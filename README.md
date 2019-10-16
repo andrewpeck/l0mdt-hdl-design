@@ -6,7 +6,7 @@ uses the Hog framework, which allows multiple top files and automated building.
 This repository is expected to have a mix of HDL approaches: VDHL, Verilog (and 
 family), HLS
 
-** See Wiki area for other information **
+**See Wiki area for other information**
 
 ## How to retrieve the code
 
