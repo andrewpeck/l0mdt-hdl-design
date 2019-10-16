@@ -6,6 +6,22 @@ uses the Hog framework, which allows multiple top files and automated building.
 This repository is expected to have a mix of HDL approaches: VDHL, Verilog (and 
 family), HLS
 
+## Gitlab workflow
+
+- Issues created to track changes in code, branchs created from issues.
+
+- Master branch protected to hold stable (release) versions
+
+- Devel branch to concentrate all the merges before release
+
+- Working branches created as needed 
+
+    - feature-<name>: for features implementation 
+
+    - hotfix-<name>: for fixes directly on master and devel branches.
+
+Please see: https://nvie.com/posts/a-successful-git-branching-model/
+
 ## Some instructions to simulate and implement the code
 
 ... TBD
