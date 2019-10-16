@@ -6,6 +6,10 @@ uses the Hog framework, which allows multiple top files and automated building.
 This repository is expected to have a mix of HDL approaches: VDHL, Verilog (and 
 family), HLS
 
+## How to retrieve the code
+
+`git clone --recurse-submodules ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/l0mdt-fpga-design.git`
+
 ## Gitlab workflow
 
 - Issues created to track changes in code, branchs created from issues.
@@ -16,9 +20,9 @@ family), HLS
 
 - Working branches created as needed 
 
-    - feature-<name>: for features implementation 
+    - feature-\<name\>: for features implementation 
 
-    - hotfix-<name>: for fixes directly on master and devel branches.
+    - hotfix-\<name\>: for fixes directly on master and devel branches.
 
 Please see: https://nvie.com/posts/a-successful-git-branching-model/
 
