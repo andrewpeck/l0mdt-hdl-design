@@ -18,7 +18,8 @@ Hog dictates the basic directory structure, please see [this](https://gitlab.cer
 
 Functionalities of this project will be implemented as libraries. "Competing"
 modules (e.g. CSF and LSF) must have equivalent levels and port structure. An 
-initial suggestion follows (naming should be improved):
+initial suggestion of libraries (as named in Hog) follows (naming should be
+improved):
 
 ```
 /shared
