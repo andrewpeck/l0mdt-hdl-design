@@ -16,10 +16,9 @@ family), HLS
 
 Hog dictates the basic directory structure, please see [this](https://gitlab.cern.ch/hog/Hog).
 
-Functionalities of this project will be implemented as libraries. "Competing"
+Functionalities of this project will be implemented as "libraries". "Competing"
 modules (e.g. CSF and LSF) must have equivalent levels and port structure. An 
-initial suggestion of libraries (as named in Hog) follows (naming should be
-improved):
+initial incomplete suggestion of libraries follows (naming can be improved):
 
 ```
 /shared
@@ -33,7 +32,7 @@ improved):
 /neighbors
 ```
 
-And Hog also define how to implement multiple designs in the same repository by
+And Hog also defines how to implement multiple designs in the same repository by
 means of the Top folder, for example:
 
 ```
