@@ -12,6 +12,36 @@ family), HLS
 
 `git clone --recurse-submodules ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/l0mdt-fpga-design.git`
 
+## Directory structure
+
+Hog dictates the basic directory structure, please see [this](https://gitlab.cern.ch/hog/Hog).
+
+Functionalities of this project will be implemented as libraries. "Competing"
+modules (e.g. CSF and LSF) must have equivalent levels and port structure. An 
+initial suggestion follows (naming should be improved):
+
+```
+/shared
+/hit_extraction
+/csf
+/lsf
+/tf1
+/tf2
+/sector_logic_interface
+/daq
+/neighbors
+```
+
+And Hog also define how to implement multiple designs in the same repository by
+means of the Top folder, for example:
+
+```
+/Top/csm_tf1
+/Top/lsm_tf1
+/Top/csm_tf2
+/Top/lsm_tf2
+```
+
 ## Gitlab workflow
 
 - Issues created to track changes in code, branchs created from issues.
