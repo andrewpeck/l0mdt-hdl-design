@@ -1,0 +1,8 @@
+vivado* 
+*~ 
+*.pyc 
+.cxl.ip/ 
+cxl_error.log
+*.log
+Vivado*
+Modelsim*
