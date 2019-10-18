@@ -86,7 +86,7 @@ begin
             end if;
 
             if out_seg.valid = '1' then
-                q <= fit_valid & fill_q & std_logic_vector(out_seg.ndof) & std_logic_vector(out_seg.chi2) & std_logic_vector(out_seg.m) & std_logic_vector(out_seg.z_local);
+                q <= out_seg.valid & fill_q & std_logic_vector(out_seg.ndof) & std_logic_vector(out_seg.chi2) & std_logic_vector(out_seg.m) & std_logic_vector(out_seg.b);
                 en_s <= '1';
                 addr_s <= (others => '0');
             end if;

@@ -73,7 +73,7 @@ architecture Behavioral of csf_chi2 is
     -- other DSP signals
     signal dv0_1, dv0_2, dv1_1, dv1_2, dv2_1, dv2_2 : std_logic := '0';
     signal start_read                      : std_logic := '0';
-    signal nhits_s                         : unsigned(max_hits_per_ml_width-1 downto 0) 
+    signal nhits_s                         : unsigned(num_hits_width-1 downto 0) 
                                                 := (others => '0');
     signal dsp_chi                         : unsigned(chi2_width*2 - 1 downto 0) := (others => '0');
     signal counter                         : integer := 0;
@@ -157,8 +157,8 @@ begin
             -- Clock 0
             dv0_1 <= outhit1.valid;
             dv0_2 <= outhit2.valid;  
-            dsp_mx1 <= resize(shift_right(mfit_s*signed('0' & outhit1.z), mfit_multi_width), mx_width);
-            dsp_mx2 <= resize(shift_right(mfit_s*signed('0' & outhit2.z), mfit_multi_width), mx_width);
+            dsp_mx1 <= resize(shift_right(mfit_s*signed('0' & outhit1.x), mfit_multi_width), mx_width);
+            dsp_mx2 <= resize(shift_right(mfit_s*signed('0' & outhit2.x), mfit_multi_width), mx_width);
             dsp_b_z_1  <= outhit1.z - b_red;
             dsp_b_z_2  <= outhit2.z - b_red;
 

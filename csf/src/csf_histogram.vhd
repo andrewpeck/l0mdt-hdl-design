@@ -38,7 +38,7 @@ end csf_histogram;
 
 architecture Behavioral of csf_histogram is
     -- Histogram parameters
-    constant histo_full_width                       : integer := mbar_width+z_width+2;
+    constant histo_full_width                       : integer := 23;
     constant histo_width                            : integer := 6;
     constant max_hits_per_bin                       : real    := 8.0;
     constant bin_depth                              : integer := integer(log2(max_hits_per_bin));
@@ -86,6 +86,7 @@ architecture Behavioral of csf_histogram is
     constant z_m_width                                 : integer := z_width     + mbar_width + 1;
     constant m_x_z_m_width                             : integer := z_m_width;
 
+
 	-- DSP signals for b+/- calculation
 	signal dsp_squ_m_r, dsp_squ_m_r_s                  : unsigned(squ_m_r_width-1 downto 0) 
         := (others => '0');
@@ -95,7 +96,7 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
     signal dsp_m_x_z_multi                             : signed(m_x_z_m_width-1 downto 0) 
         := (others =>'0');
-    signal bplus_full, bminus_full                     : signed(histo_full_width-1 downto 0 ) 
+    signal bplus_full, bminus_full                     : signed(z_m_width-1 downto 0 ) 
         := (others => '0');
     signal bplus, bminus                               : signed(histo_width+1 downto 0)       
         := (others => '0');
@@ -126,17 +127,17 @@ architecture Behavioral of csf_histogram is
         := (others => (others => '0'));
 
     -- Delta_x, Delta_y constants
-    signal m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width;
-    signal m_multi_inv_squ_m_width                    : integer := m_inv_squ_m_width + 1;
-    signal delta_z_full_width                         : integer 
+    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width;
+    constant m_multi_inv_squ_m_width                    : integer := m_inv_squ_m_width + 1;
+    constant delta_z_full_width                         : integer 
         := m_multi_inv_squ_m_width + r_width + 1;
-    signal delta_x_full_width                         : integer 
+    constant delta_x_full_width                         : integer 
         := mbar_width + inv_sqrt_m_width + r_width;
 
     -- Signals for Delta_x, Delta_z to calculate exact hit coordinate
     signal dsp_m_inv_squ_m                            : unsigned(m_inv_squ_m_width-1 downto 0) 
         := (others => '0');
-    signal dsp_m_multi_inv_squ_m                      : signed(m_multi_inv_squ_m_width-1 downto 0) 
+    signal dsp_m_multi_inv_squ_m                      : unsigned(m_multi_inv_squ_m_width-1 downto 0) 
         := (others => '0');
     signal delta_z_full                               : signed(delta_z_full_width-1 downto 0) 
         := (others => '0');
@@ -197,8 +198,8 @@ begin
             dsp_m_x <= mbar*i_mdthit.x; 
             dsp_z_m_multi <= resize(i_mdthit.z*integer(mbar_multi), z_m_width );
             dsp_m_inv_squ_m <= mbar*invsqu_m;
-            dsp_m_multi_inv_squ_m <= signed('0'& resize(invsqu_m*integer(mbar_multi),
-                                     m_multi_inv_squ_m_width));
+            dsp_m_multi_inv_squ_m <= resize(invsqu_m*integer(mbar_multi),
+                                     m_multi_inv_squ_m_width);
             mdt_hit_s <= i_mdthit;
             eof0 <= i_eof;
 
@@ -208,15 +209,15 @@ begin
             dsp_squ_m_r_s <= dsp_squ_m_r;
             mdt_hit_ss <= mdt_hit_s;
             delta_x_full <= dsp_m_inv_squ_m*mdt_hit_s.r;
-            delta_z_full <= dsp_m_multi_inv_squ_m*signed('0'& mdt_hit_s.r);
+            delta_z_full <= signed('0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.r));
             eof1 <= eof0;
 
             -- Clock 2
             dv2 <= dv1;
             bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
             bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            delta_x <= resize(shift_right(delta_x_full, delta_x_full_width - x_width), x_width);
-            delta_z <= resize(shift_right(delta_z_full, delta_z_full_width - z_width), z_width);
+            delta_x <= resize(shift_right(delta_x_full, r_over_z_multi_width + inv_sqrt_m_width), x_width);
+            delta_z <= resize(shift_right(delta_z_full, r_over_z_multi_width + inv_sqrt_m_width), z_width);
             eof2 <= eof1;
             mdt_hit_sss <= mdt_hit_ss;
 
