@@ -47,7 +47,7 @@ architecture Behavioral of top_csf is
     signal en_s : std_logic := '0';
     signal addr_s : std_logic_vector(3 downto 0) := (others => '1');
     signal out_seg : t_locseg := null_locseg;
-    signal fill_q : std_logic_vector(64 - num_hits_width - mfit_width - bfit_width - chi2_width - 1 -1 downto 0) := (others => '0');
+    signal fill_q : std_logic_vector(DataWidth - num_hits_width - mfit_width - bfit_width - chi2_width - 1 -1 downto 0) := (others => '0');
 
 begin
     

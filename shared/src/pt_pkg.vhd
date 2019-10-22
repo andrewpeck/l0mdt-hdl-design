@@ -19,22 +19,26 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
+library IEEE, csf_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use std.standard.all;
-use work.csf_pkg.all;
+use csf_lib.csf_pkg.all;
 
 package pt_pkg is
-    constant z_ref : integer := integer(bfit_mult)*120;
-    constant x_ref : integer := -32*integer(bfit_mult);
+
+    constant z_ref: integer := integer(bfit_mult)*120;
+    constant x_ref: integer := -40*integer(bfit_mult);
 
     constant theta_loc_width : integer := mfit_width;
     constant theta_loc_mult  : real := mfit_mult;
     constant theta_loc_multi_width : integer := mfit_multi_width;
-    constant z_loc_width : integer := bfit_width;
     
+    constant z_loc_width : integer := bfit_width;
+    constant roi_x_width : integer := 15;
+    constant z_glob_width : integer := 19;
+    constant r_glob_width : integer := 20;
     
     constant sagitta_width : integer := 12;
     constant sagitta_mult  : real := bfit_mult;
@@ -113,6 +117,14 @@ package pt_pkg is
     -- Eta params constants
     constant c0 : real := 0.479175*pt_mult;
     constant c1 : real :=  -3.54889*pt_mult/eta_mult;
+
+    type t_roi is
+    record
+        valid   : std_logic;
+        x_loc   : signed(roi_x_width-1 downto 0);
+        z_glob  : signed(z_glob_width-1 downto 0);
+        r_glob  : unsigned(r_glob_width-1 downto 0);
+    end record;
     
     type t_globalseg is
     record
@@ -124,9 +136,10 @@ package pt_pkg is
         eta_glob   : signed(eta_width-1 downto 0);
     end record;
 
-    constant null_locseg : t_locseg := ('0', (others => '0'), (others => '0'));
-    constant null_roi    : t_roi := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+    constant null_roi : t_roi := ('0', (others => '0'), (others => '0'), (others => '0')); 
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+
+    function vec_to_roi(vec : std_logic_vector) return t_roi;
 
     type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
     function m_to_theta return t_m_to_theta;
@@ -171,6 +184,16 @@ package pt_pkg is
 end;
 
 package body pt_pkg is
+
+    function vec_to_roi ( vec : std_logic_vector ) return t_roi is
+        variable roi : t_roi := null_roi;
+    begin
+        roi.valid := vec(62);
+        roi.x_loc := signed(vec(roi_x_width-1 downto 0));
+        roi.z_glob := signed(vec(roi_x_width+z_glob_width-1 downto roi_x_width));
+        roi.r_glob := unsigned(vec(roi_x_width+z_glob_width+r_glob_width-1 downto roi_x_width+z_glob_width));
+        return roi;
+    end function vec_to_roi;
 
     function m_to_theta return t_m_to_theta is 
     variable temp : t_m_to_theta(2**(mfit_width)-1 downto 0) := (others => (others => '0'));
