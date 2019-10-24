@@ -1,4 +1,3 @@
-../../shared/src/csf_pkg.vhd
 ../../shared/src/pt_pkg.vhd
 ../../shared/src/bram.vhd
 ../../pt/src/sagitta_calculator.vhd
