@@ -65,30 +65,20 @@ begin
             -- Clock 0
             dv0 <= seg.valid;
             z_ext <= seg.b + to_signed(z_ref, z_loc_width);
-            mx <= - resize(shift_right(seg.m*to_signed(x_ref,theta_loc_width),theta_loc_multi_width), z_loc_width);
+            mx <= resize(shift_right(seg.m*to_signed(x_ref, roi_x_width),theta_loc_multi_width), z_loc_width);
+            x_proj  <= resize(shift_right(roi.x_loc*seg.m,theta_loc_multi_width), z_loc_width);
             theta <= m_to_theta(to_integer(seg.m) + 2**(theta_loc_width-1));
 
             -- Clock 1
             dv1 <= dv0;
-            z_ext_s <= z_ext + mx;
+            z_loc <= z_ext - mx + x_proj;
             theta_s <= theta;
-            invtan <= inv_tantheta(to_integer(theta)+2**(theta_loc_width-1) );
 
             -- Clock 2
-            dv2 <= dv1;
-            z_ext_ss <= z_ext_s;
-            x_proj  <= resize(shift_right(roi_s.x_loc*invtan,inv_tantheta_width), z_loc_width);
-            theta_ss <= theta_s;
-
-            -- Clock 3
-            dv3 <= dv2;
-            z_loc <= z_ext_ss + x_proj;
-
-            -- Clock 4
-            globseg.valid <= dv3;  
+            globseg.valid <= dv1;  
             globseg.z_glob <= roi_s.z_glob + z_loc;
-            globseg.r_glob <= roi_s.r_glob;
-            globseg.theta_glob <= resize(theta_ss, theta_glob_width) + to_signed(halfpi,theta_glob_width);
+            globseg.r_glob <= roi_s.r_glob + unsigned(abs(roi_s.x_loc));
+            globseg.theta_glob <= resize(theta_ss, theta_glob_width);-- + to_signed(halfpi,theta_glob_width);
             globseg.phi_glob <= seg_s.phi;
             globseg.eta_glob <= seg_s.eta;
 

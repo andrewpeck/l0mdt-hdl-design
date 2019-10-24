@@ -115,6 +115,12 @@ begin
                 q <= dv_pt & fill_pt & std_logic_vector(pt_online);
                 en_s <= '1';
                 addr_s <= (others => '0');
+                seg_BI <= null_locseg;
+                seg_BM <= null_locseg;
+                seg_BO <= null_locseg;
+                roi_BI <= null_roi;
+                roi_BM <= null_roi;
+                roi_BO <= null_roi;
             end if;
 
         end if;

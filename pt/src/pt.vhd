@@ -49,7 +49,7 @@ architecture Behavioral of pt_calculator_top is
 	signal seg0, seg1, seg2 : t_globalseg := null_globalseg;
 	-- Sagitta calculator signals
 	signal dv_sagitta : std_logic := '0';
-	signal sagitta : signed(sagitta_width-1 downto 0) := (others => '0');
+	signal sagitta, sagitta_s : signed(sagitta_width-1 downto 0) := (others => '0');
 
 	-- Data Valid signals
 	signal dv_s, dv_phi, dv_eta : std_logic := '0';
@@ -59,9 +59,9 @@ architecture Behavioral of pt_calculator_top is
 
 	signal dbeta : signed(theta_glob_width-1 downto 0) := (others => '0');
 	-- Signal for pT calculation
-	signal pt_s, pt_s_s : unsigned(pt_width-1 downto 0) := (others => '0');
-	signal pt_p : unsigned(pt_width-1 downto 0) := (others => '0');
-	signal pt_e : unsigned(pt_width-1 downto 0) := (others => '0');
+	signal pt_s, pt_s_s : signed(pt_width downto 0) := (others => '0');
+	signal pt_p : signed(pt_width downto 0) := (others => '0');
+	signal pt_e : signed(pt_width downto 0) := (others => '0');
 	--signal pt_b   : signed(pt_width-1 downto 0) := (others => '0');
 
 begin
@@ -135,8 +135,13 @@ begin
 			--if dv_sagitta = '1' then
 
 			dv_s <= dv_sagitta;
-			pt_s <= pt_sagitta(abs(to_integer(sagitta)));
-
+			if sagitta >= 0 then
+				pt_s <= pt_sagitta(to_integer(sagitta));
+				sagitta_s <= sagitta;
+			else
+				pt_s <= pt_sagitta(to_integer(-sagitta));
+				sagitta_s <= -sagitta;
+			end if;
 --				pt_type <= 0;
 				--pt_s <= pt_sagitta(to_integer(abs(sagitta)));
 				--pt_p <= pt_phi(to_integer(abs(global_BI.phi_glob)));
@@ -164,33 +169,33 @@ begin
 			-- end if;
 
 			dv_phi <= dv_s;
-			pt_e <= pt_eta(to_integer(abs(eta)));
+			pt_e <= pt_eta(to_integer(eta) + 2**(eta_width-1));
 			pt_s_s <= pt_s;
 			
 			if pt_bin(pt_s) = 0 then
-				pt_p <= pt_phi_0(to_integer(abs(phi)));
+				pt_p <= (others => '0');
 			elsif pt_bin(pt_s) = 1 then
-				pt_p <= pt_phi_1(to_integer(abs(phi)));
+				pt_p <= pt_phi_1(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 2 then
-				pt_p <= pt_phi_2(to_integer(abs(phi)));
+				pt_p <= pt_phi_2(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 3 then
-				pt_p <= pt_phi_3(to_integer(abs(phi)));
+				pt_p <= pt_phi_3(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 4 then
-				pt_p <= pt_phi_4(to_integer(abs(phi)));
+				pt_p <= pt_phi_4(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 5 then
-				pt_p <= pt_phi_5(to_integer(abs(phi)));
+				pt_p <= pt_phi_5(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 6 then
-				pt_p <= pt_phi_6(to_integer(abs(phi)));
+				pt_p <= pt_phi_6(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 7 then
-				pt_p <= pt_phi_7(to_integer(abs(phi)));
+				pt_p <= pt_phi_7(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 8 then
-				pt_p <= pt_phi_8(to_integer(abs(phi)));
+				pt_p <= pt_phi_8(to_integer(phi) + 2**(phi_width-1));
 			elsif pt_bin(pt_s) = 9 then
-				pt_p <= pt_phi_9(to_integer(abs(phi)));
+				pt_p <= pt_phi_9(to_integer(phi) + 2**(phi_width-1));
 			end if;
 
 			o_pt_valid <= dv_phi;
-			o_pt_online <= pt_s_s - pt_p - pt_e;
+			o_pt_online <= unsigned(resize(pt_s_s - pt_p - pt_e, pt_width));
 
 		end if ;
 	end process ; -- identifier
