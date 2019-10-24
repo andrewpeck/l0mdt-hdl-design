@@ -89,7 +89,7 @@ package pt_pkg is
     constant b2_0 : real := 0.0*pt_mult/(phi_mult**2);
     constant b0_1 : real := 0.469571*pt_mult;
     constant b1_1 : real := 0.218046*pt_mult/phi_mult;
-    constant b2_1 : real := 0.0*pt_mult/(phi_mult**2);
+    constant b2_1 : real := -26.5705*pt_mult/(phi_mult**2);
     constant b0_2 : real := 1.1976*pt_mult;
     constant b1_2 : real := -0.0936068*pt_mult/phi_mult;
     constant b2_2 : real := -49.9881*pt_mult/(phi_mult**2);
