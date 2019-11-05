@@ -33,7 +33,8 @@ entity csf is
     clk       : in std_logic;
     i_seed    : in t_seed;
     i_mdt_hit : in t_mdt_hit;
-    o_seg     : out t_locseg
+    o_seg     : out t_locseg;
+    rst       : in std_logic
   );
 end csf;
 
@@ -135,9 +136,6 @@ begin
         o_segment          => output_segment
     );
 
-    -- Output 
-    o_seg <= output_segment;
-
 	CSF_proc : process(clk)
     begin
         if rising_edge(clk) then
@@ -147,9 +145,12 @@ begin
             eof <= i_mdt_hit.eof;
             rst_chi2 <= '0';
 
-            -- Reset the Chi2
+            -- Reset the Chi2 and Output
             if output_segment.valid = '1' then
                 rst_chi2 <= '1';
+                 o_seg <= output_segment;
+            elsif rst = '1' then
+                o_seg <= null_locseg;   
             end if;
 
         end if;

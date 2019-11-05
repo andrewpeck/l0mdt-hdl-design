@@ -124,6 +124,7 @@ package pt_pkg is
         x_loc   : signed(roi_x_width-1 downto 0);
         z_glob  : signed(z_glob_width-1 downto 0);
         r_glob  : unsigned(r_glob_width-1 downto 0);
+        chamber_id : unsigned(1 downto 0);
     end record;
     
     type t_globalseg is
@@ -136,7 +137,7 @@ package pt_pkg is
         eta_glob   : signed(eta_width-1 downto 0);
     end record;
 
-    constant null_roi : t_roi := ('0', (others => '0'), (others => '0'), (others => '0')); 
+    constant null_roi : t_roi := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0')); 
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
     function vec_to_roi(vec : std_logic_vector) return t_roi;
@@ -188,10 +189,11 @@ package body pt_pkg is
     function vec_to_roi ( vec : std_logic_vector ) return t_roi is
         variable roi : t_roi := null_roi;
     begin
-        roi.valid := vec(62);
+        roi.valid := vec(60);
         roi.x_loc := signed(vec(roi_x_width-1 downto 0));
         roi.r_glob := unsigned(vec(roi_x_width+r_glob_width-1 downto roi_x_width));
         roi.z_glob := signed(vec(roi_x_width+z_glob_width+r_glob_width-1 downto roi_x_width+r_glob_width));
+        roi.chamber_id := unsigned(vec(roi_x_width+z_glob_width+r_glob_width+1 downto roi_x_width+z_glob_width+r_glob_width));
         return roi;
     end function vec_to_roi;
 

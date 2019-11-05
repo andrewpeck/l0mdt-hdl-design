@@ -73,6 +73,7 @@ package csf_pkg is
     record
         valid                       : std_logic;
         mbar                        : unsigned(mbar_width-1 downto 0);
+        chamber_id                  : unsigned(1 downto 0);
     end record;
 
     -- MDT hit record    
@@ -83,6 +84,7 @@ package csf_pkg is
         x                           : unsigned(x_width-1 downto 0);
         multilayer                  : std_logic;
         r                           : unsigned(r_width-1 downto 0);
+        chamber_id                  : unsigned(1 downto 0);
         eof                         : std_logic;
     end record;
 
@@ -108,9 +110,9 @@ package csf_pkg is
 
     constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
         (others => '0'), (others => '0'), (others => '0'), (others => '0'));
-    constant null_seed               : t_seed       := ('0', (others => '0'));
+    constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
-        (others => '0'), '0');
+        (others => '0'), (others => '0'), '0');
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
 
     type t_locsegs is array(natural range <> ) of t_locseg;
@@ -161,6 +163,7 @@ package body csf_pkg is
         hit.z := signed(vec(x_width+z_width-1 downto x_width));
         hit.r := unsigned(vec(r_width+x_width+z_width-1 downto x_width+z_width));
         hit.multilayer := vec(r_width+x_width+z_width);
+        hit.chamber_id := unsigned(vec(r_width+x_width+z_width+2 downto r_width+x_width+z_width+1));
         return hit;
     end function;
 
