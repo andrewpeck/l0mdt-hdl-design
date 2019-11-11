@@ -39,6 +39,8 @@ entity csf is
 end csf;
 
 architecture Behavioral of csf is
+    -- Input RoI
+    signal seed : t_seed := null_seed;
     -- Histogram signals
     type t_mdt_hits   is array (natural range <> ) of t_mdt_hit;
     type t_histo_hits is array (natural range <> ) of t_histo_hit;
@@ -145,12 +147,20 @@ begin
             eof <= i_mdt_hit.eof;
             rst_chi2 <= '0';
 
+            if i_seed.valid = '1' then
+                seed <= i_seed;
+            end if;
+
+
             -- Reset the Chi2 and Output
             if output_segment.valid = '1' then
                 rst_chi2 <= '1';
-                 o_seg <= output_segment;
+                o_seg <= output_segment;
+                o_seg.eta <= seed.eta;
+                o_seg.phi <= seed.phi;
             elsif rst = '1' then
-                o_seg <= null_locseg;   
+                o_seg <= null_locseg; 
+                seed <= null_seed;  
             end if;
 
         end if;
