@@ -35,6 +35,7 @@ entity pt_calculator_top is
   	i_roi_BI     : in t_roi;
   	i_roi_BM     : in t_roi;
   	i_roi_BO     : in t_roi;
+  	i_rst 	     : in std_logic;
   	o_pt_online  : out unsigned(pt_width-1 downto 0);
   	o_pt_valid   : out std_logic
   	);
@@ -63,8 +64,13 @@ architecture Behavioral of pt_calculator_top is
 	signal pt_p : signed(pt_width downto 0) := (others => '0');
 	signal pt_e : signed(pt_width downto 0) := (others => '0');
 	--signal pt_b   : signed(pt_width-1 downto 0) := (others => '0');
+	signal pt_online  :  unsigned(pt_width-1 downto 0) := (others => '0');
+  	signal pt_valid   :  std_logic := '0';
 
 begin
+
+	o_pt_online <= pt_online;
+	o_pt_valid <= pt_valid;
 
 	CoordTransfBI : entity work.seg_coord_transform 
 	port map(
@@ -103,8 +109,6 @@ begin
 	pt_top_proc : process( clk )
 	begin
 		if rising_edge(clk) then
-			o_pt_valid <= '0';
-			o_pt_online <= (others => '0');
 
 			pt_s <= (others => '0');
 			pt_p <= (others => '0');
@@ -194,8 +198,15 @@ begin
 				pt_p <= pt_phi_9(to_integer(phi) + 2**(phi_width-1));
 			end if;
 
-			o_pt_valid <= dv_phi;
-			o_pt_online <= unsigned(resize(pt_s_s - pt_p - pt_e, pt_width));
+			if dv_phi = '1' then
+				pt_valid <= dv_phi;
+				pt_online <= unsigned(resize(pt_s_s - pt_p - pt_e, pt_width));
+			end if;
+
+			if i_rst = '1' then
+				pt_valid <= '0';
+				pt_online <= (others => '0');
+			end if;
 
 		end if ;
 	end process ; -- identifier

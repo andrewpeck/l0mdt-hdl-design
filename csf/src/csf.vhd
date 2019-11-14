@@ -34,7 +34,7 @@ entity csf is
     i_seed    : in t_seed;
     i_mdt_hit : in t_mdt_hit;
     o_seg     : out t_locseg;
-    rst       : in std_logic
+    i_rst     : in std_logic
   );
 end csf;
 
@@ -73,7 +73,7 @@ architecture Behavioral of csf is
     signal rst_chi2                         : std_logic := '0';
 
     -- Output signal
-    signal output_segment                   : t_locseg := null_locseg;
+    signal output_segment, final_seg        : t_locseg := null_locseg;
 
 begin
 
@@ -138,6 +138,8 @@ begin
         o_segment          => output_segment
     );
 
+    o_seg <= final_seg;
+
 	CSF_proc : process(clk)
     begin
         if rising_edge(clk) then
@@ -153,13 +155,13 @@ begin
 
 
             -- Reset the Chi2 and Output
-            if output_segment.valid = '1' then
+            if output_segment.valid = '1' and output_segment.m /= 0 and output_segment.b /= 0 then
                 rst_chi2 <= '1';
-                o_seg <= output_segment;
-                o_seg.eta <= seed.eta;
-                o_seg.phi <= seed.phi;
-            elsif rst = '1' then
-                o_seg <= null_locseg; 
+                final_seg <= output_segment;
+                final_seg.eta <= seed.eta;
+                final_seg.phi <= seed.phi;
+            elsif i_rst = '1' then
+                final_seg <= null_locseg; 
                 seed <= null_seed;  
             end if;
 
