@@ -37,7 +37,7 @@ entity top_csf_plus_pt is
     d   	: in std_logic_vector(DataWidth-1 downto 0);
     q    	: out std_logic_vector(DataWidth-1 downto 0);
     en      : out std_logic;
-    addr 	: out std_logic_vector(3 downto 0)
+    addr 	: out std_logic_vector(6 downto 0)
   );
 end top_csf_plus_pt;
 
@@ -49,7 +49,7 @@ architecture Behavioral of top_csf_plus_pt is
     signal seeds : a_seeds(2 downto 0)        := (others => null_seed);
 
     signal en_s : std_logic := '0';
-    signal addr_s : std_logic_vector(3 downto 0) := (others => '1');
+    signal addr_s : std_logic_vector(6 downto 0) := (others => '1');
     -- ROI segments in local coordinates
     type a_rois is array(natural range <> ) of t_roi; 
     signal rois : a_rois(2 downto 0) := (others => null_roi);
@@ -57,8 +57,11 @@ architecture Behavioral of top_csf_plus_pt is
     signal pt_online :  unsigned(pt_width-1 downto 0) := (others => '0');
     signal dv_pt : std_logic := '0';
     signal csf_rst : std_logic := '0';
-
+    signal rst_pt  : std_logic := '0';
     signal fill_pt : std_logic_vector(DataWidth - pt_width - 1 -1 downto 0) := (others => '0');
+    signal fill_seg : std_logic_vector(DataWidth - 3*mfit_width -1 -3 -1 downto 0) := (others => '0');
+    signal q_s :  std_logic_vector(DataWidth-1 downto 0) := (others => '0');
+
 
 begin
     
@@ -71,7 +74,7 @@ begin
         i_seed => seeds(k),
         i_mdt_hit => mdt_hits(k),
         o_seg => out_segs(k),
-        rst => csf_rst
+        i_rst => csf_rst
         );
     end generate;
 
@@ -85,13 +88,15 @@ begin
         i_roi_BI     => rois(0),
         i_roi_BM     => rois(1),
         i_roi_BO     => rois(2),
+        i_rst        => rst_pt,
         o_pt_online  => pt_online,
         o_pt_valid   => dv_pt
     );
 
     addr <= addr_s;
     en   <= en_s;
-    
+    q <= q_s;
+
 	TopProc : process(clk)
     begin
         if rising_edge(clk) then
@@ -109,22 +114,34 @@ begin
 		    end if;
 
             csf_rst <= '0';
-            if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
-                rois <= (others => null_roi);
-                csf_rst <= '1';
-            end if; 
+            --if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
+            --    rois <= (others => null_roi);
+            --    --csf_rst <= '1';
+            --end if; 
 
             -- Output
-            if unsigned(addr_s) < 15 and unsigned(addr_s) >= 0 then
+            if unsigned(addr_s) < 127 and unsigned(addr_s) >= 0 then
                 addr_s <= std_logic_vector(unsigned(addr_s) + 1);
-            elsif unsigned(addr_s) = 15 then
+            elsif unsigned(addr_s) = 127 then
                 addr_s <= (others => '1');
                 en_s <= '0'; 
-                q <= (others => '0');               
+                q_s <= (others => '0');
+                rst_pt <= '0';               
             end if;
 
+            if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
+                --rois <= (others => null_roi);
+                --q_s <= '1' & fill_seg & out_segs(2).valid & out_segs(1).valid & out_segs(0).valid & std_logic_vector(out_segs(2).m) & std_logic_vector(out_segs(1).m) & std_logic_vector(out_segs(0).m);
+                csf_rst <= '1';
+                --en_s <= '1';
+                --addr_s <= (others => '0');
+                --rois <= (others => null_roi);
+            end if; 
+
+
             if dv_pt = '1' then
-                q <= dv_pt & fill_pt & std_logic_vector(pt_online);
+                q_s <= dv_pt & fill_pt & std_logic_vector(pt_online);
+                rst_pt <= '1';
                 en_s <= '1';
                 addr_s <= (others => '0');
                 rois <= (others => null_roi);
