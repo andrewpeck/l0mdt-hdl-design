@@ -38,7 +38,7 @@ implement_project:csf:
        - synthesise_ips:csf
        - synthesise_project:csf
 
-write_bitstream:csf
+write_bitstream:csf:
     extends: .write_bitstream
     variables:
       extends: .vars
