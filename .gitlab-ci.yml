@@ -1,0 +1,51 @@
+include:
+    - project: 'atlas-l1calo-efex/Hog'
+      file: '/gitlab-ci.yml'
+
+#################### CONTROL FPGA ###########################
+
+create_project:csf:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+
+synthesise_ips:csf:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+      IP_PATH: IP
+    dependencies:
+        - create_project:csf
+
+synthesise_project:csf:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+    dependencies:
+        - synthesise_ips:csf
+        - create_project:csf
+
+implement_project:csf
+    extends: .implement_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+    dependencies:
+       - create_project:csf
+       - synthesise_ips:csf
+       - synthesise_project:csf
+
+write_bitstream:csf
+    extends: .write_bitstream
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+    dependencies:
+       - create_project:csf
+       - synthesise_ips:csf
+       - synthesise_project:csf
+       - implement_project:csf
+
