@@ -28,7 +28,7 @@ synthesise_project:csf:
         - synthesise_ips:csf
         - create_project:csf
 
-implement_project:csf
+implement_project:csf:
     extends: .implement_project
     variables:
       extends: .vars
