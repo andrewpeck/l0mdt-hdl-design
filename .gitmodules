@@ -1,3 +1,4 @@
 [submodule "Hog"]
 	path = Hog
-	url = ssh://git@gitlab.cern.ch:7999/hog/Hog.git
+#	url = ssh://git@gitlab.cern.ch:7999/hog/Hog.git
+	url = ../../hog/Hog
