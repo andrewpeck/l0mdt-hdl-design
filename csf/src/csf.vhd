@@ -155,7 +155,7 @@ begin
 
 
             -- Reset the Chi2 and Output
-            if output_segment.valid = '1' and output_segment.m /= 0 and output_segment.b /= 0 then
+            if output_segment.valid = '1' and (output_segment.ndof /= 0) then
                 rst_chi2 <= '1';
                 final_seg <= output_segment;
                 final_seg.eta <= seed.eta;

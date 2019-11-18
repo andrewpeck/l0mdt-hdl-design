@@ -72,7 +72,7 @@ package csf_pkg is
     type t_seed is
     record
         valid                       : std_logic;
-        mbar                        : unsigned(mbar_width-1 downto 0);
+        mbar                        : signed(mbar_width-1 downto 0);
         phi                         : signed(phi_width-1 downto 0);
         eta                         : signed(eta_width-1 downto 0);                        
         chamber_id                  : unsigned(1 downto 0);
@@ -173,7 +173,7 @@ package body csf_pkg is
         variable seed : t_seed := null_seed;
     begin
         seed.valid := vec(61);
-        seed.mbar := unsigned(vec(mbar_width-1 downto 0));
+        seed.mbar := signed(vec(mbar_width-1 downto 0));
         seed.phi  := signed(vec(mbar_width+phi_width-1 downto mbar_width));
         seed.eta  := signed(vec(mbar_width+phi_width+eta_width-1 downto mbar_width+phi_width));
         seed.chamber_id := unsigned(vec(mbar_width+phi_width+eta_width+1 downto mbar_width+phi_width+eta_width));
