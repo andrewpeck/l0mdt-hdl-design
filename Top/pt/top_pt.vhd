@@ -50,6 +50,7 @@ architecture Behavioral of top_pt is
     signal cmb : unsigned(1 downto 0) := (others => '0');
     signal fill_pt : std_logic_vector(DataWidth - pt_width - 1 -1 downto 0) := (others => '0');
     signal en_s : std_logic := '0';
+    signal pt_rst : std_logic := '0';
     signal addr_s : std_logic_vector(3 downto 0) := (others => '1');
 begin
     
@@ -62,6 +63,7 @@ begin
         i_roi_BI     => roi_BI,
         i_roi_BM     => roi_BM,
         i_roi_BO     => roi_BO,
+        i_rst        => pt_rst,
         o_pt_online  => pt_online,
         o_pt_valid   => dv_pt
     );
@@ -108,12 +110,14 @@ begin
             elsif unsigned(addr_s) = 15 then
 				addr_s <= (others => '1');
 				en_s <= '0'; 
-				q <= (others => '0');           	
+				q <= (others => '0');
+                pt_rst <= '0';           	
             end if;
 
             if dv_pt = '1' then
                 q <= dv_pt & fill_pt & std_logic_vector(pt_online);
                 en_s <= '1';
+                pt_rst <= '1';
                 addr_s <= (others => '0');
                 seg_BI <= null_locseg;
                 seg_BM <= null_locseg;

@@ -7,3 +7,4 @@ cxl_error.log
 Vivado*
 Modelsim*
 profpga
+*.out
