@@ -46,7 +46,7 @@ architecture Behavioral of csf_histogram is
     constant squ_m_width                            : integer := mbar_width + 1;
 
     -- Signals for seed information 
-    signal mbar                                     : unsigned(mbar_width-1 downto 0) 
+    signal mbar                                     : signed(mbar_width-1 downto 0) 
         := (others => '0');
     signal squ_m                                    : unsigned(squ_m_width-1 downto 0) 
         := (others => '0');
@@ -82,7 +82,7 @@ architecture Behavioral of csf_histogram is
     signal mdt_hit_s, mdt_hit_ss, mdt_hit_sss : t_mdt_hit := null_mdt_hit;
     -- Constants for b+/- calculation
     constant squ_m_r_width                             : integer := squ_m_width + r_width;
-    constant m_x_width                                 : integer := mbar_width  + x_width;
+    constant m_x_width                                 : integer := mbar_width + x_width + 1;
     constant z_m_width                                 : integer := z_width     + mbar_width + 1;
     constant m_x_z_m_width                             : integer := z_m_width;
 
@@ -90,7 +90,7 @@ architecture Behavioral of csf_histogram is
 	-- DSP signals for b+/- calculation
 	signal dsp_squ_m_r, dsp_squ_m_r_s                  : unsigned(squ_m_r_width-1 downto 0) 
         := (others => '0');
-	signal dsp_m_x                                     : unsigned(m_x_width-1 downto 0) 
+	signal dsp_m_x                                     : signed(m_x_width-1 downto 0) 
         := (others => '0');
 	signal dsp_z_m_multi                               : signed(z_m_width-1 downto 0) 
         := (others => '0');
@@ -127,15 +127,15 @@ architecture Behavioral of csf_histogram is
         := (others => (others => '0'));
 
     -- Delta_x, Delta_y constants
-    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width;
+    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width + 1;
     constant m_multi_inv_squ_m_width                    : integer := m_inv_squ_m_width + 1;
     constant delta_z_full_width                         : integer 
         := m_multi_inv_squ_m_width + r_width + 1;
     constant delta_x_full_width                         : integer 
-        := mbar_width + inv_sqrt_m_width + r_width;
+        := mbar_width + inv_sqrt_m_width + r_width + 2;
 
     -- Signals for Delta_x, Delta_z to calculate exact hit coordinate
-    signal dsp_m_inv_squ_m                            : unsigned(m_inv_squ_m_width-1 downto 0) 
+    signal dsp_m_inv_squ_m                            : signed(m_inv_squ_m_width-1 downto 0) 
         := (others => '0');
     signal dsp_m_multi_inv_squ_m                      : unsigned(m_multi_inv_squ_m_width-1 downto 0) 
         := (others => '0');
@@ -188,16 +188,16 @@ begin
                     
             if i_seed.valid = '1' then
                 mbar <= i_seed.mbar;
-                squ_m <= sqrt_ROM(to_integer(i_seed.mbar));
-                invsqu_m <= invsqrt_ROM(to_integer(i_seed.mbar));
+                squ_m <= sqrt_ROM(to_integer(abs(i_seed.mbar)));
+                invsqu_m <= invsqrt_ROM(to_integer(abs(i_seed.mbar)));
             end if;
     
             -- Clock 0
             dv0   <= i_mdthit.valid;
             dsp_squ_m_r <= shift_right(squ_m*i_mdthit.r,r_over_z_multi_width); 
-            dsp_m_x <= mbar*i_mdthit.x; 
+            dsp_m_x <= mbar*signed('0' & i_mdthit.x); 
             dsp_z_m_multi <= resize(i_mdthit.z*integer(mbar_multi), z_m_width );
-            dsp_m_inv_squ_m <= mbar*invsqu_m;
+            dsp_m_inv_squ_m <= mbar*signed( '0' & invsqu_m);
             dsp_m_multi_inv_squ_m <= resize(invsqu_m*integer(mbar_multi),
                                      m_multi_inv_squ_m_width);
             mdt_hit_s <= i_mdthit;
@@ -205,10 +205,10 @@ begin
 
             -- Clock 1
             dv1 <= dv0;
-            dsp_m_x_z_multi <= signed('0' & dsp_m_x) - dsp_z_m_multi;
+            dsp_m_x_z_multi <= dsp_m_x - dsp_z_m_multi;
             dsp_squ_m_r_s <= dsp_squ_m_r;
             mdt_hit_ss <= mdt_hit_s;
-            delta_x_full <= dsp_m_inv_squ_m*mdt_hit_s.r;
+            delta_x_full <= unsigned(abs(dsp_m_inv_squ_m*signed('0' & mdt_hit_s.r)));
             delta_z_full <= signed('0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.r));
             eof1 <= eof0;
 
