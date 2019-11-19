@@ -2,8 +2,6 @@ include:
     - project: 'atlas-l1calo-efex/Hog'
       file: '/gitlab-ci.yml'
 
-before_script:
-    - source ${PROFPGA_PATH}/settings64.sh
 
 
 #################### CSF Project ###########################
