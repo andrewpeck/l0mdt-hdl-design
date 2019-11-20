@@ -69,39 +69,39 @@ before_script:
 
 #################### pT Project ###########################
 
-create_project:pt:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
+# create_project:pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
 
-synthesise_ips:pt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-      IP_PATH: IP
-    dependencies:
-        - create_project:pt
+# synthesise_ips:pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:pt
 
-synthesise_project:pt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-    dependencies:
-        - synthesise_ips:pt
-        - create_project:pt
+# synthesise_project:pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#         - synthesise_ips:pt
+#         - create_project:pt
 
-implement_project:pt:
-    extends: .implement_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-    dependencies:
-       - create_project:pt
-       - synthesise_ips:pt
-       - synthesise_project:pt
+# implement_project:pt:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
 
 # write_bitstream:pt:
 #     extends: .write_bitstream
@@ -116,39 +116,39 @@ implement_project:pt:
 
 #################### CSF+pT Project ###########################
 
-# create_project:csf_plus_pt:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
+create_project:csf_plus_pt:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
 
-# synthesise_ips:csf_plus_pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:csf_plus_pt
+synthesise_ips:csf_plus_pt:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
+      IP_PATH: IP
+    dependencies:
+        - create_project:csf_plus_pt
 
-# synthesise_project:csf_plus_pt:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#     dependencies:
-#         - synthesise_ips:csf_plus_pt
-#         - create_project:csf_plus_pt
+synthesise_project:csf_plus_pt:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
+    dependencies:
+        - synthesise_ips:csf_plus_pt
+        - create_project:csf_plus_pt
 
-# implement_project:csf_plus_pt:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#     dependencies:
-#        - create_project:csf_plus_pt
-#        - synthesise_ips:csf_plus_pt
-#        - synthesise_project:csf_plus_pt
+implement_project:csf_plus_pt:
+    extends: .implement_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
+    dependencies:
+       - create_project:csf_plus_pt
+       - synthesise_ips:csf_plus_pt
+       - synthesise_project:csf_plus_pt
 
 # write_bitstream:csf_plus_pt:
 #     extends: .write_bitstream
