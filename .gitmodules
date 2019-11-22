@@ -2,4 +2,4 @@
 	path = Hog
 #	url = ssh://git@gitlab.cern.ch:7999/hog/Hog.git
 	url = https://gitlab.cern.ch/hog/Hog.git
-	branch = feture/FixCIProblems
+	branch = feature/NewDirStructure
