@@ -1,5 +1,5 @@
 include:
-    - project: 'atlas-l1calo-efex/Hog'
+    - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
 before_script:
     - env
