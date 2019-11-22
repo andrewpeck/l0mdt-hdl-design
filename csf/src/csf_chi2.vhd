@@ -68,10 +68,10 @@ architecture Behavioral of csf_chi2 is
     signal dsp_mx1, dsp_mx2                : signed(mx_width-1 downto 0) := (others => '0');
     signal dsp_b_z_1, dsp_b_z_2            : signed(z_width-1 downto 0  ) := (others => '0');
     signal dsp_res_1, dsp_res_2            : signed(res_width-1 downto 0 ) := (others => '0');
-    signal dsp_res2_1, dsp_res2_2          : unsigned(chi2_width*2-1 downto 0 ) := (others => '0');
+    signal dsp_res2_1, dsp_res2_1_s, dsp_res2_2, dsp_res2_2_s          : unsigned(chi2_width*2-1 downto 0 ) := (others => '0');
 
     -- other DSP signals
-    signal dv0_1, dv0_2, dv1_1, dv1_2, dv2_1, dv2_2 : std_logic := '0';
+    signal dv0_1, dv0_2, dv1_1, dv1_2, dv2_1, dv2_2, dv3_1, dv3_2 : std_logic := '0';
     signal start_read                      : std_logic := '0';
     signal nhits_s                         : unsigned(num_hits_width-1 downto 0) 
                                                 := (others => '0');
@@ -178,14 +178,20 @@ begin
             dsp_res2_2 <= resize(unsigned(dsp_res_2*dsp_res_2), chi2_width*2);
 
             -- Clock 3
-            if dv2_1 = '1' and dv2_2 = '1' then
-                dsp_chi <= dsp_chi + dsp_res2_1 + dsp_res2_2;
+            dv3_1 <= dv2_1;
+            dv3_2 <= dv2_2;
+            dsp_res2_1_s <= dsp_res2_1;
+            dsp_res2_2_s <= dsp_res2_2;
+            
+            -- Clock 4
+            if dv3_1 = '1' and dv3_2 = '1' then
+                dsp_chi <= dsp_chi + dsp_res2_1_s + dsp_res2_2_s;
                 startCounter <= '1';
-            elsif dv2_1 = '1' then
-                dsp_chi <= dsp_chi + dsp_res2_1;
+            elsif dv3_1 = '1' then
+                dsp_chi <= dsp_chi + dsp_res2_1_s;
                 startCounter <= '1';
-            elsif dv2_2 = '1' then
-                dsp_chi <= dsp_chi + dsp_res2_2;
+            elsif dv3_2 = '1' then
+                dsp_chi <= dsp_chi + dsp_res2_2_s;
                 startCounter <= '1';
             end if;
             

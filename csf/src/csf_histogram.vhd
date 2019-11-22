@@ -79,7 +79,7 @@ architecture Behavioral of csf_histogram is
 
 
     -- MDT hit signals
-    signal mdt_hit_s, mdt_hit_ss, mdt_hit_sss : t_mdt_hit := null_mdt_hit;
+    signal mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : t_mdt_hit := null_mdt_hit;
     -- Constants for b+/- calculation
     constant squ_m_r_width                             : integer := squ_m_width + r_width;
     constant m_x_width                                 : integer := mbar_width + x_width + 1;
@@ -139,9 +139,9 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
     signal dsp_m_multi_inv_squ_m                      : unsigned(m_multi_inv_squ_m_width-1 downto 0) 
         := (others => '0');
-    signal delta_z_full                               : signed(delta_z_full_width-1 downto 0) 
+    signal delta_z_full, delta_z_full_s               : signed(delta_z_full_width-1 downto 0) 
         := (others => '0');
-    signal delta_x_full                               : unsigned(delta_x_full_width-1 downto 0) 
+    signal delta_x_full, delta_x_full_s               : unsigned(delta_x_full_width-1 downto 0) 
         := (others => '0');
     signal delta_x, delta_x_s, delta_x_ss             : unsigned(x_width-1 downto 0) 
         := (others => '0');
@@ -216,8 +216,8 @@ begin
             dv2 <= dv1;
             bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
             bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            delta_x <= resize(shift_right(delta_x_full, r_over_z_multi_width + inv_sqrt_m_width), x_width);
-            delta_z <= resize(shift_right(delta_z_full, r_over_z_multi_width + inv_sqrt_m_width), z_width);
+            delta_x_full_s <= delta_x_full;
+            delta_z_full_s <= delta_z_full;
             eof2 <= eof1;
             mdt_hit_sss <= mdt_hit_ss;
 
@@ -227,31 +227,32 @@ begin
                 histo_width+2 );
             bminus <= resize(shift_right(bminus_full, histo_full_width - histo_width ), 
                 histo_width+2 );
-
-            hit_plus.valid <= dv2;
-            hit_minus.valid <= dv2;
-                
-            hit_plus.x <= mdt_hit_sss.x - delta_x;
-            hit_minus.x <= mdt_hit_sss.x + delta_x;
-            hit_plus.z <= mdt_hit_sss.z + delta_z;
-            hit_minus.z <= mdt_hit_sss.z - delta_z;
+            delta_x <= resize(shift_right(delta_x_full, r_over_z_multi_width + inv_sqrt_m_width), x_width);
+            delta_z <= resize(shift_right(delta_z_full, r_over_z_multi_width + inv_sqrt_m_width), z_width);
+            mdt_hit_ssss <= mdt_hit_sss;
+            
             eof3 <= eof2;
 
             -- Clock 4
             dv4 <= dv3;
             bplus_s <= unsigned(bplus(histo_width-1 downto 0));
             bminus_s <= unsigned(bminus(histo_width-1 downto 0));
-            hit_plus_s <= hit_plus;
-            hit_minus_s <= hit_minus;
+            hit_plus.valid <= dv3;
+            hit_minus.valid <= dv3;
+                
+            hit_plus.x <= mdt_hit_ssss.x - delta_x;
+            hit_minus.x <= mdt_hit_ssss.x + delta_x;
+            hit_plus.z <= mdt_hit_ssss.z + delta_z;
+            hit_minus.z <= mdt_hit_ssss.z - delta_z;
             eof4 <= eof3;     
 
             -- Clock 5
             dv5 <= dv4;
             w_en <= (others => '0');
             w_en(to_integer(bminus_s)) <= dv4;                    
-            w_hit_vec(to_integer(bminus_s)) <= histo_hit_to_vec(hit_minus_s);
+            w_hit_vec(to_integer(bminus_s)) <= histo_hit_to_vec(hit_minus);
             w_en(to_integer(bplus_s)) <= dv4;
-            w_hit_vec(to_integer(bplus_s)) <= histo_hit_to_vec(hit_plus_s);
+            w_hit_vec(to_integer(bplus_s)) <= histo_hit_to_vec(hit_plus);
                 
             bplus_ss <= bplus_s;
             bminus_ss <= bminus_s;
