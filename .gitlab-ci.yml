@@ -1,6 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
+      ref: 'feature/external_libs'
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
@@ -22,50 +23,40 @@ before_script:
 
 #################### CSF Project ###########################
 
-# create_project:profpga_duo:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo
+create_project:profpga_duo.pt.0:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo.pt.0
 
-# synthesise_ips:profpga_duo:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:profpga_duo
+synthesise_ips:profpga_duo.pt.0:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo.pt.0
+      IP_PATH: IP
+    dependencies:
+        - create_project:profpga_duo.pt.0
 
-# synthesise_project:profpga_duo:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo
-#     dependencies:
-#         - synthesise_ips:profpga_duo
-#         - create_project:profpga_duo
+synthesise_project:profpga_duo.pt.0:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo.pt.0
+    dependencies:
+        - synthesise_ips:profpga_duo.pt.0
+        - create_project:profpga_duo.pt.0
 
-# implement_project:profpga_duo:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo
-#     dependencies:
-#        - create_project:profpga_duo
-#        - synthesise_ips:profpga_duo
-#        - synthesise_project:profpga_duo
+implement_project:profpga_duo.pt.0:
+    extends: .implement_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo.pt.0
+    dependencies:
+       - create_project:profpga_duo.pt.0
+       - synthesise_ips:profpga_duo.pt.0
+       - synthesise_project:profpga_duo.pt.0
 
-# write_bitstream:profpga_duo:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo
-#     dependencies:
-#        - create_project:profpga_duo
-#        - synthesise_ips:profpga_duo
-#        - synthesise_project:profpga_duo
-#        - implement_project:profpga_duo
 
 #################### pT Project ###########################
 
@@ -116,39 +107,39 @@ before_script:
 
 #################### CSF+pT Project ###########################
 
-create_project:csf_plus_pt:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
+# create_project:csf_plus_pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
 
-synthesise_ips:csf_plus_pt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-      IP_PATH: IP
-    dependencies:
-        - create_project:csf_plus_pt
+# synthesise_ips:csf_plus_pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:csf_plus_pt
 
-synthesise_project:csf_plus_pt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-    dependencies:
-        - synthesise_ips:csf_plus_pt
-        - create_project:csf_plus_pt
+# synthesise_project:csf_plus_pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#         - synthesise_ips:csf_plus_pt
+#         - create_project:csf_plus_pt
 
-implement_project:csf_plus_pt:
-    extends: .implement_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-    dependencies:
-       - create_project:csf_plus_pt
-       - synthesise_ips:csf_plus_pt
-       - synthesise_project:csf_plus_pt
+# implement_project:csf_plus_pt:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#        - create_project:csf_plus_pt
+#        - synthesise_ips:csf_plus_pt
+#        - synthesise_project:csf_plus_pt
 
 # write_bitstream:csf_plus_pt:
 #      extends: .write_bitstream
