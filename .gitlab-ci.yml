@@ -1,7 +1,6 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref:  'feature/NewDirStructure'
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
@@ -19,7 +18,7 @@ before_script:
     - export PATH=$PATH:${HOG_PATH}
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/settings64.sh
-
+    - export HOG_NO_BITSTREAM_STAGE=1
 
 #################### CSF Project ###########################
 
@@ -151,14 +150,14 @@ implement_project:csf_plus_pt:
        - synthesise_ips:csf_plus_pt
        - synthesise_project:csf_plus_pt
 
-write_bitstream:csf_plus_pt:
-     extends: .write_bitstream
-     variables:
-       extends: .vars
-       PROJECT_NAME: csf_plus_pt
-     dependencies:
-        - create_project:csf_plus_pt
-        - synthesise_ips:csf_plus_pt
-        - synthesise_project:csf_plus_pt
-        - implement_project:csf_plus_pt
+# write_bitstream:csf_plus_pt:
+#      extends: .write_bitstream
+#      variables:
+#        extends: .vars
+#        PROJECT_NAME: csf_plus_pt
+#      dependencies:
+#         - create_project:csf_plus_pt
+#         - synthesise_ips:csf_plus_pt
+#         - synthesise_project:csf_plus_pt
+#         - implement_project:csf_plus_pt
 
