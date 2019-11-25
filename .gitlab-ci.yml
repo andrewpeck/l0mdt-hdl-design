@@ -19,7 +19,7 @@ before_script:
     - export PATH=$PATH:${HOG_PATH}
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/settings64.sh
-    - export HOG_NO_BITSTREAM_STAGE=1
+#    - export HOG_NO_BITSTREAM_STAGE=1
 
 #################### CSF Project ###########################
 
