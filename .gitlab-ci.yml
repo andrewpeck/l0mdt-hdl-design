@@ -56,9 +56,7 @@ implement_project:profpga_duo_pt.0:
        - create_project:profpga_duo_pt.0
        - synthesise_ips:profpga_duo_pt.0
        - synthesise_project:profpga_duo_pt.0
-
-
-#################### pT Project ###########################
+################### pT Project ###########################
 
 # create_project:pt:
 #     extends: .create_project
