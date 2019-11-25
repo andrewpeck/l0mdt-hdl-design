@@ -77,12 +77,14 @@ architecture Behavioral of csf_fitter is
     constant b_over_z_multi_width : integer := integer(log2(bfit_mult/z_mult));
 
 	-- Numerator/Denominator signals
-	signal dsp_NSumXZ 	, dsp_NSumXZ_s		: signed(NSumXZ_width-1 downto 0) := (others => '0');
-	signal dsp_SumZSumX , dsp_SumZSumX_s	: signed(SumZSumX_width-1 downto 0) := (others => '0');
-	signal dsp_SumZSumX2, dsp_SumZSumX2_s 	: signed(SumZSumX2_width-1 downto 0 ) := (others => '0');
-	signal dsp_SumXZSumX, dsp_SumXZSumX_s 	: signed(SumXZSumX_width-1 downto 0 ) := (others => '0');
-	signal dsp_NSumX2 	, dsp_NSumX2_s		: unsigned(NSumX2_width-1 downto 0 ) := (others => '0');
-	signal dsp_SumXSumX , dsp_SumXSumX_s	: unsigned(SumXSumX_width-1 downto 0 ) := (others => '0');
+	signal dsp_NSumXZ 	, dsp_NSumXZ_s, dsp_NSumXZ_ss		: signed(NSumXZ_width-1 downto 0) := (others => '0');
+	signal dsp_SumZSumX , dsp_SumZSumX_s, dsp_SumZSumX_ss	: signed(SumZSumX_width-1 downto 0) := (others => '0');
+	signal dsp_SumZSumX2, dsp_SumZSumX2_s,
+		   dsp_SumZSumX2_ss 	: signed(SumZSumX2_width-1 downto 0 ) := (others => '0');
+	signal dsp_SumXZSumX, dsp_SumXZSumX_s,
+		   dsp_SumXZSumX_ss 	: signed(SumXZSumX_width-1 downto 0 ) := (others => '0');
+	signal dsp_NSumX2 	, dsp_NSumX2_s, dsp_NSumX2_ss		: unsigned(NSumX2_width-1 downto 0 ) := (others => '0');
+	signal dsp_SumXSumX , dsp_SumXSumX_s, dsp_SumXSumX_ss	: unsigned(SumXSumX_width-1 downto 0 ) := (others => '0');
 	signal numerator_m      				: signed(num_m_width-1 downto 0) := (others => '0');
 	signal numerator_b 						: signed(num_b_width-1 downto 0 ) := (others => '0');
 	signal denominator      				: unsigned(den_width-1 downto 0 ) := (others => '0');
@@ -121,7 +123,7 @@ architecture Behavioral of csf_fitter is
 	signal dsp_start, dsp_start_s 			: std_logic := '0';
     signal counter : integer := 0;
     signal startCounter : std_logic := '0';
-	signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8 : std_logic := '0';
+	signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : std_logic := '0';
     signal event_valid : std_logic := '0';
 
 begin
@@ -179,42 +181,51 @@ begin
 
 			-- Clock 2
 			dv2 <= dv1;
-			numerator_m 		<= dsp_NSumXZ_s - dsp_SumZSumX_s;
-			numerator_b 		<= dsp_SumZSumX2_s - dsp_SumXZSumX_s;
-			denominator 		<= dsp_NSumX2_s - dsp_SumXSumX_s;
+			dsp_NSumXZ_ss 		<= dsp_NSumXZ_s 	;
+			dsp_SumZSumX_ss 	<= dsp_SumZSumX_s ;
+			dsp_SumZSumX2_ss 	<= dsp_SumZSumX2_s;
+			dsp_SumXZSumX_ss 	<= dsp_SumXZSumX_s;
+			dsp_NSumX2_ss 		<= dsp_NSumX2_s 	;
+			dsp_SumXSumX_ss 	<= dsp_SumXSumX_s ;
 
 			-- Clock 3
 			dv3 <= dv2;
+			numerator_m 		<= dsp_NSumXZ_ss - dsp_SumZSumX_ss;
+			numerator_b 		<= dsp_SumZSumX2_ss - dsp_SumXZSumX_ss;
+			denominator 		<= dsp_NSumX2_ss - dsp_SumXSumX_ss;
+
+			-- Clock 4
+			dv4 <= dv3;
 			numerator_m_red 	<= resize(shift_right(numerator_m, shift_num_m),
 									 num_m_width-shift_num_m);
 			numerator_b_red 	<= resize(shift_right(numerator_b, shift_num_b), 
 									 num_b_width-shift_num_b);
 			denominator_red 	<= resize(shift_right(denominator, shift_den),   
 									 den_width-shift_den);
-			-- Clock 4
-			dv4 <= dv3;
+			-- Clock 5
+			dv5 <= dv4;
 			reciprocal_addr	 	<= std_logic_vector(denominator_red);
 			numerator_b_red_s 	<= numerator_b_red;
 			numerator_m_red_s 	<= numerator_m_red;
 
-			-- Clock 5
-			dv5 <= dv4;
+			-- Clock 6
+			dv6 <= dv5;
 			reciprocal_den 		<= signed('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr))));
 			numerator_b_red_ss 	<= numerator_b_red_s;
 			numerator_m_red_ss 	<= numerator_m_red_s;
 
-			--Clock 6
-			dv6 <= dv5;
-			mfit_full 			<= numerator_m_red_ss*reciprocal_den;
-			bfit_full 			<= numerator_b_red_ss*reciprocal_den;
 			--Clock 7
 			dv7 <= dv6;
+			mfit_full 			<= numerator_m_red_ss*reciprocal_den;
+			bfit_full 			<= numerator_b_red_ss*reciprocal_den;
+			--Clock 8
+			dv8 <= dv7;
 			mfit_full_s 		<= mfit_full;
             bfit_full_s 		<= bfit_full;
             
-			--Clock 8
-			o_fit_valid <= dv7;
-			dv8 	  <= dv7;
+			--Clock 9
+			o_fit_valid <= dv8;
+			dv9 	  <= dv8;
 			o_mfit 				<= resize(shift_right(mfit_full_s, reciprocal_width + shift_den - 
 												  shift_num_m - mfit_multi_width ), mfit_width);
 			o_bfit 				<= resize(shift_right(bfit_full_s, reciprocal_width + shift_den - 
@@ -222,7 +233,7 @@ begin
 			o_nhits 				<= dsp_nhits;
 
 			-- Reset
-			if dv8 = '1' then
+			if dv9 = '1' then
 				dsp_SumXZ <= (others => '0'); 
 				dsp_SumZ  <= (others => '0'); 
 				dsp_SumX  <= (others => '0'); 

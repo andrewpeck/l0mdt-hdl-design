@@ -135,7 +135,7 @@ architecture Behavioral of csf_histogram is
         := mbar_width + inv_sqrt_m_width + r_width + 2;
 
     -- Signals for Delta_x, Delta_z to calculate exact hit coordinate
-    signal dsp_m_inv_squ_m                            : signed(m_inv_squ_m_width-1 downto 0) 
+    signal dsp_m_inv_squ_m, dsp_m_inv_squ_m_s         : signed(m_inv_squ_m_width-1 downto 0) 
         := (others => '0');
     signal dsp_m_multi_inv_squ_m                      : unsigned(m_multi_inv_squ_m_width-1 downto 0) 
         := (others => '0');
@@ -208,7 +208,7 @@ begin
             dsp_m_x_z_multi <= dsp_m_x - dsp_z_m_multi;
             dsp_squ_m_r_s <= dsp_squ_m_r;
             mdt_hit_ss <= mdt_hit_s;
-            delta_x_full <= unsigned(abs(dsp_m_inv_squ_m*signed('0' & mdt_hit_s.r)));
+            dsp_m_inv_squ_m_s <= dsp_m_inv_squ_m;
             delta_z_full <= signed('0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.r));
             eof1 <= eof0;
 
@@ -227,8 +227,8 @@ begin
                 histo_width+2 );
             bminus <= resize(shift_right(bminus_full, histo_full_width - histo_width ), 
                 histo_width+2 );
-            delta_x <= resize(shift_right(delta_x_full, r_over_z_multi_width + inv_sqrt_m_width), x_width);
-            delta_z <= resize(shift_right(delta_z_full, r_over_z_multi_width + inv_sqrt_m_width), z_width);
+            delta_x <= resize(shift_right(delta_x_full_s, r_over_z_multi_width + inv_sqrt_m_width), x_width);
+            delta_z <= resize(shift_right(delta_z_full_s, r_over_z_multi_width + inv_sqrt_m_width), z_width);
             mdt_hit_ssss <= mdt_hit_sss;
             
             eof3 <= eof2;
