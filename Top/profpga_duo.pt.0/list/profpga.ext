@@ -24,6 +24,7 @@ hdl/mmi64/mmi64_router_upstream.v     d6985c8031ddb5a9d2e0e4202f8c6763
 hdl/mmi64/mmi64_router_core.v         fc13073c0bcefe7a27946ec8d72745d3
 hdl/mmi64/mmi64_router.v              77fc38afdbdd81f076c2f3e604bce623
 hdl/mmi64/mmi64_rt.v                  d26d81323fc686c1e126aa5eec09e531
+hdl/mmi64/mmi64_rt64.v 				  f97c84de14646e3e7fc3edf87ea03b1f
 hdl/mmi64/mmi64_serializer.v          e0626e6c1b67f93eb3e61dfa9f81146c
 hdl/mmi64/mmi64_m_regif.v             184689e88c9a2c61d529eb8cdfca454d
 hdl/mmi64/mmi64_axi_master.v          6aaee05cb33b19063a2c601bbe9ba513
