@@ -1,2 +1,2 @@
-xdc/common.xdc
-xdc/fmxcvu5pr1.xdc
+../../boards/profgpa_duo/XDC/common.xdc
+../../boards/profgpa_duo/XDC/fmxcvu5pr1.xdc
