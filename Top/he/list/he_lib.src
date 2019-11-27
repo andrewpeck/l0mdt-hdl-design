@@ -1,0 +1,5 @@
+../../shared/src/he_pkg.vhd 2008
+../../he/src/he.vhd 2008
+../../he/src/he_tar.vhd 2008
+../../he/src/he_pullingMux.vhd 2008
+../../he/src/he_core.vhd 2008
