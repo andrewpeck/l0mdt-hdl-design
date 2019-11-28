@@ -22,15 +22,16 @@ use he_lib.he_pkg.all;
 
 entity he_pullingMux is
     port (
-        clk_360     : in std_logic;
-        nReset      : in std_logic;
-        tdc_enable  : in std_logic_vector(numInputs_mux -1 downto 0);
+        clk_360             : in std_logic;
+        Reset_b             : in std_logic;
+        tdc_enable_a        : in std_logic_vector(numInputs_mux -1 downto 0);
         --
-        indata      : in sta_tdc_data;
-        invalid     : in std_logic_vector(numInputs_mux -1 downto 0);
-        invalid_acq : out std_logic_vector(numInputs_mux -1 downto 0);
+        in_tdc_data_a       : in tdc_data_ta;
+        in_tdc_valid_a      : in std_logic_vector(numInputs_mux -1 downto 0);
+        in_tdc_valid_acq_a  : out std_logic_vector(numInputs_mux -1 downto 0);
         --
-        outdata     : out tr_mux2tar_data
+        out_data_r          : out mux2tar_data_rt;
+        out_data_valid      : out std_logic
     );
 end entity he_pullingMux;
 
@@ -40,41 +41,41 @@ architecture beh of he_pullingMux is
 
 begin
     
-    outdata.tdc_data <= tdc_vec2data(tdc_vector);
+    out_data_r.tdc_data_r <= tdc_vec2data(tdc_vector);
 
-    HE_PM_proc : process(nReset,clk_360) 
-        variable index_offset : integer;
-        variable new_index : integer;
+    HE_PM_proc : process(Reset_b,clk_360) 
+        variable index_offset_v   : integer;
+        variable new_index_v      : integer;
     begin
 
-        if nReset = '0' then
-            --outdata.tdc_data <= tdc_vec2data(std_logic_vector(to_unsigned(0,32)));
+        if Reset_b = '0' then
+            --out_data_r.tdc_data <= tdc_vec2data(std_logic_vector(to_unsigned(0,32)));
             tdc_vector <= (others => '0');
-            outdata.muxch   <= 0;
-            new_index := 0;
-            invalid_acq <= (others => '0');
+            out_data_r.mux_ch   <= 0;
+            new_index_v := 0;
+            in_tdc_valid_acq_a <= (others => '0');
         elsif rising_edge(clk_360) then
-            invalid_acq <= (others => '0');
+            in_tdc_valid_acq_a <= (others => '0');
             tdc_in_loop : for ti in (numInputs_mux -1) downto 0 loop
-                new_index := index_offset + ti;
-                if new_index < (numInputs_mux -1)  then
-                    if (invalid(new_index)) then
-                        tdc_vector <= indata(new_index);
-                        outdata.muxch <= new_index;
-                        invalid_acq(new_index) <= '1';
+                new_index_v := index_offset_v + ti;
+                if new_index_v < (numInputs_mux -1)  then
+                    if (in_tdc_valid_a(new_index_v)) then
+                        tdc_vector <= in_tdc_data_a(new_index_v);
+                        out_data_r.mux_ch <= new_index_v;
+                        in_tdc_valid_acq_a(new_index_v) <= '1';
 
-                        index_offset := new_index - 1;
+                        index_offset_v := new_index_v - 1;
                         exit;
                     else
 
                     end if;
                 else
-                    if (invalid(new_index - numInputs_mux)) then
-                        tdc_vector <= indata(new_index - numInputs_mux);
-                        outdata.muxch <= (new_index - numInputs_mux);
-                        invalid_acq(new_index - numInputs_mux) <= '1';
+                    if (in_tdc_valid_a(new_index_v - numInputs_mux)) then
+                        tdc_vector <= in_tdc_data_a(new_index_v - numInputs_mux);
+                        out_data_r.mux_ch <= (new_index_v - numInputs_mux);
+                        in_tdc_valid_acq_a(new_index_v - numInputs_mux) <= '1';
 
-                        index_offset := new_index - 1;
+                        index_offset_v := new_index_v - 1;
                         exit;
                     else
 

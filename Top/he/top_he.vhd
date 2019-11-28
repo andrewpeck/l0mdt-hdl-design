@@ -26,13 +26,18 @@ entity top_he is
         datawidth : integer := 64
     );
     Port(
+        -- system signals
         clk_360     : in std_logic;
-        nReset      : in std_logic;
-        tdc_enable  : in std_logic_vector(numInputs_mux -1 downto 0);
-        -- tdc inputs
-        indata      : in sta_tdc_data;
-        invalid     : in std_logic_vector(numInputs_mux -1 downto 0);
-        invalid_acq : out std_logic_vector(numInputs_mux -1 downto 0)
+        Reset_b      : in std_logic;
+        -- Control signals
+        tdc_enable_a : in std_logic_vector(numInputs_mux -1 downto 0);
+        -- input data signals
+        in_tdc_data_a      : in tdc_data_ta;
+        in_tdc_valid_a     : in std_logic_vector(numInputs_mux -1 downto 0);
+        in_tdc_valid_acq_a : out std_logic_vector(numInputs_mux -1 downto 0);
+
+        in_muonCand_data_r  : in muCand_data_rt;
+        in_muonCand_valid   : in std_logic
     );
 end top_he;
 
@@ -42,17 +47,23 @@ architecture beh of top_he is
 
 begin
 
-    HE: entity he_lib.he generic map (
+    HE: entity he_lib.he 
+    generic map (
         datawidth => datawidth 
     )
     port map (
-        clk_360       => clk_360,
-        nReset        => nReset,
-        tdc_enable    => tdc_enable,
-        --
-        indata        => indata,
-        invalid       => invalid,
-        invalid_acq   => invalid_acq
+        -- system signals
+        clk_360                 => clk_360,
+        Reset_b                 => Reset_b,
+        -- Contorl signals
+        tdc_enable_a            => tdc_enable_a,
+        -- Input related signals
+        in_tdc_data_a           => in_tdc_data_a,
+        in_tdc_valid_a          => in_tdc_valid_a,
+        in_tdc_valid_acq_a      => in_tdc_valid_acq_a,
+        -- Output related signals
+        in_muonCand_data_r      => in_muonCand_data_r,
+        in_muonCand_valid       => in_muonCand_valid
     );
 
 end beh;
