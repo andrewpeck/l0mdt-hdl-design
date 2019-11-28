@@ -3,7 +3,7 @@ set bin_file 1
 set use_questa_simulator 0
 
 ## FPGA and Vivado strategies and flows
-et FPGA xcku15p-ffva1760-2-e
+set FPGA xcku15p-ffva1760-2-e
 set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
@@ -28,6 +28,8 @@ set PROPERTIES [dict create \
 				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
 			       ]\
 		   ]
+############################################################
+############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
 source $path_repo/Hog/Tcl/create-project.tcl
