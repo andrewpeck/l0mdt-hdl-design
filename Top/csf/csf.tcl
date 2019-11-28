@@ -4,10 +4,6 @@ set use_questa_simulator 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcvu5p-flvb2104-2-i
-set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
-set SYNTH_FLOW "Vivado Synthesis 2017"
-set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
-set IMPL_FLOW "Vivado Implementation 2017"
 
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
