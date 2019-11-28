@@ -62,4 +62,7 @@ Please see: [A successful git branching model](https://nvie.com/posts/a-successf
 
 ... TBD
 
+<<<<<<< HEAD
 ## Gitlab CI
+=======
+>>>>>>> origin/master
