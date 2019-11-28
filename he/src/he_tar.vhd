@@ -22,12 +22,14 @@ use he_lib.he_pkg.all;
 
 entity he_tar is
     port (
-        clk_360 : in std_logic;
-        nReset  : in std_logic;
+        clk_360     : in std_logic;
+        Reset_b     : in std_logic;
         --
-        indata : in tr_mux2tar_data;
+        in_data_r   : in mux2tar_data_rt;
+        in_valid    : in std_logic;
         --
-        outdata : out tr_tar2fifo_data
+        out_data_r  : out tar2hec_data_rt;
+        out_valid   : out std_logic
     );
 end entity he_tar;
 
