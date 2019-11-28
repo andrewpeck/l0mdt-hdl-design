@@ -72,14 +72,10 @@ package csf_pkg is
     type t_seed is
     record
         valid                       : std_logic;
-<<<<<<< HEAD
         mbar                        : signed(mbar_width-1 downto 0);
         phi                         : signed(phi_width-1 downto 0);
         eta                         : signed(eta_width-1 downto 0);                        
         chamber_id                  : unsigned(1 downto 0);
-=======
-        mbar                        : unsigned(mbar_width-1 downto 0);
->>>>>>> origin/master
     end record;
 
     -- MDT hit record    
@@ -90,10 +86,7 @@ package csf_pkg is
         x                           : unsigned(x_width-1 downto 0);
         multilayer                  : std_logic;
         r                           : unsigned(r_width-1 downto 0);
-<<<<<<< HEAD
         chamber_id                  : unsigned(1 downto 0);
-=======
->>>>>>> origin/master
         eof                         : std_logic;
     end record;
 
@@ -113,7 +106,6 @@ package csf_pkg is
         m                           : signed(mfit_width-1 downto 0);
         chi2                        : unsigned(chi2_width-1 downto 0);
         ndof                        : unsigned(num_hits_width-1 downto 0);
-<<<<<<< HEAD
         phi                         : signed(phi_width-1 downto 0);
         eta                         : signed(eta_width-1 downto 0);
     end record;
@@ -123,15 +115,8 @@ package csf_pkg is
     constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
         (others => '0'), (others => '0'), '0');
-=======
     end record;
 
-    constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
-        (others => '0'), (others => '0'));
-    constant null_seed               : t_seed       := ('0', (others => '0'));
-    constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
-        (others => '0'), '0');
->>>>>>> origin/master
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
 
     type t_locsegs is array(natural range <> ) of t_locseg;
@@ -146,19 +131,10 @@ package csf_pkg is
     function vec_to_histo_hit ( vec : std_logic_vector ) return t_histo_hit;
     -- Convert a std_logic_vector to a CSF Input seed type
     function vec_to_seed  ( vec : std_logic_vector )     return t_seed;
-<<<<<<< HEAD
     -- Convert vec to localseg
     function vec_to_locseg(vec : std_logic_vector) return t_locseg;
     -- Convert std_logic to integer
     function stdlogic_integer( s : std_logic ) return integer ;
-
-
-
-=======
-    -- Convert std_logic to integer
-    function stdlogic_integer( s : std_logic ) return integer ;
-
->>>>>>> origin/master
 end;
 
 package body csf_pkg is
@@ -188,18 +164,14 @@ package body csf_pkg is
         hit.z := signed(vec(x_width+z_width-1 downto x_width));
         hit.r := unsigned(vec(r_width+x_width+z_width-1 downto x_width+z_width));
         hit.multilayer := vec(r_width+x_width+z_width);
-<<<<<<< HEAD
         hit.chamber_id := unsigned(vec(r_width+x_width+z_width+2 downto r_width+x_width+z_width+1));
-=======
->>>>>>> origin/master
-        return hit;
+       return hit;
     end function;
 
     function vec_to_seed (vec : std_logic_vector) return t_seed is
         variable seed : t_seed := null_seed;
     begin
         seed.valid := vec(61);
-<<<<<<< HEAD
         seed.mbar := signed(vec(mbar_width-1 downto 0));
         seed.phi  := signed(vec(mbar_width+phi_width-1 downto mbar_width));
         seed.eta  := signed(vec(mbar_width+phi_width+eta_width-1 downto mbar_width+phi_width));
@@ -218,13 +190,7 @@ package body csf_pkg is
         return seg;
     end function vec_to_locseg;
 
-=======
-        seed.mbar := unsigned(vec(mbar_width-1 downto 0));
-        return seed;
-    end function vec_to_seed ;
-
->>>>>>> origin/master
-    function stdlogic_integer( s : std_logic ) return integer is
+   function stdlogic_integer( s : std_logic ) return integer is
     begin
         if s = '1' then
             return 1;
