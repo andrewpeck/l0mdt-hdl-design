@@ -22,47 +22,55 @@ use he_lib.he_pkg.all;
 
 entity he is
     Generic(
-        datawidth   : integer := 64
+        datawidth       : integer := 64
     );
     port (
-        clk_360     : in std_logic;
-        nReset      : in std_logic;
-        tdc_enable  : in std_logic_vector(numInputs_mux -1 downto 0);
+        clk_360         : in std_logic;
+        Reset_b         : in std_logic;
+        tdc_enable_a    : in std_logic_vector(numInputs_mux -1 downto 0);
 
-        indata      : in sta_tdc_data;
-        invalid     : in std_logic_vector(numInputs_mux -1 downto 0);
-        invalid_acq : out std_logic_vector(numInputs_mux -1 downto 0)
+        in_tdc_data_a       : in tdc_data_ta;
+        in_tdc_valid_a      : in std_logic_vector(numInputs_mux -1 downto 0);
+        in_tdc_valid_acq_a  : out std_logic_vector(numInputs_mux -1 downto 0);
+
+        in_muonCand_data_r  : in muCand_data_rt;
+        in_muonCand_valid   : in std_logic
     );
 end entity he;
 
 architecture beh of he is
     
-    signal data_mux2tar : tr_mux2tar_data;
-    signal data_tar2fifo : tr_tar2fifo_data;
+    signal data_mux2tar_r       : mux2tar_data_rt;
+    signal data_mux2tar_valid   : std_logic;
+    signal data_tar2fifo_r      : tar2hec_data_rt;
+    signal data_tar2fifo_valid  : std_logic;
 
 begin
     
     HE_PullMux: entity he_lib.he_pullingMux 
     port map (
-        clk_360     => clk_360,
-        nReset      => nReset,
-        tdc_enable  => tdc_enable,
+        clk_360             => clk_360,
+        Reset_b             => Reset_b,
+        tdc_enable_a        => tdc_enable_a,
         --
-        indata      => indata,
-        invalid     => invalid,
-        invalid_acq => invalid_acq,
+        in_tdc_data_a       => in_tdc_data_a,
+        in_tdc_valid_a      => in_tdc_valid_a,
+        in_tdc_valid_acq_a  => in_tdc_valid_acq_a,
         --
-        outdata     => data_mux2tar
+        out_data_r          => data_mux2tar_r,
+        out_data_valid      => data_mux2tar_valid
     );
 
     HE_TAR: entity he_lib.he_tar 
     port map (
-        clk_360     => clk_360,
-        nReset      => nReset,
+        clk_360         => clk_360,
+        Reset_b         => Reset_b,
         --
-        indata      => data_mux2tar,
+        in_data_r       => data_mux2tar_r,
+        in_valid        => data_mux2tar_valid,
         --
-        outdata     => data_tar2fifo
+        out_data_r      => data_tar2fifo_r,
+        out_valid       => data_tar2fifo_valid
     );
 
     
