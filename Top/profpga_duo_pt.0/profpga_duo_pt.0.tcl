@@ -4,9 +4,7 @@ set use_questa_simulator 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcvu5p-flvb2104-2-i
-if {![info exists env(PROFPGA)]} {
-    error "PROFPGA environment variable is not set - please check your proFPGA software installation"
-}
+
 set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
