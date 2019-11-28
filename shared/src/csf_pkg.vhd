@@ -115,7 +115,6 @@ package csf_pkg is
     constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
         (others => '0'), (others => '0'), '0');
-    end record;
 
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
 
