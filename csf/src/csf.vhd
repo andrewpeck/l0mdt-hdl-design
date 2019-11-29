@@ -33,21 +33,15 @@ entity csf is
     clk       : in std_logic;
     i_seed    : in t_seed;
     i_mdt_hit : in t_mdt_hit;
-<<<<<<< HEAD
     o_seg     : out t_locseg;
     i_rst     : in std_logic
-=======
-    o_seg     : out t_locseg
->>>>>>> origin/master
   );
 end csf;
 
 architecture Behavioral of csf is
-<<<<<<< HEAD
     -- Input RoI
     signal seed : t_seed := null_seed;
-=======
->>>>>>> origin/master
+
     -- Histogram signals
     type t_mdt_hits   is array (natural range <> ) of t_mdt_hit;
     type t_histo_hits is array (natural range <> ) of t_histo_hit;
@@ -80,11 +74,8 @@ architecture Behavioral of csf is
     signal rst_chi2                         : std_logic := '0';
 
     -- Output signal
-<<<<<<< HEAD
     signal output_segment, final_seg        : t_locseg := null_locseg;
-=======
-    signal output_segment                   : t_locseg := null_locseg;
->>>>>>> origin/master
+
 
 begin
 
@@ -149,12 +140,7 @@ begin
         o_segment          => output_segment
     );
 
-<<<<<<< HEAD
     o_seg <= final_seg;
-=======
-    -- Output 
-    o_seg <= output_segment;
->>>>>>> origin/master
 
 	CSF_proc : process(clk)
     begin
@@ -165,7 +151,6 @@ begin
             eof <= i_mdt_hit.eof;
             rst_chi2 <= '0';
 
-<<<<<<< HEAD
             if i_seed.valid = '1' then
                 seed <= i_seed;
             end if;
@@ -180,11 +165,7 @@ begin
             elsif i_rst = '1' then
                 final_seg <= null_locseg; 
                 seed <= null_seed;  
-=======
-            -- Reset the Chi2
-            if output_segment.valid = '1' then
-                rst_chi2 <= '1';
->>>>>>> origin/master
+
             end if;
 
         end if;

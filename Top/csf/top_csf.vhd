@@ -47,12 +47,8 @@ architecture Behavioral of top_csf is
     signal en_s : std_logic := '0';
     signal addr_s : std_logic_vector(3 downto 0) := (others => '1');
     signal out_seg : t_locseg := null_locseg;
-<<<<<<< HEAD
     signal fill_q : std_logic_vector(DataWidth - num_hits_width - mfit_width - bfit_width - chi2_width - 1 -1 downto 0) := (others => '0');
     signal rst_csf : std_logic := '0';
-=======
-    signal fill_q : std_logic_vector(64 - num_hits_width - mfit_width - bfit_width - chi2_width - 1 -1 downto 0) := (others => '0');
->>>>>>> origin/master
 
 begin
     
@@ -61,12 +57,9 @@ begin
         clk => clk,
         i_seed => seed,
         i_mdt_hit => mdt_hit,
-<<<<<<< HEAD
         o_seg => out_seg,
         i_rst => rst_csf
-=======
-        o_seg => out_seg
->>>>>>> origin/master
+
     );
 
     addr <= addr_s;
@@ -86,11 +79,8 @@ begin
 		    	mdt_hit <= vec_to_mdthit(d);
 		    end if;
 
-<<<<<<< HEAD
             rst_csf <= '0';
 
-=======
->>>>>>> origin/master
             -- Output
             if unsigned(addr_s) < 15 and unsigned(addr_s) >= 0 then
             	addr_s <= std_logic_vector(unsigned(addr_s) + 1);
@@ -102,10 +92,7 @@ begin
 
             if out_seg.valid = '1' then
                 q <= out_seg.valid & fill_q & std_logic_vector(out_seg.ndof) & std_logic_vector(out_seg.chi2) & std_logic_vector(out_seg.m) & std_logic_vector(out_seg.b);
-<<<<<<< HEAD
                 rst_csf <= '1';
-=======
->>>>>>> origin/master
                 en_s <= '1';
                 addr_s <= (others => '0');
             end if;

@@ -7,7 +7,6 @@ cxl_error.log
 Vivado*
 Modelsim*
 profpga
-<<<<<<< HEAD
 *.out
-=======
->>>>>>> origin/master
+bin*
+*.Xil
