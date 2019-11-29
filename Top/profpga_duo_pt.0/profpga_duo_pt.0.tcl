@@ -9,6 +9,7 @@ set SYNTH_STRATEGY "Flow_AreaOptimized_High"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
+set DEVICE XVUP
 
 ### Set Vivado Runs Properties ###
 #
