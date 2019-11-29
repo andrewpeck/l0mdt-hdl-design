@@ -1,7 +1,6 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref: 'feature/external_libs'
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
@@ -57,6 +56,16 @@ implement_project:profpga_duo_test:
        - synthesise_ips:profpga_duo_test
        - synthesise_project:profpga_duo_test
 
+write_bitstream:profpga_duo_test:
+    extends: .write_bitstream
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
+    dependencies:
+       - create_project:profpga_duo_test
+       - synthesise_ips:profpga_duo_test
+       - synthesise_project:profpga_duo_test
+       - implement_project:profpga_duo_test
 
 #################### pT Project ###########################
 
