@@ -6,9 +6,9 @@ set use_questa_simulator 0
 set FPGA xcvu5p-flvb2104-2-i
 
 set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
-set SYNTH_FLOW "Vivado Synthesis 2019"
+set SYNTH_FLOW "Vivado Synthesis 2018"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
-set IMPL_FLOW "Vivado Implementation 2019"
+set IMPL_FLOW "Vivado Implementation 2018"
 set DEVICE XVUP
 ### Set Vivado Runs Properties ###
 #
@@ -36,4 +36,5 @@ set PROPERTIES [dict create \
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
+
 source $path_repo/Hog/Tcl/create-project.tcl

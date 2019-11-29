@@ -40,4 +40,4 @@ hdl/profpga_user/profpga_sync_tx.v    2f88e2580f571a4e8f1d44eec7b0bddf
 hdl/profpga_user/profpga_sync_rx2.v   65a3e3893abaf5fe1023745463625a53
 hdl/profpga_user/profpga_clocksync.v  a3f549ea01ad953b0fec477b40bdecb2
 hdl/profpga_user/profpga_ctrl.v 	  8d8bc21b3f9cdec0f84341ff03dbc72f
-hdl/mmi64/mmi64_p_muxdemux_functions.vh 63bcf93434de159fdd81a5ad357b9545
+#hdl/mmi64/mmi64_p_muxdemux_functions.vh 63bcf93434de159fdd81a5ad357b9545

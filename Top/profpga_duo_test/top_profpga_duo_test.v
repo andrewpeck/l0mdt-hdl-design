@@ -22,7 +22,7 @@
 // 1.0      2016-03-21  File created
 // =============================================================================
 
-module top_profpga_duo_test# (
+module top_profpga_duo_test # (
 			parameter DEVICE           = "XVUP"      // XV7S or XVUS
 			) 
    (
