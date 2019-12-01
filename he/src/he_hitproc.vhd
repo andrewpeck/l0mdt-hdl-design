@@ -25,11 +25,13 @@ entity he_core is
         datawidth   : integer := 64
     );
     port (
-        clk_360         : in std_logic;
-        Reset_b         : in std_logic;
+        clk_360             : in std_logic;
+        Reset_b             : in std_logic;
         --
-        in_tdchits_r    : in mux2tar_data_rt;
-        in_candidate_r  : in tr_muoncandidate
+        in_tdchits_r        : in tar2hec_data_rt;
+        in_tdchits_valid    : in std_logic;
+        in_candidate_r      : in muCand_data_rt;
+        in_candidate_valid  : in std_logic
     );
 end entity he_core;
 
@@ -38,5 +40,24 @@ architecture beh of he_core is
 
 begin
 
+    HE_C_TubeRangeLUT : entity he_c_crlut
+    port map (
+        
+    );
+
+    HE_C_TubeRangeLUT : entity he_c_crlut
+    port map (
+        
+    );
+
+    HE_C_TubeRangeLUT : entity he_c_crlut
+    port map (
+        
+    );
+
+    HE_C_TubeRangeLUT : entity he_c_crlut
+    port map (
+        
+    );
 
 end beh;
