@@ -42,8 +42,8 @@ architecture beh of he is
     
     signal data_mux2tar_r       : mux2tar_data_rt;
     signal data_mux2tar_valid   : std_logic;
-    signal data_tar2fifo_r      : tar2hec_data_rt;
-    signal data_tar2fifo_valid  : std_logic;
+    signal data_tar2core_r      : tar2hec_data_rt;
+    signal data_tar2core_valid  : std_logic;
 
 begin
     
@@ -69,8 +69,19 @@ begin
         in_data_r       => data_mux2tar_r,
         in_valid        => data_mux2tar_valid,
         --
-        out_data_r      => data_tar2fifo_r,
-        out_valid       => data_tar2fifo_valid
+        out_data_r      => data_tar2core_r,
+        out_valid       => data_tar2core_valid
+    );
+
+    HE_CORE : entity he_lib.he_core 
+    port map (
+        clk_360             => clk_360,
+        Reset_b             => Reset_b,
+        --
+        in_tdchits_r        => data_tar2core_r,
+        in_tdchits_valid    => data_tar2core_valid,
+        in_candidate_r      => in_muonCand_data_r,
+        in_candidate_valid  => in_muonCand_valid
     );
 
     
