@@ -2,4 +2,8 @@
 ../../he/src/he.vhd 2008
 ../../he/src/he_tar.vhd 2008
 ../../he/src/he_pullingMux.vhd 2008
-../../he/src/he_core.vhd 2008
+../../he/src/he_hitproc.vhd 2008
+../../he/src/hit_ext_core/he_hp_hc.vhd 2008
+../../he/src/hit_ext_core/he_hp_hm.vhd 2008
+../../he/src/hit_ext_core/he_hp_mcp.vhd 2008
+../../he/src/hit_ext_core/he_hp_trlut.vhd 2008
