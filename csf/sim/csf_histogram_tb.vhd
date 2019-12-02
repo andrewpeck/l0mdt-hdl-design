@@ -20,9 +20,9 @@
 
 
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
 use work.csf_pkg.all;
 
 
@@ -31,28 +31,28 @@ entity csf_histogram_tb is
 end csf_histogram_tb;
 
 architecture Behavioral of csf_histogram_tb is
-	signal clk : std_logic := '0';
-    signal inputHit : t_inputhit := null_inputhit;
-    signal header_valid : std_logic := '0';
-    signal mbar 	 : unsigned(mbar_width-1 downto 0) := (others => '0');
-    signal eof      :  std_logic := '0';
-    signal outputHit1 : t_outhit := null_outhit;
-    signal outputHit2 : t_outhit := null_outhit;
+    signal clk          : std_logic                       := '0';
+    signal inputHit     : t_inputhit                      := null_inputhit;
+    signal header_valid : std_logic                       := '0';
+    signal mbar         : unsigned(mbar_width-1 downto 0) := (others => '0');
+    signal eof          : std_logic                       := '0';
+    signal outputHit1   : t_outhit                        := null_outhit;
+    signal outputHit2   : t_outhit                        := null_outhit;
 
 begin
 
-	csf_histogram : entity work.csf_histogram
-	Port map(
-		clk  => clk,
-		inputHit  => inputHit,
-		header_valid  => header_valid,
-		mbar 	  => mbar,
-		eof       => eof,
-		outputHit1  => outputHit1,
-		outputHit2  => outputHit2
-	);
+    csf_histogram : entity work.csf_histogram
+        port map(
+            clk          => clk,
+            inputHit     => inputHit,
+            header_valid => header_valid,
+            mbar         => mbar,
+            eof          => eof,
+            outputHit1   => outputHit1,
+            outputHit2   => outputHit2
+            );
 
-	CLK_process :process
+    CLK_process : process
     begin
         CLK <= '0';
         wait for CLK_period/2;
@@ -85,33 +85,33 @@ begin
 
     Pulse : process
     begin
-    	wait for clk_period*5;
-    	header_valid <= '1';
-    	mbar <= to_unsigned(78,mbar_width);
-    	wait for clk_period;
-    	header_valid <= '0';
-    	mbar <= (others => '0');
-    	wait for clk_period*5;
-    	inputHit <= ('1', to_unsigned(0,layerId_width), to_signed(0,tubeId_width), '0', to_unsigned(518, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(0,layerId_width), to_signed(3,tubeId_width), '0', to_unsigned(492, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(0,layerId_width), to_signed(4,tubeId_width), '0', to_unsigned(78, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(1,layerId_width), to_signed(-3,tubeId_width), '0', to_unsigned(469, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(1,layerId_width), to_signed(0,tubeId_width), '0', to_unsigned(341, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(1,layerId_width), to_signed(1,tubeId_width), '0', to_unsigned(598, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(1,layerId_width), to_signed(2,tubeId_width), '0', to_unsigned(305, r_width));
-    	wait for clk_period;
-    	inputHit <= ('1', to_unsigned(2,layerId_width), to_signed(3,tubeId_width), '0', to_unsigned(173, r_width));
-    	eof <= '1';
-    	wait for clk_period;
-    	inputHit <= null_inputhit;
-    	eof <= '0';
-    	wait;
+        wait for clk_period*5;
+        header_valid <= '1';
+        mbar         <= to_unsigned(78, mbar_width);
+        wait for clk_period;
+        header_valid <= '0';
+        mbar         <= (others => '0');
+        wait for clk_period*5;
+        inputHit     <= ('1', to_unsigned(0, layerId_width), to_signed(0, tubeId_width), '0', to_unsigned(518, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(0, layerId_width), to_signed(3, tubeId_width), '0', to_unsigned(492, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(0, layerId_width), to_signed(4, tubeId_width), '0', to_unsigned(78, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(1, layerId_width), to_signed(-3, tubeId_width), '0', to_unsigned(469, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(1, layerId_width), to_signed(0, tubeId_width), '0', to_unsigned(341, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(1, layerId_width), to_signed(1, tubeId_width), '0', to_unsigned(598, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(1, layerId_width), to_signed(2, tubeId_width), '0', to_unsigned(305, r_width));
+        wait for clk_period;
+        inputHit     <= ('1', to_unsigned(2, layerId_width), to_signed(3, tubeId_width), '0', to_unsigned(173, r_width));
+        eof          <= '1';
+        wait for clk_period;
+        inputHit     <= null_inputhit;
+        eof          <= '0';
+        wait;
 
     end process;
 

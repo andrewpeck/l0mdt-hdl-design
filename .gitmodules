@@ -1,3 +1,6 @@
 [submodule "Hog"]
 	path = Hog
 	url = https://gitlab.cern.ch/hog/Hog.git
+[submodule "atlas-code-format"]
+	path = atlas-code-format
+	url = ssh://git@gitlab.cern.ch:7999/xampp/atlas-code-format.git

@@ -2,6 +2,8 @@ include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
       ref: 'feature/eoscp'
+    - project: 'xampp/atlas-code-format'
+      ref: 'feature/vhdl_verilog_formatter'
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
@@ -21,6 +23,24 @@ before_script:
     - source ${PROFPGA_PATH}/bin/settings64.sh
 
 #################### CSF Project ###########################
+
+format_code:
+  stage: format_code
+  vimage: gitlab-registry.cern.ch/xampp/atlas-code-format
+  variables: {
+    vhdl_dirs: '.',  # clang-format headers and source files
+  }
+  tags:
+    - cvmfs
+  
+  before_script:
+    - git config --global user.name "l0mdtel" && git config --global user.email "atlas.phase2.l0mdt.electronics@cern.ch"
+    - git checkout -b ${CI_COMMIT_REF_NAME} || echo "Branch ${CI_COMMIT_REF_NAME} already exists, checking it out" && git checkout ${CI_COMMIT_REF_NAME}
+  script:
+    - /scripts/format_code
+  only:
+    - master
+
 
 create_project:profpga_duo_test:
     extends: .create_project

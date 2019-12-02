@@ -20,50 +20,50 @@
 
 
 library IEEE, csf_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
 use ieee.math_real.all;
 use std.standard.all;
 use csf_lib.csf_pkg.all;
 
 package pt_pkg is
 
-    constant z_ref: integer := integer(bfit_mult)*120;
-    constant x_ref: integer := -40*integer(bfit_mult);
+    constant z_ref : integer := integer(bfit_mult)*120;
+    constant x_ref : integer := -40*integer(bfit_mult);
 
-    constant theta_loc_width : integer := mfit_width;
-    constant theta_loc_mult  : real := mfit_mult;
+    constant theta_loc_width       : integer := mfit_width;
+    constant theta_loc_mult        : real    := mfit_mult;
     constant theta_loc_multi_width : integer := mfit_multi_width;
-    
-    constant z_loc_width : integer := bfit_width;
-    constant roi_x_width : integer := 15;
+
+    constant z_loc_width  : integer := bfit_width;
+    constant roi_x_width  : integer := 15;
     constant z_glob_width : integer := 19;
     constant r_glob_width : integer := 20;
-    
+
     constant sagitta_width : integer := 15;
-    
-    constant sagitta_mult  : real := bfit_mult;
-    constant sagitta_multi_width : integer := integer(log2(sagitta_mult)); 
+
+    constant sagitta_mult        : real    := bfit_mult;
+    constant sagitta_multi_width : integer := integer(log2(sagitta_mult));
 
     constant inv_tantheta_width : integer := 13;
-    constant shift_m_den : integer := 6;
-    constant m_width : integer := 16;
+    constant shift_m_den        : integer := 6;
+    constant m_width            : integer := 16;
 
 
-    constant shift_m_num : integer := 14;
-    constant divider_width : integer := 25;
+    constant shift_m_num      : integer := 14;
+    constant divider_width    : integer := 25;
     constant theta_glob_width : integer := 15;
-    constant halfpi : integer := integer(floor(MATH_PI*theta_loc_mult));
-    constant inv_sqrt_width : integer := 22;
-    constant dbeta_width : integer := 12;
-    constant pt_width : integer := 14;
-    constant pt_mult : real := 100.0;
+    constant halfpi           : integer := integer(floor(MATH_PI*theta_loc_mult));
+    constant inv_sqrt_width   : integer := 22;
+    constant dbeta_width      : integer := 12;
+    constant pt_width         : integer := 14;
+    constant pt_mult          : real    := 100.0;
 
-    constant m_sagitta_width : integer := 16;
-    constant m_sagitta_range : real := 4.0;
-    constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
-    constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi)); 
-    
+    constant m_sagitta_width       : integer := 16;
+    constant m_sagitta_range       : real    := 4.0;
+    constant m_sagitta_multi       : real    := (2.0**m_sagitta_width/m_sagitta_range);
+    constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi));
+
     -- Root Chambers BIL2A01 BML1A01 BOL1A01 
     -- BIL2A01_BML1A01_BOL1A01  0   2.01613 435.824 -641.298    0   0   0   0.479175    -3.54889
     --BIL2A01_BML1A01_BOL1A01 1   2.01613 435.824 -641.298    0.469571    0.218046    -26.5705    0.479175    -3.54889
@@ -79,11 +79,11 @@ package pt_pkg is
     --phi_digi -3 b0 61.39264 b1 0.1297635 b2 -0.2113900312 pt_phi 1.846901226
     --eta_digi 204 c0 15.3336 c1 -0.0665416875 pt_eta 0.05497174219
     -- Sagitta params constants
-     
 
-    constant a0 : real := 2.01613*pt_mult;
-    constant a1 : real := 435.824*pt_mult*sagitta_mult;
-    constant a2 : real := -641.298*pt_mult*sagitta_mult*sagitta_mult;
+
+    constant a0   : real := 2.01613*pt_mult;
+    constant a1   : real := 435.824*pt_mult*sagitta_mult;
+    constant a2   : real := -641.298*pt_mult*sagitta_mult*sagitta_mult;
     -- Phi params constants
     constant b0_0 : real := 0.0*pt_mult;
     constant b1_0 : real := 0.0*pt_mult/phi_mult;
@@ -117,19 +117,19 @@ package pt_pkg is
     constant b1_9 : real := -1.87826*pt_mult/phi_mult;
     constant b2_9 : real := -147.191*pt_mult/(phi_mult**2);
     -- Eta params constants
-    constant c0 : real := 0.479175*pt_mult;
-    constant c1 : real :=  -3.54889*pt_mult/eta_mult;
+    constant c0   : real := 0.479175*pt_mult;
+    constant c1   : real := -3.54889*pt_mult/eta_mult;
 
 
     type t_roi is
     record
-        valid   : std_logic;
-        x_loc   : signed(roi_x_width-1 downto 0);
-        z_glob  : signed(z_glob_width-1 downto 0);
-        r_glob  : unsigned(r_glob_width-1 downto 0);
+        valid      : std_logic;
+        x_loc      : signed(roi_x_width-1 downto 0);
+        z_glob     : signed(z_glob_width-1 downto 0);
+        r_glob     : unsigned(r_glob_width-1 downto 0);
         chamber_id : unsigned(1 downto 0);
     end record;
-    
+
     type t_globalseg is
     record
         valid      : std_logic;
@@ -140,49 +140,49 @@ package pt_pkg is
         eta_glob   : signed(eta_width-1 downto 0);
     end record;
 
-    constant null_roi : t_roi := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0')); 
+    constant null_roi       : t_roi       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
     function vec_to_roi(vec : std_logic_vector) return t_roi;
 
 
-    type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
+    type t_m_to_theta is array(natural range <>) of signed(theta_loc_width-1 downto 0);
     function m_to_theta return t_m_to_theta;
 
-    type t_inv_tantheta is array( natural range <> ) of signed( inv_tantheta_width-1 downto 0);
+    type t_inv_tantheta is array(natural range <>) of signed(inv_tantheta_width-1 downto 0);
     function inv_tantheta return t_inv_tantheta;
 
-    type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
+    type t_reciprocalROM is array (natural range <>) of unsigned(divider_width-1 downto 0);
     function reciprocalROM return t_reciprocalROM;
 
-    type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_width-1 downto 0);
+    type t_invsqrt_ROM is array (natural range <>) of unsigned(inv_sqrt_width-1 downto 0);
     function invsqrt_ROM return t_invsqrt_ROM;
 
-    type t_pt_sagitta is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_sagitta is array (natural range <>) of signed(pt_width downto 0);
     function pt_sagitta return t_pt_sagitta;
 
-    type t_pt_phi_0 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_0 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_0 return t_pt_phi_0;
-    type t_pt_phi_1 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_1 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_1 return t_pt_phi_1;
-    type t_pt_phi_2 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_2 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_2 return t_pt_phi_2;
-    type t_pt_phi_3 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_3 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_3 return t_pt_phi_3;
-    type t_pt_phi_4 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_4 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_4 return t_pt_phi_4;
-    type t_pt_phi_5 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_5 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_5 return t_pt_phi_5;
-    type t_pt_phi_6 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_6 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_6 return t_pt_phi_6;
-    type t_pt_phi_7 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_7 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_7 return t_pt_phi_7;
-    type t_pt_phi_8 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_8 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_8 return t_pt_phi_8;
-    type t_pt_phi_9 is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_phi_9 is array (natural range <>) of signed(pt_width downto 0);
     function pt_phi_9 return t_pt_phi_9;
 
-    type t_pt_eta is array (natural range <> ) of signed(pt_width downto 0);
+    type t_pt_eta is array (natural range <>) of signed(pt_width downto 0);
     function pt_eta return t_pt_eta;
 
     function pt_bin(pt : signed) return integer;
@@ -191,197 +191,197 @@ end;
 
 package body pt_pkg is
 
-    function vec_to_roi ( vec : std_logic_vector ) return t_roi is
+    function vec_to_roi (vec : std_logic_vector) return t_roi is
         variable roi : t_roi := null_roi;
     begin
-        roi.valid := vec(60);
-        roi.x_loc := signed(vec(roi_x_width-1 downto 0));
-        roi.r_glob := unsigned(vec(roi_x_width+r_glob_width-1 downto roi_x_width));
-        roi.z_glob := signed(vec(roi_x_width+z_glob_width+r_glob_width-1 downto roi_x_width+r_glob_width));
+        roi.valid      := vec(60);
+        roi.x_loc      := signed(vec(roi_x_width-1 downto 0));
+        roi.r_glob     := unsigned(vec(roi_x_width+r_glob_width-1 downto roi_x_width));
+        roi.z_glob     := signed(vec(roi_x_width+z_glob_width+r_glob_width-1 downto roi_x_width+r_glob_width));
         roi.chamber_id := unsigned(vec(roi_x_width+z_glob_width+r_glob_width+1 downto roi_x_width+z_glob_width+r_glob_width));
         return roi;
     end function vec_to_roi;
 
-    function m_to_theta return t_m_to_theta is 
-    variable temp : t_m_to_theta(2**(mfit_width)-1 downto 0) := (others => (others => '0'));
-    variable m : real := real(-2.0**(mfit_width-1));
+    function m_to_theta return t_m_to_theta is
+        variable temp : t_m_to_theta(2**(mfit_width)-1 downto 0) := (others => (others => '0'));
+        variable m    : real                                     := real(-2.0**(mfit_width-1));
     begin
-    for k in 2**(mfit_width)-1 downto 0 loop
-        m := real(-2**(mfit_width-1)) + real(k);
-        temp(k) := to_signed(integer(floor(ARCTAN(mfit_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
-    end loop;
-    return temp;
+        for k in 2**(mfit_width)-1 downto 0 loop
+            m       := real(-2**(mfit_width-1)) + real(k);
+            temp(k) := to_signed(integer(floor(ARCTAN(mfit_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
+        end loop;
+        return temp;
     end function;
 
-    function inv_tantheta return t_inv_tantheta is 
-    variable temp : t_inv_tantheta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
-    variable theta : real := real(-2**(theta_loc_width-1));
+    function inv_tantheta return t_inv_tantheta is
+        variable temp  : t_inv_tantheta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
+        variable theta : real                                            := real(-2**(theta_loc_width-1));
     begin
-    for k in 2**(theta_loc_width)-1 downto 0 loop
-        theta := real(-2**(theta_loc_width-1) + k);
-        temp(k) := to_signed(integer(floor( (2.0**inv_tantheta_width)/(tan(theta/theta_loc_mult)+0.0001) )), inv_tantheta_width);
-    end loop;
-    return temp;
+        for k in 2**(theta_loc_width)-1 downto 0 loop
+            theta   := real(-2**(theta_loc_width-1) + k);
+            temp(k) := to_signed(integer(floor((2.0**inv_tantheta_width)/(tan(theta/theta_loc_mult)+0.0001))), inv_tantheta_width);
+        end loop;
+        return temp;
     end function;
 
-    function reciprocalROM return t_reciprocalROM is 
-    variable temp: t_reciprocalROM(2**(r_glob_width-shift_m_den)-1 downto 0) := (others => (others => '0'));
+    function reciprocalROM return t_reciprocalROM is
+        variable temp : t_reciprocalROM(2**(r_glob_width-shift_m_den)-1 downto 0) := (others => (others => '0'));
 
     begin
-    for k in 2 ** (r_glob_width-shift_m_den) - 1 downto 0 loop
-        temp( k ) := to_unsigned( integer( floor( (( 2.0 ** divider_width )) / ( real( k ) + 0.5 ) ) ), divider_width ) ;
-    end loop;
+        for k in 2 ** (r_glob_width-shift_m_den) - 1 downto 0 loop
+            temp(k) := to_unsigned(integer(floor(((2.0 ** divider_width)) / (real(k) + 0.5))), divider_width);
+        end loop;
 
-    return temp;
+        return temp;
     end function;
 
-    function invsqrt_ROM return t_invsqrt_ROM is 
+    function invsqrt_ROM return t_invsqrt_ROM is
         variable temp : t_invsqrt_ROM(2**(16)-1 downto 0) := (others => (others => '0'));
     begin
         for k in 2**(16) -1 downto 0 loop
-            temp(k) := to_unsigned(integer(floor( (( 2.0 ** inv_sqrt_width  ))/ sqrt( m_sagitta_multi**2 + real(k*k) ) )), inv_sqrt_width);
+            temp(k) := to_unsigned(integer(floor(((2.0 ** inv_sqrt_width))/ sqrt(m_sagitta_multi**2 + real(k*k)))), inv_sqrt_width);
         end loop;
         return temp;
     end function;
 
     function pt_sagitta return t_pt_sagitta is
-        variable temp: t_pt_sagitta(2**(sagitta_width-1)-1 downto 0) := (others => (others => '0'));
+        variable temp : t_pt_sagitta(2**(sagitta_width-1)-1 downto 0) := (others => (others => '0'));
     begin
         for k in 2**(sagitta_width-1) -1 downto 0 loop
-            temp(k) := to_signed( integer(floor( a0 + a1/(real(k)+0.5) + a2/((real(k)+0.5)*(real(k)+0.5)) )), pt_width + 1 );
+            temp(k) := to_signed(integer(floor(a0 + a1/(real(k)+0.5) + a2/((real(k)+0.5)*(real(k)+0.5)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_0 return t_pt_phi_0 is
-        variable temp: t_pt_phi_0(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable temp : t_pt_phi_0(2**(phi_width)-1 downto 0) := (others => (others => '0'));
 
         variable phi : real := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_0 + b1_0*(phi) + b2_0*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_0 + b1_0*(phi) + b2_0*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_1 return t_pt_phi_1 is
-        variable temp: t_pt_phi_1(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_1(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_1 + b1_1*(phi) + b2_1*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_1 + b1_1*(phi) + b2_1*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_2 return t_pt_phi_2 is
-        variable temp: t_pt_phi_2(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_2(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_2 + b1_2*(phi) + b2_2*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_2 + b1_2*(phi) + b2_2*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_3 return t_pt_phi_3 is
-        variable temp: t_pt_phi_3(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_3(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_3 + b1_3*(phi) + b2_3*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_3 + b1_3*(phi) + b2_3*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_4 return t_pt_phi_4 is
-        variable temp: t_pt_phi_4(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_4(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_4 + b1_4*(phi) + b2_4*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_4 + b1_4*(phi) + b2_4*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_5 return t_pt_phi_5 is
-        variable temp: t_pt_phi_5(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_5(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_5 + b1_5*(phi) + b2_5*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_5 + b1_5*(phi) + b2_5*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_6 return t_pt_phi_6 is
-        variable temp: t_pt_phi_6(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_6(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_6 + b1_6*(phi) + b2_6*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_6 + b1_6*(phi) + b2_6*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_7 return t_pt_phi_7 is
-        variable temp: t_pt_phi_7(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_7(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_7 + b1_7*(phi) + b2_7*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_7 + b1_7*(phi) + b2_7*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_8 return t_pt_phi_8 is
-        variable temp: t_pt_phi_8(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_8(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_8 + b1_8*(phi) + b2_8*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_8 + b1_8*(phi) + b2_8*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_phi_9 return t_pt_phi_9 is
-        variable temp: t_pt_phi_9(2**(phi_width)-1 downto 0) := (others => (others => '0'));
-        variable phi : real := 0.0;
+        variable temp : t_pt_phi_9(2**(phi_width)-1 downto 0) := (others => (others => '0'));
+        variable phi  : real                                  := 0.0;
     begin
         for k in 2**(phi_width) -1 downto 0 loop
-            phi := real(k) - 2.0**(phi_width-1);
-            temp(k) := to_signed( integer(floor( b0_9 + b1_9*(phi) + b2_9*((phi)*(phi)) )), pt_width + 1 );
+            phi     := real(k) - 2.0**(phi_width-1);
+            temp(k) := to_signed(integer(floor(b0_9 + b1_9*(phi) + b2_9*((phi)*(phi)))), pt_width + 1);
 
         end loop;
         return temp;
     end function;
 
     function pt_eta return t_pt_eta is
-        variable temp: t_pt_eta(2**(eta_width)-1 downto 0) := (others => (others => '0'));
-        variable eta : real := 0.0;
+        variable temp : t_pt_eta(2**(eta_width)-1 downto 0) := (others => (others => '0'));
+        variable eta  : real                                := 0.0;
     begin
         for k in 2**(eta_width) -1 downto 0 loop
-            eta := real(k) - 2.0**(eta_width-1);
-            temp(k) := to_signed( integer(floor( c0 + c1*real(eta) )), pt_width + 1 );
+            eta     := real(k) - 2.0**(eta_width-1);
+            temp(k) := to_signed(integer(floor(c0 + c1*real(eta))), pt_width + 1);
 
         end loop;
         return temp;
@@ -475,7 +475,7 @@ package body pt_pkg is
     --    return temp;
     --end function;
 
-    function pt_bin( pt : signed) return integer is
+    function pt_bin(pt : signed) return integer is
         variable bin : integer := 0;
     begin
         if pt < 500 then
