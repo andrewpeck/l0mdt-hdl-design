@@ -1,6 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
+      ref: 'feature/eoscp'
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
