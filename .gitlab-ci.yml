@@ -1,7 +1,7 @@
-include:
-    - project: 'hog/Hog'
-      file: '/gitlab-ci.yml'
-      ref: 'feature/code-formatting'
+# include:
+#     - project: 'hog/Hog'
+#       file: '/gitlab-ci.yml'
+#       ref: 'feature/code-formatting'
     
 before_script:
     - env
