@@ -2,8 +2,7 @@ include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
       ref: 'feature/eoscp'
-    - project: 'xampp/atlas-code-format'
-      ref: 'feature/vhdl_verilog_formatter'
+    
 before_script:
     - env
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
