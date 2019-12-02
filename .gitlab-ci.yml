@@ -23,20 +23,10 @@ before_script:
 
 #################### CSF Project ###########################
 
-format_code:
-  stage: format_code
-  variables: {
-    vhdl_dirs: '.',  # clang-format headers and source files
-  }
-  tags:
-    - cvmfs
-  before_script:
-    - git config --global user.name "l0mdtel" && git config --global user.email "atlas.phase2.l0mdt.electronics@cern.ch"
-    - git checkout -b ${CI_COMMIT_REF_NAME} || echo "Branch ${CI_COMMIT_REF_NAME} already exists, checking it out" && git checkout ${CI_COMMIT_REF_NAME}
-  script:
-    - ./atlas-code-format/scripts/format_code
-  only:
-    - master
+format_code:profpga_duo_test:
+  extends: .format_code
+  variables: 
+    HOG_CODE_FORMATTING: 1
 
 
 create_project:profpga_duo_test:
