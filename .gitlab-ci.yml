@@ -36,7 +36,7 @@ format_code:
     - git config --global user.name "l0mdtel" && git config --global user.email "atlas.phase2.l0mdt.electronics@cern.ch"
     - git checkout -b ${CI_COMMIT_REF_NAME} || echo "Branch ${CI_COMMIT_REF_NAME} already exists, checking it out" && git checkout ${CI_COMMIT_REF_NAME}
   script:
-    - /scripts/format_code
+    - ./atlas-code-format/scripts/format_code
   only:
     - master
 
