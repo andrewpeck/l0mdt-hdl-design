@@ -30,8 +30,7 @@ create_project:profpga_duo_test:
     variables:
       extends: .vars
       PROJECT_NAME: profpga_duo_test
-    dependencies:
-      - format_code:profpga_duo_test
+    
 
 synthesise_ips:profpga_duo_test:
     extends: .synthesise_ips
@@ -40,7 +39,6 @@ synthesise_ips:profpga_duo_test:
       PROJECT_NAME: profpga_duo_test
       IP_PATH: IP
     dependencies:
-        - format_code:profpga_duo_test
         - create_project:profpga_duo_test
 
 synthesise_project:profpga_duo_test:
@@ -51,7 +49,6 @@ synthesise_project:profpga_duo_test:
     dependencies:
         - synthesise_ips:profpga_duo_test
         - create_project:profpga_duo_test
-        - format_code:profpga_duo_test
 
 
 implement_project:profpga_duo_test:
@@ -61,7 +58,6 @@ implement_project:profpga_duo_test:
       PROJECT_NAME: profpga_duo_test
       HOG_NO_BITSTREAM_STAGE: 1
     dependencies:
-       - format_code:profpga_duo_test
        - create_project:profpga_duo_test
        - synthesise_ips:profpga_duo_test
        - synthesise_project:profpga_duo_test
@@ -72,7 +68,6 @@ write_bitstream:profpga_duo_test:
       extends: .vars
       PROJECT_NAME: profpga_duo_test
     dependencies:
-       - format_code:profpga_duo_test
        - create_project:profpga_duo_test
        - synthesise_ips:profpga_duo_test
        - synthesise_project:profpga_duo_test
