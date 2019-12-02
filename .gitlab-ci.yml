@@ -1,7 +1,7 @@
-# include:
-#     - project: 'hog/Hog'
-#       file: '/gitlab-ci.yml'
-#       ref: 'feature/code-formatting'
+include:
+    - project: 'hog/Hog'
+      file: '/gitlab-ci.yml'
+      ref: 'feature/code-formatting'
     
 before_script:
     - env
@@ -21,175 +21,14 @@ before_script:
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/bin/settings64.sh
 
-# before_script:
-#     - env
-#     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
-#     - git remote set-url origin https://${HOG_USER}:${HOG_PUSH_TOKEN}@$REPO
-#     - git config user.email ${HOG_EMAIL}
-#     - git config user.name ${HOG_USER}
-#     - git fetch 
-#     - git fetch origin $CI_COMMIT_REF_NAME    
-#     - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
-#     - git checkout $CI_COMMIT_REF_NAME
-#     - git submodule init
-#     - git submodule update
-#     - ./Hog/Ignore_ip_xml.sh
-#     - export XILINXD_LICENSE_FILE=${HOG_XIL_LICENSE}
-#     - export PATH=$PATH:${HOG_PATH}
-#     - echo $HOG_PASSWORD | kinit $HOG_USER
-
-.only-default: &only-default
-  only:
-    refs:
-      - merge_requests
-  except:
-    variables:
-      - $CI_COMMIT_REF_NAME =~ /^test\/.*$/i
-      - $CI_MERGE_REQUEST_TITLE =~ /^WIP:.*$/
-  tags:
-     - hog
-
-.vars: &vars
-    GIT_STRATEGY: clone
-#   CI_DEBUG_TRACE: "true"
-
-stages:
-    - format
-    - merge
-    - creation
-    - ip
-    - synthesis
-    - implementation
-    - bitstream    
-
-
-.format_code: &format_code 
-   <<: *only-default
-  stage: format
-  variables:
-    <<: *vars
-  script:
-    - "if [ -z ${HOG_CODE_FORMATTING+x} ]; then echo 'Hog code formatting is disabled...'; else ./Hog/format/format_code; fi"
-
-.create_project: &create_project
-     <<: *only-default
-     stage: creation
-     variables:
-        <<: *vars
-     script:
-      - ./Hog/CreateProject.sh $PROJECT_NAME
-     artifacts:
-       name: vivado_projects
-       paths:
-         - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME
-       expire_in: 30 day
-
-.synthesise_ips: &synthesise_ips
-    <<: *only-default
-    stage: ip
-    variables:
-        <<: *vars    
-    script:
-        - vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_ip_synth.tcl -tclargs $PROJECT_NAME
-    artifacts:
-        name: vivado_runs
-        paths:
-            - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME
-            - $CI_PROJECT_DIR/$IP_PATH
-        expire_in: 30 day
-
-.synthesise_project: &synthesise_project
-    <<: *only-default
-    stage: synthesis
-    variables:
-        <<: *vars        
-    script:
-        - git status
-        - git diff
-        - git stash
-        - vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_synthesis.tcl -tclargs $PROJECT_NAME
-    artifacts:
-        name: vivado_synth
-        paths:
-            - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME
-        expire_in: 30 day
-
-.implement_project: &implement_project
-    <<: *only-default    
-    stage: implementation
-    variables:
-        <<: *vars        
-    script:
-        - vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_implementation.tcl -tclargs $PROJECT_NAME
-        - "if [ -z ${HOG_NO_BITSTREAM_STAGE+x} ]; then echo 'Will create bitstream in next stage...'; else vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_write_bitstream.tcl -tclargs $PROJECT_NAME; fi"
-    artifacts:
-        name: vivado_impl
-        paths:
-            - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME
-            - $CI_PROJECT_DIR/bin           
-        expire_in: 30 days
-
-.write_bitstream: &write_bitstream
-    <<: *only-default    
-    stage: bitstream
-    variables:
-        <<: *vars        
-    script:
-        - "if [ -z ${HOG_NO_BITSTREAM_STAGE+x} ]; then vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_write_bitstream.tcl -tclargs $PROJECT_NAME; fi"
-        - eos cp -r $CI_PROJECT_DIR/bin/* $HOG_UNOFFICIAL_BIN_EOS_PATH
-
-    artifacts:
-        name: bitfiles
-        paths:
-            - $CI_PROJECT_DIR/bin
-        expire_in: 10 years 
-
-merge_and_tag:
-     <<: *only-default
-     stage: merge
-     variables:
-       GIT_STRATEGY: clone
-     script:
-      - "MR_PARAMETERS=`curl --header \"PRIVATE-TOKEN: ${HOG_PUSH_TOKEN}\" ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/merge_requests/${CI_MERGE_REQUEST_IID}`"
-      - export WIP=`echo $MR_PARAMETERS | jq -r '.work_in_progress'`
-      - export MERGE_STATUS=`echo $MR_PARAMETERS | jq -r '.merge_status'`
-      - DESCRIPTION=`echo $MR_PARAMETERS | jq -r '.description'`
-      - "echo \"WIP: ${WIP},  Merge Request Status: ${MERGE_STATUS}   Description: ${DESCRIPTION}\""
-      - export VERSION=0
-      - "if [[ $DESCRIPTION =~ .*MINOR_VERSION.* ]]; then export VERSION=1; fi"
-      - "if [[ $DESCRIPTION =~ .*MAJOR_VERSION.* ]]; then export VERSION=2; fi"
-      - "echo \"Version Level $VERSION\""
-      - git merge --no-commit origin/master
-      - vivado -mode batch -notrace -source ./Hog/Tcl/tag_repository.tcl -tclargs $CI_MERGE_REQUEST_IID $VERSION
-      - git push origin $CI_COMMIT_REF_NAME
-      - git push --tags origin $CI_COMMIT_REF_NAME
-
-tag_official_version:
-  only:
-    refs:
-      - push
-      - web
-  except:
-    variables:
-      - $CI_PIPELINE_SOURCE != "push"
-      - $CI_COMMIT_REF_SLUG != "master"
-  tags:
-     - hog
-  stage: merge
-  script:
-     - git status
-     - git pull
-     - git submodule update
-     - vivado -mode batch -notrace -source ./Hog/Tcl/tag_repository.tcl -tclargs 0 3
-     - git push origin $CI_COMMIT_REF_NAME
-     - git push --tags origin $CI_COMMIT_REF_NAME
 
 
 #################### CSF Project ###########################
 
 format_code:profpga_duo_test:
   extends: .format_code
-  variables: 
+  variables:
+    extends: .vars
     HOG_CODE_FORMATTING: 1
 
 
