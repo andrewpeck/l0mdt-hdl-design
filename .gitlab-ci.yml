@@ -1,15 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref: 'feature/eoscp'
-stages:
-    - format_code
-    - merge
-    - creation
-    - ip
-    - synthesis
-    - implementation
-    - bitstream
+      ref: 'feature/code-formatting'
     
 before_script:
     - env
