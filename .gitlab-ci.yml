@@ -38,7 +38,7 @@ create_project:profpga_duo_test:
       extends: .vars
       PROJECT_NAME: profpga_duo_test
     dependencies:
-      -format_code:profpga_duo_test
+      - format_code:profpga_duo_test
 
 synthesise_ips:profpga_duo_test:
     extends: .synthesise_ips
