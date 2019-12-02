@@ -46,7 +46,7 @@ architecture Behavioral of csf_fitter is
     signal finalhit       : std_logic   := '0';
 
     -- Summation signal widths
-    constant SumXZ_width : integer := num_hits_width+x_width+z_width;
+                    constant SumXZ_width : integer := num_hits_width+x_width+z_width;
     constant SumZ_width  : integer := num_hits_width+z_width;
     constant SumX_width  : integer := num_hits_width+x_width;
     constant SumX2_width : integer := num_hits_width+x_width+x_width;
