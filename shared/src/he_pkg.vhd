@@ -30,11 +30,50 @@ package he_pkg is
 --------------------------------------------------------------------------------
 
 -- data from muon candidate
-    type muCand_data_rt is record
-        header_r    : std_logic_vector(31 downto 0);
+-- header 32 bits
+    type muCand_header_rt is record
+        BCID        : integer range 0 to ((2**12)-1);
+        reserved    : std_logic_vector(19 downto 0);
+    end record;
+-- muon candidate 64 bits
+    --type muCand_esl_data_rt is record
+    --    pos_eta         : integer;
+    --    pos_phi         : integer;
+    --    angle_theta     : integer;
+    --    angle_phi       : integer;
+    --    pt_threshold    : std_logic_vector(3 downto 0);
+
+    --end record;
+
+    type muCand_barrel_data_rt is record
+        pos_eta_rp0     : integer;
+        pos_eta_rp1     : integer;
+        pos_eta_rp2     : integer;
+        pos_eta_rp3     : integer;
+        pos_phi         : integer;
+        coin_type       : integer;
+        pt_threshold    : std_logic_vector(3 downto 0);
+        charge          : std_logic;
+        reserved        : std_logic_vector(10 downto 0);
+    end record;
+
+-- tail 32 bits
+    type muCand_tail_rt is record
+        tail : std_logic_vector (31 downto 0);
+    end record;
+-- full packet record
+    type muCand_sl_packet_rt is record
+        header_r    : muCand_header_rt;
+        data_r      : muCand_barrel_data_rt;
+        tail_r      : muCand_tail_rt;
     end record;
 
     subtype st_muoncandidate_data is std_logic_vector(191 downto 0);
+
+-- useful muon candidate data
+    type muCand_data_rt is record
+        data : std_logic_vector(31 downto 0);
+    end record;
 
 -- data from lpGBT to pulling multiplexor
     type tdc_data_rt is record 
@@ -61,6 +100,32 @@ package he_pkg is
         tube        : integer;
         lead_edge   : std_logic_vector(16 downto 0);
         pulse_width : std_logic_vector(7 downto 0); 
+    end record;
+
+-- data types and records for hit processing block
+    
+    -- muon candidate procesor to tube range LUT
+    type tube_range_config_rt is record
+        data_valid  : std_logic;
+    end record;
+
+    type muon_candidate_info_rt is record
+        mc_time : integer;
+        mc_origin : std_logic_vector(13 downto 0);
+    end record;
+
+    -- tube range LUT to Hit Matching
+    type tube_range_cand_rt is record
+        tube_hi     : integer;
+        tube_lo     : integer;
+    end record;
+
+    -- output structures
+
+    type segment_finder_legendre_rt is record
+        x : integer;
+        y : integer;
+        r : integer;
     end record;
 
 --------------------------------------------------------------------------------
