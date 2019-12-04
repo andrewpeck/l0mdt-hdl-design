@@ -20,16 +20,23 @@ use ieee.numeric_std.all;
 library he_lib;
 use he_lib.he_pkg.all;
 
-entity he_c_mcp is
+entity he_hp_mcp is
     port (
         clk_360             : in std_logic;
         Reset_b             : in std_logic;
         --
+        in_muonCanidate             : in muCand_data_rt;
+        in_candidate_valid          : in std_logic;
+        --
+        tube_ranges_config          : out tube_range_config_rt;
+        tube_ranges_config_valid    : out std_logic;
+        muon_candidate_info         : out muon_candidate_info_rt;
+        muon_candidate_info_valid   : out std_logic
 
     );
-end entity he_c_mcp;
+end entity he_hp_mcp;
 
-architecture beh of he_c_mcp is
+architecture beh of he_hp_mcp is
 
 
 begin
