@@ -34,7 +34,11 @@ entity he is
         in_tdc_valid_acq_a  : out std_logic_vector(numInputs_mux -1 downto 0);
 
         in_muonCand_data_r  : in muCand_data_rt;
-        in_muonCand_valid   : in std_logic
+        in_muonCand_valid   : in std_logic;
+
+        -- to Segment finder
+        out_segFinder_data  : out segment_finder_legendre_rt
+
     );
 end entity he;
 
@@ -73,7 +77,7 @@ begin
         out_valid       => data_tar2core_valid
     );
 
-    HE_CORE : entity he_lib.he_core 
+    HE_PROC : entity he_lib.he_core 
     port map (
         clk_360             => clk_360,
         Reset_b             => Reset_b,
