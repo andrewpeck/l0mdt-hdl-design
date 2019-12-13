@@ -22,7 +22,7 @@
 // 1.0      2016-03-21  File created
 // =============================================================================
 
-module top_profpga_duo_pt # (
+module top_profpga_duo_csf_plus_pt # (
       parameter DEVICE           = "XVUS"      // XV7S or XVUS
       ) 
    (
@@ -269,7 +269,7 @@ module top_profpga_duo_pt # (
       .b_dout(reg_rdata_r)
     );
 
-   top_csf_plus_pt #(
+   csf_plus_pt_top #(
      .DataWidth(64)
    )
    CSF_PLUS_PT_TOP (

@@ -1,4 +1,4 @@
-../../boards/profpga_duo/Top/top_profpga_duo_pt.v
+../../boards/profpga_duo/Top/top_profpga_duo_csf_plus_pt.v
 ../../shared/src/pt_pkg.vhd
 ../../shared/src/bram.vhd
 ../../pt/src/sagitta_calculator.vhd
