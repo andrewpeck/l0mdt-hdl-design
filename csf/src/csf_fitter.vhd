@@ -19,11 +19,12 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE, csf_lib, pt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use pt_lib.pt_pkg.all;
 
 entity csf_fitter is
   Port ( 
@@ -211,7 +212,7 @@ begin
 
             -- Clock 6
             dv6 <= dv5;
-            reciprocal_den      <= signed('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr))));
+            reciprocal_den      <= signed(std_logic_vector'('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr)))));
             numerator_b_red_ss  <= numerator_b_red_s;
             numerator_m_red_ss  <= numerator_m_red_s;
 

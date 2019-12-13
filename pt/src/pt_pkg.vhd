@@ -19,36 +19,40 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use std.standard.all;
-use csf_lib.csf_pkg.all;
 
 package pt_pkg is
 
-    constant z_ref: integer := integer(bfit_mult)*120;
-    constant x_ref: integer := -40*integer(bfit_mult);
+    constant z_ref: integer := integer(64.0)*120;
+    constant x_ref: integer := -40*integer(64.0);
 
-    constant theta_loc_width : integer := mfit_width;
-    constant theta_loc_mult  : real := mfit_mult;
-    constant theta_loc_multi_width : integer := mfit_multi_width;
+    constant theta_loc_width : integer := 15;
+    constant theta_loc_mult  : real := 4096.0;
+    constant theta_loc_multi_width : integer := integer(log2(theta_loc_mult));
     
-    constant z_loc_width : integer := bfit_width;
+    constant z_loc_width : integer := 15;
     constant roi_x_width : integer := 15;
     constant z_glob_width : integer := 19;
     constant r_glob_width : integer := 20;
     
     constant sagitta_width : integer := 15;
     
-    constant sagitta_mult  : real := bfit_mult;
+    constant sagitta_mult  : real := 64.0;
     constant sagitta_multi_width : integer := integer(log2(sagitta_mult)); 
 
     constant inv_tantheta_width : integer := 13;
     constant shift_m_den : integer := 6;
     constant m_width : integer := 16;
-
+    constant phi_width              : integer := 6;
+    constant phi_range              : real    := 0.6; 
+    constant phi_mult               : real    := real(2**phi_width)/phi_range;
+    constant eta_width              : integer := 10;
+    constant eta_range              : real    := 0.6;
+    constant eta_mult               : real    := 2.0**eta_width/eta_range;
 
     constant shift_m_num : integer := 14;
     constant divider_width : integer := 25;
@@ -63,6 +67,16 @@ package pt_pkg is
     constant m_sagitta_range : real := 4.0;
     constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
     constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi)); 
+
+--  Output Segment constants
+    constant mfit_width             : integer := 15;
+    constant mfit_mult              : real    := 4096.0;
+    constant mfit_multi_width       : integer := integer(log2(mfit_mult)); 
+    constant bfit_width             : integer := 15;
+    constant bfit_mult              : real    := 64.0;
+    constant chi2_width             : integer := 15;
+    constant chi2_mult              : real    := 4.0;
+    constant chi2_mult_width        : integer := integer(log2(chi2_mult)); 
     
     -- Root Chambers BIL2A01 BML1A01 BOL1A01 
     -- BIL2A01_BML1A01_BOL1A01  0   2.01613 435.824 -641.298    0   0   0   0.479175    -3.54889
@@ -119,7 +133,10 @@ package pt_pkg is
     -- Eta params constants
     constant c0 : real := 0.479175*pt_mult;
     constant c1 : real :=  -3.54889*pt_mult/eta_mult;
-
+    -- Generic constants
+    constant max_hits_per_segment   : real    := 16.0;
+    constant num_hits_width         : integer := integer(log2(max_hits_per_segment));
+    constant max_hits_per_ml_width  : integer := num_hits_width-1;
 
     type t_roi is
     record
@@ -128,6 +145,18 @@ package pt_pkg is
         z_glob  : signed(z_glob_width-1 downto 0);
         r_glob  : unsigned(r_glob_width-1 downto 0);
         chamber_id : unsigned(1 downto 0);
+    end record;
+
+ -- Output Segment in local coordinates
+    type t_locseg is  
+    record 
+        valid                       : std_logic;
+        b                           : signed(bfit_width-1 downto 0);
+        m                           : signed(mfit_width-1 downto 0);
+        chi2                        : unsigned(chi2_width-1 downto 0);
+        ndof                        : unsigned(num_hits_width-1 downto 0);
+        phi                         : signed(phi_width-1 downto 0);
+        eta                         : signed(eta_width-1 downto 0);
     end record;
     
     type t_globalseg is
@@ -140,6 +169,8 @@ package pt_pkg is
         eta_glob   : signed(eta_width-1 downto 0);
     end record;
 
+    constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
+        (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_roi : t_roi := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0')); 
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
@@ -185,6 +216,10 @@ package pt_pkg is
     type t_pt_eta is array (natural range <> ) of signed(pt_width downto 0);
     function pt_eta return t_pt_eta;
 
+    type t_locsegs is array(natural range <> ) of t_locseg;
+    -- Convert vec to localseg
+    function vec_to_locseg(vec : std_logic_vector) return t_locseg;
+
     function pt_bin(pt : signed) return integer;
 
 end;
@@ -203,12 +238,12 @@ package body pt_pkg is
     end function vec_to_roi;
 
     function m_to_theta return t_m_to_theta is 
-    variable temp : t_m_to_theta(2**(mfit_width)-1 downto 0) := (others => (others => '0'));
-    variable m : real := real(-2.0**(mfit_width-1));
+    variable temp : t_m_to_theta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
+    variable m : real := real(-2.0**(theta_loc_width-1));
     begin
-    for k in 2**(mfit_width)-1 downto 0 loop
-        m := real(-2**(mfit_width-1)) + real(k);
-        temp(k) := to_signed(integer(floor(ARCTAN(mfit_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
+    for k in 2**(theta_loc_width)-1 downto 0 loop
+        m := real(-2**(theta_loc_width-1)) + real(k);
+        temp(k) := to_signed(integer(floor(ARCTAN(theta_loc_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
     end loop;
     return temp;
     end function;
@@ -501,6 +536,17 @@ package body pt_pkg is
         end if;
         return bin;
     end function;
+
+    function vec_to_locseg (vec : std_logic_vector) return t_locseg is
+        variable seg : t_locseg := null_locseg;
+    begin
+        seg.valid := vec(63);
+        seg.b := signed(vec(bfit_width-1 downto 0));
+        seg.m := signed(vec(mfit_width+bfit_width-1 downto bfit_width));
+        seg.phi := signed(vec(phi_width+mfit_width+bfit_width-1 downto bfit_width+mfit_width));
+        seg.eta := signed(vec(eta_width+phi_width+mfit_width+bfit_width-1 downto phi_width+bfit_width+mfit_width));
+        return seg;
+    end function vec_to_locseg;
 
 
 end package body;

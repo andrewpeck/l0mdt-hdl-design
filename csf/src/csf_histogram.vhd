@@ -19,7 +19,7 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE, csf_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
@@ -164,7 +164,7 @@ begin
 
     BinRAMs: for k in 2**histo_width-1 downto 0 generate 
     begin
-    Bin : entity csf_lib.bram_tdp
+    Bin : entity shared_lib.bram_tdp
     generic map(
         ADDR => bin_depth,
         DATA => histo_hit_width,

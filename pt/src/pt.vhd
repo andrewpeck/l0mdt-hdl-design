@@ -19,12 +19,11 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, pt_lib, csf_lib;
+library IEEE, pt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use pt_lib.pt_pkg.all;
-use csf_lib.csf_pkg.all;
 
 entity pt_calculator_top is
   Port ( 

@@ -19,11 +19,12 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE, csf_lib, shared_lib, pt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use pt_lib.pt_pkg.all;
 
 entity csf_chi2 is
   port (
@@ -82,7 +83,7 @@ architecture Behavioral of csf_chi2 is
    
 begin
 
-    HitBuffer1 : entity csf_lib.bram_tdp
+    HitBuffer1 : entity shared_lib.bram_tdp
     generic map(
         ADDR => max_hits_per_ml_width,
         DATA => histo_hit_width,
@@ -98,7 +99,7 @@ begin
         b_dout => hit_vec1
     );
 
-    HitBuffer2 : entity csf_lib.bram_tdp
+    HitBuffer2 : entity shared_lib.bram_tdp
     generic map(
         ADDR => max_hits_per_ml_width,
         DATA => histo_hit_width,
