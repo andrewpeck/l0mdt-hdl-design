@@ -44,7 +44,7 @@ architecture Behavioral of csf_chi2_comparison is
     signal dv0, dv1 : std_logic := '0';
 begin
 
-	Chi2_Compare : process(clk)
+    Chi2_Compare : process(clk)
     begin
         if rising_edge(clk) then
             -- clock 0

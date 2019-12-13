@@ -28,7 +28,7 @@ use csf_lib.csf_pkg.all;
 
 entity seg_coord_transform is
   port (
-	clk        : in std_logic;
+    clk        : in std_logic;
     seg        : in t_locseg;
     roi        : in t_roi;
     globseg    : out t_globalseg    
@@ -56,7 +56,7 @@ begin
 
     CoordProc : process( clk )
     begin
-    	if rising_edge(clk) then
+        if rising_edge(clk) then
             if roi.valid = '1' and seg.valid = '1' then
                 roi_s <= roi;
                 seg_s <= seg;
@@ -86,7 +86,7 @@ begin
             globseg.phi_glob <= seg_s.phi;
             globseg.eta_glob <= seg_s.eta;
 
-    	end if ;
+        end if ;
     end process ; -- CoordProc
 
 

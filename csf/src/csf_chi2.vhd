@@ -27,25 +27,25 @@ use csf_lib.csf_pkg.all;
 
 entity csf_chi2 is
   port (
-	clk            : in std_logic;
-	i_hit1         : in t_histo_hit;
-	i_hit2         : in t_histo_hit;
-	i_mfit         : in signed(mfit_width-1 downto 0);
-  	i_bfit         : in signed(bfit_width-1 downto 0);
+    clk            : in std_logic;
+    i_hit1         : in t_histo_hit;
+    i_hit2         : in t_histo_hit;
+    i_mfit         : in signed(mfit_width-1 downto 0);
+    i_bfit         : in signed(bfit_width-1 downto 0);
     i_nhits        : in unsigned(3 downto 0);
-  	i_fit_valid    : in std_logic;
+    i_fit_valid    : in std_logic;
     i_rst          : in std_logic;
-  	o_seg          : out t_locseg
+    o_seg          : out t_locseg
   );
 end csf_chi2; -- csf_chi2
 
 architecture Behavioral of csf_chi2 is
     -- Hit Buffer signals
-	signal w_addr1, w_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
+    signal w_addr1, w_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
                                                 := (others => '0');
-	signal r_addr1, r_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
+    signal r_addr1, r_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
                                                 := (others => '1');
-	signal hit_vec1, hit_vec2              : std_logic_vector(histo_hit_width-1 downto 0) 
+    signal hit_vec1, hit_vec2              : std_logic_vector(histo_hit_width-1 downto 0) 
                                                 := (others => '0');
     signal outhit1, outhit2                : t_histo_hit := null_histo_hit;
 
@@ -120,8 +120,8 @@ begin
 
     Chi2Proc : process( clk )
     begin
-    	if rising_edge(clk) then
-    		o_seg <= null_locseg;
+        if rising_edge(clk) then
+            o_seg <= null_locseg;
 
             -- Store Hits into a RAM, waiting for the fit result
             if i_hit1.valid = '1' then
@@ -141,7 +141,7 @@ begin
                 r_addr2 <= (others => '0');
                 start_read <= '1';
             end if ;
-    		
+            
             if start_read = '1' then
                 if unsigned(r_addr1) < unsigned(w_addr1) -1 then
                     r_addr1 <= std_logic_vector(unsigned(r_addr1) + 1);
@@ -222,7 +222,7 @@ begin
                 start_read <= '0';
             end if;
             
-    	end if ;
+        end if ;
     end process ; -- Chi2Proc
 
 

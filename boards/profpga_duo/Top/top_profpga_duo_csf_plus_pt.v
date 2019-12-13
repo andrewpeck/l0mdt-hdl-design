@@ -255,38 +255,6 @@ module top_profpga_duo_pt # (
       .reg_rvalid_i (reg_rvalid_r)
       );
 
-   // Generic Single Port RAM, can be found in $PROFPGA/hdl/generic_hdl
-   // generic_spram # (
-     //    .ADDR_W (4),
-     //    .DATA_W (64)
-     //    )
-   // U_REGISTER (
-    //      .clk   (mmi64_clk),
-    //      .ce    (reg_en),
-    //      .we    (reg_we),
-    //      .addr  (reg_addr),
-    //      .wdata (reg_wdata),
-    //      .rdata (reg_rdata_r)
-    //      );
-
-    // generic_dpram # (
-    //    .ADDR_W (4),
-    //    .DATA_W (64)
-    //     )
-    //     U_REGISTER (
-    //      .clk1   (mmi64_clk),
-    //      .ce1    (fifo_wdata[63]),
-    //      .we1    (fifo_wdata[63]),
-    //      .addr1  (fifo_addr),
-    //      .wdata1 (fifo_wdata),         
-    //      .rdata1 (fifo_rdata),
-    //      .clk2   (mmi64_clk),
-    //      .ce2    (reg_en),
-    //      .we2    (we2),
-    //      .addr2  (reg_addr),
-    //      .wdata2 (reg_wdata),         
-    //      .rdata2 (reg_rdata_r)
-    //    );
     bram_tdp #(
       .ADDR(4),
       .DATA(64)
@@ -301,18 +269,17 @@ module top_profpga_duo_pt # (
       .b_dout(reg_rdata_r)
     );
 
-   pt_top #(
-      .DataWidth(64)
-    )
-   PT_TOP (
+   top_csf_plus_pt #(
+     .DataWidth(64)
+   )
+   CSF_PLUS_PT_TOP (
       .clk(mmi64_clk),
       .we(reg_we),
       .d(reg_wdata),
       .q(fifo_wdata),
       .en(fifo_we),
       .addr(fifo_addr)
-    );
-    
+   );
 
 
    // generic_spram is providing data always in next cycle
@@ -325,13 +292,6 @@ module top_profpga_duo_pt # (
       else
         reg_rvalid_r <= 1'b0;
    end
-
-  // always @(posedge mmi64_clk) begin : VALID_SIGNAL2
-  //     if (reg_en2 && ~reg_we2)
-  //       reg_rvalid_r2 <= 1'b1;
-  //     else
-  //       reg_rvalid_r2 <= 1'b0;
-  //  end
 
    // generic_spram always accepts data
    assign reg_accept = 1'b1;

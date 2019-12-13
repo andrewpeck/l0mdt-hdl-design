@@ -10,13 +10,13 @@ use std.textio.all;
 entity sf_file_read is
 generic (
     filename : string :=  "test.txt";
-    		-- Width of S_AXI data bus
+            -- Width of S_AXI data bus
     C_S_AXI_DATA_WIDTH    : integer    := 32;
     C_M_AXIS_TDATA_WIDTH : integer := 32
     );
 port
 (
-  clk_i  : in	std_logic;
+  clk_i  : in   std_logic;
   rst_i  : in   std_logic;
   en_i   : in   std_logic;
   first  : in  std_logic;
@@ -24,7 +24,7 @@ port
   dv     : out std_logic;
   last   : out std_logic
 );
-	
+    
 end sf_file_read;
 
 architecture Behavioral of sf_file_read is
@@ -51,13 +51,13 @@ begin
         variable infile_status : FILE_OPEN_STATUS;
         variable ln, lp : integer := 0;
         variable hex_data : std_ulogic_vector(31 downto 0);
-        variable raw_data    : character;          	
+        variable raw_data    : character;           
         variable end_line : boolean;
         
     begin
     
         if rising_edge(clk_i) then    
-	    s_start_d <= s_start;
+        s_start_d <= s_start;
         
             if  (en_i = '1') and (en_d = '0') then
                 if first = '1' then
@@ -68,7 +68,7 @@ begin
                 dv <= '0';
                 last <= '0';
                 s_start <= '1';
-		
+        
             
 --            elsif  (en_i = '0') and (en_d = '1') then
             
@@ -77,7 +77,7 @@ begin
             
             elsif en_i = '1' then  
 
-		        s_start <= '0';
+                s_start <= '0';
 --                        end_file <= endfile(infile);
 
                 if endfile(infile) = false then 

@@ -27,7 +27,7 @@ use pt_lib.pt_pkg.all;
 
 entity sagitta_calculator is
   port (
-	clk : in std_logic;
+    clk : in std_logic;
     seg0 : in t_globalseg;
     seg1 : in t_globalseg;
     seg2 : in t_globalseg;
@@ -42,7 +42,7 @@ architecture Behavioral of sagitta_calculator is
     -- Constants for distance calculations
     constant delta_r_red_width : integer := r_glob_width- shift_m_den;
     -- Signals for distance calculation
-   	signal delta_z_20, delta_z_20_s, delta_z_20_ss, delta_z_10, delta_z_10_s, delta_z_10_ss, delta_z_10_sss : signed(z_glob_width-1 downto 0) := (others => '0');
+    signal delta_z_20, delta_z_20_s, delta_z_20_ss, delta_z_10, delta_z_10_s, delta_z_10_ss, delta_z_10_sss : signed(z_glob_width-1 downto 0) := (others => '0');
     signal delta_r_10, delta_r_10_s, delta_r_10_ss, delta_r_10_sss, delta_r_10_ssss, delta_r_10_sssss : unsigned(r_glob_width-1 downto 0) := (others => '0');
     signal delta_r_20 : unsigned(delta_r_red_width-1 downto 0 ) := (others => '0');
     -- Constants for m_sagitta=deltaZ_20/deltaR_20 calculation
@@ -69,7 +69,7 @@ begin
 
     SagittaProc : process( clk )
     begin
-    	if rising_edge(clk) then
+        if rising_edge(clk) then
             -- Clock 0
             dv0 <= (seg0.valid and seg1.valid and seg2.valid);
             delta_z_20 <= seg2.z_glob - seg0.z_glob;
@@ -139,7 +139,7 @@ begin
             sagitta <= resize(shift_right(sagitta_full_ss,inv_sqrt_width), sagitta_width);
 
 
-    	end if ;
+        end if ;
     end process ; -- SagittaProc
 
 

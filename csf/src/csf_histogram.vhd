@@ -88,12 +88,12 @@ architecture Behavioral of csf_histogram is
     constant m_x_z_m_width                             : integer := z_m_width;
 
 
-	-- DSP signals for b+/- calculation
-	signal dsp_squ_m_r, dsp_squ_m_r_s                  : unsigned(squ_m_r_width-1 downto 0) 
+    -- DSP signals for b+/- calculation
+    signal dsp_squ_m_r, dsp_squ_m_r_s                  : unsigned(squ_m_r_width-1 downto 0) 
         := (others => '0');
-	signal dsp_m_x                                     : signed(m_x_width-1 downto 0) 
+    signal dsp_m_x                                     : signed(m_x_width-1 downto 0) 
         := (others => '0');
-	signal dsp_z_m_multi                               : signed(z_m_width-1 downto 0) 
+    signal dsp_z_m_multi                               : signed(z_m_width-1 downto 0) 
         := (others => '0');
     signal dsp_m_x_z_multi                             : signed(m_x_z_m_width-1 downto 0) 
         := (others =>'0');
@@ -107,16 +107,16 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
 
     -- Data Valid signals
-	signal dv0, dv1, dv2, dv3, dv4, dv5, dv6           : std_logic := '0';
+    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6           : std_logic := '0';
     signal eof0, eof1, eof2, eof3, eof4, eof5, eof6, eof7, eof8 : std_logic := '0';
 
     -- Signals for histogram bins
     type t_address_histo is array (natural range <>) of std_logic_vector(bin_depth-1 downto 0);
-	signal w_addr                                     : t_address_histo(2**histo_width-1 downto 0) 
+    signal w_addr                                     : t_address_histo(2**histo_width-1 downto 0) 
         := (others => (others => '0'));
-	signal r_addr                                     : t_address_histo(2**histo_width-1 downto 0) 
+    signal r_addr                                     : t_address_histo(2**histo_width-1 downto 0) 
         := (others => (others => '1'));
-	signal w_en                                       : std_logic_vector(2**histo_width-1 downto 0) 
+    signal w_en                                       : std_logic_vector(2**histo_width-1 downto 0) 
         := (others => '0');
 
     -- Histogram hit signals
@@ -162,7 +162,7 @@ architecture Behavioral of csf_histogram is
     
 begin
 
-	BinRAMs: for k in 2**histo_width-1 downto 0 generate 
+    BinRAMs: for k in 2**histo_width-1 downto 0 generate 
     begin
     Bin : entity csf_lib.bram_tdp
     generic map(
@@ -320,16 +320,16 @@ begin
 
             -- Reading out hits in maxima
             if eof8 = '1' then
-            	start_read <= '1';
+                start_read <= '1';
                 has_max <= '0';
-            	if unsigned(max_counter_1) > 1 then
-                	r_addr(to_integer(max_bin1_s)) <= (others => '0');
+                if unsigned(max_counter_1) > 1 then
+                    r_addr(to_integer(max_bin1_s)) <= (others => '0');
                     has_max <= '1';
                 end if;
                 if unsigned(max_counter_2) > 1 and max_counter_1 = max_counter_2 then
-                	r_addr(to_integer(max_bin2_s)) <= (others => '0');
+                    r_addr(to_integer(max_bin2_s)) <= (others => '0');
                 end if;
-            	mbar <= (others => '0');
+                mbar <= (others => '0');
                 squ_m <= (others => '0');
                 invsqu_m <= (others => '0');
             end if;
@@ -367,8 +367,8 @@ begin
             end if;
 
             if start_read1 = '1' and has_max = '1' then
-            	o_histo_hit0 <= vec_to_histo_hit(r_hit_vec(to_integer(max_bin1)));
-            	o_histo_hit1 <= vec_to_histo_hit(r_hit_vec(to_integer(max_bin2)));
+                o_histo_hit0 <= vec_to_histo_hit(r_hit_vec(to_integer(max_bin1)));
+                o_histo_hit1 <= vec_to_histo_hit(r_hit_vec(to_integer(max_bin2)));
             elsif start_read1 = '1' then
                 o_histo_hit0 <= null_histo_hit;
                 o_histo_hit1 <= null_histo_hit;

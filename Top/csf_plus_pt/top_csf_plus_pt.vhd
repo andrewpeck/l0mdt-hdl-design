@@ -34,15 +34,15 @@ entity top_csf_plus_pt is
   Port ( 
     clk     : in std_logic;
     we      : in std_logic;
-    d   	: in std_logic_vector(DataWidth-1 downto 0);
-    q    	: out std_logic_vector(DataWidth-1 downto 0);
+    d       : in std_logic_vector(DataWidth-1 downto 0);
+    q       : out std_logic_vector(DataWidth-1 downto 0);
     en      : out std_logic;
-    addr 	: out std_logic_vector(6 downto 0)
+    addr    : out std_logic_vector(6 downto 0)
   );
 end top_csf_plus_pt;
 
 architecture Behavioral of top_csf_plus_pt is
-	signal eof : std_logic                   := '0';
+    signal eof : std_logic                   := '0';
     type a_mdt_hits is array(natural range <> ) of t_mdt_hit;
     signal mdt_hits : a_mdt_hits(2 downto 0) := (others => null_mdt_hit);
     type a_seeds is array(natural range <> ) of t_seed;
@@ -97,21 +97,21 @@ begin
     en   <= en_s;
     q <= q_s;
 
-	TopProc : process(clk)
+    TopProc : process(clk)
     begin
         if rising_edge(clk) then
 
             -- Input
-           	mdt_hits <= (others => null_mdt_hit);
-        	seeds    <= (others => null_seed);
+            mdt_hits <= (others => null_mdt_hit);
+            seeds    <= (others => null_seed);
 
-        	if d(61) = '1' and we = '1' then
-		        seeds(to_integer(vec_to_seed(d).chamber_id)) <= vec_to_seed(d);
-		    elsif d(63) = '1' and we = '1' then
-		    	mdt_hits(to_integer(vec_to_mdthit(d).chamber_id)) <= vec_to_mdthit(d);
+            if d(61) = '1' and we = '1' then
+                seeds(to_integer(vec_to_seed(d).chamber_id)) <= vec_to_seed(d);
+            elsif d(63) = '1' and we = '1' then
+                mdt_hits(to_integer(vec_to_mdthit(d).chamber_id)) <= vec_to_mdthit(d);
             elsif d(60) = '1' and we = '1' then
                 rois(to_integer(vec_to_roi(d).chamber_id)) <= vec_to_roi(d);
-		    end if;
+            end if;
 
             csf_rst <= '0';
             --if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
