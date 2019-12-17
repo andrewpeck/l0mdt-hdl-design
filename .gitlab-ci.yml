@@ -22,51 +22,51 @@ before_script:
 
 # #################### CSF Project ###########################
 
-# create_project:profpga_duo_test:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo_test
+create_project:profpga_duo_test:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
 
-# synthesise_ips:profpga_duo_test:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo_test
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:profpga_duo_test
+synthesise_ips:profpga_duo_test:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
+      IP_PATH: IP
+    dependencies:
+        - create_project:profpga_duo_test
 
-# synthesise_project:profpga_duo_test:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo_test
-#     dependencies:
-#         - synthesise_ips:profpga_duo_test
-#         - create_project:profpga_duo_test
+synthesise_project:profpga_duo_test:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
+    dependencies:
+        - synthesise_ips:profpga_duo_test
+        - create_project:profpga_duo_test
 
-# implement_project:profpga_duo_test:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo_test
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:profpga_duo_test
-#       - synthesise_ips:profpga_duo_test
-#       - synthesise_project:profpga_duo_test
+implement_project:profpga_duo_test:
+    extends: .implement_project
+    variables: 
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
+      HOG_NO_BITSTREAM_STAGE: 1
+    dependencies:
+      - create_project:profpga_duo_test
+      - synthesise_ips:profpga_duo_test
+      - synthesise_project:profpga_duo_test
 
-# write_bitstream:profpga_duo_test:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: profpga_duo_test
-#     dependencies:
-#       - create_project:profpga_duo_test
-#       - synthesise_ips:profpga_duo_test
-#       - synthesise_project:profpga_duo_test
-#       - implement_project:profpga_duo_test
+write_bitstream:profpga_duo_test:
+    extends: .write_bitstream
+    variables:
+      extends: .vars
+      PROJECT_NAME: profpga_duo_test
+    dependencies:
+      - create_project:profpga_duo_test
+      - synthesise_ips:profpga_duo_test
+      - synthesise_project:profpga_duo_test
+      - implement_project:profpga_duo_test
 
 #################### pT Project ###########################
 
