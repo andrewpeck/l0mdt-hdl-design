@@ -164,7 +164,7 @@ stages:
 #         - implement_project:csf_plus_pt
 
 ######## Devel automatic mr #######
-merge_devel:
+job:
     only:
         refs:
             - schedules
