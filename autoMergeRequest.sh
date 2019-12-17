@@ -9,7 +9,7 @@ BODY="{
     \"source_branch\": \"${CI_COMMIT_REF_NAME}\",
     \"target_branch\": \"master\",
     \"remove_source_branch\": false,
-    \"title\": \"${CI_COMMIT_REF_NAME}\",
+    \"title\": \"Weekly Merge request from devel\",
     \"assignee_id\":\"${GITLAB_USER_ID}\"
 }";
 # Require a list of all the merge request and take a look if there is already
@@ -23,7 +23,6 @@ if [ ${COUNTBRANCHES} -eq "0" ]; then
         --header "PRIVATE-TOKEN:${PRIVATE_TOKEN}" \
         --header "Content-Type: application/json" \
         --data "${BODY}";
-    LISTMR=`curl -X GET "${HOST}${CI_PROJECT_ID}/merge_requests?state=opened"  --header "PRIVATE-TOKEN:${PRIVATE_TOKEN}"`
     echo "Opened a new merge request: ${CI_COMMIT_REF_NAME} and assigned to $HOG_USER";
     exit;
 fi
