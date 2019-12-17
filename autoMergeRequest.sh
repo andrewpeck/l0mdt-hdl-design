@@ -8,7 +8,6 @@ BODY="{
     \"id\": ${CI_PROJECT_ID},
     \"source_branch\": \"${CI_COMMIT_REF_NAME}\",
     \"target_branch\": \"master\",
-    \"merge_when_pipeline_succeeds\": true,
     \"remove_source_branch\": false,
     \"title\": \"${CI_COMMIT_REF_NAME}\",
     \"assignee_id\":\"${GITLAB_USER_ID}\"
