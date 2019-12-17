@@ -169,7 +169,4 @@ job:
             - schedules
     stage: merge
     script:
-        - git status
-        - git pull
-        - git submodule update
-        - git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds -o merge_request.title="Weekly merge from devel"
+        - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID}               PRIVATE_TOKEN=GXK25m5GX9Ysf5ySqz6J ./autoMergeRequest.sh       
