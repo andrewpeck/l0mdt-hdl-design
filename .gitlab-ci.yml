@@ -162,7 +162,7 @@ write_bitstream:profpga_duo_test:
 #         - implement_project:csf_plus_pt
 
 ######## Devel automatic mr #######
-merge_devel:
+merge_devel:merging:
     only:
         refs:
             - schedules
