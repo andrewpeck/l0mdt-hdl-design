@@ -18,6 +18,8 @@
 #     - export PATH=$PATH:${HOG_PATH}
 #     - echo $HOG_PASSWORD | kinit $HOG_USER
 #     - source ${PROFPGA_PATH}/bin/settings64.sh
+stages:
+    - merge
 
 # #################### CSF Project ###########################
 
