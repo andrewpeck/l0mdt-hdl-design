@@ -18,8 +18,8 @@
 #     - export PATH=$PATH:${HOG_PATH}
 #     - echo $HOG_PASSWORD | kinit $HOG_USER
 #     - source ${PROFPGA_PATH}/bin/settings64.sh
-stages:
-    - merge
+# stages:
+#     - merge
 
 # #################### CSF Project ###########################
 
@@ -165,12 +165,12 @@ stages:
 
 ######## Devel automatic mr #######
 job:
-    only:
-        refs:
-            - schedules
-        stage: merge
-        script:
-            - git status
-            - git pull
-            - git submodule update
-            - git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds -o merge_request.title="Weekly merge from devel"
+    # only:
+    #     refs:
+    #         - schedules
+    # stage: merge
+    script:
+        - git status
+        - git pull
+        # - git submodule update
+        # - git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds -o merge_request.title="Weekly merge from devel"
