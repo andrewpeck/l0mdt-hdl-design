@@ -167,7 +167,7 @@ job:
     # only:
     #     refs:
     #         - schedules
-    # stage: merge
+    stage: merge
     script:
         - git status
         - git pull
