@@ -164,6 +164,7 @@ write_bitstream:profpga_duo_test:
 
 ######## Devel automatic mr #######
 job:
+    only:
     refs:
         - schedules
     stage: merge
