@@ -161,3 +161,14 @@ write_bitstream:profpga_duo_test:
 #         - synthesise_project:csf_plus_pt
 #         - implement_project:csf_plus_pt
 
+######## Devel automatic mr #######
+devel_mr:
+  only:
+    refs:
+      - schedules
+    stage: merge
+    script:
+        - git status
+        - git pull
+        - git submodule update
+        - git push -o merge_request.create -o merge_request.target=master -o merge_request.merge_when_pipeline_succeeds -o merge_request.title="Weekly merge from devel"
