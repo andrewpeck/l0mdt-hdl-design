@@ -29,12 +29,12 @@ package csf_pkg is
     -- Constants --
 
     -- MDT hit coordinates constants
-    constant x_width                : integer := 16;
-    constant x_mult                 : real    := 64.0;
-    constant z_width                : integer := 18;
-    constant z_mult                 : real    := 64.0;
-    constant r_width                : integer := 10;
-    constant r_mult                 : real    := 64.0;
+    constant x_width                : integer := 14;
+    constant x_mult                 : real    := 16.0;
+    constant z_width                : integer := 14;
+    constant z_mult                 : real    := 16.0;
+    constant r_width                : integer := 9;
+    constant r_mult                 : real    := 16.0;
     constant r_over_z_multi_width   : integer := integer(log2(r_mult/z_mult)); 
     -- RoI constants
     constant mbar_width             : integer := 11;

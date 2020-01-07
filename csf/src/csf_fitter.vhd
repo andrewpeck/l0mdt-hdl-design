@@ -73,7 +73,7 @@ architecture Behavioral of csf_fitter is
     -- Numerator/Denominator constants
     constant shift_num_m            : integer := 15;
     constant shift_num_b            : integer := 28;
-    constant shift_den              : integer := 22;
+    constant shift_den              : integer := 16;
     constant reciprocal_width       : integer := 22;
     constant b_over_z_multi_width : integer := integer(log2(bfit_mult/z_mult));
 

@@ -1,5 +1,4 @@
-../../shared/src/csf_pkg.vhd
-../../shared/src/bram.vhd
+../../csf/src/csf_pkg.vhd
 ../../csf/src/csf.vhd
 ../../csf/src/csf_chi2.vhd
 ../../csf/src/csf_chi2_comparison.vhd

@@ -1,4 +1,4 @@
-../../shared/src/pt_pkg.vhd
+../../pt/src/pt_pkg.vhd
 ../../pt/src/sagitta_calculator.vhd
 ../../pt/src/seg_coord_transform.vhd
 ../../pt/src/pt.vhd
