@@ -39,7 +39,7 @@ package pt_pkg is
     constant z_glob_width : integer := 19;
     constant r_glob_width : integer := 20;
     
-    constant sagitta_width : integer := 15;
+    constant inv_sagitta_width : integer := 15;
     
     constant sagitta_mult  : real := 64.0;
     constant sagitta_multi_width : integer := integer(log2(sagitta_mult)); 
@@ -186,6 +186,9 @@ package pt_pkg is
     type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;
 
+    type t_sqrt_m_io_ROM is array(natural range <> ) of unsigned(m_sagitta_width -1 downto 0);
+    function sqrt_m_io_ROM return t_sqrt_m_io_ROM;
+
     type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_width-1 downto 0);
     function invsqrt_ROM return t_invsqrt_ROM;
 
@@ -260,15 +263,25 @@ package body pt_pkg is
     end function;
 
     function reciprocalROM return t_reciprocalROM is 
-    variable temp: t_reciprocalROM(2**(r_glob_width-shift_m_den)-1 downto 0) := (others => (others => '0'));
+    variable temp: t_reciprocalROM(2**16 downto 0) := (others => (others => '0'));
 
     begin
-    for k in 2 ** (r_glob_width-shift_m_den) - 1 downto 0 loop
+    for k in 2 ** 16 downto 0 loop
         temp( k ) := to_unsigned( integer( floor( (( 2.0 ** divider_width )) / ( real( k ) + 0.5 ) ) ), divider_width ) ;
     end loop;
 
     return temp;
     end function;
+
+    function sqrt_m_io_ROM return t_sqrt_m_io_ROM is
+        variable temp : t_sqrt_m_io_ROM(2**(m_sagitta_width)-1 downto 0) := (others => (others => '0'));
+    begin
+        for k in 2**(m_sagitta_width) -1 downto 0 loop
+            temp(k) := to_unsigned(integer(floor( sqrt( m_sagitta_multi**2 + real(k*k) ) )), m_sagitta_width);
+        end loop;
+        return temp;
+    end function;
+
 
     function invsqrt_ROM return t_invsqrt_ROM is 
         variable temp : t_invsqrt_ROM(2**(16)-1 downto 0) := (others => (others => '0'));
@@ -280,10 +293,10 @@ package body pt_pkg is
     end function;
 
     function pt_sagitta return t_pt_sagitta is
-        variable temp: t_pt_sagitta(2**(sagitta_width-1)-1 downto 0) := (others => (others => '0'));
+        variable temp: t_pt_sagitta(2**(inv_sagitta_width-1)-1 downto 0) := (others => (others => '0'));
     begin
-        for k in 2**(sagitta_width-1) -1 downto 0 loop
-            temp(k) := to_signed( integer(floor( a0 + a1/(real(k)+0.5) + a2/((real(k)+0.5)*(real(k)+0.5)) )), pt_width + 1 );
+        for k in 2**(inv_sagitta_width-1) -1 downto 0 loop
+            temp(k) := to_signed( integer(floor( a0 + a1*(real(k)+0.5) + a2*((real(k)+0.5)*(real(k)+0.5)) )), pt_width + 1 );
 
         end loop;
         return temp;
