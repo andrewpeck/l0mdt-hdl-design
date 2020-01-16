@@ -65,7 +65,7 @@ architecture Behavioral of sagitta_calculator is
     signal m_delta_r_10, den_sagitta : signed(den_sagitta_width-1 downto 0) := (others => '0');
     
     -- den_sagitta_red constants/signals
-    constant shift_den_sagitta : integer := 15;
+    constant shift_den_sagitta : integer := 17;
     constant den_sagitta_red_width : integer := den_sagitta_width - shift_den_sagitta;
     signal den_sagitta_red : signed(den_sagitta_red_width-1 downto 0) := (others => '0');
     signal rec_den_sagitta : unsigned(divider_width-1 downto 0) := (others => '0');
@@ -148,8 +148,12 @@ begin
             -- Clock 9
             dv9 <= dv8;
             sqrt_m_io_sss <= sqrt_m_io_ss;
-            rec_den_sagitta <= reciprocalROM(to_integer(abs(den_sagitta_red)));
-
+            if to_integer(abs(den_sagitta_red)) < 2**16 then
+                rec_den_sagitta <= reciprocalROM(to_integer(abs(den_sagitta_red)));
+            else 
+                rec_den_sagitta <= reciprocalROM(2**16 -1);
+            end if;
+            
             -- Clock 10
             dv10 <= dv9;
             inv_sagitta_full <= sqrt_m_io_sss*rec_den_sagitta;

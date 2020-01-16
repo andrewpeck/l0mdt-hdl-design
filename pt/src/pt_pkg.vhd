@@ -55,7 +55,7 @@ package pt_pkg is
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
 
     constant shift_m_num : integer := 14;
-    constant divider_width : integer := 25;
+    constant divider_width : integer := 21;
     constant theta_glob_width : integer := 15;
     constant halfpi : integer := integer(floor(MATH_PI*theta_loc_mult));
     constant inv_sqrt_width : integer := 22;
