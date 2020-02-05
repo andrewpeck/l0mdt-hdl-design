@@ -8,7 +8,6 @@ set SYNTH_STRATEGY "Flow_AreaOptimized_High"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
-
 ### Set Vivado Runs Properties ###
 #
 # ATTENTION: The \ character must be the last one of each line
@@ -30,6 +29,7 @@ set PROPERTIES [dict create \
 			       ]\
 		   ]
 ############################################################
+###########################################################
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
