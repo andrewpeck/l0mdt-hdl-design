@@ -75,24 +75,6 @@ package he_pkg is
         data : std_logic_vector(31 downto 0);
     end record;
 
--- data from lpGBT to pulling multiplexor
-    type tdc_data_rt is record 
-        channel_ID  : std_logic_vector(4 downto 0);
-        edge_mode   : std_logic_vector(1 downto 0);
-        lead_edge   : std_logic_vector(16 downto 0);
-        pulse_width : std_logic_vector(7 downto 0); 
-    end record;
-
-    --type ta_tdc_data is array (numInputs_mux -1 downto 0) of tdc_data_rt;
-    subtype tdc_data_t is std_logic_vector(31 downto 0);
-    type tdc_data_ta is array (numInputs_mux -1 downto 0) of tdc_data_t;
-
--- data from pulling multiplexor to tube address remaping
-    type mux2tar_data_rt is record 
-        tdc_data_r   : tdc_data_rt;
-        mux_ch       : integer;
-    end record;
-
 -- data from TAR to hit extraction input fifo
     type tar2hec_data_rt is record
         multilayer  : integer;
