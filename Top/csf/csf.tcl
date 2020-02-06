@@ -28,6 +28,8 @@ set PROPERTIES [dict create \
 				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
 			       ]\
 		   ]
+#########################################################
+############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
 source $path_repo/Hog/Tcl/create-project.tcl
