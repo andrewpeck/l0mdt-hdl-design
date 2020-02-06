@@ -1,4 +1,5 @@
-../../pt/src/pt_pkg.vhd
+../../pt/src/pt_pkg.vhd 2008
 ../../pt/src/sagitta_calculator.vhd
 ../../pt/src/seg_coord_transform.vhd
 ../../pt/src/pt.vhd
+../../pt/src/pt_params_pkg.vhd
