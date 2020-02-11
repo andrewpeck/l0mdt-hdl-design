@@ -1,3 +1,4 @@
-../../shared/src/hp_pkg.vhd 2008
+../../hp/src/hp_pkg.vhd 2008
 ../../hp/src/hp.vhd 2008
-
+../../hp/src/hp_hit_matching.vhd 2008
+../../hp/src/hp_param_calc.vhd 2008

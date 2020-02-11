@@ -17,54 +17,56 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library he_lib;
-use he_lib.he_pkg.all;
+library l0mdt_lib;
+use l0mdt_lib.cfg_pkg.all;
+use l0mdt_lib.common_pkg.all;
+
+library hp_lib;
+use hp_lib.hp_pkg.all;
 
 
-entity top_he is
+entity top_hp is
     Generic(
         datawidth : integer := 64
     );
     Port(
         -- system signals
-        clk_360     : in std_logic;
-        Reset_b      : in std_logic;
-        -- Control signals
-
-        -- input data signals
-        in_tdc_data_a      : in tdc_data_ta;
-        in_tdc_valid_a     : in std_logic_vector(numInputs_mux -1 downto 0);
-        in_tdc_valid_acq_a : out std_logic_vector(numInputs_mux -1 downto 0);
-
-        in_muonCand_data_r  : in muCand_data_rt;
-        in_muonCand_valid   : in std_logic
+        clk                     : in std_logic;
+        -- Control
+        Reset_b                 : in std_logic;
+        enable                  : in std_logic;
+        -- SLc
+        i_muonCand_data         : in hp_SLc_barrel_rt;
+        -- MDT hit
+        i_tdc_data              : in hp_hit_data_rt;
+        i_tdc_valid             : in std_logic;
+        -- to Segment finder
+        o_data_2_sf             : out hp_2_sf_rt;
+        o_data_valid            : out std_logic
     );
-end top_he;
+end top_hp;
 
-architecture beh of top_he is
+architecture beh of top_hp is
 
 
 
 begin
 
-    -- HE: entity he_lib.he 
-    -- generic map (
-    --     datawidth => datawidth 
-    -- )
-    -- port map (
-    --     -- system signals
-    --     clk_360                 => clk_360,
-    --     Reset_b                 => Reset_b,
-    --     -- Contorl signals
-
-    --     -- Input related signals
-    --     in_tdc_data_a           => in_tdc_data_a,
-    --     in_tdc_valid_a          => in_tdc_valid_a,
-    --     in_tdc_valid_acq_a      => in_tdc_valid_acq_a,
-    --     -- Output related signals
-    --     in_muonCand_data_r      => in_muonCand_data_r,
-    --     in_muonCand_valid       => in_muonCand_valid
-    -- );
+    Ht_Processor : entity hp_lib.hit_processor
+    port map(
+        clk                 => clk,
+        -- Control
+        Reset_b             => Reset_b,
+        enable              => enable,
+        -- SLc
+        i_muonCand_data     => i_muonCand_data,
+        -- MDT hit
+        i_tdc_data          => i_tdc_data,
+        i_tdc_valid         => i_tdc_valid,
+        -- to Segment finder
+        o_segFinder_data    => o_data_2_sf,
+        o_data_valid        => o_data_valid
+    );
 
 end beh;
 

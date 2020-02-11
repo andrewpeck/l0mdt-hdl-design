@@ -9,7 +9,7 @@
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      26/11/2019  0.1  File created
+--      26/11/2019  0.1     File created
 --      05/02/2020  0.11    Change name and structure to Hit processor as the diagram
 --------------------------------------------------------------------------------
 
@@ -18,34 +18,49 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library he_lib;
-use he_lib.he_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
 
-entity he is
-    Generic(
-        datawidth       : integer := 64
-    );
+entity hit_processor is
     port (
-        clk_360         : in std_logic;
-        Reset_b         : in std_logic;
-        tdc_enable_a    : in std_logic_vector(numInputs_mux -1 downto 0);
-
-        in_tdc_data_a       : in tdc_data_ta;
-        in_tdc_valid_a      : in std_logic_vector(numInputs_mux -1 downto 0);
-        in_tdc_valid_acq_a  : out std_logic_vector(numInputs_mux -1 downto 0);
-
-        in_muonCand_data_r  : in muCand_data_rt;
-        in_muonCand_valid   : in std_logic;
-
+        clk             : in std_logic;
+        -- Control
+        Reset_b             : in std_logic;
+        enable              : in std_logic;
+        -- SLc
+        i_muonCand_data     : in hp_SLc_barrel_rt;
+        -- MDT hit
+        i_tdc_data          : in hp_hit_data_rt;
+        i_tdc_valid         : in std_logic;
         -- to Segment finder
-        out_segFinder_data  : out segment_finder_legendre_rt
-
+        o_segFinder_data    : out hp_2_sf_rt;
+        o_data_valid        : out std_logic
     );
-end entity he;
+end entity hit_processor;
 
-architecture beh of he is
+architecture beh of hit_processor is
 
 begin
+
+    HP_HM : entity hp_lib.hp_matching
+    port map(
+        clk                 => clk,
+        -- Control
+        Reset_b             => Reset_b,
+        enable              => enable,
+        -- SLc
+        i_SLc_z_pos         => i_muonCand_data.b_zpos,
+        i_SLc_BCID          => i_muonCand_data.BCID,
+        -- MDT hit
+        i_tdc_layer         => i_tdc_data.layer,
+        i_tdc_tube          => i_tdc_data.tube,
+        i_tdc_time          => i_tdc_data.time_full,
+        i_tdc_valid         => i_tdc_valid,
+        -- to Segment finder
+        o_hit_valid         => o_segFinder_data.hit_valid,
+        o_data_valid        => o_data_valid
+
+    );
     
     
 end beh;
