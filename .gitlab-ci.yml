@@ -23,40 +23,40 @@ before_script:
 
 # #################### CSF Project ###########################
 
-create_project:csf_plus_pt:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
+# create_project:csf_plus_pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
 
-synthesise_ips:csf_plus_pt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-      IP_PATH: IP
-    dependencies:
-        - create_project:csf_plus_pt
+# synthesise_ips:csf_plus_pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:csf_plus_pt
 
-synthesise_project:csf_plus_pt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-    dependencies:
-        - synthesise_ips:csf_plus_pt
-        - create_project:csf_plus_pt
+# synthesise_project:csf_plus_pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#         - synthesise_ips:csf_plus_pt
+#         - create_project:csf_plus_pt
 
-implement_project:csf_plus_pt:
-    extends: .implement_project
-    variables: 
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-#      HOG_NO_BITSTREAM_STAGE: 1
-    dependencies:
-       - create_project:csf_plus_pt
-       - synthesise_ips:csf_plus_pt
-       - synthesise_project:csf_plus_pt
+# implement_project:csf_plus_pt:
+#     extends: .implement_project
+#     variables: 
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:csf_plus_pt
+#        - synthesise_ips:csf_plus_pt
+#        - synthesise_project:csf_plus_pt
 
 # check_timing:profpga_duo_csf_plus_pt.0:
 #     extends: .check_timing
@@ -84,39 +84,39 @@ implement_project:csf_plus_pt:
 
 #################### pT Project ###########################
 
-# create_project:pt:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
+create_project:pt:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: pt
 
-# synthesise_ips:pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:pt
+synthesise_ips:pt:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: pt
+      IP_PATH: IP
+    dependencies:
+        - create_project:pt
 
-# synthesise_project:pt:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#         - synthesise_ips:pt
-#         - create_project:pt
+synthesise_project:pt:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: pt
+    dependencies:
+        - synthesise_ips:pt
+        - create_project:pt
 
-# implement_project:pt:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
+implement_project:pt:
+    extends: .implement_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: pt
+    dependencies:
+       - create_project:pt
+       - synthesise_ips:pt
+       - synthesise_project:pt
 
 # write_bitstream:pt:
 #     extends: .write_bitstream
