@@ -29,5 +29,24 @@ constant St_position : integer range 0 to 3 := 0;
 constant St_type : integer  range 0 to 3 := 0;
 -- for barrel -> 0:Long, 1:Rib, 2:short, 3:Feet
 
+--------------------------------------------------------------------------------
+-- Segment Finder
+--------------------------------------------------------------------------------
+constant SF_type : std_logic :='0';
+-- 0: CSF 1:LSF
+
+--------------------------------------------------------------------------------
+-- MDT mapping
+--------------------------------------------------------------------------------
+constant MDT_rx_interfaces_active : std_logic_vector(7 downto 0) := "00000001";
+
+constant MDT_pullmux_input_active_0 : std_logic_vector(17 downto 0) := "000000000" & "000000000" ;
+constant MDT_pullmux_input_active_1 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_2 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_3 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_4 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_5 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_6 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
+constant MDT_pullmux_input_active_7 : std_logic_vector(17 downto 0) := "000000001" & "000000000" ;
 
 end package cfg_pkg;
