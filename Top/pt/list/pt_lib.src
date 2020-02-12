@@ -3,6 +3,7 @@
 ../../pt/src/seg_coord_transform.vhd
 ../../pt/src/top_pt.vhd
 ../../pt/src/pt_params_pkg.vhd
+../../pt/data/a0.coe
 ../../IP/a0_ROM/a0_ROM.xci
 ../../IP/a1_ROM/a1_ROM.xci
 ../../IP/b0_ROM/b0_ROM.xci
