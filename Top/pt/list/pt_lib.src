@@ -1,5 +1,12 @@
 ../../pt/src/pt_pkg.vhd 2008
 ../../pt/src/sagitta_calculator.vhd
 ../../pt/src/seg_coord_transform.vhd
-../../pt/src/pt.vhd
+../../pt/src/top_pt.vhd
 ../../pt/src/pt_params_pkg.vhd
+../../IP/a0_ROM/a0_ROM.xci
+../../IP/a1_ROM/a1_ROM.xci
+../../IP/b0_ROM/b0_ROM.xci
+../../IP/b1_ROM/b1_ROM.xci
+../../IP/b2_ROM/b2_ROM.xci
+../../IP/c0_ROM/c0_ROM.xci
+../../IP/c1_ROM/c1_ROM.xci

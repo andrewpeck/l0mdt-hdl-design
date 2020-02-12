@@ -41,7 +41,7 @@ architecture Behavioral of pt_tb is
 
 begin
 
-    pt_calculator_top : entity work.pt_calculator_top
+    top_pt : entity work.top_pt
     Port map(
         clk  => clk,
         i_segment_BI => seg0,

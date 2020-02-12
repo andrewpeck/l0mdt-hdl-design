@@ -8,5 +8,10 @@ Vivado*
 Modelsim*
 profpga
 *.out
-bin*
+bin*/
 *.Xil
+
+BD/*
+!BD/*.bd
+IP/*/*
+!IP/*/*.xci
