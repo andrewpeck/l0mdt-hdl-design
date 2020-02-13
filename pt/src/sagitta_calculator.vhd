@@ -105,7 +105,7 @@ begin
     recROM0 : reciprocalROM
     PORT MAP (
         clka => clk,
-        ena => dv0,
+        ena => '1',
         addra => std_logic_vector(delta_r_20),
         douta => rec_den_m
     );
@@ -113,7 +113,7 @@ begin
     recROM1 : reciprocalROM
     PORT MAP (
         clka => clk,
-        ena => dv8,
+        ena => '1',
         addra => std_logic_vector(den_sagitta_red),
         douta => rec_den_sagitta
     );
@@ -121,8 +121,8 @@ begin
     sqrtROM : sqrt_m_io_ROM
     PORT MAP (
         clka => clk,
-        ena => dv5,
-        addra => std_logic_vector(m_sagitta),
+        ena => '1',
+        addra => std_logic_vector(unsigned(abs(m_sagitta))),
         douta => sqrt_m_io
     );
     
@@ -165,7 +165,7 @@ begin
 
             -- Clock 5
             dv5 <= dv4;
-            m_sagitta <= resize(shift_right(m_sagitta_full_s, divider_width+shift_m_den), m_sagitta_width);
+            m_sagitta <= resize((shift_right(m_sagitta_full_s, divider_width+shift_m_den)), m_sagitta_width);
             delta_r_10_sssss <= delta_r_10_ssss;
             m_mult_delta_z_10_s <= m_mult_delta_z_10;
 
@@ -196,15 +196,15 @@ begin
 --                rec_den_sagitta <= reciprocalROM(2**16 -1);
 --            end if;
             
-            -- Clock 10
+            -- Clock 10 (rec_den_sagitta now available)
             dv10 <= dv9;
             sqrt_m_io_ssss <= sqrt_m_io_sss;
-
             
+            -- Clock 11
             dv11 <= dv10;
             inv_sagitta_full <= unsigned(sqrt_m_io_ssss)*unsigned(rec_den_sagitta);
-
-            -- Clock 10
+           
+            -- Clock 12
             dv_sagitta <= dv11;
             inv_sagitta <= resize(shift_right(inv_sagitta_full,divider_width+shift_den_sagitta-shift_num_sagitta), inv_sagitta_width);
 

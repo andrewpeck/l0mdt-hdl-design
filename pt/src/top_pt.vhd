@@ -221,10 +221,6 @@ begin
     pt_top_proc : process( clk )
     begin
         if rising_edge(clk) then
-
---            pt_s <= (others => '0');
---            pt_p <= (others => '0');
---            pt_e <= (others => '0');
             segment_BI <= null_globalseg;
             segment_BM <= null_globalseg;
             segment_BO <= null_globalseg;

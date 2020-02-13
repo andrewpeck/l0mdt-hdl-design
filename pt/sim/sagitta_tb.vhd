@@ -41,12 +41,12 @@ begin
 
     sagitta_calculator : entity pt_lib.sagitta_calculator
     Port map(
-        clk  => clk,
-        seg0  => seg0,
-        seg1      => seg1,
-        seg2       => seg2,
+        clk          => clk,
+        seg0         => seg0,
+        seg1         => seg1,
+        seg2         => seg2,
         inv_sagitta  => inv_sagitta,
-        dv_sagitta  => dv_sagitta
+        dv_sagitta   => dv_sagitta
     );
 
     CLK_process :process
@@ -64,16 +64,18 @@ begin
     begin
         wait for clk_period*5;
         start <= '1';
-        seg0 <= ('1', to_signed(-73748, z_glob_width), to_unsigned(72558, r_glob_width), (others => '0'), (others => '0'), (others => '0'));
-        seg1 <= ('1', to_signed(-129356, z_glob_width), to_unsigned(127829, r_glob_width), (others => '0'), (others => '0'), (others => '0'));
-        seg2 <= ('1', to_signed(-167976, z_glob_width), to_unsigned(166870, r_glob_width), (others => '0'), (others => '0'), (others => '0'));
+        seg0 <= ('1', to_signed(-73748, z_glob_width), to_unsigned(72558, r_glob_width), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+        seg1 <= ('1', to_signed(-129356, z_glob_width), to_unsigned(127829, r_glob_width), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+        seg2 <= ('1', to_signed(-167976, z_glob_width), to_unsigned(166870, r_glob_width), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
         wait for clk_period;
         start <= '0';
         seg0 <= null_globalseg;
         seg1 <= null_globalseg;
         seg2 <= null_globalseg;
-        
         wait;
+        assert (dv_sagitta = '1' and inv_sagitta = 3820) report "Correct Sagitta evaluated" severity NOTE ;
+        assert (dv_sagitta = '1' and inv_sagitta /= 3820) report "Wrong Sagitta evaluated" severity Error ;
+
 
     end process;
 
