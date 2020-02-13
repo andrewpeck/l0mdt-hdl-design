@@ -11,3 +11,5 @@
 ../../IP/b2_ROM/b2_ROM.xci
 ../../IP/c0_ROM/c0_ROM.xci
 ../../IP/c1_ROM/c1_ROM.xci
+../../IP/reciprocalROM/reciprocalROM.xci
+../../IP/sqrt_m_io_ROM/sqrt_m_io_ROM.xci

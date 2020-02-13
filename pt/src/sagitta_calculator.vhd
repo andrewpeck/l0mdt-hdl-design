@@ -36,12 +36,12 @@ entity sagitta_calculator is
   );
 end sagitta_calculator; -- sagitta_calculator
 
-architecture Behavioral of sagitta_calculator is
+ architecture Behavioral of sagitta_calculator is
     -- Valid signals
-    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10 : std_logic := '0';
-    
+    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11 : std_logic := '0';
+        
     -- Constants for distance calculations
-    constant delta_r_red_width : integer := r_glob_width- shift_m_den;
+    constant delta_r_red_width : integer := 16;
     
     -- Signals for distance calculation
     signal delta_z_20, delta_z_20_s, delta_z_20_ss, delta_z_10, delta_z_10_s, delta_z_10_ss, delta_z_10_sss : signed(z_glob_width-1 downto 0) := (others => '0');
@@ -50,15 +50,15 @@ architecture Behavioral of sagitta_calculator is
     
     -- Constants for m_sagitta=deltaZ_20/deltaR_20 calculation
     constant m_sagitta_full_width : integer := divider_width+z_glob_width+m_sagitta_multi_width+3;
-    
+        
     -- Signals for m_sagitta=deltaZ_20/deltaR_20 calculation
-    signal rec_den_m, rec_den_m_s : unsigned(divider_width-1 downto 0) := (others => '0');
+    signal rec_den_m, rec_den_m_s : std_logic_vector(divider_width-1 downto 0) := (others => '0');
     signal m_sagitta_full, m_sagitta_full_s : signed(m_sagitta_full_width-1 downto 0);
     signal m_sagitta : signed(m_sagitta_width-1 downto 0) := (others => '0');
     
     -- sqrt(1+m_sagitta^2)
-    signal sqrt_m_io, sqrt_m_io_s, sqrt_m_io_ss, sqrt_m_io_sss : 
-           unsigned(m_sagitta_width-1 downto 0) := (others => '0');
+    signal sqrt_m_io, sqrt_m_io_s, sqrt_m_io_ss, sqrt_m_io_sss, sqrt_m_io_ssss : 
+           std_logic_vector(m_sagitta_width downto 0) := (others => '0');
     
     -- m_sagitta*DeltaR_10 constants/signals
     constant den_sagitta_width : integer := m_sagitta_width + r_glob_width + 1;
@@ -66,9 +66,10 @@ architecture Behavioral of sagitta_calculator is
     
     -- den_sagitta_red constants/signals
     constant shift_den_sagitta : integer := 17;
-    constant den_sagitta_red_width : integer := den_sagitta_width - shift_den_sagitta;
+--    constant den_sagitta_red_width : integer := den_sagitta_width - shift_den_sagitta;
+    constant den_sagitta_red_width : integer := 16;
     signal den_sagitta_red : signed(den_sagitta_red_width-1 downto 0) := (others => '0');
-    signal rec_den_sagitta : unsigned(divider_width-1 downto 0) := (others => '0');
+    signal rec_den_sagitta : std_logic_vector(divider_width-1 downto 0) := (others => '0');
 
 
     -- m_mult*DeltaZ_10 constants/signals
@@ -77,12 +78,55 @@ architecture Behavioral of sagitta_calculator is
            signed(m_mult_delta_z_10_width-1 downto 0) := (others => '0');
 
     -- inv sagitta full constants/signals
-    constant inv_sagitta_full_width : integer := divider_width+ m_sagitta_width;
+    constant inv_sagitta_full_width : integer := divider_width+ m_sagitta_width +1;
     constant shift_num_sagitta : integer := 20;
     signal inv_sagitta_full : unsigned(inv_sagitta_full_width-1 downto 0) := (others => '0');
+    
+    COMPONENT sqrt_m_io_ROM
+    PORT (
+        clka : IN STD_LOGIC;
+        ena : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(16 DOWNTO 0)
+    );
+    END COMPONENT;
+    
+    COMPONENT reciprocalROM
+    PORT (
+        clka : IN STD_LOGIC;
+        ena : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(20 DOWNTO 0)
+    );
+    END COMPONENT;
 
 begin
   
+    recROM0 : reciprocalROM
+    PORT MAP (
+        clka => clk,
+        ena => dv0,
+        addra => std_logic_vector(delta_r_20),
+        douta => rec_den_m
+    );
+    
+    recROM1 : reciprocalROM
+    PORT MAP (
+        clka => clk,
+        ena => dv8,
+        addra => std_logic_vector(den_sagitta_red),
+        douta => rec_den_sagitta
+    );
+    
+    sqrtROM : sqrt_m_io_ROM
+    PORT MAP (
+        clka => clk,
+        ena => dv5,
+        addra => std_logic_vector(m_sagitta),
+        douta => sqrt_m_io
+    );
+    
+    
 
 
     SagittaProc : process( clk )
@@ -100,18 +144,16 @@ begin
             delta_z_20_s <= delta_z_20;
             delta_z_10_s <= delta_z_10;
             delta_r_10_s <= delta_r_10;
-            rec_den_m <= reciprocalROM(to_integer(delta_r_20));
 
-            -- Clock 2
+            -- Clock 2 (rec_den_m now available)
             dv2 <= dv1;
             delta_z_10_ss <= delta_z_10_s;            
             delta_r_10_ss <= delta_r_10_s;
-            rec_den_m_s <= rec_den_m;
             delta_z_20_ss <= delta_z_20_s;
 
             -- Clock 3
             dv3 <= dv2;  
-            m_sagitta_full <= delta_z_20_ss*signed('0' & rec_den_m_s)*to_signed(integer(m_sagitta_multi),m_sagitta_multi_width+2);
+            m_sagitta_full <= delta_z_20_ss*signed('0' & rec_den_m)*to_signed(integer(m_sagitta_multi),m_sagitta_multi_width+2);
             delta_z_10_sss <= delta_z_10_ss;            
             delta_r_10_sss <= delta_r_10_ss;
 
@@ -130,36 +172,40 @@ begin
 
             -- Clock 6
             dv6 <= dv5;
-            sqrt_m_io <= sqrt_m_io_ROM(to_integer(abs(m_sagitta)));
+--            sqrt_m_io <= sqrt_m_io_ROM(to_integer(abs(m_sagitta)));
             --inv_m <= invsqrt_ROM(to_integer(abs(m_sagitta)));
             m_delta_r_10 <= signed('0' & delta_r_10_sssss)*m_sagitta;
             m_mult_delta_z_10_ss <= m_mult_delta_z_10_s;
 
-            -- Clock 7
+            -- Clock 7 (sqrt_m_io now available)
             dv7 <= dv6;
-            sqrt_m_io_s <= sqrt_m_io;
+            -- sqrt_m_io_s <= sqrt_m_io;
             den_sagitta <= m_delta_r_10 - m_mult_delta_z_10_ss;
 
             -- Clock 8
             dv8 <= dv7;
-            sqrt_m_io_ss <= sqrt_m_io_s;      
-            den_sagitta_red <= resize(shift_right(den_sagitta, shift_den_sagitta),den_sagitta_red_width);  
+            sqrt_m_io_ss <= sqrt_m_io;      
+            den_sagitta_red <= resize(shift_right(den_sagitta, shift_den_sagitta),16);  
 
             -- Clock 9
             dv9 <= dv8;
             sqrt_m_io_sss <= sqrt_m_io_ss;
-            if to_integer(abs(den_sagitta_red)) < 2**16 then
-                rec_den_sagitta <= reciprocalROM(to_integer(abs(den_sagitta_red)));
-            else 
-                rec_den_sagitta <= reciprocalROM(2**16 -1);
-            end if;
+--            if to_integer(abs(den_sagitta_red)) < 2**16 then
+--                rec_den_sagitta <= reciprocalROM(to_integer(abs(den_sagitta_red)));
+--            else 
+--                rec_den_sagitta <= reciprocalROM(2**16 -1);
+--            end if;
             
             -- Clock 10
             dv10 <= dv9;
-            inv_sagitta_full <= sqrt_m_io_sss*rec_den_sagitta;
+            sqrt_m_io_ssss <= sqrt_m_io_sss;
+
+            
+            dv11 <= dv10;
+            inv_sagitta_full <= unsigned(sqrt_m_io_ssss)*unsigned(rec_den_sagitta);
 
             -- Clock 10
-            dv_sagitta <= dv10;
+            dv_sagitta <= dv11;
             inv_sagitta <= resize(shift_right(inv_sagitta_full,divider_width+shift_den_sagitta-shift_num_sagitta), inv_sagitta_width);
 
 
