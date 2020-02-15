@@ -46,8 +46,8 @@ package common_pkg is
 --  sub types
 --------------------------------------------------------------------------------
 -- Sector Logic candidates
-    subtype SLc_BCID_st is integer range 0 to ((2**12)-1);
-    subtype SLc_zpos_st is std_logic_vector(9 downto 0); 
+    subtype SLc_BCID_st is unsigned(11 downto 0);
+    subtype SLc_zpos_st is signed(9 downto 0); 
     subtype SLc_phi_st is std_logic_vector(8 downto 0);
 
 -- MDT hits

@@ -53,6 +53,9 @@ architecture beh of top_hp is
 begin
 
     Ht_Processor : entity hp_lib.hit_processor
+    generic map(
+        t0 => 6
+    )
     port map(
         clk                 => clk,
         -- Control
