@@ -2,3 +2,4 @@
 ../../hp/src/hp.vhd 2008
 ../../hp/src/hp_hit_matching.vhd 2008
 ../../hp/src/hp_param_calc.vhd 2008
+../../hp/src/ROMs/hp_trlut_rom_s3.vhd 2008
