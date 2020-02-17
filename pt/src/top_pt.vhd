@@ -44,14 +44,17 @@ architecture Behavioral of top_pt is
     -- Online segments in global coordinates
     signal segment_BI, segment_BM, segment_BO : t_globalseg := null_globalseg;
     -- Chamber combo id
-    signal comboid_s, comboid_phi, comboid_eta : unsigned(chamber_id_width*3 + 4 -1 downto 0) := (others => '0'); 
+    signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta : 
+           unsigned(chamber_id_width*3 + 4 -1 downto 0) := (others => '0'); 
     --signal ram_index : integer := 0;
     -- Sagitta calculator signals
     signal dv_sagitta, dv_combo_s, dv_combo_s_s : std_logic := '0';
-    signal inv_sagitta, inv_sagitta_s : unsigned(inv_sagitta_width-1 downto 0) := (others => '0');
+    signal inv_sagitta, inv_sagitta_s : unsigned(inv_sagitta_width-1 downto 0) 
+           := (others => '0');
 
     -- Data Valid signals
-    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11 : std_logic := '0';
+    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11 
+                                                             : std_logic := '0';
     signal dv_a : std_logic := '0';
     -- Phi/Eta coordinate
     signal phi : signed(phi_width-1 downto 0) := (others => '0');
@@ -63,18 +66,26 @@ architecture Behavioral of top_pt is
     -- Sagitta-dependent part
     signal a0, a0_s : std_logic_vector(a0_width-1 downto 0) := (others =>'0');
     signal a1 : std_logic_vector(a1_width-1 downto 0) := (others =>'0');
-    signal a1_invsagitta : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
-    signal pt_s, pt_s0, pt_s1, pt_s2, pt_s3, pt_s4 : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+    signal a1_invsagitta : signed(a1_width+inv_sagitta_width downto 0) 
+           := (others => '0');
+    signal pt_s, pt_s0, pt_s1, pt_s2, pt_s3, pt_s4, pt_s5 
+           : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+    signal bin_s : unsigned(3 downto 0) := (others => '0');
 
     -- Phi-dependent part
     signal b0, b0_s : std_logic_vector(b0_width-1 downto 0) := (others => '0');
     signal b1 : std_logic_vector(b1_width-1 downto 0) := (others => '0');
-    signal b1_phi, pt_phi_01 : signed(b1_width+phi_width-1 downto 0) := (others => '0');
+    signal b1_phi, pt_phi_01 : signed(b1_width+phi_width-1 downto 0) 
+           := (others => '0');
     signal b2 : std_logic_vector(b2_width-1 downto 0) := (others => '0');
     signal b2_phi : signed(b2_width+phi_width-1 downto 0) := (others => '0');
-    signal b2_phi2 : signed(b2_width+phi_width*2 -1  downto 0) := (others => '0');
+    signal b2_phi2 : signed(b2_width+phi_width*2 -1  downto 0) 
+           := (others => '0');
     signal pt_p : signed(b2_width+phi_width*2 -1  downto 0) := (others => '0');
-    signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss  : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+    signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss  
+           : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+    signal bin_sp : unsigned(3 downto 0) := (others => '0');
+
 
     -- Eta dependent part
     signal c0, c0_s : std_logic_vector(c0_width-1 downto 0) := (others => '0');
@@ -225,11 +236,16 @@ begin
             segment_BM <= null_globalseg;
             segment_BO <= null_globalseg;
 
-            if i_segment_BI.valid = '1' and i_segment_BM.valid = '1' and i_segment_BO.valid = '1' then
+            if i_segment_BI.valid = '1' and 
+               i_segment_BM.valid = '1' and 
+               i_segment_BO.valid = '1' then
                segment_BI <= i_segment_BI;
                segment_BM <= i_segment_BM;
                segment_BO <= i_segment_BO;
-               comboid_s    <= "0000" & i_segment_BO.chamber_id & i_segment_BM.chamber_id & i_segment_BI.chamber_id;
+               comboid_s  <= "0000" &
+                             i_segment_BO.chamber_id & 
+                             i_segment_BM.chamber_id & 
+                             i_segment_BI.chamber_id;
                dv_combo_s     <= '1';
             end if;
 
@@ -250,27 +266,34 @@ begin
             pt_s <= signed(a0_s) + a1_invsagitta;
 
             dv2 <= dv1;
-            comboid_phi <= to_unsigned(pt_bin(pt_s),4) & segment_BO.chamber_id & segment_BM.chamber_id & segment_BI.chamber_id;
+            comboid_phi <= pt_bin(pt_s) & 
+                           segment_BO.chamber_id & 
+                           segment_BM.chamber_id & 
+                           segment_BI.chamber_id;            
             pt_s0 <= pt_s;
 
             dv3 <= dv2;
-            pt_s1 <= pt_s;
-
+            pt_s1 <= pt_s0;
+            
             -- <b> parameters now valid
             dv4 <= dv3;
             b1_phi <= signed(b1)*phi;
             b2_phi <= signed(b2)*phi;
-            pt_s2 <= pt_s1 - signed(b0);
-
+            pt_s2  <= pt_s1 - signed(b0);
+            
+            
             dv5 <= dv4;
-            b2_phi2 <= b2_phi*phi;
             pt_s3 <= pt_s2 - b1_phi;
+            b2_phi2 <= b2_phi*phi;
 
             dv6 <= dv5;
             pt_sp <= pt_s3 - b2_phi2;
 
             dv7 <= dv6;
-            comboid_eta <= to_unsigned(pt_bin(pt_sp),4) & segment_BO.chamber_id & segment_BM.chamber_id & segment_BI.chamber_id;
+            comboid_eta <= pt_bin(pt_sp) & 
+                           segment_BO.chamber_id & 
+                           segment_BM.chamber_id & 
+                           segment_BI.chamber_id;
             pt_sp_s <= pt_sp;
 
             dv8 <= dv7;
@@ -278,7 +301,7 @@ begin
 
             -- <c> parameters now valid
             dv9 <= dv8;
-            pt_sp_sss <= pt_sp_s - signed(c0);
+            pt_sp_sss <= pt_sp_ss - signed(c0);
             c1_eta <= signed(c1)*eta;
 
             pt_valid <= dv9;

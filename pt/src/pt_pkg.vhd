@@ -134,7 +134,7 @@ package pt_pkg is
     -- Convert vec to localseg
     function vec_to_locseg(vec : std_logic_vector) return t_locseg;
 
-    function pt_bin(pt : signed) return integer;
+    function pt_bin(pt : signed) return unsigned;
 
 end;
 
@@ -192,12 +192,29 @@ package body pt_pkg is
         return temp;
     end function;
 
-    function pt_bin( pt : signed) return integer is
-        variable bin : integer := 0;
+    function pt_bin( pt : signed ) return unsigned is
+        variable bin : unsigned(3 downto 0) := (others => '0');
     begin
-        bin := (to_integer(pt)/integer(5.0*pt_mult));
-        if bin > 9 then
-            bin := 9;
+        if pt < 50 then
+            bin := to_unsigned(0,4);
+        elsif pt < 100 then
+            bin := to_unsigned(1,4);
+        elsif pt < 150 then
+            bin := to_unsigned(2,4);
+        elsif pt < 200 then
+            bin := to_unsigned(3,4);
+        elsif pt < 250 then
+            bin := to_unsigned(4,4);
+        elsif pt < 300 then
+            bin := to_unsigned(5,4);
+        elsif pt < 350 then
+            bin := to_unsigned(6,4);
+        elsif pt < 400 then
+            bin := to_unsigned(7,4);
+        elsif pt < 450 then
+            bin := to_unsigned(8,4);
+        else
+            bin := to_unsigned(9,4);
         end if;
         return bin;
     end function;
@@ -211,7 +228,7 @@ package body pt_pkg is
         seg.phi := signed(vec(phi_width+mfit_width+bfit_width-1 downto bfit_width+mfit_width));
         seg.eta := signed(vec(eta_width+phi_width+mfit_width+bfit_width-1 downto phi_width+bfit_width+mfit_width));
         return seg;
-    end function vec_to_locseg;    
+    end function;    
     
     
 
