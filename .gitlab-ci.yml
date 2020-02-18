@@ -21,7 +21,7 @@ before_script:
 
 #################### Hp Project ###########################
 
-create_project:pt:
+create_project:hp:
     extends: .create_project
     variables:
       extends: .vars
