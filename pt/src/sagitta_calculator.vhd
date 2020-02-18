@@ -79,7 +79,7 @@ end sagitta_calculator; -- sagitta_calculator
 
     -- inv sagitta full constants/signals
     constant inv_sagitta_full_width : integer := divider_width+ m_sagitta_width +1;
-    constant shift_num_sagitta : integer := 20;
+    constant shift_num_sagitta : integer := 15;
     signal inv_sagitta_full : unsigned(inv_sagitta_full_width-1 downto 0) := (others => '0');
     
     COMPONENT sqrt_m_io_ROM

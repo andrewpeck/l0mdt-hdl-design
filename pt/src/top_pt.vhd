@@ -309,6 +309,15 @@ begin
             
             o_pt_valid <= pt_valid;
             o_pt_online <= resize(unsigned(pt_online), pt_width);
+            
+            --reset
+            if pt_valid = '1' then
+                phi <= (others => '0');
+                eta <= (others => '0');
+                comboid_s <= (others => '0');
+                dv_combo_s <= '0';
+            end if;
+            
         end if ;
     end process ; -- identifier
 

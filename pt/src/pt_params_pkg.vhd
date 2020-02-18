@@ -12,7 +12,7 @@ function comboid_to_index_ram(comboid : unsigned) return std_logic_vector;
 -- pT parametrisation constants
 constant params_width : natural := 32;
 constant a0_width     : natural := 11;
-constant a1_width     : natural := 23;
+constant a1_width     : natural := 6;
 constant b0_width     : natural := 12;
 constant b1_width     : natural := 8;
 constant b2_width     : natural := 4;

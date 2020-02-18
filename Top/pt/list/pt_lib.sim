@@ -1,3 +1,1 @@
-../../pt/sim/coord_tb.vhd
-../../pt/sim/sagitta_tb.vhd
-../../pt/sim/pt_tb.vhd
+../../pt/sim/pt_tb.vhd topsim=pt_tb

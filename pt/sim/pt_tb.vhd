@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- Company: Max-Planck-Institut fuer Physik, Munich
+-- Engineer: Davide Cieri
 -- 
 -- Create Date: 02/11/2019 01:23:38 PM
 -- Design Name: 
@@ -60,15 +60,16 @@ begin
         wait for CLK_period/2;
     end process;
 
-    --    Z[0] 38629 Z[1] 55024 Z[2] 69986
-    --    R[0] 315875 R[1] 455239 R[2] 615130
+    --Z[0] -24416 Z[1] -34859 Z[2] -45780
+    --R[0] 78090 R[1] 112823 R[2] 150509
+
 
     Pulse : process
     begin
         wait for clk_period*5;
-        seg0 <= ('1', to_signed(-73748, z_glob_width), to_unsigned(72558, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
-        seg1 <= ('1', to_signed(-129356, z_glob_width), to_unsigned(127829, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
-        seg2 <= ('1', to_signed(-167976, z_glob_width), to_unsigned(166870, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
+        seg0 <= ('1', to_signed(-24416, z_glob_width), to_unsigned(78090, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
+        seg1 <= ('1', to_signed(-34859, z_glob_width), to_unsigned(112823, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
+        seg2 <= ('1', to_signed(-45780, z_glob_width), to_unsigned(150509, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
         wait for clk_period;
         seg0 <= null_globalseg;
         seg1 <= null_globalseg;
