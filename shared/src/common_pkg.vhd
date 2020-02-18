@@ -51,9 +51,9 @@ package common_pkg is
     subtype SLc_phi_st is std_logic_vector(8 downto 0);
 
 -- MDT hits
-    subtype mdt_time_coarse is unsigned(16 downto 0);   -- 25 ns resolution
-    subtype mdt_time_fine is unsigned(7 downto 0);      -- 0.78 ns resolution
-    subtype mdt_time_full is unsigned(21 downto 0);     -- 0.78 ns resolution
+    subtype mdt_time_le_st is unsigned(16 downto 0);   -- 0.78 ns resolution
+    subtype mdt_time_pw_st is unsigned(7 downto 0);      -- 0.78 ns resolution
+    -- subtype mdt_time_full is unsigned(21 downto 0);     -- 0.78 ns resolution
 
 
 --------------------------------------------------------------------------------

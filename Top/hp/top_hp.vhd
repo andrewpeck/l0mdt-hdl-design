@@ -18,12 +18,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library l0mdt_lib;
-use l0mdt_lib.cfg_pkg.all;
 use l0mdt_lib.common_pkg.all;
 
 library hp_lib;
+use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
-
 
 entity top_hp is
     Generic(
@@ -54,7 +53,9 @@ begin
 
     Ht_Processor : entity hp_lib.hit_processor
     generic map(
-        t0 => 6
+        radius      => 0,
+        tube_min    => 3,
+        tube_max    => 5
     )
     port map(
         clk                 => clk,

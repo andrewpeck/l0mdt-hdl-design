@@ -19,13 +19,19 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library l0mdt_lib;
-use l0mdt_lib.cfg_pkg.all;
 use l0mdt_lib.common_pkg.all;
 
 library hp_lib;
+use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
+-- use hp_lib.hp_trLUT_s3_pkg.all;
 
 entity hp_matching is
+    generic(
+        radius      : integer; 
+        tube_min    : integer;
+        tube_max    : integer
+    );
     port (
         clk                 : in std_logic;
         -- Control
@@ -37,7 +43,7 @@ entity hp_matching is
         -- MDT hit
         i_tdc_layer         : in unsigned(mdt_layer_bits -1 downto 0);
         i_tdc_tube          : in unsigned(mdt_tube_bits - 1 downto 0);
-        i_tdc_time          : in mdt_time_coarse;
+        i_tdc_time          : in mdt_time_le_st;
         i_tdc_valid         : in std_logic;
         -- to Segment finder
         o_hit_valid         : out std_logic;
@@ -49,8 +55,9 @@ architecture beh of hp_matching is
 
     component hp_m_trLUT is
         generic(
-            tube_min : integer;
-            tube_max : integer
+            radius      : integer; 
+            tube_min    : integer;
+            tube_max    : integer
         );
         port (
             clk                 : in std_logic;
@@ -78,8 +85,9 @@ begin
 
     HP_HMTRLUT : hp_m_trLUT
     generic map(
-        tube_min => 3,
-        tube_max => 5
+        radius      => radius,
+        tube_min    => tube_min,
+        tube_max    => tube_max
     )
     port map(
         clk                 => clk,
@@ -141,18 +149,18 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library l0mdt_lib;
-use l0mdt_lib.cfg_pkg.all;
 use l0mdt_lib.common_pkg.all;
 
 library hp_lib;
+use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
 use hp_lib.hp_trLUT_s3_pkg.all;
 
 entity hp_m_trLUT is
     generic(
-
-        tube_min : integer;
-        tube_max : integer
+        radius      : integer; 
+        tube_min    : integer;
+        tube_max    : integer
     );
     port (
         clk                 : in std_logic;
@@ -182,7 +190,7 @@ architecture beh of hp_m_trLUT is
 begin
 
     cpy_mem : for x in 0 to (tube_max - tube_min - 1)  generate
-        LUT_mem(x) <= trLUT_s3_mem(0)(tube_min + x);
+        LUT_mem(x) <= trLUT_s3_mem(radius)(tube_min + x);
     end generate;
 
     lut_index <= abs(to_integer(i_SLc_z_pos))  - (tube_max - tube_min)/2;
@@ -207,3 +215,10 @@ begin
     
     
 end beh;
+
+
+
+
+
+
+

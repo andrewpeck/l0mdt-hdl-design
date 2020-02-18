@@ -1,5 +1,10 @@
-../../hp/src/hp_pkg.vhd 2008
+../../hp/src/pkg/config_pkg.vhd 2008
+../../hp/src/pkg/hp_pkg.vhd 2008
 ../../hp/src/hp.vhd 2008
+../../hp/src/ROMs/hp_turg_lut_rom_s3.vhd 2008
+../../hp/src/ROMs/hp_pwr_lut_rom.vhd 2008
+../../hp/src/ROMs/hp_pwdt_lut_rom.vhd 2008
+../../hp/src/ROMs/hp_tut0_lut_rom.vhd 2008
 ../../hp/src/hp_hit_matching.vhd 2008
-../../hp/src/hp_param_calc.vhd 2008
-../../hp/src/ROMs/hp_trlut_rom_s3.vhd 2008
+../../hp/src/hp_param_calc_csf.vhd 2008
+../../hp/src/hp_hit_timeComp.vhd 2008
