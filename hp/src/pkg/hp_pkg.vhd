@@ -17,7 +17,8 @@ library ieee, l0mdt_lib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use l0mdt_lib.cfg_pkg.all;
+library hp_lib;
+use hp_lib.cfg_pkg.all;
 use l0mdt_lib.common_pkg.all;
 
 
@@ -48,8 +49,12 @@ end record;
 type hp_hit_data_rt is record
     layer           : unsigned(mdt_layer_bits -1 downto 0);
     tube            : unsigned(mdt_tube_bits - 1 downto 0);
-    time_full       : mdt_time_coarse;
+    time_le         : mdt_time_le_st;
+    time_pw         : mdt_time_pw_st;
 end record;
+
+-- subtype mdt_time_le is unsigned(16 downto 0);   -- 0.78 ns resolution
+-- subtype mdt_time_pw is unsigned(7 downto 0);      -- 0.78 ns resolution
 
 -- data types and records for hit processing block
     
