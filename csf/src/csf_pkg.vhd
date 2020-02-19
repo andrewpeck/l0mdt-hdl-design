@@ -7,7 +7,7 @@
 -- Module Name: csf_pkg - Behavioral
 -- Project Name: MDTL0 Trigger 
 -- Target Devices: xcvu5p-flvb2104-2-e
--- Tool Versions: Vivado 2018.3
+-- Tool Versions: Vivado 2019.2
 -- Description: Common package for CSF modules
 -- 
 -- Dependencies: 
@@ -37,7 +37,7 @@ package csf_pkg is
     constant r_mult                 : real    := 16.0;
     constant r_over_z_multi_width   : integer := integer(log2(r_mult/z_mult)); 
     -- RoI constants
-    constant mbar_width             : integer := 11;
+    constant mbar_width             : integer := 12;
     constant mbar_multi             : real    := 1024.0;
     constant mbar_multi_width       : integer := integer(log2(mbar_multi));
     constant phi_width              : integer := 6;
@@ -56,7 +56,6 @@ package csf_pkg is
 
     ----------------------------------------------------------------------------
     -- Records --
-    
     -- CSF Input Seed from SL
     type t_seed is
     record
@@ -76,7 +75,6 @@ package csf_pkg is
         multilayer                  : std_logic;
         r                           : unsigned(r_width-1 downto 0);
         chamber_id                  : unsigned(1 downto 0);
-        eof                         : std_logic;
     end record;
 
     -- MDT hit in histogram maxima record
@@ -89,7 +87,7 @@ package csf_pkg is
 
     constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
-        (others => '0'), (others => '0'), '0');
+        (others => '0'), (others => '0'));
 
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
 
@@ -129,7 +127,6 @@ package body csf_pkg is
         variable hit : t_mdt_hit := null_mdt_hit;
     begin
         hit.valid := vec(63);
-        hit.eof   := vec(62);
         hit.x := unsigned(vec(x_width-1 downto 0));
         hit.z := signed(vec(x_width+z_width-1 downto x_width));
         hit.r := unsigned(vec(r_width+x_width+z_width-1 downto x_width+z_width));

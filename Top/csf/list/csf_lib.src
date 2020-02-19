@@ -4,3 +4,5 @@
 ../../csf/src/csf_chi2_comparison.vhd
 ../../csf/src/csf_fitter.vhd
 ../../csf/src/csf_histogram.vhd
+../../IP/sqrt_mbar_rom/sqrt_mbar_rom.xci
+../../IP/invsqrt_mbar_rom/invsqrt_mbar_rom.xci

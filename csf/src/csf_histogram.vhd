@@ -43,39 +43,57 @@ architecture Behavioral of csf_histogram is
     constant max_hits_per_bin                       : real    := 8.0;
     constant bin_depth                              : integer := integer(log2(max_hits_per_bin));
     constant inv_sqrt_m_width                       : integer := 18;
-    constant squ_m_width                            : integer := mbar_width + 1;
+    constant squ_m_width                            : integer := mbar_width;
 
     -- Signals for seed information 
     signal mbar                                     : signed(mbar_width-1 downto 0) 
         := (others => '0');
-    signal squ_m                                    : unsigned(squ_m_width-1 downto 0) 
+    signal squ_m                                    : std_logic_vector(squ_m_width-1 downto 0) 
         := (others => '0');
-    signal invsqu_m                                 : unsigned(inv_sqrt_m_width-1 downto 0) 
+    signal invsqu_m                                 : std_logic_vector(inv_sqrt_m_width-1 downto 0) 
         := (others => '0');
+    signal rom_en : std_logic := '0';
 
     -- ROM storing all possible values of 1/sqrt(1+m^2)
-    type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_m_width-1 downto 0);
-    function invsqrt_ROM return t_invsqrt_ROM is 
-        variable temp : t_invsqrt_ROM(2**(mbar_width)-1 downto 0) := (others => (others => '0'));
-    begin
-        for k in 2**(mbar_width) -1 downto 0 loop
-            temp(k) := to_unsigned(integer(floor( (( 2.0 ** inv_sqrt_m_width  ) ) / 
-                sqrt( mbar_multi*mbar_multi + real(k*k) ) )), inv_sqrt_m_width);
-        end loop;
-        return temp;
-    end function;
+    COMPONENT invsqrt_mbar_rom
+    PORT (
+        clka : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
+    );
+    END COMPONENT;
+    
+    
+--    type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_m_width-1 downto 0);
+--    function invsqrt_ROM return t_invsqrt_ROM is 
+--        variable temp : t_invsqrt_ROM(2**(mbar_width)-1 downto 0) := (others => (others => '0'));
+--    begin
+--        for k in 2**(mbar_width) -1 downto 0 loop
+--            temp(k) := to_unsigned(integer(floor( (( 2.0 ** inv_sqrt_m_width  ) ) / 
+--                sqrt( mbar_multi*mbar_multi + real(k*k) ) )), inv_sqrt_m_width);
+--        end loop;
+--        return temp;
+--    end function;
 
     -- ROM storing all possible values of sqrt(1+m^2)
-    type t_sqrt_ROM is array ( natural range <> ) of unsigned(mbar_width downto 0);
-    function sqrt_ROM return t_sqrt_ROM is
-        variable temp : t_sqrt_ROM(2**(mbar_width) -1 downto 0) := (others => (others => '0'));
-    begin   
-        for k in 2**(mbar_width) -1 downto 0 loop
-            temp(k) := to_unsigned(integer(floor(sqrt(mbar_multi*mbar_multi + real(k*k))))
-                , mbar_width+1);
-        end loop;
-        return temp;
-    end function;
+    COMPONENT sqrt_mbar_rom
+    PORT (
+        clka : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+    );
+    END COMPONENT;
+    
+--    type t_sqrt_ROM is array ( natural range <> ) of unsigned(mbar_width downto 0);
+--    function sqrt_ROM return t_sqrt_ROM is
+--        variable temp : t_sqrt_ROM(2**(mbar_width) -1 downto 0) := (others => (others => '0'));
+--    begin   
+--        for k in 2**(mbar_width) -1 downto 0 loop
+--            temp(k) := to_unsigned(integer(floor(sqrt(mbar_multi*mbar_multi + real(k*k))))
+--                , mbar_width);
+--        end loop;
+--        return temp;
+--    end function;
 
 
     -- MDT hit signals
@@ -160,7 +178,23 @@ architecture Behavioral of csf_histogram is
     -- Signals to extract hits in maxima
     signal start_read, start_read0, start_read1       : std_logic := '0';
     
+    signal addr : std_logic_vector(11 downto 0) := std_logic_vector(to_unsigned(50,12));
+    
 begin
+
+    invsqrt_mbar : invsqrt_mbar_rom
+    PORT MAP (
+        clka => clk,
+        addra => std_logic_vector(abs(mbar)),
+        douta => invsqu_m
+    );
+    
+    sqrt_mbar : sqrt_mbar_rom
+    PORT MAP (
+        clka => clk,
+        addra => std_logic_vector(abs(mbar)),
+        douta => squ_m
+    );
 
     BinRAMs: for k in 2**histo_width-1 downto 0 generate 
     begin
@@ -189,17 +223,16 @@ begin
                     
             if i_seed.valid = '1' then
                 mbar <= i_seed.mbar;
-                squ_m <= sqrt_ROM(to_integer(abs(i_seed.mbar)));
-                invsqu_m <= invsqrt_ROM(to_integer(abs(i_seed.mbar)));
+                rom_en <= i_seed.valid;
             end if;
     
             -- Clock 0
             dv0   <= i_mdthit.valid;
-            dsp_squ_m_r <= shift_right(squ_m*i_mdthit.r,r_over_z_multi_width); 
+            dsp_squ_m_r <= shift_right(unsigned(squ_m)*i_mdthit.r,r_over_z_multi_width); 
             dsp_m_x <= mbar*signed('0' & i_mdthit.x); 
             dsp_z_m_multi <= resize(i_mdthit.z*integer(mbar_multi), z_m_width );
             dsp_m_inv_squ_m <= mbar*signed( '0' & invsqu_m);
-            dsp_m_multi_inv_squ_m <= resize(invsqu_m*integer(mbar_multi),
+            dsp_m_multi_inv_squ_m <= resize(unsigned(invsqu_m)*integer(mbar_multi),
                                      m_multi_inv_squ_m_width);
             mdt_hit_s <= i_mdthit;
             eof0 <= i_eof;
@@ -320,6 +353,7 @@ begin
 
             -- Reading out hits in maxima
             if eof8 = '1' then
+                rom_en <= '0';
                 start_read <= '1';
                 has_max <= '0';
                 if unsigned(max_counter_1) > 1 then
@@ -330,8 +364,6 @@ begin
                     r_addr(to_integer(max_bin2_s)) <= (others => '0');
                 end if;
                 mbar <= (others => '0');
-                squ_m <= (others => '0');
-                invsqu_m <= (others => '0');
             end if;
             
             start_read0 <= start_read;

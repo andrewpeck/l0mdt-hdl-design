@@ -34,6 +34,7 @@ entity csf is
     clk       : in std_logic;
     i_seed    : in t_seed;
     i_mdt_hit : in t_mdt_hit;
+    i_eof     : in std_logic;
     o_seg     : out t_locseg;
     i_rst     : in std_logic
     );
@@ -88,7 +89,7 @@ begin
         clk           => clk,
         i_mdthit      => mdt_hits(k),
         i_seed        => i_seed,
-        i_eof         => eof,
+        i_eof         => i_eof,
         o_histo_hit0  => histo_hit_max0(k),
         o_histo_hit1  => histo_hit_max1(k)
         );
@@ -149,7 +150,6 @@ begin
 
       mdt_hits <= (others => null_mdt_hit);
       mdt_hits(stdlogic_integer(i_mdt_hit.multilayer)) <= i_mdt_hit;
-      eof <= i_mdt_hit.eof;
       rst_chi2 <= '0';
 
       if i_seed.valid = '1' then

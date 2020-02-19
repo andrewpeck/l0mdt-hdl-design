@@ -10,8 +10,13 @@ profpga
 *.out
 bin*/
 *.Xil
+*/scripts/VHDL
+transcript
+SimulationLib
+*.tmp
 
 BD/*
 !BD/*.bd
 IP/*/*
 !IP/*/*.xci
+
