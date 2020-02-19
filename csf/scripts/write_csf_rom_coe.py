@@ -9,6 +9,7 @@ def main():
     parser.add_argument("--mbar_width",type=int,help="SL slope m width", default=11)
     parser.add_argument("--mbar_multi",type=float,help="SL slope m multiplier", default=1024.0)
     parser.add_argument("--inv_sqrt_m_width", type=int, help="1/sqrt(1+mbar^2) width", default=18)
+    parser.add_argument("--divider_width", type=int, help="divider width", default=22)
 
     args = parser.parse_args()
 
@@ -21,12 +22,23 @@ def main():
     sqrt_mbar_rom = open(args.output + '/sqrt_mbar_rom.coe', "w")
     sqrt_mbar_rom.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
 
+    reciprocal_rom = open(args.output + '/fitter_reciprocal_rom.coe', "w")
+    reciprocal_rom.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
+
     for x in xrange(0,2**args.mbar_width-1):
         invsqrt = int(floor(2**args.inv_sqrt_m_width/sqrt(args.mbar_multi**2 + x**2)))
         invsqrt_mbar_rom.write("%d,\n" % invsqrt)
         sqrt_mbar = int(floor(sqrt(args.mbar_multi**2 + x**2)))
         sqrt_mbar_rom.write("%d,\n" % sqrt_mbar)
 
+    for x in xrange(0,2**16-1):
+        reciprocal = int(floor(2**args.divider_width/(x + 0.5)));
+        if x ==0:
+            reciprocal = int(floor(2**args.divider_width/(x + 1.)));
+
+        reciprocal_rom.write("%d,\n" % reciprocal)
+
+    reciprocal_rom.write("0;\n")
     invsqrt_mbar_rom.write("0; \n")
     sqrt_mbar_rom.write("0; \n")
 

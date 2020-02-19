@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1061781fs"></ZoomEndTime>
-      <Cursor1Time time="6100fs"></Cursor1Time>
+      <ZoomStartTime time="33333fs"></ZoomStartTime>
+      <ZoomEndTime time="233334fs"></ZoomEndTime>
+      <Cursor1Time time="172033fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="315"></NameColumnWidth>
-      <ValueColumnWidth column_width="122"></ValueColumnWidth>
+      <ValueColumnWidth column_width="102"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="30" />
    <wvobject type="logic" fp_name="/csf_histogram_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -27,6 +27,7 @@
    <wvobject type="array" fp_name="/csf_histogram_tb/mdt_hit">
       <obj_property name="ElementShortName">mdt_hit</obj_property>
       <obj_property name="ObjectShortName">mdt_hit</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_histogram_tb/header_valid">
       <obj_property name="ElementShortName">header_valid</obj_property>
@@ -35,6 +36,7 @@
    <wvobject type="array" fp_name="/csf_histogram_tb/seed">
       <obj_property name="ElementShortName">seed</obj_property>
       <obj_property name="ObjectShortName">seed</obj_property>
+      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_histogram_tb/eof">
       <obj_property name="ElementShortName">eof</obj_property>
@@ -43,6 +45,32 @@
    <wvobject type="array" fp_name="/csf_histogram_tb/outputHit1">
       <obj_property name="ElementShortName">outputHit1</obj_property>
       <obj_property name="ObjectShortName">outputHit1</obj_property>
+      <wvobject type="logic" fp_name="/csf_histogram_tb/outputHit1.valid">
+         <obj_property name="ElementShortName">.valid</obj_property>
+         <obj_property name="ObjectShortName">.valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_histogram_tb/outputHit1.z">
+         <obj_property name="ElementShortName">.z[13:0]</obj_property>
+         <obj_property name="ObjectShortName">.z[13:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_histogram_tb/outputHit1.x">
+         <obj_property name="ElementShortName">.x[13:0]</obj_property>
+         <obj_property name="ObjectShortName">.x[13:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/csf_histogram_tb/outputHit1.valid">
+         <obj_property name="ElementShortName">.valid</obj_property>
+         <obj_property name="ObjectShortName">.valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_histogram_tb/outputHit1.z">
+         <obj_property name="ElementShortName">.z[13:0]</obj_property>
+         <obj_property name="ObjectShortName">.z[13:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_histogram_tb/outputHit1.x">
+         <obj_property name="ElementShortName">.x[13:0]</obj_property>
+         <obj_property name="ObjectShortName">.x[13:0]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="array" fp_name="/csf_histogram_tb/outputHit2">
       <obj_property name="ElementShortName">outputHit2</obj_property>
@@ -63,6 +91,95 @@
    <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/invsqrt_mbar/douta">
       <obj_property name="ElementShortName">douta[17:0]</obj_property>
       <obj_property name="ObjectShortName">douta[17:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/squ_m">
+      <obj_property name="ElementShortName">squ_m[11:0]</obj_property>
+      <obj_property name="ObjectShortName">squ_m[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/invsqu_m">
+      <obj_property name="ElementShortName">invsqu_m[17:0]</obj_property>
+      <obj_property name="ObjectShortName">invsqu_m[17:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_histogram_tb/csf_histogram/dv0">
+      <obj_property name="ElementShortName">dv0</obj_property>
+      <obj_property name="ObjectShortName">dv0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_squ_m_r">
+      <obj_property name="ElementShortName">dsp_squ_m_r[20:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_squ_m_r[20:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_m_x">
+      <obj_property name="ElementShortName">dsp_m_x[26:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_m_x[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_z_m_multi">
+      <obj_property name="ElementShortName">dsp_z_m_multi[26:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_z_m_multi[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_m_inv_squ_m">
+      <obj_property name="ElementShortName">dsp_m_inv_squ_m[30:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_m_inv_squ_m[30:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_m_multi_inv_squ_m">
+      <obj_property name="ElementShortName">dsp_m_multi_inv_squ_m[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_m_multi_inv_squ_m[31:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_histogram_tb/csf_histogram/dv1">
+      <obj_property name="ElementShortName">dv1</obj_property>
+      <obj_property name="ObjectShortName">dv1</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/dsp_m_x_z_multi">
+      <obj_property name="ElementShortName">dsp_m_x_z_multi[26:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_m_x_z_multi[26:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_histogram_tb/csf_histogram/dv2">
+      <obj_property name="ElementShortName">dv2</obj_property>
+      <obj_property name="ObjectShortName">dv2</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bminus_full">
+      <obj_property name="ElementShortName">bminus_full[26:0]</obj_property>
+      <obj_property name="ObjectShortName">bminus_full[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bplus_full">
+      <obj_property name="ElementShortName">bplus_full[26:0]</obj_property>
+      <obj_property name="ObjectShortName">bplus_full[26:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_histogram_tb/csf_histogram/dv3">
+      <obj_property name="ElementShortName">dv3</obj_property>
+      <obj_property name="ObjectShortName">dv3</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bplus">
+      <obj_property name="ElementShortName">bplus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bplus[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bminus">
+      <obj_property name="ElementShortName">bminus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bminus[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_histogram_tb/csf_histogram/dv4">
+      <obj_property name="ElementShortName">dv4</obj_property>
+      <obj_property name="ObjectShortName">dv4</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bminus_s">
+      <obj_property name="ElementShortName">bminus_s[5:0]</obj_property>
+      <obj_property name="ObjectShortName">bminus_s[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_histogram_tb/csf_histogram/bplus_s">
+      <obj_property name="ElementShortName">bplus_s[5:0]</obj_property>
+      <obj_property name="ObjectShortName">bplus_s[5:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>

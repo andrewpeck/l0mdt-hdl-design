@@ -98,20 +98,27 @@ architecture Behavioral of csf_fitter is
                                                 := (others => '0');
     signal reciprocal_addr                  : std_logic_vector(den_width-shift_den-1 downto 0 ) 
                                                 := (others => '0');
-    signal reciprocal_den, reciprocal_den_s : signed(reciprocal_width downto 0) := (others => '0');
+    signal reciprocal_den, reciprocal_den_s : std_logic_vector(reciprocal_width downto 0) := (others => '0');
 
     -- Function storing all possible values of 1/den
-    type t_reciprocalROM is array ( natural range <> ) of 
-            std_logic_vector( reciprocal_width-1 downto 0 );
-    function reciprocalROM return t_reciprocalROM is 
-        variable temp: t_reciprocalROM(2**16-1 downto 0) := (others => (others => '0'));
-    begin
-        for k in 2 ** 16 - 1 downto 0 loop
-            temp( k ) := std_logic_vector( to_unsigned( integer( floor((( 2.0 ** reciprocal_width ))
-            / ( real( k ) + 0.5 ))), reciprocal_width ));
-        end loop;
-    return temp;
-    end function;
+    COMPONENT fitter_reciprocal_rom
+    PORT (
+        clka : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(22 DOWNTO 0)
+    );
+    END COMPONENT;  
+--    type t_reciprocalROM is array ( natural range <> ) of 
+--            std_logic_vector( reciprocal_width-1 downto 0 );
+--    function reciprocalROM return t_reciprocalROM is 
+--        variable temp: t_reciprocalROM(2**16-1 downto 0) := (others => (others => '0'));
+--    begin
+--        for k in 2 ** 16 - 1 downto 0 loop
+--            temp( k ) := std_logic_vector( to_unsigned( integer( floor((( 2.0 ** reciprocal_width ))
+--            / ( real( k ) + 0.5 ))), reciprocal_width ));
+--        end loop;
+--    return temp;
+--    end function;
 
     -- Fit result widths
     constant mfit_full_width : integer := num_m_width-shift_num_m+reciprocal_width+1;
@@ -129,6 +136,14 @@ architecture Behavioral of csf_fitter is
     signal event_valid : std_logic := '0';
 
 begin
+    
+    reciprocal_rom : fitter_reciprocal_rom
+    PORT MAP (
+        clka => clk,
+        addra => reciprocal_addr,
+        douta => reciprocal_den
+        );
+
 
     Fitter : process( clk )
     begin
@@ -212,22 +227,26 @@ begin
 
             -- Clock 6
             dv6 <= dv5;
-            reciprocal_den      <= signed(std_logic_vector'('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr)))));
+            --reciprocal_den      <= signed(std_logic_vector'('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr)))));
             numerator_b_red_ss  <= numerator_b_red_s;
             numerator_m_red_ss  <= numerator_m_red_s;
 
             --Clock 7
             dv7 <= dv6;
-            mfit_full           <= numerator_m_red_ss*reciprocal_den;
-            bfit_full           <= numerator_b_red_ss*reciprocal_den;
+            numerator_b_red_sss  <= numerator_b_red_ss;
+            numerator_m_red_sss  <= numerator_m_red_ss;
+
             --Clock 8
             dv8 <= dv7;
+            mfit_full           <= numerator_m_red_sss*signed(reciprocal_den);
+            bfit_full           <= numerator_b_red_sss*signed(reciprocal_den);
+
+            --Clock 9
+            dv9       <= dv8;
             mfit_full_s         <= mfit_full;
             bfit_full_s         <= bfit_full;
             
-            --Clock 9
-            o_fit_valid <= dv8;
-            dv9       <= dv8;
+            o_fit_valid <= dv9;
             o_mfit              <= resize(shift_right(mfit_full_s, reciprocal_width + shift_den - 
                                                   shift_num_m - mfit_multi_width ), mfit_width);
             o_bfit              <= resize(shift_right(bfit_full_s, reciprocal_width + shift_den - 

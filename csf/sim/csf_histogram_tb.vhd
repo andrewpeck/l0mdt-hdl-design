@@ -64,7 +64,7 @@ begin
     begin
         wait for clk_period*5;
         seed.valid <= '1';
-        seed.mbar <= to_signed(1112,mbar_width);
+        seed.mbar <= to_signed(1145,mbar_width);
         wait for clk_period;
         seed <= null_seed;
         wait for clk_period*5;

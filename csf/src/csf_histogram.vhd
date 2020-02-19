@@ -38,7 +38,7 @@ end csf_histogram;
 
 architecture Behavioral of csf_histogram is
     -- Histogram parameters
-    constant histo_full_width                       : integer := 23;
+    constant histo_full_width                       : integer := 21;
     constant histo_width                            : integer := 6;
     constant max_hits_per_bin                       : real    := 8.0;
     constant bin_depth                              : integer := integer(log2(max_hits_per_bin));
@@ -146,7 +146,7 @@ architecture Behavioral of csf_histogram is
         := (others => (others => '0'));
 
     -- Delta_x, Delta_y constants
-    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width + 1;
+    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width +1;
     constant m_multi_inv_squ_m_width                    : integer := m_inv_squ_m_width + 1;
     constant delta_z_full_width                         : integer 
         := m_multi_inv_squ_m_width + r_width + 1;
@@ -160,7 +160,7 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
     signal delta_z_full, delta_z_full_s               : signed(delta_z_full_width-1 downto 0) 
         := (others => '0');
-    signal delta_x_full, delta_x_full_s               : unsigned(delta_x_full_width-1 downto 0) 
+    signal delta_x_full, delta_x_full_s               : signed(delta_x_full_width-1 downto 0) 
         := (others => '0');
     signal delta_x, delta_x_s, delta_x_ss             : unsigned(x_width-1 downto 0) 
         := (others => '0');
@@ -231,7 +231,7 @@ begin
             dsp_squ_m_r <= shift_right(unsigned(squ_m)*i_mdthit.r,r_over_z_multi_width); 
             dsp_m_x <= mbar*signed('0' & i_mdthit.x); 
             dsp_z_m_multi <= resize(i_mdthit.z*integer(mbar_multi), z_m_width );
-            dsp_m_inv_squ_m <= mbar*signed( '0' & invsqu_m);
+            dsp_m_inv_squ_m <= mbar*signed('0' & invsqu_m);
             dsp_m_multi_inv_squ_m <= resize(unsigned(invsqu_m)*integer(mbar_multi),
                                      m_multi_inv_squ_m_width);
             mdt_hit_s <= i_mdthit;
@@ -250,7 +250,7 @@ begin
             dv2 <= dv1;
             bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
             bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            delta_x_full_s <= delta_x_full;
+            delta_x_full_s <= dsp_m_inv_squ_m_s*signed('0' & mdt_hit_ss.r);
             delta_z_full_s <= delta_z_full;
             eof2 <= eof1;
             mdt_hit_sss <= mdt_hit_ss;
@@ -261,7 +261,7 @@ begin
                 histo_width+2 );
             bminus <= resize(shift_right(bminus_full, histo_full_width - histo_width ), 
                 histo_width+2 );
-            delta_x <= resize(shift_right(delta_x_full_s, r_over_z_multi_width + inv_sqrt_m_width), x_width);
+            delta_x <= resize(shift_right(unsigned(abs(delta_x_full_s)), r_over_z_multi_width + inv_sqrt_m_width), x_width);
             delta_z <= resize(shift_right(delta_z_full_s, r_over_z_multi_width + inv_sqrt_m_width), z_width);
             mdt_hit_ssss <= mdt_hit_sss;
             eof3 <= eof2;
