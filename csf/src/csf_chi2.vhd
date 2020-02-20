@@ -19,12 +19,11 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib, shared_lib, pt_lib;
+library IEEE, csf_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
-use pt_lib.pt_pkg.all;
 
 entity csf_chi2 is
   port (

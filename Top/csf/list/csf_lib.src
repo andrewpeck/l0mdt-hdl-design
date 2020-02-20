@@ -1,5 +1,5 @@
 ../../csf/src/csf_pkg.vhd
-../../csf/src/csf.vhd
+../../csf/src/top_csf.vhd
 ../../csf/src/csf_chi2.vhd
 ../../csf/src/csf_chi2_comparison.vhd
 ../../csf/src/csf_fitter.vhd

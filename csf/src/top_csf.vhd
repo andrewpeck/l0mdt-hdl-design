@@ -19,14 +19,13 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib, pt_lib;
+library IEEE, csf_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
-use pt_lib.pt_pkg.all;
 
-entity csf is
+entity top_csf is
   Generic(
     DataWidth : integer := 64
     );
@@ -38,9 +37,9 @@ entity csf is
     o_seg     : out t_locseg;
     i_rst     : in std_logic
     );
-end csf;
+end top_csf;
 
-architecture Behavioral of csf is
+architecture Behavioral of top_csf is
   -- Input RoI
   signal seed : t_seed := null_seed;
 

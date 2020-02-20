@@ -19,12 +19,11 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib, pt_lib;
+library IEEE, csf_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
-use pt_lib.pt_pkg.all;
 
 entity csf_fitter is
   Port ( 
@@ -73,7 +72,7 @@ architecture Behavioral of csf_fitter is
     -- Numerator/Denominator constants
     constant shift_num_m            : integer := 15;
     constant shift_num_b            : integer := 28;
-    constant shift_den              : integer := 16;
+    constant shift_den              : integer := 20;
     constant reciprocal_width       : integer := 22;
     constant b_over_z_multi_width : integer := integer(log2(bfit_mult/z_mult));
 
@@ -90,35 +89,43 @@ architecture Behavioral of csf_fitter is
     signal numerator_m                      : signed(num_m_width-1 downto 0) := (others => '0');
     signal numerator_b                      : signed(num_b_width-1 downto 0 ) := (others => '0');
     signal denominator                      : unsigned(den_width-1 downto 0 ) := (others => '0');
-    signal numerator_m_red,numerator_m_red_s, numerator_m_red_ss: 
+    signal numerator_m_red,numerator_m_red_s, numerator_m_red_ss, numerator_m_red_sss: 
             signed(num_m_width-shift_num_m-1 downto 0):= (others => '0');
-    signal numerator_b_red,numerator_b_red_s, numerator_b_red_ss: 
+    signal numerator_b_red,numerator_b_red_s, numerator_b_red_ss, numerator_b_red_sss: 
             signed(num_b_width-shift_num_b-1 downto 0 ) := (others => '0');
     signal denominator_red                  : unsigned(den_width-shift_den-1 downto 0 ) 
                                                 := (others => '0');
     signal reciprocal_addr                  : std_logic_vector(den_width-shift_den-1 downto 0 ) 
                                                 := (others => '0');
-    signal reciprocal_den, reciprocal_den_s : std_logic_vector(reciprocal_width downto 0) := (others => '0');
+    signal reciprocal_den, reciprocal_den_s : signed(reciprocal_width downto 0) := (others => '0');
 
     -- Function storing all possible values of 1/den
-    COMPONENT fitter_reciprocal_rom
-    PORT (
-        clka : IN STD_LOGIC;
-        addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-        douta : OUT STD_LOGIC_VECTOR(22 DOWNTO 0)
-    );
-    END COMPONENT;  
---    type t_reciprocalROM is array ( natural range <> ) of 
---            std_logic_vector( reciprocal_width-1 downto 0 );
---    function reciprocalROM return t_reciprocalROM is 
---        variable temp: t_reciprocalROM(2**16-1 downto 0) := (others => (others => '0'));
---    begin
---        for k in 2 ** 16 - 1 downto 0 loop
---            temp( k ) := std_logic_vector( to_unsigned( integer( floor((( 2.0 ** reciprocal_width ))
---            / ( real( k ) + 0.5 ))), reciprocal_width ));
---        end loop;
---    return temp;
---    end function;
+    --COMPONENT fitter_reciprocal_rom
+    --PORT (
+    --    clka : IN STD_LOGIC;
+    --    addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+    --    douta : OUT STD_LOGIC_VECTOR(22 DOWNTO 0)
+    --);
+    --END COMPONENT;  
+    -- 
+    --COMPONENT fitter_reciprocal_dram
+    --PORT (
+    --    clk : IN STD_LOGIC;
+    --    a : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+    --    spo : OUT STD_LOGIC_VECTOR(22 DOWNTO 0)
+    --    );
+    --END COMPONENT; 
+    type t_reciprocalROM is array ( natural range <> ) of 
+            std_logic_vector( reciprocal_width-1 downto 0 );
+    function reciprocalROM return t_reciprocalROM is 
+        variable temp: t_reciprocalROM(2**16-1 downto 0) := (others => (others => '0'));
+    begin
+        for k in 2 ** 16 - 1 downto 0 loop
+            temp( k ) := std_logic_vector( to_unsigned( integer( floor((( 2.0 ** reciprocal_width ))
+            / ( real( k ) + 0.5 ))), reciprocal_width ));
+        end loop;
+    return temp;
+    end function;
 
     -- Fit result widths
     constant mfit_full_width : integer := num_m_width-shift_num_m+reciprocal_width+1;
@@ -137,12 +144,18 @@ architecture Behavioral of csf_fitter is
 
 begin
     
-    reciprocal_rom : fitter_reciprocal_rom
-    PORT MAP (
-        clka => clk,
-        addra => reciprocal_addr,
-        douta => reciprocal_den
-        );
+    --reciprocal_rom : fitter_reciprocal_rom
+    --PORT MAP (
+    --    clka => clk,
+    --    addra => reciprocal_addr,
+    --    douta => reciprocal_den
+    --    );
+    --reciprocal_rom : fitter_reciprocal_dram
+    --port map (
+    --    a => reciprocal_addr,
+    --    clk => clk,
+    --    spo => reciprocal_den
+    --);
 
 
     Fitter : process( clk )
@@ -178,7 +191,7 @@ begin
             end if;
 
             -- Clock 0
-            dv0 <= dsp_start;
+            --dv0 <= dsp_start;
             dsp_NSumXZ      <= signed('0'& dsp_nhits)*dsp_SumXZ;
             dsp_SumZSumX    <= dsp_SumZ*signed('0' & dsp_SumX);
             dsp_SumZSumX2   <= dsp_SumZ*signed('0' & dsp_SumX2);
@@ -188,7 +201,7 @@ begin
             --end if;
 
             -- Clock 1
-            dv1 <= dv0;
+            dv1 <= dsp_start;
             dsp_NSumXZ_s        <= dsp_NSumXZ   ;
             dsp_SumZSumX_s      <= dsp_SumZSumX ;
             dsp_SumZSumX2_s     <= dsp_SumZSumX2;
@@ -227,7 +240,7 @@ begin
 
             -- Clock 6
             dv6 <= dv5;
-            --reciprocal_den      <= signed(std_logic_vector'('0'&reciprocalROM(to_integer(unsigned(reciprocal_addr)))));
+            reciprocal_den      <= signed('0' & reciprocalROM(to_integer(unsigned(reciprocal_addr))));
             numerator_b_red_ss  <= numerator_b_red_s;
             numerator_m_red_ss  <= numerator_m_red_s;
 
@@ -235,11 +248,12 @@ begin
             dv7 <= dv6;
             numerator_b_red_sss  <= numerator_b_red_ss;
             numerator_m_red_sss  <= numerator_m_red_ss;
+            reciprocal_den_s     <= reciprocal_den;
 
             --Clock 8
             dv8 <= dv7;
-            mfit_full           <= numerator_m_red_sss*signed(reciprocal_den);
-            bfit_full           <= numerator_b_red_sss*signed(reciprocal_den);
+            mfit_full           <= numerator_m_red_sss*signed(reciprocal_den_s);
+            bfit_full           <= numerator_b_red_sss*signed(reciprocal_den_s);
 
             --Clock 9
             dv9       <= dv8;

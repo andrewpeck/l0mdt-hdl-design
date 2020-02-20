@@ -52,7 +52,32 @@ package csf_pkg is
 
     -- Number of fitter module to instantiate
     constant num_fitters            : integer := 4;
+    --  Output Segment constants
+    constant mfit_width             : integer := 15;
+    constant mfit_mult              : real    := 4096.0;
+    constant mfit_multi_width       : integer := integer(log2(mfit_mult)); 
+    constant bfit_width             : integer := 13;
+    constant bfit_mult              : real    := 16.0;
+    constant chi2_width             : integer := 15;
+    constant chi2_mult              : real    := 4.0;
+    constant chi2_mult_width        : integer := integer(log2(chi2_mult));
 
+    -- Generic constants
+    constant max_hits_per_segment   : real    := 16.0;
+    constant num_hits_width         : integer := integer(log2(max_hits_per_segment));
+    constant max_hits_per_ml_width  : integer := num_hits_width-1;
+
+    -- Output Segment in local coordinates
+    type t_locseg is  
+    record 
+        valid                       : std_logic;
+        b                           : signed(bfit_width-1 downto 0);
+        m                           : signed(mfit_width-1 downto 0);
+        chi2                        : unsigned(chi2_width-1 downto 0);
+        ndof                        : unsigned(num_hits_width-1 downto 0);
+        phi                         : signed(phi_width-1 downto 0);
+        eta                         : signed(eta_width-1 downto 0);
+    end record;
 
     ----------------------------------------------------------------------------
     -- Records --
@@ -84,12 +109,20 @@ package csf_pkg is
         z                           : signed(z_width-1 downto 0);
         x                           : unsigned(x_width-1 downto 0);
     end record;
+    
+    type t_locsegs is array(natural range <> ) of t_locseg;
+
+    -- Convert vec to localseg
+    function vec_to_locseg(vec : std_logic_vector) return t_locseg;
+
 
     constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
         (others => '0'), (others => '0'));
 
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
+    constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
+        (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
     ----------------------------------------------------------------------------
     -- Functions --   
@@ -154,5 +187,16 @@ package body csf_pkg is
             return 0;
         end if;
     end function;
+    
+    function vec_to_locseg (vec : std_logic_vector) return t_locseg is
+        variable seg : t_locseg := null_locseg;
+    begin
+        seg.valid := vec(63);
+        seg.b := signed(vec(bfit_width-1 downto 0));
+        seg.m := signed(vec(mfit_width+bfit_width-1 downto bfit_width));
+        seg.phi := signed(vec(phi_width+mfit_width+bfit_width-1 downto bfit_width+mfit_width));
+        seg.eta := signed(vec(eta_width+phi_width+mfit_width+bfit_width-1 downto phi_width+bfit_width+mfit_width));
+        return seg;
+    end function;    
 
 end package body;

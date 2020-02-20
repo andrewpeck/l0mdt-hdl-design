@@ -70,35 +70,9 @@ package pt_pkg is
     constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
     constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi)); 
 
---  Output Segment constants
-    constant mfit_width             : integer := 15;
-    constant mfit_mult              : real    := 4096.0;
-    constant mfit_multi_width       : integer := integer(log2(mfit_mult)); 
-    constant bfit_width             : integer := 15;
-    constant bfit_mult              : real    := 64.0;
-    constant chi2_width             : integer := 15;
-    constant chi2_mult              : real    := 4.0;
-    constant chi2_mult_width        : integer := integer(log2(chi2_mult)); 
-    
+
     -- Sagitta params constants
     constant max_num_comb : natural := 310;    
-   
-    -- Generic constants
-    constant max_hits_per_segment   : real    := 16.0;
-    constant num_hits_width         : integer := integer(log2(max_hits_per_segment));
-    constant max_hits_per_ml_width  : integer := num_hits_width-1;
-
-     -- Output Segment in local coordinates
-    type t_locseg is  
-    record 
-        valid                       : std_logic;
-        b                           : signed(bfit_width-1 downto 0);
-        m                           : signed(mfit_width-1 downto 0);
-        chi2                        : unsigned(chi2_width-1 downto 0);
-        ndof                        : unsigned(num_hits_width-1 downto 0);
-        phi                         : signed(phi_width-1 downto 0);
-        eta                         : signed(eta_width-1 downto 0);
-    end record;
     
     type t_globalseg is
     record
@@ -111,8 +85,6 @@ package pt_pkg is
         chamber_id : unsigned(chamber_id_width-1 downto 0);
     end record;
 
-    constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
-        (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
     type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
@@ -130,9 +102,6 @@ package pt_pkg is
     type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_width-1 downto 0);
     function invsqrt_ROM return t_invsqrt_ROM;
 
-    type t_locsegs is array(natural range <> ) of t_locseg;
-    -- Convert vec to localseg
-    function vec_to_locseg(vec : std_logic_vector) return t_locseg;
 
     function pt_bin(pt : signed) return unsigned;
 
@@ -219,16 +188,7 @@ package body pt_pkg is
         return bin;
     end function;
 
-    function vec_to_locseg (vec : std_logic_vector) return t_locseg is
-        variable seg : t_locseg := null_locseg;
-    begin
-        seg.valid := vec(63);
-        seg.b := signed(vec(bfit_width-1 downto 0));
-        seg.m := signed(vec(mfit_width+bfit_width-1 downto bfit_width));
-        seg.phi := signed(vec(phi_width+mfit_width+bfit_width-1 downto bfit_width+mfit_width));
-        seg.eta := signed(vec(eta_width+phi_width+mfit_width+bfit_width-1 downto phi_width+bfit_width+mfit_width));
-        return seg;
-    end function;    
+    
     
     
 
