@@ -10,6 +10,10 @@ def main():
     parser.add_argument("--mbar_multi",type=float,help="SL slope m multiplier", default=1024.0)
     parser.add_argument("--inv_sqrt_m_width", type=int, help="1/sqrt(1+mbar^2) width", default=18)
     parser.add_argument("--divider_width", type=int, help="divider width", default=22)
+    parser.add_argument("--mfit_width", type=int,help="mfit width", default=15)
+    parser.add_argument("--theta_glob_width", type=int,help="global theta width", default=15)
+    parser.add_argument("--theta_glob_mult", type=float, help="global theta multiplier", default=4096.0)
+
 
     args = parser.parse_args()
 
@@ -25,6 +29,10 @@ def main():
     reciprocal_rom = open(args.output + '/fitter_reciprocal_rom.coe', "w")
     reciprocal_rom.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
 
+    m_to_theta_rom = open(args.output + '/m_to_theta_rom.coe', "w")
+    m_to_theta_rom.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
+
+
     for x in xrange(0,2**args.mbar_width-1):
         invsqrt = int(floor(2**args.inv_sqrt_m_width/sqrt(args.mbar_multi**2 + x**2)))
         invsqrt_mbar_rom.write("%d,\n" % invsqrt)
@@ -38,9 +46,14 @@ def main():
 
         reciprocal_rom.write("%d,\n" % reciprocal)
 
+    for x in range(0,2**args.theta_glob_width-1):
+        m = -2**(args.theta_glob_width-1) + x + 0.5
+        theta = int(floor( atan(args.theta_glob_mult/m)*args.theta_glob_mult ))
+        m_to_theta_rom.write("%d,\n" % theta)
+
     reciprocal_rom.write("0;\n")
     invsqrt_mbar_rom.write("0; \n")
     sqrt_mbar_rom.write("0; \n")
-
+    m_to_theta_rom.write("0; \n")
 if __name__ == "__main__":
     main()

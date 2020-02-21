@@ -18,8 +18,7 @@
 -- 
 ----------------------------------------------------------------------------------
 
-
-library IEEE;
+library IEEE, pt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
@@ -28,52 +27,43 @@ use std.textio.all;
 
 package pt_pkg is
 
-    constant z_ref: integer := integer(64.0)*120;
-    constant x_ref: integer := -40*integer(64.0);
-
-    constant theta_loc_width : integer := 15;
-    constant theta_loc_mult  : real := 4096.0;
-    constant theta_loc_multi_width : integer := integer(log2(theta_loc_mult));
-    
-    constant z_loc_width : integer := 15;
-    constant roi_x_width : integer := 15;
-    constant z_glob_width : integer := 19;
-    constant r_glob_width : integer := 20;
-    constant chamber_id_width : integer := 3;
-    
-    constant inv_sagitta_width : integer := 15;
-    
-    constant sagitta_mult  : real := 64.0;
-    constant sagitta_multi_width : integer := integer(log2(sagitta_mult)); 
-
-    constant inv_tantheta_width : integer := 13;
-    constant shift_m_den : integer := 6;
-    constant m_width : integer := 16;
+    -- Segment parameters in global coordinates
+    constant theta_glob_width       : integer := 15;
+    constant theta_glob_mult        : real := 4096.0;
+    constant theta_glob_multi_width : integer := integer(log2(theta_glob_mult));
+    constant z_glob_width           : integer := 19;
+    constant r_glob_width           : integer := 19;
+    constant chamber_id_width       : integer := 3;
     constant phi_width              : integer := 6;
     constant phi_range              : real    := 0.6; 
     constant phi_mult               : real    := real(2**phi_width)/phi_range;
     constant eta_width              : integer := 10;
     constant eta_range              : real    := 0.6;
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
+    
+    -- Sagitta calculation parameter
+    constant inv_sagitta_width      : integer := 15;
+    constant sagitta_mult           : real := 64.0;
+    constant sagitta_multi_width    : integer := integer(log2(sagitta_mult)); 
+    constant m_sagitta_width : integer := 16;
+    constant m_sagitta_range : real := 4.0;
+    constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
+    constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi));
+
+    constant inv_tantheta_width     : integer := 13;
+    constant shift_m_den            : integer := 6;
+    constant m_width                : integer := 16;
+    
 
     constant shift_m_num : integer := 14;
     constant divider_width : integer := 21;
-    constant theta_glob_width : integer := 15;
-    constant halfpi : integer := integer(floor(MATH_PI*theta_loc_mult));
+
+    constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant inv_sqrt_width : integer := 22;
     constant dbeta_width : integer := 12;
     constant pt_width : integer := 14;
     constant pt_mult : real := 100.0;
-
-    constant m_sagitta_width : integer := 16;
-    constant m_sagitta_range : real := 4.0;
-    constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
-    constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi)); 
-
-
-    -- Sagitta params constants
-    constant max_num_comb : natural := 310;    
-    
+   
     type t_globalseg is
     record
         valid      : std_logic;
@@ -86,12 +76,6 @@ package pt_pkg is
     end record;
 
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
-
-    type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
-    function m_to_theta return t_m_to_theta;
-
-    type t_inv_tantheta is array( natural range <> ) of signed( inv_tantheta_width-1 downto 0);
-    function inv_tantheta return t_inv_tantheta;
 
     type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;
@@ -109,27 +93,8 @@ end;
 
 package body pt_pkg is
 
-    function m_to_theta return t_m_to_theta is 
-    variable temp : t_m_to_theta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
-    variable m : real := real(-2.0**(theta_loc_width-1));
-    begin
-    for k in 2**(theta_loc_width)-1 downto 0 loop
-        m := real(-2**(theta_loc_width-1)) + real(k);
-        temp(k) := to_signed(integer(floor(ARCTAN(theta_loc_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
-    end loop;
-    return temp;
-    end function;
 
-    function inv_tantheta return t_inv_tantheta is 
-    variable temp : t_inv_tantheta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
-    variable theta : real := real(-2**(theta_loc_width-1));
-    begin
-    for k in 2**(theta_loc_width)-1 downto 0 loop
-        theta := real(-2**(theta_loc_width-1) + k);
-        temp(k) := to_signed(integer(floor( (2.0**inv_tantheta_width)/(tan(theta/theta_loc_mult)+0.0001) )), inv_tantheta_width);
-    end loop;
-    return temp;
-    end function;
+
 
     function reciprocalROM return t_reciprocalROM is 
     variable temp: t_reciprocalROM(2**16 downto 0) := (others => (others => '0'));

@@ -46,9 +46,12 @@ package csf_pkg is
     constant eta_width              : integer := 10;
     constant eta_range              : real    := 0.6;
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
+    constant z_roi_width            : integer := 19;
+    constant r_roi_width            : integer := 19;
+    constant chamber_id_width       : integer := 3;
+
     -- CSF Histogram constants
     constant histo_hit_width        : integer := 1 + z_width + x_width;
-
 
     -- Number of fitter module to instantiate
     constant num_fitters            : integer := 4;
@@ -66,6 +69,11 @@ package csf_pkg is
     constant max_hits_per_segment   : real    := 16.0;
     constant num_hits_width         : integer := integer(log2(max_hits_per_segment));
     constant max_hits_per_ml_width  : integer := num_hits_width-1;
+
+    -- CSF offset variable
+    constant z_ref: integer := integer(64.0)*120;
+    constant x_ref: integer := -40*integer(64.0);
+
 
     -- Output Segment in local coordinates
     type t_locseg is  
@@ -86,9 +94,11 @@ package csf_pkg is
     record
         valid                       : std_logic;
         mbar                        : signed(mbar_width-1 downto 0);
+        z                           : signed(z_roi_width-1 downto 0);
+        r                           : unsigned(r_roi_width-1 downto 0);
         phi                         : signed(phi_width-1 downto 0);
-        eta                         : signed(eta_width-1 downto 0);                        
-        chamber_id                  : unsigned(1 downto 0);
+        eta                         : signed(eta_width-1 downto 0);
+        chamber_id                  : unsigned(chamber_id_width-1 downto 0);
     end record;
 
     -- MDT hit record    
@@ -116,10 +126,9 @@ package csf_pkg is
     function vec_to_locseg(vec : std_logic_vector) return t_locseg;
 
 
-    constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+    constant null_seed               : t_seed       := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
     constant null_mdt_hit           : t_mdt_hit   := ('0', (others => '0'), (others => '0'), '0', 
         (others => '0'), (others => '0'));
-
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
     constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
         (others => '0'), (others => '0'), (others => '0'), (others => '0'));
@@ -136,6 +145,9 @@ package csf_pkg is
     function vec_to_seed  ( vec : std_logic_vector )     return t_seed;
     -- Convert std_logic to integer
     function stdlogic_integer( s : std_logic ) return integer ;
+    -- Convert slope to angle (now in IP)
+--    type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
+--    function m_to_theta return t_m_to_theta;
 end;
 
 package body csf_pkg is
@@ -171,11 +183,14 @@ package body csf_pkg is
     function vec_to_seed (vec : std_logic_vector) return t_seed is
         variable seed : t_seed := null_seed;
     begin
-        seed.valid := vec(61);
-        seed.mbar := signed(vec(mbar_width-1 downto 0));
-        seed.phi  := signed(vec(mbar_width+phi_width-1 downto mbar_width));
-        seed.eta  := signed(vec(mbar_width+phi_width+eta_width-1 downto mbar_width+phi_width));
-        seed.chamber_id := unsigned(vec(mbar_width+phi_width+eta_width+1 downto mbar_width+phi_width+eta_width));
+        seed.mbar       := signed(vec(mbar_width-1 downto 0));
+        seed.phi        := signed(vec(mbar_width+phi_width-1 downto mbar_width));
+        seed.eta        := signed(vec(mbar_width+phi_width+eta_width-1 downto mbar_width+phi_width));
+        seed.chamber_id := unsigned(vec(mbar_width+phi_width+eta_width+chamber_id_width-1 downto mbar_width+phi_width+eta_width));
+        seed.z          := signed(vec(mbar_width+phi_width+eta_width+chamber_id_width+z_roi_width-1 downto mbar_width+phi_width+eta_width+chamber_id_width));
+        seed.r          := unsigned(vec(mbar_width+phi_width+eta_width+chamber_id_width+z_roi_width+r_roi_width-1 downto mbar_width+phi_width+eta_width+chamber_id_width+z_roi_width));
+        seed.valid      := vec(mbar_width+phi_width+eta_width+chamber_id_width+z_roi_width+r_roi_width);
+
         return seed;
     end function vec_to_seed ;
 
@@ -199,4 +214,15 @@ package body csf_pkg is
         return seg;
     end function;    
 
+
+--    function m_to_theta return t_m_to_theta is 
+--    variable temp : t_m_to_theta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));
+--    variable m : real := real(-2.0**(theta_loc_width-1));
+--    begin
+--    for k in 2**(theta_loc_width)-1 downto 0 loop
+--        m := real(-2**(theta_loc_width-1)) + real(k);
+--        temp(k) := to_signed(integer(floor(ARCTAN(theta_loc_mult/(m+0.5))*theta_loc_mult)), theta_loc_width);
+--    end loop;
+--    return temp;
+--    end function;
 end package body;
