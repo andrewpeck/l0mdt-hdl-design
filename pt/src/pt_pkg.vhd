@@ -42,7 +42,7 @@ package pt_pkg is
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
     
     -- Sagitta calculation parameter
-    constant inv_sagitta_width      : integer := 15;
+    constant inv_s_width      : integer := 15;
     constant sagitta_mult           : real := 64.0;
     constant sagitta_multi_width    : integer := integer(log2(sagitta_mult)); 
     constant m_sagitta_width : integer := 16;
@@ -50,7 +50,8 @@ package pt_pkg is
     constant m_sagitta_multi : real := (2.0**m_sagitta_width/m_sagitta_range); 
     constant m_sagitta_multi_width : integer := integer(log2(m_sagitta_multi));
 
-    constant inv_tantheta_width     : integer := 13;
+    constant inv_tantheta_width     : integer := 15;
+
     constant shift_m_den            : integer := 6;
     constant m_width                : integer := 16;
     
@@ -60,7 +61,7 @@ package pt_pkg is
 
     constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant inv_sqrt_width : integer := 22;
-    constant dbeta_width : integer := 12;
+    constant dbeta_width : integer := 16;
     constant pt_width : integer := 14;
     constant pt_mult : real := 100.0;
    

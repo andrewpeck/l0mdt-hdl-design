@@ -27,19 +27,27 @@ use pt_lib.pt_pkg.all;
 
 entity sagitta_calculator is
   port (
-    clk : in std_logic;
-    seg0 : in t_globalseg;
-    seg1 : in t_globalseg;
-    seg2 : in t_globalseg;
-    inv_sagitta : out unsigned(inv_sagitta_width-1 downto 0);
-    dv_sagitta : out std_logic
+    clk               : in std_logic;
+    i_seg0            : in t_globalseg;
+    i_seg1            : in t_globalseg;
+    i_seg2            : in t_globalseg;
+    o_inv_s           : out unsigned(inv_s_width-1 downto 0);
+    o_dv_s            : out std_logic
   );
 end sagitta_calculator; -- sagitta_calculator
 
  architecture Behavioral of sagitta_calculator is
-    -- Valid signals
+    -- Valid signals for sagitta
     signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11 : std_logic := '0';
-        
+    -- Valid signals for dbeta
+    signal dvb_01, dvb_02, dvb_12 : std_logic := '0';
+    signal dvb_01_1, dvb_02_1, dvb_12_1 : std_logic := '0';
+    signal dvb_01_2, dvb_02_2, dvb_12_2 : std_logic := '0';
+    signal dvb_01_3, dvb_02_3, dvb_12_3 : std_logic := '0';
+
+    -- Dbeta signals
+    signal dbeta_01, dbeta_02, dbeta_03 : unsigned(dbeta_width-1 downto 0) := (others => '0');
+
     -- Constants for distance calculations
     constant delta_r_red_width : integer := 16;
     
@@ -55,7 +63,7 @@ end sagitta_calculator; -- sagitta_calculator
     signal rec_den_m, rec_den_m_s : std_logic_vector(divider_width-1 downto 0) := (others => '0');
     signal m_sagitta_full, m_sagitta_full_s : signed(m_sagitta_full_width-1 downto 0);
     signal m_sagitta : signed(m_sagitta_width-1 downto 0) := (others => '0');
-    
+    signal rec_delta_beta : unsigned(divider_width-1 downto 0 ) := (others => '0');
     -- sqrt(1+m_sagitta^2)
     signal sqrt_m_io, sqrt_m_io_s, sqrt_m_io_ss, sqrt_m_io_sss, sqrt_m_io_ssss : 
            std_logic_vector(m_sagitta_width downto 0) := (others => '0');
@@ -125,37 +133,58 @@ begin
         addra => std_logic_vector(unsigned(abs(m_sagitta))),
         douta => sqrt_m_io
     );
-    
-    
-
 
     SagittaProc : process( clk )
     begin
         if rising_edge(clk) then
             -- Clock 0
-            dv0 <= (seg0.valid and seg1.valid and seg2.valid);
-            delta_z_20 <= seg2.z_glob - seg0.z_glob;
-            delta_z_10 <= seg1.z_glob - seg0.z_glob;
-            delta_r_20 <= resize(shift_right(seg2.r_glob - seg0.r_glob, shift_m_den), delta_r_red_width);
-            delta_r_10 <= seg1.r_glob - seg0.r_glob;
+            dv0 <= (i_seg0.valid and i_seg1.valid and i_seg2.valid);
+            
+            delta_z_20 <= i_seg2.z_glob - i_seg0.z_glob;
+            delta_z_10 <= i_seg1.z_glob - i_seg0.z_glob;
+            delta_r_20 <= resize(shift_right(i_seg2.r_glob - i_seg0.r_glob, shift_m_den), delta_r_red_width);
+            delta_r_10 <= i_seg1.r_glob - i_seg0.r_glob;
+
+            -- Delta Beta calculations
+            dvb_01 <= (i_seg0.valid and i_seg1.valid and not i_seg2.valid);
+            dvb_02 <= (i_seg0.valid and not i_seg1.valid and i_seg2.valid);
+            dvb_12 <= (not i_seg0.valid and i_seg1.valid and i_seg2.valid);
+
+            if (i_seg0.valid and i_seg1.valid and not i_seg2.valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg0.theta_glob - i_seg1.theta_glob)), delta_r_red_width);
+            elsif (i_seg0.valid and not i_seg1.valid and i_seg2.valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg0.theta_glob - i_seg2.theta_glob)), delta_r_red_width);
+            elsif (not i_seg0.valid and i_seg1.valid and i_seg2.valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg1.theta_glob - i_seg2.theta_glob)), delta_r_red_width);
+            end if;
 
             -- Clock 1
             dv1 <= dv0;
             delta_z_20_s <= delta_z_20;
             delta_z_10_s <= delta_z_10;
             delta_r_10_s <= delta_r_10;
+            dvb_01_1 <= dvb_01;
+            dvb_02_1 <= dvb_02;
+            dvb_12_1 <= dvb_12;
 
-            -- Clock 2 (rec_den_m now available)
+            -- Clock 2 
             dv2 <= dv1;
             delta_z_10_ss <= delta_z_10_s;            
             delta_r_10_ss <= delta_r_10_s;
             delta_z_20_ss <= delta_z_20_s;
+            dvb_01_2 <= dvb_01_1;
+            dvb_02_2 <= dvb_02_1;
+            dvb_12_2 <= dvb_12_1;
 
-            -- Clock 3
-            dv3 <= dv2;  
+            -- Clock 3 (rec_den_m now available)
+            dv3 <= dv2;
+            dvb_01_3 <= dvb_01_2;
+            dvb_02_3 <= dvb_02_2;
+            dvb_12_3 <= dvb_12_2;  
             m_sagitta_full <= delta_z_20_ss*signed('0' & rec_den_m)*to_signed(integer(m_sagitta_multi),m_sagitta_multi_width+2);
             delta_z_10_sss <= delta_z_10_ss;            
             delta_r_10_sss <= delta_r_10_ss;
+            rec_delta_beta <= unsigned(rec_den_m);
 
             -- Clock 4
             dv4 <= dv3;
@@ -205,9 +234,13 @@ begin
             inv_sagitta_full <= unsigned(sqrt_m_io_ssss)*unsigned(rec_den_sagitta);
            
             -- Clock 12
-            dv_sagitta <= dv11;
-            inv_sagitta <= resize(shift_right(inv_sagitta_full,divider_width+shift_den_sagitta-shift_num_sagitta), inv_sagitta_width);
+            o_dv_s <= dv11;
+            o_inv_s <= resize(shift_right(inv_sagitta_full,divider_width+shift_den_sagitta-shift_num_sagitta), inv_s_width);
 
+            if dvb_01_3 = '1' or dvb_02_3 = '1' or dvb_12_3 = '1' then
+                o_dv_s <= '1';
+                o_inv_s <= resize(shift_right(rec_delta_beta,divider_width), inv_s_width);
+            end if;
 
         end if ;
     end process ; -- SagittaProc

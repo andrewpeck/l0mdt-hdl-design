@@ -47,9 +47,9 @@ architecture Behavioral of top_pt is
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta : 
            unsigned(chamber_id_width*3 + 4 -1 downto 0) := (others => '0'); 
     --signal ram_index : integer := 0;
-    -- Sagitta calculator signals
-    signal dv_sagitta, dv_combo_s, dv_combo_s_s : std_logic := '0';
-    signal inv_sagitta, inv_sagitta_s : unsigned(inv_sagitta_width-1 downto 0) 
+    -- Sagitta/Dbeta calculator signals
+    signal dv_s, dv_combo_s, dv_combo_s_s : std_logic := '0';
+    signal inv_s, inv_s_s : unsigned(inv_s_width-1 downto 0) 
            := (others => '0');
 
     -- Data Valid signals
@@ -60,16 +60,17 @@ architecture Behavioral of top_pt is
     signal phi : signed(phi_width-1 downto 0) := (others => '0');
     signal eta : signed(eta_width-1 downto 0) := (others => '0');
 
-    signal dbeta : signed(theta_glob_width-1 downto 0) := (others => '0');
+    signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
+    signal dbeta_01, dbeta_02, dbeta_12 : unsigned(dbeta_width-1 downto 0) := (others => '0');
 
     -- Signal for pT calculation
-    -- Sagitta-dependent part
+    -- Sagitta/Dbeta-dependent part
     signal a0, a0_s : std_logic_vector(a0_width-1 downto 0) := (others =>'0');
     signal a1 : std_logic_vector(a1_width-1 downto 0) := (others =>'0');
-    signal a1_invsagitta : signed(a1_width+inv_sagitta_width downto 0) 
+    signal a1_invs : signed(a1_width+inv_s_width downto 0) 
            := (others => '0');
     signal pt_s, pt_s0, pt_s1, pt_s2, pt_s3, pt_s4, pt_s5 
-           : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+           : signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal bin_s : unsigned(3 downto 0) := (others => '0');
 
     -- Phi-dependent part
@@ -83,7 +84,7 @@ architecture Behavioral of top_pt is
            := (others => '0');
     signal pt_p : signed(b2_width+phi_width*2 -1  downto 0) := (others => '0');
     signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss  
-           : signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+           : signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal bin_sp : unsigned(3 downto 0) := (others => '0');
 
 
@@ -94,7 +95,7 @@ architecture Behavioral of top_pt is
 
     -- Final pt signals
     
-    signal pt_online  :  signed(a1_width+inv_sagitta_width downto 0) := (others => '0');
+    signal pt_online  :  signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal pt_valid   :  std_logic := '0';
     
     COMPONENT a0_ROM
@@ -166,11 +167,11 @@ begin
     SagittaCalculator : entity pt_lib.sagitta_calculator
     port map(
         clk => clk,
-        seg0 => segment_BI,
-        seg1 => segment_BM, 
-        seg2 => segment_BO,
-        inv_sagitta => inv_sagitta,
-        dv_sagitta => dv_sagitta
+        i_seg0 => segment_BI,
+        i_seg1 => segment_BM, 
+        i_seg2 => segment_BO,
+        o_inv_s => inv_s,
+        o_dv_s => dv_s
     );
     
     getA0 : a0_ROM
@@ -236,8 +237,8 @@ begin
             segment_BM <= null_globalseg;
             segment_BO <= null_globalseg;
 
-            if i_segment_BI.valid = '1' and 
-               i_segment_BM.valid = '1' and 
+            if i_segment_BI.valid = '1' or 
+               i_segment_BM.valid = '1' or 
                i_segment_BO.valid = '1' then
                segment_BI <= i_segment_BI;
                segment_BM <= i_segment_BM;
@@ -257,13 +258,13 @@ begin
             dv_combo_s_s <= dv_combo_s;
             -- <a> parameters are now valid
             dv_a <= dv_combo_s_s;
+            dv0 <= dv_s and dv_a;
+            a1_invs <= signed(a1)*signed('0' & inv_s);
 
-            dv0 <= dv_sagitta and dv_a;
             a0_s <= a0;
-            a1_invsagitta <= signed(a1)*signed('0' & inv_sagitta);
-
+                
             dv1  <= dv0;
-            pt_s <= signed(a0_s) + a1_invsagitta;
+            pt_s <= signed(a0_s) + a1_invs;
 
             dv2 <= dv1;
             comboid_phi <= pt_bin(pt_s) & 
