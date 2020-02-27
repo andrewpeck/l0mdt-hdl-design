@@ -63,6 +63,7 @@ end sagitta_calculator; -- sagitta_calculator
     signal rec_den_m, rec_den_m_s : std_logic_vector(divider_width-1 downto 0) := (others => '0');
     signal m_sagitta_full, m_sagitta_full_s : signed(m_sagitta_full_width-1 downto 0);
     signal m_sagitta : signed(m_sagitta_width-1 downto 0) := (others => '0');
+    signal abs_m_sagitta : unsigned(m_sagitta_width-1 downto 0) := (others => '0');
     signal rec_delta_beta : unsigned(divider_width-1 downto 0 ) := (others => '0');
     -- sqrt(1+m_sagitta^2)
     signal sqrt_m_io, sqrt_m_io_s, sqrt_m_io_ss, sqrt_m_io_sss, sqrt_m_io_ssss : 
@@ -130,9 +131,11 @@ begin
     PORT MAP (
         clka => clk,
         ena => '1',
-        addra => std_logic_vector(unsigned(abs(m_sagitta))),
+        addra => std_logic_vector(abs_m_sagitta),
         douta => sqrt_m_io
     );
+    
+    abs_m_sagitta <= unsigned(abs(m_sagitta));
 
     SagittaProc : process( clk )
     begin

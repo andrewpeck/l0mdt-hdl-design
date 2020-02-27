@@ -19,11 +19,12 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE, csf_lib, pt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use csf_lib.csf_pkg.all;
+use pt_lib.pt_pkg.all;
 
 entity csf_tb is
 --  Port ( );
@@ -32,18 +33,21 @@ end csf_tb;
 architecture Behavioral of csf_tb is
     signal clk : std_logic := '0';
     signal seed : t_seed := null_seed;
-    signal hit : t_mdt_hit := null_mdt_hit;
-    signal seg : t_locseg := null_locseg;
+    signal mdt_hit : t_mdt_hit := null_mdt_hit;
+    signal seg : t_globalseg := null_globalseg;
     constant clk_period : time := 4.0 ns;
-
+    signal eof          :  std_logic := '0';
+    signal rst : std_logic := '0';
 begin
 
-    csf_top : entity work.csf
+    csftop : entity work.top_csf
     Port map(
         clk       => clk,
         i_seed    => seed,
-        i_mdt_hit => hit,
-        o_seg     => seg
+        i_mdt_hit => mdt_hit,
+        i_eof     => eof,
+        o_seg     => seg,
+        i_rst     => rst
     );
 
     CLK_process :process
@@ -57,28 +61,28 @@ begin
     Pulse : process
     begin
         wait for clk_period*5;
-        seed <= ('1', to_unsigned(1112, mbar_width));
+        seed.valid <= '1';
+        seed.mbar <= to_signed(1145,mbar_width);
         wait for clk_period;
         seed <= null_seed;
-        hit <= ('1', to_signed(3737, z_width), to_unsigned(8514, x_width), '0', to_unsigned(745, r_width), '0' );
+        wait for clk_period*5;
+        mdt_hit <= ('1', to_signed(-959, z_width), to_unsigned(880, x_width), '0', to_unsigned(91, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(5659, z_width), to_unsigned(8514, x_width), '0', to_unsigned(560, r_width), '0' );
+        mdt_hit <= ('1', to_signed(-719, z_width), to_unsigned(1296, x_width), '0', to_unsigned(209, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(7581, z_width), to_unsigned(10852, x_width), '1', to_unsigned(137, r_width), '0' );
+        mdt_hit <= ('1', to_signed(-238, z_width), to_unsigned(1296, x_width), '0', to_unsigned(404, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(8543, z_width), to_unsigned(12517, x_width), '1', to_unsigned(455, r_width), '0' );
+        mdt_hit <= ('1', to_signed(-479, z_width), to_unsigned(1712, x_width), '0', to_unsigned(342, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(10465, z_width), to_unsigned(12517, x_width), '1', to_unsigned(859, r_width), '0' );
+        mdt_hit <= ('1', to_signed(2, z_width), to_unsigned(1712, x_width), '0', to_unsigned(141, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(11426, z_width), to_unsigned(14182, x_width), '1', to_unsigned(271, r_width), '0' );
+        mdt_hit <= ('1', to_signed(242, z_width), to_unsigned(2128, x_width), '0', to_unsigned(168, r_width), (others => '0'));
         wait for clk_period;
-        hit <= ('1', to_signed(12387, z_width), to_unsigned(15846, x_width), '1', to_unsigned(301, r_width), '0' );
+        mdt_hit <= null_mdt_hit;
+        wait for clk_period*5;
+        eof <= '1';
         wait for clk_period;
-        hit <= ('1', to_signed(-359, z_width), to_unsigned(3520, x_width), '0', to_unsigned(188, r_width), '0' );
-        wait for clk_period;
-        hit <= ('1', to_signed(602, z_width), to_unsigned(5185, x_width), '0', to_unsigned(410, r_width), '1' );
-        wait for clk_period;
-        hit <= null_mdt_hit;
+        eof <= '0';
         wait;
 
     end process;
