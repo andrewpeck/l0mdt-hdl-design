@@ -87,6 +87,9 @@ begin
             -- Clock 2
             o_globseg.valid <= dv1;  
             o_globseg.z_glob <= roi_s.z + z_loc;
+            if roi_s.z < 0 then
+                o_globseg.z_glob <= roi_s.z - z_loc;
+            end if; 
             o_globseg.r_glob <= roi_s.r;
             o_globseg.theta_glob <= resize(signed(theta), theta_glob_width);-- + to_signed(halfpi,theta_glob_width);
             o_globseg.phi_glob <= roi_s.phi;
