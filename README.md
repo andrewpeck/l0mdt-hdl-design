@@ -60,6 +60,6 @@ Please see: [A successful git branching model](https://nvie.com/posts/a-successf
 
 ## Some instructions to simulate and implement the code
 
-... TBD
+.... TBD
 
 ## Gitlab CI
