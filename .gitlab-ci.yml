@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-
+      ref: 'v0.0.10'
 before_script:
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
     - git remote set-url origin https://${HOG_USER}:${HOG_PUSH_TOKEN}@$REPO
@@ -75,6 +75,12 @@ create_project:csf:
       extends: .vars
       PROJECT_NAME: csf
 
+simulate_project:csf:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+
 synthesise_ips:csf:
     extends: .synthesise_ips
     variables:
@@ -109,6 +115,12 @@ implement_project:csf:
 
 create_project:pt:
     extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: pt
+
+simulate_project:pt:
+    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: pt

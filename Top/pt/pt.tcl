@@ -8,6 +8,7 @@ set SYNTH_STRATEGY "Flow_AreaOptimized_High"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
+set SIMULATOR "Xsim"
 
 ### Set Vivado Runs Properties ###
 #
@@ -20,15 +21,15 @@ set IMPL_FLOW "Vivado Implementation 2019"
 # Then copy and paste the name and the values from the Vivado Tcl console into the lines below.
 
 set PROPERTIES [dict create \
-		    synth_1 [dict create \
-				STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
-				STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
-				] \
-		    impl_1 [dict create \
-				STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
-			       ]\
-		   ]
+            synth_1 [dict create \
+                STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
+                STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
+                ] \
+            impl_1 [dict create \
+                STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
+                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
+                   ]\
+           ]
 ############################################################
 
 

@@ -20,15 +20,15 @@ set SIMULATOR "Xsim"
 # Then copy and paste the name and the values from the Vivado Tcl console into the lines below.
 
 set PROPERTIES [dict create \
-		    synth_1 [dict create \
-				STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
-				STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
-				] \
-		    impl_1 [dict create \
-				STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
-			       ]\
-		   ]
+            synth_1 [dict create \
+                STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
+                STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
+                ] \
+            impl_1 [dict create \
+                STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
+                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
+                   ]\
+           ]
 #########################################################
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
