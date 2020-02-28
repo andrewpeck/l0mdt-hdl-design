@@ -12,13 +12,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1000001fs"></ZoomEndTime>
-      <Cursor1Time time="302000fs"></Cursor1Time>
+      <ZoomStartTime time="71833fs"></ZoomStartTime>
+      <ZoomEndTime time="1185634fs"></ZoomEndTime>
+      <Cursor1Time time="406039fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="315"></NameColumnWidth>
-      <ValueColumnWidth column_width="87"></ValueColumnWidth>
+      <ValueColumnWidth column_width="82"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
    <wvobject type="logic" fp_name="/csf_tb/clk">
@@ -29,63 +29,6 @@
       <obj_property name="ElementShortName">seed</obj_property>
       <obj_property name="ObjectShortName">seed</obj_property>
       <obj_property name="isExpanded"></obj_property>
-      <wvobject type="logic" fp_name="/csf_tb/seed.valid">
-         <obj_property name="ElementShortName">.valid</obj_property>
-         <obj_property name="ObjectShortName">.valid</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.mbar">
-         <obj_property name="ElementShortName">.mbar[11:0]</obj_property>
-         <obj_property name="ObjectShortName">.mbar[11:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.z">
-         <obj_property name="ElementShortName">.z[18:0]</obj_property>
-         <obj_property name="ObjectShortName">.z[18:0]</obj_property>
-         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.r">
-         <obj_property name="ElementShortName">.r[18:0]</obj_property>
-         <obj_property name="ObjectShortName">.r[18:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.phi">
-         <obj_property name="ElementShortName">.phi[5:0]</obj_property>
-         <obj_property name="ObjectShortName">.phi[5:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.eta">
-         <obj_property name="ElementShortName">.eta[9:0]</obj_property>
-         <obj_property name="ObjectShortName">.eta[9:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.chamber_id">
-         <obj_property name="ElementShortName">.chamber_id[2:0]</obj_property>
-         <obj_property name="ObjectShortName">.chamber_id[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/csf_tb/seed.valid">
-         <obj_property name="ElementShortName">.valid</obj_property>
-         <obj_property name="ObjectShortName">.valid</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.mbar">
-         <obj_property name="ElementShortName">.mbar[11:0]</obj_property>
-         <obj_property name="ObjectShortName">.mbar[11:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.z">
-         <obj_property name="ElementShortName">.z[18:0]</obj_property>
-         <obj_property name="ObjectShortName">.z[18:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.r">
-         <obj_property name="ElementShortName">.r[18:0]</obj_property>
-         <obj_property name="ObjectShortName">.r[18:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.phi">
-         <obj_property name="ElementShortName">.phi[5:0]</obj_property>
-         <obj_property name="ObjectShortName">.phi[5:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.eta">
-         <obj_property name="ElementShortName">.eta[9:0]</obj_property>
-         <obj_property name="ObjectShortName">.eta[9:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/csf_tb/seed.chamber_id">
-         <obj_property name="ElementShortName">.chamber_id[2:0]</obj_property>
-         <obj_property name="ObjectShortName">.chamber_id[2:0]</obj_property>
-      </wvobject>
    </wvobject>
    <wvobject type="array" fp_name="/csf_tb/mdt_hit">
       <obj_property name="ElementShortName">mdt_hit</obj_property>
@@ -107,11 +50,11 @@
       <wvobject type="array" fp_name="/csf_tb/seg.r_glob">
          <obj_property name="ElementShortName">.r_glob[18:0]</obj_property>
          <obj_property name="ObjectShortName">.r_glob[18:0]</obj_property>
-         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/csf_tb/seg.theta_glob">
          <obj_property name="ElementShortName">.theta_glob[14:0]</obj_property>
          <obj_property name="ObjectShortName">.theta_glob[14:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/csf_tb/seg.phi_glob">
          <obj_property name="ElementShortName">.phi_glob[5:0]</obj_property>

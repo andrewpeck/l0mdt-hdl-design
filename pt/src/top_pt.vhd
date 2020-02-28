@@ -253,6 +253,9 @@ begin
             if segment_BI.valid = '1' then
                 phi  <= segment_BI.phi_glob;
                 eta  <= segment_BI.eta_glob;
+            elsif segment_BM.valid = '1' then
+                phi  <= segment_BM.phi_glob;
+                eta  <= segment_BM.eta_glob;
             end if;
 
             dv_combo_s_s <= dv_combo_s;

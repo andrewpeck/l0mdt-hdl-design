@@ -61,7 +61,7 @@ end sagitta_calculator; -- sagitta_calculator
         
     -- Signals for m_sagitta=deltaZ_20/deltaR_20 calculation
     signal rec_den_m, rec_den_m_s : std_logic_vector(divider_width-1 downto 0) := (others => '0');
-    signal m_sagitta_full, m_sagitta_full_s : signed(m_sagitta_full_width-1 downto 0);
+    signal m_sagitta_full, m_sagitta_full_s : signed(m_sagitta_full_width-1 downto 0) := (others => '0');
     signal m_sagitta : signed(m_sagitta_width-1 downto 0) := (others => '0');
     signal abs_m_sagitta : unsigned(m_sagitta_width-1 downto 0) := (others => '0');
     signal rec_delta_beta : unsigned(divider_width-1 downto 0 ) := (others => '0');
