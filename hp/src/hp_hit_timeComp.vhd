@@ -38,11 +38,13 @@ entity hp_t0_comp is
         Reset_b             : in std_logic;
         enable              : in std_logic;
         -- MDT hit
-        i_tdc_data          : in hp_hit_data_rt;
-        i_tdc_valid         : in std_logic;
+        i_tdc_layer         : in unsigned(mdt_layer_bits -1 downto 0);
+        i_tdc_tube          : in unsigned(mdt_tube_bits - 1 downto 0);
+        i_tdc_le            : in mdt_time_le_st;
+        -- i_tdc_valid         : in std_logic;
         -- to matching
-        o_time_comp         : out mdt_time_le_st; 
-        o_data_valid        : out std_logic
+        o_time_comp         : out mdt_time_le_st
+        -- o_data_valid        : out std_logic
     );
 end entity hp_t0_comp;
 
@@ -61,15 +63,15 @@ begin
         t0_LUT_mem(x) <= t0LUT_e_mem(radius)(tube_min + x);
     end generate;
 
-    t0 <= t0_LUT_mem(to_integer(i_tdc_data.tube) - tube_min)(to_integer(i_tdc_data.layer));
+    t0 <= t0_LUT_mem(to_integer(i_tdc_layer) - tube_min)(to_integer(i_tdc_layer));
 
-    t0_proc: process(clk)
+    t0_proc: process(Reset_b,clk)
     begin
         if not Reset_b then
             o_time_comp <= (others => '0');
         elsif rising_edge(clk) then
 
-            o_time_comp <= to_unsigned(to_integer(i_tdc_data.time_le)-t0,17);
+            o_time_comp <= to_unsigned(to_integer(i_tdc_le)-t0,17);
             
         end if;
 

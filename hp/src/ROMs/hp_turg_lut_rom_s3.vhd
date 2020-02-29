@@ -20,9 +20,12 @@ use ieee.math_real.all;
 package hp_trLUT_s3_pkg is
 
     type trLUT_limits_t is array (0 to 1) of integer;
-    type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
-    type trLUT_station_t is array (0 to 5) of trLUT_layer_t;
-    type trLut_sector_t is array ( 0 to 3) of trLUT_station_t;
+    
+    type trLUT_layer_t is array (0 to 7) of trLUT_limits_t; -- 1 layer has up to 435 tubes
+    
+    type trLUT_station_t is array (0 to 5) of trLUT_layer_t; -- 1 station has up to 8 layers
+
+    type trLut_sector_t is array ( 0 to 3) of trLUT_station_t; -- 1 sector has 4 station
 
     constant trLUT_s3i_rom_mem : trLUT_station_t := (
         ((1,1),(1,2),(0,3),(0,4),(0,5),(0,6),(0,7),(0,8)),

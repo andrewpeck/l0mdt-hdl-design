@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------------  
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Hit Processor 
---          pulse width - drif time LUT
+--          drift time - radius LUT
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -24,12 +24,28 @@ library hp_lib;
 use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
 
-package hp_pwdt_lut_rom is
+package hp_dtr_lut_rom is
 
-    type pw_dt_rom_mem_t is array (0 to 7) of integer;
+    type dtr_rom_mem_t is array (0 to 7) of integer; -- # bins
+    type dtr_rom_mem_sector_t is array (0 to 3) of dtr_rom_mem_t;
     
-    constant pw_dt_rom_mem : pw_dt_rom_mem_t :=(
+    constant dtr_i_rom_mem : dtr_rom_mem_t :=(
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+    );
+
+    constant dtr_mo_rom_mem : dtr_rom_mem_t :=(
         0,1,2,3,4,5,6,7
     );
+
+    constant dtr_rom_mem : dtr_rom_mem_sector_t :=(
+        dtr_i_rom_mem , dtr_mo_rom_mem , dtr_mo_rom_mem , dtr_mo_rom_mem
+    );
     
-end package hp_pwdt_lut_rom;
+end package hp_dtr_lut_rom;

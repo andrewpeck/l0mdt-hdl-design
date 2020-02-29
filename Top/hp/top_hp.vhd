@@ -34,6 +34,9 @@ entity top_hp is
         -- Control
         Reset_b                 : in std_logic;
         enable                  : in std_logic;
+        -- configuration
+        time_offset             : in unsigned(7 downto 0);
+        RoI_size                : in unsigned(7 downto 0);
         -- SLc
         i_muonCand_data         : in hp_SLc_barrel_rt;
         -- MDT hit
@@ -51,7 +54,7 @@ architecture beh of top_hp is
 
 begin
 
-    Ht_Processor : entity hp_lib.hit_processor
+    Hit_Processor : entity hp_lib.hit_processor
     generic map(
         radius      => 0,
         tube_min    => 3,
@@ -62,6 +65,9 @@ begin
         -- Control
         Reset_b             => Reset_b,
         enable              => enable,
+        -- configuration
+        time_offset         => time_offset,
+        RoI_size            => RoI_size,
         -- SLc
         i_muonCand_data     => i_muonCand_data,
         -- MDT hit
