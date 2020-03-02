@@ -23,7 +23,7 @@ package cfg_pkg is
 --------------------------------------------------------------------------------
 constant St_nbarrel_endcap : std_logic := '0'; 
 -- 0: barrel  1: Endcap
-constant St_position : integer range 0 to 3 := 0;
+constant St_radius : integer range 0 to 3 := 0;
 -- for barrel -> 0:inner, 1:Middle, 2:Outer, 3:Extension
 -- for Endcap ->
 constant St_type : integer  range 0 to 3 := 0;

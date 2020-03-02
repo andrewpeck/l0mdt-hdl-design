@@ -37,17 +37,20 @@ entity hp_matching is
         -- Control
         Reset_b             : in std_logic;
         enable              : in std_logic;
+        -- configuration
+        time_offset         : in unsigned(7 downto 0);
+        RoI_size            : in unsigned(7 downto 0);
         -- SLc
         i_SLc_z_pos         : in SLc_zpos_st;
         i_SLc_BCID          : in SLc_BCID_st;
         -- MDT hit
         i_tdc_layer         : in unsigned(mdt_layer_bits -1 downto 0);
         i_tdc_tube          : in unsigned(mdt_tube_bits - 1 downto 0);
-        i_tdc_time          : in mdt_time_le_st;
-        i_tdc_valid         : in std_logic;
+        i_tdc_let0          : in mdt_time_le_st;
+        -- i_tdc_valid         : in std_logic;
         -- to Segment finder
-        o_hit_valid         : out std_logic;
-        o_data_valid        : out std_logic
+        o_hit_valid         : out std_logic
+        -- o_data_valid        : out std_logic
     );
 end entity hp_matching;
 
@@ -68,16 +71,18 @@ architecture beh of hp_matching is
             i_SLc_z_pos         : in SLc_zpos_st;
             -- MDT hit
             i_tdc_layer         : in unsigned(mdt_layer_bits -1 downto 0);
-            i_tdc_valid         : in std_logic;
+            -- i_tdc_valid         : in std_logic;
             -- to Segment finder
             o_tube_high_limit   : out unsigned(mdt_tube_bits - 1 downto 0);
-            o_tube_low_limit    : out unsigned(mdt_tube_bits - 1 downto 0);
-            o_data_valid        : out std_logic
+            o_tube_low_limit    : out unsigned(mdt_tube_bits - 1 downto 0)
+            -- o_data_valid        : out std_logic
         );
     end component hp_m_trLUT;
 
     signal tube_high_limit, tube_low_limit : unsigned(mdt_tube_bits - 1 downto 0);
     signal trLUT_valid : std_logic;
+
+    signal time_high_limit, time_low_limit : mdt_time_le_st;
 
     signal space_valid,time_valid : std_logic;
 
@@ -98,21 +103,27 @@ begin
         i_SLc_z_pos         => i_SLc_z_pos,
         -- MDT hit
         i_tdc_layer         => i_tdc_layer,
-        i_tdc_valid         => i_tdc_valid,
+        -- i_tdc_valid         => i_tdc_valid,
         -- to Segment finder
         o_tube_high_limit   => tube_high_limit,
-        o_tube_low_limit    => tube_low_limit,
-        o_data_valid        => trLUT_valid
+        o_tube_low_limit    => tube_low_limit
+        -- o_data_valid        => trLUT_valid
     );
 
+    
 
     o_hit_valid <= space_valid and time_valid;
+
+    time_low_limit <= (others => '0');
+    time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
 
     validation_proc : process(clk,Reset_b)
 
     begin
         if not Reset_b then
+            --space
             space_valid <= '0';
+            -- time
             time_valid <= '0';
         elsif rising_edge(clk) then
             -- space
@@ -120,9 +131,11 @@ begin
                 space_valid <= '1';
             end if;
             -- time
-            
+            if i_tdc_let0 <= time_high_limit and i_tdc_let0 >= time_low_limit then
+                time_valid <= '1';
+            end if;
             --valid
-            o_data_valid <= trLUT_valid;
+            -- o_data_valid <= trLUT_valid;
         end if;
 
     end process;
@@ -171,11 +184,11 @@ entity hp_m_trLUT is
         i_SLc_z_pos         : in SLc_zpos_st;
         -- MDT hit
         i_tdc_layer         : in unsigned(mdt_layer_bits -1 downto 0);
-        i_tdc_valid         : in std_logic;
+        -- i_tdc_valid         : in std_logic;
         -- to matching
         o_tube_high_limit   : out unsigned(mdt_tube_bits - 1 downto 0);
-        o_tube_low_limit    : out unsigned(mdt_tube_bits - 1 downto 0);
-        o_data_valid        : out std_logic
+        o_tube_low_limit    : out unsigned(mdt_tube_bits - 1 downto 0)
+        -- o_data_valid        : out std_logic
     );
 end entity hp_m_trLUT;
 
@@ -201,12 +214,12 @@ begin
         if not Reset_b then
             o_tube_high_limit <= (others => '0');
             o_tube_low_limit <= (others => '0');
-            o_data_valid <= '0';
+            -- o_data_valid <= '0';
         elsif rising_edge(clk) then
             if lut_index < (tube_max - tube_min - 1) then
                 o_tube_high_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(1),mdt_tube_bits);
                 o_tube_low_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(0),mdt_tube_bits);
-                o_data_valid <= i_tdc_valid;
+                -- o_data_valid <= i_tdc_valid;
             else
 
             end if;

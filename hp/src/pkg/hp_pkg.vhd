@@ -13,24 +13,39 @@
 --    05/02/2020    0.11    HP matching parameters added
 --------------------------------------------------------------------------------
 
-library ieee, l0mdt_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library hp_lib;
 use hp_lib.cfg_pkg.all;
+
+
+library l0mdt_lib;
 use l0mdt_lib.common_pkg.all;
+-- use l0mdt_lib.mdttp_constants_pkg.all;
+-- use l0mdt_lib.mdttp_types_pkg.all;
+-- use l0mdt_lib.mdttp_functions_pkg.all;
+
 
 
 package hp_pkg is
 --------------------------------------------------------------------------------
 -- CONSTANTS
 --------------------------------------------------------------------------------
-
+-- hp pipeline number of cycles
+constant clks_pipe            : integer := 4;
 --------------------------------------------------------------------------------
 --  sub types
 --------------------------------------------------------------------------------
--- MDT hits
+-- -- Sector Logic candidates
+-- subtype SLc_BCID_st is unsigned(11 downto 0);
+-- subtype SLc_zpos_st is signed(9 downto 0); 
+-- subtype SLc_phi_st is std_logic_vector(8 downto 0);
+
+-- -- MDT hits
+-- subtype mdt_time_le_st is unsigned(16 downto 0);   -- 0.78 ns resolution
+-- subtype mdt_time_pw_st is unsigned(7 downto 0);      -- 0.78 ns resolution
 subtype mdt_time_comp is std_logic_vector(21 downto 0);
 --------------------------------------------------------------------------------
 --  RECORDS
@@ -42,6 +57,8 @@ type hp_SLc_barrel_rt is record
     BCID        : SLc_BCID_st;          -- 12 bits
     b_zpos      : SLc_zpos_st;          -- 10 bits
     b_phi       : SLc_phi_st;           -- 9 bits
+    b_zpos_0    : SLc_zpos_st;          -- 10 bits
+    b_phi_0     : SLc_phi_st;           -- 9 bits
 end record;  
 
 

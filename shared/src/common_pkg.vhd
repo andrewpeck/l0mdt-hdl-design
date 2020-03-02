@@ -122,13 +122,13 @@ package common_pkg is
     end record;
 
 -- data from TAR to hit extraction input fifo
-    type tar2hec_data_rt is record
-        multilayer  : integer;
-        layer       : integer;
-        tube        : integer;
-        lead_edge   : std_logic_vector(16 downto 0);
-        pulse_width : std_logic_vector(7 downto 0); 
-    end record;
+    -- type tar2hec_data_rt is record
+    --     multilayer  : integer;
+    --     layer       : integer;
+    --     tube        : integer;
+    --     lead_edge   : std_logic_vector(16 downto 0);
+    --     pulse_width : std_logic_vector(7 downto 0); 
+    -- end record;
 
 -- data types and records for hit processing block
     
