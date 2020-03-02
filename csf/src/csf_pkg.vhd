@@ -71,8 +71,8 @@ package csf_pkg is
     constant max_hits_per_ml_width  : integer := num_hits_width-1;
 
     -- CSF offset variable
-    constant z_ref: integer := integer(bfit_mult*120);
-    constant x_ref: integer := integer(-40*bfit_mult);
+    constant z_ref: integer := integer(bfit_mult*120.0);
+    constant x_ref: integer := integer(-40.0*bfit_mult);
 
 
     -- Output Segment in local coordinates
