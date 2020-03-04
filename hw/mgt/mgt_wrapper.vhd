@@ -78,6 +78,9 @@ end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
+  attribute DONT_TOUCH               : string;
+  signal reset_tree                  : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
+  attribute DONT_TOUCH of reset_tree : signal is "true";
 
   signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
@@ -87,8 +90,8 @@ architecture Behavioral of mgt_wrapper is
   signal mgt_drp_i : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal mgt_drp_o : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
 
-  constant sl_idx_array    : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
-  constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
+  -- constant sl_idx_array    : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
+  -- constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
 
   -- set of functions to get the maximum BOARD LINK ID based on the number of
   -- each type of link that the user wants to instantiate...
@@ -114,6 +117,19 @@ architecture Behavioral of mgt_wrapper is
   constant SL_LINK_MAX_ID    : integer := func_max_user_link_id (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
 
 begin
+
+  --------------------------------------------------------------------------------
+  -- Reset Tree
+  --------------------------------------------------------------------------------
+
+
+  reset_fanout: process (clocks.clock40) is
+  begin  -- process reset_fanout
+    if rising_edge(clocks.clock40) then  -- rising clock edge
+      reset_tree <= (others => reset);
+    end if;
+  end process reset_fanout;
+
   --------------------------------------------------------------------------------
   -- Refclk
   --------------------------------------------------------------------------------
@@ -144,11 +160,11 @@ begin
   --------------------------------------------------------------------------------
 
   assert false report "NUMBER of SL LINKS REQUESTED: " & integer'image(c_NUM_SECTOR_LOGIC_INPUTS) & " MAX LINK ID: " & integer'image(SL_LINK_MAX_ID) severity note;
-  sl_output_gen : for I in 0 to c_NUM_MGTS-1 generate
+  sl_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
     assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(sl_idx_array(I)) severity note;
   end generate;
 
-  lpgbt_output_gen : for I in 0 to c_NUM_MGTS-1 generate
+  lpgbt_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
     assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(lpgbt_idx_array(I)) severity note;
   end generate;
 
@@ -173,8 +189,8 @@ begin
       attribute Y_LOC           : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
       attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
+
       attribute DONT_TOUCH of MGT_GEN : label is "true";
-      attribute DONT_TOUCH : string;
 
     begin
 
@@ -186,12 +202,12 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock                 => clocks.clock40,
-          reset                 => reset,
+          reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => not reset,
+          mgt_rxusrclk_active_i => not reset_tree(I),
           mgt_txusrclk_i        => clocks.clock320,
-          mgt_txusrclk_active_i => not reset,
+          mgt_txusrclk_active_i => not reset_tree(I),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
           mgt_rxslide_i         => lpgbt_rxslide_i(lpgbt_idx_array(I)),
@@ -235,12 +251,12 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock                 => clocks.clock40,
-          reset                 => reset,
+          reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock240,
-          mgt_rxusrclk_active_i => not reset,
+          mgt_rxusrclk_active_i => not reset_tree(I),
           mgt_txusrclk_i        => clocks.clock240,
-          mgt_txusrclk_active_i => not reset,
+          mgt_txusrclk_active_i => not reset_tree(I),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
           status_o              => open,

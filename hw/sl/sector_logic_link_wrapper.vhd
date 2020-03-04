@@ -34,7 +34,20 @@ end sector_logic_link_wrapper;
 
 architecture Behavioral of  sector_logic_link_wrapper is
 
+  attribute DONT_TOUCH : string;
+  signal rx_reset_tree : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0) := (others => '1');
+  attribute DONT_TOUCH of rx_reset_tree : signal is "true";
+  --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
+  --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
+
 begin
+
+  rx_reset_fanout: process (clock) is
+  begin  -- process reset_fanout
+    if rising_edge(clock) then  -- rising clock edge
+      rx_reset_tree <= (others => reset);
+    end if;
+  end process;
 
   sl_gen : for I in 0 to c_NUM_MGTS-1 generate
 
@@ -70,7 +83,7 @@ begin
 
       port map (
         rx_usrclk2            => clock,
-        reset                 => reset,
+        reset                 => rx_reset_tree (sl_idx_array(I)),
         rxctrl0               => (others => std_logic'('0')),
         rxctrl1               => (others => std_logic'('0')),
         rxctrl2               => (others => std_logic'('0')),

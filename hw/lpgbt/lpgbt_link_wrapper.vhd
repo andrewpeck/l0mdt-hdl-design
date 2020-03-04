@@ -14,6 +14,8 @@ use framework.constants_pkg.all;
 entity lpgbt_link_wrapper is
   port(
 
+    reset: in std_logic;
+
     --------------------------------------------------------------------------------
     -- Downlink
     --------------------------------------------------------------------------------
@@ -73,9 +75,27 @@ architecture Behavioral of lpgbt_link_wrapper is
   type std230_array_t is array (integer range <>) of std_logic_vector(229 downto 0);
   signal lpgbt_uplink_decoded_data : std230_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
+  attribute DONT_TOUCH                        : string;
+  signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '1');
+  signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
+  attribute DONT_TOUCH of uplink_reset_tree   : signal is "true";
+  attribute DONT_TOUCH of downlink_reset_tree : signal is "true";
 
 begin
+
+  downlink_reset_fanout : process (lpgbt_downlink_clk_i) is
+  begin  -- process reset_fanout
+    if rising_edge(lpgbt_downlink_clk_i) then  -- rising clock edge
+      downlink_reset_tree <= (others => reset);
+    end if;
+  end process;
+
+  uplink_reset_fanout : process (lpgbt_uplink_clk_i) is
+  begin  -- process reset_fanout
+    if rising_edge(lpgbt_uplink_clk_i) then  -- rising clock edge
+      uplink_reset_tree <= (others => reset);
+    end if;
+  end process;
 
   lpgbt_gen : for I in 0 to c_NUM_MGTS-1 generate
 
@@ -83,7 +103,8 @@ begin
     -- Downlink
     --------------------------------------------------------------------------------
 
-    downlink_gen : if (lpgbt_idx_array(I) /= -1) generate
+    -- only generate downlinks for duplex lpgbts
+    downlink_gen : if (lpgbt_idx_array(I) /= -1 and lpgbt_simplex_idx_array(I) /= 1) generate
 
       lpgbt_downlink_inst : entity lpgbt_fpga.lpgbtfpga_downlink
 
@@ -94,7 +115,7 @@ begin
           )
         port map (
           clk_i               => lpgbt_downlink_clk_i,
-          rst_n_i             => not lpgbt_downlink_reset_i(lpgbt_idx_array(I)),
+          rst_n_i             => not (downlink_reset_tree(lpgbt_idx_array(I)) or lpgbt_downlink_reset_i(lpgbt_idx_array(I))),
           clken_i             => lpgbt_downlink_data(lpgbt_idx_array(I)).valid,
           userdata_i          => lpgbt_downlink_data(lpgbt_idx_array(I)).data,
           ecdata_i            => lpgbt_downlink_data(lpgbt_idx_array(I)).ec,
@@ -136,7 +157,7 @@ begin
         port map (
           clk_freerunningclk_i => std_logic_0,  -- not used since reset on even feature is disabled in frame aligner
           uplinkclk_i          => lpgbt_uplink_clk_i,
-          uplinkrst_n_i        => not lpgbt_uplink_reset_i(lpgbt_idx_array(I)),
+          uplinkrst_n_i        => not (uplink_reset_tree(lpgbt_idx_array(I)) or lpgbt_uplink_reset_i(lpgbt_idx_array(I))),
           mgt_word_o           => lpgbt_uplink_mgt_word_array_i(lpgbt_idx_array(I)),
           bypassinterleaver_i  => c_lpgbt_bypass_interleaver,
           bypassfecencoder_i   => c_lpgbt_bypass_fec,

@@ -74,6 +74,7 @@ end entity top_framework;
 architecture behavioral of top_framework is
 
   signal clocks : system_clocks_rt;
+  signal global_reset : std_logic;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -125,7 +126,8 @@ architecture behavioral of top_framework is
 begin  -- architecture behavioral
 
 
-  reset          <= not clocks.locked;
+  reset          <= global_reset;
+  global_reset   <= not clocks.locked;
   pipeline_clock <= clocks.clock_pipeline;
 
 
@@ -140,9 +142,9 @@ begin  -- architecture behavioral
       clk_out320       => clocks.clock320,
       clk_out_pipeline => clocks.clock_pipeline,
       reset            => std_logic'('0'),
-    locked    => clocks.locked,
-    clk_in1_p => clock_in_p,
-    clk_in1_n => clock_in_n
+      locked    => clocks.locked,
+      clk_in1_p => clock_in_p,
+      clk_in1_n => clock_in_n
     );
 
   --------------------------------------------------------------------------------
@@ -152,7 +154,7 @@ begin  -- architecture behavioral
   mgt_wrapper_inst : entity framework.mgt_wrapper
     port map (
       clocks                               => clocks,
-      reset                                => not clocks.locked,
+      reset                                => global_reset,
       -- reference clocks
       refclk_i_p                           => refclk_i_p,
       refclk_i_n                           => refclk_i_n,
@@ -186,7 +188,7 @@ begin  -- architecture behavioral
   begin
     if (rising_edge(clocks.clock320)) then
 
-      if clocks.locked = '0' then
+      if global_reset = '1' then
         counter            := 0;
         lpgbt_valid_strobe <= '0';
       else
@@ -222,14 +224,17 @@ begin  -- architecture behavioral
   lpgbt_link_wrapper_inst : entity framework.lpgbt_link_wrapper
     port map (
 
+
+      reset                           => global_reset,
+
       lpgbt_downlink_clk_i            => clocks.clock320,
-      lpgbt_downlink_reset_i          => (others => std_logic'(not clocks.locked)),
+      lpgbt_downlink_reset_i          => (others => global_reset),
       lpgbt_downlink_mgt_word_array_o => lpgbt_downlink_mgt_word_array,
       lpgbt_downlink_ready_o          => open,
       lpgbt_downlink_data             => lpgbt_downlink_data,
 
       lpgbt_uplink_clk_i            => clocks.clock320,
-      lpgbt_uplink_reset_i          => (others => std_logic'(not clocks.locked)),
+      lpgbt_uplink_reset_i          => (others => global_reset),
       lpgbt_uplink_data             => lpgbt_uplink_data,
       lpgbt_uplink_mgt_word_array_i => lpgbt_uplink_mgt_word_array,
       lpgbt_uplink_bitslip_o        => lpgbt_uplink_bitslip,
@@ -238,7 +243,7 @@ begin  -- architecture behavioral
 
   lpgbtemul_wrapper_1 : entity work.lpgbtemul_wrapper
     port map (
-      reset                           => not clocks.locked,
+      reset                           => global_reset,
       lpgbt_uplink_clk_i              => lpgbt_emul_uplink_clk,
       lpgbt_uplink_mgt_word_array_o   => lpgbt_emul_uplink_mgt_word_array,
       lpgbt_uplink_data_i             => lpgbt_emul_uplink_data,
@@ -265,7 +270,7 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity framework.sector_logic_link_wrapper
     port map (
       clock                  => clocks.clock240,
-      reset                  => not clocks.locked,
+      reset                  => global_reset,
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array,
       sl_rx_data_o           => sl_rx_data,
