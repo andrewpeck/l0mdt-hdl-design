@@ -7,6 +7,9 @@ package system_types_pkg is
 
   type std32_array_t is array (integer range <>) of std_logic_vector(31 downto 0);
 
+  constant std_logic_1 : std_logic := '1';
+  constant std_logic_0 : std_logic := '1';
+
   type system_clocks_rt is record
     locked         : std_logic;
     clock40        : std_logic;

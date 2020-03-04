@@ -3,7 +3,7 @@ use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library xil_defaultlib; 
+library xil_defaultlib;
 
 library framework;
 
@@ -92,6 +92,20 @@ architecture behavioral of top_framework is
   signal lpgbt_uplink_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
   signal sector_logic_rx_sump : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+  -- emulator cores
+  signal lpgbt_emul_uplink_clk              : std_logic;
+  signal lpgbt_emul_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_uplink_data             : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_uplink_ready            : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_rst_uplink              : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+
+  signal lpgbt_emul_downlink_clk            : std_logic;
+  signal lpgbt_emul_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+  signal lpgbt_emul_downlink_data           : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+  signal lpgbt_emul_downlink_ready          : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+  signal lpgbt_emul_downlink_bitslip        : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+  signal lpgbt_emul_rst_downlink            : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
   --------------------------------------------------------------------------------
@@ -111,7 +125,7 @@ architecture behavioral of top_framework is
 begin  -- architecture behavioral
 
 
-  reset <= not clocks.locked;
+  reset          <= not clocks.locked;
   pipeline_clock <= clocks.clock_pipeline;
 
 
@@ -126,10 +140,10 @@ begin  -- architecture behavioral
       clk_out320       => clocks.clock320,
       clk_out_pipeline => clocks.clock_pipeline,
       reset            => std_logic'('0'),
-      locked           => clocks.locked,
-      clk_in1_p        => clock_in_p,
-      clk_in1_n        => clock_in_n
-      );
+    locked    => clocks.locked,
+    clk_in1_p => clock_in_p,
+    clk_in1_n => clock_in_n
+    );
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -137,20 +151,28 @@ begin  -- architecture behavioral
 
   mgt_wrapper_inst : entity framework.mgt_wrapper
     port map (
-      clocks                          => clocks,
-      reset                           => not clocks.locked,
-      refclk_i_p                      => refclk_i_p,
-      refclk_i_n                      => refclk_i_n,
-      mgt_tx_p                        => mgt_tx_p,
-      mgt_tx_n                        => mgt_tx_n,
-      mgt_rx_p                        => mgt_rx_p,
-      mgt_rx_n                        => mgt_rx_n,
-      sl_rx_mgt_word_array_o          => sl_rx_mgt_word_array,
-      sl_tx_mgt_word_array_i          => sl_tx_mgt_word_array,
-      sl_tx_ctrl_i                    => sl_tx_ctrl,
-      lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
-      lpgbt_downlink_mgt_word_array_i => lpgbt_downlink_mgt_word_array,
-      lpgbt_uplink_mgt_word_array_o   => lpgbt_uplink_mgt_word_array
+      clocks                               => clocks,
+      reset                                => not clocks.locked,
+      -- reference clocks
+      refclk_i_p                           => refclk_i_p,
+      refclk_i_n                           => refclk_i_n,
+      -- transceivers
+      mgt_tx_p                             => mgt_tx_p,
+      mgt_tx_n                             => mgt_tx_n,
+      mgt_rx_p                             => mgt_rx_p,
+      mgt_rx_n                             => mgt_rx_n,
+      -- sector logic
+      sl_rx_mgt_word_array_o               => sl_rx_mgt_word_array,
+      sl_tx_mgt_word_array_i               => sl_tx_mgt_word_array,
+      sl_tx_ctrl_i                         => sl_tx_ctrl,
+      -- lpgbt
+      lpgbt_rxslide_i                      => lpgbt_uplink_bitslip,
+      lpgbt_downlink_mgt_word_array_i      => lpgbt_downlink_mgt_word_array,
+      lpgbt_uplink_mgt_word_array_o        => lpgbt_uplink_mgt_word_array,
+      -- lpgbt emulator
+      lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
+      lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
+      lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array
       );
 
   --------------------------------------------------------------------------------
@@ -214,6 +236,22 @@ begin  -- architecture behavioral
       lpgbt_uplink_ready_o          => open
       );
 
+  lpgbtemul_wrapper_1 : entity work.lpgbtemul_wrapper
+    port map (
+      reset                           => not clocks.locked,
+      lpgbt_uplink_clk_i              => lpgbt_emul_uplink_clk,
+      lpgbt_uplink_mgt_word_array_o   => lpgbt_emul_uplink_mgt_word_array,
+      lpgbt_uplink_data_i             => lpgbt_emul_uplink_data,
+      lpgbt_uplink_ready_o            => lpgbt_emul_uplink_ready,
+      lpgbt_rst_uplink_i              => lpgbt_emul_rst_uplink,
+      lpgbt_downlink_clk_i            => lpgbt_emul_downlink_clk,
+      lpgbt_downlink_mgt_word_array_i => lpgbt_emul_downlink_mgt_word_array,
+      lpgbt_downlink_data_o           => lpgbt_emul_downlink_data,
+      lpgbt_downlink_ready_o          => lpgbt_emul_downlink_ready,
+      lpgbt_downlink_bitslip_o        => lpgbt_emul_downlink_bitslip,
+      lpgbt_rst_downlink_i            => lpgbt_emul_rst_downlink
+      );
+
   --------------------------------------------------------------------------------
   -- LPGBT Controller Mux
   --------------------------------------------------------------------------------
@@ -263,7 +301,6 @@ begin  -- architecture behavioral
     end process data_loop;
   end generate;
 
-  sl_tx_mgt_word_array <= sl_rx_mgt_word_array;
   sl_sump_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
     data_loop : process (clocks.clock240) is
     begin  -- process data_loop

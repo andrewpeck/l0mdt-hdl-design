@@ -37,6 +37,7 @@ entity mgt_wrapper is
     --------------------------------------------------------------------------------
     -- LPGBT
     --------------------------------------------------------------------------------
+
     -- Rxslide from LPGBT rx core
     lpgbt_rxslide_i : in std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
@@ -46,6 +47,23 @@ entity mgt_wrapper is
     -- 32 bits / clock from mgt
     lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
+    --------------------------------------------------------------------------------
+    -- LPGBT Emulator
+    --------------------------------------------------------------------------------
+
+    -- Rxslide from LPGBT rx core
+    lpgbt_emul_rxslide_i : in std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+
+    -- 32 bits / clock to mgt
+    lpgbt_emul_downlink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+
+    -- 32 bits / clock from mgt
+    lpgbt_emul_uplink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+
+    --------------------------------------------------------------------------------
+    -- Sector Logic
+    --------------------------------------------------------------------------------
+
     -- 32 bits / bx to mgt
     sl_tx_mgt_word_array_i : in std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
@@ -54,9 +72,6 @@ entity mgt_wrapper is
 
     sl_tx_ctrl_i : in sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
-    --------------------------------------------------------------------------------
-    -- Sector Logic
-    --------------------------------------------------------------------------------
 
     );
 end mgt_wrapper;
@@ -71,22 +86,6 @@ architecture Behavioral of mgt_wrapper is
 
   signal mgt_drp_i : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal mgt_drp_o : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
-
-  -- function func_fill_subtype_idx (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
-  --   return mgt_subtype_idx_array is
-  --   variable count : integer := 0;
-  --   variable idx   : mgt_subtype_idx_array;
-  -- begin
-  --   for I in 0 to c_NUM_MGTS-1 loop
-  --     if mgt_list(I).mgt_type = i_mgt_type then
-  --       idx(I) := count;
-  --       count  := count + 1;
-  --     else
-  --       idx(I) := -1;
-  --     end if;
-  --   end loop;  -- I
-  --   return idx;
-  -- end func_fill_subtype_idx;
 
   constant sl_idx_array    : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
   constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
@@ -172,11 +171,10 @@ begin
 
       attribute X_LOC           : integer;
       attribute Y_LOC           : integer;
-      attribute X_LOC of MGTGEN : label is c_MGT_MAP(I).x_loc;
-      attribute Y_LOC of MGTGEN : label is c_MGT_MAP(I).y_loc;
-
-      attribute NUM_MGTS           : integer;
-      attribute NUM_MGTS of MGTGEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+      attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
+      attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
+      attribute DONT_TOUCH of MGT_GEN : label is "true";
+      attribute DONT_TOUCH : string;
 
     begin
 
@@ -184,7 +182,7 @@ begin
 
       assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
 
-      MGTGEN : entity work.mgt_10g24_wrapper
+      MGT_GEN : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock                 => clocks.clock40,
@@ -224,11 +222,8 @@ begin
 
       attribute X_LOC           : integer;
       attribute Y_LOC           : integer;
-      attribute X_LOC of MGTGEN : label is c_MGT_MAP(I).x_loc;
-      attribute Y_LOC of MGTGEN : label is c_MGT_MAP(I).y_loc;
-
-      attribute NUM_MGTS           : integer;
-      attribute NUM_MGTS of MGTGEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+      attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
+      attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
 
     begin
 
@@ -236,7 +231,7 @@ begin
 
       assert false report "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " SL_LINK_CNT=" & integer'image(sl_idx_array(I)) severity note;
 
-      MGTGEN : entity work.mgt_sl_wrapper
+      MGT_GEN : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           clock                 => clocks.clock40,

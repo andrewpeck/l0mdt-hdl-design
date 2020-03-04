@@ -39,8 +39,8 @@ delete_pblocks -quiet infra ttc clocks payload quad_*
 #-------------------------------------
 
 # Parameters
-set lLeftQuadWidth 1200
-set lRightQuadWidth 450
+set lLeftQuadWidth 1300
+set lRightQuadWidth 500
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
 puts "Clock region boundaries ${lClkBounds}"
@@ -52,35 +52,45 @@ lassign [create_quad_pblocks $lLeftQuadWidth $lRightQuadWidth] lNumQuads lLeftBo
 # Create the quad p-blocks and store the number of blocks created
 puts "Created $lNumQuads quads"
 
-# Right MGT column, right quads 0 to 10
-for {set lRegId 0} {$lRegId < 44} {incr lRegId} {
-    set q [expr $lRegId / 4]
-    set lQuadBlock [get_pblocks quad_R$q]
-    puts "Populating $lQuadBlock with mgt #$lRegId"
+proc assign_pblocks {min  max  side} {
 
-    set filter "NAME =~ *mgt_gen\[$lRegId]*.MGTGEN"
-    set cells [get_cells -hierarchical -filter $filter]
-    if {[string compare $cells ""] != 0} {
-        add_cells_to_pblock $lQuadBlock $cells
+    for {set lRegId $min} {$lRegId < $max} {incr lRegId} {
+
+        set q 0
+        set lQuadBlock ""
+
+        if {[string compare $side "L"] == 0} {
+            set q [expr $lRegId/4 - 11 + 3]
+        }
+        if {[string compare $side "R"] == 0} {
+            set q [expr $lRegId / 4]
+        }
+
+        set lQuadBlock [get_pblocks quad_$side$q]
+        puts "Populating $lQuadBlock with mgt #$lRegId"
+
+        # TODO: make this tcl call smart to avoid unnecessary filter calls
+        # TODO: avoid hierarchical filters and use direct calling with wildcards, e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
+        set mgt_cells   [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
+        set lpgbt_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\lpgbt_gen[$lRegId]*.lpgbt_*link_inst"]
+        set sl_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*x_packet_former_inst"]
+
+        set cells "$mgt_cells $lpgbt_cells $sl_cells"
+
+        puts "Adding cells $cells to pblock $lQuadBlock"
+
+        if {[string is space $cells] == 0} {
+            add_cells_to_pblock $lQuadBlock $cells
+        }
     }
 }
 
-# Left MGT column, left quads 11 to 18
-for {set lRegId 44} {$lRegId < 75} {incr lRegId} {
-    set q [expr $lRegId/4 - 11 + 3]
-    set lQuadBlock [get_pblocks quad_L$q]
-    puts "Populating $lQuadBlock with mgt $lRegId"
-
-    set filter "NAME =~ *mgt_gen\[$lRegId]*.MGTGEN"
-    set cells [get_cells -hierarchical -filter $filter]
-    if {[string compare $cells ""] != 0} {
-        add_cells_to_pblock $lQuadBlock $cells
-    }
-}
+assign_pblocks 0  44  R
+assign_pblocks 44  75  L
 
 # Payload Area assignment
 set lPayload [create_pblock payload]
 set lPayloadRect [find_rects [get_sites -of [get_clock_regions] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-#set lPayloadRect [find_rects [get_sites -of [get_clock_regions -f {ROW_INDEX>2}] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
 add_rects_to_pblock $lPayload $lPayloadRect
+#set lPayloadRect [find_rects [get_sites -of [get_clock_regions -f {ROW_INDEX>2}] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
 #add_cells_to_pblock [get_pblocks payload] [get_cells -quiet datapath/rgen[*].pgen.*]
