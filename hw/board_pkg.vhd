@@ -102,23 +102,29 @@ package board_pkg is
     );
 
   -- FIXME: derive this constant in some sane way
-  constant c_TDC_LINK_MAP : tdc_link_map_array_t (c_NUM_MGTS*14-1 downto 0) := (
-    -- mgt link id, even elink #, odd elink #, station
+  -- just make it oversized for now and the functions will just ignore the
+  -- higher null values... make sure to only specify real things
+  constant c_TDC_LINK_MAP : tdc_link_map_array_t (99*14-1 downto 0) := (
+    -- TODO: we know that based on the CSM design (once it is final) there are
+    -- only certain allowed pairs of even and odd elinks and these can be
+    -- derived automatically by just specifying a slot number or something
+    --
     -- this is assigned by the global MGT link ID (e.g. 0 to 75 on a ku15p)
-    0      => (lpgbt_link => 0, even_elink => 0, odd_elink => 1, station_id => 0),
-    1      => (lpgbt_link => 0, even_elink => 2, odd_elink => 3, station_id => 0),
-    2      => (lpgbt_link => 0, even_elink => 4, odd_elink => 5, station_id => 0),
-    3      => (lpgbt_link => 0, even_elink => 6, odd_elink => 7, station_id => 0),
-    4      => (lpgbt_link => 0, even_elink => 8, odd_elink => 9, station_id => 0),
-    5      => (lpgbt_link => 0, even_elink => 10, odd_elink => 11, station_id => 0),
-    6      => (lpgbt_link => 0, even_elink => 12, odd_elink => 13, station_id => 0),
-    7      => (lpgbt_link => 0, even_elink => 14, odd_elink => 15, station_id => 0),
-    8      => (lpgbt_link => 0, even_elink => 16, odd_elink => 17, station_id => 0),
-    9      => (lpgbt_link => 0, even_elink => 18, odd_elink => 19, station_id => 0),
-    10     => (lpgbt_link => 0, even_elink => 20, odd_elink => 21, station_id => 0),
-    11     => (lpgbt_link => 0, even_elink => 22, odd_elink => 23, station_id => 0),
-    12     => (lpgbt_link => 0, even_elink => 24, odd_elink => 25, station_id => 0),
-    13     => (lpgbt_link => 0, even_elink => 26, odd_elink => 27, station_id => 0),
+    -- mgt link id, even elink #, odd elink #, station
+    0      => (link_id => 0, even_elink => 0, odd_elink => 1, station_id => 0),
+    1      => (link_id => 0, even_elink => 2, odd_elink => 3, station_id => 0),
+    2      => (link_id => 0, even_elink => 4, odd_elink => 5, station_id => 0),
+    3      => (link_id => 0, even_elink => 6, odd_elink => 7, station_id => 0),
+    4      => (link_id => 0, even_elink => 8, odd_elink => 9, station_id => 0),
+    5      => (link_id => 0, even_elink => 10, odd_elink => 11, station_id => 0),
+    6      => (link_id => 0, even_elink => 12, odd_elink => 13, station_id => 0),
+    7      => (link_id => 0, even_elink => 14, odd_elink => 15, station_id => 0),
+    8      => (link_id => 0, even_elink => 16, odd_elink => 17, station_id => 0),
+    9      => (link_id => 0, even_elink => 18, odd_elink => 19, station_id => 0),
+    10     => (link_id => 0, even_elink => 20, odd_elink => 21, station_id => 0),
+    11     => (link_id => 0, even_elink => 22, odd_elink => 23, station_id => 0),
+    12     => (link_id => 0, even_elink => 24, odd_elink => 25, station_id => 0),
+    13     => (link_id => 0, even_elink => 26, odd_elink => 27, station_id => 0),
     others => (-1, -1, -1, -1)
     );
 

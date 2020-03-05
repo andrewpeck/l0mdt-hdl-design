@@ -15,6 +15,12 @@
 ../../hw/user_pkg.vhd 2008
 ../../hw/lpgbt/lpgbt_link_wrapper.vhd 2008
 ../../hw/lpgbt/lpgbt_emul_wrapper.vhd 2008
+../../hw/lpgbt/gbt_ic_controller.vhd
+../../hw/lpgbt/gbt_ic_rx.vhd
+../../hw/lpgbt/gbt_unstuffer.vhd
+../../hw/lpgbt/gbt_controller_wrapper.vhd
+../../hw/tdc/tdc_decoder_wrapper.vhd
+../../hw/lpgbt/gbt_ic_tx.vhd
 ../../hw/top_user.vhd 2008
 ../../hw/lpgbt/lpgbt_pkg.vhd 2008
 ../../hw/mgt/mgt_10g24_wrapper.vhd 2008

@@ -40,7 +40,7 @@ package board_pkg_common is
 
   type station_id_t is (INNER, MIDDLE, OUTER, EXTRA);
   type tdc_link_map_t is record
-    lpgbt_link : integer;
+    link_id : integer;
     even_elink : integer;
     odd_elink  : integer;
     station_id : integer;
@@ -57,10 +57,26 @@ package board_pkg_common is
   function func_count_link_types (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
     return integer;
 
+  function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
+    return integer;
+
 
 end package board_pkg_common;
 
 package body board_pkg_common is
+
+  function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
+    return integer is
+    variable count : integer := 0;
+  begin
+    for I in 0 to tdc_map'length-1 loop
+      if (tdc_map(I).link_id >= 0) then
+        assert ((mgt_list(tdc_map(I).link_id).mgt_type = MGT_LPGBT) or mgt_list(tdc_map(I).link_id).mgt_type = MGT_LPGBT_SIMPLEX) report "c_TDC_LINK_MAP specifies a tdc input on a non-lpgbt link" severity error;
+        count := count + 1;
+      end if;
+    end loop;
+    return count;
+  end func_count_tdc_links;
 
   function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t is
@@ -84,7 +100,7 @@ package body board_pkg_common is
   begin
     for I in 0 to mgt_list'length-1 loop
       if (mgt_list(I).mgt_type = i_mgt_type) then
-        count  := count + 1;
+        count := count + 1;
       end if;
     end loop;
     return count;

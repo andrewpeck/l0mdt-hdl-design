@@ -1,237 +1,132 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------
--- Company: TAMU
--- Engineer: Evaldas Juska (evaldas.juska@cern.ch, evka85@gmail.com)
---
--- Create Date:    16:05 2016-10-12
--- Module Name:    GBTx Internal Control (IC) controller
--- Description:    This module is handling reading and writing of GBTx registers
-------------------------------------------------------------------------------------------------------------------------------------------------------
-
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-entity gbtx_ic_controller is
---    generic(
---        g_GBTX_I2C_ADDRESS      : std_logic_vector(3 downto 0) := x"1"
---    );
-    port(
-        -- reset
-        reset_i                 : in  std_logic;
+entity gbt_ic_controller is
+  port(
+    -- reset
+    reset_i : in std_logic;
 
-        -- clocks
-        gbt_clk_i               : in std_logic;
+    -- clocks
+    -- TODO: eliminate dependency on 40MHz clock
+    clock40  : in std_logic;
+    clock320 : in std_logic;
 
-        -- GBTx I2C address (for OHv2b it should be always 0x1 because that's hardwired on the board), but 0 can be used for broadcast
-        gbtx_i2c_address        : in std_logic_vector(6 downto 0);
+    -- GBT I2C address
+    gbt_chip_address_i : in  std_logic_vector(6 downto 0);
+    gbt_chip_address_o : out std_logic_vector(6 downto 0);
 
-        -- GBTx IC elinks
-        gbt_rx_ic_elink_i       : in  std_logic_vector(1 downto 0);
-        gbt_tx_ic_elink_o       : out std_logic_vector(1 downto 0);
+    -- GBT IC elinks and valid flags
+    gbt_uplink_ic_i       : in std_logic_vector(1 downto 0);
+    gbt_uplink_ic_valid_i : in std_logic;
 
-        -- Control
-        ic_rw_address_i         : in  std_logic_vector(15 downto 0);
-        ic_w_data_i             : in  std_logic_vector(31 downto 0);
-        --ic_r_data_o             : out std_logic_vector(31 downto 0);
-        ic_rw_length_i          : in std_logic_vector(2 downto 0);
-        ic_write_req_i          : in std_logic;
-        ic_write_done_o         : out std_logic;
-        ic_read_req_i           : in std_logic
-        --ic_read_ready_o         : out std_logic
+    -- FIXME: need to sync this to the same 320MHz enable that the data will be
+    -- on
+    gbt_downlink_ic_o       : out std_logic_vector(1 downto 0);
+
+    gbt_uplink_parity_ok_o   : out std_logic;
+    gbt_downlink_parity_ok_o : out std_logic;
+    gbt_uplink_err_o         : out std_logic;
+
+    -- Control
+
+    gbt_downlink_address_i : in  std_logic_vector(15 downto 0);
+    gbt_uplink_address_o   : out std_logic_vector(15 downto 0);
+
+    gbt_downlink_data_i  : in  std_logic_vector(31 downto 0);
+    gbt_downlink_valid_i : out std_logic;
+
+    gbt_uplink_data_o  : out std_logic_vector(31 downto 0);
+    gbt_uplink_valid_o : out std_logic;
+
+    gbt_downlink_length_i : in  std_logic_vector(15 downto 0);
+    gbt_uplink_length_o   : out std_logic_vector(15 downto 0);
+
+    gbt_ic_write_req_i  : in  std_logic;
+    gbt_ic_write_done_o : out std_logic;
+    gbt_ic_read_req_i   : in  std_logic
+    --ic_read_ready_o         : out std_logic
 
     );
-end gbtx_ic_controller;
+end gbt_ic_controller;
 
-architecture Behavioral of gbtx_ic_controller is
+architecture Behavioral of gbt_ic_controller is
 
-    constant SOF_EOF            : std_logic_vector(7 downto 0) := x"7e";
+  constant SOF_EOF : std_logic_vector(7 downto 0) := x"7e";
 
-    -------------- tx serializer --------------
+  signal reset : std_logic;
 
-    type serdes_state_t is (IDLE, REG_ADDR, DATA, PARITY, EOF);
-
-    signal ser_state            : serdes_state_t;
-    signal ser_word_pos         : integer range 0 to 31 := 0;
-    signal ser_data_word_idx    : integer range 0 to 4 := 0;
-    signal ser_frame_pos        : integer range 0 to 127 := 0;
-    signal ser_parity           : std_logic_vector(7 downto 0) := (others => '0');
-    signal ser_set_bit_cnt      : integer range 0 to 7 := 0;
-    signal ser_is_write         : std_logic;
-
-    signal tx_frame             : std_logic_vector(127 downto 0) := (others => '0');
-    signal tx_sender_en         : std_logic;
-
-    -------------- tx sender --------------
-
-    type sender_state_t is (IDLE, SENDING);
-    signal sender_state         : sender_state_t;
-    signal sender_frame_pos     : integer range 0 to 127 := 0;
+  -- unstuffer signals
+  signal unstuffer_frame  : std_logic_vector (7 downto 0);
+  signal unstuffer_valid  : std_logic;
+  signal unstuffer_header : std_logic;
 
 begin
 
-    --========= Serializer FSM =========--
+  process (clock40)
+  begin
+    if (rising_edge(clock40)) then
+      reset <= reset_i;
+    end if;
+  end process;
 
-    process(gbt_clk_i)
-    begin
-        if (rising_edge(gbt_clk_i)) then
-            if (reset_i = '1') then
-                ser_state <= IDLE;
-                tx_frame <= (others => '1');
-                ser_frame_pos <= 0;
-                ser_word_pos <= 0;
-                ser_parity <= (others => '0');
-                ser_set_bit_cnt <= 0;
-                ser_data_word_idx <= 0;
-                tx_sender_en <= '0';
-            else
-                tx_sender_en <= '0';
+  --------------------------------------------------------------------------------
+  -- RX From LPGBT
+  --------------------------------------------------------------------------------
+  gbt_unstuffer_inst : entity work.gbt_unstuffer
+    port map (
 
-                case ser_state is
-                    when IDLE   =>
-                        if ((ic_write_req_i = '1' and ic_rw_length_i /= "000") or ic_read_req_i = '1') then
-                            ser_state <= REG_ADDR;
-                            ser_is_write <= ic_write_req_i;
-                            -- we assign the beginning of the frame here because there's no chance of bit stuffing here
-                            tx_frame(47 downto 0) <= x"000" & "0" & ic_rw_length_i &                     -- LENGTH
-                                                     x"01" &                                             -- CMD
-                                                     gbtx_i2c_address & not ic_write_req_i &             -- I2C ADDRESS + read flag
-                                                     x"00" & -- ???? hmm, this is not documented, but saw this in another guy's code...
-                                                     SOF_EOF;                                            -- SOF
-                            tx_frame(127 downto 48) <= (others => '1');
-                            ser_parity <= ((x"01" xor ("00000" & ic_rw_length_i)) xor ic_rw_address_i(7 downto 0)) xor ic_rw_address_i(15 downto 8) ;
-                            ser_frame_pos <= 48;
-                            ser_word_pos <= 0;
-                            ser_set_bit_cnt <= 0;
-                            ser_data_word_idx <= 0;
-                        end if;
-                    when REG_ADDR =>
-                        ser_frame_pos <= ser_frame_pos + 1;
-                        if (ser_set_bit_cnt = 5) then
-                            -- we have 5 set bits in a row, insert a 0 here
-                            tx_frame(ser_frame_pos) <= '0';
-                            ser_set_bit_cnt <= 0;
-                        else
-                            if (ser_word_pos < 15) then
-                                ser_word_pos <= ser_word_pos + 1;
-                            else
-                                ser_word_pos <= 0;
-                                if (ser_is_write = '1') then
-                                    ser_state <= DATA;
-                                else
-                                    ser_state <= PARITY;
-                                end if;
-                            end if;
+      clock_i => clock320,
 
-                            tx_frame(ser_frame_pos) <= ic_rw_address_i(ser_word_pos);
+      reset_i => reset,
 
-                            if (ic_rw_address_i(ser_word_pos) = '1') then
-                                ser_set_bit_cnt <= ser_set_bit_cnt + 1;
-                            else
-                                ser_set_bit_cnt <= 0;
-                            end if;
-                        end if;
-                    when DATA =>
-                        ser_frame_pos <= ser_frame_pos + 1;
-                        if (ser_set_bit_cnt = 5) then
-                            -- we have 5 set bits in a row, insert a 0 here
-                            tx_frame(ser_frame_pos) <= '0';
-                            ser_set_bit_cnt <= 0;
-                        else
-                            if (ser_word_pos < 7) then
-                                ser_word_pos <= ser_word_pos + 1;
-                            else
-                                ser_word_pos <= 0;
-                                ser_data_word_idx <= ser_data_word_idx + 1;
-                                -- last data word - move to the next state now
-                                if (ser_data_word_idx = to_integer(unsigned(ic_rw_length_i)) - 1) then
-                                    ser_state <= PARITY;
-                                end if;
-                            end if;
+      ic_i       => gbt_uplink_ic_i,
+      clock_en_i => gbt_uplink_ic_valid_i,
 
-                            if (ser_word_pos = 0) then
-                                -- update parity once per data word
-                                ser_parity <= ser_parity xor ic_w_data_i(((ser_data_word_idx + 1) * 8) - 1 downto (ser_data_word_idx * 8));
-                            end if;
+      frame_o  => unstuffer_frame,
+      valid_o  => unstuffer_valid,
+      header_o => unstuffer_header
 
-                            tx_frame(ser_frame_pos) <= ic_w_data_i((ser_data_word_idx * 8) + ser_word_pos);
+      );
 
-                            if (ic_w_data_i((ser_data_word_idx * 8) + ser_word_pos) = '1') then
-                                ser_set_bit_cnt <= ser_set_bit_cnt + 1;
-                            else
-                                ser_set_bit_cnt <= 0;
-                            end if;
-                        end if;
-                    when PARITY =>
-                        ser_frame_pos <= ser_frame_pos + 1;
-                        if (ser_set_bit_cnt = 5) then
-                            -- we have 5 set bits in a row, insert a 0 here
-                            tx_frame(ser_frame_pos) <= '0';
-                            ser_set_bit_cnt <= 0;
-                        else
-                            if (ser_word_pos < 7) then
-                                ser_word_pos <= ser_word_pos + 1;
-                            else
-                                ser_word_pos <= 0;
-                                ser_state <= EOF;
-                            end if;
+  gbt_ic_rx_inst : entity work.gbt_ic_rx
+    port map (
 
-                            tx_frame(ser_frame_pos) <= ser_parity(ser_word_pos);
-                            --report "tx_frame_pos(" & integer'image(ser_frame_pos) & ") = ser_parity(" & integer'image(ser_word_pos) & ")";
+      clock_i => clock320,
 
-                            if (ser_parity(ser_word_pos) = '1') then
-                                ser_set_bit_cnt <= ser_set_bit_cnt + 1;
-                            else
-                                ser_set_bit_cnt <= 0;
-                            end if;
-                        end if;
-                    when EOF =>
-                        tx_frame(ser_frame_pos + 7 downto ser_frame_pos) <= x"7e";
-                        ser_state <= IDLE;
-                        tx_sender_en <= '1';
-                    when others =>
-                        ser_state <= IDLE;
-                end case;
-            end if;
-        end if;
-    end process;
+      reset_i => reset,
 
-    --========= TX Sender FSM =========--
+      frame_i  => unstuffer_frame,
+      valid_i  => unstuffer_valid,
+      header_i => unstuffer_header,
 
-    process(gbt_clk_i)
-    begin
-        if (rising_edge(gbt_clk_i)) then
-            if (reset_i = '1') then
-                gbt_tx_ic_elink_o <= "11";
-                sender_frame_pos <= 0;
-                ic_write_done_o <= '0';
-            else
+      chip_adr_o           => gbt_chip_address_o,
+      data_o               => gbt_uplink_data_o,
+      length_o             => gbt_uplink_length_o,
+      reg_adr_o            => gbt_uplink_address_o,
+      uplink_parity_ok_o   => gbt_uplink_parity_ok_o,
+      downlink_parity_ok_o => gbt_downlink_parity_ok_o,
+      err_o                => gbt_uplink_err_o,
+      valid_o              => gbt_uplink_valid_o
+      );
 
-                ic_write_done_o <= '0';
+  --------------------------------------------------------------------------------
+  -- TX to LPGBT
+  --------------------------------------------------------------------------------
 
-                case sender_state is
-                    when IDLE =>
-                        gbt_tx_ic_elink_o <= "11";
-                        sender_frame_pos <= 0;
-                        if (tx_sender_en = '1') then
-                            sender_state <= SENDING;
-                        end if;
-                    when SENDING =>
-                        if (sender_frame_pos < 125) then
-                            sender_frame_pos <= sender_frame_pos + 2;
-                        else
-                            sender_state <= IDLE;
-                            ic_write_done_o <= '1';
-                        end if;
-                        gbt_tx_ic_elink_o <= tx_frame(sender_frame_pos + 1) & tx_frame(sender_frame_pos);
-                    when others =>
-                        gbt_tx_ic_elink_o <= "11";
-                        sender_state <= IDLE;
-                end case;
-
-            end if;
-        end if;
-    end process;
+  gbt_ic_tx_inst : entity work.gbt_ic_tx
+    port map (
+      reset_i           => reset,
+      gbt_clk_i         => clock40,
+      gbt_i2c_address   => gbt_chip_address_i,
+      gbt_tx_ic_elink_o => gbt_downlink_ic_o,
+      ic_rw_address_i   => gbt_downlink_address_i,
+      ic_w_data_i       => gbt_downlink_data_i,
+      ic_rw_length_i    => gbt_downlink_length_i (2 downto 0),
+      ic_write_req_i    => gbt_ic_write_req_i,
+      ic_write_done_o   => gbt_ic_write_done_o,
+      ic_read_req_i     => gbt_ic_read_req_i
+      );
 
 end Behavioral;
-

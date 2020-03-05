@@ -14,7 +14,7 @@ entity gbt_unstuffer is
     clock_i    : in std_logic;          -- 320 MHz please
     clock_en_i : in std_logic;          -- 40MHz clock_en
     reset_i    : in std_logic;
-    ic         : in std_logic_vector(1 downto 0);
+    ic_i       : in std_logic_vector(1 downto 0);
 
     frame_o  : out std_logic_vector (7 downto 0);
     valid_o  : out std_logic;
@@ -88,7 +88,7 @@ begin
       if (reset_i = '1') then
         ic_buf <= "00";
       elsif (clock_en_i = '1') then
-        ic_buf <= ic;
+        ic_buf <= ic_i;
       end if;
 
       if (reset_i = '1') then

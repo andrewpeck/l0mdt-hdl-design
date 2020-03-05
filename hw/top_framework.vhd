@@ -73,7 +73,7 @@ entity top_framework is
 end entity top_framework;
 architecture behavioral of top_framework is
 
-  signal clocks : system_clocks_rt;
+  signal clocks       : system_clocks_rt;
   signal global_reset : std_logic;
 
   --------------------------------------------------------------------------------
@@ -91,14 +91,15 @@ architecture behavioral of top_framework is
   -- temporary FIXME remove this
   signal lpgbt_valid_strobe   : std_logic;
   signal lpgbt_uplink_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal tdc_sump             : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   signal sector_logic_rx_sump : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   -- emulator cores
-  signal lpgbt_emul_uplink_clk              : std_logic;
-  signal lpgbt_emul_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
-  signal lpgbt_emul_uplink_data             : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
-  signal lpgbt_emul_uplink_ready            : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
-  signal lpgbt_emul_rst_uplink              : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_uplink_clk            : std_logic;
+  signal lpgbt_emul_uplink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_uplink_data           : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_uplink_ready          : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_rst_uplink            : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
 
   signal lpgbt_emul_downlink_clk            : std_logic;
   signal lpgbt_emul_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
@@ -141,11 +142,11 @@ begin  -- architecture behavioral
       clk_out240       => clocks.clock240,
       clk_out320       => clocks.clock320,
       clk_out_pipeline => clocks.clock_pipeline,
-      reset            => std_logic'('0'),
-      locked    => clocks.locked,
-      clk_in1_p => clock_in_p,
-      clk_in1_n => clock_in_n
-    );
+      reset            => std_logic_0,
+      locked           => clocks.locked,
+      clk_in1_p        => clock_in_p,
+      clk_in1_n        => clock_in_n
+      );
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -182,6 +183,7 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- FIXME: temp
+  -- should sync this to the downlink controller logic tbd
   -- 320 MHz enable, goes high 1 of 8 clocks
   process (clocks.clock320)
     variable counter : integer range 0 to 8;
@@ -225,7 +227,7 @@ begin  -- architecture behavioral
     port map (
 
 
-      reset                           => global_reset,
+      reset => global_reset,
 
       lpgbt_downlink_clk_i            => clocks.clock320,
       lpgbt_downlink_reset_i          => (others => global_reset),
@@ -240,6 +242,10 @@ begin  -- architecture behavioral
       lpgbt_uplink_bitslip_o        => lpgbt_uplink_bitslip,
       lpgbt_uplink_ready_o          => open
       );
+
+  --------------------------------------------------------------------------------
+  -- LPGBT Emulator
+  --------------------------------------------------------------------------------
 
   lpgbtemul_wrapper_1 : entity work.lpgbtemul_wrapper
     port map (
@@ -258,10 +264,16 @@ begin  -- architecture behavioral
       );
 
   --------------------------------------------------------------------------------
-  -- LPGBT Controller Mux
+  -- LPGBT Controller
   --------------------------------------------------------------------------------
 
-  -- TODO: implement this
+  gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
+    port map (
+      reset_i               => global_reset,
+      clocks                => clocks,
+      lpgbt_downlink_data_o => lpgbt_downlink_data,
+      lpgbt_uplink_data_i   => lpgbt_uplink_data
+      );
 
   --------------------------------------------------------------------------------
   -- Sector Logic Packet Former Cores
@@ -282,7 +294,14 @@ begin  -- architecture behavioral
   -- TDC Decoder Cores
   --------------------------------------------------------------------------------
 
-  -- TODO: implement this
+  tdc_decoder_wrapper_inst : entity work.tdc_decoder_wrapper
+    port map (
+      clock             => clocks.clock320,
+      pipeline_clock    => clocks.clock_pipeline,
+      reset             => global_reset,
+      lpgbt_uplink_data => lpgbt_uplink_data,
+      tdc_hits          => tdc_hits
+      );
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming
@@ -296,6 +315,15 @@ begin  -- architecture behavioral
   --     end if;
   --   end process data_loop;
   -- end generate;
+
+  TDC_sump_loop : for I in 0 to c_NUM_TDC_INPUTS-1 generate
+    data_loop : process (clocks.clock320) is
+    begin  -- process data_loop
+      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+        tdc_sump(I) <= xor_reduce(tdc_hits(I).csm);
+      end if;
+    end process data_loop;
+  end generate;
 
   lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
     data_loop : process (clocks.clock320) is
@@ -316,6 +344,11 @@ begin  -- architecture behavioral
     end process data_loop;
   end generate;
 
-  sump <= or_reduce (lpgbt_uplink_sump);
+  data_loop : process (clocks.clock320) is
+  begin  -- process data_loop
+    if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+      sump <= xor_reduce (lpgbt_uplink_sump) xor xor_reduce(tdc_sump);
+    end if;
+  end process data_loop;
 
 end architecture behavioral;
