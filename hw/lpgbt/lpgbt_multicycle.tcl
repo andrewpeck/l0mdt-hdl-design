@@ -22,3 +22,5 @@ set scrambled_d_reg_cells [get_cells -hierarchical -filter {NAME =~ *lpgbt_link_
 set_property DONT_TOUCH true $scrambled_d_reg_cells
 set_multicycle_path -setup -to $scrambled_d_reg 3
 set_multicycle_path -hold -to $scrambled_d_reg 2
+
+set_property DONT_TOUCH true [get_cells -hierarchical -filter {NAME =~ top_framework/lpgbt_link_wrapper_inst/*/gearboxSyncReset*}]
