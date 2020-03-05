@@ -212,8 +212,6 @@ begin  -- architecture behavioral
 
   -- FIXME: temp
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    lpgbt_downlink_data(I).ec <= "00";
-    lpgbt_downlink_data(I).ic <= "00";
     data_loop : process (clocks.clock320) is
     begin  -- process data_loop
       if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
@@ -282,6 +280,7 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity framework.sector_logic_link_wrapper
     port map (
       clock                  => clocks.clock240,
+      pipeline_clock         => clocks.clock_pipeline,
       reset                  => global_reset,
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array,
@@ -298,9 +297,11 @@ begin  -- architecture behavioral
     port map (
       clock             => clocks.clock320,
       pipeline_clock    => clocks.clock_pipeline,
+
       reset             => global_reset,
-      lpgbt_uplink_data => lpgbt_uplink_data,
-      tdc_hits          => tdc_hits
+
+      lpgbt_uplink_data => lpgbt_uplink_data, -- on lpgbt clock
+      tdc_hits          => tdc_hits -- on pipeline clock already
       );
 
   --------------------------------------------------------------------------------

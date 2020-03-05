@@ -2,8 +2,8 @@
 # TODO: understand how the leftquad width even works.. why 1100??? it makes no sense
 # something to do with the weird die shape but I need to understand the details and make this more human readable
 
-set lLeftQuadWidth 1125
-set lRightQuadWidth 375
+set lLeftQuadWidth 1150
+set lRightQuadWidth 400
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
 puts "Clock region boundaries ${lClkBounds}"
@@ -38,9 +38,10 @@ proc assign_pblocks {min  max  side} {
         set mgt_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
         set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
         set lpgbt_ic_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*gbt_controller_wrapper*\*_gen[$lRegId]*gbt_ic_controller_inst"]
-        set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*x_packet_former_inst"]
+        set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
+        set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*tdc_decoder*mgt_loop[$lRegId]*"]
 
-        set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells"
+        set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells $tdc_cells"
 
         puts "Adding cells $cells to pblock $lQuadBlock"
 

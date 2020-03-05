@@ -17,11 +17,9 @@ for {set i 0} {$i < $imax} {incr i} {
 
     puts "Scanning for LOC attributes on MGT $i"
 
-    set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/*MGT_GEN" $i]]
+    #set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/*MGT_GEN" $i]]
+    set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
 
-    # WANT this but Xilinx seems to optimize away the attribute ???
-    #set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
-    #
     set x_loc -1
     set y_loc -1
     if {[string is space $cell] != 1} {

@@ -54,7 +54,7 @@ entity top_user is
 end entity top_user;
 architecture behavioral of top_user is
 
-  signal tdc_hit_sump : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hit_sump    : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   signal endcap_hit_sump : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
   signal barrel_hit_sump : std_logic_vector (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
 
@@ -92,9 +92,10 @@ begin
         endcap_hit_sump(I) <= xor_reduce(endcap_slc_candidates(I).SLC_COMMON);
       end loop;
 
+      sump <= xor_reduce(tdc_hit_sump) xor xor_reduce (barrel_hit_sump) xor xor_reduce (endcap_hit_sump);
+
     end if;
 
-    sump <= xor_reduce(tdc_hit_sump);
 
   end process;
 

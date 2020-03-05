@@ -22,6 +22,7 @@
 ../../hw/tdc/tdc_decoder_wrapper.vhd
 ../../hw/lpgbt/gbt_ic_tx.vhd
 ../../hw/top_user.vhd 2008
+../../hw/sync_cdc.vhd 2008
 ../../hw/lpgbt/lpgbt_pkg.vhd 2008
 ../../hw/mgt/mgt_10g24_wrapper.vhd 2008
 ../../hw/mgt/mgt_sl_wrapper.vhd 2008

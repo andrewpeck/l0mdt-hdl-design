@@ -37,11 +37,14 @@ architecture behavioral of tdc_decoder_wrapper is
 
 begin
 
+  assert false report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders" severity note;
+
   mgt_loop : for I in 0 to (c_NUM_MGTS-1) generate
   begin
 
     -- only generate downlinks for duplex lpgbts
     tdc_gen : if (c_TDC_LINK_MAP(I).link_id /= -1) generate
+
 
       function interleave (even : std_logic_vector (7 downto 0); odd : std_logic_vector (7 downto 0))
         return std_logic_vector is
@@ -63,17 +66,28 @@ begin
       constant odd_id     : integer := c_TDC_LINK_MAP(I).odd_elink;
       constant station_id : integer := c_TDC_LINK_MAP(I).station_id;
 
+      attribute DONT_TOUCH             : string;
+      attribute MGT_INDEX              : integer;
+      attribute MGT_INDEX of sync_csm  : label is I;
+      attribute DONT_TOUCH of sync_csm : label is "true";
+      -- attribute MGT_INDEX of tdc_decoder  : label is I;
+      -- attribute DONT_TOUCH of tdc_decoder : label is "true";
+
+
     begin
 
-      assert (c_MGT_MAP(I).mgt_type = MGT_LPGBT or c_MGT_MAP(I).mgt_type = MGT_LPGBT_SIMPLEX) report "TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
+      assert false report " > Generating TDC Decoder #" & integer'image(idx) " on
+        MGT #" & integer'image(I) & " even elink = " & integer'image(even_id) & "
+        odd elink = " & integer'image(odd_id) severity note;
+
+      assert (c_MGT_MAP(I).mgt_type = MGT_LPGBT or c_MGT_MAP(I).mgt_type = MGT_LPGBT_SIMPLEX) report " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
 
       even_data        <= lpgbt_uplink_data(idx).data(8*(even_id+1)-1 downto 8*even_id);
       odd_data         <= lpgbt_uplink_data(idx).data(8*(odd_id +1)-1 downto 8* odd_id);
       valid            <= lpgbt_uplink_data(idx).valid;
       interleaved_data <= interleave (even_data, odd_data);
 
-      tdc_hits(I) <= tdc_hits_pre_cdc(I);
-
+      -- FIXME temp dummy
       -- tdc_decoder_inst : entity tdc.tdc_decoder
       --   port map (
       --     clock      => clock,
@@ -84,9 +98,28 @@ begin
 
       tdc_hits_pre_cdc(I).CSM       <= interleaved_data & interleaved_data;  -- FIXME temp dummy
       tdc_hits_pre_cdc(I).datavalid <= valid;
+
+      -- constants, don't need any CDC
       tdc_hits_pre_cdc(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_fiberid_width));
       tdc_hits_pre_cdc(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_elinkid_width));
       tdc_hits_pre_cdc(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_stationid_width));
+
+      -- constants, don't need any CDC
+      tdc_hits(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_fiberid_width));
+      tdc_hits(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_elinkid_width));
+      tdc_hits(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_stationid_width));
+
+      sync_csm : entity work.sync_cdc
+        generic map (
+          WIDTH    => tdc_hits_pre_cdc(I).CSM'length,
+          N_STAGES => 1)
+        port map (
+          clk_i   => pipeline_clock,
+          valid_i => tdc_hits_pre_cdc(I).datavalid,
+          data_i  => tdc_hits_pre_cdc(I).CSM,
+          valid_o => tdc_hits(I).datavalid,
+          data_o  => tdc_hits(I).CSM
+          );
 
     end generate;
   end generate;

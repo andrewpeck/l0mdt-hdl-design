@@ -113,7 +113,7 @@ begin
         gthtxn_out(0) => txn_o,
         gthtxp_out(0) => txp_o,
 
-        gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
+        -- gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
 
         gtwiz_userdata_tx_in  => mgt_word_i,
         gtwiz_userdata_rx_out => mgt_word_o,
@@ -142,7 +142,7 @@ begin
         gtwiz_reset_rx_done_out(0) => status_o.rx_reset_done,
         gtwiz_reset_tx_done_out(0) => status_o.tx_reset_done,
 
-        gtrefclk0_in(0) => mgt_refclk_i,
+        gtrefclk00_in(0) => mgt_refclk_i,
 
         gtpowergood_out(0)               => status_o.powergood,
         gtwiz_reset_rx_cdr_stable_out(0) => status_o.rxcdr_stable,
@@ -154,14 +154,14 @@ begin
         rxcommadet_out      => open,
         rxcommadeten_in     => xilinx_one,
         rxmcommaalignen_in  => xilinx_zero,
-        rxoutclk_out        => open,
         rxpcommaalignen_in  => xilinx_zero,
-        txoutclk_out        => open,
-        txpippmen_in        => xilinx_zero,
-        txpippmovrden_in    => xilinx_zero,
-        txpippmpd_in        => xilinx_zero,
-        txpippmsel_in       => xilinx_zero,
-        txpippmstepsize_in  => std_logic_vector (to_unsigned(0, 5))
+        rxoutclk_out        => open,
+        txoutclk_out        => open
+        --txpippmen_in        => xilinx_zero,
+        --txpippmovrden_in    => xilinx_zero,
+        --txpippmpd_in        => xilinx_zero,
+        --txpippmsel_in       => xilinx_zero,
+        --txpippmstepsize_in  => std_logic_vector (to_unsigned(0, 5))
         );
 
   end generate;
@@ -196,7 +196,7 @@ begin
         gtytxn_out(0) => txn_o,
         gtytxp_out(0) => txp_o,
 
-        gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
+        -- gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
 
         gtwiz_userdata_tx_in  => mgt_word_i,
         gtwiz_userdata_rx_out => mgt_word_o,
@@ -225,7 +225,7 @@ begin
         gtwiz_reset_rx_done_out(0) => status_o.rx_reset_done,
         gtwiz_reset_tx_done_out(0) => status_o.tx_reset_done,
 
-        gtrefclk0_in(0) => mgt_refclk_i,
+        gtrefclk00_in(0) => mgt_refclk_i,
 
         gtpowergood_out(0)               => status_o.powergood,
         gtwiz_reset_rx_cdr_stable_out(0) => status_o.rxcdr_stable,
@@ -239,12 +239,12 @@ begin
         rxmcommaalignen_in  => xilinx_zero,
         rxoutclk_out        => open,
         rxpcommaalignen_in  => xilinx_zero,
-        txoutclk_out        => open,
-        txpippmen_in        => xilinx_zero,
-        txpippmovrden_in    => xilinx_zero,
-        txpippmpd_in        => xilinx_zero,
-        txpippmsel_in       => xilinx_zero,
-        txpippmstepsize_in  => std_logic_vector (to_unsigned(0, 5))
+        txoutclk_out        => open
+        -- txpippmen_in        => xilinx_zero,
+        -- txpippmovrden_in    => xilinx_zero,
+        -- txpippmpd_in        => xilinx_zero,
+        -- txpippmsel_in       => xilinx_zero,
+        -- txpippmstepsize_in  => std_logic_vector (to_unsigned(0, 5))
         );
 
   end generate;

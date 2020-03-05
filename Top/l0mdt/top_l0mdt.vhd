@@ -77,6 +77,8 @@ architecture structural of top_mdtl0 is
   signal tts_commands          : TTS_CMD_rt;
   signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
   signal reset                 : std_logic;
+  signal framework_sump        : std_logic;
+  signal user_sump             : std_logic;
 
 begin
 
@@ -102,7 +104,7 @@ begin
       tts_commands          => tts_commands,
       daq_links             => daq_links,
       reset                 => reset,
-      sump                  => sump);
+      sump                  => framework_sump);
 
   top_user : entity framework.top_user
     port map (
@@ -116,6 +118,8 @@ begin
       tts_commands          => tts_commands,
       daq_links             => daq_links,
       reset                 => reset,
-      sump                  => sump);
+      sump                  => user_sump);
+
+  sump <= framework_sump or user_sump;
 
 end structural;
