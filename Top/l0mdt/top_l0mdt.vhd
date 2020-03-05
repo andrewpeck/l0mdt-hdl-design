@@ -15,7 +15,7 @@ use framework.board_pkg.all;
 use framework.board_pkg_common.all;
 
 
-entity mdtl0_top is
+entity top_mdtl0 is
   generic (
     -- these generics get set by hog at synthesis
     GLOBAL_FWDATE       : std_logic_vector (31 downto 0) := x"00000000";
@@ -63,9 +63,9 @@ entity mdtl0_top is
     sump : out std_logic
 
     );
-end mdtl0_top;
+end top_mdtl0;
 
-architecture structural of mdtl0_top is
+architecture structural of top_mdtl0 is
 
   signal pipeline_clock        : std_logic;
   signal ttc_commands          : TTC_CMD_rt;
@@ -104,17 +104,18 @@ begin
       reset                 => reset,
       sump                  => sump);
 
---  user_top: entity work.user_top_copy
---    port map (
---      reset                 => clock,
---      clock                 => clock,
---      ttc_commands          => ttc_commands,
---      tdc_hits              => tdc_hits,
---      endcap_slc_candidates => endcap_slc_candidates,
---      barrel_slc_candidates => barrel_slc_candidates,
---      endcap_slc_pipeline   => endcap_slc_pipeline,
---      barrel_slc_pipeline   => barrel_slc_pipeline,
---      tts_commands          => tts_commands,
---      daq_links             => daq_links);
+  top_user : entity framework.top_user
+    port map (
+      pipeline_clock        => pipeline_clock,
+      ttc_commands          => ttc_commands,
+      tdc_hits              => tdc_hits,
+      endcap_slc_candidates => endcap_slc_candidates,
+      barrel_slc_candidates => barrel_slc_candidates,
+      endcap_slc_pipeline   => endcap_slc_pipeline,
+      barrel_slc_pipeline   => barrel_slc_pipeline,
+      tts_commands          => tts_commands,
+      daq_links             => daq_links,
+      reset                 => reset,
+      sump                  => sump);
 
 end structural;

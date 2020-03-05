@@ -51,20 +51,24 @@ package board_pkg_common is
 
   type int_array_t is array (integer range <>) of integer;
 
-  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
+  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t;
+
+  function func_count_link_types (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
+    return integer;
+
 
 end package board_pkg_common;
 
 package body board_pkg_common is
 
-  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
+  function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t is
     variable count : integer := 0;
     variable idx   : int_array_t (0 to mgt_list'length-1);
   begin
     for I in 0 to mgt_list'length-1 loop
-      if (count < cnt_max and mgt_list(I).mgt_type = i_mgt_type) then
+      if (count < cnt_max and (mgt_list(I).mgt_type = i_mgt_type or mgt_list(I).mgt_type = i_mgt_type_alt)) then
         idx(I) := count;
         count  := count + 1;
       else
@@ -73,5 +77,17 @@ package body board_pkg_common is
     end loop;  -- I
     return idx;
   end func_fill_subtype_idx;
+
+  function func_count_link_types (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
+    return integer is
+    variable count : integer := 0;
+  begin
+    for I in 0 to mgt_list'length-1 loop
+      if (mgt_list(I).mgt_type = i_mgt_type) then
+        count  := count + 1;
+      end if;
+    end loop;
+    return count;
+  end func_count_link_types;
 
 end package body;

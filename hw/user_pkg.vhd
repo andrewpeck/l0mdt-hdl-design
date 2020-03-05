@@ -10,7 +10,10 @@ package user_pkg is
   --
   -- user values should be less than or equal to the board maximum
 
+  constant user_LPGBT_UPLINKS        : integer := -1;
+  constant user_LPGBT_DOWNLINKS      : integer := -1;
   constant user_CSM_LINKS            : integer := -1;  -- # of 1 tx + 2 rx csm links
+
   constant user_SECTOR_LOGIC_INPUTS  : integer := -1;
   constant user_SECTOR_LOGIC_OUTPUTS : integer := -1;
   constant user_SLC_ENDCAP_LINKS     : integer := 0;

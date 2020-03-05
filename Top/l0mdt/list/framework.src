@@ -15,6 +15,7 @@
 ../../hw/user_pkg.vhd 2008
 ../../hw/lpgbt/lpgbt_link_wrapper.vhd 2008
 ../../hw/lpgbt/lpgbt_emul_wrapper.vhd 2008
+../../hw/top_user.vhd 2008
 ../../hw/lpgbt/lpgbt_pkg.vhd 2008
 ../../hw/mgt/mgt_10g24_wrapper.vhd 2008
 ../../hw/mgt/mgt_sl_wrapper.vhd 2008

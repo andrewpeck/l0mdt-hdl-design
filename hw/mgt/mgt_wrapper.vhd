@@ -98,23 +98,23 @@ architecture Behavioral of mgt_wrapper is
   -- i.e. the user can REDUCE the # of each link type from the board maximum
   -- but obviously can't increase it
   --
-  function func_max_user_link_id (user_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
-    return integer is
-    variable count : integer := 0;
-  begin
-    for I in 0 to c_NUM_MGTS-1 loop
-      if mgt_list(I).mgt_type = i_mgt_type then
-        count := count + 1;
-        if (count = user_max) then
-          return count-1;
-        end if;
-      end if;
-    end loop;  -- I
-    return -1;
-  end func_max_user_link_id;
+  -- function func_max_user_link_id (user_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
+  --   return integer is
+  --   variable count : integer := 0;
+  -- begin
+  --   for I in 0 to c_NUM_MGTS-1 loop
+  --     if mgt_list(I).mgt_type = i_mgt_type then
+  --       count := count + 1;
+  --       if (count = user_max) then
+  --         return count-1;
+  --       end if;
+  --     end if;
+  --   end loop;  -- I
+  --   return -1;
+  -- end func_max_user_link_id;
 
-  constant LPGBT_LINK_MAX_ID : integer := func_max_user_link_id (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
-  constant SL_LINK_MAX_ID    : integer := func_max_user_link_id (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
+  -- constant LPGBT_LINK_MAX_ID : integer := func_max_user_link_id (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
+  -- constant SL_LINK_MAX_ID    : integer := func_max_user_link_id (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
 
 begin
 
@@ -122,8 +122,7 @@ begin
   -- Reset Tree
   --------------------------------------------------------------------------------
 
-
-  reset_fanout: process (clocks.clock40) is
+  reset_fanout : process (clocks.clock40) is
   begin  -- process reset_fanout
     if rising_edge(clocks.clock40) then  -- rising clock edge
       reset_tree <= (others => reset);
@@ -159,7 +158,6 @@ begin
   -- MGTS
   --------------------------------------------------------------------------------
 
-  assert false report "NUMBER of SL LINKS REQUESTED: " & integer'image(c_NUM_SECTOR_LOGIC_INPUTS) & " MAX LINK ID: " & integer'image(SL_LINK_MAX_ID) severity note;
   sl_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
     assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(sl_idx_array(I)) severity note;
   end generate;
@@ -171,13 +169,10 @@ begin
 
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
 
-    signal lpgbt_link_count : integer := 0;
-    signal sl_link_count    : integer := 0;
-
   begin
 
     assert false report "GENERATING MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
-    assert (c_MGT_MAP(I).refclk /= -1) and (c_MGT_MAP(I).refclk < c_NUM_REFCLKS) report "invalid refclk selected" severity error;
+    -- assert (c_MGT_MAP(I).refclk /= -1) and (c_MGT_MAP(I).refclk < c_NUM_REFCLKS) report "invalid refclk selected" severity error;
 
     --------------------------------------------------------------------------------
     -- LPGBT Type
@@ -185,18 +180,30 @@ begin
 
     lpgbt_gen : if (lpgbt_idx_array(I) /= -1) generate
 
-      attribute X_LOC           : integer;
-      attribute Y_LOC           : integer;
+      attribute X_LOC            : integer;
+      attribute Y_LOC            : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
       attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
 
       attribute DONT_TOUCH of MGT_GEN : label is "true";
 
+      constant downlink_idx : integer := lpgbt_downlink_idx_array(I);
+      constant uplink_idx   : integer := lpgbt_uplink_idx_array(I);
+
+      signal downlink_data : std_logic_vector (31 downto 0);
+
     begin
 
-      -- assert false report "LPGBT_LINK_MAX_ID=" & integer'image(LPGBT_LINK_MAX_ID) severity note;
 
+      downlink_data <= lpgbt_downlink_mgt_word_array_i(downlink_idx) when (downlink_idx /= -1) else x"00000000";
+
+      -- TODO: add refclk assert
       assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
+      assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
+      assert false report "uplink_idx=" & integer'image(uplink_idx) severity note;
+      --assert (c_REFCLK_TYPES (c_MGT_MAP(I).refclk) = REFCLK_SYNC320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+      assert (uplink_idx   <= c_NUM_LPGBT_UPLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_UPLINKS" severity error;
+      assert (downlink_idx <= c_NUM_LPGBT_DOWNLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_DOWNLINKS" severity error;
 
       MGT_GEN : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
@@ -210,10 +217,10 @@ begin
           mgt_txusrclk_active_i => not reset_tree(I),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => lpgbt_rxslide_i(lpgbt_idx_array(I)),
+          mgt_rxslide_i         => lpgbt_rxslide_i(uplink_idx),
           status_o              => open,
-          mgt_word_i            => lpgbt_downlink_mgt_word_array_i(lpgbt_idx_array(I)),
-          mgt_word_o            => lpgbt_uplink_mgt_word_array_o(lpgbt_idx_array(I)),
+          mgt_word_i            => downlink_data,
+          mgt_word_o            => lpgbt_uplink_mgt_word_array_o(uplink_idx),
           rxn_i                 => mgt_rx_p(I),
           rxp_i                 => mgt_rx_n(I),
           txn_o                 => mgt_tx_p(I),
@@ -221,12 +228,6 @@ begin
           mgt_drp_i             => mgt_drp_i(I),
           mgt_drp_o             => mgt_drp_o(I)
           );
-
-      -- santity check
-      lpgbt_link_count         <= lpgbt_link_count + 1;
-      assert (c_NUM_LPGBT_UPLINKS = c_NUM_LPGBT_DOWNLINKS) report "We only support symmetric # of LPGBT inputs / outputs for now" severity error;
-      assert (lpgbt_link_count <= c_NUM_LPGBT_UPLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_UPLINKS" severity error;
-      assert (lpgbt_link_count <= c_NUM_LPGBT_DOWNLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_DOWNLINKS" severity error;
 
     end generate lpgbt_gen;
 
@@ -236,21 +237,25 @@ begin
 
     sl_gen : if (sl_idx_array(I) /= -1) generate
 
-      attribute X_LOC           : integer;
-      attribute Y_LOC           : integer;
+      attribute X_LOC            : integer;
+      attribute Y_LOC            : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
       attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
 
+      constant idx : integer := sl_idx_array(I);
+
     begin
 
-      -- assert false report "LPGBT_LINK_MAX_ID=" & integer'image(LPGBT_LINK_MAX_ID) severity note;
-
-      assert false report "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " SL_LINK_CNT=" & integer'image(sl_idx_array(I)) severity note;
+      -- TODO: add refclk assert
+      --assert (c_REFCLK_TYPES (c_MGT_MAP(I).refclk) = REFCLK_SYNC240) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+      assert false report "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " SL_LINK_CNT=" & integer'image(idx) severity note;
+      assert (c_NUM_SECTOR_LOGIC_INPUTS = c_NUM_SECTOR_LOGIC_OUTPUTS) report "We only support symmetric # of SL inputs / outputs" severity error;
+      assert (idx <= c_NUM_SECTOR_LOGIC_OUTPUTS) report "conflict between # of sl links in board file and c_NUM_SECTOR_LOGIC_DOWNLINKS" severity error;
 
       MGT_GEN : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock                 => clocks.clock40,
+          clock                 => clocks.clock40,  -- FIXME: check this clock frequency
           reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock240,
@@ -260,11 +265,11 @@ begin
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
           status_o              => open,
-          txctrl0_in            => x"000" & sl_tx_ctrl_i(sl_idx_array(I)).ctrl0,
-          txctrl1_in            => x"000" & sl_tx_ctrl_i(sl_idx_array(I)).ctrl1,
-          txctrl2_in            =>   x"0" & sl_tx_ctrl_i(sl_idx_array(I)).ctrl2,
-          mgt_word_i            => sl_tx_mgt_word_array_i(sl_idx_array(I)),
-          mgt_word_o            => sl_rx_mgt_word_array_o(sl_idx_array(I)),
+          txctrl0_in            => x"000" & sl_tx_ctrl_i(idx).ctrl0,  -- FIXME: -- no idea how these work
+          txctrl1_in            => x"000" & sl_tx_ctrl_i(idx).ctrl1,
+          txctrl2_in            => x"0" & sl_tx_ctrl_i(idx).ctrl2,
+          mgt_word_i            => sl_tx_mgt_word_array_i(idx),
+          mgt_word_o            => sl_rx_mgt_word_array_o(idx),
           rxn_i                 => mgt_rx_p(I),
           rxp_i                 => mgt_rx_n(I),
           txn_o                 => mgt_tx_p(I),
@@ -272,12 +277,6 @@ begin
           mgt_drp_i             => mgt_drp_i(I),
           mgt_drp_o             => mgt_drp_o(I)
           );
-
-      -- santity check
-      sl_link_count         <= sl_link_count + 1;
-      assert (c_NUM_SECTOR_LOGIC_INPUTS = c_NUM_SECTOR_LOGIC_OUTPUTS) report "We only support symmetric # of SL inputs / outputs" severity error;
-      assert (sl_link_count <= c_NUM_SECTOR_LOGIC_INPUTS) report "conflict between # of sl links in board file and c_NUM_SECTOR_LOGIC_UPLINKS" severity error;
-      assert (sl_link_count <= c_NUM_SECTOR_LOGIC_OUTPUTS) report "conflict between # of sl links in board file and c_NUM_SECTOR_LOGIC_DOWNLINKS" severity error;
 
     end generate sl_gen;
 
