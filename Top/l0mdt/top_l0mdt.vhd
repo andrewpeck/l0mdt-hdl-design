@@ -2,17 +2,13 @@ library ieee;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
 
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
+
 library framework;
-use framework.constants_pkg.all;
-use framework.user_pkg.all;
-use framework.system_types_pkg.all;
-use framework.sector_logic_pkg.all;
-use framework.mdttp_types_pkg.all;
-use framework.lpgbt_pkg.all;
-use framework.constants_pkg.all;
-use framework.mgt_pkg.all;
 use framework.board_pkg.all;
-use framework.board_pkg_common.all;
+use framework.constants_pkg.all;
+use framework.system_types_pkg.all;
 
 
 entity top_mdtl0 is
@@ -120,6 +116,6 @@ begin
       reset                 => reset,
       sump                  => user_sump);
 
-  sump <= framework_sump or user_sump;
+  sump <= framework_sump xor user_sump;
 
 end structural;

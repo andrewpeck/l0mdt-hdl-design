@@ -3,19 +3,13 @@ use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library xil_defaultlib;
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
+use l0mdt_lib.mdttp_functions_pkg.all;
 
 library framework;
-
-use framework.all;
-use framework.sector_logic_pkg.all;
 use framework.system_types_pkg.all;
-use framework.mdttp_types_pkg.all;
-use framework.lpgbt_pkg.all;
 use framework.constants_pkg.all;
-use framework.mgt_pkg.all;
-use framework.board_pkg.all;
-use framework.board_pkg_common.all;
 
 entity top_user is
 
@@ -81,15 +75,15 @@ begin
     if pipeline_clock'event and pipeline_clock = '1' then  -- rising clock edge
 
       tdc_sump_loop : for I in 0 to c_NUM_TDC_INPUTS-1 loop
-        tdc_hit_sump(I) <= xor_reduce(tdc_hits(I).csm);
+        tdc_hit_sump(I) <= xor_reduce(tdcformat_2af(tdc_hits(I)));
       end loop;
 
       barrel_sump_loop : for I in 0 to c_NUM_SL_BARREL_CANDIDATES-1 loop
-        barrel_hit_sump(I) <= xor_reduce(barrel_slc_candidates(I).SLC_COMMON);
+        barrel_hit_sump(I) <= xor_reduce(slc_barrel_2af(barrel_slc_candidates(I)));
       end loop;
 
       endcap_sump_loop : for I in 0 to c_NUM_SL_ENDCAP_CANDIDATES-1 loop
-        endcap_hit_sump(I) <= xor_reduce(endcap_slc_candidates(I).SLC_COMMON);
+        endcap_hit_sump(I) <= xor_reduce(slc_endcap_2af(endcap_slc_candidates(I)));
       end loop;
 
       sump <= xor_reduce(tdc_hit_sump) xor xor_reduce (barrel_hit_sump) xor xor_reduce (endcap_hit_sump);

@@ -2,11 +2,8 @@
 ../../IP/mgt_10g24_gth/mgt_10g24_gth.xci
 ../../IP/mgt_10g24_gty/mgt_10g24_gty.xci
 ../../IP/mgt_9g6_gth/mgt_9g6_gth.xci
-
-../../hw/l0mdt_buses_constants.vhdl 2008
 ../../hw/top_framework.vhd 2008
 ../../hw/sl/sector_logic_pkg.vhd 2008
-../../hw/l0mdt_buses_types_pkg.vhd 2008
 ../../hw/mgt/mgt_pkg.vhd 2008
 ../../hw/system_types_pkg.vhd 2008
 ../../hw/board_pkg.vhd 2008

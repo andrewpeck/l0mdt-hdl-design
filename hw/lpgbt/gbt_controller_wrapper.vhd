@@ -3,16 +3,15 @@ use IEEE.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
+
 library framework;
 use framework.all;
-use framework.sector_logic_pkg.all;
 use framework.system_types_pkg.all;
-use framework.mdttp_types_pkg.all;
 use framework.lpgbt_pkg.all;
 use framework.constants_pkg.all;
-use framework.mgt_pkg.all;
 use framework.board_pkg.all;
-use framework.board_pkg_common.all;
 
 entity gbt_controller_wrapper is
   port(

@@ -1,7 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-use work.mdttp_types_pkg.all;
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
 
 package system_types_pkg is
 

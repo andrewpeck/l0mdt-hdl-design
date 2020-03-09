@@ -5,12 +5,15 @@ use ieee.numeric_std.all;
 
 library xil_defaultlib;
 
-library framework;
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
+use l0mdt_lib.mdttp_functions_pkg.all;
+use l0mdt_lib.mdttp_constants_pkg.all;
 
+library framework;
 use framework.all;
 use framework.sector_logic_pkg.all;
 use framework.system_types_pkg.all;
-use framework.mdttp_types_pkg.all;
 use framework.lpgbt_pkg.all;
 use framework.constants_pkg.all;
 use framework.mgt_pkg.all;
@@ -317,15 +320,6 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  TDC_sump_loop : for I in 0 to c_NUM_TDC_INPUTS-1 generate
-    data_loop : process (clocks.clock320) is
-    begin  -- process data_loop
-      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-        tdc_sump(I) <= xor_reduce(tdc_hits(I).csm);
-      end if;
-    end process data_loop;
-  end generate;
-
   lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
     data_loop : process (clocks.clock320) is
     begin  -- process data_loop
@@ -348,7 +342,7 @@ begin  -- architecture behavioral
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
     if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-      sump <= xor_reduce (lpgbt_uplink_sump) xor xor_reduce(tdc_sump);
+      sump <= xor_reduce (lpgbt_uplink_sump);
     end if;
   end process data_loop;
 

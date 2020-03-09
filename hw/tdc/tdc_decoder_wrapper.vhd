@@ -3,16 +3,17 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library l0mdt_lib;
+use l0mdt_lib.mdttp_types_pkg.all;
+use l0mdt_lib.mdttp_constants_pkg.all;
+use l0mdt_lib.mdttp_functions_pkg.all;
+
 library framework;
-use framework.all;
 use framework.board_pkg.all;
 use framework.board_pkg_common.all;
 use framework.constants_pkg.all;
-use framework.lpgbt_pkg.all;
-use framework.mdttp_types_pkg.all;
-use framework.mdttp_pkg.all;
-use framework.mgt_pkg.all;
 use framework.system_types_pkg.all;
+use framework.lpgbt_pkg.all;
 
 entity tdc_decoder_wrapper is
   port(
@@ -61,6 +62,8 @@ begin
       signal interleaved_data : std_logic_vector (15 downto 0);
       signal valid            : std_logic;
 
+      signal tdc_sync_out : TDC_at;
+
       constant idx        : integer := lpgbt_uplink_idx_array(I);
       constant even_id    : integer := c_TDC_LINK_MAP(I).even_elink;
       constant odd_id     : integer := c_TDC_LINK_MAP(I).odd_elink;
@@ -76,11 +79,12 @@ begin
 
     begin
 
-      assert false report " > Generating TDC Decoder #" & integer'image(idx) " on
-        MGT #" & integer'image(I) & " even elink = " & integer'image(even_id) & "
-        odd elink = " & integer'image(odd_id) severity note;
+      assert false report " > Generating TDC Decoder #" & integer'image(idx)  & " on MGT #"
+        & integer'image(I) & " even elink = " & integer'image(even_id) &
+        " odd elink = " & integer'image(odd_id) severity note;
 
-      assert (c_MGT_MAP(I).mgt_type = MGT_LPGBT or c_MGT_MAP(I).mgt_type = MGT_LPGBT_SIMPLEX) report " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
+      assert (c_MGT_MAP(I).mgt_type = MGT_LPGBT or c_MGT_MAP(I).mgt_type = MGT_LPGBT_SIMPLEX) report
+        " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
 
       even_data        <= lpgbt_uplink_data(idx).data(8*(even_id+1)-1 downto 8*even_id);
       odd_data         <= lpgbt_uplink_data(idx).data(8*(odd_id +1)-1 downto 8* odd_id);
@@ -96,30 +100,32 @@ begin
       --     tdc_hit_o  => tdc_hits_pre_cdc(I)
       -- );
 
-      tdc_hits_pre_cdc(I).CSM       <= interleaved_data & interleaved_data;  -- FIXME temp dummy
+      tdc_hits_pre_cdc(I).tdc_r     <= tdc_2rf (interleaved_data & interleaved_data);  -- FIXME temp dummy
       tdc_hits_pre_cdc(I).datavalid <= valid;
 
       -- constants, don't need any CDC
-      tdc_hits_pre_cdc(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_fiberid_width));
-      tdc_hits_pre_cdc(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_elinkid_width));
-      tdc_hits_pre_cdc(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_stationid_width));
+      tdc_hits_pre_cdc(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_FIBERID_LEN));
+      tdc_hits_pre_cdc(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_ELINKID_LEN));
+      tdc_hits_pre_cdc(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_STATIONID_LEN));
 
       -- constants, don't need any CDC
-      tdc_hits(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_fiberid_width));
-      tdc_hits(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_elinkid_width));
-      tdc_hits(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_stationid_width));
+      tdc_hits(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_FIBERID_LEN));
+      tdc_hits(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_ELINKID_LEN));
+      tdc_hits(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_STATIONID_LEN));
 
       sync_csm : entity work.sync_cdc
         generic map (
-          WIDTH    => tdc_hits_pre_cdc(I).CSM'length,
+          WIDTH    => TDC_LEN,
           N_STAGES => 1)
         port map (
           clk_i   => pipeline_clock,
           valid_i => tdc_hits_pre_cdc(I).datavalid,
-          data_i  => tdc_hits_pre_cdc(I).CSM,
+          data_i  => tdc_2af(tdc_hits_pre_cdc(I).tdc_r),
           valid_o => tdc_hits(I).datavalid,
-          data_o  => tdc_hits(I).CSM
+          data_o  => tdc_sync_out
           );
+
+          tdc_hits(I).tdc_r <= tdc_2rf(tdc_sync_out);
 
     end generate;
   end generate;
