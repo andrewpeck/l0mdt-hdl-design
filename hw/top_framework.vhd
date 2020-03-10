@@ -139,6 +139,9 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
+  -- FIXME: replace with a true freeclk
+  clocks.freeclk <= clocks.clock40;
+
   framework_mmcm_inst : entity xil_defaultlib.framework_mmcm
     port map (
       clk_out40        => clocks.clock40,

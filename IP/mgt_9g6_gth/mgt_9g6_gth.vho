@@ -57,6 +57,14 @@ COMPONENT mgt_9g6_gth
     gtwiz_userclk_tx_reset_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_userclk_tx_active_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_userclk_rx_active_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_reset_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_start_user_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_done_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_error_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_rx_reset_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_rx_start_user_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_rx_done_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_rx_error_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_clk_freerun_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_all_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_tx_pll_and_datapath_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
@@ -111,6 +119,14 @@ your_instance_name : mgt_9g6_gth
     gtwiz_userclk_tx_reset_in => gtwiz_userclk_tx_reset_in,
     gtwiz_userclk_tx_active_in => gtwiz_userclk_tx_active_in,
     gtwiz_userclk_rx_active_in => gtwiz_userclk_rx_active_in,
+    gtwiz_buffbypass_tx_reset_in => gtwiz_buffbypass_tx_reset_in,
+    gtwiz_buffbypass_tx_start_user_in => gtwiz_buffbypass_tx_start_user_in,
+    gtwiz_buffbypass_tx_done_out => gtwiz_buffbypass_tx_done_out,
+    gtwiz_buffbypass_tx_error_out => gtwiz_buffbypass_tx_error_out,
+    gtwiz_buffbypass_rx_reset_in => gtwiz_buffbypass_rx_reset_in,
+    gtwiz_buffbypass_rx_start_user_in => gtwiz_buffbypass_rx_start_user_in,
+    gtwiz_buffbypass_rx_done_out => gtwiz_buffbypass_rx_done_out,
+    gtwiz_buffbypass_rx_error_out => gtwiz_buffbypass_rx_error_out,
     gtwiz_reset_clk_freerun_in => gtwiz_reset_clk_freerun_in,
     gtwiz_reset_all_in => gtwiz_reset_all_in,
     gtwiz_reset_tx_pll_and_datapath_in => gtwiz_reset_tx_pll_and_datapath_in,

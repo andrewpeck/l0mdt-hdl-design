@@ -15,6 +15,8 @@ use work.board_pkg.all;
 use work.board_pkg_common.all;
 use work.sector_logic_pkg.all;
 
+-- FIXME: need to use a freerunning clock for statemachine startup ???
+
 entity mgt_wrapper is
   port(
 
@@ -78,8 +80,9 @@ end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
 
+  signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
+
   attribute DONT_TOUCH               : string;
-  signal reset_tree                  : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
   signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -139,6 +142,10 @@ begin
 
     assert false report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
 
+    --------------------------------------------------------------------------------
+    -- GTH Common
+    --------------------------------------------------------------------------------
+
     refclk_ibufds : ibufds_gte4
       generic map(
         REFCLK_EN_TX_PATH  => '0',
@@ -152,6 +159,32 @@ begin
         I     => refclk_i_p(I),
         IB    => refclk_i_n(I)
         );
+
+    --------------------------------------------------------------------------------
+    -- GTH Common
+    --------------------------------------------------------------------------------
+
+    -- https://www.xilinx.com/support/documentation/user_guides/ug576-ultrascale-gth-transceivers.pdf
+    -- In the case of a single reference clock, connect the reference clock to
+    -- the GTREFCLK00 and GTREFCLK01 ports, and tie the QPLL0REFCLKSEL and
+    -- QPLL1REFCLKSEL ports to 3'b001. The Xilinx software tools will handle the
+    -- complexity of the multiplexers and associated routing.
+
+    -- mgt_common_wrapper_inst : entity framework.mgt_common_wrapper
+    --   port map (
+    --     gtrefclk00 => refclk(I),
+    --     gtrefclk01 => refclk(I),
+    --     qpll0reset => or_reduce ( -- these should come from the gtys / gths, -- TODO: need to drive the reset
+    --     qpll1reset => '0',
+
+    --     qpll0lock          => qpll0lock,
+    --     qpll0outclk_out    => qpll0outclk_out,
+    --     qpll0outrefclk_out => qpll0outrefclk_out,
+    --     qpll1lock          => qpll1lock,
+    --     qpll1outclk_out    => qpll1outclk_out,
+    --     qpll1outrefclk_out => qpll1outrefclk_out
+    --     );
+
   end generate;
 
   --------------------------------------------------------------------------------
@@ -208,7 +241,7 @@ begin
       MGT_GEN : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock                 => clocks.clock40,
+          free_clock            => clocks.freeclk,
           reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock320,
@@ -255,7 +288,7 @@ begin
       MGT_GEN : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock                 => clocks.clock40,  -- FIXME: check this clock frequency
+          clock                 => clocks.clock40,                    -- FIXME: check this clock frequency
           reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock240,
@@ -267,7 +300,7 @@ begin
           status_o              => open,
           txctrl0_in            => x"000" & sl_tx_ctrl_i(idx).ctrl0,  -- FIXME: -- no idea how these work
           txctrl1_in            => x"000" & sl_tx_ctrl_i(idx).ctrl1,
-          txctrl2_in            => x"0" & sl_tx_ctrl_i(idx).ctrl2,
+          txctrl2_in            => x"0"   & sl_tx_ctrl_i(idx).ctrl2,
           mgt_word_i            => sl_tx_mgt_word_array_i(idx),
           mgt_word_o            => sl_rx_mgt_word_array_o(idx),
           rxn_i                 => mgt_rx_p(I),

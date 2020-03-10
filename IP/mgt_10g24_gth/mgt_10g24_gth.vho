@@ -54,8 +54,13 @@
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
 COMPONENT mgt_10g24_gth
   PORT (
+    gtwiz_userclk_tx_reset_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_userclk_tx_active_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_userclk_rx_active_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_reset_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_start_user_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_done_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtwiz_buffbypass_tx_error_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_clk_freerun_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_all_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_reset_tx_pll_and_datapath_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
@@ -67,9 +72,6 @@ COMPONENT mgt_10g24_gth
     gtwiz_reset_rx_done_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtwiz_userdata_tx_in : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
     gtwiz_userdata_rx_out : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-    gtrefclk00_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-    qpll0outclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    qpll0outrefclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     drpaddr_in : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
     drpclk_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     drpdi_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -77,6 +79,7 @@ COMPONENT mgt_10g24_gth
     drpwe_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gthrxn_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gthrxp_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    gtrefclk0_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxcommadeten_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxmcommaalignen_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxpcommaalignen_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
@@ -96,7 +99,8 @@ COMPONENT mgt_10g24_gth
     rxoutclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     txoutclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    txpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+    txpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    txprgdivresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -107,8 +111,13 @@ END COMPONENT;
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
 your_instance_name : mgt_10g24_gth
   PORT MAP (
+    gtwiz_userclk_tx_reset_in => gtwiz_userclk_tx_reset_in,
     gtwiz_userclk_tx_active_in => gtwiz_userclk_tx_active_in,
     gtwiz_userclk_rx_active_in => gtwiz_userclk_rx_active_in,
+    gtwiz_buffbypass_tx_reset_in => gtwiz_buffbypass_tx_reset_in,
+    gtwiz_buffbypass_tx_start_user_in => gtwiz_buffbypass_tx_start_user_in,
+    gtwiz_buffbypass_tx_done_out => gtwiz_buffbypass_tx_done_out,
+    gtwiz_buffbypass_tx_error_out => gtwiz_buffbypass_tx_error_out,
     gtwiz_reset_clk_freerun_in => gtwiz_reset_clk_freerun_in,
     gtwiz_reset_all_in => gtwiz_reset_all_in,
     gtwiz_reset_tx_pll_and_datapath_in => gtwiz_reset_tx_pll_and_datapath_in,
@@ -120,9 +129,6 @@ your_instance_name : mgt_10g24_gth
     gtwiz_reset_rx_done_out => gtwiz_reset_rx_done_out,
     gtwiz_userdata_tx_in => gtwiz_userdata_tx_in,
     gtwiz_userdata_rx_out => gtwiz_userdata_rx_out,
-    gtrefclk00_in => gtrefclk00_in,
-    qpll0outclk_out => qpll0outclk_out,
-    qpll0outrefclk_out => qpll0outrefclk_out,
     drpaddr_in => drpaddr_in,
     drpclk_in => drpclk_in,
     drpdi_in => drpdi_in,
@@ -130,6 +136,7 @@ your_instance_name : mgt_10g24_gth
     drpwe_in => drpwe_in,
     gthrxn_in => gthrxn_in,
     gthrxp_in => gthrxp_in,
+    gtrefclk0_in => gtrefclk0_in,
     rxcommadeten_in => rxcommadeten_in,
     rxmcommaalignen_in => rxmcommaalignen_in,
     rxpcommaalignen_in => rxpcommaalignen_in,
@@ -149,7 +156,8 @@ your_instance_name : mgt_10g24_gth
     rxoutclk_out => rxoutclk_out,
     rxpmaresetdone_out => rxpmaresetdone_out,
     txoutclk_out => txoutclk_out,
-    txpmaresetdone_out => txpmaresetdone_out
+    txpmaresetdone_out => txpmaresetdone_out,
+    txprgdivresetdone_out => txprgdivresetdone_out
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

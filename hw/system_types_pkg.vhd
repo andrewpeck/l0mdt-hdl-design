@@ -11,8 +11,18 @@ package system_types_pkg is
   constant std_logic_1 : std_logic := '1';
   constant std_logic_0 : std_logic := '1';
 
+  type gtcommon_rt is record
+    refclk       : std_logic;
+    refclk01       : std_logic;
+    clock40        : std_logic;
+    clock320       : std_logic;
+    clock240       : std_logic;
+    clock_pipeline : std_logic;
+  end record;
+
   type system_clocks_rt is record
     locked         : std_logic;
+    freeclk        : std_logic;
     clock40        : std_logic;
     clock320       : std_logic;
     clock240       : std_logic;
@@ -24,6 +34,8 @@ package system_types_pkg is
   type SLC_ENDCAP_rt_array is array (integer range <>) of SLC_ENDCAP_rt;
   type SLC_BARREL_rt_array is array (integer range <>) of SLC_BARREL_rt;
   type TDCFORMAT_rt_array is array (integer range <>) of TDCFORMAT_rt;
+
+
 
   type DAQ_LINK_rt is record
     dummy : std_logic_vector (1 downto 0);
