@@ -3,7 +3,6 @@
 ../../IP/mgt_10g24_gty/mgt_10g24_gty.xci
 ../../IP/mgt_9g6_gth/mgt_9g6_gth.xci
 ../../hw/top_framework.vhd 2008
-../../hw/sl/sector_logic_pkg.vhd 2008
 ../../hw/mgt/mgt_pkg.vhd 2008
 ../../hw/system_types_pkg.vhd 2008
 ../../hw/board_pkg.vhd 2008
@@ -17,11 +16,15 @@
 ../../hw/lpgbt/gbt_unstuffer.vhd
 ../../hw/lpgbt/gbt_controller_wrapper.vhd
 ../../hw/tdc/tdc_decoder_wrapper.vhd
+../../hw/tdc/tdc_decoder.vhd
 ../../hw/lpgbt/gbt_ic_tx.vhd
 ../../hw/top_user.vhd 2008
 ../../hw/sync_cdc.vhd 2008
 ../../hw/lpgbt/lpgbt_pkg.vhd 2008
 ../../hw/mgt/mgt_10g24_wrapper.vhd 2008
-../../hw/mgt/mgt_sl_wrapper.vhd 2008
 ../../hw/mgt/mgt_wrapper.vhd 2008
+
 ../../hw/sl/sector_logic_link_wrapper.vhd 2008
+../../hw/sl/sector_logic_pkg.vhd 2008
+../../hw/mgt/mgt_sl_wrapper.vhd 2008
+../../IP/sl_mmcm/sl_mmcm.xci

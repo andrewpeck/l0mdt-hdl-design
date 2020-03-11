@@ -35,9 +35,10 @@ package mgt_pkg is
     tx_pma_reset_done       : std_logic;
     tx_reset_done           : std_logic;
     rx_reset_done           : std_logic;
-    tx_piphase              : std_logic_vector(6 downto 0);
     buffbypass_tx_done_out  : std_logic;
     buffbypass_tx_error_out : std_logic;
+    buffbypass_rx_done_out  : std_logic;
+    buffbypass_rx_error_out : std_logic;
   end record;
   type mgt_status_rt_array is array (integer range <>) of mgt_status_rt;
 

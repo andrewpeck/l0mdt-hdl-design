@@ -21,9 +21,11 @@ package system_types_pkg is
   end record;
 
   type system_clocks_rt is record
+    sl_locked      : std_logic;
     locked         : std_logic;
-    freeclk        : std_logic;
+    freeclock      : std_logic;
     clock40        : std_logic;
+    clock300       : std_logic;
     clock320       : std_logic;
     clock240       : std_logic;
     clock_pipeline : std_logic;

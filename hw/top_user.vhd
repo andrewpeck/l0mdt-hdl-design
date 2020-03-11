@@ -51,24 +51,9 @@ architecture behavioral of top_user is
   signal tdc_hit_sump    : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   signal endcap_hit_sump : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
   signal barrel_hit_sump : std_logic_vector (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
+  signal clk       : std_logic;
 
 begin
-
-  -- hit_processor: entity work.hit_processor
-  -- generic map (
-  --     radius   => radius,
-  --     tube_min => tube_min,
-  --     tube_max => tube_max)
-  -- port map (
-  --     clk              => clk,
-  --     Reset_b          => Reset_b,
-  --     enable           => enable,
-  --     i_muonCand_data  => i_muonCand_data,
-  --     i_tdc_data       => i_tdc_data,
-  --     i_tdc_valid      => i_tdc_valid,
-  --     o_segFinder_data => o_segFinder_data,
-  --     o_data_valid     => o_data_valid
-  -- );
 
   sump_proc : process (pipeline_clock) is
   begin  -- process tdc_hit_sump_proc

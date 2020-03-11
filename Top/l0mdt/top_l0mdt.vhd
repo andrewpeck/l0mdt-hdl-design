@@ -10,6 +10,9 @@ use framework.board_pkg.all;
 use framework.constants_pkg.all;
 use framework.system_types_pkg.all;
 
+-- library c2c;
+-- use c2c.axiRegPkg.all;
+
 
 entity top_mdtl0 is
   generic (

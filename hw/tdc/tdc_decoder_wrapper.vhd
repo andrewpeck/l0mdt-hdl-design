@@ -31,7 +31,6 @@ entity tdc_decoder_wrapper is
     );
 end tdc_decoder_wrapper;
 
-
 architecture behavioral of tdc_decoder_wrapper is
 
   signal tdc_hits_pre_cdc : TDCFORMAT_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
@@ -44,7 +43,8 @@ begin
   begin
 
     -- only generate downlinks for duplex lpgbts
-    tdc_gen : if (c_TDC_LINK_MAP(I).link_id /= -1) generate
+    -- TODO: add some user_pkg override for controlling this in a more reasonable way
+    tdc_gen : if (c_TDC_LINK_MAP(I).link_id /= -1 and lpgbt_uplink_idx_array(I) /= -1) generate
 
 
       function interleave (even : std_logic_vector (7 downto 0); odd : std_logic_vector (7 downto 0))
@@ -62,7 +62,7 @@ begin
       signal interleaved_data : std_logic_vector (15 downto 0);
       signal valid            : std_logic;
 
-      signal tdc_sync_out : TDC_at;
+      signal tdc_hit_vector : TDC_at;
 
       constant idx        : integer := lpgbt_uplink_idx_array(I);
       constant even_id    : integer := c_TDC_LINK_MAP(I).even_elink;
@@ -79,7 +79,7 @@ begin
 
     begin
 
-      assert false report " > Generating TDC Decoder #" & integer'image(idx)  & " on MGT #"
+      assert false report " > Generating TDC Decoder #" & integer'image(idx) & " on MGT #"
         & integer'image(I) & " even elink = " & integer'image(even_id) &
         " odd elink = " & integer'image(odd_id) severity note;
 
@@ -91,27 +91,21 @@ begin
       valid            <= lpgbt_uplink_data(idx).valid;
       interleaved_data <= interleave (even_data, odd_data);
 
-      -- FIXME temp dummy
-      -- tdc_decoder_inst : entity tdc.tdc_decoder
-      --   port map (
-      --     clock      => clock,
-      --     data => interleaved_data,
-      --     valid => valid,
-      --     tdc_hit_o  => tdc_hits_pre_cdc(I)
-      -- );
+      tdc_decoder_inst : entity tdc.tdc_decoder
+        generic map (
+          fiberid   => TDCFORMAT_FIBERID_LEN,
+          elinkid   => TDCFORMAT_ELINKID_LEN,
+          stationid => TDCFORMAT_STATIONID_LEN
+          )
+        port map (
+          clock     => clock,
+          data      => interleaved_data,
+          valid     => valid,
+          tdc_hit_o => tdc_hits_pre_cdc(I)
+          );
 
-      tdc_hits_pre_cdc(I).tdc_r     <= tdc_2rf (interleaved_data & interleaved_data);  -- FIXME temp dummy
-      tdc_hits_pre_cdc(I).datavalid <= valid;
-
-      -- constants, don't need any CDC
-      tdc_hits_pre_cdc(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_FIBERID_LEN));
-      tdc_hits_pre_cdc(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_ELINKID_LEN));
-      tdc_hits_pre_cdc(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_STATIONID_LEN));
-
-      -- constants, don't need any CDC
-      tdc_hits(I).fiberid   <= std_logic_vector(to_unsigned(I, TDCFORMAT_FIBERID_LEN));
-      tdc_hits(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCFORMAT_ELINKID_LEN));
-      tdc_hits(I).stationid <= std_logic_vector(to_unsigned(station_id, TDCFORMAT_STATIONID_LEN));
+      -- constants don't need any CDC, only cross clocks with the 32 bit hit
+      -- data + valid flag
 
       sync_csm : entity work.sync_cdc
         generic map (
@@ -122,10 +116,10 @@ begin
           valid_i => tdc_hits_pre_cdc(I).datavalid,
           data_i  => tdc_2af(tdc_hits_pre_cdc(I).tdc_r),
           valid_o => tdc_hits(I).datavalid,
-          data_o  => tdc_sync_out
+          data_o  => tdc_hit_vector
           );
 
-          tdc_hits(I).tdc_r <= tdc_2rf(tdc_sync_out);
+      tdc_hits(I).tdc_r <= tdc_2rf(tdc_hit_vector);
 
     end generate;
   end generate;

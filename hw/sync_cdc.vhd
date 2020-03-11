@@ -13,9 +13,9 @@ use ieee.numeric_std.all;
 
 entity sync_cdc is
   generic (
-    WIDTH    : integer := 1; -- set to 1 to introduce 2 clocks of latency and
-                             -- make sure to set a datapath only max_delay of
-                             -- less than 2 clocks to the data_o ffs
+    WIDTH    : integer := 1;            -- set to 1 to introduce 2 clocks of latency and
+    -- make sure to set a datapath only max_delay of
+    -- less than 2 clocks to the data_o ffs
     N_STAGES : integer := 1
     );
   port (
@@ -63,12 +63,14 @@ begin
     process (clk_i)
     begin
 
-      if (rising_edge(clk_i) and s_resync(N_STAGES) = '1') then
-        data_o <= data_i;
-      end if;
-
       if (rising_edge(clk_i)) then
+
+        if (s_resync(N_STAGES) = '1') then
+          data_o <= data_i;
+        end if;
+
         valid_o <= s_resync(N_STAGES);
+
       end if;
 
     end process;

@@ -38,15 +38,15 @@ architecture Behavioral of gbt_controller_wrapper is
 
   --  downlink to lpgbt
   signal gbt_chip_address_i       : std_logic_vector(6 downto 0)  := (others => '0');
-  signal gbt_downlink_ic_o  : std_logic_vector(1 downto 0);
+  signal gbt_downlink_ic_o        : std_logic_vector(1 downto 0);
   signal gbt_downlink_address_i   : std_logic_vector(15 downto 0) := (others => '0');
   signal gbt_downlink_data_i      : std_logic_vector(31 downto 0) := (others => '0');
   signal gbt_downlink_length_i    : std_logic_vector(15 downto 0) := (others => '0');
   signal gbt_downlink_parity_ok_o : std_logic;
   signal gbt_downlink_valid_i     : std_logic                     := '0';
-  signal gbt_ic_read_req_i      : std_logic := '0';
-  signal gbt_ic_write_done_o    : std_logic;
-  signal gbt_ic_write_req_i     : std_logic := '0';
+  signal gbt_ic_read_req_i        : std_logic                     := '0';
+  signal gbt_ic_write_done_o      : std_logic;
+  signal gbt_ic_write_req_i       : std_logic                     := '0';
 
   --  uplink from lpgbt
   signal gbt_uplink_ic_i        : std_logic_vector(1 downto 0);

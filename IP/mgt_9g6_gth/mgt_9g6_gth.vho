@@ -47,7 +47,7 @@
 -- DO NOT MODIFY THIS FILE.
 
 -- IP VLNV: xilinx.com:ip:gtwizard_ultrascale:1.7
--- IP Revision: 4
+-- IP Revision: 7
 
 -- The following code must appear in the VHDL architecture header.
 
@@ -85,6 +85,7 @@ COMPONENT mgt_9g6_gth
     gthrxp_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     gtrefclk0_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rx8b10ben_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
+    rxslide_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxusrclk_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxusrclk2_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
     tx8b10ben_in : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
@@ -105,7 +106,8 @@ COMPONENT mgt_9g6_gth
     rxoutclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     rxpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
     txoutclk_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
-    txpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
+    txpmaresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0);
+    txprgdivresetdone_out : OUT STD_LOGIC_VECTOR(0 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -147,6 +149,7 @@ your_instance_name : mgt_9g6_gth
     gthrxp_in => gthrxp_in,
     gtrefclk0_in => gtrefclk0_in,
     rx8b10ben_in => rx8b10ben_in,
+    rxslide_in => rxslide_in,
     rxusrclk_in => rxusrclk_in,
     rxusrclk2_in => rxusrclk2_in,
     tx8b10ben_in => tx8b10ben_in,
@@ -167,7 +170,8 @@ your_instance_name : mgt_9g6_gth
     rxoutclk_out => rxoutclk_out,
     rxpmaresetdone_out => rxpmaresetdone_out,
     txoutclk_out => txoutclk_out,
-    txpmaresetdone_out => txpmaresetdone_out
+    txpmaresetdone_out => txpmaresetdone_out,
+    txprgdivresetdone_out => txprgdivresetdone_out
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

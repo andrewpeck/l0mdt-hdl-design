@@ -23,7 +23,8 @@ entity mgt_sl_wrapper is
 
     clock : in std_logic;
 
-    reset : in std_logic;
+    reset_i : in std_logic;
+
 
     mgt_refclk_i : in std_logic;
 
@@ -35,6 +36,13 @@ entity mgt_sl_wrapper is
     txctrl0_in : in std_logic_vector(15 downto 0);
     txctrl1_in : in std_logic_vector(15 downto 0);
     txctrl2_in : in std_logic_vector(7 downto 0);
+
+    rxctrl0_out : out std_logic_vector(15 downto 0);
+    rxctrl1_out : out std_logic_vector(15 downto 0);
+    rxctrl2_out : out std_logic_vector(7 downto 0);
+    rxctrl3_out : out std_logic_vector(7 downto 0);
+
+    rx_slide_i : in std_logic;
 
     --=============--
     -- resets      --
@@ -88,7 +96,7 @@ begin
     attribute X_LOC of MGT_GEN : label is c_MGT_MAP(index).x_loc;
     attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(index).y_loc;
 
-    attribute NUM_MGTS            : integer; -- need it somewhere more handy actually...
+    attribute NUM_MGTS            : integer;              -- need it somewhere more handy actually...
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
 
   begin
@@ -133,6 +141,18 @@ begin
         gtwiz_reset_rx_datapath_in(0)         => rx_resets_i.reset_datapath,
         gtwiz_reset_tx_datapath_in(0)         => tx_resets_i.reset_datapath,
 
+        -- buffer bypass
+        gtwiz_buffbypass_tx_reset_in(0)      => tx_resets_i.reset_bufbypass,
+        gtwiz_buffbypass_tx_start_user_in(0) => '0',
+        gtwiz_buffbypass_tx_done_out(0)      => status_o.buffbypass_tx_done_out,
+        gtwiz_buffbypass_tx_error_out(0)     => status_o.buffbypass_tx_error_out,
+
+        gtwiz_buffbypass_rx_reset_in(0)      => rx_resets_i.reset_bufbypass,
+        gtwiz_buffbypass_rx_start_user_in(0) => '0',
+        gtwiz_buffbypass_rx_done_out(0)      => status_o.buffbypass_rx_done_out,
+        gtwiz_buffbypass_rx_error_out(0)     => status_o.buffbypass_rx_error_out,
+
+        --
         rxpmaresetdone_out(0)      => status_o.rx_pma_reset_done,
         txpmaresetdone_out(0)      => status_o.tx_pma_reset_done,
         gtwiz_reset_rx_done_out(0) => status_o.rx_reset_done,
@@ -143,22 +163,24 @@ begin
         gtpowergood_out(0)               => status_o.powergood,
         gtwiz_reset_rx_cdr_stable_out(0) => status_o.rxcdr_stable,
 
-        gtwiz_reset_all_in(0) => reset,
+        gtwiz_reset_all_in(0) => reset_i,
 
         txctrl0_in => txctrl0_in,
         txctrl1_in => txctrl1_in,
         txctrl2_in => txctrl2_in,
 
-        rxctrl0_out => open,
-        rxctrl1_out => open,
-        rxctrl2_out => open,
-        rxctrl3_out => open,
+        rxctrl0_out => rxctrl0_out,
+        rxctrl1_out => rxctrl1_out,
+        rxctrl2_out => rxctrl2_out,
+        rxctrl3_out => rxctrl3_out,
 
         tx8b10ben_in => xilinx_one,
         rx8b10ben_in => xilinx_one,
 
-        rxoutclk_out        => open,
-        txoutclk_out        => open
+        rxslide_in(0) => rx_slide_i,
+
+        rxoutclk_out => open,
+        txoutclk_out => open
         );
 
   end generate;

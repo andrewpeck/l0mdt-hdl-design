@@ -5,6 +5,9 @@ use ieee.numeric_std.all;
 
 library xil_defaultlib;
 
+library unisim;
+use unisim.vcomponents.all;
+
 library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
@@ -76,6 +79,7 @@ entity top_framework is
 end entity top_framework;
 architecture behavioral of top_framework is
 
+  signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
   signal global_reset : std_logic;
 
@@ -91,7 +95,7 @@ architecture behavioral of top_framework is
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  -- temporary FIXME remove this
+  -- FIXME drive the valid strobe from somewhere real
   signal lpgbt_valid_strobe   : std_logic;
   signal lpgbt_uplink_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
   signal tdc_sump             : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
@@ -118,7 +122,9 @@ architecture behavioral of top_framework is
   signal sl_tx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_data           : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_tx_ctrl           : sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_tx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
   -- Save this here so we can extract it from the hierarchy later
@@ -131,7 +137,7 @@ begin  -- architecture behavioral
 
 
   reset          <= global_reset;
-  global_reset   <= not clocks.locked;
+  global_reset   <= not (clocks.locked and clocks.sl_locked);
   pipeline_clock <= clocks.clock_pipeline;
 
 
@@ -139,19 +145,43 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
-  -- FIXME: replace with a true freeclk
-  clocks.freeclk <= clocks.clock40;
+  IBUFDS_inst : IBUFDS
+    generic map(DIFF_TERM    => true,   --DifferentialTermination
+                IBUF_LOW_PWR => false,  --Lowpower(TRUE)vs.performance(FALSE)
+                IOSTANDARD   => "DEFAULT")
+    port map(
+      O  => clock_ibufds,
+      I  => clock_in_p,
+      IB => clock_in_n
+      );
 
+  -- create a freerunnning clock, not stopped by the mmcm lock, used for state
+  -- machine initialization of the mgts
+  BUFG_freeclk_inst : BUFG
+    port map (
+      I => clock_ibufds,
+      O => clocks.freeclock
+      );
+
+  -- mmcm for system clocks
   framework_mmcm_inst : entity xil_defaultlib.framework_mmcm
     port map (
       clk_out40        => clocks.clock40,
       clk_out240       => clocks.clock240,
       clk_out320       => clocks.clock320,
       clk_out_pipeline => clocks.clock_pipeline,
-      reset            => std_logic_0,
       locked           => clocks.locked,
-      clk_in1_p        => clock_in_p,
-      clk_in1_n        => clock_in_n
+      clk_in40         => clock_ibufds
+      );
+
+  -- mmcm for sector logic 300MHz clock
+  -- need a second mmcm since we cannot get 300 from the same mmcm needed in the
+  -- rest of the system... 320 and 300 are incompatible :(
+  sl_mmcm_inst : entity xil_defaultlib.sl_mmcm
+    port map (
+      clk_in40   => clock_ibufds,
+      clk_out300 => clocks.clock300,
+      locked     => clocks.sl_locked
       );
 
   --------------------------------------------------------------------------------
@@ -174,6 +204,7 @@ begin  -- architecture behavioral
       sl_rx_mgt_word_array_o               => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_i               => sl_tx_mgt_word_array,
       sl_tx_ctrl_i                         => sl_tx_ctrl,
+      sl_rx_slide_i                        => sl_rx_slide,
       -- lpgbt
       lpgbt_rxslide_i                      => lpgbt_uplink_bitslip,
       lpgbt_downlink_mgt_word_array_i      => lpgbt_downlink_mgt_word_array,
@@ -188,8 +219,7 @@ begin  -- architecture behavioral
   -- LPGBT-FPGA Cores
   --------------------------------------------------------------------------------
 
-  -- FIXME: temp
-  -- should sync this to the downlink controller logic tbd
+  -- FIXME: should sync this to the downlink controller logic which is still tbd
   -- 320 MHz enable, goes high 1 of 8 clocks
   process (clocks.clock320)
     variable counter : integer range 0 to 8;
@@ -216,7 +246,7 @@ begin  -- architecture behavioral
     end if;
   end process;
 
-  -- FIXME: temp
+  -- FIXME: remove the loopback later once we have a downlink controller
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
     data_loop : process (clocks.clock320) is
     begin  -- process data_loop
@@ -229,8 +259,6 @@ begin  -- architecture behavioral
 
   lpgbt_link_wrapper_inst : entity framework.lpgbt_link_wrapper
     port map (
-
-
       reset => global_reset,
 
       lpgbt_downlink_clk_i            => clocks.clock320,
@@ -251,7 +279,7 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
-  lpgbtemul_wrapper_1 : entity work.lpgbtemul_wrapper
+  lpgbtemul_wrapper_inst : entity work.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
       lpgbt_uplink_clk_i              => lpgbt_emul_uplink_clk,
@@ -285,14 +313,19 @@ begin  -- architecture behavioral
 
   sector_logic_link_wrapper_inst : entity framework.sector_logic_link_wrapper
     port map (
-      clock                  => clocks.clock240,
+      clock                  => clocks.clock300,  -- 300MHz sector logic userclk
       pipeline_clock         => clocks.clock_pipeline,
       reset                  => global_reset,
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array,
-      sl_rx_data_o           => sl_rx_data,
-      sl_tx_data_i           => sl_tx_data,
-      sl_tx_ctrl_o           => sl_tx_ctrl
+
+      sl_rx_data_o => sl_rx_data,
+      sl_tx_data_i => sl_tx_data,
+
+      sl_rx_ctrl_i => sl_rx_ctrl,
+      sl_tx_ctrl_o => sl_tx_ctrl,
+
+      sl_rx_slide_o => sl_rx_slide
       );
 
   --------------------------------------------------------------------------------
@@ -301,13 +334,13 @@ begin  -- architecture behavioral
 
   tdc_decoder_wrapper_inst : entity work.tdc_decoder_wrapper
     port map (
-      clock             => clocks.clock320,
-      pipeline_clock    => clocks.clock_pipeline,
+      clock          => clocks.clock320,
+      pipeline_clock => clocks.clock_pipeline,
 
-      reset             => global_reset,
+      reset => global_reset,
 
-      lpgbt_uplink_data => lpgbt_uplink_data, -- on lpgbt clock
-      tdc_hits          => tdc_hits -- on pipeline clock already
+      lpgbt_uplink_data => lpgbt_uplink_data,  -- on lpgbt clock
+      tdc_hits          => tdc_hits            -- on pipeline clock already
       );
 
   --------------------------------------------------------------------------------
@@ -323,14 +356,15 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
-    data_loop : process (clocks.clock320) is
-    begin  -- process data_loop
-      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-        lpgbt_uplink_sump(I) <= or_reduce (lpgbt_uplink_data(I).data);
-      end if;
-    end process data_loop;
-  end generate;
+  -- let this sump as tdc data in the user_top
+  -- lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
+  --   data_loop : process (clocks.clock320) is
+  --   begin  -- process data_loop
+  --     if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+  --       lpgbt_uplink_sump(I) <= or_reduce (lpgbt_uplink_data(I).data);
+  --     end if;
+  --   end process data_loop;
+  -- end generate;
 
   sl_sump_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
     data_loop : process (clocks.clock240) is

@@ -72,7 +72,12 @@ entity mgt_wrapper is
     -- 32 bits / bx from mgt
     sl_rx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    sl_tx_ctrl_i : in sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
+    sl_txclks : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rxclks : out std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+
+    sl_tx_ctrl_i  : in  sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rx_ctrl_o  : out sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
 
     );
@@ -241,7 +246,7 @@ begin
       MGT_GEN : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          free_clock            => clocks.freeclk,
+          free_clock            => clocks.freeclock,
           reset                 => reset_tree(I),
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           mgt_rxusrclk_i        => clocks.clock320,
@@ -288,27 +293,36 @@ begin
       MGT_GEN : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock                 => clocks.clock40,                    -- FIXME: check this clock frequency
-          reset                 => reset_tree(I),
-          mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
-          mgt_rxusrclk_i        => clocks.clock240,
-          mgt_rxusrclk_active_i => not reset_tree(I),
-          mgt_txusrclk_i        => clocks.clock240,
-          mgt_txusrclk_active_i => not reset_tree(I),
-          tx_resets_i           => tx_resets(I),
-          rx_resets_i           => rx_resets(I),
-          status_o              => open,
-          txctrl0_in            => x"000" & sl_tx_ctrl_i(idx).ctrl0,  -- FIXME: -- no idea how these work
-          txctrl1_in            => x"000" & sl_tx_ctrl_i(idx).ctrl1,
-          txctrl2_in            => x"0"   & sl_tx_ctrl_i(idx).ctrl2,
-          mgt_word_i            => sl_tx_mgt_word_array_i(idx),
-          mgt_word_o            => sl_rx_mgt_word_array_o(idx),
-          rxn_i                 => mgt_rx_p(I),
-          rxp_i                 => mgt_rx_n(I),
-          txn_o                 => mgt_tx_p(I),
-          txp_o                 => mgt_tx_n(I),
-          mgt_drp_i             => mgt_drp_i(I),
-          mgt_drp_o             => mgt_drp_o(I)
+          clock                    => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
+          reset_i                  => reset_tree(I),
+          mgt_refclk_i             => refclk(c_MGT_MAP(I).refclk),
+          mgt_rxusrclk_i           => clocks.clock240,
+          mgt_rxusrclk_active_i    => not reset_tree(I),
+          mgt_txusrclk_i           => clocks.clock240,
+          mgt_txusrclk_active_i    => not reset_tree(I),
+          tx_resets_i              => tx_resets(I),
+          rx_resets_i              => rx_resets(I),
+          status_o                 => open,
+          txctrl0_in               => x"000" & sl_tx_ctrl_i(idx).ctrl0,
+          txctrl1_in               => x"000" & sl_tx_ctrl_i(idx).ctrl1,
+          txctrl2_in               => x"0" & sl_tx_ctrl_i(idx).ctrl2,
+          rxctrl0_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl0,
+          rxctrl0_out(15 downto 4) => open,
+          rxctrl1_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl1,
+          rxctrl1_out(15 downto 4) => open,
+          rxctrl2_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl2,
+          rxctrl2_out(7 downto 4)  => open,
+          rxctrl3_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl3,
+          rxctrl3_out(7 downto 4)  => open,
+          rx_slide_i               => sl_rx_slide_i(idx),
+          mgt_word_i               => sl_tx_mgt_word_array_i(idx),
+          mgt_word_o               => sl_rx_mgt_word_array_o(idx),
+          rxn_i                    => mgt_rx_p(I),
+          rxp_i                    => mgt_rx_n(I),
+          txn_o                    => mgt_tx_p(I),
+          txp_o                    => mgt_tx_n(I),
+          mgt_drp_i                => mgt_drp_i(I),
+          mgt_drp_o                => mgt_drp_o(I)
           );
 
     end generate sl_gen;
