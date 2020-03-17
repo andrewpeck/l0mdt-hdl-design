@@ -72,11 +72,10 @@ package pt_pkg is
         r_glob     : unsigned(r_glob_width-1 downto 0);
         theta_glob : signed(theta_glob_width-1 downto 0);
         phi_glob   : signed(phi_width-1 downto 0);
-        eta_glob   : signed(eta_width-1 downto 0);
         chamber_id : unsigned(chamber_id_width-1 downto 0);
     end record;
 
-    constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+    constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
     type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;

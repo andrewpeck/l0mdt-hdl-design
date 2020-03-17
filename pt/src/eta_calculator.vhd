@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 30/04/2019 
 -- Design Name: L0MDT Trigger
--- Module Name: Sagitta Calculator - Behavioral
+-- Module Name: Eta Calculator - Behavioral
 -- Project Name: L0MDT Trigger
 -- Target Devices: xcvu5p-flvb2104-2-e
 -- Tool Versions: Vivado 2018.3
@@ -34,14 +34,21 @@ entity eta_calculator is
   );
 end eta_calculator; -- sagitta_calculator
 
- architecture Behavioral of sagitta_calculator is
+ architecture Behavioral of eta_calculator is
     -- Valid signals for pseudo-rapidity calculation
     signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11 : std_logic := '0';
     -- square of r and z signals 
     signal r2 : unsigned(r_glob_width*2-1 downto 0) := (others => '0');
     signal z2 : unsigned(z_glob_width*2-1 downto 0) := (others => '0');
-    -- square of vector magnitude 
+    -- square of vector magnitude
+    constant shift_mag2  : integer := 28;
+    constant mag2_width : integer := r_glob_width*2 - shift_mag2;
     signal mag2 : unsigned(r_glob_width*2-1 downto 0) := (others => '0');
+
+    -- vector magnitude
+    constant shift_mag : integer := shift_mag2/4;
+    signal mag : std_logic_vector(r_glob_width-shift_mag-1 downto 0) := (others => '0');
+    signal z_red : signed(z_glob_width-shift_mag-1 downto 0) := (others => '0');
 
     -- -- Valid signals for dbeta
     signal dvb_01, dvb_02, dvb_12 : std_logic := '0';
@@ -95,10 +102,47 @@ end eta_calculator; -- sagitta_calculator
     constant shift_num_sagitta : integer := 15;
     signal inv_sagitta_full : unsigned(inv_sagitta_full_width-1 downto 0) := (others => '0');
 
+    COMPONENT mag_ROM
+    PORT (
+        clka : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+    );
+    END COMPONENT;
+    
+    COMPONENT half_log_rom
+    PORT (
+        clka : IN STD_LOGIC;
+        addra : IN STD_LOGIC_VECTOR(12 DOWNTO 0);
+        douta : OUT STD_LOGIC_VECTOR(14 DOWNTO 0);
+        clkb : IN STD_LOGIC;
+        enb : IN STD_LOGIC;
+        addrb : IN STD_LOGIC_VECTOR(12 DOWNTO 0);
+        doutb : OUT STD_LOGIC_VECTOR(14 DOWNTO 0)
+      );
+    END COMPONENT;
+    
 begin
-
-    EtaProc : process( clk )
-    begin
+    magnitude_rom : mag_ROM
+    PORT MAP (
+        clka => clk,
+        addra => std_logic_vector(mag2),
+        douta => mag
+    );
+    
+    logarithm_rom : half_log_rom
+    PORT MAP (
+        clka => clk,
+        addra => addra,
+        douta => douta,
+        clkb => clk,
+        enb => '1',
+        addrb => addrb,
+        doutb => doutb
+    );
+    
+        EtaProc : process( clk )
+        begin
         if rising_edge(clk) then
             -- Clock 0
             dv0 <= i_seg.valid;
@@ -106,7 +150,7 @@ begin
             z2  <= unsigned(i_seg.z_glob*i_seg.z_glob);
 
             dv1 <= dv0;
-            mag2 <= r2+z2;
+            mag2 <= resize(shift_right(r2+z2, shift_mag),mag2_width);
 
             delta_z_20 <= i_seg2.z_glob - i_seg0.z_glob;
             delta_z_10 <= i_seg1.z_glob - i_seg0.z_glob;
