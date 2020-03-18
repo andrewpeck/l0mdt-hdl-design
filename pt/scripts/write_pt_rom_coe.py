@@ -8,7 +8,7 @@ def main():
     parser.add_argument("--z_mult",type=float,help="z/r Multiplier", default=16.0)
     parser.add_argument("--sagitta_mult",type=float,help="Sagitta Multiplier", default=64.0)
     parser.add_argument("--phi_mult",type=float,help="Phi Multiplier", default=2**6/0.6)
-    parser.add_argument("--eta_mult",type=float,help="Eta Multiplier", default=2**10/0.6)
+    parser.add_argument("--eta_mult",type=float,help="Eta Multiplier", default=2**15/5.4)
     parser.add_argument("--pt_mult",type=float,help="pT Multiplier", default=100.0)
     parser.add_argument("--mag2_width",type=int,help="Mag2 width", default=10)
     parser.add_argument("--z_width",type=int,help="z width", default=19)

@@ -57,6 +57,7 @@ architecture Behavioral of top_pt is
                                                              : std_logic := '0';
     signal dv_a : std_logic := '0';
     -- Phi/Eta coordinate
+    signal dv_eta : std_logic := '0';
     signal phi : signed(phi_width-1 downto 0) := (others => '0');
     signal eta : signed(eta_width-1 downto 0) := (others => '0');
 
@@ -163,6 +164,14 @@ architecture Behavioral of top_pt is
 
 
 begin
+    
+    EtaCalculator : entity pt_lib.eta_calculator
+    port map (
+        clk            => clk,
+        i_seg          => segment_BI,
+        o_eta          => eta,
+        o_dv_eta       => dv_eta
+    );
 
     SagittaCalculator : entity pt_lib.sagitta_calculator
     port map(
@@ -252,10 +261,8 @@ begin
 
             if segment_BI.valid = '1' then
                 phi  <= segment_BI.phi_glob;
-                eta  <= segment_BI.eta_glob;
             elsif segment_BM.valid = '1' then
                 phi  <= segment_BM.phi_glob;
-                eta  <= segment_BM.eta_glob;
             end if;
 
             dv_combo_s_s <= dv_combo_s;
