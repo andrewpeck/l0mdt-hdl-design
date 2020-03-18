@@ -13,7 +13,7 @@ def main():
     parser.add_argument("--mag2_width",type=int,help="Mag2 width", default=10)
     parser.add_argument("--z_width",type=int,help="z width", default=19)
     parser.add_argument("--mag2_shift",type=int,help="Mag2 shift", default=28)
-    
+
 
 
     args = parser.parse_args()
@@ -34,13 +34,13 @@ def main():
     divider_width = 21
     m_sagitta_width = 16;
     m_sagitta_range = 4.0;
-    m_sagitta_multi = (2.0**m_sagitta_width/m_sagitta_range); 
+    m_sagitta_multi = (2.0**m_sagitta_width/m_sagitta_range);
     mag_width = 19
 
     for x in xrange(0,2**16-1):
         reciprocal = int(floor(2**divider_width/(x + 0.5)));
         if x ==0:
-            reciprocal = int(floor(2**divider_width/(x + 1.)));
+            reciprocal = int(floor((2**divider_width-1)/(x + 1.)));
 
         reciprocal_rom_file.write("%d,\n" % reciprocal)
         sqrt_m_io = int(floor(sqrt(m_sagitta_multi**2 + x**2)));
