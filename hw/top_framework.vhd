@@ -248,12 +248,12 @@ begin  -- architecture behavioral
 
   -- FIXME: remove the loopback later once we have a downlink controller
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    data_loop : process (clocks.clock320) is
-    begin  -- process data_loop
-      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-        lpgbt_downlink_data(I).data <= lpgbt_uplink_data(I).data(223 downto 192) xor lpgbt_uplink_data(I).data(191 downto 160) xor lpgbt_uplink_data(I).data(159 downto 128) xor lpgbt_uplink_data(I).data(127 downto 96) xor lpgbt_uplink_data(I).data(95 downto 64) xor lpgbt_uplink_data(I).data(63 downto 32) xor lpgbt_uplink_data(I).data(31 downto 0);
-      end if;
-    end process data_loop;
+    -- data_loop : process (clocks.clock320) is
+    -- begin  -- process data_loop
+    --   if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+    --     lpgbt_downlink_data(I).data <= lpgbt_uplink_data(I).data(223 downto 192) xor lpgbt_uplink_data(I).data(191 downto 160) xor lpgbt_uplink_data(I).data(159 downto 128) xor lpgbt_uplink_data(I).data(127 downto 96) xor lpgbt_uplink_data(I).data(95 downto 64) xor lpgbt_uplink_data(I).data(63 downto 32) xor lpgbt_uplink_data(I).data(31 downto 0);
+    --   end if;
+    -- end process data_loop;
     lpgbt_downlink_data(I).valid <= lpgbt_valid_strobe;
   end generate lpgbt_downlink_valid_gen;
 

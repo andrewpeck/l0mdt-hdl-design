@@ -314,8 +314,8 @@ begin
 
           -- if idle (nothing selected, should block writes)
           else
-            lpgbt_downlink_data_o (I).ic <= (others => '0');  -- FIXME should replace with an idle pattern
-            lpgbt_downlink_data_o (I).ec <= (others => '0');  -- FIXME should replace with an idle pattern
+            lpgbt_downlink_data_o (I).ic <= (others => '1');  -- FIXME should replace with an idle pattern
+            lpgbt_downlink_data_o (I).ec <= (others => '1');  -- FIXME should replace with an idle pattern
           end if;
 
 
@@ -334,8 +334,8 @@ begin
           -- idle
           else
 
-            lpgbt_downlink_data_o (I).data((1+down_0)*8-1 downto down_0*8) <= (others => '0');  -- FIXME replace with idle pattern ?? or not?? is zero ok?
-            lpgbt_downlink_data_o (I).data((1+down_1)*8-1 downto down_1*8) <= (others => '0');  -- FIXME replace with idle pattern
+            lpgbt_downlink_data_o (I).data((1+down_0)*8-1 downto down_0*8) <= (others => '1');  -- FIXME replace with idle pattern ?? or not?? is zero ok?
+            lpgbt_downlink_data_o (I).data((1+down_1)*8-1 downto down_1*8) <= (others => '1');  -- FIXME replace with idle pattern
 
           end if;
         end if;

@@ -15,8 +15,10 @@
 
 # TDC
 ../../hw/tdc/tdc_decoder_wrapper.vhd
-../../hw/tdc/tdc_decoder.vhd
 ../../hw/tdc/csm_pkg.vhd
+../../hw/tdc/decoder_v2/dec8b10b.v
+../../hw/tdc/decoder_v2/dec_8b10b.vhd
+../../hw/tdc/decoder_v2/tdc_decoder_v2.vhd
 
 # MGT
 ../../IP/mgt_10g24_gth/mgt_10g24_gth.xci

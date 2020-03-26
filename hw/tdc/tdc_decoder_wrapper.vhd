@@ -33,8 +33,6 @@ end tdc_decoder_wrapper;
 
 architecture behavioral of tdc_decoder_wrapper is
 
-  signal tdc_hits_pre_cdc : TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
-
 begin
 
   assert false report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders" severity note;
@@ -61,9 +59,13 @@ begin
 
       signal tdc_hit_vector : TDC_at;
 
+      signal tdc_hits_pre_cdc : TDC_at;
+      signal tdc_hits_pre_cdc_valid : std_logic;
+
       constant idx     : integer := lpgbt_uplink_idx_array(I);
       constant even_id : integer := c_TDC_LINK_MAP(I).even_elink;
       constant odd_id  : integer := c_TDC_LINK_MAP(I).odd_elink;
+      constant legacy  : boolean := c_TDC_LINK_MAP(I).legacy;
 
     begin
 
@@ -74,7 +76,7 @@ begin
         attribute MGT_INDEX of sync_csm  : label is I;
         attribute DONT_TOUCH of sync_csm : label is "true";
 
-        begin
+      begin
 
         assert false report " > Generating TDC Decoder #" & integer'image(idx) & " on MGT #"
           & integer'image(I) & " even elink = " & integer'image(even_id) &
@@ -88,19 +90,31 @@ begin
         valid            <= lpgbt_uplink_data(idx).valid;
         interleaved_data <= interleave (even_data, odd_data);
 
-        tdc_decoder_inst : entity framework.tdc_decoder
-          generic map (
-            legacy  => c_TDC_LINK_MAP(I).legacy,
-            fiberid => idx,
-            elinkid => even_id
-            )
-          port map (
-            clock     => clock,
-            reset     => reset,
-            data_i    => interleaved_data,
-            valid_i   => valid,
-            tdc_hit_o => tdc_hits_pre_cdc(I)
-            );
+        -- constants
+        tdc_hits(I).fiberid <= std_logic_vector(to_unsigned(I,       TDCPOLMUX_FIBERID_LEN));
+        tdc_hits(I).elinkid <= std_logic_vector(to_unsigned(even_id, TDCPOLMUX_ELINKID_LEN));
+
+        tdc_gen : if (legacy = false) generate
+          --assert false report " > Generating Legacy TDC Decoder #" & integer'image(idx) & " on MGT #"
+          -- & integer'image(I) & " elink = " & integer'image(even_id) severity note;
+
+          tdc_decoder_v2_inst : entity framework.tdc_decoder_v2
+            port map (
+              clock      => clock,
+              reset      => reset,
+              data_i     => interleaved_data,
+              valid_i    => valid,
+              tdc_word_o => tdc_hits_pre_cdc,
+              valid_o    => tdc_hits_pre_cdc_valid,
+              tdc_err_o  => open -- TODO: connect this to a counter
+              );
+
+        end generate;
+
+        -- legacy_tdc_gen : if (legacy = true) generate
+        --   tdc_hits(I).tdc_r     <= (others => '0');
+        --   tdc_hits(I).datavalid <= valid;
+        -- end generate;
 
         -- constants don't need any CDC, only cross clocks with the 32 bit hit
         -- data + valid flag
@@ -111,8 +125,8 @@ begin
             N_STAGES => 1)
           port map (
             clk_i   => pipeline_clock,
-            valid_i => tdc_hits_pre_cdc(I).datavalid,
-            data_i  => tdc_2af(tdc_hits_pre_cdc(I).tdc_r),
+            valid_i => tdc_hits_pre_cdc_valid,
+            data_i  => tdc_hits_pre_cdc,
             valid_o => tdc_hits(I).datavalid,
             data_o  => tdc_hit_vector
             );
