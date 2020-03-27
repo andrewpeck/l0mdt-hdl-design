@@ -43,9 +43,6 @@ entity top_framework is
     mgt_tx_p : out std_logic_vector (c_NUM_MGTS-1 downto 0);
     mgt_tx_n : out std_logic_vector (c_NUM_MGTS-1 downto 0);
 
-    ttc_legacy_link_p : in std_logic;
-    ttc_legacy_link_n : in std_logic;
-
     -- pipeline clock
     pipeline_clock : out std_logic;
 
@@ -98,6 +95,7 @@ architecture behavioral of top_framework is
   -- FIXME drive the valid strobe from somewhere real
   signal lpgbt_valid_strobe   : std_logic;
   signal lpgbt_uplink_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_mgt_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
   signal tdc_sump             : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   signal sector_logic_rx_sump : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
@@ -118,6 +116,7 @@ architecture behavioral of top_framework is
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
   --------------------------------------------------------------------------------
+
   signal sl_rx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
@@ -137,7 +136,7 @@ begin  -- architecture behavioral
 
 
   reset          <= global_reset;
-  global_reset   <= not (clocks.locked and clocks.sl_locked);
+  global_reset   <= not (clocks.locked);
   pipeline_clock <= clocks.clock_pipeline;
 
 
@@ -172,16 +171,6 @@ begin  -- architecture behavioral
       clk_out_pipeline => clocks.clock_pipeline,
       locked           => clocks.locked,
       clk_in40         => clock_ibufds
-      );
-
-  -- mmcm for sector logic 300MHz clock
-  -- need a second mmcm since we cannot get 300 from the same mmcm needed in the
-  -- rest of the system... 320 and 300 are incompatible :(
-  sl_mmcm_inst : entity xil_defaultlib.sl_mmcm
-    port map (
-      clk_in40   => clock_ibufds,
-      clk_out300 => clocks.clock300,
-      locked     => clocks.sl_locked
       );
 
   --------------------------------------------------------------------------------
@@ -227,22 +216,15 @@ begin  -- architecture behavioral
     if (rising_edge(clocks.clock320)) then
 
       if global_reset = '1' then
-        counter            := 0;
+        counter := 0;
         lpgbt_valid_strobe <= '0';
+      elsif (counter=8) then
+        counter := 0;
+        lpgbt_valid_strobe <= '1';
       else
         counter := counter + 1;
-
-        if counter = 8 then
-          counter := 0;
-        end if;
-
         lpgbt_valid_strobe <= '0';
-        if counter = 0 then
-          lpgbt_valid_strobe <= '1';
-        end if;
       end if;
-
-
     end if;
   end process;
 
@@ -316,7 +298,7 @@ begin  -- architecture behavioral
 
   sector_logic_link_wrapper_inst : entity framework.sector_logic_link_wrapper
     port map (
-      clock                  => clocks.clock300,  -- 300MHz sector logic userclk
+      clock                  => clocks.clock240,  -- 240 MHz sector logic userclk
       pipeline_clock         => clocks.clock_pipeline,
       reset                  => global_reset,
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
@@ -363,8 +345,9 @@ begin  -- architecture behavioral
   -- lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
   --   data_loop : process (clocks.clock320) is
   --   begin  -- process data_loop
-  --     if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-  --       lpgbt_uplink_sump(I) <= or_reduce (lpgbt_uplink_data(I).data);
+  --     if (rising_edge(clocks.clock320)) then  -- rising clock edge
+  --       lpgbt_uplink_sump(I) <= xor_reduce (lpgbt_uplink_data(I).data);
+  --       lpgbt_uplink_mgt_sump(I) <= xor_reduce (lpgbt_uplink_mgt_word_array(I));
   --     end if;
   --   end process data_loop;
   -- end generate;
@@ -372,7 +355,7 @@ begin  -- architecture behavioral
   sl_sump_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
     data_loop : process (clocks.clock240) is
     begin  -- process data_loop
-      if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
+      if (rising_edge(clocks.clock240)) then  -- rising clock edge
         sl_tx_data(I).data  <= sl_rx_data(I).data;
         sl_tx_data(I).valid <= sl_rx_data(I).valid;
       end if;
@@ -381,8 +364,8 @@ begin  -- architecture behavioral
 
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
-    if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-      sump <= xor_reduce (lpgbt_uplink_sump);
+    if (rising_edge(clocks.clock320)) then  -- rising clock edge
+      sump <= '1'; -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
     end if;
   end process data_loop;
 

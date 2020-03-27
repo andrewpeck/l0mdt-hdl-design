@@ -5,9 +5,9 @@ set use_questa_simulator 0
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
 set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
-set SYNTH_FLOW "Vivado Synthesis 2018"
+set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
-set IMPL_FLOW "Vivado Implementation 2018"
+set IMPL_FLOW "Vivado Implementation 2019"
 
 ### Set Vivado Runs Properties ###
 #
@@ -38,9 +38,6 @@ set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
 source $path_repo/Hog/Tcl/create-project.tcl
 
-#set_msg_config -id "Synth 8-63" -limit 500
-#set_property source_mgmt_mode All [current_project]
-#update_compile_order -fileset sources_1
 #highlight_objects -color_index 1 [get_cells -hierarchical -filter {NAME =~ "*downlink*"}]
 #highlight_objects -color_index 2 [get_cells -hierarchical -filter {NAME =~ "*uplink*"}]
 #highlight_objects -color_index 3 [get_cells -hierarchical -filter {NAME =~ "*sector_logic*"}]

@@ -14,8 +14,8 @@ use framework.constants_pkg.all;
 use framework.board_pkg.all;
 use framework.csm_pkg.all;
 
-library work;
-use work.sca_pkg.all;
+library gbt_sc;
+use gbt_sc.sca_pkg.all;
 
 entity gbt_controller_wrapper is
   generic(
@@ -137,7 +137,7 @@ begin
   -- use a multiplexer to fan the single gbt_sc core out to all of the different lpgbts
   --------------------------------------------------------------------------------
 
-  gbtsc_top_inst : entity work.gbtsc_top
+  gbtsc_top_inst : entity gbt_sc.gbtsc_top
     generic map (
       g_IC_FIFO_DEPTH => 20,
       g_ToLpGBT       => 1,

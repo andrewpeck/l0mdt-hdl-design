@@ -76,8 +76,8 @@ architecture Behavioral of lpgbt_link_wrapper is
   signal lpgbt_uplink_decoded_data : std230_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
   attribute DONT_TOUCH                        : string;
-  signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '1');
-  signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
+  signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '0');
+  signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '0');
   attribute DONT_TOUCH of uplink_reset_tree   : signal is "true";
   attribute DONT_TOUCH of downlink_reset_tree : signal is "true";
 
@@ -86,13 +86,6 @@ begin
   --------------------------------------------------------------------------------
   -- Downlink
   --------------------------------------------------------------------------------
-
-  downlink_reset_fanout : process (lpgbt_downlink_clk_i) is
-  begin  -- process reset_fanout
-    if rising_edge(lpgbt_downlink_clk_i) then  -- rising clock edge
-      downlink_reset_tree <= (others => reset);
-    end if;
-  end process;
 
   downlink_gen : for I in 0 to c_NUM_MGTS-1 generate
 
@@ -103,6 +96,15 @@ begin
 
     begin
 
+      assert false report "GENERATING LpGBT Downlink Encoder #" & integer'image(idx) & " on MGT #" & integer'image(I) severity note;
+
+      downlink_reset_fanout : process (lpgbt_downlink_clk_i) is
+      begin  -- process reset_fanout
+        if rising_edge(lpgbt_downlink_clk_i) then  -- rising clock edge
+          downlink_reset_tree(idx) <= not (reset or lpgbt_downlink_reset_i(idx));
+        end if;
+      end process;
+
       lpgbt_downlink_inst : entity lpgbt_fpga.lpgbtfpga_downlink
 
         generic map (
@@ -112,7 +114,7 @@ begin
           )
         port map (
           clk_i               => lpgbt_downlink_clk_i,
-          rst_n_i             => not (downlink_reset_tree(idx) or lpgbt_downlink_reset_i(idx)),
+          rst_n_i             => downlink_reset_tree(idx),
           clken_i             => lpgbt_downlink_data(idx).valid,
           userdata_i          => lpgbt_downlink_data(idx).data,
           ecdata_i            => lpgbt_downlink_data(idx).ec,
@@ -131,13 +133,6 @@ begin
   -- Uplink
   --------------------------------------------------------------------------------
 
-  uplink_reset_fanout : process (lpgbt_uplink_clk_i) is
-  begin  -- process reset_fanout
-    if rising_edge(lpgbt_uplink_clk_i) then  -- rising clock edge
-      uplink_reset_tree <= (others => reset);
-    end if;
-  end process;
-
   uplink_gen : for I in 0 to c_NUM_MGTS-1 generate
 
     uplink_if : if (lpgbt_uplink_idx_array(I) /= -1) generate
@@ -145,6 +140,15 @@ begin
       constant idx : integer := lpgbt_uplink_idx_array(I);
 
     begin
+
+      assert false report "GENERATING LpGBT Uplink Decoder #" & integer'image(idx) & " on MGT #" & integer'image(I) severity note;
+
+      uplink_reset_fanout : process (lpgbt_uplink_clk_i) is
+      begin  -- process reset_fanout
+        if rising_edge(lpgbt_uplink_clk_i) then  -- rising clock edge
+          uplink_reset_tree(idx) <= not (reset or lpgbt_uplink_reset_i(idx));
+        end if;
+      end process;
 
       lpgbt_uplink_inst : entity lpgbt_fpga.lpgbtfpga_uplink
 
@@ -164,7 +168,7 @@ begin
         port map (
           clk_freerunningclk_i => std_logic_0,  -- not used since reset on even feature is disabled in frame aligner
           uplinkclk_i          => lpgbt_uplink_clk_i,
-          uplinkrst_n_i        => not (uplink_reset_tree(idx) or lpgbt_uplink_reset_i(idx)),
+          uplinkrst_n_i        => uplink_reset_tree(idx),
           mgt_word_o           => lpgbt_uplink_mgt_word_array_i(idx),
           bypassinterleaver_i  => c_lpgbt_bypass_interleaver,
           bypassfecencoder_i   => c_lpgbt_bypass_fec,

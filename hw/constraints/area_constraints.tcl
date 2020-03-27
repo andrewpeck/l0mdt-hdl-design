@@ -39,7 +39,8 @@ proc assign_pblocks {min  max  side} {
         set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
         set lpgbt_ic_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*gbt_controller_wrapper*\*_gen[$lRegId]*gbt_ic_controller_inst"]
         set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
-        set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*tdc_decoder*mgt_loop[$lRegId]*"]
+        #set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*tdc_decoder*mgt_loop[$lRegId]*"]
+        #FIXME: get tdc cells correctly
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells $tdc_cells"
 

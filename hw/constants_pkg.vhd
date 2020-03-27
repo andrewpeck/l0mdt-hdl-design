@@ -23,6 +23,7 @@ package constants_pkg is
   constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS, c_MAX_LPGBT_UPLINKS);
   constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS, c_MAX_LPGBT_DOWNLINKS);
 
+  -- TODO: should count only active links based on user_CSM_LINKs and user_LPGBT_UPLINKS
   constant c_MAX_TDC_INPUTS : integer := func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP);
 
   constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, c_MAX_TDC_INPUTS);

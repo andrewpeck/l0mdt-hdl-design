@@ -45,11 +45,6 @@ entity top_mdtl0 is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-    ttc_legacy_link_p : in std_logic;
-    ttc_legacy_link_n : in std_logic;
-
-
-
     -- cornell only
     --cornell_cm_led_o : out std_logic_vector (c_NUM_CORNELL_LEDS-1 downto 0);
 
@@ -91,8 +86,6 @@ begin
       mgt_rx_n              => mgt_rx_n,
       mgt_tx_p              => mgt_tx_p,
       mgt_tx_n              => mgt_tx_n,
-      ttc_legacy_link_p     => ttc_legacy_link_p,
-      ttc_legacy_link_n     => ttc_legacy_link_n,
       pipeline_clock        => pipeline_clock,
       ttc_commands          => ttc_commands,
       tdc_hits              => tdc_hits,

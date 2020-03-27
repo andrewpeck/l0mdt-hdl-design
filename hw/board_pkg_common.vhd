@@ -55,6 +55,7 @@ package board_pkg_common is
     link_id    : integer;
     even_elink : integer;
     odd_elink  : integer;
+    --enc_elink  : integer;
     station_id : integer;
     legacy     : boolean;
   end record;

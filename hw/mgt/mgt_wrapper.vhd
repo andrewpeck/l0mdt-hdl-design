@@ -239,7 +239,11 @@ begin
       assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
       assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
       assert false report "uplink_idx=" & integer'image(uplink_idx) severity note;
+
       --assert (c_REFCLK_TYPES (c_MGT_MAP(I).refclk) = REFCLK_SYNC320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+
+      assert (uplink_idx /= -1) report "instantiating an invalid LPGBT link" severity error;
+
       assert (uplink_idx   <= c_NUM_LPGBT_UPLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_UPLINKS" severity error;
       assert (downlink_idx <= c_NUM_LPGBT_DOWNLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_DOWNLINKS" severity error;
 
