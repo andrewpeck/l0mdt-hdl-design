@@ -147,7 +147,7 @@ begin  -- architecture behavioral
   IBUFDS_inst : IBUFDS
     generic map(DIFF_TERM    => true,   --DifferentialTermination
                 IBUF_LOW_PWR => false,  --Lowpower(TRUE)vs.performance(FALSE)
-                IOSTANDARD   => "DEFAULT")
+                IOSTANDARD   => "LVDS")
     port map(
       O  => clock_ibufds,
       I  => clock_in_p,

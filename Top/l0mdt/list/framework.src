@@ -20,6 +20,8 @@
 ../../hw/tdc/decoder_v2/dec_8b10b.vhd
 ../../hw/tdc/decoder_v2/tdc_decoder_v2.vhd
 ../../hw/tdc/decoder_v2/alignment_buffer.vhd
+../../hw/tdc/decoder_v2/framer.vhd
+../../hw/tdc/decoder_v2/frame_decoder.vhd
 
 # MGT
 ../../IP/mgt_10g24_gth/mgt_10g24_gth.xci

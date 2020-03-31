@@ -10,7 +10,6 @@ entity alignment_buffer is
     clock     : in  std_logic;
     bitslip_i : in  std_logic;
     valid_i   : in  std_logic;
-    valid_o   : out std_logic;
 
     data_i : in  std_logic_vector (7 downto 0);
     data_o : out std_logic_vector (7 downto 0)
@@ -54,8 +53,6 @@ begin
           fifo_ptr <= 0;
         end if;
       end if;
-
-      valid_o <= valid_i;
 
     end if; -- clock
   end process;
