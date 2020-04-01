@@ -127,7 +127,9 @@ package body board_pkg_common is
     return count;
   end func_count_link_types;
 
-  -- write function to count number of polmuxes
+  -- function to count number of polmuxes
+  -- loop over the tdc link mapping and find how many polmuxes are needed for the
+  -- number of tdcs requested in the user logic pkg
   function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
     return integer is
     variable max : integer := 0;
@@ -140,7 +142,9 @@ package body board_pkg_common is
     return max+1; -- the count is the index of the highest number + 1
   end func_count_polmux;
 
-  -- write function to count number of polmuxes
+  -- function to count number of lpgbts
+  -- loop over the tdc link mapping and find how many lpgbts are needed for the
+  -- number of tdcs requested in the user logic pkg
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
     return integer is
     variable max : integer := 0;
@@ -150,7 +154,17 @@ package body board_pkg_common is
         max := tdc_map(I).link_id;
       end if;
     end loop;
-    return max+1;
+
+    -- count is index + 1
+    max := max + 1;
+
+    -- in the case odd number uplink requested, force it to next multiple of 2 (CSM is always 2tx+1rx)
+    if (max mod 2 /= 0) then
+      max := max + 1;
+    end if;
+
+    return max;
+
   end func_count_lpgbt_link_mapped_to_csm;
 
 end package body;

@@ -2,8 +2,8 @@
 # TODO: understand how the leftquad width even works.. why 1100??? it makes no sense
 # something to do with the weird die shape but I need to understand the details and make this more human readable
 
-set lLeftQuadWidth 1150
-set lRightQuadWidth 400
+set lLeftQuadWidth  [expr 650 + 850]
+set lRightQuadWidth [expr 650]
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
 puts "Clock region boundaries ${lClkBounds}"
@@ -33,13 +33,16 @@ proc assign_pblocks {min  max  side} {
         puts "Populating $lQuadBlock with mgt #$lRegId"
 
         # TODO: make this tcl call smart to avoid unnecessary filter calls
-        # TODO: avoid hierarchical filters and use direct calling with wildcards, e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
+        # avoid hierarchical filters and use direct calling with wildcards,
+        # e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
+
         #set mgt_cells   [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/" $lRegId]]
         set mgt_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
         set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
         set lpgbt_ic_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*gbt_controller_wrapper*\*_gen[$lRegId]*gbt_ic_controller_inst"]
         set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
-        #set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*tdc_decoder*mgt_loop[$lRegId]*"]
+        set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/tdc_decoder_wrapper_inst/*mgt_tag[$lRegId]*"]
+
         #FIXME: get tdc cells correctly
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells $tdc_cells"

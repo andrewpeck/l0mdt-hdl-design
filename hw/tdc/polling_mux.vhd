@@ -49,6 +49,7 @@ architecture behavioral of polling_mux is
   -- complicated parameterized verilog module does not seem to play nicely w/ cross language instantiation
   component priority_encoder
     generic (
+      STAGE        : integer;
       WIDTH        : integer;
       LSB_PRIORITY : string (0 to 2)
       );
@@ -66,6 +67,7 @@ begin
 
   priority_encoder_inst : priority_encoder
     generic map (
+      STAGE        => 0,
       WIDTH        => g_WIDTH,
       LSB_PRIORITY => PRIORITY
       )

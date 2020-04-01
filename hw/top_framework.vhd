@@ -137,7 +137,23 @@ architecture behavioral of top_framework is
 
 begin  -- architecture behavioral
 
-  assert (c_NUM_LPGBT_UPLINKS mod 2 = 0) report "You NEED to instantiate an even number of uplinks because a CSM is always 2+1" severity error;
+  --------------------------------------------------------------------------------
+  --
+  --------------------------------------------------------------------------------
+
+  assert (c_NUM_LPGBT_UPLINKS mod 2 = 0)
+    report "You NEED to instantiate an even number of uplinks because a CSM is always 2+1 (c_NUM_LPGBT_UPLINKS="
+    & integer'image(c_NUM_LPGBT_UPLINKS) & " c_NUM_LPGBT_DOWNLINKS=)" & integer'image(c_NUM_LPGBT_DOWNLINKS)
+    severity error;
+
+  assert (c_NUM_LPGBT_UPLINKS/2 = c_NUM_LPGBT_DOWNLINKS)
+    report "Number of LPGBT Uplinks should be twice the number of downlinks"
+    & integer'image(c_NUM_LPGBT_UPLINKS) & "\nc_NUM_LPGBT_DOWNLINKS=" & integer'image(c_NUM_LPGBT_DOWNLINKS)
+    severity error;
+
+  --------------------------------------------------------------------------------
+  --
+  --------------------------------------------------------------------------------
 
   reset          <= global_reset;
   global_reset   <= not (clocks.locked);

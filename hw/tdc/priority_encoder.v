@@ -31,6 +31,7 @@ THE SOFTWARE.
  */
 module priority_encoder #
 (
+    parameter STAGE = 0,
     parameter WIDTH = 4,
     // LSB priority: "LOW", "HIGH"
     parameter LSB_PRIORITY = "LOW"
@@ -65,6 +66,7 @@ generate
         wire [$clog2(W2)-1:0] out1, out2;
         wire valid1, valid2;
         priority_encoder #(
+            .STAGE(STAGE+1),
             .WIDTH(W2),
             .LSB_PRIORITY(LSB_PRIORITY)
         )
@@ -74,6 +76,7 @@ generate
             .output_encoded(out1)
         );
         priority_encoder #(
+            .STAGE(STAGE+1),
             .WIDTH(W2),
             .LSB_PRIORITY(LSB_PRIORITY)
         )

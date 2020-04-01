@@ -98,6 +98,7 @@ architecture behavioral of tdc_decoder_wrapper is
 
 
 begin
+
   tdc_loop : for I in 0 to (c_NUM_TDC_INPUTS-1) generate
 
     signal even_data : std_logic_vector (7 downto 0);
@@ -125,85 +126,93 @@ begin
 
   begin
 
-
-    assert false report " > LINK_ID  =" & integer'image(c_TDC_LINK_MAP(I).link_id) severity note;
-    assert false report " > LPGBT_IDX=" & integer'image(lpgbt_uplink_idx_array(c_TDC_LINK_MAP(I).link_id)) severity note;
-    assert false report " > LPGBT_ID =" & integer'image(idx) severity note;
-    assert false report " > EVEN_ID  =" & integer'image(even_id) severity note;
-    assert false report " > ODD_ID   =" & integer'image(odd_id) severity note;
-
-    tdc_gen : if (c_TDC_LINK_MAP(I).link_id /= -1 and
-                  lpgbt_uplink_idx_array(c_TDC_LINK_MAP(I).link_id) /= -1 and
-                  idx /= -1 and
-                  even_id /= -1 and odd_id /= -1)
-    generate
-
-      attribute DONT_TOUCH : string;
-      attribute MGT_INDEX  : integer;
-      -- attribute MGT_INDEX of sync_csm  : label is idx;
-      -- attribute DONT_TOUCH of sync_csm : label is "true";
-
+    -- Just create a stupid loop that should tag the TDC inst with an
+    -- MGT number that can be easily picked out of the hierarchy
+    -- TODO: figure out a more efficint way to do this? It only costs compile time but still annoying
+    --mgt_tag : for MGT_NUM in 0 to c_NUM_LPGBT_UPLINKS-1 generate
+    mgt_tag : for MGT_NUM in idx to idx generate
     begin
 
-      assert I /= 0 report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders, which will be multiplexed by " &
-        integer'image(c_NUM_POLMUX) & " polling muxes" severity note;
+      tdc_gen : if (MGT_NUM = idx and
+                    c_TDC_LINK_MAP(I).link_id /= -1 and
+                    lpgbt_uplink_idx_array(c_TDC_LINK_MAP(I).link_id) /= -1 and
+                    idx /= -1 and
+                    even_id /= -1 and odd_id /= -1)
+      generate
+
+        attribute DONT_TOUCH : string;
+        attribute MGT_INDEX  : integer;
+        -- attribute MGT_INDEX of sync_csm  : label is idx;
+        -- attribute DONT_TOUCH of sync_csm : label is "true";
+
+      begin
+
+        assert false report " > LINK_ID  =" & integer'image(c_TDC_LINK_MAP(I).link_id) severity note;
+        assert false report " > LPGBT_IDX=" & integer'image(lpgbt_uplink_idx_array(c_TDC_LINK_MAP(I).link_id)) severity note;
+        assert false report " > LPGBT_ID =" & integer'image(idx) severity note;
+        assert false report " > EVEN_ID  =" & integer'image(even_id) severity note;
+        assert false report " > ODD_ID   =" & integer'image(odd_id) severity note;
+
+        assert I /= 0 report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders, which will be multiplexed by " &
+          integer'image(c_NUM_POLMUX) & " polling muxes" severity note;
 
 
-      assert (c_MGT_MAP(idx).mgt_type = MGT_LPGBT or c_MGT_MAP(idx).mgt_type = MGT_LPGBT_SIMPLEX) report
-        " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
+        assert (c_MGT_MAP(idx).mgt_type = MGT_LPGBT or c_MGT_MAP(idx).mgt_type = MGT_LPGBT_SIMPLEX) report
+          " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
 
-      even_data <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).data(8*(even_id+1)-1 downto 8*even_id);
-      odd_data  <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).data(8*(odd_id +1)-1 downto 8* odd_id);
-      valid     <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).valid;
-
-
-
-      --encoded_control_inst: entity work.encoded_control
-      --  port map (
-      --    clk_i => clocks.clock40,
-      --    dav_i => '1',
-      --    rst_i => reset,
-      --    trg_i => trg_i(I),
-      --    bcr_i => bcr_i(I),
-      --    ecr_i => ecr_i(I),
-      --    gsr_i => gsr_i(I),
-      --    enc_o => enc_o(I)
-      --);
-
-      --lpgbt_downlink_data(lpgbt_downlink_idx_array(idx)).data(8*(enc_id+1)-1 downto 8*enc_id);
+        even_data <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).data(8*(even_id+1)-1 downto 8*even_id);
+        odd_data  <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).data(8*(odd_id +1)-1 downto 8* odd_id);
+        valid     <= lpgbt_uplink_data(lpgbt_uplink_idx_array(idx)).valid;
 
 
-      assert false report " > Generating TDC Decoder #" & integer'image(I) & " on MGT #"
-        & integer'image(idx) & " even elink = " & integer'image(even_id) &
-        " odd elink = " & integer'image(odd_id) & " legacy=" & str(legacy) severity note;
 
-      new_tdc_gen : if (legacy = false) generate
+        --encoded_control_inst: entity work.encoded_control
+        --  port map (
+        --    clk_i => clocks.clock40,
+        --    dav_i => '1',
+        --    rst_i => reset,
+        --    trg_i => trg_i(I),
+        --    bcr_i => bcr_i(I),
+        --    ecr_i => ecr_i(I),
+        --    gsr_i => gsr_i(I),
+        --    enc_o => enc_o(I)
+        --);
 
-        tdc_decoder_v2_inst : entity tdc.tdc_decoder_v2
-          port map (
-            clock       => clock,
-            reset       => reset,
-            data_even   => even_data,
-            data_odd    => odd_data,
-            valid_i     => valid,
-            tdc_word_o  => tdc_word_to_polmux,
-            valid_o     => tdc_valid_to_polmux,
-            read_done_i => read_done(I),
-            tdc_err_o   => open         -- TODO: connect this to a counter
-            );
+        --lpgbt_downlink_data(lpgbt_downlink_idx_array(idx)).data(8*(enc_id+1)-1 downto 8*enc_id);
 
-      end generate;  -- new TDC gen
 
-      legacy_tdc_gen : if (legacy = true) generate
-        assert false report "ERROR: we don't support legacy TDC links yet" severity error;
-      end generate;  -- new TDC gen
+        assert false report " > Generating TDC Decoder #" & integer'image(I) & " on MGT #"
+          & integer'image(idx) & " even elink = " & integer'image(even_id) &
+          " odd elink = " & integer'image(odd_id) & " legacy=" & str(legacy) severity note;
 
-      -- constants
-      tdc_hits_to_polmux(I).fiberid   <= std_logic_vector(to_unsigned(idx, TDCPOLMUX_FIBERID_LEN));
-      tdc_hits_to_polmux(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCPOLMUX_ELINKID_LEN));
-      tdc_hits_to_polmux(I).tdc_r     <= tdc_2rf(tdc_word_to_polmux);
-      tdc_hits_to_polmux(I).datavalid <= tdc_valid_to_polmux;
+        new_tdc_gen : if (legacy = false) generate
 
+          tdc_decoder_v2_inst : entity tdc.tdc_decoder_v2
+            port map (
+              clock       => clock,
+              reset       => reset,
+              data_even   => even_data,
+              data_odd    => odd_data,
+              valid_i     => valid,
+              tdc_word_o  => tdc_word_to_polmux,
+              valid_o     => tdc_valid_to_polmux,
+              read_done_i => read_done(I),
+              tdc_err_o   => open       -- TODO: connect this to a counter
+              );
+
+        end generate;  -- new TDC gen
+
+        legacy_tdc_gen : if (legacy = true) generate
+          assert false report "ERROR: we don't support legacy TDC links yet" severity error;
+        end generate;  -- new TDC gen
+
+        -- constants
+        tdc_hits_to_polmux(I).fiberid   <= std_logic_vector(to_unsigned(idx, TDCPOLMUX_FIBERID_LEN));
+        tdc_hits_to_polmux(I).elinkid   <= std_logic_vector(to_unsigned(even_id, TDCPOLMUX_ELINKID_LEN));
+        tdc_hits_to_polmux(I).tdc_r     <= tdc_2rf(tdc_word_to_polmux);
+        tdc_hits_to_polmux(I).datavalid <= tdc_valid_to_polmux;
+
+      end generate;  -- mgt tag
     end generate;  -- TDC gen
   end generate;  -- TDC loop
 
@@ -222,7 +231,13 @@ begin
     signal polmux_output    : TDCPOLMUX_rt;
     signal fifo_output      : TDCPOLMUX_at;
 
+    constant std_logic1 : std_logic := '1';
+
   begin
+
+    -- FIXME: not clear at all where to place polling muxes... depends entirely on what they connect to
+    -- for now I guess we need to just leave it to the placer to decide? or create an overall "framework" pblock that
+    -- encompasses all of the other p-blocks and put it in there
 
     assert (false) report " > Generating Polmux #" & integer'image(I) &
       " with " & integer'image(size) & " inputs" severity note;
@@ -248,11 +263,11 @@ begin
         rd_clk => pipeline_clock,
         din    => tdcpolmux_2af(polmux_output),
         wr_en  => polmux_output.datavalid,
-        rd_en  => std_logic'('1'),
-      dout  => fifo_output,
-      full  => open,
-      empty => open
-      );
+        rd_en  => std_logic1,
+        dout   => fifo_output,
+        full   => open,
+        empty  => open
+        );
 
     tdc_hits(I) <= tdcpolmux_2rf (fifo_output);
 

@@ -42,14 +42,13 @@ entity sector_logic_link_wrapper is
     );
 end sector_logic_link_wrapper;
 
-
 architecture Behavioral of sector_logic_link_wrapper is
 
   signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   attribute DONT_TOUCH                  : string;
-  signal rx_reset_tree                  : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0) := (others => '1');
+  signal rx_reset_tree                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0) := (others => '1');
   attribute DONT_TOUCH of rx_reset_tree : signal is "true";
   --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
   --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
