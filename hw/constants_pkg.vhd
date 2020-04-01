@@ -20,13 +20,21 @@ package constants_pkg is
   constant c_MAX_LPGBT_UPLINKS   : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT) + func_count_link_types (c_MGT_MAP, MGT_LPGBT_SIMPLEX);
   constant c_MAX_LPGBT_DOWNLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT);
 
-  constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS, c_MAX_LPGBT_UPLINKS);
-  constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS, c_MAX_LPGBT_DOWNLINKS);
-
   -- TODO: should count only active links based on user_CSM_LINKs and user_LPGBT_UPLINKS
   constant c_MAX_TDC_INPUTS : integer := func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP);
 
   constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, c_MAX_TDC_INPUTS);
+
+  constant c_NUM_POLMUX : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);
+
+  --------------------------------------------------------------------------------
+  -- LPGBT
+  --------------------------------------------------------------------------------
+
+  constant c_NUM_LPGBT_LINKS_ACTIVE : integer := func_count_lpgbt_link_mapped_to_csm (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);
+
+  constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS,  c_NUM_LPGBT_LINKS_ACTIVE);
+  constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS,c_NUM_LPGBT_LINKS_ACTIVE/2);
 
   --------------------------------------------------------------------------------
   -- Emulator
@@ -108,7 +116,7 @@ package constants_pkg is
   constant lpgbt_uplink_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT_SIMPLEX);
 
   -- list of lpgbt mgts, simplex and duplex
-  constant lpgbt_downlink_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT);
+  constant lpgbt_downlink_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_DOWNLINKS, c_MGT_MAP, MGT_LPGBT, MGT_LPGBT);
 
   -- list of simplex only lpgbts
   constant lpgbt_simplex_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT_SIMPLEX, MGT_LPGBT_SIMPLEX);

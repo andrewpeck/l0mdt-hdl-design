@@ -8,6 +8,8 @@ library xil_defaultlib;
 library unisim;
 use unisim.vcomponents.all;
 
+library tdc;
+
 library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
@@ -50,7 +52,7 @@ entity top_framework is
     ttc_commands : out TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : out TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
+    tdc_hits : out TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : out SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -65,6 +67,7 @@ entity top_framework is
     -- felix
     tts_commands : in TTS_CMD_rt;
     daq_links    : in DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
+
 
     -- asserted while mmcm locking
     reset : out std_logic;
@@ -134,6 +137,7 @@ architecture behavioral of top_framework is
 
 begin  -- architecture behavioral
 
+  assert (c_NUM_LPGBT_UPLINKS mod 2 = 0) report "You NEED to instantiate an even number of uplinks because a CSM is always 2+1" severity error;
 
   reset          <= global_reset;
   global_reset   <= not (clocks.locked);
@@ -317,7 +321,7 @@ begin  -- architecture behavioral
   -- TDC Decoder Cores
   --------------------------------------------------------------------------------
 
-  tdc_decoder_wrapper_inst : entity work.tdc_decoder_wrapper
+  tdc_decoder_wrapper_inst : entity tdc.tdc_decoder_wrapper
     port map (
       clock          => clocks.clock320,
       pipeline_clock => clocks.clock_pipeline,

@@ -12,7 +12,9 @@ use framework.system_types_pkg.all;
 use framework.lpgbt_pkg.all;
 use framework.constants_pkg.all;
 use framework.board_pkg.all;
-use framework.csm_pkg.all;
+
+library tdc;
+use tdc.csm_pkg.all;
 
 library gbt_sc;
 use gbt_sc.sca_pkg.all;

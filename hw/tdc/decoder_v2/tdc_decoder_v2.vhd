@@ -1,6 +1,8 @@
 --TODO: need to simulate this
 --
 --library framework;
+library tdc;
+
 library work;
 use work.all;
 
@@ -24,13 +26,13 @@ entity tdc_decoder_v2 is
     data_odd  : in std_logic_vector (7 downto 0);
 
     -- interleave into a 16 bit word
-    tdc_word_o : out std_logic_vector (31 downto 0);
-    valid_o    : out std_logic;
-    tdc_err_o  : out std_logic
+    tdc_word_o  : out std_logic_vector (31 downto 0);
+    read_done_i : in  std_logic;
+    valid_o     : out std_logic;
+    tdc_err_o   : out std_logic
 
     );
 end tdc_decoder_v2;
-
 
 -- Baseline:
 -- LUT: 167
@@ -123,7 +125,7 @@ begin
     end if;
   end process;
 
-  alignment_buffer_even : entity work.alignment_buffer
+  alignment_buffer_even : entity tdc.alignment_buffer
     port map (
       clock     => clock,
       bitslip_i => bitslip,
@@ -132,7 +134,7 @@ begin
       data_o    => data_even_aligned
       );
 
-  alignment_buffer_odd : entity work.alignment_buffer
+  alignment_buffer_odd : entity tdc.alignment_buffer
     port map (
       clock     => clock,
       bitslip_i => bitslip,
@@ -147,7 +149,7 @@ begin
   -- Frame decoder state machine
   --------------------------------------------------------------------------------
 
-  framer_inst : entity work.framer
+  framer_inst : entity tdc.framer
     port map (
       frame_zero     => frame_zero,
       clock          => clock,
@@ -181,7 +183,7 @@ begin
     -- LUT = 31
     -- FF = 13
 
-    mDec8b10bMem_inst : entity work.mDec8b10bMem
+    mDec8b10bMem_inst : entity tdc.mDec8b10bMem
       port map (
 
         -- inputs
@@ -212,7 +214,7 @@ begin
     -- Author: Ken Boyette
     -- https://raw.githubusercontent.com/freecores/8b10b_encdec/master/8b10_dec.vhd
 
-    dec_8b10b_msbs_inst : entity work.dec_8b10b
+    dec_8b10b_msbs_inst : entity tdc.dec_8b10b
       port map (
         RESET    => reset,
         RBYTECLK => clock,
@@ -246,7 +248,7 @@ begin
   -- Frame decoder state machine
   --------------------------------------------------------------------------------
 
-  frame_decoder_inst : entity work.frame_decoder
+  frame_decoder_inst : entity tdc.frame_decoder
     port map (
       reset              => reset,
       clock              => clock,
@@ -256,6 +258,7 @@ begin
       word_8b_valid      => word_8b_valid,
       tdc_word_o         => tdc_word_o,
       tdc_err_o          => tdc_err_o,
+      read_done_i        => read_done_i,
       valid_o            => valid_o
       );
 

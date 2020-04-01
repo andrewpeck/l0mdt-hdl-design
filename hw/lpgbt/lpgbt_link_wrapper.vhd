@@ -89,6 +89,8 @@ begin
 
   downlink_gen : for I in 0 to c_NUM_MGTS-1 generate
 
+    assert false report "I = #" & integer'image(I) & " IDX= " & integer'image(lpgbt_downlink_idx_array(I)) severity note;
+
     -- only generate downlinks for duplex lpgbts
     downlink_if : if (lpgbt_downlink_idx_array(I) /= -1) generate
 
@@ -96,7 +98,7 @@ begin
 
     begin
 
-      assert false report "GENERATING LpGBT Downlink Encoder #" & integer'image(idx) & " on MGT #" & integer'image(I) severity note;
+      assert false report "GENERATING LpGBT Downlink Encoder #" & integer'image(idx) & " of " & integer'image(c_NUM_LPGBT_DOWNLINKS) & " on MGT #" & integer'image(I) severity note;
 
       downlink_reset_fanout : process (lpgbt_downlink_clk_i) is
       begin  -- process reset_fanout
@@ -141,7 +143,7 @@ begin
 
     begin
 
-      assert false report "GENERATING LpGBT Uplink Decoder #" & integer'image(idx) & " on MGT #" & integer'image(I) severity note;
+      assert false report "GENERATING LpGBT Uplink Encoder #" & integer'image(idx) & " of " & integer'image(c_NUM_LPGBT_UPLINKS) & " on MGT #" & integer'image(I) severity note;
 
       uplink_reset_fanout : process (lpgbt_uplink_clk_i) is
       begin  -- process reset_fanout

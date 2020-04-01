@@ -22,7 +22,7 @@ entity top_user is
     ttc_commands : in TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : in TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
+    tdc_hits : in TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : in SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -59,7 +59,7 @@ begin
   begin  -- process tdc_hit_sump_proc
     if pipeline_clock'event and pipeline_clock = '1' then  -- rising clock edge
 
-      tdc_sump_loop : for I in 0 to c_NUM_TDC_INPUTS-1 loop
+      tdc_sump_loop : for I in 0 to c_NUM_POLMUX-1 loop
         tdc_hit_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits(I)));
       end loop;
 

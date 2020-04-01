@@ -53,10 +53,10 @@ package board_pkg_common is
 
   type tdc_link_map_t is record
     link_id    : integer;
-    even_elink : integer;
-    odd_elink  : integer;
+    elink      : integer;
     --enc_elink  : integer;
     station_id : integer;
+    polmux_id  : integer;
     legacy     : boolean;
   end record;
   type tdc_link_map_array_t is array (integer range <>) of tdc_link_map_t;
@@ -76,6 +76,11 @@ package board_pkg_common is
   function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
     return integer;
 
+  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+    return integer;
+
+  function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+    return integer;
 
 end package board_pkg_common;
 
@@ -121,5 +126,31 @@ package body board_pkg_common is
     end loop;
     return count;
   end func_count_link_types;
+
+  -- write function to count number of polmuxes
+  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+    return integer is
+    variable max : integer := 0;
+  begin
+    for I in 0 to num_tdcs-1 loop
+      if (tdc_map(I).polmux_id > max) then
+        max := tdc_map(I).polmux_id;
+      end if;
+    end loop;
+    return max+1; -- the count is the index of the highest number + 1
+  end func_count_polmux;
+
+  -- write function to count number of polmuxes
+  function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+    return integer is
+    variable max : integer := 0;
+  begin
+    for I in 0 to num_tdcs-1 loop
+      if (tdc_map(I).link_id > max) then
+        max := tdc_map(I).link_id;
+      end if;
+    end loop;
+    return max+1;
+  end func_count_lpgbt_link_mapped_to_csm;
 
 end package body;

@@ -1,0 +1,13 @@
+# TDC
+../../hw/tdc/tdc_decoder_wrapper.vhd
+../../hw/tdc/csm_pkg.vhd
+../../hw/tdc/polling_mux.vhd
+../../hw/tdc/priority_encoder.v
+../../hw/tdc/decoder_v2/dec8b10b.v
+../../hw/tdc/decoder_v2/dec_8b10b.vhd
+../../hw/tdc/decoder_v2/tdc_decoder_v2.vhd
+../../hw/tdc/decoder_v2/alignment_buffer.vhd
+../../hw/tdc/decoder_v2/framer.vhd
+../../hw/tdc/decoder_v2/frame_decoder.vhd
+
+../../IP/polmux_sync_fifo/polmux_sync_fifo.xci

@@ -14,7 +14,8 @@ entity frame_decoder is
     word_8b_valid      : in  std_logic;
     tdc_word_o         : out std_logic_vector (31 downto 0);
     tdc_err_o          : out std_logic;
-    valid_o            : out std_logic
+    valid_o            : out std_logic;
+    read_done_i        : in  std_logic
     );
 end frame_decoder;
 
@@ -23,7 +24,6 @@ architecture behavioral of frame_decoder is
   type tdc_word_state_t is (ERR, HEADER, DATA0, DATA1, DATA2, DATA3);
   signal tdc_word_state : tdc_word_state_t;
   signal tdc_aligned    : std_logic;
-  signal valid          : std_logic;
   signal data_buf       : std_logic_vector (23 downto 0);
 begin
 
@@ -41,7 +41,9 @@ begin
 
     if (rising_edge(clock)) then
 
-      valid <= '0';
+      if (read_done_i = '1') then
+        valid_o <= '0';
+      end if;
 
       if (word_8b_valid = '1') then
         if (reset = '1') then
@@ -56,6 +58,8 @@ begin
 
               sequential_header_count := 0;
               tdc_aligned             <= '0';
+
+              valid_o <= '0';
 
               if (word_8b = TDC_START and k_char = '1') then
                 tdc_word_state <= HEADER;
@@ -118,20 +122,17 @@ begin
 
               tdc_word_o (31 downto 24) <= word_8b;
               tdc_word_o (23 downto 0)  <= data_buf(23 downto 0);
-              valid                     <= '1';
+
+              valid_o <= '1';
 
               --when others =>
-
           end case;
 
         end if;
       end if;
 
-
     end if;
   end process;
 
-  -- valid output high for only 3.125ns
-  valid_o <= '1' when (valid = '1' and word_8b_valid = '1') else '0';
 
 end behavioral;

@@ -27,7 +27,7 @@ begin
 
   process (clock) is
     variable valid : std_logic;
-    variable cycle : integer;
+    variable cycle : integer range 0 to 7;
 
     -- track which cycle (0-7) we are in of the 40MHz clock, relative to the
     -- datavalid flag in clock 0 allows us to do multiple (up to 8) operations

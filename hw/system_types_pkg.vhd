@@ -12,7 +12,7 @@ package system_types_pkg is
   constant std_logic_0 : std_logic := '1';
 
   type gtcommon_rt is record
-    refclk       : std_logic;
+    refclk         : std_logic;
     refclk01       : std_logic;
     clock40        : std_logic;
     clock320       : std_logic;
@@ -51,4 +51,23 @@ package system_types_pkg is
     backpressure : std_logic;
   end record;
 
+  function log2ceil(arg : positive) return natural;
+
 end system_types_pkg;
+
+package body system_types_pkg is
+
+  -- vhdl does not have built-in clog2...
+  function log2ceil(arg : positive) return natural is
+    variable tmp : positive := 1;
+    variable log : natural  := 0;
+  begin
+    if arg = 1 then return 0; end if;
+    while arg > tmp loop
+      tmp := tmp * 2;
+      log := log + 1;
+    end loop;
+    return log;
+  end function;
+
+end package body;
