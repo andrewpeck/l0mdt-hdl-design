@@ -1,2 +1,2 @@
-#Simulator xsim
+#Simulator questa
 ../../pt/sim/pt_tb.vhd topsim=pt_tb
