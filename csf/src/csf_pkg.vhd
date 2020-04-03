@@ -27,7 +27,7 @@ use ieee.math_real.all;
 package csf_pkg is
     ----------------------------------------------------------------------------
     -- Constants --
-
+    constant n_finders_per_station  : integer := 3;
     -- MDT hit coordinates constants
     constant x_width                : integer := 14;
     constant x_mult                 : real    := 16.0;

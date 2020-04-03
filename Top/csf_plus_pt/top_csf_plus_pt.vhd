@@ -1,22 +1,30 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 18/10/2019 9:31:09 AM
--- Design Name: 
--- Module Name: top_csf_plus_pt - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Title       : top_csf_plus_pt.vhd
+-- Project     : MDTTP
+--------------------------------------------------------------------------------
+-- File        : top_csf_plus_Pt.vhd
+-- Author      : Davide Cieri davide.cieri@cern.ch
+-- Company     : Max-Planck-Institute For Physics, Munich
+-- Created     : Tue Feb 11 13:50:27 2020
+-- Last update : Thu Apr  2 11:00:16 2020
+-- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
+--------------------------------------------------------------------------------
+-- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
+-------------------------------------------------------------------------------
+-- Description:  Template for a top vhdl file, with the generic variables parsed
+--               by HOG
+--------------------------------------------------------------------------------
+-- Revisions:  Revisions and documentation are controlled by
+-- the revision control system (RCS).  The RCS should be consulted
+-- on revision history.
+-------------------------------------------------------------------------------
+
+-- Doxygen-compatible comments
+--! @file top_csf_plus_pt.vhd
+--! @brief top_csf_plus_pt
+--! @details 
+--! Top file for a project with 9 CSF and 3 pT calculator modules
+--! @author Davide Cieri
 
 
 library IEEE;
@@ -28,16 +36,11 @@ use csf_lib.csf_pkg.all;
 use pt_lib.pt_pkg.all;
 
 entity top_csf_plus_pt is
-  Generic(
-    DataWidth : integer := 64
-  );
   Port ( 
-    clk     : in std_logic;
-    we      : in std_logic;
-    d       : in std_logic_vector(DataWidth-1 downto 0);
-    q       : out std_logic_vector(DataWidth-1 downto 0);
-    en      : out std_logic;
-    addr    : out std_logic_vector(6 downto 0)
+    clk             : in std_logic;
+    i_seed_BI       : a_seeds(n_finders_per_station-1 downto 0);
+    i_mdt_hit_BI    : a_mdt_hits(n_finders_per_station-1 downto 0)
+
   );
 end top_csf_plus_pt;
 
@@ -65,8 +68,8 @@ architecture Behavioral of top_csf_plus_pt is
 
 begin
     
-    -- Compact Segment Finders (1 per MDT station)
-    Finders: for k in 2 downto 0 generate
+    -- Compact Segment Finders for Inner Layer 
+    Finders_I: for k in n_finders_per_station-1 downto 0 generate
     begin
     CSF : entity csf_lib.csf
     port map(
@@ -78,77 +81,77 @@ begin
         );
     end generate;
 
-    -- Track Fitting
-    Pt: entity pt_lib.pt_calculator_top
-    port map(
-        clk => clk,
-        i_segment_BI => out_segs(0),
-        i_segment_BM => out_segs(1),
-        i_segment_BO => out_segs(2),
-        i_roi_BI     => rois(0),
-        i_roi_BM     => rois(1),
-        i_roi_BO     => rois(2),
-        i_rst        => rst_pt,
-        o_pt_online  => pt_online,
-        o_pt_valid   => dv_pt
-    );
+    ---- Track Fitting
+    --Pt: entity pt_lib.pt_calculator_top
+    --port map(
+    --    clk => clk,
+    --    i_segment_BI => out_segs(0),
+    --    i_segment_BM => out_segs(1),
+    --    i_segment_BO => out_segs(2),
+    --    i_roi_BI     => rois(0),
+    --    i_roi_BM     => rois(1),
+    --    i_roi_BO     => rois(2),
+    --    i_rst        => rst_pt,
+    --    o_pt_online  => pt_online,
+    --    o_pt_valid   => dv_pt
+    --);
 
-    addr <= addr_s;
-    en   <= en_s;
-    q <= q_s;
+    --addr <= addr_s;
+    --en   <= en_s;
+    --q <= q_s;
 
-    TopProc : process(clk)
-    begin
-        if rising_edge(clk) then
+    --TopProc : process(clk)
+    --begin
+    --    if rising_edge(clk) then
 
-            -- Input
-            mdt_hits <= (others => null_mdt_hit);
-            seeds    <= (others => null_seed);
+    --        -- Input
+    --        mdt_hits <= (others => null_mdt_hit);
+    --        seeds    <= (others => null_seed);
 
-            if d(61) = '1' and we = '1' then
-                seeds(to_integer(vec_to_seed(d).chamber_id)) <= vec_to_seed(d);
-            elsif d(63) = '1' and we = '1' then
-                mdt_hits(to_integer(vec_to_mdthit(d).chamber_id)) <= vec_to_mdthit(d);
-            elsif d(60) = '1' and we = '1' then
-                rois(to_integer(vec_to_roi(d).chamber_id)) <= vec_to_roi(d);
-            end if;
+    --        if d(61) = '1' and we = '1' then
+    --            seeds(to_integer(vec_to_seed(d).chamber_id)) <= vec_to_seed(d);
+    --        elsif d(63) = '1' and we = '1' then
+    --            mdt_hits(to_integer(vec_to_mdthit(d).chamber_id)) <= vec_to_mdthit(d);
+    --        elsif d(60) = '1' and we = '1' then
+    --            rois(to_integer(vec_to_roi(d).chamber_id)) <= vec_to_roi(d);
+    --        end if;
 
-            csf_rst <= '0';
-            --if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
-            --    rois <= (others => null_roi);
-            --    --csf_rst <= '1';
-            --end if; 
+    --        csf_rst <= '0';
+    --        --if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
+    --        --    rois <= (others => null_roi);
+    --        --    --csf_rst <= '1';
+    --        --end if; 
 
-            -- Output
-            if unsigned(addr_s) < 127 and unsigned(addr_s) >= 0 then
-                addr_s <= std_logic_vector(unsigned(addr_s) + 1);
-            elsif unsigned(addr_s) = 127 then
-                addr_s <= (others => '1');
-                en_s <= '0'; 
-                q_s <= (others => '0');
-                rst_pt <= '0';               
-            end if;
+    --        -- Output
+    --        if unsigned(addr_s) < 127 and unsigned(addr_s) >= 0 then
+    --            addr_s <= std_logic_vector(unsigned(addr_s) + 1);
+    --        elsif unsigned(addr_s) = 127 then
+    --            addr_s <= (others => '1');
+    --            en_s <= '0'; 
+    --            q_s <= (others => '0');
+    --            rst_pt <= '0';               
+    --        end if;
 
-            if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
-                --rois <= (others => null_roi);
-                --q_s <= '1' & fill_seg & out_segs(2).valid & out_segs(1).valid & out_segs(0).valid & std_logic_vector(out_segs(2).m) & std_logic_vector(out_segs(1).m) & std_logic_vector(out_segs(0).m);
-                csf_rst <= '1';
-                --en_s <= '1';
-                --addr_s <= (others => '0');
-                --rois <= (others => null_roi);
-            end if; 
-
-
-            if dv_pt = '1' then
-                q_s <= dv_pt & fill_pt & std_logic_vector(pt_online);
-                rst_pt <= '1';
-                en_s <= '1';
-                addr_s <= (others => '0');
-                rois <= (others => null_roi);
-            end if;
+    --        if rois(0).valid = '1' and rois(1).valid = '1' and rois(2).valid = '1' and out_segs(0).valid = '1' and out_segs(1).valid = '1' and out_segs(2).valid = '1' then
+    --            --rois <= (others => null_roi);
+    --            --q_s <= '1' & fill_seg & out_segs(2).valid & out_segs(1).valid & out_segs(0).valid & std_logic_vector(out_segs(2).m) & std_logic_vector(out_segs(1).m) & std_logic_vector(out_segs(0).m);
+    --            csf_rst <= '1';
+    --            --en_s <= '1';
+    --            --addr_s <= (others => '0');
+    --            --rois <= (others => null_roi);
+    --        end if; 
 
 
-        end if;
-    end process;
+    --        if dv_pt = '1' then
+    --            q_s <= dv_pt & fill_pt & std_logic_vector(pt_online);
+    --            rst_pt <= '1';
+    --            en_s <= '1';
+    --            addr_s <= (others => '0');
+    --            rois <= (others => null_roi);
+    --        end if;
+
+
+    --    end if;
+    --end process;
 
 end Behavioral;
