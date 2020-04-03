@@ -21,6 +21,19 @@ architecture behavioral of framer is
   signal frame_state : frame_state_t;
 
   signal word_buf : std_logic_vector (9 downto 0);
+
+  --------------------------------------------------------------------------------
+  -- Frame aligner logic, get the 16 bit words onto the same boundary
+  --------------------------------------------------------------------------------
+  --
+  -- bits[79:0]     01234567890123456789012345678901234567890123456789012345678901234567890123456789
+  --
+  -- 40MHz frames   < frame0 15:0  >< frame1 31:16 >< frame2 47:32 >< frame3 63:48 >< frame4 79:64 >
+  --                0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+  --
+  -- 10 bit words   < word0  >< word1  >< word2  >< word3  >< word4  >< word5  >< word6  >< word7  >
+  --                01234567890123456789012345678901234567890123456789012345678901234567890123456789
+  -- tdc_word       < header >< data0  >< data1  >< data2  >< data3  ><idle/err>< idle   >< idle   >
 begin
 
   frame_zero <= '1' when frame_state = FRAME0 else '0';

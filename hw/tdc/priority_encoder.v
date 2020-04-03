@@ -29,7 +29,7 @@ THE SOFTWARE.
 /*
  * Priority encoder module
  */
-module priority_encoder #
+module priority_encoder_v #
 (
     parameter STAGE = 0,
     parameter WIDTH = 4,
@@ -37,6 +37,7 @@ module priority_encoder #
     parameter LSB_PRIORITY = "LOW"
 )
 (
+    input  wire                     clock,
     input  wire [WIDTH-1:0]         input_unencoded,
     output wire                     output_valid,
     output wire [$clog2(WIDTH)-1:0] output_encoded,
@@ -65,7 +66,7 @@ generate
         // also pad input to correct power-of-two width
         wire [$clog2(W2)-1:0] out1, out2;
         wire valid1, valid2;
-        priority_encoder #(
+        priority_encoder_v #(
             .STAGE(STAGE+1),
             .WIDTH(W2),
             .LSB_PRIORITY(LSB_PRIORITY)
@@ -75,7 +76,7 @@ generate
             .output_valid(valid1),
             .output_encoded(out1)
         );
-        priority_encoder #(
+        priority_encoder_v #(
             .STAGE(STAGE+1),
             .WIDTH(W2),
             .LSB_PRIORITY(LSB_PRIORITY)

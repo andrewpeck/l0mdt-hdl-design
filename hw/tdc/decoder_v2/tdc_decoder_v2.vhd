@@ -82,27 +82,17 @@ architecture behavioral of tdc_decoder_v2 is
 
 begin
 
-  -- take in 16 bits per bx... this could be aligned arbitrarily. need to find the alignment (by looking for 8b10b words, and perform a parallel bitslip )
+  -- take in 16 bits per bx... this could be aligned arbitrarily. need to find the alignment
+  -- (by looking for 8b10b words, and perform a parallel bitslip )
   --
-  -- we can do this by putting the 16b/bx into a 32 bit deep parallel bitslip module and shifting the index pointer 1 by 1 until we achieve alignment
-  -- expect to take a few clock cycles at startup to do the alignment but this should be pretty small on the scale of things
+  -- we can do this by putting the 16b/bx into a 32 bit deep parallel bitslip module and shifting the
+  -- index pointer 1 by 1 until we achieve alignment expect to take a few clock cycles at startup to
+  -- do the alignment but this should be pretty small on the scale of things
 
   -- bitslip the data so that the head passes 8b10b check
   -- if the head of the data is 8b10b valid then the rest of the data should be aligned also
   -- although the word boundaries will follow a complicated scheme since they
   -- are different on each frame due to the convoluted tdc design
-  --
-  -- bits[79:0]     01234567890123456789012345678901234567890123456789012345678901234567890123456789
-  --
-  -- 40MHz frames   < frame0 15:0  >< frame1 31:16 >< frame2 47:32 >< frame3 63:48 >< frame4 79:64 >
-  --                0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
-  --               
-  -- 10 bit words   < word0  >< word1  >< word2  >< word3  >< word4  >< word5  >< word6  >< word7  >
-  --                01234567890123456789012345678901234567890123456789012345678901234567890123456789
-
-  --------------------------------------------------------------------------------
-  -- Frame aligner logic, get the 16 bit words onto the same boundary
-  --------------------------------------------------------------------------------
 
 
   -- TODO: check the timing on this

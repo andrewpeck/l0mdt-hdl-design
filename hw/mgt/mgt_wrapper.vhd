@@ -218,6 +218,7 @@ begin
 
     lpgbt_gen : if (lpgbt_idx_array(I) /= -1) generate
 
+      -- TODO: replace VHDL attributes with hierarchy pollution (see TDC decoder wrapper for example)
       attribute X_LOC            : integer;
       attribute Y_LOC            : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;

@@ -1,14 +1,14 @@
 package require Tcl 8.5
- 
+
 # -----------------------------------------------------------------------------
-# from http://wiki.tcl.tk/12574 
+# from http://wiki.tcl.tk/12574
 proc lcomp {expression args} {
     # Check the number of arguments.
     if {[llength $args] < 2} {
         error "wrong # args: should be \"lcomp expression var1 list1\
             ?... varN listN? ?condition?\""
     }
- 
+
     # Extract condition from $args, or use default.
     if {[llength $args] % 2 == 1} {
         set condition [lindex $args end]
@@ -16,26 +16,26 @@ proc lcomp {expression args} {
     } else {
         set condition 1
     }
- 
+
     # Collect all var/list pairs and store in reverse order.
     set varlst [list]
     foreach {var lst} $args {
         set varlst [concat [list $var] [list $lst] $varlst]
     }
- 
+
     # Actual command to be executed, repeatedly.
     set script {lappend result [subst $expression]}
- 
+
     # If necessary, make $script conditional.
     if {$condition ne "1"} {
         set script [list if $condition $script]
     }
- 
+
     # Apply layers of foreach constructs around $script.
     foreach {var lst} $varlst {
         set script [list foreach $var $lst $script]
     }
- 
+
     # Do it!
     set result [list]
     {*}$script ;# Change to "eval $script" if using Tcl 8.4 or older.
@@ -50,7 +50,7 @@ proc get_rpm_bounds {aSitelist} {
     foreach lSite $aSitelist {
         lappend lRPMXList [get_property RPM_X $lSite]
         lappend lRPMYList [get_property RPM_Y $lSite]
-        
+
     }
 
     set lRPMXList [lsort -integer $lRPMXList]
@@ -60,9 +60,6 @@ proc get_rpm_bounds {aSitelist} {
     set lTopRight [list [lindex $lRPMXList end] [lindex $lRPMYList end]]
     return [list $lBotLeft $lTopRight]
 }
-# -----------------------------------------------------------------------------
-
-
 # -----------------------------------------------------------------------------
 proc get_fpga_rpm_bounds {} {
     set lClkBounds [get_XY_bounds [get_clock_regions]]
@@ -97,7 +94,7 @@ proc get_XY_bounds {aSiteList} {
 # -----------------------------------------------------------------------------
 proc create_quad_pblock {aQuadCtr aClkRegX aClkRegY aExpr aPrefix aSitePatterns} {
     
-    set lClkReg [get_clock_regions X${aClkRegX}Y${aClkRegY}]
+    set lClkReg [get_clock_regions "X*Y${aClkRegY}"]
     puts "Creating pblock '$aPrefix${aQuadCtr}' in clock region $lClkReg ($aExpr)" 
 
      if {[catch {set lRects [find_rects [get_sites -of $lClkReg -filter "$aExpr"]]}]} {
@@ -125,7 +122,7 @@ proc create_quad_pblock {aQuadCtr aClkRegX aClkRegY aExpr aPrefix aSitePatterns}
 # -----------------------------------------------------------------------------
 
 # -----------------------------------------------------------------------------
-proc create_quad_pblocks {aLeftColWidth aRightColWith} {
+proc create_quad_pblocks {aLeftColWidth aRightColWidth} {
 
     set lSitePatterns [list SLICE DSP* RAM*]
 
@@ -142,8 +139,8 @@ proc create_quad_pblocks {aLeftColWidth aRightColWith} {
 
     set lRPMBounds [get_fpga_rpm_bounds]
     # Extract the column boundaries
-    set lLeftBoundary [expr [lindex $lRPMBounds 0 0] + $aLeftColWidth]
-    set lRightBoundary [expr [lindex $lRPMBounds 1 0] - $aRightColWith]
+    set lLeftBoundary  [expr [lindex $lRPMBounds 0 0] + $aLeftColWidth]
+    set lRightBoundary [expr [lindex $lRPMBounds 1 0] - $aRightColWidth]
 
     # Cleanup the old pblocks
     delete_pblocks -quiet [get_pblocks -quiet quad_*]
@@ -155,6 +152,7 @@ proc create_quad_pblocks {aLeftColWidth aRightColWith} {
         incr lQuadCtr
     }
 
+    # place all blocks gt than some X number into the right quads
     set aRightExpr "RPM_X > $lRightBoundary"
     set lQuadCtr 0
     for {set i $lBotY} {$i <= $lTopY} {incr i} {
@@ -164,104 +162,6 @@ proc create_quad_pblocks {aLeftColWidth aRightColWith} {
     return [list $lQuadCtr $lLeftBoundary $lRightBoundary]
 
 }
-
-# -----------------------------------------------------------------------------
-# proc create_quad_pblocks_leg {aLeftColWidth aRightColWith aSitePatterns} {
-
-#     # Read clock region bounds
-#     set lClkBounds [get_XY_bounds [get_clock_regions]]
-
-#     puts "Clock region bounds: ${lClkBounds}"
-
-#     set lRightX [lindex $lClkBounds 1 0]
-#     set lLeftX [lindex $lClkBounds 0 0]
-
-#     set lTopY [lindex $lClkBounds 1 1]
-#     set lBotY [lindex $lClkBounds 0 1]
-
-#     set lRPMBounds [get_fpga_rpm_bounds]
-#     # Extract the column boundaries
-#     set lLeftBoundary [expr [lindex $lRPMBounds 0 0] + $aLeftColWidth]
-#     set lRightBoundary [expr [lindex $lRPMBounds 1 0] - $aRightColWith]
-
-#     # Cleanup the old pblocks
-#     delete_pblocks -quiet [get_pblocks -quiet quad_*]
-
-#     set lQuadCtr 0
-
-#     # Left column
-#     for {set i $lBotY} {$i <= $lTopY} {incr i} {
-
-#         set lClkReg [get_clock_regions X${lLeftX}Y${i}]
-#         puts "Creating pblock 'quad_L${lQuadCtr}' in clock region $lClkReg (RPM x < $lLeftBoundary)" 
-
-#          if {[catch {set lRects [find_rects [get_sites -of $lClkReg -filter "RPM_X < $lLeftBoundary"]]}]} {
-#             incr lQuadCtr
-#             continue
-#         }
-
-#         puts "$lRects"
-
-#         set lToAdd [list]
-#         foreach lType $aSitePatterns {
-#             dict for {lId lRange} [dict filter $lRects key $lType] {
-#                 lappend lToAdd $lRange
-#             }
-
-#         }
-
-#         # resize_pblock $lQuadBlock -add $lToAdd
-#         # incr lQuadCtr
-        
-#         if {[llength $lToAdd] > 0} {
-#             set lQuadBlock [create_pblock quad_L$lQuadCtr]
-#             resize_pblock $lQuadBlock -add $lToAdd
-#         } else {
-#             puts "No elements in pblock quad_L$lQuadCtr"
-#         }
-    
-#         incr lQuadCtr
-#     }
-
-#     set lQuadCtr 0
-
-#     # Right column
-#     for {set i $lBotY} {$i <= $lTopY} {incr i} {
-
-#         set lClkReg [get_clock_regions X${lRightX}Y${i}]
-#         puts "Creating pblock 'quad_R${lQuadCtr}' in clock region $lClkReg (RPM x > $lRightBoundary)" 
-
-#         set lQuadBlock [create_pblock quad_R$lQuadCtr]
-
-#         if {[catch {set lSelSites [get_sites -of $lClkReg -filter "RPM_X > $lRightBoundary"]}]} {
-#             incr lQuadCtr
-#             continue
-#         }
-
-
-#         set lRects [find_rects $lSelSites]
-
-#         set lToAdd [list]
-#         foreach lType $aSitePatterns {
-#             dict for {lId lRange} [dict filter $lRects key $lType] {
-#                 lappend lToAdd $lRange
-#             }
-#         }
-
-#         if {[catch {resize_pblock $lQuadBlock -add $lToAdd}]} {
-#             puts "Failed to add 'quad_R${lQuadCtr}'. The block will be deleted."
-#             rdelete_pblocks -quiet lQuadBlock
-#             incr lQuadCtr
-#             continue
-#         }
-
-#         incr lQuadCtr
-#     }
-    
-#     return [list $lQuadCtr $lLeftBoundary $lRightBoundary]
-# }
-# -----------------------------------------------------------------------------
-
 
 # -----------------------------------------------------------------------------
 # add_rects_to_pblock --
@@ -325,5 +225,3 @@ proc find_rects {aSites} {
     return $lRect
 }
 # -----------------------------------------------------------------------------
-
-

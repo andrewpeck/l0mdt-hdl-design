@@ -1,15 +1,14 @@
 # Parameters
-# TODO: understand how the leftquad width even works.. why 1100??? it makes no sense
-# something to do with the weird die shape but I need to understand the details and make this more human readable
-
-set lLeftQuadWidth  [expr 650 + 850]
-set lRightQuadWidth [expr 650]
+# Add 950 to left side to account for oddities in RPM numbering
+set lLeftQuadWidth  [expr 800 + 850]
+set lRightQuadWidth [expr 800]
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
 puts "Clock region boundaries ${lClkBounds}"
 set lRPMBounds [get_fpga_rpm_bounds]
 puts "FPGA boundaries (RPM coords) $lRPMBounds"
 
+#create_quad_pblocks $lLeftQuadWidth $lRightQuadWidth
 lassign [create_quad_pblocks $lLeftQuadWidth $lRightQuadWidth] lNumQuads lLeftBoundary lRightBoundary
 
 # Create the quad p-blocks and store the number of blocks created
@@ -36,14 +35,16 @@ proc assign_pblocks {min  max  side} {
         # avoid hierarchical filters and use direct calling with wildcards,
         # e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
 
-        #set mgt_cells   [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/" $lRegId]]
-        set mgt_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
-        set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
+        #hierarcical
+        #set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/tdc_decoder_wrapper_inst/*mgt_tag[$lRegId]*"]
+        #set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
         set lpgbt_ic_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*gbt_controller_wrapper*\*_gen[$lRegId]*gbt_ic_controller_inst"]
         set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
-        set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/tdc_decoder_wrapper_inst/*mgt_tag[$lRegId]*"]
+        #set mgt_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
 
-        #FIXME: get tdc cells correctly
+        set lpgbt_cells    [get_cells -quiet "top_framework/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"]
+        set mgt_cells      [get_cells -quiet "top_framework/*mgt*/*mgt_gen\[$lRegId]*.MGT_GEN"]
+        set tdc_cells      [get_cells -quiet "top_framework/*tdc*/*mgt_tag\[$lRegId]*decoder*_inst"]
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells $tdc_cells"
 
@@ -55,12 +56,13 @@ proc assign_pblocks {min  max  side} {
     }
 }
 
-assign_pblocks 0  44  R
+assign_pblocks 0   44  R
 assign_pblocks 44  76  L
 
 # Payload Area assignment
-set lPayload [create_pblock payload]
-set lPayloadRect [find_rects [get_sites -of [get_clock_regions] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
-add_rects_to_pblock $lPayload $lPayloadRect
+#set lPayload [create_pblock payload]
+#set lPayloadRect [find_rects [get_sites -of [get_clock_regions] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
+#add_rects_to_pblock $lPayload $lPayloadRect
+#
 #set lPayloadRect [find_rects [get_sites -of [get_clock_regions -f {ROW_INDEX>2}] -f "RPM_X >= $lLeftBoundary && RPM_X <= $lRightBoundary"]]
 #add_cells_to_pblock [get_pblocks payload] [get_cells -quiet datapath/rgen[*].pgen.*]
