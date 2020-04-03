@@ -27,9 +27,6 @@ use csf_lib.csf_pkg.all;
 use pt_lib.pt_pkg.all;
 
 entity top_csf is
-    Generic(
-        DataWidth : integer := 64
-    );
     Port ( 
         clk       : in std_logic;
         i_seed    : in t_seed;

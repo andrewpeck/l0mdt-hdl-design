@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref: 'v0.0.27'
+      ref: 'v0.0.28'
 before_script:
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
     - git remote set-url origin https://${HOG_USER}:${HOG_PUSH_TOKEN}@$REPO
@@ -54,16 +54,6 @@ create_project:hp:
 #        - synthesise_ips:pt
 #        - synthesise_project:pt
 
-# write_bitstream:pt:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-#        - implement_project:pt
 
 
 # #################### CSF Project ###########################
@@ -152,42 +142,31 @@ implement_project:pt:
        - synthesise_ips:pt
        - synthesise_project:pt
 
-# write_bitstream:pt:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-#        - implement_project:pt
-
 #################### CSF+pT Project ###########################
 
-# create_project:csf_plus_pt:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
+create_project:csf_plus_pt:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
 
-# synthesise_ips:csf_plus_pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:csf_plus_pt
+synthesise_ips:csf_plus_pt:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
+      IP_PATH: IP
+    dependencies:
+        - create_project:csf_plus_pt
 
-# synthesise_project:csf_plus_pt:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#     dependencies:
-#         - synthesise_ips:csf_plus_pt
-#         - create_project:csf_plus_pt
+synthesise_project:csf_plus_pt:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf_plus_pt
+    dependencies:
+        - synthesise_ips:csf_plus_pt
+        - create_project:csf_plus_pt
 
 # implement_project:csf_plus_pt:
 #     extends: .implement_project

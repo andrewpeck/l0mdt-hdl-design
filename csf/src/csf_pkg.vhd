@@ -119,8 +119,11 @@ package csf_pkg is
         z                           : signed(z_width-1 downto 0);
         x                           : unsigned(x_width-1 downto 0);
     end record;
-    
+
+    -- Arrays
     type t_locsegs is array(natural range <> ) of t_locseg;
+    type a_mdt_hits is array(natural range <> ) of t_mdt_hit;
+    type a_seeds is array(natural range <> ) of t_seed;
 
     -- Convert vec to localseg
     function vec_to_locseg(vec : std_logic_vector) return t_locseg;
@@ -132,6 +135,7 @@ package csf_pkg is
     constant null_histo_hit         : t_histo_hit := ('0', (others => '0'), (others => '0'));
     constant null_locseg            : t_locseg    := ('0', (others => '0'), (others => '0'), 
         (others => '0'), (others => '0'), (others => '0'), (others => '0'));
+
 
     ----------------------------------------------------------------------------
     -- Functions --   

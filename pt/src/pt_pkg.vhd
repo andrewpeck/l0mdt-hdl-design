@@ -77,6 +77,7 @@ package pt_pkg is
 
     constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
 
+    -- Functions 
     type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;
 
@@ -86,8 +87,11 @@ package pt_pkg is
     type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_width-1 downto 0);
     function invsqrt_ROM return t_invsqrt_ROM;
 
-
     function pt_bin(pt : signed) return unsigned;
+
+    -- Arrays
+    type a_pt is array(natural range <> ) of unsigned(pt_width-1 downto 0);
+    type a_globalseg is array(natural range <> ) of t_globalseg;
 
 end;
 
