@@ -7,9 +7,11 @@ package csm_pkg is
   -- FIXME: these should be real numbers based on the board design
   constant CSM_SCA_UPLINK_ELINK0 : integer := 0;
   constant CSM_SCA_UPLINK_ELINK1 : integer := 1;
+  constant CSM_SCA_DOWNLINK_ELINK0 : integer := 0;  -- specify which 160 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA_DOWNLINK_ELINK1 : integer := 1;  -- specify which 160 Mbps elink (0 to 15) is the SCA
 
-  constant CSM_SCA_DOWNLINK_ELINK0 : integer := 0;
-  constant CSM_SCA_DOWNLINK_ELINK1 : integer := 1;
+  constant CSM_ENC_DOWNLINK_ELINK0 : integer := 2;  -- specify which 160 Mbps elink (0 to 15) is the ENC
+
 
   type int_pair_t is array (integer range 0 to 1) of integer;
   type int_array_t is array (integer range <>) of int_pair_t;

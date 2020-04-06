@@ -2,6 +2,8 @@
 ../../hw/tdc/tdc_decoder_wrapper.vhd 2008
 ../../hw/tdc/csm_pkg.vhd
 ../../hw/tdc/polling_mux.vhd 2008
+../../hw/tdc/top_tdc_control.vhd
+../../hw/tdc/tdc_encoded_control.vhd
 ../../hw/tdc/priority_encoder.v
 ../../hw/tdc/priority_encoder.vhd 2008
 ../../hw/tdc/priority_encoder_pkg.vhd 2008

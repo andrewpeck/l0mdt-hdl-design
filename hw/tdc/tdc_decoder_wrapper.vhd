@@ -108,7 +108,6 @@ begin
     constant idx     : integer := c_TDC_LINK_MAP(I).link_id;
     constant even_id : integer := c_TDC_LINK_MAP(I).elink;
     constant odd_id  : integer := c_TDC_LINK_MAP(I).elink+1;
-    constant ctrl_id  : integer := c_TDC_LINK_MAP(I).ctrl_id; 
     constant legacy  : boolean := c_TDC_LINK_MAP(I).legacy;
 
     -- TODO http://www.pldworld.com/_hdl/2/_tutor/www.stefanvhdl/vhdl/vhdl/txt_util.vhd
@@ -153,7 +152,6 @@ begin
         assert false report " > LPGBT_ID =" & integer'image(idx) severity note;
         assert false report " > EVEN_ID  =" & integer'image(even_id) severity note;
         assert false report " > ODD_ID   =" & integer'image(odd_id) severity note;
-        assert false report " > CTRL_ID  =" & integer'image(ctrl_id) severity note;
 
         assert I /= 0 report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders, which will be multiplexed by " &
           integer'image(c_NUM_POLMUX) & " polling muxes" severity note;
@@ -263,20 +261,6 @@ begin
     tdc_hits(I) <= tdcpolmux_2rf (fifo_output);
 
   end generate;  -- TDC loop
-
-        encoded_control_inst: entity work.encoded_control
-          port map (
-            clk_i => clocks.clock40,
-            dav_i => '1',
-            rst_i => reset,
-            trg_i => trg_i(I),
-            bcr_i => bcr_i(I),
-            ecr_i => ecr_i(I),
-            gsr_i => gsr_i(I),
-            enc_o => enc_o(I)
-        );
-
-        lpgbt_downlink_data(lpgbt_downlink_idx_array(idx)).data(8*(enc_id+1)-1 downto 8*enc_id);
 
 end behavioral;
 

@@ -250,11 +250,11 @@ begin
   -- Output Mux to LPGBTS
   --------------------------------------------------------------------------------
   process (tx_clk_i, ec_data_down)
-    variable control_to_sca0 : std_logic_vector (7 downto 0);
-    variable control_to_sca1 : std_logic_vector (7 downto 0);
+    variable control_to_sca0 : std_logic_vector (3 downto 0);
+    variable control_to_sca1 : std_logic_vector (3 downto 0);
 
-    constant down_0 : integer := CSM_SCA_DOWNLINK_ELINK0;
-    constant down_1 : integer := CSM_SCA_DOWNLINK_ELINK1;
+    constant d0 : integer := CSM_SCA_DOWNLINK_ELINK0;
+    constant d1 : integer := CSM_SCA_DOWNLINK_ELINK1;
 
     -- function to replicate a std_logic bit some number of times
     -- equivalent to verilog's built in {n{x}} operator
@@ -272,9 +272,9 @@ begin
   begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
-      -- replicate sca outputs bits four times each because of 80 --> 320 mbps conversion
-      control_to_sca0 := repeat(ec_data_down(0)(1), 4) & repeat(ec_data_down(0)(0), 4);
-      control_to_sca1 := repeat(ec_data_down(1)(1), 4) & repeat(ec_data_down(1)(0), 4);
+      -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
+      control_to_sca0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
+      control_to_sca1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
       -- Want to fan out the data with a clock for better timing... but we do
       -- NOT control the valid bit here since it is common with the data bus
@@ -325,20 +325,20 @@ begin
           -- if broadcast ? send to all of the scas
           if (sca_broadcast) then
 
-            lpgbt_downlink_data_o (I).data((1+down_0)*8-1 downto down_0*8) <= control_to_sca0;  -- sca0
-            lpgbt_downlink_data_o (I).data((1+down_1)*8-1 downto down_1*8) <= control_to_sca1;  -- sca1
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;  -- sca0
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;  -- sca1
 
           -- select a CSM... choose which SCA on SC controller port
           elsif (sca_link_sel = I) then
 
-            lpgbt_downlink_data_o (I).data((1+down_0)*8-1 downto down_0*8) <= control_to_sca0;
-            lpgbt_downlink_data_o (I).data((1+down_1)*8-1 downto down_1*8) <= control_to_sca1;
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
 
           -- idle
           else
 
-            lpgbt_downlink_data_o (I).data((1+down_0)*8-1 downto down_0*8) <= (others => '1');  -- FIXME replace with idle pattern ?? or not?? is zero ok?
-            lpgbt_downlink_data_o (I).data((1+down_1)*8-1 downto down_1*8) <= (others => '1');  -- FIXME replace with idle pattern
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');  -- FIXME replace with idle pattern ?? or not?? is zero ok?
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');  -- FIXME replace with idle pattern
 
           end if;
         end if;

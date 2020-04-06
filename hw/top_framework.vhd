@@ -348,6 +348,16 @@ begin  -- architecture behavioral
       tdc_hits          => tdc_hits            -- on pipeline clock already
       );
 
+  top_tdc_control_inst: entity tdc.top_tdc_control
+    port map (
+      clock40             => clocks.clock40,
+      reset               => global_reset,
+      trg_i               => std_logic_0,
+      bcr_i               => std_logic_0,
+      ecr_i               => std_logic_0,
+      gsr_i               => std_logic_0,
+      lpgbt_downlink_data => lpgbt_downlink_data
+      );
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming
   --------------------------------------------------------------------------------
