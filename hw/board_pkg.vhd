@@ -101,14 +101,9 @@ package board_pkg is
     others => REFCLK_NIL
     );
 
-  -- FIXME: derive this constant in some sane way
-  -- just make it oversized for now and the functions will just ignore the
-  -- higher null values... make sure to only specify real things
-  constant c_TDC_LINK_MAP : tdc_link_map_array_t (99*14-1 downto 0) := (
-    -- TODO: we know that based on the CSM design (once it is final) there are
-    -- only certain allowed pairs of even and odd elinks and these can be
-    -- derived automatically by just specifying a slot number or something
-    --
+  -- FIXME: the max of this loop should be based on the CSM max # of fibers...
+  -- can I count it? need to sum # of slave tdcs + number of masters
+  constant c_TDC_LINK_MAP : tdc_link_map_array_t (c_NUM_MGTS*14-1 downto 0) := (
     -- this is assigned by the global MGT link ID (e.g. 0 to 75 on a ku15p)
     -- mgt link id           , even elink #, odd elink #, station
     0   => (link_id => 0   , elink  => 0,  station_id => 0, polmux_id => 0,  legacy => false),

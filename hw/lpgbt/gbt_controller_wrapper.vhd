@@ -229,17 +229,15 @@ begin
   begin
     if (rising_edge(rx_clk_i)) then
 
-      -- TODO: mux clock enable fan-in... big fan-in :(
       rx_clk_en_mux <= lpgbt_uplink_data_i (lpgbt_link_sel).valid;
       rx_clk_en     <= rx_clk_en_mux;
 
       if (rx_clk_en_mux = '1') then
 
-        -- even bigger fan-in... TODO: apply multicycle or datapathonly constraints to ease timing? ffs to buffer?
+        -- big fan-in... TODO: apply multicycle or datapathonly constraints to ease timing? ffs to buffer?
         ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
         ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
         ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
-        -- TODO: need to reduce bits for 320 to 80 mb conversion on external elinks... just pick two bits... or something clever using 2 bits???
 
       end if;
     end if;
@@ -272,6 +270,8 @@ begin
   begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
+      -- TODO: mux the bits only during idle sequences to ensure smooth transitions
+      --
       -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
       control_to_sca0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
       control_to_sca1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
@@ -317,8 +317,8 @@ begin
 
           -- if idle (nothing selected, should block writes)
           else
-            lpgbt_downlink_data_o (I).ic <= (others => '1');  -- FIXME should replace with an idle pattern
-            lpgbt_downlink_data_o (I).ec <= (others => '1');  -- FIXME should replace with an idle pattern
+            lpgbt_downlink_data_o (I).ic <= (others => '1');
+            lpgbt_downlink_data_o (I).ec <= (others => '1');
           end if;
 
 
@@ -337,8 +337,8 @@ begin
           -- idle
           else
 
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');  -- FIXME replace with idle pattern ?? or not?? is zero ok?
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');  -- FIXME replace with idle pattern
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
 
           end if;
         end if;

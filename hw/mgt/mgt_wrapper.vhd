@@ -196,14 +196,13 @@ begin
   -- MGTS
   --------------------------------------------------------------------------------
 
-  sl_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
-    assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(sl_idx_array(I)) severity note;
-  end generate;
-
   lpgbt_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
     assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(lpgbt_idx_array(I)) severity note;
   end generate;
 
+  sl_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
+    assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(sl_idx_array(I)) severity note;
+  end generate;
 
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
 

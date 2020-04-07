@@ -3,7 +3,7 @@ set imax [llength [get_ports mgt_rx_p*]]
 # make sure to UNloc the gt_cell before LOCing it after... Xilinx chokes otherwise
 for {set i 0} {$i < $imax} {incr i} {
 
-    set gt_cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
+    set gt_cell [get_cells -quiet [format "top_framework/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #puts " > Found GT Cell at $gt_cell"
 
     if {[string is space $gt_cell]==0} {

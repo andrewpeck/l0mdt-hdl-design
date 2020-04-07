@@ -7,6 +7,8 @@ library textio;
 use textio.all;
 
 library tdc;
+use tdc.csm_pkg.all;
+
 library xil_defaultlib;
 
 library l0mdt_lib;
@@ -107,10 +109,11 @@ begin
 
     constant idx     : integer := c_TDC_LINK_MAP(I).link_id;
     constant even_id : integer := c_TDC_LINK_MAP(I).elink;
-    constant odd_id  : integer := c_TDC_LINK_MAP(I).elink+1;
+    constant odd_id  : integer := func_get_tdc_odd_id (even_id, c_MGT_MAP(idx).mgt_type, c_MASTER_ELINK_MAP, c_SLAVE_ELINK_MAP);
     constant legacy  : boolean := c_TDC_LINK_MAP(I).legacy;
 
-    -- TODO http://www.pldworld.com/_hdl/2/_tutor/www.stefanvhdl/vhdl/vhdl/txt_util.vhd
+    -- NOTE this library is very nice
+    -- http://www.pldworld.com/_hdl/2/_tutor/www.stefanvhdl/vhdl/vhdl/txt_util.vhd
     function str (bool : boolean)
       return string is
     begin
@@ -137,7 +140,7 @@ begin
                     c_TDC_LINK_MAP(I).link_id /= -1 and
                     lpgbt_uplink_idx_array(c_TDC_LINK_MAP(I).link_id) /= -1 and
                     idx /= -1 and
-                    even_id /= -1 and odd_id /= -1)
+                    even_id /= -1)
       generate
 
         attribute DONT_TOUCH : string;
@@ -153,9 +156,11 @@ begin
         assert false report " > EVEN_ID  =" & integer'image(even_id) severity note;
         assert false report " > ODD_ID   =" & integer'image(odd_id) severity note;
 
+        assert odd_id /= -1 report "Invalid E-link selected for TDC Decoder, TDC#" & integer'image(I) & " elink #" &
+          integer'image(even_id) severity error;
+
         assert I /= 0 report "Generating " & integer'image(c_NUM_TDC_INPUTS) & " TDC Decoders, which will be multiplexed by " &
           integer'image(c_NUM_POLMUX) & " polling muxes" severity note;
-
 
         assert (c_MGT_MAP(idx).mgt_type = MGT_LPGBT or c_MGT_MAP(idx).mgt_type = MGT_LPGBT_SIMPLEX) report
           " > TDC_LINK_MAP assigns elink to non-lpgbt MGT" severity error;
@@ -219,7 +224,7 @@ begin
 
   begin
 
-    -- FIXME: not clear at all where to place polling muxes... depends entirely on what they connect to
+    -- NOTE: not clear at all where to place polling muxes... depends entirely on what they connect to
     -- for now I guess we need to just leave it to the placer to decide? or create an overall "framework" pblock that
     -- encompasses all of the other p-blocks and put it in there
 

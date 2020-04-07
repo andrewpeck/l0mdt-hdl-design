@@ -362,14 +362,14 @@ begin  -- architecture behavioral
   -- Sumps to prevent trimming
   --------------------------------------------------------------------------------
 
-  -- sl_rx_sump: for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-  --   data_loop: process (clocks.clock240) is
-  --   begin  -- process data_loop
-  --     if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
-  --       sector_logic_rx_sump(I) <= or_reduce (sl_rx_data(I).data);
-  --     end if;
-  --   end process data_loop;
-  -- end generate;
+  sl_rx_sump: for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+    data_loop: process (clocks.clock240) is
+    begin  -- process data_loop
+      if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
+        sector_logic_rx_sump(I) <= xor_reduce (sl_rx_data(I).data);
+      end if;
+    end process data_loop;
+  end generate;
 
   -- let this sump as tdc data in the user_top
   -- lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
@@ -395,7 +395,7 @@ begin  -- architecture behavioral
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
     if (rising_edge(clocks.clock320)) then  -- rising clock edge
-      sump <= '1'; -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
+      sump <= xor_reduce (sector_logic_rx_sump); -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
     end if;
   end process data_loop;
 

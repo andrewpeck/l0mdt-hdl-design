@@ -31,27 +31,23 @@ proc assign_pblocks {min  max  side} {
         set lQuadBlock [get_pblocks quad_$side$q]
         puts "Populating $lQuadBlock with mgt #$lRegId"
 
-        # TODO: make this tcl call smart to avoid unnecessary filter calls
-        # avoid hierarchical filters and use direct calling with wildcards,
-        # e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
-
         #hierarcical
-        #set tdc_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/tdc_decoder_wrapper_inst/*mgt_tag[$lRegId]*"]
-        #set lpgbt_cells    [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*lpgbt_link_wrapper_inst*\*_gen[$lRegId]*.lpgbt_*link_inst"]
-        set lpgbt_ic_cells [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*gbt_controller_wrapper*\*_gen[$lRegId]*gbt_ic_controller_inst"]
-        set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
-        #set mgt_cells      [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/*mgt_gen\[$lRegId]*.MGT_GEN"]
-
         set lpgbt_cells    [get_cells -quiet "top_framework/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"]
         set mgt_cells      [get_cells -quiet "top_framework/*mgt*/*mgt_gen\[$lRegId]*.MGT_GEN"]
         set tdc_cells      [get_cells -quiet "top_framework/*tdc*/*mgt_tag\[$lRegId]*decoder*_inst"]
 
-        set cells "$mgt_cells $lpgbt_cells $sl_cells $lpgbt_ic_cells $tdc_cells"
+        # TODO: make this tcl call smart to avoid unnecessary filter calls
+        set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_framework/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
+        # avoid hierarchical filters and use direct calling with wildcards,
+        # e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
+
+
+        set cells "$mgt_cells $lpgbt_cells $sl_cells $tdc_cells"
 
         puts "Adding cells $cells to pblock $lQuadBlock"
 
         if {[string is space $cells] == 0} {
-            add_cells_to_pblock $lQuadBlock $cells
+            add_cells_to_pblock -quiet $lQuadBlock $cells
         }
     }
 }

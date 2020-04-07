@@ -86,6 +86,7 @@ end package board_pkg_common;
 
 package body board_pkg_common is
 
+  -- given a TDC map and a MGT link map, returns a count of the total number of TDC inputs instantiated
   function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
     return integer is
     variable count : integer := 0;

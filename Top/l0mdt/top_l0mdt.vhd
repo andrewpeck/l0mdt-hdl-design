@@ -35,6 +35,9 @@ entity top_mdtl0 is
     clock_in_p : in std_logic;
     clock_in_n : in std_logic;
 
+    -- FIXME: null ports are OK but partially populated ones are trouble...
+    -- should only instantiate the # that are needed and do a remapping somewhere else?
+    -- or some kind of dummy MGT
     mgt_tx_p : out std_logic_vector (c_NUM_MGTS-1 downto 0);
     mgt_tx_n : out std_logic_vector (c_NUM_MGTS-1 downto 0);
 
