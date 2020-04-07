@@ -107,14 +107,14 @@ architecture behavioral of top_framework is
   signal lpgbt_emul_uplink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
   signal lpgbt_emul_uplink_data           : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
   signal lpgbt_emul_uplink_ready          : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
-  signal lpgbt_emul_rst_uplink            : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0);
+  signal lpgbt_emul_rst_uplink            : std_logic_vector (c_NUM_LPGBT_EMUL_UPLINKS-1 downto 0) := (others => '0');
 
   signal lpgbt_emul_downlink_clk            : std_logic;
   signal lpgbt_emul_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
   signal lpgbt_emul_downlink_data           : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
   signal lpgbt_emul_downlink_ready          : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
   signal lpgbt_emul_downlink_bitslip        : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
-  signal lpgbt_emul_rst_downlink            : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0);
+  signal lpgbt_emul_rst_downlink            : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0) := (others => '0');
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
@@ -284,12 +284,12 @@ begin  -- architecture behavioral
   lpgbtemul_wrapper_inst : entity framework.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
-      lpgbt_uplink_clk_i              => lpgbt_emul_uplink_clk,
+      lpgbt_uplink_clk_i              => clocks.clock320,
       lpgbt_uplink_mgt_word_array_o   => lpgbt_emul_uplink_mgt_word_array,
       lpgbt_uplink_data_i             => lpgbt_emul_uplink_data,
       lpgbt_uplink_ready_o            => lpgbt_emul_uplink_ready,
       lpgbt_rst_uplink_i              => lpgbt_emul_rst_uplink,
-      lpgbt_downlink_clk_i            => lpgbt_emul_downlink_clk,
+      lpgbt_downlink_clk_i            => clocks.clock320,
       lpgbt_downlink_mgt_word_array_i => lpgbt_emul_downlink_mgt_word_array,
       lpgbt_downlink_data_o           => lpgbt_emul_downlink_data,
       lpgbt_downlink_ready_o          => lpgbt_emul_downlink_ready,
