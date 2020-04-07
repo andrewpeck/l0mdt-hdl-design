@@ -217,7 +217,6 @@ begin
 
     lpgbt_gen : if (lpgbt_idx_array(I) /= -1) generate
 
-      -- TODO: replace VHDL attributes with hierarchy pollution (see TDC decoder wrapper for example)
       attribute X_LOC            : integer;
       attribute Y_LOC            : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
@@ -274,6 +273,56 @@ begin
     end generate lpgbt_gen;
 
     --------------------------------------------------------------------------------
+    -- LPGBT Emulator Type
+    --------------------------------------------------------------------------------
+
+    emul_gen : if (emul_idx_array(I) /= -1) generate
+
+      attribute X_LOC            : integer;
+      attribute Y_LOC            : integer;
+      attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
+      attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
+
+      attribute DONT_TOUCH of MGT_GEN : label is "true";
+
+      constant idx : integer := emul_idx_array(I);
+
+    begin
+
+
+      -- TODO: add refclk assert
+      assert false report "GENERATING LPGBT EMULATOR LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(idx) severity note;
+      assert false report "link_idx=" & integer'image(idx) severity note;
+
+      assert (idx /= -1) report "instantiating an invalid LPGBT emulator link" severity error;
+
+      MGT_GEN : entity work.mgt_10g24_wrapper
+        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
+        port map (
+          free_clock            => clocks.freeclock,
+          reset                 => reset_tree(I),
+          mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
+          mgt_rxusrclk_i        => clocks.clock320,
+          mgt_rxusrclk_active_i => not reset_tree(I),
+          mgt_txusrclk_i        => clocks.clock320,
+          mgt_txusrclk_active_i => not reset_tree(I),
+          tx_resets_i           => tx_resets(I),
+          rx_resets_i           => rx_resets(I),
+          mgt_rxslide_i         => lpgbt_emul_rxslide_i(idx),
+          status_o              => open,
+          mgt_word_i            => lpgbt_emul_uplink_mgt_word_array_i(idx),
+          mgt_word_o            => lpgbt_emul_downlink_mgt_word_array_o(idx),
+          rxn_i                 => mgt_rx_p(I),
+          rxp_i                 => mgt_rx_n(I),
+          txn_o                 => mgt_tx_p(I),
+          txp_o                 => mgt_tx_n(I),
+          mgt_drp_i             => mgt_drp_i(I),
+          mgt_drp_o             => mgt_drp_o(I)
+          );
+
+    end generate emul_gen;
+
+    --------------------------------------------------------------------------------
     -- Sector Logic Type
     --------------------------------------------------------------------------------
 
@@ -283,6 +332,8 @@ begin
       attribute Y_LOC            : integer;
       attribute X_LOC of MGT_GEN : label is c_MGT_MAP(I).x_loc;
       attribute Y_LOC of MGT_GEN : label is c_MGT_MAP(I).y_loc;
+
+      attribute DONT_TOUCH of MGT_GEN : label is "true";
 
       constant idx : integer := sl_idx_array(I);
 

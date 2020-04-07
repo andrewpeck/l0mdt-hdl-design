@@ -32,8 +32,8 @@ package constants_pkg is
 
   constant c_NUM_LPGBT_LINKS_ACTIVE : integer := func_count_lpgbt_link_mapped_to_csm (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);
 
-  constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS,  c_NUM_LPGBT_LINKS_ACTIVE);
-  constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS,c_NUM_LPGBT_LINKS_ACTIVE/2);
+  constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS, c_NUM_LPGBT_LINKS_ACTIVE);
+  constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS, c_NUM_LPGBT_LINKS_ACTIVE/2);
 
   --------------------------------------------------------------------------------
   -- Emulator

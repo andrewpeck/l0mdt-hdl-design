@@ -96,11 +96,11 @@ architecture behavioral of top_framework is
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
   -- FIXME drive the valid strobe from somewhere real
-  signal lpgbt_valid_strobe   : std_logic;
-  signal lpgbt_uplink_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal lpgbt_uplink_mgt_sump    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal tdc_sump             : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
-  signal sector_logic_rx_sump : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal lpgbt_valid_strobe    : std_logic;
+  signal lpgbt_uplink_sump     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_mgt_sump : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+  signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   -- emulator cores
   signal lpgbt_emul_uplink_clk            : std_logic;
@@ -236,13 +236,13 @@ begin  -- architecture behavioral
     if (rising_edge(clocks.clock320)) then
 
       if global_reset = '1' then
-        counter := 0;
+        counter            := 0;
         lpgbt_valid_strobe <= '0';
-      elsif (counter=8) then
-        counter := 0;
+      elsif (counter = 8) then
+        counter            := 0;
         lpgbt_valid_strobe <= '1';
       else
-        counter := counter + 1;
+        counter            := counter + 1;
         lpgbt_valid_strobe <= '0';
       end if;
     end if;
@@ -281,7 +281,7 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
-  lpgbtemul_wrapper_inst : entity work.lpgbtemul_wrapper
+  lpgbtemul_wrapper_inst : entity framework.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
       lpgbt_uplink_clk_i              => lpgbt_emul_uplink_clk,
@@ -297,11 +297,28 @@ begin  -- architecture behavioral
       lpgbt_rst_downlink_i            => lpgbt_emul_rst_downlink
       );
 
+  -- TODO: replace with with some kind of smarter driver?
+  emul_loop : for I in 0 to c_NUM_LPGBT_EMUL_UPLINKS-1 generate
+    emul_loop_clock : process (clocks.clock320) is
+    begin  -- process data_loop
+      if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
+        lpgbt_emul_uplink_data(I).data <= lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data
+                                          & lpgbt_emul_downlink_data(I).data;
+        lpgbt_emul_uplink_data(I).valid <= lpgbt_emul_downlink_data(I).valid;
+      end if;
+    end process;
+  end generate;
+
   --------------------------------------------------------------------------------
   -- LPGBT Controller
   --------------------------------------------------------------------------------
 
-  gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
+  gbt_controller_wrapper_inst : entity framework.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
       clocks                => clocks,
@@ -348,7 +365,7 @@ begin  -- architecture behavioral
       tdc_hits          => tdc_hits            -- on pipeline clock already
       );
 
-  top_tdc_control_inst: entity tdc.top_tdc_control
+  top_tdc_control_inst : entity tdc.top_tdc_control
     port map (
       clock40             => clocks.clock40,
       reset               => global_reset,
@@ -362,8 +379,8 @@ begin  -- architecture behavioral
   -- Sumps to prevent trimming
   --------------------------------------------------------------------------------
 
-  sl_rx_sump: for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-    data_loop: process (clocks.clock240) is
+  sl_rx_sump : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+    data_loop : process (clocks.clock240) is
     begin  -- process data_loop
       if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
         sector_logic_rx_sump(I) <= xor_reduce (sl_rx_data(I).data);
@@ -394,8 +411,8 @@ begin  -- architecture behavioral
 
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
-    if (rising_edge(clocks.clock320)) then  -- rising clock edge
-      sump <= xor_reduce (sector_logic_rx_sump); -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
+    if (rising_edge(clocks.clock320)) then        -- rising clock edge
+      sump <= xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
     end if;
   end process data_loop;
 
