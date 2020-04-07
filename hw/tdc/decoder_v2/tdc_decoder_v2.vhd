@@ -63,17 +63,17 @@ architecture behavioral of tdc_decoder_v2 is
   -- least common multiple of 10 bits and 16 bits is 80 bits,
   -- i.e. we need to receive 80 bits of data on the 10bit side to nicely line up
   -- to the 8bit side boundary
-  signal data_even_aligned : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
-  signal data_odd_aligned  : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
-  signal fifo              : std_logic_vector (15 downto 0);  -- pick of just the head of the fifo
-  signal fifo_valid        : std_logic;
-  signal bitslip           : std_logic;
+  signal data_even_aligned  : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
+  signal data_odd_aligned   : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
+  signal aligned_data       : std_logic_vector (15 downto 0);  -- pick of just the head of the fifo
+  signal aligned_data_valid : std_logic;
+  signal bitslip            : std_logic;
 
   signal frame_zero         : std_logic;
   signal tdc_word_state_err : std_logic;
 
-  signal word_mux       : std_logic_vector (9 downto 0);
-  signal word_mux_valid : std_logic;
+  signal word_10b       : std_logic_vector (9 downto 0);
+  signal word_10b_valid : std_logic;
 
   -- 8b10b decoder signals
   signal k_char        : std_logic;
@@ -111,7 +111,7 @@ begin
   process (clock) is
   begin
     if (rising_edge(clock)) then
-      fifo_valid <= valid_i;
+      aligned_data_valid <= valid_i;
     end if;
   end process;
 
@@ -133,7 +133,7 @@ begin
       data_o    => data_odd_aligned
       );
 
-  fifo <= interleave (data_even_aligned, data_odd_aligned);
+  aligned_data <= interleave (data_even_aligned, data_odd_aligned);
 
   --------------------------------------------------------------------------------
   -- Frame decoder state machine
@@ -141,12 +141,12 @@ begin
 
   framer_inst : entity tdc.framer
     port map (
-      frame_zero     => frame_zero,
-      clock          => clock,
-      fifo_valid     => fifo_valid,
-      word_mux       => word_mux,
-      word_mux_valid => word_mux_valid,
-      fifo           => fifo
+      frame_zero   => frame_zero,
+      clock        => clock,
+      data_i       => aligned_data,
+      data_i_valid => aligned_data_valid,
+      data_o       => word_10b,
+      data_o_valid => word_10b_valid
       );
 
   --------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ begin
   process(clock)
   begin
     if (rising_edge(clock)) then
-      word_8b_valid <= word_mux_valid;
+      word_8b_valid <= word_10b_valid;
     end if;
   end process;
 
@@ -180,7 +180,7 @@ begin
         soft_reset_i => reset,
         i_Clk        => clock,
         i_ARst_L     => std_logic1,     -- active LOW reset
-        i10_Din      => word_mux,
+        i10_Din      => word_10b,
         i_enable     => std_logic1,
 
         -- disparity
@@ -210,16 +210,16 @@ begin
         RBYTECLK => clock,
         --  The input is a 10-bit encoded character whose bits are identified as:
         --  AI, BI, CI, DI, EI, II, FI, GI, HI, JI (Least Significant to Most)
-        AI       => word_mux(0),
-        BI       => word_mux(1),
-        CI       => word_mux(2),
-        DI       => word_mux(3),
-        EI       => word_mux(4),
-        II       => word_mux(5),
-        FI       => word_mux(6),
-        GI       => word_mux(7),
-        HI       => word_mux(8),
-        JI       => word_mux(9),
+        AI       => word_10b(0),
+        BI       => word_10b(1),
+        CI       => word_10b(2),
+        DI       => word_10b(3),
+        EI       => word_10b(4),
+        II       => word_10b(5),
+        FI       => word_10b(6),
+        GI       => word_10b(7),
+        HI       => word_10b(8),
+        JI       => word_10b(9),
         --    The eight data output bits are identified as:
         --      HI, GI, FI, EI, DI, CI, BI, AI (Most Significant to Least)
         KO       => k_char,             -- kchar output flag
