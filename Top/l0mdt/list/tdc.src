@@ -4,9 +4,6 @@
 ../../hw/tdc/polling_mux.vhd 2008
 ../../hw/tdc/top_tdc_control.vhd
 ../../hw/tdc/tdc_encoded_control.vhd
-../../hw/tdc/priority_encoder.v
-../../hw/tdc/priority_encoder.vhd 2008
-../../hw/tdc/priority_encoder_pkg.vhd 2008
 ../../hw/tdc/decoder_v2/dec8b10b.v
 ../../hw/tdc/decoder_v2/dec_8b10b.vhd
 ../../hw/tdc/decoder_v2/tdc_decoder_v2.vhd
