@@ -35,16 +35,6 @@ entity top_mdtl0 is
     clock_in_p : in std_logic;
     clock_in_n : in std_logic;
 
-    -- FIXME: null ports are OK but partially populated ones are trouble...
-    -- should only instantiate the # that are needed and do a remapping somewhere else?
-    -- or some kind of dummy MGT
-    mgt_tx_p : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_tx_n : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-
-    mgt_rx_p : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_rx_n : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-
-    -- LPGBT Links
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
@@ -76,7 +66,6 @@ architecture structural of top_mdtl0 is
   signal reset                 : std_logic;
   signal framework_sump        : std_logic;
   signal user_sump             : std_logic;
-
 begin
 
   top_framework : entity framework.top_framework
@@ -85,10 +74,6 @@ begin
       clock_in_n            => clock_in_n,
       refclk_i_p            => refclk_i_p,
       refclk_i_n            => refclk_i_n,
-      mgt_rx_p              => mgt_rx_p,
-      mgt_rx_n              => mgt_rx_n,
-      mgt_tx_p              => mgt_tx_p,
-      mgt_tx_n              => mgt_tx_n,
       pipeline_clock        => pipeline_clock,
       ttc_commands          => ttc_commands,
       tdc_hits              => tdc_hits,

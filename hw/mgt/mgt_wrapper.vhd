@@ -29,13 +29,6 @@ entity mgt_wrapper is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-    -- MGT Links
-    mgt_tx_p : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_tx_n : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-
-    mgt_rx_p : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_rx_n : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-
     --------------------------------------------------------------------------------
     -- LPGBT
     --------------------------------------------------------------------------------
@@ -79,11 +72,28 @@ entity mgt_wrapper is
     sl_rx_ctrl_o  : out sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
-
     );
 end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
+
+  signal lpgbt_mgt_rx_p : std_logic_vector (c_num_lpgbt_uplinks-1 downto 0);
+  signal lpgbt_mgt_rx_n : std_logic_vector (c_num_lpgbt_uplinks-1 downto 0);
+
+  signal lpgbt_mgt_tx_p : std_logic_vector (c_num_lpgbt_downlinks-1 downto 0);
+  signal lpgbt_mgt_tx_n : std_logic_vector (c_num_lpgbt_downlinks-1 downto 0);
+
+  signal emul_mgt_rx_p : std_logic_vector (c_num_lpgbt_emul_uplinks-1 downto 0);
+  signal emul_mgt_rx_n : std_logic_vector (c_num_lpgbt_emul_uplinks-1 downto 0);
+
+  signal emul_mgt_tx_p : std_logic_vector (c_num_lpgbt_emul_uplinks-1 downto 0);
+  signal emul_mgt_tx_n : std_logic_vector (c_num_lpgbt_emul_uplinks-1 downto 0);
+
+  signal sl_mgt_rx_p : std_logic_vector (c_num_sector_logic_inputs-1 downto 0);
+  signal sl_mgt_rx_n : std_logic_vector (c_num_sector_logic_inputs-1 downto 0);
+
+  signal sl_mgt_tx_p : std_logic_vector (c_num_sector_logic_inputs-1 downto 0);
+  signal sl_mgt_tx_n : std_logic_vector (c_num_sector_logic_inputs-1 downto 0);
 
   signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
 
@@ -97,32 +107,6 @@ architecture Behavioral of mgt_wrapper is
 
   signal mgt_drp_i : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
   signal mgt_drp_o : mgt_drp_out_rt_array (c_NUM_MGTS-1 downto 0);
-
-  -- constant sl_idx_array    : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
-  -- constant lpgbt_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
-
-  -- set of functions to get the maximum BOARD LINK ID based on the number of
-  -- each type of link that the user wants to instantiate...
-  -- i.e. the user can REDUCE the # of each link type from the board maximum
-  -- but obviously can't increase it
-  --
-  -- function func_max_user_link_id (user_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
-  --   return integer is
-  --   variable count : integer := 0;
-  -- begin
-  --   for I in 0 to c_NUM_MGTS-1 loop
-  --     if mgt_list(I).mgt_type = i_mgt_type then
-  --       count := count + 1;
-  --       if (count = user_max) then
-  --         return count-1;
-  --       end if;
-  --     end if;
-  --   end loop;  -- I
-  --   return -1;
-  -- end func_max_user_link_id;
-
-  -- constant LPGBT_LINK_MAX_ID : integer := func_max_user_link_id (c_NUM_LPGBT_UPLINKS, c_MGT_MAP, MGT_LPGBT);
-  -- constant SL_LINK_MAX_ID    : integer := func_max_user_link_id (c_NUM_SECTOR_LOGIC_INPUTS, c_MGT_MAP, MGT_SL);
 
 begin
 
@@ -229,6 +213,8 @@ begin
 
       signal downlink_data : std_logic_vector (31 downto 0);
 
+      signal tx_p, tx_n : std_logic;
+
     begin
 
 
@@ -262,13 +248,18 @@ begin
           status_o              => open,
           mgt_word_i            => downlink_data,
           mgt_word_o            => lpgbt_uplink_mgt_word_array_o(uplink_idx),
-          rxn_i                 => mgt_rx_p(I),
-          rxp_i                 => mgt_rx_n(I),
-          txn_o                 => mgt_tx_p(I),
-          txp_o                 => mgt_tx_n(I),
+          rxp_i                 => lpgbt_mgt_rx_p(uplink_idx),
+          rxn_i                 => lpgbt_mgt_rx_n(uplink_idx),
+          txp_o                 => tx_p,
+          txn_o                 => tx_n,
           mgt_drp_i             => mgt_drp_i(I),
           mgt_drp_o             => mgt_drp_o(I)
           );
+
+      tx_assign_if : if (downlink_idx /= -1) generate
+        lpgbt_mgt_tx_p(downlink_idx) <= tx_p;
+        lpgbt_mgt_tx_n(downlink_idx) <= tx_n;
+      end generate;
 
     end generate lpgbt_gen;
 
@@ -312,10 +303,10 @@ begin
           status_o              => open,
           mgt_word_i            => lpgbt_emul_uplink_mgt_word_array_i(idx),
           mgt_word_o            => lpgbt_emul_downlink_mgt_word_array_o(idx),
-          rxn_i                 => mgt_rx_p(I),
-          rxp_i                 => mgt_rx_n(I),
-          txn_o                 => mgt_tx_p(I),
-          txp_o                 => mgt_tx_n(I),
+          rxp_i                 => emul_mgt_rx_p(idx),
+          rxn_i                 => emul_mgt_rx_n(idx),
+          txp_o                 => emul_mgt_tx_p(idx),
+          txn_o                 => emul_mgt_tx_n(idx),
           mgt_drp_i             => mgt_drp_i(I),
           mgt_drp_o             => mgt_drp_o(I)
           );
@@ -372,10 +363,10 @@ begin
           rx_slide_i               => sl_rx_slide_i(idx),
           mgt_word_i               => sl_tx_mgt_word_array_i(idx),
           mgt_word_o               => sl_rx_mgt_word_array_o(idx),
-          rxn_i                    => mgt_rx_p(I),
-          rxp_i                    => mgt_rx_n(I),
-          txn_o                    => mgt_tx_p(I),
-          txp_o                    => mgt_tx_n(I),
+          rxp_i                    => sl_mgt_rx_p(idx),
+          rxn_i                    => sl_mgt_rx_n(idx),
+          txp_o                    => sl_mgt_tx_p(idx),
+          txn_o                    => sl_mgt_tx_n(idx),
           mgt_drp_i                => mgt_drp_i(I),
           mgt_drp_o                => mgt_drp_o(I)
           );

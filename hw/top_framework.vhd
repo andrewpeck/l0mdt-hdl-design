@@ -38,13 +38,6 @@ entity top_framework is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-    -- LPGBT Links
-    mgt_rx_p : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_rx_n : in std_logic_vector (c_NUM_MGTS-1 downto 0);
-
-    mgt_tx_p : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-    mgt_tx_n : out std_logic_vector (c_NUM_MGTS-1 downto 0);
-
     -- pipeline clock
     pipeline_clock : out std_logic;
 
@@ -204,11 +197,7 @@ begin  -- architecture behavioral
       -- reference clocks
       refclk_i_p                           => refclk_i_p,
       refclk_i_n                           => refclk_i_n,
-      -- transceivers
-      mgt_tx_p                             => mgt_tx_p,
-      mgt_tx_n                             => mgt_tx_n,
-      mgt_rx_p                             => mgt_rx_p,
-      mgt_rx_n                             => mgt_rx_n,
+
       -- sector logic
       sl_rx_mgt_word_array_o               => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_i               => sl_tx_mgt_word_array,
