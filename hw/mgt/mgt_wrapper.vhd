@@ -220,17 +220,11 @@ begin
 
       downlink_data <= lpgbt_downlink_mgt_word_array_i(downlink_idx) when (downlink_idx /= -1) else x"00000000";
 
-      -- TODO: add refclk assert
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk) = REFCLK_SYNC320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+
       assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
       assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
       assert false report "uplink_idx=" & integer'image(uplink_idx) severity note;
-
-      --assert (c_REFCLK_TYPES (c_MGT_MAP(I).refclk) = REFCLK_SYNC320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
-
-      assert (uplink_idx /= -1) report "instantiating an invalid LPGBT link" severity error;
-
-      assert (uplink_idx   <= c_NUM_LPGBT_UPLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_UPLINKS" severity error;
-      assert (downlink_idx <= c_NUM_LPGBT_DOWNLINKS) report "conflict between # of lpgbt links in board file and c_NUM_LPGBT_DOWNLINKS" severity error;
 
       MGT_GEN : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
@@ -280,8 +274,8 @@ begin
 
     begin
 
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk) = REFCLK_SYNC320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
 
-      -- TODO: add refclk assert
       assert false report "GENERATING LPGBT EMULATOR LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(idx) severity note;
       assert false report "link_idx=" & integer'image(idx) severity note;
 
@@ -330,8 +324,8 @@ begin
 
     begin
 
-      -- TODO: add refclk assert
-      --assert (c_REFCLK_TYPES (c_MGT_MAP(I).refclk) = REFCLK_SYNC240) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk) = REFCLK_SYNC240) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+
       assert false report "GENERATING SECTOR LOGIC TYPE LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " SL_LINK_CNT=" & integer'image(idx) severity note;
       assert (c_NUM_SECTOR_LOGIC_INPUTS = c_NUM_SECTOR_LOGIC_OUTPUTS) report "We only support symmetric # of SL inputs / outputs" severity error;
       assert (idx <= c_NUM_SECTOR_LOGIC_OUTPUTS) report "conflict between # of sl links in board file and c_NUM_SECTOR_LOGIC_DOWNLINKS" severity error;

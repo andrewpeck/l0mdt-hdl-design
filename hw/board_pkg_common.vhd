@@ -10,7 +10,13 @@ package board_pkg_common is
 
   type gt_types_t is (GT_NIL, GTH, GTY);
 
-  type mgt_types_t is (MGT_NIL, MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL, MGT_C2C, MGT_SL, MGT_TCDS, MGT_FELIX);
+  type mgt_types_t is (MGT_NIL,
+                       MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL,
+                       MGT_C2C,
+                       MGT_SL,
+                       MGT_TCDS,
+                       MGT_FELIX
+                       );
 
   type mgt_inst_t is record
     mgt_type : mgt_types_t;
@@ -20,22 +26,14 @@ package board_pkg_common is
     y_loc    : integer;
   end record;
 
-  type mgt_map_t is record
-    mgt_id : integer;
-  end record;
-
-  type mgt_info_t is record
-    gt_type      : gt_types_t;
-    refclk0_freq : real;
-    refclk1_freq : real;
-  end record;
-
-  constant c_mgtinfo_nil : mgt_info_t := (GT_NIL, 0.0, 0.0);
-  constant c_mgt_nil     : mgt_inst_t := (MGT_NIL, -1, GT_NIL, -1, -1);
+  constant MGT_NIL_MAP : mgt_inst_t := (mgt_type => MGT_NIL,
+                                        refclk   => -1,
+                                        gt_type  => GT_NIL,
+                                        x_loc    => -1,
+                                        y_loc    => -1
+                                        );
 
   type mgt_inst_array_t is array (integer range <>) of mgt_inst_t;
-  type mgt_info_array_t is array (integer range <>) of mgt_info_t;
-  type mgt_map_array_t is array (integer range <>) of mgt_map_t;
 
   --------------------------------------------------------------------------------
   -- REFCLK Mapping
@@ -54,7 +52,6 @@ package board_pkg_common is
   type tdc_link_map_t is record
     link_id    : integer;
     elink      : integer;
-    --enc_elink  : integer;
     station_id : integer;
     polmux_id  : integer;
     legacy     : boolean;
@@ -140,7 +137,7 @@ package body board_pkg_common is
         max := tdc_map(I).polmux_id;
       end if;
     end loop;
-    return max+1; -- the count is the index of the highest number + 1
+    return max+1;                       -- the count is the index of the highest number + 1
   end func_count_polmux;
 
   -- function to count number of lpgbts
