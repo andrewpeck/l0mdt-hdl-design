@@ -23,7 +23,7 @@ use framework.constants_pkg.all;
 use framework.system_types_pkg.all;
 use framework.lpgbt_pkg.all;
 
-entity tdc_decoder_wrapper is
+entity top_tdc_decoder is
   port(
 
     clock          : in std_logic;
@@ -38,9 +38,9 @@ entity tdc_decoder_wrapper is
     tdc_hits : out TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0)
 
     );
-end tdc_decoder_wrapper;
+end top_tdc_decoder;
 
-architecture behavioral of tdc_decoder_wrapper is
+architecture behavioral of top_tdc_decoder is
 
   signal tdc_hits_to_polmux : TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
 
@@ -268,47 +268,3 @@ begin
   end generate;  -- TDC loop
 
 end behavioral;
-
-
--- legacy_tdc_gen : if (legacy = true) generate
---   tdc_hits(I).tdc_r     <= (others => '0');
---   tdc_hits(I).datavalid <= valid;
--- end generate;
-
--- constants don't need any CDC, only cross clocks with the 32 bit hit
--- data + valid flag
-
--- we have a fifo valid coming in on the framework clock; this valid is high for 62.5 ns (16MHz)
---                    _________________________________________________________________
--- tdc_hits_i.valid __|
--- cycle            __/================================================================
---
--- pipe_clk has some fixed phase relationship but arbtrary frequency relationship (meaning that rising edges won't
--- necessarily line up)
---
--- we can resample the valid signal onto the pipeline clock and delay it by 1 (or more) clock cycles
--- then sample data_i when we see valid_i asserted high. just need to make sure we apply a datapath only constraint
---                ____  ____  ____  ____  ____  ____  ____  ____  ____  ____  ____
--- pipe_clk       |  |__|  |__|  |__|  |__|  |__|  |__|  |__|  |__|  |__|  |__|  |
---                      _________________________________________________________________
--- valid_i        ______|
---                            _________________________________________________________________
--- valid_i_dly    ____________|
---                            _________________________________________________________________
--- data_i            _________|
---
-
---         sync_csm : entity work.sync_cdc
---           generic map (
---             WIDTH    => tdc_hits_pre_cdc'length,
---             N_STAGES => 1
---             )
---           port map (
---             clk_i   => pipeline_clock,
---             valid_i => tdc_hits_pre_cdc_valid,
---             data_i  => tdc_hits_pre_cdc,
---             valid_o => tdc_hits(I).datavalid,
---             data_o  => tdc_hit_vector
---             );
-
---tdc_hits(I).tdc_r   <=   tdc_2rf(tdc_hit_vector);

@@ -1,14 +1,12 @@
 # -*- mode: TCL;-*-
 
-../../tdc/src/tdc.src
-
-# LPGBT
-../../lpgbt/src/lpgbt_fpga.sub
-../../lpgbt/src/lpgbt_pkg.vhd 2008
-
 # Framework
+../../Top/user/top_user.vhd 2008
 ../../hw/src/board_pkg.vhd 2008
 ../../hw/src/board_pkg_common.vhd 2008
 ../../hw/src/constants_pkg.vhd 2008
 ../../hw/src/user_pkg.vhd 2008
 ../../hw/src/system_types_pkg.vhd 2008
+
+# Sector Logic
+../../sl/src/sector_logic_pkg.vhd 2008

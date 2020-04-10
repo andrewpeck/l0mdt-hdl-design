@@ -1,0 +1,13 @@
+# IC / SCA
+../../lpgbt/src/gbt-sc/GBT-SC/gbtsc_top.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/IC/ic_deserializer.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/IC/ic_rx_fifo.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/IC/ic_rx.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/IC/ic_top.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/IC/ic_tx.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_deserializer.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_pkg.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_rx_fifo.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_rx.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_top.vhd
+../../lpgbt/src/gbt-sc/GBT-SC/SCA/sca_tx.vhd
