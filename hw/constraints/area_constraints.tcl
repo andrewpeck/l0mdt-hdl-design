@@ -1,7 +1,7 @@
 # Parameters
 # Add 950 to left side to account for oddities in RPM numbering
-set lLeftQuadWidth  [expr 800 + 850]
-set lRightQuadWidth [expr 800]
+set lLeftQuadWidth  [expr 600 + 850]
+set lRightQuadWidth [expr 600]
 
 set lClkBounds [get_XY_bounds [get_clock_regions]]
 puts "Clock region boundaries ${lClkBounds}"
