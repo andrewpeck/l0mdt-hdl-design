@@ -1,4 +1,4 @@
-set imax [llength [get_ports mgt_rx_p*]]
+set imax [get_property NUM_MGTS [get_cells "top_framework/mgt_wrapper_inst"]]
 
 # make sure to UNloc the gt_cell before LOCing it after... Xilinx chokes otherwise
 for {set i 0} {$i < $imax} {incr i} {
