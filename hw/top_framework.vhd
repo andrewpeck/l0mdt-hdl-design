@@ -88,12 +88,17 @@ architecture behavioral of top_framework is
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  -- FIXME drive the valid strobe from somewhere real
-  signal lpgbt_valid_strobe    : std_logic;
-  signal lpgbt_uplink_sump     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal lpgbt_uplink_mgt_sump : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
-  signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  -- FIXME drive the valid strobe from somewhere real or at least align to LHC40
+  signal lpgbt_downlink_valid                  : std_logic;
+
+  attribute DONT_TOUCH               : string;
+  attribute MAX_FANOUT          : string;
+  attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
+  attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
+  signal lpgbt_uplink_sump                     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_mgt_sump                 : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal tdc_sump                              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+  signal sector_logic_rx_sump                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   -- emulator cores
   signal lpgbt_emul_uplink_clk            : std_logic;
@@ -127,6 +132,7 @@ architecture behavioral of top_framework is
 
   attribute NUM_MGTS                     : integer;
   attribute NUM_MGTS of mgt_wrapper_inst : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+  attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
 
@@ -192,21 +198,24 @@ begin  -- architecture behavioral
 
   mgt_wrapper_inst : entity framework.mgt_wrapper
     port map (
-      clocks                               => clocks,
-      reset                                => global_reset,
+      clocks => clocks,
+      reset  => global_reset,
+
       -- reference clocks
-      refclk_i_p                           => refclk_i_p,
-      refclk_i_n                           => refclk_i_n,
+      refclk_i_p => refclk_i_p,
+      refclk_i_n => refclk_i_n,
 
       -- sector logic
-      sl_rx_mgt_word_array_o               => sl_rx_mgt_word_array,
-      sl_tx_mgt_word_array_i               => sl_tx_mgt_word_array,
-      sl_tx_ctrl_i                         => sl_tx_ctrl,
-      sl_rx_slide_i                        => sl_rx_slide,
+      sl_rx_mgt_word_array_o => sl_rx_mgt_word_array,
+      sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
+      sl_tx_ctrl_i           => sl_tx_ctrl,
+      sl_rx_slide_i          => sl_rx_slide,
+
       -- lpgbt
-      lpgbt_rxslide_i                      => lpgbt_uplink_bitslip,
-      lpgbt_downlink_mgt_word_array_i      => lpgbt_downlink_mgt_word_array,
-      lpgbt_uplink_mgt_word_array_o        => lpgbt_uplink_mgt_word_array,
+      lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
+      lpgbt_downlink_mgt_word_array_i => lpgbt_downlink_mgt_word_array,
+      lpgbt_uplink_mgt_word_array_o   => lpgbt_uplink_mgt_word_array,
+
       -- lpgbt emulator
       lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
       lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
@@ -217,35 +226,31 @@ begin  -- architecture behavioral
   -- LPGBT-FPGA Cores
   --------------------------------------------------------------------------------
 
-  -- FIXME: should sync this to the downlink controller logic which is still tbd
-  -- 320 MHz enable, goes high 1 of 8 clocks
-  process (clocks.clock320)
-    variable counter : integer range 0 to 8;
+  -- Create a 1 of 8 high signal synced to the 40MHZ clock
+  --            ________________              _____________
+  -- clk40    __|              |______________|
+  --            _______________________________
+  -- r80      __|                             |_____________
+  --                _______________________________
+  -- r80_dly  ______|                             |_____________
+  --            _____                             _____
+  -- valid    __|   |_____________________________|   |______
+  process (clocks.clock320, clocks.clock40)
+    variable r80     : std_logic := '0';
+    variable r80_dly : std_logic;
   begin
-    if (rising_edge(clocks.clock320)) then
-
-      if global_reset = '1' then
-        counter            := 0;
-        lpgbt_valid_strobe <= '0';
-      elsif (counter = 8) then
-        counter            := 0;
-        lpgbt_valid_strobe <= '1';
-      else
-        counter            := counter + 1;
-        lpgbt_valid_strobe <= '0';
-      end if;
+    if (rising_edge(clocks.clock40)) then
+      r80 := not r80;
     end if;
+
+    if (rising_edge(clocks.clock320)) then
+      r80_dly := r80;
+    end if;
+    lpgbt_downlink_valid <= r80_dly xor r80;
   end process;
 
-  -- FIXME: remove the loopback later once we have a downlink controller
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    -- data_loop : process (clocks.clock320) is
-    -- begin  -- process data_loop
-    --   if clocks.clock320'event and clocks.clock320 = '1' then  -- rising clock edge
-    --     lpgbt_downlink_data(I).data <= lpgbt_uplink_data(I).data(223 downto 192) xor lpgbt_uplink_data(I).data(191 downto 160) xor lpgbt_uplink_data(I).data(159 downto 128) xor lpgbt_uplink_data(I).data(127 downto 96) xor lpgbt_uplink_data(I).data(95 downto 64) xor lpgbt_uplink_data(I).data(63 downto 32) xor lpgbt_uplink_data(I).data(31 downto 0);
-    --   end if;
-    -- end process data_loop;
-    lpgbt_downlink_data(I).valid <= lpgbt_valid_strobe;
+    lpgbt_downlink_data(I).valid <= lpgbt_downlink_valid;
   end generate lpgbt_downlink_valid_gen;
 
   lpgbt_link_wrapper_inst : entity framework.lpgbt_link_wrapper
@@ -310,12 +315,9 @@ begin  -- architecture behavioral
   gbt_controller_wrapper_inst : entity framework.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
-      clocks                => clocks,
+      clock                 => clocks.clock40,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
-      lpgbt_uplink_data_i   => lpgbt_uplink_data,
-      rx_clk_i              => clocks.clock320,
-      tx_clk_i              => clocks.clock320,
-      tx_clk_en_i           => lpgbt_valid_strobe
+      lpgbt_uplink_data_i   => lpgbt_uplink_data
       );
 
   --------------------------------------------------------------------------------

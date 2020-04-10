@@ -27,16 +27,11 @@ entity gbt_controller_wrapper is
     -- reset
     reset_i : in std_logic;
 
-    clocks : in system_clocks_rt;
+    clock : in std_logic;
 
     -- take in all uplink / downlink data; need a mapping module to map this into SCA links etc..
     lpgbt_downlink_data_o : out lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
-    lpgbt_uplink_data_i   : in  lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
-
-    tx_clk_i    : in std_logic;
-    tx_clk_en_i : in std_logic;
-    rx_clk_i    : in std_logic
-
+    lpgbt_uplink_data_i   : in  lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0)
     );
 end gbt_controller_wrapper;
 
@@ -127,9 +122,9 @@ architecture Behavioral of gbt_controller_wrapper is
 
 begin
 
-  process (clocks.clock40)
+  process (clock)
   begin
-    if (rising_edge(clocks.clock40)) then
+    if (rising_edge(clock)) then
       reset <= reset;
     end if;
   end process;
@@ -148,12 +143,12 @@ begin
     port map (
 
       -- tx to lpgbt etc
-      tx_clk_i  => tx_clk_i,
-      tx_clk_en => tx_clk_en_i,
+      tx_clk_i  => clock,
+      tx_clk_en => '1',
 
       -- rx from lpgbt etc
-      rx_clk_i  => rx_clk_i,
-      rx_clk_en => rx_clk_en,
+      rx_clk_i  => clock,
+      rx_clk_en => '1',
 
       -- IC/EC data from controller
       ec_data_o => ec_data_down,
@@ -210,31 +205,17 @@ begin
   -- Input mux from LPGBT to sc controller
   --------------------------------------------------------------------------------
 
-  -- multiplex all of the inputs from lpgbt-fpga cores
-  -- TODO: should clock this mux for fan-in.... probably a couple of cycles would make sense
-  -- or clock on valid_in and can apply a multi-cycle path constraint
-  -- this is only slow control--- latency is OK
-  --
-  --
-  -- clock       --/0=\==/1=\==/2=\==/3=\==/4=\==/5=\==/6=\==/7=\==
-  -- data        __/============================================\__
-  -- en_i        __|=====\_________________________________________
-  -- en_mux      ________|=====\___________________________________
-  -- en          ______________|=====\_____________________________
-  -- dat_mux     ______________/===================================
-
-  process (rx_clk_i)
+  process (clock)
     constant up_0 : integer := CSM_SCA_UPLINK_ELINK0;
     constant up_1 : integer := CSM_SCA_UPLINK_ELINK1;
   begin
-    if (rising_edge(rx_clk_i)) then
+    if (rising_edge(clock)) then
 
       rx_clk_en_mux <= lpgbt_uplink_data_i (lpgbt_link_sel).valid;
       rx_clk_en     <= rx_clk_en_mux;
 
       if (rx_clk_en_mux = '1') then
 
-        -- big fan-in... TODO: apply multicycle or datapathonly constraints to ease timing? ffs to buffer?
         ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
         ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
         ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
@@ -247,7 +228,8 @@ begin
   --------------------------------------------------------------------------------
   -- Output Mux to LPGBTS
   --------------------------------------------------------------------------------
-  process (tx_clk_i, ec_data_down)
+
+  process (clock, ec_data_down)
     variable control_to_sca0 : std_logic_vector (3 downto 0);
     variable control_to_sca1 : std_logic_vector (3 downto 0);
 
@@ -271,77 +253,49 @@ begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
       -- TODO: mux the bits only during idle sequences to ensure smooth transitions
-      --
+
       -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
       control_to_sca0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
       control_to_sca1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
-      -- Want to fan out the data with a clock for better timing... but we do
-      -- NOT control the valid bit here since it is common with the data bus
-      -- need to make sure that the output data is aligned to the valid bit
-      --
-      -- just clocking on tx_clk_en_i will delay by 1 clk at the output... instead
-      -- clk on a delayed version of tx_clk_en_i
-      --
-      -- i.e. we want to delay the dat output by a full 25ns rather than just 3.125ns
-      --
-      -- so we want a tx_en delayed late by 7 clocks
-      --               ____  ____  ____  ____  ____  ____  ____  ____  ____  ____
-      -- cycle       __|0 |__|1 |__|2 |__|3 |__|4 |__|5 |__|6 |__|7 |__|0 |__|  |
-      -- data        __/============================================\_____________
-      -- en_i        __/=====\_________________________________________/=====\____
-      -- en_dly      ____________________________________________/=====\__________
-      -- dat         __________________________________________________/==========
+      if (rising_edge(clock)) then
 
-      if (rising_edge(tx_clk_i)) then
-        tx_clk_en_srl <= tx_clk_en_srl (tx_clk_en_srl'length-2 downto 0) & tx_clk_en_i;
+        -- if broadcast ? send to all of the lpgbts
+        if (lpgbt_broadcast) then
+          lpgbt_downlink_data_o (I).ic <= ic_data_down;
+          lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-      end if;
-      tx_clk_en_dly <= tx_clk_en_srl(6);
+        -- if master
+        elsif (lpgbt_link_sel = I and lpgbt_link_sel_master) then
+          lpgbt_downlink_data_o (I).ic <= ic_data_down;
 
-      if (rising_edge(tx_clk_i)) then
-        if (tx_clk_en_dly = '1') then
+        -- if slave
+        elsif (lpgbt_link_sel = I and not lpgbt_link_sel_master) then
+          lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-          -- if broadcast ? send to all of the lpgbts
-          if (lpgbt_broadcast) then
-            lpgbt_downlink_data_o (I).ic <= ic_data_down;
-            lpgbt_downlink_data_o (I).ec <= ic_data_down;
-
-          -- if master
-          elsif (lpgbt_link_sel = I and lpgbt_link_sel_master) then
-            lpgbt_downlink_data_o (I).ic <= ic_data_down;
-
-          -- if slave
-          elsif (lpgbt_link_sel = I and not lpgbt_link_sel_master) then
-            lpgbt_downlink_data_o (I).ec <= ic_data_down;
-
-          -- if idle (nothing selected, should block writes)
-          else
-            lpgbt_downlink_data_o (I).ic <= (others => '1');
-            lpgbt_downlink_data_o (I).ec <= (others => '1');
-          end if;
-
-
-          -- if broadcast ? send to all of the scas
-          if (sca_broadcast) then
-
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;  -- sca0
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;  -- sca1
-
-          -- select a CSM... choose which SCA on SC controller port
-          elsif (sca_link_sel = I) then
-
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
-
-          -- idle
-          else
-
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
-
-          end if;
+        -- if idle (nothing selected, should block writes)
+        else
+          lpgbt_downlink_data_o (I).ic <= (others => '1');
+          lpgbt_downlink_data_o (I).ec <= (others => '1');
         end if;
+
+
+        -- if broadcast ? send to all of the scas
+        if (sca_broadcast) then
+          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
+          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
+
+        -- select a CSM... choose which SCA on SC controller port
+        elsif (sca_link_sel = I) then
+          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
+          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
+
+        -- idle
+        else
+          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
+          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
+        end if;
+
       end if;
 
 

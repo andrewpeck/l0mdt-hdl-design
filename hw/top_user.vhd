@@ -1,3 +1,6 @@
+-- Dataformats Spreadsheet:
+-- https://docs.google.com/spreadsheets/d/1oJh-NPv990n6AzXXZ7cBaySrltqBO-eGucrsnOx_r4s/edit#gid=1745105770
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -30,12 +33,14 @@ entity top_user is
     -- Barrel + Neighbor Sector Logic Candidates
     barrel_slc_candidates : in SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
 
-    --
+    -- SL candidates back to SL
     endcap_slc_pipeline : out SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
     barrel_slc_pipeline : out SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
     -- felix
     tts_commands : out TTS_CMD_rt;
+
+    -- DAQ links
     daq_links    : out DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
 
     -- asserted while mmcm locking
@@ -57,7 +62,7 @@ begin
 
   sump_proc : process (pipeline_clock) is
   begin  -- process tdc_hit_sump_proc
-    if pipeline_clock'event and pipeline_clock = '1' then  -- rising clock edge
+    if (rising_edge(pipeline_clock)) then  -- rising clock edge
 
       tdc_sump_loop : for I in 0 to c_NUM_POLMUX-1 loop
         tdc_hit_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits(I)));

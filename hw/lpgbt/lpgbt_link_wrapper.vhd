@@ -12,6 +12,11 @@ use framework.system_types_pkg.all;
 use framework.constants_pkg.all;
 
 entity lpgbt_link_wrapper is
+  generic (
+    g_PIPELINE_BITSLIP : boolean := true;
+    g_PIPELINE_LPGBT   : boolean := true;
+    g_PIPELINE_MGT     : boolean := true
+    );
   port(
 
     reset : in std_logic;
@@ -72,9 +77,6 @@ architecture Behavioral of lpgbt_link_wrapper is
   signal std_logic_1 : std_logic := '1';
   signal std_logic_0 : std_logic := '1';
 
-  type std230_array_t is array (integer range <>) of std_logic_vector(229 downto 0);
-  signal lpgbt_uplink_decoded_data : std230_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
-
   attribute DONT_TOUCH                        : string;
   signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '0');
   signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '0');
@@ -94,7 +96,9 @@ begin
     -- only generate downlinks for duplex lpgbts
     downlink_if : if (lpgbt_downlink_idx_array(I) /= -1) generate
 
-      constant idx : integer := lpgbt_downlink_idx_array(I);
+      constant idx         : integer := lpgbt_downlink_idx_array(I);
+      signal downlink_data : lpgbt_downlink_data_rt;
+      signal mgt_data      : std_logic_vector(31 downto 0);
 
     begin
 
@@ -117,16 +121,42 @@ begin
         port map (
           clk_i               => lpgbt_downlink_clk_i,
           rst_n_i             => downlink_reset_tree(idx),
-          clken_i             => lpgbt_downlink_data(idx).valid,
-          userdata_i          => lpgbt_downlink_data(idx).data,
-          ecdata_i            => lpgbt_downlink_data(idx).ec,
-          icdata_i            => lpgbt_downlink_data(idx).ic,
-          mgt_word_o          => lpgbt_downlink_mgt_word_array_o(idx),
+          clken_i             => downlink_data.valid,
+          userdata_i          => downlink_data.data,
+          ecdata_i            => downlink_data.ec,
+          icdata_i            => downlink_data.ic,
+          mgt_word_o          => mgt_data,
           interleaverbypass_i => c_LPGBT_BYPASS_INTERLEAVER,
           encoderbypass_i     => c_LPGBT_BYPASS_FEC,
           scramblerbypass_i   => c_LPGBT_BYPASS_SCRAMBLER,
           rdy_o               => lpgbt_downlink_ready_o(idx)
           );
+
+      lpgbtlatch : if (g_PIPELINE_LPGBT) generate
+        downlink_data_pipe : process (lpgbt_downlink_clk_i) is
+        begin  -- process downlink_data_pipe
+          if lpgbt_downlink_clk_i'event and lpgbt_downlink_clk_i = '1' then  -- rising clock edge
+            downlink_data <= lpgbt_downlink_data(idx);
+          end if;
+        end process downlink_data_pipe;
+      end generate;
+
+      lpgbtnolatch : if (not g_PIPELINE_LPGBT) generate
+        downlink_data <= lpgbt_downlink_data(idx);
+      end generate;
+
+      mgtlatch : if (g_PIPELINE_MGT) generate
+        downlink_data_pipe : process (lpgbt_downlink_clk_i) is
+        begin  -- process downlink_data_pipe
+          if lpgbt_downlink_clk_i'event and lpgbt_downlink_clk_i = '1' then  -- rising clock edge
+            lpgbt_downlink_mgt_word_array_o(idx) <= mgt_data;
+          end if;
+        end process downlink_data_pipe;
+      end generate;
+
+      mgtnolatch : if (not g_PIPELINE_MGT) generate
+        lpgbt_downlink_mgt_word_array_o(idx) <= mgt_data;
+      end generate;
 
     end generate;
   end generate;
@@ -139,7 +169,10 @@ begin
 
     uplink_if : if (lpgbt_uplink_idx_array(I) /= -1) generate
 
-      constant idx : integer := lpgbt_uplink_idx_array(I);
+      constant idx       : integer := lpgbt_uplink_idx_array(I);
+      signal uplink_data : lpgbt_uplink_data_rt;
+      signal mgt_data    : std_logic_vector(31 downto 0);
+      signal bitslip     : std_logic;
 
     begin
 
@@ -168,25 +201,63 @@ begin
           )
 
         port map (
-          clk_freerunningclk_i => std_logic_0,  -- not used since reset on even feature is disabled in frame aligner
-          uplinkclk_i          => lpgbt_uplink_clk_i,
-          uplinkrst_n_i        => uplink_reset_tree(idx),
-          mgt_word_o           => lpgbt_uplink_mgt_word_array_i(idx),
-          bypassinterleaver_i  => c_lpgbt_bypass_interleaver,
-          bypassfecencoder_i   => c_lpgbt_bypass_fec,
-          bypassscrambler_i    => c_lpgbt_bypass_scrambler,
-          uplinkclkouten_o     => lpgbt_uplink_data(idx).valid,
-          userdata_o           => lpgbt_uplink_decoded_data(idx),
-          ecdata_o             => lpgbt_uplink_data(idx).ec,
-          icdata_o             => lpgbt_uplink_data(idx).ic,
-          mgt_bitslipctrl_o    => lpgbt_uplink_bitslip_o(idx),
-          datacorrected_o      => open,
-          iccorrected_o        => open,
-          eccorrected_o        => open,
-          rdy_o                => lpgbt_uplink_ready_o(idx)
+          clk_freerunningclk_i       => std_logic_0,  -- not used since reset on even feature is disabled in frame aligner
+          uplinkclk_i                => lpgbt_uplink_clk_i,
+          uplinkrst_n_i              => uplink_reset_tree(idx),
+          mgt_word_o                 => mgt_data,
+          bypassinterleaver_i        => c_lpgbt_bypass_interleaver,
+          bypassfecencoder_i         => c_lpgbt_bypass_fec,
+          bypassscrambler_i          => c_lpgbt_bypass_scrambler,
+          uplinkclkouten_o           => uplink_data.valid,
+          userdata_o(223 downto 0)   => uplink_data.data,
+          userdata_o(229 downto 224) => open,
+          ecdata_o                   => uplink_data.ec,
+          icdata_o                   => uplink_data.ic,
+          mgt_bitslipctrl_o          => bitslip,
+          datacorrected_o            => open,
+          iccorrected_o              => open,
+          eccorrected_o              => open,
+          rdy_o                      => lpgbt_uplink_ready_o(idx)
           );
 
-      lpgbt_uplink_data(idx).data <= lpgbt_uplink_decoded_data(idx)(223 downto 0);  -- 229 downto 224 are LM bits, not used
+      lpgbtlatch : if (g_PIPELINE_LPGBT) generate
+        uplink_data_pipe : process (lpgbt_uplink_clk_i) is
+        begin  -- process uplink_data_pipe
+          if lpgbt_uplink_clk_i'event and lpgbt_uplink_clk_i = '1' then  -- rising clock edge
+            lpgbt_uplink_data(idx) <= uplink_data;
+          end if;
+        end process uplink_data_pipe;
+      end generate;
+
+      lpgbtnolatch : if (not g_PIPELINE_LPGBT) generate
+        lpgbt_uplink_data(idx) <= uplink_data;
+      end generate;
+
+      mgtlatch : if (g_PIPELINE_MGT) generate
+        uplink_data_pipe : process (lpgbt_uplink_clk_i) is
+        begin  -- process uplink_data_pipe
+          if lpgbt_uplink_clk_i'event and lpgbt_uplink_clk_i = '1' then  -- rising clock edge
+            mgt_data <= lpgbt_uplink_mgt_word_array_i(idx);
+          end if;
+        end process uplink_data_pipe;
+      end generate;
+
+      mgtnolatch : if (not g_PIPELINE_MGT) generate
+        mgt_data <= lpgbt_uplink_mgt_word_array_i(idx);
+      end generate;
+
+      bitsliplatch : if (g_PIPELINE_BITSLIP) generate
+        uplink_data_pipe : process (lpgbt_uplink_clk_i) is
+        begin  -- process uplink_data_pipe
+          if lpgbt_uplink_clk_i'event and lpgbt_uplink_clk_i = '1' then  -- rising clock edge
+            lpgbt_uplink_bitslip_o(idx) <= bitslip;
+          end if;
+        end process uplink_data_pipe;
+      end generate;
+
+      bitslipnolatch : if (not g_PIPELINE_BITSLIP) generate
+        lpgbt_uplink_bitslip_o(idx) <= bitslip;
+      end generate;
 
     end generate;
 
