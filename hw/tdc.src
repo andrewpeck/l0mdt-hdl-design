@@ -1,5 +1,5 @@
 # TDC
-../../hw/tdc/tdc_decoder_wrapper.vhd 2008
+../../hw/tdc/top_tdc_decoder.vhd 2008
 ../../hw/tdc/csm_pkg.vhd
 ../../hw/tdc/polling_mux.vhd 2008
 ../../hw/tdc/top_tdc_control.vhd

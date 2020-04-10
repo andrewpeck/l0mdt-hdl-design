@@ -345,7 +345,7 @@ begin  -- architecture behavioral
   -- TDC Decoder Cores
   --------------------------------------------------------------------------------
 
-  tdc_decoder_wrapper_inst : entity tdc.tdc_decoder_wrapper
+  top_tdc_decoder_inst : entity tdc.top_tdc_decoder
     port map (
       clock          => clocks.clock320,
       pipeline_clock => clocks.clock_pipeline,
