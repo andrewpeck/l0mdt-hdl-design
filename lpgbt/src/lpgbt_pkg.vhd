@@ -13,16 +13,16 @@ package lpgbt_pkg is
   --------------------------------------------------------------------------------
 
   constant c_LPGBT_DOWNLINK_WORD_WIDTH       : integer := 32;  -- IC + EC + User Data + FEC
-  constant c_LPGBT_DOWNLINK_MULTICYCLE_DELAY : integer := 3;  -- --! Multicycle delay: USEd to relax the timing constraints
-  constant c_LPGBT_DOWNLINK_CLOCK_RATIO      : integer := 8;  -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
+  constant c_LPGBT_DOWNLINK_MULTICYCLE_DELAY : integer := 3;   -- --! Multicycle delay: USEd to relax the timing constraints
+  constant c_LPGBT_DOWNLINK_CLOCK_RATIO      : integer := 8;   -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
 
   --------------------------------------------------------------------------------
   -- Uplink
   --------------------------------------------------------------------------------
 
-  constant c_LPGBT_UPLINK_DATARATE                   : integer := DATARATE_10G24;  -- --! Multicycle delay: USEd to relax the timing constraints
-  constant c_LPGBT_UPLINK_FEC                        : integer := FEC5;  -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
-  constant c_LPGBT_UPLINK_MULTICYCLE_DELAY           : integer := 3;  -- --! Multicycle delay: USEd to relax the timing constraints
+  constant c_LPGBT_UPLINK_DATARATE                   : integer := DATARATE_10G24;
+  constant c_LPGBT_UPLINK_FEC                        : integer := FEC5;
+  constant c_LPGBT_UPLINK_MULTICYCLE_DELAY           : integer := 3;  -- --! Multicycle delay: Used to relax the timing constraints
   constant c_LPGBT_UPLINK_CLOCK_RATIO                : integer := 8;  -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
   constant c_LPGBT_UPLINK_WORD_WIDTH                 : integer := 32;
   constant c_LPGBT_UPLINK_ALLOWED_FALSE_HEADER       : integer := 5;
@@ -38,7 +38,6 @@ package lpgbt_pkg is
   type std2_array_t is array (integer range <>) of std_logic_vector(1 downto 0);
   type std224_array_t is array (integer range <>) of std_logic_vector(223 downto 0);
 
-
   type lpgbt_uplink_data_rt is record
     ec    : std_logic_vector (1 downto 0);
     ic    : std_logic_vector (1 downto 0);
@@ -53,7 +52,7 @@ package lpgbt_pkg is
     valid : std_logic;
   end record;
 
-  type lpgbt_uplink_data_rt_array is array (integer range <>)   of lpgbt_uplink_data_rt;
+  type lpgbt_uplink_data_rt_array is array (integer range <>) of lpgbt_uplink_data_rt;
   type lpgbt_downlink_data_rt_array is array (integer range <>) of lpgbt_downlink_data_rt;
 
 end lpgbt_pkg;

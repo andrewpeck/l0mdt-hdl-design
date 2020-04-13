@@ -233,8 +233,8 @@ begin  -- architecture behavioral
   -- r80      __|                             |_____________
   --                _______________________________
   -- r80_dly  ______|                             |_____________
-  --            _____                             _____
-  -- valid    __|   |_____________________________|   |______
+  --            _____                         _____
+  -- valid    __|   |_________________________|   |______
   process (clocks.clock320, clocks.clock40)
     variable r80     : std_logic := '0';
     variable r80_dly : std_logic;
