@@ -17,8 +17,9 @@ entity tdc_decoder_v2 is
     );
   port(
 
-    clock : in std_logic;
     reset : in std_logic;
+
+    clock : in std_logic; -- 320 Mbps clock
 
     -- take in 8 bits / bx of data on even odd links
     valid_i   : in std_logic;
@@ -27,24 +28,12 @@ entity tdc_decoder_v2 is
 
     -- interleave into a 16 bit word
     tdc_word_o  : out std_logic_vector (31 downto 0);
-    read_done_i : in  std_logic;
     valid_o     : out std_logic;
+    read_done_i : in  std_logic;
     tdc_err_o   : out std_logic
 
     );
 end tdc_decoder_v2;
-
--- Baseline:
--- LUT: 167
--- FF:  187
---
--- Split:
--- LUT: 165
--- FF: 187
---
--- Area Opt
--- LUT: 136
--- FF: 187
 
 architecture behavioral of tdc_decoder_v2 is
 
@@ -63,13 +52,12 @@ architecture behavioral of tdc_decoder_v2 is
   -- least common multiple of 10 bits and 16 bits is 80 bits,
   -- i.e. we need to receive 80 bits of data on the 10bit side to nicely line up
   -- to the 8bit side boundary
-  signal data_even_aligned  : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
-  signal data_odd_aligned   : std_logic_vector (7 downto 0);   -- pick of just the head of the fifo
-  signal aligned_data       : std_logic_vector (15 downto 0);  -- pick of just the head of the fifo
+  signal data_even_aligned  : std_logic_vector (7 downto 0);
+  signal data_odd_aligned   : std_logic_vector (7 downto 0);
+  signal aligned_data       : std_logic_vector (15 downto 0);
   signal aligned_data_valid : std_logic;
   signal bitslip            : std_logic;
 
-  signal frame_zero         : std_logic;
   signal tdc_word_state_err : std_logic;
 
   signal word_10b       : std_logic_vector (9 downto 0);
@@ -80,56 +68,43 @@ architecture behavioral of tdc_decoder_v2 is
   signal word_8b       : std_logic_vector (7 downto 0);
   signal word_8b_valid : std_logic;
 
+  component x_oneshot port (
+    d     : in  std_logic;
+    clock : in  std_logic;
+    q     : out std_logic
+    );
+  end component;
+
 begin
 
-  -- take in 16 bits per bx... this could be aligned arbitrarily. need to find the alignment
-  -- (by looking for 8b10b words, and perform a parallel bitslip )
-  --
-  -- we can do this by putting the 16b/bx into a 32 bit deep parallel bitslip module and shifting the
-  -- index pointer 1 by 1 until we achieve alignment expect to take a few clock cycles at startup to
-  -- do the alignment but this should be pretty small on the scale of things
+  -- fire a oneshot on the error flag to keep it from shifting multiple times on a single error
+  x_oneshot_inst : x_oneshot
+    port map (
+      d     => tdc_word_state_err,
+      q     => bitslip,
+      clock => clock
+      );
 
-  -- bitslip the data so that the head passes 8b10b check
-  -- if the head of the data is 8b10b valid then the rest of the data should be aligned also
-  -- although the word boundaries will follow a complicated scheme since they
-  -- are different on each frame due to the convoluted tdc design
-
-
-  -- TODO: check the timing on this
-  -- I think it is probably wrong
-  process (clock) is
-  begin
-    if (rising_edge(clock)) then
-      if (frame_zero = '1') and (tdc_word_state_err = '1') then
-        bitslip <= '1';
-      else
-        bitslip <= '0';
-      end if;
-    end if;
-  end process;
-
-  process (clock) is
-  begin
-    if (rising_edge(clock)) then
-      aligned_data_valid <= valid_i;
-    end if;
-  end process;
-
-  alignment_buffer_even : entity tdc.alignment_buffer
+  -- take in 16 bits per bx... this could be aligned arbitrarily relative to the frame clock due to different cable
+  -- lengths
+  ---- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
+  alignment_buffer_even : entity tdc.alignment_buffer(serial)
     port map (
       clock     => clock,
       bitslip_i => bitslip,
       data_i    => data_even,
       valid_i   => valid_i,
+      valid_o   => aligned_data_valid,
       data_o    => data_even_aligned
       );
 
-  alignment_buffer_odd : entity tdc.alignment_buffer
+  alignment_buffer_odd : entity tdc.alignment_buffer(serial)
     port map (
       clock     => clock,
       bitslip_i => bitslip,
       data_i    => data_odd,
       valid_i   => valid_i,
+      valid_o   => open,
       data_o    => data_odd_aligned
       );
 
@@ -139,9 +114,8 @@ begin
   -- Frame decoder state machine
   --------------------------------------------------------------------------------
 
-  framer_inst : entity tdc.framer
+  elink_framer_inst : entity tdc.elink_framer
     port map (
-      frame_zero   => frame_zero,
       clock        => clock,
       data_i       => aligned_data,
       data_i_valid => aligned_data_valid,
@@ -169,9 +143,6 @@ begin
     constant std_logic0 : std_logic := '0';
     constant std_logic1 : std_logic := '1';
   begin
-
-    -- LUT = 31
-    -- FF = 13
 
     mDec8b10bMem_inst : entity tdc.mDec8b10bMem
       port map (
@@ -206,7 +177,7 @@ begin
 
     dec_8b10b_msbs_inst : entity tdc.dec_8b10b
       port map (
-        RESET    => reset,
+        RESET    => '0',
         RBYTECLK => clock,
         --  The input is a 10-bit encoded character whose bits are identified as:
         --  AI, BI, CI, DI, EI, II, FI, GI, HI, JI (Least Significant to Most)
@@ -238,9 +209,25 @@ begin
   -- Frame decoder state machine
   --------------------------------------------------------------------------------
 
-  frame_decoder_inst : entity tdc.frame_decoder
+
+  -- Pair measurement format:
+  -- 31:27 =  5b Channel ID
+  -- 26:25 =  2b Edge Mode = 11 (Pair)
+  -- 24:8  = 17b Time
+  -- 7:0   =  8b Pulse width
+  --
+  -- Edge measurement format:
+  -- 31:27 =  5b Channel ID
+  -- 26:25 =  2b Edge Mode = 00 = leading, 01 = Trailing
+  -- 24:8  = 17b Time
+  -- 7:0   =  8b Pulse width
+  --
+
+  tdc_packet_processor_inst : entity tdc.tdc_packet_processor
     port map (
-      reset              => reset,
+      readout_mode       => "00",
+      debug_mode         => '0',
+      triggered_mode     => '0',
       clock              => clock,
       tdc_word_state_err => tdc_word_state_err,
       k_char             => k_char,

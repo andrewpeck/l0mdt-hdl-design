@@ -8,7 +8,8 @@
 ../../tdc/src/decoder_v2/dec_8b10b.vhd
 ../../tdc/src/decoder_v2/tdc_decoder_v2.vhd
 ../../tdc/src/decoder_v2/alignment_buffer.vhd
-../../tdc/src/decoder_v2/framer.vhd
-../../tdc/src/decoder_v2/frame_decoder.vhd
+../../tdc/src/decoder_v2/xoneshot.v
+../../tdc/src/decoder_v2/elink_framer.vhd
+../../tdc/src/decoder_v2/tdc_packet_processor.vhd
 
 ../../IP/polmux_sync_fifo/polmux_sync_fifo.xci

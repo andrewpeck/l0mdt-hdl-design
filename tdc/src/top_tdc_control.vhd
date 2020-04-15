@@ -52,7 +52,6 @@ begin
       port map (
         clk_i => clock40,
         dav_i => '1',
-        rst_i => reset,
         trg_i => trg_i,
         bcr_i => bcr_i,
         ecr_i => ecr_i,

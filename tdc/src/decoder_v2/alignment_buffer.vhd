@@ -12,22 +12,17 @@ entity alignment_buffer is
     valid_i   : in  std_logic;
 
     data_i : in  std_logic_vector (7 downto 0);
-    data_o : out std_logic_vector (7 downto 0)
+    data_o : out std_logic_vector (7 downto 0);
+
+    valid_o   : out  std_logic
 
     );
 end alignment_buffer;
 
-architecture behavioral of alignment_buffer is
-
+architecture parallel of alignment_buffer is
 
   -- bitslip signals
-
-  -- least common multiple of 10 bits and 8 bits is 80 bits,
-  -- i.e. we need to receive 80 bits of data on the 10bit side to nicely line up
-  -- to the 8bit side boundary
   signal fifo        : std_logic_vector (7 downto 0);  -- pick of just the head of the fifo
-  signal fifo_valid  : std_logic;
-  signal bitslip     : std_logic;
   signal data_buffer : std_logic_vector (8*2-1 downto 0);
   signal fifo_ptr    : integer range 0 to 8 := 0;      -- pointer to start address of fifo header
 
@@ -36,6 +31,9 @@ begin
   process(clock) is
   begin
     if (rising_edge(clock)) then
+
+      valid_o <= valid_i;
+
       if (valid_i = '1') then
 
         -- bring the data into a 32 bit deep buffer that allows us to realign the data to 10 bit boundaries
@@ -57,4 +55,44 @@ begin
     end if; -- clock
   end process;
 
-end behavioral;
+end parallel;
+
+architecture serial of alignment_buffer is
+
+  -- bitslip signals
+  signal buf         : std_logic_vector (7 downto 0);  -- pick of just the head of the fifo
+  signal fifo        : std_logic_vector (7 downto 0);  -- pick of just the head of the fifo
+
+  signal valid_dly1  : std_logic;
+
+
+begin
+
+  process(clock) is
+  begin
+    if (rising_edge(clock)) then
+
+      valid_dly1  <= valid_i;
+
+      -- copy the input data into a SR, shift it out one bit at a time
+      if (valid_i = '1') then
+        buf <= data_i;
+      else
+        buf <= buf(6 downto 0) & '0';
+      end if;
+
+      -- bitslip is selected
+      if (bitslip_i = '0') then
+        fifo (7 downto 0) <= fifo(6 downto 0) & buf(7);
+      end if;
+
+      if (valid_dly1 = '1') then
+        data_o <= fifo;
+      end if;
+
+      valid_o <= valid_dly1;
+
+    end if; -- clock
+  end process;
+
+end serial;

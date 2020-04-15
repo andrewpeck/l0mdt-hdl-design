@@ -7,7 +7,6 @@ entity encoded_control is
   port(
     clk_i : in std_logic;
     dav_i : in std_logic;
-    rst_i : in std_logic;
 
     trg_i : in std_logic;
     bcr_i : in std_logic;
@@ -20,7 +19,9 @@ entity encoded_control is
 end encoded_control;
 
 architecture behavioral of encoded_control is
-  signal triad : std_logic_vector(2 downto 0);
+  signal triad   : std_logic_vector(2 downto 0) := (others => '0');
+  signal busy_sr : std_logic_vector(1 downto 0) := (others => '0');
+  signal busy    : std_logic;
 begin
 
   --------------------------------------------------------------------------------
@@ -40,28 +41,46 @@ begin
   -- Reset   = 3'b101 = 5
   -- BCR     = 3'b110 = 6
   -- ECR     = 3'b111 = 7
+  --
+  -- Can accept a new ttc input every 3rd clock
+  --
+  -- TTC commands received during transmission of another are silently dropped
+  --
+  --            _____   _____   _____   _____   _____   _____   _____
+  -- clk_i    __|   |___|   |___|   |___|   |___|   |___|   |___|   |
+  --
+  --            _________               _________
+  -- ttc_i    __|       |_______________|       |__________________
+  --
+  --                    _________________       ___________________
+  -- busy     __________|               |_______|
+  --
+  -- enc_o    ----------< bit2 >< bit1 >< bit0 >< bit2 >< bit1 >< bit0 >
+
+  busy <= busy_sr(0) or busy_sr(1);
 
   process (clk_i) is
   begin
     if (rising_edge(clk_i)) then
-      if (dav_i='1') then
-        if (rst_i='1') then
-          triad <= "000";
+      if (dav_i = '1') then
+        if (busy = '0' and bcr_i = '1') then
+          triad   <= "110";
+          busy_sr <= "11";
+        elsif (busy = '0' and trg_i = '1') then
+          triad   <= "100";
+          busy_sr <= "11";
+        elsif (busy = '0' and ecr_i = '1') then
+          triad   <= "111";
+          busy_sr <= "11";
+        elsif (busy = '0' and gsr_i = '1') then
+          triad   <= "101";
+          busy_sr <= "11";
         else
-          if(bcr_i = '1') then
-            triad <= "110";
-          elsif (trg_i='1') then
-            triad <= "100";
-          elsif (ecr_i='1') then
-            triad <= "111";
-          elsif (gsr_i='1') then
-            triad <= "101";
-          else
-            triad <= triad(1 downto 0) & '0';
-          end if;
+          triad   <= triad(1 downto 0) & '0';
+          busy_sr <= busy_sr (1) & '0';
         end if;
-      end if;
-    end if;
+      end if;  -- dav
+    end if;  --clk
   end process;
 
   enc_o <= triad(2);
