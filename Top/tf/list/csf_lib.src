@@ -1,0 +1,11 @@
+../../csf/src/csf_pkg.vhd
+../../csf/src/top_csf.vhd
+../../csf/src/csf_chi2.vhd
+../../csf/src/csf_chi2_comparison.vhd
+../../csf/src/csf_fitter.vhd
+../../csf/src/csf_histogram.vhd
+../../csf/src/seg_coord_transform.vhd
+../../IP/sqrt_mbar_rom/sqrt_mbar_rom.xci
+../../IP/invsqrt_mbar_rom/invsqrt_mbar_rom.xci
+../../IP/fitter_reciprocal_rom/fitter_reciprocal_rom.xci
+../../IP/arctan_rom/arctan_rom.xci
