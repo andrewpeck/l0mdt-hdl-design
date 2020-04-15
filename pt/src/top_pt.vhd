@@ -1,25 +1,32 @@
-----------------------------------------------------------------------------------
--- Company: Max Planck Institut For Physics Munich
--- Engineer: Davide Cieri
--- 
--- Create Date: 04/26/2019 15:57 AM
--- Design Name: L0 MDT Trigger  
--- Module Name: top_pt - Behavioral
--- Project Name: ATLAS L0MDT Trigger 
--- Target Devices: xcvu5p-flvb2104-2-e
--- Tool Versions: Vivado 2018.2
--- Description: 
--- iii
--- Dependencies: 
--- 
--- Revision:dddd
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Title       : top_pt.vhd
+-- Project     : MDTTP
+--------------------------------------------------------------------------------
+-- File        : top_pt.vhd
+-- Author      : Davide Cieri davide.cieri@cern.ch
+-- Company     : Max-Planck-Institute For Physics, Munich
+-- Created     : Tue Feb 11 13:50:27 2020
+-- Last update : Wed Apr 15 13:52:09 2020
+-- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
+--------------------------------------------------------------------------------
+-- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
+-------------------------------------------------------------------------------
+-- Description:  pT calculator top module
+--------------------------------------------------------------------------------
+-- Revisions:  Revisions and documentation are controlled by
+-- the revision control system (RCS).  The RCS should be consulted
+-- on revision history.
+-------------------------------------------------------------------------------
+
+-- Doxygen-compatible comments
+--! @file top_pt.vhd
+--! @brief top_pt
+--! @details 
+--! pT calculator top module
+--! @author Davide Cieri
 
 
-library IEEE, pt_lib;
+library IEEE, pt_lib, dataformats;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
@@ -27,6 +34,7 @@ use pt_lib.pt_pkg.all;
 use pt_lib.pt_params_pkg.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
+use dataformats.mdttp_types_pkg.all;
 
 entity top_pt is
   Port ( 
@@ -34,6 +42,8 @@ entity top_pt is
     i_segment_BI : in t_globalseg;
     i_segment_BM : in t_globalseg;
     i_segment_BO : in t_globalseg;
+    i_dv_SLC     : in std_logic;
+    i_SLC        : in SLC_COMMON_rt;
     i_rst        : in std_logic;
     o_pt_online  : out unsigned(pt_width-1 downto 0);
     o_pt_valid   : out std_logic
@@ -259,10 +269,8 @@ begin
                dv_combo_s     <= '1';
             end if;
 
-            if segment_BI.valid = '1' then
-                phi  <= segment_BI.phi_glob;
-            elsif segment_BM.valid = '1' then
-                phi  <= segment_BM.phi_glob;
+            if i_dv_SLC = '1' then
+                phi  <= signed(i_SLC.posphi);
             end if;
 
             dv_combo_s_s <= dv_combo_s;

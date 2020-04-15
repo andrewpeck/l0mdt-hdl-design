@@ -1,22 +1,32 @@
-----------------------------------------------------------------------------------
--- Company: Max Planck Institut fuer Physik, Munich 
--- Engineer: Davide Cieri (davide.cieri@cern.ch)
--- 
--- Create Date: 30/04/2019 
--- Design Name: L0MDT Trigger
--- Module Name: Eta Calculator - Behavioral
--- Project Name: L0MDT Trigger
--- Target Devices: xcvu5p-flvb2104-2-e
--- Tool Versions: Vivado 2018.3
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Title       : eta_calculator.vhd
+-- Project     : MDTTP
+--------------------------------------------------------------------------------
+-- File        : eta_calculator.vhd
+-- Author      : Davide Cieri davide.cieri@cern.ch
+-- Company     : Max-Planck-Institute For Physics, Munich
+-- Created     : Tue Feb 11 13:50:27 2020
+-- Last update : Wed Apr 15 09:47:55 2020
+-- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
+--------------------------------------------------------------------------------
+-- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
+-------------------------------------------------------------------------------
+-- Description:  Module that calculates the pseudo-rapidity of an MDT muon 
+--               candidate out of the reconstructed MDT segment coordinates
+--------------------------------------------------------------------------------
+-- Revisions:  Revisions and documentation are controlled by
+-- the revision control system (RCS).  The RCS should be consulted
+-- on revision history.
+-------------------------------------------------------------------------------
+
+-- Doxygen-compatible comments
+--! @file eta_calculator.vhd
+--! @brief eta_calculator
+--! @details 
+--! Module that calculates the pseudo-rapidity of an MDT muon 
+--! candidate out of the reconstructed MDT segment coordinates
+--! pipeline
+--! @author Davide cieri
 
 
 library IEEE, pt_lib;
@@ -26,12 +36,12 @@ use ieee.math_real.all;
 use pt_lib.pt_pkg.all;
 
 entity eta_calculator is
-  port (
-    clk               : in std_logic;
-    i_seg            : in t_globalseg;
-    o_eta             : out signed(eta_width-1 downto 0);
-    o_dv_eta          : out std_logic
-  );
+    port (
+        clk               : in std_logic;
+        i_seg             : in t_globalseg;
+        o_eta             : out signed(eta_width-1 downto 0);
+        o_dv_eta          : out std_logic
+    );
 end eta_calculator; -- sagitta_calculator
 
  architecture Behavioral of eta_calculator is

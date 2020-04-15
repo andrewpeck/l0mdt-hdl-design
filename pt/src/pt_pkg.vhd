@@ -18,12 +18,13 @@
 -- 
 ----------------------------------------------------------------------------------
 
-library IEEE, pt_lib;
+library IEEE, pt_lib, dataformats;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use std.standard.all;
 use std.textio.all;
+use dataformats.mdttp_types_pkg.all;
 
 package pt_pkg is
 
@@ -34,7 +35,7 @@ package pt_pkg is
     constant z_glob_width           : integer := 19;
     constant r_glob_width           : integer := 19;
     constant chamber_id_width       : integer := 3;
-    constant phi_width              : integer := 6;
+    constant phi_width              : integer := 9;
     constant phi_range              : real    := 0.6; 
     constant phi_mult               : real    := real(2**phi_width)/phi_range;
     constant eta_width              : integer := 15;
@@ -71,12 +72,23 @@ package pt_pkg is
         z_glob     : signed(z_glob_width-1 downto 0);
         r_glob     : unsigned(r_glob_width-1 downto 0);
         theta_glob : signed(theta_glob_width-1 downto 0);
-        phi_glob   : signed(phi_width-1 downto 0);
         chamber_id : unsigned(chamber_id_width-1 downto 0);
     end record;
 
-    constant null_globalseg : t_globalseg := ('0', (others => '0'), (others => '0'), (others => '0'), (others => '0'), (others => '0'));
-
+    constant null_globalseg : t_globalseg := ('0', 
+                                              (others => '0'), 
+                                              (others => '0'), 
+                                              (others => '0'), 
+                                              (others => '0')
+                                            );
+    constant null_slc : SLC_COMMON_rt := (
+                                            (others => '0'),
+                                            '0',
+                                            (others => '0'),
+                                            (others => '0'),
+                                            (others => '0'),
+                                            '0'
+                                            );
     -- Functions 
     type t_reciprocalROM is array ( natural range <> ) of unsigned( divider_width-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;
@@ -90,8 +102,11 @@ package pt_pkg is
     function pt_bin(pt : signed) return unsigned;
 
     -- Arrays
+    type a_slc is array(natural range <> ) of SLC_COMMON_rt;
     type a_pt is array(natural range <> ) of unsigned(pt_width-1 downto 0);
     type a_globalseg is array(natural range <> ) of t_globalseg;
+    type a_mtc is array(natural range <> ) of MTC_rt;
+
 
 end;
 
