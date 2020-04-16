@@ -35,16 +35,11 @@ entity gbt_controller_wrapper is
     );
 end gbt_controller_wrapper;
 
-architecture Behavioral of gbt_controller_wrapper is
+architecture common_controller of gbt_controller_wrapper is
 
   signal reset : std_logic;
 
 -- Clock & reset
-
-  signal rx_clk_en_buf : std_logic;
-
-  signal rx_clk_en_mux : std_logic;
-  signal rx_clk_en     : std_logic;
 
   signal tx_clk_en_srl : std_logic_vector(6 downto 0);
   signal tx_clk_en_dly : std_logic;
@@ -144,11 +139,11 @@ begin
 
       -- tx to lpgbt etc
       tx_clk_i  => clock,
-      tx_clk_en => '1',
+      tx_clk_en => '1', -- run @ 40MHz, always enable
 
       -- rx from lpgbt etc
       rx_clk_i  => clock,
-      rx_clk_en => '1',
+      rx_clk_en => '1', -- run @ 40MHz, always enable
 
       -- IC/EC data from controller
       ec_data_o => ec_data_down,
@@ -171,15 +166,16 @@ begin
       tx_register_addr_i => tx_register_addr,
       tx_nb_to_be_read_i => tx_nb_to_be_read,
 
-      tx_wr_i             => tx_wr,
-      tx_data_to_gbtx_i   => tx_data_to_gbtx,
+      wr_clk_i          => clock,
+      tx_wr_i           => tx_wr,
+      tx_data_to_gbtx_i => tx_data_to_gbtx,
+
+      rd_clk_i            => clock,
       rx_rd_i             => rx_rd,
       rx_data_from_gbtx_o => rx_data_from_gbtx,
+
       tx_ready_o          => tx_ready,
       rx_empty_o          => rx_empty,
-      rx_gbtx_addr_o      => rx_gbtx_addr,
-      rx_mem_ptr_o        => rx_mem_ptr,
-      rx_nb_of_words_o    => rx_nb_of_words,
       sca_enable_i        => sca_enable,
       start_reset_cmd_i   => start_reset_cmd,
       start_connect_cmd_i => start_connect_cmd,
@@ -206,21 +202,17 @@ begin
   --------------------------------------------------------------------------------
 
   process (clock)
-    constant up_0 : integer := CSM_SCA_UPLINK_ELINK0;
-    constant up_1 : integer := CSM_SCA_UPLINK_ELINK1;
+    constant up0 : integer := CSM_SCA_UPLINK_ELINK0;
+    constant up1 : integer := CSM_SCA_UPLINK_ELINK1;
   begin
+
     if (rising_edge(clock)) then
 
-      rx_clk_en_mux <= lpgbt_uplink_data_i (lpgbt_link_sel).valid;
-      rx_clk_en     <= rx_clk_en_mux;
+      -- mux and copy onto 40MHz clock
+      ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
+      ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
+      ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
 
-      if (rx_clk_en_mux = '1') then
-
-        ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
-        ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
-        ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up_0 + 2);
-
-      end if;
     end if;
   end process;
 
@@ -230,8 +222,8 @@ begin
   --------------------------------------------------------------------------------
 
   process (clock, ec_data_down)
-    variable control_to_sca0 : std_logic_vector (3 downto 0);
-    variable control_to_sca1 : std_logic_vector (3 downto 0);
+    variable ec_data_down_replicated0 : std_logic_vector (3 downto 0);
+    variable ec_data_down_replicated1 : std_logic_vector (3 downto 0);
 
     constant d0 : integer := CSM_SCA_DOWNLINK_ELINK0;
     constant d1 : integer := CSM_SCA_DOWNLINK_ELINK1;
@@ -255,8 +247,8 @@ begin
       -- TODO: mux the bits only during idle sequences to ensure smooth transitions
 
       -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
-      control_to_sca0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
-      control_to_sca1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
+      ec_data_down_replicated0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
+      ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
       if (rising_edge(clock)) then
 
@@ -282,13 +274,13 @@ begin
 
         -- if broadcast ? send to all of the scas
         if (sca_broadcast) then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
+          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
 
         -- select a CSM... choose which SCA on SC controller port
         elsif (sca_link_sel = I) then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= control_to_sca0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= control_to_sca1;
+          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
 
         -- idle
         else
@@ -302,4 +294,4 @@ begin
     end loop;
   end process;
 
-end Behavioral;
+end common_controller;

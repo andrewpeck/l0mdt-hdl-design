@@ -88,11 +88,9 @@ architecture behavioral of top_framework is
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  -- FIXME drive the valid strobe from somewhere real or at least align to LHC40
   signal lpgbt_downlink_valid                  : std_logic;
-
-  attribute DONT_TOUCH               : string;
-  attribute MAX_FANOUT          : string;
+  attribute DONT_TOUCH                         : string;
+  attribute MAX_FANOUT                         : string;
   attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
   attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
   signal lpgbt_uplink_sump                     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
@@ -130,8 +128,8 @@ architecture behavioral of top_framework is
   -- Save this here so we can extract it from the hierarchy later
   --------------------------------------------------------------------------------
 
-  attribute NUM_MGTS                     : integer;
-  attribute NUM_MGTS of mgt_wrapper_inst : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+  attribute NUM_MGTS                       : integer;
+  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
@@ -227,14 +225,17 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   -- Create a 1 of 8 high signal synced to the 40MHZ clock
-  --            ________________              _____________
-  -- clk40    __|              |______________|
-  --            _______________________________
-  -- r80      __|                             |_____________
-  --                _______________________________
-  -- r80_dly  ______|                             |_____________
-  --            _____                         _____
-  -- valid    __|   |_________________________|   |______
+  --            ___ ___ ___ ___ ___ ___ ___ ___ ___
+  -- clk320   __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_
+  --            _________________               ________
+  -- clk40    __|               |_______________|
+  --            _________________________________
+  -- r80      __|                               |______
+  --                _________________________________
+  -- r80_dly  ______|                               |__
+  --            _____                           _____
+  -- valid    __|   |___________________________|   |__
+
   process (clocks.clock320, clocks.clock40)
     variable r80     : std_logic := '0';
     variable r80_dly : std_logic;
