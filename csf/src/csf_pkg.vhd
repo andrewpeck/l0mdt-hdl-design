@@ -40,12 +40,6 @@ package csf_pkg is
     constant mbar_width             : integer := 12;
     constant mbar_multi             : real    := 1024.0;
     constant mbar_multi_width       : integer := integer(log2(mbar_multi));
-    constant phi_width              : integer := 6;
-    constant phi_range              : real    := 0.6; 
-    constant phi_mult               : real    := real(2**phi_width)/phi_range;
-    constant eta_width              : integer := 10;
-    constant eta_range              : real    := 0.6;
-    constant eta_mult               : real    := 2.0**eta_width/eta_range;
     constant z_roi_width            : integer := 19;
     constant r_roi_width            : integer := 19;
     constant chamber_id_width       : integer := 3;

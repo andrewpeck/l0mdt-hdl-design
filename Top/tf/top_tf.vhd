@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Wed Apr 15 13:54:32 2020
+-- Last update : Thu Apr 16 08:54:33 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -29,11 +29,10 @@
 --! pipeline
 --! @author Davide Cieri
 
-library IEEE, csf_lib, pt_lib, dataformats;
+library IEEE, pt_lib, dataformats;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
-use csf_lib.csf_pkg.all;
 use pt_lib.pt_pkg.all;
 use dataformats.mdttp_types_pkg.all;
 
@@ -61,7 +60,7 @@ entity top_tf is
         i_nsm_segs_BO   : in  a_globalseg(n_finders_per_station-1 downto 0);
         --o_mtc           : out a_mtc(n_finders_per_station-1 downto 0);
         o_pt_online     : out a_pt(n_finders_per_station-1 downto 0);
-        o_pt_valid      : out std_logic_vector(n_finders_per_station-1 downto 0);   
+        o_pt_valid      : out std_logic_vector(n_finders_per_station-1 downto 0);
         o_SLC_pip       : out a_slc(n_slc_pipeline-1 downto 0)
     );
 end top_tf;
@@ -73,6 +72,9 @@ architecture Behavioral of top_tf is
 
     signal start_count : std_logic := '0';
     signal counter : integer := 0;
+
+    type a2_slc is array(natural range <> ) of a_slc(n_slc_pipeline-1 downto 0);
+    signal slc_pip_2 : a2_slc(n_clk_pipeline-1 downto 0);
 
 begin
     SEL_AND_PT : for k in n_finders_per_station-1 downto 0 generate
@@ -109,24 +111,12 @@ begin
             );
     end generate;
 
-    Pipeline : process(clk)
-        begin
-            if rising_edge(clk) then
-                for k in n_finders_per_station-1 downto 0 loop
-                        if i_dv_SLCs(k) = '1' then
-                            start_count <= '1';
-                        end if;
-                end loop;
-
-                if start_count = '1' and counter < n_clk_pipeline then
-                    counter <= counter + 1;
-                elsif counter = n_clk_pipeline then
-                    o_SLC_pip <= i_SLC_pip;
-                    counter <= 0;
-                    start_count <= '0';
-                end if;
-
-            end if;
-    end process;
+    PIP_CANDS : for i in 0 to n_slc_pipeline-1 generate
+        slc_pip_2(0)(i) <= i_SLC_pip(i);
+        PIP_CLKS : for k in 0 to n_clk_pipeline-2 generate
+            slc_pip_2(k+1)(i) <= slc_pip_2(k)(i);
+        end generate;
+        o_SLC_pip(i) <= slc_pip_2(n_clk_pipeline-1)(i);
+    end generate;
 
 end Behavioral;

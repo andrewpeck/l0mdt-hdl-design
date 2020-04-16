@@ -8,9 +8,9 @@ def main():
     parser.add_argument("-v","--vhdl_out",type=str, help="Output File", default="output.vhd" )
     parser.add_argument("-o","--output",type=str,help="Output Dir", default="VHDL")
     parser.add_argument("--sagitta_mult",type=float,help="Sagitta Multiplier", default=16.0/2**15)
-    parser.add_argument("--phi_mult",type=float,help="Phi Multiplier", default=2**6/0.6)
-    parser.add_argument("--eta_mult",type=float,help="Eta Multiplier", default=2**10/0.6)
-    parser.add_argument("--pt_mult",type=float,help="pT Multiplier", default=100.0)
+    parser.add_argument("--phi_mult",type=float,help="Phi Multiplier", default=2**8/0.8)
+    parser.add_argument("--eta_mult",type=float,help="Eta Multiplier", default=2**15/5.4)
+    parser.add_argument("--pt_mult",type=float,help="pT Multiplier", default=2.0)
 
     args = parser.parse_args()
 

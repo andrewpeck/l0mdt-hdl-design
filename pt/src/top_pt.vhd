@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Wed Apr 15 13:52:09 2020
+-- Last update : Thu Apr 16 09:49:58 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -35,6 +35,7 @@ use pt_lib.pt_params_pkg.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
 use dataformats.mdttp_types_pkg.all;
+use dataformats.mdttp_functions_pkg.all;
 
 entity top_pt is
   Port ( 
@@ -45,14 +46,18 @@ entity top_pt is
     i_dv_SLC     : in std_logic;
     i_SLC        : in SLC_COMMON_rt;
     i_rst        : in std_logic;
-    o_pt_online  : out unsigned(pt_width-1 downto 0);
-    o_pt_valid   : out std_logic
+    o_mtc        : out MTC_rt;
+    o_mtc_dv     : out std_logic
+    --o_pt_online  : out unsigned(pt_width-1 downto 0);
+    --o_pt_valid   : out std_logic
     );
 end top_pt;
 
 architecture Behavioral of top_pt is
     -- Online segments in global coordinates
     signal segment_BI, segment_BM, segment_BO : t_globalseg := null_globalseg;
+    -- SLC candidate
+    signal slc : SLC_COMMON_rt := null_slc;
     -- Chamber combo id
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta : 
            unsigned(chamber_id_width*3 + 4 -1 downto 0) := (others => '0'); 
@@ -72,7 +77,8 @@ architecture Behavioral of top_pt is
     signal eta : signed(eta_width-1 downto 0) := (others => '0');
 
     signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
-    signal dbeta_01, dbeta_02, dbeta_12 : unsigned(dbeta_width-1 downto 0) := (others => '0');
+    signal dbeta_01, dbeta_02, dbeta_12 : unsigned(dbeta_width-1 downto 0) 
+                                        := (others => '0');
 
     -- Signal for pT calculation
     -- Sagitta/Dbeta-dependent part
@@ -108,6 +114,9 @@ architecture Behavioral of top_pt is
     
     signal pt_online  :  signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal pt_valid   :  std_logic := '0';
+
+    signal pt : unsigned(pt_width-1 downto 0) := (others => '0');
+    signal mtc_valid : std_logic := '0';
     
     COMPONENT a0_ROM
     PORT (
@@ -269,8 +278,10 @@ begin
                dv_combo_s     <= '1';
             end if;
 
+            -- save the slc
             if i_dv_SLC = '1' then
-                phi  <= signed(i_SLC.posphi);
+                slc  <= i_SLC;
+                phi  <= i_SLC.phi - PHI_SECTOR_CENTRE;
             end if;
 
             dv_combo_s_s <= dv_combo_s;
@@ -326,13 +337,13 @@ begin
             pt_valid <= dv9;
             pt_online <= pt_sp_sss - c1_eta;
             
-            o_pt_valid <= pt_valid;
-            o_pt_online <= resize(unsigned(pt_online), pt_width);
+            -- Assembling the MTC candidate
+            mtc_valid <= pt_valid;
+            pt <= resize(unsigned(pt_online), pt_width);
             
             --reset
-            if pt_valid = '1' then
+            if pt_valid = '1' or i_rst = '1' then
                 phi <= (others => '0');
-                eta <= (others => '0');
                 comboid_s <= (others => '0');
                 dv_combo_s <= '0';
             end if;

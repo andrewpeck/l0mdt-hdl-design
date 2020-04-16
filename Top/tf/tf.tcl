@@ -1,4 +1,5 @@
 ############# modify these to match project ################
+#vivado
 set bin_file 1
 set use_questa_simulator 0
 

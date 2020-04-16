@@ -25,6 +25,7 @@ use ieee.math_real.all;
 use std.standard.all;
 use std.textio.all;
 use dataformats.mdttp_types_pkg.all;
+use dataformats.mdttp_constants_pkg.all;
 
 package pt_pkg is
 
@@ -35,12 +36,16 @@ package pt_pkg is
     constant z_glob_width           : integer := 19;
     constant r_glob_width           : integer := 19;
     constant chamber_id_width       : integer := 3;
-    constant phi_width              : integer := 9;
-    constant phi_range              : real    := 0.6; 
-    constant phi_mult               : real    := real(2**phi_width)/phi_range;
+    constant phimod_width           : integer := 8;
+    constant phimod_range           : real    := 0.8; 
+    constant phimod_mult            : real    := real(2**phimod_width)/phimod_range;
     constant eta_width              : integer := 15;
     constant eta_range              : real    := 5.4;
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
+    -- Phi Sector Centre (for sector 3)
+    constant MDT_SECTOR_PHI         : real    := 0.785398;
+    constant PHI_SECTOR_CENTRE      : signed(phimod_width-1 downto 0) := 
+                         to_signed(integer(MDT_SECTOR_PHI*phimod_mult), phimod_width);
     
     -- Sagitta calculation parameter
     constant inv_s_width      : integer := 15;
@@ -63,8 +68,8 @@ package pt_pkg is
     constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant inv_sqrt_width : integer := 22;
     constant dbeta_width : integer := 16;
-    constant pt_width : integer := 14;
-    constant pt_mult : real := 100.0;
+    constant pt_width : integer := 8;
+    constant pt_mult  : real := 2.0;
    
     type t_globalseg is
     record
@@ -100,6 +105,7 @@ package pt_pkg is
     function invsqrt_ROM return t_invsqrt_ROM;
 
     function pt_bin(pt : signed) return unsigned;
+    function phi_mod(phi : std_logic_vector) return signed;
 
     -- Arrays
     type a_slc is array(natural range <> ) of SLC_COMMON_rt;
@@ -111,9 +117,6 @@ package pt_pkg is
 end;
 
 package body pt_pkg is
-
-
-
 
     function reciprocalROM return t_reciprocalROM is 
     variable temp: t_reciprocalROM(2**16 downto 0) := (others => (others => '0'));
@@ -172,7 +175,10 @@ package body pt_pkg is
         return bin;
     end function;
 
-    
+    function phi_mod( phi : std_logic_vector ) return signed is
+        variable phi_m : signed(phi_mod-1 downto 0) := (others => '0');
+    begin
+        phi_m := real(to_integer(signed('0' & phi)))*phimod_mult/ 
     
     
 
