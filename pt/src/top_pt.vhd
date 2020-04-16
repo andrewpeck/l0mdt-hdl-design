@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Thu Apr 16 11:40:47 2020
+-- Last update : Thu Apr 16 16:25:00 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -26,7 +26,7 @@
 --! @author Davide Cieri
 
 
-library IEEE, pt_lib, dataformats;
+library IEEE, pt_lib, l0mdt_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
@@ -34,8 +34,11 @@ use pt_lib.pt_pkg.all;
 use pt_lib.pt_params_pkg.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
-use dataformats.mdttp_types_pkg.all;
-use dataformats.mdttp_functions_pkg.all;
+use l0mdt_lib.mdttp_types_pkg.all;
+use l0mdt_lib.mdttp_functions_pkg.all;
+use l0mdt_lib.mdttp_constants_pkg.all;
+use shared_lib.common_pkg.all;
+
 
 entity top_pt is
   Port ( 
@@ -72,9 +75,9 @@ architecture Behavioral of top_pt is
                                                              : std_logic := '0';
     signal dv_a : std_logic := '0';
     -- Phi/Eta coordinate
-    signal nsegments : unsigned(PTCALC_mtc_nsegments_width-1 downto 0) := (others => '0');
+    signal nsegments : unsigned(PTCALC_NSEGMENTS_LEN-1 downto 0) := (others => '0');
     signal dv_eta : std_logic := '0';
-    signal phi : signed(phi_width-1 downto 0) := (others => '0');
+    signal phi : signed(phimod_width-1 downto 0) := (others => '0');
     signal eta : signed(eta_width-1 downto 0) := (others => '0');
 
     signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
@@ -94,13 +97,13 @@ architecture Behavioral of top_pt is
     -- Phi-dependent part
     signal b0, b0_s : std_logic_vector(b0_width-1 downto 0) := (others => '0');
     signal b1 : std_logic_vector(b1_width-1 downto 0) := (others => '0');
-    signal b1_phi, pt_phi_01 : signed(b1_width+phi_width-1 downto 0) 
+    signal b1_phi, pt_phi_01 : signed(b1_width+phimod_width-1 downto 0) 
            := (others => '0');
     signal b2 : std_logic_vector(b2_width-1 downto 0) := (others => '0');
-    signal b2_phi : signed(b2_width+phi_width-1 downto 0) := (others => '0');
-    signal b2_phi2 : signed(b2_width+phi_width*2 -1  downto 0) 
+    signal b2_phi : signed(b2_width+phimod_width-1 downto 0) := (others => '0');
+    signal b2_phi2 : signed(b2_width+phimod_width*2 -1  downto 0) 
            := (others => '0');
-    signal pt_p : signed(b2_width+phi_width*2 -1  downto 0) := (others => '0');
+    signal pt_p : signed(b2_width+phimod_width*2 -1  downto 0) := (others => '0');
     signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss  
            : signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal bin_sp : unsigned(3 downto 0) := (others => '0');
@@ -115,10 +118,11 @@ architecture Behavioral of top_pt is
     
     signal pt_online  :  signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal pt_valid   :  std_logic := '0';
-
+    -- Mtc output parameters
     signal pt : unsigned(pt_width-1 downto 0) := (others => '0');
     signal mtc_valid : std_logic := '0';
-    
+    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
+
     COMPONENT a0_ROM
     PORT (
         clka : IN STD_LOGIC;
@@ -276,7 +280,8 @@ begin
                               i_segment_BO.chamber_id & 
                               i_segment_BM.chamber_id & 
                               i_segment_BI.chamber_id;
-                nsegments <= to_unsigned(stdlogic_integer(i_segment_BI.valid) + stdlogic_integer(i_segment_BM.valid) + stdlogic_integer(i_segment_BO.valid), PTCALC_mtc_nsegments_width) ;
+                nsegments <= to_unsigned(stdlogic_integer(i_segment_BI.valid) + stdlogic_integer(i_segment_BM.valid) + stdlogic_integer(i_segment_BO.valid), PTCALC_NSEGMENTS_LEN);
+                quality <= i_segment_BO.valid & i_segment_BM.valid & i_segment_BI.valid;
                 dv_combo_s     <= '1';
             end if;
 
@@ -344,19 +349,19 @@ begin
             pt <= resize(unsigned(pt_online), pt_width);
             
             o_mtc_dv <= mtc_valid;
-            o_mtc.SLC_COMMON <= slc;
-            o_mtc.mtc_eta <= eta;
-            o_mtc.mtc_pt  <= pt;
-            o_mtc.mtc_ptthresh <= pt_threshold(pt);
-            o_mtc.mtc_charge <= slc.charge; -- temporary
+            o_mtc.slc_common_r <= slc;
+            o_mtc.eta <= std_logic_vector(eta);
+            o_mtc.pt  <= std_logic_vector(pt);
+            o_mtc.ptthresh <= pt_threshold(pt);
+            o_mtc.charge <= slc.charge; -- temporary
             -- Still to add other cases
             if slc.ptthresh /= pt_threshold(pt) then
-                o_mtc.mtc_procflags <= std_logic_vector(to_unsigned(2, MTC_mtc_procflags_width));
+                o_mtc.procflags <= std_logic_vector(to_unsigned(2, MTC_PROCFLAGS_LEN));
             else
-                o_mtc.mtc_procflags <= std_logic_vector(to_unsigned(1, MTC_mtc_procflags_width));
+                o_mtc.procflags <= std_logic_vector(to_unsigned(1, MTC_PROCFLAGS_LEN));
             end if;
-            o_mtc.mtc_nsegments <= std_logic_vector(nsegments);
-            o_mtc.mtc_quality <= std_logic_vector(nsegments);
+            o_mtc.nsegments <= std_logic_vector(nsegments);
+            o_mtc.quality <= quality;   
             --reset
             if pt_valid = '1' or i_rst = '1' then
                 phi <= (others => '0');

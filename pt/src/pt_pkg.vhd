@@ -18,14 +18,14 @@
 -- 
 ----------------------------------------------------------------------------------
 
-library IEEE, pt_lib, dataformats;
+library IEEE, pt_lib, l0mdt_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use std.standard.all;
 use std.textio.all;
-use dataformats.mdttp_types_pkg.all;
-use dataformats.mdttp_constants_pkg.all;
+use l0mdt_lib.mdttp_types_pkg.all;
+use l0mdt_lib.mdttp_constants_pkg.all;
 
 package pt_pkg is
 
@@ -40,7 +40,7 @@ package pt_pkg is
     constant phimod_range           : real    := 0.8; 
     constant phimod_mult            : real    := real(2**phimod_width)/phimod_range;
     constant phi_range              : real    := 6.28;
-    constant phi_mult               : real    := real(2**SLC_COMMON_posphi_width/phi_range);
+    constant phi_mult               : real    := 2.0**SLC_COMMON_POSPHI_LEN/phi_range;
     constant eta_width              : integer := 15;
     constant eta_range              : real    := 5.4;
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
@@ -70,8 +70,8 @@ package pt_pkg is
     constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant inv_sqrt_width : integer := 22;
     constant dbeta_width : integer := 16;
-    constant pt_width : integer := 8;
-    constant pt_mult  : real := 2.0;
+    constant pt_width : integer := 9;
+    constant pt_mult  : real := 4.0;
    
     type t_globalseg is
     record
@@ -179,10 +179,10 @@ package body pt_pkg is
     end function;
 
     function calc_phi_mod( phi : std_logic_vector ) return signed is
-        variable phi_m : signed(phi_mod-1 downto 0) := (others => '0');
-        variable phi_real : real := 0;
+        variable phi_m : signed(phimod_width-1 downto 0) := (others => '0');
+        variable phi_real : real := 0.0;
     begin
-        phi_real := real(to_integer(unsigned(phi_m))/phi_mult);
+        phi_real := real(to_integer(unsigned(phi_m)))/phi_mult;
         phi_m := to_signed(integer((phi_real-MDT_SECTOR_PHI-MATH_PI)*phimod_mult), phimod_width);
         return phi_m;
     end function;
@@ -221,7 +221,7 @@ package body pt_pkg is
         elsif pt < 4*integer(pt_mult) then
             thr := 1;
         end if;
-        return std_logic_vector(to_unsigned(thr,PTCALC_mtc_ptthresh_width));
+        return std_logic_vector(to_unsigned(thr,PTCALC_PTTHRESH_LEN));
     end function;
     
 

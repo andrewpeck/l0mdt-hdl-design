@@ -1,1 +1,2 @@
 ../../shared/src/bram.vhd
+../../shared/src/common_pkg.vhd
