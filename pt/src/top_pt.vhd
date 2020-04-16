@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Thu Apr 16 09:49:58 2020
+-- Last update : Thu Apr 16 11:40:47 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -72,6 +72,7 @@ architecture Behavioral of top_pt is
                                                              : std_logic := '0';
     signal dv_a : std_logic := '0';
     -- Phi/Eta coordinate
+    signal nsegments : unsigned(PTCALC_mtc_nsegments_width-1 downto 0) := (others => '0');
     signal dv_eta : std_logic := '0';
     signal phi : signed(phi_width-1 downto 0) := (others => '0');
     signal eta : signed(eta_width-1 downto 0) := (others => '0');
@@ -266,22 +267,23 @@ begin
             segment_BO <= null_globalseg;
 
             if i_segment_BI.valid = '1' or 
-               i_segment_BM.valid = '1' or 
-               i_segment_BO.valid = '1' then
-               segment_BI <= i_segment_BI;
-               segment_BM <= i_segment_BM;
-               segment_BO <= i_segment_BO;
-               comboid_s  <= "0000" &
-                             i_segment_BO.chamber_id & 
-                             i_segment_BM.chamber_id & 
-                             i_segment_BI.chamber_id;
-               dv_combo_s     <= '1';
+                i_segment_BM.valid = '1' or 
+                i_segment_BO.valid = '1' then
+                segment_BI <= i_segment_BI;
+                segment_BM <= i_segment_BM;
+                segment_BO <= i_segment_BO;
+                comboid_s  <= "0000" &
+                              i_segment_BO.chamber_id & 
+                              i_segment_BM.chamber_id & 
+                              i_segment_BI.chamber_id;
+                nsegments <= to_unsigned(stdlogic_integer(i_segment_BI.valid) + stdlogic_integer(i_segment_BM.valid) + stdlogic_integer(i_segment_BO.valid), PTCALC_mtc_nsegments_width) ;
+                dv_combo_s     <= '1';
             end if;
 
             -- save the slc
             if i_dv_SLC = '1' then
                 slc  <= i_SLC;
-                phi  <= i_SLC.phi - PHI_SECTOR_CENTRE;
+                phi  <= calc_phi_mod(i_SLC.posphi);
             end if;
 
             dv_combo_s_s <= dv_combo_s;
@@ -341,6 +343,20 @@ begin
             mtc_valid <= pt_valid;
             pt <= resize(unsigned(pt_online), pt_width);
             
+            o_mtc_dv <= mtc_valid;
+            o_mtc.SLC_COMMON <= slc;
+            o_mtc.mtc_eta <= eta;
+            o_mtc.mtc_pt  <= pt;
+            o_mtc.mtc_ptthresh <= pt_threshold(pt);
+            o_mtc.mtc_charge <= slc.charge; -- temporary
+            -- Still to add other cases
+            if slc.ptthresh /= pt_threshold(pt) then
+                o_mtc.mtc_procflags <= std_logic_vector(to_unsigned(2, MTC_mtc_procflags_width));
+            else
+                o_mtc.mtc_procflags <= std_logic_vector(to_unsigned(1, MTC_mtc_procflags_width));
+            end if;
+            o_mtc.mtc_nsegments <= std_logic_vector(nsegments);
+            o_mtc.mtc_quality <= std_logic_vector(nsegments);
             --reset
             if pt_valid = '1' or i_rst = '1' then
                 phi <= (others => '0');

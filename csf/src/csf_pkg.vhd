@@ -141,8 +141,6 @@ package csf_pkg is
     function vec_to_histo_hit ( vec : std_logic_vector ) return t_histo_hit;
     -- Convert a std_logic_vector to a CSF Input seed type
     function vec_to_seed  ( vec : std_logic_vector )     return t_seed;
-    -- Convert std_logic to integer
-    function stdlogic_integer( s : std_logic ) return integer ;
     -- Convert slope to angle (now in IP)
 --    type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
 --    function m_to_theta return t_m_to_theta;
@@ -192,14 +190,6 @@ package body csf_pkg is
         return seed;
     end function vec_to_seed ;
 
-   function stdlogic_integer( s : std_logic ) return integer is
-    begin
-        if s = '1' then
-            return 1;
-        else
-            return 0;
-        end if;
-    end function;
     
     function vec_to_locseg (vec : std_logic_vector) return t_locseg is
         variable seg : t_locseg := null_locseg;

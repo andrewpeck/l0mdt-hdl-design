@@ -156,7 +156,8 @@ package common_pkg is
         r : integer;
     end record;
 
-
+    -- Convert std_logic to integer
+    function stdlogic_integer( s : std_logic ) return integer ;
 
 
 --------------------------------------------------------------------------------
@@ -197,7 +198,14 @@ package body common_pkg is
     --     recordOutput.pulse_width := data(7 downto 0);
     --     return recordOutput;
     -- end function;
-
+   function stdlogic_integer( s : std_logic ) return integer is
+    begin
+        if s = '1' then
+            return 1;
+        else
+            return 0;
+        end if;
+    end function;
 
 
 

@@ -39,6 +39,8 @@ package pt_pkg is
     constant phimod_width           : integer := 8;
     constant phimod_range           : real    := 0.8; 
     constant phimod_mult            : real    := real(2**phimod_width)/phimod_range;
+    constant phi_range              : real    := 6.28;
+    constant phi_mult               : real    := real(2**SLC_COMMON_posphi_width/phi_range);
     constant eta_width              : integer := 15;
     constant eta_range              : real    := 5.4;
     constant eta_mult               : real    := 2.0**eta_width/eta_range;
@@ -105,7 +107,8 @@ package pt_pkg is
     function invsqrt_ROM return t_invsqrt_ROM;
 
     function pt_bin(pt : signed) return unsigned;
-    function phi_mod(phi : std_logic_vector) return signed;
+    function calc_phi_mod(phi : std_logic_vector) return signed;
+    function pt_threshold(pt : unsigned) return std_logic_vector;
 
     -- Arrays
     type a_slc is array(natural range <> ) of SLC_COMMON_rt;
@@ -175,11 +178,51 @@ package body pt_pkg is
         return bin;
     end function;
 
-    function phi_mod( phi : std_logic_vector ) return signed is
+    function calc_phi_mod( phi : std_logic_vector ) return signed is
         variable phi_m : signed(phi_mod-1 downto 0) := (others => '0');
+        variable phi_real : real := 0;
     begin
-        phi_m := real(to_integer(signed('0' & phi)))*phimod_mult/ 
-    
+        phi_real := real(to_integer(unsigned(phi_m))/phi_mult);
+        phi_m := to_signed(integer((phi_real-MDT_SECTOR_PHI-MATH_PI)*phimod_mult), phimod_width);
+        return phi_m;
+    end function;
+
+    function pt_threshold(pt : unsigned) return std_logic_vector is
+        variable thr : integer := 0;
+    begin
+        if pt > 80*integer(pt_mult) then
+            thr := 15;
+        elsif pt < 40*integer(pt_mult) then
+            thr := 14;
+        elsif pt < 30*integer(pt_mult) then
+            thr := 13;
+        elsif pt < 25*integer(pt_mult) then
+            thr := 12;
+        elsif pt < 20*integer(pt_mult) then
+            thr := 11;
+        elsif pt < 18*integer(pt_mult) then
+            thr := 10;
+        elsif pt < 15*integer(pt_mult) then
+            thr := 9;
+        elsif pt < 12*integer(pt_mult) then
+            thr := 8;
+        elsif pt < 10*integer(pt_mult) then
+            thr := 7;
+        elsif pt < 9*integer(pt_mult) then
+            thr := 6;
+        elsif pt < 8*integer(pt_mult) then
+            thr := 5;
+        elsif pt < 7*integer(pt_mult) then
+            thr := 4;
+        elsif pt < 6*integer(pt_mult) then
+            thr := 3;
+        elsif pt < 5*integer(pt_mult) then
+            thr := 2;
+        elsif pt < 4*integer(pt_mult) then
+            thr := 1;
+        end if;
+        return std_logic_vector(to_unsigned(thr,PTCALC_mtc_ptthresh_width));
+    end function;
     
 
 
