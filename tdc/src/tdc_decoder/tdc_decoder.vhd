@@ -1,6 +1,6 @@
 --TODO: need to simulate this
 --
---library framework;
+--library hal;
 library tdc;
 
 library work;

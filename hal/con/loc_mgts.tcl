@@ -1,9 +1,9 @@
-set imax [get_property NUM_MGTS [get_cells "top_framework/mgt_wrapper_inst"]]
+set imax [get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
 
 # make sure to UNloc the gt_cell before LOCing it after... Xilinx chokes otherwise
 for {set i 0} {$i < $imax} {incr i} {
 
-    set gt_cell [get_cells -quiet [format "top_framework/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
+    set gt_cell [get_cells -quiet [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #puts " > Found GT Cell at $gt_cell"
 
     if {[string is space $gt_cell]==0} {
@@ -17,8 +17,8 @@ for {set i 0} {$i < $imax} {incr i} {
 
     puts "Scanning for LOC attributes on MGT $i"
 
-    #set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/*MGT_GEN" $i]]
-    set cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
+    #set cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/*MGT_GEN" $i]]
+    set cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
 
     set x_loc -1
     set y_loc -1
@@ -28,8 +28,8 @@ for {set i 0} {$i < $imax} {incr i} {
     }
 
     if {$x_loc >= 0 && $y_loc >= 0} {
-        #set gt_cell [get_cells -hierarchical -filter [format "NAME =~ *top_framework*/mgt_wrapper_inst/mgt_gen\[%d]*GT*CHANNEL_PRIM_INST" $i]]
-        set gt_cell [get_cells [format "top_framework/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
+        #set gt_cell [get_cells -hierarchical -filter [format "NAME =~ *top_hal*/mgt_wrapper_inst/mgt_gen\[%d]*GT*CHANNEL_PRIM_INST" $i]]
+        set gt_cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
         puts " > Found GT Cell at $gt_cell"
 
         set gt_type "NULL"

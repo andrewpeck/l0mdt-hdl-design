@@ -3,12 +3,12 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
-library framework;
-use framework.lpgbt_pkg.all;
-use framework.system_types_pkg.all;
-use framework.constants_pkg.all;
-use framework.board_pkg.all;
-use framework.board_pkg_common.all;
+library hal;
+use hal.lpgbt_pkg.all;
+use hal.system_types_pkg.all;
+use hal.constants_pkg.all;
+use hal.board_pkg.all;
+use hal.board_pkg_common.all;
 
 library lpgbt_emul;
 use lpgbt_emul.all;

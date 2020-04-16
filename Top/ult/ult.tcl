@@ -39,7 +39,3 @@ set PROPERTIES [dict create \
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
 source $path_repo/Hog/Tcl/create-project.tcl
-
-#highlight_objects -color_index 1 [get_cells -hierarchical -filter {NAME =~ "*downlink*"}]
-#highlight_objects -color_index 2 [get_cells -hierarchical -filter {NAME =~ "*uplink*"}]
-#highlight_objects -color_index 3 [get_cells -hierarchical -filter {NAME =~ "*sector_logic*"}]

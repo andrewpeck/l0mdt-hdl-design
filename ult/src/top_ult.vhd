@@ -10,11 +10,11 @@ library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
 
-library framework;
-use framework.system_types_pkg.all;
-use framework.constants_pkg.all;
+library hal;
+use hal.system_types_pkg.all;
+use hal.constants_pkg.all;
 
-entity top_user is
+entity top_ult is
 
   port (
 
@@ -50,8 +50,8 @@ entity top_user is
 
     );
 
-end entity top_user;
-architecture behavioral of top_user is
+end entity top_ult;
+architecture behavioral of top_ult is
 
   signal tdc_hit_sump    : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   signal endcap_hit_sump : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);

@@ -1,7 +1,4 @@
 # -*- mode: TCL;-*-
-
-../../Top/l0mdt/top_l0mdt.vhd
-
 # Dependencies
 ../../lpgbt/src/gbt_sc.sub
 ../../tdc/src/tdc.src
@@ -9,15 +6,15 @@
 ../../lpgbt/src/lpgbt_fpga.sub
 ../../sl/src/sl.sub
 
-# Framework
-../../Top/user/top_user.vhd 2008
-../../hw/src/top_framework.vhd 2008
-../../hw/src/board_pkg.vhd 2008
-../../hw/src/board_pkg_common.vhd 2008
-../../hw/src/constants_pkg.vhd 2008
-../../hw/src/user_pkg.vhd 2008
-../../hw/src/system_types_pkg.vhd 2008
-../../hw/src/sync_cdc.vhd 2008
+# Hal
+../../ult/src/top_ult.vhd 2008
+../../hal/src/top_hal.vhd 2008
+../../hal/src/board_pkg.vhd 2008
+../../hal/src/board_pkg_common.vhd 2008
+../../hal/src/constants_pkg.vhd 2008
+../../hal/src/user_pkg.vhd 2008
+../../hal/src/system_types_pkg.vhd 2008
+../../hal/src/sync_cdc.vhd 2008
 
 # IP
 ../../IP/framework_mmcm/framework_mmcm.xci
@@ -26,10 +23,10 @@
 ../../IP/mgt_9g6_gth/mgt_9g6_gth.xci
 
 # MGT
-../../hw/src/mgt/mgt_pkg.vhd 2008
-../../hw/src/mgt/mgt_10g24_wrapper.vhd 2008
-../../hw/src/mgt/mgt_wrapper.vhd 2008
-../../hw/src/mgt/mgt_sl_wrapper.vhd 2008
+../../hal/src/mgt/mgt_pkg.vhd 2008
+../../hal/src/mgt/mgt_10g24_wrapper.vhd 2008
+../../hal/src/mgt/mgt_wrapper.vhd 2008
+../../hal/src/mgt/mgt_sl_wrapper.vhd 2008
 
 #LPGBT
 ../../lpgbt/src/gbt_controller_wrapper.vhd
@@ -40,3 +37,4 @@
 # Sector Logic
 ../../sl/src/sector_logic_link_wrapper.vhd 2008
 ../../sl/src/sector_logic_pkg.vhd 2008
+

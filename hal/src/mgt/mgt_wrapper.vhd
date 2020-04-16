@@ -159,7 +159,7 @@ begin
     -- QPLL1REFCLKSEL ports to 3'b001. The Xilinx software tools will handle the
     -- complexity of the multiplexers and associated routing.
 
-    -- mgt_common_wrapper_inst : entity framework.mgt_common_wrapper
+    -- mgt_common_wrapper_inst : entity hal.mgt_common_wrapper
     --   port map (
     --     gtrefclk00 => refclk(I),
     --     gtrefclk01 => refclk(I),

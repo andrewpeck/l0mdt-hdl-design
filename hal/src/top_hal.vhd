@@ -15,18 +15,18 @@ use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
 use l0mdt_lib.mdttp_constants_pkg.all;
 
-library framework;
-use framework.all;
-use framework.sector_logic_pkg.all;
-use framework.system_types_pkg.all;
-use framework.lpgbt_pkg.all;
-use framework.constants_pkg.all;
-use framework.mgt_pkg.all;
-use framework.board_pkg.all;
-use framework.board_pkg_common.all;
+library hal;
+use hal.all;
+use hal.sector_logic_pkg.all;
+use hal.system_types_pkg.all;
+use hal.lpgbt_pkg.all;
+use hal.constants_pkg.all;
+use hal.mgt_pkg.all;
+use hal.board_pkg.all;
+use hal.board_pkg_common.all;
 
 
-entity top_framework is
+entity top_hal is
 
   port (
 
@@ -69,8 +69,8 @@ entity top_framework is
 
     );
 
-end entity top_framework;
-architecture behavioral of top_framework is
+end entity top_hal;
+architecture behavioral of top_hal is
 
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
@@ -194,7 +194,7 @@ begin  -- architecture behavioral
   -- Common Multi-gigabit transceivers
   --------------------------------------------------------------------------------
 
-  mgt_wrapper_inst : entity framework.mgt_wrapper
+  mgt_wrapper_inst : entity hal.mgt_wrapper
     port map (
       clocks => clocks,
       reset  => global_reset,
@@ -254,7 +254,7 @@ begin  -- architecture behavioral
     lpgbt_downlink_data(I).valid <= lpgbt_downlink_valid;
   end generate lpgbt_downlink_valid_gen;
 
-  lpgbt_link_wrapper_inst : entity framework.lpgbt_link_wrapper
+  lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
     port map (
       reset => global_reset,
 
@@ -276,7 +276,7 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
-  lpgbtemul_wrapper_inst : entity framework.lpgbtemul_wrapper
+  lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
       lpgbt_uplink_clk_i              => clocks.clock320,
@@ -313,7 +313,7 @@ begin  -- architecture behavioral
   -- LPGBT Controller
   --------------------------------------------------------------------------------
 
-  gbt_controller_wrapper_inst : entity framework.gbt_controller_wrapper
+  gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
       clock                 => clocks.clock40,
@@ -325,7 +325,7 @@ begin  -- architecture behavioral
   -- Sector Logic Packet Former Cores
   --------------------------------------------------------------------------------
 
-  sector_logic_link_wrapper_inst : entity framework.sector_logic_link_wrapper
+  sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
     port map (
       clock                  => clocks.clock240,  -- 240 MHz sector logic userclk
       pipeline_clock         => clocks.clock_pipeline,

@@ -2,11 +2,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library framework;
-use framework.system_types_pkg.all;
-use framework.board_pkg_common.all;
-use framework.board_pkg.all;
-use framework.user_pkg.all;
+library hal;
+use hal.system_types_pkg.all;
+use hal.board_pkg_common.all;
+use hal.board_pkg.all;
+use hal.user_pkg.all;
 
 package constants_pkg is
 

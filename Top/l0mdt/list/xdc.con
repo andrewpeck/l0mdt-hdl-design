@@ -1,6 +1,6 @@
-../../hw/con/timing.xdc nosynth
-../../hw/con/loc_mgts.tcl nosynth
-../../hw/con/region_constraints_toolbox.tcl nosynth
-../../hw/con/area_constraints.tcl nosynth
+../../hal/con/timing.xdc nosynth
+../../hal/con/loc_mgts.tcl nosynth
+../../hal/con/region_constraints_toolbox.tcl nosynth
+../../hal/con/area_constraints.tcl nosynth
 
 ../../lpgbt/con/lpgbt_multicycle.tcl

@@ -2,8 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library framework;
-use framework.board_pkg_common.all;
+library hal;
+use hal.board_pkg_common.all;
 
 package csm_pkg is
 

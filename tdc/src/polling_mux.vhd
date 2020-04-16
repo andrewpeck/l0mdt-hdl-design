@@ -1,7 +1,7 @@
 --TODO: need to simulate this
 
-library framework;
-use framework.system_types_pkg.all;
+library hal;
+use hal.system_types_pkg.all;
 
 library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;

@@ -5,10 +5,12 @@ use IEEE.NUMERIC_STD.all;
 library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 
-library framework;
-use framework.board_pkg.all;
-use framework.constants_pkg.all;
-use framework.system_types_pkg.all;
+library ult;
+
+library hal;
+use hal.board_pkg.all;
+use hal.constants_pkg.all;
+use hal.system_types_pkg.all;
 
 -- library c2c;
 -- use c2c.axiRegPkg.all;
@@ -64,12 +66,12 @@ architecture structural of top_mdtl0 is
   signal tts_commands          : TTS_CMD_rt;
   signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
   signal reset                 : std_logic;
-  signal framework_sump        : std_logic;
+  signal hal_sump        : std_logic;
   signal user_sump             : std_logic;
 begin
 
 
-  top_framework : entity framework.top_framework
+  top_hal : entity hal.top_hal
     port map (
       clock_in_p            => clock_in_p,
       clock_in_n            => clock_in_n,
@@ -85,9 +87,9 @@ begin
       tts_commands          => tts_commands,
       daq_links             => daq_links,
       reset                 => reset,
-      sump                  => framework_sump);
+      sump                  => hal_sump);
 
-  top_user : entity framework.top_user
+  top_ult : entity ult.top_ult
     port map (
       pipeline_clock        => pipeline_clock,
       ttc_commands          => ttc_commands,
@@ -101,6 +103,6 @@ begin
       reset                 => reset,
       sump                  => user_sump);
 
-  sump <= framework_sump xor user_sump;
+  sump <= hal_sump xor user_sump;
 
 end structural;

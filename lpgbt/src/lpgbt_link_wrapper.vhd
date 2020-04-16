@@ -3,13 +3,13 @@ use ieee.std_logic_1164.all;
 
 library lpgbt_fpga;
 
-library framework;
-use framework.constants_pkg.all;
-use framework.board_pkg.all;
-use framework.board_pkg_common.all;
-use framework.lpgbt_pkg.all;
-use framework.system_types_pkg.all;
-use framework.constants_pkg.all;
+library hal;
+use hal.constants_pkg.all;
+use hal.board_pkg.all;
+use hal.board_pkg_common.all;
+use hal.lpgbt_pkg.all;
+use hal.system_types_pkg.all;
+use hal.constants_pkg.all;
 
 entity lpgbt_link_wrapper is
   generic (

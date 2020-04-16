@@ -14,12 +14,12 @@ use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_constants_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
 
-library framework;
-use framework.board_pkg.all;
-use framework.board_pkg_common.all;
-use framework.constants_pkg.all;
-use framework.system_types_pkg.all;
-use framework.lpgbt_pkg.all;
+library hal;
+use hal.board_pkg.all;
+use hal.board_pkg_common.all;
+use hal.constants_pkg.all;
+use hal.system_types_pkg.all;
+use hal.lpgbt_pkg.all;
 
 library tdc;
 use tdc.csm_pkg.all;
