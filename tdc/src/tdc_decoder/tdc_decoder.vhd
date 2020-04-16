@@ -11,7 +11,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
-entity tdc_decoder_v2 is
+entity tdc_decoder is
   generic(
     g_DECODER_SRC : integer := 1
     );
@@ -33,9 +33,9 @@ entity tdc_decoder_v2 is
     tdc_err_o   : out std_logic
 
     );
-end tdc_decoder_v2;
+end tdc_decoder;
 
-architecture behavioral of tdc_decoder_v2 is
+architecture behavioral of tdc_decoder is
 
   function interleave (even : std_logic_vector (7 downto 0); odd : std_logic_vector (7 downto 0))
     return std_logic_vector is

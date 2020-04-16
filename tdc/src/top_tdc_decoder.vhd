@@ -176,7 +176,7 @@ begin
 
         new_tdc_gen : if (legacy = false) generate
 
-          tdc_decoder_v2_inst : entity tdc.tdc_decoder_v2
+          tdc_decoder_inst : entity tdc.tdc_decoder
             port map (
               clock       => clock,
               reset       => reset,
