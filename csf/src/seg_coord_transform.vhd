@@ -93,7 +93,6 @@ begin
             o_globseg.r_glob <= roi_s.r;
             o_globseg.theta_glob <= resize(signed(theta), theta_glob_width);-- + to_signed(halfpi,theta_glob_width);
             o_globseg.phi_glob <= roi_s.phi;
-            o_globseg.eta_glob <= roi_s.eta;
             o_globseg.chamber_id <= roi_s.chamber_id;
 
         end if ;
