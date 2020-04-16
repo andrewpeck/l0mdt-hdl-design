@@ -12,150 +12,151 @@
 --      26/11/2019  0.1     File created
 --      05/02/2020  0.11    Change name and structure to Hit processor as the diagram
 --------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library l0mdt_lib;
-use l0mdt_lib.common_pkg.all;
+library shared_lib;
+use shared_lib.cfg_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
-use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
 
-
 entity hit_processor is
-    generic(
-        radius      : integer; 
-        tube_min    : integer;
-        tube_max    : integer
-    );
-    port (
-        clk                 : in std_logic;
-        -- Control
-        Reset_b             : in std_logic;
-        enable              : in std_logic;
-        -- configuration
-        time_offset         : in unsigned(7 downto 0);
-        RoI_size            : in unsigned(7 downto 0);
-        -- SLc
-        i_muonCand_data     : in hp_SLc_barrel_rt;
-        -- MDT hit
-        i_tdc_data          : in hp_hit_data_rt;
-        i_tdc_valid         : in std_logic;
-        -- to Segment finder
-        o_segFinder_data    : out hp_2_sf_rt;
-        o_data_valid        : out std_logic
-    );
+  generic(
+    radius      : integer := 0
+    -- num_layers  : integer := 8;
+    -- package hp_pkg is new hp_lib.hp_pkg generic map (num_layers => num_layers)
+  );
+  port (
+    clk                 : in std_logic;    
+    Reset_b             : in std_logic;
+    glob_en             : in std_logic;
+    -- configuration
+    time_offset         : in unsigned(7 downto 0);
+    -- RoI_size            : in unsigned(7 downto 0);
+    -- SLc
+    i_SLC_Window        : in SLc_window_std;
+    i_slc_data          : in hp_slc_rt;
+    -- MDT hit
+    i_mdt_data          : in hp_hit_data_stdst;
+    -- i_mdt_valid         : in std_logic;
+    -- i_mdt_time_real     : in mdt_time_le_st;
+    -- to Segment finder
+    o_mdt2sf_data    : out hp2bm_stdst
+  );
 end entity hit_processor;
 
 architecture beh of hit_processor is
 
-    signal tdc_time_t0          : mdt_time_le_st;
-    signal tdc_time_comp_valid  : std_logic;
-    signal tdc_hitmatch_valid   : std_logic;
-    signal tdc_paramcalc_valid  : std_logic;
+  signal mdt_data : hp_hit_data_rt;
+  signal tdc_time_t0          : mdt_time_le_st;
+  signal tdc_time_comp_valid  : std_logic;
+  signal tdc_hitmatch_valid   : std_logic;
+  signal tdc_paramcalc_valid  : std_logic;
 
-    
-    signal valid_pipeline       : std_logic_vector(clks_pipe -1 downto 0);
+  signal data_2_sf            : hp2bm_rt;
 
 begin
     
-    T0_comp : entity hp_lib.hp_t0_comp
-    generic map(
-        radius      => radius,
-        tube_min    => tube_min,
-        tube_max    => tube_max
-    )
-    port map(
-        clk                 => clk,
-        -- Control
-        Reset_b             => Reset_b,
-        enable              => enable,
-        -- MDT hit
-        i_tdc_layer         => i_tdc_data.layer,
-        i_tdc_tube          => i_tdc_data.tube,
-        i_tdc_le            => i_tdc_data.time_le,
-        -- i_tdc_valid         => i_tdc_valid,
-        -- to Segment finder
-        o_time_comp         => tdc_time_t0
-        -- o_data_valid        => tdc_time_comp_valid
+  mdt_data <= hp_hit_data_f_std2rt(i_mdt_data);
 
-    );
+  o_mdt2sf_data <= hp2bm_rt_f_r2std(data_2_sf);
+
+    -- T0_comp : entity hp_lib.hp_t0_comp
+    -- generic map(
+    --     radius      => radius,
+    --     tube_min    => tube_min,
+    --     tube_max    => tube_max
+    -- )
+    -- port map(
+    --     clk                 => clk,
+    --     
+    --     Reset_b             => Reset_b,
+    --     glob_en             => glob_en,
+    --     -- MDT hit
+    --     i_tdc_layer         => i_mdt_data.layer,
+    --     i_tdc_tube          => i_mdt_data.tube,
+    --     i_tdc_le            => i_mdt_data.time_le,
+    --     -- i_mdt_valid         => i_mdt_valid,
+    --     -- to Segment finder
+    --     o_time_comp         => tdc_time_t0
+    --     -- o_data_valid        => tdc_time_comp_valid
+
+    -- );
 
     HP_HM : entity hp_lib.hp_matching
     generic map(
-        radius      => radius,
-        tube_min    => tube_min,
-        tube_max    => tube_max
+        radius      => radius
+        -- num_layers  => num_layers
+        -- tube_min    => tube_min,
+        -- tube_max    => tube_max
     )
     port map(
         clk                 => clk,
-        -- Control
+        
         Reset_b             => Reset_b,
-        enable              => enable,
+        glob_en             => glob_en,
         -- configuration
         time_offset         => time_offset,
-        RoI_size            => RoI_size,
+        -- RoI_size            => RoI_size,
         -- SLc
-        i_SLc_z_pos         => i_muonCand_data.b_zpos,
-        i_SLc_BCID          => i_muonCand_data.BCID,
+        i_SLC_Window        => i_SLC_Window,
+        i_SLc_rpc_z         => i_slc_data.barrel.z,
+        i_SLc_BCID          => i_slc_data.BCID,
         -- MDT hit
-        i_tdc_layer         => i_tdc_data.layer,
-        i_tdc_tube          => i_tdc_data.tube,
-        i_tdc_let0          => tdc_time_t0,
-        -- i_tdc_valid         => tdc_time_comp_valid,
+        i_mdt_layer         => mdt_data.layer,
+        i_mdt_tube          => mdt_data.tube,
+        i_mdt_time_real     => mdt_data.time_le_t0s,
+        -- i_mdt_valid         => tdc_time_comp_valid,
         -- to Segment finder
-        o_hit_valid         => o_segFinder_data.hit_valid
+        o_hit_valid         => data_2_sf.mdt_valid
         -- o_data_valid        => tdc_hitmatch_valid
 
     );
 
     HP_PC : entity hp_lib.hp_paramCalc
     generic map(
-        radius      => radius,
-        tube_min    => tube_min,
-        tube_max    => tube_max
+        radius      => radius
+        -- tube_min    => tube_min,
+        -- tube_max    => tube_max
     )
     port map(
         clk                 => clk,
-        -- Control
+        
         Reset_b             => Reset_b,
-        enable              => enable,
+        glob_en             => glob_en,
         -- SLc
-        i_SLc_z_pos         => i_muonCand_data.b_zpos,
-        i_SLc_phi           => i_muonCand_data.b_zpos,
-        i_SLc_BCID          => i_muonCand_data.BCID,
+        i_SLc_z_pos         => i_slc_data.barrel.z,
+        -- i_SLc_phi        =    i_slc_data.barrel.phi_0,
+        i_SLc_BCID          => i_slc_data.BCID,
         -- MDT hit
-        i_tdc_layer         => i_tdc_data.layer,
-        i_tdc_tube          => i_tdc_data.tube,
-        i_tdc_let0          => tdc_time_t0,
-        -- i_tdc_valid         => i_tdc_valid,
+        i_mdt_layer         => mdt_data.layer,
+        i_mdt_tube          => mdt_data.tube,
+        i_mdt_time_real     => mdt_data.time_le_t0s,
+        i_mdt_z_0           => mdt_data.z,
+        -- i_mdt_valid         => i_mdt_valid,
         -- to Segment finder
-        o_segFinder_data    => o_segFinder_data.csf
+        o_segFinder_data    => data_2_sf.sf_data
         -- o_data_valid        => tdc_paramcalc_valid
 
     );
 
-    o_data_valid <= valid_pipeline(0);
+    dv_delay : entity shared_lib.std_pipeline
+    generic map(
+      num_delays    => 4,
+      num_bits      => 1
+    )
+    port map(
+        clk               => clk,
+        
+        Reset_b           => Reset_b,
+        glob_en           => glob_en,
+        --
+        i_data(0)         => mdt_data.data_valid,
+        o_data(0)         => data_2_sf.data_valid
+    );
 
-    valid_pipe : process(Reset_b,clk)
-    begin
-        if not Reset_b then
-            -- o_data_valid <= '0';
-            valid_pipeline <= (others => '0');
-        elsif rising_edge(clk)then
-            
-            for ip in clks_pipe - 1 downto 1 loop
-                valid_pipeline(ip - 1) <= valid_pipeline(ip);
-            end loop;
-            valid_pipeline(clks_pipe -1) <= i_tdc_valid;
-        end if;
-    end process;
-
-    
-    
 end beh;
 

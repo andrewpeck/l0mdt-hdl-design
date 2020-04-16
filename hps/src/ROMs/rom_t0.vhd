@@ -16,12 +16,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library l0mdt_lib;
-use l0mdt_lib.common_pkg.all;
-
-library hp_lib;
-use hp_lib.cfg_pkg.all;
-use hp_lib.hp_pkg.all;
+library shared_lib;
+use shared_lib.cfg_pkg.all;
+use shared_lib.common_pkg.all;
 
 package hp_t0lut_rom is
 
