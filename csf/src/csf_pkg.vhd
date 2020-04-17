@@ -87,12 +87,12 @@ package csf_pkg is
     type t_seed is
     record
         valid                       : std_logic;
-        mbar                        : signed(mbar_width-1 downto 0);
-        z                           : signed(z_roi_width-1 downto 0);
-        r                           : unsigned(r_roi_width-1 downto 0);
-        phi                         : signed(phi_width-1 downto 0);
-        eta                         : signed(eta_width-1 downto 0);
-        chamber_id                  : unsigned(chamber_id_width-1 downto 0);
+        mbar                        : signed(mbar_width-1 downto 0);          -- slope between 2 points
+        z                           : signed(z_roi_width-1 downto 0);         -- SLc_z (barrel)
+        r                           : unsigned(r_roi_width-1 downto 0);       -- es mi generic r
+        phi                         : signed(phi_width-1 downto 0);           -- SLc_phi
+        eta                         : signed(eta_width-1 downto 0);           -- SLc_eta
+        chamber_id                  : unsigned(chamber_id_width-1 downto 0);  -- SLc_ch_id
     end record;
 
     -- MDT hit record    

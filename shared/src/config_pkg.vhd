@@ -16,25 +16,30 @@ library ieee, common_pkg;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- library shared_lib;
+-- use shared_lib.cfg_pkg.all;
+
 package cfg_pkg is
 
 --------------------------------------------------------------------------------
 -- Station information
 --------------------------------------------------------------------------------
-constant St_nbarrel_endcap : std_logic := '0'; 
--- 0: barrel  1: Endcap
-constant St_radius : integer range 0 to 3 := 0;
--- for barrel -> 0:inner, 1:Middle, 2:Outer, 3:Extension
--- for Endcap ->
-constant St_type : integer  range 0 to 3 := 0;
--- for barrel -> 0:Long, 1:Rib, 2:short, 3:Feet
--- constant St_
+constant ST_nBARREL_ENDCAP    : integer := 0; -- 0: barrel    1: Endcap
+constant ENDCAP_nSMALL_LARGE  : integer := 0; -- 0: small     1: large
+constant ENABLE_NEIGHTBORS    : integer := 1; -- 0: disabled  1: enabled
+
+--------------------------------------------------------------------------------
+-- IN COMPILATION CONFIGURATIONS 
+--------------------------------------------------------------------------------
+constant MAX_NUM_HP   : integer := 6;
+constant MAX_NUM_HEG  : integer := 3;
+constant MAX_NUM_HPS  : integer := 3;
+constant MAX_NUM_SL   : integer := 3 + ST_nBARREL_ENDCAP*ENDCAP_nSMALL_LARGE*3 + ENABLE_NEIGHTBORS*2;
 
 --------------------------------------------------------------------------------
 -- Segment Finder
 --------------------------------------------------------------------------------
-constant SF_type : std_logic :='0';
--- 0: CSF 1:LSF
+constant SF_type  : integer := 0;  -- 0: CSF 1:LSF
 
 --------------------------------------------------------------------------------
 -- MDT mapping

@@ -12,19 +12,22 @@
 --  Revisions:
 --      14/02/2019  0.1     File created
 --------------------------------------------------------------------------------
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library l0mdt_lib;
-use l0mdt_lib.common_pkg.all;
+library shared_lib;
+use shared_lib.cfg_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
-use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
 
 package hp_dtr_lut_rom is
+  -- generic (
+  --   package hp_pkg is new hp_lib.hp_pkg generic map (num_layers => 8)
+  -- );
+  -- use hp_pkg.all;
 
     type dtr_rom_mem_t is array (0 to 7) of integer; -- # bins
     type dtr_rom_mem_sector_t is array (0 to 3) of dtr_rom_mem_t;

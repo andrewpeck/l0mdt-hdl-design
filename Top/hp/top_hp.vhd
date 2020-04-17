@@ -11,71 +11,69 @@
 --  Revisions:
 --   26/11/2019  0.1  File created
 --------------------------------------------------------------------------------
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library l0mdt_lib;
-use l0mdt_lib.common_pkg.all;
+library shared_lib;
+use shared_lib.cfg_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
-use hp_lib.cfg_pkg.all;
 use hp_lib.hp_pkg.all;
 
 entity top_hp is
     Generic(
-        datawidth : integer := 64
+      radius      : integer := 0
+      -- num_layers  : integer := 8
     );
     Port(
-        -- system signals
-        clk                     : in std_logic;
-        -- Control
-        Reset_b                 : in std_logic;
-        enable                  : in std_logic;
-        -- configuration
-        time_offset             : in unsigned(7 downto 0);
-        RoI_size                : in unsigned(7 downto 0);
-        -- SLc
-        i_muonCand_data         : in hp_SLc_barrel_rt;
-        -- MDT hit
-        i_tdc_data              : in hp_hit_data_rt;
-        i_tdc_valid             : in std_logic;
-        -- to Segment finder
-        o_data_2_sf             : out hp_2_sf_rt;
-        o_data_valid            : out std_logic
+      clk                 : in std_logic;
+      Reset_b             : in std_logic;
+      glob_en             : in std_logic;
+      -- configuration
+      time_offset         : in unsigned(7 downto 0);
+      -- RoI_size            : in unsigned(7 downto 0);
+      -- SLc
+      i_SLC_Window        : in SLc_window_std;
+      i_slc_data          : in hp_slc_rt;
+      -- MDT hit
+      i_mdt_data          : in hp_hit_data_stdst;
+      -- i_mdt_valid         : in std_logic;
+      -- i_mdt_time_real     : in mdt_time_le_st;
+      -- to Segment finder
+      o_mdt2sf_data    : out hp2bm_stdst
     );
 end top_hp;
 
 architecture beh of top_hp is
 
 
-
 begin
 
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
-        radius      => 0,
-        tube_min    => 3,
-        tube_max    => 5
+      radius      => radius
+      -- num_layers  => num_layers
+      -- tube_max    => 5
     )
     port map(
-        clk                 => clk,
-        -- Control
-        Reset_b             => Reset_b,
-        enable              => enable,
-        -- configuration
-        time_offset         => time_offset,
-        RoI_size            => RoI_size,
-        -- SLc
-        i_muonCand_data     => i_muonCand_data,
-        -- MDT hit
-        i_tdc_data          => i_tdc_data,
-        i_tdc_valid         => i_tdc_valid,
-        -- to Segment finder
-        o_segFinder_data    => o_data_2_sf,
-        o_data_valid        => o_data_valid
+      clk                 => clk,
+      Reset_b             => Reset_b,
+      glob_en             => glob_en,
+      -- configuration
+      time_offset         => time_offset,
+      -- RoI_size            => RoI_size,
+      -- SLc
+      i_SLC_Window        => i_SLC_Window,
+      i_slc_data          => i_slc_data,
+      -- MDT hit
+      i_mdt_data          => i_mdt_data,
+      -- i_mdt_valid         => i_mdt_valid,
+      -- i_mdt_time_real     => i_mdt_time_real,
+      -- to Segment finder
+      o_mdt2sf_data    => o_mdt2sf_data
+      -- o_data_valid        => o_data_valid
     );
 
 end beh;
