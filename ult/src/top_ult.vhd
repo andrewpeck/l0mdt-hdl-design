@@ -19,13 +19,16 @@ entity top_ult is
   port (
 
     -- pipeline clock
-    pipeline_clock : in std_logic;
+    clock : in std_logic;
+    reset : in std_logic;
 
     -- ttc
     ttc_commands : in TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : in TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0);
+    tdc_hits_inner  : in TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
+    tdc_hits_middle : in TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    tdc_hits_outer  : in TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : in SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -41,10 +44,7 @@ entity top_ult is
     tts_commands : out TTS_CMD_rt;
 
     -- DAQ links
-    daq_links    : out DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
-
-    -- asserted while mmcm locking
-    reset : in std_logic;
+    daq_links : out DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
 
     sump : out std_logic
 
@@ -53,19 +53,27 @@ entity top_ult is
 end entity top_ult;
 architecture behavioral of top_ult is
 
-  signal tdc_hit_sump    : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hit_inner_sump    : std_logic_vector (c_NUM_POLMUX_INNER-1 downto 0);
+  signal tdc_hit_middle_sump    : std_logic_vector (c_NUM_POLMUX_MIDDLE-1 downto 0);
+  signal tdc_hit_outer_sump    : std_logic_vector (c_NUM_POLMUX_OUTER-1 downto 0);
   signal endcap_hit_sump : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
   signal barrel_hit_sump : std_logic_vector (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
-  signal clk       : std_logic;
+  signal clk             : std_logic;
 
 begin
 
-  sump_proc : process (pipeline_clock) is
+  sump_proc : process (clock) is
   begin  -- process tdc_hit_sump_proc
-    if (rising_edge(pipeline_clock)) then  -- rising clock edge
+    if (rising_edge(clock)) then  -- rising clock edge
 
-      tdc_sump_loop : for I in 0 to c_NUM_POLMUX-1 loop
-        tdc_hit_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits(I)));
+      inner_tdc_sump_loop : for I in 0 to c_NUM_POLMUX_INNER-1 loop
+        tdc_hit_inner_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits_inner(I)));
+      end loop;
+      middle_tdc_sump_loop : for I in 0 to c_NUM_POLMUX_MIDDLE-1 loop
+        tdc_hit_middle_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits_middle(I)));
+      end loop;
+      outer_tdc_sump_loop : for I in 0 to c_NUM_POLMUX_OUTER-1 loop
+        tdc_hit_outer_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits_outer(I)));
       end loop;
 
       barrel_sump_loop : for I in 0 to c_NUM_SL_BARREL_CANDIDATES-1 loop
@@ -76,7 +84,8 @@ begin
         endcap_hit_sump(I) <= xor_reduce(slc_endcap_2af(endcap_slc_candidates(I)));
       end loop;
 
-      sump <= xor_reduce(tdc_hit_sump) xor xor_reduce (barrel_hit_sump) xor xor_reduce (endcap_hit_sump);
+      sump <= xor_reduce(tdc_hit_inner_sump) xor xor_reduce(tdc_hit_middle_sump) xor xor_reduce(tdc_hit_outer_sump) xor
+      xor_reduce (barrel_hit_sump) xor xor_reduce (endcap_hit_sump);
 
     end if;
 

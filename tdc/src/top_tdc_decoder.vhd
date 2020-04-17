@@ -35,7 +35,9 @@ entity top_tdc_decoder is
     --lpgbt_downlink_data : out lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
 
     -- TDC hits from CSM
-    tdc_hits : out TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0)
+    tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
+    tdc_hits_middle : out TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    tdc_hits_outer  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0)
 
     );
 end top_tdc_decoder;
@@ -46,58 +48,9 @@ architecture behavioral of top_tdc_decoder is
 
   signal read_done : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
-  -- function to count the number of inputs to a given polmux
-  function polmux_size (tdc_map : tdc_link_map_array_t; index : integer; num_tdcs : integer)
-    return integer is
-    variable count : integer := 0;
-  begin
-    for I in 0 to num_tdcs-1 loop
-      if (tdc_map(I).polmux_id = index) then
-        count := count + 1;
-      end if;
-    end loop;
-    return count;
-  end polmux_size;
-
-  -- function to create a reverse mapping (take a entry, e.g. 0-19 for a given polmux and return a global index)
-  function polmux_reverse_map (tdc_map  : tdc_link_map_array_t;
-                               entry    : integer;
-                               index    : integer;
-                               num_tdcs : integer)
-    return integer is
-    variable count : integer := 0;
-    variable ret   : integer := 0;
-  begin
-    for I in 0 to num_tdcs-1 loop
-      if (tdc_map(I).polmux_id = index) then
-        if (count = entry) then
-          return I;
-        else
-          count := count + 1;
-        end if;
-      end if;
-    end loop;
-    return ret;
-  end polmux_reverse_map;
-
-  function polmux_input_map (in_array : TDCPOLMUX_rt_array;    -- full array of all TDC hits
-                             tdc_map  : tdc_link_map_array_t;  -- constant mapping from board pkg
-                             index    : integer;               -- # of the polmux
-                             size     : integer;               -- size of the polmux
-                             num_tdcs : integer)               -- number of tdcs instantiated
-    return TDCPOLMUX_rt_array is
-    variable count : integer := 0;
-    variable ret   : TDCPOLMUX_rt_array (size - 1 downto 0);
-  begin
-    for I in 0 to num_tdcs-1 loop
-      if (tdc_map(I).polmux_id = index) then
-        ret(count) := in_array (I);
-        count      := count + 1;
-      end if;
-    end loop;
-    return ret;
-  end polmux_input_map;
-
+  signal i_inner  : integer := 0;
+  signal i_middle : integer := 0;
+  signal i_outer  : integer := 0;
 
 begin
 
@@ -131,8 +84,6 @@ begin
 
     -- Just create a stupid loop that should tag the TDC inst with an
     -- MGT number that can be easily picked out of the hierarchy
-    -- TODO: figure out a more efficint way to do this? It only costs compile time but still annoying
-    --mgt_tag : for MGT_NUM in 0 to c_NUM_LPGBT_UPLINKS-1 generate
     mgt_tag : for MGT_NUM in idx to idx generate
     begin
 
@@ -142,12 +93,6 @@ begin
                     idx /= -1 and
                     even_id /= -1)
       generate
-
-        attribute DONT_TOUCH : string;
-        attribute MGT_INDEX  : integer;
-        -- attribute MGT_INDEX of sync_csm  : label is idx;
-        -- attribute DONT_TOUCH of sync_csm : label is "true";
-
       begin
 
         assert false report " > LINK_ID  =" & integer'image(c_TDC_LINK_MAP(I).link_id) severity note;
@@ -212,11 +157,80 @@ begin
   polmux_loop : for I in 0 to (c_NUM_POLMUX-1) generate
 
     -- extract the size of the polmux in this loop based on the number of inputs assigned
-    constant POLMUX_WIDTH : integer := polmux_size(c_TDC_LINK_MAP, I, c_NUM_TDC_INPUTS);
+    function polmux_station (tdc_map : tdc_link_map_array_t; index : integer)
+      return station_id_t is
+    begin
+      for I in 0 to tdc_map'length-1 loop
+        if (tdc_map(I).polmux_id = index) then
+          return tdc_map(I).station_id;
+        end if;
+      end loop;
+      return NIL;
+    end polmux_station;
+
+    -- function to count the number of inputs to a given polmux
+    function polmux_size (tdc_map : tdc_link_map_array_t; index : integer; num_tdcs : integer)
+      return integer is
+      variable count : integer := 0;
+    begin
+      for I in 0 to num_tdcs-1 loop
+        if (tdc_map(I).polmux_id = index) then
+          count := count + 1;
+        end if;
+      end loop;
+      return count;
+    end polmux_size;
+
+    -- function to create a reverse mapping (take a entry, e.g. 0-19 for a given polmux and return a global index)
+    function polmux_reverse_map (tdc_map  : tdc_link_map_array_t;
+                                 entry    : integer;
+                                 index    : integer;
+                                 num_tdcs : integer)
+      return integer is
+      variable count : integer := 0;
+      variable ret   : integer := 0;
+    begin
+      for I in 0 to num_tdcs-1 loop
+        if (tdc_map(I).polmux_id = index) then
+          if (count = entry) then
+            return I;
+          else
+            count := count + 1;
+          end if;
+        end if;
+      end loop;
+      return ret;
+    end polmux_reverse_map;
+
+    function polmux_input_map (in_array : TDCPOLMUX_rt_array;    -- full array of all TDC hits
+                               tdc_map  : tdc_link_map_array_t;  -- constant mapping from board pkg
+                               index    : integer;               -- # of the polmux
+                               size     : integer;               -- size of the polmux
+                               num_tdcs : integer)               -- number of tdcs instantiated
+      return TDCPOLMUX_rt_array is
+      variable count : integer := 0;
+      variable ret   : TDCPOLMUX_rt_array (size - 1 downto 0);
+    begin
+      for I in 0 to num_tdcs-1 loop
+        if (tdc_map(I).polmux_id = index) then
+          ret(count) := in_array (I);
+          count      := count + 1;
+        end if;
+      end loop;
+      return ret;
+    end polmux_input_map;
+
+    --------------------------------------------------------------------------------
+    -- Constants
+    --------------------------------------------------------------------------------
+
+    constant c_POLMUX_WIDTH : integer := polmux_size(c_TDC_LINK_MAP, I, c_NUM_TDC_INPUTS);
+
+    constant c_POLMUX_STATION : station_id_t := polmux_station(c_TDC_LINK_MAP, I);
 
     -- signals to hold the up to ~20 polmux inputs and outputs for this loop
-    signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
-    signal polmux_inputs    : TDCPOLMUX_rt_array (POLMUX_WIDTH-1 downto 0);
+    signal read_done_polmux : std_logic_vector (c_POLMUX_WIDTH-1 downto 0);
+    signal polmux_inputs    : TDCPOLMUX_rt_array (c_POLMUX_WIDTH-1 downto 0);
     signal polmux_output    : TDCPOLMUX_rt;
     signal fifo_output      : TDCPOLMUX_at;
 
@@ -224,28 +238,23 @@ begin
 
   begin
 
-    -- NOTE: not clear at all where to place polling muxes... depends entirely on what they connect to
-    -- for now I guess we need to just leave it to the placer to decide? or create an overall "framework" pblock that
-    -- encompasses all of the other p-blocks and put it in there
-
     assert (false) report " > Generating Polmux #" & integer'image(I) &
-      " with " & integer'image(POLMUX_WIDTH) & " inputs" severity note;
+      " with " & integer'image(c_POLMUX_WIDTH) & " inputs" severity note;
 
-    polmux_inputs <= polmux_input_map(tdc_hits_to_polmux, c_TDC_LINK_MAP, I, POLMUX_WIDTH, c_NUM_TDC_INPUTS);
+    polmux_inputs <= polmux_input_map(tdc_hits_to_polmux, c_TDC_LINK_MAP, I, c_POLMUX_WIDTH, c_NUM_TDC_INPUTS);
 
-    read_done_assign_loop : for J in 0 to POLMUX_WIDTH-1 generate
+    read_done_assign_loop : for J in 0 to c_POLMUX_WIDTH-1 generate
       read_done(polmux_reverse_map (c_TDC_LINK_MAP, J, I, c_NUM_TDC_INPUTS)) <= read_done_polmux(J);
     end generate;  -- read done assign loop
 
     polling_mux_inst : entity tdc.polling_mux
-      generic map (g_WIDTH => POLMUX_WIDTH)
+      generic map (g_WIDTH => c_POLMUX_WIDTH)
       port map (
-        clock       => clock,                                                                                    -- 320MHz system clock
+        clock       => clock,             -- 320MHz system clock
         tdc_hits_i  => polmux_inputs,
-        read_done_o => read_done_polmux,                                                                         -- will be asserted high once a tdc hit is read, feed back into the tdc hit decoder
-        tdc_hit_o   => polmux_output                                                                             -- polling mux outputs to cdc
+        read_done_o => read_done_polmux,  -- will be asserted high once a tdc hit is read, feed back into the tdc hit decoder
+        tdc_hit_o   => polmux_output      -- polling mux outputs to cdc
         );
-
 
     --------------------------------------------------------------------------------
     -- Clock domain crossing
@@ -263,7 +272,20 @@ begin
         empty  => open
         );
 
-    tdc_hits(I) <= tdcpolmux_2rf (fifo_output);
+    inner_assign : if (c_POLMUX_STATION = INNER) generate
+      i_inner                 <= i_inner +1;
+      tdc_hits_inner(i_inner) <= tdcpolmux_2rf (fifo_output);
+    end generate;
+
+    middle_assign : if (c_POLMUX_STATION = MIDDLE) generate
+      i_middle                  <= i_middle +1;
+      tdc_hits_middle(i_middle) <= tdcpolmux_2rf (fifo_output);
+    end generate;
+
+    outer_assign : if (c_POLMUX_STATION = OUTER) generate
+      i_outer                 <= i_outer +1;
+      tdc_hits_outer(i_outer) <= tdcpolmux_2rf (fifo_output);
+    end generate;
 
   end generate;  -- TDC loop
 

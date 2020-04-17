@@ -11,11 +11,13 @@ package board_pkg_common is
   type gt_types_t is (GT_NIL, GTH, GTY);
 
   type mgt_types_t is (MGT_NIL,
-                       MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL,
+                       MGT_LPGBT_SIMPLEX,
+                       MGT_LPGBT,
+                       MGT_LPGBT_EMUL,
                        MGT_C2C,
                        MGT_SL,
-                       MGT_TCDS,
-                       MGT_FELIX
+                       MGT_FELIX_UP,
+                       MGT_FELIX_DOWN
                        );
 
   type mgt_inst_t is record
@@ -43,7 +45,7 @@ package board_pkg_common is
 
   type refclk_types_array_t is array (integer range <>) of refclk_types_t;
 
-  type station_id_t is (INNER, MIDDLE, OUTER, EXTRA);
+  type station_id_t is (INNER, MIDDLE, OUTER, NIL);
 
   --------------------------------------------------------------------------------
   -- CSM Mapping
@@ -52,7 +54,7 @@ package board_pkg_common is
   type tdc_link_map_t is record
     link_id    : integer;
     elink      : integer;
-    station_id : integer;
+    station_id : station_id_t;
     polmux_id  : integer;
     legacy     : boolean;
   end record;
@@ -73,7 +75,7 @@ package board_pkg_common is
   function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
     return integer;
 
-  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer; station: station_id_t)
     return integer;
 
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
@@ -128,12 +130,12 @@ package body board_pkg_common is
   -- function to count number of polmuxes
   -- loop over the tdc link mapping and find how many polmuxes are needed for the
   -- number of tdcs requested in the user logic pkg
-  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
+  function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer; station: station_id_t)
     return integer is
     variable max : integer := 0;
   begin
     for I in 0 to num_tdcs-1 loop
-      if (tdc_map(I).polmux_id > max) then
+      if (tdc_map(I).polmux_id > max and station=tdc_map(I).station_id) then
         max := tdc_map(I).polmux_id;
       end if;
     end loop;

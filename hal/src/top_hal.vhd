@@ -45,7 +45,9 @@ entity top_hal is
     ttc_commands : out TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : out TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0);
+    tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
+    tdc_hits_middle : out TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    tdc_hits_outer  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : out SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -354,7 +356,9 @@ begin  -- architecture behavioral
       reset => global_reset,
 
       lpgbt_uplink_data => lpgbt_uplink_data,  -- on lpgbt clock
-      tdc_hits          => tdc_hits            -- on pipeline clock already
+      tdc_hits_inner    => tdc_hits_inner,
+      tdc_hits_middle   => tdc_hits_middle,
+      tdc_hits_outer    => tdc_hits_outer
       );
 
   top_tdc_control_inst : entity tdc.top_tdc_control

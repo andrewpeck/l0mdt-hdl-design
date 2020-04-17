@@ -100,7 +100,7 @@ begin
     read_done_o <= read_done;
   end generate;
 
-  pr : if (not g_ROUND_ROBIN) generate
+  pe : if (not g_ROUND_ROBIN) generate
     signal valid_vec : std_logic_vector (g_WIDTH-1 downto 0);
   begin
     -- Create a fast parallel bitmask that returns the least significant set 1 using a
@@ -122,6 +122,9 @@ begin
     read_done   <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
     read_done_o <= read_done;           -- copy to output
   end generate;
+  --------------------------------------------------------------------------------
+  -- Output Block
+  --------------------------------------------------------------------------------
 
   process (clock) is
   begin

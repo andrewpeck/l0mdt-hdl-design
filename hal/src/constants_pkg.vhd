@@ -24,7 +24,10 @@ package constants_pkg is
 
   constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, c_MAX_TDC_INPUTS);
 
-  constant c_NUM_POLMUX : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);
+  constant c_NUM_POLMUX_INNER : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, INNER);
+  constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, MIDDLE);
+  constant c_NUM_POLMUX_OUTER : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, OUTER);
+  constant c_NUM_POLMUX : integer := c_NUM_POLMUX_INNER + c_NUM_POLMUX_MIDDLE + c_NUM_POLMUX_OUTER;
 
   --------------------------------------------------------------------------------
   -- LPGBT
@@ -46,11 +49,11 @@ package constants_pkg is
   -- DAQ
   --------------------------------------------------------------------------------
 
-  constant c_MAX_DAQ_LINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX);
+  constant c_MAX_DAQ_LINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX_UP);
   constant c_NUM_DAQ_LINKS : integer := 0;
 
   constant c_NUM_FELIX_UPLINKS   : integer := 0;
-  constant c_NUM_FELIX_DOWNLINKS : integer := 0;
+  constant c_NUM_FELIX_DOWNLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX_DOWN);
 
   --------------------------------------------------------------------------------
   -- Sector Logic

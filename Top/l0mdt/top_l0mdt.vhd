@@ -58,7 +58,9 @@ architecture structural of top_mdtl0 is
 
   signal pipeline_clock        : std_logic;
   signal ttc_commands          : TTC_CMD_rt;
-  signal tdc_hits              : TDCPOLMUX_rt_array (c_NUM_POLMUX-1 downto 0);
+  signal tdc_hits_inner        : TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
+  signal tdc_hits_middle       : TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
+  signal tdc_hits_outer        : TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0);
   signal endcap_slc_candidates : SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
   signal barrel_slc_candidates : SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
   signal endcap_slc_pipeline   : SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
@@ -66,7 +68,7 @@ architecture structural of top_mdtl0 is
   signal tts_commands          : TTS_CMD_rt;
   signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
   signal reset                 : std_logic;
-  signal hal_sump        : std_logic;
+  signal hal_sump              : std_logic;
   signal user_sump             : std_logic;
 begin
 
@@ -79,7 +81,9 @@ begin
       refclk_i_n            => refclk_i_n,
       pipeline_clock        => pipeline_clock,
       ttc_commands          => ttc_commands,
-      tdc_hits              => tdc_hits,
+      tdc_hits_inner        => tdc_hits_inner,
+      tdc_hits_middle       => tdc_hits_middle,
+      tdc_hits_outer        => tdc_hits_outer,
       endcap_slc_candidates => endcap_slc_candidates,
       barrel_slc_candidates => barrel_slc_candidates,
       endcap_slc_pipeline   => endcap_slc_pipeline,
@@ -91,16 +95,18 @@ begin
 
   top_ult : entity ult.top_ult
     port map (
-      pipeline_clock        => pipeline_clock,
+      clock                 => pipeline_clock,
+      reset                 => reset,
       ttc_commands          => ttc_commands,
-      tdc_hits              => tdc_hits,
+      tdc_hits_inner        => tdc_hits_inner,
+      tdc_hits_middle       => tdc_hits_middle,
+      tdc_hits_outer        => tdc_hits_outer,
       endcap_slc_candidates => endcap_slc_candidates,
       barrel_slc_candidates => barrel_slc_candidates,
       endcap_slc_pipeline   => endcap_slc_pipeline,
       barrel_slc_pipeline   => barrel_slc_pipeline,
       tts_commands          => tts_commands,
       daq_links             => daq_links,
-      reset                 => reset,
       sump                  => user_sump);
 
   sump <= hal_sump xor user_sump;
