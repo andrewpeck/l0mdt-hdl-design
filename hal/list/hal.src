@@ -1,10 +1,10 @@
 # -*- mode: TCL;-*-
 # Dependencies
-../../lpgbt/src/gbt_sc.sub
-../../tdc/src/tdc.src
-../../lpgbt/src/lpgbt_emul.sub
-../../lpgbt/src/lpgbt_fpga.sub
-../../sl/src/sl.sub
+../../lpgbt/list/gbt_sc.sub
+../../tdc/list/tdc.src
+../../lpgbt/list/lpgbt_emul.sub
+../../lpgbt/list/lpgbt_fpga.sub
+../../sl/list/sl.sub
 
 # Hal
 ../../ult/src/top_ult.vhd 2008

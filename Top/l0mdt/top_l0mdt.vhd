@@ -15,8 +15,7 @@ use hal.system_types_pkg.all;
 -- library c2c;
 -- use c2c.axiRegPkg.all;
 
-
-entity top_mdtl0 is
+entity top_l0mdt is
   generic (
     -- these generics get set by hog at synthesis
     GLOBAL_FWDATE       : std_logic_vector (31 downto 0) := x"00000000";
@@ -52,9 +51,9 @@ entity top_mdtl0 is
     sump : out std_logic
 
     );
-end top_mdtl0;
+end top_l0mdt;
 
-architecture structural of top_mdtl0 is
+architecture structural of top_l0mdt is
 
   signal ttc_commands          : l0mdt_ttc_rt;
   signal tts_commands          : TTS_CMD_rt;
