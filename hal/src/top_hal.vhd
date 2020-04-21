@@ -127,7 +127,7 @@ architecture behavioral of top_hal is
   signal lpgbt_uplink_sump     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
   signal lpgbt_uplink_mgt_sump : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
   signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
-  signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  --signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
   -- Attributes for synthesis
@@ -422,14 +422,14 @@ begin  -- architecture behavioral
   -- Sumps to prevent trimming
   --------------------------------------------------------------------------------
 
-  sl_rx_sump : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-    data_loop : process (clocks.clock240) is
-    begin  -- process data_loop
-      if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
-        sector_logic_rx_sump(I) <= xor_reduce (sl_rx_data(I).data);
-      end if;
-    end process data_loop;
-  end generate;
+  --sl_rx_sump : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+  --  data_loop : process (clocks.clock240) is
+  --  begin  -- process data_loop
+  --    if clocks.clock240'event and clocks.clock240 = '1' then  -- rising clock edge
+  --      sector_logic_rx_sump(I) <= xor_reduce (sl_rx_data(I).data);
+  --    end if;
+  --  end process data_loop;
+  --end generate;
 
   -- let this sump as tdc data in the user_top
   -- lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
@@ -442,10 +442,10 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sl_sump_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-    data_loop : process (clocks.clock240) is
+  sl_loop_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+    data_loop : process (clocks.clock_pipeline) is
     begin  -- process data_loop
-      if (rising_edge(clocks.clock240)) then  -- rising clock edge
+      if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
         sl_tx_data(I).data  <= sl_rx_data(I).data;
         sl_tx_data(I).valid <= sl_rx_data(I).valid;
       end if;
@@ -455,7 +455,7 @@ begin  -- architecture behavioral
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
     if (rising_edge(clocks.clock320)) then        -- rising clock edge
-      sump <= xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
+      sump <= '0'; --xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
     end if;
   end process data_loop;
 
