@@ -167,22 +167,24 @@ package body board_pkg_common is
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
     return integer is
     variable max : integer := 0;
+    variable count : integer := 0;
   begin
     for I in 0 to num_tdcs-1 loop
       if (tdc_map(I).link_id > max) then
         max := tdc_map(I).link_id;
+        count := count + 1;
       end if;
     end loop;
 
     -- count is index + 1
-    max := max + 1;
+    count := count + 1;
 
     -- in the case odd number uplink requested, force it to next multiple of 2 (CSM is always 2tx+1rx)
-    if (max mod 2 /= 0) then
-      max := max + 1;
+    if (count mod 2 /= 0) then
+      count := count + 1;
     end if;
 
-    return max;
+    return count;
 
   end func_count_lpgbt_link_mapped_to_csm;
 
