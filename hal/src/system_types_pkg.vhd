@@ -51,6 +51,20 @@ package system_types_pkg is
     backpressure : std_logic;
   end record;
 
+  type l0mdt_control_rt is record       -- basic control signals to all blocks
+    clk   : std_logic;                  -- pipeline clock
+    rst_n : std_logic;                  -- active low reset (min 8 clk)
+    bx    : std_logic;                  -- bunch crossing strobe
+  end record;
+
+  type l0mdt_ttc_rt is record           -- Trigger, Timing, Control
+    bcr : std_logic;                    -- LHC bunch count reset (BC0)
+    ocr : std_logic;                    -- LHC orbit count reset
+    ecr : std_logic;                    -- ATLAS event number reset
+    l0a : std_logic;                    -- level 0 accept trigger
+    l1a : std_logic;                    -- level 1 accept trigger (optional)
+  end record;
+
   function log2ceil(arg : positive) return natural;
 
 end system_types_pkg;

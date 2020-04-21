@@ -39,10 +39,11 @@ entity top_hal is
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     -- pipeline clock
-    pipeline_clock : out std_logic;
+    clock_and_control : out l0mdt_control_rt;
 
     -- ttc
-    ttc_commands : out TTC_CMD_rt;
+    ttc_commands : out l0mdt_ttc_rt;
+    tts_commands : in TTS_CMD_rt;
 
     -- TDC hits from CSM
     tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
@@ -59,13 +60,9 @@ entity top_hal is
     endcap_slc_pipeline : in SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
     barrel_slc_pipeline : in SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
+
     -- felix
-    tts_commands : in TTS_CMD_rt;
-    daq_links    : in DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
-
-
-    -- asserted while mmcm locking
-    reset : out std_logic;
+    daq_links : in DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
 
     sump : out std_logic
 
@@ -77,6 +74,8 @@ architecture behavioral of top_hal is
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
   signal global_reset : std_logic;
+
+  signal pipeline_bx_strobe : std_logic;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -90,15 +89,7 @@ architecture behavioral of top_hal is
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  signal lpgbt_downlink_valid                  : std_logic;
-  attribute DONT_TOUCH                         : string;
-  attribute MAX_FANOUT                         : string;
-  attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
-  attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
-  signal lpgbt_uplink_sump                     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal lpgbt_uplink_mgt_sump                 : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal tdc_sump                              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
-  signal sector_logic_rx_sump                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal lpgbt_downlink_valid : std_logic;
 
   -- emulator cores
   signal lpgbt_emul_uplink_clk            : std_logic;
@@ -127,9 +118,26 @@ architecture behavioral of top_hal is
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
-  -- Save this here so we can extract it from the hierarchy later
+  -- Signal sumps for development
   --------------------------------------------------------------------------------
 
+  signal lpgbt_uplink_sump     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_mgt_sump : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
+  signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+
+  --------------------------------------------------------------------------------
+  -- Attributes for synthesis
+  --------------------------------------------------------------------------------
+
+  attribute DONT_TOUCH                         : string;
+  attribute MAX_FANOUT                         : string;
+  attribute MAX_FANOUT of pipeline_bx_strobe   : signal is "20";
+  attribute DONT_TOUCH of pipeline_bx_strobe   : signal is "true";
+  attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
+  attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
+
+  -- Save this here so we can extract it from the hierarchy later
   attribute NUM_MGTS                       : integer;
   attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
@@ -154,10 +162,7 @@ begin  -- architecture behavioral
   --
   --------------------------------------------------------------------------------
 
-  reset          <= global_reset;
-  global_reset   <= not (clocks.locked);
-  pipeline_clock <= clocks.clock_pipeline;
-
+  global_reset <= not (clocks.locked);
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -191,6 +196,44 @@ begin  -- architecture behavioral
       locked           => clocks.locked,
       clk_in40         => clock_ibufds
       );
+
+  --------------------------------------------------------------------------------
+  -- Clock and reset to User Logic
+  --------------------------------------------------------------------------------
+
+  -- Create a 1 of N high signal synced to the 40MHZ clock
+  --            ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _
+  -- clk      __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_|9|_|
+  --            ___________________                 ________
+  -- clk40    __|                  |________________|
+  --            _____________________________________
+  -- r80      __|                                   |______
+  --                _____________________________________
+  -- r80_dly  ______|                                   |__
+  --            _____                               _____
+  -- valid    __|   |_______________________________|   |__
+
+  process (clocks.clock_pipeline, clocks.clock40)
+    variable r80     : std_logic := '0';
+    variable r80_dly : std_logic;
+  begin
+    if (rising_edge(clocks.clock40)) then
+      r80 := not r80;
+    end if;
+
+    if (rising_edge(clocks.clock_pipeline)) then
+      r80_dly := r80;
+    end if;
+    pipeline_bx_strobe <= r80_dly xor r80;
+  end process;
+
+  clock_and_control <= (clk => clocks.clock_pipeline, rst_n => not global_reset, bx => pipeline_bx_strobe);
+
+  ttc_commands.bcr <= '0';
+  ttc_commands.ocr <= '0';
+  ttc_commands.ecr <= '0';
+  ttc_commands.l0a <= '0';
+  ttc_commands.l1a <= '0';
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -251,6 +294,7 @@ begin  -- architecture behavioral
     end if;
     lpgbt_downlink_valid <= r80_dly xor r80;
   end process;
+
 
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
     lpgbt_downlink_data(I).valid <= lpgbt_downlink_valid;
