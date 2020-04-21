@@ -273,18 +273,15 @@ begin
         );
 
     inner_assign : if (c_POLMUX_STATION = INNER) generate
-      i_inner                 <= i_inner +1;
-      tdc_hits_inner(i_inner) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_inner(inner_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 
     middle_assign : if (c_POLMUX_STATION = MIDDLE) generate
-      i_middle                  <= i_middle +1;
-      tdc_hits_middle(i_middle) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_middle(middle_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 
     outer_assign : if (c_POLMUX_STATION = OUTER) generate
-      i_outer                 <= i_outer +1;
-      tdc_hits_outer(i_outer) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_outer(outer_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 
   end generate;  -- TDC loop
