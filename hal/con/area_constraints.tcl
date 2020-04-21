@@ -31,16 +31,10 @@ proc assign_pblocks {min  max  side} {
         set lQuadBlock [get_pblocks quad_$side$q]
         puts "Populating $lQuadBlock with mgt #$lRegId"
 
-        #hierarcical
         set lpgbt_cells    [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"]
         set mgt_cells      [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_GEN"]
         set tdc_cells      [get_cells -quiet "top_hal/*tdc*/*mgt_tag\[$lRegId]*decoder*_inst"]
-
-        # TODO: make this tcl call smart to avoid unnecessary filter calls
-        set sl_cells       [get_cells -quiet -hierarchical -filter "NAME =~ *top_hal/sector_logic_link_wrapper_inst/sl_gen[$lRegId].*"]
-        # avoid hierarchical filters and use direct calling with wildcards,
-        # e.g. [get_cells -quiet datapath/rgen[*].pgen.*]
-
+        set sl_cells       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $tdc_cells"
 

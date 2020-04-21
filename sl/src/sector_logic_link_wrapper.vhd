@@ -22,14 +22,15 @@ entity sector_logic_link_wrapper is
     reset          : in std_logic;
 
     -- 32 bits / bx from mgt
-    sl_rx_mgt_word_array_i : in std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
-    sl_rx_data_o : out sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
+    sl_rx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
     -- 32 bits / bx to mgt
     sl_tx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-    sl_tx_data_i : in sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+    -- Received packet from SL
+    sl_rx_data_o : out sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+    -- Transmit packet back to SL
+    sl_tx_data_i : in  sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     -- from mgt
     sl_rx_ctrl_i : in sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
@@ -72,6 +73,8 @@ begin
       constant idx : integer := sl_idx_array(I);
     begin
 
+      assert false report "generating SL TX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
+
       sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
         generic map (
           NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
@@ -89,10 +92,11 @@ begin
           packet_txctrl2  => std_logic_vector'(x"100000")  -- FIXME this is made up, need to check the txctrl logic
           );
 
+      -- sync from pipeline clock-----------------------------------------------------
       sync_sl_tx : entity work.sync_cdc
         generic map (
           WIDTH    => sl_tx_data_post_cdc(idx).data'length,
-          N_STAGES => 1)
+          N_STAGES => 2)
         port map (
           clk_i   => clock,
           valid_i => sl_tx_data_i(idx).valid,
@@ -115,6 +119,8 @@ begin
       signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
       signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
     begin
+
+      assert false report "generating SL RX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
 
       -- decode 8b10b words
       rx_comma_detector_inst : entity sl.rx_comma_detection
@@ -168,22 +174,25 @@ begin
           );
 
       --sync to pipeline clock-------------------------------------------------
-      sl_pre_cdc_vec               <= sl_rx_data_pre_cdc(idx).data & sl_rx_data_o(idx).err & sl_rx_data_o(idx).locked;
-      sl_rx_data_pre_cdc(idx).data <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
-      sl_rx_data_o(idx).err        <= sl_post_cdc_vec(1);
-      sl_rx_data_o(idx).locked     <= sl_post_cdc_vec(0);
+
+      -- convert to a std_logic_vector
+      sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data & sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
 
       sync_sl_tx_data : entity work.sync_cdc
         generic map (
           WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
-          N_STAGES => 1)
+          N_STAGES => 2)
         port map (
-          clk_i   => clock,
+          clk_i   => pipeline_clock,
           valid_i => sl_rx_data_pre_cdc(idx).valid,
           valid_o => sl_rx_data_o(idx).valid,
           data_i  => sl_pre_cdc_vec,
           data_o  => sl_post_cdc_vec
           );
+
+      sl_rx_data_o(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
+      sl_rx_data_o(idx).err    <= sl_post_cdc_vec(1);
+      sl_rx_data_o(idx).locked <= sl_post_cdc_vec(0);
 
     end generate;
   end generate;
