@@ -67,6 +67,8 @@ architecture structural of top_mdtl0 is
   signal endcap_slc_pipeline   : SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
   signal barrel_slc_pipeline   : SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
   signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
+  signal segments_o            : SF_RT_array (c_NUM_SF_OUTPUTS-1 downto 0);
+  signal segments_i            : SF_RT_array (c_NUM_SF_INPUTS-1 downto 0);
   signal hal_sump              : std_logic;
   signal user_sump             : std_logic;
 begin
@@ -85,6 +87,8 @@ begin
       barrel_slc_candidates => barrel_slc_candidates,
       endcap_slc_pipeline   => endcap_slc_pipeline,
       barrel_slc_pipeline   => barrel_slc_pipeline,
+      segments_o            => segments_o,
+      segments_i            => segments_i,
       tts_commands          => tts_commands,
       daq_links             => daq_links,
       sump                  => hal_sump);
@@ -101,6 +105,8 @@ begin
       endcap_slc_pipeline   => endcap_slc_pipeline,
       barrel_slc_pipeline   => barrel_slc_pipeline,
       tts_commands          => tts_commands,
+      segments_o            => segments_o,
+      segments_i            => segments_i,
       daq_links             => daq_links,
       sump                  => user_sump);
 

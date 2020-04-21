@@ -20,9 +20,7 @@ package constants_pkg is
   constant c_MAX_LPGBT_UPLINKS   : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT) + func_count_link_types (c_MGT_MAP, MGT_LPGBT_SIMPLEX);
   constant c_MAX_LPGBT_DOWNLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT);
 
-  constant c_MAX_TDC_INPUTS : integer := func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP);
-
-  constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, c_MAX_TDC_INPUTS);
+  constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP));
 
   constant c_NUM_POLMUX_INNER : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, INNER);
   constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, MIDDLE);
@@ -54,6 +52,15 @@ package constants_pkg is
 
   constant c_NUM_FELIX_UPLINKS   : integer := 0;
   constant c_NUM_FELIX_DOWNLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_FELIX_DOWN);
+
+  --------------------------------------------------------------------------------
+  -- Chip-to-Chip Segments
+  --------------------------------------------------------------------------------
+
+  constant c_NUM_SF_INPUTS : integer := 0;
+  constant c_NUM_SF_OUTPUTS : integer := 0;
+  constant c_NUM_SF_INPUT_LINKS : integer := 1;
+  constant c_NUM_SF_OUTPUT_LINKS : integer := 1;
 
   --------------------------------------------------------------------------------
   -- Sector Logic

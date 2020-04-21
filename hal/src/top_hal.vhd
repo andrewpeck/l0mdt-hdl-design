@@ -60,6 +60,9 @@ entity top_hal is
     endcap_slc_pipeline : in SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
     barrel_slc_pipeline : in SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
+    -- SF sharing to next chip
+    segments_o : in  SF_RT_array (c_NUM_SF_OUTPUTS-1 downto 0);
+    segments_i : out SF_RT_array (c_NUM_SF_INPUTS-1 downto 0);
 
     -- felix
     daq_links : in DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);

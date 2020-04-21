@@ -39,6 +39,10 @@ entity top_ult is
     endcap_slc_pipeline : out SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
     barrel_slc_pipeline : out SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
+    -- SF sharing to next chip
+    segments_o : out SF_RT_array (c_NUM_SF_OUTPUTS-1 downto 0);
+    segments_i : in  SF_RT_array (c_NUM_SF_INPUTS-1 downto 0);
+
     -- felix
     tts_commands : out TTS_CMD_rt;
 
