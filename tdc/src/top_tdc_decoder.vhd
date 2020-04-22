@@ -154,9 +154,22 @@ begin
   -- Polling Mux
   --------------------------------------------------------------------------------
 
+  inner_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+    assert (false) report " > Inner Polmux IDX (" & integer'image(I) &
+      ")=" & integer'image(inner_polmux_idx_array(I)) severity note;
+  end generate;
+  middle_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+    assert (false) report " > Middle Polmux IDX (" & integer'image(I) &
+      ")=" & integer'image(middle_polmux_idx_array(I)) severity note;
+  end generate;
+  outer_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+    assert (false) report " > Outer Polmux IDX (" & integer'image(I) &
+      ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
+  end generate;
+
   polmux_loop : for I in 0 to (c_NUM_POLMUX-1) generate
 
-    -- extract the size of the polmux in this loop based on the number of inputs assigned
+    -- extract the polmux station from the polmux index
     function polmux_station (tdc_map : tdc_link_map_array_t; index : integer)
       return station_id_t is
     begin
@@ -273,14 +286,20 @@ begin
         );
 
     inner_assign : if (c_POLMUX_STATION = INNER) generate
+      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+        " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
       tdc_hits_inner(inner_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 
     middle_assign : if (c_POLMUX_STATION = MIDDLE) generate
+      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+        " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
       tdc_hits_middle(middle_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 
     outer_assign : if (c_POLMUX_STATION = OUTER) generate
+      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+        " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
       tdc_hits_outer(outer_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
     end generate;
 

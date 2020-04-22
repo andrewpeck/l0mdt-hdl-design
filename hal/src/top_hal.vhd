@@ -43,7 +43,7 @@ entity top_hal is
 
     -- ttc
     ttc_commands : out l0mdt_ttc_rt;
-    tts_commands : in TTS_CMD_rt;
+    tts_commands : in  TTS_CMD_rt;
 
     -- TDC hits from CSM
     tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
@@ -309,18 +309,19 @@ begin  -- architecture behavioral
     port map (
       reset => global_reset,
 
+      -- downlink
       lpgbt_downlink_clk_i            => clocks.clock320,
       lpgbt_downlink_reset_i          => (others => global_reset),
       lpgbt_downlink_mgt_word_array_o => lpgbt_downlink_mgt_word_array,
       lpgbt_downlink_ready_o          => open,
       lpgbt_downlink_data             => lpgbt_downlink_data,
-
-      lpgbt_uplink_clk_i            => clocks.clock320,
-      lpgbt_uplink_reset_i          => (others => global_reset),
-      lpgbt_uplink_data             => lpgbt_uplink_data,
-      lpgbt_uplink_mgt_word_array_i => lpgbt_uplink_mgt_word_array,
-      lpgbt_uplink_bitslip_o        => lpgbt_uplink_bitslip,
-      lpgbt_uplink_ready_o          => open
+      -- uplink
+      lpgbt_uplink_clk_i              => clocks.clock320,
+      lpgbt_uplink_reset_i            => (others => global_reset),
+      lpgbt_uplink_data               => lpgbt_uplink_data,
+      lpgbt_uplink_mgt_word_array_i   => lpgbt_uplink_mgt_word_array,
+      lpgbt_uplink_bitslip_o          => lpgbt_uplink_bitslip,
+      lpgbt_uplink_ready_o            => open
       );
 
   --------------------------------------------------------------------------------

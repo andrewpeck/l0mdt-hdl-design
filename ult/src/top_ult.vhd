@@ -90,8 +90,6 @@ begin
               xor_reduce (barrel_hit_sump) xor xor_reduce (endcap_hit_sump);
 
     end if;
-
-
   end process;
 
-end architecture behavioral;
+end behavioral;

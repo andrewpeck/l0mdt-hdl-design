@@ -38,7 +38,7 @@ proc assign_pblocks {min  max  side} {
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $tdc_cells"
 
-        puts "Adding cells $cells to pblock $lQuadBlock"
+        puts "Adding cells to pblock $lQuadBlock:"
 
         if {[string is space $cells] == 0} {
             add_cells_to_pblock -quiet $lQuadBlock $cells

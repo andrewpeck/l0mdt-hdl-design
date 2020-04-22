@@ -1,9 +1,9 @@
 # -*- mode: TCL;-*-
 
-../../tdc/src/tdc.src
+../../tdc/list/tdc.src
 
 # LPGBT
-../../lpgbt/src/lpgbt_fpga.sub
+../../lpgbt/list/lpgbt_fpga.sub
 ../../lpgbt/src/lpgbt_pkg.vhd 2008
 
 # Framework

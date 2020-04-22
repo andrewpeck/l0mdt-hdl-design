@@ -91,7 +91,7 @@ begin
 
   downlink_gen : for I in 0 to c_NUM_MGTS-1 generate
 
-    assert false report "I = #" & integer'image(I) & " IDX= " & integer'image(lpgbt_downlink_idx_array(I)) severity note;
+    --assert false report "IMGT = #" & integer'image(I) & " DOWNLINK IDX= " & integer'image(lpgbt_downlink_idx_array(I)) severity note;
 
     -- only generate downlinks for duplex lpgbts
     downlink_if : if (lpgbt_downlink_idx_array(I) /= -1) generate
@@ -102,7 +102,7 @@ begin
 
     begin
 
-      assert false report "GENERATING LpGBT Downlink Encoder #" & integer'image(idx) & " of " & integer'image(c_NUM_LPGBT_DOWNLINKS) & " on MGT #" & integer'image(I) severity note;
+      assert false report "GENERATING LpGBT Downlink Encoder #" & integer'image(idx+1) & " of " & integer'image(c_NUM_LPGBT_DOWNLINKS) & " on MGT #" & integer'image(I) severity note;
 
       downlink_reset_fanout : process (lpgbt_downlink_clk_i) is
       begin  -- process reset_fanout
@@ -167,16 +167,19 @@ begin
 
   uplink_gen : for I in 0 to c_NUM_MGTS-1 generate
 
+    --assert false report "IMGT = #" & integer'image(I) & " UPLINK IDX= " & integer'image(lpgbt_uplink_idx_array(I)) severity note;
+
     uplink_if : if (lpgbt_uplink_idx_array(I) /= -1) generate
 
       constant idx       : integer := lpgbt_uplink_idx_array(I);
       signal uplink_data : lpgbt_uplink_data_rt;
       signal mgt_data    : std_logic_vector(31 downto 0);
       signal bitslip     : std_logic;
+      signal unused_bits : std_logic_vector(5 downto 0);
 
     begin
 
-      assert false report "GENERATING LpGBT Uplink Encoder #" & integer'image(idx) & " of " & integer'image(c_NUM_LPGBT_UPLINKS) & " on MGT #" & integer'image(I) severity note;
+      assert false report "GENERATING LpGBT Uplink Encoder #" & integer'image(idx+1) & " of " & integer'image(c_NUM_LPGBT_UPLINKS) & " on MGT #" & integer'image(I) severity note;
 
       uplink_reset_fanout : process (lpgbt_uplink_clk_i) is
       begin  -- process reset_fanout
@@ -210,7 +213,7 @@ begin
           bypassscrambler_i          => c_lpgbt_bypass_scrambler,
           uplinkclkouten_o           => uplink_data.valid,
           userdata_o(223 downto 0)   => uplink_data.data,
-          userdata_o(229 downto 224) => open,
+          userdata_o(229 downto 224) => unused_bits,
           ecdata_o                   => uplink_data.ec,
           icdata_o                   => uplink_data.ic,
           mgt_bitslipctrl_o          => bitslip,
