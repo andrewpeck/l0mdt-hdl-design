@@ -124,14 +124,12 @@ package body board_pkg_common is
   function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t is
     variable count : integer := 0;
-    variable idx   : int_array_t (0 to mgt_list'length-1);
+    variable idx   : int_array_t (0 to mgt_list'length-1) := (others => -1);
   begin
     for I in 0 to mgt_list'length-1 loop
       if (count < cnt_max and (mgt_list(I).mgt_type = i_mgt_type or mgt_list(I).mgt_type = i_mgt_type_alt)) then
         idx(I) := count;
         count  := count + 1;
-      else
-        idx(I) := -1;
       end if;
     end loop;
     return idx;
@@ -166,6 +164,7 @@ package body board_pkg_common is
       end if;
 
     end loop;
+    return idx_arr;
   end func_fill_polmux_idx;
 
   -- function to count number of polmuxes
@@ -173,16 +172,16 @@ package body board_pkg_common is
   -- number of tdcs requested in the user logic pkg
   function func_count_polmux (tdc_map : tdc_link_map_array_t; num_tdcs : integer; station : station_id_t)
     return integer is
-    variable cnt : integer := 0;
-    variable max : integer := 0;
+    variable polmux_cnt : integer := 0;
+    variable max_polmux_id : integer := -1;
   begin
     for I in 0 to num_tdcs-1 loop
-      if (tdc_map(I).polmux_id > max and station = tdc_map(I).station_id) then
-        max := tdc_map(I).polmux_id;
-        cnt := cnt + 1;
+      if (tdc_map(I).polmux_id > max_polmux_id and station = tdc_map(I).station_id) then
+        max_polmux_id := tdc_map(I).polmux_id;
+        polmux_cnt := polmux_cnt + 1;
       end if;
     end loop;
-    return cnt;
+    return polmux_cnt;
   end func_count_polmux;
 
   -- function to count number of lpgbts
@@ -190,7 +189,7 @@ package body board_pkg_common is
   -- number of tdcs requested in the user logic pkg
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
     return integer is
-    variable max : integer := 0;
+    variable max : integer := -1;
     variable count : integer := 0;
   begin
     for I in 0 to num_tdcs-1 loop
@@ -200,11 +199,8 @@ package body board_pkg_common is
       end if;
     end loop;
 
-    -- count is index + 1
-    count := count + 1;
-
     -- in the case odd number uplink requested, force it to next multiple of 2 (CSM is always 2tx+1rx)
-    if (count mod 2 /= 0) then
+    if (count > 0 and (count mod 2 /= 0)) then
       count := count + 1;
     end if;
 
