@@ -246,6 +246,7 @@ begin
     signal polmux_inputs    : TDCPOLMUX_rt_array (c_POLMUX_WIDTH-1 downto 0);
     signal polmux_output    : TDCPOLMUX_rt;
     signal fifo_output      : TDCPOLMUX_at;
+    signal empty            : std_logic;
 
     constant std_logic1 : std_logic := '1';
 
@@ -273,34 +274,44 @@ begin
     -- Clock domain crossing
     --------------------------------------------------------------------------------
 
+    -- TODO: check the timing of the 'not empty' bit as a valid signal, make sure it is applied to the right clock cycle
     polmux_sync_fifo_inst : entity xil_defaultlib.polmux_sync_fifo
       port map (
         wr_clk => clock,
         rd_clk => pipeline_clock,
         din    => tdcpolmux_2af(polmux_output),
         wr_en  => polmux_output.datavalid,
-        rd_en  => std_logic1,
+        rd_en  => '1',                  --  FIFO internally gates the read signal with (not EMPTY)
         dout   => fifo_output,
         full   => open,
-        empty  => open
+        empty  => empty
         );
 
     inner_assign : if (c_POLMUX_STATION = INNER) generate
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
-      tdc_hits_inner(inner_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_inner(inner_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tdc_hits_inner(inner_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tdc_hits_inner(inner_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tdc_hits_inner(inner_polmux_idx_array(I)).datavalid <= not empty;
     end generate;
 
     middle_assign : if (c_POLMUX_STATION = MIDDLE) generate
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
-      tdc_hits_middle(middle_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_middle(middle_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tdc_hits_middle(middle_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tdc_hits_middle(middle_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tdc_hits_middle(middle_polmux_idx_array(I)).datavalid <= not empty;
     end generate;
 
     outer_assign : if (c_POLMUX_STATION = OUTER) generate
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
-      tdc_hits_outer(outer_polmux_idx_array(I)) <= tdcpolmux_2rf (fifo_output);
+      tdc_hits_outer(outer_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tdc_hits_outer(outer_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tdc_hits_outer(outer_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tdc_hits_outer(outer_polmux_idx_array(I)).datavalid <= not empty;
     end generate;
 
   end generate;  -- TDC loop
