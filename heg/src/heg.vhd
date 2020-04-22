@@ -97,7 +97,7 @@ begin
 
       -- SLc
       i_SLC_Window        => roi_b_Window,
-      i_slc_data          => hegC2hp_uCM_data,
+      i_slc_data_av          => hegC2hp_uCM_data,
       -- MDT hit
       i_mdt_data          => i_mdt_full_data(i_hp),
       -- i_mdt_valid         => i_mdt_valid,

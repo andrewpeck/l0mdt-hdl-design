@@ -33,13 +33,48 @@ entity ucm_csw is
     --
     i_control           : in ucm_csw_control_rt;
     --
-    i_data              : in slprepro_Data_astdst(MAX_NUM_SL -1 downto 0);
-    o_data              : out ucm_pl_data_astdst(MAX_NUM_SL -1 downto 0)
+    i_data              : in slc_prepro_avt(MAX_NUM_SL -1 downto 0);
+    o_data              : out slc_prepro_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
 
 begin
-
+  SLc_CS : process(Reset_b,clk) begin
+    if(not Reset_b) then
+      o_data <= (others => (others => '0'));
+    elsif rising_edge(clk) then
+      for csw_i in MAX_NUM_SL -1 downto 0 loop
+        if ?? i_control.data_present(csw_i) then
+          o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
+        else
+          o_data(csw_i) <= (others => '0');
+        end if;
+      end loop;
+    end if;
+  end process;
 end beh;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

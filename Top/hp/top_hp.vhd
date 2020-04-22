@@ -36,7 +36,7 @@ entity top_hp is
       -- RoI_size            : in unsigned(7 downto 0);
       -- SLc
       i_SLC_Window        : in SLc_window_std;
-      i_slc_data          : in hp_slc_rt;
+      i_slc_data_av          : in hp_slc_rt;
       -- MDT hit
       i_mdt_data          : in hp_hit_data_stdst;
       -- i_mdt_valid         : in std_logic;
@@ -66,7 +66,7 @@ begin
       -- RoI_size            => RoI_size,
       -- SLc
       i_SLC_Window        => i_SLC_Window,
-      i_slc_data          => i_slc_data,
+      i_slc_data_av          => i_slc_data_av,
       -- MDT hit
       i_mdt_data          => i_mdt_data,
       -- i_mdt_valid         => i_mdt_valid,

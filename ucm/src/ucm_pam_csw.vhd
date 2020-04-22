@@ -4,7 +4,7 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor
+--  Module: pam csw for processing
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_cvp is
+entity ucm_pam_csw is
   -- generic(
   --   num_delays          : integer; 
   --   num_bits            : integer
@@ -31,16 +31,33 @@ entity ucm_cvp is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     --
-    i_in_en             : in std_logic;
+    i_control           : in ucm_pam_control_rt;
     --
-    i_data              : in pipeline_vt;
-    o_ucm2hps           : out ucm_vp_data_astdst(MAX_NUM_HPS -1 downto 0)
-      
+    i_data              : in pipeline_avt(MAX_NUM_HEG -1 downto 0);
+    o_data              : out pipeline_avt(MAX_NUM_HEG -1 downto 0)
   );
-end entity ucm_cvp;
+end entity ucm_pam_csw;
 
-architecture beh of ucm_cvp is
+architecture beh of ucm_pam_csw is
 
 begin
-
+  SLc_CS : process(Reset_b,clk) begin
+    if(not Reset_b) then
+      o_data <= (others => (others => '0'));
+    elsif rising_edge(clk) then
+      for csw_i in MAX_NUM_HEG -1 downto 0 loop
+        if ?? i_control.data_present(csw_i) then
+          o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
+        else
+          o_data(csw_i) <= (others => '0');
+        end if;
+      end loop;
+    end if;
+  end process;
 end beh;
+
+
+
+
+
+

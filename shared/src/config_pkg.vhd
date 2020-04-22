@@ -24,9 +24,9 @@ package cfg_pkg is
 --------------------------------------------------------------------------------
 -- Station information
 --------------------------------------------------------------------------------
-constant ST_nBARREL_ENDCAP    : integer := 0; -- 0: barrel    1: Endcap
-constant ENDCAP_nSMALL_LARGE  : integer := 0; -- 0: small     1: large
-constant ENABLE_NEIGHTBORS    : integer := 1; -- 0: disabled  1: enabled
+constant ST_nBARREL_ENDCAP    : std_logic := '0'; -- 0: barrel    1: Endcap
+constant ENDCAP_nSMALL_LARGE  : std_logic := '0'; -- 0: small     1: large
+constant ENABLE_NEIGHTBORS    : std_logic := '1'; -- 0: disabled  1: enabled
 
 --------------------------------------------------------------------------------
 -- IN COMPILATION CONFIGURATIONS 
@@ -34,7 +34,9 @@ constant ENABLE_NEIGHTBORS    : integer := 1; -- 0: disabled  1: enabled
 constant MAX_NUM_HP   : integer := 6;
 constant MAX_NUM_HEG  : integer := 3;
 constant MAX_NUM_HPS  : integer := 3;
-constant MAX_NUM_SL   : integer := 3 + ST_nBARREL_ENDCAP*ENDCAP_nSMALL_LARGE*3 + ENABLE_NEIGHTBORS*2;
+constant MAX_NUM_SL   : integer := 3 + 
+to_integer(unsigned'("" & ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & ENDCAP_nSMALL_LARGE))*3 + 
+to_integer(unsigned'("" & ENABLE_NEIGHTBORS))*2;
 
 --------------------------------------------------------------------------------
 -- Segment Finder
