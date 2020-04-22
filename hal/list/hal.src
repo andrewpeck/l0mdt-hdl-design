@@ -21,6 +21,7 @@
 ../../IP/mgt_10g24_gth/mgt_10g24_gth.xci
 ../../IP/mgt_10g24_gty/mgt_10g24_gty.xci
 ../../IP/mgt_9g6_gth/mgt_9g6_gth.xci
+../../IP/mgt_9g6_gty/mgt_9g6_gty.xci
 
 # MGT
 ../../hal/src/mgt/mgt_pkg.vhd 2008
@@ -37,4 +38,3 @@
 # Sector Logic
 ../../sl/src/sector_logic_link_wrapper.vhd 2008
 ../../sl/src/sector_logic_pkg.vhd 2008
-
