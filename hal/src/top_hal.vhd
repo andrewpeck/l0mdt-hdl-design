@@ -230,7 +230,9 @@ begin  -- architecture behavioral
     pipeline_bx_strobe <= r80_dly xor r80;
   end process;
 
-  clock_and_control <= (clk => clocks.clock_pipeline, rst_n => not global_reset, bx => pipeline_bx_strobe);
+  clock_and_control.clk   <= clocks.clock_pipeline;
+  clock_and_control.rst_n <= not global_reset;
+  clock_and_control.bx    <= pipeline_bx_strobe;
 
   ttc_commands.bcr <= '0';
   ttc_commands.ocr <= '0';

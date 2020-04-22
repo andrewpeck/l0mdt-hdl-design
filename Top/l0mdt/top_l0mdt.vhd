@@ -75,6 +75,7 @@ begin
 
   top_hal : entity hal.top_hal
     port map (
+      clock_and_control     => clock_and_control,
       clock_in_p            => clock_in_p,
       clock_in_n            => clock_in_n,
       refclk_i_p            => refclk_i_p,
