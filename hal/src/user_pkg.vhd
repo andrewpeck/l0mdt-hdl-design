@@ -18,6 +18,6 @@ package user_pkg is
   constant user_SECTOR_LOGIC_OUTPUTS : integer := -1;
   constant user_SLC_ENDCAP_LINKS     : integer := -1;
   constant user_SLC_BARREL_LINKS     : integer := -1;
-  constant user_TDC_INPUTS           : integer := 20;  -- # of TDC inputs
+  constant user_TDC_INPUTS           : integer := -1;  -- # of TDC inputs
 
 end package user_pkg;

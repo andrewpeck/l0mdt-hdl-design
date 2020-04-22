@@ -1,4 +1,4 @@
-../../hal/con/timing.xdc nosynth
+../../hal/con/timing.xdc
 ../../hal/con/loc_mgts.tcl nosynth
 ../../hal/con/pinouts_mpi_ku15p.xdc
 ../../hal/con/region_constraints_toolbox.tcl nosynth

@@ -15,10 +15,9 @@ for {set i 0} {$i < $imax} {incr i} {
 
 for {set i 0} {$i < $imax} {incr i} {
 
-    puts "Scanning for LOC attributes on MGT $i"
-
+    #puts "Scanning for LOC attributes on MGT $i"
     #set cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN/*MGT_GEN" $i]]
-    set cell [get_cells [format "top_hal/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
+    set cell [get_cells -quiet [format "top_hal/mgt_wrapper_inst/mgt_gen\[%i]*MGT_GEN" $i]]
 
     set x_loc -1
     set y_loc -1

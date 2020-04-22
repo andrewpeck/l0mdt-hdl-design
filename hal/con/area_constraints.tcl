@@ -22,14 +22,15 @@ proc assign_pblocks {min  max  side} {
         set lQuadBlock ""
 
         if {[string compare $side "L"] == 0} {
-            set q [expr $lRegId/4 - 11 + 3]
+            # LHS GTY quads  numbered 3-10
+            set q [expr $lRegId/4 + 3]
         }
         if {[string compare $side "R"] == 0} {
-            set q [expr $lRegId / 4]
+            # RHS GTH quads numbered 0-10
+            set q [expr ($lRegId-32) / 4]
         }
 
         set lQuadBlock [get_pblocks quad_$side$q]
-        puts "Populating $lQuadBlock with mgt #$lRegId"
 
         set lpgbt_cells    [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"]
         set mgt_cells      [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_GEN"]
@@ -38,16 +39,17 @@ proc assign_pblocks {min  max  side} {
 
         set cells "$mgt_cells $lpgbt_cells $sl_cells $tdc_cells"
 
-        puts "Adding cells to pblock $lQuadBlock:"
 
         if {[string is space $cells] == 0} {
-            add_cells_to_pblock -quiet $lQuadBlock $cells
+            puts "Adding cells to pblock $lQuadBlock with mgt #$lRegId"
+            add_cells_to_pblock $lQuadBlock $cells
         }
     }
+    puts " > No cells in other pblocks"
 }
 
-assign_pblocks 0   44  R
-assign_pblocks 44  76  L
+assign_pblocks 0  32  L
+assign_pblocks 33 76  R
 
 # Payload Area assignment
 #set lPayload [create_pblock payload]
