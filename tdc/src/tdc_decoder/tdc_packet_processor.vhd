@@ -70,6 +70,8 @@ begin
           -- require some minimum number of idle characters before we start processing data
           when SYNCING =>
 
+            valid_o <= '0';
+
             if (word_8b = TDC_START and k_char = '1') then
               if (sequential_header_count < sequential_header_count_thresh) then
                 sequential_header_count := sequential_header_count + 1;
@@ -124,16 +126,18 @@ begin
             if (k_char = '1' and word_8b = TDC_ERR) then  -- 28.4 = tdc_err
               tdc_err_o      <= '1';
               tdc_word_state <= READY;
+              valid_o <= '0';
             elsif (word_8b = TDC_START and k_char = '1') then
               tdc_word_state <= READY;
+              valid_o <= '1';
             else
               tdc_word_state <= DATA0;
+              valid_o <= '1';
             end if;
 
             tdc_word_o (31 downto 24) <= word_8b;
             tdc_word_o (23 downto 0)  <= data_buf(23 downto 0);
 
-            valid_o <= '1';
 
           when others =>
             tdc_word_state <= ERR;
