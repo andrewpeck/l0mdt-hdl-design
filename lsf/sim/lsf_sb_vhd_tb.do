@@ -38,7 +38,7 @@ set LOAD_LUTS_HLS_IP "$CWD/src/hls_ip/hls_load_luts/hdl/verilog"
 set GET_ROM_ADDR_HLS_IP "$CWD/src/hls_ip/hls_get_rom_addr/hdl/verilog"
 set GET_TRIG_VALS_HLS_IP "$CWD/src/hls_ip/hls_get_trig_vals/hdl/verilog"
 set COMPUTE_RBINS_HLS_IP "$CWD/src/hls_ip/hls_compute_r_bins/hdl/verilog"
-set SPYBUFFER_SRC "..//tp-fw/src/SpyBuffer/"
+set SPYBUFFER_SRC "$CWD/../IP_repository/SpyBuffer/src"
 set PLL_IP "$CWD/IP/pll_inst"
 set FIND_MAX_BIN_HLS_IP "$CWD/src/hls_ip/hls_find_max_bin/hdl/verilog"
 set GET_LEGENDRE_SEGMENT_HLS_IP "$CWD/src/hls_ip/hls_get_legendre_segment/hdl/verilog"
@@ -128,7 +128,7 @@ vlog -sv -work work "$SRC/lsf_spybuffer_wrapper.sv"
 vlog -sv -work work "$SRC/legendreEngine_top.sv"
 vcom -work work "$SRC/l0mdt_buses_constants_pkg.vhd"		     
 vcom -work work "$SRC/lsf_wrapper.vhd"
-vlog -sv -work work "$TB/lsf_sb_vhd/lsf_sb_vhd_tb.v"
+vlog -sv -work work "$TB/lsf_sb_vhd_tb.v"
 
 
 vsim -debugDB -t 10ps  -voptargs="+acc" -L work -L unisims_ver -L work apatb_lsf_sb_vhd_tb glbl -suppress 6630 -wlf lsf_sb_vhd_tb.wlf 
