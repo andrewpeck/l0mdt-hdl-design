@@ -27,16 +27,24 @@ module legendreEngine_top(
 			  */
 			  );
 
+ 
+`ifdef SYNTHESIS
+   parameter W_IN = 7; 
+   parameter W_r  = 7; 
+   parameter char_width = 7; 
+   parameter W_zd = 7; 
+   parameter W_Rd = 7;
+   parameter W_rd = 7;
+   
+
+`else
    parameter W_zd = SLCPROC_HPS_SF_VEC_POS_LEN; //HPS_LSF_MDT_LOCALX_LEN; //19;
    parameter W_Rd = SLCPROC_HPS_SF_VEC_POS_LEN; //HPS_LSF_MDT_LOCALY_LEN; //18; //19;
-
    parameter W_rd = HPS_LSF_MDT_RADIUS_LEN; // 9;
- 
-
    parameter W_IN = 22;
    parameter W_r  = 13;
    parameter char_width = 8;
-
+`endif
    parameter gtheta = SF_SEGANGLE_LEN; //15;
    
 
@@ -74,7 +82,9 @@ module legendreEngine_top(
     
    
    logic 				       clk_hs;
-   
+  
+ assign clk_hs = clk;
+/* 
 `ifdef SYNTHESIS
     pll_inst pll_inst_0
    (
@@ -88,6 +98,7 @@ module legendreEngine_top(
 `else // !`ifdef SYNTH
    assign clk_hs = clk;
 `endif
+ */
    legendreEngine legendreEngine_inst(
 		       		      .clk(clk_hs),
 		       		      .rst(rst),
