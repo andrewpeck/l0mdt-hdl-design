@@ -43,6 +43,6 @@ module aFifo #(parameter DSIZE = 8,
       .winc(winc), .wclk(wclk),
       .wrst_n(wrst_n));
    
-`default_nettype wire
-endmodule // fifo1
 
+endmodule // fifo1
+`default_nettype wire

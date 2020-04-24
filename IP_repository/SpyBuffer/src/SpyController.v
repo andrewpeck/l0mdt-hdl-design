@@ -248,5 +248,6 @@ module SpyController #(
 
     // TODO: This is redundant now: we store metadata bits!
     assign data[DATAWIDTH:0] = data_in[DATAWIDTH:0];
-`default_nettype wire
+
 endmodule
+`default_nettype wire

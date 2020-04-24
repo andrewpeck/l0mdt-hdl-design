@@ -115,5 +115,6 @@ module SpyBuffer #(
         .meta_write_addr(spy_meta_write_addr),
         .meta_read_data(spy_meta_read_data)
     );
-`default_nettype wire
+
 endmodule
+`default_nettype wire

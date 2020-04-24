@@ -75,5 +75,6 @@
 ../../lsf/src/lsf_spybuffer_wrapper.sv
 ../../lsf/src/legendreEngine_top.sv
 ../../dataformats/l0mdt_buses_constants.svh
+../../dataformats/l0mdt_buses_constants_pkg.vhd		     
 
 
