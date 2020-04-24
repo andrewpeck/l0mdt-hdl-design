@@ -1,3 +1,4 @@
+#vivado
 ############# modify these to match project ################
 set bin_file 1
 set use_questa_simulator 1
@@ -29,4 +30,3 @@ set DESIGN "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
 
 source $path_repo/Hog/Tcl/create-project.tcl
-

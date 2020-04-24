@@ -1,8 +1,9 @@
 library IEEE;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-
-use work.mdttp_constants_pkg.all;
+library l0mdt_lib;
+  
+use l0mdt_lib.mdttp_constants_pkg.all;
 
 
 entity top_lsf IS
