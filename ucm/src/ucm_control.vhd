@@ -19,7 +19,7 @@ use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.interfaces_types_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -33,7 +33,7 @@ entity ucm_ctrl is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in slc_prepro_avt(MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_rt;
     o_pam_ctrl          : out ucm_pam_control_rt;

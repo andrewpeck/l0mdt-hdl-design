@@ -18,7 +18,7 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.interfaces_types_pkg.all;
 
 package hp_t0lut_rom is
 

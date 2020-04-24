@@ -4,7 +4,8 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Module: Muon Candidate Manager
+--          Preprocesing
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -22,40 +23,23 @@ use shared_lib.interfaces_types_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-
-entity top_ucm is
+entity ucm_prepro is-
   port (
-   clk                 : in std_logic;
+    clk                 : in std_logic;
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- pam out
-    o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
-    o_uCM2hps_data_av      : out ucm2hps_slc_avt(MAX_NUM_HPS -1 downto 0);
-    -- MDT hit
-    o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
+    o_prepro_data_av       : out ucm_prepro_avt(MAX_NUM_SL -1 downto 0)
   );
-end entity top_ucm;
+end entity ucm_prepro;
 
-architecture beh of top_ucm is
+architecture beh of ucm_prepro is
+
 
 begin
 
-  UCM : entity ucm_lib.ucm
-  port map(
-    clk                 => clk,
-    Reset_b             => Reset_b,
-    glob_en             => glob_en,
-    -- configuration, control & Monitoring
-    -- SLc in
-    i_slc_data_av          => i_slc_data_av,
-    -- pam out
-    o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-    o_uCM2hps_data_av      => o_uCM2hps_data_av,
-    -- MDT hit
-    o_uCM2pl_av            => o_uCM2pl_av
-  );
-
+  
 end beh;
