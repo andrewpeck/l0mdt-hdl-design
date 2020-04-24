@@ -64,7 +64,7 @@ module rptr_empty #(parameter ADDRSIZE = 4)
      else         ralmostempty_int <= ralmostempty_val | rempty_val;
 
 
-   `default_nettype wire
+
 endmodule // rptr_empty
 
 `default_nettype wire

@@ -6,7 +6,7 @@
 
 `ifndef L0MDT_BUS_CONSTANTS
 `define L0MDT_BUS_CONSTANTS
-`include "../src/l0mdt_buses_constants.svh"
+`include "l0mdt_buses_constants.svh"
 `endif
 
 `define AUTOTB_DUT      lsf_vhd_wrapper

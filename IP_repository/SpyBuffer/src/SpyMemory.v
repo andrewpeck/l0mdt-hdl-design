@@ -83,5 +83,6 @@ module SpyMemory #(
             end
         end
     end
-`default_nettype wire
+
 endmodule
+`default_nettype wire
