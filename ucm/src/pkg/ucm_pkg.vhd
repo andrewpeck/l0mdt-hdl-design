@@ -21,17 +21,32 @@ use shared_lib.common_pkg.all;
 
 package ucm_pkg is
 
-  constant UCM_INPUT_PL_LATENCY : integer := 3;
+constant UCM_INPUT_PL_LATENCY : integer := 3;
 
--- type sl2ucm_data_rt is record
 
---   data_valid : std_logic;
--- end record;
+type ucm_prepro_rt is record
+  muid                            : slc_muid_rt;
+  chambers                        : slc_chid_rt;
+  common                          : slc_common_rt;
+  specific                        : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);       -- can be either slc_barrel_vt or slc_endcap_vt
+  data_valid                      : std_logic;
+end record ucm_prepro_rt;
+
+constant SLC_PREPRO_WIDTH : integer := 128;
+subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
+
+function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
+function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
+-- function nullify return slc_rx_data_rt;
+
+type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
+type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
+
 -- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
-constant UCM_VP_DATA_WIDTH : integer := 1;
-subtype ucm_vp_data_stdst is std_logic_vector(SLC_PREPRO_WIDTH downto 0);
-type ucm_vp_data_astdst is array (integer range <>) of ucm_vp_data_stdst;
-type ucm_vp_data_aastdst is array (integer range <>) of ucm_vp_data_astdst(MAX_NUM_HPS-1 downto 0);
+constant UCM_CVP_DATA_WIDTH : integer := 1;
+subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
+type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
+type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
 
 type ucm_csw_dest is array (integer range <>) of std_logic_Vector(3 downto 0);
 
@@ -83,5 +98,38 @@ package body ucm_pkg is
 --------------------------------------------------------------------------------
 -- FUNCTIONS IMPLEMENTATION
 --------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------
+  -- ucm_prepro_rt
+  function nullify return ucm_prepro_rt is
+  begin
+    return (nullify
+            , nullify
+            , nullify
+            , (others => '0')
+            , '0');
+  end function nullify;
+
+  function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt is
+    variable v : ucm_prepro_vt;
+  begin
+    v := vectorify(d.muid)
+         & vectorify(d.chambers)
+         & vectorify(d.common)
+         & d.specific
+         & d.data_valid;
+    return v;
+  end function vectorify;
+
+  function recordify(v: ucm_prepro_vt) return ucm_prepro_rt is
+    variable b : ucm_prepro_rt;
+  begin
+    b.muid                 := recordify(v(127 downto 108));
+    b.chambers             := recordify(v(107 downto 84));
+    b.common               := recordify(v(83 downto 52));
+    b.specific             := v(51 downto 1);
+    b.data_valid           := v(0);
+    return b;
+  end function recordify;
+  --------------------------------------------------------------------------------
  
 end package body ucm_pkg;

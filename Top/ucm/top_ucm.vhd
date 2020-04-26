@@ -30,7 +30,7 @@ entity top_ucm is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av          : in slc_prepro_avt(MAX_NUM_SL -1 downto 0);
+    i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- pam out
     o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_slc_avt(MAX_NUM_HPS -1 downto 0);

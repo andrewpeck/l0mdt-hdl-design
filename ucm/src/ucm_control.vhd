@@ -33,7 +33,7 @@ entity ucm_ctrl is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in slc_prepro_avt(MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_rt;
     o_pam_ctrl          : out ucm_pam_control_rt;
@@ -48,17 +48,17 @@ architecture beh of ucm_ctrl is
   type alg_status_t is (
 		ALG_IDLE, ALG_RUN, ALG_SET
   );
-  signal alg_status : alg_status_t;
+  signal alg_status   : alg_status_t;
 
-  signal data_ar : slc_prepro_art(MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro_art(MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(MAX_NUM_SL -1 downto 0);
 
-  signal num_cand : unsigned(3 downto 0);
-  signal pam_update : std_logic;
+  signal num_cand     : unsigned(3 downto 0);
+  signal pam_update   : std_logic;
 
-  signal ch_busy : std_logic_vector(MAX_NUM_HEG -1 downto 0);
-  signal ch_count : ch_count_avt(MAX_NUM_HEG -1 downto 0);
+  signal ch_busy      : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  signal ch_count     : ch_count_avt(MAX_NUM_HEG -1 downto 0);
 
 begin
 

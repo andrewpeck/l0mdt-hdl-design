@@ -1,4 +1,5 @@
 ../../ucm/src/pkg/ucm_pkg.vhd 2008
+../../ucm/src/ucm_prepro.vhd 2008
 ../../ucm/src/ucm_control.vhd 2008
 ../../ucm/src/ucm_csw.vhd 2008
 ../../ucm/src/ucm_pam_csw.vhd 2008

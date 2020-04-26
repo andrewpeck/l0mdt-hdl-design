@@ -33,8 +33,8 @@ entity ucm_pam_csw is
     --
     i_control           : in ucm_pam_control_rt;
     --
-    i_data              : in pipeline_avt(MAX_NUM_HEG -1 downto 0);
-    o_data              : out pipeline_avt(MAX_NUM_HEG -1 downto 0)
+    i_data              : in ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
+    o_data              : out ucm_prepro_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity ucm_pam_csw;
 

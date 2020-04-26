@@ -33,8 +33,8 @@ entity ucm_cvp is
     --
     i_in_en             : in std_logic;
     --
-    i_data              : in pipeline_vt;
-    o_ucm2hps           : out ucm_vp_data_astdst(MAX_NUM_HPS -1 downto 0)
+    i_data              : in ucm_prepro_vt;
+    o_ucm2hps           : out ucm_cvp_avt(MAX_NUM_HPS -1 downto 0)
       
   );
 end entity ucm_cvp;

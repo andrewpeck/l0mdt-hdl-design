@@ -33,8 +33,8 @@ entity ucm_csw is
     --
     i_control           : in ucm_csw_control_rt;
     --
-    i_data              : in slc_prepro_avt(MAX_NUM_SL -1 downto 0);
-    o_data              : out slc_prepro_avt(MAX_NUM_SL -1 downto 0)
+    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
+    o_data              : out ucm_prepro_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 
