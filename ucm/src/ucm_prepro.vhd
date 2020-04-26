@@ -37,9 +37,23 @@ entity ucm_prepro is
 end entity ucm_prepro;
 
 architecture beh of ucm_prepro is
-
+  
+  signal i_slc_data_r     : slc_rx_data_rt;
+  signal o_prepro_data_r  : ucm_prepro_rt;
 
 begin
-
   
+  i_slc_data_r <= recordify(i_slc_data_v);
+  o_prepro_data_v <= vectorify(o_prepro_data_r);
+
+  o_prepro_data_r.muid <= i_slc_data_r.muid;
+  o_prepro_data_r.chambers <= i_slc_data_r.chambers;
+  o_prepro_data_r.common <= i_slc_data_r.common;
+  o_prepro_data_r.specific <= i_slc_data_r.specific;
+  o_prepro_data_r.data_valid <= i_slc_data_r.data_valid;
+
+  -- fala el calculo de phimod 
+  -- falta el calculo de sl destino
+
+
 end beh;
