@@ -73,7 +73,7 @@ begin
     -- variable order : integer(MAX_NUM_SL -1 downto 0);
   begin
 
-    if(not Reset_b) then
+    if Reset_b = '0' then
       alg_Status <= ALG_IDLE;
       o_csw_ctrl <= ((others => '0'), (others => ( others => '0')));
       pam_update <= '0';
@@ -81,7 +81,7 @@ begin
       
       case alg_status is
         when ALG_IDLE =>
-          if(?? or_reduce(input_Valids)) then
+          if or_reduce(input_Valids) = '1' then
             -- here goes the algorithm
             o_csw_ctrl <= ((others => '0'), (others => ( others => '0')));
             pl_o := 0;
@@ -90,20 +90,20 @@ begin
           end if;
         when ALG_RUN =>
           
-          if ?? ENABLE_NEIGHTBORS then -- with neigbors
-            if not (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) then -- 3+1+1
+          if  ENABLE_NEIGHTBORS = '1' then -- with neigbors
+            if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
               -- barrel or small endcap
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid then -- x1xxx
+              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
                 o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
                 o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
               end if;
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid then -- xx1xx
+              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
                 o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
                 o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
               end if;
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid then -- xxx1x
+              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
                 o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
                 o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
@@ -111,12 +111,12 @@ begin
             else 
               -- large endcap
             end if;
-            if data_ar(MAX_NUM_SL - 1).data_valid then -- xxx1x
+            if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
               o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
               o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
               pl_o := pl_o + 1;
             end if;
-            if data_ar(0).data_valid then -- xxx1x
+            if data_ar(0).data_valid = '1' then -- xxx1x
               o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
               o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(0,4));
               pl_o := pl_o + 1;
@@ -145,13 +145,13 @@ begin
     variable processed : integer := 0;
   begin
 
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       ch_busy <= (others => '0');
       ch_count <= (others => (others => '0'));
     elsif rising_edge(clk) then
       
       for ch_i in MAX_NUM_HEG -1 downto 0 loop
-        if ch_busy(ch_i) then
+        if ch_busy(ch_i) = '1' then
           if ch_count(ch_i) < LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
             o_pam_ctrl.data_present(ch_i) <= '0';
@@ -161,7 +161,7 @@ begin
           end if;
           
         else
-          if pam_update then
+          if pam_update = '1' then
             if processed < to_integer(num_cand) then
               o_pam_ctrl.data_present(ch_i) <= '1';
               o_pam_ctrl.addr_orig(ch_i) <= std_logic_vector(to_unsigned(MAX_NUM_HEG -1 - processed,4));

@@ -43,10 +43,10 @@ type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
 type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
 
 -- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
-constant UCM_CVP_DATA_WIDTH : integer := 1;
-subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
-type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
-type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
+-- constant UCM_CVP_DATA_WIDTH : integer := 1;
+-- subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
+-- type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
+-- type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
 
 type ucm_csw_dest is array (integer range <>) of std_logic_Vector(3 downto 0);
 

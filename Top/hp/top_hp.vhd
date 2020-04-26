@@ -38,11 +38,11 @@ entity top_hp is
       i_SLC_Window        : in SLc_window_std;
       i_slc_data_av          : in hp_slc_rt;
       -- MDT hit
-      i_mdt_data          : in hp_hit_data_stdst;
+      i_mdt_data          : in hp_hit_data_vt;
       -- i_mdt_valid         : in std_logic;
       -- i_mdt_time_real     : in mdt_time_le_st;
       -- to Segment finder
-      o_mdt2sf_data    : out hp2bm_stdst
+      o_mdt2sf_data    : out hp2bm_vt
     );
 end top_hp;
 

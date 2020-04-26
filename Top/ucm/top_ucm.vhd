@@ -25,16 +25,16 @@ use ucm_lib.ucm_pkg.all;
 
 entity top_ucm is
   port (
-   clk                 : in std_logic;
+    clk                 : in std_logic;
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
-    -- pam out
+    -- to hps
     o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
-    o_uCM2hps_data_av      : out ucm2hps_slc_avt(MAX_NUM_HPS -1 downto 0);
-    -- MDT hit
+    o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
+    -- pipeline
     o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity top_ucm;

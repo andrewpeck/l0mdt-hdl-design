@@ -33,7 +33,7 @@ entity heg_buffermux is
     -- configuration
     i_control           : in heg_int_control_rt;
     -- MDT in
-    i_mdt_hits          : in hp2bm_astdst;
+    i_mdt_hits          : in hp2bm_avt;
     -- MDT out
     o_mdt_hits         : out heg2sf_mdt_rt
     
@@ -52,12 +52,12 @@ architecture beh of heg_buffermux is
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       -- in
-      i_mdt_hit           : in hp2bm_stdst;
+      i_mdt_hit           : in hp2bm_vt;
       i_wr                : in std_logic;
       i_rd                : in std_logic;
       -- out
       o_empty             : out std_logic;
-      o_mdt_hit           : out hp2bm_stdst
+      o_mdt_hit           : out hp2bm_vt
   
     );
   end component heg_buffermux_infifo;
@@ -67,7 +67,7 @@ architecture beh of heg_buffermux is
 
   -- signal int_mdt_hit : 
 
-  signal mdt_hit    :  hp2bm_astdst(MAX_NUM_HP -1 downto 0);
+  signal mdt_hit    :  hp2bm_avt(MAX_NUM_HP -1 downto 0);
   signal fifo_empty : std_logic_vector(MAX_NUM_HP -1 downto 0);
 
   
@@ -99,7 +99,7 @@ begin
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
   begin
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       -- o_mdt_hits <= (others => '0');
       o_mdt_hits <= null_heg2sf_mdt_rt;
       new_index_v := 0;
@@ -166,19 +166,19 @@ entity heg_buffermux_infifo is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- in
-    i_mdt_hit           : in hp2bm_stdst;
+    i_mdt_hit           : in hp2bm_vt;
     i_wr                : in std_logic;
     i_rd                : in std_logic;
     -- out
     o_empty             : out std_logic;
-    o_mdt_hit           : out hp2bm_stdst
+    o_mdt_hit           : out hp2bm_vt
 
   );
 end entity heg_buffermux_infifo;
 
 architecture beh of heg_buffermux_infifo is
 
-  type fifo_data_at is array ( BM_FIFO_DEPTH -1 downto 0) of hp2bm_stdst;
+  type fifo_data_at is array ( BM_FIFO_DEPTH -1 downto 0) of hp2bm_vt;
   signal fifo_data : fifo_data_at;
 
   signal wr_index : integer range 0 to BM_FIFO_DEPTH -1 := 0;
@@ -192,7 +192,7 @@ begin
   case_options <= i_wr & i_rd;
 
   SLc_reg : process(Reset_b,clk) begin
-    if(not Reset_b and not glob_en ) then
+    if(Reset_b = '0' and not glob_en ) then
       fifo_data <= (others=>(others=>'0'));
       wr_index <= 0;
       o_empty <= '1';

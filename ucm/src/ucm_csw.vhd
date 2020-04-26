@@ -41,12 +41,12 @@ end entity ucm_csw;
 architecture beh of ucm_csw is
 
 begin
-  SLc_CS : process(Reset_b,clk) begin
-    if(not Reset_b) then
+  UCM_MAIN_CSW : process(Reset_b,clk) begin
+    if(Reset_b = '0') then
       o_data <= (others => (others => '0'));
     elsif rising_edge(clk) then
       for csw_i in MAX_NUM_SL -1 downto 0 loop
-        if ?? i_control.data_present(csw_i) then
+        if i_control.data_present(csw_i) = '1' then
           o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
         else
           o_data(csw_i) <= (others => '0');

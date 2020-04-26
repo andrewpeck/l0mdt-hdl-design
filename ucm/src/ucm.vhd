@@ -30,10 +30,10 @@ entity ucm is
     -- configuration, control & Monitoring
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
-    -- pam out
+    -- to hps
     o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
-    o_uCM2hps_data_av      : out ucm2hps_slc_avt(MAX_NUM_HPS -1 downto 0);
-    -- MDT hit
+    o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
+    -- pipeline
     o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
@@ -56,7 +56,7 @@ architecture beh of ucm is
   signal cvp_control          : std_logic_vector(MAX_NUM_HEG -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
-  signal uCM2hps_data         : ucm_cvp_aavt(MAX_NUM_HEG -1 downto 0);
+  signal uCM2hps_data         : ucm2hps_aavt(MAX_NUM_HEG -1 downto 0);
 begin
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl
@@ -134,14 +134,14 @@ begin
   SLC_VP_A : for vp_i in MAX_NUM_HEG -1 downto 0 generate
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
-      clk         => clk,
-      Reset_b     => Reset_b,
-      glob_en     => glob_en,
+      clk           => clk,
+      Reset_b       => Reset_b,
+      glob_en       => glob_en,
       --
-      i_in_en     => cvp_control(vp_i),
+      i_in_en       => cvp_control(vp_i),
       --
-      i_data      => cpam_out_av(vp_i),
-      o_ucm2hps   => uCM2hps_data(vp_i)
+      i_data_v      => cpam_out_av(vp_i),
+      o_uCM2hps_av  => uCM2hps_data(vp_i)
 
     );
   end generate;

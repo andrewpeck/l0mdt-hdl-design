@@ -77,10 +77,10 @@ type hp_hit_data_rt is record
   data_valid      : std_logic;
 end record;
 type hp_hit_data_art is array ( integer range <>) of hp_hit_data_rt;
-subtype hp_hit_data_stdst is std_logic_vector((hp_hit_data_rt.layer'length + hp_hit_data_rt.tube'length + hp_hit_data_rt.time_le_t0s'length + 1 ) -1 downto 0);
-type hp_hit_data_astdst is array (integer range <>) of hp_hit_data_stdst;
-function hp_hit_data_f_r2std(	inputrecord : in hp_hit_data_rt	) return hp_hit_data_stdst;
-function hp_hit_data_f_std2rt(inputvector : in hp_hit_data_stdst  ) return hp_hit_data_rt;
+subtype hp_hit_data_vt is std_logic_vector((hp_hit_data_rt.layer'length + hp_hit_data_rt.tube'length + hp_hit_data_rt.time_le_t0s'length + 1 ) -1 downto 0);
+type hp_hit_data_avt is array (integer range <>) of hp_hit_data_vt;
+function hp_hit_data_f_r2std(	inputrecord : in hp_hit_data_rt	) return hp_hit_data_vt;
+function hp_hit_data_f_std2rt(inputvector : in hp_hit_data_vt  ) return hp_hit_data_rt;
 
 --------------------------------------------------------------------------------
 --  mdtoutput port
@@ -126,10 +126,10 @@ type hp2bm_rt is record
   data_valid  : std_logic;
 end record;
 type hp2bm_art is array (integer range <>) of hp2bm_rt;
-subtype hp2bm_stdst is std_logic_vector((2 + MDT_R_WIIDTH + CSF_X_WIDTH + CSF_Z_WIDTH) -1  downto 0 );
-type hp2bm_astdst is array (integer range <>) of hp2bm_stdst;
-function hp2bm_rt_f_r2std(	inputrecord : in hp2bm_rt	) return hp2bm_stdst;
-function hp2bm_rt_f_std2rt(inputvector : in hp2bm_stdst  ) return hp2bm_rt;
+subtype hp2bm_vt is std_logic_vector((2 + MDT_R_WIIDTH + CSF_X_WIDTH + CSF_Z_WIDTH) -1  downto 0 );
+type hp2bm_avt is array (integer range <>) of hp2bm_vt;
+function hp2bm_rt_f_r2std(	inputrecord : in hp2bm_rt	) return hp2bm_vt;
+function hp2bm_rt_f_std2rt(inputvector : in hp2bm_vt  ) return hp2bm_rt;
 
 
 end package hp_pkg;
@@ -164,8 +164,8 @@ package body hp_pkg is
   -- MDT hits functions
   --------------------------------------------------------------------------------
 
-  function hp_hit_data_f_r2std(	inputrecord : in hp_hit_data_rt ) return hp_hit_data_stdst is
-    variable vectorOuput : hp_hit_data_stdst;
+  function hp_hit_data_f_r2std(	inputrecord : in hp_hit_data_rt ) return hp_hit_data_vt is
+    variable vectorOuput : hp_hit_data_vt;
   begin
     vectorOuput := std_logic_vector(inputrecord.layer) & 
     std_logic_vector(inputrecord.tube) &
@@ -174,7 +174,7 @@ package body hp_pkg is
     return vectorOuput;
   end function;
 
-	function hp_hit_data_f_std2rt( inputvector : in hp_hit_data_stdst ) return hp_hit_data_rt is
+	function hp_hit_data_f_std2rt( inputvector : in hp_hit_data_vt ) return hp_hit_data_rt is
     variable recordOutput : hp_hit_data_rt;
   begin
     recordOutput.layer        := unsigned(inputvector(MDT_LE_TIME + MDT_TUBE_WIDTH + MDT_LAYER_WIDTH downto MDT_LE_TIME + MDT_TUBE_WIDTH + 1));
@@ -189,8 +189,8 @@ package body hp_pkg is
   -- MDT output functions
   --------------------------------------------------------------------------------
 
-  function hp2bm_rt_f_r2std(i_record : in hp2bm_rt) return hp2bm_stdst is
-    variable o_vector : hp2bm_stdst;
+  function hp2bm_rt_f_r2std(i_record : in hp2bm_rt) return hp2bm_vt is
+    variable o_vector : hp2bm_vt;
   begin
     o_vector := std_logic_vector(i_record.sf_data.r) & 
     std_logic_vector(i_record.sf_data.csf.x) & 
@@ -199,7 +199,7 @@ package body hp_pkg is
     return o_vector;
   end function;
 
-  function hp2bm_rt_f_std2rt(i_vector : in hp2bm_stdst) return hp2bm_rt is
+  function hp2bm_rt_f_std2rt(i_vector : in hp2bm_vt) return hp2bm_rt is
     variable o_record : hp2bm_rt;
   begin
     o_record.sf_data.r      := unsigned(i_vector(MDT_R_WIIDTH+CSF_X_WIDTH+CSF_Z_WIDTH+2-1 downto CSF_X_WIDTH+CSF_Z_WIDTH+2));

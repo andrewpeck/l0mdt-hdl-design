@@ -39,8 +39,8 @@ entity hps_slc_dist is
     -- configuration & control
     i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     -- SLc
-    i_uCM_data          : in ucm2heg_slc_astdst(MAX_NUM_HEG -1 downto 0);
-    o_uCM_data          : out ucm2heg_slc_astdst(MAX_NUM_HEG -1 downto 0)
+    i_uCM_data          : in ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
+    o_uCM_data          : out ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity hps_slc_dist;
 
@@ -49,7 +49,7 @@ architecture beh of hps_slc_dist is
 begin
 
   SLc_CS : process(Reset_b,clk) begin
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       o_uCM_data <= (others => (others=> '0'));
     elsif rising_edge(clk) then
       

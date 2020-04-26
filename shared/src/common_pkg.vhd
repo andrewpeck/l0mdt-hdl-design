@@ -27,9 +27,9 @@ use shared_lib.cfg_pkg.all;
 
 package common_pkg is
 
---------------------------------------------------------------------------------
--- CONSTANTS
---------------------------------------------------------------------------------
+-- =============================================================================
+-- SYSTEM CONSTANTS
+-- =============================================================================
   -- delay constants
   constant LATENCY_HPS_CH : integer := 10;
 
@@ -70,9 +70,9 @@ package common_pkg is
   -- constant eta_mult               : real    := 2.0**eta_LEN/eta_range;
   constant SLC_PT_THRES_LEN       : integer := 4;
   -- barrel
-  constant SLC_B_COIN_LEN         : integer := 4;
-  constant SLC_B_RESERVED           : integer := 8;
-  constant SLC_B_ZRPC_LEN           : integer := 10;
+  -- constant SLC_B_COIN_LEN         : integer := 4;
+  -- constant SLC_B_RESERVED           : integer := 8;
+  -- constant SLC_B_ZRPC_LEN           : integer := 10;
   -- constant z_roi_LEN            : integer := 19;
   -- constant r_roi_LEN            : integer := 19;
   -- constant chamber_id_LEN       : integer := 3;
@@ -112,155 +112,10 @@ package common_pkg is
   -- subtype mdt_time_full is unsigned(21 downto 0);     -- 0.78 ns resolution
 
 
-  --------------------------------------------------------------------------------
+  -- =============================================================================
   --  LOGIC PORTS TYPES
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- -- data from muon candidate
-  -- -- header 32 bits
-  --   type SLc_header_rt is record
-  --     BCID        : SLc_BCID_st;
-  --     num_TCs     : integer range 0 to 7;
-  --     num_mTCs    : integer range 0 to 7;
-  --     reserved    : std_logic_vector(13 downto 0);
-  --   end record;
-  -- -- trailer 32 bits
-  --   type SLc_trailer_rt is record
-  --     Comma        : std_logic_vector(7 downto 0);
-  --     Board_ID     : integer range 0 to ((2**6)-1);
-  --     Fiber_ID     : integer range 0 to ((2**4)-1);
-  --     CRC          : std_logic_vector(7 downto 0);
-  --     reserved     : std_logic_vector(5 downto 0);
-  --   end record;
-
-  --   -- SLc barrel
-  --   type SLc_b_data_rt is record
-  --     ID              : std_logic_vector(SLC_TCID_LEN - 1 downto 0);
-  --     tc_2_mdttp      : std_logic;
-  --     pos_etha        : unsigned(SLC_ETA_LEN -1 downto 0);
-  --     pos_phi         : unsigned(SLC_PHI_LEN -1 downto 0);
-  --     pt_threshold    : std_logic_vector(SLC_PT_THRES_LEN - 1 downto 0);
-  --     charge          : std_logic;
-  --     coin_type       : std_logic_vector(SLC_B_COIN_LEN - 1 downto 0);
-  --     Z_rpc0          : unsigned(SLC_B_ZRPC_LEN - 1 downto 0);
-  --     Z_rpc1          : unsigned(SLC_B_ZRPC_LEN - 1 downto 0);
-  --     Z_rpc2          : unsigned(SLC_B_ZRPC_LEN - 1 downto 0);
-  --     Z_rpc3          : unsigned(SLC_B_ZRPC_LEN - 1 downto 0);
-  --     reserved        : std_logic_vector(SLC_B_RESERVED - 1 downto 0);
-  --   end record;
-
-
-  -- -- full packet record
-  --   type SLc_b_packet_rt is record
-  --     header_r    : SLc_header_rt;
-  --     data_r      : SLc_b_data_rt;
-  --     tail_r      : SLc_trailer_rt;
-  --   end record;
-
-  --   subtype st_muoncandidate_data is std_logic_vector(191 downto 0);
-
-  -- -- useful muon candidate data
-  --   type muCand_data_rt is record
-  --     data : std_logic_vector(31 downto 0);
-  --   end record;
-
-  -- --------------------------------------------------------------------------------
-  -- --  SL_PREPRO
-  -- --------------------------------------------------------------------------------
-  -- constant SLC_SLCID_LEN              : integer    := 2;
-  -- constant SLC_SLID_LEN               : integer    := 6;
-  -- constant BCID_LEN                   : integer    := 12;
-  -- constant SLC_MUID_LEN               : integer    := 20;
-
-  -- type slc_muid_rt is record
-  --   slcid                               : std_logic_vector(SLC_SLCID_LEN-1 downto 0);
-  --   slid                                : std_logic_vector(SLC_SLID_LEN-1 downto 0);
-  --   bcid                                : std_logic_vector(BCID_LEN-1 downto 0);
-  -- end record;
-
-  -- subtype slc_muid_vt is std_logic_vector(SLC_MUID_LEN-1 downto 0);
-
-  -- function vectorify(d: slc_muid_rt) return slc_muid_vt;
-  -- function recordify(v: slc_muid_vt) return slc_muid_rt;
-
-  -- constant SLC_TCID_LEN               : integer    := 2;
-  -- constant SLC_TCSENT_LEN             : integer    := 1;
-  -- constant SLC_POS_ETA_LEN            : integer    := 15;
-  -- constant SLC_POS_ETA_MULT             : real       := 0.0;
-  -- constant SLC_POS_PHI_LEN            : integer    := 9;
-  -- constant SLC_POS_PHI_MULT             : real       := 0.0;
-  -- constant SLC_PT_TH_LEN              : integer    := 4;
-  -- constant SLC_CHARGE_LEN             : integer    := 1;
-  -- constant SLC_COMMON_LEN             : integer    := 32;
-
-  -- type slc_common_rt is record
-  --   tcid                                : std_logic_vector(SLC_TCID_LEN-1 downto 0);
-  --   tcsent                              : std_logic_vector(SLC_TCSENT_LEN-1 downto 0);
-  --   pos_eta                             : signed(SLC_POS_ETA_LEN-1 downto 0);
-  --   pos_phi                             : unsigned(SLC_POS_PHI_LEN-1 downto 0);
-  --   pt_th                               : std_logic_vector(SLC_PT_TH_LEN-1 downto 0);
-  --   charge                              : std_logic_vector(SLC_CHARGE_LEN-1 downto 0);
-  -- end record;
-
-  -- subtype slc_common_vt is std_logic_vector(SLC_COMMON_LEN-1 downto 0);
-
-  -- function vectorify(d: slc_common_rt) return slc_common_vt;
-  -- function recordify(v: slc_common_vt) return slc_common_rt;
-  -- --------------------------------------------------------------------------------
-  -- constant PL_DESTSL_LEN              : integer    := 2;
-  -- constant PL_PHIMOD_LEN              : integer    := 8;
-  -- constant PL_MDTID_LEN               : integer    := 6;
-  -- constant PL_COMMON_LEN              : integer    := 34;
-
-  -- type pl_common_rt is record
-  --   destsl                              : std_logic_vector(PL_DESTSL_LEN-1 downto 0);
-  --   phi_mod                             : signed(PL_PHIMOD_LEN-1 downto 0);
-  --   mdtid_inn                           : std_logic_vector(PL_MDTID_LEN-1 downto 0);
-  --   mdtid_mid                           : std_logic_vector(PL_MDTID_LEN-1 downto 0);
-  --   mdtid_out                           : std_logic_vector(PL_MDTID_LEN-1 downto 0);
-  --   mdtid_ext                           : std_logic_vector(PL_MDTID_LEN-1 downto 0);
-  -- end record;
-
-  -- subtype pl_common_vt is std_logic_vector(PL_COMMON_LEN-1 downto 0);
-
-  -- function vectorify(d: pl_common_rt) return pl_common_vt;
-  -- function recordify(v: pl_common_vt) return pl_common_rt;
-  -- --------------------------------------------------------------------------------
-  -- constant SLC_SPARE_LEN              : integer    := 8;
-  -- constant SLC_COIN_TYPE_LEN          : integer    := 3;
-  -- constant SLC_Z_RPC_LEN              : integer    := 10;
-  -- -- constant SLC_Z_RPC_MULT               : real       := 0;
-  -- constant SLC_BARREL_LEN             : integer    := SLC_COIN_TYPE_LEN + 4 * SLC_Z_RPC_LEN;
-
-  -- type slc_barrel_rt is record
-  --   spare_bits                          : std_logic_vector(SLC_SPARE_LEN-1 downto 0);
-  --   coin_type                           : std_logic_vector(SLC_COIN_TYPE_LEN-1 downto 0);
-  --   z_rpc0                              : signed(SLC_Z_RPC_LEN-1 downto 0);
-  --   z_rpc1                              : signed(SLC_Z_RPC_LEN-1 downto 0);
-  --   z_rpc2                              : signed(SLC_Z_RPC_LEN-1 downto 0);
-  --   z_rpc3                              : signed(SLC_Z_RPC_LEN-1 downto 0);
-  -- end record;
-
-  -- constant SLC_SPECIFIC_LEN           : integer    := 51;
-  -- subtype slc_barrel_vt is std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
-
-  -- -- function vectorify(d: slc_barrel_rt) return slc_barrel_vt;
-  -- -- function recordify(v: slc_barrel_vt) return slc_barrel_rt;
-
-  -- type slc_prepro_rt is record
-  --   muid                                : slc_muid_rt;
-  --   common                              : slc_common_rt;
-  --   pl_common                           : pl_common_rt;
-  --   specific                            : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
-  --   data_valid                          : std_logic;
-  -- end record;
-  -- constant SLC_PREPRO_LEN : integer := SLC_MUID_LEN + SLC_COMMON_LEN + PL_COMMON_LEN + SLC_SPECIFIC_LEN + 1;
-  -- subtype slc_prepro_vt is std_logic_vector(SLC_PREPRO_LEN-1 downto 0);
-  -- type slc_prepro_art is array (integer range <>) of slc_prepro_rt;
-  -- type slc_prepro_avt is array (integer range <>) of slc_prepro_vt;
-
-  -- -- function slc_prepro_vectorify(d: slc_prepro_rt) return slc_prepro_vt;
-  -- function recordify(v: slc_prepro_vt) return slc_prepro_rt;
+  -- =============================================================================
+  
 
   constant SLC_SLCID_LEN              : integer    := 2;                                   -- a comment
   constant SLC_SLID_LEN               : integer    := 6;
@@ -441,40 +296,64 @@ package common_pkg is
   type ucm2heg_pam_art is array(integer range <>) of ucm2heg_pam_rt;
   --------------------------------------------------------------------------------
   -- ucm slc 2 hps
-  type ucm2heg_barrel_rt is record --from TAR & PC
-    z           : signed(SLC_B_ZRPC_LEN - 1 downto 0);          -- 10 bits
-    z_0         : signed(SLC_B_ZRPC_LEN - 1 downto 0);          -- 10 bits
-    phi         : signed(SLC_PHI_LEN - 1 downto 0); 
-    mbar        : signed(SLC_MBAR_LEN - 1 downto 0);
-  end record;
-  constant null_ucm_slc_barrel_rt : ucm2heg_barrel_rt := ((others => '0'),(others => '0'),(others => '0'),(others => '0'));
-  constant UCM2HE_BARREL_STDST_LEN : integer := 2*SLC_B_ZRPC_LEN + SLC_PHI_LEN + SLC_MBAR_LEN;
-  subtype ucm2heg_barrel_stdst is std_logic_vector(UCM2HE_BARREL_STDST_LEN-1 downto 0);
-  function ucm2heg_barrel_f_r2std(inputrecord : in ucm2heg_barrel_rt	) return ucm2heg_barrel_stdst;
-  function ucm2heg_barrel_f_std2rt(inputvector : in ucm2heg_barrel_stdst  ) return ucm2heg_barrel_rt;
-  --
-  type ucm2heg_slc_rt is record
-    BCID        : unsigned(BCID_LEN -1 downto 0);          -- 12 bits
-    barrel      : ucm2heg_barrel_rt; --barrel_ucm_t(ST_nBARREL_ENDCAP downto 0);
-    -- endcap      : hp_SLc_endcap_rt; --endcap_ucm_t(ST_nBARREL_ENDCAP downto 1);
-    data_valid  : std_logic;
-  end record;
-  constant null_ucm2heg_slc_rt : ucm2heg_slc_rt := (null_SLc_BCID_st,null_ucm_slc_barrel_rt,'0');
-  type ucm2heg_slc_art is array (integer range <>) of ucm2heg_slc_rt;
+  type ucm2hps_id_rt is record
+  bcid                            : std_logic_vector(BCID_LEN-1 downto 0);
+  chamber_id                      : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+  end record ucm2hps_id_rt;
+  constant UCM2HPS_ID_LEN : integer := 18;
+  subtype ucm2hps_id_vt is std_logic_vector(UCM2HPS_ID_LEN-1 downto 0);
+  function vectorify(d: ucm2hps_id_rt) return ucm2hps_id_vt;
+  function recordify(v: ucm2hps_id_vt) return ucm2hps_id_rt;
+  function nullify return ucm2hps_id_rt;
 
-  constant UCM2HEG_SLC_STDST_LEN : integer := UCM2HE_BARREL_STDST_LEN + BCID_LEN + 1;
-  subtype ucm2heg_slc_stdst is std_logic_vector(UCM2HEG_SLC_STDST_LEN downto 0);
-  type ucm2heg_slc_astdst is array(integer range <>) of ucm2heg_slc_stdst;
-  function ucm2heg_slc_f_r2std(	inputrecord : in ucm2heg_slc_rt	) return ucm2heg_slc_stdst;
-  function ucm2heg_slc_f_std2rt(inputvector : in ucm2heg_slc_stdst  ) return ucm2heg_slc_rt;
+  constant UCM2HPS_SPECIFIC_LEN       : integer    := 43;
+
+  type ucm2hps_rt is record
+    id                              : ucm2hps_id_rt;
+    specific                        : std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);
+    data_valid                      : std_logic;
+  end record ucm2hps_rt;
+  constant UCM2HPS_LEN : integer := 62;
+  subtype ucm2hps_vt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
+  function vectorify(d: ucm2hps_rt) return ucm2hps_vt;
+  function recordify(v: ucm2hps_vt) return ucm2hps_rt;
+  function nullify return ucm2hps_rt;
+  type ucm2hps_art is array (integer range <>) of ucm2hps_rt;
+  type ucm2hps_avt is array (integer range <>) of ucm2hps_vt;
+  type ucm2hps_aavt is array (integer range <>) of ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+
+  -- type ucm2heg_barrel_rt is record --from TAR & PC
+  --   z           : signed(SLC_B_ZRPC_LEN - 1 downto 0);          -- 10 bits
+  --   z_0         : signed(SLC_B_ZRPC_LEN - 1 downto 0);          -- 10 bits
+  --   phi         : signed(SLC_PHI_LEN - 1 downto 0); 
+  --   mbar        : signed(SLC_MBAR_LEN - 1 downto 0);
+  -- end record;
+  -- constant null_ucm_slc_barrel_rt : ucm2heg_barrel_rt := ((others => '0'),(others => '0'),(others => '0'),(others => '0'));
+  -- constant UCM2HE_BARREL_vt_LEN : integer := 2*SLC_B_ZRPC_LEN + SLC_PHI_LEN + SLC_MBAR_LEN;
+  -- subtype ucm2heg_barrel_vt is std_logic_vector(UCM2HE_BARREL_vt_LEN-1 downto 0);
+  -- function ucm2heg_barrel_f_r2std(inputrecord : in ucm2heg_barrel_rt	) return ucm2heg_barrel_vt;
+  -- function ucm2heg_barrel_f_std2rt(inputvector : in ucm2heg_barrel_vt  ) return ucm2heg_barrel_rt;
+  -- --
+  -- type ucm2heg_slc_rt is record
+  --   BCID        : unsigned(BCID_LEN -1 downto 0);          -- 12 bits
+  --   barrel      : ucm2heg_barrel_rt; --barrel_ucm_t(ST_nBARREL_ENDCAP downto 0);
+  --   -- endcap      : hp_SLc_endcap_rt; --endcap_ucm_t(ST_nBARREL_ENDCAP downto 1);
+  --   data_valid  : std_logic;
+  -- end record;
+  -- constant null_ucm2heg_slc_rt : ucm2heg_slc_rt := (null_SLc_BCID_st,null_ucm_slc_barrel_rt,'0');
+  -- type ucm2heg_slc_art is array (integer range <>) of ucm2heg_slc_rt;
+
+  -- constant UCM2HEG_SLC_vt_LEN : integer := UCM2HE_BARREL_vt_LEN + BCID_LEN + 1;
+  -- subtype ucm2heg_slc_vt is std_logic_vector(UCM2HEG_SLC_vt_LEN downto 0);
+  -- type ucm2heg_slc_avt is array(integer range <>) of ucm2heg_slc_vt;
+  -- function ucm2heg_slc_f_r2std(	inputrecord : in ucm2heg_slc_rt	) return ucm2heg_slc_vt;
+  -- function ucm2heg_slc_f_std2rt(inputvector : in ucm2heg_slc_vt  ) return ucm2heg_slc_rt;
   --------------------------------------------------------------------------------
   -- SLC data to hps
-  -- subtype ucm2heg_data_stdst is std_logic_vector(100 downto 0);
-  -- type ucm2heg_slc_astdst is array (integer range <>) of ucm2heg_data_stdst;
-  type ucm2hps_slc_avt is array (integer range <>) of ucm2heg_slc_astdst(MAX_NUM_HEG -1 downto 0);
-  --------------------------------------------------------------------------------
-  -- SLC data to pipeline
-  type slcproc_pipe_barrel_astdst is array (integer range <>) of SLCPROC_PIPE_BARREL_at;
+  -- subtype ucm2heg_data_vt is std_logic_vector(100 downto 0);
+  -- type ucm2heg_slc_avt is array (integer range <>) of ucm2heg_data_vt;
+  -- type ucm2hps_slc_avt is array (integer range <>) of ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
+
   --------------------------------------------------------------------------------
   -- mdt from tar
   type tar2heg_mdt_rt is record
@@ -483,19 +362,20 @@ package common_pkg is
     time_le         : unsigned(MDT_LE_TIME -1 downto 0);
   end record;
   type tar2heg_mdt_art is array(integer range <>) of tar2heg_mdt_rt;
-  subtype tar2heg_mdt_stdst is std_logic_vector((MDT_LAYER_LEN + MDT_TUBE_LEN + MDT_LE_TIME -1) downto 0 );
-  type tar2heg_mdt_astdt is array(integer range <>) of tar2heg_mdt_stdst;
-  function tar2heg_mdt_f_r2std(	inputrecord : in tar2heg_mdt_rt	) return tar2heg_mdt_stdst;
-  function tar2heg_mdt_f_std2rt(inputvector : in tar2heg_mdt_stdst  ) return tar2heg_mdt_rt;
+  subtype tar2heg_mdt_vt is std_logic_vector((MDT_LAYER_LEN + MDT_TUBE_LEN + MDT_LE_TIME -1) downto 0 );
+  type tar2heg_mdt_avt is array(integer range <>) of tar2heg_mdt_vt;
+  -- function tar2heg_mdt_f_r2std(	inputrecord : in tar2heg_mdt_rt	) return tar2heg_mdt_vt;
+  -- function tar2heg_mdt_f_std2rt(inputvector : in tar2heg_mdt_vt  ) return tar2heg_mdt_rt;
   
+  --------------------------------------------------------------------------------
   -- sf 2 pt
   type hps2pt_sf_rt is record
 
     data_valid : std_logic;
   end record;
   type hps2pt_sf_art is array(integer range <>) of hps2pt_sf_rt;
-  subtype hps2pt_sf_stdst is std_logic_vector(1 downto 0 );
-  type hps2pt_sf_astdst is array(integer range <>) of hps2pt_sf_stdst;
+  subtype hps2pt_sf_vt is std_logic_vector(1 downto 0 );
+  type hps2pt_sf_avt is array(integer range <>) of hps2pt_sf_vt;
 
 end package common_pkg;
 --------------------------------------------------------------------------------
@@ -806,7 +686,7 @@ package body common_pkg is
   -- --   d.data_Valid := v(0);
   -- --   return d;
   -- -- end function;
-  --------------------------------------------------------------------------------
+  -- ------------------------------------------------------------------------------
   -- pipeline
   function nullify return pipeline_rt is
   begin
@@ -844,73 +724,106 @@ package body common_pkg is
     b.data_valid           := v(0);
     return b;
   end function recordify;
-  -- function vectorify(d: pipeline_rt) return pipeline_vt is
-  --   variable v: pipeline_vt;
+
+-- ------------------------------------------------------------------------------
+-- ucm 2 hps functions
+
+  function nullify return ucm2hps_id_rt is
+  begin
+    return ((others => '0')
+            , (others => '0'));
+  end function nullify;
+
+  function vectorify(d: ucm2hps_id_rt) return ucm2hps_id_vt is
+    variable v : ucm2hps_id_vt;
+  begin
+    v := d.bcid
+         & vectorify(d.chamber_id);
+    return v;
+  end function vectorify;
+
+  function recordify(v: ucm2hps_id_vt) return ucm2hps_id_rt is
+    variable b : ucm2hps_id_rt;
+  begin
+    b.bcid                 := v(17 downto 6);
+    b.chamber_id           := recordify(v(5 downto 0));
+    return b;
+  end function recordify;
+
+  function nullify return ucm2hps_rt is
+  begin
+    return (nullify
+            , (others => '0')
+            , '0');
+  end function nullify;
+
+  function vectorify(d: ucm2hps_rt) return ucm2hps_vt is
+    variable v : ucm2hps_vt;
+  begin
+    v := vectorify(d.id)
+         & d.specific
+         & d.data_valid;
+    return v;
+  end function vectorify;
+
+  function recordify(v: ucm2hps_vt) return ucm2hps_rt is
+    variable b : ucm2hps_rt;
+  begin
+    b.id                   := recordify(v(61 downto 44));
+    b.specific             := v(43 downto 1);
+    b.data_valid           := v(0);
+    return b;
+  end function recordify;
+
+-- ------------------------------------------------------------------------------
+  -- slc from ucm
+  -- function ucm2heg_barrel_f_r2std(	i_rec : in ucm2heg_barrel_rt	) return ucm2heg_barrel_vt is
+  --   variable o_vec : ucm2heg_barrel_vt;
   -- begin
-  --   if not ST_nBARREL_ENDCAP then
-  --     -- d := (others => '0');
-  --   else
-      
-  --   end if;
-  --   v(SLC_MUID_LEN + SLC_COMMON_LEN + SLC_CHID_LEN + SLC_SPECIFIC_LEN + 4 + 2 - 1 downto SLC_COMMON_LEN + SLC_CHID_LEN + SLC_SPECIFIC_LEN + 4 + 2) := vectorify(d.muid);
-  --   v(SLC_COMMON_LEN + SLC_CHID_LEN + SLC_SPECIFIC_LEN + 4 + 2 - 1 downto SLC_CHID_LEN + SLC_SPECIFIC_LEN + 4 + 2) := vectorify(d.common); --
-  --   v(SLC_CHID_LEN + SLC_SPECIFIC_LEN + 4 + 2 - 1 downto SLC_SPECIFIC_LEN + 4 + 2) := vectorify(d.chambers); -- 85..57
-  --   v(SLC_SPECIFIC_LEN + 4 + 2 - 1 downto 4 + 2) := d.specific; -- 56..6
-  --   v(4 + 2 -1 downto 2) := d.process_ch; -- 5..2
-  --   v(1) := d.processed; -- 1
-  --   v(0) := d.data_Valid; -- 0
-  --   return v;
+  --   o_vec := std_logic_vector(i_rec.z) & std_logic_vector(i_rec.z_0) & 
+  --   std_logic_vector(i_rec.phi) & std_logic_vector(i_rec.mbar); 
+  --   return o_vec;
   -- end function;
 
-
-  -- slc from ucm
-  function ucm2heg_barrel_f_r2std(	i_rec : in ucm2heg_barrel_rt	) return ucm2heg_barrel_stdst is
-    variable o_vec : ucm2heg_barrel_stdst;
-  begin
-    o_vec := std_logic_vector(i_rec.z) & std_logic_vector(i_rec.z_0) & 
-    std_logic_vector(i_rec.phi) & std_logic_vector(i_rec.mbar); 
-    return o_vec;
-  end function;
-
-  function ucm2heg_barrel_f_std2rt(i_vec : in ucm2heg_barrel_stdst  ) return ucm2heg_barrel_rt is
-    variable o_rec : ucm2heg_barrel_rt;
-  begin
-    o_rec.z     := signed(i_vec(2*SLC_B_ZRPC_LEN + SLC_PHI_LEN -1 downto SLC_B_ZRPC_LEN + SLC_PHI_LEN + SLC_MBAR_LEN));
-    o_rec.z_0   := signed(i_vec(SLC_B_ZRPC_LEN + SLC_PHI_LEN - 1 downto SLC_PHI_LEN + SLC_MBAR_LEN));
-    o_rec.phi   := signed(i_vec(SLC_PHI_LEN - 1 downto SLC_MBAR_LEN));
-    o_rec.mbar  := signed(i_vec(SLC_MBAR_LEN - 1 downto 0));
-    return o_rec;
-  end function;
-  --
-  function ucm2heg_slc_f_r2std(	i_rec : in ucm2heg_slc_rt	) return ucm2heg_slc_stdst is
-    variable o_vec : ucm2heg_slc_stdst;
-  begin
-    o_vec := std_logic_vector(i_rec.BCID) & ucm2heg_barrel_f_r2std(i_rec.barrel) & i_rec.data_valid;
-    return o_vec;
-  end function;
-  function ucm2heg_slc_f_std2rt(i_vec : in ucm2heg_slc_stdst  ) return ucm2heg_slc_rt is
-    variable o_rec : ucm2heg_slc_rt;
-  begin
-    o_rec.BCID := UNSIGNED(i_vec(UCM2HEG_SLC_STDST_LEN -1 downto UCM2HE_BARREL_STDST_LEN + 1 ));
-    o_rec.barrel := ucm2heg_barrel_f_std2rt(i_vec(UCM2HE_BARREL_STDST_LEN downto 1));
-    o_rec.data_valid := i_vec(0);
-    return o_rec;
-  end function;
-  -- mdt from tar
-  function tar2heg_mdt_f_r2std(	i_rec : in tar2heg_mdt_rt	) return tar2heg_mdt_stdst is
-    variable o_vec : tar2heg_mdt_stdst;
-  begin
-    o_vec := std_logic_vector(i_rec.layer) & std_logic_vector(i_rec.tube) & std_logic_vector(i_rec.time_le);
-    return o_vec;
-  end function;
-  function tar2heg_mdt_f_std2rt(i_vec : in tar2heg_mdt_stdst  ) return tar2heg_mdt_rt is
-    variable o_rec : tar2heg_mdt_rt;
-  begin
-    o_rec.layer   := unsigned(i_vec(MDT_LAYER_LEN + MDT_TUBE_LEN + MDT_LE_TIME -1 downto MDT_TUBE_LEN + MDT_LE_TIME )); 
-    o_rec.tube    := unsigned(i_vec(MDT_TUBE_LEN + MDT_LE_TIME -1 downto MDT_LE_TIME));
-    o_rec.time_le := unsigned(i_vec(MDT_LE_TIME -1 downto 0));
-    return o_rec;
-  end function;
+  -- function ucm2heg_barrel_f_std2rt(i_vec : in ucm2heg_barrel_vt  ) return ucm2heg_barrel_rt is
+  --   variable o_rec : ucm2heg_barrel_rt;
+  -- begin
+  --   o_rec.z     := signed(i_vec(2*SLC_B_ZRPC_LEN + SLC_PHI_LEN -1 downto SLC_B_ZRPC_LEN + SLC_PHI_LEN + SLC_MBAR_LEN));
+  --   o_rec.z_0   := signed(i_vec(SLC_B_ZRPC_LEN + SLC_PHI_LEN - 1 downto SLC_PHI_LEN + SLC_MBAR_LEN));
+  --   o_rec.phi   := signed(i_vec(SLC_PHI_LEN - 1 downto SLC_MBAR_LEN));
+  --   o_rec.mbar  := signed(i_vec(SLC_MBAR_LEN - 1 downto 0));
+  --   return o_rec;
+  -- end function;
+  -- --
+  -- function ucm2heg_slc_f_r2std(	i_rec : in ucm2heg_slc_rt	) return ucm2heg_slc_vt is
+  --   variable o_vec : ucm2heg_slc_vt;
+  -- begin
+  --   o_vec := std_logic_vector(i_rec.BCID) & ucm2heg_barrel_f_r2std(i_rec.barrel) & i_rec.data_valid;
+  --   return o_vec;
+  -- end function;
+  -- function ucm2heg_slc_f_std2rt(i_vec : in ucm2heg_slc_vt  ) return ucm2heg_slc_rt is
+  --   variable o_rec : ucm2heg_slc_rt;
+  -- begin
+  --   o_rec.BCID := UNSIGNED(i_vec(UCM2HEG_SLC_vt_LEN -1 downto UCM2HE_BARREL_vt_LEN + 1 ));
+  --   o_rec.barrel := ucm2heg_barrel_f_std2rt(i_vec(UCM2HE_BARREL_vt_LEN downto 1));
+  --   o_rec.data_valid := i_vec(0);
+  --   return o_rec;
+  -- end function;
+  -- -- mdt from tar
+  -- function tar2heg_mdt_f_r2std(	i_rec : in tar2heg_mdt_rt	) return tar2heg_mdt_vt is
+  --   variable o_vec : tar2heg_mdt_vt;
+  -- begin
+  --   o_vec := std_logic_vector(i_rec.layer) & std_logic_vector(i_rec.tube) & std_logic_vector(i_rec.time_le);
+  --   return o_vec;
+  -- end function;
+  -- function tar2heg_mdt_f_std2rt(i_vec : in tar2heg_mdt_vt  ) return tar2heg_mdt_rt is
+  --   variable o_rec : tar2heg_mdt_rt;
+  -- begin
+  --   o_rec.layer   := unsigned(i_vec(MDT_LAYER_LEN + MDT_TUBE_LEN + MDT_LE_TIME -1 downto MDT_TUBE_LEN + MDT_LE_TIME )); 
+  --   o_rec.tube    := unsigned(i_vec(MDT_TUBE_LEN + MDT_LE_TIME -1 downto MDT_LE_TIME));
+  --   o_rec.time_le := unsigned(i_vec(MDT_LE_TIME -1 downto 0));
+  --   return o_rec;
+  -- end function;
 
 
 end package body common_pkg;

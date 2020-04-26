@@ -65,7 +65,7 @@
 
 --     t0_proc: process(Reset_b,clk)
 --     begin
---         if not Reset_b then
+--         if Reset_b = '0' then
 --             o_time_comp <= (others => '0');
 --         elsif rising_edge(clk) then
 
