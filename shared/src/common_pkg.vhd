@@ -294,6 +294,7 @@ package common_pkg is
     sel     : std_logic;
   end record;
   type ucm2heg_pam_art is array(integer range <>) of ucm2heg_pam_rt;
+  
   --------------------------------------------------------------------------------
   -- ucm slc 2 hps
   type ucm2hps_id_rt is record

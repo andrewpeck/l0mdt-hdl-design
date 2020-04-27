@@ -61,8 +61,8 @@ type ucm_pam_control_rt is record
 end record;
 
 type ucm_proc_info_rt is record
-  ch                          : std_logic_vector(3 downto 0);
-  processed                           : std_logic;
+  ch               : std_logic_vector(3 downto 0);
+  processed        : std_logic;
 end record;
 
 type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;

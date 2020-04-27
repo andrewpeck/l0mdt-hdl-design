@@ -8,6 +8,7 @@ set SYNTH_STRATEGY "Flow_PerfOptimized_high"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
+set SIMULATOR "Xsim"
 
 # set_property flow {Vivado Synthesis 2019} [get_runs synth_1]
 # set_property write_incremental_synth_checkpoint true [get_runs synth_1]

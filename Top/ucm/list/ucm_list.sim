@@ -1,0 +1,2 @@
+../../shared/sim/ucm_textio.vhd
+../../ucm/sim/ucm_tb.vhd topsim=ucm_tb

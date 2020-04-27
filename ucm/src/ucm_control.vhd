@@ -39,7 +39,7 @@ entity ucm_ctrl is
     o_pam_ctrl          : out ucm_pam_control_rt;
     o_proc_info         : out ucm_proc_info_art(MAX_NUM_HEG -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0);
-    o_pam               : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0)    
+    o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0)    
   );
 end entity ucm_ctrl;
 
@@ -148,6 +148,9 @@ begin
     if(Reset_b = '0') then
       ch_busy <= (others => '0');
       ch_count <= (others => (others => '0'));
+      o_pam_ctrl <= ((others => '0'),(others => (others => '0')));
+      o_pam2heg <= (others =>( (others => '0') , '0') );
+      o_proc_info <= (others =>( (others => '0') , '0') );
     elsif rising_edge(clk) then
       
       for ch_i in MAX_NUM_HEG -1 downto 0 loop

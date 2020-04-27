@@ -71,7 +71,7 @@ begin
     o_pam_ctrl      => pam_CSW_control,
     o_proc_info     => proc_info,
     o_cvp_ctrl      => cvp_control,
-    o_pam           => o_uCM2hps_pam_ar
+    o_pam2heg       => o_uCM2hps_pam_ar
   );
   -- input pre processor
   SLC_PP_A : for sl_i in MAX_NUM_SL -1 downto 0 generate

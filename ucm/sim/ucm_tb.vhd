@@ -16,6 +16,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library xil_defaultlib;
+
+
 library shared_lib;
 use shared_lib.cfg_pkg.all;
 use shared_lib.common_pkg.all;
@@ -49,7 +52,7 @@ architecture beh of ucm_tb is
 
 begin
   
-  UCM : entity work.top_ucm
+  UCM : entity xil_defaultlib.top_ucm
   port map(
     clk                 => clk,
     Reset_b             => Reset_b,
@@ -79,11 +82,11 @@ begin
 	-------------------------------------------------------------------------------------
 	rst_process: process
 	begin
+		reset_b <='1';
+		wait for CLK_period/2;
 		reset_b<='0';
-		wait for CLK_period;
-		reset_b<='1';
 		wait for CLK_period*reset_init_cycles;
-		reset_b <= '0';
+		reset_b <= '1';
 		wait;
   end process;
   
@@ -92,21 +95,22 @@ begin
 
   begin
     if Reset_b = '0' then
-
+      tb_motor <= x"0";
     elsif rising_edge(clk) then
 
       case tb_motor is
         when x"0"=>
           tb_motor <= x"1";
-        when x"0" =>
+        when x"1" =>
         tb_motor <= x"2";
-          i_slc_data_av(0) <= nullify;
-          i_slc_data_av(1) <= nullify;
-          i_slc_data_av(2) <= nullify;
-          i_slc_data_av(3) <= nullify;
-          i_slc_data_av(4) <= nullify;
+          i_slc_data_av(0) <= (others => '0');
+          i_slc_data_av(1) <= (others => '0');
+          i_slc_data_av(2) <= (others => '0');
+          i_slc_data_av(3) <= (others => '0');
+          i_slc_data_av(4) <= (others => '0');
         when others =>
           -- nothing to do 
+      end case;
     end if;
 
   end process;
