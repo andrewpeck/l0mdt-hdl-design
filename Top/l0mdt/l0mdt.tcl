@@ -5,9 +5,9 @@ set use_questa_simulator 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
-set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
+set SYNTH_STRATEGY "Vivado Synthesis Defaults"
 set SYNTH_FLOW "Vivado Synthesis 2019"
-set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
+set IMPL_STRATEGY "Vivado Implementation Defaults"
 set IMPL_FLOW "Vivado Implementation 2019"
 
 ### Set Vivado Runs Properties ###
@@ -23,13 +23,15 @@ set IMPL_FLOW "Vivado Implementation 2019"
 set PROPERTIES [dict create \
 		    synth_1 [dict create \
                 STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
-				STEPS.SYNTH_DESIGN.ARGS.KEEP_EQUIVALENT_REGISTERS true \
 				STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
+				STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
 				] \
 		    impl_1 [dict create \
+     			STEPS.PHYS_OPT_DESIGN.IS_ENABLED true \
+				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED true \
 				STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
-			       ]\
+				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE Default \
+			    ]\
 		   ]
 ############################################################
 
