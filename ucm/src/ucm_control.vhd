@@ -24,10 +24,6 @@ library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
 entity ucm_ctrl is
-  -- generic(
-  --   num_delays          : integer; 
-  --   num_bits            : integer
-  -- );
   port (
     clk                 : in std_logic;
     Reset_b             : in std_logic;
