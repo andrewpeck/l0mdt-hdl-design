@@ -89,7 +89,14 @@ architecture behavioral of top_hal is
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
+  constant lpgbt_downlink_data_rt_zero : lpgbt_downlink_data_rt :=  (
+    ec    => (others =>'0'),
+    ic    => (others =>'0'),
+    data  => (others =>'0'),
+    valid => '0');
+
+  signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0)
+    := (others => lpgbt_downlink_data_rt_zero);
   signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
   signal lpgbt_downlink_valid : std_logic;
