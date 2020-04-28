@@ -1,3 +1,25 @@
+create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ;  # C2C_REF0
+create_clock -period 3.125 -name refclk1  [get_ports refclk_i_p[1]]  ;  # CM2CM_REF0
+create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ;  # SL_REF0
+create_clock -period 4.166 -name refclk3  [get_ports refclk_i_p[3]]  ;  # SL_REF1
+create_clock -period 4.166 -name refclk4  [get_ports refclk_i_p[4]]  ;  # SL_REF2
+create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ;  # FELIX_REF0
+create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ;  # FELIX_REF1
+create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ;  # FELIX_REF2
+create_clock -period 3.125 -name refclk8  [get_ports refclk_i_p[8]]  ;  # AD_CLK2_KUP , muxed as C2c or Spare
+create_clock -period 3.125 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
+create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ;  # AD_CLK3_KUP , muxed as sma or spare
+create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ;  # B2B_REF2
+create_clock -period 3.125 -name refclk12 [get_ports refclk_i_p[12]] ;  # FE_REF0
+create_clock -period 3.125 -name refclk13 [get_ports refclk_i_p[13]] ;  # FE_REF1
+create_clock -period 3.125 -name refclk14 [get_ports refclk_i_p[14]] ;  # FE_REF2
+create_clock -period 3.125 -name refclk15 [get_ports refclk_i_p[15]] ;  # SPARE_REF1
+create_clock -period 3.125 -name refclk16 [get_ports refclk_i_p[16]] ;  # FE_REF3
+create_clock -period 3.125 -name refclk17 [get_ports refclk_i_p[17]] ;  # SPARE_REF2
+create_clock -period 3.125 -name refclk18 [get_ports refclk_i_p[18]] ;  # FE_REF4
+create_clock -period 3.125 -name refclk19 [get_ports refclk_i_p[19]] ;  # FE_REF5
+create_clock -period 3.125 -name refclk20 [get_ports refclk_i_p[20]] ;  # FE_REF6
+create_clock -period 3.125 -name refclk21 [get_ports refclk_i_p[21]] ;  # FE_REF7
 
 # GTY
 set_property -quiet PACKAGE_PIN AG30    [get_ports refclk_i_p[0]    ] ; # C2C_REF0_P
