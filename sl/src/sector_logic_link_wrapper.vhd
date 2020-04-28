@@ -181,7 +181,7 @@ begin
       sync_sl_tx_data : entity work.sync_cdc
         generic map (
           WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
-          N_STAGES => 2)
+          N_STAGES => 4)
         port map (
           clk_i   => pipeline_clock,
           valid_i => sl_rx_data_pre_cdc(idx).valid,
