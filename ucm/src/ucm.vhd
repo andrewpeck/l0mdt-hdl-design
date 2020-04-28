@@ -152,13 +152,13 @@ begin
     end generate;
   end generate;
 
-  -- VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
-  --   -- cpam_in_av(heg_i) <= csout_slc_data_av(MAX_NUM_SL - ((MAX_NUM_HEG - 1) - heg_i) - 1);
-  --   -- cpam_in_av(heg_i) <= csout_slc_data_av(MAX_NUM_SL - MAX_NUM_HEG + heg_i);
+  VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
+    cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((MAX_NUM_HEG - 1) - heg_i) - 1);
+    -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - MAX_NUM_HEG + heg_i);
 
-  --   o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).processed;
-  --   o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).ch;
-  -- end generate;
+    -- o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).processed;
+    -- o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).ch;
+  end generate;
 
   PL_PROC_GEN: for sl_i in MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= recordify(csw_main_out_av(sl_i));

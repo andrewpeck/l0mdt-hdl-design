@@ -47,6 +47,9 @@ architecture beh of ucm_tb is
   -- pipeline
   signal o_uCM2pl_av            : pipeline_avt(MAX_NUM_SL -1 downto 0);
 
+  signal cand1  : slc_rx_data_rt;
+  signal barrel1 : slc_barrel_rt;
+
   ------------------------------------
   signal tb_motor : std_logic_vector(3 downto 0);
 
@@ -89,13 +92,43 @@ begin
 		reset_b <= '1';
 		wait;
   end process;
-  
-
+ 	-------------------------------------------------------------------------------------
+	-- candidates
+  -------------------------------------------------------------------------------------
+  barrel1.spare_bits          <= std_logic_vector(to_unsigned( 1 , SLC_B_SPARE_LEN ));
+  barrel1.coin_type           <= std_logic_vector(to_unsigned( 1 , SLC_COIN_TYPE_LEN ));
+  barrel1.z_rpc0              <= to_signed( 1 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc1              <= to_signed( 1 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc2              <= to_signed( 1 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc3              <= to_signed( 1 , SLC_Z_RPC_LEN );
+  cand1.muid.slcid            <= std_logic_vector(to_unsigned( 1 , SLC_SLCID_LEN));
+  cand1.muid.slid             <= std_logic_vector(to_unsigned( 1 , SLC_SLID_LEN ));
+  cand1.muid.bcid             <= std_logic_vector(to_unsigned( 1 , BCID_LEN ));
+  cand1.chambers.mdt_inn      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
+  cand1.chambers.mdt_mid      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
+  cand1.chambers.mdt_out      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
+  cand1.chambers.mdt_ext      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
+  cand1.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
+  cand1.common.tcsent         <= std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
+  cand1.common.pos_eta        <= to_signed( 1 , SLC_POS_ETA_LEN );
+  cand1.common.pos_phi        <= to_unsigned( 1 , SLC_POS_PHI_LEN );
+  cand1.common.pt_th          <= std_logic_vector(to_unsigned( 1 , SLC_PT_TH_LEN ));
+  cand1.common.charge         <= std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
+  cand1.specific              <= vectorify(barrel1);
+  cand1.data_valid            <= '1';
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
   feed_1_slc : process(clk,reset_b)
 
   begin
     if Reset_b = '0' then
       tb_motor <= x"0";
+      i_slc_data_av(0) <= (others => '0');
+      i_slc_data_av(1) <= (others => '0');
+      i_slc_data_av(2) <= (others => '0');
+      i_slc_data_av(3) <= (others => '0');
+      i_slc_data_av(4) <= (others => '0');
     elsif rising_edge(clk) then
 
       case tb_motor is
@@ -103,11 +136,11 @@ begin
           tb_motor <= x"1";
         when x"1" =>
         tb_motor <= x"2";
-          i_slc_data_av(0) <= (others => '0');
-          i_slc_data_av(1) <= (others => '0');
-          i_slc_data_av(2) <= (others => '0');
-          i_slc_data_av(3) <= (others => '0');
           i_slc_data_av(4) <= (others => '0');
+          i_slc_data_av(3) <= vectorify(cand1);
+          i_slc_data_av(2) <= (others => '0');
+          i_slc_data_av(1) <= (others => '0');
+          i_slc_data_av(0) <= (others => '0');  
         when others =>
           -- nothing to do 
       end case;

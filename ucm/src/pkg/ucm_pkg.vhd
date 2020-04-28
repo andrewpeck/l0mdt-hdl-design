@@ -25,6 +25,7 @@ constant UCM_INPUT_PL_LATENCY : integer := 3;
 
 
 type ucm_prepro_rt is record
+  dummy                           : std_logic;
   muid                            : slc_muid_rt;
   chambers                        : slc_chid_rt;
   common                          : slc_common_rt;
@@ -32,12 +33,12 @@ type ucm_prepro_rt is record
   data_valid                      : std_logic;
 end record ucm_prepro_rt;
 
-constant SLC_PREPRO_WIDTH : integer := 128;
+constant SLC_PREPRO_WIDTH : integer := 129;
 subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
 
 function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
 function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
--- function nullify return slc_rx_data_rt;
+function nullify return ucm_prepro_rt;
 
 type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
 type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
@@ -66,31 +67,7 @@ type ucm_proc_info_rt is record
 end record;
 
 type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;
-
-
-
 type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
-
--- type ucm_csw_control_rt is record
---   data_present                        : std_logic;
---   addr_orig                           : ucm_csw_dest(integer(log2(real(MAX_NUM_SL))) downto 0 );
--- end record;
--- type ucm_csw_control_art is array(integer range <>) of ucm_csw_control_rt;
-
--- type ucm_pam_control_rt is record
---   data_present                        : std_logic;
---   addr_orig                           : ucm_csw_dest(3 downto 0 );
--- end record;
--- type ucm_pam_control_art is array(integer range <>) of ucm_pam_control_rt;
-
--- type ucm_proc_info_rt is record
---   process_ch                          : std_logic_vector(3 downto 0);
---   processed                           : std_logic;
--- end record;
-
--- type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;
-
--- 
 
 end package ucm_pkg;
 
@@ -102,7 +79,8 @@ package body ucm_pkg is
   -- ucm_prepro_rt
   function nullify return ucm_prepro_rt is
   begin
-    return (nullify
+    return ('0'
+            , nullify
             , nullify
             , nullify
             , (others => '0')
@@ -112,7 +90,8 @@ package body ucm_pkg is
   function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt is
     variable v : ucm_prepro_vt;
   begin
-    v := vectorify(d.muid)
+    v := d.dummy
+         & vectorify(d.muid)
          & vectorify(d.chambers)
          & vectorify(d.common)
          & d.specific
@@ -123,6 +102,7 @@ package body ucm_pkg is
   function recordify(v: ucm_prepro_vt) return ucm_prepro_rt is
     variable b : ucm_prepro_rt;
   begin
+    b.dummy                := v(128);
     b.muid                 := recordify(v(127 downto 108));
     b.chambers             := recordify(v(107 downto 84));
     b.common               := recordify(v(83 downto 52));

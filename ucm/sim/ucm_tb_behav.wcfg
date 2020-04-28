@@ -16,12 +16,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="50001fs"></ZoomEndTime>
-      <Cursor1Time time="50000fs"></Cursor1Time>
+      <ZoomEndTime time="205801fs"></ZoomEndTime>
+      <Cursor1Time time="2000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="238"></NameColumnWidth>
-      <ValueColumnWidth column_width="146"></ValueColumnWidth>
+      <ValueColumnWidth column_width="138"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="1" />
    <wvobject type="group" fp_name="group115">
@@ -40,6 +40,10 @@
          <obj_property name="ElementShortName">glob_en</obj_property>
          <obj_property name="ObjectShortName">glob_en</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/tb_motor">
+         <obj_property name="ElementShortName">tb_motor[3:0]</obj_property>
+         <obj_property name="ObjectShortName">tb_motor[3:0]</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/i_slc_data_av">
          <obj_property name="ElementShortName">i_slc_data_av[4:0][127:0]</obj_property>
          <obj_property name="ObjectShortName">i_slc_data_av[4:0][127:0]</obj_property>
@@ -57,36 +61,46 @@
          <obj_property name="ObjectShortName">o_uCM2pl_av[4:0][132:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/ucm_prepro_av">
-         <obj_property name="ElementShortName">ucm_prepro_av[4:0][127:0]</obj_property>
-         <obj_property name="ObjectShortName">ucm_prepro_av[4:0][127:0]</obj_property>
+         <obj_property name="ElementShortName">ucm_prepro_av[4:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">ucm_prepro_av[4:0][128:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_main_in_av">
-         <obj_property name="ElementShortName">csw_main_in_av[4:0][127:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_main_in_av[4:0][127:0]</obj_property>
+         <obj_property name="ElementShortName">csw_main_in_av[4:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_in_av[4:0][128:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_main_out_ar">
          <obj_property name="ElementShortName">csw_main_out_ar[4:0]</obj_property>
          <obj_property name="ObjectShortName">csw_main_out_ar[4:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_main_out_av">
-         <obj_property name="ElementShortName">csw_main_out_av[4:0][127:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_main_out_av[4:0][127:0]</obj_property>
+         <obj_property name="ElementShortName">csw_main_out_av[4:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_out_av[4:0][128:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/o_uCM2pl_ar">
          <obj_property name="ElementShortName">o_uCM2pl_ar[4:0]</obj_property>
          <obj_property name="ObjectShortName">o_uCM2pl_ar[4:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/cpam_in_av">
-         <obj_property name="ElementShortName">cpam_in_av[2:0][127:0]</obj_property>
-         <obj_property name="ObjectShortName">cpam_in_av[2:0][127:0]</obj_property>
+         <obj_property name="ElementShortName">cpam_in_av[2:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_in_av[2:0][128:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/cpam_out_av">
-         <obj_property name="ElementShortName">cpam_out_av[2:0][127:0]</obj_property>
-         <obj_property name="ObjectShortName">cpam_out_av[2:0][127:0]</obj_property>
+         <obj_property name="ElementShortName">cpam_out_av[2:0][128:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_out_av[2:0][128:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_control">
          <obj_property name="ElementShortName">csw_control</obj_property>
          <obj_property name="ObjectShortName">csw_control</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_control.data_present">
+            <obj_property name="ElementShortName">.data_present[4:0]</obj_property>
+            <obj_property name="ObjectShortName">.data_present[4:0]</obj_property>
+            <obj_property name="Radix">BINARYRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/csw_control.addr_orig">
+            <obj_property name="ElementShortName">.addr_orig[4:0][3:0]</obj_property>
+            <obj_property name="ObjectShortName">.addr_orig[4:0][3:0]</obj_property>
+         </wvobject>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/UCM/pam_CSW_control">
          <obj_property name="ElementShortName">pam_CSW_control</obj_property>

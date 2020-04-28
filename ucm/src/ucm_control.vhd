@@ -146,6 +146,7 @@ begin
   begin
 
     if(Reset_b = '0') then
+      o_cvp_ctrl <= (others => '0');
       ch_busy <= (others => '0');
       ch_count <= (others => (others => '0'));
       o_pam_ctrl <= ((others => '0'),(others => (others => '0')));
@@ -155,6 +156,7 @@ begin
       
       for ch_i in MAX_NUM_HEG -1 downto 0 loop
         if ch_busy(ch_i) = '1' then
+          o_cvp_ctrl(ch_i) <= '0';
           if ch_count(ch_i) < LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
             o_pam_ctrl.data_present(ch_i) <= '0';
@@ -164,6 +166,7 @@ begin
           end if;
           
         else
+          o_cvp_ctrl(ch_i) <= '1';
           if pam_update = '1' then
             if processed < to_integer(num_cand) then
               o_pam_ctrl.data_present(ch_i) <= '1';
