@@ -19,6 +19,50 @@ before_script:
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/bin/settings64.sh
 
+#################### UCM Project ###########################
+
+create_project:ucm:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm
+
+simulate_project:ucm:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm
+
+# synthesise_ips:csf:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:csf
+
+synthesise_project:ucm:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm
+    dependencies:
+        # - synthesise_ips:csf
+        - create_project:ucm
+
+implement_project:ucm:
+    extends: .implement_project
+    variables: 
+      extends: .vars
+      PROJECT_NAME: ucm
+#      HOG_NO_BITSTREAM_STAGE: 1
+    dependencies:
+       - create_project:ucm
+      #  - synthesise_ips:csf
+       - synthesise_project:ucm
+
+
 #################### Hp Project ###########################
 
 # create_project:hp:

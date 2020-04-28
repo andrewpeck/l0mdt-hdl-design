@@ -255,6 +255,7 @@ package common_pkg is
     processed                       : std_logic;
     data_valid                      : std_logic;
   end record pipeline_rt;
+  
   constant PIPELINE_LEN : integer := 133;
   subtype pipeline_vt is std_logic_vector(PIPELINE_LEN-1 downto 0);
   function vectorify(d: pipeline_rt) return pipeline_vt;

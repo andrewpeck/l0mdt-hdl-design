@@ -10,10 +10,16 @@ set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
 set SIMULATOR "Xsim"
 
-# set_property flow {Vivado Synthesis 2019} [get_runs synth_1]
-# set_property write_incremental_synth_checkpoint true [get_runs synth_1]
-# set_property strategy Flow_PerfOptimized_high [get_runs synth_1]
-
+set PROPERTIES [dict create \
+            synth_1 [dict create \
+                STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
+                STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
+                ] \
+            impl_1 [dict create \
+                STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
+                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
+                   ]\
+           ]
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
