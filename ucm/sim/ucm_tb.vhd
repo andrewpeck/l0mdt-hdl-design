@@ -55,7 +55,7 @@ architecture beh of ucm_tb is
 
 begin
   
-  UCM : entity xil_defaultlib.top_ucm
+  UCM : entity work.top_ucm
   port map(
     clk                 => clk,
     Reset_b             => Reset_b,
