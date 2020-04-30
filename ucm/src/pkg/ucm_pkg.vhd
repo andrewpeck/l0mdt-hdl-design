@@ -21,7 +21,8 @@ use shared_lib.common_pkg.all;
 
 package ucm_pkg is
 
-constant UCM_INPUT_PL_LATENCY : integer := 3;
+constant UCM_INPUT_PL_LATENCY : integer := 2; --algorithm latency
+constant UCM_OUTPUT_PL_LATENCY : integer := 2; -- PAM CSW + CVP latency
 
 
 type ucm_prepro_rt is record

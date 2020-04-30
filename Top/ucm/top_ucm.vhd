@@ -32,7 +32,7 @@ entity top_ucm is
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- to hps
-    o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
     o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
@@ -52,7 +52,7 @@ begin
     -- SLc in
     i_slc_data_av          => i_slc_data_av,
     -- pam out
-    o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
+    -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_data_av      => o_uCM2hps_data_av,
     -- MDT hit
     o_uCM2pl_av            => o_uCM2pl_av

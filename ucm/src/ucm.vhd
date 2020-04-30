@@ -31,7 +31,7 @@ entity ucm is
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- to hps
-    o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
     o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
@@ -49,6 +49,8 @@ architecture beh of ucm is
 
   signal cpam_in_av           : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
   signal cpam_out_av          : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
+
+  signal uCM2pl_av            : pipeline_avt(MAX_NUM_SL -1 downto 0);
 
   signal csw_control          : ucm_csw_control_rt;
   signal pam_CSW_control      : ucm_pam_control_rt;
@@ -70,8 +72,8 @@ begin
     o_csw_ctrl      => csw_control,
     o_pam_ctrl      => pam_CSW_control,
     o_proc_info     => proc_info,
-    o_cvp_ctrl      => cvp_control,
-    o_pam2heg       => o_uCM2hps_pam_ar
+    o_cvp_ctrl      => cvp_control
+    -- o_pam2heg       => o_uCM2hps_pam_ar
   );
   -- input pre processor
   SLC_PP_A : for sl_i in MAX_NUM_SL -1 downto 0 generate
@@ -146,6 +148,23 @@ begin
     );
   end generate;
 
+  -- output pipelines
+  SLC_OUT_PL_A : for sl_i in MAX_NUM_SL -1 downto 0 generate
+    SLC_OUT_PL : entity shared_lib.std_pipeline
+    generic map(
+      num_delays  => UCM_OUTPUT_PL_LATENCY,
+      num_bits    => PIPELINE_LEN
+    )
+    port map(
+      clk         => clk,
+      Reset_b     => Reset_b,
+      glob_en     => glob_en,
+      --
+      i_data      => uCM2pl_av(sl_i),
+      o_data      => o_uCM2pl_av(sl_i)
+    );
+  end generate;
+
   VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
       o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
@@ -178,7 +197,7 @@ begin
       o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
     end generate;
 
-    o_uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i));
+    uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i));
   end generate;
 
 end beh;

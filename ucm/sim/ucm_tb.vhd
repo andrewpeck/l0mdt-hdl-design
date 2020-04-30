@@ -34,15 +34,15 @@ architecture beh of ucm_tb is
   constant clk_period : time := 4.0 ns;
   signal clk : std_logic := '0';
   -- rest
-  constant reset_init_cycles : integer := 5;
-  signal reset_b : std_logic := '0';
+  constant reset_init_cycles : integer := 3;
+  signal reset_b : std_logic;
   
   signal glob_en : std_logic := '1';
 
   -- SLc in
   signal i_slc_data_av          : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
   -- to hps
-  signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
   signal o_uCM2hps_data_av      : ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av            : pipeline_avt(MAX_NUM_SL -1 downto 0);
@@ -64,7 +64,7 @@ begin
     -- SLc in
     i_slc_data_av          => i_slc_data_av,
     -- pam out
-    o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
+    -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_data_av      => o_uCM2hps_data_av,
     -- MDT hit
     o_uCM2pl_av            => o_uCM2pl_av
@@ -86,7 +86,7 @@ begin
 	rst_process: process
 	begin
 		reset_b <='1';
-		wait for CLK_period/2;
+		wait for CLK_period;
 		reset_b<='0';
 		wait for CLK_period*reset_init_cycles;
 		reset_b <= '1';
@@ -134,6 +134,11 @@ begin
       case tb_motor is
         when x"0"=>
           tb_motor <= x"1";
+          i_slc_data_av(0) <= (others => '0');
+          i_slc_data_av(1) <= (others => '0');
+          i_slc_data_av(2) <= (others => '0');
+          i_slc_data_av(3) <= (others => '0');
+          i_slc_data_av(4) <= (others => '0');
         when x"1" =>
         tb_motor <= x"2";
           i_slc_data_av(4) <= (others => '0');
@@ -142,6 +147,11 @@ begin
           i_slc_data_av(1) <= (others => '0');
           i_slc_data_av(0) <= (others => '0');  
         when others =>
+          i_slc_data_av(0) <= (others => '0');
+          i_slc_data_av(1) <= (others => '0');
+          i_slc_data_av(2) <= (others => '0');
+          i_slc_data_av(3) <= (others => '0');
+          i_slc_data_av(4) <= (others => '0');
           -- nothing to do 
       end case;
     end if;
