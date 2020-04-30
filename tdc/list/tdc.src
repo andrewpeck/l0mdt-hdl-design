@@ -1,4 +1,4 @@
-# TDC
+# -*- mode: TCL;-*-
 ../../tdc/src/top_tdc_decoder.vhd 2008
 ../../tdc/src/csm_pkg.vhd
 ../../tdc/src/polling_mux.vhd 2008
@@ -8,7 +8,7 @@
 ../../tdc/src/tdc_decoder/dec_8b10b.vhd
 ../../tdc/src/tdc_decoder/tdc_decoder.vhd
 ../../tdc/src/tdc_decoder/alignment_buffer.vhd
-../../tdc/src/tdc_decoder/xoneshot.v
+../../tdc/src/tdc_decoder/x_oneshot.vhd
 ../../tdc/src/tdc_decoder/elink_framer.vhd
 ../../tdc/src/tdc_decoder/tdc_packet_processor.vhd
 
