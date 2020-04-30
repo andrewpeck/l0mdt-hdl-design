@@ -12,7 +12,7 @@
 --    05/02/2020    0.1     File created
 --------------------------------------------------------------------------------
 
-library ieee, common_pkg;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 

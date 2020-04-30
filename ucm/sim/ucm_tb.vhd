@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library xil_defaultlib;
+library work;
 
 
 library shared_lib;
