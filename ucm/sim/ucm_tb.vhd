@@ -16,9 +16,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-
-
 library shared_lib;
 use shared_lib.cfg_pkg.all;
 use shared_lib.common_pkg.all;
