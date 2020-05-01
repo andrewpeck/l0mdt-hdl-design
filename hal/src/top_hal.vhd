@@ -30,16 +30,24 @@ entity top_hal is
 
   port (
 
-    -- 40MHz clock to MMCM
-    clock_in_p : in std_logic;
-    clock_in_n : in std_logic;
+    -- 100MHz ASYNC clock
+    clock_100m_i_p : in std_logic;
+    clock_100m_i_n : in std_logic;
+
+    -- 320MHz ASYNC clock to MMCM
+    clock_i_p : in std_logic;
+    clock_i_n : in std_logic;
+
+    -- 320MHz clock out
+    lhc_refclk_o_p : out std_logic;
+    lhc_refclk_o_n : out std_logic;
 
     -- LPGBT Links
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     -- pipeline clock
-    clock_and_control : out l0mdt_control_rt;
+    clock_and_control_o : out l0mdt_control_rt;
 
     -- ttc
     ttc_commands : out l0mdt_ttc_rt;
@@ -178,39 +186,33 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
-  IBUFDS_inst : IBUFDS
-    generic map(DIFF_TERM    => true,   --DifferentialTermination
-                IBUF_LOW_PWR => false,  --Lowpower(TRUE)vs.performance(FALSE)
-                IOSTANDARD   => "LVDS")
-    port map(
-      O  => clock_ibufds,
-      I  => clock_in_p,
-      IB => clock_in_n
-      );
-
-  -- create a freerunnning clock, not stopped by the mmcm lock, used for state
-  -- machine initialization of the mgts
-  BUFG_freeclk_inst : BUFG
+  top_clocking_inst : entity hal.top_clocking
     port map (
-      I => clock_ibufds,
-      O => clocks.freeclock
-      );
+      valid_i          => std_logic_0,        -- TODO: should be sourced felix
+      reset_i          => std_logic_0,        -- TODO: should be sourced from AXI
+      sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
+      clock_100m_i_p   => clock_100m_i_p,
+      clock_100m_i_n   => clock_100m_i_n,
+      clock_i_p        => clock_i_p,
+      clock_i_n        => clock_i_n,
+      felix_recclk_i   => std_logic_0,        -- TODO: connect to recclk
+      select_felix_clk => std_logic_0,        -- TODO: should be sourced from AXI
 
-  -- mmcm for system clocks
-  framework_mmcm_inst : entity xil_defaultlib.framework_mmcm
-    port map (
-      clk_out40        => clocks.clock40,
-      clk_out240       => clocks.clock240,
-      clk_out320       => clocks.clock320,
-      clk_out_pipeline => clocks.clock_pipeline,
-      locked           => clocks.locked,
-      clk_in40         => clock_ibufds
+      lhc_refclk_o_p => lhc_refclk_o_p,
+      lhc_refclk_o_n => lhc_refclk_o_n,
+
+      clock40_o   => clocks.clock40,
+      clock100_o  => clocks.freeclock,
+      clock320_o  => clocks.clock320,
+      clockpipe_o => clocks.clock_pipeline,
+
+      locked_o => clocks.locked
       );
 
   --------------------------------------------------------------------------------
   -- Clock and reset to User Logic
   --------------------------------------------------------------------------------
-
+  --
   -- Create a 1 of N high signal synced to the 40MHZ clock
   --            ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _
   -- clk      __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_|9|_|
@@ -237,9 +239,9 @@ begin  -- architecture behavioral
     pipeline_bx_strobe <= r80_dly xor r80;
   end process;
 
-  clock_and_control.clk   <= clocks.clock_pipeline;
-  clock_and_control.rst_n <= not global_reset;
-  clock_and_control.bx    <= pipeline_bx_strobe;
+  clock_and_control_o.clk   <= clocks.clock_pipeline;
+  clock_and_control_o.rst_n <= not global_reset;
+  clock_and_control_o.bx    <= pipeline_bx_strobe;
 
   ttc_commands.bcr <= '0';
   ttc_commands.ocr <= '0';

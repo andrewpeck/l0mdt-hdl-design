@@ -35,8 +35,14 @@ entity top_l0mdt is
     );
   port (
 
-    clock_in_p : in std_logic;
-    clock_in_n : in std_logic;
+    clock_i_p : in std_logic;
+    clock_i_n : in std_logic;
+
+    clock_100m_i_p : in std_logic;
+    clock_100m_i_n : in std_logic;
+
+    lhc_refclk_o_p : out std_logic;
+    lhc_refclk_o_n : out std_logic;
 
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
@@ -92,23 +98,38 @@ begin
 
   top_hal : entity hal.top_hal
     port map (
-      clock_and_control     => clock_and_control,
-      clock_in_p            => clock_in_p,
-      clock_in_n            => clock_in_n,
-      refclk_i_p            => refclk_i_p,
-      refclk_i_n            => refclk_i_n,
-      tdc_hits_inner        => tdc_hits_inner,
-      tdc_hits_middle       => tdc_hits_middle,
-      tdc_hits_outer        => tdc_hits_outer,
+
+      -- clock io
+      clock_i_p        => clock_i_p,
+      clock_i_n        => clock_i_n,
+      clock_100m_i_p   => clock_100m_i_p,
+      clock_100m_i_n   => clock_100m_i_n,
+      lhc_refclk_o_p => lhc_refclk_o_p,
+      lhc_refclk_o_n => lhc_refclk_o_n,
+      refclk_i_p       => refclk_i_p,
+      refclk_i_n       => refclk_i_n,
+
+      -- clocks to user logic
+      clock_and_control_o => clock_and_control,
+
+      --  tdc data
+      tdc_hits_inner  => tdc_hits_inner,
+      tdc_hits_middle => tdc_hits_middle,
+      tdc_hits_outer  => tdc_hits_outer,
+
+      --
       endcap_slc_candidates => endcap_slc_candidates,
       barrel_slc_candidates => barrel_slc_candidates,
-      endcap_slc_pipeline   => endcap_slc_pipeline,
-      barrel_slc_pipeline   => barrel_slc_pipeline,
-      segments_o            => segments_o,
-      segments_i            => segments_i,
-      tts_commands          => tts_commands,
-      daq_links             => daq_links,
-      sump                  => hal_sump);
+
+      endcap_slc_pipeline => endcap_slc_pipeline,
+      barrel_slc_pipeline => barrel_slc_pipeline,
+
+      segments_o => segments_o,
+      segments_i => segments_i,
+
+      tts_commands => tts_commands,
+      daq_links    => daq_links,
+      sump         => hal_sump);
 
   top_ult : entity ult.top_ult
     port map (
