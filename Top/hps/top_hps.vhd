@@ -38,14 +38,14 @@ entity top_hps is
     
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
-    -- configuration & control
-    i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    -- control
     -- SLc
-    i_uCM_data          : in ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
+    -- i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av          : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_data     : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av      : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf_data           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity top_hps;
 
@@ -63,13 +63,13 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       -- configuration & control
-      i_uCM_pam           => i_uCM_pam,
+      -- i_uCM_pam           => i_uCM_pam,
       -- SLc
-      i_uCM_data          => i_uCM_data,
+      i_uCM2hps_av        => i_uCM2hps_av,
       -- MDT hit
-      i_mdt_tar_data      => i_mdt_tar_data,
+      i_mdt_tar_av        => i_mdt_tar_av,
       -- to pt calc
-      o_sf_data           => o_sf_data
+      o_sf2pt_av          => o_sf2pt_av
     );
 
 

@@ -20,4 +20,5 @@ BD/*
 !BD/*.bd
 IP/*/*
 !IP/*/*.xci
+.gitlab-ci_*.yml
 

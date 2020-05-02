@@ -21,54 +21,57 @@ use shared_lib.common_pkg.all;
 
 package ucm_pkg is
 
-constant UCM_INPUT_PL_LATENCY : integer := 2; --algorithm latency
-constant UCM_OUTPUT_PL_LATENCY : integer := 2; -- PAM CSW + CVP latency
+  -- delay constants
+  constant UCM_LATENCY_HPS_CH : integer := 10;
+
+  constant UCM_INPUT_PL_LATENCY : integer := 2; --algorithm latency
+  constant UCM_OUTPUT_PL_LATENCY : integer := 2; -- PAM CSW + CVP latency
 
 
-type ucm_prepro_rt is record
-  dummy                           : std_logic;
-  muid                            : slc_muid_rt;
-  chambers                        : slc_chid_rt;
-  common                          : slc_common_rt;
-  specific                        : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);       -- can be either slc_barrel_vt or slc_endcap_vt
-  data_valid                      : std_logic;
-end record ucm_prepro_rt;
+  type ucm_prepro_rt is record
+    dummy                           : std_logic;
+    muid                            : slc_muid_rt;
+    chambers                        : slc_chid_rt;
+    common                          : slc_common_rt;
+    specific                        : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);       -- can be either slc_barrel_vt or slc_endcap_vt
+    data_valid                      : std_logic;
+  end record ucm_prepro_rt;
 
-constant SLC_PREPRO_WIDTH : integer := 129;
-subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
+  constant SLC_PREPRO_WIDTH : integer := 129;
+  subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
 
-function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
-function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
-function nullify return ucm_prepro_rt;
+  function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
+  function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
+  function nullify return ucm_prepro_rt;
 
-type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
-type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
+  type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
+  type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
 
--- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
--- constant UCM_CVP_DATA_WIDTH : integer := 1;
--- subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
--- type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
--- type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
+  -- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
+  -- constant UCM_CVP_DATA_WIDTH : integer := 1;
+  -- subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
+  -- type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
+  -- type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
 
-type ucm_csw_dest is array (integer range <>) of std_logic_Vector(3 downto 0);
+  type ucm_csw_dest is array (integer range <>) of std_logic_Vector(3 downto 0);
 
-type ucm_csw_control_rt is record
-  data_present    : std_logic_vector(MAX_NUM_SL -1 downto 0 );
-  addr_orig       : ucm_csw_dest(MAX_NUM_SL -1 downto 0 );
-end record;
+  type ucm_csw_control_rt is record
+    data_present    : std_logic_vector(MAX_NUM_SL -1 downto 0 );
+    addr_orig       : ucm_csw_dest(MAX_NUM_SL -1 downto 0 );
+  end record;
 
-type ucm_pam_control_rt is record
-  data_present    : std_logic_vector(MAX_NUM_HEG -1 downto 0 );
-  addr_orig       : ucm_csw_dest(MAX_NUM_HEG -1 downto 0 );
-end record;
+  type ucm_pam_control_rt is record
+    data_present    : std_logic_vector(MAX_NUM_HEG -1 downto 0 );
+    addr_orig       : ucm_csw_dest(MAX_NUM_HEG -1 downto 0 );
+  end record;
 
-type ucm_proc_info_rt is record
-  ch               : std_logic_vector(3 downto 0);
-  processed        : std_logic;
-end record;
+  type ucm_proc_info_rt is record
+    ch               : std_logic_vector(3 downto 0);
+    processed        : std_logic;
+  end record;
 
-type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;
-type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
+  type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;
+  type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
 
 end package ucm_pkg;
 

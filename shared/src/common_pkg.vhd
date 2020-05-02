@@ -17,9 +17,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_constants_pkg.all;
-use l0mdt_lib.mdttp_types_pkg.all;
+-- library l0mdt_lib;
+-- use l0mdt_lib.mdttp_constants_pkg.all;
+-- use l0mdt_lib.mdttp_types_pkg.all;
 -- use df_lib.mdttp_functions_pkg.all;
 
 library shared_lib;
@@ -30,13 +30,13 @@ package common_pkg is
 -- =============================================================================
 -- SYSTEM CONSTANTS
 -- =============================================================================
-  -- delay constants
-  constant LATENCY_HPS_CH : integer := 10;
+  -- -- delay constants
+  -- constant LATENCY_HPS_CH : integer := 10;
 
-  -- mdt interface
-  constant numTDCs_lpGBT  : integer := 9; 
-  constant numlpGBTs_mux  : integer := 2; 
-  constant numInputs_mux  : integer := numlpGBTs_mux * numTDCs_lpGBT; 
+  -- -- mdt interface
+  -- constant numTDCs_lpGBT  : integer := 9; 
+  -- constant numlpGBTs_mux  : integer := 2; 
+  -- constant numInputs_mux  : integer := numlpGBTs_mux * numTDCs_lpGBT; 
 
   -- mdt constants
   constant mdt_layer_max  : integer := 10;
@@ -115,7 +115,9 @@ package common_pkg is
   -- =============================================================================
   --  LOGIC PORTS TYPES
   -- =============================================================================
-  
+  --------------------------------------------------------------------------------
+  --  Sector Logic
+  --------------------------------------------------------------------------------
 
   constant SLC_SLCID_LEN              : integer    := 2;                                   -- a comment
   constant SLC_SLID_LEN               : integer    := 6;
@@ -245,7 +247,15 @@ package common_pkg is
   type slc_rx_data_avt is array (integer range <>) of slc_rx_data_vt;
 
   --------------------------------------------------------------------------------
+  --  mdt interface
+  --------------------------------------------------------------------------------
+
+  -- =============================================================================
+  --   LOGIC INTERBLOCK TYPES
+  -- =============================================================================
+  --------------------------------------------------------------------------------
   -- pipeline
+  --------------------------------------------------------------------------------
   type pipeline_rt is record
     muid                            : slc_muid_rt;
     chambers                        : slc_chid_rt;
@@ -263,41 +273,10 @@ package common_pkg is
   function nullify return pipeline_rt;
   type pipeline_art is array (integer range <>) of pipeline_rt;
   type pipeline_avt is array (integer range <>) of pipeline_vt;
-  --------------------------------------------------------------------------------
-  -- data from TAR to hit extraction input fifo
-    -- type tar2hec_data_rt is record
-    --     multilayer  : integer;
-    --     layer       : integer;
-    --     tube        : integer;
-    --     lead_edge   : std_logic_vector(16 downto 0);
-    --     pulse_LEN : std_logic_vector(7 downto 0); 
-    -- end record;
-
-  -- data types and records for hit processing block
-    
-  -- muon candidate procesor to tube range LUT
-  type tube_range_config_rt is record
-    data_valid  : std_logic;
-  end record;
-
-  type muon_candidate_info_rt is record
-    mc_time : integer;
-    mc_origin : std_logic_vector(13 downto 0);
-  end record;
 
   --------------------------------------------------------------------------------
-  --  LOGIC INTERBLOCK TYPES
+  -- candidate information  ucm 2 hps
   --------------------------------------------------------------------------------
-  -- ucm pam 2 hps
-  
-  type ucm2heg_pam_rt is record
-    addr    : std_logic_vector(3 downto 0);
-    sel     : std_logic;
-  end record;
-  type ucm2heg_pam_art is array(integer range <>) of ucm2heg_pam_rt;
-  
-  --------------------------------------------------------------------------------
-  -- ucm slc 2 hps
   type ucm2hps_id_rt is record
   bcid                            : std_logic_vector(BCID_LEN-1 downto 0);
   chamber_id                      : unsigned(SLC_CHAMBER_LEN-1 downto 0);
@@ -323,6 +302,41 @@ package common_pkg is
   type ucm2hps_art is array (integer range <>) of ucm2hps_rt;
   type ucm2hps_avt is array (integer range <>) of ucm2hps_vt;
   type ucm2hps_aavt is array (integer range <>) of ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+
+  --------------------------------------------------------------------------------
+  -- data from TAR to hit extraction input fifo
+    -- type tar2hec_data_rt is record
+    --     multilayer  : integer;
+    --     layer       : integer;
+    --     tube        : integer;
+    --     lead_edge   : std_logic_vector(16 downto 0);
+    --     pulse_LEN : std_logic_vector(7 downto 0); 
+    -- end record;
+
+  -- data types and records for hit processing block
+    
+  -- muon candidate procesor to tube range LUT
+  -- type tube_range_config_rt is record
+  --   data_valid  : std_logic;
+  -- end record;
+
+  -- type muon_candidate_info_rt is record
+  --   mc_time : integer;
+  --   mc_origin : std_logic_vector(13 downto 0);
+  -- end record;
+
+  --------------------------------------------------------------------------------
+  --  LOGIC INTERBLOCK TYPES
+  --------------------------------------------------------------------------------
+  -- ucm pam 2 hps
+  
+  -- type ucm2heg_pam_rt is record
+  --   addr    : std_logic_vector(3 downto 0);
+  --   sel     : std_logic;
+  -- end record;
+  -- type ucm2heg_pam_art is array(integer range <>) of ucm2heg_pam_rt;
+  
+
 
   -- type ucm2heg_barrel_rt is record --from TAR & PC
   --   z           : signed(SLC_B_ZRPC_LEN - 1 downto 0);          -- 10 bits

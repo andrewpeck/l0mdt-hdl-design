@@ -314,7 +314,7 @@ begin
           o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
           o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
           o_cvp_ctrl(ch_i) <= '0';
-          if ch_count(ch_i) < LATENCY_HPS_CH then
+          if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
             o_pam_ctrl.data_present(ch_i) <= '0';
             processed := processed + 1;

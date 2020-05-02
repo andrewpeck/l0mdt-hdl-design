@@ -23,31 +23,30 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 
 entity hp_paramCalc is
-    generic(
-        radius      : integer
-        --  num_layers  : integer := 8;
-        --  package c_hp_pkg is new hp_lib.hp_pkg generic map (num_layers => num_layers)
-    );
-    port (
-        clk                 : in std_logic;
-        
-        Reset_b             : in std_logic;
-        glob_en             : in std_logic;
-        -- SLc
-        i_SLc_z_pos         : in SLc_zpos_st;
-        -- i_SLc_phi           : in SLc_phi_st;
-        i_SLc_BCID          : in SLc_BCID_st;
-        -- MDT hit
-        i_mdt_layer         : in unsigned(MDT_LAYER_WIDTH -1 downto 0);
-        i_mdt_tube          : in unsigned(MDT_TUBE_WIDTH - 1 downto 0);
-        i_mdt_time_real     : in mdt_time_le_st;
-        i_mdt_z_0           : in signed(MDT_Z_WIDTH -1 downto 0);
-        
-        -- i_tdc_valid         : in std_logic;
-        -- to Segment finder
-        o_segFinder_data    : out hp2bm_sf_rt
-        -- o_data_valid        : out std_logic
-    );
+  generic(
+    radius      : integer
+    --  num_layers  : integer := 8;
+    --  package c_hp_pkg is new hp_lib.hp_pkg generic map (num_layers => num_layers)
+  );
+  port (
+    clk                 : in std_logic;
+    Reset_b             : in std_logic;
+    glob_en             : in std_logic;
+    -- SLc
+    i_SLc_z_pos         : in SLc_zpos_st;
+    -- i_SLc_phi           : in SLc_phi_st;
+    i_SLc_BCID          : in SLc_BCID_st;
+    -- MDT hit
+    i_mdt_layer         : in unsigned(MDT_LAYER_WIDTH -1 downto 0);
+    i_mdt_tube          : in unsigned(MDT_TUBE_WIDTH - 1 downto 0);
+    i_mdt_time_real     : in mdt_time_le_st;
+    i_mdt_z_0           : in signed(MDT_Z_WIDTH -1 downto 0);
+    
+    -- i_tdc_valid         : in std_logic;
+    -- to Segment finder
+    o_segFinder_data    : out hp2bm_sf_rt
+    -- o_data_valid        : out std_logic
+  );
 end entity hp_paramCalc;
 
 architecture beh of hp_paramCalc is
