@@ -40,15 +40,15 @@ entity hps is
     -- SLc
     i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av        : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av          : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity hps;
 
 architecture beh of hps is
 
-  signal mdt_full_data : hp_hit_data_avt(MAX_NUM_HP -1 downto 0);
+  signal mdt_full_data : hps_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
   signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);

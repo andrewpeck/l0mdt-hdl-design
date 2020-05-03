@@ -39,8 +39,8 @@ entity hp_paramCalc is
         i_SLc_phi           : in SLc_zpos_st;
         i_SLc_BCID          : in SLc_BCID_st;
         -- MDT hit
-        i_mdt_layer         : in unsigned(MDT_LAYER_WIDTH -1 downto 0);
-        i_mdt_tube          : in unsigned(MDT_TUBE_WIDTH - 1 downto 0);
+        i_mdt_layer         : in unsigned(MDT_LAYER_LEN -1 downto 0);
+        i_mdt_tube          : in unsigned(MDT_TUBE_LEN - 1 downto 0);
         i_mdt_time_real     : in mdt_time_le_st;
         -- i_tdc_valid         : in std_logic;
         -- to Segment finder
@@ -68,7 +68,7 @@ architecture beh of hp_paramCalc is
             i_mdt_time_real     : in mdt_time_le_st;
             -- i_tdc_valid         : in std_logic;
             -- to matching
-            o_tube_radius       : out unsigned(csf_r_width-1 downto 0)
+            o_tube_radius       : out unsigned(csf_r_LEN-1 downto 0)
             -- o_data_valid        : out std_logic
         );
     end component hp_pc_dtr_LUT;
@@ -132,8 +132,8 @@ entity hp_calc_RoI_vect is
     i_SLc_z_0           : in signed();
     i_SLc_y_0           : in signed();
 
-    i_mdt_y             : in signed(MDT_Z_WIDTH -1 downto 0);
-    i_mdt_z             : in signed(MDT_Z_WIDTH -1 downto 0);
+    i_mdt_y             : in signed(MDT_Z_LEN -1 downto 0);
+    i_mdt_z             : in signed(MDT_Z_LEN -1 downto 0);
     -- i_tdc_valid         : in std_logic;
     -- to Segment finder
     o_local_y           : out signed();

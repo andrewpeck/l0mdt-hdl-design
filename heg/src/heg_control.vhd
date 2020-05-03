@@ -35,11 +35,11 @@ entity heg_control is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_vt;
+    i_uCM_data          : in ucm2hps_vt;
     -- SLc out
-    o_uCM2sf_data       : out ucm2heg_slc_rt;
-    o_uCM2hp_data       : out hp_slc_rt;
-    o_SLC_Window        : out SLc_window_std;
+    o_uCM2sf_data       : out ucm2hps_vt;
+    o_uCM2hp_data       : out hp_heg2hp_slc_vt;
+    o_SLC_Window        : out hp_heg2hp_window_vt;
 
     o_control           : out heg_int_control_rt
   );
@@ -58,15 +58,15 @@ architecture beh of heg_control is
       glob_en             : in std_logic;
       -- configuration
       -- SLc in
-      i_uCM_data          : in ucm2heg_slc_vt;
+      i_uCM_data          : in ucm2hps_vt;
       -- SLc out
-      o_SLC_Window        : out SLc_window_std;
+      o_SLC_Window        : out hp_heg2hp_window_vt;
       o_Roi_win_valid     : out std_logic
     );
   end component heg_c_window;
 
-  signal int_uCM_data_r : ucm2heg_slc_rt;
-  signal int_uCM_data_v : ucm2heg_slc_vt;
+  signal int_uCM_data_r : ucm2hps_rt;
+  signal int_uCM_data_v : ucm2hps_vt;
   signal Roi_win_valid : std_logic;
   
 begin
@@ -91,11 +91,11 @@ begin
   -- o_uCM2sf_data <= int_uCM_data;
   -- o_uCM2hp_data.barrel.z <= int_uCM_data.barrel.z;
 
-  int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data);
+  int_uCM_data_r <= structify(i_uCM_data);
 
   SLc_reg : process(Reset_b,clk) begin
     if(Reset_b = '0') then
-      o_uCM2sf_data <= null_ucm2heg_slc_rt;
+      o_uCM2sf_data <= null_ucm2hps_rt;
       o_control <= null_heg_control_rt;
       -- o_uCM2hp_data
     elsif rising_edge(clk) then
@@ -154,16 +154,16 @@ entity heg_c_window is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_vt;
+    i_uCM_data          : in ucm2hps_vt;
     -- SLc out
-    o_SLC_Window        : out SLc_window_std;
+    o_SLC_Window        : out hp_heg2hp_window_vt;
     o_Roi_win_valid     : out std_logic
   );
 end entity heg_c_window;
 
 architecture beh of heg_c_window is
 
-  signal int_uCM_data : ucm2heg_slc_rt;
+  signal int_uCM_data : ucm2hps_rt;
 
   type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
   signal Roi_window_LUT : trLUT_layer_t;
@@ -193,7 +193,7 @@ begin
 
 
               ----------------------
-              Roi_window_a(il)(it) <= to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_WIDTH);
+              Roi_window_a(il)(it) <= to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN);
             end loop;
           end loop;
           o_Roi_win_valid <= '1';

@@ -27,13 +27,59 @@ use heg_lib.heg_pkg.all;
 
 package hps_pkg is
 
+  type hps_pc2heg_rt is record
+    tube                       : std_logic_vector(MDT_TUBE_LEN-1 downto 0);
+    layer                      : std_logic_vector(MDT_LAYER_LEN-1 downto 0);
+    time_t0                    : unsigned(MDT_TIME_LEN-1 downto 0);
+    global_z                   : unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+    global_y                   : unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+    data_valid                 : std_logic;
+  end record hps_pc2heg_rt;
+  constant HPS_PC2HEG_LEN : integer := 63;
+  subtype hps_pc2heg_vt is std_logic_vector(HPS_PC2HEG_LEN-1 downto 0);
+  function vectorify(x: hps_pc2heg_rt) return hps_pc2heg_vt;
+  function structify(x: hps_pc2heg_vt) return hps_pc2heg_rt;
+  function nullify (x: hps_pc2heg_rt) return hps_pc2heg_rt;
+
+  type hps_pc2heg_avt is array ( integer range <>) of hps_pc2heg_vt;
 
 
 end package hps_pkg;
 
 package body hps_pkg is
---------------------------------------------------------------------------------
--- FUNCTIONS IMPLEMENTATION
---------------------------------------------------------------------------------
+
+  function vectorify(x: hps_pc2heg_rt) return hps_pc2heg_vt is
+    variable y : hps_pc2heg_vt;
+  begin
+    y(62 downto 58)            := x.tube;
+    y(57 downto 49)            := x.layer;
+    y(48 downto 31)            := vectorify(x.time_t0);
+    y(30 downto 16)            := vectorify(x.global_z);
+    y(15 downto 1)             := vectorify(x.global_y);
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: hps_pc2heg_vt) return hps_pc2heg_rt is
+    variable y : hps_pc2heg_rt;
+  begin
+    y.tube                     := x(62 downto 58);
+    y.layer                    := x(57 downto 49);
+    y.time_t0                  := structify(x(48 downto 31));
+    y.global_z                 := structify(x(30 downto 16));
+    y.global_y                 := structify(x(15 downto 1));
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: hps_pc2heg_rt) return hps_pc2heg_rt is
+    variable y : hps_pc2heg_rt;
+  begin
+    y.tube                     := nullify(x.tube);
+    y.layer                    := nullify(x.layer);
+    y.time_t0                  := nullify(x.time_t0);
+    y.global_z                 := nullify(x.global_z);
+    y.global_y                 := nullify(x.global_y);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
  
 end package body hps_pkg;

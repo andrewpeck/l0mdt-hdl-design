@@ -37,8 +37,8 @@ package ucm_pkg is
   --   data_valid                      : std_logic;
   -- end record ucm_prepro_rt;
 
-  -- constant SLC_PREPRO_WIDTH : integer := 129;
-  -- subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
+  -- constant SLC_PREPRO_LEN : integer := 129;
+  -- subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_LEN-1 downto 0);
 
   -- function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
   -- function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
@@ -64,8 +64,8 @@ package ucm_pkg is
 
 
   -- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
-  -- constant UCM_CVP_DATA_WIDTH : integer := 1;
-  -- subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_WIDTH downto 0);
+  -- constant UCM_CVP_DATA_LEN : integer := 1;
+  -- subtype ucm_cvp_vt is std_logic_vector(UCM_CVP_DATA_LEN downto 0);
   -- type ucm_cvp_avt is array (integer range <>) of ucm_cvp_vt;
   -- type ucm_cvp_aavt is array (integer range <>) of ucm_cvp_avt(MAX_NUM_HPS-1 downto 0);
 

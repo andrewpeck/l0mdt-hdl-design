@@ -43,9 +43,9 @@ entity top_hps is
     -- i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     i_uCM2hps_av          : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av      : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av      : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf2pt_av           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av           : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity top_hps;
 
