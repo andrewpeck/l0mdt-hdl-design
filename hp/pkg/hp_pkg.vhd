@@ -45,7 +45,7 @@ package hp_pkg is
 
   type hp_heg2hp_window_st is array(8-1 downto 0) of hp_heg2hp_win_layer_st;
   constant HP_HEG2HP_WINDOW_LEN : integer := 80;
-  subtype HP_HEG2HP_WINDOW_vt is std_logic_vector(HP_HEG2HP_WINDOW_LEN-1 downto 0);
+  subtype hp_heg2hp_window_vt is std_logic_vector(HP_HEG2HP_WINDOW_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_window_st) return hp_heg2hp_window_vt;
   function structify (x: hp_heg2hp_window_vt) return hp_heg2hp_window_st;
   function nullify (x: hp_heg2hp_window_st) return hp_heg2hp_window_st;
