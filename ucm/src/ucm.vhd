@@ -93,7 +93,7 @@ begin
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => UCM_INPUT_PL_LATENCY,
-      num_bits    => SLC_PREPRO_WIDTH
+      num_bits    => UCM_PREPRO_LEN
     )
     port map(
       clk         => clk,
@@ -180,7 +180,7 @@ begin
   end generate;
 
   PL_PROC_GEN: for sl_i in MAX_NUM_SL -1 downto 0 generate
-    csw_main_out_ar(sl_i)         <= recordify(csw_main_out_av(sl_i));
+    csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
     o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     o_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;

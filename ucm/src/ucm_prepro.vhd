@@ -44,12 +44,12 @@ architecture beh of ucm_prepro is
 
 begin
   
-  i_slc_data_r <= recordify(i_slc_data_v);
+  i_slc_data_r <= structify(i_slc_data_v);
   o_prepro_data_v <= vectorify(o_prepro_data_r);
 
   UCM_PRE_PROC : process(Reset_b,clk) begin
     if(Reset_b = '0') then
-      o_prepro_data_r <= nullify;
+      o_prepro_data_r <= nullify(o_prepro_data_r);
     elsif rising_edge(clk) then
       if i_slc_data_r.data_valid = '1' then
         o_prepro_data_r.muid <= i_slc_data_r.muid;
@@ -58,7 +58,7 @@ begin
         o_prepro_data_r.specific <= i_slc_data_r.specific;
         o_prepro_data_r.data_valid <= i_slc_data_r.data_valid;
       else
-        o_prepro_data_r <= nullify;
+        o_prepro_data_r <= nullify(o_prepro_data_r);
       end if;
 
     end if;

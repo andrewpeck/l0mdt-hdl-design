@@ -106,11 +106,11 @@ begin
   cand1.chambers.mdt_out      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
   cand1.chambers.mdt_ext      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
   cand1.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
-  cand1.common.tcsent         <= std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
+  cand1.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
   cand1.common.pos_eta        <= to_signed( 1 , SLC_POS_ETA_LEN );
   cand1.common.pos_phi        <= to_unsigned( 1 , SLC_POS_PHI_LEN );
   cand1.common.pt_th          <= std_logic_vector(to_unsigned( 1 , SLC_PT_TH_LEN ));
-  cand1.common.charge         <= std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
+  cand1.common.charge         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
   cand1.specific              <= vectorify(barrel1);
   cand1.data_valid            <= '1';
  	-------------------------------------------------------------------------------------

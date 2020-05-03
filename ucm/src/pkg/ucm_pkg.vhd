@@ -28,24 +28,40 @@ package ucm_pkg is
   constant UCM_OUTPUT_PL_LATENCY : integer := 2; -- PAM CSW + CVP latency
 
 
+  -- type ucm_prepro_rt is record
+  --   dummy                           : std_logic;
+  --   muid                            : slc_muid_rt;
+  --   chambers                        : slc_chid_rt;
+  --   common                          : slc_common_rt;
+  --   specific                        : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);       -- can be either slc_barrel_vt or slc_endcap_vt
+  --   data_valid                      : std_logic;
+  -- end record ucm_prepro_rt;
+
+  -- constant SLC_PREPRO_WIDTH : integer := 129;
+  -- subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
+
+  -- function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
+  -- function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
+  -- function nullify return ucm_prepro_rt;
+
+  -- type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
+  -- type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
   type ucm_prepro_rt is record
-    dummy                           : std_logic;
-    muid                            : slc_muid_rt;
-    chambers                        : slc_chid_rt;
-    common                          : slc_common_rt;
-    specific                        : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);       -- can be either slc_barrel_vt or slc_endcap_vt
-    data_valid                      : std_logic;
+    muid                       : slc_muid_rt;
+    chambers                   : slc_chid_rt;
+    common                     : slc_common_rt;
+    specific                   : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+    data_valid                 : std_logic;
   end record ucm_prepro_rt;
-
-  constant SLC_PREPRO_WIDTH : integer := 129;
-  subtype ucm_prepro_vt is std_logic_vector(SLC_PREPRO_WIDTH-1 downto 0);
-
-  function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt;
-  function recordify(v: ucm_prepro_vt) return ucm_prepro_rt;
-  function nullify return ucm_prepro_rt;
-
+  constant UCM_PREPRO_LEN : integer := 128;
+  subtype ucm_prepro_vt is std_logic_vector(UCM_PREPRO_LEN-1 downto 0);
+  function vectorify(x: ucm_prepro_rt) return ucm_prepro_vt;
+  function structify(x: ucm_prepro_vt) return ucm_prepro_rt;
+  function nullify (x: ucm_prepro_rt) return ucm_prepro_rt;
+  -- custom
   type ucm_prepro_art is array (integer range <>) of ucm_prepro_rt;
   type ucm_prepro_avt is array (integer range <>) of ucm_prepro_vt;
+
 
   -- type sl2ucm_data_art is array(integer range <>) of sl2ucm_data_rt;
   -- constant UCM_CVP_DATA_WIDTH : integer := 1;
@@ -81,39 +97,69 @@ package body ucm_pkg is
 --------------------------------------------------------------------------------
   --------------------------------------------------------------------------------
   -- ucm_prepro_rt
-  function nullify return ucm_prepro_rt is
-  begin
-    return ('0'
-            , nullify
-            , nullify
-            , nullify
-            , (others => '0')
-            , '0');
-  end function nullify;
+  -- function nullify return ucm_prepro_rt is
+  -- begin
+  --   return ('0'
+  --           , nullify
+  --           , nullify
+  --           , nullify
+  --           , (others => '0')
+  --           , '0');
+  -- end function nullify;
 
-  function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt is
-    variable v : ucm_prepro_vt;
+  -- function vectorify(d: ucm_prepro_rt) return ucm_prepro_vt is
+  --   variable v : ucm_prepro_vt;
+  -- begin
+  --   v := d.dummy
+  --        & vectorify(d.muid)
+  --        & vectorify(d.chambers)
+  --        & vectorify(d.common)
+  --        & d.specific
+  --        & d.data_valid;
+  --   return v;
+  -- end function vectorify;
+
+  -- function recordify(v: ucm_prepro_vt) return ucm_prepro_rt is
+  --   variable b : ucm_prepro_rt;
+  -- begin
+  --   b.dummy                := v(128);
+  --   b.muid                 := recordify(v(127 downto 108));
+  --   b.chambers             := recordify(v(107 downto 84));
+  --   b.common               := recordify(v(83 downto 52));
+  --   b.specific             := v(51 downto 1);
+  --   b.data_valid           := v(0);
+  --   return b;
+  -- end function recordify;
+  function vectorify(x: ucm_prepro_rt) return ucm_prepro_vt is
+    variable y : ucm_prepro_vt;
   begin
-    v := d.dummy
-         & vectorify(d.muid)
-         & vectorify(d.chambers)
-         & vectorify(d.common)
-         & d.specific
-         & d.data_valid;
-    return v;
+    y(127 downto 108)          := vectorify(x.muid);
+    y(107 downto 84)           := vectorify(x.chambers);
+    y(83 downto 52)            := vectorify(x.common);
+    y(51 downto 1)             := x.specific;
+    y(0)                       := x.data_valid;
+    return y;
   end function vectorify;
-
-  function recordify(v: ucm_prepro_vt) return ucm_prepro_rt is
-    variable b : ucm_prepro_rt;
+  function structify(x: ucm_prepro_vt) return ucm_prepro_rt is
+    variable y : ucm_prepro_rt;
   begin
-    b.dummy                := v(128);
-    b.muid                 := recordify(v(127 downto 108));
-    b.chambers             := recordify(v(107 downto 84));
-    b.common               := recordify(v(83 downto 52));
-    b.specific             := v(51 downto 1);
-    b.data_valid           := v(0);
-    return b;
-  end function recordify;
+    y.muid                     := structify(x(127 downto 108));
+    y.chambers                 := structify(x(107 downto 84));
+    y.common                   := structify(x(83 downto 52));
+    y.specific                 := x(51 downto 1);
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: ucm_prepro_rt) return ucm_prepro_rt is
+    variable y : ucm_prepro_rt;
+  begin
+    y.muid                     := nullify(x.muid);
+    y.chambers                 := nullify(x.chambers);
+    y.common                   := nullify(x.common);
+    y.specific                 := nullify(x.specific);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
   --------------------------------------------------------------------------------
  
 end package body ucm_pkg;
