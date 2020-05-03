@@ -36,13 +36,13 @@ entity hps is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- control
-    -- i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+
     -- SLc
-    i_uCM2hps_av          : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av      : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf2pt_av           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av          : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity hps;
 
@@ -53,9 +53,9 @@ architecture beh of hps is
   signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);
 
-  signal int_sf_control        : heg_int_control_art(MAX_NUM_HEG -1 downto 0);
-  signal int_sf_slc_data       : ucm2heg_slc_art(MAX_NUM_HEG -1 downto 0);
-  signal int_sf_mdt_data       : heg2sf_mdt_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_control        : heg_int_control_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_slc_data       : ucm2heg_slc_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_mdt_data       : heg2sf_mdt_art(MAX_NUM_HEG -1 downto 0);
 
 begin
 
@@ -104,9 +104,9 @@ begin
       -- MDT hit
       i_mdt_full_data     => mdt_full_data,
       -- to Segment finder
-      o_sf_control        => int_sf_control(heg_i),
-      o_sf_slc_data       => int_sf_slc_data(heg_i),
-      o_sf_mdt_data       => int_sf_mdt_data(heg_i)
+      o_sf_control        => heg2sf_control(heg_i),
+      o_sf_slc_data       => heg2sf_slc_data(heg_i),
+      o_sf_mdt_data       => heg2sf_mdt_data(heg_i)
     );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -118,9 +118,9 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       -- to Segment finder
-      i_sf_control        => int_sf_control(heg_i),
-      i_sf_slc_data       => int_sf_slc_data(heg_i),
-      i_sf_mdt_data       => int_sf_mdt_data(heg_i),
+      i_sf_control        => heg2sf_control(heg_i),
+      i_sf_slc_data       => heg2sf_slc_data(heg_i),
+      i_sf_mdt_data       => heg2sf_mdt_data(heg_i),
       --
       o_sf2pt_av           => o_sf2pt_av(heg_i)
     );
