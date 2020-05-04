@@ -188,15 +188,15 @@ begin  -- architecture behavioral
 
   top_clocking_inst : entity hal.top_clocking
     port map (
-      valid_i          => std_logic_0,        -- TODO: should be sourced felix
-      reset_i          => std_logic_0,        -- TODO: should be sourced from AXI
+      valid_i          => std_logic0,        -- TODO: should be sourced felix
+      reset_i          => std_logic0,        -- TODO: should be sourced from AXI
       sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
       clock_100m_i_p   => clock_100m_i_p,
       clock_100m_i_n   => clock_100m_i_n,
       clock_i_p        => clock_i_p,
       clock_i_n        => clock_i_n,
-      felix_recclk_i   => std_logic_0,        -- TODO: connect to recclk
-      select_felix_clk => std_logic_0,        -- TODO: should be sourced from AXI
+      felix_recclk_i   => std_logic0,        -- TODO: connect to recclk
+      select_felix_clk => std_logic0,        -- TODO: should be sourced from AXI
 
       lhc_refclk_o_p => lhc_refclk_o_p,
       lhc_refclk_o_n => lhc_refclk_o_n,

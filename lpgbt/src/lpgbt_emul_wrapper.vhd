@@ -92,7 +92,7 @@ begin
           downlinkbypassdeinterleaver => c_lpgbt_bypass_interleaver,
           downlinkbypassfecdecoder    => c_lpgbt_bypass_fec,
           downlinkbypassdescsrambler  => c_lpgbt_bypass_scrambler,
-          enablefecerrcounter         => std_logic_1,
+          enablefecerrcounter         => std_logic1,
           feccorrectioncount          => open,
           downlinkrdy_o               => lpgbt_downlink_ready_o(idx),
 
@@ -115,13 +115,13 @@ begin
           gt_rxready_in        => not reset,
           gt_txdata_out        => lpgbt_uplink_mgt_word_array_o(idx),    -- 32 bit transmit data to mgt
           gt_rxdata_in         => lpgbt_downlink_mgt_word_array_i(idx),  -- 32 bit receive data word from mgt
-          uplinkscramblerreset => std_logic_0,
+          uplinkscramblerreset => std_logic0,
 
           uplinkinterleaverbypass => c_lpgbt_bypass_interleaver,
           uplinkfecbypass         => c_lpgbt_bypass_fec,
           uplinkscramblerbypass   => c_lpgbt_bypass_scrambler,
-          fecmode                 => std_logic_0,  -- 0 = fec5, 1 = fec12
-          txdatarate              => std_logic_1   -- 0 = 5.24 gbps, 1 = 10.24
+          fecmode                 => std_logic0,  -- 0 = fec5, 1 = fec12
+          txdatarate              => std_logic1   -- 0 = 5.24 gbps, 1 = 10.24
           );
     end generate;
   end generate;

@@ -74,9 +74,6 @@ end lpgbt_link_wrapper;
 
 architecture Behavioral of lpgbt_link_wrapper is
 
-  signal std_logic_1 : std_logic := '1';
-  signal std_logic_0 : std_logic := '1';
-
   attribute DONT_TOUCH                        : string;
   signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '0');
   signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '0');
@@ -204,7 +201,7 @@ begin
           )
 
         port map (
-          clk_freerunningclk_i       => std_logic_0,  -- not used since reset on even feature is disabled in frame aligner
+          clk_freerunningclk_i       => std_logic0,  -- not used since reset on even feature is disabled in frame aligner
           uplinkclk_i                => lpgbt_uplink_clk_i,
           uplinkrst_n_i              => uplink_reset_tree(idx),
           mgt_word_o                 => mgt_data,
