@@ -154,18 +154,18 @@ begin
   -- Polling Mux
   --------------------------------------------------------------------------------
 
-  inner_loop : for I in 0 to (c_NUM_POLMUX-1) generate
-    assert (false) report " > Inner Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(inner_polmux_idx_array(I)) severity note;
-  end generate;
-  middle_loop : for I in 0 to (c_NUM_POLMUX-1) generate
-    assert (false) report " > Middle Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(middle_polmux_idx_array(I)) severity note;
-  end generate;
-  outer_loop : for I in 0 to (c_NUM_POLMUX-1) generate
-    assert (false) report " > Outer Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
-  end generate;
+  -- inner_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+  --   assert (false) report " > Inner Polmux IDX (" & integer'image(I) &
+  --     ")=" & integer'image(inner_polmux_idx_array(I)) severity note;
+  -- end generate;
+  -- middle_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+  --   assert (false) report " > Middle Polmux IDX (" & integer'image(I) &
+  --     ")=" & integer'image(middle_polmux_idx_array(I)) severity note;
+  -- end generate;
+  -- outer_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+  --   assert (false) report " > Outer Polmux IDX (" & integer'image(I) &
+  --     ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
+  -- end generate;
 
   polmux_loop : for I in 0 to (c_NUM_POLMUX-1) generate
 
