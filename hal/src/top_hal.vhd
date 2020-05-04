@@ -97,15 +97,15 @@ architecture behavioral of top_hal is
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  constant lpgbt_downlink_data_rt_zero : lpgbt_downlink_data_rt :=  (
-    ec    => (others =>'0'),
-    ic    => (others =>'0'),
-    data  => (others =>'0'),
+  constant lpgbt_downlink_data_rt_zero : lpgbt_downlink_data_rt := (
+    ec    => (others => '0'),
+    ic    => (others => '0'),
+    data  => (others => '0'),
     valid => '0');
 
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0)
     := (others => lpgbt_downlink_data_rt_zero);
-  signal lpgbt_uplink_data   : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_data : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
   signal lpgbt_downlink_valid : std_logic;
 
@@ -283,6 +283,11 @@ begin  -- architecture behavioral
   -- LPGBT-FPGA Cores
   --------------------------------------------------------------------------------
 
+  -- TODO: we already have this, sourced from FELIX.. this should just be a convoluted
+  -- copy of that but we still need to -- have a fabricated source of this for cases
+  -- where the clock is locally generated... this is OK for now but maybe there is a
+  -- better way to mux this
+  --
   -- Create a 1 of 8 high signal synced to the 40MHZ clock
   --            ___ ___ ___ ___ ___ ___ ___ ___ ___
   -- clk320   __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_
@@ -466,8 +471,8 @@ begin  -- architecture behavioral
 
   data_loop : process (clocks.clock320) is
   begin  -- process data_loop
-    if (rising_edge(clocks.clock320)) then        -- rising clock edge
-      sump <= '0'; --xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
+    if (rising_edge(clocks.clock320)) then  -- rising clock edge
+      sump <= '0';                          --xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
     end if;
   end process data_loop;
 

@@ -15,8 +15,6 @@ use work.board_pkg.all;
 use work.board_pkg_common.all;
 use work.sector_logic_pkg.all;
 
--- FIXME: need to use a freerunning clock for statemachine startup ???
-
 entity mgt_wrapper is
   port(
 
