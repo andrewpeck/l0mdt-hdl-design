@@ -76,9 +76,9 @@ begin
     --
     i_uCM_data          => i_uCM_data,
     --
-    o_uCM2sf_data       => o_sf_slc_data,
-    o_uCM2hp_data       => hegC2hp_uCM_data,
-    o_SLC_Window        => roi_b_Window,
+    o_uCM2sf_data_v     => o_sf_slc_data,
+    o_uCM2hp_data_v     => hegC2hp_uCM_data,
+    o_SLC_Window_v      => roi_b_Window,
     o_control           => hegC_control
   );
 

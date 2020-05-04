@@ -22,6 +22,8 @@ use shared_lib.common_pkg.all;
 
 package hp_pkg is
 
+  constant HP_DRIFT_TIME_LEN : integer := MDT_TIME_LEN;
+
   --------------------------------------------------------------------------------
   --  slc window
   --------------------------------------------------------------------------------
@@ -102,8 +104,8 @@ package hp_pkg is
   --  mdt input port
   --------------------------------------------------------------------------------
   type hp_hpsPc2hp_rt is record
-    tube                       : std_logic_vector(MDT_TUBE_LEN-1 downto 0);
-    layer                      : std_logic_vector(MDT_LAYER_LEN-1 downto 0);
+    tube                       : unsigned(MDT_TUBE_LEN-1 downto 0);
+    layer                      : unsigned(MDT_LAYER_LEN-1 downto 0);
     time_t0                    : unsigned(MDT_TIME_LEN-1 downto 0);
     global_z                   : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     global_y                   : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -132,51 +134,72 @@ package hp_pkg is
   --------------------------------------------------------------------------------
   --  mdtoutput port
   --------------------------------------------------------------------------------
+  type hp_hp2sf_data_rt is record
+    local_z                    : unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+    local_y                    : signed(MDT_LOCAL_AXI_LEN-1 downto 0);
+    radius                     : unsigned(MDT_RADIUS_LEN-1 downto 0);
+    layer                      : std_logic_vector(MDT_LAYER_LEN-1 downto 0);
+  end record hp_hp2sf_data_rt;
+  constant HP_HP2SF_DATA_LEN : integer := 48;
+  subtype hp_hp2sf_data_vt is std_logic_vector(HP_HP2SF_DATA_LEN-1 downto 0);
+  function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_vt;
+  function structify(x: hp_hp2sf_data_vt) return hp_hp2sf_data_rt;
+  function nullify (x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
 
-  type hp2sf_csf_rt is record
-      x : unsigned(CSF_X_LEN-1 downto 0);
-      z : signed(CSF_Z_LEN-1 downto 0);
-      -- r : unsigned(csf_r_LEN-1 downto 0);
-  end record;
-  constant null_hp2sf_csf_rt  : hp2sf_csf_rt := ((others => '0'),(others => '0'));
-  constant HP2SF_CSF_LEN    : integer := CSF_X_LEN + CSF_Z_LEN;
-  -- type hp_2_sf_lsf_rt is record
-  --     x : unsigned(le_x_LEN-1 downto 0);
-  --     y : unsigned(le_y_LEN-1 downto 0);
-  --     -- r : unsigned(le_r_LEN-1 downto 0);
+  type hp_hp2bm_rt is record
+    data                       : hp_hp2sf_data_rt;
+    mdt_valid                  : std_logic;
+    data_valid                 : std_logic;
+  end record hp_hp2bm_rt;
+  constant HP_HP2BM_LEN : integer := 50;
+  subtype hp_hp2bm_vt is std_logic_vector(HP_HP2BM_LEN-1 downto 0);
+  function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_vt;
+  function structify(x: hp_hp2bm_vt) return hp_hp2bm_rt;
+  function nullify (x: hp_hp2bm_rt) return hp_hp2bm_rt;
+  -- type hp2sf_csf_rt is record
+  --     x : unsigned(CSF_X_LEN-1 downto 0);
+  --     z : signed(CSF_Z_LEN-1 downto 0);
+  --     -- r : unsigned(csf_r_LEN-1 downto 0);
   -- end record;
+  -- constant null_hp2sf_csf_rt  : hp2sf_csf_rt := ((others => '0'),(others => '0'));
+  -- constant HP2SF_CSF_LEN    : integer := CSF_X_LEN + CSF_Z_LEN;
+  -- -- type hp_2_sf_lsf_rt is record
+  -- --     x : unsigned(le_x_LEN-1 downto 0);
+  -- --     y : unsigned(le_y_LEN-1 downto 0);
+  -- --     -- r : unsigned(le_r_LEN-1 downto 0);
+  -- -- end record;
 
-  -- type hp_2_sf_rt is record
-  --     hit_valid       : std_logic;
-  --     -- parameters
-  --     csf             : hp2sf_csf_rt;
-  --     le              : hp_2_sf_lsf_rt;
+  -- -- type hp_2_sf_rt is record
+  -- --     hit_valid       : std_logic;
+  -- --     -- parameters
+  -- --     csf             : hp2sf_csf_rt;
+  -- --     le              : hp_2_sf_lsf_rt;
+  -- -- end record;
+
+  -- -- output to buffer mux
+  -- -- type hp2bm_csf_t is array (integer range <>) of hp2sf_csf_rt;
+  -- -- type hp2bm_lsf_t is array (integer range <>) of hp_2_sf_lsf_rt;
+
+  -- type hp2bm_sf_rt is record
+  --   r           : unsigned(MDT_R_WIIDTH-1 downto 0);
+  --   csf         : hp2sf_csf_rt; --hp2bm_csf_t(SF_type downto 0);
+  --   -- lsf         : hp_2_sf_lsf_rt; --hp2bm_lsf_t(SF_type downto 1);
   -- end record;
+  -- constant null_hp2bm_sf_rt : hp2bm_sf_rt := ((others => '0'),null_hp2sf_csf_rt);
 
-  -- output to buffer mux
-  -- type hp2bm_csf_t is array (integer range <>) of hp2sf_csf_rt;
-  -- type hp2bm_lsf_t is array (integer range <>) of hp_2_sf_lsf_rt;
+  -- constant HP2BM_SF_LEN : integer := MDT_R_WIIDTH + HP2SF_CSF_LEN;
 
-  type hp2bm_sf_rt is record
-    r           : unsigned(MDT_R_WIIDTH-1 downto 0);
-    csf         : hp2sf_csf_rt; --hp2bm_csf_t(SF_type downto 0);
-    -- lsf         : hp_2_sf_lsf_rt; --hp2bm_lsf_t(SF_type downto 1);
-  end record;
-  constant null_hp2bm_sf_rt : hp2bm_sf_rt := ((others => '0'),null_hp2sf_csf_rt);
-
-  constant HP2BM_SF_LEN : integer := MDT_R_WIIDTH + HP2SF_CSF_LEN;
-
-  type hp2bm_rt is record
-    sf_data     : hp2bm_sf_rt; --hp2bm_csf_t(SF_type downto 0);
-    -- lsf         : hp2bm_lsf_t(SF_type downto 1);
-    mdt_valid   : std_logic;
-    data_valid  : std_logic;
-  end record;
-  type hp2bm_art is array (integer range <>) of hp2bm_rt;
-  subtype hp2bm_vt is std_logic_vector((2 + MDT_R_WIIDTH + CSF_X_LEN + CSF_Z_LEN) -1  downto 0 );
-  type hp2bm_avt is array (integer range <>) of hp2bm_vt;
-  function hp2bm_rt_f_r2std(	inputrecord : in hp2bm_rt	) return hp2bm_vt;
-  function hp2bm_rt_f_std2rt(inputvector : in hp2bm_vt  ) return hp2bm_rt;
+  -- type hp2bm_rt is record
+  --   sf_data     : hp2bm_sf_rt; --hp2bm_csf_t(SF_type downto 0);
+  --   -- lsf         : hp2bm_lsf_t(SF_type downto 1);
+  --   mdt_valid   : std_logic;
+  --   data_valid  : std_logic;
+  -- end record;
+  -- type hp2bm_art is array (integer range <>) of hp2bm_rt;
+  -- subtype hp2bm_vt is std_logic_vector((2 + MDT_R_WIIDTH + CSF_X_LEN + CSF_Z_LEN) -1  downto 0 );
+  -- type hp2bm_avt is array (integer range <>) of hp2bm_vt;
+  -- function hp2bm_rt_f_r2std(	inputrecord : in hp2bm_rt	) return hp2bm_vt;
+  -- function hp2bm_rt_f_std2rt(inputvector : in hp2bm_vt  ) return hp2bm_rt;
 
 
 end package hp_pkg;
@@ -326,8 +349,8 @@ package body hp_pkg is
   function vectorify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_vt is
     variable y : hp_hpsPc2hp_vt;
   begin
-    y(70 downto 66)            := x.tube;
-    y(65 downto 57)            := x.layer;
+    y(70 downto 66)            := vectorify(x.tube);
+    y(65 downto 57)            := vectorify(x.layer);
     y(56 downto 39)            := vectorify(x.time_t0);
     y(38 downto 20)            := vectorify(x.global_z);
     y(19 downto 1)             := vectorify(x.global_y);
@@ -337,8 +360,8 @@ package body hp_pkg is
   function structify(x: hp_hpsPc2hp_vt) return hp_hpsPc2hp_rt is
     variable y : hp_hpsPc2hp_rt;
   begin
-    y.tube                     := x(70 downto 66);
-    y.layer                    := x(65 downto 57);
+    y.tube                     := structify(x(70 downto 66));
+    y.layer                    := structify(x(65 downto 57));
     y.time_t0                  := structify(x(56 downto 39));
     y.global_z                 := structify(x(38 downto 20));
     y.global_y                 := structify(x(19 downto 1));
@@ -380,26 +403,77 @@ package body hp_pkg is
   --------------------------------------------------------------------------------
   -- MDT output functions
   --------------------------------------------------------------------------------
-
-  function hp2bm_rt_f_r2std(i_record : in hp2bm_rt) return hp2bm_vt is
-    variable o_vector : hp2bm_vt;
+  function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_vt is
+    variable y : hp_hp2sf_data_vt;
   begin
-    o_vector := std_logic_vector(i_record.sf_data.r) & 
-    std_logic_vector(i_record.sf_data.csf.x) & 
-    std_logic_vector(i_record.sf_data.csf.z) & 
-    i_record.mdt_valid & i_record.data_valid;
-    return o_vector;
-  end function;
-
-  function hp2bm_rt_f_std2rt(i_vector : in hp2bm_vt) return hp2bm_rt is
-    variable o_record : hp2bm_rt;
+    y(47 downto 33)            := vectorify(x.local_z);
+    y(32 downto 18)            := vectorify(x.local_y);
+    y(17 downto 9)             := vectorify(x.radius);
+    y(8 downto 0)              := x.layer;
+    return y;
+  end function vectorify;
+  function structify(x: hp_hp2sf_data_vt) return hp_hp2sf_data_rt is
+    variable y : hp_hp2sf_data_rt;
   begin
-    o_record.sf_data.r      := unsigned(i_vector(MDT_R_WIIDTH+CSF_X_LEN+CSF_Z_LEN+2-1 downto CSF_X_LEN+CSF_Z_LEN+2));
-    o_record.sf_data.csf.x  := unsigned(i_vector(CSF_X_LEN+CSF_Z_LEN+2-1 downto CSF_Z_LEN+ 2));
-    o_record.sf_data.csf.z  := signed(i_vector(CSF_Z_LEN+2-1 downto 2));
-    o_record.mdt_valid      := i_vector(1);
-    o_record.data_valid     := i_vector(0);
-    return o_record;
-  end function;
+    y.local_z                  := structify(x(47 downto 33));
+    y.local_y                  := structify(x(32 downto 18));
+    y.radius                   := structify(x(17 downto 9));
+    y.layer                    := x(8 downto 0);
+    return y;
+  end function structify;
+  function nullify (x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+    variable y : hp_hp2sf_data_rt;
+  begin
+    y.local_z                  := nullify(x.local_z);
+    y.local_y                  := nullify(x.local_y);
+    y.radius                   := nullify(x.radius);
+    y.layer                    := nullify(x.layer);
+    return y;
+  end function nullify;
+
+  function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_vt is
+    variable y : hp_hp2bm_vt;
+  begin
+    y(49 downto 2)             := vectorify(x.data);
+    y(1)                       := x.mdt_valid;
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: hp_hp2bm_vt) return hp_hp2bm_rt is
+    variable y : hp_hp2bm_rt;
+  begin
+    y.data                     := structify(x(49 downto 2));
+    y.mdt_valid                := x(1);
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: hp_hp2bm_rt) return hp_hp2bm_rt is
+    variable y : hp_hp2bm_rt;
+  begin
+    y.data                     := nullify(x.data);
+    y.mdt_valid                := nullify(x.mdt_valid);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+  -- function hp2bm_rt_f_r2std(i_record : in hp2bm_rt) return hp2bm_vt is
+  --   variable o_vector : hp2bm_vt;
+  -- begin
+  --   o_vector := std_logic_vector(i_record.sf_data.r) & 
+  --   std_logic_vector(i_record.sf_data.csf.x) & 
+  --   std_logic_vector(i_record.sf_data.csf.z) & 
+  --   i_record.mdt_valid & i_record.data_valid;
+  --   return o_vector;
+  -- end function;
+
+  -- function hp2bm_rt_f_std2rt(i_vector : in hp2bm_vt) return hp2bm_rt is
+  --   variable o_record : hp2bm_rt;
+  -- begin
+  --   o_record.sf_data.r      := unsigned(i_vector(MDT_R_WIIDTH+CSF_X_LEN+CSF_Z_LEN+2-1 downto CSF_X_LEN+CSF_Z_LEN+2));
+  --   o_record.sf_data.csf.x  := unsigned(i_vector(CSF_X_LEN+CSF_Z_LEN+2-1 downto CSF_Z_LEN+ 2));
+  --   o_record.sf_data.csf.z  := signed(i_vector(CSF_Z_LEN+2-1 downto 2));
+  --   o_record.mdt_valid      := i_vector(1);
+  --   o_record.data_valid     := i_vector(0);
+  --   return o_record;
+  -- end function;
 
 end package body hp_pkg;

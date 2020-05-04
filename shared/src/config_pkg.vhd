@@ -24,6 +24,7 @@ package cfg_pkg is
   --------------------------------------------------------------------------------
   -- Sector information
   --------------------------------------------------------------------------------
+  constant SECTOR_ID            : integer  := 3;
   constant ST_nBARREL_ENDCAP    : std_logic := '0'; -- 0: barrel    1: Endcap
   constant ENDCAP_nSMALL_LARGE  : std_logic := '0'; -- 0: small     1: large
   constant ENABLE_NEIGHTBORS    : std_logic := '1'; -- 0: disabled  1: enabled
@@ -63,5 +64,11 @@ package cfg_pkg is
   constant MDT_pullmux_input_active_5 : std_logic_vector(17 downto 0) := "000100001" & "000000000" ;
   constant MDT_pullmux_input_active_6 : std_logic_vector(17 downto 0) := "000100001" & "000000000" ;
   constant MDT_pullmux_input_active_7 : std_logic_vector(17 downto 0) := "000100001" & "000000000" ;
+
+  --------------------------------------------------------------------------------
+  -- FIXED LATENCIES
+  --------------------------------------------------------------------------------
+
+  constant HPS_BUSY_CLOCKS : integer := 10;
 
 end package cfg_pkg;

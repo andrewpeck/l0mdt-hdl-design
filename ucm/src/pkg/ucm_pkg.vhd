@@ -22,7 +22,7 @@ use shared_lib.common_pkg.all;
 package ucm_pkg is
 
   -- delay constants
-  constant UCM_LATENCY_HPS_CH : integer := 10;
+  constant UCM_LATENCY_HPS_CH : integer := HPS_BUSY_CLOCKS + 2;
 
   constant UCM_INPUT_PL_LATENCY : integer := 2; --algorithm latency
   constant UCM_OUTPUT_PL_LATENCY : integer := 2; -- PAM CSW + CVP latency
@@ -87,7 +87,7 @@ package ucm_pkg is
   end record;
 
   type ucm_proc_info_art is array(integer range <>) of ucm_proc_info_rt;
-  type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
+  -- type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
 
 end package ucm_pkg;
 

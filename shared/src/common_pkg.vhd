@@ -46,6 +46,7 @@ package common_pkg is
 
   constant MDT_GLOBAL_AXI_LEN   : integer := 19;
   constant MDT_LOCAL_AXI_LEN    : integer := 15;
+  constant MDT_RADIUS_LEN       : integer := 9; 
 
   constant MDT_TIME_LEN         : integer := 18;
   -- MDT hit coordinates constants

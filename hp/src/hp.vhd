@@ -39,9 +39,8 @@ entity hit_processor is
     i_slc_data_v        : in hp_heg2hp_slc_vt;
     -- MDT hit
     i_mdt_data          : in hp_hpsPc2hp_vt;
-
     -- to Segment finder
-    o_mdt2sf_data    : out hp2bm_vt
+    o_mdt2bm_data    : out hp_hp2bm_vt
   );
 end entity hit_processor;
 
@@ -53,14 +52,16 @@ architecture beh of hit_processor is
   signal tdc_hitmatch_valid   : std_logic;
   signal tdc_paramcalc_valid  : std_logic;
 
-  signal data_2_sf            : hp2bm_rt;
+  signal data_2_sf_r          : hp_hp2bm_rt;
+
+  signal int_hit_valid       : std_logic;
 
 begin
     
   mdt_data <= structify(i_mdt_data);
   slc_data <= structify(i_slc_data_v);
 
-  o_mdt2sf_data <= hp2bm_rt_f_r2std(data_2_sf);
+  o_mdt2bm_data <= vectorify(data_2_sf_r);
 
 
   HP_HM : entity hp_lib.hp_matching
@@ -82,9 +83,9 @@ begin
     i_mdt_layer         => mdt_data.layer,
     i_mdt_tube          => mdt_data.tube,
     i_mdt_time_real     => mdt_data.time_t0,
-    -- i_mdt_valid         => tdc_time_comp_valid,
+    i_data_valid         => mdt_data.data_valid,
     -- to Segment finder
-    o_hit_valid         => data_2_sf.mdt_valid
+    o_hit_valid         => int_hit_valid
     -- o_data_valid        => tdc_hitmatch_valid
 
   );
@@ -102,11 +103,13 @@ begin
     i_SLc_BCID          => slc_data.BCID,
     -- MDT hit
     i_mdt_time_real     => mdt_data.time_t0,
-    i_mdt_z_0           => mdt_data.global_z,
-    i_mdt_y_0           => mdt_data.global_y,
-    i_mdt_valid         => mdt_data.data_valid,
+    i_mdt_z             => mdt_data.global_z,
+    i_mdt_y             => mdt_data.global_y,
+    i_data_valid         => mdt_data.data_valid,
     -- to Segment finder
-    o_segFinder_data    => data_2_sf.sf_data
+    o_tube_radius       => data_2_sf_r.data.radius,
+    o_local_y           => data_2_sf_r.data.local_y,
+    o_local_z           => data_2_sf_r.data.local_z
     -- o_data_valid        => tdc_paramcalc_valid
 
   );
@@ -122,7 +125,21 @@ begin
     glob_en           => glob_en,
     --
     i_data(0)         => mdt_data.data_valid,
-    o_data(0)         => data_2_sf.data_valid
+    o_data(0)         => data_2_sf_r.data_valid
+  );
+
+  hv_delay : entity shared_lib.std_pipeline
+  generic map(
+    num_delays    => 4,
+    num_bits      => 1
+  )
+  port map(
+    clk               => clk,
+    Reset_b           => Reset_b,
+    glob_en           => glob_en,
+    --
+    i_data(0)         => int_hit_valid,
+    o_data(0)         => data_2_sf_r.mdt_valid
   );
 
 end beh;

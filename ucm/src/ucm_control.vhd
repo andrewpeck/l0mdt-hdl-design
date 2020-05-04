@@ -11,7 +11,7 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
@@ -282,6 +282,8 @@ end entity ucm_ctrl_pam;
 architecture beh of ucm_ctrl_pam is
   
   signal ch_busy      : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  
+  type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
   signal ch_count     : ch_count_avt(MAX_NUM_HEG -1 downto 0);
 
   signal processing   : integer;

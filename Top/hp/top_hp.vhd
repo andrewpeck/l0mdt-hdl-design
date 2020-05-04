@@ -35,7 +35,7 @@ entity top_hp is
       time_offset         : in unsigned(7 downto 0);
       -- RoI_size            : in unsigned(7 downto 0);
       -- SLc
-      i_SLC_Window        : in SLc_window_std;
+      i_SLC_Window        : in hp_heg2hp_window_vt;
       i_slc_data_av          : in hp_slc_rt;
       -- MDT hit
       i_mdt_data          : in hp_hit_data_vt;

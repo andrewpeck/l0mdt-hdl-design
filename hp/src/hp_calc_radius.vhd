@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.numeric_std_unsigned.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
@@ -34,17 +35,17 @@ entity hp_calc_radius is
 
     i_SLc_BCID          : in std_logic_vector(BCID_LEN-1 downto 0);
     i_mdt_time_t0       : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
-    i_data_valid        : in std_logic;
+    i_data_valid         : in std_logic;
     
-    o_tube_radius       : out unsigned(HP_RADIUS_LEN -1 downto 0)
-    o_data_valid        : out std_logic;
+    o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0)
+    -- o_data_valid        : out std_logic
   );
 end entity hp_calc_radius;
 
 architecture beh of hp_calc_radius is
 
   signal drift_time : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
-  signal BCID_exp : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
+  signal BCID_exp : std_logic_vector(HP_DRIFT_TIME_LEN -1 downto 0);
   signal int_dv : std_logic;
     
 begin
@@ -52,6 +53,9 @@ begin
   DT2R_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
     DT2R_BS_GEN: if radius = 0 generate
       HP_DT2R_BS : entity hp_lib.hp_calc_dt2r_small
+      generic map(
+        radius              => radius
+      )
       port map(
         clk                 => clk,
         Reset_b             => Reset_b,
@@ -59,21 +63,24 @@ begin
 
         i_drift_time        => drift_time,
         i_data_valid        => int_dv,
-        o_tube_radius       => o_tube_radius,
-        o_data_valid        => o_data_valid,
+        o_tube_radius       => o_tube_radius
+        -- o_data_valid        => o_data_valid,
       );
     end generate;
     DT2R_BL_GEN: if radius > 0 generate
       HP_DT2R_BL : entity hp_lib.hp_calc_dt2r_large
+      generic map(
+        radius              => radius
+      )
       port map(
         clk                 => clk,
         Reset_b             => Reset_b,
         glob_en             => glob_en,
 
-        i_drift_time        => drift_time
+        i_drift_time        => drift_time,
         i_data_valid        => int_dv,
-        o_tube_radius       => o_tube_radius,
-        o_data_valid        => o_data_valid,
+        o_tube_radius       => o_tube_radius
+        -- o_data_valid        => o_data_valid,
       );
     end generate;
   end generate;
@@ -82,7 +89,7 @@ begin
   -- end generate;
 
 
-  BCID_exp <= unsigned(i_SLc_BCID & b"00000");
+  BCID_exp <= i_SLc_BCID & b"00000";
 
   t0_proc: process(Reset_b,clk)
   begin
@@ -91,7 +98,7 @@ begin
     elsif rising_edge(clk) then
       int_dv <= i_data_valid;
       if i_data_valid = '1' then
-        drift_time <= i_mdt_time_real - BCID_exp;
+        drift_time <= i_mdt_time_t0 - unsigned(BCID_exp);
       end if;
     end if;
 
