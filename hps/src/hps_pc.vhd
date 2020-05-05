@@ -36,14 +36,14 @@ entity hps_pc is
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit
-    i_mdt_tar_v      : in tar2hps_vt;
-    o_mdt_full_data     : out hps_pc2heg_vt
+    i_mdt_tar_v         : in tar2hps_vt;
+    o_mdt_full_data     : out hp_hpsPc2hp_vt
   );
 end entity hps_pc;
 
 architecture beh of hps_pc is
 
-  signal mdt_full_data  : hps_pc2heg_rt;
+  signal mdt_full_data  : hp_hpsPc2hp_rt;
   signal mdt_tar_data   : tar2hps_rt;
   
 begin

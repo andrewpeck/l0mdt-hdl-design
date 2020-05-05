@@ -63,13 +63,13 @@ synthesise_project:ucm:
 #       - synthesise_project:ucm
 
 
-#################### Hp Project ###########################
+#################### HPS Project ###########################
 
-# create_project:hp:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: hp
+create_project:hps:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps
 
 # synthesise_ips:pt:
 #     extends: .synthesise_ips
@@ -80,14 +80,14 @@ synthesise_project:ucm:
 #     dependencies:
 #         - create_project:pt
 
-# synthesise_project:pt:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#         - synthesise_ips:pt
-#         - create_project:pt
+synthesise_project:hps:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps
+    dependencies:
+        # - synthesise_ips:pt
+        - create_project:hps
 
 # implement_project:pt:
 #     extends: .implement_project

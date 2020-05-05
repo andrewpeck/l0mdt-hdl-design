@@ -340,6 +340,7 @@ package common_pkg is
   function vectorify(x: tar2hps_rt) return tar2hps_vt;
   function structify(x: tar2hps_vt) return tar2hps_rt;
   function nullify (x: tar2hps_rt) return tar2hps_rt;
+  
   type tar2hps_avt is array(integer range <>) of tar2hps_vt;
 
   --------------------------------------------------------------------------------

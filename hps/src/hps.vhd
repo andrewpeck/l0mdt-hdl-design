@@ -48,14 +48,14 @@ end entity hps;
 
 architecture beh of hps is
 
-  signal mdt_full_data : hps_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+  signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
   -- signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);
 
-  signal heg2sf_control        : heg_int_control_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_control        : hps_ctrl2sf_avt(MAX_NUM_HEG -1 downto 0);
   signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_mdt_data       : hps_bm2sf_vt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_avt(MAX_NUM_HEG -1 downto 0);
 
 begin
 
@@ -86,7 +86,7 @@ begin
       glob_en             => glob_en,
       --
       i_mdt_tar_v      => i_mdt_tar_av(hp_i),
-      o_mdt_full_data     => mdt_full_data(hp_i)
+      o_mdt_full_data     => mdt_full_data_av(hp_i)
     );
   end generate;
 
@@ -102,11 +102,11 @@ begin
       --
       i_uCM_data_v          => i_uCM2hps_av(heg_i),
       -- MDT hit
-      i_mdt_full_data     => mdt_full_data,
+      i_mdt_full_data_av     => mdt_full_data_av,
       -- to Segment finder
-      o_sf_control        => heg2sf_control(heg_i),
-      o_sf_slc_data       => heg2sf_slc_data(heg_i),
-      o_sf_mdt_data       => heg2sf_mdt_data(heg_i)
+      o_sf_control_v        => heg2sf_control(heg_i),
+      o_sf_slc_data_v       => heg2sf_slc_data(heg_i),
+      o_sf_mdt_data_v       => heg2sf_mdt_data(heg_i)
     );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -122,7 +122,7 @@ begin
       i_sf_slc_data       => heg2sf_slc_data(heg_i),
       i_sf_mdt_data       => heg2sf_mdt_data(heg_i),
       --
-      o_sf2pt_av           => o_sf2pt_av(heg_i)
+      o_sf_data_v           => o_sf2pt_av(heg_i)
     );
 
   end generate;
