@@ -36,44 +36,44 @@ entity hps is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- control
-    i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+
     -- SLc
-    i_uCM_data          : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_data      : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf_data           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av          : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity hps;
 
 architecture beh of hps is
 
-  signal mdt_full_data : hp_hit_data_avt(MAX_NUM_HP -1 downto 0);
+  signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
-  signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
+  -- signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);
 
-  signal int_sf_control        : heg_int_control_art(MAX_NUM_HEG -1 downto 0);
-  signal int_sf_slc_data       : ucm2heg_slc_art(MAX_NUM_HEG -1 downto 0);
-  signal int_sf_mdt_data       : heg2sf_mdt_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_control        : hps_ctrl2sf_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_avt(MAX_NUM_HEG -1 downto 0);
 
 begin
 
-  HPS_SLC_DIST : entity hps_lib.hps_slc_dist
-  generic map(
-    radius              => radius
-  )
-  port map(
-    clk                 => clk,
-    Reset_b             => Reset_b,
-    glob_en             => glob_en,
-    --
-    i_uCM_pam           => i_uCM_pam,
-    --
-    i_uCM_data          => i_uCM_data,
-    o_uCM_data          => int_uCM_data
+  -- HPS_SLC_DIST : entity hps_lib.hps_slc_dist
+  -- generic map(
+  --   radius              => radius
+  -- )
+  -- port map(
+  --   clk                 => clk,
+  --   Reset_b             => Reset_b,
+  --   glob_en             => glob_en,
+  --   --
+  --   i_uCM_pam           => i_uCM_pam,
+  --   --
+  --   i_uCM2hps_av          => i_uCM2hps_av,
+  --   o_uCM_data          => int_uCM_data
     
-  );
+  -- );
 
   pc_gen : for hp_i in MAX_NUM_HP -1 downto 0 generate
     PC : entity hps_lib.hps_pc 
@@ -85,8 +85,8 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       --
-      i_mdt_tar_data      => i_mdt_tar_data(hp_i),
-      o_mdt_full_data     => mdt_full_data(hp_i)
+      i_mdt_tar_v      => i_mdt_tar_av(hp_i),
+      o_mdt_full_data     => mdt_full_data_av(hp_i)
     );
   end generate;
 
@@ -100,13 +100,13 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       --
-      i_uCM_data          => int_uCM_data(heg_i),
+      i_uCM_data_v          => i_uCM2hps_av(heg_i),
       -- MDT hit
-      i_mdt_full_data     => mdt_full_data,
+      i_mdt_full_data_av     => mdt_full_data_av,
       -- to Segment finder
-      o_sf_control        => int_sf_control(heg_i),
-      o_sf_slc_data       => int_sf_slc_data(heg_i),
-      o_sf_mdt_data       => int_sf_mdt_data(heg_i)
+      o_sf_control_v        => heg2sf_control(heg_i),
+      o_sf_slc_data_v       => heg2sf_slc_data(heg_i),
+      o_sf_mdt_data_v       => heg2sf_mdt_data(heg_i)
     );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -118,11 +118,11 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       -- to Segment finder
-      i_sf_control        => int_sf_control(heg_i),
-      i_sf_slc_data       => int_sf_slc_data(heg_i),
-      i_sf_mdt_data       => int_sf_mdt_data(heg_i),
+      i_sf_control        => heg2sf_control(heg_i),
+      i_sf_slc_data       => heg2sf_slc_data(heg_i),
+      i_sf_mdt_data       => heg2sf_mdt_data(heg_i),
       --
-      o_sf_data           => o_sf_data(heg_i)
+      o_sf_data_v           => o_sf2pt_av(heg_i)
     );
 
   end generate;

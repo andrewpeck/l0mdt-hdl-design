@@ -36,22 +36,22 @@ entity hps_pc is
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit
-    i_mdt_tar_data      : in tar2heg_mdt_vt;
-    o_mdt_full_data     : out hp_hit_data_vt
+    i_mdt_tar_v         : in tar2hps_vt;
+    o_mdt_full_data     : out hp_hpsPc2hp_vt
   );
 end entity hps_pc;
 
 architecture beh of hps_pc is
 
-  signal mdt_full_data  : hp_hit_data_rt;
-  signal mdt_tar_data   : tar2heg_mdt_rt;
+  signal mdt_full_data  : hp_hpsPc2hp_rt;
+  signal mdt_tar_data   : tar2hps_rt;
   
 begin
 
-  o_mdt_full_data <= hp_hit_data_f_r2std(mdt_full_data);
-  mdt_tar_data <= tar2heg_mdt_f_std2rt(i_mdt_tar_data);
+  -- o_mdt_full_data <= hp_hit_data_f_r2std(mdt_full_data);
+  -- mdt_tar_data <= tar2heg_mdt_f_std2rt(i_mdt_tar_data);
 
-  mdt_full_data.layer   <= mdt_tar_data.layer;
-  mdt_full_data.tube    <= mdt_tar_data.tube;
+  -- mdt_full_data.layer   <= mdt_tar_data.layer;
+  -- mdt_full_data.tube    <= mdt_tar_data.tube;
 
 end beh;

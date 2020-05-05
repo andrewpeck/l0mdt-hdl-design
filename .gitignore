@@ -27,4 +27,5 @@ transcript
 *.wlf
 vsim.dbg
 modelsim.ini
+.gitlab-ci_*.yml
 

@@ -2,16 +2,16 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---------------------------------------------------------------------------------
+--  
 --  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Module:
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--   26/11/2019     0.1     File created
+--    05/02/2020    0.11    HP matching parameters added
 --------------------------------------------------------------------------------
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -22,18 +22,13 @@ use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
 
-package hps_pkg is
+package hp_pkg_interfaces is
 
-  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_vt;
 
-  type hps_bm2sf_avt is array(integer range <>) of heg_bm2sf_vt;
+end package hp_pkg_interfaces;
 
-end package hps_pkg;
-
-package body hps_pkg is
-
+package body hp_pkg_interfaces is
  
-end package body hps_pkg;
+
+end package body hp_pkg_interfaces;

@@ -14,6 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.numeric_std_unsigned.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
@@ -38,16 +39,16 @@ entity hp_matching is
     time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
-    i_SLC_Window        : in SLc_window_std;
-    i_SLc_rpc_z         : in SLc_zpos_st;
-    i_SLc_BCID          : in SLc_BCID_st;
+    i_SLC_Window        : in hp_heg2hp_window_vt;
+    -- i_SLc_rpc_z         : in SLc_zpos_st;
+    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
     -- i_SLc_Rho0          : in SLc_zpos_st;
     -- MDT hit
-    i_mdt_layer         : in unsigned(MDT_LAYER_WIDTH -1 downto 0);
-    i_mdt_tube          : in unsigned(MDT_TUBE_WIDTH - 1 downto 0);
-    i_mdt_time_real     : in mdt_time_le_st;
-    -- i_tdc_valid         : in std_logic;
+    i_mdt_layer         : in unsigned(MDT_LAYER_LEN -1 downto 0);
+    i_mdt_tube          : in unsigned(MDT_TUBE_LEN - 1 downto 0);
+    i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
+    i_data_valid         : in std_logic;
     -- to Segment finder
     o_hit_valid         : out std_logic
     -- o_data_valid        : out std_logic
@@ -56,18 +57,18 @@ end entity hp_matching;
 
 architecture beh of hp_matching is
 
-  signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_WIDTH - 1 downto 0);
+  signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
   signal trLUT_valid : std_logic;
 
-  signal time_high_limit, time_low_limit : mdt_time_le_st;
+  signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
   signal space_valid,time_valid : std_logic;
 
-  signal Roi_window : SLc_window_at;
+  signal Roi_window : hp_heg2hp_window_st;
 
 begin
 
-  Roi_window <= window_f_std2a(i_SLC_Window);
+  Roi_window <= structify(i_SLC_Window);
 
   time_high_limit <= to_unsigned(24,time_high_limit'length);
   time_low_limit <= to_unsigned(0,time_low_limit'length);
@@ -87,7 +88,8 @@ begin
       time_valid <= '0';
     elsif rising_edge(clk) then
       -- space
-      if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer))(1) and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer))(0) then
+      if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo 
+        and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
         space_valid <= '1';
       end if;
       -- time
@@ -146,11 +148,11 @@ end beh;
 --         i_SLC_Window        : in SLc_window_at(num_layers -1 downto 0);
 --         i_SLc_z_pos         : in SLc_zpos_st;
 --         -- MDT hit
---         i_tdc_layer         : in unsigned(MDT_LAYER_WIDTH -1 downto 0);
+--         i_tdc_layer         : in unsigned(MDT_LAYER_LEN -1 downto 0);
 --         -- i_tdc_valid         : in std_logic;
 --         -- to matching
---         o_tube_high_limit   : out unsigned(MDT_TUBE_WIDTH - 1 downto 0);
---         o_tube_low_limit    : out unsigned(MDT_TUBE_WIDTH - 1 downto 0)
+--         o_tube_high_limit   : out unsigned(MDT_TUBE_LEN - 1 downto 0);
+--         o_tube_low_limit    : out unsigned(MDT_TUBE_LEN - 1 downto 0)
 --         -- o_data_valid        : out std_logic
 --     );
 -- end entity hp_m_trLUT;
@@ -180,8 +182,8 @@ end beh;
 --             -- o_data_valid <= '0';
 --         elsif rising_edge(clk) then
 --             if lut_index < (tube_max - tube_min - 1) then
---                 o_tube_high_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(1),MDT_TUBE_WIDTH);
---                 o_tube_low_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(0),MDT_TUBE_WIDTH);
+--                 o_tube_high_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(1),MDT_TUBE_LEN);
+--                 o_tube_low_limit <= to_unsigned(LUT_mem(lut_index)(to_integer(i_tdc_layer))(0),MDT_TUBE_LEN);
 --                 -- o_data_valid <= i_tdc_valid;
 --             else
 

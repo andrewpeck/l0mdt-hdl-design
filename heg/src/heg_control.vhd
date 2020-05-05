@@ -14,6 +14,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.numeric_std_unsigned.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
@@ -35,13 +37,13 @@ entity heg_control is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_vt;
+    i_uCM_data_v        : in ucm2hps_vt;
     -- SLc out
-    o_uCM2sf_data       : out ucm2heg_slc_rt;
-    o_uCM2hp_data       : out hp_slc_rt;
-    o_SLC_Window        : out SLc_window_std;
-
-    o_control           : out heg_int_control_rt
+    o_uCM2sf_data_v     : out ucm2hps_vt;
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
+    o_SLC_Window_v      : out hp_heg2hp_window_vt;
+    
+    o_control           : out heg_ctrl2hp_rt
   );
 end entity heg_control;
 
@@ -58,16 +60,21 @@ architecture beh of heg_control is
       glob_en             : in std_logic;
       -- configuration
       -- SLc in
-      i_uCM_data          : in ucm2heg_slc_vt;
+      i_uCM_data_v        : in ucm2hps_vt;
       -- SLc out
-      o_SLC_Window        : out SLc_window_std;
+      o_SLC_Window_v      : out hp_heg2hp_window_vt;
+      o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
       o_Roi_win_valid     : out std_logic
     );
   end component heg_c_window;
 
-  signal int_uCM_data_r : ucm2heg_slc_rt;
-  signal int_uCM_data_v : ucm2heg_slc_vt;
-  signal Roi_win_valid : std_logic;
+  type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
+  signal heg_ctrl_motor     : heg_ctrl_motor_t;
+
+  signal int_uCM_data_r     : ucm2hps_rt;
+  signal Roi_win_valid      : std_logic;
+  signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
+  signal busy_count         : std_logic_vector(11 downto 0);
   
 begin
 
@@ -82,34 +89,74 @@ begin
     glob_en             => glob_en,
     -- configuration
     -- SLc in
-    i_uCM_data          => i_uCM_data,
+    i_uCM_data_v          => i_uCM_data_v,
     -- SLc out
-    o_SLC_Window        => o_SLC_Window,
-    o_Roi_win_valid     => Roi_win_valid
+    o_SLC_Window_v        => o_SLC_Window_v,
+    o_Roi_win_valid       => Roi_win_valid
   );
 
-  -- o_uCM2sf_data <= int_uCM_data;
-  -- o_uCM2hp_data.barrel.z <= int_uCM_data.barrel.z;
+  -- o_uCM2sf_data_v <= int_uCM_data;
+  -- o_uCM2hp_data_v.barrel.z <= int_uCM_data.barrel.z;
 
-  int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data);
+  int_uCM_data_r <= structify(i_uCM_data_v);
+  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
+
 
   SLc_reg : process(Reset_b,clk) begin
     if(Reset_b = '0') then
-      o_uCM2sf_data <= null_ucm2heg_slc_rt;
-      o_control <= null_heg_control_rt;
-      -- o_uCM2hp_data
+
+      o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
+
+      o_control.enable <= (others => '0');
+      o_control.reset_b <= (others => '1');
+      busy_count <= (others => '0');
+
+      heg_ctrl_motor <= IDLE;
+
     elsif rising_edge(clk) then
-      if( int_uCM_data_r.data_valid) then
-        o_uCM2sf_data <= int_uCM_data_r;
-        o_uCM2hp_data.barrel.z <= int_uCM_data_r.barrel.z;
-        -- int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data);
+      if or_reduce(o_control.enable) = '1' then
+        busy_count <= busy_count + '1';
+      else
+        busy_count <= (others => '0');
+      end if;
+
+      case heg_ctrl_motor is
+        when IDLE =>
+          if( int_uCM_data_r.data_valid = '1') then
+            o_uCM2sf_data_v <= i_uCM_data_v;
+            o_control.enable <= (others => '1');
+            o_control.reset_b <= (others => '0');
+            heg_ctrl_motor <= SET_WINDOW;
+          end if;
+
+        when SET_WINDOW =>
+          o_control.enable <= (others => '1');
+          o_control.reset_b <= (others => '1');
+          if Roi_win_valid = '1' then
+            if ST_nBARREL_ENDCAP = '0' then -- barrel
+              -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
+            else --endcap
+
+            end if;
+            heg_ctrl_motor <= HEG_BUSY;
+          end if;
+        -- int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
         -- o_uCM_data <= int_uCM_data;
         -- o_control.loc_enable <= '1';
-        o_control.hp_enables <= (others => '1');
-        o_control.hp_resets_b <= (others => '0');
-      else
-        o_control.hp_resets_b <= (others => '1');
-      end if;
+        -- o_control.enable <= (others => '1');
+        -- o_control.reset_b <= (others => '0');
+        when HEG_BUSY =>
+          if to_integer(unsigned(busy_count)) < HPS_BUSY_CLOCKS then
+            o_control.enable <= (others => '1');
+            o_control.reset_b <= (others => '1');
+          else
+            o_control.enable <= (others => '0');
+            o_control.reset_b <= (others => '1');
+            -- busy_count <= (others => '0');
+            heg_ctrl_motor <= IDLE;
+          end if;
+
+      end case;
     end if;
   end process;
 
@@ -154,34 +201,40 @@ entity heg_c_window is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_vt;
+    i_uCM_data_v        : in ucm2hps_vt;
     -- SLc out
-    o_SLC_Window        : out SLc_window_std;
+    o_SLC_Window_v      : out hp_heg2hp_window_vt;
+    o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
     o_Roi_win_valid     : out std_logic
   );
 end entity heg_c_window;
 
 architecture beh of heg_c_window is
 
-  signal int_uCM_data : ucm2heg_slc_rt;
+  signal int_uCM_data : ucm2hps_rt;
+  signal uCM_barrel   : ucm_csf_barrel_rt;
 
   type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
   signal Roi_window_LUT : trLUT_layer_t;
   signal Roi_w_index : integer;
-  signal Roi_window_a : SLc_window_at;
+  signal Roi_window_a : hp_heg2hp_window_st;
 begin
 
-  int_uCM_data <= ucm2heg_slc_f_std2rt(i_uCM_data);
+  int_uCM_data <= structify(i_uCM_data_v);
+
+  UCM_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
+    uCM_barrel <= structify(int_uCM_data.specific);
+  end generate;
 
   Roi_wingen : process(Reset_b,clk) begin
     if(Reset_b = '0') then
       o_Roi_win_valid <= '0';
-      Roi_window_a <= null_SLc_window_at;
+      Roi_window_a <= nullify(Roi_window_a);
     elsif rising_edge(clk) then
       if( int_uCM_data.data_valid = '1') then
         -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
-        if (int_uCM_data.barrel.z >= 0 and int_uCM_data.barrel.z < 6) then
-          Roi_w_index <= to_integer(int_uCM_data.barrel.z);
+        if uCM_barrel.z >= 0 and uCM_barrel.z < 6 then
+          Roi_w_index <= to_integer(uCM_barrel.z);
         else
 
         end if;
@@ -193,7 +246,7 @@ begin
 
 
               ----------------------
-              Roi_window_a(il)(it) <= to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_WIDTH);
+              -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
             end loop;
           end loop;
           o_Roi_win_valid <= '1';
@@ -201,7 +254,7 @@ begin
       end if;
     end if;
   end process;
-  o_SLC_Window <= window_f_a2std(Roi_window_a);
+  o_SLC_Window_v <= vectorify(Roi_window_a);
 
 
 end beh;
