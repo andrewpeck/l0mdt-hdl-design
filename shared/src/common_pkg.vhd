@@ -299,7 +299,7 @@ package common_pkg is
   function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
 
   type ucm2hps_id_rt is record
-    bcid                       : std_logic_vector(BCID_LEN-1 downto 0);
+    bcid                       : unsigned(BCID_LEN-1 downto 0);
     chamber_id                 : unsigned(SLC_CHAMBER_LEN-1 downto 0);
   end record ucm2hps_id_rt;
   constant UCM2HPS_ID_LEN : integer := 18;
@@ -707,14 +707,14 @@ package body common_pkg is
   function vectorify(x: ucm2hps_id_rt) return ucm2hps_id_vt is
     variable y : ucm2hps_id_vt;
   begin
-    y(17 downto 6)             := x.bcid;
+    y(17 downto 6)             := vectorify(x.bcid);
     y(5 downto 0)              := vectorify(x.chamber_id);
     return y;
   end function vectorify;
   function structify(x: ucm2hps_id_vt) return ucm2hps_id_rt is
     variable y : ucm2hps_id_rt;
   begin
-    y.bcid                     := x(17 downto 6);
+    y.bcid                     := structify(x(17 downto 6));
     y.chamber_id               := structify(x(5 downto 0));
     return y;
   end function structify;
