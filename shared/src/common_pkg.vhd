@@ -276,7 +276,7 @@ package common_pkg is
   type pipeline_art is array (MAX_NUM_SL-1 downto 0) of pipeline_rt;
   type pipeline_avt is array (MAX_NUM_SL-1 downto 0) of pipeline_vt;
 
-  constant PIPELINE_AV_LEN : integer := 665;
+  constant PIPELINE_AV_LEN : integer := 798;
   subtype pipeline_vavt is std_logic_vector(PIPELINE_AV_LEN-1 downto 0);
   function vectorify(x: pipeline_avt) return pipeline_vavt;
   function structify (x: pipeline_vavt) return pipeline_avt;
@@ -351,6 +351,8 @@ package common_pkg is
   
   type tar2hps_avt is array(integer range <>) of tar2hps_vt;
 
+  type tar2hps_aavt is array(integer range <>) of tar2hps_avt(MAX_NUM_HP -1 downto 0);
+
   --------------------------------------------------------------------------------
   -- mdt from tar
   -- type tar2heg_mdt_rt is record
@@ -373,6 +375,7 @@ package common_pkg is
   type sf2pt_art is array(integer range <>) of sf2pt_rt;
   subtype sf2pt_vt is std_logic_vector(1 downto 0 );
   type sf2pt_avt is array(integer range <>) of sf2pt_vt;
+  type sf2pt_aavt is array(integer range <>) of sf2pt_avt(MAX_NUM_HEG -1 downto 0);
 
 end package common_pkg;
 
@@ -678,7 +681,7 @@ package body common_pkg is
   end function nullify;
 
   function vectorify(x: pipeline_avt) return pipeline_vavt is
-    variable y : std_logic_vector(x'range);
+    variable y : std_logic_vector(PIPELINE_AV_LEN -1 downto 0);
     variable msb, lsb : integer;
   begin
     l: for i in x'range loop
