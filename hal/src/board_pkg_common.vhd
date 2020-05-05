@@ -16,8 +16,7 @@ package board_pkg_common is
                        MGT_LPGBT_EMUL,
                        MGT_C2C,
                        MGT_SL,
-                       MGT_FELIX_UP,
-                       MGT_FELIX_DOWN
+                       MGT_FELIX
                        );
 
   type mgt_inst_t is record

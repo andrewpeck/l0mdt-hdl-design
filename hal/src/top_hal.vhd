@@ -124,6 +124,14 @@ architecture behavioral of top_hal is
   signal lpgbt_emul_rst_downlink            : std_logic_vector (c_NUM_LPGBT_EMUL_DOWNLINKS-1 downto 0) := (others => '0');
 
   --------------------------------------------------------------------------------
+  -- FELIX
+  --------------------------------------------------------------------------------
+
+  signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
+  signal felix_uplink_mgt_word_array : std64_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+
+  --------------------------------------------------------------------------------
   -- Sector Logic Glue
   --------------------------------------------------------------------------------
 
@@ -166,20 +174,6 @@ begin  -- architecture behavioral
   --
   --------------------------------------------------------------------------------
 
-  assert (c_NUM_LPGBT_UPLINKS mod 2 = 0)
-    report "You NEED to instantiate an even number of uplinks because a CSM is always 2+1 (c_NUM_LPGBT_UPLINKS="
-    & integer'image(c_NUM_LPGBT_UPLINKS) & " c_NUM_LPGBT_DOWNLINKS=)" & integer'image(c_NUM_LPGBT_DOWNLINKS)
-    severity error;
-
-  assert (c_NUM_LPGBT_UPLINKS/2 = c_NUM_LPGBT_DOWNLINKS)
-    report "Number of LPGBT Uplinks should be twice the number of downlinks"
-    & integer'image(c_NUM_LPGBT_UPLINKS) & "\nc_NUM_LPGBT_DOWNLINKS=" & integer'image(c_NUM_LPGBT_DOWNLINKS)
-    severity error;
-
-  --------------------------------------------------------------------------------
-  --
-  --------------------------------------------------------------------------------
-
   global_reset <= not (clocks.locked);
 
   --------------------------------------------------------------------------------
@@ -188,15 +182,15 @@ begin  -- architecture behavioral
 
   top_clocking_inst : entity hal.top_clocking
     port map (
-      valid_i          => std_logic0,        -- TODO: should be sourced felix
-      reset_i          => std_logic0,        -- TODO: should be sourced from AXI
+      valid_i          => std_logic0,         -- TODO: should be sourced felix
+      reset_i          => std_logic0,         -- TODO: should be sourced from AXI
       sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
       clock_100m_i_p   => clock_100m_i_p,
       clock_100m_i_n   => clock_100m_i_n,
       clock_i_p        => clock_i_p,
       clock_i_n        => clock_i_n,
-      felix_recclk_i   => std_logic0,        -- TODO: connect to recclk
-      select_felix_clk => std_logic0,        -- TODO: should be sourced from AXI
+      felix_recclk_i   => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
+      select_felix_clk => std_logic0,         -- TODO: should be sourced from AXI
 
       lhc_refclk_o_p => lhc_refclk_o_p,
       lhc_refclk_o_n => lhc_refclk_o_n,
@@ -209,6 +203,7 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
+  -- TODO: move this into clocking?
   --------------------------------------------------------------------------------
   -- Clock and reset to User Logic
   --------------------------------------------------------------------------------
@@ -243,20 +238,18 @@ begin  -- architecture behavioral
   clock_and_control_o.rst_n <= not global_reset;
   clock_and_control_o.bx    <= pipeline_bx_strobe;
 
-  ttc_commands.bcr <= '0';
-  ttc_commands.ocr <= '0';
-  ttc_commands.ecr <= '0';
-  ttc_commands.l0a <= '0';
-  ttc_commands.l1a <= '0';
-
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
   --------------------------------------------------------------------------------
 
   mgt_wrapper_inst : entity hal.mgt_wrapper
     port map (
+
+      -- clocks
       clocks => clocks,
-      reset  => global_reset,
+
+      -- reset
+      reset => global_reset,
 
       -- reference clocks
       refclk_i_p => refclk_i_p,
@@ -276,7 +269,13 @@ begin  -- architecture behavioral
       -- lpgbt emulator
       lpgbt_emul_rxslide_i                 => lpgbt_emul_downlink_bitslip,
       lpgbt_emul_downlink_mgt_word_array_o => lpgbt_emul_downlink_mgt_word_array,
-      lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array
+      lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
+
+      -- Felix
+      -- n.b. felix Downlinks are carried on the LPGBT links
+      felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
+      felix_mgt_rxusrclk_o          => felix_mgt_rxusrclk,
+      felix_mgt_txusrclk_o          => felix_mgt_txusrclk
       );
 
   --------------------------------------------------------------------------------
@@ -429,12 +428,26 @@ begin  -- architecture behavioral
     port map (
       clock40             => clocks.clock40,
       reset               => global_reset,
-      trg_i               => std_logic_0,
-      bcr_i               => std_logic_0,
-      ecr_i               => std_logic_0,
-      gsr_i               => std_logic_0,
+      trg_i               => std_logic0,
+      bcr_i               => ttc_commands.bcr,
+      ecr_i               => ttc_commands.ecr,
+      gsr_i               => std_logic0,
       lpgbt_downlink_data => lpgbt_downlink_data
       );
+
+  --------------------------------------------------------------------------------
+  -- Felix Receiver
+  --------------------------------------------------------------------------------
+
+  -- TODO: create copies of ttc signals on different clocks?
+  felix_decoder_inst : entity work.felix_decoder
+    port map (
+      clock             => clocks.clock40,
+      reset             => global_reset,
+      lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
+      l0mdt_ttc         => ttc_commands
+      );
+
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming
   --------------------------------------------------------------------------------

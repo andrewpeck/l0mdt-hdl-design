@@ -80,22 +80,6 @@ architecture structural of top_l0mdt is
   signal user_sump             : std_logic;
 begin
 
-  assert false report "--------------------------------------------------------" severity note;
-  assert false report "c_NUM_TDC_INPUTS=" & integer'image(c_NUM_TDC_INPUTS) severity note;
-  assert false report "c_NUM_POLMUX_INNER=" & integer'image(c_NUM_POLMUX_INNER) severity note;
-  assert false report "c_NUM_POLMUX_MIDDLE=" & integer'image(c_NUM_POLMUX_MIDDLE) severity note;
-  assert false report "c_NUM_POLMUX_OUTER=" & integer'image(c_NUM_POLMUX_OUTER) severity note;
-  assert false report "--------------------------------------------------------" severity note;
-  assert false report "c_NUM_LPGBT_UPLINKS=" & integer'image(c_NUM_LPGBT_UPLINKS) severity note;
-  assert false report "c_NUM_LPGBT_DOWNLINKS=" & integer'image(c_NUM_LPGBT_DOWNLINKS) severity note;
-  assert false report "--------------------------------------------------------" severity note;
-  assert false report "c_NUM_LPGBT_EMUL_UPLINKS=" & integer'image(c_NUM_LPGBT_EMUL_UPLINKS) severity note;
-  assert false report "c_NUM_LPGBT_EMUL_DOWNLINKS=" & integer'image(c_NUM_LPGBT_EMUL_DOWNLINKS) severity note;
-  assert false report "--------------------------------------------------------" severity note;
-  assert false report "c_NUM_FELIX_UPLINKS=" & integer'image(c_NUM_FELIX_UPLINKS) severity note;
-  assert false report "c_NUM_FELIX_DOWNLINKS=" & integer'image(c_NUM_FELIX_DOWNLINKS) severity note;
-  assert false report "--------------------------------------------------------" severity note;
-
   top_hal : entity hal.top_hal
     port map (
 
