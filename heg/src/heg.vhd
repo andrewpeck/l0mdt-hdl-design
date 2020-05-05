@@ -37,31 +37,31 @@ entity heg is
     -- configuration
     -- i_heg_control       : in heg_control;
     -- SLc
-    i_uCM_data          : in ucm2heg_slc_vt;
+    i_uCM_data_v          : in ucm2hps_vt;
     -- MDT hit
-    i_mdt_full_data     : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_full_data_av     : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
     -- to Segment finder
-    o_sf_control        : out heg_int_control_rt;
-    o_sf_slc_data       : out ucm2heg_slc_rt;
-    o_sf_mdt_data       : out heg2sf_mdt_rt
+    o_sf_control_v        : out heg_ctrl2hp_vt;
+    o_sf_slc_data_v       : out ucm2hps_vt;
+    o_sf_mdt_data_v       : out heg_bm2sf_vt
   );
 end entity heg;
 
 architecture beh of heg is
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
-  signal roi_b_Window       : SLc_window_std;
-  signal hegC2hp_uCM_data   : hp_slc_rt;
+  signal roi_b_Window       : hp_heg2hp_window_vt;
+  signal hegC2hp_uCM_data   : hp_heg2hp_slc_vt;
   
-  signal hegC_control : heg_int_control_rt;
+  signal hegC_control : heg_ctrl2hp_rt;
 
-  signal hp2bm_astd : hp2bm_avt(MAX_NUM_HP -1 downto 0);
+  signal hp2bm_av : heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
 
   signal time_offset  : unsigned(7 downto 0);
 
 begin
 
-  o_sf_control <= hegC_control;
+  o_sf_control_v <= vectorify(hegC_control);
 
   Heg_Control : entity heg_lib.heg_Control
   generic map(
@@ -74,9 +74,9 @@ begin
     Reset_b             => Reset_b,
     glob_en             => glob_en,
     --
-    i_uCM_data          => i_uCM_data,
+    i_uCM_data_v        => i_uCM_data_v,
     --
-    o_uCM2sf_data_v     => o_sf_slc_data,
+    o_uCM2sf_data_v     => o_sf_slc_data_v,
     o_uCM2hp_data_v     => hegC2hp_uCM_data,
     o_SLC_Window_v      => roi_b_Window,
     o_control           => hegC_control
@@ -89,22 +89,23 @@ begin
     )
     port map(
       clk                 => clk,
-      
-      Reset_b             => hegC_control.hp_resets_b(i_hp),
-      glob_en             => hegC_control.hp_enables(i_hp),
+      Reset_b             => Reset_b,
+      glob_en             => glob_en,
       -- configuration
+      local_Reset_b       => hegC_control.reset_b(i_hp),
+      local_en            => hegC_control.enable(i_hp),
       time_offset         => time_offset,
 
       -- SLc
       i_SLC_Window        => roi_b_Window,
-      i_slc_data_av          => hegC2hp_uCM_data,
+      i_slc_data_v        => hegC2hp_uCM_data,
       -- MDT hit
-      i_mdt_data          => i_mdt_full_data(i_hp),
+      i_mdt_data          => i_mdt_full_data_av(i_hp),
       -- i_mdt_valid         => i_mdt_valid,
       -- i_mdt_time_real     => i_mdt_time_real,
       -- to Segment finder
-      -- o_sf_slc_data       => o_sf_slc_data,
-      o_mdt2sf_data       => hp2bm_astd(i_hp)
+      -- o_sf_slc_data_v       => o_sf_slc_data_v,
+      o_hit_data       => hp2bm_av(i_hp)
     );
   end generate;
 
@@ -120,9 +121,9 @@ begin
     -- configuration
     i_control           =>hegC_control,
     -- MDT in
-    i_mdt_hits          => hp2bm_astd,
+    i_mdt_hits_av       => hp2bm_av,
     -- MDT out
-    o_mdt_hits         => o_sf_mdt_data
+    o_mdt_hits_v        => o_sf_mdt_data_v
   );
 
 end beh;

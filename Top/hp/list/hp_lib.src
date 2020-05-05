@@ -1,6 +1,9 @@
-../../hp/src/pkg/hp_pkg.vhd 2008
-../../hp/src/hp.vhd 2008
-../../hp/src/ROMs/hp_dtr_lut_rom.vhd 2008
+../../hp/pkg/hp_pkg.vhd 2008
+../../hp/pkg/hp_pkg_interfaces.vhd 2008
+../../hp/src/hp_calc_dt2r_large.vhd 2008
+../../hp/src/hp_calc_dt2r_small.vhd 2008
+../../hp/src/hp_calc_radius.vhd 2008
+../../hp/src/hp_calc_RoI_vect.vhd 2008 
 ../../hp/src/hp_hit_matching.vhd 2008
 ../../hp/src/hp_param_calc.vhd 2008
-../../hp/src/hp_hit_timeComp.vhd 2008
+../../hp/src/hp.vhd 2008

@@ -41,7 +41,7 @@ entity hp_matching is
     -- SLc
     i_SLC_Window        : in hp_heg2hp_window_vt;
     -- i_SLc_rpc_z         : in SLc_zpos_st;
-    i_SLc_BCID          : in std_logic_vector(BCID_LEN-1 downto 0);
+    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
     -- i_SLc_Rho0          : in SLc_zpos_st;
     -- MDT hit
@@ -88,8 +88,8 @@ begin
       time_valid <= '0';
     elsif rising_edge(clk) then
       -- space
-      if i_mdt_tube >= unsigned(Roi_window(to_integer( i_mdt_layer))(1)) 
-        and i_mdt_tube <= unsigned(Roi_window(to_integer( i_mdt_layer))(0)) then
+      if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo 
+        and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
         space_valid <= '1';
       end if;
       -- time

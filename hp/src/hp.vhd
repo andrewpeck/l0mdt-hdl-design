@@ -32,6 +32,8 @@ entity hit_processor is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
+    local_Reset_b       : in std_logic;
+    local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 
     -- SLc
@@ -40,7 +42,7 @@ entity hit_processor is
     -- MDT hit
     i_mdt_data          : in hp_hpsPc2hp_vt;
     -- to Segment finder
-    o_mdt2bm_data    : out hp_hp2bm_vt
+    o_hit_data          : out hp_hp2bm_vt
   );
 end entity hit_processor;
 
@@ -61,7 +63,7 @@ begin
   mdt_data <= structify(i_mdt_data);
   slc_data <= structify(i_slc_data_v);
 
-  o_mdt2bm_data <= vectorify(data_2_sf_r);
+  o_hit_data <= vectorify(data_2_sf_r);
 
 
   HP_HM : entity hp_lib.hp_matching

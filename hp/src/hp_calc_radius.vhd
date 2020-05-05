@@ -33,7 +33,7 @@ entity hp_calc_radius is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
 
-    i_SLc_BCID          : in std_logic_vector(BCID_LEN-1 downto 0);
+    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     i_mdt_time_t0       : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
     i_data_valid         : in std_logic;
     
@@ -45,7 +45,7 @@ end entity hp_calc_radius;
 architecture beh of hp_calc_radius is
 
   signal drift_time : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
-  signal BCID_exp : std_logic_vector(HP_DRIFT_TIME_LEN -1 downto 0);
+  signal BCID_exp : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
   signal int_dv : std_logic;
     
 begin
@@ -89,7 +89,7 @@ begin
   -- end generate;
 
 
-  BCID_exp <= i_SLc_BCID & b"00000";
+  BCID_exp <= to_unsigned(0,1) & i_SLc_BCID & to_unsigned(0,5);
 
   t0_proc: process(Reset_b,clk)
   begin
@@ -98,7 +98,7 @@ begin
     elsif rising_edge(clk) then
       int_dv <= i_data_valid;
       if i_data_valid = '1' then
-        drift_time <= i_mdt_time_t0 - unsigned(BCID_exp);
+        drift_time <= i_mdt_time_t0 - BCID_exp;
       end if;
     end if;
 

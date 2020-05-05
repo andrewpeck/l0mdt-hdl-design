@@ -50,12 +50,12 @@ architecture beh of hps is
 
   signal mdt_full_data : hps_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
-  signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
+  -- signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);
 
   signal heg2sf_control        : heg_int_control_art(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_slc_data       : ucm2heg_slc_art(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_mdt_data       : heg2sf_mdt_art(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_vt(MAX_NUM_HEG -1 downto 0);
 
 begin
 
@@ -85,7 +85,7 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       --
-      i_mdt_tar_av      => i_mdt_tar_av(hp_i),
+      i_mdt_tar_v      => i_mdt_tar_av(hp_i),
       o_mdt_full_data     => mdt_full_data(hp_i)
     );
   end generate;
@@ -100,7 +100,7 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       --
-      i_uCM2hps_av          => i_uCM2hps_av(heg_i),
+      i_uCM_data_v          => i_uCM2hps_av(heg_i),
       -- MDT hit
       i_mdt_full_data     => mdt_full_data,
       -- to Segment finder

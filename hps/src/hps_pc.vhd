@@ -36,7 +36,7 @@ entity hps_pc is
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit
-    i_mdt_tar_data      : in tar2hps_vt;
+    i_mdt_tar_v      : in tar2hps_vt;
     o_mdt_full_data     : out hps_pc2heg_vt
   );
 end entity hps_pc;

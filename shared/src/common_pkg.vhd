@@ -40,7 +40,7 @@ package common_pkg is
 
   -- mdt constants
   constant mdt_layer_max        : integer := 10;
-  constant MDT_LAYER_LEN        : integer := integer(log2(real(mdt_layer_max)));
+  constant MDT_LAYER_LEN        : integer := 5; --integer(log2(real(mdt_layer_max)));
   constant mdt_tube_max         : integer := 435;
   constant MDT_TUBE_LEN         : integer := integer(log2(real(mdt_tube_max)));
 
@@ -140,9 +140,9 @@ package common_pkg is
   constant BCID_LEN            : integer := 12;
 
   type slc_muid_rt is record
-    slcid                      : std_logic_vector(SLC_SLCID_LEN-1 downto 0);
-    slid                       : std_logic_vector(SLC_SLID_LEN-1 downto 0);
-    bcid                       : std_logic_vector(BCID_LEN-1 downto 0);
+    slcid                      : unsigned(SLC_SLCID_LEN-1 downto 0);
+    slid                       : unsigned(SLC_SLID_LEN-1 downto 0);
+    bcid                       : unsigned(BCID_LEN-1 downto 0);
   end record slc_muid_rt;
   constant SLC_MUID_LEN : integer := 20;
   subtype slc_muid_vt is std_logic_vector(SLC_MUID_LEN-1 downto 0);
@@ -430,17 +430,17 @@ package body common_pkg is
   function vectorify(x: slc_muid_rt) return slc_muid_vt is
     variable y : slc_muid_vt;
   begin
-    y(19 downto 18)            := x.slcid;
-    y(17 downto 12)            := x.slid;
-    y(11 downto 0)             := x.bcid;
+    y(19 downto 18)            := vectorify(x.slcid);
+    y(17 downto 12)            := vectorify(x.slid);
+    y(11 downto 0)             := vectorify(x.bcid);
     return y;
   end function vectorify;
   function structify(x: slc_muid_vt) return slc_muid_rt is
     variable y : slc_muid_rt;
   begin
-    y.slcid                    := x(19 downto 18);
-    y.slid                     := x(17 downto 12);
-    y.bcid                     := x(11 downto 0);
+    y.slcid                    := structify(x(19 downto 18));
+    y.slid                     := structify(x(17 downto 12));
+    y.bcid                     := structify(x(11 downto 0));
     return y;
   end function structify;
   function nullify (x: slc_muid_rt) return slc_muid_rt is

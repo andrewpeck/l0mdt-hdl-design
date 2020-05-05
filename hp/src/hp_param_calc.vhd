@@ -32,7 +32,7 @@ entity hp_paramCalc is
     glob_en             : in std_logic;
     -- SLc
     i_SLc_specific      : in std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
-    i_SLc_BCID          : in std_logic_vector(BCID_LEN-1 downto 0);
+    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- MDT hit
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
     i_mdt_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
@@ -40,8 +40,8 @@ entity hp_paramCalc is
     i_data_valid         : in std_logic;
     -- to Segment finder
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
-    o_local_y           : out signed(MDT_LOCAL_AXI_LEN-1 downto 0);
-    o_local_z           : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0)
+    o_local_y           : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+    o_local_z           : out signed(MDT_LOCAL_AXI_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_paramCalc;

@@ -40,10 +40,10 @@ entity heg_control is
     i_uCM_data_v        : in ucm2hps_vt;
     -- SLc out
     o_uCM2sf_data_v     : out ucm2hps_vt;
-    o_uCM2hp_data_v     : out heg_heg2hp_slc_vt;
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
     o_SLC_Window_v      : out hp_heg2hp_window_vt;
     
-    o_control           : out heg_int_control_rt
+    o_control           : out heg_ctrl2hp_rt
   );
 end entity heg_control;
 
@@ -73,7 +73,7 @@ architecture beh of heg_control is
 
   signal int_uCM_data_r     : ucm2hps_rt;
   signal Roi_win_valid      : std_logic;
-  signal o_uCM2hp_data_r    : heg_heg2hp_slc_rt;
+  signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
   signal busy_count         : std_logic_vector(11 downto 0);
   
 begin
@@ -107,14 +107,14 @@ begin
 
       o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
 
-      o_control.hp_enables <= (others => '0');
-      o_control.hp_resets_b <= (others => '1');
+      o_control.enable <= (others => '0');
+      o_control.reset_b <= (others => '1');
       busy_count <= (others => '0');
 
       heg_ctrl_motor <= IDLE;
 
     elsif rising_edge(clk) then
-      if or_reduce(o_control.hp_enables) = '1' then
+      if or_reduce(o_control.enable) = '1' then
         busy_count <= busy_count + '1';
       else
         busy_count <= (others => '0');
@@ -124,14 +124,14 @@ begin
         when IDLE =>
           if( int_uCM_data_r.data_valid = '1') then
             o_uCM2sf_data_v <= i_uCM_data_v;
-            o_control.hp_enables <= (others => '1');
-            o_control.hp_resets_b <= (others => '0');
+            o_control.enable <= (others => '1');
+            o_control.reset_b <= (others => '0');
             heg_ctrl_motor <= SET_WINDOW;
           end if;
 
         when SET_WINDOW =>
-          o_control.hp_enables <= (others => '1');
-          o_control.hp_resets_b <= (others => '1');
+          o_control.enable <= (others => '1');
+          o_control.reset_b <= (others => '1');
           if Roi_win_valid = '1' then
             if ST_nBARREL_ENDCAP = '0' then -- barrel
               -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
@@ -143,15 +143,15 @@ begin
         -- int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
         -- o_uCM_data <= int_uCM_data;
         -- o_control.loc_enable <= '1';
-        -- o_control.hp_enables <= (others => '1');
-        -- o_control.hp_resets_b <= (others => '0');
+        -- o_control.enable <= (others => '1');
+        -- o_control.reset_b <= (others => '0');
         when HEG_BUSY =>
           if to_integer(unsigned(busy_count)) < HPS_BUSY_CLOCKS then
-            o_control.hp_enables <= (others => '1');
-            o_control.hp_resets_b <= (others => '1');
+            o_control.enable <= (others => '1');
+            o_control.reset_b <= (others => '1');
           else
-            o_control.hp_enables <= (others => '0');
-            o_control.hp_resets_b <= (others => '1');
+            o_control.enable <= (others => '0');
+            o_control.reset_b <= (others => '1');
             -- busy_count <= (others => '0');
             heg_ctrl_motor <= IDLE;
           end if;
@@ -217,7 +217,7 @@ architecture beh of heg_c_window is
   type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
   signal Roi_window_LUT : trLUT_layer_t;
   signal Roi_w_index : integer;
-  signal Roi_window_a : heg_heg2hp_window_st;
+  signal Roi_window_a : hp_heg2hp_window_st;
 begin
 
   int_uCM_data <= structify(i_uCM_data_v);
@@ -246,7 +246,7 @@ begin
 
 
               ----------------------
-              Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
+              -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
             end loop;
           end loop;
           o_Roi_win_valid <= '1';
