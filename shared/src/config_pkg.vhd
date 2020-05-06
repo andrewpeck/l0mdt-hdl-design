@@ -70,5 +70,6 @@ package cfg_pkg is
   --------------------------------------------------------------------------------
 
   constant HPS_BUSY_CLOCKS : integer := 10;
+  constant MAIN_PIPELINE_CLOCKS : integer := 10;
 
 end package cfg_pkg;

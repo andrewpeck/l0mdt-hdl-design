@@ -273,8 +273,16 @@ package common_pkg is
   function structify(x: pipeline_vt) return pipeline_rt;
   function nullify (x: pipeline_rt) return pipeline_rt;
 
-  type pipeline_art is array (integer range <>) of pipeline_rt;
-  type pipeline_avt is array (integer range <>) of pipeline_vt;
+  type pipeline_art is array (MAX_NUM_SL-1 downto 0) of pipeline_rt;
+  type pipeline_avt is array (MAX_NUM_SL-1 downto 0) of pipeline_vt;
+
+  constant PIPELINE_AV_LEN : integer := 798;
+  subtype pipeline_vavt is std_logic_vector(PIPELINE_AV_LEN-1 downto 0);
+  function vectorify(x: pipeline_avt) return pipeline_vavt;
+  function structify (x: pipeline_vavt) return pipeline_avt;
+  -- function nullify (x: pipeline_ar_st) return pipeline_ar_st;
+
+  
   --------------------------------------------------------------------------------
   -- candidate information  ucm 2 hps
   --------------------------------------------------------------------------------
@@ -343,6 +351,8 @@ package common_pkg is
   
   type tar2hps_avt is array(integer range <>) of tar2hps_vt;
 
+  type tar2hps_aavt is array(integer range <>) of tar2hps_avt(MAX_NUM_HP -1 downto 0);
+
   --------------------------------------------------------------------------------
   -- mdt from tar
   -- type tar2heg_mdt_rt is record
@@ -365,6 +375,7 @@ package common_pkg is
   type sf2pt_art is array(integer range <>) of sf2pt_rt;
   subtype sf2pt_vt is std_logic_vector(1 downto 0 );
   type sf2pt_avt is array(integer range <>) of sf2pt_vt;
+  type sf2pt_aavt is array(integer range <>) of sf2pt_avt(MAX_NUM_HEG -1 downto 0);
 
 end package common_pkg;
 
@@ -668,6 +679,37 @@ package body common_pkg is
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
+
+  function vectorify(x: pipeline_avt) return pipeline_vavt is
+    variable y : std_logic_vector(PIPELINE_AV_LEN -1 downto 0);
+    variable msb, lsb : integer;
+  begin
+    l: for i in x'range loop
+      msb := i * vectorify(x(i))'length + vectorify(x(i))'left;
+      lsb := i * vectorify(x(i))'length;
+      y(msb downto lsb) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify (x: pipeline_vavt) return pipeline_avt is
+    variable y : pipeline_avt;
+    variable msb, lsb : integer;
+  begin
+    l: for i in y'range loop
+      msb := i * vectorify(y(i))'length + vectorify(y(i))'left;
+      lsb := i * vectorify(y(i))'length;
+      y(i) := structify(x(msb downto lsb));
+    end loop l;
+    return y;
+  end function structify;
+  -- function nullify (x: pipeline_ar_st) return pipeline_ar_st is
+  --   variable y : pipeline_ar_st;
+  -- begin
+  --   l: for i in y'range loop
+  --     y(i) := nullify(x(i));
+  --   end loop l;
+  --   return y;
+  -- end function nullify;
 
   --------------------------------------------------------------------------------
   -- candidate information  ucm 2 hps

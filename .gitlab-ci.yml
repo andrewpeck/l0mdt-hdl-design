@@ -110,6 +110,53 @@ synthesise_project:hps:
 #        - synthesise_project:pt
 #        - implement_project:pt
 
+#################### HPS Project ###########################
+
+create_project:ucm_hps:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm_hps
+
+# synthesise_ips:pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:pt
+
+synthesise_project:ucm_hps:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm_hps
+    dependencies:
+        # - synthesise_ips:pt
+        - create_project:ucm_hps
+
+# implement_project:pt:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+
+# write_bitstream:pt:
+#     extends: .write_bitstream
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+#        - implement_project:pt
+
 
 # #################### CSF Project ###########################
 
