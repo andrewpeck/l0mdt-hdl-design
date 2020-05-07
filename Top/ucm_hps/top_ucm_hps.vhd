@@ -34,14 +34,11 @@ use hps_lib.hps_pkg.all;
 entity top_ucm_hps is
   port (
     clk                 : in std_logic;
-    
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
-    -- control
+    -- configuration, control & Monitoring
     -- SLc
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
-    -- i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
-    -- i_uCM2hps_av          : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
     i_mdt_tar_av      : in tar2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- to pt calc
@@ -82,7 +79,7 @@ begin
         clk                 => clk,
         Reset_b             => Reset_b,
         glob_en             => glob_en,
-        -- configuration & control
+        -- configuration, control & Monitoring
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
         i_uCM2hps_av        => uCM2hps_av(hps_i),
