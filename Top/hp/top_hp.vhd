@@ -24,7 +24,7 @@ use hp_lib.hp_pkg.all;
 
 entity top_hp is
     Generic(
-      radius      : integer := 0
+      radius      : integer := 1
       -- num_layers  : integer := 8
     );
     Port(

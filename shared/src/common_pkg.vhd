@@ -94,23 +94,11 @@ package common_pkg is
   constant le_y_LEN    : integer := 14;
   -- constant le_r_LEN    : integer := 9;
 
-
-  ------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  --  sub types
-  --------------------------------------------------------------------------------
-  -- -- Sector Logic candidates
-  -- subtype SLc_BCID_st is unsigned(11 downto 0);
-  -- constant null_SLc_BCID_st : SLc_BCID_st := (others => '0');
-
-  -- subtype SLc_zpos_st is signed(9 downto 0); 
-  -- subtype SLc_phi_st is std_logic_vector(8 downto 0);
-
-  -- -- MDT hits
-  -- subtype mdt_time_le_st is unsigned(MDT_LE_TIME -1 downto 0);   -- 0.78 ns resolution
-  -- subtype mdt_time_pw_st is unsigned(7 downto 0);      -- 0.78 ns resolution
-  -- -- subtype mdt_time_full is unsigned(21 downto 0);     -- 0.78 ns resolution
-
+  -- =============================================================================
+  --  FIXED LATENCIES
+  -- =============================================================================
+  constant HPS_BUSY_CLOCKS         : integer := 10,
+  constant MAIN_PIPELINE_CLOCKS    : integer := 10,
   -- =============================================================================
   --  STANDARD TYPES
   -- =============================================================================
@@ -349,8 +337,10 @@ package common_pkg is
   function structify(x: tar2hps_vt) return tar2hps_rt;
   function nullify (x: tar2hps_rt) return tar2hps_rt;
   
-  type tar2hps_avt is array(integer range <>) of tar2hps_vt;
+  type tar2hps_art is array(integer range <>) of tar2hps_rt;
+  type tar2hps_aart is array(integer range <>) of tar2hps_art(MAX_NUM_HP -1 downto 0);
 
+  type tar2hps_avt is array(integer range <>) of tar2hps_vt;
   type tar2hps_aavt is array(integer range <>) of tar2hps_avt(MAX_NUM_HP -1 downto 0);
 
   --------------------------------------------------------------------------------

@@ -80,7 +80,7 @@ begin
         i_drift_time        => drift_time,
         i_data_valid        => int_dv,
         o_tube_radius       => o_tube_radius
-        -- o_data_valid        => o_data_valid,
+        o_data_valid        => o_data_valid,
       );
     end generate;
   end generate;
