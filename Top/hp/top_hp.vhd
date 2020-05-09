@@ -15,8 +15,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- library work;
+-- use work.cfg_global_pkg.all;
+
+-- library shared_lib;
+-- use shared_lib.cfg_global_pkg.all;
+
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -24,6 +30,7 @@ use hp_lib.hp_pkg.all;
 
 entity top_hp is
     Generic(
+      -- config      : cfg_pkg := CFG_DEFAULTS;
       radius      : integer := 1
       -- num_layers  : integer := 8
     );
@@ -54,6 +61,7 @@ begin
 
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
+      -- config      => config,
       radius      => radius
       -- num_layers  => num_layers
       -- tube_max    => 5

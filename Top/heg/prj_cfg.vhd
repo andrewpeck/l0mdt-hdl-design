@@ -17,18 +17,18 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_defaults_pkg.all;
+use shared_lib.cfg_global_pkg.all;
 
-package cfg_pkg is
+package config_pkg is
 
-  constant CFG : cfg_rt := CFG_DEFAULTS;
-  function set_configuration() return cfg_rt;
+  -- constant CFG : cfg_rt := CFG_DEFAULTS;
+  function set_project_cfg return cfg_rt;
 
-end package cfg_pkg;
+end package config_pkg;
 
-package body cfg_defaults_pkg is:
+package body config_pkg is
 
-  function set_configuration() return cfg_rt is
+  function set_project_cfg return cfg_rt is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
   begin
   --   --------------------------------------------------------------------------------
@@ -57,6 +57,6 @@ package body cfg_defaults_pkg is:
   --   proj_cfg.SF_type                 := '0',  -- 0: CSF 1:LSF
  
     return proj_cfg;
-  end function set_configuration;
+  end function set_project_cfg;
 
-end package body cfg_defaults_pkg;
+end package body config_pkg;

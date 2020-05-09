@@ -18,7 +18,7 @@ use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -37,8 +37,8 @@ entity hp_calc_radius is
     i_mdt_time_t0       : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
     i_data_valid         : in std_logic;
     
-    o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0)
-    -- o_data_valid        : out std_logic
+    o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
+    o_data_valid        : out std_logic
   );
 end entity hp_calc_radius;
 
@@ -63,8 +63,8 @@ begin
 
         i_drift_time        => drift_time,
         i_data_valid        => int_dv,
-        o_tube_radius       => o_tube_radius
-        -- o_data_valid        => o_data_valid,
+        o_tube_radius       => o_tube_radius,
+        o_data_valid        => o_data_valid
       );
     end generate;
     DT2R_BL_GEN: if radius > 0 generate
@@ -79,8 +79,8 @@ begin
 
         i_drift_time        => drift_time,
         i_data_valid        => int_dv,
-        o_tube_radius       => o_tube_radius
-        o_data_valid        => o_data_valid,
+        o_tube_radius       => o_tube_radius,
+        o_data_valid        => o_data_valid
       );
     end generate;
   end generate;

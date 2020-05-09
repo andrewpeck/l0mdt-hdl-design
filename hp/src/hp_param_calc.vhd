@@ -16,7 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -50,6 +50,8 @@ architecture beh of hp_paramCalc is
 
     signal barrel_data_r : hp_heg2hp_slc_b_rt;
 
+    signal radius_dv : std_logic;
+
 begin
   SLC_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
     barrel_data_r <= structify(i_SLc_specific);
@@ -68,7 +70,8 @@ begin
     i_mdt_time_t0   => i_mdt_time_real,
     i_data_valid     => i_data_valid,
         
-    o_tube_radius   => o_tube_radius
+    o_tube_radius   => o_tube_radius,
+    o_data_valid    => radius_dv
   );
 
   HP_CALC_V : entity hp_lib.hp_calc_RoI_vect

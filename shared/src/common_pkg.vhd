@@ -23,7 +23,7 @@ use ieee.math_real.all;
 -- use df_lib.mdttp_functions_pkg.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 
 package common_pkg is
 
@@ -97,8 +97,8 @@ package common_pkg is
   -- =============================================================================
   --  FIXED LATENCIES
   -- =============================================================================
-  constant HPS_BUSY_CLOCKS         : integer := 10,
-  constant MAIN_PIPELINE_CLOCKS    : integer := 10,
+  constant HPS_BUSY_CLOCKS         : integer := 10;
+  constant MAIN_PIPELINE_CLOCKS    : integer := 10;
   -- =============================================================================
   --  STANDARD TYPES
   -- =============================================================================

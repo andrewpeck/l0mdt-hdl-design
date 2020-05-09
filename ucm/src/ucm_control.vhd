@@ -18,7 +18,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -119,7 +119,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -256,7 +256,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;

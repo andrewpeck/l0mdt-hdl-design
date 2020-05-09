@@ -17,7 +17,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -35,7 +35,7 @@ entity hp_calc_dt2r_large is
 
     i_drift_time        : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
     i_data_valid        : in std_logic;
-    o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0)
+    o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
     o_data_valid        : out std_logic
   );
 end entity hp_calc_dt2r_large;
