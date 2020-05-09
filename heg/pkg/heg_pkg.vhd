@@ -78,15 +78,15 @@ package body heg_pkg is
   function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_vt is
     variable y : heg_ctrl2hp_vt;
   begin
-    y(11 downto 6)             := x.reset_b;
-    y(5 downto 0)              := x.enable;
+    y(MAX_NUM_HP + MAX_NUM_HP -1 downto MAX_NUM_HP)             := x.reset_b;
+    y(MAX_NUM_HP -1  downto 0)              := x.enable;
     return y;
   end function vectorify;
   function structify(x: heg_ctrl2hp_vt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.reset_b                  := x(11 downto 6);
-    y.enable                   := x(5 downto 0);
+    y.reset_b                  := x(MAX_NUM_HP + MAX_NUM_HP -1 downto MAX_NUM_HP);
+    y.enable                   := x(MAX_NUM_HP -1  downto 0);
     return y;
   end function structify;
   function nullify (x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is

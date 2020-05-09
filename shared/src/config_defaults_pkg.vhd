@@ -68,7 +68,7 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- Processing channel
     ENABLE_INNER                  => '1', -- default enable
-    ENABLE_EXTRA                  => '1', -- default enable
+    ENABLE_EXTRA                  => '0', -- default enable
     ENABLE_MIDDLE                 => '1', -- default enable
     ENABLE_OUTER                  => '1', -- default enable
     -- Segment Finder
