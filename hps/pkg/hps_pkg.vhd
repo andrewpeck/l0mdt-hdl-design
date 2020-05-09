@@ -17,8 +17,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.interfaces_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -27,13 +27,13 @@ use heg_lib.heg_pkg.all;
 
 package hps_pkg is
 
+  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_vt;
 
+  type hps_bm2sf_avt is array(integer range <>) of heg_bm2sf_vt;
 
 end package hps_pkg;
 
 package body hps_pkg is
---------------------------------------------------------------------------------
--- FUNCTIONS IMPLEMENTATION
---------------------------------------------------------------------------------
+
  
 end package body hps_pkg;

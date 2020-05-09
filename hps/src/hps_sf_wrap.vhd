@@ -17,8 +17,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.interfaces_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -37,11 +37,11 @@ entity hps_sf_wrap is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_sf_control        : in heg_int_control_rt;
-    i_sf_slc_data       : in ucm2heg_slc_rt;
-    i_sf_mdt_data       : in heg2sf_mdt_rt;
+    i_sf_control        : in heg_ctrl2hp_vt;
+    i_sf_slc_data       : in ucm2hps_vt;
+    i_sf_mdt_data       : in heg_bm2sf_vt;
     --
-    o_sf_data           : out hps2pt_sf_stdst
+    o_sf_data_v           : out sf2pt_vt
   );
 end entity hps_sf_wrap;
 

@@ -16,8 +16,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.interfaces_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -31,11 +31,11 @@ entity heg_buffermux is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control           : in heg_int_control_rt;
+    i_control           : in heg_ctrl2hp_rt;
     -- MDT in
-    i_mdt_hits          : in hp2bm_astdst;
+    i_mdt_hits_av       : in heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
     -- MDT out
-    o_mdt_hits         : out heg2sf_mdt_rt
+    o_mdt_hits_v        : out heg_bm2sf_vt
     
   );
 end entity heg_buffermux;
@@ -44,7 +44,8 @@ architecture beh of heg_buffermux is
 
   component heg_buffermux_infifo is
     generic( 
-      BM_FIFO_DEPTH : integer := 4
+      BM_FIFO_DEPTH : integer := 4;
+      BM_FIFO_WIDTH : integer := 4
     );
     port (
       clk                 : in std_logic;
@@ -52,12 +53,12 @@ architecture beh of heg_buffermux is
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       -- in
-      i_mdt_hit           : in hp2bm_stdst;
+      i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
       i_wr                : in std_logic;
       i_rd                : in std_logic;
       -- out
       o_empty             : out std_logic;
-      o_mdt_hit           : out hp2bm_stdst
+      o_mdt_hit           : out std_logic_vector(BM_FIFO_WIDTH -1 downto 0)
   
     );
   end component heg_buffermux_infifo;
@@ -65,28 +66,31 @@ architecture beh of heg_buffermux is
   signal fifo_wr    : std_logic_vector(MAX_NUM_HP -1 downto 0);
   signal fifo_rd    : std_logic_vector(MAX_NUM_HP -1 downto 0);
 
-  -- signal int_mdt_hit : 
+  signal o_mdt_hits_r : heg_bm2sf_rt; 
 
-  signal mdt_hit    :  hp2bm_astdst(MAX_NUM_HP -1 downto 0);
+  signal mdt_hit    :  heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
   signal fifo_empty : std_logic_vector(MAX_NUM_HP -1 downto 0);
 
   
 begin
 
+  o_mdt_hits_v <= vectorify(o_mdt_hits_r);
+
   FIFOS: for hp_i in MAX_NUM_HP -1 downto 0 generate
 
-    fifo_wr(hp_i) <= i_mdt_hits(hp_i)(0) and i_mdt_hits(hp_i)(1);
+    fifo_wr(hp_i) <= i_mdt_hits_av(hp_i)(0) and i_mdt_hits_av(hp_i)(1);
 
     BM_IN_FIFO : heg_buffermux_infifo
     generic map(
-      BM_FIFO_DEPTH   => 4
+      BM_FIFO_DEPTH   => 4,
+      BM_FIFO_WIDTH   => HP_HP2BM_LEN
     )
     port map(
       clk                 => clk,
       Reset_b             => Reset_b,
-      glob_en             => i_control.hp_enables(hp_i),
+      glob_en             => i_control.enable(hp_i),
       --
-      i_mdt_hit           => i_mdt_hits(hp_i),
+      i_mdt_hit           => i_mdt_hits_av(hp_i),
       i_wr                => fifo_wr(hp_i),
       i_rd                => fifo_rd(hp_i),
       --
@@ -99,9 +103,9 @@ begin
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
   begin
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       -- o_mdt_hits <= (others => '0');
-      o_mdt_hits <= null_heg2sf_mdt_rt;
+      o_mdt_hits_r <= nullify(o_mdt_hits_r);
       new_index_v := 0;
     elsif rising_edge(clk) then
 
@@ -149,8 +153,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.interfaces_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -159,26 +163,27 @@ use heg_lib.heg_pkg.all;
 
 entity heg_buffermux_infifo is
   generic( 
-    BM_FIFO_DEPTH : integer := 4
+    BM_FIFO_DEPTH : integer := 4;
+    BM_FIFO_WIDTH : integer := 4
   );
   port (
     clk                 : in std_logic;
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- in
-    i_mdt_hit           : in hp2bm_stdst;
+    i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
     i_wr                : in std_logic;
     i_rd                : in std_logic;
     -- out
     o_empty             : out std_logic;
-    o_mdt_hit           : out hp2bm_stdst
+    o_mdt_hit           : out std_logic_vector(BM_FIFO_WIDTH -1 downto 0)
 
   );
 end entity heg_buffermux_infifo;
 
 architecture beh of heg_buffermux_infifo is
 
-  type fifo_data_at is array ( BM_FIFO_DEPTH -1 downto 0) of hp2bm_stdst;
+  type fifo_data_at is array ( BM_FIFO_DEPTH -1 downto 0) of std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
   signal fifo_data : fifo_data_at;
 
   signal wr_index : integer range 0 to BM_FIFO_DEPTH -1 := 0;
@@ -192,7 +197,7 @@ begin
   case_options <= i_wr & i_rd;
 
   SLc_reg : process(Reset_b,clk) begin
-    if(not Reset_b and not glob_en ) then
+    if(Reset_b = '0' and glob_en = '0' ) then
       fifo_data <= (others=>(others=>'0'));
       wr_index <= 0;
       o_empty <= '1';

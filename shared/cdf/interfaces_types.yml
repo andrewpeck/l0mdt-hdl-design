@@ -1,5 +1,5 @@
-# __config__:
-#     basic_convert_functions : on
+__config__:
+    basic_convert_functions : on
     # packages:
     #   my_lib_1:
     #     - package_1
@@ -12,6 +12,18 @@ MAX_NUM_HEG:  {qualifier: constant , type: integer , value: 3}
 MAX_NUM_HPS:  {qualifier: constant , type: integer , value: 3}
 MAX_NUM_SL:   {qualifier: constant , type: integer , value: 5}
 
+#############################################################
+# COMMON CONSTANTS
+#############################################################  
+MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
+MDT_LOCAL_AXI_LEN    : { qualifier: constant , type: integer , value: 15 }
+MDT_RADIUS_LEN       : { qualifier: constant , type: integer , value: 9 }
+
+
+
+#############################################################
+# INTERFACES TYPES
+#############################################################  
 
 # -----------------------------------------------------------
 #       Sector Logic Rx interface ouytput signal types
@@ -24,9 +36,9 @@ SLC_SLID_LEN:     {qualifier: constant , type: integer , value: 6}
 BCID_LEN:         {qualifier: constant , type: integer , value: 12}
   
 slc_muid:
-  slcid:          {type: logic , length: SLC_SLCID_LEN , comment: another comment}
-  slid:           {type: logic , length: SLC_SLID_LEN}
-  bcid:           {type: logic , length: BCID_LEN}
+  slcid:          {type: unsigned , length: SLC_SLCID_LEN , comment: another comment}
+  slid:           {type: unsigned , length: SLC_SLID_LEN}
+  bcid:           {type: unsigned , length: BCID_LEN}
 
 # slc chambers
 
@@ -96,30 +108,137 @@ slc_endcap:
 SLC_SPECIFIC_LEN:     { qualifier: constant , type: integer , value: 51 }
 
 slc_rx_data:
-  muid:       {type: slc_muid}
-  chambers:       {type: slc_chid}
-  common:     {type: slc_common}
-  specific:   {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
-  data_valid: {type: logic}
+  muid:         {type: slc_muid}
+  chambers:     {type: slc_chid}
+  common:       {type: slc_common}
+  specific:     {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
+  data_valid:   {type: logic}
     
-slc_rx_data_art: {array: open , type: slc_rx_data }
-slc_rx_data_avt: {array: open , type: slc_rx_data_vt }
+slc_rx_data_a: {array: open , type: slc_rx_data }
 
-# # -----------------------------------------------------------
-# #       UCM : Muon candidate manager internal signal types
-# # -----------------------------------------------------------
+# -----------------------------------------------------------
+# mdt 2 hps
+# -----------------------------------------------------------
+
+MDT_TUBE_LEN  : { qualifier: constant , type: integer , value: 9 }
+MDT_LAYER_LEN : { qualifier: constant , type: integer , value: 5 }
+MDT_TIME_LEN  : { qualifier: constant , type: integer , value: 18 } 
+
+tar2hps:
+  tube        : { type: logic , length: MDT_TUBE_LEN }
+  layer       : { type: logic , length: MDT_LAYER_LEN }
+  time        : { type: unsigned , length: MDT_TIME_LEN }
+  data_valid  : {type: logic}
+
+tar2hps_a     : {array: open , type: tar2hps}
+
+#############################################################
+# INTERBLOCK TYPES
+############################################################# 
+
+# -----------------------------------------------------------
+#       UCM : Muon candidate manager output signal types
+# -----------------------------------------------------------
+
+# -----------------------------------------------------------
+# slc ucm2hps specific
+# barrel
+
+UCM_MBAR_LEN: { qualifier: constant , type: integer , value: 10 }
+UCM_Z_ROI_LEN: { qualifier: constant , type: integer , value: 7 }
+UCM_R_ROI_LEN: { qualifier: constant , type: integer , value: 4 }  
+UCM_PHI_LEN: { qualifier: constant , type: integer , value: 14 }
+UCM_ETA_LEN: { qualifier: constant , type: integer , value: 8 }
+# UCM_CHAMBER_ID_LEN: { qualifier: constant , type: integer , value: 5 }
+
+ucm_csf_barrel:
+  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
+  z           : { type: unsigned , length: UCM_Z_ROI_LEN }
+  r           : { type: unsigned , length: UCM_R_ROI_LEN }
+  phi         : { type: unsigned , length: UCM_PHI_LEN }
+  eta         : { type: unsigned , length: UCM_ETA_LEN }
+  
+  
+# ucm_csf_barrel_at: {array: open , type: ucm_csf_barrel}
+
+
+# slc ucm2hps id
+ucm2hps_id:
+  bcid        : { type: unsigned , length: BCID_LEN}
+  chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN }
+# slc ucm2hps
+UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 43 }
+ucm2hps:
+  id            : { type: ucm2hps_id}
+  specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
+  data_valid    : { type: logic}
+
+ucm2hps_a    : {array: open , type: ucm2hps }
+
+
+# -----------------------------------------------------------
+# slc ucm pipeline
+# -----------------------------------------------------------
+
+pipeline:
+  muid          : {type: slc_muid}
+  chambers      : {type: slc_chid}
+  common        : {type: slc_common}
+  specific      : {type: logic , length: SLC_SPECIFIC_LEN}
+  process_ch    : {type: logic , length: 4}
+  processed     : {type: logic }
+  data_valid    : {type: logic}
+
+PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
+
+pipeline_ar    : {array: MAX_NUM_SL , type: pipeline }
+pipeline_av    : {array: MAX_NUM_SL , type: logic , length: PIPELINE_LEN}
+
+# -----------------------------------------------------------  
+# mdt tdc
+# -----------------------------------------------------------
+# MDT_TDC_CH_LEN      : { qualifier: constant , type: integer , value: 5 }
+# MDT_TDC_MODE_LEN    : { qualifier: constant , type: integer , value: 2 }
+# MDT_TDC_COARSE_LEN  : { qualifier: constant , type: integer , value: 12 }
+# MDT_TDC_FINE_LEN    : { qualifier: constant , type: integer , value: 5 }
+# MDT_TDC_PW_LEN      : { qualifier: constant , type: integer , value: 8 }
+  
+# mdt_tdc:
+#   ch        : { type: logic , length: MDT_TDC_CH_LEN }
+#   mode      : { type: logic , length: MDT_TDC_MODE_LEN }
+#   coarse    : { type: unsigned , length: MDT_TDC_COARSE_LEN }
+#   fine      : { type: unsigned , length: MDT_TDC_FINE_LEN }
+#   pw        : { type: unsigned , length: MDT_TDC_PW_LEN }
+
+# -----------------------------------------------------------  
+# mdt pullmux
+# -----------------------------------------------------------
+
+# MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
+# MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }  
+
+# mdt_pullmux_data:
+#   fiberID     : { type: logic , length: MDT_FIBER_LEN }
+#   muxID       : { type: logic , length: MDT_MUXCH_LEN }
+#   tdc         : {type: mdt_tdc}
+#   data_valid  : {type: logic}
+ 
+
+#############################################################
+# UCM TYPES
+#############################################################  
 
 # # ucm preprocesor output
 
-# ucm_prepro:
-#   muid:       {type: slc_muid}
-#   chambers:   {type: slc_chid}
-#   common:     {type: slc_common}
-#   specific:   {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
-#   data_valid: {type: logic}
+ucm_prepro:
+  muid:       {type: slc_muid}
+  chambers:   {type: slc_chid}
+  common:     {type: slc_common}
+  specific:   {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
+  data_valid: {type: logic}
 
-# ucm_prepro_art: {array: open , type: slc_rx_data }
-# ucm_prepro_avt: {array: open , type: slc_rx_data_vt }
+# ucm_prepro_art: {array: open , type: ucm_prepro }
+# ucm_prepro_avt: {array: open , type: ucm_prepro_vt }
 
 # main cross switch control
 
@@ -158,100 +277,165 @@ ucm_proc_info:
 
 ucm_proc_info_a: {array: open , type: ucm_proc_info }
 
+#############################################################
+# HPS TYPES
+#############################################################  
 # -----------------------------------------------------------
-#       UCM : Muon candidate manager output signal types
+# hps: pc 2 heg
+# -----------------------------------------------------------
+# MDT_GLOBAL_AXI_LEN : { qualifier: constant , type: integer , value: 19 }
+
+# hps_pc2heg:
+#   tube        : { type: logic , length: MDT_TUBE_LEN }
+#   layer       : { type: logic , length: MDT_LAYER_LEN }
+#   time_t0     : { type: unsigned , length: MDT_TIME_LEN }
+#   global_z    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+#   global_y    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+#   data_valid  : {type: logic}
+# hps_hpsPc2hp_a  : {array: open , type: hp_hpsPc2hp}
+# -----------------------------------------------------------
+# hps: pc 2 heg
+# -----------------------------------------------------------
+# HP_RADIUS_LEN    : { qualifier: constant , type: integer , value: 9 }
+# HP_LOCAL_AXI_LEN : { qualifier: constant , type: integer , value: 15 }
+
+# hps_hp2sf_data:
+#   local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+#   local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+#   radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+#   layer       : { type: logic , length: MDT_LAYER_LEN }
+
+# hps_bm2sf:
+#   data        : { type: hps_hp2sf_data}
+#   mdt_valid   : { type: logic}
+#   data_valid  : { type: logic}
+
+heg_hpsPc2hp_a  : {array: open , type: hp_hpsPc2hp}
+
+#############################################################
+# HEG TYPES
+#############################################################  
+# -----------------------------------------------------------
+# heg: pc 2 heg mdt data
 # -----------------------------------------------------------
 
-# slc ucm pam
 
-ucm_ctrl:
-  sel: {type: logic}
-  addr: {type: logic , length: 4}
-  
-ucm_ctrl_at: {array: open , type: ucm_ctrl}
+# heg_pc2heg:
+#   tube        : { type: logic , length: MDT_TUBE_LEN }
+#   layer       : { type: logic , length: MDT_LAYER_LEN }
+#   time_t0     : { type: unsigned , length: MDT_TIME_LEN }
+#   global_z    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+#   global_y    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+#   data_valid  : {type: logic}
 
-# slc ucm cvp
-# barrel
+# hps_bm2sf_a  : {array: open , type: heg_bm2sf}
+hps_ctrl2hp_a  : {array: open , type: heg_ctrl2hp}
+hps_bm2sf_a  : {array: open , type: heg_bm2sf}
 
-UCM_MBAR_LEN: { qualifier: constant , type: integer , value: 10 }
-UCM_Z_ROI_LEN: { qualifier: constant , type: integer , value: 7 }
-UCM_R_ROI_LEN: { qualifier: constant , type: integer , value: 4 }  
-UCM_PHI_LEN: { qualifier: constant , type: integer , value: 14 }
-UCM_ETA_LEN: { qualifier: constant , type: integer , value: 8 }
-UCM_CHAMBER_ID_LEN: { qualifier: constant , type: integer , value: 5 }
+# -----------------------------------------------------------
+#  heg: heg control 2 hp slc data
+# -----------------------------------------------------------
 
-ucm_csf_barrel:
-  mbar: { type: unsigned , length: UCM_MBAR_LEN }
-  z: { type: unsigned , length: UCM_Z_ROI_LEN }
-  r: { type: unsigned , length: UCM_R_ROI_LEN }
-  phi: { type: unsigned , length: UCM_PHI_LEN }
-  eta: { type: unsigned , length: UCM_ETA_LEN }
-  chamber_id: { type: unsigned , length: UCM_CHAMBER_ID_LEN }
-  
-ucm_csf_barrel_at: {array: open , type: ucm_csf_barrel}
+heg_ctrl2hp:
+  reset_b         : { type: logic , length : MAX_NUM_HP}
+  enable        : { type: logic , length : MAX_NUM_HP}
 
-# slc ucm pipeline
+# heg_ctrl2hp_a  : {array: MAX_NUM_HP , type: heg_ctrl2hp}
 
-pipeline_data:
-  muid          : {type: slc_muid}
-  pl_common     : {type: slc_common}
-  specific      : {type: logic , length: SLC_SPECIFIC_LEN}
-  process_ch    : {type: logic , length: 4}
-  processed     : {type: logic }
-  data_valid    : {type: logic}
+# heg_heg2hp_win_layer  : {array: 2 , type: logic, length: MDT_TUBE_LEN}
+# heg_heg2hp_window  : {array: 8 , type: hp_heg2hp_win_layer}
 
-pipeline_data_a: {array: open , type: pipeline_data }
-  
-# mdt tdc
-MDT_TDC_CH_LEN: { qualifier: constant , type: integer , value: 5 }
-MDT_TDC_MODE_LEN: { qualifier: constant , type: integer , value: 2 }
-MDT_TDC_COARSE_LEN: { qualifier: constant , type: integer , value: 12 }
-MDT_TDC_FINE_LEN: { qualifier: constant , type: integer , value: 5 }
-MDT_TDC_PW_LEN: { qualifier: constant , type: integer , value: 8 }
-  
-mdt_tdc:
-  ch: { type: logic , length: MDT_TDC_CH_LEN }
-  mode: { type: logic , length: MDT_TDC_MODE_LEN }
-  coarse: { type: unsigned , length: MDT_TDC_COARSE_LEN }
-  fine: { type: unsigned , length: MDT_TDC_FINE_LEN }
-  pw: { type: unsigned , length: MDT_TDC_PW_LEN }
-  
-# mdt pullmux
 
-MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
-MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }  
+# heg_heg2hp_slc_b:
+#   z_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+#   y_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
 
-mdt_pullmux_data:
-  fiberID: { type: logic , length: MDT_FIBER_LEN }
-  muxID: { type: logic , length: MDT_MUXCH_LEN }
-  tdc: {type: mdt_tdc}
-  data_valid: {type: logic}
+# HEG_HEG2HP_SPECIFIC_LEN : { qualifier: constant , type: integer , value: 38 }
 
-# mdt tar
+# heg_hp2sf_data:
+#   local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+#   local_x     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+#   radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+#   layer       : { type: logic , length: MDT_LAYER_LEN }
 
-MDT_TUBE_LEN: { qualifier: constant , type: integer , value: 5 }
-MDT_LAYER_LEN: { qualifier: constant , type: integer , value: 9 }
-MDT_TIME_LEN: { qualifier: constant , type: integer , value: 18 } 
+# heg_hp2bm:
+#   data        : { type: heg_hp2sf_data}
+#   mdt_valid   : { type: logic}
+#   data_valid  : { type: logic}
 
-mdt_tar_data:
-  tube: { type: logic , length: MDT_TUBE_LEN }
-  layer: { type: logic , length: MDT_LAYER_LEN }
-  time: { type: unsigned , length: MDT_TIME_LEN }
-  data_valid: {type: logic}
-  
-mdt_tar_data_a: {array: open , type: mdt_tar_data}
+# heg_hp2bm_ar    : {array: open , type: heg_hp2bm_vt }
 
-# hp 2 sf
+heg_bm2sf:
+  data        : { type: hp_hp2sf_data}
+  data_valid  : { type: logic}
 
-MDT_RADIUS_LEN: { qualifier: constant , type: integer , value: 9 }
-MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 15 }
 
-hp_data:
-  local_z: { type: signed , length: MDT_LOCAL_AXI_LEN }
-  local_x: { type: unsigned , length: MDT_LOCAL_AXI_LEN }
-  radius: { type: unsigned , length: MDT_RADIUS_LEN }
-  multilayer: {type: logic}
-  data_valid: {type: logic}
+# -----------------------------------------------------------
+#  mdt heg 2 sf
+# -----------------------------------------------------------
+
+# HP_RADIUS_LEN    : { qualifier: constant , type: integer , value: 9 }
+# HP_LOCAL_AXI_LEN : { qualifier: constant , type: integer , value: 15 }
+
+# heg_bm2sf:
+#   local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+#   local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+#   radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+#   layer       : { type: logic , length: MDT_LAYER_LEN }
+#   data_valid  : { type: logic}
+
+
   
 
+#############################################################
+# HP TYPES
+#############################################################  
+# -----------------------------------------------------------
+#  RoI window
+# -----------------------------------------------------------
+hp_win_tubs:
+  hi: { type: unsigned, length: MDT_TUBE_LEN}
+  lo: { type: unsigned, length: MDT_TUBE_LEN}
+# hp_heg2hp_win_layer  : {array: 2 , type: unsigned, length: MDT_TUBE_LEN}
+hp_heg2hp_window  : {array: 8 , type: hp_win_tubs}
 
+# -----------------------------------------------------------
+#  SLC
+# -----------------------------------------------------------
+hp_heg2hp_slc_b:
+  z_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  y_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+
+HP_HEG2HP_SPECIFIC_LEN : { qualifier: constant , type: integer , value: 38 }
+
+hp_heg2hp_slc:
+  bcid        : { type: unsigned , length: BCID_LEN}
+  specific    : {type: logic , length: HP_HEG2HP_SPECIFIC_LEN }
+  data_valid  : { type: logic}
+
+# -----------------------------------------------------------
+#  MDT full
+# -----------------------------------------------------------
+
+hp_hpsPc2hp:
+  tube        : { type: unsigned , length: MDT_TUBE_LEN }
+  layer       : { type: unsigned , length: MDT_LAYER_LEN }
+  time_t0     : { type: unsigned , length: MDT_TIME_LEN }
+  global_z    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  global_y    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  data_valid  : {type: logic}
+
+# -----------------------------------------------------------
+#  hit out
+# -----------------------------------------------------------
+
+hp_hp2sf_data:
+  local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+  local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+  radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+  layer       : { type: unsigned , length: MDT_LAYER_LEN }
+
+hp_hp2bm:
+  data        : { type: hp_hp2sf_data}
+  mdt_valid   : { type: logic}
+  data_valid  : { type: logic}

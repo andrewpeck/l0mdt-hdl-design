@@ -15,34 +15,42 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+-- library work;
+-- use work.cfg_global_pkg.all;
+
+-- library shared_lib;
+-- use shared_lib.cfg_global_pkg.all;
+
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.interfaces_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
 entity top_hp is
     Generic(
-      radius      : integer := 0
+      -- config      : cfg_pkg := CFG_DEFAULTS;
+      radius      : integer := 1
       -- num_layers  : integer := 8
     );
     Port(
-      clk                 : in std_logic;
+      clk                 : in std_logic;    
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       -- configuration
+      local_Reset_b       : in std_logic;
+      local_en            : in std_logic;
+
       time_offset         : in unsigned(7 downto 0);
-      -- RoI_size            : in unsigned(7 downto 0);
+  
       -- SLc
-      i_SLC_Window        : in SLc_window_std;
-      i_slc_data_av          : in hp_slc_rt;
+      i_SLC_Window        : in hp_heg2hp_window_vt;
+      i_slc_data_v        : in hp_heg2hp_slc_vt;
       -- MDT hit
-      i_mdt_data          : in hp_hit_data_stdst;
-      -- i_mdt_valid         : in std_logic;
-      -- i_mdt_time_real     : in mdt_time_le_st;
+      i_mdt_data          : in hp_hpsPc2hp_vt;
       -- to Segment finder
-      o_mdt2sf_data    : out hp2bm_stdst
+      o_hit_data          : out hp_hp2bm_vt
     );
 end top_hp;
 
@@ -53,6 +61,7 @@ begin
 
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
+      -- config      => config,
       radius      => radius
       -- num_layers  => num_layers
       -- tube_max    => 5
@@ -62,17 +71,19 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       -- configuration
+      local_Reset_b       => local_Reset_b,
+      local_en            => local_en,
       time_offset         => time_offset,
       -- RoI_size            => RoI_size,
       -- SLc
       i_SLC_Window        => i_SLC_Window,
-      i_slc_data_av          => i_slc_data_av,
+      i_slc_data_v        => i_slc_data_v,
       -- MDT hit
       i_mdt_data          => i_mdt_data,
       -- i_mdt_valid         => i_mdt_valid,
       -- i_mdt_time_real     => i_mdt_time_real,
       -- to Segment finder
-      o_mdt2sf_data    => o_mdt2sf_data
+      o_hit_data          => o_hit_data
       -- o_data_valid        => o_data_valid
     );
 
