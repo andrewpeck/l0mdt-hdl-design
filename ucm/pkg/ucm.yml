@@ -10,10 +10,10 @@ __config__:
 # # ucm preprocesor output
 
 ucm_prepro:
-  muid:       {type: slc_muid}
-  chambers:   {type: slc_chid}
-  common:     {type: slc_common}
-  specific:   {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
+  # muid:       {type: slc_muid}
+  # chambers:   {type: slc_chid}
+  # common:     {type: slc_common}
+  specific:   {type: logic , length: SLC_SPECIFIC_LEN , dprint: on}
   data_valid: {type: logic}
 
 # # ucm_prepro_art: {array: open , type: ucm_prepro }
