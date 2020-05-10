@@ -191,7 +191,7 @@ pipeline:
 
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 
-pipeline_    : {array: MAX_NUM_SL , type: pipeline }
+pipelines    : {array: MAX_NUM_SL , type: pipeline }
 # pipeline_av    : {array: MAX_NUM_SL , type: logic , length: PIPELINE_LEN}
 
 # -----------------------------------------------------------  

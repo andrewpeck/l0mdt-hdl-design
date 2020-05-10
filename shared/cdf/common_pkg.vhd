@@ -260,14 +260,14 @@ package common_pkg is
   function structify(x: pipeline_rvt) return pipeline_rt;
   function nullify (x: pipeline_rt) return pipeline_rt;
 
-  type pipeline__at is array(MAX_NUM_SL-1 downto 0) of pipeline_rt;
-  type pipeline__avt is array(MAX_NUM_SL-1 downto 0) of pipeline_rvt;
-  function vectorify(x: pipeline__at) return pipeline__avt;
-  function vectorify(x: pipeline__at) return std_logic_vector;
-  function structify(x: pipeline__avt) return pipeline__at;
-  function structify(x: std_logic_vector) return pipeline__at;
-  function nullify(x: pipeline__at) return pipeline__at;
-  function nullify(x: pipeline__avt) return pipeline__avt;
+  type pipelines_at is array(MAX_NUM_SL-1 downto 0) of pipeline_rt;
+  type pipelines_avt is array(MAX_NUM_SL-1 downto 0) of pipeline_rvt;
+  function vectorify(x: pipelines_at) return pipelines_avt;
+  function vectorify(x: pipelines_at) return std_logic_vector;
+  function structify(x: pipelines_avt) return pipelines_at;
+  function structify(x: std_logic_vector) return pipelines_at;
+  function nullify(x: pipelines_at) return pipelines_at;
+  function nullify(x: pipelines_avt) return pipelines_avt;
 
 end package common_pkg;
 
@@ -818,15 +818,15 @@ package body common_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: pipeline__at) return pipeline__avt is
-    variable y :  pipeline__avt;
+  function vectorify(x: pipelines_at) return pipelines_avt is
+    variable y :  pipelines_avt;
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
     end loop l;
     return y;
   end function vectorify;
-  function vectorify(x: pipeline__at) return std_logic_vector is
+  function vectorify(x: pipelines_at) return std_logic_vector is
     variable y : std_logic_vector(x'length*133-1 downto 0);
     variable msb : integer := y'length-1;
   begin
@@ -836,16 +836,16 @@ package body common_pkg is
     end loop l;
     return y;
   end function vectorify;
-  function structify(x: pipeline__avt) return pipeline__at is
-    variable y :  pipeline__at;
+  function structify(x: pipelines_avt) return pipelines_at is
+    variable y :  pipelines_at;
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
     end loop l;
     return y;
   end function structify;
-  function structify(x: std_logic_vector) return pipeline__at is
-    variable y :  pipeline__at;
+  function structify(x: std_logic_vector) return pipelines_at is
+    variable y :  pipelines_at;
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -854,16 +854,16 @@ package body common_pkg is
     end loop l;
     return y;
   end function structify;
-  function nullify(x: pipeline__at) return pipeline__at is
-    variable y :  pipeline__at;
+  function nullify(x: pipelines_at) return pipelines_at is
+    variable y :  pipelines_at;
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
     return y;
   end function nullify;
-  function nullify(x: pipeline__avt) return pipeline__avt is
-    variable y :  pipeline__avt;
+  function nullify(x: pipelines_avt) return pipelines_avt is
+    variable y :  pipelines_avt;
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

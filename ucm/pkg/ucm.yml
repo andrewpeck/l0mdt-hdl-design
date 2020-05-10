@@ -12,7 +12,7 @@ __config__:
 ucm_prepro:
   # muid:       {type: slc_muid}
   # chambers:   {type: slc_chid}
-  # common:     {type: slc_common}
+  # common:     {type: slc_common, dprint: on}
   specific:   {type: logic , length: SLC_SPECIFIC_LEN , dprint: on}
   data_valid: {type: logic}
 
