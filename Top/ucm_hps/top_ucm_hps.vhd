@@ -30,7 +30,6 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 
-
 entity top_ucm_hps is
   port (
     clk                 : in std_logic;
