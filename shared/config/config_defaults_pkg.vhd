@@ -30,10 +30,14 @@ package cfg_global_pkg is
     -- blocks configuration
     --------------------------------------------------------------------------------
     -- Processing channel
-    ENABLE_INNER                  : std_logic;
-    ENABLE_EXTRA                  : std_logic;
-    ENABLE_MIDDLE                 : std_logic;
-    ENABLE_OUTER                  : std_logic;
+    ENABLE_ST_INN                 : std_logic;
+    NUM_MDT_CH_INN                : integer;
+    ENABLE_ST_EXT                 : std_logic;
+    NUM_MDT_CH_EXT                : integer;
+    ENABLE_ST_MID                 : std_logic;
+    NUM_MDT_CH_MID                : integer;
+    ENABLE_ST_OUT                 : std_logic;
+    NUM_MDT_CH_OUT                : integer;
     -- Segment Finder
     ENABLE_SF                     : std_logic;
     SF_type                       : std_logic;  -- 0: CSF 1:LSF
@@ -66,11 +70,15 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    -- Processing channel
-    ENABLE_INNER                  => '1', -- default enable
-    ENABLE_EXTRA                  => '0', -- default enable
-    ENABLE_MIDDLE                 => '1', -- default enable
-    ENABLE_OUTER                  => '1', -- default enable
+    -- Processing channels
+    ENABLE_ST_INN                 => '1', -- default enable
+    NUM_MDT_CH_INN                => 6,   -- default 6            
+    ENABLE_ST_EXT                 => '0', -- default enable
+    NUM_MDT_CH_EXT                => 6,   -- default 6  
+    ENABLE_ST_MID                 => '1', -- default enable
+    NUM_MDT_CH_MID                => 6,   -- default 6  
+    ENABLE_ST_OUT                 => '1', -- default enable
+    NUM_MDT_CH_OUT                => 6,   -- default 6  
     -- Segment Finder
     ENABLE_SF                     => '1', -- default enable
     SF_type                       => '0', -- default CSF

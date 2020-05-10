@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.cfg_global_pkg.all;
@@ -45,13 +46,25 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 
   --------------------------------------------------------------------------------
-  constant MAX_NUM_HP   : integer := CFG.MAX_NUM_HP;
-  constant MAX_NUM_HEG  : integer := CFG.MAX_NUM_HEG;
-  constant MAX_NUM_HPS  : integer := CFG.MAX_NUM_HPS;
+  constant MAX_NUM_HP   : integer := 
+        maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_INN))*CFG.NUM_MDT_CH_INN,
+          maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT))*CFG.NUM_MDT_CH_EXT,
+            maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_MID))*CFG.NUM_MDT_CH_MID,to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
+          )
+        );
+        
+  constant MAX_NUM_HPS  : integer :=  
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
+
   constant MAX_NUM_SL   : integer := 3 + 
   to_integer(unsigned'("" & ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & ENDCAP_nSMALL_LARGE))*3 + 
   to_integer(unsigned'("" & ENABLE_NEIGHTBORS))*2;
 
+  -- parallel channels
+  constant MAX_NUM_HEG  : integer := CFG.MAX_NUM_HEG;
   --------------------------------------------------------------------------------
   -- mdt hardware interface config
   --------------------------------------------------------------------------------
