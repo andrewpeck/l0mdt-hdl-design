@@ -9,7 +9,7 @@
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---    05/02/2020    0.1     File created
+--    
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -19,6 +19,7 @@ use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.cfg_global_pkg.all;
+use shared_lib.some_functions_pkg.all;
 
 library project_lib;
 use project_lib.config_pkg.all;
@@ -47,9 +48,9 @@ package config_pkg is
   -- IN COMPILATION CONFIGURATIONS 
   --------------------------------------------------------------------------------
   constant MAX_NUM_HP   : integer := 
-        maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_INN))*CFG.NUM_MDT_CH_INN,
-          maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT))*CFG.NUM_MDT_CH_EXT,
-            maximum(to_integer(unsigned'('0' & CFG.ENABLE_ST_MID))*CFG.NUM_MDT_CH_MID,to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
+        max(to_integer(unsigned'('0' & CFG.ENABLE_ST_INN))*CFG.NUM_MDT_CH_INN,
+          max(to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT))*CFG.NUM_MDT_CH_EXT,
+            max(to_integer(unsigned'('0' & CFG.ENABLE_ST_MID))*CFG.NUM_MDT_CH_MID,to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
           )
         );
         

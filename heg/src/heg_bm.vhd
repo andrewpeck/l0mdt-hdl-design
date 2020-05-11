@@ -226,6 +226,8 @@ begin
               fifo_data(ird) <= fifo_data(ird + 1);
             end loop;
             fifo_data(wr_index) <= i_mdt_hit;
+          when others =>
+          
         end case;
       else
         -- fifo full

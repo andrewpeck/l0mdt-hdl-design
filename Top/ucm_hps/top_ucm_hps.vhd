@@ -54,7 +54,7 @@ architecture beh of top_ucm_hps is
 
 begin
 
-  UCM : entity ucm_hps_lib.ucm_hps
+  TOP : entity ucm_hps_lib.ucm_hps
   port map(
     clk                 => clk,
     Reset_b             => Reset_b,

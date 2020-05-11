@@ -1,1 +1,3 @@
 #Simulator xsim
+../../shared/sim/l0mdt_textio_pkg.vhd 2008
+../../ucm_hps/sim/ucm_hps_tb.vhd topsim=ucm_hps_tb
