@@ -6,3 +6,12 @@
 	path = dataformats
 	url = ../dataformats.git
 	branch = master
+[submodule "hw/sl/my-sl-gty-interface"]
+	path = hw/sl/my-sl-gty-interface
+	url = ../../okumura/my-sl-gty-interface
+[submodule "hw/lpgbt/lpgbt-emul"]
+	path = hw/lpgbt/lpgbt-emul
+	url = ../lpgbt-emul.git
+[submodule "hw/lpgbt/lpgbt-fpga"]
+	path = hw/lpgbt/lpgbt-fpga
+	url = ../../gbt-fpga/lpgbt-fpga.git

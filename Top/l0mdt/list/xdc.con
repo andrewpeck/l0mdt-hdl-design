@@ -1,0 +1,4 @@
+../../hw/loc_mgts.tcl
+../../hw/lpgbt/lpgbt_multicycle.tcl
+../../hw/constraints/region_constraints_toolbox.tcl
+../../hw/constraints/area_constraints.tcl nosynth
