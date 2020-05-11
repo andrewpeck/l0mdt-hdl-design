@@ -22,7 +22,7 @@ entity top_user is
     ttc_commands : in TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : in TDCFORMAT_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
+    tdc_hits : in TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : in SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -31,8 +31,8 @@ entity top_user is
     barrel_slc_candidates : in SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
 
     --
-    endcap_slc_pipeline : out SLCPROC_PIPELINE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
-    barrel_slc_pipeline : out SLCPROC_PIPELINE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
+    endcap_slc_pipeline : out SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
+    barrel_slc_pipeline : out SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
     -- felix
     tts_commands : out TTS_CMD_rt;
@@ -60,7 +60,7 @@ begin
     if pipeline_clock'event and pipeline_clock = '1' then  -- rising clock edge
 
       tdc_sump_loop : for I in 0 to c_NUM_TDC_INPUTS-1 loop
-        tdc_hit_sump(I) <= xor_reduce(tdcformat_2af(tdc_hits(I)));
+        tdc_hit_sump(I) <= xor_reduce(tdcpolmux_2af(tdc_hits(I)));
       end loop;
 
       barrel_sump_loop : for I in 0 to c_NUM_SL_BARREL_CANDIDATES-1 loop

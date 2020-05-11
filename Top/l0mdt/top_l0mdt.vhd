@@ -68,11 +68,11 @@ architecture structural of top_mdtl0 is
 
   signal pipeline_clock        : std_logic;
   signal ttc_commands          : TTC_CMD_rt;
-  signal tdc_hits              : TDCFORMAT_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits              : TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
   signal endcap_slc_candidates : SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
   signal barrel_slc_candidates : SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
-  signal endcap_slc_pipeline   : SLCPROC_PIPELINE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
-  signal barrel_slc_pipeline   : SLCPROC_PIPELINE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
+  signal endcap_slc_pipeline   : SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
+  signal barrel_slc_pipeline   : SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
   signal tts_commands          : TTS_CMD_rt;
   signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
   signal reset                 : std_logic;

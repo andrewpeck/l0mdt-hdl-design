@@ -53,7 +53,7 @@ entity top_framework is
     ttc_commands : out TTC_CMD_rt;
 
     -- TDC hits from CSM
-    tdc_hits : out TDCFORMAT_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
+    tdc_hits : out TDCPOLMUX_rt_array (c_NUM_TDC_INPUTS-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
     endcap_slc_candidates : out SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
@@ -62,8 +62,8 @@ entity top_framework is
     barrel_slc_candidates : out SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
 
     --
-    endcap_slc_pipeline : in SLCPROC_PIPELINE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
-    barrel_slc_pipeline : in SLCPROC_PIPELINE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
+    endcap_slc_pipeline : in SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
+    barrel_slc_pipeline : in SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
 
     -- felix
     tts_commands : in TTS_CMD_rt;
@@ -304,7 +304,10 @@ begin  -- architecture behavioral
       reset_i               => global_reset,
       clocks                => clocks,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
-      lpgbt_uplink_data_i   => lpgbt_uplink_data
+      lpgbt_uplink_data_i   => lpgbt_uplink_data,
+      rx_clk_i              => clocks.clock320,
+      tx_clk_i              => clocks.clock320,
+      tx_clk_en_i           => lpgbt_valid_strobe
       );
 
   --------------------------------------------------------------------------------

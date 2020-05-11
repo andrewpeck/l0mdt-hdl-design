@@ -13,18 +13,12 @@ package constants_pkg is
   function set_user_const (user : integer; max : integer)
     return integer;
 
-
-  -- TODO: should just count the number of LPGBT and LPGBT Simplex Links Here
-
   --------------------------------------------------------------------------------
   -- CSM
   --------------------------------------------------------------------------------
 
   constant c_MAX_LPGBT_UPLINKS   : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT) + func_count_link_types (c_MGT_MAP, MGT_LPGBT_SIMPLEX);
   constant c_MAX_LPGBT_DOWNLINKS : integer := func_count_link_types (c_MGT_MAP, MGT_LPGBT);
-
-  constant c_MAX_CSM_LINKS : integer := c_MAX_LPGBT_UPLINKS/2;
-  constant c_NUM_CSM_LINKS : integer := set_user_const (user_CSM_LINKS, c_MAX_CSM_LINKS);
 
   constant c_NUM_LPGBT_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS, c_MAX_LPGBT_UPLINKS);
   constant c_NUM_LPGBT_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS, c_MAX_LPGBT_DOWNLINKS);
@@ -73,7 +67,9 @@ package constants_pkg is
   constant c_NUM_C2C_INPUTS  : integer := 0;
   constant c_NUM_C2C_OUTPUTS : integer := 0;
 
+  --------------------------------------------------------------------------------
   -- board specific
+  --------------------------------------------------------------------------------
 
   -- cornell
   constant c_NUM_CORNELL_LEDS : integer := 0;
@@ -81,6 +77,25 @@ package constants_pkg is
 
   -- mpi
   constant c_NUM_DDR_OUTPUTS : integer := 0;
+
+  --------------------------------------------------------------------------------
+  -- Generated Index Arrays... e.g. say there are 4 MGTs, 2 of which are LPGBT and 2 of which are Sector Logic
+  -- then these index arrays will look like:
+  -- lpgbt_idx_array = (
+  -- 0 => 0,
+  -- 1 => 1,
+  -- 2 => -1,-- not an lpgbt type
+  -- 3 => -1 -- not an lpgbt type
+  -- )
+  --
+  -- sl_idx_array = (
+  -- 0 => -1, -- not an sl type
+  -- 1 => -1, -- not an sl type
+  -- 2 =>  0,
+  -- 3 =>  1
+  -- )
+  --
+  --------------------------------------------------------------------------------
 
   -- list of lpgbt emulator cores
   constant emul_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_EMUL_UPLINKS, c_MGT_MAP, MGT_LPGBT_EMUL, MGT_LPGBT_EMUL);

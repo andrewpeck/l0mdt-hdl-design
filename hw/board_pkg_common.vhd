@@ -4,12 +4,13 @@ use ieee.numeric_std.all;
 
 package board_pkg_common is
 
+  --------------------------------------------------------------------------------
+  -- MGT Mapping
+  --------------------------------------------------------------------------------
+
   type gt_types_t is (GT_NIL, GTH, GTY);
 
   type mgt_types_t is (MGT_NIL, MGT_LPGBT_SIMPLEX, MGT_LPGBT, MGT_LPGBT_EMUL, MGT_C2C, MGT_SL, MGT_TCDS, MGT_FELIX);
-
-  type refclk_types_t is (REFCLK_SYNC320, REFCLK_SYNC240, REFCLK_NIL);
-
 
   type mgt_inst_t is record
     mgt_type : mgt_types_t;
@@ -36,18 +37,32 @@ package board_pkg_common is
   type mgt_info_array_t is array (integer range <>) of mgt_info_t;
   type mgt_map_array_t is array (integer range <>) of mgt_map_t;
 
+  --------------------------------------------------------------------------------
+  -- REFCLK Mapping
+  --------------------------------------------------------------------------------
+
+  type refclk_types_t is (REFCLK_SYNC320, REFCLK_SYNC240, REFCLK_NIL);
+
   type refclk_types_array_t is array (integer range <>) of refclk_types_t;
 
   type station_id_t is (INNER, MIDDLE, OUTER, EXTRA);
+
+  --------------------------------------------------------------------------------
+  -- CSM Mapping
+  --------------------------------------------------------------------------------
+
   type tdc_link_map_t is record
-    link_id : integer;
+    link_id    : integer;
     even_elink : integer;
     odd_elink  : integer;
     station_id : integer;
+    legacy     : boolean;
   end record;
   type tdc_link_map_array_t is array (integer range <>) of tdc_link_map_t;
 
-  --type mgt_subtype_idx_array is array (0 to c_NUM_MGTS-1) of integer;
+  --------------------------------------------------------------------------------
+  -- Utility Functions
+  --------------------------------------------------------------------------------
 
   type int_array_t is array (integer range <>) of integer;
 

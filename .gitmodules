@@ -15,3 +15,9 @@
 [submodule "hw/lpgbt/lpgbt-fpga"]
 	path = hw/lpgbt/lpgbt-fpga
 	url = ../../gbt-fpga/lpgbt-fpga.git
+[submodule "hw/mgt/tx_phase_aligner"]
+	path = hw/mgt/tx_phase_aligner
+	url = ../../HPTD/tx_phase_aligner.git
+[submodule "hw/lpgbt/gbt-sc"]
+	path = hw/lpgbt/gbt-sc
+	url = ../gbt-sc.git

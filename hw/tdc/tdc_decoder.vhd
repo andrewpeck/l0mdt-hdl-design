@@ -17,16 +17,16 @@ use framework.lpgbt_pkg.all;
 
 entity tdc_decoder is
   generic(
-    fiberid   : integer := -1;
-    elinkid   : integer := -1;
-    stationid : integer := -1
+    fiberid : integer := -1;
+    elinkid : integer := -1;
+    legacy  : boolean := false
     );
   port(
-    clock   : in  std_logic;
-    reset   : in  std_logic;
-    data    : in  std_logic_vector(15 downto 0);
-    valid   : in  std_logic;
-    tdc_hit : out TDCFORMAT_rt;
+    clock     : in  std_logic;                      -- 320 mhz clock
+    reset     : in  std_logic;                      -- reset
+    data_i    : in  std_logic_vector(15 downto 0);  -- 16 bits per bx
+    valid_i   : in  std_logic;                      -- data valid flag (strobe 1of8 at 320 MHz )
+    tdc_hit_o : out TDCPOLMUX_rt                    -- tdc hits out
     );
 end tdc_decoder;
 
@@ -34,13 +34,24 @@ architecture behavioral of tdc_decoder is
 
 begin
 
-  -- TODO add a real tdc decoder instead of loopback
-  tdc_hit.tdc_r     <= tdc_2rf (data & data);
-  tdc_hit.datavalid <= valid;
+  tdc_gen : if (legacy = false) generate
+    --assert false report " > Generating Legacy TDC Decoder #" & integer'image(idx) & " on MGT #"
+    -- & integer'image(I) & " elink = " & integer'image(even_id) severity note;
+    -- TODO add a real tdc decoder instead of loopback
+    tdc_hit_o.tdc_r     <= tdc_2rf (data_i & data_i);
+    tdc_hit_o.datavalid <= valid_i;
 
-  -- constants
-  tdc_hit.fiberid   <= std_logic_vector(to_unsigned(fiberid,   TDCFORMAT_FIBERID_LEN));
-  tdc_hit.elinkid   <= std_logic_vector(to_unsigned(elinkid,   TDCFORMAT_ELINKID_LEN));
-  tdc_hit.stationid <= std_logic_vector(to_unsigned(stationid, TDCFORMAT_STATIONID_LEN));
+    -- constants
+    tdc_hit_o.fiberid <= std_logic_vector(to_unsigned(fiberid, TDCPOLMUX_FIBERID_LEN));
+    tdc_hit_o.elinkid <= std_logic_vector(to_unsigned(elinkid, TDCPOLMUX_ELINKID_LEN));
+  end generate;
 
+  legacy_tdc_gen : if (legacy = true) generate
+    tdc_hit_o.tdc_r     <= tdc_2rf (data_i & data_i);
+    tdc_hit_o.datavalid <= valid_i;
+
+    -- constants
+    tdc_hit_o.fiberid <= std_logic_vector(to_unsigned(fiberid, TDCPOLMUX_FIBERID_LEN));
+    tdc_hit_o.elinkid <= std_logic_vector(to_unsigned(elinkid, TDCPOLMUX_ELINKID_LEN));
+  end generate;
 end behavioral;
