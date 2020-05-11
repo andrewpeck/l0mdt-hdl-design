@@ -23,5 +23,5 @@ set PROPERTIES [dict create \
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
-source $path_repo/Hog/Tcl/create-project.tcl
+source $path_repo/Hog/Tcl/create_project.tcl
 set_property default_lib work [current_project]

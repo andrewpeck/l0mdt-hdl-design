@@ -1,18 +1,1 @@
-../../pt/src/pt_pkg.vhd 2008
-../../pt/src/segment_selector.vhd
-../../pt/src/sagitta_calculator.vhd
-../../pt/src/eta_calculator.vhd
-../../pt/src/top_pt.vhd
-../../pt/src/pt_params_pkg.vhd
-../../pt/data/a0.coe
-../../IP/a0_ROM/a0_ROM.xci
-../../IP/a1_ROM/a1_ROM.xci
-../../IP/b0_ROM/b0_ROM.xci
-../../IP/b1_ROM/b1_ROM.xci
-../../IP/b2_ROM/b2_ROM.xci
-../../IP/c0_ROM/c0_ROM.xci
-../../IP/c1_ROM/c1_ROM.xci
-../../IP/reciprocalROM/reciprocalROM.xci
-../../IP/sqrt_m_io_ROM/sqrt_m_io_ROM.xci
-../../IP/half_log_rom/half_log_rom.xci 
-../../IP/mag_ROM/mag_ROM.xci
+Top/pt/list/pt_lib.src
