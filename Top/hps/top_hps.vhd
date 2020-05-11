@@ -41,11 +41,11 @@ entity top_hps is
     -- configuration & control
     i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     -- SLc
-    i_uCM_data          : in ucm2heg_slc_astdst(MAX_NUM_HEG -1 downto 0);
+    i_uCM_data          : in ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
     -- MDT hit
-    i_mdt_tar_data     : in tar2heg_mdt_astdt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_data     : in tar2heg_mdt_avt(MAX_NUM_HP -1 downto 0);
     -- to pt calc
-    o_sf_data           : out hps2pt_sf_astdst(MAX_NUM_HEG -1 downto 0)
+    o_sf_data           : out hps2pt_sf_avt(MAX_NUM_HEG -1 downto 0)
   );
 end entity top_hps;
 

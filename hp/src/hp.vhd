@@ -38,13 +38,13 @@ entity hit_processor is
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
     i_SLC_Window        : in SLc_window_std;
-    i_slc_data          : in hp_slc_rt;
+    i_slc_data_av          : in hp_slc_rt;
     -- MDT hit
-    i_mdt_data          : in hp_hit_data_stdst;
+    i_mdt_data          : in hp_hit_data_vt;
     -- i_mdt_valid         : in std_logic;
     -- i_mdt_time_real     : in mdt_time_le_st;
     -- to Segment finder
-    o_mdt2sf_data    : out hp2bm_stdst
+    o_mdt2sf_data    : out hp2bm_vt
   );
 end entity hit_processor;
 
@@ -103,8 +103,8 @@ begin
         -- RoI_size            => RoI_size,
         -- SLc
         i_SLC_Window        => i_SLC_Window,
-        i_SLc_rpc_z         => i_slc_data.barrel.z,
-        i_SLc_BCID          => i_slc_data.BCID,
+        i_SLc_rpc_z         => i_slc_data_av.barrel.z,
+        i_SLc_BCID          => i_slc_data_av.BCID,
         -- MDT hit
         i_mdt_layer         => mdt_data.layer,
         i_mdt_tube          => mdt_data.tube,
@@ -128,9 +128,9 @@ begin
         Reset_b             => Reset_b,
         glob_en             => glob_en,
         -- SLc
-        i_SLc_z_pos         => i_slc_data.barrel.z,
-        -- i_SLc_phi        =    i_slc_data.barrel.phi_0,
-        i_SLc_BCID          => i_slc_data.BCID,
+        i_SLc_z_pos         => i_slc_data_av.barrel.z,
+        -- i_SLc_phi        =    i_slc_data_av.barrel.phi_0,
+        i_SLc_BCID          => i_slc_data_av.BCID,
         -- MDT hit
         i_mdt_layer         => mdt_data.layer,
         i_mdt_tube          => mdt_data.tube,

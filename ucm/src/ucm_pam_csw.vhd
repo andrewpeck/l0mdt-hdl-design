@@ -4,64 +4,60 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: HPS candidate distributor
+--  Module: pam csw for processing
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-
-library ieee;
+library ieee, shared_lib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.cfg_pkg.all;
 use shared_lib.common_pkg.all;
+library ucm_lib;
+use ucm_lib.ucm_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
-library hps_lib;
-use hps_lib.hps_pkg.all;
-
-entity hps_slc_dist is
-  generic(
-    radius      : integer := 0  --station
-  );
+entity ucm_pam_csw is
+  -- generic(
+  --   num_delays          : integer; 
+  --   num_bits            : integer
+  -- );
   port (
     clk                 : in std_logic;
-    
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
-    -- configuration & control
-    i_uCM_pam           : in ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
-    -- SLc
-    i_uCM_data          : in ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
-    o_uCM_data          : out ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0)
+    --
+    i_control           : in ucm_pam_control_rt;
+    --
+    i_data              : in ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
+    o_data              : out ucm_prepro_avt(MAX_NUM_HEG -1 downto 0)
   );
-end entity hps_slc_dist;
+end entity ucm_pam_csw;
 
-architecture beh of hps_slc_dist is
+architecture beh of ucm_pam_csw is
 
 begin
-
-  SLc_CS : process(Reset_b,clk) begin
+  UCM_PAM_CS : process(Reset_b,clk) begin
     if(Reset_b = '0') then
-      o_uCM_data <= (others => (others=> '0'));
+      o_data <= (others => (others => '0'));
     elsif rising_edge(clk) then
-      
-      for pam_i in MAX_NUM_HEG -1 downto 0 loop
-        if(i_uCM_pam(pam_i).sel) then
-          o_uCM_data(to_integer(unsigned(i_uCM_pam(pam_i).addr))) <= i_uCM_data(pam_i);
+      for csw_i in MAX_NUM_HEG -1 downto 0 loop
+        if i_control.data_present(csw_i) = '1' then
+          o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
+        else
+          o_data(csw_i) <= (others => '0');
         end if;
       end loop;
-
-      
     end if;
   end process;
-
-
 end beh;
+
+
+
+
+
+

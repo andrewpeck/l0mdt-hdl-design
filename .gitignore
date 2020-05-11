@@ -15,7 +15,7 @@ transcript
 SimulationLib
 *.tmp
 xvlog*
-
+.vscode/
 BD/*
 !BD/*.bd
 IP/*/*

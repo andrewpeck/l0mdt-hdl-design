@@ -50,9 +50,9 @@ entity top_heg is
     -- configuration
     -- i_heg_control       : in heg_control;
     -- SLc
-    i_uCM_data          : in ucm2heg_slc_stdst;
+    i_uCM_data          : in ucm2heg_slc_vt;
     -- MDT hit
-    i_mdt_full_data     : in hp_hit_data_astdst(MAX_NUM_HP -1 downto 0);
+    i_mdt_full_data     : in hp_hit_data_avt(MAX_NUM_HP -1 downto 0);
     -- to Segment finder
     o_sf_control        : out heg_int_control_rt;
     o_sf_slc_data       : out ucm2heg_slc_rt;

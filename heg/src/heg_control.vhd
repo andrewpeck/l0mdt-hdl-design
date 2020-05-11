@@ -35,7 +35,7 @@ entity heg_control is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_stdst;
+    i_uCM_data          : in ucm2heg_slc_vt;
     -- SLc out
     o_uCM2sf_data       : out ucm2heg_slc_rt;
     o_uCM2hp_data       : out hp_slc_rt;
@@ -58,7 +58,7 @@ architecture beh of heg_control is
       glob_en             : in std_logic;
       -- configuration
       -- SLc in
-      i_uCM_data          : in ucm2heg_slc_stdst;
+      i_uCM_data          : in ucm2heg_slc_vt;
       -- SLc out
       o_SLC_Window        : out SLc_window_std;
       o_Roi_win_valid     : out std_logic
@@ -66,7 +66,7 @@ architecture beh of heg_control is
   end component heg_c_window;
 
   signal int_uCM_data_r : ucm2heg_slc_rt;
-  signal int_uCM_data_v : ucm2heg_slc_stdst;
+  signal int_uCM_data_v : ucm2heg_slc_vt;
   signal Roi_win_valid : std_logic;
   
 begin
@@ -94,7 +94,7 @@ begin
   int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data);
 
   SLc_reg : process(Reset_b,clk) begin
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       o_uCM2sf_data <= null_ucm2heg_slc_rt;
       o_control <= null_heg_control_rt;
       -- o_uCM2hp_data
@@ -154,7 +154,7 @@ entity heg_c_window is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data          : in ucm2heg_slc_stdst;
+    i_uCM_data          : in ucm2heg_slc_vt;
     -- SLc out
     o_SLC_Window        : out SLc_window_std;
     o_Roi_win_valid     : out std_logic
@@ -174,7 +174,7 @@ begin
   int_uCM_data <= ucm2heg_slc_f_std2rt(i_uCM_data);
 
   Roi_wingen : process(Reset_b,clk) begin
-    if(not Reset_b) then
+    if(Reset_b = '0') then
       o_Roi_win_valid <= '0';
       Roi_window_a <= null_SLc_window_at;
     elsif rising_edge(clk) then

@@ -41,7 +41,7 @@ entity hps_sf_wrap is
     i_sf_slc_data       : in ucm2heg_slc_rt;
     i_sf_mdt_data       : in heg2sf_mdt_rt;
     --
-    o_sf_data           : out hps2pt_sf_stdst
+    o_sf_data           : out hps2pt_sf_vt
   );
 end entity hps_sf_wrap;
 

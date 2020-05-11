@@ -80,7 +80,7 @@ begin
   validation_proc : process(clk,Reset_b)
 
   begin
-    if not Reset_b then
+    if Reset_b = '0' then
       --space
       space_valid <= '0';
       -- time
@@ -174,7 +174,7 @@ end beh;
 --     LUT : process(clk,Reset_b)
 
 --     begin
---         if not Reset_b then
+--         if Reset_b = '0' then
 --             o_tube_high_limit <= (others => '0');
 --             o_tube_low_limit <= (others => '0');
 --             -- o_data_valid <= '0';

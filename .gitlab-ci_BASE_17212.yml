@@ -1,51 +1,23 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref: 'v0.1.0'
-
-#################### UCM Project ###########################
-
-create_project:ucm:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-
-simulate_project:ucm:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-
-# synthesise_ips:csf:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:csf
-
-synthesise_project:ucm:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-    dependencies:
-        # - synthesise_ips:csf
-        - create_project:ucm
-
-# implement_project:ucm:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:ucm
-#       #  - synthesise_ips:csf
-#       - synthesise_project:ucm
-
+      ref: 'v0.0.14'
+before_script:
+    - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
+    - git remote set-url origin https://${HOG_USER}:${HOG_PUSH_TOKEN}@$REPO
+    - git config user.email ${HOG_EMAIL}
+    - git config user.name ${HOG_USER}
+    - git fetch
+    - git fetch origin $CI_COMMIT_REF_NAME
+    - git fetch origin $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - git checkout $CI_COMMIT_REF_NAME
+    - git submodule init
+    - git submodule update
+    - ./Hog/Ignore_ip_xml.sh
+    - export XILINXD_LICENSE_FILE=${HOG_XIL_LICENSE}
+    - export PATH=$PATH:${HOG_PATH}
+    - echo $HOG_PASSWORD | kinit $HOG_USER
+    - source ${PROFPGA_PATH}/bin/settings64.sh
 
 #################### Hp Project ###########################
 
@@ -83,6 +55,16 @@ synthesise_project:ucm:
 #        - synthesise_ips:pt
 #        - synthesise_project:pt
 
+# write_bitstream:pt:
+#     extends: .write_bitstream
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+#        - implement_project:pt
 
 
 # #################### CSF Project ###########################
@@ -171,31 +153,42 @@ implement_project:pt:
        - synthesise_ips:pt
        - synthesise_project:pt
 
+# write_bitstream:pt:
+#     extends: .write_bitstream
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+#        - implement_project:pt
+
 #################### CSF+pT Project ###########################
 
-create_project:csf_plus_pt:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
+# create_project:csf_plus_pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
 
-synthesise_ips:csf_plus_pt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-      IP_PATH: IP
-    dependencies:
-        - create_project:csf_plus_pt
+# synthesise_ips:csf_plus_pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:csf_plus_pt
 
-synthesise_project:csf_plus_pt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf_plus_pt
-    dependencies:
-        - synthesise_ips:csf_plus_pt
-        - create_project:csf_plus_pt
+# synthesise_project:csf_plus_pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#         - synthesise_ips:csf_plus_pt
+#         - create_project:csf_plus_pt
 
 # implement_project:csf_plus_pt:
 #     extends: .implement_project

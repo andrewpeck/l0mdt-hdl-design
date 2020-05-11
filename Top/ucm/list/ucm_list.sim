@@ -1,0 +1,4 @@
+#Simulator xsim
+../../shared/sim/ucm_textio.vhd
+../../ucm/sim/ucm_tb.vhd topsim=ucm_tb
+../../ucm/sim/ucm_tb_behav.wcfg

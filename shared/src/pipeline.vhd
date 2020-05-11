@@ -42,10 +42,10 @@ begin
   o_data <= data_pl(0);
 
   valid_pipe : process(Reset_b,clk) begin
-    if not Reset_b then
+    if Reset_b = '0' then
       data_pl <= (others => (others => '0'));
     elsif rising_edge(clk)then
-      if glob_en then
+      if glob_en = '1' then
         for num_delays in num_delays - 1 downto 1 loop
           data_pl(num_delays - 1) <= data_pl(num_delays);
         end loop;

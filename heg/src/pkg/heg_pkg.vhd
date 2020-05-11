@@ -55,7 +55,7 @@ package heg_pkg is
 
 
   -- type hp_hit_data_art is array ( integer range <>) of hp_hit_data_rt;
-  -- type hp_hit_data_astdt is array ( integer range <>) of hp_hit_data_stdst;
+  -- type hp_hit_data_avt is array ( integer range <>) of hp_hit_data_vt;
 
   -- heg to sf (slc_info)
   type heg_2_sf_slc_rt is record
@@ -70,9 +70,9 @@ package heg_pkg is
   end record;
   constant null_heg2sf_mdt_rt : heg2sf_mdt_rt := (null_hp2bm_sf_rt,'0');
   type heg2sf_mdt_art is array (integer range <>) of heg2sf_mdt_rt;
-  -- type hp2bm_astdst is array (MAX_NUM_HP -1 downto 0) of hp2bm_stdst;
-  subtype heg2sf_mdt_stdst is std_logic_vector((HP2BM_SF_WIDTH + 1) -1 downto 0);
-  type heg2sf_mdt_astdst is array (integer range <>) of heg2sf_mdt_stdst;
+  -- type hp2bm_avt is array (MAX_NUM_HP -1 downto 0) of hp2bm_vt;
+  subtype heg2sf_mdt_vt is std_logic_vector((HP2BM_SF_WIDTH + 1) -1 downto 0);
+  type heg2sf_mdt_avt is array (integer range <>) of heg2sf_mdt_vt;
 end package heg_pkg;
 
 package body heg_pkg is

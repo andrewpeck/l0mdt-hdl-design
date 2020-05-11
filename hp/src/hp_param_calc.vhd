@@ -57,8 +57,7 @@ architecture beh of hp_paramCalc is
       radius      : integer
     );
     port (
-      clk                 : in std_logic;
-      
+      clk                 : in std_logic; 
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       -- SLc
@@ -82,7 +81,6 @@ begin
   )
   port map(
     clk                 => clk,
-    
     Reset_b             => Reset_b,
     glob_en             => glob_en,
     -- SLc
@@ -161,7 +159,7 @@ begin
   pw_2_r_LUT : process(clk,Reset_b)
 
   begin
-    if not Reset_b then
+    if Reset_b = '0' then
       o_tube_radius <= (others => '0');
       -- o_data_valid <= '1';
     elsif rising_edge(clk) then
