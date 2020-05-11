@@ -188,16 +188,16 @@ begin
       lpgbt_uplink_inst : entity lpgbt_fpga.lpgbtfpga_uplink
 
         generic map (
-          datarate                  => C_LPGBT_UPLINK_DATARATE,
-          fec                       => C_LPGBT_UPLINK_FEC,
-          c_multicyledelay          => C_LPGBT_UPLINK_MULTICYCLE_DELAY,
-          c_clockratio              => C_LPGBT_UPLINK_CLOCK_RATIO,
-          c_mgtwordwidth            => C_LPGBT_UPLINK_WORD_WIDTH,
-          c_allowedfalseheader      => C_LPGBT_UPLINK_ALLOWED_FALSE_HEADER,
-          c_allowedfalseheaderovern => C_LPGBT_UPLINK_ALLOWED_FALSE_HEADER_OVERN,
-          c_requiredtrueheader      => C_LPGBT_UPLINK_REQUIRED_TRUE_HEADER,
-          c_bitslip_mindly          => C_LPGBT_UPLINK_BITSLIP_MINDLY,
-          c_bitslip_waitdly         => C_LPGBT_UPLINK_BITSLIP_WAITDLY
+          datarate                  => c_LPGBT_UPLINK_DATARATE,
+          fec                       => c_LPGBT_UPLINK_FEC,
+          c_multicyledelay          => c_LPGBT_UPLINK_MULTICYCLE_DELAY,
+          c_clockratio              => c_LPGBT_UPLINK_CLOCK_RATIO,
+          c_mgtwordwidth            => c_LPGBT_UPLINK_WORD_WIDTH,
+          c_allowedfalseheader      => c_LPGBT_UPLINK_ALLOWED_FALSE_HEADER,
+          c_allowedfalseheaderovern => c_LPGBT_UPLINK_ALLOWED_FALSE_HEADER_OVERN,
+          c_requiredtrueheader      => c_LPGBT_UPLINK_REQUIRED_TRUE_HEADER,
+          c_bitslip_mindly          => c_LPGBT_UPLINK_BITSLIP_MINDLY,
+          c_bitslip_waitdly         => c_LPGBT_UPLINK_BITSLIP_WAITDLY
           )
 
         port map (

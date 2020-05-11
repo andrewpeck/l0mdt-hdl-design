@@ -178,6 +178,7 @@ begin
       -- convert to a std_logic_vector
       sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data & sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
 
+      -- FIXME: need to make this a smarter cdc.. can't tolerate variable latency due to metastability... transition only on known good clock edges
       sync_sl_tx_data : entity work.sync_cdc
         generic map (
           WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
