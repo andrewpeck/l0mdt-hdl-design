@@ -1,0 +1,5 @@
+../../heg/pkg/heg_pkg.vhd 2008
+../../heg/src/ROMs/heg_turg_lut_rom_s3.vhd 2008
+../../heg/src/heg_bm.vhd 2008
+../../heg/src/heg_control.vhd 2008
+../../heg/src/heg.vhd 2008

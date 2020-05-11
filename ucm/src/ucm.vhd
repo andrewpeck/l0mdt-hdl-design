@@ -34,7 +34,7 @@ entity ucm is
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av            : out pipeline_avt(MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_vav            : out pipeline_vavt
   );
 end entity ucm;
 
@@ -45,12 +45,13 @@ architecture beh of ucm is
   signal csw_main_out_ar      : ucm_prepro_art(MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
 
-  signal o_uCM2pl_ar          : pipeline_art(MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_ar          : pipeline_art;
+  signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
   signal cpam_out_av          : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
 
-  signal uCM2pl_av            : pipeline_avt(MAX_NUM_SL -1 downto 0);
+  signal uCM2pl_av            : pipeline_avt;
 
   signal csw_control          : ucm_csw_control_rt;
   signal pam_CSW_control      : ucm_pam_control_rt;
@@ -93,7 +94,7 @@ begin
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => UCM_INPUT_PL_LATENCY,
-      num_bits    => SLC_PREPRO_WIDTH
+      num_bits    => UCM_PREPRO_LEN
     )
     port map(
       clk         => clk,
@@ -165,6 +166,8 @@ begin
     );
   end generate;
 
+  o_uCM2pl_vav <= vectorify(o_uCM2pl_av);
+
   VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
       o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
@@ -180,7 +183,7 @@ begin
   end generate;
 
   PL_PROC_GEN: for sl_i in MAX_NUM_SL -1 downto 0 generate
-    csw_main_out_ar(sl_i)         <= recordify(csw_main_out_av(sl_i));
+    csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
     o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     o_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;

@@ -44,7 +44,7 @@ architecture beh of ucm_cvp is
   signal ucm2hps_ar : ucm2hps_art(MAX_NUM_HPS -1 downto 0);
 begin
 
-  i_data_r <= recordify(i_data_v);
+  i_data_r <= structify(i_data_v);
 
   UCM_HPS_GEN: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     o_ucm2hps_av(hps_i) <= vectorify(ucm2hps_ar(hps_i));
@@ -53,7 +53,7 @@ begin
   UCM_CVP : process(Reset_b,clk) begin
     if Reset_b = '0' then
       for hps_i in MAX_NUM_HPS -1 downto 0 loop
-        ucm2hps_ar(hps_i) <= nullify;
+        ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
       end loop;
     elsif rising_edge(clk) then
 
@@ -73,7 +73,7 @@ begin
 
           else
             for hps_i in MAX_NUM_HPS -1 downto 0 loop
-              ucm2hps_ar(hps_i) <= nullify;
+              ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
             end loop;
           end if;
         else --LSF

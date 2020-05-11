@@ -11,7 +11,7 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
@@ -157,7 +157,7 @@ architecture beh of ucm_ctrl_main is
 begin
   
   pre_op: for sl_i in MAX_NUM_SL -1 downto 0 generate
-    i_data_ar(sl_i) <= recordify(i_data(sl_i));
+    i_data_ar(sl_i) <= structify(i_data(sl_i));
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
   end generate;
 
@@ -282,6 +282,8 @@ end entity ucm_ctrl_pam;
 architecture beh of ucm_ctrl_pam is
   
   signal ch_busy      : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  
+  type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
   signal ch_count     : ch_count_avt(MAX_NUM_HEG -1 downto 0);
 
   signal processing   : integer;
@@ -314,7 +316,7 @@ begin
           o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
           o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
           o_cvp_ctrl(ch_i) <= '0';
-          if ch_count(ch_i) < LATENCY_HPS_CH then
+          if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
             o_pam_ctrl.data_present(ch_i) <= '0';
             processed := processed + 1;
