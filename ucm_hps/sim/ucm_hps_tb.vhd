@@ -50,7 +50,7 @@ architecture beh of ucm_hps_tb is
   -- to pt calc
   signal o_sf2pt_av          : sf2pt_aavt(MAX_NUM_HPS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_vav        : pipeline_vavt;
+  signal o_uCM2pl_vav        : pipelines_avt;
 
   signal cand1  : slc_rx_data_rt;
   signal barrel1 : slc_barrel_rt;

@@ -34,7 +34,7 @@ entity ucm is
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_vav            : out pipeline_vavt
+    o_uCM2pl_av            : out pipelines_avt
   );
 end entity ucm;
 
@@ -42,20 +42,20 @@ architecture beh of ucm is
   signal ucm_prepro_av        : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_ar      : ucm_prepro_art(MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
 
-  signal o_uCM2pl_ar          : pipeline_art;
-  signal o_uCM2pl_av          : pipeline_avt;
+  signal o_uCM2pl_ar          : pipelines_at;
+  -- signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
   signal cpam_out_av          : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
 
-  signal uCM2pl_av            : pipeline_avt;
+  signal uCM2pl_av            : pipelines_avt;
 
-  signal csw_control          : ucm_csw_control_rt;
-  signal pam_CSW_control      : ucm_pam_control_rt;
-  signal proc_info            : ucm_proc_info_art(MAX_NUM_HEG -1 downto 0);
+  signal csw_control          : ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
+  signal pam_CSW_control      : ucm_pam_control_at(MAX_NUM_HEG -1 downto 0);
+  signal proc_info            : ucm_proc_info_at(MAX_NUM_HEG -1 downto 0);
   signal cvp_control          : std_logic_vector(MAX_NUM_HEG -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -178,7 +178,7 @@ begin
     );
   end generate;
 
-  o_uCM2pl_vav <= vectorify(o_uCM2pl_av);
+  -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
   VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate

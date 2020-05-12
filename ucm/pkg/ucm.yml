@@ -6,6 +6,9 @@ __config__:
         - config_pkg
     #   my_lib_2: the_other_package
 
+UCM_INPUT_PL_LATENCY       : { qualifier: constant , type: integer , value: 2 }
+UCM_OUTPUT_PL_LATENCY       : { qualifier: constant , type: integer , value: 2 }
+UCM_LATENCY_HPS_CH       : { qualifier: constant , type: integer , value: 10 }
     
 # # ucm preprocesor output
 
@@ -16,31 +19,42 @@ ucm_prepro:
   specific:   {type: logic , length: SLC_SPECIFIC_LEN , dprint: on}
   data_valid: {type: logic}
 
-# ucm_prepro_art: {array: open , type: ucm_prepro }
+ucm_prepro_ : {array: open , type: ucm_prepro , _: off}
 # ucm_prepro_avt: {array: open , type: ucm_prepro_vt }
 
 # main cross switch control
 
 # ucm_csw_dest: {array: open , type: logic, length: 4}
-ucm_csw_dest: {array: MAX_NUM_SL , type: logic, length: 4}
+# ucm_csw_dest: {array: MAX_NUM_SL , type: logic, length: 4}
 # ucm_csw_dest: {type: logic, length: 4}
 # ucm_csw_dest_a: {array: MAX_NUM_SL ,type: ucm_csw_dest}
 
 # ucm_csw_dest_a: {array: MAX_NUM_SL , type: logic, length: 4 }
 
-ucm_csw_control:
-  data_present: { type: logic , length: MAX_NUM_SL }
-  addr_orig:    {type: ucm_csw_dest}
+# ucm_csw_control:
+#   data_present: { type: logic , length: MAX_NUM_SL }
+#   addr_orig:    {type: ucm_csw_dest}
 
+ucm_csw_ch_control:
+  data_present: { type: logic }
+  addr_orig:    { type: logic, length: 4}
 
-ucm_cvp_dest: {array: MAX_NUM_HEG , type: logic, length: 4}
+ucm_csw_control: {array: open , type: ucm_csw_ch_control}
 
-ucm_pamcsw_control:
-  data_present: { type: logic , length: MAX_NUM_SL }
-  addr_orig:    { type: ucm_cvp_dest}
+# ucm_cvp_dest: {array: MAX_NUM_HEG , type: logic, length: 4}
 
-ucm_proc_info:
+# ucm_pam_control:
+#   data_present: { type: logic , length: MAX_NUM_HEG }
+#   addr_orig:    { array: MAX_NUM_HEG , type: logic, length: 4}
+
+ucm_pam_ch_control:
+  data_present: { type: logic}
+  addr_orig:    { type: logic, length: 4}
+
+ucm_pam_control: { array: open, type: ucm_pam_ch_control}
+
+ucm_proc_info_ch:
   ch :        { type: logic , length: 4 }
-  proccesed:  { type: logic}
+  processed:  { type: logic}
 
-ucm_proc_info_a: {array: open , type: ucm_proc_info }
+ucm_proc_info: {array: open , type: ucm_proc_info_ch }

@@ -35,7 +35,7 @@ entity top_ucm is
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_vav            : out pipeline_vavt
+    o_uCM2pl_vav            : out pipelines_avt
   );
 end entity top_ucm;
 

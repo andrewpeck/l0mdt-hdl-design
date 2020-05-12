@@ -31,7 +31,7 @@ entity ucm_pam_csw is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     --
-    i_control           : in ucm_pam_control_rt;
+    i_control           : in ucm_pam_control_at;
     --
     i_data              : in ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
     o_data              : out ucm_prepro_avt(MAX_NUM_HEG -1 downto 0)
@@ -46,8 +46,8 @@ begin
       o_data <= (others => (others => '0'));
     elsif rising_edge(clk) then
       for csw_i in MAX_NUM_HEG -1 downto 0 loop
-        if i_control.data_present(csw_i) = '1' then
-          o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
+        if i_control(csw_i).data_present = '1' then
+          o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
         else
           o_data(csw_i) <= (others => '0');
         end if;

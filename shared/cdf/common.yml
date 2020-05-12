@@ -1,7 +1,7 @@
 __config__:
     basic_convert_functions : on
     packages:
-      shared:
+      shared_lib:
         - config_pkg
     #     - package_2
     #   my_lib_2: the_other_package
@@ -114,7 +114,7 @@ slc_rx_data:
   specific:     {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
   data_valid:   {type: logic}
     
-slc_rx_data_a: {array: open , type: slc_rx_data }
+slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 
 # -----------------------------------------------------------
 # mdt 2 hps
@@ -130,7 +130,10 @@ tar2hps:
   time        : { type: unsigned , length: MDT_TIME_LEN }
   data_valid  : {type: logic}
 
-tar2hps_a     : {array: open , type: tar2hps}
+tar2hps_      : {array: MAX_NUM_HP , type: tar2hps , _: off}
+
+tar2hps_a     : {array: MAX_NUM_HPS , type: tar2hps_ , _: off , dprint : on}
+
 
 #############################################################
 # INTERBLOCK TYPES
@@ -164,16 +167,20 @@ ucm_csf_barrel:
 
 # slc ucm2hps id
 ucm2hps_id:
-  bcid        : { type: unsigned , length: BCID_LEN}
-  chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN }
+  bcid          : { type: unsigned , length: BCID_LEN}
+  chamber_id    : { type: unsigned , length: SLC_CHAMBER_LEN }
 # slc ucm2hps
 UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 43 }
+
 ucm2hps:
   id            : { type: ucm2hps_id}
   specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
   data_valid    : { type: logic}
 
-ucm2hps_a    : {array: open , type: ucm2hps }
+ucm2hps_        : {array: MAX_NUM_HPS , type: ucm2hps , _: off }
+
+# ucm2hps_maxhps  : {array: MAX_NUM_HPS , type: ucm2hps }
+ucm2hps_a       : {array: open , type: ucm2hps_ , _: off }
 
 
 # -----------------------------------------------------------
@@ -192,7 +199,17 @@ pipeline:
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 
 pipelines    : {array: MAX_NUM_SL , type: pipeline }
+# pipelines_v  : { types: pipelines}
 # pipeline_av    : {array: MAX_NUM_SL , type: logic , length: PIPELINE_LEN}
+
+# -----------------------------------------------------------  
+# sf 2 pt
+# -----------------------------------------------------------
+sf2pt : 
+  data_valid : { type : logic}
+
+sf2pt_ : { array: open , type : sf2pt , _: off}
+
 
 # -----------------------------------------------------------  
 # mdt tdc

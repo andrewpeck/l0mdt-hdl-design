@@ -33,15 +33,15 @@ entity ucm_cvp is
     --
     i_in_en             : in std_logic;
     --
-    i_data_v            : in ucm_prepro_vt;
-    o_ucm2hps_av        : out ucm2hps_avt(MAX_NUM_HPS -1 downto 0)
+    i_data_v            : in ucm_prepro_rvt;
+    o_ucm2hps_av        : out ucm2hps_avt
       
   );
 end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
   signal i_data_r     : ucm_prepro_rt;
-  signal ucm2hps_ar : ucm2hps_art(MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_ar : ucm2hps_at(MAX_NUM_HPS -1 downto 0);
 begin
 
   i_data_r <= structify(i_data_v);

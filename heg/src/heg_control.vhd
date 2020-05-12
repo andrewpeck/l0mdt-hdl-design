@@ -37,9 +37,9 @@ entity heg_control is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data_v        : in ucm2hps_vt;
+    i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
-    o_uCM2sf_data_v     : out ucm2hps_vt;
+    o_uCM2sf_data_v     : out ucm2hps_rvt;
     o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
     o_SLC_Window_v      : out hp_heg2hp_window_vt;
     
@@ -60,7 +60,7 @@ architecture beh of heg_control is
       glob_en             : in std_logic;
       -- configuration
       -- SLc in
-      i_uCM_data_v        : in ucm2hps_vt;
+      i_uCM_data_v        : in ucm2hps_rvt;
       -- SLc out
       o_SLC_Window_v      : out hp_heg2hp_window_vt;
       o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
@@ -146,7 +146,7 @@ begin
         -- o_control.enable <= (others => '1');
         -- o_control.reset_b <= (others => '0');
         when HEG_BUSY =>
-          if to_integer(unsigned(busy_count)) < HPS_BUSY_CLOCKS then
+          if to_integer(unsigned(busy_count)) < HEG_BUSY_CLOCKS then
             o_control.enable <= (others => '1');
             o_control.reset_b <= (others => '1');
           else
@@ -201,7 +201,7 @@ entity heg_c_window is
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
-    i_uCM_data_v        : in ucm2hps_vt;
+    i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
     o_SLC_Window_v      : out hp_heg2hp_window_vt;
     o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);

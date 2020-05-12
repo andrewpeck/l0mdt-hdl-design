@@ -38,10 +38,10 @@ entity hps_sf_wrap is
     glob_en             : in std_logic;
     -- configuration
     i_sf_control        : in heg_ctrl2hp_vt;
-    i_sf_slc_data       : in ucm2hps_vt;
+    i_sf_slc_data       : in ucm2hps_rvt;
     i_sf_mdt_data       : in heg_bm2sf_vt;
     --
-    o_sf_data_v           : out sf2pt_vt
+    o_sf_data_v           : out sf2pt_rvt
   );
 end entity hps_sf_wrap;
 

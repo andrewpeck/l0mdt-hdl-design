@@ -31,9 +31,9 @@ entity ucm_prepro is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_v          : in slc_rx_data_vt;
+    i_slc_data_v          : in slc_rx_data_rvt;
     -- pam out
-    o_prepro_data_v       : out ucm_prepro_vt
+    o_prepro_data_v       : out ucm_prepro_rvt
   );
 end entity ucm_prepro;
 
