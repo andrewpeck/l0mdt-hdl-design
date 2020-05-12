@@ -2,6 +2,8 @@ include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
       ref: 'v0.0.14'
+    - local: 'Top/lsf/gitlab-ci.yml'
+
 before_script:
     - export REPO=`echo $CI_PROJECT_URL | sed -e s#https://##`
     - git remote set-url origin https://${HOG_USER}:${HOG_PUSH_TOKEN}@$REPO
@@ -19,8 +21,6 @@ before_script:
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/bin/settings64.sh
 
-include:
-    - local: 'Top/lsf/gitlab-ci.yml'
 # ./Top/l0mdt/gitlab-ci.yml
 # ./Top/csf_plus_pt/gitlab-ci.yml
 # ./Top/tdc/gitlab-ci.yml
