@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 #################### UCM_HPS Project ###########################
 
-=======
->>>>>>> origin/devel
 create_project:ucm_hps:
     extends: .create_project
     variables:
@@ -37,16 +34,3 @@ synthesise_project:ucm_hps:
 #        - synthesise_ips:ucm_hps
 #        - synthesise_project:ucm_hps
 
-<<<<<<< HEAD
-=======
-# write_bitstream:ucm_hps:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ucm_hps
-#     dependencies:
-#        - create_project:ucm_hps
-#        - synthesise_ips:ucm_hps
-#        - synthesise_project:ucm_hps
-#        - implement_project:ucm_hps
->>>>>>> origin/devel

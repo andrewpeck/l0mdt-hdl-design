@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 # #################### LSF Project ###########################
 
-=======
->>>>>>> origin/devel
 create_project:lsf:
     extends: .create_project
     variables:
