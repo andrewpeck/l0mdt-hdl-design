@@ -299,8 +299,9 @@ package common_pkg is
     r                          : unsigned(UCM_R_ROI_LEN-1 downto 0);
     phi                        : unsigned(UCM_PHI_LEN-1 downto 0);
     eta                        : unsigned(UCM_ETA_LEN-1 downto 0);
+    data_valid                 : std_logic;
   end record ucm_csf_barrel_rt;
-  constant UCM_CSF_BARREL_LEN : integer := 43;
+  constant UCM_CSF_BARREL_LEN : integer := 44;
   subtype ucm_csf_barrel_vt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_vt;
   function structify(x: ucm_csf_barrel_vt) return ucm_csf_barrel_rt;
@@ -718,6 +719,7 @@ package body common_pkg is
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_vt is
     variable y : ucm_csf_barrel_vt;
   begin
+    y(43)                      := vectorify(x.data_valid)
     y(42 downto 33)            := vectorify(x.mbar);
     y(32 downto 26)            := vectorify(x.z);
     y(25 downto 22)            := vectorify(x.r);
@@ -728,6 +730,7 @@ package body common_pkg is
   function structify(x: ucm_csf_barrel_vt) return ucm_csf_barrel_rt is
     variable y : ucm_csf_barrel_rt;
   begin
+    y.data_valid               := structify(x(43))
     y.mbar                     := structify(x(42 downto 33));
     y.z                        := structify(x(32 downto 26));
     y.r                        := structify(x(25 downto 22));
@@ -743,6 +746,7 @@ package body common_pkg is
     y.r                        := nullify(x.r);
     y.phi                      := nullify(x.phi);
     y.eta                      := nullify(x.eta);
+    y.data_valid               := '0';
     return y;
   end function nullify;
 

@@ -29,11 +29,11 @@ use pt_lib.pt_pkg.all;
 entity top_csf is
     Port ( 
         clk       : in std_logic;
-        i_seed    : in t_seed;
-        i_mdt_hit : in t_mdt_hit;
+        i_seed    : in slcproc_hps_sf_rt;
+        i_mdt_hit : in hps_csf_rt;
         i_eof     : in std_logic;
-        o_seg     : out t_globalseg;
-        i_rst     : in std_logic
+        i_rst     : in std_logic;
+        o_seg     : out sf_rt
     );
 end top_csf;
 
