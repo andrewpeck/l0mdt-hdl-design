@@ -16,6 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use std.textio.all;
+use std.standard.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
@@ -32,6 +33,7 @@ architecture beh of ucm_hps_tb is
   -- testbench clk
   constant TB_clk_period : time := 0.78 ns;
   signal TB_clk : std_logic := '0';
+
   -- clk
   constant HW_clk_period : time := 4.0 ns;
   signal HW_clk : std_logic := '0';
@@ -54,9 +56,13 @@ architecture beh of ucm_hps_tb is
   signal barrel1 : slc_barrel_rt;
 
   -- signal line_Example : string;
+  signal mdt_tar_event : input_tar_rt;
+  signal tb_curr_time : integer;
+
+ 
 
   ------------------------------------
-  signal tb_motor : std_logic_vector(3 downto 0);
+  -- signal tb_motor : std_logic_vector(3 downto 0);
 
 begin
   
@@ -115,36 +121,59 @@ begin
   -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
+ 
+
   CSM_read: process ( reset_b, TB_clk)
 
     file input_file                : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/ucm_hps/sim/csm_TB_C2Barrel.txt";
     variable row                   : line;
     variable row_counter           : integer := 0;
 
-    
     variable tdc_time : UNSIG_64;
+    variable mdt_event : input_tar_rt;
 
+    variable next_event_time : integer := 0;
+    variable tb_time : integer := 0;
+
+    variable first_read : std_logic := '1';
 
   begin
-    
+
+    tb_curr_time <= tb_time;
+
     if(reset_b = '0') then
 
     elsif rising_edge(TB_clk) then
-      -- read from input
-      if (not endfile(input_file)) then
+
+      -- first read from input vector file
+      if (not endfile(input_file)) and first_read = '1' then
         row_counter := row_counter +1;
+        readline(input_file,row); -- reads header and ignores
         readline(input_file,row);
+        read(row, mdt_event);
+        mdt_tar_event <= mdt_event;
+        -- report "Read line : " & integer'image(row_counter);
+        first_read := '0';
+      end if;
+      
+      -- read from input vector file
+      if (mdt_event.global_time < tb_time) then
+        i_mdt_tar_av <= mdt_tar_event.tar;
+        if (not endfile(input_file)) then
+          row_counter := row_counter +1;
+          readline(input_file,row);
+          read(row, mdt_event);
+          mdt_tar_event <= mdt_event;
+          report "Read line : " & integer'image(row_counter);
+        end if;
+      else
+        i_mdt_tar_av <= nullify(i_mdt_tar_av);
       end if;
 
-      -- line_Example <= row;
-      -- if
-
-
-
+      tb_time := tb_time +1;
 
     end if;
 
   end process;
 
-  
 end architecture beh;

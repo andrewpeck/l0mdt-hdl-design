@@ -19,12 +19,14 @@ package l0mdt_textio_pkg is
 
   subtype UNSIG_64 is unsigned(63 downto 0);
 
-  type input_tar is record
-
-    tar       : tar2hps_rt;
+  type input_tar_rt is record
+    global_time     : integer;
+    Station         : integer;
+    Chamber         : integer;
+    tar             : tar2hps_rt;
   end record;
 
-  -- procedure READ(L:inout LINE; VALUE : out input_tar);
+  procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
@@ -33,6 +35,56 @@ end l0mdt_textio_pkg;
 
 
 package body l0mdt_textio_pkg is
+
+  -----------------------------------------------
+  -- read TAR 
+  -----------------------------------------------  
+  procedure READ(L:inout LINE; VALUE : out input_tar_rt) is
+    variable global_time  : integer;
+    variable c_Station    : character;
+    variable i_station    : integer;
+    variable Chamber      : integer;
+    variable BCID         : integer;
+    variable tube_global  : integer;
+    variable tube_local   : integer;
+    variable tube_layer   : integer;
+    variable tube_z       : integer;
+    variable tube_rho     : integer;
+    variable tube_radius  : integer;
+
+    -- variable
+  begin
+    READ(L, BCID);
+    READ(L, global_time);
+    READ(L, tube_global);
+    READ(L, tube_local);
+    READ(L, tube_layer);
+    READ(L, Chamber);
+    READ(L, c_Station);
+    READ(L, tube_z);
+    READ(L, tube_rho);
+    READ(L, tube_radius);
+
+    if c_station = 'I' then 
+      i_station := 0;
+    -- elsif c_station = 'M'
+    else 
+      i_station := 1;
+    end if;
+
+    VALUE := (
+      global_time => global_time,
+      Station => i_Station,
+      Chamber => chamber,
+      tar => (  
+        tube => to_unsigned(tube_global,MDT_TUBE_LEN),
+        layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+        time => to_unsigned(global_time,MDT_TIME_LEN),
+        data_valid => '1'
+      )
+    );
+
+  end procedure;
 
   -----------------------------------------------
   -- read TDC record type as 5 decimal numbers
