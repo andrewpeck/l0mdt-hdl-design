@@ -1,0 +1,4 @@
+../../shared/src/pipeline.vhd 2008
+../../shared/src/config_defaults_pkg.vhd 2008
+../../shared/src/config_pkg.vhd 2008
+../../shared/cdf/common_pkg.vhd 2008

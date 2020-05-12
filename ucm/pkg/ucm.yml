@@ -1,0 +1,46 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared:
+        - common_pkg
+        - config_pkg
+    #   my_lib_2: the_other_package
+
+    
+# # ucm preprocesor output
+
+ucm_prepro:
+  muid:       {type: slc_muid}
+  chambers:   {type: slc_chid}
+  common:     {type: slc_common, dprint: on}
+  specific:   {type: logic , length: SLC_SPECIFIC_LEN , dprint: on}
+  data_valid: {type: logic}
+
+# ucm_prepro_art: {array: open , type: ucm_prepro }
+# ucm_prepro_avt: {array: open , type: ucm_prepro_vt }
+
+# main cross switch control
+
+# ucm_csw_dest: {array: open , type: logic, length: 4}
+ucm_csw_dest: {array: MAX_NUM_SL , type: logic, length: 4}
+# ucm_csw_dest: {type: logic, length: 4}
+# ucm_csw_dest_a: {array: MAX_NUM_SL ,type: ucm_csw_dest}
+
+# ucm_csw_dest_a: {array: MAX_NUM_SL , type: logic, length: 4 }
+
+ucm_csw_control:
+  data_present: { type: logic , length: MAX_NUM_SL }
+  addr_orig:    {type: ucm_csw_dest}
+
+
+ucm_cvp_dest: {array: MAX_NUM_HEG , type: logic, length: 4}
+
+ucm_pamcsw_control:
+  data_present: { type: logic , length: MAX_NUM_SL }
+  addr_orig:    { type: ucm_cvp_dest}
+
+ucm_proc_info:
+  ch :        { type: logic , length: 4 }
+  proccesed:  { type: logic}
+
+ucm_proc_info_a: {array: open , type: ucm_proc_info }

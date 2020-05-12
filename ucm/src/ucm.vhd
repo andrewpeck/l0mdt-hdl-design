@@ -89,6 +89,18 @@ begin
     );
   end generate;
 
+  -- SLC_PP_A : for sl_i in MAX_NUM_SL -1 downto 0 generate
+  --   SLC_PP : entity shared_lib.ucm_prepro
+  --   port map(
+  --     clk         => clk,
+  --     Reset_b     => Reset_b,
+  --     glob_en     => glob_en,
+  --     --
+  --     i_slc_data_av     => i_slc_data_av(sl_i),
+  --     o_prepro_data_av  => ucm_prepro_av(sl_i)
+  --   );
+  -- end generate;
+
   -- input pipelines
   SLC_IN_PL_A : for sl_i in MAX_NUM_SL -1 downto 0 generate
     SLC_IN_PL : entity shared_lib.std_pipeline
