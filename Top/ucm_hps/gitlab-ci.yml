@@ -1,0 +1,44 @@
+create_project:ucm_hps:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm_hps
+
+# synthesise_ips:ucm_hps:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm_hps
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:ucm_hps
+
+synthesise_project:ucm_hps:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm_hps
+    dependencies:
+        # - synthesise_ips:ucm_hps
+        - create_project:ucm_hps
+
+# implement_project:ucm_hps:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm_hps
+#     dependencies:
+#        - create_project:ucm_hps
+#        - synthesise_ips:ucm_hps
+#        - synthesise_project:ucm_hps
+
+# write_bitstream:ucm_hps:
+#     extends: .write_bitstream
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm_hps
+#     dependencies:
+#        - create_project:ucm_hps
+#        - synthesise_ips:ucm_hps
+#        - synthesise_project:ucm_hps
+#        - implement_project:ucm_hps

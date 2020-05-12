@@ -19,20 +19,176 @@ before_script:
     - echo $HOG_PASSWORD | kinit $HOG_USER
     - source ${PROFPGA_PATH}/bin/settings64.sh
 
-#################### UCM Project ###########################
-
-create_project:ucm:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-
-simulate_project:ucm:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-
+include:
+    - local: 'Top/lsf/gitlab-ci.yml'
+# ./Top/l0mdt/gitlab-ci.yml
+# ./Top/csf_plus_pt/gitlab-ci.yml
+# ./Top/tdc/gitlab-ci.yml
+# ./Top/ult/gitlab-ci.yml
+# ./Top/ucm/gitlab-ci.yml
+# ./Top/hp/gitlab-ci.yml
+# ./Top/pt/gitlab-ci.yml
+# ./Top/hps/gitlab-ci.yml
+# ./Top/profpga_duo_test/gitlab-ci.yml
+# ./Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml
+# ./Top/profpga_duo_pt.0/gitlab-ci.yml
+# ./Top/csf/gitlab-ci.yml
+# ./Top/ucm_hps/gitlab-ci.yml
+# ./Top/heg/gitlab-ci.yml
+    
+# #################### UCM Project ###########################
+# 
+# create_project:ucm:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
+# 
+# simulate_project:ucm:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
+# 
+# # synthesise_ips:csf:
+# #     extends: .synthesise_ips
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: csf
+# #       IP_PATH: IP
+# #     dependencies:
+# #         - create_project:csf
+# 
+# synthesise_project:ucm:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
+#     dependencies:
+#         # - synthesise_ips:csf
+#         - create_project:ucm
+# 
+# # implement_project:ucm:
+# #     extends: .implement_project
+# #     variables: 
+# #       extends: .vars
+# #       PROJECT_NAME: ucm
+# #       HOG_NO_BITSTREAM_STAGE: 1
+# #     dependencies:
+# #       - create_project:ucm
+# #       #  - synthesise_ips:csf
+# #       - synthesise_project:ucm
+# 
+# 
+# #################### HPS Project ###########################
+# 
+# create_project:hps:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hps
+# 
+# # synthesise_ips:pt:
+# #     extends: .synthesise_ips
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #       IP_PATH: IP
+# #     dependencies:
+# #         - create_project:pt
+# 
+# synthesise_project:hps:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hps
+#     dependencies:
+#         # - synthesise_ips:pt
+#         - create_project:hps
+# 
+# # implement_project:pt:
+# #     extends: .implement_project
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #     dependencies:
+# #        - create_project:pt
+# #        - synthesise_ips:pt
+# #        - synthesise_project:pt
+# 
+# # write_bitstream:pt:
+# #     extends: .write_bitstream
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #     dependencies:
+# #        - create_project:pt
+# #        - synthesise_ips:pt
+# #        - synthesise_project:pt
+# #        - implement_project:pt
+# 
+# #################### HPS Project ###########################
+# 
+# create_project:ucm_hps:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm_hps
+# 
+# # synthesise_ips:pt:
+# #     extends: .synthesise_ips
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #       IP_PATH: IP
+# #     dependencies:
+# #         - create_project:pt
+# 
+# synthesise_project:ucm_hps:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm_hps
+#     dependencies:
+#         # - synthesise_ips:pt
+#         - create_project:ucm_hps
+# 
+# # implement_project:pt:
+# #     extends: .implement_project
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #     dependencies:
+# #        - create_project:pt
+# #        - synthesise_ips:pt
+# #        - synthesise_project:pt
+# 
+# # write_bitstream:pt:
+# #     extends: .write_bitstream
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #     dependencies:
+# #        - create_project:pt
+# #        - synthesise_ips:pt
+# #        - synthesise_project:pt
+# #        - implement_project:pt
+# 
+# 
+# # #################### CSF Project ###########################
+# 
+# create_project:csf:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf
+# 
+# simulate_project:csf:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf
+# 
 # synthesise_ips:csf:
 #     extends: .synthesise_ips
 #     variables:
@@ -41,317 +197,179 @@ simulate_project:ucm:
 #       IP_PATH: IP
 #     dependencies:
 #         - create_project:csf
-
-synthesise_project:ucm:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-    dependencies:
-        # - synthesise_ips:csf
-        - create_project:ucm
-
-# implement_project:ucm:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:ucm
-#       #  - synthesise_ips:csf
-#       - synthesise_project:ucm
-
-
-#################### HPS Project ###########################
-
-create_project:hps:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: hps
-
-# synthesise_ips:pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:pt
-
-synthesise_project:hps:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: hps
-    dependencies:
-        # - synthesise_ips:pt
-        - create_project:hps
-
-# implement_project:pt:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-
-# write_bitstream:pt:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-#        - implement_project:pt
-
-#################### HPS Project ###########################
-
-create_project:ucm_hps:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm_hps
-
-# synthesise_ips:pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:pt
-
-synthesise_project:ucm_hps:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm_hps
-    dependencies:
-        # - synthesise_ips:pt
-        - create_project:ucm_hps
-
-# implement_project:pt:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-
-# write_bitstream:pt:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-#        - implement_project:pt
-
-
-# #################### CSF Project ###########################
-
-create_project:csf:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf
-
-simulate_project:csf:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf
-
-synthesise_ips:csf:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf
-      IP_PATH: IP
-    dependencies:
-        - create_project:csf
-
-synthesise_project:csf:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf
-    dependencies:
-        - synthesise_ips:csf
-        - create_project:csf
-
-implement_project:csf:
-    extends: .implement_project
-    variables: 
-      extends: .vars
-      PROJECT_NAME: csf
-#      HOG_NO_BITSTREAM_STAGE: 1
-    dependencies:
-       - create_project:csf
-       - synthesise_ips:csf
-       - synthesise_project:csf
-
-
-# #################### LSF Project ###########################
-
-create_project:lsf:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-
-simulate_project:lsf:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-
-synthesise_ips:lsf:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-      IP_PATH: IP
-    dependencies:
-        - create_project:lsf
-
-synthesise_project:lsf:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-    dependencies:
-        - synthesise_ips:lsf
-        - create_project:lsf
-
-implement_project:lsf:
-    extends: .implement_project
-    variables: 
-      extends: .vars
-      PROJECT_NAME: lsf
-#      HOG_NO_BITSTREAM_STAGE: 1
-    dependencies:
-       - create_project:lsf
-       - synthesise_ips:lsf
-       - synthesise_project:lsf
-
-
-#################### pT Project ###########################
-
-create_project:pt:
-    extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-
-simulate_project:pt:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-
-synthesise_ips:pt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-      IP_PATH: IP
-    dependencies:
-        - create_project:pt
-
-synthesise_project:pt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-    dependencies:
-        - synthesise_ips:pt
-        - create_project:pt
-
-implement_project:pt:
-    extends: .implement_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-    dependencies:
-       - create_project:pt
-       - synthesise_ips:pt
-       - synthesise_project:pt
-
-# write_bitstream:pt:
-#     extends: .write_bitstream
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: pt
-#     dependencies:
-#        - create_project:pt
-#        - synthesise_ips:pt
-#        - synthesise_project:pt
-#        - implement_project:pt
-
-#################### CSF+pT Project ###########################
-
-# create_project:csf_plus_pt:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-
-# synthesise_ips:csf_plus_pt:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:csf_plus_pt
-
-# synthesise_project:csf_plus_pt:
+# 
+# synthesise_project:csf:
 #     extends: .synthesise_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
+#       PROJECT_NAME: csf
 #     dependencies:
-#         - synthesise_ips:csf_plus_pt
-#         - create_project:csf_plus_pt
-
-# implement_project:csf_plus_pt:
+#         - synthesise_ips:csf
+#         - create_project:csf
+# 
+# implement_project:csf:
+#     extends: .implement_project
+#     variables: 
+#       extends: .vars
+#       PROJECT_NAME: csf
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:csf
+#        - synthesise_ips:csf
+#        - synthesise_project:csf
+# 
+# 
+# # #################### LSF Project ###########################
+# 
+# create_project:lsf:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+# 
+# simulate_project:lsf:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+# 
+# synthesise_ips:lsf:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:lsf
+# 
+# synthesise_project:lsf:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+#     dependencies:
+#         - synthesise_ips:lsf
+#         - create_project:lsf
+# 
+# implement_project:lsf:
+#     extends: .implement_project
+#     variables: 
+#       extends: .vars
+#       PROJECT_NAME: lsf
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:lsf
+#        - synthesise_ips:lsf
+#        - synthesise_project:lsf
+# 
+# 
+# #################### pT Project ###########################
+# 
+# create_project:pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+# 
+# simulate_project:pt:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+# 
+# synthesise_ips:pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:pt
+# 
+# synthesise_project:pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#         - synthesise_ips:pt
+#         - create_project:pt
+# 
+# implement_project:pt:
 #     extends: .implement_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: csf_plus_pt
+#       PROJECT_NAME: pt
 #     dependencies:
-#        - create_project:csf_plus_pt
-#        - synthesise_ips:csf_plus_pt
-#        - synthesise_project:csf_plus_pt
-
-# write_bitstream:csf_plus_pt:
-#      extends: .write_bitstream
-#      variables:
-#        extends: .vars
-#        PROJECT_NAME: csf_plus_pt
-#      dependencies:
-#         - create_project:csf_plus_pt
-#         - synthesise_ips:csf_plus_pt
-#         - synthesise_project:csf_plus_pt
-#         - implement_project:csf_plus_pt
-
-######## Devel automatic mr #######
-OpenMR:
-    only:
-        refs:
-            - schedules
-    stage: merge
-    script:
-        - git pull
-        - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID}               PRIVATE_TOKEN=GXK25m5GX9Ysf5ySqz6J ./autoMergeRequest.sh       
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+# 
+# # write_bitstream:pt:
+# #     extends: .write_bitstream
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: pt
+# #     dependencies:
+# #        - create_project:pt
+# #        - synthesise_ips:pt
+# #        - synthesise_project:pt
+# #        - implement_project:pt
+# 
+# #################### CSF+pT Project ###########################
+# 
+# # create_project:csf_plus_pt:
+# #     extends: .create_project
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: csf_plus_pt
+# 
+# # synthesise_ips:csf_plus_pt:
+# #     extends: .synthesise_ips
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: csf_plus_pt
+# #       IP_PATH: IP
+# #     dependencies:
+# #         - create_project:csf_plus_pt
+# 
+# # synthesise_project:csf_plus_pt:
+# #     extends: .synthesise_project
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: csf_plus_pt
+# #     dependencies:
+# #         - synthesise_ips:csf_plus_pt
+# #         - create_project:csf_plus_pt
+# 
+# # implement_project:csf_plus_pt:
+# #     extends: .implement_project
+# #     variables:
+# #       extends: .vars
+# #       PROJECT_NAME: csf_plus_pt
+# #     dependencies:
+# #        - create_project:csf_plus_pt
+# #        - synthesise_ips:csf_plus_pt
+# #        - synthesise_project:csf_plus_pt
+# 
+# # write_bitstream:csf_plus_pt:
+# #      extends: .write_bitstream
+# #      variables:
+# #        extends: .vars
+# #        PROJECT_NAME: csf_plus_pt
+# #      dependencies:
+# #         - create_project:csf_plus_pt
+# #         - synthesise_ips:csf_plus_pt
+# #         - synthesise_project:csf_plus_pt
+# #         - implement_project:csf_plus_pt
+# 
+# ######## Devel automatic mr #######
+# OpenMR:
+#     only:
+#         refs:
+#             - schedules
+#     stage: merge
+#     script:
+#         - git pull
+#         - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID}               PRIVATE_TOKEN=GXK25m5GX9Ysf5ySqz6J ./autoMergeRequest.sh       
+# 

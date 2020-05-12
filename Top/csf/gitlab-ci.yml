@@ -1,0 +1,40 @@
+create_project:csf:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+
+simulate_project:csf:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+
+synthesise_ips:csf:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+      IP_PATH: IP
+    dependencies:
+        - create_project:csf
+
+synthesise_project:csf:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf
+    dependencies:
+        - synthesise_ips:csf
+        - create_project:csf
+
+implement_project:csf:
+    extends: .implement_project
+    variables: 
+      extends: .vars
+      PROJECT_NAME: csf
+#      HOG_NO_BITSTREAM_STAGE: 1
+    dependencies:
+       - create_project:csf
+       - synthesise_ips:csf
+       - synthesise_project:csf
