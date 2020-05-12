@@ -1,9 +1,9 @@
-# create_project:ult:
-#     extends: .create_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ult
-# 
+create_project:ult:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult
+
 # simulate_project:ult:
 #     extends: .simulate_project
 #     variables:
