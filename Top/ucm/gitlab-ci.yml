@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 #################### UCM Project ###########################
 
+=======
+>>>>>>> origin/devel
 create_project:ucm:
     extends: .create_project
     variables:
@@ -12,6 +15,7 @@ simulate_project:ucm:
       extends: .vars
       PROJECT_NAME: ucm
 
+<<<<<<< HEAD
 # synthesise_ips:csf:
 #     extends: .synthesise_ips
 #     variables:
@@ -20,6 +24,16 @@ simulate_project:ucm:
 #       IP_PATH: IP
 #     dependencies:
 #         - create_project:csf
+=======
+# synthesise_ips:ucm:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:ucm
+>>>>>>> origin/devel
 
 synthesise_project:ucm:
     extends: .synthesise_project
@@ -27,7 +41,11 @@ synthesise_project:ucm:
       extends: .vars
       PROJECT_NAME: ucm
     dependencies:
+<<<<<<< HEAD
         # - synthesise_ips:csf
+=======
+        # - synthesise_ips:ucm
+>>>>>>> origin/devel
         - create_project:ucm
 
 # implement_project:ucm:
@@ -38,6 +56,10 @@ synthesise_project:ucm:
 #       HOG_NO_BITSTREAM_STAGE: 1
 #     dependencies:
 #       - create_project:ucm
+<<<<<<< HEAD
 #       #  - synthesise_ips:csf
+=======
+#       #  - synthesise_ips:ucm
+>>>>>>> origin/devel
 #       - synthesise_project:ucm
 

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 #################### pT Project ###########################
 
+=======
+>>>>>>> origin/devel
 create_project:pt:
     extends: .create_project
     variables:
@@ -39,3 +42,17 @@ implement_project:pt:
        - create_project:pt
        - synthesise_ips:pt
        - synthesise_project:pt
+<<<<<<< HEAD
+=======
+
+# write_bitstream:pt:
+#     extends: .write_bitstream
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt
+#        - implement_project:pt
+>>>>>>> origin/devel

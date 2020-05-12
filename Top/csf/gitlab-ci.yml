@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # #################### CSF Project ###########################
 
+=======
+>>>>>>> origin/devel
 create_project:csf:
     extends: .create_project
     variables:

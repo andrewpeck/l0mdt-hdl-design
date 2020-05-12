@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 #################### HPS Project ###########################
 
+=======
+>>>>>>> origin/devel
 create_project:hps:
     extends: .create_project
     variables:
@@ -44,3 +47,7 @@ synthesise_project:hps:
 #        - synthesise_ips:hps
 #        - synthesise_project:hps
 #        - implement_project:hps
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/devel

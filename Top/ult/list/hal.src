@@ -1,0 +1,13 @@
+# -*- mode: TCL;-*-
+
+# Framework
+../../ult/src/top_ult.vhd 2008
+../../hal/src/board_pkg.vhd 2008
+../../ult/src/top_clocking.vhd 2008
+../../hal/src/board_pkg_common.vhd 2008
+../../hal/src/constants_pkg.vhd 2008
+../../hal/src/user_pkg.vhd 2008
+../../hal/src/system_types_pkg.vhd 2008
+
+# Sector Logic
+../../sl/src/sector_logic_pkg.vhd 2008

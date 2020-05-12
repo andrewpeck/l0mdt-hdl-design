@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 create_project:csf_plus_pt:
     extends: .create_project
     variables:
@@ -43,3 +44,49 @@ write_bitstream:csf_plus_pt:
         - synthesise_project:csf_plus_pt
         - implement_project:csf_plus_pt
 
+=======
+# create_project:csf_plus_pt:
+#     extends: .create_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+
+# synthesise_ips:csf_plus_pt:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:csf_plus_pt
+
+# synthesise_project:csf_plus_pt:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#         - synthesise_ips:csf_plus_pt
+#         - create_project:csf_plus_pt
+
+# implement_project:csf_plus_pt:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf_plus_pt
+#     dependencies:
+#        - create_project:csf_plus_pt
+#        - synthesise_ips:csf_plus_pt
+#        - synthesise_project:csf_plus_pt
+
+# write_bitstream:csf_plus_pt:
+#      extends: .write_bitstream
+#      variables:
+#        extends: .vars
+#        PROJECT_NAME: csf_plus_pt
+#      dependencies:
+#         - create_project:csf_plus_pt
+#         - synthesise_ips:csf_plus_pt
+#         - synthesise_project:csf_plus_pt
+#         - implement_project:csf_plus_pt
+>>>>>>> origin/devel

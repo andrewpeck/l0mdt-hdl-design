@@ -1,6 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
+<<<<<<< HEAD
       ref: 'v0.4.9'
     - local: 'Top/csf/gitlab-ci.yml'
     - local: 'Top/hps/gitlab-ci.yml'
@@ -18,3 +19,23 @@ OpenMR:
     script:
         - git pull
         - HOST=${CI_PROJECT_URL} CI_PROJECT_ID=${CI_PROJECT_ID} CI_COMMIT_REF_NAME=${CI_COMMIT_REF_NAME} GITLAB_USER_ID=${GITLAB_USER_ID}               PRIVATE_TOKEN=GXK25m5GX9Ysf5ySqz6J ./autoMergeRequest.sh       
+=======
+      ref: 'v0.0.14'
+    - local: '/.before_script.yml'
+    - local: '/.devel_to_master.yml'
+    - local: '/Top/csf/gitlab-ci.yml'
+    - local: '/Top/lsf/gitlab-ci.yml'
+    - local: '/Top/pt/gitlab-ci.yml'
+    - local: '/Top/ucm/gitlab-ci.yml'
+    - local: '/Top/hps/gitlab-ci.yml'
+    - local: '/Top/ucm_hps/gitlab-ci.yml'
+    - local: '/Top/l0mdt/gitlab-ci.yml'
+    - local: '/Top/tdc/gitlab-ci.yml'
+#     - local: '/Top/ult/gitlab-ci.yml'
+#     - local: '/Top/hp/gitlab-ci.yml'
+#     - local: '/Top/heg/gitlab-ci.yml'
+#     - local: '/Top/csf_plus_pt/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_test/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
+>>>>>>> origin/devel

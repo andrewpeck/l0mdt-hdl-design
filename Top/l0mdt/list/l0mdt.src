@@ -1,0 +1,4 @@
+# -*- mode: TCL;-*-
+../../Top/l0mdt/top_l0mdt.vhd
+../../hal/list/hal.src
+../../ult/list/ult.src
