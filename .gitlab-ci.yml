@@ -2,7 +2,6 @@ include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
       ref: 'v0.0.14'
-    - local: '/before_script.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
 
 # ./Top/l0mdt/gitlab-ci.yml
