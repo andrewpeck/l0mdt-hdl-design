@@ -2,24 +2,23 @@ include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
       ref: 'v0.0.14'
-    - local: '/before_script.yml'
+    - local: '/.before_script.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
+    - local: '/Top/pt/gitlab-ci.yml'
+    - local: '/Top/hps/gitlab-ci.yml'
+    - local: '/Top/ucm/gitlab-ci.yml'
+#     - local: '/Top/l0mdt/gitlab-ci.yml'
+#     - local: '/Top/csf_plus_pt/gitlab-ci.yml'
+#     - local: '/Top/tdc/gitlab-ci.yml'
+#     - local: '/Top/ult/gitlab-ci.yml'
+#     - local: '/Top/hp/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_test/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
+#     - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
+#     - local: '/Top/csf/gitlab-ci.yml'
+#     - local: '/Top/ucm_hps/gitlab-ci.yml'
+#     - local: '/Top/heg/gitlab-ci.yml'
 
-# ./Top/l0mdt/gitlab-ci.yml
-# ./Top/csf_plus_pt/gitlab-ci.yml
-# ./Top/tdc/gitlab-ci.yml
-# ./Top/ult/gitlab-ci.yml
-# ./Top/ucm/gitlab-ci.yml
-# ./Top/hp/gitlab-ci.yml
-# ./Top/pt/gitlab-ci.yml
-# ./Top/hps/gitlab-ci.yml
-# ./Top/profpga_duo_test/gitlab-ci.yml
-# ./Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml
-# ./Top/profpga_duo_pt.0/gitlab-ci.yml
-# ./Top/csf/gitlab-ci.yml
-# ./Top/ucm_hps/gitlab-ci.yml
-# ./Top/heg/gitlab-ci.yml
-    
 # #################### UCM Project ###########################
 # 
 # create_project:ucm:
