@@ -2,9 +2,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library shared;
-use shared.common_pkg.all;
-use shared.config_pkg.all;
+library shared_lib;
+use shared_lib.common_pkg.all;
+use shared_lib.config_pkg.all;
 
 package ucm_pkg is
 

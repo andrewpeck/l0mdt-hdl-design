@@ -1,7 +1,7 @@
 __config__:
     basic_convert_functions : off
     packages:
-      shared:
+      shared_lib:
         - common_pkg
         - config_pkg
     #   my_lib_2: the_other_package

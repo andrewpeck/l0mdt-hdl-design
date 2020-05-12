@@ -273,12 +273,6 @@ end package common_pkg;
 
 ------------------------------------------------------------
 
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-library shared;
-use shared.config_pkg.all;
 package body common_pkg is
 
   function structify(x: std_logic_vector) return signed is
