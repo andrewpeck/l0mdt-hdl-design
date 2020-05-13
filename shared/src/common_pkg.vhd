@@ -719,7 +719,7 @@ package body common_pkg is
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_vt is
     variable y : ucm_csf_barrel_vt;
   begin
-    y(43)                      := vectorify(x.data_valid)
+    y(43)                      := vectorify(x.data_valid);
     y(42 downto 33)            := vectorify(x.mbar);
     y(32 downto 26)            := vectorify(x.z);
     y(25 downto 22)            := vectorify(x.r);
@@ -730,7 +730,7 @@ package body common_pkg is
   function structify(x: ucm_csf_barrel_vt) return ucm_csf_barrel_rt is
     variable y : ucm_csf_barrel_rt;
   begin
-    y.data_valid               := structify(x(43))
+    y.data_valid               := structify(x(43));
     y.mbar                     := structify(x(42 downto 33));
     y.z                        := structify(x(32 downto 26));
     y.r                        := structify(x(25 downto 22));
