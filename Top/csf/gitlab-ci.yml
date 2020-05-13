@@ -6,11 +6,11 @@ create_project:csf:
       extends: .vars
       PROJECT_NAME: csf
 
-simulate_project:csf:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: csf
+# simulate_project:csf:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf
 
 synthesise_ips:csf:
     extends: .synthesise_ips

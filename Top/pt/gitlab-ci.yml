@@ -6,11 +6,11 @@ create_project:pt:
       extends: .vars
       PROJECT_NAME: pt
 
-simulate_project:pt:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
+# simulate_project:pt:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
 
 synthesise_ips:pt:
     extends: .synthesise_ips
