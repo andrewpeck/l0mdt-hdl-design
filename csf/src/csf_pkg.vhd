@@ -99,6 +99,9 @@ package csf_pkg is
     -- Convert slope to angle (now in IP)
 --    type t_m_to_theta is array( natural range <> ) of signed( theta_loc_width-1 downto 0);
 --    function m_to_theta return t_m_to_theta;
+    -- Convert std_logic to integer
+    function stdlogic_integer( s : std_logic ) return integer ;
+
 end;
 
 package body csf_pkg is
@@ -130,6 +133,14 @@ package body csf_pkg is
         return seg;
     end function;    
 
+    function stdlogic_integer( s : std_logic ) return integer is
+    begin
+        if s = '1' then
+            return 1;
+        else
+            return 0;
+        end if;
+    end function;
 
 --    function m_to_theta return t_m_to_theta is 
 --    variable temp : t_m_to_theta(2**(theta_loc_width)-1 downto 0) := (others => (others => '0'));

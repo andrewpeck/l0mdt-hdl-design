@@ -68,7 +68,7 @@ architecture Behavioral of seg_coord_transform is
     );
     END COMPONENT;
     
-    COMPONENT Chamber_pos_ROM
+    COMPONENT Chamber_pos_ROM_1
     PORT (
         clka : IN STD_LOGIC;
         addra : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -85,7 +85,7 @@ begin
         douta => theta
     );
     
-    chamb_pos : Chamber_pos_ROM
+    chamb_pos : Chamber_pos_ROM_1
     PORT MAP (
         clka => clk,
         addra => chamber_id,

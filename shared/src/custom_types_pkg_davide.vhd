@@ -230,7 +230,7 @@ package custom_types_davide_pkg is
 
   constant   UCM_ETA_LEN          :  integer := 8;
 
-  constant   UCM_CHAMBER_ID_LEN   :  integer := 8;
+  constant   UCM_CHAMBER_ID_LEN   :  integer := 3;
 
   type ucm_csf_seed_rt is record
      muid                 :  slc_muidrt;
@@ -239,7 +239,7 @@ package custom_types_davide_pkg is
      chamber_id           :  std_logic_vector(UCM_CHAMBER_ID_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record ucm_csf_seed_rt;
-  constant UCM_CSF_SEED_LEN : integer := 51;
+  constant UCM_CSF_SEED_LEN : integer := 46;
   subtype ucm_csf_seed_rvt is std_logic_vector(UCM_CSF_SEED_LEN-1 downto 0);
   function vectorify(x: ucm_csf_seed_rt) return ucm_csf_seed_rvt;
   function structify(x: ucm_csf_seed_rvt) return ucm_csf_seed_rt;
@@ -371,6 +371,8 @@ package custom_types_davide_pkg is
 
   constant   SF_SEG_POS_WIDTH     :  integer := 19;
 
+  constant   SF_SEG_POS_MULTI     :  real := 16.0;
+
   constant   SF_SEG_ANG_WIDTH     :  integer := 15;
 
   constant   SF_SEG_ANG_MULTI     :  real := 4096.0;
@@ -385,7 +387,7 @@ package custom_types_davide_pkg is
      angle                :  signed(SF_SEG_ANG_WIDTH-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_barrel_rt;
-  constant SF_SEG_DATA_BARREL_LEN : integer := 64;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 59;
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
@@ -399,11 +401,57 @@ package custom_types_davide_pkg is
      angle                :  signed(SF_SEG_ANG_WIDTH-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_endcap_rt;
-  constant SF_SEG_DATA_ENDCAP_LEN : integer := 64;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 59;
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
   function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+
+  constant   SLC_PT_PHIMOD_LEN    :  integer := 8;
+
+  type slc_pt_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muidrt;
+     phimod               :  signed(SLC_PT_PHIMOD_LEN-1 downto 0);
+     charge               :  std_logic;
+  end record slc_pt_rt;
+  constant SLC_PT_LEN : integer := 30;
+  subtype slc_pt_rvt is std_logic_vector(SLC_PT_LEN-1 downto 0);
+  function vectorify(x: slc_pt_rt) return slc_pt_rvt;
+  function structify(x: slc_pt_rvt) return slc_pt_rt;
+  function nullify (x: slc_pt_rt) return slc_pt_rt;
+
+  constant   MTC_ETA_LEN          :  integer := 15;
+
+  constant   MTC_PT_LEN           :  integer := 9;
+
+  constant   MTC_PTTHR_LEN        :  integer := 4;
+
+  constant   MTC_NSEG_LEN         :  integer := 2;
+
+  constant   MTC_QUALITY_LEN      :  integer := 3;
+
+  constant   BIL_SEC3_RHO         :  real := 4949.0;
+
+  constant   BML_SEC3_RHO         :  real := 7139.0;
+
+  constant   BOL_SEC3_RHO         :  real := 9500.0;
+
+  type mtc_tf_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muidrt;
+     eta                  :  signed(MTC_ETA_LEN-1 downto 0);
+     pt                   :  unsigned(MTC_PT_LEN-1 downto 0);
+     pt_thr               :  std_logic_vector(MTC_PTTHR_LEN-1 downto 0);
+     charge               :  std_logic;
+     nseg                 :  unsigned(MTC_NSEG_LEN-1 downto 0);
+     quality              :  std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
+  end record mtc_tf_rt;
+  constant MTC_TF_LEN : integer := 55;
+  subtype mtc_tf_rvt is std_logic_vector(MTC_TF_LEN-1 downto 0);
+  function vectorify(x: mtc_tf_rt) return mtc_tf_rvt;
+  function structify(x: mtc_tf_rvt) return mtc_tf_rt;
+  function nullify (x: mtc_tf_rt) return mtc_tf_rt;
 
 end package custom_types_davide_pkg;
 
@@ -883,20 +931,20 @@ package body custom_types_davide_pkg is
   function vectorify(x: ucm_csf_seed_rt) return ucm_csf_seed_rvt is
     variable y : ucm_csf_seed_rvt;
   begin
-    y(50 downto 31)            := vectorify(x.muid);
-    y(30 downto 19)            := vectorify(x.mbar);
-    y(18 downto 9)             := vectorify(x.pos);
-    y(8 downto 1)              := x.chamber_id;
+    y(45 downto 26)            := vectorify(x.muid);
+    y(25 downto 14)            := vectorify(x.mbar);
+    y(13 downto 4)             := vectorify(x.pos);
+    y(3 downto 1)              := x.chamber_id;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: ucm_csf_seed_rvt) return ucm_csf_seed_rt is
     variable y : ucm_csf_seed_rt;
   begin
-    y.muid                     := structify(x(50 downto 31));
-    y.mbar                     := structify(x(30 downto 19));
-    y.pos                      := structify(x(18 downto 9));
-    y.chamber_id               := x(8 downto 1);
+    y.muid                     := structify(x(45 downto 26));
+    y.mbar                     := structify(x(25 downto 14));
+    y.pos                      := structify(x(13 downto 4));
+    y.chamber_id               := x(3 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -920,12 +968,12 @@ package body custom_types_davide_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_csf_seed_a_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*51-1 downto 0);
+    variable y : std_logic_vector(x'length*46-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-51) := vectorify(x(i));
-      msb := msb - 51 -1;
+      y(msb downto msb-46) := vectorify(x(i));
+      msb := msb - 46 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -942,8 +990,8 @@ package body custom_types_davide_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-51));
-      msb := msb - 51 -1;
+      y(i) := structify(x(msb downto msb-46));
+      msb := msb - 46 -1;
     end loop l;
     return y;
   end function structify;
@@ -1278,9 +1326,9 @@ package body custom_types_davide_pkg is
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
     variable y : sf_seg_data_barrel_rvt;
   begin
-    y(63)                      := x.data_valid;
-    y(62 downto 43)            := vectorify(x.muid);
-    y(42 downto 35)            := x.chamber_id;
+    y(58)                      := x.data_valid;
+    y(57 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := x.chamber_id;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -1289,9 +1337,9 @@ package body custom_types_davide_pkg is
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := x(63);
-    y.muid                     := structify(x(62 downto 43));
-    y.chamber_id               := x(42 downto 35);
+    y.data_valid               := x(58);
+    y.muid                     := structify(x(57 downto 38));
+    y.chamber_id               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -1312,9 +1360,9 @@ package body custom_types_davide_pkg is
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
     variable y : sf_seg_data_endcap_rvt;
   begin
-    y(63)                      := x.data_valid;
-    y(62 downto 43)            := vectorify(x.muid);
-    y(42 downto 35)            := x.chamber_id;
+    y(58)                      := x.data_valid;
+    y(57 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := x.chamber_id;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -1323,9 +1371,9 @@ package body custom_types_davide_pkg is
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := x(63);
-    y.muid                     := structify(x(62 downto 43));
-    y.chamber_id               := x(42 downto 35);
+    y.data_valid               := x(58);
+    y.muid                     := structify(x(57 downto 38));
+    y.chamber_id               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -1339,6 +1387,74 @@ package body custom_types_davide_pkg is
     y.chamber_id               := nullify(x.chamber_id);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: slc_pt_rt) return slc_pt_rvt is
+    variable y : slc_pt_rvt;
+  begin
+    y(29)                      := x.data_valid;
+    y(28 downto 9)             := vectorify(x.muid);
+    y(8 downto 1)              := vectorify(x.phimod);
+    y(0)                       := x.charge;
+    return y;
+  end function vectorify;
+  function structify(x: slc_pt_rvt) return slc_pt_rt is
+    variable y : slc_pt_rt;
+  begin
+    y.data_valid               := x(29);
+    y.muid                     := structify(x(28 downto 9));
+    y.phimod                   := structify(x(8 downto 1));
+    y.charge                   := x(0);
+    return y;
+  end function structify;
+  function nullify (x: slc_pt_rt) return slc_pt_rt is
+    variable y : slc_pt_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.phimod                   := nullify(x.phimod);
+    y.charge                   := nullify(x.charge);
+    return y;
+  end function nullify;
+
+  function vectorify(x: mtc_tf_rt) return mtc_tf_rvt is
+    variable y : mtc_tf_rvt;
+  begin
+    y(54)                      := x.data_valid;
+    y(53 downto 34)            := vectorify(x.muid);
+    y(33 downto 19)            := vectorify(x.eta);
+    y(18 downto 10)            := vectorify(x.pt);
+    y(9 downto 6)              := x.pt_thr;
+    y(5)                       := x.charge;
+    y(4 downto 3)              := vectorify(x.nseg);
+    y(2 downto 0)              := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: mtc_tf_rvt) return mtc_tf_rt is
+    variable y : mtc_tf_rt;
+  begin
+    y.data_valid               := x(54);
+    y.muid                     := structify(x(53 downto 34));
+    y.eta                      := structify(x(33 downto 19));
+    y.pt                       := structify(x(18 downto 10));
+    y.pt_thr                   := x(9 downto 6);
+    y.charge                   := x(5);
+    y.nseg                     := structify(x(4 downto 3));
+    y.quality                  := x(2 downto 0);
+    return y;
+  end function structify;
+  function nullify (x: mtc_tf_rt) return mtc_tf_rt is
+    variable y : mtc_tf_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.eta                      := nullify(x.eta);
+    y.pt                       := nullify(x.pt);
+    y.pt_thr                   := nullify(x.pt_thr);
+    y.charge                   := nullify(x.charge);
+    y.nseg                     := nullify(x.nseg);
     y.quality                  := nullify(x.quality);
     return y;
   end function nullify;

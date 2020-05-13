@@ -27,13 +27,13 @@ use csf_lib.csf_pkg.all;
 use shared_lib.custom_types_davide_pkg.all;
 
 entity top_csf is
-    generic{
+    generic(
         -- Project flavour (0: Barrel, 1: Endcap)
         FLAVOUR  : integer := 0
-    }
+    );
     Port ( 
         clk       : in std_logic;
-        i_seed    : in ucm_csf_barrel_rvt;
+        i_seed    : in ucm_csf_seed_rt;
         i_mdt_hit : in hp_hit_data_rt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
@@ -43,12 +43,12 @@ end top_csf;
 
 architecture Behavioral of top_csf is
     -- Input RoI
-    signal seed : ucm_csf_barrel_rvt := (others => '0');
+    signal seed : ucm_csf_seed_rt;
     
     -- Histogram signals
     type t_histo_hits is array (natural range <> ) of t_histo_hit;
     
-    signal mdt_hits                         : hp_hit_data_a_at (1 downto 0) := (others => nullify );
+    signal mdt_hits                         : hp_hit_data_a_at (1 downto 0);
     signal eof                              : std_logic := '0';
     signal histo_hit_max0, histo_hit_max1   : t_histo_hits(1 downto 0)
     := (others => (null_histo_hit));
@@ -83,9 +83,6 @@ begin
     Histograms: for k in 1 downto 0 generate
     begin
         Histogram : entity csf_lib.csf_histogram
-        generic map(
-            FLAVOUR => FLAVOUR
-        )
         port map(
         clk           => clk,
         i_mdthit      => mdt_hits(k),
@@ -145,6 +142,9 @@ begin
     
     -- Coordinate tranformation
     CoordTransform: entity csf_lib.seg_coord_transform
+    generic map(
+        FLAVOUR => FLAVOUR
+    )
     port map (
     clk                => clk,
     i_locseg           => output_segment,
@@ -158,11 +158,11 @@ begin
 begin
     if rising_edge(clk) then
         
-        mdt_hits <= (others => null_mdt_hit);
+        mdt_hits <= nullify(mdt_hits);
         mdt_hits(stdlogic_integer(i_mdt_hit.multilayer)) <= i_mdt_hit;
         rst_chi2 <= '0';
         
-        if i_seed.valid = '1' then
+        if i_seed.data_valid = '1' then
             seed <= i_seed;
         end if;
         
@@ -170,7 +170,7 @@ begin
         if output_segment.valid = '1' and (output_segment.ndof /= 0) then
             rst_chi2 <= '1';
         elsif i_rst = '1' then
-            seed <= null_seed;  
+            seed <= nullify(seed);  
         end if;
     end if;
 end process;
