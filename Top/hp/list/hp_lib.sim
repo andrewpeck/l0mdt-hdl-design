@@ -1,2 +1,2 @@
-../../hp/sim/hp_tb.vhd
-../../hp/sim/hp_tb_loadfile.vhd
+hp/sim/hp_tb.vhd
+hp/sim/hp_tb_loadfile.vhd

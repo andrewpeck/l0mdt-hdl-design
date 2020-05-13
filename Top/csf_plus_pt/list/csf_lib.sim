@@ -1,4 +1,2 @@
-../../shared/sim/read_file.vhd
-../../csf/sim/csf_tb.vhd
-../../csf/sim/csf_histogram_tb.vhd
-../../csf/sim/csf_fitter_tb.vhd
+#Simulator xsim
+Top/csf/list/csf_lib.sim

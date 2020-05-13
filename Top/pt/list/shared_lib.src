@@ -1,1 +1,3 @@
-../../shared/src/bram.vhd
+shared/src/bram.vhd
+shared/src/custom_types_pkg_davide.vhd
+shared/src/custom_types_pkg.vhd

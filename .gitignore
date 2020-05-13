@@ -20,5 +20,12 @@ BD/*
 !BD/*.bd
 IP/*/*
 !IP/*/*.xci
+*.dbg
+*.zip
+work/
+transcript
+*.wlf
+vsim.dbg
+modelsim.ini
 .gitlab-ci_*.yml
 _hdl_checker/

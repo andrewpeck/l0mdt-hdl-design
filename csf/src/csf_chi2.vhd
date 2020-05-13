@@ -24,6 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_chi2 is
   port (
@@ -60,13 +61,13 @@ architecture Behavioral of csf_chi2 is
     -- Residual widths
     constant b_over_z_multi_width          : integer := integer(log2(bfit_mult/z_mult));
     constant b_red_width                   : integer := bfit_width-b_over_z_multi_width;
-    constant mx_width                      : integer := mfit_width + x_width - mfit_multi_width + 1;
+    constant mx_width                      : integer := mfit_width + MDT_LOCAL_AXI_LEN - mfit_multi_width + 1;
     constant res_width                     : integer := mx_width - sigma_width + chi2_mult_width/2;
 
     -- Residual signals
     signal b_red                           : signed(b_red_width-1 downto 0 ) := (others => '0');
     signal dsp_mx1, dsp_mx2                : signed(mx_width-1 downto 0) := (others => '0');
-    signal dsp_b_z_1, dsp_b_z_2            : signed(z_width-1 downto 0  ) := (others => '0');
+    signal dsp_b_z_1, dsp_b_z_2            : signed(MDT_LOCAL_AXI_LEN-1 downto 0  ) := (others => '0');
     signal dsp_res_1, dsp_res_2            : signed(res_width-1 downto 0 ) := (others => '0');
     signal dsp_res2_1, dsp_res2_1_s, dsp_res2_2, dsp_res2_2_s          : unsigned(chi2_width*2-1 downto 0 ) := (others => '0');
 

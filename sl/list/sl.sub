@@ -1,0 +1,5 @@
+sl/src/my-sl-gty-interface/src/sector_logic_rx_packet_former.vhd 2008
+sl/src/my-sl-gty-interface/src/sector_logic_tx_packet_former.vhd 2008
+sl/src/my-sl-gty-interface/src/sector_logic_tx_packet_former.vhd 2008
+sl/src/my-sl-gty-interface/src/gty_fixed_latency/rx_comma_detection.vhd 2008
+sl/src/my-sl-gty-interface/src/gty_fixed_latency/dec_8b10b.vhd 2008

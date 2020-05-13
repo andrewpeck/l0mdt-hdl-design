@@ -72,8 +72,8 @@ begin
         --seg1 <= ('1', to_signed(-34859, z_glob_width), to_unsigned(112823, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
         --seg2 <= ('1', to_signed(-45780, z_glob_width), to_unsigned(150509, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
         -- Dbeta test
-        seg1 <= ('1', to_signed(2979, z_glob_width), to_unsigned(110375, r_glob_width), to_signed(6391, theta_glob_width), to_signed(-24, phi_width), to_signed(45, eta_width), to_unsigned(1,chamber_id_width));
-        seg2 <= ('1', to_signed(3180, z_glob_width), to_unsigned(148150, r_glob_width), to_signed(6431, theta_glob_width), (others => '0'), (others => '0'), to_unsigned(1, chamber_id_width));
+        seg1 <= ('1', to_signed(2979, z_glob_width), to_unsigned(110375, r_glob_width), to_signed(6391, theta_glob_width), to_signed(-24, phi_width), to_unsigned(1,chamber_id_width));
+        seg2 <= ('1', to_signed(3180, z_glob_width), to_unsigned(148150, r_glob_width), to_signed(6431, theta_glob_width), (others => '0'), to_unsigned(1, chamber_id_width));
 
         wait for clk_period;
         seg0 <= null_globalseg;

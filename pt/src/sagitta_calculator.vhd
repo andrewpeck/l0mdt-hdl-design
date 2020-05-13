@@ -19,18 +19,19 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, pt_lib;
+library IEEE, pt_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use pt_lib.pt_pkg.all;
+use shared_lib.custom_types_davide_pkg.all;
 
 entity sagitta_calculator is
   port (
     clk               : in std_logic;
-    i_seg0            : in t_globalseg;
-    i_seg1            : in t_globalseg;
-    i_seg2            : in t_globalseg;
+    i_seg0            : in sf_seg_data_barrel_rt;
+    i_seg1            : in sf_seg_data_barrel_rt;
+    i_seg2            : in sf_seg_data_barrel_rt;
     o_inv_s           : out unsigned(inv_s_width-1 downto 0);
     o_dv_s            : out std_logic
   );
@@ -141,24 +142,24 @@ begin
     begin
         if rising_edge(clk) then
             -- Clock 0
-            dv0 <= (i_seg0.valid and i_seg1.valid and i_seg2.valid);
+            dv0 <= (i_seg0.data_valid and i_seg1.data_valid and i_seg2.data_valid);
             
-            delta_z_20 <= i_seg2.z_glob - i_seg0.z_glob;
-            delta_z_10 <= i_seg1.z_glob - i_seg0.z_glob;
-            delta_r_20 <= resize(shift_right(i_seg2.r_glob - i_seg0.r_glob, shift_m_den), delta_r_red_width);
-            delta_r_10 <= i_seg1.r_glob - i_seg0.r_glob;
+            delta_z_20 <= i_seg2.pos - i_seg0.pos;
+            delta_z_10 <= i_seg1.pos - i_seg0.pos;
+            delta_r_20 <= resize(shift_right(BOL_SEC3_RHO_s - BIL_SEC3_RHO_s, shift_m_den), delta_r_red_width);
+            delta_r_10 <= BML_SEC3_RHO_s - BIL_SEC3_RHO_s;
 
             -- Delta Beta calculations
-            dvb_01 <= (i_seg0.valid and i_seg1.valid and not i_seg2.valid);
-            dvb_02 <= (i_seg0.valid and not i_seg1.valid and i_seg2.valid);
-            dvb_12 <= (not i_seg0.valid and i_seg1.valid and i_seg2.valid);
+            dvb_01 <= (i_seg0.data_valid and i_seg1.data_valid and not i_seg2.data_valid);
+            dvb_02 <= (i_seg0.data_valid and not i_seg1.data_valid and i_seg2.data_valid);
+            dvb_12 <= (not i_seg0.data_valid and i_seg1.data_valid and i_seg2.data_valid);
 
-            if (i_seg0.valid and i_seg1.valid and not i_seg2.valid) = '1' then
-                delta_r_20 <= resize(unsigned(abs(i_seg0.theta_glob - i_seg1.theta_glob)), delta_r_red_width);
-            elsif (i_seg0.valid and not i_seg1.valid and i_seg2.valid) = '1' then
-                delta_r_20 <= resize(unsigned(abs(i_seg0.theta_glob - i_seg2.theta_glob)), delta_r_red_width);
-            elsif (not i_seg0.valid and i_seg1.valid and i_seg2.valid) = '1' then
-                delta_r_20 <= resize(unsigned(abs(i_seg1.theta_glob - i_seg2.theta_glob)), delta_r_red_width);
+            if (i_seg0.data_valid and i_seg1.data_valid and not i_seg2.data_valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg0.angle - i_seg1.angle)), delta_r_red_width);
+            elsif (i_seg0.data_valid and not i_seg1.data_valid and i_seg2.data_valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg0.angle - i_seg2.angle)), delta_r_red_width);
+            elsif (not i_seg0.data_valid and i_seg1.data_valid and i_seg2.data_valid) = '1' then
+                delta_r_20 <= resize(unsigned(abs(i_seg1.angle - i_seg2.angle)), delta_r_red_width);
             end if;
 
             -- Clock 1

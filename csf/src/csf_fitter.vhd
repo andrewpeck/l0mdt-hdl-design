@@ -19,11 +19,12 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib;
+library IEEE, csf_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_fitter is
   Port ( 
@@ -46,10 +47,10 @@ architecture Behavioral of csf_fitter is
     signal finalhit : std_logic := '0';
 
     -- Summation signal widths
-    constant SumXZ_width            : integer := num_hits_width+x_width+z_width;
-    constant SumZ_width             : integer := num_hits_width+z_width;
-    constant SumX_width             : integer := num_hits_width+x_width;
-    constant SumX2_width            : integer := num_hits_width+x_width+x_width;
+    constant SumXZ_width            : integer := num_hits_width+MDT_LOCAL_AXI_LEN*2;
+    constant SumZ_width             : integer := num_hits_width+MDT_LOCAL_AXI_LEN;
+    constant SumX_width             : integer := num_hits_width+MDT_LOCAL_AXI_LEN;
+    constant SumX2_width            : integer := num_hits_width+MDT_LOCAL_AXI_LEN*2;
 
     -- Summation signals
     signal dsp_SumXZ,dsp_SumXZ_s    : signed(SumXZ_width-1 downto 0) := (others => '0');

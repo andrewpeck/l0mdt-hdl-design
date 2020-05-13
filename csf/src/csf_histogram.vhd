@@ -24,16 +24,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_histogram is
-  Port (
-    clk             : in std_logic;
-    i_mdthit        : in t_mdt_hit;
-    i_seed          : in t_seed;
-    i_eof           : in std_logic;
-    o_histo_hit0    : out t_histo_hit;
-    o_histo_hit1    : out t_histo_hit
-  );
+    Port (
+        clk             : in std_logic;
+        i_mdthit        : in hp_hit_data_rt;
+        i_seed          : in ucm_csf_seed_rt;
+        i_eof           : in std_logic;
+        o_histo_hit0    : out t_histo_hit;
+        o_histo_hit1    : out t_histo_hit
+    );
 end csf_histogram;
 
 architecture Behavioral of csf_histogram is
@@ -43,10 +44,10 @@ architecture Behavioral of csf_histogram is
     constant max_hits_per_bin                       : real    := 8.0;
     constant bin_depth                              : integer := integer(log2(max_hits_per_bin));
     constant inv_sqrt_m_width                       : integer := 18;
-    constant squ_m_width                            : integer := mbar_width;
+    constant squ_m_width                            : integer := UCM_MBAR_LEN;
 
     -- Signals for seed information 
-    signal mbar                                     : signed(mbar_width-1 downto 0) 
+    signal mbar                                     : signed(UCM_MBAR_LEN-1 downto 0) 
         := (others => '0');
     signal squ_m                                    : std_logic_vector(squ_m_width-1 downto 0) 
         := (others => '0');
@@ -66,9 +67,9 @@ architecture Behavioral of csf_histogram is
     
 --    type t_invsqrt_ROM is array ( natural range <> ) of unsigned(inv_sqrt_m_width-1 downto 0);
 --    function invsqrt_ROM return t_invsqrt_ROM is 
---        variable temp : t_invsqrt_ROM(2**(mbar_width)-1 downto 0) := (others => (others => '0'));
+--        variable temp : t_invsqrt_ROM(2**(UCM_MBAR_LEN)-1 downto 0) := (others => (others => '0'));
 --    begin
---        for k in 2**(mbar_width) -1 downto 0 loop
+--        for k in 2**(UCM_MBAR_LEN) -1 downto 0 loop
 --            temp(k) := to_unsigned(integer(floor( (( 2.0 ** inv_sqrt_m_width  ) ) / 
 --                sqrt( mbar_multi*mbar_multi + real(k*k) ) )), inv_sqrt_m_width);
 --        end loop;
@@ -84,25 +85,25 @@ architecture Behavioral of csf_histogram is
     );
     END COMPONENT;
     
---    type t_sqrt_ROM is array ( natural range <> ) of unsigned(mbar_width downto 0);
+--    type t_sqrt_ROM is array ( natural range <> ) of unsigned(UCM_MBAR_LEN downto 0);
 --    function sqrt_ROM return t_sqrt_ROM is
---        variable temp : t_sqrt_ROM(2**(mbar_width) -1 downto 0) := (others => (others => '0'));
+--        variable temp : t_sqrt_ROM(2**(UCM_MBAR_LEN) -1 downto 0) := (others => (others => '0'));
 --    begin   
---        for k in 2**(mbar_width) -1 downto 0 loop
+--        for k in 2**(UCM_MBAR_LEN) -1 downto 0 loop
 --            temp(k) := to_unsigned(integer(floor(sqrt(mbar_multi*mbar_multi + real(k*k))))
---                , mbar_width);
+--                , UCM_MBAR_LEN);
 --        end loop;
 --        return temp;
 --    end function;
 
 
     -- MDT hit signals
-    signal mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : t_mdt_hit := null_mdt_hit;
+    signal mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : hp_hit_data_rt;
     -- Constants for b+/- calculation
-    constant squ_m_r_width                             : integer := squ_m_width + r_width;
-    constant m_x_width                                 : integer := mbar_width + x_width + 1;
+    constant squ_m_r_width                             : integer := squ_m_width + MDT_RADIUS_LEN;
+    constant m_x_width                                 : integer := UCM_MBAR_LEN + MDT_LOCAL_AXI_LEN + 1;
 
-    constant z_m_width                                 : integer := z_width     + mbar_width + 1;
+    constant z_m_width                                 : integer := MDT_LOCAL_AXI_LEN     + UCM_MBAR_LEN + 1;
     constant m_x_z_m_width                             : integer := z_m_width;
 
 
@@ -146,12 +147,12 @@ architecture Behavioral of csf_histogram is
         := (others => (others => '0'));
 
     -- Delta_x, Delta_y constants
-    constant m_inv_squ_m_width                          : integer := mbar_width + inv_sqrt_m_width +1;
+    constant m_inv_squ_m_width                          : integer := UCM_MBAR_LEN + inv_sqrt_m_width +1;
     constant m_multi_inv_squ_m_width                    : integer := m_inv_squ_m_width + 1;
     constant delta_z_full_width                         : integer 
-        := m_multi_inv_squ_m_width + r_width + 1;
+        := m_multi_inv_squ_m_width + MDT_RADIUS_LEN + 1;
     constant delta_x_full_width                         : integer 
-        := mbar_width + inv_sqrt_m_width + r_width + 2;
+        := UCM_MBAR_LEN + inv_sqrt_m_width + MDT_RADIUS_LEN + 2;
 
     -- Signals for Delta_x, Delta_z to calculate exact hit coordinate
     signal dsp_m_inv_squ_m, dsp_m_inv_squ_m_s         : signed(m_inv_squ_m_width-1 downto 0) 
@@ -162,9 +163,9 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
     signal delta_x_full, delta_x_full_s               : signed(delta_x_full_width-1 downto 0) 
         := (others => '0');
-    signal delta_x, delta_x_s, delta_x_ss             : unsigned(x_width-1 downto 0) 
+    signal delta_x, delta_x_s, delta_x_ss             : unsigned(MDT_LOCAL_AXI_LEN-1 downto 0) 
         := (others => '0');
-    signal delta_z, delta_z_s, delta_z_ss             : signed(z_width-1 downto 0) 
+    signal delta_z, delta_z_s, delta_z_ss             : signed(MDT_LOCAL_AXI_LEN-1 downto 0) 
         := (others => '0');
   
     -- Signals for maximum identification
@@ -221,19 +222,18 @@ begin
             o_histo_hit0 <= null_histo_hit;
             o_histo_hit1 <= null_histo_hit;
                     
-            if i_seed.valid = '1' then
+            if i_seed.data_valid = '1' then
                 mbar <= i_seed.mbar;
-                rom_en <= i_seed.valid;
+                rom_en <= i_seed.data_valid;
             end if;
     
             -- Clock 0
-            dv0   <= i_mdthit.valid;
-            dsp_squ_m_r <= shift_right(unsigned(squ_m)*i_mdthit.r,r_over_z_multi_width); 
-            dsp_m_x <= mbar*signed('0' & i_mdthit.x); 
-            dsp_z_m_multi <= resize(i_mdthit.z*integer(mbar_multi), z_m_width );
+            dv0   <= i_mdthit.data_valid;
+            dsp_squ_m_r <= shift_right(unsigned(squ_m)*i_mdthit.radius,r_over_z_multi_width); 
+            dsp_m_x <= mbar*signed('0' & i_mdthit.local_x); 
+            dsp_z_m_multi <= resize(i_mdthit.local_z*integer(mbar_multi), z_m_width );
             dsp_m_inv_squ_m <= mbar*signed('0' & invsqu_m);
-            dsp_m_multi_inv_squ_m <= resize(unsigned(invsqu_m)*integer(mbar_multi),
-                                     m_multi_inv_squ_m_width);
+            dsp_m_multi_inv_squ_m <= resize(unsigned(invsqu_m)*integer(mbar_multi), m_multi_inv_squ_m_width);
             mdt_hit_s <= i_mdthit;
             eof0 <= i_eof;
 
@@ -243,14 +243,14 @@ begin
             dsp_squ_m_r_s <= dsp_squ_m_r;
             mdt_hit_ss <= mdt_hit_s;
             dsp_m_inv_squ_m_s <= dsp_m_inv_squ_m;
-            delta_z_full <= signed('0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.r));
+            delta_z_full <= signed('0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.radius));
             eof1 <= eof0;
 
             -- Clock 2
             dv2 <= dv1;
             bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
             bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            delta_x_full_s <= dsp_m_inv_squ_m_s*signed('0' & mdt_hit_ss.r);
+            delta_x_full_s <= dsp_m_inv_squ_m_s*signed('0' & mdt_hit_ss.radius);
             delta_z_full_s <= delta_z_full;
             eof2 <= eof1;
             mdt_hit_sss <= mdt_hit_ss;
@@ -261,8 +261,8 @@ begin
                 histo_width+2 );
             bminus <= resize(shift_right(bminus_full, histo_full_width - histo_width ), 
                 histo_width+2 );
-            delta_x <= resize(shift_right(unsigned(abs(delta_x_full_s)), r_over_z_multi_width + inv_sqrt_m_width), x_width);
-            delta_z <= resize(shift_right(delta_z_full_s, r_over_z_multi_width + inv_sqrt_m_width), z_width);
+            delta_x <= resize(shift_right(unsigned(abs(delta_x_full_s)), r_over_z_multi_width + inv_sqrt_m_width), MDT_LOCAL_AXI_LEN);
+            delta_z <= resize(shift_right(delta_z_full_s, r_over_z_multi_width + inv_sqrt_m_width), MDT_LOCAL_AXI_LEN);
             mdt_hit_ssss <= mdt_hit_sss;
             eof3 <= eof2;
 
@@ -274,10 +274,10 @@ begin
             hit_plus.valid <= dv3;
             hit_minus.valid <= dv3;
                 
-            hit_plus.x <= mdt_hit_ssss.x - delta_x;
-            hit_minus.x <= mdt_hit_ssss.x + delta_x;
-            hit_plus.z <= mdt_hit_ssss.z + delta_z;
-            hit_minus.z <= mdt_hit_ssss.z - delta_z;
+            hit_plus.x <= mdt_hit_ssss.local_x - delta_x;
+            hit_minus.x <= mdt_hit_ssss.local_x + delta_x;
+            hit_plus.z <= mdt_hit_ssss.local_z + delta_z;
+            hit_minus.z <= mdt_hit_ssss.local_z - delta_z;
             eof4 <= eof3;     
 
             -- Clock 5

@@ -1,48 +1,64 @@
-----------------------------------------------------------------------------------
--- Company: Max Planck Institut For Physics Munich
--- Engineer: Davide Cieri
--- 
--- Create Date: 04/26/2019 15:57 AM
--- Design Name: L0 MDT Trigger  
--- Module Name: top_pt - Behavioral
--- Project Name: ATLAS L0MDT Trigger 
--- Target Devices: xcvu5p-flvb2104-2-e
--- Tool Versions: Vivado 2018.2
--- Description: 
--- iii
--- Dependencies: 
--- 
--- Revision:dddd
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-- Title       : top_pt.vhd
+-- Project     : MDTTP
+--------------------------------------------------------------------------------
+-- File        : top_pt.vhd
+-- Author      : Davide Cieri davide.cieri@cern.ch
+-- Company     : Max-Planck-Institute For Physics, Munich
+-- Created     : Tue Feb 11 13:50:27 2020
+-- Last update : Thu Apr 16 16:25:00 2020
+-- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
+--------------------------------------------------------------------------------
+-- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
+-------------------------------------------------------------------------------
+-- Description:  pT calculator top module
+--------------------------------------------------------------------------------
+-- Revisions:  Revisions and documentation are controlled by
+-- the revision control system (RCS).  The RCS should be consulted
+-- on revision history.
+-------------------------------------------------------------------------------
+
+-- Doxygen-compatible comments
+--! @file top_pt.vhd
+--! @brief top_pt
+--! @details 
+--! pT calculator top module
+--! @author Davide Cieri
 
 
-library IEEE, pt_lib;
+library IEEE, pt_lib, shared_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
 use pt_lib.pt_pkg.all;
 use pt_lib.pt_params_pkg.all;
-use std.textio.all;
 use ieee.std_logic_textio.all;
+use shared_lib.custom_types_davide_pkg.all;
 
 entity top_pt is
-  Port ( 
-    clk : in std_logic;
-    i_segment_BI : in t_globalseg;
-    i_segment_BM : in t_globalseg;
-    i_segment_BO : in t_globalseg;
-    i_rst        : in std_logic;
-    o_pt_online  : out unsigned(pt_width-1 downto 0);
-    o_pt_valid   : out std_logic
+    generic(
+        FLAVOUR : integer := 0; -- Barrel
+        SECTOR  : integer := 3 
+    );
+    Port ( 
+        clk : in std_logic;
+        i_segment_I  : in sf_seg_data_barrel_rt;
+        i_segment_M  : in sf_seg_data_barrel_rt;
+        i_segment_O  : in sf_seg_data_barrel_rt;
+        i_dv_SLC     : in std_logic;
+        i_SLC        : in slc_pt_rt;
+        i_rst        : in std_logic;
+        o_mtc        : out mtc_tf_rt
     );
 end top_pt;
 
 architecture Behavioral of top_pt is
     -- Online segments in global coordinates
-    signal segment_BI, segment_BM, segment_BO : t_globalseg := null_globalseg;
+    signal segment_BI, segment_BM, segment_BO : sf_seg_data_barrel_rt;
+    signal segment_EI, segment_EM, segment_EO : sf_seg_data_endcap_rt;
+
+    -- SLC candidate
+    signal slc : slc_pt_rt;
     -- Chamber combo id
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta : 
            unsigned(chamber_id_width*3 + 4 -1 downto 0) := (others => '0'); 
@@ -57,12 +73,14 @@ architecture Behavioral of top_pt is
                                                              : std_logic := '0';
     signal dv_a : std_logic := '0';
     -- Phi/Eta coordinate
+    signal nsegments : unsigned(MTC_NSEG_LEN-1 downto 0) := (others => '0');
     signal dv_eta : std_logic := '0';
-    signal phi : signed(phi_width-1 downto 0) := (others => '0');
-    signal eta : signed(eta_width-1 downto 0) := (others => '0');
+    signal phi : signed(SLC_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
+    signal eta : signed(MTC_ETA_LEN-1 downto 0) := (others => '0');
 
     signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
-    signal dbeta_01, dbeta_02, dbeta_12 : unsigned(dbeta_width-1 downto 0) := (others => '0');
+    signal dbeta_01, dbeta_02, dbeta_12 : unsigned(dbeta_width-1 downto 0) 
+                                        := (others => '0');
 
     -- Signal for pT calculation
     -- Sagitta/Dbeta-dependent part
@@ -77,13 +95,13 @@ architecture Behavioral of top_pt is
     -- Phi-dependent part
     signal b0, b0_s : std_logic_vector(b0_width-1 downto 0) := (others => '0');
     signal b1 : std_logic_vector(b1_width-1 downto 0) := (others => '0');
-    signal b1_phi, pt_phi_01 : signed(b1_width+phi_width-1 downto 0) 
+    signal b1_phi, pt_phi_01 : signed(b1_width+SLC_PT_PHIMOD_LEN-1 downto 0) 
            := (others => '0');
     signal b2 : std_logic_vector(b2_width-1 downto 0) := (others => '0');
-    signal b2_phi : signed(b2_width+phi_width-1 downto 0) := (others => '0');
-    signal b2_phi2 : signed(b2_width+phi_width*2 -1  downto 0) 
+    signal b2_phi : signed(b2_width+SLC_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
+    signal b2_phi2 : signed(b2_width+SLC_PT_PHIMOD_LEN*2 -1  downto 0) 
            := (others => '0');
-    signal pt_p : signed(b2_width+phi_width*2 -1  downto 0) := (others => '0');
+    signal pt_p : signed(b2_width+SLC_PT_PHIMOD_LEN*2 -1  downto 0) := (others => '0');
     signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss  
            : signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal bin_sp : unsigned(3 downto 0) := (others => '0');
@@ -92,13 +110,17 @@ architecture Behavioral of top_pt is
     -- Eta dependent part
     signal c0, c0_s : std_logic_vector(c0_width-1 downto 0) := (others => '0');
     signal c1 : std_logic_vector(c1_width-1 downto 0) := (others =>'0');
-    signal c1_eta : signed(c1_width+eta_width-1 downto 0) := (others => '0');
+    signal c1_eta : signed(c1_width+MTC_ETA_LEN-1 downto 0) := (others => '0');
 
     -- Final pt signals
     
     signal pt_online  :  signed(a1_width+inv_s_width downto 0) := (others => '0');
     signal pt_valid   :  std_logic := '0';
-    
+    -- Mtc output parameters
+    signal pt : unsigned(MTC_PT_LEN-1 downto 0) := (others => '0');
+    signal mtc_valid : std_logic := '0';
+    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
+
     COMPONENT a0_ROM
     PORT (
         clka : IN STD_LOGIC;
@@ -242,27 +264,26 @@ begin
     pt_top_proc : process( clk )
     begin
         if rising_edge(clk) then
-            segment_BI <= null_globalseg;
-            segment_BM <= null_globalseg;
-            segment_BO <= null_globalseg;
 
-            if i_segment_BI.valid = '1' or 
-               i_segment_BM.valid = '1' or 
-               i_segment_BO.valid = '1' then
-               segment_BI <= i_segment_BI;
-               segment_BM <= i_segment_BM;
-               segment_BO <= i_segment_BO;
-               comboid_s  <= "0000" &
-                             i_segment_BO.chamber_id & 
-                             i_segment_BM.chamber_id & 
-                             i_segment_BI.chamber_id;
-               dv_combo_s     <= '1';
+            if  i_segment_I.data_valid = '1' or 
+                i_segment_M.data_valid = '1' or 
+                i_segment_O.data_valid = '1' then
+                segment_BI <= i_segment_I;
+                segment_BM <= i_segment_M;
+                segment_BO <= i_segment_O;
+                comboid_s  <= "0000" &
+                              unsigned(i_segment_O.chamber_id) & 
+                              unsigned(i_segment_M.chamber_id) & 
+                              unsigned(i_segment_I.chamber_id);
+                nsegments <= to_unsigned(stdlogic_integer(i_segment_I.data_valid) + stdlogic_integer(i_segment_M.data_valid) + stdlogic_integer(i_segment_O.data_valid), MTC_NSEG_LEN);
+                quality <= i_segment_O.data_valid & i_segment_M.data_valid & i_segment_I.data_valid;
+                dv_combo_s     <= '1';
             end if;
 
-            if segment_BI.valid = '1' then
-                phi  <= segment_BI.phi_glob;
-            elsif segment_BM.valid = '1' then
-                phi  <= segment_BM.phi_glob;
+            -- save the slc
+            if i_dv_SLC = '1' then
+                slc  <= i_SLC;
+                phi  <= i_SLC.phimod;
             end if;
 
             dv_combo_s_s <= dv_combo_s;
@@ -278,9 +299,9 @@ begin
 
             dv2 <= dv1;
             comboid_phi <= pt_bin(pt_s) & 
-                           segment_BO.chamber_id & 
-                           segment_BM.chamber_id & 
-                           segment_BI.chamber_id;            
+                           unsigned(segment_BO.chamber_id) & 
+                           unsigned(segment_BM.chamber_id) & 
+                           unsigned(segment_BI.chamber_id);            
             pt_s0 <= pt_s;
 
             dv3 <= dv2;
@@ -302,9 +323,9 @@ begin
 
             dv7 <= dv6;
             comboid_eta <= pt_bin(pt_sp) & 
-                           segment_BO.chamber_id & 
-                           segment_BM.chamber_id & 
-                           segment_BI.chamber_id;
+                           unsigned(segment_BO.chamber_id) & 
+                           unsigned(segment_BM.chamber_id) & 
+                           unsigned(segment_BI.chamber_id);
             pt_sp_s <= pt_sp;
 
             dv8 <= dv7;
@@ -318,13 +339,22 @@ begin
             pt_valid <= dv9;
             pt_online <= pt_sp_sss - c1_eta;
             
-            o_pt_valid <= pt_valid;
-            o_pt_online <= resize(unsigned(pt_online), pt_width);
+            -- Assembling the MTC candidate
+            mtc_valid <= pt_valid;
+            pt <= resize(unsigned(pt_online), MTC_PT_LEN);
             
+            o_mtc.data_valid <= mtc_valid;
+            o_mtc.muid <= slc.muid;
+            o_mtc.eta <= eta;
+            o_mtc.pt  <= pt;
+            o_mtc.pt_thr <= pt_threshold(pt);
+            o_mtc.charge <= slc.charge; -- temporary
+            -- Still to add other cases
+            o_mtc.nseg <= nsegments;
+            o_mtc.quality <= quality;   
             --reset
-            if pt_valid = '1' then
+            if pt_valid = '1' or i_rst = '1' then
                 phi <= (others => '0');
-                eta <= (others => '0');
                 comboid_s <= (others => '0');
                 dv_combo_s <= '0';
             end if;
