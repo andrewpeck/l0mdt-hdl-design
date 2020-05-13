@@ -46,7 +46,7 @@ entity ucm_hps is
     -- to pt calc
     o_sf2pt_av           : out sf2pt_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_vav            : out pipelines_avt
+    o_uCM2pl_av            : out pipelines_avt
   );
 end entity ucm_hps;
 
@@ -69,7 +69,7 @@ begin
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_data_av      => uCM2hps_av,
     -- MDT hit
-    o_uCM2pl_vav            => uCM2pl_vav
+    o_uCM2pl_av            => uCM2pl_vav
   );
 
   HPS_GEN: for hps_i in MAX_NUM_HPS - 1 downto 0 generate
@@ -92,19 +92,19 @@ begin
       );
   end generate;
 
-  MAIN_PL : entity shared_lib.std_pipeline
-    generic map(
-      num_delays  => MAIN_PIPELINE_CLOCKS,
-      num_bits    => PIPELINE_AV_LEN
-    )
-    port map(
-      clk         => clk,
-      Reset_b     => Reset_b,
-      glob_en     => glob_en,
-      --
-      i_data      => uCM2pl_vav,
-      o_data      => o_uCM2pl_vav
-    );
+  -- MAIN_PL : entity shared_lib.std_pipeline
+  --   generic map(
+  --     num_delays  => MAIN_PIPELINE_CLOCKS,
+  --     num_bits    => PIPELINE_AV_LEN
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     Reset_b     => Reset_b,
+  --     glob_en     => glob_en,
+  --     --
+  --     i_data      => uCM2pl_vav,
+  --     o_data      => o_uCM2pl_vav
+  --   );
 
 
 end beh;

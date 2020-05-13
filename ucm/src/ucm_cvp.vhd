@@ -41,7 +41,7 @@ end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
   signal i_data_r     : ucm_prepro_rt;
-  signal ucm2hps_ar : ucm2hps_at(MAX_NUM_HPS -1 downto 0);
+  signal ucm2hps_ar : ucm2hps_at;
 begin
 
   i_data_r <= structify(i_data_v);

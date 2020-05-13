@@ -38,11 +38,11 @@ entity hps is
     -- control
 
     -- SLc
-    i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av        : in ucm2hps_avt;
     -- MDT hit
-    i_mdt_tar_av        : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt;
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av          : out sf2pt_avt
   );
 end entity hps;
 
@@ -54,7 +54,7 @@ architecture beh of hps is
   -- signal control_enable(MAX_NUM_HEG -1 downto 0);
 
   signal heg2sf_control        : hps_ctrl2sf_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt;
   signal heg2sf_mdt_data       : hps_bm2sf_avt(MAX_NUM_HEG -1 downto 0);
 
 begin

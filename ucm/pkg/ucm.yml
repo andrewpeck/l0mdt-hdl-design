@@ -16,7 +16,7 @@ ucm_prepro:
   muid:       {type: slc_muid}
   chambers:   {type: slc_chid}
   common:     {type: slc_common, dprint: on}
-  specific:   {type: logic , length: SLC_SPECIFIC_LEN , dprint: on}
+  specific:   {type: logic , length: SLC_SPECIFIC_LEN}
   data_valid: {type: logic}
 
 ucm_prepro_ : {array: open , type: ucm_prepro , _: off}

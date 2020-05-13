@@ -45,7 +45,7 @@ entity top_ucm_hps is
     -- to pt calc
     o_sf2pt_av          : out sf2pt_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_vav        : out pipelines_avt
+    o_uCM2pl_av        : out pipelines_avt
   );
 end entity top_ucm_hps;
 
@@ -66,7 +66,7 @@ begin
     -- to pt calc
     o_sf2pt_av          => o_sf2pt_av,
     -- MDT hit
-    o_uCM2pl_vav        => o_uCM2pl_vav
+    o_uCM2pl_av        => o_uCM2pl_av
   );
 
 

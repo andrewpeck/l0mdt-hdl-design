@@ -190,6 +190,15 @@ package common_pkg is
   function nullify(x: tar2hps_at) return tar2hps_at;
   function nullify(x: tar2hps_avt) return tar2hps_avt;
 
+  type tar2hps_aat is array(integer range <>) of tar2hps_at;
+  type tar2hps_aavt is array(integer range <>) of tar2hps_avt;
+  function vectorify(x: tar2hps_aat) return tar2hps_aavt;
+  function vectorify(x: tar2hps_aat) return std_logic_vector;
+  function structify(x: tar2hps_aavt) return tar2hps_aat;
+  function structify(x: std_logic_vector) return tar2hps_aat;
+  function nullify(x: tar2hps_aat) return tar2hps_aat;
+  function nullify(x: tar2hps_aavt) return tar2hps_aavt;
+
   constant   UCM_MBAR_LEN         :  integer := 10;
 
   constant   UCM_Z_ROI_LEN        :  integer := 7;
@@ -279,22 +288,32 @@ package common_pkg is
   function nullify(x: pipelines_avt) return pipelines_avt;
 
   type sf2pt_rt is record
+     dummy                :  std_logic_vector(8-1 downto 0);
      data_valid           :  std_logic;
   end record sf2pt_rt;
-  constant SF2PT_LEN : integer := 1;
+  constant SF2PT_LEN : integer := 9;
   subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
   function vectorify(x: sf2pt_rt) return sf2pt_rvt;
   function structify(x: sf2pt_rvt) return sf2pt_rt;
   function nullify (x: sf2pt_rt) return sf2pt_rt;
 
-  type sf2pt_at is array(integer range <>) of sf2pt_rt;
-  type sf2pt_avt is array(integer range <>) of sf2pt_rvt;
+  type sf2pt_at is array(MAX_NUM_HEG-1 downto 0) of sf2pt_rt;
+  type sf2pt_avt is array(MAX_NUM_HEG-1 downto 0) of sf2pt_rvt;
   function vectorify(x: sf2pt_at) return sf2pt_avt;
   function vectorify(x: sf2pt_at) return std_logic_vector;
   function structify(x: sf2pt_avt) return sf2pt_at;
   function structify(x: std_logic_vector) return sf2pt_at;
   function nullify(x: sf2pt_at) return sf2pt_at;
   function nullify(x: sf2pt_avt) return sf2pt_avt;
+
+  type sf2pt_aat is array(integer range <>) of sf2pt_at;
+  type sf2pt_aavt is array(integer range <>) of sf2pt_avt;
+  function vectorify(x: sf2pt_aat) return sf2pt_aavt;
+  function vectorify(x: sf2pt_aat) return std_logic_vector;
+  function structify(x: sf2pt_aavt) return sf2pt_aat;
+  function structify(x: std_logic_vector) return sf2pt_aat;
+  function nullify(x: sf2pt_aat) return sf2pt_aat;
+  function nullify(x: sf2pt_aavt) return sf2pt_aavt;
 
 end package common_pkg;
 
@@ -671,6 +690,59 @@ package body common_pkg is
     return y;
   end function nullify;
 
+  function vectorify(x: tar2hps_aat) return tar2hps_aavt is
+    variable y :  tar2hps_aavt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: tar2hps_aat) return std_logic_vector is
+    variable y : std_logic_vector(x'length*198-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-198) := vectorify(x(i));
+      msb := msb - 198 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: tar2hps_aavt) return tar2hps_aat is
+    variable y :  tar2hps_aat(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return tar2hps_aat is
+    variable y :  tar2hps_aat(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-198));
+      msb := msb - 198 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: tar2hps_aat) return tar2hps_aat is
+    variable y :  tar2hps_aat(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: tar2hps_aavt) return tar2hps_aavt is
+    variable y :  tar2hps_aavt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt is
     variable y : ucm_csf_barrel_rvt;
   begin
@@ -948,24 +1020,27 @@ package body common_pkg is
   function vectorify(x: sf2pt_rt) return sf2pt_rvt is
     variable y : sf2pt_rvt;
   begin
+    y(8 downto 1)              := x.dummy;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: sf2pt_rvt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
+    y.dummy                    := x(8 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: sf2pt_rt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
+    y.dummy                    := nullify(x.dummy);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
 
   function vectorify(x: sf2pt_at) return sf2pt_avt is
-    variable y :  sf2pt_avt(x'range);
+    variable y :  sf2pt_avt;
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
@@ -973,17 +1048,17 @@ package body common_pkg is
     return y;
   end function vectorify;
   function vectorify(x: sf2pt_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable y : std_logic_vector(x'length*9-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-1) := vectorify(x(i));
-      msb := msb - 1 -1;
+      y(msb downto msb-9) := vectorify(x(i));
+      msb := msb - 9 -1;
     end loop l;
     return y;
   end function vectorify;
   function structify(x: sf2pt_avt) return sf2pt_at is
-    variable y :  sf2pt_at(x'range);
+    variable y :  sf2pt_at;
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
@@ -991,17 +1066,17 @@ package body common_pkg is
     return y;
   end function structify;
   function structify(x: std_logic_vector) return sf2pt_at is
-    variable y :  sf2pt_at(x'range);
+    variable y :  sf2pt_at;
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-1));
-      msb := msb - 1 -1;
+      y(i) := structify(x(msb downto msb-9));
+      msb := msb - 9 -1;
     end loop l;
     return y;
   end function structify;
   function nullify(x: sf2pt_at) return sf2pt_at is
-    variable y :  sf2pt_at(x'range);
+    variable y :  sf2pt_at;
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
@@ -1009,7 +1084,60 @@ package body common_pkg is
     return y;
   end function nullify;
   function nullify(x: sf2pt_avt) return sf2pt_avt is
-    variable y :  sf2pt_avt(x'range);
+    variable y :  sf2pt_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf2pt_aat) return sf2pt_aavt is
+    variable y :  sf2pt_aavt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: sf2pt_aat) return std_logic_vector is
+    variable y : std_logic_vector(x'length*27-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-27) := vectorify(x(i));
+      msb := msb - 27 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: sf2pt_aavt) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-27));
+      msb := msb - 27 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: sf2pt_aat) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: sf2pt_aavt) return sf2pt_aavt is
+    variable y :  sf2pt_aavt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

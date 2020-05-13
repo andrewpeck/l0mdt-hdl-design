@@ -21,4 +21,4 @@ BD/*
 IP/*/*
 !IP/*/*.xci
 .gitlab-ci_*.yml
-
+_hdl_checker/
