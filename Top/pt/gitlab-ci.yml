@@ -1,6 +1,6 @@
 #################### pT Project ###########################
 
-reate_project:pt:
+create_project:pt:
     extends: .create_project
     variables:
       extends: .vars
