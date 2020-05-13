@@ -33,7 +33,7 @@ entity hp_calc_dt2r_large is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
 
-    i_drift_time        : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
+    i_drift_time        : in unsigned(MDT_TIME_LEN -1 downto 0);
     i_data_valid        : in std_logic;
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
     o_data_valid        : out std_logic

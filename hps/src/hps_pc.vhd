@@ -37,7 +37,7 @@ entity hps_pc is
     -- configuration & control
     -- MDT hit
     i_mdt_tar_v         : in tar2hps_rvt;
-    o_mdt_full_data     : out hp_hpsPc2hp_vt
+    o_mdt_full_data     : out hp_hpsPc2hp_rvt
   );
 end entity hps_pc;
 

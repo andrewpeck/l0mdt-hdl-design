@@ -40,8 +40,8 @@ entity heg_control is
     i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
     o_uCM2sf_data_v     : out ucm2hps_rvt;
-    o_uCM2hp_data_v     : out hp_heg2hp_slc_vt;
-    o_SLC_Window_v      : out hp_heg2hp_window_vt;
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
+    o_SLC_Window_v      : out hp_heg2hp_window_avt;
     
     o_control           : out heg_ctrl2hp_rt
   );
@@ -62,7 +62,7 @@ architecture beh of heg_control is
       -- SLc in
       i_uCM_data_v        : in ucm2hps_rvt;
       -- SLc out
-      o_SLC_Window_v      : out hp_heg2hp_window_vt;
+      o_SLC_Window_v      : out hp_heg2hp_window_avt;
       o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
       o_Roi_win_valid     : out std_logic
     );
@@ -203,7 +203,7 @@ entity heg_c_window is
     -- SLc in
     i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
-    o_SLC_Window_v      : out hp_heg2hp_window_vt;
+    o_SLC_Window_v      : out hp_heg2hp_window_avt;
     o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
     o_Roi_win_valid     : out std_logic
   );
@@ -217,7 +217,7 @@ architecture beh of heg_c_window is
   type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
   signal Roi_window_LUT : trLUT_layer_t;
   signal Roi_w_index : integer;
-  signal Roi_window_a : hp_heg2hp_window_st;
+  signal Roi_window_a : hp_heg2hp_window_at;
 begin
 
   int_uCM_data <= structify(i_uCM_data_v);

@@ -34,7 +34,7 @@ entity hp_calc_radius is
     glob_en             : in std_logic;
 
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
-    i_mdt_time_t0       : in unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
+    i_mdt_time_t0       : in unsigned(MDT_TIME_LEN -1 downto 0);
     i_data_valid         : in std_logic;
     
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
@@ -44,8 +44,8 @@ end entity hp_calc_radius;
 
 architecture beh of hp_calc_radius is
 
-  signal drift_time : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
-  signal BCID_exp : unsigned(HP_DRIFT_TIME_LEN -1 downto 0);
+  signal drift_time : unsigned(MDT_TIME_LEN -1 downto 0);
+  signal BCID_exp : unsigned(MDT_TIME_LEN -1 downto 0);
   signal int_dv : std_logic;
     
 begin
