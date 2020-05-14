@@ -33,8 +33,8 @@ entity ucm_pam_csw is
     --
     i_control           : in ucm_pam_control_at;
     --
-    i_data              : in ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
-    o_data              : out ucm_prepro_avt(MAX_NUM_HEG -1 downto 0)
+    i_data              : in ucm_prepro_avt(NUM_THREADS -1 downto 0);
+    o_data              : out ucm_prepro_avt(NUM_THREADS -1 downto 0)
   );
 end entity ucm_pam_csw;
 
@@ -45,7 +45,7 @@ begin
     if(Reset_b = '0') then
       o_data <= (others => (others => '0'));
     elsif rising_edge(clk) then
-      for csw_i in MAX_NUM_HEG -1 downto 0 loop
+      for csw_i in NUM_THREADS -1 downto 0 loop
         if i_control(csw_i).data_present = '1' then
           o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
         else

@@ -42,7 +42,7 @@ package body config_pkg is
   --   -- IN COMPILATION CONFIGURATIONS 
   --   --------------------------------------------------------------------------------
   --   proj_cfg.MAX_NUM_HP              := 6,
-  --   proj_cfg.MAX_NUM_HEG             := 3,
+  --   proj_cfg.NUM_THREADS             := 3,
   --   proj_cfg.MAX_NUM_HPS             := 3,
   --   proj_cfg.MAX_NUM_SL              := 5,--3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHTBORS))*2,
   --   --------------------------------------------------------------------------------

@@ -42,7 +42,7 @@ package body config_pkg is
   --   -- IN COMPILATION CONFIGURATIONS 
   --   --------------------------------------------------------------------------------
     -- proj_cfg.MAX_NUM_HP              := 5;
-  --   proj_cfg.MAX_NUM_HEG             := 3;
+  --   proj_cfg.NUM_THREADS             := 3;
   --   proj_cfg.MAX_NUM_HPS             := 3;
   --   proj_cfg.MAX_NUM_SL              := 5;
   --   --------------------------------------------------------------------------------

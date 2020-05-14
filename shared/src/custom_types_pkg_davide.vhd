@@ -22,7 +22,7 @@ package custom_types_davide_pkg is
 
   constant   MAX_NUM_HP           :  integer := LEN1;
 
-  constant   MAX_NUM_HEG          :  integer := 3;
+  constant   NUM_THREADS          :  integer := 3;
 
   constant   MAX_NUM_HPS          :  integer := 3;
 

@@ -31,7 +31,7 @@ entity ucm is
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- to hps
-    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
     o_uCM2pl_av            : out pipelines_avt
@@ -48,18 +48,18 @@ architecture beh of ucm is
   signal o_uCM2pl_ar          : pipelines_at;
   -- signal o_uCM2pl_av          : pipeline_avt;
 
-  signal cpam_in_av           : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
-  signal cpam_out_av          : ucm_prepro_avt(MAX_NUM_HEG -1 downto 0);
+  signal cpam_in_av           : ucm_prepro_avt(NUM_THREADS -1 downto 0);
+  signal cpam_out_av          : ucm_prepro_avt(NUM_THREADS -1 downto 0);
 
   signal uCM2pl_av            : pipelines_avt;
 
   signal csw_control          : ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
-  signal pam_CSW_control      : ucm_pam_control_at(MAX_NUM_HEG -1 downto 0);
-  signal proc_info            : ucm_proc_info_at(MAX_NUM_HEG -1 downto 0);
-  signal cvp_control          : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  signal pam_CSW_control      : ucm_pam_control_at(NUM_THREADS -1 downto 0);
+  signal proc_info            : ucm_proc_info_at(NUM_THREADS -1 downto 0);
+  signal cvp_control          : std_logic_vector(NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
-  signal uCM2hps_data         : ucm2hps_aavt(MAX_NUM_HEG -1 downto 0);
+  signal uCM2hps_data         : ucm2hps_aavt(NUM_THREADS -1 downto 0);
 begin
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl
@@ -146,7 +146,7 @@ begin
 
 
   -- vector processors
-  SLC_VP_A : for vp_i in MAX_NUM_HEG -1 downto 0 generate
+  SLC_VP_A : for vp_i in NUM_THREADS -1 downto 0 generate
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
       clk           => clk,
@@ -181,17 +181,17 @@ begin
   -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
   VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
-    VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
+    VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
       o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
     end generate;
   end generate;
 
-  VP2HEG: for heg_i in MAX_NUM_HEG -1 downto 0 generate
-    cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((MAX_NUM_HEG - 1) - heg_i) - 1);
-    -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - MAX_NUM_HEG + heg_i);
+  VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
+    cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((NUM_THREADS - 1) - heg_i) - 1);
+    -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - NUM_THREADS + heg_i);
 
-    -- o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).processed;
-    -- o_uCM2pl_ar(MAX_NUM_SL - MAX_NUM_HEG + heg_i).processed <= proc_info(heg_i).ch;
+    -- o_uCM2pl_ar(MAX_NUM_SL - NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
+    -- o_uCM2pl_ar(MAX_NUM_SL - NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
   end generate;
 
   PL_PROC_GEN: for sl_i in MAX_NUM_SL -1 downto 0 generate
@@ -203,11 +203,11 @@ begin
     o_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     o_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
-    PL_PROC_IF: if sl_i >= MAX_NUM_SL - MAX_NUM_HEG generate
-      o_uCM2pl_ar(sl_i).processed   <= proc_info(sl_i - (MAX_NUM_SL - MAX_NUM_HEG)).processed;
-      o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (MAX_NUM_SL - MAX_NUM_HEG)).ch;
+    PL_PROC_IF: if sl_i >= MAX_NUM_SL - NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).processed   <= proc_info(sl_i - (MAX_NUM_SL - NUM_THREADS)).processed;
+      o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (MAX_NUM_SL - NUM_THREADS)).ch;
     end generate;
-    PL_PROC_0: if sl_i < MAX_NUM_SL - MAX_NUM_HEG generate
+    PL_PROC_0: if sl_i < MAX_NUM_SL - NUM_THREADS generate
       o_uCM2pl_ar(sl_i).processed   <= '0';
       o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
     end generate;

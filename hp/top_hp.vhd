@@ -45,12 +45,12 @@ entity top_hp is
       time_offset         : in unsigned(7 downto 0);
   
       -- SLc
-      i_SLC_Window        : in hp_heg2hp_window_vt;
-      i_slc_data_v        : in hp_heg2hp_slc_vt;
+      i_SLC_Window        : in hp_heg2hp_window_avt;
+      i_slc_data_v        : in hp_heg2hp_slc_rvt;
       -- MDT hit
-      i_mdt_data          : in hp_hpsPc2hp_vt;
+      i_mdt_data          : in hp_hpsPc2hp_rvt;
       -- to Segment finder
-      o_hit_data          : out hp_hp2bm_vt
+      o_hit_data          : out hp_hp2bm_rvt
     );
 end top_hp;
 

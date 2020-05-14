@@ -32,10 +32,10 @@ entity ucm_ctrl is
     i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
-    o_pam_ctrl          : out ucm_pam_control_at(MAX_NUM_HEG -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(MAX_NUM_HEG -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0)
-    -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0)    
+    o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+    o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0)
+    -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0)    
   );
 end entity ucm_ctrl;
 
@@ -62,10 +62,10 @@ architecture beh of ucm_ctrl is
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       --
-      o_pam_ctrl          : out ucm_pam_control_at(MAX_NUM_HEG -1 downto 0);
-      o_proc_info         : out ucm_proc_info_at(MAX_NUM_HEG -1 downto 0);
-      o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0);
-      -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+      o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+      o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+      o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0);
+      -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
       -- internals
       i_num_cand          : in unsigned(3 downto 0);
       i_pam_update        : in std_logic
@@ -269,10 +269,10 @@ entity ucm_ctrl_pam is
     --
     -- i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
-    o_pam_ctrl          : out ucm_pam_control_at(MAX_NUM_HEG -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(MAX_NUM_HEG -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0);
-    -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+    o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0);
+    -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
     -- internals
     i_num_cand          : in unsigned(3 downto 0);
     i_pam_update        : in std_logic
@@ -281,16 +281,16 @@ end entity ucm_ctrl_pam;
 
 architecture beh of ucm_ctrl_pam is
   
-  signal ch_busy      : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  signal ch_busy      : std_logic_vector(NUM_THREADS -1 downto 0);
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
-  signal ch_count     : ch_count_avt(MAX_NUM_HEG -1 downto 0);
+  signal ch_count     : ch_count_avt(NUM_THREADS -1 downto 0);
 
   signal processing   : integer;
 
 begin
 
-  -- for heg_i in MAX_NUM_HEG -1 downto 0 generate
+  -- for heg_i in NUM_THREADS -1 downto 0 generate
   --   -- o_pam2heg.data_present(heg_i) <= 
   --   -- o_pam2heg.addr_
   -- end generate;
@@ -311,10 +311,10 @@ begin
 
       processed := 0;
 
-      for ch_i in MAX_NUM_HEG -1 downto 0 loop
+      for ch_i in NUM_THREADS -1 downto 0 loop
         if ch_busy(ch_i) = '1' then
-          o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
-          o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
+          o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
+          o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
           o_cvp_ctrl(ch_i) <= '0';
           if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
@@ -333,17 +333,17 @@ begin
             if processed < to_integer(i_num_cand) then
               o_cvp_ctrl(ch_i) <= '1';
               o_pam_ctrl(ch_i).data_present <= '1';
-              o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_HEG -1 - processed,4));
-              o_proc_info(MAX_NUM_HEG -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
-              o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '1';
+              o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(NUM_THREADS -1 - processed,4));
+              o_proc_info(NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
+              o_proc_info(NUM_THREADS -1 - processed).processed <= '1';
               ch_busy(ch_i) <= '1';
               processed := processed + 1;
             else
 
             end if;
           else
-            o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
-            o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
+            o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
+            o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
           end if;
         end if;
         

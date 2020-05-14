@@ -42,7 +42,7 @@ architecture beh of ucm_tb is
   -- SLc in
   signal i_slc_data_av          : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
   -- to hps
-  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(NUM_THREADS -1 downto 0);
   signal o_uCM2hps_data_av      : ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av            : pipelines_avt;

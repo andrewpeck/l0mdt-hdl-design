@@ -8,7 +8,7 @@ __config__:
 
 
 # MAX_NUM_HP:   {qualifier: constant , type: integer , value: 6}
-# MAX_NUM_HEG:  {qualifier: constant , type: integer , value: 3}
+# NUM_THREADS:  {qualifier: constant , type: integer , value: 3}
 # MAX_NUM_HPS:  {qualifier: constant , type: integer , value: 3}
 # MAX_NUM_SL:   {qualifier: constant , type: integer , value: 5}
 
@@ -130,9 +130,9 @@ tar2hps:
   time        : { type: unsigned , length: MDT_TIME_LEN }
   data_valid  : {type: logic}
 
-tar2hps_      : {array: MAX_NUM_HP , type: tar2hps , _: off}
+tar2hps_      : {array: open , type: tar2hps , _: off}
 
-tar2hps_a     : {array: open , type: tar2hps_ , _: off , dprint : on}
+# tar2hps_a     : {array: open , type: tar2hps_ , _: off , dprint : on}
 
 
 #############################################################
@@ -177,10 +177,10 @@ ucm2hps:
   specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
   data_valid    : { type: logic}
 
-ucm2hps_        : {array: MAX_NUM_HPS , type: ucm2hps , _: off }
+ucm2hps_        : {array: open , type: ucm2hps , _: off }
 
 # ucm2hps_maxhps  : {array: MAX_NUM_HPS , type: ucm2hps }
-ucm2hps_a       : {array: open , type: ucm2hps_ , _: off }
+# ucm2hps_a       : {array: open , type: ucm2hps_ , _: off }
 
 
 # -----------------------------------------------------------
@@ -198,7 +198,7 @@ pipeline:
 
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 
-pipelines    : {array: MAX_NUM_SL , type: pipeline }
+pipelines    : {array: open , type: pipeline }
 # pipelines_v  : { types: pipelines}
 # pipeline_av    : {array: MAX_NUM_SL , type: logic , length: PIPELINE_LEN}
 
@@ -209,9 +209,9 @@ sf2pt :
   dummy       : {type: logic , length: 8}
   data_valid  : { type : logic}
 
-sf2pt_ : { array: MAX_NUM_HEG , type : sf2pt , _: off}
+sf2pt_ : { array: open , type : sf2pt , _: off}
 
-sf2pt_a : { array: open , type : sf2pt_ , _: off}
+# sf2pt_a : { array: open , type : sf2pt_ , _: off}
 
 # -----------------------------------------------------------  
 # mdt tdc
@@ -284,7 +284,7 @@ sf2pt_a : { array: open , type : sf2pt_ , _: off}
 
 # # pam cross switch control
 
-# ucm_cvp_dest: {array: MAX_NUM_HEG , type: logic, length: 4}
+# ucm_cvp_dest: {array: NUM_THREADS , type: logic, length: 4}
 
 # ucm_pamcsw_control:
 #   data_present: { type: logic , length: MAX_NUM_SL }

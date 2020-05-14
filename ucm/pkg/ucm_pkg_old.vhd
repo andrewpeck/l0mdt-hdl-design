@@ -77,8 +77,8 @@ package ucm_pkg is
   end record;
 
   type ucm_pam_control_rt is record
-    data_present    : std_logic_vector(MAX_NUM_HEG -1 downto 0 );
-    addr_orig       : ucm_csw_dest(MAX_NUM_HEG -1 downto 0 );
+    data_present    : std_logic_vector(NUM_THREADS -1 downto 0 );
+    addr_orig       : ucm_csw_dest(NUM_THREADS -1 downto 0 );
   end record;
 
   type ucm_proc_info_rt is record

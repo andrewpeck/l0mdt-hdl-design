@@ -65,7 +65,7 @@ package config_pkg is
   to_integer(unsigned'("" & ENABLE_NEIGHTBORS))*2;
 
   -- parallel channels
-  constant MAX_NUM_HEG  : integer := CFG.MAX_NUM_HEG;
+  constant NUM_THREADS  : integer := CFG.NUM_THREADS;
   --------------------------------------------------------------------------------
   -- mdt hardware interface config
   --------------------------------------------------------------------------------

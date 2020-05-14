@@ -319,7 +319,7 @@ package common_pkg is
 
   type ucm2hps_art is array (integer range <>) of ucm2hps_rt;
   type ucm2hps_avt is array (integer range <>) of ucm2hps_vt;
-  type ucm2hps_aavt is array (integer range <>) of ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+  type ucm2hps_aavt is array (integer range <>) of ucm2hps_avt(NUM_THREADS -1 downto 0);
 
   --------------------------------------------------------------------------------
   -- data from TAR to hps
@@ -365,7 +365,7 @@ package common_pkg is
   type sf2pt_art is array(integer range <>) of sf2pt_rt;
   subtype sf2pt_vt is std_logic_vector(1 downto 0 );
   type sf2pt_avt is array(integer range <>) of sf2pt_vt;
-  type sf2pt_aavt is array(integer range <>) of sf2pt_avt(MAX_NUM_HEG -1 downto 0);
+  type sf2pt_aavt is array(integer range <>) of sf2pt_avt(NUM_THREADS -1 downto 0);
 
 end package common_pkg;
 
