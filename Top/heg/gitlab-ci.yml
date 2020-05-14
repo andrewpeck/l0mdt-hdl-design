@@ -4,11 +4,11 @@ create_project:heg:
       extends: .vars
       PROJECT_NAME: heg
 
-simulate_project:heg:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: heg
+# simulate_project:heg:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: heg
 
 # synthesise_ips:heg:
 #     extends: .synthesise_ips
@@ -19,14 +19,14 @@ simulate_project:heg:
 #     dependencies:
 #         - create_project:heg
 
-synthesise_project:heg:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: heg
-    dependencies:
-        # - synthesise_ips:heg
-        - create_project:heg
+# synthesise_project:heg:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: heg
+#     dependencies:
+#         # - synthesise_ips:heg
+#         - create_project:heg
 
 # implement_project:heg:
 #     extends: .implement_project
