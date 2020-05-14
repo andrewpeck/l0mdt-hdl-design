@@ -222,6 +222,8 @@ package custom_types_davide_pkg is
 
   constant   UCM_MBAR_LEN         :  integer := 12;
 
+  constant   UCM_MBAR_MULT        :  real := 1024.0;
+
   constant   UCM_Z_ROI_LEN        :  integer := 10;
 
   constant   UCM_R_ROI_LEN        :  integer := 4;
@@ -345,7 +347,15 @@ package custom_types_davide_pkg is
 
   constant   MDT_RADIUS_LEN       :  integer := 9;
 
+  constant   MDT_RADIUS_MULT      :  real := 32.0;
+
   constant   MDT_LOCAL_AXI_LEN    :  integer := 14;
+
+  constant   MDT_LOCAL_AXI_MULT   :  real := 16.0;
+
+  constant   CSF_X_OFFSET         :  integer := -640;
+
+  constant   CSF_Z_OFFSET         :  integer := 1920;
 
   type hp_hit_data_rt is record
      local_z              :  signed(MDT_LOCAL_AXI_LEN-1 downto 0);
