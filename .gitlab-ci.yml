@@ -8,6 +8,8 @@ include:
     - local: '/Top/lsf/gitlab-ci.yml'
     - local: '/Top/pt/gitlab-ci.yml'
     - local: '/Top/ucm/gitlab-ci.yml'
+    - local: '/Top/hp/gitlab-ci.yml'
+    - local: '/Top/heg/gitlab-ci.yml'
     - local: '/Top/hps/gitlab-ci.yml'
     - local: '/Top/ucm_hps/gitlab-ci.yml'
     - local: '/Top/l0mdt/gitlab-ci.yml'
