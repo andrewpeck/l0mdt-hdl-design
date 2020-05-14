@@ -46,10 +46,10 @@ package common_pkg is
   constant   SLC_CHAMBER_LEN      :  integer := 6;
 
   type slc_chid_rt is record
-     mdt_inn              :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
-     mdt_mid              :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
-     mdt_out              :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
-     mdt_ext              :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+     mdt_inn              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
+     mdt_mid              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
+     mdt_out              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
+     mdt_ext              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
   end record slc_chid_rt;
   constant SLC_CHID_LEN : integer := 24;
   subtype slc_chid_rvt is std_logic_vector(SLC_CHID_LEN-1 downto 0);
@@ -392,19 +392,19 @@ package body common_pkg is
   function vectorify(x: slc_chid_rt) return slc_chid_rvt is
     variable y : slc_chid_rvt;
   begin
-    y(23 downto 18)            := x.mdt_inn;
-    y(17 downto 12)            := x.mdt_mid;
-    y(11 downto 6)             := x.mdt_out;
-    y(5 downto 0)              := x.mdt_ext;
+    y(23 downto 18)            := vectorify(x.mdt_inn);
+    y(17 downto 12)            := vectorify(x.mdt_mid);
+    y(11 downto 6)             := vectorify(x.mdt_out);
+    y(5 downto 0)              := vectorify(x.mdt_ext);
     return y;
   end function vectorify;
   function structify(x: slc_chid_rvt) return slc_chid_rt is
     variable y : slc_chid_rt;
   begin
-    y.mdt_inn                  := x(23 downto 18);
-    y.mdt_mid                  := x(17 downto 12);
-    y.mdt_out                  := x(11 downto 6);
-    y.mdt_ext                  := x(5 downto 0);
+    y.mdt_inn                  := structify(x(23 downto 18));
+    y.mdt_mid                  := structify(x(17 downto 12));
+    y.mdt_out                  := structify(x(11 downto 6));
+    y.mdt_ext                  := structify(x(5 downto 0));
     return y;
   end function structify;
   function nullify (x: slc_chid_rt) return slc_chid_rt is

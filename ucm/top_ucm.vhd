@@ -35,7 +35,7 @@ entity top_ucm is
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
     o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
     -- pipeline
-    o_uCM2pl_vav            : out pipelines_avt
+    o_uCM2pl_av            : out pipelines_avt
   );
 end entity top_ucm;
 
@@ -55,7 +55,7 @@ begin
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
     o_uCM2hps_data_av      => o_uCM2hps_data_av,
     -- MDT hit
-    o_uCM2pl_vav            => o_uCM2pl_vav
+    o_uCM2pl_av            => o_uCM2pl_av
   );
 
 end beh;

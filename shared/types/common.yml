@@ -44,10 +44,10 @@ slc_muid:
 
 SLC_CHAMBER_LEN:     {qualifier: constant , type: integer , value: 6}
 slc_chid:
-  mdt_inn:           {type: logic , length: SLC_CHAMBER_LEN}
-  mdt_mid:           {type: logic , length: SLC_CHAMBER_LEN}
-  mdt_out:           {type: logic , length: SLC_CHAMBER_LEN}
-  mdt_ext:           {type: logic , length: SLC_CHAMBER_LEN}
+  mdt_inn:           {type: unsigned , length: SLC_CHAMBER_LEN}
+  mdt_mid:           {type: unsigned , length: SLC_CHAMBER_LEN}
+  mdt_out:           {type: unsigned , length: SLC_CHAMBER_LEN}
+  mdt_ext:           {type: unsigned , length: SLC_CHAMBER_LEN}
     
 # slc common 
     
