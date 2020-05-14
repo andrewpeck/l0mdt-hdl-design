@@ -125,8 +125,8 @@ MDT_LAYER_LEN : { qualifier: constant , type: integer , value: 5 }
 MDT_TIME_LEN  : { qualifier: constant , type: integer , value: 18 } 
 
 tar2hps:
-  tube        : { type: logic , length: MDT_TUBE_LEN }
-  layer       : { type: logic , length: MDT_LAYER_LEN }
+  tube        : { type: unsigned , length: MDT_TUBE_LEN }
+  layer       : { type: unsigned , length: MDT_LAYER_LEN }
   time        : { type: unsigned , length: MDT_TIME_LEN }
   data_valid  : {type: logic}
 

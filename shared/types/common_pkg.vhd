@@ -170,8 +170,8 @@ package common_pkg is
   constant   MDT_TIME_LEN         :  integer := 18;
 
   type tar2hps_rt is record
-     tube                 :  std_logic_vector(MDT_TUBE_LEN-1 downto 0);
-     layer                :  std_logic_vector(MDT_LAYER_LEN-1 downto 0);
+     tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);
+     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
      time                 :  unsigned(MDT_TIME_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record tar2hps_rt;
@@ -612,8 +612,8 @@ package body common_pkg is
   function vectorify(x: tar2hps_rt) return tar2hps_rvt is
     variable y : tar2hps_rvt;
   begin
-    y(32 downto 24)            := x.tube;
-    y(23 downto 19)            := x.layer;
+    y(32 downto 24)            := vectorify(x.tube);
+    y(23 downto 19)            := vectorify(x.layer);
     y(18 downto 1)             := vectorify(x.time);
     y(0)                       := x.data_valid;
     return y;
@@ -621,8 +621,8 @@ package body common_pkg is
   function structify(x: tar2hps_rvt) return tar2hps_rt is
     variable y : tar2hps_rt;
   begin
-    y.tube                     := x(32 downto 24);
-    y.layer                    := x(23 downto 19);
+    y.tube                     := structify(x(32 downto 24));
+    y.layer                    := structify(x(23 downto 19));
     y.time                     := structify(x(18 downto 1));
     y.data_valid               := x(0);
     return y;
