@@ -64,8 +64,8 @@ package custom_types_csf_pkg is
      valid                :  std_logic;
      b                    :  signed(CSF_SEG_B_LEN-1 downto 0);
      m                    :  signed(CSF_SEG_M_LEN-1 downto 0);
-     chi2                 :  signed(CSF_SEG_CHI2_LEN-1 downto 0);
-     ndof                 :  signed(CSF_MAXHITS_SEG_LEN-1 downto 0);
+     chi2                 :  unsigned(CSF_SEG_CHI2_LEN-1 downto 0);
+     ndof                 :  unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
   end record csf_locseg_rt;
   constant CSF_LOCSEG_LEN : integer := 48;
   subtype csf_locseg_rvt is std_logic_vector(CSF_LOCSEG_LEN-1 downto 0);

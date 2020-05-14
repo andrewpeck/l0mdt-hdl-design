@@ -1,99 +1,114 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
+-- Company:
+-- Engineer:
+--
 -- Create Date: 03/13/2018 09:19:30 AM
--- Design Name: 
+-- Design Name:
 -- Module Name: chi2 - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
+-- Project Name:
+-- Target Devices:
+-- Tool Versions:
+-- Description:
+--
+-- Dependencies:
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- 
+--
 ----------------------------------------------------------------------------------
 
 
-library IEEE, csf_lib, shared_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee, csf_lib, shared_lib;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use ieee.math_real.all;
 use csf_lib.csf_pkg.all;
+use csf_lib.custom_types_csf_pkg.all;
 use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_chi2 is
   port (
     clk            : in std_logic;
-    i_hit1         : in t_histo_hit;
-    i_hit2         : in t_histo_hit;
-    i_mfit         : in signed(mfit_width-1 downto 0);
-    i_bfit         : in signed(bfit_width-1 downto 0);
-    i_nhits        : in unsigned(3 downto 0);
+    i_hit1         : in csf_hit_rvt;
+    i_hit2         : in csf_hit_rvt;
+    i_mfit         : in signed(CSF_SEG_M_LEN-1 downto 0);
+    i_bfit         : in signed(CSF_SEG_B_LEN-1 downto 0);
+    i_nhits        : in unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
     i_fit_valid    : in std_logic;
     i_rst          : in std_logic;
-    o_seg          : out t_locseg
+    o_seg          : out csf_locseg_rvt
   );
 end csf_chi2; -- csf_chi2
 
 architecture Behavioral of csf_chi2 is
     -- Hit Buffer signals
-    signal w_addr1, w_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
+    signal w_addr1, w_addr2   : std_logic_vector(CSF_MAXHITS_ML_LEN-1 downto 0)
                                                 := (others => '0');
-    signal r_addr1, r_addr2                : std_logic_vector(max_hits_per_ml_width-1 downto 0) 
+    signal r_addr1, r_addr2   : std_logic_vector(CSF_MAXHITS_ML_LEN-1 downto 0)
                                                 := (others => '1');
-    signal hit_vec1, hit_vec2              : std_logic_vector(histo_hit_width-1 downto 0) 
+    signal hit_vec1, hit_vec2 : csf_hit_rvt
                                                 := (others => '0');
-    signal outhit1, outhit2                : t_histo_hit := null_histo_hit;
+    signal hit1, hit2         : csf_hit_rt;
+    signal outhit1, outhit2   : csf_hit_rt;
 
     -- MDT hit coordinate uncertainty
-    constant sigma : real := 2.0;
-    constant sigma_width : integer := integer(log2(sigma)); 
+    constant SIGMA : real := 2.0;
+    constant SIGMA_LEN : integer := integer(log2(SIGMA));
 
     -- Fit parameter signals
-    signal mfit_s                          : signed(mfit_width-1 downto 0) := (others => '0');
-    signal bfit_s                          : signed(bfit_width-1 downto 0) := (others => '0');
+    signal mfit_s  : signed(CSF_SEG_M_LEN-1 downto 0) := (others => '0');
+    signal bfit_s  : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
 
     -- Residual widths
-    constant b_over_z_multi_width          : integer := integer(log2(bfit_mult/z_mult));
-    constant b_red_width                   : integer := bfit_width-b_over_z_multi_width;
-    constant mx_width                      : integer := mfit_width + MDT_LOCAL_AXI_LEN - mfit_multi_width + 1;
-    constant res_width                     : integer := mx_width - sigma_width + chi2_mult_width/2;
+    constant B_OVER_Z_MULTI_LEN  : integer
+        := integer(log2(CSF_SEG_B_MULT/MDT_LOCAL_AXI_MULT));
+    constant B_RED_LEN           : integer := CSF_SEG_B_LEN-B_OVER_Z_MULTI_LEN;
+    constant MX_LEN  : integer
+        := CSF_SEG_M_LEN + MDT_LOCAL_AXI_LEN - MFIT_MULTI_LEN + 1;
+    constant RES_LEN : integer := MX_LEN - SIGMA_LEN + CHI2_MULT_LEN/2;
 
     -- Residual signals
-    signal b_red                           : signed(b_red_width-1 downto 0 ) := (others => '0');
-    signal dsp_mx1, dsp_mx2                : signed(mx_width-1 downto 0) := (others => '0');
-    signal dsp_b_z_1, dsp_b_z_2            : signed(MDT_LOCAL_AXI_LEN-1 downto 0  ) := (others => '0');
-    signal dsp_res_1, dsp_res_2            : signed(res_width-1 downto 0 ) := (others => '0');
-    signal dsp_res2_1, dsp_res2_1_s, dsp_res2_2, dsp_res2_2_s          : unsigned(chi2_width*2-1 downto 0 ) := (others => '0');
+    signal b_red                : signed(B_RED_LEN-1 downto 0 )
+        := (others => '0');
+    signal dsp_mx1, dsp_mx2     : signed(MX_LEN-1 downto 0) := (others => '0');
+    signal dsp_b_z_1, dsp_b_z_2 : signed(MDT_LOCAL_AXI_LEN-1 downto 0  )
+        := (others => '0');
+    signal dsp_res_1, dsp_res_2 : signed(RES_LEN-1 downto 0 )
+        := (others => '0');
+    signal dsp_res2_1, dsp_res2_1_s, dsp_res2_2, dsp_res2_2_s
+        : unsigned(CSF_SEG_CHI2_LEN*2-1 downto 0 ) := (others => '0');
 
     -- other DSP signals
-    signal dv0_1, dv0_2, dv1_1, dv1_2, dv2_1, dv2_2, dv3_1, dv3_2 : std_logic := '0';
+    signal dv0_1, dv0_2, dv1_1, dv1_2, dv2_1, dv2_2, dv3_1, dv3_2
+        : std_logic := '0';
+    signal start_read  : std_logic := '0';
+    signal nhits_s     : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0)
+        := (others => '0');
+    signal dsp_chi     : unsigned(CSF_SEG_CHI2_LEN*2 - 1 downto 0)
+        := (others => '0');
+    signal counter     : integer := 0;
+    signal startCounter : std_logic := '0';
 
-    signal start_read                      : std_logic := '0';
-    signal nhits_s                         : unsigned(num_hits_width-1 downto 0) 
-                                                := (others => '0');
-    signal dsp_chi                         : unsigned(chi2_width*2 - 1 downto 0) := (others => '0');
-    signal counter                         : integer := 0;
-    signal startCounter                    : std_logic := '0';
-   
+    -- Output segment
+    signal output_seg : csf_locseg_rt;
+
 begin
+
+    hit1 <= structify(i_hit1);
+    hit2 <= structify(i_hit2);
 
     HitBuffer1 : entity shared_lib.bram_tdp
     generic map(
-        ADDR => max_hits_per_ml_width,
-        DATA => histo_hit_width,
+        ADDR => CSF_MAXHITS_ML_LEN,
+        DATA => CSF_HIT_LEN,
         ram_type => "block"
         )
     port map(
         a_clk  => clk,
-        a_wr   => i_hit1.valid,
+        a_wr   => hit1.valid,
         a_addr => w_addr1,
-        a_din  => histo_hit_to_vec(i_hit1),
+        a_din  => i_hit1,
         b_clk  => clk,
         b_addr => r_addr1,
         b_dout => hit_vec1
@@ -101,35 +116,36 @@ begin
 
     HitBuffer2 : entity shared_lib.bram_tdp
     generic map(
-        ADDR => max_hits_per_ml_width,
-        DATA => histo_hit_width,
+        ADDR => CSF_MAXHITS_ML_LEN,
+        DATA => CSF_HIT_LEN,
         ram_type => "block"
         )
     port map(
         a_clk  => clk,
-        a_wr   => i_hit2.valid,
+        a_wr   => hit2.valid,
         a_addr => w_addr2,
-        a_din  => histo_hit_to_vec(i_hit2),
+        a_din  => i_hit2,
         b_clk  => clk,
         b_addr => r_addr2,
         b_dout => hit_vec2
     );
 
-    outhit1 <= vec_to_histo_hit(hit_vec1);
-    outhit2 <= vec_to_histo_hit(hit_vec2);
+    outhit1 <= structify(hit_vec1);
+    outhit2 <= structify(hit_vec2);
 
+    o_seg <= vectorify(output_seg);
 
     Chi2Proc : process( clk )
     begin
         if rising_edge(clk) then
-            o_seg <= null_locseg;
+            output_seg <= nullify(output_seg);
 
             -- Store Hits into a RAM, waiting for the fit result
-            if i_hit1.valid = '1' then
+            if hit1.valid = '1' then
                 w_addr1 <= std_logic_vector(unsigned(w_addr1) + 1);
             end if ;
 
-            if i_hit2.valid = '1' then
+            if hit2.valid = '1' then
                 w_addr2 <= std_logic_vector(unsigned(w_addr2) + 1);
             end if;
 
@@ -137,12 +153,14 @@ begin
                 mfit_s <= i_mfit;
                 bfit_s <= i_bfit;
                 nhits_s <= i_nhits;
-                b_red <= resize(shift_right(i_bfit, b_over_z_multi_width), b_red_width);
+                b_red <= resize(
+                         shift_right(i_bfit, B_OVER_Z_MULTI_LEN),
+                         B_RED_LEN);
                 r_addr1 <= (others => '0');
                 r_addr2 <= (others => '0');
                 start_read <= '1';
             end if ;
-            
+
             if start_read = '1' then
                 if unsigned(r_addr1) < unsigned(w_addr1) -1 then
                     r_addr1 <= std_logic_vector(unsigned(r_addr1) + 1);
@@ -158,33 +176,41 @@ begin
 
             -- Clock 0
             dv0_1 <= outhit1.valid;
-            dv0_2 <= outhit2.valid;  
-            dsp_mx1 <= resize(shift_right(mfit_s*signed('0' & outhit1.x), mfit_multi_width), mx_width);
-            dsp_mx2 <= resize(shift_right(mfit_s*signed('0' & outhit2.x), mfit_multi_width), mx_width);
+            dv0_2 <= outhit2.valid;
+            dsp_mx1 <= resize(
+                    shift_right(mfit_s*signed('0' & outhit1.x), MFIT_MULTI_LEN),
+                    MX_LEN);
+            dsp_mx2 <= resize(
+                    shift_right(mfit_s*signed('0' & outhit2.x), MFIT_MULTI_LEN),
+                     MX_LEN);
             dsp_b_z_1  <= outhit1.z - b_red;
             dsp_b_z_2  <= outhit2.z - b_red;
 
             -- Clock 1
             dv1_1 <= dv0_1;
-            dv1_2 <= dv0_2; 
-            
-            dsp_res_1  <= resize(shift_left(dsp_b_z_1 - dsp_mx1, chi2_mult_width/2-sigma_width), 
-                                    res_width);
-            dsp_res_2  <= resize(shift_left(dsp_b_z_2 - dsp_mx2, chi2_mult_width/2-sigma_width), 
-                                    res_width);
-            
+            dv1_2 <= dv0_2;
+
+            dsp_res_1  <= resize(
+                shift_left(dsp_b_z_1 - dsp_mx1, CHI2_MULT_LEN/2-SIGMA_LEN),
+                                    RES_LEN);
+            dsp_res_2  <= resize(
+                shift_left(dsp_b_z_2 - dsp_mx2, CHI2_MULT_LEN/2-SIGMA_LEN),
+                                    RES_LEN);
+
             -- Clock 2
             dv2_1 <= dv1_1;
             dv2_2 <= dv1_2;
-            dsp_res2_1 <= resize(unsigned(dsp_res_1*dsp_res_1), chi2_width*2);
-            dsp_res2_2 <= resize(unsigned(dsp_res_2*dsp_res_2), chi2_width*2);
+            dsp_res2_1 <= resize(unsigned(dsp_res_1*dsp_res_1),
+                         CSF_SEG_CHI2_LEN*2);
+            dsp_res2_2 <= resize(unsigned(dsp_res_2*dsp_res_2),
+                         CSF_SEG_CHI2_LEN*2);
 
             -- Clock 3
             dv3_1 <= dv2_1;
             dv3_2 <= dv2_2;
             dsp_res2_1_s <= dsp_res2_1;
             dsp_res2_2_s <= dsp_res2_2;
-            
+
             -- Clock 4
             if dv3_1 = '1' and dv3_2 = '1' then
                 dsp_chi <= dsp_chi + dsp_res2_1_s + dsp_res2_2_s;
@@ -196,7 +222,7 @@ begin
                 dsp_chi <= dsp_chi + dsp_res2_2_s;
                 startCounter <= '1';
             end if;
-            
+
             if startCounter = '1' then
                 counter <= counter+1;
             end if;
@@ -204,16 +230,16 @@ begin
             if counter = 8 then
                 counter <= 0;
                 startCounter <= '0';
-                o_seg.valid <= '1';
-                o_seg.chi2 <= dsp_chi(chi2_width-1 downto 0);
-                
-                if dsp_chi > 2**chi2_width-1 then
-                    o_seg.chi2 <= (others => '1');
+                output_seg.valid <= '1';
+                output_seg.chi2 <= dsp_chi(CSF_SEG_CHI2_LEN-1 downto 0);
+
+                if dsp_chi > 2**CSF_SEG_CHI2_LEN-1 then
+                    output_seg.chi2 <= (others => '1');
                 end if;
-                o_seg.ndof <= nhits_s -2 ;
-                o_seg.m <= mfit_s;
-                o_seg.b <= bfit_s;
-                
+                output_seg.ndof <= nhits_s -2 ;
+                output_seg.m <= mfit_s;
+                output_seg.b <= bfit_s;
+
             end if;
 
             if i_rst = '1' then
@@ -222,7 +248,7 @@ begin
                 w_addr2 <= (others => '0');
                 start_read <= '0';
             end if;
-            
+
         end if ;
     end process ; -- Chi2Proc
 
