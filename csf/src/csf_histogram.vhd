@@ -161,7 +161,7 @@ architecture Behavioral of csf_histogram is
     --);
     --END COMPONENT;
 
-    -------------------------------------------------------------------------------- COMPONENTS --------
+    ---COMPONENTS --------
     COMPONENT rom
     GENERIC (
         MXADRB   : integer;

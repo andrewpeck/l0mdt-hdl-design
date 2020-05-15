@@ -1,4 +1,4 @@
-pt/src/pt_pkg.vhd 2008
+pt/src/pt_pkg.vhd
 pt/src/sagitta_calculator.vhd
 pt/src/eta_calculator.vhd
 pt/src/top_pt.vhd
@@ -13,5 +13,16 @@ IP/c0_ROM/c0_ROM.xci
 IP/c1_ROM/c1_ROM.xci
 IP/reciprocalROM/reciprocalROM.xci
 IP/sqrt_m_io_ROM/sqrt_m_io_ROM.xci
-IP/half_log_rom/half_log_rom.xci 
+IP/half_log_rom/half_log_rom.xci
 IP/mag_ROM/mag_ROM.xci
+pt/data/a0.mem
+pt/data/a1.mem
+pt/data/b0.mem
+pt/data/b1.mem
+pt/data/b2.mem
+pt/data/c0.mem
+pt/data/c1.mem
+pt/data/halflog_ROM.mem
+pt/data/mag_ROM.mem
+pt/data/reciprocalROM.mem
+pt/data/sqrt_m_io_ROM.mem

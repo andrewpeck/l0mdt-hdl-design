@@ -11,18 +11,18 @@ function comboid_to_index_ram(comboid : unsigned) return std_logic_vector;
 
 -- pT parametrisation constants
 constant params_width : natural := 32;
-constant a0_width     : natural := 11;
-constant a1_width     : natural := 6;
-constant b0_width     : natural := 12;
-constant b1_width     : natural := 8;
-constant b2_width     : natural := 4;
-constant c0_width     : natural := 16;
-constant c1_width     : natural := 6;
+constant A0_LEN     : natural := 11;
+constant A1_LEN     : natural := 6;
+constant B0_LEN     : natural := 12;
+constant B1_LEN     : natural := 8;
+constant B2_LEN     : natural := 4;
+constant C0_LEN     : natural := 16;
+constant C1_LEN     : natural := 6;
 
-constant params_depth_width : natural := 9;
- 
+constant PARAMS_DEPTH_LEN : natural := 9;
+
 type t_params is
-record 
+record
     a0              :  signed(params_width-1 downto 0);
     a1              :  signed(params_width-1 downto 0);
     b0              :  signed(params_width-1 downto 0);
@@ -43,7 +43,7 @@ package body pt_params_pkg is
 -- ComboId to ROM index function body
 function comboid_to_index_ram(comboid : unsigned) return std_logic_vector is
    variable index : integer := 0;
-   variable addr : std_logic_vector(params_depth_width-1 downto 0);
+   variable addr : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);
 begin
    if comboid = 10 then
        index := 0;
@@ -975,12 +975,12 @@ begin
    if comboid = 4682 then
        index := 309;
    end if;
-   
-   addr := std_logic_vector(to_unsigned(index, params_depth_width));
+
+   addr := std_logic_vector(to_unsigned(index, PARAMS_DEPTH_LEN));
    return addr;
 end function;
 
-function pt_parameter return t_params_ram is 
+function pt_parameter return t_params_ram is
    variable ram : t_params_ram := (others => null_params);
 begin
    ram(0) := ( to_signed(309, params_width), to_signed(2131, params_width), to_signed(0, params_width), to_signed(0, params_width), to_signed(0, params_width), to_signed(0, params_width), to_signed(0, params_width));

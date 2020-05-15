@@ -419,6 +419,8 @@ package custom_types_davide_pkg is
 
   constant   SLC_PT_PHIMOD_LEN    :  integer := 8;
 
+  constant   SLC_PT_PHIMOD_MULT   :  real := 320.0;
+
   type slc_pt_rt is record
      data_valid           :  std_logic;
      muid                 :  slc_muidrt;
@@ -433,7 +435,11 @@ package custom_types_davide_pkg is
 
   constant   MTC_ETA_LEN          :  integer := 15;
 
+  constant   MTC_ETA_MULT         :  real := 6068.1481481481;
+
   constant   MTC_PT_LEN           :  integer := 9;
+
+  constant   MTC_PT_MULT          :  real := 4.0;
 
   constant   MTC_PTTHR_LEN        :  integer := 4;
 
