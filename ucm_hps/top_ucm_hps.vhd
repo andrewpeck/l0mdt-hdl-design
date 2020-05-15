@@ -41,11 +41,17 @@ entity top_ucm_hps is
     -- SLc
     i_slc_data_av       : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av        : in tar2hps_aavt(MAX_NUM_HPS -1 downto 0);
+    i_mdt_tar_inn_av    : in tar2hps_avt(HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mdt_tar_mid_av    : in tar2hps_avt(HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_mdt_tar_out_av    : in tar2hps_avt(HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_mdt_tar_ext_av    : in tar2hps_avt(HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_aavt(MAX_NUM_HPS -1 downto 0);
+    o_sf2pt_inn_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
+    o_sf2pt_mid_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
+    o_sf2pt_out_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
+    o_sf2pt_ext_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av        : out pipelines_avt
+    o_uCM2pl_av         : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity top_ucm_hps;
 
@@ -62,9 +68,15 @@ begin
     -- SLc in
     i_slc_data_av       => i_slc_data_av,
     -- MDT hit
-    i_mdt_tar_av        => i_mdt_tar_av,
+    i_mdt_tar_inn_av    => i_mdt_tar_inn_av,
+    i_mdt_tar_mid_av    => i_mdt_tar_mid_av,
+    i_mdt_tar_out_av    => i_mdt_tar_out_av,
+    i_mdt_tar_ext_av    => i_mdt_tar_ext_av,
     -- to pt calc
-    o_sf2pt_av          => o_sf2pt_av,
+    o_sf2pt_inn_av      => o_sf2pt_inn_av,
+    o_sf2pt_mid_av      => o_sf2pt_mid_av,
+    o_sf2pt_out_av      => o_sf2pt_out_av,
+    o_sf2pt_ext_av      => o_sf2pt_ext_av,
     -- MDT hit
     o_uCM2pl_av        => o_uCM2pl_av
   );

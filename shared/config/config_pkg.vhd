@@ -68,6 +68,12 @@ constant HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;
           -- to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
           -- to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
           -- to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
+  constant EN_HPS_VECTOR : std_logic_vector(MAX_NUM_HPS -1 downto 0) :=
+          CFG.ENABLE_ST_INN &
+          CFG.ENABLE_ST_MID &
+          CFG.ENABLE_ST_OUT &
+          CFG.ENABLE_ST_EXT;
+
 
   constant MAX_NUM_SL   : integer := 3 + 
   to_integer(unsigned'("" & ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & ENDCAP_nSMALL_LARGE))*3 + 
