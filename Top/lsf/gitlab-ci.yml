@@ -30,13 +30,13 @@ synthesise_project:lsf:
         - synthesise_ips:lsf
         - create_project:lsf
 
-implement_project:lsf:
-    extends: .implement_project
-    variables: 
-      extends: .vars
-      PROJECT_NAME: lsf
-#      HOG_NO_BITSTREAM_STAGE: 1
-    dependencies:
-       - create_project:lsf
-       - synthesise_ips:lsf
-       - synthesise_project:lsf
+# implement_project:lsf:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: lsf
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:lsf
+#        - synthesise_ips:lsf
+#        - synthesise_project:lsf
