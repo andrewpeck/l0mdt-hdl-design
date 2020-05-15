@@ -379,22 +379,22 @@ package custom_types_davide_pkg is
   function nullify(x: hp_hit_data_a_at) return hp_hit_data_a_at;
   function nullify(x: hp_hit_data_a_avt) return hp_hit_data_a_avt;
 
-  constant   SF_SEG_POS_WIDTH     :  integer := 19;
+  constant   SF_SEG_POS_LEN       :  integer := 19;
 
   constant   SF_SEG_POS_MULTI     :  real := 16.0;
 
-  constant   SF_SEG_ANG_WIDTH     :  integer := 15;
+  constant   SF_SEG_ANG_LEN       :  integer := 15;
 
   constant   SF_SEG_ANG_MULTI     :  real := 4096.0;
 
-  constant   SF_SEG_ANG_MULTI_WIDTH :  integer := 12;
+  constant   SF_SEG_ANG_MULTI_LEN :  integer := 12;
 
   type sf_seg_data_barrel_rt is record
      data_valid           :  std_logic;
      muid                 :  slc_muidrt;
      chamber_id           :  std_logic_vector(UCM_CHAMBER_ID_LEN-1 downto 0);
-     pos                  :  signed(SF_SEG_POS_WIDTH-1 downto 0);
-     angle                :  signed(SF_SEG_ANG_WIDTH-1 downto 0);
+     pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);
+     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_barrel_rt;
   constant SF_SEG_DATA_BARREL_LEN : integer := 59;
@@ -407,8 +407,8 @@ package custom_types_davide_pkg is
      data_valid           :  std_logic;
      muid                 :  slc_muidrt;
      chamber_id           :  std_logic_vector(UCM_CHAMBER_ID_LEN-1 downto 0);
-     pos                  :  unsigned(SF_SEG_POS_WIDTH-1 downto 0);
-     angle                :  signed(SF_SEG_ANG_WIDTH-1 downto 0);
+     pos                  :  unsigned(SF_SEG_POS_LEN-1 downto 0);
+     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_endcap_rt;
   constant SF_SEG_DATA_ENDCAP_LEN : integer := 59;

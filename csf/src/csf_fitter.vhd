@@ -28,7 +28,7 @@ use csf_lib.custom_types_csf_pkg.all;
 use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_fitter is
-  Port (
+Port (
     clk             : in std_logic;
     i_hit1          : in csf_hit_rvt;
     i_hit2          : in csf_hit_rvt;
@@ -36,7 +36,7 @@ entity csf_fitter is
     o_bfit          : out signed(CSF_SEG_B_LEN-1 downto 0);
     o_fit_valid     : out std_logic;
     o_nhits         : out unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0)
-    );
+);
 end csf_fitter;
 
 architecture Behavioral of csf_fitter is
