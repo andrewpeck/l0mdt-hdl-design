@@ -90,9 +90,13 @@ package system_types_pkg is
   subtype FELIX_STREAM_vt is std_logic_vector(FELIX_STREAM_LEN-1 downto 0);
   type FELIX_STREAM_avt is array (integer range <>) of FELIX_STREAM_vt;
 
-  constant SLCPROC_LEN : integer := 128;
-  subtype SLCPROC_vt is std_logic_vector(SLCPROC_LEN-1 downto 0);
-  type SLCPROC_avt is array (integer range <>) of SLCPROC_vt;
+  constant MTC_LEN : integer := 80;
+  subtype MTC_vt is std_logic_vector(MTC_LEN-1 downto 0);
+  type MTC_avt is array (integer range <>) of MTC_vt;
+
+  constant NSP_LEN : integer := 128;
+  subtype NSP_vt is std_logic_vector(NSP_LEN-1 downto 0);
+  type NSP_avt is array (integer range <>) of NSP_vt;
 
   -- Number of TDC Hits per Station
   constant c_NUM_INNER_POLMUX  : integer := 6;
@@ -114,6 +118,8 @@ package system_types_pkg is
   -- Number of DAQ streams
   constant c_NUM_DAQ_STREAMS : integer := 1;
 
+  constant c_NUM_MTC : integer := 1;
+  constant c_NUM_NSP : integer := 2;
   --
   constant c_NUM_SLCPROC_OUTPUTS : integer := 3;
 end system_types_pkg;

@@ -80,8 +80,9 @@ entity top_hal is
     -- Data inputs
     --------------------------------------------------------------------------------
 
-    -- processed from MTC
-    slcproc_i : in SLCPROC_avt (c_NUM_SLCPROC_OUTPUTS-1 downto 0);
+    -- NSP + MUCTPI
+    MTC_i : in MTC_avt (c_NUM_MTC-1 downto 0);
+    NSP_i : in NSP_avt (c_NUM_NSP-1 downto 0);
 
     -- Segments from neighbor
     plus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
@@ -254,7 +255,7 @@ begin  -- architecture behavioral
   end process;
 
   clock_and_control_o.clk   <= clocks.clock_pipeline;
-  clock_and_control_o.rst_n <= not global_reset;
+  clock_and_control_o.rst_n <= not global_reset; -- FIXME, synchronize to clock
   clock_and_control_o.bx    <= pipeline_bx_strobe;
 
   --------------------------------------------------------------------------------
@@ -339,6 +340,7 @@ begin  -- architecture behavioral
 
   lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
     port map (
+
       reset => global_reset,
 
       -- downlink

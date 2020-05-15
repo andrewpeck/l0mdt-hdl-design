@@ -80,8 +80,9 @@ architecture structural of top_l0mdt is
   signal minus_neighbor_segments_i : SF_avt (c_NUM_SF_INPUTS-1 downto 0);
   signal daq_streams               : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
-  -- processed from MTC
-  signal slcproc : SLCPROC_avt (c_NUM_SLCPROC_OUTPUTS-1 downto 0);
+  -- NSP + MUCTPI
+  signal mtc : MTC_avt (c_NUM_MTC-1 downto 0);
+  signal nsp : NSP_avt (c_NUM_NSP-1 downto 0);
 
   --
   signal hal_sump  : std_logic;
@@ -112,18 +113,19 @@ begin
       tdc_hits_outer  => outer_tdc_hits,
       tdc_hits_extra  => extra_tdc_hits,
 
-      slcproc_i => slcproc,
-
       --
-      slc_o                     => slc,
+      slc_o => slc,
 
-      --
+      -- segment out to neighbor
       plus_neighbor_segments_i  => plus_neighbor_segments_o,
       minus_neighbor_segments_i => minus_neighbor_segments_o,
 
-      --
+      -- segment in from neighbor
       plus_neighbor_segments_o  => plus_neighbor_segments_i,
       minus_neighbor_segments_o => minus_neighbor_segments_i,
+
+      mtc_i => mtc,
+      nsp_i => nsp,
 
       daq_streams => daq_streams,
 
@@ -134,24 +136,26 @@ begin
     generic map (
       DUMMY => false)
     port map (
-      clock_and_control         => clock_and_control,
-      ttc_commands              => ttc_commands,
+      clock_and_control => clock_and_control,
+      ttc_commands      => ttc_commands,
 
-      inner_tdc_hits_i          => inner_tdc_hits,
-      middle_tdc_hits_i         => middle_tdc_hits,
-      outer_tdc_hits_i          => outer_tdc_hits,
-      extra_tdc_hits_i          => extra_tdc_hits,
+      inner_tdc_hits_i  => inner_tdc_hits,
+      middle_tdc_hits_i => middle_tdc_hits,
+      outer_tdc_hits_i  => outer_tdc_hits,
+      extra_tdc_hits_i  => extra_tdc_hits,
 
-      slc_i                     => slc,
-      slcproc_o => slcproc,
+      slc_i => slc,
 
       plus_neighbor_segments_i  => plus_neighbor_segments_i,
       minus_neighbor_segments_i => minus_neighbor_segments_i,
       plus_neighbor_segments_o  => plus_neighbor_segments_o,
       minus_neighbor_segments_o => minus_neighbor_segments_o,
 
-      daq_streams_o             => daq_streams,
-      sump                      => user_sump
+      mtc_o => mtc,
+      nsp_o => nsp,
+
+      daq_streams_o => daq_streams,
+      sump          => user_sump
       );
 
   sump <= hal_sump xor user_sump;

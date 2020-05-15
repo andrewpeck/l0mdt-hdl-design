@@ -50,13 +50,9 @@ entity top_ult is
     plus_neighbor_segments_o  : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
     minus_neighbor_segments_o : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
 
-    -- NSP
-    -- no idea
-
     -- MUCTPI
-    -- processed from MTC
-    -- -- no idea if this is right
-    slcproc_o : out SLCPROC_avt (c_NUM_SLCPROC_OUTPUTS-1 downto 0);
+    MTC_o : out MTC_avt (c_NUM_MTC-1 downto 0);
+    NSP_o : out NSP_avt (c_NUM_NSP-1 downto 0);
 
     -- AXI Control
 
@@ -81,7 +77,7 @@ architecture behavioral of top_ult is
   signal extra_segments_to_pt  : SF_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
-  signal slc_to_pt : SLC_avt (c_NUM_SLC-1 downto 0);
+  signal slc_to_pt : SLC_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
   signal slc_to_mtc : SLC_avt (c_NUM_SLC-1 downto 0);
@@ -182,11 +178,11 @@ architecture behavioral of top_ult is
       slcpipe_ptcalc_i : in SLCPIPE_PTCALC_avt;
 
       -- Sector Logic Candidates from pipeline
-      slc_i : in SLC_avt
+      slc_i : in SLC_avt;
 
-      -- NSP
-
-      -- MUCTPI
+      -- NSP + MUCTPI
+      mtc_o : out MTC_avt;
+      nsp_o : out NSP_avt
 
      -- DAQ
       );
@@ -239,7 +235,6 @@ architecture behavioral of top_ult is
 
       -- ttc
       ttc_commands : in l0mdt_ttc_rt
-
       );
   end component control;
 
@@ -317,7 +312,9 @@ begin
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         slcpipe_ptcalc_i  => slcpipe_ptcalc,
-        slc_i             => slc_i
+        slc_i             => slc_i,
+        mtc_o             => mtc_o,
+        nsp_o             => nsp_o
         );
 
     pipeline_inst : pipeline
