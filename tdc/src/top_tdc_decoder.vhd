@@ -34,9 +34,10 @@ entity top_tdc_decoder is
     lpgbt_uplink_data : in lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
-    tdc_hits_middle : out TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    tdc_hits_outer  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0)
+    tdc_hits_inner  : out TDCPOLMUX_avt (c_NUM_POLMUX_INNER-1 downto 0);
+    tdc_hits_middle : out TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    tdc_hits_outer  : out TDCPOLMUX_avt (c_NUM_POLMUX_OUTER-1 downto 0);
+    tdc_hits_extra  : out TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA-1 downto 0)
 
     );
 end top_tdc_decoder;
@@ -287,30 +288,59 @@ begin
         );
 
     inner_assign : if (c_POLMUX_STATION = INNER) generate
+      signal tmp : TDCPOLMUX_rt;
+    begin
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
-      tdc_hits_inner(inner_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
-      tdc_hits_inner(inner_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
-      tdc_hits_inner(inner_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tdc_hits_inner(inner_polmux_idx_array(I)).datavalid <= not empty;
+
+      tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tmp.datavalid <= not empty;
+
+      tdc_hits_inner(inner_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
 
     middle_assign : if (c_POLMUX_STATION = MIDDLE) generate
+      signal tmp : TDCPOLMUX_rt;
+    begin
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
-      tdc_hits_middle(middle_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
-      tdc_hits_middle(middle_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
-      tdc_hits_middle(middle_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tdc_hits_middle(middle_polmux_idx_array(I)).datavalid <= not empty;
+
+      tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tmp.datavalid <= not empty;
+
+      tdc_hits_middle(middle_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
 
     outer_assign : if (c_POLMUX_STATION = OUTER) generate
+      signal tmp : TDCPOLMUX_rt;
+    begin
       assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
         " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
-      tdc_hits_outer(outer_polmux_idx_array(I)).tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
-      tdc_hits_outer(outer_polmux_idx_array(I)).fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
-      tdc_hits_outer(outer_polmux_idx_array(I)).elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tdc_hits_outer(outer_polmux_idx_array(I)).datavalid <= not empty;
+
+      tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tmp.datavalid <= not empty;
+
+      tdc_hits_outer(outer_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
+    end generate;
+
+    extra_assign : if (c_POLMUX_STATION = EXTRA) generate
+      signal tmp : TDCPOLMUX_rt;
+    begin
+      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+        " to EXTRA tdc stream #" & integer'image(extra_polmux_idx_array(I)) severity note;
+
+      tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
+      tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
+      tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
+      tmp.datavalid <= not empty;
+
+      tdc_hits_extra(extra_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
 
   end generate;  -- TDC loop
