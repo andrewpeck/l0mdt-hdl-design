@@ -73,7 +73,7 @@ package cfg_global_pkg is
     -- Processing channels
     ENABLE_ST_INN                 => '1', -- default enable
     NUM_MDT_CH_INN                => 6,   -- default 6            
-    ENABLE_ST_EXT                 => '0', -- default enable
+    ENABLE_ST_EXT                 => '0', -- default disabled
     NUM_MDT_CH_EXT                => 6,   -- default 6  
     ENABLE_ST_MID                 => '1', -- default enable
     NUM_MDT_CH_MID                => 6,   -- default 6  

@@ -15,8 +15,6 @@ include:
     - local: '/Top/l0mdt/gitlab-ci.yml'
     - local: '/Top/tdc/gitlab-ci.yml'
 #     - local: '/Top/ult/gitlab-ci.yml'
-#     - local: '/Top/hp/gitlab-ci.yml'
-#     - local: '/Top/heg/gitlab-ci.yml'
 #     - local: '/Top/csf_plus_pt/gitlab-ci.yml'
 #     - local: '/Top/profpga_duo_test/gitlab-ci.yml'
 #     - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'

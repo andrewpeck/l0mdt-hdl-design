@@ -1,4 +1,4 @@
 MAX_NUM_HP:   {qualifier: constant , type: integer , value: 6}
 NUM_THREADS:  {qualifier: constant , type: integer , value: 3}
-MAX_NUM_HPS:  {qualifier: constant , type: integer , value: 3}
+MAX_NUM_HPS:  {qualifier: constant , type: integer , value: 4}
 MAX_NUM_SL:   {qualifier: constant , type: integer , value: 5}

@@ -39,6 +39,15 @@ package config_pkg is
   constant ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
   constant ENABLE_NEIGHTBORS    : std_logic := CFG.ENABLE_NEIGHTBORS; -- 0: disabled  1: enabled
 
+  -- Processing channel
+constant HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
+constant HPS_NUM_MDT_CH_INN         : integer   := CFG.NUM_MDT_CH_INN;              
+constant HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT ;              
+constant HPS_NUM_MDT_CH_EXT         : integer   := CFG.NUM_MDT_CH_EXT;              
+constant HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID ;              
+constant HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
+constant HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT ;              
+constant HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
   --------------------------------------------------------------------------------
   -- BLOCKS configuration
   --------------------------------------------------------------------------------
@@ -54,11 +63,11 @@ package config_pkg is
           )
         );
         
-  constant MAX_NUM_HPS  : integer :=  
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
+  constant MAX_NUM_HPS  : integer :=  4;
+          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
+          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
+          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
+          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
 
   constant MAX_NUM_SL   : integer := 3 + 
   to_integer(unsigned'("" & ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & ENDCAP_nSMALL_LARGE))*3 + 

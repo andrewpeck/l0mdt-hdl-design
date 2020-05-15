@@ -31,10 +31,12 @@ entity ucm is
     -- SLc in
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- to hps
-    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
-    o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
+    o_uCM2hps_inn_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av            : out pipelines_avt
+    o_uCM2pl_av            : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
 
@@ -45,13 +47,13 @@ architecture beh of ucm is
   signal csw_main_out_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
 
-  signal o_uCM2pl_ar          : pipelines_at;
+  signal o_uCM2pl_ar          : pipelines_at(MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_prepro_avt(NUM_THREADS -1 downto 0);
   signal cpam_out_av          : ucm_prepro_avt(NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : pipelines_avt;
+  signal uCM2pl_av            : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
   signal csw_control          : ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(NUM_THREADS -1 downto 0);
@@ -59,7 +61,8 @@ architecture beh of ucm is
   signal cvp_control          : std_logic_vector(NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
-  signal uCM2hps_data         : ucm2hps_aavt(NUM_THREADS -1 downto 0);
+  type ucm2hps_aavt is array (NUM_THREADS -1 downto 0) of ucm2hps_avt(MAX_NUM_HPS -1 downto 0);
+  signal uCM2hps_data         : ucm2hps_aavt;
 begin
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl
@@ -180,13 +183,32 @@ begin
 
   -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
-  VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
+  -- VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
-      o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
-    end generate;
-  end generate;
+      VP2HPS_INN : if HPS_ENABLE_ST_INN generate
+        o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
+      end generate;
+      VP2HPS_MID : if HPS_ENABLE_ST_MID generate
+        o_uCM2hps_mid_av(heg_i) <= uCM2hps_data(heg_i)(1);
+      end generate;
+      VP2HPS_OUT : if HPS_ENABLE_ST_OUT generate
+        o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
+      end generate;
+      VP2HPS_EXT : if HPS_ENABLE_ST_EXT generate
+        o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
+      end generate;
 
-  VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
+      -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
+    end generate;
+  -- end generate;
+
+
+
+
+
+
+
+  PAM_CSW: for heg_i in NUM_THREADS -1 downto 0 generate
     cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((NUM_THREADS - 1) - heg_i) - 1);
     -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - NUM_THREADS + heg_i);
 

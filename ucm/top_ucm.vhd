@@ -33,9 +33,12 @@ entity top_ucm is
     i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- to hps
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
-    o_uCM2hps_data_av      : out ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
+    o_uCM2hps_inn_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av            : out pipelines_avt
+    o_uCM2pl_av            : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity top_ucm;
 
@@ -50,12 +53,15 @@ begin
     glob_en             => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av          => i_slc_data_av,
+    i_slc_data_av         => i_slc_data_av,
     -- pam out
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-    o_uCM2hps_data_av      => o_uCM2hps_data_av,
+    o_uCM2hps_inn_av      => o_uCM2hps_inn_av,
+    o_uCM2hps_mid_av      => o_uCM2hps_mid_av,
+    o_uCM2hps_out_av      => o_uCM2hps_out_av,
+    o_uCM2hps_ext_av      => o_uCM2hps_ext_av,
     -- MDT hit
-    o_uCM2pl_av            => o_uCM2pl_av
+    o_uCM2pl_av           => o_uCM2pl_av
   );
 
 end beh;
