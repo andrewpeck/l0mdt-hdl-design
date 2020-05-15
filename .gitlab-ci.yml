@@ -1,8 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-#      ref: 'v0.4.10'
-      ref : '84-do-not-assign-verilog-src-to-libraries'
+      ref: 'v0.4.12'
 #    - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
     - local: '/Top/csf/gitlab-ci.yml'
