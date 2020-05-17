@@ -4,7 +4,7 @@ create_project:ucm:
     extends: .create_project
     variables:
       extends: .vars
-      PROJECT_NAME: mpl
+      PROJECT_NAME: ucm
 
 # simulate_project:ucm:
 #     extends: .simulate_project
