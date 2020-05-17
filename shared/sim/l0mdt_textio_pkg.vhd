@@ -14,17 +14,10 @@ library shared_lib;
 use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
+library ucm_hps_lib;
+use ucm_hps_lib.ucm_hps_pkg.all;
 
 package l0mdt_textio_pkg is
-
-  subtype UNSIG_64 is unsigned(63 downto 0);
-
-  type input_tar_rt is record
-    global_time     : integer;
-    Station         : integer;
-    Chamber         : integer;
-    tar             : tar2hps_rt;
-  end record;
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
@@ -41,7 +34,8 @@ package body l0mdt_textio_pkg is
   -----------------------------------------------  
   procedure READ(L:inout LINE; VALUE : out input_tar_rt) is
     variable global_time  : integer;
-    variable c_Station    : character;
+    variable space        : string(8 downto 1);
+    variable c_Station    : string(1 downto 1);
     variable i_station    : integer;
     variable Chamber      : integer;
     variable BCID         : integer;
@@ -60,22 +54,26 @@ package body l0mdt_textio_pkg is
     READ(L, tube_local);
     READ(L, tube_layer);
     READ(L, Chamber);
+    READ(L, space); -- in string we need to read spaces before
     READ(L, c_Station);
     READ(L, tube_z);
     READ(L, tube_rho);
     READ(L, tube_radius);
 
-    if c_station = 'I' then 
+    if c_station = "I" then 
       i_station := 0;
-    -- elsif c_station = 'M'
-    else 
+    elsif c_station = "M" then 
       i_station := 1;
+    elsif c_station = "O" then 
+      i_station := 2;
+    else
+      i_station := 3;
     end if;
 
     VALUE := (
-      global_time => global_time,
-      Station => i_Station,
-      Chamber => chamber,
+      global_time => to_unsigned(global_time,64),
+      Station => to_unsigned(i_Station,8),
+      Chamber => to_unsigned((chamber - 1),8),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
@@ -83,6 +81,17 @@ package body l0mdt_textio_pkg is
         data_valid => '1'
       )
     );
+
+    report "Read line : " & integer'image(BCID) &
+    " - " & integer'image(global_time) &
+    " - " & integer'image(tube_global) &
+    " - " & integer'image(tube_local) &
+    " - " & integer'image(tube_layer) &
+    " - " & integer'image(Chamber) &
+    " - " & c_station &
+    " - " & integer'image(tube_z) &
+    " - " & integer'image(tube_rho) &
+    " - " & integer'image(tube_radius);
 
   end procedure;
 
