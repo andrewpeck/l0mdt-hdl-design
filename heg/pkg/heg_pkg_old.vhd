@@ -32,7 +32,7 @@ package heg_pkg is
   --  mdt port
   --------------------------------------------------------------------------------
 
-  type heg_pc2heg_avt is array ( integer range <>) of hp_hpsPc2hp_vt;
+  type heg_pc2heg_avt is array ( integer range <>) of hp_hpsPc2hp_rvt;
 
   --------------------------------------------------------------------------------
   -- HEG control to hp
@@ -56,7 +56,7 @@ package heg_pkg is
   -- heg to sf hit data
   --------------------------------------------------------------------------------
 
-  type heg_hp2bm_avt is array(integer range <>) of hp_hp2bm_vt;
+  type heg_hp2bm_avt is array(integer range <>) of hp_hp2bm_rvt;
 
   type heg_bm2sf_rt is record
     data                       : hp_hp2sf_data_rt;

@@ -28,7 +28,7 @@ heg_ctrl2hp:
 #  heg: heg control 2 hp slc data
 # -----------------------------------------------------------
 
-heg_hp2bm    : {array: open , type: heg_hp2bm }
+heg_hp2bm    : {array: open , type: hp_hp2bm }
 
 heg_bm2sf:
   data        : { type: hp_hp2sf_data}

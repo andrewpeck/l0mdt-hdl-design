@@ -37,9 +37,9 @@ entity hps_sf_wrap is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_sf_control        : in heg_ctrl2hp_vt;
+    i_sf_control        : in heg_ctrl2hp_rvt;
     i_sf_slc_data       : in ucm2hps_rvt;
-    i_sf_mdt_data       : in heg_bm2sf_vt;
+    i_sf_mdt_data       : in heg_bm2sf_rvt;
     --
     o_sf_data_v           : out sf2pt_rvt
   );

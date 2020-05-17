@@ -27,9 +27,9 @@ use heg_lib.heg_pkg.all;
 
 package hps_pkg is
 
-  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_vt;
+  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_rvt;
 
-  type hps_bm2sf_avt is array(integer range <>) of heg_bm2sf_vt;
+  type hps_bm2sf_avt is array(integer range <>) of heg_bm2sf_rvt;
 
 end package hps_pkg;
 

@@ -35,7 +35,7 @@ entity heg_buffermux is
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg_bm2sf_vt
+    o_mdt_hits_v        : out heg_bm2sf_rvt
     
   );
 end entity heg_buffermux;
