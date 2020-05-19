@@ -81,27 +81,26 @@ begin
   validation_proc : process(clk,Reset_b)
 
   begin
-    if Reset_b = '0' then
-      --space
-      space_valid <= '0';
-      -- time
-      time_valid <= '0';
-    elsif rising_edge(clk) then
-      -- space
-      if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo 
-        and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
-        space_valid <= '1';
+    if rising_edge(clk) then
+      if Reset_b = '0' then
+        --space
+        space_valid <= '0';
+        -- time
+        time_valid <= '0';
+      else
+        -- space
+        if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
+          space_valid <= '1';
+        end if;
+        -- time
+        if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
+          time_valid <= '1';
+        end if;
+        --valid
+        -- o_data_valid <= trLUT_valid;
       end if;
-      -- time
-      if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
-        time_valid <= '1';
-      end if;
-      --valid
-      -- o_data_valid <= trLUT_valid;
     end if;
-
   end process;
-    
     
 end beh;
 

@@ -42,16 +42,18 @@ architecture beh of ucm_pam_csw is
 
 begin
   UCM_PAM_CS : process(Reset_b,clk) begin
-    if(Reset_b = '0') then
-      o_data <= (others => (others => '0'));
-    elsif rising_edge(clk) then
-      for csw_i in NUM_THREADS -1 downto 0 loop
-        if i_control(csw_i).data_present = '1' then
-          o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
-        else
-          o_data(csw_i) <= (others => '0');
-        end if;
-      end loop;
+    if rising_edge(clk) then
+      if(Reset_b = '0') then
+        o_data <= (others => (others => '0'));
+      else
+        for csw_i in NUM_THREADS -1 downto 0 loop
+          if i_control(csw_i).data_present = '1' then
+            o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
+          else
+            o_data(csw_i) <= (others => '0');
+          end if;
+        end loop;
+      end if;
     end if;
   end process;
 end beh;

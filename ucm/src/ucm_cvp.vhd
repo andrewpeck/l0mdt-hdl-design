@@ -51,36 +51,32 @@ begin
   end generate;
 
   UCM_CVP : process(Reset_b,clk) begin
-    if Reset_b = '0' then
-      for hps_i in MAX_NUM_HPS -1 downto 0 loop
-        ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-      end loop;
-    elsif rising_edge(clk) then
-
-      -- como usar i_in_en?
+    if rising_edge(clk) then
+      if Reset_b = '0' then
+        for hps_i in MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        end loop;
+      else
+        -- como usar i_in_en?
       
-      if ST_nBARREL_ENDCAP = '0' then  -- Barrel
-        if SF_type = '0' then --CSF
-          if i_data_r.data_valid = '1' then
-            for hps_i in MAX_NUM_HPS -1 downto 0 loop
-              ucm2hps_ar(hps_i).id.bcid <= i_data_r.muid.bcid;
-            end loop;
-
-
-            -- slope / mbar calc
-            -- local origin calc
-
-
-          else
-            for hps_i in MAX_NUM_HPS -1 downto 0 loop
-              ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-            end loop;
+        if ST_nBARREL_ENDCAP = '0' then  -- Barrel
+          if SF_type = '0' then --CSF
+            if i_data_r.data_valid = '1' then
+              for hps_i in MAX_NUM_HPS -1 downto 0 loop
+                ucm2hps_ar(hps_i).id.bcid <= i_data_r.muid.bcid;
+              end loop;
+              -- slope / mbar calc
+              -- local origin calc
+            else
+              for hps_i in MAX_NUM_HPS -1 downto 0 loop
+                ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+              end loop;
+            end if;
+          else --LSF
           end if;
-        else --LSF
+        else -- Endcap
         end if;
-      else -- Endcap
       end if;
-
     end if;
   end process;
 

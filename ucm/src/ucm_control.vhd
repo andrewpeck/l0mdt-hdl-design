@@ -167,81 +167,78 @@ begin
     -- variable order : integer(MAX_NUM_SL -1 downto 0);
   begin
 
-    if Reset_b = '0' then
-      alg_Status <= ALG_IDLE;
-      o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
-      o_pam_update <= '0';
-      o_num_cand <= (others => '0');
-
-    elsif rising_edge(clk) then
-      
-      case alg_status is
-        when ALG_IDLE =>
-          if or_reduce(input_Valids) = '1' then
-            -- here goes the algorithm
-            data_ar <= i_data_ar;
-            o_csw_ctrl <= nullify(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
-            pl_o := 0;
-            o_pam_update <= '0';
-            alg_Status <= ALG_RUN;
-          end if;
-
-        when ALG_RUN =>
-          if  ENABLE_NEIGHTBORS = '1' then -- with neigbors
-            if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
-              -- barrel or small endcap
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                pl_o := pl_o + 1;
-              end if;
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                pl_o := pl_o + 1;
-              end if;
-              if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                pl_o := pl_o + 1;
-              end if;
-            else 
-              -- large endcap
+    if rising_edge(clk) then
+      if Reset_b = '0' then
+        alg_Status <= ALG_IDLE;
+        o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
+        o_pam_update <= '0';
+        o_num_cand <= (others => '0');
+      else
+        case alg_status is
+          when ALG_IDLE =>
+            if or_reduce(input_Valids) = '1' then
+              -- here goes the algorithm
+              data_ar <= i_data_ar;
+              o_csw_ctrl <= nullify(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
+              pl_o := 0;
+              o_pam_update <= '0';
+              alg_Status <= ALG_RUN;
             end if;
-            -- 
-            if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
-              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
-              pl_o := pl_o + 1;
-            end if;
-            if data_ar(0).data_valid = '1' then -- xxx1x
-              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
-              pl_o := pl_o + 1;
-            end if;
-          else -- without neighbors  
-          end if;
-          o_num_cand <= to_unsigned(pl_o,4);
-          if pl_o > 0 then 
-            o_pam_update <= '1';
-          end if;
-          alg_Status <= ALG_SET;
-
-        when ALG_SET =>
-        
-          -- reset internals
-          alg_Status <= ALG_IDLE;
-          o_csw_ctrl <= nullify(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
-          o_pam_update <= '0';
-          o_num_cand <= (others => '0');
-          alg_Status <= ALG_IDLE;
-
-      end case;
-      
-    end if;
-
-  end process;
   
+          when ALG_RUN =>
+            if  ENABLE_NEIGHTBORS = '1' then -- with neigbors
+              if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
+                -- barrel or small endcap
+                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                  pl_o := pl_o + 1;
+                end if;
+                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                  pl_o := pl_o + 1;
+                end if;
+                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                  pl_o := pl_o + 1;
+                end if;
+              else 
+                -- large endcap
+              end if;
+              -- 
+              if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
+                pl_o := pl_o + 1;
+              end if;
+              if data_ar(0).data_valid = '1' then -- xxx1x
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
+                pl_o := pl_o + 1;
+              end if;
+            else -- without neighbors  
+            end if;
+            o_num_cand <= to_unsigned(pl_o,4);
+            if pl_o > 0 then 
+              o_pam_update <= '1';
+            end if;
+            alg_Status <= ALG_SET;
+  
+          when ALG_SET =>
+          
+            -- reset internals
+            alg_Status <= ALG_IDLE;
+            o_csw_ctrl <= nullify(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
+            o_pam_update <= '0';
+            o_num_cand <= (others => '0');
+            alg_Status <= ALG_IDLE;
+  
+        end case;
+      end if;
+    end if;
+  end process;
   
 end architecture beh;
 
@@ -299,61 +296,54 @@ begin
     variable processed : integer := 0;
   begin
 
-    if(Reset_b = '0') then
-      o_cvp_ctrl <= (others => '0');
-      ch_busy <= (others => '0');
-      ch_count <= (others => (others => '0'));
-      o_pam_ctrl <= nullify(o_pam_ctrl);-- ((others => '0'),(others => (others => '0')));
-      -- o_pam2heg <= (others =>( (others => '0') , '0') );
-      o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
+    if rising_edge(clk) then
+      if(Reset_b = '0') then
+        o_cvp_ctrl <= (others => '0');
+        ch_busy <= (others => '0');
+        ch_count <= (others => (others => '0'));
+        o_pam_ctrl <= nullify(o_pam_ctrl);-- ((others => '0'),(others => (others => '0')));
+        -- o_pam2heg <= (others =>( (others => '0') , '0') );
+        o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
+      else
+        processed := 0;
 
-    elsif rising_edge(clk) then
-
-      processed := 0;
-
-      for ch_i in NUM_THREADS -1 downto 0 loop
-        if ch_busy(ch_i) = '1' then
-          o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
-          o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
-          o_cvp_ctrl(ch_i) <= '0';
-          if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
-            ch_count(ch_i) <= ch_count(ch_i) + '1';
-            o_pam_ctrl(ch_i).data_present <= '0';
-            processed := processed + 1;
-          else
-            ch_busy <= (others => '0');
-            ch_count <= (others => (others => '0'));
-            -- processed := processed - 1;
-
-          end if;
-          
-        else
-          if i_pam_update = '1' then
-            
-            if processed < to_integer(i_num_cand) then
-              o_cvp_ctrl(ch_i) <= '1';
-              o_pam_ctrl(ch_i).data_present <= '1';
-              o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(NUM_THREADS -1 - processed,4));
-              o_proc_info(NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
-              o_proc_info(NUM_THREADS -1 - processed).processed <= '1';
-              ch_busy(ch_i) <= '1';
-              processed := processed + 1;
-            else
-
-            end if;
-          else
+        for ch_i in NUM_THREADS -1 downto 0 loop
+          if ch_busy(ch_i) = '1' then
             o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
             o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
+            o_cvp_ctrl(ch_i) <= '0';
+            if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
+              ch_count(ch_i) <= ch_count(ch_i) + '1';
+              o_pam_ctrl(ch_i).data_present <= '0';
+              processed := processed + 1;
+            else
+              ch_busy <= (others => '0');
+              ch_count <= (others => (others => '0'));
+              -- processed := processed - 1;
+            end if;
+            
+          else
+            if i_pam_update = '1' then
+              
+              if processed < to_integer(i_num_cand) then
+                o_cvp_ctrl(ch_i) <= '1';
+                o_pam_ctrl(ch_i).data_present <= '1';
+                o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(NUM_THREADS -1 - processed,4));
+                o_proc_info(NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
+                o_proc_info(NUM_THREADS -1 - processed).processed <= '1';
+                ch_busy(ch_i) <= '1';
+                processed := processed + 1;
+              else
+              end if;
+            else
+              o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
+              o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
+            end if;
           end if;
-        end if;
-        
-      end loop;
-
-      processing <= processed;
-
+        end loop;
+        processing <= processed;
+      end if;
     end if;
-
   end process;
-  
   
 end architecture beh;

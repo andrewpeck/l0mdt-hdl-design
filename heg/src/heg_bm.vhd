@@ -103,33 +103,34 @@ begin
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
   begin
-    if(Reset_b = '0') then
-      -- o_mdt_hits <= (others => '0');
-      o_mdt_hits_r <= nullify(o_mdt_hits_r);
-      new_index_v := 0;
-    elsif rising_edge(clk) then
+    
+    if rising_edge(clk) then
+      if(Reset_b = '0') then
+        -- o_mdt_hits <= (others => '0');
+        o_mdt_hits_r <= nullify(o_mdt_hits_r);
+        new_index_v := 0;
+      else
+        --   tdc_in_loop : for ti in (MAX_NUM_HP -1) downto 0 loop
+        --     new_index_v := index_offset_v + ti;
+        --     if new_index_v < (MAX_NUM_HP -1)  then
+        --       if (not fifo_empty(new_index_v)) then
+        --         o_mdt_hits.sf_data <= mdt_hit(new_index_v).sf_data;
+        --         index_offset_v := new_index_v - 1;
+        --         exit;
+        --       else
 
-    --   tdc_in_loop : for ti in (MAX_NUM_HP -1) downto 0 loop
-    --     new_index_v := index_offset_v + ti;
-    --     if new_index_v < (MAX_NUM_HP -1)  then
-    --       if (not fifo_empty(new_index_v)) then
-    --         o_mdt_hits.sf_data <= mdt_hit(new_index_v).sf_data;
-    --         index_offset_v := new_index_v - 1;
-    --         exit;
-    --       else
+        --       end if;
+        --     else
+        --       if (not fifo_empty(new_index_v - MAX_NUM_HP)) then
+        --         o_mdt_hits <= mdt_hit(new_index_v - MAX_NUM_HP);
+        --         index_offset_v := new_index_v - 1;
+        --         exit;
+        --       else
 
-    --       end if;
-    --     else
-    --       if (not fifo_empty(new_index_v - MAX_NUM_HP)) then
-    --         o_mdt_hits <= mdt_hit(new_index_v - MAX_NUM_HP);
-    --         index_offset_v := new_index_v - 1;
-    --         exit;
-    --       else
-
-    --       end if;    
-    --     end if;
-    -- end loop tdc_in_loop;
-
+        --       end if;    
+        --     end if;
+        -- end loop tdc_in_loop;
+      end if;
 
 
 
@@ -197,40 +198,42 @@ begin
   case_options <= i_wr & i_rd;
 
   SLc_reg : process(Reset_b,clk) begin
-    if(Reset_b = '0' and glob_en = '0' ) then
-      fifo_data <= (others=>(others=>'0'));
-      wr_index <= 0;
-      o_empty <= '1';
-    elsif rising_edge(clk) then
-      if(wr_index < BM_FIFO_DEPTH) then
-        case case_options is
-          when b"00" => -- idle
-          when b"10" => -- write
-            fifo_data(wr_index) <= i_mdt_hit;
-            wr_index <= wr_index +1;
-            o_empty <= '0';
-          when b"01" => -- read
-            -- o_mdt_hit <= fifo_data(0);
-            for ird in 0 to BM_FIFO_DEPTH - 2 loop
-              fifo_data(ird) <= fifo_data(ird + 1);
-            end loop;
-            if wr_index = 1 then
-              o_empty <= '1';
-            else
-              o_empty <= '0';
-            end if;
-            wr_index <= wr_index -1;
-          when b"11" => -- read & write 
-            -- o_mdt_hit <= fifo_data(0);
-            for ird in 0 to BM_FIFO_DEPTH - 2 loop
-              fifo_data(ird) <= fifo_data(ird + 1);
-            end loop;
-            fifo_data(wr_index) <= i_mdt_hit;
-          when others =>
-          
-        end case;
+    if rising_edge(clk) then
+      if(Reset_b = '0' and glob_en = '0' ) then
+        fifo_data <= (others=>(others=>'0'));
+        wr_index <= 0;
+        o_empty <= '1';
       else
-        -- fifo full
+        if(wr_index < BM_FIFO_DEPTH) then
+          case case_options is
+            when b"00" => -- idle
+            when b"10" => -- write
+              fifo_data(wr_index) <= i_mdt_hit;
+              wr_index <= wr_index +1;
+              o_empty <= '0';
+            when b"01" => -- read
+              -- o_mdt_hit <= fifo_data(0);
+              for ird in 0 to BM_FIFO_DEPTH - 2 loop
+                fifo_data(ird) <= fifo_data(ird + 1);
+              end loop;
+              if wr_index = 1 then
+                o_empty <= '1';
+              else
+                o_empty <= '0';
+              end if;
+              wr_index <= wr_index -1;
+            when b"11" => -- read & write 
+              -- o_mdt_hit <= fifo_data(0);
+              for ird in 0 to BM_FIFO_DEPTH - 2 loop
+                fifo_data(ird) <= fifo_data(ird + 1);
+              end loop;
+              fifo_data(wr_index) <= i_mdt_hit;
+            when others =>
+            
+          end case;
+        else
+          -- fifo full
+        end if;
       end if;
 
     end if;

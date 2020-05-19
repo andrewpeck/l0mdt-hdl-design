@@ -72,15 +72,16 @@ begin
   DT2R : process(clk,Reset_b)
 
   begin
-    if Reset_b = '0' then
-      o_tube_radius <= (others => '0');
-      o_data_valid <= '0';
-    elsif rising_edge(clk) then
-      o_data_valid <= int_data_valid;
-      if(int_data_valid = '1') then
-        o_tube_radius <= to_unsigned(mem(to_integer(addr_mem)),MDT_RADIUS_LEN);
+    if rising_edge(clk) then
+      if Reset_b = '0' then
+        o_tube_radius <= (others => '0');
+        o_data_valid <= '0';
+      else
+        o_data_valid <= int_data_valid;
+        if(int_data_valid = '1') then
+          o_tube_radius <= to_unsigned(mem(to_integer(addr_mem)),MDT_RADIUS_LEN);
+        end if;
       end if;
-
     end if ;
   end process;
 end architecture beh;

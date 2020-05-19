@@ -45,11 +45,13 @@ begin
     if rising_edge(clk)then
       if Reset_b = '0' then
         data_pl <= (others => (others => '0'));
-      elsif glob_en = '1' then
-        for num_delays in num_delays - 1 downto 1 loop
-          data_pl(num_delays - 1) <= data_pl(num_delays);
-        end loop;
-        data_pl(num_delays -1) <= i_data;
+      else
+        if glob_en = '1' then
+          for num_delays in num_delays - 1 downto 1 loop
+            data_pl(num_delays - 1) <= data_pl(num_delays);
+          end loop;
+          data_pl(num_delays -1) <= i_data;
+        end if;
       end if;
     end if;
   end process;

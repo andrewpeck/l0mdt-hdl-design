@@ -48,9 +48,12 @@ begin
   pw_2_r_LUT : process(clk,Reset_b)
 
   begin
-    if Reset_b = '0' then
+    if rising_edge(clk) then
+      if Reset_b = '0' then
 
-    elsif rising_edge(clk) then
+      else
+
+      end if;
       
     end if ;
   end process;

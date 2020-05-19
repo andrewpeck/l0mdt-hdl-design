@@ -93,16 +93,19 @@ begin
 
   t0_proc: process(Reset_b,clk)
   begin
-    if Reset_b = '0' then
-      drift_time <= (others => '0');
-    elsif rising_edge(clk) then
-      int_dv <= i_data_valid;
-      if i_data_valid = '1' then
-        drift_time <= i_mdt_time_t0 - BCID_exp;
+    if rising_edge(clk) then
+      if Reset_b = '0' then
+        drift_time <= (others => '0');
+      else
+        int_dv <= i_data_valid;
+        if i_data_valid = '1' then
+          drift_time <= i_mdt_time_t0 - BCID_exp;
+        end if;
       end if;
+
     end if;
 
-  end process t0_proc;
+  end process;
 
 end beh;
 
