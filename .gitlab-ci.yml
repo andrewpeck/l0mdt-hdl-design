@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/gitlab-ci.yml'
-      ref: 'v0.4.12'
+      ref: 'v0.4.14'
 #    - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
     - local: '/Top/csf/gitlab-ci.yml'
