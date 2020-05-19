@@ -1,1 +1,4 @@
+Top/ucm/prj_cfg.vhd 2008
+ucm/top_ucm.vhd
+shared/shared_lib.src
 ucm/ucm_lib.src

@@ -17,7 +17,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -28,30 +28,30 @@ use heg_lib.heg_pkg.all;
 
 entity heg is
   generic(
-    radius      : integer := 0  --station
+    radius              : integer := 0;  --station
+    hps_num_of_hp       : integer := 6 
   );
   port (
     clk                 : in std_logic;
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    -- i_heg_control       : in heg_control;
     -- SLc
-    i_uCM_data_v          : in ucm2hps_vt;
+    i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
-    i_mdt_full_data_av     : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_full_data_av  : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
     -- to Segment finder
-    o_sf_control_v        : out heg_ctrl2hp_vt;
-    o_sf_slc_data_v       : out ucm2hps_vt;
-    o_sf_mdt_data_v       : out heg_bm2sf_vt
+    o_sf_control_v      : out heg_ctrl2hp_rvt;
+    o_sf_slc_data_v     : out ucm2hps_rvt;
+    o_sf_mdt_data_v     : out heg_bm2sf_rvt
   );
 end entity heg;
 
 architecture beh of heg is
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
-  signal roi_b_Window       : hp_heg2hp_window_vt;
-  signal hegC2hp_uCM_data   : hp_heg2hp_slc_vt;
+  signal roi_b_Window       : hp_heg2hp_window_avt;
+  signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
   
   signal hegC_control : heg_ctrl2hp_rt;
 

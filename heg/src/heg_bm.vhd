@@ -16,7 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -35,7 +35,7 @@ entity heg_buffermux is
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg_bm2sf_vt
+    o_mdt_hits_v        : out heg_bm2sf_rvt
     
   );
 end entity heg_buffermux;
@@ -153,7 +153,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -226,6 +226,8 @@ begin
               fifo_data(ird) <= fifo_data(ird + 1);
             end loop;
             fifo_data(wr_index) <= i_mdt_hit;
+          when others =>
+          
         end case;
       else
         -- fifo full

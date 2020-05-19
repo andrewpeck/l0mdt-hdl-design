@@ -1,0 +1,57 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared_lib:
+        - common_pkg
+        - config_pkg
+    #   my_lib_2: the_other_package
+
+# -----------------------------------------------------------
+#  RoI window
+# -----------------------------------------------------------
+hp_win_tubes:
+  hi: { type: unsigned, length: MDT_TUBE_LEN}
+  lo: { type: unsigned, length: MDT_TUBE_LEN}
+# hp_heg2hp_win_layer  : {array: 2 , type: unsigned, length: MDT_TUBE_LEN}
+hp_heg2hp_window  : {array: 8 , type: hp_win_tubes}
+
+# -----------------------------------------------------------
+#  SLC
+# -----------------------------------------------------------
+hp_heg2hp_slc_b:
+  z_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  y_0         : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+
+HP_HEG2HP_SPECIFIC_LEN : { qualifier: constant , type: integer , value: 38 }
+
+hp_heg2hp_slc:
+  bcid        : { type: unsigned , length: BCID_LEN}
+  specific    : {type: logic , length: HP_HEG2HP_SPECIFIC_LEN }
+  data_valid  : { type: logic}
+
+# -----------------------------------------------------------
+#  MDT full
+# -----------------------------------------------------------
+
+hp_hpsPc2hp:
+  tube        : { type: unsigned , length: MDT_TUBE_LEN }
+  layer       : { type: unsigned , length: MDT_LAYER_LEN }
+  time_t0     : { type: unsigned , length: MDT_TIME_LEN }
+  global_z    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  global_y    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  data_valid  : {type: logic}
+
+# -----------------------------------------------------------
+#  hit out
+# -----------------------------------------------------------
+
+hp_hp2sf_data:
+  local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+  local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+  radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+  layer       : { type: unsigned , length: MDT_LAYER_LEN }
+
+hp_hp2bm:
+  data        : { type: hp_hp2sf_data}
+  mdt_valid   : { type: logic}
+  data_valid  : { type: logic}

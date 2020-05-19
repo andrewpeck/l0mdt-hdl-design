@@ -15,14 +15,14 @@ create_project:hps:
 #     dependencies:
 #         - create_project:hps
 
-synthesise_project:hps:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: hps
-    dependencies:
-        # - synthesise_ips:hps
-        - create_project:hps
+# synthesise_project:hps:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hps
+#     dependencies:
+#         # - synthesise_ips:hps
+#         - create_project:hps
 
 # implement_project:hps:
 #     extends: .implement_project

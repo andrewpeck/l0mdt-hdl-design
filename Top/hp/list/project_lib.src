@@ -1,1 +1,4 @@
+Top/hp/prj_cfg.vhd 2008
+shared/shared_lib.src
+hp/top_hp.vhd
 hp/hp_lib.src

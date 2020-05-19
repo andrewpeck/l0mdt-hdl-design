@@ -6,11 +6,11 @@ create_project:ucm:
       extends: .vars
       PROJECT_NAME: ucm
 
-simulate_project:ucm:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
+# simulate_project:ucm:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
 
 # synthesise_ips:ucm:
 #     extends: .synthesise_ips
@@ -21,14 +21,14 @@ simulate_project:ucm:
 #     dependencies:
 #         - create_project:ucm
 
-synthesise_project:ucm:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-    dependencies:
-        # - synthesise_ips:ucm
-        - create_project:ucm
+# synthesise_project:ucm:
+#     extends: .synthesise_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ucm
+#     dependencies:
+#         # - synthesise_ips:ucm
+#         - create_project:ucm
 
 # implement_project:ucm:
 #     extends: .implement_project

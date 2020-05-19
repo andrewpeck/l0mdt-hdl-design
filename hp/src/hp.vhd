@@ -1,3 +1,4 @@
+
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
@@ -17,7 +18,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -37,12 +38,12 @@ entity hit_processor is
     time_offset         : in unsigned(7 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_vt;
-    i_slc_data_v        : in hp_heg2hp_slc_vt;
+    i_SLC_Window        : in hp_heg2hp_window_avt;
+    i_slc_data_v        : in hp_heg2hp_slc_rvt;
     -- MDT hit
-    i_mdt_data          : in hp_hpsPc2hp_vt;
+    i_mdt_data          : in hp_hpsPc2hp_rvt;
     -- to Segment finder
-    o_hit_data          : out hp_hp2bm_vt
+    o_hit_data          : out hp_hp2bm_rvt
   );
 end entity hit_processor;
 

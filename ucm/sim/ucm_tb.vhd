@@ -17,8 +17,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
+
+library project_lib;
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -39,10 +42,10 @@ architecture beh of ucm_tb is
   -- SLc in
   signal i_slc_data_av          : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
   -- to hps
-  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(NUM_THREADS -1 downto 0);
   signal o_uCM2hps_data_av      : ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av            : pipeline_avt(MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av            : pipelines_avt;
 
   signal cand1  : slc_rx_data_rt;
   signal barrel1 : slc_barrel_rt;
@@ -52,7 +55,7 @@ architecture beh of ucm_tb is
 
 begin
   
-  UCM : entity work.top_ucm
+  UCM : entity project_lib.top_ucm
   port map(
     clk                 => clk,
     Reset_b             => Reset_b,
@@ -98,13 +101,13 @@ begin
   barrel1.z_rpc1              <= to_signed( 1 , SLC_Z_RPC_LEN );
   barrel1.z_rpc2              <= to_signed( 1 , SLC_Z_RPC_LEN );
   barrel1.z_rpc3              <= to_signed( 1 , SLC_Z_RPC_LEN );
-  cand1.muid.slcid            <= std_logic_vector(to_unsigned( 1 , SLC_SLCID_LEN));
-  cand1.muid.slid             <= std_logic_vector(to_unsigned( 1 , SLC_SLID_LEN ));
-  cand1.muid.bcid             <= std_logic_vector(to_unsigned( 1 , BCID_LEN ));
-  cand1.chambers.mdt_inn      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
-  cand1.chambers.mdt_mid      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
-  cand1.chambers.mdt_out      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
-  cand1.chambers.mdt_ext      <= std_logic_vector(to_unsigned( 1 , SLC_CHAMBER_LEN ));
+  cand1.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
+  cand1.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
+  cand1.muid.bcid             <= to_unsigned( 1 , BCID_LEN );
+  cand1.chambers.mdt_inn      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_mid      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_out      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_ext      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
   cand1.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
   cand1.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
   cand1.common.pos_eta        <= to_signed( 1 , SLC_POS_ETA_LEN );

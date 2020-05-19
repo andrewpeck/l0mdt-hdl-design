@@ -17,7 +17,7 @@ use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -39,7 +39,7 @@ entity hp_matching is
     time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_vt;
+    i_SLC_Window        : in hp_heg2hp_window_avt;
     -- i_SLc_rpc_z         : in SLc_zpos_st;
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
@@ -64,7 +64,7 @@ architecture beh of hp_matching is
 
   signal space_valid,time_valid : std_logic;
 
-  signal Roi_window : hp_heg2hp_window_st;
+  signal Roi_window : hp_heg2hp_window_at;
 
 begin
 

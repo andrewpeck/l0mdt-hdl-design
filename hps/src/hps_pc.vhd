@@ -16,7 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -36,8 +36,8 @@ entity hps_pc is
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit
-    i_mdt_tar_v         : in tar2hps_vt;
-    o_mdt_full_data     : out hp_hpsPc2hp_vt
+    i_mdt_tar_v         : in tar2hps_rvt;
+    o_mdt_full_data     : out hp_hpsPc2hp_rvt
   );
 end entity hps_pc;
 

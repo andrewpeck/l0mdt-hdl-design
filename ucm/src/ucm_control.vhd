@@ -18,7 +18,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -31,11 +31,11 @@ entity ucm_ctrl is
     --
     i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
-    o_csw_ctrl          : out ucm_csw_control_rt;
-    o_pam_ctrl          : out ucm_pam_control_rt;
-    o_proc_info         : out ucm_proc_info_art(MAX_NUM_HEG -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0)
-    -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0)    
+    o_csw_ctrl          : out ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
+    o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+    o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0)
+    -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0)    
   );
 end entity ucm_ctrl;
 
@@ -48,7 +48,7 @@ architecture beh of ucm_ctrl is
       glob_en             : in std_logic;
       -- extrnals
       i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-      o_csw_ctrl          : out ucm_csw_control_rt;
+      o_csw_ctrl          : out ucm_csw_control_at;
       -- internals
       o_num_cand          : out unsigned(3 downto 0);
       o_pam_update        : out std_logic
@@ -62,10 +62,10 @@ architecture beh of ucm_ctrl is
       Reset_b             : in std_logic;
       glob_en             : in std_logic;
       --
-      o_pam_ctrl          : out ucm_pam_control_rt;
-      o_proc_info         : out ucm_proc_info_art(MAX_NUM_HEG -1 downto 0);
-      o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0);
-      -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+      o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+      o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+      o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0);
+      -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
       -- internals
       i_num_cand          : in unsigned(3 downto 0);
       i_pam_update        : in std_logic
@@ -119,7 +119,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -131,7 +131,7 @@ entity ucm_ctrl_main is
     glob_en             : in std_logic;
     -- extrnals
     i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-    o_csw_ctrl          : out ucm_csw_control_rt;
+    o_csw_ctrl          : out ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
     o_pam_update        : out std_logic
@@ -145,8 +145,8 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar      : ucm_prepro_art(MAX_NUM_SL -1 downto 0);
-  signal data_ar      : ucm_prepro_art(MAX_NUM_SL -1 downto 0);
+  signal i_data_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(MAX_NUM_SL -1 downto 0);
 
@@ -169,7 +169,7 @@ begin
 
     if Reset_b = '0' then
       alg_Status <= ALG_IDLE;
-      o_csw_ctrl <= ((others => '0'), (others => ( others => '0')));
+      o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
       o_pam_update <= '0';
       o_num_cand <= (others => '0');
 
@@ -180,7 +180,7 @@ begin
           if or_reduce(input_Valids) = '1' then
             -- here goes the algorithm
             data_ar <= i_data_ar;
-            o_csw_ctrl <= ((others => '0'), (others => ( others => '0')));
+            o_csw_ctrl <= nullify(o_csw_ctrl);-- ((others => '0'), (others => ( others => '0')));
             pl_o := 0;
             o_pam_update <= '0';
             alg_Status <= ALG_RUN;
@@ -191,18 +191,18 @@ begin
             if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
               -- barrel or small endcap
               if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
-                o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
-                o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
               end if;
               if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
-                o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
-                o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
               end if;
               if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
-                o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
-                o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
                 pl_o := pl_o + 1;
               end if;
             else 
@@ -210,13 +210,13 @@ begin
             end if;
             -- 
             if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
-              o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
-              o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
+              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
               pl_o := pl_o + 1;
             end if;
             if data_ar(0).data_valid = '1' then -- xxx1x
-              o_csw_ctrl.data_present(MAX_NUM_SL - 1 - pl_o) <= '1';
-              o_csw_ctrl.addr_orig(MAX_NUM_SL - 1 - pl_o) <= std_logic_vector(to_unsigned(0,4));
+              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+              o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
               pl_o := pl_o + 1;
             end if;
           else -- without neighbors  
@@ -231,7 +231,7 @@ begin
         
           -- reset internals
           alg_Status <= ALG_IDLE;
-          o_csw_ctrl <= ((others => '0'), (others => ( others => '0')));
+          o_csw_ctrl <= nullify(o_csw_ctrl); -- ((others => '0'), (others => ( others => '0')));
           o_pam_update <= '0';
           o_num_cand <= (others => '0');
           alg_Status <= ALG_IDLE;
@@ -256,7 +256,7 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -269,10 +269,10 @@ entity ucm_ctrl_pam is
     --
     -- i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
     --
-    o_pam_ctrl          : out ucm_pam_control_rt;
-    o_proc_info         : out ucm_proc_info_art(MAX_NUM_HEG -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(MAX_NUM_HEG -1 downto 0);
-    -- o_pam2heg           : out ucm2heg_pam_art(MAX_NUM_HEG -1 downto 0);
+    o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
+    o_proc_info         : out ucm_proc_info_at(NUM_THREADS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(NUM_THREADS -1 downto 0);
+    -- o_pam2heg           : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
     -- internals
     i_num_cand          : in unsigned(3 downto 0);
     i_pam_update        : in std_logic
@@ -281,16 +281,16 @@ end entity ucm_ctrl_pam;
 
 architecture beh of ucm_ctrl_pam is
   
-  signal ch_busy      : std_logic_vector(MAX_NUM_HEG -1 downto 0);
+  signal ch_busy      : std_logic_vector(NUM_THREADS -1 downto 0);
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
-  signal ch_count     : ch_count_avt(MAX_NUM_HEG -1 downto 0);
+  signal ch_count     : ch_count_avt(NUM_THREADS -1 downto 0);
 
   signal processing   : integer;
 
 begin
 
-  -- for heg_i in MAX_NUM_HEG -1 downto 0 generate
+  -- for heg_i in NUM_THREADS -1 downto 0 generate
   --   -- o_pam2heg.data_present(heg_i) <= 
   --   -- o_pam2heg.addr_
   -- end generate;
@@ -303,22 +303,22 @@ begin
       o_cvp_ctrl <= (others => '0');
       ch_busy <= (others => '0');
       ch_count <= (others => (others => '0'));
-      o_pam_ctrl <= ((others => '0'),(others => (others => '0')));
+      o_pam_ctrl <= nullify(o_pam_ctrl);-- ((others => '0'),(others => (others => '0')));
       -- o_pam2heg <= (others =>( (others => '0') , '0') );
-      o_proc_info <= (others =>( (others => '0') , '0') );
+      o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
 
     elsif rising_edge(clk) then
 
       processed := 0;
 
-      for ch_i in MAX_NUM_HEG -1 downto 0 loop
+      for ch_i in NUM_THREADS -1 downto 0 loop
         if ch_busy(ch_i) = '1' then
-          o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
-          o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
+          o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
+          o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
           o_cvp_ctrl(ch_i) <= '0';
           if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
             ch_count(ch_i) <= ch_count(ch_i) + '1';
-            o_pam_ctrl.data_present(ch_i) <= '0';
+            o_pam_ctrl(ch_i).data_present <= '0';
             processed := processed + 1;
           else
             ch_busy <= (others => '0');
@@ -332,18 +332,18 @@ begin
             
             if processed < to_integer(i_num_cand) then
               o_cvp_ctrl(ch_i) <= '1';
-              o_pam_ctrl.data_present(ch_i) <= '1';
-              o_pam_ctrl.addr_orig(ch_i) <= std_logic_vector(to_unsigned(MAX_NUM_HEG -1 - processed,4));
-              o_proc_info(MAX_NUM_HEG -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
-              o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '1';
+              o_pam_ctrl(ch_i).data_present <= '1';
+              o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(NUM_THREADS -1 - processed,4));
+              o_proc_info(NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
+              o_proc_info(NUM_THREADS -1 - processed).processed <= '1';
               ch_busy(ch_i) <= '1';
               processed := processed + 1;
             else
 
             end if;
           else
-            o_proc_info(MAX_NUM_HEG -1 - processed).ch <= (others => '0');
-            o_proc_info(MAX_NUM_HEG -1 - processed).processed <= '0';
+            o_proc_info(NUM_THREADS -1 - processed).ch <= (others => '0');
+            o_proc_info(NUM_THREADS -1 - processed).processed <= '0';
           end if;
         end if;
         

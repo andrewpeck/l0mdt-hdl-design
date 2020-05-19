@@ -1,2 +1,5 @@
+Top/heg/prj_cfg.vhd 2008
+shared/shared_lib.src
+heg/top_heg.vhd
 hp/hp_lib.src
 heg/heg_lib.src

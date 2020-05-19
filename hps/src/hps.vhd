@@ -17,7 +17,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
+use shared_lib.config_pkg.all;
 use shared_lib.common_pkg.all;
 
 library hp_lib;
@@ -29,7 +29,8 @@ use hps_lib.hps_pkg.all;
 
 entity hps is
   generic(
-    radius      : integer := 0  --station
+    radius              : integer := 0;  --station
+    hps_num_of_hp       : integer := 6 
   );
   port (
     clk                 : in std_logic;
@@ -38,11 +39,11 @@ entity hps is
     -- control
 
     -- SLc
-    i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av        : in ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av        : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt(hps_num_of_hp -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av          : out sf2pt_avt(NUM_THREADS -1 downto 0)
   );
 end entity hps;
 
@@ -50,12 +51,12 @@ architecture beh of hps is
 
   signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
-  -- signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
-  -- signal control_enable(MAX_NUM_HEG -1 downto 0);
+  -- signal int_uCM_data : ucm2heg_slc_avt(NUM_THREADS -1 downto 0);
+  -- signal control_enable(NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control        : hps_ctrl2sf_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_mdt_data       : hps_bm2sf_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_control        : hps_ctrl2sf_avt(NUM_THREADS -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_avt(NUM_THREADS -1 downto 0);
 
 begin
 
@@ -90,10 +91,11 @@ begin
     );
   end generate;
 
-  heg_gen : for heg_i in MAX_NUM_HEG -1 downto 0 generate
+  heg_gen : for heg_i in NUM_THREADS -1 downto 0 generate
     HEG : entity heg_lib.heg
     generic map(
-      radius              => radius
+      radius              => radius,
+      hps_num_of_hp       => hps_num_of_hp
     )
     port map(
       clk                 => clk,
