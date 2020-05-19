@@ -65,11 +65,7 @@ begin
     end if;
   end process;
 
-
-
-
   -- fala el calculo de phimod 
   -- falta el calculo de sl destino
-
 
 end beh;
