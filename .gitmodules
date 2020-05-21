@@ -21,3 +21,6 @@
 [submodule "hal/lpgbt/gbt-sc"]
 	path = lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
+[submodule "tools/yml2hdl"]
+	path = tools/yml2hdl
+	url = https://gitlab.com/tcpaiva/yml2hdl.git

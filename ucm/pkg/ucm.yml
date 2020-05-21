@@ -15,7 +15,7 @@ UCM_LATENCY_HPS_CH       : { qualifier: constant , type: integer , value: 10 }
 ucm_prepro:
   muid:       {type: slc_muid}
   chambers:   {type: slc_chid}
-  common:     {type: slc_common, dprint: on}
+  common:     {type: slc_common}
   specific:   {type: logic , length: SLC_SPECIFIC_LEN}
   data_valid: {type: logic}
 
