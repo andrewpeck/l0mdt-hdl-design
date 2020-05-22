@@ -26,24 +26,22 @@ use heg_lib.heg_pkg.all;
 
 entity top_heg is
   generic(
-    radius      : integer := 0  --station
-    -- num_layers  : integer := 8;
-    -- MAX_NUM_HP      : integer := 6
+    radius              : integer := 0;  --station
+    hps_num_of_hp       : integer := 6 
   );
   port (
     clk                 : in std_logic;
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    -- i_heg_control       : in heg_control;
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
     i_mdt_full_data_av  : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
     -- to Segment finder
-    o_sf_control_v      : out heg_ctrl2hp_vt;
+    o_sf_control_v      : out heg_ctrl2hp_rvt;
     o_sf_slc_data_v     : out ucm2hps_rvt;
-    o_sf_mdt_data_v     : out heg_bm2sf_vt
+    o_sf_mdt_data_v     : out heg_bm2sf_rvt
   );
 end entity top_heg;
 

@@ -190,7 +190,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
-use heg_lib.heg_trLUT_s3_pkg.all;
+-- use heg_lib.heg_trLUT_s3_pkg.all;
 
 entity heg_c_window is
   generic(
@@ -216,11 +216,28 @@ architecture beh of heg_c_window is
   signal int_uCM_data : ucm2hps_rt;
   signal uCM_barrel   : ucm_csf_barrel_rt;
 
-  type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
-  signal Roi_window_LUT : trLUT_layer_t;
-  signal Roi_w_index : integer;
-  signal Roi_window_a : hp_heg2hp_window_at;
+  -- type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
+  -- signal Roi_window_LUT : trLUT_layer_t;
+  -- signal Roi_w_index : integer;
+  -- signal Roi_window_a : hp_heg2hp_window_at;
+
+  signal wingen_dv_o : std_logic;
 begin
+
+  ROI_GEN : entity heg_lib.heg_roi_gen
+  generic map(
+    radius => radius
+  )
+  port map(
+    clk                 => clk,
+    Reset_b             => Reset_b,
+    glob_en             => glob_en,
+    --
+    i_specific          => int_uCM_data.specific,
+    i_data_valid        => int_uCM_data.data_valid,
+    o_SLC_Window_v      => o_SLC_Window_v,
+    o_data_valid        => wingen_dv_o
+  );
 
   int_uCM_data <= structify(i_uCM_data_v);
 
@@ -228,38 +245,38 @@ begin
     uCM_barrel <= structify(int_uCM_data.specific);
   end generate;
 
-  Roi_wingen : process(Reset_b,clk) begin
-    if rising_edge(clk) then
-      if(Reset_b = '0') then
-        o_Roi_win_valid <= '0';
-        Roi_window_a <= nullify(Roi_window_a);
-      else
-        if( int_uCM_data.data_valid = '1') then
-          -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
-          if uCM_barrel.z >= 0 and uCM_barrel.z < 6 then
-            Roi_w_index <= to_integer(uCM_barrel.z);
-          else
+  -- Roi_wingen : process(Reset_b,clk) begin
+  --   if rising_edge(clk) then
+  --     if(Reset_b = '0') then
+  --       o_Roi_win_valid <= '0';
+  --       Roi_window_a <= nullify(Roi_window_a);
+  --     else
+  --       if( int_uCM_data.data_valid = '1') then
+  --         -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
+  --         if uCM_barrel.z >= 0 and uCM_barrel.z < 6 then
+  --           Roi_w_index <= to_integer(uCM_barrel.z);
+  --         else
   
-          end if;
+  --         end if;
   
-          ----------------------
-            for il in 7 downto 0 loop
-              for it in 1 downto 0 loop
-                -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
+  --         ----------------------
+  --           for il in 7 downto 0 loop
+  --             for it in 1 downto 0 loop
+  --               -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
   
   
-                ----------------------
-                -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
-              end loop;
-            end loop;
-            o_Roi_win_valid <= '1';
-          -- Enables control
-        end if;
-      end if;
+  --               ----------------------
+  --               -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
+  --             end loop;
+  --           end loop;
+  --           o_Roi_win_valid <= '1';
+  --         -- Enables control
+  --       end if;
+  --     end if;
       
-    end if;
-  end process;
-  o_SLC_Window_v <= vectorify(Roi_window_a);
+  --   end if;
+  -- end process;
+  -- o_SLC_Window_v <= vectorify(Roi_window_a);
 
 
 end beh;

@@ -10,10 +10,12 @@ package common_pkg is
   function structify(x: std_logic_vector) return signed;
   function structify(x: std_logic_vector) return unsigned;
   function structify(x: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector) return integer;
 
   function vectorify(x: signed) return std_logic_vector;
   function vectorify(x: unsigned) return std_logic_vector;
   function vectorify(x: std_logic_vector) return std_logic_vector;
+  function vectorify(x: integer) return std_logic_vector;
 
   function nullify(x: std_logic) return std_logic;
   function nullify(x: std_logic_vector) return std_logic_vector;
@@ -306,6 +308,10 @@ package body common_pkg is
   begin
     return std_logic_vector(x);
   end function structify;
+  function structify(x: std_logic_vector) return integer is
+  begin
+    return to_integer(unsigned(x));
+  end function structify;
 
   function vectorify(x: signed) return std_logic_vector is
   begin
@@ -318,6 +324,10 @@ package body common_pkg is
   function vectorify(x: std_logic_vector) return std_logic_vector is
   begin
     return x;
+  end function vectorify;
+  function vectorify(x: integer) return std_logic_vector is
+  begin
+    return std_logic_vector(to_unsigned(x, 32));
   end function vectorify;
 
   function nullify(x: std_logic) return std_logic is

@@ -70,7 +70,6 @@ begin
   )
   port map(
     clk                 => clk,
-    
     Reset_b             => Reset_b,
     glob_en             => glob_en,
     --

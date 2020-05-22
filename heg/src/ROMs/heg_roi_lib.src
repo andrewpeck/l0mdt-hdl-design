@@ -1,4 +1,5 @@
-heg/ROMs/RoI_LUT_pkg.vhd
-heg/ROMs/RoI_LUT_BILA3.vhd
-heg/ROMs/RoI_LUT_BMLA3.vhd
-heg/ROMs/RoI_LUT_BMLA3.vhd
+heg/src/ROMs/roi_types_pkg.vhd
+heg/src/ROMs/RoI_LUT_pkg.vhd
+heg/src/ROMs/RoI_LUT_BILA3.vhd
+heg/src/ROMs/RoI_LUT_BMLA3.vhd
+heg/src/ROMs/RoI_LUT_BOLA3.vhd

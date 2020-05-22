@@ -34,3 +34,15 @@ heg_bm2sf:
   data        : { type: hp_hp2sf_data}
   data_valid  : { type: logic}
 
+# -----------------------------------------------------------
+#  heg: window
+# -----------------------------------------------------------
+
+# mdt_limits      : { array : 2 , type : integer }
+# mdt_layer       : { array : 6 , type : mdt_limits }
+# smdt_layer      : { array : 8 , type : mdt_limits }
+# roi_mdt_lut     : { array : 13000 , type : mdt_layer}
+
+
+
+

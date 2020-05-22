@@ -23,7 +23,7 @@ package cfg_global_pkg is
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     : integer;
-    SECTRO_SIDE                   : std_logic;  -- 0:A          1:C
+    SECTOR_SIDE                   : std_logic;  -- 0:A          1:C
     ST_nBARREL_ENDCAP             : std_logic;  -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- 0: small     1: large
     ENABLE_NEIGHTBORS             : std_logic;  -- 0: disabled  1: enabled
@@ -65,7 +65,7 @@ package cfg_global_pkg is
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     => 3,  -- default sector 3
-    SECTRO_SIDE                   => '0', -- default A
+    SECTOR_SIDE                   => '0', -- default A
     ST_nBARREL_ENDCAP             => '0', -- default barrel
     ENDCAP_nSMALL_LARGE           => '0', -- default small endcap
     ENABLE_NEIGHTBORS             => '1', -- default enable neightbors
