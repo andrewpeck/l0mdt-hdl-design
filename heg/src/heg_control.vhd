@@ -255,7 +255,7 @@ begin
       Reset_b             => Reset_b,
       glob_en             => glob_en,
       --
-      i_z          => z_barrel,
+      i_z                 => z_barrel,
       i_data_valid        => int_uCM_data.data_valid,
       o_SLC_Window_v      => o_SLC_Window_v,
       o_data_valid        => wingen_dv_o
