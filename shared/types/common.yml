@@ -148,7 +148,7 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 # barrel
 
 UCM_MBAR_LEN: { qualifier: constant , type: integer , value: 10 }
-UCM_Z_ROI_LEN: { qualifier: constant , type: integer , value: 7 }
+UCM_Z_ROI_LEN: { qualifier: constant , type: integer , value: 10 }
 UCM_R_ROI_LEN: { qualifier: constant , type: integer , value: 4 }  
 UCM_PHI_LEN: { qualifier: constant , type: integer , value: 14 }
 UCM_ETA_LEN: { qualifier: constant , type: integer , value: 8 }
@@ -170,7 +170,7 @@ ucm2hps_id:
   bcid          : { type: unsigned , length: BCID_LEN}
   chamber_id    : { type: unsigned , length: SLC_CHAMBER_LEN }
 # slc ucm2hps
-UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 43 }
+UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 46 }
 
 ucm2hps:
   id            : { type: ucm2hps_id}

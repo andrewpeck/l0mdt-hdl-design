@@ -194,7 +194,7 @@ package common_pkg is
 
   constant   UCM_MBAR_LEN         :  integer := 10;
 
-  constant   UCM_Z_ROI_LEN        :  integer := 7;
+  constant   UCM_Z_ROI_LEN        :  integer := 10;
 
   constant   UCM_R_ROI_LEN        :  integer := 4;
 
@@ -209,7 +209,7 @@ package common_pkg is
      phi                  :  unsigned(UCM_PHI_LEN-1 downto 0);
      eta                  :  unsigned(UCM_ETA_LEN-1 downto 0);
   end record ucm_csf_barrel_rt;
-  constant UCM_CSF_BARREL_LEN : integer := 43;
+  constant UCM_CSF_BARREL_LEN : integer := 46;
   subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt;
   function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt;
@@ -225,14 +225,14 @@ package common_pkg is
   function structify(x: ucm2hps_id_rvt) return ucm2hps_id_rt;
   function nullify (x: ucm2hps_id_rt) return ucm2hps_id_rt;
 
-  constant   UCM2HPS_SPECIFIC_LEN :  integer := 43;
+  constant   UCM2HPS_SPECIFIC_LEN :  integer := 46;
 
   type ucm2hps_rt is record
      id                   :  ucm2hps_id_rt;
      specific             :  std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record ucm2hps_rt;
-  constant UCM2HPS_LEN : integer := 62;
+  constant UCM2HPS_LEN : integer := 65;
   subtype ucm2hps_rvt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
   function vectorify(x: ucm2hps_rt) return ucm2hps_rvt;
   function structify(x: ucm2hps_rvt) return ucm2hps_rt;
@@ -676,8 +676,8 @@ package body common_pkg is
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt is
     variable y : ucm_csf_barrel_rvt;
   begin
-    y(42 downto 33)            := vectorify(x.mbar);
-    y(32 downto 26)            := vectorify(x.z);
+    y(45 downto 36)            := vectorify(x.mbar);
+    y(35 downto 26)            := vectorify(x.z);
     y(25 downto 22)            := vectorify(x.r);
     y(21 downto 8)             := vectorify(x.phi);
     y(7 downto 0)              := vectorify(x.eta);
@@ -686,8 +686,8 @@ package body common_pkg is
   function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt is
     variable y : ucm_csf_barrel_rt;
   begin
-    y.mbar                     := structify(x(42 downto 33));
-    y.z                        := structify(x(32 downto 26));
+    y.mbar                     := structify(x(45 downto 36));
+    y.z                        := structify(x(35 downto 26));
     y.r                        := structify(x(25 downto 22));
     y.phi                      := structify(x(21 downto 8));
     y.eta                      := structify(x(7 downto 0));
@@ -729,16 +729,16 @@ package body common_pkg is
   function vectorify(x: ucm2hps_rt) return ucm2hps_rvt is
     variable y : ucm2hps_rvt;
   begin
-    y(61 downto 44)            := vectorify(x.id);
-    y(43 downto 1)             := x.specific;
+    y(64 downto 47)            := vectorify(x.id);
+    y(46 downto 1)             := x.specific;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: ucm2hps_rvt) return ucm2hps_rt is
     variable y : ucm2hps_rt;
   begin
-    y.id                       := structify(x(61 downto 44));
-    y.specific                 := x(43 downto 1);
+    y.id                       := structify(x(64 downto 47));
+    y.specific                 := x(46 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -760,12 +760,12 @@ package body common_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm2hps_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*62-1 downto 0);
+    variable y : std_logic_vector(x'length*65-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-62) := vectorify(x(i));
-      msb := msb - 62 -1;
+      y(msb downto msb-65) := vectorify(x(i));
+      msb := msb - 65 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -782,8 +782,8 @@ package body common_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-62));
-      msb := msb - 62 -1;
+      y(i) := structify(x(msb downto msb-65));
+      msb := msb - 65 -1;
     end loop l;
     return y;
   end function structify;

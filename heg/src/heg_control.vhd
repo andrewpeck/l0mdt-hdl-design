@@ -215,7 +215,7 @@ architecture beh of heg_c_window is
 
   signal int_uCM_data : ucm2hps_rt;
   signal uCM_barrel   : ucm_csf_barrel_rt;
-
+  signal z_barrel       : unsigned(UCM_Z_ROI_LEN-1 downto 0);
   -- type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
   -- signal Roi_window_LUT : trLUT_layer_t;
   -- signal Roi_w_index : integer;
@@ -224,25 +224,43 @@ architecture beh of heg_c_window is
   signal wingen_dv_o : std_logic;
 begin
 
-  ROI_GEN : entity heg_lib.heg_roi_gen
-  generic map(
-    radius => radius
-  )
-  port map(
-    clk                 => clk,
-    Reset_b             => Reset_b,
-    glob_en             => glob_en,
-    --
-    i_specific          => int_uCM_data.specific,
-    i_data_valid        => int_uCM_data.data_valid,
-    o_SLC_Window_v      => o_SLC_Window_v,
-    o_data_valid        => wingen_dv_o
-  );
+  -- ROI_GEN : entity heg_lib.heg_roi_gen
+  -- generic map(
+  --   radius => radius
+  -- )
+  -- port map(
+  --   clk                 => clk,
+  --   Reset_b             => Reset_b,
+  --   glob_en             => glob_en,
+  --   --
+  --   i_specific          => int_uCM_data.specific,
+  --   i_data_valid        => int_uCM_data.data_valid,
+  --   o_SLC_Window_v      => o_SLC_Window_v,
+  --   o_data_valid        => wingen_dv_o
+  -- );
 
   int_uCM_data <= structify(i_uCM_data_v);
 
   UCM_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
+
     uCM_barrel <= structify(int_uCM_data.specific);
+    z_barrel <= uCM_barrel.z;
+
+    ROI_GEN : entity heg_lib.heg_roi_gen
+    generic map(
+      radius => radius
+    )
+    port map(
+      clk                 => clk,
+      Reset_b             => Reset_b,
+      glob_en             => glob_en,
+      --
+      i_z          => z_barrel,
+      i_data_valid        => int_uCM_data.data_valid,
+      o_SLC_Window_v      => o_SLC_Window_v,
+      o_data_valid        => wingen_dv_o
+    );
+
   end generate;
 
   -- Roi_wingen : process(Reset_b,clk) begin
