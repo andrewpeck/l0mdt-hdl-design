@@ -27,10 +27,8 @@ entity ucm_cvp_slope is
     Reset_b             : in std_logic;
     glob_en             : in std_logic;
     --
-    i_in_en             : in std_logic;
-    --
     i_data_v            : in ucm_prepro_rvt;
-    o_ucm2hps_av        : out ucm2hps_avt(MAX_NUM_HPS -1 downto 0)
+    o_ucm2hps_av        : out unsigned(UCM_MBAR_LEN-1 downto 0)
     
   );
 end entity ucm_cvp_slope;
@@ -38,6 +36,17 @@ end entity ucm_cvp_slope;
 architecture beh of ucm_cvp_slope is
   
 begin
+
+  slope: process(clk)
+  begin
+    if rising_edge(clk) then
+      if Reset_b = '1' then
+        
+      else
+        
+      end if;
+    end if;
+  end process slope;
   
   
   
