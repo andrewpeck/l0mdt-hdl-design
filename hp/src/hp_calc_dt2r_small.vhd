@@ -81,7 +81,7 @@ begin
   -- DT2R : process(clk,Reset_b)
 
   -- begin
-  --   if Reset_b = '0' then
+  --   if Reset_b = '1' then
   --     o_tube_radius <= (others => '0');
   --     -- o_data_valid <= '0';
   --   elsif rising_edge(clk) then

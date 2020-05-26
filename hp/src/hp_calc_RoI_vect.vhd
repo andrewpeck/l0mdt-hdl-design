@@ -49,7 +49,7 @@ begin
 
   begin
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if Reset_b = '1' then
 
       else
 

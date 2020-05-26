@@ -52,7 +52,7 @@ begin
     variable slo_found  : std_logic := '0';
   begin
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if Reset_b = '1' then
         
       else
         for slo_i in NUM_THREADS -1 downto 0 loop

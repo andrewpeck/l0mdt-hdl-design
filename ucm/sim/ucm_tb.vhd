@@ -122,7 +122,7 @@ begin
   feed_1_slc : process(clk,reset_b)
 
   begin
-    if Reset_b = '0' then
+    if Reset_b = '1' then
       tb_motor <= x"0";
       i_slc_data_av(0) <= (others => '0');
       i_slc_data_av(1) <= (others => '0');

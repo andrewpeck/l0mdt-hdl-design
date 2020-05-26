@@ -105,7 +105,7 @@ begin
   begin
     
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(Reset_b = '1') then
         -- o_mdt_hits <= (others => '0');
         o_mdt_hits_r <= nullify(o_mdt_hits_r);
         new_index_v := 0;
@@ -199,7 +199,7 @@ begin
 
   SLc_reg : process(Reset_b,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0' and glob_en = '0' ) then
+      if(Reset_b = '1' and glob_en = '0' ) then
         fifo_data <= (others=>(others=>'0'));
         wr_index <= 0;
         o_empty <= '1';

@@ -43,7 +43,7 @@ architecture beh of ucm_pam_csw is
 begin
   UCM_PAM_CS : process(Reset_b,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(Reset_b = '1') then
         o_data <= (others => (others => '0'));
       else
         for csw_i in NUM_THREADS -1 downto 0 loop

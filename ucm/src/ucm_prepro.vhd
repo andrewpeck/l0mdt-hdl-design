@@ -49,7 +49,7 @@ begin
 
   UCM_PRE_PROC : process(Reset_b,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(Reset_b = '1') then
         o_prepro_data_r <= nullify(o_prepro_data_r);
       else
         if i_slc_data_r.data_valid = '1' then

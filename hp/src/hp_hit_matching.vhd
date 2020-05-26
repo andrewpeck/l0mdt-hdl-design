@@ -82,7 +82,7 @@ begin
 
   begin
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if Reset_b = '1' then
         --space
         space_valid <= '0';
         -- time
@@ -175,7 +175,7 @@ end beh;
 --     LUT : process(clk,Reset_b)
 
 --     begin
---         if Reset_b = '0' then
+--         if Reset_b = '1' then
 --             o_tube_high_limit <= (others => '0');
 --             o_tube_low_limit <= (others => '0');
 --             -- o_data_valid <= '0';

@@ -92,7 +92,7 @@ begin
 
     begin
       if rising_edge(clk) then
-        if Reset_b = '0' then
+        if Reset_b = '1' then
           -- o_tube_radius <= (others => '0');
           o_data_valid <= '0';
         else

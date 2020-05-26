@@ -104,7 +104,7 @@ begin
 
   SLc_reg : process(Reset_b,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(Reset_b = '1') then
 
         o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
   
@@ -265,7 +265,7 @@ begin
 
   -- Roi_wingen : process(Reset_b,clk) begin
   --   if rising_edge(clk) then
-  --     if(Reset_b = '0') then
+  --     if(Reset_b = '1') then
   --       o_Roi_win_valid <= '0';
   --       Roi_window_a <= nullify(Roi_window_a);
   --     else

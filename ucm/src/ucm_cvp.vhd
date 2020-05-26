@@ -52,7 +52,7 @@ begin
 
   UCM_CVP : process(Reset_b,clk) begin
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if Reset_b = '1' then
         for hps_i in MAX_NUM_HPS -1 downto 0 loop
           ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
         end loop;
@@ -66,7 +66,7 @@ begin
                 ucm2hps_ar(hps_i).id.bcid <= i_data_r.muid.bcid;
               end loop;
               -- slope / mbar calc
-              -- local origin calc
+              -- local origin calc : to be done in HEG local origin of window
             else
               for hps_i in MAX_NUM_HPS -1 downto 0 loop
                 ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));

@@ -168,7 +168,7 @@ begin
   begin
 
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if Reset_b = '1' then
         alg_Status <= ALG_IDLE;
         o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
         o_pam_update <= '0';
@@ -297,7 +297,7 @@ begin
   begin
 
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(Reset_b = '1') then
         o_cvp_ctrl <= (others => '0');
         ch_busy <= (others => '0');
         ch_count <= (others => (others => '0'));
