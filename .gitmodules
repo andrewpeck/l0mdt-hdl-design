@@ -1,7 +1,7 @@
 [submodule "Hog"]
     path = Hog
     url = https://gitlab.cern.ch/hog/Hog.git
-	branch = v0.0.14
+	branch = v0.4.14
 [submodule "dataformats"]
 	path = dataformats
 	url = ../dataformats.git
