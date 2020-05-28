@@ -26,7 +26,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -44,7 +44,7 @@ architecture beh of ucm_ctrl is
   component ucm_ctrl_main is
     port (
       clk                 : in std_logic;
-      Reset_b             : in std_logic;
+      rst            : in std_logic;
       glob_en             : in std_logic;
       -- extrnals
       i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -59,7 +59,7 @@ architecture beh of ucm_ctrl is
   component ucm_ctrl_pam is
     port (
       clk                 : in std_logic;
-      Reset_b             : in std_logic;
+      rst            : in std_logic;
       glob_en             : in std_logic;
       --
       o_pam_ctrl          : out ucm_pam_control_at(NUM_THREADS -1 downto 0);
@@ -81,7 +81,7 @@ begin
   MAIN_CTRL : ucm_ctrl_main
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- extrnals
     i_data              => i_data,
@@ -94,7 +94,7 @@ begin
   PAM_CTRL : ucm_ctrl_pam
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     --
     o_pam_ctrl            => o_pam_ctrl,
@@ -127,7 +127,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl_main is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- extrnals
     i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -161,14 +161,14 @@ begin
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
   end generate;
 
-  Ctrl_logic : process(Reset_b,clk) 
+  Ctrl_logic : process(rst,clk) 
     variable sl_i : integer := 0;
     variable pl_o : integer := 0;
     -- variable order : integer(MAX_NUM_SL -1 downto 0);
   begin
 
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst= '1' then
         alg_Status <= ALG_IDLE;
         o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
         o_pam_update <= '0';
@@ -186,40 +186,63 @@ begin
             end if;
   
           when ALG_RUN =>
-            if  ENABLE_NEIGHTBORS = '1' then -- with neigbors
-              if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
-                -- barrel or small endcap
-                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                  pl_o := pl_o + 1;
-                end if;
-                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                  pl_o := pl_o + 1;
-                end if;
-                if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                  o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
-                  pl_o := pl_o + 1;
-                end if;
-              else 
-                -- large endcap
-              end if;
-              -- 
-              if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
+
+          for sl_i in MAX_NUM_SL -1 downto 0 loop
+
+            if ST_nBARREL_ENDCAP = '0' or ENDCAP_nSMALL_LARGE = '0' then
+              if data_ar(sl_i).data_valid = '1' then
                 o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
+                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(sl_i,4));
                 pl_o := pl_o + 1;
               end if;
-              if data_ar(0).data_valid = '1' then -- xxx1x
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
-                pl_o := pl_o + 1;
-              end if;
-            else -- without neighbors  
+            else
+
             end if;
+
+          end loop;
+
+          -- if ST_nBARREL_ENDCAP = '0' or ENDCAP_nSMALL_LARGE = '0' then
+          --   -- if data_ar(MAX_NUM_SL - pl_0).data_valid = '1' then
+          --   -- end if;
+          -- else
+          -- end if;
+            
+          -- if (ST_nBARREL_ENDCAP and ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
+          --   -- barrel or small endcap
+          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --     pl_o := pl_o + 1;
+          --   end if;
+          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --     pl_o := pl_o + 1;
+          --   end if;
+          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --     pl_o := pl_o + 1;
+          --   end if;
+          -- else 
+          --   -- large endcap
+          -- end if;
+            
+          -- if  ENABLE_NEIGHTBORS = '1' then -- with neigbors
+
+          --   if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
+          --     pl_o := pl_o + 1;
+          --   end if;
+          --   if data_ar(0).data_valid = '1' then -- xxx1x
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
+          --     pl_o := pl_o + 1;
+          --   end if;
+
+          -- end if;
+
             o_num_cand <= to_unsigned(pl_o,4);
             if pl_o > 0 then 
               o_pam_update <= '1';
@@ -261,7 +284,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl_pam is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     -- i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -292,12 +315,12 @@ begin
   --   -- o_pam2heg.addr_
   -- end generate;
   
-  PAM_logic : process(Reset_b,clk) 
+  PAM_logic : process(rst,clk) 
     variable processed : integer := 0;
   begin
 
     if rising_edge(clk) then
-      if(Reset_b = '1') then
+      if(rst= '1') then
         o_cvp_ctrl <= (others => '0');
         ch_busy <= (others => '0');
         ch_count <= (others => (others => '0'));

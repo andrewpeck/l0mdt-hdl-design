@@ -25,7 +25,7 @@ entity hp_calc_RoI_vect is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
     i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -45,11 +45,11 @@ architecture beh of hp_calc_RoI_vect is
   
 begin
 
-  pw_2_r_LUT : process(clk,Reset_b)
+  pw_2_r_LUT : process(clk,rst)
 
   begin
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst= '1' then
 
       else
 

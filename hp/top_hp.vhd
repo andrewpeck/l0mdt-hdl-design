@@ -36,10 +36,10 @@ entity top_hp is
     );
     Port(
       clk                 : in std_logic;    
-      Reset_b             : in std_logic;
+      rst            : in std_logic;
       glob_en             : in std_logic;
       -- configuration
-      local_Reset_b       : in std_logic;
+      local_rst      : in std_logic;
       local_en            : in std_logic;
 
       time_offset         : in unsigned(7 downto 0);
@@ -68,10 +68,10 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       -- configuration
-      local_Reset_b       => local_Reset_b,
+      local_rst      => local_rst,
       local_en            => local_en,
       time_offset         => time_offset,
       -- RoI_size            => RoI_size,

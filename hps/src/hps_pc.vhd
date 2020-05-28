@@ -32,7 +32,7 @@ entity hps_pc is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit

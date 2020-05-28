@@ -40,7 +40,7 @@ architecture beh of ucm_hps_tb is
   signal clk : std_logic := '0';
   -- rest
   constant reset_init_cycles : integer := 3;
-  signal reset_b : std_logic;
+  signal rst: std_logic;
   
   signal glob_en : std_logic := '1';
 
@@ -91,7 +91,7 @@ begin
   DUT : entity ucm_hps_lib.ucm_hps
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
@@ -135,11 +135,11 @@ begin
 	-------------------------------------------------------------------------------------
 	rst_process: process
 	begin
-		reset_b <='1';
+		rst<='1';
 		wait for HW_CLK_period;
-		reset_b<='0';
+		rst<='0';
 		wait for HW_CLK_period*reset_init_cycles;
-		reset_b <= '1';
+		rst<= '1';
 		wait;
   end process;
  	-------------------------------------------------------------------------------------
@@ -151,7 +151,7 @@ begin
   -------------------------------------------------------------------------------------
  
 
-  CSM_read: process ( reset_b, clk)
+  CSM_read: process ( rst, clk)
 
     file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/ucm_hps/sim/csm_TB_C2Barrel.txt";
     variable row                  : line;
@@ -176,7 +176,7 @@ begin
 
     
     if rising_edge(clk) then
-      if(Reset_b = '1') then
+      if(rst= '1') then
 
       else
         ---------------------------------------------------------------

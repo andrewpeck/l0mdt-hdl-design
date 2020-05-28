@@ -24,7 +24,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_cvp_slope is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     i_data_v            : in ucm_prepro_rvt;
@@ -40,7 +40,7 @@ begin
   slope: process(clk)
   begin
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst= '1' then
         
       else
         

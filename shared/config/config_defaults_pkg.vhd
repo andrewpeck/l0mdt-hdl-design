@@ -47,10 +47,7 @@ package cfg_global_pkg is
     PT_type                       : std_logic;
 
     -- number of elements
-    MAX_NUM_HP                    : integer;-- := 6;
     NUM_THREADS                   : integer;-- := 3;
-    MAX_NUM_HPS                   : integer;-- := 3;
-    MAX_NUM_SL                    : integer;
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
@@ -88,13 +85,7 @@ package cfg_global_pkg is
     ENABLE_PT                     => '1', -- default enable
     PT_type                       => '0', -- default 0
     -- number of elements ( )
-    MAX_NUM_HP              => 6,
-    NUM_THREADS             => 3,
-    MAX_NUM_HPS             => 3,
-    MAX_NUM_SL              => 5
-    --3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*
-    --    to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + 
-    --    to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHTBORS))*2,
+    NUM_THREADS                   => 3
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------

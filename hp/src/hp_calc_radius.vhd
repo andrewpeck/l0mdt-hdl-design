@@ -30,7 +30,7 @@ entity hp_calc_radius is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
 
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
@@ -58,7 +58,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
 
         i_drift_time        => drift_time,
@@ -74,7 +74,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
 
         i_drift_time        => drift_time,
@@ -91,10 +91,10 @@ begin
 
   BCID_exp <= to_unsigned(0,1) & i_SLc_BCID & to_unsigned(0,5);
 
-  t0_proc: process(Reset_b,clk)
+  t0_proc: process(rst,clk)
   begin
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst= '1' then
         drift_time <= (others => '0');
       else
         int_dv <= i_data_valid;

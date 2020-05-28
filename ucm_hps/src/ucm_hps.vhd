@@ -36,7 +36,7 @@ use hps_lib.hps_pkg.all;
 entity ucm_hps is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc
@@ -67,7 +67,7 @@ begin
   UCM : entity ucm_lib.ucm
   port map(
     clk                   => clk,
-    Reset_b               => Reset_b,
+    rst              => rst,
     glob_en               => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
@@ -90,7 +90,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -110,7 +110,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -130,7 +130,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -150,7 +150,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc

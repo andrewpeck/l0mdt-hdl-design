@@ -28,7 +28,7 @@ entity ucm_csw is
   -- );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     i_control           : in ucm_csw_control_at;
@@ -41,9 +41,9 @@ end entity ucm_csw;
 architecture beh of ucm_csw is
 
 begin
-  UCM_MAIN_CSW : process(Reset_b,clk) begin
+  UCM_MAIN_CSW : process(rst,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '1') then
+      if(rst= '1') then
         o_data <= (others => (others => '0'));
       else
         for csw_i in MAX_NUM_SL -1 downto 0 loop

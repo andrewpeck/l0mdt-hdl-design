@@ -21,7 +21,7 @@ heg_pc2heg : {array: open , type : hp_hpsPc2hp}
 # -----------------------------------------------------------
 
 heg_ctrl2hp:
-  reset_b         : { type: logic , length : MAX_NUM_HP}
+  rst        : { type: logic , length : MAX_NUM_HP}
   enable        : { type: logic , length : MAX_NUM_HP}
 
 # -----------------------------------------------------------

@@ -33,7 +33,7 @@ entity heg is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     -- SLc
@@ -70,7 +70,7 @@ begin
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     --
     i_uCM_data_v        => i_uCM_data_v,
@@ -88,10 +88,10 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       -- configuration
-      local_Reset_b       => hegC_control.reset_b(i_hp),
+      local_rst      => hegC_control.rst(i_hp),
       local_en            => hegC_control.enable(i_hp),
       time_offset         => time_offset,
 
@@ -115,7 +115,7 @@ begin
   port map(
     clk                 => clk,
     
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration
     i_control           =>hegC_control,

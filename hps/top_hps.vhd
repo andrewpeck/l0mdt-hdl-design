@@ -36,7 +36,7 @@ entity top_hps is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- control
     -- SLc
@@ -60,7 +60,7 @@ begin
     port map(
       clk                 => clk,
       
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,

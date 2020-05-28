@@ -22,7 +22,7 @@ package heg_pkg is
   function nullify(x: heg_pc2heg_avt) return heg_pc2heg_avt;
 
   type heg_ctrl2hp_rt is record
-     reset_b              :  std_logic_vector(MAX_NUM_HP-1 downto 0);
+     rst             :  std_logic_vector(MAX_NUM_HP-1 downto 0);
      enable               :  std_logic_vector(MAX_NUM_HP-1 downto 0);
   end record heg_ctrl2hp_rt;
   constant HEG_CTRL2HP_LEN : integer := 12;
@@ -112,21 +112,21 @@ package body heg_pkg is
   function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rvt is
     variable y : heg_ctrl2hp_rvt;
   begin
-    y(11 downto 6)             := x.reset_b;
+    y(11 downto 6)             := x.rst;
     y(5 downto 0)              := x.enable;
     return y;
   end function vectorify;
   function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.reset_b                  := x(11 downto 6);
+    y.rst                 := x(11 downto 6);
     y.enable                   := x(5 downto 0);
     return y;
   end function structify;
   function nullify (x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.reset_b                  := nullify(x.reset_b);
+    y.rst                 := nullify(x.rst);
     y.enable                   := nullify(x.enable);
     return y;
   end function nullify;

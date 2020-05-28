@@ -31,21 +31,26 @@ end entity ucm_tb;
 
 architecture beh of ucm_tb is
   -- clk
-  constant clk_period : time := 4.0 ns;
+  constant clk_period : time := 2.7778 ns;
   signal clk : std_logic := '0';
   -- rest
   constant reset_init_cycles : integer := 3;
-  signal reset_b : std_logic;
+  signal rst: std_logic;
   
   signal glob_en : std_logic := '1';
 
   -- SLc in
-  signal i_slc_data_av          : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+  signal i_slc_data_mainA_av     : slc_rx_data_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_data_avt(2 downto 0);
+  signal i_slc_data_neightborA_v : slc_rx_data_rvt;
+  signal i_slc_data_neightborB_v : slc_rx_data_rvt;
   -- to hps
-  -- signal o_uCM2hps_pam_ar       : ucm2heg_pam_art(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_data_av      : ucm2hps_aavt(MAX_NUM_HPS -1 downto 0);
+  signal o_uCM2hps_inn_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av            : pipelines_avt;
+  signal o_uCM2pl_av            : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
   signal cand1  : slc_rx_data_rt;
   signal barrel1 : slc_barrel_rt;
@@ -55,19 +60,24 @@ architecture beh of ucm_tb is
 
 begin
   
-  UCM : entity project_lib.top_ucm
+  UCM : entity ucm_lib.ucm
   port map(
-    clk                 => clk,
-    Reset_b             => Reset_b,
-    glob_en             => glob_en,
+    clk                     => clk,
+    rst                     => rst,
+    glob_en                 => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av          => i_slc_data_av,
+    i_slc_data_mainA_av     => i_slc_data_mainA_av,
+    i_slc_data_mainB_av     => i_slc_data_mainB_av,
+    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
+    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
     -- pam out
-    -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-    o_uCM2hps_data_av      => o_uCM2hps_data_av,
+    o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+    o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+    o_uCM2hps_out_av        => o_uCM2hps_out_av,
+    o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
     -- MDT hit
-    o_uCM2pl_av            => o_uCM2pl_av
+    o_uCM2pl_av             => o_uCM2pl_av
   );
   
  	-------------------------------------------------------------------------------------
@@ -85,73 +95,72 @@ begin
 	-------------------------------------------------------------------------------------
 	rst_process: process
 	begin
-		reset_b <='1';
+		rst<='0';
 		wait for CLK_period;
-		reset_b<='0';
+		rst<='1';
 		wait for CLK_period*reset_init_cycles;
-		reset_b <= '1';
+		rst<= '0';
 		wait;
   end process;
  	-------------------------------------------------------------------------------------
 	-- candidates
   -------------------------------------------------------------------------------------
-  barrel1.spare_bits          <= std_logic_vector(to_unsigned( 1 , SLC_B_SPARE_LEN ));
-  barrel1.coin_type           <= std_logic_vector(to_unsigned( 1 , SLC_COIN_TYPE_LEN ));
-  barrel1.z_rpc0              <= to_signed( 1 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc1              <= to_signed( 1 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc2              <= to_signed( 1 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc3              <= to_signed( 1 , SLC_Z_RPC_LEN );
+  barrel1.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
+  barrel1.coin_type           <= std_logic_vector(to_unsigned( 3 , SLC_COIN_TYPE_LEN ));
+  barrel1.z_rpc0              <= to_signed( -2079 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc1              <= to_signed( 0 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc2              <= to_signed( -3858 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc3              <= to_signed( -4806 , SLC_Z_RPC_LEN );
   cand1.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
   cand1.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
-  cand1.muid.bcid             <= to_unsigned( 1 , BCID_LEN );
+  cand1.muid.bcid             <= to_unsigned( 477 , BCID_LEN );
   cand1.chambers.mdt_inn      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_mid      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_out      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_ext      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_mid      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_out      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
+  cand1.chambers.mdt_ext      <= to_unsigned( 3 , SLC_CHAMBER_LEN );
   cand1.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
   cand1.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
-  cand1.common.pos_eta        <= to_signed( 1 , SLC_POS_ETA_LEN );
-  cand1.common.pos_phi        <= to_unsigned( 1 , SLC_POS_PHI_LEN );
-  cand1.common.pt_th          <= std_logic_vector(to_unsigned( 1 , SLC_PT_TH_LEN ));
-  cand1.common.charge         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
+  cand1.common.pos_eta        <= to_signed( -1355 , SLC_POS_ETA_LEN );
+  cand1.common.pos_phi        <= to_unsigned( 292 , SLC_POS_PHI_LEN );
+  cand1.common.pt_th          <= std_logic_vector(to_unsigned( 11 , SLC_PT_TH_LEN ));
+  cand1.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
   cand1.specific              <= vectorify(barrel1);
   cand1.data_valid            <= '1';
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
 	-------------------------------------------------------------------------------------
-  feed_1_slc : process(clk,reset_b)
+  feed_1_slc : process(clk,rst)
 
   begin
-    if Reset_b = '1' then
+    if rst= '1' then
       tb_motor <= x"0";
-      i_slc_data_av(0) <= (others => '0');
-      i_slc_data_av(1) <= (others => '0');
-      i_slc_data_av(2) <= (others => '0');
-      i_slc_data_av(3) <= (others => '0');
-      i_slc_data_av(4) <= (others => '0');
+      i_slc_data_mainA_av <= ( others => (others => '0'));
+      i_slc_data_mainB_av <= (others => (others => '0'));
+      i_slc_data_neightborA_v <= (others => '0');
+      i_slc_data_neightborB_v <= (others => '0');
     elsif rising_edge(clk) then
 
       case tb_motor is
         when x"0"=>
           tb_motor <= x"1";
-          i_slc_data_av(0) <= (others => '0');
-          i_slc_data_av(1) <= (others => '0');
-          i_slc_data_av(2) <= (others => '0');
-          i_slc_data_av(3) <= (others => '0');
-          i_slc_data_av(4) <= (others => '0');
+          i_slc_data_mainA_av(2) <= (others => '0');
+          i_slc_data_mainA_av(1) <= (others => '0');
+          i_slc_data_mainA_av(0) <= (others => '0');
+          -- i_slc_data_mainA_av(3) <= (others => '0');
+          -- i_slc_data_mainA_av(4) <= (others => '0');
         when x"1" =>
-        tb_motor <= x"2";
-          i_slc_data_av(4) <= (others => '0');
-          i_slc_data_av(3) <= vectorify(cand1);
-          i_slc_data_av(2) <= (others => '0');
-          i_slc_data_av(1) <= (others => '0');
-          i_slc_data_av(0) <= (others => '0');  
+          tb_motor <= x"2";
+          i_slc_data_mainA_av(2) <= vectorify(cand1);
+          i_slc_data_mainA_av(1) <= (others => '0');
+          i_slc_data_mainA_av(0) <= (others => '0');
+          -- i_slc_data_mainA_av(1) <= (others => '0');
+          -- i_slc_data_mainA_av(0) <= (others => '0');  
         when others =>
-          i_slc_data_av(0) <= (others => '0');
-          i_slc_data_av(1) <= (others => '0');
-          i_slc_data_av(2) <= (others => '0');
-          i_slc_data_av(3) <= (others => '0');
-          i_slc_data_av(4) <= (others => '0');
+          i_slc_data_mainA_av(2) <= (others => '0');
+          i_slc_data_mainA_av(1) <= (others => '0');
+          i_slc_data_mainA_av(0) <= (others => '0');
+          -- i_slc_data_mainA_av(3) <= (others => '0');
+          -- i_slc_data_mainA_av(4) <= (others => '0');
           -- nothing to do 
       end case;
     end if;

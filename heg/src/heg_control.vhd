@@ -33,7 +33,7 @@ entity heg_control is
   port (
     clk                 : in std_logic;
     
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
@@ -56,7 +56,7 @@ architecture beh of heg_control is
     port (
       clk                 : in std_logic;
       
-      Reset_b             : in std_logic;
+      rst            : in std_logic;
       glob_en             : in std_logic;
       -- configuration
       -- SLc in
@@ -85,7 +85,7 @@ begin
   port map(
     clk                 => clk,
     
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration
     -- SLc in
@@ -102,14 +102,14 @@ begin
   o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
 
 
-  SLc_reg : process(Reset_b,clk) begin
+  SLc_reg : process(rst,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '1') then
+      if(rst= '1') then
 
         o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
   
         o_control.enable <= (others => '0');
-        o_control.reset_b <= (others => '1');
+        o_control.rst<= (others => '1');
         busy_count <= (others => '0');
   
         heg_ctrl_motor <= IDLE;
@@ -125,13 +125,13 @@ begin
             if( int_uCM_data_r.data_valid = '1') then
               o_uCM2sf_data_v <= i_uCM_data_v;
               o_control.enable <= (others => '1');
-              o_control.reset_b <= (others => '0');
+              o_control.rst<= (others => '0');
               heg_ctrl_motor <= SET_WINDOW;
             end if;
   
           when SET_WINDOW =>
             o_control.enable <= (others => '1');
-            o_control.reset_b <= (others => '1');
+            o_control.rst<= (others => '1');
             if Roi_win_valid = '1' then
               if ST_nBARREL_ENDCAP = '0' then -- barrel
                 -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
@@ -144,14 +144,14 @@ begin
           -- o_uCM_data <= int_uCM_data;
           -- o_control.loc_enable <= '1';
           -- o_control.enable <= (others => '1');
-          -- o_control.reset_b <= (others => '0');
+          -- o_control.rst<= (others => '0');
           when HEG_BUSY =>
             if to_integer(unsigned(busy_count)) < HEG_BUSY_CLOCKS then
               o_control.enable <= (others => '1');
-              o_control.reset_b <= (others => '1');
+              o_control.rst<= (others => '1');
             else
               o_control.enable <= (others => '0');
-              o_control.reset_b <= (others => '1');
+              o_control.rst<= (others => '1');
               -- busy_count <= (others => '0');
               heg_ctrl_motor <= IDLE;
             end if;
@@ -199,7 +199,7 @@ entity heg_c_window is
   port (
     clk                 : in std_logic;
     
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
@@ -230,7 +230,7 @@ begin
   -- )
   -- port map(
   --   clk                 => clk,
-  --   Reset_b             => Reset_b,
+  --   rst            => rst,
   --   glob_en             => glob_en,
   --   --
   --   i_specific          => int_uCM_data.specific,
@@ -252,7 +252,7 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       --
       i_z          => z_barrel,
@@ -263,9 +263,9 @@ begin
 
   end generate;
 
-  -- Roi_wingen : process(Reset_b,clk) begin
+  -- Roi_wingen : process(rst,clk) begin
   --   if rising_edge(clk) then
-  --     if(Reset_b = '1') then
+  --     if(rst= '1') then
   --       o_Roi_win_valid <= '0';
   --       Roi_window_a <= nullify(Roi_window_a);
   --     else

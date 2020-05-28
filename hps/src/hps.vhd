@@ -34,7 +34,7 @@ entity hps is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- control
 
@@ -66,7 +66,7 @@ begin
   -- )
   -- port map(
   --   clk                 => clk,
-  --   Reset_b             => Reset_b,
+  --   rst            => rst,
   --   glob_en             => glob_en,
   --   --
   --   i_uCM_pam           => i_uCM_pam,
@@ -83,7 +83,7 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       --
       i_mdt_tar_v      => i_mdt_tar_av(hp_i),
@@ -99,7 +99,7 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       --
       i_uCM_data_v          => i_uCM2hps_av(heg_i),
@@ -117,7 +117,7 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => glob_en,
       -- to Segment finder
       i_sf_control        => heg2sf_control(heg_i),

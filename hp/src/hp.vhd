@@ -30,10 +30,10 @@ entity hit_processor is
   );
   port (
     clk                 : in std_logic;    
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    local_Reset_b       : in std_logic;
+    local_rst      : in std_logic;
     local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 
@@ -73,7 +73,7 @@ begin
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration
     time_offset         => time_offset,
@@ -99,7 +99,7 @@ begin
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- SLc
     i_SLc_specific      => slc_data.specific,
@@ -124,7 +124,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => mdt_data.data_valid,
@@ -138,7 +138,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => int_hit_valid,

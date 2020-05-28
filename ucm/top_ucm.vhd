@@ -26,20 +26,23 @@ use ucm_lib.ucm_pkg.all;
 
 entity top_ucm is
   port (
-    clk                 : in std_logic;
-    Reset_b             : in std_logic;
-    glob_en             : in std_logic;
+    clk                     : in std_logic;
+    rst                     : in std_logic;
+    glob_en                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_neightborA_v : in slc_rx_data_rvt;
+    i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- to hps
     -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
-    o_uCM2hps_inn_1b      : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_1b      : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_1b      : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_1b      : out std_logic_vector(NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_1b           : out std_logic_vector(MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_1b             : out std_logic_vector(MAX_NUM_SL -1 downto 0)
   );
 end entity top_ucm;
 
@@ -56,20 +59,23 @@ begin
 
   UCM : entity ucm_lib.ucm
   port map(
-    clk                 => clk,
-    Reset_b             => Reset_b,
-    glob_en             => glob_en,
+    clk                     => clk,
+    rst                     => rst,
+    glob_en                 => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av         => i_slc_data_av,
+    i_slc_data_mainA_av     => i_slc_data_mainA_av,
+    i_slc_data_mainB_av     => i_slc_data_mainB_av,
+    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
+    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
     -- pam out
     -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-    o_uCM2hps_inn_av      => o_uCM2hps_inn_av,
-    o_uCM2hps_mid_av      => o_uCM2hps_mid_av,
-    o_uCM2hps_out_av      => o_uCM2hps_out_av,
-    o_uCM2hps_ext_av      => o_uCM2hps_ext_av,
+    o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+    o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+    o_uCM2hps_out_av        => o_uCM2hps_out_av,
+    o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
     -- MDT hit
-    o_uCM2pl_av           => o_uCM2pl_av
+    o_uCM2pl_av             => o_uCM2pl_av
   );
 
   TH : for th_i in NUM_THREADS -1 downto 0 generate

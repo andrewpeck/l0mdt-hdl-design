@@ -30,7 +30,7 @@ entity hp_calc_dt2r_small is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
 
     i_drift_time        : in unsigned(MDT_TIME_LEN -1 downto 0);
@@ -78,10 +78,10 @@ begin
   --   end if;
   -- end process;
 
-  -- DT2R : process(clk,Reset_b)
+  -- DT2R : process(clk,rst)
 
   -- begin
-  --   if Reset_b = '1' then
+  --   if rst= '1' then
   --     o_tube_radius <= (others => '0');
   --     -- o_data_valid <= '0';
   --   elsif rising_edge(clk) then

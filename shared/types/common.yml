@@ -356,7 +356,7 @@ sf2pt_ : { array: open , type : sf2pt , _: off}
 # # -----------------------------------------------------------
 
 # heg_ctrl2hp:
-#   reset_b         : { type: logic , length : MAX_NUM_HP}
+#   rst        : { type: logic , length : MAX_NUM_HP}
 #   enable        : { type: logic , length : MAX_NUM_HP}
 
 # # heg_ctrl2hp_a  : {array: MAX_NUM_HP , type: heg_ctrl2hp}

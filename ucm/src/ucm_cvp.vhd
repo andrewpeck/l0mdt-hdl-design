@@ -28,7 +28,7 @@ entity ucm_cvp is
   -- );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     i_in_en             : in std_logic;
@@ -50,9 +50,9 @@ begin
     o_ucm2hps_av(hps_i) <= vectorify(ucm2hps_ar(hps_i));
   end generate;
 
-  UCM_CVP : process(Reset_b,clk) begin
+  UCM_CVP : process(rst,clk) begin
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst= '1' then
         for hps_i in MAX_NUM_HPS -1 downto 0 loop
           ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
         end loop;
