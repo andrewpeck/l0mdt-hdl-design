@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Fri May 29 14:51:49 2020
+-- Last update : Fri May 29 15:12:46 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -125,9 +125,9 @@ architecture Behavioral of top_pt is
     signal mtc : mtc_tf_rt;
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
 
-    signal index_a : integer := 0;
-    signal index_b : integer := 0;
-    signal index_c : integer := 0;
+    signal index_a : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
 
     --COMPONENT a0_ROM
     --PORT (
