@@ -43,10 +43,10 @@ package config_pkg is
 
   -- physical values
 
-  constant PHY_BARREL_R0            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,0);
-  constant PHY_BARREL_R1            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,1);
-  constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
-  constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
+  -- constant PHY_BARREL_R0            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,0);
+  -- constant PHY_BARREL_R1            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,1);
+  -- constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
+  -- constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
 
   -- Processing channel
   constant HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
