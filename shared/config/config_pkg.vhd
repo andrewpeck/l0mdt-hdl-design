@@ -20,9 +20,10 @@ use ieee.math_real.all;
 library shared_lib;
 use shared_lib.cfg_global_pkg.all;
 use shared_lib.some_functions_pkg.all;
+use shared_lib.hw_param_pkg.all;
 
 library project_lib;
-use project_lib.config_pkg.all;
+use project_lib.prj_cfg.all;
 
 package config_pkg is
 
@@ -39,6 +40,13 @@ package config_pkg is
   constant ST_nBARREL_ENDCAP    : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
   constant ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
   constant ENABLE_NEIGHTBORS    : std_logic := CFG.ENABLE_NEIGHTBORS;   -- 0: disabled  1: enabled
+
+  -- physical values
+
+  constant PHY_BARREL_R0            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,0);
+  constant PHY_BARREL_R1            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,1);
+  constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
+  constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
 
   -- Processing channel
   constant HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
@@ -84,5 +92,17 @@ package config_pkg is
   -- parallel channels
   constant NUM_THREADS  : integer := CFG.NUM_THREADS;
 
+  ---------------------------------------------------------
+  -- FUNCTIONS
+  ---------------------------------------------------------
+
+  
+
 end package config_pkg;
+
+package body config_pkg is
+  
+
+  
+end package body config_pkg;
 

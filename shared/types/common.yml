@@ -42,7 +42,8 @@ slc_muid:
 
 # slc chambers
 
-SLC_CHAMBER_LEN:     {qualifier: constant , type: integer , value: 6}
+SLC_CHAMBER_LEN:     {qualifier: constant , type: integer , value: 3}
+
 slc_chid:
   mdt_inn:           {type: unsigned , length: SLC_CHAMBER_LEN}
   mdt_mid:           {type: unsigned , length: SLC_CHAMBER_LEN}
@@ -51,12 +52,13 @@ slc_chid:
     
 # slc common 
     
-SLC_TCID_LEN:     { qualifier: constant , type: integer , value: 2 }
+SLC_TCID_LEN:     { qualifier: constant , type: integer , value: 3 }
 SLC_TCSENT_LEN:   { qualifier: constant , type: integer , value: 1 }
-SLC_POS_ETA_LEN:  { qualifier: constant , type: integer , value: 15 }
+SLC_POS_ETA_LEN:  { qualifier: constant , type: integer , value: 14 }
 SLC_POS_ETA_MULT: { qualifier: constant , type: real , value: 0.014 }  
 SLC_POS_PHI_LEN:  { qualifier: constant , type: integer , value: 9 }
-SLC_POS_PHI_MULT: { qualifier: constant , type: real , value: 0.012 }  
+SLC_POS_PHI_MULT: { qualifier: constant , type: real , value: 0.012 } 
+SLC_RPC_PT_LEN:   { qualifier: constant , type: integer , value: 8 } 
 SLC_PT_TH_LEN:    { qualifier: constant , type: integer , value: 4 }
 SLC_CHARGE_LEN:   { qualifier: constant , type: integer , value: 1 }  
   
@@ -65,6 +67,7 @@ slc_common:
   tcsent:         { type: logic , length: SLC_TCSENT_LEN }
   pos_eta:        { type: signed , length: SLC_POS_ETA_LEN}
   pos_phi:        { type: unsigned , length: SLC_POS_PHI_LEN}
+  rpc_pt:         { type: logic , length: SLC_RPC_PT_LEN}
   pt_th:          { type: logic , length: SLC_PT_TH_LEN}
   charge:         { type: logic , length: SLC_CHARGE_LEN }
 
@@ -147,7 +150,7 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 # slc ucm2hps specific
 # barrel
 
-UCM_MBAR_LEN: { qualifier: constant , type: integer , value: 10 }
+UCM_MBAR_LEN: { qualifier: constant , type: integer , value: 12 }
 UCM_Z_ROI_LEN: { qualifier: constant , type: integer , value: 10 }
 UCM_R_ROI_LEN: { qualifier: constant , type: integer , value: 4 }  
 UCM_PHI_LEN: { qualifier: constant , type: integer , value: 14 }
@@ -155,26 +158,29 @@ UCM_ETA_LEN: { qualifier: constant , type: integer , value: 8 }
 # UCM_CHAMBER_ID_LEN: { qualifier: constant , type: integer , value: 5 }
 
 ucm_csf_barrel:
-  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
+  mbar        : { type: signed , length: UCM_MBAR_LEN }
   z           : { type: unsigned , length: UCM_Z_ROI_LEN }
-  r           : { type: unsigned , length: UCM_R_ROI_LEN }
-  phi         : { type: unsigned , length: UCM_PHI_LEN }
-  eta         : { type: unsigned , length: UCM_ETA_LEN }
+  # r           : { type: unsigned , length: UCM_R_ROI_LEN }
+  # phi         : { type: unsigned , length: UCM_PHI_LEN }
+  # eta         : { type: unsigned , length: UCM_ETA_LEN }
   
-  
+UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
+
 # ucm_csf_barrel_at: {array: open , type: ucm_csf_barrel}
 
-
 # slc ucm2hps id
-ucm2hps_id:
-  bcid          : { type: unsigned , length: BCID_LEN}
-  chamber_id    : { type: unsigned , length: SLC_CHAMBER_LEN }
-# slc ucm2hps
-UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 46 }
+# ucm2hps_id:
+#   # bcid          : { type: unsigned , length: BCID_LEN}
+#   # muid          : { type: slc_muid }
+#   data_valid    : { type: logic }
+# # slc ucm2hps
+
 
 ucm2hps:
-  id            : { type: ucm2hps_id}
+  # id            : { type: ucm2hps_id}
+  muid          : { type: slc_muid }
   specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
+  chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
   data_valid    : { type: logic}
 
 ucm2hps_        : {array: open , type: ucm2hps , _: off }

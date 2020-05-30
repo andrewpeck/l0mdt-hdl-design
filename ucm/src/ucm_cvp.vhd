@@ -40,9 +40,26 @@ entity ucm_cvp is
 end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
+
   signal i_data_r     : ucm_prepro_rt;
   signal ucm2hps_ar   : ucm2hps_at(MAX_NUM_HPS -1 downto 0);
+
+  signal slope        : signed(UCM_MBAR_LEN-1 downto 0);
+  signal slope_dv     : std_logic;
+  
 begin
+
+  SLOPE : entity ucm_lib.ucm_cvp_slope
+  port map(
+    clk           => clk,
+    rst           => rst,
+    glob_en       => glob_en,
+    --
+    i_data_v      => i_data_r.specific,
+    i_data_Valid  => i_data_r.data_valid,
+    o_ucm2hps_av  => slope,
+    o_data_valid  => slope_dv
+  );
 
   i_data_r <= structify(i_data_v);
 

@@ -45,7 +45,7 @@ package common_pkg is
   function structify(x: slc_muid_rvt) return slc_muid_rt;
   function nullify (x: slc_muid_rt) return slc_muid_rt;
 
-  constant   SLC_CHAMBER_LEN      :  integer := 6;
+  constant   SLC_CHAMBER_LEN      :  integer := 3;
 
   type slc_chid_rt is record
      mdt_inn              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
@@ -53,23 +53,25 @@ package common_pkg is
      mdt_out              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
      mdt_ext              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
   end record slc_chid_rt;
-  constant SLC_CHID_LEN : integer := 24;
+  constant SLC_CHID_LEN : integer := 12;
   subtype slc_chid_rvt is std_logic_vector(SLC_CHID_LEN-1 downto 0);
   function vectorify(x: slc_chid_rt) return slc_chid_rvt;
   function structify(x: slc_chid_rvt) return slc_chid_rt;
   function nullify (x: slc_chid_rt) return slc_chid_rt;
 
-  constant   SLC_TCID_LEN         :  integer := 2;
+  constant   SLC_TCID_LEN         :  integer := 3;
 
   constant   SLC_TCSENT_LEN       :  integer := 1;
 
-  constant   SLC_POS_ETA_LEN      :  integer := 15;
+  constant   SLC_POS_ETA_LEN      :  integer := 14;
 
   constant   SLC_POS_ETA_MULT     :  real := 0.014;
 
   constant   SLC_POS_PHI_LEN      :  integer := 9;
 
   constant   SLC_POS_PHI_MULT     :  real := 0.012;
+
+  constant   SLC_RPC_PT_LEN       :  integer := 8;
 
   constant   SLC_PT_TH_LEN        :  integer := 4;
 
@@ -80,10 +82,11 @@ package common_pkg is
      tcsent               :  std_logic;
      pos_eta              :  signed(SLC_POS_ETA_LEN-1 downto 0);
      pos_phi              :  unsigned(SLC_POS_PHI_LEN-1 downto 0);
+     rpc_pt               :  std_logic_vector(SLC_RPC_PT_LEN-1 downto 0);
      pt_th                :  std_logic_vector(SLC_PT_TH_LEN-1 downto 0);
      charge               :  std_logic;
   end record slc_common_rt;
-  constant SLC_COMMON_LEN : integer := 32;
+  constant SLC_COMMON_LEN : integer := 40;
   subtype slc_common_rvt is std_logic_vector(SLC_COMMON_LEN-1 downto 0);
   function vectorify(x: slc_common_rt) return slc_common_rvt;
   function structify(x: slc_common_rvt) return slc_common_rt;
@@ -150,7 +153,7 @@ package common_pkg is
      specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record slc_rx_data_rt;
-  constant SLC_RX_DATA_LEN : integer := 128;
+  constant SLC_RX_DATA_LEN : integer := 124;
   subtype slc_rx_data_rvt is std_logic_vector(SLC_RX_DATA_LEN-1 downto 0);
   function vectorify(x: slc_rx_data_rt) return slc_rx_data_rvt;
   function structify(x: slc_rx_data_rvt) return slc_rx_data_rt;
@@ -192,7 +195,7 @@ package common_pkg is
   function nullify(x: tar2hps_at) return tar2hps_at;
   function nullify(x: tar2hps_avt) return tar2hps_avt;
 
-  constant   UCM_MBAR_LEN         :  integer := 10;
+  constant   UCM_MBAR_LEN         :  integer := 12;
 
   constant   UCM_Z_ROI_LEN        :  integer := 10;
 
@@ -203,36 +206,24 @@ package common_pkg is
   constant   UCM_ETA_LEN          :  integer := 8;
 
   type ucm_csf_barrel_rt is record
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
+     mbar                 :  signed(UCM_MBAR_LEN-1 downto 0);
      z                    :  unsigned(UCM_Z_ROI_LEN-1 downto 0);
-     r                    :  unsigned(UCM_R_ROI_LEN-1 downto 0);
-     phi                  :  unsigned(UCM_PHI_LEN-1 downto 0);
-     eta                  :  unsigned(UCM_ETA_LEN-1 downto 0);
   end record ucm_csf_barrel_rt;
-  constant UCM_CSF_BARREL_LEN : integer := 46;
+  constant UCM_CSF_BARREL_LEN : integer := 22;
   subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt;
   function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt;
   function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
 
-  type ucm2hps_id_rt is record
-     bcid                 :  unsigned(BCID_LEN-1 downto 0);
-     chamber_id           :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
-  end record ucm2hps_id_rt;
-  constant UCM2HPS_ID_LEN : integer := 18;
-  subtype ucm2hps_id_rvt is std_logic_vector(UCM2HPS_ID_LEN-1 downto 0);
-  function vectorify(x: ucm2hps_id_rt) return ucm2hps_id_rvt;
-  function structify(x: ucm2hps_id_rvt) return ucm2hps_id_rt;
-  function nullify (x: ucm2hps_id_rt) return ucm2hps_id_rt;
-
-  constant   UCM2HPS_SPECIFIC_LEN :  integer := 46;
+  constant   UCM2HPS_SPECIFIC_LEN :  integer := 22;
 
   type ucm2hps_rt is record
-     id                   :  ucm2hps_id_rt;
+     muid                 :  slc_muid_rt;
      specific             :  std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record ucm2hps_rt;
-  constant UCM2HPS_LEN : integer := 65;
+  constant UCM2HPS_LEN : integer := 46;
   subtype ucm2hps_rvt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
   function vectorify(x: ucm2hps_rt) return ucm2hps_rvt;
   function structify(x: ucm2hps_rvt) return ucm2hps_rt;
@@ -256,7 +247,7 @@ package common_pkg is
      processed            :  std_logic;
      data_valid           :  std_logic;
   end record pipeline_rt;
-  constant PIPELINE_LEN : integer := 133;
+  constant PIPELINE_LEN : integer := 129;
   subtype pipeline_rvt is std_logic_vector(PIPELINE_LEN-1 downto 0);
   function vectorify(x: pipeline_rt) return pipeline_rvt;
   function structify(x: pipeline_rvt) return pipeline_rt;
@@ -375,19 +366,19 @@ package body common_pkg is
   function vectorify(x: slc_chid_rt) return slc_chid_rvt is
     variable y : slc_chid_rvt;
   begin
-    y(23 downto 18)            := vectorify(x.mdt_inn);
-    y(17 downto 12)            := vectorify(x.mdt_mid);
-    y(11 downto 6)             := vectorify(x.mdt_out);
-    y(5 downto 0)              := vectorify(x.mdt_ext);
+    y(11 downto 9)             := vectorify(x.mdt_inn);
+    y(8 downto 6)              := vectorify(x.mdt_mid);
+    y(5 downto 3)              := vectorify(x.mdt_out);
+    y(2 downto 0)              := vectorify(x.mdt_ext);
     return y;
   end function vectorify;
   function structify(x: slc_chid_rvt) return slc_chid_rt is
     variable y : slc_chid_rt;
   begin
-    y.mdt_inn                  := structify(x(23 downto 18));
-    y.mdt_mid                  := structify(x(17 downto 12));
-    y.mdt_out                  := structify(x(11 downto 6));
-    y.mdt_ext                  := structify(x(5 downto 0));
+    y.mdt_inn                  := structify(x(11 downto 9));
+    y.mdt_mid                  := structify(x(8 downto 6));
+    y.mdt_out                  := structify(x(5 downto 3));
+    y.mdt_ext                  := structify(x(2 downto 0));
     return y;
   end function structify;
   function nullify (x: slc_chid_rt) return slc_chid_rt is
@@ -403,10 +394,11 @@ package body common_pkg is
   function vectorify(x: slc_common_rt) return slc_common_rvt is
     variable y : slc_common_rvt;
   begin
-    y(31 downto 30)            := x.tcid;
-    y(29)                      := x.tcsent;
-    y(28 downto 14)            := vectorify(x.pos_eta);
-    y(13 downto 5)             := vectorify(x.pos_phi);
+    y(39 downto 37)            := x.tcid;
+    y(36)                      := x.tcsent;
+    y(35 downto 22)            := vectorify(x.pos_eta);
+    y(21 downto 13)            := vectorify(x.pos_phi);
+    y(12 downto 5)             := x.rpc_pt;
     y(4 downto 1)              := x.pt_th;
     y(0)                       := x.charge;
     return y;
@@ -414,10 +406,11 @@ package body common_pkg is
   function structify(x: slc_common_rvt) return slc_common_rt is
     variable y : slc_common_rt;
   begin
-    y.tcid                     := x(31 downto 30);
-    y.tcsent                   := x(29);
-    y.pos_eta                  := structify(x(28 downto 14));
-    y.pos_phi                  := structify(x(13 downto 5));
+    y.tcid                     := x(39 downto 37);
+    y.tcsent                   := x(36);
+    y.pos_eta                  := structify(x(35 downto 22));
+    y.pos_phi                  := structify(x(21 downto 13));
+    y.rpc_pt                   := x(12 downto 5);
     y.pt_th                    := x(4 downto 1);
     y.charge                   := x(0);
     return y;
@@ -429,6 +422,7 @@ package body common_pkg is
     y.tcsent                   := nullify(x.tcsent);
     y.pos_eta                  := nullify(x.pos_eta);
     y.pos_phi                  := nullify(x.pos_phi);
+    y.rpc_pt                   := nullify(x.rpc_pt);
     y.pt_th                    := nullify(x.pt_th);
     y.charge                   := nullify(x.charge);
     return y;
@@ -511,9 +505,9 @@ package body common_pkg is
   function vectorify(x: slc_rx_data_rt) return slc_rx_data_rvt is
     variable y : slc_rx_data_rvt;
   begin
-    y(127 downto 108)          := vectorify(x.muid);
-    y(107 downto 84)           := vectorify(x.chambers);
-    y(83 downto 52)            := vectorify(x.common);
+    y(123 downto 104)          := vectorify(x.muid);
+    y(103 downto 92)           := vectorify(x.chambers);
+    y(91 downto 52)            := vectorify(x.common);
     y(51 downto 1)             := x.specific;
     y(0)                       := x.data_valid;
     return y;
@@ -521,9 +515,9 @@ package body common_pkg is
   function structify(x: slc_rx_data_rvt) return slc_rx_data_rt is
     variable y : slc_rx_data_rt;
   begin
-    y.muid                     := structify(x(127 downto 108));
-    y.chambers                 := structify(x(107 downto 84));
-    y.common                   := structify(x(83 downto 52));
+    y.muid                     := structify(x(123 downto 104));
+    y.chambers                 := structify(x(103 downto 92));
+    y.common                   := structify(x(91 downto 52));
     y.specific                 := x(51 downto 1);
     y.data_valid               := x(0);
     return y;
@@ -548,12 +542,12 @@ package body common_pkg is
     return y;
   end function vectorify;
   function vectorify(x: slc_rx_data_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*128-1 downto 0);
+    variable y : std_logic_vector(x'length*124-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-128) := vectorify(x(i));
-      msb := msb - 128 -1;
+      y(msb downto msb-124) := vectorify(x(i));
+      msb := msb - 124 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -570,8 +564,8 @@ package body common_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-128));
-      msb := msb - 128 -1;
+      y(i) := structify(x(msb downto msb-124));
+      msb := msb - 124 -1;
     end loop l;
     return y;
   end function structify;
@@ -676,21 +670,15 @@ package body common_pkg is
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt is
     variable y : ucm_csf_barrel_rvt;
   begin
-    y(45 downto 36)            := vectorify(x.mbar);
-    y(35 downto 26)            := vectorify(x.z);
-    y(25 downto 22)            := vectorify(x.r);
-    y(21 downto 8)             := vectorify(x.phi);
-    y(7 downto 0)              := vectorify(x.eta);
+    y(21 downto 10)            := vectorify(x.mbar);
+    y(9 downto 0)              := vectorify(x.z);
     return y;
   end function vectorify;
   function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt is
     variable y : ucm_csf_barrel_rt;
   begin
-    y.mbar                     := structify(x(45 downto 36));
-    y.z                        := structify(x(35 downto 26));
-    y.r                        := structify(x(25 downto 22));
-    y.phi                      := structify(x(21 downto 8));
-    y.eta                      := structify(x(7 downto 0));
+    y.mbar                     := structify(x(21 downto 10));
+    y.z                        := structify(x(9 downto 0));
     return y;
   end function structify;
   function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt is
@@ -698,55 +686,33 @@ package body common_pkg is
   begin
     y.mbar                     := nullify(x.mbar);
     y.z                        := nullify(x.z);
-    y.r                        := nullify(x.r);
-    y.phi                      := nullify(x.phi);
-    y.eta                      := nullify(x.eta);
-    return y;
-  end function nullify;
-
-  function vectorify(x: ucm2hps_id_rt) return ucm2hps_id_rvt is
-    variable y : ucm2hps_id_rvt;
-  begin
-    y(17 downto 6)             := vectorify(x.bcid);
-    y(5 downto 0)              := vectorify(x.chamber_id);
-    return y;
-  end function vectorify;
-  function structify(x: ucm2hps_id_rvt) return ucm2hps_id_rt is
-    variable y : ucm2hps_id_rt;
-  begin
-    y.bcid                     := structify(x(17 downto 6));
-    y.chamber_id               := structify(x(5 downto 0));
-    return y;
-  end function structify;
-  function nullify (x: ucm2hps_id_rt) return ucm2hps_id_rt is
-    variable y : ucm2hps_id_rt;
-  begin
-    y.bcid                     := nullify(x.bcid);
-    y.chamber_id               := nullify(x.chamber_id);
     return y;
   end function nullify;
 
   function vectorify(x: ucm2hps_rt) return ucm2hps_rvt is
     variable y : ucm2hps_rvt;
   begin
-    y(64 downto 47)            := vectorify(x.id);
-    y(46 downto 1)             := x.specific;
+    y(45 downto 26)            := vectorify(x.muid);
+    y(25 downto 4)             := x.specific;
+    y(3 downto 1)              := x.chamber_id;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: ucm2hps_rvt) return ucm2hps_rt is
     variable y : ucm2hps_rt;
   begin
-    y.id                       := structify(x(64 downto 47));
-    y.specific                 := x(46 downto 1);
+    y.muid                     := structify(x(45 downto 26));
+    y.specific                 := x(25 downto 4);
+    y.chamber_id               := x(3 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: ucm2hps_rt) return ucm2hps_rt is
     variable y : ucm2hps_rt;
   begin
-    y.id                       := nullify(x.id);
+    y.muid                     := nullify(x.muid);
     y.specific                 := nullify(x.specific);
+    y.chamber_id               := nullify(x.chamber_id);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -760,12 +726,12 @@ package body common_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm2hps_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*65-1 downto 0);
+    variable y : std_logic_vector(x'length*46-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-65) := vectorify(x(i));
-      msb := msb - 65 -1;
+      y(msb downto msb-46) := vectorify(x(i));
+      msb := msb - 46 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -782,8 +748,8 @@ package body common_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-65));
-      msb := msb - 65 -1;
+      y(i) := structify(x(msb downto msb-46));
+      msb := msb - 46 -1;
     end loop l;
     return y;
   end function structify;
@@ -807,9 +773,9 @@ package body common_pkg is
   function vectorify(x: pipeline_rt) return pipeline_rvt is
     variable y : pipeline_rvt;
   begin
-    y(132 downto 113)          := vectorify(x.muid);
-    y(112 downto 89)           := vectorify(x.chambers);
-    y(88 downto 57)            := vectorify(x.common);
+    y(128 downto 109)          := vectorify(x.muid);
+    y(108 downto 97)           := vectorify(x.chambers);
+    y(96 downto 57)            := vectorify(x.common);
     y(56 downto 6)             := x.specific;
     y(5 downto 2)              := x.process_ch;
     y(1)                       := x.processed;
@@ -819,9 +785,9 @@ package body common_pkg is
   function structify(x: pipeline_rvt) return pipeline_rt is
     variable y : pipeline_rt;
   begin
-    y.muid                     := structify(x(132 downto 113));
-    y.chambers                 := structify(x(112 downto 89));
-    y.common                   := structify(x(88 downto 57));
+    y.muid                     := structify(x(128 downto 109));
+    y.chambers                 := structify(x(108 downto 97));
+    y.common                   := structify(x(96 downto 57));
     y.specific                 := x(56 downto 6);
     y.process_ch               := x(5 downto 2);
     y.processed                := x(1);
@@ -850,12 +816,12 @@ package body common_pkg is
     return y;
   end function vectorify;
   function vectorify(x: pipelines_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*133-1 downto 0);
+    variable y : std_logic_vector(x'length*129-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-133) := vectorify(x(i));
-      msb := msb - 133 -1;
+      y(msb downto msb-129) := vectorify(x(i));
+      msb := msb - 129 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -872,8 +838,8 @@ package body common_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-133));
-      msb := msb - 133 -1;
+      y(i) := structify(x(msb downto msb-129));
+      msb := msb - 129 -1;
     end loop l;
     return y;
   end function structify;

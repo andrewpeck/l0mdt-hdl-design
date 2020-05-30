@@ -23,30 +23,51 @@ use ucm_lib.ucm_pkg.all;
 
 entity ucm_cvp_slope is
   port (
-    clk                 : in std_logic;
-    rst            : in std_logic;
-    glob_en             : in std_logic;
+    clk           : in std_logic;
+    rst           : in std_logic;
+    glob_en       : in std_logic;
     --
-    i_data_v            : in ucm_prepro_rvt;
-    o_ucm2hps_av        : out unsigned(UCM_MBAR_LEN-1 downto 0)
+    i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+    i_data_valid  : in std_logic;
+    o_slope       : out signed(UCM_MBAR_LEN-1 downto 0);
+    o_data_valid  : out std_logic
     
   );
 end entity ucm_cvp_slope;
 
 architecture beh of ucm_cvp_slope is
   
+  signal barrel_r   : slc_barrel_rt;
 begin
 
-  slope: process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst= '1' then
-        
-      else
-        
+  BARREL: if ST_nBARREL_ENDCAP = '0' generate
+
+    barrel_r <= structify(i_data_v);
+
+    slope: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst= '1' then
+          
+        else
+          if i_data_valid = '1' then
+            sum_xt <= (barrel_r.z_rpc_0 * PHY_BARREL_R0) + 
+                      (barrel_r.z_rpc_1 * PHY_BARREL_R1) + 
+                      (barrel_r.z_rpc_2 * PHY_BARREL_R2) + 
+                      (barrel_r.z_rpc_3 * PHY_BARREL_R3);
+
+          end if;
+
+
+
+          
+        end if;
       end if;
-    end if;
-  end process slope;
+    end process slope;
+    
+  end generate BARREL;
+
+
   
   
   

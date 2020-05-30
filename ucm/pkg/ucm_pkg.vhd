@@ -21,7 +21,7 @@ package ucm_pkg is
      specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record ucm_prepro_rt;
-  constant UCM_PREPRO_LEN : integer := 128;
+  constant UCM_PREPRO_LEN : integer := 124;
   subtype ucm_prepro_rvt is std_logic_vector(UCM_PREPRO_LEN-1 downto 0);
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt;
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt;
@@ -102,9 +102,9 @@ package body ucm_pkg is
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt is
     variable y : ucm_prepro_rvt;
   begin
-    y(127 downto 108)          := vectorify(x.muid);
-    y(107 downto 84)           := vectorify(x.chambers);
-    y(83 downto 52)            := vectorify(x.common);
+    y(123 downto 104)          := vectorify(x.muid);
+    y(103 downto 92)           := vectorify(x.chambers);
+    y(91 downto 52)            := vectorify(x.common);
     y(51 downto 1)             := x.specific;
     y(0)                       := x.data_valid;
     return y;
@@ -112,9 +112,9 @@ package body ucm_pkg is
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt is
     variable y : ucm_prepro_rt;
   begin
-    y.muid                     := structify(x(127 downto 108));
-    y.chambers                 := structify(x(107 downto 84));
-    y.common                   := structify(x(83 downto 52));
+    y.muid                     := structify(x(123 downto 104));
+    y.chambers                 := structify(x(103 downto 92));
+    y.common                   := structify(x(91 downto 52));
     y.specific                 := x(51 downto 1);
     y.data_valid               := x(0);
     return y;
@@ -139,12 +139,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_prepro_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*128-1 downto 0);
+    variable y : std_logic_vector(x'length*124-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-128) := vectorify(x(i));
-      msb := msb - 128 -1;
+      y(msb downto msb-124) := vectorify(x(i));
+      msb := msb - 124 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -161,8 +161,8 @@ package body ucm_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-128));
-      msb := msb - 128 -1;
+      y(i) := structify(x(msb downto msb-124));
+      msb := msb - 124 -1;
     end loop l;
     return y;
   end function structify;
