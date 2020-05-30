@@ -21,7 +21,7 @@ library shared_lib;
 use shared_lib.common_pkg.all;
 -- use shared_lib.config_pkg.all;
 
-package hw_param_pkg is
+package detector_param_pkg is
   
   type barrel_stations_radius is array (0 to 3) of integer;
   type ys_barrel is array ( 0 to 1) of barrel_stations_radius;
@@ -32,9 +32,9 @@ package hw_param_pkg is
     );
   function get_barrel_radius ( sector, r_i: integer) return signed;
   
-end package hw_param_pkg;
+end package detector_param_pkg;
 
-package body hw_param_pkg is
+package body detector_param_pkg is
   
   function get_barrel_radius ( sector , r_i : integer) return signed is
     variable y : signed(SLC_Z_RPC_LEN-1 downto 0);
@@ -49,4 +49,4 @@ package body hw_param_pkg is
     return y;
   end function get_barrel_radius;
   
-end package body hw_param_pkg;
+end package body detector_param_pkg;
