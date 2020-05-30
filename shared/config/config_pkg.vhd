@@ -20,7 +20,7 @@ use ieee.math_real.all;
 library shared_lib;
 use shared_lib.cfg_global_pkg.all;
 use shared_lib.some_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+-- use shared_lib.detector_param_pkg.all;
 
 library project_lib;
 use project_lib.prj_cfg.all;

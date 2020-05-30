@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Fri May 15 14:12:21 2020
+-- Last update : Fri May 29 15:12:46 2020
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -55,6 +55,8 @@ architecture Behavioral of top_pt is
     -- Online segments in global coordinates
     signal segment_BI, segment_BM, segment_BO : sf_seg_data_barrel_rt;
     signal segment_BI_s, segment_BM_s, segment_BO_s : sf_seg_data_barrel_rt;
+    signal segment_BI_v, segment_BM_v, segment_BO_v : sf_seg_data_barrel_rvt;
+
 
     signal segment_EI, segment_EM, segment_EO : sf_seg_data_endcap_rt;
 
@@ -122,6 +124,10 @@ architecture Behavioral of top_pt is
     signal mtc_valid : std_logic := '0';
     signal mtc : mtc_tf_rt;
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
+
+    signal index_a : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
 
     --COMPONENT a0_ROM
     --PORT (
@@ -210,7 +216,7 @@ begin
     EtaCalculator : entity pt_lib.eta_calculator
     port map (
         clk            => clk,
-        i_seg          => vectorify(segment_BI_s),
+        i_seg          => segment_BI_v,
         o_eta          => eta,
         o_dv_eta       => dv_eta
     );
@@ -218,9 +224,9 @@ begin
     SagittaCalculator : entity pt_lib.sagitta_calculator
     port map(
         clk => clk,
-        i_seg0 => vectorify(segment_BI_s),
-        i_seg1 => vectorify(segment_BM_s),
-        i_seg2 => vectorify(segment_BO_s),
+        i_seg0 => segment_BI_v,
+        i_seg1 => segment_BM_v,
+        i_seg2 => segment_BO_v,
         o_inv_s => inv_s,
         o_dv_s => dv_s
     );
@@ -234,7 +240,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv_combo_s,
-        addra => comboid_to_index_ram(comboid_s),
+        addra => index_a,
         douta => a0
     );
 
@@ -247,7 +253,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv_combo_s,
-        addra => comboid_to_index_ram(comboid_s),
+        addra => index_a,
         douta => a1
     );
 
@@ -260,7 +266,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv2,
-        addra => comboid_to_index_ram(comboid_phi),
+        addra => index_b,
         douta => b0
     );
 
@@ -273,7 +279,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv2,
-        addra => comboid_to_index_ram(comboid_phi),
+        addra => index_b,
         douta => b1
     );
 
@@ -286,7 +292,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv2,
-        addra => comboid_to_index_ram(comboid_phi),
+        addra => index_b,
         douta => b2
     );
 
@@ -299,7 +305,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv7,
-        addra => comboid_to_index_ram(comboid_eta),
+        addra => index_c,
         douta => c0
     );
 
@@ -312,7 +318,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => dv7,
-        addra => comboid_to_index_ram(comboid_eta),
+        addra => index_c,
         douta => c1
     );
 
@@ -326,8 +332,13 @@ begin
         segment_EO <= structify(i_segment_O);
     end generate SEG_GEN;
 
+    index_a <= comboid_to_index_ram(comboid_s);
+    index_b <= comboid_to_index_ram(comboid_phi);
+    index_c <= comboid_to_index_ram(comboid_eta);
+
     slc <= structify(i_SLC);
     o_mtc <= vectorify(mtc);
+
 
     pt_top_proc : process( clk )
     begin
