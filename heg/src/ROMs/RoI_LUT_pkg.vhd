@@ -19,7 +19,8 @@ use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library heg_lib;
 use heg_lib.heg_pkg.all;

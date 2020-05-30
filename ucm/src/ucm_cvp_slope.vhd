@@ -4,7 +4,7 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor
+--  Module: slc vector processor slope calculator
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -17,7 +17,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -38,6 +39,9 @@ end entity ucm_cvp_slope;
 architecture beh of ucm_cvp_slope is
   
   signal barrel_r   : slc_barrel_rt;
+
+  signal sum_xt : signed(UCM_Z_ROI_LEN*2 +4 -1 downto 0);
+  
 begin
 
   BARREL: if ST_nBARREL_ENDCAP = '0' generate
@@ -51,10 +55,10 @@ begin
           
         else
           if i_data_valid = '1' then
-            sum_xt <= (barrel_r.z_rpc_0 * PHY_BARREL_R0) + 
-                      (barrel_r.z_rpc_1 * PHY_BARREL_R1) + 
-                      (barrel_r.z_rpc_2 * PHY_BARREL_R2) + 
-                      (barrel_r.z_rpc_3 * PHY_BARREL_R3);
+            -- sum_xt <= (barrel_r.z_rpc_0 * PHY_BARREL_R0) + 
+            --           (barrel_r.z_rpc_1 * PHY_BARREL_R1) + 
+            --           (barrel_r.z_rpc_2 * PHY_BARREL_R2) + 
+            --           (barrel_r.z_rpc_3 * PHY_BARREL_R3);
 
           end if;
 

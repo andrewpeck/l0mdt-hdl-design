@@ -20,7 +20,8 @@ use std.standard.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library ucm_hps_lib;
 use ucm_hps_lib.ucm_hps_pkg.all;

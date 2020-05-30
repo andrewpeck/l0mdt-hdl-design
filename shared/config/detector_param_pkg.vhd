@@ -18,7 +18,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-use shared_lib.common_pkg.all;
+use shared_lib.common_constants_pkg.all;
 -- use shared_lib.config_pkg.all;
 
 package detector_param_pkg is

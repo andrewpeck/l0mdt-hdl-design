@@ -17,7 +17,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -28,7 +29,7 @@ entity ucm_cvp is
   -- );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
     i_in_en             : in std_logic;
@@ -49,7 +50,7 @@ architecture beh of ucm_cvp is
   
 begin
 
-  SLOPE : entity ucm_lib.ucm_cvp_slope
+  SLOPE_CALC : entity ucm_lib.ucm_cvp_slope
   port map(
     clk           => clk,
     rst           => rst,
@@ -57,7 +58,7 @@ begin
     --
     i_data_v      => i_data_r.specific,
     i_data_Valid  => i_data_r.data_valid,
-    o_ucm2hps_av  => slope,
+    o_slope       => slope,
     o_data_valid  => slope_dv
   );
 
@@ -80,7 +81,7 @@ begin
           if SF_type = '0' then --CSF
             if i_data_r.data_valid = '1' then
               for hps_i in MAX_NUM_HPS -1 downto 0 loop
-                ucm2hps_ar(hps_i).id.bcid <= i_data_r.muid.bcid;
+                ucm2hps_ar(hps_i).muid.bcid <= i_data_r.muid.bcid;
               end loop;
               -- slope / mbar calc
               -- local origin calc : to be done in HEG local origin of window
