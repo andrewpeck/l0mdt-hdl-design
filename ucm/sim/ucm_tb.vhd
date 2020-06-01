@@ -174,7 +174,7 @@ begin
         when x"1" =>
           tb_motor <= x"2";
           i_slc_data_mainA_av(2) <= vectorify(cand1);
-          i_slc_data_mainA_av(1) <= (others => '0');
+          i_slc_data_mainA_av(1) <= vectorify(cand2);
           i_slc_data_mainA_av(0) <= (others => '0');
           i_slc_data_neightborA_v <= vectorify(cand2);
           i_slc_data_neightborB_v <= (others => '0');  

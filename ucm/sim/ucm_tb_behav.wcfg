@@ -18,15 +18,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="24404fs"></ZoomEndTime>
-      <Cursor1Time time="29169fs"></Cursor1Time>
+      <ZoomStartTime time="27500fs"></ZoomStartTime>
+      <ZoomEndTime time="43029fs"></ZoomEndTime>
+      <Cursor1Time time="40281fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="267"></NameColumnWidth>
-      <ValueColumnWidth column_width="108"></ValueColumnWidth>
+      <ValueColumnWidth column_width="92"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="12" />
    <wave_markers>
       <marker label="" time="29169" />
       <marker label="" time="31947" />
@@ -54,7 +54,6 @@
    <wvobject type="group" fp_name="group104">
       <obj_property name="label">tb</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/ucm_tb/tb_motor">
          <obj_property name="ElementShortName">tb_motor[3:0]</obj_property>
          <obj_property name="ObjectShortName">tb_motor[3:0]</obj_property>
@@ -92,6 +91,7 @@
    <wvobject type="group" fp_name="group127">
       <obj_property name="label">ucm</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/ucm_tb/UCM/i_slc_data_av">
          <obj_property name="ElementShortName">i_slc_data_av[2:0][123:0]</obj_property>
          <obj_property name="ObjectShortName">i_slc_data_av[2:0][123:0]</obj_property>
@@ -318,6 +318,7 @@
    <wvobject type="group" fp_name="group152">
       <obj_property name="label">ucm_csw_pam</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_PAM_CSW/i_control">
          <obj_property name="ElementShortName">i_control[2:0]</obj_property>
          <obj_property name="ObjectShortName">i_control[2:0]</obj_property>
@@ -329,6 +330,7 @@
       <wvobject type="array" fp_name="/ucm_tb/UCM/SLC_PAM_CSW/o_data">
          <obj_property name="ElementShortName">o_data[2:0][123:0]</obj_property>
          <obj_property name="ObjectShortName">o_data[2:0][123:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group105">
@@ -357,9 +359,27 @@
          <obj_property name="ObjectShortName">barrel_r</obj_property>
          <obj_property name="isExpanded"></obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/rpc_a">
+         <obj_property name="ElementShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/rad_a">
+         <obj_property name="ElementShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/num_h">
+         <obj_property name="ElementShortName">num_h</obj_property>
+         <obj_property name="ObjectShortName">num_h</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_zy">
-         <obj_property name="ElementShortName">sum_zy[21:0]</obj_property>
-         <obj_property name="ObjectShortName">sum_zy[21:0]</obj_property>
+         <obj_property name="ElementShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zy[23:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_y">
@@ -368,39 +388,131 @@
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_z">
-         <obj_property name="ElementShortName">sum_z[10:0]</obj_property>
-         <obj_property name="ObjectShortName">sum_z[10:0]</obj_property>
+         <obj_property name="ElementShortName">sum_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_z[11:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sum_zz">
-         <obj_property name="ElementShortName">sum_zz[21:0]</obj_property>
-         <obj_property name="ObjectShortName">sum_zz[21:0]</obj_property>
+         <obj_property name="ElementShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zz[23:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/sqr_sum_z">
-         <obj_property name="ElementShortName">sqr_sum_z[21:0]</obj_property>
-         <obj_property name="ObjectShortName">sqr_sum_z[21:0]</obj_property>
+         <obj_property name="ElementShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sqr_sum_z[23:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/b_nom">
-         <obj_property name="ElementShortName">b_nom[43:0]</obj_property>
-         <obj_property name="ObjectShortName">b_nom[43:0]</obj_property>
+         <obj_property name="ElementShortName">b_nom[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_nom[47:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/b_den">
-         <obj_property name="ElementShortName">b_den[43:0]</obj_property>
-         <obj_property name="ObjectShortName">b_den[43:0]</obj_property>
+         <obj_property name="ElementShortName">b_den[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_den[47:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/int_slope">
-         <obj_property name="ElementShortName">int_slope[87:0]</obj_property>
-         <obj_property name="ObjectShortName">int_slope[87:0]</obj_property>
+         <obj_property name="ElementShortName">int_slope[95:0]</obj_property>
+         <obj_property name="ObjectShortName">int_slope[95:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/dv_chain">
          <obj_property name="ElementShortName">dv_chain[7:0]</obj_property>
          <obj_property name="ObjectShortName">dv_chain[7:0]</obj_property>
          <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="group" fp_name="group139">
+      <obj_property name="label">slope(1)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/i_data_v">
+         <obj_property name="ElementShortName">i_data_v[50:0]</obj_property>
+         <obj_property name="ObjectShortName">i_data_v[50:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/i_data_valid">
+         <obj_property name="ElementShortName">i_data_valid</obj_property>
+         <obj_property name="ObjectShortName">i_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/o_slope">
+         <obj_property name="ElementShortName">o_slope[11:0]</obj_property>
+         <obj_property name="ObjectShortName">o_slope[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/o_data_valid">
+         <obj_property name="ElementShortName">o_data_valid</obj_property>
+         <obj_property name="ObjectShortName">o_data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/barrel_r">
+         <obj_property name="ElementShortName">barrel_r</obj_property>
+         <obj_property name="ObjectShortName">barrel_r</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/coin">
+         <obj_property name="ElementShortName">coin</obj_property>
+         <obj_property name="ObjectShortName">coin</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/rpc_a">
+         <obj_property name="ElementShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rpc_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/rad_a">
+         <obj_property name="ElementShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="ObjectShortName">rad_a[0:3][9:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+         <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/num_h">
+         <obj_property name="ElementShortName">num_h</obj_property>
+         <obj_property name="ObjectShortName">num_h</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_zy">
+         <obj_property name="ElementShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zy[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_y">
+         <obj_property name="ElementShortName">sum_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_z">
+         <obj_property name="ElementShortName">sum_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sum_zz">
+         <obj_property name="ElementShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sum_zz[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/sqr_sum_z">
+         <obj_property name="ElementShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="ObjectShortName">sqr_sum_z[23:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/b_nom">
+         <obj_property name="ElementShortName">b_nom[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_nom[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/b_den">
+         <obj_property name="ElementShortName">b_den[47:0]</obj_property>
+         <obj_property name="ObjectShortName">b_den[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/int_slope">
+         <obj_property name="ElementShortName">int_slope[95:0]</obj_property>
+         <obj_property name="ObjectShortName">int_slope[95:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/dv_chain">
+         <obj_property name="ElementShortName">dv_chain[7:0]</obj_property>
+         <obj_property name="ObjectShortName">dv_chain[7:0]</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

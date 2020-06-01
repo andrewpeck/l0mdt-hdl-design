@@ -47,16 +47,16 @@ architecture beh of ucm_cvp_slope is
   type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN-1 downto 0);
   signal rad_a : rad_at;
 
-  signal num_h : integer;
+  signal num_h , num_hh : integer;
 
-  signal sum_zy     : signed(UCM_Z_ROI_LEN*2 + 2 -1 downto 0);
+  signal sum_zy     : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
   signal sum_y      : signed(UCM_Z_ROI_LEN   + 2 -1 downto 0);
-  signal sum_z      : signed(UCM_Z_ROI_LEN   + 1 -1 downto 0);
-  signal sum_zz     : signed(UCM_Z_ROI_LEN*2 + 2 -1 downto 0);
-  signal sqr_sum_z  : signed(UCM_Z_ROI_LEN*2 + 2 -1 downto 0);
-  signal b_nom      : signed(UCM_Z_ROI_LEN*4 + 4 -1 downto 0);
-  signal b_den      : signed(UCM_Z_ROI_LEN*4 + 4 -1 downto 0);
-  signal int_slope  : signed(88 -1 downto 0);
+  signal sum_z      : signed(UCM_Z_ROI_LEN   + 2 -1 downto 0);
+  signal sum_zz     : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
+  signal sqr_sum_z  : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
+  signal b_nom      : signed(UCM_Z_ROI_LEN*4 + 8 -1 downto 0);
+  signal b_den      : signed(UCM_Z_ROI_LEN*4 + 8 -1 downto 0);
+  signal int_slope  : signed(96 -1 downto 0);
 
   signal dv_chain   : std_logic_vector(7 downto 0);
 
@@ -135,71 +135,78 @@ begin
           
         else
           if i_data_valid = '1' then
+            num_hh <= num_h;
             if num_h = 2 then
-              sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
-                            (( '0' & rpc_a(1)) * ('0' & rad_a(1)));
-              sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1));
-              sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1));
-              sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
-                            (( '0' & rpc_a(1)) * ( '0' & rpc_a(1)));
-              sqr_sum_z <=  (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1))) * 
-                            (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1)));
+              -- sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
+              --               (( '0' & rpc_a(1)) * ('0' & rad_a(1)));
+              -- sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1));
+              -- sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1));
+              -- sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
+              --               (( '0' & rpc_a(1)) * ( '0' & rpc_a(1)));
+              -- sqr_sum_z <=  (('0' & rpc_a(0)) + 
+              --               ( '0' & rpc_a(1))) * 
+              --               (('0' & rpc_a(0)) + 
+              --               ( '0' & rpc_a(1)));
             elsif num_h = 3 then
-              sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
-                            (( '0' & rpc_a(1)) * ('0' & rad_a(1))) + 
-                            (( '0' & rpc_a(2)) * ('0' & rad_a(2)));
-              sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1)) + 
-                            ( "00" & rad_a(2));
-              sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2));
-              sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
-                            (( '0' & rpc_a(1)) * ( '0' & rpc_a(1))) + 
-                            (( '0' & rpc_a(2)) * ( '0' & rpc_a(2)));
-              sqr_sum_z <=  (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2))) * 
-                            (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2)));
+              sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2));
+
+              sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
+                            resize(rad_a(2),SLC_Z_RPC_LEN +2);
+
+              sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
+                            resize(rpc_a(2),SLC_Z_RPC_LEN +2);
+
+              sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2));
+
+              sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2)) * 
+                            (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2));
+
             elsif num_h = 4 then
-              sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
-                            (( '0' & rpc_a(1)) * ('0' & rad_a(1))) + 
-                            (( '0' & rpc_a(2)) * ('0' & rad_a(2))) + 
-                            (( '0' & rpc_a(3)) * ('0' & rad_a(3)));
-              sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1)) + 
-                            ( "00" & rad_a(2)) + ( "00" & rad_a(3)) ;
-              sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2)) + ( '0' & rpc_a(3)) ;
-              sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
-                            (( '0' & rpc_a(1)) * ( '0' & rpc_a(1))) + 
-                            (( '0' & rpc_a(2)) * ( '0' & rpc_a(2))) + 
-                            (( '0' & rpc_a(3)) * ( '0' & rpc_a(3)));
-              sqr_sum_z <=  (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2)) + 
-                            ( '0' & rpc_a(3))) * 
-                            (('0' & rpc_a(0)) + 
-                            ( '0' & rpc_a(1)) + 
-                            ( '0' & rpc_a(2)) + 
-                            ( '0' & rpc_a(3)));
+              -- sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
+              --               (( '0' & rpc_a(1)) * ('0' & rad_a(1))) + 
+              --               (( '0' & rpc_a(2)) * ('0' & rad_a(2))) + 
+              --               (( '0' & rpc_a(3)) * ('0' & rad_a(3)));
+              -- sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1)) + 
+              --               ( "00" & rad_a(2)) + ( "00" & rad_a(3)) ;
+              -- sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1)) + 
+              --               ( '0' & rpc_a(2)) + ( '0' & rpc_a(3)) ;
+              -- sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
+              --               (( '0' & rpc_a(1)) * ( '0' & rpc_a(1))) + 
+              --               (( '0' & rpc_a(2)) * ( '0' & rpc_a(2))) + 
+              --               (( '0' & rpc_a(3)) * ( '0' & rpc_a(3)));
+              -- sqr_sum_z <=  (('0' & rpc_a(0)) + 
+              --               ( '0' & rpc_a(1)) + 
+              --               ( '0' & rpc_a(2)) + 
+              --               ( '0' & rpc_a(3))) * 
+              --               (('0' & rpc_a(0)) + 
+              --               ( '0' & rpc_a(1)) + 
+              --               ( '0' & rpc_a(2)) + 
+              --               ( '0' & rpc_a(3)));
             end if;
             dv_chain(0) <= '1';
           else
             dv_chain(0) <= '0';
+            sum_zy <= (others => '0');
+            sum_y <= (others => '0');
+            sum_z <= (others => '0');
+            sum_zz <= (others => '0');
+            sqr_sum_z <= (others => '0');
           end if;
 
           if dv_chain(0) = '1' then
-            b_nom <= (num_h * sum_zy) - (("00" & sum_y) * sum_Z);
-            b_den <= (num_h * sum_zz) - sqr_sum_z;
+            b_nom <= (num_hh * sum_zy) - (sum_y * sum_Z);
+            b_den <= (num_hh * sum_zz) - sqr_sum_z;
             dv_chain(1) <= '1';
           else
             dv_chain(1) <= '0';
           end if;
 
           if dv_chain(1) = '1' then
-            int_slope <= (b_nom * 2048)/b_den;
+            int_slope <= (b_nom * 1)/b_den;
             dv_chain(2) <= '1';
           else
             dv_chain(2) <= '0';
