@@ -108,10 +108,10 @@ begin
   -------------------------------------------------------------------------------------
   barrel1.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
   barrel1.coin_type           <= std_logic_vector(to_unsigned( 3 , SLC_COIN_TYPE_LEN ));
-  barrel1.z_rpc0              <= to_signed( -2079 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc1              <= to_signed( 0 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc2              <= to_signed( -3858 , SLC_Z_RPC_LEN );
-  barrel1.z_rpc3              <= to_signed( -4806 , SLC_Z_RPC_LEN );
+  barrel1.z_rpc0              <= to_signed(integer(-2079.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
+  barrel1.z_rpc1              <= to_signed(integer( 0.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
+  barrel1.z_rpc2              <= to_signed(integer( -3858.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
+  barrel1.z_rpc3              <= to_signed(integer( -4806.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
   cand1.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
   cand1.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
   cand1.muid.bcid             <= to_unsigned( 477 , BCID_LEN );
@@ -130,10 +130,10 @@ begin
   ------------------------
   barrel2.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
   barrel2.coin_type           <= std_logic_vector(to_unsigned( 1 , SLC_COIN_TYPE_LEN ));
-  barrel2.z_rpc0              <= to_signed( -537 , SLC_Z_RPC_LEN );
-  barrel2.z_rpc1              <= to_signed( -675 , SLC_Z_RPC_LEN );
-  barrel2.z_rpc2              <= to_signed( -721 , SLC_Z_RPC_LEN );
-  barrel2.z_rpc3              <= to_signed( 0 , SLC_Z_RPC_LEN );
+  barrel2.z_rpc0              <= to_signed(integer( -537.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
+  barrel2.z_rpc1              <= to_signed(integer( -675.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
+  barrel2.z_rpc2              <= to_signed(integer( -721.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
+  barrel2.z_rpc3              <= to_signed(integer( 0.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
   cand2.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
   cand2.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
   cand2.muid.bcid             <= to_unsigned( 1253 , BCID_LEN );

@@ -42,7 +42,7 @@ package common_constants_pkg is
 
   constant   SLC_Z_RPC_LEN        :  integer := 10;
 
-  constant   SLC_Z_RPC_MULT       :  real := 0.0234;
+  constant   SLC_Z_RPC_MULT       :  real := 25.0;
 
   constant   SLC_E_SPARE_LEN      :  integer := 8;
 

@@ -48,7 +48,7 @@ SLC_CHARGE_LEN:   { qualifier: constant , type: integer , value: 1 }
 SLC_B_SPARE_LEN:    { qualifier: constant , type: integer , value: 8 }
 SLC_COIN_TYPE_LEN:  { qualifier: constant , type: integer , value: 3 }
 SLC_Z_RPC_LEN:      { qualifier: constant , type: integer , value: 10 }
-SLC_Z_RPC_MULT:     {qualifier: constant , type: real , value: 0.0234 } 
+SLC_Z_RPC_MULT:     {qualifier: constant  , type: real    , value: 25.0 } 
 
 # slc specific endcap
 
