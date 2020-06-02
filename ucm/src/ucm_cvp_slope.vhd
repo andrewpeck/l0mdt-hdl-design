@@ -78,28 +78,28 @@ begin
               4 when coin = 5 else
               0;
     -- set z
-    rpc_a(0) <= barrel_r.z_rpc0 when coin = 0 else
-                barrel_r.z_rpc0 when coin = 1 else
-                barrel_r.z_rpc0 when coin = 2 else
-                barrel_r.z_rpc0 when coin = 3 else
-                barrel_r.z_rpc1 when coin = 4 else
-                barrel_r.z_rpc0 when coin = 5 else
+    rpc_a(0) <= abs(barrel_r.z_rpc0) when coin = 0 else
+                abs(barrel_r.z_rpc0) when coin = 1 else
+                abs(barrel_r.z_rpc0) when coin = 2 else
+                abs(barrel_r.z_rpc0) when coin = 3 else
+                abs(barrel_r.z_rpc1) when coin = 4 else
+                abs(barrel_r.z_rpc0) when coin = 5 else
                 (others => '0');
-    rpc_a(1) <= barrel_r.z_rpc3 when coin = 0 else
-                barrel_r.z_rpc1 when coin = 1 else
-                barrel_r.z_rpc1 when coin = 2 else
-                barrel_r.z_rpc2 when coin = 3 else
-                barrel_r.z_rpc2 when coin = 4 else
-                barrel_r.z_rpc1 when coin = 5 else
+    rpc_a(1) <= abs(barrel_r.z_rpc3) when coin = 0 else
+                abs(barrel_r.z_rpc1) when coin = 1 else
+                abs(barrel_r.z_rpc1) when coin = 2 else
+                abs(barrel_r.z_rpc2) when coin = 3 else
+                abs(barrel_r.z_rpc2) when coin = 4 else
+                abs(barrel_r.z_rpc1) when coin = 5 else
                   (others => '0');
     rpc_a(2) <= (others => '0') when coin = 0 else
-                barrel_r.z_rpc2 when coin = 1 else
-                barrel_r.z_rpc3 when coin = 2 else
-                barrel_r.z_rpc3 when coin = 3 else
-                barrel_r.z_rpc2 when coin = 4 else
-                barrel_r.z_rpc2 when coin = 5 else
+                abs(barrel_r.z_rpc2) when coin = 1 else
+                abs(barrel_r.z_rpc3) when coin = 2 else
+                abs(barrel_r.z_rpc3) when coin = 3 else
+                abs(barrel_r.z_rpc2) when coin = 4 else
+                abs(barrel_r.z_rpc2) when coin = 5 else
                 (others => '0');
-    rpc_a(3) <= barrel_r.z_rpc3 when coin = 5 else
+    rpc_a(3) <= abs(barrel_r.z_rpc3) when coin = 5 else
                 (others => '0');
     -- set r
     rad_a(0) <= PHY_BARREL_R0 when coin = 0 else
@@ -137,16 +137,18 @@ begin
           if i_data_valid = '1' then
             num_hh <= num_h;
             if num_h = 2 then
-              -- sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
-              --               (( '0' & rpc_a(1)) * ('0' & rad_a(1)));
-              -- sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1));
-              -- sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1));
-              -- sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
-              --               (( '0' & rpc_a(1)) * ( '0' & rpc_a(1)));
-              -- sqr_sum_z <=  (('0' & rpc_a(0)) + 
-              --               ( '0' & rpc_a(1))) * 
-              --               (('0' & rpc_a(0)) + 
-              --               ( '0' & rpc_a(1)));
+              sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2));
+
+              sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2);
+
+              sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2);
+
+              sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2));
+
+              sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2)) * 
+                            (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2));
             elsif num_h = 3 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
@@ -166,26 +168,24 @@ begin
                             (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2));
 
             elsif num_h = 4 then
-              -- sum_zy <=     (( '0' & rpc_a(0)) * ('0' & rad_a(0))) + 
-              --               (( '0' & rpc_a(1)) * ('0' & rad_a(1))) + 
-              --               (( '0' & rpc_a(2)) * ('0' & rad_a(2))) + 
-              --               (( '0' & rpc_a(3)) * ('0' & rad_a(3)));
-              -- sum_y <=      ( "00" & rad_a(0)) + ( "00" & rad_a(1)) + 
-              --               ( "00" & rad_a(2)) + ( "00" & rad_a(3)) ;
-              -- sum_z <=      ( '0' & rpc_a(0)) + ( '0' & rpc_a(1)) + 
-              --               ( '0' & rpc_a(2)) + ( '0' & rpc_a(3)) ;
-              -- sum_zz <=     (( '0' & rpc_a(0)) * ( '0' & rpc_a(0))) + 
-              --               (( '0' & rpc_a(1)) * ( '0' & rpc_a(1))) + 
-              --               (( '0' & rpc_a(2)) * ( '0' & rpc_a(2))) + 
-              --               (( '0' & rpc_a(3)) * ( '0' & rpc_a(3)));
-              -- sqr_sum_z <=  (('0' & rpc_a(0)) + 
-              --               ( '0' & rpc_a(1)) + 
-              --               ( '0' & rpc_a(2)) + 
-              --               ( '0' & rpc_a(3))) * 
-              --               (('0' & rpc_a(0)) + 
-              --               ( '0' & rpc_a(1)) + 
-              --               ( '0' & rpc_a(2)) + 
-              --               ( '0' & rpc_a(3)));
+              sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rad_a(3),SLC_Z_RPC_LEN +2));
+
+              sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
+                            resize(rad_a(2),SLC_Z_RPC_LEN +2) + resize(rad_a(3),SLC_Z_RPC_LEN +2);
+
+              sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
+                            resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2);
+
+              sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
+                            (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2)) +
+                            (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rpc_a(3),SLC_Z_RPC_LEN +2));
+
+              sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2)) * 
+                            (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2));
             end if;
             dv_chain(0) <= '1';
           else
@@ -202,13 +202,16 @@ begin
             b_den <= (num_hh * sum_zz) - sqr_sum_z;
             dv_chain(1) <= '1';
           else
+            b_nom <= (others => '0');
+            b_den <= (others => '0');
             dv_chain(1) <= '0';
           end if;
 
           if dv_chain(1) = '1' then
-            int_slope <= (b_nom * 1)/b_den;
+            int_slope <= (b_nom * 1000)/b_den;
             dv_chain(2) <= '1';
           else
+            int_slope <= (others => '0');
             dv_chain(2) <= '0';
           end if;
 
