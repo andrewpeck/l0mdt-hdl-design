@@ -221,6 +221,7 @@ begin
       end if;
     end process slope;
 
+    o_data_valid <= dv_chain(2);
     o_slope <= resize(int_slope,UCM_MBAR_LEN);
     
   end generate BARREL;

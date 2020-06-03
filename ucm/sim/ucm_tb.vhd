@@ -123,6 +123,7 @@ begin
   cand1.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
   cand1.common.pos_eta        <= to_signed( -1355 , SLC_POS_ETA_LEN );
   cand1.common.pos_phi        <= to_unsigned( 292 , SLC_POS_PHI_LEN );
+  cand1.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
   cand1.common.pt_th          <= std_logic_vector(to_unsigned( 11 , SLC_PT_TH_LEN ));
   cand1.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
   cand1.specific              <= vectorify(barrel1);
@@ -145,6 +146,7 @@ begin
   cand2.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
   cand2.common.pos_eta        <= to_signed( -313 , SLC_POS_ETA_LEN );
   cand2.common.pos_phi        <= to_unsigned( 307 , SLC_POS_PHI_LEN );
+  cand2.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
   cand2.common.pt_th          <= std_logic_vector(to_unsigned( 2 , SLC_PT_TH_LEN ));
   cand2.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
   cand2.specific              <= vectorify(barrel2);
