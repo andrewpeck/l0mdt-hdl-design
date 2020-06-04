@@ -129,25 +129,28 @@ begin
 
   refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
 
-    assert false report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
+    nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL) generate
 
-    -- 2'b00: ODIV2 = O
-    -- 2'b01: ODIV2 = Divide-by-2 version of O
-    -- 2'b10: ODIV2 = 1'b0
-    -- 2'b11: Reserved
-    refclk_ibufds : ibufds_gte4
-      generic map(
-        REFCLK_EN_TX_PATH  => '0',
-        REFCLK_HROW_CK_SEL => (others => '0'),
-        REFCLK_ICNTL_RX    => (others => '0')
-        )
-      port map (
-        O     => refclk(I),
-        ODIV2 => open,
-        CEB   => '0',
-        I     => refclk_i_p(I),
-        IB    => refclk_i_n(I)
-        );
+      assert false report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
+
+      -- 2'b00: ODIV2 = O
+      -- 2'b01: ODIV2 = Divide-by-2 version of O
+      -- 2'b10: ODIV2 = 1'b0
+      -- 2'b11: Reserved
+      refclk_ibufds : ibufds_gte4
+        generic map(
+          REFCLK_EN_TX_PATH  => '0',
+          REFCLK_HROW_CK_SEL => (others => '0'),
+          REFCLK_ICNTL_RX    => (others => '0')
+          )
+        port map (
+          O     => refclk(I),
+          ODIV2 => open,
+          CEB   => '0',
+          I     => refclk_i_p(I),
+          IB    => refclk_i_n(I)
+          );
+    end generate;
 
   end generate;
 

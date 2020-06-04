@@ -3,14 +3,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-library work;
-use work.all;
-
 library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
-
-library ctl;
 
 library hal;
 use hal.board_pkg.all;
@@ -51,16 +46,6 @@ entity top_l0mdt is
 
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-
-    c2c_rxn    : in  std_logic;
-    c2c_rxp    : in  std_logic;
-    c2c_txn    : out std_logic;
-    c2c_txp    : out std_logic;
-    c2c_refclkp: in  std_logic;
-    c2c_refclkn: in  std_logic;
-
-    sys_mgmt_scl  : inout std_logic;
-    sys_mgmt_sda  : inout std_logic;
 
     -- cornell only
     --cornell_cm_led_o : out std_logic_vector (c_NUM_CORNELL_LEDS-1 downto 0);
@@ -149,7 +134,7 @@ begin
 
   top_ult_inst : entity ult.top_ult
     generic map (
-      DUMMY => true)
+      DUMMY => false)
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
@@ -176,39 +161,7 @@ begin
   --top_control : entity ult.top_control
   --  port map (
   --    );
-  top_control_inst : entity ctl.top_control
-    generic map (
-      GLOBAL_FWDATE       => GLOBAL_FWDATE,
-      GLOBAL_FWTIME       => GLOBAL_FWTIME,
-      OFFICIAL            => OFFICIAL,
-      GLOBAL_FWHASH       => GLOBAL_FWHASH,
-      TOP_FWHASH          => TOP_FWHASH,
-      XML_HASH            => XML_HASH,
-      GLOBAL_FWVERSION    => GLOBAL_FWVERSION,
-      TOP_FWVERSION       => TOP_FWVERSION,
-      XML_VERSION         => XML_VERSION,
-      HOG_FWHASH          => HOG_FWHASH,
-      FRAMEWORK_FWVERSION => FRAMEWORK_FWVERSION,
-      FRAMEWORK_FWHASH    => FRAMEWORK_FWHASH)
-    port map (
 
-      c2c_rxn    => c2c_rxn,
-      c2c_rxp    => c2c_rxp,
-      c2c_txn    => c2c_txn,
-      c2c_txp    => c2c_txp,
-      c2c_refclkn=> c2c_refclkn,
-      c2c_refclkp=> c2c_refclkp,
-
-      axi_clk                 => clock_and_control.clk,
-      clk50mhz                => clock_and_control.clk,
-      reset_n                 => '1',
-      sys_mgmt_alarm          => open,
-      sys_mgmt_overtemp_alarm => open,
-      sys_mgmt_scl            => sys_mgmt_scl,
-      sys_mgmt_sda            => sys_mgmt_sda,
-      sys_mgmt_vccaux_alarm   => open,
-      sys_mgmt_vccint_alarm   => open
-      );
   sump <= hal_sump xor user_sump;
 
 end structural;

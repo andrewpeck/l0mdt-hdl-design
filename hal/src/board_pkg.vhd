@@ -109,9 +109,9 @@ package board_pkg is
     6  => (REFCLKNUM => 0 , FREQ => REF_FELIX   , QUAD => 133 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 24 , Y_MAX => 27) , -- FELIX_REF1
     7  => (REFCLKNUM => 0 , FREQ => REF_FELIX   , QUAD => 134 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 28 , Y_MAX => 31) , -- FELIX_REF2
     8  => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 224 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- AD_CLK2_KUP , muxed as C2c or Spare
-    9  => (REFCLKNUM => 1 , FREQ => REF_AXI_C2C , QUAD => 224 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- B2B_REF0
+    9  => (REFCLKNUM => 1 , FREQ => REF_NIL     , QUAD => 224 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- B2B_REF0 to SM
     10 => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 225 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- AD_CLK3_KUP , muxed as sma or spare
-    11 => (REFCLKNUM => 1 , FREQ => REF_AXI_C2C , QUAD => 225 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- B2B_REF2
+    11 => (REFCLKNUM => 1 , FREQ => REF_NIL     , QUAD => 225 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- B2B_REF2 to SM
     12 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 226 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 8  , Y_MAX => 11) , -- FE_REF0
     13 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 227 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 12 , Y_MAX => 15) , -- FE_REF1
     14 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 228 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 16 , Y_MAX => 19) , -- FE_REF2

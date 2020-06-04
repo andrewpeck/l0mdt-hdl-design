@@ -33,12 +33,7 @@ package system_types_pkg is
     clock_pipeline : std_logic;
   end record;
 
-  type SLCPROC_PIPE_ENDCAP_rt_array is array (integer range <>) of SLCPROC_PIPE_ENDCAP_rt;
-  type SLCPROC_PIPE_BARREL_rt_array is array (integer range <>) of SLCPROC_PIPE_BARREL_rt;
-  type SLC_ENDCAP_rt_array is array (integer range <>) of SLC_ENDCAP_rt;
-  type SLC_BARREL_rt_array is array (integer range <>) of SLC_BARREL_rt;
   type TDCPOLMUX_rt_array is array (integer range <>) of TDCPOLMUX_rt;
-  type SF_rt_array is array (integer range <>) of SF_rt;
 
   type DAQ_LINK_rt is record
     dummy : std_logic_vector (1 downto 0);

@@ -21,3 +21,6 @@
 [submodule "hal/lpgbt/gbt-sc"]
 	path = lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
+[submodule "regmap"]
+	path = regmap
+	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git

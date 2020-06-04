@@ -39,4 +39,9 @@ set PROPERTIES [dict create \
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set path_repo "[file normalize [file dirname [info script]]]/../../"
+
+eval exec bash -c {cd "${path_repo}/regmap" && make xml_regmap}
+
 source $path_repo/Hog/Tcl/create_project.tcl
+source $path_repo/c2c/c2c/createC2CSlaveInterconnect.tcl
+

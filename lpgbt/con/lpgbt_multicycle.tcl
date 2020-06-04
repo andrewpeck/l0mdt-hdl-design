@@ -1,6 +1,13 @@
 # Multicycle constraints: ease the timing constraints
 # Uplink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
 
+# retiming changes register names and prevents multicycle path setting on the lpgbt cores
+
+set link_wrapper_cell [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst"]
+if {[string is space $pipeline_s_reg_cells] == 0} {
+set_property BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
+}
+
 puts "Setting LPGBT Uplink Pipeline Multicycle Path"
 
 set pipeline_s_reg_cells [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*frame_pipelined_s_reg[*]"]

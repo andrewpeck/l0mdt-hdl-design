@@ -42,8 +42,8 @@ set_property -quiet PACKAGE_PIN M33     [get_ports refclk_i_n[7]    ] ; # FELIX_
 # GTH
 set_property -quiet PACKAGE_PIN AL12    [get_ports refclk_i_p[8]    ] ; # AD_CLK2_KUP_P
 set_property -quiet PACKAGE_PIN AL11    [get_ports refclk_i_n[8]    ] ; # AD_CLK2_KUP_N
-set_property -quiet PACKAGE_PIN AK10    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P
-set_property -quiet PACKAGE_PIN AK9     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N
+#set_property -quiet PACKAGE_PIN AK10    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P
+#set_property -quiet PACKAGE_PIN AK9     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N
 set_property -quiet PACKAGE_PIN AJ12    [get_ports refclk_i_p[10]    ] ; # AD_CLK3_KUP_P
 set_property -quiet PACKAGE_PIN AJ11    [get_ports refclk_i_n[10]    ] ; # AD_CLK3_KUP_N
 set_property -quiet PACKAGE_PIN AH10    [get_ports refclk_i_p[11]    ] ; # B2B_REF2_P
@@ -90,3 +90,12 @@ set_property IOSTANDARD LVDS [get_ports *refclk_o*]
 
 set_property -quiet PACKAGE_PIN AU12   [get_ports sump]
 set_property IOSTANDARD LVCMOS18 [get_ports sump]
+
+
+set_property -quiet PACKAGE_PIN AK10    [get_ports c2c_refclkp] ; # C2C_REF0_P
+set_property -quiet PACKAGE_PIN AK9    [get_ports c2c_refclkn] ; # C2C_REF0_N
+
+set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
+set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]
+set_property -quiet PACKAGE_PIN AL24     [get_ports sys_mgmt_scl] ;
+set_property -quiet PACKAGE_PIN AL25     [get_ports sys_mgmt_sda];
