@@ -32,7 +32,6 @@ package body config_pkg is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
   begin
 
-    proj_cfg.SF_type := '1';
  
     return proj_cfg;
   end function set_project_cfg;

@@ -73,7 +73,7 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    HW_PRESENT                    => '0';
+    HW_PRESENT                    => '0',
     -- Processing channels
     ENABLE_ST_INN                 => '1', -- default enable
     NUM_MDT_CH_INN                => 6,   -- default 6            
