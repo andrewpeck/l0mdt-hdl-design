@@ -61,7 +61,7 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- BLOCKS configuration
   --------------------------------------------------------------------------------
-  constant SF_type  : std_logic := '0';  -- 0: CSF 1:LSF
+  constant SF_type  : std_logic := CFG.SF_type; -- 0: CSF 1:LSF
 
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 
