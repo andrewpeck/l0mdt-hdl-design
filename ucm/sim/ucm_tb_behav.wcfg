@@ -18,13 +18,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="22500fs"></ZoomStartTime>
-      <ZoomEndTime time="49810fs"></ZoomEndTime>
+      <ZoomStartTime time="28141fs"></ZoomStartTime>
+      <ZoomEndTime time="49462fs"></ZoomEndTime>
       <Cursor1Time time="40281fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="267"></NameColumnWidth>
-      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+      <ValueColumnWidth column_width="72"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="12" />
    <wave_markers>
@@ -357,7 +357,6 @@
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/barrel_r">
          <obj_property name="ElementShortName">barrel_r</obj_property>
          <obj_property name="ObjectShortName">barrel_r</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/rpc_a">
          <obj_property name="ElementShortName">rpc_a[0:3][9:0]</obj_property>
@@ -417,10 +416,24 @@
          <obj_property name="ObjectShortName">int_slope[95:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/e_z">
+         <obj_property name="ElementShortName">e_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/e_y">
+         <obj_property name="ElementShortName">e_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/int_offset">
+         <obj_property name="ElementShortName">int_offset[107:0]</obj_property>
+         <obj_property name="ObjectShortName">int_offset[107:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(2)\/SLC_VP/SLOPE_CALC/dv_chain">
          <obj_property name="ElementShortName">dv_chain[7:0]</obj_property>
          <obj_property name="ObjectShortName">dv_chain[7:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group139">
@@ -503,6 +516,21 @@
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/b_den">
          <obj_property name="ElementShortName">b_den[47:0]</obj_property>
          <obj_property name="ObjectShortName">b_den[47:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/e_z">
+         <obj_property name="ElementShortName">e_z[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_z[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/e_y">
+         <obj_property name="ElementShortName">e_y[11:0]</obj_property>
+         <obj_property name="ObjectShortName">e_y[11:0]</obj_property>
+         <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/int_offset">
+         <obj_property name="ElementShortName">int_offset[107:0]</obj_property>
+         <obj_property name="ObjectShortName">int_offset[107:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ucm_tb/UCM/\SLC_VP_A(1)\/SLC_VP/SLOPE_CALC/int_slope">

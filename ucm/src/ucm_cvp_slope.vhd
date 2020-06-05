@@ -31,6 +31,8 @@ entity ucm_cvp_slope is
     --
     i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     i_data_valid  : in std_logic;
+    --
+    -- o_offset      : out signed();
     o_slope       : out signed(UCM_MBAR_LEN-1 downto 0);
     o_data_valid  : out std_logic
     
@@ -48,6 +50,10 @@ architecture beh of ucm_cvp_slope is
   signal rad_a : rad_at;
 
   signal num_h , num_hh : integer;
+
+  signal e_z        : signed(12 -1 downto 0);
+  signal e_y        : signed(12 -1 downto 0);
+  signal int_offset : signed(108 -1 downto 0);
 
   signal sum_zy     : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
   signal sum_y      : signed(UCM_Z_ROI_LEN   + 2 -1 downto 0);
@@ -126,8 +132,6 @@ begin
     rad_a(3) <= PHY_BARREL_R3 when coin = 5 else
                 (others => '0');
 
-
-
     slope: process(clk)
     begin
       if rising_edge(clk) then
@@ -139,62 +143,49 @@ begin
             if num_h = 2 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2));
-
               sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2);
-
               sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2);
-
               sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2));
-
               sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2)) * 
                             (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2));
             elsif num_h = 3 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2));
-
               sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
                             resize(rad_a(2),SLC_Z_RPC_LEN +2);
-
               sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
                             resize(rpc_a(2),SLC_Z_RPC_LEN +2);
-
               sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2));
-
               sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2)) * 
                             (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2));
-
             elsif num_h = 4 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rad_a(2),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rad_a(3),SLC_Z_RPC_LEN +2));
-
               sum_y <=      resize(rad_a(0),SLC_Z_RPC_LEN +2) + resize(rad_a(1),SLC_Z_RPC_LEN +2) + 
                             resize(rad_a(2),SLC_Z_RPC_LEN +2) + resize(rad_a(3),SLC_Z_RPC_LEN +2);
-
               sum_z <=      resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + 
                             resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2);
-
               sum_zz <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rpc_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rpc_a(1),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(2),SLC_Z_RPC_LEN +2) * resize(rpc_a(2),SLC_Z_RPC_LEN +2)) +
                             (resize(rpc_a(3),SLC_Z_RPC_LEN +2) * resize(rpc_a(3),SLC_Z_RPC_LEN +2));
-
               sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2)) * 
                             (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2));
             end if;
             dv_chain(0) <= '1';
           else
             dv_chain(0) <= '0';
-            sum_zy <= (others => '0');
-            sum_y <= (others => '0');
-            sum_z <= (others => '0');
-            sum_zz <= (others => '0');
-            sqr_sum_z <= (others => '0');
+            -- sum_zy <= (others => '0');
+            -- sum_y <= (others => '0');
+            -- sum_z <= (others => '0');
+            -- sum_zz <= (others => '0');
+            -- sqr_sum_z <= (others => '0');
           end if;
 
           if dv_chain(0) = '1' then
@@ -202,17 +193,31 @@ begin
             b_den <= (num_hh * sum_zz) - sqr_sum_z;
             dv_chain(1) <= '1';
           else
-            b_nom <= (others => '0');
-            b_den <= (others => '0');
+            -- b_nom <= (others => '0');
+            -- b_den <= (others => '0');
             dv_chain(1) <= '0';
           end if;
 
           if dv_chain(1) = '1' then
             int_slope <= (b_nom * 1000)/b_den;
+            --
+            e_y <= sum_y / num_hh;
+            e_z <= sum_Z / num_hh;
+            --
             dv_chain(2) <= '1';
           else
-            int_slope <= (others => '0');
+            -- int_slope <= (others => '0');
             dv_chain(2) <= '0';
+          end if;
+
+          
+          if dv_chain(2) = '1' then
+            o_slope <= resize(int_slope,UCM_MBAR_LEN);
+            int_offset <= (e_y * 1000) - (int_slope * e_z);
+            dv_chain(3) <= '1';
+          else
+            -- int_slope <= (others => '0');
+            dv_chain(3) <= '0';
           end if;
 
 
@@ -221,8 +226,8 @@ begin
       end if;
     end process slope;
 
-    o_data_valid <= dv_chain(2);
-    o_slope <= resize(int_slope,UCM_MBAR_LEN);
+    o_data_valid <= dv_chain(3);
+    -- o_slope <= resize(int_slope,UCM_MBAR_LEN);
     
   end generate BARREL;
 
