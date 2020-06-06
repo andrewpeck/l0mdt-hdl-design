@@ -64,7 +64,7 @@ architecture Behavioral of top_pt is
     signal slc, slc_s : slc_pt_rt;
     -- Chamber combo id
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta :
-           unsigned(UCM_CHAMBER_ID_LEN*3 + 4 -1 downto 0) := (others => '0');
+           unsigned(SLC_CHAMBER_LEN*3 + 4 -1 downto 0) := (others => '0');
     --signal ram_index : integer := 0;
     -- Sagitta/Dbeta calculator signals
     signal dv_s, dv_combo_s, dv_combo_s_s : std_logic := '0';

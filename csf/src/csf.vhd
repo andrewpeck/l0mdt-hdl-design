@@ -17,17 +17,21 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-
-
-library IEEE, csf_lib, shared_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
+
+library csf_lib;
 use csf_lib.csf_pkg.all;
-use shared_lib.custom_types_davide_pkg.all;
 use csf_lib.custom_types_csf_pkg.all;
 
-entity top_csf is
+entity csf is
     generic(
         -- Project flavour (0: Barrel, 1: Endcap)
         FLAVOUR  : integer := 0
@@ -40,9 +44,9 @@ entity top_csf is
         i_rst     : in std_logic;
         o_seg     : out sf_seg_data_barrel_rvt
     );
-end top_csf;
+end csf;
 
-architecture Behavioral of top_csf is
+architecture Behavioral of csf is
     -- Input RoI
     signal seed_i : ucm_csf_seed_rt;
     signal seed : ucm_csf_seed_rvt;

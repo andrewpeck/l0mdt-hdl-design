@@ -10,7 +10,7 @@ __config__:
 # COMMON CONSTANTS
 #############################################################  
 MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
-MDT_LOCAL_AXI_LEN    : { qualifier: constant , type: integer , value: 15 }
+MDT_LOCAL_AXI_LEN    : { qualifier: constant , type: integer , value: 14 } #14 o 15?
 MDT_RADIUS_LEN       : { qualifier: constant , type: integer , value: 9 }
 
 #############################################################
@@ -67,7 +67,16 @@ SLC_SPECIFIC_LEN  : { qualifier: constant , type: integer , value: 51 }
 # -----------------------------------------------------------
 # mdt 2 hps
 # -----------------------------------------------------------
-
+# mdt tdc
+MDT_TDC_CH_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_TDC_MODE_LEN: { qualifier: constant , type: integer , value: 2 }
+MDT_TDC_COARSE_LEN: { qualifier: constant , type: integer , value: 12 }
+MDT_TDC_FINE_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_TDC_PW_LEN: { qualifier: constant , type: integer , value: 8 }
+# pull mux
+MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }
+# tar
 MDT_TUBE_LEN    : { qualifier: constant , type: integer , value: 9 }
 MDT_LAYER_LEN   : { qualifier: constant , type: integer , value: 5 }
 MDT_TIME_LEN    : { qualifier: constant , type: integer , value: 18 } 
@@ -83,8 +92,8 @@ MDT_TIME_LEN    : { qualifier: constant , type: integer , value: 18 }
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-
 UCM_MBAR_LEN    : { qualifier: constant , type: integer , value: 12 }
+UCM_MBAR_MULT   : { qualifier: constant , type: real , value: 1024.0 }
 UCM_Z_ROI_LEN   : { qualifier: constant , type: integer , value: 10 }
 UCM_R_ROI_LEN   : { qualifier: constant , type: integer , value: 4 }  
 UCM_PHI_LEN     : { qualifier: constant , type: integer , value: 14 }
@@ -94,9 +103,39 @@ UCM_ETA_LEN     : { qualifier: constant , type: integer , value: 8 }
 UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
 
 # -----------------------------------------------------------
-# slc ucm pipeline
+#       HEG 2 SF
 # -----------------------------------------------------------
 
+# MDT_RADIUS_LEN: { qualifier: constant , type: integer , value: 9 }
+MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
+# MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 14 }
+MDT_LOCAL_AXI_MULT: { qualifier: constant , type: real , value: 16.0 }
+CSF_X_OFFSET : { qualifier: constant, type: integer, value : -640}
+CSF_Z_OFFSET : { qualifier: constant, type: integer, value : 1920}
 # -----------------------------------------------------------  
 # sf 2 pt
 # -----------------------------------------------------------
+SF_SEG_POS_LEN : { qualifier: constant, type: integer, value: 19}
+SF_SEG_POS_MULTI : { qualifier: constant, type: real, value: 16.0}
+SF_SEG_ANG_LEN : { qualifier: constant, type: integer, value: 15}
+SF_SEG_ANG_MULTI     : {qualifier: constant, type: real, value: 4096.0}
+SF_SEG_ANG_MULTI_LEN : {qualifier: constant, type: integer, value: 12}
+# -----------------------------------------------------------
+# slc ucm pipeline
+# -----------------------------------------------------------
+
+#pl 2 pt
+SLC_PT_PHIMOD_LEN: { qualifier: constant , type: integer , value: 8 }
+SLC_PT_PHIMOD_MULT: {qualifier: constant, type: real, value: 320.0}
+
+
+# -----------------------------------------------------------  
+# TF 2 MTC
+# -----------------------------------------------------------
+MTC_ETA_LEN   :  { qualifier: constant , type: integer , value: 15 }
+MTC_ETA_MULT  :  { qualifier: constant , type: real, value: 6068.1481481481}
+MTC_PT_LEN    :  { qualifier: constant , type: integer , value: 9 }
+MTC_PT_MULT   :  { qualifier: constant , type: real, value: 4.0}
+MTC_PTTHR_LEN :  { qualifier: constant , type: integer , value: 4 }
+MTC_NSEG_LEN  :  { qualifier: constant , type: integer , value: 2 }
+MTC_QUALITY_LEN  :  { qualifier: constant , type: integer , value: 3 }

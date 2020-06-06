@@ -1,4 +1,0 @@
-shared/src/bram.vhd
-shared/src/custom_types_davide_pkg.vhd
-shared/src/custom_types_pkg.vhd
-shared/src/rom.v
