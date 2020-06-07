@@ -30,6 +30,7 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
+    
     HW_PRESENT                    : std_logic; -- enables/disable 
     -- Processing channel
     ENABLE_ST_INN                 : std_logic;
