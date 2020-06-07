@@ -1,5 +1,5 @@
 shared/shared_lib.src
-Top/ucm/prj_cfg.vhd 2008
+Top/csf/prj_cfg.vhd 2008
 csf/csf_lib.src
 csf/top_csf.vhd
 

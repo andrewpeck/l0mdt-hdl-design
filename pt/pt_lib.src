@@ -1,8 +1,8 @@
-pt/src/pt_pkg.vhd
+pt/pkg/pt_pkg.vhd
+pt/pkg/pt_params_pkg.vhd
 pt/src/sagitta_calculator.vhd
 pt/src/eta_calculator.vhd
-pt/src/top_pt.vhd
-pt/src/pt_params_pkg.vhd
+pt/src/pt.vhd
 #IP/a0_ROM/a0_ROM.xci
 #IP/a1_ROM/a1_ROM.xci
 #IP/b0_ROM/b0_ROM.xci

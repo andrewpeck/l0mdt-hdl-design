@@ -17,14 +17,26 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-
-
-library IEEE, pt_lib, shared_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
+
+library pt_lib;
 use pt_lib.pt_pkg.all;
-use shared_lib.custom_types_davide_pkg.all;
+use pt_lib.pt_params_pkg.all;
+
+-- library IEEE, pt_lib, shared_lib;
+-- use IEEE.STD_LOGIC_1164.ALL;
+-- use IEEE.NUMERIC_STD.ALL;
+-- use ieee.math_real.all;
+-- use pt_lib.pt_pkg.all;
+-- use shared_lib.custom_types_davide_pkg.all;
 
 entity sagitta_calculator is
   port (

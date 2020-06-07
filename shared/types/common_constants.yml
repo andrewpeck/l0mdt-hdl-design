@@ -139,3 +139,11 @@ MTC_PT_MULT   :  { qualifier: constant , type: real, value: 4.0}
 MTC_PTTHR_LEN :  { qualifier: constant , type: integer , value: 4 }
 MTC_NSEG_LEN  :  { qualifier: constant , type: integer , value: 2 }
 MTC_QUALITY_LEN  :  { qualifier: constant , type: integer , value: 3 }
+
+#############################################################
+# OTHER
+############################################################# 
+
+BIL_SEC3_RHO : { qualifier: constant, type: real, value: 4949.0}
+BML_SEC3_RHO : { qualifier: constant, type: real, value: 7139.0}
+BOL_SEC3_RHO : { qualifier: constant, type: real, value: 9500.0}
