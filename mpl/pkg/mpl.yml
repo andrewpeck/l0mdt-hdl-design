@@ -1,0 +1,13 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared_lib:
+        - common_types_pkg
+        - common_constants_pkg
+        - config_pkg
+
+
+
+MPL_PL_A_LATENCY  : { qualifier: constant , type: integer , value: 10 }
+
+MPL_PL_B_LATENCY  : { qualifier: constant , type: integer , value: 5 }

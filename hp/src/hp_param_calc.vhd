@@ -16,8 +16,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -28,7 +29,7 @@ entity hp_paramCalc is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
     i_SLc_specific      : in std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
@@ -50,6 +51,8 @@ architecture beh of hp_paramCalc is
 
     signal barrel_data_r : hp_heg2hp_slc_b_rt;
 
+    signal radius_dv : std_logic;
+
 begin
   SLC_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
     barrel_data_r <= structify(i_SLc_specific);
@@ -61,14 +64,15 @@ begin
   )
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst        => rst,
     glob_en         => glob_en,
 
     i_SLc_BCID      => i_SLc_BCID,
     i_mdt_time_t0   => i_mdt_time_real,
     i_data_valid     => i_data_valid,
         
-    o_tube_radius   => o_tube_radius
+    o_tube_radius   => o_tube_radius,
+    o_data_valid    => radius_dv
   );
 
   HP_CALC_V : entity hp_lib.hp_calc_RoI_vect
@@ -77,7 +81,7 @@ begin
   )
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst        => rst,
     glob_en         => glob_en,
     -- SLc
     i_SLc_z_0       => barrel_data_r.z_0,

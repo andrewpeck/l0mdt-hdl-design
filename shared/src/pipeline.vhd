@@ -24,7 +24,7 @@ entity std_pipeline is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
     i_data              : in std_logic_vector(num_bits -1 downto 0);
@@ -41,15 +41,17 @@ begin
   
   o_data <= data_pl(0);
 
-  valid_pipe : process(Reset_b,clk) begin
-    if Reset_b = '0' then
-      data_pl <= (others => (others => '0'));
-    elsif rising_edge(clk)then
-      if glob_en = '1' then
-        for num_delays in num_delays - 1 downto 1 loop
-          data_pl(num_delays - 1) <= data_pl(num_delays);
-        end loop;
-        data_pl(num_delays -1) <= i_data;
+  valid_pipe : process(rst,clk) begin
+    if rising_edge(clk)then
+      if rst= '1' then
+        data_pl <= (others => (others => '0'));
+      else
+        if glob_en = '1' then
+          for num_delays in num_delays - 1 downto 1 loop
+            data_pl(num_delays - 1) <= data_pl(num_delays);
+          end loop;
+          data_pl(num_delays -1) <= i_data;
+        end if;
       end if;
     end if;
   end process;

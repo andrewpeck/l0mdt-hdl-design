@@ -4,7 +4,7 @@ from math import *
 
 def main():
     parser = argparse.ArgumentParser(description='Write Reciprocal ROM coe file')
-    parser.add_argument("-o","--output",type=str,help="Output Dir", default="VHDL")
+    parser.add_argument("-o","--output",type=str,help="Output Dir", default="../data")
     parser.add_argument("--z_mult",type=float,help="z/r Multiplier", default=16.0)
     parser.add_argument("--sagitta_mult",type=float,help="Sagitta Multiplier", default=64.0)
     parser.add_argument("--phi_mult",type=float,help="Phi Multiplier", default=2**6/0.6)
@@ -26,6 +26,11 @@ def main():
     mag_rom_file = open(args.output + '/mag_ROM.coe', "w")
     halflog_rom_file = open(args.output + '/halflog_ROM.coe', "w")
 
+    reciprocal_rom_mem = open(args.output + '/reciprocalROM.mem', "w")
+    sqrt_m_io_rom_mem  = open(args.output + '/sqrt_m_io_ROM.mem', "w")
+    mag_rom_mem = open(args.output + '/mag_ROM.mem', "w")
+    halflog_rom_mem = open(args.output + '/halflog_ROM.mem', "w")
+
     reciprocal_rom_file.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
     sqrt_m_io_rom_file.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
     mag_rom_file.write("memory_initialization_radix = 10; \nmemory_initialization_vector = \n")
@@ -42,22 +47,31 @@ def main():
         if x ==0:
             reciprocal = int(floor((2**divider_width-1)/(x + 1.)));
 
-        reciprocal_rom_file.write("%d,\n" % reciprocal)
         sqrt_m_io = int(floor(sqrt(m_sagitta_multi**2 + x**2)));
-        sqrt_m_io_rom_file.write("%d,\n" % sqrt_m_io)
+
+        reciprocal_rom_mem.write("%04x\n" % reciprocal)
+        sqrt_m_io_rom_mem.write("%04x\n" % sqrt_m_io)
 
     for x in xrange(0, 2**(args.mag2_width)-1):
         mag = int(sqrt(x*2**(args.mag2_shift/2)))
         mag_rom_file.write("%d,\n" % mag)
+        mag_rom_mem.write("%04x\n" % mag)
 
     for x in xrange(0,2**(args.z_width-args.mag2_shift/4)):
         log_m = int(floor(0.5**log((x+0.5)*2**(args.mag2_shift/4)/(args.z_mult))*args.eta_mult))
         halflog_rom_file.write("%d,\n"%log_m)
+        halflog_rom_mem.write("%04x\n"%log_m)
+
 
     reciprocal_rom_file.write("0; \n")
     sqrt_m_io_rom_file.write("0; \n")
     mag_rom_file.write("0; \n")
     halflog_rom_file.write("0;\n")
+
+    reciprocal_rom_mem.write("0000")
+    sqrt_m_io_rom_mem.write("0000")
+    mag_rom_mem.write("0000")
+    halflog_rom_mem.write("0000")
 
 if __name__ == "__main__":
     main()

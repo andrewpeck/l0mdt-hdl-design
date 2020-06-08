@@ -1,3 +1,4 @@
+
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
@@ -17,8 +18,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -29,20 +31,20 @@ entity hit_processor is
   );
   port (
     clk                 : in std_logic;    
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    local_Reset_b       : in std_logic;
+    local_rst      : in std_logic;
     local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_vt;
-    i_slc_data_v        : in hp_heg2hp_slc_vt;
+    i_SLC_Window        : in hp_heg2hp_window_avt;
+    i_slc_data_v        : in hp_heg2hp_slc_rvt;
     -- MDT hit
-    i_mdt_data          : in hp_hpsPc2hp_vt;
+    i_mdt_data          : in hp_hpsPc2hp_rvt;
     -- to Segment finder
-    o_hit_data          : out hp_hp2bm_vt
+    o_hit_data          : out hp_hp2bm_rvt
   );
 end entity hit_processor;
 
@@ -72,7 +74,7 @@ begin
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration
     time_offset         => time_offset,
@@ -98,7 +100,7 @@ begin
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- SLc
     i_SLc_specific      => slc_data.specific,
@@ -123,7 +125,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => mdt_data.data_valid,
@@ -137,7 +139,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => int_hit_valid,

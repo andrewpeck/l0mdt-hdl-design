@@ -1,0 +1,11 @@
+shared/functions/some_functions_pkg.vhd
+shared/config/config_defaults_pkg.vhd 2008
+shared/config/config_pkg.vhd 2008
+shared/config/detector_param_pkg.vhd 2008
+shared/types/common_constants_pkg.vhd 2008
+shared/types/common_types_pkg.vhd 2008
+shared/src/pipeline.vhd 2008
+
+shared/src/bram.vhd
+shared/src/rom.v
+shared/src/rom_dp.v

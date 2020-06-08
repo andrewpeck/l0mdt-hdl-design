@@ -13,8 +13,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -25,7 +26,7 @@ entity hp_calc_RoI_vect is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
     i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -45,12 +46,15 @@ architecture beh of hp_calc_RoI_vect is
   
 begin
 
-  pw_2_r_LUT : process(clk,Reset_b)
+  pw_2_r_LUT : process(clk,rst)
 
   begin
-    if Reset_b = '0' then
+    if rising_edge(clk) then
+      if rst= '1' then
 
-    elsif rising_edge(clk) then
+      else
+
+      end if;
       
     end if ;
   end process;

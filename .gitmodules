@@ -1,7 +1,6 @@
 [submodule "Hog"]
     path = Hog
     url = https://gitlab.cern.ch/hog/Hog.git
-	branch = v0.0.14
 [submodule "dataformats"]
 	path = dataformats
 	url = ../dataformats.git
@@ -21,3 +20,6 @@
 [submodule "hal/lpgbt/gbt-sc"]
 	path = lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
+[submodule "tools/yml2hdl"]
+	path = tools/yml2hdl
+	url = https://gitlab.com/tcpaiva/yml2hdl.git

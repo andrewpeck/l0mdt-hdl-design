@@ -30,13 +30,13 @@ synthesise_project:csf:
         - synthesise_ips:csf
         - create_project:csf
 
-implement_project:csf:
-    extends: .implement_project
-    variables: 
-      extends: .vars
-      PROJECT_NAME: csf
-#      HOG_NO_BITSTREAM_STAGE: 1
-    dependencies:
-       - create_project:csf
-       - synthesise_ips:csf
-       - synthesise_project:csf
+# implement_project:csf:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: csf
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:csf
+#        - synthesise_ips:csf
+#        - synthesise_project:csf

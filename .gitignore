@@ -28,4 +28,4 @@ transcript
 vsim.dbg
 modelsim.ini
 .gitlab-ci_*.yml
-
+_hdl_checker/
