@@ -33,3 +33,7 @@ all:
                      -e common_constants.yml \
                      -e common_types.yml \
                      ../../mpl/pkg/mpl.yml
+	python3 $(yml2hdl) -e ../config/config_type.yml \
+                     -e common_constants.yml \
+                     -e common_types.yml \
+                     ../../csf/pkg/custom_types_csf.yml
