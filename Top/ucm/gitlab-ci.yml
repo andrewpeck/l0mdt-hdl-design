@@ -21,23 +21,23 @@ create_project:ucm:
 #     dependencies:
 #         - create_project:ucm
 
-# synthesise_project:ucm:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#     dependencies:
-#         # - synthesise_ips:ucm
-#         - create_project:ucm
+synthesise_project:ucm:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ucm
+    dependencies:
+        # - synthesise_ips:ucm
+        - create_project:ucm
 
-# implement_project:ucm:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:ucm
-#       #  - synthesise_ips:ucm
-#       - synthesise_project:ucm
+implement_project:ucm:
+    extends: .implement_project
+    variables: 
+      extends: .vars
+      PROJECT_NAME: ucm
+      HOG_NO_BITSTREAM_STAGE: 1
+    dependencies:
+      - create_project:ucm
+      #  - synthesise_ips:ucm
+      - synthesise_project:ucm
 

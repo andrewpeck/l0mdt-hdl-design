@@ -17,13 +17,17 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-
-
-library IEEE, shared_lib, csf_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use ieee.math_real.all;
-use shared_lib.custom_types_davide_pkg.all;
+
+library shared_lib;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
+
+library csf_lib;
 use csf_lib.custom_types_csf_pkg.all;
 
 package csf_pkg is

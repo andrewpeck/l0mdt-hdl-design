@@ -18,7 +18,8 @@ use ieee.numeric_std_unsigned.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -33,7 +34,7 @@ entity hp_matching is
   port (
     clk                 : in std_logic;
     
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     time_offset         : in unsigned(7 downto 0);
@@ -78,11 +79,11 @@ begin
   -- time_low_limit <= (others => '0');
   -- time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
 
-  validation_proc : process(clk,Reset_b)
+  validation_proc : process(clk,rst)
 
   begin
     if rising_edge(clk) then
-      if Reset_b = '0' then
+      if rst= '1' then
         --space
         space_valid <= '0';
         -- time
@@ -141,7 +142,7 @@ end beh;
 --     port (
 --         clk                 : in std_logic;
 --         
---         Reset_b             : in std_logic;
+--         rst            : in std_logic;
 --         glob_en             : in std_logic;
 --         -- SLc
 --         i_SLC_Window        : in SLc_window_at(num_layers -1 downto 0);
@@ -172,10 +173,10 @@ end beh;
 
 --     lut_index <= abs(to_integer(i_SLc_z_pos))  - (tube_max - tube_min)/2;
 
---     LUT : process(clk,Reset_b)
+--     LUT : process(clk,rst)
 
 --     begin
---         if Reset_b = '0' then
+--         if rst= '1' then
 --             o_tube_high_limit <= (others => '0');
 --             o_tube_low_limit <= (others => '0');
 --             -- o_data_valid <= '0';

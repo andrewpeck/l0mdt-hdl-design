@@ -17,15 +17,27 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-
-
-library ieee, csf_lib, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
+
+library shared_lib;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
+
+library csf_lib;
 use csf_lib.csf_pkg.all;
 use csf_lib.custom_types_csf_pkg.all;
-use shared_lib.custom_types_davide_pkg.all;
+
+-- library ieee, csf_lib, shared_lib;
+-- use ieee.std_logic_1164.all;
+-- use ieee.numeric_std.all;
+-- use ieee.math_real.all;
+-- use csf_lib.csf_pkg.all;
+-- use csf_lib.custom_types_csf_pkg.all;
+-- use shared_lib.custom_types_davide_pkg.all;
 
 entity csf_fitter is
 Port (

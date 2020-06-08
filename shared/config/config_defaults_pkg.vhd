@@ -22,7 +22,7 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
-    SECTOR_ID                     : integer;
+    SECTOR_ID                     : integer;    -- number of sector
     SECTOR_SIDE                   : std_logic;  -- 0:A          1:C
     ST_nBARREL_ENDCAP             : std_logic;  -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- 0: small     1: large
@@ -30,6 +30,8 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
+    
+    HW_PRESENT                    : std_logic; -- enables/disable 
     -- Processing channel
     ENABLE_ST_INN                 : std_logic;
     NUM_MDT_CH_INN                : integer;
@@ -39,24 +41,24 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                : integer;
     ENABLE_ST_OUT                 : std_logic;
     NUM_MDT_CH_OUT                : integer;
+    -- muon control manager
+    ENABLE_UCM                    : std_logic;
     -- Segment Finder
     ENABLE_SF                     : std_logic;
     SF_type                       : std_logic;  -- 0: CSF 1:LSF
     -- pt-calc
     ENABLE_PT                     : std_logic;
     PT_type                       : std_logic;
+    -- DAQ
+    ENABLE_DAQ                    : std_logic;
 
-    -- number of elements
-    MAX_NUM_HP                    : integer;-- := 6;
+
+
+    -- number of elements processed
     NUM_THREADS                   : integer;-- := 3;
-    MAX_NUM_HPS                   : integer;-- := 3;
-    MAX_NUM_SL                    : integer;
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
-    -- numTDCs_lpGBT  : integer;-- := 9; 
-    -- numlpGBTs_mux  : integer;-- := 2; 
-    -- numInputs_mux  : integer;-- := numlpGBTs_mux * numTDCs_lpGBT; 
 
   end record;
 
@@ -65,13 +67,14 @@ package cfg_global_pkg is
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     => 3,  -- default sector 3
-    SECTOR_SIDE                   => '0', -- default A
-    ST_nBARREL_ENDCAP             => '0', -- default barrel
-    ENDCAP_nSMALL_LARGE           => '0', -- default small endcap
-    ENABLE_NEIGHTBORS             => '1', -- default enable neightbors
+    SECTOR_SIDE                   => '0', -- 0:A          1:C
+    ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
+    ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
+    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
+    HW_PRESENT                    => '0',
     -- Processing channels
     ENABLE_ST_INN                 => '1', -- default enable
     NUM_MDT_CH_INN                => 6,   -- default 6            
@@ -81,26 +84,21 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- default enable
     NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- muon control manager
+    ENABLE_UCM                    => '1',
     -- Segment Finder
     ENABLE_SF                     => '1', -- default enable
     SF_type                       => '0', -- default CSF
     -- pt-calc
     ENABLE_PT                     => '1', -- default enable
     PT_type                       => '0', -- default 0
+    -- DAQ
+    ENABLE_DAQ                    => '1',
     -- number of elements ( )
-    MAX_NUM_HP              => 6,
-    NUM_THREADS             => 3,
-    MAX_NUM_HPS             => 3,
-    MAX_NUM_SL              => 5
-    --3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*
-    --    to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + 
-    --    to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHTBORS))*2,
+    NUM_THREADS                   => 3
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
-    -- numTDCs_lpGBT           := 9, 
-    -- numlpGBTs_mux           := 2, 
-    -- numInputs_mux           := numlpGBTs_mux * numTDCs_lpGBT, 
     --------------------------------------------------------------------------------
     -- Segment Finder
     --------------------------------------------------------------------------------

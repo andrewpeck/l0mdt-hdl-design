@@ -1,0 +1,34 @@
+__config__:
+    basic_convert_functions : on
+    packages:
+      shared_lib:
+        - custom_types_pkg
+
+CSF_HIT_AXI_LEN: {qualifier: constant, type: integer, value: 14}
+
+csf_hit:
+  valid : {type : logic}
+  x     : {type : unsigned, length: CSF_HIT_AXI_LEN}
+  z     : {type : signed, length: CSF_HIT_AXI_LEN}
+
+csf_hit_a: {array: open , type: csf_hit}
+
+
+CSF_SEG_M_LEN : { qualifier: constant, type: integer, value: 15}
+CSF_SEG_M_MULT : { qualifier: constant, type: real, value: 4096.0}
+CSF_SEG_B_LEN : { qualifier: constant, type: integer, value: 13}
+CSF_SEG_B_MULT : { qualifier: constant, type: real, value: 16.0}
+CSF_SEG_CHI2_LEN : { qualifier: constant, type: integer, value: 15}
+CSF_SEG_CHI2_MULT : { qualifier: constant, type: real, value: 4.0}
+CSF_MAXHITS_SEG : { qualifier: constant, type: integer, value: 16}
+CSF_MAXHITS_SEG_LEN : {qualifier: constant, type: integer, value: 4}
+CSF_MAXHITS_ML_LEN : {qualifier: constant, type: integer, value: 3}
+
+csf_locseg:
+  valid : {type : logic}
+  b     : {type : signed, length: CSF_SEG_B_LEN}
+  m     : {type : signed, length: CSF_SEG_M_LEN}
+  chi2  : {type : unsigned, length: CSF_SEG_CHI2_LEN}
+  ndof  : {type : unsigned, length: CSF_MAXHITS_SEG_LEN}
+
+csf_locseg_a: {array: open , type: csf_locseg}

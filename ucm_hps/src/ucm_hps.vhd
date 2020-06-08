@@ -18,7 +18,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library ucm_hps_lib;
 -- use ucm_hps_lib.ucm_hps.all;
@@ -36,11 +37,14 @@ use hps_lib.hps_pkg.all;
 entity ucm_hps is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc
-    i_slc_data_av       : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_neightborA_v : in slc_rx_data_rvt;
+    i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- MDT hit
     i_mdt_tar_inn_av    : in tar2hps_avt(HPS_NUM_MDT_CH_INN -1 downto 0);
     i_mdt_tar_mid_av    : in tar2hps_avt(HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -67,11 +71,14 @@ begin
   UCM : entity ucm_lib.ucm
   port map(
     clk                   => clk,
-    Reset_b               => Reset_b,
+    rst              => rst,
     glob_en               => glob_en,
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av         => i_slc_data_av,
+    i_slc_data_mainA_av     => i_slc_data_mainA_av,
+    i_slc_data_mainB_av     => i_slc_data_mainB_av,
+    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
+    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
     -- pam out
     o_uCM2hps_inn_av      => uCM2hps_aav(0),
     o_uCM2hps_mid_av      => uCM2hps_aav(1),
@@ -90,7 +97,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -110,7 +117,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -130,7 +137,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc
@@ -150,7 +157,7 @@ begin
       )
       port map(
         clk                 => clk,
-        Reset_b             => Reset_b,
+        rst            => rst,
         glob_en             => glob_en,
         -- configuration, control & Monitoring
         -- SLc

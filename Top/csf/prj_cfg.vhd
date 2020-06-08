@@ -2,14 +2,14 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---------------------------------------------------------------------------------
+--  
 --  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Module: configuration file
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--    05/02/2020    0.1     File created
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -17,23 +17,23 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.cfg_global_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
+package prj_cfg is
 
-package hps_pkg is
+  -- constant CFG : cfg_rt := CFG_DEFAULTS;
+  function set_project_cfg return cfg_rt;
 
-  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_rvt;
+end package prj_cfg;
 
-  type hps_bm2sf_avt is array(integer range <>) of heg_bm2sf_rvt;
+package body prj_cfg is
 
-end package hps_pkg;
-
-package body hps_pkg is
+  function set_project_cfg return cfg_rt is
+    variable proj_cfg : cfg_rt := CFG_DEFAULTS;
+  begin
 
  
-end package body hps_pkg;
+    return proj_cfg;
+  end function set_project_cfg;
+
+end package body prj_cfg;

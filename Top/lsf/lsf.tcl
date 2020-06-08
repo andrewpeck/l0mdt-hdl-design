@@ -1,7 +1,7 @@
 #vivado
 ############# modify these to match project ################
-set bin_file 1
-set use_questa_simulator 1
+set BIN_FILE 1
+set USE_QUESTA_SIMULATOR 1
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
@@ -27,6 +27,6 @@ set SIMULATOR "modelsim"
 
 set DESIGN "[file rootname [file tail [info script]]]"
 
-set path_repo "[file normalize [file dirname [info script]]]/../../"
+set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
-source $path_repo/Hog/Tcl/create_project.tcl
+source $PATH_REPO/Hog/Tcl/create_project.tcl

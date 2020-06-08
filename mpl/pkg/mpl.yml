@@ -2,7 +2,8 @@ __config__:
     basic_convert_functions : off
     packages:
       shared_lib:
-        - common_pkg
+        - common_types_pkg
+        - common_constants_pkg
         - config_pkg
 
 

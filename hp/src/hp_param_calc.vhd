@@ -17,7 +17,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -28,7 +29,7 @@ entity hp_paramCalc is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
     i_SLc_specific      : in std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
@@ -63,7 +64,7 @@ begin
   )
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst        => rst,
     glob_en         => glob_en,
 
     i_SLc_BCID      => i_SLc_BCID,
@@ -80,7 +81,7 @@ begin
   )
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst        => rst,
     glob_en         => glob_en,
     -- SLc
     i_SLc_z_0       => barrel_data_r.z_0,

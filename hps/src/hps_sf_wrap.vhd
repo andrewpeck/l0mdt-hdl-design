@@ -18,7 +18,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -34,7 +35,7 @@ entity hps_sf_wrap is
   port (
     clk                 : in std_logic;
     
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     i_sf_control        : in heg_ctrl2hp_rvt;

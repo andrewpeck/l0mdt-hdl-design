@@ -19,7 +19,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -27,7 +28,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_prepro is
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
@@ -47,9 +48,9 @@ begin
   i_slc_data_r <= structify(i_slc_data_v);
   o_prepro_data_v <= vectorify(o_prepro_data_r);
 
-  UCM_PRE_PROC : process(Reset_b,clk) begin
+  UCM_PRE_PROC : process(rst,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(rst= '1') then
         o_prepro_data_r <= nullify(o_prepro_data_r);
       else
         if i_slc_data_r.data_valid = '1' then

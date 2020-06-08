@@ -35,7 +35,7 @@ constant clk_tdc_per    : time := 0.78 ns;
 signal clk_360          : std_logic := '0';
 constant clk_360_per    : time := 1 sec / 360E6;
 
-signal Reset_b : std_logic := '0';
+signal rst: std_logic := '0';
 
 
 begin
@@ -50,7 +50,7 @@ generic map (
 port map (
     -- system signals
     clk_360              => clk_360,
-    Reset_b              => Reset_b,
+    rst             => rst,
     -- Contorl signals
     tdc_enable_a         => tdc_enable,
     -- Input signals
@@ -82,9 +82,9 @@ end process;
 
 reset_gen : process
 begin
-    Reset_b <= '0';
+    rst<= '0';
     wait for clk_360_per * 5;
-    Reset_b <= '1';
+    rst<= '1';
 end process;
 
 

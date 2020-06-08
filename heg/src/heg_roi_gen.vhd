@@ -19,7 +19,8 @@ use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -37,7 +38,7 @@ entity heg_roi_gen is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
 
     i_z          : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
@@ -88,11 +89,11 @@ begin
       -- end if;
     end process;
 
-    DT2R : process(clk,Reset_b)
+    DT2R : process(clk,rst)
 
     begin
       if rising_edge(clk) then
-        if Reset_b = '0' then
+        if rst= '1' then
           -- o_tube_radius <= (others => '0');
           o_data_valid <= '0';
         else

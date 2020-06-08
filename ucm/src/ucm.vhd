@@ -18,29 +18,36 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
 entity ucm is
   port (
-    clk                 : in std_logic;
-    Reset_b             : in std_logic;
-    glob_en             : in std_logic;
+    clk                     : in std_logic;
+    rst                     : in std_logic;
+    glob_en                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_av          : in slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_neightborA_v : in slc_rx_data_rvt;
+    i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- to hps
-    o_uCM2hps_inn_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av      : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av            : out pipelines_avt(MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_av             : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
 
 architecture beh of ucm is
+
+  signal i_slc_data_av        : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+  --
   signal ucm_prepro_av        : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
@@ -63,12 +70,26 @@ architecture beh of ucm is
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (NUM_THREADS -1 downto 0) of ucm2hps_avt(MAX_NUM_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
+
 begin
+
+  SLC_BoEs : if ST_nBARREL_ENDCAP = '0' or ENDCAP_nSMALL_LARGE = '0' generate
+    i_slc_data_av(MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
+    i_slc_data_av(MAX_NUM_SL -2) <= i_slc_data_mainA_av(1);
+    i_slc_data_av(MAX_NUM_SL -3) <= i_slc_data_mainA_av(0);
+    SLC1 : if ENABLE_NEIGHTBORS = '1' generate
+      i_slc_data_av(MAX_NUM_SL -4) <= i_slc_data_neightborA_v;
+      i_slc_data_av(MAX_NUM_SL -5) <= i_slc_data_neightborB_v;
+    end generate;
+  end generate;
+
+
+
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst        => rst,
     glob_en         => glob_en,
     --              =>
     i_data          => ucm_prepro_av,
@@ -84,7 +105,7 @@ begin
     SLC_PP : entity ucm_lib.ucm_prepro
     port map(
       clk               => clk,
-      Reset_b           => Reset_b,
+      rst          => rst,
       glob_en           => glob_en,
       --                =>
       i_slc_data_v     => i_slc_data_av(sl_i),
@@ -96,7 +117,7 @@ begin
   --   SLC_PP : entity shared_lib.ucm_prepro
   --   port map(
   --     clk         => clk,
-  --     Reset_b     => Reset_b,
+  --     rst    => rst,
   --     glob_en     => glob_en,
   --     --
   --     i_slc_data_av     => i_slc_data_av(sl_i),
@@ -113,7 +134,7 @@ begin
     )
     port map(
       clk         => clk,
-      Reset_b     => Reset_b,
+      rst    => rst,
       glob_en     => glob_en,
       --
       i_data      => ucm_prepro_av(sl_i),
@@ -125,7 +146,7 @@ begin
   SLC_CSW : entity ucm_lib.ucm_csw
   port map(
     clk         => clk,
-    Reset_b     => Reset_b,
+    rst    => rst,
     glob_en     => glob_en,
     
     i_control   => csw_control,
@@ -138,7 +159,7 @@ begin
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
   port map(
     clk         => clk,
-    Reset_b     => Reset_b,
+    rst    => rst,
     glob_en     => glob_en,
     
     i_control   => pam_CSW_control,
@@ -153,7 +174,7 @@ begin
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
       clk           => clk,
-      Reset_b       => Reset_b,
+      rst      => rst,
       glob_en       => glob_en,
       --
       i_in_en       => cvp_control(vp_i),
@@ -173,7 +194,7 @@ begin
     )
     port map(
       clk         => clk,
-      Reset_b     => Reset_b,
+      rst    => rst,
       glob_en     => glob_en,
       --
       i_data      => uCM2pl_av(sl_i),

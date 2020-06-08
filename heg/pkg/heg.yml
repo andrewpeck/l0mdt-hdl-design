@@ -2,7 +2,8 @@ __config__:
     basic_convert_functions : off
     packages:
       shared_lib:
-        - common_pkg
+        - common_types_pkg
+        - common_constants_pkg
         - config_pkg
       hp_lib:
         - hp_pkg
@@ -21,7 +22,7 @@ heg_pc2heg : {array: open , type : hp_hpsPc2hp}
 # -----------------------------------------------------------
 
 heg_ctrl2hp:
-  reset_b         : { type: logic , length : MAX_NUM_HP}
+  rst        : { type: logic , length : MAX_NUM_HP}
   enable        : { type: logic , length : MAX_NUM_HP}
 
 # -----------------------------------------------------------

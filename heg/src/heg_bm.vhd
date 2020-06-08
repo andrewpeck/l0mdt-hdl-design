@@ -17,7 +17,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -28,7 +29,7 @@ entity heg_buffermux is
   -- generic( );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     i_control           : in heg_ctrl2hp_rt;
@@ -50,7 +51,7 @@ architecture beh of heg_buffermux is
     port (
       clk                 : in std_logic;
 
-      Reset_b             : in std_logic;
+      rst            : in std_logic;
       glob_en             : in std_logic;
       -- in
       i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
@@ -87,7 +88,7 @@ begin
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst            => rst,
       glob_en             => i_control.enable(hp_i),
       --
       i_mdt_hit           => i_mdt_hits_av(hp_i),
@@ -99,13 +100,13 @@ begin
     );
   end generate;
 
-  BM_proc : process(Reset_b,clk) 
+  BM_proc : process(rst,clk) 
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
   begin
     
     if rising_edge(clk) then
-      if(Reset_b = '0') then
+      if(rst= '1') then
         -- o_mdt_hits <= (others => '0');
         o_mdt_hits_r <= nullify(o_mdt_hits_r);
         new_index_v := 0;
@@ -155,7 +156,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.config_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -169,7 +171,7 @@ entity heg_buffermux_infifo is
   );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- in
     i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
@@ -197,9 +199,9 @@ begin
 
   case_options <= i_wr & i_rd;
 
-  SLc_reg : process(Reset_b,clk) begin
+  SLc_reg : process(rst,clk) begin
     if rising_edge(clk) then
-      if(Reset_b = '0' and glob_en = '0' ) then
+      if(rst= '1' and glob_en = '0' ) then
         fifo_data <= (others=>(others=>'0'));
         wr_index <= 0;
         o_empty <= '1';
