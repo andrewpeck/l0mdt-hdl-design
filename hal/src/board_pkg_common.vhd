@@ -63,7 +63,7 @@ package board_pkg_common is
 
   type refclk_types_array_t is array (integer range <>) of refclk_map_t;
 
-  type station_id_t is (INNER, MIDDLE, OUTER, NIL);
+  type station_id_t is (INNER, MIDDLE, OUTER, EXTRA, NIL);
 
   --------------------------------------------------------------------------------
   -- CSM Mapping

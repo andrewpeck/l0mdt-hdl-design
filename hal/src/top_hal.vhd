@@ -16,7 +16,6 @@ use l0mdt_lib.mdttp_functions_pkg.all;
 use l0mdt_lib.mdttp_constants_pkg.all;
 
 library hal;
-use hal.all;
 use hal.sector_logic_pkg.all;
 use hal.system_types_pkg.all;
 use hal.lpgbt_pkg.all;
@@ -29,6 +28,10 @@ use hal.board_pkg_common.all;
 entity top_hal is
 
   port (
+
+    --------------------------------------------------------------------------------
+    -- Hardware clocking
+    --------------------------------------------------------------------------------
 
     -- 100MHz ASYNC clock
     clock_100m_i_p : in std_logic;
@@ -46,35 +49,52 @@ entity top_hal is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
+    --------------------------------------------------------------------------------
+    -- Pipeline clock and control
+    --------------------------------------------------------------------------------
+
     -- pipeline clock
     clock_and_control_o : out l0mdt_control_rt;
 
     -- ttc
     ttc_commands : out l0mdt_ttc_rt;
-    tts_commands : in  TTS_CMD_rt;
+
+    --------------------------------------------------------------------------------
+    -- Data outputs
+    --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
-    tdc_hits_middle : out TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    tdc_hits_outer  : out TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0);
+    tdc_hits_inner  : out TDCPOLMUX_avt (c_NUM_POLMUX_INNER-1 downto 0);
+    tdc_hits_middle : out TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    tdc_hits_outer  : out TDCPOLMUX_avt (c_NUM_POLMUX_OUTER-1 downto 0);
+    tdc_hits_extra  : out TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA-1 downto 0);
 
     -- Endcap + Neighbor Sector Logic Candidates
-    endcap_slc_candidates : out SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
+    slc_o : out SLC_avt (c_NUM_SLC-1 downto 0);
 
-    -- Barrel + Neighbor Sector Logic Candidates
-    barrel_slc_candidates : out SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
+    -- Segments from neighbor
+    plus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    minus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
 
-    --
-    endcap_slc_pipeline : in SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
-    barrel_slc_pipeline : in SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
+    --------------------------------------------------------------------------------
+    -- Data inputs
+    --------------------------------------------------------------------------------
 
-    -- SF sharing to next chip
-    segments_o : in  SF_RT_array (c_NUM_SF_OUTPUTS-1 downto 0);
-    segments_i : out SF_RT_array (c_NUM_SF_INPUTS-1 downto 0);
+    -- NSP + MUCTPI
+    MTC_i : in MTC_avt (c_NUM_MTC-1 downto 0);
+    NSP_i : in NSP_avt (c_NUM_NSP-1 downto 0);
 
+    -- Segments from neighbor
+    plus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    minus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+
+    --------------------------------------------------------------------------------
     -- felix
-    daq_links : in DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
+    --------------------------------------------------------------------------------
 
+    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_LINKS-1 downto 0);
+
+    --sump--------------------------------------------------------------------------
     sump : out std_logic
 
     );
@@ -235,7 +255,7 @@ begin  -- architecture behavioral
   end process;
 
   clock_and_control_o.clk   <= clocks.clock_pipeline;
-  clock_and_control_o.rst_n <= not global_reset;
+  clock_and_control_o.rst_n <= not global_reset; -- FIXME, synchronize to clock
   clock_and_control_o.bx    <= pipeline_bx_strobe;
 
   --------------------------------------------------------------------------------
@@ -320,6 +340,7 @@ begin  -- architecture behavioral
 
   lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
     port map (
+
       reset => global_reset,
 
       -- downlink

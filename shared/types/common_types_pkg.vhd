@@ -138,6 +138,15 @@ package common_types_pkg is
   function structify(x: mdt_pullmux_data_rvt) return mdt_pullmux_data_rt;
   function nullify (x: mdt_pullmux_data_rt) return mdt_pullmux_data_rt;
 
+  type mdt_pullmux_data_at is array(integer range <>) of mdt_pullmux_data_rt;
+  type mdt_pullmux_data_avt is array(integer range <>) of mdt_pullmux_data_rvt;
+  function vectorify(x: mdt_pullmux_data_at) return mdt_pullmux_data_avt;
+  function vectorify(x: mdt_pullmux_data_at) return std_logic_vector;
+  function structify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_at;
+  function structify(x: std_logic_vector) return mdt_pullmux_data_at;
+  function nullify(x: mdt_pullmux_data_at) return mdt_pullmux_data_at;
+  function nullify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_avt;
+
   type tar2hps_rt is record
      tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);
      layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
@@ -694,6 +703,59 @@ package body common_types_pkg is
     y.muxID                    := nullify(x.muxID);
     y.tdc                      := nullify(x.tdc);
     y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: mdt_pullmux_data_at) return mdt_pullmux_data_avt is
+    variable y :  mdt_pullmux_data_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: mdt_pullmux_data_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*42-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-42) := vectorify(x(i));
+      msb := msb - 42 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_at is
+    variable y :  mdt_pullmux_data_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return mdt_pullmux_data_at is
+    variable y :  mdt_pullmux_data_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-42));
+      msb := msb - 42 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: mdt_pullmux_data_at) return mdt_pullmux_data_at is
+    variable y :  mdt_pullmux_data_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_avt is
+    variable y :  mdt_pullmux_data_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 

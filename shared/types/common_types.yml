@@ -82,6 +82,8 @@ mdt_pullmux_data:
   muxID: { type: logic , length: MDT_MUXCH_LEN }
   tdc: {type: mdt_tdc}
   data_valid: {type: logic}
+
+mdt_pullmux_data_: {array: open , type: mdt_pullmux_data , _: off }
 # mdt tar
 tar2hps:
   tube        : { type: unsigned , length: MDT_TUBE_LEN }

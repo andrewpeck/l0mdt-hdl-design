@@ -7,12 +7,12 @@ library l0mdt_lib;
 use l0mdt_lib.mdttp_types_pkg.all;
 use l0mdt_lib.mdttp_functions_pkg.all;
 
-library ult;
-
 library hal;
 use hal.board_pkg.all;
 use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
+
+library ult;
 
 -- library c2c;
 -- use c2c.axiRegPkg.all;
@@ -63,74 +63,100 @@ end top_l0mdt;
 
 architecture structural of top_l0mdt is
 
-  signal ttc_commands          : l0mdt_ttc_rt;
-  signal tts_commands          : TTS_CMD_rt;
-  signal clock_and_control     : l0mdt_control_rt;
-  signal tdc_hits_inner        : TDCPOLMUX_rt_array (c_NUM_POLMUX_INNER-1 downto 0);
-  signal tdc_hits_middle       : TDCPOLMUX_rt_array (c_NUM_POLMUX_MIDDLE-1 downto 0);
-  signal tdc_hits_outer        : TDCPOLMUX_rt_array (c_NUM_POLMUX_OUTER-1 downto 0);
-  signal endcap_slc_candidates : SLC_ENDCAP_rt_array (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
-  signal barrel_slc_candidates : SLC_BARREL_rt_array (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
-  signal endcap_slc_pipeline   : SLCPROC_PIPE_ENDCAP_rt_array (c_NUM_SLCPROC_ENDCAP_OUTPUTS-1 downto 0);
-  signal barrel_slc_pipeline   : SLCPROC_PIPE_BARREL_rt_array (c_NUM_SLCPROC_BARREL_OUTPUTS-1 downto 0);
-  signal daq_links             : DAQ_LINK_rt_array (c_NUM_DAQ_LINKS-1 downto 0);
-  signal segments_o            : SF_RT_array (c_NUM_SF_OUTPUTS-1 downto 0);
-  signal segments_i            : SF_RT_array (c_NUM_SF_INPUTS-1 downto 0);
-  signal hal_sump              : std_logic;
-  signal user_sump             : std_logic;
+  --
+  signal clock_and_control : l0mdt_control_rt;
+  signal ttc_commands      : l0mdt_ttc_rt;
+  -- signal tts_commands          : TTS_CMD_rt;
+
+  -- hal <--> ult
+  signal inner_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_INNER -1 downto 0);
+  signal middle_tdc_hits           : TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
+  signal outer_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_OUTER -1 downto 0);
+  signal extra_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
+  signal slc                       : SLC_avt (c_NUM_SLC-1 downto 0);
+  signal plus_neighbor_segments_o  : SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+  signal minus_neighbor_segments_o : SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+  signal plus_neighbor_segments_i  : SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+  signal minus_neighbor_segments_i : SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+  signal daq_streams               : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+
+  -- NSP + MUCTPI
+  signal mtc : MTC_avt (c_NUM_MTC-1 downto 0);
+  signal nsp : NSP_avt (c_NUM_NSP-1 downto 0);
+
+  --
+  signal hal_sump  : std_logic;
+  signal user_sump : std_logic;
+
 begin
 
   top_hal : entity hal.top_hal
     port map (
 
       -- clock io
-      clock_i_p        => clock_i_p,
-      clock_i_n        => clock_i_n,
-      clock_100m_i_p   => clock_100m_i_p,
-      clock_100m_i_n   => clock_100m_i_n,
+      clock_i_p      => clock_i_p,
+      clock_i_n      => clock_i_n,
+      clock_100m_i_p => clock_100m_i_p,
+      clock_100m_i_n => clock_100m_i_n,
       lhc_refclk_o_p => lhc_refclk_o_p,
       lhc_refclk_o_n => lhc_refclk_o_n,
-      refclk_i_p       => refclk_i_p,
-      refclk_i_n       => refclk_i_n,
+      refclk_i_p     => refclk_i_p,
+      refclk_i_n     => refclk_i_n,
 
       -- clocks to user logic
       clock_and_control_o => clock_and_control,
+      ttc_commands        => ttc_commands,
 
       --  tdc data
-      tdc_hits_inner  => tdc_hits_inner,
-      tdc_hits_middle => tdc_hits_middle,
-      tdc_hits_outer  => tdc_hits_outer,
+      tdc_hits_inner  => inner_tdc_hits,
+      tdc_hits_middle => middle_tdc_hits,
+      tdc_hits_outer  => outer_tdc_hits,
+      tdc_hits_extra  => extra_tdc_hits,
 
       --
-      endcap_slc_candidates => endcap_slc_candidates,
-      barrel_slc_candidates => barrel_slc_candidates,
+      slc_o => slc,
 
-      endcap_slc_pipeline => endcap_slc_pipeline,
-      barrel_slc_pipeline => barrel_slc_pipeline,
+      -- segment out to neighbor
+      plus_neighbor_segments_i  => plus_neighbor_segments_o,
+      minus_neighbor_segments_i => minus_neighbor_segments_o,
 
-      segments_o => segments_o,
-      segments_i => segments_i,
+      -- segment in from neighbor
+      plus_neighbor_segments_o  => plus_neighbor_segments_i,
+      minus_neighbor_segments_o => minus_neighbor_segments_i,
 
-      tts_commands => tts_commands,
-      daq_links    => daq_links,
-      sump         => hal_sump);
+      mtc_i => mtc,
+      nsp_i => nsp,
 
-  top_ult : entity ult.top_ult
+      daq_streams => daq_streams,
+
+      sump => hal_sump
+      );
+
+  top_ult_inst : entity ult.top_ult
+    generic map (
+      DUMMY => false)
     port map (
-      clock_and_control     => clock_and_control,
-      ttc_commands          => ttc_commands,
-      tdc_hits_inner        => tdc_hits_inner,
-      tdc_hits_middle       => tdc_hits_middle,
-      tdc_hits_outer        => tdc_hits_outer,
-      endcap_slc_candidates => endcap_slc_candidates,
-      barrel_slc_candidates => barrel_slc_candidates,
-      endcap_slc_pipeline   => endcap_slc_pipeline,
-      barrel_slc_pipeline   => barrel_slc_pipeline,
-      tts_commands          => tts_commands,
-      segments_o            => segments_o,
-      segments_i            => segments_i,
-      daq_links             => daq_links,
-      sump                  => user_sump);
+      clock_and_control => clock_and_control,
+      ttc_commands      => ttc_commands,
+
+      inner_tdc_hits_i  => inner_tdc_hits,
+      middle_tdc_hits_i => middle_tdc_hits,
+      outer_tdc_hits_i  => outer_tdc_hits,
+      extra_tdc_hits_i  => extra_tdc_hits,
+
+      slc_i => slc,
+
+      plus_neighbor_segments_i  => plus_neighbor_segments_i,
+      minus_neighbor_segments_i => minus_neighbor_segments_i,
+      plus_neighbor_segments_o  => plus_neighbor_segments_o,
+      minus_neighbor_segments_o => minus_neighbor_segments_o,
+
+      mtc_o => mtc,
+      nsp_o => nsp,
+
+      daq_streams_o => daq_streams,
+      sump          => user_sump
+      );
 
   sump <= hal_sump xor user_sump;
 

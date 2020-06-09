@@ -22,40 +22,39 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
-    SECTOR_ID                     : integer;    -- number of sector
-    SECTOR_SIDE                   : std_logic;  -- 0:A          1:C
-    ST_nBARREL_ENDCAP             : std_logic;  -- 0: barrel    1: Endcap
-    ENDCAP_nSMALL_LARGE           : std_logic;  -- 0: small     1: large
-    ENABLE_NEIGHTBORS             : std_logic;  -- 0: disabled  1: enabled
+    SECTOR_ID                     : integer;    -- selects the number of sector
+    SECTOR_SIDE                   : std_logic;  -- selects the side of the sector - 0:A          1:C
+    ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector - 0: barrel    1: Endcap
+    ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap - 0: small     1: large
+    ENABLE_NEIGHTBORS             : std_logic;  -- enables or disables the processing of SL neightbors
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    
-    HW_PRESENT                    : std_logic; -- enables/disable 
-    -- Processing channel
-    ENABLE_ST_INN                 : std_logic;
-    NUM_MDT_CH_INN                : integer;
-    ENABLE_ST_EXT                 : std_logic;
-    NUM_MDT_CH_EXT                : integer;
-    ENABLE_ST_MID                 : std_logic;
-    NUM_MDT_CH_MID                : integer;
-    ENABLE_ST_OUT                 : std_logic;
-    NUM_MDT_CH_OUT                : integer;
+    -- hardware modules
+    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation 
+    HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation  
+    -- Processing channels
+    ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
+    NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_EXT                 : std_logic;  -- enable or disable extra processing station
+    NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_MID                 : std_logic;  -- enable or disable middle processing station
+    NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
+    ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
+    NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
     -- muon control manager
-    ENABLE_UCM                    : std_logic;
+    ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
     -- Segment Finder
-    ENABLE_SF                     : std_logic;
-    SF_type                       : std_logic;  -- 0: CSF 1:LSF
+    ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
+    SF_type                       : std_logic;  -- select the type of segment finder
     -- pt-calc
-    ENABLE_PT                     : std_logic;
-    PT_type                       : std_logic;
+    ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
+    PT_type                       : std_logic;  -- select the type of pt calculator
     -- DAQ
-    ENABLE_DAQ                    : std_logic;
+    ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
 
-
-
-    -- number of elements processed
-    NUM_THREADS                   : integer;-- := 3;
+    -- number of parallel processing threads
+    NUM_THREADS                   : integer;
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
@@ -66,79 +65,121 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
-    SECTOR_ID                     => 3,  -- default sector 3
+    SECTOR_ID                     => 3,   -- default sector 3
     SECTOR_SIDE                   => '0', -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
-    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled
+    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled 
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    HW_PRESENT                    => '0',
+    UL_PRESENT                    => '1', -- 0: disabled  1: enabled -- default enabled
+    HW_PRESENT                    => '0', -- 0: disabled  1: enabled -- default disabled
     -- Processing channels
-    ENABLE_ST_INN                 => '1', -- default enable
+    ENABLE_ST_INN                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_INN                => 6,   -- default 6            
-    ENABLE_ST_EXT                 => '0', -- default disabled
+    ENABLE_ST_EXT                 => '0', -- 0: disabled  1: enabled -- default disabled
     NUM_MDT_CH_EXT                => 6,   -- default 6  
-    ENABLE_ST_MID                 => '1', -- default enable
+    ENABLE_ST_MID                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_MID                => 6,   -- default 6  
-    ENABLE_ST_OUT                 => '1', -- default enable
+    ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
     -- muon control manager
-    ENABLE_UCM                    => '1',
+    ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- Segment Finder
-    ENABLE_SF                     => '1', -- default enable
+    ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_type                       => '0', -- default CSF
     -- pt-calc
-    ENABLE_PT                     => '1', -- default enable
+    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_type                       => '0', -- default 0
     -- DAQ
-    ENABLE_DAQ                    => '1',
-    -- number of elements ( )
-    NUM_THREADS                   => 3
+    ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
     --------------------------------------------------------------------------------
-    -- mdt hardware interface config
+    --  Thread configuration
     --------------------------------------------------------------------------------
-    --------------------------------------------------------------------------------
-    -- Segment Finder
-    --------------------------------------------------------------------------------
+    NUM_THREADS                   => 3    -- default 3
   );
 
   -- function set_configuration() return cfg_rt;
 
 end package cfg_global_pkg;
 
-package body cfg_global_pkg is
+-- --------------------------------------------------------------------------------
+-- WHEN CREATING A NEW PROJECT
+-- COPY THE LINES AFTER THE COPY HERE MARCK
+-- TO THE PROJECT FILE CONFIGURATION
+-- THIS FILE SHOULD BE NAMED : prj_cfg.vhd
+-- --------------------------------------------------------------------------------
 
-  -- function set_configuration return cfg_rt is
-  --   variable proj_cfg : cfg_rt := CFG_DEFAULTS;
-  -- begin
-  --   --------------------------------------------------------------------------------
-  --   -- Sector information
-  --   --------------------------------------------------------------------------------
-  --   proj_cfg.SECTOR_ID               := 3,
-  --   proj_cfg.ST_nBARREL_ENDCAP       := '0', -- 0: barrel    1: Endcap
-  --   proj_cfg.ENDCAP_nSMALL_LARGE     := '0', -- 0: small     1: large
-  --   proj_cfg.ENABLE_NEIGHTBORS       := '1', -- 0: disabled  1: enabled
-  --   --------------------------------------------------------------------------------
-  --   -- IN COMPILATION CONFIGURATIONS 
-  --   --------------------------------------------------------------------------------
-  --   proj_cfg.MAX_NUM_HP              := 6,
-  --   proj_cfg.NUM_THREADS             := 3,
-  --   proj_cfg.MAX_NUM_HPS             := 3,
-  --   proj_cfg.MAX_NUM_SL              := 5,--3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHTBORS))*2,
-  --   --------------------------------------------------------------------------------
-  --   -- mdt hardware interface config
-  --   --------------------------------------------------------------------------------
-  --   -- numTDCs_lpGBT           := 9, 
-  --   -- numlpGBTs_mux           := 2, 
-  --   -- numInputs_mux           := numlpGBTs_mux * numTDCs_lpGBT, 
-  --   --------------------------------------------------------------------------------
-  --   -- Segment Finder
-  --   --------------------------------------------------------------------------------
-  --   proj_cfg.SF_type                 := '0',  -- 0: CSF 1:LSF
- 
-  --   return proj_cfg;
-  -- end function set_configuration;
+-- COPY FROM HERE =============>
 
-end package body cfg_global_pkg;
+-- --------------------------------------------------------------------------------
+-- --  UMass , Physics Department
+-- --  Guillermo Loustau de Linares
+-- --  gloustau@cern.ch
+-- --  
+-- --  Project: ATLAS L0MDT Trigger 
+-- --  Module: project configurations customization
+-- --  Description:
+-- --
+-- --------------------------------------------------------------------------------
+-- --  Revisions:
+-- --    05/02/2020    0.1     File created
+-- --------------------------------------------------------------------------------
+-- library ieee;
+-- use ieee.std_logic_1164.all;
+-- use ieee.numeric_std.all;
+
+-- library shared_lib;
+-- use shared_lib.cfg_global_pkg.all;
+
+-- package prj_cfg is
+--   function set_project_cfg return cfg_rt;
+-- end package prj_cfg;
+
+-- package body prj_cfg is
+--   function set_configuration return cfg_rt is
+--     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
+--   begin
+--     --------------------------------------------------------------------------------
+--     -- Sector information
+--     --------------------------------------------------------------------------------
+--     proj_cfg.SECTOR_ID                     => 3;   -- default sector 3
+--     proj_cfg.SECTOR_SIDE                   => '0'; -- 0:A          1:C
+--     proj_cfg.ST_nBARREL_ENDCAP             => '0'; -- 0: barrel    1: Endcap
+--     proj_cfg.ENDCAP_nSMALL_LARGE           => '0'; -- 0: small     1: large
+--     proj_cfg.ENABLE_NEIGHTBORS             => '1'; -- 0: disabled  1: enabled
+--     --------------------------------------------------------------------------------
+--     -- blocks configuration
+--     --------------------------------------------------------------------------------
+--     proj_cfg.UL_PRESENT                    => '1'; -- default enabled
+--     proj_cfg.HW_PRESENT                    => '0'; -- default disabled
+--     -- Processing channels
+--     proj_cfg.ENABLE_ST_INN                 => '1'; -- default enable
+--     proj_cfg.NUM_MDT_CH_INN                => 6;   -- default 6            
+--     proj_cfg.ENABLE_ST_EXT                 => '0'; -- default disabled
+--     proj_cfg.NUM_MDT_CH_EXT                => 6;   -- default 6  
+--     proj_cfg.ENABLE_ST_MID                 => '1'; -- default enable
+--     proj_cfg.NUM_MDT_CH_MID                => 6;   -- default 6  
+--     proj_cfg.ENABLE_ST_OUT                 => '1'; -- default enable
+--     proj_cfg.NUM_MDT_CH_OUT                => 6;   -- default 6  
+--     -- muon control manager
+--     proj_cfg.ENABLE_UCM                    => '1'; -- default
+--     -- Segment Finder
+--     proj_cfg.ENABLE_SF                     => '1'; -- default enable
+--     proj_cfg.SF_type                       => '0'; -- default CSF
+--     -- pt-calc
+--     proj_cfg.ENABLE_PT                     => '1'; -- default enable
+--     proj_cfg.PT_type                       => '0'; -- default 0
+--     -- DAQ
+--     proj_cfg.ENABLE_DAQ                    => '1'; -- default enabled
+--     --------------------------------------------------------------------------------
+--     --  Thread configuration
+--     --------------------------------------------------------------------------------
+--     proj_cfg.NUM_THREADS                   => 3;    -- default 3
+   
+--     return proj_cfg;
+--   end function set_configuration;
+-- end package body prj_cfg;
+
+-- <======== TO HERE

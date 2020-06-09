@@ -1,8 +1,10 @@
 __config__:
-    basic_convert_functions : on
+    basic_convert_functions : off
     packages:
       shared_lib:
-        - custom_types_pkg
+        - config_pkg
+        - common_constants_pkg
+        - common_types_pkg
 
 CSF_HIT_AXI_LEN: {qualifier: constant, type: integer, value: 14}
 
