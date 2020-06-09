@@ -1,14 +1,25 @@
--- Dataformats Spreadsheet:
--- https://docs.google.com/spreadsheets/d/1oJh-NPv990n6AzXXZ7cBaySrltqBO-eGucrsnOx_r4s/edit#gid=1745105770
-
+--------------------------------------------------------------------------------
+--
+--
+--
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: User Logic Top 
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-use l0mdt_lib.mdttp_functions_pkg.all;
+library shared_lib;
+use shared_lib.config_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.common_constants_pkg.all;
 
 library hal;
 use hal.system_types_pkg.all;
@@ -28,13 +39,16 @@ entity top_ult is
     ttc_commands : in l0mdt_ttc_rt;
 
     -- TDC Hits from Polmux
-    inner_tdc_hits_i  : in TDCPOLMUX_avt (c_NUM_POLMUX_INNER -1 downto 0);
-    middle_tdc_hits_i : in TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    outer_tdc_hits_i  : in TDCPOLMUX_avt (c_NUM_POLMUX_OUTER -1 downto 0);
-    extra_tdc_hits_i  : in TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
+    inner_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_INNER -1 downto 0);
+    middle_tdc_hits_i : in mdt_pullmux_data_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    outer_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_OUTER -1 downto 0);
+    extra_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
 
     -- Sector Logic Candidates
-    slc_i : in SLC_avt (c_NUM_SLC-1 downto 0);
+    main_A_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0); -- is the main SL used
+    main_B_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0); -- only used in the big endcap
+    plus_neighbor_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0);
+    minus_neighbor_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0);
 
     -- Segments in from neighbor
     plus_neighbor_segments_i  : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
@@ -116,10 +130,10 @@ architecture behavioral of top_ult is
       ttc_commands : in l0mdt_ttc_rt;
 
       -- TDC Hits from Polmux
-      inner_tdc_hits_i  : in TDCPOLMUX_avt;
-      middle_tdc_hits_i : in TDCPOLMUX_avt;
-      outer_tdc_hits_i  : in TDCPOLMUX_avt;
-      extra_tdc_hits_i  : in TDCPOLMUX_avt;
+      inner_tdc_hits_i  : in mdt_pullmux_data_avt;
+      middle_tdc_hits_i : in mdt_pullmux_data_avt;
+      outer_tdc_hits_i  : in mdt_pullmux_data_avt;
+      extra_tdc_hits_i  : in mdt_pullmux_data_avt;
 
       -- Sector Logic Candidates from uCM
       inner_slc_i  : in SLC_avt;
@@ -216,10 +230,10 @@ architecture behavioral of top_ult is
       ttc_commands : in l0mdt_ttc_rt;
 
       -- TDC Hits from Polmux
-      inner_tdc_hits_i  : in TDCPOLMUX_avt;
-      middle_tdc_hits_i : in TDCPOLMUX_avt;
-      outer_tdc_hits_i  : in TDCPOLMUX_avt;
-      extra_tdc_hits_i  : in TDCPOLMUX_avt;
+      inner_tdc_hits_i  : in mdt_pullmux_data_avt;
+      middle_tdc_hits_i : in mdt_pullmux_data_avt;
+      outer_tdc_hits_i  : in mdt_pullmux_data_avt;
+      extra_tdc_hits_i  : in mdt_pullmux_data_avt;
 
       -- Tracks from MTC
 

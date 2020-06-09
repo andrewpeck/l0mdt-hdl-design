@@ -22,15 +22,16 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     -- Sector information
     --------------------------------------------------------------------------------
-    SECTOR_ID                     : integer;    -- number of sector
-    SECTOR_SIDE                   : std_logic;  -- 0:A          1:C
-    ST_nBARREL_ENDCAP             : std_logic;  -- 0: barrel    1: Endcap
-    ENDCAP_nSMALL_LARGE           : std_logic;  -- 0: small     1: large
-    ENABLE_NEIGHTBORS             : std_logic;  -- 0: disabled  1: enabled
+    SECTOR_ID                     : integer;    -- selects the number of sector
+    SECTOR_SIDE                   : std_logic;  -- selects the side of the sector - 0:A          1:C
+    ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector - 0: barrel    1: Endcap
+    ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap - 0: small     1: large
+    ENABLE_NEIGHTBORS             : std_logic;  -- enables or disables the processing of SL neightbors
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
     -- hardware modules
+    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation 
     HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation  
     -- Processing channels
     ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
@@ -68,30 +69,31 @@ package cfg_global_pkg is
     SECTOR_SIDE                   => '0', -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
-    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled
+    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled 
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
-    HW_PRESENT                    => '0', -- default disabled
+    UL_PRESENT                    => '1', -- 0: disabled  1: enabled -- default enabled
+    HW_PRESENT                    => '0', -- 0: disabled  1: enabled -- default disabled
     -- Processing channels
-    ENABLE_ST_INN                 => '1', -- default enable
+    ENABLE_ST_INN                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_INN                => 6,   -- default 6            
-    ENABLE_ST_EXT                 => '0', -- default disabled
+    ENABLE_ST_EXT                 => '0', -- 0: disabled  1: enabled -- default disabled
     NUM_MDT_CH_EXT                => 6,   -- default 6  
-    ENABLE_ST_MID                 => '1', -- default enable
+    ENABLE_ST_MID                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_MID                => 6,   -- default 6  
-    ENABLE_ST_OUT                 => '1', -- default enable
+    ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
     -- muon control manager
-    ENABLE_UCM                    => '1', -- default
+    ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- Segment Finder
-    ENABLE_SF                     => '1', -- default enable
+    ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_type                       => '0', -- default CSF
     -- pt-calc
-    ENABLE_PT                     => '1', -- default enable
+    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_type                       => '0', -- default 0
     -- DAQ
-    ENABLE_DAQ                    => '1', -- default enabled
+    ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
     --------------------------------------------------------------------------------
     --  Thread configuration
     --------------------------------------------------------------------------------
@@ -117,7 +119,7 @@ end package cfg_global_pkg;
 -- --  gloustau@cern.ch
 -- --  
 -- --  Project: ATLAS L0MDT Trigger 
--- --  Module: configuration file
+-- --  Module: project configurations customization
 -- --  Description:
 -- --
 -- --------------------------------------------------------------------------------
@@ -150,6 +152,7 @@ end package cfg_global_pkg;
 --     --------------------------------------------------------------------------------
 --     -- blocks configuration
 --     --------------------------------------------------------------------------------
+--     proj_cfg.UL_PRESENT                    => '1'; -- default enabled
 --     proj_cfg.HW_PRESENT                    => '0'; -- default disabled
 --     -- Processing channels
 --     proj_cfg.ENABLE_ST_INN                 => '1'; -- default enable
