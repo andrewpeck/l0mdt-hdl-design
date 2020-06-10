@@ -27,7 +27,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_calc_radius is
   generic(
-    radius              : integer
+    g_STATION_RADIUS             : integer
   );
   port (
     clk                 : in std_logic;
@@ -52,10 +52,10 @@ architecture beh of hp_calc_radius is
 begin
 
   DT2R_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
-    DT2R_BS_GEN: if radius = 0 generate
+    DT2R_BS_GEN: if g_STATION_RADIUS= 0 generate
       HP_DT2R_BS : entity hp_lib.hp_calc_dt2r_small
       generic map(
-        radius              => radius
+        g_STATION_RADIUS             => g_STATION_RADIUS
       )
       port map(
         clk                 => clk,
@@ -68,10 +68,10 @@ begin
         o_data_valid        => o_data_valid
       );
     end generate;
-    DT2R_BL_GEN: if radius > 0 generate
+    DT2R_BL_GEN: if g_STATION_RADIUS> 0 generate
       HP_DT2R_BL : entity hp_lib.hp_calc_dt2r_large
       generic map(
-        radius              => radius
+        g_STATION_RADIUS             => g_STATION_RADIUS
       )
       port map(
         clk                 => clk,

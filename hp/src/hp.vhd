@@ -27,7 +27,7 @@ use hp_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
-    radius      : integer := 0
+    g_STATION_RADIUS     : integer := 0
   );
   port (
     clk                 : in std_logic;    
@@ -70,7 +70,7 @@ begin
 
   HP_HM : entity hp_lib.hp_matching
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
@@ -96,7 +96,7 @@ begin
 
   HP_PC : entity hp_lib.hp_paramCalc
   generic map(
-      radius      => radius
+      g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,

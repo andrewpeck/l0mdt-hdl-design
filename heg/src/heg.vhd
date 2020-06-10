@@ -29,8 +29,8 @@ use heg_lib.heg_pkg.all;
 
 entity heg is
   generic(
-    radius              : integer := 0;  --station
-    hps_num_of_hp       : integer := 6 
+    g_STATION_RADIUS             : integer := 0;  --station
+    g_HPS_NUM_OF_HP       : integer := 6 
   );
   port (
     clk                 : in std_logic;
@@ -66,7 +66,7 @@ begin
 
   Heg_Control : entity heg_lib.heg_Control
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
     -- MAX_NUM_HP      => MAX_NUM_HP
   )
   port map(
@@ -85,7 +85,7 @@ begin
   hp_gen: for i_hp in MAX_NUM_HP -1 downto 0 generate
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
-      radius              => radius
+      g_STATION_RADIUS             => g_STATION_RADIUS
     )
     port map(
       clk                 => clk,

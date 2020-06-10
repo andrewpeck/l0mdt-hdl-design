@@ -27,8 +27,8 @@ use heg_lib.heg_pkg.all;
 
 entity top_heg is
   generic(
-    radius              : integer := 0;  --station
-    hps_num_of_hp       : integer := 6 
+    g_STATION_RADIUS             : integer := 0;  --station
+    g_HPS_NUM_OF_HP       : integer := 6 
   );
   port (
     clk                 : in std_logic;
@@ -52,7 +52,7 @@ begin
 
   HEG : entity heg_lib.heg
   generic map(
-    radius              => radius 
+    g_STATION_RADIUS             => g_STATION_RADIUS
   )
   port map(
     clk                 => CLK,

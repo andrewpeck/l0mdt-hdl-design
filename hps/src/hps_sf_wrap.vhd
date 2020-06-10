@@ -30,7 +30,7 @@ use hps_lib.hps_pkg.all;
 
 entity hps_sf_wrap is
   generic(
-    radius      : integer := 0  --station
+    g_STATION_RADIUS     : integer := 0  --station
   );
   port (
     clk                 : in std_logic;

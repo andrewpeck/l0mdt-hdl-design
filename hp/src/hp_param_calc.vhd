@@ -25,7 +25,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_paramCalc is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;
@@ -60,7 +60,7 @@ begin
 
   HP_CALC_R : entity hp_lib.hp_calc_radius
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk             => clk,
@@ -77,7 +77,7 @@ begin
 
   HP_CALC_V : entity hp_lib.hp_calc_RoI_vect
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk             => clk,

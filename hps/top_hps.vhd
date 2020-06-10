@@ -32,8 +32,8 @@ use hps_lib.hps_pkg.all;
 
 entity top_hps is
   generic(
-    radius              : integer := 0;  --station
-    hps_num_of_hp       : integer := 6 
+    g_STATION_RADIUS             : integer := 0;  --station
+    g_HPS_NUM_OF_HP       : integer := 6 
   );
   port (
     clk                 : in std_logic;
@@ -43,7 +43,7 @@ entity top_hps is
     -- SLc
     i_uCM2hps_av        : in ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_pullmux_av    : in mdt_pullmux_data_avt(hps_num_of_hp -1 downto 0);
+    i_mdt_pullmux_av    : in mdt_pullmux_data_avt(g_HPS_NUM_OF_HP -1 downto 0);
     -- to pt calc
     o_sf2pt_av          : out sf2pt_avt(NUM_THREADS -1 downto 0)
   );
@@ -55,8 +55,8 @@ begin
 
   HPS : entity hps_lib.hps
     generic map(
-      radius => radius,
-      hps_num_of_hp => hps_num_of_hp
+      g_STATION_RADIUS=> g_STATION_RADIUS,
+      g_HPS_NUM_OF_HP => g_HPS_NUM_OF_HP
     )
     port map(
       clk                 => clk,

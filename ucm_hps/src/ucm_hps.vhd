@@ -92,8 +92,8 @@ begin
   HPS_INN_GEN: if HPS_ENABLE_ST_INN generate
     HPS : entity hps_lib.hps
       generic map(
-        radius              => 0,
-        hps_num_of_hp       => HPS_NUM_MDT_CH_INN
+        g_STATION_RADIUS             => 0,
+        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_INN
       )
       port map(
         clk                 => clk,
@@ -112,8 +112,8 @@ begin
   HPS_MID_GEN: if HPS_ENABLE_ST_MID generate
     HPS : entity hps_lib.hps
       generic map(
-        radius              => 1,
-        hps_num_of_hp       => HPS_NUM_MDT_CH_MID
+        g_STATION_RADIUS             => 1,
+        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_MID
       )
       port map(
         clk                 => clk,
@@ -132,8 +132,8 @@ begin
   HPS_OUT_GEN: if HPS_ENABLE_ST_OUT generate
     HPS : entity hps_lib.hps
       generic map(
-        radius              => 2,
-        hps_num_of_hp       => HPS_NUM_MDT_CH_OUT
+        g_STATION_RADIUS             => 2,
+        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_OUT
       )
       port map(
         clk                 => clk,
@@ -152,8 +152,8 @@ begin
   HPS_EXT_GEN: if HPS_ENABLE_ST_EXT generate
     HPS : entity hps_lib.hps
       generic map(
-        radius              => 3,
-        hps_num_of_hp       => HPS_NUM_MDT_CH_EXT
+        g_STATION_RADIUS             => 3,
+        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_EXT
       )
       port map(
         clk                 => clk,

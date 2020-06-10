@@ -34,7 +34,7 @@ use heg_roi_lib.RoI_LUT_pkg.all;
 
 entity heg_roi_gen is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;

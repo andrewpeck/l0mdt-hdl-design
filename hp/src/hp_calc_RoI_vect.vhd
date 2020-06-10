@@ -22,7 +22,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_calc_RoI_vect is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;

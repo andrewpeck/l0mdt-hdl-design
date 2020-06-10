@@ -27,7 +27,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_matching is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
     -- num_layers  : integer;
     -- package hp_pkg is new hp_lib.hp_pkg generic map (num_layers => num_layers)
   );
@@ -133,7 +133,7 @@ end beh;
 
 -- entity hp_m_trLUT is
 --     generic(
---         radius      : integer;
+--         g_STATION_RADIUS     : integer;
 --         num_layers  : integer;
 --         i_SLC_Window        : in SLc_window_at(num_layers -1 downto 0); 
 --         tube_min    : integer;
