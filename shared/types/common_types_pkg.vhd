@@ -23,6 +23,30 @@ package common_types_pkg is
   function nullify(x: unsigned) return unsigned;
   function nullify(x: signed) return signed;
 
+  type l0mdt_control_rt is record
+     clk                  :  std_logic;
+     rst                  :  std_logic;
+     bx                   :  std_logic;
+  end record l0mdt_control_rt;
+  constant L0MDT_CONTROL_LEN : integer := 3;
+  subtype l0mdt_control_rvt is std_logic_vector(L0MDT_CONTROL_LEN-1 downto 0);
+  function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt;
+  function structify(x: l0mdt_control_rvt) return l0mdt_control_rt;
+  function nullify (x: l0mdt_control_rt) return l0mdt_control_rt;
+
+  type l0mdt_ttc_rt is record
+     bcr                  :  std_logic;
+     ocr                  :  std_logic;
+     ecr                  :  std_logic;
+     l0a                  :  std_logic;
+     l1a                  :  std_logic;
+  end record l0mdt_ttc_rt;
+  constant L0MDT_TTC_LEN : integer := 5;
+  subtype l0mdt_ttc_rvt is std_logic_vector(L0MDT_TTC_LEN-1 downto 0);
+  function vectorify(x: l0mdt_ttc_rt) return l0mdt_ttc_rvt;
+  function structify(x: l0mdt_ttc_rvt) return l0mdt_ttc_rt;
+  function nullify (x: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+
   type slc_muid_rt is record
      slcid                :  unsigned(SLC_SLCID_LEN-1 downto 0);
      slid                 :  unsigned(SLC_SLID_LEN-1 downto 0);
@@ -397,6 +421,62 @@ package body common_types_pkg is
   function nullify(x: signed) return signed is
   begin
     return to_signed(0, x'length);
+  end function nullify;
+
+  function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt is
+    variable y : l0mdt_control_rvt;
+  begin
+    y(2)                       := x.clk;
+    y(1)                       := x.rst;
+    y(0)                       := x.bx;
+    return y;
+  end function vectorify;
+  function structify(x: l0mdt_control_rvt) return l0mdt_control_rt is
+    variable y : l0mdt_control_rt;
+  begin
+    y.clk                      := x(2);
+    y.rst                      := x(1);
+    y.bx                       := x(0);
+    return y;
+  end function structify;
+  function nullify (x: l0mdt_control_rt) return l0mdt_control_rt is
+    variable y : l0mdt_control_rt;
+  begin
+    y.clk                      := nullify(x.clk);
+    y.rst                      := nullify(x.rst);
+    y.bx                       := nullify(x.bx);
+    return y;
+  end function nullify;
+
+  function vectorify(x: l0mdt_ttc_rt) return l0mdt_ttc_rvt is
+    variable y : l0mdt_ttc_rvt;
+  begin
+    y(4)                       := x.bcr;
+    y(3)                       := x.ocr;
+    y(2)                       := x.ecr;
+    y(1)                       := x.l0a;
+    y(0)                       := x.l1a;
+    return y;
+  end function vectorify;
+  function structify(x: l0mdt_ttc_rvt) return l0mdt_ttc_rt is
+    variable y : l0mdt_ttc_rt;
+  begin
+    y.bcr                      := x(4);
+    y.ocr                      := x(3);
+    y.ecr                      := x(2);
+    y.l0a                      := x(1);
+    y.l1a                      := x(0);
+    return y;
+  end function structify;
+  function nullify (x: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+    variable y : l0mdt_ttc_rt;
+  begin
+    y.bcr                      := nullify(x.bcr);
+    y.ocr                      := nullify(x.ocr);
+    y.ecr                      := nullify(x.ecr);
+    y.l0a                      := nullify(x.l0a);
+    y.l1a                      := nullify(x.l1a);
+    return y;
   end function nullify;
 
   function vectorify(x: slc_muid_rt) return slc_muid_rvt is

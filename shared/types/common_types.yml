@@ -6,6 +6,22 @@ __config__:
         - config_pkg
 
 #############################################################
+# L0MDT CONTROL TYPES
+#############################################################  
+
+l0mdt_control:
+  clk       : { type: logic}
+  rst       : { type: logic}
+  bx        : { type: logic}
+
+l0mdt_ttc:
+  bcr       : { type: logic}
+  ocr       : { type: logic}
+  ecr       : { type: logic}
+  l0a       : { type: logic}
+  l1a       : { type: logic}
+
+#############################################################
 # INTERFACES TYPES
 #############################################################  
 

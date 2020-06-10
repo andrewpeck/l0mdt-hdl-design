@@ -37,13 +37,13 @@ entity top_hps is
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- control
     -- SLc
     i_uCM2hps_av        : in ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av        : in tar2hps_avt(hps_num_of_hp -1 downto 0);
+    i_mdt_pullmux_av    : in mdt_pullmux_data_avt(hps_num_of_hp -1 downto 0);
     -- to pt calc
     o_sf2pt_av          : out sf2pt_avt(NUM_THREADS -1 downto 0)
   );

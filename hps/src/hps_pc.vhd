@@ -29,15 +29,15 @@ use hps_lib.hps_pkg.all;
 
 entity hps_pc is
   generic(
-    radius      : integer := 0  --station
+    radius              : integer := 0  --station
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration & control
     -- MDT hit
-    i_mdt_tar_v         : in tar2hps_rvt;
+    i_mdt_pullmux_v     : in mdt_pullmux_data_rvt;
     o_mdt_full_data     : out hp_hpsPc2hp_rvt
   );
 end entity hps_pc;
