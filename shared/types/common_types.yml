@@ -104,6 +104,7 @@ mdt_pullmux_data_: {array: open , type: mdt_pullmux_data , _: off }
 tar2hps:
   tube        : { type: unsigned , length: MDT_TUBE_LEN }
   layer       : { type: unsigned , length: MDT_LAYER_LEN }
+  chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN}
   time        : { type: unsigned , length: MDT_TIME_LEN }
   data_valid  : { type: logic}
 

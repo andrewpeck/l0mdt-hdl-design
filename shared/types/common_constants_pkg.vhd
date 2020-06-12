@@ -4,12 +4,6 @@ use ieee.numeric_std.all;
 
 package common_constants_pkg is
 
-  constant   MDT_GLOBAL_AXI_LEN   :  integer := 19;
-
-  constant   MDT_LOCAL_AXI_LEN    :  integer := 14;
-
-  constant   MDT_RADIUS_LEN       :  integer := 9;
-
   constant   SLC_SLCID_LEN        :  integer := 2;
 
   constant   SLC_SLID_LEN         :  integer := 6;
@@ -94,9 +88,17 @@ package common_constants_pkg is
 
   constant   UCM2HPS_SPECIFIC_LEN :  integer := 22;
 
-  constant   MDT_RADIUS_MULT      :  real := 32.0;
+  constant   MDT_GLOBAL_AXI_LEN   :  integer := 19;
 
-  constant   MDT_LOCAL_AXI_MULT   :  real := 16.0;
+  constant   MDT_GLOBAL_AXI_MULT  :  real := 32.0;
+
+  constant   MDT_LOCAL_AXI_LEN    :  integer := 15;
+
+  constant   MDT_LOCAL_AXI_MULT   :  real := 32.0;
+
+  constant   MDT_RADIUS_LEN       :  integer := 9;
+
+  constant   MDT_RADIUS_MULT      :  real := 32.0;
 
   constant   CSF_X_OFFSET         :  integer := -640;
 

@@ -32,8 +32,11 @@ use hps_lib.hps_pkg.all;
 
 entity top_hps is
   generic(
-    g_STATION_RADIUS             : integer := 0;  --station
-    g_HPS_NUM_OF_HP       : integer := 6 
+    -- mdt type
+    -- type mdt_type;
+    -- parameters
+    g_STATION_RADIUS    : integer := 0;  --station
+    g_HPS_NUM_OF_HP     : integer := 6 
   );
   port (
     clk                 : in std_logic;
@@ -43,7 +46,8 @@ entity top_hps is
     -- SLc
     i_uCM2hps_av        : in ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_pullmux_av    : in mdt_pullmux_data_avt(g_HPS_NUM_OF_HP -1 downto 0);
+    -- i_mdt_pullmux_av    : in tar2hps_avt(g_HPS_NUM_OF_HP -1 downto 0);
+    i_mdt_tar_av        : in tar2hps_avt(g_HPS_NUM_OF_HP -1 downto 0);
     -- to pt calc
     o_sf2pt_av          : out sf2pt_avt(NUM_THREADS -1 downto 0)
   );
@@ -51,17 +55,28 @@ end entity top_hps;
 
 architecture beh of top_hps is
 
+  -- signal mdt_pullmux_data_av : hps_mdt_input_avt(g_HPS_NUM_OF_HP -1 downto 0)
+
 begin
+
+  -- IN_GEN : for hp_i in g_HPS_NUM_OF_HP downto 0 generate
+  --   mdt_pullmux_data_av(hp_i).pullmux <= i_mdt_pullmux_av(hp_i);
+  --   mdt_pullmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
+  -- end generate;
 
   HPS : entity hps_lib.hps
     generic map(
-      g_STATION_RADIUS=> g_STATION_RADIUS,
-      g_HPS_NUM_OF_HP => g_HPS_NUM_OF_HP
+      -- mdt type
+      -- mdt_type_av          => mdt_pullmux_data_avt(g_HPS_NUM_OF_HP -1 downto 0),
+      -- g_SIM_nBUILD         => '1',
+      -- parameters
+      g_STATION_RADIUS    => g_STATION_RADIUS,
+      g_HPS_NUM_OF_HP     => g_HPS_NUM_OF_HP
     )
     port map(
       clk                 => clk,
       
-      rst            => rst,
+      rst                 => rst,
       glob_en             => glob_en,
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,

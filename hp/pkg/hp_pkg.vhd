@@ -71,7 +71,7 @@ package hp_pkg is
      radius               :  unsigned(MDT_RADIUS_LEN-1 downto 0);
      layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
   end record hp_hp2sf_data_rt;
-  constant HP_HP2SF_DATA_LEN : integer := 42;
+  constant HP_HP2SF_DATA_LEN : integer := 44;
   subtype hp_hp2sf_data_rvt is std_logic_vector(HP_HP2SF_DATA_LEN-1 downto 0);
   function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rvt;
   function structify(x: hp_hp2sf_data_rvt) return hp_hp2sf_data_rt;
@@ -82,7 +82,7 @@ package hp_pkg is
      mdt_valid            :  std_logic;
      data_valid           :  std_logic;
   end record hp_hp2bm_rt;
-  constant HP_HP2BM_LEN : integer := 44;
+  constant HP_HP2BM_LEN : integer := 46;
   subtype hp_hp2bm_rvt is std_logic_vector(HP_HP2BM_LEN-1 downto 0);
   function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_rvt;
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt;
@@ -253,8 +253,8 @@ package body hp_pkg is
   function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rvt is
     variable y : hp_hp2sf_data_rvt;
   begin
-    y(41 downto 28)            := vectorify(x.local_z);
-    y(27 downto 14)            := vectorify(x.local_y);
+    y(43 downto 29)            := vectorify(x.local_z);
+    y(28 downto 14)            := vectorify(x.local_y);
     y(13 downto 5)             := vectorify(x.radius);
     y(4 downto 0)              := vectorify(x.layer);
     return y;
@@ -262,8 +262,8 @@ package body hp_pkg is
   function structify(x: hp_hp2sf_data_rvt) return hp_hp2sf_data_rt is
     variable y : hp_hp2sf_data_rt;
   begin
-    y.local_z                  := structify(x(41 downto 28));
-    y.local_y                  := structify(x(27 downto 14));
+    y.local_z                  := structify(x(43 downto 29));
+    y.local_y                  := structify(x(28 downto 14));
     y.radius                   := structify(x(13 downto 5));
     y.layer                    := structify(x(4 downto 0));
     return y;
@@ -281,7 +281,7 @@ package body hp_pkg is
   function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_rvt is
     variable y : hp_hp2bm_rvt;
   begin
-    y(43 downto 2)             := vectorify(x.data);
+    y(45 downto 2)             := vectorify(x.data);
     y(1)                       := x.mdt_valid;
     y(0)                       := x.data_valid;
     return y;
@@ -289,7 +289,7 @@ package body hp_pkg is
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt is
     variable y : hp_hp2bm_rt;
   begin
-    y.data                     := structify(x(43 downto 2));
+    y.data                     := structify(x(45 downto 2));
     y.mdt_valid                := x(1);
     y.data_valid               := x(0);
     return y;

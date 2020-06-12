@@ -29,6 +29,20 @@ use hps_lib.hps_pkg.all;
 
 entity hps_pc_tar is
   port (
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic;
+    --
+    i_fiberID             : in std_logic_vector(MDT_FIBER_LEN-1 downto 0);
+    i_muxID               : in std_logic_vector(MDT_MUXCH_LEN-1 downto 0);
+    i_tdc_ch              : in std_logic_vector(MDT_TDC_CH_LEN-1 downto 0);
+    i_data_valid          : in std_logic;
+    --
+    o_tube                : out unsigned(MDT_TUBE_LEN-1 downto 0);
+    o_layer               : out unsigned(MDT_LAYER_LEN-1 downto 0);
+    o_mdt_time            : out unsigned(MDT_TIME_LEN-1 downto 0);
+    o_data_valid          : out std_logic
+
     
   );
 end entity hps_pc_tar;

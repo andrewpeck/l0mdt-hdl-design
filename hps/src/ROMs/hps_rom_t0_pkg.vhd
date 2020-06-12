@@ -21,7 +21,7 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package hps_rom_t0 is
+package hps_rom_t0_pkg is
   -- integer values for T0 with 0.78 ns resolution
   -- T0 = ToF + t0
   -- t0 = 817
@@ -89,4 +89,4 @@ package hps_rom_t0 is
 
 
     
-end package hps_rom_t0;
+end package hps_rom_t0_pkg;

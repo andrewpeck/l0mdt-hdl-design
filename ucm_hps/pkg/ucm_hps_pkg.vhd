@@ -14,7 +14,7 @@ package ucm_hps_pkg is
      chamber              :  unsigned(8-1 downto 0);
      tar                  :  tar2hps_rt;
   end record input_tar_rt;
-  constant INPUT_TAR_LEN : integer := 113;
+  constant INPUT_TAR_LEN : integer := 116;
   subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
   function vectorify(x: input_tar_rt) return input_tar_rvt;
   function structify(x: input_tar_rvt) return input_tar_rt;
@@ -40,19 +40,19 @@ package body ucm_hps_pkg is
   function vectorify(x: input_tar_rt) return input_tar_rvt is
     variable y : input_tar_rvt;
   begin
-    y(112 downto 49)           := vectorify(x.global_time);
-    y(48 downto 41)            := vectorify(x.station);
-    y(40 downto 33)            := vectorify(x.chamber);
-    y(32 downto 0)             := vectorify(x.tar);
+    y(115 downto 52)           := vectorify(x.global_time);
+    y(51 downto 44)            := vectorify(x.station);
+    y(43 downto 36)            := vectorify(x.chamber);
+    y(35 downto 0)             := vectorify(x.tar);
     return y;
   end function vectorify;
   function structify(x: input_tar_rvt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
-    y.global_time              := structify(x(112 downto 49));
-    y.station                  := structify(x(48 downto 41));
-    y.chamber                  := structify(x(40 downto 33));
-    y.tar                      := structify(x(32 downto 0));
+    y.global_time              := structify(x(115 downto 52));
+    y.station                  := structify(x(51 downto 44));
+    y.chamber                  := structify(x(43 downto 36));
+    y.tar                      := structify(x(35 downto 0));
     return y;
   end function structify;
   function nullify (x: input_tar_rt) return input_tar_rt is
@@ -74,12 +74,12 @@ package body ucm_hps_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_tb_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*33-1 downto 0);
+    variable y : std_logic_vector(x'length*36-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-33) := vectorify(x(i));
-      msb := msb - 33 -1;
+      y(msb downto msb-36) := vectorify(x(i));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -96,8 +96,8 @@ package body ucm_hps_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-33));
-      msb := msb - 33 -1;
+      y(i) := structify(x(msb downto msb-36));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function structify;

@@ -15,3 +15,9 @@ hps_ctrl2sf : { array : open , type : heg_ctrl2hp}
 
 hps_bm2sf   : { array : open , type : heg_bm2sf} 
 
+# hps_mdt_input:
+#   pullmux   : { type : mdt_pullmux_data }
+#   tar       : { type : tar2hps }
+
+# hps_mdt_input_ : {array: open , type: hps_mdt_input , _: off}
+

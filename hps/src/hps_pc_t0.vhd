@@ -28,10 +28,18 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 entity hps_pc_t0 is
+  generic(
+    -- parameters
+    g_STATION_RADIUS    : integer := 0  --station
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    i_mdt_tar_r         : in tar2hps_rt;
+    o_time_t0           : out unsigned(MDT_TIME_LEN-1 downto 0);
+    o_dv                : out std_logic
     
   );
 end entity hps_pc_t0;

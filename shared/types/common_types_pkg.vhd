@@ -174,10 +174,11 @@ package common_types_pkg is
   type tar2hps_rt is record
      tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);
      layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
+     chamber_id           :  unsigned(SLC_CHAMBER_LEN-1 downto 0);
      time                 :  unsigned(MDT_TIME_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record tar2hps_rt;
-  constant TAR2HPS_LEN : integer := 33;
+  constant TAR2HPS_LEN : integer := 36;
   subtype tar2hps_rvt is std_logic_vector(TAR2HPS_LEN-1 downto 0);
   function vectorify(x: tar2hps_rt) return tar2hps_rvt;
   function structify(x: tar2hps_rvt) return tar2hps_rt;
@@ -252,7 +253,7 @@ package common_types_pkg is
      multilayer           :  std_logic;
      data_valid           :  std_logic;
   end record hp_hit_data_rt;
-  constant HP_HIT_DATA_LEN : integer := 39;
+  constant HP_HIT_DATA_LEN : integer := 41;
   subtype hp_hit_data_rvt is std_logic_vector(HP_HIT_DATA_LEN-1 downto 0);
   function vectorify(x: hp_hit_data_rt) return hp_hit_data_rvt;
   function structify(x: hp_hit_data_rvt) return hp_hit_data_rt;
@@ -842,8 +843,9 @@ package body common_types_pkg is
   function vectorify(x: tar2hps_rt) return tar2hps_rvt is
     variable y : tar2hps_rvt;
   begin
-    y(32 downto 24)            := vectorify(x.tube);
-    y(23 downto 19)            := vectorify(x.layer);
+    y(35 downto 27)            := vectorify(x.tube);
+    y(26 downto 22)            := vectorify(x.layer);
+    y(21 downto 19)            := vectorify(x.chamber_id);
     y(18 downto 1)             := vectorify(x.time);
     y(0)                       := x.data_valid;
     return y;
@@ -851,8 +853,9 @@ package body common_types_pkg is
   function structify(x: tar2hps_rvt) return tar2hps_rt is
     variable y : tar2hps_rt;
   begin
-    y.tube                     := structify(x(32 downto 24));
-    y.layer                    := structify(x(23 downto 19));
+    y.tube                     := structify(x(35 downto 27));
+    y.layer                    := structify(x(26 downto 22));
+    y.chamber_id               := structify(x(21 downto 19));
     y.time                     := structify(x(18 downto 1));
     y.data_valid               := x(0);
     return y;
@@ -862,6 +865,7 @@ package body common_types_pkg is
   begin
     y.tube                     := nullify(x.tube);
     y.layer                    := nullify(x.layer);
+    y.chamber_id               := nullify(x.chamber_id);
     y.time                     := nullify(x.time);
     y.data_valid               := nullify(x.data_valid);
     return y;
@@ -876,12 +880,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*33-1 downto 0);
+    variable y : std_logic_vector(x'length*36-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-33) := vectorify(x(i));
-      msb := msb - 33 -1;
+      y(msb downto msb-36) := vectorify(x(i));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -898,8 +902,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-33));
-      msb := msb - 33 -1;
+      y(i) := structify(x(msb downto msb-36));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function structify;
@@ -1110,8 +1114,8 @@ package body common_types_pkg is
   function vectorify(x: hp_hit_data_rt) return hp_hit_data_rvt is
     variable y : hp_hit_data_rvt;
   begin
-    y(38 downto 25)            := vectorify(x.local_z);
-    y(24 downto 11)            := vectorify(x.local_x);
+    y(40 downto 26)            := vectorify(x.local_z);
+    y(25 downto 11)            := vectorify(x.local_x);
     y(10 downto 2)             := vectorify(x.radius);
     y(1)                       := x.multilayer;
     y(0)                       := x.data_valid;
@@ -1120,8 +1124,8 @@ package body common_types_pkg is
   function structify(x: hp_hit_data_rvt) return hp_hit_data_rt is
     variable y : hp_hit_data_rt;
   begin
-    y.local_z                  := structify(x(38 downto 25));
-    y.local_x                  := structify(x(24 downto 11));
+    y.local_z                  := structify(x(40 downto 26));
+    y.local_x                  := structify(x(25 downto 11));
     y.radius                   := structify(x(10 downto 2));
     y.multilayer               := x(1);
     y.data_valid               := x(0);
@@ -1147,12 +1151,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: hp_hit_data_a_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*39-1 downto 0);
+    variable y : std_logic_vector(x'length*41-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-39) := vectorify(x(i));
-      msb := msb - 39 -1;
+      y(msb downto msb-41) := vectorify(x(i));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -1169,8 +1173,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-39));
-      msb := msb - 39 -1;
+      y(i) := structify(x(msb downto msb-41));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function structify;
