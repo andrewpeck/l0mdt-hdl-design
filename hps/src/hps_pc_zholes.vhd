@@ -26,8 +26,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
+use hps_lib.hps_rom_zholes_pkg.all;
 
-entity hps_pc_t0 is
+entity hps_pc_zholes is
   generic(
     -- parameters
     g_STATION_RADIUS    : integer := 0  --station
@@ -37,14 +38,16 @@ entity hps_pc_t0 is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_mdt_tar_r         : in tar2hps_rt;
-    o_time_t0           : out unsigned(MDT_TIME_LEN-1 downto 0);
+    i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    i_dv                : in std_logic;
+    o_spaces            : out unsigned(10-1 downto 0);
     o_dv                : out std_logic
     
   );
-end entity hps_pc_t0;
+end entity hps_pc_zholes;
 
-architecture beh of hps_pc_t0 is
+architecture beh of hps_pc_zholes is
+  
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
@@ -94,4 +97,41 @@ begin
       end if ;
     end process;
   end generate;
+
+  -- MID_GEN: if g_STATION_RADIUS = 1 generate
+  --   DT2R : process(clk)
+
+  --   begin
+  --     if rising_edge(clk) then
+  --       if rst= '1' then
+  --         o_spaces <= (others => '0');
+  --         o_dv <= '0';
+  --       else
+  --         o_dv <= int_data_valid;
+  --         if(int_data_valid = '1') then
+  --           o_spaces <= to_unsigned(BM_A_zh_mem(to_integer(unsigned(addr_mem))),10);
+  --         end if;
+  --       end if;
+  --     end if ;
+  --   end process;
+  -- end generate;
+
+  -- OUT_GEN: if g_STATION_RADIUS = 2 generate
+  --   DT2R : process(clk)
+
+  --   begin
+  --     if rising_edge(clk) then
+  --       if rst= '1' then
+  --         o_spaces <= (others => '0');
+  --         o_dv <= '0';
+  --       else
+  --         o_dv <= int_data_valid;
+  --         if(int_data_valid = '1') then
+  --           o_spaces <= to_unsigned(BO_A_zh_mem(to_integer(unsigned(addr_mem))),10);
+  --         end if;
+  --       end if;
+  --     end if ;
+  --   end process;
+  -- end generate;
+  
 end architecture beh;
