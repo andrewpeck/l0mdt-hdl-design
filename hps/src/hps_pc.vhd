@@ -81,8 +81,8 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_mdt_tar_r         => mdt_tar_data,
-      -- i_dv                => ,
+      i_chamber           => mdt_tar_data.chamber_id,
+      i_dv                => mdt_tar_data.data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
       
@@ -141,7 +141,7 @@ begin
           mdt_full_data.layer   <= mdt_tar_data.layer;
           mdt_full_data.tube    <= mdt_tar_data.tube;
         end if;
-        
+
       end if;
 
     end if;

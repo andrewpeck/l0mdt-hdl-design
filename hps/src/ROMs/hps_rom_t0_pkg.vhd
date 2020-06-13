@@ -27,7 +27,7 @@ package hps_rom_t0_pkg is
   -- t0 = 817
 
   type t0LUT_layer_t is array (1 to 8) of integer;
-  type t0LUT_station_t is array (1 to 15) of t0LUT_layer_t;
+  type t0LUT_station_t is array (1 to 16) of t0LUT_layer_t;
   
   constant c_BI_T0 : t0LUT_station_t :=(
     1  => (0,0,0,0,0,0,0,0), 
