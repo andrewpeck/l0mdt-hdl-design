@@ -140,6 +140,10 @@ begin
           --
           mdt_full_data.layer   <= mdt_tar_data.layer;
           mdt_full_data.tube    <= mdt_tar_data.tube;
+          --
+          mdt_full_data.data_valid <= '1';
+        else
+          mdt_full_data.data_valid <= '0';
         end if;
 
       end if;

@@ -21,13 +21,13 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package hps_rom_t0_pkg is
+package hps_rom_b_t0_pkg is
   -- integer values for T0 with 0.78 ns resolution
   -- T0 = ToF + t0
   -- t0 = 817
 
-  type t0LUT_layer_t is array (1 to 8) of integer;
-  type t0LUT_station_t is array (1 to 16) of t0LUT_layer_t;
+  type t0LUT_chamber_t is array (1 to 8) of integer;
+  type t0LUT_station_t is array (1 to 16) of t0LUT_chamber_t;
   
   constant c_BI_T0 : t0LUT_station_t :=(
     1  => (0,0,0,0,0,0,0,0), 
@@ -89,4 +89,4 @@ package hps_rom_t0_pkg is
 
 
     
-end package hps_rom_t0_pkg;
+end package hps_rom_b_t0_pkg;

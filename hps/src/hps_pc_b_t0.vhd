@@ -50,9 +50,9 @@ architecture beh of hps_pc_t0 is
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
-  signal BI_T0_mem : t0LUT_layer_t := c_BI_T0(c_SECTOR_ID);
-  signal BM_T0_mem : t0LUT_layer_t := c_BM_T0(c_SECTOR_ID);
-  signal BO_T0_mem : t0LUT_layer_t := c_BO_T0(c_SECTOR_ID);
+  signal BI_T0_mem : t0LUT_chamber_t := c_BI_T0(c_SECTOR_ID);
+  signal BM_T0_mem : t0LUT_chamber_t := c_BM_T0(c_SECTOR_ID);
+  signal BO_T0_mem : t0LUT_chamber_t := c_BO_T0(c_SECTOR_ID);
   -- signal mem : mem_array := mem_data;
 
   attribute syn_rom_style : string;

@@ -4,8 +4,8 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------  
 --  Project: ATLAS L0MDT Trigger 
---  Module: Hit Processor drift time and T0 compensation
---  Description:
+--  Module: HPS MDT holes size acumulation in Z
+--  Description: LUT
 --
 --------------------------------------------------------------------------------
 --  Revisions:
@@ -21,13 +21,13 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package hps_rom_zholes_pkg is
+package hps_rom_b_zholes_pkg is
   -- integer values for T0 with 0.78 ns resolution
   -- T0 = ToF + t0
   -- t0 = 817
 
-  type zhLUT_layer_t is array (1 to 8) of real;
-  type zhLUT_station_t is array (1 to 16) of zhLUT_layer_t;
+  type zhLUT_chamber_t is array (1 to 8) of real;
+  type zhLUT_station_t is array (1 to 16) of zhLUT_chamber_t;
   
   constant c_BI_A_zh : zhLUT_station_t :=(
     1  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0), 
@@ -89,4 +89,4 @@ package hps_rom_zholes_pkg is
 
 
     
-end package hps_rom_zholes_pkg;
+end package hps_rom_b_zholes_pkg;

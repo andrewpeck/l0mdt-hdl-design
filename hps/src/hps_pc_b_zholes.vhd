@@ -4,7 +4,7 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: HPS T0 compensation ROM reader
+--  Module: HPS MDT holes size acumulation in Z
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 use hps_lib.hps_rom_zholes_pkg.all;
 
-entity hps_pc_zholes is
+entity hps_pc_b_zholes is
   generic(
     -- parameters
     g_STATION_RADIUS    : integer := 0  --station
@@ -44,16 +44,16 @@ entity hps_pc_zholes is
     o_dv                : out std_logic
     
   );
-end entity hps_pc_zholes;
+end entity hps_pc_b_zholes;
 
-architecture beh of hps_pc_zholes is
+architecture beh of hps_pc_b_zholes is
   
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
-  signal BI_A_zh_mem : zhLUT_layer_t := c_BI_A_zh(c_SECTOR_ID);
-  signal BM_A_zh_mem : zhLUT_layer_t := c_BM_A_zh(c_SECTOR_ID);
-  signal BO_A_zh_mem : zhLUT_layer_t := c_BO_A_zh(c_SECTOR_ID);
+  signal BI_A_zh_mem : zhLUT_chamber_t := c_BI_A_zh(c_SECTOR_ID);
+  signal BM_A_zh_mem : zhLUT_chamber_t := c_BM_A_zh(c_SECTOR_ID);
+  signal BO_A_zh_mem : zhLUT_chamber_t := c_BO_A_zh(c_SECTOR_ID);
   -- signal mem : mem_array := mem_data;
 
   attribute syn_rom_style : string;
