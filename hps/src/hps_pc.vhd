@@ -58,7 +58,8 @@ architecture beh of hps_pc is
   -- global position
   signal tubesize : unsigned(9 downto 0);
   signal holesize : unsigned(10 - 1 downto 0);
-  signal global_y : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -72,7 +73,7 @@ begin
   mdt_tar_data <= structify(i_mdt_tar_v);
   o_mdt_full_data_v <= vectorify(mdt_full_data);
 
-  T0 : entity hps_lib.hps_pc_t0
+  T0 : entity hps_lib.hps_pc_b_t0
     generic map(
       g_STATION_RADIUS    => g_STATION_RADIUS
     )
@@ -88,7 +89,7 @@ begin
       
     );
 
-  ZH : entity hps_lib.hps_pc_zholes
+  ZH : entity hps_lib.hps_pc_b_zholes
     generic map(
       g_STATION_RADIUS    => g_STATION_RADIUS
     )
@@ -100,6 +101,22 @@ begin
       i_chamber           => mdt_tar_data.chamber_id,
       i_dv                => mdt_tar_data.data_valid,
       o_spaces            => holesize,
+      o_dv                => zh_dv
+      
+    );
+
+  TR : entity hps_lib.hps_pc_b_r
+    generic map(
+      g_STATION_RADIUS    => g_STATION_RADIUS
+    )
+    port map(
+      clk                 => clk,
+      rst                 => rst,
+      glob_en             => glob_en,
+      --
+      i_layer             => mdt_tar_data.layer,
+      i_dv                => mdt_tar_data.data_valid,
+      o_r_pos             => r_pos,
       o_dv                => zh_dv
       
     );

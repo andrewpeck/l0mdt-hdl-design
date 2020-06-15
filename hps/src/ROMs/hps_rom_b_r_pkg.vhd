@@ -21,7 +21,7 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-package hps_rom_b_zholes_pkg is
+package hps_rom_b_r_pkg is
   -- integer values for T0 with 0.78 ns resolution
   -- T0 = ToF + t0
   -- t0 = 817
@@ -29,7 +29,7 @@ package hps_rom_b_zholes_pkg is
   type rLUT_layer_t is array (1 to 8) of real;
   type rLUT_station_t is array (1 to 16) of rLUT_layer_t;
   
-  constant c_BI_A_zh : rLUT_station_t :=(
+  constant c_BI_A_R : rLUT_station_t :=(
     1  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0), 
     2  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
     3  => (330.0,347.5,365.0,549.0,566.5,584.0,0.0,0.0),
@@ -48,7 +48,7 @@ package hps_rom_b_zholes_pkg is
     16 => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
   );
 
-  constant c_BM_A_zh : rLUT_station_t :=(
+  constant c_BM_A_R : rLUT_station_t :=(
     1  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0), 
     2  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
     3  => (150.0,167.5,185.0,202.5,220.0,237.5,0.0,0.0),
@@ -67,7 +67,7 @@ package hps_rom_b_zholes_pkg is
     16 => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
   );
 
-  constant c_BO_A_zh : rLUT_station_t :=(
+  constant c_BO_A_R : rLUT_station_t :=(
     1  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
     2  => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
     3  => (90.0,107.5,125.0,142.5,160.0,177.5,0.0,0.0),
@@ -89,4 +89,4 @@ package hps_rom_b_zholes_pkg is
 
 
     
-end package hps_rom_b_zholes_pkg;
+end package hps_rom_b_r_pkg;

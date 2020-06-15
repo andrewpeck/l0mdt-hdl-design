@@ -26,7 +26,7 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
-use hps_lib.hps_rom_zholes_pkg.all;
+use hps_lib.hps_rom_b_zholes_pkg.all;
 
 entity hps_pc_b_zholes is
   generic(

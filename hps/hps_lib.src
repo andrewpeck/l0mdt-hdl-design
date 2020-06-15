@@ -1,9 +1,10 @@
 hps/pkg/hps_pkg.vhd 2008
 hps/src/hps_sf_wrap.vhd 2008
 hps/src/hps_pc.vhd 2008
-hps/src/ROMs/hps_rom_zholes_pkg.vhd 2008
-hps/src/hps_pc_zholes.vhd 2008
-hps/src/ROMs/hps_rom_t0_pkg.vhd 2008
-hps/src/hps_pc_t0.vhd 2008
-hps/src/hps_pc_tar.vhd 2008
+hps/src/ROMs/hps_rom_b_zholes_pkg.vhd 2008
+hps/src/hps_pc_b_zholes.vhd 2008
+hps/src/ROMs/hps_rom_b_r_pkg.vhd 2008
+hps/src/hps_pc_b_r.vhd 2008
+hps/src/ROMs/hps_rom_b_t0_pkg.vhd 2008
+hps/src/hps_pc_b_t0.vhd 2008
 hps/src/hps.vhd 2008

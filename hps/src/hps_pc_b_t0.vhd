@@ -26,9 +26,9 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
-use hps_lib.hps_rom_t0_pkg.all;
+use hps_lib.hps_rom_b_t0_pkg.all;
 
-entity hps_pc_t0 is
+entity hps_pc_b_t0 is
   generic(
     -- parameters
     g_STATION_RADIUS    : integer := 0  --station
@@ -44,9 +44,9 @@ entity hps_pc_t0 is
     o_dv                : out std_logic
     
   );
-end entity hps_pc_t0;
+end entity hps_pc_b_t0;
 
-architecture beh of hps_pc_t0 is
+architecture beh of hps_pc_b_t0 is
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
