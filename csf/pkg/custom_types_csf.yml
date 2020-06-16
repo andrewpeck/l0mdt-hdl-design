@@ -6,12 +6,10 @@ __config__:
         - common_constants_pkg
         - common_types_pkg
 
-CSF_HIT_AXI_LEN: {qualifier: constant, type: integer, value: 14}
-
 csf_hit:
   valid : {type : logic}
-  x     : {type : unsigned, length: CSF_HIT_AXI_LEN}
-  z     : {type : signed, length: CSF_HIT_AXI_LEN}
+  x     : {type : unsigned, length: MDT_LOCAL_X_LEN}
+  y     : {type : unsigned, length: MDT_LOCAL_Y_LEN}
 
 csf_hit_a: {array: open , type: csf_hit}
 

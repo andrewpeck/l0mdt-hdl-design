@@ -77,14 +77,14 @@ architecture Behavioral of csf_chi2 is
         := integer(log2(CSF_SEG_B_MULT/MDT_LOCAL_AXI_MULT));
     constant B_RED_LEN           : integer := CSF_SEG_B_LEN-B_OVER_Z_MULTI_LEN;
     constant MX_LEN  : integer
-        := CSF_SEG_M_LEN + MDT_LOCAL_AXI_LEN - MFIT_MULTI_LEN + 1;
+        := CSF_SEG_M_LEN + MDT_LOCAL_X_LEN + 1 - MFIT_MULTI_LEN + 1;
     constant RES_LEN : integer := MX_LEN - SIGMA_LEN + CHI2_MULT_LEN/2;
 
     -- Residual signals
     signal b_red                : signed(B_RED_LEN-1 downto 0 )
         := (others => '0');
     signal dsp_mx1, dsp_mx2     : signed(MX_LEN-1 downto 0) := (others => '0');
-    signal dsp_b_z_1, dsp_b_z_2 : signed(MDT_LOCAL_AXI_LEN-1 downto 0  )
+    signal dsp_b_y_1, dsp_b_y_2 : signed(MDT_LOCAL_Y_LEN downto 0  )
         := (others => '0');
     signal dsp_res_1, dsp_res_2 : signed(RES_LEN-1 downto 0 )
         := (others => '0');
@@ -195,18 +195,18 @@ begin
             dsp_mx2 <= resize(
                     shift_right(mfit_s*signed('0' & outhit2.x), MFIT_MULTI_LEN),
                      MX_LEN);
-            dsp_b_z_1  <= outhit1.z - b_red;
-            dsp_b_z_2  <= outhit2.z - b_red;
+            dsp_b_y_1  <= signed('0' & outhit1.y) - b_red;
+            dsp_b_y_2  <= signed('0' & outhit2.y) - b_red;
 
             -- Clock 1
             dv1_1 <= dv0_1;
             dv1_2 <= dv0_2;
 
             dsp_res_1  <= resize(
-                shift_left(dsp_b_z_1 - dsp_mx1, CHI2_MULT_LEN/2-SIGMA_LEN),
+                shift_left(dsp_b_y_1 - dsp_mx1, CHI2_MULT_LEN/2-SIGMA_LEN),
                                     RES_LEN);
             dsp_res_2  <= resize(
-                shift_left(dsp_b_z_2 - dsp_mx2, CHI2_MULT_LEN/2-SIGMA_LEN),
+                shift_left(dsp_b_y_2 - dsp_mx2, CHI2_MULT_LEN/2-SIGMA_LEN),
                                     RES_LEN);
 
             -- Clock 2
