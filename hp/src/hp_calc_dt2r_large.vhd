@@ -27,7 +27,7 @@ use hp_lib.hp_dt2r_large_mem.all;
 
 entity hp_calc_dt2r_large is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;

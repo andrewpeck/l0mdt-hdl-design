@@ -9,9 +9,11 @@ __config__:
 #############################################################
 # COMMON CONSTANTS
 #############################################################  
-MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
-MDT_LOCAL_AXI_LEN    : { qualifier: constant , type: integer , value: 14 } #14 o 15?
-MDT_RADIUS_LEN       : { qualifier: constant , type: integer , value: 9 }
+# MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
+# MDT_GLOBAL_AXI_MULT : { qualifier: constant , type: real , value: 32.0 , comment : mm }
+# MDT_LOCAL_AXI_LEN   : { qualifier: constant , type: integer , value: 15 } # 14 o 15?
+# MDT_LOCAL_AXI_MULT  : { qualifier: constant , type: real , value: 32.0 , comment : mm}
+# MDT_RADIUS_LEN      : { qualifier: constant , type: integer , value: 9 }
 
 #############################################################
 # INTERFACES TYPES
@@ -105,13 +107,14 @@ UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
 # -----------------------------------------------------------
 #       HEG 2 SF
 # -----------------------------------------------------------
-
-# MDT_RADIUS_LEN: { qualifier: constant , type: integer , value: 9 }
-MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
-# MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 14 }
-MDT_LOCAL_AXI_MULT: { qualifier: constant , type: real , value: 16.0 }
-CSF_X_OFFSET : { qualifier: constant, type: integer, value : -640}
-CSF_Z_OFFSET : { qualifier: constant, type: integer, value : 1920}
+MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
+MDT_GLOBAL_AXI_MULT : { qualifier: constant , type: real , value: 32.0 , comment : mm }
+MDT_LOCAL_AXI_LEN   : { qualifier: constant , type: integer , value: 15 } # 14 o 15?
+MDT_LOCAL_AXI_MULT  : { qualifier: constant , type: real , value: 32.0 , comment : mm}
+MDT_RADIUS_LEN      : { qualifier: constant , type: integer , value: 9 }
+MDT_RADIUS_MULT     : { qualifier: constant , type: real , value: 32.0 }
+CSF_X_OFFSET        : { qualifier: constant, type: integer, value : -640}
+CSF_Z_OFFSET        : { qualifier: constant, type: integer, value : 1920}
 # -----------------------------------------------------------  
 # sf 2 pt
 # -----------------------------------------------------------

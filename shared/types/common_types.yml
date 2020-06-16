@@ -6,6 +6,22 @@ __config__:
         - config_pkg
 
 #############################################################
+# L0MDT CONTROL TYPES
+#############################################################  
+
+l0mdt_control:
+  clk       : { type: logic}
+  rst       : { type: logic}
+  bx        : { type: logic}
+
+l0mdt_ttc:
+  bcr       : { type: logic}
+  ocr       : { type: logic}
+  ecr       : { type: logic}
+  l0a       : { type: logic}
+  l1a       : { type: logic}
+
+#############################################################
 # INTERFACES TYPES
 #############################################################  
 
@@ -88,6 +104,7 @@ mdt_pullmux_data_: {array: open , type: mdt_pullmux_data , _: off }
 tar2hps:
   tube        : { type: unsigned , length: MDT_TUBE_LEN }
   layer       : { type: unsigned , length: MDT_LAYER_LEN }
+  chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN}
   time        : { type: unsigned , length: MDT_TIME_LEN }
   data_valid  : { type: logic}
 

@@ -25,7 +25,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_paramCalc is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;
@@ -37,12 +37,12 @@ entity hp_paramCalc is
     -- MDT hit
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
     i_mdt_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
-    i_mdt_y             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+    i_mdt_x             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
     i_data_valid         : in std_logic;
     -- to Segment finder
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
-    o_local_y           : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
-    o_local_z           : out signed(MDT_LOCAL_AXI_LEN-1 downto 0)
+    o_local_x           : out signed(MDT_LOCAL_AXI_LEN-1 downto 0);
+    o_local_y           : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_paramCalc;
@@ -60,7 +60,7 @@ begin
 
   HP_CALC_R : entity hp_lib.hp_calc_radius
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk             => clk,
@@ -77,7 +77,7 @@ begin
 
   HP_CALC_V : entity hp_lib.hp_calc_RoI_vect
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk             => clk,
@@ -87,12 +87,12 @@ begin
     i_SLc_z_0       => barrel_data_r.z_0,
     -- i_SLc_y_0       =>    
     -- mdt
-    i_mdt_y          => i_mdt_y,  
+    i_mdt_x          => i_mdt_x,  
     i_mdt_z          => i_mdt_z,
     i_data_valid     => i_data_valid,
     -- to Segment finder
-    o_local_y        => o_local_y,  
-    o_local_z        => o_local_z  
+    o_local_x        => o_local_x,  
+    o_local_y        => o_local_y  
 
   );
 

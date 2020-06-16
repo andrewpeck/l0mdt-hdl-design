@@ -27,7 +27,7 @@ use hp_lib.hp_pkg.all;
 
 entity hp_calc_dt2r_small is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;

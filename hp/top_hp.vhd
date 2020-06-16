@@ -32,7 +32,7 @@ use hp_lib.hp_pkg.all;
 entity top_hp is
     Generic(
       -- config      : cfg_pkg := CFG_DEFAULTS;
-      radius      : integer := 1
+      g_STATION_RADIUS     : integer := 1
       -- num_layers  : integer := 8
     );
     Port(
@@ -63,7 +63,7 @@ begin
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
       -- config      => config,
-      radius      => radius
+      g_STATION_RADIUS     => g_STATION_RADIUS
       -- num_layers  => num_layers
       -- tube_max    => 5
     )

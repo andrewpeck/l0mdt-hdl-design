@@ -78,7 +78,7 @@ package body RoI_LUT_pkg is
 
     end if;
 
-
+    return out_mem;
   end function;
 
   function roi_set_max(sector, station : integer) return integer is
@@ -101,7 +101,7 @@ package body RoI_LUT_pkg is
 
     end if;
 
-
+    return out_mem;
   end function;
   
   

@@ -27,7 +27,7 @@ use hp_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
-    radius      : integer := 0
+    g_STATION_RADIUS     : integer := 0
   );
   port (
     clk                 : in std_logic;    
@@ -70,7 +70,7 @@ begin
 
   HP_HM : entity hp_lib.hp_matching
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
@@ -96,7 +96,7 @@ begin
 
   HP_PC : entity hp_lib.hp_paramCalc
   generic map(
-      radius      => radius
+      g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
@@ -108,12 +108,12 @@ begin
     -- MDT hit
     i_mdt_time_real     => mdt_data.time_t0,
     i_mdt_z             => mdt_data.global_z,
-    i_mdt_y             => mdt_data.global_y,
+    i_mdt_x             => mdt_data.global_x,
     i_data_valid         => mdt_data.data_valid,
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
-    o_local_y           => data_2_sf_r.data.local_y,
-    o_local_z           => data_2_sf_r.data.local_z
+    o_local_x           => data_2_sf_r.data.local_x,
+    o_local_y           => data_2_sf_r.data.local_y
     -- o_data_valid        => tdc_paramcalc_valid
 
   );

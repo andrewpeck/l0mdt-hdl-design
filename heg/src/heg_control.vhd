@@ -29,7 +29,7 @@ use heg_lib.heg_pkg.all;
 
 entity heg_control is
   generic(
-    radius      : integer := 0  --station
+    g_STATION_RADIUS     : integer := 0  --station
   );
   port (
     clk                 : in std_logic;
@@ -52,7 +52,7 @@ architecture beh of heg_control is
 
   component heg_c_window is
     generic(
-      radius      : integer := 0  --station
+      g_STATION_RADIUS     : integer := 0  --station
     );
     port (
       clk                 : in std_logic;
@@ -81,7 +81,7 @@ begin
 
   HEG_C_W : component heg_c_window
   generic map(
-    radius => radius
+    g_STATION_RADIUS=> g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
@@ -196,7 +196,7 @@ use heg_lib.heg_pkg.all;
 
 entity heg_c_window is
   generic(
-    radius      : integer := 0  --station
+    g_STATION_RADIUS     : integer := 0  --station
   );
   port (
     clk                 : in std_logic;
@@ -228,7 +228,7 @@ begin
 
   -- ROI_GEN : entity heg_lib.heg_roi_gen
   -- generic map(
-  --   radius => radius
+  --   g_STATION_RADIUS=> g_STATION_RADIUS
   -- )
   -- port map(
   --   clk                 => clk,
@@ -250,14 +250,14 @@ begin
 
     ROI_GEN : entity heg_lib.heg_roi_gen
     generic map(
-      radius => radius
+      g_STATION_RADIUS=> g_STATION_RADIUS
     )
     port map(
       clk                 => clk,
       rst            => rst,
       glob_en             => glob_en,
       --
-      i_z          => z_barrel,
+      i_z                 => z_barrel,
       i_data_valid        => int_uCM_data.data_valid,
       o_SLC_Window_v      => o_SLC_Window_v,
       o_data_valid        => wingen_dv_o

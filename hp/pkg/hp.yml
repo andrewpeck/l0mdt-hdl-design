@@ -39,7 +39,7 @@ hp_hpsPc2hp:
   layer       : { type: unsigned , length: MDT_LAYER_LEN }
   time_t0     : { type: unsigned , length: MDT_TIME_LEN }
   global_z    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
-  global_y    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
+  global_x    : { type: unsigned , length: MDT_GLOBAL_AXI_LEN }
   data_valid  : {type: logic}
 
 # -----------------------------------------------------------
@@ -47,7 +47,7 @@ hp_hpsPc2hp:
 # -----------------------------------------------------------
 
 hp_hp2sf_data:
-  local_z     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+  local_x     : { type: signed , length: MDT_LOCAL_AXI_LEN }
   local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
   radius      : { type: unsigned , length: MDT_RADIUS_LEN }
   layer       : { type: unsigned , length: MDT_LAYER_LEN }

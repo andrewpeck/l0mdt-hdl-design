@@ -34,7 +34,7 @@ use heg_roi_lib.RoI_LUT_pkg.all;
 
 entity heg_roi_gen is
   generic(
-    radius      : integer
+    g_STATION_RADIUS     : integer
   );
   port (
     clk                 : in std_logic;
@@ -58,8 +58,8 @@ architecture beh of heg_roi_gen is
   signal addr_mem       : unsigned(UCM_Z_ROI_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
-  signal mem_rom  : roi_mdt_lut := roi_set_mdt_mem(3,radius);
-  signal mem_max  : unsigned(UCM_Z_ROI_LEN - 1 downto 0) := to_unsigned(roi_set_max(3, radius),UCM_Z_ROI_LEN);
+  signal mem_rom  : roi_mdt_lut := roi_set_mdt_mem(3,g_STATION_RADIUS);
+  signal mem_max  : unsigned(UCM_Z_ROI_LEN - 1 downto 0) := to_unsigned(roi_set_max(3, g_STATION_RADIUS),UCM_Z_ROI_LEN);
   signal window   : roi_mdt_layer;
 
   -- attribute syn_rom_style : string;
