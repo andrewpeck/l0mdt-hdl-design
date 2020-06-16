@@ -22,10 +22,8 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
 package hps_rom_b_zholes_pkg is
-  -- integer values for T0 with 0.78 ns resolution
-  -- T0 = ToF + t0
-  -- t0 = 817
 
+  type zhLUT_chamber_integer_t is array (1 to 8) of integer;
   type zhLUT_chamber_t is array (1 to 8) of real;
   type zhLUT_station_t is array (1 to 16) of zhLUT_chamber_t;
   
@@ -86,7 +84,35 @@ package hps_rom_b_zholes_pkg is
     16 => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
   );
     
-
-
+  function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t;
     
 end package hps_rom_b_zholes_pkg;
+
+package body hps_rom_b_zholes_pkg is
+  
+  function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t is
+    variable o_layer : zhLUT_chamber_integer_t;
+  begin
+    if station = 0 then
+      -- inner
+      for l_i in 1 to 8 loop
+        o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+      end loop;
+    elsif station = 1 then
+      -- middle
+      for l_i in 1 to 8 loop
+        o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+      end loop;
+    elsif station = 2 then
+      -- outter
+      for l_i in 1 to 8 loop
+        o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+      end loop;
+    elsif station = 3 then
+      --extra
+    else
+      -- error
+    end if;
+  end function;
+  
+end package body hps_rom_b_zholes_pkg;

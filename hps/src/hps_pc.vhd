@@ -57,13 +57,14 @@ architecture beh of hps_pc is
   signal time_t0 : unsigned(MDT_TIME_LEN-1 downto 0);
   -- global position
   signal tubesize : unsigned(9 downto 0);
-  signal holesize : unsigned(10 - 1 downto 0);
+  signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
   signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal zh_dv : std_logic;
+  signal r_dv : std_logic;
   -- to hp
   signal mdt_full_data  : hp_hpsPc2hp_rt;
   
@@ -117,7 +118,7 @@ begin
       i_layer             => mdt_tar_data.layer,
       i_dv                => mdt_tar_data.data_valid,
       o_r_pos             => r_pos,
-      o_dv                => zh_dv
+      o_dv                => r_dv
       
     );
 

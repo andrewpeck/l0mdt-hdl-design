@@ -52,9 +52,9 @@ architecture beh of hps_pc_b_r is
 
   signal r_pos : real; --unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
 
-  signal BI_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
-  signal BM_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
-  signal BO_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
+  signal R_mem : rLUT_layer_integer_t := b_pos_r_get_layer(c_SECTOR_ID,g_STATION_RADIUS);
+  -- signal BM_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
+  -- signal BO_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
   -- signal mem : mem_array := mem_data;
 
   attribute syn_rom_style : string;
@@ -64,9 +64,9 @@ architecture beh of hps_pc_b_r is
   -- attribute ROM_STYLE of mem : signal is "block";
   -- force rom to be in LUT ROMs
   -- attribute syn_rom_style of mem : signal is "block_rom";
-  attribute ROM_STYLE of BI_R_mem : signal is "distributed";
-  attribute ROM_STYLE of BM_R_mem : signal is "distributed";
-  attribute ROM_STYLE of BO_R_mem : signal is "distributed";
+  attribute ROM_STYLE of R_mem : signal is "distributed";
+  -- attribute ROM_STYLE of BM_R_mem : signal is "distributed";
+  -- attribute ROM_STYLE of BO_R_mem : signal is "distributed";
 begin
 
   dv_guard : process(i_dv) begin
@@ -92,7 +92,7 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
-            o_r_pos <= to_unsigned(BI_R_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+            o_r_pos <= to_unsigned(R_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
             -- o_r_pos <= to_unsigned(integer(r_pos),MDT_LOCAL_AXI_LEN);
           end if;
         end if;

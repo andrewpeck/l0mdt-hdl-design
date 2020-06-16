@@ -40,7 +40,7 @@ entity hps_pc_b_zholes is
     --
     i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
     i_dv                : in std_logic;
-    o_spaces            : out unsigned(10-1 downto 0);
+    o_spaces            : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     o_dv                : out std_logic
     
   );
@@ -51,9 +51,9 @@ architecture beh of hps_pc_b_zholes is
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
-  signal BI_A_zh_mem : zhLUT_chamber_t := c_BI_A_zh(c_SECTOR_ID);
-  signal BM_A_zh_mem : zhLUT_chamber_t := c_BM_A_zh(c_SECTOR_ID);
-  signal BO_A_zh_mem : zhLUT_chamber_t := c_BO_A_zh(c_SECTOR_ID);
+  signal zh_mem : zhLUT_chamber_integer_t := b_zh_get_layer(c_SECTOR_ID,g_STATION_RADIUS);
+  -- signal BM_A_zh_mem : zhLUT_chamber_t := c_BM_A_zh(c_SECTOR_ID);
+  -- signal BO_A_zh_mem : zhLUT_chamber_t := c_BO_A_zh(c_SECTOR_ID);
   -- signal mem : mem_array := mem_data;
 
   attribute syn_rom_style : string;
@@ -63,9 +63,9 @@ architecture beh of hps_pc_b_zholes is
   -- attribute ROM_STYLE of mem : signal is "block";
   -- force rom to be in LUT ROMs
   -- attribute syn_rom_style of mem : signal is "block_rom";
-  attribute ROM_STYLE of BI_A_zh_mem : signal is "distributed";
-  attribute ROM_STYLE of BM_A_zh_mem : signal is "distributed";
-  attribute ROM_STYLE of BO_A_zh_mem : signal is "distributed";
+  attribute ROM_STYLE of zh_mem : signal is "distributed";
+  -- attribute ROM_STYLE of BM_A_zh_mem : signal is "distributed";
+  -- attribute ROM_STYLE of BO_A_zh_mem : signal is "distributed";
 begin
 
   dv_guard : process(i_dv) begin
@@ -91,7 +91,7 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
-            o_spaces <= to_unsigned(integer(BI_A_zh_mem(to_integer(addr_mem))),10);
+            o_spaces <= to_unsigned(zh_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
           end if;
         end if;
       end if ;
