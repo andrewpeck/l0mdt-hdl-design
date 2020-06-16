@@ -37,7 +37,7 @@ entity hp_calc_RoI_vect is
     i_data_valid        : in std_logic;
     -- to Segment finder
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-    o_local_z           : out signed(MDT_LOCAL_X_LEN-1 downto 0)
+    o_local_z           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_calc_RoI_vect;
