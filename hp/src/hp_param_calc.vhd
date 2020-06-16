@@ -3,7 +3,7 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: Hit Processor Segment finder parameter calculation
 --  Description:
 --
@@ -36,13 +36,13 @@ entity hp_paramCalc is
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- MDT hit
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
-    i_mdt_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
-    i_mdt_y             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+    i_mdt_z             : in unsigned(MDT_GLOBAL_X_LEN -1 downto 0);
+    i_mdt_y             : in unsigned(MDT_GLOBAL_Y_LEN -1 downto 0);
     i_data_valid         : in std_logic;
     -- to Segment finder
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
-    o_local_y           : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
-    o_local_z           : out signed(MDT_LOCAL_AXI_LEN-1 downto 0)
+    o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
+    o_local_z           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_paramCalc;
@@ -70,7 +70,7 @@ begin
     i_SLc_BCID      => i_SLc_BCID,
     i_mdt_time_t0   => i_mdt_time_real,
     i_data_valid     => i_data_valid,
-        
+
     o_tube_radius   => o_tube_radius,
     o_data_valid    => radius_dv
   );
@@ -85,14 +85,14 @@ begin
     glob_en         => glob_en,
     -- SLc
     i_SLc_z_0       => barrel_data_r.z_0,
-    -- i_SLc_y_0       =>    
+    -- i_SLc_y_0       =>
     -- mdt
-    i_mdt_y          => i_mdt_y,  
+    i_mdt_y          => i_mdt_y,
     i_mdt_z          => i_mdt_z,
     i_data_valid     => i_data_valid,
     -- to Segment finder
-    o_local_y        => o_local_y,  
-    o_local_z        => o_local_z  
+    o_local_y        => o_local_y,
+    o_local_z        => o_local_z
 
   );
 
