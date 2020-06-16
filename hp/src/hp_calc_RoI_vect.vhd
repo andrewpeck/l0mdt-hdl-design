@@ -29,15 +29,15 @@ entity hp_calc_RoI_vect is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
-    i_SLc_z_0           : in unsigned(MDT_GLOBAL_X_LEN-1 downto 0);
+    i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     -- i_SLc_y_0           : in signed();
     -- mdt
-    i_mdt_y             : in unsigned(MDT_GLOBAL_Y_LEN -1 downto 0);
-    i_mdt_z             : in unsigned(MDT_GLOBAL_X_LEN -1 downto 0);
+    i_mdt_y             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+    i_mdt_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
     i_data_valid        : in std_logic;
     -- to Segment finder
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-    o_local_z           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
+    o_local_z           : out signed(MDT_LOCAL_X_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_calc_RoI_vect;
