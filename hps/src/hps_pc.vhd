@@ -134,7 +134,7 @@ begin
         mdt_full_data.tube    <= (others => '0');
         mdt_full_data.time_t0 <= (others => '0');
         mdt_full_data.global_z <= (others => '0');
-        mdt_full_data.global_y <= (others => '0');
+        mdt_full_data.global_x <= (others => '0');
         mdt_full_data.data_valid <= '0';
       else
 
@@ -145,13 +145,14 @@ begin
 
         if dv_pl(0) = '1' then
           global_z <= mdt_tar_data.tube * tubesize; 
-
+          global_x <= r_pos;
           -- write to out
           
         end if;
 
         if dv_pl(1) = '1' then
           mdt_full_data.global_z <= global_z + holesize;
+          mdt_full_data.global_x <= global_x;
           --
           mdt_full_data.time_t0 <= mdt_tar_data.time + time_t0;
           --

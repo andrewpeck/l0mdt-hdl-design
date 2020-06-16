@@ -52,9 +52,9 @@ architecture beh of hps_pc_b_r is
 
   signal r_pos : real; --unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
 
-  signal BI_R_mem : rLUT_layer_t := c_BI_A_R(c_SECTOR_ID);
-  signal BM_R_mem : rLUT_layer_t := c_BM_A_R(c_SECTOR_ID);
-  signal BO_R_mem : rLUT_layer_t := c_BO_A_R(c_SECTOR_ID);
+  signal BI_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
+  signal BM_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
+  signal BO_R_mem : rLUT_layer_integer := b_pos_r_get_sector(c_SECTOR_ID,g_STATION_RADIUS);
   -- signal mem : mem_array := mem_data;
 
   attribute syn_rom_style : string;
@@ -92,7 +92,7 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
-            o_r_pos <= to_unsigned(integer(BI_R_mem(to_integer(addr_mem))),MDT_LOCAL_AXI_LEN) * to_unsigned(integer(MDT_LOCAL_AXI_MULT),5);
+            o_r_pos <= to_unsigned(BI_R_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
             -- o_r_pos <= to_unsigned(integer(r_pos),MDT_LOCAL_AXI_LEN);
           end if;
         end if;

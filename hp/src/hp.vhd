@@ -108,12 +108,12 @@ begin
     -- MDT hit
     i_mdt_time_real     => mdt_data.time_t0,
     i_mdt_z             => mdt_data.global_z,
-    i_mdt_y             => mdt_data.global_y,
+    i_mdt_x             => mdt_data.global_x,
     i_data_valid         => mdt_data.data_valid,
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
-    o_local_y           => data_2_sf_r.data.local_y,
-    o_local_z           => data_2_sf_r.data.local_z
+    o_local_x           => data_2_sf_r.data.local_x,
+    o_local_y           => data_2_sf_r.data.local_y
     -- o_data_valid        => tdc_paramcalc_valid
 
   );
