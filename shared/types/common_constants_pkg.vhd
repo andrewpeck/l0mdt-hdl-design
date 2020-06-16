@@ -94,7 +94,7 @@ package common_constants_pkg is
 
   constant   UCM_ETA_LEN          :  integer := 8;
 
-  constant   UCM2HPS_SPECIFIC_LEN :  integer := 22;
+  constant   UCM2HPS_SPECIFIC_LEN :  integer := 21;
 
   constant   MDT_RADIUS_MULT      :  real := 32.0;
 

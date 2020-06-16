@@ -101,7 +101,7 @@ UCM_PHI_LEN     : { qualifier: constant , type: integer , value: 14 }
 UCM_ETA_LEN     : { qualifier: constant , type: integer , value: 8 }
 # UCM_CHAMBER_ID_LEN: { qualifier: constant , type: integer , value: 5 }
 
-UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
+UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 21 }
 
 # -----------------------------------------------------------
 #       HEG 2 SF
