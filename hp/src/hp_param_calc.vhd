@@ -42,7 +42,7 @@ entity hp_paramCalc is
     -- to Segment finder
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-    o_local_z           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
+    o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
     -- o_data_valid        : out std_logic
   );
 end entity hp_paramCalc;
@@ -91,8 +91,8 @@ begin
     i_mdt_z          => i_mdt_z,
     i_data_valid     => i_data_valid,
     -- to Segment finder
-    o_local_x        => o_local_x,  
-    o_local_y        => o_local_y  
+    o_local_y        => o_local_y,  
+    o_local_x        => o_local_x  
 
   );
 
