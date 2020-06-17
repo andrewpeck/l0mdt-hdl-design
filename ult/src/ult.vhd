@@ -21,9 +21,9 @@ use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
-library hal;
-use hal.system_types_pkg.all;
-use hal.constants_pkg.all;
+-- library hal;
+-- use hal.system_types_pkg.all;
+-- use hal.constants_pkg.all;
 
 entity top_ult is
   generic (
@@ -39,10 +39,10 @@ entity top_ult is
     ttc_commands : in l0mdt_ttc_rt;
 
     -- TDC Hits from Polmux
-    inner_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_INNER -1 downto 0);
-    middle_tdc_hits_i : in mdt_pullmux_data_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    outer_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_OUTER -1 downto 0);
-    extra_tdc_hits_i  : in mdt_pullmux_data_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
+    inner_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_INNER -1 downto 0);
+    middle_tdc_hits_i : in mdt_pollmux_data_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
+    outer_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_OUTER -1 downto 0);
+    extra_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
 
     -- Sector Logic Candidates
     main_A_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0); -- is the main SL used

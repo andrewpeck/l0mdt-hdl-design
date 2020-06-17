@@ -31,7 +31,7 @@ l0mdt_ttc:
 
 # slc_muid 
 slc_muid:
-  slcid:          {type: unsigned , length: SLC_SLCID_LEN , comment: another comment}
+  slcid:          {type: unsigned , length: SLC_SLCID_LEN }
   slid:           {type: unsigned , length: SLC_SLID_LEN}
   bcid:           {type: unsigned , length: BCID_LEN}
 
