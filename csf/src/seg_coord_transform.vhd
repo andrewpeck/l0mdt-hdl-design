@@ -149,7 +149,7 @@ begin
 
             -- Clock 0
             dv0 <= locseg_i.valid;
-            z_ext <= locseg_i.b + to_signed(CSF_Z_OFFSET, CSF_SEG_B_LEN);
+            z_ext <= locseg_i.b + to_signed(CSF_Y_OFFSET, CSF_SEG_B_LEN);
             mx <= resize(shift_right(locseg_i.m*to_signed(CSF_X_OFFSET, CSF_SEG_B_LEN),SF_SEG_ANG_MULTI_LEN), CSF_SEG_B_LEN);
 
             -- Clock 1

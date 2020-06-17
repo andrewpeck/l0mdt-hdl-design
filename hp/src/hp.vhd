@@ -3,8 +3,8 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---------------------------------------------------------------------------------  
---  Project: ATLAS L0MDT Trigger 
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger
 --  Module: Hit Processor Top
 --  Description:
 --
@@ -30,7 +30,7 @@ entity hit_processor is
     g_STATION_RADIUS     : integer := 0
   );
   port (
-    clk                 : in std_logic;    
+    clk                 : in std_logic;
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
@@ -61,7 +61,7 @@ architecture beh of hit_processor is
   signal int_hit_valid       : std_logic;
 
 begin
-    
+
   mdt_data <= structify(i_mdt_data);
   slc_data <= structify(i_slc_data_v);
 

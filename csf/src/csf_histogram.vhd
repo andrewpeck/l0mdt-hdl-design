@@ -59,8 +59,8 @@ architecture Behavioral of csf_histogram is
     constant SQU_M_LEN       : integer := UCM_MBAR_LEN;
 
     -- Signals for seed information
-    signal seed : ucm_csf_seed_rt;
-    signal mbar      : signed(UCM_MBAR_LEN-1 downto 0) := (others => '0');
+    signal seed      : ucm_csf_seed_rt;
+    signal mbar      : unsigned(UCM_MBAR_LEN-1 downto 0) := (others => '0');
     signal squ_m     : std_logic_vector(SQU_M_LEN-1 downto 0)
         := (others => '0');
     signal invsqu_m  : std_logic_vector(INV_SQRT_M_LEN-1 downto 0)
@@ -70,20 +70,20 @@ architecture Behavioral of csf_histogram is
     signal mdt_hit, mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : hp_hit_data_rt;
     -- Constants for b+/- calculation
     constant SQU_M_R_LEN  : integer := SQU_M_LEN + MDT_RADIUS_LEN;
-    constant M_X_LEN      : integer := UCM_MBAR_LEN + MDT_LOCAL_AXI_LEN + 1;
-    constant Z_M_LEN      : integer := MDT_LOCAL_AXI_LEN + UCM_MBAR_LEN + 1;
-    constant M_X_Z_M_LEN  : integer := Z_M_LEN;
+    constant M_X_LEN      : integer := UCM_MBAR_LEN + MDT_LOCAL_X_LEN;
+    constant Y_M_LEN      : integer := MDT_LOCAL_Y_LEN + UCM_MBAR_LEN + 1;
+    constant M_X_Y_M_LEN  : integer := Y_M_LEN + 1;
 
     -- DSP signals for b+/- calculation
     signal dsp_squ_m_r, dsp_squ_m_r_s  : unsigned(SQU_M_R_LEN-1 downto 0)
         := (others => '0');
-    signal dsp_m_x                     : signed(M_X_LEN-1 downto 0)
+    signal dsp_m_x                     : unsigned(M_X_LEN-1 downto 0)
         := (others => '0');
-    signal dsp_z_m_multi               : signed(Z_M_LEN-1 downto 0)
+    signal dsp_y_m_multi               : unsigned(Y_M_LEN-1 downto 0)
         := (others => '0');
-    signal dsp_m_x_z_multi             : signed(M_X_Z_M_LEN-1 downto 0)
+    signal dsp_m_x_y_multi             : signed(M_X_Y_M_LEN-1 downto 0)
         := (others =>'0');
-    signal bplus_full, bminus_full     : signed(Z_M_LEN-1 downto 0 )
+    signal bplus_full, bminus_full     : signed(M_X_Y_M_LEN-1 downto 0 )
         := (others => '0');
     signal bplus, bminus               : signed(HISTO_LEN+1 downto 0)
         := (others => '0');
@@ -120,26 +120,26 @@ architecture Behavioral of csf_histogram is
 
     -- Delta_x, Delta_y constants
     constant M_INV_SQU_M_LEN         : integer
-        := UCM_MBAR_LEN + INV_SQRT_M_LEN +1;
+        := UCM_MBAR_LEN + INV_SQRT_M_LEN;
     constant M_MULTI_INV_SQU_M_LEN   : integer := M_INV_SQU_M_LEN + 1;
-    constant DELTA_Z_FULL_LEN        : integer
-        := M_MULTI_INV_SQU_M_LEN + MDT_RADIUS_LEN + 1;
+    constant DELTA_Y_FULL_LEN        : integer
+        := M_MULTI_INV_SQU_M_LEN + MDT_RADIUS_LEN;
     constant DELTA_X_FULL_LEN      : integer
-        := UCM_MBAR_LEN + INV_SQRT_M_LEN + MDT_RADIUS_LEN + 2;
+        := UCM_MBAR_LEN + INV_SQRT_M_LEN + MDT_RADIUS_LEN;
 
-    -- Signals for Delta_x, Delta_z to calculate exact hit coordinate
+    -- Signals for Delta_x, Delta_y to calculate exact hit coordinate
     signal dsp_m_inv_squ_m, dsp_m_inv_squ_m_s
-        : signed(M_INV_SQU_M_LEN-1 downto 0) := (others => '0');
+        : unsigned(M_INV_SQU_M_LEN-1 downto 0) := (others => '0');
     signal dsp_m_multi_inv_squ_m
         : unsigned(M_MULTI_INV_SQU_M_LEN-1 downto 0) := (others => '0');
-    signal delta_z_full, delta_z_full_s
-        : signed(DELTA_Z_FULL_LEN-1 downto 0) := (others => '0');
+    signal delta_y_full, delta_y_full_s
+        : unsigned(DELTA_Y_FULL_LEN-1 downto 0) := (others => '0');
     signal delta_x_full, delta_x_full_s
-        : signed(DELTA_X_FULL_LEN-1 downto 0) := (others => '0');
+        : unsigned(DELTA_X_FULL_LEN-1 downto 0) := (others => '0');
     signal delta_x, delta_x_s, delta_x_ss
-        : unsigned(MDT_LOCAL_AXI_LEN-1 downto 0) := (others => '0');
-    signal delta_z, delta_z_s, delta_z_ss
-        : signed(MDT_LOCAL_AXI_LEN-1 downto 0) := (others => '0');
+        : unsigned(MDT_LOCAL_X_LEN-1 downto 0) := (others => '0');
+    signal delta_y, delta_y_s, delta_y_ss
+        : unsigned(MDT_LOCAL_Y_LEN-1 downto 0) := (others => '0');
 
     -- Signals for maximum identification
     signal max_counter_1, max_counter_2,
@@ -215,7 +215,7 @@ begin
     PORT MAP (
         ena    => '1',
         clka  => clk,
-        addra => std_logic_vector(abs(mbar)),
+        addra => std_logic_vector(mbar),
         douta => invsqu_m
     );
 
@@ -228,7 +228,7 @@ begin
     port map(
         ena    => '1',
         clka  => clk,
-        addra => std_logic_vector(abs(mbar)),
+        addra => std_logic_vector(mbar),
         douta => squ_m
     );
 
@@ -266,10 +266,10 @@ begin
             dsp_squ_m_r <= shift_right(
                            unsigned(squ_m)*mdt_hit.radius,
                            R_OVER_Z_MULTI_LEN );
-            dsp_m_x <= mbar * signed('0' & mdt_hit.local_x);
-            dsp_z_m_multi <= resize(mdt_hit.local_z * integer(UCM_MBAR_MULT),
-                             Z_M_LEN );
-            dsp_m_inv_squ_m <= mbar*signed('0' & invsqu_m);
+            dsp_m_x <= mbar * mdt_hit.local_x;
+            dsp_y_m_multi <= resize(mdt_hit.local_y * integer(UCM_MBAR_MULT),
+                             Y_M_LEN );
+            dsp_m_inv_squ_m <= mbar*unsigned(invsqu_m);
             dsp_m_multi_inv_squ_m <= resize(
                                      unsigned(invsqu_m)*integer(UCM_MBAR_MULT),
                                      M_MULTI_INV_SQU_M_LEN);
@@ -278,20 +278,19 @@ begin
 
             -- Clock 1
             dv1 <= dv0;
-            dsp_m_x_z_multi <= dsp_m_x - dsp_z_m_multi;
+            dsp_m_x_y_multi <= signed('0' & dsp_m_x) - signed('0' & dsp_y_m_multi);
             dsp_squ_m_r_s <= dsp_squ_m_r;
             mdt_hit_ss <= mdt_hit_s;
             dsp_m_inv_squ_m_s <= dsp_m_inv_squ_m;
-            delta_z_full <= signed(
-                            '0' & (dsp_m_multi_inv_squ_m * mdt_hit_s.radius));
+            delta_y_full <= dsp_m_multi_inv_squ_m * mdt_hit_s.radius;
             eof1 <= eof0;
 
             -- Clock 2
             dv2 <= dv1;
-            bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_z_multi;
-            delta_x_full_s <= dsp_m_inv_squ_m_s*signed('0' & mdt_hit_ss.radius);
-            delta_z_full_s <= delta_z_full;
+            bplus_full <= signed('0' & dsp_squ_m_r_s) - dsp_m_x_y_multi;
+            bminus_full <= -signed('0' & dsp_squ_m_r_s) - dsp_m_x_y_multi;
+            delta_x_full_s <= dsp_m_inv_squ_m_s*mdt_hit_ss.radius;
+            delta_y_full_s <= delta_y_full;
             eof2 <= eof1;
             mdt_hit_sss <= mdt_hit_ss;
 
@@ -302,12 +301,12 @@ begin
             bminus <= resize(shift_right(bminus_full, HISTO_FULL_LEN - HISTO_LEN ),
                 HISTO_LEN+2 );
             delta_x <= resize(shift_right(
-                              unsigned(abs(delta_x_full_s)),
+                              delta_x_full_s,
                               R_OVER_Z_MULTI_LEN + INV_SQRT_M_LEN),
-                              MDT_LOCAL_AXI_LEN);
-            delta_z <= resize(shift_right(delta_z_full_s,
+                              MDT_LOCAL_X_LEN);
+            delta_y <= resize(shift_right(delta_y_full_s,
                              R_OVER_Z_MULTI_LEN + INV_SQRT_M_LEN),
-                             MDT_LOCAL_AXI_LEN);
+                             MDT_LOCAL_Y_LEN);
             mdt_hit_ssss <= mdt_hit_sss;
             eof3 <= eof2;
 
@@ -321,8 +320,8 @@ begin
 
             hit_plus.x <= mdt_hit_ssss.local_x - delta_x;
             hit_minus.x <= mdt_hit_ssss.local_x + delta_x;
-            hit_plus.z <= mdt_hit_ssss.local_z + delta_z;
-            hit_minus.z <= mdt_hit_ssss.local_z - delta_z;
+            hit_plus.y <= mdt_hit_ssss.local_y + delta_y;
+            hit_minus.y <= mdt_hit_ssss.local_y - delta_y;
             eof4 <= eof3;
 
             -- Clock 5

@@ -99,12 +99,12 @@ package body hps_pkg is
     return y;
   end function vectorify;
   function vectorify(x: hps_bm2sf_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*45-1 downto 0);
+    variable y : std_logic_vector(x'length*42-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-45) := vectorify(x(i));
-      msb := msb - 45 -1;
+      y(msb downto msb-42) := vectorify(x(i));
+      msb := msb - 42 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -121,8 +121,8 @@ package body hps_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-45));
-      msb := msb - 45 -1;
+      y(i) := structify(x(msb downto msb-42));
+      msb := msb - 42 -1;
     end loop l;
     return y;
   end function structify;

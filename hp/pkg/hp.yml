@@ -47,8 +47,10 @@ hp_hpsPc2hp:
 # -----------------------------------------------------------
 
 hp_hp2sf_data:
-  local_x     : { type: signed , length: MDT_LOCAL_AXI_LEN }
-  local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+  # local_x     : { type: signed , length: MDT_LOCAL_AXI_LEN }
+  # local_y     : { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+  local_y     : { type: unsigned , length: MDT_LOCAL_Y_LEN }
+  local_x     : { type: unsigned , length: MDT_LOCAL_X_LEN }
   radius      : { type: unsigned , length: MDT_RADIUS_LEN }
   layer       : { type: unsigned , length: MDT_LAYER_LEN }
 

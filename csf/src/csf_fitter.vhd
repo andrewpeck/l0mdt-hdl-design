@@ -62,15 +62,15 @@ architecture Behavioral of csf_fitter is
     signal finalhit : std_logic := '0';
 
     -- Summation signal widths
-    constant SUM_XZ_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_AXI_LEN*2;
-    constant SUM_Z_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_AXI_LEN;
-    constant SUM_X_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_AXI_LEN;
-    constant SUM_X2_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_AXI_LEN*2;
+    constant SUM_YZ_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_Y_LEN*2;
+    constant SUM_Y_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_Y_LEN;
+    constant SUM_X_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_X_LEN;
+    constant SUM_X2_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_X_LEN*2;
 
     -- Summation signals
-    signal dsp_SumXZ,dsp_SumXZ_s    : signed(SUM_XZ_LEN-1 downto 0)
+    signal dsp_SumXY,dsp_SumXY_s    : unsigned(SUM_YZ_LEN-1 downto 0)
         := (others => '0');
-    signal dsp_SumZ ,dsp_SumZ_s     : signed(SUM_Z_LEN-1 downto 0 )
+    signal dsp_SumY ,dsp_SumY_s     : unsigned(SUM_Y_LEN-1 downto 0 )
         := (others => '0');
     signal dsp_SumX ,dsp_SumX_s     : unsigned(SUM_X_LEN-1 downto 0 )
         := (others => '0');
@@ -80,14 +80,14 @@ architecture Behavioral of csf_fitter is
         := (others => '0');
 
     -- Numerator/Denominator widths
-    constant NSUM_XZ_LEN      : integer := SUM_XZ_LEN + CSF_MAXHITS_SEG_LEN + 1;
-    constant SUM_Z_SUM_X_LEN  : integer := SUM_Z_LEN  + SUM_X_LEN + 1;
-    constant SUM_Z_SUM_X2_LEN : integer := SUM_Z_LEN  + SUM_X2_LEN + 1;
-    constant SUM_XZ_SUM_X_LEN : integer := SUM_XZ_LEN + SUM_X_LEN + 1;
+    constant NSUM_YZ_LEN      : integer := SUM_YZ_LEN + CSF_MAXHITS_SEG_LEN;
+    constant SUM_Y_SUM_X_LEN  : integer := SUM_Y_LEN  + SUM_X_LEN;
+    constant SUM_Y_SUM_X2_LEN : integer := SUM_Y_LEN  + SUM_X2_LEN;
+    constant SUM_XZ_SUM_X_LEN : integer := SUM_YZ_LEN + SUM_X_LEN;
     constant SUM_X_SUM_X_LEN  : integer := SUM_X_LEN*2;
     constant NSUM_X2_LEN      : integer := CSF_MAXHITS_SEG_LEN + SUM_X2_LEN;
-    constant NUM_M_LEN        : integer := NSUM_XZ_LEN;
-    constant NUM_B_LEN        : integer := SUM_Z_SUM_X2_LEN;
+    constant NUM_M_LEN        : integer := NSUM_YZ_LEN + 1;
+    constant NUM_B_LEN        : integer := SUM_Y_SUM_X2_LEN + 2;
     constant DEN_LEN          : integer := NSUM_X2_LEN;
 
     -- Numerator/Denominator constants
@@ -99,14 +99,14 @@ architecture Behavioral of csf_fitter is
         := integer(log2(CSF_SEG_B_MULT/MDT_LOCAL_AXI_MULT));
 
     -- Numerator/Denominator signals
-    signal dsp_NSumXZ, dsp_NSumXZ_s, dsp_NSumXZ_ss
-        : signed(NSUM_XZ_LEN-1 downto 0) := (others => '0');
-    signal dsp_SumZSumX , dsp_SumZSumX_s, dsp_SumZSumX_ss
-        : signed(SUM_Z_SUM_X_LEN-1 downto 0) := (others => '0');
-    signal dsp_SumZSumX2, dsp_SumZSumX2_s, dsp_SumZSumX2_ss
-        : signed(SUM_Z_SUM_X2_LEN-1 downto 0 ) := (others => '0');
-    signal dsp_SumXZSumX, dsp_SumXZSumX_s, dsp_SumXZSumX_ss
-        : signed(SUM_XZ_SUM_X_LEN-1 downto 0 ) := (others => '0');
+    signal dsp_NSumXY, dsp_NSumXY_s, dsp_NSumXY_ss
+        : unsigned(NSUM_YZ_LEN-1 downto 0) := (others => '0');
+    signal dsp_SumYSumX , dsp_SumYSumX_s, dsp_SumYSumX_ss
+        : unsigned(SUM_Y_SUM_X_LEN-1 downto 0) := (others => '0');
+    signal dsp_SumYSumX2, dsp_SumYSumX2_s, dsp_SumYSumX2_ss
+        : unsigned(SUM_Y_SUM_X2_LEN-1 downto 0 ) := (others => '0');
+    signal dsp_SumXYSumX, dsp_SumXYSumX_s, dsp_SumXYSumX_ss
+        : unsigned(SUM_XZ_SUM_X_LEN-1 downto 0 ) := (others => '0');
     signal dsp_NSumX2   , dsp_NSumX2_s, dsp_NSumX2_ss
         : unsigned(NSUM_X2_LEN-1 downto 0 ) := (others => '0');
     signal dsp_SumXSumX , dsp_SumXSumX_s, dsp_SumXSumX_ss
@@ -180,9 +180,9 @@ begin
 
             if (hit1_s.valid = '1' or hit2_s.valid = '1')
                 and event_valid = '1' then
-                dsp_SumXZ <= dsp_SumXZ + signed('0' & hit1_s.x)*hit1_s.z +
-                             signed('0' & hit2_s.x)*hit2_s.z;
-                dsp_SumZ  <= dsp_SumZ + hit1_s.z + hit2_s.z;
+                dsp_SumXY <= dsp_SumXY + hit1_s.x*hit1_s.y +
+                             hit2_s.x*hit2_s.y;
+                dsp_SumY  <= dsp_SumY + hit1_s.y + hit2_s.y;
                 dsp_SumX  <= dsp_SumX + hit1_s.x + hit2_s.x;
                 dsp_SumX2 <= dsp_SumX2 + hit1_s.x*hit1_s.x + hit2_s.x*hit2_s.x;
                 dsp_nhits <= dsp_nhits + stdlogic_integer(hit1_s.valid) +
@@ -201,36 +201,36 @@ begin
 
             -- Clock 0
             --dv0 <= dsp_start;
-            dsp_NSumXZ      <= signed('0'& dsp_nhits)*dsp_SumXZ;
-            dsp_SumZSumX    <= dsp_SumZ*signed('0' & dsp_SumX);
-            dsp_SumZSumX2   <= dsp_SumZ*signed('0' & dsp_SumX2);
-            dsp_SumXZSumX   <= dsp_SumXZ*signed('0' & dsp_SumX);
+            dsp_NSumXY      <= dsp_nhits*dsp_SumXY;
+            dsp_SumYSumX    <= dsp_SumY*dsp_SumX;
+            dsp_SumYSumX2   <= dsp_SumY*dsp_SumX2;
+            dsp_SumXYSumX   <= dsp_SumXY*dsp_SumX;
             dsp_NSumX2      <= dsp_nhits*dsp_SumX2;
             dsp_SumXSumX    <= dsp_SumX*dsp_SumX;
             --end if;
 
             -- Clock 1
             dv1 <= dsp_start;
-            dsp_NSumXZ_s        <= dsp_NSumXZ   ;
-            dsp_SumZSumX_s      <= dsp_SumZSumX ;
-            dsp_SumZSumX2_s     <= dsp_SumZSumX2;
-            dsp_SumXZSumX_s     <= dsp_SumXZSumX;
+            dsp_NSumXY_s        <= dsp_NSumXY   ;
+            dsp_SumYSumX_s      <= dsp_SumYSumX ;
+            dsp_SumYSumX2_s     <= dsp_SumYSumX2;
+            dsp_SumXYSumX_s     <= dsp_SumXYSumX;
             dsp_NSumX2_s        <= dsp_NSumX2   ;
             dsp_SumXSumX_s      <= dsp_SumXSumX ;
 
             -- Clock 2
             dv2 <= dv1;
-            dsp_NSumXZ_ss       <= dsp_NSumXZ_s     ;
-            dsp_SumZSumX_ss     <= dsp_SumZSumX_s ;
-            dsp_SumZSumX2_ss    <= dsp_SumZSumX2_s;
-            dsp_SumXZSumX_ss    <= dsp_SumXZSumX_s;
+            dsp_NSumXY_ss       <= dsp_NSumXY_s     ;
+            dsp_SumYSumX_ss     <= dsp_SumYSumX_s ;
+            dsp_SumYSumX2_ss    <= dsp_SumYSumX2_s;
+            dsp_SumXYSumX_ss    <= dsp_SumXYSumX_s;
             dsp_NSumX2_ss       <= dsp_NSumX2_s     ;
             dsp_SumXSumX_ss     <= dsp_SumXSumX_s ;
 
             -- Clock 3
             dv3 <= dv2;
-            numerator_m         <= dsp_NSumXZ_ss - dsp_SumZSumX_ss;
-            numerator_b         <= dsp_SumZSumX2_ss - dsp_SumXZSumX_ss;
+            numerator_m         <= signed('0' & dsp_NSumXY_ss) - signed('0' & dsp_SumYSumX_ss);
+            numerator_b         <= signed('0' & dsp_SumYSumX2_ss) - signed('0' & dsp_SumXYSumX_ss);
             denominator         <= dsp_NSumX2_ss - dsp_SumXSumX_ss;
 
             -- Clock 4
@@ -290,8 +290,8 @@ begin
 
             -- Reset
             if dv9 = '1' then
-                dsp_SumXZ <= (others => '0');
-                dsp_SumZ  <= (others => '0');
+                dsp_SumXY <= (others => '0');
+                dsp_SumY  <= (others => '0');
                 dsp_SumX  <= (others => '0');
                 dsp_SumX2 <= (others => '0');
                 dsp_nhits <= (others => '0');

@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Project: ATLAS L0MDT Trigger
+--  Module:
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -33,7 +33,7 @@ entity heg_control is
   );
   port (
     clk                 : in std_logic;
-    
+
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
@@ -43,7 +43,7 @@ entity heg_control is
     o_uCM2sf_data_v     : out ucm2hps_rvt;
     o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
     o_SLC_Window_v      : out hp_heg2hp_window_avt;
-    
+
     o_control           : out heg_ctrl2hp_rt
   );
 end entity heg_control;
@@ -56,7 +56,7 @@ architecture beh of heg_control is
     );
     port (
       clk                 : in std_logic;
-      
+
       rst            : in std_logic;
       glob_en             : in std_logic;
       -- configuration
@@ -64,7 +64,7 @@ architecture beh of heg_control is
       i_uCM_data_v        : in ucm2hps_rvt;
       -- SLc out
       o_SLC_Window_v      : out hp_heg2hp_window_avt;
-      o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+      o_Z_offset          : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
       o_Roi_win_valid     : out std_logic
     );
   end component heg_c_window;
@@ -76,7 +76,7 @@ architecture beh of heg_control is
   signal Roi_win_valid      : std_logic;
   signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
   signal busy_count         : std_logic_vector(11 downto 0);
-  
+
 begin
 
   HEG_C_W : component heg_c_window
@@ -85,7 +85,7 @@ begin
   )
   port map(
     clk                 => clk,
-    
+
     rst            => rst,
     glob_en             => glob_en,
     -- configuration
@@ -108,19 +108,19 @@ begin
       if(rst= '1') then
 
         o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
-  
+
         o_control.enable <= (others => '0');
         o_control.rst<= (others => '1');
         busy_count <= (others => '0');
-  
+
         heg_ctrl_motor <= IDLE;
-      else 
+      else
         if or_reduce(o_control.enable) = '1' then
           busy_count <= busy_count + '1';
         else
           busy_count <= (others => '0');
         end if;
-  
+
         case heg_ctrl_motor is
           when IDLE =>
             if( int_uCM_data_r.data_valid = '1') then
@@ -129,7 +129,7 @@ begin
               o_control.rst<= (others => '0');
               heg_ctrl_motor <= SET_WINDOW;
             end if;
-  
+
           when SET_WINDOW =>
             o_control.enable <= (others => '1');
             o_control.rst<= (others => '1');
@@ -137,7 +137,7 @@ begin
               if ST_nBARREL_ENDCAP = '0' then -- barrel
                 -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
               else --endcap
-  
+
               end if;
               heg_ctrl_motor <= HEG_BUSY;
             end if;
@@ -156,14 +156,14 @@ begin
               -- busy_count <= (others => '0');
               heg_ctrl_motor <= IDLE;
             end if;
-  
+
         end case;
       end if;
-      
+
     end if;
   end process;
 
-  
+
 
 
 
@@ -171,13 +171,13 @@ begin
 end beh;
 
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
+--  Project: ATLAS L0MDT Trigger
+--  Module:
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -200,7 +200,7 @@ entity heg_c_window is
   );
   port (
     clk                 : in std_logic;
-    
+
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
@@ -208,7 +208,7 @@ entity heg_c_window is
     i_uCM_data_v        : in ucm2hps_rvt;
     -- SLc out
     o_SLC_Window_v      : out hp_heg2hp_window_avt;
-    o_Z_offset          : out unsigned(MDT_LOCAL_AXI_LEN-1 downto 0);
+    o_Z_offset          : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     o_Roi_win_valid     : out std_logic
   );
 end entity heg_c_window;
@@ -272,19 +272,19 @@ begin
   --       Roi_window_a <= nullify(Roi_window_a);
   --     else
   --       if( int_uCM_data.data_valid = '1') then
-  --         -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
+  --         -- TO-DO: convert from SLC.barrel.z to Roi_w_index
   --         if uCM_barrel.z >= 0 and uCM_barrel.z < 6 then
   --           Roi_w_index <= to_integer(uCM_barrel.z);
   --         else
-  
+
   --         end if;
-  
+
   --         ----------------------
   --           for il in 7 downto 0 loop
   --             for it in 1 downto 0 loop
-  --               -- TO-DO: convert from SLC.barrel.z to Roi_w_index 
-  
-  
+  --               -- TO-DO: convert from SLC.barrel.z to Roi_w_index
+
+
   --               ----------------------
   --               -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
   --             end loop;
@@ -293,7 +293,7 @@ begin
   --         -- Enables control
   --       end if;
   --     end if;
-      
+
   --   end if;
   -- end process;
   -- o_SLC_Window_v <= vectorify(Roi_window_a);

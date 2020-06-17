@@ -45,7 +45,7 @@ package heg_pkg is
      data                 :  hp_hp2sf_data_rt;
      data_valid           :  std_logic;
   end record heg_bm2sf_rt;
-  constant HEG_BM2SF_LEN : integer := 45;
+  constant HEG_BM2SF_LEN : integer := 42;
   subtype heg_bm2sf_rvt is std_logic_vector(HEG_BM2SF_LEN-1 downto 0);
   function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_rvt;
   function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt;
@@ -141,12 +141,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_hp2bm_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*46-1 downto 0);
+    variable y : std_logic_vector(x'length*43-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-46) := vectorify(x(i));
-      msb := msb - 46 -1;
+      y(msb downto msb-43) := vectorify(x(i));
+      msb := msb - 43 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -163,8 +163,8 @@ package body heg_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-46));
-      msb := msb - 46 -1;
+      y(i) := structify(x(msb downto msb-43));
+      msb := msb - 43 -1;
     end loop l;
     return y;
   end function structify;
@@ -188,14 +188,14 @@ package body heg_pkg is
   function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_rvt is
     variable y : heg_bm2sf_rvt;
   begin
-    y(44 downto 1)             := vectorify(x.data);
+    y(41 downto 1)             := vectorify(x.data);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt is
     variable y : heg_bm2sf_rt;
   begin
-    y.data                     := structify(x(44 downto 1));
+    y.data                     := structify(x(41 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;

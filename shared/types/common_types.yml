@@ -23,13 +23,13 @@ l0mdt_ttc:
 
 #############################################################
 # INTERFACES TYPES
-#############################################################  
+#############################################################
 
 # -----------------------------------------------------------
 #       Sector Logic Rx interface ouytput signal types
 # -----------------------------------------------------------
 
-# slc_muid 
+# slc_muid
 slc_muid:
   slcid:          {type: unsigned , length: SLC_SLCID_LEN }
   slid:           {type: unsigned , length: SLC_SLID_LEN}
@@ -41,8 +41,8 @@ slc_chid:
   mdt_mid:           {type: unsigned , length: SLC_CHAMBER_LEN}
   mdt_out:           {type: unsigned , length: SLC_CHAMBER_LEN}
   mdt_ext:           {type: unsigned , length: SLC_CHAMBER_LEN}
-    
-# slc common 
+
+# slc common
 slc_common:
   tcid:           { type: logic , length: SLC_TCID_LEN }
   tcsent:         { type: logic , length: SLC_TCSENT_LEN }
@@ -53,7 +53,7 @@ slc_common:
   charge:         { type: logic , length: SLC_CHARGE_LEN }
 
 # slc specific barrel
-slc_barrel: 
+slc_barrel:
   spare_bits:     {type: logic , length: SLC_B_SPARE_LEN}
   coin_type:      {type: logic , length: SLC_COIN_TYPE_LEN}
   z_rpc0:         {type: signed , length: SLC_Z_RPC_LEN}
@@ -79,7 +79,7 @@ slc_rx_data:
   common:       {type: slc_common}
   specific:     {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
   data_valid:   {type: logic}
-    
+
 slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 
 # -----------------------------------------------------------
@@ -112,7 +112,7 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 
 #############################################################
 # INTERBLOCK TYPES
-############################################################# 
+#############################################################
 
 # -----------------------------------------------------------
 #       UCM : Muon candidate manager output signal types
@@ -122,7 +122,7 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 # slc ucm2hps specific
 # barrel
 ucm_csf_barrel:
-  mbar        : { type: signed , length: UCM_MBAR_LEN }
+  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
   z           : { type: unsigned , length: UCM_Z_ROI_LEN }
   # r           : { type: unsigned , length: UCM_R_ROI_LEN }
   # phi         : { type: unsigned , length: UCM_PHI_LEN }
@@ -130,13 +130,13 @@ ucm_csf_barrel:
 
 ucm_csf_seed:
   muid          : { type: slc_muid}
-  mbar          : { type: signed , length: UCM_MBAR_LEN }
+  mbar          : { type: unsigned , length: UCM_MBAR_LEN }
   pos           : { type: unsigned , length: UCM_Z_ROI_LEN }
   chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
   data_valid    : { type: logic}
 
 ucm_csf_seed_a: {array: open , type: ucm_csf_seed}
-  
+
 # UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
 
 # ucm_csf_barrel_at: {array: open , type: ucm_csf_barrel}
@@ -166,14 +166,14 @@ ucm2hps_        : {array: open , type: ucm2hps , _: off }
 # -----------------------------------------------------------
 # CSF
 hp_hit_data:
-  local_z: { type: signed , length: MDT_LOCAL_AXI_LEN }
-  local_x: { type: unsigned , length: MDT_LOCAL_AXI_LEN }
+  local_y: { type: unsigned , length: MDT_LOCAL_Y_LEN }
+  local_x: { type: unsigned , length: MDT_LOCAL_X_LEN }
   radius: { type: unsigned , length: MDT_RADIUS_LEN }
   multilayer: {type: logic}
   data_valid: {type: logic}
 
 hp_hit_data_a : {array: open, type: hp_hit_data}
-# -----------------------------------------------------------  
+# -----------------------------------------------------------
 # sf 2 pt
 # -----------------------------------------------------------
 
@@ -194,7 +194,7 @@ sf_seg_data_endcap:
   quality    : { type: logic}
 
 
-sf2pt : 
+sf2pt :
   dummy       : {type: logic , length: 8}
   data_valid  : { type : logic}
 
@@ -227,7 +227,7 @@ slc_pt:
   charge     : { type : logic}
 
 
-# -----------------------------------------------------------  
+# -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
 

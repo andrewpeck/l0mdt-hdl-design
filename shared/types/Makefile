@@ -5,7 +5,7 @@ all:
                     common_constants.yml
 	python3 $(yml2hdl) -e ../config/config_type.yml \
                      -e common_constants.yml \
-                     common_types.yml 
+                     common_types.yml
 	python3 $(yml2hdl) -e ../config/config_type.yml \
                      -e common_constants.yml \
                      -e common_types.yml \
