@@ -1,9 +1,9 @@
 __config__:
     basic_convert_functions : off
-    # packages:
-      # shared_lib:
-        # - common_constants_pkg
-        # - config_pkg
+    packages:
+      shared_lib:
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
 
 
 #############################################################

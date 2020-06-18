@@ -33,41 +33,32 @@ entity top_ult is
   port (
 
     -- pipeline clock
-    clock_and_control : in l0mdt_control_rt;
-
+    clock_and_control             : in l0mdt_control_rt;
     -- ttc
-    ttc_commands : in l0mdt_ttc_rt;
-
+    ttc_commands                  : in l0mdt_ttc_rt;
     -- TDC Hits from Polmux
-    inner_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_INNER -1 downto 0);
-    middle_tdc_hits_i : in mdt_pollmux_data_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    outer_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_OUTER -1 downto 0);
-    extra_tdc_hits_i  : in mdt_pollmux_data_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
-
+    inner_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    middle_tdc_hits_i             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates
-    main_A_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0); -- is the main SL used
-    main_B_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0); -- only used in the big endcap
-    plus_neighbor_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0);
-    minus_neighbor_slc_i : in SLC_avt (c_NUM_SLC-1 downto 0);
-
+    main_primary_slc_i            : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- is the main SL used
+    main_secondary_slc_i          : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- only used in the big endcap
+    plus_neighbor_slc_i           : in slc_rx_data_rvt;
+    minus_neighbor_slc_i          : in slc_rx_data_rvt;
     -- Segments in from neighbor
-    plus_neighbor_segments_i  : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_i : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-
+    plus_neighbor_segments_i      : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    minus_neighbor_segments_i     : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
     -- felix
     --tts_commands : out TTS_CMD_rt;
-
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
-
+    daq_streams_o                 : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-    minus_neighbor_segments_o : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-
+    plus_neighbor_segments_o      : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    minus_neighbor_segments_o     : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
     -- MUCTPI
-    MTC_o : out MTC_avt (c_NUM_MTC-1 downto 0);
-    NSP_o : out NSP_avt (c_NUM_NSP-1 downto 0);
-
+    MTC_o                         : out MTC_avt (c_NUM_MTC-1 downto 0);
+    NSP_o                         : out NSP_avt (c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic

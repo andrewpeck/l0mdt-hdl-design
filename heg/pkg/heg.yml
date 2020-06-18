@@ -2,9 +2,11 @@ __config__:
     basic_convert_functions : off
     packages:
       shared_lib:
-        - common_types_pkg
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
         - common_constants_pkg
-        - config_pkg
+        - common_types_pkg
       hp_lib:
         - hp_pkg
 
@@ -22,8 +24,12 @@ heg_pc2heg : {array: open , type : hp_hpsPc2hp}
 # -----------------------------------------------------------
 
 heg_ctrl2hp:
-  rst        : { type: logic , length : MAX_NUM_HP}
-  enable        : { type: logic , length : MAX_NUM_HP}
+  # rst        : { type: logic , length : MAX_NUM_HP}
+  # enable        : { type: logic , length : MAX_NUM_HP}
+  rst           : { type: logic}
+  enable        : { type: logic}
+
+heg_ctrl2hp_  : { array : open , type : heg_ctrl2hp}
 
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data

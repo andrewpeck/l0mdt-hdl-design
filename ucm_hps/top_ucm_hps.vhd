@@ -45,10 +45,10 @@ entity top_ucm_hps is
     i_slc_data_neightborA_v : in slc_rx_data_rvt;
     i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- MDT hit
-    i_mdt_tar_inn_av    : in tar2hps_avt(HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mdt_tar_mid_av    : in tar2hps_avt(HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_mdt_tar_out_av    : in tar2hps_avt(HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_mdt_tar_ext_av    : in tar2hps_avt(HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_mdt_tar_inn_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mdt_tar_mid_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_mdt_tar_out_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_mdt_tar_ext_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
     o_sf2pt_inn_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
     o_sf2pt_mid_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);

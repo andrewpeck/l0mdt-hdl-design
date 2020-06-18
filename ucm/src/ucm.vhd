@@ -206,16 +206,16 @@ begin
 
   -- VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
-      VP2HPS_INN : if HPS_ENABLE_ST_INN generate
+      VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
         o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
       end generate;
-      VP2HPS_MID : if HPS_ENABLE_ST_MID generate
+      VP2HPS_MID : if c_HPS_ENABLE_ST_MID generate
         o_uCM2hps_mid_av(heg_i) <= uCM2hps_data(heg_i)(1);
       end generate;
-      VP2HPS_OUT : if HPS_ENABLE_ST_OUT generate
+      VP2HPS_OUT : if c_HPS_ENABLE_ST_OUT generate
         o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
       end generate;
-      VP2HPS_EXT : if HPS_ENABLE_ST_EXT generate
+      VP2HPS_EXT : if c_HPS_ENABLE_ST_EXT generate
         o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
       end generate;
 

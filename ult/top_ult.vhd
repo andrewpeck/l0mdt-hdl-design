@@ -38,15 +38,15 @@ entity top_ult is
     -- ttc
     ttc_commands                  : in l0mdt_ttc_rt;
     -- TDC Hits from Polmux
-    inner_tdc_hits_i              : in TDCPOLMUX_avt (c_NUM_POLMUX_INNER -1 downto 0);
-    middle_tdc_hits_i             : in TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    outer_tdc_hits_i              : in TDCPOLMUX_avt (c_NUM_POLMUX_OUTER -1 downto 0);
-    extra_tdc_hits_i              : in TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
+    inner_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    middle_tdc_hits_i             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates
-    main_A_slc_i                  : in SLC_avt (c_NUM_SLC-1 downto 0); -- is the main SL used
-    main_B_slc_i                  : in SLC_avt (c_NUM_SLC-1 downto 0); -- only used in the big endcap
-    plus_neighbor_slc_i           : in SLC_avt (c_NUM_SLC-1 downto 0);
-    minus_neighbor_slc_i          : in SLC_avt (c_NUM_SLC-1 downto 0);
+    main_primary_slc_i            : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- is the main SL used
+    main_secondary_slc_i          : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- only used in the big endcap
+    plus_neighbor_slc_i           : in slc_rx_data_rvt;
+    minus_neighbor_slc_i          : in slc_rx_data_rvt;
     -- Segments in from neighbor
     plus_neighbor_segments_i      : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
     minus_neighbor_segments_i     : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);

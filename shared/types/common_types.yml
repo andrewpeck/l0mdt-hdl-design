@@ -1,9 +1,11 @@
 __config__:
-    basic_convert_functions : on
+    basic_convert_functions : off
     packages:
       shared_lib:
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
         - common_constants_pkg
-        - config_pkg
 
 #############################################################
 # L0MDT CONTROL TYPES
@@ -93,13 +95,13 @@ mdt_tdc:
   fine: { type: unsigned , length: MDT_TDC_FINE_LEN }
   pw: { type: unsigned , length: MDT_TDC_PW_LEN }
 # mdt pullmux
-mdt_pullmux_data:
+mdt_polmux:
   fiberID: { type: logic , length: MDT_FIBER_LEN }
   muxID: { type: logic , length: MDT_MUXCH_LEN }
   tdc: {type: mdt_tdc}
   data_valid: {type: logic}
 
-mdt_pullmux_data_: {array: open , type: mdt_pullmux_data , _: off }
+mdt_polmux_: {array: open , type: mdt_polmux , _: off }
 # mdt tar
 tar2hps:
   tube        : { type: unsigned , length: MDT_TUBE_LEN }
@@ -195,7 +197,7 @@ sf_seg_data_endcap:
 
 
 sf2pt :
-  dummy       : {type: logic , length: 8}
+  dummy       : { type: logic , length: 8}
   data_valid  : { type : logic}
 
 sf2pt_ : { array: open , type : sf2pt , _: off}

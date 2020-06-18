@@ -3,25 +3,12 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
-use shared_lib.config_pkg.all;
 
 package common_types_pkg is
-
-  function structify(x: std_logic_vector) return signed;
-  function structify(x: std_logic_vector) return unsigned;
-  function structify(x: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector) return integer;
-
-  function vectorify(x: signed) return std_logic_vector;
-  function vectorify(x: unsigned) return std_logic_vector;
-  function vectorify(x: std_logic_vector) return std_logic_vector;
-  function vectorify(x: integer) return std_logic_vector;
-
-  function nullify(x: std_logic) return std_logic;
-  function nullify(x: std_logic_vector) return std_logic_vector;
-  function nullify(x: unsigned) return unsigned;
-  function nullify(x: signed) return signed;
 
   type l0mdt_control_rt is record
      clk                  :  std_logic;
@@ -150,26 +137,26 @@ package common_types_pkg is
   function structify(x: mdt_tdc_rvt) return mdt_tdc_rt;
   function nullify (x: mdt_tdc_rt) return mdt_tdc_rt;
 
-  type mdt_pullmux_data_rt is record
+  type mdt_polmux_rt is record
      fiberID              :  std_logic_vector(MDT_FIBER_LEN-1 downto 0);
      muxID                :  std_logic_vector(MDT_MUXCH_LEN-1 downto 0);
      tdc                  :  mdt_tdc_rt;
      data_valid           :  std_logic;
-  end record mdt_pullmux_data_rt;
-  constant MDT_PULLMUX_DATA_LEN : integer := 42;
-  subtype mdt_pullmux_data_rvt is std_logic_vector(MDT_PULLMUX_DATA_LEN-1 downto 0);
-  function vectorify(x: mdt_pullmux_data_rt) return mdt_pullmux_data_rvt;
-  function structify(x: mdt_pullmux_data_rvt) return mdt_pullmux_data_rt;
-  function nullify (x: mdt_pullmux_data_rt) return mdt_pullmux_data_rt;
+  end record mdt_polmux_rt;
+  constant MDT_POLMUX_LEN : integer := 42;
+  subtype mdt_polmux_rvt is std_logic_vector(MDT_POLMUX_LEN-1 downto 0);
+  function vectorify(x: mdt_polmux_rt) return mdt_polmux_rvt;
+  function structify(x: mdt_polmux_rvt) return mdt_polmux_rt;
+  function nullify (x: mdt_polmux_rt) return mdt_polmux_rt;
 
-  type mdt_pullmux_data_at is array(integer range <>) of mdt_pullmux_data_rt;
-  type mdt_pullmux_data_avt is array(integer range <>) of mdt_pullmux_data_rvt;
-  function vectorify(x: mdt_pullmux_data_at) return mdt_pullmux_data_avt;
-  function vectorify(x: mdt_pullmux_data_at) return std_logic_vector;
-  function structify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_at;
-  function structify(x: std_logic_vector) return mdt_pullmux_data_at;
-  function nullify(x: mdt_pullmux_data_at) return mdt_pullmux_data_at;
-  function nullify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_avt;
+  type mdt_polmux_at is array(integer range <>) of mdt_polmux_rt;
+  type mdt_polmux_avt is array(integer range <>) of mdt_polmux_rvt;
+  function vectorify(x: mdt_polmux_at) return mdt_polmux_avt;
+  function vectorify(x: mdt_polmux_at) return std_logic_vector;
+  function structify(x: mdt_polmux_avt) return mdt_polmux_at;
+  function structify(x: std_logic_vector) return mdt_polmux_at;
+  function nullify(x: mdt_polmux_at) return mdt_polmux_at;
+  function nullify(x: mdt_polmux_avt) return mdt_polmux_avt;
 
   type tar2hps_rt is record
      tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);
@@ -372,57 +359,6 @@ end package common_types_pkg;
 ------------------------------------------------------------
 
 package body common_types_pkg is
-
-  function structify(x: std_logic_vector) return signed is
-  begin
-    return signed(x);
-  end function structify;
-  function structify(x: std_logic_vector) return unsigned is
-  begin
-    return unsigned(x);
-  end function structify;
-  function structify(x: std_logic_vector) return std_logic_vector is
-  begin
-    return std_logic_vector(x);
-  end function structify;
-  function structify(x: std_logic_vector) return integer is
-  begin
-    return to_integer(unsigned(x));
-  end function structify;
-
-  function vectorify(x: signed) return std_logic_vector is
-  begin
-    return std_logic_vector(x);
-  end function vectorify;
-  function vectorify(x: unsigned) return std_logic_vector is
-  begin
-    return std_logic_vector(x);
-  end function vectorify;
-  function vectorify(x: std_logic_vector) return std_logic_vector is
-  begin
-    return x;
-  end function vectorify;
-  function vectorify(x: integer) return std_logic_vector is
-  begin
-    return std_logic_vector(to_unsigned(x, 32));
-  end function vectorify;
-
-  function nullify(x: std_logic) return std_logic is
-  begin
-    return '0';
-  end function nullify;
-  function nullify(x: std_logic_vector) return std_logic_vector is
-  begin
-    return (x'range => '0');
-  end function nullify;
-  function nullify(x: unsigned) return unsigned is
-  begin
-    return to_unsigned(0, x'length);
-  end function nullify;
-  function nullify(x: signed) return signed is
-  begin
-    return to_signed(0, x'length);
-  end function nullify;
 
   function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt is
     variable y : l0mdt_control_rvt;
@@ -759,8 +695,8 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: mdt_pullmux_data_rt) return mdt_pullmux_data_rvt is
-    variable y : mdt_pullmux_data_rvt;
+  function vectorify(x: mdt_polmux_rt) return mdt_polmux_rvt is
+    variable y : mdt_polmux_rvt;
   begin
     y(41 downto 37)            := x.fiberID;
     y(36 downto 33)            := x.muxID;
@@ -768,8 +704,8 @@ package body common_types_pkg is
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
-  function structify(x: mdt_pullmux_data_rvt) return mdt_pullmux_data_rt is
-    variable y : mdt_pullmux_data_rt;
+  function structify(x: mdt_polmux_rvt) return mdt_polmux_rt is
+    variable y : mdt_polmux_rt;
   begin
     y.fiberID                  := x(41 downto 37);
     y.muxID                    := x(36 downto 33);
@@ -777,8 +713,8 @@ package body common_types_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: mdt_pullmux_data_rt) return mdt_pullmux_data_rt is
-    variable y : mdt_pullmux_data_rt;
+  function nullify (x: mdt_polmux_rt) return mdt_polmux_rt is
+    variable y : mdt_polmux_rt;
   begin
     y.fiberID                  := nullify(x.fiberID);
     y.muxID                    := nullify(x.muxID);
@@ -787,15 +723,15 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: mdt_pullmux_data_at) return mdt_pullmux_data_avt is
-    variable y :  mdt_pullmux_data_avt(x'range);
+  function vectorify(x: mdt_polmux_at) return mdt_polmux_avt is
+    variable y :  mdt_polmux_avt(x'range);
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
     end loop l;
     return y;
   end function vectorify;
-  function vectorify(x: mdt_pullmux_data_at) return std_logic_vector is
+  function vectorify(x: mdt_polmux_at) return std_logic_vector is
     variable y : std_logic_vector(x'length*42-1 downto 0);
     variable msb : integer := y'length-1;
   begin
@@ -805,16 +741,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function vectorify;
-  function structify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_at is
-    variable y :  mdt_pullmux_data_at(x'range);
+  function structify(x: mdt_polmux_avt) return mdt_polmux_at is
+    variable y :  mdt_polmux_at(x'range);
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
     end loop l;
     return y;
   end function structify;
-  function structify(x: std_logic_vector) return mdt_pullmux_data_at is
-    variable y :  mdt_pullmux_data_at(x'range);
+  function structify(x: std_logic_vector) return mdt_polmux_at is
+    variable y :  mdt_polmux_at(x'range);
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -823,16 +759,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function structify;
-  function nullify(x: mdt_pullmux_data_at) return mdt_pullmux_data_at is
-    variable y :  mdt_pullmux_data_at(x'range);
+  function nullify(x: mdt_polmux_at) return mdt_polmux_at is
+    variable y :  mdt_polmux_at(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
     return y;
   end function nullify;
-  function nullify(x: mdt_pullmux_data_avt) return mdt_pullmux_data_avt is
-    variable y :  mdt_pullmux_data_avt(x'range);
+  function nullify(x: mdt_polmux_avt) return mdt_polmux_avt is
+    variable y :  mdt_polmux_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

@@ -2,10 +2,11 @@ __config__:
     basic_convert_functions : off
     packages:
       shared_lib:
-        - common_types_pkg
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
         - common_constants_pkg
-        - config_pkg
-    #   my_lib_2: the_other_package
+        - common_types_pkg
 
 UCM_INPUT_PL_LATENCY       : { qualifier: constant , type: integer , value: 2 }
 UCM_OUTPUT_PL_LATENCY       : { qualifier: constant , type: integer , value: 2 }

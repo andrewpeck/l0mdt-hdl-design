@@ -46,10 +46,10 @@ entity ucm_hps is
     i_slc_data_neightborA_v : in slc_rx_data_rvt;
     i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- MDT hit
-    i_mdt_tar_inn_av    : in tar2hps_avt(HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mdt_tar_mid_av    : in tar2hps_avt(HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_mdt_tar_out_av    : in tar2hps_avt(HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_mdt_tar_ext_av    : in tar2hps_avt(HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_mdt_tar_inn_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mdt_tar_mid_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_mdt_tar_out_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_mdt_tar_ext_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
     o_sf2pt_inn_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
     o_sf2pt_mid_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
@@ -89,11 +89,11 @@ begin
   );
 
 
-  HPS_INN_GEN: if HPS_ENABLE_ST_INN generate
+  HPS_INN_GEN: if c_HPS_ENABLE_ST_INN generate
     HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS             => 0,
-        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_INN
+        g_HPS_NUM_OF_HP       => c_HPS_NUM_MDT_CH_INN
       )
       port map(
         clk                 => clk,
@@ -109,11 +109,11 @@ begin
       );
   end generate;
 
-  HPS_MID_GEN: if HPS_ENABLE_ST_MID generate
+  HPS_MID_GEN: if c_HPS_ENABLE_ST_MID generate
     HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS             => 1,
-        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_MID
+        g_HPS_NUM_OF_HP       => c_HPS_NUM_MDT_CH_MID
       )
       port map(
         clk                 => clk,
@@ -129,11 +129,11 @@ begin
       );
   end generate;
 
-  HPS_OUT_GEN: if HPS_ENABLE_ST_OUT generate
+  HPS_OUT_GEN: if c_HPS_ENABLE_ST_OUT generate
     HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS             => 2,
-        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_OUT
+        g_HPS_NUM_OF_HP       => c_HPS_NUM_MDT_CH_OUT
       )
       port map(
         clk                 => clk,
@@ -149,11 +149,11 @@ begin
       );
   end generate;
 
-  HPS_EXT_GEN: if HPS_ENABLE_ST_EXT generate
+  HPS_EXT_GEN: if c_HPS_ENABLE_ST_EXT generate
     HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS             => 3,
-        g_HPS_NUM_OF_HP       => HPS_NUM_MDT_CH_EXT
+        g_HPS_NUM_OF_HP       => c_HPS_NUM_MDT_CH_EXT
       )
       port map(
         clk                 => clk,

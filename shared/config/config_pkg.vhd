@@ -46,7 +46,7 @@ package config_pkg is
   -- Sector information
   --------------------------------------------------------------------------------
   constant c_SECTOR_ID            : integer   := CFG.SECTOR_ID;
-  constant SECTOR_SIDE          : std_logic := CFG.SECTOR_SIDE;         -- 0:A          1:C
+  constant c_SECTOR_SIDE          : std_logic := CFG.SECTOR_SIDE;         -- 0:A          1:C
   constant ST_nBARREL_ENDCAP    : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
   constant ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
   constant ENABLE_NEIGHTBORS    : std_logic := CFG.ENABLE_NEIGHTBORS;   -- 0: disabled  1: enabled
@@ -59,14 +59,14 @@ package config_pkg is
   constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
 
   -- Processing channel
-  constant HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
-  constant HPS_NUM_MDT_CH_INN         : integer   := CFG.NUM_MDT_CH_INN;              
-  constant HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT ;              
-  constant HPS_NUM_MDT_CH_EXT         : integer   := CFG.NUM_MDT_CH_EXT;              
-  constant HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID ;              
-  constant HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
-  constant HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT ;              
-  constant HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
+  constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
+  constant c_HPS_NUM_MDT_CH_INN         : integer   := CFG.NUM_MDT_CH_INN;              
+  constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT ;              
+  constant c_HPS_NUM_MDT_CH_EXT         : integer   := CFG.NUM_MDT_CH_EXT;              
+  constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID ;              
+  constant c_HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
+  constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT ;              
+  constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
   --------------------------------------------------------------------------------
   -- BLOCKS configuration
   --------------------------------------------------------------------------------

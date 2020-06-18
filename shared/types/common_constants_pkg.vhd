@@ -2,6 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+
 package common_constants_pkg is
 
   constant   MDT_GLOBAL_AXI_LEN   :  integer := 19;

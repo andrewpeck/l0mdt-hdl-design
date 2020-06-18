@@ -48,10 +48,10 @@ architecture beh of ucm_hps_tb is
     -- SLc
     signal i_slc_data_av       : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
     -- MDT hit
-    signal i_mdt_tar_inn_av    : tar2hps_avt(HPS_NUM_MDT_CH_INN -1 downto 0);
-    signal i_mdt_tar_mid_av    : tar2hps_avt(HPS_NUM_MDT_CH_MID -1 downto 0);
-    signal i_mdt_tar_out_av    : tar2hps_avt(HPS_NUM_MDT_CH_OUT -1 downto 0);
-    signal i_mdt_tar_ext_av    : tar2hps_avt(HPS_NUM_MDT_CH_EXT -1 downto 0);
+    signal i_mdt_tar_inn_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    signal i_mdt_tar_mid_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    signal i_mdt_tar_out_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    signal i_mdt_tar_ext_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
     signal o_sf2pt_inn_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
     signal o_sf2pt_mid_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
@@ -74,15 +74,15 @@ architecture beh of ucm_hps_tb is
 
   type infifo_mem_at is array (integer range <>) of tar2hps_tb_at;
 
-  signal mdt_inn        : infifo_mem_at(HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_mid        : infifo_mem_at(HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_out        : infifo_mem_at(HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_ext        : infifo_mem_at(HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_inn        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_mid        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_out        : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_ext        : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
 
-  signal mdt_inn_counts : infifo_counts(HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
-  signal mdt_mid_counts : infifo_counts(HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
-  signal mdt_out_counts : infifo_counts(HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
-  signal mdt_ext_counts : infifo_counts(HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+  signal mdt_inn_counts : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+  signal mdt_mid_counts : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+  signal mdt_out_counts : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+  signal mdt_ext_counts : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
 
   ------------------------------------
   signal mdt_tar_event : input_tar_rt;
@@ -166,10 +166,10 @@ begin
 
     variable first_read           : std_logic := '1';
 
-    variable v_mdt_inn_counts     : infifo_counts(HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
-    variable v_mdt_mid_counts     : infifo_counts(HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
-    variable v_mdt_out_counts     : infifo_counts(HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
-    variable v_mdt_ext_counts     : infifo_counts(HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+    variable v_mdt_inn_counts     : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+    variable v_mdt_mid_counts     : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+    variable v_mdt_out_counts     : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+    variable v_mdt_ext_counts     : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
 
   begin
 
@@ -190,7 +190,7 @@ begin
         ---------------------------------------------------------------
         -- write to DUT
 
-        for wr_i in HPS_NUM_MDT_CH_INN -1 downto 0 loop
+        for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
           if(v_mdt_inn_counts(wr_i) > 0) then
             i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
@@ -202,7 +202,7 @@ begin
           end if;
         end loop;
 
-        for wr_i in HPS_NUM_MDT_CH_MID -1 downto 0 loop
+        for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
           if(v_mdt_mid_counts(wr_i) > 0) then
             i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
@@ -214,7 +214,7 @@ begin
           end if;
         end loop;
 
-        for wr_i in HPS_NUM_MDT_CH_OUT -1 downto 0 loop
+        for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
           if(v_mdt_out_counts(wr_i) > 0) then
             i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
@@ -226,7 +226,7 @@ begin
           end if;
         end loop;
 
-        for wr_i in HPS_NUM_MDT_CH_EXT -1 downto 0 loop
+        for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
           if(v_mdt_ext_counts(wr_i) > 0) then
             i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop

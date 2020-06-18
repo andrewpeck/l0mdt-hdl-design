@@ -1,0 +1,5 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared_lib:
+        - common_ieee_pkg
