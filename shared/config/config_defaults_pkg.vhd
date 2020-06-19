@@ -46,7 +46,7 @@ package cfg_global_pkg is
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
-    SF_type                       : std_logic;  -- select the type of segment finder
+    SF_TYPE                       : std_logic;  -- select the type of segment finder
     -- pt-calc
     ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
     PT_type                       : std_logic;  -- select the type of pt calculator
@@ -88,7 +88,7 @@ package cfg_global_pkg is
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
-    SF_type                       => '0', -- default CSF
+    SF_TYPE                       => '0', -- default CSF
     -- pt-calc
     ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_type                       => '0', -- default 0
@@ -167,7 +167,7 @@ end package cfg_global_pkg;
 --     proj_cfg.ENABLE_UCM                    => '1'; -- default
 --     -- Segment Finder
 --     proj_cfg.ENABLE_SF                     => '1'; -- default enable
---     proj_cfg.SF_type                       => '0'; -- default CSF
+--     proj_cfg.SF_TYPE                       => '0'; -- default CSF
 --     -- pt-calc
 --     proj_cfg.ENABLE_PT                     => '1'; -- default enable
 --     proj_cfg.PT_type                       => '0'; -- default 0

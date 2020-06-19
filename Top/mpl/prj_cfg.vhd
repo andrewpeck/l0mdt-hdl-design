@@ -54,7 +54,7 @@ package body config_pkg is
   --   --------------------------------------------------------------------------------
   --   -- Segment Finder
   --   --------------------------------------------------------------------------------
-  --   proj_cfg.SF_type                 := '0',  -- 0: CSF 1:LSF
+  --   proj_cfg.SF_TYPE                 := '0',  -- 0: CSF 1:LSF
  
     return proj_cfg;
   end function set_project_cfg;

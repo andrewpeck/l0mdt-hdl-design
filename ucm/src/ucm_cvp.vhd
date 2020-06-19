@@ -82,7 +82,7 @@ begin
         -- como usar i_in_en?
       
         if ST_nBARREL_ENDCAP = '0' then  -- Barrel
-          if SF_type = '0' then --CSF
+          if c_SF_TYPE = '0' then --CSF
             if i_data_r.data_valid = '1' then
               for hps_i in MAX_NUM_HPS -1 downto 0 loop
                 ucm2hps_ar(hps_i).muid.bcid <= i_data_r.muid.bcid;

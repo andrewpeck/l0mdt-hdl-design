@@ -158,8 +158,6 @@ package body heg_pkg is
     l: for i in x'range loop
       y(msb downto msb-2) := vectorify(x(i));
       msb := msb - 2 -1;
-      -- y(msb downto msb-1) := vectorify(x(i));
-      -- msb := msb - 1 -1;
     end loop l;
     return y;
   end function vectorify;
