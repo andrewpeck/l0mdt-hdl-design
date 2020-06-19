@@ -55,11 +55,11 @@ begin
 
   EN_SF : if c_SF_ENABLED = '1' generate
     EN_CSF : if c_SF_TYPE = '0' generate
-  
+      
     end generate;
 
     EN_LSF : if c_SF_TYPE = '1' generate
-  
+      
     end generate;
   end generate;
 

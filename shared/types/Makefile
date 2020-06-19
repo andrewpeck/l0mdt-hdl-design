@@ -71,4 +71,4 @@ all:
                       -e common_constants.yml \
 											-e l0mdt_dataformats.yml \
                      	-e common_types.yml \
-                     	../../csf/pkg/custom_types_csf.yml
+                     	../../csf/pkg/csf.yml
