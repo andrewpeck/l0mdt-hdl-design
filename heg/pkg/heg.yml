@@ -28,8 +28,9 @@ heg_ctrl2hp:
   # enable        : { type: logic , length : MAX_NUM_HP}
   rst           : { type: logic}
   enable        : { type: logic}
+  # dummy         : { type: logic, length : 2}
 
-heg_ctrl2hp_  : { array : open , type : heg_ctrl2hp}
+heg_ctrl2hp_  : { array : open , type : heg_ctrl2hp , _ : off}
 
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data

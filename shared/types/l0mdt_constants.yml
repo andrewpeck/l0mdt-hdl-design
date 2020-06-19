@@ -3,3 +3,136 @@ __config__:
     packages:
       shared_lib:
         - common_ieee_pkg
+
+
+#############################################################
+# INTERFACES TYPES
+#############################################################
+
+# -----------------------------------------------------------
+#       Sector Logic Rx interface ouytput signal types
+# -----------------------------------------------------------
+
+# slc_muid
+SLC_SLCID_LEN:    {qualifier: constant , type: integer , value: 2}
+SLC_SLID_LEN:     {qualifier: constant , type: integer , value: 6}
+BCID_LEN:         {qualifier: constant , type: integer , value: 12}
+
+# slc chambers
+SLC_CHAMBER_LEN:     {qualifier: constant , type: integer , value: 3}
+
+# slc common
+SLC_TCID_LEN:     { qualifier: constant , type: integer , value: 3 }
+SLC_TCSENT_LEN:   { qualifier: constant , type: integer , value: 1 }
+SLC_POS_ETA_LEN:  { qualifier: constant , type: integer , value: 14 }
+SLC_POS_ETA_MULT: { qualifier: constant , type: real , value: 0.014 }
+SLC_POS_PHI_LEN:  { qualifier: constant , type: integer , value: 9 }
+SLC_POS_PHI_MULT: { qualifier: constant , type: real , value: 0.012 }
+SLC_RPC_PT_LEN:   { qualifier: constant , type: integer , value: 8 }
+SLC_PT_TH_LEN:    { qualifier: constant , type: integer , value: 4 }
+SLC_CHARGE_LEN:   { qualifier: constant , type: integer , value: 1 }
+
+# slc specific barrel
+
+SLC_B_SPARE_LEN:    { qualifier: constant , type: integer , value: 8 }
+SLC_COIN_TYPE_LEN:  { qualifier: constant , type: integer , value: 3 }
+SLC_Z_RPC_LEN:      { qualifier: constant , type: integer , value: 10 }
+SLC_Z_RPC_MULT:     {qualifier: constant  , type: real    , value: 25.0 }
+
+# slc specific endcap
+
+SLC_E_SPARE_LEN:            { qualifier: constant , type: integer , value: 8 }
+SLC_R_LEN:                  { qualifier: constant , type: integer , value: 10 }
+SLC_ANGLE_WRT_PHI_LEN:      { qualifier: constant , type: integer , value: 7 }
+SLC_ANGLE_WRT_ETA_LEN:      { qualifier: constant , type: integer , value: 4 }
+SLC_NSW_ETA_LEN:            { qualifier: constant , type: integer , value: 14 }
+SLC_NSW_PHI_LEN:            { qualifier: constant , type: integer , value: 8 }
+SLC_NSW_ANGLE_WRT_ETA_LEN:  { qualifier: constant , type: integer , value: 5 }
+
+# slc rx data
+
+SLC_SPECIFIC_LEN  : { qualifier: constant , type: integer , value: 51 }
+
+# -----------------------------------------------------------
+# mdt 2 hps
+# -----------------------------------------------------------
+# mdt tdc
+MDT_TDC_CH_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_TDC_MODE_LEN: { qualifier: constant , type: integer , value: 2 }
+MDT_TDC_COARSE_LEN: { qualifier: constant , type: integer , value: 12 }
+MDT_TDC_FINE_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_TDC_PW_LEN: { qualifier: constant , type: integer , value: 8 }
+# pull mux
+MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
+MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }
+# tar
+MDT_TUBE_LEN    : { qualifier: constant , type: integer , value: 9 }
+MDT_LAYER_LEN   : { qualifier: constant , type: integer , value: 5 }
+MDT_TIME_LEN    : { qualifier: constant , type: integer , value: 18 }
+
+# #############################################################
+# # INTERBLOCK TYPES
+# #############################################################
+
+# # -----------------------------------------------------------
+# #       UCM : Muon candidate manager output signal types
+# # -----------------------------------------------------------
+
+# # -----------------------------------------------------------
+# # slc ucm2hps specific
+# # barrel
+UCM_MBAR_LEN    : { qualifier: constant , type: integer , value: 11 }
+UCM_MBAR_MULT   : { qualifier: constant , type: real , value: 1024.0 }
+UCM_Z_ROI_LEN   : { qualifier: constant , type: integer , value: 10 }
+UCM_R_ROI_LEN   : { qualifier: constant , type: integer , value: 4 }
+# UCM_PHI_LEN     : { qualifier: constant , type: integer , value: 14 }
+# UCM_ETA_LEN     : { qualifier: constant , type: integer , value: 8 }
+# # UCM_CHAMBER_ID_LEN: { qualifier: constant , type: integer , value: 5 }
+
+UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 21 }
+
+# # -----------------------------------------------------------
+# #       HEG 2 SF
+# # -----------------------------------------------------------
+
+# # MDT_RADIUS_LEN: { qualifier: constant , type: integer , value: 9 }
+# # MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
+# MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 14 }
+# MDT_LOCAL_AXI_MULT: { qualifier: constant , type: real , value: 16.0 }
+# CSF_X_OFFSET : { qualifier: constant, type: integer, value : 0}
+# CSF_Y_OFFSET : { qualifier: constant, type: integer, value : -640}
+# # -----------------------------------------------------------
+# # sf 2 pt 
+# # -----------------------------------------------------------
+# SF_SEG_POS_LEN : { qualifier: constant, type: integer, value: 19}
+# SF_SEG_POS_MULTI : { qualifier: constant, type: real, value: 16.0}
+# SF_SEG_ANG_LEN : { qualifier: constant, type: integer, value: 15}
+# SF_SEG_ANG_MULTI     : {qualifier: constant, type: real, value: 4096.0}
+# SF_SEG_ANG_MULTI_LEN : {qualifier: constant, type: integer, value: 12}
+# # -----------------------------------------------------------
+# # slc ucm pipeline
+# # -----------------------------------------------------------
+
+# #pl 2 pt
+# SLC_PT_PHIMOD_LEN: { qualifier: constant , type: integer , value: 8 }
+# SLC_PT_PHIMOD_MULT: {qualifier: constant, type: real, value: 320.0}
+
+
+# # -----------------------------------------------------------
+# # TF 2 MTC
+# # -----------------------------------------------------------
+# MTC_ETA_LEN   :  { qualifier: constant , type: integer , value: 15 }
+# MTC_ETA_MULT  :  { qualifier: constant , type: real, value: 6068.1481481481}
+# MTC_PT_LEN    :  { qualifier: constant , type: integer , value: 9 }
+# MTC_PT_MULT   :  { qualifier: constant , type: real, value: 4.0}
+# MTC_PTTHR_LEN :  { qualifier: constant , type: integer , value: 4 }
+# MTC_NSEG_LEN  :  { qualifier: constant , type: integer , value: 2 }
+# MTC_QUALITY_LEN  :  { qualifier: constant , type: integer , value: 3 }
+
+# #############################################################
+# # OTHER
+# #############################################################
+
+# BIL_SEC3_RHO : { qualifier: constant, type: real, value: 4949.0}
+# BML_SEC3_RHO : { qualifier: constant, type: real, value: 7139.0}
+# BOL_SEC3_RHO : { qualifier: constant, type: real, value: 9500.0}

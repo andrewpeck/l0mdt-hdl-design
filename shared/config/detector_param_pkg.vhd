@@ -18,6 +18,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
+use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
 -- use shared_lib.config_pkg.all;
 

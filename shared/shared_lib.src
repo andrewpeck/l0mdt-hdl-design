@@ -1,10 +1,17 @@
+
+shared/config/config_defaults_pkg.vhd
+shared/config/config_pkg.vhd
+shared/config/detector_param_pkg.vhd
+
+shared/types/common_ieee_pkg.vhd
+shared/types/l0mdt_constants_pkg.vhd
+shared/types/l0mdt_dataformats_pkg.vhd
+shared/types/common_constants_pkg.vhd
+shared/types/common_types_pkg.vhd
+
 shared/functions/some_functions_pkg.vhd
-shared/config/config_defaults_pkg.vhd 2008
-shared/config/config_pkg.vhd 2008
-shared/config/detector_param_pkg.vhd 2008
-shared/types/common_constants_pkg.vhd 2008
-shared/types/common_types_pkg.vhd 2008
-shared/src/pipeline.vhd 2008
+
+shared/src/pipeline.vhd
 
 shared/src/bram.vhd
 shared/src/rom.v

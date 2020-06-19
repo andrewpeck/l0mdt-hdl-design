@@ -18,9 +18,12 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -29,12 +32,13 @@ use heg_lib.heg_pkg.all;
 
 entity heg_control is
   generic(
-    g_STATION_RADIUS     : integer := 0  --station
+    g_STATION_RADIUS    : integer := 0;  --station
+    g_HPS_NUM_MDT_CH    : integer := 6
   );
   port (
     clk                 : in std_logic;
 
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     -- SLc in
@@ -44,7 +48,8 @@ entity heg_control is
     o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
     o_SLC_Window_v      : out hp_heg2hp_window_avt;
 
-    o_control           : out heg_ctrl2hp_rt
+    o_sf_control        : out heg_ctrl2hp_rt;
+    o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0)
   );
 end entity heg_control;
 
@@ -77,6 +82,8 @@ architecture beh of heg_control is
   signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
   signal busy_count         : std_logic_vector(11 downto 0);
 
+  signal enables_a          : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+
 begin
 
   HEG_C_W : component heg_c_window
@@ -102,6 +109,11 @@ begin
   int_uCM_data_r <= structify(i_uCM_data_v);
   o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
 
+  CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
+    enables_a(hp_i) <= o_hp_control(hp_i).enable;
+    -- o_hp_control(hp_i).rst <= '1';
+  end generate;
+
 
   SLc_reg : process(rst,clk) begin
     if rising_edge(clk) then
@@ -109,13 +121,15 @@ begin
 
         o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
 
-        o_control.enable <= (others => '0');
-        o_control.rst<= (others => '1');
+        for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+          o_hp_control(hp_i).enable <= '0';
+          o_hp_control(hp_i).rst <= '1';
+        end loop;
         busy_count <= (others => '0');
 
         heg_ctrl_motor <= IDLE;
       else
-        if or_reduce(o_control.enable) = '1' then
+        if or_reduce(enables_a) = '1' then
           busy_count <= busy_count + '1';
         else
           busy_count <= (others => '0');
@@ -125,14 +139,18 @@ begin
           when IDLE =>
             if( int_uCM_data_r.data_valid = '1') then
               o_uCM2sf_data_v <= i_uCM_data_v;
-              o_control.enable <= (others => '1');
-              o_control.rst<= (others => '0');
+              for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+                o_hp_control(hp_i).enable <= '1';
+                o_hp_control(hp_i).rst <= '0';
+              end loop;
               heg_ctrl_motor <= SET_WINDOW;
             end if;
 
           when SET_WINDOW =>
-            o_control.enable <= (others => '1');
-            o_control.rst<= (others => '1');
+            for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+              o_hp_control(hp_i).enable <= '1';
+              o_hp_control(hp_i).rst <= '1';
+            end loop;
             if Roi_win_valid = '1' then
               if ST_nBARREL_ENDCAP = '0' then -- barrel
                 -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
@@ -143,16 +161,20 @@ begin
             end if;
           -- int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
           -- o_uCM_data <= int_uCM_data;
-          -- o_control.loc_enable <= '1';
-          -- o_control.enable <= (others => '1');
-          -- o_control.rst<= (others => '0');
+          -- o_hp_control.loc_enable <= '1';
+          -- o_hp_control.enable <= (others => '1');
+          -- o_hp_control.rst<= (others => '0');
           when HEG_BUSY =>
             if to_integer(unsigned(busy_count)) < HEG_BUSY_CLOCKS then
-              o_control.enable <= (others => '1');
-              o_control.rst<= (others => '1');
+              for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+                o_hp_control(hp_i).enable <= '1';
+                o_hp_control(hp_i).rst <= '1';
+              end loop;
             else
-              o_control.enable <= (others => '0');
-              o_control.rst<= (others => '1');
+              for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+                o_hp_control(hp_i).enable <= '0';
+                o_hp_control(hp_i).rst <= '1';
+              end loop;
               -- busy_count <= (others => '0');
               heg_ctrl_motor <= IDLE;
             end if;
@@ -184,9 +206,14 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;

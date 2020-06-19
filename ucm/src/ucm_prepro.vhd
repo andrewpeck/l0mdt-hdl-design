@@ -18,10 +18,13 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
-
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+ 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 

@@ -16,9 +16,14 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -26,13 +31,15 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 
 entity heg_buffermux is
-  -- generic( );
+  generic(
+    g_HPS_NUM_MDT_CH    : integer := 6
+   );
   port (
     clk                 : in std_logic;
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control           : in heg_ctrl2hp_rt;
+    i_control           : in heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
     -- MDT out
@@ -89,7 +96,7 @@ begin
     port map(
       clk                 => clk,
       rst            => rst,
-      glob_en             => i_control.enable(hp_i),
+      glob_en             => i_control(hp_i).enable,
       --
       i_mdt_hit           => i_mdt_hits_av(hp_i),
       i_wr                => fifo_wr(hp_i),

@@ -17,9 +17,14 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -30,12 +35,8 @@ use hps_lib.hps_pkg.all;
 
 entity hps is
   generic(
-    -- mdt type
-    -- type mdt_type_av;
-    -- g_SIM_nBUILD          : std_logic := '0';
-    -- parameters
     g_STATION_RADIUS      : integer := 0;  --station
-    g_HPS_NUM_OF_HP       : integer := 6 
+    g_HPS_NUM_MDT_CH       : integer := 6 
   );
   port (
     clk                   : in std_logic;
@@ -46,7 +47,7 @@ entity hps is
     -- SLc
     i_uCM2hps_av          : in ucm2hps_avt(NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av          : in tar2hps_avt(g_HPS_NUM_OF_HP -1 downto 0);
+    i_mdt_tar_av          : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
     o_sf2pt_av            : out sf2pt_avt(NUM_THREADS -1 downto 0)
   );
@@ -65,7 +66,7 @@ architecture beh of hps is
 
 begin
 
-  pc_gen : for hp_i in g_HPS_NUM_OF_HP -1 downto 0 generate
+  pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     PC : entity hps_lib.hps_pc 
     generic map(
       -- mdt type
@@ -88,7 +89,7 @@ begin
     HEG : entity heg_lib.heg
     generic map(
       g_STATION_RADIUS      => g_STATION_RADIUS,
-      g_HPS_NUM_OF_HP       => g_HPS_NUM_OF_HP
+      g_HPS_NUM_MDT_CH       => g_HPS_NUM_MDT_CH
     )
     port map(
       clk                   => clk,
