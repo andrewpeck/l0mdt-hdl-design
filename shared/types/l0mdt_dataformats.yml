@@ -155,7 +155,6 @@ ucm2hps:
 # # -----------------------------------------------------------
 
 # sf_seg_data_barrel:
-#   data_valid : { type: logic}
 #   muid       : { type: slc_muid}
 #   chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
 #   pos        : { type: signed, length: SF_SEG_POS_LEN }

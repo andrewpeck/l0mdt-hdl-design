@@ -41,11 +41,11 @@ entity top_ucm is
     i_slc_data_neightborA_v : in slc_rx_data_rvt;
     i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- to hps
-    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(NUM_THREADS -1 downto 0);
-    o_uCM2hps_inn_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_1b        : out std_logic_vector(NUM_THREADS -1 downto 0);
+    -- o_uCM2hps_pam_ar       : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     -- pipeline
     o_uCM2pl_1b             : out std_logic_vector(MAX_NUM_SL -1 downto 0)
   );
@@ -53,10 +53,10 @@ end entity top_ucm;
 
 architecture beh of top_ucm is
 
-  signal o_uCM2hps_inn_av      : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av      : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av      : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av      : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av           : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
@@ -83,7 +83,7 @@ begin
     o_uCM2pl_av             => o_uCM2pl_av
   );
 
-  TH : for th_i in NUM_THREADS -1 downto 0 generate
+  TH : for th_i in c_NUM_THREADS -1 downto 0 generate
     o_uCM2hps_inn_1b(th_i) <= or_reduce(o_uCM2hps_inn_av(th_i));
     o_uCM2hps_mid_1b(th_i) <= or_reduce(o_uCM2hps_mid_av(th_i));
     o_uCM2hps_out_1b(th_i) <= or_reduce(o_uCM2hps_out_av(th_i));

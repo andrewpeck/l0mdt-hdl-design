@@ -38,6 +38,8 @@ package common_constants_pkg is
 
   constant   SF_SEG_ANG_MULTI_LEN :  integer := 12;
 
+  constant   SF_SEG_DATA_LEN      :  integer := 35;
+
   constant   SLC_PT_PHIMOD_LEN    :  integer := 8;
 
   constant   SLC_PT_PHIMOD_MULT   :  real := 320.0;

@@ -51,10 +51,10 @@ entity ucm_hps is
     i_mdt_tar_out_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     i_mdt_tar_ext_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
-    o_sf2pt_inn_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
-    o_sf2pt_mid_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
-    o_sf2pt_out_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
-    o_sf2pt_ext_av      : out sf2pt_avt(NUM_THREADS -1 downto 0);
+    o_sf2pt_inn_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_sf2pt_mid_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_sf2pt_out_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_sf2pt_ext_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
     o_uCM2pl_av         : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
@@ -62,7 +62,7 @@ end entity ucm_hps;
 
 architecture beh of ucm_hps is
 
-  type ucm2hps_aavt is array (MAX_NUM_HPS -1 downto 0) of ucm2hps_avt(NUM_THREADS -1 downto 0);
+  type ucm2hps_aavt is array (MAX_NUM_HPS -1 downto 0) of ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal uCM2hps_aav  : ucm2hps_aavt;
   -- signal uCM2pl_av   : pipelines_avt;
 

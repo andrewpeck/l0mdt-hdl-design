@@ -93,38 +93,34 @@ package common_types_pkg is
   function nullify(x: hp_hit_data_a_avt) return hp_hit_data_a_avt;
 
   type sf_seg_data_barrel_rt is record
-     data_valid           :  std_logic;
-     muid                 :  slc_muid_rt;
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
      pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);
      angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_barrel_rt;
-  constant SF_SEG_DATA_BARREL_LEN : integer := 59;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 35;
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
   function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
 
   type sf_seg_data_endcap_rt is record
-     data_valid           :  std_logic;
-     muid                 :  slc_muid_rt;
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
      pos                  :  unsigned(SF_SEG_POS_LEN-1 downto 0);
      angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
      quality              :  std_logic;
   end record sf_seg_data_endcap_rt;
-  constant SF_SEG_DATA_ENDCAP_LEN : integer := 59;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 35;
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
   function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
   type sf2pt_rt is record
-     dummy                :  std_logic_vector(8-1 downto 0);
+     data                 :  std_logic_vector(SF_SEG_DATA_LEN-1 downto 0);
+     muid                 :  slc_muid_rt;
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
      data_valid           :  std_logic;
   end record sf2pt_rt;
-  constant SF2PT_LEN : integer := 9;
+  constant SF2PT_LEN : integer := 59;
   subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
   function vectorify(x: sf2pt_rt) return sf2pt_rvt;
   function structify(x: sf2pt_rvt) return sf2pt_rt;
@@ -552,9 +548,6 @@ package body common_types_pkg is
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
     variable y : sf_seg_data_barrel_rvt;
   begin
-    y(58)                      := x.data_valid;
-    y(57 downto 38)            := vectorify(x.muid);
-    y(37 downto 35)            := x.chamber_id;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -563,9 +556,6 @@ package body common_types_pkg is
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := x(58);
-    y.muid                     := structify(x(57 downto 38));
-    y.chamber_id               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -574,9 +564,6 @@ package body common_types_pkg is
   function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := nullify(x.data_valid);
-    y.muid                     := nullify(x.muid);
-    y.chamber_id               := nullify(x.chamber_id);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
@@ -586,9 +573,6 @@ package body common_types_pkg is
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
     variable y : sf_seg_data_endcap_rvt;
   begin
-    y(58)                      := x.data_valid;
-    y(57 downto 38)            := vectorify(x.muid);
-    y(37 downto 35)            := x.chamber_id;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -597,9 +581,6 @@ package body common_types_pkg is
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := x(58);
-    y.muid                     := structify(x(57 downto 38));
-    y.chamber_id               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -608,9 +589,6 @@ package body common_types_pkg is
   function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := nullify(x.data_valid);
-    y.muid                     := nullify(x.muid);
-    y.chamber_id               := nullify(x.chamber_id);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
@@ -620,21 +598,27 @@ package body common_types_pkg is
   function vectorify(x: sf2pt_rt) return sf2pt_rvt is
     variable y : sf2pt_rvt;
   begin
-    y(8 downto 1)              := x.dummy;
+    y(58 downto 24)            := x.data;
+    y(23 downto 4)             := vectorify(x.muid);
+    y(3 downto 1)              := x.chamber_id;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: sf2pt_rvt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
-    y.dummy                    := x(8 downto 1);
+    y.data                     := x(58 downto 24);
+    y.muid                     := structify(x(23 downto 4));
+    y.chamber_id               := x(3 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: sf2pt_rt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
-    y.dummy                    := nullify(x.dummy);
+    y.data                     := nullify(x.data);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -648,12 +632,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: sf2pt_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*9-1 downto 0);
+    variable y : std_logic_vector(x'length*59-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-9) := vectorify(x(i));
-      msb := msb - 9 -1;
+      y(msb downto msb-59) := vectorify(x(i));
+      msb := msb - 59 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -670,8 +654,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-9));
-      msb := msb - 9 -1;
+      y(i) := structify(x(msb downto msb-59));
+      msb := msb - 59 -1;
     end loop l;
     return y;
   end function structify;

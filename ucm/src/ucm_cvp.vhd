@@ -81,7 +81,7 @@ begin
       else
         -- como usar i_in_en?
       
-        if ST_nBARREL_ENDCAP = '0' then  -- Barrel
+        if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           if c_SF_TYPE = '0' then --CSF
             if i_data_r.data_valid = '1' then
               for hps_i in MAX_NUM_HPS -1 downto 0 loop

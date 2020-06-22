@@ -36,18 +36,18 @@ entity mpl_csw is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_pl2plcsw_av          : in pipelines_avt(NUM_THREADS -1 downto 0);
-    o_plcsw2tf_av          : out pipelines_avt(NUM_THREADS -1 downto 0)
+    i_pl2plcsw_av          : in pipelines_avt(c_NUM_THREADS -1 downto 0);
+    o_plcsw2tf_av          : out pipelines_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity mpl_csw;
 
 architecture beh of mpl_csw is
 
-  signal slc_pl : pipelines_at(NUM_THREADS -1 downto 0);
+  signal slc_pl : pipelines_at(c_NUM_THREADS -1 downto 0);
   
 begin
 
-  V2R: for sl_i in NUM_THREADS - 1 downto 0 generate
+  V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
     slc_pl(sl_i) <= structify(i_pl2plcsw_av(sl_i));
   end generate V2R;
 
@@ -59,9 +59,9 @@ begin
       if Reset_b = '1' then
         
       else
-        for slo_i in NUM_THREADS -1 downto 0 loop
+        for slo_i in c_NUM_THREADS -1 downto 0 loop
           slo_found := '0';
-          for sli_i in NUM_THREADS -1 downto 0 loop
+          for sli_i in c_NUM_THREADS -1 downto 0 loop
             if ((slc_pl(sli_i).processed = '1') and (to_integer(unsigned(slc_pl(sli_i).process_ch)) = slo_i)) then
               o_plcsw2tf_av(slo_i) <= i_pl2plcsw_av(sli_i);
               slo_found := '1';

@@ -51,9 +51,9 @@ package config_pkg is
   --------------------------------------------------------------------------------
   constant c_SECTOR_ID            : integer   := CFG.SECTOR_ID;
   constant c_SECTOR_SIDE          : std_logic := CFG.SECTOR_SIDE;         -- 0:A          1:C
-  constant ST_nBARREL_ENDCAP      : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
-  constant ENDCAP_nSMALL_LARGE    : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
-  constant ENABLE_NEIGHTBORS      : std_logic := CFG.ENABLE_NEIGHTBORS;   -- 0: disabled  1: enabled
+  constant c_ST_nBARREL_ENDCAP      : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
+  constant c_ENDCAP_nSMALL_LARGE    : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
+  constant c_ENABLE_NEIGHTBORS      : std_logic := CFG.ENABLE_NEIGHTBORS;   -- 0: disabled  1: enabled
 
   -- physical values
 
@@ -101,11 +101,11 @@ package config_pkg is
 
 
   constant MAX_NUM_SL   : integer := 3 + 
-  to_integer(unsigned'("" & ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & ENDCAP_nSMALL_LARGE))*3 + 
-  to_integer(unsigned'("" & ENABLE_NEIGHTBORS))*2;
+  to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 + 
+  to_integer(unsigned'("" & CFG.ENABLE_NEIGHTBORS))*2;
 
   -- parallel channels
-  constant NUM_THREADS  : integer := CFG.NUM_THREADS;
+  constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
 
   ---------------------------------------------------------
   -- FUNCTIONS

@@ -75,7 +75,7 @@ architecture beh of heg_roi_gen is
   -- attribute ROM_STYLE of mem_rom : signal is "distributed";
 begin
 
-  BARREL : if ST_nBARREL_ENDCAP = '0' generate
+  BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
     -- uCM_barrel <= structify(i_specific);
     -- z_barrel <= uCM_barrel.z;

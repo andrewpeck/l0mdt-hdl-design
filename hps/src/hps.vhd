@@ -45,11 +45,11 @@ entity hps is
     -- control
 
     -- SLc
-    i_uCM2hps_av          : in ucm2hps_avt(NUM_THREADS -1 downto 0);
+    i_uCM2hps_av          : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
     i_mdt_tar_av          : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av            : out sf2pt_avt(NUM_THREADS -1 downto 0)
+    o_sf2pt_av            : out sf2pt_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity hps;
 
@@ -57,12 +57,12 @@ architecture beh of hps is
 
   signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
-  -- signal int_uCM_data : ucm2heg_slc_avt(NUM_THREADS -1 downto 0);
-  -- signal control_enable(NUM_THREADS -1 downto 0);
+  -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
+  -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control        : hps_ctrl2sf_avt(NUM_THREADS -1 downto 0);
-  signal heg2sf_slc_data       : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal heg2sf_mdt_data       : hps_bm2sf_avt(NUM_THREADS -1 downto 0);
+  signal heg2sf_control        : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
@@ -85,7 +85,7 @@ begin
     );
   end generate;
 
-  heg_gen : for heg_i in NUM_THREADS -1 downto 0 generate
+  heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
     HEG : entity heg_lib.heg
     generic map(
       g_STATION_RADIUS      => g_STATION_RADIUS,

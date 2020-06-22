@@ -17,9 +17,12 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 -- library hal;
 -- use hal.system_types_pkg.all;
@@ -29,9 +32,7 @@ entity top_ult is
   generic (
     DUMMY : boolean := false
     );
-
   port (
-
     -- pipeline clock
     clock_and_control             : in l0mdt_control_rt;
     -- ttc
@@ -42,23 +43,23 @@ entity top_ult is
     outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates
-    main_primary_slc_i            : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- is the main SL used
-    main_secondary_slc_i          : in slc_rx_data_avt(c_NUM_SLC-1 downto 0); -- only used in the big endcap
+    main_primary_slc_i            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
+    main_secondary_slc_i          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
     plus_neighbor_slc_i           : in slc_rx_data_rvt;
     minus_neighbor_slc_i          : in slc_rx_data_rvt;
     -- Segments in from neighbor
-    plus_neighbor_segments_i      : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_i     : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    plus_neighbor_segments_i      : in sf2pt_avt(c_NUM_SF_INPUTS-1 downto 0);
+    minus_neighbor_segments_i     : in sf2pt_avt(c_NUM_SF_INPUTS-1 downto 0);
     -- felix
     --tts_commands : out TTS_CMD_rt;
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     daq_streams_o                 : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o      : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-    minus_neighbor_segments_o     : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    plus_neighbor_segments_o      : out sf2pt_avt(c_NUM_SF_OUTPUTS-1 downto 0);
+    minus_neighbor_segments_o     : out sf2pt_avt(c_NUM_SF_OUTPUTS-1 downto 0);
     -- MUCTPI
-    MTC_o                         : out MTC_avt (c_NUM_MTC-1 downto 0);
-    NSP_o                         : out NSP_avt (c_NUM_NSP-1 downto 0);
+    MTC_o                         : out MTC_avt(c_NUM_MTC-1 downto 0);
+    NSP_o                         : out NSP_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic
@@ -69,17 +70,17 @@ end entity top_ult;
 architecture behavioral of top_ult is
 
   -- outputs from candidate manager
-  signal inner_slc_to_hts    : SLC_avt (c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_hts   : SLC_avt (c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_hts    : SLC_avt (c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_hts    : SLC_avt (c_NUM_THREADS-1 downto 0);
-  signal all_slc_to_pipeline : SLC_avt (c_NUM_SLC-1 downto 0);
+  signal inner_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
+  signal middle_slc_to_hts   : SLC_avt(c_NUM_THREADS-1 downto 0);
+  signal outer_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
+  signal extra_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
+  signal all_slc_to_pipeline : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
   -- outputs from hits to segments
-  signal inner_segments_to_pt  : SF_avt (c_NUM_THREADS-1 downto 0);
-  signal middle_segments_to_pt : SF_avt (c_NUM_THREADS-1 downto 0);
-  signal outer_segments_to_pt  : SF_avt (c_NUM_THREADS-1 downto 0);
-  signal extra_segments_to_pt  : SF_avt (c_NUM_THREADS-1 downto 0);
+  signal inner_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
+  signal middle_segments_to_pt : sf2pt_avt(c_NUM_THREADS-1 downto 0);
+  signal outer_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
+  signal extra_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
   signal slc_to_pt : SLC_avt (c_NUM_THREADS-1 downto 0);
@@ -94,21 +95,20 @@ architecture behavioral of top_ult is
     port (
       -- pipeline clock
       clock_and_control : in l0mdt_control_rt;
-
       -- ttc
       ttc_commands : in l0mdt_ttc_rt;
-
       -- Sector Logic Candidates
-      slc_i : in SLC_avt;
-
+      i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
+      i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+      i_slc_data_neightborA_v : in slc_rx_data_rvt;
+      i_slc_data_neightborB_v : in slc_rx_data_rvt;
       -- Sector Logic Candidates Out of X-point Switch
-      inner_slc_o  : out SLC_avt;
-      middle_slc_o : out SLC_avt;
-      outer_slc_o  : out SLC_avt;
-      extra_slc_o  : out SLC_avt;
-
-      -- Sector Logic Candidates to pipeline
-      all_slc_o : out SLC_avt
+      o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+      o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+      o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+      o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+      -- pipeline
+      o_uCM2pl_av             : out pipelines_avt(MAX_NUM_SL -1 downto 0)
       );
   end component candidate_manager;
 
@@ -121,10 +121,10 @@ architecture behavioral of top_ult is
       ttc_commands : in l0mdt_ttc_rt;
 
       -- TDC Hits from Polmux
-      inner_tdc_hits_i  : in mdt_pullmux_data_avt;
-      middle_tdc_hits_i : in mdt_pullmux_data_avt;
-      outer_tdc_hits_i  : in mdt_pullmux_data_avt;
-      extra_tdc_hits_i  : in mdt_pullmux_data_avt;
+      inner_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
+      middle_tdc_hits_i : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
+      outer_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
+      extra_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
 
       -- Sector Logic Candidates from uCM
       inner_slc_i  : in SLC_avt;
@@ -133,14 +133,14 @@ architecture behavioral of top_ult is
       extra_slc_i  : in SLC_avt;
 
       -- Segments Out
-      inner_segments_o  : out SF_avt;
-      middle_segments_o : out SF_avt;
-      outer_segments_o  : out SF_avt;
-      extra_segments_o  : out SF_avt;
+      inner_segments_o  : out sf2pt_avt;
+      middle_segments_o : out sf2pt_avt;
+      outer_segments_o  : out sf2pt_avt;
+      extra_segments_o  : out sf2pt_avt;
 
       -- Segments Out to Neighbor
-      plus_neighbor_segments_o  : out SF_avt;
-      minus_neighbor_segments_o : out SF_avt
+      plus_neighbor_segments_o  : out sf2pt_avt;
+      minus_neighbor_segments_o : out sf2pt_avt
       );
 
   end component hits_to_segments;
@@ -154,14 +154,14 @@ architecture behavioral of top_ult is
       ttc_commands : in l0mdt_ttc_rt;
 
       -- Segments in from segment finder
-      inner_segments_i  : in SF_avt;
-      middle_segments_i : in SF_avt;
-      outer_segments_i  : in SF_avt;
-      extra_segments_i  : in SF_avt;
+      inner_segments_i  : in sf2pt_avt;
+      middle_segments_i : in sf2pt_avt;
+      outer_segments_i  : in sf2pt_avt;
+      extra_segments_i  : in sf2pt_avt;
 
       -- Segments in from neighbor
-      minus_neighbor_segments_i : in SF_avt;
-      plus_neighbor_segments_i  : in SF_avt;
+      minus_neighbor_segments_i : in sf2pt_avt;
+      plus_neighbor_segments_i  : in sf2pt_avt;
 
       -- Sector Logic Candidates from pipeline
       slc_i : in SLC_avt;

@@ -53,10 +53,10 @@ architecture beh of ucm_hps_tb is
     signal i_mdt_tar_out_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     signal i_mdt_tar_ext_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- to pt calc
-    signal o_sf2pt_inn_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
-    signal o_sf2pt_mid_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
-    signal o_sf2pt_out_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
-    signal o_sf2pt_ext_av      : sf2pt_avt(NUM_THREADS -1 downto 0);
+    signal o_sf2pt_inn_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    signal o_sf2pt_mid_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    signal o_sf2pt_out_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
+    signal o_sf2pt_ext_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
     -- pipelin
     signal o_uCM2pl_av         : pipelines_avt(MAX_NUM_SL -1 downto 0);
 

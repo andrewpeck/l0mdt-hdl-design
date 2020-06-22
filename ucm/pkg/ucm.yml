@@ -43,11 +43,11 @@ ucm_csw_ch_control:
 
 ucm_csw_control: {array: open , type: ucm_csw_ch_control}
 
-# ucm_cvp_dest: {array: NUM_THREADS , type: logic, length: 4}
+# ucm_cvp_dest: {array: c_NUM_THREADS , type: logic, length: 4}
 
 # ucm_pam_control:
-#   data_present: { type: logic , length: NUM_THREADS }
-#   addr_orig:    { array: NUM_THREADS , type: logic, length: 4}
+#   data_present: { type: logic , length: c_NUM_THREADS }
+#   addr_orig:    { array: c_NUM_THREADS , type: logic, length: 4}
 
 ucm_pam_ch_control:
   data_present: { type: logic}

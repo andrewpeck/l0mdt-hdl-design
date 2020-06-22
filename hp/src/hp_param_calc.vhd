@@ -57,7 +57,7 @@ architecture beh of hp_paramCalc is
     signal radius_dv : std_logic;
 
 begin
-  SLC_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
+  SLC_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
     barrel_data_r <= structify(i_SLc_specific);
   end generate;
 

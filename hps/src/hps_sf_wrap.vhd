@@ -31,21 +31,23 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
+library csf_lib;
+use csf_lib.csf_pkg.all;
+
 entity hps_sf_wrap is
   generic(
-    g_STATION_RADIUS     : integer := 0  --station
+    g_STATION_RADIUS    : integer := 0  --station
   );
   port (
     clk                 : in std_logic;
-    
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     i_sf_control        : in heg_ctrl2hp_rvt;
     i_sf_slc_data       : in ucm2hps_rvt;
     i_sf_mdt_data       : in heg_bm2sf_rvt;
     --
-    o_sf_data_v           : out sf2pt_rvt
+    o_sf_data_v         : out sf2pt_rvt
   );
 end entity hps_sf_wrap;
 
@@ -54,13 +56,32 @@ architecture beh of hps_sf_wrap is
 begin
 
   EN_SF : if c_SF_ENABLED = '1' generate
+    -- CSF
     EN_CSF : if c_SF_TYPE = '0' generate
+      -- CSF : entity csf_lib.csf 
+      -- generic map(
+      --   FLAVOUR => c_ST_nBARREL_ENDCAP
+      -- )
+      -- port map(
+      --   clk           => clk,
+      --   i_seed        => , 
+      --   i_mdt_hit     => ,
+      --   i_eof         => ,
+      --   i_rst         => rst,
+      --   o_seg         =>
+      -- );
       
     end generate;
 
+    -- LSF
     EN_LSF : if c_SF_TYPE = '1' generate
       
     end generate;
+
+  end generate;
+
+  DIS_SF : if c_SF_ENABLED = '0' generate
+
   end generate;
 
 

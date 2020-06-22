@@ -54,7 +54,7 @@ architecture beh of hp_calc_radius is
     
 begin
 
-  DT2R_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
+  DT2R_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
     DT2R_BS_GEN: if g_STATION_RADIUS= 0 generate
       HP_DT2R_BS : entity hp_lib.hp_calc_dt2r_small
       generic map(
@@ -88,7 +88,7 @@ begin
       );
     end generate;
   end generate;
-  -- DT2R_E_GEN: if ST_nBARREL_ENDCAP = '1' generate
+  -- DT2R_E_GEN: if c_ST_nBARREL_ENDCAP = '1' generate
   
   -- end generate;
 

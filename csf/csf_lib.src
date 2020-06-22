@@ -1,5 +1,5 @@
 csf/pkg/csf_pkg.vhd
-csf/pkg/custom_types_csf_pkg.vhd
+csf/pkg/csf_custom_pkg.vhd
 csf/src/csf.vhd
 csf/src/csf_chi2.vhd
 csf/src/csf_chi2_comparison.vhd

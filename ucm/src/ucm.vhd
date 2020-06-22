@@ -39,10 +39,10 @@ entity ucm is
     i_slc_data_neightborA_v : in slc_rx_data_rvt;
     i_slc_data_neightborB_v : in slc_rx_data_rvt;
     -- to hps
-    o_uCM2hps_inn_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av        : out ucm2hps_avt(NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
     o_uCM2pl_av             : out pipelines_avt(MAX_NUM_SL -1 downto 0)
   );
@@ -61,27 +61,27 @@ architecture beh of ucm is
   signal o_uCM2pl_ar          : pipelines_at(MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
-  signal cpam_in_av           : ucm_prepro_avt(NUM_THREADS -1 downto 0);
-  signal cpam_out_av          : ucm_prepro_avt(NUM_THREADS -1 downto 0);
+  signal cpam_in_av           : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_out_av          : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
 
   signal uCM2pl_av            : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
   signal csw_control          : ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
-  signal pam_CSW_control      : ucm_pam_control_at(NUM_THREADS -1 downto 0);
-  signal proc_info            : ucm_proc_info_at(NUM_THREADS -1 downto 0);
-  signal cvp_control          : std_logic_vector(NUM_THREADS -1 downto 0);
+  signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
+  signal proc_info            : ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+  signal cvp_control          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(MAX_NUM_SL -1 downto 0);
-  type ucm2hps_aavt is array (NUM_THREADS -1 downto 0) of ucm2hps_avt(MAX_NUM_HPS -1 downto 0);
+  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_avt(MAX_NUM_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
 begin
 
-  SLC_BoEs : if ST_nBARREL_ENDCAP = '0' or ENDCAP_nSMALL_LARGE = '0' generate
+  SLC_BoEs : if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' generate
     i_slc_data_av(MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
     i_slc_data_av(MAX_NUM_SL -2) <= i_slc_data_mainA_av(1);
     i_slc_data_av(MAX_NUM_SL -3) <= i_slc_data_mainA_av(0);
-    SLC1 : if ENABLE_NEIGHTBORS = '1' generate
+    SLC1 : if c_ENABLE_NEIGHTBORS = '1' generate
       i_slc_data_av(MAX_NUM_SL -4) <= i_slc_data_neightborA_v;
       i_slc_data_av(MAX_NUM_SL -5) <= i_slc_data_neightborB_v;
     end generate;
@@ -174,7 +174,7 @@ begin
 
 
   -- vector processors
-  SLC_VP_A : for vp_i in NUM_THREADS -1 downto 0 generate
+  SLC_VP_A : for vp_i in c_NUM_THREADS -1 downto 0 generate
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
       clk           => clk,
@@ -209,7 +209,7 @@ begin
   -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
   -- VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
-    VP2HEG: for heg_i in NUM_THREADS -1 downto 0 generate
+    VP2HEG: for heg_i in c_NUM_THREADS -1 downto 0 generate
       VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
         o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
       end generate;
@@ -233,12 +233,12 @@ begin
 
 
 
-  PAM_CSW: for heg_i in NUM_THREADS -1 downto 0 generate
-    cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((NUM_THREADS - 1) - heg_i) - 1);
-    -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - NUM_THREADS + heg_i);
+  PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
+    cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
+    -- cpam_in_av(heg_i) <= csw_main_out_av(MAX_NUM_SL - c_NUM_THREADS + heg_i);
 
-    -- o_uCM2pl_ar(MAX_NUM_SL - NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
-    -- o_uCM2pl_ar(MAX_NUM_SL - NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
+    -- o_uCM2pl_ar(MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
+    -- o_uCM2pl_ar(MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
   end generate;
 
   PL_PROC_GEN: for sl_i in MAX_NUM_SL -1 downto 0 generate
@@ -250,11 +250,11 @@ begin
     o_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     o_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
-    PL_PROC_IF: if sl_i >= MAX_NUM_SL - NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).processed   <= proc_info(sl_i - (MAX_NUM_SL - NUM_THREADS)).processed;
-      o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (MAX_NUM_SL - NUM_THREADS)).ch;
+    PL_PROC_IF: if sl_i >= MAX_NUM_SL - c_NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).processed   <= proc_info(sl_i - (MAX_NUM_SL - c_NUM_THREADS)).processed;
+      o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (MAX_NUM_SL - c_NUM_THREADS)).ch;
     end generate;
-    PL_PROC_0: if sl_i < MAX_NUM_SL - NUM_THREADS generate
+    PL_PROC_0: if sl_i < MAX_NUM_SL - c_NUM_THREADS generate
       o_uCM2pl_ar(sl_i).processed   <= '0';
       o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
     end generate;

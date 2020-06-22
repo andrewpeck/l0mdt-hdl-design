@@ -74,7 +74,7 @@ architecture beh of ucm_cvp_slope is
 
 begin
 
-  BARREL: if ST_nBARREL_ENDCAP = '0' generate
+  BARREL: if c_ST_nBARREL_ENDCAP = '0' generate
 
     barrel_r <= structify(i_data_v);
 

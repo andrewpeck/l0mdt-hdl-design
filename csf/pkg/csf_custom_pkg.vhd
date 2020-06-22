@@ -28,9 +28,9 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
 library csf_lib;
-use csf_lib.custom_types_csf_pkg.all;
+use csf_lib.csf_pkg.all;
 
-package csf_pkg is
+package csf_custom_pkg is
     ----------------------------------------------------------------------------
     -- MDT hit coordinates constants
     constant R_OVER_Z_MULTI_LEN : integer :=
@@ -48,7 +48,7 @@ package csf_pkg is
 
 end;
 
-package body csf_pkg is
+package body csf_custom_pkg is
 
     function stdlogic_integer( s : std_logic ) return integer is
     begin

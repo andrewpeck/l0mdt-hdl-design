@@ -152,7 +152,7 @@ begin
               o_hp_control(hp_i).rst <= '1';
             end loop;
             if Roi_win_valid = '1' then
-              if ST_nBARREL_ENDCAP = '0' then -- barrel
+              if c_ST_nBARREL_ENDCAP = '0' then -- barrel
                 -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
               else --endcap
 
@@ -270,7 +270,7 @@ begin
 
   int_uCM_data <= structify(i_uCM_data_v);
 
-  UCM_B_GEN: if ST_nBARREL_ENDCAP = '0' generate
+  UCM_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
 
     uCM_barrel <= structify(int_uCM_data.specific);
     z_barrel <= uCM_barrel.z;

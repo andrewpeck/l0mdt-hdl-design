@@ -46,10 +46,10 @@ architecture beh of ucm_tb is
   signal i_slc_data_neightborA_v : slc_rx_data_rvt;
   signal i_slc_data_neightborB_v : slc_rx_data_rvt;
   -- to hps
-  signal o_uCM2hps_inn_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av       : ucm2hps_avt(NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
   signal o_uCM2pl_av            : pipelines_avt(MAX_NUM_SL -1 downto 0);
 
