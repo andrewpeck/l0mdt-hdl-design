@@ -87,6 +87,16 @@ package l0mdt_constants_pkg is
 
   constant   UCM2HPS_SPECIFIC_LEN :  integer := 21;
 
+  constant   SF_SEG_POS_LEN       :  integer := 19;
+
+  constant   SF_SEG_POS_MULTI     :  real := 16.0;
+
+  constant   SF_SEG_ANG_LEN       :  integer := 15;
+
+  constant   SF_SEG_ANG_MULTI     :  real := 4096.0;
+
+  constant   SF_SEG_ANG_MULTI_LEN :  integer := 12;
+
 end package l0mdt_constants_pkg;
 
 ------------------------------------------------------------

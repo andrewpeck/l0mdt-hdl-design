@@ -23,13 +23,15 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 library csf_lib;
 use csf_lib.csf_pkg.all;
-use csf_lib.custom_types_csf_pkg.all;
+use csf_lib.csf_custom_pkg.all;
 
 entity csf is
     generic(
@@ -42,7 +44,7 @@ entity csf is
         i_mdt_hit : in hp_hit_data_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
-        o_seg     : out sf_seg_data_barrel_rvt
+        o_seg     : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
     );
 end csf;
 

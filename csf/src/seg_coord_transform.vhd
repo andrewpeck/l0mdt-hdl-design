@@ -23,13 +23,15 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 library csf_lib;
 use csf_lib.csf_pkg.all;
-use csf_lib.custom_types_csf_pkg.all;
+use csf_lib.csf_custom_pkg.all;
 
 -- library IEEE, shared_lib, csf_lib;
 -- use IEEE.STD_LOGIC_1164.ALL;
@@ -40,16 +42,16 @@ use csf_lib.custom_types_csf_pkg.all;
 -- use csf_lib.custom_types_csf_pkg.all;
 
 entity seg_coord_transform is
-    generic (
-        -- Project flavour (0: Barrel, 1: Endcap)
-        FLAVOUR     : integer := 0
-    );
-    port (
-        clk         : in  std_logic;
-        i_locseg    : in  csf_locseg_rvt;
-        i_seed      : in  ucm_csf_seed_rvt;
-        o_globseg   : out sf_seg_data_endcap_rvt
-    );
+  generic (
+    -- Project flavour (0: Barrel, 1: Endcap)
+    FLAVOUR     : integer := 0
+  );
+  port (
+    clk         : in  std_logic;
+    i_locseg    : in  csf_locseg_rvt;
+    i_seed      : in  ucm_csf_seed_rvt;
+    o_globseg   : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
+  );
 end seg_coord_transform; -- seg_coord_transform
 
 architecture Behavioral of seg_coord_transform is

@@ -26,7 +26,7 @@ use ieee.math_real.all;
 
 library csf_lib;
 use csf_lib.csf_pkg.all;
-use csf_lib.custom_types_csf_pkg.all;
+use csf_lib.csf_custom_pkg.all;
 
 library pt_lib;
 use pt_lib.pt_pkg.all;

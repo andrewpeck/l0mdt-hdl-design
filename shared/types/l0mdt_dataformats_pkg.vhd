@@ -127,37 +127,61 @@ package l0mdt_dataformats_pkg is
   function structify(x: tar2hps_rvt) return tar2hps_rt;
   function nullify (x: tar2hps_rt) return tar2hps_rt;
 
-  type ucm_csf_barrel_rt is record
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
-     z                    :  unsigned(UCM_Z_ROI_LEN-1 downto 0);
-  end record ucm_csf_barrel_rt;
-  constant UCM_CSF_BARREL_LEN : integer := 21;
-  subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
-  function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt;
-  function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt;
-  function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
-
-  type ucm_csf_endcap_rt is record
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
-     R                    :  unsigned(UCM_R_ROI_LEN-1 downto 0);
-  end record ucm_csf_endcap_rt;
-  constant UCM_CSF_ENDCAP_LEN : integer := 15;
-  subtype ucm_csf_endcap_rvt is std_logic_vector(UCM_CSF_ENDCAP_LEN-1 downto 0);
-  function vectorify(x: ucm_csf_endcap_rt) return ucm_csf_endcap_rvt;
-  function structify(x: ucm_csf_endcap_rvt) return ucm_csf_endcap_rt;
-  function nullify (x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt;
-
-  type ucm2hps_rt is record
+  type ucm_csf_seed_rt is record
      muid                 :  slc_muid_rt;
-     specific             :  std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);
+     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
+     pos                  :  unsigned(UCM_Z_ROI_LEN-1 downto 0);
+     ang                  :  unsigned(UCM_Z_ROI_LEN-1 downto 0);
      chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
      data_valid           :  std_logic;
-  end record ucm2hps_rt;
-  constant UCM2HPS_LEN : integer := 45;
-  subtype ucm2hps_rvt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
-  function vectorify(x: ucm2hps_rt) return ucm2hps_rvt;
-  function structify(x: ucm2hps_rvt) return ucm2hps_rt;
-  function nullify (x: ucm2hps_rt) return ucm2hps_rt;
+  end record ucm_csf_seed_rt;
+  constant UCM_CSF_SEED_LEN : integer := 55;
+  subtype ucm_csf_seed_rvt is std_logic_vector(UCM_CSF_SEED_LEN-1 downto 0);
+  function vectorify(x: ucm_csf_seed_rt) return ucm_csf_seed_rvt;
+  function structify(x: ucm_csf_seed_rvt) return ucm_csf_seed_rt;
+  function nullify (x: ucm_csf_seed_rt) return ucm_csf_seed_rt;
+
+  type sf2pt_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+     pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);
+     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
+     quality              :  std_logic;
+  end record sf2pt_rt;
+  constant SF2PT_LEN : integer := 59;
+  subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt;
+  function structify(x: sf2pt_rvt) return sf2pt_rt;
+  function nullify (x: sf2pt_rt) return sf2pt_rt;
+
+  type sf_seg_data_barrel_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+     pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);
+     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
+     quality              :  std_logic;
+  end record sf_seg_data_barrel_rt;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 59;
+  subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
+  function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
+  function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
+  function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+
+  type sf_seg_data_endcap_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+     pos                  :  unsigned(SF_SEG_POS_LEN-1 downto 0);
+     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);
+     quality              :  std_logic;
+  end record sf_seg_data_endcap_rt;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 59;
+  subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
+  function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
+  function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
+  function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
 end package l0mdt_dataformats_pkg;
 
@@ -450,75 +474,139 @@ package body l0mdt_dataformats_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt is
-    variable y : ucm_csf_barrel_rvt;
+  function vectorify(x: ucm_csf_seed_rt) return ucm_csf_seed_rvt is
+    variable y : ucm_csf_seed_rvt;
   begin
-    y(20 downto 10)            := vectorify(x.mbar);
-    y(9 downto 0)              := vectorify(x.z);
-    return y;
-  end function vectorify;
-  function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt is
-    variable y : ucm_csf_barrel_rt;
-  begin
-    y.mbar                     := structify(x(20 downto 10));
-    y.z                        := structify(x(9 downto 0));
-    return y;
-  end function structify;
-  function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt is
-    variable y : ucm_csf_barrel_rt;
-  begin
-    y.mbar                     := nullify(x.mbar);
-    y.z                        := nullify(x.z);
-    return y;
-  end function nullify;
-
-  function vectorify(x: ucm_csf_endcap_rt) return ucm_csf_endcap_rvt is
-    variable y : ucm_csf_endcap_rvt;
-  begin
-    y(14 downto 4)             := vectorify(x.mbar);
-    y(3 downto 0)              := vectorify(x.R);
-    return y;
-  end function vectorify;
-  function structify(x: ucm_csf_endcap_rvt) return ucm_csf_endcap_rt is
-    variable y : ucm_csf_endcap_rt;
-  begin
-    y.mbar                     := structify(x(14 downto 4));
-    y.R                        := structify(x(3 downto 0));
-    return y;
-  end function structify;
-  function nullify (x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt is
-    variable y : ucm_csf_endcap_rt;
-  begin
-    y.mbar                     := nullify(x.mbar);
-    y.R                        := nullify(x.R);
-    return y;
-  end function nullify;
-
-  function vectorify(x: ucm2hps_rt) return ucm2hps_rvt is
-    variable y : ucm2hps_rvt;
-  begin
-    y(44 downto 25)            := vectorify(x.muid);
-    y(24 downto 4)             := x.specific;
+    y(54 downto 35)            := vectorify(x.muid);
+    y(34 downto 24)            := vectorify(x.mbar);
+    y(23 downto 14)            := vectorify(x.pos);
+    y(13 downto 4)             := vectorify(x.ang);
     y(3 downto 1)              := x.chamber_id;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
-  function structify(x: ucm2hps_rvt) return ucm2hps_rt is
-    variable y : ucm2hps_rt;
+  function structify(x: ucm_csf_seed_rvt) return ucm_csf_seed_rt is
+    variable y : ucm_csf_seed_rt;
   begin
-    y.muid                     := structify(x(44 downto 25));
-    y.specific                 := x(24 downto 4);
+    y.muid                     := structify(x(54 downto 35));
+    y.mbar                     := structify(x(34 downto 24));
+    y.pos                      := structify(x(23 downto 14));
+    y.ang                      := structify(x(13 downto 4));
     y.chamber_id               := x(3 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm2hps_rt) return ucm2hps_rt is
-    variable y : ucm2hps_rt;
+  function nullify (x: ucm_csf_seed_rt) return ucm_csf_seed_rt is
+    variable y : ucm_csf_seed_rt;
   begin
     y.muid                     := nullify(x.muid);
-    y.specific                 := nullify(x.specific);
+    y.mbar                     := nullify(x.mbar);
+    y.pos                      := nullify(x.pos);
+    y.ang                      := nullify(x.ang);
     y.chamber_id               := nullify(x.chamber_id);
     y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt is
+    variable y : sf2pt_rvt;
+  begin
+    y(58)                      := x.data_valid;
+    y(57 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := x.chamber_id;
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf2pt_rvt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := x(58);
+    y.muid                     := structify(x(57 downto 38));
+    y.chamber_id               := x(37 downto 35);
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify (x: sf2pt_rt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
+    variable y : sf_seg_data_barrel_rvt;
+  begin
+    y(58)                      := x.data_valid;
+    y(57 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := x.chamber_id;
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
+    variable y : sf_seg_data_barrel_rt;
+  begin
+    y.data_valid               := x(58);
+    y.muid                     := structify(x(57 downto 38));
+    y.chamber_id               := x(37 downto 35);
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+    variable y : sf_seg_data_barrel_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
+    variable y : sf_seg_data_endcap_rvt;
+  begin
+    y(58)                      := x.data_valid;
+    y(57 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := x.chamber_id;
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
+    variable y : sf_seg_data_endcap_rt;
+  begin
+    y.data_valid               := x(58);
+    y.muid                     := structify(x(57 downto 38));
+    y.chamber_id               := x(37 downto 35);
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+    variable y : sf_seg_data_endcap_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
     return y;
   end function nullify;
 

@@ -124,10 +124,13 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-# ucm_csf_barrel:
-#   mbar        : { type: unsigned , length: UCM_MBAR_LEN }
-#   z           : { type: unsigned , length: UCM_Z_ROI_LEN }
+ucm_csf_barrel:
+  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
+  z           : { type: unsigned , length: UCM_Z_ROI_LEN }
 
+ucm_csf_endcap:
+  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
+  R           : { type: unsigned , length: UCM_R_ROI_LEN }
 
 # ucm_csf_seed:
 #   muid          : { type: slc_muid}
@@ -149,13 +152,12 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 #   data_valid    : { type: logic }
 # # slc ucm2hps
 
-
-# ucm2hps:
-#   # id            : { type: ucm2hps_id}
-#   muid          : { type: slc_muid }
-#   specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
-#   chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
-#   data_valid    : { type: logic}
+ucm2hps:
+  # id            : { type: ucm2hps_id}
+  muid          : { type: slc_muid }
+  specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
+  chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
+  data_valid    : { type: logic}
 
 ucm2hps_        : {array: open , type: ucm2hps , _: off }
 
@@ -167,35 +169,36 @@ ucm2hps_        : {array: open , type: ucm2hps , _: off }
 # -----------------------------------------------------------
 # CSF
 hp_hit_data:
-  local_y: { type: unsigned , length: MDT_LOCAL_Y_LEN }
-  local_x: { type: unsigned , length: MDT_LOCAL_X_LEN }
-  radius: { type: unsigned , length: MDT_RADIUS_LEN }
-  multilayer: {type: logic}
-  data_valid: {type: logic}
+  local_y     : { type: unsigned , length: MDT_LOCAL_Y_LEN }
+  local_x     : { type: unsigned , length: MDT_LOCAL_X_LEN }
+  radius      : { type: unsigned , length: MDT_RADIUS_LEN }
+  multilayer  : { type: logic }
+  data_valid  : { type: logic }
 
 hp_hit_data_a : {array: open, type: hp_hit_data}
 # -----------------------------------------------------------
 # sf 2 pt
 # -----------------------------------------------------------
 
-sf_seg_data_barrel:
-  pos        : { type: signed, length: SF_SEG_POS_LEN }
-  angle      : { type: signed, length: SF_SEG_ANG_LEN }
-  quality    : { type: logic}
+# sf_seg_data_barrel:
+#   pos        : { type: signed, length: SF_SEG_POS_LEN }
+#   angle      : { type: signed, length: SF_SEG_ANG_LEN }
+#   quality    : { type: logic}
 
-sf_seg_data_endcap:
-  pos        : { type: unsigned, length: SF_SEG_POS_LEN }
-  angle      : { type: signed, length: SF_SEG_ANG_LEN }
-  quality    : { type: logic}
+# sf_seg_data_endcap:
+#   pos        : { type: unsigned, length: SF_SEG_POS_LEN }
+#   angle      : { type: signed, length: SF_SEG_ANG_LEN }
+#   quality    : { type: logic}
 
+# sf2pt :
+#   data        : {type : logic , length : SF_SEG_DATA_LEN}
+#   muid        : { type: slc_muid}
+#   chamber_id  : { type: logic , length: SLC_CHAMBER_LEN }
+#   data_valid  : { type : logic}
 
-sf2pt :
-  data        : {type : logic , length : SF_SEG_DATA_LEN}
-  muid        : { type: slc_muid}
-  chamber_id  : { type: logic , length: SLC_CHAMBER_LEN }
-  data_valid  : { type : logic}
+sf2pt   : { type : logic , length : SF_SEG_DATA_LEN}
 
-sf2pt_ : { array: open , type : sf2pt , _: off}
+sf2pt_  : { array: open , type : sf2pt , _ : off}
 
 # sf2pt_a : { array: open , type : sf2pt_ , _: off}
 
@@ -204,13 +207,13 @@ sf2pt_ : { array: open , type : sf2pt , _: off}
 # -----------------------------------------------------------
 
 pipeline:
-  muid          : {type: slc_muid}
-  chambers      : {type: slc_chid}
-  common        : {type: slc_common}
-  specific      : {type: logic , length: SLC_SPECIFIC_LEN}
-  process_ch    : {type: logic , length: 4}
-  processed     : {type: logic }
-  data_valid    : {type: logic}
+  muid          : { type : slc_muid}
+  chambers      : { type : slc_chid}
+  common        : { type : slc_common}
+  specific      : { type : logic , length: SLC_SPECIFIC_LEN}
+  process_ch    : { type : logic , length: 4}
+  processed     : { type : logic }
+  data_valid    : { type : logic }
 
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 

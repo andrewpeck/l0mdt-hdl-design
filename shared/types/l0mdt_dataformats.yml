@@ -101,42 +101,15 @@ tar2hps:
 # -----------------------------------------------------------
 
 # -----------------------------------------------------------
-# slc ucm2hps specific
-# barrel
-ucm_csf_barrel:
-  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
-  z           : { type: unsigned , length: UCM_Z_ROI_LEN }
-
-ucm_csf_endcap:
-  mbar        : { type: unsigned , length: UCM_MBAR_LEN }
-  R           : { type: unsigned , length: UCM_R_ROI_LEN }
-
-
-# ucm_csf_seed_a: {array: open , type: ucm_csf_seed}
-
-# # UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 22 }
-
-# # ucm_csf_barrel_at: {array: open , type: ucm_csf_barrel}
-
-# # slc ucm2hps id
-# # ucm2hps_id:
-# #   # bcid          : { type: unsigned , length: BCID_LEN}
-# #   # muid          : { type: slc_muid }
-# #   data_valid    : { type: logic }
-# # # slc ucm2hps
-
-
-ucm2hps:
-  # id            : { type: ucm2hps_id}
-  muid          : { type: slc_muid }
-  specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
+# slc ucm 2 sf
+ucm_csf_seed:
+  muid          : { type: slc_muid}
+  mbar          : { type: unsigned , length: UCM_MBAR_LEN }
+  pos           : { type: unsigned , length: UCM_Z_ROI_LEN }
+  ang           : { type: unsigned , length: UCM_Z_ROI_LEN }
   chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
   data_valid    : { type: logic}
 
-# ucm2hps_        : {array: open , type: ucm2hps , _: off }
-
-# # ucm2hps_maxhps  : {array: MAX_NUM_HPS , type: ucm2hps }
-# # ucm2hps_a       : {array: open , type: ucm2hps_ , _: off }
 
 # # -----------------------------------------------------------
 # #       HEG 2 SF
@@ -153,21 +126,29 @@ ucm2hps:
 # # -----------------------------------------------------------
 # # sf 2 pt
 # # -----------------------------------------------------------
+sf2pt:
+  data_valid : { type: logic}
+  muid       : { type: slc_muid}
+  chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
+  pos        : { type: signed, length: SF_SEG_POS_LEN }
+  angle      : { type: signed, length: SF_SEG_ANG_LEN }
+  quality    : { type: logic}
 
-# sf_seg_data_barrel:
-#   muid       : { type: slc_muid}
-#   chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
-#   pos        : { type: signed, length: SF_SEG_POS_LEN }
-#   angle      : { type: signed, length: SF_SEG_ANG_LEN }
-#   quality    : { type: logic}
+sf_seg_data_barrel:
+  data_valid : { type: logic}
+  muid       : { type: slc_muid}
+  chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
+  pos        : { type: signed, length: SF_SEG_POS_LEN }
+  angle      : { type: signed, length: SF_SEG_ANG_LEN }
+  quality    : { type: logic}
 
-# sf_seg_data_endcap:
-#   data_valid : { type: logic}
-#   muid       : { type: slc_muid}
-#   chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
-#   pos        : { type: unsigned, length: SF_SEG_POS_LEN }
-#   angle      : { type: signed, length: SF_SEG_ANG_LEN }
-#   quality    : { type: logic}
+sf_seg_data_endcap:
+  data_valid : { type: logic}
+  muid       : { type: slc_muid}
+  chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
+  pos        : { type: unsigned, length: SF_SEG_POS_LEN }
+  angle      : { type: signed, length: SF_SEG_ANG_LEN }
+  quality    : { type: logic}
 
 
 # sf2pt :
