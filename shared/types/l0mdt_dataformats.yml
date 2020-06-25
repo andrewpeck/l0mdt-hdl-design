@@ -210,7 +210,9 @@ tf2mtc:
 # # -----------------------------------------------------------
 
 mtc_out:
+  common        : { type : slc_common}
   data_valid : { type : logic }
 
 mtc2nsp:
+  common        : { type : slc_common}
   data_valid : { type : logic }

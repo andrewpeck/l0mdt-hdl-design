@@ -241,18 +241,20 @@ package l0mdt_dataformats_pkg is
   function nullify (x: tf2mtc_rt) return tf2mtc_rt;
 
   type mtc_out_rt is record
+     common               :  slc_common_rt;
      data_valid           :  std_logic;
   end record mtc_out_rt;
-  constant MTC_OUT_LEN : integer := 1;
+  constant MTC_OUT_LEN : integer := 41;
   subtype mtc_out_rvt is std_logic_vector(MTC_OUT_LEN-1 downto 0);
   function vectorify(x: mtc_out_rt) return mtc_out_rvt;
   function structify(x: mtc_out_rvt) return mtc_out_rt;
   function nullify (x: mtc_out_rt) return mtc_out_rt;
 
   type mtc2nsp_rt is record
+     common               :  slc_common_rt;
      data_valid           :  std_logic;
   end record mtc2nsp_rt;
-  constant MTC2NSP_LEN : integer := 1;
+  constant MTC2NSP_LEN : integer := 41;
   subtype mtc2nsp_rvt is std_logic_vector(MTC2NSP_LEN-1 downto 0);
   function vectorify(x: mtc2nsp_rt) return mtc2nsp_rvt;
   function structify(x: mtc2nsp_rvt) return mtc2nsp_rt;
@@ -827,18 +829,21 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: mtc_out_rt) return mtc_out_rvt is
     variable y : mtc_out_rvt;
   begin
+    y(40 downto 1)             := vectorify(x.common);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: mtc_out_rvt) return mtc_out_rt is
     variable y : mtc_out_rt;
   begin
+    y.common                   := structify(x(40 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: mtc_out_rt) return mtc_out_rt is
     variable y : mtc_out_rt;
   begin
+    y.common                   := nullify(x.common);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -846,18 +851,21 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: mtc2nsp_rt) return mtc2nsp_rvt is
     variable y : mtc2nsp_rvt;
   begin
+    y(40 downto 1)             := vectorify(x.common);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: mtc2nsp_rvt) return mtc2nsp_rt is
     variable y : mtc2nsp_rt;
   begin
+    y.common                   := structify(x(40 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: mtc2nsp_rt) return mtc2nsp_rt is
     variable y : mtc2nsp_rt;
   begin
+    y.common                   := nullify(x.common);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;

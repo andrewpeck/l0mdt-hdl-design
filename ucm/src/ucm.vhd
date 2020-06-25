@@ -44,7 +44,7 @@ entity ucm is
     o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av             : out pipelines_avt(c_MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
 
@@ -58,13 +58,13 @@ architecture beh of ucm is
   signal csw_main_out_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal o_uCM2pl_ar          : pipelines_at(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_ar          : ucm2pl_at(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
   signal cpam_out_av          : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
+  signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_control          : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -194,7 +194,7 @@ begin
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => UCM_OUTPUT_PL_LATENCY,
-      num_bits    => PIPELINE_LEN
+      num_bits    => UCM2PL_LEN
     )
     port map(
       clk         => clk,

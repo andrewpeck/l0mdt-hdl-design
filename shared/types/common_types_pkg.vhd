@@ -190,9 +190,11 @@ package common_types_pkg is
   function nullify(x: mtc2nsp_avt) return mtc2nsp_avt;
 
   type felix_stream_rt is record
+     muid                 :  slc_muid_rt;
+     common               :  slc_common_rt;
      data_valid           :  std_logic;
   end record felix_stream_rt;
-  constant FELIX_STREAM_LEN : integer := 1;
+  constant FELIX_STREAM_LEN : integer := 61;
   subtype felix_stream_rvt is std_logic_vector(FELIX_STREAM_LEN-1 downto 0);
   function vectorify(x: felix_stream_rt) return felix_stream_rvt;
   function structify(x: felix_stream_rvt) return felix_stream_rt;
@@ -911,12 +913,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: mtc_out_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable y : std_logic_vector(x'length*41-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-1) := vectorify(x(i));
-      msb := msb - 1 -1;
+      y(msb downto msb-41) := vectorify(x(i));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -933,8 +935,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-1));
-      msb := msb - 1 -1;
+      y(i) := structify(x(msb downto msb-41));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function structify;
@@ -964,12 +966,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: mtc2nsp_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable y : std_logic_vector(x'length*41-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-1) := vectorify(x(i));
-      msb := msb - 1 -1;
+      y(msb downto msb-41) := vectorify(x(i));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -986,8 +988,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-1));
-      msb := msb - 1 -1;
+      y(i) := structify(x(msb downto msb-41));
+      msb := msb - 41 -1;
     end loop l;
     return y;
   end function structify;
@@ -1011,18 +1013,24 @@ package body common_types_pkg is
   function vectorify(x: felix_stream_rt) return felix_stream_rvt is
     variable y : felix_stream_rvt;
   begin
+    y(60 downto 41)            := vectorify(x.muid);
+    y(40 downto 1)             := vectorify(x.common);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: felix_stream_rvt) return felix_stream_rt is
     variable y : felix_stream_rt;
   begin
+    y.muid                     := structify(x(60 downto 41));
+    y.common                   := structify(x(40 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;
   function nullify (x: felix_stream_rt) return felix_stream_rt is
     variable y : felix_stream_rt;
   begin
+    y.muid                     := nullify(x.muid);
+    y.common                   := nullify(x.common);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -1036,12 +1044,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: felix_stream_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable y : std_logic_vector(x'length*61-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-1) := vectorify(x(i));
-      msb := msb - 1 -1;
+      y(msb downto msb-61) := vectorify(x(i));
+      msb := msb - 61 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -1058,8 +1066,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-1));
-      msb := msb - 1 -1;
+      y(i) := structify(x(msb downto msb-61));
+      msb := msb - 61 -1;
     end loop l;
     return y;
   end function structify;

@@ -58,7 +58,7 @@ architecture beh of top_ucm is
   signal o_uCM2hps_out_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_ext_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av           : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av           : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 

@@ -267,6 +267,8 @@ mtc2nsp_    : {array: open , type: mtc2nsp , _ : off }
 # MTC out
 # -----------------------------------------------------------
 felix_stream:
+  muid          : { type : slc_muid}
+  common        : { type : slc_common}
   data_valid : { type : logic }
 
 felix_stream_ : {array: open , type: felix_stream , _ : off }
