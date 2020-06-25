@@ -51,27 +51,30 @@ end entity candidate_manager;
 architecture beh of candidate_manager is
   signal glob_en : std_logic;
 begin
+
+  UCM : if c_UCM_ENABLED = '1' generate
   
-  UCM : entity ucm_lib.ucm
-  port map(
-    clk                     => clock_and_control.clk,
-    rst                     => clock_and_control.rst,
-    glob_en                 => glob_en,
-    -- configuration, control & Monitoring
-    -- SLc in
-    i_slc_data_mainA_av     => i_slc_data_mainA_av,
-    i_slc_data_mainB_av     => i_slc_data_mainB_av,
-    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
-    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
-    -- pam out
-    -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
-    o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
-    o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
-    o_uCM2hps_out_av        => o_uCM2hps_out_av,
-    o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
-    -- MDT hit
-    o_uCM2pl_av             => o_uCM2pl_av
-  );
+    UCM : entity ucm_lib.ucm
+    port map(
+      clk                     => clock_and_control.clk,
+      rst                     => clock_and_control.rst,
+      glob_en                 => glob_en,
+      -- configuration, control & Monitoring
+      -- SLc in
+      i_slc_data_mainA_av     => i_slc_data_mainA_av,
+      i_slc_data_mainB_av     => i_slc_data_mainB_av,
+      i_slc_data_neightborA_v => i_slc_data_neightborA_v,
+      i_slc_data_neightborB_v => i_slc_data_neightborB_v,
+      -- pam out
+      -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
+      o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
+      o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
+      o_uCM2hps_out_av        => o_uCM2hps_out_av,
+      o_uCM2hps_ext_av        => o_uCM2hps_ext_av,
+      -- MDT hit
+      o_uCM2pl_av             => o_uCM2pl_av
+    );
+  end generate;
   
   
 end architecture beh;

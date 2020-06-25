@@ -45,16 +45,18 @@ architecture beh of pipeline is
   signal glob_en : std_logic := '1';
 begin
   
-  MPL : entity mpl_lib.mpl
-  port map(
-    clk             => clock_and_control.clk,
-    rst         => clock_and_control.rst,
-    glob_en         => glob_en,
+  MPL_EN : if c_MPL_ENABLED = '1' generate
+    MPL : entity mpl_lib.mpl
+    port map(
+      clk             => clock_and_control.clk,
+      rst         => clock_and_control.rst,
+      glob_en         => glob_en,
 
-    i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2tf_av      => o_pl2pt_av,
-    o_pl2mtc_av     => o_pl2mtc_av
-  );
+      i_uCM2pl_av     => i_uCM2pl_av,
+      o_pl2tf_av      => o_pl2pt_av,
+      o_pl2mtc_av     => o_pl2mtc_av
+    );
+  end generate;
   
   
   

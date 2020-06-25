@@ -80,6 +80,8 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- BLOCKS configuration
   --------------------------------------------------------------------------------
+  constant c_UCM_ENABLED            : std_logic := '1';
+  constant c_MPL_ENABLED            : std_logic := '1';
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
   constant c_SF_TYPE                : std_logic := CFG.SF_TYPE; -- 0: CSF 1:LSF
 
