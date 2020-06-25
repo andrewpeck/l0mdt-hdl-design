@@ -173,20 +173,20 @@ architecture behavioral of ult is
       -- ttc
       ttc_commands : in l0mdt_ttc_rt;
       -- TDC Hits from Polmux
-      inner_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-      middle_tar_hits_i : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-      outer_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-      extra_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+      i_inn_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      i_mid_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      i_out_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      i_ext_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
       -- Sector Logic Candidates from uCM
-      inner_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-      middle_slc_i : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-      outer_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-      extra_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      i_inn_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      i_mid_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      i_out_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      i_ext_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
       -- Segments Out
-      inner_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-      middle_segments_o : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-      outer_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-      extra_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      o_inn_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      o_mid_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      o_out_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      o_ext_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
       -- Segments Out to Neighbor
       plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
       minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
@@ -333,20 +333,20 @@ begin
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         -- inputs from hal
-        inner_tar_hits_i  => inner_tar_hits ,
-        middle_tar_hits_i => middle_tar_hits,
-        outer_tar_hits_i  => outer_tar_hits ,
-        extra_tar_hits_i  => extra_tar_hits ,
-        -- inputs from ucm
-        inner_slc_i  => inner_slc_to_hts,
-        middle_slc_i => middle_slc_to_hts,
-        outer_slc_i  => outer_slc_to_hts,
-        extra_slc_i  => extra_slc_to_hts,
-        -- outputs to track fitting
-        inner_segments_o  => inner_segments_to_pt,
-        middle_segments_o => middle_segments_to_pt,
-        outer_segments_o  => outer_segments_to_pt,
-        extra_segments_o  => extra_segments_to_pt,
+        i_inn_tar_hits  => inner_tar_hits ,
+        i_mid_tar_hits => middle_tar_hits,
+        i_out_tar_hits  => outer_tar_hits ,
+        i_ext_tar_hits  => extra_tar_hits ,
+        -- Sector Logicm
+        i_inn_slc       => inner_slc_to_hts,
+        i_mid_slc       => middle_slc_to_hts,
+        i_out_slc       => outer_slc_to_hts,
+        i_ext_slc       => extra_slc_to_hts,
+        -- Segments Ouack fitting
+        o_inn_segments  => inner_segments_to_pt,
+        o_mid_segments => middle_segments_to_pt,
+        o_out_segments  => outer_segments_to_pt,
+        o_ext_segments  => extra_segments_to_pt,
         -- segment outputs to hal
         plus_neighbor_segments_o  => plus_neighbor_segments_o,
         minus_neighbor_segments_o => minus_neighbor_segments_o
