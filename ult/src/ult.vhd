@@ -24,11 +24,11 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
--- library hal;
+library ult_lib;
 -- use hal.system_types_pkg.all;
 -- use hal.constants_pkg.all;
 
-entity top_ult is
+entity ult is
   generic (
     DUMMY : boolean := false
     );
@@ -49,17 +49,17 @@ entity top_ult is
     i_outer_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     i_extra_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates
-    main_primary_slc_i            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
-    main_secondary_slc_i          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
-    plus_neighbor_slc_i           : in slc_rx_data_rvt;
-    minus_neighbor_slc_i          : in slc_rx_data_rvt;
+    i_main_primary_slc            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
+    i_main_secondary_slc          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
+    i_plus_neighbor_slc           : in slc_rx_data_rvt;
+    i_minus_neighbor_slc          : in slc_rx_data_rvt;
     -- Segments in from neighbor
     plus_neighbor_segments_i      : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
     minus_neighbor_segments_i     : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
     -- felix
     --tts_commands : out TTS_CMD_rt;
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    -- daq_streams_o                 : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    daq_streams_o                 : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
     -- Segments Out to Neighbor
     plus_neighbor_segments_o      : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     minus_neighbor_segments_o     : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -72,8 +72,8 @@ entity top_ult is
 
     );
 
-end entity top_ult;
-architecture behavioral of top_ult is
+end entity ult;
+architecture behavioral of ult is
 
   -- outputs from candidate manager
   signal inner_slc_to_hts    : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
@@ -82,11 +82,17 @@ architecture behavioral of top_ult is
   signal extra_slc_to_hts    : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
   signal ucm2pl_av : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
 
-  -- TDC Hits from Polmux
+  -- TDC Hits from tar 2 hps
   signal inner_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
   signal middle_tar_hits : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
   signal outer_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
   signal extra_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
+  -- TDC Hits from tar 2 daq
+  signal inner_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- outputs from hits to segments
   signal inner_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
@@ -122,16 +128,22 @@ architecture behavioral of top_ult is
       -- i_extra_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
       
       -- TDC Hits from Tar
-      i_inner_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-      i_middle_tar_hits             : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-      i_outer_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-      i_extra_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+      i_inner_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      i_middle_tar_hits             : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      i_outer_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      i_extra_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
+      -- TDC polmux from Tar
+      o_inner_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      o_middle_tdc_hits             : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      o_outer_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      o_extra_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
       -- TDC Hits from Tar
-      o_inner_tar_hits              : out tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-      o_middle_tar_hits             : out tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-      o_outer_tar_hits              : out tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-      o_extra_tar_hits              : out tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0)
+      o_inner_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      o_middle_tar_hits             : out tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      o_outer_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      o_extra_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
 
       );
   end component mdt_tar;
@@ -244,26 +256,24 @@ architecture behavioral of top_ult is
       );
   end component pipeline;
 
-  -- component daq is
-  --   port (
-  --     -- pipeline clock
-  --     clock_and_control : in l0mdt_control_rt;
+  component daq is
+    port (
+      -- pipeline clock
+      clock_and_control : in l0mdt_control_rt;
+      -- ttc
+      ttc_commands : in l0mdt_ttc_rt;
+      -- TDC Hits from Polmux
+      i_inner_tdc_hits      : in mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      i_middle_tdc_hits     : in mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      i_outer_tdc_hits      : in mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      i_extra_tdc_hits      : in mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
-  --     -- ttc
-  --     ttc_commands : in l0mdt_ttc_rt;
+      -- Tracks from MTC
 
-  --     -- TDC Hits from Polmux
-  --     inner_tdc_hits_i  : in mdt_pullmux_data_avt;
-  --     middle_tdc_hits_i : in mdt_pullmux_data_avt;
-  --     outer_tdc_hits_i  : in mdt_pullmux_data_avt;
-  --     extra_tdc_hits_i  : in mdt_pullmux_data_avt;
-
-  --     -- Tracks from MTC
-
-  --     -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-  --     daq_streams_o : out FELIX_STREAM_avt
-  --     );
-  -- end component daq;
+      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
+      daq_streams_o : out felix_stream_avt
+      );
+  end component daq;
 
   component control is
     port (
@@ -289,16 +299,21 @@ begin
         -- i_outer_tdc_hits  =>  i_outer_tdc_hits ,
         -- i_extra_tdc_hits  =>  i_extra_tdc_hits ,
         -- candidates in from hal
-        i_inner_tar_hits   => i_inner_tar_hits  ,
-        i_middle_tar_hits  => i_middle_tar_hits ,
-        i_outer_tar_hits   => i_outer_tar_hits  ,
-        i_extra_tar_hits   => i_extra_tar_hits  ,
+        i_inner_tar_hits    => i_inner_tar_hits  ,
+        i_middle_tar_hits   => i_middle_tar_hits ,
+        i_outer_tar_hits    => i_outer_tar_hits  ,
+        i_extra_tar_hits    => i_extra_tar_hits  ,
+
+        o_inner_tdc_hits    => inner_tdc_hits,
+        o_middle_tdc_hits   => middle_tdc_hits,
+        o_outer_tdc_hits    => outer_tdc_hits,
+        o_extra_tdc_hits    => extra_tdc_hits,
 
         -- outputs to ucm
-        o_inner_tar_hits  => inner_tar_hits ,
-        o_middle_tar_hits => middle_tar_hits,
-        o_outer_tar_hits  => outer_tar_hits ,
-        o_extra_tar_hits  => extra_tar_hits 
+        o_inner_tar_hits    => inner_tar_hits ,
+        o_middle_tar_hits   => middle_tar_hits,
+        o_outer_tar_hits    => outer_tar_hits ,
+        o_extra_tar_hits    => extra_tar_hits 
 
         );
 
@@ -307,10 +322,10 @@ begin
         clock_and_control => clock_and_control,  --
         ttc_commands      => ttc_commands,       --
         -- candidates in from hal
-        i_slc_data_mainA_av     => main_primary_slc_i,
-        i_slc_data_mainB_av     => main_secondary_slc_i,
-        i_slc_data_neightborA_v => plus_neighbor_slc_i ,
-        i_slc_data_neightborB_v => minus_neighbor_slc_i,
+        i_slc_data_mainA_av     => i_main_primary_slc   ,
+        i_slc_data_mainB_av     => i_main_secondary_slc ,
+        i_slc_data_neightborA_v => i_plus_neighbor_slc  ,
+        i_slc_data_neightborB_v => i_minus_neighbor_slc ,
 
 
         -- outputs to ucm
@@ -397,21 +412,21 @@ begin
         o_pl2mtc_av => pl2mtc_av
         );
 
-    -- daq_inst : daq
-    --   port map (
-    --     --
-    --     clock_and_control => clock_and_control,
-    --     ttc_commands      => ttc_commands,
+    daq_inst : daq
+      port map (
+        --
+        clock_and_control => clock_and_control,
+        ttc_commands      => ttc_commands,
 
-    --     --
-    --     inner_tdc_hits_i  => inner_tdc_hits_i,
-    --     middle_tdc_hits_i => middle_tdc_hits_i,
-    --     outer_tdc_hits_i  => outer_tdc_hits_i,
-    --     extra_tdc_hits_i  => extra_tdc_hits_i,
+        --
+        i_inner_tdc_hits  => inner_tdc_hits,
+        i_middle_tdc_hits => middle_tdc_hits,
+        i_outer_tdc_hits  => outer_tdc_hits,
+        i_extra_tdc_hits  => extra_tdc_hits,
 
-    --     --
-    --     daq_streams_o => daq_streams_o
-    --     );
+        --
+        daq_streams_o => daq_streams_o
+        );
 
     sump <= '0';
 

@@ -189,6 +189,24 @@ package common_types_pkg is
   function nullify(x: mtc2nsp_at) return mtc2nsp_at;
   function nullify(x: mtc2nsp_avt) return mtc2nsp_avt;
 
+  type felix_stream_rt is record
+     data_valid           :  std_logic;
+  end record felix_stream_rt;
+  constant FELIX_STREAM_LEN : integer := 1;
+  subtype felix_stream_rvt is std_logic_vector(FELIX_STREAM_LEN-1 downto 0);
+  function vectorify(x: felix_stream_rt) return felix_stream_rvt;
+  function structify(x: felix_stream_rvt) return felix_stream_rt;
+  function nullify (x: felix_stream_rt) return felix_stream_rt;
+
+  type felix_stream_at is array(integer range <>) of felix_stream_rt;
+  type felix_stream_avt is array(integer range <>) of felix_stream_rvt;
+  function vectorify(x: felix_stream_at) return felix_stream_avt;
+  function vectorify(x: felix_stream_at) return std_logic_vector;
+  function structify(x: felix_stream_avt) return felix_stream_at;
+  function structify(x: std_logic_vector) return felix_stream_at;
+  function nullify(x: felix_stream_at) return felix_stream_at;
+  function nullify(x: felix_stream_avt) return felix_stream_avt;
+
 end package common_types_pkg;
 
 ------------------------------------------------------------
@@ -983,6 +1001,78 @@ package body common_types_pkg is
   end function nullify;
   function nullify(x: mtc2nsp_avt) return mtc2nsp_avt is
     variable y :  mtc2nsp_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: felix_stream_rt) return felix_stream_rvt is
+    variable y : felix_stream_rvt;
+  begin
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: felix_stream_rvt) return felix_stream_rt is
+    variable y : felix_stream_rt;
+  begin
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: felix_stream_rt) return felix_stream_rt is
+    variable y : felix_stream_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: felix_stream_at) return felix_stream_avt is
+    variable y :  felix_stream_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: felix_stream_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-1) := vectorify(x(i));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: felix_stream_avt) return felix_stream_at is
+    variable y :  felix_stream_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return felix_stream_at is
+    variable y :  felix_stream_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-1));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: felix_stream_at) return felix_stream_at is
+    variable y :  felix_stream_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: felix_stream_avt) return felix_stream_avt is
+    variable y :  felix_stream_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

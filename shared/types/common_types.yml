@@ -262,3 +262,11 @@ tf2mtc_    : {array: open , type: tf2mtc , _ : off }
 mtc_out_    : {array: open , type: mtc_out , _ : off }
 
 mtc2nsp_    : {array: open , type: mtc2nsp , _ : off }
+
+# -----------------------------------------------------------
+# MTC out
+# -----------------------------------------------------------
+felix_stream:
+  data_valid : { type : logic }
+
+felix_stream_ : {array: open , type: felix_stream , _ : off }
