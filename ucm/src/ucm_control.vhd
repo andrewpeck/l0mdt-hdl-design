@@ -34,9 +34,9 @@ entity ucm_ctrl is
     rst            : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
     --
-    o_csw_ctrl          : out ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
     o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -52,7 +52,7 @@ architecture beh of ucm_ctrl is
       rst            : in std_logic;
       glob_en             : in std_logic;
       -- extrnals
-      i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
+      i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
       o_csw_ctrl          : out ucm_csw_control_at;
       -- internals
       o_num_cand          : out unsigned(3 downto 0);
@@ -136,8 +136,8 @@ entity ucm_ctrl_main is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- extrnals
-    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-    o_csw_ctrl          : out ucm_csw_control_at(MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
     o_pam_update        : out std_logic
@@ -151,10 +151,10 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
-  signal data_ar      : ucm_prepro_at(MAX_NUM_SL -1 downto 0);
+  signal i_data_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
 
-  signal input_valids : std_logic_vector(MAX_NUM_SL -1 downto 0);
+  signal input_valids : std_logic_vector(c_MAX_NUM_SL -1 downto 0);
 
   -- signal o_num_cand     : unsigned(3 downto 0);
   -- signal o_pam_update   : std_logic;
@@ -162,7 +162,7 @@ architecture beh of ucm_ctrl_main is
   
 begin
   
-  pre_op: for sl_i in MAX_NUM_SL -1 downto 0 generate
+  pre_op: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     i_data_ar(sl_i) <= structify(i_data(sl_i));
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
   end generate;
@@ -170,7 +170,7 @@ begin
   Ctrl_logic : process(rst,clk) 
     variable sl_i : integer := 0;
     variable pl_o : integer := 0;
-    -- variable order : integer(MAX_NUM_SL -1 downto 0);
+    -- variable order : integer(c_MAX_NUM_SL -1 downto 0);
   begin
 
     if rising_edge(clk) then
@@ -193,12 +193,12 @@ begin
   
           when ALG_RUN =>
 
-          for sl_i in MAX_NUM_SL -1 downto 0 loop
+          for sl_i in c_MAX_NUM_SL -1 downto 0 loop
 
             if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' then
               if data_ar(sl_i).data_valid = '1' then
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-                o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(sl_i,4));
+                o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+                o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(sl_i,4));
                 pl_o := pl_o + 1;
               end if;
             else
@@ -208,26 +208,26 @@ begin
           end loop;
 
           -- if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' then
-          --   -- if data_ar(MAX_NUM_SL - pl_0).data_valid = '1' then
+          --   -- if data_ar(c_MAX_NUM_SL - pl_0).data_valid = '1' then
           --   -- end if;
           -- else
           -- end if;
             
           -- if (c_ST_nBARREL_ENDCAP and c_ENDCAP_nSMALL_LARGE) = '0' then -- 3+1+1
           --   -- barrel or small endcap
-          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- x1xxx
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
           --     pl_o := pl_o + 1;
           --   end if;
-          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xx1xx
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
           --     pl_o := pl_o + 1;
           --   end if;
-          --   if data_ar(MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(MAX_NUM_SL - 2 - pl_o,4));
+          --   if data_ar(c_MAX_NUM_SL - 2 - pl_o).data_valid = '1' then -- xxx1x
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig<= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 2 - pl_o,4));
           --     pl_o := pl_o + 1;
           --   end if;
           -- else 
@@ -236,14 +236,14 @@ begin
             
           -- if  c_ENABLE_NEIGHTBORS = '1' then -- with neigbors
 
-          --   if data_ar(MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(MAX_NUM_SL - 1,4));
+          --   if data_ar(c_MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(c_MAX_NUM_SL - 1,4));
           --     pl_o := pl_o + 1;
           --   end if;
           --   if data_ar(0).data_valid = '1' then -- xxx1x
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).data_present <= '1';
-          --     o_csw_ctrl(MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';
+          --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).addr_orig <= std_logic_vector(to_unsigned(0,4));
           --     pl_o := pl_o + 1;
           --   end if;
 
@@ -294,7 +294,7 @@ entity ucm_ctrl_pam is
     rst            : in std_logic;
     glob_en             : in std_logic;
     --
-    -- i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
+    -- i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
     o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);

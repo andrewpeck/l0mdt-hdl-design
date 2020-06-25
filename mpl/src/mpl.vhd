@@ -37,21 +37,21 @@ entity mpl is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_uCM2pl_av         : in pipelines_avt(MAX_NUM_SL -1 downto 0);
+    i_uCM2pl_av         : in pipelines_avt(c_MAX_NUM_SL -1 downto 0);
     o_pl2tf_av          : out pipelines_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pipelines_avt(MAX_NUM_SL -1 downto 0)
+    o_pl2mtc_av         : out pipelines_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl;
 
 architecture beh of mpl is
 
-  signal pl2pl_av : pipelines_avt(MAX_NUM_SL -1 downto 0);
+  signal pl2pl_av : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal pl2plcsw_av : pipelines_avt(c_NUM_THREADS -1 downto 0);
   signal pl2plcsw_av : pipelines_avt(c_NUM_THREADS -1 downto 0);
   
 begin
 
-  MPL_A : for sl_i in MAX_NUM_SL -1 downto 0 generate
+  MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => MPL_PL_A_LATENCY,
@@ -78,7 +78,7 @@ begin
     o_plcsw2tf_av       => o_pl2tf_av
   );
 
-  MPL_B : for sl_i in MAX_NUM_SL -1 downto 0 generate
+  MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => MPL_PL_B_LATENCY,
@@ -95,7 +95,7 @@ begin
   end generate;
 
   PL2CSW : for sl_i in c_NUM_THREADS -1 downto 0 generate
-    pl2plcsw_av(sl_i) <= pl2pl_av((MAX_NUM_SL - 1) - ((c_NUM_THREADS - 1) - sl_i));
+    pl2plcsw_av(sl_i) <= pl2pl_av((c_MAX_NUM_SL - 1) - ((c_NUM_THREADS - 1) - sl_i));
   end generate;
   
   

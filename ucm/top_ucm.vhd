@@ -47,7 +47,7 @@ entity top_ucm is
     o_uCM2hps_out_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_ext_1b        : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_1b             : out std_logic_vector(MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_1b             : out std_logic_vector(c_MAX_NUM_SL -1 downto 0)
   );
 end entity top_ucm;
 
@@ -58,7 +58,7 @@ architecture beh of top_ucm is
   signal o_uCM2hps_out_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_ext_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av           : pipelines_avt(MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av           : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
@@ -90,7 +90,7 @@ begin
     o_uCM2hps_ext_1b(th_i) <= or_reduce(o_uCM2hps_ext_av(th_i));
   end generate;
 
-  PL : for pl_i in MAX_NUM_SL -1 downto 0 generate
+  PL : for pl_i in c_MAX_NUM_SL -1 downto 0 generate
     o_uCM2pl_1b(pl_i) <= or_reduce(o_uCM2pl_av(pl_i));
   end generate;
 

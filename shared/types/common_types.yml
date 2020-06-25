@@ -206,37 +206,59 @@ sf2pt_  : { array: open , type : sf2pt , _ : off}
 # slc ucm pipeline
 # -----------------------------------------------------------
 
-pipeline:
-  muid          : { type : slc_muid}
-  chambers      : { type : slc_chid}
-  common        : { type : slc_common}
-  specific      : { type : logic , length: SLC_SPECIFIC_LEN}
-  process_ch    : { type : logic , length: 4}
-  processed     : { type : logic }
-  data_valid    : { type : logic }
+# ucm2pl:
+#   muid          : { type : slc_muid}
+#   chambers      : { type : slc_chid}
+#   common        : { type : slc_common}
+#   specific      : { type : logic , length: SLC_SPECIFIC_LEN}
+#   process_ch    : { type : logic , length: 4}
+#   processed     : { type : logic }
+#   data_valid    : { type : logic }
 
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 
-pipelines    : {array: open , type: pipeline }
+ucm2pl_    : {array: open , type: ucm2pl , _ : off }
 
-#pl 2 pt
-slc_pt:
-  data_valid : { type : logic }
-  muid       : { type : slc_muid}
-  phimod     : { type : signed, length: SLC_PT_PHIMOD_LEN}
-  charge     : { type : logic}
+# #pl 2 pt
+# pl2pt:
+#   data_valid : { type : logic }
+#   muid       : { type : slc_muid}
+#   phimod     : { type : signed, length: SLC_PT_PHIMOD_LEN}
+#   charge     : { type : logic}
 
+pl2pt_    : {array: open , type: pl2pt , _ : off}
+
+# pl2mtc:
+#   muid          : { type : slc_muid}
+#   chambers      : { type : slc_chid}
+#   common        : { type : slc_common}
+#   specific      : { type : logic , length: SLC_SPECIFIC_LEN}
+#   process_ch    : { type : logic , length: 4}
+#   processed     : { type : logic }
+#   data_valid    : { type : logic }
+
+pl2mtc_    : {array: open , type: pl2mtc, _ : off }
 
 # -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
 
-mtc_tf:
-  data_valid : { type : logic }
-  muid       : { type : slc_muid}
-  eta        : { type : signed, length: MTC_ETA_LEN}
-  pt         : { type : unsigned, length: MTC_PT_LEN}
-  pt_thr     : { type : logic, length: MTC_PTTHR_LEN}
-  charge     : { type : logic}
-  nseg       : { type : unsigned, length: MTC_NSEG_LEN}
-  quality    : { type : logic, length: MTC_QUALITY_LEN}
+# mtc_tf:
+#   data_valid : { type : logic }
+#   muid       : { type : slc_muid}
+#   eta        : { type : signed, length: MTC_ETA_LEN}
+#   pt         : { type : unsigned, length: MTC_PT_LEN}
+#   pt_thr     : { type : logic, length: MTC_PTTHR_LEN}
+#   charge     : { type : logic}
+#   nseg       : { type : unsigned, length: MTC_NSEG_LEN}
+#   quality    : { type : logic, length: MTC_QUALITY_LEN}
+
+tf2mtc_    : {array: open , type: tf2mtc , _ : off }
+
+# -----------------------------------------------------------
+# MTC out
+# -----------------------------------------------------------
+
+mtc_out_    : {array: open , type: mtc_out , _ : off }
+
+mtc2nsp_    : {array: open , type: mtc2nsp , _ : off }

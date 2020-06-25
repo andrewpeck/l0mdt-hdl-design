@@ -34,20 +34,6 @@ package common_constants_pkg is
 
   constant   SLC_PT_PHIMOD_MULT   :  real := 320.0;
 
-  constant   MTC_ETA_LEN          :  integer := 15;
-
-  constant   MTC_ETA_MULT         :  real := 6068.1481481481;
-
-  constant   MTC_PT_LEN           :  integer := 9;
-
-  constant   MTC_PT_MULT          :  real := 4.0;
-
-  constant   MTC_PTTHR_LEN        :  integer := 4;
-
-  constant   MTC_NSEG_LEN         :  integer := 2;
-
-  constant   MTC_QUALITY_LEN      :  integer := 3;
-
   constant   BIL_SEC3_RHO         :  real := 4949.0;
 
   constant   BML_SEC3_RHO         :  real := 7139.0;

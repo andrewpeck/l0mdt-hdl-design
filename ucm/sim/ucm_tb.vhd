@@ -51,7 +51,7 @@ architecture beh of ucm_tb is
   signal o_uCM2hps_out_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_ext_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av            : pipelines_avt(MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal cand1 , cand2 , cand3 , cand4 : slc_rx_data_rt;
   signal barrel1 , barrel2 , barrel3 , barrel4 : slc_barrel_rt;

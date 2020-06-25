@@ -137,13 +137,13 @@ SLC_PT_PHIMOD_MULT: {qualifier: constant, type: real, value: 320.0}
 # -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
-MTC_ETA_LEN   :  { qualifier: constant , type: integer , value: 15 }
-MTC_ETA_MULT  :  { qualifier: constant , type: real, value: 6068.1481481481}
-MTC_PT_LEN    :  { qualifier: constant , type: integer , value: 9 }
-MTC_PT_MULT   :  { qualifier: constant , type: real, value: 4.0}
-MTC_PTTHR_LEN :  { qualifier: constant , type: integer , value: 4 }
-MTC_NSEG_LEN  :  { qualifier: constant , type: integer , value: 2 }
-MTC_QUALITY_LEN  :  { qualifier: constant , type: integer , value: 3 }
+# MTC_ETA_LEN   :  { qualifier: constant , type: integer , value: 15 }
+# MTC_ETA_MULT  :  { qualifier: constant , type: real, value: 6068.1481481481}
+# MTC_PT_LEN    :  { qualifier: constant , type: integer , value: 9 }
+# MTC_PT_MULT   :  { qualifier: constant , type: real, value: 4.0}
+# MTC_PTTHR_LEN :  { qualifier: constant , type: integer , value: 4 }
+# MTC_NSEG_LEN  :  { qualifier: constant , type: integer , value: 2 }
+# MTC_QUALITY_LEN  :  { qualifier: constant , type: integer , value: 3 }
 
 #############################################################
 # OTHER

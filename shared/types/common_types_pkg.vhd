@@ -135,57 +135,59 @@ package common_types_pkg is
   function nullify(x: sf2pt_at) return sf2pt_at;
   function nullify(x: sf2pt_avt) return sf2pt_avt;
 
-  type pipeline_rt is record
-     muid                 :  slc_muid_rt;
-     chambers             :  slc_chid_rt;
-     common               :  slc_common_rt;
-     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
-     process_ch           :  std_logic_vector(4-1 downto 0);
-     processed            :  std_logic;
-     data_valid           :  std_logic;
-  end record pipeline_rt;
-  constant PIPELINE_LEN : integer := 129;
-  subtype pipeline_rvt is std_logic_vector(PIPELINE_LEN-1 downto 0);
-  function vectorify(x: pipeline_rt) return pipeline_rvt;
-  function structify(x: pipeline_rvt) return pipeline_rt;
-  function nullify (x: pipeline_rt) return pipeline_rt;
+  type ucm2pl_at is array(integer range <>) of ucm2pl_rt;
+  type ucm2pl_avt is array(integer range <>) of ucm2pl_rvt;
+  function vectorify(x: ucm2pl_at) return ucm2pl_avt;
+  function vectorify(x: ucm2pl_at) return std_logic_vector;
+  function structify(x: ucm2pl_avt) return ucm2pl_at;
+  function structify(x: std_logic_vector) return ucm2pl_at;
+  function nullify(x: ucm2pl_at) return ucm2pl_at;
+  function nullify(x: ucm2pl_avt) return ucm2pl_avt;
 
-  type pipelines_at is array(integer range <>) of pipeline_rt;
-  type pipelines_avt is array(integer range <>) of pipeline_rvt;
-  function vectorify(x: pipelines_at) return pipelines_avt;
-  function vectorify(x: pipelines_at) return std_logic_vector;
-  function structify(x: pipelines_avt) return pipelines_at;
-  function structify(x: std_logic_vector) return pipelines_at;
-  function nullify(x: pipelines_at) return pipelines_at;
-  function nullify(x: pipelines_avt) return pipelines_avt;
+  type pl2pt_at is array(integer range <>) of pl2pt_rt;
+  type pl2pt_avt is array(integer range <>) of pl2pt_rvt;
+  function vectorify(x: pl2pt_at) return pl2pt_avt;
+  function vectorify(x: pl2pt_at) return std_logic_vector;
+  function structify(x: pl2pt_avt) return pl2pt_at;
+  function structify(x: std_logic_vector) return pl2pt_at;
+  function nullify(x: pl2pt_at) return pl2pt_at;
+  function nullify(x: pl2pt_avt) return pl2pt_avt;
 
-  type slc_pt_rt is record
-     data_valid           :  std_logic;
-     muid                 :  slc_muid_rt;
-     phimod               :  signed(SLC_PT_PHIMOD_LEN-1 downto 0);
-     charge               :  std_logic;
-  end record slc_pt_rt;
-  constant SLC_PT_LEN : integer := 30;
-  subtype slc_pt_rvt is std_logic_vector(SLC_PT_LEN-1 downto 0);
-  function vectorify(x: slc_pt_rt) return slc_pt_rvt;
-  function structify(x: slc_pt_rvt) return slc_pt_rt;
-  function nullify (x: slc_pt_rt) return slc_pt_rt;
+  type pl2mtc_at is array(integer range <>) of pl2mtc_rt;
+  type pl2mtc_avt is array(integer range <>) of pl2mtc_rvt;
+  function vectorify(x: pl2mtc_at) return pl2mtc_avt;
+  function vectorify(x: pl2mtc_at) return std_logic_vector;
+  function structify(x: pl2mtc_avt) return pl2mtc_at;
+  function structify(x: std_logic_vector) return pl2mtc_at;
+  function nullify(x: pl2mtc_at) return pl2mtc_at;
+  function nullify(x: pl2mtc_avt) return pl2mtc_avt;
 
-  type mtc_tf_rt is record
-     data_valid           :  std_logic;
-     muid                 :  slc_muid_rt;
-     eta                  :  signed(MTC_ETA_LEN-1 downto 0);
-     pt                   :  unsigned(MTC_PT_LEN-1 downto 0);
-     pt_thr               :  std_logic_vector(MTC_PTTHR_LEN-1 downto 0);
-     charge               :  std_logic;
-     nseg                 :  unsigned(MTC_NSEG_LEN-1 downto 0);
-     quality              :  std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
-  end record mtc_tf_rt;
-  constant MTC_TF_LEN : integer := 55;
-  subtype mtc_tf_rvt is std_logic_vector(MTC_TF_LEN-1 downto 0);
-  function vectorify(x: mtc_tf_rt) return mtc_tf_rvt;
-  function structify(x: mtc_tf_rvt) return mtc_tf_rt;
-  function nullify (x: mtc_tf_rt) return mtc_tf_rt;
+  type tf2mtc_at is array(integer range <>) of tf2mtc_rt;
+  type tf2mtc_avt is array(integer range <>) of tf2mtc_rvt;
+  function vectorify(x: tf2mtc_at) return tf2mtc_avt;
+  function vectorify(x: tf2mtc_at) return std_logic_vector;
+  function structify(x: tf2mtc_avt) return tf2mtc_at;
+  function structify(x: std_logic_vector) return tf2mtc_at;
+  function nullify(x: tf2mtc_at) return tf2mtc_at;
+  function nullify(x: tf2mtc_avt) return tf2mtc_avt;
+
+  type mtc_out_at is array(integer range <>) of mtc_out_rt;
+  type mtc_out_avt is array(integer range <>) of mtc_out_rvt;
+  function vectorify(x: mtc_out_at) return mtc_out_avt;
+  function vectorify(x: mtc_out_at) return std_logic_vector;
+  function structify(x: mtc_out_avt) return mtc_out_at;
+  function structify(x: std_logic_vector) return mtc_out_at;
+  function nullify(x: mtc_out_at) return mtc_out_at;
+  function nullify(x: mtc_out_avt) return mtc_out_avt;
+
+  type mtc2nsp_at is array(integer range <>) of mtc2nsp_rt;
+  type mtc2nsp_avt is array(integer range <>) of mtc2nsp_rvt;
+  function vectorify(x: mtc2nsp_at) return mtc2nsp_avt;
+  function vectorify(x: mtc2nsp_at) return std_logic_vector;
+  function structify(x: mtc2nsp_avt) return mtc2nsp_at;
+  function structify(x: std_logic_vector) return mtc2nsp_at;
+  function nullify(x: mtc2nsp_at) return mtc2nsp_at;
+  function nullify(x: mtc2nsp_avt) return mtc2nsp_avt;
 
 end package common_types_pkg;
 
@@ -670,52 +672,15 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: pipeline_rt) return pipeline_rvt is
-    variable y : pipeline_rvt;
-  begin
-    y(128 downto 109)          := vectorify(x.muid);
-    y(108 downto 97)           := vectorify(x.chambers);
-    y(96 downto 57)            := vectorify(x.common);
-    y(56 downto 6)             := x.specific;
-    y(5 downto 2)              := x.process_ch;
-    y(1)                       := x.processed;
-    y(0)                       := x.data_valid;
-    return y;
-  end function vectorify;
-  function structify(x: pipeline_rvt) return pipeline_rt is
-    variable y : pipeline_rt;
-  begin
-    y.muid                     := structify(x(128 downto 109));
-    y.chambers                 := structify(x(108 downto 97));
-    y.common                   := structify(x(96 downto 57));
-    y.specific                 := x(56 downto 6);
-    y.process_ch               := x(5 downto 2);
-    y.processed                := x(1);
-    y.data_valid               := x(0);
-    return y;
-  end function structify;
-  function nullify (x: pipeline_rt) return pipeline_rt is
-    variable y : pipeline_rt;
-  begin
-    y.muid                     := nullify(x.muid);
-    y.chambers                 := nullify(x.chambers);
-    y.common                   := nullify(x.common);
-    y.specific                 := nullify(x.specific);
-    y.process_ch               := nullify(x.process_ch);
-    y.processed                := nullify(x.processed);
-    y.data_valid               := nullify(x.data_valid);
-    return y;
-  end function nullify;
-
-  function vectorify(x: pipelines_at) return pipelines_avt is
-    variable y :  pipelines_avt(x'range);
+  function vectorify(x: ucm2pl_at) return ucm2pl_avt is
+    variable y :  ucm2pl_avt(x'range);
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
     end loop l;
     return y;
   end function vectorify;
-  function vectorify(x: pipelines_at) return std_logic_vector is
+  function vectorify(x: ucm2pl_at) return std_logic_vector is
     variable y : std_logic_vector(x'length*129-1 downto 0);
     variable msb : integer := y'length-1;
   begin
@@ -725,16 +690,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function vectorify;
-  function structify(x: pipelines_avt) return pipelines_at is
-    variable y :  pipelines_at(x'range);
+  function structify(x: ucm2pl_avt) return ucm2pl_at is
+    variable y :  ucm2pl_at(x'range);
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
     end loop l;
     return y;
   end function structify;
-  function structify(x: std_logic_vector) return pipelines_at is
-    variable y :  pipelines_at(x'range);
+  function structify(x: std_logic_vector) return ucm2pl_at is
+    variable y :  ucm2pl_at(x'range);
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -743,16 +708,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function structify;
-  function nullify(x: pipelines_at) return pipelines_at is
-    variable y :  pipelines_at(x'range);
+  function nullify(x: ucm2pl_at) return ucm2pl_at is
+    variable y :  ucm2pl_at(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
     return y;
   end function nullify;
-  function nullify(x: pipelines_avt) return pipelines_avt is
-    variable y :  pipelines_avt(x'range);
+  function nullify(x: ucm2pl_avt) return ucm2pl_avt is
+    variable y :  ucm2pl_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
@@ -760,71 +725,268 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: slc_pt_rt) return slc_pt_rvt is
-    variable y : slc_pt_rvt;
+  function vectorify(x: pl2pt_at) return pl2pt_avt is
+    variable y :  pl2pt_avt(x'range);
   begin
-    y(29)                      := x.data_valid;
-    y(28 downto 9)             := vectorify(x.muid);
-    y(8 downto 1)              := vectorify(x.phimod);
-    y(0)                       := x.charge;
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
     return y;
   end function vectorify;
-  function structify(x: slc_pt_rvt) return slc_pt_rt is
-    variable y : slc_pt_rt;
+  function vectorify(x: pl2pt_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*22-1 downto 0);
+    variable msb : integer := y'length-1;
   begin
-    y.data_valid               := x(29);
-    y.muid                     := structify(x(28 downto 9));
-    y.phimod                   := structify(x(8 downto 1));
-    y.charge                   := x(0);
+    l: for i in x'range loop
+      y(msb downto msb-22) := vectorify(x(i));
+      msb := msb - 22 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: pl2pt_avt) return pl2pt_at is
+    variable y :  pl2pt_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
     return y;
   end function structify;
-  function nullify (x: slc_pt_rt) return slc_pt_rt is
-    variable y : slc_pt_rt;
+  function structify(x: std_logic_vector) return pl2pt_at is
+    variable y :  pl2pt_at(x'range);
+    variable msb : integer := x'length-1;
   begin
-    y.data_valid               := nullify(x.data_valid);
-    y.muid                     := nullify(x.muid);
-    y.phimod                   := nullify(x.phimod);
-    y.charge                   := nullify(x.charge);
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-22));
+      msb := msb - 22 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: pl2pt_at) return pl2pt_at is
+    variable y :  pl2pt_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: pl2pt_avt) return pl2pt_avt is
+    variable y :  pl2pt_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 
-  function vectorify(x: mtc_tf_rt) return mtc_tf_rvt is
-    variable y : mtc_tf_rvt;
+  function vectorify(x: pl2mtc_at) return pl2mtc_avt is
+    variable y :  pl2mtc_avt(x'range);
   begin
-    y(54)                      := x.data_valid;
-    y(53 downto 34)            := vectorify(x.muid);
-    y(33 downto 19)            := vectorify(x.eta);
-    y(18 downto 10)            := vectorify(x.pt);
-    y(9 downto 6)              := x.pt_thr;
-    y(5)                       := x.charge;
-    y(4 downto 3)              := vectorify(x.nseg);
-    y(2 downto 0)              := x.quality;
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
     return y;
   end function vectorify;
-  function structify(x: mtc_tf_rvt) return mtc_tf_rt is
-    variable y : mtc_tf_rt;
+  function vectorify(x: pl2mtc_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*129-1 downto 0);
+    variable msb : integer := y'length-1;
   begin
-    y.data_valid               := x(54);
-    y.muid                     := structify(x(53 downto 34));
-    y.eta                      := structify(x(33 downto 19));
-    y.pt                       := structify(x(18 downto 10));
-    y.pt_thr                   := x(9 downto 6);
-    y.charge                   := x(5);
-    y.nseg                     := structify(x(4 downto 3));
-    y.quality                  := x(2 downto 0);
+    l: for i in x'range loop
+      y(msb downto msb-129) := vectorify(x(i));
+      msb := msb - 129 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: pl2mtc_avt) return pl2mtc_at is
+    variable y :  pl2mtc_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
     return y;
   end function structify;
-  function nullify (x: mtc_tf_rt) return mtc_tf_rt is
-    variable y : mtc_tf_rt;
+  function structify(x: std_logic_vector) return pl2mtc_at is
+    variable y :  pl2mtc_at(x'range);
+    variable msb : integer := x'length-1;
   begin
-    y.data_valid               := nullify(x.data_valid);
-    y.muid                     := nullify(x.muid);
-    y.eta                      := nullify(x.eta);
-    y.pt                       := nullify(x.pt);
-    y.pt_thr                   := nullify(x.pt_thr);
-    y.charge                   := nullify(x.charge);
-    y.nseg                     := nullify(x.nseg);
-    y.quality                  := nullify(x.quality);
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-129));
+      msb := msb - 129 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: pl2mtc_at) return pl2mtc_at is
+    variable y :  pl2mtc_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: pl2mtc_avt) return pl2mtc_avt is
+    variable y :  pl2mtc_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: tf2mtc_at) return tf2mtc_avt is
+    variable y :  tf2mtc_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: tf2mtc_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*55-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-55) := vectorify(x(i));
+      msb := msb - 55 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: tf2mtc_avt) return tf2mtc_at is
+    variable y :  tf2mtc_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return tf2mtc_at is
+    variable y :  tf2mtc_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-55));
+      msb := msb - 55 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: tf2mtc_at) return tf2mtc_at is
+    variable y :  tf2mtc_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: tf2mtc_avt) return tf2mtc_avt is
+    variable y :  tf2mtc_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: mtc_out_at) return mtc_out_avt is
+    variable y :  mtc_out_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: mtc_out_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-1) := vectorify(x(i));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: mtc_out_avt) return mtc_out_at is
+    variable y :  mtc_out_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return mtc_out_at is
+    variable y :  mtc_out_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-1));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: mtc_out_at) return mtc_out_at is
+    variable y :  mtc_out_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: mtc_out_avt) return mtc_out_avt is
+    variable y :  mtc_out_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: mtc2nsp_at) return mtc2nsp_avt is
+    variable y :  mtc2nsp_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: mtc2nsp_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*1-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-1) := vectorify(x(i));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: mtc2nsp_avt) return mtc2nsp_at is
+    variable y :  mtc2nsp_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return mtc2nsp_at is
+    variable y :  mtc2nsp_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-1));
+      msb := msb - 1 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: mtc2nsp_at) return mtc2nsp_at is
+    variable y :  mtc2nsp_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: mtc2nsp_avt) return mtc2nsp_avt is
+    variable y :  mtc2nsp_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 

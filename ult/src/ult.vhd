@@ -38,28 +38,34 @@ entity top_ult is
     -- ttc
     ttc_commands                  : in l0mdt_ttc_rt;
     -- TDC Hits from Polmux
-    inner_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    middle_tdc_hits_i             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- inner_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    -- middle_tdc_hits_i             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    -- outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    -- extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    
+    -- TDC Hits from Tar
+    inner_tar_hits_i              : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    middle_tar_hits_i             : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    outer_tar_hits_i              : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    extra_tar_hits_i              : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates
     main_primary_slc_i            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
     main_secondary_slc_i          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
     plus_neighbor_slc_i           : in slc_rx_data_rvt;
     minus_neighbor_slc_i          : in slc_rx_data_rvt;
     -- Segments in from neighbor
-    plus_neighbor_segments_i      : in sf2pt_avt(c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_i     : in sf2pt_avt(c_NUM_SF_INPUTS-1 downto 0);
+    plus_neighbor_segments_i      : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    minus_neighbor_segments_i     : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
     -- felix
     --tts_commands : out TTS_CMD_rt;
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o                 : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    -- daq_streams_o                 : out FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o      : out sf2pt_avt(c_NUM_SF_OUTPUTS-1 downto 0);
-    minus_neighbor_segments_o     : out sf2pt_avt(c_NUM_SF_OUTPUTS-1 downto 0);
-    -- MUCTPI
-    MTC_o                         : out MTC_avt(c_NUM_MTC-1 downto 0);
-    NSP_o                         : out NSP_avt(c_NUM_NSP-1 downto 0);
+    plus_neighbor_segments_o      : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    minus_neighbor_segments_o     : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    -- -- MUCTPI
+    MTC_o                         : out mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_o                         : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic
@@ -70,11 +76,17 @@ end entity top_ult;
 architecture behavioral of top_ult is
 
   -- outputs from candidate manager
-  signal inner_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_hts   : SLC_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_hts    : SLC_avt(c_NUM_THREADS-1 downto 0);
-  signal all_slc_to_pipeline : pipelines_avt(MAX_NUM_SL -1 downto 0);
+  signal inner_slc_to_hts    : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal middle_slc_to_hts   : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal outer_slc_to_hts    : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal extra_slc_to_hts    : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+  signal ucm2pl_av : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+
+  -- TDC Hits from Polmux
+  -- signal inner_tar_hits_i  : tar2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- signal middle_tar_hits_i : tar2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- signal outer_tar_hits_i  : tar2hps_avt(c_NUM_THREADS -1 downto 0);
+  -- signal extra_tar_hits_i  : tar2hps_avt(c_NUM_THREADS -1 downto 0);
 
   -- outputs from hits to segments
   signal inner_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
@@ -83,13 +95,18 @@ architecture behavioral of top_ult is
   signal extra_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
-  signal slc_to_pt : SLC_avt (c_NUM_THREADS-1 downto 0);
+  signal inner_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal middle_slc_to_pt : sf2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal outer_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal extra_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
-  signal slc_to_mtc : SLC_avt (c_NUM_SLC-1 downto 0);
-
-  -- pt calc
-  signal slcpipe_ptcalc : SLCPIPE_PTCALC_avt (c_NUM_THREADS-1 downto 0);
+  signal pl2pt_av : pl2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal pl2mtc_av : pl2mtc_avt (c_MAX_NUM_SL-1 downto 0);
+          
+  -- pt calc 2 mtc
+  signal pt2mtc_av : tf2mtc_avt(c_NUM_THREADS-1 downto 0);
+  -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
   component candidate_manager is
     port (
@@ -108,7 +125,7 @@ architecture behavioral of top_ult is
       o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
       o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
       -- pipeline
-      o_uCM2pl_av             : out pipelines_avt(MAX_NUM_SL -1 downto 0)
+      o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
       );
   end component candidate_manager;
 
@@ -121,26 +138,26 @@ architecture behavioral of top_ult is
       ttc_commands : in l0mdt_ttc_rt;
 
       -- TDC Hits from Polmux
-      inner_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
-      middle_tdc_hits_i : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
-      outer_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
-      extra_tdc_hits_i  : in tar2hps_avt(c_NUM_THREADS -1 downto 0);
+      inner_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+      middle_tar_hits_i : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+      outer_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+      extra_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
       -- Sector Logic Candidates from uCM
-      inner_slc_i  : in SLC_avt;
-      middle_slc_i : in SLC_avt;
-      outer_slc_i  : in SLC_avt;
-      extra_slc_i  : in SLC_avt;
+      inner_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      middle_slc_i : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      outer_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+      extra_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
 
       -- Segments Out
-      inner_segments_o  : out sf2pt_avt;
-      middle_segments_o : out sf2pt_avt;
-      outer_segments_o  : out sf2pt_avt;
-      extra_segments_o  : out sf2pt_avt;
+      inner_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      middle_segments_o : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      outer_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+      extra_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
 
       -- Segments Out to Neighbor
-      plus_neighbor_segments_o  : out sf2pt_avt;
-      minus_neighbor_segments_o : out sf2pt_avt
+      plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+      minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
       );
 
   end component hits_to_segments;
@@ -148,26 +165,21 @@ architecture behavioral of top_ult is
   component track_fitting is
     port (
       -- pipeline clock
-      clock_and_control : in l0mdt_control_rt;
-
+      clock_and_control         : in l0mdt_control_rt;
       -- ttc
-      ttc_commands : in l0mdt_ttc_rt;
-
+      ttc_commands              : in l0mdt_ttc_rt;
       -- Segments in from segment finder
-      inner_segments_i  : in sf2pt_avt;
-      middle_segments_i : in sf2pt_avt;
-      outer_segments_i  : in sf2pt_avt;
-      extra_segments_i  : in sf2pt_avt;
-
+      inner_segments_i          : in sf2pt_avt;
+      middle_segments_i         : in sf2pt_avt;
+      outer_segments_i          : in sf2pt_avt;
+      extra_segments_i          : in sf2pt_avt;
       -- Segments in from neighbor
       minus_neighbor_segments_i : in sf2pt_avt;
       plus_neighbor_segments_i  : in sf2pt_avt;
-
       -- Sector Logic Candidates from pipeline
-      slc_i : in SLC_avt;
-
+      i_pl2pt_av                : in pl2pt_avt(c_NUM_THREADS-1 downto 0);
       -- array of corrected SLC outputs to UCM
-      slcpipe_ptcalc_o : out SLCPIPE_PTCALC_avt
+      o_pt2mtc                  : out tf2mtc_avt(c_NUM_THREADS -1 downto 0)
       );
   end component track_fitting;
 
@@ -175,19 +187,15 @@ architecture behavioral of top_ult is
     port (
       -- pipeline clock
       clock_and_control : in l0mdt_control_rt;
-
       -- ttc
-      ttc_commands : in l0mdt_ttc_rt;
-
+      ttc_commands      : in l0mdt_ttc_rt;
       -- array of pt corrected SLC outputs from x-point switch
-      slcpipe_ptcalc_i : in SLCPIPE_PTCALC_avt;
-
+      i_ptcalc          : in tf2mtc_avt(c_NUM_THREADS -1 downto 0);
       -- Sector Logic Candidates from pipeline
-      slc_i : in SLC_avt;
-
+      i_pl2mtc          : in pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
       -- NSP + MUCTPI
-      mtc_o : out MTC_avt;
-      nsp_o : out NSP_avt
+      o_mtc             : out mtc_out_avt(c_NUM_MTC -1 downto 0);
+      o_nsp             : out mtc2nsp_avt(c_NUM_NSP -1 downto 0)
 
      -- DAQ
       );
@@ -197,41 +205,37 @@ architecture behavioral of top_ult is
     port (
       -- pipeline clock
       clock_and_control : in l0mdt_control_rt;
-
       -- ttc
-      ttc_commands : in l0mdt_ttc_rt;
-
+      ttc_commands      : in l0mdt_ttc_rt;
       -- Sector Logic Candidates from uCM
-      all_slc_i : in SLC_avt;
-
+      i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
       -- Sector Logic Candidates to Track fitting
-      slc_to_pt_o : out SLC_avt;
-
+      o_pl2pt_av        : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
       -- Sector Logic Candidates to mTC
-      slc_to_mtc_o : out SLC_avt
+      o_pl2mtc_av       : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
       );
   end component pipeline;
 
-  component daq is
-    port (
-      -- pipeline clock
-      clock_and_control : in l0mdt_control_rt;
+  -- component daq is
+  --   port (
+  --     -- pipeline clock
+  --     clock_and_control : in l0mdt_control_rt;
 
-      -- ttc
-      ttc_commands : in l0mdt_ttc_rt;
+  --     -- ttc
+  --     ttc_commands : in l0mdt_ttc_rt;
 
-      -- TDC Hits from Polmux
-      inner_tdc_hits_i  : in mdt_pullmux_data_avt;
-      middle_tdc_hits_i : in mdt_pullmux_data_avt;
-      outer_tdc_hits_i  : in mdt_pullmux_data_avt;
-      extra_tdc_hits_i  : in mdt_pullmux_data_avt;
+  --     -- TDC Hits from Polmux
+  --     inner_tdc_hits_i  : in mdt_pullmux_data_avt;
+  --     middle_tdc_hits_i : in mdt_pullmux_data_avt;
+  --     outer_tdc_hits_i  : in mdt_pullmux_data_avt;
+  --     extra_tdc_hits_i  : in mdt_pullmux_data_avt;
 
-      -- Tracks from MTC
+  --     -- Tracks from MTC
 
-      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-      daq_streams_o : out FELIX_STREAM_avt
-      );
-  end component daq;
+  --     -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
+  --     daq_streams_o : out FELIX_STREAM_avt
+  --     );
+  -- end component daq;
 
   component control is
     port (
@@ -251,14 +255,19 @@ begin
       port map (
         clock_and_control => clock_and_control,  --
         ttc_commands      => ttc_commands,       --
-        slc_i             => slc_i,              -- candidates in from hal
+        -- candidates in from hal
+        i_slc_data_mainA_av     => main_primary_slc_i,
+        i_slc_data_mainB_av     => main_secondary_slc_i,
+        i_slc_data_neightborA_v => plus_neighbor_slc_i ,
+        i_slc_data_neightborB_v => minus_neighbor_slc_i,
 
         -- outputs to ucm
-        inner_slc_o  => inner_slc_to_hts,
-        middle_slc_o => middle_slc_to_hts,
-        outer_slc_o  => outer_slc_to_hts,
-        extra_slc_o  => extra_slc_to_hts,
-        all_slc_o    => all_slc_to_pipeline
+        o_uCM2hps_inn_av => inner_slc_to_hts,
+        o_uCM2hps_mid_av  => middle_slc_to_hts,
+        o_uCM2hps_out_av => outer_slc_to_hts,
+        o_uCM2hps_ext_av => extra_slc_to_hts,
+
+        o_uCM2pl_av    => ucm2pl_av
         );
 
 
@@ -269,10 +278,10 @@ begin
         ttc_commands      => ttc_commands,
 
         -- inputs from hal
-        inner_tdc_hits_i  => inner_tdc_hits_i,
-        middle_tdc_hits_i => middle_tdc_hits_i,
-        outer_tdc_hits_i  => outer_tdc_hits_i,
-        extra_tdc_hits_i  => extra_tdc_hits_i,
+        inner_tar_hits_i  => inner_tar_hits_i ,
+        middle_tar_hits_i => middle_tar_hits_i,
+        outer_tar_hits_i  => outer_tar_hits_i ,
+        extra_tar_hits_i  => extra_tar_hits_i ,
 
         -- inputs from ucm
         inner_slc_i  => inner_slc_to_hts,
@@ -307,19 +316,19 @@ begin
         outer_segments_i  => outer_segments_to_pt,
         extra_segments_i  => extra_segments_to_pt,
 
-        slc_i => slc_to_pt,
+        i_pl2pt_av => pl2pt_av,
 
-        slcpipe_ptcalc_o => slcpipe_ptcalc
+        o_pt2mtc => pt2mtc_av
         );
 
     mtc_builder_inst : mtc_builder
       port map (
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-        slcpipe_ptcalc_i  => slcpipe_ptcalc,
-        slc_i             => slc_i,
-        mtc_o             => mtc_o,
-        nsp_o             => nsp_o
+        i_ptcalc          => pt2mtc_av,
+        i_pl2mtc          => pl2mtc_av,
+        o_mtc             => mtc_o,
+        o_nsp             => nsp_o
         );
 
     pipeline_inst : pipeline
@@ -329,39 +338,39 @@ begin
         ttc_commands      => ttc_commands,
 
         -- slc inputs
-        all_slc_i => all_slc_to_pipeline,
+        i_ucm2pl_av => ucm2pl_av,
 
         -- slc outputs
-        slc_to_pt_o  => slc_to_pt,
-        slc_to_mtc_o => slc_to_mtc
+        o_pl2pt_av  => pl2pt_av,
+        o_pl2mtc_av => pl2mtc_av
         );
 
-    daq_inst : daq
-      port map (
-        --
-        clock_and_control => clock_and_control,
-        ttc_commands      => ttc_commands,
+    -- daq_inst : daq
+    --   port map (
+    --     --
+    --     clock_and_control => clock_and_control,
+    --     ttc_commands      => ttc_commands,
 
-        --
-        inner_tdc_hits_i  => inner_tdc_hits_i,
-        middle_tdc_hits_i => middle_tdc_hits_i,
-        outer_tdc_hits_i  => outer_tdc_hits_i,
-        extra_tdc_hits_i  => extra_tdc_hits_i,
+    --     --
+    --     inner_tdc_hits_i  => inner_tdc_hits_i,
+    --     middle_tdc_hits_i => middle_tdc_hits_i,
+    --     outer_tdc_hits_i  => outer_tdc_hits_i,
+    --     extra_tdc_hits_i  => extra_tdc_hits_i,
 
-        --
-        daq_streams_o => daq_streams_o
-        );
+    --     --
+    --     daq_streams_o => daq_streams_o
+    --     );
 
     sump <= '0';
 
   end generate;
 
   dummy_gen : if (DUMMY) generate
-    signal tdc_hit_inner_sump  : std_logic_vector (c_NUM_POLMUX_INNER-1 downto 0);
-    signal tdc_hit_middle_sump : std_logic_vector (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    signal tdc_hit_outer_sump  : std_logic_vector (c_NUM_POLMUX_OUTER-1 downto 0);
-    signal endcap_hit_sump     : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
-    signal barrel_hit_sump     : std_logic_vector (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
+    signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    -- signal endcap_hit_sump     : std_logic_vector (c_NUM_SL_ENDCAP_CANDIDATES-1 downto 0);
+    -- signal barrel_hit_sump     : std_logic_vector (c_NUM_SL_BARREL_CANDIDATES-1 downto 0);
   begin
 
     sump_proc : process (clock_and_control.clk) is
@@ -388,9 +397,9 @@ begin
 
         sump <= xor_reduce(tdc_hit_inner_sump)
                 xor xor_reduce(tdc_hit_middle_sump)
-                xor xor_reduce(tdc_hit_outer_sump)
-                xor xor_reduce (barrel_hit_sump)
-                xor xor_reduce (endcap_hit_sump);
+                xor xor_reduce(tdc_hit_outer_sump);
+                -- xor xor_reduce (barrel_hit_sump)
+                -- xor xor_reduce (endcap_hit_sump);
 
       end if;
     end process;

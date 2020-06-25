@@ -27,14 +27,14 @@ ucm_prepro_ : {array: open , type: ucm_prepro , _: off}
 # main cross switch control
 
 # ucm_csw_dest: {array: open , type: logic, length: 4}
-# ucm_csw_dest: {array: MAX_NUM_SL , type: logic, length: 4}
+# ucm_csw_dest: {array: c_MAX_NUM_SL , type: logic, length: 4}
 # ucm_csw_dest: {type: logic, length: 4}
-# ucm_csw_dest_a: {array: MAX_NUM_SL ,type: ucm_csw_dest}
+# ucm_csw_dest_a: {array: c_MAX_NUM_SL ,type: ucm_csw_dest}
 
-# ucm_csw_dest_a: {array: MAX_NUM_SL , type: logic, length: 4 }
+# ucm_csw_dest_a: {array: c_MAX_NUM_SL , type: logic, length: 4 }
 
 # ucm_csw_control:
-#   data_present: { type: logic , length: MAX_NUM_SL }
+#   data_present: { type: logic , length: c_MAX_NUM_SL }
 #   addr_orig:    {type: ucm_csw_dest}
 
 ucm_csw_ch_control:

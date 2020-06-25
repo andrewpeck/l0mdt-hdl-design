@@ -183,6 +183,81 @@ package l0mdt_dataformats_pkg is
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
   function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
+  type ucm2pl_rt is record
+     muid                 :  slc_muid_rt;
+     chambers             :  slc_chid_rt;
+     common               :  slc_common_rt;
+     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+     process_ch           :  std_logic_vector(4-1 downto 0);
+     processed            :  std_logic;
+     data_valid           :  std_logic;
+  end record ucm2pl_rt;
+  constant UCM2PL_LEN : integer := 129;
+  subtype ucm2pl_rvt is std_logic_vector(UCM2PL_LEN-1 downto 0);
+  function vectorify(x: ucm2pl_rt) return ucm2pl_rvt;
+  function structify(x: ucm2pl_rvt) return ucm2pl_rt;
+  function nullify (x: ucm2pl_rt) return ucm2pl_rt;
+
+  type pl2pt_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;
+     charge               :  std_logic;
+  end record pl2pt_rt;
+  constant PL2PT_LEN : integer := 22;
+  subtype pl2pt_rvt is std_logic_vector(PL2PT_LEN-1 downto 0);
+  function vectorify(x: pl2pt_rt) return pl2pt_rvt;
+  function structify(x: pl2pt_rvt) return pl2pt_rt;
+  function nullify (x: pl2pt_rt) return pl2pt_rt;
+
+  type pl2mtc_rt is record
+     muid                 :  slc_muid_rt;
+     chambers             :  slc_chid_rt;
+     common               :  slc_common_rt;
+     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+     process_ch           :  std_logic_vector(4-1 downto 0);
+     processed            :  std_logic;
+     data_valid           :  std_logic;
+  end record pl2mtc_rt;
+  constant PL2MTC_LEN : integer := 129;
+  subtype pl2mtc_rvt is std_logic_vector(PL2MTC_LEN-1 downto 0);
+  function vectorify(x: pl2mtc_rt) return pl2mtc_rvt;
+  function structify(x: pl2mtc_rvt) return pl2mtc_rt;
+  function nullify (x: pl2mtc_rt) return pl2mtc_rt;
+
+  type tf2mtc_rt is record
+     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;
+     eta                  :  signed(MTC_ETA_LEN-1 downto 0);
+     pt                   :  unsigned(MTC_PT_LEN-1 downto 0);
+     pt_thr               :  std_logic_vector(MTC_PTTHR_LEN-1 downto 0);
+     charge               :  std_logic;
+     nseg                 :  unsigned(MTC_NSEG_LEN-1 downto 0);
+     quality              :  std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
+  end record tf2mtc_rt;
+  constant TF2MTC_LEN : integer := 55;
+  subtype tf2mtc_rvt is std_logic_vector(TF2MTC_LEN-1 downto 0);
+  function vectorify(x: tf2mtc_rt) return tf2mtc_rvt;
+  function structify(x: tf2mtc_rvt) return tf2mtc_rt;
+  function nullify (x: tf2mtc_rt) return tf2mtc_rt;
+
+  type mtc_out_rt is record
+     data_valid           :  std_logic;
+  end record mtc_out_rt;
+  constant MTC_OUT_LEN : integer := 1;
+  subtype mtc_out_rvt is std_logic_vector(MTC_OUT_LEN-1 downto 0);
+  function vectorify(x: mtc_out_rt) return mtc_out_rvt;
+  function structify(x: mtc_out_rvt) return mtc_out_rt;
+  function nullify (x: mtc_out_rt) return mtc_out_rt;
+
+  type mtc2nsp_rt is record
+     data_valid           :  std_logic;
+  end record mtc2nsp_rt;
+  constant MTC2NSP_LEN : integer := 1;
+  subtype mtc2nsp_rvt is std_logic_vector(MTC2NSP_LEN-1 downto 0);
+  function vectorify(x: mtc2nsp_rt) return mtc2nsp_rvt;
+  function structify(x: mtc2nsp_rvt) return mtc2nsp_rt;
+  function nullify (x: mtc2nsp_rt) return mtc2nsp_rt;
+
 end package l0mdt_dataformats_pkg;
 
 ------------------------------------------------------------
@@ -607,6 +682,183 @@ package body l0mdt_dataformats_pkg is
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: ucm2pl_rt) return ucm2pl_rvt is
+    variable y : ucm2pl_rvt;
+  begin
+    y(128 downto 109)          := vectorify(x.muid);
+    y(108 downto 97)           := vectorify(x.chambers);
+    y(96 downto 57)            := vectorify(x.common);
+    y(56 downto 6)             := x.specific;
+    y(5 downto 2)              := x.process_ch;
+    y(1)                       := x.processed;
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: ucm2pl_rvt) return ucm2pl_rt is
+    variable y : ucm2pl_rt;
+  begin
+    y.muid                     := structify(x(128 downto 109));
+    y.chambers                 := structify(x(108 downto 97));
+    y.common                   := structify(x(96 downto 57));
+    y.specific                 := x(56 downto 6);
+    y.process_ch               := x(5 downto 2);
+    y.processed                := x(1);
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: ucm2pl_rt) return ucm2pl_rt is
+    variable y : ucm2pl_rt;
+  begin
+    y.muid                     := nullify(x.muid);
+    y.chambers                 := nullify(x.chambers);
+    y.common                   := nullify(x.common);
+    y.specific                 := nullify(x.specific);
+    y.process_ch               := nullify(x.process_ch);
+    y.processed                := nullify(x.processed);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: pl2pt_rt) return pl2pt_rvt is
+    variable y : pl2pt_rvt;
+  begin
+    y(21)                      := x.data_valid;
+    y(20 downto 1)             := vectorify(x.muid);
+    y(0)                       := x.charge;
+    return y;
+  end function vectorify;
+  function structify(x: pl2pt_rvt) return pl2pt_rt is
+    variable y : pl2pt_rt;
+  begin
+    y.data_valid               := x(21);
+    y.muid                     := structify(x(20 downto 1));
+    y.charge                   := x(0);
+    return y;
+  end function structify;
+  function nullify (x: pl2pt_rt) return pl2pt_rt is
+    variable y : pl2pt_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.charge                   := nullify(x.charge);
+    return y;
+  end function nullify;
+
+  function vectorify(x: pl2mtc_rt) return pl2mtc_rvt is
+    variable y : pl2mtc_rvt;
+  begin
+    y(128 downto 109)          := vectorify(x.muid);
+    y(108 downto 97)           := vectorify(x.chambers);
+    y(96 downto 57)            := vectorify(x.common);
+    y(56 downto 6)             := x.specific;
+    y(5 downto 2)              := x.process_ch;
+    y(1)                       := x.processed;
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: pl2mtc_rvt) return pl2mtc_rt is
+    variable y : pl2mtc_rt;
+  begin
+    y.muid                     := structify(x(128 downto 109));
+    y.chambers                 := structify(x(108 downto 97));
+    y.common                   := structify(x(96 downto 57));
+    y.specific                 := x(56 downto 6);
+    y.process_ch               := x(5 downto 2);
+    y.processed                := x(1);
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: pl2mtc_rt) return pl2mtc_rt is
+    variable y : pl2mtc_rt;
+  begin
+    y.muid                     := nullify(x.muid);
+    y.chambers                 := nullify(x.chambers);
+    y.common                   := nullify(x.common);
+    y.specific                 := nullify(x.specific);
+    y.process_ch               := nullify(x.process_ch);
+    y.processed                := nullify(x.processed);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: tf2mtc_rt) return tf2mtc_rvt is
+    variable y : tf2mtc_rvt;
+  begin
+    y(54)                      := x.data_valid;
+    y(53 downto 34)            := vectorify(x.muid);
+    y(33 downto 19)            := vectorify(x.eta);
+    y(18 downto 10)            := vectorify(x.pt);
+    y(9 downto 6)              := x.pt_thr;
+    y(5)                       := x.charge;
+    y(4 downto 3)              := vectorify(x.nseg);
+    y(2 downto 0)              := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: tf2mtc_rvt) return tf2mtc_rt is
+    variable y : tf2mtc_rt;
+  begin
+    y.data_valid               := x(54);
+    y.muid                     := structify(x(53 downto 34));
+    y.eta                      := structify(x(33 downto 19));
+    y.pt                       := structify(x(18 downto 10));
+    y.pt_thr                   := x(9 downto 6);
+    y.charge                   := x(5);
+    y.nseg                     := structify(x(4 downto 3));
+    y.quality                  := x(2 downto 0);
+    return y;
+  end function structify;
+  function nullify (x: tf2mtc_rt) return tf2mtc_rt is
+    variable y : tf2mtc_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.eta                      := nullify(x.eta);
+    y.pt                       := nullify(x.pt);
+    y.pt_thr                   := nullify(x.pt_thr);
+    y.charge                   := nullify(x.charge);
+    y.nseg                     := nullify(x.nseg);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: mtc_out_rt) return mtc_out_rvt is
+    variable y : mtc_out_rvt;
+  begin
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: mtc_out_rvt) return mtc_out_rt is
+    variable y : mtc_out_rt;
+  begin
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: mtc_out_rt) return mtc_out_rt is
+    variable y : mtc_out_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
+
+  function vectorify(x: mtc2nsp_rt) return mtc2nsp_rvt is
+    variable y : mtc2nsp_rvt;
+  begin
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: mtc2nsp_rvt) return mtc2nsp_rt is
+    variable y : mtc2nsp_rt;
+  begin
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify (x: mtc2nsp_rt) return mtc2nsp_rt is
+    variable y : mtc2nsp_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
 

@@ -38,8 +38,8 @@ entity ucm_csw is
     --
     i_control           : in ucm_csw_control_at;
     --
-    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-    o_data              : out ucm_prepro_avt(MAX_NUM_SL -1 downto 0)
+    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    o_data              : out ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 
@@ -51,7 +51,7 @@ begin
       if(rst= '1') then
         o_data <= (others => (others => '0'));
       else
-        for csw_i in MAX_NUM_SL -1 downto 0 loop
+        for csw_i in c_MAX_NUM_SL -1 downto 0 loop
           if i_control(csw_i).data_present = '1' then
             o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
           else

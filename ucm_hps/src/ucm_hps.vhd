@@ -56,7 +56,7 @@ entity ucm_hps is
     o_sf2pt_out_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
     o_sf2pt_ext_av      : out sf2pt_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av         : out pipelines_avt(MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_av         : out pipelines_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_hps;
 

@@ -71,6 +71,12 @@ package config_pkg is
   constant c_HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
   constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT ;              
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
+  
+  ---------------------------------------------------------
+  -- PORTS CONFIG
+  ---------------------------------------------------------
+  constant c_NUM_MTC                    : integer := 1;
+  constant c_NUM_NSP                    : integer := 2;
   --------------------------------------------------------------------------------
   -- BLOCKS configuration
   --------------------------------------------------------------------------------
@@ -99,8 +105,10 @@ package config_pkg is
           CFG.ENABLE_ST_OUT &
           CFG.ENABLE_ST_EXT;
 
+  constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHTBORS));
+  constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHTBORS));
 
-  constant MAX_NUM_SL   : integer := 3 + 
+  constant c_MAX_NUM_SL   : integer := 3 + 
   to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 + 
   to_integer(unsigned'("" & CFG.ENABLE_NEIGHTBORS))*2;
 

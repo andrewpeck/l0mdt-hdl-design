@@ -46,7 +46,7 @@ architecture beh of ucm_hps_tb is
   signal glob_en : std_logic := '1';
 
     -- SLc
-    signal i_slc_data_av       : slc_rx_data_avt(MAX_NUM_SL -1 downto 0);
+    signal i_slc_data_av       : slc_rx_data_avt(c_MAX_NUM_SL -1 downto 0);
     -- MDT hit
     signal i_mdt_tar_inn_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     signal i_mdt_tar_mid_av    : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -58,7 +58,7 @@ architecture beh of ucm_hps_tb is
     signal o_sf2pt_out_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
     signal o_sf2pt_ext_av      : sf2pt_avt(c_NUM_THREADS -1 downto 0);
     -- pipelin
-    signal o_uCM2pl_av         : pipelines_avt(MAX_NUM_SL -1 downto 0);
+    signal o_uCM2pl_av         : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal cand1  : slc_rx_data_rt;
   signal barrel1 : slc_barrel_rt;
