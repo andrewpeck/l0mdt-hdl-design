@@ -32,23 +32,24 @@ entity mpl_csw is
 
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst             : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_pl2plcsw_av          : in pipelines_avt(c_NUM_THREADS -1 downto 0);
-    o_plcsw2tf_av          : out pipelines_avt(c_NUM_THREADS -1 downto 0)
+    i_ucm_av          : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+    o_tf_av          : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_mtc_av          : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl_csw;
 
 architecture beh of mpl_csw is
 
-  signal slc_pl : pipelines_at(c_NUM_THREADS -1 downto 0);
+  signal slc_pl : ucm2pl_at(c_NUM_THREADS -1 downto 0);
   
 begin
 
   V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
-    slc_pl(sl_i) <= structify(i_pl2plcsw_av(sl_i));
+    slc_pl(sl_i) <= structify(i_ucm_av(sl_i));
   end generate V2R;
 
   MP2TF_CSW: process(clk)
@@ -56,19 +57,19 @@ begin
     variable slo_found  : std_logic := '0';
   begin
     if rising_edge(clk) then
-      if Reset_b = '1' then
+      if rst = '1' then
         
       else
         for slo_i in c_NUM_THREADS -1 downto 0 loop
           slo_found := '0';
           for sli_i in c_NUM_THREADS -1 downto 0 loop
             if ((slc_pl(sli_i).processed = '1') and (to_integer(unsigned(slc_pl(sli_i).process_ch)) = slo_i)) then
-              o_plcsw2tf_av(slo_i) <= i_pl2plcsw_av(sli_i);
+              o_tf_av(slo_i) <= i_ucm_av(sli_i);
               slo_found := '1';
             end if;
           end loop;
           if slo_found = '0' then
-            o_plcsw2tf_av(slo_i) <= nullify(o_plcsw2tf_av(slo_i));
+            o_tf_av(slo_i) <= nullify(o_tf_av(slo_i));
           end if;
         end loop;
         
