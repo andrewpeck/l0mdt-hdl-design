@@ -126,19 +126,16 @@ architecture behavioral of ult is
       -- i_middle_tdc_hits             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
       -- i_outer_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
       -- i_extra_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-      
       -- TDC Hits from Tar
       i_inner_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
       i_middle_tar_hits             : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
       i_outer_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
       i_extra_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-
       -- TDC polmux from Tar
       o_inner_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
       o_middle_tdc_hits             : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
       o_outer_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
       o_extra_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-
       -- TDC Hits from Tar
       o_inner_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
       o_middle_tar_hits             : out tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -173,28 +170,23 @@ architecture behavioral of ult is
     port (
       -- pipeline clock
       clock_and_control : in l0mdt_control_rt;
-
       -- ttc
       ttc_commands : in l0mdt_ttc_rt;
-
       -- TDC Hits from Polmux
       inner_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
       middle_tar_hits_i : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
       outer_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
       extra_tar_hits_i  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-
       -- Sector Logic Candidates from uCM
       inner_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
       middle_slc_i : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
       outer_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
       extra_slc_i  : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-
       -- Segments Out
       inner_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
       middle_segments_o : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
       outer_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
       extra_segments_o  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-
       -- Segments Out to Neighbor
       plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
       minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
@@ -303,12 +295,11 @@ begin
         i_middle_tar_hits   => i_middle_tar_hits ,
         i_outer_tar_hits    => i_outer_tar_hits  ,
         i_extra_tar_hits    => i_extra_tar_hits  ,
-
+        -- 
         o_inner_tdc_hits    => inner_tdc_hits,
         o_middle_tdc_hits   => middle_tdc_hits,
         o_outer_tdc_hits    => outer_tdc_hits,
         o_extra_tdc_hits    => extra_tdc_hits,
-
         -- outputs to ucm
         o_inner_tar_hits    => inner_tar_hits ,
         o_middle_tar_hits   => middle_tar_hits,
@@ -326,14 +317,12 @@ begin
         i_slc_data_mainB_av     => i_main_secondary_slc ,
         i_slc_data_neightborA_v => i_plus_neighbor_slc  ,
         i_slc_data_neightborB_v => i_minus_neighbor_slc ,
-
-
         -- outputs to ucm
         o_uCM2hps_inn_av => inner_slc_to_hts,
         o_uCM2hps_mid_av  => middle_slc_to_hts,
         o_uCM2hps_out_av => outer_slc_to_hts,
         o_uCM2hps_ext_av => extra_slc_to_hts,
-
+        -- pipeline
         o_uCM2pl_av    => ucm2pl_av
         );
 
@@ -343,25 +332,21 @@ begin
         --
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-
         -- inputs from hal
         inner_tar_hits_i  => inner_tar_hits ,
         middle_tar_hits_i => middle_tar_hits,
         outer_tar_hits_i  => outer_tar_hits ,
         extra_tar_hits_i  => extra_tar_hits ,
-
         -- inputs from ucm
         inner_slc_i  => inner_slc_to_hts,
         middle_slc_i => middle_slc_to_hts,
         outer_slc_i  => outer_slc_to_hts,
         extra_slc_i  => extra_slc_to_hts,
-
         -- outputs to track fitting
         inner_segments_o  => inner_segments_to_pt,
         middle_segments_o => middle_segments_to_pt,
         outer_segments_o  => outer_segments_to_pt,
         extra_segments_o  => extra_segments_to_pt,
-
         -- segment outputs to hal
         plus_neighbor_segments_o  => plus_neighbor_segments_o,
         minus_neighbor_segments_o => minus_neighbor_segments_o
@@ -372,19 +357,17 @@ begin
         --
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-
-        --  from hal
+        --  segments from neighbors
         plus_neighbor_segments_i  => plus_neighbor_segments_i,
         minus_neighbor_segments_i => minus_neighbor_segments_i,
-
-        --
+        -- segments from hps
         inner_segments_i  => inner_segments_to_pt,
         middle_segments_i => middle_segments_to_pt,
         outer_segments_i  => outer_segments_to_pt,
         extra_segments_i  => extra_segments_to_pt,
-
+        -- from pipeline
         i_pl2pt_av => pl2pt_av,
-
+        -- to mtc
         o_pt2mtc => pt2mtc_av
         );
 
@@ -417,13 +400,11 @@ begin
         --
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-
         --
         i_inner_tdc_hits  => inner_tdc_hits,
         i_middle_tdc_hits => middle_tdc_hits,
         i_outer_tdc_hits  => outer_tdc_hits,
         i_extra_tdc_hits  => extra_tdc_hits,
-
         --
         daq_streams_o => daq_streams_o
         );
