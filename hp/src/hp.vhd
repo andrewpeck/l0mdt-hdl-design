@@ -105,7 +105,8 @@ begin
     clk                 => clk,
     rst            => rst,
     glob_en             => glob_en,
-    -- SLc
+    -- SLc-
+    i_SLC_Window        => i_SLC_Window(0),
     i_SLc_specific      => slc_data.specific,
     i_SLc_BCID          => slc_data.BCID,
     -- MDT hit

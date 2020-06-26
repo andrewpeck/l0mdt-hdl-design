@@ -32,6 +32,7 @@ entity hp_calc_RoI_vect is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
+    i_SLC_Window        : in hp_win_tubes_rvt;
     i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     -- i_SLc_y_0           : in signed();
     -- mdt
