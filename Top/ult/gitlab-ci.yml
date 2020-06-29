@@ -10,23 +10,23 @@ create_project:ult:
 #       extends: .vars
 #       PROJECT_NAME: ult
 # 
-# synthesise_ips:ult:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ult
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:ult
+synthesise_ips:ult:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult
+      IP_PATH: IP
+    dependencies:
+        - create_project:ult
 # 
-# synthesise_project:ult:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ult
-#     dependencies:
-#         # - synthesise_ips:ult
-#         - create_project:ult
+synthesise_project:ult:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult
+    dependencies:
+        # - synthesise_ips:ult
+        - create_project:ult
 # 
 # implement_project:ult:
 #     extends: .implement_project
