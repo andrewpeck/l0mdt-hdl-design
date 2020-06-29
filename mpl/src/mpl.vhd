@@ -84,7 +84,7 @@ begin
     PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => MPL_PL_B_LATENCY,
-      num_bits    => pl2csw_av(sl_i)'length
+      num_bits    => csw2mtc_av(sl_i)'length
     )
     port map(
       clk         => clk,
