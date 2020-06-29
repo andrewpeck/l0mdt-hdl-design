@@ -91,6 +91,9 @@ UCM_R_ROI_LEN   : { qualifier: constant , type: integer , value: 4 }
 
 UCM2HPS_SPECIFIC_LEN: { qualifier: constant , type: integer , value: 21 }
 
+UCM_PT_PHIMOD_LEN: { qualifier: constant , type: integer , value: 8 }
+UCM_PT_PHIMOD_MULT: {qualifier: constant, type: real, value: 4.0}
+
 # # -----------------------------------------------------------
 # #       HEG 2 SF
 # # -----------------------------------------------------------
@@ -114,8 +117,7 @@ SF_SEG_ANG_MULTI_LEN : {qualifier: constant, type: integer, value: 12}
 # # -----------------------------------------------------------
 
 # #pl 2 pt
-# SLC_PT_PHIMOD_LEN: { qualifier: constant , type: integer , value: 8 }
-# SLC_PT_PHIMOD_MULT: {qualifier: constant, type: real, value: 320.0}
+
 
 
 # # -----------------------------------------------------------
