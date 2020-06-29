@@ -47,7 +47,7 @@ entity hp_calc_RoI_vect is
 end entity hp_calc_RoI_vect;
 
 architecture beh of hp_calc_RoI_vect is
-
+  signal orig_x : unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
 begin
 
   pw_2_r_LUT : process(clk,rst)
@@ -57,6 +57,8 @@ begin
       if rst= '1' then
 
       else
+        
+
 
       end if;
 
