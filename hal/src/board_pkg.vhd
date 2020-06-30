@@ -14,10 +14,10 @@ package board_pkg is
   constant c_MGT_MAP : mgt_inst_array_t (c_NUM_MGTS-1 downto 0) := (
 
 -- mgt#    => (mgt_type          , refclk , gt_type , x , y)
-    0      => (MGT_NIL           ,  0     , GTY     , 0 , 0)  , -- C2C from SM
-    1      => (MGT_NIL           ,  0     , GTY     , 0 , 1)  , -- C2C from SM
-    2      => (MGT_NIL           ,  0     , GTY     , 0 , 2)  , -- C2C from SM
-    3      => (MGT_NIL           ,  0     , GTY     , 0 , 3)  , -- C2C from SM
+    0      => (MGT_NIL           ,  0     , GTY     , 0 , 0)  , -- C2C
+    1      => (MGT_NIL           ,  0     , GTY     , 0 , 1)  , -- C2C
+    2      => (MGT_NIL           ,  0     , GTY     , 0 , 2)  , -- C2C
+    3      => (MGT_NIL           ,  0     , GTY     , 0 , 3)  , -- C2C
     4      => (MGT_NIL           ,  1     , GTY     , 0 , 4)  , -- CM2CM
     5      => (MGT_NIL           ,  1     , GTY     , 0 , 5)  , -- CM2CM
     6      => (MGT_NIL           ,  1     , GTY     , 0 , 6)  , -- CM2CM
