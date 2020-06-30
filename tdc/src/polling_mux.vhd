@@ -40,7 +40,7 @@ architecture behavioral of polling_mux is
   signal tdc_hits_and : TDCPOLMUX_rt_array (g_WIDTH-1 downto 0);
   signal tdc_hits_or  : TDCPOLMUX_rt;
 
-  signal read_done, read_done_r : std_logic_vector (g_WIDTH-1 downto 0);
+  signal hit_sel_mask, hit_sel_mask_r : std_logic_vector (g_WIDTH-1 downto 0);
 
   -- function to pull the valid bits out of a tdcpolmux array and put it in a std_logic_vector
   function tdchits2valid_stdlogic (arr : TDCPOLMUX_rt_array; size : integer) return std_logic_vector is
@@ -80,11 +80,23 @@ architecture behavioral of polling_mux is
 
 begin
 
+  --------------------------------------------------------------------------------
+  -- Port Aliasing
+  --------------------------------------------------------------------------------
+
+  read_done_o <= hit_sel_mask;
+
+  --------------------------------------------------------------------------------
+  -- Round Robin Selector
+  --------------------------------------------------------------------------------
+
   rr : if (g_ROUND_ROBIN) generate
     signal cnt : integer range 0 to g_WIDTH-1 := 0;
   begin
 
-    assert (g_WIDTH <= 20) report "Round-robin polling mux cannot exceed 20 bit width. Reduce width or switch to priority encoded design" severity error;
+    assert (g_WIDTH <= 20) report "Round-robin polling mux cannot exceed 20 bit width (320MHz/16MHz=20). "
+      & "Reduce width or switch to priority encoded design which can be arbitrarily large "
+      & "but can be lossy at extremely high rates" severity error;
 
     process (clock) is
     begin
@@ -96,9 +108,12 @@ begin
         end if;
       end if;
     end process;
-    read_done   <= std_logic_vector(shift_left(to_unsigned(1, read_done'length), cnt));
-    read_done_o <= read_done;
+    hit_sel_mask   <= std_logic_vector(shift_left(to_unsigned(1, hit_sel_mask'length), cnt));
   end generate;
+
+  --------------------------------------------------------------------------------
+  -- Priority Encoded Selector
+  --------------------------------------------------------------------------------
 
   pe : if (not g_ROUND_ROBIN) generate
     signal valid_vec : std_logic_vector (g_WIDTH-1 downto 0);
@@ -119,9 +134,9 @@ begin
 
     -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be pipelined if needed
     valid_vec   <= tdchits2valid_stdlogic(tdc_hits_i, tdc_hits_i'length);
-    read_done   <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
-    read_done_o <= read_done;           -- copy to output
+    hit_sel_mask <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
   end generate;
+
   --------------------------------------------------------------------------------
   -- Output Block
   --------------------------------------------------------------------------------
@@ -130,13 +145,13 @@ begin
   begin
     if (rising_edge(clock)) then
 
-      read_done_r <= read_done;
+      -- Copy the input and selection mask for pipelining
+      hit_sel_mask_r <= hit_sel_mask;
       tdc_hits_r  <= tdc_hits_i;
-
 
       -- AND each TDC hit w/ its valid bit in one step
       for I in 0 to tdc_hits_i'length-1 loop
-        tdc_hits_and(I) <= tdcpolmux_2rf (tdcpolmux_2af (tdc_hits_r(I)) and repeat(read_done_r(I), TDCPOLMUX_len));
+        tdc_hits_and(I) <= tdcpolmux_2rf (tdcpolmux_2af (tdc_hits_r(I)) and repeat(hit_sel_mask_r(I), TDCPOLMUX_len));
       end loop;  -- I
 
       -- then just OR together the masked outputs in another clock

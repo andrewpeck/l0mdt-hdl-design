@@ -246,7 +246,9 @@ begin
     signal polmux_inputs    : TDCPOLMUX_rt_array (c_POLMUX_WIDTH-1 downto 0);
     signal polmux_output    : TDCPOLMUX_rt;
     signal fifo_output      : TDCPOLMUX_at;
-    signal empty            : std_logic;
+    signal valid            : std_logic;
+    signal din              : std_logic_vector (63 downto 0);
+    signal dout             : std_logic_vector (63 downto 0);
 
     constant std_logic1 : std_logic := '1';
 
@@ -274,17 +276,30 @@ begin
     -- Clock domain crossing
     --------------------------------------------------------------------------------
 
-    -- TODO: check the timing of the 'not empty' bit as a valid signal, make sure it is applied to the right clock cycle
-    polmux_sync_fifo_inst : entity xil_defaultlib.polmux_sync_fifo
+    -- TODO: check the timing of the 'not valid' bit as a valid signal, make sure it is applied to the right clock cycle
+    -- TODO: a "smart sync" of some sort..?... can CDC based on a valid bit on certain clock cycles only
+
+    din <= std_logic_vector(resize(unsigned(tdcpolmux_2af(polmux_output)), din'length));  -- zero pad
+    fifo_output <= dout(fifo_output'length-1 downto 0);
+
+    polmux_sync_fifo_inst : entity work.xpm_fifo
+      generic map (
+        DEPTH    => 16,
+        WR_WIDTH => 64,
+        RD_WIDTH => 64)
       port map (
-        wr_clk => clock,
-        rd_clk => pipeline_clock,
-        din    => tdcpolmux_2af(polmux_output),
-        wr_en  => polmux_output.datavalid,
-        rd_en  => '1',                  --  FIFO internally gates the read signal with (not EMPTY)
-        dout   => fifo_output,
-        full   => open,
-        empty  => empty
+        rst     => '0',
+        wr_clk  => clock,
+        rd_clk  => pipeline_clock,
+        din     => din,
+        dout    => dout,
+        wr_en   => polmux_output.datavalid,
+        rd_en   => '1',                         --  FIFO internally gates the read signal with (not EMPTY)
+        empty   => open,
+        valid   => valid,
+        full    => open,
+        sbiterr => open,
+        dbiterr => open
         );
 
     inner_assign : if (c_POLMUX_STATION = INNER) generate
@@ -296,7 +311,7 @@ begin
       tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
       tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
       tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tmp.datavalid <= not empty;
+      tmp.datavalid <= valid;
 
       tdc_hits_inner(inner_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
@@ -310,7 +325,7 @@ begin
       tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
       tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
       tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tmp.datavalid <= not empty;
+      tmp.datavalid <= valid;
 
       tdc_hits_middle(middle_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
@@ -324,7 +339,7 @@ begin
       tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
       tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
       tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tmp.datavalid <= not empty;
+      tmp.datavalid <= valid;
 
       tdc_hits_outer(outer_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
@@ -338,7 +353,7 @@ begin
       tmp.tdc_r     <= tdcpolmux_2rf (fifo_output).tdc_r;
       tmp.fiberid   <= tdcpolmux_2rf (fifo_output).fiberid;
       tmp.elinkid   <= tdcpolmux_2rf (fifo_output).elinkid;
-      tmp.datavalid <= not empty;
+      tmp.datavalid <= valid;
 
       tdc_hits_extra(extra_polmux_idx_array(I)) <= tdcpolmux_2af(tmp);
     end generate;
