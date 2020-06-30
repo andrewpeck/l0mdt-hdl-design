@@ -105,8 +105,11 @@ architecture behavioral of top_hal is
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
   signal global_reset : std_logic;
+  signal felix_phase_out_of_sync : std_logic; -- FIXME: connect to AXI
 
-  signal pipeline_bx_strobe : std_logic;
+  signal strobe_pipeline : std_logic;
+  signal strobe_320 : std_logic;
+  signal felix_valid : std_logic;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -178,8 +181,8 @@ architecture behavioral of top_hal is
 
   attribute DONT_TOUCH                         : string;
   attribute MAX_FANOUT                         : string;
-  attribute MAX_FANOUT of pipeline_bx_strobe   : signal is "20";
-  attribute DONT_TOUCH of pipeline_bx_strobe   : signal is "true";
+  attribute MAX_FANOUT of strobe_pipeline   : signal is "20";
+  attribute DONT_TOUCH of strobe_pipeline   : signal is "true";
   attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
   attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
 
@@ -202,61 +205,40 @@ begin  -- architecture behavioral
 
   top_clocking_inst : entity hal.top_clocking
     port map (
-      valid_i          => std_logic0,         -- TODO: should be sourced felix
+      --
       reset_i          => std_logic0,         -- TODO: should be sourced from AXI
+      select_felix_clk => std_logic0,         -- TODO: should be sourced from AXI
+
+      -- synchronization
       sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
+      felix_valid_i    => felix_valid,
+      felix_recclk_i   => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
+      out_of_sync_o    => felix_phase_out_of_sync,
+
+      -- clock inputs
       clock_100m_i_p   => clock_100m_i_p,
       clock_100m_i_n   => clock_100m_i_n,
       clock_i_p        => clock_i_p,
       clock_i_n        => clock_i_n,
-      felix_recclk_i   => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      select_felix_clk => std_logic0,         -- TODO: should be sourced from AXI
 
+      -- clock output to pins
       lhc_refclk_o_p => lhc_refclk_o_p,
       lhc_refclk_o_n => lhc_refclk_o_n,
 
-      clock40_o   => clocks.clock40,
-      clock100_o  => clocks.freeclock,
-      clock320_o  => clocks.clock320,
-      clockpipe_o => clocks.clock_pipeline,
+      -- system clocks
+      clocks_o => clocks,
 
+      -- bx strobes
+      strobe_320_o => strobe_320,
+      strobe_pipeline_o => strobe_pipeline,
+
+      -- mmcm status
       locked_o => clocks.locked
       );
 
-  -- TODO: move this into clocking?
-  --------------------------------------------------------------------------------
-  -- Clock and reset to User Logic
-  --------------------------------------------------------------------------------
-  --
-  -- Create a 1 of N high signal synced to the 40MHZ clock
-  --            ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _
-  -- clk      __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_|9|_|
-  --            ___________________                 ________
-  -- clk40    __|                  |________________|
-  --            _____________________________________
-  -- r80      __|                                   |______
-  --                _____________________________________
-  -- r80_dly  ______|                                   |__
-  --            _____                               _____
-  -- valid    __|   |_______________________________|   |__
-
-  process (clocks.clock_pipeline, clocks.clock40)
-    variable r80     : std_logic := '0';
-    variable r80_dly : std_logic;
-  begin
-    if (rising_edge(clocks.clock40)) then
-      r80 := not r80;
-    end if;
-
-    if (rising_edge(clocks.clock_pipeline)) then
-      r80_dly := r80;
-    end if;
-    pipeline_bx_strobe <= r80_dly xor r80;
-  end process;
-
-  clock_and_control_o.clk   <= clocks.clock_pipeline;
   clock_and_control_o.rst_n <= not global_reset; -- FIXME, synchronize to clock
-  clock_and_control_o.bx    <= pipeline_bx_strobe;
+  clock_and_control_o.clk   <= clocks.clock_pipeline;
+  clock_and_control_o.bx    <= strobe_pipeline;
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -302,40 +284,8 @@ begin  -- architecture behavioral
   -- LPGBT-FPGA Cores
   --------------------------------------------------------------------------------
 
-  -- TODO: we already have this, sourced from FELIX.. this should just be a convoluted
-  -- copy of that but we still need to -- have a fabricated source of this for cases
-  -- where the clock is locally generated... this is OK for now but maybe there is a
-  -- better way to mux this
-  --
-  -- Create a 1 of 8 high signal synced to the 40MHZ clock
-  --            ___ ___ ___ ___ ___ ___ ___ ___ ___
-  -- clk320   __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_
-  --            _________________               ________
-  -- clk40    __|               |_______________|
-  --            _________________________________
-  -- r80      __|                               |______
-  --                _________________________________
-  -- r80_dly  ______|                               |__
-  --            _____                           _____
-  -- valid    __|   |___________________________|   |__
-
-  process (clocks.clock320, clocks.clock40)
-    variable r80     : std_logic := '0';
-    variable r80_dly : std_logic;
-  begin
-    if (rising_edge(clocks.clock40)) then
-      r80 := not r80;
-    end if;
-
-    if (rising_edge(clocks.clock320)) then
-      r80_dly := r80;
-    end if;
-    lpgbt_downlink_valid <= r80_dly xor r80;
-  end process;
-
-
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    lpgbt_downlink_data(I).valid <= lpgbt_downlink_valid;
+    lpgbt_downlink_data(I).valid <= strobe_320;
   end generate lpgbt_downlink_valid_gen;
 
   lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
@@ -466,7 +416,8 @@ begin  -- architecture behavioral
       clock             => clocks.clock40,
       reset             => global_reset,
       lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
-      l0mdt_ttc         => ttc_commands
+      l0mdt_ttc         => ttc_commands,
+      valid_o           => felix_valid
       );
 
   --------------------------------------------------------------------------------

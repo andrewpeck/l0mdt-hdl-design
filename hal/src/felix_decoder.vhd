@@ -27,6 +27,7 @@ entity felix_decoder is
     port(
       clock          : in std_logic;
       reset          : in std_logic;
+      valid_o        : out std_logic;
 
       -- data from LPGBTs
       lpgbt_uplink_data : in lpgbt_uplink_data_rt;
@@ -44,5 +45,6 @@ begin
   l0mdt_ttc.ecr <= lpgbt_uplink_data.data(felix_ecr_bit);
   l0mdt_ttc.l0a <= lpgbt_uplink_data.data(felix_l0a_bit);
   l0mdt_ttc.l1a <= lpgbt_uplink_data.data(felix_l1a_bit);
+  valid_o       <= lpgbt_uplink_data.valid;
 
 end behavioral;
