@@ -201,9 +201,10 @@ package l0mdt_dataformats_pkg is
   type pl2pt_rt is record
      data_valid           :  std_logic;
      muid                 :  slc_muid_rt;
+     phimod               :  signed(UCM_PT_PHIMOD_LEN-1 downto 0);
      charge               :  std_logic;
   end record pl2pt_rt;
-  constant PL2PT_LEN : integer := 22;
+  constant PL2PT_LEN : integer := 30;
   subtype pl2pt_rvt is std_logic_vector(PL2PT_LEN-1 downto 0);
   function vectorify(x: pl2pt_rt) return pl2pt_rvt;
   function structify(x: pl2pt_rvt) return pl2pt_rt;
@@ -213,12 +214,12 @@ package l0mdt_dataformats_pkg is
      muid                 :  slc_muid_rt;
      chambers             :  slc_chid_rt;
      common               :  slc_common_rt;
-     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+     specific             :  std_logic_vector(UCM_PT_PHIMOD_LEN-1 downto 0);
      process_ch           :  std_logic_vector(4-1 downto 0);
      processed            :  std_logic;
      data_valid           :  std_logic;
   end record pl2mtc_rt;
-  constant PL2MTC_LEN : integer := 129;
+  constant PL2MTC_LEN : integer := 86;
   subtype pl2mtc_rvt is std_logic_vector(PL2MTC_LEN-1 downto 0);
   function vectorify(x: pl2mtc_rt) return pl2mtc_rvt;
   function structify(x: pl2mtc_rvt) return pl2mtc_rt;
@@ -727,16 +728,18 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: pl2pt_rt) return pl2pt_rvt is
     variable y : pl2pt_rvt;
   begin
-    y(21)                      := x.data_valid;
-    y(20 downto 1)             := vectorify(x.muid);
+    y(29)                      := x.data_valid;
+    y(28 downto 9)             := vectorify(x.muid);
+    y(8 downto 1)              := vectorify(x.phimod);
     y(0)                       := x.charge;
     return y;
   end function vectorify;
   function structify(x: pl2pt_rvt) return pl2pt_rt is
     variable y : pl2pt_rt;
   begin
-    y.data_valid               := x(21);
-    y.muid                     := structify(x(20 downto 1));
+    y.data_valid               := x(29);
+    y.muid                     := structify(x(28 downto 9));
+    y.phimod                   := structify(x(8 downto 1));
     y.charge                   := x(0);
     return y;
   end function structify;
@@ -745,6 +748,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
+    y.phimod                   := nullify(x.phimod);
     y.charge                   := nullify(x.charge);
     return y;
   end function nullify;
@@ -752,10 +756,10 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: pl2mtc_rt) return pl2mtc_rvt is
     variable y : pl2mtc_rvt;
   begin
-    y(128 downto 109)          := vectorify(x.muid);
-    y(108 downto 97)           := vectorify(x.chambers);
-    y(96 downto 57)            := vectorify(x.common);
-    y(56 downto 6)             := x.specific;
+    y(85 downto 66)            := vectorify(x.muid);
+    y(65 downto 54)            := vectorify(x.chambers);
+    y(53 downto 14)            := vectorify(x.common);
+    y(13 downto 6)             := x.specific;
     y(5 downto 2)              := x.process_ch;
     y(1)                       := x.processed;
     y(0)                       := x.data_valid;
@@ -764,10 +768,10 @@ package body l0mdt_dataformats_pkg is
   function structify(x: pl2mtc_rvt) return pl2mtc_rt is
     variable y : pl2mtc_rt;
   begin
-    y.muid                     := structify(x(128 downto 109));
-    y.chambers                 := structify(x(108 downto 97));
-    y.common                   := structify(x(96 downto 57));
-    y.specific                 := x(56 downto 6);
+    y.muid                     := structify(x(85 downto 66));
+    y.chambers                 := structify(x(65 downto 54));
+    y.common                   := structify(x(53 downto 14));
+    y.specific                 := x(13 downto 6);
     y.process_ch               := x(5 downto 2);
     y.processed                := x(1);
     y.data_valid               := x(0);

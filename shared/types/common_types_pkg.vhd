@@ -754,12 +754,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: pl2pt_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*22-1 downto 0);
+    variable y : std_logic_vector(x'length*30-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-22) := vectorify(x(i));
-      msb := msb - 22 -1;
+      y(msb downto msb-30) := vectorify(x(i));
+      msb := msb - 30 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -776,8 +776,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-22));
-      msb := msb - 22 -1;
+      y(i) := structify(x(msb downto msb-30));
+      msb := msb - 30 -1;
     end loop l;
     return y;
   end function structify;
@@ -807,12 +807,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: pl2mtc_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*129-1 downto 0);
+    variable y : std_logic_vector(x'length*86-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-129) := vectorify(x(i));
-      msb := msb - 129 -1;
+      y(msb downto msb-86) := vectorify(x(i));
+      msb := msb - 86 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -829,8 +829,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-129));
-      msb := msb - 129 -1;
+      y(i) := structify(x(msb downto msb-86));
+      msb := msb - 86 -1;
     end loop l;
     return y;
   end function structify;

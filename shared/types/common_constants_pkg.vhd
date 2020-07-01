@@ -30,10 +30,6 @@ package common_constants_pkg is
 
   constant   SF_SEG_DATA_LEN      :  integer := 59;
 
-  constant   SLC_PT_PHIMOD_LEN    :  integer := 8;
-
-  constant   SLC_PT_PHIMOD_MULT   :  real := 320.0;
-
   constant   BIL_SEC3_RHO         :  real := 4949.0;
 
   constant   BML_SEC3_RHO         :  real := 7139.0;

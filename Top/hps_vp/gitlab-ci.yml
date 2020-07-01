@@ -1,0 +1,35 @@
+#################### HPS_vp Project ###########################
+
+create_project:hps_vp:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_vp
+
+synthesise_ips:hps_vp:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_vp
+      IP_PATH: IP
+    dependencies:
+        - create_project:hps_vp
+
+synthesise_project:hps_vp:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_vp
+    dependencies:
+        - synthesise_ips:hps_vp
+        - create_project:hps_vp
+
+implement_project:hps_vp:
+    extends: .implement_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_vp
+    dependencies:
+       - create_project:hps_vp
+       - synthesise_ips:hps_vp
+       - synthesise_project:hps_vp

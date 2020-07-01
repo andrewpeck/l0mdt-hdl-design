@@ -30,12 +30,12 @@ use heg_lib.heg_pkg.all;
 
 entity top_heg is
   generic(
-    g_STATION_RADIUS             : integer := 0;  --station
-    g_HPS_NUM_OF_HP       : integer := 6 
+    g_STATION_RADIUS    : integer := 0;  --station
+    g_HPS_NUM_MDT_CH     : integer := 6 
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     -- SLc

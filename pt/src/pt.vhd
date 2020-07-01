@@ -29,10 +29,17 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+-- library shared_lib;
+-- use shared_lib.config_pkg.all;
+-- use shared_lib.common_types_pkg.all;
+-- use shared_lib.common_constants_pkg.all;
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library pt_lib;
 use pt_lib.pt_pkg.all;
@@ -57,9 +64,9 @@ entity pt is
         i_segment_I  : in sf_seg_data_barrel_rvt;
         i_segment_M  : in sf_seg_data_barrel_rvt;
         i_segment_O  : in sf_seg_data_barrel_rvt;
-        i_SLC        : in slc_pt_rvt;
+        i_SLC        : in pl2pt_rvt;
         i_rst        : in std_logic;
-        o_mtc        : out mtc_tf_rvt
+        o_mtc        : out tf2mtc_rvt
     );
 end pt;
 
@@ -73,7 +80,7 @@ architecture Behavioral of pt is
     signal segment_EI, segment_EM, segment_EO : sf_seg_data_endcap_rt;
 
     -- SLC candidate
-    signal slc, slc_s : slc_pt_rt;
+    signal slc, slc_s : pl2pt_rt;
     -- Chamber combo id
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta :
            unsigned(SLC_CHAMBER_LEN*3 + 4 -1 downto 0) := (others => '0');
@@ -90,7 +97,7 @@ architecture Behavioral of pt is
     -- Phi/Eta coordinate
     signal nsegments : unsigned(MTC_NSEG_LEN-1 downto 0) := (others => '0');
     signal dv_eta : std_logic := '0';
-    signal phi : signed(SLC_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
+    signal phi : signed(UCM_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
     signal eta : signed(MTC_ETA_LEN-1 downto 0) := (others => '0');
 
     signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
@@ -110,13 +117,13 @@ architecture Behavioral of pt is
     -- Phi-dependent part
     signal b0, b0_s : std_logic_vector(b0_len-1 downto 0) := (others => '0');
     signal b1 : std_logic_vector(b1_len-1 downto 0) := (others => '0');
-    signal b1_phi, pt_phi_01 : signed(b1_len+SLC_PT_PHIMOD_LEN-1 downto 0)
+    signal b1_phi, pt_phi_01 : signed(b1_len+UCM_PT_PHIMOD_LEN-1 downto 0)
            := (others => '0');
     signal b2 : std_logic_vector(b2_len-1 downto 0) := (others => '0');
-    signal b2_phi : signed(b2_len+SLC_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
-    signal b2_phi2 : signed(b2_len+SLC_PT_PHIMOD_LEN*2 -1  downto 0)
+    signal b2_phi : signed(b2_len+UCM_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
+    signal b2_phi2 : signed(b2_len+UCM_PT_PHIMOD_LEN*2 -1  downto 0)
            := (others => '0');
-    signal pt_p : signed(b2_len+SLC_PT_PHIMOD_LEN*2 -1  downto 0) := (others => '0');
+    signal pt_p : signed(b2_len+UCM_PT_PHIMOD_LEN*2 -1  downto 0) := (others => '0');
     signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss
            : signed(a1_len+inv_s_len downto 0) := (others => '0');
     signal bin_sp : unsigned(3 downto 0) := (others => '0');
@@ -134,7 +141,7 @@ architecture Behavioral of pt is
     -- Mtc output parameters
     signal pt : unsigned(MTC_PT_LEN-1 downto 0) := (others => '0');
     signal mtc_valid : std_logic := '0';
-    signal mtc : mtc_tf_rt;
+    signal mtc : tf2mtc_rt;
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
 
     signal index_a : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
