@@ -96,10 +96,16 @@ architecture behavioral of top_clocking is
 
   -- clk40 synchronizer
   signal clear          : std_logic := '0';
-  signal valid_sr       : std_logic_vector (6 downto 0) := (others => '0');
+  signal valid_sr       : std_logic_vector (5 downto 0) := (others => '0');
   signal synced         : std_logic                     := '0';
   signal mmcm_locking   : std_logic;
   signal mmcm_locked_sr : std_logic_vector (7 downto 0);
+
+  signal oos_r, oos_rr : std_logic;
+  signal oos_cnt_max : integer := 10;
+  signal oos_cnt : integer range 0 to oos_cnt_max := 10;
+
+  signal out_of_sync : std_logic := '0';
 
   signal strobe_320 : std_logic;
 
@@ -139,7 +145,30 @@ begin  -- architecture behavioral
 
   -- by construction always in sync if we are using a local clock (since it doesn't matter)
   -- otherwise we should sync to the felix datavalid
-  out_of_sync_o <= (strobe_320 xor felix_valid_i) or (not select_felix_clk);
+  process (clk320)
+  begin
+    if (rising_edge(clk320)) then
+      out_of_sync <= (strobe_320 xor felix_valid_i) and (select_felix_clk);
+    end if;
+  end process;
+
+  -- extend the out of sync a few clocks using the 100MHz clock to make it a readable signal
+  process (clk100)
+  begin
+    if (rising_edge(clk100)) then
+      oos_r <= not synced or out_of_sync;
+      oos_rr <= oos_r;
+      if (oos_rr = '1') then
+        oos_cnt <= oos_cnt_max;
+        out_of_sync_o <= '1';
+      elsif (oos_cnt > 0) then
+        oos_cnt <= oos_cnt - 1;
+        out_of_sync_o <= '1';
+      else
+        out_of_sync_o <= '0';
+      end if;
+    end if;
+  end process;
 
   --------------------------------------------------------------------------------
   -- 100MHz free-running clock
@@ -320,7 +349,7 @@ begin  -- architecture behavioral
       sync_r  := sync_i or mmcm_locking or (not mmcm_locked);
       sync_rr := sync_r;
 
-      valid_sr <= felix_valid_i & valid_sr(valid_sr'length-1 downto 1) after 0.1 ns;
+      valid_sr <= felix_valid_i & valid_sr(valid_sr'length-1 downto 1);
 
       if (select_felix_clk = '0') then
         clear  <= '0';
