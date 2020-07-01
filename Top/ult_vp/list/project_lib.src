@@ -1,6 +1,8 @@
 # project files
 Top/ult/prj_cfg.vhd
 ult/top_ult_vp.vhd
+# IPs
+IP/vio_ult/vio_ult.xci
 # modules included
 shared/shared_lib.src
 mpl/mpl_lib.src

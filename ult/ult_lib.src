@@ -1,5 +1,4 @@
 # -*- mode: TCL;-*-
-IP/vio_ult/vio_ult.xci
 ult/src/ult.vhd
 ult/src/ult_h2s.vhd
 ult/src/ult_tar.vhd
