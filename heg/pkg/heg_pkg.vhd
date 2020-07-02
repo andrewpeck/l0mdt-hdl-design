@@ -1,121 +1,265 @@
---------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  gloustau@cern.ch
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: 
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
-
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
 package heg_pkg is
-  --------------------------------------------------------------------------------
-  --  slc port
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  --  mdt port
-  --------------------------------------------------------------------------------
 
-  type heg_pc2heg_avt is array ( integer range <>) of hp_hpsPc2hp_vt;
+  constant   HEG_BUSY_CLOCKS      :  integer := 10;
 
-  --------------------------------------------------------------------------------
-  -- HEG control to hp
-  --------------------------------------------------------------------------------
+  type heg_pc2heg_at is array(integer range <>) of hp_hpsPc2hp_rt;
+  type heg_pc2heg_avt is array(integer range <>) of hp_hpsPc2hp_rvt;
+  function vectorify(x: heg_pc2heg_at) return heg_pc2heg_avt;
+  function vectorify(x: heg_pc2heg_at) return std_logic_vector;
+  function structify(x: heg_pc2heg_avt) return heg_pc2heg_at;
+  function structify(x: std_logic_vector) return heg_pc2heg_at;
+  function nullify(x: heg_pc2heg_at) return heg_pc2heg_at;
+  function nullify(x: heg_pc2heg_avt) return heg_pc2heg_avt;
+
   type heg_ctrl2hp_rt is record
-    reset_b                    : std_logic_vector(MAX_NUM_HP-1 downto 0);
-    enable                     : std_logic_vector(MAX_NUM_HP-1 downto 0);
+     rst                  :  std_logic;
+     enable               :  std_logic;
   end record heg_ctrl2hp_rt;
-  constant HEG_CTRL2HP_LEN : integer := 12;
-  subtype heg_ctrl2hp_vt is std_logic_vector(HEG_CTRL2HP_LEN-1 downto 0);
-  function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_vt;
-  function structify(x: heg_ctrl2hp_vt) return heg_ctrl2hp_rt;
+  constant HEG_CTRL2HP_LEN : integer := 2;
+  subtype heg_ctrl2hp_rvt is std_logic_vector(HEG_CTRL2HP_LEN-1 downto 0);
+  function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rvt;
+  function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt;
   function nullify (x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt;
-  --------------------------------------------------------------------------------
-  -- HEG window to hp
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- HEG slc to hp
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- heg to sf hit data
-  --------------------------------------------------------------------------------
 
-  type heg_hp2bm_avt is array(integer range <>) of hp_hp2bm_vt;
+  type heg_ctrl2hp_at is array(integer range <>) of heg_ctrl2hp_rt;
+  type heg_ctrl2hp_avt is array(integer range <>) of heg_ctrl2hp_rvt;
+  function vectorify(x: heg_ctrl2hp_at) return heg_ctrl2hp_avt;
+  function vectorify(x: heg_ctrl2hp_at) return std_logic_vector;
+  function structify(x: heg_ctrl2hp_avt) return heg_ctrl2hp_at;
+  function structify(x: std_logic_vector) return heg_ctrl2hp_at;
+  function nullify(x: heg_ctrl2hp_at) return heg_ctrl2hp_at;
+  function nullify(x: heg_ctrl2hp_avt) return heg_ctrl2hp_avt;
+
+  type heg_hp2bm_at is array(integer range <>) of hp_hp2bm_rt;
+  type heg_hp2bm_avt is array(integer range <>) of hp_hp2bm_rvt;
+  function vectorify(x: heg_hp2bm_at) return heg_hp2bm_avt;
+  function vectorify(x: heg_hp2bm_at) return std_logic_vector;
+  function structify(x: heg_hp2bm_avt) return heg_hp2bm_at;
+  function structify(x: std_logic_vector) return heg_hp2bm_at;
+  function nullify(x: heg_hp2bm_at) return heg_hp2bm_at;
+  function nullify(x: heg_hp2bm_avt) return heg_hp2bm_avt;
 
   type heg_bm2sf_rt is record
-    data                       : hp_hp2sf_data_rt;
-    data_valid                 : std_logic;
+     data                 :  hp_hp2sf_data_rt;
+     data_valid           :  std_logic;
   end record heg_bm2sf_rt;
-  constant HEG_BM2SF_LEN : integer := 49;
-  subtype heg_bm2sf_vt is std_logic_vector(HEG_BM2SF_LEN-1 downto 0);
-  function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_vt;
-  function structify(x: heg_bm2sf_vt) return heg_bm2sf_rt;
+  constant HEG_BM2SF_LEN : integer := 42;
+  subtype heg_bm2sf_rvt is std_logic_vector(HEG_BM2SF_LEN-1 downto 0);
+  function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_rvt;
+  function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt;
   function nullify (x: heg_bm2sf_rt) return heg_bm2sf_rt;
 
 end package heg_pkg;
 
+------------------------------------------------------------
+
 package body heg_pkg is
-  --------------------------------------------------------------------------------
-  --  mdt port
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- HEG control to hp
-  --------------------------------------------------------------------------------
-  function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_vt is
-    variable y : heg_ctrl2hp_vt;
+
+  function vectorify(x: heg_pc2heg_at) return heg_pc2heg_avt is
+    variable y :  heg_pc2heg_avt(x'range);
   begin
-    y(11 downto 6)             := x.reset_b;
-    y(5 downto 0)              := x.enable;
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
     return y;
   end function vectorify;
-  function structify(x: heg_ctrl2hp_vt) return heg_ctrl2hp_rt is
+  function vectorify(x: heg_pc2heg_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*71-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-71) := vectorify(x(i));
+      msb := msb - 71 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: heg_pc2heg_avt) return heg_pc2heg_at is
+    variable y :  heg_pc2heg_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return heg_pc2heg_at is
+    variable y :  heg_pc2heg_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-71));
+      msb := msb - 71 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: heg_pc2heg_at) return heg_pc2heg_at is
+    variable y :  heg_pc2heg_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: heg_pc2heg_avt) return heg_pc2heg_avt is
+    variable y :  heg_pc2heg_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rvt is
+    variable y : heg_ctrl2hp_rvt;
+  begin
+    y(1)                       := x.rst;
+    y(0)                       := x.enable;
+    return y;
+  end function vectorify;
+  function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.reset_b                  := x(11 downto 6);
-    y.enable                   := x(5 downto 0);
+    y.rst                      := x(1);
+    y.enable                   := x(0);
     return y;
   end function structify;
   function nullify (x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.reset_b                  := nullify(x.reset_b);
+    y.rst                      := nullify(x.rst);
     y.enable                   := nullify(x.enable);
     return y;
   end function nullify;
-  --------------------------------------------------------------------------------
-  -- HEG window to hp
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- HEG slc to hp
-  --------------------------------------------------------------------------------
-  --------------------------------------------------------------------------------
-  -- heg to sf hit data
-  --------------------------------------------------------------------------------
-  function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_vt is
-    variable y : heg_bm2sf_vt;
+
+  function vectorify(x: heg_ctrl2hp_at) return heg_ctrl2hp_avt is
+    variable y :  heg_ctrl2hp_avt(x'range);
   begin
-    y(44 downto 1)             := vectorify(x.data);
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: heg_ctrl2hp_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*2-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-2) := vectorify(x(i));
+      msb := msb - 2 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: heg_ctrl2hp_avt) return heg_ctrl2hp_at is
+    variable y :  heg_ctrl2hp_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return heg_ctrl2hp_at is
+    variable y :  heg_ctrl2hp_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-2));
+      msb := msb - 2 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: heg_ctrl2hp_at) return heg_ctrl2hp_at is
+    variable y :  heg_ctrl2hp_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: heg_ctrl2hp_avt) return heg_ctrl2hp_avt is
+    variable y :  heg_ctrl2hp_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: heg_hp2bm_at) return heg_hp2bm_avt is
+    variable y :  heg_hp2bm_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: heg_hp2bm_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*43-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-43) := vectorify(x(i));
+      msb := msb - 43 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: heg_hp2bm_avt) return heg_hp2bm_at is
+    variable y :  heg_hp2bm_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return heg_hp2bm_at is
+    variable y :  heg_hp2bm_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-43));
+      msb := msb - 43 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: heg_hp2bm_at) return heg_hp2bm_at is
+    variable y :  heg_hp2bm_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: heg_hp2bm_avt) return heg_hp2bm_avt is
+    variable y :  heg_hp2bm_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: heg_bm2sf_rt) return heg_bm2sf_rvt is
+    variable y : heg_bm2sf_rvt;
+  begin
+    y(41 downto 1)             := vectorify(x.data);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
-  function structify(x: heg_bm2sf_vt) return heg_bm2sf_rt is
+  function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt is
     variable y : heg_bm2sf_rt;
   begin
-    y.data                     := structify(x(44 downto 1));
+    y.data                     := structify(x(41 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;

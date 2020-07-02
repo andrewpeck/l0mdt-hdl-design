@@ -23,8 +23,12 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use ieee.math_real.all;
-library csf_lib, pt_lib;
+
+library csf_lib;
 use csf_lib.csf_pkg.all;
+use csf_lib.csf_custom_pkg.all;
+
+library pt_lib;
 use pt_lib.pt_pkg.all;
 
 entity csf_plus_pt_top is

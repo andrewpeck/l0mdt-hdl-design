@@ -1,0 +1,63 @@
+--------------------------------------------------------------------------------
+--  UMass , Physics Department
+--  Guillermo Loustau de Linares
+--  gloustau@cern.ch
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: MDT tdc data addres remap
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
+library mpl_lib;
+use mpl_lib.mpl_pkg.all;
+
+entity pipeline is
+  port (
+    -- pipeline clock
+    clock_and_control : in l0mdt_control_rt;
+    -- ttc
+    ttc_commands      : in l0mdt_ttc_rt;
+    -- Sector Logic Candidates from uCM
+    i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+    -- Sector Logic Candidates to Track fitting
+    o_pl2pt_av        : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    -- Sector Logic Candidates to mTC
+    o_pl2mtc_av       : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
+    );
+end entity pipeline;
+
+architecture beh of pipeline is
+  signal glob_en : std_logic := '1';
+begin
+  
+  MPL_EN : if c_MPL_ENABLED = '1' generate
+    MPL : entity mpl_lib.mpl
+    port map(
+      clk             => clock_and_control.clk,
+      rst         => clock_and_control.rst,
+      glob_en         => glob_en,
+
+      i_uCM2pl_av     => i_uCM2pl_av,
+      o_pl2tf_av      => o_pl2pt_av,
+      o_pl2mtc_av     => o_pl2mtc_av
+    );
+  end generate;
+  
+  
+  
+end architecture beh;

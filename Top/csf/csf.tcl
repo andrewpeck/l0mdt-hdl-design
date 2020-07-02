@@ -1,10 +1,10 @@
 ############# modify these to match project ################
-set bin_file 1
-set use_questa_simulator 0
+set BIN_FILE 1
+set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
-set SYNTH_STRATEGY "Flow_AreaOptimized_High" 
+set SYNTH_STRATEGY "Flow_AreaOptimized_High"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
@@ -32,5 +32,5 @@ set PROPERTIES [dict create \
 #########################################################
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
-set path_repo "[file normalize [file dirname [info script]]]/../../"
-source $path_repo/Hog/Tcl/create_project.tcl
+set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
+source $PATH_REPO/Hog/Tcl/create_project.tcl

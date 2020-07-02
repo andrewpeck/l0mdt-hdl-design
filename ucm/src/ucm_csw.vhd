@@ -16,8 +16,13 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+ 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -28,30 +33,32 @@ entity ucm_csw is
   -- );
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     --
-    i_control           : in ucm_csw_control_rt;
+    i_control           : in ucm_csw_control_at;
     --
-    i_data              : in ucm_prepro_avt(MAX_NUM_SL -1 downto 0);
-    o_data              : out ucm_prepro_avt(MAX_NUM_SL -1 downto 0)
+    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    o_data              : out ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
 
 begin
-  UCM_MAIN_CSW : process(Reset_b,clk) begin
-    if(Reset_b = '0') then
-      o_data <= (others => (others => '0'));
-    elsif rising_edge(clk) then
-      for csw_i in MAX_NUM_SL -1 downto 0 loop
-        if i_control.data_present(csw_i) = '1' then
-          o_data(csw_i) <= i_data(to_integer(unsigned(i_control.addr_orig(csw_i))));
-        else
-          o_data(csw_i) <= (others => '0');
-        end if;
-      end loop;
+  UCM_MAIN_CSW : process(rst,clk) begin
+    if rising_edge(clk) then
+      if(rst= '1') then
+        o_data <= (others => (others => '0'));
+      else
+        for csw_i in c_MAX_NUM_SL -1 downto 0 loop
+          if i_control(csw_i).data_present = '1' then
+            o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
+          else
+            o_data(csw_i) <= (others => '0');
+          end if;
+        end loop;
+      end if;
     end if;
   end process;
 end beh;

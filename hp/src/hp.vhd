@@ -1,9 +1,10 @@
+
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---------------------------------------------------------------------------------  
---  Project: ATLAS L0MDT Trigger 
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger
 --  Module: Hit Processor Top
 --  Description:
 --
@@ -17,32 +18,36 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
-    radius      : integer := 0
+    g_STATION_RADIUS     : integer := 0
   );
   port (
-    clk                 : in std_logic;    
-    Reset_b             : in std_logic;
+    clk                 : in std_logic;
+    rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    local_Reset_b       : in std_logic;
+    local_rst      : in std_logic;
     local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_vt;
-    i_slc_data_v        : in hp_heg2hp_slc_vt;
+    i_SLC_Window        : in hp_heg2hp_window_avt;
+    i_slc_data_v        : in hp_heg2hp_slc_rvt;
     -- MDT hit
-    i_mdt_data          : in hp_hpsPc2hp_vt;
+    i_mdt_data          : in hp_hpsPc2hp_rvt;
     -- to Segment finder
-    o_hit_data          : out hp_hp2bm_vt
+    o_hit_data          : out hp_hp2bm_rvt
   );
 end entity hit_processor;
 
@@ -59,7 +64,7 @@ architecture beh of hit_processor is
   signal int_hit_valid       : std_logic;
 
 begin
-    
+
   mdt_data <= structify(i_mdt_data);
   slc_data <= structify(i_slc_data_v);
 
@@ -68,11 +73,11 @@ begin
 
   HP_HM : entity hp_lib.hp_matching
   generic map(
-    radius      => radius
+    g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- configuration
     time_offset         => time_offset,
@@ -94,11 +99,11 @@ begin
 
   HP_PC : entity hp_lib.hp_paramCalc
   generic map(
-      radius      => radius
+      g_STATION_RADIUS     => g_STATION_RADIUS
   )
   port map(
     clk                 => clk,
-    Reset_b             => Reset_b,
+    rst            => rst,
     glob_en             => glob_en,
     -- SLc
     i_SLc_specific      => slc_data.specific,
@@ -106,12 +111,12 @@ begin
     -- MDT hit
     i_mdt_time_real     => mdt_data.time_t0,
     i_mdt_z             => mdt_data.global_z,
-    i_mdt_y             => mdt_data.global_y,
+    i_mdt_x             => mdt_data.global_x,
     i_data_valid         => mdt_data.data_valid,
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
-    o_local_y           => data_2_sf_r.data.local_y,
-    o_local_z           => data_2_sf_r.data.local_z
+    o_local_x           => data_2_sf_r.data.local_x,
+    o_local_y           => data_2_sf_r.data.local_y
     -- o_data_valid        => tdc_paramcalc_valid
 
   );
@@ -123,7 +128,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => mdt_data.data_valid,
@@ -137,7 +142,7 @@ begin
   )
   port map(
     clk               => clk,
-    Reset_b           => Reset_b,
+    rst          => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => int_hit_valid,

@@ -17,8 +17,14 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.cfg_pkg.all;
-use shared_lib.common_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -29,20 +35,21 @@ use hps_lib.hps_pkg.all;
 
 entity hps is
   generic(
-    radius      : integer := 0  --station
+    g_STATION_RADIUS      : integer := 0;  --station
+    g_HPS_NUM_MDT_CH       : integer := 6 
   );
   port (
-    clk                 : in std_logic;
-    Reset_b             : in std_logic;
-    glob_en             : in std_logic;
+    clk                   : in std_logic;
+    rst                   : in std_logic;
+    glob_en               : in std_logic;
     -- control
 
     -- SLc
-    i_uCM2hps_av        : in ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
+    i_uCM2hps_av          : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    i_mdt_tar_av        : in tar2hps_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_tar_av          : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
-    o_sf2pt_av          : out sf2pt_avt(MAX_NUM_HEG -1 downto 0)
+    o_sf2pt_av            : out sf2pt_avt(c_NUM_THREADS -1 downto 0)
   );
 end entity hps;
 
@@ -50,59 +57,48 @@ architecture beh of hps is
 
   signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
 
-  -- signal int_uCM_data : ucm2heg_slc_avt(MAX_NUM_HEG -1 downto 0);
-  -- signal control_enable(MAX_NUM_HEG -1 downto 0);
+  -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
+  -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control        : hps_ctrl2sf_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_slc_data       : ucm2hps_avt(MAX_NUM_HEG -1 downto 0);
-  signal heg2sf_mdt_data       : hps_bm2sf_avt(MAX_NUM_HEG -1 downto 0);
+  signal heg2sf_control        : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_slc_data       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_mdt_data       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
-  -- HPS_SLC_DIST : entity hps_lib.hps_slc_dist
-  -- generic map(
-  --   radius              => radius
-  -- )
-  -- port map(
-  --   clk                 => clk,
-  --   Reset_b             => Reset_b,
-  --   glob_en             => glob_en,
-  --   --
-  --   i_uCM_pam           => i_uCM_pam,
-  --   --
-  --   i_uCM2hps_av          => i_uCM2hps_av,
-  --   o_uCM_data          => int_uCM_data
-    
-  -- );
-
-  pc_gen : for hp_i in MAX_NUM_HP -1 downto 0 generate
+  pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     PC : entity hps_lib.hps_pc 
     generic map(
-      radius              => radius
+      -- mdt type
+      -- mdt_type            => mdt_pullmux_data_rvt,
+      -- g_SIM_nBUILD        => g_SIM_nBUILD,
+      -- parameters
+      g_STATION_RADIUS    => g_STATION_RADIUS
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst                 => rst,
       glob_en             => glob_en,
       --
-      i_mdt_tar_v      => i_mdt_tar_av(hp_i),
-      o_mdt_full_data     => mdt_full_data_av(hp_i)
+      i_mdt_tar_v         => i_mdt_tar_av(hp_i),
+      o_mdt_full_data_v   => mdt_full_data_av(hp_i)
     );
   end generate;
 
-  heg_gen : for heg_i in MAX_NUM_HEG -1 downto 0 generate
+  heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
     HEG : entity heg_lib.heg
     generic map(
-      radius              => radius
+      g_STATION_RADIUS      => g_STATION_RADIUS,
+      g_HPS_NUM_MDT_CH       => g_HPS_NUM_MDT_CH
     )
     port map(
-      clk                 => clk,
-      Reset_b             => Reset_b,
-      glob_en             => glob_en,
+      clk                   => clk,
+      rst                   => rst,
+      glob_en               => glob_en,
       --
       i_uCM_data_v          => i_uCM2hps_av(heg_i),
       -- MDT hit
-      i_mdt_full_data_av     => mdt_full_data_av,
+      i_mdt_full_data_av    => mdt_full_data_av,
       -- to Segment finder
       o_sf_control_v        => heg2sf_control(heg_i),
       o_sf_slc_data_v       => heg2sf_slc_data(heg_i),
@@ -111,18 +107,18 @@ begin
 
     SF : entity hps_lib.hps_sf_wrap
     generic map(
-      radius              => radius
+      g_STATION_RADIUS    => g_STATION_RADIUS
     )
     port map(
       clk                 => clk,
-      Reset_b             => Reset_b,
+      rst                 => rst,
       glob_en             => glob_en,
       -- to Segment finder
       i_sf_control        => heg2sf_control(heg_i),
       i_sf_slc_data       => heg2sf_slc_data(heg_i),
       i_sf_mdt_data       => heg2sf_mdt_data(heg_i),
       --
-      o_sf_data_v           => o_sf2pt_av(heg_i)
+      o_sf_data_v         => o_sf2pt_av(heg_i)
     );
 
   end generate;

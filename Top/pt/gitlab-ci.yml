@@ -30,12 +30,12 @@ synthesise_project:pt:
         - synthesise_ips:pt
         - create_project:pt
 
-implement_project:pt:
-    extends: .implement_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: pt
-    dependencies:
-       - create_project:pt
-       - synthesise_ips:pt
-       - synthesise_project:pt
+# implement_project:pt:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: pt
+#     dependencies:
+#        - create_project:pt
+#        - synthesise_ips:pt
+#        - synthesise_project:pt

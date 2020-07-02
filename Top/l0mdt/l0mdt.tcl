@@ -1,7 +1,7 @@
 #vivado
 ############# modify these to match project ################
-set bin_file 1
-set use_questa_simulator 0
+set BIN_FILE 1
+set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
@@ -38,14 +38,13 @@ set PROPERTIES [dict create \
 
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
-set path_repo "[file normalize [file dirname [info script]]]/../../"
+set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
-eval exec bash -c {cd "${path_repo}/regmap" && make xml_regmap}
+eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
 
-source $path_repo/Hog/Tcl/create_project.tcl
+source $PATH_REPO/Hog/Tcl/create_project.tcl
 
-set C2C_PATH $path_repo/c2c/src/c2c
-set BD_PATH $path_repo/c2c/src/bd
-cd     $path_repo/c2c/src/c2c
+set C2C_PATH $PATH_REPO/c2c/src/c2c
+set BD_PATH $PATH_REPO/c2c/src/bd
+cd     $PATH_REPO/c2c/src/c2c
 source createC2CSlaveInterconnect.tcl
-
