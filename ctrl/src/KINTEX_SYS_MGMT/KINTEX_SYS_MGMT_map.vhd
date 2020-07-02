@@ -5,8 +5,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
-use work.HOG_INFO_Ctrl.all;
-entity HOG_INFO_interface is
+use work.KINTEX_SYS_MGMT_Ctrl.all;
+entity KINTEX_SYS_MGMT_interface is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -14,10 +14,10 @@ entity HOG_INFO_interface is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
-    Mon              : in  HOG_INFO_Mon_t
+    Mon              : in  KINTEX_SYS_MGMT_Mon_t
     );
-end entity HOG_INFO_interface;
-architecture behavioral of HOG_INFO_interface is
+end entity KINTEX_SYS_MGMT_interface;
+architecture behavioral of KINTEX_SYS_MGMT_interface is
   signal localAddress       : slv_32_t;
   signal localRdData        : slv_32_t;
   signal localRdData_latch  : slv_32_t;
@@ -27,8 +27,8 @@ architecture behavioral of HOG_INFO_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 17);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 17) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 295);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 295) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -64,36 +64,41 @@ begin  -- architecture behavioral
     localRdData <= x"00000000";
     if localRdReq = '1' then
       localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(4 downto 0))) is
-        when 0 => --0x0
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWDATE;            --
-        when 1 => --0x1
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWTIME;            --
-        when 2 => --0x2
-          localRdData(31 downto  0)  <=  Mon.OFFICIAL;                 --
-        when 3 => --0x3
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWHASH;            --
-        when 4 => --0x4
-          localRdData(31 downto  0)  <=  Mon.TOP_FWHASH;               --
-        when 5 => --0x5
-          localRdData(31 downto  0)  <=  Mon.XML_HASH;                 --
-        when 6 => --0x6
-          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWVERSION;         --
-        when 7 => --0x7
-          localRdData(31 downto  0)  <=  Mon.TOP_FWVERSION;            --
-        when 8 => --0x8
-          localRdData(31 downto  0)  <=  Mon.XML_VERSION;              --
-        when 9 => --0x9
-          localRdData(31 downto  0)  <=  Mon.HOG_FWHASH;               --
-        when 16 => --0x10
-          localRdData(31 downto  0)  <=  Mon.FRAMEWORK_FWVERSION;      --
-        when 17 => --0x11
-          localRdData(31 downto  0)  <=  Mon.FRAMEWORK_FWHASH;         --
+      case to_integer(unsigned(localAddress(8 downto 0))) is
+
+        when 256 => --0x100
+          localRdData(15 downto  6)  <=  Mon.TEMP;             --
+        when 257 => --0x101
+          localRdData(15 downto  6)  <=  Mon.VCCINT;           --
+        when 258 => --0x102
+          localRdData(15 downto  6)  <=  Mon.VCCAUX;           --
+        when 263 => --0x107
+          localRdData(15 downto  6)  <=  Mon.VCCBRAM;          --
+        when 288 => --0x120
+          localRdData(15 downto  6)  <=  Mon.TEMP_MAX;         --
+        when 289 => --0x121
+          localRdData(15 downto  6)  <=  Mon.VCCINT_MAX;       --
+        when 290 => --0x122
+          localRdData(15 downto  6)  <=  Mon.VCCAUX_MAX;       --
+        when 291 => --0x123
+          localRdData(15 downto  6)  <=  Mon.VCCBRAM_MAX;      --
+        when 292 => --0x124
+          localRdData(15 downto  6)  <=  Mon.TEMP_MIN;         --
+        when 293 => --0x125
+          localRdData(15 downto  6)  <=  Mon.VCCINT_MIN;       --
+        when 294 => --0x126
+          localRdData(15 downto  6)  <=  Mon.VCCAUX_MIN;       --
+        when 295 => --0x127
+          localRdData(15 downto  6)  <=  Mon.VCCBRAM_MIN;      --
+
+
         when others =>
           localRdData <= x"00000000";
       end case;
     end if;
   end process reads;
+
+
 
 
 

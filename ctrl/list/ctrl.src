@@ -1,0 +1,24 @@
+# -*- mode: TCL;-*-
+ctrl/src/top_control.vhd
+ctrl/src/axi/types.vhd
+ctrl/src/axi/axiReg.vhd
+ctrl/src/axi/axiRegPkg.vhd
+ctrl/src/axi/axi_bram_controller.vhd
+ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
+
+#ctrl/src/*/*.vhd
+
+ctrl/src/FW_INFO/FW_INFO_PKG.vhd
+ctrl/src/FW_INFO/FW_INFO_map.vhd
+
+ctrl/src/HOG_INFO/HOG_INFO_PKG.vhd
+ctrl/src/HOG_INFO/HOG_INFO_map.vhd
+
+ctrl/src/HOG_INFO/HOG_INFO_PKG.vhd
+ctrl/src/HOG_INFO/HOG_INFO_map.vhd
+
+ctrl/src/HAL/HAL_PKG.vhd
+ctrl/src/HAL/HAL_map.vhd
+
+ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_PKG.vhd
+ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_map.vhd

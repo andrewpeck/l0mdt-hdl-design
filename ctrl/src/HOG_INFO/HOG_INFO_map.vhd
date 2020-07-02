@@ -5,8 +5,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
-use work.FW_INFO_Ctrl.all;
-entity FW_INFO_interface is
+use work.HOG_INFO_Ctrl.all;
+entity HOG_INFO_interface is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -14,10 +14,10 @@ entity FW_INFO_interface is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
-    Mon              : in  FW_INFO_Mon_t
+    Mon              : in  HOG_INFO_Mon_t
     );
-end entity FW_INFO_interface;
-architecture behavioral of FW_INFO_interface is
+end entity HOG_INFO_interface;
+architecture behavioral of HOG_INFO_interface is
   signal localAddress       : slv_32_t;
   signal localRdData        : slv_32_t;
   signal localRdData_latch  : slv_32_t;
@@ -65,31 +65,40 @@ begin  -- architecture behavioral
     if localRdReq = '1' then
       localRdAck  <= '1';
       case to_integer(unsigned(localAddress(4 downto 0))) is
+
         when 0 => --0x0
-          localRdData( 1)            <=  Mon.GIT_VALID;             --
+          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWDATE;            --
         when 1 => --0x1
-          localRdData(31 downto  0)  <=  Mon.GIT_HASH_1;            --
+          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWTIME;            --
         when 2 => --0x2
-          localRdData(31 downto  0)  <=  Mon.GIT_HASH_2;            --
+          localRdData(31 downto  0)  <=  Mon.OFFICIAL;                 --
         when 3 => --0x3
-          localRdData(31 downto  0)  <=  Mon.GIT_HASH_3;            --
+          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWHASH;            --
         when 4 => --0x4
-          localRdData(31 downto  0)  <=  Mon.GIT_HASH_4;            --
+          localRdData(31 downto  0)  <=  Mon.TOP_FWHASH;               --
         when 5 => --0x5
-          localRdData(31 downto  0)  <=  Mon.GIT_HASH_5;            --
+          localRdData(31 downto  0)  <=  Mon.XML_HASH;                 --
+        when 6 => --0x6
+          localRdData(31 downto  0)  <=  Mon.GLOBAL_FWVERSION;         --
+        when 7 => --0x7
+          localRdData(31 downto  0)  <=  Mon.TOP_FWVERSION;            --
+        when 8 => --0x8
+          localRdData(31 downto  0)  <=  Mon.XML_VERSION;              --
+        when 9 => --0x9
+          localRdData(31 downto  0)  <=  Mon.HOG_FWHASH;               --
         when 16 => --0x10
-          localRdData( 7 downto  0)  <=  Mon.BUILD_DATE.DAY;        --
-          localRdData(15 downto  8)  <=  Mon.BUILD_DATE.MONTH;      --
-          localRdData(31 downto 16)  <=  Mon.BUILD_DATE.YEAR;       --
+          localRdData(31 downto  0)  <=  Mon.FRAMEWORK_FWVERSION;      --
         when 17 => --0x11
-          localRdData( 7 downto  0)  <=  Mon.BUILD_TIME.SEC;        --
-          localRdData(15 downto  8)  <=  Mon.BUILD_TIME.MIN;        --
-          localRdData(23 downto 16)  <=  Mon.BUILD_TIME.HOUR;       --
+          localRdData(31 downto  0)  <=  Mon.FRAMEWORK_FWHASH;         --
+
+
         when others =>
           localRdData <= x"00000000";
       end case;
     end if;
   end process reads;
+
+
 
 
 

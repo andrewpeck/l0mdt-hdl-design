@@ -43,5 +43,9 @@ set path_repo "[file normalize [file dirname [info script]]]/../../"
 eval exec bash -c {cd "${path_repo}/regmap" && make xml_regmap}
 
 source $path_repo/Hog/Tcl/create_project.tcl
-source $path_repo/c2c/c2c/createC2CSlaveInterconnect.tcl
+
+set C2C_PATH $path_repo/c2c/src/c2c
+set BD_PATH $path_repo/c2c/src/bd
+cd     $path_repo/c2c/src/c2c
+source createC2CSlaveInterconnect.tcl
 

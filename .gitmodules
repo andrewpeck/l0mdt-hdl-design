@@ -24,3 +24,6 @@
 [submodule "regmap"]
 	path = regmap
 	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git
+[submodule "bd"]
+	path = bd
+	url = https://github.com/dgastler/BU_BUILD

@@ -2,4 +2,4 @@
 Top/l0mdt/top_l0mdt.vhd
 hal/list/hal.src
 ult/list/ult.src
-ctl/list/ctl.src
+ctrl/list/ctrl.src

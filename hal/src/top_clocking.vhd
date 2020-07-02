@@ -88,7 +88,7 @@ end entity top_clocking;
 architecture behavioral of top_clocking is
 
   signal clkfb_nobuf, clk320_nobuf, clkpipe_nobuf       : std_logic;
-  signal clkfb, clk100, clk40, clk320, clkoddr, clkpipe : std_logic;
+  signal clkfb, clk50, clk100, clk40, clk320, clkoddr, clkpipe : std_logic;
   signal mmcm_locked                                    : std_logic;
 
   signal clock_ibufds      : std_logic;
@@ -102,7 +102,7 @@ architecture behavioral of top_clocking is
   signal mmcm_locked_sr : std_logic_vector (7 downto 0);
 
   signal oos_r, oos_rr : std_logic;
-  signal oos_cnt_max : integer := 10;
+  constant oos_cnt_max : integer := 10;
   signal oos_cnt : integer range 0 to oos_cnt_max := 10;
 
   signal out_of_sync : std_logic := '0';
@@ -112,9 +112,10 @@ architecture behavioral of top_clocking is
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
-  -- Aliasing
+  -- Port Aliasing
   --------------------------------------------------------------------------------
 
+  clocks_o.axiclock       <= clk50;
   clocks_o.clock40        <= clk40;
   clocks_o.clock320       <= clk320;
   clocks_o.freeclock      <= clk100;
@@ -194,6 +195,18 @@ begin  -- architecture behavioral
     port map (
       I => clock_100m_ibufds,
       O => clk100
+      );
+
+  -- 50MHz divided copy for AXI  (should increase this later)
+  BUFG_clk50_inst : BUFGCE_DIV
+    generic map (
+      BUFGCE_DIVIDE => 2
+      )
+    port map (
+      I   => clock_100m_ibufds,
+      CLR => '0',
+      CE  => '1',
+      O   => clk50
       );
 
   -------------------------------------------------------------------------------

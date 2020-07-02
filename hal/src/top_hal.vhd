@@ -24,6 +24,9 @@ use hal.mgt_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
 
+library ctrl;
+use ctrl.hal_ctrl.all;
+use ctrl.axiRegPkg.all;
 
 entity top_hal is
 
@@ -73,8 +76,8 @@ entity top_hal is
     slc_o : out SLC_avt (c_NUM_SLC-1 downto 0);
 
     -- Segments from neighbor
-    plus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    plus_neighbor_segments_o  : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    minus_neighbor_segments_o : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- Data inputs
@@ -85,7 +88,7 @@ entity top_hal is
     NSP_i : in NSP_avt (c_NUM_NSP-1 downto 0);
 
     -- Segments from neighbor
-    plus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    plus_neighbor_segments_i  : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
     minus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
 
     --------------------------------------------------------------------------------
@@ -93,6 +96,17 @@ entity top_hal is
     --------------------------------------------------------------------------------
 
     daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_LINKS-1 downto 0);
+
+    --------------------------------------------------------------------------------
+    -- AXI
+    --------------------------------------------------------------------------------
+
+    axi_clk_o : out std_logic;
+
+    hal_readmosi  : in  axireadmosi;
+    hal_readmiso  : out axireadmiso;
+    hal_writemosi : in  axiwritemosi;
+    hal_writemiso : out axiwritemiso;
 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
@@ -102,14 +116,16 @@ entity top_hal is
 end entity top_hal;
 architecture behavioral of top_hal is
 
-  signal clock_ibufds : std_logic;
-  signal clocks       : system_clocks_rt;
-  signal global_reset : std_logic;
-  signal felix_phase_out_of_sync : std_logic; -- FIXME: connect to AXI
+  signal HAL_MON : HAL_MON_t;
+
+  signal clock_ibufds            : std_logic;
+  signal clocks                  : system_clocks_rt;
+  signal global_reset            : std_logic;
+  signal felix_phase_out_of_sync : std_logic;  -- FIXME: connect to AXI
 
   signal strobe_pipeline : std_logic;
-  signal strobe_320 : std_logic;
-  signal felix_valid : std_logic;
+  signal strobe_320      : std_logic;
+  signal felix_valid     : std_logic;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -181,8 +197,8 @@ architecture behavioral of top_hal is
 
   attribute DONT_TOUCH                         : string;
   attribute MAX_FANOUT                         : string;
-  attribute MAX_FANOUT of strobe_pipeline   : signal is "20";
-  attribute DONT_TOUCH of strobe_pipeline   : signal is "true";
+  attribute MAX_FANOUT of strobe_pipeline      : signal is "20";
+  attribute DONT_TOUCH of strobe_pipeline      : signal is "true";
   attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
   attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
 
@@ -194,10 +210,32 @@ architecture behavioral of top_hal is
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
-  --
+  -- Signal Aliasing
   --------------------------------------------------------------------------------
 
   global_reset <= not (clocks.locked);
+  axi_clk_o    <= clocks.axiclock;
+
+  --------------------------------------------------------------------------------
+  -- AXI Interface
+  --------------------------------------------------------------------------------
+
+  hal_interface_inst : entity ctrl.hal_interface
+    port map (
+      clk_axi         => clocks.axiclock,
+      reset_axi_n     => '1',
+      slave_readmosi  => hal_readmosi,
+      slave_readmiso  => hal_readmiso,
+      slave_writemosi => hal_writemosi,
+      slave_writemiso => hal_writemiso,
+
+      -- monitor signals in
+      mon => hal_mon
+
+     -- control signals out
+      );
+
+  hal_mon.clocking.mmcm_locked <= clocks.locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -206,20 +244,21 @@ begin  -- architecture behavioral
   top_clocking_inst : entity hal.top_clocking
     port map (
       --
-      reset_i          => std_logic0,         -- TODO: should be sourced from AXI
-      select_felix_clk => std_logic0,         -- TODO: should be sourced from AXI
+      reset_i          => std_logic0,   -- TODO: should be sourced from AXI
+      select_felix_clk => std_logic0,   -- TODO: should be sourced from AXI
 
       -- synchronization
-      sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
-      felix_valid_i    => felix_valid,
-      felix_recclk_i   => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      out_of_sync_o    => felix_phase_out_of_sync,
+      sync_i         => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
+      felix_valid_i  => felix_valid,
+      felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
+      out_of_sync_o  => felix_phase_out_of_sync,
 
       -- clock inputs
-      clock_100m_i_p   => clock_100m_i_p,
-      clock_100m_i_n   => clock_100m_i_n,
-      clock_i_p        => clock_i_p,
-      clock_i_n        => clock_i_n,
+      -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
+      clock_100m_i_p => clock_100m_i_p,
+      clock_100m_i_n => clock_100m_i_n,
+      clock_i_p      => clock_i_p,
+      clock_i_n      => clock_i_n,
 
       -- clock output to pins
       lhc_refclk_o_p => lhc_refclk_o_p,
@@ -229,14 +268,14 @@ begin  -- architecture behavioral
       clocks_o => clocks,
 
       -- bx strobes
-      strobe_320_o => strobe_320,
+      strobe_320_o      => strobe_320,
       strobe_pipeline_o => strobe_pipeline,
 
       -- mmcm status
       locked_o => clocks.locked
       );
 
-  clock_and_control_o.rst_n <= not global_reset; -- FIXME, synchronize to clock
+  clock_and_control_o.rst_n <= not global_reset;  -- FIXME, synchronize to clock
   clock_and_control_o.clk   <= clocks.clock_pipeline;
   clock_and_control_o.bx    <= strobe_pipeline;
 

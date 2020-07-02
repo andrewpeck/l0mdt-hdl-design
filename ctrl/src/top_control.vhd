@@ -24,21 +24,6 @@ use work.FW_INFO_CTRL.all;
 use work.axiRegPkg.all;
 
 entity top_control is
-  generic (
-    -- these generics get set by hog at synthesis
-    GLOBAL_FWDATE       : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWTIME       : std_logic_vector (31 downto 0) := x"00000000";
-    OFFICIAL            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWHASH       : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    XML_HASH            : std_logic_vector (31 downto 0) := x"00000000";
-    GLOBAL_FWVERSION    : std_logic_vector (31 downto 0) := x"00000000";
-    TOP_FWVERSION       : std_logic_vector (31 downto 0) := x"00000000";
-    XML_VERSION         : std_logic_vector (31 downto 0) := x"00000000";
-    HOG_FWHASH          : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWVERSION : std_logic_vector (31 downto 0) := x"00000000";
-    FRAMEWORK_FWHASH    : std_logic_vector (31 downto 0) := x"00000000"
-    );
   port (
     -- axi
     axi_clk     : in std_logic;
@@ -54,6 +39,20 @@ entity top_control is
     c2c_refclkp  : in std_logic;
     c2c_refclkn  : in std_logic;
 
+    hal_readmosi  : out axireadmosi;
+    hal_readmiso  : in axireadmiso;
+    hal_writemosi : out axiwritemosi;
+    hal_writemiso : in axiwritemiso;
+
+    fw_info_readmosi  : out axireadmosi;
+    fw_info_readmiso  : in axireadmiso;
+    fw_info_writemosi : out axiwritemosi;
+    fw_info_writemiso : in axiwritemiso;
+
+    hog_info_readmosi  : out axireadmosi;
+    hog_info_readmiso  : in axireadmiso;
+    hog_info_writemosi : out axiwritemosi;
+    hog_info_writemiso : in axiwritemiso;
 
     -- system management
     sys_mgmt_scl            : inout std_logic;
@@ -68,64 +67,9 @@ end top_control;
 
 architecture control_arch of top_control is
 
-  signal fw_info_readmosi  : axireadmosi;
-  signal fw_info_readmiso  : axireadmiso;
-  signal fw_info_writemosi : axiwritemosi;
-  signal fw_info_writemiso : axiwritemiso;
-
-  signal hog_info_readmosi  : axireadmosi;
-  signal hog_info_readmiso  : axireadmiso;
-  signal hog_info_writemosi : axiwritemosi;
-  signal hog_info_writemiso : axiwritemiso;
-
   signal axi_reset_n : std_logic;
 
 begin
-
-  hog_info_interface_inst : entity work.hog_info_interface
-    port map (
-      clk_axi                 => axi_clk,
-      reset_axi_n             => axi_reset_n,
-      slave_readmosi          => hog_info_readmosi,
-      slave_readmiso          => hog_info_readmiso,
-      slave_writemosi         => hog_info_writemosi,
-      slave_writemiso         => hog_info_writemiso,
-      mon.GLOBAL_FWDATE       => GLOBAL_FWDATE,
-      mon.GLOBAL_FWTIME       => GLOBAL_FWTIME,
-      mon.OFFICIAL            => OFFICIAL,
-      mon.GLOBAL_FWHASH       => GLOBAL_FWHASH,
-      mon.TOP_FWHASH          => TOP_FWHASH,
-      mon.XML_HASH            => XML_HASH,
-      mon.GLOBAL_FWVERSION    => GLOBAL_FWVERSION,
-      mon.TOP_FWVERSION       => TOP_FWVERSION,
-      mon.XML_VERSION         => XML_VERSION,
-      mon.HOG_FWHASH          => HOG_FWHASH,
-      mon.FRAMEWORK_FWVERSION => FRAMEWORK_FWVERSION,
-      mon.FRAMEWORK_FWHASH    => FRAMEWORK_FWHASH
-      );
-
-  fw_info_interface_inst : entity work.fw_info_interface
-    port map (
-      clk_axi                          => axi_clk,
-      reset_axi_n                      => axi_reset_n,
-      slave_readmosi                   => fw_info_readmosi,
-      slave_readmiso                   => fw_info_readmiso,
-      slave_writemosi                  => fw_info_writemosi,
-      slave_writemiso                  => fw_info_writemiso,
-      mon.GIT_VALID                    => '0',              -- FW_HASH_VALID,
-      mon.GIT_HASH_1                   => (others => '0'),  -- FW_HASH_1,
-      mon.GIT_HASH_2                   => (others => '0'),  -- FW_HASH_2,
-      mon.GIT_HASH_3                   => (others => '0'),  -- FW_HASH_3,
-      mon.GIT_HASH_4                   => (others => '0'),  -- FW_HASH_4,
-      mon.GIT_HASH_5                   => (others => '0'),  -- FW_HASH_5,
-      mon.BUILD_DATE.DAY               => (others => '0'),  -- TS_DAY,
-      mon.BUILD_DATE.MONTH             => (others => '0'),  -- TS_MONTH,
-      mon.BUILD_DATE.YEAR(7 downto 0)  => (others => '0'),  -- TS_YEAR,
-      mon.BUILD_DATE.YEAR(15 downto 8) => (others => '0'),  -- TS_CENT,
-      mon.BUILD_TIME.sec               => (others => '0'),  -- TS_SEC,
-      mon.BUILD_TIME.min               => (others => '0'),  -- TS_MIN,
-      mon.BUILD_TIME.HOUR              => (others => '0')   -- TS_HOUR
-      );
 
   c2cslave_wrapper_inst : entity xil_defaultlib.c2cslave_wrapper
     port map (
@@ -207,6 +151,26 @@ begin
       fw_info_wready(0)  => fw_info_writemiso.ready_for_data,
       fw_info_wstrb      => fw_info_writemosi.data_write_strobe,
       fw_info_wvalid(0)  => fw_info_writemosi.data_valid,
+
+      hal_araddr     => hal_readmosi.address,
+      hal_arprot     => hal_readmosi.protection_type,
+      hal_arready(0) => hal_readmiso.ready_for_address,
+      hal_arvalid(0) => hal_readmosi.address_valid,
+      hal_awaddr     => hal_writemosi.address,
+      hal_awprot     => hal_writemosi.protection_type,
+      hal_awready(0) => hal_writemiso.ready_for_address,
+      hal_awvalid(0) => hal_writemosi.address_valid,
+      hal_bready(0)  => hal_writemosi.ready_for_response,
+      hal_bresp      => hal_writemiso.response,
+      hal_bvalid(0)  => hal_writemiso.response_valid,
+      hal_rdata      => hal_readmiso.data,
+      hal_rready(0)  => hal_readmosi.ready_for_data,
+      hal_rresp      => hal_readmiso.response,
+      hal_rvalid(0)  => hal_readmiso.data_valid,
+      hal_wdata      => hal_writemosi.data,
+      hal_wready(0)  => hal_writemiso.ready_for_data,
+      hal_wstrb      => hal_writemosi.data_write_strobe,
+      hal_wvalid(0)  => hal_writemosi.data_valid,
 
       -- system monitor outputs
 
