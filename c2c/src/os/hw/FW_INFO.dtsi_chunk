@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveFW_INFO: FW_INFO@83C43000 {
+      compatible = "generic-uio";
+      reg = <0x83C43000 0x1000>;
+      label = "FW_INFO";
+    };
+  };

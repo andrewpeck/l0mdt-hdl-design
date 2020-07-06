@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveHAL: HAL@83C49000 {
+      compatible = "generic-uio";
+      reg = <0x83C49000 0x1000>;
+      label = "HAL";
+    };
+  };
