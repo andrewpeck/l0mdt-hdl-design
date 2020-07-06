@@ -3,10 +3,9 @@
 library hal;
 use hal.system_types_pkg.all;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-use l0mdt_lib.mdttp_constants_pkg.all;
-use l0mdt_lib.mdttp_functions_pkg.all;
+library shared_lib;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_types_pkg.all;
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -28,26 +27,28 @@ entity polling_mux is
     );
   port(
     clock       : in  std_logic;
-    tdc_hits_i  : in  TDCPOLMUX_rt_array (g_WIDTH-1 downto 0);
+    tdc_hits_i  : in  mdt_polmux_avt (g_WIDTH-1 downto 0);
     read_done_o : out std_logic_vector (g_WIDTH-1 downto 0);
-    tdc_hit_o   : out TDCPOLMUX_rt
+    tdc_hit_o   : out mdt_polmux_rvt
     );
 end polling_mux;
 
 architecture behavioral of polling_mux is
 
-  signal tdc_hits_r   : TDCPOLMUX_rt_array (g_WIDTH-1 downto 0);
-  signal tdc_hits_and : TDCPOLMUX_rt_array (g_WIDTH-1 downto 0);
-  signal tdc_hits_or  : TDCPOLMUX_rt;
+  signal tdc_hits_r   : mdt_polmux_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_and : mdt_polmux_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_or  : mdt_polmux_rvt;
 
   signal hit_sel_mask, hit_sel_mask_r : std_logic_vector (g_WIDTH-1 downto 0);
 
   -- function to pull the valid bits out of a tdcpolmux array and put it in a std_logic_vector
-  function tdchits2valid_stdlogic (arr : TDCPOLMUX_rt_array; size : integer) return std_logic_vector is
+  function tdchits2valid_stdlogic (arr : mdt_polmux_avt; size : integer) return std_logic_vector is
     variable tmp : std_logic_vector(size - 1 downto 0);
+    variable rec : mdt_polmux_rt;
   begin
     for I in 0 to size-1 loop
-      if (arr(I).datavalid = '1') then
+      rec := structify(arr(I));
+      if (rec.data_valid = '1') then
         tmp(I) := '1';
       else
         tmp(I) := '0';
@@ -67,13 +68,13 @@ architecture behavioral of polling_mux is
     return result;
   end;
 
-  -- ORs together a TDCPOLMUX_rt array, useful for multiplexing
-  function or_reduce (arr : TDCPOLMUX_rt_array) return TDCPOLMUX_rt is
-    variable tmp : TDCPOLMUX_rt;
+  -- ORs together a mdt_polmux_avt, useful for multiplexing
+  function or_reduce (arr : mdt_polmux_avt) return mdt_polmux_rvt is
+    variable tmp : mdt_polmux_rvt;
   begin
-    tmp := tdcpolmux_2rf (repeat('0', TDCPOLMUX_len));
+    tmp := repeat('0', MDT_POLMUX_LEN);
     for I in 0 to arr'length-1 loop
-      tmp := tdcpolmux_2rf (tdcpolmux_2af(tmp) or tdcpolmux_2af(arr(I)));
+      tmp := tmp or arr(I);
     end loop;
     return tmp;
   end function;
@@ -108,7 +109,7 @@ begin
         end if;
       end if;
     end process;
-    hit_sel_mask   <= std_logic_vector(shift_left(to_unsigned(1, hit_sel_mask'length), cnt));
+    hit_sel_mask <= std_logic_vector(shift_left(to_unsigned(1, hit_sel_mask'length), cnt));
   end generate;
 
   --------------------------------------------------------------------------------
@@ -133,7 +134,7 @@ begin
     -- is implemented in a way that is efficient and fast while a more obvious implmentation runs a lot slower
 
     -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be pipelined if needed
-    valid_vec   <= tdchits2valid_stdlogic(tdc_hits_i, tdc_hits_i'length);
+    valid_vec    <= tdchits2valid_stdlogic(tdc_hits_i, tdc_hits_i'length);
     hit_sel_mask <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
   end generate;
 
@@ -147,11 +148,11 @@ begin
 
       -- Copy the input and selection mask for pipelining
       hit_sel_mask_r <= hit_sel_mask;
-      tdc_hits_r  <= tdc_hits_i;
+      tdc_hits_r     <= tdc_hits_i;
 
       -- AND each TDC hit w/ its valid bit in one step
       for I in 0 to tdc_hits_i'length-1 loop
-        tdc_hits_and(I) <= tdcpolmux_2rf (tdcpolmux_2af (tdc_hits_r(I)) and repeat(hit_sel_mask_r(I), TDCPOLMUX_len));
+        tdc_hits_and(I) <= tdc_hits_r(I) and repeat(hit_sel_mask_r(I), tdc_hits_r(I)'length);
       end loop;  -- I
 
       -- then just OR together the masked outputs in another clock

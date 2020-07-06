@@ -17,6 +17,36 @@ package csm_pkg is
 
   type int_array_t is array (integer range <>) of integer;
 
+  type tdc_elink_pair is record
+    ch1 : integer;
+    ch2 : integer;
+  end record;
+
+  type elink_pair_map_t is array (integer range 0 to 17) of tdc_elink_pair;
+
+  -- FIXME: update this map with real values from CSM schematic
+  -- TODO: use a function to set this..? would probably be clearer
+  constant elink_pair_map : elink_pair_map_t := (
+    0  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    1  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    2  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    3  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    4  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    5  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    6  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    7  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    8  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    9  => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    10 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    11 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    12 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    13 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    14 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    15 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    16 => (ch1 => 6*4+3, ch2 => 6*4+2),  -- 63 62
+    17 => (ch1 => 6*4+3, ch2 => 6*4+2)   -- 63 62
+    );
+
   -- FIXME: update these mappings once a real CSM is made that is actually useable
   -- create a list based on CSM hardware of which elinks are "primary" (even)
   -- elinks that can be connected to a tdc
@@ -98,13 +128,13 @@ package body csm_pkg is
   function func_get_tdc_odd_id (id : integer; mgt_type : mgt_types_t; master_map : int_array_t; slave_map : int_array_t)
     return integer is
   begin
-        if (mgt_type=MGT_LPGBT) then
-          return master_map(id);
-        elsif (mgt_type=MGT_LPGBT_SIMPLEX) then
-          return slave_map(id);
-        else
-          return -1;
-        end if;
+    if (mgt_type = MGT_LPGBT) then
+      return master_map(id);
+    elsif (mgt_type = MGT_LPGBT_SIMPLEX) then
+      return slave_map(id);
+    else
+      return -1;
+    end if;
   end func_get_tdc_odd_id;
 
 end package body;

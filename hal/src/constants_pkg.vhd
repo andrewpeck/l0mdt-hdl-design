@@ -22,10 +22,10 @@ package constants_pkg is
 
   constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP));
 
-  constant c_NUM_POLMUX_INNER  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, INNER);
-  constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, MIDDLE);
-  constant c_NUM_POLMUX_OUTER  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, OUTER);
-  constant c_NUM_POLMUX_EXTRA  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, EXTRA);
+  constant c_NUM_POLMUX_INNER  : integer := func_count_polmux (c_TDC_LINK_MAP, INNER);
+  constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, MIDDLE);
+  constant c_NUM_POLMUX_OUTER  : integer := func_count_polmux (c_TDC_LINK_MAP, OUTER);
+  constant c_NUM_POLMUX_EXTRA  : integer := func_count_polmux (c_TDC_LINK_MAP, EXTRA);
   constant c_NUM_POLMUX        : integer := c_NUM_POLMUX_INNER + c_NUM_POLMUX_MIDDLE + c_NUM_POLMUX_OUTER + c_NUM_POLMUX_EXTRA;
 
   constant c_NUM_CSM_LINKS_ACTIVE : integer := func_count_lpgbt_link_mapped_to_csm (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);

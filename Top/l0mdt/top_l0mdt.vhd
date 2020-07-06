@@ -21,7 +21,15 @@ use ctrl.HOG_INFO_CTRL.all;
 use ctrl.FW_INFO_CTRL.all;
 use ctrl.axiRegPkg.all;
 
-library ult;
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
+library ult_lib;
 
 -- library c2c;
 -- use c2c.axiRegPkg.all;
@@ -88,20 +96,32 @@ architecture structural of top_l0mdt is
   -- signal tts_commands          : TTS_CMD_rt;
 
   -- hal <--> ult
-  signal inner_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_INNER -1 downto 0);
-  signal middle_tdc_hits           : TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-  signal outer_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_OUTER -1 downto 0);
-  signal extra_tdc_hits            : TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA -1 downto 0);
-  signal slc                       : SLC_avt (c_NUM_SLC-1 downto 0);
-  signal plus_neighbor_segments_o  : SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-  signal minus_neighbor_segments_o : SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-  signal plus_neighbor_segments_i  : SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-  signal minus_neighbor_segments_i : SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+
+  signal inner_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
+  signal i_inner_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_middle_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_outer_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_extra_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
+
+  signal main_primary_slc     : slc_rx_data_avt(2 downto 0); -- is the main SL used
+  signal main_secondary_slc   : slc_rx_data_avt(2 downto 0); -- only used in the big endcap
+  signal plus_neighbor_slc    : slc_rx_data_rvt;
+  signal minus_neighbor_slc   : slc_rx_data_rvt;
+
+  signal plus_neighbor_segments_i  : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+
   signal daq_streams               : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- NSP + MUCTPI
-  signal mtc : MTC_avt (c_NUM_MTC-1 downto 0);
-  signal nsp : NSP_avt (c_NUM_NSP-1 downto 0);
+  signal mtc :mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal nsp :mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 
@@ -142,7 +162,7 @@ begin
 
       -- clocks to user logic
       clock_and_control_o => clock_and_control,
-      ttc_commands        => ttc_commands,
+      ttc_commands_o      => ttc_commands,
 
       --  tdc data
       tdc_hits_inner  => inner_tdc_hits,
@@ -150,8 +170,11 @@ begin
       tdc_hits_outer  => outer_tdc_hits,
       tdc_hits_extra  => extra_tdc_hits,
 
-      --
-      slc_o => slc,
+      -- SLC
+      main_primary_slc    =>   main_primary_slc,
+      main_secondary_slc  =>   main_secondary_slc,
+      plus_neighbor_slc   =>   plus_neighbor_slc,
+      minus_neighbor_slc  =>   minus_neighbor_slc,
 
       -- segment out to neighbor
       plus_neighbor_segments_i  => plus_neighbor_segments_o,
@@ -179,24 +202,33 @@ begin
       sump => hal_sump
       );
 
-  top_ult_inst : entity ult.top_ult
+  ult_inst : entity ult_lib.ult
     generic map (
       DUMMY => true)
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      inner_tdc_hits_i  => inner_tdc_hits,
-      middle_tdc_hits_i => middle_tdc_hits,
-      outer_tdc_hits_i  => outer_tdc_hits,
-      extra_tdc_hits_i  => extra_tdc_hits,
-
-      slc_i => slc,
+      --inner_tdc_hits_i  => inner_tdc_hits,
+      --middle_tdc_hits_i => middle_tdc_hits,
+      --outer_tdc_hits_i  => outer_tdc_hits,
+      --extra_tdc_hits_i  => extra_tdc_hits,
 
       plus_neighbor_segments_i  => plus_neighbor_segments_i,
       minus_neighbor_segments_i => minus_neighbor_segments_i,
       plus_neighbor_segments_o  => plus_neighbor_segments_o,
       minus_neighbor_segments_o => minus_neighbor_segments_o,
+
+      -- SLC
+      i_main_primary_slc    =>   main_primary_slc,
+      i_main_secondary_slc  =>   main_secondary_slc,
+      i_plus_neighbor_slc   =>   plus_neighbor_slc,
+      i_minus_neighbor_slc  =>   minus_neighbor_slc,
+
+      i_inner_tar_hits    => i_inner_tar_hits,
+      i_middle_tar_hits   => i_middle_tar_hits,
+      i_outer_tar_hits    => i_outer_tar_hits,
+      i_extra_tar_hits    => i_extra_tar_hits,
 
       mtc_o => mtc,
       nsp_o => nsp,
@@ -205,9 +237,6 @@ begin
       sump          => user_sump
       );
 
-  --top_control : entity ult.top_control
-  --  port map (
-  --    );
   top_control_inst : entity ctrl.top_control
     port map (
 

@@ -4,7 +4,7 @@ use xpm.vcomponents.all;
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity xpm_fifo is
+entity fifo_async is
   generic (
     DEPTH    : integer := 16;
     WR_WIDTH : integer := 64;
@@ -24,9 +24,9 @@ entity xpm_fifo is
     sbiterr : out std_logic;
     dbiterr : out std_logic
     );
-end xpm_fifo;
+end fifo_async;
 
-architecture Behavioral of xpm_fifo is
+architecture Behavioral of fifo_async is
 begin
 
   xpm_fifo_sync_inst : xpm_fifo_async

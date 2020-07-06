@@ -24,6 +24,14 @@ use hal.mgt_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
 library ctrl;
 use ctrl.hal_ctrl.all;
 use ctrl.axiRegPkg.all;
@@ -60,36 +68,41 @@ entity top_hal is
     clock_and_control_o : out l0mdt_control_rt;
 
     -- ttc
-    ttc_commands : out l0mdt_ttc_rt;
+    ttc_commands_o : out l0mdt_ttc_rt;
 
     --------------------------------------------------------------------------------
     -- Data outputs
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out TDCPOLMUX_avt (c_NUM_POLMUX_INNER-1 downto 0);
-    tdc_hits_middle : out TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    tdc_hits_outer  : out TDCPOLMUX_avt (c_NUM_POLMUX_OUTER-1 downto 0);
-    tdc_hits_extra  : out TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA-1 downto 0);
-
-    -- Endcap + Neighbor Sector Logic Candidates
-    slc_o : out SLC_avt (c_NUM_SLC-1 downto 0);
-
-    -- Segments from neighbor
-    plus_neighbor_segments_o  : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_o : in SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    tdc_hits_inner  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
-    -- Data inputs
+    -- SLC
     --------------------------------------------------------------------------------
 
+    main_primary_slc   : out slc_rx_data_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
+    plus_neighbor_slc  : out slc_rx_data_rvt;
+    minus_neighbor_slc : out slc_rx_data_rvt;
+
+    -- pt from neighbor
+    plus_neighbor_segments_o  : out sf2pt_avt (c_NUM_SF_INPUTS -1 downto 0);
+    minus_neighbor_segments_o : out sf2pt_avt (c_NUM_SF_INPUTS -1 downto 0);
+
+    -- pt to neighbor
+    plus_neighbor_segments_i  : in sf2pt_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    minus_neighbor_segments_i : in sf2pt_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+
+    --------------------------------------------------------------------------------
     -- NSP + MUCTPI
-    MTC_i : in MTC_avt (c_NUM_MTC-1 downto 0);
-    NSP_i : in NSP_avt (c_NUM_NSP-1 downto 0);
+    --------------------------------------------------------------------------------
 
-    -- Segments from neighbor
-    plus_neighbor_segments_i  : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-    minus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    MTC_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_i : in mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- felix
@@ -118,6 +131,7 @@ architecture behavioral of top_hal is
 
   signal HAL_MON : HAL_MON_t;
 
+
   signal clock_ibufds            : std_logic;
   signal clocks                  : system_clocks_rt;
   signal global_reset            : std_logic;
@@ -126,6 +140,8 @@ architecture behavioral of top_hal is
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
   signal felix_valid     : std_logic;
+
+  signal ttc_commands : l0mdt_ttc_rt;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -275,9 +291,9 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
-  clock_and_control_o.rst_n <= not global_reset;  -- FIXME, synchronize to clock
-  clock_and_control_o.clk   <= clocks.clock_pipeline;
-  clock_and_control_o.bx    <= strobe_pipeline;
+  clock_and_control_o.rst <= global_reset;  -- FIXME, synchronize to clock
+  clock_and_control_o.clk <= clocks.clock_pipeline;
+  clock_and_control_o.bx  <= strobe_pipeline;
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -449,14 +465,19 @@ begin  -- architecture behavioral
   -- Felix Receiver
   --------------------------------------------------------------------------------
 
-  -- TODO: create copies of ttc signals on different clocks?
   felix_decoder_inst : entity work.felix_decoder
     port map (
       clock             => clocks.clock40,
       reset             => global_reset,
       lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
-      l0mdt_ttc         => ttc_commands,
-      valid_o           => felix_valid
+
+      strobe_pipeline => strobe_pipeline,
+      strobe_320      => strobe_320,
+
+      l0mdt_ttc_40m      => ttc_commands,
+      l0mdt_ttc_320m     => open,
+      l0mdt_ttc_pipeline => ttc_commands_o,
+      valid_o            => felix_valid
       );
 
   --------------------------------------------------------------------------------
