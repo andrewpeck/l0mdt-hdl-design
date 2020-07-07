@@ -1,5 +1,5 @@
-shared/shared_lib.src
+shared/shared_lib.src lib=shared_lib
 Top/pt/prj_cfg.vhd
-pt/pt_lib.src
+pt/pt_lib.src lib=pt_lib
 pt/top_pt.vhd
 
