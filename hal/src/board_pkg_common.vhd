@@ -83,6 +83,7 @@ package board_pkg_common is
   --------------------------------------------------------------------------------
 
   type int_array_t is array (integer range <>) of integer;
+  type bool_array_t is array (integer range <>) of boolean;
 
   function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t;
@@ -97,6 +98,9 @@ package board_pkg_common is
     return integer;
 
   function func_count_polmux (tdc_map : tdc_link_map_array_t; station : station_id_t)
+    return integer;
+
+  function func_polmux_maxid (tdc_map : tdc_link_map_array_t)
     return integer;
 
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
@@ -148,16 +152,17 @@ package body board_pkg_common is
 
   function func_fill_polmux_idx (tdc_map : tdc_link_map_array_t; num_polmux : integer; station : station_id_t)
     return int_array_t is
-    variable max     : integer := -1;
+    variable polmux_already_counted : bool_array_t (-1 to 99) := (others => false);
+    -- 99 is just a random large number, larger than the # of polmuxes we could ever want
     variable cnt     : integer := 0;
-    variable idx_arr : int_array_t (0 to num_polmux-1) := (others => -1);
+    variable idx_arr : int_array_t (0 to num_polmux) := (others => -1);
   begin
     assert false report "num_polmux=" & integer'image(num_polmux) severity note;
     for I in 0 to tdc_map'length-1 loop
-      if (tdc_map(I).polmux_id > max) then
-        max := max + 1;
+      if (polmux_already_counted(tdc_map(I).polmux_id)=false) then
         if (station = tdc_map(I).station_id) then
-          idx_arr(max) := cnt;
+          polmux_already_counted(tdc_map(I).polmux_id) := true;
+          idx_arr(tdc_map(I).polmux_id) := cnt;
           if (cnt = num_polmux-1) then
             return idx_arr;
           else
@@ -172,14 +177,32 @@ package body board_pkg_common is
   -- function to count number of polmuxes
   -- loop over the tdc link mapping and find how many polmuxes are needed for the
   -- number of tdcs requested in the user logic pkg
+  function func_polmux_maxid (tdc_map : tdc_link_map_array_t)
+    return integer is
+    variable max : integer := 0;
+    variable id : integer;
+  begin
+    for I in 0 to tdc_map'length-1 loop
+      id := tdc_map(I).polmux_id;
+      if (id > max) then
+        max := id;
+      end if;
+    end loop;
+    return max;
+  end func_polmux_maxid;
+
+  -- function to count number of polmuxes
+  -- loop over the tdc link mapping and find how many polmuxes are needed for the
+  -- number of tdcs requested in the user logic pkg
   function func_count_polmux (tdc_map : tdc_link_map_array_t; station : station_id_t)
     return integer is
     variable polmux_cnt : integer := 0;
-    variable max_polmux_id : integer := -1;
+    variable polmux_already_counted : bool_array_t (-1 to 99) := (others => false);
+    -- 99 is just a random large number, larger than the # of polmuxes we could ever want
   begin
     for I in 0 to tdc_map'length-1 loop
-      if (tdc_map(I).polmux_id > max_polmux_id and station = tdc_map(I).station_id) then
-        max_polmux_id := tdc_map(I).polmux_id;
+      if (polmux_already_counted(tdc_map(I).polmux_id)=false and station = tdc_map(I).station_id) then
+        polmux_already_counted(tdc_map(I).polmux_id) := true;
         polmux_cnt := polmux_cnt + 1;
       end if;
     end loop;

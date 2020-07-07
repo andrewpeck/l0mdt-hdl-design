@@ -102,26 +102,26 @@ architecture structural of top_l0mdt is
   signal outer_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
   signal extra_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
-  signal i_inner_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
-  signal i_middle_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
-  signal i_outer_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_extra_tar_hits   : tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_inner_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_middle_tar_hits : tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_outer_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_extra_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal main_primary_slc     : slc_rx_data_avt(2 downto 0); -- is the main SL used
-  signal main_secondary_slc   : slc_rx_data_avt(2 downto 0); -- only used in the big endcap
-  signal plus_neighbor_slc    : slc_rx_data_rvt;
-  signal minus_neighbor_slc   : slc_rx_data_rvt;
+  signal main_primary_slc   : slc_rx_data_avt(2 downto 0);  -- is the main SL used
+  signal main_secondary_slc : slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
+  signal plus_neighbor_slc  : slc_rx_data_rvt;
+  signal minus_neighbor_slc : slc_rx_data_rvt;
 
   signal plus_neighbor_segments_i  : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
   signal minus_neighbor_segments_i : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
   signal plus_neighbor_segments_o  : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
   signal minus_neighbor_segments_o : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams               : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+  signal daq_streams : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- NSP + MUCTPI
-  signal mtc :mtc_out_avt(c_NUM_MTC-1 downto 0);
-  signal nsp :mtc2nsp_avt(c_NUM_NSP-1 downto 0);
+  signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
+  signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 
@@ -171,10 +171,10 @@ begin
       tdc_hits_extra  => extra_tdc_hits,
 
       -- SLC
-      main_primary_slc    =>   main_primary_slc,
-      main_secondary_slc  =>   main_secondary_slc,
-      plus_neighbor_slc   =>   plus_neighbor_slc,
-      minus_neighbor_slc  =>   minus_neighbor_slc,
+      main_primary_slc   => main_primary_slc,
+      main_secondary_slc => main_secondary_slc,
+      plus_neighbor_slc  => plus_neighbor_slc,
+      minus_neighbor_slc => minus_neighbor_slc,
 
       -- segment out to neighbor
       plus_neighbor_segments_i  => plus_neighbor_segments_o,
@@ -186,7 +186,7 @@ begin
 
       -- AXI
 
-      axi_clk_o     => axi_clk,
+      axi_clk_o => axi_clk,
 
       hal_readmosi  => hal_readmosi,
       hal_readmiso  => hal_readmiso,
@@ -204,15 +204,23 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY => true)
+      DUMMY       => false,
+      EN_TAR_HITS => 0,
+      EN_MDT_HITS => 1
+      )
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      --inner_tdc_hits_i  => inner_tdc_hits,
-      --middle_tdc_hits_i => middle_tdc_hits,
-      --outer_tdc_hits_i  => outer_tdc_hits,
-      --extra_tdc_hits_i  => extra_tdc_hits,
+      i_inner_tdc_hits  => inner_tdc_hits,
+      i_middle_tdc_hits => middle_tdc_hits,
+      i_outer_tdc_hits  => outer_tdc_hits,
+      i_extra_tdc_hits  => extra_tdc_hits,
+
+      i_inner_tar_hits  => i_inner_tar_hits,
+      i_middle_tar_hits => i_middle_tar_hits,
+      i_outer_tar_hits  => i_outer_tar_hits,
+      i_extra_tar_hits  => i_extra_tar_hits,
 
       plus_neighbor_segments_i  => plus_neighbor_segments_i,
       minus_neighbor_segments_i => minus_neighbor_segments_i,
@@ -220,15 +228,10 @@ begin
       minus_neighbor_segments_o => minus_neighbor_segments_o,
 
       -- SLC
-      i_main_primary_slc    =>   main_primary_slc,
-      i_main_secondary_slc  =>   main_secondary_slc,
-      i_plus_neighbor_slc   =>   plus_neighbor_slc,
-      i_minus_neighbor_slc  =>   minus_neighbor_slc,
-
-      i_inner_tar_hits    => i_inner_tar_hits,
-      i_middle_tar_hits   => i_middle_tar_hits,
-      i_outer_tar_hits    => i_outer_tar_hits,
-      i_extra_tar_hits    => i_extra_tar_hits,
+      i_main_primary_slc   => main_primary_slc,
+      i_main_secondary_slc => main_secondary_slc,
+      i_plus_neighbor_slc  => plus_neighbor_slc,
+      i_minus_neighbor_slc => minus_neighbor_slc,
 
       mtc_o => mtc,
       nsp_o => nsp,

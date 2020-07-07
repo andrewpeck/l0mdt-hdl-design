@@ -60,9 +60,9 @@ begin
     signal odd_data  : std_logic_vector (7 downto 0);
     signal valid     : std_logic;
 
-    constant idx        : integer := c_TDC_LINK_MAP(I).link_id;
-    constant channel    : integer := c_TDC_LINK_MAP(I).ch;
-    constant legacy     : boolean := c_TDC_LINK_MAP(I).legacy;
+    constant idx     : integer := c_TDC_LINK_MAP(I).link_id;
+    constant channel : integer := c_TDC_LINK_MAP(I).ch;
+    constant legacy  : boolean := c_TDC_LINK_MAP(I).legacy;
 
     -- NOTE this library is very nice
     -- http://www.pldworld.com/_hdl/2/_tutor/www.stefanvhdl/vhdl/vhdl/txt_util.vhd
@@ -171,207 +171,211 @@ begin
   --     ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
   -- end generate;
 
-  polmux_loop : for I in 0 to (c_NUM_POLMUX-1) generate
+  polmux_loop : for I in 0 to (c_POLMUX_MAXID-1) generate
+  begin
+    is_used_check : if (inner_polmux_idx_array(I) /= -1 or middle_polmux_idx_array(I) /= -1 or
+                     outer_polmux_idx_array(I) /= -1 or extra_polmux_idx_array(I) /= -1)
+    generate
+      -- extract the polmux station from the polmux index
+      function get_polmux_station (tdc_map : tdc_link_map_array_t; index : integer)
+        return station_id_t is
+      begin
+        for I in 0 to tdc_map'length-1 loop
+          if (tdc_map(I).polmux_id = index) then
+            return tdc_map(I).station_id;
+          end if;
+        end loop;
+        return NIL;
+      end get_polmux_station;
 
-    -- extract the polmux station from the polmux index
-    function get_polmux_station (tdc_map : tdc_link_map_array_t; index : integer)
-      return station_id_t is
-    begin
-      for I in 0 to tdc_map'length-1 loop
-        if (tdc_map(I).polmux_id = index) then
-          return tdc_map(I).station_id;
-        end if;
-      end loop;
-      return NIL;
-    end get_polmux_station;
-
-    -- function to count the number of inputs to a given polmux based on the link mapping
-    function get_polmux_size (tdc_map : tdc_link_map_array_t; index : integer; num_tdcs : integer)
-      return integer is
-      variable count : integer := 0;
-    begin
-      for I in 0 to num_tdcs-1 loop
-        if (tdc_map(I).polmux_id = index) then
-          count := count + 1;
-        end if;
-      end loop;
-      return count;
-    end get_polmux_size;
-
-    -- function to create a reversed polmux mapping,
-    -- i.e. given a polmux entry (e.g. 0-19) for a given polmux
-    -- it will return a global index of the tdc number
-    function get_tdc_index (tdc_map   : tdc_link_map_array_t;
-                            entry     : integer;  -- entry to the polmux (e.g. 0-19)
-                            polmux_id : integer)  -- POLMUX #
-      return integer is
-      variable count : integer := 0;
-    begin
-      for I in 0 to c_NUM_TDC_INPUTS-1 loop
-        if (tdc_map(I).polmux_id = polmux_id) then
-          if (count = entry) then
-            return I;
-          else
+      -- function to count the number of inputs to a given polmux based on the link mapping
+      function get_polmux_size (tdc_map : tdc_link_map_array_t; index : integer; num_tdcs : integer)
+        return integer is
+        variable count : integer := 0;
+      begin
+        for I in 0 to num_tdcs-1 loop
+          if (tdc_map(I).polmux_id = index) then
             count := count + 1;
           end if;
-        end if;
-      end loop;
-      return 0;
-    end get_tdc_index;
+        end loop;
+        return count;
+      end get_polmux_size;
 
-    -- function to take create an array of tdc hits correctly mapped and assigned to be
-    -- used as input to the polling mux
-    function polmux_input_map (in_array  : mdt_polmux_avt;        -- full array of all TDC hits
-                               tdc_map   : tdc_link_map_array_t;  -- constant mapping from board pkg
-                               polmux_id : integer;               -- id # of the polmux
-                               size      : integer)               -- size of the polmux
-      return mdt_polmux_avt is
-      variable count : integer := 0;
-      variable ret   : mdt_polmux_avt (size - 1 downto 0);
+      -- function to create a reversed polmux mapping,
+      -- i.e. given a polmux entry (e.g. 0-19) for a given polmux
+      -- it will return a global index of the tdc number
+      function get_tdc_index (tdc_map   : tdc_link_map_array_t;
+                              entry     : integer;  -- entry to the polmux (e.g. 0-19)
+                              polmux_id : integer)  -- POLMUX #
+        return integer is
+        variable count : integer := 0;
+      begin
+        for I in 0 to c_NUM_TDC_INPUTS-1 loop
+          if (tdc_map(I).polmux_id = polmux_id) then
+            if (count = entry) then
+              return I;
+            else
+              count := count + 1;
+            end if;
+          end if;
+        end loop;
+        return 0;
+      end get_tdc_index;
+
+      -- function to take create an array of tdc hits correctly mapped and assigned to be
+      -- used as input to the polling mux
+      function polmux_input_map (in_array  : mdt_polmux_avt;        -- full array of all TDC hits
+                                 tdc_map   : tdc_link_map_array_t;  -- constant mapping from board pkg
+                                 polmux_id : integer;               -- id # of the polmux
+                                 size      : integer)               -- size of the polmux
+        return mdt_polmux_avt is
+        variable count : integer := 0;
+        variable ret   : mdt_polmux_avt (size - 1 downto 0);
+      begin
+        for I in 0 to c_NUM_TDC_INPUTS-1 loop
+          if (tdc_map(I).polmux_id = polmux_id) then
+            ret(count) := in_array (I);
+            count      := count + 1;
+          end if;
+        end loop;
+        return ret;
+      end polmux_input_map;
+
+      function is_valid (a : mdt_polmux_rvt)
+        return std_logic is
+        variable tmp : mdt_polmux_rt;
+      begin
+        tmp := structify(a);
+        return tmp.data_valid;
+      end is_valid;
+
+      --------------------------------------------------------------------------------
+      -- Constants
+      --------------------------------------------------------------------------------
+
+      constant POLMUX_WIDTH : integer := get_polmux_size(c_TDC_LINK_MAP, I, c_NUM_TDC_INPUTS);
+
+      constant POLMUX_STATION : station_id_t := get_polmux_station(c_TDC_LINK_MAP, I);
+
+      -- signals to hold the up to ~20 polmux inputs and outputs for this loop
+      signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
+      signal polmux_inputs    : mdt_polmux_avt (POLMUX_WIDTH-1 downto 0);
+      signal polmux_output    : mdt_polmux_rvt;
+      signal fifo_output      : mdt_polmux_rvt;
+      signal valid            : std_logic;
+      signal din              : std_logic_vector (63 downto 0);
+      signal dout             : std_logic_vector (63 downto 0);
+
+      constant std_logic0 : std_logic := '0';
+      constant std_logic1 : std_logic := '1';
+
     begin
-      for I in 0 to c_NUM_TDC_INPUTS-1 loop
-        if (tdc_map(I).polmux_id = polmux_id) then
-          ret(count) := in_array (I);
-          count      := count + 1;
-        end if;
-      end loop;
-      return ret;
-    end polmux_input_map;
 
-    function is_valid (a : mdt_polmux_rvt)
-      return std_logic is
-      variable tmp : mdt_polmux_rt;
-    begin
-      tmp := structify(a);
-      return tmp.data_valid;
-    end is_valid;
+      assert (false) report " > Generating Polmux #" & integer'image(I) &
+        " with " & integer'image(POLMUX_WIDTH) & " inputs" severity note;
 
-    --------------------------------------------------------------------------------
-    -- Constants
-    --------------------------------------------------------------------------------
+      polmux_inputs <= polmux_input_map(tdc_hits_to_polmux, c_TDC_LINK_MAP, I, POLMUX_WIDTH);
 
-    constant POLMUX_WIDTH : integer := get_polmux_size(c_TDC_LINK_MAP, I, c_NUM_TDC_INPUTS);
+      read_done_assign_loop : for J in 0 to POLMUX_WIDTH-1 generate
+        read_done(get_tdc_index (c_TDC_LINK_MAP, J, I)) <= read_done_polmux(J);
+      end generate;  -- read done assign loop
 
-    constant POLMUX_STATION : station_id_t := get_polmux_station(c_TDC_LINK_MAP, I);
+      polling_mux_inst : entity tdc.polling_mux
+        generic map (g_WIDTH => POLMUX_WIDTH)
+        port map (
+          clock       => clock,             -- 320MHz system clock
+          tdc_hits_i  => polmux_inputs,
+          read_done_o => read_done_polmux,  -- will be asserted high once a tdc hit is read, feed back into the tdc hit decoder
+          tdc_hit_o   => polmux_output      -- polling mux outputs to cdc
+          );
 
-    -- signals to hold the up to ~20 polmux inputs and outputs for this loop
-    signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
-    signal polmux_inputs    : mdt_polmux_avt (POLMUX_WIDTH-1 downto 0);
-    signal polmux_output    : mdt_polmux_rvt;
-    signal fifo_output      : mdt_polmux_rvt;
-    signal valid            : std_logic;
-    signal din              : std_logic_vector (63 downto 0);
-    signal dout             : std_logic_vector (63 downto 0);
+      --------------------------------------------------------------------------------
+      -- Clock domain crossing
+      --------------------------------------------------------------------------------
 
-    constant std_logic0 : std_logic := '0';
-    constant std_logic1 : std_logic := '1';
+      -- TODO: check the timing of the 'not valid' bit as a valid signal, make sure it is applied to the right clock cycle
+      -- TODO: a "smart sync" of some sort..?... can CDC based on a valid bit on certain clock cycles only
 
-  begin
+      din         <= std_logic_vector(resize(unsigned(polmux_output), din'length));  -- zero pad
+      fifo_output <= dout(fifo_output'length-1 downto 0);
 
-    assert (false) report " > Generating Polmux #" & integer'image(I) &
-      " with " & integer'image(POLMUX_WIDTH) & " inputs" severity note;
+      polmux_sync_fifo_inst : entity work.fifo_async
+        generic map (
+          DEPTH    => 16,
+          WR_WIDTH => 64,
+          RD_WIDTH => 64)
+        port map (
+          rst     => std_logic0,
+          wr_clk  => clock,
+          rd_clk  => pipeline_clock,
+          din     => din,
+          dout    => dout,
+          wr_en   => is_valid(polmux_output),
+          rd_en   => std_logic1,        --  FIFO internally gates the read signal with (not EMPTY)
+          empty   => open,
+          valid   => valid,
+          full    => open,
+          sbiterr => open,
+          dbiterr => open
+          );
 
-    polmux_inputs <= polmux_input_map(tdc_hits_to_polmux, c_TDC_LINK_MAP, I, POLMUX_WIDTH);
+      inner_assign : if (POLMUX_STATION = INNER) generate
+        signal tmp : mdt_polmux_rt;
+      begin
+        assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+          " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
 
-    read_done_assign_loop : for J in 0 to POLMUX_WIDTH-1 generate
-      read_done(get_tdc_index (c_TDC_LINK_MAP, J, I)) <= read_done_polmux(J);
-    end generate;  -- read done assign loop
+        tmp.tdc        <= structify (fifo_output).tdc;
+        tmp.fiberid    <= structify (fifo_output).fiberid;
+        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.data_valid <= valid;
 
-    polling_mux_inst : entity tdc.polling_mux
-      generic map (g_WIDTH => POLMUX_WIDTH)
-      port map (
-        clock       => clock,             -- 320MHz system clock
-        tdc_hits_i  => polmux_inputs,
-        read_done_o => read_done_polmux,  -- will be asserted high once a tdc hit is read, feed back into the tdc hit decoder
-        tdc_hit_o   => polmux_output      -- polling mux outputs to cdc
-        );
+        tdc_hits_inner(inner_polmux_idx_array(I)) <= vectorify(tmp);
+      end generate;
 
-    --------------------------------------------------------------------------------
-    -- Clock domain crossing
-    --------------------------------------------------------------------------------
+      middle_assign : if (POLMUX_STATION = MIDDLE) generate
+        signal tmp : mdt_polmux_rt;
+      begin
+        assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+          " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
 
-    -- TODO: check the timing of the 'not valid' bit as a valid signal, make sure it is applied to the right clock cycle
-    -- TODO: a "smart sync" of some sort..?... can CDC based on a valid bit on certain clock cycles only
+        tmp.tdc        <= structify (fifo_output).tdc;
+        tmp.fiberid    <= structify (fifo_output).fiberid;
+        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.data_valid <= valid;
 
-    din         <= std_logic_vector(resize(unsigned(polmux_output), din'length));  -- zero pad
-    fifo_output <= dout(fifo_output'length-1 downto 0);
+        tdc_hits_middle(middle_polmux_idx_array(I)) <= vectorify(tmp);
+      end generate;
 
-    polmux_sync_fifo_inst : entity work.fifo_async
-      generic map (
-        DEPTH    => 16,
-        WR_WIDTH => 64,
-        RD_WIDTH => 64)
-      port map (
-        rst     => std_logic0,
-        wr_clk  => clock,
-        rd_clk  => pipeline_clock,
-        din     => din,
-        dout    => dout,
-        wr_en   => is_valid(polmux_output),
-        rd_en   => std_logic1, --  FIFO internally gates the read signal with (not EMPTY)
-        empty   => open,
-        valid   => valid,
-        full    => open,
-        sbiterr => open,
-        dbiterr => open
-        );
+      outer_assign : if (POLMUX_STATION = OUTER) generate
+        signal tmp : mdt_polmux_rt;
+      begin
+        assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+          " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
 
-    inner_assign : if (POLMUX_STATION = INNER) generate
-      signal tmp : mdt_polmux_rt;
-    begin
-      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
-        " to INNER tdc stream #" & integer'image(inner_polmux_idx_array(I)) severity note;
+        tmp.tdc        <= structify (fifo_output).tdc;
+        tmp.fiberid    <= structify (fifo_output).fiberid;
+        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.data_valid <= valid;
 
-      tmp.tdc        <= structify (fifo_output).tdc;
-      tmp.fiberid    <= structify (fifo_output).fiberid;
-      tmp.muxid      <= structify (fifo_output).muxid;
-      tmp.data_valid <= valid;
+        tdc_hits_outer(outer_polmux_idx_array(I)) <= vectorify(tmp);
+      end generate;
 
-      tdc_hits_inner(inner_polmux_idx_array(I)) <= vectorify(tmp);
-    end generate;
+      extra_assign : if (POLMUX_STATION = EXTRA) generate
+        signal tmp : mdt_polmux_rt;
+      begin
+        assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
+          " to EXTRA tdc stream #" & integer'image(extra_polmux_idx_array(I)) severity note;
 
-    middle_assign : if (POLMUX_STATION = MIDDLE) generate
-      signal tmp : mdt_polmux_rt;
-    begin
-      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
-        " to MIDDLE tdc stream #" & integer'image(middle_polmux_idx_array(I)) severity note;
+        tmp.tdc        <= structify (fifo_output).tdc;
+        tmp.fiberid    <= structify (fifo_output).fiberid;
+        tmp.muxid      <= structify (fifo_output).muxid;
+        tmp.data_valid <= valid;
 
-      tmp.tdc        <= structify (fifo_output).tdc;
-      tmp.fiberid    <= structify (fifo_output).fiberid;
-      tmp.muxid      <= structify (fifo_output).muxid;
-      tmp.data_valid <= valid;
+        tdc_hits_extra(extra_polmux_idx_array(I)) <= vectorify(tmp);
+      end generate;
 
-      tdc_hits_middle(middle_polmux_idx_array(I)) <= vectorify(tmp);
-    end generate;
-
-    outer_assign : if (POLMUX_STATION = OUTER) generate
-      signal tmp : mdt_polmux_rt;
-    begin
-      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
-        " to OUTER tdc stream #" & integer'image(outer_polmux_idx_array(I)) severity note;
-
-      tmp.tdc        <= structify (fifo_output).tdc;
-      tmp.fiberid    <= structify (fifo_output).fiberid;
-      tmp.muxid      <= structify (fifo_output).muxid;
-      tmp.data_valid <= valid;
-
-      tdc_hits_outer(outer_polmux_idx_array(I)) <= vectorify(tmp);
-    end generate;
-
-    extra_assign : if (POLMUX_STATION = EXTRA) generate
-      signal tmp : mdt_polmux_rt;
-    begin
-      assert (false) report " > Assigning Output of Polmux #" & integer'image(I) &
-        " to EXTRA tdc stream #" & integer'image(extra_polmux_idx_array(I)) severity note;
-
-      tmp.tdc        <= structify (fifo_output).tdc;
-      tmp.fiberid    <= structify (fifo_output).fiberid;
-      tmp.muxid      <= structify (fifo_output).muxid;
-      tmp.data_valid <= valid;
-
-      tdc_hits_extra(extra_polmux_idx_array(I)) <= vectorify(tmp);
-    end generate;
-
+    end generate;  -- check polmux idx array
   end generate;  -- TDC loop
 
 end behavioral;
