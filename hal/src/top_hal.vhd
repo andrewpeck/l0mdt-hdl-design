@@ -132,10 +132,9 @@ architecture behavioral of top_hal is
   signal Mon  : HAL_MON_t;
   signal Ctrl : HAL_CTRL_t;
 
-  signal clock_ibufds            : std_logic;
-  signal clocks                  : system_clocks_rt;
-  signal global_reset            : std_logic;
-  signal felix_phase_out_of_sync : std_logic;  -- FIXME: connect to AXI
+  signal clock_ibufds : std_logic;
+  signal clocks       : system_clocks_rt;
+  signal global_reset : std_logic;
 
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
@@ -260,14 +259,14 @@ begin  -- architecture behavioral
   top_clocking_inst : entity hal.top_clocking
     port map (
       --
-      reset_i          => std_logic0,   -- TODO: should be sourced from AXI
-      select_felix_clk => std_logic0,   -- TODO: should be sourced from AXI
+      reset_i          => ctrl.clocking.reset_mmcm,
+      select_felix_clk => ctrl.clocking.select_felix_clk,
 
       -- synchronization
-      sync_i         => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
+      sync_i         => ctrl.clocking.resync_clk_phase,
       felix_valid_i  => felix_valid,
       felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      out_of_sync_o  => felix_phase_out_of_sync,
+      out_of_sync_o  => mon.clocking.clk_phase_outofsync,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
@@ -407,7 +406,8 @@ begin  -- architecture behavioral
   gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
-      clock                 => clocks.clock40,
+      axi_clk               => clocks.axiclock,
+      lpgbt_clk             => clocks.clock40,
       ctrl                  => ctrl.gbt,
       mon                   => mon.gbt,
       lpgbt_downlink_data_o => lpgbt_downlink_data,

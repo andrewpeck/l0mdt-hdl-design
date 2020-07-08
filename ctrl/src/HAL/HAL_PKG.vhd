@@ -7,9 +7,22 @@ use IEEE.std_logic_1164.all;
 package HAL_CTRL is
   type HAL_CLOCKING_MON_t is record
     MMCM_LOCKED                :std_logic;   
+    CLK_PHASE_OUTOFSYNC        :std_logic;   
   end record HAL_CLOCKING_MON_t;
 
 
+  type HAL_CLOCKING_CTRL_t is record
+    RESET_MMCM                 :std_logic;   
+    SELECT_FELIX_CLK           :std_logic;   
+    RESYNC_CLK_PHASE           :std_logic;   
+  end record HAL_CLOCKING_CTRL_t;
+
+
+  constant DEFAULT_HAL_CLOCKING_CTRL_t : HAL_CLOCKING_CTRL_t := (
+                                                                 RESET_MMCM => '0',
+                                                                 SELECT_FELIX_CLK => '0',
+                                                                 RESYNC_CLK_PHASE => '0'
+                                                                );
   type HAL_GBT_SC_MON_t is record
     RX_DATA_FROM_GBTX          :std_logic_vector( 7 downto 0);
     TX_READY                   :std_logic;                    
@@ -20,7 +33,7 @@ package HAL_CTRL is
     RX_TRANSID_0               :std_logic_vector( 7 downto 0);
     RX_ERR_0                   :std_logic_vector( 7 downto 0);
     RX_RECEIVED_0              :std_logic;                    
-    RX_CHANNEL_0               :std_logic_vector( 1 downto 0);
+    RX_CHANNEL_0               :std_logic_vector( 7 downto 0);
     RX_DATA_0                  :std_logic_vector(31 downto 0);
     RX_LEN_1                   :std_logic_vector( 7 downto 0);
     RX_ADDRESS_1               :std_logic_vector( 7 downto 0);
@@ -28,7 +41,7 @@ package HAL_CTRL is
     RX_TRANSID_1               :std_logic_vector( 7 downto 0);
     RX_ERR_1                   :std_logic_vector( 7 downto 0);
     RX_RECEIVED_1              :std_logic;                    
-    RX_CHANNEL_1               :std_logic_vector( 1 downto 0);
+    RX_CHANNEL_1               :std_logic_vector( 7 downto 0);
     RX_DATA_1                  :std_logic_vector(31 downto 0);
   end record HAL_GBT_SC_MON_t;
 
@@ -111,11 +124,13 @@ package HAL_CTRL is
 
 
   type HAL_CTRL_t is record
-    GBT                        :HAL_GBT_CTRL_t;
+    CLOCKING                   :HAL_CLOCKING_CTRL_t;
+    GBT                        :HAL_GBT_CTRL_t;     
   end record HAL_CTRL_t;
 
 
   constant DEFAULT_HAL_CTRL_t : HAL_CTRL_t := (
+                                               CLOCKING => DEFAULT_HAL_CLOCKING_CTRL_t,
                                                GBT => DEFAULT_HAL_GBT_CTRL_t
                                               );
 

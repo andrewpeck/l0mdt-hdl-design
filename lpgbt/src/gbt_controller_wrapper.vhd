@@ -31,7 +31,8 @@ entity gbt_controller_wrapper is
     -- reset
     reset_i : in std_logic;
 
-    clock : in std_logic;
+    lpgbt_clk : in std_logic;
+    axi_clk   : in std_logic;
 
     ctrl : in  HAL_GBT_CTRL_t;
     mon  : out HAL_GBT_MON_t;
@@ -77,16 +78,16 @@ begin
     generic map (
       g_IC_FIFO_DEPTH => 32,
       g_ToLpGBT       => 1,
-      g_SCA_COUNT     => 1
+      g_SCA_COUNT     => g_SCAS_PER_LPGBT
       )
     port map (
 
       -- tx to lpgbt etc
-      tx_clk_i  => clock,
+      tx_clk_i  => lpgbt_clk,
       tx_clk_en => '1',                 -- run @ 40MHz, always enable
 
       -- rx from lpgbt etc
-      rx_clk_i  => clock,
+      rx_clk_i  => lpgbt_clk,
       rx_clk_en => '1',                 -- run @ 40MHz, always enable
 
       -- IC/EC data from controller
@@ -110,11 +111,11 @@ begin
       tx_register_addr_i => ctrl.sc.tx_register_addr,
       tx_nb_to_be_read_i => ctrl.sc.tx_num_bytes_to_read,
 
-      wr_clk_i          => clock,
+      wr_clk_i          => axi_clk,
       tx_wr_i           => ctrl.sc.tx_wr,
       tx_data_to_gbtx_i => ctrl.sc.tx_data_to_gbtx,
 
-      rd_clk_i            => clock,
+      rd_clk_i            => axi_clk,
       rx_rd_i             => ctrl.sc.rx_rd,
       rx_data_from_gbtx_o => mon.sc.rx_data_from_gbtx,
 
@@ -132,23 +133,23 @@ begin
       tx_data_i           => ctrl.sc.tx_data,
 
       -- SCA Command
-      rx_received_o(0) => mon.sc.rx_received_0,  -- array
-      rx_address_o(0)  => mon.sc.rx_address_0,
-      rx_control_o(0)  => mon.sc.rx_control_0,
-      rx_transID_o(0)  => mon.sc.rx_transID_0,
-      rx_channel_o(0)  => mon.sc.rx_channel_0,
-      rx_len_o(0)      => mon.sc.rx_len_0,
-      rx_error_o(0)    => mon.sc.rx_err_0,
-      rx_data_o(0)     => mon.sc.rx_data_0,
 
-      rx_received_o(1) => mon.sc.rx_received_1,  -- array
+      rx_address_o(0)  => mon.sc.rx_address_0,
       rx_address_o(1)  => mon.sc.rx_address_1,
-      rx_control_o(1)  => mon.sc.rx_control_1,
-      rx_transID_o(1)  => mon.sc.rx_transID_1,
+      rx_channel_o(0)  => mon.sc.rx_channel_0,
       rx_channel_o(1)  => mon.sc.rx_channel_1,
-      rx_len_o(1)      => mon.sc.rx_len_1,
+      rx_control_o(0)  => mon.sc.rx_control_0,
+      rx_control_o(1)  => mon.sc.rx_control_1,
+      rx_data_o(0)     => mon.sc.rx_data_0,
+      rx_data_o(1)     => mon.sc.rx_data_1,
+      rx_error_o(0)    => mon.sc.rx_err_0,
       rx_error_o(1)    => mon.sc.rx_err_1,
-      rx_data_o(1)     => mon.sc.rx_data_1
+      rx_len_o(0)      => mon.sc.rx_len_0,
+      rx_len_o(1)      => mon.sc.rx_len_1,
+      rx_received_o(0) => mon.sc.rx_received_0,  -- array
+      rx_received_o(1) => mon.sc.rx_received_1,  -- array
+      rx_transID_o(0)  => mon.sc.rx_transID_0,
+      rx_transID_o(1)  => mon.sc.rx_transID_1
 
       );
 
@@ -156,14 +157,14 @@ begin
   -- Input mux from LPGBT to sc controller
   --------------------------------------------------------------------------------
 
-  process (clock)
+  process (lpgbt_clk)
     constant up0 : integer := CSM_SCA_UPLINK_ELINK0;
     constant up1 : integer := CSM_SCA_UPLINK_ELINK1;
   begin
 
-    if (rising_edge(clock)) then
+    if (rising_edge(lpgbt_clk)) then
 
-      -- mux and copy onto 40MHz clock
+      -- mux and copy onto 40MHz lpgbt_clk
       ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
       ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
       ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
@@ -176,7 +177,7 @@ begin
   -- Output Mux to LPGBTS
   --------------------------------------------------------------------------------
 
-  process (clock, ec_data_down)
+  process (lpgbt_clk, ec_data_down)
     variable ec_data_down_replicated0 : std_logic_vector (3 downto 0);
     variable ec_data_down_replicated1 : std_logic_vector (3 downto 0);
 
@@ -205,7 +206,7 @@ begin
       ec_data_down_replicated0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
       ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
-      if (rising_edge(clock)) then
+      if (rising_edge(lpgbt_clk)) then
 
         -- if broadcast ? send to all of the lpgbts
         if (lpgbt_broadcast = '1') then
