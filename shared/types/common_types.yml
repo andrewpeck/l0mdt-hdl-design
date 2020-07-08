@@ -85,7 +85,7 @@ l0mdt_ttc:
 slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 
 # -----------------------------------------------------------
-#   MDT tdc, pullmux & TAR
+#   MDT tdc, polmux & TAR
 # -----------------------------------------------------------
 # #TDC
 # mdt_tdc:
@@ -94,7 +94,7 @@ slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 #   coarse: { type: unsigned , length: MDT_TDC_COARSE_LEN }
 #   fine: { type: unsigned , length: MDT_TDC_FINE_LEN }
 #   pw: { type: unsigned , length: MDT_TDC_PW_LEN }
-# # mdt pullmux
+# # mdt polmux
 # mdt_polmux:
 #   fiberID: { type: logic , length: MDT_FIBER_LEN }
 #   muxID: { type: logic , length: MDT_MUXCH_LEN }

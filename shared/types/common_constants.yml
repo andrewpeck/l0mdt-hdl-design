@@ -76,7 +76,7 @@ MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
 # MDT_TDC_COARSE_LEN: { qualifier: constant , type: integer , value: 12 }
 # MDT_TDC_FINE_LEN: { qualifier: constant , type: integer , value: 5 }
 # MDT_TDC_PW_LEN: { qualifier: constant , type: integer , value: 8 }
-# pull mux
+# pol mux
 # MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
 # MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }
 # tar

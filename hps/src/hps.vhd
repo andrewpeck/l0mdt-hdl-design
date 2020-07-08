@@ -55,7 +55,7 @@ end entity hps;
 
 architecture beh of hps is
 
-  signal mdt_full_data_av : heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+  signal mdt_full_data_av : heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
@@ -70,7 +70,7 @@ begin
     PC : entity hps_lib.hps_pc 
     generic map(
       -- mdt type
-      -- mdt_type            => mdt_pullmux_data_rvt,
+      -- mdt_type            => mdt_polmux_data_rvt,
       -- g_SIM_nBUILD        => g_SIM_nBUILD,
       -- parameters
       g_STATION_RADIUS    => g_STATION_RADIUS

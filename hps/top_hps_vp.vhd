@@ -49,7 +49,7 @@ entity top_hps_vp is
     -- SLc
     i_uCM2hps_av        : in ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     -- MDT hit
-    -- i_mdt_pullmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     i_mdt_tar_av        : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to pt calc
     o_sf2pt_av          : out sf2pt_avt(c_NUM_THREADS -1 downto 0)
@@ -58,19 +58,19 @@ end entity top_hps_vp;
 
 architecture beh of top_hps_vp is
 
-  -- signal mdt_pullmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
+  -- signal mdt_polmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
 
 begin
 
   -- IN_GEN : for hp_i in g_HPS_NUM_MDT_CH downto 0 generate
-  --   mdt_pullmux_data_av(hp_i).pullmux <= i_mdt_pullmux_av(hp_i);
-  --   mdt_pullmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
+  --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);
+  --   mdt_polmux_data_av(hp_i).tar <= i_mdt_tar_av(hp_i);
   -- end generate;
 
   HPS : entity hps_lib.hps
     generic map(
       -- mdt type
-      -- mdt_type_av          => mdt_pullmux_data_avt(g_HPS_NUM_MDT_CH -1 downto 0),
+      -- mdt_type_av          => mdt_polmux_data_avt(g_HPS_NUM_MDT_CH -1 downto 0),
       -- g_SIM_nBUILD         => '1',
       -- parameters
       g_STATION_RADIUS    => g_STATION_RADIUS,
