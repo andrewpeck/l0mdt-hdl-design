@@ -2,11 +2,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library hal;
-use hal.system_types_pkg.all;
-use hal.board_pkg_common.all;
-use hal.board_pkg.all;
-use hal.user_pkg.all;
+library work;
+use work.system_types_pkg.all;
+use work.board_pkg_common.all;
+use work.board_pkg.all;
+use work.user_pkg.all;
 
 package constants_pkg is
 
@@ -86,13 +86,6 @@ package constants_pkg is
 
   constant c_NUM_SLCPROC_ENDCAP_OUTPUTS : integer := 0;
   constant c_NUM_SLCPROC_BARREL_OUTPUTS : integer := 0;
-
-  --------------------------------------------------------------------------------
-  -- C2C
-  --------------------------------------------------------------------------------
-
-  constant c_NUM_C2C_INPUTS  : integer := 0;
-  constant c_NUM_C2C_OUTPUTS : integer := 0;
 
   --------------------------------------------------------------------------------
   -- board specific
