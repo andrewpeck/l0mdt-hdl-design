@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 package system_types_pkg is
 
   constant std_logic1 : std_logic := '1';
-  constant std_logic0 : std_logic := '1';
+  constant std_logic0 : std_logic := '0';
 
   type std32_array_t is array (integer range <>) of std_logic_vector(31 downto 0);
   type std64_array_t is array (integer range <>) of std_logic_vector(63 downto 0);

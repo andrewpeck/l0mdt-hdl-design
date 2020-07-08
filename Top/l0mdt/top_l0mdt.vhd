@@ -15,11 +15,11 @@ use hal.board_pkg.all;
 use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
-library ctrl;
-use ctrl.HAL_CTRL.all;
-use ctrl.HOG_INFO_CTRL.all;
-use ctrl.FW_INFO_CTRL.all;
-use ctrl.axiRegPkg.all;
+library ctrl_lib;
+use ctrl_lib.HAL_CTRL.all;
+use ctrl_lib.HOG_INFO_CTRL.all;
+use ctrl_lib.FW_INFO_CTRL.all;
+use ctrl_lib.axiRegPkg.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -237,7 +237,7 @@ begin
       sump          => user_sump
       );
 
-  top_control_inst : entity ctrl.top_control
+  top_control_inst : entity ctrl_lib.top_control
     port map (
 
       -- c2c physical
@@ -276,7 +276,7 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-  hog_info_interface_inst : entity ctrl.hog_info_interface
+  hog_info_interface_inst : entity ctrl_lib.hog_info_interface
     port map (
       clk_axi                 => axi_clk,
       reset_axi_n             => '1',
@@ -298,7 +298,7 @@ begin
       mon.FRAMEWORK_FWHASH    => FRAMEWORK_FWHASH
       );
 
-  fw_info_interface_inst : entity ctrl.fw_info_interface
+  fw_info_interface_inst : entity ctrl_lib.fw_info_interface
     port map (
       clk_axi                          => axi_clk,
       reset_axi_n                      => '1',

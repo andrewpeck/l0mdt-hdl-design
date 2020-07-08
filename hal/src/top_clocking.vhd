@@ -42,8 +42,8 @@ library xil_defaultlib;
 library unisim;
 use unisim.vcomponents.all;
 
-library hal;
-use hal.system_types_pkg.all;
+library work;
+use work.system_types_pkg.all;
 
 entity top_clocking is
   port (

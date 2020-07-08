@@ -3,4 +3,71 @@
   <node id="CLOCKING" address="0x1">
     <node id="MMCM_LOCKED"  mask="0x1" permission="r"/>
   </node>
+  <node id="GBT" address="0x2">
+
+    <node id="RESET"         address="0x0" mask="0x1" permission="w"/> <!--ACTION-->
+
+    <node id="LINK_SEL"      address="0x1" mask="0x0ff" permission="rw"/>
+    <node id="SEL_SLAVE"     address="0x1" mask="0x100" permission="rw"/>
+    <node id="BROADCAST"     address="0x1" mask="0x200" permission="rw"/>
+    <node id="SCA_SEL"       address="0x1" mask="0x400" permission="rw"/>
+    <node id="SCA_BROADCAST" address="0x1" mask="0x800" permission="rw"/>
+
+    <node id="SC" address="0x2">
+
+      <node id="TX_RESET"    address="0x0" mask="0x00000001" permission="w"/>
+      <node id="RX_RESET"    address="0x0" mask="0x00000002" permission="w"/>
+
+      <!-- IC Control-->
+      <node id="TX_START_WRITE"    address="0x0" mask="0x00000004" permission="rw"/>
+      <node id="TX_START_READ"     address="0x0" mask="0x00000008" permission="rw"/>
+
+      <!-- IC Config-->
+      <node id="TX_GBTX_ADDR"      address="0x1" mask="0x00000ff0" permission="rw"/>
+      <node id="TX_REGISTER_ADDR"  address="0x2"  mask="0x0000ffff" permission="rw"/>
+      <node id="TX_NUM_BYTES_TO_READ" address="0x2"  mask="0xffff0000" permission="rw"/>
+
+      <!-- IC FIFO -->
+      <node id="TX_DATA_TO_GBTX"   address="0x3"  mask="0x000000ff" permission="rw"/>
+      <node id="RX_DATA_FROM_GBTX" address="0x3"  mask="0x0000ff00" permission="r"/>
+      <node id="TX_WR"             address="0x4"  mask="0x1"        permission="w"/><!--ACTION-->
+      <node id="RX_RD"             address="0x5"  mask="0x1"        permission="w"/><!--ACTION-->
+
+      <!-- IC Status-->
+      <node id="TX_READY"   address="0x6" mask="0x1" permission="r"/>
+      <node id="RX_EMPTY"   address="0x6" mask="0x2" permission="r"/>
+
+      <!--SCA Commands -->
+      <node id="TX_CMD"     address="0x7" mask="0x000000ff" permission="rw"/>
+      <node id="TX_ADDRESS" address="0x7" mask="0x0000ff00" permission="rw"/>
+      <node id="TX_TRANSID" address="0x7" mask="0x00ff0000" permission="rw"/>
+      <node id="TX_CHANNEL" address="0x7" mask="0xff000000" permission="rw"/>
+      <node id="TX_DATA"    address="0x8" mask="0xffffffff" permission="rw"/>
+
+      <node id="RX_LEN_0"         address="0x9" mask="0x000000ff" permission="r"/>
+      <node id="RX_ADDRESS_0"     address="0x9" mask="0x0000ff00" permission="r"/>
+      <node id="RX_CONTROL_0"     address="0x9" mask="0x00ff0000" permission="r"/>
+      <node id="RX_TRANSID_0"     address="0x9" mask="0xff000000" permission="r"/>
+      <node id="RX_ERR_0"         address="0xA" mask="0x000000ff" permission="r"/>
+      <node id="RX_RECEIVED_0"    address="0xA" mask="0x00000100" permission="r"/>
+      <node id="RX_CHANNEL_0"     address="0xA" mask="0x00003000" permission="r"/> <!--size = to # of scas-->
+      <node id="RX_DATA_0"        address="0xB" mask="0xffffffff" permission="r"/>
+
+      <node id="RX_LEN_1"         address="0xC" mask="0x000000ff" permission="r"/>
+      <node id="RX_ADDRESS_1"     address="0xC" mask="0x0000ff00" permission="r"/>
+      <node id="RX_CONTROL_1"     address="0xC" mask="0x00ff0000" permission="r"/>
+      <node id="RX_TRANSID_1"     address="0xC" mask="0xff000000" permission="r"/>
+      <node id="RX_ERR_1"         address="0xD" mask="0x000000ff" permission="r"/>
+      <node id="RX_RECEIVED_1"    address="0xD" mask="0x00000100" permission="r"/>
+      <node id="RX_CHANNEL_1"     address="0xD" mask="0x00003000" permission="r"/> <!--size = to # of scas-->
+      <node id="RX_DATA_1"        address="0xE" mask="0xffffffff" permission="r"/>
+
+      <!--SCA Control -->
+      <node id="SCA_ENABLE"     address="0xF"  mask="0x3" permission="rw" parameters="default=0x1"/> <!--size = to # of scas-->
+      <node id="START_RESET"    address="0x10" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="START_CONNECT"  address="0x11" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="START_COMMAND"  address="0x12" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="INJ_CRC_ERR"    address="0x13" mask="0x1" permission="w"/> <!--ACTION-->
+    </node>
+  </node>
 </node>

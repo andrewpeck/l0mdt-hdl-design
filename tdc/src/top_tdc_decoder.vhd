@@ -188,7 +188,7 @@ begin
         return count;
       end get_polmux_size;
 
-      -- function to create a reversed polmux mapping,
+      -- function to get a tdc index for a given polmux / entry
       -- i.e. given a polmux entry (e.g. 0-19) for a given polmux
       -- it will return a global index of the tdc number
       function get_tdc_index (tdc_map   : tdc_link_map_array_t;
@@ -252,9 +252,6 @@ begin
       signal valid            : std_logic;
       signal din              : std_logic_vector (63 downto 0);
       signal dout             : std_logic_vector (63 downto 0);
-
-      constant std_logic0 : std_logic := '0';
-      constant std_logic1 : std_logic := '1';
 
     begin
 

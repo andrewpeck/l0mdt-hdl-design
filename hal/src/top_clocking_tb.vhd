@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 library unisim;
 use unisim.vcomponents.all;
 
-library hal;
-use hal.system_types_pkg.all;
+library work;
+use work.system_types_pkg.all;
 
 entity top_clocking_tb is
 end top_clocking_tb;
@@ -70,7 +70,7 @@ begin
     --sync <= '0';
     --wait for 200 ns;
     wait for 400 ns;
-    wait;
+    std.env.stop;
   end process;
 
   -- round off the numbers... don't want to use such high precision

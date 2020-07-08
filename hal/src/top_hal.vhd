@@ -32,9 +32,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library ctrl;
-use ctrl.hal_ctrl.all;
-use ctrl.axiRegPkg.all;
+library ctrl_lib;
+use ctrl_lib.HAL_CTRL.all;
+use ctrl_lib.axiRegPkg.all;
 
 entity top_hal is
 
@@ -129,8 +129,8 @@ entity top_hal is
 end entity top_hal;
 architecture behavioral of top_hal is
 
-  signal HAL_MON : HAL_MON_t;
-
+  signal Mon  : HAL_MON_t;
+  signal Ctrl : HAL_CTRL_t;
 
   signal clock_ibufds            : std_logic;
   signal clocks                  : system_clocks_rt;
@@ -236,22 +236,22 @@ begin  -- architecture behavioral
   -- AXI Interface
   --------------------------------------------------------------------------------
 
-  hal_interface_inst : entity ctrl.hal_interface
+  hal_interface_inst : entity ctrl_lib.HAL_interface
     port map (
       clk_axi         => clocks.axiclock,
-      reset_axi_n     => '1',
+      reset_axi_n     => std_logic1,
       slave_readmosi  => hal_readmosi,
       slave_readmiso  => hal_readmiso,
       slave_writemosi => hal_writemosi,
       slave_writemiso => hal_writemiso,
 
       -- monitor signals in
-      mon => hal_mon
-
-     -- control signals out
+      mon  => mon,
+      -- control signals out
+      ctrl => ctrl
       );
 
-  hal_mon.clocking.mmcm_locked <= clocks.locked;
+  mon.clocking.mmcm_locked <= clocks.locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -408,6 +408,8 @@ begin  -- architecture behavioral
     port map (
       reset_i               => global_reset,
       clock                 => clocks.clock40,
+      ctrl                  => ctrl.gbt,
+      mon                   => mon.gbt,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
       lpgbt_uplink_data_i   => lpgbt_uplink_data
       );
