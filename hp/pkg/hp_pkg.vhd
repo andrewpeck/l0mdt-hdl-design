@@ -12,8 +12,8 @@ use shared_lib.common_types_pkg.all;
 package hp_pkg is
 
   type hp_win_tubes_rt is record
-     hi                   :  unsigned(MDT_TUBE_LEN-1 downto 0);
-     lo                   :  unsigned(MDT_TUBE_LEN-1 downto 0);
+     hi                   :  unsigned(MDT_TUBE_LEN-1 downto 0);                           
+     lo                   :  unsigned(MDT_TUBE_LEN-1 downto 0);                           
   end record hp_win_tubes_rt;
   constant HP_WIN_TUBES_LEN : integer := 18;
   subtype hp_win_tubes_rvt is std_logic_vector(HP_WIN_TUBES_LEN-1 downto 0);
@@ -31,8 +31,8 @@ package hp_pkg is
   function nullify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_avt;
 
   type hp_heg2hp_slc_b_rt is record
-     z_0                  :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-     y_0                  :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+     z_0                  :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);                     
+     y_0                  :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);                     
   end record hp_heg2hp_slc_b_rt;
   constant HP_HEG2HP_SLC_B_LEN : integer := 38;
   subtype hp_heg2hp_slc_b_rvt is std_logic_vector(HP_HEG2HP_SLC_B_LEN-1 downto 0);
@@ -40,12 +40,12 @@ package hp_pkg is
   function structify(x: hp_heg2hp_slc_b_rvt) return hp_heg2hp_slc_b_rt;
   function nullify (x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
 
-  constant   HP_HEG2HP_SPECIFIC_LEN :  integer := 38;
+  constant   HP_HEG2HP_SPECIFIC_LEN :  integer := 38;                                     
 
   type hp_heg2hp_slc_rt is record
-     bcid                 :  unsigned(BCID_LEN-1 downto 0);
-     specific             :  std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
-     data_valid           :  std_logic;
+     bcid                 :  unsigned(BCID_LEN-1 downto 0);                               
+     specific             :  std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);         
+     data_valid           :  std_logic;                                                   
   end record hp_heg2hp_slc_rt;
   constant HP_HEG2HP_SLC_LEN : integer := 51;
   subtype hp_heg2hp_slc_rvt is std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
@@ -54,12 +54,12 @@ package hp_pkg is
   function nullify (x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
 
   type hp_hpsPc2hp_rt is record
-     tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);
-     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
-     time_t0              :  unsigned(MDT_TIME_LEN-1 downto 0);
-     global_z             :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-     global_x             :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-     data_valid           :  std_logic;
+     tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);                           
+     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);                          
+     time_t0              :  unsigned(MDT_TIME_LEN-1 downto 0);                           
+     global_z             :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);                     
+     global_x             :  unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);                     
+     data_valid           :  std_logic;                                                   
   end record hp_hpsPc2hp_rt;
   constant HP_HPSPC2HP_LEN : integer := 71;
   subtype hp_hpsPc2hp_rvt is std_logic_vector(HP_HPSPC2HP_LEN-1 downto 0);
@@ -68,10 +68,10 @@ package hp_pkg is
   function nullify (x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
 
   type hp_hp2sf_data_rt is record
-     local_y              :  unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-     local_x              :  unsigned(MDT_LOCAL_X_LEN-1 downto 0);
-     radius               :  unsigned(MDT_RADIUS_LEN-1 downto 0);
-     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);
+     local_y              :  unsigned(MDT_LOCAL_Y_LEN-1 downto 0);                        
+     local_x              :  unsigned(MDT_LOCAL_X_LEN-1 downto 0);                        
+     radius               :  unsigned(MDT_RADIUS_LEN-1 downto 0);                         
+     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);                          
   end record hp_hp2sf_data_rt;
   constant HP_HP2SF_DATA_LEN : integer := 41;
   subtype hp_hp2sf_data_rvt is std_logic_vector(HP_HP2SF_DATA_LEN-1 downto 0);
@@ -80,9 +80,9 @@ package hp_pkg is
   function nullify (x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
 
   type hp_hp2bm_rt is record
-     data                 :  hp_hp2sf_data_rt;
-     mdt_valid            :  std_logic;
-     data_valid           :  std_logic;
+     data                 :  hp_hp2sf_data_rt;                                            
+     mdt_valid            :  std_logic;                                                   
+     data_valid           :  std_logic;                                                   
   end record hp_hp2bm_rt;
   constant HP_HP2BM_LEN : integer := 43;
   subtype hp_hp2bm_rvt is std_logic_vector(HP_HP2BM_LEN-1 downto 0);

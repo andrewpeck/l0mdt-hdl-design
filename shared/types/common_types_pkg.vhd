@@ -11,9 +11,9 @@ use shared_lib.common_constants_pkg.all;
 package common_types_pkg is
 
   type l0mdt_control_rt is record
-     clk                  :  std_logic;
-     rst                  :  std_logic;
-     bx                   :  std_logic;
+     clk                  :  std_logic;                                                   
+     rst                  :  std_logic;                                                   
+     bx                   :  std_logic;                                                   
   end record l0mdt_control_rt;
   constant L0MDT_CONTROL_LEN : integer := 3;
   subtype l0mdt_control_rvt is std_logic_vector(L0MDT_CONTROL_LEN-1 downto 0);
@@ -22,11 +22,11 @@ package common_types_pkg is
   function nullify (x: l0mdt_control_rt) return l0mdt_control_rt;
 
   type l0mdt_ttc_rt is record
-     bcr                  :  std_logic;
-     ocr                  :  std_logic;
-     ecr                  :  std_logic;
-     l0a                  :  std_logic;
-     l1a                  :  std_logic;
+     bcr                  :  std_logic;                                                   
+     ocr                  :  std_logic;                                                   
+     ecr                  :  std_logic;                                                   
+     l0a                  :  std_logic;                                                   
+     l1a                  :  std_logic;                                                   
   end record l0mdt_ttc_rt;
   constant L0MDT_TTC_LEN : integer := 5;
   subtype l0mdt_ttc_rvt is std_logic_vector(L0MDT_TTC_LEN-1 downto 0);
@@ -62,8 +62,8 @@ package common_types_pkg is
   function nullify(x: tar2hps_avt) return tar2hps_avt;
 
   type ucm_csf_barrel_rt is record
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
-     z                    :  unsigned(UCM_Z_ROI_LEN-1 downto 0);
+     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);                           
+     z                    :  unsigned(UCM_Z_ROI_LEN-1 downto 0);                          
   end record ucm_csf_barrel_rt;
   constant UCM_CSF_BARREL_LEN : integer := 21;
   subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
@@ -72,8 +72,8 @@ package common_types_pkg is
   function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
 
   type ucm_csf_endcap_rt is record
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);
-     R                    :  unsigned(UCM_R_ROI_LEN-1 downto 0);
+     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);                           
+     R                    :  unsigned(UCM_R_ROI_LEN-1 downto 0);                          
   end record ucm_csf_endcap_rt;
   constant UCM_CSF_ENDCAP_LEN : integer := 15;
   subtype ucm_csf_endcap_rvt is std_logic_vector(UCM_CSF_ENDCAP_LEN-1 downto 0);
@@ -82,10 +82,10 @@ package common_types_pkg is
   function nullify (x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt;
 
   type ucm2hps_rt is record
-     muid                 :  slc_muid_rt;
-     specific             :  std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
-     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;                                                 
+     specific             :  std_logic_vector(UCM2HPS_SPECIFIC_LEN-1 downto 0);           
+     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);                
+     data_valid           :  std_logic;                                                   
   end record ucm2hps_rt;
   constant UCM2HPS_LEN : integer := 45;
   subtype ucm2hps_rvt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
@@ -103,11 +103,11 @@ package common_types_pkg is
   function nullify(x: ucm2hps_avt) return ucm2hps_avt;
 
   type hp_hit_data_rt is record
-     local_y              :  unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-     local_x              :  unsigned(MDT_LOCAL_X_LEN-1 downto 0);
-     radius               :  unsigned(MDT_RADIUS_LEN-1 downto 0);
-     multilayer           :  std_logic;
-     data_valid           :  std_logic;
+     local_y              :  unsigned(MDT_LOCAL_Y_LEN-1 downto 0);                        
+     local_x              :  unsigned(MDT_LOCAL_X_LEN-1 downto 0);                        
+     radius               :  unsigned(MDT_RADIUS_LEN-1 downto 0);                         
+     multilayer           :  std_logic;                                                   
+     data_valid           :  std_logic;                                                   
   end record hp_hit_data_rt;
   constant HP_HIT_DATA_LEN : integer := 38;
   subtype hp_hit_data_rvt is std_logic_vector(HP_HIT_DATA_LEN-1 downto 0);
@@ -124,7 +124,7 @@ package common_types_pkg is
   function nullify(x: hp_hit_data_a_at) return hp_hit_data_a_at;
   function nullify(x: hp_hit_data_a_avt) return hp_hit_data_a_avt;
 
-  subtype    sf2pt_t              is std_logic_vector(SF_SEG_DATA_LEN-1 downto 0);
+  subtype    sf2pt_t              is std_logic_vector(SF_SEG_DATA_LEN-1 downto 0);        
 
   type sf2pt_at is array(integer range <>) of sf2pt_t;
   type sf2pt_avt is array(integer range <>) of sf2pt_t;
@@ -190,9 +190,9 @@ package common_types_pkg is
   function nullify(x: mtc2nsp_avt) return mtc2nsp_avt;
 
   type felix_stream_rt is record
-     muid                 :  slc_muid_rt;
-     common               :  slc_common_rt;
-     data_valid           :  std_logic;
+     muid                 :  slc_muid_rt;                                                 
+     common               :  slc_common_rt;                                               
+     data_valid           :  std_logic;                                                   
   end record felix_stream_rt;
   constant FELIX_STREAM_LEN : integer := 61;
   subtype felix_stream_rvt is std_logic_vector(FELIX_STREAM_LEN-1 downto 0);
