@@ -11,18 +11,18 @@ use shared_lib.common_types_pkg.all;
 
 package ucm_pkg is
 
-  constant   UCM_INPUT_PL_LATENCY :  integer := 2;                                        
+  constant   UCM_INPUT_PL_LATENCY :  integer := 2;                                        -- 
 
-  constant   UCM_OUTPUT_PL_LATENCY :  integer := 2;                                       
+  constant   UCM_OUTPUT_PL_LATENCY :  integer := 2;                                       -- 
 
-  constant   UCM_LATENCY_HPS_CH   :  integer := 10;                                       
+  constant   UCM_LATENCY_HPS_CH   :  integer := 10;                                       -- 
 
   type ucm_prepro_rt is record
-     muid                 :  slc_muid_rt;                                                 
-     chambers             :  slc_chid_rt;                                                 
-     common               :  slc_common_rt;                                               
-     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);               
-     data_valid           :  std_logic;                                                   
+     muid                 :  slc_muid_rt;                                                 -- 
+     chambers             :  slc_chid_rt;                                                 -- 
+     common               :  slc_common_rt;                                               -- 
+     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);               -- 
+     data_valid           :  std_logic;                                                   -- 
   end record ucm_prepro_rt;
   constant UCM_PREPRO_LEN : integer := 124;
   subtype ucm_prepro_rvt is std_logic_vector(UCM_PREPRO_LEN-1 downto 0);
@@ -40,8 +40,8 @@ package ucm_pkg is
   function nullify(x: ucm_prepro_avt) return ucm_prepro_avt;
 
   type ucm_csw_ch_control_rt is record
-     data_present         :  std_logic;                                                   
-     addr_orig            :  std_logic_vector(4-1 downto 0);                              
+     data_present         :  std_logic;                                                   -- 
+     addr_orig            :  std_logic_vector(4-1 downto 0);                              -- 
   end record ucm_csw_ch_control_rt;
   constant UCM_CSW_CH_CONTROL_LEN : integer := 5;
   subtype ucm_csw_ch_control_rvt is std_logic_vector(UCM_CSW_CH_CONTROL_LEN-1 downto 0);
@@ -59,8 +59,8 @@ package ucm_pkg is
   function nullify(x: ucm_csw_control_avt) return ucm_csw_control_avt;
 
   type ucm_pam_ch_control_rt is record
-     data_present         :  std_logic;                                                   
-     addr_orig            :  std_logic_vector(4-1 downto 0);                              
+     data_present         :  std_logic;                                                   -- 
+     addr_orig            :  std_logic_vector(4-1 downto 0);                              -- 
   end record ucm_pam_ch_control_rt;
   constant UCM_PAM_CH_CONTROL_LEN : integer := 5;
   subtype ucm_pam_ch_control_rvt is std_logic_vector(UCM_PAM_CH_CONTROL_LEN-1 downto 0);
@@ -78,8 +78,8 @@ package ucm_pkg is
   function nullify(x: ucm_pam_control_avt) return ucm_pam_control_avt;
 
   type ucm_proc_info_ch_rt is record
-     ch                   :  std_logic_vector(4-1 downto 0);                              
-     processed            :  std_logic;                                                   
+     ch                   :  std_logic_vector(4-1 downto 0);                              -- 
+     processed            :  std_logic;                                                   -- 
   end record ucm_proc_info_ch_rt;
   constant UCM_PROC_INFO_CH_LEN : integer := 5;
   subtype ucm_proc_info_ch_rvt is std_logic_vector(UCM_PROC_INFO_CH_LEN-1 downto 0);
