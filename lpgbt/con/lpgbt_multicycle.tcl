@@ -4,7 +4,7 @@
 # retiming changes register names and prevents multicycle path setting on the lpgbt cores
 
 set link_wrapper_cell [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst"]
-if {[string is space $pipeline_s_reg_cells] == 0} {
+if {[string is space $link_wrapper_cell] == 0} {
 set_property BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
 }
 
