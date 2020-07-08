@@ -19,9 +19,9 @@ use tdc.csm_pkg.all;
 library gbt_sc;
 use gbt_sc.sca_pkg.all;
 
-library ctrl;
-use ctrl.hal_ctrl.all;
-use ctrl.axiRegPkg.all;
+library ctrl_lib;
+use ctrl_lib.hal_ctrl.all;
+use ctrl_lib.axiRegPkg.all;
 
 entity gbt_controller_wrapper is
   generic(
