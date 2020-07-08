@@ -108,7 +108,7 @@ entity top_hal is
     -- felix
     --------------------------------------------------------------------------------
 
-    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_LINKS-1 downto 0);
+    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- AXI
@@ -514,11 +514,41 @@ begin  -- architecture behavioral
     end process data_loop;
   end generate;
 
-  data_loop : process (clocks.clock320) is
+  sump_loop : process (clocks.clock_pipeline) is
+    variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
+    variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
+    variable nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
+    variable plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+    variable minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
   begin  -- process data_loop
-    if (rising_edge(clocks.clock320)) then  -- rising clock edge
-      sump <= '0';                          --xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
-    end if;
-  end process data_loop;
+    if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
+      daqsump_loop : for I in 0 to c_NUM_DAQ_STREAMS-1 loop
+        daq_sump(I) := xor_reduce(daq_streams(I));
+      end loop;
+      mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
+        mtc_sump(I) := xor_reduce(mtc_i(I));
+      end loop;
+      nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
+        nsp_sump(I) := xor_reduce(nsp_i(I));
+      end loop;
+      plus_neighbor_segments_sump_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+        plus_neighbor_segments_sump(I) := xor_reduce(plus_neighbor_segments_i(I));
+      end loop;
+      minus_neighbor_segments_sump_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+        minus_neighbor_segments_sump(I) := xor_reduce(minus_neighbor_segments_i(I));
+      end loop;
+      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump) xor xor_reduce(mtc_sump)
+              xor xor_reduce(minus_neighbor_segments_sump)
+              xor xor_reduce(plus_neighbor_segments_sump);
 
+
+      main_primary_slc          <= (others => (others => sump));
+      main_secondary_slc        <= (others => (others => sump));
+      plus_neighbor_slc         <= (others => sump);
+      minus_neighbor_slc        <= (others => sump);
+      plus_neighbor_segments_o  <= (others => (others => sump));
+      minus_neighbor_segments_o <= (others => (others => sump));
+
+    end if;
+  end process sump_loop;
 end architecture behavioral;

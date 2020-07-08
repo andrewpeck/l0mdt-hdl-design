@@ -42,24 +42,24 @@ set_property -quiet PACKAGE_PIN M33     [get_ports refclk_i_n[7]    ] ; # FELIX_
 # GTH
 set_property -quiet PACKAGE_PIN AL12    [get_ports refclk_i_p[8]    ] ; # AD_CLK2_KUP_P
 set_property -quiet PACKAGE_PIN AL11    [get_ports refclk_i_n[8]    ] ; # AD_CLK2_KUP_N
-#set_property -quiet PACKAGE_PIN AK10    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P ;; used for SM-CM link
-#set_property -quiet PACKAGE_PIN AK9     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N ;; used for SM-CM link
-set_property -quiet PACKAGE_PIN AJ12    [get_ports refclk_i_p[10]    ] ; # AD_CLK3_KUP_P
-set_property -quiet PACKAGE_PIN AJ11    [get_ports refclk_i_n[10]    ] ; # AD_CLK3_KUP_N
-set_property -quiet PACKAGE_PIN AH10    [get_ports refclk_i_p[11]    ] ; # B2B_REF2_P
-set_property -quiet PACKAGE_PIN AH9     [get_ports refclk_i_n[11]    ] ; # B2B_REF2_N
-set_property -quiet PACKAGE_PIN AG12    [get_ports refclk_i_p[12]    ] ; # FE_REF0_P
-set_property -quiet PACKAGE_PIN AG11    [get_ports refclk_i_n[12]    ] ; # FE_REF0_N
-set_property -quiet PACKAGE_PIN AE12    [get_ports refclk_i_p[13]    ] ; # FE_REF1_P
-set_property -quiet PACKAGE_PIN AE11    [get_ports refclk_i_n[13]    ] ; # FE_REF1_N
-set_property -quiet PACKAGE_PIN AC12    [get_ports refclk_i_p[14]    ] ; # FE_REF2_P
-set_property -quiet PACKAGE_PIN AC11    [get_ports refclk_i_n[14]    ] ; # FE_REF2_N
-set_property -quiet PACKAGE_PIN AA12    [get_ports refclk_i_p[15]    ] ; # SPARE_REF1_P
-set_property -quiet PACKAGE_PIN AA11    [get_ports refclk_i_n[15]    ] ; # SPARE_REF1_N
-set_property -quiet PACKAGE_PIN W12     [get_ports refclk_i_p[16]    ] ; # FE_REF3_P
-set_property -quiet PACKAGE_PIN W11     [get_ports refclk_i_n[16]    ] ; # FE_REF3_N
-set_property -quiet PACKAGE_PIN V10     [get_ports refclk_i_p[17]    ] ; # SPARE_REF2_P
-set_property -quiet PACKAGE_PIN V9      [get_ports refclk_i_n[17]    ] ; # SPARE_REF2_N
+set_property -quiet PACKAGE_PIN AK10    [get_ports refclk_i_p[9]    ] ; # B2B_REF0_P ;; used for SM-CM link
+set_property -quiet PACKAGE_PIN AK9     [get_ports refclk_i_n[9]    ] ; # B2B_REF0_N ;; used for SM-CM link
+set_property -quiet PACKAGE_PIN AJ12    [get_ports refclk_i_p[10]   ] ; # AD_CLK3_KUP_P
+set_property -quiet PACKAGE_PIN AJ11    [get_ports refclk_i_n[10]   ] ; # AD_CLK3_KUP_N
+set_property -quiet PACKAGE_PIN AH10    [get_ports refclk_i_p[11]   ] ; # B2B_REF2_P
+set_property -quiet PACKAGE_PIN AH9     [get_ports refclk_i_n[11]   ] ; # B2B_REF2_N
+set_property -quiet PACKAGE_PIN AG12    [get_ports refclk_i_p[12]   ] ; # FE_REF0_P
+set_property -quiet PACKAGE_PIN AG11    [get_ports refclk_i_n[12]   ] ; # FE_REF0_N
+set_property -quiet PACKAGE_PIN AE12    [get_ports refclk_i_p[13]   ] ; # FE_REF1_P
+set_property -quiet PACKAGE_PIN AE11    [get_ports refclk_i_n[13]   ] ; # FE_REF1_N
+set_property -quiet PACKAGE_PIN AC12    [get_ports refclk_i_p[14]   ] ; # FE_REF2_P
+set_property -quiet PACKAGE_PIN AC11    [get_ports refclk_i_n[14]   ] ; # FE_REF2_N
+set_property -quiet PACKAGE_PIN AA12    [get_ports refclk_i_p[15]   ] ; # SPARE_REF1_P
+set_property -quiet PACKAGE_PIN AA11    [get_ports refclk_i_n[15]   ] ; # SPARE_REF1_N
+set_property -quiet PACKAGE_PIN W12     [get_ports refclk_i_p[16]   ] ; # FE_REF3_P
+set_property -quiet PACKAGE_PIN W11     [get_ports refclk_i_n[16]   ] ; # FE_REF3_N
+set_property -quiet PACKAGE_PIN V10     [get_ports refclk_i_p[17]   ] ; # SPARE_REF2_P
+set_property -quiet PACKAGE_PIN V9      [get_ports refclk_i_n[17]   ] ; # SPARE_REF2_N
 set_property -quiet PACKAGE_PIN U12     [get_ports refclk_i_p[18]   ] ; # FE_REF4_P
 set_property -quiet PACKAGE_PIN U11     [get_ports refclk_i_n[18]   ] ; # FE_REF4_N
 set_property -quiet PACKAGE_PIN R12     [get_ports refclk_i_p[19]   ] ; # FE_REF5_P
@@ -72,6 +72,7 @@ set_property -quiet PACKAGE_PIN L11     [get_ports refclk_i_n[21]   ] ; # FE_REF
 # LHC REF Inputs
 #set_property -quiet PACKAGE_PIN AT24    [get_ports lhc_clock_in_p] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
 #set_property -quiet PACKAGE_PIN AU24    [get_ports lhc_clock_in_n] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
+create_clock -period 3.125 -name clock_in_async [get_ports clock_i_p]
 
 # CLK_GEN Inputs
 set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
@@ -80,6 +81,7 @@ set_property -quiet PACKAGE_PIN AP30    [get_ports clock_i_n] ; # IN: async prog
 # 100M Oscillator
 set_property -quiet PACKAGE_PIN AY16    [get_ports clock_100m_i_p] ; # IN: oscillator clock, 100MHz, always on
 set_property -quiet PACKAGE_PIN AY15    [get_ports clock_100m_i_n] ; # IN: oscillator clock, 100MHz, always on
+create_clock -period 10.00 -name clock_100 [get_ports clock_100m_i_p]
 
 # LHC REF Output
 set_property -quiet PACKAGE_PIN AT23    [get_ports lhc_refclk_o_p] ; # OUT: recovered LHC Clock to synths
@@ -91,10 +93,6 @@ set_property IOSTANDARD LVDS [get_ports  lhc_refclk_o*]
 
 set_property -quiet PACKAGE_PIN AU12   [get_ports sump]
 set_property IOSTANDARD LVCMOS18       [get_ports sump]
-
-
-set_property -quiet PACKAGE_PIN AK10    [get_ports c2c_refclkp] ; # C2C_REF0_P
-set_property -quiet PACKAGE_PIN AK9     [get_ports c2c_refclkn] ; # C2C_REF0_N
 
 set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
 set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]

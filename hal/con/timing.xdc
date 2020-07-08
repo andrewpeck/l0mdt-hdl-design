@@ -1,5 +1,3 @@
-create_clock -period 24.9 -name clock [get_ports clock_in_p]
-
 # sector logic clock domain crossing
 set_max_delay -datapath_only -from [get_clocks *] -to [get_pins -hierarchical -filter {NAME =~ *s_resync_reg*/D}] 2.5
 

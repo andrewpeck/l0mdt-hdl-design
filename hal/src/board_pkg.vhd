@@ -96,6 +96,8 @@ package board_pkg is
 
   constant c_NUM_REFCLKS : integer := 22;
 
+  constant C2C_REFCLK_SRC : integer := 9;
+
   constant c_REFCLK_MAP : refclk_types_array_t (c_NUM_REFCLKS-1 downto 0) := (
     -- B2B = AXI c2c
     -- C2C = sf c2c

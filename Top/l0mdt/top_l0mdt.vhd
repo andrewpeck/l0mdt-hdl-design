@@ -68,8 +68,6 @@ entity top_l0mdt is
     c2c_rxp     : in  std_logic;
     c2c_txn     : out std_logic;
     c2c_txp     : out std_logic;
-    c2c_refclkp : in  std_logic;
-    c2c_refclkn : in  std_logic;
 
     sys_mgmt_scl : inout std_logic;
     sys_mgmt_sda : inout std_logic;
@@ -193,7 +191,6 @@ begin
       hal_writemosi => hal_writemosi,
       hal_writemiso => hal_writemiso,
 
-
       mtc_i => mtc,
       nsp_i => nsp,
 
@@ -248,8 +245,8 @@ begin
       c2c_rxp     => c2c_rxp,
       c2c_txn     => c2c_txn,
       c2c_txp     => c2c_txp,
-      c2c_refclkn => c2c_refclkn,
-      c2c_refclkp => c2c_refclkp,
+      c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),
+      c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),
 
       -- axi slaves
       hal_readmosi  => hal_readmosi,
