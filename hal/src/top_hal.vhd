@@ -363,7 +363,14 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
 
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    lpgbt_downlink_data(I).valid <= strobe_320;
+    process (clocks.clock320) begin
+      if (rising_edge(clocks.clock320)) then
+        -- drive the lpgbt downlink valid flags
+        -- should come 1 clock later than the strobe to match the
+        -- downlink data which is driven similarly
+        lpgbt_downlink_data(I).valid <= strobe_320;
+      end if;
+    end process;
   end generate lpgbt_downlink_valid_gen;
 
   lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
