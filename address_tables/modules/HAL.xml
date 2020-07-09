@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="HAL">
-  <node id="CLOCKING" address="0x1">
-    <node id="MMCM_LOCKED"         mask="0x1" permission="r"/>
-    <node id="RESET_MMCM"          mask="0x2" permission="rw"/>
-    <node id="SELECT_FELIX_CLK"    mask="0x4" permission="rw"/>
-    <node id="CLK_PHASE_OUTOFSYNC" mask="0x8" permission="r"/>
-    <node id="RESYNC_CLK_PHASE"    mask="0x10" permission="rw"/>
-  </node>
-  <node id="GBT" address="0x2">
+  <node id="GBT" address="0x1">
 
     <node id="RESET"         address="0x0" mask="0x1" permission="w"/> <!--ACTION-->
 

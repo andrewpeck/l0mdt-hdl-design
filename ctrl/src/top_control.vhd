@@ -19,6 +19,7 @@ library xil_defaultlib;
 library work;
 use work.HOG_INFO_CTRL.all;
 use work.FW_INFO_CTRL.all;
+use work.HAL_CORE_CTRL.all;
 --use work.FW_TIMESTAMP.all;
 --use work.FW_VERSION.all;
 use work.axiRegPkg.all;
@@ -43,6 +44,11 @@ entity top_control is
     hal_readmiso  : in axireadmiso;
     hal_writemosi : out axiwritemosi;
     hal_writemiso : in axiwritemiso;
+
+    hal_core_readmosi  : out axireadmosi;
+    hal_core_readmiso  : in axireadmiso;
+    hal_core_writemosi : out axiwritemosi;
+    hal_core_writemiso : in axiwritemiso;
 
     fw_info_readmosi  : out axireadmosi;
     fw_info_readmiso  : in axireadmiso;
@@ -171,6 +177,26 @@ begin
       hal_wready(0)  => hal_writemiso.ready_for_data,
       hal_wstrb      => hal_writemosi.data_write_strobe,
       hal_wvalid(0)  => hal_writemosi.data_valid,
+
+      hal_core_araddr     => hal_core_readmosi.address,
+      hal_core_arprot     => hal_core_readmosi.protection_type,
+      hal_core_arready(0) => hal_core_readmiso.ready_for_address,
+      hal_core_arvalid(0) => hal_core_readmosi.address_valid,
+      hal_core_awaddr     => hal_core_writemosi.address,
+      hal_core_awprot     => hal_core_writemosi.protection_type,
+      hal_core_awready(0) => hal_core_writemiso.ready_for_address,
+      hal_core_awvalid(0) => hal_core_writemosi.address_valid,
+      hal_core_bready(0)  => hal_core_writemosi.ready_for_response,
+      hal_core_bresp      => hal_core_writemiso.response,
+      hal_core_bvalid(0)  => hal_core_writemiso.response_valid,
+      hal_core_rdata      => hal_core_readmiso.data,
+      hal_core_rready(0)  => hal_core_readmosi.ready_for_data,
+      hal_core_rresp      => hal_core_readmiso.response,
+      hal_core_rvalid(0)  => hal_core_readmiso.data_valid,
+      hal_core_wdata      => hal_core_writemosi.data,
+      hal_core_wready(0)  => hal_core_writemiso.ready_for_data,
+      hal_core_wstrb      => hal_core_writemosi.data_write_strobe,
+      hal_core_wvalid(0)  => hal_core_writemosi.data_valid,
 
       -- system monitor outputs
 

@@ -16,6 +16,7 @@ use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
 library ctrl_lib;
+use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.HOG_INFO_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
@@ -130,6 +131,11 @@ architecture structural of top_l0mdt is
   signal hal_writemosi : axiwritemosi;
   signal hal_writemiso : axiwritemiso;
 
+  signal hal_core_readmosi  : axireadmosi;
+  signal hal_core_readmiso  : axireadmiso;
+  signal hal_core_writemosi : axiwritemosi;
+  signal hal_core_writemiso : axiwritemiso;
+
   signal hog_info_readmosi  : axireadmosi;
   signal hog_info_readmiso  : axireadmiso;
   signal hog_info_writemosi : axiwritemosi;
@@ -190,6 +196,11 @@ begin
       hal_readmiso  => hal_readmiso,
       hal_writemosi => hal_writemosi,
       hal_writemiso => hal_writemiso,
+
+      hal_core_readmosi  => hal_core_readmosi,
+      hal_core_readmiso  => hal_core_readmiso,
+      hal_core_writemosi => hal_core_writemosi,
+      hal_core_writemiso => hal_core_writemiso,
 
       mtc_i => mtc,
       nsp_i => nsp,
@@ -253,6 +264,11 @@ begin
       hal_readmiso  => hal_readmiso,
       hal_writemosi => hal_writemosi,
       hal_writemiso => hal_writemiso,
+
+      hal_core_readmosi  => hal_core_readmosi,
+      hal_core_readmiso  => hal_core_readmiso,
+      hal_core_writemosi => hal_core_writemosi,
+      hal_core_writemiso => hal_core_writemiso,
 
       fw_info_readmosi  => fw_info_readmosi,
       fw_info_readmiso  => fw_info_readmiso,

@@ -20,5 +20,8 @@ ctrl/src/HOG_INFO/HOG_INFO_map.vhd
 ctrl/src/HAL/HAL_PKG.vhd
 ctrl/src/HAL/HAL_map.vhd
 
+ctrl/src/HAL_CORE/HAL_CORE_PKG.vhd
+ctrl/src/HAL_CORE/HAL_CORE_map.vhd
+
 ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_PKG.vhd
 ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_map.vhd

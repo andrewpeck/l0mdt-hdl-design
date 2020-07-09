@@ -34,6 +34,7 @@ use shared_lib.config_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HAL_CTRL.all;
+use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 
 entity top_hal is
@@ -121,6 +122,11 @@ entity top_hal is
     hal_writemosi : in  axiwritemosi;
     hal_writemiso : out axiwritemiso;
 
+    hal_core_readmosi  : in  axireadmosi;
+    hal_core_readmiso  : out axireadmiso;
+    hal_core_writemosi : in  axiwritemosi;
+    hal_core_writemiso : out axiwritemiso;
+
     --sump--------------------------------------------------------------------------
     sump : out std_logic
 
@@ -131,6 +137,9 @@ architecture behavioral of top_hal is
 
   signal Mon  : HAL_MON_t;
   signal Ctrl : HAL_CTRL_t;
+
+  signal Core_Mon  : HAL_CORE_MON_t;
+  signal Core_Ctrl : HAL_CORE_CTRL_t;
 
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
@@ -235,9 +244,24 @@ begin  -- architecture behavioral
   -- AXI Interface
   --------------------------------------------------------------------------------
 
-  hal_interface_inst : entity ctrl_lib.HAL_interface
+  hal_core_interface_inst : entity ctrl_lib.HAL_CORE_interface
     port map (
       clk_axi         => clocks.axiclock,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hal_readmosi,
+      slave_readmiso  => hal_readmiso,
+      slave_writemosi => hal_writemosi,
+      slave_writemiso => hal_writemiso,
+
+      -- monitor signals in
+      mon  => core_mon,
+      -- control signals out
+      ctrl => core_ctrl
+      );
+
+  hal_interface_inst : entity ctrl_lib.HAL_interface
+    port map (
+      clk_axi         => clocks.clock320,
       reset_axi_n     => std_logic1,
       slave_readmosi  => hal_readmosi,
       slave_readmiso  => hal_readmiso,
@@ -250,7 +274,7 @@ begin  -- architecture behavioral
       ctrl => ctrl
       );
 
-  mon.clocking.mmcm_locked <= clocks.locked;
+  core_mon.clocking.mmcm_locked <= clocks.locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -259,14 +283,14 @@ begin  -- architecture behavioral
   top_clocking_inst : entity hal.top_clocking
     port map (
       --
-      reset_i          => ctrl.clocking.reset_mmcm,
-      select_felix_clk => ctrl.clocking.select_felix_clk,
+      reset_i          => core_ctrl.clocking.reset_mmcm,
+      select_felix_clk => core_ctrl.clocking.select_felix_clk,
 
       -- synchronization
-      sync_i         => ctrl.clocking.resync_clk_phase,
+      sync_i         => core_ctrl.clocking.resync_clk_phase,
       felix_valid_i  => felix_valid,
       felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      out_of_sync_o  => mon.clocking.clk_phase_outofsync,
+      out_of_sync_o  => core_mon.clocking.clk_phase_outofsync,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
@@ -459,7 +483,7 @@ begin  -- architecture behavioral
       trg_i               => std_logic0,
       bcr_i               => ttc_commands.bcr,
       ecr_i               => ttc_commands.ecr,
-      gsr_i               => std_logic0,
+      gsr_i               => global_reset,  -- TODO: add a reset from axi control
       lpgbt_downlink_data => lpgbt_downlink_data
       );
 
