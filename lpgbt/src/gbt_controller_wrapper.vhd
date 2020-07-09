@@ -32,6 +32,7 @@ entity gbt_controller_wrapper is
     reset_i : in std_logic;
 
     lpgbt_clk : in std_logic;
+    valid     : in std_logic;
     axi_clk   : in std_logic;
 
     ctrl : in  HAL_GBT_CTRL_t;
@@ -60,6 +61,8 @@ architecture common_controller of gbt_controller_wrapper is
   signal sca_link_sel  : integer   := 0;
   signal sca_broadcast : std_logic := '0';
 
+  signal tx_reset, rx_reset : std_logic := '0';
+
 begin
 
   lpgbt_link_sel       <= to_integer(unsigned(ctrl.link_sel));
@@ -84,11 +87,11 @@ begin
 
       -- tx to lpgbt etc
       tx_clk_i  => lpgbt_clk,
-      tx_clk_en => '1',                 -- run @ 40MHz, always enable
+      tx_clk_en => valid,
 
       -- rx from lpgbt etc
       rx_clk_i  => lpgbt_clk,
-      rx_clk_en => '1',                 -- run @ 40MHz, always enable
+      rx_clk_en => valid,
 
       -- IC/EC data from controller
       ec_data_o => ec_data_down,
@@ -99,8 +102,8 @@ begin
       ic_data_i => ic_data_up,
 
       -- reset
-      rx_reset_i => ctrl.sc.rx_reset or ctrl.reset or reset_i,
-      tx_reset_i => ctrl.sc.tx_reset or ctrl.reset or reset_i,
+      rx_reset_i => rx_reset,
+      tx_reset_i => tx_reset,
 
       -- connect all of the following to AXI slave
 
@@ -146,8 +149,8 @@ begin
       rx_error_o(1)    => mon.sc.rx_err_1,
       rx_len_o(0)      => mon.sc.rx_len_0,
       rx_len_o(1)      => mon.sc.rx_len_1,
-      rx_received_o(0) => mon.sc.rx_received_0,  -- array
-      rx_received_o(1) => mon.sc.rx_received_1,  -- array
+      rx_received_o(0) => mon.sc.rx_received_0,
+      rx_received_o(1) => mon.sc.rx_received_1,
       rx_transID_o(0)  => mon.sc.rx_transID_0,
       rx_transID_o(1)  => mon.sc.rx_transID_1
 
@@ -163,12 +166,12 @@ begin
   begin
 
     if (rising_edge(lpgbt_clk)) then
-
-      -- mux and copy onto 40MHz lpgbt_clk
-      ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
-      ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
-      ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
-
+      if (valid) then
+        -- mux and copy onto 40MHz lpgbt_clk
+        ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
+        ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
+        ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
+      end if;
     end if;
   end process;
 
@@ -207,45 +210,45 @@ begin
       ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
       if (rising_edge(lpgbt_clk)) then
+        if (valid) then
 
-        -- if broadcast ? send to all of the lpgbts
-        if (lpgbt_broadcast = '1') then
-          lpgbt_downlink_data_o (I).ic <= ic_data_down;
-          lpgbt_downlink_data_o (I).ec <= ic_data_down;
+          -- if broadcast ? send to all of the lpgbts
+          if (lpgbt_broadcast = '1') then
+            lpgbt_downlink_data_o (I).ic <= ic_data_down;
+            lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-        -- if master
-        elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '0') then
-          lpgbt_downlink_data_o (I).ic <= ic_data_down;
+          -- if master
+          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '0') then
+            lpgbt_downlink_data_o (I).ic <= ic_data_down;
 
-        -- if slave
-        elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '1') then
-          lpgbt_downlink_data_o (I).ec <= ic_data_down;
+          -- if slave
+          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '1') then
+            lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-        -- if idle (nothing selected, should block writes)
-        else
-          lpgbt_downlink_data_o (I).ic <= (others => '1');
-          lpgbt_downlink_data_o (I).ec <= (others => '1');
+          -- if idle (nothing selected, should block writes)
+          else
+            lpgbt_downlink_data_o (I).ic <= (others => '1');
+            lpgbt_downlink_data_o (I).ec <= (others => '1');
+          end if;
+
+          -- if broadcast ? send to all of the scas
+          if (sca_broadcast = '1') then
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+
+          -- select a CSM... choose which SCA on SC controller port
+          elsif (sca_link_sel = I) then
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+
+          -- idle
+          else
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
+          end if;
+
         end if;
-
-        -- if broadcast ? send to all of the scas
-        if (sca_broadcast = '1') then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
-
-        -- select a CSM... choose which SCA on SC controller port
-        elsif (sca_link_sel = I) then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
-
-        -- idle
-        else
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
-        end if;
-
       end if;
-
-
     end loop;
   end process;
 

@@ -432,6 +432,7 @@ begin  -- architecture behavioral
       reset_i               => global_reset,
       axi_clk               => clocks.axiclock,
       lpgbt_clk             => clocks.clock40,
+      valid                 => '1',     -- run @ 40MHz, always enable
       ctrl                  => ctrl.gbt,
       mon                   => mon.gbt,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
