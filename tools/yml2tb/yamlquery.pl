@@ -16,15 +16,15 @@ die "usage: $0 <data_file> <name>" if( $#ARGV < 1);
 foreach my $arg ( @ARGV ) {
     if( $arg =~ m{\.db}) {
 	$dbfile = $arg
-    } elsif( $arg =~ m/-d\d/) {
-	($debug) = $arg =~ m/-d(\d)/;
+    } elsif( $arg =~ m/-d/) {
+	$debug++;
     } else {
 	push @names, $arg;
     }
 }
 
 my $db = retrieve( $ARGV[0]);
-print Dumper($db) if($debug);
+print Dumper($db) if($debug > 1);
 
 # see if a type is a synthesizable type
 sub is_base_type {
@@ -70,13 +70,11 @@ sub lookup {
 		if( !is_base_type( $mtype)) {
 		    lookup( $mtype,$list);
 		} else {
-		    print $pfx,"  $mname is $mtype " if($debug);
+		    my $ptype = $mtype;
+		    $ptype = "$mtype($msize-1 downto 0)" if( $msize ne "scalar");
+		    print $pfx,"  $mname is $ptype" if($debug);
 		    print is_base_type($mtype) ? "*\n" : "\n" if($debug);
-		    if( $msize eq "scalar") {
-			push @{$list}, "$mname $mtype";
-		    } else {
-			push @{$list}, "$mname $mtype($msize-1 downto 0)";
-		    }
+		    push @{$list}, "$mname $ptype";
 		}
 	    }
 
@@ -102,7 +100,7 @@ foreach my $name ( @names ) {
     my $list = [ ];
     if( lookup( $name,$list)) {
 	foreach my $item ( @{$list}) {
-	    print "  $item\n";
+	    print "  $item\n" if( !$debug);
 	}
     } else {
 	print "not found\n";

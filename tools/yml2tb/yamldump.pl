@@ -7,6 +7,7 @@
 #   record with elements, where each is:
 #      signed/unsigned/std_logic scalar
 #      signed/unsigned/std_logic vector
+#      a custom type
 #   top-level item
 #      integer/real constant
 #      array of custom type
@@ -56,7 +57,7 @@ my $dbfile = 0;		       # database file name if specified
 # loop over arguments
 #   name.yml is a YAML (input) file
 #   name.db  is a database (output) file
-#   -d#      set debug level # (1, 2...)
+#   -d      increase debug level
 #
 for( my $i=0; $i<$na; $i++) {
     my $arg = $ARGV[$i];
@@ -68,8 +69,8 @@ for( my $i=0; $i<$na; $i++) {
 	$types = \%comb;
     } elsif( $arg =~ m{\.db}) {
 	$dbfile = $arg;
-    } elsif( $arg =~ m{-d\d}) {
-	$debug = substr( $arg, 2, 1) + 0;
+    } elsif( $arg =~ m{-d}) {
+	$debug++;
     }
 }
 
