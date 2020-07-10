@@ -24,7 +24,7 @@ detail.
 ```ymldump.pl``` usage:
 
 ```
-  $ ./ymldump.pl ...path/*.yml ...path/*.yml -d1       # dump data
+  $ ./ymldump.pl ...path/*.yml ...path/*.yml -d        # dump data
   $ ./ymldump.pl ...path/*.yml ...path/*.yml types.db  # write to db
 ```
 
@@ -38,9 +38,9 @@ of elements, each of which may be:
 * An *integer* or *real* constant
 * An array of a custom type defined elswhere in the YAML
 * A record, with elements in an ordered list, where each is one of:
- * A scalar of std_logic
- * A vector of any synthesizable type
- * A scalar of a custom type defined elsewhere in the YAML
+   * A scalar of std_logic
+   * A vector of any synthesizable type
+   * A scalar of a custom type defined elsewhere in the YAML
  
 The hierarchy described in the YAML is two-level only.
 
@@ -139,3 +139,5 @@ items which must be included in a test vector file for a given type.
 ```
 
 The ```-d``` (debug) option displays an indented hierarchical list.
+
+### yaml
