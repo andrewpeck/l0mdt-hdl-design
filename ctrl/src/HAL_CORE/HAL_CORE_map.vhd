@@ -68,11 +68,9 @@ begin  -- architecture behavioral
       case to_integer(unsigned(localAddress(0 downto 0))) is
 
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.CLOCKING.MMCM_LOCKED;              --
-          localRdData( 1)  <=  reg_data( 1)( 1);                      --
-          localRdData( 2)  <=  reg_data( 1)( 2);                      --
-          localRdData( 3)  <=  Mon.CLOCKING.CLK_PHASE_OUTOFSYNC;      --
-          localRdData( 4)  <=  reg_data( 1)( 4);                      --
+          localRdData( 0)  <=  Mon.CLOCKING.MMCM_LOCKED;      --
+          localRdData( 1)  <=  reg_data( 1)( 1);              --
+          localRdData( 2)  <=  reg_data( 1)( 2);              --
 
 
         when others =>
@@ -87,7 +85,6 @@ begin  -- architecture behavioral
   -- Register mapping to ctrl structures
   Ctrl.CLOCKING.RESET_MMCM        <=  reg_data( 1)( 1);     
   Ctrl.CLOCKING.SELECT_FELIX_CLK  <=  reg_data( 1)( 2);     
-  Ctrl.CLOCKING.RESYNC_CLK_PHASE  <=  reg_data( 1)( 4);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -95,7 +92,6 @@ begin  -- architecture behavioral
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
       reg_data( 1)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.RESET_MMCM;
       reg_data( 1)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.SELECT_FELIX_CLK;
-      reg_data( 1)( 4)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.RESYNC_CLK_PHASE;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       
@@ -106,7 +102,6 @@ begin  -- architecture behavioral
         when 1 => --0x1
           reg_data( 1)( 1)  <=  localWrData( 1);      --
           reg_data( 1)( 2)  <=  localWrData( 2);      --
-          reg_data( 1)( 4)  <=  localWrData( 4);      --
 
           when others => null;
         end case;

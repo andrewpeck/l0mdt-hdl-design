@@ -14,9 +14,6 @@ ctrl/src/FW_INFO/FW_INFO_map.vhd
 ctrl/src/HOG_INFO/HOG_INFO_PKG.vhd
 ctrl/src/HOG_INFO/HOG_INFO_map.vhd
 
-ctrl/src/HOG_INFO/HOG_INFO_PKG.vhd
-ctrl/src/HOG_INFO/HOG_INFO_map.vhd
-
 ctrl/src/HAL/HAL_PKG.vhd
 ctrl/src/HAL/HAL_map.vhd
 

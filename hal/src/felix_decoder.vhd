@@ -36,7 +36,7 @@ entity felix_decoder is
     lpgbt_uplink_data : in lpgbt_uplink_data_rt;
 
     strobe_pipeline : in std_logic;
-    strobe_320 : in std_logic;
+    strobe_320      : in std_logic;
 
     l0mdt_ttc_40m      : out l0mdt_ttc_rt;
     l0mdt_ttc_320m     : out l0mdt_ttc_rt;
@@ -62,23 +62,29 @@ architecture behavioral of felix_decoder is
   function gate_ttc (ttc : l0mdt_ttc_rt; gate : std_logic)
     return l0mdt_ttc_rt is
   begin
-    return structify(vectorify(ttc) and repeat(gate,L0MDT_TTC_LEN));
+    return structify(vectorify(ttc) and repeat(gate, L0MDT_TTC_LEN));
   end gate_ttc;
 begin
+  process (clock)
+  begin
+    if (rising_edge(clock)) then
+      valid_o <= lpgbt_uplink_data.valid;
+      if (lpgbt_uplink_data.valid) then
 
-  -- TODO: add some injector, local control, bunch counter, etc... steal from somewhere if possible
+        -- TODO: add some injector, local control, bunch counter, etc... steal from somewhere if possible
+        l0mdt_ttc.bcr <= lpgbt_uplink_data.data(felix_bcr_bit);
+        l0mdt_ttc.ocr <= lpgbt_uplink_data.data(felix_ocr_bit);
+        l0mdt_ttc.ecr <= lpgbt_uplink_data.data(felix_ecr_bit);
+        l0mdt_ttc.l0a <= lpgbt_uplink_data.data(felix_l0a_bit);
+        l0mdt_ttc.l1a <= lpgbt_uplink_data.data(felix_l1a_bit);
 
-  l0mdt_ttc.bcr <= lpgbt_uplink_data.data(felix_bcr_bit);
-  l0mdt_ttc.ocr <= lpgbt_uplink_data.data(felix_ocr_bit);
-  l0mdt_ttc.ecr <= lpgbt_uplink_data.data(felix_ecr_bit);
-  l0mdt_ttc.l0a <= lpgbt_uplink_data.data(felix_l0a_bit);
-  l0mdt_ttc.l1a <= lpgbt_uplink_data.data(felix_l1a_bit);
+        -- create copies of ttc signals gated with different clocks
+        l0mdt_ttc_40m      <= l0mdt_ttc;
+        l0mdt_ttc_320m     <= gate_ttc(l0mdt_ttc, strobe_320);
+        l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc, strobe_pipeline);
 
-  valid_o <= lpgbt_uplink_data.valid;
-
-  -- create copies of ttc signals gated with different clocks
-  l0mdt_ttc_40m      <= l0mdt_ttc;
-  l0mdt_ttc_320m     <= gate_ttc(l0mdt_ttc,strobe_320);
-  l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc,strobe_pipeline);
+      end if;
+    end if;
+  end process;
 
 end behavioral;

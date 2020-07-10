@@ -147,6 +147,9 @@ architecture behavioral of top_hal is
 
   signal strobe_pipeline : std_logic;
   signal strobe_320      : std_logic;
+
+  signal reset          : std_logic;
+
   signal felix_valid     : std_logic;
 
   signal ttc_commands : l0mdt_ttc_rt;
@@ -248,10 +251,10 @@ begin  -- architecture behavioral
     port map (
       clk_axi         => clocks.axiclock,
       reset_axi_n     => std_logic1,
-      slave_readmosi  => hal_readmosi,
-      slave_readmiso  => hal_readmiso,
-      slave_writemosi => hal_writemosi,
-      slave_writemiso => hal_writemiso,
+      slave_readmosi  => hal_core_readmosi,
+      slave_readmiso  => hal_core_readmiso,
+      slave_writemosi => hal_core_writemosi,
+      slave_writemiso => hal_core_writemiso,
 
       -- monitor signals in
       mon  => core_mon,
@@ -287,10 +290,10 @@ begin  -- architecture behavioral
       select_felix_clk => core_ctrl.clocking.select_felix_clk,
 
       -- synchronization
-      sync_i         => core_ctrl.clocking.resync_clk_phase,
       felix_valid_i  => felix_valid,
       felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      out_of_sync_o  => core_mon.clocking.clk_phase_outofsync,
+      sync_i         => '0',
+      out_of_sync_o  => open,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
@@ -314,7 +317,20 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
-  clock_and_control_o.rst <= global_reset;  -- FIXME, synchronize to clock
+   rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => reset,
+      dest_clk => clocks.clock320,
+      src_rst =>  global_reset);
+
+   pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => clock_and_control_o.rst,
+      dest_clk => clocks.clock_pipeline,
+      src_rst =>  global_reset);
+
   clock_and_control_o.clk <= clocks.clock_pipeline;
   clock_and_control_o.bx  <= strobe_pipeline;
 
@@ -438,8 +454,8 @@ begin  -- architecture behavioral
     port map (
       reset_i               => global_reset,
       axi_clk               => clocks.axiclock,
-      lpgbt_clk             => clocks.clock40,
-      valid                 => '1',     -- run @ 40MHz, always enable
+      lpgbt_clk             => clocks.clock320,
+      valid                 => strobe_320,
       ctrl                  => ctrl.gbt,
       mon                   => mon.gbt,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
@@ -486,7 +502,8 @@ begin  -- architecture behavioral
 
   top_tdc_control_inst : entity tdc.top_tdc_control
     port map (
-      clock40             => clocks.clock40,
+      clock_i             => clocks.clock320,
+      valid_i             => strobe_320,
       reset               => global_reset,
       trg_i               => std_logic0,
       bcr_i               => ttc_commands.bcr,
@@ -501,7 +518,7 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock             => clocks.clock40,
+      clock             => clocks.clock320,
       reset             => global_reset,
       lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
 

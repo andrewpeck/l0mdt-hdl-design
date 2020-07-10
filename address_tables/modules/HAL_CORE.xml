@@ -6,10 +6,8 @@ is guaranteed to always be running -->
 control logic should run NOT on this asynchronous domain -->
 <node id="HAL_CORE">
   <node id="CLOCKING" address="0x1">
-    <node id="MMCM_LOCKED"         mask="0x1"  permission="r"  description=""/>
-    <node id="RESET_MMCM"          mask="0x2"  permission="rw" description=""/>
-    <node id="SELECT_FELIX_CLK"    mask="0x4"  permission="rw" description=""/>
-    <node id="CLK_PHASE_OUTOFSYNC" mask="0x8"  permission="r"  description=""/>
-    <node id="RESYNC_CLK_PHASE"    mask="0x10" permission="rw" description=""/>
+    <node id="MMCM_LOCKED"         mask="0x1" permission="r"  description=""/>
+    <node id="RESET_MMCM"          mask="0x2" permission="rw" description=""/>
+    <node id="SELECT_FELIX_CLK"    mask="0x4" permission="rw" description=""/>
   </node>
 </node>
