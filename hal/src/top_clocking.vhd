@@ -42,8 +42,7 @@ use work.system_types_pkg.all;
 
 entity top_clocking is
   generic (
-    GENERATE_40M : boolean := false;
-    SAFE_START   : boolean := false
+    GENERATE_40M : boolean := false
     );
   port (
 
@@ -232,7 +231,7 @@ begin  -- architecture behavioral
     generic map (BUFGCE_DIVIDE => 1)
     port map (
       I   => clk320_nobuf,
-      CLR => not clk320_en,
+      CLR => '0',
       CE  => '1',
       O   => clk320
       );
@@ -242,65 +241,10 @@ begin  -- architecture behavioral
     generic map (BUFGCE_DIVIDE => 1)
     port map (
       I   => clkpipe_nobuf,
-      CLR => not clkpipe_en,            -- CLR is an asynchronous reset assertion and synchronous reset deassertion to this buffer.
+      CLR => '0',
       CE  => '1',
       O   => clkpipe
       );
-
-  --------------------------------------------------------------------------------
-  -- Safe Start
-  --------------------------------------------------------------------------------
-
-  safe_gen : if (SAFE_START) generate
-    signal clkpipe_locked : std_logic_vector (7 downto 0);
-    signal clk320_locked  : std_logic_vector (7 downto 0);
-    signal clk320_enclk   : std_logic;
-    signal clkpipe_enclk  : std_logic;
-  begin
-
-    -- lpgbt clock
-    bufgce_clk320_inst : bufgce
-      port map (
-        I  => clk320_nobuf,
-        CE => '1',
-        O  => clk320_enclk
-        );
-
-    -- pipeline clock
-    bufgce_clkpipe_inst : bufgce
-      port map (
-        I  => clkpipe_nobuf,
-        CE => '1',
-        O  => clkpipe_enclk
-        );
-
-    -- asynchronous deassertion, synchronous assertion
-    process (clkpipe_enclk, mmcm_locked)
-    begin
-      if (not mmcm_locked) then
-        clkpipe_locked <= (others => '0');
-      elsif (rising_edge (clkpipe_enclk)) then
-        clkpipe_locked <= clkpipe_locked (6 downto 0) & mmcm_locked;
-      end if;
-    end process;
-
-    process (clk320_enclk, mmcm_locked)
-    begin
-      if (not mmcm_locked) then
-        clk320_locked <= (others => '0');
-      elsif (rising_edge (clk320_enclk)) then
-        clk320_locked <= clk320_locked (6 downto 0) & mmcm_locked;
-      end if;
-    end process;
-
-    clkpipe_en <= clkpipe_locked(7);
-    clk320_en  <= clk320_locked(7);
-  end generate;
-
-  nosafe_gen : if (not SAFE_START) generate
-    clkpipe_en <= '1';
-    clk320_en  <= '1';
-  end generate;
 
   --------------------------------------------------------------------------------
   -- 40MHz clock

@@ -6,6 +6,9 @@ use ieee.numeric_std.all;
 library unisim;
 use unisim.vcomponents.all;
 
+library xpm;
+use xpm.vcomponents.all;
+
 library work;
 use work.system_types_pkg.all;
 use work.constants_pkg.all;
@@ -60,6 +63,7 @@ entity mgt_wrapper is
 
     -- -- Rxslide from LPGBT rx core
     -- felix_rxslide_i : in std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
+    --
 
     -- -- 32 bits / clock from mgt
     -- felix_downlink_mgt_word_array_o : out std32_array_t (c_NUM_FELIX_DOWNLINKS-1 downto 0);
@@ -158,14 +162,6 @@ begin
   -- MGTS
   --------------------------------------------------------------------------------
 
-  --lpgbt_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
-  --  assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(lpgbt_idx_array(I)) severity note;
-  --end generate;
-
-  --sl_idx_array_print : for I in 0 to c_NUM_MGTS-1 generate
-  --  assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = " & integer'image(sl_idx_array(I)) severity note;
-  --end generate;
-
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
@@ -259,7 +255,6 @@ begin
       signal rx_p, rx_n, tx_p, tx_n : std_logic;
 
     begin
-
 
       assert false report "GENERATING LPGBT EMULATOR LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " LPGBT_LINK_CNT=" & integer'image(idx) severity note;
       assert false report "link_idx=" & integer'image(idx) severity note;
@@ -377,6 +372,10 @@ begin
       signal txoutclk_bufg, rxoutclk_bufg : std_logic;
       signal rx_cesync, rx_clrsync        : std_logic;
       signal tx_cesync, tx_clrsync        : std_logic;
+      signal tx_usrclk_active             : std_logic;
+      signal rx_usrclk_active             : std_logic;
+      signal felix_rx_usrclk_reset : std_logic:= '0'; -- FIXME
+      signal felix_tx_usrclk_reset : std_logic:= '0'; -- FIXME
 
       signal rxslide : std_logic_vector (3 downto 0);
       signal words_o : std32_array_t (3 downto 0);
@@ -388,30 +387,28 @@ begin
 
       assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
 
-      --assert (c_NUM_SECTOR_LOGIC_INPUTS = c_NUM_SECTOR_LOGIC_OUTPUTS) report "We only support symmetric # of SL inputs / outputs" severity error;
-      --assert (idx <= c_NUM_SECTOR_LOGIC_OUTPUTS) report "conflict between # of sl links in board file and c_NUM_SECTOR_LOGIC_DOWNLINKS" severity error;
       assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_FELIX) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
 
       MGT_INST : entity work.mgt_felix_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           free_clock            => clocks.freeclock,
-          reset                 => reset_tree(I),
+          reset                 => '0', -- FIXME: how to reset? due to recovered clock...
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => (others => lpgbt_rxslide_i (c_FELIX_LPGBT_INDEX)),  -- FIXME: should zero the ohters that aren't used
-          status_o              => open,                                               -- TODO: wire this
+          mgt_rxslide_i         => (others => lpgbt_rxslide_i (c_FELIX_LPGBT_INDEX)),  -- FIXME: should zero the others that aren't used
+          status_o              => open,                                               -- TODO: wire this to axi
           mgt_words_i           => felix_uplink_mgt_word_array_i(idx+3 downto idx),
           mgt_words_o           => words_o,
-          tx_header_i           => (others => '0'),                                    -- something to do with 64/67
-          tx_sequence_i         => (others => '0'),                                    -- ditto
+          tx_header_i           => (others => '0'),         -- something to do with 64/67
+          tx_sequence_i         => (others => '0'),        -- ditto
           mgt_txoutclk_o        => txoutclk (3 downto 0),
           mgt_rxoutclk_o        => rxoutclk (3 downto 0),
           mgt_txusrclk_i        => txusrclk (3 downto 0),
           mgt_rxusrclk_i        => rxusrclk (3 downto 0),
-          mgt_rxusrclk_active_i => '1',                                                -- FIXME:  fix what drives theses
-          mgt_txusrclk_active_i => '1',
+          mgt_rxusrclk_active_i => rx_usrclk_active,
+          mgt_txusrclk_active_i => tx_usrclk_active,
           rxp_i                 => rx_p,
           rxn_i                 => rx_n,
           txp_o                 => tx_p,
@@ -453,7 +450,32 @@ begin
         end generate;
       end generate;
 
-      felix_mgt_txusrclk_o (idx+3 downto idx) <= txusrclk;
+      -- Assign RX userclocks
+      rxusrclk <= (others => rxoutclk_bufg);
+
+      -- rx active process
+      p_userclk_rx_active : process (rxoutclk_bufg, felix_rx_usrclk_reset) is
+        variable r, rr : std_logic := '0';
+      begin
+        if (felix_rx_usrclk_reset = '1') then
+          r  := '0';
+          rr := '0';
+        elsif rising_edge(rxoutclk_bufg) then
+          r  := '1';
+          rr := r;
+        end if;
+        rx_usrclk_active <= not rr;
+      end process p_userclk_rx_active;
+
+      -- The RX buffer bypass controller helper block should be held in reset
+      -- until the RX user clocking network helper
+      -- block which drives it is active
+      bufbypass_rst_bit_synchronizer : xpm_cdc_sync_rst
+        generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+        port map (
+          dest_clk => rxoutclk_bufg,
+          dest_rst => rx_resets(I).reset_bufbypass,
+          src_rst =>  not rx_usrclk_active);
 
       -- UltraScale+ devices also have 24 BUFG_GTs but they have 14 BUFG_GT_SYNCs per GT Quad
       --
@@ -468,6 +490,7 @@ begin
       -- GTs have no other direct, dedicated connections to other clock resources. However, they can connect to the CMT via the BUFG_GT and the clock routing resources.
 
       txusrclk(3 downto 0) <= (others => txoutclk_bufg);
+      felix_mgt_txusrclk_o (idx+3 downto idx) <= txusrclk;
 
       BUFG_GT_SYNC_tx_inst : BUFG_GT_SYNC
         port map (
@@ -489,17 +512,20 @@ begin
           O       => txoutclk_bufg
           );
 
-      ---- rx active process
-      --p_userclk_rx_active : process (rxusrclk2_in(0), gtwiz_userclk_rx_reset_in(0)) is
-      --begin
-      --  if(gtwiz_userclk_rx_reset_in(0) = '1') then
-      --    gtwiz_userclk_rx_active_meta(0) <= '0';
-      --    gtwiz_userclk_rx_active_in(0)   <= '0';
-      --  elsif rxusrclk2_in(0)'event and rxusrclk2_in(0) = '1' then
-      --    gtwiz_userclk_rx_active_meta(0) <= '1';
-      --    gtwiz_userclk_rx_active_in(0)   <= gtwiz_userclk_rx_active_meta(0);
-      --  end if;
-      --end process p_userclk_rx_active;
+      -- TODO: move into wrappers
+      -- tx active process
+      p_userclk_tx_active : process (txoutclk_bufg, felix_tx_usrclk_reset) is
+        variable r, rr : std_logic := '0';
+      begin
+        if (felix_tx_usrclk_reset = '1') then
+          r  := '0';
+          rr := '0';
+        elsif rising_edge(txoutclk_bufg) then
+          r  := '1';
+          rr := r;
+        end if;
+        tx_usrclk_active <= not rr;
+      end process p_userclk_tx_active;
 
     end generate felix_gen;
 

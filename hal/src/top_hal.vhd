@@ -10,10 +10,10 @@ use unisim.vcomponents.all;
 
 library tdc;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-use l0mdt_lib.mdttp_functions_pkg.all;
-use l0mdt_lib.mdttp_constants_pkg.all;
+--library l0mdt_lib;
+--use l0mdt_lib.mdttp_types_pkg.all;
+--use l0mdt_lib.mdttp_functions_pkg.all;
+--use l0mdt_lib.mdttp_constants_pkg.all;
 
 library hal;
 use hal.sector_logic_pkg.all;
@@ -36,6 +36,9 @@ library ctrl_lib;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
+
+library xpm;
+use xpm.vcomponents.all;
 
 entity top_hal is
 
@@ -345,7 +348,7 @@ begin  -- architecture behavioral
       clocks => clocks,
 
       -- reset
-      reset => global_reset,
+      reset => '0', -- need a separate reset from the mmcm due to recovered links
 
       -- reference clocks
       refclk_i_p => refclk_i_p,
@@ -429,7 +432,7 @@ begin  -- architecture behavioral
       lpgbt_rst_downlink_i            => lpgbt_emul_rst_downlink
       );
 
-  -- TODO: replace with with some kind of smarter driver?
+  -- TODO: replace with with some kind of smarter driver? prbs31?
   emul_loop : for I in 0 to c_NUM_LPGBT_EMUL_UPLINKS-1 generate
     emul_loop_clock : process (clocks.clock320) is
     begin  -- process data_loop
@@ -453,7 +456,7 @@ begin  -- architecture behavioral
   gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
-      axi_clk               => clocks.axiclock,
+      axi_clk               => clocks.clock320,
       lpgbt_clk             => clocks.clock320,
       valid_i               => strobe_320,
       ctrl                  => ctrl.gbt,
