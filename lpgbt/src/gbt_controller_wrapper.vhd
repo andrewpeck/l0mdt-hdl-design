@@ -32,7 +32,7 @@ entity gbt_controller_wrapper is
     reset_i : in std_logic;
 
     lpgbt_clk : in std_logic;
-    valid     : in std_logic;
+    valid_i   : in std_logic;
     axi_clk   : in std_logic;
 
     ctrl : in  HAL_GBT_CTRL_t;
@@ -45,6 +45,11 @@ entity gbt_controller_wrapper is
 end gbt_controller_wrapper;
 
 architecture common_controller of gbt_controller_wrapper is
+
+  signal valid : std_logic;
+
+  attribute DONT_TOUCH          : string;
+  attribute DONT_TOUCH of valid : signal is "true";
 
   -- EC line
   signal ec_data_down : reg2_arr((g_SCAS_PER_LPGBT-1) downto 0);  --! (TX) Array of bits to be mapped to the TX GBT-Frame
@@ -65,12 +70,25 @@ architecture common_controller of gbt_controller_wrapper is
 
 begin
 
-  lpgbt_link_sel       <= to_integer(unsigned(ctrl.link_sel));
-  lpgbt_link_sel_slave <= ctrl.sel_slave;
-  lpgbt_broadcast      <= ctrl.broadcast;
+  valid <= valid_i;
 
-  sca_link_sel  <= 1 when ctrl.sca_sel = '1' else 0;
-  sca_broadcast <= ctrl.sca_broadcast;
+  process (lpgbt_clk)
+  begin
+    if (rising_edge(lpgbt_clk)) then
+      if (valid) then
+        lpgbt_link_sel       <= to_integer(unsigned(ctrl.link_sel));
+        lpgbt_link_sel_slave <= ctrl.sel_slave;
+        lpgbt_broadcast      <= ctrl.broadcast;
+
+        if (ctrl.sca_sel = '1') then
+          sca_link_sel <= 1;
+        else
+          sca_link_sel <= 0;
+        end if;
+        sca_broadcast <= ctrl.sca_broadcast;
+      end if;
+    end if;
+  end process;
 
   --------------------------------------------------------------------------------
   -- instantiate a single gbtsc core, connect it to a single axi slave
