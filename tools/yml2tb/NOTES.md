@@ -3,8 +3,10 @@ Sorting out the type suffixes
 
 _avt "array of vector type"
    type tar2hps_avt is array(integer range <>) of tar2hps_rvt;
+
 _rvt "record (converted to) vector type"
    subtype tar2hps_rvt is std_logic_vector(TAR2HPS_LEN-1 downto 0);
+
 _rt "record type"
 
 Functions exist:
