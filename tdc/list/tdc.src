@@ -12,4 +12,4 @@ tdc/src/tdc_decoder/x_oneshot.vhd
 tdc/src/tdc_decoder/elink_framer.vhd
 tdc/src/tdc_decoder/tdc_packet_processor.vhd
 
-IP/polmux_sync_fifo/polmux_sync_fifo.xci
+IP/tdc/polmux_sync_fifo/polmux_sync_fifo.xci
