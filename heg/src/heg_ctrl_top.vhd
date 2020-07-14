@@ -37,7 +37,6 @@ entity heg_ctrl_top is
   );
   port (
     clk                 : in std_logic;
-
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
@@ -72,26 +71,20 @@ architecture beh of heg_ctrl_top is
     );
   end component ctrl_signals;
 
-  type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
-  signal heg_ctrl_motor     : heg_ctrl_motor_t;
-
-  signal int_uCM_data_r     : ucm2hps_rt;
+  signal uCM_data_r         : ucm2hps_rt;
   signal Roi_win_valid      : std_logic;
   signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
-  signal busy_count         : std_logic_vector(11 downto 0);
-
-  signal enables_a          : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
-
+  
 begin
 
-  entity heg_lib.heg_ctri_roi
+  HEG_CTRL : entity heg_lib.heg_ctrl_roi
   generic map(
-    g_STATION_RADIUS=> g_STATION_RADIUS
+    g_STATION_RADIUS => g_STATION_RADIUS,
+    g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH
   )
   port map(
     clk                 => clk,
-
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- configuration
     -- SLc in
@@ -104,20 +97,8 @@ begin
   -- o_uCM2sf_data_v <= int_uCM_data;
   -- o_uCM2hp_data_v.barrel.z <= int_uCM_data.barrel.z;
 
-  int_uCM_data_r <= structify(i_uCM_data_v);
+  uCM_data_r <= structify(i_uCM_data_v);
   o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
-
-  CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
-    enables_a(hp_i) <= o_hp_control(hp_i).enable;
-    -- o_hp_control(hp_i).rst <= '1';
-  end generate;
-
-
-
-
-
-
-
 
 end beh;
 
@@ -161,15 +142,28 @@ entity ctrl_signals is
     glob_en             : in std_logic;
     --
     i_uCM_data_r        : in ucm2hps_rt;
-
+    --
+    i_Roi_win_valid     : in std_logic;
+    --
     o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
     o_uCM2sf_data_v     : out ucm2hps_rvt
   );
 end entity ctrl_signals;
 
 architecture beh of ctrl_signals is
-  
+
+  type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
+  signal heg_ctrl_motor     : heg_ctrl_motor_t;
+
+  signal busy_count         : std_logic_vector(11 downto 0);
+  signal enables_a          : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+
 begin
+
+  CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
+    enables_a(hp_i) <= o_hp_control(hp_i).enable;
+    -- o_hp_control(hp_i).rst <= '1';
+  end generate;
   
   SLc_reg : process(rst,clk) begin
     if rising_edge(clk) then
@@ -193,8 +187,8 @@ begin
 
         case heg_ctrl_motor is
           when IDLE =>
-            if( int_uCM_data_r.data_valid = '1') then
-              o_uCM2sf_data_v <= i_uCM_data_v;
+            if( i_uCM_data_r.data_valid = '1') then
+              -- o_uCM2sf_data_v <= i_uCM_data_v;
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control(hp_i).enable <= '1';
                 o_hp_control(hp_i).rst <= '0';
@@ -207,15 +201,15 @@ begin
               o_hp_control(hp_i).enable <= '1';
               o_hp_control(hp_i).rst <= '1';
             end loop;
-            if Roi_win_valid = '1' then
+            if i_Roi_win_valid = '1' then
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
-                -- o_uCM2hp_data_r.specific.z_0 <= int_uCM_data_r.barrel.z;
+                -- o_uCM2hp_data_r.specific.z_0 <= uCM_data_r.barrel.z;
               else --endcap
 
               end if;
               heg_ctrl_motor <= HEG_BUSY;
             end if;
-          -- int_uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
+          -- uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
           -- o_uCM_data <= int_uCM_data;
           -- o_hp_control.loc_enable <= '1';
           -- o_hp_control.enable <= (others => '1');

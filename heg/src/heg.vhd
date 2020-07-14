@@ -70,7 +70,7 @@ begin
 
   o_sf_control_v <= vectorify(heg_Sf_control);
 
-  Heg_Control : entity heg_lib.heg_Control
+  Heg_Control : entity heg_lib.heg_ctrl_top
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
     g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH

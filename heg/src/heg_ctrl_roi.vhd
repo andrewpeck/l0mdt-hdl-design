@@ -31,8 +31,19 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 
 entity heg_ctrl_roi is
+  generic(
+    g_STATION_RADIUS    : integer := 0;  --station
+    g_HPS_NUM_MDT_CH    : integer := 6
+  );
   port (
-
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic;
+    --
+    i_uCM_data_v        : in ucm2hps_rvt;
+    --
+    o_SLC_Window_v      : out hp_heg2hp_window_avt;
+    o_Roi_win_valid      : out std_logic
     
   );
 end entity heg_ctrl_roi;
@@ -75,14 +86,12 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 -- use heg_lib.heg_trLUT_s3_pkg.all;
 
-entity heg_c_window is
+entity z2roi is
   generic(
     g_STATION_RADIUS     : integer := 0  --station
   );
   port (
-    clk                 : in std_logic;
-    rst                 : in std_logic;
-    glob_en             : in std_logic;
+
     -- configuration
     -- SLc in
     i_uCM_data_v        : in ucm2hps_rvt;
@@ -91,9 +100,9 @@ entity heg_c_window is
     o_Z_offset          : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     o_Roi_win_valid     : out std_logic
   );
-end entity heg_c_window;
+end entity z2roi;
 
-architecture beh of heg_c_window is
+architecture beh of z2roi is
 
   signal int_uCM_data : ucm2hps_rt;
   signal uCM_barrel   : ucm_csf_barrel_rt;
@@ -106,77 +115,6 @@ architecture beh of heg_c_window is
   signal wingen_dv_o : std_logic;
 begin
 
-  -- ROI_GEN : entity heg_lib.heg_roi_gen
-  -- generic map(
-  --   g_STATION_RADIUS=> g_STATION_RADIUS
-  -- )
-  -- port map(
-  --   clk                 => clk,
-  --   rst            => rst,
-  --   glob_en             => glob_en,
-  --   --
-  --   i_specific          => int_uCM_data.specific,
-  --   i_data_valid        => int_uCM_data.data_valid,
-  --   o_SLC_Window_v      => o_SLC_Window_v,
-  --   o_data_valid        => wingen_dv_o
-  -- );
-
-  int_uCM_data <= structify(i_uCM_data_v);
-
-  UCM_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
-
-    uCM_barrel <= structify(int_uCM_data.specific);
-    z_barrel <= uCM_barrel.z;
-
-    ROI_GEN : entity heg_lib.heg_roi_gen
-    generic map(
-      g_STATION_RADIUS      => g_STATION_RADIUS
-    )
-    port map(
-      clk                   => clk,
-      rst                   => rst,
-      glob_en               => glob_en,
-      --
-      i_z                   => z_barrel,
-      i_data_valid          => int_uCM_data.data_valid,
-      o_SLC_Window_v        => o_SLC_Window_v,
-      o_data_valid          => wingen_dv_o
-    );
-
-  end generate;
-
-  -- Roi_wingen : process(rst,clk) begin
-  --   if rising_edge(clk) then
-  --     if(rst= '1') then
-  --       o_Roi_win_valid <= '0';
-  --       Roi_window_a <= nullify(Roi_window_a);
-  --     else
-  --       if( int_uCM_data.data_valid = '1') then
-  --         -- TO-DO: convert from SLC.barrel.z to Roi_w_index
-  --         if uCM_barrel.z >= 0 and uCM_barrel.z < 6 then
-  --           Roi_w_index <= to_integer(uCM_barrel.z);
-  --         else
-
-  --         end if;
-
-  --         ----------------------
-  --           for il in 7 downto 0 loop
-  --             for it in 1 downto 0 loop
-  --               -- TO-DO: convert from SLC.barrel.z to Roi_w_index
-
-
-  --               ----------------------
-  --               -- Roi_window_a(il)(it) <= std_logic_vector(to_unsigned(trLUT_s3_mem(radius)(Roi_w_index)(il)(it),MDT_TUBE_LEN));
-  --             end loop;
-  --           end loop;
-  --           o_Roi_win_valid <= '1';
-  --         -- Enables control
-  --       end if;
-  --     end if;
-
-  --   end if;
-  -- end process;
-  -- o_SLC_Window_v <= vectorify(Roi_window_a);
 
 
 end beh;
