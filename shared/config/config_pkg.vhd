@@ -122,12 +122,29 @@ package config_pkg is
   -- FUNCTIONS
   ---------------------------------------------------------
 
+  function get_num_layers(station : integer) return integer;
   
 
 end package config_pkg;
 
 package body config_pkg is
   
+  function get_num_layers(station : integer) return integer is
+    variable layers : integer;
+  begin
+
+    if c_ST_nBARREL_ENDCAP = '0' then
+      if station = 0 then
+        layers := 8;
+      else
+        layers := 6;
+      end if;
+    else
+      layers := 2;
+    end if;
+
+    return layers;
+  end function;
 
   
 end package body config_pkg;

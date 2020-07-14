@@ -91,14 +91,14 @@ entity z2roi is
     g_STATION_RADIUS     : integer := 0  --station
   );
   port (
-
-    -- configuration
-    -- SLc in
-    i_uCM_data_v        : in ucm2hps_rvt;
-    -- SLc out
-    o_SLC_Window_v      : out hp_heg2hp_window_avt;
-    o_Z_offset          : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
-    o_Roi_win_valid     : out std_logic
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic;
+    --
+    z                   : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    --
+    roi_center          : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    data_valid          : out std_logic
   );
 end entity z2roi;
 

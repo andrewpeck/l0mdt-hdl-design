@@ -21,8 +21,8 @@ package hp_pkg is
   function structify(x: hp_win_tubes_rvt) return hp_win_tubes_rt;
   function nullify (x: hp_win_tubes_rt) return hp_win_tubes_rt;
 
-  type hp_heg2hp_window_at is array(8-1 downto 0) of hp_win_tubes_rt;
-  type hp_heg2hp_window_avt is array(8-1 downto 0) of hp_win_tubes_rvt;
+  type hp_heg2hp_window_at is array(integer range <>) of hp_win_tubes_rt;
+  type hp_heg2hp_window_avt is array(integer range <>) of hp_win_tubes_rvt;
   function vectorify(x: hp_heg2hp_window_at) return hp_heg2hp_window_avt;
   function vectorify(x: hp_heg2hp_window_at) return std_logic_vector;
   function structify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_at;
@@ -119,7 +119,7 @@ package body hp_pkg is
   end function nullify;
 
   function vectorify(x: hp_heg2hp_window_at) return hp_heg2hp_window_avt is
-    variable y :  hp_heg2hp_window_avt;
+    variable y :  hp_heg2hp_window_avt(x'range);
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
@@ -137,7 +137,7 @@ package body hp_pkg is
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_at is
-    variable y :  hp_heg2hp_window_at;
+    variable y :  hp_heg2hp_window_at(x'range);
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
@@ -145,7 +145,7 @@ package body hp_pkg is
     return y;
   end function structify;
   function structify(x: std_logic_vector) return hp_heg2hp_window_at is
-    variable y :  hp_heg2hp_window_at;
+    variable y :  hp_heg2hp_window_at(x'range);
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -155,7 +155,7 @@ package body hp_pkg is
     return y;
   end function structify;
   function nullify(x: hp_heg2hp_window_at) return hp_heg2hp_window_at is
-    variable y :  hp_heg2hp_window_at;
+    variable y :  hp_heg2hp_window_at(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
@@ -163,7 +163,7 @@ package body hp_pkg is
     return y;
   end function nullify;
   function nullify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_avt is
-    variable y :  hp_heg2hp_window_avt;
+    variable y :  hp_heg2hp_window_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

@@ -45,7 +45,7 @@ entity heg_ctrl_top is
     -- SLc out
     o_uCM2sf_data_v     : out ucm2hps_rvt;
     o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
-    o_SLC_Window_v      : out hp_heg2hp_window_avt;
+    o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
     o_sf_control        : out heg_ctrl2hp_rt;
     o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0)
@@ -65,7 +65,9 @@ architecture beh of heg_ctrl_top is
       glob_en             : in std_logic;
       --
       i_uCM_data_r        : in ucm2hps_rt;
-  
+      --
+      i_Roi_win_valid     : in std_logic;
+      --
       o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
       o_uCM2sf_data_v     : out ucm2hps_rvt
     );
@@ -77,7 +79,7 @@ architecture beh of heg_ctrl_top is
   
 begin
 
-  HEG_CTRL : entity heg_lib.heg_ctrl_roi
+  HEG_CTRL_ROI : entity heg_lib.heg_ctrl_roi
   generic map(
     g_STATION_RADIUS => g_STATION_RADIUS,
     g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH
@@ -92,6 +94,23 @@ begin
     -- SLc out
     o_SLC_Window_v        => o_SLC_Window_v,
     o_Roi_win_valid       => Roi_win_valid
+  );
+
+  HEG_SIGNALS : component ctrl_signals
+  generic map(
+    g_STATION_RADIUS => g_STATION_RADIUS,
+    g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    glob_en             => glob_en,
+    -- SLc in
+    i_uCM_data_r        => uCM_data_r,
+    i_Roi_win_valid     => Roi_win_valid,
+    -- SLc out
+    o_hp_control        => o_hp_control,
+    o_uCM2sf_data_v     => o_uCM2sf_data_v
   );
 
   -- o_uCM2sf_data_v <= int_uCM_data;

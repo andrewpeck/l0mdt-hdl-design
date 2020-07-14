@@ -56,7 +56,7 @@ end entity heg;
 architecture beh of heg is
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
-  signal roi_b_Window       : hp_heg2hp_window_avt;
+  signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
   
   signal heg_Sf_control : heg_ctrl2hp_rt;

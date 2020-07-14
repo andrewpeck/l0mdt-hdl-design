@@ -38,7 +38,7 @@ entity top_hps_vp is
     -- mdt type
     -- type mdt_type;
     -- parameters
-    g_STATION_RADIUS    : integer := 0;  --station
+    g_STATION_RADIUS    : integer := 1;  --station
     g_HPS_NUM_MDT_CH     : integer := 6 
   );
   port (

@@ -15,7 +15,7 @@ hp_win_tubes:
   hi: { type: unsigned, length: MDT_TUBE_LEN}
   lo: { type: unsigned, length: MDT_TUBE_LEN}
 # hp_heg2hp_win_layer  : {array: 2 , type: unsigned, length: MDT_TUBE_LEN}
-hp_heg2hp_window  : {array: 8 , type: hp_win_tubes}
+hp_heg2hp_window  : {array: open , type: hp_win_tubes}
 
 # -----------------------------------------------------------
 #  SLC
