@@ -36,6 +36,10 @@ foreach my $name ( @{$names}) {
     my $dir = $ports->{$name}->{"dir"};
     printf "\n----- %-25s: $dir $type\n", $name;
 
+    print "  orn integer\n";
+    print "  bcn integer\n";
+    print "  tick integer\n";
+
     # separate into range and type if array
     my $btype = $type;
     my $range = "";
