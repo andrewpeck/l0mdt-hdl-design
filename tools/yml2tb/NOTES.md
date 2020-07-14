@@ -6,8 +6,13 @@ _avt "array of vector type"
 
 _rvt "record (converted to) vector type"
    subtype tar2hps_rvt is std_logic_vector(TAR2HPS_LEN-1 downto 0);
+   I think we can assume an _rt exists too...
 
 _rt "record type"
+  type xyzzy_rt is record...
+
+_at "array (of) record type"
+  type array_port_at is array(integer range <>) of xyzzy_rt;
 
 Functions exist:
   function vectorify(x: tar2hps_rt) return tar2hps_rvt;

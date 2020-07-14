@@ -74,8 +74,21 @@ foreach my $top ( keys %{$types}) {
     print FP "    variable v_index : integer\n" if( $class eq 'array');
     print FP "  begin\n";
 
-    print FP 
+    if( $class eq 'record') {	# handle record elements
+	print "Processing RECORD $top\n" if($debug);
+	print Dumper($ptr);
+	foreach my $memb ( @{$ptr->{'members'}}) {
+	    my $name = $memb->{'name'};
+	    my $type = $memb->{'type'};
+	    my $size = $memb->{'size'};
+	    print "  >>> $name $type($size)\n" if($debug);
+	    print FP "    READ(L, v_data.$name);\n";
+	}
+    } else {			# just read a scalar
+	print "Processing $class\n";
+	print FP "    READ(L, v_data);\n";
+    }
 
+    print FP "  end\n";
 }
-
 

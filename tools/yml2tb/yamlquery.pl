@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #------------------------------------------------------------------------
 # read DB, look up a type and provide the test vector format
-#
+# -d option for indented output
 #------------------------------------------------------------------------
 use strict;
 use lib '.';
