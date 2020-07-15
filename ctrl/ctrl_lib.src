@@ -1,5 +1,4 @@
 # -*- mode: TCL;-*-
-ctrl/src/top_control.vhd
 ctrl/src/axi/types.vhd
 ctrl/src/axi/axiReg.vhd
 ctrl/src/axi/axiRegPkg.vhd

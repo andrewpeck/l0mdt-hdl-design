@@ -1,7 +1,7 @@
 # -*- mode: TCL;-*-
 Top/l0mdt/top_l0mdt.vhd
 hal/list/hal.src
-ctrl/list/ctrl_lib.src
+ctrl/ctrl_lib.src
 shared/shared_lib.src
 mpl/mpl_lib.src
 ult/ult_lib.src
@@ -10,3 +10,4 @@ hp/hp_lib.src
 heg/heg_lib.src
 hps/hps_lib.src
 csf/csf_lib.src
+Top/lsf/list/lsf.src
