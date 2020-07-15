@@ -41,11 +41,9 @@ begin
 process(a_clk)
 begin
     if(a_clk'event and a_clk='1') then
-        if(a_wr='1') then
+        if(a_wr='1' and last_addr /= conv_integer(a_addr)) then
             mem(conv_integer(a_addr)) := a_din;
-        end if;
-        mem(conv_integer(last_addr)) := (others => '0');
-
+          end if;
 --        a_dout <= mem(conv_integer(a_addr));
     end if;
 end process;
