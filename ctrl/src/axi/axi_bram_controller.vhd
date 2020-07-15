@@ -4,9 +4,7 @@ use ieee.numeric_std.all;
 
 library work;
 use work.AXIRegPkg.all;
-
-library axi_bram_ctrl_v4_1_2;
-use axi_bram_ctrl_v4_1_2.axi_bram_ctrl;
+use work.axi_bram_ctrl;
 
 entity axi_bram_controller is
   generic (
