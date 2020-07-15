@@ -22,7 +22,7 @@
 	url = ../gbt-sc.git
 [submodule "regmap"]
 	path = regmap
-	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git
+	url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
 	path = tools/yml2hdl
 	url = https://gitlab.com/tcpaiva/yml2hdl.git
