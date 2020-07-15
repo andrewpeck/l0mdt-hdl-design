@@ -3,13 +3,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-library hal;
-use hal.board_pkg.all;
-use hal.constants_pkg.all;
-use hal.system_types_pkg.all;
-
-library ult;
-
 library xil_defaultlib;
 
 library work;
