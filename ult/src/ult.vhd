@@ -25,7 +25,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 library ult_lib;
---
+
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
@@ -42,12 +42,11 @@ entity ult is
     EN_MDT_HITS : integer := 1
     );
   port (
-    -- pipeline clock
+    -- clock and ttc
     clock_and_control : in l0mdt_control_rt;
-    -- ttc
     ttc_commands      : in l0mdt_ttc_rt;
 
-    -- control
+    -- control and monitoring
 
     h2s_ctrl : in  H2S_CTRL_t;
     h2s_mon  : out H2S_MON_t;
@@ -87,16 +86,18 @@ entity ult is
     i_main_secondary_slc      : in  slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
     i_plus_neighbor_slc       : in  slc_rx_data_rvt;
     i_minus_neighbor_slc      : in  slc_rx_data_rvt;
+
     -- Segments in from neighbor
     plus_neighbor_segments_i  : in  sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
     minus_neighbor_segments_i : in  sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    -- felix
-    --tts_commands : out TTS_CMD_rt;
+
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     daq_streams_o             : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+
     -- Segments Out to Neighbor
     plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+
     -- -- MUCTPI
     MTC_o                     : out mtc_out_avt(c_NUM_MTC-1 downto 0);
     NSP_o                     : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
@@ -158,6 +159,7 @@ begin
         EN_MDT_HITS => EN_MDT_HITS
         )
       port map (
+        -- clock, control, and monitoring
         clock_and_control => clock_and_control,  --
         ttc_commands      => ttc_commands,       --
         ctrl              => tar_ctrl,
@@ -187,6 +189,7 @@ begin
 
     candidate_manager_inst : entity work.candidate_manager
       port map (
+        -- clock, control, and monitoring
         clock_and_control       => clock_and_control,  --
         ttc_commands            => ttc_commands,       --
         ctrl                    => ucm_ctrl,
@@ -208,7 +211,7 @@ begin
 
     hits_to_segments_inst : entity work.hits_to_segments
       port map (
-        --
+        -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
         ttc_commands              => ttc_commands,
         ctrl                      => h2s_ctrl,
@@ -235,7 +238,7 @@ begin
 
     track_fitting_inst : entity work.track_fitting
       port map (
-        -- clock + ttc
+        -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
         ttc_commands              => ttc_commands,
         ctrl                      => tf_ctrl,
@@ -256,19 +259,22 @@ begin
 
     mtc_builder_inst : entity work.mtc_builder
       port map (
+        -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         ctrl              => mtc_ctrl,
         mon               => mtc_mon,
+        --  inputs
         i_ptcalc          => pt2mtc_av,
         i_pl2mtc          => pl2mtc_av,
+        -- outputs
         o_mtc             => mtc_o,
         o_nsp             => nsp_o
         );
 
     pipeline_inst : entity work.pipeline
       port map (
-        -- pipeline clock
+        -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         ctrl              => mpl_ctrl,
@@ -285,7 +291,7 @@ begin
 
     daq_inst : entity work.daq
       port map (
-        -- pipeline clock
+        -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
         ctrl              => daq_ctrl,
