@@ -31,14 +31,13 @@ my ($generics,$ports,$names) = ReadEntity::ReadEntity( @lines);
 
 print "Read type database and VHDL\n" if($debug);
 
+print Dumper($types) if($debug);
+
 foreach my $name ( @{$names}) {
     my $type = $ports->{$name}->{"type"};
     my $dir = $ports->{$name}->{"dir"};
     printf "\n----- %-25s: $dir $type\n", $name;
 
-    print "  orn integer\n";
-    print "  bcn integer\n";
-    print "  tick integer\n";
 
     # separate into range and type if array
     my $btype = $type;
@@ -54,7 +53,16 @@ foreach my $name ( @{$names}) {
 	my ($base,$suffix) = $btype =~ /^(\w+)_([arv]+t)$/;
 	print "base = \"$base\"  suffix = \"$suffix\"\n" if($debug);
 	print "  array_index integer\n" if( $range ne "");
-	system( "./yamlquery.pl types.db $base");
+	if( !exists $types->{$base}) {
+	    print "  UNKNOWN port $name with type $type\n";
+	} else {
+	    print "  orn integer\n";
+	    print "  bcn integer\n";
+	    print "  tick integer\n";
+	    system( "./yamlquery.pl types.db $base");
+	}
+    } else {
+	print "  UNKNOWN port $name with type $type\n";
     }
 }
 

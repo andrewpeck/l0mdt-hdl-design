@@ -10,7 +10,7 @@ package ReadEntity;
 
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(ReadEntity CleanHDL);
+@EXPORT = qw(ReadEntity CleanHDL IsRange GetRange);
 
 # variable to hold possible errors
 $errors = '';
@@ -25,7 +25,49 @@ $nconstants = 0;
 $valid = 0;
 
 # debug control
-$debug = 0;
+$debug = 1;
+
+#------------------------------------------------------------
+# IsRange( $str)
+# Return boolean if a range (start to/downto end) is found
+#------------------------------------------------------------
+sub IsRange {
+    my $str = shift;
+    return( $str =~ / to / or $str =~ / downto / or $str =~ / range /);
+}
+
+
+#------------------------------------------------------------
+# ($name, $range) = GetRange( $str)
+#
+# parse a VHDL array type
+#    like "<name> ( <start> [down]to <end>)"
+#      or "<name> range <start> [down]to <end"
+#      or "<name> ( integer range ...)"
+#------------------------------------------------------------
+sub GetRange {
+
+    my $debug = 1;
+
+    my $str = shift;
+    my $name;
+    my $range;
+
+    print ">> GetRange( $str)\n" if( $debug);
+
+    if( $str =~ /\(.*\srange\s/) {
+	( $name, $range) = $str =~ /^\s*(.*)\s*\(\s*(.*\s+range\s+.*)\s*\)/;
+    } elsif( $str =~ /range/) {
+	( $name, $range) = $str =~ /^\s*(.*)\s+range\s+(.*)\s*$/
+    } else {
+	( $name, $range) = $str =~ /\s*(.*)\(\s*(.*)\)/;
+    }
+    $name =~ s/ //g;		# strip any whitespace
+    print ">> GetRange -> name=\"$name\" range=\"$range\"\n" if( $debug);
+    return( $name, $range);
+}
+
+
 
 #------------------------------------------------------------
 # CleanHDL( FH)

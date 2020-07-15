@@ -44,7 +44,7 @@ foreach my $top ( keys %{$types}) {
 	$range = "($size-1 downto 0)" if( $size ne 'open');
 	my $vtype = $top;
 	chop $vtype if( $vtype =~ /_$/); # strip trailing underscores
-	$vtype .= "_avt" . $range;
+#	$vtype .= "_avt" . $range;
 	print FP "-- ARRAY type $top\n";
 	print FP "  procedure READ( L:inout LINE; VALUE: out $vtype);\n";
 	print FP "  procedure WRITE( L:inout LINE; VALUE: in $vtype);\n";
@@ -59,6 +59,8 @@ foreach my $top ( keys %{$types}) {
     }
 }
 
+print FP $TextIo::Inter;
+
 # pass 2 -- emit function definitions
 print "-------------------- Pass 2:\n" if( $debug);
 foreach my $top ( keys %{$types}) {
@@ -69,9 +71,9 @@ foreach my $top ( keys %{$types}) {
     next if( exists $ptr->{'skip'});
 
     print FP "\n";
-    print FP "  procedure READ( L:inout LINE, VALUE: out $top) is\n";
-    print FP "    variable v_data : $top\n";
-    print FP "    variable v_index : integer\n" if( $class eq 'array');
+    print FP "  procedure READ( L:inout LINE; VALUE: out $top) is\n";
+    print FP "    variable v_data : $top;\n";
+    print FP "    variable v_index : integer;\n" if( $class eq 'array');
     print FP "  begin\n";
 
     if( $class eq 'record') {	# handle record elements
@@ -89,6 +91,8 @@ foreach my $top ( keys %{$types}) {
 	print FP "    READ(L, v_data);\n";
     }
 
-    print FP "  end\n";
+    print FP "  end READ;\n";
 }
 
+print "-- done --\n";
+print FP $TextIo::Last;
