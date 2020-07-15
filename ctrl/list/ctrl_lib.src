@@ -22,3 +22,27 @@ ctrl/src/HAL_CORE/HAL_CORE_map.vhd
 
 ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_PKG.vhd
 ctrl/src/KINTEX_SYS_MGMT/KINTEX_SYS_MGMT_map.vhd
+
+ctrl/src/H2S/H2S_PKG.vhd
+ctrl/src/H2S/H2S_map.vhd
+
+ctrl/src/UCM/UCM_PKG.vhd
+ctrl/src/UCM/UCM_map.vhd
+
+ctrl/src/DAQ/DAQ_PKG.vhd
+ctrl/src/DAQ/DAQ_map.vhd
+
+ctrl/src/TAR/TAR_PKG.vhd
+ctrl/src/TAR/TAR_map.vhd
+
+ctrl/src/MTC/MTC_PKG.vhd
+ctrl/src/MTC/MTC_map.vhd
+
+ctrl/src/UCM/UCM_PKG.vhd
+ctrl/src/UCM/UCM_map.vhd
+
+ctrl/src/TF/TF_PKG.vhd
+ctrl/src/TF/TF_map.vhd
+
+ctrl/src/MPL/MPL_PKG.vhd
+ctrl/src/MPL/MPL_map.vhd

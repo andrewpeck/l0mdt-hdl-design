@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="MPL" address="0x0">
+  <node id="RESET"          address="0x0" mask="0x1" permission="w"/>
+  <node id="STATUS"         address="0x1" mask="0x1" permission="r"/>
+  <node id="READY"          address="0x1" mask="0x2" permission="r"/>
+</node>

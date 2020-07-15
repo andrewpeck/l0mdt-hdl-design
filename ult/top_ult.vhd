@@ -34,6 +34,8 @@ library ult_lib;
 entity top_ult is
   generic (
     DUMMY : boolean := false
+    EN_TAR_HITS : integer := 0;
+    EN_MDT_HITS : integer := 1
     );
 
   port (
@@ -41,17 +43,19 @@ entity top_ult is
     clock_and_control             : in l0mdt_control_rt;
     -- ttc
     ttc_commands                  : in l0mdt_ttc_rt;
+
     -- TDC Hits from Polmux
-    -- inner_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    -- middle_tdc_hits_i             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    -- outer_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    -- extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits              : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits             : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits              : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits              : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     
     -- TDC Hits from Tar
-    i_inner_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits             : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits              : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits             : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits              : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits              : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
     -- Sector Logic Candidates
     i_main_primary_slc            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
     i_main_secondary_slc          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
@@ -84,6 +88,8 @@ begin
 
     ULT : entity ult_lib.ult
     generic map(
+      EN_TAR_HITS => EN_TAR_HITS,
+      EN_MDT_HITS => EN_MDT_HITS,
       DUMMY => DUMMY
     )
     port map(
@@ -92,6 +98,11 @@ begin
       -- ttc
       ttc_commands                  => ttc_commands,
       -- TDC Hits from Polmux
+      i_inner_tdc_hits              => i_inner_tdc_hits ,
+      i_middle_tdc_hits             => i_middle_tdc_hits,
+      i_outer_tdc_hits              => i_outer_tdc_hits ,
+      i_extra_tdc_hits              => i_extra_tdc_hits ,
+      -- TAR Hits for simulation
       i_inner_tar_hits              => i_inner_tar_hits ,
       i_middle_tar_hits             => i_middle_tar_hits,
       i_outer_tar_hits              => i_outer_tar_hits ,

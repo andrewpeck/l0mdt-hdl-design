@@ -20,6 +20,14 @@ library work;
 use work.HOG_INFO_CTRL.all;
 use work.FW_INFO_CTRL.all;
 use work.HAL_CORE_CTRL.all;
+use work.HAL_CTRL.all;
+use work.H2S_CTRL.all;
+use work.TAR_CTRL.all;
+use work.MTC_CTRL.all;
+use work.UCM_CTRL.all;
+use work.DAQ_CTRL.all;
+use work.TF_CTRL.all;
+use work.MPL_CTRL.all;
 --use work.FW_TIMESTAMP.all;
 --use work.FW_VERSION.all;
 use work.axiRegPkg.all;
@@ -27,53 +35,122 @@ use work.axiRegPkg.all;
 entity top_control is
   port (
     -- axi
-    axi_clk     : in std_logic;
+    axi_clk : in std_logic;
+    clk320  : in std_logic;
+    clkpipe : in std_logic;
 
     -- system clock
     clk50mhz : in std_logic;
     reset_n  : in std_logic;
 
-    c2c_rxn     : in std_logic;
-    c2c_rxp     : in std_logic;
+    c2c_rxn     : in  std_logic;
+    c2c_rxp     : in  std_logic;
     c2c_txn     : out std_logic;
     c2c_txp     : out std_logic;
-    c2c_refclkp  : in std_logic;
-    c2c_refclkn  : in std_logic;
-
-    hal_readmosi  : out axireadmosi;
-    hal_readmiso  : in axireadmiso;
-    hal_writemosi : out axiwritemosi;
-    hal_writemiso : in axiwritemiso;
-
-    hal_core_readmosi  : out axireadmosi;
-    hal_core_readmiso  : in axireadmiso;
-    hal_core_writemosi : out axiwritemosi;
-    hal_core_writemiso : in axiwritemiso;
+    c2c_refclkp : in  std_logic;
+    c2c_refclkn : in  std_logic;
 
     fw_info_readmosi  : out axireadmosi;
-    fw_info_readmiso  : in axireadmiso;
+    fw_info_readmiso  : in  axireadmiso;
     fw_info_writemosi : out axiwritemosi;
-    fw_info_writemiso : in axiwritemiso;
+    fw_info_writemiso : in  axiwritemiso;
 
     hog_info_readmosi  : out axireadmosi;
-    hog_info_readmiso  : in axireadmiso;
+    hog_info_readmiso  : in  axireadmiso;
     hog_info_writemosi : out axiwritemosi;
-    hog_info_writemiso : in axiwritemiso;
+    hog_info_writemiso : in  axiwritemiso;
+
+    -- control
+
+    h2s_ctrl : out H2S_CTRL_t;
+    h2s_mon : in  H2S_MON_t;
+
+    tar_ctrl : out TAR_CTRL_t;
+    tar_mon : in  TAR_MON_t;
+
+    mtc_ctrl : out MTC_CTRL_t;
+    mtc_mon : in  MTC_MON_t;
+
+    ucm_ctrl : out UCM_CTRL_t;
+    ucm_mon : in  UCM_MON_t;
+
+    daq_ctrl : out DAQ_CTRL_t;
+    daq_mon : in  DAQ_MON_t;
+
+    tf_ctrl : out TF_CTRL_t;
+    tf_mon : in  TF_MON_t;
+
+    mpl_ctrl : out MPL_CTRL_t;
+    mpl_mon : in  MPL_MON_t;
+
+    hal_mon  : in HAL_MON_t;
+    hal_ctrl : out HAL_CTRL_t;
+
+    hal_core_mon  : in HAL_CORE_MON_t;
+    hal_core_ctrl : out HAL_CORE_CTRL_t;
 
     -- system management
     sys_mgmt_scl            : inout std_logic;
     sys_mgmt_sda            : inout std_logic;
-    sys_mgmt_alarm          : out std_logic;
-    sys_mgmt_overtemp_alarm : out std_logic;
-    sys_mgmt_vccaux_alarm   : out std_logic;
-    sys_mgmt_vccint_alarm   : out std_logic
+    sys_mgmt_alarm          : out   std_logic;
+    sys_mgmt_overtemp_alarm : out   std_logic;
+    sys_mgmt_vccaux_alarm   : out   std_logic;
+    sys_mgmt_vccint_alarm   : out   std_logic
 
     );
 end top_control;
 
 architecture control_arch of top_control is
 
-  signal axi_reset_n : std_logic;
+  constant std_logic1 : std_logic := '1';
+  constant std_logic0 : std_logic := '0';
+
+  signal axi_reset_n : std_logic := '0';
+
+  signal hal_core_readmosi  : axireadmosi;
+  signal hal_core_readmiso  : axireadmiso;
+  signal hal_core_writemosi : axiwritemosi;
+  signal hal_core_writemiso : axiwritemiso;
+
+  signal hal_readmosi  : axireadmosi;
+  signal hal_readmiso  : axireadmiso;
+  signal hal_writemosi : axiwritemosi;
+  signal hal_writemiso : axiwritemiso;
+
+  signal h2s_readmosi  : axireadmosi;
+  signal h2s_readmiso  : axireadmiso;
+  signal h2s_writemosi : axiwritemosi;
+  signal h2s_writemiso : axiwritemiso;
+
+  signal mtc_readmosi  : axireadmosi;
+  signal mtc_readmiso  : axireadmiso;
+  signal mtc_writemosi : axiwritemosi;
+  signal mtc_writemiso : axiwritemiso;
+
+  signal tf_readmosi  : axireadmosi;
+  signal tf_readmiso  : axireadmiso;
+  signal tf_writemosi : axiwritemosi;
+  signal tf_writemiso : axiwritemiso;
+
+  signal ucm_readmosi  : axireadmosi;
+  signal ucm_readmiso  : axireadmiso;
+  signal ucm_writemosi : axiwritemosi;
+  signal ucm_writemiso : axiwritemiso;
+
+  signal daq_readmosi  : axireadmosi;
+  signal daq_readmiso  : axireadmiso;
+  signal daq_writemosi : axiwritemosi;
+  signal daq_writemiso : axiwritemiso;
+
+  signal tar_readmosi  : axireadmosi;
+  signal tar_readmiso  : axireadmiso;
+  signal tar_writemosi : axiwritemosi;
+  signal tar_writemiso : axiwritemiso;
+
+  signal mpl_readmosi  : axireadmosi;
+  signal mpl_readmiso  : axireadmiso;
+  signal mpl_writemosi : axiwritemosi;
+  signal mpl_writemiso : axiwritemiso;
 
 begin
 
@@ -82,6 +159,8 @@ begin
 
       -- axi clock and reset
       axi_clk      => axi_clk,
+      clk320       => clk320,
+      clkpipe       => clkpipe,
       axi_rst_n(0) => axi_reset_n,
 
       -- system clock and reset
@@ -93,12 +172,12 @@ begin
       --------------------------------------------------------------------------------
 
       -- physical link
-      k_c2clink_phy_rx_rxn(0)       => c2c_rxn,  -- k_c2clink_phy_rx_rxn,
-      k_c2clink_phy_rx_rxp(0)       => c2c_rxp,  -- k_c2clink_phy_rx_rxp,
-      k_c2clink_phy_tx_txn(0)       => c2c_txn,  -- k_c2clink_phy_tx_txn,
-      k_c2clink_phy_tx_txp(0)       => c2c_txp,  -- k_c2clink_phy_tx_txp,
-      k_c2clink_phy_refclk_clk_n => c2c_refclkn,   -- k_c2clink_phy_refclk_clk_n,
-      k_c2clink_phy_refclk_clk_p => c2c_refclkp,   -- k_c2clink_phy_refclk_clk_p,
+      k_c2clink_phy_rx_rxn(0)    => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
+      k_c2clink_phy_rx_rxp(0)    => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
+      k_c2clink_phy_tx_txn(0)    => c2c_txn,      -- k_c2clink_phy_tx_txn,
+      k_c2clink_phy_tx_txp(0)    => c2c_txp,      -- k_c2clink_phy_tx_txp,
+      k_c2clink_phy_refclk_clk_n => c2c_refclkn,  -- k_c2clink_phy_refclk_clk_n,
+      k_c2clink_phy_refclk_clk_p => c2c_refclkp,  -- k_c2clink_phy_refclk_clk_p,
 
       -- status outputs
       k_c2clink_phy_gt_pll_lock             => open,  -- k_c2clink_phy_gt_pll_lock,
@@ -158,25 +237,25 @@ begin
       fw_info_wstrb      => fw_info_writemosi.data_write_strobe,
       fw_info_wvalid(0)  => fw_info_writemosi.data_valid,
 
-      hal_araddr     => hal_readmosi.address,
-      hal_arprot     => hal_readmosi.protection_type,
-      hal_arready(0) => hal_readmiso.ready_for_address,
-      hal_arvalid(0) => hal_readmosi.address_valid,
-      hal_awaddr     => hal_writemosi.address,
-      hal_awprot     => hal_writemosi.protection_type,
-      hal_awready(0) => hal_writemiso.ready_for_address,
-      hal_awvalid(0) => hal_writemosi.address_valid,
-      hal_bready(0)  => hal_writemosi.ready_for_response,
-      hal_bresp      => hal_writemiso.response,
-      hal_bvalid(0)  => hal_writemiso.response_valid,
-      hal_rdata      => hal_readmiso.data,
-      hal_rready(0)  => hal_readmosi.ready_for_data,
-      hal_rresp      => hal_readmiso.response,
-      hal_rvalid(0)  => hal_readmiso.data_valid,
-      hal_wdata      => hal_writemosi.data,
-      hal_wready(0)  => hal_writemiso.ready_for_data,
-      hal_wstrb      => hal_writemosi.data_write_strobe,
-      hal_wvalid(0)  => hal_writemosi.data_valid,
+      hal_araddr  => hal_readmosi.address,
+      hal_arprot  => hal_readmosi.protection_type,
+      hal_arready => hal_readmiso.ready_for_address,
+      hal_arvalid => hal_readmosi.address_valid,
+      hal_awaddr  => hal_writemosi.address,
+      hal_awprot  => hal_writemosi.protection_type,
+      hal_awready => hal_writemiso.ready_for_address,
+      hal_awvalid => hal_writemosi.address_valid,
+      hal_bready  => hal_writemosi.ready_for_response,
+      hal_bresp   => hal_writemiso.response,
+      hal_bvalid  => hal_writemiso.response_valid,
+      hal_rdata   => hal_readmiso.data,
+      hal_rready  => hal_readmosi.ready_for_data,
+      hal_rresp   => hal_readmiso.response,
+      hal_rvalid  => hal_readmiso.data_valid,
+      hal_wdata   => hal_writemosi.data,
+      hal_wready  => hal_writemiso.ready_for_data,
+      hal_wstrb   => hal_writemosi.data_write_strobe,
+      hal_wvalid  => hal_writemosi.data_valid,
 
       hal_core_araddr     => hal_core_readmosi.address,
       hal_core_arprot     => hal_core_readmosi.protection_type,
@@ -198,6 +277,150 @@ begin
       hal_core_wstrb      => hal_core_writemosi.data_write_strobe,
       hal_core_wvalid(0)  => hal_core_writemosi.data_valid,
 
+      --------------------------------------------------------------------------------
+      -- User Logic
+      --------------------------------------------------------------------------------
+
+      h2s_araddr  => h2s_readmosi.address,
+      h2s_arprot  => h2s_readmosi.protection_type,
+      h2s_arready => h2s_readmiso.ready_for_address,
+      h2s_arvalid => h2s_readmosi.address_valid,
+      h2s_awaddr  => h2s_writemosi.address,
+      h2s_awprot  => h2s_writemosi.protection_type,
+      h2s_awready => h2s_writemiso.ready_for_address,
+      h2s_awvalid => h2s_writemosi.address_valid,
+      h2s_bready  => h2s_writemosi.ready_for_response,
+      h2s_bresp   => h2s_writemiso.response,
+      h2s_bvalid  => h2s_writemiso.response_valid,
+      h2s_rdata   => h2s_readmiso.data,
+      h2s_rready  => h2s_readmosi.ready_for_data,
+      h2s_rresp   => h2s_readmiso.response,
+      h2s_rvalid  => h2s_readmiso.data_valid,
+      h2s_wdata   => h2s_writemosi.data,
+      h2s_wready  => h2s_writemiso.ready_for_data,
+      h2s_wstrb   => h2s_writemosi.data_write_strobe,
+      h2s_wvalid  => h2s_writemosi.data_valid,
+
+      tar_araddr  => tar_readmosi.address,
+      tar_arprot  => tar_readmosi.protection_type,
+      tar_arready => tar_readmiso.ready_for_address,
+      tar_arvalid => tar_readmosi.address_valid,
+      tar_awaddr  => tar_writemosi.address,
+      tar_awprot  => tar_writemosi.protection_type,
+      tar_awready => tar_writemiso.ready_for_address,
+      tar_awvalid => tar_writemosi.address_valid,
+      tar_bready  => tar_writemosi.ready_for_response,
+      tar_bresp   => tar_writemiso.response,
+      tar_bvalid  => tar_writemiso.response_valid,
+      tar_rdata   => tar_readmiso.data,
+      tar_rready  => tar_readmosi.ready_for_data,
+      tar_rresp   => tar_readmiso.response,
+      tar_rvalid  => tar_readmiso.data_valid,
+      tar_wdata   => tar_writemosi.data,
+      tar_wready  => tar_writemiso.ready_for_data,
+      tar_wstrb   => tar_writemosi.data_write_strobe,
+      tar_wvalid  => tar_writemosi.data_valid,
+
+      mtc_araddr  => mtc_readmosi.address,
+      mtc_arprot  => mtc_readmosi.protection_type,
+      mtc_arready => mtc_readmiso.ready_for_address,
+      mtc_arvalid => mtc_readmosi.address_valid,
+      mtc_awaddr  => mtc_writemosi.address,
+      mtc_awprot  => mtc_writemosi.protection_type,
+      mtc_awready => mtc_writemiso.ready_for_address,
+      mtc_awvalid => mtc_writemosi.address_valid,
+      mtc_bready  => mtc_writemosi.ready_for_response,
+      mtc_bresp   => mtc_writemiso.response,
+      mtc_bvalid  => mtc_writemiso.response_valid,
+      mtc_rdata   => mtc_readmiso.data,
+      mtc_rready  => mtc_readmosi.ready_for_data,
+      mtc_rresp   => mtc_readmiso.response,
+      mtc_rvalid  => mtc_readmiso.data_valid,
+      mtc_wdata   => mtc_writemosi.data,
+      mtc_wready  => mtc_writemiso.ready_for_data,
+      mtc_wstrb   => mtc_writemosi.data_write_strobe,
+      mtc_wvalid  => mtc_writemosi.data_valid,
+
+      ucm_araddr  => ucm_readmosi.address,
+      ucm_arprot  => ucm_readmosi.protection_type,
+      ucm_arready => ucm_readmiso.ready_for_address,
+      ucm_arvalid => ucm_readmosi.address_valid,
+      ucm_awaddr  => ucm_writemosi.address,
+      ucm_awprot  => ucm_writemosi.protection_type,
+      ucm_awready => ucm_writemiso.ready_for_address,
+      ucm_awvalid => ucm_writemosi.address_valid,
+      ucm_bready  => ucm_writemosi.ready_for_response,
+      ucm_bresp   => ucm_writemiso.response,
+      ucm_bvalid  => ucm_writemiso.response_valid,
+      ucm_rdata   => ucm_readmiso.data,
+      ucm_rready  => ucm_readmosi.ready_for_data,
+      ucm_rresp   => ucm_readmiso.response,
+      ucm_rvalid  => ucm_readmiso.data_valid,
+      ucm_wdata   => ucm_writemosi.data,
+      ucm_wready  => ucm_writemiso.ready_for_data,
+      ucm_wstrb   => ucm_writemosi.data_write_strobe,
+      ucm_wvalid  => ucm_writemosi.data_valid,
+
+      daq_araddr  => daq_readmosi.address,
+      daq_arprot  => daq_readmosi.protection_type,
+      daq_arready => daq_readmiso.ready_for_address,
+      daq_arvalid => daq_readmosi.address_valid,
+      daq_awaddr  => daq_writemosi.address,
+      daq_awprot  => daq_writemosi.protection_type,
+      daq_awready => daq_writemiso.ready_for_address,
+      daq_awvalid => daq_writemosi.address_valid,
+      daq_bready  => daq_writemosi.ready_for_response,
+      daq_bresp   => daq_writemiso.response,
+      daq_bvalid  => daq_writemiso.response_valid,
+      daq_rdata   => daq_readmiso.data,
+      daq_rready  => daq_readmosi.ready_for_data,
+      daq_rresp   => daq_readmiso.response,
+      daq_rvalid  => daq_readmiso.data_valid,
+      daq_wdata   => daq_writemosi.data,
+      daq_wready  => daq_writemiso.ready_for_data,
+      daq_wstrb   => daq_writemosi.data_write_strobe,
+      daq_wvalid  => daq_writemosi.data_valid,
+
+      tf_araddr  => tf_readmosi.address,
+      tf_arprot  => tf_readmosi.protection_type,
+      tf_arready => tf_readmiso.ready_for_address,
+      tf_arvalid => tf_readmosi.address_valid,
+      tf_awaddr  => tf_writemosi.address,
+      tf_awprot  => tf_writemosi.protection_type,
+      tf_awready => tf_writemiso.ready_for_address,
+      tf_awvalid => tf_writemosi.address_valid,
+      tf_bready  => tf_writemosi.ready_for_response,
+      tf_bresp   => tf_writemiso.response,
+      tf_bvalid  => tf_writemiso.response_valid,
+      tf_rdata   => tf_readmiso.data,
+      tf_rready  => tf_readmosi.ready_for_data,
+      tf_rresp   => tf_readmiso.response,
+      tf_rvalid  => tf_readmiso.data_valid,
+      tf_wdata   => tf_writemosi.data,
+      tf_wready  => tf_writemiso.ready_for_data,
+      tf_wstrb   => tf_writemosi.data_write_strobe,
+      tf_wvalid  => tf_writemosi.data_valid,
+
+      mpl_araddr  => mpl_readmosi.address,
+      mpl_arprot  => mpl_readmosi.protection_type,
+      mpl_arready => mpl_readmiso.ready_for_address,
+      mpl_arvalid => mpl_readmosi.address_valid,
+      mpl_awaddr  => mpl_writemosi.address,
+      mpl_awprot  => mpl_writemosi.protection_type,
+      mpl_awready => mpl_writemiso.ready_for_address,
+      mpl_awvalid => mpl_writemosi.address_valid,
+      mpl_bready  => mpl_writemosi.ready_for_response,
+      mpl_bresp   => mpl_writemiso.response,
+      mpl_bvalid  => mpl_writemiso.response_valid,
+      mpl_rdata   => mpl_readmiso.data,
+      mpl_rready  => mpl_readmosi.ready_for_data,
+      mpl_rresp   => mpl_readmiso.response,
+      mpl_rvalid  => mpl_readmiso.data_valid,
+      mpl_wdata   => mpl_writemosi.data,
+      mpl_wready  => mpl_writemiso.ready_for_data,
+      mpl_wstrb   => mpl_writemosi.data_write_strobe,
+      mpl_wvalid  => mpl_writemosi.data_valid,
+
       -- system monitor outputs
 
       kintex_sys_mgmt_alarm          => sys_mgmt_alarm,
@@ -207,6 +430,145 @@ begin
       kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
       kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm
 
+      );
+
+  --------------------------------------------------------------------------------
+  -- AXI Interfaces
+  --------------------------------------------------------------------------------
+
+  hal_core_interface_inst : entity work.HAL_CORE_interface
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hal_core_readmosi,
+      slave_readmiso  => hal_core_readmiso,
+      slave_writemosi => hal_core_writemosi,
+      slave_writemiso => hal_core_writemiso,
+
+      -- monitor signals in
+      mon  => hal_core_mon,
+      -- control signals out
+      ctrl => hal_core_ctrl
+      );
+
+  hal_interface_inst : entity work.HAL_interface
+    port map (
+      clk_axi         => clk320,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => hal_readmosi,
+      slave_readmiso  => hal_readmiso,
+      slave_writemosi => hal_writemosi,
+      slave_writemiso => hal_writemiso,
+
+      -- monitor signals in
+      mon  => hal_mon,
+      -- control signals out
+      ctrl => hal_ctrl
+      );
+
+  h2s_interface_inst : entity work.H2S_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => h2s_readmosi,
+      slave_readmiso  => h2s_readmiso,
+      slave_writemosi => h2s_writemosi,
+      slave_writemiso => h2s_writemiso,
+
+      -- monitor signals in
+      mon  => h2s_mon,
+      -- control signals out
+      ctrl => h2s_ctrl
+      );
+
+  tar_interface_inst : entity work.TAR_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tar_readmosi,
+      slave_readmiso  => tar_readmiso,
+      slave_writemosi => tar_writemosi,
+      slave_writemiso => tar_writemiso,
+
+      -- monitor signals in
+      mon  => tar_mon,
+      -- control signals out
+      ctrl => tar_ctrl
+      );
+
+  mtc_interface_inst : entity work.MTC_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => mtc_readmosi,
+      slave_readmiso  => mtc_readmiso,
+      slave_writemosi => mtc_writemosi,
+      slave_writemiso => mtc_writemiso,
+
+      -- monitor signals in
+      mon  => mtc_mon,
+      -- control signals out
+      ctrl => mtc_ctrl
+      );
+
+  ucm_interface_inst : entity work.UCM_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => ucm_readmosi,
+      slave_readmiso  => ucm_readmiso,
+      slave_writemosi => ucm_writemosi,
+      slave_writemiso => ucm_writemiso,
+
+      -- monitor signals in
+      mon  => ucm_mon,
+      -- control signals out
+      ctrl => ucm_ctrl
+      );
+
+  daq_interface_inst : entity work.DAQ_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => daq_readmosi,
+      slave_readmiso  => daq_readmiso,
+      slave_writemosi => daq_writemosi,
+      slave_writemiso => daq_writemiso,
+
+      -- monitor signals in
+      mon  => daq_mon,
+      -- control signals out
+      ctrl => daq_ctrl
+      );
+
+  tf_interface_inst : entity work.TF_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => tf_readmosi,
+      slave_readmiso  => tf_readmiso,
+      slave_writemosi => tf_writemosi,
+      slave_writemiso => tf_writemiso,
+
+      -- monitor signals in
+      mon  => tf_mon,
+      -- control signals out
+      ctrl => tf_ctrl
+      );
+
+  mpl_interface_inst : entity work.MPL_interface
+    port map (
+      clk_axi         => clkpipe,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => mpl_readmosi,
+      slave_readmiso  => mpl_readmiso,
+      slave_writemosi => mpl_writemosi,
+      slave_writemiso => mpl_writemiso,
+
+      -- monitor signals in
+      mon  => mpl_mon,
+      -- control signals out
+      ctrl => mpl_ctrl
       );
 
 end control_arch;

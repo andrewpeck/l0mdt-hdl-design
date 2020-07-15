@@ -21,6 +21,13 @@ use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.HOG_INFO_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
+use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.TAR_CTRL.all;
+use ctrl_lib.MTC_CTRL.all;
+use ctrl_lib.UCM_CTRL.all;
+use ctrl_lib.DAQ_CTRL.all;
+use ctrl_lib.TF_CTRL.all;
+use ctrl_lib.MPL_CTRL.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -31,6 +38,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 library ult_lib;
+
 
 -- library c2c;
 -- use c2c.axiRegPkg.all;
@@ -65,10 +73,10 @@ entity top_l0mdt is
     refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-    c2c_rxn     : in  std_logic;
-    c2c_rxp     : in  std_logic;
-    c2c_txn     : out std_logic;
-    c2c_txp     : out std_logic;
+    c2c_rxn : in  std_logic;
+    c2c_rxp : in  std_logic;
+    c2c_txn : out std_logic;
+    c2c_txp : out std_logic;
 
     sys_mgmt_scl : inout std_logic;
     sys_mgmt_sda : inout std_logic;
@@ -119,22 +127,45 @@ architecture structural of top_l0mdt is
   signal daq_streams : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- NSP + MUCTPI
+
   signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
   signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 
   signal axi_clk : std_logic;
+  signal clk320  : std_logic;
 
-  signal hal_readmosi  : axireadmosi;
-  signal hal_readmiso  : axireadmiso;
-  signal hal_writemosi : axiwritemosi;
-  signal hal_writemiso : axiwritemiso;
+  -- Control and Monitoring Records
 
-  signal hal_core_readmosi  : axireadmosi;
-  signal hal_core_readmiso  : axireadmiso;
-  signal hal_core_writemosi : axiwritemosi;
-  signal hal_core_writemiso : axiwritemiso;
+  signal h2s_mon  : H2S_MON_t;
+  signal h2s_ctrl : H2S_CTRL_t;
+
+  signal tar_ctrl : TAR_CTRL_t;
+  signal tar_mon  : TAR_MON_t;
+
+  signal mtc_ctrl : MTC_CTRL_t;
+  signal mtc_mon  : MTC_MON_t;
+
+  signal ucm_ctrl : UCM_CTRL_t;
+  signal ucm_mon  : UCM_MON_t;
+
+  signal daq_ctrl : DAQ_CTRL_t;
+  signal daq_mon  : DAQ_MON_t;
+
+  signal tf_ctrl : TF_CTRL_t;
+  signal tf_mon  : TF_MON_t;
+
+  signal mpl_mon  : MPL_MON_t;
+  signal mpl_ctrl : MPL_CTRL_t;
+
+  signal hal_mon  : HAL_MON_t;
+  signal hal_ctrl : HAL_CTRL_t;
+
+  signal hal_core_mon  : HAL_CORE_MON_t;
+  signal hal_core_ctrl : HAL_CORE_CTRL_t;
+
+  -- AXI interfaces
 
   signal hog_info_readmosi  : axireadmosi;
   signal hog_info_readmiso  : axireadmiso;
@@ -145,6 +176,8 @@ architecture structural of top_l0mdt is
   signal fw_info_readmiso  : axireadmiso;
   signal fw_info_writemosi : axiwritemosi;
   signal fw_info_writemiso : axiwritemiso;
+
+  --
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
@@ -190,17 +223,15 @@ begin
 
       -- AXI
 
+      clk320_o => clk320,
+
       axi_clk_o => axi_clk,
 
-      hal_readmosi  => hal_readmosi,
-      hal_readmiso  => hal_readmiso,
-      hal_writemosi => hal_writemosi,
-      hal_writemiso => hal_writemiso,
+      core_ctrl => hal_core_ctrl,
+      core_mon  => hal_core_mon,
 
-      hal_core_readmosi  => hal_core_readmosi,
-      hal_core_readmiso  => hal_core_readmiso,
-      hal_core_writemosi => hal_core_writemosi,
-      hal_core_writemiso => hal_core_writemiso,
+      ctrl => hal_ctrl,
+      mon  => hal_mon,
 
       mtc_i => mtc,
       nsp_i => nsp,
@@ -245,7 +276,26 @@ begin
       nsp_o => nsp,
 
       daq_streams_o => daq_streams,
-      sump          => user_sump
+
+      -- Control and Monitoring
+
+      h2s_ctrl => h2s_ctrl,
+      h2s_mon  => h2s_mon,
+      tar_ctrl => tar_ctrl,
+      tar_mon  => tar_mon,
+      mtc_ctrl => mtc_ctrl,
+      mtc_mon  => mtc_mon,
+      ucm_ctrl => ucm_ctrl,
+      ucm_mon  => ucm_mon,
+      daq_ctrl => daq_ctrl,
+      daq_mon  => daq_mon,
+      tf_ctrl  => tf_ctrl,
+      tf_mon   => tf_mon,
+      mpl_ctrl => mpl_ctrl,
+      mpl_mon  => mpl_mon,
+      --
+
+      sump => user_sump
       );
 
   top_control_inst : entity ctrl_lib.top_control
@@ -259,16 +309,32 @@ begin
       c2c_refclkp => refclk_i_p(C2C_REFCLK_SRC),
       c2c_refclkn => refclk_i_n(C2C_REFCLK_SRC),
 
-      -- axi slaves
-      hal_readmosi  => hal_readmosi,
-      hal_readmiso  => hal_readmiso,
-      hal_writemosi => hal_writemosi,
-      hal_writemiso => hal_writemiso,
+      -- HAL Control
 
-      hal_core_readmosi  => hal_core_readmosi,
-      hal_core_readmiso  => hal_core_readmiso,
-      hal_core_writemosi => hal_core_writemosi,
-      hal_core_writemiso => hal_core_writemiso,
+      hal_core_ctrl => hal_core_ctrl,
+      hal_core_mon  => hal_core_mon,
+
+      hal_ctrl => hal_ctrl,
+      hal_mon  => hal_mon,
+
+      -- ULT Control
+
+      h2s_ctrl => h2s_ctrl,
+      h2s_mon  => h2s_mon,
+      tar_ctrl => tar_ctrl,
+      tar_mon  => tar_mon,
+      mtc_ctrl => mtc_ctrl,
+      mtc_mon  => mtc_mon,
+      ucm_ctrl => ucm_ctrl,
+      ucm_mon  => ucm_mon,
+      daq_ctrl => daq_ctrl,
+      daq_mon  => daq_mon,
+      tf_ctrl  => tf_ctrl,
+      tf_mon   => tf_mon,
+      mpl_ctrl => mpl_ctrl,
+      mpl_mon  => mpl_mon,
+
+      -- axi slaves
 
       fw_info_readmosi  => fw_info_readmosi,
       fw_info_readmiso  => fw_info_readmiso,
@@ -281,6 +347,8 @@ begin
       hog_info_writemiso => hog_info_writemiso,
 
       -- axi common
+      clk320                  => clk320,
+      clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
       clk50mhz                => axi_clk,
       reset_n                 => '1',

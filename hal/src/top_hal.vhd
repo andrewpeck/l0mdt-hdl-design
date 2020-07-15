@@ -118,17 +118,15 @@ entity top_hal is
     -- AXI
     --------------------------------------------------------------------------------
 
+    Mon  : out HAL_MON_t;
+    Ctrl : in HAL_CTRL_t;
+
+    Core_Mon  :out  HAL_CORE_MON_t;
+    Core_Ctrl : in HAL_CORE_CTRL_t;
+
     axi_clk_o : out std_logic;
 
-    hal_readmosi  : in  axireadmosi;
-    hal_readmiso  : out axireadmiso;
-    hal_writemosi : in  axiwritemosi;
-    hal_writemiso : out axiwritemiso;
-
-    hal_core_readmosi  : in  axireadmosi;
-    hal_core_readmiso  : out axireadmiso;
-    hal_core_writemosi : in  axiwritemosi;
-    hal_core_writemiso : out axiwritemiso;
+    clk320_o : out std_logic;
 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
@@ -137,12 +135,6 @@ entity top_hal is
 
 end entity top_hal;
 architecture behavioral of top_hal is
-
-  signal Mon  : HAL_MON_t;
-  signal Ctrl : HAL_CTRL_t;
-
-  signal Core_Mon  : HAL_CORE_MON_t;
-  signal Core_Ctrl : HAL_CORE_CTRL_t;
 
   signal clock_ibufds : std_logic;
   signal clocks       : system_clocks_rt;
@@ -245,40 +237,11 @@ begin  -- architecture behavioral
 
   global_reset <= not (clocks.locked);
   axi_clk_o    <= clocks.axiclock;
+  clk320_o <= clocks.clock320;
 
   --------------------------------------------------------------------------------
   -- AXI Interface
   --------------------------------------------------------------------------------
-
-  hal_core_interface_inst : entity ctrl_lib.HAL_CORE_interface
-    port map (
-      clk_axi         => clocks.axiclock,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hal_core_readmosi,
-      slave_readmiso  => hal_core_readmiso,
-      slave_writemosi => hal_core_writemosi,
-      slave_writemiso => hal_core_writemiso,
-
-      -- monitor signals in
-      mon  => core_mon,
-      -- control signals out
-      ctrl => core_ctrl
-      );
-
-  hal_interface_inst : entity ctrl_lib.HAL_interface
-    port map (
-      clk_axi         => clocks.clock320,
-      reset_axi_n     => std_logic1,
-      slave_readmosi  => hal_readmosi,
-      slave_readmiso  => hal_readmiso,
-      slave_writemosi => hal_writemosi,
-      slave_writemiso => hal_writemiso,
-
-      -- monitor signals in
-      mon  => mon,
-      -- control signals out
-      ctrl => ctrl
-      );
 
   core_mon.clocking.mmcm_locked <= clocks.locked;
 
