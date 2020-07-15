@@ -25,7 +25,7 @@ $nconstants = 0;
 $valid = 0;
 
 # debug control
-$debug = 1;
+$debug = 0;
 
 #------------------------------------------------------------
 # IsRange( $str)
