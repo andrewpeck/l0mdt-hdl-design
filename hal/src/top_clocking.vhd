@@ -40,6 +40,9 @@ use unisim.vcomponents.all;
 library work;
 use work.system_types_pkg.all;
 
+library xpm;
+use xpm.vcomponents.all;
+
 entity top_clocking is
   generic (
     GENERATE_40M : boolean := false
@@ -92,9 +95,10 @@ architecture behavioral of top_clocking is
   signal clock_ibufds      : std_logic;
   signal clock_100m_ibufds : std_logic;
 
-  signal strobe_320_dly   : std_logic := '0';
-  signal strobe_320_local : std_logic;
-  signal strobe_320       : std_logic;
+  signal strobe_320_dly        : std_logic := '0';
+  signal strobe_320_local      : std_logic;
+  signal strobe_320            : std_logic;
+  signal select_felix_clk_sync : std_logic;
 
 begin  -- architecture behavioral
 
@@ -129,7 +133,21 @@ begin  -- architecture behavioral
     end if;
   end process;
 
-  strobe_320 <= felix_valid_i when select_felix_clk = '1' else strobe_320_local;
+  xpm_cdc_sync : xpm_cdc_single
+    generic map (
+      DEST_SYNC_FF   => 4,                -- DECIMAL; range: 2-10
+      INIT_SYNC_FF   => 0,                -- DECIMAL; integer; 0=disable simulation init values, 1=enable simulation init values
+      SIM_ASSERT_CHK => 0,                -- DECIMAL; integer; 0=disable simulation messages, 1=enable simulation messages
+      SRC_INPUT_REG  => 0                 -- DECIMAL; integer; 0=do not register input, 1=register input
+      )
+    port map (
+      dest_out => select_felix_clk_sync,  -- 1-bit output: src_in synchronized to the destination clock domain. This output is registered.
+      dest_clk => clk320,                 -- 1-bit input: Clock signal for the destination clock domain.
+      src_clk  => std_logic1,             -- 1-bit input: optional; required when SRC_INPUT_REG = 1
+      src_in   => select_felix_clk        -- 1-bit input: Input signal to be synchronized to dest_clk domain.
+      );
+
+  strobe_320 <= felix_valid_i when select_felix_clk_sync = '1' else strobe_320_local;
 
   process (clkpipe)
   begin
