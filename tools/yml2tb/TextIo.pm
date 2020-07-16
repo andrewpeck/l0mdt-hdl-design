@@ -12,7 +12,7 @@ use ieee.numeric_std.all;
 use ieee.std_logic_textio.all;
 use std.textio.all;
 
-library l0mdt_lib;
+library shared_lib;
 -- use l0mdt_lib.mdttp_constants_pkg.all;
 -- use l0mdt_lib.mdttp_types_pkg.all;
 

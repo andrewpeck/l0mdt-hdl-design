@@ -37,6 +37,7 @@ foreach my $top ( keys %{$types}) {
     next if( $top eq "__config__");
     my $ptr = $types->{$top};
     my $class = $ptr->{'class'};
+    print "\nDUMP:", Dumper($ptr) if($debug);
     #--- array, which means an _avt type
     if( $class eq 'array') {
 	my $size = $ptr->{'size'};
@@ -50,6 +51,8 @@ foreach my $top ( keys %{$types}) {
 	print FP "  procedure WRITE( L:inout LINE; VALUE: in $vtype);\n";
     } elsif( $class eq 'record') {
 	print "RECORD (prototypes)\n" if($debug);
+	my $hdl_type = $top . "_rt";
+	$ptr->{'hdl_type'} = $hdl_type;
 	print FP "-- RECORD type $top\n";
 	print FP "  procedure READ( L:inout LINE; VALUE: out $top);\n";
 	print FP "  procedure WRITE( L:inout LINE; VALUE: in $top);\n";
