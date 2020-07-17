@@ -31,7 +31,7 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 -- use heg_lib.heg_trLUT_s3_pkg.all;
 
-entity mbar2roi is
+entity b_mbar2roi is
   generic(
     g_STATION_RADIUS     : integer := 0  --station
   );
@@ -45,9 +45,9 @@ entity mbar2roi is
     roi_center          : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     data_valid          : out std_logic
   );
-end entity mbar2roi;
+end entity b_mbar2roi;
 
-architecture beh of mbar2roi is
+architecture beh of b_mbar2roi is
 
   signal int_uCM_data : ucm2hps_rt;
   signal uCM_barrel   : ucm_csf_barrel_rt;

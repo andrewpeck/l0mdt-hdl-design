@@ -49,11 +49,41 @@ entity heg_ctrl_roi is
 end entity heg_ctrl_roi;
 
 architecture beh of heg_ctrl_roi is
+
+  signal slc_b_data : ucm_csf_barrel_rt;
+  
+
+  -- signal slc_e_data : ucm_csf_endcap_rt;
   
 begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
+    slc_b_data <= structify(structify(i_uCM_data_v).specific);
+
+    ROI_Z : entity heg_lib.b_z2roi
+    generic map(
+      g_STATION_RADIUS => g_STATION_RADIUS
+    )
+    port map(
+      clk                 => clk,
+      rst                 => rst,
+      glob_en             => glob_en,
+      --
+      z                   => slc_b_data.z,
+    );
+
+    ROI_MBAR : entity heg_lib.b_mbar2roi
+    generic map(
+      g_STATION_RADIUS => g_STATION_RADIUS
+    )
+    port map(
+      clk                 => clk,
+      rst                 => rst,
+      glob_en             => glob_en,
+      --
+      mbar                => slc_b_data.mbar,
+    );
 
 
   end generate;

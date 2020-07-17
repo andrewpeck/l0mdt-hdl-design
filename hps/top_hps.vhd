@@ -78,7 +78,6 @@ begin
     )
     port map(
       clk                 => clk,
-      
       rst                 => rst,
       glob_en             => glob_en,
       -- configuration & control

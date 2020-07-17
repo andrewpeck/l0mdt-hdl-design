@@ -51,6 +51,6 @@ heg_bm2sf:
 # smdt_layer      : { array : 8 , type : mdt_limits }
 # roi_mdt_lut     : { array : 13000 , type : mdt_layer}
 
-
+# heg_roi_center  : {array: open , type: unsigned, length: MDT_TUBE_LEN}
 
 
