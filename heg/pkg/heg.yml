@@ -24,11 +24,11 @@ heg_pc2heg : {array: open , type : hp_hpsPc2hp}
 # -----------------------------------------------------------
 
 heg_ctrl2hp:
-  # rst        : { type: logic , length : MAX_NUM_HP}
-  # enable        : { type: logic , length : MAX_NUM_HP}
-  rst           : { type: logic}
-  enable        : { type: logic}
-  # dummy         : { type: logic, length : 2}
+  # - rst        : { type: logic , length : MAX_NUM_HP}
+  # - enable        : { type: logic , length : MAX_NUM_HP}
+  - rst           : { type: logic}
+  - enable        : { type: logic}
+  # - dummy         : { type: logic, length : 2}
 
 heg_ctrl2hp_  : { array : open , type : heg_ctrl2hp , _ : off}
 
@@ -39,8 +39,8 @@ heg_ctrl2hp_  : { array : open , type : heg_ctrl2hp , _ : off}
 heg_hp2bm    : {array: open , type: hp_hp2bm }
 
 heg_bm2sf:
-  data        : { type: hp_hp2sf_data}
-  data_valid  : { type: logic}
+  - data        : { type: hp_hp2sf_data}
+  - data_valid  : { type: logic}
 
 # -----------------------------------------------------------
 #  heg: window
