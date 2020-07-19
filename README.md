@@ -58,11 +58,16 @@ means of the Top folder, for example:
 
 Please see: [A successful git branching model](https://nvie.com/posts/a-successful-git-branching-model/)
 
+## Hog documentation hub
+
+http://hog-user-docs.web.cern.ch/
+
 ## Some instructions to simulate and implement the code
   
 .... TBD
 
 ## Gitlab CI
+
 
 ... TBD
 
