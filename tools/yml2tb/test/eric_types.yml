@@ -9,6 +9,8 @@ __config__:
 # L0MDT CONTROL TYPES
 #############################################################  
 
+HDL_Types:
+
 l0mdt_control:
   - clk       : { type: logic}
   - rst       : { type: logic}
