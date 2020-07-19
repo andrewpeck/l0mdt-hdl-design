@@ -16,64 +16,73 @@ my $reuse = 0;
 
 my $debug = 0;
 
+my @group;
+
+#
+# print a top-level group with one blank line before
+#
+sub dump_group {
+    my ($gp) = @_;
+    # see if we have a pending group to take care of
+    my $ng = scalar( @{$gp});
+    if( $ng) {
+	print "\n";
+	if( $gp->[0] =~ /config/) { # config group
+	    # print the group
+	    foreach my $str ( @group ) {
+		print "$str\n";
+	    }
+	    # now header
+	    print "HDL_Types:\n";
+	} else {		# type group, indent with hyphen
+	    print "  - " . $gp->[0] . "\n";
+	    if( $ng > 1) {
+		for( my $i=1; $i<$ng; $i++) {
+		    print "    " . $gp->[$i] . "\n";
+		}
+	    }
+	}
+    }
+}
+
+
 while( my $line = <>) {
 
     $line = $reuse if( $reuse);
-
     chomp $line;
     $line =~ s/\r[\n]*//gm;	# kill DOS line endings
 
-    if( $reuse) {
-	print "REUSE: '$line'\n" if($debug);
-	$reuse = 0;
-    } else {
-	print " LINE: '$line'\n" if($debug);
-    }
-
-    # skip comment lines
-    if( $line =~ /^\s*#/) {
-	print "COMMENT: $line\n" if($debug);
+    # print and skip comment and blank lines
+    if( $line =~ /^\s*#/ or $line =~ /^\s*$/) {
 	print "$line\n";
 	next;
     }
 
-    # group start is unambiguous
-    if( $line =~ m{^\w+:$} && $line !~ m{__config__} ) {
-	print "$line\n";	
-	print "(start)\n" if($debug);
-	$in_group = 1;
-    } else {
-	print "Not start\n" if($debug);
-	if( $line =~ /^\s*\w+\s*:\s*{/) { # looks like a group member
-	    print "Is Group\n" if($debug);
-	    if( $in_group == 1) {	  # first member
-		print "first: $line\n" if($debug);
-		($prefix,$rest) = $line =~ /^(\s*)(\w.*)$/;
-		print "  prefix: '$prefix'  rest: '$rest'\n" if($debug);
-		print $prefix . "- $rest\n";
-		$in_group++;
-	    } elsif( $in_group) { # subsequent members
-		print "member: $line\n" if($debug);
-		my ($pfx,$rst) = $line =~ /^(\s*)(\w.*)$/;
-		if( $pfx eq $prefix) {
-		    print $prefix . "- $rst\n";
-		} else {
-		    print("Prefix changed from '$prefix' to '$pfx'...\n") if($debug);
-		    # prefix changed, so bail out
-		    my $reuse = $line;
-		    next;
-		}
-	    } else {
-		print "Other group\n" if($debug);
-		print "$line\n";
-	    }
-	} elsif( $line =~ /^\s*$/) { # blank line
-	    print "blank:\n" if($debug);
-	    print "\n";	    
-	    $in_group = 0;
-	} else {
-	    print "other: $line\n" if($debug);
-	    print "$line\n";	    
+    # group start is unambiguous, word character in column 1
+    # group just continues until next group start or EOF,
+    # or is contained on a single line
+    # collect the group in an array
+
+    if( $line =~ m{^\w+\s*:}) {
+
+	if( $#group >= 0) {
+	    dump_group( \@group);
+	    @group = ( );
 	}
+
+	push @group, $line;
+	print "START:  $line\n" if($debug);
+	my ($group) = $line =~ /^(\w+)\s*:/;
+	my $body = "";
+	if( $line =~ /{/) {
+	    ($body) = $line =~ /(\{[^}]+})/;
+	}
+    } else {
+	print "CONT:   $line\n" if($debug);
+	push @group, $line;
     }
+}
+
+if( $#group >= 0) {
+    dump_group( \@group);
 }

@@ -1,3 +1,6 @@
+
+
+
 __config__:
     basic_convert_functions : off
     packages:
@@ -11,11 +14,10 @@ __config__:
         - hp_pkg
       heg_lib:
         - heg_pkg
+HDL_Types:
 
 
-hps_ctrl2sf : { array : open , type : heg_ctrl2hp}
-
-hps_bm2sf   : { array : open , type : heg_bm2sf} 
+  - hps_ctrl2sf : { array : open , type : heg_ctrl2hp}
 
 # hps_mdt_input:
 #   pullmux   : { type : mdt_pullmux_data }
@@ -23,3 +25,5 @@ hps_bm2sf   : { array : open , type : heg_bm2sf}
 
 # hps_mdt_input_ : {array: open , type: hps_mdt_input , _: off}
 
+
+  - hps_bm2sf   : { array : open , type : heg_bm2sf} 

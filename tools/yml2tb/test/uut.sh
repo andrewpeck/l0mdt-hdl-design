@@ -1,5 +1,5 @@
-# GHDL=/usr/bin/ghdl
-GHDL=/home/hazen/src/ghdl-0.37/ghdl_mcode 
+GHDL=/usr/bin/ghdl
+# GHDL=/home/hazen/src/ghdl-0.37/ghdl_mcode 
 AOPT="--ieee=synopsys"
 rm -f *.cf
 $GHDL -a $AOPT --work=shared_lib common_ieee_pkg.vhd

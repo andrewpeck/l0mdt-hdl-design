@@ -2,7 +2,13 @@
 #------------------------------------------------------------------------
 # Read a set of YAML files and build a simple database of types
 #
-#   expect to find only the following types:
+# Top-level YAML contains two items:
+#   1.  '__config__' or 'config'
+#     this has some configuration stuff we can ignore for now
+#   2.  'HDL_Types'
+#     this has a list of all HDL types
+#
+#   Within item 2, expect to find only the following types:
 #  
 #   record with elements, where each is:
 #      signed/unsigned/std_logic scalar
@@ -50,7 +56,8 @@ if( $na < 1) {
 
 my $debug = 0;		       # debug level
 
-my $types = { };	       # merged YAML type hashes
+my $types = [ ];	       # merged YAML type list
+
 my $db = { };		       # database of types
 my $dbfile = 0;		       # database file name if specified
 
@@ -64,9 +71,19 @@ for( my $i=0; $i<$na; $i++) {
     if( $arg =~ m{\.yml}) {
 	print "Loading YAML from $ARGV[$i]\n";
 	my $type = ReadYaml( $ARGV[$i]);
-	my $k;
-	my %comb = ( %{$types}, %{$type});
-	$types = \%comb;
+	# quick sanity check
+	if( scalar( keys %{$type}) != 2 or
+	    !exists $type->{'__config__'} or
+	    !exists $type->{'HDL_Types'}) {
+	    print "ERROR in $ARGV[$i], missing __config__ or HDL_Types\n";
+	    exit;
+	}
+	my $tlist = $type->{'HDL_Types'};
+	foreach my $ftyp ( @{$tlist}) {
+	    push @{$types}, $ftyp;
+	}
+#	my %comb = ( %{$types}, %{$type});
+#	$types = \%comb;
     } elsif( $arg =~ m{\.db}) {
 	$dbfile = $arg;
     } elsif( $arg =~ m{-d}) {
@@ -76,15 +93,26 @@ for( my $i=0; $i<$na; $i++) {
 
 if( $debug ) {
     print "---- YAML Merged:\n";
-    foreach my $k ( keys %{$types}) { print " $k\n"; }
-    print Dumper( $types) if($debug);
+    foreach my $th ( @{$types}) {
+	my $nk = scalar( keys %{$th});
+	if( $nk != 1) {
+	    print "Format error, multiple keys in:\n";
+	    print Dumper( $th);
+	    exit;
+	}
+	my $typnam = (keys %{$th})[0];
+	print "--- $typnam ---\n" if($debug);
+	print Dumper( $th->{$typnam}) if($debug);
+    }
 }
 
 print "---- parsing the structure\n" if($debug);
 
 # iterate over top-level hash
-foreach my $item ( keys %{$types}) {
-    my $thing = $types->{$item};        # hash key 'item' = top-level item name
+foreach my $th ( @{$types}) {
+    my $item = (keys %{$th})[0];
+    my $thing = $th->{$item};
+#    my $thing = $types->{$item};        # hash key 'item' = top-level item name
     my $reft = ref $thing;              # reference to either a hash (scalar) or array (record)
     print "$item: " if($debug>1);
     if( $reft eq "ARRAY") {	        # it's an array, must be of VHDL records

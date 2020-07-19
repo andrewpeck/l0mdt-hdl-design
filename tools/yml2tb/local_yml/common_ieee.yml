@@ -1,2 +1,4 @@
+
 __config__:
     basic_convert_functions : on
+HDL_Types:
