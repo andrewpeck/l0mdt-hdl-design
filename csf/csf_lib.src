@@ -14,4 +14,4 @@ csf/data/m_to_theta.mem
 #IP/invsqrt_mbar_rom/invsqrt_mbar_rom.xci
 #IP/fitter_reciprocal_rom/fitter_reciprocal_rom.xci
 #IP/arctan_rom/arctan_rom.xci
-IP/Chamber_pos_ROM_1/Chamber_pos_ROM_1.xci
+IP/csf/Chamber_pos_ROM_1/Chamber_pos_ROM_1.xci

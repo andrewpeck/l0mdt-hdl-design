@@ -56,7 +56,7 @@ lsf/src/hls_ip/hls_get_trig_vals/hdl/verilog/get_trig_vals.v
 lsf/src/hls_ip/hls_compute_r_bins/hdl/verilog/compute_r_bins.v
 lsf/src/hls_ip/hls_compute_r_bins/hdl/verilog/compute_r_bins_0_s.v
 lsf/src/hls_ip/hls_compute_r_bins/hdl/verilog/compute_r_bins_mul_mul_15s_22s_35_2_1.v
-IP/histogram_memory_128x4/histogram_memory_128x4.xci
+IP/lsf/histogram_memory_128x4/histogram_memory_128x4.xci
 lsf/src/update_histogram.sv
 lsf/src/hls_ip/hls_find_max_bin/hdl/verilog/find_max_bin.v
 lsf/src/hls_ip/hls_get_legendre_segment/hdl/verilog/get_legendre_segment.v
