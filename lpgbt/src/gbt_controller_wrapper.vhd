@@ -3,9 +3,6 @@ use IEEE.STD_LOGIC_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-
 library hal;
 use hal.all;
 use hal.system_types_pkg.all;

@@ -10,9 +10,6 @@ ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
 ctrl/src/FW_INFO/FW_INFO_PKG.vhd
 ctrl/src/FW_INFO/FW_INFO_map.vhd
 
-ctrl/src/HOG_INFO/HOG_INFO_PKG.vhd
-ctrl/src/HOG_INFO/HOG_INFO_map.vhd
-
 ctrl/src/HAL/HAL_PKG.vhd
 ctrl/src/HAL/HAL_map.vhd
 

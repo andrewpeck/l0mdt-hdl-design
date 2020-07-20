@@ -2,6 +2,7 @@
 Top/l0mdt/top_l0mdt.vhd
 hal/list/hal.src
 ctrl/ctrl_lib.src
+ctrl/src/top_control.vhd
 shared/shared_lib.src
 mpl/mpl_lib.src
 ult/ult_lib.src
@@ -11,3 +12,4 @@ heg/heg_lib.src
 hps/hps_lib.src
 csf/csf_lib.src
 Top/lsf/list/lsf.src
+
