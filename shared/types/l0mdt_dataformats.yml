@@ -5,6 +5,8 @@ __config__:
         - common_ieee_pkg
         - l0mdt_constants_pkg
 
+HDL_Types:
+
 # #############################################################
 # # INTERFACES TYPES
 # #############################################################
@@ -14,20 +16,20 @@ __config__:
 # # -----------------------------------------------------------
 
 # slc_muid
-slc_muid:
+- slc_muid:
   - slcid:          {type: unsigned , length: SLC_SLCID_LEN }
   - slid:           {type: unsigned , length: SLC_SLID_LEN}
   - bcid:           {type: unsigned , length: BCID_LEN}
 
 # slc chambers
-slc_chid:
+- slc_chid:
   - mdt_inn:           {type: unsigned , length: SLC_CHAMBER_LEN}
   - mdt_mid:           {type: unsigned , length: SLC_CHAMBER_LEN}
   - mdt_out:           {type: unsigned , length: SLC_CHAMBER_LEN}
   - mdt_ext:           {type: unsigned , length: SLC_CHAMBER_LEN}
 
 # slc common
-slc_common:
+- slc_common:
   - tcid:           { type: logic , length: SLC_TCID_LEN }
   - tcsent:         { type: logic , length: SLC_TCSENT_LEN }
   - pos_eta:        { type: signed , length: SLC_POS_ETA_LEN}
@@ -37,7 +39,7 @@ slc_common:
   - charge:         { type: logic , length: SLC_CHARGE_LEN }
 
 # slc specific barrel
-slc_barrel:
+- slc_barrel:
   - spare_bits:     {type: logic , length: SLC_B_SPARE_LEN}
   - coin_type:      {type: logic , length: SLC_COIN_TYPE_LEN}
   - z_rpc0:         {type: signed , length: SLC_Z_RPC_LEN}
@@ -46,7 +48,7 @@ slc_barrel:
   - z_rpc3:         {type: signed , length: SLC_Z_RPC_LEN}
 
 # slc specific endcap
-slc_endcap:
+- slc_endcap:
   - spare_bits:         { type: logic , length: SLC_E_SPARE_LEN }
   - r:                  { type: unsigned , length: SLC_R_LEN }
   - angle_wrt_phi:      { type: signed , length: SLC_ANGLE_WRT_PHI_LEN }
@@ -57,7 +59,7 @@ slc_endcap:
   - nsw_monitor:        { type: logic }
 
 # slc rx data
-slc_rx_data:
+- slc_rx_data:
   - muid:         {type: slc_muid}
   - chambers:     {type: slc_chid}
   - common:       {type: slc_common}
@@ -68,7 +70,7 @@ slc_rx_data:
 #   MDT tdc, pullmux & TAR
 # -----------------------------------------------------------
 #TDC
-mdt_tdc:
+- mdt_tdc:
   - ch: { type: logic , length: MDT_TDC_CH_LEN }
   - mode: { type: logic , length: MDT_TDC_MODE_LEN }
   - coarse: { type: unsigned , length: MDT_TDC_COARSE_LEN }
@@ -76,14 +78,14 @@ mdt_tdc:
   - pw: { type: unsigned , length: MDT_TDC_PW_LEN }
 
 # mdt pullmux
-mdt_polmux:
+- mdt_polmux:
   - fiberID: { type: logic , length: MDT_FIBER_LEN }
   - muxID: { type: logic , length: MDT_MUXCH_LEN }
   - tdc: {type: mdt_tdc}
   - data_valid: {type: logic}
 
 # mdt tar
-tar2hps:
+- tar2hps:
   - tube        : { type: unsigned , length: MDT_TUBE_LEN }
   - layer       : { type: unsigned , length: MDT_LAYER_LEN }
   - chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN}
@@ -102,7 +104,7 @@ tar2hps:
 
 # -----------------------------------------------------------
 # slc ucm 2 sf
-ucm_csf_seed:
+- ucm_csf_seed:
   - muid          : { type: slc_muid}
   - mbar          : { type: unsigned , length: UCM_MBAR_LEN }
   - pos           : { type: unsigned , length: UCM_Z_ROI_LEN }
@@ -126,7 +128,7 @@ ucm_csf_seed:
 # # -----------------------------------------------------------
 # # sf 2 pt
 # # -----------------------------------------------------------
-sf2pt:
+- sf2pt:
   - data_valid  : { type: logic}
   - muid        : { type: slc_muid}
   - chamber_id  : { type: logic , length: SLC_CHAMBER_LEN }
@@ -134,7 +136,7 @@ sf2pt:
   - angle       : { type: signed, length: SF_SEG_ANG_LEN }
   - quality     : { type: logic}
 
-sf_seg_data_barrel:
+- sf_seg_data_barrel:
   - data_valid : { type: logic}
   - muid       : { type: slc_muid}
   - chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
@@ -142,7 +144,7 @@ sf_seg_data_barrel:
   - angle      : { type: signed, length: SF_SEG_ANG_LEN }
   - quality    : { type: logic}
 
-sf_seg_data_endcap:
+- sf_seg_data_endcap:
   - data_valid : { type: logic}
   - muid       : { type: slc_muid}
   - chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
@@ -164,7 +166,7 @@ sf_seg_data_endcap:
 # # -----------------------------------------------------------
 
 # ucm 2 pl
-ucm2pl:
+- ucm2pl:
   - muid          : { type : slc_muid}
   - chambers      : { type : slc_chid}
   - common        : { type : slc_common}
@@ -174,14 +176,14 @@ ucm2pl:
   - data_valid    : { type : logic }
 
 #pl 2 pt
-pl2pt:
+- pl2pt:
   - data_valid : { type : logic }
   - muid       : { type : slc_muid}
   - phimod     : { type : signed, length: UCM_PT_PHIMOD_LEN}
   - charge     : { type : logic}
 
 # pl 2 mtc
-pl2mtc:
+- pl2mtc:
   - muid          : { type : slc_muid}
   - chambers      : { type : slc_chid}
   - common        : { type : slc_common}
@@ -195,7 +197,7 @@ pl2mtc:
 # # TF 2 MTC
 # # -----------------------------------------------------------
 
-tf2mtc:
+- tf2mtc:
   - data_valid : { type : logic }
   - muid       : { type : slc_muid}
   - eta        : { type : signed, length: MTC_ETA_LEN}
@@ -209,10 +211,10 @@ tf2mtc:
 # # MTC out
 # # -----------------------------------------------------------
 
-mtc_out:
+- mtc_out:
   - common        : { type : slc_common}
   - data_valid : { type : logic }
 
-mtc2nsp:
+- mtc2nsp:
   - common        : { type : slc_common}
   - data_valid : { type : logic }
