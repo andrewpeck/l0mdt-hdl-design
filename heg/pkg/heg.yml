@@ -39,7 +39,7 @@ HDL_Types:
 
 - heg_hp2bm    : {array: open , type: hp_hp2bm }
 
-- qgheg_bm2sf:
+- heg_bm2sf:
   - data        : { type: hp_hp2sf_data}
   - data_valid  : { type: logic}
 
