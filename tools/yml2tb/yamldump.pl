@@ -10,13 +10,15 @@
 #
 #   Within item 2, expect to find only the following types:
 #  
-#   record with elements, where each is:
+#   record with elements                       suffix "_rt"
 #      signed/unsigned/std_logic scalar
 #      signed/unsigned/std_logic vector
 #      a custom type
+#
 #   top-level item
 #      integer/real constant
 #      array of custom type
+#        either "array : open" or length : <something>"
 #  
 #   other (special, no type, ignored)
 #
@@ -60,6 +62,17 @@ my $types = [ ];	       # merged YAML type list
 
 my $db = { };		       # database of types
 my $dbfile = 0;		       # database file name if specified
+
+
+#
+# check for synthesizable type
+#
+sub syntype {
+    my ($type) = @_;
+    return( $type eq 'logic' || $type eq 'signed' || $type eq 'unsigned' ||
+	    $type =~ 'std_logic');
+}
+
 
 # loop over arguments
 #   name.yml is a YAML (input) file
@@ -111,15 +124,27 @@ print "---- parsing the structure\n" if($debug);
 # iterate over top-level hash
 foreach my $th ( @{$types}) {
     my $item = (keys %{$th})[0];
+
+    my $hdl_type = $item;
+    if( $item =~ /_$/) {
+	print "<> Trailing underscore changed to 's' in $item\n" if($debug);
+	chop $hdl_type;
+	$hdl_type .= "s";
+	print "   type now $hdl_type\n" if($debug);
+    }
+
     my $thing = $th->{$item};
-#    my $thing = $types->{$item};        # hash key 'item' = top-level item name
     my $reft = ref $thing;              # reference to either a hash (scalar) or array (record)
     print "$item: " if($debug>1);
-    if( $reft eq "ARRAY") {	        # it's an array, must be of VHDL records
+
+    if( $reft eq "ARRAY") {	        # it's an array, must be a VHDL record
 	print "Array\n" if($debug>1);
+	$hdl_type .= "_rt";
+	print "<> Type $item -> $hdl_type\n" if($debug);
 	# start to build the DB entry
-	$db->{$item}->{"class"} = "record";    # set the class to 'record'
-	$db->{$item}->{"members"} = ( );       # create an empty list for members
+	$db->{$hdl_type}->{"class"} = "record";    # set the class to 'record'
+	$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
+	$db->{$hdl_type}->{"members"} = ( );       # create an empty list for members
 	foreach my $member ( @{$thing}) {      # loop over members
 	    # better be a hash reference with a single key
 	    if( ref($member) ne "HASH") {
@@ -154,7 +179,8 @@ foreach my $th ( @{$types}) {
 		    print "Storing info for $mname...\n";
 		    print Dumper( \%minfo);
 		}
-		push @{$db->{$item}->{"members"}}, \%minfo;
+		push @{$db->{$hdl_type}->{"members"}}, \%minfo;
+		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
 	    } else {
 		print "ERROR: no type for member $mname of item $item\n";
 		exit;
@@ -173,30 +199,105 @@ foreach my $th ( @{$types}) {
 		    exit;
 		}
 		my $value = $thing->{"value"};
-		$db->{$item}->{"class"} = "constant";
-		$db->{$item}->{"value"} = $value;
-		$db->{$item}->{"type"} = $type;
-		print "% $item is $type (constant, value=$value)\n" if($debug);
+		my $hdl_type = $item . "_constant";
+		$db->{$hdl_type}->{"class"} = "constant";
+		$db->{$hdl_type}->{"value"} = $value;
+		$db->{$hdl_type}->{"type"} = $type;
+		print "% $hdl_type is $type (constant, value=$value)\n" if($debug);
+		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
 		
-	    } elsif( exists $thing->{"array"}) {
-		my $size = $thing->{"array"};
-		print "% $item is array of $type size $size\n" if($debug);
-		$db->{$item}->{"class"} = "array";
-		$db->{$item}->{"type"} = $type;
-		$db->{$item}->{"size"} = $size;
+	    } elsif( exists $thing->{"array"} or exists $thing->{"length"}) {
+		my $size;
+		if( exists $thing->{"array"}) {
+		    $size = $thing->{"array"};
+		} else {
+		    $size = $thing->{"length"};
+		}
+		print "% $hdl_type is array of $type size $size\n" if($debug);
+		$db->{$hdl_type}->{"class"} = "array";
+		$db->{$hdl_type}->{"type"} = $type;
+		$db->{$hdl_type}->{"size"} = $size;
+		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
 	    } else {
-		print "ERROR: $item is $type but not array or constant\n";
+		print "ERROR: $hdl_type is $type but not array or constant\n";
 		exit;
 	    }
 	} else {
-	    $db->{$item}->{"class"} = "other";
-	    print "% $item is -no type-\n" if($debug);
+	    $db->{$hdl_type}->{"class"} = "other";
+	    $db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
+	    print "% $hdl_type is -no type-\n" if($debug);
 	}
 
     } else {
 	print "ERROR:  ref = $reft\n";
 	exit;
     }
+}
+
+print "--- fixup ---\n" if($debug);
+
+# now go through and fix up the suffixes if we can
+foreach my $item ( keys %{$db}) {
+    my $p = $db->{$item};
+    printf "AAA  %-30s %-30s %-10s %s\n", $item, $p->{'original_type'}, 
+	$p->{'class'}, $p->{'type'} if($debug);
+
+    if( $p->{'class'} eq 'array') {
+	my $type = $p->{'type'};
+	print "   array of $type\n" if($debug);
+	# look for this type
+	if( !syntype( $type)) {
+	    my $matches = 0;
+	    print "   look it up\n" if($debug);
+	    foreach my $ck ( keys %{$db}) {
+		if( $db->{$ck}->{'original_type'} eq $type) {
+		    my $pk = $db->{$ck};
+		    my $pc = $pk->{'class'};
+		    $matches++;
+		    print "   found $type as: $pc with type=$item\n" if($debug);
+		    print "   change our type to $ck\n" if($debug);
+		    $p->{'type'} = $ck;
+		    if( $pc eq 'record') {
+			my $newtype = $item . "_at";
+			$db->{$newtype} = $p;
+			delete $db->{$item};
+			print "   changed $item to $newtype\n" if($debug);
+		    }
+		}
+	    }
+	    if( $matches != 1) {
+		print "OOPS!  duplicate matches for $type\n";
+	    }
+	}
+    } elsif( $p->{'class'} eq 'record') {
+	print "   record\n" if($debug);
+	my $mbrs = $p->{'members'};
+	foreach my $mem ( @{$mbrs}) {
+	    my $mtype = $mem->{'type'};
+	    my $mname = $mem->{'name'};
+	    print "      member: $mname of $mtype\n" if($debug);
+	    if( !syntype( $mtype)) {
+		print "      lookup $mtype...\n" if($debug);
+		my $matches = 0;
+		print "   look it up\n" if($debug);
+		foreach my $ck ( keys %{$db}) {
+		    if( $db->{$ck}->{'original_type'} eq $mtype) {
+			my $pk = $db->{$ck};
+			my $pc = $pk->{'class'};
+			$matches++;
+			print "      found $mtype as: $pc with type=$ck\n" if($debug);
+			print "      change member type to $ck\n" if($debug);
+			$mem->{'type'} = $ck;
+		    }
+		}
+		if( $matches != 1) {
+		    print "OOPS!  duplicate matches for $mtype\n";
+		}
+
+	    }
+	}
+    }
+	
 }
 
 if( $debug) {
