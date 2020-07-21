@@ -2,7 +2,6 @@ create_project:hal:
     extends: .create_project
     variables:
       extends: .vars
-      HOG_CHECK_SYNTAX: 0
       PROJECT_NAME: hal
 
 # simulate_project:hal:
