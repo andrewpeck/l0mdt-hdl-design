@@ -37,7 +37,7 @@ entity gbt_controller_wrapper is
 
     -- take in all uplink / downlink data; need a mapping module to map this into SCA links etc..
     lpgbt_downlink_data_o : out lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
-    lpgbt_uplink_data_i   : in  lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0)
+    lpgbt_uplink_data_i   : in  lpgbt_uplink_data_rt_array (c_FELIX_LPGBT_INDEX downto 0)
     );
 end gbt_controller_wrapper;
 

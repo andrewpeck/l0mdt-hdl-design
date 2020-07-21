@@ -16,6 +16,7 @@ package board_pkg_common is
                        MGT_LPGBT_EMUL,
                        MGT_C2C,
                        MGT_SL,
+                       MGT_FELIX_TXRX,
                        MGT_FELIX
                        );
 
@@ -69,6 +70,24 @@ package board_pkg_common is
   -- CSM Mapping
   --------------------------------------------------------------------------------
 
+--  type polmux_link_map_t is record
+--    link_id    : integer;
+--    ch         : integer;
+--    station_id : station_id_t;
+--    legacy     : boolean;
+--  end record;
+--
+--  constant POLMUX_MAX_SIZE : integer := 18;
+--
+--  type polmux_link_map_array_t is array (integer range 0 to POLMUX_MAX_SIZE-1) of polmux_link_map_t;
+--
+--  type mdt_link_map is record
+--    inner : polmux_link_map_array_t;
+--    middle : polmux_link_map_array_t;
+--    outer : polmux_link_map_array_t;
+--    extra : polmux_link_map_array_t;
+--  end record;
+--
   type tdc_link_map_t is record
     link_id    : integer;
     ch         : integer;
@@ -76,6 +95,26 @@ package board_pkg_common is
     polmux_id  : integer;
     legacy     : boolean;
   end record;
+
+  --  constant c_TDC_LINK_MAP : tdc_link_map_array_t (c_NUM_MGTS*14-1 downto 0) := (
+  --    -- this is assigned by the global MGT link ID (e.g. 0 to 75 on a ku15p)
+  --    -- mgt link id           , even elink # , odd elink #         , station
+  --
+  --    inner => (
+  --      0 => (
+  --    0 => (link_id => 41 , ch => 0  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    1 => (link_id => 41 , ch => 1  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    2 => (link_id => 41 , ch => 2  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    3 => (link_id => 41 , ch => 3  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    4 => (link_id => 41 , ch => 4  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    5 => (link_id => 41 , ch => 5  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    6 => (link_id => 41 , ch => 6  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    7 => (link_id => 41 , ch => 7  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    8 => (link_id => 42 , ch => 8  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    9 => (link_id => 42 , ch => 9  , station_id   => INNER , polmux_id => 0  , legacy => false) ,
+  --    )
+  --      ),
+
   type tdc_link_map_array_t is array (integer range <>) of tdc_link_map_t;
 
   --------------------------------------------------------------------------------
@@ -88,7 +127,7 @@ package board_pkg_common is
   function func_fill_subtype_idx (cnt_max : integer; mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t; i_mgt_type_alt : mgt_types_t)
     return int_array_t;
 
-  function func_fill_polmux_idx (tdc_map : tdc_link_map_array_t; num_polmux : integer; station : station_id_t)
+  function func_fill_polmux_idx (tdc_cnt_max: integer; tdc_map : tdc_link_map_array_t; num_polmux : integer; station : station_id_t)
     return int_array_t;
 
   function func_count_link_types (mgt_list : mgt_inst_array_t; i_mgt_type : mgt_types_t)
@@ -97,10 +136,10 @@ package board_pkg_common is
   function func_count_tdc_links (tdc_map : tdc_link_map_array_t; mgt_list : mgt_inst_array_t)
     return integer;
 
-  function func_count_polmux (tdc_map : tdc_link_map_array_t; station : station_id_t)
+  function func_count_polmux (tdc_cnt_max: integer; tdc_map : tdc_link_map_array_t; station : station_id_t)
     return integer;
 
-  function func_polmux_maxid (tdc_map : tdc_link_map_array_t)
+  function func_polmux_maxid (tdc_cnt_max: integer; tdc_map : tdc_link_map_array_t)
     return integer;
 
   function func_count_lpgbt_link_mapped_to_csm (tdc_map : tdc_link_map_array_t; num_tdcs : integer)
@@ -150,16 +189,22 @@ package body board_pkg_common is
     return count;
   end func_count_link_types;
 
-  function func_fill_polmux_idx (tdc_map : tdc_link_map_array_t; num_polmux : integer; station : station_id_t)
+  function func_fill_polmux_idx (tdc_cnt_max: integer; tdc_map : tdc_link_map_array_t; num_polmux : integer; station : station_id_t)
     return int_array_t is
     variable polmux_already_counted : bool_array_t (-1 to 99) := (others => false);
     -- 99 is just a random large number, larger than the # of polmuxes we could ever want
+    variable tdc_cnt : integer := 0;
     variable cnt     : integer := 0;
     variable idx_arr : int_array_t (0 to num_polmux) := (others => -1);
   begin
     assert false report "num_polmux=" & integer'image(num_polmux) severity note;
     for I in 0 to tdc_map'length-1 loop
-      if (polmux_already_counted(tdc_map(I).polmux_id)=false) then
+
+      if (tdc_map(I).link_id /= -1) then
+        tdc_cnt := tdc_cnt + 1;
+      end if;
+
+      if (tdc_cnt < tdc_cnt_max and polmux_already_counted(tdc_map(I).polmux_id)=false) then
         if (station = tdc_map(I).station_id) then
           polmux_already_counted(tdc_map(I).polmux_id) := true;
           idx_arr(tdc_map(I).polmux_id) := cnt;
@@ -177,14 +222,18 @@ package body board_pkg_common is
   -- function to count number of polmuxes
   -- loop over the tdc link mapping and find how many polmuxes are needed for the
   -- number of tdcs requested in the user logic pkg
-  function func_polmux_maxid (tdc_map : tdc_link_map_array_t)
+  function func_polmux_maxid (tdc_cnt_max: integer; tdc_map : tdc_link_map_array_t)
     return integer is
+    variable tdc_cnt : integer := 0;
     variable max : integer := 0;
     variable id : integer;
   begin
     for I in 0 to tdc_map'length-1 loop
+      if (tdc_map(I).link_id /= -1) then
+        tdc_cnt := tdc_cnt + 1;
+      end if;
       id := tdc_map(I).polmux_id;
-      if (id > max) then
+      if (id > max and tdc_cnt <= tdc_cnt_max) then
         max := id;
       end if;
     end loop;
@@ -194,14 +243,21 @@ package body board_pkg_common is
   -- function to count number of polmuxes
   -- loop over the tdc link mapping and find how many polmuxes are needed for the
   -- number of tdcs requested in the user logic pkg
-  function func_count_polmux (tdc_map : tdc_link_map_array_t; station : station_id_t)
+  function func_count_polmux (tdc_cnt_max : integer; tdc_map : tdc_link_map_array_t; station : station_id_t)
     return integer is
+
     variable polmux_cnt : integer := 0;
     variable polmux_already_counted : bool_array_t (-1 to 99) := (others => false);
+
+    variable tdc_cnt : integer := 0;
+
     -- 99 is just a random large number, larger than the # of polmuxes we could ever want
   begin
     for I in 0 to tdc_map'length-1 loop
-      if (polmux_already_counted(tdc_map(I).polmux_id)=false and station = tdc_map(I).station_id) then
+      if (tdc_map(I).link_id /= -1) then
+        tdc_cnt := tdc_cnt + 1;
+      end if;
+      if (tdc_cnt <= tdc_cnt_max and polmux_already_counted(tdc_map(I).polmux_id)=false and station = tdc_map(I).station_id) then
         polmux_already_counted(tdc_map(I).polmux_id) := true;
         polmux_cnt := polmux_cnt + 1;
       end if;

@@ -36,13 +36,13 @@ entity mgt_wrapper is
     --------------------------------------------------------------------------------
 
     -- Rxslide from LPGBT rx core
-    lpgbt_rxslide_i : in std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_rxslide_i : in std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
 
     -- 32 bits / clock to mgt
     lpgbt_downlink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
 
     -- 32 bits / clock from mgt
-    lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_FELIX_LPGBT_INDEX downto 0);
 
     --------------------------------------------------------------------------------
     -- LPGBT Emulator

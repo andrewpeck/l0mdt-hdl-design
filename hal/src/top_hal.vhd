@@ -154,9 +154,9 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal lpgbt_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
-  signal lpgbt_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_mgt_word_array   : std32_array_t (c_FELIX_LPGBT_INDEX downto 0);
 
-  signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_bitslip : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
 
   constant lpgbt_downlink_data_rt_zero : lpgbt_downlink_data_rt := (
     ec    => (others => '0'),
@@ -166,7 +166,7 @@ architecture behavioral of top_hal is
 
   signal lpgbt_downlink_data : lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0)
     := (others => lpgbt_downlink_data_rt_zero);
-  signal lpgbt_uplink_data : lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_data : lpgbt_uplink_data_rt_array (c_FELIX_LPGBT_INDEX downto 0);
 
   signal lpgbt_downlink_valid : std_logic;
 
@@ -208,8 +208,8 @@ architecture behavioral of top_hal is
   -- Signal sumps for development
   --------------------------------------------------------------------------------
 
-  signal lpgbt_uplink_sump     : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
-  signal lpgbt_uplink_mgt_sump : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+  signal lpgbt_uplink_sump     : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
+  signal lpgbt_uplink_mgt_sump : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
   signal tdc_sump              : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
   --signal sector_logic_rx_sump  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
@@ -486,7 +486,7 @@ begin  -- architecture behavioral
     port map (
       clock             => clocks.clock320,
       reset             => global_reset,
-      lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
+      lpgbt_uplink_data => lpgbt_uplink_data(c_FELIX_LPGBT_INDEX),
 
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,
@@ -511,7 +511,7 @@ begin  -- architecture behavioral
   --end generate;
 
   -- let this sump as tdc data in the user_top
-  -- lpgbt_sump_loop : for I in 0 to c_NUM_LPGBT_UPLINKS-1 generate
+  -- lpgbt_sump_loop : for I in 0 to c_FELIX_LPGBT_INDEX generate
   --   data_loop : process (clocks.clock320) is
   --   begin  -- process data_loop
   --     if (rising_edge(clocks.clock320)) then  -- rising clock edge
