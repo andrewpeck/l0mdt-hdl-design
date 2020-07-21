@@ -17,75 +17,36 @@ package csm_pkg is
 
   type int_array_t is array (integer range <>) of integer;
 
-  -- FIXME: update these mappings once a real CSM is made that is actually useable
-  -- create a list based on CSM hardware of which elinks are "primary" (even)
-  -- elinks that can be connected to a tdc
-  constant c_MASTER_ELINK_MAP : int_array_t (27 downto 0) := (
-    -- allowed even e-links should be assigned to their pair
-    0  => 1,
-    2  => 3,
-    4  => 5,
-    6  => 7,
-    8  => 9,
-    10 => 11,
-    12 => 13,
-    14 => 15,
-    16 => 17,
-    18 => 19,
-    20 => 21,
-    22 => 23,
-    24 => 25,
-    26 => 27,
-    -- disallowed e-links (SCA, odd pair)
-    1  => -1,
-    3  => -1,
-    5  => -1,
-    7  => -1,
-    9  => -1,
-    11 => -1,
-    13 => -1,
-    15 => -1,
-    17 => -1,
-    19 => -1,
-    21 => -1,
-    23 => -1,
-    25 => -1,
-    27 => -1
-    );
+  type tdc_elink_pair is record
+    ch1 : integer;
+    ch2 : integer;
+  end record;
 
-  -- create a list based on CSM hardware of which elinks are "primary" (even)
-  -- elinks that can be connected to a tdc
-  constant c_SLAVE_ELINK_MAP : int_array_t (27 downto 0) := (
-    -- allowed even e-links should be assigned to their pair
-    0  => 1,
-    2  => 3,
-    4  => 5,
-    6  => 7,
-    8  => 9,
-    10 => 11,
-    12 => 13,
-    14 => 15,
-    16 => 17,
-    18 => 19,
-    20 => 21,
-    22 => 23,
-    24 => 25,
-    26 => 27,
-    -- disallowed e-links (SCA, odd pair)
-    1  => -1,
-    3  => -1,
-    5  => -1,
-    7  => -1,
-    9  => -1,
-    11 => -1,
-    13 => -1,
-    15 => -1,
-    17 => -1,
-    19 => -1,
-    21 => -1,
-    23 => -1,
-    25 => -1,
-    27 => -1
+  type elink_pair_map_t is array (integer range 0 to 17) of tdc_elink_pair;
+
+  -- for each CSM channel (0-17) specify an elink pair (0-27)
+  -- to match LpGBT / CSM naming specify as G*4+P
+  -- where G and P are the group and pair,
+  -- e.g. 63 = group 6 pair 3 = channel 27
+  constant elink_pair_map : elink_pair_map_t := (
+    0  => (ch1 => 6*4+3, ch2 => 6*4+2), -- M
+    1  => (ch1 => 5*4+1, ch2 => 5*4+0), -- M
+    2  => (ch1 => 6*4+1, ch2 => 6*4+0), -- M
+    3  => (ch1 => 4*4+3, ch2 => 4*4+2), -- M
+    4  => (ch1 => 5*4+3, ch2 => 5*4+2), -- M
+    5  => (ch1 => 1*4+0, ch2 => 1*4+1), -- M
+    6  => (ch1 => 0*4+0, ch2 => 0*4+1), -- M
+    7  => (ch1 => 1*4+2, ch2 => 1*4+3), -- M
+    8  => (ch1 => 0*4+2, ch2 => 0*4+3), -- M
+    9  => (ch1 => 2*4+0, ch2 => 2*4+1), -- M
+    10 => (ch1 => 6*4+3, ch2 => 6*4+2), -- S
+    11 => (ch1 => 4*4+1, ch2 => 4*4+0), -- S
+    12 => (ch1 => 6*4+1, ch2 => 6*4+0), -- S
+    13 => (ch1 => 3*4+3, ch2 => 3*4+2), -- S
+    14 => (ch1 => 4*4+3, ch2 => 4*4+2), -- S
+    15 => (ch1 => 1*4+0, ch2 => 1*4+1), -- S
+    16 => (ch1 => 0*4+0, ch2 => 0*4+1), -- S
+    17 => (ch1 => 1*4+2, ch2 => 1*4+3)  -- S
     );
 
   function func_get_tdc_odd_id (id : integer; mgt_type : mgt_types_t; master_map : int_array_t; slave_map : int_array_t) return integer;
@@ -98,13 +59,13 @@ package body csm_pkg is
   function func_get_tdc_odd_id (id : integer; mgt_type : mgt_types_t; master_map : int_array_t; slave_map : int_array_t)
     return integer is
   begin
-        if (mgt_type=MGT_LPGBT) then
-          return master_map(id);
-        elsif (mgt_type=MGT_LPGBT_SIMPLEX) then
-          return slave_map(id);
-        else
-          return -1;
-        end if;
+    if (mgt_type = MGT_LPGBT) then
+      return master_map(id);
+    elsif (mgt_type = MGT_LPGBT_SIMPLEX) then
+      return slave_map(id);
+    else
+      return -1;
+    end if;
   end func_get_tdc_odd_id;
 
 end package body;

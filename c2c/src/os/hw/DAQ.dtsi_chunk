@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveDAQ: DAQ@44A80000 {
+      compatible = "generic-uio";
+      reg = <0x44A80000 0x10000>;
+      label = "DAQ";
+    };
+  };

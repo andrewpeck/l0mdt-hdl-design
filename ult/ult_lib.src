@@ -4,3 +4,6 @@ ult/src/ult_h2s.vhd
 ult/src/ult_tar.vhd
 ult/src/ult_mpl.vhd
 ult/src/ult_ucm.vhd
+ult/src/ult_mtc.vhd
+ult/src/ult_daq.vhd
+ult/src/ult_tf.vhd

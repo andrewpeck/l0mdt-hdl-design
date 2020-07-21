@@ -8,6 +8,7 @@ sl/list/sl.sub
 
 # Hal
 hal/src/top_hal.vhd 2008
+hal/src/clock_strobe.vhd 2008
 hal/src/top_clocking.vhd 2008
 hal/src/board_pkg.vhd 2008
 hal/src/board_pkg_common.vhd 2008

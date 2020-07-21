@@ -9,9 +9,9 @@ use shared_lib.l0mdt_constants_pkg.all;
 package l0mdt_dataformats_pkg is
 
   type slc_muid_rt is record
-     slcid                :  unsigned(SLC_SLCID_LEN-1 downto 0);                          -- 
-     slid                 :  unsigned(SLC_SLID_LEN-1 downto 0);                           -- 
-     bcid                 :  unsigned(BCID_LEN-1 downto 0);                               -- 
+    slcid : unsigned(SLC_SLCID_LEN-1 downto 0);
+    slid : unsigned(SLC_SLID_LEN-1 downto 0);
+    bcid : unsigned(BCID_LEN-1 downto 0);
   end record slc_muid_rt;
   constant SLC_MUID_LEN : integer := 20;
   subtype slc_muid_rvt is std_logic_vector(SLC_MUID_LEN-1 downto 0);
@@ -20,10 +20,10 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_muid_rt) return slc_muid_rt;
 
   type slc_chid_rt is record
-     mdt_inn              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);                        -- 
-     mdt_mid              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);                        -- 
-     mdt_out              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);                        -- 
-     mdt_ext              :  unsigned(SLC_CHAMBER_LEN-1 downto 0);                        -- 
+    mdt_inn : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdt_mid : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdt_out : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdt_ext : unsigned(SLC_CHAMBER_LEN-1 downto 0);
   end record slc_chid_rt;
   constant SLC_CHID_LEN : integer := 12;
   subtype slc_chid_rvt is std_logic_vector(SLC_CHID_LEN-1 downto 0);
@@ -32,13 +32,13 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_chid_rt) return slc_chid_rt;
 
   type slc_common_rt is record
-     tcid                 :  std_logic_vector(SLC_TCID_LEN-1 downto 0);                   -- 
-     tcsent               :  std_logic;                                                   -- 
-     pos_eta              :  signed(SLC_POS_ETA_LEN-1 downto 0);                          -- 
-     pos_phi              :  unsigned(SLC_POS_PHI_LEN-1 downto 0);                        -- 
-     rpc_pt               :  std_logic_vector(SLC_RPC_PT_LEN-1 downto 0);                 -- 
-     pt_th                :  std_logic_vector(SLC_PT_TH_LEN-1 downto 0);                  -- 
-     charge               :  std_logic;                                                   -- 
+    tcid : std_logic_vector(SLC_TCID_LEN-1 downto 0);
+    tcsent : std_logic;
+    pos_eta : signed(SLC_POS_ETA_LEN-1 downto 0);
+    pos_phi : unsigned(SLC_POS_PHI_LEN-1 downto 0);
+    rpc_pt : std_logic_vector(SLC_RPC_PT_LEN-1 downto 0);
+    pt_th : std_logic_vector(SLC_PT_TH_LEN-1 downto 0);
+    charge : std_logic;
   end record slc_common_rt;
   constant SLC_COMMON_LEN : integer := 40;
   subtype slc_common_rvt is std_logic_vector(SLC_COMMON_LEN-1 downto 0);
@@ -47,12 +47,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_common_rt) return slc_common_rt;
 
   type slc_barrel_rt is record
-     spare_bits           :  std_logic_vector(SLC_B_SPARE_LEN-1 downto 0);                -- 
-     coin_type            :  std_logic_vector(SLC_COIN_TYPE_LEN-1 downto 0);              -- 
-     z_rpc0               :  signed(SLC_Z_RPC_LEN-1 downto 0);                            -- 
-     z_rpc1               :  signed(SLC_Z_RPC_LEN-1 downto 0);                            -- 
-     z_rpc2               :  signed(SLC_Z_RPC_LEN-1 downto 0);                            -- 
-     z_rpc3               :  signed(SLC_Z_RPC_LEN-1 downto 0);                            -- 
+    spare_bits : std_logic_vector(SLC_B_SPARE_LEN-1 downto 0);
+    coin_type : std_logic_vector(SLC_COIN_TYPE_LEN-1 downto 0);
+    z_rpc0 : signed(SLC_Z_RPC_LEN-1 downto 0);
+    z_rpc1 : signed(SLC_Z_RPC_LEN-1 downto 0);
+    z_rpc2 : signed(SLC_Z_RPC_LEN-1 downto 0);
+    z_rpc3 : signed(SLC_Z_RPC_LEN-1 downto 0);
   end record slc_barrel_rt;
   constant SLC_BARREL_LEN : integer := 51;
   subtype slc_barrel_rvt is std_logic_vector(SLC_BARREL_LEN-1 downto 0);
@@ -61,14 +61,14 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_barrel_rt) return slc_barrel_rt;
 
   type slc_endcap_rt is record
-     spare_bits           :  std_logic_vector(SLC_E_SPARE_LEN-1 downto 0);                -- 
-     r                    :  unsigned(SLC_R_LEN-1 downto 0);                              -- 
-     angle_wrt_phi        :  signed(SLC_ANGLE_WRT_PHI_LEN-1 downto 0);                    -- 
-     angle_wrt_eta        :  signed(SLC_ANGLE_WRT_ETA_LEN-1 downto 0);                    -- 
-     nsw_eta              :  unsigned(SLC_NSW_ETA_LEN-1 downto 0);                        -- 
-     nsw_phi              :  unsigned(SLC_NSW_PHI_LEN-1 downto 0);                        -- 
-     nsw_angle_wrt_eta    :  signed(SLC_NSW_ANGLE_WRT_ETA_LEN-1 downto 0);                -- 
-     nsw_monitor          :  std_logic;                                                   -- 
+    spare_bits : std_logic_vector(SLC_E_SPARE_LEN-1 downto 0);
+    r : unsigned(SLC_R_LEN-1 downto 0);
+    angle_wrt_phi : signed(SLC_ANGLE_WRT_PHI_LEN-1 downto 0);
+    angle_wrt_eta : signed(SLC_ANGLE_WRT_ETA_LEN-1 downto 0);
+    nsw_eta : unsigned(SLC_NSW_ETA_LEN-1 downto 0);
+    nsw_phi : unsigned(SLC_NSW_PHI_LEN-1 downto 0);
+    nsw_angle_wrt_eta : signed(SLC_NSW_ANGLE_WRT_ETA_LEN-1 downto 0);
+    nsw_monitor : std_logic;
   end record slc_endcap_rt;
   constant SLC_ENDCAP_LEN : integer := 57;
   subtype slc_endcap_rvt is std_logic_vector(SLC_ENDCAP_LEN-1 downto 0);
@@ -77,11 +77,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_endcap_rt) return slc_endcap_rt;
 
   type slc_rx_data_rt is record
-     muid                 :  slc_muid_rt;                                                 -- 
-     chambers             :  slc_chid_rt;                                                 -- 
-     common               :  slc_common_rt;                                               -- 
-     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);               -- can be either slc_barrel_vt or slc_endcap_vt
-     data_valid           :  std_logic;                                                   -- 
+    muid : slc_muid_rt;
+    chambers : slc_chid_rt;
+    common : slc_common_rt;
+    -- specific: can be either slc_barrel_vt or slc_endcap_vt
+    specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+    data_valid : std_logic;
   end record slc_rx_data_rt;
   constant SLC_RX_DATA_LEN : integer := 124;
   subtype slc_rx_data_rvt is std_logic_vector(SLC_RX_DATA_LEN-1 downto 0);
@@ -90,11 +91,11 @@ package l0mdt_dataformats_pkg is
   function nullify (x: slc_rx_data_rt) return slc_rx_data_rt;
 
   type mdt_tdc_rt is record
-     ch                   :  std_logic_vector(MDT_TDC_CH_LEN-1 downto 0);                 -- 
-     mode                 :  std_logic_vector(MDT_TDC_MODE_LEN-1 downto 0);               -- 
-     coarse               :  unsigned(MDT_TDC_COARSE_LEN-1 downto 0);                     -- 
-     fine                 :  unsigned(MDT_TDC_FINE_LEN-1 downto 0);                       -- 
-     pw                   :  unsigned(MDT_TDC_PW_LEN-1 downto 0);                         -- 
+    ch : std_logic_vector(MDT_TDC_CH_LEN-1 downto 0);
+    mode : std_logic_vector(MDT_TDC_MODE_LEN-1 downto 0);
+    coarse : unsigned(MDT_TDC_COARSE_LEN-1 downto 0);
+    fine : unsigned(MDT_TDC_FINE_LEN-1 downto 0);
+    pw : unsigned(MDT_TDC_PW_LEN-1 downto 0);
   end record mdt_tdc_rt;
   constant MDT_TDC_LEN : integer := 32;
   subtype mdt_tdc_rvt is std_logic_vector(MDT_TDC_LEN-1 downto 0);
@@ -103,10 +104,10 @@ package l0mdt_dataformats_pkg is
   function nullify (x: mdt_tdc_rt) return mdt_tdc_rt;
 
   type mdt_polmux_rt is record
-     fiberID              :  std_logic_vector(MDT_FIBER_LEN-1 downto 0);                  -- 
-     muxID                :  std_logic_vector(MDT_MUXCH_LEN-1 downto 0);                  -- 
-     tdc                  :  mdt_tdc_rt;                                                  -- 
-     data_valid           :  std_logic;                                                   -- 
+    fiberID : std_logic_vector(MDT_FIBER_LEN-1 downto 0);
+    muxID : std_logic_vector(MDT_MUXCH_LEN-1 downto 0);
+    tdc : mdt_tdc_rt;
+    data_valid : std_logic;
   end record mdt_polmux_rt;
   constant MDT_POLMUX_LEN : integer := 42;
   subtype mdt_polmux_rvt is std_logic_vector(MDT_POLMUX_LEN-1 downto 0);
@@ -115,11 +116,11 @@ package l0mdt_dataformats_pkg is
   function nullify (x: mdt_polmux_rt) return mdt_polmux_rt;
 
   type tar2hps_rt is record
-     tube                 :  unsigned(MDT_TUBE_LEN-1 downto 0);                           -- 
-     layer                :  unsigned(MDT_LAYER_LEN-1 downto 0);                          -- 
-     chamber_id           :  unsigned(SLC_CHAMBER_LEN-1 downto 0);                        -- 
-     time                 :  unsigned(MDT_TIME_LEN-1 downto 0);                           -- 
-     data_valid           :  std_logic;                                                   -- 
+    tube : unsigned(MDT_TUBE_LEN-1 downto 0);
+    layer : unsigned(MDT_LAYER_LEN-1 downto 0);
+    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    time : unsigned(MDT_TIME_LEN-1 downto 0);
+    data_valid : std_logic;
   end record tar2hps_rt;
   constant TAR2HPS_LEN : integer := 36;
   subtype tar2hps_rvt is std_logic_vector(TAR2HPS_LEN-1 downto 0);
@@ -128,12 +129,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: tar2hps_rt) return tar2hps_rt;
 
   type ucm_csf_seed_rt is record
-     muid                 :  slc_muid_rt;                                                 -- 
-     mbar                 :  unsigned(UCM_MBAR_LEN-1 downto 0);                           -- 
-     pos                  :  unsigned(UCM_Z_ROI_LEN-1 downto 0);                          -- 
-     ang                  :  unsigned(UCM_Z_ROI_LEN-1 downto 0);                          -- 
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);                -- 
-     data_valid           :  std_logic;                                                   -- 
+    muid : slc_muid_rt;
+    mbar : unsigned(UCM_MBAR_LEN-1 downto 0);
+    pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    data_valid : std_logic;
   end record ucm_csf_seed_rt;
   constant UCM_CSF_SEED_LEN : integer := 55;
   subtype ucm_csf_seed_rvt is std_logic_vector(UCM_CSF_SEED_LEN-1 downto 0);
@@ -142,12 +143,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: ucm_csf_seed_rt) return ucm_csf_seed_rt;
 
   type sf2pt_rt is record
-     data_valid           :  std_logic;                                                   -- 
-     muid                 :  slc_muid_rt;                                                 -- 
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);                -- 
-     pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);                           -- 
-     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);                           -- 
-     quality              :  std_logic;                                                   -- 
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    pos : signed(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
   end record sf2pt_rt;
   constant SF2PT_LEN : integer := 59;
   subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
@@ -156,12 +157,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: sf2pt_rt) return sf2pt_rt;
 
   type sf_seg_data_barrel_rt is record
-     data_valid           :  std_logic;                                                   -- 
-     muid                 :  slc_muid_rt;                                                 -- 
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);                -- 
-     pos                  :  signed(SF_SEG_POS_LEN-1 downto 0);                           -- 
-     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);                           -- 
-     quality              :  std_logic;                                                   -- 
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    pos : signed(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
   end record sf_seg_data_barrel_rt;
   constant SF_SEG_DATA_BARREL_LEN : integer := 59;
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
@@ -170,12 +171,12 @@ package l0mdt_dataformats_pkg is
   function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
 
   type sf_seg_data_endcap_rt is record
-     data_valid           :  std_logic;                                                   -- 
-     muid                 :  slc_muid_rt;                                                 -- 
-     chamber_id           :  std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);                -- 
-     pos                  :  unsigned(SF_SEG_POS_LEN-1 downto 0);                         -- 
-     angle                :  signed(SF_SEG_ANG_LEN-1 downto 0);                           -- 
-     quality              :  std_logic;                                                   -- 
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    pos : unsigned(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
   end record sf_seg_data_endcap_rt;
   constant SF_SEG_DATA_ENDCAP_LEN : integer := 59;
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
@@ -184,13 +185,13 @@ package l0mdt_dataformats_pkg is
   function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
   type ucm2pl_rt is record
-     muid                 :  slc_muid_rt;                                                 -- 
-     chambers             :  slc_chid_rt;                                                 -- 
-     common               :  slc_common_rt;                                               -- 
-     specific             :  std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);               -- 
-     process_ch           :  std_logic_vector(4-1 downto 0);                              -- 
-     processed            :  std_logic;                                                   -- 
-     data_valid           :  std_logic;                                                   -- 
+    muid : slc_muid_rt;
+    chambers : slc_chid_rt;
+    common : slc_common_rt;
+    specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
+    process_ch : std_logic_vector(4-1 downto 0);
+    processed : std_logic;
+    data_valid : std_logic;
   end record ucm2pl_rt;
   constant UCM2PL_LEN : integer := 129;
   subtype ucm2pl_rvt is std_logic_vector(UCM2PL_LEN-1 downto 0);
@@ -199,10 +200,10 @@ package l0mdt_dataformats_pkg is
   function nullify (x: ucm2pl_rt) return ucm2pl_rt;
 
   type pl2pt_rt is record
-     data_valid           :  std_logic;                                                   -- 
-     muid                 :  slc_muid_rt;                                                 -- 
-     phimod               :  signed(UCM_PT_PHIMOD_LEN-1 downto 0);                        -- 
-     charge               :  std_logic;                                                   -- 
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    phimod : signed(UCM_PT_PHIMOD_LEN-1 downto 0);
+    charge : std_logic;
   end record pl2pt_rt;
   constant PL2PT_LEN : integer := 30;
   subtype pl2pt_rvt is std_logic_vector(PL2PT_LEN-1 downto 0);
@@ -211,13 +212,13 @@ package l0mdt_dataformats_pkg is
   function nullify (x: pl2pt_rt) return pl2pt_rt;
 
   type pl2mtc_rt is record
-     muid                 :  slc_muid_rt;                                                 -- 
-     chambers             :  slc_chid_rt;                                                 -- 
-     common               :  slc_common_rt;                                               -- 
-     specific             :  std_logic_vector(UCM_PT_PHIMOD_LEN-1 downto 0);              -- 
-     process_ch           :  std_logic_vector(4-1 downto 0);                              -- 
-     processed            :  std_logic;                                                   -- 
-     data_valid           :  std_logic;                                                   -- 
+    muid : slc_muid_rt;
+    chambers : slc_chid_rt;
+    common : slc_common_rt;
+    specific : std_logic_vector(UCM_PT_PHIMOD_LEN-1 downto 0);
+    process_ch : std_logic_vector(4-1 downto 0);
+    processed : std_logic;
+    data_valid : std_logic;
   end record pl2mtc_rt;
   constant PL2MTC_LEN : integer := 86;
   subtype pl2mtc_rvt is std_logic_vector(PL2MTC_LEN-1 downto 0);
@@ -226,14 +227,14 @@ package l0mdt_dataformats_pkg is
   function nullify (x: pl2mtc_rt) return pl2mtc_rt;
 
   type tf2mtc_rt is record
-     data_valid           :  std_logic;                                                   -- 
-     muid                 :  slc_muid_rt;                                                 -- 
-     eta                  :  signed(MTC_ETA_LEN-1 downto 0);                              -- 
-     pt                   :  unsigned(MTC_PT_LEN-1 downto 0);                             -- 
-     pt_thr               :  std_logic_vector(MTC_PTTHR_LEN-1 downto 0);                  -- 
-     charge               :  std_logic;                                                   -- 
-     nseg                 :  unsigned(MTC_NSEG_LEN-1 downto 0);                           -- 
-     quality              :  std_logic_vector(MTC_QUALITY_LEN-1 downto 0);                -- 
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    eta : signed(MTC_ETA_LEN-1 downto 0);
+    pt : unsigned(MTC_PT_LEN-1 downto 0);
+    pt_thr : std_logic_vector(MTC_PTTHR_LEN-1 downto 0);
+    charge : std_logic;
+    nseg : unsigned(MTC_NSEG_LEN-1 downto 0);
+    quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
   end record tf2mtc_rt;
   constant TF2MTC_LEN : integer := 55;
   subtype tf2mtc_rvt is std_logic_vector(TF2MTC_LEN-1 downto 0);
@@ -242,8 +243,8 @@ package l0mdt_dataformats_pkg is
   function nullify (x: tf2mtc_rt) return tf2mtc_rt;
 
   type mtc_out_rt is record
-     common               :  slc_common_rt;                                               -- 
-     data_valid           :  std_logic;                                                   -- 
+    common : slc_common_rt;
+    data_valid : std_logic;
   end record mtc_out_rt;
   constant MTC_OUT_LEN : integer := 41;
   subtype mtc_out_rvt is std_logic_vector(MTC_OUT_LEN-1 downto 0);
@@ -252,8 +253,8 @@ package l0mdt_dataformats_pkg is
   function nullify (x: mtc_out_rt) return mtc_out_rt;
 
   type mtc2nsp_rt is record
-     common               :  slc_common_rt;                                               -- 
-     data_valid           :  std_logic;                                                   -- 
+    common : slc_common_rt;
+    data_valid : std_logic;
   end record mtc2nsp_rt;
   constant MTC2NSP_LEN : integer := 41;
   subtype mtc2nsp_rvt is std_logic_vector(MTC2NSP_LEN-1 downto 0);

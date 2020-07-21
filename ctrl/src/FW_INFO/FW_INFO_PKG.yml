@@ -1,0 +1,31 @@
+# This file was auto-generated.
+# Modifications might be lost.
+__config__:
+    basic_convert_functions : off
+    packages:
+    shared_lib:
+        - common_ieee_pkg
+
+FW_INFO_BUILD_DATE_MON_t:
+  - DAY : { type: logic, length: 8 }
+  - MONTH : { type: logic, length: 8 }
+  - YEAR : { type: logic, length: 16 }
+
+
+FW_INFO_BUILD_TIME_MON_t:
+  - SEC : { type: logic, length: 8 }
+  - MIN : { type: logic, length: 8 }
+  - HOUR : { type: logic, length: 8 }
+
+
+FW_INFO_MON_t:
+  - GIT_VALID : { type: logic }
+  - GIT_HASH_1 : { type: logic, length: 32 }
+  - GIT_HASH_2 : { type: logic, length: 32 }
+  - GIT_HASH_3 : { type: logic, length: 32 }
+  - GIT_HASH_4 : { type: logic, length: 32 }
+  - GIT_HASH_5 : { type: logic, length: 32 }
+  - BUILD_DATE : { type: FW_INFO_BUILD_DATE_MON_t }
+  - BUILD_TIME : { type: FW_INFO_BUILD_TIME_MON_t }
+
+

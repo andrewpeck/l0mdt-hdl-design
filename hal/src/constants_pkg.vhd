@@ -2,11 +2,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library hal;
-use hal.system_types_pkg.all;
-use hal.board_pkg_common.all;
-use hal.board_pkg.all;
-use hal.user_pkg.all;
+library work;
+use work.system_types_pkg.all;
+use work.board_pkg_common.all;
+use work.board_pkg.all;
+use work.user_pkg.all;
 
 package constants_pkg is
 
@@ -22,11 +22,12 @@ package constants_pkg is
 
   constant c_NUM_TDC_INPUTS : integer := set_user_const (user_TDC_INPUTS, func_count_tdc_links (c_TDC_LINK_MAP, c_MGT_MAP));
 
-  constant c_NUM_POLMUX_INNER  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, INNER);
-  constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, MIDDLE);
-  constant c_NUM_POLMUX_OUTER  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, OUTER);
-  constant c_NUM_POLMUX_EXTRA  : integer := func_count_polmux (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS, EXTRA);
-  constant c_NUM_POLMUX        : integer := c_NUM_POLMUX_INNER + c_NUM_POLMUX_MIDDLE + c_NUM_POLMUX_OUTER + c_NUM_POLMUX_EXTRA;
+  constant c_NUM_POLMUX_INNER  : integer := func_count_polmux (c_TDC_LINK_MAP, INNER);
+  constant c_NUM_POLMUX_MIDDLE : integer := func_count_polmux (c_TDC_LINK_MAP, MIDDLE);
+  constant c_NUM_POLMUX_OUTER  : integer := func_count_polmux (c_TDC_LINK_MAP, OUTER);
+  constant c_NUM_POLMUX_EXTRA  : integer := func_count_polmux (c_TDC_LINK_MAP, EXTRA);
+  --constant c_NUM_POLMUX        : integer := c_NUM_POLMUX_INNER + c_NUM_POLMUX_MIDDLE + c_NUM_POLMUX_OUTER + c_NUM_POLMUX_EXTRA;
+  constant c_POLMUX_MAXID      : integer := func_polmux_maxid (c_TDC_LINK_MAP);
 
   constant c_NUM_CSM_LINKS_ACTIVE : integer := func_count_lpgbt_link_mapped_to_csm (c_TDC_LINK_MAP, c_NUM_TDC_INPUTS);
 
@@ -87,13 +88,6 @@ package constants_pkg is
   constant c_NUM_SLCPROC_BARREL_OUTPUTS : integer := 0;
 
   --------------------------------------------------------------------------------
-  -- C2C
-  --------------------------------------------------------------------------------
-
-  constant c_NUM_C2C_INPUTS  : integer := 0;
-  constant c_NUM_C2C_OUTPUTS : integer := 0;
-
-  --------------------------------------------------------------------------------
   -- board specific
   --------------------------------------------------------------------------------
 
@@ -123,11 +117,11 @@ package constants_pkg is
   --
   --------------------------------------------------------------------------------
 
-  -- list of lpgbt emulator cores
-  constant inner_polmux_idx_array  : int_array_t (0 to c_NUM_POLMUX-1) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_NUM_POLMUX, INNER);
-  constant middle_polmux_idx_array : int_array_t (0 to c_NUM_POLMUX-1) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_NUM_POLMUX, MIDDLE);
-  constant outer_polmux_idx_array  : int_array_t (0 to c_NUM_POLMUX-1) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_NUM_POLMUX, OUTER);
-  constant extra_polmux_idx_array  : int_array_t (0 to c_NUM_POLMUX-1) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_NUM_POLMUX, EXTRA);
+  -- polling multiplexer configuration
+  constant inner_polmux_idx_array  : int_array_t (0 to c_POLMUX_MAXID) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_POLMUX_MAXID, INNER);
+  constant middle_polmux_idx_array : int_array_t (0 to c_POLMUX_MAXID) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_POLMUX_MAXID, MIDDLE);
+  constant outer_polmux_idx_array  : int_array_t (0 to c_POLMUX_MAXID) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_POLMUX_MAXID, OUTER);
+  constant extra_polmux_idx_array  : int_array_t (0 to c_POLMUX_MAXID) := func_fill_polmux_idx (c_TDC_LINK_MAP, c_POLMUX_MAXID, EXTRA);
 
   -- list of lpgbt emulator cores
   constant emul_idx_array : int_array_t (0 to c_NUM_MGTS-1) := func_fill_subtype_idx (c_NUM_LPGBT_EMUL_UPLINKS, c_MGT_MAP, MGT_LPGBT_EMUL, MGT_LPGBT_EMUL);

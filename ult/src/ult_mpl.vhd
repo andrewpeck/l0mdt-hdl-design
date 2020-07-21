@@ -26,12 +26,16 @@ use shared_lib.config_pkg.all;
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.MPL_CTRL.all;
+
 entity pipeline is
   port (
-    -- pipeline clock
-    clock_and_control : in l0mdt_control_rt;
-    -- ttc
-    ttc_commands      : in l0mdt_ttc_rt;
+    -- clock and control
+    clock_and_control : in  l0mdt_control_rt;
+    ttc_commands      : in  l0mdt_ttc_rt;
+    ctrl              : in  MPL_CTRL_t;
+    mon               : out MPL_MON_t;
     -- Sector Logic Candidates from uCM
     i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
     -- Sector Logic Candidates to Track fitting

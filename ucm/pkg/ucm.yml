@@ -8,20 +8,22 @@ __config__:
       - common_constants_pkg
       - common_types_pkg
 
-UCM_INPUT_PL_LATENCY  : { qualifier: constant , type: integer , value: 2 }
-UCM_OUTPUT_PL_LATENCY : { qualifier: constant , type: integer , value: 2 }
-UCM_LATENCY_HPS_CH    : { qualifier: constant , type: integer , value: 10 }
+HDL_Types:
+
+- UCM_INPUT_PL_LATENCY  : { qualifier: constant , type: integer , value: 2 }
+- UCM_OUTPUT_PL_LATENCY : { qualifier: constant , type: integer , value: 2 }
+- UCM_LATENCY_HPS_CH    : { qualifier: constant , type: integer , value: 10 }
 
 # # ucm preprocesor output
 
-ucm_prepro:
+- ucm_prepro:
   - muid:       {type: slc_muid}
   - chambers:   {type: slc_chid}
   - common:     {type: slc_common}
   - specific:   {type: logic , length: SLC_SPECIFIC_LEN}
   - data_valid: {type: logic}
 
-ucm_prepro_ : {array: open , type: ucm_prepro , _: off}
+- ucm_prepro_ : {array: open , type: ucm_prepro , _: off}
 # ucm_prepro_avt: {array: open , type: ucm_prepro_vt }
 
 # main cross switch control
@@ -37,11 +39,11 @@ ucm_prepro_ : {array: open , type: ucm_prepro , _: off}
 #   data_present: { type: logic , length: c_MAX_NUM_SL }
 #   addr_orig:    {type: ucm_csw_dest}
 
-ucm_csw_ch_control:
+- ucm_csw_ch_control:
   - data_present: { type: logic }
   - addr_orig:    { type: logic, length: 4}
 
-ucm_csw_control: {array: open , type: ucm_csw_ch_control}
+- ucm_csw_control: {array: open , type: ucm_csw_ch_control}
 
 # ucm_cvp_dest: {array: c_NUM_THREADS , type: logic, length: 4}
 
@@ -49,14 +51,14 @@ ucm_csw_control: {array: open , type: ucm_csw_ch_control}
 #   data_present: { type: logic , length: c_NUM_THREADS }
 #   addr_orig:    { array: c_NUM_THREADS , type: logic, length: 4}
 
-ucm_pam_ch_control:
+- ucm_pam_ch_control:
   - data_present: { type: logic}
   - addr_orig:    { type: logic, length: 4}
 
-ucm_pam_control: { array: open, type: ucm_pam_ch_control}
+- ucm_pam_control: { array: open, type: ucm_pam_ch_control}
 
-ucm_proc_info_ch:
+- ucm_proc_info_ch:
   - ch :        { type: logic , length: 4 }
   - processed:  { type: logic}
 
-ucm_proc_info: {array: open , type: ucm_proc_info_ch }
+- ucm_proc_info: {array: open , type: ucm_proc_info_ch }
