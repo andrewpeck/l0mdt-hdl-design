@@ -142,9 +142,32 @@ begin
   gen_8b10b_a : if (g_DECODER_SRC = 0) generate
     constant std_logic0 : std_logic := '0';
     constant std_logic1 : std_logic := '1';
+
+    component mdec8b10bmem
+      port(
+        -- inputs
+        soft_reset_i : in std_logic;
+        i_Clk        : in std_logic;
+        i_ARst_L     : in std_logic;
+        i10_Din      : in std_logic_vector;
+        i_enable     : in std_logic;
+
+        -- disparity
+        i_ForceDisparity : in  std_logic;
+        i_Disparity      : in  std_logic;
+        o_DpErr          : out std_logic;
+        o_Rd             : out std_logic;
+
+        -- outputs
+        o8_Dout : out std_logic_vector;
+        o_Kout  : out std_logic;
+        o_Kerr  : out std_logic;
+        o_DErr  : out std_logic
+        );
+    end component;
   begin
 
-    mDec8b10bMem_inst : entity tdc.mDec8b10bMem
+    mDec8b10bMem_inst : mDec8b10bMem
       port map (
 
         -- inputs
@@ -157,7 +180,6 @@ begin
         -- disparity
         o_DpErr          => open,
         i_ForceDisparity => std_logic0,
-        i_Disparity      => std_logic0,
         i_Disparity      => std_logic0,
         o_Rd             => open,       -- running disparity output
 

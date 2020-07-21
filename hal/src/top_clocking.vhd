@@ -100,6 +100,23 @@ architecture behavioral of top_clocking is
   signal strobe_320            : std_logic;
   signal select_felix_clk_sync : std_logic;
 
+  component framework_mmcm
+    port
+      (                                 -- Clock in ports
+        clk320_async_i : in  std_logic;
+        clk_sel_i      : in  std_logic;
+        clkfb_i        : in  std_logic;
+        -- Clock out ports
+        clk320_o       : out std_logic;
+        clkpipe_o      : out std_logic;
+        clkfb_o        : out std_logic;
+        -- Status and control signals
+        reset          : in  std_logic;
+        locked_o       : out std_logic;
+        clk320_sync_i  : in  std_logic
+        );
+  end component;
+
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
@@ -216,7 +233,7 @@ begin  -- architecture behavioral
   -- the MMCM/PLL must be reset. The MMCM/PLL clock MUX switching is shown in Figure 3-10.
   -- The CLKINSEL signal directly controls the MUX. No synchronization logic is present
 
-  framework_mmcm_inst : entity xil_defaultlib.framework_mmcm
+  framework_mmcm_inst : framework_mmcm
     port map (
       clk320_async_i => clock_ibufds,
       clk320_sync_i  => felix_recclk_i,
