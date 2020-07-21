@@ -10,10 +10,8 @@ sl/list/sl.sub
 hal/src/top_hal.vhd 2008
 hal/src/clock_strobe.vhd 2008
 hal/src/top_clocking.vhd 2008
-hal/src/board_pkg.vhd 2008
 hal/src/board_pkg_common.vhd 2008
 hal/src/constants_pkg.vhd 2008
-hal/src/user_pkg.vhd 2008
 hal/src/system_types_pkg.vhd 2008
 hal/src/sync_cdc.vhd 2008
 hal/src/felix_decoder.vhd 2008

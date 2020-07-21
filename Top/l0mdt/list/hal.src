@@ -1,0 +1,4 @@
+# -*- mode: TCL;-*-
+hal/list/hal.src
+Top/l0mdt/hal_board_pkg.vhd
+Top/l0mdt/hal_user_pkg.vhd
