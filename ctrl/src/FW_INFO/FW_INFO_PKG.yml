@@ -6,19 +6,21 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-FW_INFO_FW_INFO_BUILD_DATE_MON_t:
+HDL_Types:
+
+- FW_INFO_FW_INFO_BUILD_DATE_MON_t:
   - DAY : { type: logic, length: 8 }
   - MONTH : { type: logic, length: 8 }
   - YEAR : { type: logic, length: 16 }
 
 
-FW_INFO_FW_INFO_BUILD_TIME_MON_t:
+- FW_INFO_FW_INFO_BUILD_TIME_MON_t:
   - SEC : { type: logic, length: 8 }
   - MIN : { type: logic, length: 8 }
   - HOUR : { type: logic, length: 8 }
 
 
-FW_INFO_FW_INFO_MON_t:
+- FW_INFO_FW_INFO_MON_t:
   - GIT_VALID : { type: logic }
   - GIT_HASH_1 : { type: logic, length: 32 }
   - GIT_HASH_2 : { type: logic, length: 32 }
@@ -29,7 +31,7 @@ FW_INFO_FW_INFO_MON_t:
   - BUILD_TIME : { type: FW_INFO_FW_INFO_BUILD_TIME_MON_t }
 
 
-FW_INFO_HOG_INFO_MON_t:
+- FW_INFO_HOG_INFO_MON_t:
   - GLOBAL_FWDATE : { type: logic, length: 32 }
   - GLOBAL_FWTIME : { type: logic, length: 32 }
   - OFFICIAL : { type: logic, length: 32 }
@@ -44,7 +46,7 @@ FW_INFO_HOG_INFO_MON_t:
   - FRAMEWORK_FWHASH : { type: logic, length: 32 }
 
 
-FW_INFO_CONFIG_MON_t:
+- FW_INFO_CONFIG_MON_t:
   - MAIN_CFG_COMPILE_HW : { type: logic }
   - MAIN_CFG_COMPILE_UL : { type: logic }
   - SECTOR_SIDE : { type: logic }
@@ -79,7 +81,7 @@ FW_INFO_CONFIG_MON_t:
   - NUM_THREADS : { type: logic, length: 8 }
 
 
-FW_INFO_MON_t:
+- FW_INFO_MON_t:
   - FW_INFO : { type: FW_INFO_FW_INFO_MON_t }
   - HOG_INFO : { type: FW_INFO_HOG_INFO_MON_t }
   - CONFIG : { type: FW_INFO_CONFIG_MON_t }
