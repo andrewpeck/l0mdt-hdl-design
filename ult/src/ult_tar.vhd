@@ -13,6 +13,7 @@
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
@@ -23,59 +24,94 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.TAR_CTRL.all;
+
 entity mdt_tar is
+  generic (
+    EN_TAR_HITS : integer := 1;
+    EN_MDT_HITS : integer := 0
+    );
   port (
     -- pipeline clock
-    clock_and_control : in l0mdt_control_rt;
+    clock_and_control : in  l0mdt_control_rt;
+    ctrl              : in  TAR_CTRL_t;
+    mon               : out TAR_MON_t;
     -- ttc
-    ttc_commands : in l0mdt_ttc_rt;
+    ttc_commands      : in  l0mdt_ttc_rt;
     -- Sector Logic Candidates
     -- TDC Hits from Polmux
-    -- i_inner_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    -- i_middle_tdc_hits             : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    -- i_outer_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    -- i_extra_tdc_hits              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in  mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in  mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in  mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in  mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inner_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits             : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits              : in tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in  tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits : in  tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits  : in  tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits  : in  tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC polmux from Tar
-    o_inner_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_middle_tdc_hits             : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_outer_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_extra_tdc_hits              : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    o_inner_tdc_hits  : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_middle_tdc_hits : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_outer_tdc_hits  : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_extra_tdc_hits  : out mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_inner_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_middle_tar_hits             : out tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_outer_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_extra_tar_hits              : out tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
+    o_inner_tar_hits  : out tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_middle_tar_hits : out tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_outer_tar_hits  : out tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_extra_tar_hits  : out tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
 
     );
 end entity mdt_tar;
 
 architecture beh of mdt_tar is
-  
+  signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+  signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+  signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+  signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 begin
 
-    TAR: process(clock_and_control.clk)
-    begin
-      if rising_edge(clock_and_control.clk) then
-        if clock_and_control.rst = '1' then
-          o_inner_tar_hits  <= nullify(o_inner_tar_hits );
-          o_middle_tar_hits <= nullify(o_middle_tar_hits);
-          o_outer_tar_hits  <= nullify(o_outer_tar_hits );
-          o_extra_tar_hits  <= nullify(o_extra_tar_hits );
-        else
-          o_inner_tar_hits  <= i_inner_tar_hits;
-          o_middle_tar_hits <= i_middle_tar_hits;
-          o_outer_tar_hits  <= i_outer_tar_hits;
-          o_extra_tar_hits  <= i_extra_tar_hits;
-        end if;
+  TAR : process(clock_and_control.clk)
+  begin
+    if rising_edge(clock_and_control.clk) then
+      if clock_and_control.rst = '1' then
+        o_inner_tar_hits  <= nullify(o_inner_tar_hits);
+        o_middle_tar_hits <= nullify(o_middle_tar_hits);
+        o_outer_tar_hits  <= nullify(o_outer_tar_hits);
+        o_extra_tar_hits  <= nullify(o_extra_tar_hits);
+      elsif (EN_MDT_HITS = 1) then
+        o_inner_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
+        o_middle_tar_hits <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
+        o_outer_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
+        o_extra_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
+      elsif (EN_TAR_HITS = 1) then
+        o_inner_tar_hits  <= i_inner_tar_hits;
+        o_middle_tar_hits <= i_middle_tar_hits;
+        o_outer_tar_hits  <= i_outer_tar_hits;
+        o_extra_tar_hits  <= i_extra_tar_hits;
       end if;
-    end process TAR;
+    end if;
+  end process TAR;
 
-  
-  
-  
+  sump_proc : process (clock_and_control.clk) is
+  begin  -- process tdc_hit_sump_proc
+    if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+
+      inner_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_INN-1 loop
+        tdc_hit_inner_sump(I) <= xor_reduce(vectorify(i_inner_tdc_hits(I)));
+      end loop;
+      middle_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_MID-1 loop
+        tdc_hit_middle_sump(I) <= xor_reduce(vectorify(i_middle_tdc_hits(I)));
+      end loop;
+      outer_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 loop
+        tdc_hit_outer_sump(I) <= xor_reduce(vectorify(i_outer_tdc_hits(I)));
+      end loop;
+      extra_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 loop
+        tdc_hit_extra_sump(I) <= xor_reduce(vectorify(i_extra_tdc_hits(I)));
+      end loop;
+
+    end if;
+  end process;
+
+
 end architecture beh;

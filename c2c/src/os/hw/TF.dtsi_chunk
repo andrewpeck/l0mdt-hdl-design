@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveTF: TF@44A60000 {
+      compatible = "generic-uio";
+      reg = <0x44A60000 0x10000>;
+      label = "TF";
+    };
+  };

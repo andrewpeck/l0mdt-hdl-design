@@ -1,0 +1,23 @@
+# This file was auto-generated.
+# Modifications might be lost.
+__config__:
+    basic_convert_functions : off
+    packages:
+    shared_lib:
+        - common_ieee_pkg
+
+HOG_INFO_MON_t:
+  - GLOBAL_FWDATE : { type: logic, length: 32 }
+  - GLOBAL_FWTIME : { type: logic, length: 32 }
+  - OFFICIAL : { type: logic, length: 32 }
+  - GLOBAL_FWHASH : { type: logic, length: 32 }
+  - TOP_FWHASH : { type: logic, length: 32 }
+  - XML_HASH : { type: logic, length: 32 }
+  - GLOBAL_FWVERSION : { type: logic, length: 32 }
+  - TOP_FWVERSION : { type: logic, length: 32 }
+  - XML_VERSION : { type: logic, length: 32 }
+  - HOG_FWHASH : { type: logic, length: 32 }
+  - FRAMEWORK_FWVERSION : { type: logic, length: 32 }
+  - FRAMEWORK_FWHASH : { type: logic, length: 32 }
+
+

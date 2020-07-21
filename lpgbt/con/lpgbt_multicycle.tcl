@@ -1,6 +1,17 @@
 # Multicycle constraints: ease the timing constraints
 # Uplink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
 
+# retiming changes register names and prevents multicycle path setting on the lpgbt cores
+# Prevent these reset registers from getting merged across different LPGBT instances...
+# they are high fanout and it caused timing to fail early on
+# TODO: replace hierarchical filters with direct calls
+set_property -quiet KEEP true [get_cells -quiet -hierarchical -filter {NAME =~ top_hal/lpgbt_link_wrapper_inst/*/gearboxSyncReset*}]
+
+set link_wrapper_cell [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst"]
+if {[string is space $link_wrapper_cell] == 0} {
+set_property BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
+}
+
 puts "Setting LPGBT Uplink Pipeline Multicycle Path"
 
 set pipeline_s_reg_cells [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*frame_pipelined_s_reg[*]"]
@@ -10,8 +21,8 @@ if {[string is space $pipeline_s_reg_cells] == 0} {
 
 set pipeline_s_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/frame_pipelined_s_reg[*]/C"]
 if {[string is space $pipeline_s_reg] == 0} {
-    set_multicycle_path 3 -from $pipeline_s_reg -setup
-    set_multicycle_path 2 -from $pipeline_s_reg -hold
+    set_multicycle_path 4 -from $pipeline_s_reg -setup
+    set_multicycle_path 3 -from $pipeline_s_reg -hold
 }
 
 puts "Setting LPGBT Uplink Descrambler Multicycle Path"
@@ -22,8 +33,8 @@ if {[string is space $descrambled_d_reg_cells] == 0} {
 
 set descrambled_d_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*descrambler*/*descrambler*/descrambledData_reg*/C"]
 if {[string is space $descrambled_d_reg] == 0} {
-    set_multicycle_path 3 -from $descrambled_d_reg -setup
-    set_multicycle_path 2 -from $descrambled_d_reg -hold
+    set_multicycle_path 4 -from $descrambled_d_reg -setup
+    set_multicycle_path 3 -from $descrambled_d_reg -hold
 }
 
 # Downlink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
@@ -35,11 +46,19 @@ if {[string is space $scrambled_d_reg_cells] == 0} {
 
 set scrambled_d_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*downlink*/*_scramble*/*scrambledData*/D"]
 if {[string is space $scrambled_d_reg] == 0} {
-    set_multicycle_path -setup -to $scrambled_d_reg 3
-    set_multicycle_path -hold -to $scrambled_d_reg 2
+    set_multicycle_path 4 -setup -to $scrambled_d_reg
+    set_multicycle_path 3 -hold -to $scrambled_d_reg
 }
 
-# Prevent these reset registers from getting merged across different LPGBT instances...
-# they are high fanout and it caused timing to fail early on
-# TODO: replace hierarchical filters with direct calls
-set_property -quiet KEEP true [get_cells -quiet -hierarchical -filter {NAME =~ top_hal/lpgbt_link_wrapper_inst/*/gearboxSyncReset*}]
+################################################################################
+# GBT-SCA Multicycle Path
+################################################################################
+
+set sca_from [get_cells -of [all_fanout -endpoints_only -flat -from [get_nets top_hal/gbt_controller_wrapper_inst/valid]]]
+
+set_multicycle_path 8 -setup \
+    -from $sca_from
+
+set_multicycle_path 7 -hold \
+    -from $sca_from
+

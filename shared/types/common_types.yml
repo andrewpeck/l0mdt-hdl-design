@@ -7,16 +7,18 @@ __config__:
         - l0mdt_dataformats_pkg
         - common_constants_pkg
 
+HDL_Types:
+
 #############################################################
 # L0MDT CONTROL TYPES
 #############################################################
 
-l0mdt_control:
+- l0mdt_control:
   - clk       : { type: logic}
   - rst       : { type: logic}
   - bx        : { type: logic}
 
-l0mdt_ttc:
+- l0mdt_ttc:
   - bcr       : { type: logic}
   - ocr       : { type: logic}
   - ecr       : { type: logic}
@@ -82,7 +84,7 @@ l0mdt_ttc:
 #   specific:     {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
 #   data_valid:   {type: logic}
 
-slc_rx_data_: {array: open , type: slc_rx_data , _: off }
+- slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 
 # -----------------------------------------------------------
 #   MDT tdc, pullmux & TAR
@@ -101,7 +103,7 @@ slc_rx_data_: {array: open , type: slc_rx_data , _: off }
 #   tdc: {type: mdt_tdc}
 #   data_valid: {type: logic}
 
-mdt_polmux_: {array: open , type: mdt_polmux , _: off }
+- mdt_polmux_: {array: open , type: mdt_polmux , _: off }
 
 # # mdt tar
 # tar2hps:
@@ -111,7 +113,7 @@ mdt_polmux_: {array: open , type: mdt_polmux , _: off }
 #   time        : { type: unsigned , length: MDT_TIME_LEN }
 #   data_valid  : { type: logic}
 
-tar2hps_      : {array: open , type: tar2hps , _: off}
+- tar2hps_      : {array: open , type: tar2hps , _: off}
 
 #############################################################
 # INTERBLOCK TYPES
@@ -124,11 +126,11 @@ tar2hps_      : {array: open , type: tar2hps , _: off}
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-ucm_csf_barrel:
+- ucm_csf_barrel:
   - mbar        : { type: unsigned , length: UCM_MBAR_LEN }
   - z           : { type: unsigned , length: UCM_Z_ROI_LEN }
 
-ucm_csf_endcap:
+- ucm_csf_endcap:
   - mbar        : { type: unsigned , length: UCM_MBAR_LEN }
   - R           : { type: unsigned , length: UCM_R_ROI_LEN }
 
@@ -152,14 +154,14 @@ ucm_csf_endcap:
 #   data_valid    : { type: logic }
 # # slc ucm2hps
 
-ucm2hps:
+- ucm2hps:
   # - id            : { type: ucm2hps_id}
   - muid          : { type: slc_muid }
   - specific      : { type: logic , length: UCM2HPS_SPECIFIC_LEN}
   - chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
   - data_valid    : { type: logic}
 
-ucm2hps_        : {array: open , type: ucm2hps , _: off }
+- ucm2hps_        : {array: open , type: ucm2hps , _: off }
 
 # ucm2hps_maxhps  : {array: MAX_NUM_HPS , type: ucm2hps }
 # ucm2hps_a       : {array: open , type: ucm2hps_ , _: off }
@@ -168,14 +170,15 @@ ucm2hps_        : {array: open , type: ucm2hps , _: off }
 #       HEG 2 SF
 # -----------------------------------------------------------
 # CSF
-hp_hit_data:
+- hp_hit_data:
   - local_y     : { type: unsigned , length: MDT_LOCAL_Y_LEN }
   - local_x     : { type: unsigned , length: MDT_LOCAL_X_LEN }
   - radius      : { type: unsigned , length: MDT_RADIUS_LEN }
   - multilayer  : { type: logic }
   - data_valid  : { type: logic }
 
-hp_hit_data_a : {array: open, type: hp_hit_data}
+- hp_hit_data_a : {array: open, type: hp_hit_data}
+
 # -----------------------------------------------------------
 # sf 2 pt
 # -----------------------------------------------------------
@@ -196,9 +199,9 @@ hp_hit_data_a : {array: open, type: hp_hit_data}
 #   chamber_id  : { type: logic , length: SLC_CHAMBER_LEN }
 #   data_valid  : { type : logic}
 
-sf2pt   : { type : logic , length : SF_SEG_DATA_LEN}
+- sf2pt   : { type : logic , length : SF_SEG_DATA_LEN}
 
-sf2pt_  : { array: open , type : sf2pt , _ : off}
+- sf2pt_  : { array: open , type : sf2pt , _ : off}
 
 # sf2pt_a : { array: open , type : sf2pt_ , _: off}
 
@@ -217,7 +220,7 @@ sf2pt_  : { array: open , type : sf2pt , _ : off}
 
 # PIPELINE_LEN    : { qualifier: constant , type: integer , value: 133 }
 
-ucm2pl_    : {array: open , type: ucm2pl , _ : off }
+- ucm2pl_    : {array: open , type: ucm2pl , _ : off }
 
 # #pl 2 pt
 # pl2pt:
@@ -226,7 +229,7 @@ ucm2pl_    : {array: open , type: ucm2pl , _ : off }
 #   phimod     : { type : signed, length: SLC_PT_PHIMOD_LEN}
 #   charge     : { type : logic}
 
-pl2pt_    : {array: open , type: pl2pt , _ : off}
+- pl2pt_    : {array: open , type: pl2pt , _ : off}
 
 # pl2mtc:
 #   muid          : { type : slc_muid}
@@ -237,7 +240,7 @@ pl2pt_    : {array: open , type: pl2pt , _ : off}
 #   processed     : { type : logic }
 #   data_valid    : { type : logic }
 
-pl2mtc_    : {array: open , type: pl2mtc, _ : off }
+- pl2mtc_    : {array: open , type: pl2mtc, _ : off }
 
 # -----------------------------------------------------------
 # TF 2 MTC
@@ -253,22 +256,22 @@ pl2mtc_    : {array: open , type: pl2mtc, _ : off }
 #   nseg       : { type : unsigned, length: MTC_NSEG_LEN}
 #   quality    : { type : logic, length: MTC_QUALITY_LEN}
 
-tf2mtc_    : {array: open , type: tf2mtc , _ : off }
+- tf2mtc_    : {array: open , type: tf2mtc , _ : off }
 
 # -----------------------------------------------------------
 # MTC out
 # -----------------------------------------------------------
 
-mtc_out_    : {array: open , type: mtc_out , _ : off }
+- mtc_out_    : {array: open , type: mtc_out , _ : off }
 
-mtc2nsp_    : {array: open , type: mtc2nsp , _ : off }
+- mtc2nsp_    : {array: open , type: mtc2nsp , _ : off }
 
 # -----------------------------------------------------------
 # MTC out
 # -----------------------------------------------------------
-felix_stream:
+- felix_stream:
   - muid          : { type : slc_muid}
   - common        : { type : slc_common}
   - data_valid : { type : logic }
 
-felix_stream_ : {array: open , type: felix_stream , _ : off }
+- felix_stream_ : {array: open , type: felix_stream , _ : off }

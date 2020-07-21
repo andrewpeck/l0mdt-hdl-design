@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveHAL_CORE: HAL_CORE@44A30000 {
+      compatible = "generic-uio";
+      reg = <0x44A30000 0x10000>;
+      label = "HAL_CORE";
+    };
+  };
