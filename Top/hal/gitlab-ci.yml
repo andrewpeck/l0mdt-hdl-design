@@ -1,3 +1,5 @@
+# #################### HAL Project ###########################
+
 create_project:hal:
     extends: .create_project
     variables:
@@ -9,7 +11,6 @@ create_project:hal:
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hal
-#
 
 synthesise_ips:hal:
     extends: .synthesise_ips
@@ -21,21 +22,21 @@ synthesise_ips:hal:
         - create_project:hal
 
 synthesise_project:hal:
-     extends: .synthesise_project
-     variables:
-       extends: .vars
-       PROJECT_NAME: hal
-     dependencies:
-         - synthesise_ips:hal
-         - create_project:hal
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hal
+    dependencies:
+        - synthesise_ips:hal
+        - create_project:hal
 
-#implement_project:hal:
-#    extends: .implement_project
-#    variables:
-#      extends: .vars
-#      PROJECT_NAME: hal
-#      HOG_NO_BITSTREAM_STAGE: 1
-#    dependencies:
-#      - create_project:hal
-#      - synthesise_ips:hal
-#      - synthesise_project:hal
+# implement_project:hal:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hal
+# #      HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#        - create_project:hal
+#        - synthesise_ips:hal
+#        - synthesise_project:hal
