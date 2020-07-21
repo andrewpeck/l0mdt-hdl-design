@@ -42,7 +42,8 @@ set SIMULATOR  xsim
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
-eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
+# TODO: uncomment when CI machine has uHAL
+#eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
 
 source $PATH_REPO/Hog/Tcl/create_project.tcl
 
