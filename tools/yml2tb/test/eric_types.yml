@@ -8,9 +8,6 @@ __config__:
 #############################################################
 # L0MDT CONTROL TYPES
 #############################################################  
-
-HDL_Types:
-
 l0mdt_control:
   - clk       : { type: logic}
   - rst       : { type: logic}
@@ -23,7 +20,7 @@ l0mdt_ttc:
   - l0a       : { type: logic}
   - l1a       : { type: logic}
 
-mdt_polmux_: {array: open , type: mdt_polmux , _: off }
+mdt_polmuxs: {array: open , type: mdt_polmux , _: off }
 
 # mdt pollmux
 mdt_polmux:
