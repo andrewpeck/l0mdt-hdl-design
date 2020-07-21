@@ -75,7 +75,7 @@ end lpgbt_link_wrapper;
 architecture Behavioral of lpgbt_link_wrapper is
 
   attribute DONT_TOUCH                        : string;
-  signal uplink_reset_tree                    : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0)   := (others => '0');
+  signal uplink_reset_tree                    : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0)     := (others => '0');
   signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '0');
   attribute DONT_TOUCH of uplink_reset_tree   : signal is "true";
   attribute DONT_TOUCH of downlink_reset_tree : signal is "true";
@@ -168,9 +168,19 @@ begin
 
     uplink_if : if (lpgbt_uplink_idx_array(I) /= -1 or felix_txrx_idx_array(I) /= -1) generate
 
-      -- add the two indexes together, and add a +1 to offset the -1 of the index that is turned off
-      -- (just a dumb way to get the index of the link type that is on)
-      constant idx       : integer := 1+felix_txrx_idx_array(I)+lpgbt_uplink_idx_array(I);
+      function func_get_idx (lpgbt_idx : integer; felix_idx : integer)
+        return integer is
+      begin
+        if (lpgbt_idx >= 0) then
+          return lpgbt_idx;
+        elsif (felix_idx >= 0) then
+          return felix_idx+c_FELIX_LPGBT_INDEX;
+        else
+          return 0;
+        end if;
+      end func_get_idx;
+
+      constant idx : integer := func_get_idx(lpgbt_uplink_idx_array(I), felix_txrx_idx_array(I));
 
       signal uplink_data : lpgbt_uplink_data_rt;
       signal mgt_data    : std_logic_vector(31 downto 0);
