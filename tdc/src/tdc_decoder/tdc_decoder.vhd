@@ -11,9 +11,13 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library unisim;
+use unisim.vcomponents.all;
+
 entity tdc_decoder is
   generic(
-    g_DECODER_SRC : integer := 1
+    g_DECODER_SRC : integer := 1;
+    g_BITSLIP_SRC : integer := 0
     );
   port(
 
@@ -85,28 +89,69 @@ begin
       clock => clock
       );
 
-  -- take in 16 bits per bx... this could be aligned arbitrarily relative to the frame clock due to different cable
-  -- lengths
-  ---- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
-  alignment_buffer_even : entity tdc.alignment_buffer(serial)
-    port map (
-      clock     => clock,
-      bitslip_i => bitslip,
-      data_i    => data_even,
-      valid_i   => valid_i,
-      valid_o   => aligned_data_valid,
-      data_o    => data_even_aligned
-      );
+  data_bitslip_gen : if (g_BITSLIP_SRC = 1) generate
 
-  alignment_buffer_odd : entity tdc.alignment_buffer(serial)
-    port map (
-      clock     => clock,
-      bitslip_i => bitslip,
-      data_i    => data_odd,
-      valid_i   => valid_i,
-      valid_o   => open,
-      data_o    => data_odd_aligned
-      );
+    -- take in 16 bits per bx... this could be aligned arbitrarily relative to the frame clock due to different cable
+    -- lengths
+    -- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
+
+    alignment_buffer_even : entity tdc.alignment_buffer(serial)
+      port map (
+        clock     => clock,
+        bitslip_i => bitslip,
+        data_i    => data_even,
+        valid_i   => valid_i,
+        valid_o   => aligned_data_valid,
+        data_o    => data_even_aligned
+        );
+
+    alignment_buffer_odd : entity tdc.alignment_buffer(serial)
+      port map (
+        clock     => clock,
+        bitslip_i => bitslip,
+        data_i    => data_odd,
+        valid_i   => valid_i,
+        valid_o   => open,
+        data_o    => data_odd_aligned
+        );
+  end generate;
+
+  valid_bitslip_gen : if (g_BITSLIP_SRC = 0) generate
+    signal adr : unsigned (3 downto 0) := (others => '0');
+  begin
+
+    -- we can accomplish the same behavior by slipping the valid bit rather than the data, saving quite a few
+    -- resources in the meantime
+
+    data_even_aligned <= data_even;
+    data_odd_aligned  <= data_odd;
+
+    process(clock)
+    begin
+      if (rising_edge(clock)) then
+        if (bitslip = '1') then
+          if (adr = x"7") then
+            adr <= "0000";
+          else
+            adr <= adr + "1";
+          end if;
+        end if;
+      end if;
+    end process;
+
+    valid_dly : SRL16E
+      port map (
+        CLK => clock,
+        CE  => '1',
+        D   => valid_i,
+        A0  => adr(0),
+        A1  => adr(1),
+        A2  => adr(2),
+        A3  => adr(3),
+        Q   => aligned_data_valid
+        );
+
+  end generate;
 
   aligned_data <= interleave (data_even_aligned, data_odd_aligned);
 
