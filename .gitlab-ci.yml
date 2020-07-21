@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog-dynamic.yml'
-      ref: 'v1.6.0'
+      ref: 'bugfix/dynamic-ci'
   #   - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
     #- local: '/Top/csf/gitlab-ci.yml'
