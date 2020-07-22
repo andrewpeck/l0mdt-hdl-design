@@ -40,10 +40,11 @@ entity b_mbar2roi is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    mbar                : in unsigned(UCM_MBAR_LEN-1 downto 0);
+    i_mbar              : in unsigned(UCM_MBAR_LEN-1 downto 0);
+    i_dv                : in std_logic;
     --
-    roi_center          : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-    data_valid          : out std_logic
+    o_roi_edges         : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_dv                : out std_logic
   );
 end entity b_mbar2roi;
 

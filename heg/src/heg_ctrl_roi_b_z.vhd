@@ -29,6 +29,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+use heg_lib.heg_custom_pkg.all;
 -- use heg_lib.heg_trLUT_s3_pkg.all;
 
 entity b_z2roi is
@@ -40,10 +41,11 @@ entity b_z2roi is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    z                   : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    i_z                 : in unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    i_dv                : in std_logic;
     --
-    roi_center          : out heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-    data_valid          : out std_logic
+    o_roi_center        : out heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_dv                : out std_logic
   );
 end entity b_z2roi;
 

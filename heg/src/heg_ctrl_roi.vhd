@@ -29,6 +29,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+use heg_lib.heg_custom_pkg.all;
 
 entity heg_ctrl_roi is
   generic(
@@ -50,16 +51,20 @@ end entity heg_ctrl_roi;
 
 architecture beh of heg_ctrl_roi is
 
-  signal slc_b_data : ucm_csf_barrel_rt;
+  signal uCM_data_r : ucm2hps_rt;
+  signal slc_b_data_r  : ucm_csf_barrel_rt;
   
-
+  signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal roi_edges : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal dv_z, dv_mbar : std_logic;
   -- signal slc_e_data : ucm_csf_endcap_rt;
   
 begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    slc_b_data <= structify(structify(i_uCM_data_v).specific);
+    uCM_data_r <= structify(i_uCM_data_v);
+    slc_b_data_r <= structify(uCM_data_r.specific);
 
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
@@ -70,7 +75,11 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      z                   => slc_b_data.z,
+      i_z                 => slc_b_data_r.z,
+      i_dv                => uCM_data_r.data_valid,
+      --
+      o_roi_center        => roi_center,
+      o_dv                => dv_Z
     );
 
     ROI_MBAR : entity heg_lib.b_mbar2roi
@@ -82,7 +91,11 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      mbar                => slc_b_data.mbar,
+      i_mbar              => slc_b_data_r.mbar,
+      i_dv                => uCM_data_r.data_valid,
+      --
+      o_roi_edges         => roi_edges,
+      o_dv                => dv_mbar
     );
 
 
