@@ -20,7 +20,7 @@ package csf_pkg is
   subtype csf_hit_rvt is std_logic_vector(CSF_HIT_LEN-1 downto 0);
   function vectorify(x: csf_hit_rt) return csf_hit_rvt;
   function structify(x: csf_hit_rvt) return csf_hit_rt;
-  function nullify (x: csf_hit_rt) return csf_hit_rt;
+  function nullify(x: csf_hit_rt) return csf_hit_rt;
 
   type csf_hit_a_at is array(integer range <>) of csf_hit_rt;
   type csf_hit_a_avt is array(integer range <>) of csf_hit_rvt;
@@ -60,7 +60,7 @@ package csf_pkg is
   subtype csf_locseg_rvt is std_logic_vector(CSF_LOCSEG_LEN-1 downto 0);
   function vectorify(x: csf_locseg_rt) return csf_locseg_rvt;
   function structify(x: csf_locseg_rvt) return csf_locseg_rt;
-  function nullify (x: csf_locseg_rt) return csf_locseg_rt;
+  function nullify(x: csf_locseg_rt) return csf_locseg_rt;
 
   type csf_locseg_a_at is array(integer range <>) of csf_locseg_rt;
   type csf_locseg_a_avt is array(integer range <>) of csf_locseg_rvt;
@@ -93,7 +93,7 @@ package body csf_pkg is
     y.y                        := structify(x(13 downto 0));
     return y;
   end function structify;
-  function nullify (x: csf_hit_rt) return csf_hit_rt is
+  function nullify(x: csf_hit_rt) return csf_hit_rt is
     variable y : csf_hit_rt;
   begin
     y.valid                    := nullify(x.valid);
@@ -175,7 +175,7 @@ package body csf_pkg is
     y.ndof                     := structify(x(3 downto 0));
     return y;
   end function structify;
-  function nullify (x: csf_locseg_rt) return csf_locseg_rt is
+  function nullify(x: csf_locseg_rt) return csf_locseg_rt is
     variable y : csf_locseg_rt;
   begin
     y.valid                    := nullify(x.valid);

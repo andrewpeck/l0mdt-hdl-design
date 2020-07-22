@@ -19,7 +19,7 @@ package hp_pkg is
   subtype hp_win_tubes_rvt is std_logic_vector(HP_WIN_TUBES_LEN-1 downto 0);
   function vectorify(x: hp_win_tubes_rt) return hp_win_tubes_rvt;
   function structify(x: hp_win_tubes_rvt) return hp_win_tubes_rt;
-  function nullify (x: hp_win_tubes_rt) return hp_win_tubes_rt;
+  function nullify(x: hp_win_tubes_rt) return hp_win_tubes_rt;
 
   type hp_heg2hp_window_at is array(integer range <>) of hp_win_tubes_rt;
   type hp_heg2hp_window_avt is array(integer range <>) of hp_win_tubes_rvt;
@@ -38,7 +38,7 @@ package hp_pkg is
   subtype hp_heg2hp_slc_b_rvt is std_logic_vector(HP_HEG2HP_SLC_B_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rvt;
   function structify(x: hp_heg2hp_slc_b_rvt) return hp_heg2hp_slc_b_rt;
-  function nullify (x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
+  function nullify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
 
   constant HP_HEG2HP_SPECIFIC_LEN : integer := 38;
 
@@ -51,7 +51,7 @@ package hp_pkg is
   subtype hp_heg2hp_slc_rvt is std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rvt;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt;
-  function nullify (x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
+  function nullify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt;
 
   type hp_hpsPc2hp_rt is record
     tube : unsigned(MDT_TUBE_LEN-1 downto 0);
@@ -65,7 +65,7 @@ package hp_pkg is
   subtype hp_hpsPc2hp_rvt is std_logic_vector(HP_HPSPC2HP_LEN-1 downto 0);
   function vectorify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rvt;
   function structify(x: hp_hpsPc2hp_rvt) return hp_hpsPc2hp_rt;
-  function nullify (x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
+  function nullify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt;
 
   type hp_hp2sf_data_rt is record
     local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
@@ -77,7 +77,7 @@ package hp_pkg is
   subtype hp_hp2sf_data_rvt is std_logic_vector(HP_HP2SF_DATA_LEN-1 downto 0);
   function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rvt;
   function structify(x: hp_hp2sf_data_rvt) return hp_hp2sf_data_rt;
-  function nullify (x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
+  function nullify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt;
 
   type hp_hp2bm_rt is record
     data : hp_hp2sf_data_rt;
@@ -88,7 +88,7 @@ package hp_pkg is
   subtype hp_hp2bm_rvt is std_logic_vector(HP_HP2BM_LEN-1 downto 0);
   function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_rvt;
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt;
-  function nullify (x: hp_hp2bm_rt) return hp_hp2bm_rt;
+  function nullify(x: hp_hp2bm_rt) return hp_hp2bm_rt;
 
 end package hp_pkg;
 
@@ -110,7 +110,7 @@ package body hp_pkg is
     y.lo                       := structify(x(8 downto 0));
     return y;
   end function structify;
-  function nullify (x: hp_win_tubes_rt) return hp_win_tubes_rt is
+  function nullify(x: hp_win_tubes_rt) return hp_win_tubes_rt is
     variable y : hp_win_tubes_rt;
   begin
     y.hi                       := nullify(x.hi);
@@ -185,7 +185,7 @@ package body hp_pkg is
     y.y_0                      := structify(x(18 downto 0));
     return y;
   end function structify;
-  function nullify (x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
+  function nullify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
     variable y : hp_heg2hp_slc_b_rt;
   begin
     y.z_0                      := nullify(x.z_0);
@@ -209,7 +209,7 @@ package body hp_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
+  function nullify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
     variable y : hp_heg2hp_slc_rt;
   begin
     y.bcid                     := nullify(x.bcid);
@@ -240,7 +240,7 @@ package body hp_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
+  function nullify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
     variable y : hp_hpsPc2hp_rt;
   begin
     y.tube                     := nullify(x.tube);
@@ -270,7 +270,7 @@ package body hp_pkg is
     y.layer                    := structify(x(4 downto 0));
     return y;
   end function structify;
-  function nullify (x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
+  function nullify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
     variable y : hp_hp2sf_data_rt;
   begin
     y.local_y                  := nullify(x.local_y);
@@ -296,7 +296,7 @@ package body hp_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: hp_hp2bm_rt) return hp_hp2bm_rt is
+  function nullify(x: hp_hp2bm_rt) return hp_hp2bm_rt is
     variable y : hp_hp2bm_rt;
   begin
     y.data                     := nullify(x.data);
