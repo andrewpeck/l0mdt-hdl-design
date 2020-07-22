@@ -51,22 +51,22 @@ entity lpgbt_link_wrapper is
     lpgbt_uplink_clk_i : in std_logic;  -- 320 MHz
 
     -- Per-link reset input
-    lpgbt_uplink_reset_i : in std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_uplink_reset_i : in std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
 
     -- 1 bit valid output (strobes at 40MHz)
     -- 224 bits / bx to fabric
     -- 2 bits ic
     -- 2 bits ec
-    lpgbt_uplink_data : out lpgbt_uplink_data_rt_array (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_uplink_data : out lpgbt_uplink_data_rt_array (c_FELIX_LPGBT_INDEX downto 0);
 
     -- 256 bits / bx from mgt
-    lpgbt_uplink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_uplink_mgt_word_array_i : in std32_array_t (c_FELIX_LPGBT_INDEX downto 0);
 
     -- bitslip flag to connect to mgt rxslide for alignment
-    lpgbt_uplink_bitslip_o : out std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
+    lpgbt_uplink_bitslip_o : out std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
 
     -- uplink ready output
-    lpgbt_uplink_ready_o : out std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)
+    lpgbt_uplink_ready_o : out std_logic_vector (c_FELIX_LPGBT_INDEX downto 0)
 
     );
 end lpgbt_link_wrapper;
@@ -75,7 +75,7 @@ end lpgbt_link_wrapper;
 architecture Behavioral of lpgbt_link_wrapper is
 
   attribute DONT_TOUCH                        : string;
-  signal uplink_reset_tree                    : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0)   := (others => '0');
+  signal uplink_reset_tree                    : std_logic_vector (c_FELIX_LPGBT_INDEX downto 0)     := (others => '0');
   signal downlink_reset_tree                  : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '0');
   attribute DONT_TOUCH of uplink_reset_tree   : signal is "true";
   attribute DONT_TOUCH of downlink_reset_tree : signal is "true";
@@ -166,9 +166,22 @@ begin
 
     --assert false report "IMGT = #" & integer'image(I) & " UPLINK IDX= " & integer'image(lpgbt_uplink_idx_array(I)) severity note;
 
-    uplink_if : if (lpgbt_uplink_idx_array(I) /= -1) generate
+    uplink_if : if (lpgbt_uplink_idx_array(I) /= -1 or felix_txrx_idx_array(I) /= -1) generate
 
-      constant idx       : integer := lpgbt_uplink_idx_array(I);
+      function func_get_idx (lpgbt_idx : integer; felix_idx : integer)
+        return integer is
+      begin
+        if (lpgbt_idx >= 0) then
+          return lpgbt_idx;
+        elsif (felix_idx >= 0) then
+          return felix_idx+c_FELIX_LPGBT_INDEX;
+        else
+          return 0;
+        end if;
+      end func_get_idx;
+
+      constant idx : integer := func_get_idx(lpgbt_uplink_idx_array(I), felix_txrx_idx_array(I));
+
       signal uplink_data : lpgbt_uplink_data_rt;
       signal mgt_data    : std_logic_vector(31 downto 0);
       signal bitslip     : std_logic;

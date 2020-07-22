@@ -6,7 +6,9 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-KINTEX_SYS_MGMT_MON_t:
+HDL_Types:
+
+- KINTEX_SYS_MGMT_MON_t:
   - TEMP : { type: logic, length: 10 }
   - VCCINT : { type: logic, length: 10 }
   - VCCAUX : { type: logic, length: 10 }
