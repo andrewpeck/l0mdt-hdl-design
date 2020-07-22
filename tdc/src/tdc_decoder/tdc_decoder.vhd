@@ -19,7 +19,7 @@ entity tdc_decoder is
 
     reset : in std_logic;
 
-    clock : in std_logic; -- 320 Mbps clock
+    clock : in std_logic;               -- 320 Mbps clock
 
     -- take in 8 bits / bx of data on even odd links
     valid_i   : in std_logic;
@@ -42,7 +42,7 @@ architecture behavioral of tdc_decoder is
     variable int : std_logic_vector (15 downto 0);
   begin
     for ibit in 0 to even'length-1 loop
-      int ((ibit+1)*2-1 downto ibit*2) := even(ibit) & odd(ibit);
+      int ((ibit+1)*2-1 downto ibit*2) := odd(ibit) & even(ibit);
     end loop;
     return int;
   end interleave;
@@ -171,6 +171,9 @@ begin
 
 
   gen_8b10b_b : if (g_DECODER_SRC = 1) generate
+    signal k_char_int  : std_logic;
+    signal word_8b_int : std_logic_vector (7 downto 0);
+  begin
 
     -- Author: Ken Boyette
     -- https://raw.githubusercontent.com/freecores/8b10b_encdec/master/8b10_dec.vhd
@@ -178,6 +181,7 @@ begin
     dec_8b10b_msbs_inst : entity tdc.dec_8b10b
       port map (
         RESET    => '0',
+        -- this module is FALLING EDGE sensitive for some reason, so we need to register its outputs
         RBYTECLK => clock,
         --  The input is a 10-bit encoded character whose bits are identified as:
         --  AI, BI, CI, DI, EI, II, FI, GI, HI, JI (Least Significant to Most)
@@ -193,16 +197,24 @@ begin
         JI       => word_10b(9),
         --    The eight data output bits are identified as:
         --      HI, GI, FI, EI, DI, CI, BI, AI (Most Significant to Least)
-        KO       => k_char,             -- kchar output flag
-        HO       => word_8b(7),         -- 8
-        GO       => word_8b(6),         -- 78
-        FO       => word_8b(5),
-        EO       => word_8b(4),
-        DO       => word_8b(3),
-        CO       => word_8b(2),
-        BO       => word_8b(1),
-        AO       => word_8b(0)
+        KO       => k_char_int,         -- kchar output flag
+        HO       => word_8b_int(7),     -- 8
+        GO       => word_8b_int(6),     -- 78
+        FO       => word_8b_int(5),
+        EO       => word_8b_int(4),
+        DO       => word_8b_int(3),
+        CO       => word_8b_int(2),
+        BO       => word_8b_int(1),
+        AO       => word_8b_int(0)
         );
+
+    process(clock)
+    begin
+      if (rising_edge(clock)) then
+        word_8b <= word_8b_int;
+        k_char  <= k_char_int;
+      end if;
+    end process;
   end generate;
 
   --------------------------------------------------------------------------------

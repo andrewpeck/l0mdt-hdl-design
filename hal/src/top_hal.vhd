@@ -10,10 +10,10 @@ use unisim.vcomponents.all;
 
 library tdc;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-use l0mdt_lib.mdttp_functions_pkg.all;
-use l0mdt_lib.mdttp_constants_pkg.all;
+--library l0mdt_lib;
+--use l0mdt_lib.mdttp_types_pkg.all;
+--use l0mdt_lib.mdttp_functions_pkg.all;
+--use l0mdt_lib.mdttp_constants_pkg.all;
 
 library hal;
 use hal.sector_logic_pkg.all;
@@ -24,6 +24,21 @@ use hal.mgt_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
+library ctrl_lib;
+use ctrl_lib.HAL_CTRL.all;
+use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.axiRegPkg.all;
+
+library xpm;
+use xpm.vcomponents.all;
 
 entity top_hal is
 
@@ -57,42 +72,61 @@ entity top_hal is
     clock_and_control_o : out l0mdt_control_rt;
 
     -- ttc
-    ttc_commands : out l0mdt_ttc_rt;
+    ttc_commands_o : out l0mdt_ttc_rt;
 
     --------------------------------------------------------------------------------
     -- Data outputs
     --------------------------------------------------------------------------------
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out TDCPOLMUX_avt (c_NUM_POLMUX_INNER-1 downto 0);
-    tdc_hits_middle : out TDCPOLMUX_avt (c_NUM_POLMUX_MIDDLE-1 downto 0);
-    tdc_hits_outer  : out TDCPOLMUX_avt (c_NUM_POLMUX_OUTER-1 downto 0);
-    tdc_hits_extra  : out TDCPOLMUX_avt (c_NUM_POLMUX_EXTRA-1 downto 0);
-
-    -- Endcap + Neighbor Sector Logic Candidates
-    slc_o : out SLC_avt (c_NUM_SLC-1 downto 0);
-
-    -- Segments from neighbor
-    plus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
-    minus_neighbor_segments_o : in  SF_avt (c_NUM_SF_INPUTS-1 downto 0);
+    tdc_hits_inner  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
 
     --------------------------------------------------------------------------------
-    -- Data inputs
+    -- SLC
     --------------------------------------------------------------------------------
 
+    main_primary_slc   : out slc_rx_data_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
+    plus_neighbor_slc  : out slc_rx_data_rvt;
+    minus_neighbor_slc : out slc_rx_data_rvt;
+
+    -- pt from neighbor
+    plus_neighbor_segments_o  : out sf2pt_avt (c_NUM_SF_INPUTS -1 downto 0);
+    minus_neighbor_segments_o : out sf2pt_avt (c_NUM_SF_INPUTS -1 downto 0);
+
+    -- pt to neighbor
+    plus_neighbor_segments_i  : in sf2pt_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+    minus_neighbor_segments_i : in sf2pt_avt (c_NUM_SF_OUTPUTS -1 downto 0);
+
+    --------------------------------------------------------------------------------
     -- NSP + MUCTPI
-    MTC_i : in MTC_avt (c_NUM_MTC-1 downto 0);
-    NSP_i : in NSP_avt (c_NUM_NSP-1 downto 0);
+    --------------------------------------------------------------------------------
 
-    -- Segments from neighbor
-    plus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
-    minus_neighbor_segments_i : out SF_avt (c_NUM_SF_OUTPUTS-1 downto 0);
+    MTC_i : in mtc_out_avt(c_NUM_MTC-1 downto 0);
+    NSP_i : in mtc2nsp_avt(c_NUM_NSP-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- felix
     --------------------------------------------------------------------------------
 
-    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_LINKS-1 downto 0);
+    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+
+    --------------------------------------------------------------------------------
+    -- AXI
+    --------------------------------------------------------------------------------
+
+    Mon  : out HAL_MON_t;
+    Ctrl : in HAL_CTRL_t;
+
+    Core_Mon  :out  HAL_CORE_MON_t;
+    Core_Ctrl : in HAL_CORE_CTRL_t;
+
+    axi_clk_o : out std_logic;
+
+    clk320_o : out std_logic;
 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
@@ -106,7 +140,14 @@ architecture behavioral of top_hal is
   signal clocks       : system_clocks_rt;
   signal global_reset : std_logic;
 
-  signal pipeline_bx_strobe : std_logic;
+  signal strobe_pipeline : std_logic;
+  signal strobe_320      : std_logic;
+
+  signal reset          : std_logic;
+
+  signal felix_valid     : std_logic;
+
+  signal ttc_commands : l0mdt_ttc_rt;
 
   --------------------------------------------------------------------------------
   -- LPGBT Glue
@@ -178,8 +219,8 @@ architecture behavioral of top_hal is
 
   attribute DONT_TOUCH                         : string;
   attribute MAX_FANOUT                         : string;
-  attribute MAX_FANOUT of pipeline_bx_strobe   : signal is "20";
-  attribute DONT_TOUCH of pipeline_bx_strobe   : signal is "true";
+  attribute MAX_FANOUT of strobe_pipeline      : signal is "20";
+  attribute DONT_TOUCH of strobe_pipeline      : signal is "true";
   attribute MAX_FANOUT of lpgbt_downlink_valid : signal is "20";
   attribute DONT_TOUCH of lpgbt_downlink_valid : signal is "true";
 
@@ -191,10 +232,18 @@ architecture behavioral of top_hal is
 begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
-  --
+  -- Signal Aliasing
   --------------------------------------------------------------------------------
 
   global_reset <= not (clocks.locked);
+  axi_clk_o    <= clocks.axiclock;
+  clk320_o <= clocks.clock320;
+
+  --------------------------------------------------------------------------------
+  -- AXI Interface
+  --------------------------------------------------------------------------------
+
+  core_mon.clocking.mmcm_locked <= clocks.locked;
 
   --------------------------------------------------------------------------------
   -- Common Clocking
@@ -202,61 +251,54 @@ begin  -- architecture behavioral
 
   top_clocking_inst : entity hal.top_clocking
     port map (
-      valid_i          => std_logic0,         -- TODO: should be sourced felix
-      reset_i          => std_logic0,         -- TODO: should be sourced from AXI
-      sync_i           => not clocks.locked,  -- TODO should be sourced from AXI ? or auto?
-      clock_100m_i_p   => clock_100m_i_p,
-      clock_100m_i_n   => clock_100m_i_n,
-      clock_i_p        => clock_i_p,
-      clock_i_n        => clock_i_n,
-      felix_recclk_i   => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      select_felix_clk => std_logic0,         -- TODO: should be sourced from AXI
+      --
+      reset_i          => core_ctrl.clocking.reset_mmcm,
+      select_felix_clk => core_ctrl.clocking.select_felix_clk,
 
+      -- synchronization
+      felix_valid_i  => felix_valid,
+      felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
+      sync_i         => '0',
+      out_of_sync_o  => open,
+
+      -- clock inputs
+      -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
+      clock_100m_i_p => clock_100m_i_p,
+      clock_100m_i_n => clock_100m_i_n,
+      clock_i_p      => clock_i_p,
+      clock_i_n      => clock_i_n,
+
+      -- clock output to pins
       lhc_refclk_o_p => lhc_refclk_o_p,
       lhc_refclk_o_n => lhc_refclk_o_n,
 
-      clock40_o   => clocks.clock40,
-      clock100_o  => clocks.freeclock,
-      clock320_o  => clocks.clock320,
-      clockpipe_o => clocks.clock_pipeline,
+      -- system clocks
+      clocks_o => clocks,
 
+      -- bx strobes
+      strobe_320_o      => strobe_320,
+      strobe_pipeline_o => strobe_pipeline,
+
+      -- mmcm status
       locked_o => clocks.locked
       );
 
-  -- TODO: move this into clocking?
-  --------------------------------------------------------------------------------
-  -- Clock and reset to User Logic
-  --------------------------------------------------------------------------------
-  --
-  -- Create a 1 of N high signal synced to the 40MHZ clock
-  --            ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _
-  -- clk      __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_|9|_|
-  --            ___________________                 ________
-  -- clk40    __|                  |________________|
-  --            _____________________________________
-  -- r80      __|                                   |______
-  --                _____________________________________
-  -- r80_dly  ______|                                   |__
-  --            _____                               _____
-  -- valid    __|   |_______________________________|   |__
+   rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => reset,
+      dest_clk => clocks.clock320,
+      src_rst =>  global_reset);
 
-  process (clocks.clock_pipeline, clocks.clock40)
-    variable r80     : std_logic := '0';
-    variable r80_dly : std_logic;
-  begin
-    if (rising_edge(clocks.clock40)) then
-      r80 := not r80;
-    end if;
+   pipeline_rst_bit_synchronizer : xpm_cdc_sync_rst
+    generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
+    port map (
+      dest_rst => clock_and_control_o.rst,
+      dest_clk => clocks.clock_pipeline,
+      src_rst =>  global_reset);
 
-    if (rising_edge(clocks.clock_pipeline)) then
-      r80_dly := r80;
-    end if;
-    pipeline_bx_strobe <= r80_dly xor r80;
-  end process;
-
-  clock_and_control_o.clk   <= clocks.clock_pipeline;
-  clock_and_control_o.rst_n <= not global_reset; -- FIXME, synchronize to clock
-  clock_and_control_o.bx    <= pipeline_bx_strobe;
+  clock_and_control_o.clk <= clocks.clock_pipeline;
+  clock_and_control_o.bx  <= strobe_pipeline;
 
   --------------------------------------------------------------------------------
   -- Common Multi-gigabit transceivers
@@ -269,7 +311,7 @@ begin  -- architecture behavioral
       clocks => clocks,
 
       -- reset
-      reset => global_reset,
+      reset => '0', -- need a separate reset from the mmcm due to recovered links
 
       -- reference clocks
       refclk_i_p => refclk_i_p,
@@ -302,40 +344,15 @@ begin  -- architecture behavioral
   -- LPGBT-FPGA Cores
   --------------------------------------------------------------------------------
 
-  -- TODO: we already have this, sourced from FELIX.. this should just be a convoluted
-  -- copy of that but we still need to -- have a fabricated source of this for cases
-  -- where the clock is locally generated... this is OK for now but maybe there is a
-  -- better way to mux this
-  --
-  -- Create a 1 of 8 high signal synced to the 40MHZ clock
-  --            ___ ___ ___ ___ ___ ___ ___ ___ ___
-  -- clk320   __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_
-  --            _________________               ________
-  -- clk40    __|               |_______________|
-  --            _________________________________
-  -- r80      __|                               |______
-  --                _________________________________
-  -- r80_dly  ______|                               |__
-  --            _____                           _____
-  -- valid    __|   |___________________________|   |__
-
-  process (clocks.clock320, clocks.clock40)
-    variable r80     : std_logic := '0';
-    variable r80_dly : std_logic;
-  begin
-    if (rising_edge(clocks.clock40)) then
-      r80 := not r80;
-    end if;
-
-    if (rising_edge(clocks.clock320)) then
-      r80_dly := r80;
-    end if;
-    lpgbt_downlink_valid <= r80_dly xor r80;
-  end process;
-
-
   lpgbt_downlink_valid_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 generate
-    lpgbt_downlink_data(I).valid <= lpgbt_downlink_valid;
+    process (clocks.clock320) begin
+      if (rising_edge(clocks.clock320)) then
+        -- drive the lpgbt downlink valid flags
+        -- should come 1 clock later than the strobe to match the
+        -- downlink data which is driven similarly
+        lpgbt_downlink_data(I).valid <= strobe_320;
+      end if;
+    end process;
   end generate lpgbt_downlink_valid_gen;
 
   lpgbt_link_wrapper_inst : entity hal.lpgbt_link_wrapper
@@ -378,7 +395,7 @@ begin  -- architecture behavioral
       lpgbt_rst_downlink_i            => lpgbt_emul_rst_downlink
       );
 
-  -- TODO: replace with with some kind of smarter driver?
+  -- TODO: replace with with some kind of smarter driver? prbs31?
   emul_loop : for I in 0 to c_NUM_LPGBT_EMUL_UPLINKS-1 generate
     emul_loop_clock : process (clocks.clock320) is
     begin  -- process data_loop
@@ -402,7 +419,11 @@ begin  -- architecture behavioral
   gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
-      clock                 => clocks.clock40,
+      axi_clk               => clocks.clock320,
+      lpgbt_clk             => clocks.clock320,
+      valid_i               => strobe_320,
+      ctrl                  => ctrl.gbt,
+      mon                   => mon.gbt,
       lpgbt_downlink_data_o => lpgbt_downlink_data,
       lpgbt_uplink_data_i   => lpgbt_uplink_data
       );
@@ -447,12 +468,13 @@ begin  -- architecture behavioral
 
   top_tdc_control_inst : entity tdc.top_tdc_control
     port map (
-      clock40             => clocks.clock40,
+      clock_i             => clocks.clock320,
+      valid_i             => strobe_320,
       reset               => global_reset,
       trg_i               => std_logic0,
       bcr_i               => ttc_commands.bcr,
       ecr_i               => ttc_commands.ecr,
-      gsr_i               => std_logic0,
+      gsr_i               => global_reset,  -- TODO: add a reset from axi control
       lpgbt_downlink_data => lpgbt_downlink_data
       );
 
@@ -460,13 +482,19 @@ begin  -- architecture behavioral
   -- Felix Receiver
   --------------------------------------------------------------------------------
 
-  -- TODO: create copies of ttc signals on different clocks?
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock             => clocks.clock40,
+      clock             => clocks.clock320,
       reset             => global_reset,
       lpgbt_uplink_data => lpgbt_uplink_data(c_NUM_LPGBT_UPLINKS-1),
-      l0mdt_ttc         => ttc_commands
+
+      strobe_pipeline => strobe_pipeline,
+      strobe_320      => strobe_320,
+
+      l0mdt_ttc_40m      => ttc_commands,
+      l0mdt_ttc_320m     => open,
+      l0mdt_ttc_pipeline => ttc_commands_o,
+      valid_o            => felix_valid
       );
 
   --------------------------------------------------------------------------------
@@ -503,11 +531,41 @@ begin  -- architecture behavioral
     end process data_loop;
   end generate;
 
-  data_loop : process (clocks.clock320) is
+  sump_loop : process (clocks.clock_pipeline) is
+    variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
+    variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
+    variable nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
+    variable plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+    variable minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
   begin  -- process data_loop
-    if (rising_edge(clocks.clock320)) then  -- rising clock edge
-      sump <= '0';                          --xor_reduce (sector_logic_rx_sump);  -- xor_reduce (lpgbt_uplink_sump) xor xor_reduce(lpgbt_uplink_mgt_sump);
-    end if;
-  end process data_loop;
+    if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
+      daqsump_loop : for I in 0 to c_NUM_DAQ_STREAMS-1 loop
+        daq_sump(I) := xor_reduce(daq_streams(I));
+      end loop;
+      mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
+        mtc_sump(I) := xor_reduce(mtc_i(I));
+      end loop;
+      nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
+        nsp_sump(I) := xor_reduce(nsp_i(I));
+      end loop;
+      plus_neighbor_segments_sump_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+        plus_neighbor_segments_sump(I) := xor_reduce(plus_neighbor_segments_i(I));
+      end loop;
+      minus_neighbor_segments_sump_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+        minus_neighbor_segments_sump(I) := xor_reduce(minus_neighbor_segments_i(I));
+      end loop;
+      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump) xor xor_reduce(mtc_sump)
+              xor xor_reduce(minus_neighbor_segments_sump)
+              xor xor_reduce(plus_neighbor_segments_sump);
 
+
+      main_primary_slc          <= (others => (others => sump));
+      main_secondary_slc        <= (others => (others => sump));
+      plus_neighbor_slc         <= (others => sump);
+      minus_neighbor_slc        <= (others => sump);
+      plus_neighbor_segments_o  <= (others => (others => sump));
+      minus_neighbor_segments_o <= (others => (others => sump));
+
+    end if;
+  end process sump_loop;
 end architecture behavioral;

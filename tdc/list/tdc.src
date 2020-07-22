@@ -11,5 +11,4 @@ tdc/src/tdc_decoder/alignment_buffer.vhd
 tdc/src/tdc_decoder/x_oneshot.vhd
 tdc/src/tdc_decoder/elink_framer.vhd
 tdc/src/tdc_decoder/tdc_packet_processor.vhd
-
-IP/polmux_sync_fifo/polmux_sync_fifo.xci
+tdc/src/fifo_async.vhd

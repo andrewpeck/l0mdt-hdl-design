@@ -12,13 +12,14 @@ __config__:
       heg_lib:
         - heg_pkg
 
+HDL_Types:
 
-hps_ctrl2sf : { array : open , type : heg_ctrl2hp}
+- hps_ctrl2sf : { array : open , type : heg_ctrl2hp}
 
-hps_bm2sf   : { array : open , type : heg_bm2sf} 
+- hps_bm2sf   : { array : open , type : heg_bm2sf} 
 
 # hps_mdt_input:
-#   polmux   : { type : mdt_polmux_data }
+#   pullmux   : { type : mdt_pullmux_data }
 #   tar       : { type : tar2hps }
 
 # hps_mdt_input_ : {array: open , type: hps_mdt_input , _: off}

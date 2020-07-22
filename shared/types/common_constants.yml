@@ -6,18 +6,20 @@ __config__:
         - l0mdt_constants_pkg
 
 
+HDL_Types:
+
 #############################################################
 # COMMON CONSTANTS
 #############################################################  
 # mdt
-MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
-MDT_GLOBAL_AXI_MULT : { qualifier: constant , type: real , value: 32.0 , comment : mm }
+- MDT_GLOBAL_AXI_LEN  : { qualifier: constant , type: integer , value: 19 }
+- MDT_GLOBAL_AXI_MULT : { qualifier: constant , type: real , value: 32.0 , comment : mm }
 # MDT_LOCAL_AXI_LEN   : { qualifier: constant , type: integer , value: 15 } # 14 o 15?
 # MDT_LOCAL_AXI_MULT  : { qualifier: constant , type: real , value: 32.0 , comment : mm}
-MDT_LOCAL_X_LEN    : { qualifier: constant , type: integer , value: 13 } #14 o 15?
-MDT_LOCAL_Y_LEN    : { qualifier: constant , type: integer , value: 14 } #14 o 15?
-MDT_RADIUS_LEN       : { qualifier: constant , type: integer , value: 9 }
-MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
+- MDT_LOCAL_X_LEN    : { qualifier: constant , type: integer , value: 13 } #14 o 15?
+- MDT_LOCAL_Y_LEN    : { qualifier: constant , type: integer , value: 14 } #14 o 15?
+- MDT_RADIUS_LEN       : { qualifier: constant , type: integer , value: 9 }
+- MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
 
 #############################################################
 # INTERFACES TYPES
@@ -76,7 +78,7 @@ MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
 # MDT_TDC_COARSE_LEN: { qualifier: constant , type: integer , value: 12 }
 # MDT_TDC_FINE_LEN: { qualifier: constant , type: integer , value: 5 }
 # MDT_TDC_PW_LEN: { qualifier: constant , type: integer , value: 8 }
-# pol mux
+# pull mux
 # MDT_FIBER_LEN: { qualifier: constant , type: integer , value: 5 }
 # MDT_MUXCH_LEN: { qualifier: constant , type: integer , value: 4 }
 # tar
@@ -111,10 +113,10 @@ MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
 
 # MDT_RADIUS_LEN: { qualifier: constant , type: integer , value: 9 }
 # MDT_RADIUS_MULT: { qualifier: constant , type: real , value: 32.0 }
-MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 14 }
-MDT_LOCAL_AXI_MULT: { qualifier: constant , type: real , value: 16.0 }
-CSF_X_OFFSET : { qualifier: constant, type: integer, value : 0}
-CSF_Y_OFFSET : { qualifier: constant, type: integer, value : -640}
+- MDT_LOCAL_AXI_LEN: { qualifier: constant , type: integer , value: 14 }
+- MDT_LOCAL_AXI_MULT: { qualifier: constant , type: real , value: 16.0 }
+- CSF_X_OFFSET : { qualifier: constant, type: integer, value : 0}
+- CSF_Y_OFFSET : { qualifier: constant, type: integer, value : -640}
 # -----------------------------------------------------------
 # sf 2 pt 
 # -----------------------------------------------------------
@@ -124,7 +126,7 @@ CSF_Y_OFFSET : { qualifier: constant, type: integer, value : -640}
 # SF_SEG_ANG_MULTI     : {qualifier: constant, type: real, value: 4096.0}
 # SF_SEG_ANG_MULTI_LEN : {qualifier: constant, type: integer, value: 12}
 
-SF_SEG_DATA_LEN : {qualifier : constant , type : integer , value : 59}
+- SF_SEG_DATA_LEN : {qualifier : constant , type : integer , value : 59}
 # -----------------------------------------------------------
 # slc ucm pipeline
 # -----------------------------------------------------------
@@ -149,6 +151,6 @@ SF_SEG_DATA_LEN : {qualifier : constant , type : integer , value : 59}
 # OTHER
 #############################################################
 
-BIL_SEC3_RHO : { qualifier: constant, type: real, value: 4949.0}
-BML_SEC3_RHO : { qualifier: constant, type: real, value: 7139.0}
-BOL_SEC3_RHO : { qualifier: constant, type: real, value: 9500.0}
+- BIL_SEC3_RHO : { qualifier: constant, type: real, value: 4949.0}
+- BML_SEC3_RHO : { qualifier: constant, type: real, value: 7139.0}
+- BOL_SEC3_RHO : { qualifier: constant, type: real, value: 9500.0}

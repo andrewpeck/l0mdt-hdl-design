@@ -8,6 +8,7 @@ sl/list/sl.sub
 
 # Hal
 hal/src/top_hal.vhd 2008
+hal/src/clock_strobe.vhd 2008
 hal/src/top_clocking.vhd 2008
 hal/src/board_pkg.vhd 2008
 hal/src/board_pkg_common.vhd 2008
@@ -18,12 +19,12 @@ hal/src/sync_cdc.vhd 2008
 hal/src/felix_decoder.vhd 2008
 
 # IP
-IP/framework_mmcm/framework_mmcm.xci
-IP/mgt_10g24_gth/mgt_10g24_gth.xci
-IP/mgt_10g24_gty/mgt_10g24_gty.xci
-IP/mgt_9g6_gth/mgt_9g6_gth.xci
-IP/mgt_9g6_gty/mgt_9g6_gty.xci
-IP/mgt_felix/mgt_felix.xci
+IP/hal/framework_mmcm/framework_mmcm.xci
+IP/hal/mgt_10g24_gth/mgt_10g24_gth.xci
+IP/hal/mgt_10g24_gty/mgt_10g24_gty.xci
+IP/hal/mgt_9g6_gth/mgt_9g6_gth.xci
+IP/hal/mgt_9g6_gty/mgt_9g6_gty.xci
+IP/hal/mgt_felix/mgt_felix.xci
 
 # MGT
 hal/src/mgt/mgt_pkg.vhd 2008

@@ -27,7 +27,8 @@ use tdc.csm_pkg.all;
 entity top_tdc_control is
   port(
 
-    clock40 : in std_logic;
+    clock_i : in std_logic;
+    valid_i : in std_logic;
     reset   : in std_logic;
     trg_i   : in std_logic;
     bcr_i   : in std_logic;
@@ -50,8 +51,8 @@ begin
 
     encoded_control_inst : entity work.encoded_control
       port map (
-        clk_i => clock40,
-        dav_i => '1',
+        clk_i => clock_i,
+        dav_i => valid_i,
         trg_i => trg_i,
         bcr_i => bcr_i,
         ecr_i => ecr_i,

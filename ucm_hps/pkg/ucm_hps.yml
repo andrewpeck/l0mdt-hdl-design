@@ -8,14 +8,15 @@ __config__:
         - common_constants_pkg
         - common_types_pkg
 
+HDL_Types:
 
-input_tar:
-  global_time : { type : unsigned , length : 64}
-  station     : { type : unsigned , length : 8}
-  chamber     : { type : unsigned , length : 8}
-  tar         : { type : tar2hps }
+- input_tar:
+  - global_time : { type : unsigned , length : 64}
+  - station     : { type : unsigned , length : 8}
+  - chamber     : { type : unsigned , length : 8}
+  - tar         : { type : tar2hps }
 
-TB_TAR_FIFO_WIDTH:     { qualifier: constant , type: integer , value: 32 }
+- TB_TAR_FIFO_WIDTH:     { qualifier: constant , type: integer , value: 32 }
 
-tar2hps_tb    : { array: TB_TAR_FIFO_WIDTH , type: tar2hps}
+- tar2hps_tb    : { array: TB_TAR_FIFO_WIDTH , type: tar2hps}
 # in_tarfifo:

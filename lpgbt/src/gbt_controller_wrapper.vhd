@@ -19,6 +19,10 @@ use tdc.csm_pkg.all;
 library gbt_sc;
 use gbt_sc.sca_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.hal_ctrl.all;
+use ctrl_lib.axiRegPkg.all;
+
 entity gbt_controller_wrapper is
   generic(
     g_SCAS_PER_LPGBT : integer := 2
@@ -27,7 +31,12 @@ entity gbt_controller_wrapper is
     -- reset
     reset_i : in std_logic;
 
-    clock : in std_logic;
+    lpgbt_clk : in std_logic;
+    valid_i   : in std_logic;
+    axi_clk   : in std_logic;
+
+    ctrl : in  HAL_GBT_CTRL_t;
+    mon  : out HAL_GBT_MON_t;
 
     -- take in all uplink / downlink data; need a mapping module to map this into SCA links etc..
     lpgbt_downlink_data_o : out lpgbt_downlink_data_rt_array (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
@@ -37,62 +46,10 @@ end gbt_controller_wrapper;
 
 architecture common_controller of gbt_controller_wrapper is
 
-  signal reset : std_logic;
+  signal valid : std_logic;
 
--- Clock & reset
-
-  signal tx_clk_en_srl : std_logic_vector(6 downto 0);
-  signal tx_clk_en_dly : std_logic;
-
-  signal rx_reset_i : std_logic;        --! Reset RX datapath
-  signal tx_reset_i : std_logic;        --! Reset TX datapath
-
-  -- IC control
-  signal tx_start_write : std_logic;    --! Request a write config. to the GBTx (IC)
-  signal tx_start_read  : std_logic;    --! Request a read config. to the GBTx (IC)
-
-  -- IC configuration
-  signal tx_GBTx_address  : std_logic_vector(7 downto 0);   --! I2C address of the GBTx
-  signal tx_register_addr : std_logic_vector(15 downto 0);  --! Address of the first register to be accessed
-  signal tx_nb_to_be_read : std_logic_vector(15 downto 0);  --! Number of words/bytes to be read (only for read transactions)
-  -- IC FIFO control
-
-  signal tx_wr           : std_logic;                     --! Request a write operation into the internal FIFO (Data to GBTx)
-  signal tx_data_to_gbtx : std_logic_vector(7 downto 0);  --! Data to be written into the internal FIFO
-
-  signal rx_rd             : std_logic;                     --! Request a read operation of the internal FIFO (GBTx reply)
-  signal rx_data_from_gbtx : std_logic_vector(7 downto 0);  --! Data from the FIFO
-
-  -- IC Status
-  signal tx_ready : std_logic;          --! IC core ready for a transaction
-  signal rx_empty : std_logic;          --! Rx FIFO is empty (no reply from GBTx)
-
-  signal rx_gbtx_addr   : std_logic_vector(7 downto 0);   --! I2C address of the GBTx (read from a reply)
-  signal rx_mem_ptr     : std_logic_vector(15 downto 0);  --! I2C address of the first register read/written
-  signal rx_nb_of_words : std_logic_vector(15 downto 0);  --! Number of words/bytes read/written
-
-  -- SCA control
-  signal sca_enable        : std_logic_vector((g_SCAS_PER_LPGBT-1) downto 0);  --! Enable flag to select SCAs
-  signal start_reset_cmd   : std_logic;                                        --! Send a reset command to the enabled SCAs
-  signal start_connect_cmd : std_logic;                                        --! Send a connect command to the enabled SCAs
-  signal start_command     : std_logic;                                        --! Send the command set in input to the enabled SCAs
-  signal inject_crc_error  : std_logic;                                        --! Emulate a CRC error
-
-  -- SCA command
-  signal tx_address : std_logic_vector(7 downto 0);   --! Command: address field (According to the SCA manual)
-  signal tx_transID : std_logic_vector(7 downto 0);   --! Command: transaction ID field (According to the SCA manual)
-  signal tx_channel : std_logic_vector(7 downto 0);   --! Command: channel field (According to the SCA manual)
-  signal tx_command : std_logic_vector(7 downto 0);   --! Command: command field (According to the SCA manual)
-  signal tx_data    : std_logic_vector(31 downto 0);  --! Command: data field (According to the SCA manual)
-
-  signal rx_received : std_logic_vector((g_SCAS_PER_LPGBT-1) downto 0);  --! Reply received flag (pulse)
-  signal rx_address  : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: address field (According to the SCA manual)
-  signal rx_control  : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: control field (According to the SCA manual)
-  signal rx_transID  : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: transaction ID field (According to the SCA manual)
-  signal rx_channel  : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: channel field (According to the SCA manual)
-  signal rx_len      : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: len field (According to the SCA manual)
-  signal rx_error    : reg8_arr((g_SCAS_PER_LPGBT-1) downto 0);          --! Reply: error field (According to the SCA manual)
-  signal rx_data     : reg32_arr((g_SCAS_PER_LPGBT-1) downto 0);         --! Reply: data field (According to the SCA manual)
+  attribute DONT_TOUCH          : string;
+  attribute DONT_TOUCH of valid : signal is "true";
 
   -- EC line
   signal ec_data_down : reg2_arr((g_SCAS_PER_LPGBT-1) downto 0);  --! (TX) Array of bits to be mapped to the TX GBT-Frame
@@ -102,25 +59,34 @@ architecture common_controller of gbt_controller_wrapper is
   signal ic_data_down : std_logic_vector(1 downto 0);  --! (TX) Array of bits to be mapped to the TX GBT-Frame (bits 83/84)
   signal ic_data_up   : std_logic_vector(1 downto 0);  --! (RX) Array of bits to be mapped to the RX GBT-Frame (bits 83/84)
 
-  -- TODO: need to drive this from axi slave
-  -- 0 = csm0 master
-  -- 1 = csm0 slave
-  -- 2 = csm1 master
-  -- 3 = csm1 slave
-  -- etc....
-  signal lpgbt_link_sel        : integer := 0;
-  signal lpgbt_link_sel_master : boolean := false;
-  signal lpgbt_broadcast       : boolean := false;
+  signal lpgbt_link_sel       : integer   := 0;
+  signal lpgbt_link_sel_slave : std_logic := '0';
+  signal lpgbt_broadcast      : std_logic := '0';
 
-  signal sca_link_sel  : integer := 0;
-  signal sca_broadcast : boolean := false;
+  signal sca_link_sel  : integer   := 0;
+  signal sca_broadcast : std_logic := '0';
+
+  signal tx_reset, rx_reset : std_logic := '0';
 
 begin
 
-  process (clock)
+  valid <= valid_i;
+
+  process (lpgbt_clk)
   begin
-    if (rising_edge(clock)) then
-      reset <= reset;
+    if (rising_edge(lpgbt_clk)) then
+      if (valid) then
+        lpgbt_link_sel       <= to_integer(unsigned(ctrl.link_sel));
+        lpgbt_link_sel_slave <= ctrl.sel_slave;
+        lpgbt_broadcast      <= ctrl.broadcast;
+
+        if (ctrl.sca_sel = '1') then
+          sca_link_sel <= 1;
+        else
+          sca_link_sel <= 0;
+        end if;
+        sca_broadcast <= ctrl.sca_broadcast;
+      end if;
     end if;
   end process;
 
@@ -131,19 +97,19 @@ begin
 
   gbtsc_top_inst : entity gbt_sc.gbtsc_top
     generic map (
-      g_IC_FIFO_DEPTH => 20,
+      g_IC_FIFO_DEPTH => 32,
       g_ToLpGBT       => 1,
       g_SCA_COUNT     => g_SCAS_PER_LPGBT
       )
     port map (
 
       -- tx to lpgbt etc
-      tx_clk_i  => clock,
-      tx_clk_en => '1', -- run @ 40MHz, always enable
+      tx_clk_i  => lpgbt_clk,
+      tx_clk_en => valid,
 
       -- rx from lpgbt etc
-      rx_clk_i  => clock,
-      rx_clk_en => '1', -- run @ 40MHz, always enable
+      rx_clk_i  => lpgbt_clk,
+      rx_clk_en => valid,
 
       -- IC/EC data from controller
       ec_data_o => ec_data_down,
@@ -154,46 +120,57 @@ begin
       ic_data_i => ic_data_up,
 
       -- reset
-      rx_reset_i => reset,
-      tx_reset_i => reset,
+      rx_reset_i => rx_reset,
+      tx_reset_i => tx_reset,
 
       -- connect all of the following to AXI slave
 
-      tx_start_write_i => tx_start_write,
-      tx_start_read_i  => tx_start_read,
+      tx_start_write_i => ctrl.sc.tx_start_write,
+      tx_start_read_i  => ctrl.sc.tx_start_read,
 
-      tx_GBTx_address_i  => tx_gbtx_address,
-      tx_register_addr_i => tx_register_addr,
-      tx_nb_to_be_read_i => tx_nb_to_be_read,
+      tx_gbtx_address_i  => ctrl.sc.tx_gbtx_addr,
+      tx_register_addr_i => ctrl.sc.tx_register_addr,
+      tx_nb_to_be_read_i => ctrl.sc.tx_num_bytes_to_read,
 
-      wr_clk_i          => clock,
-      tx_wr_i           => tx_wr,
-      tx_data_to_gbtx_i => tx_data_to_gbtx,
+      wr_clk_i          => axi_clk,
+      tx_wr_i           => ctrl.sc.tx_wr,
+      tx_data_to_gbtx_i => ctrl.sc.tx_data_to_gbtx,
 
-      rd_clk_i            => clock,
-      rx_rd_i             => rx_rd,
-      rx_data_from_gbtx_o => rx_data_from_gbtx,
+      rd_clk_i            => axi_clk,
+      rx_rd_i             => ctrl.sc.rx_rd,
+      rx_data_from_gbtx_o => mon.sc.rx_data_from_gbtx,
 
-      tx_ready_o          => tx_ready,
-      rx_empty_o          => rx_empty,
-      sca_enable_i        => sca_enable,
-      start_reset_cmd_i   => start_reset_cmd,
-      start_connect_cmd_i => start_connect_cmd,
-      start_command_i     => start_command,
-      inject_crc_error    => inject_crc_error,
-      tx_address_i        => tx_address,
-      tx_transID_i        => tx_transID,
-      tx_channel_i        => tx_channel,
-      tx_command_i        => tx_command,
-      tx_data_i           => tx_data,
-      rx_received_o       => rx_received,
-      rx_address_o        => rx_address,
-      rx_control_o        => rx_control,
-      rx_transID_o        => rx_transID,
-      rx_channel_o        => rx_channel,
-      rx_len_o            => rx_len,
-      rx_error_o          => rx_error,
-      rx_data_o           => rx_data
+      tx_ready_o          => mon.sc.tx_ready,  --! IC core ready for a transaction
+      rx_empty_o          => mon.sc.rx_empty,
+      sca_enable_i        => ctrl.sc.sca_enable,
+      start_reset_cmd_i   => ctrl.sc.start_reset,
+      start_connect_cmd_i => ctrl.sc.start_connect,
+      start_command_i     => ctrl.sc.start_command,
+      inject_crc_error    => ctrl.sc.inj_crc_err,
+      tx_address_i        => ctrl.sc.tx_address,
+      tx_transID_i        => ctrl.sc.tx_transID,
+      tx_channel_i        => ctrl.sc.tx_channel,
+      tx_command_i        => ctrl.sc.tx_cmd,
+      tx_data_i           => ctrl.sc.tx_data,
+
+      -- SCA Command
+
+      rx_address_o(0)  => mon.sc.rx_address_0,
+      rx_address_o(1)  => mon.sc.rx_address_1,
+      rx_channel_o(0)  => mon.sc.rx_channel_0,
+      rx_channel_o(1)  => mon.sc.rx_channel_1,
+      rx_control_o(0)  => mon.sc.rx_control_0,
+      rx_control_o(1)  => mon.sc.rx_control_1,
+      rx_data_o(0)     => mon.sc.rx_data_0,
+      rx_data_o(1)     => mon.sc.rx_data_1,
+      rx_error_o(0)    => mon.sc.rx_err_0,
+      rx_error_o(1)    => mon.sc.rx_err_1,
+      rx_len_o(0)      => mon.sc.rx_len_0,
+      rx_len_o(1)      => mon.sc.rx_len_1,
+      rx_received_o(0) => mon.sc.rx_received_0,
+      rx_received_o(1) => mon.sc.rx_received_1,
+      rx_transID_o(0)  => mon.sc.rx_transID_0,
+      rx_transID_o(1)  => mon.sc.rx_transID_1
 
       );
 
@@ -201,18 +178,18 @@ begin
   -- Input mux from LPGBT to sc controller
   --------------------------------------------------------------------------------
 
-  process (clock)
+  process (lpgbt_clk)
     constant up0 : integer := CSM_SCA_UPLINK_ELINK0;
     constant up1 : integer := CSM_SCA_UPLINK_ELINK1;
   begin
 
-    if (rising_edge(clock)) then
-
-      -- mux and copy onto 40MHz clock
-      ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
-      ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
-      ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
-
+    if (rising_edge(lpgbt_clk)) then
+      if (valid) then
+        -- mux and copy onto 40MHz lpgbt_clk
+        ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
+        ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
+        ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
+      end if;
     end if;
   end process;
 
@@ -221,7 +198,7 @@ begin
   -- Output Mux to LPGBTS
   --------------------------------------------------------------------------------
 
-  process (clock, ec_data_down)
+  process (lpgbt_clk, ec_data_down)
     variable ec_data_down_replicated0 : std_logic_vector (3 downto 0);
     variable ec_data_down_replicated1 : std_logic_vector (3 downto 0);
 
@@ -250,47 +227,46 @@ begin
       ec_data_down_replicated0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
       ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
-      if (rising_edge(clock)) then
+      if (rising_edge(lpgbt_clk)) then
+        if (valid) then
 
-        -- if broadcast ? send to all of the lpgbts
-        if (lpgbt_broadcast) then
-          lpgbt_downlink_data_o (I).ic <= ic_data_down;
-          lpgbt_downlink_data_o (I).ec <= ic_data_down;
+          -- if broadcast ? send to all of the lpgbts
+          if (lpgbt_broadcast = '1') then
+            lpgbt_downlink_data_o (I).ic <= ic_data_down;
+            lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-        -- if master
-        elsif (lpgbt_link_sel = I and lpgbt_link_sel_master) then
-          lpgbt_downlink_data_o (I).ic <= ic_data_down;
+          -- if master
+          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '0') then
+            lpgbt_downlink_data_o (I).ic <= ic_data_down;
 
-        -- if slave
-        elsif (lpgbt_link_sel = I and not lpgbt_link_sel_master) then
-          lpgbt_downlink_data_o (I).ec <= ic_data_down;
+          -- if slave
+          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '1') then
+            lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-        -- if idle (nothing selected, should block writes)
-        else
-          lpgbt_downlink_data_o (I).ic <= (others => '1');
-          lpgbt_downlink_data_o (I).ec <= (others => '1');
+          -- if idle (nothing selected, should block writes)
+          else
+            lpgbt_downlink_data_o (I).ic <= (others => '1');
+            lpgbt_downlink_data_o (I).ec <= (others => '1');
+          end if;
+
+          -- if broadcast ? send to all of the scas
+          if (sca_broadcast = '1') then
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+
+          -- select a CSM... choose which SCA on SC controller port
+          elsif (sca_link_sel = I) then
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+
+          -- idle
+          else
+            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
+          end if;
+
         end if;
-
-
-        -- if broadcast ? send to all of the scas
-        if (sca_broadcast) then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
-
-        -- select a CSM... choose which SCA on SC controller port
-        elsif (sca_link_sel = I) then
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
-
-        -- idle
-        else
-          lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
-          lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
-        end if;
-
       end if;
-
-
     end loop;
   end process;
 

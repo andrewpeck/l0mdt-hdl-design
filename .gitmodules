@@ -20,6 +20,12 @@
 [submodule "hal/lpgbt/gbt-sc"]
 	path = lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
+[submodule "regmap"]
+	path = regmap
+	url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
 	path = tools/yml2hdl
 	url = https://gitlab.com/tcpaiva/yml2hdl.git
+[submodule "c2c/src/bd"]
+	path = c2c/src/bd
+	url = https://github.com/dgastler/BU_BUILD

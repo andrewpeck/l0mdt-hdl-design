@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveH2S: H2S@44A40000 {
+      compatible = "generic-uio";
+      reg = <0x44A40000 0x10000>;
+      label = "H2S";
+    };
+  };

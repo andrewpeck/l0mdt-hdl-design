@@ -13,7 +13,7 @@ package lpgbt_pkg is
   --------------------------------------------------------------------------------
 
   constant c_LPGBT_DOWNLINK_WORD_WIDTH       : integer := 32;  -- IC + EC + User Data + FEC
-  constant c_LPGBT_DOWNLINK_MULTICYCLE_DELAY : integer := 3;   -- --! Multicycle delay: USEd to relax the timing constraints
+  constant c_LPGBT_DOWNLINK_MULTICYCLE_DELAY : integer := 4;   -- Multicycle delay: USEd to relax the timing constraints
   constant c_LPGBT_DOWNLINK_CLOCK_RATIO      : integer := 8;   -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
 
   --------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ package lpgbt_pkg is
 
   constant c_LPGBT_UPLINK_DATARATE                   : integer := DATARATE_10G24;
   constant c_LPGBT_UPLINK_FEC                        : integer := FEC5;
-  constant c_LPGBT_UPLINK_MULTICYCLE_DELAY           : integer := 3;  -- --! Multicycle delay: Used to relax the timing constraints
+  constant c_LPGBT_UPLINK_MULTICYCLE_DELAY           : integer := 4;  -- --! Multicycle delay: Used to relax the timing constraints
   constant c_LPGBT_UPLINK_CLOCK_RATIO                : integer := 8;  -- Clock ratio is clock_out / 40 (shall be an integer - E.g.: 320/40 = 8)
   constant c_LPGBT_UPLINK_WORD_WIDTH                 : integer := 32;
   constant c_LPGBT_UPLINK_ALLOWED_FALSE_HEADER       : integer := 5;
