@@ -13,7 +13,7 @@ include:
     - local: '/Top/hps/gitlab-ci.yml'
     # - local: '/Top/ucm_hps/gitlab-ci.yml'
     - local: '/Top/ult/gitlab-ci.yml'
-    - local: '/Top/hal/gitlab-ci.yml'
+    # - local: '/Top/hal/gitlab-ci.yml'
     # - local: '/Top/l0mdt/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
     # - local: '/Top/ult/gitlab-ci.yml'
