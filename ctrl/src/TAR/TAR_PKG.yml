@@ -6,12 +6,14 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-TAR_MON_t:
+HDL_Types:
+
+- TAR_MON_t:
   - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-TAR_CTRL_t:
+- TAR_CTRL_t:
   - RESET : { type: logic }
 
 

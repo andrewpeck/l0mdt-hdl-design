@@ -6,7 +6,9 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-HAL_GBT_SC_MON_t:
+HDL_Types:
+
+- HAL_GBT_SC_MON_t:
   - RX_DATA_FROM_GBTX : { type: logic, length: 8 }
   - TX_READY : { type: logic }
   - RX_EMPTY : { type: logic }
@@ -28,7 +30,7 @@ HAL_GBT_SC_MON_t:
   - RX_DATA_1 : { type: logic, length: 32 }
 
 
-HAL_GBT_SC_CTRL_t:
+- HAL_GBT_SC_CTRL_t:
   - TX_RESET : { type: logic }
   - RX_RESET : { type: logic }
   - TX_START_WRITE : { type: logic }
@@ -51,11 +53,11 @@ HAL_GBT_SC_CTRL_t:
   - INJ_CRC_ERR : { type: logic }
 
 
-HAL_GBT_MON_t:
+- HAL_GBT_MON_t:
   - SC : { type: HAL_GBT_SC_MON_t }
 
 
-HAL_GBT_CTRL_t:
+- HAL_GBT_CTRL_t:
   - RESET : { type: logic }
   - LINK_SEL : { type: logic, length: 8 }
   - SEL_SLAVE : { type: logic }
@@ -65,11 +67,11 @@ HAL_GBT_CTRL_t:
   - SC : { type: HAL_GBT_SC_CTRL_t }
 
 
-HAL_MON_t:
+- HAL_MON_t:
   - GBT : { type: HAL_GBT_MON_t }
 
 
-HAL_CTRL_t:
+- HAL_CTRL_t:
   - GBT : { type: HAL_GBT_CTRL_t }
 
 

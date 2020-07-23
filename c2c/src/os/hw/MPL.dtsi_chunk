@@ -1,7 +1,7 @@
   amba_pl {
-    axiSlaveMPL: MPL@44AA0000 {
+    axiSlaveMPL: MPL@44A90000 {
       compatible = "generic-uio";
-      reg = <0x44AA0000 0x10000>;
+      reg = <0x44A90000 0x10000>;
       label = "MPL";
     };
   };

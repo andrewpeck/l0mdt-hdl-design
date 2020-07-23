@@ -21,26 +21,29 @@ set IMPL_FLOW "Vivado Implementation 2019"
 # Then copy and paste the name and the values from the Vivado Tcl console into the lines below.
 
 set PROPERTIES [dict create \
-		    synth_1 [dict create \
-                STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
-				STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
-				STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
-				] \
-		    impl_1 [dict create \
-     			STEPS.PHYS_OPT_DESIGN.IS_ENABLED true \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED true \
-				STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE Default \
-			    ]\
-		   ]
+    synth_1 [dict create \
+        STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
+        STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
+        STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 500 \
+        ] \
+    impl_1 [dict create \
+        STEPS.PHYS_OPT_DESIGN.IS_ENABLED true \
+        STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED true \
+        STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
+        STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE Default \
+        ]\
+    ]
 ############################################################
 
 
 ############################################################
+set SYNTH_TOP_MODULE  top_l0mdt
+set SIMULATOR  xsim
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
-eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
+# TODO: uncomment when CI machine has uHAL
+#eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
 
 source $PATH_REPO/Hog/Tcl/create_project.tcl
 

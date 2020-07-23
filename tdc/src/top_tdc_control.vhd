@@ -9,11 +9,6 @@ use textio.all;
 library tdc;
 library xil_defaultlib;
 
-library l0mdt_lib;
-use l0mdt_lib.mdttp_types_pkg.all;
-use l0mdt_lib.mdttp_constants_pkg.all;
-use l0mdt_lib.mdttp_functions_pkg.all;
-
 library hal;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;

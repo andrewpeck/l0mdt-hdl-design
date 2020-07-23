@@ -6,50 +6,52 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-H2S_HPS_INNER_MON_t:
-  - STATUS : { type: logic, length: 4 }
+HDL_Types:
+
+- H2S_HPS_INNER_MON_t:
+  - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-H2S_HPS_INNER_CTRL_t:
+- H2S_HPS_INNER_CTRL_t:
   - RESET : { type: logic }
 
 
-H2S_HPS_MIDDLE_MON_t:
-  - STATUS : { type: logic, length: 4 }
+- H2S_HPS_MIDDLE_MON_t:
+  - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-H2S_HPS_MIDDLE_CTRL_t:
+- H2S_HPS_MIDDLE_CTRL_t:
   - RESET : { type: logic }
 
 
-H2S_HPS_OUTER_MON_t:
-  - STATUS : { type: logic, length: 4 }
+- H2S_HPS_OUTER_MON_t:
+  - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-H2S_HPS_OUTER_CTRL_t:
+- H2S_HPS_OUTER_CTRL_t:
   - RESET : { type: logic }
 
 
-H2S_HPS_EXTRA_MON_t:
-  - STATUS : { type: logic, length: 4 }
+- H2S_HPS_EXTRA_MON_t:
+  - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-H2S_HPS_EXTRA_CTRL_t:
+- H2S_HPS_EXTRA_CTRL_t:
   - RESET : { type: logic }
 
 
-H2S_MON_t:
+- H2S_MON_t:
   - HPS_INNER : { type: H2S_HPS_INNER_MON_t }
   - HPS_MIDDLE : { type: H2S_HPS_MIDDLE_MON_t }
   - HPS_OUTER : { type: H2S_HPS_OUTER_MON_t }
   - HPS_EXTRA : { type: H2S_HPS_EXTRA_MON_t }
 
 
-H2S_CTRL_t:
+- H2S_CTRL_t:
   - HPS_INNER : { type: H2S_HPS_INNER_CTRL_t }
   - HPS_MIDDLE : { type: H2S_HPS_MIDDLE_CTRL_t }
   - HPS_OUTER : { type: H2S_HPS_OUTER_CTRL_t }

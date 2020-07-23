@@ -6,12 +6,14 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-DAQ_MON_t:
+HDL_Types:
+
+- DAQ_MON_t:
   - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-DAQ_CTRL_t:
+- DAQ_CTRL_t:
   - RESET : { type: logic }
 
 
