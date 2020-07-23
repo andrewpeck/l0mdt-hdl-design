@@ -43,8 +43,8 @@ entity ucm_hps is
     -- SLc
     i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
-    i_slc_data_neightborA_v : in slc_rx_data_rvt;
-    i_slc_data_neightborB_v : in slc_rx_data_rvt;
+    i_slc_data_neighborA_v : in slc_rx_data_rvt;
+    i_slc_data_neighborB_v : in slc_rx_data_rvt;
     -- MDT hit
     i_mdt_tar_inn_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     i_mdt_tar_mid_av    : in tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -77,8 +77,8 @@ begin
     -- SLc in
     i_slc_data_mainA_av     => i_slc_data_mainA_av,
     i_slc_data_mainB_av     => i_slc_data_mainB_av,
-    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
-    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
+    i_slc_data_neighborA_v => i_slc_data_neighborA_v,
+    i_slc_data_neighborB_v => i_slc_data_neighborB_v,
     -- pam out
     o_uCM2hps_inn_av      => uCM2hps_aav(0),
     o_uCM2hps_mid_av      => uCM2hps_aav(1),

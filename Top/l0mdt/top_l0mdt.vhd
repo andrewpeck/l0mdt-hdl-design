@@ -381,7 +381,7 @@ begin
       mon.CONFIG.MAIN_CFG_COMPILE_UL => MAIN_CFG_COMPILE_UL,
       mon.CONFIG.SECTOR_SIDE         => c_SECTOR_SIDE,
       mon.CONFIG.ST_nBARREL_ENDCAP   => c_ST_nBARREL_ENDCAP,
-      mon.CONFIG.ENABLE_NEIGHTBORS   => c_ENABLE_NEIGHTBORS,
+      mon.CONFIG.ENABLE_NEIGHBORS    => c_ENABLE_NEIGHBORS,
       mon.CONFIG.SECTOR_ID           => std_logic_vector(to_unsigned(c_SECTOR_ID,32)),
       mon.CONFIG.ENDCAP_nSMALL_LARGE => c_ENDCAP_nSMALL_LARGE,
       mon.CONFIG.PHY_BARREL_R0       => std_logic_vector(resize(PHY_BARREL_R0,32)),
