@@ -35,6 +35,8 @@ entity hp_paramCalc is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- SLc
+        -- SLc
+    i_SLC_Window        : in hp_win_tubes_rvt;
     i_SLc_specific      : in std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- MDT hit
@@ -84,9 +86,10 @@ begin
   )
   port map(
     clk             => clk,
-    rst        => rst,
+    rst             => rst,
     glob_en         => glob_en,
     -- SLc
+    i_SLC_Window    => i_SLC_Window,
     i_SLc_z_0       => barrel_data_r.z_0,
     -- i_SLc_y_0       =>
     -- mdt
