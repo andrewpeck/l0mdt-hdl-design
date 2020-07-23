@@ -43,8 +43,8 @@ architecture beh of ucm_tb is
   -- SLc in
   signal i_slc_data_mainA_av     : slc_rx_data_avt(2 downto 0);
   signal i_slc_data_mainB_av     : slc_rx_data_avt(2 downto 0);
-  signal i_slc_data_neightborA_v : slc_rx_data_rvt;
-  signal i_slc_data_neightborB_v : slc_rx_data_rvt;
+  signal i_slc_data_neighborA_v : slc_rx_data_rvt;
+  signal i_slc_data_neighborB_v : slc_rx_data_rvt;
   -- to hps
   signal o_uCM2hps_inn_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_mid_av       : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -70,8 +70,8 @@ begin
     -- SLc in
     i_slc_data_mainA_av     => i_slc_data_mainA_av,
     i_slc_data_mainB_av     => i_slc_data_mainB_av,
-    i_slc_data_neightborA_v => i_slc_data_neightborA_v,
-    i_slc_data_neightborB_v => i_slc_data_neightborB_v,
+    i_slc_data_neighborA_v => i_slc_data_neighborA_v,
+    i_slc_data_neighborB_v => i_slc_data_neighborB_v,
     -- pam out
     o_uCM2hps_inn_av        => o_uCM2hps_inn_av,
     o_uCM2hps_mid_av        => o_uCM2hps_mid_av,
@@ -161,8 +161,8 @@ begin
       tb_motor <= x"0";
       i_slc_data_mainA_av <= ( others => (others => '0'));
       i_slc_data_mainB_av <= (others => (others => '0'));
-      i_slc_data_neightborA_v <= (others => '0');
-      i_slc_data_neightborB_v <= (others => '0');
+      i_slc_data_neighborA_v <= (others => '0');
+      i_slc_data_neighborB_v <= (others => '0');
     elsif rising_edge(clk) then
 
       case tb_motor is
@@ -171,21 +171,21 @@ begin
           i_slc_data_mainA_av(2) <= (others => '0');
           i_slc_data_mainA_av(1) <= (others => '0');
           i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neightborA_v <= (others => '0');
-          i_slc_data_neightborB_v <= (others => '0');
+          i_slc_data_neighborA_v <= (others => '0');
+          i_slc_data_neighborB_v <= (others => '0');
         when x"1" =>
           tb_motor <= x"2";
           i_slc_data_mainA_av(2) <= vectorify(cand1);
           i_slc_data_mainA_av(1) <= vectorify(cand2);
           i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neightborA_v <= vectorify(cand2);
-          i_slc_data_neightborB_v <= (others => '0');  
+          i_slc_data_neighborA_v <= vectorify(cand2);
+          i_slc_data_neighborB_v <= (others => '0');
         when others =>
           i_slc_data_mainA_av(2) <= (others => '0');
           i_slc_data_mainA_av(1) <= (others => '0');
           i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neightborA_v <= (others => '0');
-          i_slc_data_neightborB_v <= (others => '0');
+          i_slc_data_neighborA_v <= (others => '0');
+          i_slc_data_neighborB_v <= (others => '0');
           -- nothing to do 
       end case;
     end if;

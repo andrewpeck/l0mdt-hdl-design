@@ -40,8 +40,8 @@ entity candidate_manager is
       -- Sector Logic Candidates
       i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
       i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
-      i_slc_data_neightborA_v : in slc_rx_data_rvt;
-      i_slc_data_neightborB_v : in slc_rx_data_rvt;
+      i_slc_data_neighborA_v : in slc_rx_data_rvt;
+      i_slc_data_neighborB_v : in slc_rx_data_rvt;
       -- Sector Logic Candidates Out of X-point Switch
       o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
       o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -67,8 +67,8 @@ begin
       -- SLc in
       i_slc_data_mainA_av     => i_slc_data_mainA_av,
       i_slc_data_mainB_av     => i_slc_data_mainB_av,
-      i_slc_data_neightborA_v => i_slc_data_neightborA_v,
-      i_slc_data_neightborB_v => i_slc_data_neightborB_v,
+      i_slc_data_neighborA_v => i_slc_data_neighborA_v,
+      i_slc_data_neighborB_v => i_slc_data_neighborB_v,
       -- pam out
       -- o_uCM2hps_pam_ar       => o_uCM2hps_pam_ar,
       o_uCM2hps_inn_av        => o_uCM2hps_inn_av,

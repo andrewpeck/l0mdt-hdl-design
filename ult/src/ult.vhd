@@ -197,8 +197,8 @@ begin
         -- candidates in from hal
         i_slc_data_mainA_av     => i_main_primary_slc,
         i_slc_data_mainB_av     => i_main_secondary_slc,
-        i_slc_data_neightborA_v => i_plus_neighbor_slc,
-        i_slc_data_neightborB_v => i_minus_neighbor_slc,
+        i_slc_data_neighborA_v => i_plus_neighbor_slc,
+        i_slc_data_neighborB_v => i_minus_neighbor_slc,
         -- outputs to ucm
         o_uCM2hps_inn_av        => inner_slc_to_hts,
         o_uCM2hps_mid_av        => middle_slc_to_hts,

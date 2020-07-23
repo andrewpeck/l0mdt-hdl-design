@@ -36,8 +36,8 @@ entity ucm is
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
-    i_slc_data_neightborA_v : in slc_rx_data_rvt;
-    i_slc_data_neightborB_v : in slc_rx_data_rvt;
+    i_slc_data_neighborA_v : in slc_rx_data_rvt;
+    i_slc_data_neighborB_v : in slc_rx_data_rvt;
     -- to hps
     o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
@@ -81,9 +81,9 @@ begin
     i_slc_data_av(c_MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
     i_slc_data_av(c_MAX_NUM_SL -2) <= i_slc_data_mainA_av(1);
     i_slc_data_av(c_MAX_NUM_SL -3) <= i_slc_data_mainA_av(0);
-    SLC1 : if c_ENABLE_NEIGHTBORS = '1' generate
-      i_slc_data_av(c_MAX_NUM_SL -4) <= i_slc_data_neightborA_v;
-      i_slc_data_av(c_MAX_NUM_SL -5) <= i_slc_data_neightborB_v;
+    SLC1 : if c_ENABLE_NEIGHBORS = '1' generate
+      i_slc_data_av(c_MAX_NUM_SL -4) <= i_slc_data_neighborA_v;
+      i_slc_data_av(c_MAX_NUM_SL -5) <= i_slc_data_neighborB_v;
     end generate;
   end generate;
 
