@@ -43,7 +43,7 @@ entity b_mbar2roi is
     i_mbar              : in unsigned(UCM_MBAR_LEN-1 downto 0);
     i_dv                : in std_logic;
     --
-    o_roi_edges         : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_roi_edges         : out hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_dv                : out std_logic
   );
 end entity b_mbar2roi;
