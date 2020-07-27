@@ -112,7 +112,7 @@ entity top_hal is
     -- felix
     --------------------------------------------------------------------------------
 
-    daq_streams : in FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    daq_streams : in FELIX_STREAM_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- AXI

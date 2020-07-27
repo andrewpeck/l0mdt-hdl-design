@@ -115,7 +115,7 @@ architecture structural of top_l0mdt is
   signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
   signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+  signal daq_streams : FELIX_STREAM_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- NSP + MUCTPI
 
