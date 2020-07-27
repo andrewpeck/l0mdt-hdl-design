@@ -53,7 +53,7 @@ package FW_INFO_CTRL is
     SECTOR_SIDE                :std_logic;   
     ST_nBARREL_ENDCAP          :std_logic;   
     ENDCAP_nSMALL_LARGE        :std_logic;   
-    ENABLE_NEIGHTBORS          :std_logic;   
+    ENABLE_NEIGHBORS          :std_logic;
     SECTOR_ID                  :std_logic_vector(31 downto 0);
     PHY_BARREL_R0              :std_logic_vector(31 downto 0);
     PHY_BARREL_R1              :std_logic_vector(31 downto 0);

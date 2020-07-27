@@ -52,7 +52,7 @@ HDL_Types:
   - SECTOR_SIDE : { type: logic }
   - ST_nBARREL_ENDCAP : { type: logic }
   - ENDCAP_nSMALL_LARGE : { type: logic }
-  - ENABLE_NEIGHTBORS : { type: logic }
+  - ENABLE_NEIGHBORS : { type: logic }
   - SECTOR_ID : { type: logic, length: 32 }
   - PHY_BARREL_R0 : { type: logic, length: 32 }
   - PHY_BARREL_R1 : { type: logic, length: 32 }

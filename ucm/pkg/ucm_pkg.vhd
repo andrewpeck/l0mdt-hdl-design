@@ -28,7 +28,7 @@ package ucm_pkg is
   subtype ucm_prepro_rvt is std_logic_vector(UCM_PREPRO_LEN-1 downto 0);
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt;
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt;
-  function nullify (x: ucm_prepro_rt) return ucm_prepro_rt;
+  function nullify(x: ucm_prepro_rt) return ucm_prepro_rt;
 
   type ucm_prepro_at is array(integer range <>) of ucm_prepro_rt;
   type ucm_prepro_avt is array(integer range <>) of ucm_prepro_rvt;
@@ -47,7 +47,7 @@ package ucm_pkg is
   subtype ucm_csw_ch_control_rvt is std_logic_vector(UCM_CSW_CH_CONTROL_LEN-1 downto 0);
   function vectorify(x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rvt;
   function structify(x: ucm_csw_ch_control_rvt) return ucm_csw_ch_control_rt;
-  function nullify (x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rt;
+  function nullify(x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rt;
 
   type ucm_csw_control_at is array(integer range <>) of ucm_csw_ch_control_rt;
   type ucm_csw_control_avt is array(integer range <>) of ucm_csw_ch_control_rvt;
@@ -66,7 +66,7 @@ package ucm_pkg is
   subtype ucm_pam_ch_control_rvt is std_logic_vector(UCM_PAM_CH_CONTROL_LEN-1 downto 0);
   function vectorify(x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rvt;
   function structify(x: ucm_pam_ch_control_rvt) return ucm_pam_ch_control_rt;
-  function nullify (x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rt;
+  function nullify(x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rt;
 
   type ucm_pam_control_at is array(integer range <>) of ucm_pam_ch_control_rt;
   type ucm_pam_control_avt is array(integer range <>) of ucm_pam_ch_control_rvt;
@@ -85,7 +85,7 @@ package ucm_pkg is
   subtype ucm_proc_info_ch_rvt is std_logic_vector(UCM_PROC_INFO_CH_LEN-1 downto 0);
   function vectorify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rvt;
   function structify(x: ucm_proc_info_ch_rvt) return ucm_proc_info_ch_rt;
-  function nullify (x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt;
+  function nullify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt;
 
   type ucm_proc_info_at is array(integer range <>) of ucm_proc_info_ch_rt;
   type ucm_proc_info_avt is array(integer range <>) of ucm_proc_info_ch_rvt;
@@ -122,7 +122,7 @@ package body ucm_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm_prepro_rt) return ucm_prepro_rt is
+  function nullify(x: ucm_prepro_rt) return ucm_prepro_rt is
     variable y : ucm_prepro_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -200,7 +200,7 @@ package body ucm_pkg is
     y.addr_orig                := x(3 downto 0);
     return y;
   end function structify;
-  function nullify (x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rt is
+  function nullify(x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rt is
     variable y : ucm_csw_ch_control_rt;
   begin
     y.data_present             := nullify(x.data_present);
@@ -275,7 +275,7 @@ package body ucm_pkg is
     y.addr_orig                := x(3 downto 0);
     return y;
   end function structify;
-  function nullify (x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rt is
+  function nullify(x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rt is
     variable y : ucm_pam_ch_control_rt;
   begin
     y.data_present             := nullify(x.data_present);
@@ -350,7 +350,7 @@ package body ucm_pkg is
     y.processed                := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt is
+  function nullify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt is
     variable y : ucm_proc_info_ch_rt;
   begin
     y.ch                       := nullify(x.ch);

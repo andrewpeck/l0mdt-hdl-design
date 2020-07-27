@@ -19,7 +19,7 @@ package common_types_pkg is
   subtype l0mdt_control_rvt is std_logic_vector(L0MDT_CONTROL_LEN-1 downto 0);
   function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt;
   function structify(x: l0mdt_control_rvt) return l0mdt_control_rt;
-  function nullify (x: l0mdt_control_rt) return l0mdt_control_rt;
+  function nullify(x: l0mdt_control_rt) return l0mdt_control_rt;
 
   type l0mdt_ttc_rt is record
     bcr : std_logic;
@@ -32,7 +32,7 @@ package common_types_pkg is
   subtype l0mdt_ttc_rvt is std_logic_vector(L0MDT_TTC_LEN-1 downto 0);
   function vectorify(x: l0mdt_ttc_rt) return l0mdt_ttc_rvt;
   function structify(x: l0mdt_ttc_rvt) return l0mdt_ttc_rt;
-  function nullify (x: l0mdt_ttc_rt) return l0mdt_ttc_rt;
+  function nullify(x: l0mdt_ttc_rt) return l0mdt_ttc_rt;
 
   type slc_rx_data_at is array(integer range <>) of slc_rx_data_rt;
   type slc_rx_data_avt is array(integer range <>) of slc_rx_data_rvt;
@@ -69,7 +69,7 @@ package common_types_pkg is
   subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
   function vectorify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rvt;
   function structify(x: ucm_csf_barrel_rvt) return ucm_csf_barrel_rt;
-  function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
+  function nullify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt;
 
   type ucm_csf_endcap_rt is record
     mbar : unsigned(UCM_MBAR_LEN-1 downto 0);
@@ -79,7 +79,7 @@ package common_types_pkg is
   subtype ucm_csf_endcap_rvt is std_logic_vector(UCM_CSF_ENDCAP_LEN-1 downto 0);
   function vectorify(x: ucm_csf_endcap_rt) return ucm_csf_endcap_rvt;
   function structify(x: ucm_csf_endcap_rvt) return ucm_csf_endcap_rt;
-  function nullify (x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt;
+  function nullify(x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt;
 
   type ucm2hps_rt is record
     muid : slc_muid_rt;
@@ -91,7 +91,7 @@ package common_types_pkg is
   subtype ucm2hps_rvt is std_logic_vector(UCM2HPS_LEN-1 downto 0);
   function vectorify(x: ucm2hps_rt) return ucm2hps_rvt;
   function structify(x: ucm2hps_rvt) return ucm2hps_rt;
-  function nullify (x: ucm2hps_rt) return ucm2hps_rt;
+  function nullify(x: ucm2hps_rt) return ucm2hps_rt;
 
   type ucm2hps_at is array(integer range <>) of ucm2hps_rt;
   type ucm2hps_avt is array(integer range <>) of ucm2hps_rvt;
@@ -113,7 +113,7 @@ package common_types_pkg is
   subtype hp_hit_data_rvt is std_logic_vector(HP_HIT_DATA_LEN-1 downto 0);
   function vectorify(x: hp_hit_data_rt) return hp_hit_data_rvt;
   function structify(x: hp_hit_data_rvt) return hp_hit_data_rt;
-  function nullify (x: hp_hit_data_rt) return hp_hit_data_rt;
+  function nullify(x: hp_hit_data_rt) return hp_hit_data_rt;
 
   type hp_hit_data_a_at is array(integer range <>) of hp_hit_data_rt;
   type hp_hit_data_a_avt is array(integer range <>) of hp_hit_data_rvt;
@@ -198,7 +198,7 @@ package common_types_pkg is
   subtype felix_stream_rvt is std_logic_vector(FELIX_STREAM_LEN-1 downto 0);
   function vectorify(x: felix_stream_rt) return felix_stream_rvt;
   function structify(x: felix_stream_rvt) return felix_stream_rt;
-  function nullify (x: felix_stream_rt) return felix_stream_rt;
+  function nullify(x: felix_stream_rt) return felix_stream_rt;
 
   type felix_stream_at is array(integer range <>) of felix_stream_rt;
   type felix_stream_avt is array(integer range <>) of felix_stream_rvt;
@@ -231,7 +231,7 @@ package body common_types_pkg is
     y.bx                       := x(0);
     return y;
   end function structify;
-  function nullify (x: l0mdt_control_rt) return l0mdt_control_rt is
+  function nullify(x: l0mdt_control_rt) return l0mdt_control_rt is
     variable y : l0mdt_control_rt;
   begin
     y.clk                      := nullify(x.clk);
@@ -260,7 +260,7 @@ package body common_types_pkg is
     y.l1a                      := x(0);
     return y;
   end function structify;
-  function nullify (x: l0mdt_ttc_rt) return l0mdt_ttc_rt is
+  function nullify(x: l0mdt_ttc_rt) return l0mdt_ttc_rt is
     variable y : l0mdt_ttc_rt;
   begin
     y.bcr                      := nullify(x.bcr);
@@ -444,7 +444,7 @@ package body common_types_pkg is
     y.z                        := structify(x(9 downto 0));
     return y;
   end function structify;
-  function nullify (x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt is
+  function nullify(x: ucm_csf_barrel_rt) return ucm_csf_barrel_rt is
     variable y : ucm_csf_barrel_rt;
   begin
     y.mbar                     := nullify(x.mbar);
@@ -466,7 +466,7 @@ package body common_types_pkg is
     y.R                        := structify(x(3 downto 0));
     return y;
   end function structify;
-  function nullify (x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt is
+  function nullify(x: ucm_csf_endcap_rt) return ucm_csf_endcap_rt is
     variable y : ucm_csf_endcap_rt;
   begin
     y.mbar                     := nullify(x.mbar);
@@ -492,7 +492,7 @@ package body common_types_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm2hps_rt) return ucm2hps_rt is
+  function nullify(x: ucm2hps_rt) return ucm2hps_rt is
     variable y : ucm2hps_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -575,7 +575,7 @@ package body common_types_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: hp_hit_data_rt) return hp_hit_data_rt is
+  function nullify(x: hp_hit_data_rt) return hp_hit_data_rt is
     variable y : hp_hit_data_rt;
   begin
     y.local_y                  := nullify(x.local_y);
@@ -1026,7 +1026,7 @@ package body common_types_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: felix_stream_rt) return felix_stream_rt is
+  function nullify(x: felix_stream_rt) return felix_stream_rt is
     variable y : felix_stream_rt;
   begin
     y.muid                     := nullify(x.muid);
