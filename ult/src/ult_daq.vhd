@@ -23,11 +23,11 @@ entity daq is
     ctrl              : in  DAQ_CTRL_t;
     mon               : out DAQ_MON_t;
 
-    i_inner_tdc_hits  : in  mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in  mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in  mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in  mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-    daq_streams_o     : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0)
+    i_inner_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0)
     );
 
 end entity daq;

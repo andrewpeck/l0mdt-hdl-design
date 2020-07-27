@@ -95,32 +95,32 @@ architecture structural of top_l0mdt is
 
   -- hal <--> ult
 
-  signal inner_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
-  signal i_inner_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
-  signal i_middle_tar_hits : tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
-  signal i_outer_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_extra_tar_hits  : tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_inner_tar_hits  : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_middle_tar_hits : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_outer_tar_hits  : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_extra_tar_hits  : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal main_primary_slc   : slc_rx_data_avt(2 downto 0);  -- is the main SL used
-  signal main_secondary_slc : slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
+  signal main_primary_slc   : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
+  signal main_secondary_slc : slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
   signal plus_neighbor_slc  : slc_rx_data_rvt;
   signal minus_neighbor_slc : slc_rx_data_rvt;
 
-  signal plus_neighbor_segments_i  : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_i : sf2pt_avt (c_NUM_SF_INPUTS - 1 downto 0);
-  signal plus_neighbor_segments_o  : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_o : sf2pt_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_i  : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
   signal daq_streams : FELIX_STREAM_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- NSP + MUCTPI
 
-  signal mtc : mtc_out_avt(c_NUM_MTC-1 downto 0);
-  signal nsp : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
+  signal mtc : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+  signal nsp : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
   -- AXI
 

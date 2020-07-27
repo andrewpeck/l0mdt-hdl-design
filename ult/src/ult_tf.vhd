@@ -22,15 +22,15 @@ entity track_fitting is
     ttc_commands              : in  l0mdt_ttc_rt;
     ctrl                      : in  TF_CTRL_t;
     mon                       : out TF_MON_t;
-    inner_segments_i          : in sf2pt_avt(c_NUM_THREADS-1 downto 0);
-    middle_segments_i         : in sf2pt_avt(c_NUM_THREADS-1 downto 0);
-    outer_segments_i          : in sf2pt_avt(c_NUM_THREADS-1 downto 0);
-    extra_segments_i          : in sf2pt_avt(c_NUM_THREADS-1 downto 0);
-    minus_neighbor_segments_i : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    plus_neighbor_segments_i  : in sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_pl2pt_av                : in pl2pt_avt(c_NUM_THREADS-1 downto 0);
+    inner_segments_i          : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    middle_segments_i         : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    outer_segments_i          : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    extra_segments_i          : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+    minus_neighbor_segments_i : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    plus_neighbor_segments_i  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_pl2pt_av                : in pl2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
-    o_pt2mtc : out tf2mtc_avt(c_NUM_THREADS -1 downto 0));
+    o_pt2mtc : out tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0));
 
 end entity track_fitting;
 
