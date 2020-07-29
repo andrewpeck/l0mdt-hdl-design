@@ -26,7 +26,7 @@ package cfg_global_pkg is
     SECTOR_SIDE                   : std_logic;  -- selects the side of the sector - 0:A          1:C
     ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector - 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap - 0: small     1: large
-    ENABLE_NEIGHTBORS             : std_logic;  -- enables or disables the processing of SL neightbors
+    ENABLE_NEIGHBORS             : std_logic;  -- enables or disables the processing of SL neighbors
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ package cfg_global_pkg is
     SECTOR_SIDE                   => '0', -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
-    ENABLE_NEIGHTBORS             => '1', -- 0: disabled  1: enabled 
+    ENABLE_NEIGHBORS             => '1', -- 0: disabled  1: enabled
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ end package cfg_global_pkg;
 --     proj_cfg.SECTOR_SIDE                   => '0'; -- 0:A          1:C
 --     proj_cfg.ST_nBARREL_ENDCAP             => '0'; -- 0: barrel    1: Endcap
 --     proj_cfg.ENDCAP_nSMALL_LARGE           => '0'; -- 0: small     1: large
---     proj_cfg.ENABLE_NEIGHTBORS             => '1'; -- 0: disabled  1: enabled
+--     proj_cfg.ENABLE_NEIGHBORS             => '1'; -- 0: disabled  1: enabled
 --     --------------------------------------------------------------------------------
 --     -- blocks configuration
 --     --------------------------------------------------------------------------------

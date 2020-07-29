@@ -234,7 +234,7 @@ begin
           --   -- large endcap
           -- end if;
             
-          -- if  c_ENABLE_NEIGHTBORS = '1' then -- with neigbors
+          -- if  c_ENABLE_NEIGHBORS = '1' then -- with neigbors
 
           --   if data_ar(c_MAX_NUM_SL - 1).data_valid = '1' then -- xxx1x
           --     o_csw_ctrl(c_MAX_NUM_SL - 1 - pl_o).data_present <= '1';

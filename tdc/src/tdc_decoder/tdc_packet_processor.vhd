@@ -26,7 +26,7 @@ end tdc_packet_processor;
 
 architecture behavioral of tdc_packet_processor is
   -- packet decoder signals
-  type tdc_word_state_t is (ERR, SYNCING, READY, DATA0, DATA1, DATA2, DATA3);
+  type tdc_word_state_t is (ERR, SYNCING, READY, DATA0, DATA1, DATA2);
   signal tdc_word_state : tdc_word_state_t := SYNCING;
   signal tdc_aligned    : std_logic;
   signal data_buf       : std_logic_vector (23 downto 0);
@@ -88,7 +88,8 @@ begin
 
             -- start reading on 1st non-kchar
             if (k_char = '0') then
-              tdc_word_state <= DATA0;
+              tdc_word_state       <= DATA0;
+              data_buf(7 downto 0) <= word_8b;
             end if;
 
           when DATA0 =>
@@ -99,7 +100,7 @@ begin
               tdc_word_state <= DATA1;
             end if;
 
-            data_buf(7 downto 0) <= word_8b;
+            data_buf(15 downto 8) <= word_8b;
 
           when DATA1 =>
 
@@ -109,38 +110,29 @@ begin
               tdc_word_state <= DATA2;
             end if;
 
-            data_buf(15 downto 8) <= word_8b;
-
-          when DATA2 =>
-
-            if (k_char = '1') then
-              tdc_word_state <= ERR;
-            else
-              tdc_word_state <= DATA3;
-            end if;
-
             data_buf(23 downto 16) <= word_8b;
 
-          when DATA3 =>
+          when DATA2 =>
 
             if (k_char = '1' and word_8b = TDC_ERR) then  -- 28.4 = tdc_err
               tdc_err_o      <= '1';
               tdc_word_state <= READY;
-              valid_o <= '0';
+              valid_o        <= '0';
             elsif (word_8b = TDC_START and k_char = '1') then
               tdc_word_state <= READY;
-              valid_o <= '1';
+              valid_o        <= '1';
             else
               tdc_word_state <= DATA0;
-              valid_o <= '1';
+              valid_o        <= '1';
             end if;
 
             tdc_word_o (31 downto 24) <= word_8b;
             tdc_word_o (23 downto 0)  <= data_buf(23 downto 0);
 
-
           when others =>
+
             tdc_word_state <= ERR;
+
         end case;
 
       end if;

@@ -116,6 +116,7 @@ package body hps_rom_b_zholes_pkg is
     else
       -- error
     end if;
+    return o_layer;
   end function;
   
 end package body hps_rom_b_zholes_pkg;

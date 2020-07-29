@@ -41,7 +41,7 @@ entity top_heg is
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
-    i_mdt_full_data_av  : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to Segment finder
     o_sf_control_v      : out heg_ctrl2hp_rvt;
     o_sf_slc_data_v     : out ucm2hps_rvt;

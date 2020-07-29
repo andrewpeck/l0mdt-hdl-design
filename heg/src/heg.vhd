@@ -45,7 +45,7 @@ entity heg is
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
-    i_mdt_full_data_av  : in heg_pc2heg_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- to Segment finder
     o_sf_control_v      : out heg_ctrl2hp_rvt;
     o_sf_slc_data_v     : out ucm2hps_rvt;
@@ -56,13 +56,13 @@ end entity heg;
 architecture beh of heg is
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
-  signal roi_b_Window       : hp_heg2hp_window_avt;
+  signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
   
   signal heg_Sf_control : heg_ctrl2hp_rt;
   signal hegC_control : heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
 
-  signal hp2bm_av : heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
+  signal hp2bm_av : heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal time_offset  : unsigned(7 downto 0);
 
@@ -70,7 +70,7 @@ begin
 
   o_sf_control_v <= vectorify(heg_Sf_control);
 
-  Heg_Control : entity heg_lib.heg_Control
+  Heg_Control : entity heg_lib.heg_ctrl_top
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
     g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
@@ -89,7 +89,7 @@ begin
     o_hp_control        => hegC_control
   );
 
-  hp_gen: for i_hp in MAX_NUM_HP -1 downto 0 generate
+  hp_gen: for i_hp in g_HPS_NUM_MDT_CH-1 downto 0 generate
     Hit_Processor : entity hp_lib.hit_processor
     generic map(
       g_STATION_RADIUS    => g_STATION_RADIUS

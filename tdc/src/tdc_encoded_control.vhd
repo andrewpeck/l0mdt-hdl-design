@@ -66,14 +66,14 @@ begin
         if (busy = '0' and bcr_i = '1') then
           triad   <= "110";
           busy_sr <= "11";
+        elsif (busy = '0' and gsr_i = '1') then
+          triad   <= "101";
+          busy_sr <= "11";
         elsif (busy = '0' and trg_i = '1') then
           triad   <= "100";
           busy_sr <= "11";
         elsif (busy = '0' and ecr_i = '1') then
           triad   <= "111";
-          busy_sr <= "11";
-        elsif (busy = '0' and gsr_i = '1') then
-          triad   <= "101";
           busy_sr <= "11";
         else
           triad   <= triad(1 downto 0) & '0';

@@ -11,15 +11,19 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library unisim;
+use unisim.vcomponents.all;
+
 entity tdc_decoder is
   generic(
-    g_DECODER_SRC : integer := 1
+    g_DECODER_SRC : integer := 1;
+    g_BITSLIP_SRC : integer := 0
     );
   port(
 
     reset : in std_logic;
 
-    clock : in std_logic; -- 320 Mbps clock
+    clock : in std_logic;               -- 320 Mbps clock
 
     -- take in 8 bits / bx of data on even odd links
     valid_i   : in std_logic;
@@ -42,7 +46,7 @@ architecture behavioral of tdc_decoder is
     variable int : std_logic_vector (15 downto 0);
   begin
     for ibit in 0 to even'length-1 loop
-      int ((ibit+1)*2-1 downto ibit*2) := even(ibit) & odd(ibit);
+      int ((ibit+1)*2-1 downto ibit*2) := odd(ibit) & even(ibit);
     end loop;
     return int;
   end interleave;
@@ -85,28 +89,69 @@ begin
       clock => clock
       );
 
-  -- take in 16 bits per bx... this could be aligned arbitrarily relative to the frame clock due to different cable
-  -- lengths
-  ---- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
-  alignment_buffer_even : entity tdc.alignment_buffer(serial)
-    port map (
-      clock     => clock,
-      bitslip_i => bitslip,
-      data_i    => data_even,
-      valid_i   => valid_i,
-      valid_o   => aligned_data_valid,
-      data_o    => data_even_aligned
-      );
+  data_bitslip_gen : if (g_BITSLIP_SRC = 1) generate
 
-  alignment_buffer_odd : entity tdc.alignment_buffer(serial)
-    port map (
-      clock     => clock,
-      bitslip_i => bitslip,
-      data_i    => data_odd,
-      valid_i   => valid_i,
-      valid_o   => open,
-      data_o    => data_odd_aligned
-      );
+    -- take in 16 bits per bx... this could be aligned arbitrarily relative to the frame clock due to different cable
+    -- lengths
+    -- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
+
+    alignment_buffer_even : entity tdc.alignment_buffer(serial)
+      port map (
+        clock     => clock,
+        bitslip_i => bitslip,
+        data_i    => data_even,
+        valid_i   => valid_i,
+        valid_o   => aligned_data_valid,
+        data_o    => data_even_aligned
+        );
+
+    alignment_buffer_odd : entity tdc.alignment_buffer(serial)
+      port map (
+        clock     => clock,
+        bitslip_i => bitslip,
+        data_i    => data_odd,
+        valid_i   => valid_i,
+        valid_o   => open,
+        data_o    => data_odd_aligned
+        );
+  end generate;
+
+  valid_bitslip_gen : if (g_BITSLIP_SRC = 0) generate
+    signal adr : unsigned (3 downto 0) := (others => '0');
+  begin
+
+    -- we can accomplish the same behavior by slipping the valid bit rather than the data, saving quite a few
+    -- resources in the meantime
+
+    data_even_aligned <= data_even;
+    data_odd_aligned  <= data_odd;
+
+    process(clock)
+    begin
+      if (rising_edge(clock)) then
+        if (bitslip = '1') then
+          if (adr = x"7") then
+            adr <= "0000";
+          else
+            adr <= adr + "1";
+          end if;
+        end if;
+      end if;
+    end process;
+
+    valid_dly : SRL16E
+      port map (
+        CLK => clock,
+        CE  => '1',
+        D   => valid_i,
+        A0  => adr(0),
+        A1  => adr(1),
+        A2  => adr(2),
+        A3  => adr(3),
+        Q   => aligned_data_valid
+        );
+
+  end generate;
 
   aligned_data <= interleave (data_even_aligned, data_odd_aligned);
 
@@ -142,9 +187,32 @@ begin
   gen_8b10b_a : if (g_DECODER_SRC = 0) generate
     constant std_logic0 : std_logic := '0';
     constant std_logic1 : std_logic := '1';
+
+    component mdec8b10bmem
+      port(
+        -- inputs
+        soft_reset_i : in std_logic;
+        i_Clk        : in std_logic;
+        i_ARst_L     : in std_logic;
+        i10_Din      : in std_logic_vector;
+        i_enable     : in std_logic;
+
+        -- disparity
+        i_ForceDisparity : in  std_logic;
+        i_Disparity      : in  std_logic;
+        o_DpErr          : out std_logic;
+        o_Rd             : out std_logic;
+
+        -- outputs
+        o8_Dout : out std_logic_vector;
+        o_Kout  : out std_logic;
+        o_Kerr  : out std_logic;
+        o_DErr  : out std_logic
+        );
+    end component;
   begin
 
-    mDec8b10bMem_inst : entity tdc.mDec8b10bMem
+    mDec8b10bMem_inst : mDec8b10bMem
       port map (
 
         -- inputs
@@ -158,7 +226,6 @@ begin
         o_DpErr          => open,
         i_ForceDisparity => std_logic0,
         i_Disparity      => std_logic0,
-        i_Disparity      => std_logic0,
         o_Rd             => open,       -- running disparity output
 
         -- outputs
@@ -171,6 +238,9 @@ begin
 
 
   gen_8b10b_b : if (g_DECODER_SRC = 1) generate
+    signal k_char_int  : std_logic;
+    signal word_8b_int : std_logic_vector (7 downto 0);
+  begin
 
     -- Author: Ken Boyette
     -- https://raw.githubusercontent.com/freecores/8b10b_encdec/master/8b10_dec.vhd
@@ -178,6 +248,7 @@ begin
     dec_8b10b_msbs_inst : entity tdc.dec_8b10b
       port map (
         RESET    => '0',
+        -- this module is FALLING EDGE sensitive for some reason, so we need to register its outputs
         RBYTECLK => clock,
         --  The input is a 10-bit encoded character whose bits are identified as:
         --  AI, BI, CI, DI, EI, II, FI, GI, HI, JI (Least Significant to Most)
@@ -193,16 +264,24 @@ begin
         JI       => word_10b(9),
         --    The eight data output bits are identified as:
         --      HI, GI, FI, EI, DI, CI, BI, AI (Most Significant to Least)
-        KO       => k_char,             -- kchar output flag
-        HO       => word_8b(7),         -- 8
-        GO       => word_8b(6),         -- 78
-        FO       => word_8b(5),
-        EO       => word_8b(4),
-        DO       => word_8b(3),
-        CO       => word_8b(2),
-        BO       => word_8b(1),
-        AO       => word_8b(0)
+        KO       => k_char_int,         -- kchar output flag
+        HO       => word_8b_int(7),     -- 8
+        GO       => word_8b_int(6),     -- 78
+        FO       => word_8b_int(5),
+        EO       => word_8b_int(4),
+        DO       => word_8b_int(3),
+        CO       => word_8b_int(2),
+        BO       => word_8b_int(1),
+        AO       => word_8b_int(0)
         );
+
+    process(clock)
+    begin
+      if (rising_edge(clock)) then
+        word_8b <= word_8b_int;
+        k_char  <= k_char_int;
+      end if;
+    end process;
   end generate;
 
   --------------------------------------------------------------------------------

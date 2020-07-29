@@ -12,18 +12,18 @@ use shared_lib.common_types_pkg.all;
 package ucm_hps_pkg is
 
   type input_tar_rt is record
-     global_time          :  unsigned(64-1 downto 0);                                     -- 
-     station              :  unsigned(8-1 downto 0);                                      -- 
-     chamber              :  unsigned(8-1 downto 0);                                      -- 
-     tar                  :  tar2hps_rt;                                                  -- 
+    global_time : unsigned(64-1 downto 0);
+    station : unsigned(8-1 downto 0);
+    chamber : unsigned(8-1 downto 0);
+    tar : tar2hps_rt;
   end record input_tar_rt;
   constant INPUT_TAR_LEN : integer := 116;
   subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
   function vectorify(x: input_tar_rt) return input_tar_rvt;
   function structify(x: input_tar_rvt) return input_tar_rt;
-  function nullify (x: input_tar_rt) return input_tar_rt;
+  function nullify(x: input_tar_rt) return input_tar_rt;
 
-  constant   TB_TAR_FIFO_WIDTH    :  integer := 32;                                       -- 
+  constant TB_TAR_FIFO_WIDTH : integer := 32;
 
   type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
   type tar2hps_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rvt;
@@ -58,7 +58,7 @@ package body ucm_hps_pkg is
     y.tar                      := structify(x(35 downto 0));
     return y;
   end function structify;
-  function nullify (x: input_tar_rt) return input_tar_rt is
+  function nullify(x: input_tar_rt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
     y.global_time              := nullify(x.global_time);

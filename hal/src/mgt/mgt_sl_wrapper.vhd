@@ -99,9 +99,68 @@ begin
     attribute NUM_MGTS            : integer;              -- need it somewhere more handy actually...
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
 
+    component mgt_9g6_gth
+      port (
+        gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
+        gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_error_out      : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_error_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_clk_freerun_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_all_in                 : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_cdr_stable_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_userdata_tx_in               : in  std_logic_vector(31 downto 0);
+        gtwiz_userdata_rx_out              : out std_logic_vector(31 downto 0);
+        drpaddr_in                         : in  std_logic_vector(9 downto 0);
+        drpclk_in                          : in  std_logic_vector(0 downto 0);
+        drpdi_in                           : in  std_logic_vector(15 downto 0);
+        drpen_in                           : in  std_logic_vector(0 downto 0);
+        drpwe_in                           : in  std_logic_vector(0 downto 0);
+        gthrxn_in                          : in  std_logic_vector(0 downto 0);
+        gthrxp_in                          : in  std_logic_vector(0 downto 0);
+        gtrefclk0_in                       : in  std_logic_vector(0 downto 0);
+        rx8b10ben_in                       : in  std_logic_vector(0 downto 0);
+        rxslide_in                         : in  std_logic_vector(0 downto 0);
+        rxusrclk_in                        : in  std_logic_vector(0 downto 0);
+        rxusrclk2_in                       : in  std_logic_vector(0 downto 0);
+        tx8b10ben_in                       : in  std_logic_vector(0 downto 0);
+        txctrl0_in                         : in  std_logic_vector(15 downto 0);
+        txctrl1_in                         : in  std_logic_vector(15 downto 0);
+        txctrl2_in                         : in  std_logic_vector(7 downto 0);
+        txusrclk_in                        : in  std_logic_vector(0 downto 0);
+        txusrclk2_in                       : in  std_logic_vector(0 downto 0);
+        drpdo_out                          : out std_logic_vector(15 downto 0);
+        drprdy_out                         : out std_logic_vector(0 downto 0);
+        gthtxn_out                         : out std_logic_vector(0 downto 0);
+        gthtxp_out                         : out std_logic_vector(0 downto 0);
+        gtpowergood_out                    : out std_logic_vector(0 downto 0);
+        rxctrl0_out                        : out std_logic_vector(15 downto 0);
+        rxctrl1_out                        : out std_logic_vector(15 downto 0);
+        rxctrl2_out                        : out std_logic_vector(7 downto 0);
+        rxctrl3_out                        : out std_logic_vector(7 downto 0);
+        rxoutclk_out                       : out std_logic_vector(0 downto 0);
+        rxpmaresetdone_out                 : out std_logic_vector(0 downto 0);
+        txoutclk_out                       : out std_logic_vector(0 downto 0);
+        txpmaresetdone_out                 : out std_logic_vector(0 downto 0);
+        txprgdivresetdone_out              : out std_logic_vector(0 downto 0)
+        );
+    end component;
+
   begin
 
-    MGT_GEN : entity xil_defaultlib.mgt_9g6_gth
+    mgt_gen : mgt_9g6_gth
       port map (
 
         -- drp
@@ -197,9 +256,67 @@ begin
     attribute NUM_MGTS            : integer;              -- need it somewhere more handy actually...
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
 
+    component mgt_9g6_gty
+      port (
+        gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
+        gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_tx_error_out      : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_error_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_clk_freerun_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_all_in                 : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_cdr_stable_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_userdata_tx_in               : in  std_logic_vector(31 downto 0);
+        gtwiz_userdata_rx_out              : out std_logic_vector(31 downto 0);
+        drpaddr_in                         : in  std_logic_vector(9 downto 0);
+        drpclk_in                          : in  std_logic_vector(0 downto 0);
+        drpdi_in                           : in  std_logic_vector(15 downto 0);
+        drpen_in                           : in  std_logic_vector(0 downto 0);
+        drpwe_in                           : in  std_logic_vector(0 downto 0);
+        gtrefclk0_in                       : in  std_logic_vector(0 downto 0);
+        gtyrxn_in                          : in  std_logic_vector(0 downto 0);
+        gtyrxp_in                          : in  std_logic_vector(0 downto 0);
+        rx8b10ben_in                       : in  std_logic_vector(0 downto 0);
+        rxslide_in                         : in  std_logic_vector(0 downto 0);
+        rxusrclk_in                        : in  std_logic_vector(0 downto 0);
+        rxusrclk2_in                       : in  std_logic_vector(0 downto 0);
+        tx8b10ben_in                       : in  std_logic_vector(0 downto 0);
+        txctrl0_in                         : in  std_logic_vector(15 downto 0);
+        txctrl1_in                         : in  std_logic_vector(15 downto 0);
+        txctrl2_in                         : in  std_logic_vector(7 downto 0);
+        txusrclk_in                        : in  std_logic_vector(0 downto 0);
+        txusrclk2_in                       : in  std_logic_vector(0 downto 0);
+        drpdo_out                          : out std_logic_vector(15 downto 0);
+        drprdy_out                         : out std_logic_vector(0 downto 0);
+        gtpowergood_out                    : out std_logic_vector(0 downto 0);
+        gtytxn_out                         : out std_logic_vector(0 downto 0);
+        gtytxp_out                         : out std_logic_vector(0 downto 0);
+        rxctrl0_out                        : out std_logic_vector(15 downto 0);
+        rxctrl1_out                        : out std_logic_vector(15 downto 0);
+        rxctrl2_out                        : out std_logic_vector(7 downto 0);
+        rxctrl3_out                        : out std_logic_vector(7 downto 0);
+        rxoutclk_out                       : out std_logic_vector(0 downto 0);
+        rxpmaresetdone_out                 : out std_logic_vector(0 downto 0);
+        txoutclk_out                       : out std_logic_vector(0 downto 0);
+        txpmaresetdone_out                 : out std_logic_vector(0 downto 0);
+        txprgdivresetdone_out              : out std_logic_vector(0 downto 0)
+        );
+    end component;
   begin
 
-    MGT_GEN : entity xil_defaultlib.mgt_9g6_gty
+    MGT_GEN : MGT_9G6_GTY
       port map (
 
         -- drp

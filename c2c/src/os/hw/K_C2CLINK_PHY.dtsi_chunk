@@ -1,0 +1,7 @@
+  amba_pl {
+    axiSlaveK_C2CLINK_PHY: K_C2CLINK_PHY@83C44000 {
+      compatible = "generic-uio";
+      reg = <0x83C44000 0x1000>;
+      label = "K_C2CLINK_PHY";
+    };
+  };

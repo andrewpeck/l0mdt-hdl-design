@@ -12,15 +12,15 @@ use shared_lib.common_types_pkg.all;
 package csf_pkg is
 
   type csf_hit_rt is record
-     valid                :  std_logic;                                                   -- 
-     x                    :  unsigned(MDT_LOCAL_X_LEN-1 downto 0);                        -- 
-     y                    :  unsigned(MDT_LOCAL_Y_LEN-1 downto 0);                        -- 
+    valid : std_logic;
+    x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
+    y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
   end record csf_hit_rt;
   constant CSF_HIT_LEN : integer := 28;
   subtype csf_hit_rvt is std_logic_vector(CSF_HIT_LEN-1 downto 0);
   function vectorify(x: csf_hit_rt) return csf_hit_rvt;
   function structify(x: csf_hit_rvt) return csf_hit_rt;
-  function nullify (x: csf_hit_rt) return csf_hit_rt;
+  function nullify(x: csf_hit_rt) return csf_hit_rt;
 
   type csf_hit_a_at is array(integer range <>) of csf_hit_rt;
   type csf_hit_a_avt is array(integer range <>) of csf_hit_rvt;
@@ -31,36 +31,36 @@ package csf_pkg is
   function nullify(x: csf_hit_a_at) return csf_hit_a_at;
   function nullify(x: csf_hit_a_avt) return csf_hit_a_avt;
 
-  constant   CSF_SEG_M_LEN        :  integer := 15;                                       -- 
+  constant CSF_SEG_M_LEN : integer := 15;
 
-  constant   CSF_SEG_M_MULT       :  real := 4096.0;                                      -- 
+  constant CSF_SEG_M_MULT : real := 4096.0;
 
-  constant   CSF_SEG_B_LEN        :  integer := 13;                                       -- 
+  constant CSF_SEG_B_LEN : integer := 13;
 
-  constant   CSF_SEG_B_MULT       :  real := 16.0;                                        -- 
+  constant CSF_SEG_B_MULT : real := 16.0;
 
-  constant   CSF_SEG_CHI2_LEN     :  integer := 15;                                       -- 
+  constant CSF_SEG_CHI2_LEN : integer := 15;
 
-  constant   CSF_SEG_CHI2_MULT    :  real := 4.0;                                         -- 
+  constant CSF_SEG_CHI2_MULT : real := 4.0;
 
-  constant   CSF_MAXHITS_SEG      :  integer := 16;                                       -- 
+  constant CSF_MAXHITS_SEG : integer := 16;
 
-  constant   CSF_MAXHITS_SEG_LEN  :  integer := 4;                                        -- 
+  constant CSF_MAXHITS_SEG_LEN : integer := 4;
 
-  constant   CSF_MAXHITS_ML_LEN   :  integer := 3;                                        -- 
+  constant CSF_MAXHITS_ML_LEN : integer := 3;
 
   type csf_locseg_rt is record
-     valid                :  std_logic;                                                   -- 
-     b                    :  signed(CSF_SEG_B_LEN-1 downto 0);                            -- 
-     m                    :  signed(CSF_SEG_M_LEN-1 downto 0);                            -- 
-     chi2                 :  unsigned(CSF_SEG_CHI2_LEN-1 downto 0);                       -- 
-     ndof                 :  unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);                    -- 
+    valid : std_logic;
+    b : signed(CSF_SEG_B_LEN-1 downto 0);
+    m : signed(CSF_SEG_M_LEN-1 downto 0);
+    chi2 : unsigned(CSF_SEG_CHI2_LEN-1 downto 0);
+    ndof : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
   end record csf_locseg_rt;
   constant CSF_LOCSEG_LEN : integer := 48;
   subtype csf_locseg_rvt is std_logic_vector(CSF_LOCSEG_LEN-1 downto 0);
   function vectorify(x: csf_locseg_rt) return csf_locseg_rvt;
   function structify(x: csf_locseg_rvt) return csf_locseg_rt;
-  function nullify (x: csf_locseg_rt) return csf_locseg_rt;
+  function nullify(x: csf_locseg_rt) return csf_locseg_rt;
 
   type csf_locseg_a_at is array(integer range <>) of csf_locseg_rt;
   type csf_locseg_a_avt is array(integer range <>) of csf_locseg_rvt;
@@ -93,7 +93,7 @@ package body csf_pkg is
     y.y                        := structify(x(13 downto 0));
     return y;
   end function structify;
-  function nullify (x: csf_hit_rt) return csf_hit_rt is
+  function nullify(x: csf_hit_rt) return csf_hit_rt is
     variable y : csf_hit_rt;
   begin
     y.valid                    := nullify(x.valid);
@@ -175,7 +175,7 @@ package body csf_pkg is
     y.ndof                     := structify(x(3 downto 0));
     return y;
   end function structify;
-  function nullify (x: csf_locseg_rt) return csf_locseg_rt is
+  function nullify(x: csf_locseg_rt) return csf_locseg_rt is
     variable y : csf_locseg_rt;
   begin
     y.valid                    := nullify(x.valid);

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="H2S" address="0x0">
+  <node id="HPS_INNER"  address="0x00000000" module="file://HPS.xml"/>
+  <node id="HPS_MIDDLE" address="0x00001000" module="file://HPS.xml"/>
+  <node id="HPS_OUTER"  address="0x00002000" module="file://HPS.xml"/>
+  <node id="HPS_EXTRA"  address="0x00004000" module="file://HPS.xml"/>
+</node>

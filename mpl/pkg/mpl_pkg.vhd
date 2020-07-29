@@ -11,9 +11,9 @@ use shared_lib.common_types_pkg.all;
 
 package mpl_pkg is
 
-  constant   MPL_PL_A_LATENCY     :  integer := 10;                                       -- 
+  constant MPL_PL_A_LATENCY : integer := 10;
 
-  constant   MPL_PL_B_LATENCY     :  integer := 5;                                        -- 
+  constant MPL_PL_B_LATENCY : integer := 5;
 
 end package mpl_pkg;
 

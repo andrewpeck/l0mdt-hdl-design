@@ -51,9 +51,9 @@ package config_pkg is
   --------------------------------------------------------------------------------
   constant c_SECTOR_ID            : integer   := CFG.SECTOR_ID;
   constant c_SECTOR_SIDE          : std_logic := CFG.SECTOR_SIDE;         -- 0:A          1:C
-  constant c_ST_nBARREL_ENDCAP      : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
-  constant c_ENDCAP_nSMALL_LARGE    : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
-  constant c_ENABLE_NEIGHTBORS      : std_logic := CFG.ENABLE_NEIGHTBORS;   -- 0: disabled  1: enabled
+  constant c_ST_nBARREL_ENDCAP    : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
+  constant c_ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
+  constant c_ENABLE_NEIGHBORS     : std_logic := CFG.ENABLE_NEIGHBORS;   -- 0: disabled  1: enabled
 
   -- physical values
 
@@ -85,7 +85,7 @@ package config_pkg is
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
   constant c_SF_TYPE                : std_logic := CFG.SF_TYPE; -- 0: CSF 1:LSF
 
-  constant c_NUM_DAQ_STREAMS        : integer := 2;
+  constant c_NUM_DAQ_STREAMS        : integer := 1;
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 
   --------------------------------------------------------------------------------
@@ -108,12 +108,12 @@ package config_pkg is
           CFG.ENABLE_ST_OUT &
           CFG.ENABLE_ST_EXT;
 
-  constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHTBORS));
-  constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHTBORS));
+  constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
+  constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
 
   constant c_MAX_NUM_SL   : integer := 3 + 
   to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 + 
-  to_integer(unsigned'("" & CFG.ENABLE_NEIGHTBORS))*2;
+  to_integer(unsigned'("" & CFG.ENABLE_NEIGHBORS))*2;
 
   -- parallel channels
   constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
@@ -122,12 +122,29 @@ package config_pkg is
   -- FUNCTIONS
   ---------------------------------------------------------
 
+  function get_num_layers(station : integer) return integer;
   
 
 end package config_pkg;
 
 package body config_pkg is
   
+  function get_num_layers(station : integer) return integer is
+    variable layers : integer;
+  begin
+
+    if c_ST_nBARREL_ENDCAP = '0' then
+      if station = 0 then
+        layers := 8;
+      else
+        layers := 6;
+      end if;
+    else
+      layers := 2;
+    end if;
+
+    return layers;
+  end function;
 
   
 end package body config_pkg;

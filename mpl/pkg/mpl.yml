@@ -10,6 +10,8 @@ __config__:
 
 
 
-MPL_PL_A_LATENCY  : { qualifier: constant , type: integer , value: 10 }
+HDL_Types:
 
-MPL_PL_B_LATENCY  : { qualifier: constant , type: integer , value: 5 }
+- MPL_PL_A_LATENCY  : { qualifier: constant , type: integer , value: 10 }
+
+- MPL_PL_B_LATENCY  : { qualifier: constant , type: integer , value: 5 }
