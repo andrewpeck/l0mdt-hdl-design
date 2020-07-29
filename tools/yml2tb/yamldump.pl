@@ -88,15 +88,15 @@ for( my $i=0; $i<$na; $i++) {
 	if( scalar( keys %{$type}) != 2 or
 	    !exists $type->{'__config__'} or
 	    !exists $type->{'HDL_Types'}) {
-	    print "ERROR in $ARGV[$i], missing __config__ or HDL_Types\n";
-	    exit;
+	    print "WARNING: $ARGV[$i], missing __config__ or HDL_Types (skipped)\n";
+	} else {
+	    my $tlist = $type->{'HDL_Types'};
+	    foreach my $ftyp ( @{$tlist}) {
+		push @{$types}, $ftyp;
+	    }
+	    #	my %comb = ( %{$types}, %{$type});
+	    #	$types = \%comb;
 	}
-	my $tlist = $type->{'HDL_Types'};
-	foreach my $ftyp ( @{$tlist}) {
-	    push @{$types}, $ftyp;
-	}
-#	my %comb = ( %{$types}, %{$type});
-#	$types = \%comb;
     } elsif( $arg =~ m{\.db}) {
 	$dbfile = $arg;
     } elsif( $arg =~ m{-d}) {
