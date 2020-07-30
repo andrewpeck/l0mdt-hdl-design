@@ -29,6 +29,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+l
 -- use heg_lib.heg_trLUT_s3_pkg.all;
 
 entity b_mbar2roi is
@@ -50,17 +51,47 @@ end entity b_mbar2roi;
 
 architecture beh of b_mbar2roi is
 
-  signal int_uCM_data : ucm2hps_rt;
-  signal uCM_barrel   : ucm_csf_barrel_rt;
-  signal z_barrel       : unsigned(UCM_Z_ROI_LEN-1 downto 0);
-  -- type trLUT_layer_t is array (0 to 7) of trLUT_limits_t;
-  -- signal Roi_window_LUT : trLUT_layer_t;
-  -- signal Roi_w_index : integer;
-  -- signal Roi_window_a : hp_heg2hp_window_at;
+  signal rom_mem  : roi_mbar_lut_t(0 to get_roi_mbar_max(g_STATION_RADIUS) - 1);
+  signal addr_mem : unsigned(UCM_Z_ROI_LEN-1 downto 0); 
+  signal int_data_valid : std_logic;
+  
+  attribute ROM_STYLE : string;
+  attribute ROM_STYLE of rom_mem : signal is "distributed";
 
-  signal wingen_dv_o : std_logic;
+  signal roi_edges : std_logic_vector(MDT_TUBE_LEN * get_num_layers(g_STATION_RADIUS)) -1 downto 0);
 begin
 
+  rom_mem <= get_roi_center_tubes(g_STATION_RADIUS);
 
+  dv_guard : process(i_dv) begin
+    int_data_valid <= i_dv;
+  end process;
+
+  mem_guard : process(i_mbar) begin
+    -- if ( to_integer(unsigned(i_mbar)) > 5) then
+    --   addr_mem <= (others => '0');
+    -- else
+      addr_mem <= i_mbar;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
+    -- end if;
+  end process;
+
+  INN_GEN: if g_STATION_RADIUS = 0 generate
+    DT2R : process(clk)
+
+    begin
+      if rising_edge(clk) then
+        if rst= '1' then
+          o_spaces <= (others => '0');
+          o_dv <= '0';
+        else
+          o_dv <= int_data_valid;
+          if(int_data_valid = '1') then
+            roi_edges <= rom_mem(to_integer(addr_mem));
+            -- o_spaces <= to_unsigned(rom_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+          end if;
+        end if;
+      end if ;
+    end process;
+  end generate;
 
 end beh;
