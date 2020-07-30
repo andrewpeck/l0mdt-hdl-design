@@ -6,7 +6,7 @@ include:
     - local: '/.devel_to_master.yml'
     - local: '/Top/csf/gitlab-ci.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
-    - local: '/Top/pt/gitlab-ci.yml'
+    - local: '/Top/tf/gitlab-ci.yml'
     - local: '/Top/ucm/gitlab-ci.yml'
     - local: '/Top/hp/gitlab-ci.yml'
     - local: '/Top/heg/gitlab-ci.yml'

@@ -159,7 +159,7 @@ HDL_Types:
 
 # sf2pt_ : { array: open , type : sf2pt , _: off}
 
-# # sf2pt_a : { array: open , type : sf2pt_ , _: off}
+- sf2pt_a : { array: open , type : sf2pt , _: off}
 
 # # -----------------------------------------------------------
 # # slc ucm pipeline
@@ -181,6 +181,8 @@ HDL_Types:
   - muid       : { type : slc_muid}
   - phimod     : { type : signed, length: UCM_PT_PHIMOD_LEN}
   - charge     : { type : logic}
+
+- pl2pt_a : { array: open , type : pl2pt, _: off}
 
 # pl 2 mtc
 - pl2mtc:
@@ -206,6 +208,9 @@ HDL_Types:
   - charge     : { type : logic}
   - nseg       : { type : unsigned, length: MTC_NSEG_LEN}
   - quality    : { type : logic, length: MTC_QUALITY_LEN}
+
+- tf2mtc_a : { array: open , type : tf2mtc , _: off}
+
 
 # # -----------------------------------------------------------
 # # MTC out

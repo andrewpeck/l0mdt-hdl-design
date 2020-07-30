@@ -44,9 +44,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library pt_lib;
-use pt_lib.pt_pkg.all;
-use pt_lib.pt_params_pkg.all;
+library tf_lib;
+use tf_lib.pt_pkg.all;
+use tf_lib.pt_params_pkg.all;
 
 -- library IEEE, pt_lib;
 -- use IEEE.STD_LOGIC_1164.ALL;
@@ -57,49 +57,67 @@ use pt_lib.pt_params_pkg.all;
 entity segment_selector is
     port (
         clk               : in std_logic;
-        i_seg_BI          : in  t_globalseg;
-        i_seg_BM          : in  t_globalseg;
-        i_seg_BO          : in  t_globalseg;
-        i_nsp_seg_BI      : in  t_globalseg;
-        i_nsp_seg_BM      : in  t_globalseg;
-        i_nsp_seg_BO      : in  t_globalseg;
-        i_nsm_seg_BI      : in  t_globalseg;
-        i_nsm_seg_BM      : in  t_globalseg;
-        i_nsm_seg_BO      : in  t_globalseg;
-        o_seg_BI          : out t_globalseg;
-        o_seg_BM          : out t_globalseg;
-        o_seg_BO          : out t_globalseg
+        i_seg_I          : in  sf2pt_rvt;
+        i_seg_M          : in  sf2pt_rvt;
+        i_seg_O          : in  sf2pt_rvt;
+        i_nsp_seg_I      : in  sf2pt_rvt;
+        i_nsp_seg_M      : in  sf2pt_rvt;
+        i_nsp_seg_O      : in  sf2pt_rvt;
+        i_nsm_seg_I      : in  sf2pt_rvt;
+        i_nsm_seg_M      : in  sf2pt_rvt;
+        i_nsm_seg_O      : in  sf2pt_rvt;
+        o_seg_I          : out sf2pt_rvt;
+        o_seg_M          : out sf2pt_rvt;
+        o_seg_O          : out sf2pt_rvt
     );
 end segment_selector; -- segment_selector
 
 architecture Behavioral of segment_selector is
 
     function select_segment ( 
-        seg0 : t_globalseg; 
-        seg1 : t_globalseg; 
-        seg2 : t_globalseg
-    ) return t_globalseg is
-        variable outseg : t_globalseg := null_globalseg;
+        seg0 : sf2pt_rt; 
+        seg1 : sf2pt_rt; 
+        seg2 : sf2pt_rt
+    ) return sf2pt_rt is
+        variable outseg : sf2pt_rt;
     begin
-        if seg0.valid = '1' then
+        if seg0.data_valid = '1' then
             outseg := seg0;
-        elsif seg1.valid = '1' then
+        elsif seg1.data_valid = '1' then
             outseg := seg1;
-        elsif seg2.valid = '1' then
+        elsif seg2.data_valid = '1' then
             outseg := seg2;
         end if;
-        return outseg;
+        return nullify(outseg);
     end function select_segment;
 
+    signal seg_I, seg_M, seg_O, 
+           nsp_seg_I, nsp_seg_M, nsp_seg_O, 
+           nsm_seg_I, nsm_seg_M, nsm_seg_O : sf2pt_rt;
+    signal outseg_I, outseg_M, outseg_O : sf2pt_rt;
+
 begin
-    
+    seg_I <= structify(i_seg_I);
+    seg_M <= structify(i_seg_M);
+    seg_O <= structify(i_seg_O);
+    nsm_seg_I <= structify(i_nsm_seg_I);
+    nsm_seg_M <= structify(i_nsm_seg_M);
+    nsm_seg_O <= structify(i_nsm_seg_O);
+    nsp_seg_I <= structify(i_nsp_seg_I);
+    nsp_seg_M <= structify(i_nsp_seg_M);
+    nsp_seg_O <= structify(i_nsp_seg_O);
+
+    o_seg_I <= vectorify(outseg_I);
+    o_seg_M <= vectorify(outseg_M);
+    o_seg_O <= vectorify(outseg_O);
+
     SelProc : process( clk )
         begin
         if rising_edge(clk) then
             -- Clock 0
-            o_seg_BI <= select_segment(i_seg_BI, i_nsp_seg_BI, i_nsm_seg_BI);
-            o_seg_BM <= select_segment(i_seg_BM, i_nsp_seg_BM, i_nsm_seg_BM);
-            o_seg_BO <= select_segment(i_seg_BO, i_nsp_seg_BO, i_nsm_seg_BO);
+            outseg_I <= select_segment(seg_I, nsp_seg_I, nsm_seg_I);
+            outseg_M <= select_segment(seg_M, nsp_seg_M, nsm_seg_M);
+            outseg_O <= select_segment(seg_O, nsp_seg_O, nsm_seg_O);
         end if ;
     end process ; -- SagittaProc
 
