@@ -29,10 +29,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
--- library shared_lib;
--- use shared_lib.config_pkg.all;
--- use shared_lib.common_types_pkg.all;
--- use shared_lib.common_constants_pkg.all;
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -41,18 +37,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library pt_lib;
-use pt_lib.pt_pkg.all;
-use pt_lib.pt_params_pkg.all;
-
--- library IEEE, pt_lib, shared_lib;
--- use IEEE.STD_LOGIC_1164.ALL;
--- use IEEE.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use pt_lib.pt_pkg.all;
--- use pt_lib.pt_params_pkg.all;
--- use ieee.std_logic_textio.all;
--- use shared_lib.custom_types_davide_pkg.all;
+library tf_lib;
+use tf_lib.pt_pkg.all;
+use tf_lib.pt_params_pkg.all;
 
 entity top_pt is
     generic(
@@ -74,7 +61,7 @@ architecture Behavioral of top_pt is
 
 begin
 
-  PT : entity pt_lib.pt
+  PT : entity tf_lib.pt
     generic map (
         FLAVOUR       => FLAVOUR,
         SECTOR        => SECTOR

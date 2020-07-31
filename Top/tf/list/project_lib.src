@@ -2,4 +2,3 @@ shared/shared_lib.src
 Top/tf/prj_cfg.vhd
 tf/tf_lib.src
 tf/top_tf.vhd
-tf/top_pt.vhd
