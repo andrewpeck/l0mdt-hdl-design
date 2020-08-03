@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
---use std.textio.all;
+use std.textio.all;
 
 library ieee;
 use ieee.math_real.uniform;
@@ -17,7 +17,10 @@ architecture Behavioral of tdc_decoder_tb is
   constant clk_period : time := 3 ns;
   constant sim_period : time := 40000000 ns;
 
+  signal max_sync_bxs    : integer := 0;
+
   signal resync               : std_logic                     := '0';
+  signal synced               : std_logic                     := '0';
   signal reset                : std_logic                     := '1';
   signal clock                : std_logic                     := '0';
   signal valid_i              : std_logic;
@@ -257,24 +260,39 @@ begin
     variable seed2 : positive := 4;
     variable x     : real;
     variable y     : time     := 0 ns;
+    variable sync_start : time := 0 ns;
+    variable sync_end : time  := 0 ns;
+    variable sync_bxs : integer;
   begin
 
     -- send k-chars for a while to sync
     syncing <= '1';
     bitslip <= '1';
 
-    wait until rising_edge(clock);
-    resync <= '1';
-    wait until rising_edge(clock);
-    resync <= '0';
-
     uniform(seed1, seed2, x);
     y       := floor(x*8.0)*clk_period;
     wait for y;
     wait until rising_edge(clock);
     bitslip <= '0';
-    wait for 20 us;
 
+    wait until rising_edge(clock);
+    resync <= '1';
+    sync_start := now;
+    wait until rising_edge(clock);
+    resync <= '0';
+
+    ---- send data, wait for a valid
+    --syncing <= '0';
+    wait until rising_edge(synced) for 100 us;
+    assert (synced='1') report "failed to synchronize after resync" severity error;
+    sync_end := now;
+    sync_bxs := integer(floor(real((sync_end - sync_start) / (clk_period * 8))));
+    if (sync_bxs > max_sync_bxs) then
+      assert (false) report "Max time to sync = " & integer'image(sync_bxs) & " bx" severity note;
+      max_sync_bxs <= sync_bxs;
+    end if;
+
+    --wait for 1 us;
     -- send data, wait for a valid
     syncing <= '0';
     wait for 100 us;
@@ -331,6 +349,7 @@ begin
     port map (
       reset       => '0',
       resync_i    => resync,
+      synced_o    => synced,
       clock       => clock,
       valid_i     => valid_i,
       data_even   => data_even_skewed,

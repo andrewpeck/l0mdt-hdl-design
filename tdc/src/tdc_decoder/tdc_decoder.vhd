@@ -19,6 +19,8 @@ entity tdc_decoder is
 
     resync_i : in std_logic;
 
+    synced_o : out std_logic;
+
     clock : in std_logic;               -- 320 Mbps clock
 
     -- take in 8 bits / bx of data on even odd links
@@ -137,6 +139,7 @@ begin
     port map (
       clock        => clock,
       resync_i     => resync_i,
+      synced_o     => synced_o,
       data_i       => aligned_data,
       data_i_valid => aligned_data_valid,
       err_o        => bitslip,

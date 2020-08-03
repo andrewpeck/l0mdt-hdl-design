@@ -8,6 +8,7 @@ entity decoder_framer is
   port(
     clock        : in  std_logic;
     resync_i     : in  std_logic;
+    synced_o     : out std_logic;
     data_i       : in  std_logic_vector (15 downto 0);  -- receive 16 bits / bx
     data_i_valid : in  std_logic;                       -- input data valid flag
     data_o       : out std_logic_vector (9 downto 0) := (others => '0');
@@ -87,6 +88,7 @@ architecture behavioral of decoder_framer is
 
 begin
 
+  synced_o <= '1' when synced else '0';
   k_good <= k_good0 and k_good1 and k_good2 and k_good3 and k_good4;
   err_o  <= '1' when (timeout) or (not synced and wait_for_slip = 0 and valid = '1' and not k_good) else '0';
 
