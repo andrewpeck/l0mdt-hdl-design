@@ -42,7 +42,7 @@ entity hit_processor is
     time_offset         : in unsigned(7 downto 0);
 
     -- SLc
-    i_SLC_Window        : in hp_heg2hp_window_avt;
+    i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     i_slc_data_v        : in hp_heg2hp_slc_rvt;
     -- MDT hit
     i_mdt_data          : in hp_hpsPc2hp_rvt;
@@ -105,7 +105,8 @@ begin
     clk                 => clk,
     rst            => rst,
     glob_en             => glob_en,
-    -- SLc
+    -- SLc-
+    i_SLC_Window        => i_SLC_Window(0),
     i_SLc_specific      => slc_data.specific,
     i_SLc_BCID          => slc_data.BCID,
     -- MDT hit

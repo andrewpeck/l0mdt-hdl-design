@@ -90,7 +90,6 @@ begin
       i_dv                => mdt_tar_data.data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
-      
     );
 
   ZH : entity hps_lib.hps_pc_b_zholes
@@ -106,7 +105,6 @@ begin
       i_dv                => mdt_tar_data.data_valid,
       o_spaces            => holesize,
       o_dv                => zh_dv
-      
     );
 
   TR : entity hps_lib.hps_pc_b_r
@@ -122,7 +120,6 @@ begin
       i_dv                => mdt_tar_data.data_valid,
       o_r_pos             => r_pos,
       o_dv                => r_dv
-      
     );
 
   dv_pl(0) <= mdt_tar_data.data_valid;

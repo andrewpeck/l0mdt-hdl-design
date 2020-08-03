@@ -1,7 +1,7 @@
   amba_pl {
-    axiSlaveTAR: TAR@44A90000 {
+    axiSlaveTAR: TAR@44A80000 {
       compatible = "generic-uio";
-      reg = <0x44A90000 0x10000>;
+      reg = <0x44A80000 0x10000>;
       label = "TAR";
     };
   };

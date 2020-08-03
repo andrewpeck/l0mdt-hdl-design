@@ -17,7 +17,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_muid_rvt is std_logic_vector(SLC_MUID_LEN-1 downto 0);
   function vectorify(x: slc_muid_rt) return slc_muid_rvt;
   function structify(x: slc_muid_rvt) return slc_muid_rt;
-  function nullify (x: slc_muid_rt) return slc_muid_rt;
+  function nullify(x: slc_muid_rt) return slc_muid_rt;
 
   type slc_chid_rt is record
     mdt_inn : unsigned(SLC_CHAMBER_LEN-1 downto 0);
@@ -29,7 +29,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_chid_rvt is std_logic_vector(SLC_CHID_LEN-1 downto 0);
   function vectorify(x: slc_chid_rt) return slc_chid_rvt;
   function structify(x: slc_chid_rvt) return slc_chid_rt;
-  function nullify (x: slc_chid_rt) return slc_chid_rt;
+  function nullify(x: slc_chid_rt) return slc_chid_rt;
 
   type slc_common_rt is record
     tcid : std_logic_vector(SLC_TCID_LEN-1 downto 0);
@@ -44,7 +44,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_common_rvt is std_logic_vector(SLC_COMMON_LEN-1 downto 0);
   function vectorify(x: slc_common_rt) return slc_common_rvt;
   function structify(x: slc_common_rvt) return slc_common_rt;
-  function nullify (x: slc_common_rt) return slc_common_rt;
+  function nullify(x: slc_common_rt) return slc_common_rt;
 
   type slc_barrel_rt is record
     spare_bits : std_logic_vector(SLC_B_SPARE_LEN-1 downto 0);
@@ -58,7 +58,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_barrel_rvt is std_logic_vector(SLC_BARREL_LEN-1 downto 0);
   function vectorify(x: slc_barrel_rt) return slc_barrel_rvt;
   function structify(x: slc_barrel_rvt) return slc_barrel_rt;
-  function nullify (x: slc_barrel_rt) return slc_barrel_rt;
+  function nullify(x: slc_barrel_rt) return slc_barrel_rt;
 
   type slc_endcap_rt is record
     spare_bits : std_logic_vector(SLC_E_SPARE_LEN-1 downto 0);
@@ -74,7 +74,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_endcap_rvt is std_logic_vector(SLC_ENDCAP_LEN-1 downto 0);
   function vectorify(x: slc_endcap_rt) return slc_endcap_rvt;
   function structify(x: slc_endcap_rvt) return slc_endcap_rt;
-  function nullify (x: slc_endcap_rt) return slc_endcap_rt;
+  function nullify(x: slc_endcap_rt) return slc_endcap_rt;
 
   type slc_rx_data_rt is record
     muid : slc_muid_rt;
@@ -88,7 +88,7 @@ package l0mdt_dataformats_pkg is
   subtype slc_rx_data_rvt is std_logic_vector(SLC_RX_DATA_LEN-1 downto 0);
   function vectorify(x: slc_rx_data_rt) return slc_rx_data_rvt;
   function structify(x: slc_rx_data_rvt) return slc_rx_data_rt;
-  function nullify (x: slc_rx_data_rt) return slc_rx_data_rt;
+  function nullify(x: slc_rx_data_rt) return slc_rx_data_rt;
 
   type mdt_tdc_rt is record
     ch : std_logic_vector(MDT_TDC_CH_LEN-1 downto 0);
@@ -101,7 +101,7 @@ package l0mdt_dataformats_pkg is
   subtype mdt_tdc_rvt is std_logic_vector(MDT_TDC_LEN-1 downto 0);
   function vectorify(x: mdt_tdc_rt) return mdt_tdc_rvt;
   function structify(x: mdt_tdc_rvt) return mdt_tdc_rt;
-  function nullify (x: mdt_tdc_rt) return mdt_tdc_rt;
+  function nullify(x: mdt_tdc_rt) return mdt_tdc_rt;
 
   type mdt_polmux_rt is record
     fiberID : std_logic_vector(MDT_FIBER_LEN-1 downto 0);
@@ -113,7 +113,7 @@ package l0mdt_dataformats_pkg is
   subtype mdt_polmux_rvt is std_logic_vector(MDT_POLMUX_LEN-1 downto 0);
   function vectorify(x: mdt_polmux_rt) return mdt_polmux_rvt;
   function structify(x: mdt_polmux_rvt) return mdt_polmux_rt;
-  function nullify (x: mdt_polmux_rt) return mdt_polmux_rt;
+  function nullify(x: mdt_polmux_rt) return mdt_polmux_rt;
 
   type tar2hps_rt is record
     tube : unsigned(MDT_TUBE_LEN-1 downto 0);
@@ -126,7 +126,7 @@ package l0mdt_dataformats_pkg is
   subtype tar2hps_rvt is std_logic_vector(TAR2HPS_LEN-1 downto 0);
   function vectorify(x: tar2hps_rt) return tar2hps_rvt;
   function structify(x: tar2hps_rvt) return tar2hps_rt;
-  function nullify (x: tar2hps_rt) return tar2hps_rt;
+  function nullify(x: tar2hps_rt) return tar2hps_rt;
 
   type ucm_csf_seed_rt is record
     muid : slc_muid_rt;
@@ -140,7 +140,7 @@ package l0mdt_dataformats_pkg is
   subtype ucm_csf_seed_rvt is std_logic_vector(UCM_CSF_SEED_LEN-1 downto 0);
   function vectorify(x: ucm_csf_seed_rt) return ucm_csf_seed_rvt;
   function structify(x: ucm_csf_seed_rvt) return ucm_csf_seed_rt;
-  function nullify (x: ucm_csf_seed_rt) return ucm_csf_seed_rt;
+  function nullify(x: ucm_csf_seed_rt) return ucm_csf_seed_rt;
 
   type sf2pt_rt is record
     data_valid : std_logic;
@@ -154,7 +154,7 @@ package l0mdt_dataformats_pkg is
   subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
   function vectorify(x: sf2pt_rt) return sf2pt_rvt;
   function structify(x: sf2pt_rvt) return sf2pt_rt;
-  function nullify (x: sf2pt_rt) return sf2pt_rt;
+  function nullify(x: sf2pt_rt) return sf2pt_rt;
 
   type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
@@ -168,7 +168,7 @@ package l0mdt_dataformats_pkg is
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
-  function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+  function nullify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
 
   type sf_seg_data_endcap_rt is record
     data_valid : std_logic;
@@ -182,7 +182,7 @@ package l0mdt_dataformats_pkg is
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
-  function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+  function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
   type ucm2pl_rt is record
     muid : slc_muid_rt;
@@ -197,7 +197,7 @@ package l0mdt_dataformats_pkg is
   subtype ucm2pl_rvt is std_logic_vector(UCM2PL_LEN-1 downto 0);
   function vectorify(x: ucm2pl_rt) return ucm2pl_rvt;
   function structify(x: ucm2pl_rvt) return ucm2pl_rt;
-  function nullify (x: ucm2pl_rt) return ucm2pl_rt;
+  function nullify(x: ucm2pl_rt) return ucm2pl_rt;
 
   type pl2pt_rt is record
     data_valid : std_logic;
@@ -209,7 +209,7 @@ package l0mdt_dataformats_pkg is
   subtype pl2pt_rvt is std_logic_vector(PL2PT_LEN-1 downto 0);
   function vectorify(x: pl2pt_rt) return pl2pt_rvt;
   function structify(x: pl2pt_rvt) return pl2pt_rt;
-  function nullify (x: pl2pt_rt) return pl2pt_rt;
+  function nullify(x: pl2pt_rt) return pl2pt_rt;
 
   type pl2mtc_rt is record
     muid : slc_muid_rt;
@@ -224,7 +224,7 @@ package l0mdt_dataformats_pkg is
   subtype pl2mtc_rvt is std_logic_vector(PL2MTC_LEN-1 downto 0);
   function vectorify(x: pl2mtc_rt) return pl2mtc_rvt;
   function structify(x: pl2mtc_rvt) return pl2mtc_rt;
-  function nullify (x: pl2mtc_rt) return pl2mtc_rt;
+  function nullify(x: pl2mtc_rt) return pl2mtc_rt;
 
   type tf2mtc_rt is record
     data_valid : std_logic;
@@ -240,7 +240,7 @@ package l0mdt_dataformats_pkg is
   subtype tf2mtc_rvt is std_logic_vector(TF2MTC_LEN-1 downto 0);
   function vectorify(x: tf2mtc_rt) return tf2mtc_rvt;
   function structify(x: tf2mtc_rvt) return tf2mtc_rt;
-  function nullify (x: tf2mtc_rt) return tf2mtc_rt;
+  function nullify(x: tf2mtc_rt) return tf2mtc_rt;
 
   type mtc_out_rt is record
     common : slc_common_rt;
@@ -250,7 +250,7 @@ package l0mdt_dataformats_pkg is
   subtype mtc_out_rvt is std_logic_vector(MTC_OUT_LEN-1 downto 0);
   function vectorify(x: mtc_out_rt) return mtc_out_rvt;
   function structify(x: mtc_out_rvt) return mtc_out_rt;
-  function nullify (x: mtc_out_rt) return mtc_out_rt;
+  function nullify(x: mtc_out_rt) return mtc_out_rt;
 
   type mtc2nsp_rt is record
     common : slc_common_rt;
@@ -260,7 +260,7 @@ package l0mdt_dataformats_pkg is
   subtype mtc2nsp_rvt is std_logic_vector(MTC2NSP_LEN-1 downto 0);
   function vectorify(x: mtc2nsp_rt) return mtc2nsp_rvt;
   function structify(x: mtc2nsp_rvt) return mtc2nsp_rt;
-  function nullify (x: mtc2nsp_rt) return mtc2nsp_rt;
+  function nullify(x: mtc2nsp_rt) return mtc2nsp_rt;
 
 end package l0mdt_dataformats_pkg;
 
@@ -284,7 +284,7 @@ package body l0mdt_dataformats_pkg is
     y.bcid                     := structify(x(11 downto 0));
     return y;
   end function structify;
-  function nullify (x: slc_muid_rt) return slc_muid_rt is
+  function nullify(x: slc_muid_rt) return slc_muid_rt is
     variable y : slc_muid_rt;
   begin
     y.slcid                    := nullify(x.slcid);
@@ -311,7 +311,7 @@ package body l0mdt_dataformats_pkg is
     y.mdt_ext                  := structify(x(2 downto 0));
     return y;
   end function structify;
-  function nullify (x: slc_chid_rt) return slc_chid_rt is
+  function nullify(x: slc_chid_rt) return slc_chid_rt is
     variable y : slc_chid_rt;
   begin
     y.mdt_inn                  := nullify(x.mdt_inn);
@@ -345,7 +345,7 @@ package body l0mdt_dataformats_pkg is
     y.charge                   := x(0);
     return y;
   end function structify;
-  function nullify (x: slc_common_rt) return slc_common_rt is
+  function nullify(x: slc_common_rt) return slc_common_rt is
     variable y : slc_common_rt;
   begin
     y.tcid                     := nullify(x.tcid);
@@ -380,7 +380,7 @@ package body l0mdt_dataformats_pkg is
     y.z_rpc3                   := structify(x(9 downto 0));
     return y;
   end function structify;
-  function nullify (x: slc_barrel_rt) return slc_barrel_rt is
+  function nullify(x: slc_barrel_rt) return slc_barrel_rt is
     variable y : slc_barrel_rt;
   begin
     y.spare_bits               := nullify(x.spare_bits);
@@ -418,7 +418,7 @@ package body l0mdt_dataformats_pkg is
     y.nsw_monitor              := x(0);
     return y;
   end function structify;
-  function nullify (x: slc_endcap_rt) return slc_endcap_rt is
+  function nullify(x: slc_endcap_rt) return slc_endcap_rt is
     variable y : slc_endcap_rt;
   begin
     y.spare_bits               := nullify(x.spare_bits);
@@ -452,7 +452,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: slc_rx_data_rt) return slc_rx_data_rt is
+  function nullify(x: slc_rx_data_rt) return slc_rx_data_rt is
     variable y : slc_rx_data_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -483,7 +483,7 @@ package body l0mdt_dataformats_pkg is
     y.pw                       := structify(x(7 downto 0));
     return y;
   end function structify;
-  function nullify (x: mdt_tdc_rt) return mdt_tdc_rt is
+  function nullify(x: mdt_tdc_rt) return mdt_tdc_rt is
     variable y : mdt_tdc_rt;
   begin
     y.ch                       := nullify(x.ch);
@@ -512,7 +512,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: mdt_polmux_rt) return mdt_polmux_rt is
+  function nullify(x: mdt_polmux_rt) return mdt_polmux_rt is
     variable y : mdt_polmux_rt;
   begin
     y.fiberID                  := nullify(x.fiberID);
@@ -542,7 +542,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: tar2hps_rt) return tar2hps_rt is
+  function nullify(x: tar2hps_rt) return tar2hps_rt is
     variable y : tar2hps_rt;
   begin
     y.tube                     := nullify(x.tube);
@@ -575,7 +575,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm_csf_seed_rt) return ucm_csf_seed_rt is
+  function nullify(x: ucm_csf_seed_rt) return ucm_csf_seed_rt is
     variable y : ucm_csf_seed_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -609,7 +609,7 @@ package body l0mdt_dataformats_pkg is
     y.quality                  := x(0);
     return y;
   end function structify;
-  function nullify (x: sf2pt_rt) return sf2pt_rt is
+  function nullify(x: sf2pt_rt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
     y.data_valid               := nullify(x.data_valid);
@@ -643,7 +643,7 @@ package body l0mdt_dataformats_pkg is
     y.quality                  := x(0);
     return y;
   end function structify;
-  function nullify (x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+  function nullify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
     y.data_valid               := nullify(x.data_valid);
@@ -677,7 +677,7 @@ package body l0mdt_dataformats_pkg is
     y.quality                  := x(0);
     return y;
   end function structify;
-  function nullify (x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+  function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
     y.data_valid               := nullify(x.data_valid);
@@ -713,7 +713,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: ucm2pl_rt) return ucm2pl_rt is
+  function nullify(x: ucm2pl_rt) return ucm2pl_rt is
     variable y : ucm2pl_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -744,7 +744,7 @@ package body l0mdt_dataformats_pkg is
     y.charge                   := x(0);
     return y;
   end function structify;
-  function nullify (x: pl2pt_rt) return pl2pt_rt is
+  function nullify(x: pl2pt_rt) return pl2pt_rt is
     variable y : pl2pt_rt;
   begin
     y.data_valid               := nullify(x.data_valid);
@@ -778,7 +778,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: pl2mtc_rt) return pl2mtc_rt is
+  function nullify(x: pl2mtc_rt) return pl2mtc_rt is
     variable y : pl2mtc_rt;
   begin
     y.muid                     := nullify(x.muid);
@@ -817,7 +817,7 @@ package body l0mdt_dataformats_pkg is
     y.quality                  := x(2 downto 0);
     return y;
   end function structify;
-  function nullify (x: tf2mtc_rt) return tf2mtc_rt is
+  function nullify(x: tf2mtc_rt) return tf2mtc_rt is
     variable y : tf2mtc_rt;
   begin
     y.data_valid               := nullify(x.data_valid);
@@ -845,7 +845,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: mtc_out_rt) return mtc_out_rt is
+  function nullify(x: mtc_out_rt) return mtc_out_rt is
     variable y : mtc_out_rt;
   begin
     y.common                   := nullify(x.common);
@@ -867,7 +867,7 @@ package body l0mdt_dataformats_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify (x: mtc2nsp_rt) return mtc2nsp_rt is
+  function nullify(x: mtc2nsp_rt) return mtc2nsp_rt is
     variable y : mtc2nsp_rt;
   begin
     y.common                   := nullify(x.common);

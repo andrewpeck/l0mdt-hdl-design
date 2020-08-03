@@ -100,28 +100,79 @@ begin
     attribute NUM_MGTS            : integer;              -- need it somewhere more handy actually...
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
 
+    component mgt_felix
+      port (
+        gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_reset_in       : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_start_user_in  : in  std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_done_out       : out std_logic_vector(0 downto 0);
+        gtwiz_buffbypass_rx_error_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_clk_freerun_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_all_in                 : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_pll_and_datapath_in : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_datapath_in         : in  std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_cdr_stable_out      : out std_logic_vector(0 downto 0);
+        gtwiz_reset_tx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_reset_rx_done_out            : out std_logic_vector(0 downto 0);
+        gtwiz_userdata_tx_in               : in  std_logic_vector(255 downto 0);
+        gtwiz_userdata_rx_out              : out std_logic_vector(127 downto 0);
+        gtrefclk00_in                      : in  std_logic_vector(0 downto 0);
+        gtrefclk01_in                      : in  std_logic_vector(0 downto 0);
+        qpll0outclk_out                    : out std_logic_vector(0 downto 0);
+        qpll0outrefclk_out                 : out std_logic_vector(0 downto 0);
+        qpll1outclk_out                    : out std_logic_vector(0 downto 0);
+        qpll1outrefclk_out                 : out std_logic_vector(0 downto 0);
+        drpaddr_in                         : in  std_logic_vector(39 downto 0);
+        drpclk_in                          : in  std_logic_vector(3 downto 0);
+        drpdi_in                           : in  std_logic_vector(63 downto 0);
+        drpen_in                           : in  std_logic_vector(3 downto 0);
+        drpwe_in                           : in  std_logic_vector(3 downto 0);
+        gtyrxn_in                          : in  std_logic_vector(3 downto 0);
+        gtyrxp_in                          : in  std_logic_vector(3 downto 0);
+        rxslide_in                         : in  std_logic_vector(3 downto 0);
+        rxusrclk_in                        : in  std_logic_vector(3 downto 0);
+        rxusrclk2_in                       : in  std_logic_vector(3 downto 0);
+        txheader_in                        : in  std_logic_vector(23 downto 0);
+        txsequence_in                      : in  std_logic_vector(27 downto 0);
+        txusrclk_in                        : in  std_logic_vector(3 downto 0);
+        txusrclk2_in                       : in  std_logic_vector(3 downto 0);
+        drpdo_out                          : out std_logic_vector(63 downto 0);
+        drprdy_out                         : out std_logic_vector(3 downto 0);
+        gtpowergood_out                    : out std_logic_vector(3 downto 0);
+        gtytxn_out                         : out std_logic_vector(3 downto 0);
+        gtytxp_out                         : out std_logic_vector(3 downto 0);
+        rxoutclk_out                       : out std_logic_vector(3 downto 0);
+        rxpmaresetdone_out                 : out std_logic_vector(3 downto 0);
+        txoutclk_out                       : out std_logic_vector(3 downto 0);
+        txpmaresetdone_out                 : out std_logic_vector(3 downto 0)
+        );
+    end component;
+
   begin
 
-    MGT_GEN : entity xil_defaultlib.mgt_felix
+    MGT_GEN : mgt_felix
       port map (
 
         -- drp
 
         drpaddr_in => (mgt_drp_i(3).drpaddr_in & mgt_drp_i(2).drpaddr_in & mgt_drp_i(1).drpaddr_in & mgt_drp_i(0).drpaddr_in),
-        drpclk_in  => (mgt_drp_i(3).drpclk_in  & mgt_drp_i(2).drpclk_in  & mgt_drp_i(1).drpclk_in  & mgt_drp_i(0).drpclk_in),
-        drpdi_in   => (mgt_drp_i(3).drpdi_in   & mgt_drp_i(2).drpdi_in   & mgt_drp_i(1).drpdi_in   & mgt_drp_i(0).drpdi_in),
-        drpen_in   => (mgt_drp_i(3).drpen_in   & mgt_drp_i(2).drpen_in   & mgt_drp_i(1).drpen_in   & mgt_drp_i(0).drpen_in),
-        drpwe_in   => (mgt_drp_i(3).drpwe_in   & mgt_drp_i(2).drpwe_in   & mgt_drp_i(1).drpwe_in   & mgt_drp_i(0).drpwe_in),
+        drpclk_in  => (mgt_drp_i(3).drpclk_in & mgt_drp_i(2).drpclk_in & mgt_drp_i(1).drpclk_in & mgt_drp_i(0).drpclk_in),
+        drpdi_in   => (mgt_drp_i(3).drpdi_in & mgt_drp_i(2).drpdi_in & mgt_drp_i(1).drpdi_in & mgt_drp_i(0).drpdi_in),
+        drpen_in   => (mgt_drp_i(3).drpen_in & mgt_drp_i(2).drpen_in & mgt_drp_i(1).drpen_in & mgt_drp_i(0).drpen_in),
+        drpwe_in   => (mgt_drp_i(3).drpwe_in & mgt_drp_i(2).drpwe_in & mgt_drp_i(1).drpwe_in & mgt_drp_i(0).drpwe_in),
 
         drpdo_out(15 downto 0)  => mgt_drp_o(0).drpdo_out,
         drpdo_out(31 downto 16) => mgt_drp_o(1).drpdo_out,
         drpdo_out(47 downto 32) => mgt_drp_o(2).drpdo_out,
         drpdo_out(63 downto 48) => mgt_drp_o(3).drpdo_out,
 
-        drprdy_out(0 downto 0)  => mgt_drp_o(0).drprdy_out,
-        drprdy_out(1 downto 1)  => mgt_drp_o(1).drprdy_out,
-        drprdy_out(2 downto 2)  => mgt_drp_o(2).drprdy_out,
-        drprdy_out(3 downto 3)  => mgt_drp_o(3).drprdy_out,
+        drprdy_out(0 downto 0) => mgt_drp_o(0).drprdy_out,
+        drprdy_out(1 downto 1) => mgt_drp_o(1).drprdy_out,
+        drprdy_out(2 downto 2) => mgt_drp_o(2).drprdy_out,
+        drprdy_out(3 downto 3) => mgt_drp_o(3).drprdy_out,
 
         -- multi-gigabit
         gtyrxn_in  => rxn_i,
@@ -131,9 +182,9 @@ begin
 
         gtwiz_userdata_tx_in => mgt_words_i(3) &mgt_words_i(2) &mgt_words_i(1) & mgt_words_i(0),
 
-        gtwiz_userdata_rx_out (31 downto 0)  => mgt_words_o(0),
-        gtwiz_userdata_rx_out (63 downto 32) => mgt_words_o(1),
-        gtwiz_userdata_rx_out (95 downto 64) => mgt_words_o(2),
+        gtwiz_userdata_rx_out (31 downto 0)   => mgt_words_o(0),
+        gtwiz_userdata_rx_out (63 downto 32)  => mgt_words_o(1),
+        gtwiz_userdata_rx_out (95 downto 64)  => mgt_words_o(2),
         gtwiz_userdata_rx_out (127 downto 96) => mgt_words_o(3),
 
         txheader_in   => tx_header_i,
@@ -167,15 +218,15 @@ begin
         -- reset controller helper block has completed.
         gtwiz_reset_tx_done_out(0) => status_o(0).tx_reset_done,
 
-        rxpmaresetdone_out(0)      => status_o(0).rx_pma_reset_done,
-        rxpmaresetdone_out(1)      => status_o(1).rx_pma_reset_done,
-        rxpmaresetdone_out(2)      => status_o(2).rx_pma_reset_done,
-        rxpmaresetdone_out(3)      => status_o(3).rx_pma_reset_done,
+        rxpmaresetdone_out(0) => status_o(0).rx_pma_reset_done,
+        rxpmaresetdone_out(1) => status_o(1).rx_pma_reset_done,
+        rxpmaresetdone_out(2) => status_o(2).rx_pma_reset_done,
+        rxpmaresetdone_out(3) => status_o(3).rx_pma_reset_done,
 
-        txpmaresetdone_out(0)      => status_o(0).tx_pma_reset_done,
-        txpmaresetdone_out(1)      => status_o(1).tx_pma_reset_done,
-        txpmaresetdone_out(2)      => status_o(2).tx_pma_reset_done,
-        txpmaresetdone_out(3)      => status_o(3).tx_pma_reset_done,
+        txpmaresetdone_out(0) => status_o(0).tx_pma_reset_done,
+        txpmaresetdone_out(1) => status_o(1).tx_pma_reset_done,
+        txpmaresetdone_out(2) => status_o(2).tx_pma_reset_done,
+        txpmaresetdone_out(3) => status_o(3).tx_pma_reset_done,
 
         --pll------------------------------------------------------------------
 
@@ -196,7 +247,7 @@ begin
         gtwiz_buffbypass_rx_reset_in(0) => rx_resets_i.reset_bufbypass,
 
         -- Active-High user signal that is synchronously pulsed to force the receiver buffer bypass procedure to restart. Hold Low when not used
-        gtwiz_buffbypass_rx_start_user_in(0) => '0', -- tied to 0 in example design
+        gtwiz_buffbypass_rx_start_user_in(0) => '0',  -- tied to 0 in example design
 
         -- Active-High indicates that the receiver buffer bypass procedure has completed.
         gtwiz_buffbypass_rx_done_out(0) => status_o(0).buffbypass_rx_done_out,

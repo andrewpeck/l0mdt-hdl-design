@@ -5,21 +5,20 @@ use ieee.std_logic_misc.all;
 
 library xil_defaultlib;
 
-library work;
-use work.HOG_INFO_CTRL.all;
-use work.FW_INFO_CTRL.all;
-use work.HAL_CORE_CTRL.all;
-use work.HAL_CTRL.all;
-use work.H2S_CTRL.all;
-use work.TAR_CTRL.all;
-use work.MTC_CTRL.all;
-use work.UCM_CTRL.all;
-use work.DAQ_CTRL.all;
-use work.TF_CTRL.all;
-use work.MPL_CTRL.all;
---use work.FW_TIMESTAMP.all;
---use work.FW_VERSION.all;
-use work.axiRegPkg.all;
+library ctrl_lib;
+use ctrl_lib.FW_INFO_CTRL.all;
+use ctrl_lib.HAL_CORE_CTRL.all;
+use ctrl_lib.HAL_CTRL.all;
+use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.TAR_CTRL.all;
+use ctrl_lib.MTC_CTRL.all;
+use ctrl_lib.UCM_CTRL.all;
+use ctrl_lib.DAQ_CTRL.all;
+use ctrl_lib.TF_CTRL.all;
+use ctrl_lib.MPL_CTRL.all;
+--use ctrl_lib.FW_TIMESTAMP.all;
+--use ctrl_lib.FW_VERSION.all;
+use ctrl_lib.axiRegPkg.all;
 
 entity top_control is
   port (
@@ -43,11 +42,6 @@ entity top_control is
     fw_info_readmiso  : in  axireadmiso;
     fw_info_writemosi : out axiwritemosi;
     fw_info_writemiso : in  axiwritemiso;
-
-    hog_info_readmosi  : out axireadmosi;
-    hog_info_readmiso  : in  axireadmiso;
-    hog_info_writemosi : out axiwritemosi;
-    hog_info_writemiso : in  axiwritemiso;
 
     -- control
 
@@ -181,30 +175,9 @@ begin
       k_c2clink_aurora_do_cc                => open,  -- k_c2clink_aurora_do_cc,
 
       -- control inputs
-      k_c2clink_phy_power_down => '0',  -- k_c2clink_phy_power_down,
-
+      k_c2clink_phy_power_down => std_logic0,  -- k_c2clink_phy_power_down,
 
       -- AXI PL Slaves
-
-      hog_info_araddr     => hog_info_readmosi.address,
-      hog_info_arprot     => hog_info_readmosi.protection_type,
-      hog_info_arready(0) => hog_info_readmiso.ready_for_address,
-      hog_info_arvalid(0) => hog_info_readmosi.address_valid,
-      hog_info_awaddr     => hog_info_writemosi.address,
-      hog_info_awprot     => hog_info_writemosi.protection_type,
-      hog_info_awready(0) => hog_info_writemiso.ready_for_address,
-      hog_info_awvalid(0) => hog_info_writemosi.address_valid,
-      hog_info_bready(0)  => hog_info_writemosi.ready_for_response,
-      hog_info_bresp      => hog_info_writemiso.response,
-      hog_info_bvalid(0)  => hog_info_writemiso.response_valid,
-      hog_info_rdata      => hog_info_readmiso.data,
-      hog_info_rready(0)  => hog_info_readmosi.ready_for_data,
-      hog_info_rresp      => hog_info_readmiso.response,
-      hog_info_rvalid(0)  => hog_info_readmiso.data_valid,
-      hog_info_wdata      => hog_info_writemosi.data,
-      hog_info_wready(0)  => hog_info_writemiso.ready_for_data,
-      hog_info_wstrb      => hog_info_writemosi.data_write_strobe,
-      hog_info_wvalid(0)  => hog_info_writemosi.data_valid,
 
       fw_info_araddr     => fw_info_readmosi.address,
       fw_info_arprot     => fw_info_readmosi.protection_type,
@@ -425,7 +398,7 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_interface_inst : entity work.HAL_CORE_interface
+  hal_core_interface_inst : entity ctrl_lib.HAL_CORE_interface
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => std_logic1,
@@ -440,7 +413,7 @@ begin
       ctrl => hal_core_ctrl
       );
 
-  hal_interface_inst : entity work.HAL_interface
+  hal_interface_inst : entity ctrl_lib.HAL_interface
     port map (
       clk_axi         => clk320,
       reset_axi_n     => std_logic1,
@@ -455,7 +428,7 @@ begin
       ctrl => hal_ctrl
       );
 
-  h2s_interface_inst : entity work.H2S_interface
+  h2s_interface_inst : entity ctrl_lib.H2S_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -470,7 +443,7 @@ begin
       ctrl => h2s_ctrl
       );
 
-  tar_interface_inst : entity work.TAR_interface
+  tar_interface_inst : entity ctrl_lib.TAR_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -485,7 +458,7 @@ begin
       ctrl => tar_ctrl
       );
 
-  mtc_interface_inst : entity work.MTC_interface
+  mtc_interface_inst : entity ctrl_lib.MTC_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -500,7 +473,7 @@ begin
       ctrl => mtc_ctrl
       );
 
-  ucm_interface_inst : entity work.UCM_interface
+  ucm_interface_inst : entity ctrl_lib.UCM_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -515,7 +488,7 @@ begin
       ctrl => ucm_ctrl
       );
 
-  daq_interface_inst : entity work.DAQ_interface
+  daq_interface_inst : entity ctrl_lib.DAQ_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -530,7 +503,7 @@ begin
       ctrl => daq_ctrl
       );
 
-  tf_interface_inst : entity work.TF_interface
+  tf_interface_inst : entity ctrl_lib.TF_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,
@@ -545,7 +518,7 @@ begin
       ctrl => tf_ctrl
       );
 
-  mpl_interface_inst : entity work.MPL_interface
+  mpl_interface_inst : entity ctrl_lib.MPL_interface
     port map (
       clk_axi         => clkpipe,
       reset_axi_n     => std_logic1,

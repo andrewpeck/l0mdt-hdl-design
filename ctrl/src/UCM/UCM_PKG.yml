@@ -6,12 +6,14 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-UCM_MON_t:
+HDL_Types:
+
+- UCM_MON_t:
   - STATUS : { type: logic }
   - READY : { type: logic }
 
 
-UCM_CTRL_t:
+- UCM_CTRL_t:
   - RESET : { type: logic }
 
 

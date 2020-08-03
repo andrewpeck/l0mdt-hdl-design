@@ -30,6 +30,9 @@ use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.ROI_LUT_BILA3.all;
 use heg_roi_lib.ROI_LUT_BMLA3.all;
 use heg_roi_lib.ROI_LUT_BOLA3.all;
+use heg_roi_lib.ROI_LUT_BILA3_slope.all;
+use heg_roi_lib.ROI_LUT_BMLA3_slope.all;
+use heg_roi_lib.ROI_LUT_BOLA3_slope.all;
 
 package RoI_LUT_pkg is
 
@@ -50,59 +53,59 @@ package RoI_LUT_pkg is
   --   S3  : b_sector_mem;
   -- end record;
 
-  function roi_set_mdt_mem(sector, station : integer) return roi_mdt_lut;
+  -- function roi_set_mdt_mem(sector, station : integer) return roi_mdt_lut;
   
-  function roi_set_max(sector, station : integer) return integer;
+  -- function roi_set_max(sector, station : integer) return integer;
   
 end package RoI_LUT_pkg;
 
 package body RoI_LUT_pkg is
   
-  function roi_set_mdt_mem(sector, station : integer) return roi_mdt_lut is
-    variable out_mem : roi_mdt_lut := (others =>(others =>(others => 0))) ;
-  begin
+  -- function roi_set_mdt_mem(sector, station : integer) return roi_mdt_lut is
+  --   variable out_mem : roi_mdt_lut := (others =>(others =>(others => 0))) ;
+  -- begin
 
-    if sector = 0 then
+  --   if sector = 0 then
 
-    elsif sector = 3 then
-      if station = 0 then
-        out_mem := trLUT_s3i_rom_mem;
-      elsif station = 1 then
+  --   elsif sector = 3 then
+  --     if station = 0 then
+  --       out_mem := trLUT_s3i_rom_mem;
+  --     elsif station = 1 then
 
-      elsif station = 2 then
+  --     elsif station = 2 then
 
-      elsif station = 3 then
+  --     elsif station = 3 then
 
-      end if;
-    else
+  --     end if;
+  --   else
 
-    end if;
+  --   end if;
 
-    return out_mem;
-  end function;
+  --   return out_mem;
+  -- end function;
 
-  function roi_set_max(sector, station : integer) return integer is
-    variable out_mem : integer := 0;
-  begin
+  -- function roi_set_max(sector, station : integer) return integer is
+  --   variable out_mem : integer := 0;
+  -- begin
 
-    if sector = 0 then
+  --   if sector = 0 then
 
-    elsif sector = 3 then
-      if station = 0 then
-        out_mem := BILA3_IN_MAX;
-      elsif station = 1 then
+  --   elsif sector = 3 then
+  --     if station = 0 then
+  --       out_mem := BILA3_IN_MAX;
+  --     elsif station = 1 then
 
-      elsif station = 2 then
+  --     elsif station = 2 then
 
-      elsif station = 3 then
+  --     elsif station = 3 then
 
-      end if;
-    else
+  --     end if;
+  --   else
 
-    end if;
+  --   end if;
 
-    return out_mem;
-  end function;
+  --   return out_mem;
+  -- end function;
   
   
 end package body RoI_LUT_pkg;

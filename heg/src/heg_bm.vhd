@@ -41,7 +41,7 @@ entity heg_buffermux is
     -- configuration
     i_control           : in heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
-    i_mdt_hits_av       : in heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
+    i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
     o_mdt_hits_v        : out heg_bm2sf_rvt
     
@@ -71,20 +71,20 @@ architecture beh of heg_buffermux is
     );
   end component heg_buffermux_infifo;
 
-  signal fifo_wr    : std_logic_vector(MAX_NUM_HP -1 downto 0);
-  signal fifo_rd    : std_logic_vector(MAX_NUM_HP -1 downto 0);
+  signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal o_mdt_hits_r : heg_bm2sf_rt; 
 
-  signal mdt_hit    :  heg_hp2bm_avt(MAX_NUM_HP -1 downto 0);
-  signal fifo_empty : std_logic_vector(MAX_NUM_HP -1 downto 0);
+  signal mdt_hit    :  heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
   
 begin
 
   o_mdt_hits_v <= vectorify(o_mdt_hits_r);
 
-  FIFOS: for hp_i in MAX_NUM_HP -1 downto 0 generate
+  FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
     fifo_wr(hp_i) <= i_mdt_hits_av(hp_i)(0) and i_mdt_hits_av(hp_i)(1);
 
@@ -118,9 +118,9 @@ begin
         o_mdt_hits_r <= nullify(o_mdt_hits_r);
         new_index_v := 0;
       else
-        --   tdc_in_loop : for ti in (MAX_NUM_HP -1) downto 0 loop
+        --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop
         --     new_index_v := index_offset_v + ti;
-        --     if new_index_v < (MAX_NUM_HP -1)  then
+        --     if new_index_v < (g_HPS_NUM_MDT_CH-1)  then
         --       if (not fifo_empty(new_index_v)) then
         --         o_mdt_hits.sf_data <= mdt_hit(new_index_v).sf_data;
         --         index_offset_v := new_index_v - 1;
