@@ -17,80 +17,80 @@ HDL_Types:
 
 # slc_muid
 - slc_muid:
-  - slcid:          {type: unsigned , length: SLC_SLCID_LEN }
-  - slid:           {type: unsigned , length: SLC_SLID_LEN}
-  - bcid:           {type: unsigned , length: BCID_LEN}
+  - slcid:          [type: unsigned , length: SLC_SLCID_LEN ]
+  - slid:           [type: unsigned , length: SLC_SLID_LEN]
+  - bcid:           [type: unsigned , length: BCID_LEN]
 
 # slc chambers
 - slc_chid:
-  - mdt_inn:           {type: unsigned , length: SLC_CHAMBER_LEN}
-  - mdt_mid:           {type: unsigned , length: SLC_CHAMBER_LEN}
-  - mdt_out:           {type: unsigned , length: SLC_CHAMBER_LEN}
-  - mdt_ext:           {type: unsigned , length: SLC_CHAMBER_LEN}
+  - mdt_inn:           [type: unsigned , length: SLC_CHAMBER_LEN]
+  - mdt_mid:           [type: unsigned , length: SLC_CHAMBER_LEN]
+  - mdt_out:           [type: unsigned , length: SLC_CHAMBER_LEN]
+  - mdt_ext:           [type: unsigned , length: SLC_CHAMBER_LEN]
 
 # slc common
 - slc_common:
-  - tcid:           { type: logic , length: SLC_TCID_LEN }
-  - tcsent:         { type: logic , length: SLC_TCSENT_LEN }
-  - pos_eta:        { type: signed , length: SLC_POS_ETA_LEN}
-  - pos_phi:        { type: unsigned , length: SLC_POS_PHI_LEN}
-  - rpc_pt:         { type: logic , length: SLC_RPC_PT_LEN}
-  - pt_th:          { type: logic , length: SLC_PT_TH_LEN}
-  - charge:         { type: logic , length: SLC_CHARGE_LEN }
+  - tcid:           [ type: logic , length: SLC_TCID_LEN ]
+  - tcsent:         [ type: logic , length: SLC_TCSENT_LEN ]
+  - pos_eta:        [ type: signed , length: SLC_POS_ETA_LEN]
+  - pos_phi:        [ type: unsigned , length: SLC_POS_PHI_LEN]
+  - rpc_pt:         [ type: logic , length: SLC_RPC_PT_LEN]
+  - pt_th:          [ type: logic , length: SLC_PT_TH_LEN]
+  - charge:         [ type: logic , length: SLC_CHARGE_LEN ]
 
 # slc specific barrel
 - slc_barrel:
-  - spare_bits:     {type: logic , length: SLC_B_SPARE_LEN}
-  - coin_type:      {type: logic , length: SLC_COIN_TYPE_LEN}
-  - z_rpc0:         {type: signed , length: SLC_Z_RPC_LEN}
-  - z_rpc1:         {type: signed , length: SLC_Z_RPC_LEN}
-  - z_rpc2:         {type: signed , length: SLC_Z_RPC_LEN}
-  - z_rpc3:         {type: signed , length: SLC_Z_RPC_LEN}
+  - spare_bits:     [type: logic , length: SLC_B_SPARE_LEN]
+  - coin_type:      [type: logic , length: SLC_COIN_TYPE_LEN]
+  - z_rpc0:         [type: signed , length: SLC_Z_RPC_LEN]
+  - z_rpc1:         [type: signed , length: SLC_Z_RPC_LEN]
+  - z_rpc2:         [type: signed , length: SLC_Z_RPC_LEN]
+  - z_rpc3:         [type: signed , length: SLC_Z_RPC_LEN]
 
 # slc specific endcap
 - slc_endcap:
-  - spare_bits:         { type: logic , length: SLC_E_SPARE_LEN }
-  - r:                  { type: unsigned , length: SLC_R_LEN }
-  - angle_wrt_phi:      { type: signed , length: SLC_ANGLE_WRT_PHI_LEN }
-  - angle_wrt_eta:      { type: signed , length: SLC_ANGLE_WRT_ETA_LEN }
-  - nsw_eta:            { type: unsigned , length: SLC_NSW_ETA_LEN}
-  - nsw_phi:            { type: unsigned , length: SLC_NSW_PHI_LEN}
-  - nsw_angle_wrt_eta:  { type: signed , length: SLC_NSW_ANGLE_WRT_ETA_LEN }
-  - nsw_monitor:        { type: logic }
+  - spare_bits:         [ type: logic , length: SLC_E_SPARE_LEN ]
+  - r:                  [ type: unsigned , length: SLC_R_LEN ]
+  - angle_wrt_phi:      [ type: signed , length: SLC_ANGLE_WRT_PHI_LEN ]
+  - angle_wrt_eta:      [ type: signed , length: SLC_ANGLE_WRT_ETA_LEN ]
+  - nsw_eta:            [ type: unsigned , length: SLC_NSW_ETA_LEN]
+  - nsw_phi:            [ type: unsigned , length: SLC_NSW_PHI_LEN]
+  - nsw_angle_wrt_eta:  [ type: signed , length: SLC_NSW_ANGLE_WRT_ETA_LEN ]
+  - nsw_monitor:        [ type: logic ]
 
 # slc rx data
 - slc_rx_data:
-  - muid:         {type: slc_muid}
-  - chambers:     {type: slc_chid}
-  - common:       {type: slc_common}
-  - specific:     {type: logic , length: SLC_SPECIFIC_LEN , comment: can be either slc_barrel_vt or slc_endcap_vt}
-  - data_valid:   {type: logic}
+  - muid:         [type: slc_muid]
+  - chambers:     [type: slc_chid]
+  - common:       [type: slc_common]
+  - specific:     [type: logic , length: SLC_SPECIFIC_LEN , ~: can be either slc_barrel_vt or slc_endcap_vt]
+  - data_valid:   [type: logic]
 
 # -----------------------------------------------------------
 #   MDT tdc, pullmux & TAR
 # -----------------------------------------------------------
 #TDC
 - mdt_tdc:
-  - ch: { type: logic , length: MDT_TDC_CH_LEN }
-  - mode: { type: logic , length: MDT_TDC_MODE_LEN }
-  - coarse: { type: unsigned , length: MDT_TDC_COARSE_LEN }
-  - fine: { type: unsigned , length: MDT_TDC_FINE_LEN }
-  - pw: { type: unsigned , length: MDT_TDC_PW_LEN }
+  - ch: [ type: logic , length: MDT_TDC_CH_LEN ]
+  - mode: [ type: logic , length: MDT_TDC_MODE_LEN ]
+  - coarse: [ type: unsigned , length: MDT_TDC_COARSE_LEN ]
+  - fine: [ type: unsigned , length: MDT_TDC_FINE_LEN ]
+  - pw: [ type: unsigned , length: MDT_TDC_PW_LEN ]
 
 # mdt pullmux
 - mdt_polmux:
-  - fiberID: { type: logic , length: MDT_FIBER_LEN }
-  - muxID: { type: logic , length: MDT_MUXCH_LEN }
-  - tdc: {type: mdt_tdc}
-  - data_valid: {type: logic}
+  - fiberID: [ type: logic , length: MDT_FIBER_LEN ]
+  - muxID: [ type: logic , length: MDT_MUXCH_LEN ]
+  - tdc: [type: mdt_tdc]
+  - data_valid: [type: logic]
 
 # mdt tar
 - tar2hps:
-  - tube        : { type: unsigned , length: MDT_TUBE_LEN }
-  - layer       : { type: unsigned , length: MDT_LAYER_LEN }
-  - chamber_id  : { type: unsigned , length: SLC_CHAMBER_LEN}
-  - time        : { type: unsigned , length: MDT_TIME_LEN }
-  - data_valid  : { type: logic}
+  - tube        : [ type: unsigned , length: MDT_TUBE_LEN ]
+  - layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
+  - chamber_id  : [ type: unsigned , length: SLC_CHAMBER_LEN]
+  - time        : [ type: unsigned , length: MDT_TIME_LEN ]
+  - data_valid  : [ type: logic]
 
 
 
@@ -105,12 +105,12 @@ HDL_Types:
 # -----------------------------------------------------------
 # slc ucm 2 sf
 - ucm_csf_seed:
-  - muid          : { type: slc_muid}
-  - mbar          : { type: unsigned , length: UCM_MBAR_LEN }
-  - pos           : { type: unsigned , length: UCM_Z_ROI_LEN }
-  - ang           : { type: unsigned , length: UCM_Z_ROI_LEN }
-  - chamber_id    : { type: logic , length: SLC_CHAMBER_LEN }
-  - data_valid    : { type: logic}
+  - muid          : [ type: slc_muid]
+  - mbar          : [ type: unsigned , length: UCM_MBAR_LEN ]
+  - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - ang           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - data_valid    : [ type: logic]
 
 
 # # -----------------------------------------------------------
@@ -118,48 +118,48 @@ HDL_Types:
 # # -----------------------------------------------------------
 # # CSF
 # hp_hit_data:
-#   local_y: { type: unsigned , length: MDT_LOCAL_Y_LEN }
-#   local_x: { type: unsigned , length: MDT_LOCAL_X_LEN }
-#   radius: { type: unsigned , length: MDT_RADIUS_LEN }
-#   multilayer: {type: logic}
-#   data_valid: {type: logic}
+#   local_y: [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
+#   local_x: [ type: unsigned , length: MDT_LOCAL_X_LEN ]
+#   radius: [ type: unsigned , length: MDT_RADIUS_LEN ]
+#   multilayer: [type: logic]
+#   data_valid: [type: logic]
 
-# hp_hit_data_a : {array: open, type: hp_hit_data}
+# hp_hit_data_a : [array: open, type: hp_hit_data]
 # # -----------------------------------------------------------
 # # sf 2 pt
 # # -----------------------------------------------------------
 - sf2pt:
-  - data_valid  : { type: logic}
-  - muid        : { type: slc_muid}
-  - chamber_id  : { type: logic , length: SLC_CHAMBER_LEN }
-  - pos         : { type: signed, length: SF_SEG_POS_LEN }
-  - angle       : { type: signed, length: SF_SEG_ANG_LEN }
-  - quality     : { type: logic}
+  - data_valid  : [ type: logic]
+  - muid        : [ type: slc_muid]
+  - chamber_id  : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality     : [ type: logic]
 
 - sf_seg_data_barrel:
-  - data_valid : { type: logic}
-  - muid       : { type: slc_muid}
-  - chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
-  - pos        : { type: signed, length: SF_SEG_POS_LEN }
-  - angle      : { type: signed, length: SF_SEG_ANG_LEN }
-  - quality    : { type: logic}
+  - data_valid : [ type: logic]
+  - muid       : [ type: slc_muid]
+  - chamber_id : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - pos        : [ type: signed, length: SF_SEG_POS_LEN ]
+  - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality    : [ type: logic]
 
 - sf_seg_data_endcap:
-  - data_valid : { type: logic}
-  - muid       : { type: slc_muid}
-  - chamber_id : { type: logic , length: SLC_CHAMBER_LEN }
-  - pos        : { type: unsigned, length: SF_SEG_POS_LEN }
-  - angle      : { type: signed, length: SF_SEG_ANG_LEN }
-  - quality    : { type: logic}
+  - data_valid : [ type: logic]
+  - muid       : [ type: slc_muid]
+  - chamber_id : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - pos        : [ type: unsigned, length: SF_SEG_POS_LEN ]
+  - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality    : [ type: logic]
 
 
 # sf2pt :
-#   dummy       : { type: logic , length: 8}
-#   data_valid  : { type : logic}
+#   dummy       : [ type: logic , length: 8]
+#   data_valid  : [ type : logic]
 
-# sf2pt_ : { array: open , type : sf2pt , _: off}
+# sf2pt_ : [ array: open , type : sf2pt , _: off]
 
-- sf2pt_a : { array: open , type : sf2pt , _: off}
+- sf2pt_a : [ array: open , type : sf2pt , _: off]
 
 # # -----------------------------------------------------------
 # # slc ucm pipeline
@@ -167,32 +167,32 @@ HDL_Types:
 
 # ucm 2 pl
 - ucm2pl:
-  - muid          : { type : slc_muid}
-  - chambers      : { type : slc_chid}
-  - common        : { type : slc_common}
-  - specific      : { type : logic , length: SLC_SPECIFIC_LEN}
-  - process_ch    : { type : logic , length: 4}
-  - processed     : { type : logic }
-  - data_valid    : { type : logic }
+  - muid          : [ type : slc_muid]
+  - chambers      : [ type : slc_chid]
+  - common        : [ type : slc_common]
+  - specific      : [ type : logic , length: SLC_SPECIFIC_LEN]
+  - process_ch    : [ type : logic , length: 4]
+  - processed     : [ type : logic ]
+  - data_valid    : [ type : logic ]
 
 #pl 2 pt
 - pl2pt:
-  - data_valid : { type : logic }
-  - muid       : { type : slc_muid}
-  - phimod     : { type : signed, length: UCM_PT_PHIMOD_LEN}
-  - charge     : { type : logic}
+  - data_valid : [ type : logic ]
+  - muid       : [ type : slc_muid]
+  - phimod     : [ type : signed, length: UCM_PT_PHIMOD_LEN]
+  - charge     : [ type : logic]
 
-- pl2pt_a : { array: open , type : pl2pt, _: off}
+- pl2pt_a :  [array: open , type : pl2pt, _: off]
 
 # pl 2 mtc
 - pl2mtc:
-  - muid          : { type : slc_muid}
-  - chambers      : { type : slc_chid}
-  - common        : { type : slc_common}
-  - specific      : { type : logic , length: UCM_PT_PHIMOD_LEN}
-  - process_ch    : { type : logic , length: 4}
-  - processed     : { type : logic }
-  - data_valid    : { type : logic }
+  - muid          : [ type : slc_muid]
+  - chambers      : [ type : slc_chid]
+  - common        : [ type : slc_common]
+  - specific      : [ type : logic , length: UCM_PT_PHIMOD_LEN]
+  - process_ch    : [ type : logic , length: 4]
+  - processed     : [ type : logic ]
+  - data_valid    : [ type : logic ]
 
 
 # # -----------------------------------------------------------
@@ -200,16 +200,16 @@ HDL_Types:
 # # -----------------------------------------------------------
 
 - tf2mtc:
-  - data_valid : { type : logic }
-  - muid       : { type : slc_muid}
-  - eta        : { type : signed, length: MTC_ETA_LEN}
-  - pt         : { type : unsigned, length: MTC_PT_LEN}
-  - pt_thr     : { type : logic, length: MTC_PTTHR_LEN}
-  - charge     : { type : logic}
-  - nseg       : { type : unsigned, length: MTC_NSEG_LEN}
-  - quality    : { type : logic, length: MTC_QUALITY_LEN}
+  - data_valid : [ type : logic ]
+  - muid       : [ type : slc_muid]
+  - eta        : [ type : signed, length: MTC_ETA_LEN]
+  - pt         : [ type : unsigned, length: MTC_PT_LEN]
+  - pt_thr     : [ type : logic, length: MTC_PTTHR_LEN]
+  - charge     : [ type : logic]
+  - nseg       : [ type : unsigned, length: MTC_NSEG_LEN]
+  - quality    : [ type : logic, length: MTC_QUALITY_LEN]
 
-- tf2mtc_a : { array: open , type : tf2mtc , _: off}
+- tf2mtc_a : [ array: open , type : tf2mtc , _: off]
 
 
 # # -----------------------------------------------------------
@@ -217,9 +217,9 @@ HDL_Types:
 # # -----------------------------------------------------------
 
 - mtc_out:
-  - common        : { type : slc_common}
-  - data_valid : { type : logic }
+  - common        : [ type : slc_common]
+  - data_valid : [ type : logic ]
 
 - mtc2nsp:
-  - common        : { type : slc_common}
-  - data_valid : { type : logic }
+  - common        : [ type : slc_common]
+  - data_valid : [ type : logic ]
