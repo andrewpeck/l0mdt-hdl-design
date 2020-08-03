@@ -36,8 +36,8 @@ entity top_ucm is
     glob_en                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_data_bus_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_data_bus_avt(2 downto 0);
     i_slc_data_neighborA_v : in slc_rx_data_rvt;
     i_slc_data_neighborB_v : in slc_rx_data_rvt;
     -- to hps
@@ -53,12 +53,12 @@ end entity top_ucm;
 
 architecture beh of top_ucm is
 
-  signal o_uCM2hps_inn_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av      : ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_inn_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_mid_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_out_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_uCM2hps_ext_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av           : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_av           : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 

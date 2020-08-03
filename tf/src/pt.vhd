@@ -41,18 +41,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library pt_lib;
-use pt_lib.pt_pkg.all;
-use pt_lib.pt_params_pkg.all;
-
--- library IEEE, pt_lib, shared_lib;
--- use IEEE.STD_LOGIC_1164.ALL;
--- use IEEE.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use pt_lib.pt_pkg.all;
--- use pt_lib.pt_params_pkg.all;
--- use ieee.std_logic_textio.all;
--- use shared_lib.custom_types_davide_pkg.all;
+library tf_lib;
+use tf_lib.pt_pkg.all;
+use tf_lib.pt_params_pkg.all;
 
 entity pt is
     generic(
@@ -232,7 +223,7 @@ architecture Behavioral of pt is
 
 begin
 
-    EtaCalculator : entity pt_lib.eta_calculator
+    EtaCalculator : entity tf_lib.eta_calculator
     port map (
         clk            => clk,
         i_seg          => segment_BI_v,
@@ -240,7 +231,7 @@ begin
         o_dv_eta       => dv_eta
     );
 
-    SagittaCalculator : entity pt_lib.sagitta_calculator
+    SagittaCalculator : entity tf_lib.sagitta_calculator
     port map(
         clk => clk,
         i_seg0 => segment_BI_v,

@@ -184,6 +184,15 @@ package l0mdt_dataformats_pkg is
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
   function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
 
+  type sf2pt_aat is array(integer range <>) of sf2pt_rt;
+  type sf2pt_aavt is array(integer range <>) of sf2pt_rvt;
+  function vectorify(x: sf2pt_aat) return sf2pt_aavt;
+  function vectorify(x: sf2pt_aat) return std_logic_vector;
+  function structify(x: sf2pt_aavt) return sf2pt_aat;
+  function structify(x: std_logic_vector) return sf2pt_aat;
+  function nullify(x: sf2pt_aat) return sf2pt_aat;
+  function nullify(x: sf2pt_aavt) return sf2pt_aavt;
+
   type ucm2pl_rt is record
     muid : slc_muid_rt;
     chambers : slc_chid_rt;
@@ -210,6 +219,15 @@ package l0mdt_dataformats_pkg is
   function vectorify(x: pl2pt_rt) return pl2pt_rvt;
   function structify(x: pl2pt_rvt) return pl2pt_rt;
   function nullify(x: pl2pt_rt) return pl2pt_rt;
+
+  type pl2pt_aat is array(integer range <>) of pl2pt_rt;
+  type pl2pt_aavt is array(integer range <>) of pl2pt_rvt;
+  function vectorify(x: pl2pt_aat) return pl2pt_aavt;
+  function vectorify(x: pl2pt_aat) return std_logic_vector;
+  function structify(x: pl2pt_aavt) return pl2pt_aat;
+  function structify(x: std_logic_vector) return pl2pt_aat;
+  function nullify(x: pl2pt_aat) return pl2pt_aat;
+  function nullify(x: pl2pt_aavt) return pl2pt_aavt;
 
   type pl2mtc_rt is record
     muid : slc_muid_rt;
@@ -241,6 +259,15 @@ package l0mdt_dataformats_pkg is
   function vectorify(x: tf2mtc_rt) return tf2mtc_rvt;
   function structify(x: tf2mtc_rvt) return tf2mtc_rt;
   function nullify(x: tf2mtc_rt) return tf2mtc_rt;
+
+  type tf2mtc_aat is array(integer range <>) of tf2mtc_rt;
+  type tf2mtc_aavt is array(integer range <>) of tf2mtc_rvt;
+  function vectorify(x: tf2mtc_aat) return tf2mtc_aavt;
+  function vectorify(x: tf2mtc_aat) return std_logic_vector;
+  function structify(x: tf2mtc_aavt) return tf2mtc_aat;
+  function structify(x: std_logic_vector) return tf2mtc_aat;
+  function nullify(x: tf2mtc_aat) return tf2mtc_aat;
+  function nullify(x: tf2mtc_aavt) return tf2mtc_aavt;
 
   type mtc_out_rt is record
     common : slc_common_rt;
@@ -689,6 +716,59 @@ package body l0mdt_dataformats_pkg is
     return y;
   end function nullify;
 
+  function vectorify(x: sf2pt_aat) return sf2pt_aavt is
+    variable y :  sf2pt_aavt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: sf2pt_aat) return std_logic_vector is
+    variable y : std_logic_vector(x'length*59-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-59) := vectorify(x(i));
+      msb := msb - 59 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: sf2pt_aavt) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-59));
+      msb := msb - 59 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: sf2pt_aat) return sf2pt_aat is
+    variable y :  sf2pt_aat(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: sf2pt_aavt) return sf2pt_aavt is
+    variable y :  sf2pt_aavt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
   function vectorify(x: ucm2pl_rt) return ucm2pl_rvt is
     variable y : ucm2pl_rvt;
   begin
@@ -751,6 +831,59 @@ package body l0mdt_dataformats_pkg is
     y.muid                     := nullify(x.muid);
     y.phimod                   := nullify(x.phimod);
     y.charge                   := nullify(x.charge);
+    return y;
+  end function nullify;
+
+  function vectorify(x: pl2pt_aat) return pl2pt_aavt is
+    variable y :  pl2pt_aavt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: pl2pt_aat) return std_logic_vector is
+    variable y : std_logic_vector(x'length*30-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-30) := vectorify(x(i));
+      msb := msb - 30 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: pl2pt_aavt) return pl2pt_aat is
+    variable y :  pl2pt_aat(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return pl2pt_aat is
+    variable y :  pl2pt_aat(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-30));
+      msb := msb - 30 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: pl2pt_aat) return pl2pt_aat is
+    variable y :  pl2pt_aat(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: pl2pt_aavt) return pl2pt_aavt is
+    variable y :  pl2pt_aavt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 
@@ -828,6 +961,59 @@ package body l0mdt_dataformats_pkg is
     y.charge                   := nullify(x.charge);
     y.nseg                     := nullify(x.nseg);
     y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: tf2mtc_aat) return tf2mtc_aavt is
+    variable y :  tf2mtc_aavt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: tf2mtc_aat) return std_logic_vector is
+    variable y : std_logic_vector(x'length*55-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-55) := vectorify(x(i));
+      msb := msb - 55 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: tf2mtc_aavt) return tf2mtc_aat is
+    variable y :  tf2mtc_aat(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return tf2mtc_aat is
+    variable y :  tf2mtc_aat(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-55));
+      msb := msb - 55 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: tf2mtc_aat) return tf2mtc_aat is
+    variable y :  tf2mtc_aat(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: tf2mtc_aavt) return tf2mtc_aavt is
+    variable y :  tf2mtc_aavt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 

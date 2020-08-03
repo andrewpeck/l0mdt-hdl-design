@@ -9,19 +9,19 @@ __config__:
 HDL_Types:
 
 - HAL_CORE_CLOCKING_MON_t:
-  - MMCM_LOCKED : { type: logic }
+  - MMCM_LOCKED : [ type: logic ]
 
 
 - HAL_CORE_CLOCKING_CTRL_t:
-  - RESET_MMCM : { type: logic }
-  - SELECT_FELIX_CLK : { type: logic }
+  - RESET_MMCM : [ type: logic ]
+  - SELECT_FELIX_CLK : [ type: logic ]
 
 
 - HAL_CORE_MON_t:
-  - CLOCKING : { type: HAL_CORE_CLOCKING_MON_t }
+  - CLOCKING : [ type: HAL_CORE_CLOCKING_MON_t ]
 
 
 - HAL_CORE_CTRL_t:
-  - CLOCKING : { type: HAL_CORE_CLOCKING_CTRL_t }
+  - CLOCKING : [ type: HAL_CORE_CLOCKING_CTRL_t ]
 
 

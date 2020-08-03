@@ -37,18 +37,18 @@ entity mpl is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2tf_av          : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
+    i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    o_pl2tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl;
 
 architecture beh of mpl is
 
-  signal pl2csw_av : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2csw_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal pl2plcsw_av : pipelines_avt(c_NUM_THREADS -1 downto 0);
-  signal csw2pt_av : pl2pt_avt(c_NUM_THREADS -1 downto 0);
-  signal csw2mtc_av : pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw2pt_av : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal csw2mtc_av : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
   
 begin
 

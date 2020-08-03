@@ -42,23 +42,23 @@ entity hits_to_segments is
     mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mid_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_out_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_ext_tar_hits  : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
-    i_inn_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc       : in ucm2hps_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_out_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
     -- Segments Out
-    o_inn_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments  : out sf2pt_avt (c_NUM_THREADS-1 downto 0);
+    o_inn_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_mid_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_out_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_ext_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
+    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
     );
 
 end entity hits_to_segments;
