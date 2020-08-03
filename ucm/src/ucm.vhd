@@ -34,37 +34,37 @@ entity ucm is
     glob_en                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_mainA_av     : in slc_rx_data_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_data_avt(2 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_data_bus_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_data_bus_avt(2 downto 0);
     i_slc_data_neighborA_v : in slc_rx_data_rvt;
     i_slc_data_neighborB_v : in slc_rx_data_rvt;
     -- to hps
-    o_uCM2hps_inn_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av        : out ucm2hps_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_out_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_uCM2hps_ext_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
     -- pipeline
-    o_uCM2pl_av             : out ucm2pl_avt(c_MAX_NUM_SL -1 downto 0)
+    o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm;
 
 architecture beh of ucm is
 
-  signal i_slc_data_av        : slc_rx_data_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_slc_data_av        : slc_rx_data_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  signal ucm_prepro_av        : ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+  signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_in_av       : ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_av      : ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_in_av       : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_av      : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal o_uCM2pl_ar          : ucm2pl_at(c_MAX_NUM_SL -1 downto 0);
+  signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
-  signal cpam_in_av           : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
-  signal cpam_out_av          : ucm_prepro_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_in_av           : ucm_prepro_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_out_av          : ucm_prepro_bus_avt(c_NUM_THREADS -1 downto 0);
 
-  signal uCM2pl_av            : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal uCM2pl_av            : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal csw_control          : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -72,7 +72,7 @@ architecture beh of ucm is
   signal cvp_control          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_avt(MAX_NUM_HPS -1 downto 0);
+  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(MAX_NUM_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
 begin

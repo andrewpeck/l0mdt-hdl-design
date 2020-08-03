@@ -34,17 +34,17 @@ entity top_tdc_decoder is
     lpgbt_uplink_data : in lpgbt_uplink_data_rt_array (c_FELIX_LPGBT_INDEX downto 0);
 
     -- TDC hits from CSM
-    tdc_hits_inner  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    tdc_hits_middle : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    tdc_hits_outer  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    tdc_hits_extra  : out mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0)
+    tdc_hits_inner  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN-1 downto 0);
+    tdc_hits_middle : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID-1 downto 0);
+    tdc_hits_outer  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    tdc_hits_extra  : out mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT-1 downto 0)
 
     );
 end top_tdc_decoder;
 
 architecture behavioral of top_tdc_decoder is
 
-  signal tdc_hits_to_polmux : mdt_polmux_avt (c_NUM_TDC_INPUTS-1 downto 0);
+  signal tdc_hits_to_polmux : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
 
   signal read_done : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
 
@@ -211,13 +211,13 @@ begin
 
       -- function to take create an array of tdc hits correctly mapped and assigned to be
       -- used as input to the polling mux
-      function polmux_input_map (in_array  : mdt_polmux_avt;        -- full array of all TDC hits
+      function polmux_input_map (in_array  : mdt_polmux_bus_avt;        -- full array of all TDC hits
                                  tdc_map   : tdc_link_map_array_t;  -- constant mapping from board pkg
                                  polmux_id : integer;               -- id # of the polmux
                                  size      : integer)               -- size of the polmux
-        return mdt_polmux_avt is
+        return mdt_polmux_bus_avt is
         variable count : integer := 0;
-        variable ret   : mdt_polmux_avt (size - 1 downto 0);
+        variable ret   : mdt_polmux_bus_avt (size - 1 downto 0);
       begin
         for I in 0 to c_NUM_TDC_INPUTS-1 loop
           if (tdc_map(I).polmux_id = polmux_id) then
@@ -246,7 +246,7 @@ begin
 
       -- signals to hold the up to ~20 polmux inputs and outputs for this loop
       signal read_done_polmux : std_logic_vector (POLMUX_WIDTH-1 downto 0);
-      signal polmux_inputs    : mdt_polmux_avt (POLMUX_WIDTH-1 downto 0);
+      signal polmux_inputs    : mdt_polmux_bus_avt (POLMUX_WIDTH-1 downto 0);
       signal polmux_output    : mdt_polmux_rvt;
       signal fifo_output      : mdt_polmux_rvt;
       signal valid            : std_logic;

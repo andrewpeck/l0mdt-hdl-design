@@ -27,7 +27,7 @@ entity polling_mux is
     );
   port(
     clock       : in  std_logic;
-    tdc_hits_i  : in  mdt_polmux_avt (g_WIDTH-1 downto 0);
+    tdc_hits_i  : in  mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
     read_done_o : out std_logic_vector (g_WIDTH-1 downto 0);
     tdc_hit_o   : out mdt_polmux_rvt
     );
@@ -35,14 +35,14 @@ end polling_mux;
 
 architecture behavioral of polling_mux is
 
-  signal tdc_hits_r   : mdt_polmux_avt (g_WIDTH-1 downto 0);
-  signal tdc_hits_and : mdt_polmux_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_r   : mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_and : mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
   signal tdc_hits_or  : mdt_polmux_rvt;
 
   signal hit_sel_mask, hit_sel_mask_r : std_logic_vector (g_WIDTH-1 downto 0);
 
   -- function to pull the valid bits out of a tdcpolmux array and put it in a std_logic_vector
-  function tdchits2valid_stdlogic (arr : mdt_polmux_avt; size : integer) return std_logic_vector is
+  function tdchits2valid_stdlogic (arr : mdt_polmux_bus_avt; size : integer) return std_logic_vector is
     variable tmp : std_logic_vector(size - 1 downto 0);
     variable rec : mdt_polmux_rt;
   begin
@@ -68,8 +68,8 @@ architecture behavioral of polling_mux is
     return result;
   end;
 
-  -- ORs together a mdt_polmux_avt, useful for multiplexing
-  function or_reduce (arr : mdt_polmux_avt) return mdt_polmux_rvt is
+  -- ORs together a mdt_polmux_bus_avt, useful for multiplexing
+  function or_reduce (arr : mdt_polmux_bus_avt) return mdt_polmux_rvt is
     variable tmp : mdt_polmux_rvt;
   begin
     tmp := repeat('0', MDT_POLMUX_LEN);

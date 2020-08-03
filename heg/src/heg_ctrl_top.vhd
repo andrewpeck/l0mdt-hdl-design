@@ -48,7 +48,7 @@ entity heg_ctrl_top is
     o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
     o_sf_control        : out heg_ctrl2hp_rt;
-    o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0)
+    o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0)
   );
 end entity heg_ctrl_top;
 
@@ -68,7 +68,7 @@ architecture beh of heg_ctrl_top is
       --
       i_Roi_win_valid     : in std_logic;
       --
-      o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
+      o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
       o_uCM2sf_data_v     : out ucm2hps_rvt
     );
   end component ctrl_signals;
@@ -164,7 +164,7 @@ entity ctrl_signals is
     --
     i_Roi_win_valid     : in std_logic;
     --
-    o_hp_control        : out heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
+    o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     o_uCM2sf_data_v     : out ucm2hps_rvt
   );
 end entity ctrl_signals;

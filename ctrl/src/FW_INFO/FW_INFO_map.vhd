@@ -116,7 +116,7 @@ begin  -- architecture behavioral
           localRdData( 2)            <=  Mon.CONFIG.SECTOR_SIDE;                --
           localRdData( 3)            <=  Mon.CONFIG.ST_nBARREL_ENDCAP;          --
           localRdData( 4)            <=  Mon.CONFIG.ENDCAP_nSMALL_LARGE;        --
-          localRdData( 5)            <=  Mon.CONFIG.ENABLE_NEIGHBORS;          --
+          localRdData( 5)            <=  Mon.CONFIG.ENABLE_NEIGHBORS;           --
         when 70 => --0x46
           localRdData( 0)            <=  Mon.CONFIG.HPS_ENABLE_ST_INN;          --
           localRdData( 1)            <=  Mon.CONFIG.HPS_ENABLE_ST_EXT;          --

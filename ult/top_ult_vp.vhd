@@ -53,8 +53,8 @@ entity top_ult_vp is
     -- i_outer_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     -- i_extra_tar_hits              : in tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- -- Sector Logic Candidates
-    -- i_main_primary_slc            : in slc_rx_data_avt(2 downto 0); -- is the main SL used
-    -- i_main_secondary_slc          : in slc_rx_data_avt(2 downto 0); -- only used in the big endcap
+    -- i_main_primary_slc            : in slc_rx_data_bus_avt(2 downto 0); -- is the main SL used
+    -- i_main_secondary_slc          : in slc_rx_data_bus_avt(2 downto 0); -- only used in the big endcap
     -- i_plus_neighbor_slc           : in slc_rx_data_rvt;
     -- i_minus_neighbor_slc          : in slc_rx_data_rvt;
     -- -- Segments in from neighbor
@@ -143,28 +143,28 @@ architecture behavioral of top_ult_vp is
   -- extra_tdc_hits_i              : in mdt_polmux_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
   
   -- TDC Hits from Tar
-  signal inner_tar_hits              : tar2hps_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tar_hits             : tar2hps_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tar_hits              : tar2hps_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tar_hits              : tar2hps_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tar_hits              : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tar_hits             : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tar_hits              : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tar_hits              : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
   -- Sector Logic Candidates
-  signal main_primary_slc            : slc_rx_data_avt(2 downto 0); -- is the main SL used
-  signal main_secondary_slc          : slc_rx_data_avt(2 downto 0); -- only used in the big endcap
+  signal main_primary_slc            : slc_rx_data_bus_avt(2 downto 0); -- is the main SL used
+  signal main_secondary_slc          : slc_rx_data_bus_avt(2 downto 0); -- only used in the big endcap
   signal plus_neighbor_slc           : slc_rx_data_rvt;
   signal minus_neighbor_slc          : slc_rx_data_rvt;
   -- Segments in from neighbor
-  signal plus_neighbor_segments_in      : sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_in     : sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_in      : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_in     : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
   -- felix
   --tts_commands : out TTS_CMD_rt;
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-  signal daq_streams                 : felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+  signal daq_streams                 : felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
   -- Segments Out to Neighbor
-  signal plus_neighbor_segments_out      : sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_out     : sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_out      : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_out     : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
   -- -- MUCTPI
-  signal MTC                         : mtc_out_avt(c_NUM_MTC-1 downto 0);
-  signal NSP                         : mtc2nsp_avt(c_NUM_NSP-1 downto 0);
+  signal MTC                         : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+  signal NSP                         : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
  signal probe_in0   : STD_LOGIC_VECTOR(60 DOWNTO 0);
  signal probe_in1   : STD_LOGIC_VECTOR(60 DOWNTO 0);

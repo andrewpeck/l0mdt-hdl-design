@@ -70,37 +70,37 @@ entity ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in  slc_rx_data_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in  slc_rx_data_avt(2 downto 0);  -- only used in the big endcap
+    i_main_primary_slc        : in  slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc      : in  slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
     i_plus_neighbor_slc       : in  slc_rx_data_rvt;
     i_minus_neighbor_slc      : in  slc_rx_data_rvt;
 
     -- Segments in from neighbor
-    plus_neighbor_segments_i  : in  sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    minus_neighbor_segments_i : in  sf2pt_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    plus_neighbor_segments_i  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    minus_neighbor_segments_i : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o             : out felix_stream_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    daq_streams_o             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- -- MUCTPI
-    MTC_o                     : out mtc_out_avt(c_NUM_MTC-1 downto 0);
-    NSP_o                     : out mtc2nsp_avt(c_NUM_NSP-1 downto 0);
+    MTC_o                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    NSP_o                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic
@@ -111,42 +111,42 @@ end entity ult;
 architecture behavioral of ult is
 
   -- outputs from candidate manager
-  signal inner_slc_to_hts  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_hts : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_hts  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_hts  : ucm2hps_avt(c_NUM_THREADS-1 downto 0);
-  signal ucm2pl_av         : ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+  signal inner_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal middle_slc_to_hts : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal outer_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal extra_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal inner_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tar_hits : tar2hps_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tar_hits  : tar2hps_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tar_hits : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- TDC Hits from tar 2 daq
-  signal inner_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inner_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_segments_to_pt : sf2pt_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_segments_to_pt  : sf2pt_avt(c_NUM_THREADS-1 downto 0);
+  signal inner_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal middle_segments_to_pt : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal outer_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal extra_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
-  signal inner_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_pt : sf2pt_avt (c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_pt  : sf2pt_avt (c_NUM_THREADS-1 downto 0);
+  signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
-  signal pl2pt_av  : pl2pt_avt (c_NUM_THREADS-1 downto 0);
-  signal pl2mtc_av : pl2mtc_avt (c_MAX_NUM_SL-1 downto 0);
+  signal pl2pt_av  : pl2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  signal pl2mtc_av : pl2mtc_bus_avt (c_MAX_NUM_SL-1 downto 0);
 
   -- pt calc 2 mtc
-  signal pt2mtc_av : tf2mtc_avt(c_NUM_THREADS-1 downto 0);
+  signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
 begin

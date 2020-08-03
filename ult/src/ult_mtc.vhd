@@ -22,10 +22,10 @@ entity mtc_builder is
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl              : in  MTC_CTRL_t;
     mon               : out MTC_MON_t;
-    i_ptcalc          : in  tf2mtc_avt(c_NUM_THREADS -1 downto 0);
-    i_pl2mtc          : in  pl2mtc_avt(c_MAX_NUM_SL -1 downto 0);
-    o_mtc             : out mtc_out_avt(c_NUM_MTC -1 downto 0);
-    o_nsp             : out mtc2nsp_avt(c_NUM_NSP -1 downto 0)
+    i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0);
+    o_nsp             : out mtc2nsp_bus_avt(c_NUM_NSP -1 downto 0)
     );
 
 end entity mtc_builder;

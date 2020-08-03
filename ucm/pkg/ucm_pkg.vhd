@@ -30,14 +30,14 @@ package ucm_pkg is
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt;
   function nullify(x: ucm_prepro_rt) return ucm_prepro_rt;
 
-  type ucm_prepro_at is array(integer range <>) of ucm_prepro_rt;
-  type ucm_prepro_avt is array(integer range <>) of ucm_prepro_rvt;
-  function vectorify(x: ucm_prepro_at) return ucm_prepro_avt;
-  function vectorify(x: ucm_prepro_at) return std_logic_vector;
-  function structify(x: ucm_prepro_avt) return ucm_prepro_at;
-  function structify(x: std_logic_vector) return ucm_prepro_at;
-  function nullify(x: ucm_prepro_at) return ucm_prepro_at;
-  function nullify(x: ucm_prepro_avt) return ucm_prepro_avt;
+  type ucm_prepro_bus_at is array(integer range <>) of ucm_prepro_rt;
+  type ucm_prepro_bus_avt is array(integer range <>) of ucm_prepro_rvt;
+  function vectorify(x: ucm_prepro_bus_at) return ucm_prepro_bus_avt;
+  function vectorify(x: ucm_prepro_bus_at) return std_logic_vector;
+  function structify(x: ucm_prepro_bus_avt) return ucm_prepro_bus_at;
+  function structify(x: std_logic_vector) return ucm_prepro_bus_at;
+  function nullify(x: ucm_prepro_bus_at) return ucm_prepro_bus_at;
+  function nullify(x: ucm_prepro_bus_avt) return ucm_prepro_bus_avt;
 
   type ucm_csw_ch_control_rt is record
     data_present : std_logic;
@@ -133,15 +133,15 @@ package body ucm_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: ucm_prepro_at) return ucm_prepro_avt is
-    variable y :  ucm_prepro_avt(x'range);
+  function vectorify(x: ucm_prepro_bus_at) return ucm_prepro_bus_avt is
+    variable y :  ucm_prepro_bus_avt(x'range);
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
     end loop l;
     return y;
   end function vectorify;
-  function vectorify(x: ucm_prepro_at) return std_logic_vector is
+  function vectorify(x: ucm_prepro_bus_at) return std_logic_vector is
     variable y : std_logic_vector(x'length*124-1 downto 0);
     variable msb : integer := y'length-1;
   begin
@@ -151,16 +151,16 @@ package body ucm_pkg is
     end loop l;
     return y;
   end function vectorify;
-  function structify(x: ucm_prepro_avt) return ucm_prepro_at is
-    variable y :  ucm_prepro_at(x'range);
+  function structify(x: ucm_prepro_bus_avt) return ucm_prepro_bus_at is
+    variable y :  ucm_prepro_bus_at(x'range);
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
     end loop l;
     return y;
   end function structify;
-  function structify(x: std_logic_vector) return ucm_prepro_at is
-    variable y :  ucm_prepro_at(x'range);
+  function structify(x: std_logic_vector) return ucm_prepro_bus_at is
+    variable y :  ucm_prepro_bus_at(x'range);
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -169,16 +169,16 @@ package body ucm_pkg is
     end loop l;
     return y;
   end function structify;
-  function nullify(x: ucm_prepro_at) return ucm_prepro_at is
-    variable y :  ucm_prepro_at(x'range);
+  function nullify(x: ucm_prepro_bus_at) return ucm_prepro_bus_at is
+    variable y :  ucm_prepro_bus_at(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
     return y;
   end function nullify;
-  function nullify(x: ucm_prepro_avt) return ucm_prepro_avt is
-    variable y :  ucm_prepro_avt(x'range);
+  function nullify(x: ucm_prepro_bus_avt) return ucm_prepro_bus_avt is
+    variable y :  ucm_prepro_bus_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

@@ -34,7 +34,7 @@ entity ucm_ctrl is
     rst            : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -52,7 +52,7 @@ architecture beh of ucm_ctrl is
       rst            : in std_logic;
       glob_en             : in std_logic;
       -- extrnals
-      i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+      i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
       o_csw_ctrl          : out ucm_csw_control_at;
       -- internals
       o_num_cand          : out unsigned(3 downto 0);
@@ -136,7 +136,7 @@ entity ucm_ctrl_main is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- extrnals
-    i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
@@ -151,8 +151,8 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
-  signal data_ar      : ucm_prepro_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(c_MAX_NUM_SL -1 downto 0);
 
