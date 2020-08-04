@@ -32,17 +32,18 @@ end tdc_packet_processor;
 architecture behavioral of tdc_packet_processor is
   -- packet decoder signals
   type tdc_word_state_t is (ERR, SYNCING, READY, DATA0, DATA1, DATA2);
-  signal tdc_word_state                   : tdc_word_state_t               := SYNCING;
-  signal tdc_aligned                      : std_logic                      := '0';
-  signal data_buf                         : std_logic_vector (23 downto 0) := (others => '0');
-  signal sequential_header_count          : unsigned (3 downto 0)          := (others => '0');
-  constant sequential_header_count_thresh : unsigned (3 downto 0)          := (others => '1');
+  signal tdc_word_state : tdc_word_state_t               := SYNCING;
+  signal tdc_aligned    : boolean                        := false;
+  signal data_buf       : std_logic_vector (31 downto 8) := (others => '0');
+
+  constant sequential_header_count_thresh : integer                                           := 4;
+  signal sequential_header_count          : integer range 0 to sequential_header_count_thresh := 0;
 begin
 
   tdc_word_state_err <= '1' when (tdc_word_state = ERR) else '0';
 
   -- ro_mode = 00
-  tdc_aligned <= '1' when (tdc_word_state /= ERR and sequential_header_count = sequential_header_count_thresh) else '0';
+  tdc_aligned <= (tdc_word_state /= ERR and sequential_header_count = sequential_header_count_thresh);
 
   process (clock)
     constant TDC_START : std_logic_vector := x"3C";
@@ -54,7 +55,7 @@ begin
     if (rising_edge(clock)) then
 
       if (reset = '1') then
-        sequential_header_count <= (others => '0');
+        sequential_header_count <= 0;
         tdc_word_state          <= SYNCING;
         valid_o                 <= '0';
       else
@@ -67,12 +68,21 @@ begin
 
           tdc_err_o <= '0';
 
+          -- TDC Datasheet
+          --
+          -- http://ohm.bu.edu/trac/edf/attachment/wiki/AtlasPhase2Muons/TDCV2_datasheet_20200310.pdf
+          --
+          -- For a triggerless pair mode 32bit TDC word, 8b/10b encoding starts at the MSB byte [31:24].
+          -- The MSB in every byte corresponds to bit H, and the LSB corresponds to bit A according to
+          -- 8b/10b encoding definition.
+          --
+          --
           case tdc_word_state is
 
             -- err state, wait for header k-char to be received
             when ERR =>
 
-              sequential_header_count <= (others => '0');
+              sequential_header_count <= 0;
 
               valid_o <= '0';
 
@@ -96,10 +106,10 @@ begin
                 misaligned_o <= '1';
               end if;
 
-              if (tdc_aligned = '1') then
+              if (tdc_aligned) then
                 -- make sure this transition only happens on a k-char so we don't just drop into the middle of a packet
                 -- and get some weird sequence
-                if (k_char='1') then
+                if (k_char = '1') then
                   tdc_word_state <= READY;
                 end if;
               end if;
@@ -108,8 +118,8 @@ begin
 
               -- start reading on 1st non-kchar
               if (k_char = '0') then
-                tdc_word_state       <= DATA0;
-                data_buf(7 downto 0) <= word_8b;
+                tdc_word_state         <= DATA0;
+                data_buf(31 downto 24) <= word_8b;
               end if;
 
             when DATA0 =>
@@ -120,7 +130,7 @@ begin
                 tdc_word_state <= DATA1;
               end if;
 
-              data_buf(15 downto 8) <= word_8b;
+              data_buf(23 downto 16) <= word_8b;
 
             when DATA1 =>
 
@@ -130,7 +140,7 @@ begin
                 tdc_word_state <= DATA2;
               end if;
 
-              data_buf(23 downto 16) <= word_8b;
+              data_buf(15 downto 8) <= word_8b;
 
             when DATA2 =>
 
@@ -143,8 +153,8 @@ begin
                 valid_o        <= '1';
               end if;
 
-              tdc_word_o (31 downto 24) <= word_8b;
-              tdc_word_o (23 downto 0)  <= data_buf(23 downto 0);
+              tdc_word_o (7 downto 0)  <= word_8b;
+              tdc_word_o (31 downto 8) <= data_buf(31 downto 8);
 
             when others =>
 

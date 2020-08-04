@@ -41,32 +41,33 @@ end decoder_framer;
 --   > frame4 gives us 2 words
 --   -------------------------
 --   > total = 8 ten-bit words over 5 40MHz clocks
-
-
--- Usage: LUT=41, FF=25
 architecture behavioral of decoder_framer is
 
   -- frame parser signals
   type frame_state_t is (FRAME0, FRAME1, FRAME2, FRAME3, FRAME4);
   signal frame_state : frame_state_t := FRAME0;
   signal buf         : std_logic_vector (7 downto 0);
-  signal zeroeth     : std_logic     := '0';
-  signal first       : std_logic     := '0';
-  signal second      : std_logic     := '0';
+  signal zeroeth     : boolean       := false;
+  signal first       : boolean       := false;
 
   signal data_r, data : std_logic_vector (15 downto 0);
 
   signal synced : boolean := false;
 
-  signal valid      : std_logic;
+  signal valid      : boolean;
   signal data_o_int : std_logic_vector (9 downto 0) := (others => '0');
 
-  constant wait_for_slip_max : integer := 383;
-  signal wait_for_slip : integer := wait_for_slip_max;
+  -- only bitslip every so many clocks to make sure we have
+  -- time for the feedback to propagate through the system
+  constant wait_for_slip_max : integer                              := 191;
+  signal wait_for_slip       : integer range 0 to wait_for_slip_max := wait_for_slip_max;
 
-  signal timeout       : boolean := false;
-  constant timeout_max : integer := 2*3564*8;
-  signal timeout_cnt   : integer := 0;
+  -- kout watchdog
+  -- corresponds to syn_packet_number in the TDC
+  -- the maximum no IDLE packet
+  signal timeout       : boolean                 := false;
+  constant timeout_max : integer                 := 4095;
+  signal timeout_cnt   : integer range 0 to 4095 := 0;
 
   signal k_good  : boolean := false;
   signal k_good0 : boolean := false;
@@ -75,36 +76,34 @@ architecture behavioral of decoder_framer is
   signal k_good3 : boolean := false;
   signal k_good4 : boolean := false;
 
-  --function isk (a : std_logic_vector) return std_logic is
-  --  constant k3cm1 : std_logic_vector (9 downto 0) := "10" & x"7C";
-  --  constant k3cp1 : std_logic_vector (9 downto 0) := "01" & x"83";
-  --begin
-  --  if (a = k3cm1 or a = k3cp1) then
-  --    return '1';
-  --  else
-  --    return '0';
-  --  end if;
-  --end function isk;
+  function isk (a : std_logic_vector) return boolean is
+    constant k3cp1 : std_logic_vector (9 downto 0) := "01" & x"83";
+    constant k3cm1 : std_logic_vector (9 downto 0) := "10" & x"7C";
+  begin
+    return (a = k3cm1 or a = k3cp1);
+  end function isk;
 
 begin
 
-  synced_o <= '1' when synced else '0';
-  k_good <= k_good0 and k_good1 and k_good2 and k_good3 and k_good4;
-  err_o  <= '1' when (timeout) or (not synced and wait_for_slip = 0 and valid = '1' and not k_good) else '0';
+  synced_o <= '1' when synced                                                                   else '0';
+  k_good   <= k_good0 and k_good1 and k_good2 and k_good3 and k_good4;
+  err_o    <= '1' when (timeout) or (not synced and wait_for_slip = 0 and valid and not k_good) else '0';
 
-  -- have a watchdog to make sure we see a comma sequence every so many bxs
+  -- have a watchdog to make sure we see a comma every so many bxs
   process (clock) is
   begin
     if (rising_edge(clock)) then
-      if (k_good) then
-        timeout_cnt <= 0;
-        timeout     <= false;
-      elsif (timeout_cnt < timeout_max) then
-        timeout_cnt <= timeout_cnt + 1;
-        timeout     <= false;
-      else
-        timeout_cnt <= 0;
-        timeout     <= true;
+      if (valid) then
+        if (isk(data_o_int)) then
+          timeout_cnt <= 0;
+          timeout     <= false;
+        elsif (timeout_cnt < timeout_max) then
+          timeout_cnt <= timeout_cnt + 1;
+          timeout     <= false;
+        else
+          timeout_cnt <= 0;
+          timeout     <= true;
+        end if;
       end if;
     end if;
   end process;
@@ -119,8 +118,6 @@ begin
         synced <= false;
       end if;
 
-      -- only bitslip every so many clocks to make sure we have
-      -- time for the feedback to propagate through the system
       if (err_o = '1') then
         wait_for_slip <= wait_for_slip_max;
       elsif (wait_for_slip > 0) then
@@ -134,14 +131,15 @@ begin
     end if;
   end process;
 
-  zeroeth <= data_i_valid;
+  zeroeth <= true when data_i_valid = '1' else false;
 
   process (clock) is
   begin
     if (rising_edge(clock)) then
 
-      first  <= zeroeth;
-      second <= first;
+      first <= zeroeth;
+
+      valid <= false;
 
       case frame_state is
 
@@ -155,66 +153,63 @@ begin
             k_good0 <= false;
           end if;
 
-          if ((k_good0 or synced) and first = '1') then
+          if ((k_good0 or synced) and first) then
             frame_state <= FRAME1;
           end if;
 
           -- word 0
-          valid <= '0';
-          if (first = '1') then
+          if (first) then
             buf (5 downto 0) <= data(15 downto 10);
-            valid            <= '1';
+            valid            <= true;
             data_o_int       <= data(9 downto 0);
           end if;
 
         when FRAME1 =>
 
-        if (data = x"e7c6" or data = x"1839") then
-          k_good1 <= true;
-        else
-          k_good1 <= false;
-        end if;
+          if (data = x"e7c6" or data = x"1839") then
+            k_good1 <= true;
+          else
+            k_good1 <= false;
+          end if;
 
           -- frame_state
           if (not (k_good0 or synced)) then
             frame_state <= FRAME0;
-          elsif (first = '1') then
+          elsif (first) then
             frame_state <= FRAME2;
           end if;
 
           -- word 0
-          valid <= '0';
-          if (zeroeth = '1') then
-            valid                  <= '1';
+          if (zeroeth) then
+            valid                  <= true;
             buf(1 downto 0)        <= data(15 downto 14);
             data_o_int(9 downto 6) <= data (3 downto 0);
             data_o_int(5 downto 0) <= buf(5 downto 0);
           end if;
           -- word 1
-          if (first = '1') then
-            valid      <= '1';
+          if (first) then
+            valid      <= true;
             data_o_int <= data(13 downto 4);
           end if;
 
         when FRAME2 =>
 
-        if (data = x"7c60" or data = x"839f") then
-          k_good2 <= true;
-        else
-          k_good2 <= false;
-        end if;
+          if (data = x"7c60" or data = x"839f") then
+            k_good2 <= true;
+          else
+            k_good2 <= false;
+          end if;
 
           -- frame_state
           if (not ((k_good0 and k_good1) or synced)) then
             frame_state <= FRAME0;
-          elsif (first = '1') then
+          elsif (first) then
             frame_state <= FRAME3;
           end if;
 
           -- word 0
-          valid <= '0';
-          if (zeroeth = '1') then
-            valid                  <= '1';
+          if (zeroeth) then
+            valid                  <= true;
             buf(7 downto 0)        <= data (15 downto 8);
             data_o_int(9 downto 2) <= data (7 downto 0);
             data_o_int(1 downto 0) <= buf (1 downto 0);
@@ -222,57 +217,56 @@ begin
 
         when FRAME3 =>
 
-        if (data = x"c60e" or data = x"39f1") then
-          k_good3 <= true;
-        else
-          k_good3 <= false;
-        end if;
+          if (data = x"c60e" or data = x"39f1") then
+            k_good3 <= true;
+          else
+            k_good3 <= false;
+          end if;
+
           -- frame_state
           if (not ((k_good0 and k_good1 and k_good2) or synced)) then
             frame_state <= FRAME0;
-          elsif (first = '1') then
+          elsif (first) then
             frame_state <= FRAME4;
           end if;
 
           -- word 0
-          valid <= '0';
-          if (zeroeth = '1') then
-            valid                  <= '1';
+          if (zeroeth) then
+            valid                  <= true;
             data_o_int(9 downto 8) <= data (1 downto 0);
             data_o_int(7 downto 0) <= buf(7 downto 0);
           end if;
           -- word 1
-          if (first = '1') then
-            valid            <= '1';
+          if (first) then
+            valid            <= true;
             data_o_int       <= data (11 downto 2);
             buf (3 downto 0) <= data (15 downto 12);
           end if;
 
         when FRAME4 =>
 
-        if (data = x"60e7" or data = x"9f18") then
-          k_good4 <= true;
-        else
-          k_good4 <= false;
-        end if;
+          if (data = x"60e7" or data = x"9f18") then
+            k_good4 <= true;
+          else
+            k_good4 <= false;
+          end if;
 
           -- frame_state
           if (not ((k_good0 and k_good1 and k_good2 and k_good3) or synced)) then
             frame_state <= FRAME0;
-          elsif (first = '1') then
+          elsif (first) then
             frame_state <= FRAME0;
           end if;
 
           -- word 0
-          valid <= '0';
-          if (zeroeth = '1') then
-            valid                  <= '1';
+          if (zeroeth) then
+            valid                  <= true;
             data_o_int(9 downto 4) <= data (5 downto 0);
             data_o_int(3 downto 0) <= buf (3 downto 0);
           end if;
           -- word 1
-          if (first = '1') then
-            valid      <= '1';
+          if (first) then
+            valid      <= true;
             data_o_int <= data (15 downto 6);
           end if;
 
@@ -282,7 +276,7 @@ begin
 
   end process;
 
-  data_o       <= (others => '0') when not synced else data_o_int;
-  data_o_valid <= '0'             when not synced else valid;
+  data_o       <= data_o_int when (synced)           else (others => '0');
+  data_o_valid <= '1'        when (synced and valid) else '0';
 
 end behavioral;

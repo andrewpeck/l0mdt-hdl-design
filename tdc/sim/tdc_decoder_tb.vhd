@@ -15,9 +15,9 @@ end tdc_decoder_tb;
 architecture Behavioral of tdc_decoder_tb is
 
   constant clk_period : time := 3 ns;
-  constant sim_period : time := 40000000 ns;
+  constant sim_period : time := 50 ms;
 
-  signal max_sync_bxs    : integer := 0;
+  signal max_sync_bxs : integer := 0;
 
   signal resync               : std_logic                     := '0';
   signal synced               : std_logic                     := '0';
@@ -42,6 +42,8 @@ architecture Behavioral of tdc_decoder_tb is
 
   signal syncing : std_logic;
 
+  signal resync_cnt      : integer := 0;
+  signal valid_cnt       : integer := 0;
   signal bad_frames_cnt  : integer := 0;
   signal good_frames_cnt : integer := 0;
 
@@ -115,28 +117,28 @@ begin
     data_8b_gen <= x"3C" after 0.1 ns;
     KI_gen      <= '1'   after 0.1 ns;
     wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"10" after 0.1 ns;
-    KI_gen      <= '0'   after 0.1 ns;
-    wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"32" after 0.1 ns;
-    KI_gen      <= '0'   after 0.1 ns;
-    wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"54" after 0.1 ns;
-    KI_gen      <= '0'   after 0.1 ns;
-    wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"76" after 0.1 ns;
-    KI_gen      <= '0'   after 0.1 ns;
-    wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"98" after 0.1 ns;
-    KI_gen      <= '0'   after 0.1 ns;
-    wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"bA" after 0.1 ns;
+    data_8b_gen <= x"fe" after 0.1 ns;
     KI_gen      <= '0'   after 0.1 ns;
     wait until rising_edge(data_gen_valid);
     data_8b_gen <= x"dc" after 0.1 ns;
     KI_gen      <= '0'   after 0.1 ns;
     wait until rising_edge(data_gen_valid);
-    data_8b_gen <= x"fe" after 0.1 ns;
+    data_8b_gen <= x"bA" after 0.1 ns;
+    KI_gen      <= '0'   after 0.1 ns;
+    wait until rising_edge(data_gen_valid);
+    data_8b_gen <= x"98" after 0.1 ns;
+    KI_gen      <= '0'   after 0.1 ns;
+    wait until rising_edge(data_gen_valid);
+    data_8b_gen <= x"76" after 0.1 ns;
+    KI_gen      <= '0'   after 0.1 ns;
+    wait until rising_edge(data_gen_valid);
+    data_8b_gen <= x"54" after 0.1 ns;
+    KI_gen      <= '0'   after 0.1 ns;
+    wait until rising_edge(data_gen_valid);
+    data_8b_gen <= x"32" after 0.1 ns;
+    KI_gen      <= '0'   after 0.1 ns;
+    wait until rising_edge(data_gen_valid);
+    data_8b_gen <= x"10" after 0.1 ns;
     KI_gen      <= '0'   after 0.1 ns;
   end process;
 
@@ -256,13 +258,13 @@ begin
   -- use alignment buffers to intentionally skew the data
   -- by bitslipping for a random amount of time
   bs : process
-    variable seed1 : positive := 4;
-    variable seed2 : positive := 4;
-    variable x     : real;
-    variable y     : time     := 0 ns;
-    variable sync_start : time := 0 ns;
-    variable sync_end : time  := 0 ns;
-    variable sync_bxs : integer;
+    variable seed1      : positive := 4;
+    variable seed2      : positive := 4;
+    variable x          : real;
+    variable y          : time     := 0 ns;
+    variable sync_start : time     := 0 ns;
+    variable sync_end   : time     := 0 ns;
+    variable sync_bxs   : integer;
   begin
 
     -- send k-chars for a while to sync
@@ -270,21 +272,22 @@ begin
     bitslip <= '1';
 
     uniform(seed1, seed2, x);
-    y       := floor(x*8.0)*clk_period;
+    y := floor(x*8.0)*clk_period;
     wait for y;
     wait until rising_edge(clock);
     bitslip <= '0';
 
     wait until rising_edge(clock);
-    resync <= '1';
+    resync_cnt <= resync_cnt + 1;
+    resync     <= '1';
     sync_start := now;
     wait until rising_edge(clock);
-    resync <= '0';
+    resync     <= '0';
 
     ---- send data, wait for a valid
-    --syncing <= '0';
-    wait until rising_edge(synced) for 100 us;
-    assert (synced='1') report "failed to synchronize after resync" severity error;
+    wait until rising_edge(synced) for 10 us;
+    syncing <= '0';
+    assert (synced = '1') report "failed to synchronize after resync" severity error;
     sync_end := now;
     sync_bxs := integer(floor(real((sync_end - sync_start) / (clk_period * 8))));
     if (sync_bxs > max_sync_bxs) then
@@ -294,10 +297,13 @@ begin
 
     --wait for 1 us;
     -- send data, wait for a valid
-    syncing <= '0';
-    wait for 100 us;
-    wait until rising_edge(valid_o) for 1 us;
-    assert valid_o = '1'report "err, valid=0";
+    --wait for 100 us;
+    wait until rising_edge(valid_o) for 10 us;
+    if (valid_o = '1') then
+      valid_cnt <= valid_cnt + 1;
+    end if;
+    assert valid_o = '1'report "err, valid=0, framer failed to synchronize";
+    wait for 0.5 us;
 
   end process;
 
@@ -324,6 +330,7 @@ begin
     wait for sim_period/10;
     report integer'image(integer(floor((100.0 * real(now / ns) / (real (sim_period / ns)))))) & "% complete";
     report integer'image(bad_frames_cnt) & " bad of " & integer'image(bad_frames_cnt + good_frames_cnt) & " frames";
+    report integer'image(resync_cnt) & " resyncs";
   end process;
 
   alignment_buffer_even : entity work.alignment_buffer(parallel)

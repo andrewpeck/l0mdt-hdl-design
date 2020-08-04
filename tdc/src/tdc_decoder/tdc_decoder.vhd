@@ -117,21 +117,6 @@ begin
   aligned_data <= interleave (data_even_aligned, data_odd_aligned);
 
   --------------------------------------------------------------------------------
-  -- Comma Character Preprocessor
-  --------------------------------------------------------------------------------
-
-  --find_kchars_1 : entity work.find_kchars
-  --  port map (
-  --    clock     => clock,
-  --    valid_i   => valid_i,
-  --    align_i   => '0',
-  --    data_i    => aligned_data(9 downto 0),
-  --    aligned_o => word_aligned,
-  --    kchar_o   => kchar_lookahead,
-  --    shift_o   => bitslip
-  --    );
-
-  --------------------------------------------------------------------------------
   -- Frame decoder state machine
   --------------------------------------------------------------------------------
 
@@ -254,15 +239,9 @@ begin
         AO       => word_8b_int(0)
         );
 
-    process(clock)
-    begin
-      if (rising_edge(clock)) then
-        if (word_8b_valid = '1') then
-          word_8b <= word_8b_int;
-          k_char  <= k_char_int;
-        end if;
-      end if;
-    end process;
+    word_8b <= word_8b_int;
+    k_char  <= k_char_int;
+
   end generate;
 
   --------------------------------------------------------------------------------
