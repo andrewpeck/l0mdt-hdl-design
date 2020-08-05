@@ -11,7 +11,15 @@ use ieee.numeric_std.all;
 
 entity tdc_decoder is
   generic(
-    g_DECODER_SRC : integer := 1
+    g_DECODER_SRC       : integer := 1;
+    -- Per https://lpgbt.web.cern.ch/lpgbt/v0/ePorts.html#elink-groups
+    -- the lpgbt elink orders bits MSB first at inputs and outputs
+    --
+    -- Per TDCV2_datasheet_20200310.pdf the TDC sends out data in the order
+    -- a --> b --> c --> d --> e --> i --> f --> g --> h --> j
+    -- where a is the least significant bit, so it is LSB first
+    -- need to reverse the LPGBT data to be LSB first
+    g_REVERSE_BIT_ORDER : integer := 1
     );
   port(
 
@@ -38,6 +46,17 @@ entity tdc_decoder is
 end tdc_decoder;
 
 architecture behavioral of tdc_decoder is
+
+  function reverse_vector (a : in std_logic_vector)
+    return std_logic_vector is
+    variable result : std_logic_vector(a'range);
+    alias aa        : std_logic_vector(a'reverse_range) is a;
+  begin
+    for i in aa'range loop
+      result(i) := aa(i);
+    end loop;
+    return result;
+  end;  -- function reverse_vector
 
   function interleave (even : std_logic_vector (7 downto 0); odd : std_logic_vector (7 downto 0))
     return std_logic_vector is
@@ -80,7 +99,20 @@ architecture behavioral of tdc_decoder is
 
   signal slip_err_cnt : integer := 0;
 
+  signal data_even_reversed : std_logic_vector (7 downto 0);
+  signal data_odd_reversed  : std_logic_vector (7 downto 0);
+
 begin
+
+  norevgen : if (g_REVERSE_BIT_ORDER = 0) generate
+    data_even_reversed <= data_even;
+    data_odd_reversed  <= data_odd;
+  end generate;
+
+  revgen : if (g_REVERSE_BIT_ORDER = 1) generate
+    data_even_reversed <= reverse_vector(data_even);
+    data_odd_reversed  <= reverse_vector(data_odd);
+  end generate;
 
   --------------------------------------------------------------------------------
   -- Byte Alignment
@@ -90,11 +122,12 @@ begin
   -- lengths
   -- need to find the alignment (by looking for valid 8b10b words, and perform a bitslip )
 
+
   alignment_buffer_even : entity work.alignment_buffer(parallel)
     port map (
       clock     => clock,
       bitslip_i => bitslip,
-      data_i    => data_even,
+      data_i    => data_even_reversed,
       valid_i   => valid_i,
       valid_o   => aligned_data_valid,
       data_o    => data_even_aligned
@@ -104,7 +137,7 @@ begin
     port map (
       clock     => clock,
       bitslip_i => bitslip,
-      data_i    => data_odd,
+      data_i    => data_odd_reversed,
       valid_i   => valid_i,
       valid_o   => open,
       data_o    => data_odd_aligned

@@ -14,6 +14,17 @@ end tdc_decoder_tb;
 
 architecture Behavioral of tdc_decoder_tb is
 
+  function reverse_vector (a : in std_logic_vector)
+    return std_logic_vector is
+    variable result : std_logic_vector(a'range);
+    alias aa        : std_logic_vector(a'reverse_range) is a;
+  begin
+    for i in aa'range loop
+      result(i) := aa(i);
+    end loop;
+    return result;
+  end;  -- function reverse_vector
+
   constant clk_period : time := 3 ns;
   constant sim_period : time := 50 ms;
 
@@ -110,6 +121,8 @@ begin
     end if;
 
     if (syncing = '1') then
+      data_8b_gen <= x"3C" after 0.1 ns;
+      KI_gen      <= '1'   after 0.1 ns;
       wait until syncing = '0';
     end if;
 
@@ -211,25 +224,25 @@ begin
 
   framer2 : entity work.encoder_framer
     port map (
-      clock        => clock,
-      data_i       => data_10b,
-      data_i_valid => data_10b_valid,   -- input data valid flag
-      data_o       => data_i,
-      data_o_valid => valid_i
+      clock         => clock,
+      data_i        => data_10b,
+      data_i_valid  => data_10b_valid,  -- input data valid flag
+      frame_o       => data_i,
+      frame_o_valid => valid_i
       );
 
   --data2 : process
   --begin
   --  wait until rising_edge(data_gen_valid);
-  --  data_i <= x"0000";
+  --  data_i <= x"3e70";
   --  wait until rising_edge(data_gen_valid);
-  --  data_i <= x"0000";
+  --  data_i <= x"63e7";
   --  wait until rising_edge(data_gen_valid);
-  --  data_i <= x"c60e";
+  --  data_i <= x"063e";
   --  wait until rising_edge(data_gen_valid);
-  --  data_i <= x"60E7";
+  --  data_i <= x"7063";
   --  wait until rising_edge(data_gen_valid);
-  --  data_i <= x"0000";
+  --  data_i <= x"e706";
   --  --data_i <= "000011" & "10" & x"7c";
   --end process;
   --valid_i <= transport data_gen_valid after clk_period * 0;
@@ -272,7 +285,7 @@ begin
     bitslip <= '1';
 
     uniform(seed1, seed2, x);
-    y := floor(x*8.0)*clk_period;
+    y       := floor(x*8.0)*clk_period;
     wait for y;
     wait until rising_edge(clock);
     bitslip <= '0';
@@ -286,7 +299,8 @@ begin
 
     ---- send data, wait for a valid
     wait until rising_edge(synced) for 10 us;
-    syncing <= '0';
+    wait for 0.25 us;
+    syncing  <= '0';
     assert (synced = '1') report "failed to synchronize after resync" severity error;
     sync_end := now;
     sync_bxs := integer(floor(real((sync_end - sync_start) / (clk_period * 8))));
@@ -359,8 +373,8 @@ begin
       synced_o    => synced,
       clock       => clock,
       valid_i     => valid_i,
-      data_even   => data_even_skewed,
-      data_odd    => data_odd_skewed,
+      data_even   => reverse_vector(data_even_skewed),
+      data_odd    => reverse_vector(data_odd_skewed),
       tdc_word_o  => tdc_word_o,
       valid_o     => valid_o,
       read_done_i => valid_o,
