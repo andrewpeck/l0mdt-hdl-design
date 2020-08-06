@@ -39,7 +39,7 @@ entity heg_buffermux is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control           : in heg_ctrl2hp_at(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_control           : in heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out

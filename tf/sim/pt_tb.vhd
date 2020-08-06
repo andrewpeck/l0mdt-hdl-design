@@ -20,11 +20,11 @@
 
 
 library IEEE;
-library pt_lib;
+library tf_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use pt_lib.pt_pkg.all;
+use tf_lib.pt_pkg.all;
 
 
 entity pt_tb is

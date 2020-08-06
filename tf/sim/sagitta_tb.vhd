@@ -19,11 +19,11 @@
 ----------------------------------------------------------------------------------
 
 
-library IEEE, pt_lib;
+library IEEE, tf_lib;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
-use pt_lib.pt_pkg.all;
+use tf_lib.pt_pkg.all;
 
 
 entity sagitta_tb is
@@ -39,7 +39,7 @@ architecture Behavioral of sagitta_tb is
     constant CLK_period : time := 4.0 ns;
 begin
 
-    sagitta_calculator : entity pt_lib.sagitta_calculator
+    sagitta_calculator : entity tf_lib.sagitta_calculator
     Port map(
         clk          => clk,
         seg0         => seg0,

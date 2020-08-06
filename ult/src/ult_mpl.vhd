@@ -37,11 +37,11 @@ entity pipeline is
     ctrl              : in  MPL_CTRL_t;
     mon               : out MPL_MON_t;
     -- Sector Logic Candidates from uCM
-    i_ucm2pl_av       : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
+    i_ucm2pl_av       : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     -- Sector Logic Candidates to Track fitting
-    o_pl2pt_av        : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2pt_av        : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
     -- Sector Logic Candidates to mTC
-    o_pl2mtc_av       : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
+    o_pl2mtc_av       : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
     );
 end entity pipeline;
 

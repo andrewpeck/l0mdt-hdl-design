@@ -30,7 +30,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library pt_lib;
+library tf_lib;
 -- use pt_lib.pt_pkg.all;
 -- use pt_lib.pt_params_pkg.all;
 
