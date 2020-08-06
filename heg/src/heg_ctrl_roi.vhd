@@ -55,7 +55,7 @@ architecture beh of heg_ctrl_roi is
   signal slc_b_data_r  : ucm_csf_barrel_rt;
   
   signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal roi_edges : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal dv_z, dv_mbar : std_logic;
   -- signal slc_e_data : ucm_csf_endcap_rt;
   signal SLC_Window_r : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -102,8 +102,8 @@ begin
     o_Roi_win_valid <= dv_z and dv_mbar;
 
     WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
-      SLC_Window_r(l_i).lo <= roi_center(l_i) + roi_edges(l_i).lo;
-      SLC_Window_r(l_i).hi <= roi_center(l_i) + roi_edges(l_i).hi;
+      SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+      SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
 
       o_SLC_Window_v <= vectorify(SLC_Window_r);
     end generate;

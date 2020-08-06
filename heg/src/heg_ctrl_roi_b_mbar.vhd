@@ -46,34 +46,28 @@ entity b_mbar2roi is
     i_mbar              : in unsigned(UCM_MBAR_LEN-1 downto 0);
     i_dv                : in std_logic;
     --
-    o_roi_edges         : out hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_roi_edges         : out hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_dv                : out std_logic
   );
 end entity b_mbar2roi;
 
 architecture beh of b_mbar2roi is
 
-
-
-
-
-
-
-  signal rom_mem  : roi_mbar_lut_std(0 to get_roi_mbar_max(g_STATION_RADIUS) - 1);
+  -- signal rom_mem  : roi_mbar_lut_std(0 to get_roi_mbar_max(g_STATION_RADIUS) - 1);
+  signal rom_mem  : roi_mbar_lut_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0)(0 to get_num_layers(g_STATION_RADIUS) -1) := get_roi_mbar_tubes(g_STATION_RADIUS);
+  signal mem_ouput : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
   signal addr_mem : unsigned(UCM_MBAR_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
+
   
   attribute ROM_STYLE : string;
   attribute ROM_STYLE of rom_mem : signal is "distributed";
 
   signal roi_edges : std_logic_vector(MDT_TUBE_LEN * get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
-
-
-
 begin
 
-  rom_mem <= get_roi_mbar_tubes(g_STATION_RADIUS);
+  -- rom_mem <= get_roi_mbar_tubes(g_STATION_RADIUS);
 
   dv_guard : process(i_dv) begin
     int_data_valid <= i_dv;
@@ -98,12 +92,18 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
-            -- roi_edges <= rom_mem(to_integer(addr_mem));
+            mem_ouput <= rom_mem(to_integer(addr_mem));
             -- o_spaces <= to_unsigned(rom_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
           end if;
         end if;
       end if ;
     end process;
+  end generate;
+
+  OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
+    o_roi_edges(l_i).lo <= to_signed(mem_ouput(l_i)(0),MDT_TUBE_LEN);
+    o_roi_edges(l_i).hi <= to_signed(mem_ouput(l_i)(1),MDT_TUBE_LEN);
+
   end generate;
 
 end beh;

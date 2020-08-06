@@ -27,12 +27,12 @@ package roi_lut_BOLA3_slope is
 
   constant ROI_BOLA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BOLA3_SLOPE_MAX_SIZE - 1 downto 0)(0 to 5) := (
 
-    1023 downto 858 => ((-5,5),(-4,6),(-3,7),(5,15),(6,16),(6,16)), -- from 45 to 50 degree 
-    859  downto 716 => ((-5,5),(-4,6),(-4,6),(3,13),(4,14),(5,15)), -- from 50 to 55 degree 
-    717  downto 476 => ((-5,5),(-5,5),(-4,6),(1,11),(1,11),(2,12)), -- from 55 to 65 degree 
-    477  downto 273 => ((-5,5),(-5,5),(-5,5),(-1,9),(-1,9),(-1,9)), -- from 65 to 75 degree 
-    274  downto 89 => ((-5,5),(-5,5),(-5,5),(-4,6),(-3,7),(-3,7)), -- from 75 to 85 degree 
-    90   downto 0 => ((-5,5),(-5,5),(-5,5),(-5,5),(-5,5),(-5,5))  -- from 85 to 90 degree 
+    1023 downto 859 => ((-5,5),(-4,6),(-3,7),(5,15),(6,16),(6,16)), -- from 45 to 50 degree 
+    858  downto 717 => ((-5,5),(-4,6),(-4,6),(3,13),(4,14),(5,15)), -- from 50 to 55 degree 
+    716  downto 477 => ((-5,5),(-5,5),(-4,6),(1,11),(1,11),(2,12)), -- from 55 to 65 degree 
+    476  downto 274 => ((-5,5),(-5,5),(-5,5),(-1,9),(-1,9),(-1,9)), -- from 65 to 75 degree 
+    273  downto  90 => ((-5,5),(-5,5),(-5,5),(-4,6),(-3,7),(-3,7)), -- from 75 to 85 degree 
+    89   downto   0 => ((-5,5),(-5,5),(-5,5),(-5,5),(-5,5),(-5,5))  -- from 85 to 90 degree 
   );
 
  end package roi_lut_BOLA3_slope;

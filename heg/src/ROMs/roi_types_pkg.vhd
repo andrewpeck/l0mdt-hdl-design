@@ -45,7 +45,7 @@ package roi_types_pkg is
 
   type roi_mbar_lut_std is array(integer range <>) of std_logic_vector(MDT_TUBE_LEN * 8 -1 downto 0);
 
-  function vectorify(x : roi_mbar_lut_t) return std_logic_vector;
+  -- function vectorify(x : roi_mbar_lut_t) return roi_mbar_lut_std;
 
   -- function stru_large(x : std_logic_vector) return roi_mbar_layer_large_t;
 
@@ -53,12 +53,12 @@ end package;
 
 package body roi_types_pkg is
   
-  function vectorify(x : roi_mbar_lut_t) return std_logic_vector is
-    variable z : std_logic_vector(MDT_TUBE_LEN * x'length -1 downto 0);
-  begin
+  -- function vectorify(x : roi_mbar_lut_t) return roi_mbar_lut_std is
+  --   variable z : std_logic_vector(MDT_TUBE_LEN * x'length -1 downto 0);
+  -- begin
     
-    return z;
-  end function;
+  --   return z;
+  -- end function;
 
   -- function stru_large(x : std_logic_vector) return roi_mbar_layer_large_t is
   --   variable y : roi_mbar_layer_large_t;
