@@ -34,7 +34,7 @@ use heg_roi_lib.ROI_LUT_BILA3_slope.all;
 use heg_roi_lib.ROI_LUT_BMLA3_slope.all;
 use heg_roi_lib.ROI_LUT_BOLA3_slope.all;
 
-package RoI_LUT_pkg is
+package roi_func_pkg is
 
   -- type trLUT_limits_t is array (0 to 1) of integer;
   -- type trLUT_layer_t is array (0 to 5) of trLUT_limits_t;
@@ -53,23 +53,23 @@ package RoI_LUT_pkg is
   --   S3  : b_sector_mem;
   -- end record;
 
-  function get_roi_mbar_tubes(station : integer) return roi_mdt_lut;
+  function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_std;
   
   function get_roi_mbar_max(station : integer) return integer;
   
-end package RoI_LUT_pkg;
+end package roi_func_pkg;
 
-package body RoI_LUT_pkg is
+package body roi_func_pkg is
   
-  function roi_set_mdt_mem(station : integer) return roi_mdt_lut is
-    variable out_mem : roi_mdt_lut := (others =>(others =>(others => 0))) ;
+  function get_roi_mbar_tubes(station : integer) return roi_mbar_lut_std is
+    variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;
   begin
 
-    if sector = 0 then
+    if c_SECTOR_ID = 0 then
 
-    elsif sector = 3 then
+    elsif c_SECTOR_ID = 3 then
       if station = 0 then
-        out_mem := trLUT_s3i_rom_mem;
+        -- out_mem := trLUT_s3i_rom_mem;
       elsif station = 1 then
 
       elsif station = 2 then
@@ -84,28 +84,28 @@ package body RoI_LUT_pkg is
     return out_mem;
   end function;
 
-  -- function roi_set_max(sector, station : integer) return integer is
-  --   variable out_mem : integer := 0;
-  -- begin
+  function get_roi_mbar_max(station : integer) return integer is
+    variable out_mem : integer := 0;
+  begin
 
-  --   if sector = 0 then
+    if c_SECTOR_ID = 0 then
 
-  --   elsif sector = 3 then
-  --     if station = 0 then
-  --       out_mem := BILA3_IN_MAX;
-  --     elsif station = 1 then
+    elsif c_SECTOR_ID = 3 then
+      if station = 0 then
+        out_mem := ROM_BOLA3_SLOPE_MAX_SIZE;
+      elsif station = 1 then
 
-  --     elsif station = 2 then
+      elsif station = 2 then
 
-  --     elsif station = 3 then
+      elsif station = 3 then
 
-  --     end if;
-  --   else
+      end if;
+    else
 
-  --   end if;
+    end if;
 
-  --   return out_mem;
-  -- end function;
+    return out_mem;
+  end function;
   
   
-end package body RoI_LUT_pkg;
+end package body roi_func_pkg;
