@@ -81,7 +81,7 @@ begin
     -- end if;
   end process;
 
-  INN_GEN: if g_STATION_RADIUS = 0 generate
+  -- INN_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
 
     begin
@@ -98,7 +98,7 @@ begin
         end if;
       end if ;
     end process;
-  end generate;
+  -- end generate;
 
   OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
     o_roi_edges(l_i).lo <= to_signed(mem_ouput(l_i)(0),MDT_TUBE_LEN);

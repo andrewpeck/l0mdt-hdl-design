@@ -66,7 +66,7 @@ begin
 
     uCM_data_r <= structify(i_uCM_data_v);
     slc_b_data_r <= structify(uCM_data_r.specific);
-
+    
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
       g_STATION_RADIUS => g_STATION_RADIUS
