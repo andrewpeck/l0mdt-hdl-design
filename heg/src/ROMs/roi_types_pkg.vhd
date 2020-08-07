@@ -28,8 +28,8 @@ use shared_lib.detector_param_pkg.all;
 package roi_types_pkg is
 
   -- constant ROM_MAX_SIZE : integer := 1024;
-
-  type roi_z_lut_t is array(integer range <>) of integer;
+  type roi_z_centers is array (0 to 1) of integer;
+  type roi_z_lut_t is array(integer range <>) of roi_z_centers;
 
 
   type roi_mbar_limit is array (0 to 1) of integer;
