@@ -52,7 +52,8 @@ package cfg_global_pkg is
     PT_type                       : std_logic;  -- select the type of pt calculator
     -- DAQ
     ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
-
+    -- MTC
+    ENABLE_MTC                    : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
     --------------------------------------------------------------------------------
@@ -69,7 +70,7 @@ package cfg_global_pkg is
     SECTOR_SIDE                   => '0', -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
-    ENABLE_NEIGHBORS             => '1', -- 0: disabled  1: enabled
+    ENABLE_NEIGHBORS              => '1', -- 0: disabled  1: enabled
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -94,6 +95,8 @@ package cfg_global_pkg is
     PT_type                       => '0', -- default 0
     -- DAQ
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
+    -- MTC
+    ENABLE_MTC                    => '1',
     --------------------------------------------------------------------------------
     --  Thread configuration
     --------------------------------------------------------------------------------
