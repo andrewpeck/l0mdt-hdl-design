@@ -1,0 +1,40 @@
+create_project:ult_tp:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp
+
+# simulate_project:ult_tp:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ult_tp
+# 
+synthesise_ips:ult_tp:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp
+      IP_PATH: IP
+    dependencies:
+        - create_project:ult_tp
+# 
+synthesise_project:ult_tp:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp
+    dependencies:
+        # - synthesise_ips:ult_tp
+        - create_project:ult_tp
+# 
+# implement_project:ult_tp:
+#     extends: .implement_project
+#     variables: 
+#       extends: .vars
+#       PROJECT_NAME: ult_tp
+#       HOG_NO_BITSTREAM_STAGE: 1
+#     dependencies:
+#       - create_project:ult_tp
+#       #  - synthesise_ips:ult_tp
+#       - synthesise_project:ult_tp
