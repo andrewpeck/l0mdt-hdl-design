@@ -158,7 +158,19 @@ foreach my $th ( @{$types}) {
 
 	    my $mname = (keys %{$member})[0];             # finally, get the name of the member
 	    print "  $mname: " if( $debug>1);
-	    my $mref = $member->{$mname};      # and reference to the underlying hash
+
+	    my $mary = $member->{$mname};      # and reference to the underlying hash
+	    # so now $mary is an array reference to a list of single-key hashes (ugh!)
+	    # convert it to a single hash so we don't go crazy
+	    my $mref = { };
+	    foreach my $ae ( @{$mary}) {
+#		print "--- ref: " . ref($ae) . "\n" if($debug);
+		my $key = (keys %{$ae})[0];
+		my $val = $ae->{$key};
+#		print "--- key: $key val: $val\n" if($debug);;
+		$mref->{$key} = $val;
+	    }
+
 	    my %minfo;
 
 	    if( $mref->{"type"}) {	       # better have a type
