@@ -6,23 +6,23 @@ create_project:hps:
       extends: .vars
       PROJECT_NAME: hps
 
-# synthesise_ips:hps:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: hps
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:hps
+synthesise_ips:hps:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps
+      IP_PATH: IP
+    dependencies:
+        - create_project:hps
 
-# synthesise_project:hps:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: hps
-#     dependencies:
-#         # - synthesise_ips:hps
-#         - create_project:hps
+synthesise_project:hps:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps
+    dependencies:
+        # - synthesise_ips:hps
+        - create_project:hps
 
 # implement_project:hps:
 #     extends: .implement_project
