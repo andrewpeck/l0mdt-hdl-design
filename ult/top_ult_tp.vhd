@@ -110,9 +110,9 @@ entity top_ult_tp is
 
     );
 
-end entity top_ult;
+end entity top_ult_tp;
 
-architecture behavioral of top_ult is
+architecture behavioral of top_ult_tp is
 
 begin
 

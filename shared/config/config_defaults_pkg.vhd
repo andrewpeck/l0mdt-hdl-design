@@ -44,6 +44,7 @@ package cfg_global_pkg is
     NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
     -- muon control manager
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
+    ENABLE_MPL                    : std_logic;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
@@ -87,6 +88,7 @@ package cfg_global_pkg is
     NUM_MDT_CH_OUT                => 6,   -- default 6  
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
+    ENABLE_MPL                    => '1',
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
