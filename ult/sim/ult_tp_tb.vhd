@@ -13,24 +13,104 @@
 --------------------------------------------------------------------------------
 
 library ieee;
+use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
-library project_lib;
+library ult_lib;
 
-library ucm_lib;
-use ucm_lib.ucm_pkg.all;
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.TAR_CTRL.all;
+use ctrl_lib.MTC_CTRL.all;
+use ctrl_lib.UCM_CTRL.all;
+use ctrl_lib.DAQ_CTRL.all;
+use ctrl_lib.TF_CTRL.all;
+use ctrl_lib.MPL_CTRL.all;
 
 entity ult_tp is
-  -- TB, no ports
+  generic (
+    DUMMY       : boolean := false;
+    EN_TAR_HITS : integer := 1;
+    EN_MDT_HITS : integer := 0
+    );
 end entity ult_tp;
 
 architecture beh of ult_tp is
+
+  signal clock_and_control : l0mdt_control_rt;
+  signal ttc_commands      : l0mdt_ttc_rt;
+  -- axi control
+
+  signal h2s_ctrl :  H2S_CTRL_t;
+  signal h2s_mon  :  H2S_MON_t;
+  signal tar_ctrl :  TAR_CTRL_t;
+  signal tar_mon  :  TAR_MON_t;
+  signal mtc_ctrl :  MTC_CTRL_t;
+  signal mtc_mon  :  MTC_MON_t;
+  signal ucm_ctrl :  UCM_CTRL_t;
+  signal ucm_mon  :  UCM_MON_t;
+  signal daq_ctrl :  DAQ_CTRL_t;
+  signal daq_mon  :  DAQ_MON_t;
+  signal tf_ctrl  :  TF_CTRL_t;
+  signal tf_mon   :  TF_MON_t;
+  signal mpl_ctrl :  MPL_CTRL_t;
+  signal mpl_mon  :  MPL_MON_t;
+
+  -- TDC Hits from Polmux
+  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
+  -- TDC Hits from Tar
+  signal i_inner_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_middle_tar_hits :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_outer_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_extra_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+
+  -- Sector Logic Candidates
+  signal i_main_primary_slc        : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc      : slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc       : slc_rx_data_rvt;
+  signal i_minus_neighbor_slc      : slc_rx_data_rvt;
+  -- Segments in from neighbor
+  signal plus_neighbor_segments_i  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal minus_neighbor_segments_i : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+
+  -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
+  signal daq_streams_o :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+
+  -- Segments Out to Neighbor
+  signal plus_neighbor_segments_o  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal minus_neighbor_segments_o :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+
+  -- MUCTPI
+  signal MTC_o :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+  signal NSP_o :  mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+
+  signal sump : std_logic;
+
+
+
+
+
+
+
+
+
+
+
   -- clk
   constant clk_period : time := 2.7778 ns;
   signal clk : std_logic := '0';
@@ -40,7 +120,7 @@ architecture beh of ult_tp is
   
   signal glob_en : std_logic := '1';
 
-  signal clock_and_control : l0mdt_control_rt;
+  -- signal clock_and_control : l0mdt_control_rt;
 
   -- SLc in
   signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
@@ -53,7 +133,7 @@ architecture beh of ult_tp is
   signal o_uCM2hps_out_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_ext_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
-  signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal cand1 , cand2 , cand3 , cand4 : slc_rx_data_rt;
   signal barrel1 , barrel2 , barrel3 , barrel4 : slc_barrel_rt;
@@ -65,9 +145,9 @@ begin
   
   ULT : entity ult_lib.ult
     generic map(
-      EN_TAR_HITS => EN_TAR_HITS,
-      EN_MDT_HITS => EN_MDT_HITS,
-      DUMMY       => DUMMY
+      EN_TAR_HITS => 1,
+      EN_MDT_HITS => 0,
+      DUMMY       => false
       )
     port map(
       -- pipeline clock
