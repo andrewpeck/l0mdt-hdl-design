@@ -22,6 +22,10 @@ for( my $i=0; $i<$na; $i++) {
     if( $arg =~ m{\.yml}) {
 	print "Loading YAML from $ARGV[$i]\n";
 	my $type = ReadYaml( $ARGV[$i]);
+	print "--- Original ---\n";
 	print Dumper( $type);
+	print "--- Fixed ---\n";
+	my $new_type = Restructure( $type);
+	print Dumper( $new_type);
     }
 }

@@ -127,6 +127,7 @@ foreach my $th ( @{$types}) {
 
     my $hdl_type = $item;
     if( $item =~ /_$/) {
+	die "NO trailing underscore allowed in $item";
 	print "<> Trailing underscore changed to 's' in $item\n" if($debug);
 	chop $hdl_type;
 	$hdl_type .= "s";
