@@ -21,7 +21,7 @@ use heg_roi_lib.roi_types_pkg.all;
 package roi_lut_BOLA3 is
 
     -- add length of constant array
-    constant ROM_BOLA3_Z_MAX_SIZE : integer := 12248;
+    constant ROM_BOLA3_Z_MAX_SIZE : integer := 12249;
 
     constant ROI_BOLA3_Z_MEM : roi_z_lut_t(0 to ROM_BOLA3_Z_MAX_SIZE - 1) := (
   
