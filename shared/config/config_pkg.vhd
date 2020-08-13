@@ -81,6 +81,8 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- Blocks configuration
   --------------------------------------------------------------------------------
+  constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
+  constant c_TAR_INSEL              : std_logic := CFG.INSEL_MDT_nTAR;
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
   constant c_MPL_ENABLED            : std_logic := CFG.ENABLE_MPL;
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;

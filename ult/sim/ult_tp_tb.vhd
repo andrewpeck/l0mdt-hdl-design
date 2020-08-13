@@ -101,16 +101,7 @@ architecture beh of ult_tp is
 
   signal sump : std_logic;
 
-
-
-
-
-
-
-
-
-
-
+-----------------------------------------------------------------------------------------------------
   -- clk
   constant clk_period : time := 2.7778 ns;
   signal clk : std_logic := '0';

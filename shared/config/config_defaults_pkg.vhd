@@ -42,8 +42,12 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
     ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
     NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    -- tube address remap
+    ENABLE_TAR                    : std_logic;
+    INSEL_MDT_nTAR                : std_logic;
     -- muon control manager
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
+    -- main pipeline
     ENABLE_MPL                    : std_logic;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
@@ -86,6 +90,9 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- tube address remap
+    ENABLE_TAR                    => '1',
+    INSEL_MDT_nTAR                => '1',
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
     ENABLE_MPL                    => '1',
