@@ -43,7 +43,7 @@ entity heg_ctrl_roi is
     --
     i_uCM_data_v        : in ucm2hps_rvt;
     --
-    o_SLC_Window_v      : out hp_heg2hp_window_avt;
+    o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_Roi_win_valid      : out std_logic
     
   );
@@ -55,9 +55,10 @@ architecture beh of heg_ctrl_roi is
   signal slc_b_data_r  : ucm_csf_barrel_rt;
   
   signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
-  signal roi_edges : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal dv_z, dv_mbar : std_logic;
   -- signal slc_e_data : ucm_csf_endcap_rt;
+  signal SLC_Window_r : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   
 begin
 
@@ -65,7 +66,7 @@ begin
 
     uCM_data_r <= structify(i_uCM_data_v);
     slc_b_data_r <= structify(uCM_data_r.specific);
-
+    
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
       g_STATION_RADIUS => g_STATION_RADIUS
@@ -97,6 +98,16 @@ begin
       o_roi_edges         => roi_edges,
       o_dv                => dv_mbar
     );
+
+    o_Roi_win_valid <= dv_z and dv_mbar;
+
+    WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
+      SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+      SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+
+      o_SLC_Window_v <= vectorify(SLC_Window_r);
+    end generate;
+
 
 
   end generate;

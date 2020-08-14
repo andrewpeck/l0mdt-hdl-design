@@ -30,6 +30,25 @@ package hp_pkg is
   function nullify(x: hp_heg2hp_window_at) return hp_heg2hp_window_at;
   function nullify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_avt;
 
+  type hp_win_tubes_limits_rt is record
+    hi : signed(MDT_TUBE_LEN-1 downto 0);
+    lo : signed(MDT_TUBE_LEN-1 downto 0);
+  end record hp_win_tubes_limits_rt;
+  constant HP_WIN_TUBES_LIMITS_LEN : integer := 18;
+  subtype hp_win_tubes_limits_rvt is std_logic_vector(HP_WIN_TUBES_LIMITS_LEN-1 downto 0);
+  function vectorify(x: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rvt;
+  function structify(x: hp_win_tubes_limits_rvt) return hp_win_tubes_limits_rt;
+  function nullify(x: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt;
+
+  type hp_window_limits_at is array(integer range <>) of hp_win_tubes_limits_rt;
+  type hp_window_limits_avt is array(integer range <>) of hp_win_tubes_limits_rvt;
+  function vectorify(x: hp_window_limits_at) return hp_window_limits_avt;
+  function vectorify(x: hp_window_limits_at) return std_logic_vector;
+  function structify(x: hp_window_limits_avt) return hp_window_limits_at;
+  function structify(x: std_logic_vector) return hp_window_limits_at;
+  function nullify(x: hp_window_limits_at) return hp_window_limits_at;
+  function nullify(x: hp_window_limits_avt) return hp_window_limits_avt;
+
   type hp_heg2hp_slc_b_rt is record
     z_0 : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     y_0 : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -164,6 +183,81 @@ package body hp_pkg is
   end function nullify;
   function nullify(x: hp_heg2hp_window_avt) return hp_heg2hp_window_avt is
     variable y :  hp_heg2hp_window_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rvt is
+    variable y : hp_win_tubes_limits_rvt;
+  begin
+    y(17 downto 9)             := vectorify(x.hi);
+    y(8 downto 0)              := vectorify(x.lo);
+    return y;
+  end function vectorify;
+  function structify(x: hp_win_tubes_limits_rvt) return hp_win_tubes_limits_rt is
+    variable y : hp_win_tubes_limits_rt;
+  begin
+    y.hi                       := structify(x(17 downto 9));
+    y.lo                       := structify(x(8 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: hp_win_tubes_limits_rt) return hp_win_tubes_limits_rt is
+    variable y : hp_win_tubes_limits_rt;
+  begin
+    y.hi                       := nullify(x.hi);
+    y.lo                       := nullify(x.lo);
+    return y;
+  end function nullify;
+
+  function vectorify(x: hp_window_limits_at) return hp_window_limits_avt is
+    variable y :  hp_window_limits_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: hp_window_limits_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*18-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-18) := vectorify(x(i));
+      msb := msb - 18 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: hp_window_limits_avt) return hp_window_limits_at is
+    variable y :  hp_window_limits_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return hp_window_limits_at is
+    variable y :  hp_window_limits_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-18));
+      msb := msb - 18 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: hp_window_limits_at) return hp_window_limits_at is
+    variable y :  hp_window_limits_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: hp_window_limits_avt) return hp_window_limits_avt is
+    variable y :  hp_window_limits_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
