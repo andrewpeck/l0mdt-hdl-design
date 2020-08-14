@@ -1,30 +1,39 @@
 yml2hdl := "../../tools/yml2hdl/yml2hdl.py"
 
 all:
-	# common ieee
+	##### common ieee
 	python3 $(yml2hdl)  common_ieee.yml
-	# l0mdt constants
+	##### l0mdt constants shared folder
 	python3 $(yml2hdl)  \
 	-e common_ieee.yml  \
 	l0mdt_constants.yml
-	# l0mdt dataformats
+	##### l0mdt dataformats shared folder
 	python3 $(yml2hdl)     \
 	-e common_ieee.yml     \
 	-e l0mdt_constants.yml \
 	l0mdt_dataformats.yml
-	# common constants
+	##### l0mdt constants dataformat folder
+	# python3 $(yml2hdl)  \
+	# -e common_ieee.yml  \
+	# ../../dataformats/l0mdt_constants.yml
+	##### l0mdt dataformats dataformat folder
+	# python3 $(yml2hdl)     \
+	# -e common_ieee.yml     \
+	# -e ../../dataformats/l0mdt_constants.yml \
+	# ../../dataformats/l0mdt_dataformats.yml
+	##### common constants
 	python3 $(yml2hdl)     \
 	-e common_ieee.yml     \
 	-e l0mdt_constants.yml \
 	common_constants.yml
-	# common types
+	##### common types
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
 	-e l0mdt_constants.yml   \
 	-e common_constants.yml  \
 	-e l0mdt_dataformats.yml \
 	common_types.yml
-	# ucm
+	##### ucm
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
 	-e l0mdt_constants.yml   \
