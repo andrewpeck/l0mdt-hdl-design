@@ -20,9 +20,9 @@ end decoder_framer;
 --------------------------------------------------------------------------------------------------
 -- Frame aligner logic, extract 10 bit words from 16 bits/clock
 --------------------------------------------------------------------------------------------------
--- Least common multiple of 16 and 10 is 80
--- so, because of the weird 10 bit alignment and 16 bits / bx received, there are 80/16 = 5 different mapping of 16
--- ==> 10 bits, and some of the bits have to be buffered from one clock cycle to the next
+-- Least common multiple of 16 and 10 is 80 so, because of the weird 10 bit alignment and 16 bits /
+-- bx received, there are 80/16 = 5 different mapping of 16 ==> 10 bits, and some of the bits have
+-- to be buffered from one clock cycle to the next
 --
 -- bits[79:0]     01234567890123456789012345678901234567890123456789012345678901234567890123456789
 --
