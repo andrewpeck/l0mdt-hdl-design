@@ -77,7 +77,7 @@ begin
           busy_sr <= "11";
         else
           triad   <= triad(1 downto 0) & '0';
-          busy_sr <= busy_sr (1) & '0';
+          busy_sr <= busy_sr (0) & '0';
         end if;
       end if;  -- dav
     end if;  --clk
