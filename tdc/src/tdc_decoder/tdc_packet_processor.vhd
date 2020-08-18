@@ -144,6 +144,8 @@ begin
 
             when DATA2 =>
 
+              -- FIXME: the TDC_ERR signal applies (according to the documentation) to the packet
+              -- following the ERR, rather than the packet preceeding it
               if (k_char = '1' and word_8b = TDC_ERR) then  -- 28.4 = tdc_err
                 tdc_err_o      <= '1';
                 tdc_word_state <= READY;
