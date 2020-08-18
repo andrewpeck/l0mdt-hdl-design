@@ -196,8 +196,6 @@ begin
   --------------------------------------------------------------------------------
 
   process (lpgbt_clk, ec_data_down)
-    variable ec_data_down_replicated0 : std_logic_vector (3 downto 0);
-    variable ec_data_down_replicated1 : std_logic_vector (3 downto 0);
 
     constant d0 : integer := CSM_SCA_DOWNLINK_ELINK0;
     constant d1 : integer := CSM_SCA_DOWNLINK_ELINK1;
@@ -248,18 +246,18 @@ begin
 
           -- if broadcast ? send to all of the scas
           if (sca_broadcast = '1') then
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
 
           -- select a CSM... choose which SCA on SC controller port
           elsif (sca_link_sel = I) then
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
 
           -- idle
           else
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= (others => '1');
           end if;
 
         end if;
