@@ -29,3 +29,6 @@
 [submodule "c2c/src/bd"]
 	path = c2c/src/bd
 	url = https://github.com/dgastler/BU_BUILD
+[submodule "tv"]
+	path = tv
+	url = https://gitlab.cern.ch/atlas_hllhc_uci_mdtTrigger/tv.git
