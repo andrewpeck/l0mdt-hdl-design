@@ -230,15 +230,12 @@ package l0mdt_dataformats_pkg is
   function nullify(x: pl2pt_aavt) return pl2pt_aavt;
 
   type pl2mtc_rt is record
-    muid : slc_muid_rt;
-    chambers : slc_chid_rt;
     common : slc_common_rt;
-    specific : std_logic_vector(UCM_PT_PHIMOD_LEN-1 downto 0);
     process_ch : std_logic_vector(4-1 downto 0);
     processed : std_logic;
     data_valid : std_logic;
   end record pl2mtc_rt;
-  constant PL2MTC_LEN : integer := 86;
+  constant PL2MTC_LEN : integer := 46;
   subtype pl2mtc_rvt is std_logic_vector(PL2MTC_LEN-1 downto 0);
   function vectorify(x: pl2mtc_rt) return pl2mtc_rvt;
   function structify(x: pl2mtc_rvt) return pl2mtc_rt;
@@ -890,10 +887,7 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: pl2mtc_rt) return pl2mtc_rvt is
     variable y : pl2mtc_rvt;
   begin
-    y(85 downto 66)            := vectorify(x.muid);
-    y(65 downto 54)            := vectorify(x.chambers);
-    y(53 downto 14)            := vectorify(x.common);
-    y(13 downto 6)             := x.specific;
+    y(45 downto 6)             := vectorify(x.common);
     y(5 downto 2)              := x.process_ch;
     y(1)                       := x.processed;
     y(0)                       := x.data_valid;
@@ -902,10 +896,7 @@ package body l0mdt_dataformats_pkg is
   function structify(x: pl2mtc_rvt) return pl2mtc_rt is
     variable y : pl2mtc_rt;
   begin
-    y.muid                     := structify(x(85 downto 66));
-    y.chambers                 := structify(x(65 downto 54));
-    y.common                   := structify(x(53 downto 14));
-    y.specific                 := x(13 downto 6);
+    y.common                   := structify(x(45 downto 6));
     y.process_ch               := x(5 downto 2);
     y.processed                := x(1);
     y.data_valid               := x(0);
@@ -914,10 +905,7 @@ package body l0mdt_dataformats_pkg is
   function nullify(x: pl2mtc_rt) return pl2mtc_rt is
     variable y : pl2mtc_rt;
   begin
-    y.muid                     := nullify(x.muid);
-    y.chambers                 := nullify(x.chambers);
     y.common                   := nullify(x.common);
-    y.specific                 := nullify(x.specific);
     y.process_ch               := nullify(x.process_ch);
     y.processed                := nullify(x.processed);
     y.data_valid               := nullify(x.data_valid);

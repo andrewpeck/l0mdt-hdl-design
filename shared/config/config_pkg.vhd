@@ -92,7 +92,7 @@ package config_pkg is
   --
   constant c_TF_ENABLED             : std_logic := CFG.ENABLE_TF;
   --
-  constant c_MTC_ENABLED             : std_logic := '1';
+  constant c_MTC_ENABLED             : std_logic := CFG.ENABLE_MTC;
   --
   constant c_DAQ_ENABLED            : std_logic := CFG.ENABLE_DAQ;
   constant c_NUM_DAQ_STREAMS        : integer := 1;

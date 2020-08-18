@@ -186,10 +186,10 @@ HDL_Types:
 
 # pl 2 mtc
 - pl2mtc:
-  - muid          : [ type : slc_muid]
-  - chambers      : [ type : slc_chid]
+  # - muid          : [ type : slc_muid]
+  # - chambers      : [ type : slc_chid]
   - common        : [ type : slc_common]
-  - specific      : [ type : logic , length: UCM_PT_PHIMOD_LEN]
+  # - specific      : [ type : logic , length: UCM_PT_PHIMOD_LEN]
   - process_ch    : [ type : logic , length: 4]
   - processed     : [ type : logic ]
   - data_valid    : [ type : logic ]
