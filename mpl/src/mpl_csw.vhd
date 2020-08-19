@@ -37,8 +37,8 @@ entity mpl_csw is
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_ucm_av          : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_mtc_av          : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    o_tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    -- o_mtc_av          : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity mpl_csw;
 
