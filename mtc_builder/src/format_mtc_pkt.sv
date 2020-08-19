@@ -1,4 +1,4 @@
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
 module format_mtc_pkt #(
 			 parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
 			 parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,

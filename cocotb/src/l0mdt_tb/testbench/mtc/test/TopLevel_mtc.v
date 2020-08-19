@@ -7,7 +7,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
 
   module TopLevel_mtc #(
 			parameter SLCPIPELINE_WIDTH = PL2MTC_LEN,

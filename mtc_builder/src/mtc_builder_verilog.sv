@@ -1,4 +1,4 @@
-`include "l0mdt_buses_constants.svh"
+//`include "l0mdt_buses_constants.svh"
 `default_nettype wire
 module mtc_builder_verilog#(
 			    parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
