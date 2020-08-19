@@ -7,7 +7,7 @@ use hal.board_pkg_common.all;
 
 package csm_pkg is
 
-  constant CSM_ENC_LINK : integer := 0;  -- specify which 80 Mbps elink (0 to 15) is the ENC
+  constant CSM_ENC_DOWNLINK : integer := 0;  -- specify which 80 Mbps elink (0 to 15) is the ENC
 
   constant CSM_SCA0_UP_PRI : integer := -1;     -- specify which 80 Mbps elink (0 to 15) is the SCA
   constant CSM_SCA1_UP_PRI : integer := 4*1+1;  -- specify which 80 Mbps elink (0 to 15) is the SCA

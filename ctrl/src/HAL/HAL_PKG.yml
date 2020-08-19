@@ -28,6 +28,14 @@ HDL_Types:
   - RX_RECEIVED_1 : [ type: logic ]
   - RX_CHANNEL_1 : [ type: logic, length: 8 ]
   - RX_DATA_1 : [ type: logic, length: 32 ]
+  - RX_LEN_2 : [ type: logic, length: 8 ]
+  - RX_ADDRESS_2 : [ type: logic, length: 8 ]
+  - RX_CONTROL_2 : [ type: logic, length: 8 ]
+  - RX_TRANSID_2 : [ type: logic, length: 8 ]
+  - RX_ERR_2 : [ type: logic, length: 8 ]
+  - RX_RECEIVED_2 : [ type: logic ]
+  - RX_CHANNEL_2 : [ type: logic, length: 8 ]
+  - RX_DATA_2 : [ type: logic, length: 32 ]
 
 
 - HAL_GBT_SC_CTRL_t:
@@ -46,7 +54,7 @@ HDL_Types:
   - TX_TRANSID : [ type: logic, length: 8 ]
   - TX_CHANNEL : [ type: logic, length: 8 ]
   - TX_DATA : [ type: logic, length: 32 ]
-  - SCA_ENABLE : [ type: logic, length: 2 ]
+  - SCA_ENABLE : [ type: logic, length: 3 ]
   - START_RESET : [ type: logic ]
   - START_CONNECT : [ type: logic ]
   - START_COMMAND : [ type: logic ]

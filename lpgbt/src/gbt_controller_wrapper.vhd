@@ -152,22 +152,31 @@ begin
 
       -- SCA Command
 
+      -- TODO: convert these into arrays in the XML
       rx_address_o(0)  => mon.sc.rx_address_0,
       rx_address_o(1)  => mon.sc.rx_address_1,
+      rx_address_o(2)  => mon.sc.rx_address_2,
       rx_channel_o(0)  => mon.sc.rx_channel_0,
       rx_channel_o(1)  => mon.sc.rx_channel_1,
+      rx_channel_o(2)  => mon.sc.rx_channel_2,
       rx_control_o(0)  => mon.sc.rx_control_0,
       rx_control_o(1)  => mon.sc.rx_control_1,
+      rx_control_o(2)  => mon.sc.rx_control_2,
       rx_data_o(0)     => mon.sc.rx_data_0,
       rx_data_o(1)     => mon.sc.rx_data_1,
+      rx_data_o(2)     => mon.sc.rx_data_2,
       rx_error_o(0)    => mon.sc.rx_err_0,
       rx_error_o(1)    => mon.sc.rx_err_1,
+      rx_error_o(2)    => mon.sc.rx_err_2,
       rx_len_o(0)      => mon.sc.rx_len_0,
       rx_len_o(1)      => mon.sc.rx_len_1,
+      rx_len_o(2)      => mon.sc.rx_len_2,
       rx_received_o(0) => mon.sc.rx_received_0,
       rx_received_o(1) => mon.sc.rx_received_1,
+      rx_received_o(2) => mon.sc.rx_received_2,
       rx_transID_o(0)  => mon.sc.rx_transID_0,
-      rx_transID_o(1)  => mon.sc.rx_transID_1
+      rx_transID_o(1)  => mon.sc.rx_transID_1,
+      rx_transID_o(2)  => mon.sc.rx_transID_2
 
       );
 
@@ -203,7 +212,7 @@ begin
 
     constant d0 : integer := CSM_SCA0_DOWN_AUX;
     constant d1 : integer := CSM_SCA1_DOWN_AUX;
-    constant d1 : integer := CSM_SCA1_DOWN_AUX;
+    constant d2 : integer := CSM_SCA2_DOWN_AUX;
 
     -- function to replicate a std_logic bit some number of times
     -- equivalent to verilog's built in {n{x}} operator
@@ -222,10 +231,6 @@ begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
       -- TODO: mux the bits only during idle sequences to ensure smooth transitions
-
-      -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
-      ec_data_down_replicated0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
-      ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
       if (rising_edge(lpgbt_clk)) then
         if (valid) then

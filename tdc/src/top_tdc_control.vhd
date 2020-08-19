@@ -33,7 +33,7 @@ entity top_tdc_control is
 end top_tdc_control;
 
 architecture behavioral of top_tdc_control is
-  constant elink : integer := CSM_ENC_DOWNLINK_ELINK0;
+  constant elink : integer := CSM_ENC_DOWNLINK;
 begin
 
   tdc_loop : for I in 0 to (c_NUM_LPGBT_DOWNLINKS-1) generate
