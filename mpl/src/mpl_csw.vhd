@@ -36,7 +36,7 @@ entity mpl_csw is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_ucm_av          : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_ucm_av          : in pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
     o_tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0)
     -- o_mtc_av          : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
@@ -44,7 +44,7 @@ end entity mpl_csw;
 
 architecture beh of mpl_csw is
 
-  signal slc_pl : ucm2pl_bus_at(c_NUM_THREADS -1 downto 0);
+  signal slc_pl : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
   
 begin
 

@@ -44,14 +44,15 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
+  
+  -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2pt_av       : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal pl2mtc_av      : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal pl2csw_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw2pt_av : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal pl2pl_av : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
-
-  signal pl2csw_ar : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal csw2pt_ar : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
-  signal pl2pl_ar : pl2mtc_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal main_pl_out_ar : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal pl2pt_ar : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
+  signal pl2mtc_ar : pl2mtc_bus_at(c_MAX_NUM_SL -1 downto 0);
   
 begin
 
@@ -67,7 +68,7 @@ begin
       glob_en     => glob_en,
       --
       i_data      => i_uCM2pl_av(sl_i),
-      o_data      => pl2csw_av(sl_i)
+      o_data      => main_pl_out_av(sl_i)
     );
   end generate;
 
@@ -78,36 +79,44 @@ begin
     glob_en             => glob_en,
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_ucm_av       => pl2csw_av,
+    i_ucm_av       => pl2pt_av,
     o_tf_av       => o_pl2tf_av
-    -- o_mtc_av      => pl2pl_av 
+    -- o_mtc_av      => pl2mtc_av 
   );
 
   MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => MPL_PL_B_LATENCY,
-      num_bits    => pl2pl_av(sl_i)'length
+      num_bits    => pl2mtc_av(sl_i)'length
     )
     port map(
       clk         => clk,
       rst     => rst,
       glob_en     => glob_en,
       --
-      i_data      => pl2pl_av(sl_i),
+      i_data      => pl2mtc_av(sl_i),
       o_data      => o_pl2mtc_av(sl_i)
     );
   end generate;
 
-  PL2CSW : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    pl2pl_ar(sl_i).common <= pl2csw_ar(sl_i).common;
-    pl2pl_ar(sl_i).process_ch <= pl2csw_ar(sl_i).process_ch;
-    pl2pl_ar(sl_i).processed <= pl2csw_ar(sl_i).processed;
-    pl2pl_ar(sl_i).data_valid <= pl2csw_ar(sl_i).data_valid;
+  PL_2_TF : for c_i in c_MAX_NUM_SL -1 downto c_MAX_NUM_SL - c_NUM_THREADS generate
+    pl2pt_ar(c_i).muid <= main_pl_out_ar(c_i).muid;
+    pl2pt_ar(c_i).process_ch <= main_pl_out_ar(c_i).process_ch;
+    pl2pt_ar(c_i).processed <= main_pl_out_ar(c_i).processed;
+    pl2pt_ar(c_i).data_valid <= main_pl_out_ar(c_i).data_valid;
+  end generate;
+
+  PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    pl2mtc_ar(sl_i).common <= main_pl_out_ar(sl_i).common;
+    pl2mtc_ar(sl_i).process_ch <= main_pl_out_ar(sl_i).process_ch;
+    pl2mtc_ar(sl_i).processed <= main_pl_out_ar(sl_i).processed;
+    pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
   end generate;
   
-  pl2pl_av <= vectorify(pl2pl_ar);
-  pl2csw_ar <= structify(pl2csw_av);
+  pl2pt_av <= vectorify(pl2pt_ar);
+  pl2mtc_av <= vectorify(pl2mtc_ar);
+  main_pl_out_ar <= structify(main_pl_out_av);
   
 end architecture beh;
 
