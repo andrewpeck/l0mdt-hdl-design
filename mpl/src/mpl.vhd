@@ -100,11 +100,11 @@ begin
     );
   end generate;
 
-  PL_2_TF : for c_i in c_MAX_NUM_SL -1 downto c_MAX_NUM_SL - c_NUM_THREADS generate
-    pl2pt_ar(c_i).muid <= main_pl_out_ar(c_i).muid;
-    pl2pt_ar(c_i).process_ch <= main_pl_out_ar(c_i).process_ch;
-    pl2pt_ar(c_i).processed <= main_pl_out_ar(c_i).processed;
-    pl2pt_ar(c_i).data_valid <= main_pl_out_ar(c_i).data_valid;
+  PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate
+    pl2pt_ar(c_i).muid <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).muid;
+    pl2pt_ar(c_i).process_ch <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).process_ch;
+    pl2pt_ar(c_i).processed <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).processed;
+    pl2pt_ar(c_i).data_valid <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).data_valid;
   end generate;
 
   PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
