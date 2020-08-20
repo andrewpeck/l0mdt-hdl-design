@@ -62,14 +62,14 @@ package config_pkg is
   constant PHY_BARREL_R2            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,2);
   constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
 
-  -- Processing channel
-  constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN ;              
+  -- Processing channel/stations
+  constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN;              
   constant c_HPS_NUM_MDT_CH_INN         : integer   := CFG.NUM_MDT_CH_INN;              
-  constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT ;              
+  constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT;              
   constant c_HPS_NUM_MDT_CH_EXT         : integer   := CFG.NUM_MDT_CH_EXT;              
-  constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID ;              
+  constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID;              
   constant c_HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
-  constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT ;              
+  constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT;              
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
   
   ---------------------------------------------------------
@@ -77,14 +77,24 @@ package config_pkg is
   ---------------------------------------------------------
   constant c_NUM_MTC                    : integer := 1;
   constant c_NUM_NSP                    : integer := 2;
+
   --------------------------------------------------------------------------------
-  -- BLOCKS configuration
+  -- Blocks configuration
   --------------------------------------------------------------------------------
-  constant c_UCM_ENABLED            : std_logic := '1';
-  constant c_MPL_ENABLED            : std_logic := '1';
+  constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
+  constant c_TAR_INSEL              : std_logic := CFG.INSEL_MDT_nTAR;
+  constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
+  constant c_H2S_ENABLED            : std_logic := '1';
+  constant c_MPL_ENABLED            : std_logic := CFG.ENABLE_MPL;
+  --
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
   constant c_SF_TYPE                : std_logic := CFG.SF_TYPE; -- 0: CSF 1:LSF
-
+  --
+  constant c_TF_ENABLED             : std_logic := CFG.ENABLE_TF;
+  --
+  constant c_MTC_ENABLED             : std_logic := CFG.ENABLE_MTC;
+  --
+  constant c_DAQ_ENABLED            : std_logic := CFG.ENABLE_DAQ;
   constant c_NUM_DAQ_STREAMS        : integer := 1;
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 

@@ -25,6 +25,14 @@ package HAL_CTRL is
     RX_RECEIVED_1              :std_logic;                    
     RX_CHANNEL_1               :std_logic_vector( 7 downto 0);
     RX_DATA_1                  :std_logic_vector(31 downto 0);
+    RX_LEN_2                   :std_logic_vector( 7 downto 0);
+    RX_ADDRESS_2               :std_logic_vector( 7 downto 0);
+    RX_CONTROL_2               :std_logic_vector( 7 downto 0);
+    RX_TRANSID_2               :std_logic_vector( 7 downto 0);
+    RX_ERR_2                   :std_logic_vector( 7 downto 0);
+    RX_RECEIVED_2              :std_logic;                    
+    RX_CHANNEL_2               :std_logic_vector( 7 downto 0);
+    RX_DATA_2                  :std_logic_vector(31 downto 0);
   end record HAL_GBT_SC_MON_t;
 
 
@@ -44,7 +52,7 @@ package HAL_CTRL is
     TX_TRANSID                 :std_logic_vector( 7 downto 0);
     TX_CHANNEL                 :std_logic_vector( 7 downto 0);
     TX_DATA                    :std_logic_vector(31 downto 0);
-    SCA_ENABLE                 :std_logic_vector( 1 downto 0);
+    SCA_ENABLE                 :std_logic_vector( 2 downto 0);
     START_RESET                :std_logic;                    
     START_CONNECT              :std_logic;                    
     START_COMMAND              :std_logic;                    
@@ -63,7 +71,7 @@ package HAL_CTRL is
                                                              START_CONNECT => '0',
                                                              START_COMMAND => '0',
                                                              INJ_CRC_ERR => '0',
-                                                             SCA_ENABLE => "01",
+                                                             SCA_ENABLE => "000",
                                                              TX_DATA_TO_GBTX => (others => '0'),
                                                              TX_CMD => (others => '0'),
                                                              TX_GBTX_ADDR => (others => '0'),

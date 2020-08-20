@@ -127,6 +127,8 @@ begin
             port map (
               clock       => clock,
               reset       => reset,
+              resync_i    => '0', -- TODO: connect this
+              synced_o    => open, -- TODO: connect this
               data_even   => even_data,
               data_odd    => odd_data,
               valid_i     => valid,

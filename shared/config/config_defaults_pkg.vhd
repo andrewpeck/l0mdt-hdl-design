@@ -42,17 +42,23 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
     ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
     NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    -- tube address remap
+    ENABLE_TAR                    : std_logic;
+    INSEL_MDT_nTAR                : std_logic;
     -- muon control manager
     ENABLE_UCM                    : std_logic;  -- enable or disable the muon control manager
+    -- main pipeline
+    ENABLE_MPL                    : std_logic;
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
     -- pt-calc
-    ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
+    ENABLE_TF                     : std_logic;  -- enable or disable the pt calculator
     PT_type                       : std_logic;  -- select the type of pt calculator
     -- DAQ
     ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
-
+    -- MTC
+    ENABLE_MTC                    : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
     --------------------------------------------------------------------------------
@@ -69,7 +75,7 @@ package cfg_global_pkg is
     SECTOR_SIDE                   => '0', -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
-    ENABLE_NEIGHBORS             => '1', -- 0: disabled  1: enabled
+    ENABLE_NEIGHBORS              => '1', -- 0: disabled  1: enabled
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -84,16 +90,22 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- tube address remap
+    ENABLE_TAR                    => '1',
+    INSEL_MDT_nTAR                => '1',
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
+    ENABLE_MPL                    => '1',
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
     -- pt-calc
-    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
+    ENABLE_TF                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_type                       => '0', -- default 0
     -- DAQ
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
+    -- MTC
+    ENABLE_MTC                    => '1',
     --------------------------------------------------------------------------------
     --  Thread configuration
     --------------------------------------------------------------------------------
@@ -169,7 +181,7 @@ end package cfg_global_pkg;
 --     proj_cfg.ENABLE_SF                     => '1'; -- default enable
 --     proj_cfg.SF_TYPE                       => '0'; -- default CSF
 --     -- pt-calc
---     proj_cfg.ENABLE_PT                     => '1'; -- default enable
+--     proj_cfg.ENABLE_TF                     => '1'; -- default enable
 --     proj_cfg.PT_type                       => '0'; -- default 0
 --     -- DAQ
 --     proj_cfg.ENABLE_DAQ                    => '1'; -- default enabled

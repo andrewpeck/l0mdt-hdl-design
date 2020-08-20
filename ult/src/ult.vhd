@@ -153,143 +153,167 @@ begin
 
   logic_gen : if (not DUMMY) generate
 
-    TAR : entity work.mdt_tar
-      generic map (
-        EN_TAR_HITS => EN_TAR_HITS,
-        EN_MDT_HITS => EN_MDT_HITS
-        )
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control => clock_and_control,  --
-        ttc_commands      => ttc_commands,       --
-        ctrl              => tar_ctrl,
-        mon               => tar_mon,
-        -- TDC Hits from Polmux
-        i_inner_tdc_hits  => i_inner_tdc_hits,
-        i_middle_tdc_hits => i_middle_tdc_hits,
-        i_outer_tdc_hits  => i_outer_tdc_hits,
-        i_extra_tdc_hits  => i_extra_tdc_hits,
-        -- candidates in from hal
-        i_inner_tar_hits  => i_inner_tar_hits,
-        i_middle_tar_hits => i_middle_tar_hits,
-        i_outer_tar_hits  => i_outer_tar_hits,
-        i_extra_tar_hits  => i_extra_tar_hits,
-        -- 
-        o_inner_tdc_hits  => inner_tdc_hits,
-        o_middle_tdc_hits => middle_tdc_hits,
-        o_outer_tdc_hits  => outer_tdc_hits,
-        o_extra_tdc_hits  => extra_tdc_hits,
-        -- outputs to ucm
-        o_inner_tar_hits  => inner_tar_hits,
-        o_middle_tar_hits => middle_tar_hits,
-        o_outer_tar_hits  => outer_tar_hits,
-        o_extra_tar_hits  => extra_tar_hits
+    TAR_GEN : if c_TAR_ENABLED generate
 
-        );
+      TAR : entity work.mdt_tar
+        generic map (
+          EN_TAR_HITS => EN_TAR_HITS,
+          EN_MDT_HITS => EN_MDT_HITS
+          )
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control => clock_and_control,  --
+          ttc_commands      => ttc_commands,       --
+          ctrl              => tar_ctrl,
+          mon               => tar_mon,
+          -- TDC Hits from Polmux
+          i_inner_tdc_hits  => i_inner_tdc_hits,
+          i_middle_tdc_hits => i_middle_tdc_hits,
+          i_outer_tdc_hits  => i_outer_tdc_hits,
+          i_extra_tdc_hits  => i_extra_tdc_hits,
+          -- candidates in from hal
+          i_inner_tar_hits  => i_inner_tar_hits,
+          i_middle_tar_hits => i_middle_tar_hits,
+          i_outer_tar_hits  => i_outer_tar_hits,
+          i_extra_tar_hits  => i_extra_tar_hits,
+          -- 
+          o_inner_tdc_hits  => inner_tdc_hits,
+          o_middle_tdc_hits => middle_tdc_hits,
+          o_outer_tdc_hits  => outer_tdc_hits,
+          o_extra_tdc_hits  => extra_tdc_hits,
+          -- outputs to ucm
+          o_inner_tar_hits  => inner_tar_hits,
+          o_middle_tar_hits => middle_tar_hits,
+          o_outer_tar_hits  => outer_tar_hits,
+          o_extra_tar_hits  => extra_tar_hits
 
-    candidate_manager_inst : entity work.candidate_manager
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control       => clock_and_control,  --
-        ttc_commands            => ttc_commands,       --
-        ctrl                    => ucm_ctrl,
-        mon                     => ucm_mon,
-        -- candidates in from hal
-        i_slc_data_mainA_av     => i_main_primary_slc,
-        i_slc_data_mainB_av     => i_main_secondary_slc,
-        i_slc_data_neighborA_v => i_plus_neighbor_slc,
-        i_slc_data_neighborB_v => i_minus_neighbor_slc,
-        -- outputs to ucm
-        o_uCM2hps_inn_av        => inner_slc_to_hts,
-        o_uCM2hps_mid_av        => middle_slc_to_hts,
-        o_uCM2hps_out_av        => outer_slc_to_hts,
-        o_uCM2hps_ext_av        => extra_slc_to_hts,
-        -- pipeline
-        o_uCM2pl_av             => ucm2pl_av
-        );
+          );
+
+    end generate;
+
+    UCM_GEN : if c_UCM_ENABLED generate
+
+      UCM : entity work.candidate_manager
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control       => clock_and_control,  --
+          ttc_commands            => ttc_commands,       --
+          ctrl                    => ucm_ctrl,
+          mon                     => ucm_mon,
+          -- candidates in from hal
+          i_slc_data_mainA_av     => i_main_primary_slc,
+          i_slc_data_mainB_av     => i_main_secondary_slc,
+          i_slc_data_neighborA_v => i_plus_neighbor_slc,
+          i_slc_data_neighborB_v => i_minus_neighbor_slc,
+          -- outputs to ucm
+          o_uCM2hps_inn_av        => inner_slc_to_hts,
+          o_uCM2hps_mid_av        => middle_slc_to_hts,
+          o_uCM2hps_out_av        => outer_slc_to_hts,
+          o_uCM2hps_ext_av        => extra_slc_to_hts,
+          -- pipeline
+          o_uCM2pl_av             => ucm2pl_av
+          );
+
+    end generate;
 
 
-    hits_to_segments_inst : entity work.hits_to_segments
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control         => clock_and_control,
-        ttc_commands              => ttc_commands,
-        ctrl                      => h2s_ctrl,
-        mon                       => h2s_mon,
-        -- inputs from hal
-        i_inn_tar_hits            => inner_tar_hits,
-        i_mid_tar_hits            => middle_tar_hits,
-        i_out_tar_hits            => outer_tar_hits,
-        i_ext_tar_hits            => extra_tar_hits,
-        -- Sector Logic Candidates from uCM
-        i_inn_slc                 => inner_slc_to_hts,
-        i_mid_slc                 => middle_slc_to_hts,
-        i_out_slc                 => outer_slc_to_hts,
-        i_ext_slc                 => extra_slc_to_hts,
-        -- Segments Out to track fitting
-        o_inn_segments            => inner_segments_to_pt,
-        o_mid_segments            => middle_segments_to_pt,
-        o_out_segments            => outer_segments_to_pt,
-        o_ext_segments            => extra_segments_to_pt,
-        -- Segment outputs to HAL
-        plus_neighbor_segments_o  => plus_neighbor_segments_o,
-        minus_neighbor_segments_o => minus_neighbor_segments_o
-        );
+    H2S_GEN : if c_H2S_ENABLED generate
 
-    track_fitting_inst : entity work.track_fitting
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control         => clock_and_control,
-        ttc_commands              => ttc_commands,
-        ctrl                      => tf_ctrl,
-        mon                       => tf_mon,
-        --  segments from neighbors
-        plus_neighbor_segments_i  => plus_neighbor_segments_i,
-        minus_neighbor_segments_i => minus_neighbor_segments_i,
-        -- segments from hps
-        inner_segments_i          => inner_segments_to_pt,
-        middle_segments_i         => middle_segments_to_pt,
-        outer_segments_i          => outer_segments_to_pt,
-        extra_segments_i          => extra_segments_to_pt,
-        -- from pipeline
-        i_pl2pt_av                => pl2pt_av,
-        -- to mtc
-        o_pt2mtc                  => pt2mtc_av
-        );
+      H2S : entity work.hits_to_segments
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control         => clock_and_control,
+          ttc_commands              => ttc_commands,
+          ctrl                      => h2s_ctrl,
+          mon                       => h2s_mon,
+          -- inputs from hal
+          i_inn_tar_hits            => inner_tar_hits,
+          i_mid_tar_hits            => middle_tar_hits,
+          i_out_tar_hits            => outer_tar_hits,
+          i_ext_tar_hits            => extra_tar_hits,
+          -- Sector Logic Candidates from uCM
+          i_inn_slc                 => inner_slc_to_hts,
+          i_mid_slc                 => middle_slc_to_hts,
+          i_out_slc                 => outer_slc_to_hts,
+          i_ext_slc                 => extra_slc_to_hts,
+          -- Segments Out to track fitting
+          o_inn_segments            => inner_segments_to_pt,
+          o_mid_segments            => middle_segments_to_pt,
+          o_out_segments            => outer_segments_to_pt,
+          o_ext_segments            => extra_segments_to_pt,
+          -- Segment outputs to HAL
+          plus_neighbor_segments_o  => plus_neighbor_segments_o,
+          minus_neighbor_segments_o => minus_neighbor_segments_o
+          );
 
-    mtc_builder_inst : entity work.mtc_builder
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control => clock_and_control,
-        ttc_commands      => ttc_commands,
-        ctrl              => mtc_ctrl,
-        mon               => mtc_mon,
-        --  inputs
-        i_ptcalc          => pt2mtc_av,
-        i_pl2mtc          => pl2mtc_av,
-        -- outputs
-        o_mtc             => mtc_o,
-        o_nsp             => nsp_o
-        );
+    end generate;
 
-    pipeline_inst : entity work.pipeline
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control => clock_and_control,
-        ttc_commands      => ttc_commands,
-        ctrl              => mpl_ctrl,
-        mon               => mpl_mon,
+    MPL_GEN : if c_MPL_ENABLED generate
+      pipeline_inst : entity ult_lib.pipeline
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control => clock_and_control,
+          ttc_commands      => ttc_commands,
+          ctrl              => mpl_ctrl,
+          mon               => mpl_mon,
 
-        -- Sector Logic Candidates from uCM
-        i_ucm2pl_av => ucm2pl_av,
+          -- Sector Logic Candidates from uCM
+          i_ucm2pl_av => ucm2pl_av,
 
-        -- Sector Logic Candidates to Track fitting
-        o_pl2pt_av  => pl2pt_av,
-        -- Sector Logic Candidates to mTC
-        o_pl2mtc_av => pl2mtc_av
-        );
+          -- Sector Logic Candidates to Track fitting
+          o_pl2pt_av  => pl2pt_av,
+          -- Sector Logic Candidates to mTC
+          o_pl2mtc_av => pl2mtc_av
+          );
+  end generate;
 
-    daq_inst : entity work.daq
+    TF_GEN : if c_TF_ENABLED generate
+
+      track_fitting_inst : entity work.track_fitting
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control         => clock_and_control,
+          ttc_commands              => ttc_commands,
+          ctrl                      => tf_ctrl,
+          mon                       => tf_mon,
+          --  segments from neighbors
+          plus_neighbor_segments_i  => plus_neighbor_segments_i,
+          minus_neighbor_segments_i => minus_neighbor_segments_i,
+          -- segments from hps
+          inner_segments_i          => inner_segments_to_pt,
+          middle_segments_i         => middle_segments_to_pt,
+          outer_segments_i          => outer_segments_to_pt,
+          extra_segments_i          => extra_segments_to_pt,
+          -- from pipeline
+          i_pl2pt_av                => pl2pt_av,
+          -- to mtc
+          o_pt2mtc                  => pt2mtc_av
+          );
+
+    end generate;
+
+    MTC_GEN : if c_MTC_ENABLED generate
+
+      mtc_builder_inst : entity work.mtc_builder
+        port map (
+          -- clock, control, and monitoring
+          clock_and_control => clock_and_control,
+          ttc_commands      => ttc_commands,
+          ctrl              => mtc_ctrl,
+          mon               => mtc_mon,
+          --  inputs
+          i_ptcalc          => pt2mtc_av,
+          i_pl2mtc          => pl2mtc_av,
+          -- outputs
+          o_mtc             => mtc_o,
+          o_nsp             => nsp_o
+          );
+
+    end generate;
+
+    DAQ_GEN : if c_DAQ_ENABLED generate
+
+      daq_inst : entity work.daq
       port map (
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
@@ -309,6 +333,8 @@ begin
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
         daq_streams_o => daq_streams_o
         );
+
+    end generate;
 
     sump <= '0';
 

@@ -14,13 +14,13 @@ use ieee.numeric_std.all;
 
 entity polling_mux is
   generic(
-    -- the polling mux can be run in a round-robin fasion (which forces the clock frequency is at least enough to look
-    -- through everything, a minimum of 320MHz for 20 inputs)
+    -- the polling mux can be run in a round-robin fasion (which forces the clock frequency is at
+    -- least enough to look through everything, a minimum of 320MHz for 20 inputs)
     --
-    -- if disabled, the polling mux will run in priority encoder mode where it chooses the LSB tdc hit which allows it
-    -- to operate at much wider aspect ratios and could be more efficient, since a large number of low rate inputs can
-    -- be muxed into a single high speed output, so that the ratio can be determined based on expected hit rates rather
-    -- than just f=20*16MHz
+    -- if disabled, the polling mux will run in priority encoder mode where it chooses the LSB tdc
+    -- hit which allows it to operate at much wider aspect ratios and could be more efficient, since
+    -- a large number of low rate inputs can be muxed into a single high speed output, so that the
+    -- ratio can be determined based on expected hit rates rather than just f=20*16MHz
 
     g_ROUND_ROBIN : boolean := false;
     g_WIDTH       : integer := 20
@@ -119,21 +119,23 @@ begin
   pe : if (not g_ROUND_ROBIN) generate
     signal valid_vec : std_logic_vector (g_WIDTH-1 downto 0);
   begin
-    -- Create a fast parallel bitmask that returns the least significant set 1 using a
-    -- property of integers: subtracting 1 from a number will always affect the
-    -- least-significant set 1-bit. using just arithmetic, with this trick we can
-    -- create a one hot of the first set bit
+    -- Create a fast parallel bitmask that returns the least significant set 1 using a property of
+    -- integers: subtracting 1 from a number will always affect the least-significant set 1-bit.
+    -- using just arithmetic, with this trick we can create a one hot of the first set bit
     --
     -- e.g.
     -- let a        = 101100100  // our starting number
     --    ~a        = 010011011  // bitwise inversion
-    --     b = ~a+1 = 010011100  // b is exactly the twos complement of a, which we know to be the same as (-a) ! :)
+    --     b = ~a+1 = 010011100  // b is exactly the twos complement of a,
+    --                           // which we know to be the same as (-a) ! :)
     --     a & b    = 000000100  // one hot of first one set
     --
-    -- The compiler seems to be more happy with this template since it falls into some expected pattern and
-    -- is implemented in a way that is efficient and fast while a more obvious implmentation runs a lot slower
+    -- The compiler seems to be more happy with this template since it falls into some expected
+    -- pattern and is implemented in a way that is efficient and fast while a more obvious
+    -- implmentation runs a lot slower
 
-    -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be pipelined if needed
+    -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be
+    -- pipelined if needed
     valid_vec    <= tdchits2valid_stdlogic(tdc_hits_i, tdc_hits_i'length);
     hit_sel_mask <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
   end generate;

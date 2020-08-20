@@ -8,7 +8,6 @@ tdc/src/tdc_decoder/dec8b10b.v
 tdc/src/tdc_decoder/dec_8b10b.vhd
 tdc/src/tdc_decoder/tdc_decoder.vhd
 tdc/src/tdc_decoder/alignment_buffer.vhd
-tdc/src/tdc_decoder/x_oneshot.vhd
-tdc/src/tdc_decoder/elink_framer.vhd
+tdc/src/tdc_decoder/decoder_framer.vhd
 tdc/src/tdc_decoder/tdc_packet_processor.vhd
 tdc/src/fifo_async.vhd

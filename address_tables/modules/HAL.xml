@@ -59,12 +59,21 @@
       <node id="RX_CHANNEL_1"     address="0xD" mask="0x000ff000" permission="r"/> <!--size = to # of scas-->
       <node id="RX_DATA_1"        address="0xE" mask="0xffffffff" permission="r"/>
 
+      <node id="RX_LEN_2"         address="0xF" mask="0x000000ff" permission="r"/>
+      <node id="RX_ADDRESS_2"     address="0xF" mask="0x0000ff00" permission="r"/>
+      <node id="RX_CONTROL_2"     address="0xF" mask="0x00ff0000" permission="r"/>
+      <node id="RX_TRANSID_2"     address="0xF" mask="0xff000000" permission="r"/>
+      <node id="RX_ERR_2"         address="0x10" mask="0x000000ff" permission="r"/>
+      <node id="RX_RECEIVED_2"    address="0x10" mask="0x00000100" permission="r"/>
+      <node id="RX_CHANNEL_2"     address="0x10" mask="0x000ff000" permission="r"/> <!--size = to # of scas-->
+      <node id="RX_DATA_2"        address="0x20" mask="0xffffffff" permission="r"/>
+
       <!--SCA Control -->
-      <node id="SCA_ENABLE"     address="0xF"  mask="0x3" permission="rw" parameters="default=0x1"/> <!--size = to # of scas-->
-      <node id="START_RESET"    address="0x10" mask="0x1" permission="w"/> <!--ACTION-->
-      <node id="START_CONNECT"  address="0x11" mask="0x1" permission="w"/> <!--ACTION-->
-      <node id="START_COMMAND"  address="0x12" mask="0x1" permission="w"/> <!--ACTION-->
-      <node id="INJ_CRC_ERR"    address="0x13" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="SCA_ENABLE"     address="0x80" mask="0x7" permission="rw" parameters="default=0x0"/> <!--size = to # of scas-->
+      <node id="START_RESET"    address="0x81" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="START_CONNECT"  address="0x82" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="START_COMMAND"  address="0x83" mask="0x1" permission="w"/> <!--ACTION-->
+      <node id="INJ_CRC_ERR"    address="0x84" mask="0x1" permission="w"/> <!--ACTION-->
     </node>
   </node>
 </node>
