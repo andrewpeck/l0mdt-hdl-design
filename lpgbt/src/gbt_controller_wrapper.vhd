@@ -22,7 +22,7 @@ use ctrl_lib.axiRegPkg.all;
 
 entity gbt_controller_wrapper is
   generic(
-    g_SCAS_PER_LPGBT : integer := 2
+    g_SCAS_PER_LPGBT : integer := 3
     );
   port(
     -- reset
@@ -152,22 +152,31 @@ begin
 
       -- SCA Command
 
+      -- TODO: convert these into arrays in the XML
       rx_address_o(0)  => mon.sc.rx_address_0,
       rx_address_o(1)  => mon.sc.rx_address_1,
+      rx_address_o(2)  => mon.sc.rx_address_2,
       rx_channel_o(0)  => mon.sc.rx_channel_0,
       rx_channel_o(1)  => mon.sc.rx_channel_1,
+      rx_channel_o(2)  => mon.sc.rx_channel_2,
       rx_control_o(0)  => mon.sc.rx_control_0,
       rx_control_o(1)  => mon.sc.rx_control_1,
+      rx_control_o(2)  => mon.sc.rx_control_2,
       rx_data_o(0)     => mon.sc.rx_data_0,
       rx_data_o(1)     => mon.sc.rx_data_1,
+      rx_data_o(2)     => mon.sc.rx_data_2,
       rx_error_o(0)    => mon.sc.rx_err_0,
       rx_error_o(1)    => mon.sc.rx_err_1,
+      rx_error_o(2)    => mon.sc.rx_err_2,
       rx_len_o(0)      => mon.sc.rx_len_0,
       rx_len_o(1)      => mon.sc.rx_len_1,
+      rx_len_o(2)      => mon.sc.rx_len_2,
       rx_received_o(0) => mon.sc.rx_received_0,
       rx_received_o(1) => mon.sc.rx_received_1,
+      rx_received_o(2) => mon.sc.rx_received_2,
       rx_transID_o(0)  => mon.sc.rx_transID_0,
-      rx_transID_o(1)  => mon.sc.rx_transID_1
+      rx_transID_o(1)  => mon.sc.rx_transID_1,
+      rx_transID_o(2)  => mon.sc.rx_transID_2
 
       );
 
@@ -176,31 +185,34 @@ begin
   --------------------------------------------------------------------------------
 
   process (lpgbt_clk)
-    constant up0 : integer := CSM_SCA_UPLINK_ELINK0;
-    constant up1 : integer := CSM_SCA_UPLINK_ELINK1;
+    -- TODO: right now it is using aux channels for all e-links, but 2/3 SCAs have both primary and
+    -- aux connected. Add some way to switch?
+    constant up0 : integer := CSM_SCA0_UP_AUX;
+    constant up1 : integer := CSM_SCA0_UP_AUX;
+    constant up2 : integer := CSM_SCA0_UP_AUX;
   begin
 
     if (rising_edge(lpgbt_clk)) then
       if (valid) then
         -- mux and copy onto 40MHz lpgbt_clk
         ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
+        -- TODO: move this into a loop
         ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
         ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
+        ec_data_up(2) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up2+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up2 + 2);
       end if;
     end if;
   end process;
-
 
   --------------------------------------------------------------------------------
   -- Output Mux to LPGBTS
   --------------------------------------------------------------------------------
 
   process (lpgbt_clk, ec_data_down)
-    variable ec_data_down_replicated0 : std_logic_vector (3 downto 0);
-    variable ec_data_down_replicated1 : std_logic_vector (3 downto 0);
 
-    constant d0 : integer := CSM_SCA_DOWNLINK_ELINK0;
-    constant d1 : integer := CSM_SCA_DOWNLINK_ELINK1;
+    constant d0 : integer := CSM_SCA0_DOWN_AUX;
+    constant d1 : integer := CSM_SCA1_DOWN_AUX;
+    constant d2 : integer := CSM_SCA2_DOWN_AUX;
 
     -- function to replicate a std_logic bit some number of times
     -- equivalent to verilog's built in {n{x}} operator
@@ -219,10 +231,6 @@ begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
       -- TODO: mux the bits only during idle sequences to ensure smooth transitions
-
-      -- replicate sca outputs bits two times each because of 80 --> 160 mbps conversion
-      ec_data_down_replicated0 := repeat(ec_data_down(0)(1), 2) & repeat(ec_data_down(0)(0), 2);
-      ec_data_down_replicated1 := repeat(ec_data_down(1)(1), 2) & repeat(ec_data_down(1)(0), 2);
 
       if (rising_edge(lpgbt_clk)) then
         if (valid) then
@@ -248,18 +256,24 @@ begin
 
           -- if broadcast ? send to all of the scas
           if (sca_broadcast = '1') then
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+            -- TODO: move this into a loop
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
+            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
 
           -- select a CSM... choose which SCA on SC controller port
           elsif (sca_link_sel = I) then
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= ec_data_down_replicated0;
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= ec_data_down_replicated1;
+            -- TODO: move this into a loop
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
+            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
 
           -- idle
           else
-            lpgbt_downlink_data_o (I).data((1+d0)*4-1 downto d0*4) <= (others => '1');
-            lpgbt_downlink_data_o (I).data((1+d1)*4-1 downto d1*4) <= (others => '1');
+            -- TODO: move this into a loop
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= (others => '1');
+            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= (others => '1');
           end if;
 
         end if;
