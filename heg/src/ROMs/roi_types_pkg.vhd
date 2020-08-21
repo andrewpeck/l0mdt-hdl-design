@@ -35,17 +35,17 @@ package roi_types_pkg is
   -------------------------
   -- VHDL-2001
   -------------------------
-  -- type roi_mbar_layer_large_t is array (0 to 7) of roi_mbar_limit;
-  -- type roi_mbar_layer_small_t is array (0 to 5) of roi_mbar_limit;
+  type roi_mbar_layer_large_t is array (0 to 7) of roi_mbar_limit;
+  type roi_mbar_layer_small_t is array (0 to 5) of roi_mbar_limit;
 
-  -- type roi_mbar_lut_large_t is array(integer range <>) of roi_mbar_layer_large_t;
-  -- type roi_mbar_lut_small_t is array(integer range <>) of roi_mbar_layer_small_t;
+  type roi_mbar_lut_large_t is array(integer range <>) of roi_mbar_layer_large_t;
+  type roi_mbar_lut_small_t is array(integer range <>) of roi_mbar_layer_small_t;
 
   -------------------------
   -- VHDL-2008
   -------------------------
-  type roi_mbar_layer_t is array (integer range <>) of roi_mbar_limit;
-  type roi_mbar_lut_t is array(integer range <>) of roi_mbar_layer_t;
+  -- type roi_mbar_layer_t is array (integer range <>) of roi_mbar_limit;
+  -- type roi_mbar_lut_t is array(integer range <>) of roi_mbar_layer_t;
 
   -------------------------
   -- 

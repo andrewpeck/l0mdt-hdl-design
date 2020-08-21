@@ -25,7 +25,8 @@ package roi_lut_BILA3_slope is
   -- add length of constant array
   constant ROM_BILA3_SLOPE_MAX_SIZE : integer := 1024;
 
-  constant ROI_BILA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BILA3_SLOPE_MAX_SIZE - 1 downto 0)( 0 to 7 ) := (
+  -- VHDL2008 -- constant ROI_BILA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BILA3_SLOPE_MAX_SIZE - 1 downto 0)( 0 to 7 ) := (
+  constant ROI_BILA3_SLOPE_MEM : roi_mbar_lut_large_t(ROM_BILA3_SLOPE_MAX_SIZE - 1 downto 0) := (
   -- constant ROI_BILA3_SLOPE_MEM : roi_mbar_lut_std(ROM_BILA3_MAX_SIZE - 1 downto 0) := (
 
     -- 1023 downto 91 =>  ( (-13,-3),(-12,-2),(-11,-1),(-10,0),(-8,2),(-7,3),(-6,4),(-5,5) ) ), -- from 45 to 50 degree 
