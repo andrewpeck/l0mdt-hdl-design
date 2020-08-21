@@ -93,6 +93,8 @@ begin
     end if;
   end process TAR;
 
+  NO_MAPPING_GEN : if EN_TAR_HITS = 0 generate
+
   sump_proc : process (clock_and_control.clk) is
   begin  -- process tdc_hit_sump_proc
     if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
@@ -112,6 +114,8 @@ begin
 
     end if;
   end process;
+
+end generate;
 
 
 end architecture beh;

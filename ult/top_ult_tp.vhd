@@ -42,8 +42,8 @@ use ctrl_lib.MPL_CTRL.all;
 entity top_ult_tp is
   generic (
     DUMMY       : boolean := false;
-    EN_TAR_HITS : integer := 0;
-    EN_MDT_HITS : integer := 1
+    EN_TAR_HITS : integer := 1;
+    EN_MDT_HITS : integer := 0
     );
 
   port (
