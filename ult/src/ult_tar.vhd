@@ -76,7 +76,7 @@ begin
     if rising_edge(clock_and_control.clk) then
       if clock_and_control.rst = '1' then
         o_inner_tar_hits  <= nullify(o_inner_tar_hits);
-        o_middle_tar_hits <= nullify(o_middle_tar_hits);
+        o_middle_tar_hits <= nullify(o_middle_tar_hits);º
         o_outer_tar_hits  <= nullify(o_outer_tar_hits);
         o_extra_tar_hits  <= nullify(o_extra_tar_hits);
       elsif (EN_MDT_HITS = 1) then
@@ -116,6 +116,36 @@ begin
   end process;
 
 end generate;
+
+
+TAR : entity tar_lib.tar
+port map (
+  -- clock, control, and monitoring
+  clk               => clock_and_control.clk,
+  rst               => clock_and_control.rst,
+  glob_en           => '1',
+  -- TDC Hits from Polmux
+  i_inner_tdc_hits  => i_inner_tdc_hits,
+  i_middle_tdc_hits => i_middle_tdc_hits,
+  i_outer_tdc_hits  => i_outer_tdc_hits,
+  i_extra_tdc_hits  => i_extra_tdc_hits,
+  -- candidates in from hal
+  i_inner_tar_hits  => i_inner_tar_hits,
+  i_middle_tar_hits => i_middle_tar_hits,
+  i_outer_tar_hits  => i_outer_tar_hits,
+  i_extra_tar_hits  => i_extra_tar_hits,
+  -- 
+  o_inner_tdc_hits  => inner_tdc_hits,
+  o_middle_tdc_hits => middle_tdc_hits,
+  o_outer_tdc_hits  => outer_tdc_hits,
+  o_extra_tdc_hits  => extra_tdc_hits,
+  -- outputs to ucm
+  o_inner_tar_hits  => inner_tar_hits,
+  o_middle_tar_hits => middle_tar_hits,
+  o_outer_tar_hits  => outer_tar_hits,
+  o_extra_tar_hits  => extra_tar_hits
+
+  );
 
 
 end architecture beh;

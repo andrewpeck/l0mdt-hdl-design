@@ -33,7 +33,7 @@ entity mpl is
 
   port (
     clk                 : in std_logic;
-    rst             : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
