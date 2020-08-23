@@ -199,8 +199,8 @@ begin
       );
   
 
-      clock_and_control.clk <= clk;
-      clock_and_control.rst <= rst;
+
+      
  	-------------------------------------------------------------------------------------
 	-- clock Generator
 	-------------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ begin
     clk <= '1';
     wait for CLK_period/2;
   end process;
-
+  clock_and_control.clk <= clk;
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
 	-------------------------------------------------------------------------------------
@@ -223,95 +223,157 @@ begin
 		rst<= '0';
 		wait;
   end process;
+  clock_and_control.rst <= rst;
  	-------------------------------------------------------------------------------------
 	-- candidates
   -------------------------------------------------------------------------------------
-  barrel1.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
-  barrel1.coin_type           <= std_logic_vector(to_unsigned( 3 , SLC_COIN_TYPE_LEN ));
-  barrel1.z_rpc0              <= to_signed(integer(-2079.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
-  barrel1.z_rpc1              <= to_signed(integer( 0.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
-  barrel1.z_rpc2              <= to_signed(integer( -3858.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
-  barrel1.z_rpc3              <= to_signed(integer( -4806.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
-  cand1.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
-  cand1.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
-  cand1.muid.bcid             <= to_unsigned( 477 , BCID_LEN );
-  cand1.chambers.mdt_inn      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_mid      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_out      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
-  cand1.chambers.mdt_ext      <= to_unsigned( 3 , SLC_CHAMBER_LEN );
-  cand1.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
-  cand1.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
-  cand1.common.pos_eta        <= to_signed( -1355 , SLC_POS_ETA_LEN );
-  cand1.common.pos_phi        <= to_unsigned( 292 , SLC_POS_PHI_LEN );
-  cand1.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
-  cand1.common.pt_th          <= std_logic_vector(to_unsigned( 11 , SLC_PT_TH_LEN ));
-  cand1.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
-  cand1.specific              <= vectorify(barrel1);
-  cand1.data_valid            <= '1';
-  ------------------------
-  barrel2.spare_bits          <= std_logic_vector(to_unsigned( 0 , SLC_B_SPARE_LEN ));
-  barrel2.coin_type           <= std_logic_vector(to_unsigned( 1 , SLC_COIN_TYPE_LEN ));
-  barrel2.z_rpc0              <= to_signed(integer( -537.0 / SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN );
-  barrel2.z_rpc1              <= to_signed(integer( -675.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
-  barrel2.z_rpc2              <= to_signed(integer( -721.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
-  barrel2.z_rpc3              <= to_signed(integer( 0.0 / SLC_Z_RPC_MULT), SLC_Z_RPC_LEN );
-  cand2.muid.slcid            <= to_unsigned( 1 , SLC_SLCID_LEN);
-  cand2.muid.slid             <= to_unsigned( 1 , SLC_SLID_LEN );
-  cand2.muid.bcid             <= to_unsigned( 1253 , BCID_LEN );
-  cand2.chambers.mdt_inn      <= to_unsigned( 1 , SLC_CHAMBER_LEN );
-  cand2.chambers.mdt_mid      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
-  cand2.chambers.mdt_out      <= to_unsigned( 2 , SLC_CHAMBER_LEN );
-  cand2.chambers.mdt_ext      <= to_unsigned( 3 , SLC_CHAMBER_LEN );
-  cand2.common.tcid           <= std_logic_vector(to_unsigned( 1 , SLC_TCID_LEN ));
-  cand2.common.tcsent         <= '1'; --std_logic_vector(to_unsigned( 1 , SLC_TCSENT_LEN ));
-  cand2.common.pos_eta        <= to_signed( -313 , SLC_POS_ETA_LEN );
-  cand2.common.pos_phi        <= to_unsigned( 307 , SLC_POS_PHI_LEN );
-  cand2.common.rpc_pt         <= std_logic_vector(to_unsigned( 0 , 8));
-  cand2.common.pt_th          <= std_logic_vector(to_unsigned( 2 , SLC_PT_TH_LEN ));
-  cand2.common.charge         <= '0'; --std_logic_vector(to_unsigned( 1 , SLC_CHARGE_LEN ));
-  cand2.specific              <= vectorify(barrel2);
-  cand2.data_valid            <= '1';
- 	-------------------------------------------------------------------------------------
-	-- Reset Generator
-	-------------------------------------------------------------------------------------
-  feed_1_slc : process(clk,rst)
+
+-------------------------------------------------------------------------------------
+	-- hits
+  -------------------------------------------------------------------------------------
+ 
+
+  CSM_read: process ( rst, clk)
+
+    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/ucm_hps/sim/csm_TB_C2Barrel.txt";
+    variable row                  : line;
+    variable row_counter          : integer := 0;
+
+    -- variable tdc_time             : UNSIG_64;
+    variable mdt_event            : input_tar_rt;
+
+    variable next_event_time      : integer := 0;
+    variable tb_time              : integer := 0;
+
+    variable first_read           : std_logic := '1';
+
+    variable v_mdt_inn_counts     : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+    variable v_mdt_mid_counts     : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+    variable v_mdt_out_counts     : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+    variable v_mdt_ext_counts     : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
 
   begin
-    if rst= '1' then
-      tb_motor <= x"0";
-      i_slc_data_mainA_av <= ( others => (others => '0'));
-      i_slc_data_mainB_av <= (others => (others => '0'));
-      i_slc_data_neighborA_v <= (others => '0');
-      i_slc_data_neighborB_v <= (others => '0');
-    elsif rising_edge(clk) then
 
-      case tb_motor is
-        when x"0"=>
-          tb_motor <= x"1";
-          i_slc_data_mainA_av(2) <= (others => '0');
-          i_slc_data_mainA_av(1) <= (others => '0');
-          i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neighborA_v <= (others => '0');
-          i_slc_data_neighborB_v <= (others => '0');
-        when x"1" =>
-          tb_motor <= x"2";
-          i_slc_data_mainA_av(2) <= vectorify(cand1);
-          i_slc_data_mainA_av(1) <= vectorify(cand2);
-          i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neighborA_v <= vectorify(cand2);
-          i_slc_data_neighborB_v <= (others => '0');
-        when others =>
-          i_slc_data_mainA_av(2) <= (others => '0');
-          i_slc_data_mainA_av(1) <= (others => '0');
-          i_slc_data_mainA_av(0) <= (others => '0');
-          i_slc_data_neighborA_v <= (others => '0');
-          i_slc_data_neighborB_v <= (others => '0');
-          -- nothing to do 
-      end case;
+    -- tb_curr_time <= tb_time;
+
+    
+    if rising_edge(clk) then
+      if(rst= '1') then
+
+      else
+        -- write to DUT
+
+        for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
+          if(v_mdt_inn_counts(wr_i) > 0) then
+            i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn(wr_i)(0));
+            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+              mdt_inn(wr_i)(mv_i - 1) <= mdt_inn(wr_i)(mv_i);
+            end loop;
+            v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
+          else
+            i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
+          end if;
+        end loop;
+
+        for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
+          if(v_mdt_mid_counts(wr_i) > 0) then
+            i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid(wr_i)(0));
+            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+              mdt_mid(wr_i)(mv_i - 1) <= mdt_MID(wr_i)(mv_i);
+            end loop;
+            v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
+          else
+            i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
+          end if;
+        end loop;
+
+        for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
+          if(v_mdt_out_counts(wr_i) > 0) then
+            i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out(wr_i)(0));
+            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+              mdt_out(wr_i)(mv_i - 1) <= mdt_out(wr_i)(mv_i);
+            end loop;
+            v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
+          else
+            i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
+          end if;
+        end loop;
+
+        for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
+          if(v_mdt_ext_counts(wr_i) > 0) then
+            i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext(wr_i)(0));
+            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+              mdt_ext(wr_i)(mv_i - 1) <= mdt_ext(wr_i)(mv_i);
+            end loop;
+            v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
+          else
+            i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
+          end if;
+        end loop;
+        
+        -- first read from input vector file
+        if (not endfile(input_mdt_tar_file)) and first_read = '1' then
+          row_counter := row_counter +1;
+          readline(input_mdt_tar_file,row); -- reads header and ignores
+          readline(input_mdt_tar_file,row);
+          read(row, mdt_event);
+          mdt_tar_event <= mdt_event;
+          report "Read line : " & integer'image(row_counter);
+          first_read := '0';
+        end if;
+
+        -- read from input vector file
+        RL : while true loop
+          if (mdt_event.global_time / 32 < tb_curr_time) then
+            -- i_mdt_tar_av <= mdt_tar_event.tar;
+            if (endfile(input_mdt_tar_file) = false) then
+              
+              if to_integer(mdt_event.station) = 0 then
+                mdt_inn(to_integer(mdt_event.chamber))(v_mdt_inn_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                v_mdt_inn_counts(to_integer(mdt_event.chamber)) := v_mdt_inn_counts(to_integer(mdt_event.chamber)) + 1;
+              elsif to_integer(mdt_event.station) = 1 then
+                mdt_mid(to_integer(mdt_event.chamber))(v_mdt_mid_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                v_mdt_mid_counts(to_integer(mdt_event.chamber)) := v_mdt_mid_counts(to_integer(mdt_event.chamber)) + 1;
+              elsif to_integer(mdt_event.station) = 2 then
+                mdt_out(to_integer(mdt_event.chamber))(v_mdt_out_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                v_mdt_out_counts(to_integer(mdt_event.chamber)) := v_mdt_out_counts(to_integer(mdt_event.chamber)) + 1;
+              elsif to_integer(mdt_event.station) = 3 then
+                mdt_ext(to_integer(mdt_event.chamber))(v_mdt_ext_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                v_mdt_ext_counts(to_integer(mdt_event.chamber)) := v_mdt_ext_counts(to_integer(mdt_event.chamber)) + 1;
+              else
+                -- ERROR
+              end if;
+              row_counter := row_counter +1;
+              readline(input_mdt_tar_file,row);
+              read(row, mdt_event);
+              mdt_tar_event <= mdt_event;
+              report "Read line : " & integer'image(row_counter);
+            else
+              exit;
+            end if;
+          else
+            -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+            exit;
+          end if;
+        end loop;
+
+
+
+       
+
+      end if;
+
+      mdt_inn_counts <= v_mdt_inn_counts;
+      mdt_mid_counts <= v_mdt_mid_counts;
+      mdt_out_counts <= v_mdt_out_counts;
+      mdt_ext_counts <= v_mdt_ext_counts;
+
+
+
+      tb_curr_time <= tb_curr_time + '1';
     end if;
 
   end process;
-
 
   
 end architecture beh;
