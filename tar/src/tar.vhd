@@ -30,30 +30,34 @@ library tar_lib;
 use tar_lib.tar_pkg.all;
 
 entity tar is
+  generic (
+    EN_TAR_HITS : integer := 1;
+    EN_MDT_HITS : integer := 0
+    );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_inner_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits   : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inn_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_mid_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_out_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_ext_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inner_tar_hits    : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits   : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits    : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits    : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- i_inn_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    -- i_mid_tar_hits   : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    -- i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    -- i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC polmux from Tar
-    o_inner_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_middle_tdc_hits   : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_outer_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_extra_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    o_inn_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_mid_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_inner_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_middle_tar_hits   : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_outer_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_extra_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
+    o_inn_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
   );
 end entity tar;
 

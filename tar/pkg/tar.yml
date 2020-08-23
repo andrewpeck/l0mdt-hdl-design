@@ -1,0 +1,17 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      shared_lib:
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
+        - common_constants_pkg
+        - common_types_pkg
+
+
+
+HDL_Types:
+
+- TAR_PL_A_LATENCY  : [ qualifier: constant , type: integer , value: 10 ]
+
+
