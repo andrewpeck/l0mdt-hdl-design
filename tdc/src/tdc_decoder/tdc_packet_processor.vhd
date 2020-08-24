@@ -10,6 +10,7 @@ entity tdc_packet_processor is
 
     reset : in std_logic;
 
+    -- only 8b pair mode is supported right now!!
     readout_mode   : in std_logic_vector (1 downto 0);
     debug_mode     : in std_logic;
     triggered_mode : in std_logic;

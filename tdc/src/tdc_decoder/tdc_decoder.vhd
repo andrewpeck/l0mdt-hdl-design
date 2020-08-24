@@ -14,12 +14,7 @@ entity tdc_decoder is
     g_DECODER_SRC       : integer := 1;
     -- Per https://lpgbt.web.cern.ch/lpgbt/v0/ePorts.html#elink-groups
     -- the lpgbt elink orders bits MSB first at inputs and outputs
-    --
-    -- Per TDCV2_datasheet_20200310.pdf the TDC sends out data in the order
-    -- a --> b --> c --> d --> e --> i --> f --> g --> h --> j
-    -- where a is the least significant bit, so it is LSB first
-    -- need to reverse the LPGBT data to be LSB first
-    g_REVERSE_BIT_ORDER : integer := 1
+    g_REVERSE_BIT_ORDER : integer := 0
     );
   port(
 

@@ -93,8 +93,9 @@ begin
                     idx /= -1 and
                     channel /= -1)
       generate
-        constant even_elink : integer := elink_pair_map(channel).ch1;  -- FIXME: ch1 vs. ch2 even odd??
-        constant odd_elink  : integer := elink_pair_map(channel).ch2;
+        -- d0 carries the odd bits, d1 carries the even bits
+        constant even_elink : integer := elink_pair_map(channel).ch2;
+        constant odd_elink  : integer := elink_pair_map(channel).ch1;
       begin
 
         assert false report " > LINK_ID     =" & integer'image(c_TDC_LINK_MAP(I).link_id) severity note;
