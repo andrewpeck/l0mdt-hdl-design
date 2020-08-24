@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog-dynamic.yml'
-      ref: '102-unify-vivado-ci-stage'
+      ref: '102-unify-vivado-ci-stages'
   #   - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
     - local: '/Top/csf/gitlab-ci.yml'
