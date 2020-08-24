@@ -7,6 +7,7 @@ lpgbt/list/lpgbt_fpga.sub
 sl/list/sl.sub
 
 # Hal
+hal/src/counter.vhd
 hal/src/top_hal.vhd 2008
 hal/src/clock_strobe.vhd 2008
 hal/src/top_clocking.vhd 2008

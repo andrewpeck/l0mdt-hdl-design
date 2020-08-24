@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="HAL">
-  <node id="GBT" address="0x1">
+
+  <node id="LPGBT_FPGA" address="0x0000">
+
+    <node id="RESET_DOWNLINKS" address="0x0" mask="0x1" permission="w" description="Resets all LPGBT Downlinks"/>
+    <node id="RESET_UPLINKS"   address="0x1" mask="0x1" permission="w" description="Resets all LPGBT Uplinks"/>
+    <node id="RESET_COUNTERS"  address="0x2" mask="0x1" permission="w" description="Resets counters"/>
+
+    <node id="UPLINK" address="0x3">
+      <node id="UPLINK_0"    address="0x00" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_1"    address="0x2" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_2"    address="0x4" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_3"    address="0x6" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_4"    address="0x8" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_5"    address="0xA" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_6"    address="0xC" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_7"    address="0xE" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_8"    address="0x10" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_9"    address="0x12" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_10"   address="0x14" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_11"   address="0x16" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_12"   address="0x18" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_13"   address="0x1A" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_14"   address="0x1C" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_15"   address="0x1E" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_16"   address="0x20" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_17"   address="0x22" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_18"   address="0x24" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_19"   address="0x26" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_20"   address="0x28" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_21"   address="0x2A" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_22"   address="0x2C" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_23"   address="0x2E" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_24"   address="0x30" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_25"   address="0x32" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_26"   address="0x34" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_27"   address="0x36" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_28"   address="0x38" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_29"   address="0x3A" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_30"   address="0x3C" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_31"   address="0x3E" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_32"   address="0x40" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_33"   address="0x42" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_34"   address="0x44" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_35"   address="0x46" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+      <node id="UPLINK_36"   address="0x48" fwinfo="type=array" module="file://LPGBT_UPLINK.xml"/>
+    </node> <!--uplink -->
+
+    <node id="DOWNLINK" address="0x1f0">
+      <node id="DOWNLINK_0"   address="0x00" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_1"   address="0x2" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_2"   address="0x4" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_3"   address="0x6" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_4"   address="0x8" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_5"   address="0xA" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_6"   address="0xC" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_7"   address="0xE" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_8"   address="0x10" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_9"   address="0x12" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_10"  address="0x14" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_11"  address="0x16" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_12"  address="0x18" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_13"  address="0x1A" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_14"  address="0x1C" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_15"  address="0x1E" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_16"  address="0x20" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+      <node id="DOWNLINK_17"  address="0x22" fwinfo="type=array" module="file://LPGBT_DOWNLINK.xml"/>
+    </node> <!--downlink-->
+
+  </node> <!--lpgbt fpga-->
+
+  <node id="GBT" address="0x1000">
 
     <node id="LINK_SEL"      address="0x1" mask="0x0ff" permission="rw" description="Selects an LPGBT link to write to"/>
     <node id="SEL_SLAVE"     address="0x1" mask="0x100" permission="rw" description="Set to 1 to select the slave link (EC)"/>
@@ -32,15 +102,15 @@
 
       <!--SCA Commands -->
       <node id="TX_CMD"     address="0x7" mask="0x000000ff" permission="rw" description="Command: The Command field is present in the frames received by the SCA and indicates the operation to be performed. Meaning is specific to the channel."/>
-      <node id="TX_ADDRESS" address="0x7" mask="0x0000ff00" permission="rw" description="Command: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00."/>
+      <node id="TX_ADDRESS" address="0x7" mask="0x0000ff00" permission="rw" description="Command: It represents the packet destination address. The address is one-byte long. By default, the GBT-SCA use address 0x00."/>
       <node id="TX_TRANSID" address="0x7" mask="0x00ff0000" permission="rw" description="Command: Specifies the message identification number. The reply messages generated by the SCA have the same transaction identifier of the request message allowing to associate the transmitted commands with the corresponding replies, permitting the concurrent use of all the SCA channels.  It is not required that ID values are ordered. ID values 0x00 and 0xff are reserved for interrupt packets generated spontaneously by the SCA and should not be used in requests."/>
       <node id="TX_CHANNEL" address="0x7" mask="0xff000000" permission="rw" description="Command: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac)."/>
       <node id="TX_DATA"    address="0x8" mask="0xffffffff" permission="rw" description="Command: data field (According to the SCA manual)"/>
 
       <node id="RX" address="0x9">
-         <node id="RX0" address="0x0" fwinfo="type=array" module="file://SCA_RX.xml"/>
-         <node id="RX1" address="0x3" fwinfo="type=array" module="file://SCA_RX.xml"/>
-         <node id="RX2" address="0x6" fwinfo="type=array" module="file://SCA_RX.xml"/>
+        <node id="RX_0" address="0x0" fwinfo="type=array" module="file://SCA_RX.xml"/>
+        <node id="RX_1" address="0x3" fwinfo="type=array" module="file://SCA_RX.xml"/>
+        <node id="RX_2" address="0x6" fwinfo="type=array" module="file://SCA_RX.xml"/>
       </node>
 
       <!--SCA Control -->
@@ -49,6 +119,6 @@
       <node id="START_CONNECT"  address="0x82" mask="0x1" permission="w" description="Send a connect command to the enabled SCAs"/> <!--ACTION-->
       <node id="START_COMMAND"  address="0x83" mask="0x1" permission="w" description="Send the command set in input to the enabled SCAs"/> <!--ACTION-->
       <node id="INJ_CRC_ERR"    address="0x84" mask="0x1" permission="w" description="Emulate a CRC error"/> <!--ACTION-->
-    </node>
-  </node>
-</node>
+    </node> <!-- SC -->
+  </node> <!-- GBT -->
+</node> <!-- HAL -->

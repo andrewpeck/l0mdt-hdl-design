@@ -313,6 +313,9 @@ begin  -- architecture behavioral
       -- reset
       reset => '0', -- need a separate reset from the mmcm due to recovered links
 
+      ctrl  => core_ctrl.mgt,
+      mon   => core_mon.mgt,
+
       -- reference clocks
       refclk_i_p => refclk_i_p,
       refclk_i_n => refclk_i_n,
@@ -359,20 +362,19 @@ begin  -- architecture behavioral
     port map (
 
       reset => global_reset,
+      ctrl  => ctrl.lpgbt_fpga,
+      mon   => mon.lpgbt_fpga,
 
       -- downlink
       lpgbt_downlink_clk_i            => clocks.clock320,
-      lpgbt_downlink_reset_i          => (others => global_reset),
       lpgbt_downlink_mgt_word_array_o => lpgbt_downlink_mgt_word_array,
-      lpgbt_downlink_ready_o          => open,
       lpgbt_downlink_data             => lpgbt_downlink_data,
+
       -- uplink
       lpgbt_uplink_clk_i              => clocks.clock320,
-      lpgbt_uplink_reset_i            => (others => global_reset),
       lpgbt_uplink_data               => lpgbt_uplink_data,
       lpgbt_uplink_mgt_word_array_i   => lpgbt_uplink_mgt_word_array,
-      lpgbt_uplink_bitslip_o          => lpgbt_uplink_bitslip,
-      lpgbt_uplink_ready_o            => open
+      lpgbt_uplink_bitslip_o          => lpgbt_uplink_bitslip
       );
 
   --------------------------------------------------------------------------------
