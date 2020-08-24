@@ -1,6 +1,6 @@
 include:
     - project: 'hog/Hog'
-      file: '/hog-dynamic.yml'
+      file: '/hog.yml'
       ref: '102-unify-vivado-ci-stages'
   #   - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
