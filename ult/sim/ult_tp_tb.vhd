@@ -84,10 +84,10 @@ architecture beh of ult_tp is
   signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- TDC Hits from Tar
-  signal i_inner_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_middle_tar_hits :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_outer_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_extra_tar_hits  :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_mdt_tar_out_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
@@ -127,15 +127,15 @@ architecture beh of ult_tp is
   -- signal clock_and_control : l0mdt_control_rt;
 
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_data_bus_avt(2 downto 0);
-  signal i_slc_data_neighborA_v : slc_rx_data_rvt;
-  signal i_slc_data_neighborB_v : slc_rx_data_rvt;
-  -- to hps
-  signal o_uCM2hps_inn_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_mid_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_out_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2hps_ext_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
+  -- signal i_slc_data_mainB_av     : slc_rx_data_bus_avt(2 downto 0);
+  -- signal i_slc_data_neighborA_v : slc_rx_data_rvt;
+  -- signal i_slc_data_neighborB_v : slc_rx_data_rvt;
+  -- -- to hps
+  -- signal o_uCM2hps_inn_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal o_uCM2hps_mid_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal o_uCM2hps_out_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal o_uCM2hps_ext_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- pipeline
   -- signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -195,10 +195,10 @@ begin
       i_extra_tdc_hits  => i_extra_tdc_hits,
 
       -- TAR Hits for simulation
-      i_inner_tar_hits  => i_inner_tar_hits,
-      i_middle_tar_hits => i_middle_tar_hits,
-      i_outer_tar_hits  => i_outer_tar_hits,
-      i_extra_tar_hits  => i_extra_tar_hits,
+      i_inner_tar_hits  => i_mdt_tar_inn_av,
+      i_middle_tar_hits => i_mdt_tar_mid_av,
+      i_outer_tar_hits  => i_mdt_tar_out_av,
+      i_extra_tar_hits  => i_mdt_tar_ext_av,
 
       -- Sector Logic Candidates
       i_main_primary_slc   => i_main_primary_slc,
@@ -278,7 +278,7 @@ begin
 
   CSM_read: process ( rst, clk)
 
-    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3Barrel.txt";
+    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
     variable row                  : line;
     variable row_counter          : integer := 0;
 
@@ -298,7 +298,6 @@ begin
   begin
 
     -- tb_curr_time <= tb_time;
-
     
     if rising_edge(clk) then
       if(rst= '1') then
