@@ -8,34 +8,50 @@ __config__:
 
 HDL_Types:
 
+- HAL_GBT_SC_RX_RX0_MON_t:
+  - RX_LEN : [ type: logic, length: 8, description:Reply: The length qualifier field specifies the number of bytes contained in the DATA field. ]
+  - RX_ADDRESS : [ type: logic, length: 8, description:Reply: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00. ]
+  - RX_CONTROL : [ type: logic, length: 8, description:Reply: The control field is 1 byte in length and contains frame sequence numbers of the currently transmitted frame and the last correctly received frame. The control field is also used to convey three supervisory level commands: Connect, Reset, and Test. ]
+  - RX_TRANSID : [ type: logic, length: 8, description:Reply: transaction ID field (According to the SCA manual) ]
+  - RX_ERR : [ type: logic, length: 8, description:Reply: The Error Flag field is present in the channel reply frames to indicate error conditions encountered in the execution of a command. If no errors are found, its value is 0x00. ]
+  - RX_RECEIVED : [ type: logic, description:Reply received flag (pulse) ]
+  - RX_CHANNEL : [ type: logic, length: 8, description:Reply: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
+  - RX_DATA : [ type: logic, length: 32, description:Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register. ]
+
+
+- HAL_GBT_SC_RX_RX1_MON_t:
+  - RX_LEN : [ type: logic, length: 8, description:Reply: The length qualifier field specifies the number of bytes contained in the DATA field. ]
+  - RX_ADDRESS : [ type: logic, length: 8, description:Reply: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00. ]
+  - RX_CONTROL : [ type: logic, length: 8, description:Reply: The control field is 1 byte in length and contains frame sequence numbers of the currently transmitted frame and the last correctly received frame. The control field is also used to convey three supervisory level commands: Connect, Reset, and Test. ]
+  - RX_TRANSID : [ type: logic, length: 8, description:Reply: transaction ID field (According to the SCA manual) ]
+  - RX_ERR : [ type: logic, length: 8, description:Reply: The Error Flag field is present in the channel reply frames to indicate error conditions encountered in the execution of a command. If no errors are found, its value is 0x00. ]
+  - RX_RECEIVED : [ type: logic, description:Reply received flag (pulse) ]
+  - RX_CHANNEL : [ type: logic, length: 8, description:Reply: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
+  - RX_DATA : [ type: logic, length: 32, description:Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register. ]
+
+
+- HAL_GBT_SC_RX_RX2_MON_t:
+  - RX_LEN : [ type: logic, length: 8, description:Reply: The length qualifier field specifies the number of bytes contained in the DATA field. ]
+  - RX_ADDRESS : [ type: logic, length: 8, description:Reply: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00. ]
+  - RX_CONTROL : [ type: logic, length: 8, description:Reply: The control field is 1 byte in length and contains frame sequence numbers of the currently transmitted frame and the last correctly received frame. The control field is also used to convey three supervisory level commands: Connect, Reset, and Test. ]
+  - RX_TRANSID : [ type: logic, length: 8, description:Reply: transaction ID field (According to the SCA manual) ]
+  - RX_ERR : [ type: logic, length: 8, description:Reply: The Error Flag field is present in the channel reply frames to indicate error conditions encountered in the execution of a command. If no errors are found, its value is 0x00. ]
+  - RX_RECEIVED : [ type: logic, description:Reply received flag (pulse) ]
+  - RX_CHANNEL : [ type: logic, length: 8, description:Reply: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
+  - RX_DATA : [ type: logic, length: 32, description:Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register. ]
+
+
+- HAL_GBT_SC_RX_MON_t:
+  - RX0 : [ type: HAL_GBT_SC_RX_RX0_MON_t ]
+  - RX1 : [ type: HAL_GBT_SC_RX_RX1_MON_t ]
+  - RX2 : [ type: HAL_GBT_SC_RX_RX2_MON_t ]
+
+
 - HAL_GBT_SC_MON_t:
   - RX_DATA_FROM_GBTX : [ type: logic, length: 8 ]
   - TX_READY : [ type: logic ]
   - RX_EMPTY : [ type: logic ]
-  - RX_LEN_0 : [ type: logic, length: 8 ]
-  - RX_ADDRESS_0 : [ type: logic, length: 8 ]
-  - RX_CONTROL_0 : [ type: logic, length: 8 ]
-  - RX_TRANSID_0 : [ type: logic, length: 8 ]
-  - RX_ERR_0 : [ type: logic, length: 8 ]
-  - RX_RECEIVED_0 : [ type: logic ]
-  - RX_CHANNEL_0 : [ type: logic, length: 8 ]
-  - RX_DATA_0 : [ type: logic, length: 32 ]
-  - RX_LEN_1 : [ type: logic, length: 8 ]
-  - RX_ADDRESS_1 : [ type: logic, length: 8 ]
-  - RX_CONTROL_1 : [ type: logic, length: 8 ]
-  - RX_TRANSID_1 : [ type: logic, length: 8 ]
-  - RX_ERR_1 : [ type: logic, length: 8 ]
-  - RX_RECEIVED_1 : [ type: logic ]
-  - RX_CHANNEL_1 : [ type: logic, length: 8 ]
-  - RX_DATA_1 : [ type: logic, length: 32 ]
-  - RX_LEN_2 : [ type: logic, length: 8 ]
-  - RX_ADDRESS_2 : [ type: logic, length: 8 ]
-  - RX_CONTROL_2 : [ type: logic, length: 8 ]
-  - RX_TRANSID_2 : [ type: logic, length: 8 ]
-  - RX_ERR_2 : [ type: logic, length: 8 ]
-  - RX_RECEIVED_2 : [ type: logic ]
-  - RX_CHANNEL_2 : [ type: logic, length: 8 ]
-  - RX_DATA_2 : [ type: logic, length: 32 ]
+  - RX : [ type: HAL_GBT_SC_RX_MON_t ]
 
 
 - HAL_GBT_SC_CTRL_t:
@@ -49,11 +65,11 @@ HDL_Types:
   - TX_DATA_TO_GBTX : [ type: logic, length: 8 ]
   - TX_WR : [ type: logic ]
   - RX_RD : [ type: logic ]
-  - TX_CMD : [ type: logic, length: 8 ]
-  - TX_ADDRESS : [ type: logic, length: 8 ]
-  - TX_TRANSID : [ type: logic, length: 8 ]
-  - TX_CHANNEL : [ type: logic, length: 8 ]
-  - TX_DATA : [ type: logic, length: 32 ]
+  - TX_CMD : [ type: logic, length: 8, description:Command: The Command field is present in the frames received by the SCA and indicates the operation to be performed. Meaning is specific to the channel. ]
+  - TX_ADDRESS : [ type: logic, length: 8, description:Command: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00. ]
+  - TX_TRANSID : [ type: logic, length: 8, description:Command: Specifies the message identification number. The reply messages generated by the SCA have the same transaction identifier of the request message allowing to associate the transmitted commands with the corresponding replies, permitting the concurrent use of all the SCA channels.  It is not required that ID values are ordered. ID values 0x00 and 0xff are reserved for interrupt packets generated spontaneously by the SCA and should not be used in requests. ]
+  - TX_CHANNEL : [ type: logic, length: 8, description:Command: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
+  - TX_DATA : [ type: logic, length: 32, description:Command: data field (According to the SCA manual) ]
   - SCA_ENABLE : [ type: logic, length: 3 ]
   - START_RESET : [ type: logic ]
   - START_CONNECT : [ type: logic ]

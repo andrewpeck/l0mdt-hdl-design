@@ -30,7 +30,6 @@ entity gbt_controller_wrapper is
 
     lpgbt_clk : in std_logic;
     valid_i   : in std_logic;
-    axi_clk   : in std_logic;
 
     ctrl : in  HAL_GBT_CTRL_t;
     mon  : out HAL_GBT_MON_t;
@@ -60,9 +59,6 @@ architecture common_controller of gbt_controller_wrapper is
   signal lpgbt_link_sel_slave : std_logic := '0';
   signal lpgbt_broadcast      : std_logic := '0';
 
-  signal sca_link_sel  : integer   := 0;
-  signal sca_broadcast : std_logic := '0';
-
   signal tx_reset, rx_reset : std_logic := '0';
 
 begin
@@ -76,13 +72,6 @@ begin
         lpgbt_link_sel       <= to_integer(unsigned(ctrl.link_sel));
         lpgbt_link_sel_slave <= ctrl.sel_slave;
         lpgbt_broadcast      <= ctrl.broadcast;
-
-        if (ctrl.sca_sel = '1') then
-          sca_link_sel <= 1;
-        else
-          sca_link_sel <= 0;
-        end if;
-        sca_broadcast <= ctrl.sca_broadcast;
       end if;
     end if;
   end process;
@@ -92,10 +81,19 @@ begin
   -- use a multiplexer to fan the single gbt_sc core out to all of the different lpgbts
   --------------------------------------------------------------------------------
 
+  -- NOTE: this core has a "fifo" with a "CDC" but I'm not sure it follows any
+  -- real clock domain crossing techniques, to be safe should probably operate
+  -- the whole thing on the same LPGBT clock
+  --
+  -- FIXME: for buff-bypass operation this is OK, but if using ZDM it isn't
+  -- clear the best way to change clock domains
+  --
+  -- Need some user defined clock group??
+
   gbtsc_top_inst : entity gbt_sc.gbtsc_top
     generic map (
       g_IC_FIFO_DEPTH => 32,
-      g_ToLpGBT       => 1,
+      g_ToLpGBT       => 1,             -- 1 = LPGBT, 0=GBTX
       g_SCA_COUNT     => g_SCAS_PER_LPGBT
       )
     port map (
@@ -129,11 +127,11 @@ begin
       tx_register_addr_i => ctrl.sc.tx_register_addr,
       tx_nb_to_be_read_i => ctrl.sc.tx_num_bytes_to_read,
 
-      wr_clk_i          => axi_clk,
+      wr_clk_i          => lpgbt_clk,
       tx_wr_i           => ctrl.sc.tx_wr,
       tx_data_to_gbtx_i => ctrl.sc.tx_data_to_gbtx,
 
-      rd_clk_i            => axi_clk,
+      rd_clk_i            => lpgbt_clk,
       rx_rd_i             => ctrl.sc.rx_rd,
       rx_data_from_gbtx_o => mon.sc.rx_data_from_gbtx,
 
@@ -153,30 +151,30 @@ begin
       -- SCA Command
 
       -- TODO: convert these into arrays in the XML
-      rx_address_o(0)  => mon.sc.rx_address_0,
-      rx_address_o(1)  => mon.sc.rx_address_1,
-      rx_address_o(2)  => mon.sc.rx_address_2,
-      rx_channel_o(0)  => mon.sc.rx_channel_0,
-      rx_channel_o(1)  => mon.sc.rx_channel_1,
-      rx_channel_o(2)  => mon.sc.rx_channel_2,
-      rx_control_o(0)  => mon.sc.rx_control_0,
-      rx_control_o(1)  => mon.sc.rx_control_1,
-      rx_control_o(2)  => mon.sc.rx_control_2,
-      rx_data_o(0)     => mon.sc.rx_data_0,
-      rx_data_o(1)     => mon.sc.rx_data_1,
-      rx_data_o(2)     => mon.sc.rx_data_2,
-      rx_error_o(0)    => mon.sc.rx_err_0,
-      rx_error_o(1)    => mon.sc.rx_err_1,
-      rx_error_o(2)    => mon.sc.rx_err_2,
-      rx_len_o(0)      => mon.sc.rx_len_0,
-      rx_len_o(1)      => mon.sc.rx_len_1,
-      rx_len_o(2)      => mon.sc.rx_len_2,
-      rx_received_o(0) => mon.sc.rx_received_0,
-      rx_received_o(1) => mon.sc.rx_received_1,
-      rx_received_o(2) => mon.sc.rx_received_2,
-      rx_transID_o(0)  => mon.sc.rx_transID_0,
-      rx_transID_o(1)  => mon.sc.rx_transID_1,
-      rx_transID_o(2)  => mon.sc.rx_transID_2
+      rx_address_o(0)  => mon.sc.rx.rx0.rx_address,
+      rx_address_o(1)  => mon.sc.rx.rx1.rx_address,
+      rx_address_o(2)  => mon.sc.rx.rx2.rx_address,
+      rx_channel_o(0)  => mon.sc.rx.rx0.rx_channel,
+      rx_channel_o(1)  => mon.sc.rx.rx1.rx_channel,
+      rx_channel_o(2)  => mon.sc.rx.rx2.rx_channel,
+      rx_control_o(0)  => mon.sc.rx.rx0.rx_control,
+      rx_control_o(1)  => mon.sc.rx.rx1.rx_control,
+      rx_control_o(2)  => mon.sc.rx.rx2.rx_control,
+      rx_data_o(0)     => mon.sc.rx.rx0.rx_data,
+      rx_data_o(1)     => mon.sc.rx.rx1.rx_data,
+      rx_data_o(2)     => mon.sc.rx.rx2.rx_data,
+      rx_error_o(0)    => mon.sc.rx.rx0.rx_err,
+      rx_error_o(1)    => mon.sc.rx.rx1.rx_err,
+      rx_error_o(2)    => mon.sc.rx.rx2.rx_err,
+      rx_len_o(0)      => mon.sc.rx.rx0.rx_len,
+      rx_len_o(1)      => mon.sc.rx.rx1.rx_len,
+      rx_len_o(2)      => mon.sc.rx.rx2.rx_len,
+      rx_received_o(0) => mon.sc.rx.rx0.rx_received,
+      rx_received_o(1) => mon.sc.rx.rx1.rx_received,
+      rx_received_o(2) => mon.sc.rx.rx2.rx_received,
+      rx_transID_o(0)  => mon.sc.rx.rx0.rx_transID,
+      rx_transID_o(1)  => mon.sc.rx.rx1.rx_transID,
+      rx_transID_o(2)  => mon.sc.rx.rx2.rx_transID
 
       );
 
@@ -196,7 +194,6 @@ begin
       if (valid) then
         -- mux and copy onto 40MHz lpgbt_clk
         ic_data_up    <= lpgbt_uplink_data_i (lpgbt_link_sel).ic;
-        -- TODO: move this into a loop
         ec_data_up(0) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up0 + 2);
         ec_data_up(1) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up1 + 2);
         ec_data_up(2) <= lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up2+4) & lpgbt_uplink_data_i (lpgbt_link_sel).data(8*up2 + 2);
@@ -214,63 +211,46 @@ begin
     constant d1 : integer := CSM_SCA1_DOWN_AUX;
     constant d2 : integer := CSM_SCA2_DOWN_AUX;
 
-    -- function to replicate a std_logic bit some number of times
-    -- equivalent to verilog's built in {n{x}} operator
-    function repeat(B : std_logic; N : integer)
-      return std_logic_vector
-    is
-      variable result : std_logic_vector(1 to N);
-    begin
-      for i in 1 to N loop
-        result(i) := B;
-      end loop;
-      return result;
-    end;
-
   begin
     output_mux_gen : for I in 0 to c_NUM_LPGBT_DOWNLINKS-1 loop
 
-      -- TODO: mux the bits only during idle sequences to ensure smooth transitions
+      -- FIXME: mux the bits only during idle sequences to ensure smooth transitions?
+      -- for now make sure it is done in software
 
       if (rising_edge(lpgbt_clk)) then
         if (valid) then
 
           -- if broadcast ? send to all of the lpgbts
           if (lpgbt_broadcast = '1') then
+
             lpgbt_downlink_data_o (I).ic <= ic_data_down;
             lpgbt_downlink_data_o (I).ec <= ic_data_down;
 
-          -- if master
-          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '0') then
-            lpgbt_downlink_data_o (I).ic <= ic_data_down;
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
+            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
 
-          -- if slave
-          elsif (lpgbt_link_sel = I and lpgbt_link_sel_slave = '1') then
-            lpgbt_downlink_data_o (I).ec <= ic_data_down;
+          elsif (lpgbt_link_sel = I) then
+
+            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
+            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
+            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
+
+            -- if master
+            if (lpgbt_link_sel_slave = '0') then
+              lpgbt_downlink_data_o (I).ic <= ic_data_down;
+              lpgbt_downlink_data_o (I).ec <= (others => '1');
+            -- if slave
+            elsif (lpgbt_link_sel_slave = '1') then
+              lpgbt_downlink_data_o (I).ec <= ic_data_down;
+              lpgbt_downlink_data_o (I).ic <= (others => '1');
+            end if;
 
           -- if idle (nothing selected, should block writes)
           else
             lpgbt_downlink_data_o (I).ic <= (others => '1');
             lpgbt_downlink_data_o (I).ec <= (others => '1');
-          end if;
 
-          -- if broadcast ? send to all of the scas
-          if (sca_broadcast = '1') then
-            -- TODO: move this into a loop
-            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
-            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
-            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
-
-          -- select a CSM... choose which SCA on SC controller port
-          elsif (sca_link_sel = I) then
-            -- TODO: move this into a loop
-            lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= ec_data_down(0);
-            lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= ec_data_down(1);
-            lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= ec_data_down(2);
-
-          -- idle
-          else
-            -- TODO: move this into a loop
             lpgbt_downlink_data_o (I).data((1+d0)*2-1 downto d0*2) <= (others => '1');
             lpgbt_downlink_data_o (I).data((1+d1)*2-1 downto d1*2) <= (others => '1');
             lpgbt_downlink_data_o (I).data((1+d2)*2-1 downto d2*2) <= (others => '1');

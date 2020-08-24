@@ -419,7 +419,6 @@ begin  -- architecture behavioral
   gbt_controller_wrapper_inst : entity hal.gbt_controller_wrapper
     port map (
       reset_i               => global_reset,
-      axi_clk               => clocks.clock320,
       lpgbt_clk             => clocks.clock320,
       valid_i               => strobe_320,
       ctrl                  => ctrl.gbt,
