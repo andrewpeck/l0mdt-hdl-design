@@ -40,6 +40,9 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 
+library ult_tp_list;
+use ult_tp_list.gldl_l0mdt_textio_pkg.all;
+
 entity ult_tp is
   generic (
     DUMMY       : boolean := false;
@@ -49,6 +52,10 @@ entity ult_tp is
 end entity ult_tp;
 
 architecture beh of ult_tp is
+
+  ---------------------------------------------------------------------------
+  -- signals related to DUT ports
+  ---------------------------------------------------------------------------
 
   signal clock_and_control : l0mdt_control_rt;
   signal ttc_commands      : l0mdt_ttc_rt;
@@ -103,7 +110,10 @@ architecture beh of ult_tp is
 
   signal sump : std_logic;
 
------------------------------------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  -- simulation signals
+  ---------------------------------------------------------------------------
+
   -- clk
   constant clk_period : time := 2.7778 ns;
   signal clk : std_logic := '0';
@@ -128,11 +138,36 @@ architecture beh of ult_tp is
   -- pipeline
   -- signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal cand1 , cand2 , cand3 , cand4 : slc_rx_data_rt;
-  signal barrel1 , barrel2 , barrel3 , barrel4 : slc_barrel_rt;
+  -- signal cand1 , cand2 , cand3 , cand4 : slc_rx_data_rt;
+  -- signal barrel1 , barrel2 , barrel3 , barrel4 : slc_barrel_rt;
 
-  ------------------------------------
-  signal tb_motor : std_logic_vector(3 downto 0);
+  -- ------------------------------------
+  -- signal tb_motor : std_logic_vector(3 downto 0);
+
+  ----------------------------------------
+    -- signal line_Example : string;
+    signal mdt_tar_station : tar2hps_tb_at;
+    signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  
+    -- input fifos
+    -- signal tar_base : tar2hps_rt;
+    -- constant INFIFO_WIDTH : integer := 32;
+    type infifo_counts is array (integer range <>) of integer;
+  
+    type infifo_mem_at is array (integer range <>) of tar2hps_tb_at;
+  
+    signal mdt_inn        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
+    signal mdt_mid        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
+    signal mdt_out        : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
+    signal mdt_ext        : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
+  
+    signal mdt_inn_counts : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+    signal mdt_mid_counts : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+    signal mdt_out_counts : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+    signal mdt_ext_counts : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+  
+    ------------------------------------
+    signal mdt_tar_event : input_tar_rt;
 
 begin
   
@@ -237,7 +272,7 @@ begin
 
   CSM_read: process ( rst, clk)
 
-    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/ucm_hps/sim/csm_TB_C2Barrel.txt";
+    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3Barrel.txt";
     variable row                  : line;
     variable row_counter          : integer := 0;
 

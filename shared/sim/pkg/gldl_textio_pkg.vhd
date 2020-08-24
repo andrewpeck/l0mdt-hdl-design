@@ -11,24 +11,38 @@ use ieee.std_logic_textio.all;
 use std.textio.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
-library ucm_hps_lib;
-use ucm_hps_lib.ucm_hps_pkg.all;
+-- library ucm_hps_lib;
+-- use ucm_hps_lib.ucm_hps_pkg.all;
 
-package l0mdt_textio_pkg is
+package gldl_l0mdt_textio_pkg is
+
+  type input_tar_rt is record
+    global_time : unsigned(64-1 downto 0);
+    station : unsigned(8-1 downto 0);
+    chamber : unsigned(8-1 downto 0);
+    tar : tar2hps_rt;
+  end record input_tar_rt;
+
+  type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
 
-end l0mdt_textio_pkg;
+end gldl_l0mdt_textio_pkg;
 
 
-package body l0mdt_textio_pkg is
+package body gldl_l0mdt_textio_pkg is
 
   -----------------------------------------------
   -- read TAR 
@@ -78,6 +92,7 @@ package body l0mdt_textio_pkg is
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+        chamber_id => to_unsigned((chamber - 1),8),
         time => to_unsigned(global_time,MDT_TIME_LEN),
         data_valid => '1'
       )
@@ -173,4 +188,4 @@ package body l0mdt_textio_pkg is
 
   -- end WRITE;
 
-end l0mdt_textio_pkg;
+end gldl_l0mdt_textio_pkg;
