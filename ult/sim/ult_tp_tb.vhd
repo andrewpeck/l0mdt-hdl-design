@@ -16,6 +16,8 @@ library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use std.textio.all;
+use std.standard.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
