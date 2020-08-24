@@ -68,6 +68,5 @@ http://hog-user-docs.web.cern.ch/
 
 ## Gitlab CI
 
-
 ... TBD
 

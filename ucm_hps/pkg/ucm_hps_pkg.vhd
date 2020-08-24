@@ -21,7 +21,7 @@ package ucm_hps_pkg is
   subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
   function vectorify(x: input_tar_rt) return input_tar_rvt;
   function structify(x: input_tar_rvt) return input_tar_rt;
-  function nullify (x: input_tar_rt) return input_tar_rt;
+  function nullify(x: input_tar_rt) return input_tar_rt;
 
   constant TB_TAR_FIFO_WIDTH : integer := 32;
 
@@ -58,7 +58,7 @@ package body ucm_hps_pkg is
     y.tar                      := structify(x(35 downto 0));
     return y;
   end function structify;
-  function nullify (x: input_tar_rt) return input_tar_rt is
+  function nullify(x: input_tar_rt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
     y.global_time              := nullify(x.global_time);

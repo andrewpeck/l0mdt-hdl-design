@@ -41,7 +41,7 @@
     <node id="SECTOR_SIDE"         address="0x0" permission="r" mask="0x00000004"/>
     <node id="ST_nBARREL_ENDCAP"   address="0x0" permission="r" mask="0x00000008"/>
     <node id="ENDCAP_nSMALL_LARGE" address="0x0" permission="r" mask="0x00000010"/>
-    <node id="ENABLE_NEIGHTBORS"   address="0x0" permission="r" mask="0x00000020"/>
+    <node id="ENABLE_NEIGHBORS"    address="0x0" permission="r" mask="0x00000020"/>
     <node id="SECTOR_ID"           address="0x1" permission="r" mask="0xFFFFFFFF"/>
     <node id="PHY_BARREL_R0"       address="0x2" permission="r" mask="0xFFFFFFFF"/>
     <node id="PHY_BARREL_R1"       address="0x3" permission="r" mask="0xFFFFFFFF"/>

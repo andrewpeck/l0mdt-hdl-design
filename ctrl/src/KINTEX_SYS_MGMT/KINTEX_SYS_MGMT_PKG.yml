@@ -9,17 +9,17 @@ __config__:
 HDL_Types:
 
 - KINTEX_SYS_MGMT_MON_t:
-  - TEMP : { type: logic, length: 10 }
-  - VCCINT : { type: logic, length: 10 }
-  - VCCAUX : { type: logic, length: 10 }
-  - VCCBRAM : { type: logic, length: 10 }
-  - TEMP_MAX : { type: logic, length: 10 }
-  - VCCINT_MAX : { type: logic, length: 10 }
-  - VCCAUX_MAX : { type: logic, length: 10 }
-  - VCCBRAM_MAX : { type: logic, length: 10 }
-  - TEMP_MIN : { type: logic, length: 10 }
-  - VCCINT_MIN : { type: logic, length: 10 }
-  - VCCAUX_MIN : { type: logic, length: 10 }
-  - VCCBRAM_MIN : { type: logic, length: 10 }
+  - TEMP : [ type: logic, length: 10 ]
+  - VCCINT : [ type: logic, length: 10 ]
+  - VCCAUX : [ type: logic, length: 10 ]
+  - VCCBRAM : [ type: logic, length: 10 ]
+  - TEMP_MAX : [ type: logic, length: 10 ]
+  - VCCINT_MAX : [ type: logic, length: 10 ]
+  - VCCAUX_MAX : [ type: logic, length: 10 ]
+  - VCCBRAM_MAX : [ type: logic, length: 10 ]
+  - TEMP_MIN : [ type: logic, length: 10 ]
+  - VCCINT_MIN : [ type: logic, length: 10 ]
+  - VCCAUX_MIN : [ type: logic, length: 10 ]
+  - VCCBRAM_MIN : [ type: logic, length: 10 ]
 
 

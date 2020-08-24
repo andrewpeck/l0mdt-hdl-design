@@ -9,11 +9,11 @@ __config__:
 HDL_Types:
 
 - MPL_MON_t:
-  - STATUS : { type: logic }
-  - READY : { type: logic }
+  - STATUS : [ type: logic ]
+  - READY : [ type: logic ]
 
 
 - MPL_CTRL_t:
-  - RESET : { type: logic }
+  - RESET : [ type: logic ]
 
 

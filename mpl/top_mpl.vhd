@@ -37,9 +37,9 @@ entity top_mpl is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_uCM2pl_av         : in ucm2pl_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2tf_av          : out pl2pt_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pl2mtc_avt(c_MAX_NUM_SL -1 downto 0)
+    i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    o_pl2tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+    o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity top_mpl;
 

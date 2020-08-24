@@ -14,20 +14,20 @@ use ieee.numeric_std.all;
 
 entity polling_mux is
   generic(
-    -- the polling mux can be run in a round-robin fasion (which forces the clock frequency is at least enough to look
-    -- through everything, a minimum of 320MHz for 20 inputs)
+    -- the polling mux can be run in a round-robin fasion (which forces the clock frequency is at
+    -- least enough to look through everything, a minimum of 320MHz for 20 inputs)
     --
-    -- if disabled, the polling mux will run in priority encoder mode where it chooses the LSB tdc hit which allows it
-    -- to operate at much wider aspect ratios and could be more efficient, since a large number of low rate inputs can
-    -- be muxed into a single high speed output, so that the ratio can be determined based on expected hit rates rather
-    -- than just f=20*16MHz
+    -- if disabled, the polling mux will run in priority encoder mode where it chooses the LSB tdc
+    -- hit which allows it to operate at much wider aspect ratios and could be more efficient, since
+    -- a large number of low rate inputs can be muxed into a single high speed output, so that the
+    -- ratio can be determined based on expected hit rates rather than just f=20*16MHz
 
     g_ROUND_ROBIN : boolean := false;
     g_WIDTH       : integer := 20
     );
   port(
     clock       : in  std_logic;
-    tdc_hits_i  : in  mdt_polmux_avt (g_WIDTH-1 downto 0);
+    tdc_hits_i  : in  mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
     read_done_o : out std_logic_vector (g_WIDTH-1 downto 0);
     tdc_hit_o   : out mdt_polmux_rvt
     );
@@ -35,14 +35,14 @@ end polling_mux;
 
 architecture behavioral of polling_mux is
 
-  signal tdc_hits_r   : mdt_polmux_avt (g_WIDTH-1 downto 0);
-  signal tdc_hits_and : mdt_polmux_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_r   : mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
+  signal tdc_hits_and : mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
   signal tdc_hits_or  : mdt_polmux_rvt;
 
   signal hit_sel_mask, hit_sel_mask_r : std_logic_vector (g_WIDTH-1 downto 0);
 
   -- function to pull the valid bits out of a tdcpolmux array and put it in a std_logic_vector
-  function tdchits2valid_stdlogic (arr : mdt_polmux_avt; size : integer) return std_logic_vector is
+  function tdchits2valid_stdlogic (arr : mdt_polmux_bus_avt; size : integer) return std_logic_vector is
     variable tmp : std_logic_vector(size - 1 downto 0);
     variable rec : mdt_polmux_rt;
   begin
@@ -68,8 +68,8 @@ architecture behavioral of polling_mux is
     return result;
   end;
 
-  -- ORs together a mdt_polmux_avt, useful for multiplexing
-  function or_reduce (arr : mdt_polmux_avt) return mdt_polmux_rvt is
+  -- ORs together a mdt_polmux_bus_avt, useful for multiplexing
+  function or_reduce (arr : mdt_polmux_bus_avt) return mdt_polmux_rvt is
     variable tmp : mdt_polmux_rvt;
   begin
     tmp := repeat('0', MDT_POLMUX_LEN);
@@ -119,21 +119,23 @@ begin
   pe : if (not g_ROUND_ROBIN) generate
     signal valid_vec : std_logic_vector (g_WIDTH-1 downto 0);
   begin
-    -- Create a fast parallel bitmask that returns the least significant set 1 using a
-    -- property of integers: subtracting 1 from a number will always affect the
-    -- least-significant set 1-bit. using just arithmetic, with this trick we can
-    -- create a one hot of the first set bit
+    -- Create a fast parallel bitmask that returns the least significant set 1 using a property of
+    -- integers: subtracting 1 from a number will always affect the least-significant set 1-bit.
+    -- using just arithmetic, with this trick we can create a one hot of the first set bit
     --
     -- e.g.
     -- let a        = 101100100  // our starting number
     --    ~a        = 010011011  // bitwise inversion
-    --     b = ~a+1 = 010011100  // b is exactly the twos complement of a, which we know to be the same as (-a) ! :)
+    --     b = ~a+1 = 010011100  // b is exactly the twos complement of a,
+    --                           // which we know to be the same as (-a) ! :)
     --     a & b    = 000000100  // one hot of first one set
     --
-    -- The compiler seems to be more happy with this template since it falls into some expected pattern and
-    -- is implemented in a way that is efficient and fast while a more obvious implmentation runs a lot slower
+    -- The compiler seems to be more happy with this template since it falls into some expected
+    -- pattern and is implemented in a way that is efficient and fast while a more obvious
+    -- implmentation runs a lot slower
 
-    -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be pipelined if needed
+    -- Do this fast (async output) to feed back into the TDC decoder and let the priority encoder be
+    -- pipelined if needed
     valid_vec    <= tdchits2valid_stdlogic(tdc_hits_i, tdc_hits_i'length);
     hit_sel_mask <= (valid_vec) and std_logic_vector((unsigned((not valid_vec)) + 1));
   end generate;

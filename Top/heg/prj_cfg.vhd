@@ -37,14 +37,13 @@ package body prj_cfg is
   --   proj_cfg.SECTOR_ID               := 3,
   --   proj_cfg.ST_nBARREL_ENDCAP       := '0', -- 0: barrel    1: Endcap
   --   proj_cfg.ENDCAP_nSMALL_LARGE     := '0', -- 0: small     1: large
-  --   proj_cfg.ENABLE_NEIGHTBORS       := '1', -- 0: disabled  1: enabled
+  --   proj_cfg.ENABLE_NEIGHBORS        := '1', -- 0: disabled  1: enabled
   --   --------------------------------------------------------------------------------
   --   -- IN COMPILATION CONFIGURATIONS 
   --   --------------------------------------------------------------------------------
-  --   proj_cfg.MAX_NUM_HP              := 6,
   --   proj_cfg.NUM_THREADS             := 3,
   --   proj_cfg.MAX_NUM_HPS             := 3,
-  --   proj_cfg.MAX_NUM_SL              := 5,--3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHTBORS))*2,
+  --   proj_cfg.MAX_NUM_SL              := 5,--3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHBORS))*2,
   --   --------------------------------------------------------------------------------
   --   -- mdt hardware interface config
   --   --------------------------------------------------------------------------------
