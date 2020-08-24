@@ -20,19 +20,17 @@ use shared_lib.config_pkg.all;
 use shared_lib.some_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
--- library ucm_hps_lib;
--- use ucm_hps_lib.ucm_hps_pkg.all;
+library ult_tp_list;
+use ult_tp_list.gldl_ult_tp_sim_pkg.all;
 
 package gldl_l0mdt_textio_pkg is
 
-  type input_tar_rt is record
-    global_time : unsigned(64-1 downto 0);
-    station : unsigned(8-1 downto 0);
-    chamber : unsigned(8-1 downto 0);
-    tar : tar2hps_rt;
-  end record input_tar_rt;
-
-  type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
+  -- type input_tar_rt is record
+  --   global_time : unsigned(64-1 downto 0);
+  --   station : unsigned(8-1 downto 0);
+  --   chamber : unsigned(8-1 downto 0);
+  --   tar : tar2hps_rt;
+  -- end record input_tar_rt;
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 

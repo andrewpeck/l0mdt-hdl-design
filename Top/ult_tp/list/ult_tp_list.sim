@@ -1,4 +1,5 @@
 #Simulator xsim
+shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
 shared/sim/pkg/gldl_textio_pkg.vhd
 ult/sim/ult_tp_tb.vhd topsim=ult_tp
 # ult/sim/ucm_tb_behav.wcfg

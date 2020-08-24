@@ -41,6 +41,7 @@ use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 
 library ult_tp_list;
+use ult_tp_list.gldl_ult_tp_sim_pkg.all;
 use ult_tp_list.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
@@ -145,29 +146,34 @@ architecture beh of ult_tp is
   -- signal tb_motor : std_logic_vector(3 downto 0);
 
   ----------------------------------------
-    -- signal line_Example : string;
-    signal mdt_tar_station : tar2hps_tb_at;
-    signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  -- constant TB_TAR_FIFO_WIDTH : integer := 32;
+
+  -- type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
+  -- signal line_Example : string;
+  signal mdt_tar_station : tar2hps_tb_at;
+  signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+
+  -- input fifos
+  -- signal tar_base : tar2hps_rt;
+  -- constant INFIFO_WIDTH : integer := 32;
+  type infifo_counts is array (integer range <>) of integer;
+
+  type infifo_mem_at is array (integer range <>) of tar2hps_tb_at;
+
   
-    -- input fifos
-    -- signal tar_base : tar2hps_rt;
-    -- constant INFIFO_WIDTH : integer := 32;
-    type infifo_counts is array (integer range <>) of integer;
-  
-    type infifo_mem_at is array (integer range <>) of tar2hps_tb_at;
-  
-    signal mdt_inn        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
-    signal mdt_mid        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
-    signal mdt_out        : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
-    signal mdt_ext        : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
-  
-    signal mdt_inn_counts : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
-    signal mdt_mid_counts : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
-    signal mdt_out_counts : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
-    signal mdt_ext_counts : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
-  
-    ------------------------------------
-    signal mdt_tar_event : input_tar_rt;
+
+  signal mdt_inn        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_mid        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_out        : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_ext        : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
+
+  signal mdt_inn_counts : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+  signal mdt_mid_counts : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+  signal mdt_out_counts : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+  signal mdt_ext_counts : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+
+  ------------------------------------
+  signal mdt_tar_event : input_tar_rt;
 
 begin
   
