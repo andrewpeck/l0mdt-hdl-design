@@ -162,10 +162,10 @@ architecture beh of ult_tp is
 
   
 
-  signal mdt_inn        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_mid        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_out        : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
-  signal mdt_ext        : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_inn_fifo : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_mid_fifo : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_out_fifo : infifo_mem_at(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => nullify(mdt_tar_station));
+  signal mdt_ext_fifo : infifo_mem_at(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => nullify(mdt_tar_station));
 
   signal mdt_inn_counts : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
   signal mdt_mid_counts : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
@@ -307,9 +307,9 @@ begin
 
         for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
           if(v_mdt_inn_counts(wr_i) > 0) then
-            i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn(wr_i)(0));
+            i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_inn(wr_i)(mv_i - 1) <= mdt_inn(wr_i)(mv_i);
+              mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
             end loop;
             v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
           else
@@ -319,9 +319,9 @@ begin
 
         for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
           if(v_mdt_mid_counts(wr_i) > 0) then
-            i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid(wr_i)(0));
+            i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_mid(wr_i)(mv_i - 1) <= mdt_MID(wr_i)(mv_i);
+              mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_MID(wr_i)(mv_i);
             end loop;
             v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
           else
@@ -331,21 +331,19 @@ begin
 
         for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
           if(v_mdt_out_counts(wr_i) > 0) then
-            i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out(wr_i)(0));
+            i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0));
             for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_out(wr_i)(mv_i - 1) <= mdt_out(wr_i)(mv_i);
+              mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
             end loop;
             v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
           else
             i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
           end if;
         end loop;
-
-        for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
-          if(v_mdt_ext_counts(wr_i) > 0) then
-            i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext(wr_i)(0));
-            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_ext(wr_i)(mv_i - 1) <= mdt_ext(wr_i)(mv_i);
+  for wr_i in c_HPS__CH_d loop
+          if(v_mdt_ext_coui) > 0) thei_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext_fifo0));
+            for mv_i in TBFO_WIDTH -1 downto
+              mdt_ext_fifomv_i - 1) <= mdt_ext_fifomv_i);
             end loop;
             v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
           else
@@ -371,16 +369,16 @@ begin
             if (endfile(input_mdt_tar_file) = false) then
               
               if to_integer(mdt_event.station) = 0 then
-                mdt_inn(to_integer(mdt_event.chamber))(v_mdt_inn_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                mdt_inn_fifo(to_integer(mdt_event.chamber))(v_mdt_inn_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
                 v_mdt_inn_counts(to_integer(mdt_event.chamber)) := v_mdt_inn_counts(to_integer(mdt_event.chamber)) + 1;
               elsif to_integer(mdt_event.station) = 1 then
-                mdt_mid(to_integer(mdt_event.chamber))(v_mdt_mid_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                mdt_mid_fifo(to_integer(mdt_event.chamber))(v_mdt_mid_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
                 v_mdt_mid_counts(to_integer(mdt_event.chamber)) := v_mdt_mid_counts(to_integer(mdt_event.chamber)) + 1;
               elsif to_integer(mdt_event.station) = 2 then
-                mdt_out(to_integer(mdt_event.chamber))(v_mdt_out_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
-                v_mdt_out_counts(to_integer(mdt_event.chamber)) := v_mdt_out_counts(to_integer(mdt_event.chamber)) + 1;
-              elsif to_integer(mdt_event.station) = 3 then
-                mdt_ext(to_integer(mdt_event.chamber))(v_mdt_ext_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                mdt_out_fifoeger(mdt_event.chamber))(v_mdt_out_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
+                v_mdt_out_co_integer(mdt_event.chamber)) := v_mdt_out_counts(to_integer(mdt_event.chamber)) + 1;
+              elsif to_integevent.station) = 3 then
+                mdt_ext_fifoeger(mdt_event.chamber))(v_mdt_ext_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
                 v_mdt_ext_counts(to_integer(mdt_event.chamber)) := v_mdt_ext_counts(to_integer(mdt_event.chamber)) + 1;
               else
                 -- ERROR
