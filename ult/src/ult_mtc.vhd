@@ -11,8 +11,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
--- library ctrl_lib;
--- use ctrl_lib.MTC_CTRL.all;
+library ctrl_lib;
+use ctrl_lib.MTC_CTRL.all;
 
 entity mtc_builder is
 
@@ -20,8 +20,8 @@ entity mtc_builder is
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    -- ctrl              : in  MTC_CTRL_t;
-    -- mon               : out MTC_MON_t;
+    ctrl              : in  MTC_CTRL_t;
+    mon               : out MTC_MON_t;
     i_ptcalc          : in  tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
     i_pl2mtc          : in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
     o_mtc             : out mtc_out_bus_avt(c_NUM_MTC -1 downto 0);
