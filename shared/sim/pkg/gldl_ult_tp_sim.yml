@@ -13,7 +13,7 @@ HDL_Types:
 - input_tar:
   - global_time : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 8]
-  - chamber     : [ type : unsigned , length : 8]
+  - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
   - tar         : [ type : tar2hps ]
 
 - TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
