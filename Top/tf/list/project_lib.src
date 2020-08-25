@@ -1,4 +1,4 @@
-shared/shared_lib.src
+shared/shared_lib.src lib=shared_lib
 Top/tf/prj_cfg.vhd
-tf/tf_lib.src
+tf/tf_lib.src lib=tf_lib
 tf/top_tf.vhd
