@@ -1,8 +1,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+library work;
 use work.axiRegPkg.all;
 use work.types.all;
+
+-- library ctrl_lib;
+-- use ctrl_lib.AXIRegPkg.all;
+-- use ctrl_lib.types.all;
 
 entity axiLiteReg is
 

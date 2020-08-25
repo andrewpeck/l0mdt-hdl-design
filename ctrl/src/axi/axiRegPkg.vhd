@@ -5,6 +5,10 @@ use ieee.numeric_std.all;
 library work;
 use work.types.all;
 
+-- library ctrl_lib;
+-- -- use ctrl_lib.axiRegPkg.all;
+-- use ctrl_lib.types.all;
+
 package AXIRegPkg is
 
   constant AXI_ID_BIT_COUNT : integer := 6;
