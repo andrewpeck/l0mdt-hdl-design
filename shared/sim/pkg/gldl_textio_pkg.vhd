@@ -86,7 +86,7 @@ package body gldl_l0mdt_textio_pkg is
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-        chamber_id => to_unsigned((chamber - 1),8),
+        chamber_id => to_unsigned(chamber,8),
         time => to_unsigned(tdc_time,MDT_TIME_LEN),
         data_valid => '1'
       )

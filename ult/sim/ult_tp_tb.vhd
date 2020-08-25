@@ -160,7 +160,7 @@ architecture beh of ult_tp is
 
   type infifo_mem_at is array (integer range <>) of tar2hps_tb_at;
 
-  
+  signal mdt_new_event            : input_tar_rt;
 
   signal mdt_inn_fifo        : infifo_mem_at(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => nullify(mdt_tar_station));
   signal mdt_mid_fifo        : infifo_mem_at(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => nullify(mdt_tar_station));
