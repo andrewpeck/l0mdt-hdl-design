@@ -24,8 +24,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library ctrl_lib;
-use ctrl_lib.TAR_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.TAR_CTRL.all;
 
 library tar_lib;
 use tar_lib.tar_pkg.all;
@@ -38,8 +38,8 @@ entity mdt_tar is
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
-    ctrl              : in  TAR_CTRL_t;
-    mon               : out TAR_MON_t;
+    -- ctrl              : in  TAR_CTRL_t;
+    -- mon               : out TAR_MON_t;
     -- ttc
     ttc_commands      : in  l0mdt_ttc_rt;
     -- Sector Logic Candidates

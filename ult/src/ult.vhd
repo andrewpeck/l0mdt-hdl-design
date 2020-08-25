@@ -26,14 +26,14 @@ use shared_lib.config_pkg.all;
 
 library ult_lib;
 
-library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.TAR_CTRL.all;
-use ctrl_lib.MTC_CTRL.all;
-use ctrl_lib.UCM_CTRL.all;
-use ctrl_lib.DAQ_CTRL.all;
-use ctrl_lib.TF_CTRL.all;
-use ctrl_lib.MPL_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.H2S_CTRL.all;
+-- use ctrl_lib.TAR_CTRL.all;
+-- use ctrl_lib.MTC_CTRL.all;
+-- use ctrl_lib.UCM_CTRL.all;
+-- use ctrl_lib.DAQ_CTRL.all;
+-- use ctrl_lib.TF_CTRL.all;
+-- use ctrl_lib.MPL_CTRL.all;
 
 entity ult is
   generic (
@@ -48,26 +48,26 @@ entity ult is
 
     -- control and monitoring
 
-    h2s_ctrl : in  H2S_CTRL_t;
-    h2s_mon  : out H2S_MON_t;
+    -- h2s_ctrl : in  H2S_CTRL_t;
+    -- h2s_mon  : out H2S_MON_t;
 
-    tar_ctrl : in  TAR_CTRL_t;
-    tar_mon  : out TAR_MON_t;
+    -- tar_ctrl : in  TAR_CTRL_t;
+    -- tar_mon  : out TAR_MON_t;
 
-    mtc_ctrl : in  MTC_CTRL_t;
-    mtc_mon  : out MTC_MON_t;
+    -- mtc_ctrl : in  MTC_CTRL_t;
+    -- mtc_mon  : out MTC_MON_t;
 
-    ucm_ctrl : in  UCM_CTRL_t;
-    ucm_mon  : out UCM_MON_t;
+    -- ucm_ctrl : in  UCM_CTRL_t;
+    -- ucm_mon  : out UCM_MON_t;
 
-    daq_ctrl : in  DAQ_CTRL_t;
-    daq_mon  : out DAQ_MON_t;
+    -- daq_ctrl : in  DAQ_CTRL_t;
+    -- daq_mon  : out DAQ_MON_t;
 
-    tf_ctrl : in  TF_CTRL_t;
-    tf_mon  : out TF_MON_t;
+    -- tf_ctrl : in  TF_CTRL_t;
+    -- tf_mon  : out TF_MON_t;
 
-    mpl_ctrl : in  MPL_CTRL_t;
-    mpl_mon  : out MPL_MON_t;
+    -- mpl_ctrl : in  MPL_CTRL_t;
+    -- mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
     i_inner_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
@@ -164,8 +164,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,  --
           ttc_commands      => ttc_commands,       --
-          ctrl              => tar_ctrl,
-          mon               => tar_mon,
+          -- ctrl              => tar_ctrl,
+          -- mon               => tar_mon,
           -- TDC Hits from Polmux
           i_inner_tdc_hits  => i_inner_tdc_hits,
           i_middle_tdc_hits => i_middle_tdc_hits,
@@ -198,8 +198,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control       => clock_and_control,  --
           ttc_commands            => ttc_commands,       --
-          ctrl                    => ucm_ctrl,
-          mon                     => ucm_mon,
+          -- ctrl                    => ucm_ctrl,
+          -- mon                     => ucm_mon,
           -- candidates in from hal
           i_slc_data_mainA_av     => i_main_primary_slc,
           i_slc_data_mainB_av     => i_main_secondary_slc,
@@ -224,8 +224,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control         => clock_and_control,
           ttc_commands              => ttc_commands,
-          ctrl                      => h2s_ctrl,
-          mon                       => h2s_mon,
+          -- ctrl                      => h2s_ctrl,
+          -- mon                       => h2s_mon,
           -- inputs from hal
           i_inn_tar_hits            => inner_tar_hits,
           i_mid_tar_hits            => middle_tar_hits,
@@ -254,8 +254,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
-          ctrl              => mpl_ctrl,
-          mon               => mpl_mon,
+          -- ctrl              => mpl_ctrl,
+          -- mon               => mpl_mon,
 
           -- Sector Logic Candidates from uCM
           i_ucm2pl_av => ucm2pl_av,
@@ -274,8 +274,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control         => clock_and_control,
           ttc_commands              => ttc_commands,
-          ctrl                      => tf_ctrl,
-          mon                       => tf_mon,
+          -- ctrl                      => tf_ctrl,
+          -- mon                       => tf_mon,
           --  segments from neighbors
           plus_neighbor_segments_i  => plus_neighbor_segments_i,
           minus_neighbor_segments_i => minus_neighbor_segments_i,
@@ -299,8 +299,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
-          ctrl              => mtc_ctrl,
-          mon               => mtc_mon,
+          -- ctrl              => mtc_ctrl,
+          -- mon               => mtc_mon,
           --  inputs
           i_ptcalc          => pt2mtc_av,
           i_pl2mtc          => pl2mtc_av,
@@ -318,8 +318,8 @@ begin
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-        ctrl              => daq_ctrl,
-        mon               => daq_mon,
+        -- ctrl              => daq_ctrl,
+        -- mon               => daq_mon,
 
         -- TDC Hits from Polmux
         i_inner_tdc_hits  => inner_tdc_hits,

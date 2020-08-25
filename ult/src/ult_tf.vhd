@@ -11,8 +11,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library ctrl_lib;
-use ctrl_lib.TF_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.TF_CTRL.all;
 
 entity track_fitting is
 
@@ -20,8 +20,8 @@ entity track_fitting is
     -- clock and control
     clock_and_control         : in  l0mdt_control_rt;
     ttc_commands              : in  l0mdt_ttc_rt;
-    ctrl                      : in  TF_CTRL_t;
-    mon                       : out TF_MON_t;
+    -- ctrl                      : in  TF_CTRL_t;
+    -- mon                       : out TF_MON_t;
     inner_segments_i          : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
     middle_segments_i         : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
     outer_segments_i          : in sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);

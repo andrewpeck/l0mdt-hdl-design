@@ -29,14 +29,14 @@ use shared_lib.detector_param_pkg.all;
 
 library ult_lib;
 
-library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.TAR_CTRL.all;
-use ctrl_lib.MTC_CTRL.all;
-use ctrl_lib.UCM_CTRL.all;
-use ctrl_lib.DAQ_CTRL.all;
-use ctrl_lib.TF_CTRL.all;
-use ctrl_lib.MPL_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.H2S_CTRL.all;
+-- use ctrl_lib.TAR_CTRL.all;
+-- use ctrl_lib.MTC_CTRL.all;
+-- use ctrl_lib.UCM_CTRL.all;
+-- use ctrl_lib.DAQ_CTRL.all;
+-- use ctrl_lib.TF_CTRL.all;
+-- use ctrl_lib.MPL_CTRL.all;
 
 
 entity top_ult_tp is
@@ -53,26 +53,26 @@ entity top_ult_tp is
 
     -- axi control
 
-    h2s_ctrl : in  H2S_CTRL_t;
-    h2s_mon  : out H2S_MON_t;
+    -- h2s_ctrl : in  H2S_CTRL_t;
+    -- h2s_mon  : out H2S_MON_t;
 
-    tar_ctrl : in  TAR_CTRL_t;
-    tar_mon  : out TAR_MON_t;
+    -- tar_ctrl : in  TAR_CTRL_t;
+    -- tar_mon  : out TAR_MON_t;
 
-    mtc_ctrl : in  MTC_CTRL_t;
-    mtc_mon  : out MTC_MON_t;
+    -- mtc_ctrl : in  MTC_CTRL_t;
+    -- mtc_mon  : out MTC_MON_t;
 
-    ucm_ctrl : in  UCM_CTRL_t;
-    ucm_mon  : out UCM_MON_t;
+    -- ucm_ctrl : in  UCM_CTRL_t;
+    -- ucm_mon  : out UCM_MON_t;
 
-    daq_ctrl : in  DAQ_CTRL_t;
-    daq_mon  : out DAQ_MON_t;
+    -- daq_ctrl : in  DAQ_CTRL_t;
+    -- daq_mon  : out DAQ_MON_t;
 
-    tf_ctrl : in  TF_CTRL_t;
-    tf_mon  : out TF_MON_t;
+    -- tf_ctrl : in  TF_CTRL_t;
+    -- tf_mon  : out TF_MON_t;
 
-    mpl_ctrl : in  MPL_CTRL_t;
-    mpl_mon  : out MPL_MON_t;
+    -- mpl_ctrl : in  MPL_CTRL_t;
+    -- mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
     i_inner_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
@@ -151,20 +151,20 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl => h2s_ctrl,
-      h2s_mon  => h2s_mon,
-      tar_ctrl => tar_ctrl,
-      tar_mon  => tar_mon,
-      mtc_ctrl => mtc_ctrl,
-      mtc_mon  => mtc_mon,
-      ucm_ctrl => ucm_ctrl,
-      ucm_mon  => ucm_mon,
-      daq_ctrl => daq_ctrl,
-      daq_mon  => daq_mon,
-      tf_ctrl  => tf_ctrl,
-      tf_mon   => tf_mon,
-      mpl_ctrl => mpl_ctrl,
-      mpl_mon  => mpl_mon,
+      -- h2s_ctrl => h2s_ctrl,
+      -- h2s_mon  => h2s_mon,
+      -- tar_ctrl => tar_ctrl,
+      -- tar_mon  => tar_mon,
+      -- mtc_ctrl => mtc_ctrl,
+      -- mtc_mon  => mtc_mon,
+      -- ucm_ctrl => ucm_ctrl,
+      -- ucm_mon  => ucm_mon,
+      -- daq_ctrl => daq_ctrl,
+      -- daq_mon  => daq_mon,
+      -- tf_ctrl  => tf_ctrl,
+      -- tf_mon   => tf_mon,
+      -- mpl_ctrl => mpl_ctrl,
+      -- mpl_mon  => mpl_mon,
 
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
       daq_streams_o => daq_streams_o,

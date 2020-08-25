@@ -30,16 +30,16 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
-library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.H2S_CTRL.all;
 
 entity hits_to_segments is
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    ctrl              : in  H2S_CTRL_t;
-    mon               : out H2S_MON_t;
+    -- ctrl              : in  H2S_CTRL_t;
+    -- mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);

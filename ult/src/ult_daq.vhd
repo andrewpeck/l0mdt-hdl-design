@@ -11,8 +11,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-library ctrl_lib;
-use ctrl_lib.DAQ_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.DAQ_CTRL.all;
 
 entity daq is
 
@@ -20,8 +20,8 @@ entity daq is
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    ctrl              : in  DAQ_CTRL_t;
-    mon               : out DAQ_MON_t;
+    -- ctrl              : in  DAQ_CTRL_t;
+    -- mon               : out DAQ_MON_t;
 
     i_inner_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
