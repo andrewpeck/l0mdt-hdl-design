@@ -371,17 +371,17 @@ begin
             if (endfile(input_mdt_tar_file) = false) then
               
               if to_integer(mdt_event.station) = 0 then
-                mdt_inn_fifo(to_integer(mdt_event.chamber))(v_mdt_inn_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
-                v_mdt_inn_counts(to_integer(mdt_event.chamber)) := v_mdt_inn_counts(to_integer(mdt_event.chamber)) + 1;
+                mdt_inn_fifo(to_integer(mdt_event.chamber) -1 )(v_mdt_inn_counts(to_integer(mdt_event.chamber) -1 )) <= mdt_event.tar;
+                v_mdt_inn_counts(to_integer(mdt_event.chamber) -1 ) := v_mdt_inn_counts(to_integer(mdt_event.chamber) -1) + 1;
               elsif to_integer(mdt_event.station) = 1 then
-                mdt_mid_fifo(to_integer(mdt_event.chamber))(v_mdt_mid_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
-                v_mdt_mid_counts(to_integer(mdt_event.chamber)) := v_mdt_mid_counts(to_integer(mdt_event.chamber)) + 1;
+                mdt_mid_fifo(to_integer(mdt_event.chamber) -1 )(v_mdt_mid_counts(to_integer(mdt_event.chamber) -1 )) <= mdt_event.tar;
+                v_mdt_mid_counts(to_integer(mdt_event.chamber) -1 ) := v_mdt_mid_counts(to_integer(mdt_event.chamber) -1 ) + 1;
               elsif to_integer(mdt_event.station) = 2 then
-                mdt_out_fifo(to_integer(mdt_event.chamber))(v_mdt_out_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
-                v_mdt_out_counts(to_integer(mdt_event.chamber)) := v_mdt_out_counts(to_integer(mdt_event.chamber)) + 1;
+                mdt_out_fifo(to_integer(mdt_event.chamber) -1 )(v_mdt_out_counts(to_integer(mdt_event.chamber) -1 )) <= mdt_event.tar;
+                v_mdt_out_counts(to_integer(mdt_event.chamber) -1 ) := v_mdt_out_counts(to_integer(mdt_event.chamber) -1 ) + 1;
               elsif to_integer(mdt_event.station) = 3 then
-                mdt_ext_fifo(to_integer(mdt_event.chamber))(v_mdt_ext_counts(to_integer(mdt_event.chamber))) <= mdt_event.tar;
-                v_mdt_ext_counts(to_integer(mdt_event.chamber)) := v_mdt_ext_counts(to_integer(mdt_event.chamber)) + 1;
+                mdt_ext_fifo(to_integer(mdt_event.chamber) -1 )(v_mdt_ext_counts(to_integer(mdt_event.chamber) -1 )) <= mdt_event.tar;
+                v_mdt_ext_counts(to_integer(mdt_event.chamber) -1 ) := v_mdt_ext_counts(to_integer(mdt_event.chamber) -1 ) + 1;
               else
                 -- ERROR
               end if;
