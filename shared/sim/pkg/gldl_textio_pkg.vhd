@@ -11,32 +11,38 @@ use ieee.std_logic_textio.all;
 use std.textio.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+use shared_lib.some_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
-library ucm_hps_lib;
-use ucm_hps_lib.ucm_hps_pkg.all;
+library ult_tp_list;
+use ult_tp_list.gldl_ult_tp_sim_pkg.all;
 
-package l0mdt_textio_pkg is
+package gldl_l0mdt_textio_pkg is
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
 
-end l0mdt_textio_pkg;
+end gldl_l0mdt_textio_pkg;
 
 
-package body l0mdt_textio_pkg is
+package body gldl_l0mdt_textio_pkg is
 
   -----------------------------------------------
   -- read TAR 
   -----------------------------------------------  
   procedure READ(L:inout LINE; VALUE : out input_tar_rt) is
     variable global_time  : integer;
-    variable space        : string(8 downto 1);
-    variable c_Station    : string(1 downto 1);
+    variable tdc_time     : integer;
+    -- variable space        : string(8 downto 1);
+    -- variable c_Station    : string(1 downto 1);
     variable i_station    : integer;
     variable Chamber      : integer;
     variable BCID         : integer;
@@ -51,34 +57,37 @@ package body l0mdt_textio_pkg is
   begin
     READ(L, BCID);
     READ(L, global_time);
+    READ(L, tdc_time);
     READ(L, tube_global);
     READ(L, tube_local);
     READ(L, tube_layer);
     READ(L, Chamber);
-    READ(L, space); -- in string we need to read spaces before
-    READ(L, c_Station);
+    -- READ(L, space); -- in string we need to read spaces before
+    -- READ(L, c_Station);
+    READ(L, i_station);
     READ(L, tube_z);
     READ(L, tube_rho);
     READ(L, tube_radius);
 
-    if c_station = "I" then 
-      i_station := 0;
-    elsif c_station = "M" then 
-      i_station := 1;
-    elsif c_station = "O" then 
-      i_station := 2;
-    else
-      i_station := 3;
-    end if;
+    -- if c_station = "I" then 
+    --   i_station := 0;
+    -- elsif c_station = "M" then 
+    --   i_station := 1;
+    -- elsif c_station = "O" then 
+    --   i_station := 2;
+    -- else
+    --   i_station := 3;
+    -- end if;
 
     VALUE := (
       global_time => to_unsigned(global_time,64),
       Station => to_unsigned(i_Station,8),
-      Chamber => to_unsigned((chamber - 1),8),
+      Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-        time => to_unsigned(global_time,MDT_TIME_LEN),
+        chamber_id => to_unsigned(chamber,SLC_CHAMBER_LEN),
+        time => to_unsigned(tdc_time,MDT_TIME_LEN),
         data_valid => '1'
       )
     );
@@ -89,7 +98,8 @@ package body l0mdt_textio_pkg is
     " - " & integer'image(tube_local) &
     " - " & integer'image(tube_layer) &
     " - " & integer'image(Chamber) &
-    " - " & c_station &
+    " - " & integer'image(i_station) &
+    -- " - " & c_station &
     " - " & integer'image(tube_z) &
     " - " & integer'image(tube_rho) &
     " - " & integer'image(tube_radius);
@@ -173,4 +183,4 @@ package body l0mdt_textio_pkg is
 
   -- end WRITE;
 
-end l0mdt_textio_pkg;
+end gldl_l0mdt_textio_pkg;

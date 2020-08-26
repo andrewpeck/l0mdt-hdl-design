@@ -76,7 +76,7 @@ all:
 	-e l0mdt_dataformats.yml \
 	-e common_types.yml      \
 	../../ucm_hps/pkg/ucm_hps.yml
-	# main pìpeline
+	# main pipeline
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
 	-e l0mdt_constants.yml   \
@@ -92,3 +92,19 @@ all:
 	-e l0mdt_dataformats.yml \
 	-e common_types.yml      \
 	../../csf/pkg/csf.yml
+	# TAR
+	python3 $(yml2hdl)       \
+	-e common_ieee.yml       \
+	-e l0mdt_constants.yml   \
+	-e common_constants.yml  \
+	-e l0mdt_dataformats.yml \
+	-e common_types.yml      \
+	../../tar/pkg/tar.yml
+		# ULT simulation package
+	python3 $(yml2hdl)       \
+	-e common_ieee.yml       \
+	-e l0mdt_constants.yml   \
+	-e common_constants.yml  \
+	-e l0mdt_dataformats.yml \
+	-e common_types.yml      \
+	../../shared/sim/pkg/gldl_ult_tp_sim.yml

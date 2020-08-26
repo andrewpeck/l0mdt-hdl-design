@@ -45,7 +45,7 @@ begin
 
       -- increment counter when bitslip is selected
       if (bitslip_i = '1') then
-        if (fifo_ptr < 8) then
+        if (fifo_ptr < 7) then
           fifo_ptr <= fifo_ptr + 1;
         else
           fifo_ptr <= 0;
@@ -56,43 +56,3 @@ begin
   end process;
 
 end parallel;
-
-architecture serial of alignment_buffer is
-
-  -- bitslip signals
-  signal buf         : std_logic_vector (7 downto 0);  -- pick of just the head of the fifo
-  signal fifo        : std_logic_vector (7 downto 0);  -- pick of just the head of the fifo
-
-  signal valid_dly1  : std_logic;
-
-
-begin
-
-  process(clock) is
-  begin
-    if (rising_edge(clock)) then
-
-      valid_dly1  <= valid_i;
-
-      -- copy the input data into a SR, shift it out one bit at a time
-      if (valid_i = '1') then
-        buf <= data_i;
-      else
-        buf <= buf(6 downto 0) & '0';
-      end if;
-
-      -- bitslip is selected
-      if (bitslip_i = '0') then
-        fifo (7 downto 0) <= fifo(6 downto 0) & buf(7);
-      end if;
-
-      if (valid_dly1 = '1') then
-        data_o <= fifo;
-      end if;
-
-      valid_o <= valid_dly1;
-
-    end if; -- clock
-  end process;
-
-end serial;

@@ -4,12 +4,12 @@ create_project:ult_tp:
       extends: .vars
       PROJECT_NAME: ult_tp
 
-# simulate_project:ult_tp:
-#     extends: .simulate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ult_tp
-# 
+simulate_project:ult_tp:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp
+
 synthesise_ips:ult_tp:
     extends: .synthesise_ips
     variables:
