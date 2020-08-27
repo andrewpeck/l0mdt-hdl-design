@@ -60,7 +60,7 @@ architecture beh of ucm_hps_tb is
     -- pipelin
     signal o_uCM2pl_av         : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal cand1  : slc_rx_data_rt;
+  signal cand1  : slc_rx_rt;
   signal barrel1 : slc_barrel_rt;
 
   -- signal line_Example : string;

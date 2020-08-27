@@ -84,7 +84,7 @@ HDL_Types:
 #   specific:     [type: logic , length: SLC_SPECIFIC_LEN , ~: can be either slc_barrel_vt or slc_endcap_vt]
 #   data_valid:   [type: logic]
 
-- slc_rx_data_bus: [array: open , type: slc_rx_data]
+- slc_rx_bus: [array: open , type: slc_rx]
 
 # -----------------------------------------------------------
 #   MDT tdc, polmux & TAR
@@ -103,7 +103,7 @@ HDL_Types:
 #   tdc: [type: mdt_tdc]
 #   data_valid: [type: logic]
 
-- mdt_polmux_bus: [array: open , type: mdt_polmux]
+- mdt_polmux_bus: [array: open , type: tdcpolmux2tar]
 
 # # mdt tar
 # tar2hps:
@@ -229,7 +229,7 @@ HDL_Types:
 #   phimod     : [ type : signed, length: SLC_PT_PHIMOD_LEN]
 #   charge     : [ type : logic]
 
-- pl2pt_bus: [array: open , type: pl2pt]
+- pl2pt_bus: [array: open , type: pl2ptcalc]
 
 # pl2mtc:
 #   muid          : [ type : slc_muid]
@@ -256,15 +256,15 @@ HDL_Types:
 #   nseg       : [ type : unsigned, length: MTC_NSEG_LEN]
 #   quality    : [ type : logic, length: MTC_QUALITY_LEN]
 
-- tf2mtc_bus: [array: open , type: tf2mtc]
+- tf2mtc_bus: [array: open , type: ptcalc2mtc]
 
 # -----------------------------------------------------------
 # MTC out
 # -----------------------------------------------------------
 
-- mtc_out_bus: [array: open , type: mtc_out]
+- mtc_out_bus: [array: open , type: mtc2sl]
 
-- mtc2nsp_bus: [array: open , type: mtc2nsp]
+- mtc2nsp_bus: [array: open , type: mtc2sl]
 
 # -----------------------------------------------------------
 # MTC out

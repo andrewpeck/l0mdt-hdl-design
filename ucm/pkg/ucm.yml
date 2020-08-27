@@ -14,7 +14,9 @@ HDL_Types:
 - UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
 - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 10 ]
 
-- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 80 ]
+- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
+
+- UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
 
 # # ucm preprocesor output
 

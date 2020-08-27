@@ -35,7 +35,7 @@ entity ucm_prepro is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_v          : in slc_rx_data_rvt;
+    i_slc_data_v          : in slc_rx_rvt;
     -- pam out
     o_prepro_data_v       : out ucm_prepro_rvt
   );
@@ -43,7 +43,7 @@ end entity ucm_prepro;
 
 architecture beh of ucm_prepro is
   
-  signal i_slc_data_r     : slc_rx_data_rt;
+  signal i_slc_data_r     : slc_rx_rt;
   signal o_prepro_data_r  : ucm_prepro_rt;
 
 begin
@@ -56,12 +56,12 @@ begin
       if(rst= '1') then
         o_prepro_data_r <= nullify(o_prepro_data_r);
       else
-        if i_slc_data_r.data_valid = '1' then
-          o_prepro_data_r.muid <= i_slc_data_r.muid;
-          o_prepro_data_r.chambers <= i_slc_data_r.chambers;
-          o_prepro_data_r.common <= i_slc_data_r.common;
-          o_prepro_data_r.specific <= i_slc_data_r.specific;
-          o_prepro_data_r.data_valid <= i_slc_data_r.data_valid;
+        if i_slc_data_r.slc_rx_data_valid = '1' then
+          -- o_prepro_data_r.muid        <= i_slc_data_r.muid;
+          -- o_prepro_data_r.chambers    <= i_slc_data_r.chambers;
+          o_prepro_data_r.common      <= i_slc_data_r.slc_rx_slc_common;
+          o_prepro_data_r.specific    <= i_slc_data_r.slc_rx_slc_specific;
+          o_prepro_data_r.data_valid  <= i_slc_data_r.slc_rx_data_valid;
         else
           o_prepro_data_r <= nullify(o_prepro_data_r);
         end if;

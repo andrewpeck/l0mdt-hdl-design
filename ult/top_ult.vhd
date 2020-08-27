@@ -89,8 +89,8 @@ entity top_ult is
     -- Sector Logic Candidates
     i_main_primary_slc        : in slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
     i_main_secondary_slc      : in slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
-    i_plus_neighbor_slc       : in slc_rx_data_rvt;
-    i_minus_neighbor_slc      : in slc_rx_data_rvt;
+    i_plus_neighbor_slc       : in slc_rx_rvt;
+    i_minus_neighbor_slc      : in slc_rx_rvt;
     -- Segments in from neighbor
     plus_neighbor_segments_i  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
     minus_neighbor_segments_i : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);

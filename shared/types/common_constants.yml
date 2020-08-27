@@ -52,8 +52,8 @@ HDL_Types:
 
 # SLC_B_SPARE_LEN:    [ qualifier: constant , type: integer , value: 8 ]
 # SLC_COIN_TYPE_LEN:  [ qualifier: constant , type: integer , value: 3 ]
-# SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: 10 ]
-# SLC_Z_RPC_MULT:     [qualifier: constant  , type: real    , value: 25.0 ]
+- SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: 10 ]
+- SLC_Z_RPC_MULT:     [qualifier: constant  , type: real    , value: 13.0 ]
 
 # slc specific endcap
 
@@ -99,7 +99,7 @@ HDL_Types:
 # barrel
 # UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
 # UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
-# UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: 10 ]
+- UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] # 10
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]
 # UCM_ETA_LEN     : [ qualifier: constant , type: integer , value: 8 ]

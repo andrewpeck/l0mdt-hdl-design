@@ -92,8 +92,8 @@ architecture beh of ult_tp is
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
   signal i_main_secondary_slc      : slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc       : slc_rx_data_rvt;
-  signal i_minus_neighbor_slc      : slc_rx_data_rvt;
+  signal i_plus_neighbor_slc       : slc_rx_rvt;
+  signal i_minus_neighbor_slc      : slc_rx_rvt;
   -- Segments in from neighbor
   signal plus_neighbor_segments_i  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal minus_neighbor_segments_i : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
@@ -129,8 +129,8 @@ architecture beh of ult_tp is
   -- SLc in
   -- signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
   -- signal i_slc_data_mainB_av     : slc_rx_data_bus_avt(2 downto 0);
-  -- signal i_slc_data_neighborA_v : slc_rx_data_rvt;
-  -- signal i_slc_data_neighborB_v : slc_rx_data_rvt;
+  -- signal i_slc_data_neighborA_v : slc_rx_rvt;
+  -- signal i_slc_data_neighborB_v : slc_rx_rvt;
   -- -- to hps
   -- signal o_uCM2hps_inn_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- signal o_uCM2hps_mid_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -139,7 +139,7 @@ architecture beh of ult_tp is
   -- pipeline
   -- signal o_uCM2pl_av            : pipelines_avt(c_MAX_NUM_SL -1 downto 0);
 
-  -- signal cand1 , cand2 , cand3 , cand4 : slc_rx_data_rt;
+  -- signal cand1 , cand2 , cand3 , cand4 : slc_rx_rt;
   -- signal barrel1 , barrel2 , barrel3 , barrel4 : slc_barrel_rt;
 
   -- ------------------------------------

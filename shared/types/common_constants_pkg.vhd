@@ -25,6 +25,10 @@ package common_constants_pkg is
 
   constant SLC_CHAMBER_LEN : integer := 3;
 
+  constant SLC_Z_RPC_LEN : integer := 10;
+
+  constant SLC_Z_RPC_MULT : real := 13.0;
+
   constant MDT_FIBER_LEN : integer := 5;
 
   constant MDT_MUXCH_LEN : integer := 4;
@@ -34,6 +38,8 @@ package common_constants_pkg is
   constant MDT_LAYER_LEN : integer := TAR2HPS_MDT_TUBE_LAYER_LEN;
 
   constant MDT_TIME_LEN : integer := 18;
+
+  constant UCM_Z_ROI_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 
   constant MDT_LOCAL_AXI_LEN : integer := 14;
 
