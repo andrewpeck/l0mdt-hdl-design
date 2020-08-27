@@ -14,11 +14,13 @@ HDL_Types:
 - UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
 - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 10 ]
 
+- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 80 ]
+
 # # ucm preprocesor output
 
 - ucm_prepro:
   - muid:       [type: slc_muid]
-  - chambers:   [type: slc_chid]
+  # - chambers:   [type: slc_chid]
   - common:     [type: slc_common]
   - specific:   [type: logic , length: SLC_SPECIFIC_LEN]
   - data_valid: [type: logic]

@@ -127,12 +127,12 @@ HDL_Types:
 # slc ucm2hps specific
 # barrel
 - ucm_csf_barrel:
-  - mbar        : [ type: unsigned , length: UCM_MBAR_LEN ]
-  - z           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - mbar        : [ type : unsigned , length : UCM2SF_VEC_ANG_LEN]
+  - z           : [ type : unsigned , length : UCM2SF_VEC_POS_LEN ]
 
-- ucm_csf_endcap:
-  - mbar        : [ type: unsigned , length: UCM_MBAR_LEN ]
-  - R           : [ type: unsigned , length: UCM_R_ROI_LEN ]
+# - ucm_csf_endcap:
+  # - mbar        : [ type : unsigned , length : UCM2CSF_VEC_ANG_LEN]
+  # - R           : [ type : unsigned , length : UCM_R_ROI_LEN ]
 
 # ucm_csf_seed:
 #   muid          : [ type: slc_muid]
@@ -154,12 +154,12 @@ HDL_Types:
 #   data_valid    : [ type: logic ]
 # # slc ucm2hps
 
-- ucm2hps:
-  # - id            : [ type: ucm2hps_id]
-  - muid          : [ type: slc_muid ]
-  - specific      : [ type: logic , length: UCM2HPS_SPECIFIC_LEN]
-  - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
-  - data_valid    : [ type: logic]
+# - ucm2hps:
+#   # - id            : [ type: ucm2hps_id]
+#   - muid          : [ type: slc_muid ]
+#   - specific      : [ type: logic , length: UCM2HPS_SPECIFIC_LEN]
+#   - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+#   - data_valid    : [ type: logic]
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 

@@ -21,6 +21,20 @@ package common_constants_pkg is
 
   constant MDT_RADIUS_MULT : real := 32.0;
 
+  constant BCID_LEN : integer := SL_HEADER_BCID_LEN;
+
+  constant SLC_CHAMBER_LEN : integer := 3;
+
+  constant MDT_FIBER_LEN : integer := 5;
+
+  constant MDT_MUXCH_LEN : integer := 4;
+
+  constant MDT_TUBE_LEN : integer := TAR2HPS_MDT_TUBE_NUM_LEN;
+
+  constant MDT_LAYER_LEN : integer := TAR2HPS_MDT_TUBE_LAYER_LEN;
+
+  constant MDT_TIME_LEN : integer := 18;
+
   constant MDT_LOCAL_AXI_LEN : integer := 14;
 
   constant MDT_LOCAL_AXI_MULT : real := 16.0;

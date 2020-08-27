@@ -17,14 +17,15 @@ package ucm_pkg is
 
   constant UCM_LATENCY_HPS_CH : integer := 10;
 
+  constant SLC_SPECIFIC_LEN : integer := 80;
+
   type ucm_prepro_rt is record
     muid : slc_muid_rt;
-    chambers : slc_chid_rt;
     common : slc_common_rt;
     specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
   end record ucm_prepro_rt;
-  constant UCM_PREPRO_LEN : integer := 124;
+  constant UCM_PREPRO_LEN : integer := 209;
   subtype ucm_prepro_rvt is std_logic_vector(UCM_PREPRO_LEN-1 downto 0);
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt;
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt;
@@ -105,20 +106,18 @@ package body ucm_pkg is
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt is
     variable y : ucm_prepro_rvt;
   begin
-    y(123 downto 104)          := vectorify(x.muid);
-    y(103 downto 92)           := vectorify(x.chambers);
-    y(91 downto 52)            := vectorify(x.common);
-    y(51 downto 1)             := x.specific;
+    y(208 downto 188)          := vectorify(x.muid);
+    y(187 downto 81)           := vectorify(x.common);
+    y(80 downto 1)             := x.specific;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: ucm_prepro_rvt) return ucm_prepro_rt is
     variable y : ucm_prepro_rt;
   begin
-    y.muid                     := structify(x(123 downto 104));
-    y.chambers                 := structify(x(103 downto 92));
-    y.common                   := structify(x(91 downto 52));
-    y.specific                 := x(51 downto 1);
+    y.muid                     := structify(x(208 downto 188));
+    y.common                   := structify(x(187 downto 81));
+    y.specific                 := x(80 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -126,7 +125,6 @@ package body ucm_pkg is
     variable y : ucm_prepro_rt;
   begin
     y.muid                     := nullify(x.muid);
-    y.chambers                 := nullify(x.chambers);
     y.common                   := nullify(x.common);
     y.specific                 := nullify(x.specific);
     y.data_valid               := nullify(x.data_valid);
@@ -142,12 +140,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_prepro_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*124-1 downto 0);
+    variable y : std_logic_vector(x'length*209-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-124) := vectorify(x(i));
-      msb := msb - 124 -1;
+      y(msb downto msb-209) := vectorify(x(i));
+      msb := msb - 209 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -164,8 +162,8 @@ package body ucm_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-124));
-      msb := msb - 124 -1;
+      y(i) := structify(x(msb downto msb-209));
+      msb := msb - 209 -1;
     end loop l;
     return y;
   end function structify;

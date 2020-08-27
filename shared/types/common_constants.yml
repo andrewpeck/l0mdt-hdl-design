@@ -32,10 +32,10 @@ HDL_Types:
 # slc_muid
 # SLC_SLCID_LEN:    [qualifier: constant , type: integer , value: 2]
 # SLC_SLID_LEN:     [qualifier: constant , type: integer , value: 6]
-# BCID_LEN:         [qualifier: constant , type: integer , value: 12]
+- BCID_LEN:         [qualifier: constant , type: integer , value: SL_HEADER_BCID_LEN]
 
 # slc chambers
-# SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 3]
+- SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 3]
 
 # slc common
 # SLC_TCID_LEN:     [ qualifier: constant , type: integer , value: 3 ]
@@ -79,12 +79,12 @@ HDL_Types:
 # MDT_TDC_FINE_LEN: [ qualifier: constant , type: integer , value: 5 ]
 # MDT_TDC_PW_LEN: [ qualifier: constant , type: integer , value: 8 ]
 # pull mux
-# MDT_FIBER_LEN: [ qualifier: constant , type: integer , value: 5 ]
-# MDT_MUXCH_LEN: [ qualifier: constant , type: integer , value: 4 ]
+- MDT_FIBER_LEN   : [ qualifier: constant , type: integer , value: 5 ]
+- MDT_MUXCH_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # tar
-# MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: 9 ]
-# MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: 5 ]
-# MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
+- MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: TAR2HPS_MDT_TUBE_NUM_LEN ]
+- MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: TAR2HPS_MDT_TUBE_LAYER_LEN ]
+- MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
 
 #############################################################
 # INTERBLOCK TYPES
