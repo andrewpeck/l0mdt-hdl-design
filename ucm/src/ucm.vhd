@@ -54,9 +54,9 @@ architecture beh of ucm is
   --
   signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_in_av       : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_av      : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal csw_main_out_av      : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
@@ -93,7 +93,7 @@ begin
   SLC_CTRL : entity ucm_lib.ucm_ctrl
   port map(
     clk             => clk,
-    rst        => rst,
+    rst             => rst,
     glob_en         => glob_en,
     --              =>
     i_data          => ucm_prepro_av,
@@ -106,17 +106,17 @@ begin
   );
 
   -- input pre processor
-  SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_PP : entity ucm_lib.ucm_prepro
-    port map(
-      clk               => clk,
-      rst               => rst,
-      glob_en           => glob_en,
-      --                =>
-      i_slc_data_v      => i_slc_data_av(sl_i),
-      o_prepro_data_v   => ucm_prepro_av(sl_i)
-    );
-  end generate;
+  -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   SLC_PP : entity ucm_lib.ucm_prepro
+  --   port map(
+  --     clk               => clk,
+  --     rst               => rst,
+  --     glob_en           => glob_en,
+  --     --                =>
+  --     i_slc_data_v      => i_slc_data_av(sl_i),
+  --     o_prepro_data_v   => ucm_prepro_av(sl_i)
+  --   );
+  -- end generate;
 
   -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
   --   SLC_PP : entity shared_lib.ucm_prepro
@@ -139,10 +139,10 @@ begin
     )
     port map(
       clk         => clk,
-      rst    => rst,
+      rst         => rst,
       glob_en     => glob_en,
       --
-      i_data      => ucm_prepro_av(sl_i),
+      i_data      => i_slc_data_av(sl_i),
       o_data      => csw_main_in_av(sl_i)
     );
   end generate;
@@ -151,7 +151,7 @@ begin
   SLC_CSW : entity ucm_lib.ucm_csw
   port map(
     clk         => clk,
-    rst    => rst,
+    rst         => rst,
     glob_en     => glob_en,
     
     i_control   => csw_control,
@@ -160,11 +160,24 @@ begin
     o_data      => csw_main_out_av
   );
 
+  -- Candidate Data Extractor
+  SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    SLC_PP : entity ucm_lib.ucm_prepro
+    port map(
+      clk               => clk,
+      rst               => rst,
+      glob_en           => glob_en,
+      --                =>
+      i_slc_data_v      => cde_in_av,
+      o_cde_data_v   => cpam_in_av
+    );
+  end generate;
+
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
   port map(
     clk         => clk,
-    rst    => rst,
+    rst         => rst,
     glob_en     => glob_en,
     
     i_control   => pam_CSW_control,
@@ -179,7 +192,7 @@ begin
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
       clk           => clk,
-      rst      => rst,
+      rst           => rst,
       glob_en       => glob_en,
       --
       i_in_en       => cvp_control(vp_i),
@@ -199,7 +212,7 @@ begin
     )
     port map(
       clk         => clk,
-      rst    => rst,
+      rst         => rst,
       glob_en     => glob_en,
       --
       i_data      => uCM2pl_av(sl_i),
@@ -251,9 +264,9 @@ begin
 
     ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
       
-      o_uCM2pl_ar(sl_i).nswseg_poseta     <= csw_main_out_ar(sl_i).specific.nswseg_poseta
-      o_uCM2pl_ar(sl_i).nswseg_posphi     <= csw_main_out_ar(sl_i).specific.nswseg_posphi
-      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= csw_main_out_ar(sl_i).specific.nswseg_angdtheta
+      o_uCM2pl_ar(sl_i).nswseg_poseta     <= csw_main_out_ar(sl_i).specific.nswseg_poseta;
+      o_uCM2pl_ar(sl_i).nswseg_posphi     <= csw_main_out_ar(sl_i).specific.nswseg_posphi;
+      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= csw_main_out_ar(sl_i).specific.nswseg_angdtheta;
     end generate;
 
     -- o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
