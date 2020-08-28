@@ -168,7 +168,7 @@ package common_types_pkg is
   function nullify(x: mtc2nsp_bus_avt) return mtc2nsp_bus_avt;
 
   type felix_stream_rt is record
-    muid : slc_muid_rt;
+    slc_muid : slc_muid_rt;
     common : slc_common_rt;
     data_valid : std_logic;
   end record felix_stream_rt;
@@ -941,7 +941,7 @@ package body common_types_pkg is
   function vectorify(x: felix_stream_rt) return felix_stream_rvt is
     variable y : felix_stream_rvt;
   begin
-    y(128 downto 108)          := vectorify(x.muid);
+    y(128 downto 108)          := vectorify(x.slc_muid);
     y(107 downto 1)            := vectorify(x.common);
     y(0)                       := x.data_valid;
     return y;
@@ -949,7 +949,7 @@ package body common_types_pkg is
   function structify(x: felix_stream_rvt) return felix_stream_rt is
     variable y : felix_stream_rt;
   begin
-    y.muid                     := structify(x(128 downto 108));
+    y.slc_muid                 := structify(x(128 downto 108));
     y.common                   := structify(x(107 downto 1));
     y.data_valid               := x(0);
     return y;
@@ -957,7 +957,7 @@ package body common_types_pkg is
   function nullify(x: felix_stream_rt) return felix_stream_rt is
     variable y : felix_stream_rt;
   begin
-    y.muid                     := nullify(x.muid);
+    y.slc_muid                 := nullify(x.slc_muid);
     y.common                   := nullify(x.common);
     y.data_valid               := nullify(x.data_valid);
     return y;

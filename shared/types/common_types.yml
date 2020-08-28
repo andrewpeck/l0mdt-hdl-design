@@ -270,7 +270,7 @@ HDL_Types:
 # MTC out
 # -----------------------------------------------------------
 - felix_stream:
-  - muid          : [ type : slc_muid]
+  - slc_muid          : [ type : slc_muid]
   - common        : [ type : slc_common]
   - data_valid : [ type : logic ]
 

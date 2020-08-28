@@ -90,8 +90,8 @@ architecture beh of ult_tp is
   signal i_mdt_tar_ext_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc        : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      : slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
   signal i_plus_neighbor_slc       : slc_rx_rvt;
   signal i_minus_neighbor_slc      : slc_rx_rvt;
   -- Segments in from neighbor
@@ -127,8 +127,8 @@ architecture beh of ult_tp is
   -- signal clock_and_control : l0mdt_control_rt;
 
   -- SLc in
-  -- signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
-  -- signal i_slc_data_mainB_av     : slc_rx_data_bus_avt(2 downto 0);
+  -- signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
+  -- signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
   -- signal i_slc_data_neighborA_v : slc_rx_rvt;
   -- signal i_slc_data_neighborB_v : slc_rx_rvt;
   -- -- to hps

@@ -56,10 +56,10 @@ begin
       if(rst= '1') then
         o_prepro_data_r <= nullify(o_prepro_data_r);
       else
-        if i_slc_data_r.slc_rx_data_valid = '1' then
+        if i_slc_data_r.data_valid = '1' then
           -- o_prepro_data_r.muid        <= i_slc_data_r.muid;
           -- o_prepro_data_r.chambers    <= i_slc_data_r.chambers;
-          o_prepro_data_r.common      <= i_slc_data_r.slc_common;
+          o_prepro_data_r.common      <= i_slc_data_r.common;
           o_prepro_data_r.specific    <= i_slc_data_r.slc_specific;
           o_prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
         else

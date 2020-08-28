@@ -41,8 +41,8 @@ architecture beh of ucm_tb is
   signal glob_en : std_logic := '1';
 
   -- SLc in
-  signal i_slc_data_mainA_av     : slc_rx_data_bus_avt(2 downto 0);
-  signal i_slc_data_mainB_av     : slc_rx_data_bus_avt(2 downto 0);
+  signal i_slc_data_mainA_av     : slc_rx_bus_avt(2 downto 0);
+  signal i_slc_data_mainB_av     : slc_rx_bus_avt(2 downto 0);
   signal i_slc_data_neighborA_v : slc_rx_rvt;
   signal i_slc_data_neighborB_v : slc_rx_rvt;
   -- to hps

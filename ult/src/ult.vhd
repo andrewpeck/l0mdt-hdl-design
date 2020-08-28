@@ -82,8 +82,8 @@ entity ult is
     i_extra_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in  slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in  slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_main_primary_slc        : in  slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc      : in  slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
     i_plus_neighbor_slc       : in  slc_rx_rvt;
     i_minus_neighbor_slc      : in  slc_rx_rvt;
 

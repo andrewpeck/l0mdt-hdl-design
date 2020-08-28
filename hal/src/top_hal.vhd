@@ -88,8 +88,8 @@ entity top_hal is
     -- SLC
     --------------------------------------------------------------------------------
 
-    main_primary_slc   : out slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
-    main_secondary_slc : out slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
+    main_primary_slc   : out slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+    main_secondary_slc : out slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
     plus_neighbor_slc  : out slc_rx_rvt;
     minus_neighbor_slc : out slc_rx_rvt;
 

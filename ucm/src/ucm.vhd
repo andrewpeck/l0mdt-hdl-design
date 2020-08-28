@@ -34,8 +34,8 @@ entity ucm is
     glob_en                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc in
-    i_slc_data_mainA_av     : in slc_rx_data_bus_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_data_bus_avt(2 downto 0);
+    i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_neighborA_v : in slc_rx_rvt;
     i_slc_data_neighborB_v : in slc_rx_rvt;
     -- to hps
@@ -50,7 +50,7 @@ end entity ucm;
 
 architecture beh of ucm is
 
-  signal i_slc_data_av        : slc_rx_data_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
   signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
@@ -104,16 +104,17 @@ begin
     o_cvp_ctrl      => cvp_control
     -- o_pam2heg       => o_uCM2hps_pam_ar
   );
+
   -- input pre processor
   SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_PP : entity ucm_lib.ucm_prepro
     port map(
       clk               => clk,
-      rst          => rst,
+      rst               => rst,
       glob_en           => glob_en,
       --                =>
-      i_slc_data_v     => i_slc_data_av(sl_i),
-      o_prepro_data_v  => ucm_prepro_av(sl_i)
+      i_slc_data_v      => i_slc_data_av(sl_i),
+      o_prepro_data_v   => ucm_prepro_av(sl_i)
     );
   end generate;
 
@@ -241,21 +242,32 @@ begin
     -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
   end generate;
 
+
+
   PL_PROC_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
-    o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
+
+
+    ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
+      
+      o_uCM2pl_ar(sl_i).nswseg_poseta     <= csw_main_out_ar(sl_i).specific.nswseg_poseta
+      o_uCM2pl_ar(sl_i).nswseg_posphi     <= csw_main_out_ar(sl_i).specific.nswseg_posphi
+      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= csw_main_out_ar(sl_i).specific.nswseg_angdtheta
+    end generate;
+
+    -- o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     o_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
-    o_uCM2pl_ar(sl_i).chambers    <= csw_main_out_ar(sl_i).chambers;
-    o_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
+    -- o_uCM2pl_ar(sl_i).chambers    <= csw_main_out_ar(sl_i).chambers;
+    -- o_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     o_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
     PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).processed   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
+      o_uCM2pl_ar(sl_i).busy   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
     end generate;
     PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).processed   <= '0';
+      o_uCM2pl_ar(sl_i).busy   <= '0';
       o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
     end generate;
 
