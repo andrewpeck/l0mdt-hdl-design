@@ -27,7 +27,7 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_cvp_slope is
+entity ucm_cvp_b_slope is
   port (
     clk           : in std_logic;
     rst           : in std_logic;
@@ -41,9 +41,9 @@ entity ucm_cvp_slope is
     o_data_valid  : out std_logic
     
   );
-end entity ucm_cvp_slope;
+end entity ucm_cvp_b_slope;
 
-architecture beh of ucm_cvp_slope is
+architecture beh of ucm_cvp_b_slope is
   
   signal barrel_r   : slc_barrel_rt;
   signal coin : integer;

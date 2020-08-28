@@ -21,6 +21,16 @@ package ucm_pkg is
 
   constant UCM_MBAR_LEN : integer := 11;
 
+  type slc_in_data_rt is record
+    muid : slc_muid_rt;
+    data_valid : std_logic;
+  end record slc_in_data_rt;
+  constant SLC_IN_DATA_LEN : integer := 22;
+  subtype slc_in_data_rvt is std_logic_vector(SLC_IN_DATA_LEN-1 downto 0);
+  function vectorify(x: slc_in_data_rt) return slc_in_data_rvt;
+  function structify(x: slc_in_data_rvt) return slc_in_data_rt;
+  function nullify(x: slc_in_data_rt) return slc_in_data_rt;
+
   type ucm_prepro_rt is record
     muid : slc_muid_rt;
     common : slc_common_rt;
@@ -104,6 +114,28 @@ end package ucm_pkg;
 ------------------------------------------------------------
 
 package body ucm_pkg is
+
+  function vectorify(x: slc_in_data_rt) return slc_in_data_rvt is
+    variable y : slc_in_data_rvt;
+  begin
+    y(21 downto 1)             := vectorify(x.muid);
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: slc_in_data_rvt) return slc_in_data_rt is
+    variable y : slc_in_data_rt;
+  begin
+    y.muid                     := structify(x(21 downto 1));
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify(x: slc_in_data_rt) return slc_in_data_rt is
+    variable y : slc_in_data_rt;
+  begin
+    y.muid                     := nullify(x.muid);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
 
   function vectorify(x: ucm_prepro_rt) return ucm_prepro_rvt is
     variable y : ucm_prepro_rvt;

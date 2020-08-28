@@ -54,17 +54,21 @@ architecture beh of ucm_cvp is
   
 begin
 
-  SLOPE_CALC : entity ucm_lib.ucm_cvp_slope
-  port map(
-    clk           => clk,
-    rst           => rst,
-    glob_en       => glob_en,
-    --
-    i_data_v      => i_data_r.specific,
-    i_data_Valid  => i_data_r.data_valid,
-    o_slope       => slope,
-    o_data_valid  => slope_dv
-  );
+  B_SLOPE : if c_ST_nBARREL_ENDCAP = '0' generate
+
+    SLOPE_CALC : entity ucm_lib.ucm_cvp_slope
+    port map(
+      clk           => clk,
+      rst           => rst,
+      glob_en       => glob_en,
+      --
+      i_data_v      => i_data_r.specific,
+      i_data_Valid  => i_data_r.data_valid,
+      o_slope       => slope,
+      o_data_valid  => slope_dv
+    );
+
+  end generate;
 
   i_data_r <= structify(i_data_v);
 
