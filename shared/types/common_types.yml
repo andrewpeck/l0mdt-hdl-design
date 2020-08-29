@@ -85,6 +85,7 @@ HDL_Types:
 #   data_valid:   [type: logic]
 
 - slc_rx_bus: [array: open , type: slc_rx]
+- slc_endcap_bus: [array: open , type: slc_endcap]
 
 # -----------------------------------------------------------
 #   MDT tdc, polmux & TAR

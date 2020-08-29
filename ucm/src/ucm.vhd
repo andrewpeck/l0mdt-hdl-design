@@ -52,17 +52,21 @@ architecture beh of ucm is
 
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
+  signal slc_endcap_ar        : slc_endcap_bus_at(c_MAX_NUM_SL -1 downto 0);
+
+  signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
+
   signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
-  signal cpam_in_av           : ucm_prepro_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal cpam_out_av          : ucm_prepro_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_in_av           : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal cpam_out_av          : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
 
   signal uCM2pl_av            : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -96,7 +100,7 @@ begin
     rst             => rst,
     glob_en         => glob_en,
     --              =>
-    i_data          => ucm_prepro_av,
+    i_data          => i_slc_data_av,
     --              =>
     o_csw_ctrl      => csw_control,
     o_pam_ctrl      => pam_CSW_control,
@@ -135,7 +139,7 @@ begin
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
       num_delays  => UCM_INPUT_PL_LATENCY,
-      num_bits    => UCM_PREPRO_LEN
+      num_bits    => SLC_RX_LEN
     )
     port map(
       clk         => clk,
@@ -161,15 +165,15 @@ begin
   );
 
   -- Candidate Data Extractor
-  SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_PP : entity ucm_lib.ucm_prepro
+  SLC_CDE_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    SLC_CDE : entity ucm_lib.ucm_cde
     port map(
       clk               => clk,
       rst               => rst,
       glob_en           => glob_en,
       --                =>
       i_slc_data_v      => cde_in_av,
-      o_cde_data_v   => cpam_in_av
+      o_cde_data_v      => cpam_in_av
     );
   end generate;
 
@@ -248,7 +252,7 @@ begin
 
 
   PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
-    cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
+    cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
     -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
 
     -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
@@ -263,10 +267,10 @@ begin
 
 
     ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
-      
-      o_uCM2pl_ar(sl_i).nswseg_poseta     <= csw_main_out_ar(sl_i).specific.nswseg_poseta;
-      o_uCM2pl_ar(sl_i).nswseg_posphi     <= csw_main_out_ar(sl_i).specific.nswseg_posphi;
-      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= csw_main_out_ar(sl_i).specific.nswseg_angdtheta;
+      slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
+      o_uCM2pl_ar(sl_i).nswseg_poseta     <= slc_endcap_ar(sl_i).nswseg_poseta;
+      o_uCM2pl_ar(sl_i).nswseg_posphi     <= slc_endcap_ar(sl_i).nswseg_posphi;
+      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= slc_endcap_ar(sl_i).nswseg_angdtheta;
     end generate;
 
     -- o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;

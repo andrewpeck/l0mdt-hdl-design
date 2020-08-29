@@ -20,18 +20,18 @@ HDL_Types:
 
 # # ucm preprocesor output
 
-- slc_in_data:
-  - muid        : [type: slc_muid]
-  - data_valid  : [type: logic]
+# - slc_in_data:
+#   - muid        : [type: slc_muid]
+#   - data_valid  : [type: logic]
 
-- ucm_prepro:
+- ucm_cde:
   - muid        : [type: slc_muid]
   # - chambers:   [type: slc_chid]
   - common      : [type: slc_common]
   - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type: logic]
 
-- ucm_prepro_bus : [array: open , type: ucm_prepro]
+- ucm_cde_bus : [array: open , type: ucm_cde]
 # ucm_prepro_avt: [array: open , type: ucm_prepro_vt ]
 
 # main cross switch control

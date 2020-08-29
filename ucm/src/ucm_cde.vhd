@@ -51,23 +51,23 @@ begin
   i_slc_data_r <= structify(i_slc_data_v);
   o_prepro_data_v <= vectorify(o_prepro_data_r);
 
-  UCM_PRE_PROC : process(rst,clk) begin
-    if rising_edge(clk) then
-      if(rst= '1') then
-        o_prepro_data_r <= nullify(o_prepro_data_r);
-      else
-        if i_slc_data_r.data_valid = '1' then
-          -- o_prepro_data_r.muid        <= i_slc_data_r.muid;
-          -- o_prepro_data_r.chambers    <= i_slc_data_r.chambers;
-          o_prepro_data_r.common      <= i_slc_data_r.common;
-          o_prepro_data_r.specific    <= i_slc_data_r.slc_specific;
-          o_prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
-        else
-          o_prepro_data_r <= nullify(o_prepro_data_r);
-        end if;
-      end if;
-    end if;
-  end process;
+  -- UCM_PRE_PROC : process(rst,clk) begin
+  --   if rising_edge(clk) then
+  --     if(rst= '1') then
+  --       o_prepro_data_r <= nullify(o_prepro_data_r);
+  --     else
+  --       if i_slc_data_r.data_valid = '1' then
+  --         -- o_prepro_data_r.muid        <= i_slc_data_r.muid;
+  --         -- o_prepro_data_r.chambers    <= i_slc_data_r.chambers;
+  --         o_prepro_data_r.common      <= i_slc_data_r.common;
+  --         o_prepro_data_r.specific    <= i_slc_data_r.slc_specific;
+  --         o_prepro_data_r.data_valid  <= i_slc_data_r.data_valid;
+  --       else
+  --         o_prepro_data_r <= nullify(o_prepro_data_r);
+  --       end if;
+  --     end if;
+  --   end if;
+  -- end process;
 
   -- fala el calculo de phimod 
   -- falta el calculo de sl destino

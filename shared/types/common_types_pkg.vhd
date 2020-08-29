@@ -43,6 +43,15 @@ package common_types_pkg is
   function nullify(x: slc_rx_bus_at) return slc_rx_bus_at;
   function nullify(x: slc_rx_bus_avt) return slc_rx_bus_avt;
 
+  type slc_endcap_bus_at is array(integer range <>) of slc_endcap_rt;
+  type slc_endcap_bus_avt is array(integer range <>) of slc_endcap_rvt;
+  function vectorify(x: slc_endcap_bus_at) return slc_endcap_bus_avt;
+  function vectorify(x: slc_endcap_bus_at) return std_logic_vector;
+  function structify(x: slc_endcap_bus_avt) return slc_endcap_bus_at;
+  function structify(x: std_logic_vector) return slc_endcap_bus_at;
+  function nullify(x: slc_endcap_bus_at) return slc_endcap_bus_at;
+  function nullify(x: slc_endcap_bus_avt) return slc_endcap_bus_avt;
+
   type mdt_polmux_bus_at is array(integer range <>) of tdcpolmux2tar_rt;
   type mdt_polmux_bus_avt is array(integer range <>) of tdcpolmux2tar_rvt;
   function vectorify(x: mdt_polmux_bus_at) return mdt_polmux_bus_avt;
@@ -295,6 +304,59 @@ package body common_types_pkg is
   end function nullify;
   function nullify(x: slc_rx_bus_avt) return slc_rx_bus_avt is
     variable y :  slc_rx_bus_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: slc_endcap_bus_at) return slc_endcap_bus_avt is
+    variable y :  slc_endcap_bus_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: slc_endcap_bus_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*85-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-85) := vectorify(x(i));
+      msb := msb - 85 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: slc_endcap_bus_avt) return slc_endcap_bus_at is
+    variable y :  slc_endcap_bus_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return slc_endcap_bus_at is
+    variable y :  slc_endcap_bus_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-85));
+      msb := msb - 85 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: slc_endcap_bus_at) return slc_endcap_bus_at is
+    variable y :  slc_endcap_bus_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: slc_endcap_bus_avt) return slc_endcap_bus_avt is
+    variable y :  slc_endcap_bus_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
