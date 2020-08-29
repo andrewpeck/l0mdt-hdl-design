@@ -27,7 +27,7 @@ HDL_Types:
 - ucm_cde:
   - muid        : [type: slc_muid]
   # - chambers:   [type: slc_chid]
-  - common      : [type: slc_common]
+  - cointype    :  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
   - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type: logic]
 

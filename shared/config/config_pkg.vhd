@@ -110,16 +110,16 @@ package config_pkg is
           )
         );
         
-  constant MAX_NUM_HPS  : integer :=  4;
-          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
-          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
-          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
-          -- to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
-  constant EN_HPS_VECTOR : std_logic_vector(MAX_NUM_HPS -1 downto 0) :=
-          CFG.ENABLE_ST_INN &
-          CFG.ENABLE_ST_MID &
-          CFG.ENABLE_ST_OUT &
-          CFG.ENABLE_ST_EXT;
+  constant c_MAX_NUM_HPS  : integer := 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
+  -- constant EN_HPS_VECTOR : std_logic_vector(CFG.MAX_NUM_HPS -1 downto 0) :=
+  --         CFG.ENABLE_ST_INN &
+  --         CFG.ENABLE_ST_MID &
+  --         CFG.ENABLE_ST_OUT &
+  --         CFG.ENABLE_ST_EXT;
 
   constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
   constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));

@@ -36,8 +36,8 @@ entity ucm is
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
-    i_slc_data_neighborA_v : in slc_rx_rvt;
-    i_slc_data_neighborB_v : in slc_rx_rvt;
+    i_slc_data_neighborA_v  : in slc_rx_rvt;
+    i_slc_data_neighborB_v  : in slc_rx_rvt;
     -- to hps
     o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -76,7 +76,7 @@ architecture beh of ucm is
   signal cvp_control          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(MAX_NUM_HPS -1 downto 0);
+  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_NUM_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
 begin
@@ -165,15 +165,15 @@ begin
   );
 
   -- Candidate Data Extractor
-  SLC_CDE_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  SLC_CDE_A : for sl_i in c_NUM_THREADS -1 downto 0 generate
     SLC_CDE : entity ucm_lib.ucm_cde
     port map(
       clk               => clk,
       rst               => rst,
       glob_en           => glob_en,
       --                =>
-      i_slc_data_v      => cde_in_av,
-      o_cde_data_v      => cpam_in_av
+      i_slc_data_v      => cde_in_av(sl_i),
+      o_cde_data_v      => cpam_in_av(sl_i)
     );
   end generate;
 
@@ -226,7 +226,7 @@ begin
 
   -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
-  -- VP2HPS: for hps_i in MAX_NUM_HPS -1 downto 0 generate
+  -- VP2HPS: for hps_i in c_MAX_NUM_HPS -1 downto 0 generate
     VP2HEG: for heg_i in c_NUM_THREADS -1 downto 0 generate
       VP2HPS_INN : if c_HPS_ENABLE_ST_INN generate
         o_uCM2hps_inn_av(heg_i) <= uCM2hps_data(heg_i)(0);
