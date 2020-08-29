@@ -24,6 +24,15 @@ HDL_Types:
 #   - muid        : [type: slc_muid]
 #   - data_valid  : [type: logic]
 
+- ucm_prepro:
+  - muid        : [type: slc_muid]
+  # - chambers:   [type: slc_chid]
+  # - cointype    :  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  # - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type: logic]
+
+- ucm_prepro_bus : [array: open , type: ucm_prepro]
+
 - ucm_cde:
   - muid        : [type: slc_muid]
   # - chambers:   [type: slc_chid]

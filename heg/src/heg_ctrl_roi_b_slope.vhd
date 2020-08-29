@@ -34,7 +34,7 @@ library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.roi_func_pkg.all;
 
-entity b_mbar2roi is
+entity b_slope2roi is
   generic(
     g_STATION_RADIUS     : integer := 0  --station
   );
@@ -49,9 +49,9 @@ entity b_mbar2roi is
     o_roi_edges         : out hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_dv                : out std_logic
   );
-end entity b_mbar2roi;
+end entity b_slope2roi;
 
-architecture beh of b_mbar2roi is
+architecture beh of b_slope2roi is
 
   -- VHDL2008 -- signal rom_mem  : roi_mbar_lut_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0)(0 to get_num_layers(g_STATION_RADIUS) -1) := get_roi_mbar_tubes(g_STATION_RADIUS);
   signal rom_mem_small  : roi_mbar_lut_small_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
