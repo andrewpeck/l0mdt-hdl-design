@@ -97,7 +97,7 @@ HDL_Types:
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-# UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
+- UCM_VEC_ANG_LEN    : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_ANG_LEN ]
 # UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
 - UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] # 10
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]

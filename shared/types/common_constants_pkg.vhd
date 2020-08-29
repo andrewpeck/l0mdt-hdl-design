@@ -39,6 +39,8 @@ package common_constants_pkg is
 
   constant MDT_TIME_LEN : integer := 18;
 
+  constant UCM_VEC_ANG_LEN : integer := UCM2HPS_VEC_ANG_LEN;
+
   constant UCM_Z_ROI_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 
   constant MDT_LOCAL_AXI_LEN : integer := 14;
