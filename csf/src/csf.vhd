@@ -40,7 +40,7 @@ entity csf is
     );
     Port (
         clk       : in std_logic;
-        i_seed    : in ucm_csf_seed_rvt;
+        i_seed    : in csf_seed_rvt;
         i_mdt_hit : in hp_hit_data_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
@@ -50,8 +50,8 @@ end csf;
 
 architecture Behavioral of csf is
     -- Input RoI
-    signal seed_i : ucm_csf_seed_rt;
-    signal seed : ucm_csf_seed_rvt;
+    signal seed_i : csf_seed_rt;
+    signal seed : csf_seed_rvt;
 
     -- Input signals
     signal mdt_hit  : hp_hit_data_rt;

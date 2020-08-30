@@ -82,8 +82,8 @@ HDL_Types:
 - MDT_FIBER_LEN   : [ qualifier: constant , type: integer , value: 5 ]
 - MDT_MUXCH_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # tar
-- MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: TAR2HPS_MDT_TUBE_NUM_LEN ]
-- MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: TAR2HPS_MDT_TUBE_LAYER_LEN ]
+- MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: TAR2HPS_TUBE_LEN ]
+- MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: TAR2HPS_LAYER_LEN ]
 - MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
 
 #############################################################
@@ -98,7 +98,8 @@ HDL_Types:
 # slc ucm2hps specific
 # barrel
 - UCM_VEC_ANG_LEN    : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_ANG_LEN ]
-# UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+# - UCM_VEC_ANG_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+
 - UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] # 10
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]

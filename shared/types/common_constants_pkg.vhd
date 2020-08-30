@@ -33,13 +33,15 @@ package common_constants_pkg is
 
   constant MDT_MUXCH_LEN : integer := 4;
 
-  constant MDT_TUBE_LEN : integer := TAR2HPS_MDT_TUBE_NUM_LEN;
+  constant MDT_TUBE_LEN : integer := TAR2HPS_TUBE_LEN;
 
-  constant MDT_LAYER_LEN : integer := TAR2HPS_MDT_TUBE_LAYER_LEN;
+  constant MDT_LAYER_LEN : integer := TAR2HPS_LAYER_LEN;
 
   constant MDT_TIME_LEN : integer := 18;
 
   constant UCM_VEC_ANG_LEN : integer := UCM2HPS_VEC_ANG_LEN;
+
+  constant UCM_VEC_ANG_MULT : real := 1024.0;
 
   constant UCM_Z_ROI_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 

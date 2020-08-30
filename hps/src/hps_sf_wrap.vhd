@@ -47,25 +47,25 @@ entity hps_sf_wrap is
     i_sf_slc_data       : in ucm2hps_rvt;
     i_sf_mdt_data       : in heg_bm2sf_rvt;
     --
-    o_sf_data_v         : out sf2pt_rvt
+    o_sf_data_v         : out sf2ptcalc_rvt
   );
 end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
   -- CSF
-  signal slc_data : ucm2hps_rt;
+  signal slc_data   : ucm2hps_rt;
   signal slc_barrel : ucm_csf_barrel_rt;
   signal slc_endcap : ucm_csf_endcap_rt;
-  signal mdt_data : heg_bm2sf_rt;
-  signal sf_data_v : sf2pt_rvt;
-  signal eof : std_logic;
+  signal mdt_data   : heg_bm2sf_rt;
+  signal sf_data_v  : sf2ptcalc_rvt;
+  signal eof        : std_logic;
   
 
   --barrel
-  signal i_seed_r : ucm_csf_seed_rt;
-  signal i_mdt_hit_r : hp_hit_data_rt;
-  signal i_seed_v : ucm_csf_seed_rvt;
-  signal i_mdt_hit_v : hp_hit_data_rvt;
+  signal i_seed_r     : csf_seed_rt;
+  signal i_mdt_hit_r  : hp_hit_data_rt;
+  signal i_seed_v     : csf_seed_rvt;
+  signal i_mdt_hit_v  : hp_hit_data_rvt;
 
 begin
 

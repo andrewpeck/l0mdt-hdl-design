@@ -104,7 +104,7 @@ HDL_Types:
 
 # -----------------------------------------------------------
 # slc ucm 2 sf
-- ucm_csf_seed:
+- csf_seed_:
   - muid          : [ type: slc_muid]
   - mbar          : [ type: unsigned , length: UCM_MBAR_LEN ]
   - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]

@@ -11,6 +11,42 @@ use shared_lib.common_types_pkg.all;
 
 package csf_pkg is
 
+  constant UCM_MBAR_LEN : integer := UCM_VEC_ANG_LEN;
+
+  constant UCM_MBAR_MULT : real := UCM_VEC_ANG_MULT;
+
+  constant CSF_SEG_M_LEN : integer := 15;
+
+  constant CSF_SEG_M_MULT : real := 4096.0;
+
+  constant CSF_SEG_B_LEN : integer := 13;
+
+  constant CSF_SEG_B_MULT : real := 16.0;
+
+  constant CSF_SEG_CHI2_LEN : integer := 15;
+
+  constant CSF_SEG_CHI2_MULT : real := 4.0;
+
+  constant CSF_MAXHITS_SEG : integer := 16;
+
+  constant CSF_MAXHITS_SEG_LEN : integer := 4;
+
+  constant CSF_MAXHITS_ML_LEN : integer := 3;
+
+  type csf_seed_rt is record
+    muid : slc_muid_rt;
+    mbar : unsigned(UCM_VEC_ANG_LEN-1 downto 0);
+    pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
+    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    data_valid : std_logic;
+  end record csf_seed_rt;
+  constant CSF_SEED_LEN : integer := 56;
+  subtype csf_seed_rvt is std_logic_vector(CSF_SEED_LEN-1 downto 0);
+  function vectorify(x: csf_seed_rt) return csf_seed_rvt;
+  function structify(x: csf_seed_rvt) return csf_seed_rt;
+  function nullify(x: csf_seed_rt) return csf_seed_rt;
+
   type csf_hit_rt is record
     valid : std_logic;
     x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
@@ -30,24 +66,6 @@ package csf_pkg is
   function structify(x: std_logic_vector) return csf_hit_a_at;
   function nullify(x: csf_hit_a_at) return csf_hit_a_at;
   function nullify(x: csf_hit_a_avt) return csf_hit_a_avt;
-
-  constant CSF_SEG_M_LEN : integer := 15;
-
-  constant CSF_SEG_M_MULT : real := 4096.0;
-
-  constant CSF_SEG_B_LEN : integer := 13;
-
-  constant CSF_SEG_B_MULT : real := 16.0;
-
-  constant CSF_SEG_CHI2_LEN : integer := 15;
-
-  constant CSF_SEG_CHI2_MULT : real := 4.0;
-
-  constant CSF_MAXHITS_SEG : integer := 16;
-
-  constant CSF_MAXHITS_SEG_LEN : integer := 4;
-
-  constant CSF_MAXHITS_ML_LEN : integer := 3;
 
   type csf_locseg_rt is record
     valid : std_logic;
@@ -76,6 +94,40 @@ end package csf_pkg;
 ------------------------------------------------------------
 
 package body csf_pkg is
+
+  function vectorify(x: csf_seed_rt) return csf_seed_rvt is
+    variable y : csf_seed_rvt;
+  begin
+    y(55 downto 35)            := vectorify(x.muid);
+    y(34 downto 24)            := vectorify(x.mbar);
+    y(23 downto 14)            := vectorify(x.pos);
+    y(13 downto 4)             := vectorify(x.ang);
+    y(3 downto 1)              := x.chamber_id;
+    y(0)                       := x.data_valid;
+    return y;
+  end function vectorify;
+  function structify(x: csf_seed_rvt) return csf_seed_rt is
+    variable y : csf_seed_rt;
+  begin
+    y.muid                     := structify(x(55 downto 35));
+    y.mbar                     := structify(x(34 downto 24));
+    y.pos                      := structify(x(23 downto 14));
+    y.ang                      := structify(x(13 downto 4));
+    y.chamber_id               := x(3 downto 1);
+    y.data_valid               := x(0);
+    return y;
+  end function structify;
+  function nullify(x: csf_seed_rt) return csf_seed_rt is
+    variable y : csf_seed_rt;
+  begin
+    y.muid                     := nullify(x.muid);
+    y.mbar                     := nullify(x.mbar);
+    y.pos                      := nullify(x.pos);
+    y.ang                      := nullify(x.ang);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.data_valid               := nullify(x.data_valid);
+    return y;
+  end function nullify;
 
   function vectorify(x: csf_hit_rt) return csf_hit_rvt is
     variable y : csf_hit_rvt;

@@ -426,12 +426,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*71-1 downto 0);
+    variable y : std_logic_vector(x'length*76-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-71) := vectorify(x(i));
-      msb := msb - 71 -1;
+      y(msb downto msb-76) := vectorify(x(i));
+      msb := msb - 76 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -448,8 +448,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-71));
-      msb := msb - 71 -1;
+      y(i) := structify(x(msb downto msb-76));
+      msb := msb - 76 -1;
     end loop l;
     return y;
   end function structify;

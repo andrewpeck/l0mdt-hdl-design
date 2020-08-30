@@ -49,14 +49,14 @@ entity seg_coord_transform is
   port (
     clk         : in  std_logic;
     i_locseg    : in  csf_locseg_rvt;
-    i_seed      : in  ucm_csf_seed_rvt;
+    i_seed      : in  csf_seed_rvt;
     o_globseg   : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
   );
 end seg_coord_transform; -- seg_coord_transform
 
 architecture Behavioral of seg_coord_transform is
     -- Store roi information
-    signal seed, seed_i : ucm_csf_seed_rt;
+    signal seed, seed_i : csf_seed_rt;
     -- Store seg information
     signal locseg, locseg_i : csf_locseg_rt;
     -- Extrapolated coordinate (z_ext = z_fit + z_ref - x_ref*m_fit)

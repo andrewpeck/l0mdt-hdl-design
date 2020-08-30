@@ -10,23 +10,33 @@ __config__:
 
 HDL_Types:
 
+- UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
+- UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+
+- CSF_SEG_M_LEN       : [ qualifier: constant, type: integer, value: 15]
+- CSF_SEG_M_MULT      : [ qualifier: constant, type: real, value: 4096.0]
+- CSF_SEG_B_LEN       : [ qualifier: constant, type: integer, value: 13]
+- CSF_SEG_B_MULT      : [ qualifier: constant, type: real, value: 16.0]
+- CSF_SEG_CHI2_LEN    : [ qualifier: constant, type: integer, value: 15]
+- CSF_SEG_CHI2_MULT   : [ qualifier: constant, type: real, value: 4.0]
+- CSF_MAXHITS_SEG     : [ qualifier: constant, type: integer, value: 16]
+- CSF_MAXHITS_SEG_LEN : [qualifier: constant, type: integer, value: 4]
+- CSF_MAXHITS_ML_LEN  : [qualifier: constant, type: integer, value: 3]
+
+- csf_seed:
+  - muid          : [ type: slc_muid]
+  - mbar          : [ type: unsigned , length: UCM_VEC_ANG_LEN ]
+  - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - ang           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+  - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - data_valid    : [ type: logic]
+
 - csf_hit:
   - valid : [type : logic]
   - x     : [type : unsigned, length: MDT_LOCAL_X_LEN]
   - y     : [type : unsigned, length: MDT_LOCAL_Y_LEN]
 
 - csf_hit_a: [array: open , type: csf_hit]
-
-
-- CSF_SEG_M_LEN : [ qualifier: constant, type: integer, value: 15]
-- CSF_SEG_M_MULT : [ qualifier: constant, type: real, value: 4096.0]
-- CSF_SEG_B_LEN : [ qualifier: constant, type: integer, value: 13]
-- CSF_SEG_B_MULT : [ qualifier: constant, type: real, value: 16.0]
-- CSF_SEG_CHI2_LEN : [ qualifier: constant, type: integer, value: 15]
-- CSF_SEG_CHI2_MULT : [ qualifier: constant, type: real, value: 4.0]
-- CSF_MAXHITS_SEG : [ qualifier: constant, type: integer, value: 16]
-- CSF_MAXHITS_SEG_LEN : [qualifier: constant, type: integer, value: 4]
-- CSF_MAXHITS_ML_LEN : [qualifier: constant, type: integer, value: 3]
 
 - csf_locseg:
   - valid : [type : logic]

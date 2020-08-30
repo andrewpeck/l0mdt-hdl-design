@@ -44,7 +44,7 @@ entity csf_histogram is
     Port (
         clk             : in std_logic;
         i_mdthit        : in hp_hit_data_rvt;
-        i_seed          : in ucm_csf_seed_rvt;
+        i_seed          : in csf_seed_rvt;
         i_eof           : in std_logic;
         o_histo_hit0    : out csf_hit_rvt;
         o_histo_hit1    : out csf_hit_rvt
@@ -61,7 +61,7 @@ architecture Behavioral of csf_histogram is
     constant SQU_M_LEN       : integer := UCM_MBAR_LEN;
 
     -- Signals for seed information
-    signal seed      : ucm_csf_seed_rt;
+    signal seed      : csf_seed_rt;
     signal mbar      : unsigned(UCM_MBAR_LEN-1 downto 0) := (others => '0');
     signal squ_m     : std_logic_vector(SQU_M_LEN-1 downto 0)
         := (others => '0');
