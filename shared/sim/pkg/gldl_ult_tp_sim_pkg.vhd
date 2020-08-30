@@ -17,7 +17,7 @@ package gldl_ult_tp_sim_pkg is
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     tar : tar2hps_rt;
   end record input_tar_rt;
-  constant INPUT_TAR_LEN : integer := 151;
+  constant INPUT_TAR_LEN : integer := 149;
   subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
   function vectorify(x: input_tar_rt) return input_tar_rvt;
   function structify(x: input_tar_rvt) return input_tar_rt;
@@ -43,19 +43,19 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: input_tar_rt) return input_tar_rvt is
     variable y : input_tar_rvt;
   begin
-    y(150 downto 87)           := vectorify(x.global_time);
-    y(86 downto 79)            := vectorify(x.station);
-    y(78 downto 76)            := vectorify(x.chamber);
-    y(75 downto 0)             := vectorify(x.tar);
+    y(148 downto 85)           := vectorify(x.global_time);
+    y(84 downto 77)            := vectorify(x.station);
+    y(76 downto 74)            := vectorify(x.chamber);
+    y(73 downto 0)             := vectorify(x.tar);
     return y;
   end function vectorify;
   function structify(x: input_tar_rvt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
-    y.global_time              := structify(x(150 downto 87));
-    y.station                  := structify(x(86 downto 79));
-    y.chamber                  := structify(x(78 downto 76));
-    y.tar                      := structify(x(75 downto 0));
+    y.global_time              := structify(x(148 downto 85));
+    y.station                  := structify(x(84 downto 77));
+    y.chamber                  := structify(x(76 downto 74));
+    y.tar                      := structify(x(73 downto 0));
     return y;
   end function structify;
   function nullify(x: input_tar_rt) return input_tar_rt is
@@ -77,12 +77,12 @@ package body gldl_ult_tp_sim_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_tb_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*76-1 downto 0);
+    variable y : std_logic_vector(x'length*74-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-76) := vectorify(x(i));
-      msb := msb - 76 -1;
+      y(msb downto msb-74) := vectorify(x(i));
+      msb := msb - 74 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -99,8 +99,8 @@ package body gldl_ult_tp_sim_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-76));
-      msb := msb - 76 -1;
+      y(i) := structify(x(msb downto msb-74));
+      msb := msb - 74 -1;
     end loop l;
     return y;
   end function structify;

@@ -164,6 +164,8 @@ HDL_Types:
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 
+- heg2sf_bus     : [array: open , type: heg2sf]
+
 # ucm2hps_maxhps  : [array: c_MAX_NUM_HPS , type: ucm2hps ]
 # ucm2hps_a       : [array: open , type: ucm2hps_ , _: off ]
 

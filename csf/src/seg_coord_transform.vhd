@@ -63,7 +63,7 @@ architecture Behavioral of seg_coord_transform is
     signal z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
     -- Theta angle
     signal theta, theta_s, theta_ss : std_logic_vector(SF_SEG_ANG_LEN-1 downto 0) := (others => '0');
-    -- Chamber_id
+    -- chamber_id
     signal chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
     -- Chamber pos
     signal chamber_pos : std_logic_vector(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
@@ -146,7 +146,7 @@ begin
             if seed_i.data_valid = '1' and locseg_i.valid = '1' then
                 seed <= seed_i;
                 locseg <= locseg_i;
-                chamber_id <= seed_i.chamber_id;
+                chamber_id <= std_logic_vector(seed_i.chamber_id);
             end if;
 
             -- Clock 0

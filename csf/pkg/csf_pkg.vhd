@@ -13,7 +13,7 @@ package csf_pkg is
 
   constant UCM_MBAR_LEN : integer := UCM_VEC_ANG_LEN;
 
-  constant UCM_MBAR_MULT : real := UCM_VEC_ANG_MULT;
+  constant UCM_MBAR_MULT : real := 1024.0;
 
   constant CSF_SEG_M_LEN : integer := 15;
 
@@ -38,7 +38,7 @@ package csf_pkg is
     mbar : unsigned(UCM_VEC_ANG_LEN-1 downto 0);
     pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
     ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
-    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     data_valid : std_logic;
   end record csf_seed_rt;
   constant CSF_SEED_LEN : integer := 56;
@@ -89,6 +89,58 @@ package csf_pkg is
   function nullify(x: csf_locseg_a_at) return csf_locseg_a_at;
   function nullify(x: csf_locseg_a_avt) return csf_locseg_a_avt;
 
+  constant SF_SEG_POS_LEN : integer := 19;
+
+  constant SF_SEG_POS_MULTI : real := 16.0;
+
+  constant SF_SEG_ANG_LEN : integer := 15;
+
+  constant SF_SEG_ANG_MULTI : real := 4096.0;
+
+  constant SF_SEG_ANG_MULTI_LEN : integer := 12;
+
+  type sf2pt_rt is record
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    pos : signed(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
+  end record sf2pt_rt;
+  constant SF2PT_LEN : integer := 60;
+  subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt;
+  function structify(x: sf2pt_rvt) return sf2pt_rt;
+  function nullify(x: sf2pt_rt) return sf2pt_rt;
+
+  type sf_seg_data_barrel_rt is record
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    pos : signed(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
+  end record sf_seg_data_barrel_rt;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 60;
+  subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
+  function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
+  function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
+  function nullify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt;
+
+  type sf_seg_data_endcap_rt is record
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    pos : unsigned(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
+  end record sf_seg_data_endcap_rt;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 60;
+  subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
+  function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
+  function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
+  function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt;
+
 end package csf_pkg;
 
 ------------------------------------------------------------
@@ -102,7 +154,7 @@ package body csf_pkg is
     y(34 downto 24)            := vectorify(x.mbar);
     y(23 downto 14)            := vectorify(x.pos);
     y(13 downto 4)             := vectorify(x.ang);
-    y(3 downto 1)              := x.chamber_id;
+    y(3 downto 1)              := vectorify(x.chamber_id);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
@@ -113,7 +165,7 @@ package body csf_pkg is
     y.mbar                     := structify(x(34 downto 24));
     y.pos                      := structify(x(23 downto 14));
     y.ang                      := structify(x(13 downto 4));
-    y.chamber_id               := x(3 downto 1);
+    y.chamber_id               := structify(x(3 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -288,6 +340,108 @@ package body csf_pkg is
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt is
+    variable y : sf2pt_rvt;
+  begin
+    y(59)                      := x.data_valid;
+    y(58 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := vectorify(x.chamber_id);
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf2pt_rvt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := x(59);
+    y.muid                     := structify(x(58 downto 38));
+    y.chamber_id               := structify(x(37 downto 35));
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify(x: sf2pt_rt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
+    variable y : sf_seg_data_barrel_rvt;
+  begin
+    y(59)                      := x.data_valid;
+    y(58 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := vectorify(x.chamber_id);
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
+    variable y : sf_seg_data_barrel_rt;
+  begin
+    y.data_valid               := x(59);
+    y.muid                     := structify(x(58 downto 38));
+    y.chamber_id               := structify(x(37 downto 35));
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
+    variable y : sf_seg_data_barrel_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
+    variable y : sf_seg_data_endcap_rvt;
+  begin
+    y(59)                      := x.data_valid;
+    y(58 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := vectorify(x.chamber_id);
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
+    variable y : sf_seg_data_endcap_rt;
+  begin
+    y.data_valid               := x(59);
+    y.muid                     := structify(x(58 downto 38));
+    y.chamber_id               := structify(x(37 downto 35));
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is
+    variable y : sf_seg_data_endcap_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_id               := nullify(x.chamber_id);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
     return y;
   end function nullify;
 

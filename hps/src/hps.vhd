@@ -61,8 +61,8 @@ architecture beh of hps is
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
   signal heg2sf_control        : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sf_slc_data       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sf_mdt_data       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_slc_av       : heg2sf_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_mdt_av       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
@@ -101,8 +101,8 @@ begin
       i_mdt_full_data_av    => mdt_full_data_av,
       -- to Segment finder
       o_sf_control_v        => heg2sf_control(heg_i),
-      o_sf_slc_data_v       => heg2sf_slc_data(heg_i),
-      o_sf_mdt_data_v       => heg2sf_mdt_data(heg_i)
+      o_sf_slc_data_v       => heg2sf_slc_av(heg_i),
+      o_sf_mdt_data_v       => heg2sf_mdt_av(heg_i)
     );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -115,8 +115,8 @@ begin
       glob_en             => glob_en,
       -- to Segment finder
       i_sf_control        => heg2sf_control(heg_i),
-      i_sf_slc_data       => heg2sf_slc_data(heg_i),
-      i_sf_mdt_data       => heg2sf_mdt_data(heg_i),
+      i_sf_slc_data       => heg2sf_slc_av(heg_i),
+      i_sf_mdt_data       => heg2sf_mdt_av(heg_i),
       --
       o_sf_data_v         => o_sf2pt_av(heg_i)
     );

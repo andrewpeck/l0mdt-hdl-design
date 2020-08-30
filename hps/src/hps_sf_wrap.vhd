@@ -44,8 +44,8 @@ entity hps_sf_wrap is
     glob_en             : in std_logic;
     -- configuration
     i_sf_control        : in heg_ctrl2hp_rvt;
-    i_sf_slc_data       : in ucm2hps_rvt;
-    i_sf_mdt_data       : in heg_bm2sf_rvt;
+    i_sf_slc_data       : in heg2sf_rvt;
+    i_sf_mdt_data       : in std_logic_vector(HPS2CSF_LEN-1 downto 0);
     --
     o_sf_data_v         : out sf2ptcalc_rvt
   );
@@ -53,9 +53,9 @@ end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
   -- CSF
-  signal slc_data   : ucm2hps_rt;
-  signal slc_barrel : ucm_csf_barrel_rt;
-  signal slc_endcap : ucm_csf_endcap_rt;
+  signal slc_data   : heg2sf_rt;
+  -- signal slc_barrel : ucm_csf_barrel_rt;
+  -- signal slc_endcap : ucm_csf_endcap_rt;
   signal mdt_data   : heg_bm2sf_rt;
   signal sf_data_v  : sf2ptcalc_rvt;
   signal eof        : std_logic;
@@ -77,14 +77,14 @@ begin
 
       SF_B : if c_ST_nBARREL_ENDCAP = '0' generate
         --SLC
-        slc_barrel <= structify(slc_data.specific);
+        -- slc_barrel <= structify(slc_data.specific);
         i_seed_v <= vectorify(i_seed_r);
 
         i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_barrel.mbar;
-        i_seed_r.pos        <= slc_barrel.Z;
+        i_seed_r.mbar       <= slc_data.vec_ang;
+        i_seed_r.pos        <= slc_data.vec_pos;
         i_seed_r.ang        <= (others => '0');
-        i_seed_r.chamber_id <= slc_data.chamber_id;
+        i_seed_r.chamber_id <= slc_data.mdtid.chamber_id;
         i_seed_r.data_valid <= slc_data.data_valid;
         
         -- MDT
@@ -105,14 +105,14 @@ begin
       end generate;
 
       SF_E : if c_ST_nBARREL_ENDCAP = '1' generate
-        slc_endcap <= structify(slc_data.specific);
+        -- slc_endcap <= structify(slc_data.specific);
         i_seed_v <= vectorify(i_seed_r);
         
         i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_endcap.mbar;
+        i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= (others => '0');
-        i_seed_r.ang        <= slc_endcap.R;
-        i_seed_r.chamber_id <= slc_data.chamber_id;
+        i_seed_r.ang        <= slc_data.vec_pos;
+        i_seed_r.chamber_id <= slc_data.mdtid.chamber_id;
         i_seed_r.data_valid <= slc_data.data_valid;
       end generate;
 

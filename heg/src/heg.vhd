@@ -48,7 +48,7 @@ entity heg is
     i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- to Segment finder
     o_sf_control_v      : out heg_ctrl2hp_rvt;
-    o_sf_slc_data_v     : out ucm2sf_rvt;
+    o_sf_slc_data_v     : out heg2sf_rvt;
     o_sf_mdt_data_v     : out heg_bm2sf_rvt
   );
 end entity heg;
