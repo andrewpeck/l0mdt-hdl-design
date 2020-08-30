@@ -60,7 +60,7 @@ architecture beh of hps is
   -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control        : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_control      : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sf_slc_av       : heg2sf_bus_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sf_mdt_av       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
 

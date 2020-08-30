@@ -43,7 +43,7 @@ entity heg_buffermux is
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg_bm2sf_rvt
+    o_mdt_hits_v        : out hps2csf_rvt
     
   );
 end entity heg_buffermux;
@@ -74,7 +74,7 @@ architecture beh of heg_buffermux is
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal o_mdt_hits_r : heg_bm2sf_rt; 
+  signal o_mdt_hits_r : hps2csf_rt; 
 
   signal mdt_hit    :  heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);

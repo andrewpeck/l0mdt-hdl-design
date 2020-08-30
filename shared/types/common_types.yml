@@ -204,7 +204,7 @@ HDL_Types:
 
 - sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
 
-- sf2pt_bus: [ array: open , type : sf2pt]
+- sf2pt_bus: [ array: open , type : sf2ptcalc]
 
 # sf2pt_a : [ array: open , type : sf2pt_ , _: off]
 
