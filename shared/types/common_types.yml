@@ -173,14 +173,14 @@ HDL_Types:
 #       HEG 2 SF
 # -----------------------------------------------------------
 # CSF
-- hp_hit_data:
+- heg2sf_mdt:
   - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
   - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
   - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
   - multilayer  : [ type: logic ]
   - data_valid  : [ type: logic ]
 
-- hp_hit_data_a : [array: open, type: hp_hit_data]
+- heg2sf_mdt_bus : [array: open, type: heg2sf_mdt]
 
 # -----------------------------------------------------------
 # sf 2 pt

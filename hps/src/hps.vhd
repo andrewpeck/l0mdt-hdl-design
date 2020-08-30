@@ -114,9 +114,9 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       -- to Segment finder
-      i_sf_control        => heg2sf_control(heg_i),
-      i_sf_slc_data       => heg2sf_slc_av(heg_i),
-      i_sf_mdt_data       => heg2sf_mdt_av(heg_i),
+      i_control        => heg2sf_control(heg_i),
+      i_slc_data       => heg2sf_slc_av(heg_i),
+      i_mdt_data       => heg2sf_mdt_av(heg_i),
       --
       o_sf_data_v         => o_sf2pt_av(heg_i)
     );

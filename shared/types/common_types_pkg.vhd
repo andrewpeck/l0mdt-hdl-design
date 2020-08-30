@@ -98,27 +98,27 @@ package common_types_pkg is
   function nullify(x: heg2sf_bus_at) return heg2sf_bus_at;
   function nullify(x: heg2sf_bus_avt) return heg2sf_bus_avt;
 
-  type hp_hit_data_rt is record
+  type heg2sf_mdt_rt is record
     local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
     local_x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     radius : unsigned(MDT_RADIUS_LEN-1 downto 0);
     multilayer : std_logic;
     data_valid : std_logic;
-  end record hp_hit_data_rt;
-  constant HP_HIT_DATA_LEN : integer := 38;
-  subtype hp_hit_data_rvt is std_logic_vector(HP_HIT_DATA_LEN-1 downto 0);
-  function vectorify(x: hp_hit_data_rt) return hp_hit_data_rvt;
-  function structify(x: hp_hit_data_rvt) return hp_hit_data_rt;
-  function nullify(x: hp_hit_data_rt) return hp_hit_data_rt;
+  end record heg2sf_mdt_rt;
+  constant HEG2SF_MDT_LEN : integer := 38;
+  subtype heg2sf_mdt_rvt is std_logic_vector(HEG2SF_MDT_LEN-1 downto 0);
+  function vectorify(x: heg2sf_mdt_rt) return heg2sf_mdt_rvt;
+  function structify(x: heg2sf_mdt_rvt) return heg2sf_mdt_rt;
+  function nullify(x: heg2sf_mdt_rt) return heg2sf_mdt_rt;
 
-  type hp_hit_data_a_at is array(integer range <>) of hp_hit_data_rt;
-  type hp_hit_data_a_avt is array(integer range <>) of hp_hit_data_rvt;
-  function vectorify(x: hp_hit_data_a_at) return hp_hit_data_a_avt;
-  function vectorify(x: hp_hit_data_a_at) return std_logic_vector;
-  function structify(x: hp_hit_data_a_avt) return hp_hit_data_a_at;
-  function structify(x: std_logic_vector) return hp_hit_data_a_at;
-  function nullify(x: hp_hit_data_a_at) return hp_hit_data_a_at;
-  function nullify(x: hp_hit_data_a_avt) return hp_hit_data_a_avt;
+  type heg2sf_mdt_bus_at is array(integer range <>) of heg2sf_mdt_rt;
+  type heg2sf_mdt_bus_avt is array(integer range <>) of heg2sf_mdt_rvt;
+  function vectorify(x: heg2sf_mdt_bus_at) return heg2sf_mdt_bus_avt;
+  function vectorify(x: heg2sf_mdt_bus_at) return std_logic_vector;
+  function structify(x: heg2sf_mdt_bus_avt) return heg2sf_mdt_bus_at;
+  function structify(x: std_logic_vector) return heg2sf_mdt_bus_at;
+  function nullify(x: heg2sf_mdt_bus_at) return heg2sf_mdt_bus_at;
+  function nullify(x: heg2sf_mdt_bus_avt) return heg2sf_mdt_bus_avt;
 
   subtype sf2pt_t is std_logic_vector(SF_SEG_DATA_LEN-1 downto 0);
 
@@ -607,8 +607,8 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: hp_hit_data_rt) return hp_hit_data_rvt is
-    variable y : hp_hit_data_rvt;
+  function vectorify(x: heg2sf_mdt_rt) return heg2sf_mdt_rvt is
+    variable y : heg2sf_mdt_rvt;
   begin
     y(37 downto 24)            := vectorify(x.local_y);
     y(23 downto 11)            := vectorify(x.local_x);
@@ -617,8 +617,8 @@ package body common_types_pkg is
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
-  function structify(x: hp_hit_data_rvt) return hp_hit_data_rt is
-    variable y : hp_hit_data_rt;
+  function structify(x: heg2sf_mdt_rvt) return heg2sf_mdt_rt is
+    variable y : heg2sf_mdt_rt;
   begin
     y.local_y                  := structify(x(37 downto 24));
     y.local_x                  := structify(x(23 downto 11));
@@ -627,8 +627,8 @@ package body common_types_pkg is
     y.data_valid               := x(0);
     return y;
   end function structify;
-  function nullify(x: hp_hit_data_rt) return hp_hit_data_rt is
-    variable y : hp_hit_data_rt;
+  function nullify(x: heg2sf_mdt_rt) return heg2sf_mdt_rt is
+    variable y : heg2sf_mdt_rt;
   begin
     y.local_y                  := nullify(x.local_y);
     y.local_x                  := nullify(x.local_x);
@@ -638,15 +638,15 @@ package body common_types_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: hp_hit_data_a_at) return hp_hit_data_a_avt is
-    variable y :  hp_hit_data_a_avt(x'range);
+  function vectorify(x: heg2sf_mdt_bus_at) return heg2sf_mdt_bus_avt is
+    variable y :  heg2sf_mdt_bus_avt(x'range);
   begin
     l: for i in x'range loop
       y(i) := vectorify(x(i));
     end loop l;
     return y;
   end function vectorify;
-  function vectorify(x: hp_hit_data_a_at) return std_logic_vector is
+  function vectorify(x: heg2sf_mdt_bus_at) return std_logic_vector is
     variable y : std_logic_vector(x'length*38-1 downto 0);
     variable msb : integer := y'length-1;
   begin
@@ -656,16 +656,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function vectorify;
-  function structify(x: hp_hit_data_a_avt) return hp_hit_data_a_at is
-    variable y :  hp_hit_data_a_at(x'range);
+  function structify(x: heg2sf_mdt_bus_avt) return heg2sf_mdt_bus_at is
+    variable y :  heg2sf_mdt_bus_at(x'range);
   begin
     l: for i in x'range loop
       y(i) := structify(x(i));
     end loop l;
     return y;
   end function structify;
-  function structify(x: std_logic_vector) return hp_hit_data_a_at is
-    variable y :  hp_hit_data_a_at(x'range);
+  function structify(x: std_logic_vector) return heg2sf_mdt_bus_at is
+    variable y :  heg2sf_mdt_bus_at(x'range);
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
@@ -674,16 +674,16 @@ package body common_types_pkg is
     end loop l;
     return y;
   end function structify;
-  function nullify(x: hp_hit_data_a_at) return hp_hit_data_a_at is
-    variable y :  hp_hit_data_a_at(x'range);
+  function nullify(x: heg2sf_mdt_bus_at) return heg2sf_mdt_bus_at is
+    variable y :  heg2sf_mdt_bus_at(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
     return y;
   end function nullify;
-  function nullify(x: hp_hit_data_a_avt) return hp_hit_data_a_avt is
-    variable y :  hp_hit_data_a_avt(x'range);
+  function nullify(x: heg2sf_mdt_bus_avt) return heg2sf_mdt_bus_avt is
+    variable y :  heg2sf_mdt_bus_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));
