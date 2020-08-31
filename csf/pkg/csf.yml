@@ -28,7 +28,7 @@ HDL_Types:
   - mbar          : [ type: unsigned , length: UCM_VEC_ANG_LEN ]
   - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
   - ang           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
-  - chamber_id    : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta    : [ type: unsigned , length: SLC_CHAMBER_LEN ]
   - data_valid    : [ type: logic]
 
 - csf_hit:
@@ -47,24 +47,24 @@ HDL_Types:
 
 - csf_locseg_a: [array: open , type: csf_locseg]
 
-- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
-- SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
-- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
-- SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
-- SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
+# - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+# - SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
+# - SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
+# - SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
+# - SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
-- sf2pt:
-  - data_valid  : [ type: logic]
-  - muid        : [ type: slc_muid]
-  - chamber_id  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
-  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
-  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
-  - quality     : [ type: logic]
+# - sf2pt:
+#   - data_valid  : [ type: logic]
+#   - muid        : [ type: slc_muid]
+#   - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+#   - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+#   - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+#   - quality     : [ type: logic]
 
 - sf_seg_data_barrel:
   - data_valid : [ type: logic]
   - muid       : [ type: slc_muid]
-  - chamber_id : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta : [ type: unsigned , length: SLC_CHAMBER_LEN ]
   - pos        : [ type: signed, length: SF_SEG_POS_LEN ]
   - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
   - quality    : [ type: logic]
@@ -72,7 +72,7 @@ HDL_Types:
 - sf_seg_data_endcap:
   - data_valid : [ type: logic]
   - muid       : [ type: slc_muid]
-  - chamber_id : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta : [ type: unsigned , length: SLC_CHAMBER_LEN ]
   - pos        : [ type: unsigned, length: SF_SEG_POS_LEN ]
   - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
   - quality    : [ type: logic]

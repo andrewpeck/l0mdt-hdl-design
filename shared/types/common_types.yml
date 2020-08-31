@@ -110,7 +110,7 @@ HDL_Types:
 # tar2hps:
 #   tube        : [ type: unsigned , length: MDT_TUBE_LEN ]
 #   layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
-#   chamber_id  : [ type: unsigned , length: SLC_CHAMBER_LEN]
+#   chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN]
 #   time        : [ type: unsigned , length: MDT_TIME_LEN ]
 #   data_valid  : [ type: logic]
 
@@ -139,7 +139,7 @@ HDL_Types:
 #   muid          : [ type: slc_muid]
 #   mbar          : [ type: unsigned , length: UCM_MBAR_LEN ]
 #   pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
-#   chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+#   chamber_ieta    : [ type: logic , length: SLC_CHAMBER_LEN ]
 #   data_valid    : [ type: logic]
 
 # ucm_csf_seed_a: [array: open , type: ucm_csf_seed]
@@ -159,7 +159,7 @@ HDL_Types:
 #   # - id            : [ type: ucm2hps_id]
 #   - muid          : [ type: slc_muid ]
 #   - specific      : [ type: logic , length: UCM2HPS_SPECIFIC_LEN]
-#   - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+#   - chamber_ieta    : [ type: logic , length: SLC_CHAMBER_LEN ]
 #   - data_valid    : [ type: logic]
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
@@ -186,23 +186,21 @@ HDL_Types:
 # sf 2 pt
 # -----------------------------------------------------------
 
-# sf_seg_data_barrel:
-#   pos        : [ type: signed, length: SF_SEG_POS_LEN ]
-#   angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
-#   quality    : [ type: logic]
+- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+- SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
+- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
+- SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
+- SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
-# sf_seg_data_endcap:
-#   pos        : [ type: unsigned, length: SF_SEG_POS_LEN ]
-#   angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
-#   quality    : [ type: logic]
+- sf2pt:
+  - data_valid  : [ type: logic]
+  - muid        : [ type: slc_muid]
+  - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality     : [ type: logic]
 
-# sf2pt :
-#   data        : [type : logic , length : SF_SEG_DATA_LEN]
-#   muid        : [ type: slc_muid]
-#   chamber_id  : [ type: logic , length: SLC_CHAMBER_LEN ]
-#   data_valid  : [ type : logic]
-
-- sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
+# - sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
 
 - sf2pt_bus: [ array: open , type : sf2ptcalc]
 

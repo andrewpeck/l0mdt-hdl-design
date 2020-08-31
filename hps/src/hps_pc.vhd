@@ -86,7 +86,7 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_chamber           => mdt_tar_data.chamber_id,
+      i_chamber           => mdt_tar_data.chamber_ieta,
       i_dv                => mdt_tar_data.data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
@@ -101,7 +101,7 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_chamber           => mdt_tar_data.chamber_id,
+      i_chamber           => mdt_tar_data.chamber_ieta,
       i_dv                => mdt_tar_data.data_valid,
       o_spaces            => holesize,
       o_dv                => zh_dv

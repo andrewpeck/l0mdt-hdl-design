@@ -68,12 +68,12 @@ begin
     begin
         wait for clk_period*5;
         -- Sagitta test
-        --seg0 <= ('1', to_signed(-24416, z_glob_width), to_unsigned(78090, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
-        --seg1 <= ('1', to_signed(-34859, z_glob_width), to_unsigned(112823, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
-        --seg2 <= ('1', to_signed(-45780, z_glob_width), to_unsigned(150509, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_id_width));
+        --seg0 <= ('1', to_signed(-24416, z_glob_width), to_unsigned(78090, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_ieta_width));
+        --seg1 <= ('1', to_signed(-34859, z_glob_width), to_unsigned(112823, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_ieta_width));
+        --seg2 <= ('1', to_signed(-45780, z_glob_width), to_unsigned(150509, r_glob_width), (others => '0'), (others => '0'), (others => '0'), to_unsigned(2,chamber_ieta_width));
         -- Dbeta test
-        seg1 <= ('1', to_signed(2979, z_glob_width), to_unsigned(110375, r_glob_width), to_signed(6391, theta_glob_width), to_signed(-24, phi_width), to_unsigned(1,chamber_id_width));
-        seg2 <= ('1', to_signed(3180, z_glob_width), to_unsigned(148150, r_glob_width), to_signed(6431, theta_glob_width), (others => '0'), to_unsigned(1, chamber_id_width));
+        seg1 <= ('1', to_signed(2979, z_glob_width), to_unsigned(110375, r_glob_width), to_signed(6391, theta_glob_width), to_signed(-24, phi_width), to_unsigned(1,chamber_ieta_width));
+        seg2 <= ('1', to_signed(3180, z_glob_width), to_unsigned(148150, r_glob_width), to_signed(6431, theta_glob_width), (others => '0'), to_unsigned(1, chamber_ieta_width));
 
         wait for clk_period;
         seg0 <= null_globalseg;

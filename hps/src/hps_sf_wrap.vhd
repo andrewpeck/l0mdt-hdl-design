@@ -84,7 +84,7 @@ begin
         i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= slc_data.vec_pos;
         i_seed_r.ang        <= (others => '0');
-        i_seed_r.chamber_id <= slc_data.mdtid.chamber_id;
+        i_seed_r.chamber_ieta <= slc_data.mdtid.chamber_ieta;
         i_seed_r.data_valid <= slc_data.data_valid;
         
         -- MDT
@@ -112,7 +112,7 @@ begin
         i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= (others => '0');
         i_seed_r.ang        <= slc_data.vec_pos;
-        i_seed_r.chamber_id <= slc_data.mdtid.chamber_id;
+        i_seed_r.chamber_ieta <= slc_data.mdtid.chamber_ieta;
         i_seed_r.data_valid <= slc_data.data_valid;
       end generate;
 

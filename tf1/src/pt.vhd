@@ -362,9 +362,9 @@ begin
                 segment_BM_s <= segment_BM;
                 segment_BO_s <= segment_BO;
                 comboid_s  <= "0000" &
-                              unsigned(segment_BO.chamber_id) &
-                              unsigned(segment_BM.chamber_id) &
-                              unsigned(segment_BI.chamber_id);
+                              unsigned(segment_BO.chamber_ieta) &
+                              unsigned(segment_BM.chamber_ieta) &
+                              unsigned(segment_BI.chamber_ieta);
                 nsegments <= to_unsigned(stdlogic_integer(segment_BI.data_valid)
                     + stdlogic_integer(segment_BM.data_valid)
                     + stdlogic_integer(segment_BO.data_valid),
@@ -394,9 +394,9 @@ begin
 
             dv2 <= dv1;
             comboid_phi <= pt_bin(pt_s) &
-                           unsigned(segment_BO_s.chamber_id) &
-                           unsigned(segment_BM_s.chamber_id) &
-                           unsigned(segment_BI_s.chamber_id);
+                           unsigned(segment_BO_s.chamber_ieta) &
+                           unsigned(segment_BM_s.chamber_ieta) &
+                           unsigned(segment_BI_s.chamber_ieta);
             pt_s0 <= pt_s;
 
             dv3 <= dv2;
@@ -418,9 +418,9 @@ begin
 
             dv7 <= dv6;
             comboid_eta <= pt_bin(pt_sp) &
-                           unsigned(segment_BO_s.chamber_id) &
-                           unsigned(segment_BM_s.chamber_id) &
-                           unsigned(segment_BI_s.chamber_id);
+                           unsigned(segment_BO_s.chamber_ieta) &
+                           unsigned(segment_BM_s.chamber_ieta) &
+                           unsigned(segment_BI_s.chamber_ieta);
             pt_sp_s <= pt_sp;
 
             dv8 <= dv7;

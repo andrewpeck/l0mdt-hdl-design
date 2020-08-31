@@ -120,7 +120,29 @@ package common_types_pkg is
   function nullify(x: heg2sf_mdt_bus_at) return heg2sf_mdt_bus_at;
   function nullify(x: heg2sf_mdt_bus_avt) return heg2sf_mdt_bus_avt;
 
-  subtype sf2pt_t is std_logic_vector(SF_SEG_DATA_LEN-1 downto 0);
+  constant SF_SEG_POS_LEN : integer := 19;
+
+  constant SF_SEG_POS_MULTI : real := 16.0;
+
+  constant SF_SEG_ANG_LEN : integer := 15;
+
+  constant SF_SEG_ANG_MULTI : real := 4096.0;
+
+  constant SF_SEG_ANG_MULTI_LEN : integer := 12;
+
+  type sf2pt_rt is record
+    data_valid : std_logic;
+    muid : slc_muid_rt;
+    chamber_ieta : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    pos : signed(SF_SEG_POS_LEN-1 downto 0);
+    angle : signed(SF_SEG_ANG_LEN-1 downto 0);
+    quality : std_logic;
+  end record sf2pt_rt;
+  constant SF2PT_LEN : integer := 60;
+  subtype sf2pt_rvt is std_logic_vector(SF2PT_LEN-1 downto 0);
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt;
+  function structify(x: sf2pt_rvt) return sf2pt_rt;
+  function nullify(x: sf2pt_rt) return sf2pt_rt;
 
   type sf2pt_bus_at is array(integer range <>) of sf2ptcalc_rt;
   type sf2pt_bus_avt is array(integer range <>) of sf2ptcalc_rvt;
@@ -688,6 +710,40 @@ package body common_types_pkg is
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: sf2pt_rt) return sf2pt_rvt is
+    variable y : sf2pt_rvt;
+  begin
+    y(59)                      := x.data_valid;
+    y(58 downto 38)            := vectorify(x.muid);
+    y(37 downto 35)            := vectorify(x.chamber_ieta);
+    y(34 downto 16)            := vectorify(x.pos);
+    y(15 downto 1)             := vectorify(x.angle);
+    y(0)                       := x.quality;
+    return y;
+  end function vectorify;
+  function structify(x: sf2pt_rvt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := x(59);
+    y.muid                     := structify(x(58 downto 38));
+    y.chamber_ieta             := structify(x(37 downto 35));
+    y.pos                      := structify(x(34 downto 16));
+    y.angle                    := structify(x(15 downto 1));
+    y.quality                  := x(0);
+    return y;
+  end function structify;
+  function nullify(x: sf2pt_rt) return sf2pt_rt is
+    variable y : sf2pt_rt;
+  begin
+    y.data_valid               := nullify(x.data_valid);
+    y.muid                     := nullify(x.muid);
+    y.chamber_ieta             := nullify(x.chamber_ieta);
+    y.pos                      := nullify(x.pos);
+    y.angle                    := nullify(x.angle);
+    y.quality                  := nullify(x.quality);
     return y;
   end function nullify;
 

@@ -89,9 +89,9 @@
          <obj_property name="ObjectShortName">.layer[4:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.chamber_id">
-         <obj_property name="ElementShortName">.chamber_id[2:0]</obj_property>
-         <obj_property name="ObjectShortName">.chamber_id[2:0]</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.chamber_ieta">
+         <obj_property name="ElementShortName">.chamber_ieta[2:0]</obj_property>
+         <obj_property name="ObjectShortName">.chamber_ieta[2:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.time">

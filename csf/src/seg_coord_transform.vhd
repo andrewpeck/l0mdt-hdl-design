@@ -63,8 +63,8 @@ architecture Behavioral of seg_coord_transform is
     signal z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
     -- Theta angle
     signal theta, theta_s, theta_ss : std_logic_vector(SF_SEG_ANG_LEN-1 downto 0) := (others => '0');
-    -- chamber_id
-    signal chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
+    -- chamber_ieta
+    signal chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
     -- Chamber pos
     signal chamber_pos : std_logic_vector(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
     -- Global seg barrel
@@ -136,7 +136,7 @@ begin
     chamb_pos : Chamber_pos_ROM_1
     PORT MAP (
         clka => clk,
-        addra => chamber_id,
+        addra => chamber_ieta,
         douta => chamber_pos
     );
 
@@ -146,7 +146,7 @@ begin
             if seed_i.data_valid = '1' and locseg_i.valid = '1' then
                 seed <= seed_i;
                 locseg <= locseg_i;
-                chamber_id <= std_logic_vector(seed_i.chamber_id);
+                chamber_ieta <= std_logic_vector(seed_i.chamber_ieta);
             end if;
 
             -- Clock 0
@@ -169,14 +169,14 @@ begin
                 globseg_brl.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_brl.muid <= seed.muid;
                 globseg_brl.quality <= '1';
-                globseg_brl.chamber_id <= seed.chamber_id;
+                globseg_brl.chamber_ieta <= seed.chamber_ieta;
 
             elsif FLAVOUR = 1 then -- Endcap
                 globseg_edc.data_valid <= dv1;
                 globseg_edc.pos <= unsigned(chamber_pos) + unsigned(z_loc);
                 globseg_edc.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_edc.muid <= seed.muid;
-                globseg_edc.chamber_id <= seed.chamber_id;
+                globseg_edc.chamber_ieta <= seed.chamber_ieta;
                 globseg_edc.quality <= '1';
             end if;
 

@@ -88,7 +88,7 @@ HDL_Types:
 - tar2hps:
   - tube        : [ type: unsigned , length: MDT_TUBE_LEN ]
   - layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
-  - chamber_id  : [ type: unsigned , length: SLC_CHAMBER_LEN]
+  - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN]
   - time        : [ type: unsigned , length: MDT_TIME_LEN ]
   - data_valid  : [ type: logic]
 
@@ -109,7 +109,7 @@ HDL_Types:
   - mbar          : [ type: unsigned , length: UCM_MBAR_LEN ]
   - pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
   - ang           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
-  - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta    : [ type: logic , length: SLC_CHAMBER_LEN ]
   - data_valid    : [ type: logic]
 
 
@@ -131,7 +131,7 @@ HDL_Types:
 - sf2pt:
   - data_valid  : [ type: logic]
   - muid        : [ type: slc_muid]
-  - chamber_id  : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta  : [ type: logic , length: SLC_CHAMBER_LEN ]
   - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
   - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
   - quality     : [ type: logic]
@@ -139,7 +139,7 @@ HDL_Types:
 - sf_seg_data_barrel:
   - data_valid : [ type: logic]
   - muid       : [ type: slc_muid]
-  - chamber_id : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta : [ type: logic , length: SLC_CHAMBER_LEN ]
   - pos        : [ type: signed, length: SF_SEG_POS_LEN ]
   - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
   - quality    : [ type: logic]
@@ -147,7 +147,7 @@ HDL_Types:
 - sf_seg_data_endcap:
   - data_valid : [ type: logic]
   - muid       : [ type: slc_muid]
-  - chamber_id : [ type: logic , length: SLC_CHAMBER_LEN ]
+  - chamber_ieta : [ type: logic , length: SLC_CHAMBER_LEN ]
   - pos        : [ type: unsigned, length: SF_SEG_POS_LEN ]
   - angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
   - quality    : [ type: logic]
