@@ -87,7 +87,7 @@ package pt_pkg is
 
     function pt_bin(pt : signed) return unsigned;
 --    function calc_phi_mod(phi : std_logic_vector) return signed;
-    function pt_threshold(pt : unsigned) return std_logic_vector;
+    function pt_threshold(pt : unsigned) return unsigned;
     function stdlogic_integer( s : std_logic ) return integer ;
 
     -- Arrays
@@ -163,7 +163,7 @@ package body pt_pkg is
 --        return phi_m;
 --    end function;
 
-    function pt_threshold(pt : unsigned) return std_logic_vector is
+    function pt_threshold(pt : unsigned) return unsigned is
         variable thr : integer := 0;
     begin
         if pt > 80*integer(MTC_PT_MULT) then
@@ -197,7 +197,7 @@ package body pt_pkg is
         elsif pt < 4*integer(MTC_PT_MULT) then
             thr := 1;
         end if;
-        return std_logic_vector(to_unsigned(thr,MTC_PTTHR_LEN));
+        return unsigned(to_unsigned(thr,MTC_PTTHR_LEN));
     end function;
 
 

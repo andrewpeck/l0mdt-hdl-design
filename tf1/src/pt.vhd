@@ -52,26 +52,26 @@ entity pt is
     );
     Port (
         clk : in std_logic;
-        i_segment_I  : in sf_seg_data_barrel_rvt;
-        i_segment_M  : in sf_seg_data_barrel_rvt;
-        i_segment_O  : in sf_seg_data_barrel_rvt;
-        i_SLC        : in pl2pt_rvt;
+        i_segment_I  : in sf2ptcalc_rvt;
+        i_segment_M  : in sf2ptcalc_rvt;
+        i_segment_O  : in sf2ptcalc_rvt;
+        i_SLC        : in pl2ptcalc_rvt;
         i_rst        : in std_logic;
-        o_mtc        : out tf2mtc_rvt
+        o_mtc        : out ptcalc2mtc_rvt
     );
 end pt;
 
 architecture Behavioral of pt is
     -- Online segments in global coordinates
-    signal segment_BI, segment_BM, segment_BO : sf_seg_data_barrel_rt;
-    signal segment_BI_s, segment_BM_s, segment_BO_s : sf_seg_data_barrel_rt;
-    signal segment_BI_v, segment_BM_v, segment_BO_v : sf_seg_data_barrel_rvt;
+    signal segment_BI, segment_BM, segment_BO : sf2ptcalc_rt;
+    signal segment_BI_s, segment_BM_s, segment_BO_s : sf2ptcalc_rt;
+    signal segment_BI_v, segment_BM_v, segment_BO_v : sf2ptcalc_rvt;
 
 
-    signal segment_EI, segment_EM, segment_EO : sf_seg_data_endcap_rt;
+    signal segment_EI, segment_EM, segment_EO : sf2ptcalc_rvt;
 
     -- SLC candidate
-    signal slc, slc_s : pl2pt_rt;
+    signal slc, slc_s : pl2ptcalc_rt;
     -- Chamber combo id
     signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta :
            unsigned(SLC_CHAMBER_LEN*3 + 4 -1 downto 0) := (others => '0');
@@ -132,7 +132,7 @@ architecture Behavioral of pt is
     -- Mtc output parameters
     signal pt : unsigned(MTC_PT_LEN-1 downto 0) := (others => '0');
     signal mtc_valid : std_logic := '0';
-    signal mtc : tf2mtc_rt;
+    signal mtc : ptcalc2mtc_rt;
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
 
     signal index_a : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
@@ -362,9 +362,9 @@ begin
                 segment_BM_s <= segment_BM;
                 segment_BO_s <= segment_BO;
                 comboid_s  <= "0000" &
-                              unsigned(segment_BO.chamber_ieta) &
-                              unsigned(segment_BM.chamber_ieta) &
-                              unsigned(segment_BI.chamber_ieta);
+                              unsigned(segment_BO.mdtid.chamber_ieta) &
+                              unsigned(segment_BM.mdtid.chamber_ieta) &
+                              unsigned(segment_BI.mdtid.chamber_ieta);
                 nsegments <= to_unsigned(stdlogic_integer(segment_BI.data_valid)
                     + stdlogic_integer(segment_BM.data_valid)
                     + stdlogic_integer(segment_BO.data_valid),
@@ -394,9 +394,9 @@ begin
 
             dv2 <= dv1;
             comboid_phi <= pt_bin(pt_s) &
-                           unsigned(segment_BO_s.chamber_ieta) &
-                           unsigned(segment_BM_s.chamber_ieta) &
-                           unsigned(segment_BI_s.chamber_ieta);
+                           unsigned(segment_BO_s.mdtid.chamber_ieta) &
+                           unsigned(segment_BM_s.mdtid.chamber_ieta) &
+                           unsigned(segment_BI_s.mdtid.chamber_ieta);
             pt_s0 <= pt_s;
 
             dv3 <= dv2;
@@ -418,9 +418,9 @@ begin
 
             dv7 <= dv6;
             comboid_eta <= pt_bin(pt_sp) &
-                           unsigned(segment_BO_s.chamber_ieta) &
-                           unsigned(segment_BM_s.chamber_ieta) &
-                           unsigned(segment_BI_s.chamber_ieta);
+                           unsigned(segment_BO_s.mdtid.chamber_ieta) &
+                           unsigned(segment_BM_s.mdtid.chamber_ieta) &
+                           unsigned(segment_BI_s.mdtid.chamber_ieta);
             pt_sp_s <= pt_sp;
 
             dv8 <= dv7;
@@ -442,10 +442,10 @@ begin
             mtc.muid <= slc_s.muid;
             mtc.eta <= eta;
             mtc.pt  <= pt;
-            mtc.pt_thr <= pt_threshold(pt);
+            mtc.ptthresh <= pt_threshold(pt);
             mtc.charge <= slc.charge; -- temporary
             -- Still to add other cases
-            mtc.nseg <= nsegments;
+            mtc.nsegments <= nsegments;
             mtc.quality <= quality;
             --reset
             if pt_valid = '1' or i_rst = '1' then

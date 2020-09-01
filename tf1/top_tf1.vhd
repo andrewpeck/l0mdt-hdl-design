@@ -45,7 +45,7 @@ library tf_lib;
 use tf_lib.pt_pkg.all;
 
 
-entity top_tf is
+entity top_tf1 is
     generic (
         N_FINDERS_PER_STATION : integer := 3
     );
@@ -64,9 +64,9 @@ entity top_tf is
         i_nsm_segs_O   : in  sf2pt_bus_avt(N_FINDERS_PER_STATION-1 downto 0);
         o_mtcs         : out tf2mtc_bus_avt(N_FINDERS_PER_STATION-1 downto 0)
     );
-end top_tf;
+end top_tf1;
 
-architecture Behavioral of top_tf is
+architecture Behavioral of top_tf1 is
     signal pt_seg_I, pt_seg_M, pt_seg_O
             : sf2pt_bus_avt(N_FINDERS_PER_STATION-1 downto 0 )
             := (others => (others => '0'));

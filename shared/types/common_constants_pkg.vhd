@@ -23,7 +23,7 @@ package common_constants_pkg is
 
   constant BCID_LEN : integer := SL_HEADER_BCID_LEN;
 
-  constant SLC_CHAMBER_LEN : integer := 3;
+  constant SLC_CHAMBER_LEN : integer := 4;
 
   constant SLC_Z_RPC_LEN : integer := 10;
 
@@ -51,7 +51,31 @@ package common_constants_pkg is
 
   constant CSF_Y_OFFSET : integer := -640;
 
+  constant SF_SEG_POS_LEN : integer := 19;
+
+  constant SF_SEG_POS_MULTI : real := 16.0;
+
+  constant SF_SEG_ANG_LEN : integer := 15;
+
+  constant SF_SEG_ANG_MULTI : real := 4096.0;
+
+  constant SF_SEG_ANG_MULTI_LEN : integer := 12;
+
   constant SF_SEG_DATA_LEN : integer := 59;
+
+  constant UCM_PT_PHIMOD_LEN : integer := UCM2PL_PHIMOD_LEN;
+
+  constant MTC_ETA_LEN : integer := 15;
+
+  constant MTC_PT_LEN : integer := PTCALC2MTC_MDT_PT_LEN;
+
+  constant MTC_PT_MULT : real := PTCALC2MTC_MDT_PT_MULT;
+
+  constant MTC_PTTHR_LEN : integer := PTCALC2MTC_MDT_PTTHRESH_LEN;
+
+  constant MTC_NSEG_LEN : integer := PTCALC2MTC_MDT_NSEGMENTS_LEN;
+
+  constant MTC_QUALITY_LEN : integer := PTCALC2MTC_MDT_QUALITY_LEN;
 
   constant BIL_SEC3_RHO : real := 4949.0;
 

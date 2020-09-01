@@ -186,11 +186,7 @@ HDL_Types:
 # sf 2 pt
 # -----------------------------------------------------------
 
-- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
-- SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
-- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
-- SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
-- SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
+
 
 - sf2pt:
   - data_valid  : [ type: logic]

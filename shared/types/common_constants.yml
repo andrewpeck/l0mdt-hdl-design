@@ -35,7 +35,7 @@ HDL_Types:
 - BCID_LEN:         [qualifier: constant , type: integer , value: SL_HEADER_BCID_LEN]
 
 # slc chambers
-- SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 3]
+- SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 4]
 
 # slc common
 # SLC_TCID_LEN:     [ qualifier: constant , type: integer , value: 3 ]
@@ -121,11 +121,17 @@ HDL_Types:
 # -----------------------------------------------------------
 # sf 2 pt 
 # -----------------------------------------------------------
-# SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+# - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
 # SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
 # SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
 # SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
 # SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
+
+- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+- SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
+- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
+- SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
+- SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
 - SF_SEG_DATA_LEN : [qualifier : constant , type : integer , value : 59]
 # -----------------------------------------------------------
@@ -133,20 +139,20 @@ HDL_Types:
 # -----------------------------------------------------------
 
 #pl 2 pt
-# UCM_PT_PHIMOD_LEN: [ qualifier: constant , type: integer , value: 8 ]
+- UCM_PT_PHIMOD_LEN: [ qualifier: constant , type: integer , value: UCM2PL_PHIMOD_LEN ]
 # UCM_PT_PHIMOD_MULT: [qualifier: constant, type: real, value: 320.0]
 
 
 # -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
-# MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: 15 ]
+- MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: 15 ]
 # MTC_ETA_MULT  :  [ qualifier: constant , type: real, value: 6068.1481481481]
-# MTC_PT_LEN    :  [ qualifier: constant , type: integer , value: 9 ]
-# MTC_PT_MULT   :  [ qualifier: constant , type: real, value: 4.0]
-# MTC_PTTHR_LEN :  [ qualifier: constant , type: integer , value: 4 ]
-# MTC_NSEG_LEN  :  [ qualifier: constant , type: integer , value: 2 ]
-# MTC_QUALITY_LEN  :  [ qualifier: constant , type: integer , value: 3 ]
+- MTC_PT_LEN    :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_PT_LEN ]
+- MTC_PT_MULT   :  [ qualifier: constant , type: real, value: PTCALC2MTC_MDT_PT_MULT] # 4.0
+- MTC_PTTHR_LEN :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_PTTHRESH_LEN ]
+- MTC_NSEG_LEN  :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_NSEGMENTS_LEN ]
+- MTC_QUALITY_LEN  :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_QUALITY_LEN ]
 
 #############################################################
 # OTHER
