@@ -128,8 +128,8 @@ HDL_Types:
 # slc ucm2hps specific
 # barrel
 - ucm_csf_barrel:
-  - mbar        : [ type : unsigned , length : UCM2SF_VEC_ANG_LEN]
-  - z           : [ type : unsigned , length : UCM2SF_VEC_POS_LEN ]
+  - mbar        : [ type : unsigned , length : HEG2SF_VEC_ANG_LEN]
+  - z           : [ type : unsigned , length : HEG2SF_VEC_POS_LEN ]
 
 # - ucm_csf_endcap:
   # - mbar        : [ type : unsigned , length : UCM2CSF_VEC_ANG_LEN]

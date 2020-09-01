@@ -71,8 +71,8 @@ package common_types_pkg is
   function nullify(x: tar2hps_bus_avt) return tar2hps_bus_avt;
 
   type ucm_csf_barrel_rt is record
-    mbar : unsigned(UCM2SF_VEC_ANG_LEN-1 downto 0);
-    z : unsigned(UCM2SF_VEC_POS_LEN-1 downto 0);
+    mbar : unsigned(HEG2SF_VEC_ANG_LEN-1 downto 0);
+    z : unsigned(HEG2SF_VEC_POS_LEN-1 downto 0);
   end record ucm_csf_barrel_rt;
   constant UCM_CSF_BARREL_LEN : integer := 21;
   subtype ucm_csf_barrel_rvt is std_logic_vector(UCM_CSF_BARREL_LEN-1 downto 0);
@@ -457,12 +457,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*74-1 downto 0);
+    variable y : std_logic_vector(x'length*36-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-74) := vectorify(x(i));
-      msb := msb - 74 -1;
+      y(msb downto msb-36) := vectorify(x(i));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -479,8 +479,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-74));
-      msb := msb - 74 -1;
+      y(i) := structify(x(msb downto msb-36));
+      msb := msb - 36 -1;
     end loop l;
     return y;
   end function structify;
@@ -532,12 +532,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm2hps_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*63-1 downto 0);
+    variable y : std_logic_vector(x'length*54-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-63) := vectorify(x(i));
-      msb := msb - 63 -1;
+      y(msb downto msb-54) := vectorify(x(i));
+      msb := msb - 54 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -554,8 +554,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-63));
-      msb := msb - 63 -1;
+      y(i) := structify(x(msb downto msb-54));
+      msb := msb - 54 -1;
     end loop l;
     return y;
   end function structify;
@@ -585,12 +585,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg2sf_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*63-1 downto 0);
+    variable y : std_logic_vector(x'length*64-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-63) := vectorify(x(i));
-      msb := msb - 63 -1;
+      y(msb downto msb-64) := vectorify(x(i));
+      msb := msb - 64 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -607,8 +607,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-63));
-      msb := msb - 63 -1;
+      y(i) := structify(x(msb downto msb-64));
+      msb := msb - 64 -1;
     end loop l;
     return y;
   end function structify;
@@ -756,12 +756,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: sf2pt_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*62-1 downto 0);
+    variable y : std_logic_vector(x'length*63-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-62) := vectorify(x(i));
-      msb := msb - 62 -1;
+      y(msb downto msb-63) := vectorify(x(i));
+      msb := msb - 63 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -778,8 +778,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-62));
-      msb := msb - 62 -1;
+      y(i) := structify(x(msb downto msb-63));
+      msb := msb - 63 -1;
     end loop l;
     return y;
   end function structify;
