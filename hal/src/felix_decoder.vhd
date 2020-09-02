@@ -33,7 +33,7 @@ entity felix_decoder is
     valid_o : out std_logic;
 
     -- data from LPGBTs
-    lpgbt_uplink_data : in lpgbt_uplink_data_rt;
+    ttc_mgt_data_i : in std_logic_vector(31 downto 0);
 
     strobe_pipeline : in std_logic;
     strobe_320      : in std_logic;
@@ -48,6 +48,7 @@ end felix_decoder;
 architecture behavioral of felix_decoder is
   signal l0mdt_ttc : l0mdt_ttc_rt;
 
+    signal lpgbt_uplink_data : lpgbt_uplink_data_rt;
   -- function to replicate a std_logic bit some number of times
   -- equivalent to verilog's built in {n{x}} operator
   function repeat(B : std_logic; N : integer) return std_logic_vector is
@@ -65,6 +66,51 @@ architecture behavioral of felix_decoder is
     return structify(vectorify(ttc) and repeat(gate, L0MDT_TTC_LEN));
   end gate_ttc;
 begin
+
+
+    --uplink_inst : entity lpgbt_fpga.lpgbtfpga_uplink
+
+    --  generic map (
+    --    datarate                  => g_UPLINK_DATARATE,
+    --    fec                       => g_UPLINK_FEC,
+    --    c_multicyledelay          => g_UPLINK_MULTICYCLE_DELAY,
+    --    c_clockratio              => g_UPLINK_CLOCK_RATIO,
+    --    c_mgtwordwidth            => g_UPLINK_WORD_WIDTH,
+    --    c_allowedfalseheader      => g_UPLINK_ALLOWED_FALSE_HEADER,
+    --    c_allowedfalseheaderovern => g_UPLINK_ALLOWED_FALSE_HEADER_OVERN,
+    --    c_requiredtrueheader      => g_UPLINK_REQUIRED_TRUE_HEADER,
+    --    c_bitslip_mindly          => g_UPLINK_BITSLIP_MINDLY,
+    --    c_bitslip_waitdly         => g_UPLINK_BITSLIP_WAITDLY
+    --    )
+
+    --  port map (
+    --    clk_freerunningclk_i       => std_logic0,  -- not used since reset on even feature is
+    --                                               -- disabled in frame aligner
+    --    uplinkclk_i                => uplink_clk,
+    --    uplinkrst_n_i              => uplink_reset,
+    --    mgt_word_o                 => mgt_data,
+    --    bypassinterleaver_i        => g_LPGBT_BYPASS_INTERLEAVER,
+    --    bypassfecencoder_i         => g_LPGBT_BYPASS_FEC,
+    --    bypassscrambler_i          => g_LPGBT_BYPASS_SCRAMBLER,
+    --    uplinkclkouten_o           => uplink_data.valid,
+    --    userdata_o(223 downto 0)   => uplink_data.data,
+    --    userdata_o(229 downto 224) => unused_bits,
+    --    ecdata_o                   => uplink_data.ec,
+    --    icdata_o                   => uplink_data.ic,
+    --    mgt_bitslipctrl_o          => bitslip,
+    --    datacorrected_o            => datacorrected,
+    --    iccorrected_o              => iccorrected,
+    --    eccorrected_o              => eccorrected,
+    --    rdy_o                      => uplink_ready(I)
+    --    );
+
+
+
+
+
+
+
+
   process (clock)
   begin
     if (rising_edge(clock)) then

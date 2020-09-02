@@ -40,17 +40,17 @@ entity mgt_wrapper is
     refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
     --------------------------------------------------------------------------------
-    -- LPGBT (CSM + FELIX Downlink)
+    -- LPGBT (CSM Downlink)
     --------------------------------------------------------------------------------
 
     -- Rxslide from LPGBT rx core
-    lpgbt_rxslide_i : in std_logic_vector (c_FELIX_LPGBT_INDEX downto 0);
+    lpgbt_rxslide_i : in std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
     -- 32 bits / clock to mgt
     lpgbt_downlink_mgt_word_array_i : in std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
 
     -- 32 bits / clock from mgt
-    lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_FELIX_LPGBT_INDEX downto 0);
+    lpgbt_uplink_mgt_word_array_o : out std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- LPGBT Emulator
@@ -176,37 +176,54 @@ begin
   axi_map_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
-    mon.mgt(I).status.rxcdr_stable            <= status(I).rxcdr_stable;
-    mon.mgt(I).status.powergood               <= status(I).powergood;
-    mon.mgt(I).status.txready                 <= status(I).txready;
-    mon.mgt(I).status.rxready                 <= status(I).rxready;
-    mon.mgt(I).status.rx_pma_reset_done       <= status(I).rx_pma_reset_done;
-    mon.mgt(I).status.tx_pma_reset_done       <= status(I).tx_pma_reset_done;
-    mon.mgt(I).status.tx_reset_done           <= status(I).tx_reset_done;
-    mon.mgt(I).status.rx_reset_done           <= status(I).rx_reset_done;
-    mon.mgt(I).status.buffbypass_tx_done_out  <= status(I).buffbypass_tx_done_out;
-    mon.mgt(I).status.buffbypass_tx_error_out <= status(I).buffbypass_tx_error_out;
-    mon.mgt(I).status.buffbypass_rx_done_out  <= status(I).buffbypass_rx_done_out;
-    mon.mgt(I).status.buffbypass_rx_error_out <= status(I).buffbypass_rx_error_out;
+    drp_i(I).drpclk_in(0) <= clocks.axiclock;  -- 50MHz from MMCM
 
-    mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
-    mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out(0);
+    -- some of these are crossing clock domains so add one ff to help metastability
+    process (clocks.axiclock) is
+    begin
+      if (rising_edge(clocks.axiclock)) then
+        mon.mgt(I).status.rxcdr_stable            <= status(I).rxcdr_stable;
+        mon.mgt(I).status.powergood               <= status(I).powergood;
+        mon.mgt(I).status.txready                 <= status(I).txready;
+        mon.mgt(I).status.rxready                 <= status(I).rxready;
+        mon.mgt(I).status.rx_pma_reset_done       <= status(I).rx_pma_reset_done;
+        mon.mgt(I).status.tx_pma_reset_done       <= status(I).tx_pma_reset_done;
+        mon.mgt(I).status.tx_reset_done           <= status(I).tx_reset_done;
+        mon.mgt(I).status.rx_reset_done           <= status(I).rx_reset_done;
+        mon.mgt(I).status.buffbypass_tx_done_out  <= status(I).buffbypass_tx_done_out;
+        mon.mgt(I).status.buffbypass_tx_error_out <= status(I).buffbypass_tx_error_out;
+        mon.mgt(I).status.buffbypass_rx_done_out  <= status(I).buffbypass_rx_done_out;
+        mon.mgt(I).status.buffbypass_rx_error_out <= status(I).buffbypass_rx_error_out;
 
-    drp_i(I).drpaddr_in  <= ctrl.mgt(I).drp.wr_addr;
-    drp_i(I).drpclk_in(0)<= clocks.axiclock;  -- 50MHz from MMCM
-    drp_i(I).drpdi_in    <= ctrl.mgt(I).drp.wr_data;
-    drp_i(I).drpen_in(0) <= ctrl.mgt(I).drp.en;
-    drp_i(I).drpwe_in(0) <= ctrl.mgt(I).drp.wr_en;
+        mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
+        mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out(0);
 
-    tx_resets(I).reset                  <= ctrl.mgt(I).tx_resets.reset;
-    tx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).tx_resets.reset_pll_and_datapath;
-    tx_resets(I).reset_datapath         <= ctrl.mgt(I).tx_resets.reset_datapath;
-    tx_resets(I).reset_bufbypass        <= ctrl.mgt(I).tx_resets.reset_bufbypass;
+        drp_i(I).drpaddr_in   <= ctrl.mgt(I).drp.wr_addr;
+        drp_i(I).drpdi_in     <= ctrl.mgt(I).drp.wr_data;
+        drp_i(I).drpen_in(0)  <= ctrl.mgt(I).drp.en;
+        drp_i(I).drpwe_in(0)  <= ctrl.mgt(I).drp.wr_en;
 
-    rx_resets(I).reset                  <= ctrl.mgt(I).rx_resets.reset;
-    rx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).rx_resets.reset_pll_and_datapath;
-    rx_resets(I).reset_datapath         <= ctrl.mgt(I).rx_resets.reset_datapath;
-    rx_resets(I).reset_bufbypass        <= ctrl.mgt(I).rx_resets.reset_bufbypass;
+        tx_resets(I).reset                  <= ctrl.mgt(I).tx_resets.reset;
+        tx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).tx_resets.reset_pll_and_datapath;
+        tx_resets(I).reset_datapath         <= ctrl.mgt(I).tx_resets.reset_datapath;
+        tx_resets(I).reset_bufbypass        <= ctrl.mgt(I).tx_resets.reset_bufbypass;
+
+        rx_resets(I).reset                  <= ctrl.mgt(I).rx_resets.reset;
+        rx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).rx_resets.reset_pll_and_datapath;
+        rx_resets(I).reset_datapath         <= ctrl.mgt(I).rx_resets.reset_datapath;
+
+      end if;
+    end process;
+
+    notfelix_gen : if (felix_idx_array(I) = -1) generate
+      process (clocks.axiclock) is
+      begin
+        if (rising_edge(clocks.axiclock)) then
+          rx_resets(I).reset_bufbypass <= ctrl.mgt(I).rx_resets.reset_bufbypass;
+        end if;
+      end process;
+    end generate;
+
   end generate;
 
   --------------------------------------------------------------------------------
@@ -448,8 +465,8 @@ begin
       signal tx_cesync, tx_clrsync        : std_logic;
       signal tx_usrclk_active             : std_logic;
       signal rx_usrclk_active             : std_logic;
-      signal felix_rx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI
-      signal felix_tx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI
+      signal felix_rx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI?
+      signal felix_tx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI?
 
       signal rxslide : std_logic_vector (3 downto 0);
       signal words_o : std32_array_t (3 downto 0);
@@ -471,16 +488,16 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
           free_clock            => clocks.freeclock,
-          reset                 => '0',                                                -- FIXME: how to reset? due to recovered clock...
+          reset                 => '0',              -- FIXME: how to reset? due to recovered clock...
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => (others => lpgbt_rxslide_i (c_FELIX_LPGBT_INDEX)),  -- FIXME: should zero the others that aren't used
+          mgt_rxslide_i         => (others => '0'),  --(others => lpgbt_rxslide_i (c_FELIX_LPGBT_INDEX)),  -- FIXME: should zero the others that aren't used
           status_o              => status(I+3 downto I),
           mgt_words_i           => felix_uplink_mgt_word_array_i(idx+3 downto idx),
           mgt_words_o           => words_o,
-          tx_header_i           => (others => '0'),                                    -- something to do with 64/67
-          tx_sequence_i         => (others => '0'),                                    -- ditto
+          tx_header_i           => (others => '0'),  -- something to do with 64/67
+          tx_sequence_i         => (others => '0'),  -- ditto
           mgt_txoutclk_o        => txoutclk (3 downto 0),
           mgt_rxoutclk_o        => rxoutclk (3 downto 0),
           mgt_txusrclk_i        => txusrclk (3 downto 0),
@@ -501,7 +518,7 @@ begin
       mgtout_assign_loop : for J in 0 to 3 generate
         matchgen : if (idx+J = c_FELIX_RECCLK_SRC) generate
 
-          lpgbt_uplink_mgt_word_array_o(c_FELIX_LPGBT_INDEX) <= words_o (J);
+          --lpgbt_uplink_mgt_word_array_o(c_FELIX_LPGBT_INDEX) <= words_o (J);
 
           BUFG_GT_SYNC_rx_inst : BUFG_GT_SYNC
             port map (

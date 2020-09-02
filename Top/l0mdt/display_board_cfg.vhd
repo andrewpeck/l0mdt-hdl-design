@@ -3,11 +3,11 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.system_types_pkg.all;
-use work.constants_pkg.all;
-use work.board_pkg.all;
-use work.board_pkg_common.all;
+library hal;
+use hal.system_types_pkg.all;
+use hal.constants_pkg.all;
+use hal.board_pkg.all;
+use hal.board_pkg_common.all;
 
 entity display_board_cfg is
 end display_board_cfg;
@@ -68,10 +68,10 @@ begin
     lpgbt_gen : if (lpgbt_idx_array(I) /= -1) generate
       constant downlink_idx : integer := lpgbt_downlink_idx_array(I);
       constant uplink_idx   : integer := lpgbt_uplink_idx_array(I);
-      signal downlink_data : std_logic_vector (31 downto 0);
+      signal downlink_data  : std_logic_vector (31 downto 0);
     begin
 
-  --------------------------------------------------------------------------------
+      --------------------------------------------------------------------------------
 
       assert (c_NUM_CSM_UPLINKS mod 2 = 0)
         report "You NEED to instantiate an even number of uplinks because a CSM is always 2+1 (c_NUM_CSM_UPLINKS="
@@ -123,7 +123,7 @@ begin
     felix_gen : if (felix_idx_array(I) /= -1 and (I mod 4 = 0)) generate
       constant idx : integer := felix_idx_array(I);
     begin
-      assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I)   & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
+      assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
       assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+1) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
       assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+2) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
       assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+3) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
@@ -163,5 +163,78 @@ begin
   assert false report "c_NUM_SECTOR_LOGIC_INPUTS=" & integer'image(c_NUM_SECTOR_LOGIC_INPUTS) severity note;
   assert false report "c_NUM_SECTOR_LOGIC_OUTPUTS=" & integer'image(c_NUM_SECTOR_LOGIC_OUTPUTS) severity note;
   assert false report "--------------------------------------------------------" severity note;
+
+  csm_hilo_print : for I in csm_hi_lo'range generate
+  begin
+    assert false
+      report "CSM Hi Lo(" & integer'image(I) & ")=" &
+      integer'image(csm_hi_lo (I).hi) & " downto " &
+      integer'image(csm_hi_lo (I).lo) severity note;
+  end generate;
+
+  polmux_hilo_print : for I in polmux_hi_lo'range generate
+  begin
+    assert false
+      report "Polmux Hi Lo(" & integer'image(I) & ")=" &
+      integer'image(polmux_hi_lo (I).hi) & " downto " &
+      integer'image(polmux_hi_lo (I).lo) severity note;
+  end generate;
+
+  -- 0 to 3, inner middle outer extra
+  station_gen : for I in 0 to 3 generate
+    constant num_polmuxes : int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
+                                                     c_NUM_POLMUX_MIDDLE,
+                                                     c_NUM_POLMUX_OUTER,
+                                                     c_NUM_POLMUX_EXTRA);
+  begin
+
+
+      polmux_gen : for J in 0 to num_polmuxes(I)-1 generate
+        constant id    : integer := get_polmux_global_id (c_MDT_CONFIG, J, stations(I));
+        constant hi    : integer := polmux_hi_lo (id).hi;
+        constant lo    : integer := polmux_hi_lo (id).lo;
+        constant width : integer := hi-lo+1;
+      begin
+
+        assert false report
+          "Generating PolMux " & stations_str(I)
+          & " local#" & integer'image(J)
+          & " global#" & integer'image(id)
+          & " width=" & integer'image(width)
+          & " hi=" & integer'image(hi)
+          & " lo=" & integer'image(lo)
+          severity note;
+
+      end generate;
+    end generate;
+
+
+  --csm_loop : for I in c_MDT_CONFIG'range generate
+  --  function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is
+  --    variable cnt : integer := 0;
+  --  begin
+  --    for k in 0 to c_MDT_CONFIG'length -1 loop
+  --      if (a(k) = '1') then
+  --        if (k = pos) then
+  --          return cnt;
+  --        end if;
+  --        cnt := cnt + 1;
+  --      end if;
+  --    end loop;
+  --    return -1;
+  --  end function;
+
+  --begin
+  --  assert false report "POLMUX " & integer'image(I) severity note;
+  --  en_loop : for J in c_MDT_CONFIG(I).en'range generate
+  --  begin
+  --    assert false report "    CH " & integer'image(J) & "en=" &
+  --      integer'image(to_integer(unsigned(std_logic_vector'('0' & c_MDT_CONFIG(I).en(J)))))
+  --    & "    idx " &
+  --      integer'image(get_ith_bit_index (c_MDT_CONFIG(I).en, J)) severity note;
+  --    tdc_gen : if (c_MDT_CONFIG(I).en(J)='1') generate
+  --    end generate;
+  --  end generate;
+  --end generate;
 
 end Behavioral;

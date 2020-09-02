@@ -29,7 +29,7 @@ entity polling_mux is
     clock       : in  std_logic;
     tdc_hits_i  : in  mdt_polmux_bus_avt (g_WIDTH-1 downto 0);
     read_done_o : out std_logic_vector (g_WIDTH-1 downto 0);
-    tdc_hit_o   : out mdt_polmux_rvt
+    tdc_hit_o   : out mdt_polmux_rt
     );
 end polling_mux;
 
@@ -165,6 +165,6 @@ begin
     end if;
   end process;
 
-  tdc_hit_o <= tdc_hits_or;
+  tdc_hit_o <= structify(tdc_hits_or);
 
 end behavioral;

@@ -16,6 +16,9 @@ hal/src/constants_pkg.vhd 2008
 hal/src/system_types_pkg.vhd 2008
 hal/src/sync_cdc.vhd 2008
 hal/src/felix_decoder.vhd 2008
+hal/src/polmux_wrapper.vhd 2008
+hal/src/tdc_decoder_wrapper.vhd 2008
+hal/src/csm.vhd 2008
 
 #
 hal/src/mmcm_wiz.v 2008

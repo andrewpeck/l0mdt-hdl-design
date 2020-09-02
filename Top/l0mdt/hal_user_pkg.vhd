@@ -10,9 +10,9 @@ package user_pkg is
   --
   -- user values should be less than or equal to the board maximum
 
-  constant user_LPGBT_UPLINKS        : integer := 20;
-  constant user_LPGBT_DOWNLINKS      : integer := 10;
-  constant user_TDC_INPUTS           : integer := 10;  -- # of TDC inputs
+  constant user_LPGBT_UPLINKS        : integer := -1;
+  constant user_LPGBT_DOWNLINKS      : integer := -1;
+  constant user_TDC_INPUTS           : integer := -1;  -- # of TDC inputs
 
   constant user_SECTOR_LOGIC_INPUTS  : integer := -1;
   constant user_SECTOR_LOGIC_OUTPUTS : integer := -1;
