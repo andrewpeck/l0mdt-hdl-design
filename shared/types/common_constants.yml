@@ -127,13 +127,13 @@ HDL_Types:
 # SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
 # SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
-- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: SF2PTCALC_SEGPOS_LEN]
 - SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
-- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
+- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: SF2PTCALC_SEGANGLE_LEN]
 - SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
 - SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
-- SF_SEG_DATA_LEN : [qualifier : constant , type : integer , value : 59]
+# - SF_SEG_DATA_LEN : [qualifier : constant , type : integer , value : 59]
 # -----------------------------------------------------------
 # slc ucm pipeline
 # -----------------------------------------------------------

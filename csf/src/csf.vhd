@@ -44,7 +44,7 @@ entity csf is
         i_mdt_hit : in heg2sf_mdt_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
-        o_seg     : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
+        o_seg     : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
     );
 end csf;
 

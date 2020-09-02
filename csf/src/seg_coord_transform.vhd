@@ -50,7 +50,7 @@ entity seg_coord_transform is
     clk         : in  std_logic;
     i_locseg    : in  csf_locseg_rvt;
     i_seed      : in  csf_seed_rvt;
-    o_globseg   : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
+    o_globseg   : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
   );
 end seg_coord_transform; -- seg_coord_transform
 
@@ -133,12 +133,12 @@ begin
     --    douta => theta
     --);
 
-    chamb_pos : Chamber_pos_ROM_1
-    PORT MAP (
-        clka => clk,
-        addra => chamber_ieta,
-        douta => chamber_pos
-    );
+    -- chamb_pos : Chamber_pos_ROM_1
+    -- PORT MAP (
+    --     clka => clk,
+    --     addra => chamber_ieta,
+    --     douta => chamber_pos
+    -- );
 
     CoordProc : process( clk )
     begin
@@ -146,7 +146,7 @@ begin
             if seed_i.data_valid = '1' and locseg_i.valid = '1' then
                 seed <= seed_i;
                 locseg <= locseg_i;
-                chamber_ieta <= std_logic_vector(seed_i.chamber_ieta);
+                chamber_ieta <= std_logic_vector(seed_i.mdtid.chamber_ieta);
             end if;
 
             -- Clock 0
@@ -169,14 +169,14 @@ begin
                 globseg_brl.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_brl.muid <= seed.muid;
                 globseg_brl.quality <= '1';
-                globseg_brl.chamber_ieta <= seed.chamber_ieta;
+                globseg_brl.mdtid <= seed.mdtid;
 
             elsif FLAVOUR = 1 then -- Endcap
                 globseg_edc.data_valid <= dv1;
                 globseg_edc.pos <= unsigned(chamber_pos) + unsigned(z_loc);
                 globseg_edc.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_edc.muid <= seed.muid;
-                globseg_edc.chamber_ieta <= seed.chamber_ieta;
+                globseg_edc.mdtid <= seed.mdtid;
                 globseg_edc.quality <= '1';
             end if;
 

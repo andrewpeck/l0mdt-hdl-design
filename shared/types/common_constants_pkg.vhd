@@ -51,17 +51,15 @@ package common_constants_pkg is
 
   constant CSF_Y_OFFSET : integer := -640;
 
-  constant SF_SEG_POS_LEN : integer := 19;
+  constant SF_SEG_POS_LEN : integer := SF2PTCALC_SEGPOS_LEN;
 
   constant SF_SEG_POS_MULTI : real := 16.0;
 
-  constant SF_SEG_ANG_LEN : integer := 15;
+  constant SF_SEG_ANG_LEN : integer := SF2PTCALC_SEGANGLE_LEN;
 
   constant SF_SEG_ANG_MULTI : real := 4096.0;
 
   constant SF_SEG_ANG_MULTI_LEN : integer := 12;
-
-  constant SF_SEG_DATA_LEN : integer := 59;
 
   constant UCM_PT_PHIMOD_LEN : integer := UCM2PL_PHIMOD_LEN;
 

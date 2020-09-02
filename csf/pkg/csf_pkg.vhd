@@ -38,10 +38,10 @@ package csf_pkg is
     mbar : unsigned(UCM_VEC_ANG_LEN-1 downto 0);
     pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
     ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
-    chamber_ieta : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdtid : vec_mdtid_rt;
     data_valid : std_logic;
   end record csf_seed_rt;
-  constant CSF_SEED_LEN : integer := 57;
+  constant CSF_SEED_LEN : integer := 62;
   subtype csf_seed_rvt is std_logic_vector(CSF_SEED_LEN-1 downto 0);
   function vectorify(x: csf_seed_rt) return csf_seed_rvt;
   function structify(x: csf_seed_rvt) return csf_seed_rt;
@@ -92,12 +92,12 @@ package csf_pkg is
   type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
     muid : slc_muid_rt;
-    chamber_ieta : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdtid : vec_mdtid_rt;
     pos : signed(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
   end record sf_seg_data_barrel_rt;
-  constant SF_SEG_DATA_BARREL_LEN : integer := 61;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 66;
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
@@ -106,12 +106,12 @@ package csf_pkg is
   type sf_seg_data_endcap_rt is record
     data_valid : std_logic;
     muid : slc_muid_rt;
-    chamber_ieta : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    mdtid : vec_mdtid_rt;
     pos : unsigned(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
   end record sf_seg_data_endcap_rt;
-  constant SF_SEG_DATA_ENDCAP_LEN : integer := 61;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 66;
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
@@ -126,22 +126,22 @@ package body csf_pkg is
   function vectorify(x: csf_seed_rt) return csf_seed_rvt is
     variable y : csf_seed_rvt;
   begin
-    y(56 downto 36)            := vectorify(x.muid);
-    y(35 downto 25)            := vectorify(x.mbar);
-    y(24 downto 15)            := vectorify(x.pos);
-    y(14 downto 5)             := vectorify(x.ang);
-    y(4 downto 1)              := vectorify(x.chamber_ieta);
+    y(61 downto 41)            := vectorify(x.muid);
+    y(40 downto 30)            := vectorify(x.mbar);
+    y(29 downto 20)            := vectorify(x.pos);
+    y(19 downto 10)            := vectorify(x.ang);
+    y(9 downto 1)              := vectorify(x.mdtid);
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
   function structify(x: csf_seed_rvt) return csf_seed_rt is
     variable y : csf_seed_rt;
   begin
-    y.muid                     := structify(x(56 downto 36));
-    y.mbar                     := structify(x(35 downto 25));
-    y.pos                      := structify(x(24 downto 15));
-    y.ang                      := structify(x(14 downto 5));
-    y.chamber_ieta             := structify(x(4 downto 1));
+    y.muid                     := structify(x(61 downto 41));
+    y.mbar                     := structify(x(40 downto 30));
+    y.pos                      := structify(x(29 downto 20));
+    y.ang                      := structify(x(19 downto 10));
+    y.mdtid                    := structify(x(9 downto 1));
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -152,7 +152,7 @@ package body csf_pkg is
     y.mbar                     := nullify(x.mbar);
     y.pos                      := nullify(x.pos);
     y.ang                      := nullify(x.ang);
-    y.chamber_ieta             := nullify(x.chamber_ieta);
+    y.mdtid                    := nullify(x.mdtid);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -322,9 +322,9 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
     variable y : sf_seg_data_barrel_rvt;
   begin
-    y(60)                      := x.data_valid;
-    y(59 downto 39)            := vectorify(x.muid);
-    y(38 downto 35)            := vectorify(x.chamber_ieta);
+    y(65)                      := x.data_valid;
+    y(64 downto 44)            := vectorify(x.muid);
+    y(43 downto 35)            := vectorify(x.mdtid);
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -333,9 +333,9 @@ package body csf_pkg is
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := x(60);
-    y.muid                     := structify(x(59 downto 39));
-    y.chamber_ieta             := structify(x(38 downto 35));
+    y.data_valid               := x(65);
+    y.muid                     := structify(x(64 downto 44));
+    y.mdtid                    := structify(x(43 downto 35));
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -346,7 +346,7 @@ package body csf_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
-    y.chamber_ieta             := nullify(x.chamber_ieta);
+    y.mdtid                    := nullify(x.mdtid);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
@@ -356,9 +356,9 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
     variable y : sf_seg_data_endcap_rvt;
   begin
-    y(60)                      := x.data_valid;
-    y(59 downto 39)            := vectorify(x.muid);
-    y(38 downto 35)            := vectorify(x.chamber_ieta);
+    y(65)                      := x.data_valid;
+    y(64 downto 44)            := vectorify(x.muid);
+    y(43 downto 35)            := vectorify(x.mdtid);
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -367,9 +367,9 @@ package body csf_pkg is
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := x(60);
-    y.muid                     := structify(x(59 downto 39));
-    y.chamber_ieta             := structify(x(38 downto 35));
+    y.data_valid               := x(65);
+    y.muid                     := structify(x(64 downto 44));
+    y.mdtid                    := structify(x(43 downto 35));
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -380,7 +380,7 @@ package body csf_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
-    y.chamber_ieta             := nullify(x.chamber_ieta);
+    y.mdtid                    := nullify(x.mdtid);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
