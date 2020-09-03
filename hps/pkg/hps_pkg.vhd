@@ -24,8 +24,8 @@ package hps_pkg is
   function nullify(x: hps_ctrl2sf_at) return hps_ctrl2sf_at;
   function nullify(x: hps_ctrl2sf_avt) return hps_ctrl2sf_avt;
 
-  type hps_bm2sf_at is array(integer range <>) of hps2csf_rt;
-  type hps_bm2sf_avt is array(integer range <>) of hps2csf_rvt;
+  type hps_bm2sf_at is array(integer range <>) of hps2csf_tNone;
+  type hps_bm2sf_avt is array(integer range <>) of hps2csf_tNone;
   function vectorify(x: hps_bm2sf_at) return hps_bm2sf_avt;
   function vectorify(x: hps_bm2sf_at) return std_logic_vector;
   function structify(x: hps_bm2sf_avt) return hps_bm2sf_at;
@@ -101,12 +101,12 @@ package body hps_pkg is
     return y;
   end function vectorify;
   function vectorify(x: hps_bm2sf_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*40-1 downto 0);
+    variable y : std_logic_vector(x'length*None-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-40) := vectorify(x(i));
-      msb := msb - 40 -1;
+      y(msb downto msb-None) := vectorify(x(i));
+      msb := msb - None -1;
     end loop l;
     return y;
   end function vectorify;
@@ -123,8 +123,8 @@ package body hps_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-40));
-      msb := msb - 40 -1;
+      y(i) := structify(x(msb downto msb-None));
+      msb := msb - None -1;
     end loop l;
     return y;
   end function structify;

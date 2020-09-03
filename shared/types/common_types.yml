@@ -127,9 +127,9 @@ HDL_Types:
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-- ucm_csf_barrel:
-  - mbar        : [ type : unsigned , length : HEG2SF_VEC_ANG_LEN]
-  - z           : [ type : unsigned , length : HEG2SF_VEC_POS_LEN ]
+# - ucm_csf_barrel:
+#   - mbar        : [ type : unsigned , length : HEG2SF_VEC_ANG_LEN]
+#   - z           : [ type : unsigned , length : HEG2SF_VEC_POS_LEN ]
 
 # - ucm_csf_endcap:
   # - mbar        : [ type : unsigned , length : UCM2CSF_VEC_ANG_LEN]
@@ -164,8 +164,8 @@ HDL_Types:
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 
-- heg2sf_bus     : [array: open , type: heg2sf]
-
+- heg2sf_slc_bus : [ array : open , type : heg2sfslc]
+- heg2sf_mdt_bus : [ array : open , type : heg2sfhit] 
 # ucm2hps_maxhps  : [array: c_MAX_NUM_HPS , type: ucm2hps ]
 # ucm2hps_a       : [array: open , type: ucm2hps_ , _: off ]
 
@@ -173,14 +173,14 @@ HDL_Types:
 #       HEG 2 SF
 # -----------------------------------------------------------
 # CSF
-- heg2sf_mdt:
-  - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
-  - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
-  - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
-  - multilayer  : [ type: logic ]
-  - data_valid  : [ type: logic ]
+# - heg2sf_mdt:
+#   - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
+#   - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
+#   - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
+#   - multilayer  : [ type: logic ]
+#   - data_valid  : [ type: logic ]
 
-- heg2sf_mdt_bus : [array: open, type: heg2sf_mdt]
+# - heg2sf_mdt_bus : [array: open, type: heg2sf_mdt]
 
 # -----------------------------------------------------------
 # sf 2 pt
