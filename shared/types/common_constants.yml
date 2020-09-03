@@ -147,7 +147,7 @@ HDL_Types:
 # -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
-- MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: 15 ]
+- MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_ETA_LEN ]
 # MTC_ETA_MULT  :  [ qualifier: constant , type: real, value: 6068.1481481481]
 - MTC_PT_LEN    :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_PT_LEN ]
 - MTC_PT_MULT   :  [ qualifier: constant , type: real, value: PTCALC2MTC_MDT_PT_MULT] # 4.0

@@ -179,7 +179,7 @@ begin
             -- Clock 0
             dv0 <= seg.data_valid;
             z2  <= unsigned(seg.segpos*seg.segpos);
-            z_red <= resize(shift_right(seg.segpos, SHIFT_MAG), SF_SEG_POS_LEN-SHIFT_MAG);
+            z_red <= resize(shift_right(signed(seg.segpos), SHIFT_MAG), SF_SEG_POS_LEN - SHIFT_MAG);
 
             -- Clock 1
             dv1 <= dv0;

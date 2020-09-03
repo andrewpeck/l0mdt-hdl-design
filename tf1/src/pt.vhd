@@ -440,13 +440,13 @@ begin
 
             mtc.data_valid <= mtc_valid;
             mtc.muid <= slc_s.muid;
-            mtc.eta <= eta;
-            mtc.pt  <= pt;
-            mtc.ptthresh <= pt_threshold(pt);
-            mtc.charge <= slc.charge; -- temporary
+            mtc.mdt_eta <= eta;
+            mtc.mdt_pt  <= pt;
+            mtc.mdt_ptthresh <= pt_threshold(pt);
+            mtc.mdt_charge <= slc.sl_charge; -- temporary
             -- Still to add other cases
-            mtc.nsegments <= nsegments;
-            mtc.quality <= quality;
+            mtc.mdt_nsegments <= nsegments;
+            mtc.mdt_quality <= quality;
             --reset
             if pt_valid = '1' or i_rst = '1' then
                 comboid_s <= (others => '0');

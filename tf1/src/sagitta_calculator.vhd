@@ -215,8 +215,8 @@ begin
             -- Clock 0
             dv0 <= (seg0.data_valid and seg1.data_valid and seg2.data_valid);
 
-            delta_z_20 <= seg2.segpos - seg0.segpos;
-            delta_z_10 <= seg1.segpos - seg0.segpos;
+            delta_z_20 <= signed(seg2.segpos) - signed(seg0.segpos);
+            delta_z_10 <= signed(seg1.segpos) - signed(seg0.segpos);
             delta_r_20 <= resize(
                     shift_right(BOL_SEC3_RHO_s - BIL_SEC3_RHO_s, shift_m_den),
                     DELTA_R_RED_LEN);
@@ -237,17 +237,17 @@ begin
                 seg1.data_valid and
                 not seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg0.segangle - seg1.segangle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg0.segangle) - signed(seg1.segangle))), DELTA_R_RED_LEN);
             elsif (seg0.data_valid and
                 not seg1.data_valid and
                 seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg0.segangle - seg2.segangle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg0.segangle) - signed(seg2.segangle))), DELTA_R_RED_LEN);
             elsif (not seg0.data_valid and
                 seg1.data_valid and
                 seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg1.segangle - seg2.segangle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg1.segangle) - signed(seg2.segangle))), DELTA_R_RED_LEN);
             end if;
 
             -- Clock 1

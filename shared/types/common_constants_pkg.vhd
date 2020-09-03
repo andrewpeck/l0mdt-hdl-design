@@ -65,7 +65,7 @@ package common_constants_pkg is
 
   constant UCM_PT_PHIMOD_LEN : integer := UCM2PL_PHIMOD_LEN;
 
-  constant MTC_ETA_LEN : integer := 15;
+  constant MTC_ETA_LEN : integer := PTCALC2MTC_MDT_ETA_LEN;
 
   constant MTC_PT_LEN : integer := PTCALC2MTC_MDT_PT_LEN;
 
