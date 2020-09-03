@@ -16,8 +16,8 @@ HDL_Types:
 - MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 , ~ : mm ]
 # MDT_LOCAL_AXI_LEN   : [ qualifier: constant , type: integer , value: 15 ] # 14 o 15?
 # MDT_LOCAL_AXI_MULT  : [ qualifier: constant , type: real , value: 32.0 , ~ : mm]
-- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: 13 ] #14 o 15?
-- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: 14 ] #14 o 15?
+- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
+- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
 - MDT_RADIUS_LEN       : [ qualifier: constant , type: integer , value: 9 ]
 - MDT_RADIUS_MULT: [ qualifier: constant , type: real , value: 32.0 ]
 
@@ -98,6 +98,7 @@ HDL_Types:
 # slc ucm2hps specific
 # barrel
 - UCM_VEC_ANG_LEN    : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_ANG_LEN ]
+- UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
 # - UCM_VEC_ANG_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
 
 - UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] # 10

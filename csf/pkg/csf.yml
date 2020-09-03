@@ -10,7 +10,7 @@ __config__:
 
 HDL_Types:
 
-- UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
+# - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
 - UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
 
 - CSF_SEG_M_LEN       : [ qualifier: constant, type: integer, value: 15]

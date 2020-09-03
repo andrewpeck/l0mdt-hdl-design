@@ -19,8 +19,6 @@ package ucm_pkg is
 
   constant SLC_SPECIFIC_LEN : integer := 85;
 
-  constant UCM_MBAR_LEN : integer := 11;
-
   type ucm_prepro_rt is record
     muid : slc_muid_rt;
     data_valid : std_logic;

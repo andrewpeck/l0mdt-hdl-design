@@ -11,8 +11,6 @@ use shared_lib.common_types_pkg.all;
 
 package csf_pkg is
 
-  constant UCM_MBAR_LEN : integer := UCM_VEC_ANG_LEN;
-
   constant UCM_MBAR_MULT : real := 1024.0;
 
   constant CSF_SEG_M_LEN : integer := 15;
@@ -52,7 +50,7 @@ package csf_pkg is
     x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
   end record csf_hit_rt;
-  constant CSF_HIT_LEN : integer := 28;
+  constant CSF_HIT_LEN : integer := 31;
   subtype csf_hit_rvt is std_logic_vector(CSF_HIT_LEN-1 downto 0);
   function vectorify(x: csf_hit_rt) return csf_hit_rvt;
   function structify(x: csf_hit_rvt) return csf_hit_rt;
@@ -160,17 +158,17 @@ package body csf_pkg is
   function vectorify(x: csf_hit_rt) return csf_hit_rvt is
     variable y : csf_hit_rvt;
   begin
-    y(27)                      := x.valid;
-    y(26 downto 14)            := vectorify(x.x);
-    y(13 downto 0)             := vectorify(x.y);
+    y(30)                      := x.valid;
+    y(29 downto 15)            := vectorify(x.x);
+    y(14 downto 0)             := vectorify(x.y);
     return y;
   end function vectorify;
   function structify(x: csf_hit_rvt) return csf_hit_rt is
     variable y : csf_hit_rt;
   begin
-    y.valid                    := x(27);
-    y.x                        := structify(x(26 downto 14));
-    y.y                        := structify(x(13 downto 0));
+    y.valid                    := x(30);
+    y.x                        := structify(x(29 downto 15));
+    y.y                        := structify(x(14 downto 0));
     return y;
   end function structify;
   function nullify(x: csf_hit_rt) return csf_hit_rt is
@@ -191,12 +189,12 @@ package body csf_pkg is
     return y;
   end function vectorify;
   function vectorify(x: csf_hit_a_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*28-1 downto 0);
+    variable y : std_logic_vector(x'length*31-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-28) := vectorify(x(i));
-      msb := msb - 28 -1;
+      y(msb downto msb-31) := vectorify(x(i));
+      msb := msb - 31 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -213,8 +211,8 @@ package body csf_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-28));
-      msb := msb - 28 -1;
+      y(i) := structify(x(msb downto msb-31));
+      msb := msb - 31 -1;
     end loop l;
     return y;
   end function structify;

@@ -178,7 +178,7 @@ begin
     if rising_edge(clk) then
 
         mdt_hits <= (others => (others => '0'));
-        mdt_hits(stdlogic_integer(mdt_hit.multilayer)) <= i_mdt_hit;
+        mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
         rst_chi2 <= '0';
 
         if seed_i.data_valid = '1' then

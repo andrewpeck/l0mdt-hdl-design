@@ -232,7 +232,7 @@ begin
             -- Clock 3
             dv3 <= dv2;
             numerator_m         <= signed('0' & dsp_NSumXY_ss) - signed('0' & dsp_SumYSumX_ss);
-            numerator_b         <= signed('0' & dsp_SumYSumX2_ss) - signed('0' & dsp_SumXYSumX_ss);
+            -- numerator_b         <= signed('0' & dsp_SumYSumX2_ss) - signed('0' & dsp_SumXYSumX_ss);
             denominator         <= dsp_NSumX2_ss - dsp_SumXSumX_ss;
 
             -- Clock 4
