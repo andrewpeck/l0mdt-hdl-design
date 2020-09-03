@@ -41,7 +41,7 @@ entity csf is
     Port (
         clk       : in std_logic;
         i_seed    : in csf_seed_rvt;
-        i_mdt_hit : in heg2sf_mdt_rvt;
+        i_mdt_hit : in heg2sfhit_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
         o_seg     : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
@@ -54,8 +54,8 @@ architecture Behavioral of csf is
     signal seed : csf_seed_rvt;
 
     -- Input signals
-    signal mdt_hit  : heg2sf_mdt_rt;
-    signal mdt_hits : heg2sf_mdt_bus_avt (1 downto 0) := (others => (others => '0'));
+    signal mdt_hit  : heg2sfhit_rt;
+    signal mdt_hits : heg2sfhit_bus_avt (1 downto 0) := (others => (others => '0'));
     signal eof      : std_logic := '0';
 
     -- Histogram signals

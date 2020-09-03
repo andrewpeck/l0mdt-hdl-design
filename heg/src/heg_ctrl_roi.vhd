@@ -52,7 +52,7 @@ end entity heg_ctrl_roi;
 architecture beh of heg_ctrl_roi is
 
   signal uCM_data_r : ucm2hps_rt;
-  signal slc_b_data_r  : ucm_csf_barrel_rt;
+  -- signal slc_b_data_r  : ucm_csf_barrel_rt;
   
   signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);

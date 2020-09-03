@@ -164,8 +164,8 @@ HDL_Types:
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 
-- heg2sf_slc_bus : [ array : open , type : heg2sfslc]
-- heg2sf_mdt_bus : [ array : open , type : heg2sfhit] 
+- heg2sfslc_bus : [ array : open , type : heg2sfslc]
+- heg2sfhit_bus : [ array : open , type : heg2sfhit] 
 # ucm2hps_maxhps  : [array: c_MAX_NUM_HPS , type: ucm2hps ]
 # ucm2hps_a       : [array: open , type: ucm2hps_ , _: off ]
 
@@ -180,7 +180,7 @@ HDL_Types:
 #   - multilayer  : [ type: logic ]
 #   - data_valid  : [ type: logic ]
 
-# - heg2sf_mdt_bus : [array: open, type: heg2sf_mdt]
+# - heg2sfhit_bus : [array: open, type: heg2sf_mdt]
 
 # -----------------------------------------------------------
 # sf 2 pt

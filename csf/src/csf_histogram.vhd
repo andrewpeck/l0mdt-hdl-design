@@ -43,7 +43,7 @@ use csf_lib.csf_custom_pkg.all;
 entity csf_histogram is
     Port (
         clk             : in std_logic;
-        i_mdthit        : in heg2sf_mdt_rvt;
+        i_mdthit        : in heg2sfhit_rvt;
         i_seed          : in csf_seed_rvt;
         i_eof           : in std_logic;
         o_histo_hit0    : out csf_hit_rvt;
@@ -69,7 +69,7 @@ architecture Behavioral of csf_histogram is
         := (others => '0');
 
     -- MDT hit signals
-    signal mdt_hit, mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : heg2sf_mdt_rt;
+    signal mdt_hit, mdt_hit_s, mdt_hit_ss, mdt_hit_sss, mdt_hit_ssss : heg2sfhit_rt;
     -- Constants for b+/- calculation
     constant SQU_M_R_LEN  : integer := SQU_M_LEN + MDT_RADIUS_LEN;
     constant M_X_LEN      : integer := UCM_MBAR_LEN + MDT_LOCAL_X_LEN;

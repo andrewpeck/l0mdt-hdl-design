@@ -45,7 +45,7 @@ entity hps_sf_wrap is
     -- configuration
     i_control        : in heg_ctrl2hp_rvt;
     i_slc_data       : in heg2sf_rvt;
-    i_mdt_data       : in heg2sf_mdt_rvt;
+    i_mdt_data       : in heg2sfhit_rvt;
     --
     o_sf_data_v         : out sf2ptcalc_rvt
   );
@@ -56,16 +56,16 @@ architecture beh of hps_sf_wrap is
   signal slc_data     : heg2sf_rt;
   -- signal slc_barrel : ucm_csf_barrel_rt;
   -- signal slc_endcap : ucm_csf_endcap_rt;
-  signal mdt_data : heg2sf_mdt_rt;
+  signal mdt_data : heg2sfhit_rt;
   signal sf_data_v    : sf2ptcalc_rvt;
   signal eof          : std_logic;
   
 
   --barrel
   signal i_seed_r     : csf_seed_rt;
-  signal i_mdt_hit_r  : heg2sf_mdt_rt;
+  signal i_mdt_hit_r  : heg2sfhit_rt;
   signal i_seed_v     : csf_seed_rvt;
-  signal i_mdt_hit_v  : heg2sf_mdt_rvt;
+  signal i_mdt_hit_v  : heg2sfhit_rvt;
 
 begin
 
