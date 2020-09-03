@@ -36,7 +36,7 @@ use hps_lib.hps_pkg.all;
 entity hps is
   generic(
     g_STATION_RADIUS      : integer := 0;  --station
-    g_HPS_NUM_MDT_CH       : integer := 6 
+    g_HPS_NUM_MDT_CH      : integer := 6 
   );
   port (
     clk                   : in std_logic;
@@ -60,9 +60,9 @@ architecture beh of hps is
   -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control      : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfslc_av       : heg2sf_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal heg2sfhit_av       : hps_bm2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_control : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 

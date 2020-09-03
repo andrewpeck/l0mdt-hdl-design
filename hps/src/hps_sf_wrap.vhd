@@ -44,7 +44,7 @@ entity hps_sf_wrap is
     glob_en             : in std_logic;
     -- configuration
     i_control        : in heg_ctrl2hp_rvt;
-    i_slc_data       : in heg2sf_rvt;
+    i_slc_data       : in heg2sfslc_rvt;
     i_mdt_data       : in heg2sfhit_rvt;
     --
     o_sf_data_v         : out sf2ptcalc_rvt
@@ -53,10 +53,10 @@ end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
   -- CSF
-  signal slc_data     : heg2sf_rt;
+  signal slc_data     : heg2sfslc_rt;
   -- signal slc_barrel : ucm_csf_barrel_rt;
   -- signal slc_endcap : ucm_csf_endcap_rt;
-  signal mdt_data : heg2sfhit_rt;
+  signal mdt_data     : heg2sfhit_rt;
   signal sf_data_v    : sf2ptcalc_rvt;
   signal eof          : std_logic;
   
@@ -84,18 +84,18 @@ begin
         i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= slc_data.vec_pos;
         i_seed_r.ang        <= (others => '0');
-        i_seed_r.chamber_ieta <= slc_data.mdtid.chamber_ieta;
+        i_seed_r.mdtid      <= slc_data.mdtid;
         i_seed_r.data_valid <= slc_data.data_valid;
         
         -- MDT
         mdt_data <= structify(i_mdt_data);
         i_mdt_hit_v <= vectorify(i_mdt_hit_r);
 
-        i_mdt_hit_r.local_y    <= mdt_data.local_y;
-        i_mdt_hit_r.local_x    <= mdt_data.local_x;
-        i_mdt_hit_r.radius     <= mdt_data.radius;
-        i_mdt_hit_r.multilayer <= mdt_data.multilayer;
-        i_mdt_hit_r.data_valid <= mdt_data.data_valid;
+        i_mdt_hit_r.localy      <= mdt_data.localy;
+        i_mdt_hit_r.localx      <= mdt_data.localx;
+        i_mdt_hit_r.radius      <= mdt_data.radius;
+        i_mdt_hit_r.mlayer      <= mdt_data.mlayer;
+        i_mdt_hit_r.data_valid  <= mdt_data.data_valid;
 
         -- SF
         -- o_sf_data_v <= vectorify(sf_data_r);
@@ -112,7 +112,7 @@ begin
         i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= (others => '0');
         i_seed_r.ang        <= slc_data.vec_pos;
-        i_seed_r.chamber_ieta <= slc_data.mdtid.chamber_ieta;
+        i_seed_r.mdtid <= slc_data.mdtid;
         i_seed_r.data_valid <= slc_data.data_valid;
       end generate;
 
