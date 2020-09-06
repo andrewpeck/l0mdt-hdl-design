@@ -132,8 +132,8 @@ package body heg_pkg is
   function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.rst                      := x(1);
-    y.enable                   := x(0);
+    y.rst                      := structify(x(1 downto 1));
+    y.enable                   := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is
@@ -261,7 +261,7 @@ package body heg_pkg is
     variable y : heg_bm2sf_rt;
   begin
     y.data                     := structify(x(44 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_bm2sf_rt) return heg_bm2sf_rt is

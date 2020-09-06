@@ -10,7 +10,6 @@ config:
     ttc_lib:
       - ttc_defs_pkg      
     daq_lib:
-      - daq_user_defs_pkg
       - daq_devel_defs_pkg
 
 hdl:

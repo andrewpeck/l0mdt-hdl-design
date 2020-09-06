@@ -14,8 +14,6 @@ hdl:
 - DAQ_N_PIPELINES: [type: integer, qualifier: constant, value: 16]
 - DAQ_N_STREAMS: [type: integer, qualifier: constant, value: 1]
 - DAQ_N_FLOWS: [type: integer, qualifier: constant, value: 6]
-  
-- snake_paths_desc: [type: integer_bus, length: DAQ_N_STREAMS]
 - DAQ_STREAMS: [type: snake_paths_desc, qualifier: constant, value: [40]]
 
 

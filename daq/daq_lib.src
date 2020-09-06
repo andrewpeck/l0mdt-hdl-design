@@ -1,7 +1,6 @@
 IP/daq/data_fifo/data_fifo.xci
 IP/daq/fifo_daq_req/fifo_daq_req.xci
 
-daq/pkg/daq_user_defs_pkg.vhd  2008
 daq/pkg/daq_devel_defs_pkg.vhd 2008
 daq/pkg/daq_defs_pkg.vhd       2008
 daq/pkg/daq_row_defs_pkg.vhd   2008

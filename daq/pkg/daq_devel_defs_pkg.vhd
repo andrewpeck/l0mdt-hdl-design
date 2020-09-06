@@ -9,10 +9,18 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-library daq_lib;
-use daq_lib.daq_user_defs_pkg.all;
 
 package daq_devel_defs_pkg is
+
+  constant DAQ_N_PIPELINES : integer := 16;
+
+  constant DAQ_N_STREAMS : integer := 1;
+
+  constant DAQ_N_FLOWS : integer := 6;
+
+  subtype snake_paths_desc_t is integer_bus_at(DAQ_N_STREAMS-1 downto 0);
+
+  constant DAQ_STREAMS : snake_paths_desc_t := (0 => 40);
 
   constant DEV_CELL_DATA_BUS_WIDTH : integer := 512;
 

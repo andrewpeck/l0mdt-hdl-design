@@ -10,7 +10,6 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 
 library daq_lib;
-use daq_lib.daq_user_defs_pkg.all;
 use daq_lib.daq_devel_defs_pkg.all;
 use daq_lib.daq_row_defs_pkg.all;
 
@@ -39,7 +38,6 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 
 library daq_lib;
-use daq_lib.daq_user_defs_pkg.all;
 use daq_lib.daq_devel_defs_pkg.all;
 use daq_lib.daq_defs_pkg.all;
 use daq_lib.daq_row_defs_pkg.all;

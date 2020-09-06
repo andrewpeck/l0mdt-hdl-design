@@ -134,7 +134,7 @@ package body ucm_pkg is
     variable y : ucm_prepro_rt;
   begin
     y.muid                     := structify(x(21 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_prepro_rt) return ucm_prepro_rt is
@@ -211,9 +211,9 @@ package body ucm_pkg is
     variable y : ucm_cde_rt;
   begin
     y.muid                     := structify(x(109 downto 89));
-    y.cointype                 := x(88 downto 86);
-    y.specific                 := x(85 downto 1);
-    y.data_valid               := x(0);
+    y.cointype                 := structify(x(88 downto 86));
+    y.specific                 := structify(x(85 downto 1));
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_cde_rt) return ucm_cde_rt is
@@ -289,8 +289,8 @@ package body ucm_pkg is
   function structify(x: ucm_csw_ch_control_rvt) return ucm_csw_ch_control_rt is
     variable y : ucm_csw_ch_control_rt;
   begin
-    y.data_present             := x(4);
-    y.addr_orig                := x(3 downto 0);
+    y.data_present             := structify(x(4 downto 4));
+    y.addr_orig                := structify(x(3 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_csw_ch_control_rt) return ucm_csw_ch_control_rt is
@@ -364,8 +364,8 @@ package body ucm_pkg is
   function structify(x: ucm_pam_ch_control_rvt) return ucm_pam_ch_control_rt is
     variable y : ucm_pam_ch_control_rt;
   begin
-    y.data_present             := x(4);
-    y.addr_orig                := x(3 downto 0);
+    y.data_present             := structify(x(4 downto 4));
+    y.addr_orig                := structify(x(3 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_pam_ch_control_rt) return ucm_pam_ch_control_rt is
@@ -439,8 +439,8 @@ package body ucm_pkg is
   function structify(x: ucm_proc_info_ch_rvt) return ucm_proc_info_ch_rt is
     variable y : ucm_proc_info_ch_rt;
   begin
-    y.ch                       := x(4 downto 1);
-    y.processed                := x(0);
+    y.ch                       := structify(x(4 downto 1));
+    y.processed                := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: ucm_proc_info_ch_rt) return ucm_proc_info_ch_rt is

@@ -300,8 +300,8 @@ package body hp_pkg is
     variable y : hp_heg2hp_slc_rt;
   begin
     y.bcid                     := structify(x(50 downto 39));
-    y.specific                 := x(38 downto 1);
-    y.data_valid               := x(0);
+    y.specific                 := structify(x(38 downto 1));
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
@@ -332,7 +332,7 @@ package body hp_pkg is
     y.time_t0                  := structify(x(56 downto 39));
     y.global_z                 := structify(x(38 downto 20));
     y.global_x                 := structify(x(19 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
@@ -387,8 +387,8 @@ package body hp_pkg is
     variable y : hp_hp2bm_rt;
   begin
     y.data                     := structify(x(45 downto 2));
-    y.mdt_valid                := x(1);
-    y.data_valid               := x(0);
+    y.mdt_valid                := structify(x(1 downto 1));
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_hp2bm_rt) return hp_hp2bm_rt is

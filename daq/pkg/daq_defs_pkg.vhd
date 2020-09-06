@@ -12,7 +12,6 @@ use shared_lib.common_types_pkg.all;
 library ttc_lib;
 use ttc_lib.ttc_defs_pkg.all;
 library daq_lib;
-use daq_lib.daq_user_defs_pkg.all;
 use daq_lib.daq_devel_defs_pkg.all;
 
 package daq_defs_pkg is

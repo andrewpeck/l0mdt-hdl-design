@@ -7,10 +7,17 @@ config:
       - l0mdt_dataformats_pkg
       - common_constants_pkg
       - common_types_pkg
-    daq_lib:
-      - daq_user_defs_pkg
 
 hdl:
+
+# User customizations ----------------------------------------------------------
+
+- DAQ_N_PIPELINES: [type: integer, qualifier: constant, value: 8]
+- DAQ_N_STREAMS: [type: integer, qualifier: constant, value: 4]
+- DAQ_N_FLOWS: [type: integer, qualifier: constant, value: 1]
+  
+- snake_paths_desc: [type: integer_bus, length: DAQ_N_STREAMS]
+- DAQ_STREAMS: [type: snake_paths_desc, qualifier: constant, value: [10]]
   
 # FIFOs ------------------------------------------------------------------------
 - DEV_CELL_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 512]
