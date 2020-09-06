@@ -10,14 +10,14 @@ create_project:daq:
 #       extends: .vars
 #       PROJECT_NAME: daq
 
-synthesise_ips:daq:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: daq
-      IP_PATH: IP
-    dependencies:
-        - create_project:daq
+# synthesise_ips:daq:
+#     extends: .synthesise_ips
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: daq
+#       IP_PATH: IP
+#     dependencies:
+#         - create_project:daq
 
 synthesise_project:daq:
     extends: .synthesise_project
