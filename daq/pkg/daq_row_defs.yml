@@ -1,0 +1,100 @@
+config:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+    ttc_lib:
+      - ttc_defs_pkg      
+    daq_lib:
+      - daq_user_defs_pkg
+      - daq_devel_defs_pkg
+      - daq_defs_pkg
+      
+hdl:
+
+# basic interfaces ===========================================================
+
+# management / cell ----------------------------------------------------------
+
+- mngt_to_cell:
+    - en: [type: logic]
+    - win_lower: [type: bcid]
+    - win_width: [type: bcid]
+
+- cell_to_mngt:
+    - done: [type: logic]
+    - full: [type: logic]
+    - unexpected: [type: logic]
+
+- mngt_to_cell_bus: [array: open, type: mngt_to_cell]
+  
+- cell_to_mngt_bus: [array: open, type: cell_to_mngt]
+
+# cell / bus converter -------------------------------------------------------
+
+- cell_to_bconv:
+    - nempty: [type: logic]
+    - data: [type: logic, length: DEV_CELL_DATA_BUS_WIDTH]
+    - counter: [type: logic, length: DEV_CELL_COUNTER_WIDTH]
+      
+- bconv_to_cell:
+    - rd_strb: [type: logic]
+          
+# entities ===================================================================
+
+# cell -----------------------------------------------------------------------
+
+- cell_generics:
+  - INPUT_DATA_LEN: [type: natural]
+  - COUNTER_LEN: [type: natural]
+
+- cell_i:
+  - sys: [type: daq_sys]
+  - mngt: [type: mngt_to_cell]
+  - stream: [type: stream]
+  - bconv: [type: bconv_to_cell]
+  - _: off
+
+- cell_o:
+  - mngt: [type: cell_to_mngt]
+  - bconv: [type: cell_to_bconv]
+  - _: off
+
+- cell:
+  - i : [type: cell_i]
+  - o : [type: cell_o]
+
+- cell_bus: [array: DAQ_N_PIPELINES, type: cell]
+
+- cell_bus_i: [array: DAQ_N_PIPELINES, type: cell_i, _: off]
+
+- cell_bus_o: [array: DAQ_N_PIPELINES, type: cell_o, _: off]
+
+# bus converter --------------------------------------------------------------
+
+- bconv_generics:
+  - INPUT_DATA_LEN: [type: natural]
+  - OUTPUT_DATA_LEN: [type: natural]
+  - COUNTER_LEN: [type: natural]
+
+- bconv_i:
+  - sys: [type: daq_sys]
+  - cell: [type: cell_to_bconv]
+  - pkt_bldr: [type: pkt_bldr_to_row]
+  - _: off
+
+- bconv_o:
+  - cell: [type: bconv_to_cell]
+  - pkt_bldr: [type: row_to_pkt_bldr]
+  - _: off
+
+- bconv:
+    - i: [type: bconv_i]
+    - o: [type: bconv_o]
+      
+
+  

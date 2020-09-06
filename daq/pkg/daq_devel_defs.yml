@@ -1,0 +1,42 @@
+config:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+    daq_lib:
+      - daq_user_defs_pkg
+
+hdl:
+  
+# FIFOs ------------------------------------------------------------------------
+- DEV_CELL_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 512]
+- DEV_CELL_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 12]
+    
+- DEV_LXA_REQ_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 512]
+- DEV_LXA_REQ_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 11]
+
+# ROWs -------------------------------------------------------------------------
+
+- DEV_ROWS: [type: integer, qualifier: constant, value: DAQ_N_STREAMS + 1]
+- DEV_ROWS_ERR_WIDTH: [type: integer, qualifier: constant, value: "2 * DEV_ROWS"]
+- DEV_ROW_SEL_WIDTH: [type: integer, qualifier: constant,
+                      value: "integer(ceil(log2(real(DEV_ROWS))))"] 
+- DEV_COL_SEL_WIDTH: [type: integer, qualifier: constant,
+                      value: "integer(ceil(log2(real(DAQ_N_PIPELINES))))"] 
+
+# FELIX ------------------------------------------------------------------------
+
+- DEV_F2E_INPUT_DATA_WIDTH: [qualifier: constant, type: integer, value: 16]
+- DEV_F2E_OUTPUT_DATA_WIDTH: [qualifier: constant, type: integer, value: 18]
+
+# USER -------------------------------------------------------------------------
+
+- user_generics:
+    - N_STREAMS: [type: integer]
+    - STREAMS: [type: snake_paths_desc]
+    - PIPELINES: [type: integer]
+

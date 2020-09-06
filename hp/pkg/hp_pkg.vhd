@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -291,8 +292,8 @@ package body hp_pkg is
     variable y : hp_heg2hp_slc_rvt;
   begin
     y(50 downto 39)            := vectorify(x.bcid);
-    y(38 downto 1)             := x.specific;
-    y(0)                       := x.data_valid;
+    y(38 downto 1)             := vectorify(x.specific);
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt is
@@ -320,7 +321,7 @@ package body hp_pkg is
     y(56 downto 39)            := vectorify(x.time_t0);
     y(38 downto 20)            := vectorify(x.global_z);
     y(19 downto 1)             := vectorify(x.global_x);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_hpsPc2hp_rvt) return hp_hpsPc2hp_rt is
@@ -378,8 +379,8 @@ package body hp_pkg is
     variable y : hp_hp2bm_rvt;
   begin
     y(45 downto 2)             := vectorify(x.data);
-    y(1)                       := x.mdt_valid;
-    y(0)                       := x.data_valid;
+    y(1 downto 1)              := vectorify(x.mdt_valid);
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt is
