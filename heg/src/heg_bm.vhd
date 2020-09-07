@@ -76,10 +76,10 @@ architecture beh of heg_buffermux is
 
   signal o_mdt_hits_r : heg2sfhit_rt; 
 
-  signal mdt_hit    :  heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal mdt_hit    : heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  
+  signal nexthit  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 begin
 
   o_mdt_hits_v <= vectorify(o_mdt_hits_r);
