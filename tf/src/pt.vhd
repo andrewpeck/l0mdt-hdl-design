@@ -73,7 +73,8 @@ architecture Behavioral of pt is
     -- SLC candidate
     signal slc, slc_s : pl2pt_rt;
     -- Chamber combo id
-    signal comboid_s, comboid_phi, comboid_phi_s, comboid_eta :
+    signal comboid_s : unsigned(SLC_CHAMBER_LEN*3 -1 downto 0) := (others => '0');
+    signal comboid_phi, comboid_phi_s, comboid_eta :
            unsigned(SLC_CHAMBER_LEN*3 + 4 -1 downto 0) := (others => '0');
     --signal ram_index : integer := 0;
     -- Sagitta/Dbeta calculator signals
@@ -135,7 +136,7 @@ architecture Behavioral of pt is
     signal mtc : tf2mtc_rt;
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
 
-    signal index_a : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal index_a : std_logic_vector(A_PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
     signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
     signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
 
@@ -243,7 +244,7 @@ begin
 
     getA0 : rom
     GENERIC MAP(
-        MXADRB => PARAMS_DEPTH_LEN,
+        MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A0_LEN,
         ROM_FILE => "../data/a0.mem"
     )
@@ -256,7 +257,7 @@ begin
 
     getA1 : rom
     GENERIC MAP(
-        MXADRB => PARAMS_DEPTH_LEN,
+        MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A1_LEN,
         ROM_FILE => "../data/a1.mem"
     )
@@ -342,7 +343,7 @@ begin
         segment_EO <= structify(i_segment_O);
     end generate SEG_GEN;
 
-    index_a <= comboid_to_index_ram(comboid_s);
+    index_a <= acomboid_to_index_ram(comboid_s);
     index_b <= comboid_to_index_ram(comboid_phi);
     index_c <= comboid_to_index_ram(comboid_eta);
 
@@ -361,8 +362,7 @@ begin
                 segment_BI_s <= segment_BI;
                 segment_BM_s <= segment_BM;
                 segment_BO_s <= segment_BO;
-                comboid_s  <= "0000" &
-                              unsigned(segment_BO.chamber_id) &
+                comboid_s  <= unsigned(segment_BO.chamber_id) &
                               unsigned(segment_BM.chamber_id) &
                               unsigned(segment_BI.chamber_id);
                 nsegments <= to_unsigned(stdlogic_integer(segment_BI.data_valid)

@@ -36,7 +36,10 @@ def main():
     parser.add_argument("--pt_mult",
                         type=float,
                         help="pT Multiplier",
-                        default=512.0)
+                        default=2.0)
+
+    TF_B_MULTI = 8.
+    TF_C_MULTI = 8.
 
     args = parser.parse_args()
 
@@ -60,6 +63,14 @@ def main():
     b2 = 0
     c0 = 0
     c1 = 0
+    a_combo_mem.write(
+        "function acomboid_to_index_ram(comboid : unsigned) return std_logic_vector is\nvariable index : integer := 0;\nvariable addr : std_logic_vector(A_PARAMS_DEPTH_LEN-1 downto 0);\nbegin\n"
+    )
+    combo_mem.write(
+        "function comboid_to_index_ram(comboid : unsigned) return std_logic_vector is\nvariable index : integer := 0;\nvariable addr : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);\nbegin\n"
+    )
+    acombo_index = 0
+    combo_index = 0
 
     with open(args.input, "r") as param_file:
         reader = csv.reader(param_file, delimiter='\t')
@@ -70,43 +81,62 @@ def main():
                 full_combo = 0
                 full_combo |= int(row[1]) & 4095
                 full_combo |= (int(row[2]) & 15) << 12
-
-                a0 = int(round(float(row[3]) * args.pt_mult))
-                a1 = int(
-                    round(float(row[4]) * args.pt_mult * args.sagitta_mult))
+                a0 = 0
+                a1 = 0
+                b0 = 0
+                b1 = 0
+                b2 = 0
+                c0 = 0
+                c1 = 0
+                a0 |= int(round(float(row[3]) * args.pt_mult)) & 65535
+                a1 |= (int(round(float(row[4]) * args.pt_mult)) & 65535)
                 if pt_bin == 0:
-                    print("combo %s a0 %f a1 %f" %
-                          (row[0], float(row[3]), float(row[4])))
-                    a0_mem.write("%08x\n" % a0)
-                    a1_mem.write("%08x\n" % a1)
-                    a_combo_mem.write("%04x\n" % combo)
+                    a0_mem.write("%04x\n" % a0)
+                    a1_mem.write("%04x\n" % a1)
+                    a_combo_mem.write(
+                        "if comboid = %d then\n index := %d;\nend if;\n" %
+                        (combo, acombo_index))
+                    acombo_index += 1
+                combo_mem.write(
+                    "if comboid = %d then\n index := %d;\nend if;\n" %
+                    (full_combo, combo_index))
+                combo_index += 1
+                b0 |= int(round(
+                    float(row[5]) * args.pt_mult * TF_B_MULTI)) & 65535
+                if abs(float(row[5]) * args.pt_mult * TF_B_MULTI) > 65535:
+                    print("b0 larger than ffff")
 
-                combo_mem.write("%04x\n" % full_combo)
-                print("combo %s pt_bin %d b0 %f b1 %f b2 %f \n" %
-                      (row[0], pt_bin, float(row[5]), float(
-                          row[6]), float(row[7])))
+                b1 |= int(round(
+                    float(row[6]) * args.pt_mult * TF_B_MULTI)) & 65535
+                if abs(float(row[6]) * args.pt_mult * TF_B_MULTI) > 65535:
+                    print("b1 larger than ffff")
+                b2 |= int(round(
+                    float(row[7]) * args.pt_mult * TF_B_MULTI)) & 65535
+                if abs(float(row[7]) * args.pt_mult * TF_B_MULTI) > 65535:
+                    print("b2 larger than ffff")
+                c0 |= int(round(
+                    float(row[8]) * args.pt_mult * TF_C_MULTI)) & 65535
+                if abs(float(row[8]) * args.pt_mult * TF_C_MULTI) > 65535:
+                    print("c0 larger than ffff")
+                c1 |= int(round(
+                    float(row[9]) * args.pt_mult * TF_C_MULTI)) & 65535
+                if abs(float(row[9]) * args.pt_mult * TF_C_MULTI) > 65535:
+                    print("c1 larger than ffff")
 
-                b0 = int(round(float(row[5]) * args.pt_mult))
-                b1 = int(round(float(row[6]) * args.pt_mult / (args.phi_mult)))
-                b2 = int(
-                    round(float(row[7]) * args.pt_mult / (args.phi_mult**2)))
-                c0 = int(round(float(row[8]) * args.pt_mult))
-                c1 = int(round(float(row[9]) * args.pt_mult / args.eta_mult))
-
-                b0_mem.write("%08x\n" % b0)
-                b1_mem.write("%08x\n" % b1)
-                b2_mem.write("%08x\n" % b2)
+                b0_mem.write("%04x\n" % b0)
+                b1_mem.write("%04x\n" % b1)
+                b2_mem.write("%04x\n" % b2)
 
                 c0_mem.write("%04x\n" % c0)
                 c1_mem.write("%04x\n" % c1)
 
-    a0_mem.write("0000")
-    a1_mem.write("0000")
-    b0_mem.write("0000")
-    b1_mem.write("0000")
-    b2_mem.write("0000")
-    c0_mem.write("0000")
-    c1_mem.write("0000")
+    a_combo_mem.write(
+        "addr := std_logic_vector(to_unsigned(index, A_PARAMS_DEPTH_LEN));\nreturn addr;\nend function;"
+    )
+
+    combo_mem.write(
+        "addr := std_logic_vector(to_unsigned(index, PARAMS_DEPTH_LEN));\nreturn addr;\nend function;"
+    )
 
     # print("a0_width: %d, a1_width: %d, b0_width: %d, b1_width: %d,  b2_width: %d, c0_width: %d, c1_width: %d" %
     #     (1 + math.ceil(math.log(a0, 2)), 1 + math.ceil(math.log(a1, 2)), 1 + math.ceil(math.log(b0, 2)), 1 + math.ceil(math.log(b1, 2)),
