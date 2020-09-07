@@ -58,14 +58,14 @@ use tf_lib.pt_params_pkg.all;
 entity eta_calculator is
     port (
         clk               : in std_logic;
-        i_seg             : in sf_seg_data_barrel_rvt;
+        i_seg             : in sf2ptcalc_rvt;
         o_eta             : out signed(MTC_ETA_LEN-1 downto 0);
         o_dv_eta          : out std_logic
     );
 end eta_calculator; -- sagitta_calculator
 
 architecture Behavioral of eta_calculator is
-    signal seg : sf_seg_data_barrel_rt;
+    signal seg : sf2ptcalc_rt;
     -- Valid signals for pseudo-rapidity calculation
     signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11
         : std_logic := '0';
@@ -178,8 +178,8 @@ begin
         if rising_edge(clk) then
             -- Clock 0
             dv0 <= seg.data_valid;
-            z2  <= unsigned(seg.pos*seg.pos);
-            z_red <= resize(shift_right(seg.pos, SHIFT_MAG), SF_SEG_POS_LEN-SHIFT_MAG);
+            z2  <= unsigned(seg.segpos*seg.segpos);
+            z_red <= resize(shift_right(signed(seg.segpos), SHIFT_MAG), SF_SEG_POS_LEN - SHIFT_MAG);
 
             -- Clock 1
             dv1 <= dv0;

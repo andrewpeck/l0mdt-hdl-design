@@ -17,7 +17,7 @@ package gldl_ult_tp_sim_pkg is
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     tar : tar2hps_rt;
   end record input_tar_rt;
-  constant INPUT_TAR_LEN : integer := 111;
+  constant INPUT_TAR_LEN : integer := 112;
   subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
   function vectorify(x: input_tar_rt) return input_tar_rvt;
   function structify(x: input_tar_rvt) return input_tar_rt;
@@ -43,18 +43,18 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: input_tar_rt) return input_tar_rvt is
     variable y : input_tar_rvt;
   begin
-    y(110 downto 47)           := vectorify(x.global_time);
-    y(46 downto 39)            := vectorify(x.station);
-    y(38 downto 36)            := vectorify(x.chamber);
+    y(111 downto 48)           := vectorify(x.global_time);
+    y(47 downto 40)            := vectorify(x.station);
+    y(39 downto 36)            := vectorify(x.chamber);
     y(35 downto 0)             := vectorify(x.tar);
     return y;
   end function vectorify;
   function structify(x: input_tar_rvt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
-    y.global_time              := structify(x(110 downto 47));
-    y.station                  := structify(x(46 downto 39));
-    y.chamber                  := structify(x(38 downto 36));
+    y.global_time              := structify(x(111 downto 48));
+    y.station                  := structify(x(47 downto 40));
+    y.chamber                  := structify(x(39 downto 36));
     y.tar                      := structify(x(35 downto 0));
     return y;
   end function structify;

@@ -44,8 +44,8 @@ entity top_heg is
     i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to Segment finder
     o_sf_control_v      : out heg_ctrl2hp_rvt;
-    o_sf_slc_data_v     : out ucm2hps_rvt;
-    o_sf_mdt_data_v     : out heg_bm2sf_rvt
+    o_sf_slc_data_v     : out heg2sfslc_rvt;
+    o_sf_mdt_data_v     : out heg2sfhit_rvt
   );
 end entity top_heg;
 
@@ -61,7 +61,7 @@ begin
   port map(
     clk                 => CLK,
     
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- configuration
     -- SLc

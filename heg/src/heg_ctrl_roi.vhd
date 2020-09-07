@@ -52,7 +52,7 @@ end entity heg_ctrl_roi;
 architecture beh of heg_ctrl_roi is
 
   signal uCM_data_r : ucm2hps_rt;
-  signal slc_b_data_r  : ucm_csf_barrel_rt;
+  -- signal slc_b_data_r  : ucm_csf_barrel_rt;
   
   signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -65,7 +65,7 @@ begin
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
     uCM_data_r <= structify(i_uCM_data_v);
-    slc_b_data_r <= structify(uCM_data_r.specific);
+    -- slc_b_data_r <= structify(uCM_data_r.specific);
     
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
@@ -76,14 +76,14 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_z                 => slc_b_data_r.z,
+      i_z                 => uCM_data_r.vec_pos,
       i_dv                => uCM_data_r.data_valid,
       --
       o_roi_center        => roi_center,
       o_dv                => dv_Z
     );
 
-    ROI_MBAR : entity heg_lib.b_mbar2roi
+    ROI_MBAR : entity heg_lib.b_slope2roi
     generic map(
       g_STATION_RADIUS => g_STATION_RADIUS
     )
@@ -92,7 +92,7 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_mbar              => slc_b_data_r.mbar,
+      i_ang               => uCM_data_r.vec_ang,
       i_dv                => uCM_data_r.data_valid,
       --
       o_roi_edges         => roi_edges,

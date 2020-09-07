@@ -48,9 +48,9 @@ use tf_lib.pt_params_pkg.all;
 entity sagitta_calculator is
   port (
     clk               : in std_logic;
-    i_seg0            : in sf_seg_data_barrel_rvt;
-    i_seg1            : in sf_seg_data_barrel_rvt;
-    i_seg2            : in sf_seg_data_barrel_rvt;
+    i_seg0            : in sf2ptcalc_rvt;
+    i_seg1            : in sf2ptcalc_rvt;
+    i_seg2            : in sf2ptcalc_rvt;
     o_inv_s           : out unsigned(INV_S_LEN-1 downto 0);
     o_dv_s            : out std_logic
   );
@@ -58,7 +58,7 @@ end sagitta_calculator; -- sagitta_calculator
 
 architecture Behavioral of sagitta_calculator is
     -- Inputs
-    signal seg0, seg1, seg2 : sf_seg_data_barrel_rt;
+    signal seg0, seg1, seg2 : sf2ptcalc_rt;
     -- Valid signals for sagitta
     signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11
         : std_logic := '0';
@@ -215,8 +215,8 @@ begin
             -- Clock 0
             dv0 <= (seg0.data_valid and seg1.data_valid and seg2.data_valid);
 
-            delta_z_20 <= seg2.pos - seg0.pos;
-            delta_z_10 <= seg1.pos - seg0.pos;
+            delta_z_20 <= signed(seg2.segpos) - signed(seg0.segpos);
+            delta_z_10 <= signed(seg1.segpos) - signed(seg0.segpos);
             delta_r_20 <= resize(
                     shift_right(BOL_SEC3_RHO_s - BIL_SEC3_RHO_s, shift_m_den),
                     DELTA_R_RED_LEN);
@@ -237,17 +237,17 @@ begin
                 seg1.data_valid and
                 not seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg0.angle - seg1.angle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg0.segangle) - signed(seg1.segangle))), DELTA_R_RED_LEN);
             elsif (seg0.data_valid and
                 not seg1.data_valid and
                 seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg0.angle - seg2.angle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg0.segangle) - signed(seg2.segangle))), DELTA_R_RED_LEN);
             elsif (not seg0.data_valid and
                 seg1.data_valid and
                 seg2.data_valid) = '1' then
                 delta_r_20 <= resize(
-                    unsigned(abs(seg1.angle - seg2.angle)), DELTA_R_RED_LEN);
+                    unsigned(abs(signed(seg1.segangle) - signed(seg2.segangle))), DELTA_R_RED_LEN);
             end if;
 
             -- Clock 1

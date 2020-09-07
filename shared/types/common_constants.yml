@@ -16,8 +16,8 @@ HDL_Types:
 - MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 , ~ : mm ]
 # MDT_LOCAL_AXI_LEN   : [ qualifier: constant , type: integer , value: 15 ] # 14 o 15?
 # MDT_LOCAL_AXI_MULT  : [ qualifier: constant , type: real , value: 32.0 , ~ : mm]
-- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: 13 ] #14 o 15?
-- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: 14 ] #14 o 15?
+- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
+- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
 - MDT_RADIUS_LEN       : [ qualifier: constant , type: integer , value: 9 ]
 - MDT_RADIUS_MULT: [ qualifier: constant , type: real , value: 32.0 ]
 
@@ -32,10 +32,10 @@ HDL_Types:
 # slc_muid
 # SLC_SLCID_LEN:    [qualifier: constant , type: integer , value: 2]
 # SLC_SLID_LEN:     [qualifier: constant , type: integer , value: 6]
-# BCID_LEN:         [qualifier: constant , type: integer , value: 12]
+- BCID_LEN:         [qualifier: constant , type: integer , value: SL_HEADER_BCID_LEN]
 
 # slc chambers
-# SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 3]
+- SLC_CHAMBER_LEN:     [qualifier: constant , type: integer , value: 4]
 
 # slc common
 # SLC_TCID_LEN:     [ qualifier: constant , type: integer , value: 3 ]
@@ -52,8 +52,8 @@ HDL_Types:
 
 # SLC_B_SPARE_LEN:    [ qualifier: constant , type: integer , value: 8 ]
 # SLC_COIN_TYPE_LEN:  [ qualifier: constant , type: integer , value: 3 ]
-# SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: 10 ]
-# SLC_Z_RPC_MULT:     [qualifier: constant  , type: real    , value: 25.0 ]
+- SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: 10 ]
+- SLC_Z_RPC_MULT:     [qualifier: constant  , type: real    , value: 13.0 ]
 
 # slc specific endcap
 
@@ -79,12 +79,12 @@ HDL_Types:
 # MDT_TDC_FINE_LEN: [ qualifier: constant , type: integer , value: 5 ]
 # MDT_TDC_PW_LEN: [ qualifier: constant , type: integer , value: 8 ]
 # pull mux
-# MDT_FIBER_LEN: [ qualifier: constant , type: integer , value: 5 ]
-# MDT_MUXCH_LEN: [ qualifier: constant , type: integer , value: 4 ]
+- MDT_FIBER_LEN   : [ qualifier: constant , type: integer , value: 5 ]
+- MDT_MUXCH_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # tar
-# MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: 9 ]
-# MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: 5 ]
-# MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
+- MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: TAR2HPS_TUBE_LEN ]
+- MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: TAR2HPS_LAYER_LEN ]
+- MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
 
 #############################################################
 # INTERBLOCK TYPES
@@ -97,9 +97,11 @@ HDL_Types:
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-# UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
-# UCM_MBAR_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
-# UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: 10 ]
+- UCM_VEC_ANG_LEN    : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_ANG_LEN ]
+- UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
+# - UCM_VEC_ANG_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+
+- UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] # 10
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]
 # UCM_ETA_LEN     : [ qualifier: constant , type: integer , value: 8 ]
@@ -120,32 +122,38 @@ HDL_Types:
 # -----------------------------------------------------------
 # sf 2 pt 
 # -----------------------------------------------------------
-# SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
+# - SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: 19]
 # SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
 # SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: 15]
 # SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
 # SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
 
-- SF_SEG_DATA_LEN : [qualifier : constant , type : integer , value : 59]
+- SF_SEG_POS_LEN : [ qualifier: constant, type: integer, value: SF2PTCALC_SEGPOS_LEN]
+- SF_SEG_POS_MULTI : [ qualifier: constant, type: real, value: 16.0]
+- SF_SEG_ANG_LEN : [ qualifier: constant, type: integer, value: SF2PTCALC_SEGANGLE_LEN]
+- SF_SEG_ANG_MULTI     : [qualifier: constant, type: real, value: 4096.0]
+- SF_SEG_ANG_MULTI_LEN : [qualifier: constant, type: integer, value: 12]
+
+# - SF_SEG_DATA_LEN : [qualifier : constant , type : integer , value : 59]
 # -----------------------------------------------------------
 # slc ucm pipeline
 # -----------------------------------------------------------
 
 #pl 2 pt
-# UCM_PT_PHIMOD_LEN: [ qualifier: constant , type: integer , value: 8 ]
+- UCM_PT_PHIMOD_LEN: [ qualifier: constant , type: integer , value: UCM2PL_PHIMOD_LEN ]
 # UCM_PT_PHIMOD_MULT: [qualifier: constant, type: real, value: 320.0]
 
 
 # -----------------------------------------------------------
 # TF 2 MTC
 # -----------------------------------------------------------
-# MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: 15 ]
+- MTC_ETA_LEN   :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_ETA_LEN ]
 # MTC_ETA_MULT  :  [ qualifier: constant , type: real, value: 6068.1481481481]
-# MTC_PT_LEN    :  [ qualifier: constant , type: integer , value: 9 ]
-# MTC_PT_MULT   :  [ qualifier: constant , type: real, value: 4.0]
-# MTC_PTTHR_LEN :  [ qualifier: constant , type: integer , value: 4 ]
-# MTC_NSEG_LEN  :  [ qualifier: constant , type: integer , value: 2 ]
-# MTC_QUALITY_LEN  :  [ qualifier: constant , type: integer , value: 3 ]
+- MTC_PT_LEN    :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_PT_LEN ]
+- MTC_PT_MULT   :  [ qualifier: constant , type: real, value: PTCALC2MTC_MDT_PT_MULT] # 4.0
+- MTC_PTTHR_LEN :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_PTTHRESH_LEN ]
+- MTC_NSEG_LEN  :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_NSEGMENTS_LEN ]
+- MTC_QUALITY_LEN  :  [ qualifier: constant , type: integer , value: PTCALC2MTC_MDT_QUALITY_LEN ]
 
 #############################################################
 # OTHER

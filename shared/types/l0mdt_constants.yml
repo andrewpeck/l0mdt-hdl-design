@@ -89,7 +89,7 @@ HDL_Types:
 - UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]
 # UCM_ETA_LEN     : [ qualifier: constant , type: integer , value: 8 ]
-# # UCM_CHAMBER_ID_LEN: [ qualifier: constant , type: integer , value: 5 ]
+# # UCM_chamber_ieta_LEN: [ qualifier: constant , type: integer , value: 5 ]
 
 - UCM2HPS_SPECIFIC_LEN: [ qualifier: constant , type: integer , value: 21 ]
 

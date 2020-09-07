@@ -40,23 +40,22 @@ entity csf is
     );
     Port (
         clk       : in std_logic;
-        i_seed    : in ucm_csf_seed_rvt;
-        i_mdt_hit : in hp_hit_data_rvt;
+        i_seed    : in csf_seed_rvt;
+        i_mdt_hit : in heg2sfhit_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
-        o_seg     : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
+        o_seg     : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
     );
 end csf;
 
 architecture Behavioral of csf is
     -- Input RoI
-    signal seed_i : ucm_csf_seed_rt;
-    signal seed : ucm_csf_seed_rvt;
+    signal seed_i : csf_seed_rt;
+    signal seed : csf_seed_rvt;
 
     -- Input signals
-    signal mdt_hit  : hp_hit_data_rt;
-    signal mdt_hits : hp_hit_data_a_avt (1 downto 0)
-        := (others => (others => '0'));
+    signal mdt_hit  : heg2sfhit_rt;
+    signal mdt_hits : heg2sfhit_bus_avt (1 downto 0) := (others => (others => '0'));
     signal eof      : std_logic := '0';
 
     -- Histogram signals
@@ -179,7 +178,7 @@ begin
     if rising_edge(clk) then
 
         mdt_hits <= (others => (others => '0'));
-        mdt_hits(stdlogic_integer(mdt_hit.multilayer)) <= i_mdt_hit;
+        mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
         rst_chi2 <= '0';
 
         if seed_i.data_valid = '1' then

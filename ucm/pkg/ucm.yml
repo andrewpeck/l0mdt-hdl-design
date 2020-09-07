@@ -14,16 +14,33 @@ HDL_Types:
 - UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
 - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 10 ]
 
+- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
+
+# - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
+
 # # ucm preprocesor output
 
+# - slc_in_data:
+#   - muid        : [type: slc_muid]
+#   - data_valid  : [type: logic]
+
 - ucm_prepro:
-  - muid:       [type: slc_muid]
-  - chambers:   [type: slc_chid]
-  - common:     [type: slc_common]
-  - specific:   [type: logic , length: SLC_SPECIFIC_LEN]
-  - data_valid: [type: logic]
+  - muid        : [type: slc_muid]
+  # - chambers:   [type: slc_chid]
+  # - cointype    :  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  # - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type: logic]
 
 - ucm_prepro_bus : [array: open , type: ucm_prepro]
+
+- ucm_cde:
+  - muid        : [type: slc_muid]
+  # - chambers:   [type: slc_chid]
+  - cointype    :  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type: logic]
+
+- ucm_cde_bus : [array: open , type: ucm_cde]
 # ucm_prepro_avt: [array: open , type: ucm_prepro_vt ]
 
 # main cross switch control

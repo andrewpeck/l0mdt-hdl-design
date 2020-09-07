@@ -57,29 +57,29 @@ use tf_lib.pt_params_pkg.all;
 entity segment_selector is
     port (
         clk               : in std_logic;
-        i_seg_I          : in  sf2pt_rvt;
-        i_seg_M          : in  sf2pt_rvt;
-        i_seg_O          : in  sf2pt_rvt;
-        i_nsp_seg_I      : in  sf2pt_rvt;
-        i_nsp_seg_M      : in  sf2pt_rvt;
-        i_nsp_seg_O      : in  sf2pt_rvt;
-        i_nsm_seg_I      : in  sf2pt_rvt;
-        i_nsm_seg_M      : in  sf2pt_rvt;
-        i_nsm_seg_O      : in  sf2pt_rvt;
-        o_seg_I          : out sf2pt_rvt;
-        o_seg_M          : out sf2pt_rvt;
-        o_seg_O          : out sf2pt_rvt
+        i_seg_I          : in  sf2ptcalc_rvt;
+        i_seg_M          : in  sf2ptcalc_rvt;
+        i_seg_O          : in  sf2ptcalc_rvt;
+        i_nsp_seg_I      : in  sf2ptcalc_rvt;
+        i_nsp_seg_M      : in  sf2ptcalc_rvt;
+        i_nsp_seg_O      : in  sf2ptcalc_rvt;
+        i_nsm_seg_I      : in  sf2ptcalc_rvt;
+        i_nsm_seg_M      : in  sf2ptcalc_rvt;
+        i_nsm_seg_O      : in  sf2ptcalc_rvt;
+        o_seg_I          : out sf2ptcalc_rvt;
+        o_seg_M          : out sf2ptcalc_rvt;
+        o_seg_O          : out sf2ptcalc_rvt
     );
 end segment_selector; -- segment_selector
 
 architecture Behavioral of segment_selector is
 
     function select_segment ( 
-        seg0 : sf2pt_rt; 
-        seg1 : sf2pt_rt; 
-        seg2 : sf2pt_rt
-    ) return sf2pt_rt is
-        variable outseg : sf2pt_rt;
+        seg0 : sf2ptcalc_rt; 
+        seg1 : sf2ptcalc_rt; 
+        seg2 : sf2ptcalc_rt
+    ) return sf2ptcalc_rt is
+        variable outseg : sf2ptcalc_rt;
     begin
         if seg0.data_valid = '1' then
             outseg := seg0;
@@ -93,8 +93,8 @@ architecture Behavioral of segment_selector is
 
     signal seg_I, seg_M, seg_O, 
            nsp_seg_I, nsp_seg_M, nsp_seg_O, 
-           nsm_seg_I, nsm_seg_M, nsm_seg_O : sf2pt_rt;
-    signal outseg_I, outseg_M, outseg_O : sf2pt_rt;
+           nsm_seg_I, nsm_seg_M, nsm_seg_O : sf2ptcalc_rt;
+    signal outseg_I, outseg_M, outseg_O : sf2ptcalc_rt;
 
 begin
     seg_I <= structify(i_seg_I);

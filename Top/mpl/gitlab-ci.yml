@@ -1,43 +1,43 @@
-#################### UCM Project ###########################
+#################### MPL Project ###########################
 
-create_project:ucm:
+create_project:mpl:
     extends: .create_project
     variables:
       extends: .vars
       PROJECT_NAME: mpl
 
-# simulate_project:ucm:
+# simulate_project:mpl:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ucm
+#       PROJECT_NAME: mpl
 
-# synthesise_ips:ucm:
+# synthesise_ips:mpl:
 #     extends: .synthesise_ips
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ucm
+#       PROJECT_NAME: mpl
 #       IP_PATH: IP
 #     dependencies:
-#         - create_project:ucm
+#         - create_project:mpl
 
-# synthesise_project:ucm:
+# synthesise_project:mpl:
 #     extends: .synthesise_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ucm
+#       PROJECT_NAME: mpl
 #     dependencies:
-#         # - synthesise_ips:ucm
-#         - create_project:ucm
+#         # - synthesise_ips:mpl
+#         - create_project:mpl
 
-# implement_project:ucm:
+# implement_project:mpl:
 #     extends: .implement_project
 #     variables: 
 #       extends: .vars
-#       PROJECT_NAME: ucm
+#       PROJECT_NAME: mpl
 #       HOG_NO_BITSTREAM_STAGE: 1
 #     dependencies:
-#       - create_project:ucm
-#       #  - synthesise_ips:ucm
-#       - synthesise_project:ucm
+#       - create_project:mpl
+#       #  - synthesise_ips:mpl
+#       - synthesise_project:mpl
 

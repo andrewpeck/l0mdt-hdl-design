@@ -89,7 +89,7 @@ architecture Behavioral of csf_fitter is
     constant SUM_X_SUM_X_LEN  : integer := SUM_X_LEN*2;
     constant NSUM_X2_LEN      : integer := CSF_MAXHITS_SEG_LEN + SUM_X2_LEN;
     constant NUM_M_LEN        : integer := NSUM_YZ_LEN + 1;
-    constant NUM_B_LEN        : integer := SUM_Y_SUM_X2_LEN + 2;
+    constant NUM_B_LEN        : integer := SUM_Y_SUM_X2_LEN + 1;
     constant DEN_LEN          : integer := NSUM_X2_LEN;
 
     -- Numerator/Denominator constants

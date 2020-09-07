@@ -84,7 +84,8 @@ HDL_Types:
 #   specific:     [type: logic , length: SLC_SPECIFIC_LEN , ~: can be either slc_barrel_vt or slc_endcap_vt]
 #   data_valid:   [type: logic]
 
-- slc_rx_data_bus: [array: open , type: slc_rx_data]
+- slc_rx_bus: [array: open , type: slc_rx]
+- slc_endcap_bus: [array: open , type: slc_endcap]
 
 # -----------------------------------------------------------
 #   MDT tdc, polmux & TAR
@@ -103,13 +104,13 @@ HDL_Types:
 #   tdc: [type: mdt_tdc]
 #   data_valid: [type: logic]
 
-- mdt_polmux_bus: [array: open , type: mdt_polmux]
+- mdt_polmux_bus: [array: open , type: tdcpolmux2tar]
 
 # # mdt tar
 # tar2hps:
 #   tube        : [ type: unsigned , length: MDT_TUBE_LEN ]
 #   layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
-#   chamber_id  : [ type: unsigned , length: SLC_CHAMBER_LEN]
+#   chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN]
 #   time        : [ type: unsigned , length: MDT_TIME_LEN ]
 #   data_valid  : [ type: logic]
 
@@ -126,19 +127,19 @@ HDL_Types:
 # -----------------------------------------------------------
 # slc ucm2hps specific
 # barrel
-- ucm_csf_barrel:
-  - mbar        : [ type: unsigned , length: UCM_MBAR_LEN ]
-  - z           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
+# - ucm_csf_barrel:
+#   - mbar        : [ type : unsigned , length : HEG2SF_VEC_ANG_LEN]
+#   - z           : [ type : unsigned , length : HEG2SF_VEC_POS_LEN ]
 
-- ucm_csf_endcap:
-  - mbar        : [ type: unsigned , length: UCM_MBAR_LEN ]
-  - R           : [ type: unsigned , length: UCM_R_ROI_LEN ]
+# - ucm_csf_endcap:
+  # - mbar        : [ type : unsigned , length : UCM2CSF_VEC_ANG_LEN]
+  # - R           : [ type : unsigned , length : UCM_R_ROI_LEN ]
 
 # ucm_csf_seed:
 #   muid          : [ type: slc_muid]
 #   mbar          : [ type: unsigned , length: UCM_MBAR_LEN ]
 #   pos           : [ type: unsigned , length: UCM_Z_ROI_LEN ]
-#   chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
+#   chamber_ieta    : [ type: logic , length: SLC_CHAMBER_LEN ]
 #   data_valid    : [ type: logic]
 
 # ucm_csf_seed_a: [array: open , type: ucm_csf_seed]
@@ -154,54 +155,50 @@ HDL_Types:
 #   data_valid    : [ type: logic ]
 # # slc ucm2hps
 
-- ucm2hps:
-  # - id            : [ type: ucm2hps_id]
-  - muid          : [ type: slc_muid ]
-  - specific      : [ type: logic , length: UCM2HPS_SPECIFIC_LEN]
-  - chamber_id    : [ type: logic , length: SLC_CHAMBER_LEN ]
-  - data_valid    : [ type: logic]
+# - ucm2hps:
+#   # - id            : [ type: ucm2hps_id]
+#   - muid          : [ type: slc_muid ]
+#   - specific      : [ type: logic , length: UCM2HPS_SPECIFIC_LEN]
+#   - chamber_ieta    : [ type: logic , length: SLC_CHAMBER_LEN ]
+#   - data_valid    : [ type: logic]
 
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 
-# ucm2hps_maxhps  : [array: MAX_NUM_HPS , type: ucm2hps ]
+- heg2sfslc_bus : [ array : open , type : heg2sfslc]
+- heg2sfhit_bus : [ array : open , type : heg2sfhit] 
+# ucm2hps_maxhps  : [array: c_MAX_NUM_HPS , type: ucm2hps ]
 # ucm2hps_a       : [array: open , type: ucm2hps_ , _: off ]
 
 # -----------------------------------------------------------
 #       HEG 2 SF
 # -----------------------------------------------------------
 # CSF
-- hp_hit_data:
-  - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
-  - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
-  - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
-  - multilayer  : [ type: logic ]
-  - data_valid  : [ type: logic ]
+# - heg2sf_mdt:
+#   - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
+#   - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
+#   - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
+#   - multilayer  : [ type: logic ]
+#   - data_valid  : [ type: logic ]
 
-- hp_hit_data_a : [array: open, type: hp_hit_data]
+# - heg2sfhit_bus : [array: open, type: heg2sf_mdt]
 
 # -----------------------------------------------------------
 # sf 2 pt
 # -----------------------------------------------------------
 
-# sf_seg_data_barrel:
-#   pos        : [ type: signed, length: SF_SEG_POS_LEN ]
-#   angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
-#   quality    : [ type: logic]
 
-# sf_seg_data_endcap:
-#   pos        : [ type: unsigned, length: SF_SEG_POS_LEN ]
-#   angle      : [ type: signed, length: SF_SEG_ANG_LEN ]
-#   quality    : [ type: logic]
 
-# sf2pt :
-#   data        : [type : logic , length : SF_SEG_DATA_LEN]
-#   muid        : [ type: slc_muid]
-#   chamber_id  : [ type: logic , length: SLC_CHAMBER_LEN ]
-#   data_valid  : [ type : logic]
+- sf2pt:
+  - data_valid  : [ type: logic]
+  - muid        : [ type: slc_muid]
+  - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+  - quality     : [ type: logic]
 
-- sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
+# - sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
 
-- sf2pt_bus: [ array: open , type : sf2pt]
+- sf2pt_bus: [ array: open , type : sf2ptcalc]
 
 # sf2pt_a : [ array: open , type : sf2pt_ , _: off]
 
@@ -229,7 +226,7 @@ HDL_Types:
 #   phimod     : [ type : signed, length: SLC_PT_PHIMOD_LEN]
 #   charge     : [ type : logic]
 
-- pl2pt_bus: [array: open , type: pl2pt]
+- pl2pt_bus: [array: open , type: pl2ptcalc]
 
 # pl2mtc:
 #   muid          : [ type : slc_muid]
@@ -256,21 +253,21 @@ HDL_Types:
 #   nseg       : [ type : unsigned, length: MTC_NSEG_LEN]
 #   quality    : [ type : logic, length: MTC_QUALITY_LEN]
 
-- tf2mtc_bus: [array: open , type: tf2mtc]
+- tf2mtc_bus: [array: open , type: ptcalc2mtc]
 
 # -----------------------------------------------------------
 # MTC out
 # -----------------------------------------------------------
 
-- mtc_out_bus: [array: open , type: mtc_out]
+- mtc_out_bus: [array: open , type: mtc2sl]
 
-- mtc2nsp_bus: [array: open , type: mtc2nsp]
+- mtc2nsp_bus: [array: open , type: mtc2sl]
 
 # -----------------------------------------------------------
 # MTC out
 # -----------------------------------------------------------
 - felix_stream:
-  - muid          : [ type : slc_muid]
+  - slc_muid          : [ type : slc_muid]
   - common        : [ type : slc_common]
   - data_valid : [ type : logic ]
 

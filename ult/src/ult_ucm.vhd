@@ -38,10 +38,10 @@ entity candidate_manager is
       ctrl              : in  UCM_CTRL_t;
       mon               : out UCM_MON_t;
       -- Sector Logic Candidates
-      i_slc_data_mainA_av     : in slc_rx_data_bus_avt(2 downto 0);
-      i_slc_data_mainB_av     : in slc_rx_data_bus_avt(2 downto 0);
-      i_slc_data_neighborA_v : in slc_rx_data_rvt;
-      i_slc_data_neighborB_v : in slc_rx_data_rvt;
+      i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
+      i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
+      i_slc_data_neighborA_v : in slc_rx_rvt;
+      i_slc_data_neighborB_v : in slc_rx_rvt;
       -- Sector Logic Candidates Out of X-point Switch
       o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
       o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);

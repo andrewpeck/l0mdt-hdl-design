@@ -36,14 +36,14 @@ entity heg_buffermux is
    );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     i_control           : in heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
     i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg_bm2sf_rvt
+    o_mdt_hits_v        : out heg2sfhit_rvt
     
   );
 end entity heg_buffermux;
@@ -58,7 +58,7 @@ architecture beh of heg_buffermux is
     port (
       clk                 : in std_logic;
 
-      rst            : in std_logic;
+      rst                 : in std_logic;
       glob_en             : in std_logic;
       -- in
       i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
@@ -74,7 +74,7 @@ architecture beh of heg_buffermux is
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal o_mdt_hits_r : heg_bm2sf_rt; 
+  signal o_mdt_hits_r : heg2sfhit_rt; 
 
   signal mdt_hit    :  heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);

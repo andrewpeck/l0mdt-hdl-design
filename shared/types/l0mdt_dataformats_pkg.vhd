@@ -118,7 +118,7 @@ package l0mdt_dataformats_pkg is
   type tar2hps_rt is record
     tube : unsigned(MDT_TUBE_LEN-1 downto 0);
     layer : unsigned(MDT_LAYER_LEN-1 downto 0);
-    chamber_id : unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_ieta : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     time : unsigned(MDT_TIME_LEN-1 downto 0);
     data_valid : std_logic;
   end record tar2hps_rt;
@@ -133,7 +133,7 @@ package l0mdt_dataformats_pkg is
     mbar : unsigned(UCM_MBAR_LEN-1 downto 0);
     pos : unsigned(UCM_Z_ROI_LEN-1 downto 0);
     ang : unsigned(UCM_Z_ROI_LEN-1 downto 0);
-    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
     data_valid : std_logic;
   end record ucm_csf_seed_rt;
   constant UCM_CSF_SEED_LEN : integer := 55;
@@ -145,7 +145,7 @@ package l0mdt_dataformats_pkg is
   type sf2pt_rt is record
     data_valid : std_logic;
     muid : slc_muid_rt;
-    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
     pos : signed(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
@@ -159,7 +159,7 @@ package l0mdt_dataformats_pkg is
   type sf_seg_data_barrel_rt is record
     data_valid : std_logic;
     muid : slc_muid_rt;
-    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
     pos : signed(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
@@ -173,7 +173,7 @@ package l0mdt_dataformats_pkg is
   type sf_seg_data_endcap_rt is record
     data_valid : std_logic;
     muid : slc_muid_rt;
-    chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
+    chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0);
     pos : unsigned(SF_SEG_POS_LEN-1 downto 0);
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
@@ -553,7 +553,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y(35 downto 27)            := vectorify(x.tube);
     y(26 downto 22)            := vectorify(x.layer);
-    y(21 downto 19)            := vectorify(x.chamber_id);
+    y(21 downto 19)            := vectorify(x.chamber_ieta);
     y(18 downto 1)             := vectorify(x.time);
     y(0)                       := x.data_valid;
     return y;
@@ -563,7 +563,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.tube                     := structify(x(35 downto 27));
     y.layer                    := structify(x(26 downto 22));
-    y.chamber_id               := structify(x(21 downto 19));
+    y.chamber_ieta               := structify(x(21 downto 19));
     y.time                     := structify(x(18 downto 1));
     y.data_valid               := x(0);
     return y;
@@ -573,7 +573,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.tube                     := nullify(x.tube);
     y.layer                    := nullify(x.layer);
-    y.chamber_id               := nullify(x.chamber_id);
+    y.chamber_ieta               := nullify(x.chamber_ieta);
     y.time                     := nullify(x.time);
     y.data_valid               := nullify(x.data_valid);
     return y;
@@ -586,7 +586,7 @@ package body l0mdt_dataformats_pkg is
     y(34 downto 24)            := vectorify(x.mbar);
     y(23 downto 14)            := vectorify(x.pos);
     y(13 downto 4)             := vectorify(x.ang);
-    y(3 downto 1)              := x.chamber_id;
+    y(3 downto 1)              := x.chamber_ieta;
     y(0)                       := x.data_valid;
     return y;
   end function vectorify;
@@ -597,7 +597,7 @@ package body l0mdt_dataformats_pkg is
     y.mbar                     := structify(x(34 downto 24));
     y.pos                      := structify(x(23 downto 14));
     y.ang                      := structify(x(13 downto 4));
-    y.chamber_id               := x(3 downto 1);
+    y.chamber_ieta               := x(3 downto 1);
     y.data_valid               := x(0);
     return y;
   end function structify;
@@ -608,7 +608,7 @@ package body l0mdt_dataformats_pkg is
     y.mbar                     := nullify(x.mbar);
     y.pos                      := nullify(x.pos);
     y.ang                      := nullify(x.ang);
-    y.chamber_id               := nullify(x.chamber_id);
+    y.chamber_ieta               := nullify(x.chamber_ieta);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;
@@ -618,7 +618,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y(58)                      := x.data_valid;
     y(57 downto 38)            := vectorify(x.muid);
-    y(37 downto 35)            := x.chamber_id;
+    y(37 downto 35)            := x.chamber_ieta;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -629,7 +629,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := x(58);
     y.muid                     := structify(x(57 downto 38));
-    y.chamber_id               := x(37 downto 35);
+    y.chamber_ieta               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -640,7 +640,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
-    y.chamber_id               := nullify(x.chamber_id);
+    y.chamber_ieta               := nullify(x.chamber_ieta);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
@@ -652,7 +652,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y(58)                      := x.data_valid;
     y(57 downto 38)            := vectorify(x.muid);
-    y(37 downto 35)            := x.chamber_id;
+    y(37 downto 35)            := x.chamber_ieta;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -663,7 +663,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := x(58);
     y.muid                     := structify(x(57 downto 38));
-    y.chamber_id               := x(37 downto 35);
+    y.chamber_ieta               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -674,7 +674,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
-    y.chamber_id               := nullify(x.chamber_id);
+    y.chamber_ieta               := nullify(x.chamber_ieta);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);
@@ -686,7 +686,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y(58)                      := x.data_valid;
     y(57 downto 38)            := vectorify(x.muid);
-    y(37 downto 35)            := x.chamber_id;
+    y(37 downto 35)            := x.chamber_ieta;
     y(34 downto 16)            := vectorify(x.pos);
     y(15 downto 1)             := vectorify(x.angle);
     y(0)                       := x.quality;
@@ -697,7 +697,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := x(58);
     y.muid                     := structify(x(57 downto 38));
-    y.chamber_id               := x(37 downto 35);
+    y.chamber_ieta               := x(37 downto 35);
     y.pos                      := structify(x(34 downto 16));
     y.angle                    := structify(x(15 downto 1));
     y.quality                  := x(0);
@@ -708,7 +708,7 @@ package body l0mdt_dataformats_pkg is
   begin
     y.data_valid               := nullify(x.data_valid);
     y.muid                     := nullify(x.muid);
-    y.chamber_id               := nullify(x.chamber_id);
+    y.chamber_ieta               := nullify(x.chamber_ieta);
     y.pos                      := nullify(x.pos);
     y.angle                    := nullify(x.angle);
     y.quality                  := nullify(x.quality);

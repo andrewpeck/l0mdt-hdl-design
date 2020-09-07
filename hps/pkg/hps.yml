@@ -16,7 +16,7 @@ HDL_Types:
 
 - hps_ctrl2sf : [ array : open , type : heg_ctrl2hp]
 
-- hps_bm2sf   : [ array : open , type : heg_bm2sf] 
+# - hps_bm2sf   : [ array : open , type : hps2sf] 
 
 # hps_mdt_input:
 #   pullmux   : [ type : mdt_pullmux_data ]

@@ -27,12 +27,13 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_cvp_slope is
+entity ucm_cvp_b_slope is
   port (
     clk           : in std_logic;
     rst           : in std_logic;
     glob_en       : in std_logic;
     --
+    i_cointype    : in std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
     i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     i_data_valid  : in std_logic;
     --
@@ -41,16 +42,16 @@ entity ucm_cvp_slope is
     o_data_valid  : out std_logic
     
   );
-end entity ucm_cvp_slope;
+end entity ucm_cvp_b_slope;
 
-architecture beh of ucm_cvp_slope is
+architecture beh of ucm_cvp_b_slope is
   
   signal barrel_r   : slc_barrel_rt;
   signal coin : integer;
 
-  type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN-1 downto 0);
+  type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN downto 0);
   signal rpc_a : rpc_at;
-  type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN-1 downto 0);
+  type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN downto 0);
   signal rad_a : rad_at;
 
   signal num_h , num_hh : integer;
@@ -78,7 +79,7 @@ begin
 
     barrel_r <= structify(i_data_v);
 
-    coin <= to_integer(unsigned(barrel_r.coin_type));
+    coin <= to_integer(unsigned(i_cointype));
     -- set coin type
     num_h <=  2 when coin = 0 else
               3 when coin = 1 else
@@ -88,28 +89,28 @@ begin
               4 when coin = 5 else
               0;
     -- set z
-    rpc_a(0) <= abs(barrel_r.z_rpc0) when coin = 0 else
-                abs(barrel_r.z_rpc0) when coin = 1 else
-                abs(barrel_r.z_rpc0) when coin = 2 else
-                abs(barrel_r.z_rpc0) when coin = 3 else
-                abs(barrel_r.z_rpc1) when coin = 4 else
-                abs(barrel_r.z_rpc0) when coin = 5 else
+    rpc_a(0) <= signed( "0" & barrel_r.rpc0_posz) when coin = 0 else
+                signed( "0" & barrel_r.rpc0_posz) when coin = 1 else
+                signed( "0" & barrel_r.rpc0_posz) when coin = 2 else
+                signed( "0" & barrel_r.rpc0_posz) when coin = 3 else
+                signed( "0" & barrel_r.rpc1_posz) when coin = 4 else
+                signed( "0" & barrel_r.rpc0_posz) when coin = 5 else
                 (others => '0');
-    rpc_a(1) <= abs(barrel_r.z_rpc3) when coin = 0 else
-                abs(barrel_r.z_rpc1) when coin = 1 else
-                abs(barrel_r.z_rpc1) when coin = 2 else
-                abs(barrel_r.z_rpc2) when coin = 3 else
-                abs(barrel_r.z_rpc2) when coin = 4 else
-                abs(barrel_r.z_rpc1) when coin = 5 else
+    rpc_a(1) <= signed( "0" & barrel_r.rpc3_posz) when coin = 0 else
+                signed( "0" & barrel_r.rpc1_posz) when coin = 1 else
+                signed( "0" & barrel_r.rpc1_posz) when coin = 2 else
+                signed( "0" & barrel_r.rpc2_posz) when coin = 3 else
+                signed( "0" & barrel_r.rpc2_posz) when coin = 4 else
+                signed( "0" & barrel_r.rpc1_posz) when coin = 5 else
                   (others => '0');
     rpc_a(2) <= (others => '0') when coin = 0 else
-                abs(barrel_r.z_rpc2) when coin = 1 else
-                abs(barrel_r.z_rpc3) when coin = 2 else
-                abs(barrel_r.z_rpc3) when coin = 3 else
-                abs(barrel_r.z_rpc2) when coin = 4 else
-                abs(barrel_r.z_rpc2) when coin = 5 else
+                signed( "0" & barrel_r.rpc2_posz) when coin = 1 else
+                signed( "0" & barrel_r.rpc3_posz) when coin = 2 else
+                signed( "0" & barrel_r.rpc3_posz) when coin = 3 else
+                signed( "0" & barrel_r.rpc2_posz) when coin = 4 else
+                signed( "0" & barrel_r.rpc2_posz) when coin = 5 else
                 (others => '0');
-    rpc_a(3) <= abs(barrel_r.z_rpc3) when coin = 5 else
+    rpc_a(3) <= signed( "0" & barrel_r.rpc3_posz) when coin = 5 else
                 (others => '0');
     -- set r
     rad_a(0) <= PHY_BARREL_R0 when coin = 0 else
