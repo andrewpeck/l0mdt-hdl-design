@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -124,15 +125,15 @@ package body heg_pkg is
   function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rvt is
     variable y : heg_ctrl2hp_rvt;
   begin
-    y(1)                       := x.rst;
-    y(0)                       := x.enable;
+    y(1 downto 1)              := vectorify(x.rst);
+    y(0 downto 0)              := vectorify(x.enable);
     return y;
   end function vectorify;
   function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.rst                      := x(1);
-    y.enable                   := x(0);
+    y.rst                      := structify(x(1 downto 1));
+    y.enable                   := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is
@@ -253,14 +254,14 @@ package body heg_pkg is
     variable y : heg_bm2sf_rvt;
   begin
     y(44 downto 1)             := vectorify(x.data);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt is
     variable y : heg_bm2sf_rt;
   begin
     y.data                     := structify(x(44 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_bm2sf_rt) return heg_bm2sf_rt is
