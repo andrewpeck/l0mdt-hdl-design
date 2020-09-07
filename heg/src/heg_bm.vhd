@@ -42,7 +42,7 @@ entity heg_buffermux is
     -- configuration
     i_control           : in heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
-    i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+    i_mdt_hits_av       : in heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
     o_mdt_hits_v        : out heg2sfhit_rvt
     
@@ -72,13 +72,22 @@ architecture beh of heg_buffermux is
     );
   end component heg_buffermux_infifo;
 
+  signal i_mdt_hits_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal o_mdt_hits_r : heg2sfhit_rt; 
 
-  signal ff_o_mdt_hit_v : heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
-  signal ff_o_mdt_hit_r : heg_hp2bm_at(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_i_mdt_hit_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_i_mdt_hit_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal ff_o_mdt_hit_av : heg_hp2bm_data_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_o_mdt_hit_ar  : heg_hp2bm_data_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal buff_mdt_hit_v : hp_hp2sf_data_rvt;
+  signal buff_mdt_hit_r : hp_hp2sf_data_rt;
+  signal buff_mdt_dv    : std_logic;
 
   signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
@@ -88,28 +97,37 @@ architecture beh of heg_buffermux is
 begin
 
   o_mdt_hits_v <= vectorify(o_mdt_hits_r);
-  ff_o_mdt_hit_r <= structify(ff_o_mdt_hit_v);
+  buff_mdt_hit_r <= structify(buff_mdt_hit_v);
+
+  o_mdt_hits_r.localx <= buff_mdt_hit_r.local_x;
+  o_mdt_hits_r.localy <= buff_mdt_hit_r.local_y;
+  o_mdt_hits_r.radius <= buff_mdt_hit_r.radius;
+  o_mdt_hits_r.mlayer <= buff_mdt_hit_r.mlayer;
+  o_mdt_hits_r.data_valid <= buff_mdt_dv;
 
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
+    -- input extraction
+    
+    i_mdt_hits_ar(hp_i) <= structify(i_mdt_hits_av(hp_i));
 
-    fifo_wr(hp_i) <= i_mdt_hits_av(hp_i)(0) and i_mdt_hits_av(hp_i)(1);
+    fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 
     BM_IN_FIFO : heg_buffermux_infifo
     generic map(
-      BM_FIFO_DEPTH   => 4,
-      BM_FIFO_WIDTH   => HP_HP2BM_LEN
+      BM_FIFO_DEPTH   => 32,
+      BM_FIFO_WIDTH   => HP_HP2SF_DATA_LEN
     )
     port map(
       clk                 => clk,
-      rst            => rst,
+      rst                 => rst,
       glob_en             => i_control(hp_i).enable,
       --
-      i_mdt_hit           => i_mdt_hits_av(hp_i),
+      i_mdt_hit           => vectorify(i_mdt_hits_ar(hp_i).data),
       i_wr                => fifo_wr(hp_i),
       i_rd                => fifo_rd(hp_i),
       --
       o_empty             => fifo_empty(hp_i),
-      o_mdt_hit           => ff_o_mdt_hit_v(hp_i)
+      o_mdt_hit           => ff_o_mdt_hit_av(hp_i)
     );
   end generate;
 
@@ -126,7 +144,9 @@ begin
         -- new_index_v := 0;
         nexthit <= 0;
         lasthit <= 0;
-        -- readhit <= '0';
+        readhit <= '0';
+
+        buff_mdt_dv <= '0';
 
       else
         -- check for next hit to read
@@ -143,17 +163,18 @@ begin
         -- read hit
         if readhit = '1' then
           fifo_rd(nexthit) <= '1';
-          o_mdt_hits_v <= ff_o_mdt_hit_v(nexthit);
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(nexthit);
+          buff_mdt_dv <= '1';
           lasthit <= nexthit;
         else 
-
+          buff_mdt_dv <= '0';
         end if;
 
         --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop
         --     new_index_v := index_offset_v + ti;
         --     if new_index_v < (g_HPS_NUM_MDT_CH-1)  then
         --       if (not fifo_empty(new_index_v)) then
-        --         o_mdt_hits.sf_data <= ff_o_mdt_hit_v(new_index_v).sf_data;
+        --         o_mdt_hits.sf_data <= ff_o_mdt_hit_av(new_index_v).sf_data;
         --         index_offset_v := new_index_v - 1;
         --         exit;
         --       else
@@ -161,7 +182,7 @@ begin
         --       end if;
         --     else
         --       if (not fifo_empty(new_index_v - MAX_NUM_HP)) then
-        --         o_mdt_hits <= ff_o_mdt_hit_v(new_index_v - MAX_NUM_HP);
+        --         o_mdt_hits <= ff_o_mdt_hit_av(new_index_v - MAX_NUM_HP);
         --         index_offset_v := new_index_v - 1;
         --         exit;
         --       else

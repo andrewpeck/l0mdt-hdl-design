@@ -17,7 +17,7 @@ package common_constants_pkg is
 
   constant MDT_LOCAL_Y_LEN : integer := HEG2SFHIT_LOCALY_LEN;
 
-  constant MDT_RADIUS_LEN : integer := 9;
+  constant MDT_RADIUS_LEN : integer := HEG2SFHIT_RADIUS_LEN;
 
   constant MDT_RADIUS_MULT : real := 32.0;
 
