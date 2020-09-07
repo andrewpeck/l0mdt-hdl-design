@@ -140,7 +140,7 @@ begin
     if rising_edge(clk) then
       if(rst= '1') then
         -- o_mdt_hits <= (others => '0');
-        o_mdt_hits_r <= nullify(o_mdt_hits_r);
+        buff_mdt_hit_v <= nullify(buff_mdt_hit_v);
         -- new_index_v := 0;
         nexthit <= 0;
         lasthit <= 0;
@@ -151,9 +151,34 @@ begin
       else
         -- check for next hit to read
         if and_reduce(fifo_empty) = '0' then
-          index_offset_v := lasthit;
-          loop_a : for ti in 0 to (g_HPS_NUM_MDT_CH-1) loop
+          -- there are hits
+          index_offset_v := lasthit + 1;
+          loop_done_v := 0;
+          new_index_v := index_offset_v;
+          loop_a : for ti in 1 to (g_HPS_NUM_MDT_CH-1) loop
             
+
+            if loop_done_v = 0 then
+              -- moving index
+              if new_index_v < g_HPS_NUM_MDT_CH then
+                new_index_v := ti + index_offset_v;
+              else
+                new_index_v := ti + index_offset_v - g_HPS_NUM_MDT_CH;
+              end if;
+
+              -- checking fifo
+              if fifo_empty(new_index_v) = '0' then
+                -- next hit found
+                nexthit <= new_index_v;
+                loop_done_v := 1;
+              else
+                -- loop_done_v := 0;
+              end if;
+            else
+
+            end if;
+
+
           end loop;
           readhit <= '1';
         else
@@ -169,6 +194,17 @@ begin
         else 
           buff_mdt_dv <= '0';
         end if;
+
+      end if;
+
+
+
+    end if;
+  end process;
+
+
+end beh;
+
 
         --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop
         --     new_index_v := index_offset_v + ti;
@@ -190,15 +226,6 @@ begin
         --       end if;    
         --     end if;
         -- end loop tdc_in_loop;
-      end if;
-
-
-
-    end if;
-  end process;
-
-
-end beh;
 
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
