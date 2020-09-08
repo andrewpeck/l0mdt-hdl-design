@@ -45,7 +45,7 @@ entity hp_calc_dt2r_small is
 end entity hp_calc_dt2r_small;
 
 architecture beh of hp_calc_dt2r_small is
-  signal addr_mem : unsigned(DT2R_LARGE_ADDR_LEN-1 downto 0); 
+  signal addr_mem : unsigned(DT2R_SMALL_ADDR_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
   signal mem : mem_array := mem_data;
@@ -65,10 +65,10 @@ begin
   end process;
 
   mem_guard : process(i_drift_time) begin
-    if ( i_drift_time > DT2R_LARGE_MEM_SIZE) then
+    if ( i_drift_time > DT2R_SMALL_MEM_SIZE) then
       addr_mem <= (others => '0');
     else
-      addr_mem <= i_drift_time(DT2R_LARGE_ADDR_LEN -1 downto 0);
+      addr_mem <= i_drift_time(DT2R_SMALL_ADDR_LEN -1 downto 0);
     end if;
   end process;
 

@@ -18,11 +18,11 @@ use ieee.numeric_std.all;
 
 package hp_dt2r_small_mem is
 
-  constant DT2R_LARGE_ADDR_LEN : integer := 9;
-  constant DT2R_LARGE_DATA_LEN : integer := 8;
-  constant DT2R_LARGE_MEM_SIZE : integer := 494;
+  constant DT2R_SMALL_ADDR_LEN : integer := 9;
+  constant DT2R_SMALL_DATA_LEN : integer := 8;
+  constant DT2R_SMALL_MEM_SIZE : integer := 494;
 
-  type mem_array is array (0 to DT2R_LARGE_MEM_SIZE-1) of integer;
+  type mem_array is array (0 to DT2R_SMALL_MEM_SIZE-1) of integer;
   constant mem_data : mem_array := (
     0 to 3 =>4,
     4 to 8 =>7,
