@@ -62,7 +62,7 @@ architecture beh of heg is
   signal heg_Sf_control : heg_ctrl2hp_rt;
   signal hegC_control : heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
 
-  signal hp2bm_av : heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal hp2bm_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal time_offset  : unsigned(7 downto 0);
 
