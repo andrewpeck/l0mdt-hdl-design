@@ -23,7 +23,7 @@ use heg_roi_lib.roi_types_pkg.all;
 package roi_lut_BMLA3_slope is
 
   -- add length of constant array
-  constant ROM_BMLA3_SLOPE_MAX_SIZE : integer := 2047;
+  constant ROM_BMLA3_ANGLE_MAX_SIZE : integer := 2048;
 
 -- VHDL2008  -- constant ROI_BMLA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BMLA3_SLOPE_MAX_SIZE - 1 downto 0)(0 to 5) := (
   constant ROI_BMLA3_ANGLE_MEM : roi_mbar_lut_small_t(ROM_BMLA3_ANGLE_MAX_SIZE - 1 downto 88) := (
