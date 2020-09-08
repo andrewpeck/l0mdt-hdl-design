@@ -55,9 +55,11 @@ begin
   begin
     if rising_edge(clk) then
       if rst= '1' then
-
+        o_local_x <= (others => '0');
+        o_local_y <= (others => '0');
       else
         
+        o_local_x <= resize(i_mdt_z - i_SLc_z_0,MDT_LOCAL_Y_LEN);
 
 
       end if;
