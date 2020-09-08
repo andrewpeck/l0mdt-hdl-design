@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -129,7 +130,7 @@ package body csf_pkg is
     y(29 downto 20)            := vectorify(x.pos);
     y(19 downto 10)            := vectorify(x.ang);
     y(9 downto 1)              := vectorify(x.mdtid);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: csf_seed_rvt) return csf_seed_rt is
@@ -140,7 +141,7 @@ package body csf_pkg is
     y.pos                      := structify(x(29 downto 20));
     y.ang                      := structify(x(19 downto 10));
     y.mdtid                    := structify(x(9 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: csf_seed_rt) return csf_seed_rt is
@@ -158,7 +159,7 @@ package body csf_pkg is
   function vectorify(x: csf_hit_rt) return csf_hit_rvt is
     variable y : csf_hit_rvt;
   begin
-    y(30)                      := x.valid;
+    y(30 downto 30)            := vectorify(x.valid);
     y(29 downto 15)            := vectorify(x.x);
     y(14 downto 0)             := vectorify(x.y);
     return y;
@@ -166,7 +167,7 @@ package body csf_pkg is
   function structify(x: csf_hit_rvt) return csf_hit_rt is
     variable y : csf_hit_rt;
   begin
-    y.valid                    := x(30);
+    y.valid                    := structify(x(30 downto 30));
     y.x                        := structify(x(29 downto 15));
     y.y                        := structify(x(14 downto 0));
     return y;
@@ -236,7 +237,7 @@ package body csf_pkg is
   function vectorify(x: csf_locseg_rt) return csf_locseg_rvt is
     variable y : csf_locseg_rvt;
   begin
-    y(47)                      := x.valid;
+    y(47 downto 47)            := vectorify(x.valid);
     y(46 downto 34)            := vectorify(x.b);
     y(33 downto 19)            := vectorify(x.m);
     y(18 downto 4)             := vectorify(x.chi2);
@@ -246,7 +247,7 @@ package body csf_pkg is
   function structify(x: csf_locseg_rvt) return csf_locseg_rt is
     variable y : csf_locseg_rt;
   begin
-    y.valid                    := x(47);
+    y.valid                    := structify(x(47 downto 47));
     y.b                        := structify(x(46 downto 34));
     y.m                        := structify(x(33 downto 19));
     y.chi2                     := structify(x(18 downto 4));
@@ -320,23 +321,23 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
     variable y : sf_seg_data_barrel_rvt;
   begin
-    y(62)                      := x.data_valid;
+    y(62 downto 62)            := vectorify(x.data_valid);
     y(61 downto 41)            := vectorify(x.muid);
     y(40 downto 32)            := vectorify(x.mdtid);
     y(31 downto 14)            := vectorify(x.pos);
     y(13 downto 1)             := vectorify(x.angle);
-    y(0)                       := x.quality;
+    y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := x(62);
+    y.data_valid               := structify(x(62 downto 62));
     y.muid                     := structify(x(61 downto 41));
     y.mdtid                    := structify(x(40 downto 32));
     y.pos                      := structify(x(31 downto 14));
     y.angle                    := structify(x(13 downto 1));
-    y.quality                  := x(0);
+    y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rt is
@@ -354,23 +355,23 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
     variable y : sf_seg_data_endcap_rvt;
   begin
-    y(62)                      := x.data_valid;
+    y(62 downto 62)            := vectorify(x.data_valid);
     y(61 downto 41)            := vectorify(x.muid);
     y(40 downto 32)            := vectorify(x.mdtid);
     y(31 downto 14)            := vectorify(x.pos);
     y(13 downto 1)             := vectorify(x.angle);
-    y(0)                       := x.quality;
+    y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := x(62);
+    y.data_valid               := structify(x(62 downto 62));
     y.muid                     := structify(x(61 downto 41));
     y.mdtid                    := structify(x(40 downto 32));
     y.pos                      := structify(x(31 downto 14));
     y.angle                    := structify(x(13 downto 1));
-    y.quality                  := x(0);
+    y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rt is

@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -203,17 +204,17 @@ package body common_types_pkg is
   function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt is
     variable y : l0mdt_control_rvt;
   begin
-    y(2)                       := x.clk;
-    y(1)                       := x.rst;
-    y(0)                       := x.bx;
+    y(2 downto 2)              := vectorify(x.clk);
+    y(1 downto 1)              := vectorify(x.rst);
+    y(0 downto 0)              := vectorify(x.bx);
     return y;
   end function vectorify;
   function structify(x: l0mdt_control_rvt) return l0mdt_control_rt is
     variable y : l0mdt_control_rt;
   begin
-    y.clk                      := x(2);
-    y.rst                      := x(1);
-    y.bx                       := x(0);
+    y.clk                      := structify(x(2 downto 2));
+    y.rst                      := structify(x(1 downto 1));
+    y.bx                       := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: l0mdt_control_rt) return l0mdt_control_rt is
@@ -228,21 +229,21 @@ package body common_types_pkg is
   function vectorify(x: l0mdt_ttc_rt) return l0mdt_ttc_rvt is
     variable y : l0mdt_ttc_rvt;
   begin
-    y(4)                       := x.bcr;
-    y(3)                       := x.ocr;
-    y(2)                       := x.ecr;
-    y(1)                       := x.l0a;
-    y(0)                       := x.l1a;
+    y(4 downto 4)              := vectorify(x.bcr);
+    y(3 downto 3)              := vectorify(x.ocr);
+    y(2 downto 2)              := vectorify(x.ecr);
+    y(1 downto 1)              := vectorify(x.l0a);
+    y(0 downto 0)              := vectorify(x.l1a);
     return y;
   end function vectorify;
   function structify(x: l0mdt_ttc_rvt) return l0mdt_ttc_rt is
     variable y : l0mdt_ttc_rt;
   begin
-    y.bcr                      := x(4);
-    y.ocr                      := x(3);
-    y.ecr                      := x(2);
-    y.l0a                      := x(1);
-    y.l1a                      := x(0);
+    y.bcr                      := structify(x(4 downto 4));
+    y.ocr                      := structify(x(3 downto 3));
+    y.ecr                      := structify(x(2 downto 2));
+    y.l0a                      := structify(x(1 downto 1));
+    y.l1a                      := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: l0mdt_ttc_rt) return l0mdt_ttc_rt is
@@ -630,23 +631,23 @@ package body common_types_pkg is
   function vectorify(x: sf2pt_rt) return sf2pt_rvt is
     variable y : sf2pt_rvt;
   begin
-    y(57)                      := x.data_valid;
+    y(57 downto 57)            := vectorify(x.data_valid);
     y(56 downto 36)            := vectorify(x.muid);
     y(35 downto 32)            := vectorify(x.chamber_ieta);
     y(31 downto 14)            := vectorify(x.pos);
     y(13 downto 1)             := vectorify(x.angle);
-    y(0)                       := x.quality;
+    y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf2pt_rvt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
-    y.data_valid               := x(57);
+    y.data_valid               := structify(x(57 downto 57));
     y.muid                     := structify(x(56 downto 36));
     y.chamber_ieta             := structify(x(35 downto 32));
     y.pos                      := structify(x(31 downto 14));
     y.angle                    := structify(x(13 downto 1));
-    y.quality                  := x(0);
+    y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: sf2pt_rt) return sf2pt_rt is
@@ -1037,7 +1038,7 @@ package body common_types_pkg is
   begin
     y(128 downto 108)          := vectorify(x.slc_muid);
     y(107 downto 1)            := vectorify(x.common);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: felix_stream_rvt) return felix_stream_rt is
@@ -1045,7 +1046,7 @@ package body common_types_pkg is
   begin
     y.slc_muid                 := structify(x(128 downto 108));
     y.common                   := structify(x(107 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: felix_stream_rt) return felix_stream_rt is
