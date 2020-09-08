@@ -24,6 +24,7 @@ use shared_lib.common_constants_pkg.all;
 
 package detector_param_pkg is
   
+  
   type barrel_stations_radius is array (0 to 3) of real;
   type ys_barrel is array ( 0 to 1) of barrel_stations_radius;
   constant barrel_radius : ys_barrel :=(
