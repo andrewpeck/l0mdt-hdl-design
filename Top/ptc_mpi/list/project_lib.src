@@ -1,0 +1,4 @@
+shared/shared_lib.src
+Top/ptc_mpi/prj_cfg.vhd
+ptc_mpi/ptc_lib.src 
+ptc_mpi/top_ptc_mpi.vhd
