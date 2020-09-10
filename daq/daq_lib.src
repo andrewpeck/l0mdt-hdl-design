@@ -1,0 +1,16 @@
+IP/daq/data_fifo/data_fifo.xci
+IP/daq/fifo_daq_req/fifo_daq_req.xci
+
+daq/pkg/daq_devel_defs_pkg.vhd 2008
+daq/pkg/daq_defs_pkg.vhd       2008
+daq/pkg/daq_row_defs_pkg.vhd   2008
+
+daq/src/daq_algo.vhd           2008
+daq/src/daq_bus_conv.vhd       2008
+daq/src/daq_data_cell.vhd      2008
+daq/src/daq_header_cell.vhd    2008
+daq/src/daq_packet_builder.vhd 2008
+daq/src/daq_row.vhd            2008
+daq/src/top_daq.vhd            2008
+
+

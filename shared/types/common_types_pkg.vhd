@@ -11,6 +11,17 @@ use shared_lib.common_constants_pkg.all;
 
 package common_types_pkg is
 
+  subtype bcid_t is unsigned(12-1 downto 0);
+
+  type integer_bus_at is array(integer range <>) of integer;
+  type integer_bus_avt is array(integer range <>) of std_logic_vector;
+  function vectorify(x: integer_bus_at) return integer_bus_avt;
+  function vectorify(x: integer_bus_at) return std_logic_vector;
+  function structify(x: integer_bus_avt) return integer_bus_at;
+  function structify(x: std_logic_vector) return integer_bus_at;
+  function nullify(x: integer_bus_at) return integer_bus_at;
+  function nullify(x: integer_bus_avt) return integer_bus_avt;
+
   type l0mdt_control_rt is record
     clk : std_logic;
     rst : std_logic;
@@ -200,6 +211,59 @@ end package common_types_pkg;
 ------------------------------------------------------------
 
 package body common_types_pkg is
+
+  function vectorify(x: integer_bus_at) return integer_bus_avt is
+    variable y :  integer_bus_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: integer_bus_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*32-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-32) := vectorify(x(i));
+      msb := msb - 32 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: integer_bus_avt) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-32));
+      msb := msb - 32 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: integer_bus_at) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: integer_bus_avt) return integer_bus_avt is
+    variable y :  integer_bus_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
 
   function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt is
     variable y : l0mdt_control_rvt;
