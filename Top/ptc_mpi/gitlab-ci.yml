@@ -1,42 +1,42 @@
-#################### tf1 Project ###########################
+#################### ptc_mpi Project ###########################
 
-create_project:tf1:
+create_project:ptc_mpi:
     extends: .create_project
     variables:
       extends: .vars
-      PROJECT_NAME: tf1
+      PROJECT_NAME: ptc_mpi
 
-simulate_project:tf1:
+simulate_project:ptc_mpi:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: tf1
+      PROJECT_NAME: ptc_mpi
 
-synthesise_ips:tf1:
+synthesise_ips:ptc_mpi:
     extends: .synthesise_ips
     variables:
       extends: .vars
-      PROJECT_NAME: tf1
+      PROJECT_NAME: ptc_mpi
       IP_PATH: IP
     dependencies:
-        - create_project:tf1
+        - create_project:ptc_mpi
 
-synthesise_project:tf1:
+synthesise_project:ptc_mpi:
     extends: .synthesise_project
     variables:
       extends: .vars
-      PROJECT_NAME: tf1
+      PROJECT_NAME: ptc_mpi
     dependencies:
-        - synthesise_ips:tf1
-        - create_project:tf1
+        - synthesise_ips:ptc_mpi
+        - create_project:ptc_mpi
 
-# implement_project:tf1:
+# implement_project:ptc_mpi:
 #     extends: .implement_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: tf1
+#       PROJECT_NAME: ptc_mpi
 #     dependencies:
-#        - create_project:tf1
-#        - synthesise_ips:tf1
-#        - synthesise_project:tf1
+#        - create_project:ptc_mpi
+#        - synthesise_ips:ptc_mpi
+#        - synthesise_project:ptc_mpi
 
