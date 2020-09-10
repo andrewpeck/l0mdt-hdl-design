@@ -106,7 +106,7 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     -- SLc-
-    i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
+    -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_specific      => slc_data.specific,
     i_SLc_BCID          => slc_data.BCID,
     -- MDT hit

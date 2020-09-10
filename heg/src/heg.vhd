@@ -47,7 +47,7 @@ entity heg is
     -- MDT hit
     i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- to Segment finder
-    o_sf_control_v      : out heg_ctrl2hp_rvt;
+    o_sf_control_v      : out heg_ctrl2sf_rvt;
     o_sf_slc_data_v     : out heg2sfslc_rvt;
     o_sf_mdt_data_v     : out heg2sfhit_rvt
   );
@@ -59,7 +59,7 @@ architecture beh of heg is
   signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
   
-  signal heg_Sf_control : heg_ctrl2hp_rt;
+  signal heg_Sf_control : heg_ctrl2sf_rt;
   signal hegC_control : heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
 
   signal hp2bm_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
