@@ -30,14 +30,14 @@ use hp_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
-    g_STATION_RADIUS     : integer := 0
+    g_STATION_RADIUS    : integer := 0
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    local_rst      : in std_logic;
+    local_rst           : in std_logic;
     local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 

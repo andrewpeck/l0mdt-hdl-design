@@ -61,10 +61,9 @@ begin
         o_local_y <= (others => '0');
       else
 
-        o_local_y <= get_b_layer_radius(g_STATION_RADIUS,to_integer(i_mdt_layer));
+        o_local_y <= get_b_layer_height(g_STATION_RADIUS,to_integer(i_mdt_layer));
         
         o_local_x <= resize(i_mdt_z - i_SLc_z_0,MDT_LOCAL_Y_LEN);
-
 
       end if;
 

@@ -11,12 +11,15 @@ package common_constants_pkg is
 
   constant MDT_GLOBAL_AXI_LEN : integer := 19;
 
-  -- MDT_GLOBAL_AXI_MULT: mm
   constant MDT_GLOBAL_AXI_MULT : real := 32.0;
 
   constant MDT_LOCAL_X_LEN : integer := HEG2SFHIT_LOCALX_LEN;
 
+  constant MDT_LOCAL_X_MULT : real := HEG2SFHIT_LOCALX_MULT;
+
   constant MDT_LOCAL_Y_LEN : integer := HEG2SFHIT_LOCALY_LEN;
+
+  constant MDT_LOCAL_Y_MULT : real := HEG2SFHIT_LOCALY_MULT;
 
   constant MDT_RADIUS_LEN : integer := HEG2SFHIT_RADIUS_LEN;
 

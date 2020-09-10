@@ -13,13 +13,15 @@ HDL_Types:
 #############################################################  
 # mdt
 - MDT_GLOBAL_AXI_LEN  : [ qualifier: constant , type: integer , value: 19 ]
-- MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 , ~ : mm ]
+- MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 ]
 # MDT_LOCAL_AXI_LEN   : [ qualifier: constant , type: integer , value: 15 ] # 14 o 15?
 # MDT_LOCAL_AXI_MULT  : [ qualifier: constant , type: real , value: 32.0 , ~ : mm]
-- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
-- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
-- MDT_RADIUS_LEN       : [ qualifier: constant , type: integer , value: HEG2SFHIT_RADIUS_LEN ]
-- MDT_RADIUS_MULT: [ qualifier: constant , type: real , value: 32.0 ]
+- MDT_LOCAL_X_LEN     : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
+- MDT_LOCAL_X_MULT    : [ qualifier: constant , type: real , value: HEG2SFHIT_LOCALX_MULT]
+- MDT_LOCAL_Y_LEN     : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
+- MDT_LOCAL_Y_MULT    : [ qualifier: constant , type: real , value: HEG2SFHIT_LOCALY_MULT]
+- MDT_RADIUS_LEN      : [ qualifier: constant , type: integer , value: HEG2SFHIT_RADIUS_LEN ]
+- MDT_RADIUS_MULT     : [ qualifier: constant , type: real , value: 32.0 ]
 
 #############################################################
 # INTERFACES TYPES
