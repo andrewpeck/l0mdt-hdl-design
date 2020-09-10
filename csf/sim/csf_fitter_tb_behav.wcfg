@@ -5,32 +5,55 @@
    <db_ref_list>
       <db_ref path="csf_fitter_tb_behav.wdb" id="1">
          <top_modules>
+            <top_module name="cfg_global_pkg" />
+            <top_module name="common_constants_pkg" />
+            <top_module name="common_ieee_pkg" />
+            <top_module name="common_types_pkg" />
+            <top_module name="config_pkg" />
+            <top_module name="csf_custom_pkg" />
             <top_module name="csf_fitter_tb" />
             <top_module name="csf_pkg" />
+            <top_module name="detector_param_pkg" />
+            <top_module name="l0mdt_constants_pkg" />
+            <top_module name="l0mdt_dataformats_pkg" />
+            <top_module name="prj_cfg" />
+            <top_module name="some_functions_pkg" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="332180fs"></ZoomEndTime>
-      <Cursor1Time time="56508fs"></Cursor1Time>
+      <ZoomEndTime time="156097fs"></ZoomEndTime>
+      <Cursor1Time time="98619fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="315"></NameColumnWidth>
-      <ValueColumnWidth column_width="92"></ValueColumnWidth>
+      <NameColumnWidth column_width="302"></NameColumnWidth>
+      <ValueColumnWidth column_width="75"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="36" />
+   <WVObjectSize size="62" />
+   <wave_markers>
+      <marker label="" time="98619" />
+      <marker label="" time="13890" />
+   </wave_markers>
    <wvobject type="logic" fp_name="/csf_fitter_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/hit1">
-      <obj_property name="ElementShortName">hit1</obj_property>
-      <obj_property name="ObjectShortName">hit1</obj_property>
+      <obj_property name="ElementShortName">hit1[30:0]</obj_property>
+      <obj_property name="ObjectShortName">hit1[30:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/hit2">
-      <obj_property name="ElementShortName">hit2</obj_property>
-      <obj_property name="ObjectShortName">hit2</obj_property>
+      <obj_property name="ElementShortName">hit2[30:0]</obj_property>
+      <obj_property name="ObjectShortName">hit2[30:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/hit1_s">
+      <obj_property name="ElementShortName">hit1_s</obj_property>
+      <obj_property name="ObjectShortName">hit1_s</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/hit2_s">
+      <obj_property name="ElementShortName">hit2_s</obj_property>
+      <obj_property name="ObjectShortName">hit2_s</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/nhits">
       <obj_property name="ElementShortName">nhits[3:0]</obj_property>
@@ -44,81 +67,78 @@
       <obj_property name="ElementShortName">dsp_start</obj_property>
       <obj_property name="ObjectShortName">dsp_start</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumXZ">
-      <obj_property name="ElementShortName">dsp_SumXZ[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumXZ[31:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumZ">
-      <obj_property name="ElementShortName">dsp_SumZ[17:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumZ[17:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumX">
-      <obj_property name="ElementShortName">dsp_SumX[17:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumX[17:0]</obj_property>
+      <obj_property name="ElementShortName">dsp_SumX[18:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumX[18:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumX2">
-      <obj_property name="ElementShortName">dsp_SumX2[31:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumX2[31:0]</obj_property>
+      <obj_property name="ElementShortName">dsp_SumX2[33:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumX2[33:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumXY">
+      <obj_property name="ElementShortName">dsp_SumXY[33:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumXY[33:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumY">
+      <obj_property name="ElementShortName">dsp_SumY[18:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumY[18:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_nhits">
       <obj_property name="ElementShortName">dsp_nhits[3:0]</obj_property>
       <obj_property name="ObjectShortName">dsp_nhits[3:0]</obj_property>
-   </wvobject>
-   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv0">
-      <obj_property name="ElementShortName">dv0</obj_property>
-      <obj_property name="ObjectShortName">dv0</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_NSumXZ">
-      <obj_property name="ElementShortName">dsp_NSumXZ[36:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_NSumXZ[36:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumZSumX">
-      <obj_property name="ElementShortName">dsp_SumZSumX[36:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumZSumX[36:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumZSumX2">
-      <obj_property name="ElementShortName">dsp_SumZSumX2[50:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumZSumX2[50:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumXZSumX">
-      <obj_property name="ElementShortName">dsp_SumXZSumX[50:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumXZSumX[50:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_NSumX2">
-      <obj_property name="ElementShortName">dsp_NSumX2[35:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_NSumX2[35:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="ElementShortName">dsp_NSumX2[37:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_NSumX2[37:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_NSumXY">
+      <obj_property name="ElementShortName">dsp_NSumXY[37:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_NSumXY[37:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumYSumX">
+      <obj_property name="ElementShortName">dsp_SumYSumX[37:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumYSumX[37:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumXSumX">
-      <obj_property name="ElementShortName">dsp_SumXSumX[35:0]</obj_property>
-      <obj_property name="ObjectShortName">dsp_SumXSumX[35:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      <obj_property name="ElementShortName">dsp_SumXSumX[37:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumXSumX[37:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumYSumX2">
+      <obj_property name="ElementShortName">dsp_SumYSumX2[52:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumYSumX2[52:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/dsp_SumXYSumX">
+      <obj_property name="ElementShortName">dsp_SumXYSumX[52:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_SumXYSumX[52:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv3">
       <obj_property name="ElementShortName">dv3</obj_property>
       <obj_property name="ObjectShortName">dv3</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/numerator_m">
-      <obj_property name="ElementShortName">numerator_m[36:0]</obj_property>
-      <obj_property name="ObjectShortName">numerator_m[36:0]</obj_property>
+      <obj_property name="ElementShortName">numerator_m[38:0]</obj_property>
+      <obj_property name="ObjectShortName">numerator_m[38:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/numerator_b">
-      <obj_property name="ElementShortName">numerator_b[50:0]</obj_property>
-      <obj_property name="ObjectShortName">numerator_b[50:0]</obj_property>
+      <obj_property name="ElementShortName">numerator_b[53:0]</obj_property>
+      <obj_property name="ObjectShortName">numerator_b[53:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/denominator">
-      <obj_property name="ElementShortName">denominator[35:0]</obj_property>
-      <obj_property name="ObjectShortName">denominator[35:0]</obj_property>
+      <obj_property name="ElementShortName">denominator[37:0]</obj_property>
+      <obj_property name="ObjectShortName">denominator[37:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv4">
@@ -126,18 +146,18 @@
       <obj_property name="ObjectShortName">dv4</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/numerator_m_red">
-      <obj_property name="ElementShortName">numerator_m_red[21:0]</obj_property>
-      <obj_property name="ObjectShortName">numerator_m_red[21:0]</obj_property>
+      <obj_property name="ElementShortName">numerator_m_red[23:0]</obj_property>
+      <obj_property name="ObjectShortName">numerator_m_red[23:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/numerator_b_red">
-      <obj_property name="ElementShortName">numerator_b_red[22:0]</obj_property>
-      <obj_property name="ObjectShortName">numerator_b_red[22:0]</obj_property>
+      <obj_property name="ElementShortName">numerator_b_red[25:0]</obj_property>
+      <obj_property name="ObjectShortName">numerator_b_red[25:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/denominator_red">
-      <obj_property name="ElementShortName">denominator_red[15:0]</obj_property>
-      <obj_property name="ObjectShortName">denominator_red[15:0]</obj_property>
+      <obj_property name="ElementShortName">denominator_red[16:0]</obj_property>
+      <obj_property name="ObjectShortName">denominator_red[16:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv5">
@@ -145,29 +165,33 @@
       <obj_property name="ObjectShortName">dv5</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/reciprocal_addr">
-      <obj_property name="ElementShortName">reciprocal_addr[15:0]</obj_property>
-      <obj_property name="ObjectShortName">reciprocal_addr[15:0]</obj_property>
+      <obj_property name="ElementShortName">reciprocal_addr[16:0]</obj_property>
+      <obj_property name="ObjectShortName">reciprocal_addr[16:0]</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv7">
-      <obj_property name="ElementShortName">dv7</obj_property>
-      <obj_property name="ObjectShortName">dv7</obj_property>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv6">
+      <obj_property name="ElementShortName">dv6</obj_property>
+      <obj_property name="ObjectShortName">dv6</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/reciprocal_den">
       <obj_property name="ElementShortName">reciprocal_den[22:0]</obj_property>
       <obj_property name="ObjectShortName">reciprocal_den[22:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv7">
+      <obj_property name="ElementShortName">dv7</obj_property>
+      <obj_property name="ObjectShortName">dv7</obj_property>
+   </wvobject>
    <wvobject type="logic" fp_name="/csf_fitter_tb/csf_fitter/dv8">
       <obj_property name="ElementShortName">dv8</obj_property>
       <obj_property name="ObjectShortName">dv8</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/mfit_full">
-      <obj_property name="ElementShortName">mfit_full[44:0]</obj_property>
-      <obj_property name="ObjectShortName">mfit_full[44:0]</obj_property>
+      <obj_property name="ElementShortName">mfit_full[46:0]</obj_property>
+      <obj_property name="ObjectShortName">mfit_full[46:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/csf_fitter/bfit_full">
-      <obj_property name="ElementShortName">bfit_full[45:0]</obj_property>
-      <obj_property name="ObjectShortName">bfit_full[45:0]</obj_property>
+      <obj_property name="ElementShortName">bfit_full[48:0]</obj_property>
+      <obj_property name="ObjectShortName">bfit_full[48:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/csf_fitter_tb/fit_valid">
@@ -180,8 +204,151 @@
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/csf_fitter_tb/bfit">
-      <obj_property name="ElementShortName">bfit[14:0]</obj_property>
-      <obj_property name="ObjectShortName">bfit[14:0]</obj_property>
+      <obj_property name="ElementShortName">bfit[12:0]</obj_property>
+      <obj_property name="ObjectShortName">bfit[12:0]</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/csf_fitter_tb/csf_fitter/B_OVER_Z_MULTI_LEN">
+      <obj_property name="ElementShortName">B_OVER_Z_MULTI_LEN</obj_property>
+      <obj_property name="ObjectShortName">B_OVER_Z_MULTI_LEN</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/b_red">
+      <obj_property name="ElementShortName">b_red[13:0]</obj_property>
+      <obj_property name="ObjectShortName">b_red[13:0]</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_mx1">
+      <obj_property name="ElementShortName">dsp_mx1[19:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_mx1[19:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_mx2">
+      <obj_property name="ElementShortName">dsp_mx2[19:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_mx2[19:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_b_y_1">
+      <obj_property name="ElementShortName">dsp_b_y_1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_b_y_1[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_b_y_2">
+      <obj_property name="ElementShortName">dsp_b_y_2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_b_y_2[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res_1">
+      <obj_property name="ElementShortName">dsp_res_1[18:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res_1[18:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res_2">
+      <obj_property name="ElementShortName">dsp_res_2[18:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res_2[18:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res2_1">
+      <obj_property name="ElementShortName">dsp_res2_1[29:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res2_1[29:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res2_1_s">
+      <obj_property name="ElementShortName">dsp_res2_1_s[29:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res2_1_s[29:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res2_2">
+      <obj_property name="ElementShortName">dsp_res2_2[29:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res2_2[29:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_res2_2_s">
+      <obj_property name="ElementShortName">dsp_res2_2_s[29:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_res2_2_s[29:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv0_1">
+      <obj_property name="ElementShortName">dv0_1</obj_property>
+      <obj_property name="ObjectShortName">dv0_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv0_2">
+      <obj_property name="ElementShortName">dv0_2</obj_property>
+      <obj_property name="ObjectShortName">dv0_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv1_1">
+      <obj_property name="ElementShortName">dv1_1</obj_property>
+      <obj_property name="ObjectShortName">dv1_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv1_2">
+      <obj_property name="ElementShortName">dv1_2</obj_property>
+      <obj_property name="ObjectShortName">dv1_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv2_1">
+      <obj_property name="ElementShortName">dv2_1</obj_property>
+      <obj_property name="ObjectShortName">dv2_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv2_2">
+      <obj_property name="ElementShortName">dv2_2</obj_property>
+      <obj_property name="ObjectShortName">dv2_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv3_1">
+      <obj_property name="ElementShortName">dv3_1</obj_property>
+      <obj_property name="ObjectShortName">dv3_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/dv3_2">
+      <obj_property name="ElementShortName">dv3_2</obj_property>
+      <obj_property name="ObjectShortName">dv3_2</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/dsp_chi">
+      <obj_property name="ElementShortName">dsp_chi[29:0]</obj_property>
+      <obj_property name="ObjectShortName">dsp_chi[29:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg">
+      <obj_property name="ElementShortName">output_seg</obj_property>
+      <obj_property name="ObjectShortName">output_seg</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/output_seg.valid">
+         <obj_property name="ElementShortName">.valid</obj_property>
+         <obj_property name="ObjectShortName">.valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.b">
+         <obj_property name="ElementShortName">.b[12:0]</obj_property>
+         <obj_property name="ObjectShortName">.b[12:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.m">
+         <obj_property name="ElementShortName">.m[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.m[14:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.chi2">
+         <obj_property name="ElementShortName">.chi2[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.chi2[14:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.ndof">
+         <obj_property name="ElementShortName">.ndof[3:0]</obj_property>
+         <obj_property name="ObjectShortName">.ndof[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/csf_fitter_tb/csf_chi2/output_seg.valid">
+         <obj_property name="ElementShortName">.valid</obj_property>
+         <obj_property name="ObjectShortName">.valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.b">
+         <obj_property name="ElementShortName">.b[12:0]</obj_property>
+         <obj_property name="ObjectShortName">.b[12:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.m">
+         <obj_property name="ElementShortName">.m[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.m[14:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.chi2">
+         <obj_property name="ElementShortName">.chi2[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.chi2[14:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/output_seg.ndof">
+         <obj_property name="ElementShortName">.ndof[3:0]</obj_property>
+         <obj_property name="ObjectShortName">.ndof[3:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/csf_fitter_tb/csf_chi2/o_seg">
+      <obj_property name="ElementShortName">o_seg[47:0]</obj_property>
+      <obj_property name="ObjectShortName">o_seg[47:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/csf_fitter_tb/csf_chi2/SIGMA_LEN">
+      <obj_property name="ElementShortName">SIGMA_LEN</obj_property>
+      <obj_property name="ObjectShortName">SIGMA_LEN</obj_property>
    </wvobject>
 </wave_config>

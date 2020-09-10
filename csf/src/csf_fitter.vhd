@@ -95,10 +95,10 @@ architecture Behavioral of csf_fitter is
     -- Numerator/Denominator constants
     constant SHIFT_NUM_M            : integer := 15;
     constant SHIFT_NUM_B            : integer := 28;
-    constant SHIFT_DEN              : integer := 20;
+    constant SHIFT_DEN              : integer := 21;
     constant RECIPROCAL_LEN         : integer := 22;
     constant B_OVER_Z_MULTI_LEN     : integer
-        := integer(log2(CSF_SEG_B_MULT/MDT_LOCAL_AXI_MULT));
+        := integer(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
 
     -- Numerator/Denominator signals
     signal dsp_NSumXY, dsp_NSumXY_s, dsp_NSumXY_ss

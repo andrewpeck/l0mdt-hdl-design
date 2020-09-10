@@ -29,10 +29,6 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
--- library shared_lib;
--- use shared_lib.config_pkg.all;
--- use shared_lib.common_types_pkg.all;
--- use shared_lib.common_constants_pkg.all;
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -73,9 +69,9 @@ architecture Behavioral of pt is
     -- SLC candidate
     signal slc, slc_s : pl2ptcalc_rt;
     -- Chamber combo id
-    signal comboid_s : unsigned(SLC_CHAMBER_LEN*3 -1 downto 0) := (others => '0');
+    signal comboid_s : unsigned(VEC_MDTID_CHAMBER_IETA_LEN*3 -1 downto 0) := (others => '0');
     signal comboid_phi, comboid_phi_s, comboid_eta :
-           unsigned(SLC_CHAMBER_LEN*3 + 4 -1 downto 0) := (others => '0');
+           unsigned(VEC_MDTID_CHAMBER_IETA_LEN*3 + 4 -1 downto 0) := (others => '0');
     --signal ram_index : integer := 0;
     -- Sagitta/Dbeta calculator signals
     signal dv_s, dv_combo_s, dv_combo_s_s : std_logic := '0';
@@ -127,7 +123,6 @@ architecture Behavioral of pt is
     signal c1_eta : signed(c1_len+MTC_ETA_LEN-1 downto 0) := (others => '0');
 
     -- Final pt signals
-
     signal pt_online  :  signed(a1_len+inv_s_len downto 0) := (others => '0');
     signal pt_valid   :  std_logic := '0';
     -- Mtc output parameters
@@ -140,68 +135,6 @@ architecture Behavioral of pt is
     signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
     signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
 
-    --COMPONENT a0_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(a0_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT a1_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(a1_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT b0_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(b0_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT b1_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(b1_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT b2_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(b2_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT c0_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(c0_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT c1_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    ena : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(params_depth_len-1 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(c1_len-1 DOWNTO 0)
-    --);
-    --END COMPONENT;
 
     ----------------------------------------------------------------------------
     -- COMPONENTS --------------------------------------------------------------
@@ -224,7 +157,7 @@ architecture Behavioral of pt is
 
 begin
 
-    EtaCalculator : entity tf_lib.eta_calculator
+    EtaCalculator : entity ptc_lib.eta_calculator
     port map (
         clk            => clk,
         i_seg          => segment_BI_v,
@@ -232,7 +165,7 @@ begin
         o_dv_eta       => dv_eta
     );
 
-    SagittaCalculator : entity tf_lib.sagitta_calculator
+    SagittaCalculator : entity ptc_lib.sagitta_calculator
     port map(
         clk => clk,
         i_seg0 => segment_BI_v,
@@ -362,9 +295,9 @@ begin
                 segment_BI_s <= segment_BI;
                 segment_BM_s <= segment_BM;
                 segment_BO_s <= segment_BO;
-                comboid_s  <= unsigned(segment_BO.chamber_id) &
-                              unsigned(segment_BM.chamber_id) &
-                              unsigned(segment_BI.chamber_id);
+                comboid_s  <= unsigned(segment_BO.mdtid.chamber_ieta) &
+                              unsigned(segment_BM.mdtid.chamber_ieta) &
+                              unsigned(segment_BI.mdtid.chamber_ieta);
                 nsegments <= to_unsigned(stdlogic_integer(segment_BI.data_valid)
                     + stdlogic_integer(segment_BM.data_valid)
                     + stdlogic_integer(segment_BO.data_valid),

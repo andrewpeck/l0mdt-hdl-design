@@ -44,7 +44,7 @@ entity csf_histogram is
   Port (
     clk             : in std_logic;
     i_mdthit        : in heg2sfhit_rvt;
-    i_seed          : in csf_seed_rvt;
+    i_seed          : in heg2sfslc_rvt;
     i_eof           : in std_logic;
     o_histo_hit0    : out csf_hit_rvt;
     o_histo_hit1    : out csf_hit_rvt
@@ -53,15 +53,16 @@ end csf_histogram;
 
 architecture Behavioral of csf_histogram is
   -- Histogram parameters
-  constant HISTO_FULL_LEN  : integer := 21;
+  constant HISTO_FULL_MULTI : real := real(HEG2SFHIT_LOCALX_MULT * UCM_MBAR_MULT);
   constant HISTO_LEN       : integer := 6;
+  constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * (2.0 ** real(HISTO_LEN + 1))));
   constant MAX_HITS_PER_BIN  : real    := 8.0;
   constant BIN_DEPTH         : integer := integer(log2(max_hits_per_bin));
   constant INV_SQRT_M_LEN  : integer := 18;
   constant SQU_M_LEN       : integer := UCM_MBAR_LEN;
 
   -- Signals for seed information
-  signal seed      : csf_seed_rt;
+  signal seed      : heg2sfslc_rt;
   signal mbar      : unsigned(UCM_MBAR_LEN-1 downto 0) := (others => '0');
   signal squ_m     : std_logic_vector(SQU_M_LEN-1 downto 0)
       := (others => '0');
@@ -212,7 +213,7 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => INV_SQRT_M_LEN,
-      ROM_FILE => "../data/invsqrt_mbar.mem"
+      ROM_FILE => "invsqrt_mbar.mem"
   )
   PORT MAP (
       ena    => '1',
@@ -225,7 +226,7 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => SQU_M_LEN,
-      ROM_FILE => "../data/sqrt_mbar.mem"
+      ROM_FILE => "sqrt_mbar.mem"
   )
   port map(
       ena    => '1',
@@ -260,7 +261,7 @@ begin
           o_histo_hit1 <= (others => '0');
 
           if seed.data_valid = '1' then
-              mbar <= seed.mbar;
+              mbar <= seed.vec_ang;
           end if;
 
           -- Clock 0

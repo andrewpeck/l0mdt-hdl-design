@@ -1,2 +1,2 @@
 #Simulator xsim
-tf1/sim/pt_tb.vhd topsim=pt_tb
+ptc_mpi/sim/pt_tb.vhd topsim=pt_tb

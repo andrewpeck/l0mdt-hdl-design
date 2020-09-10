@@ -6,3 +6,5 @@ csf/sim/csf_fitter_tb.vhd
 csf/sim/csf_fitter_tb_behav.wcfg
 csf/sim/csf_histogram_tb_behav.wcfg
 csf/sim/csf_tb_behav.wcfg
+csf/sim/seg_coord_tb.vhd
+csf/sim/seg_coord_tb_behav.wcfg

@@ -26,6 +26,7 @@ library shared_lib;
 use shared_lib.config_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
 
 library csf_lib;
 use csf_lib.csf_pkg.all;
@@ -34,7 +35,7 @@ package csf_custom_pkg is
     ----------------------------------------------------------------------------
     -- MDT hit coordinates constants
     constant R_OVER_Z_MULTI_LEN : integer :=
-        integer(log2(MDT_RADIUS_MULT/MDT_LOCAL_AXI_MULT));
+        integer(log2(HEG2SFHIT_RADIUS_MULT/HEG2SFHIT_LOCALX_MULT));
 
     -- Number of fitter module to instantiate
     constant NUM_FITTERS : integer := 4;
