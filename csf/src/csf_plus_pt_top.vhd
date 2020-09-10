@@ -110,11 +110,11 @@ begin
             seeds    <= (others => null_seed);
 
             if d(61) = '1' and we = '1' then
-                seeds(to_integer(vec_to_seed(d).chamber_id)) <= vec_to_seed(d);
+                seeds(to_integer(vec_to_seed(d).chamber_ieta)) <= vec_to_seed(d);
             elsif d(63) = '1' and we = '1' then
-                mdt_hits(to_integer(vec_to_mdthit(d).chamber_id)) <= vec_to_mdthit(d);
+                mdt_hits(to_integer(vec_to_mdthit(d).chamber_ieta)) <= vec_to_mdthit(d);
             elsif d(60) = '1' and we = '1' then
-                rois(to_integer(vec_to_roi(d).chamber_id)) <= vec_to_roi(d);
+                rois(to_integer(vec_to_roi(d).chamber_ieta)) <= vec_to_roi(d);
             end if;
 
             csf_rst <= '0';

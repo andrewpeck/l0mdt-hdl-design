@@ -11,3 +11,5 @@ heg/heg_lib.src
 hps/hps_lib.src
 csf/csf_lib.src
 ctrl/ctrl_lib.src
+tar/tar_lib.src
+tf1/tf_lib.src

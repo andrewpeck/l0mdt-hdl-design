@@ -43,29 +43,29 @@ entity hps_sf_wrap is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_sf_control        : in heg_ctrl2hp_rvt;
-    i_sf_slc_data       : in ucm2hps_rvt;
-    i_sf_mdt_data       : in heg_bm2sf_rvt;
+    i_control        : in heg_ctrl2hp_rvt;
+    i_slc_data       : in heg2sfslc_rvt;
+    i_mdt_data       : in heg2sfhit_rvt;
     --
-    o_sf_data_v         : out sf2pt_rvt
+    o_sf_data_v         : out sf2ptcalc_rvt
   );
 end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
   -- CSF
-  signal slc_data : ucm2hps_rt;
-  signal slc_barrel : ucm_csf_barrel_rt;
-  signal slc_endcap : ucm_csf_endcap_rt;
-  signal mdt_data : heg_bm2sf_rt;
-  signal sf_data_v : sf2pt_rvt;
-  signal eof : std_logic;
+  signal slc_data     : heg2sfslc_rt;
+  -- signal slc_barrel : ucm_csf_barrel_rt;
+  -- signal slc_endcap : ucm_csf_endcap_rt;
+  signal mdt_data     : heg2sfhit_rt;
+  signal sf_data_v    : sf2ptcalc_rvt;
+  signal eof          : std_logic;
   
 
   --barrel
-  signal i_seed_r : ucm_csf_seed_rt;
-  signal i_mdt_hit_r : hp_hit_data_rt;
-  signal i_seed_v : ucm_csf_seed_rvt;
-  signal i_mdt_hit_v : hp_hit_data_rvt;
+  signal i_seed_r     : csf_seed_rt;
+  signal i_mdt_hit_r  : heg2sfhit_rt;
+  signal i_seed_v     : csf_seed_rvt;
+  signal i_mdt_hit_v  : heg2sfhit_rvt;
 
 begin
 
@@ -73,29 +73,29 @@ begin
     -- CSF
     EN_CSF : if c_SF_TYPE = '0' generate
 
-      slc_data <= structify(i_sf_slc_data);
+      slc_data <= structify(i_slc_data);
 
       SF_B : if c_ST_nBARREL_ENDCAP = '0' generate
         --SLC
-        slc_barrel <= structify(slc_data.specific);
+        -- slc_barrel <= structify(slc_data.specific);
         i_seed_v <= vectorify(i_seed_r);
 
         i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_barrel.mbar;
-        i_seed_r.pos        <= slc_barrel.Z;
+        i_seed_r.mbar       <= slc_data.vec_ang;
+        i_seed_r.pos        <= slc_data.vec_pos;
         i_seed_r.ang        <= (others => '0');
-        i_seed_r.chamber_id <= slc_data.chamber_id;
+        i_seed_r.mdtid      <= slc_data.mdtid;
         i_seed_r.data_valid <= slc_data.data_valid;
         
         -- MDT
-        mdt_data <= structify(i_sf_mdt_data);
+        mdt_data <= structify(i_mdt_data);
         i_mdt_hit_v <= vectorify(i_mdt_hit_r);
 
-        i_mdt_hit_r.local_y    <= mdt_data.data.local_y ;
-        i_mdt_hit_r.local_x    <= mdt_data.data.local_x ;
-        i_mdt_hit_r.radius     <= mdt_data.data.radius ;
-        i_mdt_hit_r.multilayer <= '0' when mdt_data.data.layer < 4 else '1';
-        i_mdt_hit_r.data_valid <= mdt_data.data_valid;
+        i_mdt_hit_r.localy      <= mdt_data.localy;
+        i_mdt_hit_r.localx      <= mdt_data.localx;
+        i_mdt_hit_r.radius      <= mdt_data.radius;
+        i_mdt_hit_r.mlayer      <= mdt_data.mlayer;
+        i_mdt_hit_r.data_valid  <= mdt_data.data_valid;
 
         -- SF
         -- o_sf_data_v <= vectorify(sf_data_r);
@@ -105,14 +105,14 @@ begin
       end generate;
 
       SF_E : if c_ST_nBARREL_ENDCAP = '1' generate
-        slc_endcap <= structify(slc_data.specific);
+        -- slc_endcap <= structify(slc_data.specific);
         i_seed_v <= vectorify(i_seed_r);
         
         i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_endcap.mbar;
+        i_seed_r.mbar       <= slc_data.vec_ang;
         i_seed_r.pos        <= (others => '0');
-        i_seed_r.ang        <= slc_endcap.R;
-        i_seed_r.chamber_id <= slc_data.chamber_id;
+        i_seed_r.ang        <= slc_data.vec_pos;
+        i_seed_r.mdtid <= slc_data.mdtid;
         i_seed_r.data_valid <= slc_data.data_valid;
       end generate;
 

@@ -33,7 +33,7 @@ entity top_mpl is
 
   port (
     clk                 : in std_logic;
-    Reset_b             : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
@@ -50,7 +50,7 @@ begin
   MPL : entity mpl_lib.mpl
   port map(
     clk             => clk,
-    Reset_b         => Reset_b,
+    rst             => rst,
     glob_en         => glob_en,
 
     i_uCM2pl_av     => i_uCM2pl_av,

@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -90,9 +91,9 @@ package hp_pkg is
     local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
     local_x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
     radius : unsigned(MDT_RADIUS_LEN-1 downto 0);
-    layer : unsigned(MDT_LAYER_LEN-1 downto 0);
+    mlayer : std_logic;
   end record hp_hp2sf_data_rt;
-  constant HP_HP2SF_DATA_LEN : integer := 41;
+  constant HP_HP2SF_DATA_LEN : integer := 40;
   subtype hp_hp2sf_data_rvt is std_logic_vector(HP_HP2SF_DATA_LEN-1 downto 0);
   function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rvt;
   function structify(x: hp_hp2sf_data_rvt) return hp_hp2sf_data_rt;
@@ -103,7 +104,7 @@ package hp_pkg is
     mdt_valid : std_logic;
     data_valid : std_logic;
   end record hp_hp2bm_rt;
-  constant HP_HP2BM_LEN : integer := 43;
+  constant HP_HP2BM_LEN : integer := 42;
   subtype hp_hp2bm_rvt is std_logic_vector(HP_HP2BM_LEN-1 downto 0);
   function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_rvt;
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt;
@@ -291,16 +292,16 @@ package body hp_pkg is
     variable y : hp_heg2hp_slc_rvt;
   begin
     y(50 downto 39)            := vectorify(x.bcid);
-    y(38 downto 1)             := x.specific;
-    y(0)                       := x.data_valid;
+    y(38 downto 1)             := vectorify(x.specific);
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt is
     variable y : hp_heg2hp_slc_rt;
   begin
     y.bcid                     := structify(x(50 downto 39));
-    y.specific                 := x(38 downto 1);
-    y.data_valid               := x(0);
+    y.specific                 := structify(x(38 downto 1));
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rt is
@@ -320,7 +321,7 @@ package body hp_pkg is
     y(56 downto 39)            := vectorify(x.time_t0);
     y(38 downto 20)            := vectorify(x.global_z);
     y(19 downto 1)             := vectorify(x.global_x);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_hpsPc2hp_rvt) return hp_hpsPc2hp_rt is
@@ -331,7 +332,7 @@ package body hp_pkg is
     y.time_t0                  := structify(x(56 downto 39));
     y.global_z                 := structify(x(38 downto 20));
     y.global_x                 := structify(x(19 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rt is
@@ -349,19 +350,19 @@ package body hp_pkg is
   function vectorify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rvt is
     variable y : hp_hp2sf_data_rvt;
   begin
-    y(40 downto 27)            := vectorify(x.local_y);
-    y(26 downto 14)            := vectorify(x.local_x);
-    y(13 downto 5)             := vectorify(x.radius);
-    y(4 downto 0)              := vectorify(x.layer);
+    y(39 downto 25)            := vectorify(x.local_y);
+    y(24 downto 10)            := vectorify(x.local_x);
+    y(9 downto 1)              := vectorify(x.radius);
+    y(0 downto 0)              := vectorify(x.mlayer);
     return y;
   end function vectorify;
   function structify(x: hp_hp2sf_data_rvt) return hp_hp2sf_data_rt is
     variable y : hp_hp2sf_data_rt;
   begin
-    y.local_y                  := structify(x(40 downto 27));
-    y.local_x                  := structify(x(26 downto 14));
-    y.radius                   := structify(x(13 downto 5));
-    y.layer                    := structify(x(4 downto 0));
+    y.local_y                  := structify(x(39 downto 25));
+    y.local_x                  := structify(x(24 downto 10));
+    y.radius                   := structify(x(9 downto 1));
+    y.mlayer                   := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_hp2sf_data_rt) return hp_hp2sf_data_rt is
@@ -370,24 +371,24 @@ package body hp_pkg is
     y.local_y                  := nullify(x.local_y);
     y.local_x                  := nullify(x.local_x);
     y.radius                   := nullify(x.radius);
-    y.layer                    := nullify(x.layer);
+    y.mlayer                   := nullify(x.mlayer);
     return y;
   end function nullify;
 
   function vectorify(x: hp_hp2bm_rt) return hp_hp2bm_rvt is
     variable y : hp_hp2bm_rvt;
   begin
-    y(42 downto 2)             := vectorify(x.data);
-    y(1)                       := x.mdt_valid;
-    y(0)                       := x.data_valid;
+    y(41 downto 2)             := vectorify(x.data);
+    y(1 downto 1)              := vectorify(x.mdt_valid);
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_hp2bm_rvt) return hp_hp2bm_rt is
     variable y : hp_hp2bm_rt;
   begin
-    y.data                     := structify(x(42 downto 2));
-    y.mdt_valid                := x(1);
-    y.data_valid               := x(0);
+    y.data                     := structify(x(41 downto 2));
+    y.mdt_valid                := structify(x(1 downto 1));
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_hp2bm_rt) return hp_hp2bm_rt is

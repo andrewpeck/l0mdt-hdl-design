@@ -33,7 +33,7 @@ entity mpl is
 
   port (
     clk                 : in std_logic;
-    rst             : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
@@ -101,16 +101,37 @@ begin
   end generate;
 
   PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate
-    pl2pt_ar(c_i).muid <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).muid;
-    pl2pt_ar(c_i).process_ch <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).process_ch;
-    pl2pt_ar(c_i).processed <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).processed;
-    pl2pt_ar(c_i).data_valid <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).data_valid;
+    -- muid
+    pl2pt_ar(c_i).muid.slcid
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.slcid;
+    pl2pt_ar(c_i).muid.slid
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.trailer.slid;
+    pl2pt_ar(c_i).muid.bcid
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.header.bcid;
+    -- proc control
+    pl2pt_ar(c_i).process_ch 
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).process_ch;
+    pl2pt_ar(c_i).busy 
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).busy;
+    pl2pt_ar(c_i).data_valid 
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).data_valid;
+    -- data
+    pl2pt_ar(c_i).phimod
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).phimod;
+    pl2pt_ar(c_i).sl_charge
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.sl_charge;
+    pl2pt_ar(c_i).nswseg_poseta
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_poseta;
+    pl2pt_ar(c_i).nswseg_posphi
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_posphi;
+    pl2pt_ar(c_i).nswseg_angdtheta
+      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_angdtheta;
   end generate;
 
   PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     pl2mtc_ar(sl_i).common <= main_pl_out_ar(sl_i).common;
     pl2mtc_ar(sl_i).process_ch <= main_pl_out_ar(sl_i).process_ch;
-    pl2mtc_ar(sl_i).processed <= main_pl_out_ar(sl_i).processed;
+    pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
     pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
   end generate;
   

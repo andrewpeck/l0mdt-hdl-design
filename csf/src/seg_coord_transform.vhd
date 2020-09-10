@@ -49,22 +49,22 @@ entity seg_coord_transform is
   port (
     clk         : in  std_logic;
     i_locseg    : in  csf_locseg_rvt;
-    i_seed      : in  ucm_csf_seed_rvt;
-    o_globseg   : out std_logic_vector(SF_SEG_DATA_LEN-1 downto 0)
+    i_seed      : in  csf_seed_rvt;
+    o_globseg   : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
   );
 end seg_coord_transform; -- seg_coord_transform
 
 architecture Behavioral of seg_coord_transform is
     -- Store roi information
-    signal seed, seed_i : ucm_csf_seed_rt;
+    signal seed, seed_i : csf_seed_rt;
     -- Store seg information
     signal locseg, locseg_i : csf_locseg_rt;
     -- Extrapolated coordinate (z_ext = z_fit + z_ref - x_ref*m_fit)
     signal z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
     -- Theta angle
     signal theta, theta_s, theta_ss : std_logic_vector(SF_SEG_ANG_LEN-1 downto 0) := (others => '0');
-    -- Chamber_id
-    signal chamber_id : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
+    -- chamber_ieta
+    signal chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
     -- Chamber pos
     signal chamber_pos : std_logic_vector(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
     -- Global seg barrel
@@ -133,12 +133,12 @@ begin
     --    douta => theta
     --);
 
-    chamb_pos : Chamber_pos_ROM_1
-    PORT MAP (
-        clka => clk,
-        addra => chamber_id,
-        douta => chamber_pos
-    );
+    -- chamb_pos : Chamber_pos_ROM_1
+    -- PORT MAP (
+    --     clka => clk,
+    --     addra => chamber_ieta,
+    --     douta => chamber_pos
+    -- );
 
     CoordProc : process( clk )
     begin
@@ -146,7 +146,7 @@ begin
             if seed_i.data_valid = '1' and locseg_i.valid = '1' then
                 seed <= seed_i;
                 locseg <= locseg_i;
-                chamber_id <= seed_i.chamber_id;
+                chamber_ieta <= std_logic_vector(seed_i.mdtid.chamber_ieta);
             end if;
 
             -- Clock 0
@@ -169,14 +169,14 @@ begin
                 globseg_brl.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_brl.muid <= seed.muid;
                 globseg_brl.quality <= '1';
-                globseg_brl.chamber_id <= seed.chamber_id;
+                globseg_brl.mdtid <= seed.mdtid;
 
             elsif FLAVOUR = 1 then -- Endcap
                 globseg_edc.data_valid <= dv1;
                 globseg_edc.pos <= unsigned(chamber_pos) + unsigned(z_loc);
                 globseg_edc.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
                 globseg_edc.muid <= seed.muid;
-                globseg_edc.chamber_id <= seed.chamber_id;
+                globseg_edc.mdtid <= seed.mdtid;
                 globseg_edc.quality <= '1';
             end if;
 

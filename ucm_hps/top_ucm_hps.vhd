@@ -40,10 +40,10 @@ entity top_ucm_hps is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc
-    i_slc_data_mainA_av     : in slc_rx_data_bus_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_data_bus_avt(2 downto 0);
-    i_slc_data_neighborA_v : in slc_rx_data_rvt;
-    i_slc_data_neighborB_v : in slc_rx_data_rvt;
+    i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
+    i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
+    i_slc_data_neighborA_v : in slc_rx_rvt;
+    i_slc_data_neighborB_v : in slc_rx_rvt;
     -- MDT hit
     i_mdt_tar_inn_av    : in tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     i_mdt_tar_mid_av    : in tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);

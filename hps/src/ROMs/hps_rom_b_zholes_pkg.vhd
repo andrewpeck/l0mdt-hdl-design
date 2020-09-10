@@ -26,8 +26,8 @@ use shared_lib.config_pkg.all;
 
 package hps_rom_b_zholes_pkg is
 
-  type zhLUT_chamber_integer_t is array (1 to 8) of integer;
-  type zhLUT_chamber_t is array (1 to 8) of real;
+  type zhLUT_chamber_integer_t is array (0 to 7) of integer;
+  type zhLUT_chamber_t is array (0 to 7) of real;
   type zhLUT_station_t is array (1 to 16) of zhLUT_chamber_t;
   
   constant c_BI_A_zh : zhLUT_station_t :=(
@@ -98,17 +98,17 @@ package body hps_rom_b_zholes_pkg is
   begin
     if station = 0 then
       -- inner
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 1 then
       -- middle
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 2 then
       -- outter
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 3 then

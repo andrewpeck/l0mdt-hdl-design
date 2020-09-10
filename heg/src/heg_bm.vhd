@@ -14,6 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -36,14 +37,14 @@ entity heg_buffermux is
    );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
     i_control           : in heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     -- MDT in
-    i_mdt_hits_av       : in heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+    i_mdt_hits_av       : in heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
     -- MDT out
-    o_mdt_hits_v        : out heg_bm2sf_rvt
+    o_mdt_hits_v        : out heg2sfhit_rvt
     
   );
 end entity heg_buffermux;
@@ -58,7 +59,7 @@ architecture beh of heg_buffermux is
     port (
       clk                 : in std_logic;
 
-      rst            : in std_logic;
+      rst                 : in std_logic;
       glob_en             : in std_logic;
       -- in
       i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
@@ -71,73 +72,129 @@ architecture beh of heg_buffermux is
     );
   end component heg_buffermux_infifo;
 
+  signal i_mdt_hits_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal fifo_rd    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal o_mdt_hits_r : heg_bm2sf_rt; 
+  signal o_mdt_hits_r : heg2sfhit_rt; 
 
-  signal mdt_hit    :  heg_hp2bm_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_i_mdt_hit_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_i_mdt_hit_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal ff_o_mdt_hit_av : heg_hp2bm_data_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_o_mdt_hit_ar  : heg_hp2bm_data_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  signal buff_mdt_hit_v : hp_hp2sf_data_rvt;
+  signal buff_mdt_hit_r : hp_hp2sf_data_rt;
+  signal buff_mdt_dv    : std_logic;
+
   signal fifo_empty : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  
+  signal nexthit  : integer; --std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal lasthit  : integer;
+  signal readhit  : std_logic;
 begin
 
   o_mdt_hits_v <= vectorify(o_mdt_hits_r);
+  buff_mdt_hit_r <= structify(buff_mdt_hit_v);
+
+  o_mdt_hits_r.localx <= buff_mdt_hit_r.local_x;
+  o_mdt_hits_r.localy <= buff_mdt_hit_r.local_y;
+  o_mdt_hits_r.radius <= buff_mdt_hit_r.radius;
+  o_mdt_hits_r.mlayer <= buff_mdt_hit_r.mlayer;
+  o_mdt_hits_r.data_valid <= buff_mdt_dv;
 
   FIFOS: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
+    -- input extraction
+    
+    i_mdt_hits_ar(hp_i) <= structify(i_mdt_hits_av(hp_i));
 
-    fifo_wr(hp_i) <= i_mdt_hits_av(hp_i)(0) and i_mdt_hits_av(hp_i)(1);
+    fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 
     BM_IN_FIFO : heg_buffermux_infifo
     generic map(
-      BM_FIFO_DEPTH   => 4,
-      BM_FIFO_WIDTH   => HP_HP2BM_LEN
+      BM_FIFO_DEPTH   => 32,
+      BM_FIFO_WIDTH   => HP_HP2SF_DATA_LEN
     )
     port map(
       clk                 => clk,
-      rst            => rst,
+      rst                 => rst,
       glob_en             => i_control(hp_i).enable,
       --
-      i_mdt_hit           => i_mdt_hits_av(hp_i),
+      i_mdt_hit           => vectorify(i_mdt_hits_ar(hp_i).data),
       i_wr                => fifo_wr(hp_i),
       i_rd                => fifo_rd(hp_i),
       --
       o_empty             => fifo_empty(hp_i),
-      o_mdt_hit           => mdt_hit(hp_i)
+      o_mdt_hit           => ff_o_mdt_hit_av(hp_i)
     );
   end generate;
 
   BM_proc : process(rst,clk) 
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
+    variable loop_done_v      : integer;
   begin
     
     if rising_edge(clk) then
       if(rst= '1') then
         -- o_mdt_hits <= (others => '0');
-        o_mdt_hits_r <= nullify(o_mdt_hits_r);
-        new_index_v := 0;
+        buff_mdt_hit_v <= nullify(buff_mdt_hit_v);
+        -- new_index_v := 0;
+        nexthit <= 0;
+        lasthit <= 0;
+        readhit <= '0';
+
+        buff_mdt_dv <= '0';
+
       else
-        --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop
-        --     new_index_v := index_offset_v + ti;
-        --     if new_index_v < (g_HPS_NUM_MDT_CH-1)  then
-        --       if (not fifo_empty(new_index_v)) then
-        --         o_mdt_hits.sf_data <= mdt_hit(new_index_v).sf_data;
-        --         index_offset_v := new_index_v - 1;
-        --         exit;
-        --       else
+        -- check for next hit to read
+        if and_reduce(fifo_empty) = '0' then
+          -- there are hits
+          index_offset_v := lasthit + 1;
+          loop_done_v := 0;
+          new_index_v := index_offset_v;
+          loop_a : for ti in 1 to (g_HPS_NUM_MDT_CH-1) loop
+            
 
-        --       end if;
-        --     else
-        --       if (not fifo_empty(new_index_v - MAX_NUM_HP)) then
-        --         o_mdt_hits <= mdt_hit(new_index_v - MAX_NUM_HP);
-        --         index_offset_v := new_index_v - 1;
-        --         exit;
-        --       else
+            if loop_done_v = 0 then
+              -- moving index
+              if new_index_v < g_HPS_NUM_MDT_CH then
+                new_index_v := ti + index_offset_v;
+              else
+                new_index_v := ti + index_offset_v - g_HPS_NUM_MDT_CH;
+              end if;
 
-        --       end if;    
-        --     end if;
-        -- end loop tdc_in_loop;
+              -- checking fifo
+              if fifo_empty(new_index_v) = '0' then
+                -- next hit found
+                nexthit <= new_index_v;
+                loop_done_v := 1;
+              else
+                -- loop_done_v := 0;
+              end if;
+            else
+
+            end if;
+
+
+          end loop;
+          readhit <= '1';
+        else
+          readhit <= '0';
+        end if;
+
+        -- read hit
+        if readhit = '1' then
+          fifo_rd(nexthit) <= '1';
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(nexthit);
+          buff_mdt_dv <= '1';
+          lasthit <= nexthit;
+        else 
+          buff_mdt_dv <= '0';
+        end if;
+
       end if;
 
 
@@ -147,6 +204,28 @@ begin
 
 
 end beh;
+
+
+        --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop
+        --     new_index_v := index_offset_v + ti;
+        --     if new_index_v < (g_HPS_NUM_MDT_CH-1)  then
+        --       if (not fifo_empty(new_index_v)) then
+        --         o_mdt_hits.sf_data <= ff_o_mdt_hit_av(new_index_v).sf_data;
+        --         index_offset_v := new_index_v - 1;
+        --         exit;
+        --       else
+
+        --       end if;
+        --     else
+        --       if (not fifo_empty(new_index_v - MAX_NUM_HP)) then
+        --         o_mdt_hits <= ff_o_mdt_hit_av(new_index_v - MAX_NUM_HP);
+        --         index_offset_v := new_index_v - 1;
+        --         exit;
+        --       else
+
+        --       end if;    
+        --     end if;
+        -- end loop tdc_in_loop;
 
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
@@ -178,7 +257,7 @@ entity heg_buffermux_infifo is
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- in
     i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
