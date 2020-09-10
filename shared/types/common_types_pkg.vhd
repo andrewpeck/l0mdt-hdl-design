@@ -14,7 +14,7 @@ package common_types_pkg is
   subtype bcid_t is unsigned(12-1 downto 0);
 
   type integer_bus_at is array(integer range <>) of integer;
-  type integer_bus_avt is array(integer range <>) of std_logic_vector;
+  type integer_bus_avt is array(integer range <>) of std_logic_vector(31 downto 0);
   function vectorify(x: integer_bus_at) return integer_bus_avt;
   function vectorify(x: integer_bus_at) return std_logic_vector;
   function structify(x: integer_bus_avt) return integer_bus_at;
