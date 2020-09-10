@@ -63,7 +63,7 @@ HDL_Types:
   - local_y     : [ type: unsigned , length: MDT_LOCAL_Y_LEN ]
   - local_x     : [ type: unsigned , length: MDT_LOCAL_X_LEN ]
   - radius      : [ type: unsigned , length: MDT_RADIUS_LEN ]
-  - layer       : [ type: unsigned , length: MDT_LAYER_LEN ]
+  - mlayer      : [ type: logic]
 
 - hp_hp2bm:
   - data        : [ type: hp_hp2sf_data]
