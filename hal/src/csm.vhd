@@ -32,6 +32,7 @@ entity csm is
 
     reset_i    : in std_logic;
     strobe_320 : in std_logic;
+    clk40 : in std_logic;
 
     --------------------------------------------------------------------------------
     -- Downlink
@@ -107,7 +108,8 @@ begin
     port map (
 
       reset_i   => reset_i,
-      lpgbt_clk => downlink_clk,
+      clk40     => clk40,
+      clk320    => downlink_clk,
       valid_i   => downlink_data(0).valid,
       ctrl      => ctrl.sc,
       mon       => mon.sc,

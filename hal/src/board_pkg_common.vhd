@@ -86,6 +86,7 @@ package board_pkg_common is
 
   type csm_config_t is record
     polmux_id  : integer;
+    csm_id     : integer;
     en         : std_logic_vector (17 downto 0);
     legacy     : std_logic_vector (17 downto 0);
     station_id : station_id_t;

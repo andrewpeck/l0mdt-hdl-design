@@ -203,11 +203,11 @@ begin
           & " width=" & integer'image(width)
           & " hi=" & integer'image(hi)
           & " lo=" & integer'image(lo)
+          & " mgt=" & integer'image(get_csm_mgt_num(I, c_MGT_MAP))
           severity note;
 
       end generate;
     end generate;
-
 
   --csm_loop : for I in c_MDT_CONFIG'range generate
   --  function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is

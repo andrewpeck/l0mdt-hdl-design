@@ -52,12 +52,12 @@ begin
   tdc_loop : for I in g_ENABLE_MASK'range generate
   begin
 
-    tdc_gen : if (g_ENABLE_MASK(i)) generate
+    tdc_gen : if (g_ENABLE_MASK(I)) generate
 
       -- d0 carries the odd bits, d1 carries the even bits
-      constant d1      : integer := elink_pair_map(i).ch2;
-      constant d0      : integer := elink_pair_map(i).ch1;
-      constant lpgbt   : integer := elink_pair_map(i).lpgbt;
+      constant d1      : integer := elink_pair_map(I).ch2;
+      constant d0      : integer := elink_pair_map(I).ch1;
+      constant lpgbt   : integer := elink_pair_map(I).lpgbt;
       signal err       : std_logic;
       signal even_data : std_logic_vector (7 downto 0);
       signal odd_data  : std_logic_vector (7 downto 0);
@@ -67,7 +67,7 @@ begin
 
       signal valid : std_logic := '0';
 
-      signal tdc_hit : mdt_polmux_rt;
+      signal tdc_hit : tdcpolmux2tar_rt;
 
       function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is
         variable cnt : integer := 0;
@@ -87,16 +87,12 @@ begin
 
     begin
 
-      assert false report "T " &
-        --integer'image(to_integer(unsigned(std_logic_vector'('0' & c_MDT_CONFIG(I).en(J))))) severity note;
-        integer'image(idx) severity note;
-
       even_data <= lpgbt_uplink_data_i(lpgbt).data(8*(d1+1)-1 downto 8*d1);
       odd_data  <= lpgbt_uplink_data_i(lpgbt).data(8*(d0+1)-1 downto 8*d0);
       valid     <= lpgbt_uplink_data_i(lpgbt).valid;
 
-      tdc_hit.fiberid    <= std_logic_vector(to_unsigned(g_CSM, tdc_hit.fiberid'length));
-      tdc_hit.muxid      <= std_logic_vector(to_unsigned(I, tdc_hit.muxid'length));
+      tdc_hit.fiberid    <= to_unsigned(g_CSM, tdc_hit.fiberid'length); -- FIXME: the name of this should change from fiberid to csm_id
+      tdc_hit.elinkid    <= to_unsigned(I, tdc_hit.elinkid'length); -- FIXME: the name of this should change from elinkid -> tdc_id
       tdc_hit.tdc        <= structify(tdc_word);
       tdc_hit.data_valid <= tdc_valid;
 

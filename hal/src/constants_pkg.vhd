@@ -177,6 +177,8 @@ package constants_pkg is
 
   type hi_lo_array_t is array (integer range <>) of hi_lo_t;
 
+  function get_csm_mgt_num (csm_id : integer; mgt_map : mgt_inst_array_t)
+    return integer;
   function get_csm_hi_lo (mdt_config : mdt_config_t)
     return hi_lo_array_t;
   function get_polmux_hi_lo (mdt_config : mdt_config_t)
@@ -246,6 +248,24 @@ package body constants_pkg is
     end loop;
 
     return hi_lo;
+  end function;
+
+  function get_csm_mgt_num (csm_id : integer; mgt_map : mgt_inst_array_t)
+    return integer is
+    variable cnt   : integer := 0;
+  begin
+    for I in 0 to mgt_map'length-1 loop
+      if (mgt_map(I).mgt_type = MGT_LPGBT) then
+
+        if (cnt=csm_id) then
+          return I;
+        end if;
+
+        cnt := cnt + 1;
+
+      end if;
+    end loop;
+    return -1;
   end function;
 
   function get_csm_hi_lo (mdt_config : mdt_config_t)

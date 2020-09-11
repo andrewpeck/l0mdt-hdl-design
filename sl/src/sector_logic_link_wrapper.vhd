@@ -1,7 +1,20 @@
+--
+-- https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
+--
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
+use ieee.numeric_std.all;
 
 library sl;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 library work;
 use work.system_types_pkg.all;
@@ -26,11 +39,11 @@ entity sector_logic_link_wrapper is
     -- 32 bits / bx to mgt
     sl_tx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
+    -- Data from SL
+    sl_data_o : out slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    -- Received packet from SL
-    sl_rx_data_o : out sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-    -- Transmit packet back to SL
-    sl_tx_data_i : in  sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    -- Data to SL
+    mtc_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
 
     -- from mgt
     sl_rx_ctrl_i : in sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
@@ -45,6 +58,10 @@ end sector_logic_link_wrapper;
 
 architecture Behavioral of sector_logic_link_wrapper is
 
+  -- Received packet from SL
+  signal sl_rx_data : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_data : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
   signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
@@ -55,6 +72,66 @@ architecture Behavioral of sector_logic_link_wrapper is
   --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
 
 begin
+
+  --tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
+  --begin
+  --function structify(x: mtc2sl_rvt) return mtc2sl_rt is
+  --end generate;
+
+  rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+    signal slc_barrel_specific : slc_barrel_rt;
+    signal slc_endcap_specific : slc_endcap_rt;
+    signal header              : std_logic_vector (31 downto 0);
+    signal trailer             : std_logic_vector (31 downto 0);
+    signal data                : std_logic_vector (127 downto 0);
+    signal sl_data             : slc_rx_rt;
+    type sl_stations_t is (BARREL, ENDCAP);
+    constant station           : sl_stations_t := ENDCAP;
+  begin
+
+    header  <= sl_rx_data(I).data(31 downto 0);
+    data    <= sl_rx_data(I).data(159 downto 32);
+    trailer <= sl_rx_data(I).data(191 downto 160);
+
+    sl_data_o(I) <= vectorify(sl_data);
+
+    sl_data.common.header  <= structify(header);
+    sl_data.common.trailer <= structify(trailer);
+
+    sl_data.common.slcid       <= unsigned(data(2 downto 0));
+    sl_data.common.tcsent      <= data(3);
+    sl_data.common.poseta      <= signed(data(17 downto 4));
+    sl_data.common.posphi      <= unsigned(data(26 downto 18));
+    sl_data.common.sl_pt       <= unsigned(data(34 downto 27));
+    sl_data.common.sl_ptthresh <= unsigned(data(38 downto 35));
+    sl_data.common.sl_charge   <= data(39);
+    sl_data.common.cointype    <= data (42 downto 40);
+
+    slc_barrel_specific.rpc0_posz  <= unsigned(data(54 downto 43));
+    slc_barrel_specific.rpc1_posz  <= unsigned(data(66 downto 55));
+    slc_barrel_specific.rpc2_posz  <= unsigned(data(78 downto 67));
+    slc_barrel_specific.rpc3_posz  <= unsigned(data(90 downto 79));
+    slc_barrel_specific.b_reserved <= data (127 downto 91);
+
+    slc_endcap_specific.seg_angdtheta    <= signed(data(49 downto 43));
+    slc_endcap_specific.seg_angdphi      <= signed(data(53 downto 50));
+    slc_endcap_specific.nswseg_poseta    <= unsigned(data(67 downto 54));
+    slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
+    slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
+    slc_endcap_specific.nswseg_mon       <= data(81);
+    slc_endcap_specific.e_reserved       <= data(127 downto 82);
+
+    barrel_spec_gen : if (station = BARREL) generate
+      sl_data.specific <= vectorify(slc_barrel_specific);
+    end generate;
+
+    endcap_spec_gen : if (station = ENDCAP) generate
+      sl_data.specific <= vectorify(slc_endcap_specific);
+    end generate;
+
+    sl_data.data_valid <= sl_rx_data(I).valid;
+
+  end generate;
 
   rx_reset_fanout : process (clock) is
   begin  -- process reset_fanout
@@ -99,8 +176,8 @@ begin
           N_STAGES => 2)
         port map (
           clk_i   => clock,
-          valid_i => sl_tx_data_i(idx).valid,
-          data_i  => sl_tx_data_i(idx).data,
+          valid_i => sl_tx_data(idx).valid,
+          data_i  => sl_tx_data(idx).data,
           valid_o => sl_tx_data_post_cdc(idx).valid,
           data_o  => sl_tx_data_post_cdc(idx).data
           );
@@ -187,14 +264,18 @@ begin
         port map (
           clk_i   => pipeline_clock,
           valid_i => sl_rx_data_pre_cdc(idx).valid,
-          valid_o => sl_rx_data_o(idx).valid,
+          valid_o => sl_rx_data(idx).valid,
           data_i  => sl_pre_cdc_vec,
           data_o  => sl_post_cdc_vec
           );
 
-      sl_rx_data_o(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
-      sl_rx_data_o(idx).err    <= sl_post_cdc_vec(1);
-      sl_rx_data_o(idx).locked <= sl_post_cdc_vec(0);
+      sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
+      sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
+      sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
+
+      -- FIXME: add 320 -> 240 cdc
+
+      sl_tx_data_post_cdc <= sl_tx_data;
 
     end generate;
   end generate;

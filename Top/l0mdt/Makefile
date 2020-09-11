@@ -5,8 +5,8 @@ COMMON_FILES=../../hal/src/board_pkg_common.vhd ../../hal/src/boards/board_pkg_m
 
 SHARED_LIB_FILES = ../../shared/config/config_defaults_pkg.vhd\
 									 ../../shared/types/common_ieee_pkg.vhd\
-									 ../../shared/types/l0mdt_constants_pkg.vhd\
-									 ../../shared/types/l0mdt_dataformats_pkg.vhd\
+									 ../../dataformats/l0mdt_constants_pkg.vhd \
+									 ../../dataformats/l0mdt_dataformats_pkg.vhd \
 									 ../../shared/types/common_constants_pkg.vhd\
 									 ../../shared/functions/some_functions_pkg.vhd\
 									 ../../shared/types/common_types_pkg.vhd\
@@ -26,4 +26,4 @@ common_ghdl:
 	ghdl -a --work="shared_lib" --std=08 --ieee=synopsys ../../shared/config/config_pkg.vhd
 
 clean:
-	rm *.o
+	rm -f *.o *.cf

@@ -122,6 +122,7 @@ entity top_hal is
     axi_clk_o : out std_logic;
 
     clk320_o : out std_logic;
+    clk40_o  : out std_logic;
 
     --sump--------------------------------------------------------------------------
     sump : out std_logic
@@ -190,12 +191,10 @@ architecture behavioral of top_hal is
 
   signal sl_rx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_data           : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_data           : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_tx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-
+  signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -228,6 +227,7 @@ begin  -- architecture behavioral
   global_reset <= not (clocks.locked);
   axi_clk_o    <= clocks.axiclock;
   clk320_o     <= clocks.clock320;
+  clk40_o      <= clocks.clock40;
 
   --------------------------------------------------------------------------------
   -- AXI Interface
@@ -379,34 +379,41 @@ begin  -- architecture behavioral
     constant hi      : integer := csm_hi_lo (I).hi;
     constant lo      : integer := csm_hi_lo (I).lo;
     constant tdc_cnt : integer := count_ones(c_MDT_CONFIG(I).en);
+    constant mgt_idx : integer := get_csm_mgt_num(I, c_MGT_MAP);
   begin
     csm_ifgen : if (I < c_NUM_CSMS_ACTIVE and tdc_cnt > 0) generate
     begin
 
-      assert false report
-        "Generating CSM #" & integer'image(I)
-        & " bithi=" & integer'image(hi)
-        & " bitlo=" & integer'image(lo)
-        severity note;
+      mgt_tag : for MGT_NUM in mgt_idx to mgt_idx generate
+      begin
 
-      csm_inst : entity work.csm
-        generic map (
-          g_CSM_ID  => I,
-          g_TDC_CNT => tdc_cnt
-          )
-        port map (
-          reset_i                      => global_reset,
-          strobe_320                   => strobe_320,
-          downlink_clk                 => clocks.clock320,  -- ZDM?
-          downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
-          uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
-          uplink_clk                   => clocks.clock320,  -- ZDM?
-          uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
-          tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
-          read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
-          ctrl                         => ctrl.csm.csm(I),
-          mon                          => mon.csm.csm(I)
-          );
+        assert false report
+          "Generating CSM #" & integer'image(I)
+          & " bithi=" & integer'image(hi)
+          & " bitlo=" & integer'image(lo)
+          severity note;
+
+        csm_inst : entity work.csm
+          generic map (
+            g_CSM_ID  => c_MDT_CONFIG(I).csm_id,
+            g_TDC_CNT => tdc_cnt
+            )
+          port map (
+            reset_i                      => global_reset,
+            clk40                        => clocks.clock40,
+            strobe_320                   => strobe_320,
+            downlink_clk                 => clocks.clock320,  -- ZDM?
+            downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
+            uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
+            uplink_clk                   => clocks.clock320,  -- ZDM?
+            uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
+            tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
+            read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
+            ctrl                         => ctrl.csm.csm(I),
+            mon                          => mon.csm.csm(I)
+            );
+
+      end generate;
     end generate;
   end generate;
 
@@ -423,7 +430,7 @@ begin  -- architecture behavioral
       constant hi       : integer := polmux_hi_lo (id).hi;
       constant lo       : integer := polmux_hi_lo (id).lo;
       constant width    : integer := hi-lo+1;
-      signal tdc_hits_o : mdt_polmux_rvt;
+      signal tdc_hits_o : tdcpolmux2tar_rvt;
     begin
 
       assert false report "Generating PolMux #" & integer'image(id)
@@ -467,6 +474,7 @@ begin  -- architecture behavioral
 
   --------------------------------------------------------------------------------
   -- Sector Logic Packet Former Cores
+  -- https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
   --------------------------------------------------------------------------------
 
   sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
@@ -479,8 +487,8 @@ begin  -- architecture behavioral
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_o => sl_tx_mgt_word_array,
 
-      sl_rx_data_o => sl_rx_data,
-      sl_tx_data_i => sl_tx_data,
+      sl_data_o => sl_rx_data,
+      mtc_i     => mtc_i,
 
       sl_rx_ctrl_i => sl_rx_ctrl,
       sl_tx_ctrl_o => sl_tx_ctrl,
@@ -488,6 +496,11 @@ begin  -- architecture behavioral
       sl_rx_slide_o => sl_rx_slide
       );
 
+  -- FIXME: these mappings are totally made up for testing purposes...
+  main_primary_slc   <= sl_rx_data(2 downto 0);
+  main_secondary_slc <= sl_rx_data(5 downto 3);
+  plus_neighbor_slc  <= sl_rx_data(6);
+  minus_neighbor_slc <= sl_rx_data(7);
 
   --------------------------------------------------------------------------------
   -- Felix Receiver
@@ -532,16 +545,6 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sl_loop_loop : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-    data_loop : process (clocks.clock_pipeline) is
-    begin  -- process data_loop
-      if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
-        sl_tx_data(I).data  <= sl_rx_data(I).data;
-        sl_tx_data(I).valid <= sl_rx_data(I).valid;
-      end if;
-    end process data_loop;
-  end generate;
-
   sump_loop : process (clocks.clock_pipeline) is
     variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
     variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
@@ -562,28 +565,6 @@ begin  -- architecture behavioral
       end loop;
 
       sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump) xor xor_reduce(mtc_sump);
-
-
-      -- 124 bits each FIXME: these mappings are totally made up for testing purposes...
-      -- should map them using a real map when I can figure out what it is
-      -- Ask Yasu!!
-
-      main_primary_slc(0)(0)              <= sl_rx_data(0).valid;
-      main_primary_slc(0)(123 downto 1)   <= sl_rx_data(0).data(122 downto 0);
-      main_primary_slc(1)(1)              <= sl_rx_data(1).valid;
-      main_primary_slc(1)(123 downto 1)   <= sl_rx_data(1).data(122 downto 0);
-      main_primary_slc(2)(2)              <= sl_rx_data(2).valid;
-      main_primary_slc(2)(123 downto 1)   <= sl_rx_data(2).data(122 downto 0);
-      main_secondary_slc(0)(0)            <= sl_rx_data(3).valid;
-      main_secondary_slc(0)(123 downto 1) <= sl_rx_data(3).data(122 downto 0);
-      main_secondary_slc(1)(1)            <= sl_rx_data(4).valid;
-      main_secondary_slc(1)(123 downto 1) <= sl_rx_data(4).data(122 downto 0);
-      main_secondary_slc(2)(2)            <= sl_rx_data(5).valid;
-      main_secondary_slc(2)(123 downto 1) <= sl_rx_data(5).data(122 downto 0);
-      plus_neighbor_slc(0)                <= sl_rx_data(6).valid;
-      plus_neighbor_slc(123 downto 1)     <= sl_rx_data(6).data(122 downto 0);
-      minus_neighbor_slc(0)               <= sl_rx_data(6).valid;
-      minus_neighbor_slc(123 downto 1)    <= sl_rx_data(6).data(122 downto 0);
 
       plus_neighbor_segments_o  <= plus_neighbor_segments_i;
       minus_neighbor_segments_o <= minus_neighbor_segments_i;
