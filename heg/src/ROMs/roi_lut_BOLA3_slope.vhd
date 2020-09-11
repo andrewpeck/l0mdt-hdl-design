@@ -26,7 +26,7 @@ package roi_lut_BOLA3_slope is
   constant ROM_BOLA3_ANGLE_MAX_SIZE : integer := 2048;
 
 -- VHDL2008  -- constant ROI_BOLA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BOLA3_SLOPE_MAX_SIZE - 1 downto 0)(0 to 5) := (
-  constant ROI_BOLA3_ANGLE_MEM : roi_mbar_lut_small_t(ROM_BOLA3_ANGLE_MAX_SIZE - 1 downto 88) := (
+  constant ROI_BOLA3_ANGLE_MEM : roi_mbar_lut_small_t(ROM_BOLA3_ANGLE_MAX_SIZE - 1 downto 0) := (
     2047 downto 1921 => ( ( -2,  8),( -3,  7),( -3,  7),( -7,  3),( -7,  3),( -8,  2) ), -- from 117.28 to 110 degree 
     1920 downto 1834 => ( ( -3,  7),( -3,  7),( -4,  6),( -6,  4),( -7,  3),( -7,  3) ), -- from 110 to 105 degree 
     1833 downto 1746 => ( ( -4,  6),( -4,  6),( -4,  6),( -6,  4),( -6,  4),( -6,  4) ), -- from 105 to 100 degree 
