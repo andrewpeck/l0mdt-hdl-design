@@ -267,8 +267,13 @@ begin
         AO       => word_8b_int(0)
         );
 
-    word_8b <= word_8b_int;
-    k_char  <= k_char_int;
+    process (clock) is
+    begin
+      if (rising_edge(clock)) then
+        word_8b <= word_8b_int;
+        k_char  <= k_char_int;
+      end if;
+    end process;
 
   end generate;
 
