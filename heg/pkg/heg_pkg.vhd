@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -42,6 +43,17 @@ package heg_pkg is
   function structify(x: std_logic_vector) return heg_ctrl2hp_bus_at;
   function nullify(x: heg_ctrl2hp_bus_at) return heg_ctrl2hp_bus_at;
   function nullify(x: heg_ctrl2hp_bus_avt) return heg_ctrl2hp_bus_avt;
+
+  type heg_ctrl2sf_rt is record
+    rst : std_logic;
+    enable : std_logic;
+    window_valid : std_logic;
+  end record heg_ctrl2sf_rt;
+  constant HEG_CTRL2SF_LEN : integer := 3;
+  subtype heg_ctrl2sf_rvt is std_logic_vector(HEG_CTRL2SF_LEN-1 downto 0);
+  function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt;
+  function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt;
+  function nullify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rt;
 
   type heg_hp2bm_bus_at is array(integer range <>) of hp_hp2bm_rt;
   type heg_hp2bm_bus_avt is array(integer range <>) of hp_hp2bm_rvt;
@@ -133,15 +145,15 @@ package body heg_pkg is
   function vectorify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rvt is
     variable y : heg_ctrl2hp_rvt;
   begin
-    y(1)                       := x.rst;
-    y(0)                       := x.enable;
+    y(1 downto 1)              := vectorify(x.rst);
+    y(0 downto 0)              := vectorify(x.enable);
     return y;
   end function vectorify;
   function structify(x: heg_ctrl2hp_rvt) return heg_ctrl2hp_rt is
     variable y : heg_ctrl2hp_rt;
   begin
-    y.rst                      := x(1);
-    y.enable                   := x(0);
+    y.rst                      := structify(x(1 downto 1));
+    y.enable                   := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_ctrl2hp_rt) return heg_ctrl2hp_rt is
@@ -205,6 +217,31 @@ package body heg_pkg is
     return y;
   end function nullify;
 
+  function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt is
+    variable y : heg_ctrl2sf_rvt;
+  begin
+    y(2 downto 2)              := vectorify(x.rst);
+    y(1 downto 1)              := vectorify(x.enable);
+    y(0 downto 0)              := vectorify(x.window_valid);
+    return y;
+  end function vectorify;
+  function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt is
+    variable y : heg_ctrl2sf_rt;
+  begin
+    y.rst                      := structify(x(2 downto 2));
+    y.enable                   := structify(x(1 downto 1));
+    y.window_valid             := structify(x(0 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rt is
+    variable y : heg_ctrl2sf_rt;
+  begin
+    y.rst                      := nullify(x.rst);
+    y.enable                   := nullify(x.enable);
+    y.window_valid             := nullify(x.window_valid);
+    return y;
+  end function nullify;
+
   function vectorify(x: heg_hp2bm_bus_at) return heg_hp2bm_bus_avt is
     variable y :  heg_hp2bm_bus_avt(x'range);
   begin
@@ -262,14 +299,14 @@ package body heg_pkg is
     variable y : heg_bm2sf_rvt;
   begin
     y(40 downto 1)             := vectorify(x.data);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: heg_bm2sf_rvt) return heg_bm2sf_rt is
     variable y : heg_bm2sf_rt;
   begin
     y.data                     := structify(x(40 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_bm2sf_rt) return heg_bm2sf_rt is

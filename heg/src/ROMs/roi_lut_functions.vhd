@@ -101,12 +101,12 @@ package body roi_func_pkg is
     if c_SECTOR_ID = 0 then
     elsif c_SECTOR_ID = 3 then
       if station = 0 then
-        -- out_mem := ROI_BILA3_SLOPE_MEM;
+        -- out_mem := ROI_BILA3_ANGLE_MEM;
         -- ERROR
       elsif station = 1 then
-        out_mem := ROI_BMLA3_SLOPE_MEM;
+        out_mem := ROI_BMLA3_ANGLE_MEM;
       elsif station = 2 then
-        out_mem := ROI_BOLA3_SLOPE_MEM;
+        out_mem := ROI_BOLA3_ANGLE_MEM;
       -- elsif station = 3 then
       end if;
     else
@@ -123,11 +123,11 @@ package body roi_func_pkg is
     if c_SECTOR_ID = 0 then
     elsif c_SECTOR_ID = 3 then
       if station = 0 then
-        out_mem := ROI_BILA3_SLOPE_MEM;
+        out_mem := ROI_BILA3_ANGLE_MEM;
       -- elsif station = 1 then
-      --   out_mem := ROI_BMLA3_SLOPE_MEM;
+      --   out_mem := ROI_BMLA3_ANGLE_MEM;
       -- elsif station = 2 then
-      --   out_mem := ROI_BOLA3_SLOPE_MEM;
+      --   out_mem := ROI_BOLA3_ANGLE_MEM;
       -- elsif station = 3 then
       end if;
     else
@@ -142,11 +142,11 @@ package body roi_func_pkg is
     if c_SECTOR_ID = 0 then
     elsif c_SECTOR_ID = 3 then
       if station = 0 then
-        out_max := ROM_BILA3_SLOPE_MAX_SIZE;
+        out_max := ROM_BILA3_ANGLE_MAX_SIZE;
       elsif station = 1 then
-        out_max := ROM_BMLA3_SLOPE_MAX_SIZE;
+        out_max := ROM_BMLA3_ANGLE_MAX_SIZE;
       elsif station = 2 then
-        out_max := ROM_BOLA3_SLOPE_MAX_SIZE;
+        out_max := ROM_BOLA3_ANGLE_MAX_SIZE;
       -- elsif station = 3 then
       end if;
     else
@@ -167,11 +167,11 @@ package body roi_func_pkg is
   --   if c_SECTOR_ID = 0 then
   --   elsif c_SECTOR_ID = 3 then
   --     if station = 0 then
-  --       out_mem := ROI_BILA3_SLOPE_MEM;
+  --       out_mem := ROI_BILA3_ANGLE_MEM;
   --     elsif station = 1 then
-  --       out_mem := ROI_BMLA3_SLOPE_MEM;
+  --       out_mem := ROI_BMLA3_ANGLE_MEM;
   --     elsif station = 2 then
-  --       out_mem := ROI_BOLA3_SLOPE_MEM;
+  --       out_mem := ROI_BOLA3_ANGLE_MEM;
   --     -- elsif station = 3 then
   --     end if;
   --   else

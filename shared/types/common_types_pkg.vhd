@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -9,6 +10,17 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 
 package common_types_pkg is
+
+  subtype bcid_t is unsigned(12-1 downto 0);
+
+  type integer_bus_at is array(integer range <>) of integer;
+  type integer_bus_avt is array(integer range <>) of std_logic_vector(31 downto 0);
+  function vectorify(x: integer_bus_at) return integer_bus_avt;
+  function vectorify(x: integer_bus_at) return std_logic_vector;
+  function structify(x: integer_bus_avt) return integer_bus_at;
+  function structify(x: std_logic_vector) return integer_bus_at;
+  function nullify(x: integer_bus_at) return integer_bus_at;
+  function nullify(x: integer_bus_avt) return integer_bus_avt;
 
   type l0mdt_control_rt is record
     clk : std_logic;
@@ -200,20 +212,73 @@ end package common_types_pkg;
 
 package body common_types_pkg is
 
+  function vectorify(x: integer_bus_at) return integer_bus_avt is
+    variable y :  integer_bus_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: integer_bus_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*32-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-32) := vectorify(x(i));
+      msb := msb - 32 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: integer_bus_avt) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-32));
+      msb := msb - 32 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: integer_bus_at) return integer_bus_at is
+    variable y :  integer_bus_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: integer_bus_avt) return integer_bus_avt is
+    variable y :  integer_bus_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
   function vectorify(x: l0mdt_control_rt) return l0mdt_control_rvt is
     variable y : l0mdt_control_rvt;
   begin
-    y(2)                       := x.clk;
-    y(1)                       := x.rst;
-    y(0)                       := x.bx;
+    y(2 downto 2)              := vectorify(x.clk);
+    y(1 downto 1)              := vectorify(x.rst);
+    y(0 downto 0)              := vectorify(x.bx);
     return y;
   end function vectorify;
   function structify(x: l0mdt_control_rvt) return l0mdt_control_rt is
     variable y : l0mdt_control_rt;
   begin
-    y.clk                      := x(2);
-    y.rst                      := x(1);
-    y.bx                       := x(0);
+    y.clk                      := structify(x(2 downto 2));
+    y.rst                      := structify(x(1 downto 1));
+    y.bx                       := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: l0mdt_control_rt) return l0mdt_control_rt is
@@ -228,21 +293,21 @@ package body common_types_pkg is
   function vectorify(x: l0mdt_ttc_rt) return l0mdt_ttc_rvt is
     variable y : l0mdt_ttc_rvt;
   begin
-    y(4)                       := x.bcr;
-    y(3)                       := x.ocr;
-    y(2)                       := x.ecr;
-    y(1)                       := x.l0a;
-    y(0)                       := x.l1a;
+    y(4 downto 4)              := vectorify(x.bcr);
+    y(3 downto 3)              := vectorify(x.ocr);
+    y(2 downto 2)              := vectorify(x.ecr);
+    y(1 downto 1)              := vectorify(x.l0a);
+    y(0 downto 0)              := vectorify(x.l1a);
     return y;
   end function vectorify;
   function structify(x: l0mdt_ttc_rvt) return l0mdt_ttc_rt is
     variable y : l0mdt_ttc_rt;
   begin
-    y.bcr                      := x(4);
-    y.ocr                      := x(3);
-    y.ecr                      := x(2);
-    y.l0a                      := x(1);
-    y.l1a                      := x(0);
+    y.bcr                      := structify(x(4 downto 4));
+    y.ocr                      := structify(x(3 downto 3));
+    y.ecr                      := structify(x(2 downto 2));
+    y.l0a                      := structify(x(1 downto 1));
+    y.l1a                      := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: l0mdt_ttc_rt) return l0mdt_ttc_rt is
@@ -371,12 +436,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: mdt_polmux_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*42-1 downto 0);
+    variable y : std_logic_vector(x'length*43-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-42) := vectorify(x(i));
-      msb := msb - 42 -1;
+      y(msb downto msb-43) := vectorify(x(i));
+      msb := msb - 43 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -393,8 +458,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-42));
-      msb := msb - 42 -1;
+      y(i) := structify(x(msb downto msb-43));
+      msb := msb - 43 -1;
     end loop l;
     return y;
   end function structify;
@@ -477,12 +542,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm2hps_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*54-1 downto 0);
+    variable y : std_logic_vector(x'length*58-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-54) := vectorify(x(i));
-      msb := msb - 54 -1;
+      y(msb downto msb-58) := vectorify(x(i));
+      msb := msb - 58 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -499,8 +564,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-54));
-      msb := msb - 54 -1;
+      y(i) := structify(x(msb downto msb-58));
+      msb := msb - 58 -1;
     end loop l;
     return y;
   end function structify;
@@ -530,12 +595,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg2sfslc_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*64-1 downto 0);
+    variable y : std_logic_vector(x'length*72-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-64) := vectorify(x(i));
-      msb := msb - 64 -1;
+      y(msb downto msb-72) := vectorify(x(i));
+      msb := msb - 72 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -552,8 +617,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-64));
-      msb := msb - 64 -1;
+      y(i) := structify(x(msb downto msb-72));
+      msb := msb - 72 -1;
     end loop l;
     return y;
   end function structify;
@@ -630,23 +695,23 @@ package body common_types_pkg is
   function vectorify(x: sf2pt_rt) return sf2pt_rvt is
     variable y : sf2pt_rvt;
   begin
-    y(57)                      := x.data_valid;
+    y(57 downto 57)            := vectorify(x.data_valid);
     y(56 downto 36)            := vectorify(x.muid);
     y(35 downto 32)            := vectorify(x.chamber_ieta);
     y(31 downto 14)            := vectorify(x.pos);
     y(13 downto 1)             := vectorify(x.angle);
-    y(0)                       := x.quality;
+    y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf2pt_rvt) return sf2pt_rt is
     variable y : sf2pt_rt;
   begin
-    y.data_valid               := x(57);
+    y.data_valid               := structify(x(57 downto 57));
     y.muid                     := structify(x(56 downto 36));
     y.chamber_ieta             := structify(x(35 downto 32));
     y.pos                      := structify(x(31 downto 14));
     y.angle                    := structify(x(13 downto 1));
-    y.quality                  := x(0);
+    y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: sf2pt_rt) return sf2pt_rt is
@@ -1037,7 +1102,7 @@ package body common_types_pkg is
   begin
     y(128 downto 108)          := vectorify(x.slc_muid);
     y(107 downto 1)            := vectorify(x.common);
-    y(0)                       := x.data_valid;
+    y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: felix_stream_rvt) return felix_stream_rt is
@@ -1045,7 +1110,7 @@ package body common_types_pkg is
   begin
     y.slc_muid                 := structify(x(128 downto 108));
     y.common                   := structify(x(107 downto 1));
-    y.data_valid               := x(0);
+    y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: felix_stream_rt) return felix_stream_rt is

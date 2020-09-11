@@ -23,10 +23,10 @@ use heg_roi_lib.roi_types_pkg.all;
 package roi_lut_BMLA3_slope is
 
   -- add length of constant array
-  constant ROM_BMLA3_ANGLE_MAX_SIZE : integer := 2047;
+  constant ROM_BMLA3_ANGLE_MAX_SIZE : integer := 2048;
 
--- VHDL2008  -- constant ROI_BMLA3_ANGLE_MEM : roi_mbar_lut_t(ROM_BMLA3_ANGLE_MAX_SIZE - 1 downto 0)(0 to 5) := (
-  constant ROI_BMLA3_ANGLE_MEM : roi_mbar_lut_small_t(ROM_BMLA3_ANGLE_MAX_SIZE - 1 downto 88) := (
+-- VHDL2008  -- constant ROI_BMLA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BMLA3_SLOPE_MAX_SIZE - 1 downto 0)(0 to 5) := (
+  constant ROI_BMLA3_ANGLE_MEM : roi_mbar_lut_small_t(ROM_BMLA3_ANGLE_MAX_SIZE - 1 downto 0) := (
     2047 downto 1921 => ( ( -2,  8),( -3,  7),( -3,  7),( -7,  3),( -7,  3),( -8,  2) ), -- from 117.28 to 110 degree 
     1920 downto 1834 => ( ( -3,  7),( -3,  7),( -4,  6),( -6,  4),( -7,  3),( -7,  3) ), -- from 110 to 105 degree 
     1833 downto 1746 => ( ( -4,  6),( -4,  6),( -4,  6),( -6,  4),( -6,  4),( -6,  4) ), -- from 105 to 100 degree 
@@ -44,7 +44,7 @@ package roi_lut_BMLA3_slope is
      436 downto  350 => ( (-23,-13),(-21,-11),(-18, -8),(  8, 18),( 11, 21),( 13, 23) ), -- from 25 to 20 degree 
      349 downto  263 => ( (-29,-19),(-26,-16),(-23,-13),( 13, 23),( 16, 26),( 19, 29) ), -- from 20 to 15 degree 
      262 downto  176 => ( (-40,-30),(-35,-25),(-31,-21),( 21, 31),( 25, 35),( 30, 40) ), -- from 15 to 10 degree 
-     175 downto   88 => ( (-64,-54),(-56,-46),(-48,-38),( 38, 48),( 46, 56),( 54, 64) )  -- from 10 to 5 degree 
+     175 downto   0 => ( (-64,-54),(-56,-46),(-48,-38),( 38, 48),( 46, 56),( 54, 64) )  -- from 10 to 5 degree 
   );
 
  end package roi_lut_BMLA3_slope;

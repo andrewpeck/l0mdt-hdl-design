@@ -30,14 +30,14 @@ use hp_lib.hp_pkg.all;
 
 entity hit_processor is
   generic(
-    g_STATION_RADIUS     : integer := 0
+    g_STATION_RADIUS    : integer := 0
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    local_rst      : in std_logic;
+    local_rst           : in std_logic;
     local_en            : in std_logic;
     time_offset         : in unsigned(7 downto 0);
 
@@ -77,20 +77,20 @@ begin
   )
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- configuration
-    time_offset         => time_offset,
+    -- time_offset         => time_offset,
     -- RoI_size            => RoI_size,
     -- SLc
     i_SLC_Window        => i_SLC_Window,
     -- i_SLc_rpc_z         => i_slc_data_av.barrel.z,
-    i_SLc_BCID          => slc_data.BCID,
+    -- i_SLc_BCID          => slc_data.BCID,
     -- MDT hit
     i_mdt_layer         => mdt_data.layer,
     i_mdt_tube          => mdt_data.tube,
     i_mdt_time_real     => mdt_data.time_t0,
-    i_data_valid         => mdt_data.data_valid,
+    i_data_valid        => mdt_data.data_valid,
     -- to Segment finder
     o_hit_valid         => int_hit_valid
     -- o_data_valid        => tdc_hitmatch_valid
@@ -103,17 +103,18 @@ begin
   )
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- SLc-
-    i_SLC_Window        => i_SLC_Window(0),
+    -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_specific      => slc_data.specific,
     i_SLc_BCID          => slc_data.BCID,
     -- MDT hit
     i_mdt_time_real     => mdt_data.time_t0,
     i_mdt_z             => mdt_data.global_z,
-    i_mdt_x             => mdt_data.global_x,
-    i_data_valid         => mdt_data.data_valid,
+    -- i_mdt_x             => mdt_data.global_x,
+    i_mdt_layer         => mdt_data.layer,
+    i_data_valid        => mdt_data.data_valid,
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
     o_local_x           => data_2_sf_r.data.local_x,
@@ -129,7 +130,7 @@ begin
   )
   port map(
     clk               => clk,
-    rst          => rst,
+    rst               => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => mdt_data.data_valid,
@@ -143,7 +144,7 @@ begin
   )
   port map(
     clk               => clk,
-    rst          => rst,
+    rst               => rst,
     glob_en           => glob_en,
     --
     i_data(0)         => int_hit_valid,

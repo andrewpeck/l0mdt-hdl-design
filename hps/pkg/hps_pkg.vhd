@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -15,8 +16,8 @@ use heg_lib.heg_pkg.all;
 
 package hps_pkg is
 
-  type hps_ctrl2sf_at is array(integer range <>) of heg_ctrl2hp_rt;
-  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2hp_rvt;
+  type hps_ctrl2sf_at is array(integer range <>) of heg_ctrl2sf_rt;
+  type hps_ctrl2sf_avt is array(integer range <>) of heg_ctrl2sf_rvt;
   function vectorify(x: hps_ctrl2sf_at) return hps_ctrl2sf_avt;
   function vectorify(x: hps_ctrl2sf_at) return std_logic_vector;
   function structify(x: hps_ctrl2sf_avt) return hps_ctrl2sf_at;
@@ -39,12 +40,12 @@ package body hps_pkg is
     return y;
   end function vectorify;
   function vectorify(x: hps_ctrl2sf_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*2-1 downto 0);
+    variable y : std_logic_vector(x'length*3-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-2) := vectorify(x(i));
-      msb := msb - 2 -1;
+      y(msb downto msb-3) := vectorify(x(i));
+      msb := msb - 3 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -61,8 +62,8 @@ package body hps_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-2));
-      msb := msb - 2 -1;
+      y(i) := structify(x(msb downto msb-3));
+      msb := msb - 3 -1;
     end loop l;
     return y;
   end function structify;

@@ -34,6 +34,14 @@ HDL_Types:
 - heg_ctrl2hp_bus  : [ array : open , type : heg_ctrl2hp]
 
 # -----------------------------------------------------------
+#  heg: heg control 2 sf
+# -----------------------------------------------------------
+  
+- heg_ctrl2sf:
+  - rst           : [ type : logic ]
+  - enable        : [ type : logic ]
+  - window_valid  : [ type : logic ]
+# -----------------------------------------------------------
 #  heg: heg control 2 hp slc data
 # -----------------------------------------------------------
 
