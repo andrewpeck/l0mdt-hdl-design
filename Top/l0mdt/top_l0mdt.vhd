@@ -126,6 +126,7 @@ architecture structural of top_l0mdt is
 
   signal axi_clk : std_logic;
   signal clk320  : std_logic;
+  signal clk40   : std_logic;
 
   -- Control and Monitoring Records
 
@@ -210,6 +211,7 @@ begin
       -- AXI
 
       clk320_o => clk320,
+      clk40_o  => clk40,
 
       axi_clk_o => axi_clk,
 
@@ -329,6 +331,7 @@ begin
 
       -- axi common
       clk320                  => clk320,
+      clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
       clk50mhz                => axi_clk,

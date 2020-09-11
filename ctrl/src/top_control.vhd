@@ -25,6 +25,7 @@ entity top_control is
     -- axi
     axi_clk : in std_logic;
     clk320  : in std_logic;
+    clk40  : in std_logic;
     clkpipe : in std_logic;
 
     -- system clock
@@ -142,8 +143,8 @@ begin
 
       -- axi clock and reset
       axi_clk      => axi_clk,
-      clk320       => clk320,
-      clkpipe       => clkpipe,
+      clk40        => clk40,
+      clkpipe      => clkpipe,
       axi_rst_n(0) => axi_reset_n,
 
       -- system clock and reset
@@ -415,7 +416,7 @@ begin
 
   hal_interface_inst : entity ctrl_lib.HAL_interface
     port map (
-      clk_axi         => clk320,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => hal_readmosi,
       slave_readmiso  => hal_readmiso,

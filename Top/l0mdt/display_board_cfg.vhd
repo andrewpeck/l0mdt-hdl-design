@@ -3,6 +3,14 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
 library hal;
 use hal.system_types_pkg.all;
 use hal.constants_pkg.all;
@@ -189,25 +197,25 @@ begin
   begin
 
 
-      polmux_gen : for J in 0 to num_polmuxes(I)-1 generate
-        constant id    : integer := get_polmux_global_id (c_MDT_CONFIG, J, stations(I));
-        constant hi    : integer := polmux_hi_lo (id).hi;
-        constant lo    : integer := polmux_hi_lo (id).lo;
-        constant width : integer := hi-lo+1;
-      begin
+    polmux_gen : for J in 0 to num_polmuxes(I)-1 generate
+      constant id    : integer := get_polmux_global_id (c_MDT_CONFIG, J, stations(I));
+      constant hi    : integer := polmux_hi_lo (id).hi;
+      constant lo    : integer := polmux_hi_lo (id).lo;
+      constant width : integer := hi-lo+1;
+    begin
 
-        assert false report
-          "Generating PolMux " & stations_str(I)
-          & " local#" & integer'image(J)
-          & " global#" & integer'image(id)
-          & " width=" & integer'image(width)
-          & " hi=" & integer'image(hi)
-          & " lo=" & integer'image(lo)
-          & " mgt=" & integer'image(get_csm_mgt_num(I, c_MGT_MAP))
-          severity note;
+      assert false report
+        "Generating PolMux " & stations_str(I)
+        & " local#" & integer'image(J)
+        & " global#" & integer'image(id)
+        & " width=" & integer'image(width)
+        & " hi=" & integer'image(hi)
+        & " lo=" & integer'image(lo)
+        & " mgt=" & integer'image(get_csm_mgt_num(I, c_MGT_MAP))
+        severity note;
 
-      end generate;
     end generate;
+  end generate;
 
   --csm_loop : for I in c_MDT_CONFIG'range generate
   --  function get_ith_bit_index (a : std_logic_vector; pos : integer) return integer is
@@ -237,4 +245,37 @@ begin
   --  end generate;
   --end generate;
 
+  assert false report "--------------------------------------------------------" severity note;
+  assert false report "MAIN_CFG_COMPILE_HW   = " & std_logic'image(MAIN_CFG_COMPILE_HW) severity note;
+  assert false report "MAIN_CFG_COMPILE_UL   = " & std_logic'image(MAIN_CFG_COMPILE_UL) severity note;
+  assert false report "c_SECTOR_SIDE         = " & std_logic'image(c_SECTOR_SIDE) severity note;
+  assert false report "c_ST_nBARREL_ENDCAP   = " & std_logic'image(c_ST_nBARREL_ENDCAP) severity note;
+  assert false report "c_ENABLE_NEIGHBORS   = " & std_logic'image(c_ENABLE_NEIGHBORS) severity note;
+  assert false report "c_SECTOR_ID           = " & integer'image(c_SECTOR_ID) severity note;
+  assert false report "c_ENDCAP_nSMALL_LARGE = " & std_logic'image(c_ENDCAP_nSMALL_LARGE) severity note;
+  assert false report "PHY_BARREL_R0         = " & integer'image(to_integer(PHY_BARREL_R0)) severity note;
+  assert false report "PHY_BARREL_R1         = " & integer'image(to_integer(PHY_BARREL_R1)) severity note;
+  assert false report "PHY_BARREL_R2         = " & integer'image(to_integer(PHY_BARREL_R2)) severity note;
+  assert false report "PHY_BARREL_R3         = " & integer'image(to_integer(PHY_BARREL_R3)) severity note;
+  assert false report "c_HPS_ENABLE_ST_INN   = " & std_logic'image(c_HPS_ENABLE_ST_INN) severity note;
+  assert false report "c_HPS_ENABLE_ST_EXT   = " & std_logic'image(c_HPS_ENABLE_ST_EXT) severity note;
+  assert false report "c_HPS_ENABLE_ST_MID   = " & std_logic'image(c_HPS_ENABLE_ST_MID) severity note;
+  assert false report "c_HPS_ENABLE_ST_OUT   = " & std_logic'image(c_HPS_ENABLE_ST_OUT) severity note;
+  assert false report "c_HPS_NUM_MDT_CH_INN  = " & integer'image(c_HPS_NUM_MDT_CH_INN) severity note;
+  assert false report "c_HPS_NUM_MDT_CH_EXT  = " & integer'image(c_HPS_NUM_MDT_CH_EXT) severity note;
+  assert false report "c_HPS_NUM_MDT_CH_MID  = " & integer'image(c_HPS_NUM_MDT_CH_MID) severity note;
+  assert false report "c_HPS_NUM_MDT_CH_OUT  = " & integer'image(c_HPS_NUM_MDT_CH_OUT) severity note;
+  assert false report "c_NUM_MTC             = " & integer'image(c_NUM_MTC) severity note;
+  assert false report "c_NUM_NSP             = " & integer'image(c_NUM_NSP) severity note;
+  assert false report "c_UCM_ENABLED         = " & std_logic'image(c_UCM_ENABLED) severity note;
+  assert false report "c_MPL_ENABLED         = " & std_logic'image(c_MPL_ENABLED) severity note;
+  assert false report "c_SF_ENABLED          = " & std_logic'image(c_SF_ENABLED) severity note;
+  assert false report "c_SF_TYPE             = " & std_logic'image(c_SF_TYPE) severity note;
+  assert false report "c_NUM_DAQ_STREAMS     = " & integer'image(c_NUM_DAQ_STREAMS) severity note;
+  assert false report "MAX_NUM_HP            = " & integer'image(MAX_NUM_HP) severity note;
+  assert false report "c_NUM_SF_INPUTS       = " & integer'image(c_NUM_SF_INPUTS) severity note;
+  assert false report "c_NUM_SF_OUTPUTS      = " & integer'image(c_NUM_SF_OUTPUTS) severity note;
+  assert false report "c_MAX_NUM_SL          = " & integer'image(c_MAX_NUM_SL) severity note;
+  assert false report "c_NUM_THREADS         = " & integer'image(c_NUM_THREADS) severity note;
+  assert false report "--------------------------------------------------------" severity note;
 end Behavioral;

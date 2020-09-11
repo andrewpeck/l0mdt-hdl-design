@@ -175,10 +175,10 @@ begin
 
       -- SCA Control
       sca_enable_i        => (others => '0'),
-      start_reset_cmd_i   => (others => '0'),
-      start_connect_cmd_i => (others => '0'),
-      start_command_i     => (others => '0'),
-      inject_crc_error    => (others => '0'),
+      start_reset_cmd_i   => '0',
+      start_connect_cmd_i => '0',
+      start_command_i     => '0',
+      inject_crc_error    => '0',
       tx_address_i        => (others => '0'),
       tx_transID_i        => (others => '0'),
       tx_channel_i        => (others => '0'),
