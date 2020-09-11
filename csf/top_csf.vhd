@@ -41,11 +41,11 @@ entity top_csf is
   );
   Port (
     clk       : in std_logic;
-    i_seed    : in csf_seed_rvt;
+    i_seed    : in heg2sfslc_rvt;
     i_mdt_hit : in heg2sfhit_rvt;
     i_eof     : in std_logic;
     i_rst     : in std_logic;
-    o_seg     : out sf_seg_data_barrel_rvt
+    o_seg     : out sf2ptcalc_rvt
   );
 end top_csf;
 
