@@ -43,7 +43,7 @@ entity hps_sf_wrap is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control        : in heg_ctrl2hp_rvt;
+    i_control        : in heg_ctrl2sf_rvt;
     i_slc_data       : in heg2sfslc_rvt;
     i_mdt_data       : in heg2sfhit_rvt;
     --
