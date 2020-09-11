@@ -29,7 +29,7 @@ package common_constants_pkg is
 
   constant SLC_CHAMBER_LEN : integer := 4;
 
-  constant SLC_Z_RPC_LEN : integer := 10;
+  constant SLC_Z_RPC_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 
   constant SLC_Z_RPC_MULT : real := 13.0;
 
