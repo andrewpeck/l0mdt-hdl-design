@@ -112,6 +112,7 @@ begin
     i_Roi_win_valid     => Roi_win_valid,
     -- SLc out
     o_hp_control        => o_hp_control,
+    o_sf_control        => o_sf_control,
     o_uCM2sf_data_v     => o_uCM2sf_data_v
   );
 
