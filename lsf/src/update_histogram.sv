@@ -1,20 +1,27 @@
+//--------------------------------------------------------------------------------
+//--  Department of Physics and Astronomy, UCI
+//--  Priya Sundararajan
+//--  priya.sundararajan@cern.ch
+//--------------------------------------------------------------------------------
+//--  Project: ATLAS L0MDT Trigger 
+//--  Description:
+//--
+//--------------------------------------------------------------------------------
+//--  Revisions:
+//--      
+//--------------------------------------------------------------------------------
+`timescale 1ns/1ps
 module update_histogram (
         input 		   clk,
         input 		   rst_n,
       	input logic [7:0]  r_bin_V_TDATA,
 	input logic 	   r_bin_V_TVALID,
 	output logic 	   r_bin_V_TREADY,
-/*	output logic [3:0] r_val_V_TDATA,
-	output logic 	   r_val_V_TVALID,
-	input logic 	   r_val_V_TREADY,
- 	output logic [7:0] r_bin_out_TDATA,
-	output logic 	   r_bin_out_TVALID,
- */
 	input logic 	   enable_V,
 	output logic [6:0] local_max_rbin,
 	output logic [3:0] local_max_count,
 	output logic 	   local_max_vld,
-	input logic 	   reset_V
+	input logic 	   reset_rbins
 );
 
    logic [6:0] 		   hist_acc_wraddr;
@@ -29,7 +36,7 @@ module update_histogram (
    logic [3:0] 		   hist_acc_rddata;
    logic [3:0] 		   war_next_write;
    
-   logic [127:0] 	   histogram_reset_state;
+// logic [127:0] 	   histogram_reset_state;
    logic 		   reset_seq;
    logic 		   war ;
    logic [1:0] 		   war_d;
@@ -43,7 +50,7 @@ module update_histogram (
    logic [7:0] 		   r_bin_out_TDATA;
    logic 		   r_bin_out_TVALID;
    
-   logic 		   rst_d0;
+
    logic [7:0] 		   r_bin_V_TDATA_d0;
    logic [7:0] 		   r_bin_V_TDATA_d1;
    
@@ -73,16 +80,16 @@ module update_histogram (
 
    always @ (posedge clk)
      begin
-	if (~rst_n | reset_V)
+	if (~rst_n)
 	  begin
 	     reset_seq             <= 1;
 	     hist_acc_wren         <= 0;
-	     hist_acc_wraddr       <= 0; //(hist_acc_wraddr == 7'h7f)? 0 : hist_acc_wraddr + 1;
+	   
 	     r_bin_out_TDATA       <= 0;
 	     r_bin_out_TVALID      <= 0;
 	     hist_acc_wrdata       <= 0;
-	     histogram_reset_state <= 0;
-	     rst_d0                <= 0;
+//	     histogram_reset_state <= 0;
+
 	     r_bin_V_TVALID_d0     <= 0;
 	     r_bin_V_TVALID_d1     <= 0;
 	     r_bin_V_TDATA_d0      <= 0;
@@ -94,6 +101,9 @@ module update_histogram (
 	     hist_acc_rdaddr_d0    <= 0;
 	     hist_acc_rdaddr_d1    <= 0;
 	     war                   <= 0;
+	     hist_acc_wraddr       <= 0;
+	     hist_acc_wren         <= 0;
+	     hist_acc_wrdata       <= 0;
 	  end
 	else if (enable_V)
 	  begin
@@ -111,40 +121,65 @@ module update_histogram (
 
 	     war_d                 <={war_d[0], war};
 	     hist_acc_wrdata_d0    <= hist_acc_wrdata;
-	     bin_reset_state       <= (histogram_reset_state >> r_bin_V_TDATA_d0[6:0]) & 1'b1;
+//	     bin_reset_state       <= (histogram_reset_state >> r_bin_V_TDATA_d0[6:0]) & 1'b1;
 	     war                   <= (r_bin_V_TVALID_d0 == 1)&(hist_acc_wraddr == hist_acc_rdaddr_d0);
 	     war_2                 <= (r_bin_V_TVALID_d0 == 1)&( r_bin_V_TVALID_d1) & (hist_acc_rdaddr_d1 == hist_acc_rdaddr_d0);
 	     
 	     hist_acc_rdaddr_d0    <= hist_acc_rdaddr;
 	     hist_acc_rdaddr_d1    <= hist_acc_rdaddr_d0;
 	     
- 	     if(bin_reset_state == 1)
+//	     if(bin_reset_state == 1)
+	     if(r_bin_V_TVALID_d1)
 	       begin
-		  rst_d0                <= 0;
+
 		  hist_acc_wrdata       <=   hist_acc_rddata + 1;
 		  r_val_V_TDATA         <=   hist_acc_rddata + 1;
 	       end
 	     else
 	       begin
-		  rst_d0                <= 1;
+
 		  hist_acc_wrdata       <=  1;
 		  r_val_V_TDATA         <=  1;
 	       end
 	     r_val_V_TVALID        <= r_bin_V_TVALID_d0;
 	    
 
-	     if(r_bin_V_TDATA_d0[7] == 0)
+	  /* if(r_bin_V_TDATA_d0[7] == 0)
 	       begin
 		  histogram_reset_state[r_bin_V_TDATA_d0] = 1;
 		  
-	       end
+	       end*/
+	  end // if (enable_V)
+	else if (reset_rbins)
+	  begin
+	     hist_acc_wraddr       <= (hist_acc_wraddr == 7'h7f)? 0 : hist_acc_wraddr + 1;
+	     hist_acc_wren         <= 1;
+	     hist_acc_wrdata       <= 0;
+	     r_val_V_TDATA         <= 0;
+	     r_bin_out_TDATA       <= 0;
+	     
+	    
+
+
+	     r_bin_out_TVALID      <= 0;
+	     r_bin_V_TVALID_d0     <= 0;
+	     r_bin_V_TVALID_d1     <= 0;
+	     r_bin_V_TDATA_d0      <= 0;
+	     r_bin_V_TDATA_d1      <= 0;
+	     hist_acc_wrdata_d0    <= 0;
+	     war_d                 <= 0;
+	     bin_reset_state       <= 0;
+	     war                   <= 0;
+	     hist_acc_rdaddr_d0    <= 0;
+	     hist_acc_rdaddr_d1    <= 0;
+	     war                   <= 0;
 	  end
      end
 
 
    always @ (posedge clk)
      begin
-	if(~rst_n || (enable_V == 0))
+	if(reset_rbins || (~rst_n & enable_V == 0))
 	  begin
 	     local_max_rbin  <= 0;
 	     local_max_count <= 0;
