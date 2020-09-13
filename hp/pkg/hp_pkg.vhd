@@ -52,22 +52,21 @@ package hp_pkg is
 
   type hp_heg2hp_slc_b_rt is record
     z_0 : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-    y_0 : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   end record hp_heg2hp_slc_b_rt;
-  constant HP_HEG2HP_SLC_B_LEN : integer := 38;
+  constant HP_HEG2HP_SLC_B_LEN : integer := 19;
   subtype hp_heg2hp_slc_b_rvt is std_logic_vector(HP_HEG2HP_SLC_B_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rvt;
   function structify(x: hp_heg2hp_slc_b_rvt) return hp_heg2hp_slc_b_rt;
   function nullify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt;
 
-  constant HP_HEG2HP_SPECIFIC_LEN : integer := 38;
+  constant HP_HEG2HP_SPECIFIC_LEN : integer := 19;
 
   type hp_heg2hp_slc_rt is record
     bcid : unsigned(BCID_LEN-1 downto 0);
     specific : std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
   end record hp_heg2hp_slc_rt;
-  constant HP_HEG2HP_SLC_LEN : integer := 51;
+  constant HP_HEG2HP_SLC_LEN : integer := 32;
   subtype hp_heg2hp_slc_rvt is std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rvt;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt;
@@ -269,38 +268,35 @@ package body hp_pkg is
   function vectorify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rvt is
     variable y : hp_heg2hp_slc_b_rvt;
   begin
-    y(37 downto 19)            := vectorify(x.z_0);
-    y(18 downto 0)             := vectorify(x.y_0);
+    y(18 downto 0)             := vectorify(x.z_0);
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_slc_b_rvt) return hp_heg2hp_slc_b_rt is
     variable y : hp_heg2hp_slc_b_rt;
   begin
-    y.z_0                      := structify(x(37 downto 19));
-    y.y_0                      := structify(x(18 downto 0));
+    y.z_0                      := structify(x(18 downto 0));
     return y;
   end function structify;
   function nullify(x: hp_heg2hp_slc_b_rt) return hp_heg2hp_slc_b_rt is
     variable y : hp_heg2hp_slc_b_rt;
   begin
     y.z_0                      := nullify(x.z_0);
-    y.y_0                      := nullify(x.y_0);
     return y;
   end function nullify;
 
   function vectorify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rvt is
     variable y : hp_heg2hp_slc_rvt;
   begin
-    y(50 downto 39)            := vectorify(x.bcid);
-    y(38 downto 1)             := vectorify(x.specific);
+    y(31 downto 20)            := vectorify(x.bcid);
+    y(19 downto 1)             := vectorify(x.specific);
     y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt is
     variable y : hp_heg2hp_slc_rt;
   begin
-    y.bcid                     := structify(x(50 downto 39));
-    y.specific                 := structify(x(38 downto 1));
+    y.bcid                     := structify(x(31 downto 20));
+    y.specific                 := structify(x(19 downto 1));
     y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;

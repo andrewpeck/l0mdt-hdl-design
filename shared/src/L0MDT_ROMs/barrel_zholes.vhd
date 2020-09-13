@@ -23,7 +23,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-use shared_lib.b_zholes_rom.all;
+use shared_lib.barrel_zholes_chamber_pkg.all;
 -- library hp_lib;
 -- use hp_lib.hp_pkg.all;
 -- library heg_lib;

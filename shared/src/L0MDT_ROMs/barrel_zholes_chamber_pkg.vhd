@@ -24,7 +24,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
-package b_zholes_rom is
+package barrel_zholes_chamber_pkg is
 
   type zhLUT_chamber_integer_t is array (0 to 7) of integer;
   type zhLUT_chamber_t is array (0 to 7) of real;
@@ -89,9 +89,9 @@ package b_zholes_rom is
     
   function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t;
     
-end package b_zholes_rom;
+end package barrel_zholes_chamber_pkg;
 
-package body b_zholes_rom is
+package body barrel_zholes_chamber_pkg is
   
   function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t is
     variable o_layer : zhLUT_chamber_integer_t;
@@ -119,4 +119,4 @@ package body b_zholes_rom is
     return o_layer;
   end function;
   
-end package body b_zholes_rom;
+end package body barrel_zholes_chamber_pkg;

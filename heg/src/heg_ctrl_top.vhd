@@ -192,9 +192,12 @@ architecture beh of ctrl_signals is
 
   signal o_uCM2sf_data_r    : heg2sfslc_rt;
   signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
+  signal b_data : hp_heg2hp_slc_b_rt;
 
   signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
-  signal zh_dv : std_logic;
+  signal holesize_dv : std_logic;
+  signal z_win_org : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal z_win_org_dv : std_logic;
 
 begin
 
@@ -207,10 +210,10 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     --
-    -- i_chamber           => mdt_tar_data.chamber_ieta,
+    i_chamber           => i_uCM_data_r.mdtid.chamber_ieta, -- ojo no es corecto, ha de depender del tubo
     i_dv                => i_Roi_win_valid,
     o_spaces            => holesize,
-    o_dv                => zh_dv
+    o_dv                => holesize_dv
   );
 
   o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r);
@@ -241,10 +244,19 @@ begin
         heg_ctrl_motor <= IDLE;
       else
         -- windows origin calculator
-        if i_Roi_win_valid = '1' then
+        if c_ST_nBARREL_ENDCAP = '0' then -- barrel
+          if holesize_dv = '1' then
+            -- if (i_uCM_data_r.mdtid.chamber_id = 2) 
+            -- or (i_uCM_data_r.mdtid.chamber_id = 3) 
+            -- or (i_uCM_data_r.mdtid.chamber_id = 5) then
+              b_data.z_0 <= resize(holesize + i_Roi_win_origin * to_unsigned(960,10),b_data.z_0'length);
+            
+          else
 
+          end if;
+          z_win_org_dv <= holesize_dv;
         else
-
+        -- endcap
         end if;
 
         -- time counter
@@ -279,9 +291,9 @@ begin
               o_hp_control(hp_i).enable <= '1';
               o_hp_control(hp_i).rst <= '1';
             end loop;
-            if i_Roi_win_valid = '1' then
+            if z_win_org_dv = '1' then
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
-                -- o_uCM2hp_data_r.specific.z_0 <= uCM_data_r.barrel.z;
+                o_uCM2hp_data_r.specific <= vectorify(b_data);
               else --endcap
 
               end if;
