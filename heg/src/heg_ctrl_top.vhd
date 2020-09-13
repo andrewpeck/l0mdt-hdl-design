@@ -66,6 +66,7 @@ architecture beh of heg_ctrl_top is
       --
       i_uCM_data_r        : in ucm2hps_rt;
       --
+      i_Roi_win_origin    : in unsigned(MDT_TUBE_LEN-1 downto 0);
       i_Roi_win_valid     : in std_logic;
       --
       o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
@@ -110,6 +111,8 @@ begin
     glob_en             => glob_en,
     -- SLc in
     i_uCM_data_r        => uCM_data_r,
+    --
+    i_Roi_win_origin    => structify(o_SLC_Window_v(0)).lo,
     i_Roi_win_valid     => Roi_win_valid,
     -- SLc out
     o_hp_control        => o_hp_control,
@@ -168,6 +171,7 @@ entity ctrl_signals is
     --
     i_uCM_data_r        : in ucm2hps_rt;
     --
+    i_Roi_win_origin    : in unsigned(MDT_TUBE_LEN-1 downto 0);
     i_Roi_win_valid     : in std_logic;
     --
     o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
@@ -218,6 +222,13 @@ begin
 
         heg_ctrl_motor <= IDLE;
       else
+        -- windows origin calculator
+        if i_Roi_win_valid = '1' then
+          
+        else
+
+        end if;
+
         -- time counter
         if or_reduce(enables_a) = '1' then
           busy_count <= busy_count + '1';
@@ -225,17 +236,18 @@ begin
           busy_count <= (others => '0');
         end if;
 
+        -- signal motor state machine
         case heg_ctrl_motor is
           when IDLE =>
-            if( i_uCM_data_r.data_valid = '1') then
+            if( i_uCM_data_r.data_valid = '1') then  -- new slc
               -- HP
               o_uCM2hp_data_r.bcid <= i_uCM_data_r.muid.bcid;
               -- SF
-              o_uCM2sf_data_r.muid <= i_uCM_data_r.muid;
+              o_uCM2sf_data_r.muid        <= i_uCM_data_r.muid;
               o_uCM2sf_data_r.mdtseg_dest <= i_uCM_data_r.mdtseg_dest;
-              o_uCM2sf_data_r.mdtid <= i_uCM_data_r.mdtid;
-              o_uCM2sf_data_r.vec_pos <= i_uCM_data_r.vec_pos;
-              o_uCM2sf_data_r.vec_ang <= i_uCM_data_r.vec_ang;
+              o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
+              o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
+              o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control(hp_i).enable <= '1';

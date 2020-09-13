@@ -21,3 +21,8 @@ shared/src/pipeline.vhd
 shared/src/bram.vhd
 shared/src/rom.v
 shared/src/rom_dp.v
+
+#Detector ROMs
+
+shared/src/L0MDT_ROMs/barrel_zholes_pkg.vhd
+shared/src/L0MDT_ROMs/barrel_zholes.vhd
