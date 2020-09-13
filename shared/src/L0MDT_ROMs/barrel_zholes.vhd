@@ -32,7 +32,7 @@ use shared_lib.b_zholes_rom.all;
 -- use hps_lib.hps_pkg.all;
 -- use hps_lib.hps_rom_b_zholes_pkg.all;
 
-entity hps_pc_b_zholes is
+entity b_zholes_src is
   generic(
     -- parameters
     g_STATION_RADIUS    : integer := 0  --station
@@ -42,15 +42,15 @@ entity hps_pc_b_zholes is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
+    i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
     i_dv                : in std_logic;
     o_spaces            : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     o_dv                : out std_logic
     
   );
-end entity hps_pc_b_zholes;
+end entity b_zholes_src;
 
-architecture beh of hps_pc_b_zholes is
+architecture beh of b_zholes_src is
   
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;

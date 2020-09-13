@@ -193,7 +193,25 @@ architecture beh of ctrl_signals is
   signal o_uCM2sf_data_r    : heg2sfslc_rt;
   signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
 
+  signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
+  signal zh_dv : std_logic;
+
 begin
+
+  ZH : entity shared_lib.b_zholes_src
+  generic map(
+    g_STATION_RADIUS    => g_STATION_RADIUS
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    glob_en             => glob_en,
+    --
+    -- i_chamber           => mdt_tar_data.chamber_ieta,
+    i_dv                => i_Roi_win_valid,
+    o_spaces            => holesize,
+    o_dv                => zh_dv
+  );
 
   o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r);
   o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
@@ -224,7 +242,7 @@ begin
       else
         -- windows origin calculator
         if i_Roi_win_valid = '1' then
-          
+
         else
 
         end if;
