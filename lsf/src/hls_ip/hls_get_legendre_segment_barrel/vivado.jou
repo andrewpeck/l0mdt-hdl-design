@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1.1 (64-bit)
+# SW Build 2580384 on Sat Jun 29 08:04:45 MDT 2019
+# IP Build 2579722 on Sat Jun 29 11:35:40 MDT 2019
+# Start of session at: Wed Sep  2 10:41:17 2020
+# Process ID: 8039
+# Current directory: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_legendre_segment_barrel/proj_get_legendre_segment_barrel/solution_get_legendre_segment_barrel/impl/ip
+# Command line: vivado -notrace -mode batch -source run_ippack.tcl
+# Log file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_legendre_segment_barrel/proj_get_legendre_segment_barrel/solution_get_legendre_segment_barrel/impl/ip/vivado.log
+# Journal file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_legendre_segment_barrel/proj_get_legendre_segment_barrel/solution_get_legendre_segment_barrel/impl/ip/vivado.jou
+#-----------------------------------------------------------
+source run_ippack.tcl -notrace

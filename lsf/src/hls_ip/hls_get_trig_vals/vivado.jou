@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1.1 (64-bit)
+# SW Build 2580384 on Sat Jun 29 08:04:45 MDT 2019
+# IP Build 2579722 on Sat Jun 29 11:35:40 MDT 2019
+# Start of session at: Fri Sep  4 13:25:16 2020
+# Process ID: 60533
+# Current directory: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_trig_vals/proj_get_trig_vals/solution_get_trig_vals/impl/ip
+# Command line: vivado -notrace -mode batch -source run_ippack.tcl
+# Log file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_trig_vals/proj_get_trig_vals/solution_get_trig_vals/impl/ip/vivado.log
+# Journal file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_trig_vals/proj_get_trig_vals/solution_get_trig_vals/impl/ip/vivado.jou
+#-----------------------------------------------------------
+source run_ippack.tcl -notrace

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="get_rom_addr" xd:componentRef="get_rom_addr" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="theta_for_lut" xd:originalName="theta_for_lut" xd:direction="in" xd:interfaceRef="theta_for_lut_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18"/>
+  <xd:arg xd:name="*(rom_index)" xd:originalName="rom_index" xd:direction="out" xd:interfaceRef="rom_index_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="4" xd:firstOut="1"/>
+  <xd:arg xd:name="*(lut_start_addr)" xd:originalName="lut_start_addr" xd:direction="out" xd:interfaceRef="lut_start_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="14" xd:firstOut="1"/>
+  <xd:latencyEstimates xd:best-case="1" xd:worst-case="1" xd:average-case="1"/>
+  <xd:resourceEstimates xd:LUT="167" xd:FF="39" xd:BRAM="0" xd:DSP="0"/>
+</xd:acceleratorMap>
