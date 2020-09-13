@@ -71,6 +71,7 @@ architecture beh of heg_ctrl_top is
       o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
       o_sf_control        : out heg_ctrl2sf_rt;
       --
+      o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
       o_uCM2sf_data_v     : out heg2sfslc_rvt
     );
   end component ctrl_signals;
@@ -113,6 +114,8 @@ begin
     -- SLc out
     o_hp_control        => o_hp_control,
     o_sf_control        => o_sf_control,
+    --
+    o_uCM2hp_data_v     => o_uCM2hp_data_v,
     o_uCM2sf_data_v     => o_uCM2sf_data_v
   );
 
@@ -170,6 +173,7 @@ entity ctrl_signals is
     o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     o_sf_control        : out heg_ctrl2sf_rt;
     --
+    o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
     o_uCM2sf_data_v     : out heg2sfslc_rvt
   );
 end entity ctrl_signals;
@@ -183,10 +187,12 @@ architecture beh of ctrl_signals is
   signal enables_a          : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
 
   signal o_uCM2sf_data_r    : heg2sfslc_rt;
+  signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
 
 begin
 
   o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r);
+  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
 
   CTRL_GEN : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     enables_a(hp_i) <= o_hp_control(hp_i).enable;
@@ -197,7 +203,8 @@ begin
     if rising_edge(clk) then
       if(rst= '1') then
 
-        o_uCM2sf_data_v <= nullify(o_uCM2sf_data_v);
+        o_uCM2sf_data_r <= nullify(o_uCM2sf_data_r);
+        o_uCM2hp_data_r <= nullify(o_uCM2hp_data_r);
         -- hp control resets
         o_sf_control.enable <= '0';
         o_sf_control.rst <= '0';
@@ -221,7 +228,9 @@ begin
         case heg_ctrl_motor is
           when IDLE =>
             if( i_uCM_data_r.data_valid = '1') then
-              -- o_uCM2sf_data_v <= i_uCM_data_v;
+              -- HP
+              o_uCM2hp_data_r.bcid <= i_uCM_data_r.muid.bcid;
+              -- SF
               o_uCM2sf_data_r.muid <= i_uCM_data_r.muid;
               o_uCM2sf_data_r.mdtseg_dest <= i_uCM_data_r.mdtseg_dest;
               o_uCM2sf_data_r.mdtid <= i_uCM_data_r.mdtid;
