@@ -32,7 +32,7 @@ use shared_lib.barrel_zholes_chamber_pkg.all;
 -- use hps_lib.hps_pkg.all;
 -- use hps_lib.hps_rom_b_zholes_pkg.all;
 
-entity b_zholes_src is
+entity barrel_zholes is
   generic(
     -- parameters
     g_STATION_RADIUS    : integer := 0  --station
@@ -48,9 +48,9 @@ entity b_zholes_src is
     o_dv                : out std_logic
     
   );
-end entity b_zholes_src;
+end entity barrel_zholes;
 
-architecture beh of b_zholes_src is
+architecture beh of barrel_zholes is
   
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
@@ -77,14 +77,14 @@ begin
   end process;
 
   mem_guard : process(i_chamber) begin
-    if ( to_integer(unsigned(i_chamber)) > 5) then
+    -- if ( to_integer(unsigned(i_chamber)) > 5) then
       addr_mem <= (others => '0');
-    else
+    -- else
       addr_mem <= i_chamber;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
-    end if;
+    -- end if;
   end process;
 
-  INN_GEN: if g_STATION_RADIUS = 0 generate
+  -- INN_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
 
     begin
@@ -100,7 +100,7 @@ begin
         end if;
       end if ;
     end process;
-  end generate;
+  -- end generate;
 
   -- MID_GEN: if g_STATION_RADIUS = 1 generate
   --   DT2R : process(clk)

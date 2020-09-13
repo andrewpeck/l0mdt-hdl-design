@@ -186,6 +186,7 @@ architecture beh of ctrl_signals is
 
   type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
   signal heg_ctrl_motor     : heg_ctrl_motor_t;
+  
 
   signal busy_count         : std_logic_vector(11 downto 0);
   signal enables_a          : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
@@ -201,7 +202,7 @@ architecture beh of ctrl_signals is
 
 begin
 
-  ZH : entity shared_lib.b_zholes_src
+  ZH : entity shared_lib.barrel_zholes
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS
   )
@@ -210,7 +211,8 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     --
-    i_chamber           => i_uCM_data_r.mdtid.chamber_ieta, -- ojo no es corecto, ha de depender del tubo
+    i_chamber           => i_uCM_data_r.mdtid.chamber_ieta, 
+    -- ojo no es corecto, ha de depender del tubo
     i_dv                => i_Roi_win_valid,
     o_spaces            => holesize,
     o_dv                => holesize_dv
