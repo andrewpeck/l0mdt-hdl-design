@@ -24,11 +24,11 @@ entity top_upt is
     port (
         clk : in std_logic;
         i_rst : in std_logic;
-        i_slc: in pl2pt_rvt;
-        i_segment_i : in sf_seg_data_barrel_rvt;
-        i_segment_m : in sf_seg_data_barrel_rvt;
-        i_segment_o : in sf_seg_data_barrel_rvt;
-        o_mtc : out tf2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
+        i_slc: in pl2ptcalc_rvt;
+        i_segment_i : in sf2pt_rvt;
+        i_segment_m : in sf2pt_rvt;
+        i_segment_o : in sf2pt_rvt;
+        o_mtc : out ptcalc2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
     );
 end top_upt;
 
@@ -45,11 +45,11 @@ architecture behav of top_upt is
             --ap_done : out std_logic;
             --ap_idle : out std_logic;
             --ap_ready : out std_logic;
-            pl2ptcalc_v : in pl2pt_rvt;
-            sf2ptcalc_inn_v : in sf_seg_data_barrel_rvt;
-            sf2ptcalc_mid_v : in sf_seg_data_barrel_rvt;
-            sf2ptcalc_out_v : in sf_seg_data_barrel_rvt;
-            ptcalc2mtc_v : out tf2mtc_rvt;
+            pl2ptcalc_v : in pl2ptcalc_rvt;
+            sf2ptcalc_inn_v : in sf2pt_rvt;
+            sf2ptcalc_mid_v : in sf2pt_rvt;
+            sf2ptcalc_out_v : in sf2pt_rvt;
+            ptcalc2mtc_v : out ptcalc2mtc_rvt;
             ptcalc2mtc_v_ap_vld : out std_logic
             );
     end component;
