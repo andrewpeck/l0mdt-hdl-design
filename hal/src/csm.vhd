@@ -34,6 +34,12 @@ entity csm is
     strobe_320 : in std_logic;
     clk40 : in std_logic;
 
+    -- TTC
+    trg_i : in std_logic;
+    bcr_i : in std_logic;
+    ecr_i : in std_logic;
+    gsr_i : in std_logic;
+
     --------------------------------------------------------------------------------
     -- Downlink
     --------------------------------------------------------------------------------
@@ -71,6 +77,8 @@ end csm;
 
 architecture behavioral of csm is
 
+  constant enc_elink : integer := CSM_ENC_DOWNLINK;
+
   -- TODO: right now it is using aux channels for all e-links, but 2/3 SCAs have both primary and
   -- aux connected. Add some way to switch?
   constant up0 : integer := CSM_SCA0_UP_AUX;
@@ -90,6 +98,8 @@ architecture behavioral of csm is
   signal downlink_data  : lpgbt_downlink_data_rt_array (g_NUM_DOWNLINKS-1 downto 0);
   signal downlink_reset : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
   signal downlink_ready : std_logic_vector (g_NUM_DOWNLINKS-1 downto 0);
+
+  signal enc_o : std_logic := '0';
 
 begin
 
@@ -130,6 +140,23 @@ begin
       sca1_data_o => downlink_data(0).data(CSM_SCA1_DOWN_AUX_RANGE),
       sca2_data_o => downlink_data(0).data(CSM_SCA2_DOWN_AUX_RANGE)
       );
+
+  --------------------------------------------------------------------------------
+  -- ENC
+  --------------------------------------------------------------------------------
+
+  encoded_control_inst : entity tdc.encoded_control
+    port map (
+      clk_i => clk40,
+      dav_i => '1',
+      trg_i => trg_i,
+      bcr_i => bcr_i,
+      ecr_i => ecr_i,
+      gsr_i => gsr_i,
+      enc_o => enc_o                  -- puts out 1 bit every 25ns, needs 3 bx for a command
+      );
+
+  downlink_data(0).data((enc_elink+1)*2-1 downto 2*enc_elink) <= enc_o & enc_o;  -- 40 mb to 80 mb replication
 
   lpgbt_links_inst : entity work.lpgbt_link_wrapper
     generic map (
@@ -181,6 +208,7 @@ begin
   --    count  => fec_err_cnt(I),
   --    at_max => open
   --    );
+
 
   ----------------------------------------------------------------------------------
   ---- AXI Control and Monitoring

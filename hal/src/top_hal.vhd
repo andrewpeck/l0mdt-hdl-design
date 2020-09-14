@@ -400,12 +400,16 @@ begin  -- architecture behavioral
             )
           port map (
             reset_i                      => global_reset,
+            trg_i                        => ttc_commands.l0a,
+            bcr_i                        => ttc_commands.bcr,
+            ecr_i                        => ttc_commands.ecr,
+            gsr_i                        => global_reset,  -- TODO: axi control
             clk40                        => clocks.clock40,
             strobe_320                   => strobe_320,
-            downlink_clk                 => clocks.clock320,  -- ZDM?
+            downlink_clk                 => clocks.clock320,            -- ZDM?
             downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
             uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
-            uplink_clk                   => clocks.clock320,  -- ZDM?
+            uplink_clk                   => clocks.clock320,            -- ZDM?
             uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
             tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
             read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
