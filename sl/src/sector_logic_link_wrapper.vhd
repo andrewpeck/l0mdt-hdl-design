@@ -6,6 +6,9 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
 
+library IEEE;
+use IEEE.math_real.all;
+
 library sl;
 
 library shared_lib;
@@ -71,12 +74,35 @@ architecture Behavioral of sector_logic_link_wrapper is
   --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
   --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
 
+  function signed_mag_to_signed (data : std_logic_vector) return std_logic_vector is
+    variable result : std_logic_vector(data'length-1 downto 0);
+    variable sign   : std_logic;
+    variable mag    : std_logic_vector (data'length-2 downto 0);
+  begin
+    sign := data(data'length-1);
+    mag  := data(data'length-2 downto 0);
+    if (sign = '1') then
+      return signed('0' & mag);
+    else
+      return signed('1' & (2**mag'length - unsigned(mag)));
+    end if;
+  end;
+
 begin
 
-  --tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
-  --begin
+  assert "111"=signed_mag_to_signed("111") report "failure in signed magnutude conversion of -3" severity error;
+  assert "110"=signed_mag_to_signed("110") report "failure in signed magnutude conversion of -2" severity error;
+  assert "101"=signed_mag_to_signed("101") report "failure in signed magnutude conversion of -1" severity error;
+  assert "000"=signed_mag_to_signed("000") report "failure in signed magnutude conversion of  0" severity error;
+  assert "001"=signed_mag_to_signed("001") report "failure in signed magnutude conversion of  1" severity error;
+  assert "010"=signed_mag_to_signed("010") report "failure in signed magnutude conversion of  2" severity error;
+  assert "011"=signed_mag_to_signed("011") report "failure in signed magnutude conversion of  3" severity error;
+
+  tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
+  begin
+
   --function structify(x: mtc2sl_rvt) return mtc2sl_rt is
-  --end generate;
+  end generate;
 
   rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
     signal slc_barrel_specific : slc_barrel_rt;
@@ -87,6 +113,8 @@ begin
     signal sl_data             : slc_rx_rt;
     type sl_stations_t is (BARREL, ENDCAP);
     constant station           : sl_stations_t := ENDCAP;
+
+
   begin
 
     header  <= sl_rx_data(I).data(31 downto 0);
@@ -107,14 +135,14 @@ begin
     sl_data.common.sl_charge   <= data(39);
     sl_data.common.cointype    <= data (42 downto 40);
 
-    slc_barrel_specific.rpc0_posz  <= unsigned(data(54 downto 43));
-    slc_barrel_specific.rpc1_posz  <= unsigned(data(66 downto 55));
-    slc_barrel_specific.rpc2_posz  <= unsigned(data(78 downto 67));
-    slc_barrel_specific.rpc3_posz  <= unsigned(data(90 downto 79));
+    slc_barrel_specific.rpc0_posz  <= signed(data(54 downto 43));
+    slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
+    slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
+    slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
     slc_barrel_specific.b_reserved <= data (127 downto 91);
 
-    slc_endcap_specific.seg_angdtheta    <= signed(data(49 downto 43));
-    slc_endcap_specific.seg_angdphi      <= signed(data(53 downto 50));
+    slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
+    slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
     slc_endcap_specific.nswseg_poseta    <= unsigned(data(67 downto 54));
     slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
     slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
