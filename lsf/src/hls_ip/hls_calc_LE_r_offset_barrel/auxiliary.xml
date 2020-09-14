@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="calc_LE_r_offset_barrel" xd:componentRef="calc_LE_r_offset_barrel" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="hw_sin_val" xd:originalName="hw_sin_val" xd:direction="in" xd:interfaceRef="hw_sin_val_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
+  <xd:arg xd:name="hw_cos_val" xd:originalName="hw_cos_val" xd:direction="in" xd:interfaceRef="hw_cos_val_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
+  <xd:arg xd:name="roi_seed_r" xd:originalName="roi_seed_r" xd:direction="out" xd:interfaceRef="roi_seed_r_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="22" xd:firstOut="3"/>
+  <xd:arg xd:name="slcvec_pos_Z" xd:originalName="slcvec_pos_Z" xd:direction="in" xd:interfaceRef="slcvec_pos_Z_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="14" xd:firstOut="3"/>
+  <xd:arg xd:name="slcvec_pos_Rho" xd:originalName="slcvec_pos_Rho" xd:direction="in" xd:interfaceRef="slcvec_pos_Rho_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="3"/>
+  <xd:arg xd:name="hewindow_pos_Z" xd:originalName="hewindow_pos_Z" xd:direction="in" xd:interfaceRef="hewindow_pos_Z_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="14" xd:firstOut="3"/>
+  <xd:arg xd:name="hewindow_pos_Rho" xd:originalName="hewindow_pos_Rho" xd:direction="in" xd:interfaceRef="hewindow_pos_Rho_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="3"/>
+  <xd:latencyEstimates xd:best-case="3" xd:worst-case="3" xd:average-case="3"/>
+  <xd:resourceEstimates xd:LUT="97" xd:FF="183" xd:BRAM="0" xd:DSP="2"/>
+</xd:acceleratorMap>

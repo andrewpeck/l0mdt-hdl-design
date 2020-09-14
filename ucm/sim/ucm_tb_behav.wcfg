@@ -11,7 +11,7 @@
             <top_module name="config_pkg" />
             <top_module name="detector_param_pkg" />
             <top_module name="prj_cfg" />
-            <top_module name="some_functions_pkg" />
+            <top_module name="vhdl2008_functions_pkg" />
             <top_module name="ucm_pkg" />
             <top_module name="ucm_tb" />
          </top_modules>

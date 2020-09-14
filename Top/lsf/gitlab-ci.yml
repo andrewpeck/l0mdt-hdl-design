@@ -1,13 +1,7 @@
-# #################### LSF Project ###########################
+#################### LSF Project ###########################
 
 create_project:lsf:
     extends: .create_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-
-simulate_project:lsf:
-    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: lsf
@@ -27,7 +21,7 @@ synthesise_project:lsf:
       extends: .vars
       PROJECT_NAME: lsf
     dependencies:
-        - synthesise_ips:lsf
+        # - synthesise_ips:lsf
         - create_project:lsf
 
 # implement_project:lsf:
@@ -35,7 +29,6 @@ synthesise_project:lsf:
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: lsf
-# #      HOG_NO_BITSTREAM_STAGE: 1
 #     dependencies:
 #        - create_project:lsf
 #        - synthesise_ips:lsf

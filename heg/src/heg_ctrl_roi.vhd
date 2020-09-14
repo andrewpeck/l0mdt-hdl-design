@@ -105,8 +105,10 @@ begin
       SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
       SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
 
-      o_SLC_Window_v <= vectorify(SLC_Window_r);
+      
     end generate;
+
+    o_SLC_Window_v <= vectorify(SLC_Window_r);
 
 
 
