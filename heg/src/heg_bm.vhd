@@ -135,6 +135,7 @@ begin
     variable index_offset_v   : integer;
     variable new_index_v      : integer;
     variable loop_done_v      : integer;
+    variable nexthit_v       : integer;
   begin
     
     if rising_edge(clk) then
@@ -147,6 +148,8 @@ begin
         readhit <= '0';
 
         buff_mdt_dv <= '0';
+
+        nexthit_v := 0;
 
       else
         -- check for next hit to read
@@ -169,7 +172,7 @@ begin
               -- checking fifo
               if fifo_empty(new_index_v) = '0' then
                 -- next hit found
-                nexthit <= new_index_v;
+                nexthit_v := new_index_v;
                 loop_done_v := 1;
               else
                 -- loop_done_v := 0;
@@ -180,6 +183,8 @@ begin
 
 
           end loop;
+
+          -- nexthit <= nexthit_v;
           readhit <= '1';
         else
           readhit <= '0';
@@ -187,6 +192,7 @@ begin
 
         -- read hit
         if readhit = '1' then
+          
           fifo_rd(nexthit) <= '1';
           buff_mdt_hit_v <= ff_o_mdt_hit_av(nexthit);
           buff_mdt_dv <= '1';
@@ -295,10 +301,12 @@ begin
         if(wr_index < BM_FIFO_DEPTH) then
           case case_options is
             when b"00" => -- idle
+
             when b"10" => -- write
               fifo_data(wr_index) <= i_mdt_hit;
               wr_index <= wr_index +1;
               o_empty <= '0';
+
             when b"01" => -- read
               -- o_mdt_hit <= fifo_data(0);
               for ird in 0 to BM_FIFO_DEPTH - 2 loop
@@ -309,7 +317,10 @@ begin
               else
                 o_empty <= '0';
               end if;
-              wr_index <= wr_index -1;
+              if wr_index > 0 then 
+                wr_index <= wr_index -1;
+              end if;
+              
             when b"11" => -- read & write 
               -- o_mdt_hit <= fifo_data(0);
               for ird in 0 to BM_FIFO_DEPTH - 2 loop
