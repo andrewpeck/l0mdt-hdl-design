@@ -1,7 +1,9 @@
 # -*- mode: TCL;-*-
 Top/l0mdt/top_l0mdt.vhd
-ctrl/ctrl_lib.src
 ctrl/src/top_control.vhd
+
+# Other libraries
+ctrl/ctrl_lib.src
 shared/shared_lib.src
 mpl/mpl_lib.src
 ult/ult_lib.src
@@ -11,3 +13,5 @@ heg/heg_lib.src
 hps/hps_lib.src
 csf/csf_lib.src
 tar/tar_lib.src
+# for some reason, it seems HOG requires hal.src to be double listed here and in l0mdt.src???
+hal/list/hal.src
