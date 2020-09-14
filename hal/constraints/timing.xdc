@@ -21,6 +21,12 @@ set_false_path \
     -to [get_pins top_hal/mgt_wrapper_inst/*.mon_reg*buffbypass_tx_error_out*/D]
 
 set_false_path \
+    -to [get_pins top_hal/mgt_wrapper_inst/*.mon_reg*done_out*/D]
+
+set_false_path \
+    -to [get_pins top_hal/mgt_wrapper_inst/*.mon_reg*error_out*/D]
+
+set_false_path \
     -from [get_cells top_control_inst/c2cslave_wrapper*/*/sys_reseter/U0/ACTIVE_LOW_BSR_OUT_DFF*]
 
 # TODO: XDCB #1 Warning The option '-to : [get_pins -hierarchical -filter {NAME =~ *gen_cdc_bus_inst*/D}]' of constraint

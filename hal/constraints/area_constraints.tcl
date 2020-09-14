@@ -32,12 +32,12 @@ proc assign_pblocks {min  max  side} {
 
         set lQuadBlock [get_pblocks quad_$side$q]
 
-        set lpgbt_cells    [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"]
-        set mgt_cells      [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_INST"]
-        set tdc_cells      [get_cells -quiet "top_hal/*tdc*/*mgt_tag\[$lRegId]*decoder*_inst"]
-        set sl_cells       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]
-
-        set cells "$mgt_cells $lpgbt_cells $sl_cells $tdc_cells"
+        set cells [concat \
+                       [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"] \
+                       [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_INST"] \
+                       [get_cells -quiet "top_hal/*csm*/*mgt_tag\[$lRegId]*decoder*_inst"] \
+                       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]
+                  ]
 
 
         if {[string is space $cells] == 0} {
