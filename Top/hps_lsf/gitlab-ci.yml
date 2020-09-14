@@ -1,0 +1,35 @@
+#################### HPS Project ###########################
+
+create_project:hps_lsf:
+    extends: .create_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_lsf
+
+synthesise_ips:hps_lsf:
+    extends: .synthesise_ips
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_lsf
+      IP_PATH: IP
+    dependencies:
+        - create_project:hps_lsf
+
+synthesise_project:hps_lsf:
+    extends: .synthesise_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps_lsf
+    dependencies:
+        # - synthesise_ips:hps_lsf
+        - create_project:hps_lsf
+
+# implement_project:hps_lsf:
+#     extends: .implement_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hps_lsf
+#     dependencies:
+#        - create_project:hps_lsf
+#        - synthesise_ips:hps_lsf
+#        - synthesise_project:hps_lsf

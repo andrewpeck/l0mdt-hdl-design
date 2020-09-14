@@ -1,4 +1,4 @@
-Top/hps/prj_cfg.vhd 2008
+Top/hps_lsf/prj_cfg.vhd 2008
 hps/top_hps.vhd
 shared/shared_lib.src
 hp/hp_lib.src
