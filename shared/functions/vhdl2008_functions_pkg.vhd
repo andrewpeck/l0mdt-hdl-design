@@ -23,13 +23,13 @@ use ieee.math_real.all;
 -- library project_lib;
 -- use project_lib.config_pkg.all;
 
-package some_functions_pkg is
+package vhdl2008_functions_pkg is
 
   function max (x,y : integer) return integer;
 
-end some_functions_pkg;
+end vhdl2008_functions_pkg;
 
-package body some_functions_pkg is
+package body vhdl2008_functions_pkg is
 
   function max(x,y : integer) return integer is
     variable z : integer;
@@ -42,4 +42,4 @@ package body some_functions_pkg is
     return z;
   end function;
 
-end some_functions_pkg;
+end vhdl2008_functions_pkg;
