@@ -407,7 +407,7 @@ begin
       mon.CONFIG.SF_TYPE             => c_SF_TYPE,
       mon.CONFIG.NUM_DAQ_STREAMS     => std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8)),
       mon.CONFIG.MAX_NUM_HP          => std_logic_vector(to_unsigned(MAX_NUM_HP, 8)),
-      mon.CONFIG.MAX_NUM_HPS         => std_logic_vector(to_unsigned(MAX_NUM_HPS, 8)),
+      mon.CONFIG.MAX_NUM_HPS         => std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8)),
       mon.CONFIG.NUM_SF_INPUTS       => std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8)),
       mon.CONFIG.NUM_SF_OUTPUTS      => std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8)),
       mon.CONFIG.MAX_NUM_SL          => std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8)),
