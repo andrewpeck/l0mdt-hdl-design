@@ -84,74 +84,87 @@ architecture Behavioral of sector_logic_link_wrapper is
   begin
     sign := sv(data'length-1);
     mag  := sv(data'length-2 downto 0);
-    if (sign = '1') then
+    if (or_reduce(sv)='0') then
+      twos_complement := (others => '0');
+    elsif (sign = '1') then
       twos_complement := ('0' & mag);
     else
-      twos_complement := ('1' & std_logic_vector(2**mag'length - unsigned(mag)));
+      twos_complement := ('1' & std_logic_vector(unsigned(not mag) + 1));
     end if;
     result := signed(twos_complement);
     return result;
   end;
-
 begin
 
   rx_reset_fanout : process (clock) is
   begin  -- process reset_fanout
     if rising_edge(clock) then          -- rising clock edge
-      rx_reset_tree <= (others => reset);
+      rx_reset_tree <= (others => reset); -- TODO: connect to AXI
     end if;
   end process;
 
-  --assert "111"=signed_mag_to_signed("111") report "failure in signed magnutude conversion of -3" severity error;
-  --assert "110"=signed_mag_to_signed("110") report "failure in signed magnutude conversion of -2" severity error;
-  --assert "101"=signed_mag_to_signed("101") report "failure in signed magnutude conversion of -1" severity error;
-  --assert "000"=signed_mag_to_signed("000") report "failure in signed magnutude conversion of  0" severity error;
-  --assert "001"=signed_mag_to_signed("001") report "failure in signed magnutude conversion of  1" severity error;
-  --assert "010"=signed_mag_to_signed("010") report "failure in signed magnutude conversion of  2" severity error;
-  --assert "011"=signed_mag_to_signed("011") report "failure in signed magnutude conversion of  3" severity error;
+  -- unit test on this conversion function...
+  assert -3=to_integer(signed_mag_to_signed("011"))
+    report "failure in signed magnutude conversion of -3 get=" & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
+  assert -2=to_integer(signed_mag_to_signed("010"))
+    report "failure in signed magnutude conversion of -2 get=" & integer'image (to_integer(signed_mag_to_signed("010"))) severity error;
+  assert -1=to_integer(signed_mag_to_signed("001"))
+    report "failure in signed magnutude conversion of -1 get=" & integer'image (to_integer(signed_mag_to_signed("001"))) severity error;
+  assert  0=to_integer(signed_mag_to_signed("000"))
+    report "failure in signed magnutude conversion of  0 get=" & integer'image (to_integer(signed_mag_to_signed("000"))) severity error;
+  assert  0=to_integer(signed_mag_to_signed("100"))
+    report "failure in signed magnutude conversion of  0 get=" & integer'image (to_integer(signed_mag_to_signed("100"))) severity error;
+  assert  1=to_integer(signed_mag_to_signed("101"))
+    report "failure in signed magnutude conversion of  1 get=" & integer'image (to_integer(signed_mag_to_signed("101"))) severity error;
+  assert  2=to_integer(signed_mag_to_signed("110"))
+    report "failure in signed magnutude conversion of  2 get=" & integer'image (to_integer(signed_mag_to_signed("110"))) severity error;
+  assert  3=to_integer(signed_mag_to_signed("111"))
+    report "failure in signed magnutude conversion of  3 get=" & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
 
   tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
-    signal header              : std_logic_vector (31 downto 0);
-    signal trailer             : std_logic_vector (31 downto 0);
-    signal data                : std_logic_vector (127 downto 0);
-    signal mtc : mtc2sl_rt;
+    signal header  : std_logic_vector (31 downto 0);
+    signal trailer : std_logic_vector (31 downto 0);
+    signal data    : std_logic_vector (127 downto 0);
+    signal mtc     : mtc2sl_rt;
   begin
 
     sl : if (I < c_NUM_MTC) generate
 
       mtc <= structify(mtc_i(I));
 
-      --header <= vectorify(mtc.common.header);
-      --trailer <= vectorify(mtc.common.trailer);
+      header  <= vectorify(mtc.common.header);
+      trailer <= vectorify(mtc.common.trailer);
 
-      --data(2 downto 0)    <= mtc.common.slcid;
-      --data(3)             <= mtc.common.tcsent;
-      --data(17 downto 4)   <= std_logic_vector(mtc.common.poseta);
-      --data(26 downto 18)  <= mtc.common.poseta;
-      --data(34 downto 27)  <= mtc.common.posphi;
-      --data(38 downto 35)  <= mtc.common.sl_ptthresh;
-      --data(39)            <= mtc.common.sl_charge;
-      --data(42 downto 40)  <= mtc.common.cointype;
-      --data(56 downto 43)  <= mtc.mdt_eta;
-      --data(64 downto 57)  <= mtc.mdt_pt;
-      --data(68 downto 65)  <= mtc.mdt_ptthresh;
-      --data(69)            <= mtc.mdt_charge;
-      --data(73 downto 70)  <= mtc.mdt_procflags;
-      --data(75 downto 74)  <= mtc.mdt_nsegments;
-      --data(78 downto 76)  <= mtc.mdt_quality;
-      --data(127 downto 79) <= mtc.m_reserved;
+      data(2 downto 0)    <= std_logic_vector(mtc.common.slcid);
+      data(3)             <= mtc.common.tcsent;
+      data(17 downto 4)   <= std_logic_vector(mtc.common.poseta);
+      data(26 downto 18)  <= std_logic_vector(mtc.common.posphi);
+      data(34 downto 27)  <= std_logic_vector(mtc.common.sl_pt);
+      data(38 downto 35)  <= std_logic_vector(mtc.common.sl_ptthresh);
+      data(39)            <= mtc.common.sl_charge;
+      data(42 downto 40)  <= mtc.common.cointype;
+      data(56 downto 43)  <= std_logic_vector(mtc.mdt_eta);
+      data(64 downto 57)  <= std_logic_vector(mtc.mdt_pt);
+      data(68 downto 65)  <= std_logic_vector(mtc.mdt_ptthresh);
+      data(69)            <= mtc.mdt_charge;
+      data(73 downto 70)  <= mtc.mdt_procflags;
+      data(75 downto 74)  <= std_logic_vector(mtc.mdt_nsegments);
+      data(78 downto 76)  <= mtc.mdt_quality;
+      data(127 downto 79) <= mtc.m_reserved;
 
-      --sl_tx_data(I).valid <= mtc.data_valid;
-      --sl_tx_data(I).data(31 downto 0) <= header;
-      --sl_tx_data(I).data(159 downto 32) <= data;
-      sl_tx_data(I).valid <= mtc_i(I)(2);
-      sl_tx_data(I).data(191 downto 0) <= mtc_i(I)(191 downto 0);
+      sl_tx_data(I).valid                <= mtc.data_valid;
+      sl_tx_data(I).data(31 downto 0)    <= header;
+      sl_tx_data(I).data(159 downto 32)  <= data;
+      sl_tx_data(I).data(191 downto 160) <= trailer;
+
+      --sl_tx_data(I).valid <= mtc_i(I)(2);
+      --sl_tx_data(I).data(191 downto 0) <= mtc_i(I)(191 downto 0);
 
     end generate;
 
     nosl : if (I >= c_NUM_MTC) generate
 
-      sl_tx_data(I).data <= (others => '0');
+      sl_tx_data(I).data  <= (others => '0');
       sl_tx_data(I).valid <= '0';
 
     end generate;

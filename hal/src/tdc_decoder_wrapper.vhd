@@ -91,8 +91,8 @@ begin
       odd_data  <= lpgbt_uplink_data_i(lpgbt).data(8*(d0+1)-1 downto 8*d0);
       valid     <= lpgbt_uplink_data_i(lpgbt).valid;
 
-      tdc_hit.fiberid    <= to_unsigned(g_CSM, tdc_hit.fiberid'length); -- FIXME: the name of this should change from fiberid to csm_id
-      tdc_hit.elinkid    <= to_unsigned(I, tdc_hit.elinkid'length); -- FIXME: the name of this should change from elinkid -> tdc_id
+      tdc_hit.csmid      <= to_unsigned(g_CSM, tdc_hit.csmid'length);
+      tdc_hit.tdcid      <= to_unsigned(I, tdc_hit.tdcid'length);
       tdc_hit.tdc        <= structify(tdc_word);
       tdc_hit.data_valid <= tdc_valid;
 
