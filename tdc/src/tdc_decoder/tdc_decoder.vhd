@@ -83,8 +83,8 @@ architecture behavioral of tdc_decoder is
   signal tdc_word_state_err : std_logic;
   signal misaligned         : std_logic;
 
-  signal word_10b       : std_logic_vector (9 downto 0);
-  signal word_10b_valid : std_logic;
+  signal word_10b, word_10b_s0             : std_logic_vector (9 downto 0);
+  signal word_10b_valid, word_10b_valid_s0 : std_logic;
 
 
   -- 8b10b decoder signals
@@ -156,9 +156,19 @@ begin
       data_i       => aligned_data,
       data_i_valid => aligned_data_valid,
       err_o        => bitslip,
-      data_o       => word_10b,
-      data_o_valid => word_10b_valid
+      data_o       => word_10b_s0,
+      data_o_valid => word_10b_valid_s0
       );
+
+  -- pipeline register before 8b10b
+  process (clock) is
+  begin
+    if (rising_edge(clock)) then
+      word_10b <= word_10b_s0;
+      word_10b_valid <= word_10b_valid_s0;
+    end if;
+  end process;
+
 
   --------------------------------------------------------------------------------
   -- 8b10b decoder
