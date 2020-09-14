@@ -68,19 +68,16 @@ architecture beh of hps_sf_wrap is
   signal i_mdt_hit_v  : heg2sfhit_rvt;
 
   -- LSF
-  signal slc_roi_valid : in std_logic;         
-  signal slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
-
-  signal mdt_hit_valid : in std_logic; 
-  signal mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
-
-  signal lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
-  signal lsf_re        : in std_logic;
-
-  signal hba_max_clocks: in std_logic_vector(9 downto 0);
-  signal mdt_hit_af    : out std_logic;
-  signal slc_roi_af    : out std_logic;
-  signal lsf_empty     : out std_logic
+  signal slc_roi_valid  : std_logic;         
+  signal slc_roi        : std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
+  signal mdt_hit_valid  : std_logic; 
+  signal mdt_hit        : std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
+  signal lsf            : std_logic_vector(SF2PTCALC_LEN-1 downto 0);
+  signal lsf_re         : std_logic;
+  signal hba_max_clocks : std_logic_vector(9 downto 0);
+  signal mdt_hit_af     : std_logic;
+  signal slc_roi_af     : std_logic;
+  signal lsf_empty      : std_logic;
 
 begin
 
