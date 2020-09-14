@@ -24,6 +24,7 @@ use work.system_types_pkg.all;
 use work.sector_logic_pkg.all;
 use work.constants_pkg.all;
 use work.board_pkg.all;
+use work.board_pkg_common.all;
 
 entity sector_logic_link_wrapper is
   generic (
@@ -74,46 +75,100 @@ architecture Behavioral of sector_logic_link_wrapper is
   --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
   --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
 
-  function signed_mag_to_signed (data : std_logic_vector) return std_logic_vector is
-    variable result : std_logic_vector(data'length-1 downto 0);
-    variable sign   : std_logic;
-    variable mag    : std_logic_vector (data'length-2 downto 0);
+  function signed_mag_to_signed (data : std_logic_vector) return signed is
+    alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
+    variable twos_complement : std_logic_vector(data'length-1 downto 0);
+    variable sign            : std_logic;
+    variable mag             : std_logic_vector (data'length-2 downto 0);
+    variable result          : signed(data'length-1 downto 0);
   begin
-    sign := data(data'length-1);
-    mag  := data(data'length-2 downto 0);
+    sign := sv(data'length-1);
+    mag  := sv(data'length-2 downto 0);
     if (sign = '1') then
-      return signed('0' & mag);
+      twos_complement := ('0' & mag);
     else
-      return signed('1' & (2**mag'length - unsigned(mag)));
+      twos_complement := ('1' & std_logic_vector(2**mag'length - unsigned(mag)));
     end if;
+    result := signed(twos_complement);
+    return result;
   end;
 
 begin
 
-  assert "111"=signed_mag_to_signed("111") report "failure in signed magnutude conversion of -3" severity error;
-  assert "110"=signed_mag_to_signed("110") report "failure in signed magnutude conversion of -2" severity error;
-  assert "101"=signed_mag_to_signed("101") report "failure in signed magnutude conversion of -1" severity error;
-  assert "000"=signed_mag_to_signed("000") report "failure in signed magnutude conversion of  0" severity error;
-  assert "001"=signed_mag_to_signed("001") report "failure in signed magnutude conversion of  1" severity error;
-  assert "010"=signed_mag_to_signed("010") report "failure in signed magnutude conversion of  2" severity error;
-  assert "011"=signed_mag_to_signed("011") report "failure in signed magnutude conversion of  3" severity error;
+  rx_reset_fanout : process (clock) is
+  begin  -- process reset_fanout
+    if rising_edge(clock) then          -- rising clock edge
+      rx_reset_tree <= (others => reset);
+    end if;
+  end process;
+
+  --assert "111"=signed_mag_to_signed("111") report "failure in signed magnutude conversion of -3" severity error;
+  --assert "110"=signed_mag_to_signed("110") report "failure in signed magnutude conversion of -2" severity error;
+  --assert "101"=signed_mag_to_signed("101") report "failure in signed magnutude conversion of -1" severity error;
+  --assert "000"=signed_mag_to_signed("000") report "failure in signed magnutude conversion of  0" severity error;
+  --assert "001"=signed_mag_to_signed("001") report "failure in signed magnutude conversion of  1" severity error;
+  --assert "010"=signed_mag_to_signed("010") report "failure in signed magnutude conversion of  2" severity error;
+  --assert "011"=signed_mag_to_signed("011") report "failure in signed magnutude conversion of  3" severity error;
 
   tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
+    signal header              : std_logic_vector (31 downto 0);
+    signal trailer             : std_logic_vector (31 downto 0);
+    signal data                : std_logic_vector (127 downto 0);
+    signal mtc : mtc2sl_rt;
   begin
+
+    sl : if (I < c_NUM_MTC) generate
+
+      mtc <= structify(mtc_i(I));
+
+      --header <= vectorify(mtc.common.header);
+      --trailer <= vectorify(mtc.common.trailer);
+
+      --data(2 downto 0)    <= mtc.common.slcid;
+      --data(3)             <= mtc.common.tcsent;
+      --data(17 downto 4)   <= std_logic_vector(mtc.common.poseta);
+      --data(26 downto 18)  <= mtc.common.poseta;
+      --data(34 downto 27)  <= mtc.common.posphi;
+      --data(38 downto 35)  <= mtc.common.sl_ptthresh;
+      --data(39)            <= mtc.common.sl_charge;
+      --data(42 downto 40)  <= mtc.common.cointype;
+      --data(56 downto 43)  <= mtc.mdt_eta;
+      --data(64 downto 57)  <= mtc.mdt_pt;
+      --data(68 downto 65)  <= mtc.mdt_ptthresh;
+      --data(69)            <= mtc.mdt_charge;
+      --data(73 downto 70)  <= mtc.mdt_procflags;
+      --data(75 downto 74)  <= mtc.mdt_nsegments;
+      --data(78 downto 76)  <= mtc.mdt_quality;
+      --data(127 downto 79) <= mtc.m_reserved;
+
+      --sl_tx_data(I).valid <= mtc.data_valid;
+      --sl_tx_data(I).data(31 downto 0) <= header;
+      --sl_tx_data(I).data(159 downto 32) <= data;
+      sl_tx_data(I).valid <= mtc_i(I)(2);
+      sl_tx_data(I).data(191 downto 0) <= mtc_i(I)(191 downto 0);
+
+    end generate;
+
+    nosl : if (I >= c_NUM_MTC) generate
+
+      sl_tx_data(I).data <= (others => '0');
+      sl_tx_data(I).valid <= '0';
+
+    end generate;
 
   --function structify(x: mtc2sl_rvt) return mtc2sl_rt is
   end generate;
 
   rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+
+    -- intermediate signals to remap
     signal slc_barrel_specific : slc_barrel_rt;
     signal slc_endcap_specific : slc_endcap_rt;
     signal header              : std_logic_vector (31 downto 0);
     signal trailer             : std_logic_vector (31 downto 0);
     signal data                : std_logic_vector (127 downto 0);
     signal sl_data             : slc_rx_rt;
-    type sl_stations_t is (BARREL, ENDCAP);
-    constant station           : sl_stations_t := ENDCAP;
-
+    constant station           : station_t := ENDCAP;
 
   begin
 
@@ -139,7 +194,7 @@ begin
     slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
     slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
     slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
-    slc_barrel_specific.b_reserved <= data (127 downto 91);
+    slc_barrel_specific.b_reserved <= data(127 downto 91);
 
     slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
     slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
@@ -160,13 +215,6 @@ begin
     sl_data.data_valid <= sl_rx_data(I).valid;
 
   end generate;
-
-  rx_reset_fanout : process (clock) is
-  begin  -- process reset_fanout
-    if rising_edge(clock) then          -- rising clock edge
-      rx_reset_tree <= (others => reset);
-    end if;
-  end process;
 
   sl_gen : for I in 0 to c_NUM_MGTS-1 generate
 
@@ -218,9 +266,9 @@ begin
 
     rx_gen : if (sl_idx_array(I) /= -1) generate
       constant idx           : integer := sl_idx_array(I);
-      signal dec_rxctrl0     : std_logic_vector(NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_rxctrl2     : std_logic_vector(NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_userdata    : std_logic_vector(31 downto 0);
+      signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+      signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+      signal dec_userdata    : std_logic_vector (31 downto 0);
       signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
       signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
     begin

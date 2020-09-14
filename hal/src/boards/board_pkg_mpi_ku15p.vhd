@@ -6,6 +6,8 @@ use work.board_pkg_common.all;
 
 package board_pkg is
 
+  constant c_STATION : station_t := BARREL;
+
   constant c_NUM_MGTS                 : integer := 44 + 32;
 
   -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT

@@ -8,6 +8,8 @@ package board_pkg_common is
   -- MGT Mapping
   --------------------------------------------------------------------------------
 
+  type station_t is (BARREL, ENDCAP, NIL);
+
   type gt_types_t is (GT_NIL, GTH, GTY);
 
   type mgt_types_t is (MGT_NIL,
