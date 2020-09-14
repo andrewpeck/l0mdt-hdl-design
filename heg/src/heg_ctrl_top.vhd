@@ -154,6 +154,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+use shared_lib.gtube2chamber_pkg.all;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
@@ -211,7 +213,7 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     --
-    i_chamber           => i_uCM_data_r.mdtid.chamber_ieta, 
+    i_chamber           => to_unsigned(get_b_chamber_from_tubes(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,to_integer(i_Roi_win_origin)),SLC_CHAMBER_LEN), 
     -- ojo no es corecto, ha de depender del tubo
     i_dv                => i_Roi_win_valid,
     o_spaces            => holesize,
