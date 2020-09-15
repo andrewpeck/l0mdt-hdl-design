@@ -37,7 +37,7 @@ architecture behav of top_upt is
     constant const_ap_start : std_logic := '1';
     constant const_ap_idle : std_logic := '0';
 
-    component hls_ptcalc_top
+    component ptcalc_top
         port (
             ap_clk : in std_logic;
             ap_rst : in std_logic;
