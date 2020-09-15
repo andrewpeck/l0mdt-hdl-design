@@ -24,11 +24,11 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="100001fs"></ZoomEndTime>
-      <Cursor1Time time="27780fs"></Cursor1Time>
+      <ZoomEndTime time="160588fs"></ZoomEndTime>
+      <Cursor1Time time="34725fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="302"></NameColumnWidth>
+      <NameColumnWidth column_width="297"></NameColumnWidth>
       <ValueColumnWidth column_width="75"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="13" />
@@ -52,6 +52,31 @@
       <obj_property name="ElementShortName">globseg</obj_property>
       <obj_property name="ObjectShortName">globseg</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/seg_coord_tb/seg_coord/globseg.data_valid">
+         <obj_property name="ElementShortName">.data_valid</obj_property>
+         <obj_property name="ObjectShortName">.data_valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/globseg.muid">
+         <obj_property name="ElementShortName">.muid</obj_property>
+         <obj_property name="ObjectShortName">.muid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/globseg.segpos">
+         <obj_property name="ElementShortName">.segpos[17:0]</obj_property>
+         <obj_property name="ObjectShortName">.segpos[17:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/globseg.segangle">
+         <obj_property name="ElementShortName">.segangle[12:0]</obj_property>
+         <obj_property name="ObjectShortName">.segangle[12:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/seg_coord_tb/seg_coord/globseg.segquality">
+         <obj_property name="ElementShortName">.segquality</obj_property>
+         <obj_property name="ObjectShortName">.segquality</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/globseg.mdtid">
+         <obj_property name="ElementShortName">.mdtid</obj_property>
+         <obj_property name="ObjectShortName">.mdtid</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/he_window_pos">
       <obj_property name="ElementShortName">he_window_pos[17:0]</obj_property>
@@ -96,6 +121,26 @@
          <obj_property name="ElementShortName">.m[14:0]</obj_property>
          <obj_property name="ObjectShortName">.m[14:0]</obj_property>
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/locseg.chi2">
+         <obj_property name="ElementShortName">.chi2[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.chi2[14:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/locseg.ndof">
+         <obj_property name="ElementShortName">.ndof[3:0]</obj_property>
+         <obj_property name="ObjectShortName">.ndof[3:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/seg_coord_tb/seg_coord/locseg.valid">
+         <obj_property name="ElementShortName">.valid</obj_property>
+         <obj_property name="ObjectShortName">.valid</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/locseg.b">
+         <obj_property name="ElementShortName">.b[12:0]</obj_property>
+         <obj_property name="ObjectShortName">.b[12:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/locseg.m">
+         <obj_property name="ElementShortName">.m[14:0]</obj_property>
+         <obj_property name="ObjectShortName">.m[14:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/seg_coord_tb/seg_coord/locseg.chi2">
          <obj_property name="ElementShortName">.chi2[14:0]</obj_property>

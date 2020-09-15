@@ -34,11 +34,11 @@ package pt_pkg is
 
     -- Segment parameters in global coordinates
     constant BIL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF_SEG_POS_MULTI)), SF_SEG_POS_LEN);
+        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
     constant BML_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF_SEG_POS_MULTI)), SF_SEG_POS_LEN);
+        := to_unsigned(integer(floor(BML_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
     constant BOL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF_SEG_POS_MULTI)), SF_SEG_POS_LEN);
+        := to_unsigned(integer(floor(BOL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
     constant BIL_SEC3_RHO2_s : unsigned(SF_SEG_POS_LEN*2-1 downto 0)
         := BIL_SEC3_RHO_s*BIL_SEC3_RHO_s;
 
@@ -49,13 +49,14 @@ package pt_pkg is
     constant SAGITTA_MULTI_LEN   : integer := integer(log2(sagitta_mult));
     constant M_SAGITTA_LEN       : integer := 16;
     constant M_SAGITTA_RANGE     : real := 4.0;
-    constant M_SAGITTA_MULTI     : real := (2.0**m_sagitta_len/m_sagitta_range);
-    constant M_SAGITTA_MULTI_LEN : integer := integer(log2(m_sagitta_multi));
+    constant M_SAGITTA_MULTI     : real := (2.0**M_SAGITTA_LEN/M_SAGITTA_RANGE);
+    constant M_SAGITTA_MULTI_LEN : integer := integer(log2(M_SAGITTA_MULTI));
     constant INV_TANTHETA_LEN    : integer := 15;
     constant SHIFT_M_DEN         : integer := 6;
     constant M_LEN               : integer := 16;
     constant SHIFT_M_NUM         : integer := 14;
     constant DIVIDER_LEN         : integer := 21;
+    --constant INV_SAGITTA_MULT    : real := 2**/SF2PTCALC_SEGPOS_MULT
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant INV_SQRT_LEN : integer := 22;

@@ -23,6 +23,6 @@ ptc_mpi/data/c0.mem
 ptc_mpi/data/c1.mem
 ptc_mpi/data/halflog_ROM.mem
 ptc_mpi/data/mag_ROM.mem
-ptc_mpi/data/reciprocalROM.mem
+ptc_mpi/src/reciprocalROM.mem
 ptc_mpi/data/sqrt_m_io_ROM.mem
 ptc_mpi/src/segment_selector.vhd

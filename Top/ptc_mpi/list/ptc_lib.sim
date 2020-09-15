@@ -1,2 +1,3 @@
 #Simulator xsim
-Top/pt1/list/pt_lib.sim
+ptc_mpi/sim/pt_tb.vhd
+ptc_mpi/sim/sagitta_tb.vhd

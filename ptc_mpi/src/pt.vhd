@@ -59,9 +59,9 @@ end pt;
 
 architecture Behavioral of pt is
     -- Online segments in global coordinates
-    signal segment_BI, segment_BM, segment_BO : sf2ptcalc_rt;
-    signal segment_BI_s, segment_BM_s, segment_BO_s : sf2ptcalc_rt;
-    signal segment_BI_v, segment_BM_v, segment_BO_v : sf2ptcalc_rvt;
+    signal segment_I, segment_M, segment_O : sf2ptcalc_rt;
+    signal segment_I_s, segment_M_s, segment_O_s : sf2ptcalc_rt;
+    signal segment_I_v, segment_M_v, segment_O_v : sf2ptcalc_rvt;
 
 
     signal segment_EI, segment_EM, segment_EO : sf2ptcalc_rvt;
@@ -160,7 +160,7 @@ begin
     EtaCalculator : entity ptc_lib.eta_calculator
     port map (
         clk            => clk,
-        i_seg          => segment_BI_v,
+        i_seg          => segment_I_v,
         o_eta          => eta,
         o_dv_eta       => dv_eta
     );
@@ -168,9 +168,9 @@ begin
     SagittaCalculator : entity ptc_lib.sagitta_calculator
     port map(
         clk => clk,
-        i_seg0 => segment_BI_v,
-        i_seg1 => segment_BM_v,
-        i_seg2 => segment_BO_v,
+        i_seg0 => segment_I_v,
+        i_seg1 => segment_M_v,
+        i_seg2 => segment_O_v,
         o_inv_s => inv_s,
         o_dv_s => dv_s
     );
@@ -266,15 +266,10 @@ begin
         douta => c1
     );
 
-    SEG_GEN  : if FLAVOUR = 0 generate
-        segment_BI <= structify(i_segment_I);
-        segment_BM <= structify(i_segment_M);
-        segment_BO <= structify(i_segment_O);
-    else generate
-        segment_EI <= structify(i_segment_I);
-        segment_EM <= structify(i_segment_M);
-        segment_EO <= structify(i_segment_O);
-    end generate SEG_GEN;
+    segment_I <= structify(i_segment_I);
+    segment_M <= structify(i_segment_M);
+    segment_O <= structify(i_segment_O);
+    
 
     index_a <= acomboid_to_index_ram(comboid_s);
     index_b <= comboid_to_index_ram(comboid_phi);
@@ -289,22 +284,22 @@ begin
         if rising_edge(clk) then
 
             if  FLAVOUR = 0 and (
-                segment_BI.data_valid = '1' or
-                segment_BM.data_valid = '1' or
-                segment_BO.data_valid = '1' ) then
-                segment_BI_s <= segment_BI;
-                segment_BM_s <= segment_BM;
-                segment_BO_s <= segment_BO;
-                comboid_s  <= unsigned(segment_BO.mdtid.chamber_ieta) &
-                              unsigned(segment_BM.mdtid.chamber_ieta) &
-                              unsigned(segment_BI.mdtid.chamber_ieta);
-                nsegments <= to_unsigned(stdlogic_integer(segment_BI.data_valid)
-                    + stdlogic_integer(segment_BM.data_valid)
-                    + stdlogic_integer(segment_BO.data_valid),
+                segment_I.data_valid = '1' or
+                segment_M.data_valid = '1' or
+                segment_O.data_valid = '1' ) then
+                segment_I_s <= segment_I;
+                segment_M_s <= segment_M;
+                segment_O_s <= segment_O;
+                comboid_s  <= unsigned(segment_O.mdtid.chamber_ieta) &
+                              unsigned(segment_M.mdtid.chamber_ieta) &
+                              unsigned(segment_I.mdtid.chamber_ieta);
+                nsegments <= to_unsigned(stdlogic_integer(segment_I.data_valid)
+                    + stdlogic_integer(segment_M.data_valid)
+                    + stdlogic_integer(segment_O.data_valid),
                     MTC_NSEG_LEN);
-                quality <= segment_BO.data_valid &
-                           segment_BM.data_valid &
-                           segment_BI.data_valid;
+                quality <= segment_O.data_valid &
+                           segment_M.data_valid &
+                           segment_I.data_valid;
                 dv_combo_s     <= '1';
             -- TODO: ADD ENDCAP
             end if;
@@ -327,9 +322,9 @@ begin
 
             dv2 <= dv1;
             comboid_phi <= pt_bin(pt_s) &
-                           unsigned(segment_BO_s.mdtid.chamber_ieta) &
-                           unsigned(segment_BM_s.mdtid.chamber_ieta) &
-                           unsigned(segment_BI_s.mdtid.chamber_ieta);
+                           unsigned(segment_O_s.mdtid.chamber_ieta) &
+                           unsigned(segment_M_s.mdtid.chamber_ieta) &
+                           unsigned(segment_I_s.mdtid.chamber_ieta);
             pt_s0 <= pt_s;
 
             dv3 <= dv2;
@@ -351,9 +346,9 @@ begin
 
             dv7 <= dv6;
             comboid_eta <= pt_bin(pt_sp) &
-                           unsigned(segment_BO_s.mdtid.chamber_ieta) &
-                           unsigned(segment_BM_s.mdtid.chamber_ieta) &
-                           unsigned(segment_BI_s.mdtid.chamber_ieta);
+                           unsigned(segment_O_s.mdtid.chamber_ieta) &
+                           unsigned(segment_M_s.mdtid.chamber_ieta) &
+                           unsigned(segment_I_s.mdtid.chamber_ieta);
             pt_sp_s <= pt_sp;
 
             dv8 <= dv7;
@@ -385,9 +380,9 @@ begin
                 comboid_s <= (others => '0');
                 dv_combo_s <= '0';
                 slc_s <= nullify(slc_s);
-                segment_BI_s <= nullify(segment_BI_s);
-                segment_BM_s <= nullify(segment_BM_s);
-                segment_BO_s <= nullify(segment_BO_s);
+                segment_I_s <= nullify(segment_I_s);
+                segment_M_s <= nullify(segment_M_s);
+                segment_O_s <= nullify(segment_O_s);
             end if;
 
         end if ;

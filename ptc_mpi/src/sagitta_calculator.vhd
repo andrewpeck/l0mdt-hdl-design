@@ -38,13 +38,6 @@ library ptc_lib;
 use ptc_lib.pt_pkg.all;
 use ptc_lib.pt_params_pkg.all;
 
--- library IEEE, pt_lib, shared_lib;
--- use IEEE.STD_LOGIC_1164.ALL;
--- use IEEE.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use pt_lib.pt_pkg.all;
--- use shared_lib.custom_types_davide_pkg.all;
-
 entity sagitta_calculator is
   port (
     clk               : in std_logic;
@@ -78,15 +71,15 @@ architecture Behavioral of sagitta_calculator is
     -- Signals for distance calculation
     signal delta_z_20, delta_z_20_s, delta_z_20_ss,
            delta_z_10, delta_z_10_s, delta_z_10_ss,
-           delta_z_10_sss : signed(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
+           delta_z_10_sss : signed(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
     signal delta_r_10, delta_r_10_s, delta_r_10_ss,
            delta_r_10_sss, delta_r_10_ssss,
-           delta_r_10_sssss : unsigned(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
+           delta_r_10_sssss : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
     signal delta_r_20 : unsigned(DELTA_R_RED_LEN-1 downto 0 ) := (others => '0');
 
     -- Constants for m_sagitta=deltaZ_20/deltaR_20 calculation
     constant M_SAGITTA_FULL_LEN : integer
-        := DIVIDER_LEN+SF_SEG_POS_LEN+M_SAGITTA_MULTI_LEN+3;
+        := DIVIDER_LEN+SF2PTCALC_SEGPOS_LEN+M_SAGITTA_MULTI_LEN+3;
 
     -- Signals for m_sagitta=deltaZ_20/deltaR_20 calculation
     signal rec_den_m, rec_den_m_s : std_logic_vector(DIVIDER_LEN-1 downto 0)
@@ -101,7 +94,7 @@ architecture Behavioral of sagitta_calculator is
            std_logic_vector(M_SAGITTA_LEN downto 0) := (others => '0');
 
     -- m_sagitta*DeltaR_10 constants/signals
-    constant DEN_SAGITTA_LEN : integer := M_SAGITTA_LEN + SF_SEG_POS_LEN + 1;
+    constant DEN_SAGITTA_LEN : integer := M_SAGITTA_LEN + SF2PTCALC_SEGPOS_LEN + 1;
     signal m_delta_r_10, den_sagitta : signed(DEN_SAGITTA_LEN-1 downto 0)
         := (others => '0');
 
@@ -117,7 +110,7 @@ architecture Behavioral of sagitta_calculator is
 
     -- m_mult*DeltaZ_10 constants/signals
     constant m_mult_delta_z_10_width : integer
-        := M_SAGITTA_MULTI_LEN+2+SF_SEG_POS_LEN;
+        := M_SAGITTA_MULTI_LEN+2+SF2PTCALC_SEGPOS_LEN;
     signal m_mult_delta_z_10, m_mult_delta_z_10_s, m_mult_delta_z_10_ss :
            signed(m_mult_delta_z_10_width-1 downto 0) := (others => '0');
 
@@ -169,7 +162,7 @@ begin
     GENERIC MAP (
         MXADRB => DELTA_R_RED_LEN,
         MXDATB => DIVIDER_LEN,
-        ROM_FILE => "../data/reciprocalROM.mem"
+        ROM_FILE => "reciprocalROM.mem"
     )
     PORT MAP (
         clka => clk,
@@ -182,7 +175,7 @@ begin
     GENERIC MAP (
         MXADRB => DEN_SAGITTA_RED_LEN,
         MXDATB => DIVIDER_LEN,
-        ROM_FILE => "../data/reciprocalROM.mem"
+        ROM_FILE => "reciprocalROM.mem"
     )
     PORT MAP (
         clka => clk,
@@ -195,7 +188,7 @@ begin
     GENERIC MAP (
         MXADRB => M_SAGITTA_LEN,
         MXDATB => M_SAGITTA_LEN+1,
-        ROM_FILE => "../data/reciprocalROM.mem"
+        ROM_FILE => "reciprocalROM.mem"
     )
     PORT MAP (
         clka => clk,
