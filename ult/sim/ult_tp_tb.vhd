@@ -270,13 +270,34 @@ begin
  	-------------------------------------------------------------------------------------
 	-- candidates
   -------------------------------------------------------------------------------------
+  HIT_SLC: process ( rst, clk)
 
--------------------------------------------------------------------------------------
+    file input_slc_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
+    -- variable row                  : line;
+    -- variable row_counter          : integer := 0;
+
+    -- -- variable tdc_time             : UNSIG_64;
+    -- variable mdt_event            : input_tar_rt;
+
+    -- variable next_event_time      : integer := 0;
+    -- variable tb_time              : integer := 0;
+
+    -- variable first_read           : std_logic := '1';
+
+    -- variable v_mdt_inn_counts     : infifo_counts(c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => 0);
+    -- variable v_mdt_mid_counts     : infifo_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
+    -- variable v_mdt_out_counts     : infifo_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
+    -- variable v_mdt_ext_counts     : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+
+  begin
+
+  end process;
+  -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
  
 
-  CSM_read: process ( rst, clk)
+  HIT_READ: process ( rst, clk)
 
     file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
     variable row                  : line;
