@@ -24,9 +24,9 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
  
--- library ucm_lib;
--- use ucm_lib.ucm_pkg.all;
--- use ucm_lib.roi_atan.all;
+library ucm_lib;
+use ucm_lib.ucm_pkg.all;
+use ucm_lib.roi_atan.all;
 
 entity ucm_cvp_atan is
   port (

@@ -24,7 +24,8 @@ package roi_atan is
     -- add length of constant array
     constant ROM_ATAN_MAX_SIZE : integer := 111638;
 
-    constant ROI_ATAN_MEM : roi_atan_lut_t(0 to ROM_ATAN_MAX_SIZE - 1) := (
+
+    constant ROI_ATAN_MEM : integer(0 to ROM_ATAN_MAX_SIZE - 1) := (
 
         0 to    49 =>    0,
        50 to   149 =>    1,
