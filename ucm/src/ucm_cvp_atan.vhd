@@ -30,6 +30,9 @@ use ucm_lib.roi_atan.all;
 
 entity ucm_cvp_atan is
   port (
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic
     
   );
 end entity ucm_cvp_atan;
