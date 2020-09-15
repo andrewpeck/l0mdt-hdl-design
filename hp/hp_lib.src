@@ -1,5 +1,6 @@
 hp/pkg/hp_pkg.vhd 2008
 hp/src/ROMs/hp_dt2r_large_mem.vhd 2008
+hp/src/ROMs/hp_dt2r_small_mem.vhd 2008
 hp/src/hp_calc_dt2r_large.vhd 2008
 hp/src/hp_calc_dt2r_small.vhd 2008
 hp/src/hp_calc_radius.vhd 2008

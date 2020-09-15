@@ -1,3 +1,4 @@
+
 // ==============================================================
 // Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1 (64-bit)
 // Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
@@ -6,7 +7,7 @@
 
 `ifndef L0MDT_BUS_CONSTANTS
 `define L0MDT_BUS_CONSTANTS
-`include "l0mdt_buses_constants.svh"
+`include "../dataformats/l0mdt_buses_constants.svh"
 `endif
 
 `define AUTOTB_DUT      lsf_vhd_wrapper
@@ -21,27 +22,29 @@
 `define AESL_DEPTH_mdt_hit_V 1
 `define AESL_DEPTH_hit_extraction_roi_V 1
 
-`define AESL_DEPTH_histogram_bins_reset_V 1
-`define AUTOTB_TVIN_mdt_hit_V  "../tv/cdatafile/c.histogram_bin_accumulation.autotvin_mdt_hit_V.dat"
-`define AUTOTB_TVIN_le_output_V  "../tv/rtldatafile/rtl.compute_LE_results.autotvout_LE_output_V.dat"
-`define AUTOTB_TVIN_le_tb_output_V  "../tv/rtldatafile/rtl.compute_LE_results.autotvout_LE_tb_output_V.dat"
-`define AUTOTB_TVIN_hit_extraction_roi_V  "../tv/cdatafile/c.histogram_bin_accumulation.autotvin_hit_extraction_roi_V.dat"
- 
-`define AUTOTB_TVIN_histogram_bins_reset_V  "../tv/cdatafile/c.histogram_bin_accumulation.autotvin_histogram_bins_reset_V.dat"
-`define AUTOTB_TVIN_mdt_hit_V_out_wrapc  "../tv/rtldatafile/rtl.histogram_bin_accumulation.autotvin_mdt_hit_V.dat"
-`define AUTOTB_TVIN_hit_extraction_roi_V_out_wrapc  "../tv/rtldatafile/rtl.histogram_bin_accumulation.autotvin_hit_extraction_roi_V.dat"
 
-`define AUTOTB_TVIN_histogram_bins_reset_V_out_wrapc  "../tv/rtldatafile/rtl.histogram_bin_accumulation.autotvin_histogram_bins_reset_V.dat"
+`define AESL_DEPTH_histogram_bins_reset_V 1
+`define AUTOTB_TVIN_mdt_hit_V  "../tv/barrel/cdatafile/c.compute_r_bins.autotvin_input_hps_sf_V.dat"
+//`define AUTOTB_TVIN_le_output_V  "../tv/endcap/rtldatafile/rtl.get_legendre_segment_endcap.autotvout_LE_output_V.dat"
+//`define AUTOTB_TVIN_le_tb_output_V  "../tv/endcap/rtldatafile/rtl.get_legendre_segment_endcap.autotvout_LE_tb_output_V.dat"
+`define AUTOTB_TVIN_le_output_V  "../tv/barrel/rtldatafile/rtl.get_legendre_segment_barrel.autotvout_LE_output_V.dat"
+`define AUTOTB_TVIN_le_tb_output_V  "../tv/barrel/rtldatafile/rtl.get_legendre_segment_barrel.autotvout_LE_tb_output_V.dat"
+`define AUTOTB_TVIN_hit_extraction_roi_V  "../tv/barrel/cdatafile/c.load_LE_angles.autotvin_input_slcproc_sf_V.dat"
+`define AUTOTB_TVIN_mdt_hit_V_out_wrapc  "../tv/barrel/rtldatafile/rtl.histogram_bin_accumulation.autotvin_mdt_hit_V.dat"
+`define AUTOTB_TVIN_hit_extraction_roi_V_out_wrapc  "../tv/barrel/rtldatafile/rtl.histogram_bin_accumulation.autotvin_hit_extraction_roi_V.dat"
+`define AUTOTB_TVIN_slcvecpos_Rho  "../tv/barrel/cdatafile/c.calc_LE_r_offset_barrel.autotvin_slcvec_pos_Rho_V.dat"
+`define AUTOTB_TVIN_hewindowpos_Rho  "../tv/barrel/cdatafile/c.calc_LE_r_offset_barrel.autotvin_hewindow_pos_Rho_V.dat"
+
 
 
 module `AUTOTB_TOP;
-   parameter TOTAL_SLC = 10;
-   parameter AUTOTB_TRANSACTION_NUM = TOTAL_SLC; //85;
+
+parameter AUTOTB_TRANSACTION_NUM = 86;
 parameter PROGRESS_TIMEOUT = 10000000;
 parameter LATENCY_ESTIMATION = 13;
 parameter LENGTH_mdt_hit_V = 1;
 parameter LENGTH_hit_extraction_roi_V = 1;
-
+   
 parameter LENGTH_histogram_bins_reset_V = 1;
 
 task read_token;
@@ -55,13 +58,14 @@ task read_token;
     end
 endtask
 
+   parameter TOTAL_SLC = 10;
    integer total_passed = 0;
    integer total_failed = 0;
    integer total_skipped = 0;
    
    
    //PRIYA
-   reg [31:0] total_hits_in_Roi[TOTAL_SLC];
+   reg [31:0] total_hits_in_Roi[100];
    integer    roi_count;
    integer    roi_count_we;
    
@@ -96,10 +100,10 @@ wire ap_done;
 wire ap_idle;
 wire ap_ready;
 wire  mdt_hit_V_ap_vld;
-   wire [46 : 0] mdt_hit;
-wire [118 : 0] hit_extraction_roi;
-wire [191 : 0] mdt_hit_V;
-wire [391 : 0] hit_extraction_roi_V;
+wire [HEG2SFHIT_LEN-1 : 0] mdt_hit;
+wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi;
+wire [HEG2SFHIT_LEN-1 : 0] mdt_hit_V;
+wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi_V;
 
 wire [0 : 0] histogram_bins_reset_V;
 integer done_cnt = 0;
@@ -117,8 +121,8 @@ wire ap_clk;
 wire ap_rst;
 wire ap_rst_n;
 
-   wire [383:0] le_output;
-   wire [93:0] 	le_output_rtl;
+   wire [SF2PTCALC_LEN-1:0] le_output;
+   wire [SF2PTCALC_LEN-1:0] le_output_rtl;
    
    wire 	le_output_vld;
    wire 	le_output_empty;
@@ -134,20 +138,31 @@ wire ap_rst_n;
    wire 	mdt_hit_af;
    wire 	mdt_hit_ap_ready;
 
-   parameter W_zd = SLCPROC_HPS_SF_VEC_POS_LEN; //HPS_LSF_MDT_LOCALX_LEN; //19;
-   parameter W_Rd = SLCPROC_HPS_SF_VEC_POS_LEN; //HPS_LSF_MDT_LOCALY_LEN; //18; //19;
-   parameter W_rd = HPS_LSF_MDT_RADIUS_LEN; // 9;
+   parameter W_zd = HEG2SFSLC_VEC_POS_LEN; //HPS_LSF_MDT_LOCALX_LEN; //19;
+   parameter W_Rd = HEG2SFSLC_VEC_POS_LEN; //HPS_LSF_MDT_LOCALY_LEN; //18; //19;
+   parameter W_rd = HEG2SFHIT_RADIUS_LEN; // 9;
  
 
    parameter W_IN = 22;
    parameter W_r  = 13;
    parameter char_width = 8;
-
-   parameter gtheta = SF_SEGANGLE_LEN; //15;
+   logic [SLC_MUID_LEN-1:0] slc_muid;
+   logic [VEC_MDTID_LEN-1:0] slc_mdtid;
+   logic [SF2PTCALC_SEGPOS_LEN-1: 0] slcvec_pos_ref;
+   logic [SF2PTCALC_SEGPOS_LEN-1: 0]  hewindow_pos_ref;
+   
+   
+   parameter gtheta = SF2PTCALC_SEGANGLE_LEN; //15;
    
 
-
-      
+   assign mdt_hit                    = mdt_hit_V;
+   assign hit_extraction_roi         = hit_extraction_roi_V;
+   assign le_output                  = le_output_rtl;
+   assign slc_muid                   = hit_extraction_roi_V[HEG2SFSLC_MUID_MSB:HEG2SFSLC_MUID_LSB];
+   assign slc_mdtid                  = hit_extraction_roi_V[HEG2SFSLC_MDTID_MSB:HEG2SFSLC_MDTID_LSB];
+   
+   
+      /*
    assign mdt_hit[W_zd-1:0]                    = mdt_hit_V[63:0];
    assign mdt_hit[W_Rd+W_zd-1 : W_zd]          = mdt_hit_V[127:64];
    assign mdt_hit[W_rd+W_Rd+W_zd-1 :W_Rd+W_zd] = mdt_hit_V[191:128];
@@ -162,6 +177,8 @@ wire ap_rst_n;
    assign hit_extraction_roi[char_width+W_zd+W_Rd+W_r+W_Rd+W_zd+W_IN-1:W_zd+W_Rd+W_r+W_Rd+W_zd+W_IN] = hit_extraction_roi_V[391:384];
 
 
+   
+   
    assign le_output[63:0] = {'b0,le_output_rtl[W_zd-1:0]} ;
    assign le_output[127 :64] = {'b0,le_output_rtl[W_Rd+W_zd-1:W_zd]};
    assign le_output[191 :128] = {'b0,le_output_rtl[W_r+W_Rd+W_zd-1:W_Rd+W_zd]};
@@ -170,17 +187,17 @@ wire ap_rst_n;
    assign le_output[319:256] = {'b0,le_output_rtl[W_r+W_Rd+W_zd+gtheta*2-1:W_r+W_Rd+W_zd+gtheta]};
    assign le_output[383:320] = {'b0,le_output_rtl[W_r+W_Rd+W_zd+gtheta*2 + W_r -1:W_r+W_Rd+W_zd+gtheta*2]};
    
- 
+*/ 
    
+    assign le_tb_output_i = (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output_vld)? `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output : le_tb_output_i;
    
-   assign le_tb_output_i = (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output_vld)? `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output : le_tb_output_i;
    assign mdt_hit_ap_ready = ~mdt_hit_af;
-   assign roi_ap_ready     = (roi_count_we == -1) || (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1) ; //~roi_af;
-   logic [9:0] 	hba_max_clocks;
-   assign hba_max_clocks = 10'd27;
+//   assign roi_ap_ready     = (roi_count_we == -1) || (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1) ; 
+   assign roi_ap_ready     = (roi_count_we == -1)  || (le_output_re) || (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1) ; //~roi_af;
+   logic [9:0] 		     hba_max_clocks;
+   assign hba_max_clocks = 27;
    
-   
-   `AUTOTB_DUT `AUTOTB_DUT_INST(
+     `AUTOTB_DUT `AUTOTB_DUT_INST(
 				.clock(ap_clk),
 				.reset(ap_rst),
 			//	.srst(ap_rst),
@@ -200,7 +217,28 @@ wire ap_rst_n;
 				//.le_tb_output_vld(le_tb_output_vld)
 			
 				);
-   
+   /*
+   `AUTOTB_DUT `AUTOTB_DUT_INST(
+				.clock(ap_clk),
+				.reset(ap_rst),
+			//	.srst(ap_rst),
+			//	.mdt_hit_vld(mdt_hit_V_ap_vld),
+				.mdt_hit(mdt_hit),
+				.mdt_hit_af(mdt_hit_af),
+				.mdt_hit_we(mdt_hit_V_ap_vld), //mdt_hit_ap_ready),
+				.roi(hit_extraction_roi),
+//				.hit_extraction_roi_vld(hit_extraction_roi_V_vld),
+				.histogram_accumulation_count(27),
+				.roi_we(hit_extraction_roi_V_vld), //(roi_ap_ready),
+				.roi_af(roi_af),
+				.lsf_output(le_output_rtl),
+				.lsf_output_re(le_output_re), //(le_output_vld),
+				.lsf_output_empty(le_output_empty)
+				//.le_tb_output(le_tb_output),
+				//.le_tb_output_vld(le_tb_output_vld)
+			
+				);
+   */
 
 // Assignment for control signal
 assign ap_clk = AESL_clock;
@@ -208,7 +246,7 @@ assign ap_clk = AESL_clock;
    assign ap_rst_n = ~rst;   
 assign ap_start = AESL_start;
 assign AESL_start = start;
-   assign AESL_done = ~le_output_empty & le_output_re ; //ap_done;
+assign AESL_done = ap_done;
 assign AESL_idle = ap_idle;
    assign AESL_ready = mdt_hit_ap_ready; //PRIYA ap_ready;
 assign AESL_ce = ce;
@@ -337,9 +375,9 @@ end // block: read_file_process_mdt_hit_V
    
 
 // The signal of port hit_extraction_roi_V
-reg [391: 0] AESL_REG_hit_extraction_roi_V = 0;
+reg [HEG2SFHIT_LEN-1: 0] AESL_REG_hit_extraction_roi_V = 0;
 assign hit_extraction_roi_V = AESL_REG_hit_extraction_roi_V;
-   assign roi_count = (AESL_reset)? -1 : ((`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1 && `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_empty == 0 )? roi_count + 1 : roi_count);
+   assign roi_count = (AESL_reset)? -1 : ((`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1)? roi_count + 1 : roi_count);
    
 initial begin : read_file_process_hit_extraction_roi_V
     integer fp;
@@ -365,18 +403,22 @@ initial begin : read_file_process_hit_extraction_roi_V
         $finish;
     end
     read_token(fp, token);
+   
     if (token != "[[[runtime]]]") begin
         $display("ERROR: Simulation using HLS TB failed.");
         $finish;
     end
     read_token(fp, token);
+
+   
     while (token != "[[[/runtime]]]") begin
         if (token != "[[transaction]]") begin
             $display("ERROR: Simulation using HLS TB failed.");
               $finish;
         end
         read_token(fp, token);  // skip transaction number
-          read_token(fp, token); //New RoI
+       read_token(fp, token); //New RoI
+
             # 0.2;
        while(ready_wire !== 1) begin
 	  @(posedge AESL_clock);
@@ -385,6 +427,8 @@ initial begin : read_file_process_hit_extraction_roi_V
        
        if(token != "[[/transaction]]") begin
 	  //PRIYA hit_extraction_roi_V_vld = 1;
+	  $display("PRIYA TOKEN = %s\n",token);
+	  
 	  while(roi_ap_ready!=1)begin
 	     hit_extraction_roi_V_vld = 0;
 	     @(posedge AESL_clock);
@@ -398,16 +442,22 @@ initial begin : read_file_process_hit_extraction_roi_V
              $finish;
           end
 //	  $display("AESL_REG_hit_extraction_roi_V=%s\n",token);
-	  for(mdt_hits_trans_skip = 0; mdt_hits_trans_skip < total_hits_in_Roi[roi_count_we+1]; mdt_hits_trans_skip++)begin //Skip all MDT hits, previous transaction was roi vld
-	     read_token(fp, token);
-	     read_token(fp, token);
-	     read_token(fp, token);
-	     read_token(fp, token);
+	  
+	  /*for(mdt_hits_trans_skip = 0; mdt_hits_trans_skip < total_hits_in_Roi[roi_count_we+1]; mdt_hits_trans_skip++)begin //Skip all MDT hits, previous transaction was roi vld
+	     @(posedge AESL_clock);
+	     hit_extraction_roi_V_vld = 0;
+	     @(posedge AESL_clock);
 	   end
+	 */
+	  
           @(posedge AESL_clock);
 	  hit_extraction_roi_V_vld = 0;
 	  roi_count_we++;
+	  repeat(10) @ (posedge AESL_clock);
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_state == 0) //IDLE
+	    $display("PRIYA TOKEN 2 = %s\n",token);
           read_token(fp, token);
+	  
        end // if (token != "[[/transaction]]")
        
        
@@ -422,12 +472,13 @@ initial begin : read_file_process_hit_extraction_roi_V
 end
 
 
+// The signal of port slcvecpos_Rho
+   reg [SF2PTCALC_SEGPOS_LEN-1: 0] AESL_REG_hewindow_pos_ref = 0;
+   assign hewindow_pos_ref = AESL_REG_hewindow_pos_ref;
+   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.hewindow_pos_ref = AESL_REG_hewindow_pos_ref;
+   
 
-
-// The signal of port histogram_bins_reset_V
-reg [0: 0] AESL_REG_histogram_bins_reset_V = 0;
-assign histogram_bins_reset_V = AESL_REG_histogram_bins_reset_V;
-initial begin : read_file_process_histogram_bins_reset_V
+initial begin : read_file_process_hewindow_pos_ref
     integer fp;
     integer err;
     integer ret;
@@ -436,46 +487,149 @@ initial begin : read_file_process_histogram_bins_reset_V
     integer i;
     reg transaction_finish;
     integer transaction_idx;
-    transaction_idx = 0;
+
+ 
+   transaction_idx          = 0;
+   roi_count_we             = -1;
+
+   
     wait(AESL_reset === 0);
-    fp = $fopen(`AUTOTB_TVIN_histogram_bins_reset_V,"r");
+    fp = $fopen(`AUTOTB_TVIN_hewindowpos_Rho,"r");
     if(fp == 0) begin       // Failed to open file
-        $display("Failed to open file \"%s\"!", `AUTOTB_TVIN_histogram_bins_reset_V);
-        $display("ERROR: Simulation using HLS TB failed.");
+        $display("Failed to open file \"%s\"!", `AUTOTB_TVIN_hewindowpos_Rho);
+        $display("ERROR: Simulation using HLS TB failed while reading ROI roi_count_we=%d",roi_count_we);
         $finish;
     end
     read_token(fp, token);
+   
     if (token != "[[[runtime]]]") begin
         $display("ERROR: Simulation using HLS TB failed.");
         $finish;
     end
     read_token(fp, token);
+
+   
     while (token != "[[[/runtime]]]") begin
         if (token != "[[transaction]]") begin
             $display("ERROR: Simulation using HLS TB failed.");
               $finish;
         end
         read_token(fp, token);  // skip transaction number
-          read_token(fp, token);
+       read_token(fp, token); //New RoI
+
             # 0.2;
-            while(ready_wire !== 1) begin
-                @(posedge AESL_clock);
-                # 0.2;
-            end
-        if(token != "[[/transaction]]") begin
-            ret = $sscanf(token, "0x%x", AESL_REG_histogram_bins_reset_V);
-              if (ret != 1) begin
-                  $display("Failed to parse token!");
-                $display("ERROR: Simulation using HLS TB failed.");
-                  $finish;
-              end
-            @(posedge AESL_clock);
-              read_token(fp, token);
-        end
+       while(ready_wire !== 1) begin
+	  @(posedge AESL_clock);
+          # 0.2;
+       end
+       
+       if(token != "[[/transaction]]") begin
+	  //repeat (2) @(posedge AESL_clock);
+	  ret = $sscanf(token, "0x%x", AESL_REG_hewindow_pos_ref);	 
+          if (ret != 1) begin
+             $display("Failed to parse token!");
+             $display("ERROR: Simulation using HLS TB failed.");
+             $finish;
+          end
+	 
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
+	    @(posedge AESL_clock);
           read_token(fp, token);
-    end
+	  
+       end // if (token != "[[/transaction]]")
+       
+       
+       read_token(fp, token);
+    end // while (token != "[[[/runtime]]]")
+ 
     $fclose(fp);
 end
+
+
+   
+
+
+
+
+
+
+
+// The signal of port slcvecpos_Rho
+   reg [SF2PTCALC_SEGPOS_LEN-1: 0] AESL_REG_slcvec_pos_ref = 0;
+   assign slcvec_pos_ref = AESL_REG_slcvec_pos_ref;
+   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.slcvec_pos_ref = AESL_REG_slcvec_pos_ref;
+   
+initial begin : read_file_process_slcvec_pos_ref
+    integer fp;
+    integer err;
+    integer ret;
+    integer proc_rand;
+    reg [887  : 0] token;
+    integer i;
+    reg transaction_finish;
+    integer transaction_idx;
+
+ 
+   transaction_idx          = 0;
+   roi_count_we             = -1;
+
+   
+    wait(AESL_reset === 0);
+    fp = $fopen(`AUTOTB_TVIN_slcvecpos_Rho,"r");
+    if(fp == 0) begin       // Failed to open file
+        $display("Failed to open file \"%s\"!", `AUTOTB_TVIN_slcvecpos_Rho);
+        $display("ERROR: Simulation using HLS TB failed while reading ROI roi_count_we=%d",roi_count_we);
+        $finish;
+    end
+    read_token(fp, token);
+   
+    if (token != "[[[runtime]]]") begin
+        $display("ERROR: Simulation using HLS TB failed.");
+        $finish;
+    end
+    read_token(fp, token);
+
+   
+    while (token != "[[[/runtime]]]") begin
+        if (token != "[[transaction]]") begin
+            $display("ERROR: Simulation using HLS TB failed.");
+              $finish;
+        end
+        read_token(fp, token);  // skip transaction number
+       read_token(fp, token); //New RoI
+
+            # 0.2;
+       while(ready_wire !== 1) begin
+	  @(posedge AESL_clock);
+          # 0.2;
+       end
+       
+       if(token != "[[/transaction]]") begin
+	  //repeat (2) @(posedge AESL_clock);
+	  ret = $sscanf(token, "0x%x", AESL_REG_slcvec_pos_ref);	 
+          if (ret != 1) begin
+             $display("Failed to parse token!");
+             $display("ERROR: Simulation using HLS TB failed.");
+             $finish;
+          end
+	 
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
+	    @(posedge AESL_clock);
+          read_token(fp, token);
+	  
+       end // if (token != "[[/transaction]]")
+       
+       
+       read_token(fp, token);
+    end // while (token != "[[[/runtime]]]")
+ 
+    $fclose(fp);
+end
+
+
+
+
+
 
 
 initial begin : generate_AESL_ready_cnt_proc
@@ -539,6 +693,17 @@ initial begin
     forever #`AUTOTB_CLOCK_PERIOD_DIV2 AESL_clock = ~AESL_clock;
 end
 
+
+reg end_mdt_hit_V;
+reg [31:0] size_mdt_hit_V;
+reg [31:0] size_mdt_hit_V_backup;
+reg end_hit_extraction_roi_V;
+reg [31:0] size_hit_extraction_roi_V;
+reg [31:0] size_hit_extraction_roi_V_backup;
+
+reg end_histogram_bins_reset_V;
+reg [31:0] size_histogram_bins_reset_V;
+reg [31:0] size_histogram_bins_reset_V_backup;
 
 initial begin : initial_process
     integer proc_rand;
@@ -859,7 +1024,15 @@ endtask
 
    //Verify Output - Added by Priya
    // The signal of port hit_extraction_roi_V
-reg [383: 0] AESL_REG_le_output_V = 0;
+reg [SF2PTCALC_LEN-1-30: 0] AESL_REG_le_output_V = 0;
+   wire [SF2PTCALC_LEN-1: 0] le_output_TB;
+   assign le_output_TB[SF2PTCALC_MDTID_MSB:SF2PTCALC_MDTID_LSB] = slc_mdtid;
+   assign le_output_TB[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB] =slc_muid;
+   assign le_output_TB[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGQUALITY_LSB] = AESL_REG_le_output_V;
+   assign le_output_TB[SF2PTCALC_DATA_VALID_MSB] = 1;
+   
+   
+   
 //assign AESL_REG_le_output_V = (le_output_vld == 1) le_output : 0;
 initial begin : read_file_process_le_output_V
     integer fp;
@@ -880,7 +1053,9 @@ initial begin : read_file_process_le_output_V
    le_output_re             = 0;
    
 
-    wait(AESL_reset === 0);
+
+   wait(AESL_reset === 0);
+   
     fp = $fopen(`AUTOTB_TVIN_le_output_V,"r");
     if(fp == 0) begin       // Failed to open file
         $display("Failed to open file \"%s\"!", `AUTOTB_TVIN_le_output_V);
@@ -908,49 +1083,52 @@ initial begin : read_file_process_le_output_V
 //       while(le_output_vld !== 1) begin
        while(le_output_empty === 1) begin
 	  @(posedge AESL_clock);
-          # 0.2;
+          //# 0.2;
        end
        
        if(token != "[[/transaction]]") begin
 	  //PRIYA le_output_V_vld = 1;
-	  ret = $sscanf(token, "%x", AESL_REG_le_output_V);
-	  
+	  ret = $sscanf(token, "%x", AESL_REG_le_output_V);	  
           if (ret != 1) begin
              $display("Failed to parse token when reading AUTOTB_TVIN_le_output_V! ret = %d val=0x%x ",ret, AESL_REG_le_output_V);
 	     $display("TOKEN=%s", token);
 	     
              $display("ERROR: Simulation using HLS TB failed.");
              $finish;
-          end
-	 	  
-	  if(le_tb_output_i[63:0] >= 5)
+          end	 
+	  wait(le_output_empty == 0);
+	  
+	  if(le_tb_output_i[63:0] >= 0 ) //>5 Check number of hits in bin
 	    begin
-	       if(AESL_REG_le_output_V !== le_output)
+	       //if(AESL_REG_le_output_V !== le_output)
+	       #20
+	       if(le_output_TB !== le_output)
 		 begin
-		    $display("%d: LE output mismatch expected 0x%x actual=0x%x",finish_cnt,AESL_REG_le_output_V, le_output);
+		    $display("roi_count:%d, slc_muid:%d: LE output mismatch expected 0x%x,0x%x actual=0x%x",roi_count,slc_muid,le_output_TB, AESL_REG_le_output_V, le_output);
 		    total_failed++;
 		    //  $display("LE output mismatch actual 0x%x%x%x%x",le_output[191:128],le_output[127:64],le_output[63:0]);
-		    $finish;
+		    #3000
+		      $finish;
 		 end
 	       else
 		 begin
-		    $display("%d:LE output matched le_output=0x%x",finish_cnt,le_output);
+		    $display("%d:LE output matched le_output=0x%x",roi_count,le_output);
 		    total_passed++;
 		 end
 	    end // if (le_tb_output[63:0] >= 5)
 	  else
 	    begin
-	       $display("%d:Skipping ROI as max count in bin <5. le_tb_output_i=%d",finish_cnt,le_tb_output_i[63:0]);
+	       $display("%d:Skipping ROI as max count in bin <5. le_tb_output_i=%d",roi_count,le_tb_output_i[63:0]);
 	       total_skipped++;
 	    end
 	  le_output_re = 1;
 	  @(posedge AESL_clock);
 	  le_output_re = 0;
 	  read_token(fp, token);
-	  if(finish_cnt == TOTAL_SLC-1)
+	  if(roi_count == TOTAL_SLC-1)
 	    begin
 	       $display("Test Completed total_roi = %d, total_passed = %d, total_failed = %d, total_skipped = %d\n",TOTAL_SLC, total_passed, total_failed, total_skipped);
-	      // $finish();
+	       $finish();
 	       
 	    end
 

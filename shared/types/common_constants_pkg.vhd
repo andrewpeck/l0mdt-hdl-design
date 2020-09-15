@@ -11,12 +11,15 @@ package common_constants_pkg is
 
   constant MDT_GLOBAL_AXI_LEN : integer := 19;
 
-  -- MDT_GLOBAL_AXI_MULT: mm
   constant MDT_GLOBAL_AXI_MULT : real := 32.0;
 
   constant MDT_LOCAL_X_LEN : integer := HEG2SFHIT_LOCALX_LEN;
 
+  constant MDT_LOCAL_X_MULT : real := HEG2SFHIT_LOCALX_MULT;
+
   constant MDT_LOCAL_Y_LEN : integer := HEG2SFHIT_LOCALY_LEN;
+
+  constant MDT_LOCAL_Y_MULT : real := HEG2SFHIT_LOCALY_MULT;
 
   constant MDT_RADIUS_LEN : integer := HEG2SFHIT_RADIUS_LEN;
 
@@ -26,7 +29,7 @@ package common_constants_pkg is
 
   constant SLC_CHAMBER_LEN : integer := 4;
 
-  constant SLC_Z_RPC_LEN : integer := 10;
+  constant SLC_Z_RPC_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
 
   constant SLC_Z_RPC_MULT : real := 13.0;
 
@@ -44,7 +47,7 @@ package common_constants_pkg is
 
   constant UCM_MBAR_LEN : integer := UCM_VEC_ANG_LEN;
 
-  constant UCM_Z_ROI_LEN : integer := SLC_BARREL_RPC0_POSZ_LEN;
+  constant UCM_Z_ROI_LEN : integer := UCM2HPS_VEC_POS_LEN;
 
   constant MDT_LOCAL_AXI_LEN : integer := 14;
 

@@ -60,13 +60,13 @@ architecture beh of ucm_cvp_b_slope is
   signal e_y        : signed(12 -1 downto 0);
   signal int_offset : signed(108 -1 downto 0);
 
-  signal sum_zy     : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
-  signal sum_y      : signed(UCM_Z_ROI_LEN   + 2 -1 downto 0);
-  signal sum_z      : signed(UCM_Z_ROI_LEN   + 2 -1 downto 0);
-  signal sum_zz     : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
-  signal sqr_sum_z  : signed(UCM_Z_ROI_LEN*2 + 4 -1 downto 0);
-  signal b_nom      : signed(UCM_Z_ROI_LEN*4 + 8 -1 downto 0);
-  signal b_den      : signed(UCM_Z_ROI_LEN*4 + 8 -1 downto 0);
+  signal sum_zy     : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sum_y      : signed(SLC_Z_RPC_LEN   + 2 -1 downto 0);
+  signal sum_z      : signed(SLC_Z_RPC_LEN   + 2 -1 downto 0);
+  signal sum_zz     : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sqr_sum_z  : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal b_nom      : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  signal b_den      : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
   signal int_slope  : signed(96 -1 downto 0);
 
   signal dv_chain   : std_logic_vector(7 downto 0);

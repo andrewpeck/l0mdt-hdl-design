@@ -14,7 +14,7 @@ package common_types_pkg is
   subtype bcid_t is unsigned(12-1 downto 0);
 
   type integer_bus_at is array(integer range <>) of integer;
-  type integer_bus_avt is array(integer range <>) of std_logic_vector;
+  type integer_bus_avt is array(integer range <>) of std_logic_vector(31 downto 0);
   function vectorify(x: integer_bus_at) return integer_bus_avt;
   function vectorify(x: integer_bus_at) return std_logic_vector;
   function structify(x: integer_bus_avt) return integer_bus_at;
@@ -542,12 +542,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm2hps_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*54-1 downto 0);
+    variable y : std_logic_vector(x'length*58-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-54) := vectorify(x(i));
-      msb := msb - 54 -1;
+      y(msb downto msb-58) := vectorify(x(i));
+      msb := msb - 58 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -564,8 +564,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-54));
-      msb := msb - 54 -1;
+      y(i) := structify(x(msb downto msb-58));
+      msb := msb - 58 -1;
     end loop l;
     return y;
   end function structify;
@@ -595,12 +595,12 @@ package body common_types_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg2sfslc_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*64-1 downto 0);
+    variable y : std_logic_vector(x'length*72-1 downto 0);
     variable msb : integer := y'length-1;
   begin
     l: for i in x'range loop
-      y(msb downto msb-64) := vectorify(x(i));
-      msb := msb - 64 -1;
+      y(msb downto msb-72) := vectorify(x(i));
+      msb := msb - 72 -1;
     end loop l;
     return y;
   end function vectorify;
@@ -617,8 +617,8 @@ package body common_types_pkg is
     variable msb : integer := x'length-1;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-64));
-      msb := msb - 64 -1;
+      y(i) := structify(x(msb downto msb-72));
+      msb := msb - 72 -1;
     end loop l;
     return y;
   end function structify;
