@@ -50,8 +50,9 @@ package gldl_ult_tp_sim_pkg is
     z_RPC1 : signed(SLC_BARREL_RPC1_POSZ_LEN-1 downto 0);
     z_RPC2 : signed(SLC_BARREL_RPC2_POSZ_LEN-1 downto 0);
     z_RPC3 : signed(SLC_BARREL_RPC3_POSZ_LEN-1 downto 0);
+    dv : std_logic;
   end record input_slc_rt;
-  constant INPUT_SLC_LEN : integer := 164;
+  constant INPUT_SLC_LEN : integer := 165;
   subtype input_slc_rvt is std_logic_vector(INPUT_SLC_LEN-1 downto 0);
   function vectorify(x: input_slc_rt) return input_slc_rvt;
   function structify(x: input_slc_rvt) return input_slc_rt;
@@ -147,39 +148,41 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: input_slc_rt) return input_slc_rvt is
     variable y : input_slc_rvt;
   begin
-    y(163 downto 152)          := vectorify(x.BCID);
-    y(151 downto 88)           := vectorify(x.ToA);
-    y(87 downto 85)            := vectorify(x.nTC);
-    y(84 downto 82)            := vectorify(x.TC_sent);
-    y(81 downto 79)            := vectorify(x.TC_id);
-    y(78 downto 65)            := vectorify(x.Eta);
-    y(64 downto 56)            := vectorify(x.Phi);
-    y(55 downto 52)            := vectorify(x.pT_thr);
-    y(51 downto 51)            := vectorify(x.Charge);
-    y(50 downto 48)            := vectorify(x.Coincidence);
-    y(47 downto 36)            := vectorify(x.z_RPC0);
-    y(35 downto 24)            := vectorify(x.z_RPC1);
-    y(23 downto 12)            := vectorify(x.z_RPC2);
-    y(11 downto 0)             := vectorify(x.z_RPC3);
+    y(164 downto 153)          := vectorify(x.BCID);
+    y(152 downto 89)           := vectorify(x.ToA);
+    y(88 downto 86)            := vectorify(x.nTC);
+    y(85 downto 83)            := vectorify(x.TC_sent);
+    y(82 downto 80)            := vectorify(x.TC_id);
+    y(79 downto 66)            := vectorify(x.Eta);
+    y(65 downto 57)            := vectorify(x.Phi);
+    y(56 downto 53)            := vectorify(x.pT_thr);
+    y(52 downto 52)            := vectorify(x.Charge);
+    y(51 downto 49)            := vectorify(x.Coincidence);
+    y(48 downto 37)            := vectorify(x.z_RPC0);
+    y(36 downto 25)            := vectorify(x.z_RPC1);
+    y(24 downto 13)            := vectorify(x.z_RPC2);
+    y(12 downto 1)             := vectorify(x.z_RPC3);
+    y(0 downto 0)              := vectorify(x.dv);
     return y;
   end function vectorify;
   function structify(x: input_slc_rvt) return input_slc_rt is
     variable y : input_slc_rt;
   begin
-    y.BCID                     := structify(x(163 downto 152));
-    y.ToA                      := structify(x(151 downto 88));
-    y.nTC                      := structify(x(87 downto 85));
-    y.TC_sent                  := structify(x(84 downto 82));
-    y.TC_id                    := structify(x(81 downto 79));
-    y.Eta                      := structify(x(78 downto 65));
-    y.Phi                      := structify(x(64 downto 56));
-    y.pT_thr                   := structify(x(55 downto 52));
-    y.Charge                   := structify(x(51 downto 51));
-    y.Coincidence              := structify(x(50 downto 48));
-    y.z_RPC0                   := structify(x(47 downto 36));
-    y.z_RPC1                   := structify(x(35 downto 24));
-    y.z_RPC2                   := structify(x(23 downto 12));
-    y.z_RPC3                   := structify(x(11 downto 0));
+    y.BCID                     := structify(x(164 downto 153));
+    y.ToA                      := structify(x(152 downto 89));
+    y.nTC                      := structify(x(88 downto 86));
+    y.TC_sent                  := structify(x(85 downto 83));
+    y.TC_id                    := structify(x(82 downto 80));
+    y.Eta                      := structify(x(79 downto 66));
+    y.Phi                      := structify(x(65 downto 57));
+    y.pT_thr                   := structify(x(56 downto 53));
+    y.Charge                   := structify(x(52 downto 52));
+    y.Coincidence              := structify(x(51 downto 49));
+    y.z_RPC0                   := structify(x(48 downto 37));
+    y.z_RPC1                   := structify(x(36 downto 25));
+    y.z_RPC2                   := structify(x(24 downto 13));
+    y.z_RPC3                   := structify(x(12 downto 1));
+    y.dv                       := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: input_slc_rt) return input_slc_rt is
@@ -199,6 +202,7 @@ package body gldl_ult_tp_sim_pkg is
     y.z_RPC1                   := nullify(x.z_RPC1);
     y.z_RPC2                   := nullify(x.z_RPC2);
     y.z_RPC3                   := nullify(x.z_RPC3);
+    y.dv                       := nullify(x.dv);
     return y;
   end function nullify;
 

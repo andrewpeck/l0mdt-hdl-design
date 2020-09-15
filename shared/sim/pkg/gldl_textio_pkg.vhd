@@ -94,7 +94,7 @@ package body gldl_l0mdt_textio_pkg is
       )
     );
 
-    report "Read line : " & integer'image(BCID) &
+    report "##### HIT : " & integer'image(BCID) &
     " - " & integer'image(global_time) &
     " - " & integer'image(tube_global) &
     " - " & integer'image(tube_local) &
@@ -112,43 +112,70 @@ package body gldl_l0mdt_textio_pkg is
   -- read SLC 
   -----------------------------------------------  
   procedure READ(L:inout LINE; VALUE : out slc_rx_rt) is
-    h_reserved : std_logic_vector(SL_HEADER_H_RESERVED_LEN-1 downto 0);
-    tcoverflow : std_logic;
-    nmtc_sl : unsigned(SL_HEADER_NMTC_SL_LEN-1 downto 0);
-    nmtc_mdt : unsigned(SL_HEADER_NMTC_MDT_LEN-1 downto 0);
-    nslc : unsigned(SL_HEADER_NSLC_LEN-1 downto 0);
-    bcid : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
-
-    t_reserved : std_logic_vector(SL_TRAILER_T_RESERVED_LEN-1 downto 0);
-    crc : std_logic_vector(SL_TRAILER_CRC_LEN-1 downto 0);
-    fiberid : unsigned(SL_TRAILER_FIBERID_LEN-1 downto 0);
-    slid : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
-    comma : std_logic_vector(SL_TRAILER_COMMA_LEN-1 downto 0);
-
-    header : sl_header_rt;
-    slcid : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
-    tcsent : std_logic;
-    poseta : signed(SLC_COMMON_POSETA_LEN-1 downto 0);
-    posphi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
-    sl_pt : unsigned(SLC_COMMON_SL_PT_LEN-1 downto 0);
-    sl_ptthresh : unsigned(SLC_COMMON_SL_PTTHRESH_LEN-1 downto 0);
-    sl_charge : std_logic;
-    cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    trailer : sl_trailer_rt;
-
-    b_reserved : std_logic_vector(SLC_BARREL_B_RESERVED_LEN-1 downto 0);
-    rpc3_posz : unsigned(SLC_BARREL_RPC3_POSZ_LEN-1 downto 0);
-    rpc2_posz : unsigned(SLC_BARREL_RPC2_POSZ_LEN-1 downto 0);
-    rpc1_posz : unsigned(SLC_BARREL_RPC1_POSZ_LEN-1 downto 0);
-    rpc0_posz : unsigned(SLC_BARREL_RPC0_POSZ_LEN-1 downto 0);
-
-    data_valid : std_logic;
-    common : slc_common_rt;
-    specific : std_logic_vector(SLC_RX_SPECIFIC_LEN-1 downto 0);
+    variable BCID        : integer; 
+    variable ToA         : integer; 
+    variable nTC         : integer; 
+    variable TC_sent     : integer; 
+    variable TC_id       : integer; 
+    variable Eta         : integer; 
+    variable Phi         : integer; 
+    variable pT_thr      : integer; 
+    variable Charge      : integer; 
+    variable Coincidence : integer; 
+    variable z_RPC0      : integer; 
+    variable z_RPC1      : integer; 
+    variable z_RPC2      : integer; 
+    variable z_RPC3      : integer; 
 
 
   begin
+    READ(L,BCID        );
+    READ(L,ToA         );
+    READ(L,nTC         );
+    READ(L,TC_sent     );
+    READ(L,TC_id       );
+    READ(L,Eta         );
+    READ(L,Phi         );
+    READ(L,pT_thr      );
+    READ(L,Charge      );
+    READ(L,Coincidence );
+    READ(L,z_RPC0      );
+    READ(L,z_RPC1      );
+    READ(L,z_RPC2      );
+    READ(L,z_RPC3      );
 
+    VALUE := (
+      BCID        => to_unsigned(BCID       , SL_HEADER_BCID_LEN) , 
+      ToA         => to_unsigned(ToA        , 64) , 
+      nTC         => to_unsigned(nTC        , SL_HEADER_NSLC_LEN) , 
+      TC_sent     => to_unsigned(TC_sent    , SL_HEADER_NMTC_SL_LEN) , 
+      TC_id       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN) , 
+      Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
+      Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
+      pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
+      Charge      => std_logic_vector(to_unsigned(Charge     ,1))(0), 
+      Coincidence => to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN) , 
+      z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
+      z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
+      z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
+      z_RPC3      => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN) , 
+      dv          => '1'
+    );
+
+    report "##### SLC : " & integer'image(BCID) &
+    " - " & integer'image(ToA) &
+    " - " & integer'image(nTC) &
+    " - " & integer'image(TC_sent) &
+    " - " & integer'image(TC_id) &
+    " - " & integer'image(Eta) &
+    " - " & integer'image(Phi) &
+    " - " & integer'image(pT_thr) &
+    " - " & integer'image(Charge) &
+    " - " & integer'image(Coincidence) &
+    " - " & integer'image(z_RPC0) &
+    " - " & integer'image(z_RPC1) &
+    " - " & integer'image(z_RPC2) &
+    " - " & integer'image(z_RPC3);
   end procedure;
 
   -----------------------------------------------

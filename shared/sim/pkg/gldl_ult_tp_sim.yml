@@ -36,3 +36,4 @@ HDL_Types:
   - z_RPC1      : [ type : signed , length : SLC_BARREL_RPC1_POSZ_LEN]
   - z_RPC2      : [ type : signed , length : SLC_BARREL_RPC2_POSZ_LEN]
   - z_RPC3      : [ type : signed , length : SLC_BARREL_RPC3_POSZ_LEN]
+  - dv          : [ type : logic]
