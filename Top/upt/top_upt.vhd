@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine 
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2020-09-14
+-- last update: 2020-09-15
 -- ===========================================================
 
 library ieee;
@@ -13,8 +13,8 @@ library shared_lib;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
+--use shared_lib.common_constants_pkg.all;
+--use shared_lib.common_types_pkg.all;
 
 entity top_upt is
     generic (
@@ -25,9 +25,9 @@ entity top_upt is
         clk : in std_logic;
         i_rst : in std_logic;
         i_slc: in pl2ptcalc_rvt;
-        i_segment_i : in sf2pt_rvt;
-        i_segment_m : in sf2pt_rvt;
-        i_segment_o : in sf2pt_rvt;
+        i_segment_i : in sf2ptcalc_rvt;
+        i_segment_m : in sf2ptcalc_rvt;
+        i_segment_o : in sf2ptcalc_rvt;
         o_mtc : out ptcalc2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
     );
 end top_upt;
@@ -46,9 +46,9 @@ architecture behav of top_upt is
             --ap_idle : out std_logic;
             --ap_ready : out std_logic;
             pl2ptcalc_v : in pl2ptcalc_rvt;
-            sf2ptcalc_inn_v : in sf2pt_rvt;
-            sf2ptcalc_mid_v : in sf2pt_rvt;
-            sf2ptcalc_out_v : in sf2pt_rvt;
+            sf2ptcalc_inn_v : in sf2ptcalc_rvt;
+            sf2ptcalc_mid_v : in sf2ptcalc_rvt;
+            sf2ptcalc_out_v : in sf2ptcalc_rvt;
             ptcalc2mtc_v : out ptcalc2mtc_rvt;
             ptcalc2mtc_v_ap_vld : out std_logic
             );
