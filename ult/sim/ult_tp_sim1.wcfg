@@ -39,7 +39,7 @@
             <top_module name="roi_lut_bola3" />
             <top_module name="roi_lut_bola3_slope" />
             <top_module name="roi_types_pkg" />
-            <top_module name="some_functions_pkg" />
+            <top_module name="vhdl2008_functions_pkg" />
             <top_module name="tar_ctrl" />
             <top_module name="tar_pkg" />
             <top_module name="tf_ctrl" />

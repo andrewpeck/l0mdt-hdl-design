@@ -13,13 +13,15 @@ HDL_Types:
 #############################################################  
 # mdt
 - MDT_GLOBAL_AXI_LEN  : [ qualifier: constant , type: integer , value: 19 ]
-- MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 , ~ : mm ]
+- MDT_GLOBAL_AXI_MULT : [ qualifier: constant , type: real , value: 32.0 ]
 # MDT_LOCAL_AXI_LEN   : [ qualifier: constant , type: integer , value: 15 ] # 14 o 15?
 # MDT_LOCAL_AXI_MULT  : [ qualifier: constant , type: real , value: 32.0 , ~ : mm]
-- MDT_LOCAL_X_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
-- MDT_LOCAL_Y_LEN    : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
-- MDT_RADIUS_LEN       : [ qualifier: constant , type: integer , value: HEG2SFHIT_RADIUS_LEN ]
-- MDT_RADIUS_MULT: [ qualifier: constant , type: real , value: 32.0 ]
+- MDT_LOCAL_X_LEN     : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALX_LEN ] #14 o 15?
+- MDT_LOCAL_X_MULT    : [ qualifier: constant , type: real , value: HEG2SFHIT_LOCALX_MULT]
+- MDT_LOCAL_Y_LEN     : [ qualifier: constant , type: integer , value: HEG2SFHIT_LOCALY_LEN ] #14 o 15?
+- MDT_LOCAL_Y_MULT    : [ qualifier: constant , type: real , value: HEG2SFHIT_LOCALY_MULT]
+- MDT_RADIUS_LEN      : [ qualifier: constant , type: integer , value: HEG2SFHIT_RADIUS_LEN ]
+- MDT_RADIUS_MULT     : [ qualifier: constant , type: real , value: 32.0 ]
 
 #############################################################
 # INTERFACES TYPES
@@ -52,7 +54,7 @@ HDL_Types:
 
 # SLC_B_SPARE_LEN:    [ qualifier: constant , type: integer , value: 8 ]
 # SLC_COIN_TYPE_LEN:  [ qualifier: constant , type: integer , value: 3 ]
-- SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: 10 ]
+- SLC_Z_RPC_LEN:      [ qualifier: constant , type: integer , value: SLC_BARREL_RPC0_POSZ_LEN ] #10
 - SLC_Z_RPC_MULT:     [qualifier: constant  , type: real    , value: 13.0 ]
 
 # slc specific endcap
@@ -100,7 +102,12 @@ HDL_Types:
 - UCM_VEC_ANG_LEN    : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_ANG_LEN ]
 - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
 # - UCM_VEC_ANG_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
+<<<<<<< HEAD
 - UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_POS_LEN ] # 14
+=======
+
+- UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_POS_LEN ] # 10
+>>>>>>> origin/devel
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]
 # UCM_ETA_LEN     : [ qualifier: constant , type: integer , value: 8 ]

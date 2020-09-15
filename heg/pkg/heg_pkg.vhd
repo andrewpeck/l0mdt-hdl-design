@@ -44,6 +44,17 @@ package heg_pkg is
   function nullify(x: heg_ctrl2hp_bus_at) return heg_ctrl2hp_bus_at;
   function nullify(x: heg_ctrl2hp_bus_avt) return heg_ctrl2hp_bus_avt;
 
+  type heg_ctrl2sf_rt is record
+    rst : std_logic;
+    enable : std_logic;
+    window_valid : std_logic;
+  end record heg_ctrl2sf_rt;
+  constant HEG_CTRL2SF_LEN : integer := 3;
+  subtype heg_ctrl2sf_rvt is std_logic_vector(HEG_CTRL2SF_LEN-1 downto 0);
+  function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt;
+  function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt;
+  function nullify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rt;
+
   type heg_hp2bm_bus_at is array(integer range <>) of hp_hp2bm_rt;
   type heg_hp2bm_bus_avt is array(integer range <>) of hp_hp2bm_rvt;
   function vectorify(x: heg_hp2bm_bus_at) return heg_hp2bm_bus_avt;
@@ -203,6 +214,31 @@ package body heg_pkg is
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt is
+    variable y : heg_ctrl2sf_rvt;
+  begin
+    y(2 downto 2)              := vectorify(x.rst);
+    y(1 downto 1)              := vectorify(x.enable);
+    y(0 downto 0)              := vectorify(x.window_valid);
+    return y;
+  end function vectorify;
+  function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt is
+    variable y : heg_ctrl2sf_rt;
+  begin
+    y.rst                      := structify(x(2 downto 2));
+    y.enable                   := structify(x(1 downto 1));
+    y.window_valid             := structify(x(0 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rt is
+    variable y : heg_ctrl2sf_rt;
+  begin
+    y.rst                      := nullify(x.rst);
+    y.enable                   := nullify(x.enable);
+    y.window_valid             := nullify(x.window_valid);
     return y;
   end function nullify;
 

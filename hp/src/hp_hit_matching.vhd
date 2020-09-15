@@ -40,12 +40,12 @@ entity hp_matching is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    time_offset         : in unsigned(7 downto 0);
+    -- time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
     i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     -- i_SLc_rpc_z         : in SLc_zpos_st;
-    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
+    -- i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
     -- i_SLc_Rho0          : in SLc_zpos_st;
     -- MDT hit
@@ -79,7 +79,7 @@ begin
 
   o_hit_valid <= space_valid and time_valid;
 
-  -- time_low_limit <= (others => '0');
+  -- time_low_limit <= to_unsigned( to_integer(i_SLc_BCID) ,17); 
   -- time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
 
   validation_proc : process(clk,rst)

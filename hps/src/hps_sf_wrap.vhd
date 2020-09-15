@@ -43,7 +43,7 @@ entity hps_sf_wrap is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    i_control        : in heg_ctrl2hp_rvt;
+    i_control        : in heg_ctrl2sf_rvt;
     i_slc_data       : in heg2sfslc_rvt;
     i_mdt_data       : in heg2sfhit_rvt;
     --
@@ -66,6 +66,18 @@ architecture beh of hps_sf_wrap is
   signal i_mdt_hit_r  : heg2sfhit_rt;
   signal i_seed_v     : csf_seed_rvt;
   signal i_mdt_hit_v  : heg2sfhit_rvt;
+
+  -- LSF
+  signal slc_roi_valid  : std_logic;         
+  signal slc_roi        : std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
+  signal mdt_hit_valid  : std_logic; 
+  signal mdt_hit        : std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
+  signal lsf            : std_logic_vector(SF2PTCALC_LEN-1 downto 0);
+  signal lsf_re         : std_logic;
+  signal hba_max_clocks : std_logic_vector(9 downto 0);
+  signal mdt_hit_af     : std_logic;
+  signal slc_roi_af     : std_logic;
+  signal lsf_empty      : std_logic;
 
 begin
 
@@ -135,6 +147,23 @@ begin
 
     -- LSF
     EN_LSF : if c_SF_TYPE = '1' generate
+
+
+      -- LSF : entity lsf_lib.lsf_vhd_wrapper
+      -- port map(
+      --   clock           => clk,
+      --   reset           => rst,
+      --   slc_roi_valid   => 
+      --   slc_roi         => 
+      --   mdt_hit_valid   => 
+      --   mdt_hit         => 
+      --   lsf             => 
+      --   lsf_re          => 
+      --   hba_max_clocks  => 
+      --   mdt_hit_af      => 
+      --   slc_roi_af      => 
+      --   lsf_empty       => 
+      -- );
       
     end generate;
 

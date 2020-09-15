@@ -1,0 +1,7 @@
+Top/hps_lsf/prj_cfg.vhd 2008
+hps/top_hps.vhd
+shared/shared_lib.src
+hp/hp_lib.src
+heg/heg_lib.src
+hps/hps_lib.src
+csf/csf_lib.src

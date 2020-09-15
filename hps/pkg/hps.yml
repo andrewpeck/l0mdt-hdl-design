@@ -14,7 +14,7 @@ __config__:
 
 HDL_Types:
 
-- hps_ctrl2sf : [ array : open , type : heg_ctrl2hp]
+- hps_ctrl2sf : [ array : open , type : heg_ctrl2sf]
 
 # - hps_bm2sf   : [ array : open , type : hps2sf] 
 
