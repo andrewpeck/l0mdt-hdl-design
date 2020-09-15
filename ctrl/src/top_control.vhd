@@ -144,7 +144,7 @@ begin
       -- axi clock and reset
       axi_clk      => axi_clk,
       clk40        => clk40,
-      clkpipe      => clkpipe,
+      --clkpipe      => clkpipe,
       axi_rst_n(0) => axi_reset_n,
 
       -- system clock and reset
@@ -431,7 +431,7 @@ begin
 
   h2s_interface_inst : entity ctrl_lib.H2S_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => h2s_readmosi,
       slave_readmiso  => h2s_readmiso,
@@ -446,7 +446,7 @@ begin
 
   tar_interface_inst : entity ctrl_lib.TAR_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => tar_readmosi,
       slave_readmiso  => tar_readmiso,
@@ -461,7 +461,7 @@ begin
 
   mtc_interface_inst : entity ctrl_lib.MTC_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => mtc_readmosi,
       slave_readmiso  => mtc_readmiso,
@@ -476,7 +476,7 @@ begin
 
   ucm_interface_inst : entity ctrl_lib.UCM_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => ucm_readmosi,
       slave_readmiso  => ucm_readmiso,
@@ -491,7 +491,7 @@ begin
 
   daq_interface_inst : entity ctrl_lib.DAQ_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => daq_readmosi,
       slave_readmiso  => daq_readmiso,
@@ -506,7 +506,7 @@ begin
 
   tf_interface_inst : entity ctrl_lib.TF_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => tf_readmosi,
       slave_readmiso  => tf_readmiso,
@@ -521,7 +521,7 @@ begin
 
   mpl_interface_inst : entity ctrl_lib.MPL_interface
     port map (
-      clk_axi         => clkpipe,
+      clk_axi         => clk40,
       reset_axi_n     => std_logic1,
       slave_readmosi  => mpl_readmosi,
       slave_readmiso  => mpl_readmiso,
