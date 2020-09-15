@@ -27,6 +27,8 @@ package gldl_l0mdt_textio_pkg is
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
+  procedure READ(L:inout LINE; VALUE : out slc_rx_rt);
+
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
 
@@ -103,6 +105,49 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(tube_z) &
     " - " & integer'image(tube_rho) &
     " - " & integer'image(tube_radius);
+
+  end procedure;
+
+  -----------------------------------------------
+  -- read SLC 
+  -----------------------------------------------  
+  procedure READ(L:inout LINE; VALUE : out slc_rx_rt) is
+    h_reserved : std_logic_vector(SL_HEADER_H_RESERVED_LEN-1 downto 0);
+    tcoverflow : std_logic;
+    nmtc_sl : unsigned(SL_HEADER_NMTC_SL_LEN-1 downto 0);
+    nmtc_mdt : unsigned(SL_HEADER_NMTC_MDT_LEN-1 downto 0);
+    nslc : unsigned(SL_HEADER_NSLC_LEN-1 downto 0);
+    bcid : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+
+    t_reserved : std_logic_vector(SL_TRAILER_T_RESERVED_LEN-1 downto 0);
+    crc : std_logic_vector(SL_TRAILER_CRC_LEN-1 downto 0);
+    fiberid : unsigned(SL_TRAILER_FIBERID_LEN-1 downto 0);
+    slid : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
+    comma : std_logic_vector(SL_TRAILER_COMMA_LEN-1 downto 0);
+
+    header : sl_header_rt;
+    slcid : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
+    tcsent : std_logic;
+    poseta : signed(SLC_COMMON_POSETA_LEN-1 downto 0);
+    posphi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
+    sl_pt : unsigned(SLC_COMMON_SL_PT_LEN-1 downto 0);
+    sl_ptthresh : unsigned(SLC_COMMON_SL_PTTHRESH_LEN-1 downto 0);
+    sl_charge : std_logic;
+    cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
+    trailer : sl_trailer_rt;
+
+    b_reserved : std_logic_vector(SLC_BARREL_B_RESERVED_LEN-1 downto 0);
+    rpc3_posz : unsigned(SLC_BARREL_RPC3_POSZ_LEN-1 downto 0);
+    rpc2_posz : unsigned(SLC_BARREL_RPC2_POSZ_LEN-1 downto 0);
+    rpc1_posz : unsigned(SLC_BARREL_RPC1_POSZ_LEN-1 downto 0);
+    rpc0_posz : unsigned(SLC_BARREL_RPC0_POSZ_LEN-1 downto 0);
+
+    data_valid : std_logic;
+    common : slc_common_rt;
+    specific : std_logic_vector(SLC_RX_SPECIFIC_LEN-1 downto 0);
+
+
+  begin
 
   end procedure;
 

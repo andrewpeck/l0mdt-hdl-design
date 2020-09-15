@@ -272,7 +272,7 @@ begin
   -------------------------------------------------------------------------------------
   HIT_SLC: process ( rst, clk)
 
-    file input_slc_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
+    file input_slc_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
     -- variable row                  : line;
     -- variable row_counter          : integer := 0;
 
@@ -290,6 +290,18 @@ begin
     -- variable v_mdt_ext_counts     : infifo_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
 
   begin
+
+    if rising_edge(clk) then
+      if rst = '1' then
+        
+      else
+
+        -- write to DUT
+
+        -- read from file
+
+      end if;
+    end if;
 
   end process;
   -------------------------------------------------------------------------------------

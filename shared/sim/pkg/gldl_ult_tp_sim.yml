@@ -19,4 +19,20 @@ HDL_Types:
 - TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
 
 - tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps]
-# in_tarfifo:
+
+
+- input_slc:
+  - BCID        : [ type : unsigned , length : SL_HEADER_BCID_LEN]
+  - ToA         : [ type : unsigned , length : 64]
+  - nTC         : [ type : unsigned , length : SL_HEADER_NSLC_LEN]
+  - TC_sent     : [ type : unsigned , length : SL_HEADER_NMTC_SL_LEN]
+  - TC_id       : [ type : unsigned , length : SL_HEADER_NSLC_LEN]
+  - Eta         : [ type : signed   , length : SLC_COMMON_POSETA_LEN]
+  - Phi         : [ type : unsigned , length : SLC_COMMON_POSPHI_LEN]
+  - pT_thr      : [ type : unsigned , length : SLC_COMMON_SL_PTTHRESH_LEN]
+  - Charge      : [ type : logic]
+  - Coincidence : [ type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - z_RPC0      : [ type : signed , length : SLC_BARREL_RPC0_POSZ_LEN]
+  - z_RPC1      : [ type : signed , length : SLC_BARREL_RPC1_POSZ_LEN]
+  - z_RPC2      : [ type : signed , length : SLC_BARREL_RPC2_POSZ_LEN]
+  - z_RPC3      : [ type : signed , length : SLC_BARREL_RPC3_POSZ_LEN]
