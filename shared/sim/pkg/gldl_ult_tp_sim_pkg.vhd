@@ -35,28 +35,26 @@ package gldl_ult_tp_sim_pkg is
   function nullify(x: tar2hps_tb_at) return tar2hps_tb_at;
   function nullify(x: tar2hps_tb_avt) return tar2hps_tb_avt;
 
-  type input_slc_rt is record
-    BCID : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+  type input_slc_b_rt is record
     ToA : unsigned(64-1 downto 0);
-    nTC : unsigned(SL_HEADER_NSLC_LEN-1 downto 0);
-    TC_sent : unsigned(SL_HEADER_NMTC_SL_LEN-1 downto 0);
-    TC_id : unsigned(SL_HEADER_NSLC_LEN-1 downto 0);
-    Eta : signed(SLC_COMMON_POSETA_LEN-1 downto 0);
-    Phi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
-    pT_thr : unsigned(SLC_COMMON_SL_PTTHRESH_LEN-1 downto 0);
-    Charge : std_logic;
-    Coincidence : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
-    z_RPC0 : signed(SLC_BARREL_RPC0_POSZ_LEN-1 downto 0);
-    z_RPC1 : signed(SLC_BARREL_RPC1_POSZ_LEN-1 downto 0);
-    z_RPC2 : signed(SLC_BARREL_RPC2_POSZ_LEN-1 downto 0);
-    z_RPC3 : signed(SLC_BARREL_RPC3_POSZ_LEN-1 downto 0);
-    dv : std_logic;
-  end record input_slc_rt;
-  constant INPUT_SLC_LEN : integer := 165;
-  subtype input_slc_rvt is std_logic_vector(INPUT_SLC_LEN-1 downto 0);
-  function vectorify(x: input_slc_rt) return input_slc_rvt;
-  function structify(x: input_slc_rvt) return input_slc_rt;
-  function nullify(x: input_slc_rt) return input_slc_rt;
+    slc : slc_rx_rt;
+  end record input_slc_b_rt;
+  constant INPUT_SLC_B_LEN : integer := 257;
+  subtype input_slc_b_rvt is std_logic_vector(INPUT_SLC_B_LEN-1 downto 0);
+  function vectorify(x: input_slc_b_rt) return input_slc_b_rvt;
+  function structify(x: input_slc_b_rvt) return input_slc_b_rt;
+  function nullify(x: input_slc_b_rt) return input_slc_b_rt;
+
+  constant TB_SLC_FIFO_WIDTH : integer := 32;
+
+  type slc_tb_at is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rt;
+  type slc_tb_avt is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rvt;
+  function vectorify(x: slc_tb_at) return slc_tb_avt;
+  function vectorify(x: slc_tb_at) return std_logic_vector;
+  function structify(x: slc_tb_avt) return slc_tb_at;
+  function structify(x: std_logic_vector) return slc_tb_at;
+  function nullify(x: slc_tb_at) return slc_tb_at;
+  function nullify(x: slc_tb_avt) return slc_tb_avt;
 
 end package gldl_ult_tp_sim_pkg;
 
@@ -145,64 +143,78 @@ package body gldl_ult_tp_sim_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: input_slc_rt) return input_slc_rvt is
-    variable y : input_slc_rvt;
+  function vectorify(x: input_slc_b_rt) return input_slc_b_rvt is
+    variable y : input_slc_b_rvt;
   begin
-    y(164 downto 153)          := vectorify(x.BCID);
-    y(152 downto 89)           := vectorify(x.ToA);
-    y(88 downto 86)            := vectorify(x.nTC);
-    y(85 downto 83)            := vectorify(x.TC_sent);
-    y(82 downto 80)            := vectorify(x.TC_id);
-    y(79 downto 66)            := vectorify(x.Eta);
-    y(65 downto 57)            := vectorify(x.Phi);
-    y(56 downto 53)            := vectorify(x.pT_thr);
-    y(52 downto 52)            := vectorify(x.Charge);
-    y(51 downto 49)            := vectorify(x.Coincidence);
-    y(48 downto 37)            := vectorify(x.z_RPC0);
-    y(36 downto 25)            := vectorify(x.z_RPC1);
-    y(24 downto 13)            := vectorify(x.z_RPC2);
-    y(12 downto 1)             := vectorify(x.z_RPC3);
-    y(0 downto 0)              := vectorify(x.dv);
+    y(256 downto 193)          := vectorify(x.ToA);
+    y(192 downto 0)            := vectorify(x.slc);
     return y;
   end function vectorify;
-  function structify(x: input_slc_rvt) return input_slc_rt is
-    variable y : input_slc_rt;
+  function structify(x: input_slc_b_rvt) return input_slc_b_rt is
+    variable y : input_slc_b_rt;
   begin
-    y.BCID                     := structify(x(164 downto 153));
-    y.ToA                      := structify(x(152 downto 89));
-    y.nTC                      := structify(x(88 downto 86));
-    y.TC_sent                  := structify(x(85 downto 83));
-    y.TC_id                    := structify(x(82 downto 80));
-    y.Eta                      := structify(x(79 downto 66));
-    y.Phi                      := structify(x(65 downto 57));
-    y.pT_thr                   := structify(x(56 downto 53));
-    y.Charge                   := structify(x(52 downto 52));
-    y.Coincidence              := structify(x(51 downto 49));
-    y.z_RPC0                   := structify(x(48 downto 37));
-    y.z_RPC1                   := structify(x(36 downto 25));
-    y.z_RPC2                   := structify(x(24 downto 13));
-    y.z_RPC3                   := structify(x(12 downto 1));
-    y.dv                       := structify(x(0 downto 0));
+    y.ToA                      := structify(x(256 downto 193));
+    y.slc                      := structify(x(192 downto 0));
     return y;
   end function structify;
-  function nullify(x: input_slc_rt) return input_slc_rt is
-    variable y : input_slc_rt;
+  function nullify(x: input_slc_b_rt) return input_slc_b_rt is
+    variable y : input_slc_b_rt;
   begin
-    y.BCID                     := nullify(x.BCID);
     y.ToA                      := nullify(x.ToA);
-    y.nTC                      := nullify(x.nTC);
-    y.TC_sent                  := nullify(x.TC_sent);
-    y.TC_id                    := nullify(x.TC_id);
-    y.Eta                      := nullify(x.Eta);
-    y.Phi                      := nullify(x.Phi);
-    y.pT_thr                   := nullify(x.pT_thr);
-    y.Charge                   := nullify(x.Charge);
-    y.Coincidence              := nullify(x.Coincidence);
-    y.z_RPC0                   := nullify(x.z_RPC0);
-    y.z_RPC1                   := nullify(x.z_RPC1);
-    y.z_RPC2                   := nullify(x.z_RPC2);
-    y.z_RPC3                   := nullify(x.z_RPC3);
-    y.dv                       := nullify(x.dv);
+    y.slc                      := nullify(x.slc);
+    return y;
+  end function nullify;
+
+  function vectorify(x: slc_tb_at) return slc_tb_avt is
+    variable y :  slc_tb_avt;
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: slc_tb_at) return std_logic_vector is
+    variable y : std_logic_vector(x'length*193-1 downto 0);
+    variable msb : integer := y'length-1;
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-193) := vectorify(x(i));
+      msb := msb - 193 -1;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: slc_tb_avt) return slc_tb_at is
+    variable y :  slc_tb_at;
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return slc_tb_at is
+    variable y :  slc_tb_at;
+    variable msb : integer := x'length-1;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-193));
+      msb := msb - 193 -1;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: slc_tb_at) return slc_tb_at is
+    variable y :  slc_tb_at;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: slc_tb_avt) return slc_tb_avt is
+    variable y :  slc_tb_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 

@@ -27,7 +27,7 @@ package gldl_l0mdt_textio_pkg is
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
-  procedure READ(L:inout LINE; VALUE : out input_slc_rt);
+  procedure READ(L:inout LINE; VALUE : out input_slc_b_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
@@ -111,21 +111,28 @@ package body gldl_l0mdt_textio_pkg is
   -----------------------------------------------
   -- read SLC 
   -----------------------------------------------  
-  procedure READ(L:inout LINE; VALUE : out input_slc_rt) is
-    variable BCID        : integer; 
-    variable ToA         : integer; 
-    variable nTC         : integer; 
-    variable TC_sent     : integer; 
-    variable TC_id       : integer; 
-    variable Eta         : integer; 
-    variable Phi         : integer; 
-    variable pT_thr      : integer; 
-    variable Charge      : integer; 
-    variable Coincidence : integer; 
-    variable z_RPC0      : integer; 
-    variable z_RPC1      : integer; 
-    variable z_RPC2      : integer; 
-    variable z_RPC3      : integer; 
+  procedure READ(L:inout LINE; VALUE : out input_slc_b_rt) is
+    variable BCID         : integer; 
+    variable ToA          : integer; 
+    variable nTC          : integer; 
+    variable TC_sent      : integer; 
+    variable TC_id        : integer; 
+    variable Eta          : integer; 
+    variable Phi          : integer; 
+    variable pT_thr       : integer; 
+    variable Charge       : integer; 
+    variable Coincidence  : integer; 
+    variable z_RPC0       : integer; 
+    variable z_RPC1       : integer; 
+    variable z_RPC2       : integer; 
+    variable z_RPC3       : integer; 
+
+    variable header       : sl_header_rt;
+    variable trailer      : sl_trailer_rt;
+    variable common       : slc_common_rt;
+    variable specific     : slc_barrel_rt;
+    
+    variable tcoverflow : std_logic;
 
 
   begin
@@ -144,23 +151,72 @@ package body gldl_l0mdt_textio_pkg is
     READ(L,z_RPC2      );
     READ(L,z_RPC3      );
 
-    VALUE := (
-      BCID        => to_unsigned(BCID       , SL_HEADER_BCID_LEN) , 
-      ToA         => to_unsigned(ToA        , 64) , 
-      nTC         => to_unsigned(nTC        , SL_HEADER_NSLC_LEN) , 
-      TC_sent     => to_unsigned(TC_sent    , SL_HEADER_NMTC_SL_LEN) , 
-      TC_id       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN) , 
-      Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
-      Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
-      pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
-      Charge      => std_logic(to_unsigned(Charge     ,1)(0)), 
-      Coincidence => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)) , 
-      z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
-      z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
-      z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
-      z_RPC3      => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN) , 
-      dv          => '1'
+    if nTC > 3 then 
+      tcoverflow := '1';
+    else
+      tcoverflow := '0';
+    end if;
+
+    header := (
+      h_reserved => (others => '1'),
+      tcoverflow => tcoverflow,
+      nmtc_sl    => to_unsigned(nTC        , SL_HEADER_NSLC_LEN),
+      nmtc_mdt   => (others => '1'),
+      nslc       => (others => '1'),
+      bcid       => to_unsigned(BCID       , SL_HEADER_BCID_LEN)
     );
+
+    trailer :=(
+      t_reserved => (others => '1'),
+      crc        => (others => '1'),
+      fiberid    => (others => '1'),
+      slid       => (others => '1'),
+      comma      => (others => '1')
+    );
+
+    common := (
+      header      => header,
+      slcid       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN),
+      tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
+      poseta      => to_signed(Eta          , SLC_COMMON_POSETA_LEN) ,
+      posphi      => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
+      sl_pt       => ( others => '0'),
+      sl_ptthresh => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
+      sl_charge   => std_logic(to_unsigned(Charge     ,1)(0)), 
+      cointype    => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)), 
+      trailer     => trailer
+    );
+
+    specific :=(
+      b_reserved  => (others => '0'),
+      rpc3_posz   => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) ,
+      rpc2_posz   => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) ,
+      rpc1_posz   => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) ,
+      rpc0_posz   => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
+    );
+
+    VALUE := (
+      ToA => to_unsigned(ToA , 64) , 
+      slc => (
+        data_Valid  => '1',
+        common      => common,
+        specific    => std_logic_vector(vectorify(specific))
+      )
+    );
+
+    -- BCID        => to_unsigned(BCID       , SL_HEADER_BCID_LEN) , 
+    -- nTC         => to_unsigned(nTC        , SL_HEADER_NSLC_LEN) , 
+    -- TC_sent     => to_unsigned(TC_sent    , SL_HEADER_NMTC_SL_LEN) , 
+    -- TC_id       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN) , 
+    -- Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
+    -- Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
+    -- pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
+    -- Charge      => std_logic(to_unsigned(Charge     ,1)(0)), 
+    -- Coincidence => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)) , 
+    -- z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
+    -- z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
+    -- z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
+    -- z_RPC3      => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
 
     report "##### SLC : " & integer'image(BCID) &
     " - " & integer'image(ToA) &
