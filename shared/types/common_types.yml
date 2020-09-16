@@ -197,13 +197,13 @@ HDL_Types:
 
 
 
-- sf2pt:
-  - data_valid  : [ type: logic]
-  - muid        : [ type: slc_muid]
-  - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
-  - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
-  - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
-  - quality     : [ type: logic]
+# - sf2pt:
+#   - data_valid  : [ type: logic]
+#   - muid        : [ type: slc_muid]
+#   - chamber_ieta  : [ type: unsigned , length: SLC_CHAMBER_LEN ]
+#   - pos         : [ type: signed, length: SF_SEG_POS_LEN ]
+#   - angle       : [ type: signed, length: SF_SEG_ANG_LEN ]
+#   - quality     : [ type: logic]
 
 # - sf2pt   : [ type : logic , length : SF_SEG_DATA_LEN]
 

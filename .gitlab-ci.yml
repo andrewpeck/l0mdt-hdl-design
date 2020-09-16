@@ -7,6 +7,7 @@ include:
     - local: '/Top/csf/gitlab-ci.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
     - local: '/Top/tf1/gitlab-ci.yml'
+    - local: '/Top/upt/gitlab-ci.yml'
     - local: '/Top/ucm/gitlab-ci.yml'
     - local: '/Top/hp/gitlab-ci.yml'
     - local: '/Top/heg/gitlab-ci.yml'
