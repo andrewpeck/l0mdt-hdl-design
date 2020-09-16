@@ -44,6 +44,7 @@ entity sagitta_calculator is
     i_seg0            : in sf2ptcalc_rvt;
     i_seg1            : in sf2ptcalc_rvt;
     i_seg2            : in sf2ptcalc_rvt;
+    o_charge          : out std_logic;
     o_inv_s           : out unsigned(INV_S_LEN-1 downto 0);
     o_dv_s            : out std_logic
   );
@@ -116,9 +117,22 @@ architecture Behavioral of sagitta_calculator is
 
     -- inv sagitta full constants/signals
     constant INV_SAGITTA_FULL_LEN : integer := DIVIDER_LEN+ M_SAGITTA_LEN +1;
-    constant SHIFT_NUM_SAGITTA : integer := 15;
+    constant SHIFT_NUM_SAGITTA : integer := 20;
     signal inv_sagitta_full : unsigned(INV_SAGITTA_FULL_LEN-1 downto 0)
         := (others => '0');
+
+            -- Segment parameters in global coordinates
+    constant BIL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
+        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
+    constant BML_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
+        := to_unsigned(integer(floor(BML_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
+    constant BOL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
+        := to_unsigned(integer(floor(BOL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
+    constant BIL_SEC3_RHO2_s : unsigned(SF_SEG_POS_LEN*2-1 downto 0)
+        := BIL_SEC3_RHO_s*BIL_SEC3_RHO_s;
+
+    -- charge signals 
+    signal q0, q1, q2, q3, q4 : std_logic := '0';
 
     --COMPONENT sqrt_m_io_ROM
     --PORT (
@@ -180,7 +194,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => '1',
-        addra => std_logic_vector(den_sagitta_red),
+        addra => std_logic_vector(abs(den_sagitta_red)),
         douta => rec_den_sagitta
     );
 
@@ -188,7 +202,7 @@ begin
     GENERIC MAP (
         MXADRB => M_SAGITTA_LEN,
         MXDATB => M_SAGITTA_LEN+1,
-        ROM_FILE => "reciprocalROM.mem"
+        ROM_FILE => "sqrt_m_io_ROM.mem"
     )
     PORT MAP (
         clka => clk,
@@ -211,7 +225,7 @@ begin
             delta_z_20 <= signed(seg2.segpos) - signed(seg0.segpos);
             delta_z_10 <= signed(seg1.segpos) - signed(seg0.segpos);
             delta_r_20 <= resize(
-                    shift_right(BOL_SEC3_RHO_s - BIL_SEC3_RHO_s, shift_m_den),
+                    shift_right(BOL_SEC3_RHO_s - BIL_SEC3_RHO_s, SHIFT_M_DEN),
                     DELTA_R_RED_LEN);
             delta_r_10 <= BML_SEC3_RHO_s - BIL_SEC3_RHO_s;
 
@@ -268,7 +282,7 @@ begin
             dvb_12_3 <= dvb_12_2;
             m_sagitta_full <= delta_z_20_ss*
                 signed('0' & rec_den_m)*
-                to_signed(integer(m_sagitta_multi),M_SAGITTA_MULTI_LEN+2);
+                to_signed(integer(M_SAGITTA_MULTI),M_SAGITTA_MULTI_LEN+2);
             delta_z_10_sss <= delta_z_10_ss;
             delta_r_10_sss <= delta_r_10_ss;
             rec_delta_beta <= unsigned(rec_den_m);
@@ -305,12 +319,19 @@ begin
             -- Clock 8
             dv8 <= dv7;
             sqrt_m_io_ss <= sqrt_m_io;
-            den_sagitta_red <=
-                resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA),
+            if den_sagitta < 0 then
+                den_sagitta_red <=
+                resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) + 1 ,
                     DEN_SAGITTA_RED_LEN);
-
+                q0 <= '0';
+            else
+                den_sagitta_red <= resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) + 1 ,
+                    DEN_SAGITTA_RED_LEN);
+                q0 <= '1';
+            end if;
             -- Clock 9
             dv9 <= dv8;
+            q1 <= q0;
             sqrt_m_io_sss <= sqrt_m_io_ss;
 --            if to_integer(abs(den_sagitta_red)) < 2**16 then
 --                rec_den_sagitta <= reciprocalROM(to_integer(abs(den_sagitta_red)));
@@ -320,15 +341,18 @@ begin
 
             -- Clock 10 (rec_den_sagitta now available)
             dv10 <= dv9;
+            q2 <= q1;
             sqrt_m_io_ssss <= sqrt_m_io_sss;
 
             -- Clock 11
             dv11 <= dv10;
+            q3 <= q2;
             inv_sagitta_full <=
                 unsigned(sqrt_m_io_ssss)*unsigned(rec_den_sagitta);
 
             -- Clock 12
             o_dv_s <= dv11;
+            o_charge <= q3;
             o_inv_s <= resize(
                 shift_right(inv_sagitta_full,
                     DIVIDER_LEN+SHIFT_DEN_SAGITTA-SHIFT_NUM_SAGITTA),

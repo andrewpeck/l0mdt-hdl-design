@@ -18,20 +18,20 @@
             <top_module name="pt_params_pkg" />
             <top_module name="pt_pkg" />
             <top_module name="sagitta_tb" />
-            <top_module name="some_functions_pkg" />
+            <top_module name="vhdl2008_functions_pkg" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="1000001fs"></ZoomEndTime>
-      <Cursor1Time time="127678fs"></Cursor1Time>
+      <ZoomStartTime time="2144fs"></ZoomStartTime>
+      <ZoomEndTime time="94253fs"></ZoomEndTime>
+      <Cursor1Time time="72414fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="292"></NameColumnWidth>
+      <NameColumnWidth column_width="267"></NameColumnWidth>
       <ValueColumnWidth column_width="75"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="36" />
+   <WVObjectSize size="38" />
    <wvobject type="logic" fp_name="/sagitta_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -79,10 +79,12 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/delta_z_20">
       <obj_property name="ElementShortName">delta_z_20[17:0]</obj_property>
       <obj_property name="ObjectShortName">delta_z_20[17:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/delta_z_10">
       <obj_property name="ElementShortName">delta_z_10[17:0]</obj_property>
       <obj_property name="ObjectShortName">delta_z_10[17:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/delta_r_20">
       <obj_property name="ElementShortName">delta_r_20[15:0]</obj_property>
@@ -101,6 +103,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/rec_den_m">
       <obj_property name="ElementShortName">rec_den_m[20:0]</obj_property>
       <obj_property name="ObjectShortName">rec_den_m[20:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv3">
       <obj_property name="ElementShortName">dv3</obj_property>
@@ -109,6 +112,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/m_sagitta_full">
       <obj_property name="ElementShortName">m_sagitta_full[55:0]</obj_property>
       <obj_property name="ObjectShortName">m_sagitta_full[55:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv4">
       <obj_property name="ElementShortName">dv4</obj_property>
@@ -117,6 +121,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/m_mult_delta_z_10">
       <obj_property name="ElementShortName">m_mult_delta_z_10[33:0]</obj_property>
       <obj_property name="ObjectShortName">m_mult_delta_z_10[33:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv5">
       <obj_property name="ElementShortName">dv5</obj_property>
@@ -125,6 +130,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/m_sagitta">
       <obj_property name="ElementShortName">m_sagitta[15:0]</obj_property>
       <obj_property name="ObjectShortName">m_sagitta[15:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv6">
       <obj_property name="ElementShortName">dv6</obj_property>
@@ -133,18 +139,21 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/m_delta_r_10">
       <obj_property name="ElementShortName">m_delta_r_10[34:0]</obj_property>
       <obj_property name="ObjectShortName">m_delta_r_10[34:0]</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/sqrt_m_io">
-      <obj_property name="ElementShortName">sqrt_m_io[16:0]</obj_property>
-      <obj_property name="ObjectShortName">sqrt_m_io[16:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv7">
       <obj_property name="ElementShortName">dv7</obj_property>
       <obj_property name="ObjectShortName">dv7</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/sqrt_m_io">
+      <obj_property name="ElementShortName">sqrt_m_io[16:0]</obj_property>
+      <obj_property name="ObjectShortName">sqrt_m_io[16:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/den_sagitta">
       <obj_property name="ElementShortName">den_sagitta[34:0]</obj_property>
       <obj_property name="ObjectShortName">den_sagitta[34:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv8">
       <obj_property name="ElementShortName">dv8</obj_property>
@@ -153,6 +162,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/den_sagitta_red">
       <obj_property name="ElementShortName">den_sagitta_red[15:0]</obj_property>
       <obj_property name="ObjectShortName">den_sagitta_red[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv10">
       <obj_property name="ElementShortName">dv10</obj_property>
@@ -161,6 +171,12 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/rec_den_sagitta">
       <obj_property name="ElementShortName">rec_den_sagitta[20:0]</obj_property>
       <obj_property name="ObjectShortName">rec_den_sagitta[20:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/sqrt_m_io_ssss">
+      <obj_property name="ElementShortName">sqrt_m_io_ssss[16:0]</obj_property>
+      <obj_property name="ObjectShortName">sqrt_m_io_ssss[16:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dv11">
       <obj_property name="ElementShortName">dv11</obj_property>
@@ -169,6 +185,7 @@
    <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/inv_sagitta_full">
       <obj_property name="ElementShortName">inv_sagitta_full[37:0]</obj_property>
       <obj_property name="ObjectShortName">inv_sagitta_full[37:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/o_dv_s">
       <obj_property name="ElementShortName">o_dv_s</obj_property>
@@ -178,5 +195,9 @@
       <obj_property name="ElementShortName">o_inv_s[14:0]</obj_property>
       <obj_property name="ObjectShortName">o_inv_s[14:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/o_charge">
+      <obj_property name="ElementShortName">o_charge</obj_property>
+      <obj_property name="ObjectShortName">o_charge</obj_property>
    </wvobject>
 </wave_config>

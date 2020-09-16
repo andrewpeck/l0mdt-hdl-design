@@ -1,9 +1,15 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 use ieee.math_real.all;
-use std.standard.all;
-use std.textio.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
 package pt_params_pkg is
 -- ComboId to ROM index function declaration
@@ -13,15 +19,22 @@ function acomboid_to_index_ram(comboid : unsigned) return std_logic_vector;
 -- pT parametrisation constants
 constant params_width : natural := 32;
 constant A0_LEN     : natural := 11;
-constant A1_LEN     : natural := 6;
-constant B0_LEN     : natural := 12;
-constant B1_LEN     : natural := 8;
-constant B2_LEN     : natural := 4;
+constant A1_LEN     : natural := 10;
+constant B0_LEN     : natural := 7;
+constant B1_LEN     : natural := 11;
+constant B2_LEN     : natural := 16;
 constant C0_LEN     : natural := 16;
-constant C1_LEN     : natural := 6;
+constant C1_LEN     : natural := 16;
 
 constant A_PARAMS_DEPTH_LEN : natural := 5;
 constant PARAMS_DEPTH_LEN : natural := 9;
+constant PHIMOD_MULTI_LEN   : integer := integer(log2(UCM2PL_PHIMOD_MULT*1000.0));
+constant ETA_MULTI_LEN : integer := integer(log2(PTCALC2MTC_MDT_ETA_MULT));
+constant B_MULT     : real := 8.0;
+constant B_MULT_LEN : integer := integer(log2(B_MULT));
+constant C_MULT     : real := 8.0;
+constant C_MULT_LEN : integer := integer(log2(C_MULT));
+
 
 type t_params is
 record

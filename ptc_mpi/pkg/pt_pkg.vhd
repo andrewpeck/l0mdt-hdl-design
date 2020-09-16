@@ -32,6 +32,11 @@ use shared_lib.config_pkg.all;
 
 package pt_pkg is
 
+    -- Sector 3 MDT Radius coordinate
+    constant BIL_SEC3_RHO : real := 4755.8234;
+    constant BML_SEC3_RHO : real := 6898.3570;
+    constant BOL_SEC3_RHO : real := 9259.3865;
+
     -- Segment parameters in global coordinates
     constant BIL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
         := to_unsigned(integer(floor(BIL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
@@ -56,7 +61,8 @@ package pt_pkg is
     constant M_LEN               : integer := 16;
     constant SHIFT_M_NUM         : integer := 14;
     constant DIVIDER_LEN         : integer := 21;
-    --constant INV_SAGITTA_MULT    : real := 2**/SF2PTCALC_SEGPOS_MULT
+    constant SHIFT_NUM_SAGITTA   : integer := 20;
+    constant INV_S_MULT          : integer := (2**SHIFT_NUM_SAGITTA)/integer(SF2PTCALC_SEGPOS_MULT);
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant INV_SQRT_LEN : integer := 22;
@@ -75,7 +81,7 @@ package pt_pkg is
         of unsigned(inv_sqrt_len-1 downto 0);
     function invsqrt_ROM return t_invsqrt_ROM;
 
-    function pt_bin(pt : signed) return unsigned;
+    function pt_bin(pt : unsigned) return unsigned;
 --    function calc_phi_mod(phi : std_logic_vector) return signed;
     function pt_threshold(pt : unsigned) return unsigned;
     function stdlogic_integer( s : std_logic ) return integer ;
@@ -117,26 +123,26 @@ package body pt_pkg is
         return temp;
     end function;
 
-    function pt_bin( pt : signed ) return unsigned is
+    function pt_bin( pt : unsigned ) return unsigned is
         variable bin : unsigned(3 downto 0) := (others => '0');
     begin
-        if pt < 5*integer(MTC_PT_MULT) then
+        if pt < 5*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(0,4);
-        elsif pt < 10*integer(MTC_PT_MULT) then
+        elsif pt < 10*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT) then
             bin := to_unsigned(1,4);
-        elsif pt < 15*integer(MTC_PT_MULT)  then
+        elsif pt < 15*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(2,4);
-        elsif pt < 20*integer(MTC_PT_MULT)  then
+        elsif pt < 20*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(3,4);
-        elsif pt < 25*integer(MTC_PT_MULT)  then
+        elsif pt < 25*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(4,4);
-        elsif pt < 30*integer(MTC_PT_MULT)  then
+        elsif pt < 30*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(5,4);
-        elsif pt < 35*integer(MTC_PT_MULT)  then
+        elsif pt < 35*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(6,4);
-        elsif pt < 40*integer(MTC_PT_MULT)  then
+        elsif pt < 40*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(7,4);
-        elsif pt < 45*integer(MTC_PT_MULT)  then
+        elsif pt < 45*integer(MTC_PT_MULT) + 4*integer(MTC_PT_MULT)  then
             bin := to_unsigned(8,4);
         else
             bin := to_unsigned(9,4);

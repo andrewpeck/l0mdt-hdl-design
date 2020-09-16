@@ -59,7 +59,7 @@ entity eta_calculator is
     port (
         clk               : in std_logic;
         i_seg             : in sf2ptcalc_rvt;
-        o_eta             : out signed(MTC_ETA_LEN-1 downto 0);
+        o_eta             : out unsigned(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
         o_dv_eta          : out std_logic
     );
 end eta_calculator; -- sagitta_calculator
@@ -82,34 +82,15 @@ architecture Behavioral of eta_calculator is
     constant SHIFT_MAG : integer := SHIFT_MAG2/4;
     signal mag : std_logic_vector(SF_SEG_POS_LEN-SHIFT_MAG-1 downto 0)
         := (others => '0');
-    signal z_red, z_red_s, z_red_ss : signed(SF_SEG_POS_LEN-SHIFT_MAG-1 downto 0)
+    signal z_red, z_red_s, z_red_ss, z_red_sss : signed(SF_SEG_POS_LEN-SHIFT_MAG-1 downto 0)
         := (others => '0');
     signal m_plus_z, m_minus_z : signed(SF_SEG_POS_LEN-SHIFT_MAG downto 0)
         := (others => '0');
 
     -- logarithm signals
-    signal log_plus, log_minus : std_logic_vector(MTC_ETA_LEN-1 downto 0)
+    signal log_plus, log_minus : std_logic_vector(PTCALC2MTC_MDT_ETA_LEN-1 downto 0)
         := (others => '0');
 
-    --COMPONENT mag_ROM
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    --COMPONENT half_log_rom
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(12 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(14 DOWNTO 0);
-    --    clkb : IN STD_LOGIC;
-    --    addrb : IN STD_LOGIC_VECTOR(12 DOWNTO 0);
-    --    doutb : OUT STD_LOGIC_VECTOR(14 DOWNTO 0)
-    --  );
-    --END COMPONENT;
-    --
 
     COMPONENT rom
     GENERIC (
@@ -147,7 +128,7 @@ begin
     GENERIC MAP (
         MXADRB => SF_SEG_POS_LEN*2-SHIFT_MAG2,
         MXDATB => SF_SEG_POS_LEN-SHIFT_MAG,
-        ROM_FILE  => "../data/mag_ROM.mem"
+        ROM_FILE  => "mag_ROM.mem"
     )
     PORT MAP (
         clka => clk,
@@ -160,7 +141,7 @@ begin
     GENERIC MAP (
         MXADRB => SF_SEG_POS_LEN-SHIFT_MAG+1,
         MXDATB => MTC_ETA_LEN,
-        ROM_FILE => "../data/halflog_ROM.mem"
+        ROM_FILE => "halflog_ROM.mem"
     )
     PORT MAP (
         clka  => clk,
@@ -192,15 +173,25 @@ begin
 
             -- Clock 3 (mag available)
             dv3 <= dv2;
-            m_plus_z <= resize(signed(mag) + z_red_ss, SF_SEG_POS_LEN-SHIFT_MAG+1);
-            m_minus_z <= resize(signed(mag) - z_red_ss, SF_SEG_POS_LEN-SHIFT_MAG+1);
-
+            z_red_sss <= z_red_ss;
             -- Clock 4
             dv4 <= dv3;
+            m_plus_z <= resize(signed(mag) + z_red_sss, SF_SEG_POS_LEN-SHIFT_MAG+1);
+            m_minus_z <= resize(signed(mag) - z_red_sss, SF_SEG_POS_LEN-SHIFT_MAG+1);
 
-            -- Clock 5 (log available)
-            o_dv_eta <= dv5;
-            o_eta <= signed(log_plus) - signed(log_minus);
+            -- Clock 5
+            dv5 <= dv4;
+
+            -- Clock 6
+            dv6 <= dv5;
+
+            -- Clock 7
+            o_dv_eta <= dv6;
+            if unsigned(log_plus) > unsigned(log_minus) then
+                o_eta <= unsigned(log_plus) - unsigned(log_minus);
+            else 
+                o_eta <= unsigned(log_minus) - unsigned(log_plus);
+            end if;
 
         end if ;
     end process ; -- SagittaProc

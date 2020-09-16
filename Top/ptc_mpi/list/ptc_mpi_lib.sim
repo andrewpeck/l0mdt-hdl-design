@@ -1,0 +1,6 @@
+#Simulator xsim
+ptc_mpi/sim/pt_tb.vhd topsim=pt_tb
+ptc_mpi/sim/pt_tb_behav1.wcfg
+ptc_mpi/sim/sagitta_tb.vhd
+ptc_mpi/sim/sagitta_tb_behav.wcfg
+ptc_mpi/sim/eta_tb.vhd
