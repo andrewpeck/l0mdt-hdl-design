@@ -5,6 +5,7 @@
    <db_ref_list>
       <db_ref path="ult_tp_behav.wdb" id="1">
          <top_modules>
+            <top_module name="barrel_zholes_chamber_pkg" />
             <top_module name="cfg_global_pkg" />
             <top_module name="common_constants_pkg" />
             <top_module name="common_ieee_pkg" />
@@ -16,10 +17,12 @@
             <top_module name="glbl" />
             <top_module name="gldl_l0mdt_textio_pkg" />
             <top_module name="gldl_ult_tp_sim_pkg" />
+            <top_module name="gtube2chamber_pkg" />
             <top_module name="h2s_ctrl" />
             <top_module name="heg_custom_pkg" />
             <top_module name="heg_pkg" />
             <top_module name="hp_dt2r_large_mem" />
+            <top_module name="hp_dt2r_small_mem" />
             <top_module name="hp_pkg" />
             <top_module name="hps_pkg" />
             <top_module name="hps_rom_b_r_pkg" />
@@ -39,26 +42,26 @@
             <top_module name="roi_lut_bola3" />
             <top_module name="roi_lut_bola3_slope" />
             <top_module name="roi_types_pkg" />
-            <top_module name="vhdl2008_functions_pkg" />
             <top_module name="tar_ctrl" />
             <top_module name="tar_pkg" />
             <top_module name="tf_ctrl" />
             <top_module name="ucm_ctrl" />
             <top_module name="ucm_pkg" />
             <top_module name="ult_tp" />
+            <top_module name="vhdl2008_functions_pkg" />
          </top_modules>
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="3724033fs"></ZoomStartTime>
-      <ZoomEndTime time="3750574fs"></ZoomEndTime>
-      <Cursor1Time time="3744433fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="3576001fs"></ZoomEndTime>
+      <Cursor1Time time="285846fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="261"></NameColumnWidth>
-      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+      <NameColumnWidth column_width="257"></NameColumnWidth>
+      <ValueColumnWidth column_width="171"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="4" />
+   <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
       <obj_property name="ObjectShortName">.clk</obj_property>
@@ -67,41 +70,129 @@
       <obj_property name="ElementShortName">.rst</obj_property>
       <obj_property name="ObjectShortName">.rst</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ult_tp/mdt_tar_event">
-      <obj_property name="ElementShortName">mdt_tar_event</obj_property>
-      <obj_property name="ObjectShortName">mdt_tar_event</obj_property>
+   <wvobject type="array" fp_name="/ult_tp/tb_curr_time">
+      <obj_property name="ElementShortName">tb_curr_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_curr_time[63:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_inn_ar">
+      <obj_property name="ElementShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_mid_ar">
+      <obj_property name="ElementShortName">i_mdt_tar_mid_ar[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mdt_tar_mid_ar[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_out_ar">
+      <obj_property name="ElementShortName">i_mdt_tar_out_ar[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mdt_tar_out_ar[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_ext_ar">
+      <obj_property name="ElementShortName">i_mdt_tar_ext_ar[5:0]</obj_property>
+      <obj_property name="ObjectShortName">i_mdt_tar_ext_ar[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar">
+      <obj_property name="ElementShortName">i_main_primary_slc_ar[2:0]</obj_property>
+      <obj_property name="ObjectShortName">i_main_primary_slc_ar[2:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       <obj_property name="isExpanded"></obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-      <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
-      <obj_property name="label">mdt_tar_data_5</obj_property>
-      <obj_property name="isExpanded"></obj_property>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.tube">
-         <obj_property name="ElementShortName">.tube[8:0]</obj_property>
-         <obj_property name="ObjectShortName">.tube[8:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2]">
+         <obj_property name="ElementShortName">[2]</obj_property>
+         <obj_property name="ObjectShortName">[2]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.layer">
-         <obj_property name="ElementShortName">.layer[4:0]</obj_property>
-         <obj_property name="ObjectShortName">.layer[4:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[1]">
+         <obj_property name="ElementShortName">[1]</obj_property>
+         <obj_property name="ObjectShortName">[1]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.chamber_ieta">
-         <obj_property name="ElementShortName">.chamber_ieta[2:0]</obj_property>
-         <obj_property name="ObjectShortName">.chamber_ieta[2:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.time">
-         <obj_property name="ElementShortName">.time[17:0]</obj_property>
-         <obj_property name="ObjectShortName">.time[17:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data.data_valid">
-         <obj_property name="ElementShortName">.data_valid</obj_property>
-         <obj_property name="ObjectShortName">.data_valid</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0]">
+         <obj_property name="ElementShortName">[0]</obj_property>
+         <obj_property name="ObjectShortName">[0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[0].data_valid">
+            <obj_property name="ElementShortName">.data_valid</obj_property>
+            <obj_property name="ObjectShortName">.data_valid</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common">
+            <obj_property name="ElementShortName">.common</obj_property>
+            <obj_property name="ObjectShortName">.common</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header">
+               <obj_property name="ElementShortName">.header</obj_property>
+               <obj_property name="ObjectShortName">.header</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+               <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.h_reserved">
+                  <obj_property name="ElementShortName">.h_reserved[9:0]</obj_property>
+                  <obj_property name="ObjectShortName">.h_reserved[9:0]</obj_property>
+               </wvobject>
+               <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.tcoverflow">
+                  <obj_property name="ElementShortName">.tcoverflow</obj_property>
+                  <obj_property name="ObjectShortName">.tcoverflow</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.nmtc_sl">
+                  <obj_property name="ElementShortName">.nmtc_sl[2:0]</obj_property>
+                  <obj_property name="ObjectShortName">.nmtc_sl[2:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.nmtc_mdt">
+                  <obj_property name="ElementShortName">.nmtc_mdt[2:0]</obj_property>
+                  <obj_property name="ObjectShortName">.nmtc_mdt[2:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.nslc">
+                  <obj_property name="ElementShortName">.nslc[2:0]</obj_property>
+                  <obj_property name="ObjectShortName">.nslc[2:0]</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.header.bcid">
+                  <obj_property name="ElementShortName">.bcid[11:0]</obj_property>
+                  <obj_property name="ObjectShortName">.bcid[11:0]</obj_property>
+                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+               </wvobject>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.slcid">
+               <obj_property name="ElementShortName">.slcid[2:0]</obj_property>
+               <obj_property name="ObjectShortName">.slcid[2:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.tcsent">
+               <obj_property name="ElementShortName">.tcsent</obj_property>
+               <obj_property name="ObjectShortName">.tcsent</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.poseta">
+               <obj_property name="ElementShortName">.poseta[13:0]</obj_property>
+               <obj_property name="ObjectShortName">.poseta[13:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.posphi">
+               <obj_property name="ElementShortName">.posphi[8:0]</obj_property>
+               <obj_property name="ObjectShortName">.posphi[8:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.sl_pt">
+               <obj_property name="ElementShortName">.sl_pt[7:0]</obj_property>
+               <obj_property name="ObjectShortName">.sl_pt[7:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.sl_ptthresh">
+               <obj_property name="ElementShortName">.sl_ptthresh[3:0]</obj_property>
+               <obj_property name="ObjectShortName">.sl_ptthresh[3:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.sl_charge">
+               <obj_property name="ElementShortName">.sl_charge</obj_property>
+               <obj_property name="ObjectShortName">.sl_charge</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.cointype">
+               <obj_property name="ElementShortName">.cointype[2:0]</obj_property>
+               <obj_property name="ObjectShortName">.cointype[2:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].common.trailer">
+               <obj_property name="ElementShortName">.trailer</obj_property>
+               <obj_property name="ObjectShortName">.trailer</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0].specific">
+            <obj_property name="ElementShortName">.specific[84:0]</obj_property>
+            <obj_property name="ObjectShortName">.specific[84:0]</obj_property>
+         </wvobject>
       </wvobject>
    </wvobject>
 </wave_config>
