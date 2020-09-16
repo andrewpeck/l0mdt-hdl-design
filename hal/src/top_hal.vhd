@@ -568,7 +568,7 @@ begin  -- architecture behavioral
         nsp_sump(I) := xor_reduce(nsp_i(I));
       end loop;
 
-      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump) xor xor_reduce(mtc_sump);
+      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump);
 
       plus_neighbor_segments_o  <= plus_neighbor_segments_i;
       minus_neighbor_segments_o <= minus_neighbor_segments_i;
