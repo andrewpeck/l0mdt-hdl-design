@@ -362,10 +362,6 @@ begin
       sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
       sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
-      -- FIXME: add 320 -> 240 cdc
-
-      sl_tx_data_post_cdc <= sl_tx_data;
-
     end generate;
   end generate;
 
