@@ -27,7 +27,7 @@ package gldl_l0mdt_textio_pkg is
 
   procedure READ(L:inout LINE; VALUE : out input_tar_rt);
 
-  procedure READ(L:inout LINE; VALUE : out slc_rx_rt);
+  procedure READ(L:inout LINE; VALUE : out input_slc_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
   -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
@@ -111,7 +111,7 @@ package body gldl_l0mdt_textio_pkg is
   -----------------------------------------------
   -- read SLC 
   -----------------------------------------------  
-  procedure READ(L:inout LINE; VALUE : out slc_rx_rt) is
+  procedure READ(L:inout LINE; VALUE : out input_slc_rt) is
     variable BCID        : integer; 
     variable ToA         : integer; 
     variable nTC         : integer; 
@@ -153,8 +153,8 @@ package body gldl_l0mdt_textio_pkg is
       Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
       Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
       pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
-      Charge      => std_logic_vector(to_unsigned(Charge     ,1))(0), 
-      Coincidence => to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN) , 
+      Charge      => std_logic(to_unsigned(Charge     ,1)(0)), 
+      Coincidence => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)) , 
       z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
       z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
       z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
