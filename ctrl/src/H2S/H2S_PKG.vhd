@@ -5,83 +5,67 @@ use IEEE.std_logic_1164.all;
 
 
 package H2S_CTRL is
-  type H2S_HPS_INNER_MON_t is record
+  type H2S_HPS_LSF_MON_t is record
+    STATUS                     :std_logic;   
+  end record H2S_HPS_LSF_MON_t;
+
+
+  type H2S_HPS_LSF_CTRL_t is record
+    RESET                      :std_logic;   
+    HBA_MAX_CLOCKS             :std_logic_vector( 9 downto 0);
+  end record H2S_HPS_LSF_CTRL_t;
+
+
+  constant DEFAULT_H2S_HPS_LSF_CTRL_t : H2S_HPS_LSF_CTRL_t := (
+                                                               RESET => '0',
+                                                               HBA_MAX_CLOCKS => (others => '0')
+                                                              );
+  type H2S_HPS_CSF_MON_t is record
     STATUS                     :std_logic;   
     READY                      :std_logic;   
-  end record H2S_HPS_INNER_MON_t;
+  end record H2S_HPS_CSF_MON_t;
 
 
-  type H2S_HPS_INNER_CTRL_t is record
+  type H2S_HPS_CSF_CTRL_t is record
     RESET                      :std_logic;   
-  end record H2S_HPS_INNER_CTRL_t;
+  end record H2S_HPS_CSF_CTRL_t;
 
 
-  constant DEFAULT_H2S_HPS_INNER_CTRL_t : H2S_HPS_INNER_CTRL_t := (
-                                                                   RESET => '0'
-                                                                  );
-  type H2S_HPS_MIDDLE_MON_t is record
+  constant DEFAULT_H2S_HPS_CSF_CTRL_t : H2S_HPS_CSF_CTRL_t := (
+                                                               RESET => '0'
+                                                              );
+  type H2S_HPS_MON_t is record
     STATUS                     :std_logic;   
     READY                      :std_logic;   
-  end record H2S_HPS_MIDDLE_MON_t;
+    LSF                        :H2S_HPS_LSF_MON_t;
+    CSF                        :H2S_HPS_CSF_MON_t;
+  end record H2S_HPS_MON_t;
+  type H2S_HPS_MON_t_ARRAY is array(0 to 3) of H2S_HPS_MON_t;
 
-
-  type H2S_HPS_MIDDLE_CTRL_t is record
+  type H2S_HPS_CTRL_t is record
     RESET                      :std_logic;   
-  end record H2S_HPS_MIDDLE_CTRL_t;
+    LSF                        :H2S_HPS_LSF_CTRL_t;
+    CSF                        :H2S_HPS_CSF_CTRL_t;
+  end record H2S_HPS_CTRL_t;
+  type H2S_HPS_CTRL_t_ARRAY is array(0 to 3) of H2S_HPS_CTRL_t;
 
-
-  constant DEFAULT_H2S_HPS_MIDDLE_CTRL_t : H2S_HPS_MIDDLE_CTRL_t := (
-                                                                     RESET => '0'
-                                                                    );
-  type H2S_HPS_OUTER_MON_t is record
-    STATUS                     :std_logic;   
-    READY                      :std_logic;   
-  end record H2S_HPS_OUTER_MON_t;
-
-
-  type H2S_HPS_OUTER_CTRL_t is record
-    RESET                      :std_logic;   
-  end record H2S_HPS_OUTER_CTRL_t;
-
-
-  constant DEFAULT_H2S_HPS_OUTER_CTRL_t : H2S_HPS_OUTER_CTRL_t := (
-                                                                   RESET => '0'
-                                                                  );
-  type H2S_HPS_EXTRA_MON_t is record
-    STATUS                     :std_logic;   
-    READY                      :std_logic;   
-  end record H2S_HPS_EXTRA_MON_t;
-
-
-  type H2S_HPS_EXTRA_CTRL_t is record
-    RESET                      :std_logic;   
-  end record H2S_HPS_EXTRA_CTRL_t;
-
-
-  constant DEFAULT_H2S_HPS_EXTRA_CTRL_t : H2S_HPS_EXTRA_CTRL_t := (
-                                                                   RESET => '0'
-                                                                  );
+  constant DEFAULT_H2S_HPS_CTRL_t : H2S_HPS_CTRL_t := (
+                                                       RESET => '0',
+                                                       LSF => DEFAULT_H2S_HPS_LSF_CTRL_t,
+                                                       CSF => DEFAULT_H2S_HPS_CSF_CTRL_t
+                                                      );
   type H2S_MON_t is record
-    HPS_INNER                  :H2S_HPS_INNER_MON_t;
-    HPS_MIDDLE                 :H2S_HPS_MIDDLE_MON_t;
-    HPS_OUTER                  :H2S_HPS_OUTER_MON_t; 
-    HPS_EXTRA                  :H2S_HPS_EXTRA_MON_t; 
+    HPS                        :H2S_HPS_MON_t_ARRAY;
   end record H2S_MON_t;
 
 
   type H2S_CTRL_t is record
-    HPS_INNER                  :H2S_HPS_INNER_CTRL_t;
-    HPS_MIDDLE                 :H2S_HPS_MIDDLE_CTRL_t;
-    HPS_OUTER                  :H2S_HPS_OUTER_CTRL_t; 
-    HPS_EXTRA                  :H2S_HPS_EXTRA_CTRL_t; 
+    HPS                        :H2S_HPS_CTRL_t_ARRAY;
   end record H2S_CTRL_t;
 
 
   constant DEFAULT_H2S_CTRL_t : H2S_CTRL_t := (
-                                               HPS_INNER => DEFAULT_H2S_HPS_INNER_CTRL_t,
-                                               HPS_MIDDLE => DEFAULT_H2S_HPS_MIDDLE_CTRL_t,
-                                               HPS_OUTER => DEFAULT_H2S_HPS_OUTER_CTRL_t,
-                                               HPS_EXTRA => DEFAULT_H2S_HPS_EXTRA_CTRL_t
+                                               HPS => (others => DEFAULT_H2S_HPS_CTRL_t )
                                               );
 
 

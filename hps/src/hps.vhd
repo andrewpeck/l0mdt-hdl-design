@@ -33,6 +33,9 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity hps is
   generic(
     g_STATION_RADIUS      : integer := 0;  --station
@@ -42,7 +45,10 @@ entity hps is
     clk                   : in std_logic;
     rst                   : in std_logic;
     glob_en               : in std_logic;
+
     -- control
+    ctrl              : in  H2S_HPS_CTRL_t;
+    mon               : out H2S_HPS_MON_t;
 
     -- SLc
     i_uCM2hps_av          : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -79,6 +85,7 @@ begin
       clk                 => clk,
       rst                 => rst,
       glob_en             => glob_en,
+
       --
       i_mdt_tar_v         => i_mdt_tar_av(hp_i),
       o_mdt_full_data_v   => mdt_full_data_av(hp_i)
@@ -95,6 +102,7 @@ begin
       clk                   => clk,
       rst                   => rst,
       glob_en               => glob_en,
+
       --
       i_uCM_data_v          => i_uCM2hps_av(heg_i),
       -- MDT hit
@@ -111,6 +119,13 @@ begin
     )
     port map(
       clk                 => clk,
+
+      lsf_ctrl => ctrl.lsf,
+      lsf_mon => mon.lsf,
+
+      csf_ctrl => ctrl.csf,
+      csf_mon => mon.csf,
+
       rst                 => rst,
       glob_en             => glob_en,
       -- to Segment finder

@@ -77,6 +77,10 @@ begin
       clk                 => clock_and_control.clk,
       rst                 => clock_and_control.rst,
       glob_en             => glob_en,
+
+      ctrl => ctrl.hps(0),
+      mon => mon.hps(0),
+
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
       -- SLc
@@ -98,6 +102,10 @@ begin
       clk                 => clock_and_control.clk,
       rst                 => clock_and_control.rst,
       glob_en             => glob_en,
+
+      ctrl => ctrl.hps(1),
+      mon => mon.hps(1),
+
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
       -- SLc
@@ -119,6 +127,10 @@ begin
       clk                 => clock_and_control.clk,
       rst                 => clock_and_control.rst,
       glob_en             => glob_en,
+
+      ctrl => ctrl.hps(2),
+      mon => mon.hps(2),
+
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
       -- SLc
@@ -140,6 +152,10 @@ begin
       clk                 => clock_and_control.clk,
       rst                 => clock_and_control.rst,
       glob_en             => glob_en,
+
+      ctrl => ctrl.hps(3),
+      mon => mon.hps(3),
+
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
       -- SLc

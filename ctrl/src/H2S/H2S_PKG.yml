@@ -8,53 +8,42 @@ __config__:
 
 HDL_Types:
 
-- H2S_HPS_INNER_MON_t:
+- H2S_HPS_LSF_MON_t:
+  - STATUS : [ type: logic ]
+
+
+- H2S_HPS_LSF_CTRL_t:
+  - RESET : [ type: logic ]
+  - HBA_MAX_CLOCKS : [ type: logic, length: 10 ]
+
+
+- H2S_HPS_CSF_MON_t:
   - STATUS : [ type: logic ]
   - READY : [ type: logic ]
 
 
-- H2S_HPS_INNER_CTRL_t:
+- H2S_HPS_CSF_CTRL_t:
   - RESET : [ type: logic ]
 
 
-- H2S_HPS_MIDDLE_MON_t:
+- H2S_HPS_MON_t:
   - STATUS : [ type: logic ]
   - READY : [ type: logic ]
+  - LSF : [ type: H2S_HPS_LSF_MON_t ]
+  - CSF : [ type: H2S_HPS_CSF_MON_t ]
+  type H2S_HPS_MON_t_ARRAY is array(0 to 3) of H2S_HPS_MON_t;
 
-
-- H2S_HPS_MIDDLE_CTRL_t:
+- H2S_HPS_CTRL_t:
   - RESET : [ type: logic ]
-
-
-- H2S_HPS_OUTER_MON_t:
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
-
-
-- H2S_HPS_OUTER_CTRL_t:
-  - RESET : [ type: logic ]
-
-
-- H2S_HPS_EXTRA_MON_t:
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
-
-
-- H2S_HPS_EXTRA_CTRL_t:
-  - RESET : [ type: logic ]
-
+  - LSF : [ type: H2S_HPS_LSF_CTRL_t ]
+  - CSF : [ type: H2S_HPS_CSF_CTRL_t ]
+  type H2S_HPS_CTRL_t_ARRAY is array(0 to 3) of H2S_HPS_CTRL_t;
 
 - H2S_MON_t:
-  - HPS_INNER : [ type: H2S_HPS_INNER_MON_t ]
-  - HPS_MIDDLE : [ type: H2S_HPS_MIDDLE_MON_t ]
-  - HPS_OUTER : [ type: H2S_HPS_OUTER_MON_t ]
-  - HPS_EXTRA : [ type: H2S_HPS_EXTRA_MON_t ]
+  - HPS : [ type: H2S_HPS_MON_t_ARRAY ]
 
 
 - H2S_CTRL_t:
-  - HPS_INNER : [ type: H2S_HPS_INNER_CTRL_t ]
-  - HPS_MIDDLE : [ type: H2S_HPS_MIDDLE_CTRL_t ]
-  - HPS_OUTER : [ type: H2S_HPS_OUTER_CTRL_t ]
-  - HPS_EXTRA : [ type: H2S_HPS_EXTRA_CTRL_t ]
+  - HPS : [ type: H2S_HPS_CTRL_t_ARRAY ]
 
 

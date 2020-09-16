@@ -34,6 +34,9 @@ use hps_lib.hps_pkg.all;
 library csf_lib;
 use csf_lib.csf_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity hps_sf_wrap is
   generic(
     g_STATION_RADIUS    : integer := 0  --station
@@ -42,6 +45,14 @@ entity hps_sf_wrap is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+
+    -- control
+    csf_ctrl    : in  H2S_HPS_CSF_CTRL_t;
+    csf_mon     : out H2S_HPS_CSF_MON_t;
+
+    lsf_ctrl    : in  H2S_HPS_LSF_CTRL_t;
+    lsf_mon     : out H2S_HPS_LSF_MON_t;
+
     -- configuration
     i_control        : in heg_ctrl2sf_rvt;
     i_slc_data       : in heg2sfslc_rvt;
@@ -153,6 +164,8 @@ begin
       -- port map(
       --   clock           => clk,
       --   reset           => rst,
+      --   ctrl            => ctrl.lsf,
+      --   mon             => mon.lsf,
       --   slc_roi_valid   => 
       --   slc_roi         => 
       --   mdt_hit_valid   => 
