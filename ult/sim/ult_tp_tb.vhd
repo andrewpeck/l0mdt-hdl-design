@@ -277,7 +277,7 @@ begin
     -- variable row_counter          : integer := 0;
 
     -- -- variable tdc_time             : UNSIG_64;
-    -- variable mdt_event            : input_tar_rt;
+    variable slc_event            : input_slc_rt;
 
     -- variable next_event_time      : integer := 0;
     -- variable tb_time              : integer := 0;
@@ -299,6 +299,16 @@ begin
         -- write to DUT
 
         -- read from file
+        -- first read from input vector file
+        if (not endfile(input_slc_file)) and first_read = '1' then
+          row_counter := row_counter +1;
+          readline(input_slc_file,row); -- reads header and ignores
+          readline(input_slc_file,row);
+          read(row, slc_event);
+          -- mdt_tar_event <= slc_event;
+          report "Read line : " & integer'image(row_counter);
+          first_read := '0';
+        end if;
 
       end if;
     end if;
