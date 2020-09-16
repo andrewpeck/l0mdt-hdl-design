@@ -66,5 +66,7 @@ if {[string is space $scrambled_d_reg] == 0} {
 
 set to_sca [get_cells top_hal/csm*/gbt_controller_wrapper_inst/*/sca_inst/sca_gen*/sca_deserializer_inst/data_o_reg*]
 
-set_multicycle_path 8 -setup -to $to_sca
-set_multicycle_path 7 -hold -to $to_sca
+#set_multicycle_path 8 -setup -from $sca_clk_en_from
+#set_multicycle_path 7 -hold -from $sca_clk_en_from
+#set_multicycle_path 8 -setup -to $sca_clk_en_to
+#set_multicycle_path 7 -hold -to $sca_clk_en_to

@@ -1,7 +1,6 @@
 # sector logic clock domain crossing
 
 # https://forums.xilinx.com/t5/Synthesis/Vivado-Implementation-Duplicates-Clocks-and-Creates-Unsafe/td-p/856321
-
 set_case_analysis 0  [get_pins top_hal/top_clocking_inst/*/*/CLKINSEL ]
 
 set_max_delay -datapath_only \
@@ -39,11 +38,7 @@ set_false_path \
 
 set_false_path \
     -from [get_pins top_control_inst/hal_core_interface_inst/reg_data*/C] \
-    -to [get_pins -hierarchical -filter {NAME =~ "top_hal/top_clocking_inst/clk40_gen.clear_reg/*" && (REF_PIN_NAME == D || REF_PIN_NAME == CE)}]
-
-set_false_path \
-    -from [get_pins top_control_inst/hal_core_interface_inst/reg_data*/C] \
-    -to [get_pins -hierarchical -filter {NAME =~ "top_hal/top_clocking_inst/clk40_gen.synced_reg/*" && (REF_PIN_NAME == D || REF_PIN_NAME == CE)}]
+    -to [get_pins -hierarchical -filter {NAME =~ "top_hal/top_clocking_inst/clk40_gen.*_reg/*" && (REF_PIN_NAME == D || REF_PIN_NAME == CE)}]
 
 set_false_path \
     -from [get_pins top_hal/top_clocking_inst/clk40_gen.mmcm_locked*/C] \
