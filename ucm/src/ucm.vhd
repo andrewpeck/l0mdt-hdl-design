@@ -52,7 +52,7 @@ architecture beh of ucm is
 
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  -- signal ucm_prepro_av        : ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
@@ -109,18 +109,18 @@ begin
     -- o_pam2heg       => o_uCM2hps_pam_ar
   );
 
-  -- input pre processor
-  -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   SLC_PP : entity ucm_lib.ucm_prepro
-  --   port map(
-  --     clk               => clk,
-  --     rst               => rst,
-  --     glob_en           => glob_en,
-  --     --                =>
-  --     i_slc_data_v      => i_slc_data_av(sl_i),
-  --     o_prepro_data_v   => ucm_prepro_av(sl_i)
-  --   );
-  -- end generate;
+  --input pre processor
+  SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    SLC_PP : entity ucm_lib.ucm_prepro
+    port map(
+      clk               => clk,
+      rst               => rst,
+      glob_en           => glob_en,
+      --                =>
+      i_slc_data_v      => i_slc_data_av(sl_i),
+      o_prepro_data_v   => ucm_prepro_av(sl_i)
+    );
+  end generate;
 
   -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
   --   SLC_PP : entity shared_lib.ucm_prepro
@@ -146,7 +146,7 @@ begin
       rst         => rst,
       glob_en     => glob_en,
       --
-      i_data      => i_slc_data_av(sl_i),
+      i_data      => ucm_prepro_av(sl_i),
       o_data      => csw_main_in_av(sl_i)
     );
   end generate;
@@ -244,11 +244,6 @@ begin
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
     end generate;
   -- end generate;
-
-
-
-
-
 
 
   PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
