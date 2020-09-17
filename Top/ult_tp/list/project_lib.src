@@ -1,5 +1,5 @@
 # project files
-Top/ult_tb/prj_cfg.vhd
+Top/ult_tp/prj_cfg.vhd
 ult/top_ult.vhd
 # modules included
 shared/shared_lib.src lib=shared_lib
