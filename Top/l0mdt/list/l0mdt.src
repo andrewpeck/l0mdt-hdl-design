@@ -13,5 +13,6 @@ heg/heg_lib.src
 hps/hps_lib.src
 csf/csf_lib.src
 tar/tar_lib.src
+tf1/tf_lib.src
 # for some reason, it seems HOG requires hal.src to be double listed here and in l0mdt.src???
 hal/list/hal.src
