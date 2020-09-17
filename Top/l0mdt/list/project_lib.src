@@ -1,1 +1,2 @@
-Top/l0mdt/prj_cfg.vhd 2008
+shared/shared_lib.src lib=shared_lib
+Top/l0mdt/prj_cfg.vhd

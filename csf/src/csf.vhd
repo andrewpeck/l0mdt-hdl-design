@@ -40,18 +40,18 @@ entity csf is
     );
     Port (
         clk       : in std_logic;
-        i_seed    : in csf_seed_rvt;
+        i_seed    : in heg2sfslc_rvt;
         i_mdt_hit : in heg2sfhit_rvt;
         i_eof     : in std_logic;
         i_rst     : in std_logic;
-        o_seg     : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
+        o_seg     : out sf2ptcalc_rvt
     );
 end csf;
 
 architecture Behavioral of csf is
     -- Input RoI
-    signal seed_i : csf_seed_rt;
-    signal seed : csf_seed_rvt;
+    signal seed_i : heg2sfslc_rt;
+    signal seed : heg2sfslc_rvt;
 
     -- Input signals
     signal mdt_hit  : heg2sfhit_rt;
@@ -172,8 +172,6 @@ begin
 begin
     mdt_hit <= structify(i_mdt_hit);
     seed_i <= structify(i_seed);
-
-
 
     if rising_edge(clk) then
 

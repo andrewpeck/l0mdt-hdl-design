@@ -33,14 +33,6 @@ library csf_lib;
 use csf_lib.csf_pkg.all;
 use csf_lib.csf_custom_pkg.all;
 
--- library IEEE, shared_lib, csf_lib;
--- use IEEE.STD_LOGIC_1164.ALL;
--- use IEEE.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use shared_lib.custom_types_davide_pkg.all;
--- use csf_lib.csf_pkg.all;
--- use csf_lib.custom_types_csf_pkg.all;
-
 entity seg_coord_transform is
   generic (
     -- Project flavour (0: Barrel, 1: Endcap)
@@ -49,14 +41,26 @@ entity seg_coord_transform is
   port (
     clk         : in  std_logic;
     i_locseg    : in  csf_locseg_rvt;
-    i_seed      : in  csf_seed_rvt;
-    o_globseg   : out std_logic_vector(SF2PTCALC_LEN-1 downto 0)
+    i_seed      : in  heg2sfslc_rvt;
+    o_globseg   : out sf2ptcalc_rvt
   );
 end seg_coord_transform; -- seg_coord_transform
 
 architecture Behavioral of seg_coord_transform is
+
+    -- Pos HE Window shift
+    constant HE_POS_SHIFT : integer := integer(log2(SF2PTCALC_SEGPOS_MULT/HEG2SFSLC_HEWINDOW_POS_MULT ));
+    -- Local Pos shift
+    constant LOC_POS_SHIFT : integer := integer(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
+    -- HE window pos in global segment format
+    signal he_window_pos : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    -- Absolute local segment pos in global segment format
+    signal abs_loc_pos : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    -- local segment position sign 
+    signal loc_pos_sign : std_logic := '0';
+
     -- Store roi information
-    signal seed, seed_i : csf_seed_rt;
+    signal seed, seed_i : heg2sfslc_rt;
     -- Store seg information
     signal locseg, locseg_i : csf_locseg_rt;
     -- Extrapolated coordinate (z_ext = z_fit + z_ref - x_ref*m_fit)
@@ -66,30 +70,14 @@ architecture Behavioral of seg_coord_transform is
     -- chamber_ieta
     signal chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
     -- Chamber pos
-    signal chamber_pos : std_logic_vector(SF_SEG_POS_LEN-1 downto 0) := (others => '0');
-    -- Global seg barrel
-    signal globseg_brl : sf_seg_data_barrel_rt;
-    -- Global seg endcap
-    signal globseg_edc : sf_seg_data_endcap_rt;
+    signal chamber_pos : std_logic_vector(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    -- Global seg
+    signal globseg : sf2ptcalc_rt;
+
+    signal addr : std_logic_vector(CSF_SEG_M_LEN downto 0) := (others => '0');
 
     -- Valid signals
     signal dv0, dv1, dv2, dv3 : std_logic := '0';
-
-    --COMPONENT arctan_rom
-    --PORT (
-    --    clka : IN STD_LOGIC;
-    --    addra : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-    --    douta : OUT STD_LOGIC_VECTOR(14 DOWNTO 0)
-    --);
-    --END COMPONENT;
-
-    COMPONENT Chamber_pos_ROM_1
-    PORT (
-        clka : IN STD_LOGIC;
-        addra : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-        douta : OUT STD_LOGIC_VECTOR(18 DOWNTO 0)
-    );
-    END COMPONENT;
 
     -------------------------------------------------------------------------------- COMPONENTS --------
     COMPONENT rom
@@ -106,88 +94,57 @@ architecture Behavioral of seg_coord_transform is
     );
     END COMPONENT;
 
-
-
 begin
 
     seed_i <= structify(i_seed);
     locseg_i <= structify(i_locseg);
+    o_globseg <= vectorify(globseg);
 
     ARCTAN : rom
     GENERIC MAP(
         MXADRB => CSF_SEG_M_LEN+1,
-        MXDATB => SF_SEG_ANG_LEN,
-        ROM_FILE => "../data/m_to_theta.mem"
+        MXDATB => SF2PTCALC_SEGANGLE_LEN,
+        ROM_FILE => "m_to_theta.mem"
     )
     PORT MAP(
         clka => clk,
         ena  => '1',
-        addra => std_logic_vector(to_unsigned(to_integer(locseg_i.m) + 2**(SF_SEG_ANG_LEN-1), CSF_SEG_M_LEN+1)),
+        --addra => std_logic_vector(to_unsigned(to_integer(locseg_i.m) + 2**(CSF_SEG_M_LEN-1), CSF_SEG_M_LEN+1)),
+        addra => addr,
         douta => theta
     );
 
-    --arctan : arctan_rom
-    --PORT MAP (
-    --    clka => clk,
-    --    addra => std_logic_vector(to_unsigned(to_integer(i_locseg.m) + 2**(SF_SEG_ANG_LEN-1), CSF_SEG_M_LEN+1)),
-    --    douta => theta
-    --);
-
-    -- chamb_pos : Chamber_pos_ROM_1
-    -- PORT MAP (
-    --     clka => clk,
-    --     addra => chamber_ieta,
-    --     douta => chamber_pos
-    -- );
+    addr <= std_logic_vector(to_unsigned(to_integer(locseg_i.m) + 2**(CSF_SEG_M_LEN-1), CSF_SEG_M_LEN+1)); 
 
     CoordProc : process( clk )
     begin
         if rising_edge(clk) then
+            -- Clock 0
+            dv0 <= locseg_i.valid;
             if seed_i.data_valid = '1' and locseg_i.valid = '1' then
                 seed <= seed_i;
                 locseg <= locseg_i;
                 chamber_ieta <= std_logic_vector(seed_i.mdtid.chamber_ieta);
+                he_window_pos <= shift_left(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
             end if;
-
-            -- Clock 0
-            dv0 <= locseg_i.valid;
-            z_ext <= locseg_i.b + to_signed(CSF_Y_OFFSET, CSF_SEG_B_LEN);
-            mx <= resize(shift_right(locseg_i.m*to_signed(CSF_X_OFFSET, CSF_SEG_B_LEN),SF_SEG_ANG_MULTI_LEN), CSF_SEG_B_LEN);
 
             -- Clock 1
             dv1 <= dv0;
-            z_loc <= z_ext - mx;
+            abs_loc_pos <= resize(shift_right(unsigned(abs(locseg.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
+            loc_pos_sign <= locseg.b(CSF_SEG_B_LEN-1);
 
             -- Clock 2
-
-            if FLAVOUR = 0 then -- Barrel
-                globseg_brl.data_valid <= dv1;
-                globseg_brl.pos <= signed(chamber_pos) + z_loc;
-                if signed(chamber_pos) < 0 then
-                    globseg_brl.pos <= signed(chamber_pos) - z_loc;
-                end if;
-                globseg_brl.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
-                globseg_brl.muid <= seed.muid;
-                globseg_brl.quality <= '1';
-                globseg_brl.mdtid <= seed.mdtid;
-
-            elsif FLAVOUR = 1 then -- Endcap
-                globseg_edc.data_valid <= dv1;
-                globseg_edc.pos <= unsigned(chamber_pos) + unsigned(z_loc);
-                globseg_edc.angle <= resize(signed(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
-                globseg_edc.muid <= seed.muid;
-                globseg_edc.mdtid <= seed.mdtid;
-                globseg_edc.quality <= '1';
-            end if;
-
-            -- Clock 3
-            if FLAVOUR = 0 then -- Barrel
-                o_globseg <= vectorify(globseg_brl);
-            elsif FLAVOUR = 1 then -- Endcap
-                o_globseg <= vectorify(globseg_edc);
+            globseg.data_valid <= dv1;
+            if loc_pos_sign = '1' then
+                globseg.segpos <= he_window_pos - abs_loc_pos;
             else
-                o_globseg <= (others => '0');
+                globseg.segpos <= he_window_pos + abs_loc_pos;
             end if;
+
+            globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
+            globseg.muid <= seed.muid;
+            globseg.segquality <= '1';
+            globseg.mdtid <= seed.mdtid;
 
         end if ;
     end process ; -- CoordProc

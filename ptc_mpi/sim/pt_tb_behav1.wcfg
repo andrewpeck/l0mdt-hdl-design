@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="pt_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="cfg_global_pkg" />
+            <top_module name="common_constants_pkg" />
+            <top_module name="common_ieee_pkg" />
+            <top_module name="common_types_pkg" />
+            <top_module name="config_pkg" />
+            <top_module name="detector_param_pkg" />
+            <top_module name="glbl" />
+            <top_module name="l0mdt_constants_pkg" />
+            <top_module name="l0mdt_dataformats_pkg" />
+            <top_module name="prj_cfg" />
+            <top_module name="pt_params_pkg" />
+            <top_module name="pt_pkg" />
+            <top_module name="pt_tb" />
+            <top_module name="vhdl2008_functions_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="300001fs"></ZoomEndTime>
+      <Cursor1Time time="68000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="315"></NameColumnWidth>
+      <ValueColumnWidth column_width="87"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="57" />
+   <wvobject type="logic" fp_name="/pt_tb/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/rst">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/pt_tb/CLK_period">
+      <obj_property name="ElementShortName">CLK_period</obj_property>
+      <obj_property name="ObjectShortName">CLK_period</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_I">
+      <obj_property name="ElementShortName">segment_I</obj_property>
+      <obj_property name="ObjectShortName">segment_I</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_M">
+      <obj_property name="ElementShortName">segment_M</obj_property>
+      <obj_property name="ObjectShortName">segment_M</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_O">
+      <obj_property name="ElementShortName">segment_O</obj_property>
+      <obj_property name="ObjectShortName">segment_O</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/slc">
+      <obj_property name="ElementShortName">slc</obj_property>
+      <obj_property name="ObjectShortName">slc</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/comboid_s">
+      <obj_property name="ElementShortName">comboid_s[11:0]</obj_property>
+      <obj_property name="ObjectShortName">comboid_s[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_I_v">
+      <obj_property name="ElementShortName">segment_I_v[62:0]</obj_property>
+      <obj_property name="ObjectShortName">segment_I_v[62:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_M_v">
+      <obj_property name="ElementShortName">segment_M_v[62:0]</obj_property>
+      <obj_property name="ObjectShortName">segment_M_v[62:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/segment_O_v">
+      <obj_property name="ElementShortName">segment_O_v[62:0]</obj_property>
+      <obj_property name="ObjectShortName">segment_O_v[62:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/inv_s">
+      <obj_property name="ElementShortName">inv_s[14:0]</obj_property>
+      <obj_property name="ObjectShortName">inv_s[14:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv_s">
+      <obj_property name="ElementShortName">dv_s</obj_property>
+      <obj_property name="ObjectShortName">dv_s</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv_eta">
+      <obj_property name="ElementShortName">dv_eta</obj_property>
+      <obj_property name="ObjectShortName">dv_eta</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/eta">
+      <obj_property name="ElementShortName">eta[13:0]</obj_property>
+      <obj_property name="ObjectShortName">eta[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv_combo_s_s">
+      <obj_property name="ElementShortName">dv_combo_s_s</obj_property>
+      <obj_property name="ObjectShortName">dv_combo_s_s</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/a0">
+      <obj_property name="ElementShortName">a0[10:0]</obj_property>
+      <obj_property name="ObjectShortName">a0[10:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/a1">
+      <obj_property name="ElementShortName">a1[9:0]</obj_property>
+      <obj_property name="ObjectShortName">a1[9:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv0">
+      <obj_property name="ElementShortName">dv0</obj_property>
+      <obj_property name="ObjectShortName">dv0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/a1_invs">
+      <obj_property name="ElementShortName">a1_invs[10:0]</obj_property>
+      <obj_property name="ObjectShortName">a1_invs[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv1">
+      <obj_property name="ElementShortName">dv1</obj_property>
+      <obj_property name="ObjectShortName">dv1</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_s">
+      <obj_property name="ElementShortName">pt_s[10:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_s[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider2002" type="divider">
+      <obj_property name="label">PT PHI</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv2">
+      <obj_property name="ElementShortName">dv2</obj_property>
+      <obj_property name="ObjectShortName">dv2</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/comboid_phi">
+      <obj_property name="ElementShortName">comboid_phi[15:0]</obj_property>
+      <obj_property name="ObjectShortName">comboid_phi[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv3">
+      <obj_property name="ElementShortName">dv3</obj_property>
+      <obj_property name="ObjectShortName">dv3</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_s2">
+      <obj_property name="ElementShortName">pt_s2[11:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_s2[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv4">
+      <obj_property name="ElementShortName">dv4</obj_property>
+      <obj_property name="ObjectShortName">dv4</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b0">
+      <obj_property name="ElementShortName">b0[6:0]</obj_property>
+      <obj_property name="ObjectShortName">b0[6:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b1">
+      <obj_property name="ElementShortName">b1[10:0]</obj_property>
+      <obj_property name="ObjectShortName">b1[10:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b2">
+      <obj_property name="ElementShortName">b2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">b2[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv5">
+      <obj_property name="ElementShortName">dv5</obj_property>
+      <obj_property name="ObjectShortName">dv5</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b1_phi">
+      <obj_property name="ElementShortName">b1_phi[10:0]</obj_property>
+      <obj_property name="ObjectShortName">b1_phi[10:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b2_phi">
+      <obj_property name="ElementShortName">b2_phi[15:0]</obj_property>
+      <obj_property name="ObjectShortName">b2_phi[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_s3">
+      <obj_property name="ElementShortName">pt_s3[11:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_s3[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv6">
+      <obj_property name="ElementShortName">dv6</obj_property>
+      <obj_property name="ObjectShortName">dv6</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/b2_phi2">
+      <obj_property name="ElementShortName">b2_phi2[15:0]</obj_property>
+      <obj_property name="ObjectShortName">b2_phi2[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv7">
+      <obj_property name="ElementShortName">dv7</obj_property>
+      <obj_property name="ObjectShortName">dv7</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_sp">
+      <obj_property name="ElementShortName">pt_sp[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_sp[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider2515" type="divider">
+      <obj_property name="label">PT ETA</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv8">
+      <obj_property name="ElementShortName">dv8</obj_property>
+      <obj_property name="ObjectShortName">dv8</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_sp_s">
+      <obj_property name="ElementShortName">pt_sp_s[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_sp_s[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/comboid_eta">
+      <obj_property name="ElementShortName">comboid_eta[15:0]</obj_property>
+      <obj_property name="ObjectShortName">comboid_eta[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv9">
+      <obj_property name="ElementShortName">dv9</obj_property>
+      <obj_property name="ObjectShortName">dv9</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_sp_ss">
+      <obj_property name="ElementShortName">pt_sp_ss[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_sp_ss[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv10">
+      <obj_property name="ElementShortName">dv10</obj_property>
+      <obj_property name="ObjectShortName">dv10</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_sp_sss">
+      <obj_property name="ElementShortName">pt_sp_sss[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_sp_sss[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/c0">
+      <obj_property name="ElementShortName">c0[15:0]</obj_property>
+      <obj_property name="ObjectShortName">c0[15:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/c1">
+      <obj_property name="ElementShortName">c1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">c1[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/dv11">
+      <obj_property name="ElementShortName">dv11</obj_property>
+      <obj_property name="ObjectShortName">dv11</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_sp_ssss">
+      <obj_property name="ElementShortName">pt_sp_ssss[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_sp_ssss[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/c1_eta">
+      <obj_property name="ElementShortName">c1_eta[18:0]</obj_property>
+      <obj_property name="ObjectShortName">c1_eta[18:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/pt_valid">
+      <obj_property name="ElementShortName">pt_valid</obj_property>
+      <obj_property name="ObjectShortName">pt_valid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt_online">
+      <obj_property name="ElementShortName">pt_online[18:0]</obj_property>
+      <obj_property name="ObjectShortName">pt_online[18:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/pt_tb/pt/mtc_valid">
+      <obj_property name="ElementShortName">mtc_valid</obj_property>
+      <obj_property name="ObjectShortName">mtc_valid</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/pt">
+      <obj_property name="ElementShortName">pt[7:0]</obj_property>
+      <obj_property name="ObjectShortName">pt[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/pt_tb/pt/mtc">
+      <obj_property name="ElementShortName">mtc</obj_property>
+      <obj_property name="ObjectShortName">mtc</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+</wave_config>

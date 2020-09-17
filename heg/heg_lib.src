@@ -1,4 +1,4 @@
-heg/src/ROMs/heg_roi_lib.src
+heg/src/ROMs/heg_roi_lib.src lib=heg_roi_lib.src
 heg/src/ROMs/heg_rom_b_zholes_pkg.vhd
 heg/pkg/heg_pkg.vhd 2008
 heg/pkg/heg_custom_pkg.vhd 2008
