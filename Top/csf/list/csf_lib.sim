@@ -1,6 +1,6 @@
 #Simulator xsim
 shared/sim/src/read_file.vhd
-csf/sim/csf_tb.vhd topsim=csf_tb
+csf/sim/csf_tb.vhd topsim=csf_tb runtime=10us
 csf/sim/csf_histogram_tb.vhd 
 csf/sim/csf_fitter_tb.vhd 
 csf/sim/csf_fitter_tb_behav.wcfg
