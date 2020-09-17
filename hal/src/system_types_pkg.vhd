@@ -15,7 +15,6 @@ package system_types_pkg is
     refclk01       : std_logic;
     clock40        : std_logic;
     clock320       : std_logic;
-    clock240       : std_logic;
     clock_pipeline : std_logic;
   end record;
 
@@ -25,9 +24,7 @@ package system_types_pkg is
     freeclock      : std_logic;
     axiclock       : std_logic;
     clock40        : std_logic;
-    clock300       : std_logic;
     clock320       : std_logic;
-    clock240       : std_logic;
     clock_pipeline : std_logic;
   end record;
 

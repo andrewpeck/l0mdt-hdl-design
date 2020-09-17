@@ -152,7 +152,8 @@ architecture behavioral of top_hal is
   signal lpgbt_downlink_mgt_word_array : std32_array_t (c_NUM_LPGBT_DOWNLINKS-1 downto 0);
   signal lpgbt_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
-  signal felix_ttc_mgt_word_array : std_logic_vector (31 downto 0);
+  signal felix_ttc_mgt_word : std_logic_vector (31 downto 0);
+  signal felix_ttc_bitslip        : std_logic;
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
@@ -333,7 +334,10 @@ begin  -- architecture behavioral
       lpgbt_emul_uplink_mgt_word_array_i   => lpgbt_emul_uplink_mgt_word_array,
 
       -- Felix
-      -- n.b. felix Downlinks are carried on the LPGBT links
+      -- felix Downlinks are carried on the LPGBT links
+      felix_ttc_bitslip_i  => felix_ttc_bitslip,
+      felix_ttc_mgt_word_o => felix_ttc_mgt_word,
+
       felix_uplink_mgt_word_array_i => felix_uplink_mgt_word_array,
       felix_mgt_rxusrclk_o          => felix_mgt_rxusrclk,
       felix_mgt_txusrclk_o          => felix_mgt_txusrclk
@@ -409,13 +413,13 @@ begin  -- architecture behavioral
             trg_i                        => ttc_commands.l0a,
             bcr_i                        => ttc_commands.bcr,
             ecr_i                        => ttc_commands.ecr,
-            gsr_i                        => global_reset,  -- TODO: axi control
+            gsr_i                        => global_reset,     -- TODO: axi control
             clk40                        => clocks.clock40,
             strobe_320                   => strobe_320,
-            downlink_clk                 => clocks.clock320,            -- ZDM?
+            downlink_clk                 => clocks.clock320,  -- ZDM?
             downlink_mgt_word_array_o(0) => lpgbt_downlink_mgt_word_array(I),
             uplink_mgt_word_array_i      => lpgbt_uplink_mgt_word_array(I*2+1 downto I*2),
-            uplink_clk                   => clocks.clock320,            -- ZDM?
+            uplink_clk                   => clocks.clock320,  -- ZDM?
             uplink_bitslip_o             => lpgbt_uplink_bitslip(I*2+1 downto I*2),
             tdc_hits_to_polmux_o         => tdc_hits_to_polmux (hi downto lo),
             read_done_from_polmux_i      => read_done_from_polmux (hi downto lo),
@@ -519,9 +523,11 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock          => clocks.clock320,
-      reset          => global_reset,
-      ttc_mgt_data_i => felix_ttc_mgt_word_array,
+      clock => clocks.clock320,
+      reset => global_reset,
+
+      ttc_mgt_data_i    => felix_ttc_mgt_word,
+      ttc_mgt_bitslip_o => felix_ttc_bitslip,
 
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,

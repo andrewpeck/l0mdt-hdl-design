@@ -69,12 +69,11 @@ entity mgt_wrapper is
     -- FELIX
     --------------------------------------------------------------------------------
 
-    -- -- Rxslide from LPGBT rx core
-    -- felix_rxslide_i : in std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
-    --
+    -- Rxslide from LPGBT rx core
+    felix_ttc_bitslip_i : in std_logic;
 
     -- -- 32 bits / clock from mgt
-    -- felix_downlink_mgt_word_array_o : out std32_array_t (c_NUM_FELIX_DOWNLINKS-1 downto 0);
+    felix_ttc_mgt_word_o : out std_logic_vector (31 downto 0);
     felix_mgt_rxusrclk_o : out std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
 
     -- 64 bits / clock to mgt
@@ -494,7 +493,7 @@ begin
           mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
           tx_resets_i           => tx_resets(I),
           rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => (others => '0'),  --(others => lpgbt_rxslide_i (c_FELIX_LPGBT_INDEX)),  -- FIXME: should zero the others that aren't used
+          mgt_rxslide_i         => (others => felix_ttc_bitslip_i),  -- FIXME: should zero the others that aren't used
           status_o              => status(I+3 downto I),
           mgt_words_i           => felix_uplink_mgt_word_array_i(idx+3 downto idx),
           mgt_words_o           => words_o,
@@ -520,7 +519,7 @@ begin
       mgtout_assign_loop : for J in 0 to 3 generate
         matchgen : if (idx+J = c_FELIX_RECCLK_SRC) generate
 
-          --lpgbt_uplink_mgt_word_array_o(c_FELIX_LPGBT_INDEX) <= words_o (J);
+          felix_ttc_mgt_word_o <= words_o (J);
 
           BUFG_GT_SYNC_rx_inst : BUFG_GT_SYNC
             port map (
