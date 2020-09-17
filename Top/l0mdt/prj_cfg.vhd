@@ -21,6 +21,8 @@ package body prj_cfg is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
   begin
 
+    proj_cfg.INSEL_MDT_nTAR := '1';
+
     -- take these values from HAL, derived from the link mapping
     proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
     proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
