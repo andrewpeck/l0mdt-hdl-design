@@ -1,5 +1,3 @@
-Top/lsf/prj_cfg.vhd
-shared/shared_lib.src lib=shared_lib
 dataformats/l0mdt_buses_constants.svh
 IP/lsf/histogram_memory_128x4/histogram_memory_128x4.xci
 IP/lsf/compute_r_bins_hls.xcix  
@@ -25,4 +23,4 @@ IP_repository/SpyBuffer/SpyPlayback.v
 IP_repository/SpyBuffer/SpyBuffer.v
 lsf/src/lsf_spybuffer_wrapper.sv
 lsf/src/legendreEngine_top.sv
-Top/lsf/top_lsf.vhd
+lsf/top_lsf.vhd
