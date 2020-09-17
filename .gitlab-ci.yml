@@ -9,7 +9,7 @@ include:
     - local: '/Top/lsf/gitlab-ci.yml'
     - local: '/Top/upt/gitlab-ci.yml'
     - local: '/Top/ucm/gitlab-ci.yml'
-    - local: '/Top/hp/gitlab-ci.yml'
+#    - local: '/Top/hp/gitlab-ci.yml'
     - local: '/Top/heg/gitlab-ci.yml'
     - local: '/Top/hps_csf/gitlab-ci.yml'
     - local: '/Top/hps_lsf/gitlab-ci.yml'
