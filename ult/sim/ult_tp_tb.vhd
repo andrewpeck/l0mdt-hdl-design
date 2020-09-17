@@ -114,7 +114,10 @@ architecture beh of ult_tp is
   ---------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
-
+  -- clk
+  constant clk_time_period : time := 1 ns;  -- 1Ghz
+  signal clk_time : std_logic := '0';
+  signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
@@ -124,7 +127,7 @@ architecture beh of ult_tp is
 
   signal glob_en : std_logic := '1';
 
-  signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  
   ---------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
@@ -265,7 +268,17 @@ begin
  	-------------------------------------------------------------------------------------
 	-- clock Generator
 	-------------------------------------------------------------------------------------
-  CLK_320 : process begin
+  CLK_RT : process begin
+    clk_time <= '0';
+    wait for CLK_time_period/2;
+    clk_time <= '1';
+    wait for CLK_time_period/2;
+  end process;
+  -- clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+	-- 
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
     clk <= '0';
     wait for CLK_period/2;
     clk <= '1';
@@ -288,9 +301,9 @@ begin
   -------------------------------------------------------------------------------------
 	-- Test Bench time
   -------------------------------------------------------------------------------------
-  ToA: process(clk)
+  ToA: process(clk_time)
   begin
-    if rising_edge(clk) then
+    if rising_edge(clk_time) then
       tb_curr_time <= tb_curr_time + '1';
     end if;
   end process ToA;
@@ -299,14 +312,14 @@ begin
   -------------------------------------------------------------------------------------
   HIT_SLC: process ( rst, clk)
 
-    file input_slc_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
-    variable row              : line;
-    variable row_counter      : integer := 0;
-    -- variable tdc_time         : UNSIG_64;
+    file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
+    variable row                : line;
+    variable row_counter        : integer := 0;
+    -- variable tdc_time           : UNSIG_64;
     variable v_slc_event        : input_slc_b_rt;
-    -- variable next_event_time  : integer := 0;
-    -- variable tb_time          : integer := 0;
-    variable first_read       : std_logic := '1';
+    -- variable next_event_time    : integer := 0;
+    -- variable tb_time            : integer := 0;
+    variable first_read         : std_logic := '1';
 
     variable v_slc_main_prim_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
     variable v_slc_main_seco_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
@@ -334,6 +347,7 @@ begin
             v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
           else
             i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
+            i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
           end if;
         end loop;
 
