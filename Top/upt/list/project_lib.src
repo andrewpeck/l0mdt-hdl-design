@@ -1,5 +1,5 @@
-Top/upt/prj_cfg.vhd 2008
-shared/shared_lib.src
+Top/upt/prj_cfg.vhd
+shared/shared_lib.src lib=shared_lib
 dataformats/l0mdt_buses_constants.svh
 upt/src/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top.v
 upt/src/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_21ns_28s_49_2_1.v

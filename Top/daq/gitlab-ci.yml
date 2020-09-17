@@ -1,40 +1,12 @@
-create_project:daq:
-    extends: .create_project
+generate_project:daq:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: daq
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # simulate_project:daq:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: daq
-
-synthesise_ips:daq:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: daq
-      IP_PATH: IP
-    dependencies:
-        - create_project:daq
-
-synthesise_project:daq:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: daq
-    dependencies:
-        # - synthesise_ips:daq
-        - create_project:daq
-
-# implement_project:daq:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: daq
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:daq
-#       #  - synthesise_ips:daq
-#       - synthesise_project:daq

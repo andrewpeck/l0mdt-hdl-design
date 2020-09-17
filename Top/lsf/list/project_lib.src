@@ -1,5 +1,5 @@
-Top/csf/prj_cfg.vhd 2008
-shared/shared_lib.src
+Top/csf/prj_cfg.vhd
+shared/shared_lib.src lib=shared_lib
 dataformats/l0mdt_buses_constants.svh
 IP/lsf/histogram_memory_128x4/histogram_memory_128x4.xci
 IP/lsf/compute_r_bins_hls.xcix  

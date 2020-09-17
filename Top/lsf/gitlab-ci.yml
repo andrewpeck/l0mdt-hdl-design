@@ -1,35 +1,13 @@
 #################### LSF Project ###########################
-
-create_project:lsf:
-    extends: .create_project
+generate_project:lsf:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: lsf
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-synthesise_ips:lsf:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-      IP_PATH: IP
-    dependencies:
-        - create_project:lsf
-
-synthesise_project:lsf:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf
-    dependencies:
-        # - synthesise_ips:lsf
-        - create_project:lsf
-
-# implement_project:lsf:
-#     extends: .implement_project
+# simulate_project:example:
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: lsf
-#     dependencies:
-#        - create_project:lsf
-#        - synthesise_ips:lsf
-#        - synthesise_project:lsf
+#       PROJECT_NAME: example

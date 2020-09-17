@@ -1,35 +1,13 @@
-#################### UPT Project ###########################
-
-create_project:upt:
-    extends: .create_project
+#################### upt Project ###########################
+generate_project:upt:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: upt
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-synthesise_ips:upt:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: upt
-      IP_PATH: IP
-    dependencies:
-        - create_project:upt
-
-synthesise_project:upt:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: upt
-    dependencies:
-        # - synthesise_ips:upt
-        - create_project:upt
-
-# implement_project:upt:
-#     extends: .implement_project
+# simulate_project:upt:
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: upt
-#     dependencies:
-#        - create_project:upt
-#        - synthesise_ips:upt
-#        - synthesise_project:upt

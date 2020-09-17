@@ -1,42 +1,13 @@
 #################### ptc_mpi Project ###########################
-
-create_project:ptc_mpi:
-    extends: .create_project
+generate_project:ptc_mpi:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ptc_mpi
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 simulate_project:ptc_mpi:
     extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: ptc_mpi
-
-synthesise_ips:ptc_mpi:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: ptc_mpi
-      IP_PATH: IP
-    dependencies:
-        - create_project:ptc_mpi
-
-synthesise_project:ptc_mpi:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ptc_mpi
-    dependencies:
-        - synthesise_ips:ptc_mpi
-        - create_project:ptc_mpi
-
-# implement_project:ptc_mpi:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ptc_mpi
-#     dependencies:
-#        - create_project:ptc_mpi
-#        - synthesise_ips:ptc_mpi
-#        - synthesise_project:ptc_mpi
-
