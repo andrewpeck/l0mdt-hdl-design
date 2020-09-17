@@ -1,16 +1,17 @@
 # https://ghdl.readthedocs.io/en/latest/getting/PrecompileVendorPrimitives.html
-COMMON_FILES=../../hal/src/board_pkg_common.vhd ../../hal/src/boards/board_pkg_mpi_ku15p.vhd hal_user_pkg.vhd \
-									 ../../hal/src/system_types_pkg.vhd\
-									 ../../hal/src/constants_pkg.vhd\
+COMMON_FILES= ../../hal/src/board_pkg_common.vhd\
+						  ../../hal/src/boards/board_pkg_mpi_ku15p.vhd hal_user_pkg.vhd \
+						  ../../hal/src/system_types_pkg.vhd\
+						  ../../hal/src/constants_pkg.vhd\
 
 SHARED_LIB_FILES = ../../shared/config/config_defaults_pkg.vhd\
 									 ../../shared/types/common_ieee_pkg.vhd\
 									 ../../dataformats/l0mdt_constants_pkg.vhd \
 									 ../../dataformats/l0mdt_dataformats_pkg.vhd \
 									 ../../shared/types/common_constants_pkg.vhd\
-									 ../../shared/functions/some_functions_pkg.vhd\
-									 ../../shared/types/common_types_pkg.vhd\
-									 ../../shared/config/detector_param_pkg.vhd
+									 ../../shared/detector_parameters/detector_param_pkg.vhd\
+									 ../../shared/functions/vhdl2008_functions_pkg.vhd\
+									 ../../shared/types/common_types_pkg.vhd
 
 PROJECT_LIB = prj_cfg.vhd
 
