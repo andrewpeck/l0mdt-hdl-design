@@ -91,8 +91,8 @@ entity mgt_wrapper is
     -- 32 bits / bx from mgt
     sl_rx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    sl_txclks : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-    sl_rxclks : out std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+    sl_tx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
     sl_tx_ctrl_i  : in  sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
@@ -409,10 +409,12 @@ begin
           clock                    => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
           reset_i                  => reset_tree(I),
           mgt_refclk_i             => refclk(c_MGT_MAP(I).refclk),
-          mgt_rxusrclk_i           => clocks.clock240,
+          mgt_rxusrclk_i           => sl_rx_clk(idx),
           mgt_rxusrclk_active_i    => not reset_tree(I),
-          mgt_txusrclk_i           => clocks.clock240,
+          mgt_txusrclk_i           => sl_tx_clk(idx),
           mgt_txusrclk_active_i    => not reset_tree(I),
+          rxoutclk                 => sl_rx_clk(idx),
+          txoutclk                 => sl_tx_clk(idx),
           tx_resets_i              => tx_resets(I),
           rx_resets_i              => rx_resets(I),
           status_o                 => status(I),

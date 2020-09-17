@@ -25,6 +25,8 @@ entity mgt_sl_wrapper is
 
     reset_i : in std_logic;
 
+    txoutclk : out std_logic;
+    rxoutclk : out std_logic;
 
     mgt_refclk_i : in std_logic;
 
@@ -394,8 +396,8 @@ begin
 
         rxslide_in(0) => rx_slide_i,
 
-        rxoutclk_out => open,
-        txoutclk_out => open
+        rxoutclk_out(0) => rxoutclk,
+        txoutclk_out(0) => txoutclk
         );
 
   end generate gty_gen;

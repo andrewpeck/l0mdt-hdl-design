@@ -195,6 +195,10 @@ architecture behavioral of top_hal is
   signal sl_rx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+
   --------------------------------------------------------------------------------
   -- Signal sumps for development
   --------------------------------------------------------------------------------
@@ -315,6 +319,8 @@ begin  -- architecture behavioral
       sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
       sl_tx_ctrl_i           => sl_tx_ctrl,
       sl_rx_slide_i          => sl_rx_slide,
+      sl_tx_clk              => sl_tx_clk,
+      sl_rx_clk              => sl_rx_clk,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -484,7 +490,8 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
     port map (
 
-      clock          => clocks.clock240,  -- 240 MHz sector logic userclk
+      tx_clk         => sl_tx_clk,
+      rx_clk         => sl_rx_clk,
       pipeline_clock => clocks.clock_pipeline,
       reset          => global_reset,
 

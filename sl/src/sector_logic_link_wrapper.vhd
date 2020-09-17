@@ -33,7 +33,8 @@ entity sector_logic_link_wrapper is
     );
   port(
 
-    clock : in std_logic;
+    tx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    rx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
     pipeline_clock : in std_logic;
     reset          : in std_logic;
@@ -84,7 +85,7 @@ architecture Behavioral of sector_logic_link_wrapper is
   begin
     sign := sv(data'length-1);
     mag  := sv(data'length-2 downto 0);
-    if (or_reduce(sv)='0') then
+    if (or_reduce(sv) = '0') then
       twos_complement := (others => '0');
     elsif (sign = '1') then
       twos_complement := ('0' & mag);
@@ -96,30 +97,41 @@ architecture Behavioral of sector_logic_link_wrapper is
   end;
 begin
 
-  rx_reset_fanout : process (clock) is
-  begin  -- process reset_fanout
-    if rising_edge(clock) then          -- rising clock edge
-      rx_reset_tree <= (others => reset); -- TODO: connect to AXI
-    end if;
-  end process;
+  rxrstgen : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
+  begin
+    process (rx_clk(I))
+    begin
+      if rising_edge(rx_clk(I)) then    -- rising clock edge
+        rx_reset_tree(I) <= reset;      -- TODO: connect to AXI
+      end if;
+    end process;
+  end generate;
 
   -- unit test on this conversion function...
-  assert -3=to_integer(signed_mag_to_signed("011"))
-    report "failure in signed magnutude conversion of -3 get=" & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
-  assert -2=to_integer(signed_mag_to_signed("010"))
-    report "failure in signed magnutude conversion of -2 get=" & integer'image (to_integer(signed_mag_to_signed("010"))) severity error;
-  assert -1=to_integer(signed_mag_to_signed("001"))
-    report "failure in signed magnutude conversion of -1 get=" & integer'image (to_integer(signed_mag_to_signed("001"))) severity error;
-  assert  0=to_integer(signed_mag_to_signed("000"))
-    report "failure in signed magnutude conversion of  0 get=" & integer'image (to_integer(signed_mag_to_signed("000"))) severity error;
-  assert  0=to_integer(signed_mag_to_signed("100"))
-    report "failure in signed magnutude conversion of  0 get=" & integer'image (to_integer(signed_mag_to_signed("100"))) severity error;
-  assert  1=to_integer(signed_mag_to_signed("101"))
-    report "failure in signed magnutude conversion of  1 get=" & integer'image (to_integer(signed_mag_to_signed("101"))) severity error;
-  assert  2=to_integer(signed_mag_to_signed("110"))
-    report "failure in signed magnutude conversion of  2 get=" & integer'image (to_integer(signed_mag_to_signed("110"))) severity error;
-  assert  3=to_integer(signed_mag_to_signed("111"))
-    report "failure in signed magnutude conversion of  3 get=" & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
+  assert -3 = to_integer(signed_mag_to_signed("011"))
+    report "failure in signed magnutude conversion of -3 get="
+    & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
+  assert -2 = to_integer(signed_mag_to_signed("010"))
+    report "failure in signed magnutude conversion of -2 get="
+    & integer'image (to_integer(signed_mag_to_signed("010"))) severity error;
+  assert -1 = to_integer(signed_mag_to_signed("001"))
+    report "failure in signed magnutude conversion of -1 get="
+    & integer'image (to_integer(signed_mag_to_signed("001"))) severity error;
+  assert 0 = to_integer(signed_mag_to_signed("000"))
+    report "failure in signed magnutude conversion of  0 get="
+    & integer'image (to_integer(signed_mag_to_signed("000"))) severity error;
+  assert 0 = to_integer(signed_mag_to_signed("100"))
+    report "failure in signed magnutude conversion of  0 get="
+    & integer'image (to_integer(signed_mag_to_signed("100"))) severity error;
+  assert 1 = to_integer(signed_mag_to_signed("101"))
+    report "failure in signed magnutude conversion of  1 get="
+    & integer'image (to_integer(signed_mag_to_signed("101"))) severity error;
+  assert 2 = to_integer(signed_mag_to_signed("110"))
+    report "failure in signed magnutude conversion of  2 get="
+    & integer'image (to_integer(signed_mag_to_signed("110"))) severity error;
+  assert 3 = to_integer(signed_mag_to_signed("111"))
+    report "failure in signed magnutude conversion of  3 get="
+    & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
 
   tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
     signal header  : std_logic_vector (31 downto 0);
@@ -246,7 +258,7 @@ begin
           NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
           NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
         port map (
-          tx_usrclk2      => clock,
+          tx_usrclk2      => tx_clk(idx),
           userdata_tx     => sl_tx_mgt_word_array_o(idx),
           txctrl0         => sl_tx_ctrl_o(idx).ctrl0,      -- 4 bit to mgt
           txctrl1         => sl_tx_ctrl_o(idx).ctrl1,      -- 4 bit to mgt
@@ -264,7 +276,7 @@ begin
           WIDTH    => sl_tx_data_post_cdc(idx).data'length,
           N_STAGES => 2)
         port map (
-          clk_i   => clock,
+          clk_i   => tx_clk(idx),
           valid_i => sl_tx_data(idx).valid,
           data_i  => sl_tx_data(idx).data,
           valid_o => sl_tx_data_post_cdc(idx).valid,
@@ -295,7 +307,7 @@ begin
           NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
         port map (
           reset               => rx_reset_tree(idx),
-          clk_in              => clock,
+          clk_in              => rx_clk(idx),
           rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
           rx_ctrl0_in         => sl_rx_ctrl_i(idx).ctrl0,      -- 4 bit from mgt
           rx_ctrl1_in         => sl_rx_ctrl_i(idx).ctrl1,      -- 4 bit from mgt
@@ -316,7 +328,7 @@ begin
         port map (
           reset => rx_reset_tree (idx),
 
-          rx_usrclk2 => clock,
+          rx_usrclk2 => rx_clk(idx),
 
           userdata_rx => dec_userdata,
 
