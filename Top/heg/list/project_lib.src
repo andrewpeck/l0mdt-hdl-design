@@ -1,5 +1,5 @@
 Top/heg/prj_cfg.vhd
-shared/shared_lib.src
+shared/shared_lib.src lib=shared_lib
 heg/top_heg.vhd
-hp/hp_lib.src
-heg/heg_lib.src
+hp/hp_lib.src lib=hp_lib
+heg/heg_lib.src lib=heg_lib

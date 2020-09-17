@@ -1,4 +1,4 @@
-Top/ucm/prj_cfg.vhd 2008
+Top/ucm/prj_cfg.vhd 
 mpl/top_mpl.vhd
-shared/shared_lib.src
-mpl/mpl_lib.src
+shared/shared_lib.src lib=shared_lib
+mpl/mpl_lib.src lib=mpl_lib

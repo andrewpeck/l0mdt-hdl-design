@@ -62,7 +62,7 @@ architecture beh of hps_sf_wrap is
   
 
   --barrel
-  signal i_seed_r     : csf_seed_rt;
+  signal i_seed_r     : heg2sfslc_rt;
   signal i_mdt_hit_r  : heg2sfhit_rt;
   signal i_seed_v     : csf_seed_rvt;
   signal i_mdt_hit_v  : heg2sfhit_rvt;
@@ -85,48 +85,48 @@ begin
     -- CSF
     EN_CSF : if c_SF_TYPE = '0' generate
 
-      slc_data <= structify(i_slc_data);
+      --slc_data <= structify(i_slc_data);
 
-      SF_B : if c_ST_nBARREL_ENDCAP = '0' generate
-        --SLC
-        -- slc_barrel <= structify(slc_data.specific);
-        i_seed_v <= vectorify(i_seed_r);
+      --SF_B : if c_ST_nBARREL_ENDCAP = '0' generate
+      --  --SLC
+      --  -- slc_barrel <= structify(slc_data.specific);
+      --  i_seed_v <= vectorify(i_seed_r);
 
-        i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_data.vec_ang;
-        i_seed_r.pos        <= slc_data.vec_pos;
-        i_seed_r.ang        <= (others => '0');
-        i_seed_r.mdtid      <= slc_data.mdtid;
-        i_seed_r.data_valid <= slc_data.data_valid;
+      --  i_seed_r.muid       <= slc_data.muid;
+      --  i_seed_r.mbar       <= slc_data.vec_ang;
+      --  i_seed_r.vecpos        <= slc_data.vec_pos;
+      --  i_seed_r.ang        <= (others => '0');
+      --  i_seed_r.mdtid      <= slc_data.mdtid;
+      --  i_seed_r.data_valid <= slc_data.data_valid;
         
-        -- MDT
-        mdt_data <= structify(i_mdt_data);
-        i_mdt_hit_v <= vectorify(i_mdt_hit_r);
+      --  -- MDT
+      --  mdt_data <= structify(i_mdt_data);
+      --  i_mdt_hit_v <= vectorify(i_mdt_hit_r);
 
-        i_mdt_hit_r.localy      <= mdt_data.localy;
-        i_mdt_hit_r.localx      <= mdt_data.localx;
-        i_mdt_hit_r.radius      <= mdt_data.radius;
-        i_mdt_hit_r.mlayer      <= mdt_data.mlayer;
-        i_mdt_hit_r.data_valid  <= mdt_data.data_valid;
+      --  i_mdt_hit_r.localy      <= mdt_data.localy;
+      --  i_mdt_hit_r.localx      <= mdt_data.localx;
+      --  i_mdt_hit_r.radius      <= mdt_data.radius;
+      --  i_mdt_hit_r.mlayer      <= mdt_data.mlayer;
+      --  i_mdt_hit_r.data_valid  <= mdt_data.data_valid;
 
-        -- SF
-        -- o_sf_data_v <= vectorify(sf_data_r);
-        o_sf_data_v <= sf_data_v;
-        -- sf_data_r.data_valid <= 
+      --  -- SF
+      --  -- o_sf_data_v <= vectorify(sf_data_r);
+      --  o_sf_data_v <= sf_data_v;
+      --  -- sf_data_r.data_valid <= 
 
-      end generate;
+      --end generate;
 
-      SF_E : if c_ST_nBARREL_ENDCAP = '1' generate
-        -- slc_endcap <= structify(slc_data.specific);
-        i_seed_v <= vectorify(i_seed_r);
+      --SF_E : if c_ST_nBARREL_ENDCAP = '1' generate
+      --  -- slc_endcap <= structify(slc_data.specific);
+      --  i_seed_v <= vectorify(i_seed_r);
         
-        i_seed_r.muid       <= slc_data.muid;
-        i_seed_r.mbar       <= slc_data.vec_ang;
-        i_seed_r.pos        <= (others => '0');
-        i_seed_r.ang        <= slc_data.vec_pos;
-        i_seed_r.mdtid <= slc_data.mdtid;
-        i_seed_r.data_valid <= slc_data.data_valid;
-      end generate;
+      --  i_seed_r.muid       <= slc_data.muid;
+      --  i_seed_r.mbar       <= slc_data.vec_ang;
+      --  i_seed_r.pos        <= (others => '0');
+      --  i_seed_r.ang        <= slc_data.vec_pos;
+      --  i_seed_r.mdtid <= slc_data.mdtid;
+      --  i_seed_r.data_valid <= slc_data.data_valid;
+      --end generate;
 
 
 
@@ -136,8 +136,8 @@ begin
       )
       port map(
         clk        => clk,
-        i_seed     => i_seed_v,
-        i_mdt_hit  => i_mdt_hit_v,
+        i_seed     => i_slc_data,
+        i_mdt_hit  => i_mdt_data,
         i_eof      => eof,
         i_rst      => rst,
         o_seg      => sf_data_v

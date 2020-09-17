@@ -1,35 +1,13 @@
-#################### HPS Project ###########################
-
-create_project:hps_csf:
-    extends: .create_project
+#################### hps_csf Project ###########################
+generate_project:hps_csf:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: hps_csf
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-synthesise_ips:hps_csf:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: hps_csf
-      IP_PATH: IP
-    dependencies:
-        - create_project:hps_csf
-
-synthesise_project:hps_csf:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: hps_csf
-    dependencies:
-        # - synthesise_ips:hps_csf
-        - create_project:hps_csf
-
-# implement_project:hps_csf:
-#     extends: .implement_project
+# simulate_project:hps_csf:
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hps_csf
-#     dependencies:
-#        - create_project:hps_csf
-#        - synthesise_ips:hps_csf
-#        - synthesise_project:hps_csf

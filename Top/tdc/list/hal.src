@@ -1,6 +1,6 @@
 # -*- mode: TCL;-*-
 
-tdc/list/tdc.src
+tdc/list/tdc.src lib=tdc
 
 # LPGBT
 lpgbt/list/lpgbt_fpga.sub

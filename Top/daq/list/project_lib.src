@@ -1,4 +1,4 @@
 Top/daq/prj_cfg.vhd
-shared/shared_lib.src
-ttc/ttc_lib.src
-daq/daq_lib.src
+shared/shared_lib.src lib=shared_lib
+ttc/ttc_lib.src lib=ttc_lib
+daq/daq_lib.src lib=daq_lib

@@ -1,6 +1,6 @@
 # -*- mode: TCL;-*-
-hal/list/hal.src
+hal/list/hal.src lib=hal
 Top/l0mdt/hal_user_pkg.vhd
-ctrl/ctrl_lib.src
-shared/shared_lib.src
+ctrl/ctrl_lib.src lib=ctrl_lib
+shared/shared_lib.src lib=shared_lib
 hal/src/boards/board_pkg_mpi_ku15p.vhd
