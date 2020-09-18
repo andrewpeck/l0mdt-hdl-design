@@ -1,0 +1,7 @@
+dataformats/l0mdt_buses_constants.svh
+shared/shared_lib.src lib=shared_lib
+ctrl/ctrl_lib.src lib=ctrl_lib
+Top/mtc/prj_cfg.vhd
+mtc/src/format_mtc_pkt.sv
+mtc/src/mtc_builder_verilog.sv
+mtc/top_mtc.vhd 2008

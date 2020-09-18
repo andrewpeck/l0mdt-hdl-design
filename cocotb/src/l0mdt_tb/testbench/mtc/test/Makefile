@@ -31,9 +31,10 @@ SIM ?= questa
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../
 SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
-MTCDIR = $(SRCDIR)/mtc_builder/src
+MTCDIR = $(SRCDIR)/mtc/src
 DFDIR  = $(SRCDIR)/dataformats
 
+RTL_LIBRARY = shared_lib
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
@@ -46,8 +47,18 @@ VERILOG_SOURCES = \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files
-VHDL_SOURCES = \
-    $(MTCDIR)/../top_mtc_builder.vhd
+#VHDL_SOURCES = \
+#    $(MTCDIR)/../../shared/types/common_ieee_pkg.vhd \
+#    $(MTCDIR)/../../shared/config/config_defaults_pkg.vhd \
+#    $(MTCDIR)/../../shared/config/config_pkg.vhd \
+#    $(MTCDIR)/../../shared/detector_parameters/detector_param_pkg.vhd \
+#    $(MTCDIR)/../../shared/detector_parameters/gtube2chamber_pkg.vhd \
+#    $(MTCDIR)/../../shared/functions/vhdl2008_functions_pkg.vhd \
+#    $(MTCDIR)/../../dataformats/l0mdt_constants_pkg.vhd \
+#    $(MTCDIR)/../../dataformats/l0mdt_dataformats_pkg.vhd \
+#    $(MTCDIR)/../../shared/types/common_constants_pkg.vhd \
+#    $(MTCDIR)/../../shared/types/common_types_pkg.vhd \
+#    $(MTCDIR)/../top_mtc.vhd
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR) +incdir+$(DFDIR) +incdir+$(MTCDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver
