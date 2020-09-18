@@ -31,13 +31,15 @@ HDL_Types:
   - READY : [ type: logic ]
   - LSF : [ type: H2S_HPS_LSF_MON_t ]
   - CSF : [ type: H2S_HPS_CSF_MON_t ]
-  type H2S_HPS_MON_t_ARRAY is array(0 to 3) of H2S_HPS_MON_t;
+
+- H2S_HPS_MON_t_ARRAY: [array: 3, type: H2S_HPS_MON_t]
 
 - H2S_HPS_CTRL_t:
   - RESET : [ type: logic ]
   - LSF : [ type: H2S_HPS_LSF_CTRL_t ]
   - CSF : [ type: H2S_HPS_CSF_CTRL_t ]
-  type H2S_HPS_CTRL_t_ARRAY is array(0 to 3) of H2S_HPS_CTRL_t;
+
+- H2S_HPS_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_CTRL_t]
 
 - H2S_MON_t:
   - HPS : [ type: H2S_HPS_MON_t_ARRAY ]

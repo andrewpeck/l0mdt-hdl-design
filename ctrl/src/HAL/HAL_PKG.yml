@@ -11,11 +11,13 @@ HDL_Types:
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t:
   - READY : [ type: logic, description:LPGBT Uplink Ready ]
   - FEC_ERR_CNT : [ type: logic, length: 16, description:Data Corrected Count ]
-  type HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY is array(0 to 1) of HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t;
+
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t:
   - RESET : [ type: logic, description:Reset this Uplink ]
-  type HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY is array(0 to 1) of HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t;
+
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_MON_t:
   - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY ]
@@ -52,7 +54,8 @@ HDL_Types:
   - RX_RECEIVED : [ type: logic, description:Reply received flag (pulse) ]
   - RX_CHANNEL : [ type: logic, length: 8, description:Reply: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
   - RX_DATA : [ type: logic, length: 32, description:Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register. ]
-  type HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is array(0 to 2) of HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+
+- HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY: [array: 2, type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t]
 
 - HAL_CSM_CSM_SC_MASTER_RX_MON_t:
   - RX : [ type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY ]
@@ -120,12 +123,14 @@ HDL_Types:
 - HAL_CSM_CSM_MON_t:
   - LPGBT : [ type: HAL_CSM_CSM_LPGBT_MON_t ]
   - SC : [ type: HAL_CSM_CSM_SC_MON_t ]
-  type HAL_CSM_CSM_MON_t_ARRAY is array(0 to 17) of HAL_CSM_CSM_MON_t;
+
+- HAL_CSM_CSM_MON_t_ARRAY: [array: 17, type: HAL_CSM_CSM_MON_t]
 
 - HAL_CSM_CSM_CTRL_t:
   - LPGBT : [ type: HAL_CSM_CSM_LPGBT_CTRL_t ]
   - SC : [ type: HAL_CSM_CSM_SC_CTRL_t ]
-  type HAL_CSM_CSM_CTRL_t_ARRAY is array(0 to 17) of HAL_CSM_CSM_CTRL_t;
+
+- HAL_CSM_CSM_CTRL_t_ARRAY: [array: 17, type: HAL_CSM_CSM_CTRL_t]
 
 - HAL_CSM_MON_t:
   - CSM : [ type: HAL_CSM_CSM_MON_t_ARRAY ]
