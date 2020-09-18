@@ -46,7 +46,8 @@ VERILOG_SOURCES = \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files
-VHDL_SOURCES = 
+VHDL_SOURCES = \
+    $(MTCDIR)/../top_mtc_builder.vhd
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR) +incdir+$(DFDIR) +incdir+$(MTCDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver

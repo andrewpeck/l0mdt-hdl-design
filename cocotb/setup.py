@@ -16,11 +16,11 @@ import subprocess
 #    system_sim_path = "https://gitlab.cern.ch/atlas-tdaq-p2-firmware/tdaq-htt-firmware/system-simulation.git"
 #system_sim_branch = "python3_import"
 #os.system("pip install git+{}@{}".format(system_sim_path, system_sim_branch))
-os.system("python -m pip install CppHeaderParser")
-os.system("python -m pip install ../dataformats")
-os.system("python -m pip install ../tv/TVReader")
-os.system("python -m pip install ../tv/TVDataFormat")
-os.system("python -m pip install ../tv")
+#os.system("python -m pip install CppHeaderParser")
+#os.system("python -m pip install -e ../dataformats")
+#os.system("python -m pip install -e ../tv/TVReader")
+#os.system("python -m pip install -e ../tv/TVDataFormat")
+#os.system("python -m pip install -e ../tv")
 #os.system("source ../tv/setupPy.sh")
 
 setup(

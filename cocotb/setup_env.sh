@@ -57,7 +57,7 @@ function python3_available {
 }
 
 function update_pip {
-    python -m pip install --upgrade --no-cache-dir pip setuptools wheel 2>&1 >/dev/null
+    python3 -m pip install --upgrade --no-cache-dir pip setuptools wheel 2>&1 >/dev/null
     status=$?
     if [[ ! $status -eq 0 ]]; then
         echo "ERROR Problem in updating pip within the virutal environment"
@@ -92,19 +92,32 @@ function pre_commit_setup {
     return 0
 }
 
+function install_tv {
+    echo "Installing TV environment"
+    python3 -m pip install pandas
+    python3 -m pip install tabulate
+    python3 -m pip install termcolor    
+    python3 -m pip install -e ./../dataformats
+    python3 -m pip install -e ../tv/TVReader
+    python3 -m pip install -e ../tv/TVMaker
+    python3 -m pip install -e ../tv/TVDataFormat
+    python3 -m pip install -e ../tv
+    return 0
+}
+
 function checkout_deps {
     ## dataformats package
-    if [ ! -d "../DataFormats" ]; then
-        echo "Checking out dependency: DataFormats"
+    if [ ! -d "../dataformats" ]; then
+        echo "Checking out dependency: dataformats"
         git clone -b ${dataformats_tag} ${dataformats_repo} ../dataformats
-        if [ ! -d "../DataFormats" ]; then
+        if [ ! -d "../dataformats" ]; then
             echo "ERROR Failed to clone dataformats repo from ${dataformats_repo}"
             return 1
         fi
     fi
     start_dir=${PWD}
     cd "../dataformats"
-    echo "Checking out DataFormats branch ${dataformats_tag}"
+    echo "Checking out dataformats branch ${dataformats_tag}"
     git checkout ${dataformats_tag}
     cd ${start_dir}
 
@@ -158,7 +171,7 @@ function main {
 #            return 1
 #        fi
 #    fi
- 
+  
     ##
     ## setup
     ##
@@ -172,6 +185,8 @@ function main {
         fi
 
     else
+	echo "Setting up Python environment"
+	 
         python3 -m venv ${venv_dir_name}
         if [ ! -d ${venv_dir_name} ]; then
             echo "ERROR Problem setting up virtual environment \"${venv_dir_name}\""
@@ -182,20 +197,27 @@ function main {
             fi
 
 
-	    if ! python -m pip install --quiet -e . ; then
+	   # if ! python -m pip install --quiet -e . ; then
+	    if ! python3 -m pip install  -e . ; then
                 echo "ERROR There was a problem in installing the packages"
                 deactivate >/dev/null 2>&1
                 return 1
             fi
 
+	    echo "Installing required package for the TV environment"
+            if ! install_tv; then
+                return 1
+            fi
+            echo "Installation successful"
+
 
             ##
             ## setup pre-commit
             ##
-            if ! pre_commit_setup; then
-                return 1
-            fi
-
+            #if ! pre_commit_setup; then
+            #   return 1
+            #fi
+	  
 
 
             echo "Installation successful"

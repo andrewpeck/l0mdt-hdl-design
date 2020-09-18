@@ -1,3 +1,18 @@
+//--------------------------------------------------------------------------------
+//--  Department of Physics and Astronomy, UCI
+//--  Priya Sundararajan
+//--  priya.sundararajan@cern.ch
+//--------------------------------------------------------------------------------
+//--  Project: ATLAS L0MDT Trigger 
+//--  Description:
+//--
+//--------------------------------------------------------------------------------
+//--  Revisions:
+//--      
+//--------------------------------------------------------------------------------
+
+
+
 //`include "l0mdt_buses_constants.svh"
 `default_nettype wire
 module mtc_builder_verilog#(
