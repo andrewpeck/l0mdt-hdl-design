@@ -153,7 +153,7 @@ architecture behavioral of top_hal is
   signal lpgbt_uplink_mgt_word_array   : std32_array_t (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
   signal felix_ttc_mgt_word : std_logic_vector (31 downto 0);
-  signal felix_ttc_bitslip        : std_logic;
+  signal felix_ttc_bitslip  : std_logic;
 
   signal lpgbt_uplink_bitslip : std_logic_vector (c_NUM_LPGBT_UPLINKS-1 downto 0);
 
@@ -192,8 +192,8 @@ architecture behavioral of top_hal is
 
   signal sl_rx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_mgt_word_array : std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_tx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_ctrl           : sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_tx_ctrl           : sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);

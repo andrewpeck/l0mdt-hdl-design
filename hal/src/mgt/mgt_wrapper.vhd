@@ -93,8 +93,8 @@ entity mgt_wrapper is
     sl_tx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-    sl_tx_ctrl_i  : in  sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-    sl_rx_ctrl_o  : out sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
     );
@@ -142,7 +142,9 @@ begin
 
   refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
 
-    nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL) generate
+    nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL
+                   and c_REFCLK_MAP(I).FREQ /= REF_SYNC240 -- SL has its own buffer
+                   ) generate
 
       assert false
         report "GENERATING REFCLK IBUF=" & integer'image(I) severity note;
@@ -197,10 +199,10 @@ begin
         mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
         mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out(0);
 
-        drp_i(I).drpaddr_in   <= ctrl.mgt(I).drp.wr_addr;
-        drp_i(I).drpdi_in     <= ctrl.mgt(I).drp.wr_data;
-        drp_i(I).drpen_in(0)  <= ctrl.mgt(I).drp.en;
-        drp_i(I).drpwe_in(0)  <= ctrl.mgt(I).drp.wr_en;
+        drp_i(I).drpaddr_in  <= ctrl.mgt(I).drp.wr_addr;
+        drp_i(I).drpdi_in    <= ctrl.mgt(I).drp.wr_data;
+        drp_i(I).drpen_in(0) <= ctrl.mgt(I).drp.en;
+        drp_i(I).drpwe_in(0) <= ctrl.mgt(I).drp.wr_en;
 
         tx_resets(I).reset                  <= ctrl.mgt(I).tx_resets.reset;
         tx_resets(I).reset_pll_and_datapath <= ctrl.mgt(I).tx_resets.reset_pll_and_datapath;
@@ -375,7 +377,7 @@ begin
     -- Sector Logic Type
     --------------------------------------------------------------------------------
 
-    sl_gen : if (sl_idx_array(I) /= -1) generate
+    sl_gen : if (sl_idx_array(I) /= -1 and (I mod 4 = 0)) generate  -- only generate for the quad
 
       attribute X_LOC             : integer;
       attribute Y_LOC             : integer;
@@ -386,7 +388,7 @@ begin
 
       constant idx : integer := sl_idx_array(I);
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic;
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
 
     begin
 
@@ -405,38 +407,24 @@ begin
       MGT_INST : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock                    => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
-          reset_i                  => reset_tree(I),
-          mgt_refclk_i             => refclk(c_MGT_MAP(I).refclk),
-          mgt_rxusrclk_i           => sl_rx_clk(idx),
-          mgt_rxusrclk_active_i    => not reset_tree(I),
-          mgt_txusrclk_i           => sl_tx_clk(idx),
-          mgt_txusrclk_active_i    => not reset_tree(I),
-          rxoutclk                 => sl_rx_clk(idx),
-          txoutclk                 => sl_tx_clk(idx),
-          tx_resets_i              => tx_resets(I),
-          rx_resets_i              => rx_resets(I),
-          status_o                 => status(I),
-          txctrl0_in               => x"000" & sl_tx_ctrl_i(idx).ctrl0,
-          txctrl1_in               => x"000" & sl_tx_ctrl_i(idx).ctrl1,
-          txctrl2_in               => x"0" & sl_tx_ctrl_i(idx).ctrl2,
-          rxctrl0_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl0,
-          rxctrl0_out(15 downto 4) => open,
-          rxctrl1_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl1,
-          rxctrl1_out(15 downto 4) => open,
-          rxctrl2_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl2,
-          rxctrl2_out(7 downto 4)  => open,
-          rxctrl3_out(3 downto 0)  => sl_rx_ctrl_o(idx).ctrl3,
-          rxctrl3_out(7 downto 4)  => open,
-          rx_slide_i               => sl_rx_slide_i(idx),
-          mgt_word_i               => sl_tx_mgt_word_array_i(idx),
-          mgt_word_o               => sl_rx_mgt_word_array_o(idx),
-          rxp_i                    => rx_p,
-          rxn_i                    => rx_n,
-          txp_o                    => tx_p,
-          txn_o                    => tx_n,
-          mgt_drp_i                => drp_i(I),
-          mgt_drp_o                => drp_o(I)
+          clock        => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
+          reset_i      => reset_tree(I),
+          mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
+          mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
+          rxoutclk     => sl_rx_clk(idx + 3 downto idx),
+          txoutclk     => sl_tx_clk(idx + 3 downto idx),
+          status_o     => status(I+3 downto I),
+          txctrl_in    => sl_tx_ctrl_i(idx+3 downto idx),
+          rxctrl_out   => sl_rx_ctrl_o(idx+3 downto idx),
+          rx_slide_i   => sl_rx_slide_i(idx+3 downto idx),
+          mgt_word_i   => sl_tx_mgt_word_array_i(idx+3 downto idx),
+          mgt_word_o   => sl_rx_mgt_word_array_o(idx+3 downto idx),
+          rxp_i        => rx_p,
+          rxn_i        => rx_n,
+          txp_o        => tx_p,
+          txn_o        => tx_n,
+          mgt_drp_i    => drp_i(I+3 downto I),
+          mgt_drp_o    => drp_o(I+3 downto I)
           );
 
     end generate sl_gen;
@@ -488,17 +476,41 @@ begin
       MGT_INST : entity work.mgt_felix_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          free_clock            => clocks.freeclock,
-          reset                 => '0',              -- FIXME: how to reset? due to recovered clock...
-          mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
-          tx_resets_i           => tx_resets(I),
-          rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => (others => felix_ttc_bitslip_i),  -- FIXME: should zero the others that aren't used
-          status_o              => status(I+3 downto I),
-          mgt_words_i           => felix_uplink_mgt_word_array_i(idx+3 downto idx),
-          mgt_words_o           => words_o,
-          tx_header_i           => (others => '0'),  -- something to do with 64/67
-          tx_sequence_i         => (others => '0'),  -- ditto
+          free_clock    => clocks.freeclock,
+          reset         => '0',                              -- FIXME: how to reset? due to recovered clock...
+          mgt_refclk_i  => refclk(c_MGT_MAP(I).refclk),
+          tx_resets_i   => tx_resets(I),
+          rx_resets_i   => rx_resets(I),
+          mgt_rxslide_i => (others => felix_ttc_bitslip_i),  -- FIXME: should zero the others that aren't used
+          status_o      => status(I+3 downto I),
+          mgt_words_i   => felix_uplink_mgt_word_array_i(idx+3 downto idx),
+          mgt_words_o   => words_o,
+
+
+
+          -- TXHEADER[5:0]
+          -- Input port to provide header.
+          -- In normal mode for 2-byte, 4-byte, and 8-byte interfaces, TXHEADER[1:0] is used for the
+          -- 64B/66B gearbox and TXHEADER[2:0] is used for the 64B/67B gearbox.
+          --
+          -- TX Aynchronous Gearbox:
+          --
+          -- When using an 8-byte TXDATA interface (TX_DATA_WIDTH = 64), 2 bits of header and 64 bits
+          -- of payload are placed onto TXHEADER[1:0] and TXDATA[63:0] every TXUSRCLK2 cycle.
+          -- TXSEQUENCE[0] is tied Low when using a 64-bit (8-byte) TXDATA interface because a 2-bit
+          -- header is provided every TXUSRCLK2 cycle
+
+          tx_header_i => (others => '0'),  -- something to do with 64/67
+
+          -- TXSEQUENCE[6:0]
+          -- This input port is used for the interconnect logic sequence counter when the TX gearbox
+          -- is used. Bits [5:0] are used for the 64B/66B gearbox, and bits [6:0] are used for the
+          -- 64B/67B gearbox.
+
+          tx_sequence_i => (others => '0'),  -- ditto
+
+
+
           mgt_txoutclk_o        => txoutclk (3 downto 0),
           mgt_rxoutclk_o        => rxoutclk (3 downto 0),
           mgt_txusrclk_i        => txusrclk (3 downto 0),

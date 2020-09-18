@@ -1,15 +1,8 @@
---
 -- https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
---
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
-
-library IEEE;
-use IEEE.math_real.all;
-
-library sl;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -25,6 +18,8 @@ use work.sector_logic_pkg.all;
 use work.constants_pkg.all;
 use work.board_pkg.all;
 use work.board_pkg_common.all;
+
+library sl;
 
 entity sector_logic_link_wrapper is
   generic (
@@ -51,10 +46,10 @@ entity sector_logic_link_wrapper is
     mtc_i : in mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
 
     -- from mgt
-    sl_rx_ctrl_i : in sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_rx_ctrl_i : in sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
     -- to mgt
-    sl_tx_ctrl_o : out sl_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    sl_tx_ctrl_o : out sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
     sl_rx_slide_o : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
 
@@ -249,6 +244,9 @@ begin
 
     tx_gen : if (sl_idx_array(I) /= -1) generate
       constant idx : integer := sl_idx_array(I);
+      signal txctrl0 : std_logic_vector (3 downto 0);
+      signal txctrl1 : std_logic_vector (3 downto 0);
+      signal txctrl2 : std_logic_vector (3 downto 0);
     begin
 
       assert false report "generating SL TX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
@@ -260,15 +258,19 @@ begin
         port map (
           tx_usrclk2      => tx_clk(idx),
           userdata_tx     => sl_tx_mgt_word_array_o(idx),
-          txctrl0         => sl_tx_ctrl_o(idx).ctrl0,      -- 4 bit to mgt
-          txctrl1         => sl_tx_ctrl_o(idx).ctrl1,      -- 4 bit to mgt
-          txctrl2         => sl_tx_ctrl_o(idx).ctrl2,      -- 4 bit to mgt
+          txctrl0         => txctrl0,      -- 4 bit to mgt
+          txctrl1         => txctrl1,      -- 4 bit to mgt
+          txctrl2         => txctrl2,      -- 4 bit to mgt
           packet_userdata => sl_tx_data_post_cdc(idx).data,
           packet_valid    => sl_tx_data_post_cdc(idx).valid,
-          packet_txctrl0  => std_logic_vector'(x"000000"),
-          packet_txctrl1  => std_logic_vector'(x"000000"),
-          packet_txctrl2  => std_logic_vector'(x"100000")  -- FIXME this is made up, need to check the txctrl logic
+          packet_txctrl0  => std_logic_vector'(x"000000"), --
+          packet_txctrl1  => std_logic_vector'(x"000000"), --
+          packet_txctrl2  => std_logic_vector'(x"100000")  --
           );
+
+      sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
+      sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
+      sl_tx_ctrl_o(idx).ctrl2 <= x"0"   & txctrl2;
 
       -- sync from pipeline clock-----------------------------------------------------
       sync_sl_tx : entity work.sync_cdc
@@ -296,9 +298,15 @@ begin
       signal dec_userdata    : std_logic_vector (31 downto 0);
       signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
       signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+
+      signal rxctrl0 : std_logic_vector (3 downto 0);
+      signal rxctrl1 : std_logic_vector (3 downto 0);
     begin
 
       assert false report "generating SL RX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
+
+      rxctrl0 <= sl_rx_ctrl_i(idx).ctrl0(3 downto 0);
+      rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
 
       -- decode 8b10b words
       rx_comma_detector_inst : entity sl.rx_comma_detection
@@ -309,8 +317,8 @@ begin
           reset               => rx_reset_tree(idx),
           clk_in              => rx_clk(idx),
           rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
-          rx_ctrl0_in         => sl_rx_ctrl_i(idx).ctrl0,      -- 4 bit from mgt
-          rx_ctrl1_in         => sl_rx_ctrl_i(idx).ctrl1,      -- 4 bit from mgt
+          rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
+          rx_ctrl1_in         => rxctrl1,                      -- 4 bit from mgt
           decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
           decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
           decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
