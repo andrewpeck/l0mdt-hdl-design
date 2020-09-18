@@ -370,8 +370,8 @@ begin
             if (endfile(input_slc_file) = false) then
 
               if v_slc_event.slc.common.slcid < 3 then
-                slc_main_prim_fifo(to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
-                v_slc_main_prim_counts(to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(to_integer(v_slc_event.slc.common.slcid)) + 1;
+                slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+                v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
               end if;
 
               row_counter := row_counter +1;

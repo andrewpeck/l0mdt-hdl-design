@@ -53,15 +53,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="67381fs"></ZoomEndTime>
-      <Cursor1Time time="2872350fs"></Cursor1Time>
+      <ZoomStartTime time="2868446fs"></ZoomStartTime>
+      <ZoomEndTime time="2930747fs"></ZoomEndTime>
+      <Cursor1Time time="2891262fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="257"></NameColumnWidth>
-      <ValueColumnWidth column_width="155"></ValueColumnWidth>
+      <ValueColumnWidth column_width="151"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="7" />
+   <WVObjectSize size="5" />
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
       <obj_property name="ObjectShortName">.clk</obj_property>
@@ -106,76 +106,25 @@
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
    </wvobject>
-   <wvobject type="group" fp_name="group217">
-      <obj_property name="label">UCM_main</obj_property>
+   <wvobject type="group" fp_name="group114">
+      <obj_property name="label">UCM_MAIN</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/clk">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/rst">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/glob_en">
+         <obj_property name="ElementShortName">glob_en</obj_property>
+         <obj_property name="ObjectShortName">glob_en</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/i_slc_data_mainA_av">
          <obj_property name="ElementShortName">i_slc_data_mainA_av[2:0][192:0]</obj_property>
          <obj_property name="ObjectShortName">i_slc_data_mainA_av[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/i_slc_data_av">
-         <obj_property name="ElementShortName">i_slc_data_av[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">i_slc_data_av[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="divider44" type="divider">
-         <obj_property name="label">CSW</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_in_av">
-         <obj_property name="ElementShortName">csw_main_in_av[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_main_in_av[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_out_ar">
-         <obj_property name="ElementShortName">csw_main_out_ar[2:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_main_out_ar[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_out_av">
-         <obj_property name="ElementShortName">csw_main_out_av[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_main_out_av[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="divider47" type="divider">
-         <obj_property name="label">CDE</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cde_in_av">
-         <obj_property name="ElementShortName">cde_in_av[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">cde_in_av[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cpam_in_av">
-         <obj_property name="ElementShortName">cpam_in_av[2:0][109:0]</obj_property>
-         <obj_property name="ObjectShortName">cpam_in_av[2:0][109:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cpam_out_av">
-         <obj_property name="ElementShortName">cpam_out_av[2:0][109:0]</obj_property>
-         <obj_property name="ObjectShortName">cpam_out_av[2:0][109:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/uCM2pl_av">
-         <obj_property name="ElementShortName">uCM2pl_av[2:0][147:0]</obj_property>
-         <obj_property name="ObjectShortName">uCM2pl_av[2:0][147:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_control">
-         <obj_property name="ElementShortName">csw_control[2:0]</obj_property>
-         <obj_property name="ObjectShortName">csw_control[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/pam_CSW_control">
-         <obj_property name="ElementShortName">pam_CSW_control[2:0]</obj_property>
-         <obj_property name="ObjectShortName">pam_CSW_control[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/proc_info">
-         <obj_property name="ElementShortName">proc_info[2:0]</obj_property>
-         <obj_property name="ObjectShortName">proc_info[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cvp_control">
-         <obj_property name="ElementShortName">cvp_control[2:0]</obj_property>
-         <obj_property name="ObjectShortName">cvp_control[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/uCM2hps_data">
-         <obj_property name="ElementShortName">uCM2hps_data[2:0][2:0][57:0]</obj_property>
-         <obj_property name="ObjectShortName">uCM2hps_data[2:0][2:0][57:0]</obj_property>
-      </wvobject>
-      <wvobject fp_name="divider45" type="divider">
-         <obj_property name="label">OUT2HPS</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2hps_inn_av">
          <obj_property name="ElementShortName">o_uCM2hps_inn_av[2:0][57:0]</obj_property>
@@ -189,190 +138,92 @@
          <obj_property name="ElementShortName">o_uCM2hps_out_av[2:0][57:0]</obj_property>
          <obj_property name="ObjectShortName">o_uCM2hps_out_av[2:0][57:0]</obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2hps_ext_av">
-         <obj_property name="ElementShortName">o_uCM2hps_ext_av[2:0][57:0]</obj_property>
-         <obj_property name="ObjectShortName">o_uCM2hps_ext_av[2:0][57:0]</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_av">
+         <obj_property name="ElementShortName">o_uCM2pl_av[2:0][147:0]</obj_property>
+         <obj_property name="ObjectShortName">o_uCM2pl_av[2:0][147:0]</obj_property>
       </wvobject>
-      <wvobject fp_name="divider46" type="divider">
-         <obj_property name="label">OUT2PL</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/i_slc_data_av">
+         <obj_property name="ElementShortName">i_slc_data_av[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">i_slc_data_av[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/ucm_prepro_av">
+         <obj_property name="ElementShortName">ucm_prepro_av[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">ucm_prepro_av[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider118" type="divider">
+         <obj_property name="label">CSW</obj_property>
+         <obj_property name="DisplayName">label</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_control">
+         <obj_property name="ElementShortName">csw_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_in_av">
+         <obj_property name="ElementShortName">csw_main_in_av[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_in_av[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_out_ar">
+         <obj_property name="ElementShortName">csw_main_out_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_out_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/csw_main_out_av">
+         <obj_property name="ElementShortName">csw_main_out_av[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">csw_main_out_av[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cde_in_av">
+         <obj_property name="ElementShortName">cde_in_av[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">cde_in_av[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cpam_in_av">
+         <obj_property name="ElementShortName">cpam_in_av[2:0][109:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_in_av[2:0][109:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cpam_out_av">
+         <obj_property name="ElementShortName">cpam_out_av[2:0][109:0]</obj_property>
+         <obj_property name="ObjectShortName">cpam_out_av[2:0][109:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/pam_CSW_control">
+         <obj_property name="ElementShortName">pam_CSW_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">pam_CSW_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/proc_info">
+         <obj_property name="ElementShortName">proc_info[2:0]</obj_property>
+         <obj_property name="ObjectShortName">proc_info[2:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/cvp_control">
+         <obj_property name="ElementShortName">cvp_control[2:0]</obj_property>
+         <obj_property name="ObjectShortName">cvp_control[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/uCM2hps_data">
+         <obj_property name="ElementShortName">uCM2hps_data[2:0][2:0][57:0]</obj_property>
+         <obj_property name="ObjectShortName">uCM2hps_data[2:0][2:0][57:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="divider119" type="divider">
+         <obj_property name="label">UCM2PL</obj_property>
          <obj_property name="DisplayName">label</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_ar">
          <obj_property name="ElementShortName">o_uCM2pl_ar[2:0]</obj_property>
          <obj_property name="ObjectShortName">o_uCM2pl_ar[2:0]</obj_property>
          <obj_property name="isExpanded"></obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_av">
-         <obj_property name="ElementShortName">o_uCM2pl_av[2:0][147:0]</obj_property>
-         <obj_property name="ObjectShortName">o_uCM2pl_av[2:0][147:0]</obj_property>
-      </wvobject>
-   </wvobject>
-   <wvobject type="group" fp_name="group48">
-      <obj_property name="label">SLC_CTRL</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/clk">
-         <obj_property name="ElementShortName">clk</obj_property>
-         <obj_property name="ObjectShortName">clk</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/rst">
-         <obj_property name="ElementShortName">rst</obj_property>
-         <obj_property name="ObjectShortName">rst</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/glob_en">
-         <obj_property name="ElementShortName">glob_en</obj_property>
-         <obj_property name="ObjectShortName">glob_en</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/i_data">
-         <obj_property name="ElementShortName">i_data[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">i_data[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/o_csw_ctrl">
-         <obj_property name="ElementShortName">o_csw_ctrl[2:0]</obj_property>
-         <obj_property name="ObjectShortName">o_csw_ctrl[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/o_pam_ctrl">
-         <obj_property name="ElementShortName">o_pam_ctrl[2:0]</obj_property>
-         <obj_property name="ObjectShortName">o_pam_ctrl[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/o_proc_info">
-         <obj_property name="ElementShortName">o_proc_info[2:0]</obj_property>
-         <obj_property name="ObjectShortName">o_proc_info[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/o_cvp_ctrl">
-         <obj_property name="ElementShortName">o_cvp_ctrl[2:0]</obj_property>
-         <obj_property name="ObjectShortName">o_cvp_ctrl[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/num_cand">
-         <obj_property name="ElementShortName">num_cand[3:0]</obj_property>
-         <obj_property name="ObjectShortName">num_cand[3:0]</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/pam_update">
-         <obj_property name="ElementShortName">pam_update</obj_property>
-         <obj_property name="ObjectShortName">pam_update</obj_property>
-      </wvobject>
-      <wvobject type="group" fp_name="group60">
-         <obj_property name="label">MAIN_CTRL</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/clk">
-            <obj_property name="ElementShortName">clk</obj_property>
-            <obj_property name="ObjectShortName">clk</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_ar[2]">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">[2]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/rst">
-            <obj_property name="ElementShortName">rst</obj_property>
-            <obj_property name="ObjectShortName">rst</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_ar[1]">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">[1]</obj_property>
          </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/glob_en">
-            <obj_property name="ElementShortName">glob_en</obj_property>
-            <obj_property name="ObjectShortName">glob_en</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/i_data">
-            <obj_property name="ElementShortName">i_data[2:0][192:0]</obj_property>
-            <obj_property name="ObjectShortName">i_data[2:0][192:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/o_csw_ctrl">
-            <obj_property name="ElementShortName">o_csw_ctrl[2:0]</obj_property>
-            <obj_property name="ObjectShortName">o_csw_ctrl[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/o_num_cand">
-            <obj_property name="ElementShortName">o_num_cand[3:0]</obj_property>
-            <obj_property name="ObjectShortName">o_num_cand[3:0]</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/o_pam_update">
-            <obj_property name="ElementShortName">o_pam_update</obj_property>
-            <obj_property name="ObjectShortName">o_pam_update</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/alg_status">
-            <obj_property name="ElementShortName">alg_status</obj_property>
-            <obj_property name="ObjectShortName">alg_status</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/i_data_ar">
-            <obj_property name="ElementShortName">i_data_ar[2:0]</obj_property>
-            <obj_property name="ObjectShortName">i_data_ar[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/data_ar">
-            <obj_property name="ElementShortName">data_ar[2:0]</obj_property>
-            <obj_property name="ObjectShortName">data_ar[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/MAIN_CTRL/input_valids">
-            <obj_property name="ElementShortName">input_valids[2:0]</obj_property>
-            <obj_property name="ObjectShortName">input_valids[2:0]</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/o_uCM2pl_ar[0]">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">[0]</obj_property>
          </wvobject>
       </wvobject>
-      <wvobject type="group" fp_name="group72">
-         <obj_property name="label">PAM_CTRL</obj_property>
-         <obj_property name="DisplayName">label</obj_property>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/clk">
-            <obj_property name="ElementShortName">clk</obj_property>
-            <obj_property name="ObjectShortName">clk</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/rst">
-            <obj_property name="ElementShortName">rst</obj_property>
-            <obj_property name="ObjectShortName">rst</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/glob_en">
-            <obj_property name="ElementShortName">glob_en</obj_property>
-            <obj_property name="ObjectShortName">glob_en</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl">
-            <obj_property name="ElementShortName">o_pam_ctrl[2:0]</obj_property>
-            <obj_property name="ObjectShortName">o_pam_ctrl[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/o_proc_info">
-            <obj_property name="ElementShortName">o_proc_info[2:0]</obj_property>
-            <obj_property name="ObjectShortName">o_proc_info[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/o_cvp_ctrl">
-            <obj_property name="ElementShortName">o_cvp_ctrl[2:0]</obj_property>
-            <obj_property name="ObjectShortName">o_cvp_ctrl[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/i_num_cand">
-            <obj_property name="ElementShortName">i_num_cand[3:0]</obj_property>
-            <obj_property name="ObjectShortName">i_num_cand[3:0]</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/i_pam_update">
-            <obj_property name="ElementShortName">i_pam_update</obj_property>
-            <obj_property name="ObjectShortName">i_pam_update</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/ch_busy">
-            <obj_property name="ElementShortName">ch_busy[2:0]</obj_property>
-            <obj_property name="ObjectShortName">ch_busy[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/ch_count">
-            <obj_property name="ElementShortName">ch_count[2:0][11:0]</obj_property>
-            <obj_property name="ObjectShortName">ch_count[2:0][11:0]</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CTRL/PAM_CTRL/processing">
-            <obj_property name="ElementShortName">processing</obj_property>
-            <obj_property name="ObjectShortName">processing</obj_property>
-         </wvobject>
-      </wvobject>
-   </wvobject>
-   <wvobject type="group" fp_name="group79">
-      <obj_property name="label">MAIN_CSW</obj_property>
-      <obj_property name="DisplayName">label</obj_property>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/clk">
-         <obj_property name="ElementShortName">clk</obj_property>
-         <obj_property name="ObjectShortName">clk</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/rst">
-         <obj_property name="ElementShortName">rst</obj_property>
-         <obj_property name="ObjectShortName">rst</obj_property>
-      </wvobject>
-      <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/glob_en">
-         <obj_property name="ElementShortName">glob_en</obj_property>
-         <obj_property name="ObjectShortName">glob_en</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/i_control">
-         <obj_property name="ElementShortName">i_control[2:0]</obj_property>
-         <obj_property name="ObjectShortName">i_control[2:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/i_data">
-         <obj_property name="ElementShortName">i_data[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">i_data[2:0][192:0]</obj_property>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/SLC_CSW/o_data">
-         <obj_property name="ElementShortName">o_data[2:0][192:0]</obj_property>
-         <obj_property name="ObjectShortName">o_data[2:0][192:0]</obj_property>
+      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/uCM2pl_av">
+         <obj_property name="ElementShortName">uCM2pl_av[2:0][147:0]</obj_property>
+         <obj_property name="ObjectShortName">uCM2pl_av[2:0][147:0]</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

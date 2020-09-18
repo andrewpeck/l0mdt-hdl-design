@@ -83,6 +83,7 @@ architecture beh of ucm is
 
 begin
 
+
   SLC_BoEs : if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' generate
     i_slc_data_av(c_MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
     i_slc_data_av(c_MAX_NUM_SL -2) <= i_slc_data_mainA_av(1);
@@ -135,7 +136,7 @@ begin
     port map(
       clk         => clk,
       rst         => rst,
-      glob_en     => glob_en,
+      glob_en     => '1',
       --
       i_data      => ucm_prepro_av(sl_i),
       o_data      => csw_main_in_av(sl_i)
@@ -250,7 +251,12 @@ begin
   PL_PROC_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
-
+    BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
+      -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
+      o_uCM2pl_ar(sl_i).nswseg_poseta     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_poseta;
+      o_uCM2pl_ar(sl_i).nswseg_posphi     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_posphi;
+      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= (others => '0');--slc_endcap_ar(sl_i).nswseg_angdtheta;
+    end generate;
 
     ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
       slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
