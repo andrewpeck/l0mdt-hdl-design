@@ -70,7 +70,13 @@ package config_pkg is
   constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID;              
   constant c_HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
   constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT;              
-  constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;              
+  constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;    
+  
+  constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) := 
+      CFG.ENABLE_ST_INN & CFG.ENABLE_ST_MID & CFG.ENABLE_ST_OUT & CFG.ENABLE_ST_EXT;
+
+  constant c_STATIONS_IN_FPGA           : std_logic_vector(0 to 3) := 
+      CFG.FPGA_EN_ST_INN & CFG.FPGA_EN_ST_MID & CFG.FPGA_EN_ST_OUT & CFG.FPGA_EN_ST_EXT;
   
   ---------------------------------------------------------
   -- PORTS CONFIG

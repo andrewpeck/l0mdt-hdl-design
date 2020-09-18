@@ -42,6 +42,11 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
     ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
     NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    -- stations in current fpga
+    FPGA_EN_ST_INN                 : std_logic;  
+    FPGA_EN_ST_EXT                 : std_logic;  
+    FPGA_EN_ST_MID                 : std_logic;  
+    FPGA_EN_ST_OUT                 : std_logic;  
     -- tube address remap
     ENABLE_TAR                    : std_logic;
     INSEL_MDT_nTAR                : std_logic;
@@ -90,6 +95,11 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- stations enabled in hte fpga
+    FPGA_EN_ST_INN                => '1',
+    FPGA_EN_ST_EXT                => '0',
+    FPGA_EN_ST_MID                => '1',
+    FPGA_EN_ST_OUT                => '1',
     -- tube address remap
     ENABLE_TAR                    => '1',
     INSEL_MDT_nTAR                => '1',
