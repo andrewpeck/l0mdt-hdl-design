@@ -36,7 +36,9 @@ entity ucm_prepro is
     -- configuration, control & Monitoring
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
-    -- pam out
+    -- ctrl out
+    o_prepro2ctrl_v       : out ucm_prepro2ctrl_rvt;
+    -- data out
     o_prepro_data_v       : out slc_rx_rvt
   );
 end entity ucm_prepro;
@@ -48,10 +50,14 @@ architecture beh of ucm_prepro is
   signal i_barrel         : slc_barrel_rt;
   signal o_barrel         : slc_barrel_rt;
 
+  signal o_prepro2ctrl_r  : ucm_prepro2ctrl_rt;
+
 begin
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_prepro_data_v <= vectorify(o_prepro_data_r);
+
+  o_prepro2ctrl_v <= vectorify(o_prepro2ctrl_r);
 
   o_prepro_data_r.data_valid                <= i_slc_data_r.data_valid;
   o_prepro_data_r.common.header.h_reserved  <= (others => '0');
@@ -83,7 +89,7 @@ begin
   o_barrel.rpc1_posz  <= i_barrel.rpc1_posz;
   o_barrel.rpc0_posz  <= i_barrel.rpc0_posz;
 
-
+  o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
 
   -- UCM_PRE_PROC : process(rst,clk) begin
   --   if rising_edge(clk) then

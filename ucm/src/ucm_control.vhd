@@ -31,10 +31,10 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -52,7 +52,7 @@ architecture beh of ucm_ctrl is
       rst                 : in std_logic;
       glob_en             : in std_logic;
       -- extrnals
-      i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+      i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
       o_csw_ctrl          : out ucm_csw_control_at;
       -- internals
       o_num_cand          : out unsigned(3 downto 0);
@@ -86,10 +86,10 @@ begin
   MAIN_CTRL : ucm_ctrl_main
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- extrnals
-    i_data              => i_data,
+    i_data              => i_prepro2ctrl_av,
     o_csw_ctrl          => o_csw_ctrl,
     -- internals
     o_num_cand          => num_cand,
@@ -99,7 +99,7 @@ begin
   PAM_CTRL : ucm_ctrl_pam
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     --
     o_pam_ctrl            => o_pam_ctrl,
@@ -137,10 +137,10 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl_main is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- extrnals
-    i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
@@ -155,8 +155,8 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar    : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal data_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar    : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(c_MAX_NUM_SL -1 downto 0);
 

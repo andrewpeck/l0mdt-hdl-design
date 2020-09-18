@@ -52,6 +52,8 @@ architecture beh of ucm is
 
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
+  signal prepro2ctrl_av       : ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  --
   signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -96,17 +98,17 @@ begin
   --control
   SLC_CTRL : entity ucm_lib.ucm_ctrl
   port map(
-    clk             => clk,
-    rst             => rst,
-    glob_en         => glob_en,
-    --              =>
-    i_data          => i_slc_data_av,
-    --              =>
-    o_csw_ctrl      => csw_control,
-    o_pam_ctrl      => pam_CSW_control,
-    o_proc_info     => proc_info,
-    o_cvp_ctrl      => cvp_control
-    -- o_pam2heg       => o_uCM2hps_pam_ar
+    clk               => clk,
+    rst               => rst,
+    glob_en           => glob_en,
+    --
+    i_prepro2ctrl_av  => prepro2ctrl_av,
+    --
+    o_csw_ctrl        => csw_control,
+    o_pam_ctrl        => pam_CSW_control,
+    o_proc_info       => proc_info,
+    o_cvp_ctrl        => cvp_control
+    -- o_pam2heg         => o_uCM2hps_pam_ar
   );
 
   --input pre processor
@@ -118,21 +120,10 @@ begin
       glob_en           => glob_en,
       --                =>
       i_slc_data_v      => i_slc_data_av(sl_i),
+      o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
       o_prepro_data_v   => ucm_prepro_av(sl_i)
     );
   end generate;
-
-  -- SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   SLC_PP : entity shared_lib.ucm_prepro
-  --   port map(
-  --     clk         => clk,
-  --     rst    => rst,
-  --     glob_en     => glob_en,
-  --     --
-  --     i_slc_data_av     => i_slc_data_av(sl_i),
-  --     o_prepro_data_av  => ucm_prepro_av(sl_i)
-  --   );
-  -- end generate;
 
   -- input pipelines
   SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
