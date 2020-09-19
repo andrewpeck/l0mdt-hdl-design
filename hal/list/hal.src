@@ -1,27 +1,27 @@
 # -*- mode: TCL;-*-
 # Dependencies
-lpgbt/list/gbt_sc.sub
-tdc/list/tdc.src
-lpgbt/list/lpgbt_emul.sub
-lpgbt/list/lpgbt_fpga.sub
-sl/list/sl.sub
+lpgbt/list/gbt_sc.sub lib=gbt_sc
+tdc/list/tdc.src lib=tdc
+lpgbt/list/lpgbt_emul.sub lib=lpgbt_emul
+lpgbt/list/lpgbt_fpga.sub lib=lpgbt_fpga
+sl/list/sl.sub lib=sl
 
 # Hal
 hal/src/counter.vhd
-hal/src/top_hal.vhd 2008
-#hal/src/clock_strobe.vhd 2008
-hal/src/top_clocking.vhd 2008
-hal/src/board_pkg_common.vhd 2008
-hal/src/constants_pkg.vhd 2008
-hal/src/system_types_pkg.vhd 2008
-hal/src/sync_cdc.vhd 2008
-hal/src/felix_decoder.vhd 2008
-hal/src/polmux_wrapper.vhd 2008
-hal/src/tdc_decoder_wrapper.vhd 2008
-hal/src/csm.vhd 2008
+hal/src/top_hal.vhd
+#hal/src/clock_strobe.vhd
+hal/src/top_clocking.vhd
+hal/src/board_pkg_common.vhd
+hal/src/constants_pkg.vhd
+hal/src/system_types_pkg.vhd
+hal/src/sync_cdc.vhd
+hal/src/felix_decoder.vhd
+hal/src/polmux_wrapper.vhd
+hal/src/tdc_decoder_wrapper.vhd
+hal/src/csm.vhd
 
 #
-hal/src/mmcm_wiz.v 2008
+hal/src/mmcm_wiz.v
 
 # IP
 IP/hal/mgt_10g24_gth/mgt_10g24_gth.xci
@@ -31,18 +31,18 @@ IP/hal/mgt_9g6_gty/mgt_9g6_gty.xci
 IP/hal/mgt_felix/mgt_felix.xci
 
 # MGT
-hal/src/mgt/mgt_pkg.vhd 2008
-hal/src/mgt/mgt_10g24_wrapper.vhd 2008
-hal/src/mgt/mgt_wrapper.vhd 2008
-hal/src/mgt/mgt_sl_wrapper.vhd 2008
-hal/src/mgt/mgt_felix_wrapper.vhd 2008
+hal/src/mgt/mgt_pkg.vhd
+hal/src/mgt/mgt_10g24_wrapper.vhd
+hal/src/mgt/mgt_wrapper.vhd
+hal/src/mgt/mgt_sl_wrapper.vhd
+hal/src/mgt/mgt_felix_wrapper.vhd
 
 #LPGBT
 lpgbt/src/gbt_controller_wrapper.vhd
-lpgbt/src/lpgbt_link_wrapper.vhd 2008
-lpgbt/src/lpgbt_emul_wrapper.vhd 2008
-lpgbt/src/lpgbt_pkg.vhd 2008
+lpgbt/src/lpgbt_link_wrapper.vhd
+lpgbt/src/lpgbt_emul_wrapper.vhd
+lpgbt/src/lpgbt_pkg.vhd
 
 # Sector Logic
-sl/src/sector_logic_link_wrapper.vhd 2008
-sl/src/sector_logic_pkg.vhd 2008
+sl/src/sector_logic_link_wrapper.vhd
+sl/src/sector_logic_pkg.vhd
