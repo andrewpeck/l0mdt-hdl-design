@@ -32,10 +32,7 @@ use shared_lib.config_pkg.all;
 
 package pt_pkg is
 
-    -- Sector 3 MDT Radius coordinate
-    constant BIL_SEC3_RHO : real := 4755.8234;
-    constant BML_SEC3_RHO : real := 6898.3570;
-    constant BOL_SEC3_RHO : real := 9259.3865;
+
 
     -- Segment parameters in global coordinates
     constant BIL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)

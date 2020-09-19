@@ -49,9 +49,9 @@ architecture beh of ucm_cvp_b_slope is
   signal barrel_r   : slc_barrel_rt;
   signal coin : integer;
 
-  type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN downto 0);
+  type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
   signal rpc_a : rpc_at;
-  type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN downto 0);
+  type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
   signal rad_a : rad_at;
 
   signal num_h , num_hh : integer;

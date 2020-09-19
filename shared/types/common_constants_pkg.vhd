@@ -81,6 +81,12 @@ package common_constants_pkg is
 
   constant MTC_QUALITY_LEN : integer := PTCALC2MTC_MDT_QUALITY_LEN;
 
+  constant BIL_SEC3_RHO : real := 4755.8234;
+
+  constant BML_SEC3_RHO : real := 6898.357;
+
+  constant BOL_SEC3_RHO : real := 9259.3865;
+
 end package common_constants_pkg;
 
 ------------------------------------------------------------
