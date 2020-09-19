@@ -14,7 +14,7 @@ use shared_lib.config_pkg.all;
 library ctrl_lib;
 use ctrl_lib.TF_CTRL.all;
 
-library tf_lib;
+library ptc_lib;
 
 entity track_fitting is
 
@@ -47,7 +47,7 @@ architecture behavioral of track_fitting is
 begin
 
   tf_gen_loop : for I in 0 to c_NUM_THREADS-1 generate
-    pt_1 : entity tf_lib.pt
+    pt_1 : entity ptc_lib.pt
       generic map (
         FLAVOUR => 0,
         SECTOR  => I)
