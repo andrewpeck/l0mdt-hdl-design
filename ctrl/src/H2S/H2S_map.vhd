@@ -72,7 +72,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(0).READY;                   --
         when 257 => --0x101
           localRdData( 0)            <=  Mon.HPS(0).LSF.STATUS;              --
-          localRdData(13 downto  4)  <=  reg_data(257)(13 downto  4);        --
+          localRdData(13 downto  4)  <=  reg_data(257)(13 downto  4);        --add some description
         when 513 => --0x201
           localRdData( 0)            <=  Mon.HPS(0).CSF.STATUS;              --
           localRdData( 1)            <=  Mon.HPS(0).CSF.READY;               --
@@ -81,7 +81,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(1).READY;                   --
         when 4353 => --0x1101
           localRdData( 0)            <=  Mon.HPS(1).LSF.STATUS;              --
-          localRdData(13 downto  4)  <=  reg_data(4353)(13 downto  4);       --
+          localRdData(13 downto  4)  <=  reg_data(4353)(13 downto  4);       --add some description
         when 4609 => --0x1201
           localRdData( 0)            <=  Mon.HPS(1).CSF.STATUS;              --
           localRdData( 1)            <=  Mon.HPS(1).CSF.READY;               --
@@ -90,7 +90,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(2).READY;                   --
         when 8449 => --0x2101
           localRdData( 0)            <=  Mon.HPS(2).LSF.STATUS;              --
-          localRdData(13 downto  4)  <=  reg_data(8449)(13 downto  4);       --
+          localRdData(13 downto  4)  <=  reg_data(8449)(13 downto  4);       --add some description
         when 8705 => --0x2201
           localRdData( 0)            <=  Mon.HPS(2).CSF.STATUS;              --
           localRdData( 1)            <=  Mon.HPS(2).CSF.READY;               --
@@ -99,7 +99,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(3).READY;                   --
         when 16641 => --0x4101
           localRdData( 0)            <=  Mon.HPS(3).LSF.STATUS;              --
-          localRdData(13 downto  4)  <=  reg_data(16641)(13 downto  4);      --
+          localRdData(13 downto  4)  <=  reg_data(16641)(13 downto  4);      --add some description
         when 16897 => --0x4201
           localRdData( 0)            <=  Mon.HPS(3).CSF.STATUS;              --
           localRdData( 1)            <=  Mon.HPS(3).CSF.READY;               --
@@ -152,7 +152,7 @@ begin  -- architecture behavioral
         when 256 => --0x100
           Ctrl.HPS(0).LSF.RESET          <=  localWrData( 0);               
         when 257 => --0x101
-          reg_data(257)(13 downto  4)    <=  localWrData(13 downto  4);      --
+          reg_data(257)(13 downto  4)    <=  localWrData(13 downto  4);      --add some description
         when 512 => --0x200
           Ctrl.HPS(0).CSF.RESET          <=  localWrData( 0);               
         when 4096 => --0x1000
@@ -160,7 +160,7 @@ begin  -- architecture behavioral
         when 4352 => --0x1100
           Ctrl.HPS(1).LSF.RESET          <=  localWrData( 0);               
         when 4353 => --0x1101
-          reg_data(4353)(13 downto  4)   <=  localWrData(13 downto  4);      --
+          reg_data(4353)(13 downto  4)   <=  localWrData(13 downto  4);      --add some description
         when 4608 => --0x1200
           Ctrl.HPS(1).CSF.RESET          <=  localWrData( 0);               
         when 8192 => --0x2000
@@ -168,7 +168,7 @@ begin  -- architecture behavioral
         when 8448 => --0x2100
           Ctrl.HPS(2).LSF.RESET          <=  localWrData( 0);               
         when 8449 => --0x2101
-          reg_data(8449)(13 downto  4)   <=  localWrData(13 downto  4);      --
+          reg_data(8449)(13 downto  4)   <=  localWrData(13 downto  4);      --add some description
         when 8704 => --0x2200
           Ctrl.HPS(2).CSF.RESET          <=  localWrData( 0);               
         when 16384 => --0x4000
@@ -176,7 +176,7 @@ begin  -- architecture behavioral
         when 16640 => --0x4100
           Ctrl.HPS(3).LSF.RESET          <=  localWrData( 0);               
         when 16641 => --0x4101
-          reg_data(16641)(13 downto  4)  <=  localWrData(13 downto  4);      --
+          reg_data(16641)(13 downto  4)  <=  localWrData(13 downto  4);      --add some description
         when 16896 => --0x4200
           Ctrl.HPS(3).CSF.RESET          <=  localWrData( 0);               
 

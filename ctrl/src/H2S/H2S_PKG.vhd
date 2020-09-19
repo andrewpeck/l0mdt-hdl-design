@@ -12,13 +12,13 @@ package H2S_CTRL is
 
   type H2S_HPS_LSF_CTRL_t is record
     RESET                      :std_logic;   
-    HBA_MAX_CLOCKS             :std_logic_vector( 9 downto 0);
+    HBA_MAX_CLOCKS             :std_logic_vector( 9 downto 0);  -- add some description
   end record H2S_HPS_LSF_CTRL_t;
 
 
   constant DEFAULT_H2S_HPS_LSF_CTRL_t : H2S_HPS_LSF_CTRL_t := (
                                                                RESET => '0',
-                                                               HBA_MAX_CLOCKS => (others => '0')
+                                                               HBA_MAX_CLOCKS => "0010000000"
                                                               );
   type H2S_HPS_CSF_MON_t is record
     STATUS                     :std_logic;   

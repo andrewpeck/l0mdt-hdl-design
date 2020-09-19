@@ -14,7 +14,7 @@ HDL_Types:
 
 - H2S_HPS_LSF_CTRL_t:
   - RESET : [ type: logic ]
-  - HBA_MAX_CLOCKS : [ type: logic, length: 10 ]
+  - HBA_MAX_CLOCKS : [ type: logic, length: 10, description:add some description ]
 
 
 - H2S_HPS_CSF_MON_t:
