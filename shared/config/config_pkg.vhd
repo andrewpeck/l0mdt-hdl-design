@@ -115,6 +115,8 @@ package config_pkg is
             to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
           )
         );
+
+  constant c_MAX_POSSIBLE_HPS : integer := 4;
         
   constant c_MAX_NUM_HPS  : integer := 
           to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 

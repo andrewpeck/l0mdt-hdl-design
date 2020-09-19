@@ -78,7 +78,7 @@ architecture beh of ucm is
   signal cvp_control          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
-  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_NUM_HPS -1 downto 0);
+  type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
 begin
