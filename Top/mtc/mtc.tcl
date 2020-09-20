@@ -30,4 +30,4 @@ set DESIGN "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 source $PATH_REPO/Hog/Tcl/create_project.tcl
 set_property default_lib work [current_project]
-set_property IS_GLOBAL_INCLUDE 1 [get_files $PATH_REPO/dataformats/l0mdt_buses_constants.svh]
+#set_property IS_GLOBAL_INCLUDE 1 [get_files $PATH_REPO/dataformats/l0mdt_buses_constants.svh]

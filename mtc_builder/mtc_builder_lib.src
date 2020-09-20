@@ -1,5 +1,0 @@
-mtc_builder/mtc_builder.vhd 2008
-dataformats/l0mdt_buses_constants.svh
-src/format_mtc_pkt.sv
-src/mtc_builder_verilog.sv
-top_mtc_builder.vhd
