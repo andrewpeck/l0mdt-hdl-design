@@ -123,6 +123,10 @@ package config_pkg is
           to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
           to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
           to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
+
+  -- type constant_order_array is array(0 to c_MAX_POSSIBLE_HPS - 1) of integer;
+  -- constant c_STATION_ORDER : integer : 
+
   -- constant EN_HPS_VECTOR : std_logic_vector(CFG.MAX_NUM_HPS -1 downto 0) :=
   --         CFG.ENABLE_ST_INN &
   --         CFG.ENABLE_ST_MID &
