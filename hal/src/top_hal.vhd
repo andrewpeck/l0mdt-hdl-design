@@ -319,6 +319,7 @@ begin  -- architecture behavioral
       sl_rx_mgt_word_array_o => sl_rx_mgt_word_array,
       sl_tx_mgt_word_array_i => sl_tx_mgt_word_array,
       sl_tx_ctrl_i           => sl_tx_ctrl,
+      sl_rx_ctrl_o           => sl_rx_ctrl,
       sl_rx_slide_i          => sl_rx_slide,
       sl_tx_clk              => sl_tx_clk,
       sl_rx_clk              => sl_rx_clk,

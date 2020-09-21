@@ -143,7 +143,7 @@ begin
   refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
 
     nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL
-                   and c_REFCLK_MAP(I).FREQ /= REF_SYNC240 -- SL has its own buffer
+                   and c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
       assert false
@@ -407,24 +407,24 @@ begin
       MGT_INST : entity work.mgt_sl_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          clock        => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
-          reset_i      => reset_tree(I),
+          clock          => clocks.freeclock,  -- FIXME: check this clock frequency against IP core
+          reset_i        => reset_tree(I),
           mgt_refclk_i_p => refclk_i_p(c_MGT_MAP(I).refclk),
           mgt_refclk_i_n => refclk_i_n(c_MGT_MAP(I).refclk),
-          rxoutclk     => sl_rx_clk(idx + 3 downto idx),
-          txoutclk     => sl_tx_clk(idx + 3 downto idx),
-          status_o     => status(I+3 downto I),
-          txctrl_in    => sl_tx_ctrl_i(idx+3 downto idx),
-          rxctrl_out   => sl_rx_ctrl_o(idx+3 downto idx),
-          rx_slide_i   => sl_rx_slide_i(idx+3 downto idx),
-          mgt_word_i   => sl_tx_mgt_word_array_i(idx+3 downto idx),
-          mgt_word_o   => sl_rx_mgt_word_array_o(idx+3 downto idx),
-          rxp_i        => rx_p,
-          rxn_i        => rx_n,
-          txp_o        => tx_p,
-          txn_o        => tx_n,
-          mgt_drp_i    => drp_i(I+3 downto I),
-          mgt_drp_o    => drp_o(I+3 downto I)
+          rxoutclk       => sl_rx_clk(idx + 3 downto idx),
+          txoutclk       => sl_tx_clk(idx + 3 downto idx),
+          status_o       => status(I+3 downto I),
+          txctrl_in      => sl_tx_ctrl_i(idx+3 downto idx),
+          rxctrl_out     => sl_rx_ctrl_o(idx+3 downto idx),
+          rx_slide_i     => sl_rx_slide_i(idx+3 downto idx),
+          mgt_word_i     => sl_tx_mgt_word_array_i(idx+3 downto idx),
+          mgt_word_o     => sl_rx_mgt_word_array_o(idx+3 downto idx),
+          rxp_i          => rx_p,
+          rxn_i          => rx_n,
+          txp_o          => tx_p,
+          txn_o          => tx_n,
+          mgt_drp_i      => drp_i(I+3 downto I),
+          mgt_drp_o      => drp_o(I+3 downto I)
           );
 
     end generate sl_gen;

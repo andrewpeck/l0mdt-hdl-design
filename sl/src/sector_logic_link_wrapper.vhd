@@ -65,11 +65,8 @@ architecture Behavioral of sector_logic_link_wrapper is
   signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-  attribute DONT_TOUCH                  : string;
   signal rx_reset_tree                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0) := (others => '1');
-  attribute DONT_TOUCH of rx_reset_tree : signal is "true";
   --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
-  --attribute DONT_TOUCH of tx_reset_tree : signal is "true";
 
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
@@ -164,19 +161,14 @@ begin
       sl_tx_data(I).data(159 downto 32)  <= data;
       sl_tx_data(I).data(191 downto 160) <= trailer;
 
-      --sl_tx_data(I).valid <= mtc_i(I)(2);
-      --sl_tx_data(I).data(191 downto 0) <= mtc_i(I)(191 downto 0);
-
     end generate;
 
+    -- drive disconnected SL links with all zero
     nosl : if (I >= c_NUM_MTC) generate
-
       sl_tx_data(I).data  <= (others => '0');
       sl_tx_data(I).valid <= '0';
-
     end generate;
 
-  --function structify(x: mtc2sl_rvt) return mtc2sl_rt is
   end generate;
 
   rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
@@ -208,7 +200,7 @@ begin
     sl_data.common.sl_pt       <= unsigned(data(34 downto 27));
     sl_data.common.sl_ptthresh <= unsigned(data(38 downto 35));
     sl_data.common.sl_charge   <= data(39);
-    sl_data.common.cointype    <= data (42 downto 40);
+    sl_data.common.cointype    <= data(42 downto 40);
 
     slc_barrel_specific.rpc0_posz  <= signed(data(54 downto 43));
     slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
@@ -322,8 +314,8 @@ begin
           decoded_data_out    => dec_userdata,                 -- 32 bit to packet former
           decoded_charisk_out => dec_rxctrl0,                  -- 4 bit to packet former
           decoded_iscomma_out => dec_rxctrl2,                  -- 4 bit to packet former
-          comma_pulse_out     => open,                         --
-          lock_out            => open,                         --
+          comma_pulse_out     => open,                         -- not used in my-sl-gty
+          lock_out            => open,                         -- not used in my-sl-gty
           rxslide_out         => sl_rx_slide_o(idx)            -- 1 bit to mgt
           );
 
@@ -347,10 +339,10 @@ begin
           rxctrl3 => (others => '0'),
 
           -- 23 downto 0
-          packet_rxctrl0 => open,       -- just connects to led sump
-          packet_rxctrl1 => open,
-          packet_rxctrl2 => open,
-          packet_rxctrl3 => open,
+          packet_rxctrl0 => open, -- my-sl-gty just connects to led sump
+          packet_rxctrl1 => open, -- my-sl-gty just connects to led sump
+          packet_rxctrl2 => open, -- my-sl-gty just connects to led sump
+          packet_rxctrl3 => open, -- my-sl-gty just connects to led sump
 
           packet_userdata       => sl_rx_data_pre_cdc(idx).data,
           packet_locked         => sl_rx_data_pre_cdc(idx).locked,
@@ -373,8 +365,8 @@ begin
         port map (
           clk_i   => pipeline_clock,
           valid_i => sl_rx_data_pre_cdc(idx).valid,
-          valid_o => sl_rx_data(idx).valid,
           data_i  => sl_pre_cdc_vec,
+          valid_o => sl_rx_data(idx).valid,
           data_o  => sl_post_cdc_vec
           );
 

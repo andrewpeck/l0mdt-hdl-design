@@ -242,6 +242,16 @@ begin
         hb2_gtwiz_userclk_rx_usrclk2_out => rxoutclk(2),
         hb3_gtwiz_userclk_rx_usrclk2_out => rxoutclk(3),
 
+        hb0_gtwiz_buffbypass_rx_error_out => open, -- TODO: connect
+        hb1_gtwiz_buffbypass_rx_error_out => open,
+        hb2_gtwiz_buffbypass_rx_error_out => open,
+        hb3_gtwiz_buffbypass_rx_error_out => open,
+
+        ch0_rxcommadet_out => open,
+        ch1_rxcommadet_out => open,
+        ch2_rxcommadet_out => open,
+        ch3_rxcommadet_out => open,
+
         -- rxslide
         ch0_rxslide_in => rx_slide_i(0),
         ch1_rxslide_in => rx_slide_i(1),
@@ -336,7 +346,6 @@ begin
         ch0_txprgdivresetdone_out => open,
         ch1_txprgdivresetdone_out => open,
         ch2_txprgdivresetdone_out => open,
-
         ch3_txprgdivresetdone_out => open,
 
         -- User-provided ports for reset helper block(s)
