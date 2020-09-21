@@ -4,6 +4,7 @@ set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
+#set FPGA xcku15p-ffva1760-1LV-i
 set SYNTH_STRATEGY "Flow_PerfOptimized_high"
 set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
@@ -24,9 +25,17 @@ set PROPERTIES [dict create \
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../.."
 source $PATH_REPO/Hog/Tcl/create_project.tcl
+
+set_property  ip_repo_paths  {../../IP ../../lsf/src/hls_ip} [current_project]
+update_ip_catalog
+
+
 set_property default_lib work [current_project]
 
 set_property top top_hps [current_fileset]
 
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs synth_1]
+
+
+set_property target_language VHDL [current_project]

@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "def_testbench_config": {
+            "type": "object",
+            "properties": {
+                "test_name" : {"type" : "string"},
+                "input_args" : {"type" : "object"},
+                "run_config": {"$ref": "#/definitions/def_run_config"},
+                "testvectors": {"$ref": "#/definitions/def_testvectors"}
+            },
+            "required": ["test_name", "run_config", "input_args", "testvectors"]
+        },
+        "def_run_config": {
+            "type": "object",
+            "properties": {
+                "output_directory_name" : { "type": "string" },
+                "test_location" : { "type" : "string" },
+                "components_lib_dir" : { "type" : "string" },
+                "expected_is_observed": {"type" : "boolean" }
+            },
+            "required": ["output_directory_name", "test_location", "components_lib_dir", "expected_is_observed"]
+        },
+        "def_testvectors": {
+            "type" : "object",
+            "properties": {
+                "testvector_dir" : {"type" : "string"},
+                "inputs": {"type" : "array", "items": {"type":"object"}},
+                "outputs": {"type" : "array", "items": {"type":"object"}}
+            },
+            "required": ["testvector_dir", "inputs", "outputs"]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "testbench_config": { "$ref": "#/definitions/def_testbench_config"}
+    },
+    "required": ["testbench_config"]
+}
