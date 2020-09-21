@@ -11,8 +11,17 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+
+library project_lib;
+use project_lib.prj_cfg.all;
+
+
+
 library ctrl_lib;
 use ctrl_lib.MTC_CTRL.all;
+
+library mtc_lib;
+use mtc_lib.all;
 
 entity mtc_builder is
 
@@ -30,27 +39,22 @@ entity mtc_builder is
 
 end entity mtc_builder;
 
+
 architecture behavioral of mtc_builder is
-    signal ptcalc_sump : std_logic_vector (c_NUM_THREADS -1 downto 0);
-    signal pl2mtc_sump : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
 begin
 
-  sump_proc : process (clock_and_control.clk) is
-  begin  -- process tdc_hit_sump_proc
-    if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
-      ptcalc_loop : for I in 0 to c_NUM_THREADS-1 loop
-        ptcalc_sump(I) <= xor_reduce(i_ptcalc(I));
-      end loop;
-      pl2mtc_loop : for I in 0 to c_MAX_NUM_SL-1 loop
-        pl2mtc_sump(I) <= xor_reduce(i_pl2mtc(I));
-      end loop;
-      o_mtc_loop : for I in 0 to c_NUM_MTC-1 loop
-        o_mtc(I) <= (others => xor_reduce(ptcalc_sump));
-      end loop;
-      o_nsp_loop : for I in 0 to c_NUM_NSP-1 loop
-        o_nsp(I) <= (others => xor_reduce(pl2mtc_sump));
-      end loop;
-    end if;
-  end process;
-
+ MTC: entity mtc_lib.top_mtc
+  generic map(
+      TOTAL_PTCALC_BLKS => c_NUM_THREADS,
+      MTC_PER_BCID      => c_MAX_NUM_SL,
+      n_PRIMARY_MTC     => c_NUM_MTC
+      )
+    port map (
+    clock               => clock_and_control.clk,
+    rst                 => clock_and_control.rst,
+    i_ptcalc            => i_ptcalc,
+    i_pl2mtc            => i_pl2mtc,
+    o_mtc               => o_mtc
+    );
+ 
 end behavioral;

@@ -21,7 +21,7 @@ use shared_lib.cfg_global_pkg.all;
 
 package prj_cfg is
 
-  -- constant CFG : cfg_rt := CFG_DEFAULTS;
+  constant CFG : cfg_rt := CFG_DEFAULTS;
   function set_project_cfg return cfg_rt;
 
 end package prj_cfg;
@@ -41,7 +41,7 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- IN COMPILATION CONFIGURATIONS 
   --   --------------------------------------------------------------------------------
-    -- proj_cfg.NUM_THREADS             := 3;
+       proj_cfg.NUM_THREADS             := 3;
   --   --------------------------------------------------------------------------------
   --   -- mdt hardware interface config
   --   --------------------------------------------------------------------------------
