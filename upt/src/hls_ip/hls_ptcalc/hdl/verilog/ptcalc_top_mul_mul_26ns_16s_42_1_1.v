@@ -1,16 +1,16 @@
 
 `timescale 1 ns / 1 ps
 
-  module ptcalc_top_mul_mul_17ns_28s_45_1_1_DSP48_2(a, b, p);
-input [17 - 1 : 0] a;
-input signed [28 - 1 : 0] b;
-output signed [45 - 1 : 0] p;
+  module ptcalc_top_mul_mul_26ns_16s_42_1_1_DSP48_1(a, b, p);
+input [26 - 1 : 0] a;
+input signed [16 - 1 : 0] b;
+output signed [42 - 1 : 0] p;
 
 assign p = $signed ({1'b0, a}) * $signed (b);
 
 endmodule
 `timescale 1 ns / 1 ps
-module ptcalc_top_mul_mul_17ns_28s_45_1_1(
+module ptcalc_top_mul_mul_26ns_16s_42_1_1(
     din0,
     din1,
     dout);
@@ -26,7 +26,7 @@ output[dout_WIDTH - 1:0] dout;
 
 
 
-ptcalc_top_mul_mul_17ns_28s_45_1_1_DSP48_2 ptcalc_top_mul_mul_17ns_28s_45_1_1_DSP48_2_U(
+ptcalc_top_mul_mul_26ns_16s_42_1_1_DSP48_1 ptcalc_top_mul_mul_26ns_16s_42_1_1_DSP48_1_U(
     .a( din0 ),
     .b( din1 ),
     .p( dout ));

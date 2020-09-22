@@ -5,16 +5,16 @@
 
 `timescale 1 ns / 1 ps
 
-module ptcalc_top_mul_28s_22s_49_2_1_MulnS_5(clk, ce, a, b, p);
+module ptcalc_top_mul_35ns_33ns_67_2_1_MulnS_1(clk, ce, a, b, p);
 input clk;
 input ce;
-input signed [28 - 1 : 0] a;
-input signed [22 - 1 : 0] b;
-output[49 - 1 : 0] p;
-reg signed [49 - 1 : 0] p;
-wire signed [49 - 1 : 0] tmp_product;
+input [35 - 1 : 0] a;
+input [33 - 1 : 0] b;
+output[67 - 1 : 0] p;
+reg signed [67 - 1 : 0] p;
+wire [67 - 1 : 0] tmp_product;
 
-assign tmp_product = $signed(a) * $signed(b);
+assign tmp_product = a * b;
 always @ (posedge clk) begin
     if (ce) begin
         p <= tmp_product;
@@ -22,7 +22,7 @@ always @ (posedge clk) begin
 end
 endmodule
 `timescale 1 ns / 1 ps
-module ptcalc_top_mul_28s_22s_49_2_1(
+module ptcalc_top_mul_35ns_33ns_67_2_1(
     clk,
     reset,
     ce,
@@ -44,7 +44,7 @@ output[dout_WIDTH - 1:0] dout;
 
 
 
-ptcalc_top_mul_28s_22s_49_2_1_MulnS_5 ptcalc_top_mul_28s_22s_49_2_1_MulnS_5_U(
+ptcalc_top_mul_35ns_33ns_67_2_1_MulnS_1 ptcalc_top_mul_35ns_33ns_67_2_1_MulnS_1_U(
     .clk( clk ),
     .ce( ce ),
     .a( din0 ),

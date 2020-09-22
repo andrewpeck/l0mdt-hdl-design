@@ -6,27 +6,27 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
-entity ptcalc_top_mul_26s_30ns_55_2_1_MulnS_2 is
+entity ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0 is
 port (
     clk: in std_logic;
     ce: in std_logic;
-    a: in std_logic_vector(26 - 1 downto 0);
-    b: in std_logic_vector(30 - 1 downto 0);
-    p: out std_logic_vector(55 - 1 downto 0));
+    a: in std_logic_vector(30 - 1 downto 0);
+    b: in std_logic_vector(24 - 1 downto 0);
+    p: out std_logic_vector(53 - 1 downto 0));
 end entity;
 
-architecture behav of ptcalc_top_mul_26s_30ns_55_2_1_MulnS_2 is
-    signal tmp_product : std_logic_vector(55 - 1 downto 0);
-    signal a_i : std_logic_vector(26 - 1 downto 0);
-    signal b_i : std_logic_vector(30 - 1 downto 0);
-    signal p_tmp : std_logic_vector(55 - 1 downto 0);
+architecture behav of ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0 is
+    signal tmp_product : std_logic_vector(53 - 1 downto 0);
+    signal a_i : std_logic_vector(30 - 1 downto 0);
+    signal b_i : std_logic_vector(24 - 1 downto 0);
+    signal p_tmp : std_logic_vector(53 - 1 downto 0);
 
 begin
     a_i <= a;
     b_i <= b;
     p <= p_tmp;
 
-    tmp_product <= std_logic_vector(resize(unsigned(std_logic_vector(signed(a_i) * signed('0' & b_i))), 55));
+    tmp_product <= std_logic_vector(resize(unsigned(std_logic_vector(signed('0' & a_i) * signed(b_i))), 53));
 
     process(clk)
     begin
@@ -40,7 +40,7 @@ end architecture;
 Library IEEE;
 use IEEE.std_logic_1164.all;
 
-entity ptcalc_top_mul_26s_30ns_55_2_1 is
+entity ptcalc_top_mul_30ns_24s_53_2_1 is
     generic (
         ID : INTEGER;
         NUM_STAGE : INTEGER;
@@ -56,8 +56,8 @@ entity ptcalc_top_mul_26s_30ns_55_2_1 is
         dout : OUT STD_LOGIC_VECTOR(dout_WIDTH - 1 DOWNTO 0));
 end entity;
 
-architecture arch of ptcalc_top_mul_26s_30ns_55_2_1 is
-    component ptcalc_top_mul_26s_30ns_55_2_1_MulnS_2 is
+architecture arch of ptcalc_top_mul_30ns_24s_53_2_1 is
+    component ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0 is
         port (
             clk : IN STD_LOGIC;
             ce : IN STD_LOGIC;
@@ -69,7 +69,7 @@ architecture arch of ptcalc_top_mul_26s_30ns_55_2_1 is
 
 
 begin
-    ptcalc_top_mul_26s_30ns_55_2_1_MulnS_2_U :  component ptcalc_top_mul_26s_30ns_55_2_1_MulnS_2
+    ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0_U :  component ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0
     port map (
         clk => clk,
         ce => ce,

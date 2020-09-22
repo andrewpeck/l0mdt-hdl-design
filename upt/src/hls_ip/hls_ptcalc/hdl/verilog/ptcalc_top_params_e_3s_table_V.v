@@ -6,7 +6,7 @@
 module ptcalc_top_params_e_3s_table_V_rom (
 addr0, ce0, q0, clk);
 
-parameter DWIDTH = 21;
+parameter DWIDTH = 19;
 parameter AWIDTH = 7;
 parameter MEM_SIZE = 120;
 
@@ -43,7 +43,7 @@ module ptcalc_top_params_e_3s_table_V(
     ce0,
     q0);
 
-parameter DataWidth = 32'd21;
+parameter DataWidth = 32'd19;
 parameter AddressRange = 32'd120;
 parameter AddressWidth = 32'd7;
 input reset;

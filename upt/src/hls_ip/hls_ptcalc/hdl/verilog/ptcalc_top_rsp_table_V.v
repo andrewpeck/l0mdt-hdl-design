@@ -6,7 +6,7 @@
 module ptcalc_top_rsp_table_V_rom (
 addr0, ce0, q0, clk);
 
-parameter DWIDTH = 16;
+parameter DWIDTH = 7;
 parameter AWIDTH = 12;
 parameter MEM_SIZE = 4096;
 
@@ -43,7 +43,7 @@ module ptcalc_top_rsp_table_V(
     ce0,
     q0);
 
-parameter DataWidth = 32'd16;
+parameter DataWidth = 32'd7;
 parameter AddressRange = 32'd4096;
 parameter AddressWidth = 32'd12;
 input reset;

@@ -3,8 +3,8 @@
 # Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 # ==============================================================
 
-Family       : zynquplus
-Device       : xczu11eg
-Package      : -ffvf1517
-Speed Grade  : -3-e
-Clock Period : 3.100 ns
+Family       : kintexuplus
+Device       : xcku15p
+Package      : -ffva1760
+Speed Grade  : -2-e
+Clock Period : 3.125 ns
