@@ -165,11 +165,10 @@ begin
         port map(
           clock           => clk,
           reset           => rst,
-          ctrl            => lsf_ctrl,
-          mon             => lsf_mon,
           slc_roi         => i_slc_data,
           mdt_hit         => i_mdt_data,
-          lsf             => sf_data_v
+          lsf             => sf_data_v,
+          hba_max_clocks  => lsf_ctrl.hba_max_clocks
           );
 
     end generate;
