@@ -1,4 +1,4 @@
 Top/upt/prj_cfg.vhd
 shared/shared_lib.src lib=shared_lib
-IP/upt/hls_upt.xci
+IP/upt/hls_upt.xcix
 Top/upt/top_upt.vhd

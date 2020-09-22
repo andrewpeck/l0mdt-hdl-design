@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>xilinx.com</spirit:vendor>
+  <spirit:vendor>UCI</spirit:vendor>
   <spirit:library>hls</spirit:library>
   <spirit:name>ptcalc_top</spirit:name>
   <spirit:version>1.0</spirit:version>
@@ -959,10 +959,10 @@
       <xilinx:taxonomies>
         <xilinx:taxonomy>/VIVADO_HLS_IP</xilinx:taxonomy>
       </xilinx:taxonomies>
-      <xilinx:displayName>Ptcalc_top</xilinx:displayName>
+      <xilinx:displayName>Pt Calculation</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009220717</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-22T14:17:30Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2009220828</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-09-22T15:28:33Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.1.1</xilinx:xilinxVersion>
