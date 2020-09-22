@@ -13,11 +13,14 @@ parameter MXADRB       = 9;
 parameter MXDATB       = 11;
 parameter ROMLENGTH    = 1 << MXADRB;
 parameter ROM_FILE     = "a0.mem";
+parameter ROM_STYLE    = "auto";
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // Signals
 //----------------------------------------------------------------------------------------------------------------------
 
+(* ram_style = ROM_STYLE *) 
 reg [MXDATB-1:0] rom [ROMLENGTH-1:0];
 reg [MXDATB-1:0] rd_data0;
 

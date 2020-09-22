@@ -56,9 +56,13 @@ use ptc_lib.pt_params_pkg.all;
 -- use shared_lib.custom_types_davide_pkg.all;
 
 entity eta_calculator is
+    generic(
+        FLAVOUR : integer := 0 -- Barrel
+    );
     port (
         clk               : in std_logic;
         i_seg             : in sf2ptcalc_rvt;
+        i_layer           : in std_logic;
         o_eta             : out unsigned(PTCALC2MTC_MDT_ETA_LEN-1 downto 0);
         o_dv_eta          : out std_logic
     );
@@ -69,34 +73,20 @@ architecture Behavioral of eta_calculator is
     -- Valid signals for pseudo-rapidity calculation
     signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10, dv11
         : std_logic := '0';
-    -- square of r and z signals
-    -- signal r2 : unsigned(SF_SEG_POS_LEN*2-1 downto 0) := (others => '0');
-    signal z2 : unsigned(SF_SEG_POS_LEN*2-1 downto 0) := (others => '0');
-    -- square of vector magnitude
-    constant SHIFT_MAG2  : integer := 28;
-    constant MAG2_LEN : integer := SF_SEG_POS_LEN*2 - SHIFT_MAG2;
-    signal mag2 : unsigned(SF_SEG_POS_LEN*2-SHIFT_MAG2-1 downto 0)
-        := (others => '0');
+    signal en_BI, en_BM : std_logic := '0';
+    signal layer, layer_s : std_logic := '0';
 
-    -- vector magnitude
-    constant SHIFT_MAG : integer := SHIFT_MAG2/4;
-    signal mag : std_logic_vector(SF_SEG_POS_LEN-SHIFT_MAG-1 downto 0)
+    constant SHIFT_ETA  : integer := 10;
+    signal z_red : unsigned(SF_SEG_POS_LEN-SHIFT_ETA-1 downto 0)
         := (others => '0');
-    signal z_red, z_red_s, z_red_ss, z_red_sss : signed(SF_SEG_POS_LEN-SHIFT_MAG-1 downto 0)
-        := (others => '0');
-    signal m_plus_z, m_minus_z : signed(SF_SEG_POS_LEN-SHIFT_MAG downto 0)
-        := (others => '0');
-
-    -- logarithm signals
-    signal log_plus, log_minus : std_logic_vector(PTCALC2MTC_MDT_ETA_LEN-1 downto 0)
-        := (others => '0');
-
+    signal eta_BI, eta_BM : std_logic_vector(PTCALC2MTC_MDT_ETA_LEN-1 downto 0) := (others => '0');
 
     COMPONENT rom
     GENERIC (
         MXADRB   : integer;
         MXDATB   : integer;
-        ROM_FILE : string
+        ROM_FILE : string;
+        ROM_STYLE : string
     );
     PORT (
         clka  : in std_logic;
@@ -106,52 +96,36 @@ architecture Behavioral of eta_calculator is
     );
     END COMPONENT;
 
-    COMPONENT rom_dp
-    GENERIC (
-        MXADRB : integer;
-        MXDATB : integer;
-        ROM_FILE : string
-    );
-    PORT (
-        clka : IN STD_LOGIC;
-        addra : IN STD_LOGIC_VECTOR;
-        douta : OUT STD_LOGIC_VECTOR;
-        clkb : IN STD_LOGIC;
-        addrb : IN STD_LOGIC_VECTOR;
-        doutb : OUT STD_LOGIC_VECTOR
-    );
-    END COMPONENT;
-
 begin
 
-    magnitude_rom : rom
+    eta_BI_rom : rom
     GENERIC MAP (
-        MXADRB => SF_SEG_POS_LEN*2-SHIFT_MAG2,
-        MXDATB => SF_SEG_POS_LEN-SHIFT_MAG,
-        ROM_FILE  => "mag_ROM.mem"
+        MXADRB => SF_SEG_POS_LEN-SHIFT_ETA,
+        MXDATB => PTCALC2MTC_MDT_ETA_LEN,
+        ROM_FILE  => "eta_BI.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena  => '1',
-        addra => std_logic_vector(mag2),
-        douta => mag
+        ena  => en_BI,
+        addra => std_logic_vector(z_red),
+        douta => eta_BI
     );
 
-    logarithm_rom : rom_dp
+    eta_BM_rom : rom
     GENERIC MAP (
-        MXADRB => SF_SEG_POS_LEN-SHIFT_MAG+1,
-        MXDATB => MTC_ETA_LEN,
-        ROM_FILE => "halflog_ROM.mem"
+        MXADRB => SF_SEG_POS_LEN-SHIFT_ETA,
+        MXDATB => PTCALC2MTC_MDT_ETA_LEN,
+        ROM_FILE  => "eta_BM.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
-        clka  => clk,
-        addra => std_logic_vector(m_plus_z),
-        douta => log_plus,
-        clkb  => clk,
-        addrb => std_logic_vector(m_minus_z),
-        doutb => log_minus
+        clka => clk,
+        ena  => en_BM,
+        addra => std_logic_vector(z_red),
+        douta => eta_BM
     );
-    
+
     seg <= structify(i_seg);
 
     EtaProc : process( clk )
@@ -159,38 +133,26 @@ begin
         if rising_edge(clk) then
             -- Clock 0
             dv0 <= seg.data_valid;
-            z2  <= unsigned(seg.segpos*seg.segpos);
-            z_red <= resize(shift_right(signed(seg.segpos), SHIFT_MAG), SF_SEG_POS_LEN - SHIFT_MAG);
+            z_red <= resize(shift_right(unsigned(seg.segpos), SHIFT_ETA), SF_SEG_POS_LEN - SHIFT_ETA);
+            en_BM <= '0';
+            en_BI <= '0';
+            if i_layer = '0' then
+                en_BI <= '1';
+            else
+                en_BM <= '1';
+            end if;
+            layer <= i_layer;
 
             -- Clock 1
             dv1 <= dv0;
-            mag2 <= resize(shift_right(BIL_SEC3_RHO2_s+z2, SHIFT_MAG2),MAG2_LEN);
-            z_red_s <= z_red;
-
+            layer_s <= layer;
+            
             -- Clock 2
-            dv2 <= dv1;
-            z_red_ss <= z_red_s;
-
-            -- Clock 3 (mag available)
-            dv3 <= dv2;
-            z_red_sss <= z_red_ss;
-            -- Clock 4
-            dv4 <= dv3;
-            m_plus_z <= resize(signed(mag) + z_red_sss, SF_SEG_POS_LEN-SHIFT_MAG+1);
-            m_minus_z <= resize(signed(mag) - z_red_sss, SF_SEG_POS_LEN-SHIFT_MAG+1);
-
-            -- Clock 5
-            dv5 <= dv4;
-
-            -- Clock 6
-            dv6 <= dv5;
-
-            -- Clock 7
-            o_dv_eta <= dv6;
-            if unsigned(log_plus) > unsigned(log_minus) then
-                o_eta <= unsigned(log_plus) - unsigned(log_minus);
-            else 
-                o_eta <= unsigned(log_minus) - unsigned(log_plus);
+            o_dv_eta <= dv1;
+            if layer_s = '0' then
+                o_eta <= unsigned(eta_BI);
+            else
+                o_eta <= unsigned(eta_BM);
             end if;
 
         end if ;
