@@ -92,7 +92,7 @@
 		    .TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS)
 		    )
    mtc_builder_inst(
-    		    .clk(clock),
+    		    .clock(clock),
 		    .rst(~reset_n),
 		    .srst(~reset_n),
 		    .ptcalc(ptcalc),
