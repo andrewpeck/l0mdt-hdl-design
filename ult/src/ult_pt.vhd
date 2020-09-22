@@ -15,6 +15,7 @@ library ctrl_lib;
 use ctrl_lib.TF_CTRL.all;
 
 library ptc_lib;
+library upt_lib;
 
 entity ptcalc is
 
