@@ -5,3 +5,4 @@ hp/hp_lib.src lib=hp_lib
 heg/heg_lib.src lib=heg_lib
 hps/hps_lib.src lib=hps_lib
 csf/csf_lib.src lib=csf_lib
+ctrl/ctrl_lib.src lib=ctrl_lib

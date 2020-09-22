@@ -31,7 +31,8 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
-
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
 
 entity top_hps is
   generic(
@@ -45,6 +46,11 @@ entity top_hps is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+
+    -- control
+    ctrl              : in  H2S_HPS_CTRL_t;
+    mon               : out H2S_HPS_MON_t;
+
     -- control
     -- SLc
     i_uCM2hps_av        : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -80,6 +86,10 @@ begin
       clk                 => clk,
       rst                 => rst,
       glob_en             => glob_en,
+
+      ctrl => ctrl,
+      mon => mon,
+
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
       -- SLc

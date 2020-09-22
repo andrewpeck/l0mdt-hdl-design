@@ -67,7 +67,7 @@ architecture behavioral of decoder_framer is
   -- the maximum no IDLE packet
   signal timeout       : boolean                 := false;
   constant timeout_max : integer                 := 4095;
-  signal timeout_cnt   : integer range 0 to 4095 := 0; -- TODO: make programmable from AXI ?
+  signal timeout_cnt   : integer range 0 to 4095 := 0;  -- TODO: make programmable from AXI ?
 
   signal k_good : boolean := false;
 
@@ -94,8 +94,24 @@ begin
 
   k_good <= frame_state = FRAME0 and isk(reverse_vector(data(15 downto 6)));
 
-  synced_o <= '1' when synced                                                    else '0';
-  err_o    <= '1' when (timeout) or (not synced and wait_for_slip = 0 and valid) else '0';
+  process (clock) is
+  begin
+    if (rising_edge(clock)) then
+
+      if (synced) then
+        synced_o <= '1';
+      else
+        synced_o <= '0';
+      end if;
+
+      if ((timeout) or (not synced and wait_for_slip = 0 and valid)) then
+        err_o    <= '1';
+      else
+        err_o    <= '0';
+      end if;
+
+    end if;
+  end process;
 
   -- have a watchdog to make sure we see a comma every so many bxs
   process (clock) is
@@ -149,99 +165,108 @@ begin
 
       valid <= false;
 
-      if (resync_i = '1' or err_o = '1') then
-        frame_state <= FRAME0;
+      case frame_state is
+
+        when FRAME0 =>
+
+          if (first) then
+            if (synced or k_good) then
+              frame_state <= FRAME1;
+            end if;
+          end if;
+
+          if (first) then
+            buf (5 downto 0) <= data(5 downto 0);
+            valid            <= true;
+            data_o_int       <= reverse_vector(data(15 downto 6));  -- word0
+          end if;
+
+        when FRAME1 =>
+
+          if (first) then
+            frame_state <= FRAME2;
+          end if;
+
+          -- word 0
+          if (zeroeth) then
+            valid      <= true;
+            data_o_int <= reverse_vector(buf(5 downto 0) & data (15 downto 12));  -- word1
+          end if;
+          -- word 1
+          if (first) then
+            valid           <= true;
+            data_o_int      <= reverse_vector(data(11 downto 2));                 -- word2
+            buf(1 downto 0) <= data(1 downto 0);
+          end if;
+
+        when FRAME2 =>
+
+          if (first) then
+            frame_state <= FRAME3;
+          end if;
+
+          if (zeroeth) then
+            valid           <= true;
+            buf(7 downto 0) <= data (7 downto 0);
+            data_o_int      <= reverse_vector(buf(1 downto 0) & data (15 downto 8));  -- word3
+          end if;
+
+        when FRAME3 =>
+
+          if (first) then
+            frame_state <= FRAME4;
+          end if;
+
+          -- word 0
+          if (zeroeth) then
+            valid      <= true;
+            data_o_int <= reverse_vector(buf(7 downto 0) & data (15 downto 14));  -- word 4
+          end if;
+          -- word 1
+          if (first) then
+            valid            <= true;
+            data_o_int       <= reverse_vector(data (13 downto 4));               -- word 5
+            buf (3 downto 0) <= data (3 downto 0);
+          end if;
+
+        when FRAME4 =>
+
+          if (first) then
+            frame_state <= FRAME0;
+          end if;
+
+          -- word 0
+          if (zeroeth) then
+            valid      <= true;
+            data_o_int <= reverse_vector(buf (3 downto 0) & data (15 downto 10));  -- word 6
+          end if;
+          -- word 1
+          if (first) then
+            valid      <= true;
+            data_o_int <= reverse_vector(data (9 downto 0));                       -- word 7
+          end if;
+
+      end case;
+    end if;
+
+    -- Reset Logic
+    if (resync_i = '1' or err_o = '1') then
+      frame_state <= FRAME0;
+    end if;
+
+    -- Output buffers
+    if (synced) then
+      data_o       <= data_o_int;
+      if (valid) then
+        data_o_valid <= '1';
       else
-
-        case frame_state is
-
-          when FRAME0 =>
-
-            if (first) then
-              if (synced or k_good) then
-                frame_state <= FRAME1;
-              end if;
-            end if;
-
-            if (first) then
-              buf (5 downto 0) <= data(5 downto 0);
-              valid            <= true;
-              data_o_int       <= reverse_vector(data(15 downto 6));  -- word0
-            end if;
-
-          when FRAME1 =>
-
-            if (first) then
-              frame_state <= FRAME2;
-            end if;
-
-            -- word 0
-            if (zeroeth) then
-              valid      <= true;
-              data_o_int <= reverse_vector(buf(5 downto 0) & data (15 downto 12));  -- word1
-            end if;
-            -- word 1
-            if (first) then
-              valid           <= true;
-              data_o_int      <= reverse_vector(data(11 downto 2));                 -- word2
-              buf(1 downto 0) <= data(1 downto 0);
-            end if;
-
-          when FRAME2 =>
-
-            if (first) then
-              frame_state <= FRAME3;
-            end if;
-
-            if (zeroeth) then
-              valid           <= true;
-              buf(7 downto 0) <= data (7 downto 0);
-              data_o_int      <= reverse_vector(buf(1 downto 0) & data (15 downto 8));  -- word3
-            end if;
-
-          when FRAME3 =>
-
-            if (first) then
-              frame_state <= FRAME4;
-            end if;
-
-            -- word 0
-            if (zeroeth) then
-              valid      <= true;
-              data_o_int <= reverse_vector(buf(7 downto 0) & data (15 downto 14));  -- word 4
-            end if;
-            -- word 1
-            if (first) then
-              valid            <= true;
-              data_o_int       <= reverse_vector(data (13 downto 4));               -- word 5
-              buf (3 downto 0) <= data (3 downto 0);
-            end if;
-
-          when FRAME4 =>
-
-            if (first) then
-              frame_state <= FRAME0;
-            end if;
-
-            -- word 0
-            if (zeroeth) then
-              valid      <= true;
-              data_o_int <= reverse_vector(buf (3 downto 0) & data (15 downto 10));  -- word 6
-            end if;
-            -- word 1
-            if (first) then
-              valid      <= true;
-              data_o_int <= reverse_vector(data (9 downto 0));                       -- word 7
-            end if;
-
-        end case;
-
+        data_o_valid <= '0';
       end if;
+    else
+      data_o       <= (others => '0');
+      data_o_valid <= '0';
     end if;
 
   end process;
-
-  data_o       <= data_o_int when (synced)           else (others => '0');
-  data_o_valid <= '1'        when (synced and valid) else '0';
 
 end behavioral;

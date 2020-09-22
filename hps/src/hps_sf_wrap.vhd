@@ -34,8 +34,10 @@ use hps_lib.hps_pkg.all;
 library csf_lib;
 use csf_lib.csf_pkg.all;
 
-library lsf_lib;
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
 
+library lsf_lib;
 
 entity hps_sf_wrap is
   generic(
@@ -45,6 +47,14 @@ entity hps_sf_wrap is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+
+    -- control
+    csf_ctrl    : in  H2S_HPS_CSF_CTRL_t;
+    csf_mon     : out H2S_HPS_CSF_MON_t;
+
+    lsf_ctrl    : in  H2S_HPS_LSF_CTRL_t;
+    lsf_mon     : out H2S_HPS_LSF_MON_t;
+
     -- configuration
     i_control        : in heg_ctrl2sf_rvt;
     i_slc_data       : in heg2sfslc_rvt;
@@ -145,6 +155,7 @@ begin
 
     -- LSF
     EN_LSF : if c_SF_TYPE = '1' generate
+
       LSF : entity lsf_lib.top_lsf
        -- generic map(
           --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
@@ -154,12 +165,12 @@ begin
         port map(
           clock           => clk,
           reset           => rst,
-          slc_roi         => i_slc_data,          
+          slc_roi         => i_slc_data,
           mdt_hit         => i_mdt_data,
-          lsf             => sf_data_v,    
-          hba_max_clocks  => hba_max_clocks
+          lsf             => sf_data_v,
+          hba_max_clocks  => lsf_ctrl.hba_max_clocks
           );
-      
+
     end generate;
 
   end generate;

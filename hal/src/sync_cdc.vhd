@@ -13,9 +13,9 @@ use ieee.numeric_std.all;
 
 entity sync_cdc is
   generic (
-    WIDTH    : integer := 1;            -- set to 1 to introduce 2 clocks of latency and
-    -- make sure to set a datapath only max_delay of
-    -- less than 2 clocks to the data_o ffs
+    WIDTH    : integer := 1;  -- set to 1 to introduce 2 clocks of latency and
+                              -- make sure to set a datapath only max_delay of
+                              -- less than 2 clocks to the data_o ffs
     N_STAGES : integer := 1
     );
   port (

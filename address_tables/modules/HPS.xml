@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="HPS">
-  <node id="RESET"          address="0x0" mask="0x1" permission="w"/>
-  <node id="STATUS"         address="0x1" mask="0x1" permission="r"/>
-  <node id="READY"          address="0x1" mask="0x2" permission="r"/>
+  <node id="RESET"  address="0x0" mask="0x1" permission="w"/>
+  <node id="STATUS" address="0x1" mask="0x1" permission="r"/>
+  <node id="READY"  address="0x1" mask="0x2" permission="r"/>
+  <node id="LSF"    address="0x00000100" module="file://LSF.xml"/>
+  <node id="CSF"    address="0x00000200" module="file://CSF.xml"/>
 </node>

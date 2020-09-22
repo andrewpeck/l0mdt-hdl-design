@@ -44,6 +44,9 @@ end top_tdc_decoder;
 
 architecture behavioral of top_tdc_decoder is
 
+  type tdc_err_cnt_array_t is array (integer range <>) of std_logic_vector(15 downto 0);
+  signal tdc_err_cnt : tdc_err_cnt_array_t (c_NUM_TDC_INPUTS-1 downto 0) := (others => '0');
+
   signal tdc_hits_to_polmux : mdt_polmux_bus_avt (c_NUM_TDC_INPUTS-1 downto 0);
 
   signal read_done : std_logic_vector (c_NUM_TDC_INPUTS-1 downto 0);
@@ -93,8 +96,12 @@ begin
                     idx /= -1 and
                     channel /= -1)
       generate
-        constant even_elink : integer := elink_pair_map(channel).ch1;  -- FIXME: ch1 vs. ch2 even odd??
-        constant odd_elink  : integer := elink_pair_map(channel).ch2;
+        -- d0 carries the odd bits, d1 carries the even bits
+        constant even_elink : integer := elink_pair_map(channel).ch2;
+        constant odd_elink  : integer := elink_pair_map(channel).ch1;
+
+        signal tdc_err : std_logic;
+
       begin
 
         assert false report " > LINK_ID     =" & integer'image(c_TDC_LINK_MAP(I).link_id) severity note;
@@ -127,15 +134,15 @@ begin
             port map (
               clock       => clock,
               reset       => reset,
-              resync_i    => '0', -- TODO: connect this
-              synced_o    => open, -- TODO: connect this
+              resync_i    => '0', -- TODO: connect this to AXI
+              synced_o    => open, -- TODO: connect this to AXI
               data_even   => even_data,
               data_odd    => odd_data,
               valid_i     => valid,
               tdc_word_o  => tdc_word_from_decoder,
               valid_o     => tdc_valid_from_decoder,
               read_done_i => read_done(I),
-              tdc_err_o   => open       -- TODO: connect this to a counter
+              tdc_err_o   => tdc_err
               );
 
         end generate;  -- new TDC gen
@@ -152,6 +159,17 @@ begin
 
         tdc_hits_to_polmux(I) <= vectorify(tdc_hit_to_polmux);
 
+        cnt_err : entity work.counter
+          generic map (width => 16)
+          port map (
+            clk    => clock,
+            reset  => '0',
+            enable => '1',
+            event  => tdc_err,
+            count  => tdc_err_cnt(idx),
+            at_max => open
+            );
+
       end generate;  -- mgt tag
     end generate;  -- TDC gen
   end generate;  -- TDC loop
@@ -160,7 +178,7 @@ begin
   -- Polling Mux
   --------------------------------------------------------------------------------
 
-  polmux_loop : for I in 0 to (c_POLMUX_MAXID) generate
+  polmux_loop : for I in 0 to (c_NUM_POLMUX) generate
   begin
     is_used_check : if (inner_polmux_idx_array(I) /= -1 or middle_polmux_idx_array(I) /= -1 or
                      outer_polmux_idx_array(I) /= -1 or extra_polmux_idx_array(I) /= -1)
