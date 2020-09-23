@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine 
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2020-09-15
+-- last update: 2020-09-21
 -- ===========================================================
 
 library ieee;
@@ -30,14 +30,14 @@ entity top_upt is
         i_segment_o : in sf2ptcalc_rvt;
         o_mtc : out ptcalc2mtc_rvt -- TODO [check with Kostas/Davide/etc.] change name to pt2mtc_rvt in data format?
     );
-end top_upt;
+end entity top_upt;
 
 architecture behav of top_upt is
 
-    constant const_ap_start : std_logic := '1';
-    constant const_ap_idle : std_logic := '0';
+ --   constant const_ap_start : std_logic := '1';
+ --   constant const_ap_idle : std_logic := '0';
 
-    component ptcalc_top
+    component hls_upt
         port (
             ap_clk : in std_logic;
             ap_rst : in std_logic;
@@ -55,7 +55,7 @@ architecture behav of top_upt is
     end component;
 
 begin 
-    ptcalc_top_inst : ptcalc_top port map (
+    upt : hls_upt port map (
         ap_clk => clk,
         ap_rst => i_rst,
         --ap_start => const_ap_start, -- hls control signal: goes high 1 clk after rst goes low
@@ -70,4 +70,4 @@ begin
         ptcalc2mtc_v_ap_vld => open -- hls control signal: probably not needed?
         );
 
-end behav;   
+end architecture behav;   

@@ -1,5 +1,5 @@
-############# modify these to match project ################
 #vivado
+############# modify these to match project ################
 set BIN_FILE 1
 set USE_QUESTA_SIMULATOR 0
 

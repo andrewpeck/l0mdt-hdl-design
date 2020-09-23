@@ -39,6 +39,8 @@ package mgt_pkg is
     buffbypass_tx_error_out : std_logic;
     buffbypass_rx_done_out  : std_logic;
     buffbypass_rx_error_out : std_logic;
+    rxbyteisaligned         : std_logic;
+    rxbyterealign           : std_logic;
   end record;
   type mgt_status_rt_array is array (integer range <>) of mgt_status_rt;
 

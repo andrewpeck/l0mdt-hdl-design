@@ -46,13 +46,11 @@ package pt_pkg is
 
 
     -- Sagitta calculation parameter
-    constant INV_S_LEN           : integer := 15;
+    constant INV_S_LEN           : integer := 11;
     constant SAGITTA_MULT        : real := 64.0;
     constant SAGITTA_MULTI_LEN   : integer := integer(log2(sagitta_mult));
-    constant M_SAGITTA_LEN       : integer := 16;
-    constant M_SAGITTA_RANGE     : real := 4.0;
-    constant M_SAGITTA_MULTI     : real := (2.0**M_SAGITTA_LEN/M_SAGITTA_RANGE);
-    constant M_SAGITTA_MULTI_LEN : integer := integer(log2(M_SAGITTA_MULTI));
+    constant M_SAGITTA_MULTI_LEN : integer := 10;
+    constant M_SAGITTA_MULTI     : real := 2.0**M_SAGITTA_MULTI_LEN;
     constant INV_TANTHETA_LEN    : integer := 15;
     constant SHIFT_M_DEN         : integer := 6;
     constant M_LEN               : integer := 16;
@@ -63,20 +61,12 @@ package pt_pkg is
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant INV_SQRT_LEN : integer := 22;
-    constant DBETA_LEN : integer := 16;
+    constant DBETA_LEN : integer := SF2PTCALC_SEGANGLE_LEN+1;
 
     -- Functions
     type t_reciprocalROM is array ( natural range <> )
         of unsigned( divider_len-1 downto 0 );
     function reciprocalROM return t_reciprocalROM;
-
-    type t_sqrt_m_io_ROM is array(natural range <> )
-        of unsigned(m_sagitta_len -1 downto 0);
-    function sqrt_m_io_ROM return t_sqrt_m_io_ROM;
-
-    type t_invsqrt_ROM is array ( natural range <> )
-        of unsigned(inv_sqrt_len-1 downto 0);
-    function invsqrt_ROM return t_invsqrt_ROM;
 
     function pt_bin(pt : unsigned) return unsigned;
 --    function calc_phi_mod(phi : std_logic_vector) return signed;
@@ -99,25 +89,6 @@ package body pt_pkg is
     end loop;
 
     return temp;
-    end function;
-
-    function sqrt_m_io_ROM return t_sqrt_m_io_ROM is
-        variable temp : t_sqrt_m_io_ROM(2**(m_sagitta_len)-1 downto 0) := (others => (others => '0'));
-    begin
-        for k in 2**(m_sagitta_len) -1 downto 0 loop
-            temp(k) := to_unsigned(integer(floor( sqrt( M_SAGITTA_MULTI**2 + real(k*k) ) )), M_SAGITTA_LEN);
-        end loop;
-        return temp;
-    end function;
-
-
-    function invsqrt_ROM return t_invsqrt_ROM is
-        variable temp : t_invsqrt_ROM(2**(16)-1 downto 0) := (others => (others => '0'));
-    begin
-        for k in 2**(16) -1 downto 0 loop
-            temp(k) := to_unsigned(integer(floor( (( 2.0 ** inv_sqrt_len  ))/ sqrt( M_SAGITTA_MULTI**2 + real(k*k) ) )), INV_SQRT_LEN);
-        end loop;
-        return temp;
     end function;
 
     function pt_bin( pt : unsigned ) return unsigned is

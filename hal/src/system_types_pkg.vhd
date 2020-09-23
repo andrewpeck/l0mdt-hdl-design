@@ -6,6 +6,7 @@ package system_types_pkg is
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
 
+  type std16_array_t is array (integer range <>) of std_logic_vector(15 downto 0);
   type std32_array_t is array (integer range <>) of std_logic_vector(31 downto 0);
   type std64_array_t is array (integer range <>) of std_logic_vector(63 downto 0);
 
@@ -14,7 +15,6 @@ package system_types_pkg is
     refclk01       : std_logic;
     clock40        : std_logic;
     clock320       : std_logic;
-    clock240       : std_logic;
     clock_pipeline : std_logic;
   end record;
 
@@ -24,9 +24,7 @@ package system_types_pkg is
     freeclock      : std_logic;
     axiclock       : std_logic;
     clock40        : std_logic;
-    clock300       : std_logic;
     clock320       : std_logic;
-    clock240       : std_logic;
     clock_pipeline : std_logic;
   end record;
 

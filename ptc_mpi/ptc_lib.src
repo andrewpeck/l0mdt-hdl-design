@@ -21,8 +21,9 @@ ptc_mpi/src/b1.mem
 ptc_mpi/src/b2.mem
 ptc_mpi/src/c0.mem
 ptc_mpi/src/c1.mem
-ptc_mpi/src/halflog_ROM.mem
-ptc_mpi/src/mag_ROM.mem
-ptc_mpi/src/reciprocalROM.mem
+ptc_mpi/src/eta_BI.mem
+ptc_mpi/src/eta_BM.mem
+ptc_mpi/src/rec_dbeta.mem
+ptc_mpi/src/rec_sagitta.mem
 ptc_mpi/src/sqrt_m_io_ROM.mem
 ptc_mpi/src/segment_selector.vhd

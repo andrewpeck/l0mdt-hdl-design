@@ -171,6 +171,7 @@ begin
           i_middle_tdc_hits => i_middle_tdc_hits,
           i_outer_tdc_hits  => i_outer_tdc_hits,
           i_extra_tdc_hits  => i_extra_tdc_hits,
+
           -- candidates in from hal
           i_inner_tar_hits  => i_inner_tar_hits,
           i_middle_tar_hits => i_middle_tar_hits,
@@ -236,7 +237,7 @@ begin
           i_mid_slc                 => middle_slc_to_hts,
           i_out_slc                 => outer_slc_to_hts,
           i_ext_slc                 => extra_slc_to_hts,
-          -- Segments Out to track fitting
+          -- Segments Out to pt calculation
           o_inn_segments            => inner_segments_to_pt,
           o_mid_segments            => middle_segments_to_pt,
           o_out_segments            => outer_segments_to_pt,
@@ -260,7 +261,7 @@ begin
           -- Sector Logic Candidates from uCM
           i_ucm2pl_av => ucm2pl_av,
 
-          -- Sector Logic Candidates to Track fitting
+          -- Sector Logic Candidates to pt calculation
           o_pl2pt_av  => pl2pt_av,
           -- Sector Logic Candidates to mTC
           o_pl2mtc_av => pl2mtc_av
@@ -269,7 +270,7 @@ begin
 
     TF_GEN : if c_TF_ENABLED generate
 
-      track_fitting_inst : entity work.track_fitting
+      ptcalc_inst : entity work.ptcalc
         port map (
           -- clock, control, and monitoring
           clock_and_control         => clock_and_control,

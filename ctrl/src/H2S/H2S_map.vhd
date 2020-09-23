@@ -28,8 +28,8 @@ architecture behavioral of H2S_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 16385);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 16385) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 16897);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 16897) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -68,17 +68,41 @@ begin  -- architecture behavioral
       case to_integer(unsigned(localAddress(14 downto 0))) is
 
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.HPS_INNER.STATUS;       --
-          localRdData( 1)  <=  Mon.HPS_INNER.READY;        --
+          localRdData( 0)            <=  Mon.HPS(0).STATUS;                  --
+          localRdData( 1)            <=  Mon.HPS(0).READY;                   --
+        when 257 => --0x101
+          localRdData( 0)            <=  Mon.HPS(0).LSF.STATUS;              --
+          localRdData(13 downto  4)  <=  reg_data(257)(13 downto  4);        --add some description
+        when 513 => --0x201
+          localRdData( 0)            <=  Mon.HPS(0).CSF.STATUS;              --
+          localRdData( 1)            <=  Mon.HPS(0).CSF.READY;               --
         when 4097 => --0x1001
-          localRdData( 0)  <=  Mon.HPS_MIDDLE.STATUS;      --
-          localRdData( 1)  <=  Mon.HPS_MIDDLE.READY;       --
+          localRdData( 0)            <=  Mon.HPS(1).STATUS;                  --
+          localRdData( 1)            <=  Mon.HPS(1).READY;                   --
+        when 4353 => --0x1101
+          localRdData( 0)            <=  Mon.HPS(1).LSF.STATUS;              --
+          localRdData(13 downto  4)  <=  reg_data(4353)(13 downto  4);       --add some description
+        when 4609 => --0x1201
+          localRdData( 0)            <=  Mon.HPS(1).CSF.STATUS;              --
+          localRdData( 1)            <=  Mon.HPS(1).CSF.READY;               --
         when 8193 => --0x2001
-          localRdData( 0)  <=  Mon.HPS_OUTER.STATUS;       --
-          localRdData( 1)  <=  Mon.HPS_OUTER.READY;        --
+          localRdData( 0)            <=  Mon.HPS(2).STATUS;                  --
+          localRdData( 1)            <=  Mon.HPS(2).READY;                   --
+        when 8449 => --0x2101
+          localRdData( 0)            <=  Mon.HPS(2).LSF.STATUS;              --
+          localRdData(13 downto  4)  <=  reg_data(8449)(13 downto  4);       --add some description
+        when 8705 => --0x2201
+          localRdData( 0)            <=  Mon.HPS(2).CSF.STATUS;              --
+          localRdData( 1)            <=  Mon.HPS(2).CSF.READY;               --
         when 16385 => --0x4001
-          localRdData( 0)  <=  Mon.HPS_EXTRA.STATUS;       --
-          localRdData( 1)  <=  Mon.HPS_EXTRA.READY;        --
+          localRdData( 0)            <=  Mon.HPS(3).STATUS;                  --
+          localRdData( 1)            <=  Mon.HPS(3).READY;                   --
+        when 16641 => --0x4101
+          localRdData( 0)            <=  Mon.HPS(3).LSF.STATUS;              --
+          localRdData(13 downto  4)  <=  reg_data(16641)(13 downto  4);      --add some description
+        when 16897 => --0x4201
+          localRdData( 0)            <=  Mon.HPS(3).CSF.STATUS;              --
+          localRdData( 1)            <=  Mon.HPS(3).CSF.READY;               --
 
 
         when others =>
@@ -91,30 +115,70 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
+  Ctrl.HPS(0).LSF.HBA_MAX_CLOCKS  <=  reg_data(257)(13 downto  4);       
+  Ctrl.HPS(1).LSF.HBA_MAX_CLOCKS  <=  reg_data(4353)(13 downto  4);      
+  Ctrl.HPS(2).LSF.HBA_MAX_CLOCKS  <=  reg_data(8449)(13 downto  4);      
+  Ctrl.HPS(3).LSF.HBA_MAX_CLOCKS  <=  reg_data(16641)(13 downto  4);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data(257)(13 downto  4)  <= DEFAULT_H2S_CTRL_t.HPS(0).LSF.HBA_MAX_CLOCKS;
+      reg_data(4353)(13 downto  4)  <= DEFAULT_H2S_CTRL_t.HPS(1).LSF.HBA_MAX_CLOCKS;
+      reg_data(8449)(13 downto  4)  <= DEFAULT_H2S_CTRL_t.HPS(2).LSF.HBA_MAX_CLOCKS;
+      reg_data(16641)(13 downto  4)  <= DEFAULT_H2S_CTRL_t.HPS(3).LSF.HBA_MAX_CLOCKS;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.HPS_INNER.RESET <= '0';
-      Ctrl.HPS_MIDDLE.RESET <= '0';
-      Ctrl.HPS_OUTER.RESET <= '0';
-      Ctrl.HPS_EXTRA.RESET <= '0';
+      Ctrl.HPS(0).RESET <= '0';
+      Ctrl.HPS(0).LSF.RESET <= '0';
+      Ctrl.HPS(0).CSF.RESET <= '0';
+      Ctrl.HPS(1).RESET <= '0';
+      Ctrl.HPS(1).LSF.RESET <= '0';
+      Ctrl.HPS(1).CSF.RESET <= '0';
+      Ctrl.HPS(2).RESET <= '0';
+      Ctrl.HPS(2).LSF.RESET <= '0';
+      Ctrl.HPS(2).CSF.RESET <= '0';
+      Ctrl.HPS(3).RESET <= '0';
+      Ctrl.HPS(3).LSF.RESET <= '0';
+      Ctrl.HPS(3).CSF.RESET <= '0';
       
 
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(14 downto 0))) is
         when 0 => --0x0
-          Ctrl.HPS_INNER.RESET   <=  localWrData( 0);     
+          Ctrl.HPS(0).RESET              <=  localWrData( 0);               
+        when 256 => --0x100
+          Ctrl.HPS(0).LSF.RESET          <=  localWrData( 0);               
+        when 257 => --0x101
+          reg_data(257)(13 downto  4)    <=  localWrData(13 downto  4);      --add some description
+        when 512 => --0x200
+          Ctrl.HPS(0).CSF.RESET          <=  localWrData( 0);               
         when 4096 => --0x1000
-          Ctrl.HPS_MIDDLE.RESET  <=  localWrData( 0);     
+          Ctrl.HPS(1).RESET              <=  localWrData( 0);               
+        when 4352 => --0x1100
+          Ctrl.HPS(1).LSF.RESET          <=  localWrData( 0);               
+        when 4353 => --0x1101
+          reg_data(4353)(13 downto  4)   <=  localWrData(13 downto  4);      --add some description
+        when 4608 => --0x1200
+          Ctrl.HPS(1).CSF.RESET          <=  localWrData( 0);               
         when 8192 => --0x2000
-          Ctrl.HPS_OUTER.RESET   <=  localWrData( 0);     
+          Ctrl.HPS(2).RESET              <=  localWrData( 0);               
+        when 8448 => --0x2100
+          Ctrl.HPS(2).LSF.RESET          <=  localWrData( 0);               
+        when 8449 => --0x2101
+          reg_data(8449)(13 downto  4)   <=  localWrData(13 downto  4);      --add some description
+        when 8704 => --0x2200
+          Ctrl.HPS(2).CSF.RESET          <=  localWrData( 0);               
         when 16384 => --0x4000
-          Ctrl.HPS_EXTRA.RESET   <=  localWrData( 0);     
+          Ctrl.HPS(3).RESET              <=  localWrData( 0);               
+        when 16640 => --0x4100
+          Ctrl.HPS(3).LSF.RESET          <=  localWrData( 0);               
+        when 16641 => --0x4101
+          reg_data(16641)(13 downto  4)  <=  localWrData(13 downto  4);      --add some description
+        when 16896 => --0x4200
+          Ctrl.HPS(3).CSF.RESET          <=  localWrData( 0);               
 
           when others => null;
         end case;

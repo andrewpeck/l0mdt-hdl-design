@@ -44,9 +44,7 @@ library xpm;
 use xpm.vcomponents.all;
 
 entity top_clocking is
-  generic (
-    GENERATE_40M : boolean := false
-    );
+  generic (SYNC_40M : boolean := true);
   port (
 
     reset_i : in std_logic;             --
@@ -285,11 +283,24 @@ begin  -- architecture behavioral
   -- 40MHz clock
   --------------------------------------------------------------------------------
 
-  noclk40_gen : if (not GENERATE_40M) generate
+  noclk40_gen : if (not SYNC_40M) generate
+
     out_of_sync_o <= '0';
+
+    bufgce_clk40_inst : bufgce_div
+      generic map (
+        BUFGCE_DIVIDE => 8
+        )
+      port map (
+        I   => clk320_nobuf,
+        CLR => '0',
+        CE  => '1',
+        O   => clk40
+        );
+
   end generate;
 
-  clk40_gen : if (GENERATE_40M) generate
+  clk40_gen : if (SYNC_40M) generate
 
     -- clk40 synchronizer
     signal clear          : std_logic                     := '0';

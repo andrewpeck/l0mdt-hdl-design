@@ -62,7 +62,7 @@ architecture Behavioral of pt is
     -- Online segments in global coordinates
     signal segment_I, segment_M, segment_O : sf2ptcalc_rt;
     signal segment_I_s, segment_M_s, segment_O_s : sf2ptcalc_rt;
-    signal segment_I_v, segment_M_v, segment_O_v : sf2ptcalc_rvt;
+    signal segment_eta, segment_I_v, segment_M_v, segment_O_v : sf2ptcalc_rvt;
 
 
     signal segment_EI, segment_EM, segment_EO : sf2ptcalc_rvt;
@@ -88,7 +88,7 @@ architecture Behavioral of pt is
     signal dv_eta : std_logic := '0';
     signal phi : signed(UCM_PT_PHIMOD_LEN-1 downto 0) := (others => '0');
     signal eta : unsigned(PTCALC2MTC_MDT_ETA_LEN-1 downto 0) := (others => '0');
-
+    signal im : std_logic := '0'; -- 0: Inner, 1: Middle
     signal dv_dbeta_01, dv_dbeta_02, dv_dbeta_12 : std_logic := '0';
     signal dbeta_01, dbeta_02, dbeta_12 : unsigned(DBETA_LEN-1 downto 0)
                                         := (others => '0');
@@ -150,7 +150,8 @@ architecture Behavioral of pt is
     GENERIC (
         MXADRB   : integer;
         MXDATB   : integer;
-        ROM_FILE : string
+        ROM_FILE : string;
+        ROM_STYLE : string
     );
     PORT (
         clka  : in std_logic;
@@ -166,7 +167,8 @@ begin
     EtaCalculator : entity ptc_lib.eta_calculator
     port map (
         clk            => clk,
-        i_seg          => segment_I_v,
+        i_seg          => segment_eta,
+        i_layer        => im,
         o_eta          => eta,
         o_dv_eta       => dv_eta
     );
@@ -185,7 +187,8 @@ begin
     GENERIC MAP(
         MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A0_LEN,
-        ROM_FILE => "a0.mem"
+        ROM_FILE => "a0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -198,7 +201,8 @@ begin
     GENERIC MAP(
         MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A1_LEN,
-        ROM_FILE => "a1.mem"
+        ROM_FILE => "a1.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -211,7 +215,8 @@ begin
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B0_LEN,
-        ROM_FILE => "b0.mem"
+        ROM_FILE => "b0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -224,7 +229,8 @@ begin
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B1_LEN,
-        ROM_FILE => "b1.mem"
+        ROM_FILE => "b1.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -237,7 +243,8 @@ begin
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B2_LEN,
-        ROM_FILE => "b2.mem"
+        ROM_FILE => "b2.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -250,7 +257,8 @@ begin
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => C0_LEN,
-        ROM_FILE => "c0.mem"
+        ROM_FILE => "c0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -263,7 +271,8 @@ begin
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => C1_LEN,
-        ROM_FILE => "c1.mem"
+        ROM_FILE => "c1.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -296,6 +305,14 @@ begin
                 segment_I_v <= i_segment_I;
                 segment_M_v <= i_segment_M;
                 segment_O_v <= i_segment_O;
+                if segment_I.data_valid = '1' then
+                    segment_eta <= i_segment_I;
+                    im <= '0';
+                else
+                    segment_eta <= i_segment_M;
+                    im <= '1';
+                end if;
+
                 comboid_s  <= unsigned(segment_O.mdtid.chamber_ieta) &
                               unsigned(segment_M.mdtid.chamber_ieta) &
                               unsigned(segment_I.mdtid.chamber_ieta);

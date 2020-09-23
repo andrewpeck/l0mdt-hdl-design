@@ -36,54 +36,65 @@ def main():
                         help="Mag2 width",
                         default=10)
     parser.add_argument("--z_width", type=int, help="z width", default=18)
-    parser.add_argument("--mag2_shift",
-                        type=int,
-                        help="Mag2 shift",
-                        default=28)
+    parser.add_argument("--eta_shift", type=int, help="Eta shift", default=10)
 
     args = parser.parse_args()
 
     if not os.path.exists(args.output):
         os.mkdir(args.output)
 
-    reciprocal_rom_mem = open(args.output + '/reciprocalROM.mem', "w")
+    rec_sagitta_rom_mem = open(args.output + '/rec_sagitta.mem', "w")
+    rec_dbeta_rom_mem = open(args.output + '/rec_dbeta.mem', "w")
     sqrt_m_io_rom_mem = open(args.output + '/sqrt_m_io_ROM.mem', "w")
-    mag_rom_mem = open(args.output + '/mag_ROM.mem', "w")
-    halflog_rom_mem = open(args.output + '/halflog_ROM.mem', "w")
+    eta_BI_rom_mem = open(args.output + "/eta_BI.mem", "w")
+    eta_BM_rom_mem = open(args.output + "/eta_BM.mem", "w")
 
-    divider_width = 21
-    m_sagitta_width = 16
-    m_sagitta_range = 4.0
-    m_sagitta_multi = (2.0**m_sagitta_width / m_sagitta_range)
-    mag_width = 19
+    z_red_width = args.z_width - args.eta_shift
+    divider_sagitta = 12
+    divider_dbeta = 17
+    dbeta_len = 14
+    rec_sagitta_len = 10
 
-    for x in xrange(0, 2**16 - 1):
-        reciprocal = int(floor(2**divider_width / (x + 0.5)))
-        if x == 0:
-            reciprocal = int(floor((2**divider_width - 1) / (x + 1.)))
+    m_sagitta_len = 11
+    m_sagitta_multi = 2.0**10
 
-        sqrt_m_io = int(floor(sqrt(m_sagitta_multi**2 + x**2)))
+    BIL_SEC3_RHO = 4755.8234
+    BML_SEC3_RHO = 6898.3570
 
-        reciprocal_rom_mem.write("%04x\n" % reciprocal)
+    for beta in xrange(0, 2**dbeta_len - 1):
+        reciprocal = int(floor(2**divider_dbeta / (beta + 0.5)))
+        if beta == 0:
+            reciprocal = int(floor((2**divider_dbeta - 1) / (beta + 1.)))
+        rec_dbeta_rom_mem.write("%04x\n" % reciprocal)
+
+    for den_sagitta in xrange(0, 2**rec_sagitta_len - 1):
+        reciprocal = int(floor(2**divider_sagitta / (den_sagitta + 0.5)))
+        if den_sagitta == 0:
+            reciprocal = int(
+                floor((2**divider_sagitta - 1) / (den_sagitta + 1.)))
+        rec_sagitta_rom_mem.write("%04x\n" % reciprocal)
+
+    for m in xrange(0, 2**m_sagitta_len - 1):
+        sqrt_m_io = int(floor(sqrt(m_sagitta_multi**2 + m**2)))
         sqrt_m_io_rom_mem.write("%04x\n" % sqrt_m_io)
 
-    for x in xrange(0, 2**(args.mag2_width) - 1):
-        mag = int(sqrt(x * 2**(args.mag2_shift / 2)))
-        mag_rom_mem.write("%04x\n" % mag)
+    for z_digi in xrange(0, 2**(z_red_width) - 1):
+        z = z_digi * 2**(args.eta_shift) / args.z_mult
+        mag_BI = sqrt(z * z + BIL_SEC3_RHO * BIL_SEC3_RHO)
+        eta_BI = 0.5 * log((mag_BI + z) / (mag_BI - z))
+        eta_BI_digi = int(floor(eta_BI * args.eta_mult))
+        eta_BI_rom_mem.write("%04x\n" % eta_BI_digi)
 
-    # int(floor(0.5 * log((m_plus_z + 0.5) * pow(2, ETA_SHIFT_POS) / SEG_GPOS_MULTI) * MTC_ETA_MULTI));
-    for x in xrange(0, 2**(args.z_width - args.mag2_shift / 4)):
-        log_m = int(
-            floor(0.5 * log(
-                (x + 0.5) * 2**(args.mag2_shift / 4) / args.z_mult) *
-                  args.eta_mult))
-        # print("x: %d, log_m: %d" % (x, log_m))
-        halflog_rom_mem.write("%04x\n" % log_m)
+        mag_BM = sqrt(z * z + BML_SEC3_RHO * BML_SEC3_RHO)
+        eta_BM = 0.5 * log((mag_BM + z) / (mag_BM - z))
+        eta_BM_digi = int(floor(eta_BM * args.eta_mult))
+        eta_BM_rom_mem.write("%04x\n" % eta_BM_digi)
 
-    reciprocal_rom_mem.write("0000")
+    rec_sagitta_rom_mem.write("0000")
+    rec_dbeta_rom_mem.write("0000")
     sqrt_m_io_rom_mem.write("0000")
-    mag_rom_mem.write("0000")
-    halflog_rom_mem.write("0000")
+    eta_BI_rom_mem.write("0000")
+    eta_BM_rom_mem.write("0000")
 
 
 if __name__ == "__main__":

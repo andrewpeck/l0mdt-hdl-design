@@ -14,12 +14,7 @@ entity tdc_decoder is
     g_DECODER_SRC       : integer := 1;
     -- Per https://lpgbt.web.cern.ch/lpgbt/v0/ePorts.html#elink-groups
     -- the lpgbt elink orders bits MSB first at inputs and outputs
-    --
-    -- Per TDCV2_datasheet_20200310.pdf the TDC sends out data in the order
-    -- a --> b --> c --> d --> e --> i --> f --> g --> h --> j
-    -- where a is the least significant bit, so it is LSB first
-    -- need to reverse the LPGBT data to be LSB first
-    g_REVERSE_BIT_ORDER : integer := 1
+    g_REVERSE_BIT_ORDER : integer := 0
     );
   port(
 
@@ -88,8 +83,8 @@ architecture behavioral of tdc_decoder is
   signal tdc_word_state_err : std_logic;
   signal misaligned         : std_logic;
 
-  signal word_10b       : std_logic_vector (9 downto 0);
-  signal word_10b_valid : std_logic;
+  signal word_10b, word_10b_s0             : std_logic_vector (9 downto 0);
+  signal word_10b_valid, word_10b_valid_s0 : std_logic;
 
 
   -- 8b10b decoder signals
@@ -161,9 +156,19 @@ begin
       data_i       => aligned_data,
       data_i_valid => aligned_data_valid,
       err_o        => bitslip,
-      data_o       => word_10b,
-      data_o_valid => word_10b_valid
+      data_o       => word_10b_s0,
+      data_o_valid => word_10b_valid_s0
       );
+
+  -- pipeline register before 8b10b
+  process (clock) is
+  begin
+    if (rising_edge(clock)) then
+      word_10b <= word_10b_s0;
+      word_10b_valid <= word_10b_valid_s0;
+    end if;
+  end process;
+
 
   --------------------------------------------------------------------------------
   -- 8b10b decoder
@@ -272,8 +277,13 @@ begin
         AO       => word_8b_int(0)
         );
 
-    word_8b <= word_8b_int;
-    k_char  <= k_char_int;
+    process (clock) is
+    begin
+      if (rising_edge(clock)) then
+        word_8b <= word_8b_int;
+        k_char  <= k_char_int;
+      end if;
+    end process;
 
   end generate;
 

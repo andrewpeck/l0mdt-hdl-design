@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<node id="LSF">
+  <node id="RESET"           address="0x0" mask="0x1"    permission="w"/>
+  <node id="STATUS"          address="0x1" mask="0x1"    permission="r"/>
+  <node id="HBA_MAX_CLOCKS" address="0x1" mask="0x3FF0" permission="rw" parameters="default=128" description="add some description"/>
+</node>
