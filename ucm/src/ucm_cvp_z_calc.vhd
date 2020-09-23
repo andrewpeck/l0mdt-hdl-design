@@ -56,7 +56,7 @@ architecture beh of ucm_cvp_z_calc is
 
   -- signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
 
-  
+  constant resolution_change : integer := integer( (1000.0 * SLC_Z_RPC_MULT) / UCM2HPS_VEC_POS_MULT);
 
   
 begin
@@ -74,7 +74,11 @@ begin
         if i_data_valid = '1' then
 
 
-          o_vec_z_pos <= resize(unsigned((chamb_h - i_offset) / i_slope),UCM2HPS_VEC_POS_LEN);
+          o_vec_z_pos <= resize(
+              unsigned(
+                ((chamb_h - i_offset) / i_slope) * to_signed(resolution_change,15)
+              )
+            ,UCM2HPS_VEC_POS_LEN);
 
         else
 

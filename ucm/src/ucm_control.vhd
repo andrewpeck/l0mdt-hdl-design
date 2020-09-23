@@ -323,6 +323,8 @@ architecture beh of ucm_ctrl_pam is
 
   signal processing   : integer;
 
+  signal buff_pam_ctrl : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
+
 begin
 
   -- for heg_i in c_NUM_THREADS -1 downto 0 generate
@@ -343,6 +345,9 @@ begin
         -- o_pam2heg <= (others =>( (others => '0') , '0') );
         o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
       else
+
+        o_pam_ctrl <= buff_pam_ctrl;
+
         processed := 0;
 
         for ch_i in c_NUM_THREADS -1 downto 0 loop
@@ -352,7 +357,7 @@ begin
             o_cvp_ctrl(ch_i) <= '0';
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
-              o_pam_ctrl(ch_i).data_present <= '0';
+              buff_pam_ctrl(ch_i).data_present <= '0';
               processed := processed + 1;
             else
               ch_busy <= (others => '0');
@@ -365,8 +370,8 @@ begin
               
               if processed < to_integer(i_num_cand) then
                 o_cvp_ctrl(ch_i) <= '1';
-                o_pam_ctrl(ch_i).data_present <= '1';
-                o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
+                buff_pam_ctrl(ch_i).data_present <= '1';
+                buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 o_proc_info(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 o_proc_info(c_NUM_THREADS -1 - processed).processed <= '1';
                 ch_busy(ch_i) <= '1';

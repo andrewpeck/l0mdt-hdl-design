@@ -166,7 +166,7 @@ package body detector_param_pkg is
       r:= barrel_radius(1)(r_i);
       -- y:= to_signed((barrel_radius(1)(r_i) / SLC_Z_RPC_MULT),SLC_Z_RPC_LEN);
     end if;
-    r_c := integer(r / SLC_Z_RPC_MULT);
+    r_c := integer(r * SLC_Z_RPC_MULT);
     y := to_signed(r_c,SLC_Z_RPC_LEN);
     return y;
   end function get_barrel_radius;
