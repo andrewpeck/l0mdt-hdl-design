@@ -22,5 +22,4 @@ IP_repository/SpyBuffer/SpyMemory.v
 IP_repository/SpyBuffer/SpyPlayback.v 
 IP_repository/SpyBuffer/SpyBuffer.v
 lsf/src/lsf_spybuffer_wrapper.sv
-lsf/src/legendreEngine_top.sv
 lsf/top_lsf.vhd

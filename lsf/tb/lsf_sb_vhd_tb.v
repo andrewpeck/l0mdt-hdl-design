@@ -189,7 +189,7 @@ wire ap_rst_n;
    
 */ 
    
-    assign le_tb_output_i = (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output_vld)? `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_tb_output : le_tb_output_i;
+    assign le_tb_output_i = (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_tb_output_vld)? `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_tb_output : le_tb_output_i;
    
    assign mdt_hit_ap_ready = ~mdt_hit_af;
 //   assign roi_ap_ready     = (roi_count_we == -1) || (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.lsf_roi_re == 1) ; 
@@ -454,7 +454,7 @@ initial begin : read_file_process_hit_extraction_roi_V
 	  hit_extraction_roi_V_vld = 0;
 	  roi_count_we++;
 	  repeat(10) @ (posedge AESL_clock);
-	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_state == 0) //IDLE
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_state == 0) //IDLE
 	    $display("PRIYA TOKEN 2 = %s\n",token);
           read_token(fp, token);
 	  
@@ -475,7 +475,7 @@ end
 // The signal of port slcvecpos_Rho
    reg [SF2PTCALC_SEGPOS_LEN-1: 0] AESL_REG_hewindow_pos_ref = 0;
    assign hewindow_pos_ref = AESL_REG_hewindow_pos_ref;
-   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.hewindow_pos_ref = AESL_REG_hewindow_pos_ref;
+   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.hewindow_pos_ref = AESL_REG_hewindow_pos_ref;
    
 
 initial begin : read_file_process_hewindow_pos_ref
@@ -532,7 +532,7 @@ initial begin : read_file_process_hewindow_pos_ref
              $finish;
           end
 	 
-	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
 	    @(posedge AESL_clock);
           read_token(fp, token);
 	  
@@ -557,7 +557,7 @@ end
 // The signal of port slcvecpos_Rho
    reg [SF2PTCALC_SEGPOS_LEN-1: 0] AESL_REG_slcvec_pos_ref = 0;
    assign slcvec_pos_ref = AESL_REG_slcvec_pos_ref;
-   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.slcvec_pos_ref = AESL_REG_slcvec_pos_ref;
+   assign `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.slcvec_pos_ref = AESL_REG_slcvec_pos_ref;
    
 initial begin : read_file_process_slcvec_pos_ref
     integer fp;
@@ -613,7 +613,7 @@ initial begin : read_file_process_slcvec_pos_ref
              $finish;
           end
 	 
-	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_top_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
+	  wait(`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_results_vld == 1) //IDLE
 	    @(posedge AESL_clock);
           read_token(fp, token);
 	  

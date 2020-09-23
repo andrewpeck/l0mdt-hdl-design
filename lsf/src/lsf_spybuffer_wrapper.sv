@@ -18,7 +18,10 @@
 `include "l0mdt_buses_constants.svh"
 `endif
 
-module lsf_spybuffer_wrapper
+module lsf_spybuffer_wrapper #(
+			       parameter LSF_SB_MEM_WIDTH    = 6,			       
+			       parameter LSF_SB_EL_MEM_WIDTH = 4
+			       )
   (
    // main TP clock, nominally 200 MHz
    input wire 			   clock,
@@ -26,13 +29,27 @@ module lsf_spybuffer_wrapper
    input wire [HEG2SFHIT_LEN-1:0]  mdt_hit,
    input wire 			   mdt_hit_we,
    //output wire 			   mdt_hit_af,
-   input wire [HEG2SFSLC_LEN-1:0]    roi,
+   input wire [HEG2SFSLC_LEN-1:0]  roi,
    input wire 			   roi_we,
   // output wire 			   roi_af ,
    output reg [SF2PTCALC_LEN -1:0] lsf_output,
    //input 			   lsf_output_re,
   // output 			   lsf_output_empty,
-   input logic [9:0] 		   histogram_accumulation_count
+
+   //CTRL/Spy Interface
+   input logic [9:0] 		   histogram_accumulation_count,
+   input 			   sb_lsf_mdt_hits_freeze,
+  // input 			   sb_lsf_mdt_hits_playback,
+  // input 			   sb_lsf_mdt_hits_playback_we,
+  // input [HEG2SFSLC_LEN-1:0] 	   sb_lsf_mdt_hits_playback_wdata,
+   input 			   sb_lsf_mdt_hits_re,
+  // input 			   sb_lsf_mdt_hits_meta_re,
+   input [LSF_SB_MEM_WIDTH-1:0]    sb_lsf_mdt_hits_raddr,
+ //  input [LSF_SB_EL_MEM_WIDTH-1:0] sb_lsf_mdt_hits_meta_raddr,
+ //  input [LSF_SB_MEM_WIDTH-1:0]    sb_lsf_mdt_hits_waddr,
+ //  input [LSF_SB_EL_MEM_WIDTH-1:0] sb_lsf_mdt_hits_meta_waddr,
+   output [HEG2SFHIT_LEN-1:0] 	   sb_lsf_mdt_hits_rdata
+ //  output [LSF_SB_MEM_WIDTH-1:0]   sb_lsf_mdt_hits_meta_rdata
    );
    
    logic [HEG2SFSLC_LEN-1:0] 	       lsf_roi;
@@ -51,7 +68,8 @@ module lsf_spybuffer_wrapper
    
    
    SpyBuffer #(
-	       .DATA_WIDTH(HEG2SFSLC_LEN-1)
+	       .DATA_WIDTH(HEG2SFSLC_LEN-1),
+	       .SPY_MEM_WIDTH(LSF_SB_MEM_WIDTH)
 	       ) roi_buffer (
 			     .rclock(clock),
 			     .wclock(clock),
@@ -83,7 +101,8 @@ module lsf_spybuffer_wrapper
 
     SpyBuffer #(
 		.DATA_WIDTH(HEG2SFHIT_LEN-1),
-		.FC_FIFO_WIDTH(4)
+		.FC_FIFO_WIDTH(4),
+		.SPY_MEM_WIDTH(LSF_SB_MEM_WIDTH)
 	       ) mdt_hit_buffer (
 				 .rclock(clock),
 				 .wclock(clock),
@@ -98,33 +117,33 @@ module lsf_spybuffer_wrapper
 				 // The following should not be needed until one actually wants
 				 // to use the spy-buffer functionality, whereas for now we just
 				 // want to use the fifo functionality.
-				 .freeze(1'b0),
-				 .playback(2'b0),
-				 .playback_write_enable(0),
-				 .playback_write_data(0),
-				 .spy_read_enable(1'b0),
-				 .spy_meta_read_enable(1'b0),
-				 .spy_read_addr(1'b0),
-				 .spy_meta_read_addr(1'b0),
-				 .spy_write_addr(),
-				 .spy_meta_write_addr(),
-				 .spy_data(),
-				 .spy_meta_read_data()
+				 .freeze(sb_lsf_mdt_hits_freeze),
+				 .playback(sb_lsf_mdt_hits_playback),
+				 .playback_write_enable(sb_lsf_mdt_hits_playback_we),
+				 .playback_write_data(sb_lsf_mdt_hits_playback_wdata),
+				 .spy_read_enable(sb_lsf_mdt_hits_re),
+				 .spy_meta_read_enable(sb_lsf_mdt_hits_meta_re),
+				 .spy_read_addr(sb_lsf_mdt_hits_raddr),
+			    	 .spy_meta_read_addr(sb_lsf_mdt_hits_meta_raddr),
+				 .spy_write_addr(sb_lsf_mdt_hits_waddr),
+				 .spy_meta_write_addr(sb_lsf_mdt_hits_meta_waddr),
+				 .spy_data(sb_lsf_mdt_hits_rdata),
+				 .spy_meta_read_data(sb_lsf_mdt_hits_meta_rdata)
 				 );
    
    
-   legendreEngine_top legendreEngine_top_inst(
+   legendreEngine  legendreEngine_inst(
 					      .clk(clock),
 					      .rst(reset),
 					      .srst(reset),
-					      .mdt_hit_top(lsf_mdt_hit),
-					      .mdt_hit_top_re(lsf_mdt_hit_re),
-					      .mdt_hit_top_empty(lsf_mdt_hit_empty),
-					      .hit_extraction_roi_top(lsf_roi),
+					      .mdt_hit(lsf_mdt_hit),
+					      .mdt_hit_re(lsf_mdt_hit_re),
+					      .mdt_hit_empty(lsf_mdt_hit_empty),
+					      .hit_extraction_roi(lsf_roi),
 					      .hit_extraction_roi_re(lsf_roi_re),
 					      .hit_extraction_roi_empty(lsf_roi_empty),
 					      .histogram_accumulation_count(histogram_accumulation_count),
-					      .le_output_top(lsf),
+					      .le_output(lsf),
 					      .le_output_vld(lsf_we)
 					      /* 
 					       .le_tb_output(),
@@ -136,7 +155,9 @@ module lsf_spybuffer_wrapper
 
    SpyBuffer #(
 	       .DATA_WIDTH(SF2PTCALC_LEN-1),
-	       .PASSTHROUGH(1)
+	       .PASSTHROUGH(1),
+	       .SPY_MEM_WIDTH(LSF_SB_MEM_WIDTH),
+	       .EL_MEM_WIDTH(LSF_SB_EL_MEM_WIDTH)
 	       ) lsf_output_buffer (
 				    .rclock(clock),
 				    .wclock(clock),
