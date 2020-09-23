@@ -76,9 +76,7 @@ begin
 
   end generate;
 
-  Z_CALC_LOOP : for st_i in 0 to 3 generate
-    -- signal st_c : integer := 0;
-  begin
+  Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
       Z_CALC : entity ucm_lib.ucm_cvp_z_calc
       generic map(
@@ -94,7 +92,7 @@ begin
         i_slope       => slope,
         i_data_valid  => slope_dv,
         --
-        o_vec_z_pos   => ucm2hps_ar(st_i).vec_pos
+        o_vec_z_pos   => vec_pos_array(st_i)
       );
     end generate;
   end generate;

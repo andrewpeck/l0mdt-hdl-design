@@ -15,3 +15,4 @@ tar/tar_lib.src lib=tar_lib
 ptc_mpi/ptc_lib.src lib=ptc_lib
 upt/upt_lib.src lib=upt_lib
 mtc/mtc_lib.src lib=mtc_lib
+lsf/lsf_lib.src lib=lsf_lib

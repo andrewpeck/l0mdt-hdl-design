@@ -268,7 +268,7 @@ begin
           );
   end generate;
 
-    TF_GEN : if c_TF_ENABLED generate
+    TF_GEN : if c_PT_ENABLED generate
 
       ptcalc_inst : entity work.ptcalc
         port map (

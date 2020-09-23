@@ -43,7 +43,7 @@ entity ucm_cvp_z_calc is
     i_slope       : in signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;
     --
-    o_vec_z_pos   : out unsigned(UCM_Z_ROI_LEN-1 downto 0)
+    o_vec_z_pos   : out unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0)
     
   );
 end entity ucm_cvp_z_calc;
@@ -54,7 +54,9 @@ architecture beh of ucm_cvp_z_calc is
   
   signal chamb_h : signed (SLC_Z_RPC_LEN downto 0);
 
-  signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
+  -- signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
+
+  
 
   
 begin
@@ -72,7 +74,7 @@ begin
         if i_data_valid = '1' then
 
 
-          o_vec_z_pos <= resize(unsigned((chamb_h - i_offset) / i_slope),UCM_Z_ROI_LEN);
+          o_vec_z_pos <= resize(unsigned((chamb_h - i_offset) / i_slope),UCM2HPS_VEC_POS_LEN);
 
         else
 
