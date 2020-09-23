@@ -45,7 +45,7 @@ entity top_hps is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
 
     -- control
     ctrl              : in  H2S_HPS_CTRL_t;

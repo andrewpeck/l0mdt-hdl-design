@@ -34,7 +34,7 @@ entity top_mpl is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);

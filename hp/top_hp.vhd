@@ -34,10 +34,10 @@ entity top_hp is
     );
     Port(
       clk                 : in std_logic;    
-      rst            : in std_logic;
-      glob_en             : in std_logic;
+      rst                 : in std_logic;
+      glob_en             : in std_logic := '1';
       -- configuration
-      local_rst      : in std_logic;
+      local_rst           : in std_logic;
       local_en            : in std_logic;
 
       time_offset         : in unsigned(7 downto 0);

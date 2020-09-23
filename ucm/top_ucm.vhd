@@ -33,7 +33,7 @@ entity top_ucm is
   port (
     clk                     : in std_logic;
     rst                     : in std_logic;
-    glob_en                 : in std_logic;
+    glob_en                 : in std_logic := '1';
     -- configuration, control & Monitoring
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);

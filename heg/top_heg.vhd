@@ -36,7 +36,7 @@ entity top_heg is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
     -- configuration
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;

@@ -35,7 +35,7 @@ entity hit_processor is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
     -- configuration
     local_rst           : in std_logic;
     local_en            : in std_logic;
