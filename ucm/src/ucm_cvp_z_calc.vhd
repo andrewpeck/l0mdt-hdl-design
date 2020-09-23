@@ -52,9 +52,15 @@ architecture beh of ucm_cvp_z_calc is
 
   signal chamber_center_Y : b_chamber_center_radius_unsigned_au := get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS);
   
+  signal chamb_h : signed (SLC_Z_RPC_LEN downto 0);
+
+  signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
+
   
 begin
 
+
+  chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_mdtid.chamber_ieta))),SLC_Z_RPC_LEN +1));
   
   Z_CALC: process(clk)
   begin
@@ -62,6 +68,15 @@ begin
       if rst = '1' then
         
       else
+
+        if i_data_valid = '1' then
+
+
+          o_vec_z_pos <= resize(unsigned((chamb_h - i_offset) / i_slope),UCM_Z_ROI_LEN);
+
+        else
+
+        end if;
         
       end if;
     end if;

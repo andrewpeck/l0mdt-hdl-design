@@ -53,9 +53,9 @@ package detector_param_pkg is
     --     INN MID OUT EXT
      0 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
      1 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
-     2 => ( (4755.93,4755.93,4755.93,4755.93,4755.93,4755.93,0.0,0.0),
-            (6898.46,6898.46,6898.46,6898.46,6898.46,6898.46,0.0,0.0),
-            (9259.46,9259.46,9259.46,9259.46,9259.46,9259.46,0.0,0.0),
+     2 => ( (4949.0,4949.0,4949.0,4949.0,4949.0,4949.0,0.0,0.0),
+            (7139.0,7139.0,7139.0,7139.0,7139.0,7139.0,0.0,0.0),
+            (9500.0,9500.0,9500.0,9500.0,9500.0,9500.0,0.0,0.0),
             (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S3
      3 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S4
      4 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S5
@@ -177,7 +177,7 @@ package body detector_param_pkg is
     variable y : b_chamber_center_radius_unsigned_au;
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
     end loop;
     return y;
   end function get_b_chamber_center_radius;
@@ -188,7 +188,7 @@ package body detector_param_pkg is
   function get_b_chamber_origin( sector, station, chamber  : integer) return unsigned is
     variable y : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   begin
-    y := to_unsigned(integer(b_chamber_origin_radius(sector)(station)(chamber) * MDT_GLOBAL_AXI_MULT) , MDT_GLOBAL_AXI_LEN);
+    y := to_unsigned(integer(b_chamber_origin_radius(sector - 1)(station)(chamber) * MDT_GLOBAL_AXI_MULT) , MDT_GLOBAL_AXI_LEN);
     return y;
   end function get_b_chamber_origin;
   -------------------------------------------------------------------------
