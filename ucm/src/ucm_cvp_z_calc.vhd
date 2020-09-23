@@ -23,6 +23,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -37,6 +38,7 @@ entity ucm_cvp_z_calc is
     rst           : in std_logic;
     glob_en       : in std_logic;
     --
+    i_mdtid       : in vec_mdtid_rt;
     i_offset      : in signed(126 -1 downto 0);
     i_slope       : in signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;
@@ -47,8 +49,12 @@ entity ucm_cvp_z_calc is
 end entity ucm_cvp_z_calc;
 
 architecture beh of ucm_cvp_z_calc is
+
+  signal chamber_center_Y : b_chamber_center_radius_unsigned_au := get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS);
+  
   
 begin
+
   
   Z_CALC: process(clk)
   begin

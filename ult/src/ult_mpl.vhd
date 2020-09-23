@@ -46,14 +46,16 @@ entity pipeline is
 end entity pipeline;
 
 architecture beh of pipeline is
-  signal glob_en : std_logic := '1';
+  signal glob_en : std_logic;
 begin
+
+  glob_en <= '1';
   
   MPL_EN : if c_MPL_ENABLED = '1' generate
     MPL : entity mpl_lib.mpl
     port map(
       clk             => clock_and_control.clk,
-      rst         => clock_and_control.rst,
+      rst             => clock_and_control.rst,
       glob_en         => glob_en,
 
       i_uCM2pl_av     => i_uCM2pl_av,

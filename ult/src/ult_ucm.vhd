@@ -56,6 +56,8 @@ architecture beh of candidate_manager is
   signal glob_en : std_logic;
 begin
 
+  glob_en <= '1';
+
   UCM : if c_UCM_ENABLED = '1' generate
   
     UCM : entity ucm_lib.ucm

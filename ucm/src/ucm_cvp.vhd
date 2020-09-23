@@ -89,6 +89,7 @@ begin
         rst           => rst,
         glob_en       => glob_en,
         --
+        i_mdtid       => i_data_r.mdtid,
         i_offset      => offset,
         i_slope       => slope,
         i_data_valid  => slope_dv,

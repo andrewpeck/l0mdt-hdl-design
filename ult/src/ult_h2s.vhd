@@ -67,6 +67,8 @@ architecture beh of hits_to_segments is
   signal glob_en : std_logic;
 begin
 
+  glob_en <= '1';
+
   HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
     HPS : entity hps_lib.hps
     generic map(
