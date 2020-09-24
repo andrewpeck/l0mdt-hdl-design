@@ -189,10 +189,10 @@ package body gldl_l0mdt_textio_pkg is
 
     specific :=(
       b_reserved  => (others => '0'),
-      rpc3_posz   => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) ,
-      rpc2_posz   => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) ,
-      rpc1_posz   => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) ,
-      rpc0_posz   => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
+      rpc0_posz   => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) ,
+      rpc1_posz   => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) ,
+      rpc2_posz   => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) ,
+      rpc3_posz   => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
     );
 
     VALUE := (
