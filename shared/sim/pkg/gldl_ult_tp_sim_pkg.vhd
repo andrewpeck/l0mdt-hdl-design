@@ -99,12 +99,12 @@ package body gldl_ult_tp_sim_pkg is
     return y;
   end function vectorify;
   function vectorify(x: tar2hps_tb_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*36-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*36-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-36) := vectorify(x(i));
-      msb := msb - 36 -1;
+      y(msb downto msb-36+1) := vectorify(x(i));
+      msb := msb - 36;
     end loop l;
     return y;
   end function vectorify;
@@ -118,11 +118,11 @@ package body gldl_ult_tp_sim_pkg is
   end function structify;
   function structify(x: std_logic_vector) return tar2hps_tb_at is
     variable y :  tar2hps_tb_at;
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-36));
-      msb := msb - 36 -1;
+      y(i) := structify(x(msb downto msb-36+1));
+      msb := msb - 36;
     end loop l;
     return y;
   end function structify;
@@ -174,12 +174,12 @@ package body gldl_ult_tp_sim_pkg is
     return y;
   end function vectorify;
   function vectorify(x: slc_tb_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*193-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*193-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-193) := vectorify(x(i));
-      msb := msb - 193 -1;
+      y(msb downto msb-193+1) := vectorify(x(i));
+      msb := msb - 193;
     end loop l;
     return y;
   end function vectorify;
@@ -193,11 +193,11 @@ package body gldl_ult_tp_sim_pkg is
   end function structify;
   function structify(x: std_logic_vector) return slc_tb_at is
     variable y :  slc_tb_at;
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-193));
-      msb := msb - 193 -1;
+      y(i) := structify(x(msb downto msb-193+1));
+      msb := msb - 193;
     end loop l;
     return y;
   end function structify;
