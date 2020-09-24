@@ -145,6 +145,20 @@ begin
         if rst= '1' then
           rad_a <= (others => (others => '0'));
           rpc_a <= (others => (others => '0'));
+          dv_chain <= (others => '0');
+          int_slope <= (others => '0');
+          o_slope <= (others => '0');
+          int_offset <= (others => '0');
+          o_offset <= (others => '0');
+          e_z <= (others => '0');
+          e_y <= (others => '0');
+          sum_zy <= (others => '0');
+          sum_y <= (others => '0');
+          sum_z <= (others => '0');
+          sum_zz <= (others => '0');
+          sqr_sum_z <= (others => '0');
+          b_nom <= (others => '0');
+          b_den <= (others => '0');
         else
           if i_data_valid = '1' then
             -- coin type
@@ -276,21 +290,16 @@ begin
             dv_chain(1) <= '1';
           else
             dv_chain(1) <= '0';
-            -- sum_zy <= (others => '0');
-            -- sum_y <= (others => '0');
-            -- sum_z <= (others => '0');
-            -- sum_zz <= (others => '0');
-            -- sqr_sum_z <= (others => '0');
           end if;
 
           if dv_chain(1) = '1' then
             num_h(2) <= num_h(1);
+            --
             b_nom <= (num_h(1) * sum_zy) - (sum_y * sum_Z);
             b_den <= (num_h(1) * sum_zz) - sqr_sum_z;
+            --
             dv_chain(2) <= '1';
           else
-            -- b_nom <= (others => '0');
-            -- b_den <= (others => '0');
             dv_chain(2) <= '0';
           end if;
 
@@ -302,18 +311,16 @@ begin
             --
             dv_chain(3) <= '1';
           else
-            -- int_slope <= (others => '0');
             dv_chain(3) <= '0';
           end if;
 
           
           if dv_chain(3) = '1' then
-            -- o_slope <= resize(int_slope,UCM_MBAR_LEN);
             o_slope <= int_slope;
             o_offset <= (e_y * 1000) - (int_slope * e_z);
+            --
             dv_chain(4) <= '1';
           else
-            -- int_slope <= (others => '0');
             dv_chain(4) <= '0';
           end if;
 

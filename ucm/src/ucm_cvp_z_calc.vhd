@@ -68,7 +68,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        
+        o_vec_z_pos <= (others => '0');
       else
 
         if i_data_valid = '1' then

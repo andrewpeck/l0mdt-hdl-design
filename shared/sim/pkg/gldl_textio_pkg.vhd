@@ -136,20 +136,20 @@ package body gldl_l0mdt_textio_pkg is
 
 
   begin
-    READ(L,BCID        );
-    READ(L,ToA         );
-    READ(L,nTC         );
-    READ(L,TC_sent     );
-    READ(L,TC_id       );
-    READ(L,Eta         );
-    READ(L,Phi         );
-    READ(L,pT_thr      );
-    READ(L,Charge      );
-    READ(L,Coincidence );
-    READ(L,z_RPC0      );
-    READ(L,z_RPC1      );
-    READ(L,z_RPC2      );
-    READ(L,z_RPC3      );
+    READ( L , BCID );
+    READ( L , ToA );
+    READ( L , nTC );
+    READ( L , TC_sent );
+    READ( L , TC_id );
+    READ( L , Eta );
+    READ( L , Phi );
+    READ( L , pT_thr );
+    READ( L , Charge );
+    READ( L , Coincidence );
+    READ( L , z_RPC0 );
+    READ( L , z_RPC1 );
+    READ( L , z_RPC2 );
+    READ( L , z_RPC3 );
 
     if nTC > 3 then 
       tcoverflow := '1';
@@ -160,10 +160,10 @@ package body gldl_l0mdt_textio_pkg is
     header := (
       h_reserved => (others => '1'),
       tcoverflow => tcoverflow,
-      nmtc_sl    => to_unsigned(nTC        , SL_HEADER_NSLC_LEN),
+      nmtc_sl    => to_unsigned(nTC, SL_HEADER_NSLC_LEN),
       nmtc_mdt   => (others => '1'),
       nslc       => (others => '1'),
-      bcid       => to_unsigned(BCID       , SL_HEADER_BCID_LEN)
+      bcid       => to_unsigned(BCID, SL_HEADER_BCID_LEN)
     );
 
     trailer :=(
@@ -176,23 +176,23 @@ package body gldl_l0mdt_textio_pkg is
 
     common := (
       header      => header,
-      slcid       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN),
+      slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
       tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-      poseta      => to_signed(Eta          , SLC_COMMON_POSETA_LEN) ,
-      posphi      => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
+      poseta      => to_signed(Eta, SLC_COMMON_POSETA_LEN) ,
+      posphi      => to_unsigned(Phi, SLC_COMMON_POSPHI_LEN) , 
       sl_pt       => ( others => '0'),
-      sl_ptthresh => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
-      sl_charge   => std_logic(to_unsigned(Charge     ,1)(0)), 
+      sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
+      sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
       cointype    => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)), 
       trailer     => trailer
     );
 
     specific :=(
       b_reserved  => (others => '0'),
-      rpc0_posz   => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) ,
-      rpc1_posz   => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) ,
-      rpc2_posz   => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) ,
-      rpc3_posz   => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
+      rpc0_posz   => to_signed(integer(real(z_RPC0) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC0_POSZ_LEN) ,
+      rpc1_posz   => to_signed(integer(real(z_RPC1) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC1_POSZ_LEN) ,
+      rpc2_posz   => to_signed(integer(real(z_RPC2) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC2_POSZ_LEN) ,
+      rpc3_posz   => to_signed(integer(real(z_RPC3) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC3_POSZ_LEN)
     );
 
     VALUE := (
