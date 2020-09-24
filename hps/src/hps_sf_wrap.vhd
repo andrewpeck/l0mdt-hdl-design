@@ -84,7 +84,7 @@ architecture beh of hps_sf_wrap is
   signal slc_roi        : std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
   signal mdt_hit        : std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
   signal lsf            : std_logic_vector(SF2PTCALC_LEN-1 downto 0);
-  signal hba_max_clocks : std_logic_vector(9 downto 0);
+ -- signal hba_max_clocks : std_logic_vector(9 downto 0);
  
 
 begin
@@ -168,7 +168,12 @@ begin
           slc_roi         => i_slc_data,
           mdt_hit         => i_mdt_data,
           lsf             => sf_data_v,
-          hba_max_clocks  => lsf_ctrl.hba_max_clocks
+          hba_max_clocks  => lsf_ctrl.hba_max_clocks,
+          --SpyBuffer 
+          sb_lsf_mdt_hits_freeze        => lsf_ctrl.sb_lsf_mdt_hits_freeze,
+          sb_lsf_mdt_hits_re            => lsf_ctrl.sb_lsf_mdt_hits_re,
+          sb_lsf_mdt_hits_raddr         => lsf_ctrl.sb_lsf_mdt_hits_raddr,
+          sb_lsf_mdt_hits_rdata         => lsf_mon.sb_lsf_mdt_hits_rdata 
           );
 
     end generate;
