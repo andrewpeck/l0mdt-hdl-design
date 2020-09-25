@@ -78,19 +78,19 @@ begin
 
   end generate;
 
-  -- PL : entity shared_lib.std_pipeline
-  -- generic map(
-  --   num_delays  => 5,
-  --   num_bits    => chamber_ieta'length
-  -- )
-  -- port map(
-  --   clk         => clk,
-  --   rst         => rst,
-  --   glob_en     => glob_en,
-  --   --
-  --   i_data      => i_data_r.chamb_ieta,
-  --   o_data      => chamber_ieta
-  -- );
+  PL : entity shared_lib.std_pipeline
+  generic map(
+    num_delays  => 5,
+    num_bits    => chamber_ieta'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    glob_en     => glob_en,
+    --
+    i_data      => vectorify(i_data_r.chamb_ieta),
+    o_data      => chamber_ieta
+  );
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
@@ -103,7 +103,7 @@ begin
         rst           => rst,
         glob_en       => glob_en,
         --
-        i_mdtid       => i_data_r.mdtid,
+        i_chamb_ieta  => structify(chamber_ieta)(st_i),
         i_offset      => offset,
         i_slope       => slope,
         i_data_valid  => slope_dv,

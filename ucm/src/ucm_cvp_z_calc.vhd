@@ -38,7 +38,7 @@ entity ucm_cvp_z_calc is
     rst           : in std_logic;
     glob_en       : in std_logic;
     --
-    i_mdtid       : in vec_mdtid_rt;
+    i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     i_offset      : in signed(126 -1 downto 0);
     i_slope       : in signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;
@@ -62,7 +62,7 @@ architecture beh of ucm_cvp_z_calc is
 begin
 
 
-  chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_mdtid.chamber_ieta))),SLC_Z_RPC_LEN +1));
+  chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))),SLC_Z_RPC_LEN +1));
   
   Z_CALC: process(clk)
   begin
