@@ -49,6 +49,8 @@ architecture beh of ucm_cvp is
   signal i_data_r     : ucm_cde_rt;
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
+  signal chamber_ieta : std_logic_vector(15 downto 0);
+
   signal offset       : signed(126 -1 downto 0);
   signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
   signal slope_dv     : std_logic;
@@ -75,6 +77,20 @@ begin
     );
 
   end generate;
+
+  -- PL : entity shared_lib.std_pipeline
+  -- generic map(
+  --   num_delays  => 5,
+  --   num_bits    => chamber_ieta'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => rst,
+  --   glob_en     => glob_en,
+  --   --
+  --   i_data      => i_data_r.chamb_ieta,
+  --   o_data      => chamber_ieta
+  -- );
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
@@ -160,3 +176,60 @@ begin
 
 
 end beh;
+
+
+
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: slc vector processor
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
+library ieee, shared_lib;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+ 
+library ucm_lib;
+use ucm_lib.ucm_pkg.all;
+
+entity ucm_cvp_chamber_id is
+  port (
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic;
+    --
+    i_chamber_ieta      : in std_logic;
+    --
+    o_mdtid             : in ucm_cde_rvt
+  );
+end entity ucm_cvp_chamber_id;
+
+architecture beh of ucm_cvp_chamber_id is
+  
+begin
+
+  ID_CALC: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        
+      else
+        
+      end if;
+    end if;
+  end process ID_CALC;
+  
+  
+  
+end architecture beh;

@@ -107,10 +107,10 @@ package detector_param_pkg is
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
   type b_chamber_z_origin_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  type b_chamber_z_origin is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
-  type b_chamber_z_origin_station is array (0 to 3) of b_chamber_z_origin;
-  type b_chamber_z_origin_chamber is array ( 0 to 15) of b_chamber_z_origin_station;
-  constant b_chamber_z_origin_detector : b_chamber_z_origin_chamber :=(
+  type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
+  type b_chamber_z_origin_detector_at is array ( 0 to 15) of b_chamber_z_origin_station_at;
+  constant b_chamber_z_origin_detector : b_chamber_z_origin_detector_at :=(
     --     INN MID OUT EXT
      0 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
      1 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
@@ -137,10 +137,35 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
+  type b_chamber_type_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
+  type b_chamber_type_station_at is array (0 to 12) of b_chamber_type_at;
+  type b_chamber_type_detector_at is array (0 to 12) of b_chamber_type_station_at;
+  constant b_chamber_type_detector : b_chamber_type_detector_at :=(
+    0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S1
+    1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S2
+    2 => ((1,1,1,1,1,1,0,0),
+          (3,3,3,3,3,3,0,0),
+          (5,5,5,5,5,5,0,0),
+          (0,0,0,0,0,0,0.0)), -- S3
+    3 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S4
+    4 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S5
+    5 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S6
+    6 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S7
+    7 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S8
+    8 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S9
+    9 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S10
+   10 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S11
+   11 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S12
+   12 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S13
+   13 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S14
+   14 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S15
+   15 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)) -- S16
+ );
   function get_b_chamber_type( sector, station, chamber_ieta  : integer) return integer;
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
+  type b_chamber_z_origin_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_layer_dist_tubes is array (0 to 7) of integer;
   type b_layer_dist_types is array (0 to 12) of b_layer_dist_tubes;
   constant rom_b_layer_height : b_layer_dist_types :=(
