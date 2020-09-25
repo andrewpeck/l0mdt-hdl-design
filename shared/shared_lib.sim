@@ -1,0 +1,16 @@
+#---------------------------------
+# Simulation packages
+#---------------------------------
+shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
+shared/sim/pkg/gldl_textio_pkg.vhd
+
+#---------------------------------
+# Simulation files
+#---------------------------------
+
+#---------------------------------
+# Simulation input vectors
+#---------------------------------
+
+shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt
+shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt
