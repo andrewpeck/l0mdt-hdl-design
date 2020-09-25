@@ -49,7 +49,8 @@ architecture beh of ucm_cvp is
   signal i_data_r     : ucm_cde_rt;
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
-  signal chamber_ieta : std_logic_vector(15 downto 0);
+  signal chamber_ieta_v : std_logic_vector(15 downto 0);
+  signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
 
   signal offset       : signed(126 -1 downto 0);
   signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
@@ -81,7 +82,7 @@ begin
   PL : entity shared_lib.std_pipeline
   generic map(
     num_delays  => 5,
-    num_bits    => chamber_ieta'length
+    num_bits    => chamber_ieta_v'length
   )
   port map(
     clk         => clk,
@@ -89,8 +90,10 @@ begin
     glob_en     => glob_en,
     --
     i_data      => vectorify(i_data_r.chamb_ieta),
-    o_data      => chamber_ieta
+    o_data      => chamber_ieta_v
   );
+
+  chamber_ieta_r <= structify(chamber_ieta_v);
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
@@ -103,7 +106,7 @@ begin
         rst           => rst,
         glob_en       => glob_en,
         --
-        i_chamb_ieta  => structify(chamber_ieta)(st_i),
+        i_chamb_ieta  => chamber_ieta_r(st_i),
         i_offset      => offset,
         i_slope       => slope,
         i_data_valid  => slope_dv,
