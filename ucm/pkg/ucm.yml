@@ -35,8 +35,14 @@ HDL_Types:
 
 - chamb_ieta_rpc : [type : unsigned , length : 4]
 
+<<<<<<< HEAD
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc, dprint: on]
 # - chamb_ieta_rpc_bus : [array : 4 , type : unsigned, length: 4]
+||||||| merged common ancestors
+- chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
+=======
+- chamb_ieta_rpc_bus : [array : 4 , type : unsigned , length : 4]
+>>>>>>> ult_tb_tp_dev
 
 - ucm_cde:
   - muid        : [type : slc_muid]
