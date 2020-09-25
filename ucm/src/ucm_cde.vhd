@@ -86,6 +86,25 @@ begin
           o_cde_data_r.data_valid   <= i_slc_data_r.data_valid;
 
           for z_i in 3 downto 0 loop
+            if rpc_z_a(z_i) < chamber_z_org_a(z_i)(0) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(0,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(1) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(1,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(2) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(2,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(3) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(3,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(4) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(4,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(5) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(5,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(6) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(6,4);
+            elsif rpc_z_a(z_i) < chamber_z_org_a(z_i)(7) then
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(7,4);
+            else
+              o_cde_data_r.chamb_ieta(z_i) <= to_unsigned(8,4);
+            end if;
 
           end loop;
 
