@@ -138,15 +138,15 @@ package detector_param_pkg is
   -- Chamber type from 
   -------------------------------------------------------------------------
   type b_chamber_type_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
-  type b_chamber_type_station_at is array (0 to 12) of b_chamber_type_at;
-  type b_chamber_type_detector_at is array (0 to 12) of b_chamber_type_station_at;
+  type b_chamber_type_station_at is array (0 to 3) of b_chamber_type_ait;
+  type b_chamber_type_detector_at is array (0 to 15) of b_chamber_type_station_at;
   constant b_chamber_type_detector : b_chamber_type_detector_at :=(
     0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S1
     1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S2
     2 => ((1,1,1,1,1,1,0,0),
           (3,3,3,3,3,3,0,0),
           (5,5,5,5,5,5,0,0),
-          (0,0,0,0,0,0,0.0)), -- S3
+          (0,0,0,0,0,0,0,0)), -- S3
     3 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S4
     4 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S5
     5 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S6
@@ -165,7 +165,7 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
-  type b_chamber_z_origin_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  type b_layer_dist_tubes_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_layer_dist_tubes is array (0 to 7) of integer;
   type b_layer_dist_types is array (0 to 12) of b_layer_dist_tubes;
   constant rom_b_layer_height : b_layer_dist_types :=(
