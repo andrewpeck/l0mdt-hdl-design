@@ -137,9 +137,9 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
-  type b_chamber_type_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
-  type b_chamber_type_station_at is array (0 to 3) of b_chamber_type_ait;
-  type b_chamber_type_detector_at is array (0 to 15) of b_chamber_type_station_at;
+  type b_chamber_type_station_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
+  type b_chamber_type_sector_at is array (0 to 3) of b_chamber_type_station_ait;
+  type b_chamber_type_detector_at is array (0 to 15) of b_chamber_type_sector_at;
   constant b_chamber_type_detector : b_chamber_type_detector_at :=(
     0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S1
     1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S2
@@ -161,7 +161,7 @@ package detector_param_pkg is
    14 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S15
    15 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)) -- S16
  );
-  function get_b_chamber_type( sector, station, chamber_ieta  : integer) return integer;
+  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
@@ -260,12 +260,13 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
-  function get_b_chamber_type( sector, station, chamber_ieta : integer) return integer is
-    variable y : integer;
+  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
+    variable y : b_chamber_type_sector_at;
   begin
+    y := b_chamber_type_detector(sector);
 
     return y;
-  end function get_b_chamber_type;
+  end function;
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------

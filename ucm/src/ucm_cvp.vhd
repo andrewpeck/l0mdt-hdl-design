@@ -181,7 +181,7 @@ end beh;
 
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor
+--  Module: slc vector processor, chamber type extractor
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -199,6 +199,8 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+
+use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -209,13 +211,16 @@ entity ucm_cvp_chamber_id is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_chamber_ieta      : in std_logic;
+    i_station           : in unsigned(3 downto 0);
+    i_chamber_ieta      : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     --
-    o_mdtid             : in ucm_cde_rvt
+    o_mdtid             : out vec_mdtid_rt
   );
 end entity ucm_cvp_chamber_id;
 
 architecture beh of ucm_cvp_chamber_id is
+
+  signal mem : b_chamber_type_sector_at := get_b_chamber_type_sector(c_SECTOR_ID);
   
 begin
 
@@ -225,6 +230,9 @@ begin
       if rst = '1' then
         
       else
+
+        o_mdtid.chamber_ieta <= i_chamber_ieta;
+        o_mdtid.chamber_id <= to_unsigned(mem(to_integer(i_station))(to_integer(i_chamber_ieta)),VEC_MDTID_CHAMBER_ID_LEN);
         
       end if;
     end if;

@@ -28,6 +28,7 @@ use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
+use ucm_lib.ucm_function_pkg.all;
 
 entity ucm_cde is
   port (
@@ -49,13 +50,13 @@ architecture beh of ucm_cde is
 
   signal barrel_r : slc_barrel_rt;
 
-  type chamb_z_org_at is array ( 3 downto 0) of b_chamber_z_origin_unsigned_au;
-  signal chamber_z_org_a : chamb_z_org_at := (
-    get_b_chamber_origin_z(c_SECTOR_ID,3),
-    get_b_chamber_origin_z(c_SECTOR_ID,2),
-    get_b_chamber_origin_z(c_SECTOR_ID,1),
-    get_b_chamber_origin_z(c_SECTOR_ID,0)
-  );
+  -- type chamb_z_org_at is array ( 3 downto 0) of b_chamber_z_origin_unsigned_au;
+  -- signal chamber_z_org_a : chamb_z_org_at := (
+  --   get_b_chamber_origin_z(c_SECTOR_ID,3),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,2),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,1),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,0)
+  -- );
 
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
@@ -96,91 +97,95 @@ begin
             -- INN
             ch_i := 0;
             rpc_i := 0;
-            if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
-            else
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
-            end if;
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,rpc_z_a(rpc_i));
+            -- if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
+            -- else
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
+            -- end if;
             -- MID 1
             ch_i := 1;
             rpc_i := 1;
-            if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
-            else
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
-            end if;
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,rpc_z_a(rpc_i));
+            -- if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
+            -- else
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
+            -- end if;
             -- MID 2
             ch_i := 1;
             rpc_i := 2;
-            if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
-            else
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
-            end if;
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,rpc_z_a(rpc_i));
+            -- if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
+            -- else
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
+            -- end if;
             -- OUT
             ch_i := 2;
             rpc_i := 3;
-            if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
-            elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
-            else
-              o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
-            end if;
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,rpc_z_a(rpc_i));
+            -- if rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(0) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(0,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(1) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(1,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(2) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(2,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(3) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(3,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(4) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(4,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(5) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(5,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(6) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(6,4);
+            -- elsif rpc_z_a(rpc_i) < chamber_z_org_a(ch_i)(7) then
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(7,4);
+            -- else
+            --   o_cde_data_r.chamb_ieta(rpc_i) <= to_unsigned(8,4);
+            -- end if;
 
             -- end loop;
 
