@@ -72,19 +72,14 @@ begin
       else
 
         if i_data_valid = '1' then
-
-
           o_vec_z_pos <= resize(
               unsigned(
-                ((chamb_h - i_offset) / i_slope) * to_signed(resolution_change,15)
+                ((chamb_h - i_offset) * to_signed(resolution_change,15)) / i_slope
               )
             ,UCM2HPS_VEC_POS_LEN);
-
         else
           o_vec_z_pos <= (others => '0');
-
         end if;
-        
       end if;
     end if;
   end process Z_CALC;
