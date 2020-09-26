@@ -81,6 +81,7 @@ begin
             ,UCM2HPS_VEC_POS_LEN);
 
         else
+          o_vec_z_pos <= (others => '0');
 
         end if;
         
