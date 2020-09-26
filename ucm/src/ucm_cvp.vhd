@@ -22,6 +22,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -148,10 +149,20 @@ begin
             -- if i_data_r.data_valid = '1' then
               for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
                 if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-                  ucm2hps_ar(hps_i).muid          <= i_data_r.muid;
-                  -- ucm2hps_ar(hps_i).mdtseg_dest   <= i_data_r.
-                  ucm2hps_ar(hps_i).mdtid.chamber_ieta <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)));
-                  -- ucm2hps_ar(hps_i).vec_pos       <=
+                  ucm2hps_ar(hps_i).muid                <= i_data_r.muid;
+                  ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                  ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)));
+                  -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= to_unsigned(get_b_chamber_type(
+                  --   c_SECTOR_ID,
+                  --   hps_i,
+                  --   to_integer(get_chamber_ieta(
+                  --     c_SECTOR_ID,
+                  --     hps_i,
+                  --     to_integer(vec_pos_array(hps_i))
+                  --     ))
+                  --   )
+                  -- ,VEC_MDTID_CHAMBER_ID_LEN);
+                  -- ucm2hps_ar(hps_i).vec_pos       <= 
                   -- ucm2hps_ar(hps_i).vec_ang       <=
                   -- ucm2hps_ar(hps_i).hewindow_pos  <=
 

@@ -71,7 +71,7 @@ architecture beh of ucm_cvp_b_slope is
   signal dv_chain   : std_logic_vector(7 downto 0);
 
   type num_at is array ( 0 to 5) of integer;
-  signal num_h , num_hh : num_at;
+  signal num_h : num_at;
 
   -- signal slope_mult : signal()
 
@@ -159,7 +159,12 @@ begin
           sqr_sum_z <= (others => '0');
           b_nom <= (others => '0');
           b_den <= (others => '0');
+          num_h <= (others => 0);
         else
+
+          dv_chain <= dv_chain(7 downto 1) & i_data_valid;
+
+
           if i_data_valid = '1' then
             -- coin type
             case coin is
@@ -242,12 +247,15 @@ begin
               when others => 
             end case;
 
-            dv_chain(0) <= '1';
+            -- dv_chain(0) <= '1';
           else
-            dv_chain(0) <= '0';
+            rad_a <= (others => (others => '0'));
+            rpc_a <= (others => (others => '0'));
+            num_h(0) <= 0;
+            -- dv_chain(0) <= '0';
           end if;
 
-          if dv_chain(0) = '1' then
+          -- if dv_chain(0) = '1' then
             num_h(1) <= num_h(0);
             if num_h(0) = 2 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
@@ -287,21 +295,21 @@ begin
               sqr_sum_z <=  (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2)) * 
                             (resize(rpc_a(0),SLC_Z_RPC_LEN +2) + resize(rpc_a(1),SLC_Z_RPC_LEN +2) + resize(rpc_a(2),SLC_Z_RPC_LEN +2) + resize(rpc_a(3),SLC_Z_RPC_LEN +2));
             end if;
-            dv_chain(1) <= '1';
-          else
-            dv_chain(1) <= '0';
-          end if;
+            -- dv_chain(1) <= '1';
+          -- else
+            -- dv_chain(1) <= '0';
+          -- end if;
 
-          if dv_chain(1) = '1' then
+          -- if dv_chain(1) = '1' then
             num_h(2) <= num_h(1);
             --
             b_nom <= (num_h(1) * sum_zy) - (sum_y * sum_Z);
             b_den <= (num_h(1) * sum_zz) - sqr_sum_z;
             --
-            dv_chain(2) <= '1';
-          else
-            dv_chain(2) <= '0';
-          end if;
+            -- dv_chain(2) <= '1';
+          -- else
+            -- dv_chain(2) <= '0';
+          -- end if;
 
           if dv_chain(2) = '1' then
             int_slope <= (b_nom * 1000)/b_den;
@@ -309,9 +317,11 @@ begin
             e_y <= sum_y / num_h(2);
             e_z <= sum_Z / num_h(2);
             --
-            dv_chain(3) <= '1';
+            -- dv_chain(3) <= '1';
           else
-            dv_chain(3) <= '0';
+            e_y <= (others => '0');
+            e_z <= (others => '0');
+            -- dv_chain(3) <= '0';
           end if;
 
           
@@ -321,6 +331,8 @@ begin
             --
             dv_chain(4) <= '1';
           else
+            o_slope <= (others => '0');
+            o_offset <= (others => '0');
             dv_chain(4) <= '0';
           end if;
 

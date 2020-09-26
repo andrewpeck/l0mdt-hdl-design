@@ -54,13 +54,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="115713738fs"></ZoomStartTime>
-      <ZoomEndTime time="115774889fs"></ZoomEndTime>
-      <Cursor1Time time="115742638fs"></Cursor1Time>
+      <ZoomStartTime time="7877262fs"></ZoomStartTime>
+      <ZoomEndTime time="8577263fs"></ZoomEndTime>
+      <Cursor1Time time="11397262fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="257"></NameColumnWidth>
-      <ValueColumnWidth column_width="87"></ValueColumnWidth>
+      <ValueColumnWidth column_width="83"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="10" />
    <wave_markers>
@@ -245,48 +245,6 @@
          <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          <obj_property name="isExpanded"></obj_property>
       </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a">
-         <obj_property name="ElementShortName">chamber_z_org_a[3:0][0:7][11:0]</obj_property>
-         <obj_property name="ObjectShortName">chamber_z_org_a[3:0][0:7][11:0]</obj_property>
-         <obj_property name="isExpanded"></obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[3]">
-            <obj_property name="ElementShortName">[3][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[3][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[2]">
-            <obj_property name="ElementShortName">[2][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[2][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[1]">
-            <obj_property name="ElementShortName">[1][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[1][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[0]">
-            <obj_property name="ElementShortName">[0][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[0][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[3]">
-            <obj_property name="ElementShortName">[3][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[3][0:7][11:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[2]">
-            <obj_property name="ElementShortName">[2][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[2][0:7][11:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[1]">
-            <obj_property name="ElementShortName">[1][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[1][0:7][11:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/chamber_z_org_a[0]">
-            <obj_property name="ElementShortName">[0][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[0][0:7][11:0]</obj_property>
-         </wvobject>
-      </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/rpc_z_a">
          <obj_property name="ElementShortName">rpc_z_a[3:0][11:0]</obj_property>
          <obj_property name="ObjectShortName">rpc_z_a[3:0][11:0]</obj_property>
@@ -340,10 +298,32 @@
          <obj_property name="ElementShortName">vec_pos_array[0:3][13:0]</obj_property>
          <obj_property name="ObjectShortName">vec_pos_array[0:3][13:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/vec_pos_array[0]">
+            <obj_property name="ElementShortName">[0][13:0]</obj_property>
+            <obj_property name="ObjectShortName">[0][13:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/vec_pos_array[1]">
+            <obj_property name="ElementShortName">[1][13:0]</obj_property>
+            <obj_property name="ObjectShortName">[1][13:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/vec_pos_array[2]">
+            <obj_property name="ElementShortName">[2][13:0]</obj_property>
+            <obj_property name="ObjectShortName">[2][13:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/vec_pos_array[3]">
+            <obj_property name="ElementShortName">[3][13:0]</obj_property>
+            <obj_property name="ObjectShortName">[3][13:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group270">
          <obj_property name="label">slope_calc</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/b_slope/SLOPE_CALC/clk">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -480,6 +460,7 @@
       <wvobject type="group" fp_name="group614">
          <obj_property name="label">Z_CALC_2</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/\Z_CALC_LOOP(2)\/z_calc_if/Z_CALC/clk">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -536,7 +517,6 @@
    <wvobject type="group" fp_name="group216">
       <obj_property name="label">ucm_cde_0</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/clk">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -603,6 +583,46 @@
                <obj_property name="CustomSignalColor">#FF00FF</obj_property>
                <obj_property name="UseCustomSignalColor">true</obj_property>
             </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.chamb_ieta[3]">
+               <obj_property name="ElementShortName">[3][3:0]</obj_property>
+               <obj_property name="ObjectShortName">[3][3:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.chamb_ieta[2]">
+               <obj_property name="ElementShortName">[2][3:0]</obj_property>
+               <obj_property name="ObjectShortName">[2][3:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.chamb_ieta[1]">
+               <obj_property name="ElementShortName">[1][3:0]</obj_property>
+               <obj_property name="ObjectShortName">[1][3:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.chamb_ieta[0]">
+               <obj_property name="ElementShortName">[0][3:0]</obj_property>
+               <obj_property name="ObjectShortName">[0][3:0]</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.cointype">
+            <obj_property name="ElementShortName">.cointype[2:0]</obj_property>
+            <obj_property name="ObjectShortName">.cointype[2:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.specific">
+            <obj_property name="ElementShortName">.specific[84:0]</obj_property>
+            <obj_property name="ObjectShortName">.specific[84:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.data_valid">
+            <obj_property name="ElementShortName">.data_valid</obj_property>
+            <obj_property name="ObjectShortName">.data_valid</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.muid">
+            <obj_property name="ElementShortName">.muid</obj_property>
+            <obj_property name="ObjectShortName">.muid</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.mdtid">
+            <obj_property name="ElementShortName">.mdtid</obj_property>
+            <obj_property name="ObjectShortName">.mdtid</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.chamb_ieta">
+            <obj_property name="ElementShortName">.chamb_ieta[3:0][3:0]</obj_property>
+            <obj_property name="ObjectShortName">.chamb_ieta[3:0][3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_r.cointype">
             <obj_property name="ElementShortName">.cointype[2:0]</obj_property>
@@ -647,31 +667,25 @@
             <obj_property name="ObjectShortName">.rpc0_posz[11:0]</obj_property>
             <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
          </wvobject>
-      </wvobject>
-      <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/chamber_z_org_a">
-         <obj_property name="ElementShortName">chamber_z_org_a[3:0][0:7][11:0]</obj_property>
-         <obj_property name="ObjectShortName">chamber_z_org_a[3:0][0:7][11:0]</obj_property>
-         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-         <obj_property name="isExpanded"></obj_property>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/chamber_z_org_a[3]">
-            <obj_property name="ElementShortName">[3][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[3][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/barrel_r.b_reserved">
+            <obj_property name="ElementShortName">.b_reserved[36:0]</obj_property>
+            <obj_property name="ObjectShortName">.b_reserved[36:0]</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/chamber_z_org_a[2]">
-            <obj_property name="ElementShortName">[2][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[2][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/barrel_r.rpc3_posz">
+            <obj_property name="ElementShortName">.rpc3_posz[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.rpc3_posz[11:0]</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/chamber_z_org_a[1]">
-            <obj_property name="ElementShortName">[1][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[1][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/barrel_r.rpc2_posz">
+            <obj_property name="ElementShortName">.rpc2_posz[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.rpc2_posz[11:0]</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/chamber_z_org_a[0]">
-            <obj_property name="ElementShortName">[0][0:7][11:0]</obj_property>
-            <obj_property name="ObjectShortName">[0][0:7][11:0]</obj_property>
-            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/barrel_r.rpc1_posz">
+            <obj_property name="ElementShortName">.rpc1_posz[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.rpc1_posz[11:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/barrel_r.rpc0_posz">
+            <obj_property name="ElementShortName">.rpc0_posz[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.rpc0_posz[11:0]</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/rpc_z_a">
@@ -698,6 +712,22 @@
             <obj_property name="ElementShortName">[0][11:0]</obj_property>
             <obj_property name="ObjectShortName">[0][11:0]</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/rpc_z_a[3]">
+            <obj_property name="ElementShortName">[3][11:0]</obj_property>
+            <obj_property name="ObjectShortName">[3][11:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/rpc_z_a[2]">
+            <obj_property name="ElementShortName">[2][11:0]</obj_property>
+            <obj_property name="ObjectShortName">[2][11:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/rpc_z_a[1]">
+            <obj_property name="ElementShortName">[1][11:0]</obj_property>
+            <obj_property name="ObjectShortName">[1][11:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/ucm_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/rpc_z_a[0]">
+            <obj_property name="ElementShortName">[0][11:0]</obj_property>
+            <obj_property name="ObjectShortName">[0][11:0]</obj_property>
          </wvobject>
       </wvobject>
    </wvobject>

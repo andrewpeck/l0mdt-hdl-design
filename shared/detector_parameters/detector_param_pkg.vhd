@@ -163,7 +163,9 @@ package detector_param_pkg is
    14 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S15
    15 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)) -- S16
  );
-  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
+ function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
+ function get_b_chamber_type( sector,station,ieta : integer) return integer;
+  
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
@@ -277,6 +279,14 @@ package body detector_param_pkg is
 
     return y;
   end function;
+
+  function get_b_chamber_type( sector,station,ieta : integer) return integer is
+    variable y : integer;
+  begin
+    y := b_chamber_type_detector(sector)(station)(ieta);
+    return y;
+  end function;
+
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
