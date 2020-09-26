@@ -106,7 +106,8 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  type b_chamber_z_origin_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
   type b_chamber_z_origin_detector_at is array ( 0 to 15) of b_chamber_z_origin_station_at;
@@ -133,7 +134,8 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_origin_z( sector, station : integer) return b_chamber_z_origin_unsigned_au;
+  function get_b_chamber_origin_z_u( sector, station : integer) return b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_i( sector, station : integer) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
@@ -249,11 +251,19 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_origin_z( sector, station: integer) return b_chamber_z_origin_unsigned_au is
-    variable y : b_chamber_z_origin_unsigned_au;
+  function get_b_chamber_origin_z_u( sector, station: integer) return b_chamber_z_origin_aut is
+    variable y : b_chamber_z_origin_aut;
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
       y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+    end loop;
+    return y;
+  end function;
+  function get_b_chamber_origin_z_i( sector, station: integer) return b_chamber_z_origin_ait is
+    variable y : b_chamber_z_origin_ait;
+  begin
+    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+      y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT);
     end loop;
     return y;
   end function;

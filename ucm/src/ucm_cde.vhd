@@ -50,13 +50,13 @@ architecture beh of ucm_cde is
 
   signal barrel_r : slc_barrel_rt;
 
-  type chamb_z_org_at is array ( 3 downto 0) of b_chamber_z_origin_unsigned_au;
-  signal chamber_z_org_a : chamb_z_org_at := (
-    get_b_chamber_origin_z(c_SECTOR_ID,3),
-    get_b_chamber_origin_z(c_SECTOR_ID,2),
-    get_b_chamber_origin_z(c_SECTOR_ID,1),
-    get_b_chamber_origin_z(c_SECTOR_ID,0)
-  );
+  -- type chamb_z_org_at is array ( 3 downto 0) of b_chamber_z_origin_unsigned_au;
+  -- signal chamber_z_org_a : chamb_z_org_at := (
+  --   get_b_chamber_origin_z(c_SECTOR_ID,3),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,2),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,1),
+  --   get_b_chamber_origin_z(c_SECTOR_ID,0)
+  -- );
 
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
@@ -97,22 +97,22 @@ begin
             -- INN
             ch_i := 0;
             rpc_i := 0;
-            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,rpc_z_a(0));
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,0,to_integer(rpc_z_a(0)));
 
             -- MID 1
             ch_i := 1;
             rpc_i := 1;
-            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,rpc_z_a(1));
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,to_integer(rpc_z_a(1)));
 
             -- MID 2
             ch_i := 1;
             rpc_i := 2;
-            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,rpc_z_a(2));
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,1,to_integer(rpc_z_a(2)));
 
             -- OUT
             ch_i := 2;
             rpc_i := 3;
-            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,2,rpc_z_a(3));
+            o_cde_data_r.chamb_ieta(rpc_i) <= get_chamber_ieta(c_SECTOR_ID,2,to_integer(rpc_z_a(3)));
 
 
           else

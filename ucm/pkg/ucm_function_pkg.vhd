@@ -31,7 +31,7 @@ package ucm_function_pkg is
   function get_chamber_ieta(
      sector : integer ;
      station: integer ; 
-     rpc : unsigned (SLC_Z_RPC_LEN -1 downto 0)
+     rpc : integer --unsigned (SLC_Z_RPC_LEN -1 downto 0)
   ) return unsigned;
   
 end package ucm_function_pkg;
@@ -41,10 +41,10 @@ package body ucm_function_pkg is
   function get_chamber_ieta(
      sector : integer ;
      station: integer ; 
-     rpc : unsigned (SLC_Z_RPC_LEN -1 downto 0)
+     rpc : integer -- unsigned (SLC_Z_RPC_LEN -1 downto 0)
   ) return unsigned is
     variable y : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
-    variable chamber_z_org_a : b_chamber_z_origin_unsigned_au := (get_b_chamber_origin_z(sector,station));
+    variable chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(sector,station);
   begin
 
     if rpc < chamber_z_org_a(0) then

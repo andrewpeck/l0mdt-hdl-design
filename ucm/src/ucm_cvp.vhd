@@ -25,6 +25,7 @@ use shared_lib.config_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
+use ucm_lib.ucm_function_pkg.all;
 
 entity ucm_cvp is
   -- generic(
@@ -145,15 +146,16 @@ begin
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           if c_SF_TYPE = '0' then --CSF
             -- if i_data_r.data_valid = '1' then
-              for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                ucm2hps_ar(hps_i).muid          <= i_data_r.muid;
-                -- ucm2hps_ar(hps_i).mdtseg_dest   <= i_data_r.
-                -- ucm2hps_ar(hps_i).mdtid         <= i_data_r.mdtid;
-                -- ucm2hps_ar(hps_i).vec_pos       <=
-                -- ucm2hps_ar(hps_i).vec_ang       <=
-                -- ucm2hps_ar(hps_i).hewindow_pos  <=
+              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+                  ucm2hps_ar(hps_i).muid          <= i_data_r.muid;
+                  -- ucm2hps_ar(hps_i).mdtseg_dest   <= i_data_r.
+                  ucm2hps_ar(hps_i).mdtid.chamber_ieta <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)));
+                  -- ucm2hps_ar(hps_i).vec_pos       <=
+                  -- ucm2hps_ar(hps_i).vec_ang       <=
+                  -- ucm2hps_ar(hps_i).hewindow_pos  <=
 
-
+                end if;
               end loop;
               -- slope / mbar calc
               -- local origin calc : to be done in HEG local origin of window
