@@ -113,9 +113,16 @@ begin
 
 end beh;
 
--- ---------------------
---  Main control aka algorithm
--- ---------------------
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: Main control aka algorithm
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
+
 
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
@@ -275,9 +282,15 @@ begin
   
 end architecture beh;
 
--- ---------------------
---  PAM control
--- ---------------------
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: PAM control
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
 
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
@@ -354,14 +367,15 @@ begin
           if ch_busy(ch_i) = '1' then
             o_proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
             o_proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
-            o_cvp_ctrl(ch_i) <= '0';
+            -- o_cvp_ctrl(ch_i) <= '0';
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
               buff_pam_ctrl(ch_i).data_present <= '0';
               processed := processed + 1;
             else
-              ch_busy <= (others => '0');
-              ch_count <= (others => (others => '0'));
+              o_cvp_ctrl(ch_i) <= '0';
+              ch_busy(ch_i) <= '0';
+              ch_count(ch_i) <= (others => '0');
               -- processed := processed - 1;
             end if;
             

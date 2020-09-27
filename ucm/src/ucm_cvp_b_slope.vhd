@@ -55,18 +55,18 @@ architecture beh of ucm_cvp_b_slope is
   type rad_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
   signal rad_a : rad_at;
 
-  signal e_z        : signed(SLC_Z_RPC_LEN + 2 -1 downto 0);
-  signal e_y        : signed(2*(SLC_Z_RPC_LEN + 2) -1 downto 0);
-  signal int_offset : signed(126 -1 downto 0);
+  signal e_z                  : signed(SLC_Z_RPC_LEN + 2 -1 downto 0);
+  signal e_y , e_y_2          : signed(2*(SLC_Z_RPC_LEN + 2) -1 downto 0);
+  signal int_offset           : signed(126 -1 downto 0);
   type sum_pl_st is array (0 to 5) of signed(SLC_Z_RPC_LEN   + 2 -1 downto 0);
-  signal sum_y      : sum_pl_st;
-  signal sum_z      : sum_pl_st;
-  signal sum_zy     : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
-  signal sum_zz     : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
-  signal sqr_sum_z  : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
-  signal b_nom      : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
-  signal b_den      : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
-  signal int_slope  : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+  signal sum_y                : sum_pl_st;
+  signal sum_z                : sum_pl_st;
+  signal sum_zy               : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sum_zz               : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal sqr_sum_z            : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
+  signal b_nom                : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  signal b_den                : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  signal int_slope, int_slope_2 : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
 
   signal s_e_z : signed(126 -1 downto 0);
 
@@ -280,17 +280,20 @@ begin
             -- dv_chain(3) <= '0';
           end if;
 
-          
+          int_slope_2 <= int_slope;
           -- if dv_chain(3) = '1' then
-            o_slope <= int_slope;
-            s_e_z <= (int_slope * e_z);
-            o_offset <= (e_y) - s_e_z;
+            
+          s_e_z <= (int_slope * e_z);
+          e_y_2 <= e_y;
+          
+          o_slope <= int_slope_2;
+          o_offset <= (e_y_2) - s_e_z;
             -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
             --
             -- dv_chain(4) <= '1';
           -- else
-            o_slope <= (others => '0');
-            o_offset <= (others => '0');
+            -- o_slope <= (others => '0');
+            -- o_offset <= (others => '0');
             -- dv_chain(4) <= '0';
           -- end if;
 
@@ -300,7 +303,7 @@ begin
       end if;
     end process slope;
 
-    o_data_valid <= dv_chain(4);
+    o_data_valid <= dv_chain(5);
     -- o_slope <= resize(int_slope,UCM_MBAR_LEN);
     
   end generate BARREL;

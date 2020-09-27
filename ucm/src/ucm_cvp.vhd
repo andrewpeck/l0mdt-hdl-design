@@ -49,6 +49,11 @@ end entity ucm_cvp;
 architecture beh of ucm_cvp is
 
   signal i_data_r     : ucm_cde_rt;
+  
+  signal data_v       : ucm_cde_rvt;
+  signal data_v_2     : ucm_cde_rvt;
+  signal data_r       : ucm_cde_rt;
+  
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
   signal chamber_ieta_v : std_logic_vector(15 downto 0);
@@ -60,6 +65,8 @@ architecture beh of ucm_cvp is
 
   type vec_pos_array_t  is array (0 to c_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal vec_pos_array  : vec_pos_array_t;
+
+  signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   
 begin
 
@@ -81,21 +88,38 @@ begin
 
   end generate;
 
-  PL : entity shared_lib.std_pipeline
+  PL_in : entity shared_lib.std_pipeline
   generic map(
     num_delays  => 5,
-    num_bits    => chamber_ieta_v'length
+    num_bits    => i_data_v'length
   )
   port map(
     clk         => clk,
     rst         => rst,
     glob_en     => glob_en,
     --
-    i_data      => vectorify(i_data_r.chamb_ieta),
-    o_data      => chamber_ieta_v
+    i_data      => i_data_v,
+    o_data      => data_v
   );
 
-  chamber_ieta_r <= structify(chamber_ieta_v);
+  chamber_ieta_r <= structify(data_v).chamb_ieta;
+
+  PL : entity shared_lib.std_pipeline
+  generic map(
+    num_delays  => 2,
+    num_bits    => data_v'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    glob_en     => glob_en,
+    --
+    i_data      => data_v,
+    o_data      => data_v_2
+  );
+
+  data_r <= structify(data_v_2);
+  -- 
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
@@ -136,35 +160,42 @@ begin
 
   UCM_CVP : process(rst,clk) begin
     if rising_edge(clk) then
+
+      vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
       
       if rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          -- ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
         end loop;
       elsif i_in_en = '1' then
-        -- como usar i_in_en?
+        -- como usar i_in_en? si ocupado deberia mantenerse desactivado
+          -- ojo se tiene qu eser previsor para poder empezar a calcular candidato si el proceso esta apunto de acabarse
       
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           if c_SF_TYPE = '0' then --CSF
             -- if i_data_r.data_valid = '1' then
               for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
                 if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-                  ucm2hps_ar(hps_i).muid                <= i_data_r.muid;
-                  ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
-                  ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)));
-                  ucm2hps_ar(hps_i).mdtid.chamber_id    <= to_unsigned(get_b_chamber_type(
-                    c_SECTOR_ID,
-                    hps_i,
-                    to_integer(get_chamber_ieta(
-                      c_SECTOR_ID,
-                      hps_i,
-                      to_integer(vec_pos_array(hps_i))
-                      ))
-                    )
-                  ,VEC_MDTID_CHAMBER_ID_LEN);
-                  -- ucm2hps_ar(hps_i).vec_pos       <= 
-                  -- ucm2hps_ar(hps_i).vec_ang       <=
-                  -- ucm2hps_ar(hps_i).hewindow_pos  <=
+
+                  if data_r.data_valid = '1' then
+
+                    ucm2hps_ar(hps_i).muid                <= data_r.muid;
+                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT);
+                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(
+                                                                get_b_chamber_type(c_SECTOR_ID,hps_i,
+                                                                  to_integer(
+                                                                    get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT)
+                                                                  )
+                                                                ),VEC_MDTID_CHAMBER_ID_LEN
+                                                              );
+                    ucm2hps_ar(hps_i).vec_pos       <= vec_pos_array(hps_i);
+                    ucm2hps_ar(hps_i).vec_ang       <= vec_ang_pl;
+                    ucm2hps_ar(hps_i).data_valid    <= '1';
+                  
+                  else
+
+                  end if;
 
                 end if;
               end loop;
@@ -181,9 +212,9 @@ begin
         end if;
         
       else
-        -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-        -- end loop;
+        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        end loop;
         -- block dissabled
       end if;
     end if;

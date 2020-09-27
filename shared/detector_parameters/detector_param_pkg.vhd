@@ -135,7 +135,7 @@ package detector_param_pkg is
   );
 
   function get_b_chamber_origin_z_u( sector, station : integer) return b_chamber_z_origin_aut;
-  function get_b_chamber_origin_z_i( sector, station : integer) return b_chamber_z_origin_ait;
+  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
@@ -261,11 +261,11 @@ package body detector_param_pkg is
     end loop;
     return y;
   end function;
-  function get_b_chamber_origin_z_i( sector, station: integer) return b_chamber_z_origin_ait is
+  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait is
     variable y : b_chamber_z_origin_ait;
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT);
+      y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult);
     end loop;
     return y;
   end function;
@@ -275,7 +275,7 @@ package body detector_param_pkg is
   function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
     variable y : b_chamber_type_sector_at;
   begin
-    y := b_chamber_type_detector(sector);
+    y := b_chamber_type_detector(sector - 1 );
 
     return y;
   end function;
@@ -283,7 +283,7 @@ package body detector_param_pkg is
   function get_b_chamber_type( sector,station,ieta : integer) return integer is
     variable y : integer;
   begin
-    y := b_chamber_type_detector(sector)(station)(ieta);
+    y := b_chamber_type_detector(sector - 1)(station)(ieta);
     return y;
   end function;
 
