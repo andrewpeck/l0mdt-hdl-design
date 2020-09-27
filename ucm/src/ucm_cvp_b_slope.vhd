@@ -267,9 +267,9 @@ begin
           -- end if;
 
           if dv_chain(2) = '1' then
-            int_slope <= (b_nom * 1000)/b_den;
+            int_slope <= (b_nom * 1024)/b_den;
             --
-            e_y <= (sum_y(1) * 1000) / num_h(2);
+            e_y <= (sum_y(1) * 1024) / num_h(2);
             e_z <= sum_Z(1) / num_h(2);
             --
             -- dv_chain(3) <= '1';
