@@ -68,6 +68,8 @@ architecture beh of ucm_cvp_b_slope is
   signal b_den      : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
   signal int_slope  : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
 
+  signal s_e_z : signed(126 -1 downto 0);
+
   signal dv_chain   : std_logic_vector(7 downto 0);
 
   type num_at is array ( 0 to 5) of integer;
@@ -82,63 +84,7 @@ begin
     barrel_r <= structify(i_data_v);
 
     coin <= to_integer(unsigned(i_cointype));
-    -- set coin type
-    -- num_h <=  2 when coin = 0 else
-    --           3 when coin = 1 else
-    --           3 when coin = 2 else
-    --           3 when coin = 3 else
-    --           3 when coin = 4 else
-    --           4 when coin = 5 else
-    --           0;
-    -- set z
-    -- rpc_a(0) <= barrel_r.rpc0_posz when coin = 0 else
-    --             barrel_r.rpc0_posz when coin = 1 else
-    --             barrel_r.rpc0_posz when coin = 2 else
-    --             barrel_r.rpc0_posz when coin = 3 else
-    --             barrel_r.rpc1_posz when coin = 4 else
-    --             barrel_r.rpc0_posz when coin = 5 else
-    --             (others => '0');
-    -- rpc_a(1) <= barrel_r.rpc3_posz when coin = 0 else
-    --             barrel_r.rpc1_posz when coin = 1 else
-    --             barrel_r.rpc1_posz when coin = 2 else
-    --             barrel_r.rpc2_posz when coin = 3 else
-    --             barrel_r.rpc2_posz when coin = 4 else
-    --             barrel_r.rpc1_posz when coin = 5 else
-    --               (others => '0');
-    -- rpc_a(2) <= (others => '0') when coin = 0 else
-    --             barrel_r.rpc2_posz when coin = 1 else
-    --             barrel_r.rpc3_posz when coin = 2 else
-    --             barrel_r.rpc3_posz when coin = 3 else
-    --             barrel_r.rpc2_posz when coin = 4 else
-    --             barrel_r.rpc2_posz when coin = 5 else
-    --             (others => '0');
-    -- rpc_a(3) <= barrel_r.rpc3_posz when coin = 5 else
-    --             (others => '0');
-    -- set r
-    -- rad_a(0) <= PHY_BARREL_R0 when coin = 0 else
-    --             PHY_BARREL_R0 when coin = 1 else
-    --             PHY_BARREL_R0 when coin = 2 else
-    --             PHY_BARREL_R0 when coin = 3 else
-    --             PHY_BARREL_R1 when coin = 4 else
-    --             PHY_BARREL_R0 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(1) <= PHY_BARREL_R3 when coin = 0 else
-    --             PHY_BARREL_R1 when coin = 1 else
-    --             PHY_BARREL_R1 when coin = 2 else
-    --             PHY_BARREL_R2 when coin = 3 else
-    --             PHY_BARREL_R2 when coin = 4 else
-    --             PHY_BARREL_R1 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(2) <= (others => '0') when coin = 0 else
-    --             PHY_BARREL_R2 when coin = 1 else
-    --             PHY_BARREL_R3 when coin = 2 else
-    --             PHY_BARREL_R3 when coin = 3 else
-    --             PHY_BARREL_R2 when coin = 4 else
-    --             PHY_BARREL_R2 when coin = 5 else
-    --             (others => '0');
-    -- rad_a(3) <= PHY_BARREL_R3 when coin = 5 else
-    --             (others => '0');
-
+    
     slope: process(clk)
     begin
       if rising_edge(clk) then
@@ -335,17 +281,18 @@ begin
           end if;
 
           
-          if dv_chain(3) = '1' then
+          -- if dv_chain(3) = '1' then
             o_slope <= int_slope;
-            o_offset <= (e_y) - (int_slope * e_z);
+            s_e_z <= (int_slope * e_z);
+            o_offset <= (e_y) - s_e_z;
             -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
             --
-            dv_chain(4) <= '1';
-          else
+            -- dv_chain(4) <= '1';
+          -- else
             o_slope <= (others => '0');
             o_offset <= (others => '0');
-            dv_chain(4) <= '0';
-          end if;
+            -- dv_chain(4) <= '0';
+          -- end if;
 
 
           
@@ -363,3 +310,63 @@ begin
   
   
 end architecture beh;
+
+
+
+-- set coin type
+    -- num_h <=  2 when coin = 0 else
+    --           3 when coin = 1 else
+    --           3 when coin = 2 else
+    --           3 when coin = 3 else
+    --           3 when coin = 4 else
+    --           4 when coin = 5 else
+    --           0;
+    -- set z
+    -- rpc_a(0) <= barrel_r.rpc0_posz when coin = 0 else
+    --             barrel_r.rpc0_posz when coin = 1 else
+    --             barrel_r.rpc0_posz when coin = 2 else
+    --             barrel_r.rpc0_posz when coin = 3 else
+    --             barrel_r.rpc1_posz when coin = 4 else
+    --             barrel_r.rpc0_posz when coin = 5 else
+    --             (others => '0');
+    -- rpc_a(1) <= barrel_r.rpc3_posz when coin = 0 else
+    --             barrel_r.rpc1_posz when coin = 1 else
+    --             barrel_r.rpc1_posz when coin = 2 else
+    --             barrel_r.rpc2_posz when coin = 3 else
+    --             barrel_r.rpc2_posz when coin = 4 else
+    --             barrel_r.rpc1_posz when coin = 5 else
+    --               (others => '0');
+    -- rpc_a(2) <= (others => '0') when coin = 0 else
+    --             barrel_r.rpc2_posz when coin = 1 else
+    --             barrel_r.rpc3_posz when coin = 2 else
+    --             barrel_r.rpc3_posz when coin = 3 else
+    --             barrel_r.rpc2_posz when coin = 4 else
+    --             barrel_r.rpc2_posz when coin = 5 else
+    --             (others => '0');
+    -- rpc_a(3) <= barrel_r.rpc3_posz when coin = 5 else
+    --             (others => '0');
+    -- set r
+    -- rad_a(0) <= PHY_BARREL_R0 when coin = 0 else
+    --             PHY_BARREL_R0 when coin = 1 else
+    --             PHY_BARREL_R0 when coin = 2 else
+    --             PHY_BARREL_R0 when coin = 3 else
+    --             PHY_BARREL_R1 when coin = 4 else
+    --             PHY_BARREL_R0 when coin = 5 else
+    --             (others => '0');
+    -- rad_a(1) <= PHY_BARREL_R3 when coin = 0 else
+    --             PHY_BARREL_R1 when coin = 1 else
+    --             PHY_BARREL_R1 when coin = 2 else
+    --             PHY_BARREL_R2 when coin = 3 else
+    --             PHY_BARREL_R2 when coin = 4 else
+    --             PHY_BARREL_R1 when coin = 5 else
+    --             (others => '0');
+    -- rad_a(2) <= (others => '0') when coin = 0 else
+    --             PHY_BARREL_R2 when coin = 1 else
+    --             PHY_BARREL_R3 when coin = 2 else
+    --             PHY_BARREL_R3 when coin = 3 else
+    --             PHY_BARREL_R2 when coin = 4 else
+    --             PHY_BARREL_R2 when coin = 5 else
+    --             (others => '0');
+    -- rad_a(3) <= PHY_BARREL_R3 when coin = 5 else
+    --             (others => '0');
+    

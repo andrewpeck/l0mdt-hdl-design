@@ -299,7 +299,7 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl_pam is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
     -- i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
