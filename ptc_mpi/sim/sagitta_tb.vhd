@@ -88,9 +88,9 @@ begin
     Pulse : process
     begin
         wait for clk_period*5;
-        seg0.segpos <= to_unsigned(30702, SF2PTCALC_SEGPOS_LEN);
-        seg1.segpos <= to_unsigned(44193, SF2PTCALC_SEGPOS_LEN);
-        seg2.segpos <= to_unsigned(58813, SF2PTCALC_SEGPOS_LEN);
+        seg0.segpos <= to_unsigned(39153, SF2PTCALC_SEGPOS_LEN);
+        seg1.segpos <= to_unsigned(56666, SF2PTCALC_SEGPOS_LEN);
+        seg2.segpos <= to_unsigned(75632, SF2PTCALC_SEGPOS_LEN);
         seg0.data_valid <= '1';
         seg1.data_valid <= '1';
         seg2.data_valid <= '1';

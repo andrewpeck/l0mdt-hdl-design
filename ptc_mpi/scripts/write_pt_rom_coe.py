@@ -68,10 +68,12 @@ def main():
         rec_dbeta_rom_mem.write("%04x\n" % reciprocal)
 
     for den_sagitta in xrange(0, 2**rec_sagitta_len - 1):
-        reciprocal = int(floor(2**divider_sagitta / (den_sagitta + 0.5)))
         if den_sagitta == 0:
             reciprocal = int(
                 floor((2**divider_sagitta - 1) / (den_sagitta + 1.)))
+        else:
+            reciprocal = int(floor(2**divider_sagitta / (den_sagitta)))
+
         rec_sagitta_rom_mem.write("%04x\n" % reciprocal)
 
     for m in xrange(0, 2**m_sagitta_len - 1):

@@ -53,11 +53,13 @@ end sagitta_calculator; -- sagitta_calculator
 architecture Behavioral of sagitta_calculator is
     
     -- Constants
-    constant DIVIDER_DELTA_R : integer := 23;
+    constant SHIFT_DELTA_R  : integer := 6;
+    constant DIVIDER_DELTA_R : integer := 17;
     constant DELTA_R_10_LEN : integer := 15;
-    constant DELTA_R_10 : unsigned(DELTA_R_10_LEN-1 downto 0) := to_unsigned( integer(floor(BML_SEC3_RHO-BIL_SEC3_RHO)*SF2PTCALC_SEGPOS_MULT), DELTA_R_10_LEN );
-    constant REC_DELTA_R_20_INT : integer := 2**DIVIDER_DELTA_R/integer(floor(BOL_SEC3_RHO-BIL_SEC3_RHO)*SF2PTCALC_SEGPOS_MULT);
-    constant REC_DELTA_R_20 : unsigned(4 downto 0) := to_unsigned(REC_DELTA_R_20_INT, 5) ;
+    constant DELTA_R_10 : unsigned(DELTA_R_10_LEN-1 downto 0) := to_unsigned( BML_SEC3_RHO_INT - BIL_SEC3_RHO_INT, DELTA_R_10_LEN );
+    constant DELTA_R_20 : integer := (BOL_SEC3_RHO_INT - BIL_SEC3_RHO_INT)/2**SHIFT_DELTA_R;
+    constant REC_DELTA_R_20_INT : integer := 2**DIVIDER_DELTA_R/DELTA_R_20;
+    constant REC_DELTA_R_20 : unsigned(7 downto 0) := to_unsigned(REC_DELTA_R_20_INT, 8) ;
 
     -- Inputs
     signal seg0, seg1, seg2 : sf2ptcalc_rt;
@@ -84,8 +86,8 @@ architecture Behavioral of sagitta_calculator is
 
     -- Constants for m_sagitta=deltaZ_20/deltaR_20 calculation
     constant M_SAGITTA_FULL_LEN : integer
-        := 5+SF2PTCALC_SEGPOS_LEN+M_SAGITTA_MULTI_LEN+1; -- 34
-    constant M_SAGITTA_LEN : integer := M_SAGITTA_FULL_LEN-DIVIDER_DELTA_R; -- 11
+        := 8+SF2PTCALC_SEGPOS_LEN+M_SAGITTA_MULTI_LEN+1; -- 34
+    constant M_SAGITTA_LEN : integer := M_SAGITTA_FULL_LEN-DIVIDER_DELTA_R-SHIFT_DELTA_R; -- 11
     -- Signals for m_sagitta=deltaZ_20/deltaR_20 calculation
     signal m_sagitta_full, m_sagitta_full_s : unsigned(M_SAGITTA_FULL_LEN-1 downto 0)
         := (others => '0');
@@ -108,6 +110,7 @@ architecture Behavioral of sagitta_calculator is
     constant DIVIDER_LEN_SAGITTA : integer := 12;
     signal den_sagitta_red : signed(DEN_SAGITTA_RED_LEN-1 downto 0)
         := (others => '0');
+    signal rec_sagitta_addr : std_logic_vector(DEN_SAGITTA_RED_LEN-1 downto 0) := (others => '0');
     signal rec_den_sagitta : std_logic_vector(DIVIDER_LEN_SAGITTA-1 downto 0)
         := (others => '0');
 
@@ -183,7 +186,7 @@ begin
     PORT MAP (
         clka => clk,
         ena => '1',
-        addra => std_logic_vector(abs(den_sagitta_red)),
+        addra => rec_sagitta_addr,
         douta => rec_den_sagitta
     );
 
@@ -204,7 +207,7 @@ begin
     seg0 <= structify(i_seg0);
     seg1 <= structify(i_seg1);
     seg2 <= structify(i_seg2);
-
+    rec_sagitta_addr <= std_logic_vector(abs(den_sagitta_red));
 
     SagittaProc : process( clk )
     begin
@@ -279,7 +282,7 @@ begin
             -- Clock 5
             dv5 <= dv4;
             m_sagitta <= resize(
-                (shift_right(m_sagitta_full_s, DIVIDER_DELTA_R)),
+                (shift_right(m_sagitta_full_s, DIVIDER_DELTA_R+SHIFT_DELTA_R)),
                 M_SAGITTA_LEN);
             m_mult_delta_z_10_s <= m_mult_delta_z_10;
 
@@ -298,11 +301,11 @@ begin
             sqrt_m_io_ss <= sqrt_m_io;
             if den_sagitta < 0 then
                 den_sagitta_red <=
-                resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) + 1 ,
+                resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) ,
                     DEN_SAGITTA_RED_LEN);
                 q0 <= '0';
             else
-                den_sagitta_red <= resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) + 1 ,
+                den_sagitta_red <= resize(shift_right(den_sagitta, SHIFT_DEN_SAGITTA) ,
                     DEN_SAGITTA_RED_LEN);
                 q0 <= '1';
             end if;
