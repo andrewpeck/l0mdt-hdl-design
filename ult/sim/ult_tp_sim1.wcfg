@@ -54,18 +54,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1528384fs"></ZoomStartTime>
-      <ZoomEndTime time="17903931fs"></ZoomEndTime>
-      <Cursor1Time time="4523897fs"></Cursor1Time>
+      <ZoomStartTime time="4510872fs"></ZoomStartTime>
+      <ZoomEndTime time="4582873fs"></ZoomEndTime>
+      <Cursor1Time time="4543679fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="214"></NameColumnWidth>
+      <NameColumnWidth column_width="190"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
    <wave_markers>
-      <marker label="" time="2878766" />
-      <marker label="" time="2919378" />
+      <marker label="" time="5084310" />
+      <marker label="" time="8198938" />
    </wave_markers>
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
@@ -85,16 +85,17 @@
    <wvobject type="group" fp_name="group218">
       <obj_property name="label">TB_IV</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_inn_ar">
          <obj_property name="ElementShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
          <obj_property name="ObjectShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_mid_ar">
          <obj_property name="ElementShortName">i_mdt_tar_mid_ar[5:0]</obj_property>
          <obj_property name="ObjectShortName">i_mdt_tar_mid_ar[5:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_out_ar">
          <obj_property name="ElementShortName">i_mdt_tar_out_ar[5:0]</obj_property>
@@ -854,6 +855,7 @@
    <wvobject type="group" fp_name="group2018">
       <obj_property name="label">HPS_INN</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/clk">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>
@@ -939,8 +941,8 @@
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -986,10 +988,6 @@
             <obj_property name="ElementShortName">r_dv</obj_property>
             <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
-         </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
             <obj_property name="ObjectShortName">g_SIM_nBUILD</obj_property>
@@ -997,10 +995,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(5)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group2263">
@@ -1031,8 +1025,8 @@
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -1078,10 +1072,6 @@
             <obj_property name="ElementShortName">r_dv</obj_property>
             <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
-         </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
             <obj_property name="ObjectShortName">g_SIM_nBUILD</obj_property>
@@ -1089,10 +1079,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(4)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group2286">
@@ -1123,8 +1109,8 @@
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -1170,10 +1156,6 @@
             <obj_property name="ElementShortName">r_dv</obj_property>
             <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
-         </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
             <obj_property name="ObjectShortName">g_SIM_nBUILD</obj_property>
@@ -1181,10 +1163,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(3)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group2309">
@@ -1215,8 +1193,8 @@
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -1262,10 +1240,6 @@
             <obj_property name="ElementShortName">r_dv</obj_property>
             <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
-         </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
             <obj_property name="ObjectShortName">g_SIM_nBUILD</obj_property>
@@ -1273,10 +1247,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(2)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group2332">
@@ -1306,35 +1276,14 @@
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/dv_pl">
             <obj_property name="ElementShortName">dv_pl[3:0]</obj_property>
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
             <obj_property name="isExpanded"></obj_property>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data.data_valid">
-               <obj_property name="ElementShortName">.data_valid</obj_property>
-               <obj_property name="ObjectShortName">.data_valid</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data.chamber_ieta">
-               <obj_property name="ElementShortName">.chamber_ieta[3:0]</obj_property>
-               <obj_property name="ObjectShortName">.chamber_ieta[3:0]</obj_property>
-               <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data.layer">
-               <obj_property name="ElementShortName">.layer[4:0]</obj_property>
-               <obj_property name="ObjectShortName">.layer[4:0]</obj_property>
-               <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data.tube">
-               <obj_property name="ElementShortName">.tube[8:0]</obj_property>
-               <obj_property name="ObjectShortName">.tube[8:0]</obj_property>
-               <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_tar_data.time">
-               <obj_property name="ElementShortName">.time[16:0]</obj_property>
-               <obj_property name="ObjectShortName">.time[16:0]</obj_property>
-               <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-            </wvobject>
+            <obj_property name="CustomSignalColor">#00FF7F</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -1345,17 +1294,27 @@
             <obj_property name="ObjectShortName">time_t0[17:0]</obj_property>
             <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/tubesize">
-            <obj_property name="ElementShortName">tubesize[9:0]</obj_property>
-            <obj_property name="ObjectShortName">tubesize[9:0]</obj_property>
+         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/zh_dv">
+            <obj_property name="ElementShortName">zh_dv</obj_property>
+            <obj_property name="ObjectShortName">zh_dv</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/holesize">
             <obj_property name="ElementShortName">holesize[18:0]</obj_property>
             <obj_property name="ObjectShortName">holesize[18:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/r_dv">
+            <obj_property name="ElementShortName">r_dv</obj_property>
+            <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/r_pos">
             <obj_property name="ElementShortName">r_pos[18:0]</obj_property>
             <obj_property name="ObjectShortName">r_pos[18:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/tubesize">
+            <obj_property name="ElementShortName">tubesize[9:0]</obj_property>
+            <obj_property name="ObjectShortName">tubesize[9:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/global_x">
             <obj_property name="ElementShortName">global_x[18:0]</obj_property>
@@ -1373,17 +1332,48 @@
             <obj_property name="ElementShortName">global_z_ph[18:0]</obj_property>
             <obj_property name="ObjectShortName">global_z_ph[18:0]</obj_property>
          </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/zh_dv">
-            <obj_property name="ElementShortName">zh_dv</obj_property>
-            <obj_property name="ObjectShortName">zh_dv</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/r_dv">
-            <obj_property name="ElementShortName">r_dv</obj_property>
-            <obj_property name="ObjectShortName">r_dv</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r">
+            <obj_property name="ElementShortName">mdt_full_data_r</obj_property>
+            <obj_property name="ObjectShortName">mdt_full_data_r</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.tube">
+               <obj_property name="ElementShortName">.tube[8:0]</obj_property>
+               <obj_property name="ObjectShortName">.tube[8:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.layer">
+               <obj_property name="ElementShortName">.layer[4:0]</obj_property>
+               <obj_property name="ObjectShortName">.layer[4:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.time_t0">
+               <obj_property name="ElementShortName">.time_t0[17:0]</obj_property>
+               <obj_property name="ObjectShortName">.time_t0[17:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.global_z">
+               <obj_property name="ElementShortName">.global_z[18:0]</obj_property>
+               <obj_property name="ObjectShortName">.global_z[18:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.global_x">
+               <obj_property name="ElementShortName">.global_x[18:0]</obj_property>
+               <obj_property name="ObjectShortName">.global_x[18:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/mdt_full_data_r.data_valid">
+               <obj_property name="ElementShortName">.data_valid</obj_property>
+               <obj_property name="ObjectShortName">.data_valid</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
@@ -1392,10 +1382,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(1)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group2355">
@@ -1426,8 +1412,8 @@
             <obj_property name="ObjectShortName">dv_pl[3:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/mdt_tar_data">
-            <obj_property name="ElementShortName">mdt_tar_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_tar_data</obj_property>
+            <obj_property name="ElementShortName">mdt_tar_data[3:0]</obj_property>
+            <obj_property name="ObjectShortName">mdt_tar_data[3:0]</obj_property>
          </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/t0_dv">
             <obj_property name="ElementShortName">t0_dv</obj_property>
@@ -1473,10 +1459,6 @@
             <obj_property name="ElementShortName">r_dv</obj_property>
             <obj_property name="ObjectShortName">r_dv</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/mdt_full_data">
-            <obj_property name="ElementShortName">mdt_full_data</obj_property>
-            <obj_property name="ObjectShortName">mdt_full_data</obj_property>
-         </wvobject>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/g_SIM_nBUILD">
             <obj_property name="ElementShortName">g_SIM_nBUILD</obj_property>
             <obj_property name="ObjectShortName">g_SIM_nBUILD</obj_property>
@@ -1484,10 +1466,6 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/g_STATION_RADIUS">
             <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
             <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\pc_gen(0)\/PC/c_DV_PL_LEN">
-            <obj_property name="ElementShortName">c_DV_PL_LEN</obj_property>
-            <obj_property name="ObjectShortName">c_DV_PL_LEN</obj_property>
          </wvobject>
       </wvobject>
    </wvobject>

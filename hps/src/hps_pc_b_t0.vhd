@@ -94,6 +94,8 @@ begin
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
             o_time_t0 <= to_unsigned(integer(BI_T0_mem(to_integer(addr_mem))),MDT_TIME_LEN);
+          else
+            o_time_t0 <= (others => '0');
           end if;
         end if;
       end if ;

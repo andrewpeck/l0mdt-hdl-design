@@ -99,17 +99,17 @@ package body hps_rom_b_zholes_pkg is
     if station = 0 then
       -- inner
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * UCM_Z_ROI_MULT);
       end loop;
     elsif station = 1 then
       -- middle
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * UCM_Z_ROI_MULT);
       end loop;
     elsif station = 2 then
       -- outter
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * UCM_Z_ROI_MULT);
       end loop;
     elsif station = 3 then
       --extra

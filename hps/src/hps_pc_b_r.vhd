@@ -97,6 +97,8 @@ begin
           if(int_data_valid = '1') then
             o_r_pos <= to_unsigned(R_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
             -- o_r_pos <= to_unsigned(integer(r_pos),MDT_LOCAL_AXI_LEN);
+          else
+            o_r_pos <= (others => '0');
           end if;
         end if;
       end if ;
