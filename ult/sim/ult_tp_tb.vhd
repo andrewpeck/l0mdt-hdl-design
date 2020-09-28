@@ -440,6 +440,7 @@ begin
             v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
           else
             i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
+            i_mdt_tar_inn_ar(wr_i) <= nullify(i_mdt_tar_inn_ar(wr_i));
           end if;
         end loop;
 
@@ -455,6 +456,7 @@ begin
             v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
           else
             i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
+            i_mdt_tar_mid_ar(wr_i) <= nullify(i_mdt_tar_mid_ar(wr_i));
           end if;
         end loop;
 
@@ -470,6 +472,7 @@ begin
             v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
           else
             i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
+            i_mdt_tar_out_ar(wr_i) <= nullify(i_mdt_tar_out_ar(wr_i));
           end if;
         end loop;
 
@@ -485,6 +488,7 @@ begin
             v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
           else
             i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
+            i_mdt_tar_ext_ar(wr_i) <= nullify(i_mdt_tar_ext_ar(wr_i));
           end if;
         end loop;
 
