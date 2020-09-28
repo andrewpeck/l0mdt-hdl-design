@@ -49,6 +49,8 @@ package common_constants_pkg is
 
   constant UCM_Z_ROI_LEN : integer := UCM2HPS_VEC_POS_LEN;
 
+  constant UCM_Z_ROI_MULT : real := UCM2HPS_VEC_POS_MULT;
+
   constant MDT_LOCAL_AXI_LEN : integer := 14;
 
   constant MDT_LOCAL_AXI_MULT : real := 16.0;
