@@ -60,13 +60,14 @@ architecture beh of hps_pc is
   signal t0_dv : std_logic;
   signal time_t0 : unsigned(MDT_TIME_LEN-1 downto 0);
   -- global position
-  signal tubesize : unsigned(9 downto 0);
+  constant tubesize : unsigned(9 downto 0) := to_unsigned(integer(30.0 * MDT_GLOBAL_AXI_MULT),10); -- constant in 0.03125 mm resolution
+
   signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
   signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-  signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-  signal global_z_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  -- signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  -- signal global_z_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal zh_dv : std_logic;
   signal r_dv : std_logic;
   -- to hp
@@ -125,7 +126,6 @@ begin
 
   dv_pl(0) <= mdt_tar_data(0).data_valid;
 
-  tubesize <= to_unsigned(integer(30.0 * MDT_LOCAL_AXI_MULT),10);
 
   COORD : process(clk)
   begin
@@ -145,7 +145,7 @@ begin
         mdt_tar_data(c_HPS_PC_PL_LEN -1 downto 1) <= mdt_tar_data(c_HPS_PC_PL_LEN - 2 downto 0);
 
         if dv_pl(1) = '1' then
-          global_z <= mdt_tar_data(0).tube * tubesize; 
+          global_z <= mdt_tar_data(1).tube * tubesize; 
           global_x <= r_pos;
           -- write to out
           
