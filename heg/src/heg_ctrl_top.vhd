@@ -24,6 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -79,7 +80,7 @@ architecture beh of heg_ctrl_top is
 
   signal uCM_data_r         : ucm2hps_rt;
   signal Roi_win_valid      : std_logic;
-  signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
+  -- signal o_uCM2hp_data_r    : hp_heg2hp_slc_rt;
   
 begin
 
@@ -126,11 +127,11 @@ begin
   -- o_uCM2hp_data_v.barrel.z <= int_uCM_data.barrel.z;
 
   uCM_data_r <= structify(i_uCM_data_v);
-  o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
+  -- o_uCM2hp_data_v <= vectorify(o_uCM2hp_data_r);
 
 end beh;
 
---
+
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module:
@@ -153,6 +154,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 use shared_lib.gtube2chamber_pkg.all;
 
@@ -241,7 +243,7 @@ begin
         -- hp control reset
         for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
           o_hp_control(hp_i).enable <= '0';
-          o_hp_control(hp_i).rst <= '1';
+          o_hp_control(hp_i).rst <= '0';
         end loop;
         busy_count <= (others => '0');
 
@@ -284,18 +286,19 @@ begin
               o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
-                o_hp_control(hp_i).enable <= '1';
-                o_hp_control(hp_i).rst <= '0';
+                o_hp_control(hp_i).enable <= '0';
+                o_hp_control(hp_i).rst <= '1';
               end loop;
               heg_ctrl_motor <= SET_WINDOW;
             end if;
 
           when SET_WINDOW =>
-            for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
-              o_hp_control(hp_i).enable <= '1';
-              o_hp_control(hp_i).rst <= '1';
-            end loop;
+
             if z_win_org_dv = '1' then
+              for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+                o_hp_control(hp_i).enable <= '1';
+                o_hp_control(hp_i).rst <= '0';
+              end loop;
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
                 o_uCM2hp_data_r.specific <= vectorify(b_data);
               else --endcap
@@ -312,12 +315,12 @@ begin
             if to_integer(unsigned(busy_count)) < HEG_BUSY_CLOCKS then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control(hp_i).enable <= '1';
-                o_hp_control(hp_i).rst <= '1';
+                o_hp_control(hp_i).rst <= '0';
               end loop;
             else
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control(hp_i).enable <= '0';
-                o_hp_control(hp_i).rst <= '1';
+                o_hp_control(hp_i).rst <= '0';
               end loop;
               -- busy_count <= (others => '0');
               heg_ctrl_motor <= IDLE;

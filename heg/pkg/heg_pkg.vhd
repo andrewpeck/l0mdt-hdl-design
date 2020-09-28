@@ -14,8 +14,6 @@ use hp_lib.hp_pkg.all;
 
 package heg_pkg is
 
-  constant HEG_BUSY_CLOCKS : integer := 10;
-
   type heg_pc2heg_at is array(integer range <>) of hp_hpsPc2hp_rt;
   type heg_pc2heg_avt is array(integer range <>) of hp_hpsPc2hp_rvt;
   function vectorify(x: heg_pc2heg_at) return heg_pc2heg_avt;

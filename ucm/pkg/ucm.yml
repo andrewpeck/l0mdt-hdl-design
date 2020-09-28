@@ -12,7 +12,7 @@ HDL_Types:
 
 - UCM_INPUT_PL_LATENCY  : [ qualifier: constant , type: integer , value: 2 ]
 - UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
-- UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 100 ]
+# - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 100 ]
 
 - SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
 

@@ -12,7 +12,7 @@ __config__:
 
 HDL_Types:
 
-- HEG_BUSY_CLOCKS  : [ qualifier: constant , type: integer , value: 10 ]
+# - HEG_BUSY_CLOCKS  : [ qualifier: constant , type: integer , value: 10 ]
 
 # -----------------------------------------------------------
 # heg: pc 2 heg mdt data
