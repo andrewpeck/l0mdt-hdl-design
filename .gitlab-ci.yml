@@ -4,7 +4,7 @@ include:
       ref: 'v2.7.0'
     # - local: '/.before_script.yml'
     - local: '/.devel_to_master.yml'
-    - local: '/Top/csf/gitlab-ci.yml'
+    # - local: '/Top/csf/gitlab-ci.yml'
     - local: '/Top/ptc_mpi/gitlab-ci.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
     - local: '/Top/upt/gitlab-ci.yml'
