@@ -49,24 +49,26 @@ entity hps_sf_wrap is
     glob_en             : in std_logic;
 
     -- control
-    csf_ctrl    : in  H2S_HPS_CSF_CTRL_t;
-    csf_mon     : out H2S_HPS_CSF_MON_t;
+    csf_ctrl            : in  H2S_HPS_CSF_CTRL_t;
+    csf_mon             : out H2S_HPS_CSF_MON_t;
 
-    lsf_ctrl    : in  H2S_HPS_LSF_CTRL_t;
-    lsf_mon     : out H2S_HPS_LSF_MON_t;
+    lsf_ctrl            : in  H2S_HPS_LSF_CTRL_t;
+    lsf_mon             : out H2S_HPS_LSF_MON_t;
 
     -- configuration
-    i_control        : in heg_ctrl2sf_rvt;
-    i_slc_data       : in heg2sfslc_rvt;
-    i_mdt_data       : in heg2sfhit_rvt;
+    i_control_v         : in heg_ctrl2sf_rvt;
+    i_slc_data_v        : in heg2sfslc_rvt;
+    i_mdt_data_v        : in heg2sfhit_rvt;
     --
     o_sf_data_v         : out sf2ptcalc_rvt
   );
 end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
+
+  signal i_control_r  : heg_ctrl2sf_rt;
   -- CSF
-  signal slc_data     : heg2sfslc_rt;
+  -- signal slc_data     : heg2sfslc_rt;
   -- signal slc_barrel : ucm_csf_barrel_rt;
   -- signal slc_endcap : ucm_csf_endcap_rt;
   signal mdt_data     : heg2sfhit_rt;
@@ -89,11 +91,13 @@ architecture beh of hps_sf_wrap is
 
 begin
 
+  i_control_r <= structify(i_control_v);
+
   EN_SF : if c_SF_ENABLED = '1' generate
     -- CSF
     EN_CSF : if c_SF_TYPE = '0' generate
 
-      --slc_data <= structify(i_slc_data);
+      --slc_data <= structify(i_slc_data_v);
 
       --SF_B : if c_ST_nBARREL_ENDCAP = '0' generate
       --  --SLC
@@ -108,7 +112,7 @@ begin
       --  i_seed_r.data_valid <= slc_data.data_valid;
         
       --  -- MDT
-      --  mdt_data <= structify(i_mdt_data);
+      --  mdt_data <= structify(i_mdt_data_v);
       --  i_mdt_hit_v <= vectorify(i_mdt_hit_r);
 
       --  i_mdt_hit_r.localy      <= mdt_data.localy;
@@ -144,9 +148,9 @@ begin
       )
       port map(
         clk        => clk,
-        i_seed     => i_slc_data,
-        i_mdt_hit  => i_mdt_data,
-        i_eof      => eof,
+        i_seed     => i_slc_data_v,
+        i_mdt_hit  => i_mdt_data_v,
+        i_eof      => i_control_r.eof,
         i_rst      => rst,
         o_seg      => sf_data_v
       );
@@ -165,8 +169,8 @@ begin
         port map(
           clock           => clk,
           reset           => rst,
-          slc_roi         => i_slc_data,
-          mdt_hit         => i_mdt_data,
+          slc_roi         => i_slc_data_v,
+          mdt_hit         => i_mdt_data_v,
           lsf             => sf_data_v,
           hba_max_clocks  => lsf_ctrl.hba_max_clocks,
           --SpyBuffer 

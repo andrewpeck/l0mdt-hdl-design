@@ -39,6 +39,7 @@ HDL_Types:
   
 - heg_ctrl2sf:
   - rst           : [ type : logic ]
+  - eof           : [ type : logic ]
   - enable        : [ type : logic ]
   - window_valid  : [ type : logic ]
 # -----------------------------------------------------------

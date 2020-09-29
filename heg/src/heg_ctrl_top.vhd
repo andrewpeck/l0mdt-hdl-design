@@ -47,6 +47,8 @@ entity heg_ctrl_top is
     o_uCM2sf_data_v     : out heg2sfslc_rvt;
     o_uCM2hp_data_v     : out hp_heg2hp_slc_rvt;
     o_SLC_Window_v      : out hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+    o_SLC_Win_dv        : out std_logic;
+
 
     o_sf_control        : out heg_ctrl2sf_rt;
     o_hp_control        : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0)
