@@ -14,8 +14,6 @@ use hp_lib.hp_pkg.all;
 
 package heg_pkg is
 
-  constant HEG_BUSY_CLOCKS : integer := 10;
-
   type heg_pc2heg_at is array(integer range <>) of hp_hpsPc2hp_rt;
   type heg_pc2heg_avt is array(integer range <>) of hp_hpsPc2hp_rvt;
   function vectorify(x: heg_pc2heg_at) return heg_pc2heg_avt;
@@ -98,12 +96,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_pc2heg_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*71-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*71-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-71) := vectorify(x(i));
-      msb := msb - 71 -1;
+      y(msb downto msb-71+1) := vectorify(x(i));
+      msb := msb - 71;
     end loop l;
     return y;
   end function vectorify;
@@ -117,11 +115,11 @@ package body heg_pkg is
   end function structify;
   function structify(x: std_logic_vector) return heg_pc2heg_at is
     variable y :  heg_pc2heg_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-71));
-      msb := msb - 71 -1;
+      y(i) := structify(x(msb downto msb-71+1));
+      msb := msb - 71;
     end loop l;
     return y;
   end function structify;
@@ -173,12 +171,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_ctrl2hp_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*2-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*2-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-2) := vectorify(x(i));
-      msb := msb - 2 -1;
+      y(msb downto msb-2+1) := vectorify(x(i));
+      msb := msb - 2;
     end loop l;
     return y;
   end function vectorify;
@@ -192,11 +190,11 @@ package body heg_pkg is
   end function structify;
   function structify(x: std_logic_vector) return heg_ctrl2hp_bus_at is
     variable y :  heg_ctrl2hp_bus_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-2));
-      msb := msb - 2 -1;
+      y(i) := structify(x(msb downto msb-2+1));
+      msb := msb - 2;
     end loop l;
     return y;
   end function structify;
@@ -251,12 +249,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_hp2bm_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*42-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*42-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-42) := vectorify(x(i));
-      msb := msb - 42 -1;
+      y(msb downto msb-42+1) := vectorify(x(i));
+      msb := msb - 42;
     end loop l;
     return y;
   end function vectorify;
@@ -270,11 +268,11 @@ package body heg_pkg is
   end function structify;
   function structify(x: std_logic_vector) return heg_hp2bm_bus_at is
     variable y :  heg_hp2bm_bus_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-42));
-      msb := msb - 42 -1;
+      y(i) := structify(x(msb downto msb-42+1));
+      msb := msb - 42;
     end loop l;
     return y;
   end function structify;
@@ -326,12 +324,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_hp2bm_data_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*40-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*40-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-40) := vectorify(x(i));
-      msb := msb - 40 -1;
+      y(msb downto msb-40+1) := vectorify(x(i));
+      msb := msb - 40;
     end loop l;
     return y;
   end function vectorify;
@@ -345,11 +343,11 @@ package body heg_pkg is
   end function structify;
   function structify(x: std_logic_vector) return heg_hp2bm_data_bus_at is
     variable y :  heg_hp2bm_data_bus_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-40));
-      msb := msb - 40 -1;
+      y(i) := structify(x(msb downto msb-40+1));
+      msb := msb - 40;
     end loop l;
     return y;
   end function structify;

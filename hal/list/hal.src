@@ -1,10 +1,6 @@
 # -*- mode: TCL;-*-
 # Dependencies
-lpgbt/list/gbt_sc.sub lib=gbt_sc
 tdc/list/tdc.src lib=tdc
-lpgbt/list/lpgbt_emul.sub lib=lpgbt_emul
-lpgbt/list/lpgbt_fpga.sub lib=lpgbt_fpga
-sl/list/sl.sub lib=sl
 
 # Hal
 hal/src/counter.vhd
@@ -26,8 +22,6 @@ hal/src/mmcm_wiz.v
 # IP
 IP/hal/mgt_10g24_gth/mgt_10g24_gth.xci
 IP/hal/mgt_10g24_gty/mgt_10g24_gty.xci
-IP/hal/mgt_9g6_gth/mgt_9g6_gth.xci
-IP/hal/mgt_9g6_gty/mgt_9g6_gty.xci
 IP/hal/mgt_felix/mgt_felix.xci
 
 # MGT

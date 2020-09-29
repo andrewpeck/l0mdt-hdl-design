@@ -16,8 +16,6 @@ package ucm_pkg is
 
   constant UCM_OUTPUT_PL_LATENCY : integer := 2;
 
-  constant UCM_LATENCY_HPS_CH : integer := 10;
-
   constant SLC_SPECIFIC_LEN : integer := 85;
 
   type ucm_prepro2ctrl_rt is record
@@ -38,14 +36,26 @@ package ucm_pkg is
   function nullify(x: ucm_prepro2ctrl_bus_at) return ucm_prepro2ctrl_bus_at;
   function nullify(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
 
+  subtype chamb_ieta_rpc_t is unsigned(4-1 downto 0);
+
+  type chamb_ieta_rpc_bus_at is array(4-1 downto 0) of chamb_ieta_rpc_t;
+  type chamb_ieta_rpc_bus_avt is array(4-1 downto 0) of std_logic_vector(4-1 downto 0);
+  function vectorify(x: chamb_ieta_rpc_bus_at) return chamb_ieta_rpc_bus_avt;
+  function vectorify(x: chamb_ieta_rpc_bus_at) return std_logic_vector;
+  function structify(x: chamb_ieta_rpc_bus_avt) return chamb_ieta_rpc_bus_at;
+  function structify(x: std_logic_vector) return chamb_ieta_rpc_bus_at;
+  function nullify(x: chamb_ieta_rpc_bus_at) return chamb_ieta_rpc_bus_at;
+  function nullify(x: chamb_ieta_rpc_bus_avt) return chamb_ieta_rpc_bus_avt;
+
   type ucm_cde_rt is record
     muid : slc_muid_rt;
     mdtid : vec_mdtid_rt;
+    chamb_ieta : chamb_ieta_rpc_bus_at;
     cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
     specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
   end record ucm_cde_rt;
-  constant UCM_CDE_LEN : integer := 119;
+  constant UCM_CDE_LEN : integer := 135;
   subtype ucm_cde_rvt is std_logic_vector(UCM_CDE_LEN-1 downto 0);
   function vectorify(x: ucm_cde_rt) return ucm_cde_rvt;
   function structify(x: ucm_cde_rvt) return ucm_cde_rt;
@@ -151,12 +161,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_prepro2ctrl_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*1-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*1-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-1) := vectorify(x(i));
-      msb := msb - 1 -1;
+      y(msb downto msb-1+1) := vectorify(x(i));
+      msb := msb - 1;
     end loop l;
     return y;
   end function vectorify;
@@ -170,11 +180,11 @@ package body ucm_pkg is
   end function structify;
   function structify(x: std_logic_vector) return ucm_prepro2ctrl_bus_at is
     variable y :  ucm_prepro2ctrl_bus_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-1));
-      msb := msb - 1 -1;
+      y(i) := structify(x(msb downto msb-1+1));
+      msb := msb - 1;
     end loop l;
     return y;
   end function structify;
@@ -195,11 +205,65 @@ package body ucm_pkg is
     return y;
   end function nullify;
 
+  function vectorify(x: chamb_ieta_rpc_bus_at) return chamb_ieta_rpc_bus_avt is
+    variable y :  chamb_ieta_rpc_bus_avt;
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: chamb_ieta_rpc_bus_at) return std_logic_vector is
+    variable msb : integer := x'length*4-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-4+1) := vectorify(x(i));
+      msb := msb - 4;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: chamb_ieta_rpc_bus_avt) return chamb_ieta_rpc_bus_at is
+    variable y :  chamb_ieta_rpc_bus_at;
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return chamb_ieta_rpc_bus_at is
+    variable y :  chamb_ieta_rpc_bus_at;
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-4+1));
+      msb := msb - 4;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: chamb_ieta_rpc_bus_at) return chamb_ieta_rpc_bus_at is
+    variable y :  chamb_ieta_rpc_bus_at;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: chamb_ieta_rpc_bus_avt) return chamb_ieta_rpc_bus_avt is
+    variable y :  chamb_ieta_rpc_bus_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
   function vectorify(x: ucm_cde_rt) return ucm_cde_rvt is
     variable y : ucm_cde_rvt;
   begin
-    y(118 downto 98)           := vectorify(x.muid);
-    y(97 downto 89)            := vectorify(x.mdtid);
+    y(134 downto 114)          := vectorify(x.muid);
+    y(113 downto 105)          := vectorify(x.mdtid);
+    y(104 downto 89)           := vectorify(x.chamb_ieta);
     y(88 downto 86)            := vectorify(x.cointype);
     y(85 downto 1)             := vectorify(x.specific);
     y(0 downto 0)              := vectorify(x.data_valid);
@@ -208,8 +272,9 @@ package body ucm_pkg is
   function structify(x: ucm_cde_rvt) return ucm_cde_rt is
     variable y : ucm_cde_rt;
   begin
-    y.muid                     := structify(x(118 downto 98));
-    y.mdtid                    := structify(x(97 downto 89));
+    y.muid                     := structify(x(134 downto 114));
+    y.mdtid                    := structify(x(113 downto 105));
+    y.chamb_ieta               := structify(x(104 downto 89));
     y.cointype                 := structify(x(88 downto 86));
     y.specific                 := structify(x(85 downto 1));
     y.data_valid               := structify(x(0 downto 0));
@@ -220,6 +285,7 @@ package body ucm_pkg is
   begin
     y.muid                     := nullify(x.muid);
     y.mdtid                    := nullify(x.mdtid);
+    y.chamb_ieta               := nullify(x.chamb_ieta);
     y.cointype                 := nullify(x.cointype);
     y.specific                 := nullify(x.specific);
     y.data_valid               := nullify(x.data_valid);
@@ -235,12 +301,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_cde_bus_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*119-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*135-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-119) := vectorify(x(i));
-      msb := msb - 119 -1;
+      y(msb downto msb-135+1) := vectorify(x(i));
+      msb := msb - 135;
     end loop l;
     return y;
   end function vectorify;
@@ -254,11 +320,11 @@ package body ucm_pkg is
   end function structify;
   function structify(x: std_logic_vector) return ucm_cde_bus_at is
     variable y :  ucm_cde_bus_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-119));
-      msb := msb - 119 -1;
+      y(i) := structify(x(msb downto msb-135+1));
+      msb := msb - 135;
     end loop l;
     return y;
   end function structify;
@@ -310,12 +376,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_csw_control_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*5-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*5-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-5) := vectorify(x(i));
-      msb := msb - 5 -1;
+      y(msb downto msb-5+1) := vectorify(x(i));
+      msb := msb - 5;
     end loop l;
     return y;
   end function vectorify;
@@ -329,11 +395,11 @@ package body ucm_pkg is
   end function structify;
   function structify(x: std_logic_vector) return ucm_csw_control_at is
     variable y :  ucm_csw_control_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-5));
-      msb := msb - 5 -1;
+      y(i) := structify(x(msb downto msb-5+1));
+      msb := msb - 5;
     end loop l;
     return y;
   end function structify;
@@ -385,12 +451,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_pam_control_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*5-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*5-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-5) := vectorify(x(i));
-      msb := msb - 5 -1;
+      y(msb downto msb-5+1) := vectorify(x(i));
+      msb := msb - 5;
     end loop l;
     return y;
   end function vectorify;
@@ -404,11 +470,11 @@ package body ucm_pkg is
   end function structify;
   function structify(x: std_logic_vector) return ucm_pam_control_at is
     variable y :  ucm_pam_control_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-5));
-      msb := msb - 5 -1;
+      y(i) := structify(x(msb downto msb-5+1));
+      msb := msb - 5;
     end loop l;
     return y;
   end function structify;
@@ -460,12 +526,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_proc_info_at) return std_logic_vector is
-    variable y : std_logic_vector(x'length*5-1 downto 0);
-    variable msb : integer := y'length-1;
+    variable msb : integer := x'length*5-1;
+    variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-5) := vectorify(x(i));
-      msb := msb - 5 -1;
+      y(msb downto msb-5+1) := vectorify(x(i));
+      msb := msb - 5;
     end loop l;
     return y;
   end function vectorify;
@@ -479,11 +545,11 @@ package body ucm_pkg is
   end function structify;
   function structify(x: std_logic_vector) return ucm_proc_info_at is
     variable y :  ucm_proc_info_at(x'range);
-    variable msb : integer := x'length-1;
+    variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-5));
-      msb := msb - 5 -1;
+      y(i) := structify(x(msb downto msb-5+1));
+      msb := msb - 5;
     end loop l;
     return y;
   end function structify;

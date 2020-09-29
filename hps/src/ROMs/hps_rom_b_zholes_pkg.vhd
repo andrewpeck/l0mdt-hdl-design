@@ -87,29 +87,29 @@ package hps_rom_b_zholes_pkg is
     16 => (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)
   );
     
-  function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t;
+  function b_zh_get_layer(sector , station : integer; mult : real) return zhLUT_chamber_integer_t;
     
 end package hps_rom_b_zholes_pkg;
 
 package body hps_rom_b_zholes_pkg is
   
-  function b_zh_get_layer(sector : integer ; station : integer) return zhLUT_chamber_integer_t is
+  function b_zh_get_layer(sector , station : integer ; mult : real) return zhLUT_chamber_integer_t is
     variable o_layer : zhLUT_chamber_integer_t;
   begin
     if station = 0 then
       -- inner
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BI_A_zh(sector)(l_i) * mult);
       end loop;
     elsif station = 1 then
       -- middle
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BM_A_zh(sector)(l_i) * mult);
       end loop;
     elsif station = 2 then
       -- outter
       for l_i in 0 to 7 loop
-        o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
+        o_layer(l_i) := integer(c_BO_A_zh(sector)(l_i) * mult);
       end loop;
     elsif station = 3 then
       --extra

@@ -22,9 +22,11 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
+use ucm_lib.ucm_function_pkg.all;
 
 entity ucm_cvp is
   -- generic(
@@ -47,7 +49,15 @@ end entity ucm_cvp;
 architecture beh of ucm_cvp is
 
   signal i_data_r     : ucm_cde_rt;
+  
+  signal data_v       : ucm_cde_rvt;
+  signal data_v_2     : ucm_cde_rvt;
+  signal data_r       : ucm_cde_rt;
+  
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
+
+  signal chamber_ieta_v : std_logic_vector(15 downto 0);
+  signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
 
   signal offset       : signed(126 -1 downto 0);
   signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
@@ -55,6 +65,8 @@ architecture beh of ucm_cvp is
 
   type vec_pos_array_t  is array (0 to c_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal vec_pos_array  : vec_pos_array_t;
+
+  signal vec_ang_pl : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
   
 begin
 
@@ -76,6 +88,39 @@ begin
 
   end generate;
 
+  PL_in : entity shared_lib.std_pipeline
+  generic map(
+    num_delays  => 5,
+    num_bits    => i_data_v'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    glob_en     => glob_en,
+    --
+    i_data      => i_data_v,
+    o_data      => data_v
+  );
+
+  chamber_ieta_r <= structify(data_v).chamb_ieta;
+
+  PL : entity shared_lib.std_pipeline
+  generic map(
+    num_delays  => 2,
+    num_bits    => data_v'length
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    glob_en     => glob_en,
+    --
+    i_data      => data_v,
+    o_data      => data_v_2
+  );
+
+  data_r <= structify(data_v_2);
+  -- 
+
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
       Z_CALC : entity ucm_lib.ucm_cvp_z_calc
@@ -87,7 +132,7 @@ begin
         rst           => rst,
         glob_en       => glob_en,
         --
-        i_mdtid       => i_data_r.mdtid,
+        i_chamb_ieta  => chamber_ieta_r(st_i),
         i_offset      => offset,
         i_slope       => slope,
         i_data_valid  => slope_dv,
@@ -115,26 +160,48 @@ begin
 
   UCM_CVP : process(rst,clk) begin
     if rising_edge(clk) then
+
+      vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
       
       if rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          -- ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
         end loop;
       elsif i_in_en = '1' then
-        -- como usar i_in_en?
+        -- como usar i_in_en? si ocupado deberia mantenerse desactivado
+          -- ojo se tiene qu eser previsor para poder empezar a calcular candidato si el proceso esta apunto de acabarse
       
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           if c_SF_TYPE = '0' then --CSF
             -- if i_data_r.data_valid = '1' then
-              for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                ucm2hps_ar(hps_i).muid          <= i_data_r.muid;
-                -- ucm2hps_ar(hps_i).mdtseg_dest   <= i_data_r.
-                -- ucm2hps_ar(hps_i).mdtid         <= i_data_r.mdtid;
-                -- ucm2hps_ar(hps_i).vec_pos       <=
-                -- ucm2hps_ar(hps_i).vec_ang       <=
-                -- ucm2hps_ar(hps_i).hewindow_pos  <=
+              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
 
+                  if data_r.data_valid = '1' then
 
+                    ucm2hps_ar(hps_i).muid                <= data_r.muid;
+                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT);
+                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(
+                                                                get_b_chamber_type(c_SECTOR_ID,hps_i,
+                                                                  to_integer(
+                                                                    get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT)
+                                                                  )
+                                                                ),VEC_MDTID_CHAMBER_ID_LEN
+                                                              );
+                    ucm2hps_ar(hps_i).vec_pos       <= vec_pos_array(hps_i);
+                    ucm2hps_ar(hps_i).vec_ang       <= vec_ang_pl;
+                    ucm2hps_ar(hps_i).data_valid    <= '1';
+                  
+                  else
+
+                    for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+                      ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    end loop;
+
+                  end if;
+
+                end if;
               end loop;
               -- slope / mbar calc
               -- local origin calc : to be done in HEG local origin of window
@@ -149,9 +216,9 @@ begin
         end if;
         
       else
-        -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-        --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-        -- end loop;
+        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        end loop;
         -- block dissabled
       end if;
     end if;
@@ -160,3 +227,68 @@ begin
 
 
 end beh;
+
+
+
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: slc vector processor, chamber type extractor
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
+library ieee, shared_lib;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
+use shared_lib.detector_param_pkg.all;
+ 
+library ucm_lib;
+use ucm_lib.ucm_pkg.all;
+
+entity ucm_cvp_chamber_id is
+  port (
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    glob_en             : in std_logic;
+    --
+    i_station           : in unsigned(3 downto 0);
+    i_chamber_ieta      : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    --
+    o_mdtid             : out vec_mdtid_rt
+  );
+end entity ucm_cvp_chamber_id;
+
+architecture beh of ucm_cvp_chamber_id is
+
+  signal mem : b_chamber_type_sector_at := get_b_chamber_type_sector(c_SECTOR_ID);
+  
+begin
+
+  ID_CALC: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        
+      else
+
+        o_mdtid.chamber_ieta <= i_chamber_ieta;
+        o_mdtid.chamber_id <= to_unsigned(mem(to_integer(i_station))(to_integer(i_chamber_ieta)),VEC_MDTID_CHAMBER_ID_LEN);
+        
+      end if;
+    end if;
+  end process ID_CALC;
+  
+  
+  
+end architecture beh;

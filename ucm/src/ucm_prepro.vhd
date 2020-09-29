@@ -80,16 +80,20 @@ begin
   o_prepro_data_r.common.trailer.slid       <= i_slc_data_r.common.trailer.slid ;
   o_prepro_data_r.common.trailer.comma      <= i_slc_data_r.common.trailer.comma ;
 
-  i_barrel <= structify(i_slc_data_r.specific);
-  o_prepro_data_r.specific <= vectorify(o_barrel);
+  B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-  o_barrel.b_reserved <= (others => '0');
-  o_barrel.rpc3_posz  <= i_barrel.rpc3_posz;
-  o_barrel.rpc2_posz  <= i_barrel.rpc2_posz;
-  o_barrel.rpc1_posz  <= i_barrel.rpc1_posz;
-  o_barrel.rpc0_posz  <= i_barrel.rpc0_posz;
+    i_barrel <= structify(i_slc_data_r.specific);
+    o_prepro_data_r.specific <= vectorify(o_barrel);
 
-  o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
+    o_barrel.b_reserved <= (others => '0');
+    o_barrel.rpc3_posz  <= i_barrel.rpc3_posz;
+    o_barrel.rpc2_posz  <= i_barrel.rpc2_posz;
+    o_barrel.rpc1_posz  <= i_barrel.rpc1_posz;
+    o_barrel.rpc0_posz  <= i_barrel.rpc0_posz;
+
+    o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
+
+  end generate;
 
   -- UCM_PRE_PROC : process(rst,clk) begin
   --   if rising_edge(clk) then

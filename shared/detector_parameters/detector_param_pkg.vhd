@@ -28,6 +28,8 @@ package detector_param_pkg is
   -- Some constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY : integer := 967; -- ns
+  constant UCM_LATENCY_HPS_CH : integer := 445; -- cycles
+  constant HEG_BUSY_CLOCKS : integer := UCM_LATENCY_HPS_CH;
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------
@@ -36,7 +38,7 @@ package detector_param_pkg is
   constant barrel_radius : ys_barrel :=(
   -- rpc0 - rpc1 - rpc2 - rpc3
     (5000.0,7000.0,7500.0,10000.0), -- odd sectors
-    (4200.0,7800.0,8200.0,10000.0)  -- even sectors
+    (5300.0,7600.0,8500.0,10000.0)  -- even sectors
   );
 
   function get_barrel_radius ( sector, r_i: integer) return signed;
@@ -102,15 +104,74 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_origin( sector, station, chamber : integer) return unsigned;
+  function get_b_chamber_origin_x( sector, station, chamber : integer) return unsigned;
+  -------------------------------------------------------------------------
+  -- Z from IP to the origin of the chamber
+  -------------------------------------------------------------------------
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
+  type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
+  type b_chamber_z_origin_detector_at is array ( 0 to 15) of b_chamber_z_origin_station_at;
+  constant b_chamber_z_origin_detector : b_chamber_z_origin_detector_at :=(
+    --     INN MID OUT EXT
+     0 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
+     1 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
+     2 => ( (330.0 , 1250.0 , 2350.0 , 3450.0 , 4550.0 , 5470.0 , 6566.2 , 0.0),
+            (150.0 , 1850.0 , 3550.0 , 5250.0 , 6470.0 , 7690.0 , 9660.0 , 0.0),
+            (150.0 , 2330.0 , 4510.0 , 6210.0 , 8390.0 , 10570.0, 12270.0, 0.0),
+            (0.0   , 0.0    , 0.0    , 0.0    , 0.0    , 0.0    , 0.0 , 0.0)), -- S3
+     3 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S4
+     4 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S5
+     5 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S6
+     6 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S7
+     7 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S8
+     8 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S9
+     9 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S10
+    10 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S11
+    11 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S12
+    12 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S13
+    13 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S14
+    14 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S15
+    15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
+  );
 
+  function get_b_chamber_origin_z_u( sector, station : integer) return b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
-  function get_b_chamber_type( sector, station, chamber_ieta  : integer) return integer;
+  type b_chamber_type_station_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
+  type b_chamber_type_sector_at is array (0 to 3) of b_chamber_type_station_ait;
+  type b_chamber_type_detector_at is array (0 to 15) of b_chamber_type_sector_at;
+  constant b_chamber_type_detector : b_chamber_type_detector_at :=(
+    0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S1
+    1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S2
+    2 => ((1,1,1,1,1,1,0,0),
+          (3,3,3,3,3,3,0,0),
+          (5,5,5,5,5,5,0,0),
+          (0,0,0,0,0,0,0,0)), -- S3
+    3 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S4
+    4 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S5
+    5 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S6
+    6 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S7
+    7 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S8
+    8 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S9
+    9 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S10
+   10 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S11
+   11 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S12
+   12 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S13
+   13 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S14
+   14 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)), -- S15
+   15 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)) -- S16
+ );
+ function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
+ function get_b_chamber_type( sector,station,ieta : integer) return integer;
+  
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
+  type b_layer_dist_tubes_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_layer_dist_tubes is array (0 to 7) of integer;
   type b_layer_dist_types is array (0 to 12) of b_layer_dist_tubes;
   constant rom_b_layer_height : b_layer_dist_types :=(
@@ -185,21 +246,49 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Radius to the origin of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_origin( sector, station, chamber  : integer) return unsigned is
+  function get_b_chamber_origin_x( sector, station, chamber  : integer) return unsigned is
     variable y : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   begin
     y := to_unsigned(integer(b_chamber_origin_radius(sector - 1)(station)(chamber) * MDT_GLOBAL_AXI_MULT) , MDT_GLOBAL_AXI_LEN);
     return y;
-  end function get_b_chamber_origin;
+  end function get_b_chamber_origin_x;
+  -------------------------------------------------------------------------
+  -- Z from IP to the origin of the chamber
+  -------------------------------------------------------------------------
+  function get_b_chamber_origin_z_u( sector, station: integer) return b_chamber_z_origin_aut is
+    variable y : b_chamber_z_origin_aut;
+  begin
+    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+    end loop;
+    return y;
+  end function;
+  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait is
+    variable y : b_chamber_z_origin_ait;
+  begin
+    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+      y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult);
+    end loop;
+    return y;
+  end function;
   -------------------------------------------------------------------------
   -- Chamber type from 
   -------------------------------------------------------------------------
-  function get_b_chamber_type( sector, station, chamber_ieta : integer) return integer is
-    variable y : integer;
+  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
+    variable y : b_chamber_type_sector_at;
   begin
+    y := b_chamber_type_detector(sector - 1 );
 
     return y;
-  end function get_b_chamber_type;
+  end function;
+
+  function get_b_chamber_type( sector,station,ieta : integer) return integer is
+    variable y : integer;
+  begin
+    y := b_chamber_type_detector(sector - 1)(station)(ieta);
+    return y;
+  end function;
+
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------

@@ -103,6 +103,7 @@ HDL_Types:
 - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: UCM_VEC_ANG_LEN ]
 # - UCM_VEC_ANG_MULT   : [ qualifier: constant , type: real , value: 1024.0 ]
 - UCM_Z_ROI_LEN   : [ qualifier: constant , type: integer , value: UCM2HPS_VEC_POS_LEN ] # 10
+- UCM_Z_ROI_MULT   : [ qualifier: constant , type: real , value: UCM2HPS_VEC_POS_MULT ] # 10
 # UCM_R_ROI_LEN   : [ qualifier: constant , type: integer , value: 4 ]
 # UCM_PHI_LEN     : [ qualifier: constant , type: integer , value: 14 ]
 # UCM_ETA_LEN     : [ qualifier: constant , type: integer , value: 8 ]

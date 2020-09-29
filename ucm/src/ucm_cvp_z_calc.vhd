@@ -38,7 +38,7 @@ entity ucm_cvp_z_calc is
     rst           : in std_logic;
     glob_en       : in std_logic;
     --
-    i_mdtid       : in vec_mdtid_rt;
+    i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     i_offset      : in signed(126 -1 downto 0);
     i_slope       : in signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;
@@ -52,38 +52,34 @@ architecture beh of ucm_cvp_z_calc is
 
   signal chamber_center_Y : b_chamber_center_radius_unsigned_au := get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS);
   
-  signal chamb_h : signed (SLC_Z_RPC_LEN downto 0);
+  signal chamb_h : signed (24 -1 downto 0);
 
   -- signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
 
-  constant resolution_change : integer := integer( (1000.0 * SLC_Z_RPC_MULT) / UCM2HPS_VEC_POS_MULT);
+  constant resolution_change : integer := integer( (1024.0 * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
+
+  signal vec_pos : signed(141-1 downto 0);
 
   
 begin
 
+  o_vec_z_pos <= resize(unsigned(vec_pos/1024),UCM2HPS_VEC_POS_LEN);
 
-  chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_mdtid.chamber_ieta))),SLC_Z_RPC_LEN +1));
+  -- chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))),SLC_Z_RPC_LEN +1));
+  chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024);
   
   Z_CALC: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        
+        vec_pos <= (others => '0');
       else
 
         if i_data_valid = '1' then
-
-
-          o_vec_z_pos <= resize(
-              unsigned(
-                ((chamb_h - i_offset) / i_slope) * to_signed(resolution_change,15)
-              )
-            ,UCM2HPS_VEC_POS_LEN);
-
+          vec_pos <= ((chamb_h - i_offset) * to_signed(resolution_change,15)) / i_slope;
         else
-
+          vec_pos <= (others => '0');
         end if;
-        
       end if;
     end if;
   end process Z_CALC;

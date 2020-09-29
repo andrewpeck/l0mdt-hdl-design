@@ -40,9 +40,9 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 
-library ult_tp_list;
-use ult_tp_list.gldl_ult_tp_sim_pkg.all;
-use ult_tp_list.gldl_l0mdt_textio_pkg.all;
+library project_lib;
+use project_lib.gldl_ult_tp_sim_pkg.all;
+use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
@@ -312,7 +312,8 @@ begin
   -------------------------------------------------------------------------------------
   HIT_SLC: process ( rst, clk)
 
-    file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
+    -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
+    file input_slc_file         : text open read_mode is "slc_TB_A3_Barrel.txt";
     variable row                : line;
     variable row_counter        : integer := 0;
     -- variable tdc_time           : UNSIG_64;
@@ -399,7 +400,8 @@ begin
 
   HIT_READ: process ( rst, clk)
 
-    file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
+    -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
+    file input_mdt_tar_file       : text open read_mode is "csm_TB_A3_Barrel.txt";
     variable row                  : line;
     variable row_counter          : integer := 0;
 
@@ -438,6 +440,7 @@ begin
             v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
           else
             i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
+            i_mdt_tar_inn_ar(wr_i) <= nullify(i_mdt_tar_inn_ar(wr_i));
           end if;
         end loop;
 
@@ -453,6 +456,7 @@ begin
             v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
           else
             i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
+            i_mdt_tar_mid_ar(wr_i) <= nullify(i_mdt_tar_mid_ar(wr_i));
           end if;
         end loop;
 
@@ -468,6 +472,7 @@ begin
             v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
           else
             i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
+            i_mdt_tar_out_ar(wr_i) <= nullify(i_mdt_tar_out_ar(wr_i));
           end if;
         end loop;
 
@@ -483,6 +488,7 @@ begin
             v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
           else
             i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
+            i_mdt_tar_ext_ar(wr_i) <= nullify(i_mdt_tar_ext_ar(wr_i));
           end if;
         end loop;
 

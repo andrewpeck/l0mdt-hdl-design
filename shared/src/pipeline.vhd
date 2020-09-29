@@ -19,6 +19,7 @@ use ieee.numeric_std.all;
 
 entity std_pipeline is
   generic(
+    type_memory         : string := "distributed" ;
     num_delays          : integer; 
     num_bits            : integer
   );
@@ -36,6 +37,11 @@ architecture beh of std_pipeline is
 
   type data_pl_at is array (num_delays -1 downto 0) of std_logic_vector(num_bits -1 downto 0);
   signal data_pl : data_pl_at;
+
+  attribute ram_style : string;
+  attribute ram_style of data_pl : signal is type_memory;
+  -- "ultra" for ultra ram
+  -- "distributed" for normal logic cells
 
 begin
   

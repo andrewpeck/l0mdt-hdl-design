@@ -26,7 +26,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_SF := '1';
     proj_cfg.ENABLE_PT := '1';
     proj_cfg.SF_TYPE   := '0'; -- 0: CSF 1:LSF
-    proj_cfg.TF_TYPE   := '0'; -- 0: MPT 1:UPT
+    proj_cfg.PT_TYPE   := '0'; -- 0: MPT 1:UPT
 
     -- take these values from HAL, derived from the link mapping
     proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
