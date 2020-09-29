@@ -54,13 +54,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2833274fs"></ZoomStartTime>
-      <ZoomEndTime time="3092675fs"></ZoomEndTime>
-      <Cursor1Time time="2999674fs"></Cursor1Time>
+      <ZoomStartTime time="2882559fs"></ZoomStartTime>
+      <ZoomEndTime time="2982176fs"></ZoomEndTime>
+      <Cursor1Time time="4415983fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="273"></NameColumnWidth>
-      <ValueColumnWidth column_width="84"></ValueColumnWidth>
+      <ValueColumnWidth column_width="80"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
    <wave_markers>
@@ -1541,6 +1541,38 @@
                      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
                      <obj_property name="UseCustomSignalColor">true</obj_property>
                   </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[7]">
+                     <obj_property name="ElementShortName">[7]</obj_property>
+                     <obj_property name="ObjectShortName">[7]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[6]">
+                     <obj_property name="ElementShortName">[6]</obj_property>
+                     <obj_property name="ObjectShortName">[6]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[5]">
+                     <obj_property name="ElementShortName">[5]</obj_property>
+                     <obj_property name="ObjectShortName">[5]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[4]">
+                     <obj_property name="ElementShortName">[4]</obj_property>
+                     <obj_property name="ObjectShortName">[4]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[3]">
+                     <obj_property name="ElementShortName">[3]</obj_property>
+                     <obj_property name="ObjectShortName">[3]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[2]">
+                     <obj_property name="ElementShortName">[2]</obj_property>
+                     <obj_property name="ObjectShortName">[2]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[1]">
+                     <obj_property name="ElementShortName">[1]</obj_property>
+                     <obj_property name="ObjectShortName">[1]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r[0]">
+                     <obj_property name="ElementShortName">[0]</obj_property>
+                     <obj_property name="ObjectShortName">[0]</obj_property>
+                  </wvobject>
                </wvobject>
                <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/g_STATION_RADIUS">
                   <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
@@ -1567,51 +1599,13 @@
                   <obj_property name="ElementShortName">i_Roi_win_valid</obj_property>
                   <obj_property name="ObjectShortName">i_Roi_win_valid</obj_property>
                </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control">
-                  <obj_property name="ElementShortName">o_hp_control[5:0]</obj_property>
-                  <obj_property name="ObjectShortName">o_hp_control[5:0]</obj_property>
-                  <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                  <obj_property name="UseCustomSignalColor">true</obj_property>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[5]">
-                     <obj_property name="ElementShortName">[5]</obj_property>
-                     <obj_property name="ObjectShortName">[5]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[4]">
-                     <obj_property name="ElementShortName">[4]</obj_property>
-                     <obj_property name="ObjectShortName">[4]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[3]">
-                     <obj_property name="ElementShortName">[3]</obj_property>
-                     <obj_property name="ObjectShortName">[3]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[2]">
-                     <obj_property name="ElementShortName">[2]</obj_property>
-                     <obj_property name="ObjectShortName">[2]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[1]">
-                     <obj_property name="ElementShortName">[1]</obj_property>
-                     <obj_property name="ObjectShortName">[1]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
-                  <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control[0]">
-                     <obj_property name="ElementShortName">[0]</obj_property>
-                     <obj_property name="ObjectShortName">[0]</obj_property>
-                     <obj_property name="CustomSignalColor">#00FFFF</obj_property>
-                     <obj_property name="UseCustomSignalColor">true</obj_property>
-                  </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_hp_control_r">
+                  <obj_property name="ElementShortName">o_hp_control_r[5:0]</obj_property>
+                  <obj_property name="ObjectShortName">o_hp_control_r[5:0]</obj_property>
                </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_sf_control">
-                  <obj_property name="ElementShortName">o_sf_control</obj_property>
-                  <obj_property name="ObjectShortName">o_sf_control</obj_property>
+               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_sf_control_r">
+                  <obj_property name="ElementShortName">o_sf_control_r</obj_property>
+                  <obj_property name="ObjectShortName">o_sf_control_r</obj_property>
                </wvobject>
                <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_v">
                   <obj_property name="ElementShortName">o_uCM2hp_data_v[31:0]</obj_property>
@@ -1628,7 +1622,6 @@
                <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/busy_count">
                   <obj_property name="ElementShortName">busy_count[11:0]</obj_property>
                   <obj_property name="ObjectShortName">busy_count[11:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
                </wvobject>
                <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_SIGNALS/enables_a">
                   <obj_property name="ElementShortName">enables_a[5:0]</obj_property>
@@ -1682,14 +1675,6 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/o_SLC_Window_v">
                <obj_property name="ElementShortName">o_SLC_Window_v[7:0][17:0]</obj_property>
                <obj_property name="ObjectShortName">o_SLC_Window_v[7:0][17:0]</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/o_sf_control">
-               <obj_property name="ElementShortName">o_sf_control</obj_property>
-               <obj_property name="ObjectShortName">o_sf_control</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/o_hp_control">
-               <obj_property name="ElementShortName">o_hp_control[5:0]</obj_property>
-               <obj_property name="ObjectShortName">o_hp_control[5:0]</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/uCM_data_r">
                <obj_property name="ElementShortName">uCM_data_r</obj_property>

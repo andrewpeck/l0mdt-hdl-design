@@ -28,7 +28,7 @@ package detector_param_pkg is
   -- Some constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY : integer := 967; -- ns
-  constant UCM_LATENCY_HPS_CH : integer := 445; -- cycles
+  constant UCM_LATENCY_HPS_CH : integer := 575; -- cycles
   constant HEG_BUSY_CLOCKS : integer := UCM_LATENCY_HPS_CH;
   -------------------------------------------------------------------------
   -- Radius to RPC hit

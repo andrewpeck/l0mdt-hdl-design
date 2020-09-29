@@ -68,7 +68,7 @@ architecture beh of heg is
 
 begin
 
-  o_sf_control_v <= vectorify(heg_Sf_control);
+  -- o_sf_control_v <= vectorify(heg_Sf_control);
 
   Heg_Control : entity heg_lib.heg_ctrl_top
   generic map(
@@ -85,8 +85,8 @@ begin
     o_uCM2sf_data_v     => o_sf_slc_data_v,
     o_uCM2hp_data_v     => hegC2hp_uCM_data,
     o_SLC_Window_v      => roi_b_Window,
-    o_sf_control        => heg_Sf_control,
-    o_hp_control        => hegC_control
+    o_sf_control_v      => o_sf_control_v,
+    o_hp_control_r      => hegC_control
   );
 
   hp_gen: for i_hp in g_HPS_NUM_MDT_CH-1 downto 0 generate

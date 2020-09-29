@@ -29,10 +29,13 @@ HDL_Types:
   # - enable        : [ type: logic , length : MAX_NUM_HP]
   - rst           : [ type: logic]
   - enable        : [ type: logic]
+  # - window_valid  : [ type : logic ]
   # - dummy         : [ type: logic, length : 2]
 
 - heg_ctrl2hp_bus  : [ array : open , type : heg_ctrl2hp]
 
+- heg_ctrl2hp_all:
+  - window_valid  : [ type : logic ]
 # -----------------------------------------------------------
 #  heg: heg control 2 sf
 # -----------------------------------------------------------
@@ -41,7 +44,7 @@ HDL_Types:
   - rst           : [ type : logic ]
   - eof           : [ type : logic ]
   - enable        : [ type : logic ]
-  - window_valid  : [ type : logic ]
+  # - window_valid  : [ type : logic ]
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data
 # -----------------------------------------------------------
