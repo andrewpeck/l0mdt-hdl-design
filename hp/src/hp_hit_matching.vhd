@@ -24,6 +24,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+use shared_lib.detector_param_pkg.all;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
@@ -74,7 +76,7 @@ begin
 
   Roi_window <= structify(i_SLC_Window);
 
-  time_high_limit <= to_unsigned(24,time_high_limit'length);
+  time_high_limit <= to_unsigned(HP_BCID_OFFSET_TIME,time_high_limit'length);
   time_low_limit <= to_unsigned(0,time_low_limit'length);
 
   o_hit_valid <= space_valid and time_valid;

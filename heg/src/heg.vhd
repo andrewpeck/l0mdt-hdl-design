@@ -59,7 +59,7 @@ architecture beh of heg is
   signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
   
-  signal heg_Sf_control : heg_ctrl2sf_rt;
+  -- signal heg_Sf_control : heg_ctrl2sf_rt;
   signal hegC_control : heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
 
   signal hp2bm_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
@@ -101,7 +101,7 @@ begin
       -- configuration
       local_rst           => hegC_control(i_hp).rst,
       local_en            => hegC_control(i_hp).enable,
-      time_offset         => time_offset,
+      -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
 
       -- SLc
       i_SLC_Window        => roi_b_Window,

@@ -66,6 +66,7 @@ begin
 
     uCM_data_r <= structify(i_uCM_data_v);
     -- slc_b_data_r <= structify(uCM_data_r.specific);
+    o_SLC_Window_v <= vectorify(SLC_Window_r);
     
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
@@ -99,16 +100,46 @@ begin
       o_dv                => dv_mbar
     );
 
-    o_Roi_win_valid <= dv_z and dv_mbar;
+    -- o_Roi_win_valid <= dv_z and dv_mbar;
 
-    WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
-      SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
-      SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+
+    WIN_GEN: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          SLC_Window_r <= (others => (others => (others => '0')));
+        else
+          for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 loop
+            if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).lo) >= 0 then
+              SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+            else
+              SLC_Window_r(l_i).lo <= (others => '0');
+            end if;
+            if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).hi) >= 0 then
+              SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+            else
+              SLC_Window_r(l_i).hi <= (others => '0');
+            end if;
+          end loop;
+
+        o_Roi_win_valid <= dv_z and dv_mbar;
+
+        end if;
+      end if;
+    end process WIN_GEN;
+
+    -- WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
+    --   if (roi_center(l_i)) + roi_edges(l_i).lo > 0) then
+    --     SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+    --   else
+    --     SLC_Window_r(l_i).lo <= (others => '0');
+    --   end if;
+    --   SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
 
       
-    end generate;
+    -- end generate;
 
-    o_SLC_Window_v <= vectorify(SLC_Window_r);
+   
 
 
 

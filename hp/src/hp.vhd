@@ -39,7 +39,7 @@ entity hit_processor is
     -- configuration
     local_rst           : in std_logic;
     local_en            : in std_logic;
-    time_offset         : in unsigned(7 downto 0);
+    -- time_offset         : in unsigned(12 -1 downto 0);
 
     -- SLc
     i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
