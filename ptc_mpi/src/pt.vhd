@@ -188,7 +188,7 @@ begin
         MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A0_LEN,
         ROM_FILE => "a0.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -202,7 +202,7 @@ begin
         MXADRB => A_PARAMS_DEPTH_LEN,
         MXDATB => A1_LEN,
         ROM_FILE => "a1.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -216,7 +216,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B0_LEN,
         ROM_FILE => "b0.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -230,7 +230,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B1_LEN,
         ROM_FILE => "b1.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -244,7 +244,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => B2_LEN,
         ROM_FILE => "b2.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -258,7 +258,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => C0_LEN,
         ROM_FILE => "c0.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,
@@ -272,7 +272,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => C1_LEN,
         ROM_FILE => "c1.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "block"
     )
     PORT MAP (
         clka => clk,

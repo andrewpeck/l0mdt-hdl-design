@@ -103,7 +103,7 @@ begin
         MXADRB => SF_SEG_POS_LEN-SHIFT_ETA,
         MXDATB => PTCALC2MTC_MDT_ETA_LEN,
         ROM_FILE  => "eta_BI.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "auto"
     )
     PORT MAP (
         clka => clk,
@@ -117,7 +117,7 @@ begin
         MXADRB => SF_SEG_POS_LEN-SHIFT_ETA,
         MXDATB => PTCALC2MTC_MDT_ETA_LEN,
         ROM_FILE  => "eta_BM.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "auto"
     )
     PORT MAP (
         clka => clk,

@@ -51,7 +51,9 @@ entity sagitta_calculator is
 end sagitta_calculator; -- sagitta_calculator
 
 architecture Behavioral of sagitta_calculator is
-    
+    attribute keep_hierarchy : string;
+    attribute keep_hierarchy of Behavioral : architecture is "yes";
+
     -- Constants
     constant SHIFT_DELTA_R  : integer := 6;
     constant DIVIDER_DELTA_R : integer := 17;
@@ -71,10 +73,16 @@ architecture Behavioral of sagitta_calculator is
     signal dvb_01_1, dvb_02_1, dvb_12_1 : std_logic := '0';
     signal dvb_01_2, dvb_02_2, dvb_12_2 : std_logic := '0';
     signal dvb_01_3, dvb_02_3, dvb_12_3 : std_logic := '0';
-
     -- Dbeta signals
     signal delta_beta : unsigned(DBETA_LEN-1 downto 0)
         := (others => '0');
+
+    attribute keep : boolean;
+    attribute keep of dvb_01 : signal is true;
+    attribute keep of dvb_02 : signal is true;
+    attribute keep of dvb_12 : signal is true;
+    attribute keep of delta_beta : signal is true;
+
 
     -- Constants for distance calculations
     constant DELTA_R_RED_LEN : integer := 16;
@@ -162,12 +170,12 @@ architecture Behavioral of sagitta_calculator is
 
 begin
 
-    recROM0 : rom
+    rec_dbeta : rom
     GENERIC MAP (
         MXADRB => DBETA_LEN,
         MXDATB => DIVIDER_LEN_BETA,
         ROM_FILE => "rec_dbeta.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "auto"
     )
     PORT MAP (
         clka => clk,
@@ -176,12 +184,12 @@ begin
         douta => rec_delta_beta
     );
 
-    recROM1 : rom
+    rec_sagitta : rom
     GENERIC MAP (
         MXADRB => DEN_SAGITTA_RED_LEN,
         MXDATB => DIVIDER_LEN_SAGITTA,
         ROM_FILE => "rec_sagitta.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "auto"
     )
     PORT MAP (
         clka => clk,
@@ -195,7 +203,7 @@ begin
         MXADRB => M_SAGITTA_LEN,
         MXDATB => M_SAGITTA_LEN+1,
         ROM_FILE => "sqrt_m_io_ROM.mem",
-        ROM_STYLE => "distributed"
+        ROM_STYLE => "auto"
     )
     PORT MAP (
         clka => clk,
@@ -219,31 +227,32 @@ begin
             delta_z_10 <= seg1.segpos - seg0.segpos;
 
             -- Delta Beta calculations
-            dvb_01 <= (seg0.data_valid and
-                       seg1.data_valid and
-                       not seg2.data_valid);
-            dvb_02 <= (seg0.data_valid and
-                       not seg1.data_valid and
+            dvb_01 <= ( (seg0.data_valid and
+                       seg1.data_valid) nand
                        seg2.data_valid);
-            dvb_12 <= (not seg0.data_valid and
-                       seg1.data_valid and
+            dvb_02 <= ( (seg0.data_valid nand
+                        seg1.data_valid) and
                        seg2.data_valid);
+            dvb_12 <= ((seg1.data_valid and
+                       seg2.data_valid) nand seg0.data_valid);
 
-            if (seg0.data_valid and
-                seg1.data_valid and
-                not seg2.data_valid) = '1' then
+            if seg0.data_valid = '1' and
+                seg1.data_valid = '1' and
+                seg2.data_valid = '0' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg1.segangle))), DBETA_LEN);
-            elsif (seg0.data_valid and
-                not seg1.data_valid and
-                seg2.data_valid) = '1' then
+            elsif seg0.data_valid = '1' and
+                seg1.data_valid = '0' and
+                seg2.data_valid = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg0.segangle) - signed(seg2.segangle))), DBETA_LEN);
-            elsif (not seg0.data_valid and
-                seg1.data_valid and
-                seg2.data_valid) = '1' then
+            elsif seg0.data_valid = '0' and
+                seg1.data_valid = '1' and
+                seg2.data_valid = '1' then
                 delta_beta <= resize(
                     unsigned(abs(signed(seg1.segangle) - signed(seg2.segangle))), DBETA_LEN);
+            else
+                delta_beta <= (others => '0');
             end if;
 
             -- Clock 1
@@ -264,9 +273,6 @@ begin
 
             -- Clock 3 (rec_den_m now available)
             dv3 <= dv2;
-            dvb_01_3 <= dvb_01_2;
-            dvb_02_3 <= dvb_02_2;
-            dvb_12_3 <= dvb_12_2;
             m_sagitta_full <= delta_z_20_ss*
                 REC_DELTA_R_20*
                 to_unsigned(integer(M_SAGITTA_MULTI),M_SAGITTA_MULTI_LEN+1);
@@ -338,10 +344,9 @@ begin
                     DIVIDER_LEN_SAGITTA+SHIFT_DEN_SAGITTA-SHIFT_NUM_SAGITTA),
                 INV_S_LEN);
 
-            if dvb_01_3 = '1' or dvb_02_3 = '1' or dvb_12_3 = '1' then
+            if dvb_01_2 = '1' or dvb_02_2 = '1' or dvb_12_2 = '1' then
                 o_dv_s <= '1';
-                o_inv_s <= resize(
-                    shift_right(unsigned(rec_delta_beta),DIVIDER_LEN_BETA), INV_S_LEN);
+                o_inv_s <= resize(unsigned(rec_delta_beta), INV_S_LEN);
             end if;
 
         end if ;

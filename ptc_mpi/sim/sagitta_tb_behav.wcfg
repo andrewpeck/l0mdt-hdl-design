@@ -23,15 +23,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="181220fs"></ZoomEndTime>
-      <Cursor1Time time="55871fs"></Cursor1Time>
+      <ZoomStartTime time="16666fs"></ZoomStartTime>
+      <ZoomEndTime time="116667fs"></ZoomEndTime>
+      <Cursor1Time time="39196fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="257"></NameColumnWidth>
-      <ValueColumnWidth column_width="145"></ValueColumnWidth>
+      <ValueColumnWidth column_width="140"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="39" />
+   <WVObjectSize size="53" />
    <wvobject type="logic" fp_name="/sagitta_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -59,6 +59,62 @@
    <wvobject type="array" fp_name="/sagitta_tb/seg2">
       <obj_property name="ElementShortName">seg2</obj_property>
       <obj_property name="ObjectShortName">seg2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_01">
+      <obj_property name="ElementShortName">dvb_01</obj_property>
+      <obj_property name="ObjectShortName">dvb_01</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_02">
+      <obj_property name="ElementShortName">dvb_02</obj_property>
+      <obj_property name="ObjectShortName">dvb_02</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_12">
+      <obj_property name="ElementShortName">dvb_12</obj_property>
+      <obj_property name="ObjectShortName">dvb_12</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/delta_beta">
+      <obj_property name="ElementShortName">delta_beta[13:0]</obj_property>
+      <obj_property name="ObjectShortName">delta_beta[13:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_01_1">
+      <obj_property name="ElementShortName">dvb_01_1</obj_property>
+      <obj_property name="ObjectShortName">dvb_01_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_02_1">
+      <obj_property name="ElementShortName">dvb_02_1</obj_property>
+      <obj_property name="ObjectShortName">dvb_02_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_12_1">
+      <obj_property name="ElementShortName">dvb_12_1</obj_property>
+      <obj_property name="ObjectShortName">dvb_12_1</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_01_2">
+      <obj_property name="ElementShortName">dvb_01_2</obj_property>
+      <obj_property name="ObjectShortName">dvb_01_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_02_2">
+      <obj_property name="ElementShortName">dvb_02_2</obj_property>
+      <obj_property name="ObjectShortName">dvb_02_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_12_2">
+      <obj_property name="ElementShortName">dvb_12_2</obj_property>
+      <obj_property name="ObjectShortName">dvb_12_2</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_01_3">
+      <obj_property name="ElementShortName">dvb_01_3</obj_property>
+      <obj_property name="ObjectShortName">dvb_01_3</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_02_3">
+      <obj_property name="ElementShortName">dvb_02_3</obj_property>
+      <obj_property name="ObjectShortName">dvb_02_3</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/sagitta_tb/sagitta_calculator/dvb_12_3">
+      <obj_property name="ElementShortName">dvb_12_3</obj_property>
+      <obj_property name="ObjectShortName">dvb_12_3</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/sagitta_tb/sagitta_calculator/rec_delta_beta">
+      <obj_property name="ElementShortName">rec_delta_beta[16:0]</obj_property>
+      <obj_property name="ObjectShortName">rec_delta_beta[16:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/sagitta_tb/o_inv_s">
       <obj_property name="ElementShortName">o_inv_s[10:0]</obj_property>
