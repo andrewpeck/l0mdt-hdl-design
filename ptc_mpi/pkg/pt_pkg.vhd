@@ -35,14 +35,10 @@ package pt_pkg is
 
 
     -- Segment parameters in global coordinates
-    constant BIL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BIL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
-    constant BML_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BML_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
-    constant BOL_SEC3_RHO_s :  unsigned(SF_SEG_POS_LEN-1 downto 0)
-        := to_unsigned(integer(floor(BOL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT)), SF_SEG_POS_LEN);
-    constant BIL_SEC3_RHO2_s : unsigned(SF_SEG_POS_LEN*2-1 downto 0)
-        := BIL_SEC3_RHO_s*BIL_SEC3_RHO_s;
+    constant BIL_SEC3_RHO_INT :  integer := integer(floor(BIL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT));
+    constant BML_SEC3_RHO_INT :  integer := integer(floor(BML_SEC3_RHO*SF2PTCALC_SEGPOS_MULT));
+    constant BOL_SEC3_RHO_INT :  integer := integer(floor(BOL_SEC3_RHO*SF2PTCALC_SEGPOS_MULT));
+    constant BIL_SEC3_RHO2_INT  : integer := BIL_SEC3_RHO_INT*BIL_SEC3_RHO_INT;
 
 
     -- Sagitta calculation parameter
@@ -56,7 +52,7 @@ package pt_pkg is
     constant M_LEN               : integer := 16;
     constant SHIFT_M_NUM         : integer := 14;
     constant DIVIDER_LEN         : integer := 21;
-    constant SHIFT_NUM_SAGITTA   : integer := 20;
+    constant SHIFT_NUM_SAGITTA   : integer := 13;
     constant INV_S_MULT          : integer := (2**SHIFT_NUM_SAGITTA)/integer(SF2PTCALC_SEGPOS_MULT);
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
@@ -130,7 +126,7 @@ package body pt_pkg is
     function pt_threshold(pt : unsigned) return unsigned is
         variable thr : integer := 0;
     begin
-        if pt > 80*integer(MTC_PT_MULT) then
+        if pt > 40*integer(MTC_PT_MULT) then
             thr := 15;
         elsif pt < 40*integer(MTC_PT_MULT) then
             thr := 14;

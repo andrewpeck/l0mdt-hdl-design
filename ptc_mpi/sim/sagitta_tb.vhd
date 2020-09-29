@@ -69,31 +69,33 @@ begin
     i_seg1 <= vectorify(seg1);
     i_seg2 <= vectorify(seg2);
 
--- ComboId 03L_I4_M4_O4
---    Z[0] 30702.0000 Z[1] 44193.0000 Z[2] 58813.0000
---R[0] 38046.0000 R[1] 55186.0000 R[2] 74075.0000
---delta_z_20 28111.0000 delta_z_10 13491.0000 delta_r_20 562.0000 delta_r_10 17140.0000
---rec_den_m 3728.0000 m_sagitta_full 1717007286272.0000 m_mult_delta_z_10 221036544.0000 m_sagitta 12792.0000 sqrt_m 20786.0000 den_sagitta -14.0000 rec_sagitta -155345.0000 inv_sagitta_full -3229001170.0000 m_inv_sagitta -12318.0000 sagitta -86.0000
-
-
-  --    type sf2ptcalc_rt is record
-  --  data_valid : std_logic;
-  --  muid : slc_muid_rt;
-  --  segpos : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0);
-  --  segangle : unsigned(SF2PTCALC_SEGANGLE_LEN-1 downto 0);
-  --  segquality : std_logic;
-  --  mdtid : vec_mdtid_rt;
-  --end record sf2ptcalc_rt;
+--    ***** MPI_TrackFitter DIGI debug ***********
+--TVector3 A 3D physics vector (x,y,z)=(3362.936764,3362.935708,-4894.147499) (rho,theta,phi)=(6824.321211,135.820708,44.999991)
+--TVector3 A 3D physics vector (x,y,z)=(4877.934340,4877.932809,-7083.292512) (rho,theta,phi)=(9887.441768,135.757464,44.999991)
+--TVector3 A 3D physics vector (x,y,z)=(6547.413628,6547.411572,-9454.095179) (rho,theta,phi)=(13233.183259,135.595961,44.999991)
+--Z[0] -4894.1475 Z[1] -7083.2925 Z[2] -9454.0952
+--R[0] 4755.9100 R[1] 6898.4398 R[2] 9259.4397
+--m_m_sagitta -1.0125 sagitta 13.8955 inv_sagitta 0.0720
+--Z[0] 39153.0000 Z[1] 56666.0000 Z[2] 75632.0000
+--R[0] 38047.0000 R[1] 55187.0000 R[2] 74075.0000
+--delta_z_20 36479.0000 delta_z_10 17513.0000 delta_r_20 562.0000 delta_r_10 17140.0000
+--rec_den_m 233.0000 m_sagitta_full 8703597568.0000 m_mult_delta_z_10 17933312.0000 m_sagitta 1037.0000 sqrt_m 1457.0000 den_sagitta -156.0000 rec_sagitta -27.0000 inv_sagitta_full -39339.0000 m_inv_sagitta -77.0000 sagitta -107.0000
     
     Pulse : process
     begin
+        seg0 <= nullify(seg0);
+        seg1 <= nullify(seg1);
+        seg2 <= nullify(seg2);
         wait for clk_period*5;
-        seg0.segpos <= to_unsigned(30702, SF2PTCALC_SEGPOS_LEN);
-        seg1.segpos <= to_unsigned(44193, SF2PTCALC_SEGPOS_LEN);
-        seg2.segpos <= to_unsigned(58813, SF2PTCALC_SEGPOS_LEN);
+        seg0.segpos <= to_unsigned(39153, SF2PTCALC_SEGPOS_LEN);
+        seg1.segpos <= to_unsigned(56666, SF2PTCALC_SEGPOS_LEN);
+        seg2.segpos <= to_unsigned(75632, SF2PTCALC_SEGPOS_LEN);
+        seg0.segangle <= to_unsigned(100, SF2PTCALC_SEGANGLE_LEN);
+
+        seg1.segangle <= to_unsigned(140, SF2PTCALC_SEGANGLE_LEN);
         seg0.data_valid <= '1';
         seg1.data_valid <= '1';
-        seg2.data_valid <= '1';
+        seg2.data_valid <= '0';
 
 
         wait for clk_period;

@@ -70,46 +70,43 @@ begin
         wait for CLK_period/2;
     end process;
 
-    --   ***** MPI_TrackFitter DIGI debug ***********
-    --TVector3 A 3D physics vector (x,y,z)=(3362.875000,3362.875000,-4894.937500) (rho,theta,phi)=(6824.827445,135.825852,45.000000)
-    --TVector3 A 3D physics vector (x,y,z)=(4877.875000,4877.875000,-7083.750000) (rho,theta,phi)=(9887.711722,135.759658,45.000000)
-    --TVector3 A 3D physics vector (x,y,z)=(6547.375000,6547.375000,-9455.062500) (rho,theta,phi)=(13233.837148,135.599056,45.000000)
-    --Z[0] -4894.9375 Z[1] -7083.7500 Z[2] -9455.0625
-    --R[0] 4755.8234 R[1] 6898.3570 R[2] 9259.3865
-    --m_m_sagitta -1.0126 sagitta 13.6110 inv_sagitta 0.0735
-    --Z[0] 39159.0000 Z[1] 56670.0000 Z[2] 75640.0000
-    --R[0] 38046.0000 R[1] 55186.0000 R[2] 74075.0000
-    --delta_z_20 36481.0000 delta_z_10 17511.0000 delta_r_20 562.0000 delta_r_10 17140.0000
-    --rec_den_m 3728.0000 m_sagitta_full 2228243136512.0000 m_mult_delta_z_10 286900224.0000 m_sagitta 16601.0000 sqrt_m 23324.0000 den_sagitta -18.0000 rec_sagitta -119838.0000 inv_sagitta_full -2795101512.0000 m_inv_sagitta -10663.0000 sagitta -99.0000
-    --sagitta float -12.3750 invsagitta float -0.0814
-    -- == 3-station method ==
-    --ComboId 03L_I5_M5_O5
-    --phiSectorCenter 0.7854 phi 0.7854
-    --a0 3.3105 a1 478.9977 b0 1.3043 b1 4.7233 b2 -186.1890 c0 5.2262 c1 -4.5117
-    --s -0.0814 phi 0.2302 eta -0.9019
-    --pt_s 42.2780 pt_phi 7.4758 pt_eta -1.1570
-    --Floating point pt: 48.5968
-    -- == 3-station method ==
-    --ComboId 03L_I5_M5_O5
-    --float a0 3.3105 a1 478.9977
-    --float b0 1.3043 b1 4.7233 b2 -186.1890
-    --float c0 5.2262 c1 -4.5117
-    --sagitta -0.0814 phimod 0.2302 eta -0.9019
-    --=== Eta Calculation ===
-    --zdigi 39159.0000 rdigi 38046.0000
-    --z2 1533427281.0000 z_red 305.0000
-    --mag2 11.0000 mag 424.0000
-    --m_plus_z 729.0000 m_minus_z 119.0000
-    --log_plus 9589.0000 log_minus 7737.0000
-    --eta_digi 1852.0000 eta 0.9043
-    --s_digi 10663.0000 a0 7.0000 a1 958.0000 pt_s 84.0000 float 42.0000
-    --INV_SAGITTA_MULT 131072.0000 MTC_PT_MULTI 2.0000 MTC_PHI_MULTI 256.0000
-    --phi_digi 58.0000 b0 21.0000 b1 76.0000 b2 -2979.0000 pt_phi -115.0000 float -7.1875
-    --eta_digi 1852.0000 c0 84.0000 c1 -72.0000 pt_eta 18.0000 float 1.1250
-    --Digitised pt: 96.0000
-    --Float pt 48.0000
-    --mpi_pt DIGI 48.0000
-    --muon pt 46.3214
+--***** MPI_TrackFitter DIGI debug ***********
+--TVector3 A 3D physics vector (x,y,z)=(3362.936764,3362.935708,-4894.147499) (rho,theta,phi)=(6824.321211,135.820708,44.999991)
+--TVector3 A 3D physics vector (x,y,z)=(4877.934340,4877.932809,-7083.292512) (rho,theta,phi)=(9887.441768,135.757464,44.999991)
+--TVector3 A 3D physics vector (x,y,z)=(6547.413628,6547.411572,-9454.095179) (rho,theta,phi)=(13233.183259,135.595961,44.999991)
+--Z[0] -4894.1475 Z[1] -7083.2925 Z[2] -9454.0952
+--R[0] 4755.9100 R[1] 6898.4398 R[2] 9259.4397
+--m_m_sagitta -1.0125 sagitta 13.8955 inv_sagitta 0.0720
+--Z[0] 39153.0000 Z[1] 56666.0000 Z[2] 75632.0000
+--R[0] 38047.0000 R[1] 55187.0000 R[2] 74075.0000
+--delta_z_20 36479.0000 delta_z_10 17513.0000 delta_r_20 562.0000 delta_r_10 17140.0000
+--rec_den_m 233.0000 m_sagitta_full 8703597568.0000 m_mult_delta_z_10 17933312.0000 m_sagitta 1037.0000 sqrt_m 1457.0000 den_sagitta -156.0000 rec_sagitta 26.0000 inv_sagitta_full 37882.0000 m_inv_sagitta 73.0000 sagitta 112.0000
+--sagitta float 14.0000 invsagitta float -0.0713
+-- == 3-station method ==
+--ComboId 03BL_I5_M5_O5
+--phiSectorCenter 0.7854 phi 0.7854
+--a0 2.0599 a1 531.7054 b0 4.4427 b1 5.1689 b2 -183.4191 c0 15.9731 c1 -18.6350
+--s -0.0713 phi 0.2302 eta -0.9018
+--pt_s 39.9647 pt_phi 4.0881 pt_eta 0.8315
+--Floating point pt: 44.8842
+-- == 3-station method ==
+--ComboId 03BL_I5_M5_O5
+--float a0 2.0599 a1 531.7054
+--float b0 4.4427 b1 5.1689 b2 -183.4191
+--float c0 15.9731 c1 -18.6350
+--sagitta -0.0713 phimod 0.2302 eta -0.9018
+--=== Eta Calculation ===
+--z_float 4864.0000 r_float 4755.9100
+--mag 6802.7330
+--eta_digi 1837.0000 eta 0.8970
+--s_digi 73.0000 a0 4.0000 a1 1063.0000 pt_s 79.0000 float 39.5000
+--INV_SAGITTA_MULT 1024.0000 MTC_PT_MULTI 2.0000 MTC_PHI_MULTI 256.0000
+--phi_digi 58.0000 b0 71.0000 b1 83.0000 b2 -2935.0000 pt_phi -61.0000 float -3.8125
+--eta_digi 1837.0000 c0 241.0000 c1 -276.0000 pt_eta -7.0000 float -0.4375
+--Digitised pt: 87.0000
+--Float pt 43.5000
+--mpi_pt DIGI 43.5000
+--muon pt 46.3214
 
     i_SLC <= vectorify(slc);
     i_segment_I <= vectorify(seg_I);
@@ -122,6 +119,9 @@ begin
     Pulse : process
     begin
         slc <= nullify(slc);
+        seg_I <= nullify(seg_I);
+        seg_M <= nullify(seg_M);
+        seg_O <= nullify(seg_O);
         wait for clk_period*5;
         slc.data_valid <= '1';
         slc.phimod <= to_signed(58,UCM2PL_PHIMOD_LEN);
@@ -129,15 +129,15 @@ begin
         slc <= nullify(slc);
         wait for clk_period*10;
         seg_I.data_valid <= '1';
-        seg_I.segpos <= to_unsigned(39159, SF2PTCALC_SEGPOS_LEN);
+        seg_I.segpos <= to_unsigned(39153, SF2PTCALC_SEGPOS_LEN);
         seg_I.mdtid.chamber_ieta <= to_unsigned(5, VEC_MDTID_CHAMBER_IETA_LEN);
 
         seg_M.data_valid <= '1';
-        seg_M.segpos <= to_unsigned(56670, SF2PTCALC_SEGPOS_LEN);
+        seg_M.segpos <= to_unsigned(56666, SF2PTCALC_SEGPOS_LEN);
         seg_M.mdtid.chamber_ieta <= to_unsigned(5, VEC_MDTID_CHAMBER_IETA_LEN);
 
         seg_O.data_valid <= '1';
-        seg_O.segpos <= to_unsigned(75640, SF2PTCALC_SEGPOS_LEN);
+        seg_O.segpos <= to_unsigned(75632, SF2PTCALC_SEGPOS_LEN);
         seg_O.mdtid.chamber_ieta <= to_unsigned(5, VEC_MDTID_CHAMBER_IETA_LEN);
         wait for clk_period;
         seg_I <= nullify(seg_I);

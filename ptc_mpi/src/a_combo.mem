@@ -2,101 +2,86 @@ function acomboid_to_index_ram(comboid : unsigned) return std_logic_vector is
 variable index : integer := 0;
 variable addr : std_logic_vector(A_PARAMS_DEPTH_LEN-1 downto 0);
 begin
-if comboid = 51 then
+if comboid = 1126 then
  index := 0;
 end if;
-if comboid = 802 then
+if comboid = 1638 then
  index := 1;
 end if;
-if comboid = 546 then
+if comboid = 257 then
  index := 2;
 end if;
-if comboid = 34 then
+if comboid = 1028 then
  index := 3;
 end if;
-if comboid = 1076 then
+if comboid = 1092 then
  index := 4;
 end if;
-if comboid = 1365 then
+if comboid = 1348 then
  index := 5;
 end if;
-if comboid = 1382 then
+if comboid = 514 then
  index := 6;
 end if;
-if comboid = 1638 then
+if comboid = 771 then
  index := 7;
 end if;
-if comboid = 1348 then
+if comboid = 1542 then
  index := 8;
 end if;
-if comboid = 1092 then
+if comboid = 546 then
  index := 9;
 end if;
-if comboid = 17 then
+if comboid = 803 then
  index := 10;
 end if;
-if comboid = 1364 then
+if comboid = 1076 then
  index := 11;
 end if;
-if comboid = 529 then
+if comboid = 272 then
  index := 12;
 end if;
-if comboid = 273 then
+if comboid = 819 then
  index := 13;
 end if;
-if comboid = 547 then
+if comboid = 1075 then
  index := 14;
 end if;
-if comboid = 803 then
+if comboid = 102 then
  index := 15;
 end if;
-if comboid = 85 then
+if comboid = 529 then
  index := 16;
 end if;
-if comboid = 1637 then
+if comboid = 273 then
  index := 17;
 end if;
 if comboid = 1381 then
  index := 18;
 end if;
-if comboid = 102 then
+if comboid = 17 then
  index := 19;
 end if;
-if comboid = 101 then
+if comboid = 34 then
  index := 20;
 end if;
-if comboid = 530 then
+if comboid = 85 then
  index := 21;
 end if;
-if comboid = 52 then
+if comboid = 1365 then
  index := 22;
 end if;
-if comboid = 68 then
+if comboid = 51 then
  index := 23;
 end if;
-if comboid = 771 then
+if comboid = 68 then
  index := 24;
 end if;
-if comboid = 819 then
+if comboid = 1072 then
  index := 25;
 end if;
-if comboid = 1075 then
+if comboid = 1364 then
  index := 26;
-end if;
-if comboid = 514 then
- index := 27;
-end if;
-if comboid = 257 then
- index := 28;
-end if;
-if comboid = 816 then
- index := 29;
-end if;
-if comboid = 1072 then
- index := 30;
-end if;
-if comboid = 272 then
- index := 31;
 end if;
 addr := std_logic_vector(to_unsigned(index, A_PARAMS_DEPTH_LEN));
 return addr;
