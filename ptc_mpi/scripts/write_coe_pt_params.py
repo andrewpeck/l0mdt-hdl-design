@@ -10,7 +10,7 @@ def main():
                         "--sector",
                         type=str,
                         help="Sector ID",
-                        default="03")
+                        default="03BL")
     parser.add_argument("-v",
                         "--vhdl_out",
                         type=str,
@@ -20,7 +20,7 @@ def main():
                         "--output",
                         type=str,
                         help="Output Dir",
-                        default="../data")
+                        default="../src")
     parser.add_argument("--sagitta_mult",
                         type=float,
                         help="Sagitta Multiplier",

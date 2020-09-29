@@ -87,7 +87,7 @@ begin
 --phiSectorCenter 0.7854 phi 0.7854
 --a0 2.0599 a1 531.7054 b0 4.4427 b1 5.1689 b2 -183.4191 c0 15.9731 c1 -18.6350
 --s -0.0752 phi 0.2302 eta -0.9018
---pt_s 42.0416 pt_phi 4.0881 pt_eta 0.8315
+--pt_s 42.0416 pt_phi 4.0881 pt_et
 --Floating point pt: 46.9612
 -- == 3-station method ==
 --ComboId 03BL_I5_M5_O5
@@ -119,6 +119,9 @@ begin
     Pulse : process
     begin
         slc <= nullify(slc);
+        seg_I <= nullify(seg_I);
+        seg_M <= nullify(seg_M);
+        seg_O <= nullify(seg_O);
         wait for clk_period*5;
         slc.data_valid <= '1';
         slc.phimod <= to_signed(58,UCM2PL_PHIMOD_LEN);

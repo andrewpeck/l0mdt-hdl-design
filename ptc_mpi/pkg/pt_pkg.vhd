@@ -52,7 +52,7 @@ package pt_pkg is
     constant M_LEN               : integer := 16;
     constant SHIFT_M_NUM         : integer := 14;
     constant DIVIDER_LEN         : integer := 21;
-    constant SHIFT_NUM_SAGITTA   : integer := 20;
+    constant SHIFT_NUM_SAGITTA   : integer := 13;
     constant INV_S_MULT          : integer := (2**SHIFT_NUM_SAGITTA)/integer(SF2PTCALC_SEGPOS_MULT);
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
@@ -126,7 +126,7 @@ package body pt_pkg is
     function pt_threshold(pt : unsigned) return unsigned is
         variable thr : integer := 0;
     begin
-        if pt > 80*integer(MTC_PT_MULT) then
+        if pt > 40*integer(MTC_PT_MULT) then
             thr := 15;
         elsif pt < 40*integer(MTC_PT_MULT) then
             thr := 14;

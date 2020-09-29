@@ -298,13 +298,13 @@ begin
     begin
         if rising_edge(clk) then
 
-            if  FLAVOUR = 0 then
-                segment_I_s <= segment_I;
-                segment_M_s <= segment_M;
-                segment_O_s <= segment_O;
-                segment_I_v <= i_segment_I;
-                segment_M_v <= i_segment_M;
-                segment_O_v <= i_segment_O;
+
+            segment_I_v <= i_segment_I;
+            segment_M_v <= i_segment_M;
+            segment_O_v <= i_segment_O;
+
+            if segment_I.data_valid = '1' or segment_M.data_valid = '1' or segment_O.data_valid = '1' then
+                dv_combo_s     <= '1';
                 if segment_I.data_valid = '1' then
                     segment_eta <= i_segment_I;
                     im <= '0';
@@ -323,10 +323,10 @@ begin
                 quality <= segment_O.data_valid &
                            segment_M.data_valid &
                            segment_I.data_valid;
-                dv_combo_s     <= '1';
-            -- TODO: ADD ENDCAP
+               segment_I_s <= segment_I;
+               segment_M_s <= segment_M;
+               segment_O_s <= segment_O;
             end if;
-
             -- save the slc
             if slc.data_valid = '1' then
                 slc_s  <= SLC;
@@ -411,13 +411,16 @@ begin
             mtc.mdt_nsegments <= nsegments;
             mtc.mdt_quality <= quality;
             --reset
-            if pt_valid = '1' or i_rst = '1' then
+            if mtc_valid = '1' or i_rst = '1' then
                 comboid_s <= (others => '0');
                 dv_combo_s <= '0';
                 slc_s <= nullify(slc_s);
                 segment_I_s <= nullify(segment_I_s);
                 segment_M_s <= nullify(segment_M_s);
                 segment_O_s <= nullify(segment_O_s);
+                segment_eta <= nullify(segment_eta);
+                nsegments <= (others => '0');
+                quality   <= (others => '0');
             end if;
 
         end if ;
