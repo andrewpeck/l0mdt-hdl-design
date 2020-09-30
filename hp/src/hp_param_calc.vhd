@@ -45,6 +45,7 @@ entity hp_paramCalc is
     i_mdt_layer         : in unsigned(MDT_LAYER_LEN -1 downto 0);
     i_data_valid        : in std_logic;
     -- to Segment finder
+    -- o_params_r      : out hp_hp2sf_data_rt;
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
     o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
@@ -55,9 +56,15 @@ end entity hp_paramCalc;
 
 architecture beh of hp_paramCalc is
 
-    signal barrel_data_r : hp_heg2hp_slc_b_rt;
+  signal barrel_data_r : hp_heg2hp_slc_b_rt;
 
-    signal radius_dv : std_logic;
+  signal pl_local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
+  signal pl_local_x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
+  signal pl_ml : std_logic;
+  signal pl_local_dv : std_logic;
+
+  signal radius_dv  : std_logic;
+  signal local_dv   : std_logic;
 
 begin
   SLC_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
@@ -99,8 +106,9 @@ begin
     i_mdt_z         => i_mdt_z,
     i_data_valid    => i_data_valid,
     -- to Segment finder
-    o_local_y       => o_local_y,  
-    o_local_x       => o_local_x  
+    o_local_y       => pl_local_y,  
+    o_local_x       => pl_local_x,  
+    o_data_valid    => pl_local_dv
 
   );
 
@@ -110,22 +118,29 @@ begin
       if rst = '1' then
         
       else
+
+        o_local_y <= pl_local_y;
+        o_local_x <= pl_local_x;
+        local_dv <= pl_local_dv;
+        o_data_valid <= local_dv and radius_dv;
+        o_ml <= pl_ml;
+
         if i_data_valid = '1' then
           if g_STATION_RADIUS = 0 then
             if i_mdt_layer < 4 then
-              o_ml <= '0';
+              pl_ml <= '0';
             else
-              o_ml <= '1';
+              pl_ml <= '1';
             end if;
           else
             if i_mdt_layer < 3 then
-              o_ml <= '0';
+              pl_ml <= '0';
             else
-              o_ml <= '1';
+              pl_ml <= '1';
             end if;
           end if;
         else
-          o_ml <= '0';
+          pl_ml <= '0';
         end if;
         
       end if;

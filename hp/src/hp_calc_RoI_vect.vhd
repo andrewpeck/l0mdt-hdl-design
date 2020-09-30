@@ -43,8 +43,8 @@ entity hp_calc_RoI_vect is
     i_data_valid        : in std_logic;
     -- to Segment finder
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-    o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
-    -- o_data_valid        : out std_logic
+    o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
+    o_data_valid        : out std_logic
   );
 end entity hp_calc_RoI_vect;
 
@@ -61,10 +61,16 @@ begin
         o_local_y <= (others => '0');
       else
 
-        o_local_y <= get_b_layer_height(g_STATION_RADIUS,to_integer(i_mdt_layer));
-        
-        o_local_x <= resize(i_mdt_z - i_SLc_z_0,MDT_LOCAL_Y_LEN);
+        o_data_valid <= i_data_valid;
 
+        if i_data_valid = '1' then
+          o_local_y <= get_b_layer_height(g_STATION_RADIUS,to_integer(i_mdt_layer));
+          o_local_x <= resize(i_mdt_z - i_SLc_z_0,MDT_LOCAL_Y_LEN);
+        else
+          o_local_x <= (others => '0');
+          o_local_y <= (others => '0');
+        end if;
+        
       end if;
 
     end if ;

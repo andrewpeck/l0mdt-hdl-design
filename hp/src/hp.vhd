@@ -57,8 +57,10 @@ architecture beh of hit_processor is
   -- signal tdc_time_t0          : mdt_time_le_st;
   -- signal tdc_time_comp_valid  : std_logic;
   signal tdc_hitmatch_valid   : std_logic;
+  signal tdc_hitmatch_valid_pl: std_logic;
   signal tdc_paramcalc_valid  : std_logic;
-
+  signal mdt_valid_pl : std_logic;
+  
   signal data_2_sf_r          : hp_hp2bm_rt;
 
   signal int_hit_valid       : std_logic;
@@ -126,7 +128,7 @@ begin
 
   dv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 4,
+    num_delays    => 1,
     num_bits      => 1
   )
   port map(
@@ -134,13 +136,13 @@ begin
     rst               => rst,
     glob_en           => glob_en,
     --
-    i_data(0)         => mdt_data.data_valid,
-    o_data(0)         => data_2_sf_r.data_valid
+    i_data(0)         => tdc_hitmatch_valid,
+    o_data(0)         => tdc_hitmatch_valid_pl
   );
 
   hv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 4,
+    num_delays    => 1,
     num_bits      => 1
   )
   port map(
@@ -149,8 +151,11 @@ begin
     glob_en           => glob_en,
     --
     i_data(0)         => int_hit_valid,
-    o_data(0)         => data_2_sf_r.mdt_valid
+    o_data(0)         => mdt_valid_pl
   );
+
+  data_2_sf_r.mdt_valid <= mdt_valid_pl;
+  data_2_sf_r.data_valid <= tdc_hitmatch_valid_pl and tdc_paramcalc_valid;
 
 end beh;
 

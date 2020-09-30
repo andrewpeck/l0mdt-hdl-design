@@ -55,30 +55,34 @@ architecture beh of hp_calc_radius is
 begin
 
   DT2R_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
-    DT2R_BS_GEN: if g_STATION_RADIUS= 0 generate
-      HP_DT2R_BS : entity hp_lib.hp_calc_dt2r_small
-      generic map(
-        g_STATION_RADIUS             => g_STATION_RADIUS
-      )
-      port map(
-        clk                 => clk,
-        rst            => rst,
-        glob_en             => glob_en,
 
-        i_drift_time        => drift_time,
-        i_data_valid        => int_dv,
-        o_tube_radius       => o_tube_radius,
-        o_data_valid        => o_data_valid
-      );
-    end generate;
-    DT2R_BL_GEN: if g_STATION_RADIUS> 0 generate
+    -- sMDT
+    -- DT2R_BS_GEN: if g_STATION_RADIUS= 0 generate
+    --   HP_DT2R_BS : entity hp_lib.hp_calc_dt2r_small
+    --   generic map(
+    --     g_STATION_RADIUS             => g_STATION_RADIUS
+    --   )
+    --   port map(
+    --     clk                 => clk,
+    --     rst            => rst,
+    --     glob_en             => glob_en,
+
+    --     i_drift_time        => drift_time,
+    --     i_data_valid        => int_dv,
+    --     o_tube_radius       => o_tube_radius,
+    --     o_data_valid        => o_data_valid
+    --   );
+    -- end generate;
+    
+    -- MDT
+    -- DT2R_BL_GEN: if g_STATION_RADIUS> 0 generate
       HP_DT2R_BL : entity hp_lib.hp_calc_dt2r_large
-      generic map(
-        g_STATION_RADIUS             => g_STATION_RADIUS
-      )
+      -- generic map(
+      --   g_STATION_RADIUS             => g_STATION_RADIUS
+      -- )
       port map(
         clk                 => clk,
-        rst            => rst,
+        rst                 => rst,
         glob_en             => glob_en,
 
         i_drift_time        => drift_time,
@@ -86,7 +90,7 @@ begin
         o_tube_radius       => o_tube_radius,
         o_data_valid        => o_data_valid
       );
-    end generate;
+    -- end generate;
   end generate;
   -- DT2R_E_GEN: if c_ST_nBARREL_ENDCAP = '1' generate
   
@@ -102,9 +106,13 @@ begin
       if rst= '1' then
         drift_time <= (others => '0');
       else
+
         int_dv <= i_data_valid;
+
         if i_data_valid = '1' then
           drift_time <= i_mdt_time_t0 - BCID_exp;
+        else
+          drift_time <= (others => '0');
         end if;
       end if;
 

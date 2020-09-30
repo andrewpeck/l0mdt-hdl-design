@@ -29,9 +29,9 @@ use hp_lib.hp_pkg.all;
 use hp_lib.hp_dt2r_large_mem.all;
 
 entity hp_calc_dt2r_large is
-  generic(
-    g_STATION_RADIUS     : integer
-  );
+  -- generic(
+  --   g_STATION_RADIUS     : integer
+  -- );
   port (
     clk                 : in std_logic;
     rst            : in std_logic;
@@ -84,6 +84,8 @@ begin
         o_data_valid <= int_data_valid;
         if(int_data_valid = '1') then
           o_tube_radius <= to_unsigned(mem(to_integer(addr_mem)),MDT_RADIUS_LEN);
+        else
+          o_tube_radius <= (others => '0');
         end if;
       end if;
     end if ;
