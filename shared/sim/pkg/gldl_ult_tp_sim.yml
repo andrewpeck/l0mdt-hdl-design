@@ -11,7 +11,7 @@ __config__:
 HDL_Types:
 
 - input_tar:
-  - global_time : [ type : unsigned , length : 64]
+  - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 8]
   - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
   - tar         : [ type : tar2hps ]

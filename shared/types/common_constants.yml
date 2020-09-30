@@ -86,7 +86,7 @@ HDL_Types:
 # tar
 - MDT_TUBE_LEN    : [ qualifier: constant , type: integer , value: TAR2HPS_TUBE_LEN ]
 - MDT_LAYER_LEN   : [ qualifier: constant , type: integer , value: TAR2HPS_LAYER_LEN ]
-- MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: 18 ]
+- MDT_TIME_LEN    : [ qualifier: constant , type: integer , value: TDC_COARSETIME_LEN + TDC_FINETIME_LEN]
 
 #############################################################
 # INTERBLOCK TYPES

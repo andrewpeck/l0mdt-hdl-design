@@ -93,7 +93,8 @@ begin
   -- end generate;
 
 
-  BCID_exp <= to_unsigned(0,1) & i_SLc_BCID & to_unsigned(0,5);
+  -- BCID_exp <= to_unsigned(0,1) & i_SLc_BCID & to_unsigned(0,5);
+  BCID_exp <= i_SLc_BCID & to_unsigned(0,5);
 
   t0_proc: process(rst,clk)
   begin

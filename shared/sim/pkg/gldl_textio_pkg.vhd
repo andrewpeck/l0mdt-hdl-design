@@ -41,13 +41,14 @@ package body gldl_l0mdt_textio_pkg is
   -- read TAR 
   -----------------------------------------------  
   procedure READ(L:inout LINE; VALUE : out input_tar_rt) is
-    variable global_time  : integer;
-    variable tdc_time     : integer;
+    variable mdt_ToA  : integer;
+    -- variable tdc_time     : integer;
     -- variable space        : string(8 downto 1);
     -- variable c_Station    : string(1 downto 1);
     variable i_station    : integer;
     variable Chamber      : integer;
-    variable BCID         : integer;
+    variable mdt_time_coarse  : integer;
+    variable mdt_time_fine  : integer;
     variable tube_global  : integer;
     variable tube_local   : integer;
     variable tube_layer   : integer;
@@ -57,9 +58,9 @@ package body gldl_l0mdt_textio_pkg is
 
     -- variable
   begin
-    READ(L, BCID);
-    READ(L, global_time);
-    READ(L, tdc_time);
+    READ(L, mdt_ToA);
+    READ(L, mdt_time_coarse);
+    READ(L, mdt_time_fine);
     READ(L, tube_global);
     READ(L, tube_local);
     READ(L, tube_layer);
@@ -82,20 +83,21 @@ package body gldl_l0mdt_textio_pkg is
     -- end if;
 
     VALUE := (
-      global_time => to_unsigned(global_time,64),
+      ToA => to_unsigned(mdt_ToA,32),
       Station => to_unsigned(i_Station,8),
       Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
         chamber_ieta => to_unsigned(chamber,SLC_CHAMBER_LEN),
-        time => to_unsigned(tdc_time,MDT_TIME_LEN),
+        time => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN) & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
         data_valid => '1'
       )
     );
 
-    report "##### HIT : " & integer'image(BCID) &
-    " - " & integer'image(global_time) &
+    report "##### HIT : " & integer'image(mdt_ToA) &
+    " - " & integer'image(mdt_time_coarse) &
+    " - " & integer'image(mdt_time_fine) &
     " - " & integer'image(tube_global) &
     " - " & integer'image(tube_local) &
     " - " & integer'image(tube_layer) &

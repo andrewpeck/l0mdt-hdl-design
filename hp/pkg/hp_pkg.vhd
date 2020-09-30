@@ -80,7 +80,7 @@ package hp_pkg is
     global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     data_valid : std_logic;
   end record hp_hpsPc2hp_rt;
-  constant HP_HPSPC2HP_LEN : integer := 71;
+  constant HP_HPSPC2HP_LEN : integer := 70;
   subtype hp_hpsPc2hp_rvt is std_logic_vector(HP_HPSPC2HP_LEN-1 downto 0);
   function vectorify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rvt;
   function structify(x: hp_hpsPc2hp_rvt) return hp_hpsPc2hp_rt;
@@ -312,9 +312,9 @@ package body hp_pkg is
   function vectorify(x: hp_hpsPc2hp_rt) return hp_hpsPc2hp_rvt is
     variable y : hp_hpsPc2hp_rvt;
   begin
-    y(70 downto 62)            := vectorify(x.tube);
-    y(61 downto 57)            := vectorify(x.layer);
-    y(56 downto 39)            := vectorify(x.time_t0);
+    y(69 downto 61)            := vectorify(x.tube);
+    y(60 downto 56)            := vectorify(x.layer);
+    y(55 downto 39)            := vectorify(x.time_t0);
     y(38 downto 20)            := vectorify(x.global_z);
     y(19 downto 1)             := vectorify(x.global_x);
     y(0 downto 0)              := vectorify(x.data_valid);
@@ -323,9 +323,9 @@ package body hp_pkg is
   function structify(x: hp_hpsPc2hp_rvt) return hp_hpsPc2hp_rt is
     variable y : hp_hpsPc2hp_rt;
   begin
-    y.tube                     := structify(x(70 downto 62));
-    y.layer                    := structify(x(61 downto 57));
-    y.time_t0                  := structify(x(56 downto 39));
+    y.tube                     := structify(x(69 downto 61));
+    y.layer                    := structify(x(60 downto 56));
+    y.time_t0                  := structify(x(55 downto 39));
     y.global_z                 := structify(x(38 downto 20));
     y.global_x                 := structify(x(19 downto 1));
     y.data_valid               := structify(x(0 downto 0));

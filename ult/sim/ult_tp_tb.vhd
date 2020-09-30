@@ -313,7 +313,7 @@ begin
   HIT_SLC: process ( rst, clk)
 
     -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
-    file input_slc_file         : text open read_mode is "slc_TB_A3_Barrel_old.txt";
+    file input_slc_file         : text open read_mode is "slc_TB_A3_Barrel.txt";
     variable row                : line;
     variable row_counter        : integer := 0;
     -- variable tdc_time           : UNSIG_64;
@@ -401,7 +401,7 @@ begin
   HIT_READ: process ( rst, clk)
 
     -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
-    file input_mdt_tar_file       : text open read_mode is "csm_TB_A3_Barrel_old.txt";
+    file input_mdt_tar_file       : text open read_mode is "csm_TB_A3_Barrel.txt";
     variable row                  : line;
     variable row_counter          : integer := 0;
 
@@ -505,7 +505,7 @@ begin
 
         -- read from input vector file
         RL : while true loop
-          if (v_mdt_event.global_time < tb_curr_time) then
+          if (v_mdt_event.ToA < tb_curr_time) then
             -- i_mdt_tar_av <= mdt_tar_event_r.tar;
             if (endfile(input_mdt_tar_file) = false) then
 

@@ -105,12 +105,12 @@ package body heg_pkg is
     return y;
   end function vectorify;
   function vectorify(x: heg_pc2heg_at) return std_logic_vector is
-    variable msb : integer := x'length*71-1;
+    variable msb : integer := x'length*70-1;
     variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-71+1) := vectorify(x(i));
-      msb := msb - 71;
+      y(msb downto msb-70+1) := vectorify(x(i));
+      msb := msb - 70;
     end loop l;
     return y;
   end function vectorify;
@@ -127,8 +127,8 @@ package body heg_pkg is
     variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-71+1));
-      msb := msb - 71;
+      y(i) := structify(x(msb downto msb-70+1));
+      msb := msb - 70;
     end loop l;
     return y;
   end function structify;

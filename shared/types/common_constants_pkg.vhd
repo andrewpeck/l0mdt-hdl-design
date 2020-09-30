@@ -41,7 +41,7 @@ package common_constants_pkg is
 
   constant MDT_LAYER_LEN : integer := TAR2HPS_LAYER_LEN;
 
-  constant MDT_TIME_LEN : integer := 18;
+  constant MDT_TIME_LEN : integer := TDC_COARSETIME_LEN + TDC_FINETIME_LEN;
 
   constant UCM_VEC_ANG_LEN : integer := UCM2HPS_VEC_ANG_LEN;
 

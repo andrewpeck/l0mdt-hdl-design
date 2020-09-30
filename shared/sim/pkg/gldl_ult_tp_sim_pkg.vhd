@@ -13,7 +13,7 @@ use shared_lib.common_types_pkg.all;
 package gldl_ult_tp_sim_pkg is
 
   type input_tar_rt is record
-    global_time : unsigned(64-1 downto 0);
+    ToA : unsigned(32-1 downto 0);
     station : unsigned(8-1 downto 0);
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     tar : tar2hps_rt;
@@ -65,7 +65,7 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: input_tar_rt) return input_tar_rvt is
     variable y : input_tar_rvt;
   begin
-    y(111 downto 48)           := vectorify(x.global_time);
+    y(111 downto 48)           := vectorify(x.ToA);
     y(47 downto 40)            := vectorify(x.station);
     y(39 downto 36)            := vectorify(x.chamber);
     y(35 downto 0)             := vectorify(x.tar);
@@ -74,7 +74,7 @@ package body gldl_ult_tp_sim_pkg is
   function structify(x: input_tar_rvt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
-    y.global_time              := structify(x(111 downto 48));
+    y.ToA                      := structify(x(111 downto 48));
     y.station                  := structify(x(47 downto 40));
     y.chamber                  := structify(x(39 downto 36));
     y.tar                      := structify(x(35 downto 0));
@@ -83,7 +83,7 @@ package body gldl_ult_tp_sim_pkg is
   function nullify(x: input_tar_rt) return input_tar_rt is
     variable y : input_tar_rt;
   begin
-    y.global_time              := nullify(x.global_time);
+    y.ToA                      := nullify(x.ToA);
     y.station                  := nullify(x.station);
     y.chamber                  := nullify(x.chamber);
     y.tar                      := nullify(x.tar);
