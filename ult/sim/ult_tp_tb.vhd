@@ -505,7 +505,7 @@ begin
 
         -- read from input vector file
         RL : while true loop
-          if (v_mdt_event.global_time + TIME_SLC_MDT_DELAY < tb_curr_time) then
+          if (v_mdt_event.global_time < tb_curr_time) then
             -- i_mdt_tar_av <= mdt_tar_event_r.tar;
             if (endfile(input_mdt_tar_file) = false) then
 

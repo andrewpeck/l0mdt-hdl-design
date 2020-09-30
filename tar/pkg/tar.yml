@@ -12,6 +12,6 @@ __config__:
 
 HDL_Types:
 
-- TAR_PL_A_LATENCY  : [ qualifier: constant , type: integer , value: 250 ]
+- TAR_PL_A_LATENCY_dummy  : [ qualifier: constant , type: integer , value: 250 ]
 
 
