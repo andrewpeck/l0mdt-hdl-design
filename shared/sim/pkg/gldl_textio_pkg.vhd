@@ -55,6 +55,7 @@ package body gldl_l0mdt_textio_pkg is
     variable tube_z       : integer;
     variable tube_rho     : integer;
     variable tube_radius  : integer;
+    variable event        : integer;
 
     -- variable
   begin
@@ -71,6 +72,7 @@ package body gldl_l0mdt_textio_pkg is
     READ(L, tube_z);
     READ(L, tube_rho);
     READ(L, tube_radius);
+    READ(L, event);
 
     -- if c_station = "I" then 
     --   i_station := 0;
@@ -83,7 +85,7 @@ package body gldl_l0mdt_textio_pkg is
     -- end if;
 
     VALUE := (
-      ToA => to_unsigned(mdt_ToA,32),
+      ToA => to_unsigned(mdt_ToA,64),
       Station => to_unsigned(i_Station,8),
       Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
       tar => (  
@@ -119,8 +121,8 @@ package body gldl_l0mdt_textio_pkg is
     variable nTC          : integer; 
     variable TC_sent      : integer; 
     variable TC_id        : integer; 
-    variable Eta          : integer; 
-    variable Phi          : integer; 
+    variable Eta          : real; 
+    variable Phi          : real; 
     variable pT_thr       : integer; 
     variable Charge       : integer; 
     variable Coincidence  : integer; 
@@ -180,8 +182,8 @@ package body gldl_l0mdt_textio_pkg is
       header      => header,
       slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
       tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
-      poseta      => to_signed(Eta, SLC_COMMON_POSETA_LEN) ,
-      posphi      => to_unsigned(Phi, SLC_COMMON_POSPHI_LEN) , 
+      poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+      posphi      => to_unsigned(integer(Phi * SLC_COMMON_POSPHI_MULT), SLC_COMMON_POSPHI_LEN) , 
       sl_pt       => ( others => '0'),
       sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
       sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
@@ -225,8 +227,8 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(nTC) &
     " - " & integer'image(TC_sent) &
     " - " & integer'image(TC_id) &
-    " - " & integer'image(Eta) &
-    " - " & integer'image(Phi) &
+    " - " & real'image(Eta) &
+    " - " & real'image(Phi) &
     " - " & integer'image(pT_thr) &
     " - " & integer'image(Charge) &
     " - " & integer'image(Coincidence) &

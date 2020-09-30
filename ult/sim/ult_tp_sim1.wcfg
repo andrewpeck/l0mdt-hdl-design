@@ -54,19 +54,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="4969832fs"></ZoomStartTime>
-      <ZoomEndTime time="5216033fs"></ZoomEndTime>
-      <Cursor1Time time="5015582fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="28467229fs"></ZoomEndTime>
+      <Cursor1Time time="17739634fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="316"></NameColumnWidth>
-      <ValueColumnWidth column_width="107"></ValueColumnWidth>
+      <ValueColumnWidth column_width="95"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
-   <wave_markers>
-      <marker label="" time="2878766" />
-      <marker label="" time="2919378" />
-   </wave_markers>
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
       <obj_property name="ObjectShortName">.clk</obj_property>
@@ -86,6 +82,28 @@
       <obj_property name="label">TB_IV</obj_property>
       <obj_property name="DisplayName">label</obj_property>
       <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r">
+         <obj_property name="ElementShortName">mdt_tar_event_r</obj_property>
+         <obj_property name="ObjectShortName">mdt_tar_event_r</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r.ToA">
+            <obj_property name="ElementShortName">.ToA[63:0]</obj_property>
+            <obj_property name="ObjectShortName">.ToA[63:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r.station">
+            <obj_property name="ElementShortName">.station[7:0]</obj_property>
+            <obj_property name="ObjectShortName">.station[7:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r.chamber">
+            <obj_property name="ElementShortName">.chamber[3:0]</obj_property>
+            <obj_property name="ObjectShortName">.chamber[3:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r.tar">
+            <obj_property name="ElementShortName">.tar</obj_property>
+            <obj_property name="ObjectShortName">.tar</obj_property>
+         </wvobject>
+      </wvobject>
       <wvobject type="array" fp_name="/ult_tp/i_mdt_tar_inn_ar">
          <obj_property name="ElementShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
          <obj_property name="ObjectShortName">i_mdt_tar_inn_ar[5:0]</obj_property>
@@ -110,6 +128,56 @@
          <obj_property name="ElementShortName">i_main_primary_slc_ar[2:0]</obj_property>
          <obj_property name="ObjectShortName">i_main_primary_slc_ar[2:0]</obj_property>
          <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2]">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">[2]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[2].data_valid">
+               <obj_property name="ElementShortName">.data_valid</obj_property>
+               <obj_property name="ObjectShortName">.data_valid</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2].common">
+               <obj_property name="ElementShortName">.common</obj_property>
+               <obj_property name="ObjectShortName">.common</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2].specific">
+               <obj_property name="ElementShortName">.specific[84:0]</obj_property>
+               <obj_property name="ObjectShortName">.specific[84:0]</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/i_main_primary_slc_ar[2].data_valid">
+               <obj_property name="ElementShortName">.data_valid</obj_property>
+               <obj_property name="ObjectShortName">.data_valid</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2].common">
+               <obj_property name="ElementShortName">.common</obj_property>
+               <obj_property name="ObjectShortName">.common</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2].specific">
+               <obj_property name="ElementShortName">.specific[84:0]</obj_property>
+               <obj_property name="ObjectShortName">.specific[84:0]</obj_property>
+            </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[1]">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">[1]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0]">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">[0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[2]">
+            <obj_property name="ElementShortName">[2]</obj_property>
+            <obj_property name="ObjectShortName">[2]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[1]">
+            <obj_property name="ElementShortName">[1]</obj_property>
+            <obj_property name="ObjectShortName">[1]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/i_main_primary_slc_ar[0]">
+            <obj_property name="ElementShortName">[0]</obj_property>
+            <obj_property name="ObjectShortName">[0]</obj_property>
+         </wvobject>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group2003">
@@ -857,7 +925,6 @@
    <wvobject type="group" fp_name="group2018">
       <obj_property name="label">HPS_INN</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="group" fp_name="group815">
          <obj_property name="label">main</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -1684,10 +1751,6 @@
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
             </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(5)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
-            </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(5)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>
                <obj_property name="ObjectShortName">tdc_hitmatch_valid</obj_property>
@@ -1755,10 +1818,6 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(4)\/Hit_Processor/mdt_data">
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
-            </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(4)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(4)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>
@@ -1828,10 +1887,6 @@
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
             </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(3)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
-            </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(3)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>
                <obj_property name="ObjectShortName">tdc_hitmatch_valid</obj_property>
@@ -1900,10 +1955,6 @@
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
             </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
-            </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>
                <obj_property name="ObjectShortName">tdc_hitmatch_valid</obj_property>
@@ -1968,40 +2019,11 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data">
                <obj_property name="ElementShortName">slc_data</obj_property>
                <obj_property name="ObjectShortName">slc_data</obj_property>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.bcid">
-                  <obj_property name="ElementShortName">.bcid[11:0]</obj_property>
-                  <obj_property name="ObjectShortName">.bcid[11:0]</obj_property>
-                  <obj_property name="isExpanded"></obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.specific">
-                  <obj_property name="ElementShortName">.specific[18:0]</obj_property>
-                  <obj_property name="ObjectShortName">.specific[18:0]</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.data_valid">
-                  <obj_property name="ElementShortName">.data_valid</obj_property>
-                  <obj_property name="ObjectShortName">.data_valid</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.bcid">
-                  <obj_property name="ElementShortName">.bcid[11:0]</obj_property>
-                  <obj_property name="ObjectShortName">.bcid[11:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.specific">
-                  <obj_property name="ElementShortName">.specific[18:0]</obj_property>
-                  <obj_property name="ObjectShortName">.specific[18:0]</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/slc_data.data_valid">
-                  <obj_property name="ElementShortName">.data_valid</obj_property>
-                  <obj_property name="ObjectShortName">.data_valid</obj_property>
-               </wvobject>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/mdt_data">
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
                <obj_property name="isExpanded"></obj_property>
-            </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>
@@ -2015,19 +2037,6 @@
                <obj_property name="ElementShortName">data_2_sf_r</obj_property>
                <obj_property name="ObjectShortName">data_2_sf_r</obj_property>
                <obj_property name="isExpanded"></obj_property>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/data_2_sf_r.data">
-                  <obj_property name="ElementShortName">.data</obj_property>
-                  <obj_property name="ObjectShortName">.data</obj_property>
-                  <obj_property name="isExpanded"></obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/data_2_sf_r.mdt_valid">
-                  <obj_property name="ElementShortName">.mdt_valid</obj_property>
-                  <obj_property name="ObjectShortName">.mdt_valid</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/data_2_sf_r.data_valid">
-                  <obj_property name="ElementShortName">.data_valid</obj_property>
-                  <obj_property name="ObjectShortName">.data_valid</obj_property>
-               </wvobject>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(1)\/Hit_Processor/int_hit_valid">
                <obj_property name="ElementShortName">int_hit_valid</obj_property>
@@ -2084,10 +2093,6 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(0)\/Hit_Processor/mdt_data">
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
-            </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(0)\/Hit_Processor/tdc_time_comp_valid">
-               <obj_property name="ElementShortName">tdc_time_comp_valid</obj_property>
-               <obj_property name="ObjectShortName">tdc_time_comp_valid</obj_property>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(0)\/Hit_Processor/tdc_hitmatch_valid">
                <obj_property name="ElementShortName">tdc_hitmatch_valid</obj_property>

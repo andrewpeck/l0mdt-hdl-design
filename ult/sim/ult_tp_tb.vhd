@@ -48,7 +48,9 @@ entity ult_tp is
   generic (
     DUMMY       : boolean := false;
     EN_TAR_HITS : integer := 1;
-    EN_MDT_HITS : integer := 0
+    EN_MDT_HITS : integer := 0;
+    IN_SLC_FILE : string  := "slc_TB_A3_Barrel_d_new.txt";
+    IN_MDT_FILE : string  := "csm_TB_A3_Barrel_d_new.txt"
     );
 end entity ult_tp;
 
@@ -313,7 +315,7 @@ begin
   HIT_SLC: process ( rst, clk)
 
     -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
-    file input_slc_file         : text open read_mode is "slc_TB_A3_Barrel.txt";
+    file input_slc_file         : text open read_mode is IN_SLC_FILE;
     variable row                : line;
     variable row_counter        : integer := 0;
     -- variable tdc_time           : UNSIG_64;
@@ -401,7 +403,7 @@ begin
   HIT_READ: process ( rst, clk)
 
     -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
-    file input_mdt_tar_file       : text open read_mode is "csm_TB_A3_Barrel.txt";
+    file input_mdt_tar_file       : text open read_mode is IN_MDT_FILE;
     variable row                  : line;
     variable row_counter          : integer := 0;
 
