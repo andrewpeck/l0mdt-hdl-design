@@ -161,7 +161,11 @@ begin
   UCM_CVP : process(rst,clk) begin
     if rising_edge(clk) then
 
-      vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
+      if slope < 2047 then
+        vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
+      else
+        vec_ang_pl <= (others => '1');
+      end if;
       
       if rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop

@@ -75,7 +75,6 @@ architecture beh of ucm_cvp_b_slope is
   type num_at is array ( 0 to 5) of integer;
   signal num_h : num_at;
 
-  -- signal slope_mult : signal()
 
 begin
 
@@ -196,16 +195,13 @@ begin
               when others => 
             end case;
 
-            -- dv_chain(0) <= '1';
           else
             rad_a <= (others => (others => '0'));
             rpc_a <= (others => (others => '0'));
             num_h(0) <= 0;
-            -- dv_chain(0) <= '0';
           end if;
 
           -- if dv_chain(0) = '1' then
-            -- num_h(1) <= num_h(0);
             if num_h(0) = 2 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2));
@@ -250,20 +246,13 @@ begin
               sum_zz <= (others => '0');
               sqr_sum_z <= (others => '0');
             end if;
-            -- dv_chain(1) <= '1';
           -- else
-            -- dv_chain(1) <= '0';
           -- end if;
 
           -- if dv_chain(1) = '1' then
-            -- num_h(2) <= num_h(1);
-            --
-            b_nom <= (num_h(1) * sum_zy) - (sum_y(0) * sum_Z(0));
-            b_den <= (num_h(1) * sum_zz) - sqr_sum_z;
-            --
-            -- dv_chain(2) <= '1';
+          b_nom <= (num_h(1) * sum_zy) - (sum_y(0) * sum_Z(0));
+          b_den <= (num_h(1) * sum_zz) - sqr_sum_z;
           -- else
-            -- dv_chain(2) <= '0';
           -- end if;
 
           if dv_chain(2) = '1' then
@@ -271,31 +260,30 @@ begin
             --
             e_y <= (sum_y(1) * 1024) / num_h(2);
             e_z <= sum_Z(1) / num_h(2);
-            --
-            -- dv_chain(3) <= '1';
           else
             int_slope <= (others => '0');
             e_y <= (others => '0');
             e_z <= (others => '0');
-            -- dv_chain(3) <= '0';
           end if;
-
-          int_slope_2 <= int_slope;
+          
           -- if dv_chain(3) = '1' then
-            
+          int_slope_2 <= int_slope;
           s_e_z <= (int_slope * e_z);
           e_y_2 <= e_y;
+          -- else
+          -- end if;
           
-          o_slope <= int_slope_2;
-          o_offset <= (e_y_2) - s_e_z;
+          if dv_chain(4) = '1' then
+            o_slope <= int_slope_2;
+            o_offset <= (e_y_2) - s_e_z;
             -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
             --
             -- dv_chain(4) <= '1';
-          -- else
-            -- o_slope <= (others => '0');
-            -- o_offset <= (others => '0');
+          else
+            o_slope <= (others => '0');
+            o_offset <= (others => '0');
             -- dv_chain(4) <= '0';
-          -- end if;
+          end if;
 
 
           
