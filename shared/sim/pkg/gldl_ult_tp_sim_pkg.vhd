@@ -13,7 +13,7 @@ use shared_lib.common_types_pkg.all;
 package gldl_ult_tp_sim_pkg is
 
   type input_tar_rt is record
-    ToA : unsigned(32-1 downto 0);
+    ToA : unsigned(64-1 downto 0);
     station : unsigned(8-1 downto 0);
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     tar : tar2hps_rt;

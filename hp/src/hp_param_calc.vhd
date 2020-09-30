@@ -47,8 +47,9 @@ entity hp_paramCalc is
     -- to Segment finder
     o_tube_radius       : out unsigned(MDT_RADIUS_LEN -1 downto 0);
     o_local_y           : out unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
-    o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0)
-    -- o_data_valid        : out std_logic
+    o_local_x           : out unsigned(MDT_LOCAL_X_LEN-1 downto 0);
+    o_ml                : out std_logic;
+    o_data_valid        : out std_logic
   );
 end entity hp_paramCalc;
 
@@ -102,6 +103,34 @@ begin
     o_local_x       => o_local_x  
 
   );
+
+  ML_CALC: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        
+      else
+        if i_data_valid = '1' then
+          if g_STATION_RADIUS = 0 then
+            if i_mdt_layer < 4 then
+              o_ml <= '0';
+            else
+              o_ml <= '1';
+            end if;
+          else
+            if i_mdt_layer < 3 then
+              o_ml <= '0';
+            else
+              o_ml <= '1';
+            end if;
+          end if;
+        else
+          o_ml <= '0';
+        end if;
+        
+      end if;
+    end if;
+  end process ML_CALC;
 
 end beh;
 

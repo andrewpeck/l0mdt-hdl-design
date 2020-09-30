@@ -55,7 +55,7 @@ architecture beh of hit_processor is
   signal slc_data             : hp_heg2hp_slc_rt;
   signal mdt_data             : hp_hpsPc2hp_rt;
   -- signal tdc_time_t0          : mdt_time_le_st;
-  signal tdc_time_comp_valid  : std_logic;
+  -- signal tdc_time_comp_valid  : std_logic;
   signal tdc_hitmatch_valid   : std_logic;
   signal tdc_paramcalc_valid  : std_logic;
 
@@ -92,8 +92,8 @@ begin
     i_mdt_time_real     => mdt_data.time_t0,
     i_data_valid        => mdt_data.data_valid,
     -- to Segment finder
-    o_hit_valid         => int_hit_valid
-    -- o_data_valid        => tdc_hitmatch_valid
+    o_hit_valid         => int_hit_valid,
+    o_data_valid        => tdc_hitmatch_valid
 
   );
 
@@ -118,8 +118,9 @@ begin
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
     o_local_x           => data_2_sf_r.data.local_x,
-    o_local_y           => data_2_sf_r.data.local_y
-    -- o_data_valid        => tdc_paramcalc_valid
+    o_local_y           => data_2_sf_r.data.local_y,
+    o_ml                => data_2_sf_r.data.mlayer,
+    o_data_valid        => tdc_paramcalc_valid
 
   );
 

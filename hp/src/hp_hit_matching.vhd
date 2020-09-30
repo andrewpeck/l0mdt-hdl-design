@@ -56,8 +56,8 @@ entity hp_matching is
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
     i_data_valid         : in std_logic;
     -- to Segment finder
-    o_hit_valid         : out std_logic
-    -- o_data_valid        : out std_logic
+    o_hit_valid         : out std_logic;
+    o_data_valid        : out std_logic
   );
 end entity hp_matching;
 
@@ -94,16 +94,28 @@ begin
         -- time
         time_valid <= '0';
       else
-        -- space
-        if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
-          space_valid <= '1';
+
+        o_data_valid <= i_data_valid;
+
+        if i_data_valid = '1' then
+          -- space
+          if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
+            space_valid <= '1';
+          else
+            space_valid <= '0';
+          end if;
+          -- time
+          if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
+            time_valid <= '1';
+          else
+            time_valid <= '0';
+          end if;
+          --valid
+          -- o_data_valid <= trLUT_valid;
+        else
+          space_valid <= '0';
+          time_valid <= '0';
         end if;
-        -- time
-        if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
-          time_valid <= '1';
-        end if;
-        --valid
-        -- o_data_valid <= trLUT_valid;
       end if;
     end if;
   end process;

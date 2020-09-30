@@ -51,7 +51,8 @@ HDL_Types:
   - time_t0     : [ type: unsigned , length: MDT_TIME_LEN ]
   - global_z    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
   - global_x    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
-  - data_valid  : [type: logic]
+  # - mlayer      : [ type: logic ]
+  - data_valid  : [ type: logic ]
 
 # -----------------------------------------------------------
 #  hit out
