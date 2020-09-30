@@ -85,7 +85,7 @@ package body gldl_l0mdt_textio_pkg is
     -- end if;
 
     VALUE := (
-      ToA => to_unsigned(mdt_ToA,64),
+      ToA => to_unsigned(integer(real(mdt_ToA) * (32.0/25.0)),64),
       Station => to_unsigned(i_Station,8),
       Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
       tar => (  
