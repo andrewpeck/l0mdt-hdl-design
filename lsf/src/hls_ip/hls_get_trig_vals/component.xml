@@ -392,7 +392,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>24201448</spirit:value>
+            <spirit:value>4414953e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -408,7 +408,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>fd708dbb</spirit:value>
+            <spirit:value>9849217c</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -424,7 +424,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>ebd367e2</spirit:value>
+            <spirit:value>31b60698</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -440,7 +440,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e1724d64</spirit:value>
+            <spirit:value>11685ec0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -891,67 +891,67 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_0.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutbkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_0_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutbkb_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_1.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutcud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_1_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutcud_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_2.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutdEe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_2_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutdEe_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_3.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luteOg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_3_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luteOg_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_4.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutfYi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_4_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutfYi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_5.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutg8j.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_5_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutg8j_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_6.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luthbi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_6_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luthbi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_7.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutibs.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_7_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutibs_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
@@ -962,75 +962,75 @@
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_0.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutbkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_0_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutbkb_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_1.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutcud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_1_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutcud_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_2.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutdEe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_2_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutdEe_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_3.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luteOg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_3_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luteOg_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_4.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutfYi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_4_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutfYi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_5.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutg8j.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_5_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutg8j_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_6.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luthbi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_6_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_luthbi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_7.v</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutibs.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/get_trig_vals_lut_tables_7_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/get_trig_vals_lutibs_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
@@ -1047,82 +1047,82 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_0.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutbkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_2.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutdEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_3.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_luteOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_4.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutfYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_5.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutg8j.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_6.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_luthbi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_7.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutibs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/get_trig_vals.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_b44fb57f</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_550e72be</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_0.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutbkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutcud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_2.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutdEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_3.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_luteOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_4.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutfYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_5.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutg8j.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_6.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_luthbi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/get_trig_vals_lut_tables_7.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/get_trig_vals_lutibs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -1201,13 +1201,13 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Get_trig_vals</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009041325</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-04T20:25:24Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2009301403</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-09-30T21:03:40Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2019.1.1</xilinx:xilinxVersion>
+      <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="30ce88c7"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="6fac231d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="155aa39b"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="237f38e5"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="5699f31e"/>
     </xilinx:packagingInfo>

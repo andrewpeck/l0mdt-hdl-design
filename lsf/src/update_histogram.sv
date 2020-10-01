@@ -11,7 +11,10 @@
 //--      
 //--------------------------------------------------------------------------------
 `timescale 1ns/1ps
-module update_histogram (
+module update_histogram #(
+			 parameter THETA_BINS=128
+			 )
+  (
         input 		   clk,
         input 		   rst_n,
       	input logic [7:0]  r_bin_V_TDATA,
@@ -35,6 +38,9 @@ module update_histogram (
    logic [3:0] 		   hist_acc_rd;
    logic [3:0] 		   hist_acc_rddata;
    logic [3:0] 		   war_next_write;
+
+   logic [7:0] 		   counter;
+   
    
 // logic [127:0] 	   histogram_reset_state;
    logic 		   reset_seq;
@@ -80,7 +86,7 @@ module update_histogram (
 
    always @ (posedge clk)
      begin
-	if (~rst_n)
+	if (~rst_n | (~reset_rbins & ~enable_V))
 	  begin
 	     reset_seq             <= 1;
 	     hist_acc_wren         <= 0;
@@ -104,8 +110,10 @@ module update_histogram (
 	     hist_acc_wraddr       <= 0;
 	     hist_acc_wren         <= 0;
 	     hist_acc_wrdata       <= 0;
+	     counter               <= 0;
+	     
 	  end
-	else if (enable_V)
+	else if (~reset_rbins & enable_V)
 	  begin
 	     reset_seq             <= 0;
 	     hist_acc_wren         <= (r_bin_V_TDATA_d1[7] == 0)? r_bin_V_TVALID_d1 : 1'b0;
@@ -127,6 +135,8 @@ module update_histogram (
 	     
 	     hist_acc_rdaddr_d0    <= hist_acc_rdaddr;
 	     hist_acc_rdaddr_d1    <= hist_acc_rdaddr_d0;
+
+	     counter               <= 0;
 	     
 //	     if(bin_reset_state == 1)
 	     if(r_bin_V_TVALID_d1)
@@ -153,7 +163,7 @@ module update_histogram (
 	else if (reset_rbins)
 	  begin
 	     hist_acc_wraddr       <= (hist_acc_wraddr == 7'h7f)? 0 : hist_acc_wraddr + 1;
-	     hist_acc_wren         <= 1;
+	     hist_acc_wren         <= (counter == THETA_BINS)? 0 : 1;
 	     hist_acc_wrdata       <= 0;
 	     r_val_V_TDATA         <= 0;
 	     r_bin_out_TDATA       <= 0;
@@ -173,7 +183,11 @@ module update_histogram (
 	     hist_acc_rdaddr_d0    <= 0;
 	     hist_acc_rdaddr_d1    <= 0;
 	     war                   <= 0;
-	  end
+	     counter               <= (counter == THETA_BINS)? counter : counter + 1;
+	     
+	  end // if (reset_rbins)
+	
+	 
      end
 
 

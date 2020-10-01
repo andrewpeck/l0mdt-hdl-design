@@ -19,8 +19,8 @@
 `endif
 
 module lsf_spybuffer_wrapper #(
-			       parameter LSF_SB_MEM_WIDTH    = 6,			       
-			       parameter LSF_SB_EL_MEM_WIDTH = 4
+			       parameter LSF_SB_MEM_WIDTH    = 10,			       
+			       parameter LSF_SB_EL_MEM_WIDTH = 10
 			       )
   (
    // main TP clock, nominally 200 MHz
@@ -118,7 +118,7 @@ module lsf_spybuffer_wrapper #(
 				 // to use the spy-buffer functionality, whereas for now we just
 				 // want to use the fifo functionality.
 				 .freeze(sb_lsf_mdt_hits_freeze),
-				 .playback(sb_lsf_mdt_hits_playback),
+				 .playback(0),//sb_lsf_mdt_hits_playback),
 				 .playback_write_enable(sb_lsf_mdt_hits_playback_we),
 				 .playback_write_data(sb_lsf_mdt_hits_playback_wdata),
 				 .spy_read_enable(sb_lsf_mdt_hits_re),

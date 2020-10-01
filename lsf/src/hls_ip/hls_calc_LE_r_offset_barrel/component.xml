@@ -138,7 +138,7 @@
       </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
-      <spirit:name>slcvec_pos_Z_V</spirit:name>
+      <spirit:name>hewindow_pos_ref_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
       <spirit:slave/>
@@ -148,13 +148,13 @@
             <spirit:name>DATA</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>slcvec_pos_Z_V</spirit:name>
+            <spirit:name>hewindow_pos_ref_V</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
-      <spirit:name>slcvec_pos_Rho_V</spirit:name>
+      <spirit:name>hewindow_pos_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
       <spirit:slave/>
@@ -164,13 +164,13 @@
             <spirit:name>DATA</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>slcvec_pos_Rho_V</spirit:name>
+            <spirit:name>hewindow_pos_V</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
-      <spirit:name>hewindow_pos_Z_V</spirit:name>
+      <spirit:name>slcvec_pos_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
       <spirit:slave/>
@@ -180,13 +180,13 @@
             <spirit:name>DATA</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>hewindow_pos_Z_V</spirit:name>
+            <spirit:name>slcvec_pos_V</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
-      <spirit:name>hewindow_pos_Rho_V</spirit:name>
+      <spirit:name>slcvec_pos_ref_V</spirit:name>
       <spirit:busType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data" spirit:version="1.0"/>
       <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="signal" spirit:name="data_rtl" spirit:version="1.0"/>
       <spirit:slave/>
@@ -196,7 +196,7 @@
             <spirit:name>DATA</spirit:name>
           </spirit:logicalPort>
           <spirit:physicalPort>
-            <spirit:name>hewindow_pos_Rho_V</spirit:name>
+            <spirit:name>slcvec_pos_ref_V</spirit:name>
           </spirit:physicalPort>
         </spirit:portMap>
       </spirit:portMaps>
@@ -216,7 +216,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>282db600</spirit:value>
+            <spirit:value>0c0a29de</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -232,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>22026ca5</spirit:value>
+            <spirit:value>9f2f3139</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>bc4d9392</spirit:value>
+            <spirit:value>8c8dd97d</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -264,7 +264,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>7dcebf8b</spirit:value>
+            <spirit:value>2ac0dae3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -320,19 +320,6 @@
       </spirit:view>
     </spirit:views>
     <spirit:ports>
-      <spirit:port>
-        <spirit:name>roi_seed_r_V_ap_vld</spirit:name>
-        <spirit:wire>
-          <spirit:direction>out</spirit:direction>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>STD_LOGIC</spirit:typeName>
-              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
       <spirit:port>
         <spirit:name>ap_clk</spirit:name>
         <spirit:wire>
@@ -463,24 +450,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>slcvec_pos_Z_V</spirit:name>
-        <spirit:wire>
-          <spirit:direction>in</spirit:direction>
-          <spirit:vector>
-            <spirit:left spirit:format="long">13</spirit:left>
-            <spirit:right spirit:format="long">0</spirit:right>
-          </spirit:vector>
-          <spirit:wireTypeDefs>
-            <spirit:wireTypeDef>
-              <spirit:typeName>std_logic_vector</spirit:typeName>
-              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
-              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
-            </spirit:wireTypeDef>
-          </spirit:wireTypeDefs>
-        </spirit:wire>
-      </spirit:port>
-      <spirit:port>
-        <spirit:name>slcvec_pos_Rho_V</spirit:name>
+        <spirit:name>hewindow_pos_ref_V</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
@@ -497,7 +467,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>hewindow_pos_Z_V</spirit:name>
+        <spirit:name>hewindow_pos_V</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
@@ -514,7 +484,24 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>hewindow_pos_Rho_V</spirit:name>
+        <spirit:name>slcvec_pos_V</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:vector>
+            <spirit:left spirit:format="long">13</spirit:left>
+            <spirit:right spirit:format="long">0</spirit:right>
+          </spirit:vector>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic_vector</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>slcvec_pos_ref_V</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
@@ -541,11 +528,11 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/calc_LE_r_offset_barrel_mac_muladd_18s_20s_38s_38_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/calc_LE_r_offset_bkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/calc_LE_r_offset_barrel_mul_mul_18s_21s_38_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/calc_LE_r_offset_cud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -556,12 +543,12 @@
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/verilog/calc_LE_r_offset_barrel_mac_muladd_18s_20s_38s_38_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/calc_LE_r_offset_bkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/calc_LE_r_offset_barrel_mul_mul_18s_21s_38_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/calc_LE_r_offset_cud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -579,28 +566,28 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/calc_LE_r_offset_barrel_mac_muladd_18s_20s_38s_38_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/calc_LE_r_offset_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/calc_LE_r_offset_barrel_mul_mul_18s_21s_38_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/calc_LE_r_offset_cud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/calc_LE_r_offset_barrel.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_38ebfb23</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_d3078193</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/vhdl/calc_LE_r_offset_barrel_mac_muladd_18s_20s_38s_38_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/calc_LE_r_offset_bkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/calc_LE_r_offset_barrel_mul_mul_18s_21s_38_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/calc_LE_r_offset_cud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -662,7 +649,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>latency</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">3</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">5</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>II</spirit:name>
@@ -672,22 +659,22 @@
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
-        <xilinx:family xilinx:lifeCycle="Pre-Production">zynquplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Pre-Production">kintexuplus</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>/VIVADO_HLS_IP</xilinx:taxonomy>
       </xilinx:taxonomies>
       <xilinx:displayName>Calc_le_r_offset_barrel</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009021055</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-02T17:55:34Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2009301336</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-09-30T20:37:08Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2019.1.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="97822303"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="da721f6a"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="20a988da"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="306c5411"/>
+      <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="1dddfa39"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="7831b1d8"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="d99a5ff8"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="eeb78517"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>
