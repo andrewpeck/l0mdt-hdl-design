@@ -1,5 +1,5 @@
 dataformats/l0mdt_buses_constants.svh
-IP/lsf/histogram_memory_128x4/histogram_memory_128x4.xcix
+IP/lsf/histogram_memory_128x4.xcix
 IP/lsf/compute_r_bins_hls.xcix  
 IP/lsf/get_legendre_segment_barrel_hls.xcix  
 IP/lsf/get_rom_addr_hls.xcix  
