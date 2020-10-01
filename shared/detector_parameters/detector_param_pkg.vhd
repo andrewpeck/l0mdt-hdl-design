@@ -40,8 +40,10 @@ package detector_param_pkg is
   type ys_barrel is array ( 0 to 1) of barrel_stations_radius;
   constant barrel_radius : ys_barrel :=(
   -- rpc0 - rpc1 - rpc2 - rpc3
-    (5000.0,7000.0,7500.0,10000.0), -- odd sectors
-    (5300.0,7600.0,8500.0,10000.0)  -- even sectors
+    (5157.0,6727.0,7626.0,9755.0), -- odd sectors / impar
+    -- (5000.0,7000.0,7500.0,10000.0), -- odd sectors
+    (5300.0,7600.0,8500.0,10000.0)  -- even sectors / par
+    -- (5300.0,7600.0,8500.0,10000.0)  -- even sectors
   );
 
   function get_barrel_radius ( sector, r_i: integer) return signed;
@@ -223,11 +225,11 @@ package body detector_param_pkg is
     variable r: real;
     variable r_c: integer;
   begin
-    if (sector mod 2) = 0 then
-      r:= barrel_radius(0)(r_i);
+    if (sector mod 2) = 0 then --even -- par
+      r:= barrel_radius(1)(r_i);
       -- y:= to_signed((barrel_radius(0)(r_i) / SLC_Z_RPC_MULT),SLC_Z_RPC_LEN);
     else
-      r:= barrel_radius(1)(r_i);
+      r:= barrel_radius(0)(r_i); --odd impar
       -- y:= to_signed((barrel_radius(1)(r_i) / SLC_Z_RPC_MULT),SLC_Z_RPC_LEN);
     end if;
     r_c := integer(r * SLC_Z_RPC_MULT);

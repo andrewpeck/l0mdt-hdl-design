@@ -63,8 +63,8 @@ end entity hp_matching;
 
 architecture beh of hp_matching is
 
-  signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
-  signal trLUT_valid : std_logic;
+  -- signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
+  -- signal trLUT_valid : std_logic;
 
   signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
