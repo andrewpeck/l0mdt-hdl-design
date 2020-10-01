@@ -47,7 +47,7 @@ entity hp_matching is
     -- SLc
     i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     -- i_SLc_rpc_z         : in SLc_zpos_st;
-    -- i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
+    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- i_SLc_z0            : in SLc_zpos_st;
     -- i_SLc_Rho0          : in SLc_zpos_st;
     -- MDT hit
@@ -76,8 +76,8 @@ begin
 
   Roi_window <= structify(i_SLC_Window);
 
-  time_high_limit <= to_unsigned(HP_BCID_OFFSET_TIME,time_high_limit'length);
-  time_low_limit <= to_unsigned(0,time_low_limit'length);
+  time_high_limit <= to_unsigned((to_integer(i_SLc_BCID) *25) + HP_BCID_OFFSET_TIME,time_high_limit'length);
+  time_low_limit <= to_unsigned((to_integer(i_SLc_BCID) *25),time_low_limit'length);
 
   o_hit_valid <= space_valid and time_valid;
 

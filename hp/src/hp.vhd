@@ -87,7 +87,7 @@ begin
     -- SLc
     i_SLC_Window        => i_SLC_Window,
     -- i_SLc_rpc_z         => i_slc_data_av.barrel.z,
-    -- i_SLc_BCID          => slc_data.BCID,
+    i_SLc_BCID          => slc_data.BCID,
     -- MDT hit
     i_mdt_layer         => mdt_data.layer,
     i_mdt_tube          => mdt_data.tube,
