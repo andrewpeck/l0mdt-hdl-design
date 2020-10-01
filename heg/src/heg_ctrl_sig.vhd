@@ -154,7 +154,7 @@ begin
               o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
               o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
               o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
-              o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
+              
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '0';
@@ -171,15 +171,21 @@ begin
             end if;
 
           when SET_WINDOW =>
+            if holesize_dv = '1' then
+              o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
+            end if;
 
             if z_win_org_dv = '1' then
+
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';
                 o_hp_control_r(hp_i).rst <= '0';
               end loop;
+
               o_sf_control_r.enable <= '1';
               o_sf_control_r.rst <= '0';
               o_sf_control_r.eof <= '0';
+
               if c_ST_nBARREL_ENDCAP = '0' then -- barrel
                 o_uCM2hp_data_r.specific <= vectorify(b_data);
               else --endcap
