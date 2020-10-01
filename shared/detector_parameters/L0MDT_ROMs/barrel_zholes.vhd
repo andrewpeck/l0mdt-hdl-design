@@ -96,6 +96,8 @@ begin
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
             o_spaces <= to_unsigned(zh_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+          else
+            o_spaces <= (others => '0');
           end if;
         end if;
       end if ;

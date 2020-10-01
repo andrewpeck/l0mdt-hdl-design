@@ -70,7 +70,7 @@ architecture beh of heg_ctrl_sig is
 
   signal holesize         : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
   signal holesize_dv      : std_logic;
-  signal z_win_org        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  -- signal z_win_org        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal z_win_org_dv     : std_logic;
 
 begin
@@ -154,6 +154,7 @@ begin
               o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
               o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
               o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
+              o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '0';
