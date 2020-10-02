@@ -46,4 +46,6 @@ update_ip_catalog
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs synth_1]
 
+set_property top top_ult [current_fileset]
+
 # synth_design -rtl -name rtl_1
