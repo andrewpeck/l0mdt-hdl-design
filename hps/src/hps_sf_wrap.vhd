@@ -49,11 +49,11 @@ entity hps_sf_wrap is
     glob_en             : in std_logic;
 
     -- control
-    csf_ctrl            : in  H2S_HPS_CSF_CTRL_t;
-    csf_mon             : out H2S_HPS_CSF_MON_t;
+    csf_ctrl            : in  H2S_HPS_CSF_CSF_CTRL_t;
+    csf_mon             : out H2S_HPS_CSF_CSF_MON_t;
 
-    lsf_ctrl            : in  H2S_HPS_LSF_CTRL_t;
-    lsf_mon             : out H2S_HPS_LSF_MON_t;
+    lsf_ctrl            : in  H2S_HPS_LSF_LSF_CTRL_t;
+    lsf_mon             : out H2S_HPS_LSF_LSF_MON_t;
 
     -- configuration
     i_control_v         : in heg_ctrl2sf_rvt;
