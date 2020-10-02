@@ -31,10 +31,6 @@ library tar_lib;
 use tar_lib.tar_pkg.all;
 
 entity mdt_tar is
-  generic (
-    EN_TAR_HITS : integer := 1;
-    EN_MDT_HITS : integer := 0
-    );
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
@@ -44,15 +40,15 @@ entity mdt_tar is
     ttc_commands      : in  l0mdt_ttc_rt;
     -- Sector Logic Candidates
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits  : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits  : in  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits  : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits  : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
     -- TDC polmux from Tar
     o_inner_tdc_hits  : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
     o_middle_tdc_hits : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -83,12 +79,12 @@ begin
   --         o_middle_tar_hits <= nullify(o_middle_tar_hits);º
   --         o_outer_tar_hits  <= nullify(o_outer_tar_hits);
   --         o_extra_tar_hits  <= nullify(o_extra_tar_hits);
-  --       elsif (EN_MDT_HITS = 1) then
+  --       elsif (c_EN_MDT_HITS = 1) then
   --         o_inner_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
   --         o_middle_tar_hits <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
   --         o_outer_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
   --         o_extra_tar_hits  <= (others => (others => xor_reduce(tdc_hit_inner_sump)));
-  --       elsif (EN_TAR_HITS = 1) then
+  --       elsif (c_EN_TAR_HITS = 1) then
   --         o_inner_tar_hits  <= i_inner_tar_hits;
   --         o_middle_tar_hits <= i_middle_tar_hits;
   --         o_outer_tar_hits  <= i_outer_tar_hits;
@@ -97,7 +93,7 @@ begin
   --     end if;
   --   end process TAR;
 
-  --   NO_MAPPING_GEN : if EN_TAR_HITS = 0 generate
+  --   NO_MAPPING_GEN : if c_EN_TAR_HITS = 0 generate
 
   --   sump_proc : process (clock_and_control.clk) is
   --   begin  -- process tdc_hit_sump_proc
@@ -124,10 +120,6 @@ begin
   TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
     TAR : entity tar_lib.tar
-    generic map (
-          EN_TAR_HITS => EN_TAR_HITS,
-          EN_MDT_HITS => EN_MDT_HITS
-          )
     port map (
       -- clock, control, and monitoring
       clk             => clock_and_control.clk,

@@ -89,6 +89,8 @@ package config_pkg is
   --------------------------------------------------------------------------------
   constant c_TAR_ENABLED            : std_logic := CFG.ENABLE_TAR;
   constant c_TAR_INSEL              : std_logic := CFG.INSEL_MDT_nTAR;
+  constant c_EN_MDT_HITS            : integer   := to_integer(unsigned'('0' & c_TAR_INSEL));
+  constant c_EN_TAR_HITS            : integer   := to_integer(unsigned'('0' & (not c_TAR_INSEL)));
 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
 

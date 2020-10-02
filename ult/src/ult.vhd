@@ -37,9 +37,7 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity ult is
   generic (
-    DUMMY       : boolean := false;
-    EN_TAR_HITS : integer := 1;
-    EN_MDT_HITS : integer := 0
+    DUMMY       : boolean := false
     );
   port (
     -- clock and ttc
@@ -70,16 +68,16 @@ entity ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc        : in  slc_rx_bus_avt(2 downto 0);  -- is the main SL used
@@ -156,10 +154,6 @@ begin
     TAR_GEN : if c_TAR_ENABLED generate
 
       TAR : entity work.mdt_tar
-        generic map (
-          EN_TAR_HITS => EN_TAR_HITS,
-          EN_MDT_HITS => EN_MDT_HITS
-          )
         port map (
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,  --
