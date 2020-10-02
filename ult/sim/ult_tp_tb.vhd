@@ -47,8 +47,6 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 entity ult_tp is
   generic (
     DUMMY       : boolean := false;
-    EN_TAR_HITS : integer := 1;
-    EN_MDT_HITS : integer := 0;
     IN_SLC_FILE : string  := "slc_TB_A3_Barrel_d_new.txt";
     IN_MDT_FILE : string  := "csm_TB_A3_Barrel_d_new.txt"
     );
@@ -80,16 +78,16 @@ architecture beh of ult_tp is
   signal mpl_mon  :  MPL_MON_t;
 
   -- TDC Hits from Polmux
-  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_mdt_tar_out_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
@@ -135,10 +133,10 @@ architecture beh of ult_tp is
   ---------------------------------------------------------------------------
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_ar :  tar2hps_bus_at (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_mdt_tar_mid_ar :  tar2hps_bus_at (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_mdt_tar_out_ar :  tar2hps_bus_at (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_mdt_tar_ext_ar :  tar2hps_bus_at (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_mdt_tar_inn_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal i_mdt_tar_mid_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal i_mdt_tar_out_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal i_mdt_tar_ext_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- Sector Logic Candidates
   signal i_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
@@ -202,8 +200,6 @@ begin
 
   ULT : entity ult_lib.ult
     generic map(
-      EN_TAR_HITS => 1,
-      EN_MDT_HITS => 0,
       DUMMY       => false
       )
     port map(
