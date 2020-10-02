@@ -8,29 +8,54 @@ __config__:
 
 HDL_Types:
 
-- H2S_HPS_LSF_MON_t:
+- H2S_HPS_LSF_LSF_MON_t:
   - STATUS : [ type: logic ]
+  - sb_lsf_mdt_hits_rdata_31_0 : [ type: logic, length: 32 ]
+  - sb_lsf_mdt_hits_rdata_40_32 : [ type: logic, length: 9 ]
+
+- H2S_HPS_LSF_LSF_MON_t_ARRAY: [array: 2, type: H2S_HPS_LSF_LSF_MON_t]
+
+- H2S_HPS_LSF_LSF_CTRL_t:
+  - RESET : [ type: logic ]
+  - HBA_MAX_CLOCKS : [ type: logic, length: 10, description:add some description ]
+  - sb_lsf_mdt_hits_freeze : [ type: logic ]
+  - sb_lsf_mdt_hits_raddr : [ type: logic, length: 8 ]
+  - sb_lsf_mdt_hits_re : [ type: logic ]
+
+- H2S_HPS_LSF_LSF_CTRL_t_ARRAY: [array: 2, type: H2S_HPS_LSF_LSF_CTRL_t]
+
+- H2S_HPS_LSF_MON_t:
+  - LSF : [ type: H2S_HPS_LSF_LSF_MON_t_ARRAY ]
 
 
 - H2S_HPS_LSF_CTRL_t:
-  - RESET : [ type: logic ]
-  - HBA_MAX_CLOCKS : [ type: logic, length: 10, description:add some description ]
+  - LSF : [ type: H2S_HPS_LSF_LSF_CTRL_t_ARRAY ]
 
 
-- H2S_HPS_CSF_MON_t:
+- H2S_HPS_CSF_CSF_MON_t:
   - STATUS : [ type: logic ]
   - READY : [ type: logic ]
+
+- H2S_HPS_CSF_CSF_MON_t_ARRAY: [array: 2, type: H2S_HPS_CSF_CSF_MON_t]
+
+- H2S_HPS_CSF_CSF_CTRL_t:
+  - RESET : [ type: logic ]
+
+- H2S_HPS_CSF_CSF_CTRL_t_ARRAY: [array: 2, type: H2S_HPS_CSF_CSF_CTRL_t]
+
+- H2S_HPS_CSF_MON_t:
+  - CSF : [ type: H2S_HPS_CSF_CSF_MON_t_ARRAY ]
 
 
 - H2S_HPS_CSF_CTRL_t:
-  - RESET : [ type: logic ]
+  - CSF : [ type: H2S_HPS_CSF_CSF_CTRL_t_ARRAY ]
 
 
 - H2S_HPS_MON_t:
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
   - LSF : [ type: H2S_HPS_LSF_MON_t ]
   - CSF : [ type: H2S_HPS_CSF_MON_t ]
+  - STATUS : [ type: logic ]
+  - READY : [ type: logic ]
 
 - H2S_HPS_MON_t_ARRAY: [array: 3, type: H2S_HPS_MON_t]
 

@@ -231,10 +231,7 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY       => false,
-      EN_TAR_HITS => 0,
-      EN_MDT_HITS => 1
-      )
+      DUMMY       => false)
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
