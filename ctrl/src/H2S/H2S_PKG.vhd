@@ -7,7 +7,8 @@ use IEEE.std_logic_1164.all;
 package H2S_CTRL is
   type H2S_HPS_LSF_LSF_MON_t is record
     STATUS                     :std_logic;   
-    sb_lsf_mdt_hits_rdata      :std_logic_vector(31 downto 0);
+    sb_lsf_mdt_hits_rdata_31_0  :std_logic_vector(31 downto 0);
+    sb_lsf_mdt_hits_rdata_40_32  :std_logic_vector( 8 downto 0);
   end record H2S_HPS_LSF_LSF_MON_t;
   type H2S_HPS_LSF_LSF_MON_t_ARRAY is array(0 to 2) of H2S_HPS_LSF_LSF_MON_t;
 
@@ -15,7 +16,7 @@ package H2S_CTRL is
     RESET                      :std_logic;   
     HBA_MAX_CLOCKS             :std_logic_vector( 9 downto 0);  -- add some description
     sb_lsf_mdt_hits_freeze     :std_logic;                    
-    sb_lsf_mdt_hits_raddr      :std_logic_vector(15 downto 0);
+    sb_lsf_mdt_hits_raddr      :std_logic_vector( 7 downto 0);
     sb_lsf_mdt_hits_re         :std_logic;                    
   end record H2S_HPS_LSF_LSF_CTRL_t;
   type H2S_HPS_LSF_LSF_CTRL_t_ARRAY is array(0 to 2) of H2S_HPS_LSF_LSF_CTRL_t;

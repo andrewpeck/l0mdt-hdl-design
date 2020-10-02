@@ -177,7 +177,8 @@ begin
           sb_lsf_mdt_hits_freeze        => lsf_ctrl.sb_lsf_mdt_hits_freeze,
           sb_lsf_mdt_hits_re            => lsf_ctrl.sb_lsf_mdt_hits_re,
           sb_lsf_mdt_hits_raddr         => lsf_ctrl.sb_lsf_mdt_hits_raddr,
-          sb_lsf_mdt_hits_rdata         => lsf_mon.sb_lsf_mdt_hits_rdata 
+          sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
+          sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
           );
 
     end generate;
