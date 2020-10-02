@@ -7,5 +7,6 @@ heg/src/heg_ctrl_top.vhd 2008
 heg/src/heg_ctrl_sig.vhd 2008
 heg/src/heg_ctrl_roi.vhd 2008
 heg/src/heg_ctrl_roi_b_z.vhd 2008
-heg/src/heg_ctrl_roi_b_slope.vhd 2008
+heg/src/heg_ctrl_roi_b_slope_6l.vhd 2008
+heg/src/heg_ctrl_roi_b_slope_8l.vhd 2008
 heg/src/heg.vhd 2008
