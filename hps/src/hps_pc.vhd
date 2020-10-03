@@ -155,7 +155,7 @@ begin
           mdt_full_data_r.global_z <= global_z + holesize;
           mdt_full_data_r.global_x <= global_x;
           --
-          mdt_full_data_r.time_t0 <= mdt_tar_data(2).time + time_t0;
+          mdt_full_data_r.time_t0 <= mdt_tar_data(2).time - time_t0;
           --
           mdt_full_data_r.layer   <= mdt_tar_data(2).layer;
           mdt_full_data_r.tube    <= mdt_tar_data(2).tube;

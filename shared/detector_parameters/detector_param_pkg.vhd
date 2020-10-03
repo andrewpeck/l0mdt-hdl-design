@@ -32,7 +32,8 @@ package detector_param_pkg is
   --
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
-  constant HP_BCID_OFFSET_TIME  : integer := 575; -- cycles
+  constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
+  constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------

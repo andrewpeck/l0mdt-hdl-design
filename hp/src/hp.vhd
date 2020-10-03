@@ -59,11 +59,13 @@ architecture beh of hit_processor is
   signal tdc_hitmatch_valid   : std_logic;
   signal tdc_hitmatch_valid_pl: std_logic;
   signal tdc_paramcalc_valid  : std_logic;
-  signal mdt_valid_pl : std_logic;
+
+  signal hm2pl      : std_logic_vector(1 downto 0);
+  signal plout_hm   : std_logic_vector(1 downto 0);
   
   signal data_2_sf_r          : hp_hp2bm_rt;
 
-  signal int_hit_valid       : std_logic;
+  
 
 begin
 
@@ -94,8 +96,8 @@ begin
     i_mdt_time_real     => mdt_data.time_t0,
     i_data_valid        => mdt_data.data_valid,
     -- to Segment finder
-    o_hit_valid         => int_hit_valid,
-    o_data_valid        => tdc_hitmatch_valid
+    o_hit_valid         => hm2pl(0),
+    o_data_valid        => hm2pl(1)
 
   );
 
@@ -128,34 +130,34 @@ begin
 
   dv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 1,
-    num_bits      => 1
+    num_delays    => 2,
+    num_bits      => 2
   )
   port map(
     clk               => clk,
     rst               => rst,
     glob_en           => glob_en,
     --
-    i_data(0)         => tdc_hitmatch_valid,
-    o_data(0)         => tdc_hitmatch_valid_pl
+    i_data            => hm2pl,
+    o_data            => plout_hm
   );
 
-  hv_delay : entity shared_lib.std_pipeline
-  generic map(
-    num_delays    => 1,
-    num_bits      => 1
-  )
-  port map(
-    clk               => clk,
-    rst               => rst,
-    glob_en           => glob_en,
-    --
-    i_data(0)         => int_hit_valid,
-    o_data(0)         => mdt_valid_pl
-  );
+  -- hv_delay : entity shared_lib.std_pipeline
+  -- generic map(
+  --   num_delays    => 2,
+  --   num_bits      => 1
+  -- )
+  -- port map(
+  --   clk               => clk,
+  --   rst               => rst,
+  --   glob_en           => glob_en,
+  --   --
+  --   i_data(0)         => int_hit_valid,
+  --   o_data(0)         => mdt_valid_pl
+  -- );
 
-  data_2_sf_r.mdt_valid <= mdt_valid_pl;
-  data_2_sf_r.data_valid <= tdc_hitmatch_valid_pl and tdc_paramcalc_valid;
+  data_2_sf_r.mdt_valid <= plout_hm(0);
+  data_2_sf_r.data_valid <= plout_hm(1) and tdc_paramcalc_valid;
 
 end beh;
 
