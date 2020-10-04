@@ -130,7 +130,7 @@ begin
 
   dv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 2,
+    num_delays    => 1,
     num_bits      => 2
   )
   port map(

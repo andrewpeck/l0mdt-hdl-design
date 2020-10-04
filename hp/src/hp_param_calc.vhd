@@ -112,6 +112,8 @@ begin
 
   );
 
+  o_data_valid <= local_dv and radius_dv;
+  
   ML_CALC: process(clk)
   begin
     if rising_edge(clk) then
@@ -122,7 +124,7 @@ begin
         o_local_y <= pl_local_y;
         o_local_x <= pl_local_x;
         local_dv <= pl_local_dv;
-        o_data_valid <= local_dv and radius_dv;
+        
         o_ml <= pl_ml;
 
         if i_data_valid = '1' then
