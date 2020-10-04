@@ -2,11 +2,11 @@
 <xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="get_rom_addr" xd:componentRef="get_rom_addr" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
   <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
   <xd:arg xd:name="theta_for_lut" xd:originalName="theta_for_lut" xd:direction="in" xd:interfaceRef="theta_for_lut_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
-  <xd:arg xd:name="*(rom_index)" xd:originalName="rom_index" xd:direction="out" xd:interfaceRef="rom_index_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="3" xd:firstOut="3"/>
-  <xd:arg xd:name="*(lut_start_addr)" xd:originalName="lut_start_addr" xd:direction="out" xd:interfaceRef="lut_start_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="12" xd:firstOut="3"/>
-  <xd:arg xd:name="lbins0_gbl1" xd:originalName="lbins0_gbl1" xd:direction="in" xd:interfaceRef="lbins0_gbl1_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1" xd:firstOut="3"/>
-  <xd:arg xd:name="slcvec_offset_angle_int" xd:originalName="slcvec_offset_angle_int" xd:direction="in" xd:interfaceRef="slcvec_offset_angle_int_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="11" xd:firstOut="3"/>
-  <xd:arg xd:name="*(slcvec_angle_polar_offset_mrad)" xd:originalName="slcvec_angle_polar_offset_mrad" xd:direction="out" xd:interfaceRef="slcvec_angle_polar_offset_mrad_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="3"/>
-  <xd:latencyEstimates xd:best-case="4" xd:worst-case="4" xd:average-case="4"/>
-  <xd:resourceEstimates xd:LUT="236" xd:FF="260" xd:BRAM="0" xd:DSP="0"/>
+  <xd:arg xd:name="*(rom_index)" xd:originalName="rom_index" xd:direction="out" xd:interfaceRef="rom_index_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="3" xd:firstOut="2"/>
+  <xd:arg xd:name="*(lut_start_addr)" xd:originalName="lut_start_addr" xd:direction="out" xd:interfaceRef="lut_start_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="12" xd:firstOut="2"/>
+  <xd:arg xd:name="lbins0_gbl1" xd:originalName="lbins0_gbl1" xd:direction="in" xd:interfaceRef="lbins0_gbl1_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1" xd:firstOut="2"/>
+  <xd:arg xd:name="slcvec_offset_angle_int" xd:originalName="slcvec_offset_angle_int" xd:direction="in" xd:interfaceRef="slcvec_offset_angle_int_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="11" xd:firstOut="2"/>
+  <xd:arg xd:name="*(slcvec_angle_polar_offset_mrad)" xd:originalName="slcvec_angle_polar_offset_mrad" xd:direction="out" xd:interfaceRef="slcvec_angle_polar_offset_mrad_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="2"/>
+  <xd:latencyEstimates xd:best-case="3" xd:worst-case="3" xd:average-case="3"/>
+  <xd:resourceEstimates xd:LUT="170" xd:FF="95" xd:BRAM="0" xd:DSP="0"/>
 </xd:acceleratorMap>

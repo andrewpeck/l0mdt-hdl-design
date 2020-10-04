@@ -2,14 +2,14 @@ Top/lsf/prj_cfg.vhd
 ctrl/ctrl_lib.src lib=ctrl_lib
 shared/shared_lib.src lib=shared_lib
 dataformats/l0mdt_buses_constants.svh
-IP/lsf/compute_r_bins_hls.xcix
-IP/lsf/get_rom_addr_hls.xcix
-IP/lsf/histogram_memory_128x4.xcix
-IP/lsf/hls_find_max_bin.xcix
-IP/lsf/get_legendre_segment_barrel_hls.xcix
-IP/lsf/get_trig_vals_hls.xcix
-IP/lsf/hls_calc_LE_r_offset_barrel.xcix
-IP/lsf/hls_load_LE_refPos.xcix
+IP/lsf/histogram_memory_128x4/histogram_memory_128x4.xci
+IP/lsf/hls_compute_r_bins/hls_compute_r_bins.xci  
+IP/lsf/hls_get_legendre_segment_barrel/hls_get_legendre_segment_barrel.xci
+P/lsf/hls_get_rom_addr/hls_get_rom_addr.xci
+IP/lsf/hls_get_trig_vals/hls_get_trig_vals.xci
+IP/lsf/hls_find_max_bin/hls_find_max_bin.xci
+IP/lsf/hls_calc_LE_r_offset_barrel/hls_calc_LE_r_offset_barrel.xci
+IP/lsf/hls_load_LE_refPos/hls_load_LE_refPos.xci
 lsf/src/update_histogram.sv
 lsf/src/legendreEngine.sv
 IP_repository/SpyBuffer/aFifo/aFifo.v 

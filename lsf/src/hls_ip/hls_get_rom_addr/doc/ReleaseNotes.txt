@@ -6,5 +6,5 @@
 Family       : kintexuplus
 Device       : xcku15p
 Package      : -ffva1760
-Speed Grade  : -1LV-i
+Speed Grade  : -2-e
 Clock Period : 3.125 ns

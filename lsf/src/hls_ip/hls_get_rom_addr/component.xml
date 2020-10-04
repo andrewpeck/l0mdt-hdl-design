@@ -200,7 +200,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>cdfc1846</spirit:value>
+            <spirit:value>49eff9c7</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -216,7 +216,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a13dc09f</spirit:value>
+            <spirit:value>ab4df492</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -232,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>583301ba</spirit:value>
+            <spirit:value>c8281f3f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>daa7f2cb</spirit:value>
+            <spirit:value>ea5f0d96</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -517,7 +517,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/get_rom_addr.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_daa7f2cb</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_ea5f0d96</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -580,7 +580,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>latency</spirit:name>
-      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">4</spirit:value>
+      <spirit:value spirit:id="PARAM_VALUE.latency" spirit:order="5">3</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>II</spirit:name>
@@ -597,15 +597,15 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Get_rom_addr</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009301412</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-30T21:12:12Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2010021037</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-10-02T17:37:33Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="9b257252"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="5b5931b7"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="96cf0ff1"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="b56d6c53"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="4e7f695c"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="b5801fdb"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

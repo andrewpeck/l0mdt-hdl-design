@@ -46,7 +46,8 @@ package body prj_cfg is
     proj_cfg.ENABLE_SF                := '1';
     proj_cfg.SF_TYPE                  := '1';  -- 0: CSF 1:LSF
     proj_cfg.ENABLE_PT                := '1';
-    proj_cfg.PT_TYPE                := '1';       
+    --proj_cfg.PT_ENABLE                := '1';       
+    proj_cfg.PT_TYPE                  := '1';       
     proj_cfg.ENABLE_DAQ               := '0';
     proj_cfg.ENABLE_MTC               := '1';
 

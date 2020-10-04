@@ -20,5 +20,5 @@
   <xd:arg xd:name="rom_idx" xd:originalName="rom_idx" xd:direction="in" xd:interfaceRef="rom_idx_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="3" xd:firstOut="3"/>
   <xd:arg xd:name="lut_start_addr" xd:originalName="lut_start_addr" xd:direction="in" xd:interfaceRef="lut_start_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="12" xd:firstOut="3"/>
   <xd:latencyEstimates xd:best-case="4" xd:worst-case="4" xd:average-case="4"/>
-  <xd:resourceEstimates xd:LUT="1475" xd:FF="1057" xd:BRAM="8" xd:DSP="0"/>
+  <xd:resourceEstimates xd:LUT="1475" xd:FF="909" xd:BRAM="8" xd:DSP="0"/>
 </xd:acceleratorMap>
