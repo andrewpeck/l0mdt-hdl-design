@@ -159,6 +159,8 @@ begin
         lasthit <= 0;
         readhit <= '0';
 
+        loop_done_v := 0;
+
         next_read <= (5,4,3,2,1,0);
 
         fifo_rd <= (others => '0');
@@ -173,21 +175,90 @@ begin
 
         -- fifo_empty_next <= fifo_empty;
         fifo_rd <= (others => '0');
+        -- loop_done_v := 0;
+
+        -- for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+        --   -- loop until read
+        --   if loop_done_v = 0 then
+        --     -- something to read
+        --     if fifo_empty(next_read(hp_i)) = '0' then
+        --       -- same fifo check real hit waiting
+        --       if lasthit = next_read(hp_i) then
+        --         if fifo_used(hp_i) > 1 then
+        --           fifo_rd(next_read(hp_i)) <= '1';
+        --           lasthit <= next_read(hp_i);
+        --           last_read_v := hp_i;
+        --         else
+        --           fifo_rd(next_read(hp_i)) <= '0';
+        --         end if;
+        --       -- first time this fifo
+        --       else
+        --         fifo_rd(next_read(hp_i)) <= '1';
+        --         lasthit <= next_read(hp_i);
+        --         last_read_v := hp_i;
+        --       end if;
+            
+        --     else
+
+        --     end if;
+        --     loop_done_v := 1;
+        --   else
+        --     -- HIT readed, nothing to do
+        --   end if;
+
+
+        -- end loop;
+
+        -- if loop_done_v = 0 then
+        --   fifo_rd <= (others => '0');
+        --   lasthit <= 10;
+        --   last_read_v := 0;
+        -- end if;
 
         if fifo_empty(next_read(5)) = '0' then
-          fifo_rd(next_read(5)) <= '1';
-          lasthit <= next_read(5);
-          last_read_v := 5;
+          if lasthit = next_read(5) then
+            if fifo_used(5) > 1 then
+              fifo_rd(next_read(5)) <= '1';
+              lasthit <= next_read(5);
+              last_read_v := 5;
+            else
+              fifo_rd(next_read(5)) <= '0';
+            end if;
+          else
+            fifo_rd(next_read(5)) <= '1';
+            lasthit <= next_read(5);
+            last_read_v := 5;
+          end if;
 
         elsif fifo_empty(next_read(4)) = '0' then
-          fifo_rd(next_read(4)) <= '1';
-          lasthit <= next_read(4); 
-          last_read_v := 4;
+          if lasthit = next_read(4) then
+            if fifo_used(4) > 1 then
+              fifo_rd(next_read(4)) <= '1';
+              lasthit <= next_read(4);
+              last_read_v := 4;
+            else
+              fifo_rd(next_read(4)) <= '0';
+            end if;
+          else
+            fifo_rd(next_read(4)) <= '1';
+            lasthit <= next_read(4);
+            last_read_v := 4;
+          end if;
 
         elsif fifo_empty(next_read(3)) = '0' then
-          fifo_rd(next_read(3)) <= '1';
-          lasthit <= next_read(3);
-          last_read_v := 3;
+          if lasthit = next_read(3) then
+            if fifo_used(3) > 1 then
+              fifo_rd(next_read(3)) <= '1';
+              lasthit <= next_read(3);
+              last_read_v := 3;
+            else
+              fifo_rd(next_read(3)) <= '0';
+            end if;
+          else
+            fifo_rd(next_read(3)) <= '1';
+            lasthit <= next_read(3);
+            last_read_v := 3;
+          end if;
 
         elsif fifo_empty(next_read(2)) = '0' then
           if lasthit = next_read(2) then
@@ -205,9 +276,19 @@ begin
           end if;
 
         elsif fifo_empty(next_read(1)) = '0' then
-          fifo_rd(next_read(1)) <= '1';
-          lasthit <= next_read(1);
-          last_read_v := 1;
+          if lasthit = next_read(1) then
+            if fifo_used(1) > 1 then
+              fifo_rd(next_read(1)) <= '1';
+              lasthit <= next_read(1);
+              last_read_v := 1;
+            else
+              fifo_rd(next_read(1)) <= '0';
+            end if;
+          else
+            fifo_rd(next_read(1)) <= '1';
+            lasthit <= next_read(1);
+            last_read_v := 1;
+          end if;
 
         elsif fifo_empty(next_read(0)) = '0' then
 
