@@ -344,7 +344,7 @@ module legendreEngine(
 `ifdef RUN_SIM	   
      get_legendre_segment_barrel get_legendre_segment_barrel_inst(
 `else								   
-   get_legendre_segment_barrel_hls get_legendre_segment_barrel_inst(
+   hls_get_legendre_segment_barrel get_legendre_segment_barrel_inst(
 `endif								  
 								  .ap_clk(clk),
 								  .ap_rst(ap_rst),
@@ -424,7 +424,7 @@ module legendreEngine(
 `ifdef RUN_SIM	   
 	   compute_r_bins compute_r_bins_inst(
 `else
-	   compute_r_bins_hls compute_r_bins_inst(
+	   hls_compute_r_bins compute_r_bins_inst(
 `endif
 					      .ap_clk(clk),
 					      .ap_rst_n(ap_rst_n),
@@ -981,7 +981,7 @@ module legendreEngine(
 		    gra_total_bins       <= 0;
 		    hba_ap_ready_reg     <= hba_ap_ready_d0;
  		   // gra_ap_start         <= (counter == find_max_bin_latency -1)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;
- 		    gra_ap_start         <= (counter ==  find_max_bin_latency)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;						  
+ 		    gra_ap_start         <= (counter ==  find_max_bin_latency - 1)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;						  
  	            histogram_reset_n    <= 1'h1;						  	    		    
 		    if(hba_results_rdy)
 		    begin
@@ -1021,7 +1021,7 @@ module legendreEngine(
 `ifdef RUN_SIM	   
 get_rom_addr get_rom_addr_inst(
 `else
-get_rom_addr_hls get_rom_addr_inst(
+hls_get_rom_addr get_rom_addr_inst(
 `endif
 				.ap_clk(clk),
 				.ap_rst(ap_rst_gra), //|hba_reset_fo[0]),
@@ -1044,7 +1044,7 @@ get_rom_addr_hls get_rom_addr_inst(
 `ifdef RUN_SIM	     
 get_trig_vals get_trig_vals_inst(
 `else
-get_trig_vals_hls get_trig_vals_inst(
+hls_get_trig_vals get_trig_vals_inst(
 `endif
 				 .ap_clk(clk),
 				 .ap_rst((ap_rst_gra)), // | hba_reset)),

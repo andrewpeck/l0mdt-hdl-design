@@ -29,7 +29,7 @@ end;
 architecture behav of compute_r_bins is 
     attribute CORE_GENERATION_INFO : STRING;
     attribute CORE_GENERATION_INFO of behav : architecture is
-    "compute_r_bins,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku15p-ffva1760-1LV-i,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.455500,HLS_SYN_LAT=6,HLS_SYN_TPT=2,HLS_SYN_MEM=0,HLS_SYN_DSP=1,HLS_SYN_FF=241,HLS_SYN_LUT=178,HLS_VERSION=2019_2_1}";
+    "compute_r_bins,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku15p-ffva1760-2-e,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.453333,HLS_SYN_LAT=6,HLS_SYN_TPT=2,HLS_SYN_MEM=0,HLS_SYN_DSP=1,HLS_SYN_FF=178,HLS_SYN_LUT=183,HLS_VERSION=2019_2_1}";
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
     constant ap_ST_fsm_pp0_stage0 : STD_LOGIC_VECTOR (1 downto 0) := "01";
@@ -70,45 +70,44 @@ architecture behav of compute_r_bins is
     signal ap_enable_reg_pp0_iter2 : STD_LOGIC := '0';
     signal ap_enable_reg_pp0_iter3 : STD_LOGIC := '0';
     signal trunc_ln1353_fu_127_p1 : STD_LOGIC_VECTOR (11 downto 0);
-    signal trunc_ln1353_reg_201 : STD_LOGIC_VECTOR (11 downto 0);
+    signal trunc_ln1353_reg_199 : STD_LOGIC_VECTOR (11 downto 0);
     signal ap_block_state1_pp0_stage0_iter0 : BOOLEAN;
     signal ap_block_state3_pp0_stage0_iter1 : BOOLEAN;
     signal ap_block_state5_pp0_stage0_iter2 : BOOLEAN;
     signal regslice_both_r_bin_V_U_apdone_blk : STD_LOGIC;
     signal ap_block_state7_pp0_stage0_iter3 : BOOLEAN;
     signal ap_block_pp0_stage0_11001 : BOOLEAN;
-    signal trunc_ln1353_reg_201_pp0_iter1_reg : STD_LOGIC_VECTOR (11 downto 0);
-    signal hw_sin_val_V_read_reg_206 : STD_LOGIC_VECTOR (17 downto 0);
+    signal trunc_ln1353_reg_199_pp0_iter1_reg : STD_LOGIC_VECTOR (11 downto 0);
+    signal hw_sin_val_V_read_reg_204 : STD_LOGIC_VECTOR (17 downto 0);
     signal ap_block_state2_pp0_stage1_iter0 : BOOLEAN;
     signal ap_block_state4_pp0_stage1_iter1 : BOOLEAN;
     signal ap_block_state6_pp0_stage1_iter2 : BOOLEAN;
     signal ap_block_pp0_stage1_11001 : BOOLEAN;
-    signal mdt_localy_V_read_reg_211 : STD_LOGIC_VECTOR (14 downto 0);
-    signal lhs_V_fu_131_p1 : STD_LOGIC_VECTOR (32 downto 0);
-    signal rhs_V_fu_136_p1 : STD_LOGIC_VECTOR (32 downto 0);
+    signal mdt_localy_V_read_reg_209 : STD_LOGIC_VECTOR (14 downto 0);
+    signal zext_ln215_1_cast_reg_214 : STD_LOGIC_VECTOR (11 downto 0);
     signal trunc_ln1353_1_fu_141_p1 : STD_LOGIC_VECTOR (11 downto 0);
-    signal trunc_ln1353_1_reg_226 : STD_LOGIC_VECTOR (11 downto 0);
-    signal lhs_V_1_fu_145_p1 : STD_LOGIC_VECTOR (32 downto 0);
-    signal rhs_V_1_fu_149_p1 : STD_LOGIC_VECTOR (32 downto 0);
-    signal grp_fu_117_p4 : STD_LOGIC_VECTOR (11 downto 0);
-    signal zext_ln215_1_cast_reg_241 : STD_LOGIC_VECTOR (11 downto 0);
+    signal trunc_ln1353_1_reg_220 : STD_LOGIC_VECTOR (11 downto 0);
+    signal tmp_reg_225 : STD_LOGIC_VECTOR (11 downto 0);
     signal ap_enable_reg_pp0_iter1 : STD_LOGIC := '0';
-    signal trunc_ln1_reg_247 : STD_LOGIC_VECTOR (6 downto 0);
-    signal trunc_ln1503_1_reg_252 : STD_LOGIC_VECTOR (6 downto 0);
-    signal zext_ln321_fu_193_p1 : STD_LOGIC_VECTOR (7 downto 0);
-    signal zext_ln321_1_fu_197_p1 : STD_LOGIC_VECTOR (7 downto 0);
+    signal trunc_ln1_reg_231 : STD_LOGIC_VECTOR (6 downto 0);
+    signal trunc_ln1503_1_reg_236 : STD_LOGIC_VECTOR (6 downto 0);
+    signal zext_ln321_fu_191_p1 : STD_LOGIC_VECTOR (7 downto 0);
+    signal zext_ln321_1_fu_195_p1 : STD_LOGIC_VECTOR (7 downto 0);
     signal ap_block_pp0_stage1_subdone : BOOLEAN;
     signal ap_block_pp0_stage0_subdone : BOOLEAN;
     signal ap_block_pp0_stage0_01001 : BOOLEAN;
     signal ap_block_pp0_stage1_01001 : BOOLEAN;
     signal grp_fu_103_p0 : STD_LOGIC_VECTOR (17 downto 0);
+    signal rhs_V_fu_136_p1 : STD_LOGIC_VECTOR (32 downto 0);
+    signal rhs_V_1_fu_149_p1 : STD_LOGIC_VECTOR (32 downto 0);
     signal grp_fu_103_p1 : STD_LOGIC_VECTOR (14 downto 0);
+    signal lhs_V_fu_131_p1 : STD_LOGIC_VECTOR (32 downto 0);
+    signal lhs_V_1_fu_145_p1 : STD_LOGIC_VECTOR (32 downto 0);
     signal grp_fu_103_p2 : STD_LOGIC_VECTOR (32 downto 0);
     signal add_ln1353_fu_153_p2 : STD_LOGIC_VECTOR (11 downto 0);
-    signal add_ln1353_1_fu_158_p2 : STD_LOGIC_VECTOR (11 downto 0);
-    signal add_ln1353_2_fu_173_p2 : STD_LOGIC_VECTOR (11 downto 0);
-    signal add_ln1353_3_fu_178_p2 : STD_LOGIC_VECTOR (11 downto 0);
-    signal grp_fu_103_ce : STD_LOGIC;
+    signal add_ln1353_1_fu_157_p2 : STD_LOGIC_VECTOR (11 downto 0);
+    signal add_ln1353_2_fu_172_p2 : STD_LOGIC_VECTOR (11 downto 0);
+    signal add_ln1353_3_fu_176_p2 : STD_LOGIC_VECTOR (11 downto 0);
     signal ap_NS_fsm : STD_LOGIC_VECTOR (1 downto 0);
     signal ap_reset_idle_pp0 : STD_LOGIC;
     signal ap_idle_pp0 : STD_LOGIC;
@@ -122,23 +121,6 @@ architecture behav of compute_r_bins is
     signal r_bin_V_TVALID_int : STD_LOGIC;
     signal r_bin_V_TREADY_int : STD_LOGIC;
     signal regslice_both_r_bin_V_U_vld_out : STD_LOGIC;
-
-    component compute_r_bins_mubkb IS
-    generic (
-        ID : INTEGER;
-        NUM_STAGE : INTEGER;
-        din0_WIDTH : INTEGER;
-        din1_WIDTH : INTEGER;
-        dout_WIDTH : INTEGER );
-    port (
-        clk : IN STD_LOGIC;
-        reset : IN STD_LOGIC;
-        din0 : IN STD_LOGIC_VECTOR (17 downto 0);
-        din1 : IN STD_LOGIC_VECTOR (14 downto 0);
-        ce : IN STD_LOGIC;
-        dout : OUT STD_LOGIC_VECTOR (32 downto 0) );
-    end component;
-
 
     component regslice_both IS
     generic (
@@ -158,21 +140,6 @@ architecture behav of compute_r_bins is
 
 
 begin
-    compute_r_bins_mubkb_U1 : component compute_r_bins_mubkb
-    generic map (
-        ID => 1,
-        NUM_STAGE => 2,
-        din0_WIDTH => 18,
-        din1_WIDTH => 15,
-        dout_WIDTH => 33)
-    port map (
-        clk => ap_clk,
-        reset => ap_rst_n_inv,
-        din0 => grp_fu_103_p0,
-        din1 => grp_fu_103_p1,
-        ce => grp_fu_103_ce,
-        dout => grp_fu_103_p2);
-
     regslice_both_mdt_r_offset_V_U : component regslice_both
     generic map (
         DataWidth => 24)
@@ -223,7 +190,7 @@ begin
             if (ap_rst_n_inv = '1') then
                 ap_enable_reg_pp0_iter1 <= ap_const_logic_0;
             else
-                if (((ap_const_boolean_0 = ap_block_pp0_stage1_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1))) then 
+                if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_subdone))) then 
                     ap_enable_reg_pp0_iter1 <= ap_const_logic_1;
                 end if; 
             end if;
@@ -237,7 +204,7 @@ begin
             if (ap_rst_n_inv = '1') then
                 ap_enable_reg_pp0_iter2 <= ap_const_logic_0;
             else
-                if (((ap_const_boolean_0 = ap_block_pp0_stage1_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1))) then 
+                if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_subdone))) then 
                     ap_enable_reg_pp0_iter2 <= ap_enable_reg_pp0_iter1;
                 end if; 
             end if;
@@ -251,7 +218,7 @@ begin
             if (ap_rst_n_inv = '1') then
                 ap_enable_reg_pp0_iter3 <= ap_const_logic_0;
             else
-                if (((ap_const_boolean_0 = ap_block_pp0_stage1_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1))) then 
+                if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_subdone))) then 
                     ap_enable_reg_pp0_iter3 <= ap_enable_reg_pp0_iter2;
                 elsif (((ap_const_boolean_0 = ap_block_pp0_stage0_subdone) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_enable_reg_pp0_iter2 = ap_const_logic_0))) then 
                     ap_enable_reg_pp0_iter3 <= ap_const_logic_0;
@@ -304,11 +271,11 @@ begin
     begin
         if (ap_clk'event and ap_clk = '1') then
             if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001))) then
-                hw_sin_val_V_read_reg_206 <= hw_sin_val_V_0_data_reg;
-                mdt_localy_V_read_reg_211 <= mdt_localy_V_0_data_reg;
-                trunc_ln1353_1_reg_226 <= trunc_ln1353_1_fu_141_p1;
-                trunc_ln1503_1_reg_252 <= add_ln1353_3_fu_178_p2(11 downto 5);
-                trunc_ln1_reg_247 <= add_ln1353_1_fu_158_p2(11 downto 5);
+                hw_sin_val_V_read_reg_204 <= hw_sin_val_V_0_data_reg;
+                mdt_localy_V_read_reg_209 <= mdt_localy_V_0_data_reg;
+                trunc_ln1353_1_reg_220 <= trunc_ln1353_1_fu_141_p1;
+                trunc_ln1503_1_reg_236 <= add_ln1353_3_fu_176_p2(11 downto 5);
+                trunc_ln1_reg_231 <= add_ln1353_1_fu_157_p2(11 downto 5);
             end if;
         end if;
     end process;
@@ -331,17 +298,25 @@ begin
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001))) then
-                trunc_ln1353_reg_201 <= trunc_ln1353_fu_127_p1;
-                trunc_ln1353_reg_201_pp0_iter1_reg <= trunc_ln1353_reg_201;
+            if (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001))) then
+                tmp_reg_225 <= grp_fu_103_p2(27 downto 16);
             end if;
         end if;
     end process;
     process (ap_clk)
     begin
         if (ap_clk'event and ap_clk = '1') then
-            if (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001))) then
-                zext_ln215_1_cast_reg_241 <= grp_fu_103_p2(27 downto 16);
+            if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001))) then
+                trunc_ln1353_reg_199 <= trunc_ln1353_fu_127_p1;
+                trunc_ln1353_reg_199_pp0_iter1_reg <= trunc_ln1353_reg_199;
+            end if;
+        end if;
+    end process;
+    process (ap_clk)
+    begin
+        if (ap_clk'event and ap_clk = '1') then
+            if (((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_logic_1 = ap_const_logic_1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001))) then
+                zext_ln215_1_cast_reg_214 <= grp_fu_103_p2(27 downto 16);
             end if;
         end if;
     end process;
@@ -367,10 +342,10 @@ begin
                 ap_NS_fsm <= "XX";
         end case;
     end process;
-    add_ln1353_1_fu_158_p2 <= std_logic_vector(unsigned(add_ln1353_fu_153_p2) + unsigned(zext_ln215_1_cast_reg_241));
-    add_ln1353_2_fu_173_p2 <= std_logic_vector(unsigned(trunc_ln1353_1_reg_226) + unsigned(grp_fu_117_p4));
-    add_ln1353_3_fu_178_p2 <= std_logic_vector(unsigned(add_ln1353_2_fu_173_p2) + unsigned(zext_ln215_1_cast_reg_241));
-    add_ln1353_fu_153_p2 <= std_logic_vector(unsigned(trunc_ln1353_reg_201_pp0_iter1_reg) + unsigned(grp_fu_117_p4));
+    add_ln1353_1_fu_157_p2 <= std_logic_vector(unsigned(add_ln1353_fu_153_p2) + unsigned(zext_ln215_1_cast_reg_214));
+    add_ln1353_2_fu_172_p2 <= std_logic_vector(unsigned(trunc_ln1353_1_reg_220) + unsigned(tmp_reg_225));
+    add_ln1353_3_fu_176_p2 <= std_logic_vector(unsigned(add_ln1353_2_fu_172_p2) + unsigned(zext_ln215_1_cast_reg_214));
+    add_ln1353_fu_153_p2 <= std_logic_vector(unsigned(trunc_ln1353_reg_199_pp0_iter1_reg) + unsigned(tmp_reg_225));
     ap_CS_fsm_pp0_stage0 <= ap_CS_fsm(0);
     ap_CS_fsm_pp0_stage1 <= ap_CS_fsm(1);
         ap_block_pp0_stage0 <= not((ap_const_boolean_1 = ap_const_boolean_1));
@@ -452,17 +427,7 @@ begin
     end process;
 
 
-    grp_fu_103_ce_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage0_11001, ap_block_pp0_stage1_11001)
-    begin
-        if ((((ap_const_logic_1 = ap_CS_fsm_pp0_stage1) and (ap_const_boolean_0 = ap_block_pp0_stage1_11001)) or ((ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0_11001)))) then 
-            grp_fu_103_ce <= ap_const_logic_1;
-        else 
-            grp_fu_103_ce <= ap_const_logic_0;
-        end if; 
-    end process;
-
-
-    grp_fu_103_p0_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, rhs_V_fu_136_p1, rhs_V_1_fu_149_p1, ap_enable_reg_pp0_iter1)
+    grp_fu_103_p0_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, ap_enable_reg_pp0_iter1, rhs_V_fu_136_p1, rhs_V_1_fu_149_p1)
     begin
         if (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0))) then 
             grp_fu_103_p0 <= rhs_V_1_fu_149_p1(18 - 1 downto 0);
@@ -474,7 +439,7 @@ begin
     end process;
 
 
-    grp_fu_103_p1_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, lhs_V_fu_131_p1, lhs_V_1_fu_145_p1, ap_enable_reg_pp0_iter1)
+    grp_fu_103_p1_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_block_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1, ap_enable_reg_pp0_iter1, lhs_V_fu_131_p1, lhs_V_1_fu_145_p1)
     begin
         if (((ap_enable_reg_pp0_iter1 = ap_const_logic_1) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0) and (ap_const_boolean_0 = ap_block_pp0_stage0))) then 
             grp_fu_103_p1 <= lhs_V_1_fu_145_p1(15 - 1 downto 0);
@@ -485,7 +450,7 @@ begin
         end if; 
     end process;
 
-    grp_fu_117_p4 <= grp_fu_103_p2(27 downto 16);
+    grp_fu_103_p2 <= std_logic_vector(IEEE.numeric_std.resize(unsigned(std_logic_vector(signed(grp_fu_103_p0) * signed(grp_fu_103_p1))), 33));
 
     hw_cos_val_V_0_ack_out_assign_proc : process(ap_CS_fsm_pp0_stage1, ap_block_pp0_stage1_11001)
     begin
@@ -506,7 +471,7 @@ begin
         end if; 
     end process;
 
-        lhs_V_1_fu_145_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(mdt_localy_V_read_reg_211),33));
+        lhs_V_1_fu_145_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(mdt_localy_V_read_reg_209),33));
 
         lhs_V_fu_131_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(mdt_localx_V_0_data_reg),33));
 
@@ -571,13 +536,13 @@ begin
     end process;
 
 
-    r_bin_V_TDATA_int_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_enable_reg_pp0_iter2, zext_ln321_fu_193_p1, zext_ln321_1_fu_197_p1, ap_block_pp0_stage0_01001, ap_block_pp0_stage1_01001)
+    r_bin_V_TDATA_int_assign_proc : process(ap_CS_fsm_pp0_stage0, ap_CS_fsm_pp0_stage1, ap_enable_reg_pp0_iter2, zext_ln321_fu_191_p1, zext_ln321_1_fu_195_p1, ap_block_pp0_stage0_01001, ap_block_pp0_stage1_01001)
     begin
         if ((ap_enable_reg_pp0_iter2 = ap_const_logic_1)) then
             if (((ap_const_boolean_0 = ap_block_pp0_stage1_01001) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage1))) then 
-                r_bin_V_TDATA_int <= zext_ln321_1_fu_197_p1;
+                r_bin_V_TDATA_int <= zext_ln321_1_fu_195_p1;
             elsif (((ap_const_boolean_0 = ap_block_pp0_stage0_01001) and (ap_const_logic_1 = ap_CS_fsm_pp0_stage0))) then 
-                r_bin_V_TDATA_int <= zext_ln321_fu_193_p1;
+                r_bin_V_TDATA_int <= zext_ln321_fu_191_p1;
             else 
                 r_bin_V_TDATA_int <= "XXXXXXXX";
             end if;
@@ -597,12 +562,12 @@ begin
         end if; 
     end process;
 
-        rhs_V_1_fu_149_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(hw_sin_val_V_read_reg_206),33));
+        rhs_V_1_fu_149_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(hw_sin_val_V_read_reg_204),33));
 
         rhs_V_fu_136_p1 <= std_logic_vector(IEEE.numeric_std.resize(signed(hw_cos_val_V_0_data_reg),33));
 
     trunc_ln1353_1_fu_141_p1 <= mdt_r_offset_V_TDATA_int(12 - 1 downto 0);
     trunc_ln1353_fu_127_p1 <= mdt_r_offset_V_TDATA_int(12 - 1 downto 0);
-    zext_ln321_1_fu_197_p1 <= std_logic_vector(IEEE.numeric_std.resize(unsigned(trunc_ln1503_1_reg_252),8));
-    zext_ln321_fu_193_p1 <= std_logic_vector(IEEE.numeric_std.resize(unsigned(trunc_ln1_reg_247),8));
+    zext_ln321_1_fu_195_p1 <= std_logic_vector(IEEE.numeric_std.resize(unsigned(trunc_ln1503_1_reg_236),8));
+    zext_ln321_fu_191_p1 <= std_logic_vector(IEEE.numeric_std.resize(unsigned(trunc_ln1_reg_231),8));
 end behav;

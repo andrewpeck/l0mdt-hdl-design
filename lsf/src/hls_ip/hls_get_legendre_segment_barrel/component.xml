@@ -232,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>7c6a84e8</spirit:value>
+            <spirit:value>76464422</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>bd4c76f6</spirit:value>
+            <spirit:value>2b3c05cc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -264,7 +264,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>617fbe4e</spirit:value>
+            <spirit:value>27aa3b32</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -280,7 +280,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>5dba4866</spirit:value>
+            <spirit:value>398aad08</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -656,7 +656,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/get_legendre_segment_barrel.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_e01674ac</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_f65701d3</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -756,13 +756,13 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Get_legendre_segment_barrel</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009301340</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-30T20:40:33Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2010011812</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-10-02T01:13:01Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="5937d2f8"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="cfed8d9d"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="df1e7cf0"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="7ee4c868"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="9a9b2f5c"/>
     </xilinx:packagingInfo>

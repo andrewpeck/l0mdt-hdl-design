@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps 
 
-(* CORE_GENERATION_INFO="get_rom_addr,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku15p-ffva1760-1LV-i,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.519375,HLS_SYN_LAT=4,HLS_SYN_TPT=1,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=260,HLS_SYN_LUT=236,HLS_VERSION=2019_2_1}" *)
+(* CORE_GENERATION_INFO="get_rom_addr,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcku15p-ffva1760-2-e,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.392563,HLS_SYN_LAT=3,HLS_SYN_TPT=1,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=95,HLS_SYN_LUT=170,HLS_VERSION=2019_2_1}" *)
 
 module get_rom_addr (
         ap_clk,
@@ -49,16 +49,14 @@ wire    ap_enable_reg_pp0_iter0;
 reg    ap_enable_reg_pp0_iter1;
 reg    ap_enable_reg_pp0_iter2;
 reg    ap_enable_reg_pp0_iter3;
-reg    ap_enable_reg_pp0_iter4;
 reg    ap_idle_pp0;
 reg    ap_block_state1_pp0_stage0_iter0;
 wire    ap_block_state2_pp0_stage0_iter1;
 wire    ap_block_state3_pp0_stage0_iter2;
-wire    ap_block_state4_pp0_stage0_iter3;
 reg    rom_index_V_1_ack_in;
 reg    lut_start_addr_V_1_ack_in;
 reg    slcvec_angle_polar_offset_mrad_V_1_ack_in;
-reg    ap_block_state5_pp0_stage0_iter4;
+reg    ap_block_state4_pp0_stage0_iter3;
 reg    ap_block_pp0_stage0_11001;
 reg   [17:0] theta_for_lut_V_0_data_reg;
 reg    theta_for_lut_V_0_vld_reg;
@@ -79,40 +77,36 @@ reg   [17:0] slcvec_angle_polar_offset_mrad_V_1_data_reg;
 reg    slcvec_angle_polar_offset_mrad_V_1_vld_reg;
 reg    slcvec_angle_polar_offset_mrad_V_1_vld_in;
 wire   [0:0] grp_read_fu_76_p2;
-reg   [0:0] lbins0_gbl1_V_read_reg_227;
-reg   [0:0] lbins0_gbl1_V_read_reg_227_pp0_iter2_reg;
-wire  signed [17:0] sext_ln703_fu_136_p1;
-reg  signed [17:0] sext_ln703_reg_236;
-reg  signed [17:0] sext_ln703_reg_236_pp0_iter2_reg;
-wire   [17:0] add_ln703_fu_140_p2;
-reg   [17:0] add_ln703_reg_242;
-wire   [2:0] trunc_ln209_fu_217_p1;
-wire   [11:0] trunc_ln214_fu_222_p1;
+reg   [0:0] lbins0_gbl1_V_read_reg_229;
+wire  signed [17:0] sext_ln703_fu_137_p1;
+reg  signed [17:0] sext_ln703_reg_233;
+wire   [17:0] add_ln703_fu_142_p2;
+reg   [17:0] add_ln703_reg_238;
+wire   [2:0] trunc_ln209_fu_219_p1;
+wire   [11:0] trunc_ln214_fu_224_p1;
 reg    ap_block_pp0_stage0_subdone;
-wire   [17:0] ap_phi_reg_pp0_iter0_p_Val2_1_reg_109;
-reg   [17:0] ap_phi_reg_pp0_iter1_p_Val2_1_reg_109;
-reg   [17:0] ap_phi_reg_pp0_iter2_p_Val2_1_reg_109;
+reg   [17:0] ap_phi_mux_p_Val2_1_phi_fu_112_p4;
+wire   [17:0] ap_phi_reg_pp0_iter1_p_Val2_1_reg_109;
 reg    ap_block_pp0_stage0_01001;
 wire    ap_block_pp0_stage0;
-wire   [15:0] p_Val2_s_fu_118_p3;
-wire   [16:0] zext_ln728_fu_126_p1;
-wire   [16:0] slcvec_angle_polar_o_fu_130_p2;
-wire   [23:0] r_V_fu_146_p3;
-wire  signed [24:0] sext_ln1118_fu_153_p1;
-wire   [24:0] add_ln1192_fu_157_p2;
-wire   [14:0] tmp_fu_163_p4;
-wire   [9:0] trunc_ln851_fu_185_p1;
-wire  signed [15:0] sext_ln835_fu_173_p1;
-wire   [0:0] icmp_ln851_fu_189_p2;
-wire   [15:0] ret_V_fu_195_p2;
-wire   [0:0] p_Result_s_fu_177_p3;
-wire   [15:0] select_ln851_fu_201_p3;
-wire   [15:0] select_ln850_fu_209_p3;
+wire   [15:0] p_Val2_s_fu_119_p3;
+wire   [16:0] zext_ln728_fu_127_p1;
+wire   [16:0] slcvec_angle_polar_o_fu_131_p2;
+wire   [23:0] r_V_fu_148_p3;
+wire  signed [24:0] sext_ln1118_fu_155_p1;
+wire   [24:0] add_ln1192_fu_159_p2;
+wire   [14:0] tmp_fu_165_p4;
+wire   [9:0] trunc_ln851_fu_187_p1;
+wire  signed [15:0] sext_ln835_fu_175_p1;
+wire   [0:0] icmp_ln851_fu_191_p2;
+wire   [15:0] ret_V_fu_197_p2;
+wire   [0:0] p_Result_s_fu_179_p3;
+wire   [15:0] select_ln851_fu_203_p3;
+wire   [15:0] select_ln850_fu_211_p3;
 reg   [0:0] ap_NS_fsm;
-reg    ap_idle_pp0_0to3;
+reg    ap_idle_pp0_0to2;
 reg    ap_reset_idle_pp0;
 wire    ap_enable_pp0;
-reg    ap_condition_248;
 
 // power-on initialization
 initial begin
@@ -120,7 +114,6 @@ initial begin
 #0 ap_enable_reg_pp0_iter1 = 1'b0;
 #0 ap_enable_reg_pp0_iter2 = 1'b0;
 #0 ap_enable_reg_pp0_iter3 = 1'b0;
-#0 ap_enable_reg_pp0_iter4 = 1'b0;
 #0 theta_for_lut_V_0_data_reg = 18'd0;
 #0 theta_for_lut_V_0_vld_reg = 1'b0;
 #0 rom_index_V_1_data_reg = 3'd0;
@@ -174,38 +167,9 @@ always @ (posedge ap_clk) begin
 end
 
 always @ (posedge ap_clk) begin
-    if (ap_rst == 1'b1) begin
-        ap_enable_reg_pp0_iter4 <= 1'b0;
-    end else begin
-        if ((1'b0 == ap_block_pp0_stage0_subdone)) begin
-            ap_enable_reg_pp0_iter4 <= ap_enable_reg_pp0_iter3;
-        end
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if ((1'b1 == ap_condition_248)) begin
-        if ((grp_read_fu_76_p2 == 1'd1)) begin
-            ap_phi_reg_pp0_iter2_p_Val2_1_reg_109 <= theta_for_lut_V_0_data_reg;
-        end else if ((grp_read_fu_76_p2 == 1'd0)) begin
-            ap_phi_reg_pp0_iter2_p_Val2_1_reg_109 <= sext_ln703_fu_136_p1;
-        end else if ((1'b1 == 1'b1)) begin
-            ap_phi_reg_pp0_iter2_p_Val2_1_reg_109 <= ap_phi_reg_pp0_iter1_p_Val2_1_reg_109;
-        end
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if ((1'b0 == ap_block_pp0_stage0_11001)) begin
-        add_ln703_reg_242 <= add_ln703_fu_140_p2;
-        lbins0_gbl1_V_read_reg_227_pp0_iter2_reg <= lbins0_gbl1_V_read_reg_227;
-        sext_ln703_reg_236_pp0_iter2_reg[17 : 5] <= sext_ln703_reg_236[17 : 5];
-    end
-end
-
-always @ (posedge ap_clk) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_start == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
-        ap_phi_reg_pp0_iter1_p_Val2_1_reg_109 <= ap_phi_reg_pp0_iter0_p_Val2_1_reg_109;
+    if (((1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
+        add_ln703_reg_238 <= add_ln703_fu_142_p2;
+        lbins0_gbl1_V_read_reg_229 <= lbins0_gbl1_V_0_data_reg;
     end
 end
 
@@ -216,33 +180,27 @@ always @ (posedge ap_clk) begin
 end
 
 always @ (posedge ap_clk) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
-        lbins0_gbl1_V_read_reg_227 <= lbins0_gbl1_V_0_data_reg;
-    end
-end
-
-always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (lut_start_addr_V_1_vld_reg == 1'b0) & (lut_start_addr_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (lut_start_addr_V_1_vld_in == 1'b1) & (lut_start_addr_V_1_vld_reg == 1'b1)))) begin
-        lut_start_addr_V_1_data_reg <= trunc_ln214_fu_222_p1;
+        lut_start_addr_V_1_data_reg <= trunc_ln214_fu_224_p1;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (rom_index_V_1_vld_reg == 1'b0) & (rom_index_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (rom_index_V_1_vld_in == 1'b1) & (rom_index_V_1_vld_reg == 1'b1)))) begin
-        rom_index_V_1_data_reg <= trunc_ln209_fu_217_p1;
+        rom_index_V_1_data_reg <= trunc_ln209_fu_219_p1;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == ap_CS_fsm_pp0_stage0) & (grp_read_fu_76_p2 == 1'd0))) begin
-        sext_ln703_reg_236[17 : 5] <= sext_ln703_fu_136_p1[17 : 5];
+        sext_ln703_reg_233[17 : 5] <= sext_ln703_fu_137_p1[17 : 5];
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (slcvec_angle_polar_offset_mrad_V_1_vld_reg == 1'b0) & (slcvec_angle_polar_offset_mrad_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (slcvec_angle_polar_offset_mrad_V_1_vld_in == 1'b1) & (slcvec_angle_polar_offset_mrad_V_1_vld_reg == 1'b1)))) begin
-        slcvec_angle_polar_offset_mrad_V_1_data_reg[3] <= sext_ln703_reg_236_pp0_iter2_reg[3];
-slcvec_angle_polar_offset_mrad_V_1_data_reg[17 : 5] <= sext_ln703_reg_236_pp0_iter2_reg[17 : 5];
+        slcvec_angle_polar_offset_mrad_V_1_data_reg[3] <= sext_ln703_reg_233[3];
+slcvec_angle_polar_offset_mrad_V_1_data_reg[17 : 5] <= sext_ln703_reg_233[17 : 5];
     end
 end
 
@@ -259,7 +217,7 @@ always @ (posedge ap_clk) begin
 end
 
 always @ (*) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter4 == 1'b1))) begin
+    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter3 == 1'b1))) begin
         ap_done = 1'b1;
     end else begin
         ap_done = 1'b0;
@@ -275,7 +233,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((ap_enable_reg_pp0_iter4 == 1'b0) & (ap_enable_reg_pp0_iter3 == 1'b0) & (ap_enable_reg_pp0_iter2 == 1'b0) & (ap_enable_reg_pp0_iter1 == 1'b0) & (ap_enable_reg_pp0_iter0 == 1'b0))) begin
+    if (((ap_enable_reg_pp0_iter3 == 1'b0) & (ap_enable_reg_pp0_iter2 == 1'b0) & (ap_enable_reg_pp0_iter1 == 1'b0) & (ap_enable_reg_pp0_iter0 == 1'b0))) begin
         ap_idle_pp0 = 1'b1;
     end else begin
         ap_idle_pp0 = 1'b0;
@@ -283,10 +241,20 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((ap_enable_reg_pp0_iter3 == 1'b0) & (ap_enable_reg_pp0_iter2 == 1'b0) & (ap_enable_reg_pp0_iter1 == 1'b0) & (ap_enable_reg_pp0_iter0 == 1'b0))) begin
-        ap_idle_pp0_0to3 = 1'b1;
+    if (((ap_enable_reg_pp0_iter2 == 1'b0) & (ap_enable_reg_pp0_iter1 == 1'b0) & (ap_enable_reg_pp0_iter0 == 1'b0))) begin
+        ap_idle_pp0_0to2 = 1'b1;
     end else begin
-        ap_idle_pp0_0to3 = 1'b0;
+        ap_idle_pp0_0to2 = 1'b0;
+    end
+end
+
+always @ (*) begin
+    if ((grp_read_fu_76_p2 == 1'd1)) begin
+        ap_phi_mux_p_Val2_1_phi_fu_112_p4 = theta_for_lut_V_0_data_reg;
+    end else if ((grp_read_fu_76_p2 == 1'd0)) begin
+        ap_phi_mux_p_Val2_1_phi_fu_112_p4 = sext_ln703_fu_137_p1;
+    end else begin
+        ap_phi_mux_p_Val2_1_phi_fu_112_p4 = ap_phi_reg_pp0_iter1_p_Val2_1_reg_109;
     end
 end
 
@@ -299,7 +267,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((ap_start == 1'b0) & (ap_idle_pp0_0to3 == 1'b1))) begin
+    if (((ap_start == 1'b0) & (ap_idle_pp0_0to2 == 1'b1))) begin
         ap_reset_idle_pp0 = 1'b1;
     end else begin
         ap_reset_idle_pp0 = 1'b0;
@@ -323,7 +291,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter3 == 1'b1))) begin
+    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter2 == 1'b1))) begin
         lut_start_addr_V_1_vld_in = 1'b1;
     end else begin
         lut_start_addr_V_1_vld_in = 1'b0;
@@ -339,7 +307,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter3 == 1'b1))) begin
+    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter2 == 1'b1))) begin
         rom_index_V_1_vld_in = 1'b1;
     end else begin
         rom_index_V_1_vld_in = 1'b0;
@@ -355,7 +323,7 @@ always @ (*) begin
 end
 
 always @ (*) begin
-    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter3 == 1'b1) & (lbins0_gbl1_V_read_reg_227_pp0_iter2_reg == 1'd0))) begin
+    if (((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter2 == 1'b1) & (lbins0_gbl1_V_read_reg_229 == 1'd0))) begin
         slcvec_angle_polar_offset_mrad_V_1_vld_in = 1'b1;
     end else begin
         slcvec_angle_polar_offset_mrad_V_1_vld_in = 1'b0;
@@ -389,24 +357,24 @@ always @ (*) begin
     endcase
 end
 
-assign add_ln1192_fu_157_p2 = ($signed(25'd3282944) + $signed(sext_ln1118_fu_153_p1));
+assign add_ln1192_fu_159_p2 = ($signed(25'd3282944) + $signed(sext_ln1118_fu_155_p1));
 
-assign add_ln703_fu_140_p2 = ($signed(18'd262136) + $signed(ap_phi_reg_pp0_iter2_p_Val2_1_reg_109));
+assign add_ln703_fu_142_p2 = ($signed(18'd262136) + $signed(ap_phi_mux_p_Val2_1_phi_fu_112_p4));
 
 assign ap_CS_fsm_pp0_stage0 = ap_CS_fsm[32'd0];
 
 assign ap_block_pp0_stage0 = ~(1'b1 == 1'b1);
 
 always @ (*) begin
-    ap_block_pp0_stage0_01001 = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter4 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
+    ap_block_pp0_stage0_01001 = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter3 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
 end
 
 always @ (*) begin
-    ap_block_pp0_stage0_11001 = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter4 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
+    ap_block_pp0_stage0_11001 = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter3 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
 end
 
 always @ (*) begin
-    ap_block_pp0_stage0_subdone = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter4 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
+    ap_block_pp0_stage0_subdone = (((ap_start == 1'b0) & (ap_start == 1'b1)) | ((ap_enable_reg_pp0_iter3 == 1'b1) & ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0))));
 end
 
 always @ (*) begin
@@ -417,67 +385,60 @@ assign ap_block_state2_pp0_stage0_iter1 = ~(1'b1 == 1'b1);
 
 assign ap_block_state3_pp0_stage0_iter2 = ~(1'b1 == 1'b1);
 
-assign ap_block_state4_pp0_stage0_iter3 = ~(1'b1 == 1'b1);
-
 always @ (*) begin
-    ap_block_state5_pp0_stage0_iter4 = ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0));
-end
-
-always @ (*) begin
-    ap_condition_248 = ((1'b0 == ap_block_pp0_stage0_11001) & (ap_enable_reg_pp0_iter1 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0));
+    ap_block_state4_pp0_stage0_iter3 = ((slcvec_angle_polar_offset_mrad_V_1_ack_in == 1'b0) | (lut_start_addr_V_1_ack_in == 1'b0) | (rom_index_V_1_ack_in == 1'b0));
 end
 
 assign ap_enable_pp0 = (ap_idle_pp0 ^ 1'b1);
 
 assign ap_enable_reg_pp0_iter0 = ap_start;
 
-assign ap_phi_reg_pp0_iter0_p_Val2_1_reg_109 = 'bx;
+assign ap_phi_reg_pp0_iter1_p_Val2_1_reg_109 = 'bx;
 
 assign grp_read_fu_76_p2 = lbins0_gbl1_V_0_data_reg;
 
-assign icmp_ln851_fu_189_p2 = ((trunc_ln851_fu_185_p1 == 10'd0) ? 1'b1 : 1'b0);
+assign icmp_ln851_fu_191_p2 = ((trunc_ln851_fu_187_p1 == 10'd0) ? 1'b1 : 1'b0);
 
 assign lut_start_addr_V = lut_start_addr_V_1_data_reg;
 
-assign p_Result_s_fu_177_p3 = add_ln1192_fu_157_p2[32'd24];
+assign p_Result_s_fu_179_p3 = add_ln1192_fu_159_p2[32'd24];
 
-assign p_Val2_s_fu_118_p3 = {{slcvec_offset_angle_int_V_0_data_reg}, {5'd0}};
+assign p_Val2_s_fu_119_p3 = {{slcvec_offset_angle_int_V_0_data_reg}, {5'd0}};
 
-assign r_V_fu_146_p3 = {{add_ln703_reg_242}, {6'd0}};
+assign r_V_fu_148_p3 = {{add_ln703_reg_238}, {6'd0}};
 
-assign ret_V_fu_195_p2 = ($signed(16'd1) + $signed(sext_ln835_fu_173_p1));
+assign ret_V_fu_197_p2 = ($signed(16'd1) + $signed(sext_ln835_fu_175_p1));
 
 assign rom_index_V = rom_index_V_1_data_reg;
 
-assign select_ln850_fu_209_p3 = ((p_Result_s_fu_177_p3[0:0] === 1'b1) ? select_ln851_fu_201_p3 : sext_ln835_fu_173_p1);
+assign select_ln850_fu_211_p3 = ((p_Result_s_fu_179_p3[0:0] === 1'b1) ? select_ln851_fu_203_p3 : sext_ln835_fu_175_p1);
 
-assign select_ln851_fu_201_p3 = ((icmp_ln851_fu_189_p2[0:0] === 1'b1) ? sext_ln835_fu_173_p1 : ret_V_fu_195_p2);
+assign select_ln851_fu_203_p3 = ((icmp_ln851_fu_191_p2[0:0] === 1'b1) ? sext_ln835_fu_175_p1 : ret_V_fu_197_p2);
 
-assign sext_ln1118_fu_153_p1 = $signed(r_V_fu_146_p3);
+assign sext_ln1118_fu_155_p1 = $signed(r_V_fu_148_p3);
 
-assign sext_ln703_fu_136_p1 = $signed(slcvec_angle_polar_o_fu_130_p2);
+assign sext_ln703_fu_137_p1 = $signed(slcvec_angle_polar_o_fu_131_p2);
 
-assign sext_ln835_fu_173_p1 = $signed(tmp_fu_163_p4);
+assign sext_ln835_fu_175_p1 = $signed(tmp_fu_165_p4);
 
-assign slcvec_angle_polar_o_fu_130_p2 = ($signed(zext_ln728_fu_126_p1) + $signed(17'd79784));
+assign slcvec_angle_polar_o_fu_131_p2 = ($signed(zext_ln728_fu_127_p1) + $signed(17'd79784));
 
 assign slcvec_angle_polar_offset_mrad_V = slcvec_angle_polar_offset_mrad_V_1_data_reg;
 
-assign tmp_fu_163_p4 = {{add_ln1192_fu_157_p2[24:10]}};
+assign tmp_fu_165_p4 = {{add_ln1192_fu_159_p2[24:10]}};
 
-assign trunc_ln209_fu_217_p1 = select_ln850_fu_209_p3[2:0];
+assign trunc_ln209_fu_219_p1 = select_ln850_fu_211_p3[2:0];
 
-assign trunc_ln214_fu_222_p1 = select_ln850_fu_209_p3[11:0];
+assign trunc_ln214_fu_224_p1 = select_ln850_fu_211_p3[11:0];
 
-assign trunc_ln851_fu_185_p1 = add_ln1192_fu_157_p2[9:0];
+assign trunc_ln851_fu_187_p1 = add_ln1192_fu_159_p2[9:0];
 
-assign zext_ln728_fu_126_p1 = p_Val2_s_fu_118_p3;
+assign zext_ln728_fu_127_p1 = p_Val2_s_fu_119_p3;
 
 always @ (posedge ap_clk) begin
     slcvec_angle_polar_offset_mrad_V_1_data_reg[2:0] <= 3'b000;
     slcvec_angle_polar_offset_mrad_V_1_data_reg[4] <= 1'b0;
-    sext_ln703_reg_236[4:0] <= 5'b01000;
-    sext_ln703_reg_236_pp0_iter2_reg[4:0] <= 5'b01000;
+    sext_ln703_reg_233[4:0] <= 5'b01000;
 end
 
 endmodule //get_rom_addr

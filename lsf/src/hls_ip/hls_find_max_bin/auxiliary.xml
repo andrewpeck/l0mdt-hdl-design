@@ -259,13 +259,13 @@
   <xd:arg xd:name="max_bin_r[125]" xd:originalName="max_bin_r125" xd:direction="in" xd:interfaceRef="max_bin_r_125_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="7" xd:arraySize="1"/>
   <xd:arg xd:name="max_bin_r[126]" xd:originalName="max_bin_r126" xd:direction="in" xd:interfaceRef="max_bin_r_126_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="7" xd:arraySize="1"/>
   <xd:arg xd:name="max_bin_r[127]" xd:originalName="max_bin_r127" xd:direction="in" xd:interfaceRef="max_bin_r_127_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="7" xd:arraySize="1"/>
-  <xd:arg xd:name="*(hls_LT_theta_global)" xd:originalName="hls_LT_theta_global" xd:direction="out" xd:interfaceRef="hls_LT_theta_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18" xd:firstOut="4"/>
-  <xd:arg xd:name="*(hls_LT_r_global)" xd:originalName="hls_LT_r_global" xd:direction="out" xd:interfaceRef="hls_LT_r_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="22" xd:firstOut="4"/>
-  <xd:arg xd:name="*(hls_LT_theta)" xd:originalName="hls_LT_theta" xd:direction="out" xd:interfaceRef="hls_LT_theta_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18" xd:firstOut="4"/>
-  <xd:arg xd:name="*(hls_LT_r)" xd:originalName="hls_LT_r" xd:direction="out" xd:interfaceRef="hls_LT_r_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="22" xd:firstOut="4"/>
-  <xd:arg xd:name="*(res_max_bin_count)" xd:originalName="res_max_bin_count" xd:direction="out" xd:interfaceRef="res_max_bin_count_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="4" xd:firstOut="4"/>
-  <xd:arg xd:name="*(res_max_bin_theta)" xd:originalName="res_max_bin_theta" xd:direction="out" xd:interfaceRef="res_max_bin_theta_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="4"/>
-  <xd:arg xd:name="*(res_max_bin_r)" xd:originalName="res_max_bin_r" xd:direction="out" xd:interfaceRef="res_max_bin_r_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="4"/>
-  <xd:latencyEstimates xd:best-case="4" xd:worst-case="4" xd:average-case="4"/>
-  <xd:resourceEstimates xd:LUT="3566" xd:FF="842" xd:BRAM="0" xd:DSP="0"/>
+  <xd:arg xd:name="*(hls_LT_theta_global)" xd:originalName="hls_LT_theta_global" xd:direction="out" xd:interfaceRef="hls_LT_theta_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18" xd:firstOut="3"/>
+  <xd:arg xd:name="*(hls_LT_r_global)" xd:originalName="hls_LT_r_global" xd:direction="out" xd:interfaceRef="hls_LT_r_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="22" xd:firstOut="3"/>
+  <xd:arg xd:name="*(hls_LT_theta)" xd:originalName="hls_LT_theta" xd:direction="out" xd:interfaceRef="hls_LT_theta_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18" xd:firstOut="3"/>
+  <xd:arg xd:name="*(hls_LT_r)" xd:originalName="hls_LT_r" xd:direction="out" xd:interfaceRef="hls_LT_r_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="22" xd:firstOut="3"/>
+  <xd:arg xd:name="*(res_max_bin_count)" xd:originalName="res_max_bin_count" xd:direction="out" xd:interfaceRef="res_max_bin_count_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="4" xd:firstOut="3"/>
+  <xd:arg xd:name="*(res_max_bin_theta)" xd:originalName="res_max_bin_theta" xd:direction="out" xd:interfaceRef="res_max_bin_theta_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="3"/>
+  <xd:arg xd:name="*(res_max_bin_r)" xd:originalName="res_max_bin_r" xd:direction="out" xd:interfaceRef="res_max_bin_r_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="3"/>
+  <xd:latencyEstimates xd:best-case="3" xd:worst-case="3" xd:average-case="3"/>
+  <xd:resourceEstimates xd:LUT="3566" xd:FF="734" xd:BRAM="0" xd:DSP="0"/>
 </xd:acceleratorMap>

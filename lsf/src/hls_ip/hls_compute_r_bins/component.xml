@@ -224,7 +224,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>155bb478</spirit:value>
+            <spirit:value>8299066a</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -240,7 +240,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>e2879835</spirit:value>
+            <spirit:value>ac844323</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -256,7 +256,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>a7c9070c</spirit:value>
+            <spirit:value>b7cc56b0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -272,7 +272,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>9da2d3aa</spirit:value>
+            <spirit:value>90fd5698</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -533,10 +533,6 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/compute_r_bins_mubkb.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>hdl/verilog/regslice_core.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
@@ -547,11 +543,6 @@
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
-      <spirit:file>
-        <spirit:name>hdl/verilog/compute_r_bins_mubkb.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
       <spirit:file>
         <spirit:name>hdl/verilog/regslice_core.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
@@ -571,26 +562,17 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/compute_r_bins_mubkb.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
         <spirit:name>hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/compute_r_bins.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_41197a00</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_f620fd47</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
-      <spirit:file>
-        <spirit:name>hdl/vhdl/compute_r_bins_mubkb.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-      </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/regslice_core.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
@@ -678,13 +660,13 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Compute_r_bins</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009301134</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-30T18:35:07Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2010011806</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-10-02T01:06:42Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="db142ecb"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="3c607278"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="59e6f3e4"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="60952e17"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="5d54cb9d"/>
     </xilinx:packagingInfo>

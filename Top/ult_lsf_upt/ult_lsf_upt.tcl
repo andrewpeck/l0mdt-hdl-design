@@ -38,8 +38,9 @@ set PROPERTIES [dict create \
 ############################################################
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
+
 source $PATH_REPO/Hog/Tcl/create_project.tcl
-set_property  ip_repo_paths  {../../IP ../../lsf/src/hls_ip ../../upt/src/hls_ip} [current_project]
+set_property  ip_repo_paths  {../../lsf/src/hls_ip ../../upt/src/hls_ip ../../IP/lsf ../../IP/upt} [current_project]
 update_ip_catalog
 
 
