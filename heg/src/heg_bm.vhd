@@ -323,7 +323,35 @@ begin
           end if;
         end loop;
 
-        
+
+        if fifo_rd(5) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(5);
+          buff_mdt_dv <= '1';
+        elsif fifo_rd(4) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(4);
+        elsif fifo_rd(3) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(3);
+          buff_mdt_dv <= '1';
+        elsif fifo_rd(2) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(2);
+          buff_mdt_dv <= '1';
+        elsif fifo_rd(1) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(1);
+          buff_mdt_dv <= '1';
+        elsif fifo_rd(0) = '1' then
+          buff_mdt_hit_v <= ff_o_mdt_hit_av(0);
+          buff_mdt_dv <= '1';
+        else
+          buff_mdt_hit_v <= (others => '0');
+          buff_mdt_dv <= '0';
+        end if;
+
+      end if;
+    end if;
+  end process;
+
+
+end beh;
 /* OLD
         -- check for next hit to read
         if and_reduce(fifo_empty) = '0' then
@@ -374,12 +402,6 @@ begin
           buff_mdt_dv <= '0';
         end if;
 /*        */
-      end if;
-    end if;
-  end process;
-
-
-end beh;
 /*
 
         --   tdc_in_loop : for ti in (g_HPS_NUM_MDT_CH-1) downto 0 loop

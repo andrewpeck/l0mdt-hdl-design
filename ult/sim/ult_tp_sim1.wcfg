@@ -53,13 +53,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2295222fs"></ZoomStartTime>
-      <ZoomEndTime time="2361573fs"></ZoomEndTime>
-      <Cursor1Time time="2313322fs"></Cursor1Time>
+      <ZoomStartTime time="2297080fs"></ZoomStartTime>
+      <ZoomEndTime time="2413281fs"></ZoomEndTime>
+      <Cursor1Time time="2316446fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="261"></NameColumnWidth>
-      <ValueColumnWidth column_width="66"></ValueColumnWidth>
+      <NameColumnWidth column_width="311"></NameColumnWidth>
+      <ValueColumnWidth column_width="181"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="6" />
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
@@ -80,7 +80,6 @@
    <wvobject type="group" fp_name="group218">
       <obj_property name="label">TB_IV</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/ult_tp/mdt_tar_event_r">
          <obj_property name="ElementShortName">mdt_tar_event_r</obj_property>
          <obj_property name="ObjectShortName">mdt_tar_event_r</obj_property>
@@ -118,7 +117,6 @@
    <wvobject type="group" fp_name="group2003">
       <obj_property name="label">UCM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="group" fp_name="group114">
          <obj_property name="label">UCM_MAIN</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -927,7 +925,6 @@
       <wvobject type="group" fp_name="group4352">
          <obj_property name="label">PC</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <obj_property name="isExpanded"></obj_property>
          <wvobject type="group" fp_name="group2240">
             <obj_property name="label">PC_5</obj_property>
             <obj_property name="DisplayName">label</obj_property>
@@ -1505,7 +1502,6 @@
             <wvobject type="group" fp_name="group405">
                <obj_property name="label">roi</obj_property>
                <obj_property name="DisplayName">label</obj_property>
-               <obj_property name="isExpanded"></obj_property>
                <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_Control/HEG_CTRL_ROI/i_uCM_data_v">
                   <obj_property name="ElementShortName">i_uCM_data_v[60:0]</obj_property>
                   <obj_property name="ObjectShortName">i_uCM_data_v[60:0]</obj_property>
@@ -1846,7 +1842,6 @@
          <wvobject type="group" fp_name="group1156">
             <obj_property name="label">hp_2</obj_property>
             <obj_property name="DisplayName">label</obj_property>
-            <obj_property name="isExpanded"></obj_property>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/clk">
                <obj_property name="ElementShortName">clk</obj_property>
                <obj_property name="ObjectShortName">clk</obj_property>
@@ -1886,17 +1881,14 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/slc_data">
                <obj_property name="ElementShortName">slc_data</obj_property>
                <obj_property name="ObjectShortName">slc_data</obj_property>
-               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/mdt_data">
                <obj_property name="ElementShortName">mdt_data</obj_property>
                <obj_property name="ObjectShortName">mdt_data</obj_property>
-               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="group" fp_name="group1013">
                <obj_property name="label">hm</obj_property>
                <obj_property name="DisplayName">label</obj_property>
-               <obj_property name="isExpanded"></obj_property>
                <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/HP_HM/clk">
                   <obj_property name="ElementShortName">clk</obj_property>
                   <obj_property name="ObjectShortName">clk</obj_property>
@@ -1979,7 +1971,6 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/data_2_sf_r">
                <obj_property name="ElementShortName">data_2_sf_r</obj_property>
                <obj_property name="ObjectShortName">data_2_sf_r</obj_property>
-               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/\hp_gen(2)\/Hit_Processor/g_STATION_RADIUS">
                <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
@@ -2310,14 +2301,13 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/i_mdt_hits_av">
                <obj_property name="ElementShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
                <obj_property name="ObjectShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FFA500</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/i_mdt_hits_ar">
                <obj_property name="ElementShortName">i_mdt_hits_ar[5:0]</obj_property>
                <obj_property name="ObjectShortName">i_mdt_hits_ar[5:0]</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_wr">
-               <obj_property name="ElementShortName">fifo_wr[5:0]</obj_property>
-               <obj_property name="ObjectShortName">fifo_wr[5:0]</obj_property>
                <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="group" fp_name="group2609">
@@ -2378,11 +2368,6 @@
                <obj_property name="ElementShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
                <obj_property name="ObjectShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
             </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_av">
-               <obj_property name="ElementShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
-               <obj_property name="ObjectShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
-               <obj_property name="isExpanded"></obj_property>
-            </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_ar">
                <obj_property name="ElementShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
                <obj_property name="ObjectShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
@@ -2407,65 +2392,21 @@
                <obj_property name="ElementShortName">clk</obj_property>
                <obj_property name="ObjectShortName">clk</obj_property>
             </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_wr">
+               <obj_property name="ElementShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+            </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used">
                <obj_property name="ElementShortName">fifo_used[5:0][4:0]</obj_property>
                <obj_property name="ObjectShortName">fifo_used[5:0][4:0]</obj_property>
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
                <obj_property name="isExpanded"></obj_property>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[5]">
-                  <obj_property name="ElementShortName">[5][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[5][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[4]">
-                  <obj_property name="ElementShortName">[4][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[4][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[3]">
-                  <obj_property name="ElementShortName">[3][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[3][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[2]">
-                  <obj_property name="ElementShortName">[2][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[2][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[1]">
-                  <obj_property name="ElementShortName">[1][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[1][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[0]">
-                  <obj_property name="ElementShortName">[0][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[0][4:0]</obj_property>
-                  <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[5]">
-                  <obj_property name="ElementShortName">[5][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[5][4:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[4]">
-                  <obj_property name="ElementShortName">[4][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[4][4:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[3]">
-                  <obj_property name="ElementShortName">[3][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[3][4:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[2]">
-                  <obj_property name="ElementShortName">[2][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[2][4:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[1]">
-                  <obj_property name="ElementShortName">[1][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[1][4:0]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_used[0]">
-                  <obj_property name="ElementShortName">[0][4:0]</obj_property>
-                  <obj_property name="ObjectShortName">[0][4:0]</obj_property>
-               </wvobject>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_av">
+               <obj_property name="ElementShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/fifo_rd">
                <obj_property name="ElementShortName">fifo_rd[5:0]</obj_property>
@@ -2506,65 +2447,116 @@
       <wvobject type="group" fp_name="group4403">
          <obj_property name="label">HEG_1</obj_property>
          <obj_property name="DisplayName">label</obj_property>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/clk">
-            <obj_property name="ElementShortName">clk</obj_property>
-            <obj_property name="ObjectShortName">clk</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/rst">
-            <obj_property name="ElementShortName">rst</obj_property>
-            <obj_property name="ObjectShortName">rst</obj_property>
-         </wvobject>
-         <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/glob_en">
-            <obj_property name="ElementShortName">glob_en</obj_property>
-            <obj_property name="ObjectShortName">glob_en</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/i_uCM_data_v">
-            <obj_property name="ElementShortName">i_uCM_data_v[60:0]</obj_property>
-            <obj_property name="ObjectShortName">i_uCM_data_v[60:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/i_mdt_full_data_av">
-            <obj_property name="ElementShortName">i_mdt_full_data_av[5:0][69:0]</obj_property>
-            <obj_property name="ObjectShortName">i_mdt_full_data_av[5:0][69:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/o_sf_control_v">
-            <obj_property name="ElementShortName">o_sf_control_v[2:0]</obj_property>
-            <obj_property name="ObjectShortName">o_sf_control_v[2:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/o_sf_slc_data_v">
-            <obj_property name="ElementShortName">o_sf_slc_data_v[74:0]</obj_property>
-            <obj_property name="ObjectShortName">o_sf_slc_data_v[74:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/o_sf_mdt_data_v">
-            <obj_property name="ElementShortName">o_sf_mdt_data_v[40:0]</obj_property>
-            <obj_property name="ObjectShortName">o_sf_mdt_data_v[40:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/roi_b_Window">
-            <obj_property name="ElementShortName">roi_b_Window[7:0][17:0]</obj_property>
-            <obj_property name="ObjectShortName">roi_b_Window[7:0][17:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/hegC2hp_uCM_data">
-            <obj_property name="ElementShortName">hegC2hp_uCM_data[31:0]</obj_property>
-            <obj_property name="ObjectShortName">hegC2hp_uCM_data[31:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/hegC_control">
-            <obj_property name="ElementShortName">hegC_control[5:0]</obj_property>
-            <obj_property name="ObjectShortName">hegC_control[5:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/hp2bm_av">
-            <obj_property name="ElementShortName">hp2bm_av[5:0][41:0]</obj_property>
-            <obj_property name="ObjectShortName">hp2bm_av[5:0][41:0]</obj_property>
-         </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/time_offset">
-            <obj_property name="ElementShortName">time_offset[7:0]</obj_property>
-            <obj_property name="ObjectShortName">time_offset[7:0]</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/g_STATION_RADIUS">
-            <obj_property name="ElementShortName">g_STATION_RADIUS</obj_property>
-            <obj_property name="ObjectShortName">g_STATION_RADIUS</obj_property>
-         </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/g_HPS_NUM_MDT_CH">
-            <obj_property name="ElementShortName">g_HPS_NUM_MDT_CH</obj_property>
-            <obj_property name="ObjectShortName">g_HPS_NUM_MDT_CH</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="group" fp_name="group9308">
+            <obj_property name="label">bm</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/clk">
+               <obj_property name="ElementShortName">clk</obj_property>
+               <obj_property name="ObjectShortName">clk</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/rst">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/glob_en">
+               <obj_property name="ElementShortName">glob_en</obj_property>
+               <obj_property name="ObjectShortName">glob_en</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/i_control">
+               <obj_property name="ElementShortName">i_control[5:0]</obj_property>
+               <obj_property name="ObjectShortName">i_control[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/i_mdt_hits_av">
+               <obj_property name="ElementShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
+               <obj_property name="ObjectShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/o_mdt_hits_v">
+               <obj_property name="ElementShortName">o_mdt_hits_v[40:0]</obj_property>
+               <obj_property name="ObjectShortName">o_mdt_hits_v[40:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/i_mdt_hits_ar">
+               <obj_property name="ElementShortName">i_mdt_hits_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">i_mdt_hits_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/fifo_wr">
+               <obj_property name="ElementShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/fifo_rd">
+               <obj_property name="ElementShortName">fifo_rd[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_rd[5:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/o_mdt_hits_r">
+               <obj_property name="ElementShortName">o_mdt_hits_r</obj_property>
+               <obj_property name="ObjectShortName">o_mdt_hits_r</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/ff_i_mdt_hit_av">
+               <obj_property name="ElementShortName">ff_i_mdt_hit_av[5:0][41:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_i_mdt_hit_av[5:0][41:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/ff_i_mdt_hit_ar">
+               <obj_property name="ElementShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_av">
+               <obj_property name="ElementShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_ar">
+               <obj_property name="ElementShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/buff_mdt_hit_v">
+               <obj_property name="ElementShortName">buff_mdt_hit_v[39:0]</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_hit_v[39:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/buff_mdt_hit_r">
+               <obj_property name="ElementShortName">buff_mdt_hit_r</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_hit_r</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/buff_mdt_dv">
+               <obj_property name="ElementShortName">buff_mdt_dv</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_dv</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/fifo_used">
+               <obj_property name="ElementShortName">fifo_used[5:0][4:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_used[5:0][4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/fifo_empty">
+               <obj_property name="ElementShortName">fifo_empty[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_empty[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/fifo_empty_next">
+               <obj_property name="ElementShortName">fifo_empty_next[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_empty_next[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/next_read">
+               <obj_property name="ElementShortName">next_read[5:0]</obj_property>
+               <obj_property name="ObjectShortName">next_read[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/nexthit">
+               <obj_property name="ElementShortName">nexthit</obj_property>
+               <obj_property name="ObjectShortName">nexthit</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/lasthit">
+               <obj_property name="ElementShortName">lasthit</obj_property>
+               <obj_property name="ObjectShortName">lasthit</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/readhit">
+               <obj_property name="ElementShortName">readhit</obj_property>
+               <obj_property name="ObjectShortName">readhit</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/g_HPS_NUM_MDT_CH">
+               <obj_property name="ElementShortName">g_HPS_NUM_MDT_CH</obj_property>
+               <obj_property name="ObjectShortName">g_HPS_NUM_MDT_CH</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(1)\/HEG/Heg_buffer_mux/BM_FIFO_DEPTH">
+               <obj_property name="ElementShortName">BM_FIFO_DEPTH</obj_property>
+               <obj_property name="ObjectShortName">BM_FIFO_DEPTH</obj_property>
+            </wvobject>
          </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group4420">
@@ -2629,6 +2621,116 @@
          <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/g_HPS_NUM_MDT_CH">
             <obj_property name="ElementShortName">g_HPS_NUM_MDT_CH</obj_property>
             <obj_property name="ObjectShortName">g_HPS_NUM_MDT_CH</obj_property>
+         </wvobject>
+         <wvobject type="group" fp_name="group9335">
+            <obj_property name="label">bm</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/clk">
+               <obj_property name="ElementShortName">clk</obj_property>
+               <obj_property name="ObjectShortName">clk</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/rst">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/glob_en">
+               <obj_property name="ElementShortName">glob_en</obj_property>
+               <obj_property name="ObjectShortName">glob_en</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/i_control">
+               <obj_property name="ElementShortName">i_control[5:0]</obj_property>
+               <obj_property name="ObjectShortName">i_control[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/i_mdt_hits_av">
+               <obj_property name="ElementShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
+               <obj_property name="ObjectShortName">i_mdt_hits_av[5:0][41:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/o_mdt_hits_v">
+               <obj_property name="ElementShortName">o_mdt_hits_v[40:0]</obj_property>
+               <obj_property name="ObjectShortName">o_mdt_hits_v[40:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/i_mdt_hits_ar">
+               <obj_property name="ElementShortName">i_mdt_hits_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">i_mdt_hits_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/fifo_wr">
+               <obj_property name="ElementShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_wr[5:0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/fifo_rd">
+               <obj_property name="ElementShortName">fifo_rd[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_rd[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/o_mdt_hits_r">
+               <obj_property name="ElementShortName">o_mdt_hits_r</obj_property>
+               <obj_property name="ObjectShortName">o_mdt_hits_r</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/ff_i_mdt_hit_av">
+               <obj_property name="ElementShortName">ff_i_mdt_hit_av[5:0][41:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_i_mdt_hit_av[5:0][41:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/ff_i_mdt_hit_ar">
+               <obj_property name="ElementShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_i_mdt_hit_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_av">
+               <obj_property name="ElementShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_o_mdt_hit_av[5:0][39:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/ff_o_mdt_hit_ar">
+               <obj_property name="ElementShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
+               <obj_property name="ObjectShortName">ff_o_mdt_hit_ar[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/buff_mdt_hit_v">
+               <obj_property name="ElementShortName">buff_mdt_hit_v[39:0]</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_hit_v[39:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/buff_mdt_hit_r">
+               <obj_property name="ElementShortName">buff_mdt_hit_r</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_hit_r</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/buff_mdt_dv">
+               <obj_property name="ElementShortName">buff_mdt_dv</obj_property>
+               <obj_property name="ObjectShortName">buff_mdt_dv</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/fifo_used">
+               <obj_property name="ElementShortName">fifo_used[5:0][4:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_used[5:0][4:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/fifo_empty">
+               <obj_property name="ElementShortName">fifo_empty[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_empty[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/fifo_empty_next">
+               <obj_property name="ElementShortName">fifo_empty_next[5:0]</obj_property>
+               <obj_property name="ObjectShortName">fifo_empty_next[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/next_read">
+               <obj_property name="ElementShortName">next_read[5:0]</obj_property>
+               <obj_property name="ObjectShortName">next_read[5:0]</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/nexthit">
+               <obj_property name="ElementShortName">nexthit</obj_property>
+               <obj_property name="ObjectShortName">nexthit</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/lasthit">
+               <obj_property name="ElementShortName">lasthit</obj_property>
+               <obj_property name="ObjectShortName">lasthit</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/readhit">
+               <obj_property name="ElementShortName">readhit</obj_property>
+               <obj_property name="ObjectShortName">readhit</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/g_HPS_NUM_MDT_CH">
+               <obj_property name="ElementShortName">g_HPS_NUM_MDT_CH</obj_property>
+               <obj_property name="ObjectShortName">g_HPS_NUM_MDT_CH</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/h2s_gen/H2S/hps_inn/HPS/\heg_gen(0)\/HEG/Heg_buffer_mux/BM_FIFO_DEPTH">
+               <obj_property name="ElementShortName">BM_FIFO_DEPTH</obj_property>
+               <obj_property name="ObjectShortName">BM_FIFO_DEPTH</obj_property>
+            </wvobject>
          </wvobject>
       </wvobject>
    </wvobject>
