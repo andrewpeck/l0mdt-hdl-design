@@ -76,8 +76,11 @@ begin
 
   Roi_window <= structify(i_SLC_Window);
 
-  time_high_limit <= to_unsigned((to_integer(i_SLc_BCID) *25) + HP_BCID_OFFSET_TIME,time_high_limit'length);
-  time_low_limit <= to_unsigned((to_integer(i_SLc_BCID) *25),time_low_limit'length);
+  time_high_limit <= resize(
+      (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)
+    ,time_high_limit'length);
+
+  time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
 
   o_hit_valid <= space_valid and time_valid;
 

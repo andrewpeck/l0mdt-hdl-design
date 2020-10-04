@@ -84,7 +84,9 @@ begin
       o_dv                => dv_Z
     );
 
-    ROI_MBAR : entity heg_lib.b_slope2roi
+    SMALL_GEN: if g_STATION_RADIUS > 0 generate
+
+    ROI_MBAR_6L : entity heg_lib.b_slope2roi_6l
     generic map(
       g_STATION_RADIUS => g_STATION_RADIUS
     )
@@ -99,6 +101,29 @@ begin
       o_roi_edges         => roi_edges,
       o_dv                => dv_mbar
     );
+
+    end generate;
+
+    
+    LARGE_GEN: if g_STATION_RADIUS = 0 generate
+
+      ROI_MBAR_6L : entity heg_lib.b_slope2roi_8l
+      generic map(
+        g_STATION_RADIUS => g_STATION_RADIUS
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        --
+        i_ang               => uCM_data_r.vec_ang,
+        i_dv                => uCM_data_r.data_valid,
+        --
+        o_roi_edges         => roi_edges,
+        o_dv                => dv_mbar
+      );
+
+    end generate;
 
     -- o_Roi_win_valid <= dv_z and dv_mbar;
 

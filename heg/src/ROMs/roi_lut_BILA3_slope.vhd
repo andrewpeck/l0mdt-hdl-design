@@ -23,25 +23,66 @@ use heg_roi_lib.roi_types_pkg.all;
 package roi_lut_BILA3_slope is
 
   -- add length of constant array
-  constant ROM_BILA3_ANGLE_MAX_SIZE : integer := 2048;
+  constant ROM_BILA3_ANGLE_MAX_SIZE : integer := 14;
 
 -- VHDL2008  -- constant ROI_BILA3_SLOPE_MEM : roi_mbar_lut_t(ROM_BILA3_SLOPE_MAX_SIZE - 1 downto 0)(0 to 5) := (
   constant ROI_BILA3_ANGLE_MEM : roi_mbar_lut_large_t(ROM_BILA3_ANGLE_MAX_SIZE - 1 downto 0) := (
-   2047 downto  1429 => ( ( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5) ), -- from 89.10482629 to 85 degree 
-  --   365 downto  119 => ( ( -6,  4),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -4,  6) ), -- from 85 to 75 degree 
-  --   118 downto   69 => ( ( -7,  3),( -6,  4),( -6,  4),( -6,  4),( -4,  6),( -4,  6),( -4,  6),( -3,  7) ), -- from 75 to 65 degree 
-  --  2144 downto   46 => ( ( -8,  2),( -8,  2),( -7,  3),( -6,  4),( -4,  6),( -3,  7),( -2,  8),( -2,  8) ), -- from 65 to 55 degree 
-   1428 downto   1192 => ( ( -9,  1),( -9,  1),( -8,  2),( -7,  3),( -3,  7),( -2,  8),( -1,  9),( -1,  9) ), -- from 55 to 50 degree 
-   1191 downto   1001 => ( (-10,  0),( -9,  1),( -8,  2),( -8,  2),( -2,  8),( -2,  8),( -1,  9),(  0, 10) ), -- from 50 to 45 degree 
-   1000 downto   840 => ( (-11, -1),(-10,  0),( -9,  1),( -8,  2),( -2,  8),( -1,  9),(  0, 10),(  1, 11) ), -- from 45 to 40 degree 
-    839 downto   701 => ( (-13, -3),(-11, -1),(-10,  0),( -9,  1),( -1,  9),(  0, 10),(  1, 11),(  3, 13) ), -- from 40 to 35 degree 
-    700 downto   578 => ( (-14, -4),(-13, -3),(-11, -1),(-10,  0),(  0, 10),(  1, 11),(  3, 13),(  4, 14) ), -- from 35 to 30 degree 
-    577 downto   467 => ( (-17, -7),(-15, -5),(-13, -3),(-11, -1),(  1, 11),(  3, 13),(  5, 15),(  7, 17) ), -- from 30 to 25 degree 
-    466 downto   364 => ( (-20,-10),(-17, -7),(-15, -5),(-13, -3),(  3, 13),(  5, 15),(  7, 17),( 10, 20) ), -- from 25 to 20 degree 
-    363 downto   268 => ( (-25,-15),(-21,-11),(-18, -8),(-15, -5),(  5, 15),(  8, 18),( 11, 21),( 15, 25) ), -- from 20 to 15 degree 
-    267 downto   177 => ( (-33,-23),(-29,-19),(-24,-14),(-20,-10),( 10, 20),( 14, 24),( 19, 29),( 23, 33) ), -- from 15 to 10 degree 
-    176 downto    0 => ( (-53,-43),(-45,-35),(-37,-27),(-30,-20),( 20, 30),( 27, 37),( 35, 45),( 43, 53) )  -- from 10 to 5 degree 
+    ( ( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5) ), -- from 86.4234479 to 85 degree 
+    ( ( -6,  4),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -5,  5),( -4,  6) ), -- from 85 to 75 degree 
+    ( ( -7,  3),( -6,  4),( -6,  4),( -6,  4),( -4,  6),( -4,  6),( -4,  6),( -3,  7) ), -- from 75 to 65 degree 
+    ( ( -8,  2),( -8,  2),( -7,  3),( -6,  4),( -4,  6),( -3,  7),( -2,  8),( -2,  8) ), -- from 65 to 55 degree 
+    ( ( -9,  1),( -9,  1),( -8,  2),( -7,  3),( -3,  7),( -2,  8),( -1,  9),( -1,  9) ), -- from 55 to 50 degree 
+    ( (-10,  0),( -9,  1),( -8,  2),( -8,  2),( -2,  8),( -2,  8),( -1,  9),(  0, 10) ), -- from 50 to 45 degree 
+    ( (-11, -1),(-10,  0),( -9,  1),( -8,  2),( -2,  8),( -1,  9),(  0, 10),(  1, 11) ), -- from 45 to 40 degree 
+    ( (-13, -3),(-11, -1),(-10,  0),( -9,  1),( -1,  9),(  0, 10),(  1, 11),(  3, 13) ), -- from 40 to 35 degree 
+    ( (-14, -4),(-13, -3),(-11, -1),(-10,  0),(  0, 10),(  1, 11),(  3, 13),(  4, 14) ), -- from 35 to 30 degree 
+    ( (-17, -7),(-15, -5),(-13, -3),(-11, -1),(  1, 11),(  3, 13),(  5, 15),(  7, 17) ), -- from 30 to 25 degree 
+    ( (-20,-10),(-17, -7),(-15, -5),(-13, -3),(  3, 13),(  5, 15),(  7, 17),( 10, 20) ), -- from 25 to 20 degree 
+    ( (-25,-15),(-21,-11),(-18, -8),(-15, -5),(  5, 15),(  8, 18),( 11, 21),( 15, 25) ), -- from 20 to 15 degree 
+    ( (-33,-23),(-29,-19),(-24,-14),(-20,-10),( 10, 20),( 14, 24),( 19, 29),( 23, 33) ), -- from 15 to 10 degree 
+    ( (-53,-43),(-45,-35),(-37,-27),(-30,-20),( 20, 30),( 27, 37),( 35, 45),( 43, 53) )  -- from 10 to 0 degree 
   );
+
+  -- function get_win_slope(slope : integer) return roi_mbar_layer_large_t;
 
  end package roi_lut_BILA3_slope;
 
+package body roi_lut_BILA3_slope is
+  
+  -- function get_win_slope(slope : integer) return roi_mbar_layer_large_t is
+  --   variable y : roi_mbar_layer_large_t;
+  --   -- variable index : integer;
+  -- begin
+  --   if slope > 11704 then
+  --     y := ROI_BILA3_ANGLE_MEM(13);
+  --   elsif slope >   3822 then
+  --     y := ROI_BILA3_ANGLE_MEM(12);
+  --   elsif slope >   2196 then
+  --     y := ROI_BILA3_ANGLE_MEM(11);
+  --   elsif slope >   1462 then
+  --     y := ROI_BILA3_ANGLE_MEM(10);
+  --   elsif slope >   1220 then
+  --     y := ROI_BILA3_ANGLE_MEM(9);
+  --   elsif slope >   1024 then
+  --     y := ROI_BILA3_ANGLE_MEM(8);
+  --   elsif slope >    859 then
+  --     y := ROI_BILA3_ANGLE_MEM(7);
+  --   elsif slope >    717 then
+  --     y := ROI_BILA3_ANGLE_MEM(6);
+  --   elsif slope >    591 then
+  --     y := ROI_BILA3_ANGLE_MEM(5);
+  --   elsif slope >    477 then
+  --     y := ROI_BILA3_ANGLE_MEM(4);
+  --   elsif slope >    373 then
+  --     y := ROI_BILA3_ANGLE_MEM(3);
+  --   elsif slope >    274 then
+  --     y := ROI_BILA3_ANGLE_MEM(2);
+  --   elsif slope >    181 then  
+  --     y := ROI_BILA3_ANGLE_MEM(1);
+  --   else 
+  --     y := ROI_BILA3_ANGLE_MEM(0);
+  --   end if;
+  --   return y;
+  -- end function;
+  
+end package body roi_lut_BILA3_slope;

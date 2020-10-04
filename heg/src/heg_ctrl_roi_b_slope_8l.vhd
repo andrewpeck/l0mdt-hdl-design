@@ -34,7 +34,7 @@ library heg_roi_lib;
 use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.roi_func_pkg.all;
 
-entity b_slope2roi is
+entity b_slope2roi_8l is
   generic(
     g_STATION_RADIUS     : integer := 0  --station
   );
@@ -49,16 +49,16 @@ entity b_slope2roi is
     o_roi_edges         : out hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     o_dv                : out std_logic
   );
-end entity b_slope2roi;
+end entity b_slope2roi_8l;
 
-architecture beh of b_slope2roi is
+architecture beh of b_slope2roi_8l is
 
   -- VHDL2008 -- signal rom_mem  : roi_mbar_lut_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0)(0 to get_num_layers(g_STATION_RADIUS) -1) := get_roi_mbar_tubes(g_STATION_RADIUS);
-  signal rom_mem_small  : roi_mbar_lut_small_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
+  -- signal rom_mem_small  : roi_mbar_lut_small_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   signal rom_mem_large  : roi_mbar_lut_large_t(get_roi_mbar_max(g_STATION_RADIUS) - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   
   -- VHDL2008 -- signal mem_ouput : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
-  signal mem_ouput_small : roi_mbar_layer_small_t;
+  -- signal mem_ouput_small : roi_mbar_layer_small_t;
   signal mem_ouput_large : roi_mbar_layer_large_t;
 
   signal addr_mem : unsigned(UCM_VEC_ANG_LEN-1 downto 0); 
@@ -66,7 +66,7 @@ architecture beh of b_slope2roi is
 
   
   attribute ROM_STYLE : string;
-  attribute ROM_STYLE of rom_mem_small : signal is "distributed";
+  -- attribute ROM_STYLE of rom_mem_small : signal is "distributed";
   attribute ROM_STYLE of rom_mem_large : signal is "distributed";
 
   signal roi_edges : std_logic_vector(MDT_TUBE_LEN * get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -85,7 +85,7 @@ begin
     -- end if;
   end process;
 
-  LARGE_GEN: if g_STATION_RADIUS = 0 generate
+  -- LARGE_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
 
     begin
@@ -96,7 +96,7 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
-            mem_ouput_large <= rom_mem_large(to_integer(addr_mem));
+            mem_ouput_large <= get_win_slope_8l(to_integer(addr_mem));
             -- o_spaces <= to_unsigned(rom_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
           end if;
         end if;
@@ -108,32 +108,32 @@ begin
       o_roi_edges(l_i).hi <= to_signed(mem_ouput_large(l_i)(1),MDT_TUBE_LEN);
     end generate;
 
-  end generate;
+  -- end generate;
 
-  SMALL_GEN: if g_STATION_RADIUS > 0 generate
-    DT2R : process(clk)
+  -- SMALL_GEN: if g_STATION_RADIUS > 0 generate
+  --   DT2R : process(clk)
 
-    begin
-      if rising_edge(clk) then
-        if rst= '1' then
-          -- o_spaces <= (others => '0');
-          o_dv <= '0';
-        else
-          o_dv <= int_data_valid;
-          if(int_data_valid = '1') then
-            mem_ouput_small <= rom_mem_small(to_integer(addr_mem));
-            -- o_spaces <= to_unsigned(rom_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
-          end if;
-        end if;
-      end if ;
-    end process;
+  --   begin
+  --     if rising_edge(clk) then
+  --       if rst= '1' then
+  --         -- o_spaces <= (others => '0');
+  --         o_dv <= '0';
+  --       else
+  --         o_dv <= int_data_valid;
+  --         if(int_data_valid = '1') then
+  --           mem_ouput_small <= rom_mem_small(to_integer(addr_mem));
+  --           -- o_spaces <= to_unsigned(rom_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+  --         end if;
+  --       end if;
+  --     end if ;
+  --   end process;
 
-    OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
-      o_roi_edges(l_i).lo <= to_signed(mem_ouput_small(l_i)(0),MDT_TUBE_LEN);
-      o_roi_edges(l_i).hi <= to_signed(mem_ouput_small(l_i)(1),MDT_TUBE_LEN);
-    end generate;
+  --   OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
+  --     o_roi_edges(l_i).lo <= to_signed(mem_ouput_small(l_i)(0),MDT_TUBE_LEN);
+  --     o_roi_edges(l_i).hi <= to_signed(mem_ouput_small(l_i)(1),MDT_TUBE_LEN);
+  --   end generate;
 
-  end generate;
+  -- end generate;
 
 
 

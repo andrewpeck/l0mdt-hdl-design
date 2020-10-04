@@ -40,7 +40,7 @@ package csf_pkg is
     mdtid : vec_mdtid_rt;
     data_valid : std_logic;
   end record csf_seed_rt;
-  constant CSF_SEED_LEN : integer := 70;
+  constant CSF_SEED_LEN : integer := 73;
   subtype csf_seed_rvt is std_logic_vector(CSF_SEED_LEN-1 downto 0);
   function vectorify(x: csf_seed_rt) return csf_seed_rvt;
   function structify(x: csf_seed_rvt) return csf_seed_rt;
@@ -125,8 +125,8 @@ package body csf_pkg is
   function vectorify(x: csf_seed_rt) return csf_seed_rvt is
     variable y : csf_seed_rvt;
   begin
-    y(69 downto 49)            := vectorify(x.muid);
-    y(48 downto 38)            := vectorify(x.mbar);
+    y(72 downto 52)            := vectorify(x.muid);
+    y(51 downto 38)            := vectorify(x.mbar);
     y(37 downto 24)            := vectorify(x.pos);
     y(23 downto 10)            := vectorify(x.ang);
     y(9 downto 1)              := vectorify(x.mdtid);
@@ -136,8 +136,8 @@ package body csf_pkg is
   function structify(x: csf_seed_rvt) return csf_seed_rt is
     variable y : csf_seed_rt;
   begin
-    y.muid                     := structify(x(69 downto 49));
-    y.mbar                     := structify(x(48 downto 38));
+    y.muid                     := structify(x(72 downto 52));
+    y.mbar                     := structify(x(51 downto 38));
     y.pos                      := structify(x(37 downto 24));
     y.ang                      := structify(x(23 downto 10));
     y.mdtid                    := structify(x(9 downto 1));
