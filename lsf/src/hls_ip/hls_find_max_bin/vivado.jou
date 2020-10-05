@@ -2,8 +2,8 @@
 # Vivado v2019.2.1 (64-bit)
 # SW Build 2729669 on Thu Dec  5 04:48:12 MST 2019
 # IP Build 2729494 on Thu Dec  5 07:38:25 MST 2019
-# Start of session at: Wed Sep 30 14:12:54 2020
-# Process ID: 8036
+# Start of session at: Fri Oct  2 10:49:47 2020
+# Process ID: 65087
 # Current directory: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_find_max_bin/proj_find_max_bin/solution_find_max_bin/impl/ip
 # Command line: vivado -notrace -mode batch -source run_ippack.tcl
 # Log file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_find_max_bin/proj_find_max_bin/solution_find_max_bin/impl/ip/vivado.log

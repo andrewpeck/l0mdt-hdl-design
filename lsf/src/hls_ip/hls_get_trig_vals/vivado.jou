@@ -2,8 +2,8 @@
 # Vivado v2019.2.1 (64-bit)
 # SW Build 2729669 on Thu Dec  5 04:48:12 MST 2019
 # IP Build 2729494 on Thu Dec  5 07:38:25 MST 2019
-# Start of session at: Wed Sep 30 14:03:30 2020
-# Process ID: 1130
+# Start of session at: Fri Oct  2 10:32:12 2020
+# Process ID: 55260
 # Current directory: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_trig_vals/proj_get_trig_vals/solution_get_trig_vals/impl/ip
 # Command line: vivado -notrace -mode batch -source run_ippack.tcl
 # Log file: /home/psundara/L0MDT/psundara/HLS_MuTrig/TestBench_get_trig_vals/proj_get_trig_vals/solution_get_trig_vals/impl/ip/vivado.log
