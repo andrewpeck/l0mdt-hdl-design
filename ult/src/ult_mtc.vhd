@@ -43,18 +43,21 @@ end entity mtc_builder;
 architecture behavioral of mtc_builder is
 begin
 
- MTC: entity mtc_lib.top_mtc
-  generic map(
+  MTC_GEN : if c_MTC_ENABLED generate
+    MTC: entity mtc_lib.top_mtc
+    generic map(
       TOTAL_PTCALC_BLKS => c_NUM_THREADS,
       MTC_PER_BCID      => c_MAX_NUM_SL,
       n_PRIMARY_MTC     => c_NUM_MTC
-      )
+    )
     port map (
-    clock               => clock_and_control.clk,
-    rst                 => clock_and_control.rst,
-    i_ptcalc            => i_ptcalc,
-    i_pl2mtc            => i_pl2mtc,
-    o_mtc               => o_mtc
+      clock               => clock_and_control.clk,
+      rst                 => clock_and_control.rst,
+      i_ptcalc            => i_ptcalc,
+      i_pl2mtc            => i_pl2mtc,
+      o_mtc               => o_mtc
     );
+  end generate;
+
  
 end behavioral;

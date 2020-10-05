@@ -69,104 +69,108 @@ begin
 
   glob_en <= '1';
 
-  HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-    HPS : entity hps_lib.hps
-    generic map(
-      g_STATION_RADIUS    => 0,
-      g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_INN
-    )
-    port map(
-      clk                 => clock_and_control.clk,
-      rst                 => clock_and_control.rst,
-      glob_en             => glob_en,
+  H2S_GEN : if c_H2S_ENABLED generate
 
-      ctrl => ctrl.hps(0),
-      mon => mon.hps(0),
+    HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+      HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 0,
+        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_INN
+      )
+      port map(
+        clk                 => clock_and_control.clk,
+        rst                 => clock_and_control.rst,
+        glob_en             => glob_en,
 
-      -- configuration & control
-      -- i_uCM_pam           => i_uCM_pam,
-      -- SLc
-      i_uCM2hps_av        => i_inn_slc,
-      -- MDT hit
-      i_mdt_tar_av        => i_inn_tar_hits,
-      -- to pt calc
-      o_sf2pt_av          => o_inn_segments
-    );
-  end generate;
+        ctrl => ctrl.hps(0),
+        mon => mon.hps(0),
 
-  HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
-    HPS : entity hps_lib.hps
-    generic map(
-      g_STATION_RADIUS    => 1,
-      g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_MID
-    )
-    port map(
-      clk                 => clock_and_control.clk,
-      rst                 => clock_and_control.rst,
-      glob_en             => glob_en,
+        -- configuration & control
+        -- i_uCM_pam           => i_uCM_pam,
+        -- SLc
+        i_uCM2hps_av        => i_inn_slc,
+        -- MDT hit
+        i_mdt_tar_av        => i_inn_tar_hits,
+        -- to pt calc
+        o_sf2pt_av          => o_inn_segments
+      );
+    end generate;
 
-      ctrl => ctrl.hps(1),
-      mon => mon.hps(1),
+    HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
+      HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 1,
+        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_MID
+      )
+      port map(
+        clk                 => clock_and_control.clk,
+        rst                 => clock_and_control.rst,
+        glob_en             => glob_en,
 
-      -- configuration & control
-      -- i_uCM_pam           => i_uCM_pam,
-      -- SLc
-      i_uCM2hps_av        => i_mid_slc,
-      -- MDT hit
-      i_mdt_tar_av        => i_mid_tar_hits,
-      -- to pt calc
-      o_sf2pt_av          => o_mid_segments
-    );
-  end generate;
+        ctrl => ctrl.hps(1),
+        mon => mon.hps(1),
 
-  HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
-    HPS : entity hps_lib.hps
-    generic map(
-      g_STATION_RADIUS    => 2,
-      g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_OUT
-    )
-    port map(
-      clk                 => clock_and_control.clk,
-      rst                 => clock_and_control.rst,
-      glob_en             => glob_en,
+        -- configuration & control
+        -- i_uCM_pam           => i_uCM_pam,
+        -- SLc
+        i_uCM2hps_av        => i_mid_slc,
+        -- MDT hit
+        i_mdt_tar_av        => i_mid_tar_hits,
+        -- to pt calc
+        o_sf2pt_av          => o_mid_segments
+      );
+    end generate;
 
-      ctrl => ctrl.hps(2),
-      mon => mon.hps(2),
+    HPS_OUT : if c_HPS_ENABLE_ST_OUT = '1' generate
+      HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 2,
+        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_OUT
+      )
+      port map(
+        clk                 => clock_and_control.clk,
+        rst                 => clock_and_control.rst,
+        glob_en             => glob_en,
 
-      -- configuration & control
-      -- i_uCM_pam           => i_uCM_pam,
-      -- SLc
-      i_uCM2hps_av        => i_out_slc,
-      -- MDT hit
-      i_mdt_tar_av        => i_out_tar_hits,
-      -- to pt calc
-      o_sf2pt_av          => o_out_segments
-    );
-  end generate;
+        ctrl => ctrl.hps(2),
+        mon => mon.hps(2),
 
-  HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
-    HPS : entity hps_lib.hps
-    generic map(
-      g_STATION_RADIUS    => 3,
-      g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_EXT
-    )
-    port map(
-      clk                 => clock_and_control.clk,
-      rst                 => clock_and_control.rst,
-      glob_en             => glob_en,
+        -- configuration & control
+        -- i_uCM_pam           => i_uCM_pam,
+        -- SLc
+        i_uCM2hps_av        => i_out_slc,
+        -- MDT hit
+        i_mdt_tar_av        => i_out_tar_hits,
+        -- to pt calc
+        o_sf2pt_av          => o_out_segments
+      );
+    end generate;
 
-      ctrl => ctrl.hps(3),
-      mon => mon.hps(3),
+    HPS_EXT : if c_HPS_ENABLE_ST_EXT = '1' generate
+      HPS : entity hps_lib.hps
+      generic map(
+        g_STATION_RADIUS    => 3,
+        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_EXT
+      )
+      port map(
+        clk                 => clock_and_control.clk,
+        rst                 => clock_and_control.rst,
+        glob_en             => glob_en,
 
-      -- configuration & control
-      -- i_uCM_pam           => i_uCM_pam,
-      -- SLc
-      i_uCM2hps_av        => i_ext_slc,
-      -- MDT hit
-      i_mdt_tar_av        => i_ext_tar_hits,
-      -- to pt calc
-      o_sf2pt_av          => o_ext_segments
-    );
+        ctrl => ctrl.hps(3),
+        mon => mon.hps(3),
+
+        -- configuration & control
+        -- i_uCM_pam           => i_uCM_pam,
+        -- SLc
+        i_uCM2hps_av        => i_ext_slc,
+        -- MDT hit
+        i_mdt_tar_av        => i_ext_tar_hits,
+        -- to pt calc
+        o_sf2pt_av          => o_ext_segments
+      );
+    end generate;
+
   end generate;
 
   

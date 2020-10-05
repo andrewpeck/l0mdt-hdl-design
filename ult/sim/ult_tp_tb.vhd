@@ -119,6 +119,10 @@ architecture beh of ult_tp is
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';
   signal tb_curr_time : unsigned(63 downto 0) := (others => '0');
+  -- clk 0.78
+  constant clk_tdc_time_period : time := 0.78125 ns;  
+  signal clk_tdc_time : std_logic := '0';
+  signal tb_curr_tdc_time : unsigned(63 downto 0) := (others => '0');
   -- clk
   constant clk_period : time := 3.125 ns;  -- 320Mhz
   signal clk : std_logic := '0';
@@ -273,9 +277,18 @@ begin
     clk_time <= '1';
     wait for CLK_time_period/2;
   end process;
+  -------------------------------------------------------------------------------------
+	-- clock tdc Generator
+	-------------------------------------------------------------------------------------
+  CLK_TDC : process begin
+    clk_tdc_time <= '0';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+  end process;
   -- clock_and_control.clk <= clk;
   -------------------------------------------------------------------------------------
-	-- 
+	-- Main FPGA clock
 	-------------------------------------------------------------------------------------
   CLK_MAIN : process begin
     clk <= '0';
@@ -305,7 +318,16 @@ begin
     if rising_edge(clk_time) then
       tb_curr_time <= tb_curr_time + '1';
     end if;
-  end process ToA;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench tdc time
+  -------------------------------------------------------------------------------------
+  ToA_tdc: process(clk_tdc_time)
+  begin
+    if rising_edge(clk_tdc_time) then
+      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
+    end if;
+  end process;
  	-------------------------------------------------------------------------------------
 	-- candidates
   -------------------------------------------------------------------------------------
@@ -504,7 +526,7 @@ begin
 
         -- read from input vector file
         RL : while true loop
-          if (v_mdt_event.ToA < tb_curr_time) then
+          if (v_mdt_event.ToA < tb_curr_tdc_time) then
             -- i_mdt_tar_av <= mdt_tar_event_r.tar;
             if (endfile(input_mdt_tar_file) = false) then
 

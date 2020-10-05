@@ -47,40 +47,42 @@ architecture behavioral of ptcalc is
   signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
 begin
 
-  tf_gen_loop : for I in 0 to c_NUM_THREADS-1 generate
+  TF_GEN : if c_PT_ENABLED generate
+    tf_gen_loop : for I in 0 to c_NUM_THREADS-1 generate
 
-    mpt : if (c_PT_TYPE = '0') generate
-      pt_1 : entity ptc_lib.pt
-        generic map (
-          FLAVOUR => 0,
-          SECTOR  => I)
-        port map (
-          clk         => clock_and_control.clk,
-          i_segment_I => inner_segments_i(I),
-          i_segment_M => middle_segments_i(I),
-          i_segment_O => outer_segments_i(I),
-          i_SLC       => i_pl2pt_av(I),
-          i_rst       => clock_and_control.rst,
-          o_mtc       => o_pt2mtc(I)
-          );
+      mpt : if (c_PT_TYPE = '0') generate
+        pt_1 : entity ptc_lib.pt
+          generic map (
+            FLAVOUR => 0,
+            SECTOR  => I)
+          port map (
+            clk         => clock_and_control.clk,
+            i_segment_I => inner_segments_i(I),
+            i_segment_M => middle_segments_i(I),
+            i_segment_O => outer_segments_i(I),
+            i_SLC       => i_pl2pt_av(I),
+            i_rst       => clock_and_control.rst,
+            o_mtc       => o_pt2mtc(I)
+            );
+      end generate;
+
+      upt : if (c_PT_TYPE = '1') generate
+        pt_1 : entity upt_lib.top_upt
+          generic map (
+            FLAVOUR => 0,
+            SECTOR  => I)
+          port map (
+            clk         => clock_and_control.clk,
+            i_rst       => clock_and_control.rst,
+            i_segment_i => inner_segments_i(i),
+            i_segment_m => middle_segments_i(i),
+            i_segment_o => outer_segments_i(i),
+            i_slc       => i_pl2pt_av(i),
+            o_mtc       => o_pt2mtc(i)
+            );
+      end generate;
+
     end generate;
-
-    upt : if (c_PT_TYPE = '1') generate
-      pt_1 : entity upt_lib.top_upt
-        generic map (
-          FLAVOUR => 0,
-          SECTOR  => I)
-        port map (
-          clk         => clock_and_control.clk,
-          i_rst       => clock_and_control.rst,
-          i_segment_i => inner_segments_i(i),
-          i_segment_m => middle_segments_i(i),
-          i_segment_o => outer_segments_i(i),
-          i_slc       => i_pl2pt_av(i),
-          o_mtc       => o_pt2mtc(i)
-          );
-    end generate;
-
   end generate;
 
 

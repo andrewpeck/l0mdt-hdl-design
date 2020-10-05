@@ -117,71 +117,76 @@ begin
 
   -- end generate;
 
-  TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
+  TAR_GEN : if c_TAR_ENABLED generate
 
-    TAR : entity tar_lib.tar
-    port map (
-      -- clock, control, and monitoring
-      clk             => clock_and_control.clk,
-      rst             => clock_and_control.rst,
-      glob_en         => glob_en,
-      -- TDC Hits from Polmux
-      i_inn_tdc_hits  => i_inner_tdc_hits,
-      i_mid_tdc_hits  => i_middle_tdc_hits,
-      i_out_tdc_hits  => i_outer_tdc_hits,
-      i_ext_tdc_hits  => i_extra_tdc_hits,
-      -- candidates in from hal
-      -- i_inn_tar_hits  => i_inner_tar_hits,
-      -- i_mid_tar_hits  => i_middle_tar_hits,
-      -- i_out_tar_hits  => i_outer_tar_hits,
-      -- i_ext_tar_hits  => i_extra_tar_hits,
-      -- 
-      o_inn_tdc_hits  => o_inner_tdc_hits,
-      o_mid_tdc_hits  => o_middle_tdc_hits,
-      o_out_tdc_hits  => o_outer_tdc_hits,
-      o_ext_tdc_hits  => o_extra_tdc_hits,
-      -- outputs to ucm
-      o_inn_tar_hits  => o_inner_tar_hits,
-      o_mid_tar_hits  => o_middle_tar_hits,
-      o_out_tar_hits  => o_outer_tar_hits,
-      o_ext_tar_hits  => o_extra_tar_hits
+    TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
+
+      TAR : entity tar_lib.tar
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => clock_and_control.rst,
+        glob_en         => glob_en,
+        -- TDC Hits from Polmux
+        i_inn_tdc_hits  => i_inner_tdc_hits,
+        i_mid_tdc_hits  => i_middle_tdc_hits,
+        i_out_tdc_hits  => i_outer_tdc_hits,
+        i_ext_tdc_hits  => i_extra_tdc_hits,
+        -- candidates in from hal
+        -- i_inn_tar_hits  => i_inner_tar_hits,
+        -- i_mid_tar_hits  => i_middle_tar_hits,
+        -- i_out_tar_hits  => i_outer_tar_hits,
+        -- i_ext_tar_hits  => i_extra_tar_hits,
+        -- 
+        o_inn_tdc_hits  => o_inner_tdc_hits,
+        o_mid_tdc_hits  => o_middle_tdc_hits,
+        o_out_tdc_hits  => o_outer_tdc_hits,
+        o_ext_tdc_hits  => o_extra_tdc_hits,
+        -- outputs to ucm
+        o_inn_tar_hits  => o_inner_tar_hits,
+        o_mid_tar_hits  => o_middle_tar_hits,
+        o_out_tar_hits  => o_outer_tar_hits,
+        o_ext_tar_hits  => o_extra_tar_hits
   
       );
 
+    end generate;
+
+    TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
+
+      TAR : entity tar_lib.tar_tp
+      port map (
+        -- clock, control, and monitoring
+        clk             => clock_and_control.clk,
+        rst             => clock_and_control.rst,
+        glob_en         => glob_en,
+        -- TDC Hits from Polmux
+        -- i_inn_tdc_hits  => i_inner_tdc_hits,
+        -- i_mid_tdc_hits  => i_middle_tdc_hits,
+        -- i_out_tdc_hits  => i_outer_tdc_hits,
+        -- i_ext_tdc_hits  => i_extra_tdc_hits,
+        -- candidates in from hal
+        i_inn_tar_hits  => i_inner_tar_hits,
+        i_mid_tar_hits  => i_middle_tar_hits,
+        i_out_tar_hits  => i_outer_tar_hits,
+        i_ext_tar_hits  => i_extra_tar_hits,
+        -- 
+        -- o_inn_tdc_hits  => o_inner_tdc_hits,
+        -- o_mid_tdc_hits  => o_middle_tdc_hits,
+        -- o_out_tdc_hits  => o_outer_tdc_hits,
+        -- o_ext_tdc_hits  => o_extra_tdc_hits,
+        -- outputs to ucm
+        o_inn_tar_hits  => o_inner_tar_hits,
+        o_mid_tar_hits  => o_middle_tar_hits,
+        o_out_tar_hits  => o_outer_tar_hits,
+        o_ext_tar_hits  => o_extra_tar_hits
+
+      );
+
+    end generate;
+
   end generate;
 
-  TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
-
-  TAR : entity tar_lib.tar_tp
-  port map (
-    -- clock, control, and monitoring
-    clk             => clock_and_control.clk,
-    rst             => clock_and_control.rst,
-    glob_en         => glob_en,
-    -- TDC Hits from Polmux
-    -- i_inn_tdc_hits  => i_inner_tdc_hits,
-    -- i_mid_tdc_hits  => i_middle_tdc_hits,
-    -- i_out_tdc_hits  => i_outer_tdc_hits,
-    -- i_ext_tdc_hits  => i_extra_tdc_hits,
-    -- candidates in from hal
-    i_inn_tar_hits  => i_inner_tar_hits,
-    i_mid_tar_hits  => i_middle_tar_hits,
-    i_out_tar_hits  => i_outer_tar_hits,
-    i_ext_tar_hits  => i_extra_tar_hits,
-    -- 
-    -- o_inn_tdc_hits  => o_inner_tdc_hits,
-    -- o_mid_tdc_hits  => o_middle_tdc_hits,
-    -- o_out_tdc_hits  => o_outer_tdc_hits,
-    -- o_ext_tdc_hits  => o_extra_tdc_hits,
-    -- outputs to ucm
-    o_inn_tar_hits  => o_inner_tar_hits,
-    o_mid_tar_hits  => o_middle_tar_hits,
-    o_out_tar_hits  => o_outer_tar_hits,
-    o_ext_tar_hits  => o_extra_tar_hits
-
-    );
-
-  end generate;
 
 
 end architecture beh;
