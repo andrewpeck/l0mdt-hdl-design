@@ -2,8 +2,8 @@
 ctrl/src/axi/types.vhd
 ctrl/src/axi/axiReg.vhd
 ctrl/src/axi/axiRegPkg.vhd
-ctrl/src/axi/axi_bram_controller.vhd
-ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
+#ctrl/src/axi/axi_bram_controller.vhd
+#ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
 
 #ctrl/src/*/*.vhd
 

@@ -42,6 +42,11 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
     ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
     NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    -- stations in current fpga
+    FPGA_EN_ST_INN                 : std_logic;  
+    FPGA_EN_ST_EXT                 : std_logic;  
+    FPGA_EN_ST_MID                 : std_logic;  
+    FPGA_EN_ST_OUT                 : std_logic;  
     -- tube address remap
     ENABLE_TAR                    : std_logic;
     INSEL_MDT_nTAR                : std_logic;
@@ -53,7 +58,7 @@ package cfg_global_pkg is
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
     -- pt-calc
-    ENABLE_TF                     : std_logic;  -- enable or disable the pt calculator
+    ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
     PT_type                       : std_logic;  -- select the type of pt calculator
     -- DAQ
     ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
@@ -90,6 +95,11 @@ package cfg_global_pkg is
     NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- stations enabled in hte fpga
+    FPGA_EN_ST_INN                => '1',
+    FPGA_EN_ST_EXT                => '0',
+    FPGA_EN_ST_MID                => '1',
+    FPGA_EN_ST_OUT                => '1',
     -- tube address remap
     ENABLE_TAR                    => '1',
     INSEL_MDT_nTAR                => '1',
@@ -100,7 +110,7 @@ package cfg_global_pkg is
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
     -- pt-calc
-    ENABLE_TF                     => '1', -- 0: disabled  1: enabled -- default enabled
+    ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_type                       => '0', -- default 0
     -- DAQ
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
@@ -181,7 +191,7 @@ end package cfg_global_pkg;
 --     proj_cfg.ENABLE_SF                     => '1'; -- default enable
 --     proj_cfg.SF_TYPE                       => '0'; -- default CSF
 --     -- pt-calc
---     proj_cfg.ENABLE_TF                     => '1'; -- default enable
+--     proj_cfg.ENABLE_PT                     => '1'; -- default enable
 --     proj_cfg.PT_type                       => '0'; -- default 0
 --     -- DAQ
 --     proj_cfg.ENABLE_DAQ                    => '1'; -- default enabled

@@ -12,18 +12,40 @@ HDL_Types:
 
 - UCM_INPUT_PL_LATENCY  : [ qualifier: constant , type: integer , value: 2 ]
 - UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
-- UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 10 ]
+# - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 100 ]
+
+- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
+
+# - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
 
 # # ucm preprocesor output
 
-- ucm_prepro:
-  - muid:       [type: slc_muid]
-  - chambers:   [type: slc_chid]
-  - common:     [type: slc_common]
-  - specific:   [type: logic , length: SLC_SPECIFIC_LEN]
-  - data_valid: [type: logic]
+# - slc_in_data:
+#   - muid        : [type: slc_muid]
+#   - data_valid  : [type: logic]
 
-- ucm_prepro_bus : [array: open , type: ucm_prepro]
+- ucm_prepro2ctrl:
+  # - muid        : [type: slc_muid]
+  # - chambers:   [type: slc_chid]
+  # - cointype    :  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  # - specific    : [type: logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type: logic]
+
+- ucm_prepro2ctrl_bus : [array: open , type: ucm_prepro2ctrl]
+
+- chamb_ieta_rpc : [type : unsigned , length : 4]
+
+- chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
+
+- ucm_cde:
+  - muid        : [type : slc_muid]
+  - mdtid       : [type : vec_mdtid]
+  - chamb_ieta  : [type : chamb_ieta_rpc_bus]
+  - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type : logic]
+
+- ucm_cde_bus : [array: open , type: ucm_cde]
 # ucm_prepro_avt: [array: open , type: ucm_prepro_vt ]
 
 # main cross switch control

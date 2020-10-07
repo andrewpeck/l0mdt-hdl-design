@@ -33,13 +33,13 @@ entity ucm_csw is
   -- );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
     i_control           : in ucm_csw_control_at;
     --
-    i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_data              : out ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_data              : in slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    o_data              : out slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ucm_csw;
 

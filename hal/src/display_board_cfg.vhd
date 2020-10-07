@@ -38,22 +38,22 @@ begin
   -- Polmux
   --------------------------------------------------------------------------------
 
-  inner_loop : for I in 0 to (c_POLMUX_MAXID) generate
-    assert (false) report " > Inner Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(inner_polmux_idx_array(I)) severity note;
-  end generate;
-  middle_loop : for I in 0 to (c_POLMUX_MAXID) generate
-    assert (false) report " > Middle Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(middle_polmux_idx_array(I)) severity note;
-  end generate;
-  outer_loop : for I in 0 to (c_POLMUX_MAXID) generate
-    assert (false) report " > Outer Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
-  end generate;
-  extra_loop : for I in 0 to (c_POLMUX_MAXID) generate
-    assert (false) report " > Extra Polmux IDX (" & integer'image(I) &
-      ")=" & integer'image(extra_polmux_idx_array(I)) severity note;
-  end generate;
+  --inner_loop : for I in 0 to (c_POLMUX_MAXID) generate
+  --  assert (false) report " > Inner Polmux IDX (" & integer'image(I) &
+  --    ")=" & integer'image(inner_polmux_idx_array(I)) severity note;
+  --end generate;
+  --middle_loop : for I in 0 to (c_NUM_POLMUX) generate
+  --  assert (false) report " > Middle Polmux IDX (" & integer'image(I) &
+  --    ")=" & integer'image(middle_polmux_idx_array(I)) severity note;
+  --end generate;
+  --outer_loop : for I in 0 to (c_NUM_POLMUX) generate
+  --  assert (false) report " > Outer Polmux IDX (" & integer'image(I) &
+  --    ")=" & integer'image(outer_polmux_idx_array(I)) severity note;
+  --end generate;
+  --extra_loop : for I in 0 to (c_NUM_POLMUX) generate
+  --  assert (false) report " > Extra Polmux IDX (" & integer'image(I) &
+  --    ")=" & integer'image(extra_polmux_idx_array(I)) severity note;
+  --end generate;
 
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
@@ -140,9 +140,9 @@ begin
   assert false report "c_NUM_POLMUX_MIDDLE=" & integer'image(c_NUM_POLMUX_MIDDLE) severity note;
   assert false report "c_NUM_POLMUX_OUTER=" & integer'image(c_NUM_POLMUX_OUTER) severity note;
   assert false report "c_NUM_POLMUX_EXTRA=" & integer'image(c_NUM_POLMUX_EXTRA) severity note;
-  assert false report "c_POLMUX_MAXID=" & integer'image(c_POLMUX_MAXID) severity note;
+  assert false report "c_NUM_POLMUX=" & integer'image(c_NUM_POLMUX) severity note;
   assert false report "--------------------------------------------------------" severity note;
-  assert false report "c_NUM_CSM_LINKS_ACTIVE=" & integer'image(c_NUM_CSM_LINKS_ACTIVE) severity note;
+  assert false report "c_NUM_CSMS_ACTIVE=" & integer'image(c_NUM_CSMS_ACTIVE) severity note;
   assert false report "c_NUM_CSM_UPLINKS=" & integer'image(c_NUM_CSM_UPLINKS) severity note;
   assert false report "c_NUM_CSM_DOWNLINKS=" & integer'image(c_NUM_CSM_DOWNLINKS) severity note;
   assert false report "--------------------------------------------------------" severity note;

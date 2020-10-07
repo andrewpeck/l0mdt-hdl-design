@@ -12,12 +12,15 @@ set SIMULATOR "Xsim"
 
 set PROPERTIES [dict create \
             synth_1 [dict create \
+                STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
                 STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
-                STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
+                STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
                 ] \
             impl_1 [dict create \
+                STEPS.PHYS_OPT_DESIGN.IS_ENABLED true \
+                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.IS_ENABLED true \
                 STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
+                STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE Default \
                    ]\
            ]
 ############################################################

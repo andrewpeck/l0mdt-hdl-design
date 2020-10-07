@@ -12,7 +12,7 @@ __config__:
 
 HDL_Types:
 
-- HEG_BUSY_CLOCKS  : [ qualifier: constant , type: integer , value: 10 ]
+# - HEG_BUSY_CLOCKS  : [ qualifier: constant , type: integer , value: 10 ]
 
 # -----------------------------------------------------------
 # heg: pc 2 heg mdt data
@@ -29,19 +29,33 @@ HDL_Types:
   # - enable        : [ type: logic , length : MAX_NUM_HP]
   - rst           : [ type: logic]
   - enable        : [ type: logic]
+  # - window_valid  : [ type : logic ]
   # - dummy         : [ type: logic, length : 2]
 
 - heg_ctrl2hp_bus  : [ array : open , type : heg_ctrl2hp]
 
+- heg_ctrl2hp_all:
+  - window_valid  : [ type : logic ]
+# -----------------------------------------------------------
+#  heg: heg control 2 sf
+# -----------------------------------------------------------
+  
+- heg_ctrl2sf:
+  - rst           : [ type : logic ]
+  - eof           : [ type : logic ]
+  - enable        : [ type : logic ]
+  # - window_valid  : [ type : logic ]
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data
 # -----------------------------------------------------------
 
-- heg_hp2bm    : [array: open , type: hp_hp2bm ]
+- heg_hp2bm_bus    : [array: open , type: hp_hp2bm ]
 
 - heg_bm2sf:
   - data        : [ type: hp_hp2sf_data]
   - data_valid  : [ type: logic]
+
+- heg_hp2bm_data_bus    : [array: open , type: hp_hp2sf_data ]
 
 # -----------------------------------------------------------
 #  heg: window

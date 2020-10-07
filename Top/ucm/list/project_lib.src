@@ -1,5 +1,5 @@
-shared/shared_lib.src
-Top/ucm/prj_cfg.vhd 2008
-ucm/ucm_lib.src
+shared/shared_lib.src lib=shared_lib
+Top/ucm/prj_cfg.vhd 
+ucm/ucm_lib.src lib=ucm_lib
 ucm/top_ucm.vhd
 

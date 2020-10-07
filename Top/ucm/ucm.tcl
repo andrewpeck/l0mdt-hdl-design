@@ -1,5 +1,6 @@
 ############# modify these to match project ################
 set BIN_FILE 1
+set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
@@ -24,3 +25,6 @@ set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../.."
 source $PATH_REPO/Hog/Tcl/create_project.tcl
 set_property default_lib work [current_project]
+
+set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
+set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs synth_1]

@@ -10,6 +10,7 @@ entity tdc_packet_processor is
 
     reset : in std_logic;
 
+    -- only 8b pair mode is supported right now!!
     readout_mode   : in std_logic_vector (1 downto 0);
     debug_mode     : in std_logic;
     triggered_mode : in std_logic;
@@ -54,117 +55,116 @@ begin
 
     if (rising_edge(clock)) then
 
+      if (read_done_i = '1') then
+        valid_o <= '0';
+      end if;
+
+      if (word_8b_valid = '1') then
+
+        tdc_err_o <= '0';
+
+        -- TDC Datasheet
+        --
+        -- http://ohm.bu.edu/trac/edf/attachment/wiki/AtlasPhase2Muons/TDCV2_datasheet_20200310.pdf
+        --
+        -- For a triggerless pair mode 32bit TDC word, 8b/10b encoding starts at the MSB byte [31:24].
+        -- The MSB in every byte corresponds to bit H, and the LSB corresponds to bit A according to
+        -- 8b/10b encoding definition.
+        --
+        --
+        case tdc_word_state is
+
+          -- err state, wait for header k-char to be received
+          when ERR =>
+
+            sequential_header_count <= 0;
+
+            valid_o <= '0';
+
+            if (word_8b = TDC_START and k_char = '1') then
+              tdc_word_state <= SYNCING;
+            end if;
+
+          -- require some minimum number of idle characters before we start processing data
+          when SYNCING =>
+
+            valid_o <= '0';
+
+            if (word_8b = TDC_START and k_char = '1') then
+              if (sequential_header_count < sequential_header_count_thresh) then
+                sequential_header_count <= sequential_header_count + 1;
+                misaligned_o            <= '1';
+              else
+                misaligned_o <= '0';
+              end if;
+            else
+              misaligned_o <= '1';
+            end if;
+
+            if (tdc_aligned) then
+              -- make sure this transition only happens on a k-char so we don't just drop into the middle of a packet
+              -- and get some weird sequence
+              if (k_char = '1') then
+                tdc_word_state <= READY;
+              end if;
+            end if;
+
+          when READY =>
+
+            -- start reading on 1st non-kchar
+            if (k_char = '0') then
+              tdc_word_state         <= DATA0;
+              data_buf(31 downto 24) <= word_8b;
+            end if;
+
+          when DATA0 =>
+
+            if (k_char = '1') then
+              tdc_word_state <= ERR;
+            else
+              tdc_word_state <= DATA1;
+            end if;
+
+            data_buf(23 downto 16) <= word_8b;
+
+          when DATA1 =>
+
+            if (k_char = '1') then
+              tdc_word_state <= ERR;
+            else
+              tdc_word_state <= DATA2;
+            end if;
+
+            data_buf(15 downto 8) <= word_8b;
+
+          when DATA2 =>
+
+            -- FIXME: the TDC_ERR signal applies (according to the documentation) to the packet
+            -- following the ERR, rather than the packet preceeding it
+            if (k_char = '1' and word_8b = TDC_ERR) then  -- 28.4 = tdc_err
+              tdc_err_o      <= '1';
+              tdc_word_state <= READY;
+              valid_o        <= '0';
+            else
+              tdc_word_state <= READY;
+              valid_o        <= '1';
+            end if;
+
+            tdc_word_o (7 downto 0)  <= word_8b;
+            tdc_word_o (31 downto 8) <= data_buf(31 downto 8);
+
+          when others =>
+
+            tdc_word_state <= ERR;
+
+        end case;
+
+      end if;
+
       if (reset = '1') then
         sequential_header_count <= 0;
         tdc_word_state          <= SYNCING;
         valid_o                 <= '0';
-      else
-
-        if (read_done_i = '1') then
-          valid_o <= '0';
-        end if;
-
-        if (word_8b_valid = '1') then
-
-          tdc_err_o <= '0';
-
-          -- TDC Datasheet
-          --
-          -- http://ohm.bu.edu/trac/edf/attachment/wiki/AtlasPhase2Muons/TDCV2_datasheet_20200310.pdf
-          --
-          -- For a triggerless pair mode 32bit TDC word, 8b/10b encoding starts at the MSB byte [31:24].
-          -- The MSB in every byte corresponds to bit H, and the LSB corresponds to bit A according to
-          -- 8b/10b encoding definition.
-          --
-          --
-          case tdc_word_state is
-
-            -- err state, wait for header k-char to be received
-            when ERR =>
-
-              sequential_header_count <= 0;
-
-              valid_o <= '0';
-
-              if (word_8b = TDC_START and k_char = '1') then
-                tdc_word_state <= SYNCING;
-              end if;
-
-            -- require some minimum number of idle characters before we start processing data
-            when SYNCING =>
-
-              valid_o <= '0';
-
-              if (word_8b = TDC_START and k_char = '1') then
-                if (sequential_header_count < sequential_header_count_thresh) then
-                  sequential_header_count <= sequential_header_count + 1;
-                  misaligned_o            <= '1';
-                else
-                  misaligned_o <= '0';
-                end if;
-              else
-                misaligned_o <= '1';
-              end if;
-
-              if (tdc_aligned) then
-                -- make sure this transition only happens on a k-char so we don't just drop into the middle of a packet
-                -- and get some weird sequence
-                if (k_char = '1') then
-                  tdc_word_state <= READY;
-                end if;
-              end if;
-
-            when READY =>
-
-              -- start reading on 1st non-kchar
-              if (k_char = '0') then
-                tdc_word_state         <= DATA0;
-                data_buf(31 downto 24) <= word_8b;
-              end if;
-
-            when DATA0 =>
-
-              if (k_char = '1') then
-                tdc_word_state <= ERR;
-              else
-                tdc_word_state <= DATA1;
-              end if;
-
-              data_buf(23 downto 16) <= word_8b;
-
-            when DATA1 =>
-
-              if (k_char = '1') then
-                tdc_word_state <= ERR;
-              else
-                tdc_word_state <= DATA2;
-              end if;
-
-              data_buf(15 downto 8) <= word_8b;
-
-            when DATA2 =>
-
-              -- FIXME: the TDC_ERR signal applies (according to the documentation) to the packet
-              -- following the ERR, rather than the packet preceeding it
-              if (k_char = '1' and word_8b = TDC_ERR) then  -- 28.4 = tdc_err
-                tdc_err_o      <= '1';
-                tdc_word_state <= READY;
-                valid_o        <= '0';
-              else
-                tdc_word_state <= READY;
-                valid_o        <= '1';
-              end if;
-
-              tdc_word_o (7 downto 0)  <= word_8b;
-              tdc_word_o (31 downto 8) <= data_buf(31 downto 8);
-
-            when others =>
-
-              tdc_word_state <= ERR;
-
-          end case;
-
-        end if;
       end if;
 
     end if;

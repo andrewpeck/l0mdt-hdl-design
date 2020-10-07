@@ -24,7 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-use shared_lib.some_functions_pkg.all;
+-- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library ult_lib;
@@ -41,9 +41,7 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity top_ult is
   generic (
-    DUMMY       : boolean := false;
-    EN_TAR_HITS : integer := 0;
-    EN_MDT_HITS : integer := 1
+    DUMMY       : boolean := false
     );
 
   port (
@@ -75,22 +73,22 @@ entity top_ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_bus_avt (EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
+    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
+    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
-    i_plus_neighbor_slc       : in slc_rx_data_rvt;
-    i_minus_neighbor_slc      : in slc_rx_data_rvt;
+    i_main_primary_slc        : in slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc      : in slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_plus_neighbor_slc       : in slc_rx_rvt;
+    i_minus_neighbor_slc      : in slc_rx_rvt;
     -- Segments in from neighbor
     plus_neighbor_segments_i  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
     minus_neighbor_segments_i : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
@@ -118,8 +116,6 @@ begin
 
   ULT : entity ult_lib.ult
     generic map(
-      EN_TAR_HITS => EN_TAR_HITS,
-      EN_MDT_HITS => EN_MDT_HITS,
       DUMMY       => DUMMY
       )
     port map(

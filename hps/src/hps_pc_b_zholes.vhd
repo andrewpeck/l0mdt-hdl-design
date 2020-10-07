@@ -54,7 +54,7 @@ architecture beh of hps_pc_b_zholes is
   signal addr_mem : unsigned(SLC_CHAMBER_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
 
-  signal zh_mem : zhLUT_chamber_integer_t := b_zh_get_layer(c_SECTOR_ID,g_STATION_RADIUS);
+  signal zh_mem : zhLUT_chamber_integer_t := b_zh_get_layer(c_SECTOR_ID,g_STATION_RADIUS,MDT_GLOBAL_AXI_MULT);
   -- signal BM_A_zh_mem : zhLUT_chamber_t := c_BM_A_zh(c_SECTOR_ID);
   -- signal BO_A_zh_mem : zhLUT_chamber_t := c_BO_A_zh(c_SECTOR_ID);
   -- signal mem : mem_array := mem_data;
@@ -95,6 +95,8 @@ begin
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
             o_spaces <= to_unsigned(zh_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+          else
+            o_spaces <= (others => '0');
           end if;
         end if;
       end if ;

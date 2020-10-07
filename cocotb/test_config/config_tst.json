@@ -1,0 +1,37 @@
+{
+    "testbench_config": {
+        "test_name": "tst",
+        "input_args": {
+            "n_events": 2,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns"
+        },
+        "run_config": {
+            "output_directory_name": "tst",
+            "test_location": "/DFS-L/DATA/atlas/psundara/CERN/ATLAS/L0MDT/GIT/uci-l0mdt-hdl-design/l0mdt-hdl-design/cocotb/src/l0mdt_tb/testbench/tst/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "/DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/"
+        },
+        "testvectors": {
+            "testvector_dir": "/DFS-L/DATA/atlas/psundara/CERN/ATLAS/L0MDT/GIT/uci-l0mdt-hdl-design/testvecs",
+	    "testvector_file": "B_A_03_LPTCALC.raw",
+	    "inputs": [
+		{
+		    "tv_format": "SLCPIPE_MTC",
+		    "ports": 3
+		},
+		{
+		    "tv_format": "PTCALC_LSF",
+		    "ports": 3
+		}
+	    ],
+	    "outputs": [
+		{
+		    "tv_format": "MTC_LSF",
+		    "ports": 3
+		}
+	    ]
+        }
+    }
+}

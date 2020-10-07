@@ -1,0 +1,19 @@
+config:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+
+hdl:
+
+# - N_SNAKE_PATHS: [type: integer, qualifier: constant, value: 2]
+- DAQ_N_PIPELINES: [type: integer, qualifier: constant, value: 16]
+- DAQ_N_STREAMS: [type: integer, qualifier: constant, value: 1]
+- DAQ_N_FLOWS: [type: integer, qualifier: constant, value: 6]
+- DAQ_STREAMS: [type: snake_paths_desc, qualifier: constant, value: [40]]
+
+

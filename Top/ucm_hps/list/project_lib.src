@@ -1,8 +1,8 @@
-Top/ucm_hps/prj_cfg.vhd 2008
+Top/ucm_hps/prj_cfg.vhd
 ucm_hps/top_ucm_hps.vhd
-shared/shared_lib.src
-ucm_hps/ucm_hps_lib.src
-ucm/ucm_lib.src
-hp/hp_lib.src
-heg/heg_lib.src
-hps/hps_lib.src
+shared/shared_lib.src lib=shared_lib
+ucm_hps/ucm_hps_lib.src lib=ucm_hps_lib
+ucm/ucm_lib.src lib=ucm_lib
+hp/hp_lib.src lib=hp_lib
+heg/heg_lib.src lib=heg_lib
+hps/hps_lib.src lib=hps_lib

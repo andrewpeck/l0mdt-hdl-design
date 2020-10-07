@@ -1,8 +1,8 @@
 # -*- mode: TCL;-*-
-tdc/src/top_tdc_decoder.vhd 2008
+#tdc/src/top_tdc_decoder.vhd 2008
 tdc/src/csm_pkg.vhd
 tdc/src/polling_mux.vhd 2008
-tdc/src/top_tdc_control.vhd
+#tdc/src/top_tdc_control.vhd
 tdc/src/tdc_encoded_control.vhd
 tdc/src/tdc_decoder/dec8b10b.v
 tdc/src/tdc_decoder/dec_8b10b.vhd

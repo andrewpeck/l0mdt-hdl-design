@@ -1,4 +1,5 @@
-vivado* 
+vivado*
+*.o
 *~ 
 *.pyc 
 .cxl.ip/ 

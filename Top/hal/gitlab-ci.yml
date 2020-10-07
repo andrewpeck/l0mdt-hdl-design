@@ -1,42 +1,13 @@
-# #################### HAL Project ###########################
-
-create_project:hal:
-    extends: .create_project
+#################### hal Project ###########################
+generate_project:hal:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: hal
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # simulate_project:hal:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hal
-
-synthesise_ips:hal:
-    extends: .synthesise_ips
-    variables:
-      extends: .vars
-      PROJECT_NAME: hal
-      IP_PATH: IP
-    dependencies:
-        - create_project:hal
-
-synthesise_project:hal:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: hal
-    dependencies:
-        - synthesise_ips:hal
-        - create_project:hal
-
-# implement_project:hal:
-#     extends: .implement_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: hal
-# #      HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#        - create_project:hal
-#        - synthesise_ips:hal
-#        - synthesise_project:hal

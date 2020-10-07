@@ -1,0 +1,57 @@
+config:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+
+hdl:
+
+# sys ------------------------------------------------------------------------
+- ttc_sys:
+  - clk40: [type: logic]
+  - clk320: [type: logic]
+  - rst: [type: logic]
+
+# ttc ------------------------------------------------------------------------
+- ttc_fmt:
+  - bcr: [type: logic]
+  - ecr: [type: logic]
+  - lxa: [type: logic]
+  - reserved0: [type: logic]
+  - reserved1: [type: logic]
+  - reserved2: [type: logic]
+  - reserved3: [type: logic]
+  - reserved4: [type: logic]
+
+- ttc_cmds:
+  - ~: 320MHz domain
+  - bcr: [type: logic]
+  - ocr: [type: logic]
+  - ecr: [type: logic]
+  - lxa: [type: logic]
+  - bx: [type: logic]
+
+- ttc_counters:
+  - bcid: [type: bcid]
+  - eventid: [type: unsigned, length: 32]
+  - orbitid: [type: unsigned, length: 32]
+  
+# entity ---------------------------------------------------------------------
+- ttc_i:
+  - sys: [type: ttc_sys]
+  - data: [type: logic, length: ttc_fmt]
+  - _: off
+      
+- ttc_o:
+  - cmds: [type: ttc_cmds]
+  - cnt: [type: ttc_counters]
+  - _: off
+
+- ttc:
+  - i : [type: ttc_i]
+  - o : [type: ttc_o]
+

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="eta_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="cfg_global_pkg" />
+            <top_module name="common_constants_pkg" />
+            <top_module name="common_ieee_pkg" />
+            <top_module name="common_types_pkg" />
+            <top_module name="config_pkg" />
+            <top_module name="detector_param_pkg" />
+            <top_module name="eta_tb" />
+            <top_module name="glbl" />
+            <top_module name="l0mdt_constants_pkg" />
+            <top_module name="l0mdt_dataformats_pkg" />
+            <top_module name="prj_cfg" />
+            <top_module name="pt_params_pkg" />
+            <top_module name="pt_pkg" />
+            <top_module name="vhdl2008_functions_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="100001fs"></ZoomEndTime>
+      <Cursor1Time time="51238fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="247"></NameColumnWidth>
+      <ValueColumnWidth column_width="75"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="19" />
+   <wvobject type="logic" fp_name="/eta_tb/eta/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/i_seg">
+      <obj_property name="ElementShortName">i_seg[62:0]</obj_property>
+      <obj_property name="ObjectShortName">i_seg[62:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/seg">
+      <obj_property name="ElementShortName">seg</obj_property>
+      <obj_property name="ObjectShortName">seg</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/dv0">
+      <obj_property name="ElementShortName">dv0</obj_property>
+      <obj_property name="ObjectShortName">dv0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/z2">
+      <obj_property name="ElementShortName">z2[35:0]</obj_property>
+      <obj_property name="ObjectShortName">z2[35:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/z_red">
+      <obj_property name="ElementShortName">z_red[10:0]</obj_property>
+      <obj_property name="ObjectShortName">z_red[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/dv1">
+      <obj_property name="ElementShortName">dv1</obj_property>
+      <obj_property name="ObjectShortName">dv1</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/mag2">
+      <obj_property name="ElementShortName">mag2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">mag2[7:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/dv2">
+      <obj_property name="ElementShortName">dv2</obj_property>
+      <obj_property name="ObjectShortName">dv2</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/z_red_ss">
+      <obj_property name="ElementShortName">z_red_ss[10:0]</obj_property>
+      <obj_property name="ObjectShortName">z_red_ss[10:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/dv3">
+      <obj_property name="ElementShortName">dv3</obj_property>
+      <obj_property name="ObjectShortName">dv3</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/mag">
+      <obj_property name="ElementShortName">mag[10:0]</obj_property>
+      <obj_property name="ObjectShortName">mag[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/dv4">
+      <obj_property name="ElementShortName">dv4</obj_property>
+      <obj_property name="ObjectShortName">dv4</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/m_plus_z">
+      <obj_property name="ElementShortName">m_plus_z[11:0]</obj_property>
+      <obj_property name="ObjectShortName">m_plus_z[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/m_minus_z">
+      <obj_property name="ElementShortName">m_minus_z[11:0]</obj_property>
+      <obj_property name="ObjectShortName">m_minus_z[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/log_plus">
+      <obj_property name="ElementShortName">log_plus[13:0]</obj_property>
+      <obj_property name="ObjectShortName">log_plus[13:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/log_minus">
+      <obj_property name="ElementShortName">log_minus[13:0]</obj_property>
+      <obj_property name="ObjectShortName">log_minus[13:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/eta_tb/eta/o_dv_eta">
+      <obj_property name="ElementShortName">o_dv_eta</obj_property>
+      <obj_property name="ObjectShortName">o_dv_eta</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/eta_tb/eta/o_eta">
+      <obj_property name="ElementShortName">o_eta[13:0]</obj_property>
+      <obj_property name="ObjectShortName">o_eta[13:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

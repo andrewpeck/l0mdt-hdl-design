@@ -75,11 +75,11 @@ begin
   end process;
 
   mem_guard : process(i_chamber) begin
-    if ( to_integer(unsigned(i_chamber)) > 5) then
-      addr_mem <= (others => '0');
-    else
+    -- if ( to_integer(unsigned(i_chamber)) > 5) then
+    --   addr_mem <= (others => '0');
+    -- else
       addr_mem <= i_chamber;--(DT2R_LARGE_ADDR_LEN -1 downto 0);
-    end if;
+    -- end if;
   end process;
 
   INN_GEN: if g_STATION_RADIUS = 0 generate
@@ -94,6 +94,8 @@ begin
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
             o_time_t0 <= to_unsigned(integer(BI_T0_mem(to_integer(addr_mem))),MDT_TIME_LEN);
+          else
+            o_time_t0 <= (others => '0');
           end if;
         end if;
       end if ;

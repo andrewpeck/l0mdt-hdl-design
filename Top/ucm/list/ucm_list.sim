@@ -1,4 +1,4 @@
 #Simulator xsim
-shared/sim/l0mdt_textio_pkg.vhd
+shared/sim/pkg/l0mdt_textio_pkg.vhd
 ucm/sim/ucm_tb.vhd topsim=ucm_tb
 ucm/sim/ucm_tb_behav.wcfg

@@ -1,40 +1,13 @@
-create_project:heg:
-    extends: .create_project
+#################### heg Project ###########################
+generate_project:heg:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: heg
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # simulate_project:heg:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: heg
-
-# synthesise_ips:heg:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: heg
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:heg
-
-# synthesise_project:heg:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: heg
-#     dependencies:
-#         # - synthesise_ips:heg
-#         - create_project:heg
-
-# implement_project:heg:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: heg
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:heg
-#       #  - synthesise_ips:heg
-#       - synthesise_project:heg

@@ -29,9 +29,9 @@ package hps_rom_b_r_pkg is
   -- integer values for T0 with 0.78 ns resolution
   -- T0 = ToF + t0
   -- t0 = 817
-  type rLUT_layer_integer_t is array (1 to 8) of integer;
+  type rLUT_layer_integer_t is array (0 to 7) of integer;
 
-  type rLUT_layer_t is array (1 to 8) of real;
+  type rLUT_layer_t is array (0 to 7) of real;
   type rLUT_station_t is array (1 to 16) of rLUT_layer_t;
   
   constant c_BI_A_R : rLUT_station_t :=(
@@ -104,17 +104,17 @@ package body hps_rom_b_r_pkg is
 
     if station = 0 then
       -- inner
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BI_A_R(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 1 then
       -- middle
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BM_A_R(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 2 then
       -- outter
-      for l_i in 1 to 8 loop
+      for l_i in 0 to 7 loop
         o_layer(l_i) := integer(c_BO_A_R(sector)(l_i) * MDT_GLOBAL_AXI_MULT);
       end loop;
     elsif station = 3 then

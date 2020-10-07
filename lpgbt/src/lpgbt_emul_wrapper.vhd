@@ -90,9 +90,9 @@ begin
           downlinkdatagroup1          => lpgbt_downlink_data_o(idx).data(31 downto 16),
           downlinkdataec              => lpgbt_downlink_data_o(idx).ec,
           downlinkdataic              => lpgbt_downlink_data_o(idx).ic,
-          downlinkbypassdeinterleaver => c_lpgbt_bypass_interleaver,
-          downlinkbypassfecdecoder    => c_lpgbt_bypass_fec,
-          downlinkbypassdescsrambler  => c_lpgbt_bypass_scrambler,
+          downlinkbypassdeinterleaver => c_BYPASS_INTERLEAVER,
+          downlinkbypassfecdecoder    => c_BYPASS_FEC,
+          downlinkbypassdescsrambler  => c_BYPASS_SCRAMBLER,
           enablefecerrcounter         => std_logic1,
           feccorrectioncount          => open,
           downlinkrdy_o               => lpgbt_downlink_ready_o(idx),
@@ -118,9 +118,9 @@ begin
           gt_rxdata_in         => lpgbt_downlink_mgt_word_array_i(idx),  -- 32 bit receive data word from mgt
           uplinkscramblerreset => std_logic0,
 
-          uplinkinterleaverbypass => c_lpgbt_bypass_interleaver,
-          uplinkfecbypass         => c_lpgbt_bypass_fec,
-          uplinkscramblerbypass   => c_lpgbt_bypass_scrambler,
+          uplinkinterleaverbypass => c_BYPASS_INTERLEAVER,
+          uplinkfecbypass         => c_BYPASS_FEC,
+          uplinkscramblerbypass   => c_BYPASS_SCRAMBLER,
           txdatarate              => std_logic1   -- 0 = 5.24 gbps, 1 = 10.24
           );
     end generate;

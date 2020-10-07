@@ -105,10 +105,10 @@ architecture structural of top_l0mdt is
   signal i_outer_tar_hits  : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
   signal i_extra_tar_hits  : tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
-  signal main_primary_slc   : slc_rx_data_bus_avt(2 downto 0);  -- is the main SL used
-  signal main_secondary_slc : slc_rx_data_bus_avt(2 downto 0);  -- only used in the big endcap
-  signal plus_neighbor_slc  : slc_rx_data_rvt;
-  signal minus_neighbor_slc : slc_rx_data_rvt;
+  signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+  signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal plus_neighbor_slc  : slc_rx_rvt;
+  signal minus_neighbor_slc : slc_rx_rvt;
 
   signal plus_neighbor_segments_i  : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
   signal minus_neighbor_segments_i : sf2pt_bus_avt (c_NUM_SF_INPUTS - 1 downto 0);
@@ -126,6 +126,7 @@ architecture structural of top_l0mdt is
 
   signal axi_clk : std_logic;
   signal clk320  : std_logic;
+  signal clk40   : std_logic;
 
   -- Control and Monitoring Records
 
@@ -210,6 +211,7 @@ begin
       -- AXI
 
       clk320_o => clk320,
+      clk40_o  => clk40,
 
       axi_clk_o => axi_clk,
 
@@ -229,10 +231,7 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY       => false,
-      EN_TAR_HITS => 0,
-      EN_MDT_HITS => 1
-      )
+      DUMMY       => false)
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
@@ -329,6 +328,7 @@ begin
 
       -- axi common
       clk320                  => clk320,
+      clk40                   => clk40,
       clkpipe                 => clock_and_control.clk,
       axi_clk                 => axi_clk,
       clk50mhz                => axi_clk,
@@ -382,33 +382,33 @@ begin
       mon.CONFIG.SECTOR_SIDE         => c_SECTOR_SIDE,
       mon.CONFIG.ST_nBARREL_ENDCAP   => c_ST_nBARREL_ENDCAP,
       mon.CONFIG.ENABLE_NEIGHBORS    => c_ENABLE_NEIGHBORS,
-      mon.CONFIG.SECTOR_ID           => std_logic_vector(to_unsigned(c_SECTOR_ID,32)),
+      mon.CONFIG.SECTOR_ID           => std_logic_vector(to_unsigned(c_SECTOR_ID, 32)),
       mon.CONFIG.ENDCAP_nSMALL_LARGE => c_ENDCAP_nSMALL_LARGE,
-      mon.CONFIG.PHY_BARREL_R0       => std_logic_vector(resize(PHY_BARREL_R0,32)),
-      mon.CONFIG.PHY_BARREL_R1       => std_logic_vector(resize(PHY_BARREL_R1,32)),
-      mon.CONFIG.PHY_BARREL_R2       => std_logic_vector(resize(PHY_BARREL_R2,32)),
-      mon.CONFIG.PHY_BARREL_R3       => std_logic_vector(resize(PHY_BARREL_R3,32)),
+      mon.CONFIG.PHY_BARREL_R0       => std_logic_vector(resize(PHY_BARREL_R0, 32)),
+      mon.CONFIG.PHY_BARREL_R1       => std_logic_vector(resize(PHY_BARREL_R1, 32)),
+      mon.CONFIG.PHY_BARREL_R2       => std_logic_vector(resize(PHY_BARREL_R2, 32)),
+      mon.CONFIG.PHY_BARREL_R3       => std_logic_vector(resize(PHY_BARREL_R3, 32)),
       mon.CONFIG.HPS_ENABLE_ST_INN   => c_HPS_ENABLE_ST_INN,
       mon.CONFIG.HPS_ENABLE_ST_EXT   => c_HPS_ENABLE_ST_EXT,
       mon.CONFIG.HPS_ENABLE_ST_MID   => c_HPS_ENABLE_ST_MID,
       mon.CONFIG.HPS_ENABLE_ST_OUT   => c_HPS_ENABLE_ST_OUT,
-      mon.CONFIG.HPS_NUM_MDT_CH_INN  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN,8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_EXT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT,8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_MID  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID,8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_OUT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT,8)),
-      mon.CONFIG.NUM_MTC             => std_logic_vector(to_unsigned(c_NUM_MTC,8)),
-      mon.CONFIG.NUM_NSP             => std_logic_vector(to_unsigned(c_NUM_NSP,8)),
+      mon.CONFIG.HPS_NUM_MDT_CH_INN  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8)),
+      mon.CONFIG.HPS_NUM_MDT_CH_EXT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8)),
+      mon.CONFIG.HPS_NUM_MDT_CH_MID  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8)),
+      mon.CONFIG.HPS_NUM_MDT_CH_OUT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8)),
+      mon.CONFIG.NUM_MTC             => std_logic_vector(to_unsigned(c_NUM_MTC, 8)),
+      mon.CONFIG.NUM_NSP             => std_logic_vector(to_unsigned(c_NUM_NSP, 8)),
       mon.CONFIG.UCM_ENABLED         => c_UCM_ENABLED,
       mon.CONFIG.MPL_ENABLED         => c_MPL_ENABLED,
       mon.CONFIG.SF_ENABLED          => c_SF_ENABLED,
       mon.CONFIG.SF_TYPE             => c_SF_TYPE,
-      mon.CONFIG.NUM_DAQ_STREAMS     => std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS,8)),
-      mon.CONFIG.MAX_NUM_HP          => std_logic_vector(to_unsigned(MAX_NUM_HP,8)),
-      mon.CONFIG.MAX_NUM_HPS         => std_logic_vector(to_unsigned(MAX_NUM_HPS,8)),
-      mon.CONFIG.NUM_SF_INPUTS       => std_logic_vector(to_unsigned(c_NUM_SF_INPUTS,8)),
-      mon.CONFIG.NUM_SF_OUTPUTS      => std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS,8)),
-      mon.CONFIG.MAX_NUM_SL          => std_logic_vector(to_unsigned(c_MAX_NUM_SL,8)),
-      mon.CONFIG.NUM_THREADS         => std_logic_vector(to_unsigned(c_NUM_THREADS,8))
+      mon.CONFIG.NUM_DAQ_STREAMS     => std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8)),
+      mon.CONFIG.MAX_NUM_HP          => std_logic_vector(to_unsigned(MAX_NUM_HP, 8)),
+      mon.CONFIG.MAX_NUM_HPS         => std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8)),
+      mon.CONFIG.NUM_SF_INPUTS       => std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8)),
+      mon.CONFIG.NUM_SF_OUTPUTS      => std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8)),
+      mon.CONFIG.MAX_NUM_SL          => std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8)),
+      mon.CONFIG.NUM_THREADS         => std_logic_vector(to_unsigned(c_NUM_THREADS, 8))
 
       );
 

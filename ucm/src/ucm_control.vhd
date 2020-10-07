@@ -31,10 +31,10 @@ use ucm_lib.ucm_pkg.all;
 entity ucm_ctrl is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     --
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -49,10 +49,10 @@ architecture beh of ucm_ctrl is
   component ucm_ctrl_main is
     port (
       clk                 : in std_logic;
-      rst            : in std_logic;
+      rst                 : in std_logic;
       glob_en             : in std_logic;
       -- extrnals
-      i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+      i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
       o_csw_ctrl          : out ucm_csw_control_at;
       -- internals
       o_num_cand          : out unsigned(3 downto 0);
@@ -64,7 +64,7 @@ architecture beh of ucm_ctrl is
   component ucm_ctrl_pam is
     port (
       clk                 : in std_logic;
-      rst            : in std_logic;
+      rst                 : in std_logic;
       glob_en             : in std_logic;
       --
       o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
@@ -86,10 +86,10 @@ begin
   MAIN_CTRL : ucm_ctrl_main
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- extrnals
-    i_data              => i_data,
+    i_data              => i_prepro2ctrl_av,
     o_csw_ctrl          => o_csw_ctrl,
     -- internals
     o_num_cand          => num_cand,
@@ -99,7 +99,7 @@ begin
   PAM_CTRL : ucm_ctrl_pam
   port map(
     clk                 => clk,
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     --
     o_pam_ctrl            => o_pam_ctrl,
@@ -113,9 +113,16 @@ begin
 
 end beh;
 
--- ---------------------
---  Main control aka algorithm
--- ---------------------
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: Main control aka algorithm
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
+
 
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
@@ -124,19 +131,23 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
 entity ucm_ctrl_main is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     -- extrnals
-    i_data              : in ucm_prepro_bus_avt(c_MAX_NUM_SL -1 downto 0);
+    i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     -- internals
     o_num_cand          : out unsigned(3 downto 0);
@@ -151,8 +162,8 @@ architecture beh of ucm_ctrl_main is
   );
   signal alg_status   : alg_status_t;
 
-  signal i_data_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal data_ar      : ucm_prepro_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar    : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal data_ar      : ucm_prepro2ctrl_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   signal input_valids : std_logic_vector(c_MAX_NUM_SL -1 downto 0);
 
@@ -271,9 +282,15 @@ begin
   
 end architecture beh;
 
--- ---------------------
---  PAM control
--- ---------------------
+--------------------------------------------------------------------------------
+--  Project: ATLAS L0MDT Trigger 
+--  Module: PAM control
+--  Description:
+--
+--------------------------------------------------------------------------------
+--  Revisions:
+--      
+--------------------------------------------------------------------------------
 
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
@@ -282,16 +299,22 @@ use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
 
 library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+
+use shared_lib.detector_param_pkg.all;
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
 entity ucm_ctrl_pam is
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
     -- i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
@@ -315,6 +338,8 @@ architecture beh of ucm_ctrl_pam is
 
   signal processing   : integer;
 
+  signal buff_pam_ctrl : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
+
 begin
 
   -- for heg_i in c_NUM_THREADS -1 downto 0 generate
@@ -335,20 +360,24 @@ begin
         -- o_pam2heg <= (others =>( (others => '0') , '0') );
         o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
       else
+
+        o_pam_ctrl <= buff_pam_ctrl;
+
         processed := 0;
 
         for ch_i in c_NUM_THREADS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
             o_proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
             o_proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
-            o_cvp_ctrl(ch_i) <= '0';
+            -- o_cvp_ctrl(ch_i) <= '0';
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
-              o_pam_ctrl(ch_i).data_present <= '0';
+              buff_pam_ctrl(ch_i).data_present <= '0';
               processed := processed + 1;
             else
-              ch_busy <= (others => '0');
-              ch_count <= (others => (others => '0'));
+              o_cvp_ctrl(ch_i) <= '0';
+              ch_busy(ch_i) <= '0';
+              ch_count(ch_i) <= (others => '0');
               -- processed := processed - 1;
             end if;
             
@@ -357,8 +386,8 @@ begin
               
               if processed < to_integer(i_num_cand) then
                 o_cvp_ctrl(ch_i) <= '1';
-                o_pam_ctrl(ch_i).data_present <= '1';
-                o_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
+                buff_pam_ctrl(ch_i).data_present <= '1';
+                buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 o_proc_info(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 o_proc_info(c_NUM_THREADS -1 - processed).processed <= '1';
                 ch_busy(ch_i) <= '1';

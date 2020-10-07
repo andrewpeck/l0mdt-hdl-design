@@ -30,22 +30,22 @@ use heg_lib.heg_pkg.all;
 
 entity top_heg is
   generic(
-    g_STATION_RADIUS    : integer := 0;  --station
+    g_STATION_RADIUS    : integer := 1;  --station
     g_HPS_NUM_MDT_CH     : integer := 6 
   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
     -- configuration
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
     i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- to Segment finder
-    o_sf_control_v      : out heg_ctrl2hp_rvt;
-    o_sf_slc_data_v     : out ucm2hps_rvt;
-    o_sf_mdt_data_v     : out heg_bm2sf_rvt
+    o_sf_control_v      : out heg_ctrl2sf_rvt;
+    o_sf_slc_data_v     : out heg2sfslc_rvt;
+    o_sf_mdt_data_v     : out heg2sfhit_rvt
   );
 end entity top_heg;
 
@@ -61,7 +61,7 @@ begin
   port map(
     clk                 => CLK,
     
-    rst            => rst,
+    rst                 => rst,
     glob_en             => glob_en,
     -- configuration
     -- SLc

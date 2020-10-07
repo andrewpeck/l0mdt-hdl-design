@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="load_LE_refPos" xd:componentRef="load_LE_refPos" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="mdtid" xd:originalName="mdtid" xd:direction="in" xd:interfaceRef="mdtid_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="9"/>
+  <xd:arg xd:name="slcvec_pos_ref" xd:originalName="slcvec_pos_ref" xd:direction="out" xd:interfaceRef="slcvec_pos_ref_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="1"/>
+  <xd:arg xd:name="hewindow_pos_ref" xd:originalName="hewindow_pos_ref" xd:direction="out" xd:interfaceRef="hewindow_pos_ref_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18" xd:firstOut="1"/>
+  <xd:latencyEstimates xd:best-case="2" xd:worst-case="2" xd:average-case="2"/>
+  <xd:resourceEstimates xd:LUT="41" xd:FF="37" xd:BRAM="1" xd:DSP="0"/>
+</xd:acceleratorMap>

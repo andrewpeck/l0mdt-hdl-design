@@ -52,7 +52,7 @@ end entity heg_ctrl_roi;
 architecture beh of heg_ctrl_roi is
 
   signal uCM_data_r : ucm2hps_rt;
-  signal slc_b_data_r  : ucm_csf_barrel_rt;
+  -- signal slc_b_data_r  : ucm_csf_barrel_rt;
   
   signal roi_center : heg_roi_center_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal roi_edges : hp_window_limits_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -65,7 +65,8 @@ begin
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
     uCM_data_r <= structify(i_uCM_data_v);
-    slc_b_data_r <= structify(uCM_data_r.specific);
+    -- slc_b_data_r <= structify(uCM_data_r.specific);
+    o_SLC_Window_v <= vectorify(SLC_Window_r);
     
     ROI_Z : entity heg_lib.b_z2roi
     generic map(
@@ -76,14 +77,16 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_z                 => slc_b_data_r.z,
+      i_z                 => uCM_data_r.vec_pos,
       i_dv                => uCM_data_r.data_valid,
       --
       o_roi_center        => roi_center,
       o_dv                => dv_Z
     );
 
-    ROI_MBAR : entity heg_lib.b_mbar2roi
+    SMALL_GEN: if g_STATION_RADIUS > 0 generate
+
+    ROI_MBAR_6L : entity heg_lib.b_slope2roi_6l
     generic map(
       g_STATION_RADIUS => g_STATION_RADIUS
     )
@@ -92,21 +95,76 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
       --
-      i_mbar              => slc_b_data_r.mbar,
+      i_ang               => uCM_data_r.vec_ang,
       i_dv                => uCM_data_r.data_valid,
       --
       o_roi_edges         => roi_edges,
       o_dv                => dv_mbar
     );
 
-    o_Roi_win_valid <= dv_z and dv_mbar;
-
-    WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
-      SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
-      SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
-
-      o_SLC_Window_v <= vectorify(SLC_Window_r);
     end generate;
+
+    
+    LARGE_GEN: if g_STATION_RADIUS = 0 generate
+
+      ROI_MBAR_6L : entity heg_lib.b_slope2roi_8l
+      generic map(
+        g_STATION_RADIUS => g_STATION_RADIUS
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        --
+        i_ang               => uCM_data_r.vec_ang,
+        i_dv                => uCM_data_r.data_valid,
+        --
+        o_roi_edges         => roi_edges,
+        o_dv                => dv_mbar
+      );
+
+    end generate;
+
+    -- o_Roi_win_valid <= dv_z and dv_mbar;
+
+
+    WIN_GEN: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          SLC_Window_r <= (others => (others => (others => '0')));
+        else
+          for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 loop
+            if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).lo) >= 0 then
+              SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+            else
+              SLC_Window_r(l_i).lo <= (others => '0');
+            end if;
+            if to_integer(signed(roi_center(l_i)) + roi_edges(l_i).hi) >= 0 then
+              SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+            else
+              SLC_Window_r(l_i).hi <= (others => '0');
+            end if;
+          end loop;
+
+        o_Roi_win_valid <= dv_z and dv_mbar;
+
+        end if;
+      end if;
+    end process WIN_GEN;
+
+    -- WIN_GEN : for l_i in get_num_layers(g_STATION_RADIUS)-1 downto 0 generate
+    --   if (roi_center(l_i)) + roi_edges(l_i).lo > 0) then
+    --     SLC_Window_r(l_i).lo <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).lo);
+    --   else
+    --     SLC_Window_r(l_i).lo <= (others => '0');
+    --   end if;
+    --   SLC_Window_r(l_i).hi <= unsigned(signed(roi_center(l_i)) + roi_edges(l_i).hi);
+
+      
+    -- end generate;
+
+   
 
 
 

@@ -1,42 +1,13 @@
-create_project:tdc:
-    extends: .create_project
+#################### ptc_mpi Project ###########################
+generate_project:tdc:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: tdc
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # simulate_project:tdc:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: tdc
-# 
-# synthesise_ips:tdc:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: tdc
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:tdc
-# 
-# synthesise_project:tdc:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: tdc
-#     dependencies:
-#         # - synthesise_ips:tdc
-#         - create_project:tdc
-# 
-# implement_project:tdc:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: tdc
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:tdc
-#       #  - synthesise_ips:tdc
-#       - synthesise_project:tdc
-
-

@@ -14,24 +14,24 @@ set_property BLOCK_SYNTH.RETIMING false  $link_wrapper_cell
 
 puts "Setting LPGBT Uplink Pipeline Multicycle Path"
 
-set pipeline_s_reg_cells [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*frame_pipelined_s_reg[*]"]
+set pipeline_s_reg_cells [get_cells -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*uplink*/*frame_pipelined_s_reg[*]"]
 if {[string is space $pipeline_s_reg_cells] == 0} {
     set_property -quiet KEEP true $pipeline_s_reg_cells
 }
 
-set pipeline_s_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/frame_pipelined_s_reg[*]/C"]
+set pipeline_s_reg [get_pins -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*uplink*/frame_pipelined_s_reg[*]/C"]
 if {[string is space $pipeline_s_reg] == 0} {
     set_multicycle_path 4 -from $pipeline_s_reg -setup
     set_multicycle_path 3 -from $pipeline_s_reg -hold
 }
 
 puts "Setting LPGBT Uplink Descrambler Multicycle Path"
-set descrambled_d_reg_cells [get_cells -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*descrambler*/*descrambler*/descrambledData_reg*"]
+set descrambled_d_reg_cells [get_cells -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*uplink*/*descrambler*/*descrambler*/descrambledData_reg*"]
 if {[string is space $descrambled_d_reg_cells] == 0} {
     set_property -quiet KEEP true $descrambled_d_reg_cells
 }
 
-set descrambled_d_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*uplink*/*descrambler*/*descrambler*/descrambledData_reg*/C"]
+set descrambled_d_reg [get_pins -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*uplink*/*descrambler*/*descrambler*/descrambledData_reg*/C"]
 if {[string is space $descrambled_d_reg] == 0} {
     set_multicycle_path 4 -from $descrambled_d_reg -setup
     set_multicycle_path 3 -from $descrambled_d_reg -hold
@@ -39,12 +39,12 @@ if {[string is space $descrambled_d_reg] == 0} {
 
 # Downlink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
 puts "Setting LPGBT Downlink Scrambler Multicycle Path"
-set scrambled_d_reg_cells [get_cells -quiet "top_hal/*lpgbt_link_wrapper_inst/*downlink_inst*/*_scramble*/scrambledData*"]
+set scrambled_d_reg_cells [get_cells -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*downlink_inst*/*_scramble*/scrambledData*"]
 if {[string is space $scrambled_d_reg_cells] == 0} {
     set_property -quiet KEEP true $scrambled_d_reg_cells
 }
 
-set scrambled_d_reg [get_pins -quiet "top_hal/lpgbt_link_wrapper_inst/*downlink*/*_scramble*/*scrambledData*/D"]
+set scrambled_d_reg [get_pins -quiet "top_hal/*csm_gen*/lpgbt_links_inst/*downlink_inst*/*_scramble*/scrambledData*/D"]
 if {[string is space $scrambled_d_reg] == 0} {
     set_multicycle_path 4 -setup -to $scrambled_d_reg
     set_multicycle_path 3 -hold -to $scrambled_d_reg
@@ -54,11 +54,19 @@ if {[string is space $scrambled_d_reg] == 0} {
 # GBT-SCA Multicycle Path
 ################################################################################
 
-set sca_from [get_cells -of [all_fanout -endpoints_only -flat -from [get_nets top_hal/gbt_controller_wrapper_inst/valid]]]
+#set latch_cells [concat \
+#                     [get_cells top_hal/*csm_gen*/lpgbt_links_inst/uplink_gen*.lpgbtlatch.uplink_data_o_reg*] \
+#                     [get_cells top_hal/*csm_gen*/lpgbt_links_inst/downlink_gen*downlink_data_reg*] \
+#                     [get_cells -of [all_fanout -endpoints_only -flat -from [get_nets top_hal/strobe_320]]]
+#             ]
+#
+#set_multicycle_path 8 -setup -from $latch_cells
+#set_multicycle_path 7 -hold -from $latch_cells
 
-set_multicycle_path 8 -setup \
-    -from $sca_from
 
-set_multicycle_path 7 -hold \
-    -from $sca_from
+set to_sca [get_cells top_hal/csm*/gbt_controller_wrapper_inst/*/sca_inst/sca_gen*/sca_deserializer_inst/data_o_reg*]
 
+#set_multicycle_path 8 -setup -from $sca_clk_en_from
+#set_multicycle_path 7 -hold -from $sca_clk_en_from
+#set_multicycle_path 8 -setup -to $sca_clk_en_to
+#set_multicycle_path 7 -hold -to $sca_clk_en_to

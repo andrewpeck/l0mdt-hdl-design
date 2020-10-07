@@ -24,6 +24,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+use shared_lib.detector_param_pkg.all;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
@@ -40,7 +42,7 @@ entity hp_matching is
     rst            : in std_logic;
     glob_en             : in std_logic;
     -- configuration
-    time_offset         : in unsigned(7 downto 0);
+    -- time_offset         : in unsigned(7 downto 0);
     -- RoI_size            : in unsigned(7 downto 0);
     -- SLc
     i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -54,15 +56,15 @@ entity hp_matching is
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
     i_data_valid         : in std_logic;
     -- to Segment finder
-    o_hit_valid         : out std_logic
-    -- o_data_valid        : out std_logic
+    o_hit_valid         : out std_logic;
+    o_data_valid        : out std_logic
   );
 end entity hp_matching;
 
 architecture beh of hp_matching is
 
-  signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
-  signal trLUT_valid : std_logic;
+  -- signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
+  -- signal trLUT_valid : std_logic;
 
   signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
@@ -74,12 +76,15 @@ begin
 
   Roi_window <= structify(i_SLC_Window);
 
-  time_high_limit <= to_unsigned(24,time_high_limit'length);
-  time_low_limit <= to_unsigned(0,time_low_limit'length);
+  time_high_limit <= resize(
+      (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)
+    ,time_high_limit'length);
+
+  time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
 
   o_hit_valid <= space_valid and time_valid;
 
-  -- time_low_limit <= (others => '0');
+  -- time_low_limit <= to_unsigned( to_integer(i_SLc_BCID) ,17); 
   -- time_high_limit <=to_unsigned( to_integer(i_SLc_BCID) + to_integer(time_offset),17); 
 
   validation_proc : process(clk,rst)
@@ -92,16 +97,28 @@ begin
         -- time
         time_valid <= '0';
       else
-        -- space
-        if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
-          space_valid <= '1';
+
+        o_data_valid <= i_data_valid;
+
+        if i_data_valid = '1' then
+          -- space
+          if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
+            space_valid <= '1';
+          else
+            space_valid <= '0';
+          end if;
+          -- time
+          if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
+            time_valid <= '1';
+          else
+            time_valid <= '0';
+          end if;
+          --valid
+          -- o_data_valid <= trLUT_valid;
+        else
+          space_valid <= '0';
+          time_valid <= '0';
         end if;
-        -- time
-        if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
-          time_valid <= '1';
-        end if;
-        --valid
-        -- o_data_valid <= trLUT_valid;
       end if;
     end if;
   end process;

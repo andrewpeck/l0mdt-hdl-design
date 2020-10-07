@@ -67,16 +67,17 @@ architecture Behavioral of csf_chi2 is
     signal outhit1, outhit2   : csf_hit_rt;
 
     -- MDT hit coordinate uncertainty
-    constant SIGMA : real := 2.0;
-    constant SIGMA_LEN : integer := integer(log2(SIGMA));
+    constant SIGMA : real := 1.0/8.0;
+    constant SIGMA_LEN : integer := integer(log2(SIGMA*HEG2SFHIT_LOCALX_MULT));
 
     -- Fit parameter signals
     signal mfit_s  : signed(CSF_SEG_M_LEN-1 downto 0) := (others => '0');
     signal bfit_s  : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
 
     -- Residual widths
-    constant B_OVER_Z_MULTI_LEN  : integer
-        := integer(log2(CSF_SEG_B_MULT/MDT_LOCAL_AXI_MULT));
+    constant B_OVER_Z_MULTI_LEN     : integer
+        := integer(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
+
     constant B_RED_LEN           : integer := CSF_SEG_B_LEN-B_OVER_Z_MULTI_LEN;
     constant MX_LEN  : integer
         := CSF_SEG_M_LEN + MDT_LOCAL_X_LEN + 1 - MFIT_MULTI_LEN + 1;
@@ -167,9 +168,15 @@ begin
                 mfit_s <= i_mfit;
                 bfit_s <= i_bfit;
                 nhits_s <= i_nhits;
-                b_red <= resize(
-                         shift_right(i_bfit, B_OVER_Z_MULTI_LEN),
-                         B_RED_LEN);
+                if B_OVER_Z_MULTI_LEN < 0 then
+                    b_red <= resize(
+                             shift_left(i_bfit, abs(B_OVER_Z_MULTI_LEN)),
+                             B_RED_LEN);
+                else
+                    b_red <= resize(
+                             shift_right(i_bfit, B_OVER_Z_MULTI_LEN),
+                             B_RED_LEN);
+                end if;
                 r_addr1 <= (others => '0');
                 r_addr2 <= (others => '0');
                 start_read <= '1';
@@ -205,10 +212,10 @@ begin
             dv1_2 <= dv0_2;
 
             dsp_res_1  <= resize(
-                shift_left(dsp_b_y_1 - dsp_mx1, CHI2_MULT_LEN/2-SIGMA_LEN),
+                shift_right(dsp_b_y_1 - dsp_mx1, SIGMA_LEN-CHI2_MULT_LEN/2),
                                     RES_LEN);
             dsp_res_2  <= resize(
-                shift_left(dsp_b_y_2 - dsp_mx2, CHI2_MULT_LEN/2-SIGMA_LEN),
+                shift_right(dsp_b_y_2 - dsp_mx2, SIGMA_LEN-CHI2_MULT_LEN/2),
                                     RES_LEN);
 
             -- Clock 2

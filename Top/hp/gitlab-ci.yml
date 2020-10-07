@@ -1,40 +1,13 @@
-create_project:hp:
-    extends: .create_project
+#################### hp Project ###########################
+generate_project:hp:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: hp
-# 
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
 # simulate_project:hp:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hp
-# 
-# synthesise_ips:csf:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:csf
-# 
-# synthesise_project:hp:
-#     extends: .synthesise_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: hp
-#     dependencies:
-#         # - synthesise_ips:csf
-#         - create_project:hp
-# 
-# implement_project:hp:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: hp
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:hp
-#       #  - synthesise_ips:csf
-#       - synthesise_project:hp

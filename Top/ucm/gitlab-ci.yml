@@ -1,43 +1,13 @@
-#################### UCM Project ###########################
-
-create_project:ucm:
-    extends: .create_project
+#################### ucm Project ###########################
+generate_project:ucm:
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ucm
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # simulate_project:ucm:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ucm
-
-# synthesise_ips:ucm:
-#     extends: .synthesise_ips
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#       IP_PATH: IP
-#     dependencies:
-#         - create_project:ucm
-
-synthesise_project:ucm:
-    extends: .synthesise_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ucm
-    dependencies:
-        # - synthesise_ips:ucm
-        - create_project:ucm
-
-# implement_project:ucm:
-#     extends: .implement_project
-#     variables: 
-#       extends: .vars
-#       PROJECT_NAME: ucm
-#       HOG_NO_BITSTREAM_STAGE: 1
-#     dependencies:
-#       - create_project:ucm
-#       #  - synthesise_ips:ucm
-#       - synthesise_project:ucm
-

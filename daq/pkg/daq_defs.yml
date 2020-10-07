@@ -1,0 +1,304 @@
+config:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+    ttc_lib:
+      - ttc_defs_pkg      
+    daq_lib:
+      - daq_devel_defs_pkg
+
+hdl:
+  
+# ----------------------------------------------------------------------------
+
+- daq_sys:
+    - clk320: [type: logic]
+    - rst: [type: logic]
+
+- daq_evt_cntr: [type: unsigned, length: 32]
+
+- daq_hdr_swrod:
+    - ~: Fields required by swROD
+    - flag_0: [type: logic, length: 8, ~: example of flag from swROD]
+    - flag_1: [type: logic, length: 8]
+    - flag_2: [type: logic, length: 16]
+    - eventid: [type: daq_evt_cntr]
+        
+- daq_hdr_extra:
+    - win_lower: [type: bcid]
+    - daq_bcid: [type: bcid]
+    - win_width: [type: bcid]
+    - win_lower_ref: [type: bcid]
+    - win_upper_ref: [type: bcid]
+  
+- daq_hdr:
+    - swrod: [type: daq_hdr_swrod]
+    - extra: [type: daq_hdr_extra]
+
+- stream:
+    - bcid: [type: bcid]
+    - valid: [type: logic]
+    - data: [type: logic, length: DEV_CELL_DATA_BUS_WIDTH]
+
+- f2e_data: [type: logic, length: DEV_F2E_OUTPUT_DATA_WIDTH]
+
+- daq_stream_bus: [array: DAQ_N_STREAMS, type: stream]
+
+- daq_output_payload_bus: [array: DAQ_N_STREAMS, type: f2e_data]
+
+- daq_counters:
+    - daq_bcid: [type: bcid]
+    - win_lower: [type: bcid]
+      
+- stability:
+    - win_upper: [type: logic]
+    - win_lower: [type: logic]
+    - latency: [type: logic]
+    - base: [type: logic]
+
+- daq_ctrl:
+    - win_upper: [type: bcid]
+    - win_lower: [type: bcid]
+    - latency: [type: bcid]
+    - win_width: [type: bcid]
+
+# cell FIFO interface ----------------------------------------------------------
+
+- cell_fifo_write_i:
+    - clk: [type: logic]
+    - en:  [type: logic]
+    - data: [type: logic, length: DEV_CELL_DATA_BUS_WIDTH]
+    - _: off
+      
+- cell_fifo_write_o:
+    - full: [type: logic]
+    - rst_busy: [type: logic]
+    - _: off
+      
+- cell_fifo_read_i:
+    - clk: [type: logic]
+    - en: [type: logic]
+    - _: off
+      
+- cell_fifo_read_o:
+    - data: [type: logic, length: DEV_CELL_DATA_BUS_WIDTH]
+    - count: [type: logic, length: DEV_CELL_COUNTER_WIDTH]
+    - empty: [type: logic]
+    - rst_busy: [type: logic]
+    - _: off
+      
+- cell_fifo_i:
+    - wr: [type: cell_fifo_write_i]
+    - rd: [type: cell_fifo_read_i]
+    - _: off
+      
+- cell_fifo_o:
+    - wr: [type: cell_fifo_write_o]
+    - rd: [type: cell_fifo_read_o]
+    - _: off
+      
+- cell_fifo:
+    - i: [type: cell_fifo_i]
+    - o: [type: cell_fifo_o]
+
+# LXA request FIFO interface ---------------------------------------------------
+
+- lxa_req_fifo_write_i:
+    - clk: [type: logic]
+    - en:  [type: logic]
+    - data: [type: logic, length: DEV_LXA_REQ_DATA_BUS_WIDTH]
+    - _: off
+
+- lxa_req_fifo_write_o:
+    - full: [type: logic]
+    - rst_busy: [type: logic]
+    - _: off
+      
+- lxa_req_fifo_read_i:
+    - clk: [type: logic]
+    - en: [type: logic]
+    - _: off
+      
+- lxa_req_fifo_read_o:
+    - data: [type: logic, length: DEV_LXA_REQ_DATA_BUS_WIDTH]
+    - count: [type: logic, length: DEV_LXA_REQ_COUNTER_WIDTH]
+    - empty: [type: logic]
+    - rst_busy: [type: logic]
+    - _: off
+      
+- lxa_req_fifo_i:
+    - wr: [type: lxa_req_fifo_write_i]
+    - rd: [type: lxa_req_fifo_read_i]
+    - _: off
+      
+- lxa_req_fifo_o:
+    - wr: [type: lxa_req_fifo_write_o]
+    - rd: [type: lxa_req_fifo_read_o]
+    - _: off
+      
+- lxa_req_fifo:
+    - i: [type: lxa_req_fifo_i]
+    - o: [type: lxa_req_fifo_o]
+
+# Basic interfaces =============================================================
+
+# management | row -------------------------------------------------------------
+
+- row_to_mngt:
+    - done: [type: logic]
+    - err : [type: logic, length: DEV_ROWS_ERR_WIDTH]
+      
+- mngt_to_row: 
+    - col_wr_en: [type: logic, length: DEV_COL_SEL_WIDTH]
+    - col_rd_en: [type: logic, length: DEV_COL_SEL_WIDTH]
+    - win_lower: [type: bcid]
+    - win_width: [type: bcid]
+
+# management | packet builder --------------------------------------------------
+
+- mngt_to_pkt_bldr:
+    - en: [type: logic]
+
+- pkt_bldr_to_mngt:
+    - done: [type: logic]
+    - row_sel: [type: logic, length: DEV_ROW_SEL_WIDTH]
+
+# packet builder | row ---------------------------------------------------------
+
+- row_to_pkt_bldr:
+    - counter: [type: logic, length: DEV_F2E_INPUT_DATA_WIDTH]
+    - data: [type: logic, length: DEV_F2E_INPUT_DATA_WIDTH]
+    - nempty: [type: logic]
+
+- pkt_bldr_to_row:
+    - rd_strb: [type: logic]
+
+# daq top | daq algo -----------------------------------------------------------
+
+- f2e_to_daq_algo:
+    - hfull: [type: logic]
+
+- daq_algo_to_f2e:
+    - wr_en: [type: logic]
+    - data: [type: f2e_data]
+
+
+# payload | daq top ------------------------------------------------------------
+
+- ctrl_to_daq:
+    - wr_en : [type: logic]
+    - latency: [type: bcid]
+    - win_lower: [type: bcid]
+    - win_upper: [type: bcid]
+
+- daq_to_ctrl:
+    - invalid_values: [type: logic]
+    - stability: [type: logic, length: stability]
+      
+# Entities =====================================================================
+
+# Row --------------------------------------------------------------------------
+
+- row_generics:
+    - INPUT_DATA_LEN: [type: natural]
+    - OUTPUT_DATA_LEN: [type: natural]
+    - COUNTER_LEN: [type: natural]
+    - CELL_TYPE: [type: natural, ~: "0 for header, 1 otherwise"]
+
+- row_i:
+    - sys: [type: daq_sys]
+    - mngt: [type: mngt_to_row]
+    - stream: [type: stream]
+    - pkt_bldr: [type: pkt_bldr_to_row]
+    - _: off
+
+- row_o:
+    - mngt: [type: row_to_mngt]
+    - pkt_bldr: [type: row_to_pkt_bldr]
+    - _: off
+
+- row:
+    - i: [type: row_i]
+    - o: [type: row_o]
+
+- row_bus: [array: DEV_ROWS, type: row]
+
+    
+# Packet builder ---------------------------------------------------------------
+
+- pkt_bldr_generics:
+    - PAYLOAD_LEN: [type: natural]
+
+- pkt_bldr_i:
+    - sys: [type: daq_sys]
+    - mngt: [type: mngt_to_pkt_bldr]
+    - row: [type: row_to_pkt_bldr]
+    - f2e: [type: f2e_to_daq_algo]
+    - _: off
+
+- pkt_bldr_o:
+    - mngt: [type: pkt_bldr_to_mngt]
+    - row: [type:  pkt_bldr_to_row]
+    - f2e: [type:  daq_algo_to_f2e]
+    - _: off
+
+- pkt_bldr:
+    - i: [type: pkt_bldr_i]
+    - o: [type: pkt_bldr_o]
+
+# DAQ algo ---------------------------------------------------------------------
+
+- daq_payload_alen: [type: integer_bus, length: DAQ_N_STREAMS]
+
+- algo_i:
+    - sys: [type: daq_sys]
+    - ttc: [type: ttc_o]
+    - ctrl: [type: ctrl_to_daq]
+    - stream_bus: [type: daq_stream_bus]
+    - f2e: [type: f2e_to_daq_algo]
+    - _: off
+
+- algo_o:
+    - ctrl: [type: daq_to_ctrl]
+    - f2e: [type: daq_algo_to_f2e]
+    - _: off
+
+- algo:
+    - i: [type: algo_i]
+    - o: [type: algo_o]
+
+- algo_bus: [array: DAQ_N_FLOWS, type: algo]
+      
+# DAQ top ----------------------------------------------------------------------
+
+- f2e_to_daq_top: [array: DAQ_N_FLOWS, type: f2e_to_daq_algo]
+
+- daq_flow_bus: [array: DAQ_N_FLOWS, type: daq_stream_bus]  
+
+- top_i:
+    - sys: [type: daq_sys]
+    - ttc: [type: ttc_o]
+    - ctrl: [type: ctrl_to_daq]
+    - flow_bus: [type: daq_flow_bus]
+    - f2e_bus: [type: f2e_to_daq_top]
+    - _: off
+
+- daq_top_to_ext_ctrl: [array: DAQ_N_FLOWS, type: daq_to_ctrl]
+      
+- daq_top_to_ext_f2e: [array: DAQ_N_FLOWS, type: daq_algo_to_f2e]
+      
+- top_o:
+    - ctrl_bus: [type: daq_top_to_ext_ctrl]
+    - f2e_bus: [type: daq_top_to_ext_f2e]
+    - _: off
+
+- top:
+    - i: [type: algo_i]
+    - o: [type: algo_o]
+        
+        
