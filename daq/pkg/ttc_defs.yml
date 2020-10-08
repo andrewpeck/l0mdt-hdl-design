@@ -6,20 +6,22 @@ config:
 
 hdl:
 
-- clk: [type: logic]
+- clk_t: [type: logic]
 
-- evid: [type: unsigned, length: 32]
+- bcid_at: [array: open, type: bcid_t]
 
-- orid: [type: unsigned, length: 32]
+- evid_t: [type: unsigned, length: 32]
+
+- orid_t: [type: unsigned, length: 32]
 
 # sys ------------------------------------------------------------------------
-- ttc_sys:
+- ttc_sys_rt:
     - clk40: [type: logic]
     - clk320: [type: logic]
     - rst: [type: logic]
 
 # ttc ------------------------------------------------------------------------
-- ttc_fmt:
+- ttc_fmt_rt:
     - bcr: [type: logic]
     - ecr: [type: logic]
     - lxa: [type: logic]
@@ -29,7 +31,9 @@ hdl:
     - reserved3: [type: logic]
     - reserved4: [type: logic]
 
-- ttc_cmd:
+- ttc_fmt_vt: [type: logic, length: ttc_fmt_rt, ~: 40MHz domain]
+
+- ttc_cmds_rt:
     - ~: 320MHz domain
     - bcr: [type: logic]
     - ocr: [type: logic]
@@ -37,22 +41,25 @@ hdl:
     - lxa: [type: logic]
     - bx: [type: logic]
 
-- ttc_counters:
-    - bcid: [type: bcid]
-    - evid: [type: evid]
-    - orid: [type: orid]
+- ttc_counters_rt:
+    - bcid:    [type: bcid_t]
+    - evid: [type: evid_t]
+    - orid: [type: orid_t]
   
 # entity ---------------------------------------------------------------------
-- ttc_i:
-    - sys: [type: ttc_sys]
-    - data: [type: logic, length: TTC_FMT_LEN]
+- ttc_irt:
+    - sys: [type: ttc_sys_rt]
+    - data: [type: ttc_fmt_vt]
 
-- ttc_o:
-    - cmd: [type: ttc_cmd]
-    - cnt: [type: ttc_counters]
-    - _: off
+- ttc_ivt: [type: logic, length: ttc_irt]
 
-- ttc_e:
-    - i : [type: ttc_i]
-    - o : [type: ttc_o]
-    - _: off
+
+- ttc_ort:
+    - cmds: [type: ttc_cmds_rt]
+    - cnt: [type: ttc_counters_rt]
+
+- ttc_ovt: [type: logic, length: ttc_ort]
+      
+- ttc_ert:
+    - i : [type: ttc_irt]
+    - o : [type: ttc_ort]

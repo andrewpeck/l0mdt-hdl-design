@@ -1,31 +1,17 @@
 library ieee;
+library ttc_def;
+
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library work;
-use work.ttc_defs_pkg.all;
-
-package ttc_pkg is
-  component ttc is
-    port(i: in ttc_irt; o: out ttc_ort);
-  end component ttc;
-end package ttc_pkg;
-
------------------------------------------------------------
-
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-library work;
-use work.ttc_defs_pkg.all;
+use ttc_def.ttc_defs.all;
 
 entity ttc is
-  port(i: in ttc_irt; o: out ttc_ort);
+  port(port_ir: in ttc_irt; port_or: out ttc_ort);
 end entity ttc;
 
 architecture V2 of ttc is
+
   signal fmt_r: ttc_fmt_rt;
   signal fmt_320_dr: ttc_fmt_rt; -- delayed
   signal fmt_40_dr: ttc_fmt_rt; -- delayed
@@ -42,27 +28,28 @@ architecture V2 of ttc is
 
   signal ecr_req: std_logic := '0';
   signal bcr_req: std_logic := '0';
+  
 begin
 
-  o.cmds <= cmds_r;
-  o.cnt <= cnt_r;
+  port_or.cmds <= cmds_r;
+  port_or.cnt <= cnt_r;
 
-  fmt_r <= structify(i.data);
+  fmt_r <= structify(port_ir.data, fmt_r);
 
   ocr <= fmt_r.bcr and fmt_40_dr.bcr;
 
-  cmds_r.bx  <= '1' when i.sys.clk40 = '1' and clk40_dd  = '0' else '0';
+  cmds_r.bx  <= '1' when port_ir.sys.clk40 = '1' and clk40_dd  = '0' else '0';
   cmds_r.lxa <= '1' when fmt_r.lxa = '0' and fmt_320_dr.lxa = '1' else '0';
   cmds_r.ecr <= '1' when fmt_r.ecr = '1' and fmt_320_dr.ecr = '0' else '0';
   cmds_r.bcr <= '1' when fmt_r.bcr = '1' and fmt_320_dr.bcr = '0' else '0';
   cmds_r.ocr <= '1' when ocr = '1' and ocr_d = '0' else '0';
 
-  process (i.sys.clk40)
+  process (port_ir.sys.clk40)
   begin
-    if rising_edge(i.sys.clk40) then
+    if rising_edge(port_ir.sys.clk40) then
       fmt_40_dr <= fmt_r;
 
-      if i.sys.rst = '1' then
+      if port_ir.sys.rst = '1' then
         cnt_r <= nullify(cnt_r);
       else
       
@@ -77,14 +64,14 @@ begin
           ecr_req <= '1';
         end if;
 
-        -- Update bcid counter. Reset BCID and ORBITID counters accordingly.
+        -- Update bcid counter. Reset BCID and ORID counters accordingly.
         if fmt_r.bcr = '1' then
           cnt_r.bcid <= to_unsigned(0, cnt_r.bcid'length);
           if ocr_req = '1' then
-            cnt_r.orbitid <= to_unsigned(0, cnt_r.orbitid'length);
+            cnt_r.orid <= to_unsigned(0, cnt_r.orid'length);
             ocr_req <= '0';
           else
-            cnt_r.orbitid <= cnt_r.orbitid + 1;
+            cnt_r.orid <= cnt_r.orid + 1;
           end if;
         else
           cnt_r.bcid <= cnt_r.bcid + 1;
@@ -93,10 +80,10 @@ begin
         -- Update event counter. Reset event id accordingly.
         if fmt_r.lxa = '1' then
           if ecr_req = '1' then
-            cnt_r.eventid <= to_unsigned(0, cnt_r.eventid'length);
+            cnt_r.evid <= to_unsigned(0, cnt_r.evid'length);
             ecr_req <= '0';
           else
-            cnt_r.eventid <= cnt_r.eventid + 1;
+            cnt_r.evid <= cnt_r.evid + 1;
           end if;
         end if;
         
@@ -104,11 +91,11 @@ begin
     end if; -- clock
   end process;
   
-  process (i.sys.clk320)
+  process (port_ir.sys.clk320)
   begin
-    if rising_edge(i.sys.clk320) then
+    if rising_edge(port_ir.sys.clk320) then
       -- delay clk40 to generate BX pulses
-      clk40_d <= i.sys.clk40;
+      clk40_d <= port_ir.sys.clk40;
       clk40_dd <= clk40_d;
       -- delay data to generate pulses
       fmt_320_dr <= fmt_r;
@@ -117,3 +104,29 @@ begin
   end process;
 
 end architecture V2;
+
+--------------------------------------------------------------------------------
+
+library ieee;
+library types_def;
+library ttc_def;
+
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use types_def.common_defs.all;
+use ttc_def.ttc_defs.all;
+
+entity ttc_wrap is
+  port (port_iv : in ttc_ivt; port_ov : out ttc_ovt);
+end entity ttc_wrap;
+
+architecture V2 of ttc_wrap is
+  signal port_ir : ttc_irt;
+  signal port_or : ttc_ort;
+begin
+  port_ir <= structify(port_iv, port_ir);
+  port_ov <= vectorify(port_or, port_ov);
+  u_ttc : entity work.ttc
+    port map (port_ir => port_ir, port_or => port_or);
+end V2;

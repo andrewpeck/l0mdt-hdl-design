@@ -1,99 +1,135 @@
 config:
   basic_convert_functions: off
   packages:
-    shared_lib:
-      - common_ieee_pkg
-      - l0mdt_constants_pkg
-      - l0mdt_dataformats_pkg
-      - common_constants_pkg
-      - common_types_pkg
-    ttc_lib:
-      - ttc_defs_pkg      
-    daq_lib:
-      - daq_devel_defs_pkg
-      - daq_defs_pkg
-      
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - ttc_def: [ttc_defs]
+    - types_def: [common_defs]
+    - daq_def: [daq_devel_defs, daq_defs]
+
 hdl:
 
-# basic interfaces ===========================================================
+# basic interfaces =============================================================
 
-# management / cell ----------------------------------------------------------
+# hnode | mngt -----------------------------------------------------------------
 
-- mngt_to_cell:
-    - en: [type: logic]
-    - win_lower: [type: bcid]
-    - win_width: [type: bcid]
+- node_to_mngt_rt:
+  - done: [type: logic]
+  - nempty: [type: logic]
+  - err : [type: logic]
 
-- cell_to_mngt:
-    - done: [type: logic]
-    - full: [type: logic]
-    - unexpected: [type: logic]
+- mngt_to_node_rt:
+  - en: [type: logic]
+  - rd_en: [type: logic]
 
-- mngt_to_cell_bus: [array: open, type: mngt_to_cell]
-  
-- cell_to_mngt_bus: [array: open, type: cell_to_mngt]
+# hnode | mngt -----------------------------------------------------------------
 
-# cell / bus converter -------------------------------------------------------
+# node | bus converter ---------------------------------------------------------
 
-- cell_to_bconv:
-    - nempty: [type: logic]
-    - data: [type: logic, length: DEV_CELL_DATA_BUS_WIDTH]
-    - counter: [type: logic, length: DEV_CELL_COUNTER_WIDTH]
+- node_to_bconv_rt:
+    - counter: [type: forward_rt]
+    - payload: [type: forward_rt]
+
+- bconv_to_node_rt:
+    - counter: [type: backward_rt]
+    - payload: [type: backward_rt]
+
+- bconv_to_pbldr_rt:
+    - counter: [type: forward_rt]
+    - payload: [type: forward_rt]
+
+- pbldr_to_bconv_rt:
+    - counter: [type: backward_rt]
+    - payload: [type: backward_rt]
+
+# entities =====================================================================
+
+# common node ------------------------------------------------------------------
+
+- node_ort:
+  - mngt: [type: node_to_mngt_rt]
+  - bconv: [type: node_to_bconv_rt]
+
+- node_ovt: [type: logic, length: node_ort]
       
-- bconv_to_cell:
-    - rd_strb: [type: logic]
-          
-# entities ===================================================================
+# data node --------------------------------------------------------------------
 
-# cell -----------------------------------------------------------------------
+- dnode_grt:
+    - DATA_LEN: [type: natural]
+    - COUNTER_LEN: [type: natural]
+ 
+- dnode_irt:
+    - sys: [type: daq_sys_rt]
+    - mngt: [type: mngt_to_node_rt]
+    - req: [type: req_to_row_common_rt]
+    - stream: [type: daq_stream_rt]
+    - bconv: [type: bconv_to_node_rt]
 
-- cell_generics:
-  - INPUT_DATA_LEN: [type: natural]
-  - COUNTER_LEN: [type: natural]
+- dnode_ert:
+    - i : [type: dnode_irt]
+    - o : [type: node_ort]
 
-- cell_i:
-  - sys: [type: daq_sys]
-  - mngt: [type: mngt_to_cell]
-  - stream: [type: stream]
-  - bconv: [type: bconv_to_cell]
-  - _: off
+- dnode_ivt: [type: logic, length: dnode_irt]
+      
+# header node ------------------------------------------------------------------
 
-- cell_o:
-  - mngt: [type: cell_to_mngt]
-  - bconv: [type: cell_to_bconv]
-  - _: off
+- hnode_grt:
+    - COUNTER_LEN: [type: natural]
+ 
+- hnode_irt:
+    - sys: [type: daq_sys_rt]
+    - mngt: [type: mngt_to_node_rt]
+    - req: [type: req_to_row_rt]
+    - bconv: [type: bconv_to_node_rt]
 
-- cell:
-  - i : [type: cell_i]
-  - o : [type: cell_o]
+- hnode_ert:
+    - i : [type: hnode_irt]
+    - o : [type: node_ort]
 
-- cell_bus: [array: DAQ_N_PIPELINES, type: cell]
-
-- cell_bus_i: [array: DAQ_N_PIPELINES, type: cell_i, _: off]
-
-- cell_bus_o: [array: DAQ_N_PIPELINES, type: cell_o, _: off]
-
+- hnode_ivt: [type: logic, length: hnode_irt]
+      
 # bus converter --------------------------------------------------------------
 
-- bconv_generics:
+- bconv_grt:
   - INPUT_DATA_LEN: [type: natural]
   - OUTPUT_DATA_LEN: [type: natural]
-  - COUNTER_LEN: [type: natural]
 
-- bconv_i:
-  - sys: [type: daq_sys]
-  - cell: [type: cell_to_bconv]
-  - pkt_bldr: [type: pkt_bldr_to_row]
-  - _: off
+- bconv_irt:
+  - sys: [type: daq_sys_rt]
+  - src: [type: forward_rt]
+  - dst: [type: backward_rt]
 
-- bconv_o:
-  - cell: [type: bconv_to_cell]
-  - pkt_bldr: [type: row_to_pkt_bldr]
-  - _: off
+- bconv_ort:
+  - src: [type: backward_rt]
+  - dst: [type: forward_rt]
 
-- bconv:
-    - i: [type: bconv_i]
-    - o: [type: bconv_o]
+- bconv_ert:
+    - i: [type: bconv_irt]
+    - o: [type: bconv_ort]
+
+- bconv_ivt: [type: logic, length: bconv_irt]
+
+- bconv_ovt: [type: logic, length: bconv_ort]
       
+# hub --------------------------------------------------------------------------
 
+- hub_grt:
+  - DATA_LEN: [type: natural]
+
+- hub_irt:
+  - cnt: [type: forward_rt]
+  - pld: [type: forward_rt]
+  - dst: [type: backward_rt]
+
+- hub_ort:
+  - cnt: [type: backward_rt]
+  - pld: [type: backward_rt]
+  - dst: [type: forward_rt]
+
+- hub_ert:
+  - i: [type: hub_irt]
+  - o: [type: hub_ort]
+
+- hub_ivt: [type: logic, length: hub_irt]
+
+- hub_ovt: [type: logic, length: hub_ort]
   
