@@ -52,8 +52,9 @@ package body prj_cfg is
     proj_cfg.ENABLE_SF  := '0'; 
     proj_cfg.ENABLE_PT  := '0'; 
     proj_cfg.ENABLE_MTC := '0';
+    proj_cfg.ENABLE_H2S := '0';
     proj_cfg.ENABLE_TAR := '1';
-    proj_cfg.ENABLE_DAQ := '1'; 
+    proj_cfg.ENABLE_DAQ := '1';
  
     return proj_cfg;
   end function set_project_cfg;

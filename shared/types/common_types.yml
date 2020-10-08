@@ -15,24 +15,31 @@ HDL_Types:
 
 - bcid : [type: unsigned, length: 12]
 
+- evid : [type: unsigned, length: 32]
+
+- orid : [type: unsigned, length: 32]
+
 - integer_bus: [array: open, type: integer]
 
-  
+
 #############################################################
 # L0MDT CONTROL TYPES
 #############################################################
 
 - l0mdt_control:
-  - clk       : [ type: logic]
-  - rst       : [ type: logic]
-  - bx        : [ type: logic]
+  - clk       : [type: logic]
+  - rst       : [type: logic]
+  - bx        : [type: logic]
 
 - l0mdt_ttc:
-  - bcr       : [ type: logic]
-  - ocr       : [ type: logic]
-  - ecr       : [ type: logic]
-  - l0a       : [ type: logic]
-  - l1a       : [ type: logic]
+  - bcr       : [type: logic]
+  - ocr       : [type: logic]
+  - ecr       : [type: logic]
+  - l0a       : [type: logic]
+  - l1a       : [type: logic]
+  - bcid      : [type: bcid]
+  - evid      : [type: evid]
+  - orid      : [type: orid]
 
 #############################################################
 # INTERFACES TYPES
@@ -174,7 +181,7 @@ HDL_Types:
 - ucm2hps_bus     : [array: open , type: ucm2hps]
 
 - heg2sfslc_bus : [ array : open , type : heg2sfslc]
-- heg2sfhit_bus : [ array : open , type : heg2sfhit] 
+- heg2sfhit_bus : [ array : open , type : heg2sfhit]
 # ucm2hps_maxhps  : [array: c_MAX_NUM_HPS , type: ucm2hps ]
 # ucm2hps_a       : [array: open , type: ucm2hps_ , _: off ]
 
@@ -273,11 +280,23 @@ HDL_Types:
 - mtc2nsp_bus: [array: open , type: mtc2sl]
 
 # -----------------------------------------------------------
-# MTC out
+# DAQ out
 # -----------------------------------------------------------
-- felix_stream:
-  - slc_muid          : [ type : slc_muid]
-  - common        : [ type : slc_common]
-  - data_valid : [ type : logic ]
 
+# - felix_stream:
+#   - slc_muid   : [type : slc_muid]
+#   - common     : [type : slc_common]
+#   - data_valid : [type : logic]
+
+# - felix_to_usr:
+#     - hfull: [type: logic]
+
+- felix_data: [type: logic, length: TDCPOLMUX2TAR_LEN]
+
+- felix_stream:
+    - valid: [type: logic]
+    - data: [type: felix_data]
+
+
+#- felix_stream_bus : [array: open , type: felix_stream]
 - felix_stream_bus : [array: open , type: felix_stream]

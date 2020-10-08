@@ -34,7 +34,7 @@ architecture V2 of daq_data_node is
   signal fifo_empty : std_logic := '1';
   
   -- counter signal for bit length adjustment
-  signal fifo_counter : std_logic_vector(DAQ_LXA_REQ_COUNTER_WIDTH-1 downto 0)
+  signal fifo_counter : std_logic_vector(DAQ_NODE_COUNTER_WIDTH-1 downto 0)
     := (others => '0');
   
   -- ensure FIFO wr_en is active only when node is active
@@ -42,8 +42,8 @@ architecture V2 of daq_data_node is
   signal fifo_rden : std_logic := '0';
   
   -- data signal for bit length adjustment
-  signal fifo_data_in : std_logic_vector(DAQ_LXA_REQ_DATA_BUS_WIDTH-1 downto 0);
-  signal fifo_data_out : std_logic_vector(DAQ_LXA_REQ_DATA_BUS_WIDTH-1 downto 0);
+  signal fifo_data_in : std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
+  signal fifo_data_out : std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
   
   -- This FIFO keeps the selected data until the package builder is
   -- able to retrieve it.
@@ -51,13 +51,13 @@ architecture V2 of daq_data_node is
   port (
     clk : in std_logic;
     srst : in std_logic;
-    din : in std_logic_vector(DAQ_LXA_REQ_DATA_BUS_WIDTH-1 downto 0);
+    din : in std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
     wr_en : in std_logic;
     rd_en : in std_logic;
-    dout : out std_logic_vector(DAQ_LXA_REQ_DATA_BUS_WIDTH-1 downto 0);
+    dout : out std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
     full : out std_logic;
     empty : out std_logic;
-    data_count : out std_logic_vector(DAQ_LXA_REQ_COUNTER_WIDTH-1 downto 0)
+    data_count : out std_logic_vector(DAQ_NODE_COUNTER_WIDTH-1 downto 0)
   );
   end component;
 
@@ -159,10 +159,14 @@ begin
     fifo_data_in <= stream_dr.data(fifo_data_in'range);
   end generate ig4;
 
-  ig5: if fifo_data_in'length >= stream_dr.data'length generate
+  ig5: if fifo_data_in'length > stream_dr.data'length generate
     fifo_data_in <= (fifo_data_in'left downto stream_dr.data'length => '0')
                     & stream_dr.data;
   end generate ig5;
+
+  ig6: if fifo_data_in'length = stream_dr.data'length generate
+    fifo_data_in <= stream_dr.data;
+  end generate ig6;
 
   -- FSM -----------------------------------------------------------------------
 

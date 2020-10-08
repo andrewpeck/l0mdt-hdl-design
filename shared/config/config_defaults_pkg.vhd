@@ -66,6 +66,8 @@ package cfg_global_pkg is
     ENABLE_MTC                    : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
+    --
+    ENABLE_H2S                    : std_logic;
     --------------------------------------------------------------------------------
     -- mdt hardware interface config
     --------------------------------------------------------------------------------
@@ -116,6 +118,8 @@ package cfg_global_pkg is
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- MTC
     ENABLE_MTC                    => '1',
+    -- H2S
+    ENABLE_H2S                    => '1',
     --------------------------------------------------------------------------------
     --  Thread configuration
     --------------------------------------------------------------------------------

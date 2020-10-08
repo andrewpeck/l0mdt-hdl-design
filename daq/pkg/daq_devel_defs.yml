@@ -10,7 +10,7 @@ hdl:
 
 - DAQ_MAX_STREAMS: [qualifier: constant, type: integer, value: 1]
 
-- DAQ_MAX_BRANCHES: [qualifier: constant, type: integer, value: 1]
+- DAQ_MAX_BRANCHES: [qualifier: constant, type: integer, value: 6]
 
 - DAQ_MAX_ROWS: [qualifier: constant, type: integer, value: DAQ_MAX_STREAMS + 1]
 
@@ -18,13 +18,13 @@ hdl:
 
 - DAQ_MAX_COUNTER_LEN: [qualifier: constant, type: integer, value: 64]
   
-- DAQ_MAX_DATA_LEN: [qualifier: constant, type: integer, value: 42]
+- DAQ_MAX_DATA_LEN: [qualifier: constant, type: integer, value: 160]
 
   
 # FIFOs ------------------------------------------------------------------------
 
-- DAQ_NODE_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 512]
-- DAQ_NODE_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 64]
+- DAQ_NODE_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 42]
+- DAQ_NODE_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 11]
     
 - DAQ_LXA_REQ_DATA_BUS_WIDTH: [qualifier: constant, type: integer, value: 512]
 - DAQ_LXA_REQ_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 11]

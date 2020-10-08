@@ -86,7 +86,7 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: node_ort) return node_ort;
   function nullify(t: node_ort) return node_ort;
 
-  subtype node_ovt is std_logic_vector(89-1 downto 0);
+  subtype node_ovt is std_logic_vector(325-1 downto 0);
 
   type dnode_grt is record
     DATA_LEN : natural;
@@ -118,7 +118,7 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: dnode_ert) return dnode_ert;
   function nullify(t: dnode_ert) return dnode_ert;
 
-  subtype dnode_ivt is std_logic_vector(86-1 downto 0);
+  subtype dnode_ivt is std_logic_vector(204-1 downto 0);
 
   type hnode_grt is record
     COUNTER_LEN : natural;
@@ -187,9 +187,9 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: bconv_ert) return bconv_ert;
   function nullify(t: bconv_ert) return bconv_ert;
 
-  subtype bconv_ivt is std_logic_vector(46-1 downto 0);
+  subtype bconv_ivt is std_logic_vector(164-1 downto 0);
 
-  subtype bconv_ovt is std_logic_vector(44-1 downto 0);
+  subtype bconv_ovt is std_logic_vector(162-1 downto 0);
 
   type hub_grt is record
     DATA_LEN : natural;
@@ -228,9 +228,9 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: hub_ert) return hub_ert;
   function nullify(t: hub_ert) return hub_ert;
 
-  subtype hub_ivt is std_logic_vector(87-1 downto 0);
+  subtype hub_ivt is std_logic_vector(323-1 downto 0);
 
-  subtype hub_ovt is std_logic_vector(45-1 downto 0);
+  subtype hub_ovt is std_logic_vector(163-1 downto 0);
 
 end package daq_row_defs;
 

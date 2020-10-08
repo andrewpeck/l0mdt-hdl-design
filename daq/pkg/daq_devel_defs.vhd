@@ -15,7 +15,7 @@ package daq_devel_defs is
 
   constant DAQ_MAX_STREAMS : integer := 1;
 
-  constant DAQ_MAX_BRANCHES : integer := 1;
+  constant DAQ_MAX_BRANCHES : integer := 6;
 
   constant DAQ_MAX_ROWS : integer := DAQ_MAX_STREAMS + 1;
 
@@ -23,11 +23,11 @@ package daq_devel_defs is
 
   constant DAQ_MAX_COUNTER_LEN : integer := 64;
 
-  constant DAQ_MAX_DATA_LEN : integer := 42;
+  constant DAQ_MAX_DATA_LEN : integer := 160;
 
-  constant DAQ_NODE_DATA_BUS_WIDTH : integer := 512;
+  constant DAQ_NODE_DATA_BUS_WIDTH : integer := 42;
 
-  constant DAQ_NODE_COUNTER_WIDTH : integer := 64;
+  constant DAQ_NODE_COUNTER_WIDTH : integer := 11;
 
   constant DAQ_LXA_REQ_DATA_BUS_WIDTH : integer := 512;
 

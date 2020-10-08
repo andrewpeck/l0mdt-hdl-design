@@ -458,9 +458,9 @@ package daq_defs is
 
   subtype daq_hrow_ivt is std_logic_vector(201-1 downto 0);
 
-  subtype daq_drow_ivt is std_logic_vector(164-1 downto 0);
+  subtype daq_drow_ivt is std_logic_vector(282-1 downto 0);
 
-  subtype daq_row_ovt is std_logic_vector(163-1 downto 0);
+  subtype daq_row_ovt is std_logic_vector(281-1 downto 0);
 
   type daq_pbldr_grt is record
     DATA_LEN : natural;
@@ -499,9 +499,9 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_pbldr_ert) return daq_pbldr_ert;
   function nullify(t: daq_pbldr_ert) return daq_pbldr_ert;
 
-  subtype daq_pbldr_ivt is std_logic_vector(47-1 downto 0);
+  subtype daq_pbldr_ivt is std_logic_vector(165-1 downto 0);
 
-  subtype daq_pbldr_ovt is std_logic_vector(46-1 downto 0);
+  subtype daq_pbldr_ovt is std_logic_vector(164-1 downto 0);
 
   type daq_mngt_grt is record
     STREAMS : natural;
@@ -588,9 +588,9 @@ package daq_defs is
 
   subtype daq_algo_gvt is std_logic_vector(128-1 downto 0);
 
-  subtype daq_algo_ivt is std_logic_vector(176-1 downto 0);
+  subtype daq_algo_ivt is std_logic_vector(294-1 downto 0);
 
-  subtype daq_algo_ovt is std_logic_vector(46-1 downto 0);
+  subtype daq_algo_ovt is std_logic_vector(164-1 downto 0);
 
   type mfelix_to_top_at is array(0 to DAQ_MAX_BRANCHES-1) of felix_to_daq_rt;
   function len(x: mfelix_to_top_at) return natural;
@@ -651,11 +651,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_top_ert) return daq_top_ert;
   function nullify(t: daq_top_ert) return daq_top_ert;
 
-  subtype daq_top_gvt is std_logic_vector(128-1 downto 0);
+  subtype daq_top_gvt is std_logic_vector(288-1 downto 0);
 
-  subtype daq_top_ivt is std_logic_vector(176-1 downto 0);
+  subtype daq_top_ivt is std_logic_vector(1164-1 downto 0);
 
-  subtype daq_top_ovt is std_logic_vector(46-1 downto 0);
+  subtype daq_top_ovt is std_logic_vector(984-1 downto 0);
 
   type daq_usr_irt is record
     sys : ttc_sys_rt;
