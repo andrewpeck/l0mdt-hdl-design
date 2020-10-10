@@ -68,8 +68,7 @@ use daq_def.daq_row_defs.all;
 entity daq_algo is
   generic(G: daq_algo_grt := (PIPELINES => 4,
                               BRANCH_STRUCT => (96, 128, others => 0),
-                              COUNTER_LEN => 64,
-                              OUTPUT_DATA_LEN => 16));
+                              COUNTER_WIDTH => 64));
   port(port_ir: in daq_algo_irt; port_or: out daq_algo_ort);
 end entity daq_algo;
 
@@ -146,9 +145,8 @@ begin
   -- header row ----------------------------------------------------------------
   u_hrow : entity work.daq_hrow
     generic map (G => (PIPELINES => G.PIPELINES,
-                       INPUT_DATA_LEN => daq_hdr_vt'length,
-                       OUTPUT_DATA_LEN => 16,
-                       COUNTER_LEN => 32))
+                       INPUT_DATA_WIDTH => daq_hdr_vt'length,
+                       COUNTER_WIDTH => 32))
     port map (hrow_ir, row_aor(0));
   hrow_ir.sys            <= port_ir.sys;
   hrow_ir.req            <= req_er.o.row;
@@ -163,9 +161,8 @@ begin
     ig: if G.BRANCH_STRUCT(j-1) /= 0 generate
       u_drow : entity work.daq_drow
         generic map (G => (PIPELINES => G.PIPELINES,
-                           INPUT_DATA_LEN => G.BRANCH_STRUCT(j-1),
-                           OUTPUT_DATA_LEN => G.OUTPUT_DATA_LEN,
-                           COUNTER_LEN => G.COUNTER_LEN))
+                           INPUT_DATA_WIDTH => G.BRANCH_STRUCT(j-1),
+                           COUNTER_WIDTH => G.COUNTER_WIDTH))
         port map (drow_air(j), row_aor(j));
       drow_air(j).sys           <= port_ir.sys;
       drow_air(j).req           <= req_er.o.row.common;
@@ -199,7 +196,6 @@ begin
   -- exposing it to fifo2elink block.
   
   u_pbldr : entity work.daq_packet_builder
-    generic map (G => (DATA_LEN => G.OUTPUT_DATA_LEN))
     port map (port_ir => pbldr_er.i, port_or => pbldr_er.o);
   
   pbldr_er.i.sys <= port_ir.sys;
@@ -225,15 +221,15 @@ begin
   -- ---- -- timing isssues begin
   -- ---- -- timing isssues 
   -- ---- -- timing isssues   -- temp counter starts with the length of header
-  -- ---- -- timing isssues   local_v := to_unsigned(DAQ_COUNTER_LEN, local_v'length)
-  -- ---- -- timing isssues              + to_unsigned(PAYLOAD_LEN(0), local_v'length);
+  -- ---- -- timing isssues   local_v := to_unsigned(DAQ_COUNTER_WIDTH, local_v'length)
+  -- ---- -- timing isssues              + to_unsigned(PAYLOAD_WIDTH(0), local_v'length);
   -- ---- -- timing isssues   S0 : for i in 1 to ROWS-1 loop
   -- ---- -- timing isssues     local_v := local_v
-  -- ---- -- timing isssues              + DAQ_COUNTER_LEN
-  -- ---- -- timing isssues              + unsigned(counter_a(i)) * PAYLOAD_LEN(i);
+  -- ---- -- timing isssues              + DAQ_COUNTER_WIDTH
+  -- ---- -- timing isssues              + unsigned(counter_a(i)) * PAYLOAD_WIDTH(i);
   -- ---- -- timing isssues   end loop S0;
-  -- ---- -- timing isssues   counter_a(0)(DAQ_COUNTER_LEN-1 downto 0) <= "000" &
-  -- ---- -- timing isssues     std_logic_vector(local_v(DAQ_COUNTER_LEN-1 downto 3));
+  -- ---- -- timing isssues   counter_a(0)(DAQ_COUNTER_WIDTH-1 downto 0) <= "000" &
+  -- ---- -- timing isssues     std_logic_vector(local_v(DAQ_COUNTER_WIDTH-1 downto 3));
   -- ---- -- timing isssues end process;
   
 end architecture V2;

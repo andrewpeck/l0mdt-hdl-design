@@ -54,8 +54,8 @@ hdl:
 # data node --------------------------------------------------------------------
 
 - dnode_grt:
-    - DATA_LEN: [type: natural]
-    - COUNTER_LEN: [type: natural]
+    - INPUT_DATA_WIDTH: [type: natural]
+    - COUNTER_WIDTH: [type: natural]
  
 - dnode_irt:
     - sys: [type: daq_sys_rt]
@@ -73,7 +73,7 @@ hdl:
 # header node ------------------------------------------------------------------
 
 - hnode_grt:
-    - COUNTER_LEN: [type: natural]
+    - COUNTER_WIDTH: [type: natural]
  
 - hnode_irt:
     - sys: [type: daq_sys_rt]
@@ -90,8 +90,7 @@ hdl:
 # bus converter --------------------------------------------------------------
 
 - bconv_grt:
-  - INPUT_DATA_LEN: [type: natural]
-  - OUTPUT_DATA_LEN: [type: natural]
+  - INPUT_DATA_WIDTH: [type: natural]
 
 - bconv_irt:
   - sys: [type: daq_sys_rt]
@@ -111,9 +110,6 @@ hdl:
 - bconv_ovt: [type: logic, length: bconv_ort]
       
 # hub --------------------------------------------------------------------------
-
-- hub_grt:
-  - DATA_LEN: [type: natural]
 
 - hub_irt:
   - cnt: [type: forward_rt]

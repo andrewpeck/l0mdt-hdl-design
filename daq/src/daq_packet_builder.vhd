@@ -22,7 +22,6 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq_packet_builder is
-  generic (G: daq_pbldr_grt);
   port(port_ir: in daq_pbldr_irt; port_or: out daq_pbldr_ort);
 end entity daq_packet_builder;
 
@@ -42,9 +41,11 @@ architecture V2 of daq_packet_builder is
   signal sto_sent : std_logic := '0';
 
   -- start of packet word in f2e
-  constant STA : std_logic_vector(G.DATA_LEN+1 downto 0) := "10" & (G.DATA_LEN-1 downto 0 => '0');
+  constant STA : std_logic_vector(DAQ_FELIX_STREAM_WIDTH+1 downto 0)
+    := "10" & (DAQ_FELIX_STREAM_WIDTH-1 downto 0 => '0');
   -- end of packet word in f2e
-  constant STO : std_logic_vector(G.DATA_LEN+1 downto 0) := "01" & (G.DATA_LEN-1 downto 0 => '0');
+  constant STO : std_logic_vector(DAQ_FELIX_STREAM_WIDTH+1 downto 0)
+    := "01" & (DAQ_FELIX_STREAM_WIDTH-1 downto 0 => '0');
 
 begin
 
@@ -178,7 +179,6 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq_packet_builder_wrap is
-  generic (G: daq_pbldr_grt);
   port(port_iv: in daq_pbldr_ivt; port_ov: out daq_pbldr_ovt);
 end entity daq_packet_builder_wrap;
 
@@ -189,6 +189,5 @@ begin
   port_ir <= structify(port_iv, port_ir);
   port_ov <= vectorify(port_or, port_ov);
   u_pbldr : entity work.daq_packet_builder
-    generic map (G => G)
     port map (port_ir => port_ir, port_or => port_or);
 end architecture V2;

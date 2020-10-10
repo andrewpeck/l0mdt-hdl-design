@@ -12,7 +12,6 @@ use daq_def.daq_defs.all;
 use daq_def.daq_row_defs.all;
 
 entity daq_hub is
-  generic (G : hub_grt);
   port (port_ir : in  hub_irt; port_or : out hub_ort);
 end entity daq_hub;
 
@@ -50,7 +49,6 @@ use daq_def.daq_defs.all;
 use daq_def.daq_row_defs.all;
 
 entity daq_hub_top is
-  generic (G : hub_grt);
   port (port_iv : in  hub_ivt; port_ov : out hub_ovt);
 end entity daq_hub_top;
 
@@ -61,5 +59,5 @@ begin
   port_ir <= structify(port_iv, port_ir);
   port_ov <= vectorify(port_or, port_ov);
   u_hub : entity work.daq_hub
-    generic map (G) port map (port_ir, port_or);
+    port map (port_ir, port_or);
 end V2;

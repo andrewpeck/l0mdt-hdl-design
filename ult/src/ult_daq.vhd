@@ -69,8 +69,7 @@ architecture behavioral of daq is
                         (TDCPOLMUX2TAR_LEN, others => 0),
                         (TDCPOLMUX2TAR_LEN, others => 0),
                         others => (others => 0)),
-    COUNTER_LEN     => 32,
-    OUTPUT_DATA_LEN => TDCPOLMUX2TAR_LEN);
+    COUNTER_WIDTH     => 32);
 
   type top_aert is array (integer range <>) of daq_top_ert;
   signal inner_aer  : top_aert(c_HPS_NUM_MDT_CH_INN-1 downto 0);

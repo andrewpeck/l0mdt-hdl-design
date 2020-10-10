@@ -51,8 +51,8 @@
   typedef logic [$bits(node_ort)-1:0] node_ovt;
 
   typedef struct packed {
-    int  DATA_LEN;
-    int  COUNTER_LEN;
+    int  INPUT_DATA_WIDTH;
+    int  COUNTER_WIDTH;
   } dnode_grt;
 
   typedef struct packed {
@@ -71,7 +71,7 @@
   typedef logic [$bits(dnode_irt)-1:0] dnode_ivt;
 
   typedef struct packed {
-    int  COUNTER_LEN;
+    int  COUNTER_WIDTH;
   } hnode_grt;
 
   typedef struct packed {
@@ -89,8 +89,7 @@
   typedef logic [$bits(hnode_irt)-1:0] hnode_ivt;
 
   typedef struct packed {
-    int  INPUT_DATA_LEN;
-    int  OUTPUT_DATA_LEN;
+    int  INPUT_DATA_WIDTH;
   } bconv_grt;
 
   typedef struct packed {
@@ -112,10 +111,6 @@
   typedef logic [$bits(bconv_irt)-1:0] bconv_ivt;
 
   typedef logic [$bits(bconv_ort)-1:0] bconv_ovt;
-
-  typedef struct packed {
-    int  DATA_LEN;
-  } hub_grt;
 
   typedef struct packed {
     forward_rt   cnt;

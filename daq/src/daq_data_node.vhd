@@ -29,55 +29,26 @@ architecture V2 of daq_data_node is
   signal done : std_logic;
   
   -- FIFO related signals ------------------------------------------------------
-  
-  -- empty signal is needed since we work with data available instead
-  signal fifo_empty : std_logic := '1';
-  
-  -- counter signal for bit length adjustment
-  signal fifo_counter : std_logic_vector(DAQ_NODE_COUNTER_WIDTH-1 downto 0)
-    := (others => '0');
-  
-  -- ensure FIFO wr_en is active only when node is active
-  signal fifo_wren : std_logic := '0';
-  signal fifo_rden : std_logic := '0';
-  
-  -- data signal for bit length adjustment
-  signal fifo_data_in : std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
-  signal fifo_data_out : std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
-  
-  -- This FIFO keeps the selected data until the package builder is
-  -- able to retrieve it.
-  component data_fifo
-  port (
-    clk : in std_logic;
-    srst : in std_logic;
-    din : in std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
-    wr_en : in std_logic;
-    rd_en : in std_logic;
-    dout : out std_logic_vector(DAQ_NODE_DATA_BUS_WIDTH-1 downto 0);
-    full : out std_logic;
-    empty : out std_logic;
-    data_count : out std_logic_vector(DAQ_NODE_COUNTER_WIDTH-1 downto 0)
-  );
-  end component;
+
+  signal fifo_er : daq_node_fifo_ert;
 
   type cnt_rt is record
     nempty  : std_logic;
-    data    : std_logic_vector(G.COUNTER_LEN-1 downto 0);
+    data    : std_logic_vector(G.COUNTER_WIDTH-1 downto 0);
     rd_strb : std_logic;
   end record cnt_rt;
   signal cnt_r : cnt_rt := ('0', (others => '0'), '0');
   
   type pld_out_rt is record
     nempty : std_logic;
-    data   : std_logic_vector(G.DATA_LEN-1 downto 0);
+    data   : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
     rd_strb : std_logic;
   end record pld_out_rt;
   signal pld_out_r : pld_out_rt := ('0', (others => '0'), '0');
   
   type pld_in_rt is record
     bcid  : bcid_t;
-    data  : std_logic_vector(G.DATA_LEN-1 downto 0);
+    data  : std_logic_vector(G.INPUT_DATA_WIDTH-1 downto 0);
     valid : std_logic;
   end record pld_in_rt;
   signal stream_dr : pld_in_rt := ((others => '0'), (others => '0'), '0');
@@ -97,7 +68,7 @@ begin
 
   -- mapping ports -------------------------------------------------------------
   
-  pld_out_r.nempty <= not fifo_empty;
+  pld_out_r.nempty <= not fifo_er.o.dst.nempty;
 
   port_or.mngt.done <= done;
 
@@ -118,54 +89,48 @@ begin
   
   -- FIFO ----------------------------------------------------------------------
 
-  data_fifo_u : component data_fifo port map (
-    clk           => port_ir.sys.clk320,            -- : IN STD_LOGIC;
-    srst          => port_ir.sys.rst,               -- : IN STD_LOGIC;
-    din           => fifo_data_in,                  -- : IN STD_LOGIC_VECTOR;
-    wr_en         => fifo_wren,                     -- : IN STD_LOGIC;
-    rd_en         => fifo_rden,                     -- : IN STD_LOGIC;
-    dout          => fifo_data_out,                 -- : IN STD_LOGIC_VECTOR;
-    full          => port_or.mngt.err,              -- : OUT STD_LOGIC;
-    empty         => fifo_empty,                    -- : OUT STD_LOGIC;
-    data_count    => fifo_counter                   -- : OUT STD_LOGIC_VECTOR(10 DOWNTO 0)
-  );
-
+  data_fifo_u : entity work.daq_node_fifo
+    generic map (G => (WRITE_DATA_WIDTH => G.INPUT_DATA_WIDTH,
+                       READ_DATA_WIDTH => G.INPUT_DATA_WIDTH,
+                       READ_COUNT_WIDTH => G.COUNTER_WIDTH))
+    port map (port_ir => fifo_er.i, port_or => fifo_er.o);
+  
   -- converting widths
-  ig0 : if cnt_r.data'length >= fifo_counter'length generate
-    cnt_r.data(fifo_counter'range) <= fifo_counter;
+  ig0 : if cnt_r.data'length >= fifo_er.o.dst.count'length generate
+    cnt_r.data(fifo_er.o.dst.count'range) <= fifo_er.o.dst.count;
   end generate ig0;
   
-  ig1: if cnt_r.data'length < fifo_counter'length generate
-    cnt_r.data <= fifo_counter(cnt_r.data'range);
+  ig1: if cnt_r.data'length < fifo_er.o.dst.count'length generate
+    cnt_r.data <= fifo_er.o.dst.count(cnt_r.data'range);
   end generate ig1;
   
   -- Logic ---------------------------------------------------------------------
 
-  ig2: if pld_out_r.data'length < fifo_data_out'length generate
-    pld_out_r.data <= fifo_data_out(pld_out_r.data'range);
+  ig2: if pld_out_r.data'length < fifo_er.o.dst.data'length generate
+    pld_out_r.data <= fifo_er.o.dst.data(pld_out_r.data'range);
   end generate ig2;
   
-  ig3: if pld_out_r.data'length >= fifo_data_out'length generate
-    pld_out_r.data(fifo_data_out'range) <= fifo_data_out;
+  ig3: if pld_out_r.data'length >= fifo_er.o.dst.data'length generate
+    pld_out_r.data(fifo_er.o.dst.data'range) <= fifo_er.o.dst.data;
   end generate ig3;
   
-  fifo_wren <= stream_dr.valid;
-  fifo_rden <= '1'
-               when (port_ir.bconv.payload.rd_strb = '1'
-                     and port_ir.mngt.rd_en = '1')
-               else '0';
+  fifo_er.i.src.wr_en <= stream_dr.valid;
+  fifo_er.i.dst.rd_en <= '1'
+                         when (port_ir.bconv.payload.rd_strb = '1'
+                               and port_ir.mngt.rd_en = '1')
+                         else '0';
 
-  ig4: if fifo_data_in'length < stream_dr.data'length generate
-    fifo_data_in <= stream_dr.data(fifo_data_in'range);
+  ig4: if fifo_er.i.src.data'length < stream_dr.data'length generate
+    fifo_er.i.src.data <= stream_dr.data(fifo_er.i.src.data'range);
   end generate ig4;
 
-  ig5: if fifo_data_in'length > stream_dr.data'length generate
-    fifo_data_in <= (fifo_data_in'left downto stream_dr.data'length => '0')
+  ig5: if fifo_er.i.src.data'length > stream_dr.data'length generate
+    fifo_er.i.src.data <= (fifo_er.i.src.data'left downto stream_dr.data'length => '0')
                     & stream_dr.data;
   end generate ig5;
 
-  ig6: if fifo_data_in'length = stream_dr.data'length generate
-    fifo_data_in <= stream_dr.data;
+  ig6: if fifo_er.i.src.data'length = stream_dr.data'length generate
+    fifo_er.i.src.data <= stream_dr.data;
   end generate ig6;
 
   -- FSM -----------------------------------------------------------------------

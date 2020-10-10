@@ -18,10 +18,10 @@ end entity daq_bus_conv;
 
 architecture V2 of daq_bus_conv is
 
-  constant K : natural := ((G.INPUT_DATA_LEN-1) / G.OUTPUT_DATA_LEN) + 1;
+  constant K : natural := ((G.INPUT_DATA_WIDTH-1) / DAQ_FELIX_STREAM_WIDTH) + 1;
 
-  subtype pld_src_t is std_logic_vector(K*G.OUTPUT_DATA_LEN-1 downto 0);
-  subtype pld_dst_t is std_logic_vector(G.OUTPUT_DATA_LEN-1 downto 0);
+  subtype pld_src_t is std_logic_vector(K*DAQ_FELIX_STREAM_WIDTH-1 downto 0);
+  subtype pld_dst_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
   type mux_at is array(K-1 downto 0) of pld_dst_t;
 

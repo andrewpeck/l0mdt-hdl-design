@@ -35,7 +35,7 @@ architecture V2 of daq_hrow is
   type bconvs is (cnt, pld);
 
   type bconv_lrt is record
-    data    : std_logic_vector(G.OUTPUT_DATA_LEN-1 downto 0);
+    data    : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
     nempty  : std_logic;
     rd_strb : std_logic;
   end record bconv_lrt;
@@ -47,10 +47,8 @@ architecture V2 of daq_hrow is
   signal bconv_ar : bconv_art;
   signal bconv_lar : bconv_lart;
 
-  constant bconv_agr : bconv_agrt := (cnt => (INPUT_DATA_LEN => G.COUNTER_LEN,
-                                              OUTPUT_DATA_LEN => G.OUTPUT_DATA_LEN),
-                                      pld => (INPUT_DATA_LEN => G.INPUT_DATA_LEN,
-                                              OUTPUT_DATA_LEN => G.OUTPUT_DATA_LEN));
+  constant bconv_agr : bconv_agrt := (cnt => (INPUT_DATA_WIDTH => G.COUNTER_WIDTH),
+                                      pld => (INPUT_DATA_WIDTH => G.INPUT_DATA_WIDTH));
 
   signal hub_er : hub_ert;
   
@@ -83,7 +81,6 @@ begin
   -- hub -----------------------------------------------------------------------
 
   u_hub : entity work.daq_hub
-    generic map (G => (DATA_LEN => G.OUTPUT_DATA_LEN))
     port map (port_ir => hub_er.i, port_or => hub_er.o);
   
   hub_er.i.dst <= port_ir.pbldr.payload;
@@ -110,7 +107,7 @@ begin
   hnodes : for j in 0 to G.PIPELINES-1 generate
     
     u_hnode : entity work.daq_header_node
-      generic map(G => (COUNTER_LEN => G.COUNTER_LEN))
+      generic map(G => (COUNTER_WIDTH => G.COUNTER_WIDTH))
       port map (port_ir => hnode_air(j), port_or => node_aor(j));
     
     hnode_air(j).sys        <= port_ir.sys;

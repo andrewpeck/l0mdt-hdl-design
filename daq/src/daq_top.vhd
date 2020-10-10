@@ -50,8 +50,7 @@ entity daq_top is
                                (96, 128, others => 0),
                                (96, 128, others => 0),
                                others => (others => 0)),
-                             COUNTER_LEN => 64,
-                             OUTPUT_DATA_LEN => 16));
+                             COUNTER_WIDTH => 64));
   port(port_ir: in daq_top_irt; port_or: out daq_top_ort);
 end entity daq_top;
 
@@ -71,8 +70,7 @@ begin
       u_daq_algo : entity work.daq_algo
         generic map(G => (PIPELINES       => G.PIPELINES,
                           BRANCH_STRUCT   => G.BRANCHES_STRUCT(j),
-                          COUNTER_LEN     => G.COUNTER_LEN,
-                          OUTPUT_DATA_LEN => G.OUTPUT_DATA_LEN))
+                          COUNTER_WIDTH   => G.COUNTER_WIDTH))
         port map (port_ir => algo_ar(j).i, port_or => algo_ar(j).o);
 
       algo_ar(j).i.sys <= port_ir.sys;

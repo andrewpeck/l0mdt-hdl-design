@@ -10,7 +10,7 @@ hdl:
 
 # ----------------------------------------------------------------------------
 
-- daq_stream_data_t: [type: logic, length: DAQ_MAX_DATA_LEN]
+- daq_stream_data_t: [type: logic, length: DAQ_MAX_DATA_WIDTH]
   
 - daq_stream_rt:
   - bcid: [type: bcid_t]
@@ -72,11 +72,11 @@ hdl:
     - latency: [type: bcid_t]
     - width: [type: bcid_t]
 
-- pbldr_payload_t: [type: logic, length: DAQ_MAX_DATA_LEN]
+- pbldr_payload_t: [type: logic, length: DAQ_MAX_DATA_WIDTH]
 
 - forward_rt:
     - nempty: [type: logic]
-    - data: [type: logic, length: DAQ_MAX_DATA_LEN]
+    - data: [type: logic, length: DAQ_MAX_DATA_WIDTH]
 
       
 - backward_rt:
@@ -84,39 +84,42 @@ hdl:
   
 # node FIFO interface ----------------------------------------------------------
 
-- node_fifo_write_irt:
-    - clk: [type: logic]
-    - en:  [type: logic]
-    - data: [type: logic, length: DAQ_MAX_DATA_LEN]
+- src_to_node_fifo_rt: 
+  - wr_en:  [type: logic]
+  - data: [type: logic, length: DAQ_MAX_DATA_WIDTH]
 
-- node_fifo_write_ort:
-    - full: [type: logic]
-    - rst_busy: [type: logic]
+- node_fifo_to_src_rt:
+  - full: [type: logic]
 
-- node_fifo_read_irt:
-    - clk: [type: logic]
-    - en: [type: logic]
+- node_fifo_cnt_t : [type: logic, length: DAQ_MAX_COUNTER_WIDTH]
 
-- node_cnt_t : [type: logic, length: DAQ_MAX_COUNTER_LEN]
-      
-- node_fifo_read_ort:
-    - data: [type: daq_stream_data_t]
-    - count: [type: node_cnt_t]
-    - empty: [type: logic]
-    - rst_busy: [type: logic]
+- node_fifo_to_dst_rt:
+  - data: [type: daq_stream_data_t]
+  - count: [type: node_fifo_cnt_t]
+  - nempty: [type: logic]
 
-- node_fifo_irt:
-    - wr: [type: node_fifo_write_irt]
-    - rd: [type: node_fifo_read_irt]
+- dst_to_node_fifo_rt:
+  - rd_en: [type: logic]
 
-- node_fifo_ort:
-    - wr: [type: node_fifo_write_ort]
-    - rd: [type: node_fifo_read_ort]
+- daq_node_fifo_irt:
+  - sys: [type: daq_sys_rt]
+  - src: [type: src_to_node_fifo_rt]
+  - dst: [type: dst_to_node_fifo_rt]
 
-- node_fifo_rt:
-    - i: [type: node_fifo_irt]
-    - o: [type: node_fifo_ort]
+- daq_node_fifo_ort:
+  - src: [type: node_fifo_to_src_rt]
+  - dst: [type: node_fifo_to_dst_rt]
 
+- daq_node_fifo_ert:
+  - i: [type: daq_node_fifo_irt]
+  - o: [type: daq_node_fifo_ort]
+
+- daq_node_fifo_grt:
+  - WRITE_DATA_WIDTH: [type: integer]
+  - READ_DATA_WIDTH: [type: integer]
+  - READ_COUNT_WIDTH: [type: integer]
+
+    
 # Basic interfaces =============================================================
 
 # management | row -------------------------------------------------------------
@@ -175,7 +178,7 @@ hdl:
 - felix_to_daq_rt:
     - hfull: [type: logic]
 
-- felix_data_t: [type: logic, length: DAQ_MAX_DATA_LEN]
+- felix_data_t: [type: logic, length: DAQ_MAX_DATA_WIDTH]
 
 - daq_to_felix_rt:
     - wr_en: [type: logic]
@@ -220,9 +223,8 @@ hdl:
 
 - daq_row_grt:
     - PIPELINES: [type: natural]
-    - INPUT_DATA_LEN: [type: natural]
-    - OUTPUT_DATA_LEN: [type: natural]
-    - COUNTER_LEN: [type: natural]
+    - INPUT_DATA_WIDTH: [type: natural]
+    - COUNTER_WIDTH: [type: natural]
 
 - daq_hrow_irt:
     - sys: [type: daq_sys_rt]
@@ -258,9 +260,6 @@ hdl:
 # - daq_row_aert: [array: DAQ_ROWS, type: daq_row_ert]
 
 # Packet builder ---------------------------------------------------------------
-
-- daq_pbldr_grt:
-    - DATA_LEN: [type: natural]
 
 - daq_pbldr_irt:
     - sys: [type: daq_sys_rt]
@@ -310,8 +309,7 @@ hdl:
 - daq_algo_grt:
     - PIPELINES: [type: natural]
     - BRANCH_STRUCT: [type: daq_branch_struct_t]
-    - OUTPUT_DATA_LEN: [type: natural]
-    - COUNTER_LEN: [type: natural]
+    - COUNTER_WIDTH: [type: natural]
     - _pkd: off
 
 - daq_algo_irt:
@@ -345,8 +343,7 @@ hdl:
 - daq_top_grt:
     - PIPELINES: [type: natural]
     - BRANCHES_STRUCT: [type: daq_branches_map_at]
-    - OUTPUT_DATA_LEN: [type: natural]
-    - COUNTER_LEN: [type: natural]
+    - COUNTER_WIDTH: [type: natural]
     - _pkd: off
 
 - daq_top_irt:
@@ -407,20 +404,20 @@ hdl:
 # - generics:
 #     - STREAMS: [type: natural, value: 5]
 #     - PIPELINES: [type: natural, value: 4]
-#     - PAYLOAD_LEN: [type: integer_, length: 16]
+#     - PAYLOAD_WIDTH: [type: integer_, length: 16]
 #
 #
 #
 # - DAQ_INIT_LATENCY: [qualifier: constant, type: natural, value: 11]
 #
-# - DAQ_MAX_BUS_LEN: [qualifier: constant, type: natural, value: 1024]
-# - DAQ_NODE_COUNTER_LEN: [qualifier: constant, type: natural, value: 11]
+# - DAQ_MAX_BUS_WIDTH: [qualifier: constant, type: natural, value: 1024]
+# - DAQ_NODE_COUNTER_WIDTH: [qualifier: constant, type: natural, value: 11]
 #
-# - DAQ_COUNTER_LEN: [qualifier: constant, type: natural, value: 16]
+# - DAQ_COUNTER_WIDTH: [qualifier: constant, type: natural, value: 16]
 #
-# - DAQ_PACKET_BUILDER_PAYLOAD_LEN: [qualifier: constant, type: natural, value: 16]
+# - DAQ_PACKET_BUILDER_PAYLOAD_WIDTH: [qualifier: constant, type: natural, value: 16]
 #
-# - DAQ_EVENT_COUNTER_LEN: [qualifier: constant, type: natural, value: 16]
+# - DAQ_EVENT_COUNTER_WIDTH: [qualifier: constant, type: natural, value: 16]
 #
 #
 # - daq_counters:
@@ -431,7 +428,7 @@ hdl:
 #
 # - daq_bcid_: [array: open, type: bcid_t, _: off]
 #
-# - daq_counter: [type: logic; length: DAQ_COUNTER_LEN]
+# - daq_counter: [type: logic; length: DAQ_COUNTER_WIDTH]
 # - daq_counter_at: [array: open, type: daq_counter]
 #
 # - daq_payload_bus: [type: logic; length: 512]

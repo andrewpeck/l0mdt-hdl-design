@@ -21,7 +21,7 @@ use daq_def.daq_devel_defs.all;
 
 package daq_defs is
 
-  subtype daq_stream_data_t is std_logic_vector(DAQ_MAX_DATA_LEN-1 downto 0);
+  subtype daq_stream_data_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
 
   type daq_stream_rt is record
     bcid : bcid_t;
@@ -137,11 +137,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
   function nullify(t: daq_win_rt) return daq_win_rt;
 
-  subtype pbldr_payload_t is std_logic_vector(DAQ_MAX_DATA_LEN-1 downto 0);
+  subtype pbldr_payload_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
 
   type forward_rt is record
     nempty : std_logic;
-    data : std_logic_vector(DAQ_MAX_DATA_LEN-1 downto 0);
+    data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
   end record forward_rt;
   function len(x: forward_rt) return natural;
   function vectorify(x: forward_rt; t: std_logic_vector) return std_logic_vector;
@@ -156,73 +156,80 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: backward_rt) return backward_rt;
   function nullify(t: backward_rt) return backward_rt;
 
-  type node_fifo_write_irt is record
-    clk : std_logic;
-    en : std_logic;
-    data : std_logic_vector(DAQ_MAX_DATA_LEN-1 downto 0);
-  end record node_fifo_write_irt;
-  function len(x: node_fifo_write_irt) return natural;
-  function vectorify(x: node_fifo_write_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_write_irt) return node_fifo_write_irt;
-  function nullify(t: node_fifo_write_irt) return node_fifo_write_irt;
+  type src_to_node_fifo_rt is record
+    wr_en : std_logic;
+    data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
+  end record src_to_node_fifo_rt;
+  function len(x: src_to_node_fifo_rt) return natural;
+  function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
+  function nullify(t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
 
-  type node_fifo_write_ort is record
+  type node_fifo_to_src_rt is record
     full : std_logic;
-    rst_busy : std_logic;
-  end record node_fifo_write_ort;
-  function len(x: node_fifo_write_ort) return natural;
-  function vectorify(x: node_fifo_write_ort; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_write_ort) return node_fifo_write_ort;
-  function nullify(t: node_fifo_write_ort) return node_fifo_write_ort;
+  end record node_fifo_to_src_rt;
+  function len(x: node_fifo_to_src_rt) return natural;
+  function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
+  function nullify(t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
 
-  type node_fifo_read_irt is record
-    clk : std_logic;
-    en : std_logic;
-  end record node_fifo_read_irt;
-  function len(x: node_fifo_read_irt) return natural;
-  function vectorify(x: node_fifo_read_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_read_irt) return node_fifo_read_irt;
-  function nullify(t: node_fifo_read_irt) return node_fifo_read_irt;
+  subtype node_fifo_cnt_t is std_logic_vector(DAQ_MAX_COUNTER_WIDTH-1 downto 0);
 
-  subtype node_cnt_t is std_logic_vector(DAQ_MAX_COUNTER_LEN-1 downto 0);
-
-  type node_fifo_read_ort is record
+  type node_fifo_to_dst_rt is record
     data : daq_stream_data_t;
-    count : node_cnt_t;
-    empty : std_logic;
-    rst_busy : std_logic;
-  end record node_fifo_read_ort;
-  function len(x: node_fifo_read_ort) return natural;
-  function vectorify(x: node_fifo_read_ort; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_read_ort) return node_fifo_read_ort;
-  function nullify(t: node_fifo_read_ort) return node_fifo_read_ort;
+    count : node_fifo_cnt_t;
+    nempty : std_logic;
+  end record node_fifo_to_dst_rt;
+  function len(x: node_fifo_to_dst_rt) return natural;
+  function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
+  function nullify(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
 
-  type node_fifo_irt is record
-    wr : node_fifo_write_irt;
-    rd : node_fifo_read_irt;
-  end record node_fifo_irt;
-  function len(x: node_fifo_irt) return natural;
-  function vectorify(x: node_fifo_irt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_irt) return node_fifo_irt;
-  function nullify(t: node_fifo_irt) return node_fifo_irt;
+  type dst_to_node_fifo_rt is record
+    rd_en : std_logic;
+  end record dst_to_node_fifo_rt;
+  function len(x: dst_to_node_fifo_rt) return natural;
+  function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
+  function nullify(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
 
-  type node_fifo_ort is record
-    wr : node_fifo_write_ort;
-    rd : node_fifo_read_ort;
-  end record node_fifo_ort;
-  function len(x: node_fifo_ort) return natural;
-  function vectorify(x: node_fifo_ort; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_ort) return node_fifo_ort;
-  function nullify(t: node_fifo_ort) return node_fifo_ort;
+  type daq_node_fifo_irt is record
+    sys : daq_sys_rt;
+    src : src_to_node_fifo_rt;
+    dst : dst_to_node_fifo_rt;
+  end record daq_node_fifo_irt;
+  function len(x: daq_node_fifo_irt) return natural;
+  function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt;
+  function nullify(t: daq_node_fifo_irt) return daq_node_fifo_irt;
 
-  type node_fifo_rt is record
-    i : node_fifo_irt;
-    o : node_fifo_ort;
-  end record node_fifo_rt;
-  function len(x: node_fifo_rt) return natural;
-  function vectorify(x: node_fifo_rt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: node_fifo_rt) return node_fifo_rt;
-  function nullify(t: node_fifo_rt) return node_fifo_rt;
+  type daq_node_fifo_ort is record
+    src : node_fifo_to_src_rt;
+    dst : node_fifo_to_dst_rt;
+  end record daq_node_fifo_ort;
+  function len(x: daq_node_fifo_ort) return natural;
+  function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort;
+  function nullify(t: daq_node_fifo_ort) return daq_node_fifo_ort;
+
+  type daq_node_fifo_ert is record
+    i : daq_node_fifo_irt;
+    o : daq_node_fifo_ort;
+  end record daq_node_fifo_ert;
+  function len(x: daq_node_fifo_ert) return natural;
+  function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert;
+  function nullify(t: daq_node_fifo_ert) return daq_node_fifo_ert;
+
+  type daq_node_fifo_grt is record
+    WRITE_DATA_WIDTH : integer;
+    READ_DATA_WIDTH : integer;
+    READ_COUNT_WIDTH : integer;
+  end record daq_node_fifo_grt;
+  function len(x: daq_node_fifo_grt) return natural;
+  function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt;
+  function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt;
 
   type row_to_mngt_rt is record
     done : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
@@ -325,7 +332,7 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: felix_to_daq_rt) return felix_to_daq_rt;
   function nullify(t: felix_to_daq_rt) return felix_to_daq_rt;
 
-  subtype felix_data_t is std_logic_vector(DAQ_MAX_DATA_LEN-1 downto 0);
+  subtype felix_data_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
 
   type daq_to_felix_rt is record
     wr_en : std_logic;
@@ -397,9 +404,8 @@ package daq_defs is
 
   type daq_row_grt is record
     PIPELINES : natural;
-    INPUT_DATA_LEN : natural;
-    OUTPUT_DATA_LEN : natural;
-    COUNTER_LEN : natural;
+    INPUT_DATA_WIDTH : natural;
+    COUNTER_WIDTH : natural;
   end record daq_row_grt;
   function len(x: daq_row_grt) return natural;
   function vectorify(x: daq_row_grt; t: std_logic_vector) return std_logic_vector;
@@ -461,14 +467,6 @@ package daq_defs is
   subtype daq_drow_ivt is std_logic_vector(282-1 downto 0);
 
   subtype daq_row_ovt is std_logic_vector(281-1 downto 0);
-
-  type daq_pbldr_grt is record
-    DATA_LEN : natural;
-  end record daq_pbldr_grt;
-  function len(x: daq_pbldr_grt) return natural;
-  function vectorify(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt;
-  function nullify(t: daq_pbldr_grt) return daq_pbldr_grt;
 
   type daq_pbldr_irt is record
     sys : daq_sys_rt;
@@ -548,8 +546,7 @@ package daq_defs is
   type daq_algo_grt is record
     PIPELINES : natural;
     BRANCH_STRUCT : daq_branch_struct_t;
-    OUTPUT_DATA_LEN : natural;
-    COUNTER_LEN : natural;
+    COUNTER_WIDTH : natural;
   end record daq_algo_grt;
   function len(x: daq_algo_grt) return natural;
   function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector;
@@ -586,7 +583,7 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_algo_ert) return daq_algo_ert;
   function nullify(t: daq_algo_ert) return daq_algo_ert;
 
-  subtype daq_algo_gvt is std_logic_vector(128-1 downto 0);
+  subtype daq_algo_gvt is std_logic_vector(96-1 downto 0);
 
   subtype daq_algo_ivt is std_logic_vector(294-1 downto 0);
 
@@ -613,8 +610,7 @@ package daq_defs is
   type daq_top_grt is record
     PIPELINES : natural;
     BRANCHES_STRUCT : daq_branches_map_at;
-    OUTPUT_DATA_LEN : natural;
-    COUNTER_LEN : natural;
+    COUNTER_WIDTH : natural;
   end record daq_top_grt;
   function len(x: daq_top_grt) return natural;
   function vectorify(x: daq_top_grt; t: std_logic_vector) return std_logic_vector;
@@ -651,7 +647,7 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_top_ert) return daq_top_ert;
   function nullify(t: daq_top_ert) return daq_top_ert;
 
-  subtype daq_top_gvt is std_logic_vector(288-1 downto 0);
+  subtype daq_top_gvt is std_logic_vector(256-1 downto 0);
 
   subtype daq_top_ivt is std_logic_vector(1164-1 downto 0);
 
@@ -1482,161 +1478,95 @@ package body daq_defs is
     return y;
   end function nullify;
 
-  function len(x: node_fifo_write_irt) return natural is
+  function len(x: src_to_node_fifo_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.clk);
-    l := l + len(x.en);
+    l := l + len(x.wr_en);
     l := l + len(x.data);
     return l;
   end function len;
-  function vectorify(x: node_fifo_write_irt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.clk)-1) := vectorify(x.clk, y(left to left+len(x.clk)-1));
-      left := left + len(x.clk);
-      y(left to left+len(x.en)-1) := vectorify(x.en, y(left to left+len(x.en)-1));
-      left := left + len(x.en);
+      y(left to left+len(x.wr_en)-1) := vectorify(x.wr_en, y(left to left+len(x.wr_en)-1));
+      left := left + len(x.wr_en);
       y(left to left+len(x.data)-1) := vectorify(x.data, y(left to left+len(x.data)-1));
     else
-      y(left downto left-len(x.clk)+1) := vectorify(x.clk, y(left downto left-len(x.clk)+1));
-      left := left - len(x.clk);
-      y(left downto left-len(x.en)+1) := vectorify(x.en, y(left downto left-len(x.en)+1));
-      left := left - len(x.en);
+      y(left downto left-len(x.wr_en)+1) := vectorify(x.wr_en, y(left downto left-len(x.wr_en)+1));
+      left := left - len(x.wr_en);
       y(left downto left-len(x.data)+1) := vectorify(x.data, y(left downto left-len(x.data)+1));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_write_irt) return node_fifo_write_irt is
-    variable y: node_fifo_write_irt;
+  function structify(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
+    variable y: src_to_node_fifo_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
-      left := left + len(y.clk);
-      y.en := structify(x(left to left+len(y.en)-1), y.en);
-      left := left + len(y.en);
+      y.wr_en := structify(x(left to left+len(y.wr_en)-1), y.wr_en);
+      left := left + len(y.wr_en);
       y.data := structify(x(left to left+len(y.data)-1), y.data);
     else
-      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
-      left := left - len(y.clk);
-      y.en := structify(x(left downto left-len(y.en)+1), y.en);
-      left := left - len(y.en);
+      y.wr_en := structify(x(left downto left-len(y.wr_en)+1), y.wr_en);
+      left := left - len(y.wr_en);
       y.data := structify(x(left downto left-len(y.data)+1), y.data);
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_write_irt) return node_fifo_write_irt is
-  variable y: node_fifo_write_irt;
+  function nullify(t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
+  variable y: src_to_node_fifo_rt;
   begin
-    y.clk := nullify(t.clk);
-    y.en := nullify(t.en);
+    y.wr_en := nullify(t.wr_en);
     y.data := nullify(t.data);
     return y;
   end function nullify;
 
-  function len(x: node_fifo_write_ort) return natural is
+  function len(x: node_fifo_to_src_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.full);
-    l := l + len(x.rst_busy);
     return l;
   end function len;
-  function vectorify(x: node_fifo_write_ort; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
       y(left to left+len(x.full)-1) := vectorify(x.full, y(left to left+len(x.full)-1));
-      left := left + len(x.full);
-      y(left to left+len(x.rst_busy)-1) := vectorify(x.rst_busy, y(left to left+len(x.rst_busy)-1));
     else
       y(left downto left-len(x.full)+1) := vectorify(x.full, y(left downto left-len(x.full)+1));
-      left := left - len(x.full);
-      y(left downto left-len(x.rst_busy)+1) := vectorify(x.rst_busy, y(left downto left-len(x.rst_busy)+1));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_write_ort) return node_fifo_write_ort is
-    variable y: node_fifo_write_ort;
+  function structify(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
+    variable y: node_fifo_to_src_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
       y.full := structify(x(left to left+len(y.full)-1), y.full);
-      left := left + len(y.full);
-      y.rst_busy := structify(x(left to left+len(y.rst_busy)-1), y.rst_busy);
     else
       y.full := structify(x(left downto left-len(y.full)+1), y.full);
-      left := left - len(y.full);
-      y.rst_busy := structify(x(left downto left-len(y.rst_busy)+1), y.rst_busy);
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_write_ort) return node_fifo_write_ort is
-  variable y: node_fifo_write_ort;
+  function nullify(t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
+  variable y: node_fifo_to_src_rt;
   begin
     y.full := nullify(t.full);
-    y.rst_busy := nullify(t.rst_busy);
     return y;
   end function nullify;
 
-  function len(x: node_fifo_read_irt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.clk);
-    l := l + len(x.en);
-    return l;
-  end function len;
-  function vectorify(x: node_fifo_read_irt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      y(left to left+len(x.clk)-1) := vectorify(x.clk, y(left to left+len(x.clk)-1));
-      left := left + len(x.clk);
-      y(left to left+len(x.en)-1) := vectorify(x.en, y(left to left+len(x.en)-1));
-    else
-      y(left downto left-len(x.clk)+1) := vectorify(x.clk, y(left downto left-len(x.clk)+1));
-      left := left - len(x.clk);
-      y(left downto left-len(x.en)+1) := vectorify(x.en, y(left downto left-len(x.en)+1));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_read_irt) return node_fifo_read_irt is
-    variable y: node_fifo_read_irt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.clk := structify(x(left to left+len(y.clk)-1), y.clk);
-      left := left + len(y.clk);
-      y.en := structify(x(left to left+len(y.en)-1), y.en);
-    else
-      y.clk := structify(x(left downto left-len(y.clk)+1), y.clk);
-      left := left - len(y.clk);
-      y.en := structify(x(left downto left-len(y.en)+1), y.en);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: node_fifo_read_irt) return node_fifo_read_irt is
-  variable y: node_fifo_read_irt;
-  begin
-    y.clk := nullify(t.clk);
-    y.en := nullify(t.en);
-    return y;
-  end function nullify;
-
-  function len(x: node_fifo_read_ort) return natural is
+  function len(x: node_fifo_to_dst_rt) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.data);
     l := l + len(x.count);
-    l := l + len(x.empty);
-    l := l + len(x.rst_busy);
+    l := l + len(x.nempty);
     return l;
   end function len;
-  function vectorify(x: node_fifo_read_ort; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1645,22 +1575,18 @@ package body daq_defs is
       left := left + len(x.data);
       y(left to left+len(x.count)-1) := vectorify(x.count, y(left to left+len(x.count)-1));
       left := left + len(x.count);
-      y(left to left+len(x.empty)-1) := vectorify(x.empty, y(left to left+len(x.empty)-1));
-      left := left + len(x.empty);
-      y(left to left+len(x.rst_busy)-1) := vectorify(x.rst_busy, y(left to left+len(x.rst_busy)-1));
+      y(left to left+len(x.nempty)-1) := vectorify(x.nempty, y(left to left+len(x.nempty)-1));
     else
       y(left downto left-len(x.data)+1) := vectorify(x.data, y(left downto left-len(x.data)+1));
       left := left - len(x.data);
       y(left downto left-len(x.count)+1) := vectorify(x.count, y(left downto left-len(x.count)+1));
       left := left - len(x.count);
-      y(left downto left-len(x.empty)+1) := vectorify(x.empty, y(left downto left-len(x.empty)+1));
-      left := left - len(x.empty);
-      y(left downto left-len(x.rst_busy)+1) := vectorify(x.rst_busy, y(left downto left-len(x.rst_busy)+1));
+      y(left downto left-len(x.nempty)+1) := vectorify(x.nempty, y(left downto left-len(x.nempty)+1));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_read_ort) return node_fifo_read_ort is
-    variable y: node_fifo_read_ort;
+  function structify(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
+    variable y: node_fifo_to_dst_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1668,128 +1594,168 @@ package body daq_defs is
       left := left + len(y.data);
       y.count := structify(x(left to left+len(y.count)-1), y.count);
       left := left + len(y.count);
-      y.empty := structify(x(left to left+len(y.empty)-1), y.empty);
-      left := left + len(y.empty);
-      y.rst_busy := structify(x(left to left+len(y.rst_busy)-1), y.rst_busy);
+      y.nempty := structify(x(left to left+len(y.nempty)-1), y.nempty);
     else
       y.data := structify(x(left downto left-len(y.data)+1), y.data);
       left := left - len(y.data);
       y.count := structify(x(left downto left-len(y.count)+1), y.count);
       left := left - len(y.count);
-      y.empty := structify(x(left downto left-len(y.empty)+1), y.empty);
-      left := left - len(y.empty);
-      y.rst_busy := structify(x(left downto left-len(y.rst_busy)+1), y.rst_busy);
+      y.nempty := structify(x(left downto left-len(y.nempty)+1), y.nempty);
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_read_ort) return node_fifo_read_ort is
-  variable y: node_fifo_read_ort;
+  function nullify(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
+  variable y: node_fifo_to_dst_rt;
   begin
     y.data := nullify(t.data);
     y.count := nullify(t.count);
-    y.empty := nullify(t.empty);
-    y.rst_busy := nullify(t.rst_busy);
+    y.nempty := nullify(t.nempty);
     return y;
   end function nullify;
 
-  function len(x: node_fifo_irt) return natural is
+  function len(x: dst_to_node_fifo_rt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.wr);
-    l := l + len(x.rd);
+    l := l + len(x.rd_en);
     return l;
   end function len;
-  function vectorify(x: node_fifo_irt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr)-1) := vectorify(x.wr, y(left to left+len(x.wr)-1));
-      left := left + len(x.wr);
-      y(left to left+len(x.rd)-1) := vectorify(x.rd, y(left to left+len(x.rd)-1));
+      y(left to left+len(x.rd_en)-1) := vectorify(x.rd_en, y(left to left+len(x.rd_en)-1));
     else
-      y(left downto left-len(x.wr)+1) := vectorify(x.wr, y(left downto left-len(x.wr)+1));
-      left := left - len(x.wr);
-      y(left downto left-len(x.rd)+1) := vectorify(x.rd, y(left downto left-len(x.rd)+1));
+      y(left downto left-len(x.rd_en)+1) := vectorify(x.rd_en, y(left downto left-len(x.rd_en)+1));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_irt) return node_fifo_irt is
-    variable y: node_fifo_irt;
+  function structify(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
+    variable y: dst_to_node_fifo_rt;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.wr := structify(x(left to left+len(y.wr)-1), y.wr);
-      left := left + len(y.wr);
-      y.rd := structify(x(left to left+len(y.rd)-1), y.rd);
+      y.rd_en := structify(x(left to left+len(y.rd_en)-1), y.rd_en);
     else
-      y.wr := structify(x(left downto left-len(y.wr)+1), y.wr);
-      left := left - len(y.wr);
-      y.rd := structify(x(left downto left-len(y.rd)+1), y.rd);
+      y.rd_en := structify(x(left downto left-len(y.rd_en)+1), y.rd_en);
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_irt) return node_fifo_irt is
-  variable y: node_fifo_irt;
+  function nullify(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
+  variable y: dst_to_node_fifo_rt;
   begin
-    y.wr := nullify(t.wr);
-    y.rd := nullify(t.rd);
+    y.rd_en := nullify(t.rd_en);
     return y;
   end function nullify;
 
-  function len(x: node_fifo_ort) return natural is
+  function len(x: daq_node_fifo_irt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.wr);
-    l := l + len(x.rd);
+    l := l + len(x.sys);
+    l := l + len(x.src);
+    l := l + len(x.dst);
     return l;
   end function len;
-  function vectorify(x: node_fifo_ort; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr)-1) := vectorify(x.wr, y(left to left+len(x.wr)-1));
-      left := left + len(x.wr);
-      y(left to left+len(x.rd)-1) := vectorify(x.rd, y(left to left+len(x.rd)-1));
+      y(left to left+len(x.sys)-1) := vectorify(x.sys, y(left to left+len(x.sys)-1));
+      left := left + len(x.sys);
+      y(left to left+len(x.src)-1) := vectorify(x.src, y(left to left+len(x.src)-1));
+      left := left + len(x.src);
+      y(left to left+len(x.dst)-1) := vectorify(x.dst, y(left to left+len(x.dst)-1));
     else
-      y(left downto left-len(x.wr)+1) := vectorify(x.wr, y(left downto left-len(x.wr)+1));
-      left := left - len(x.wr);
-      y(left downto left-len(x.rd)+1) := vectorify(x.rd, y(left downto left-len(x.rd)+1));
+      y(left downto left-len(x.sys)+1) := vectorify(x.sys, y(left downto left-len(x.sys)+1));
+      left := left - len(x.sys);
+      y(left downto left-len(x.src)+1) := vectorify(x.src, y(left downto left-len(x.src)+1));
+      left := left - len(x.src);
+      y(left downto left-len(x.dst)+1) := vectorify(x.dst, y(left downto left-len(x.dst)+1));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_ort) return node_fifo_ort is
-    variable y: node_fifo_ort;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt is
+    variable y: daq_node_fifo_irt;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.wr := structify(x(left to left+len(y.wr)-1), y.wr);
-      left := left + len(y.wr);
-      y.rd := structify(x(left to left+len(y.rd)-1), y.rd);
+      y.sys := structify(x(left to left+len(y.sys)-1), y.sys);
+      left := left + len(y.sys);
+      y.src := structify(x(left to left+len(y.src)-1), y.src);
+      left := left + len(y.src);
+      y.dst := structify(x(left to left+len(y.dst)-1), y.dst);
     else
-      y.wr := structify(x(left downto left-len(y.wr)+1), y.wr);
-      left := left - len(y.wr);
-      y.rd := structify(x(left downto left-len(y.rd)+1), y.rd);
+      y.sys := structify(x(left downto left-len(y.sys)+1), y.sys);
+      left := left - len(y.sys);
+      y.src := structify(x(left downto left-len(y.src)+1), y.src);
+      left := left - len(y.src);
+      y.dst := structify(x(left downto left-len(y.dst)+1), y.dst);
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_ort) return node_fifo_ort is
-  variable y: node_fifo_ort;
+  function nullify(t: daq_node_fifo_irt) return daq_node_fifo_irt is
+  variable y: daq_node_fifo_irt;
   begin
-    y.wr := nullify(t.wr);
-    y.rd := nullify(t.rd);
+    y.sys := nullify(t.sys);
+    y.src := nullify(t.src);
+    y.dst := nullify(t.dst);
     return y;
   end function nullify;
 
-  function len(x: node_fifo_rt) return natural is
+  function len(x: daq_node_fifo_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.src);
+    l := l + len(x.dst);
+    return l;
+  end function len;
+  function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.src)-1) := vectorify(x.src, y(left to left+len(x.src)-1));
+      left := left + len(x.src);
+      y(left to left+len(x.dst)-1) := vectorify(x.dst, y(left to left+len(x.dst)-1));
+    else
+      y(left downto left-len(x.src)+1) := vectorify(x.src, y(left downto left-len(x.src)+1));
+      left := left - len(x.src);
+      y(left downto left-len(x.dst)+1) := vectorify(x.dst, y(left downto left-len(x.dst)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort is
+    variable y: daq_node_fifo_ort;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.src := structify(x(left to left+len(y.src)-1), y.src);
+      left := left + len(y.src);
+      y.dst := structify(x(left to left+len(y.dst)-1), y.dst);
+    else
+      y.src := structify(x(left downto left-len(y.src)+1), y.src);
+      left := left - len(y.src);
+      y.dst := structify(x(left downto left-len(y.dst)+1), y.dst);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: daq_node_fifo_ort) return daq_node_fifo_ort is
+  variable y: daq_node_fifo_ort;
+  begin
+    y.src := nullify(t.src);
+    y.dst := nullify(t.dst);
+    return y;
+  end function nullify;
+
+  function len(x: daq_node_fifo_ert) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.i);
     l := l + len(x.o);
     return l;
   end function len;
-  function vectorify(x: node_fifo_rt; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1804,8 +1770,8 @@ package body daq_defs is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: node_fifo_rt) return node_fifo_rt is
-    variable y: node_fifo_rt;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert is
+    variable y: daq_node_fifo_ert;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1819,11 +1785,66 @@ package body daq_defs is
     end if;
     return y;
   end function structify;
-  function nullify(t: node_fifo_rt) return node_fifo_rt is
-  variable y: node_fifo_rt;
+  function nullify(t: daq_node_fifo_ert) return daq_node_fifo_ert is
+  variable y: daq_node_fifo_ert;
   begin
     y.i := nullify(t.i);
     y.o := nullify(t.o);
+    return y;
+  end function nullify;
+
+  function len(x: daq_node_fifo_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.WRITE_DATA_WIDTH);
+    l := l + len(x.READ_DATA_WIDTH);
+    l := l + len(x.READ_COUNT_WIDTH);
+    return l;
+  end function len;
+  function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.WRITE_DATA_WIDTH)-1) := vectorify(x.WRITE_DATA_WIDTH, y(left to left+len(x.WRITE_DATA_WIDTH)-1));
+      left := left + len(x.WRITE_DATA_WIDTH);
+      y(left to left+len(x.READ_DATA_WIDTH)-1) := vectorify(x.READ_DATA_WIDTH, y(left to left+len(x.READ_DATA_WIDTH)-1));
+      left := left + len(x.READ_DATA_WIDTH);
+      y(left to left+len(x.READ_COUNT_WIDTH)-1) := vectorify(x.READ_COUNT_WIDTH, y(left to left+len(x.READ_COUNT_WIDTH)-1));
+    else
+      y(left downto left-len(x.WRITE_DATA_WIDTH)+1) := vectorify(x.WRITE_DATA_WIDTH, y(left downto left-len(x.WRITE_DATA_WIDTH)+1));
+      left := left - len(x.WRITE_DATA_WIDTH);
+      y(left downto left-len(x.READ_DATA_WIDTH)+1) := vectorify(x.READ_DATA_WIDTH, y(left downto left-len(x.READ_DATA_WIDTH)+1));
+      left := left - len(x.READ_DATA_WIDTH);
+      y(left downto left-len(x.READ_COUNT_WIDTH)+1) := vectorify(x.READ_COUNT_WIDTH, y(left downto left-len(x.READ_COUNT_WIDTH)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt is
+    variable y: daq_node_fifo_grt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.WRITE_DATA_WIDTH := structify(x(left to left+len(y.WRITE_DATA_WIDTH)-1), y.WRITE_DATA_WIDTH);
+      left := left + len(y.WRITE_DATA_WIDTH);
+      y.READ_DATA_WIDTH := structify(x(left to left+len(y.READ_DATA_WIDTH)-1), y.READ_DATA_WIDTH);
+      left := left + len(y.READ_DATA_WIDTH);
+      y.READ_COUNT_WIDTH := structify(x(left to left+len(y.READ_COUNT_WIDTH)-1), y.READ_COUNT_WIDTH);
+    else
+      y.WRITE_DATA_WIDTH := structify(x(left downto left-len(y.WRITE_DATA_WIDTH)+1), y.WRITE_DATA_WIDTH);
+      left := left - len(y.WRITE_DATA_WIDTH);
+      y.READ_DATA_WIDTH := structify(x(left downto left-len(y.READ_DATA_WIDTH)+1), y.READ_DATA_WIDTH);
+      left := left - len(y.READ_DATA_WIDTH);
+      y.READ_COUNT_WIDTH := structify(x(left downto left-len(y.READ_COUNT_WIDTH)+1), y.READ_COUNT_WIDTH);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt is
+  variable y: daq_node_fifo_grt;
+  begin
+    y.WRITE_DATA_WIDTH := nullify(t.WRITE_DATA_WIDTH);
+    y.READ_DATA_WIDTH := nullify(t.READ_DATA_WIDTH);
+    y.READ_COUNT_WIDTH := nullify(t.READ_COUNT_WIDTH);
     return y;
   end function nullify;
 
@@ -2671,9 +2692,8 @@ package body daq_defs is
     variable l : natural := 0;
   begin
     l := l + len(x.PIPELINES);
-    l := l + len(x.INPUT_DATA_LEN);
-    l := l + len(x.OUTPUT_DATA_LEN);
-    l := l + len(x.COUNTER_LEN);
+    l := l + len(x.INPUT_DATA_WIDTH);
+    l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
   function vectorify(x: daq_row_grt; t: std_logic_vector) return std_logic_vector is
@@ -2683,19 +2703,15 @@ package body daq_defs is
     if t'ascending then
       y(left to left+len(x.PIPELINES)-1) := vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1));
       left := left + len(x.PIPELINES);
-      y(left to left+len(x.INPUT_DATA_LEN)-1) := vectorify(x.INPUT_DATA_LEN, y(left to left+len(x.INPUT_DATA_LEN)-1));
-      left := left + len(x.INPUT_DATA_LEN);
-      y(left to left+len(x.OUTPUT_DATA_LEN)-1) := vectorify(x.OUTPUT_DATA_LEN, y(left to left+len(x.OUTPUT_DATA_LEN)-1));
-      left := left + len(x.OUTPUT_DATA_LEN);
-      y(left to left+len(x.COUNTER_LEN)-1) := vectorify(x.COUNTER_LEN, y(left to left+len(x.COUNTER_LEN)-1));
+      y(left to left+len(x.INPUT_DATA_WIDTH)-1) := vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1));
+      left := left + len(x.INPUT_DATA_WIDTH);
+      y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
       y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
       left := left - len(x.PIPELINES);
-      y(left downto left-len(x.INPUT_DATA_LEN)+1) := vectorify(x.INPUT_DATA_LEN, y(left downto left-len(x.INPUT_DATA_LEN)+1));
-      left := left - len(x.INPUT_DATA_LEN);
-      y(left downto left-len(x.OUTPUT_DATA_LEN)+1) := vectorify(x.OUTPUT_DATA_LEN, y(left downto left-len(x.OUTPUT_DATA_LEN)+1));
-      left := left - len(x.OUTPUT_DATA_LEN);
-      y(left downto left-len(x.COUNTER_LEN)+1) := vectorify(x.COUNTER_LEN, y(left downto left-len(x.COUNTER_LEN)+1));
+      y(left downto left-len(x.INPUT_DATA_WIDTH)+1) := vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1));
+      left := left - len(x.INPUT_DATA_WIDTH);
+      y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -2706,19 +2722,15 @@ package body daq_defs is
     if x'ascending then
       y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
       left := left + len(y.PIPELINES);
-      y.INPUT_DATA_LEN := structify(x(left to left+len(y.INPUT_DATA_LEN)-1), y.INPUT_DATA_LEN);
-      left := left + len(y.INPUT_DATA_LEN);
-      y.OUTPUT_DATA_LEN := structify(x(left to left+len(y.OUTPUT_DATA_LEN)-1), y.OUTPUT_DATA_LEN);
-      left := left + len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left to left+len(y.COUNTER_LEN)-1), y.COUNTER_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
+      left := left + len(y.INPUT_DATA_WIDTH);
+      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
       y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
       left := left - len(y.PIPELINES);
-      y.INPUT_DATA_LEN := structify(x(left downto left-len(y.INPUT_DATA_LEN)+1), y.INPUT_DATA_LEN);
-      left := left - len(y.INPUT_DATA_LEN);
-      y.OUTPUT_DATA_LEN := structify(x(left downto left-len(y.OUTPUT_DATA_LEN)+1), y.OUTPUT_DATA_LEN);
-      left := left - len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left downto left-len(y.COUNTER_LEN)+1), y.COUNTER_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
+      left := left - len(y.INPUT_DATA_WIDTH);
+      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
     end if;
     return y;
   end function structify;
@@ -2726,9 +2738,8 @@ package body daq_defs is
   variable y: daq_row_grt;
   begin
     y.PIPELINES := nullify(t.PIPELINES);
-    y.INPUT_DATA_LEN := nullify(t.INPUT_DATA_LEN);
-    y.OUTPUT_DATA_LEN := nullify(t.OUTPUT_DATA_LEN);
-    y.COUNTER_LEN := nullify(t.COUNTER_LEN);
+    y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
+    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
 
@@ -3004,41 +3015,6 @@ package body daq_defs is
   begin
     y.i := nullify(t.i);
     y.o := nullify(t.o);
-    return y;
-  end function nullify;
-
-  function len(x: daq_pbldr_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.DATA_LEN);
-    return l;
-  end function len;
-  function vectorify(x: daq_pbldr_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      y(left to left+len(x.DATA_LEN)-1) := vectorify(x.DATA_LEN, y(left to left+len(x.DATA_LEN)-1));
-    else
-      y(left downto left-len(x.DATA_LEN)+1) := vectorify(x.DATA_LEN, y(left downto left-len(x.DATA_LEN)+1));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: daq_pbldr_grt) return daq_pbldr_grt is
-    variable y: daq_pbldr_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.DATA_LEN := structify(x(left to left+len(y.DATA_LEN)-1), y.DATA_LEN);
-    else
-      y.DATA_LEN := structify(x(left downto left-len(y.DATA_LEN)+1), y.DATA_LEN);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: daq_pbldr_grt) return daq_pbldr_grt is
-  variable y: daq_pbldr_grt;
-  begin
-    y.DATA_LEN := nullify(t.DATA_LEN);
     return y;
   end function nullify;
 
@@ -3402,8 +3378,7 @@ package body daq_defs is
   begin
     l := l + len(x.PIPELINES);
     l := l + len(x.BRANCH_STRUCT);
-    l := l + len(x.OUTPUT_DATA_LEN);
-    l := l + len(x.COUNTER_LEN);
+    l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
   function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector is
@@ -3415,17 +3390,13 @@ package body daq_defs is
       left := left + len(x.PIPELINES);
       y(left to left+len(x.BRANCH_STRUCT)-1) := vectorify(x.BRANCH_STRUCT, y(left to left+len(x.BRANCH_STRUCT)-1));
       left := left + len(x.BRANCH_STRUCT);
-      y(left to left+len(x.OUTPUT_DATA_LEN)-1) := vectorify(x.OUTPUT_DATA_LEN, y(left to left+len(x.OUTPUT_DATA_LEN)-1));
-      left := left + len(x.OUTPUT_DATA_LEN);
-      y(left to left+len(x.COUNTER_LEN)-1) := vectorify(x.COUNTER_LEN, y(left to left+len(x.COUNTER_LEN)-1));
+      y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
       y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
       left := left - len(x.PIPELINES);
       y(left downto left-len(x.BRANCH_STRUCT)+1) := vectorify(x.BRANCH_STRUCT, y(left downto left-len(x.BRANCH_STRUCT)+1));
       left := left - len(x.BRANCH_STRUCT);
-      y(left downto left-len(x.OUTPUT_DATA_LEN)+1) := vectorify(x.OUTPUT_DATA_LEN, y(left downto left-len(x.OUTPUT_DATA_LEN)+1));
-      left := left - len(x.OUTPUT_DATA_LEN);
-      y(left downto left-len(x.COUNTER_LEN)+1) := vectorify(x.COUNTER_LEN, y(left downto left-len(x.COUNTER_LEN)+1));
+      y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -3438,17 +3409,13 @@ package body daq_defs is
       left := left + len(y.PIPELINES);
       y.BRANCH_STRUCT := structify(x(left to left+len(y.BRANCH_STRUCT)-1), y.BRANCH_STRUCT);
       left := left + len(y.BRANCH_STRUCT);
-      y.OUTPUT_DATA_LEN := structify(x(left to left+len(y.OUTPUT_DATA_LEN)-1), y.OUTPUT_DATA_LEN);
-      left := left + len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left to left+len(y.COUNTER_LEN)-1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
       y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
       left := left - len(y.PIPELINES);
       y.BRANCH_STRUCT := structify(x(left downto left-len(y.BRANCH_STRUCT)+1), y.BRANCH_STRUCT);
       left := left - len(y.BRANCH_STRUCT);
-      y.OUTPUT_DATA_LEN := structify(x(left downto left-len(y.OUTPUT_DATA_LEN)+1), y.OUTPUT_DATA_LEN);
-      left := left - len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left downto left-len(y.COUNTER_LEN)+1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
     end if;
     return y;
   end function structify;
@@ -3457,8 +3424,7 @@ package body daq_defs is
   begin
     y.PIPELINES := nullify(t.PIPELINES);
     y.BRANCH_STRUCT := nullify(t.BRANCH_STRUCT);
-    y.OUTPUT_DATA_LEN := nullify(t.OUTPUT_DATA_LEN);
-    y.COUNTER_LEN := nullify(t.COUNTER_LEN);
+    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
 
@@ -3803,8 +3769,7 @@ package body daq_defs is
   begin
     l := l + len(x.PIPELINES);
     l := l + len(x.BRANCHES_STRUCT);
-    l := l + len(x.OUTPUT_DATA_LEN);
-    l := l + len(x.COUNTER_LEN);
+    l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
   function vectorify(x: daq_top_grt; t: std_logic_vector) return std_logic_vector is
@@ -3816,17 +3781,13 @@ package body daq_defs is
       left := left + len(x.PIPELINES);
       y(left to left+len(x.BRANCHES_STRUCT)-1) := vectorify(x.BRANCHES_STRUCT, y(left to left+len(x.BRANCHES_STRUCT)-1));
       left := left + len(x.BRANCHES_STRUCT);
-      y(left to left+len(x.OUTPUT_DATA_LEN)-1) := vectorify(x.OUTPUT_DATA_LEN, y(left to left+len(x.OUTPUT_DATA_LEN)-1));
-      left := left + len(x.OUTPUT_DATA_LEN);
-      y(left to left+len(x.COUNTER_LEN)-1) := vectorify(x.COUNTER_LEN, y(left to left+len(x.COUNTER_LEN)-1));
+      y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
       y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
       left := left - len(x.PIPELINES);
       y(left downto left-len(x.BRANCHES_STRUCT)+1) := vectorify(x.BRANCHES_STRUCT, y(left downto left-len(x.BRANCHES_STRUCT)+1));
       left := left - len(x.BRANCHES_STRUCT);
-      y(left downto left-len(x.OUTPUT_DATA_LEN)+1) := vectorify(x.OUTPUT_DATA_LEN, y(left downto left-len(x.OUTPUT_DATA_LEN)+1));
-      left := left - len(x.OUTPUT_DATA_LEN);
-      y(left downto left-len(x.COUNTER_LEN)+1) := vectorify(x.COUNTER_LEN, y(left downto left-len(x.COUNTER_LEN)+1));
+      y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -3839,17 +3800,13 @@ package body daq_defs is
       left := left + len(y.PIPELINES);
       y.BRANCHES_STRUCT := structify(x(left to left+len(y.BRANCHES_STRUCT)-1), y.BRANCHES_STRUCT);
       left := left + len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_LEN := structify(x(left to left+len(y.OUTPUT_DATA_LEN)-1), y.OUTPUT_DATA_LEN);
-      left := left + len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left to left+len(y.COUNTER_LEN)-1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
       y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
       left := left - len(y.PIPELINES);
       y.BRANCHES_STRUCT := structify(x(left downto left-len(y.BRANCHES_STRUCT)+1), y.BRANCHES_STRUCT);
       left := left - len(y.BRANCHES_STRUCT);
-      y.OUTPUT_DATA_LEN := structify(x(left downto left-len(y.OUTPUT_DATA_LEN)+1), y.OUTPUT_DATA_LEN);
-      left := left - len(y.OUTPUT_DATA_LEN);
-      y.COUNTER_LEN := structify(x(left downto left-len(y.COUNTER_LEN)+1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
     end if;
     return y;
   end function structify;
@@ -3858,8 +3815,7 @@ package body daq_defs is
   begin
     y.PIPELINES := nullify(t.PIPELINES);
     y.BRANCHES_STRUCT := nullify(t.BRANCHES_STRUCT);
-    y.OUTPUT_DATA_LEN := nullify(t.OUTPUT_DATA_LEN);
-    y.COUNTER_LEN := nullify(t.COUNTER_LEN);
+    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
 
