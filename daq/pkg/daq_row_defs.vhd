@@ -86,7 +86,7 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: node_ort) return node_ort;
   function nullify(t: node_ort) return node_ort;
 
-  subtype node_ovt is std_logic_vector(325-1 downto 0);
+  subtype node_ovt is std_logic_vector(1029-1 downto 0);
 
   type dnode_grt is record
     INPUT_DATA_WIDTH : natural;
@@ -118,7 +118,7 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: dnode_ert) return dnode_ert;
   function nullify(t: dnode_ert) return dnode_ert;
 
-  subtype dnode_ivt is std_logic_vector(204-1 downto 0);
+  subtype dnode_ivt is std_logic_vector(556-1 downto 0);
 
   type hnode_grt is record
     COUNTER_WIDTH : natural;
@@ -161,7 +161,7 @@ package daq_row_defs is
   type bconv_irt is record
     sys : daq_sys_rt;
     src : forward_rt;
-    dst : backward_rt;
+    dst : pbldr_backward_rt;
   end record bconv_irt;
   function len(x: bconv_irt) return natural;
   function vectorify(x: bconv_irt; t: std_logic_vector) return std_logic_vector;
@@ -170,7 +170,7 @@ package daq_row_defs is
 
   type bconv_ort is record
     src : backward_rt;
-    dst : forward_rt;
+    dst : pbldr_forward_rt;
   end record bconv_ort;
   function len(x: bconv_ort) return natural;
   function vectorify(x: bconv_ort; t: std_logic_vector) return std_logic_vector;
@@ -186,14 +186,14 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: bconv_ert) return bconv_ert;
   function nullify(t: bconv_ert) return bconv_ert;
 
-  subtype bconv_ivt is std_logic_vector(164-1 downto 0);
+  subtype bconv_ivt is std_logic_vector(516-1 downto 0);
 
-  subtype bconv_ovt is std_logic_vector(162-1 downto 0);
+  subtype bconv_ovt is std_logic_vector(66-1 downto 0);
 
   type hub_irt is record
-    cnt : forward_rt;
-    pld : forward_rt;
-    dst : backward_rt;
+    cnt : pbldr_forward_rt;
+    pld : pbldr_forward_rt;
+    dst : pbldr_backward_rt;
   end record hub_irt;
   function len(x: hub_irt) return natural;
   function vectorify(x: hub_irt; t: std_logic_vector) return std_logic_vector;
@@ -201,9 +201,9 @@ package daq_row_defs is
   function nullify(t: hub_irt) return hub_irt;
 
   type hub_ort is record
-    cnt : backward_rt;
-    pld : backward_rt;
-    dst : forward_rt;
+    cnt : pbldr_backward_rt;
+    pld : pbldr_backward_rt;
+    dst : pbldr_forward_rt;
   end record hub_ort;
   function len(x: hub_ort) return natural;
   function vectorify(x: hub_ort; t: std_logic_vector) return std_logic_vector;
@@ -219,9 +219,9 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: hub_ert) return hub_ert;
   function nullify(t: hub_ert) return hub_ert;
 
-  subtype hub_ivt is std_logic_vector(323-1 downto 0);
+  subtype hub_ivt is std_logic_vector(131-1 downto 0);
 
-  subtype hub_ovt is std_logic_vector(163-1 downto 0);
+  subtype hub_ovt is std_logic_vector(67-1 downto 0);
 
 end package daq_row_defs;
 

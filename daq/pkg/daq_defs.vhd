@@ -137,7 +137,7 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
   function nullify(t: daq_win_rt) return daq_win_rt;
 
-  subtype pbldr_payload_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
+  subtype pbldr_payload_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
   type forward_rt is record
     nempty : std_logic;
@@ -232,9 +232,9 @@ package daq_defs is
   function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt;
 
   type row_to_mngt_rt is record
-    done : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
-    nempty : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
-    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    done : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    nempty : std_logic_vector(DAQ_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
   end record row_to_mngt_rt;
   function len(x: row_to_mngt_rt) return natural;
   function vectorify(x: row_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
@@ -242,8 +242,8 @@ package daq_defs is
   function nullify(t: row_to_mngt_rt) return row_to_mngt_rt;
 
   type mngt_to_row_rt is record
-    en : std_logic_vector(0 to DAQ_MAX_PIPELINES-1);
-    rd_en : std_logic_vector(0 to DAQ_MAX_PIPELINES-1);
+    en : std_logic_vector(0 to DAQ_PIPELINES-1);
+    rd_en : std_logic_vector(0 to DAQ_PIPELINES-1);
   end record mngt_to_row_rt;
   function len(x: mngt_to_row_rt) return natural;
   function vectorify(x: mngt_to_row_rt; t: std_logic_vector) return std_logic_vector;
@@ -266,8 +266,25 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
   function nullify(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
 
+  type pbldr_forward_rt is record
+    nempty : std_logic;
+    data : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
+  end record pbldr_forward_rt;
+  function len(x: pbldr_forward_rt) return natural;
+  function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt;
+  function nullify(t: pbldr_forward_rt) return pbldr_forward_rt;
+
+  type pbldr_backward_rt is record
+    rd_strb : std_logic;
+  end record pbldr_backward_rt;
+  function len(x: pbldr_backward_rt) return natural;
+  function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt;
+  function nullify(t: pbldr_backward_rt) return pbldr_backward_rt;
+
   type row_to_pbldr_rt is record
-    payload : forward_rt;
+    payload : pbldr_forward_rt;
   end record row_to_pbldr_rt;
   function len(x: row_to_pbldr_rt) return natural;
   function vectorify(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
@@ -275,7 +292,7 @@ package daq_defs is
   function nullify(t: row_to_pbldr_rt) return row_to_pbldr_rt;
 
   type pbldr_to_row_rt is record
-    payload : backward_rt;
+    payload : pbldr_backward_rt;
     sel : std_logic;
   end record pbldr_to_row_rt;
   function len(x: pbldr_to_row_rt) return natural;
@@ -284,7 +301,7 @@ package daq_defs is
   function nullify(t: pbldr_to_row_rt) return pbldr_to_row_rt;
 
   type pbldr_to_rows_rt is record
-    payload : backward_rt;
+    payload : pbldr_backward_rt;
     sel : std_logic_vector(0 to DAQ_MAX_ROWS-1);
   end record pbldr_to_rows_rt;
   function len(x: pbldr_to_rows_rt) return natural;
@@ -332,7 +349,7 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: felix_to_daq_rt) return felix_to_daq_rt;
   function nullify(t: felix_to_daq_rt) return felix_to_daq_rt;
 
-  subtype felix_data_t is std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
+  subtype felix_data_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH+2-1 downto 0);
 
   type daq_to_felix_rt is record
     wr_en : std_logic;
@@ -403,7 +420,6 @@ package daq_defs is
   subtype daq_req_ovt is std_logic_vector(120-1 downto 0);
 
   type daq_row_grt is record
-    PIPELINES : natural;
     INPUT_DATA_WIDTH : natural;
     COUNTER_WIDTH : natural;
   end record daq_row_grt;
@@ -462,11 +478,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert;
   function nullify(t: daq_drow_ert) return daq_drow_ert;
 
-  subtype daq_hrow_ivt is std_logic_vector(201-1 downto 0);
+  subtype daq_hrow_ivt is std_logic_vector(185-1 downto 0);
 
-  subtype daq_drow_ivt is std_logic_vector(282-1 downto 0);
+  subtype daq_drow_ivt is std_logic_vector(618-1 downto 0);
 
-  subtype daq_row_ovt is std_logic_vector(281-1 downto 0);
+  subtype daq_row_ovt is std_logic_vector(161-1 downto 0);
 
   type daq_pbldr_irt is record
     sys : daq_sys_rt;
@@ -497,13 +513,12 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_pbldr_ert) return daq_pbldr_ert;
   function nullify(t: daq_pbldr_ert) return daq_pbldr_ert;
 
-  subtype daq_pbldr_ivt is std_logic_vector(165-1 downto 0);
+  subtype daq_pbldr_ivt is std_logic_vector(69-1 downto 0);
 
-  subtype daq_pbldr_ovt is std_logic_vector(164-1 downto 0);
+  subtype daq_pbldr_ovt is std_logic_vector(70-1 downto 0);
 
   type daq_mngt_grt is record
     STREAMS : natural;
-    PIPELINES : natural;
   end record daq_mngt_grt;
   function len(x: daq_mngt_grt) return natural;
   function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector;
@@ -523,7 +538,7 @@ package daq_defs is
   type daq_mngt_ort is record
     row : mngt_to_row_rt;
     pbldr : mngt_to_pbldr_rt;
-    err : std_logic_vector(DAQ_MAX_PIPELINES-1 downto 0);
+    err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
   end record daq_mngt_ort;
   function len(x: daq_mngt_ort) return natural;
   function vectorify(x: daq_mngt_ort; t: std_logic_vector) return std_logic_vector;
@@ -539,12 +554,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_mngt_ert) return daq_mngt_ert;
   function nullify(t: daq_mngt_ert) return daq_mngt_ert;
 
-  subtype daq_mngt_ivt is std_logic_vector(203-1 downto 0);
+  subtype daq_mngt_ivt is std_logic_vector(179-1 downto 0);
 
-  subtype daq_mngt_ovt is std_logic_vector(121-1 downto 0);
+  subtype daq_mngt_ovt is std_logic_vector(97-1 downto 0);
 
   type daq_algo_grt is record
-    PIPELINES : natural;
     BRANCH_STRUCT : daq_branch_struct_t;
     COUNTER_WIDTH : natural;
   end record daq_algo_grt;
@@ -583,11 +597,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_algo_ert) return daq_algo_ert;
   function nullify(t: daq_algo_ert) return daq_algo_ert;
 
-  subtype daq_algo_gvt is std_logic_vector(96-1 downto 0);
+  subtype daq_algo_gvt is std_logic_vector(64-1 downto 0);
 
-  subtype daq_algo_ivt is std_logic_vector(294-1 downto 0);
+  subtype daq_algo_ivt is std_logic_vector(646-1 downto 0);
 
-  subtype daq_algo_ovt is std_logic_vector(164-1 downto 0);
+  subtype daq_algo_ovt is std_logic_vector(70-1 downto 0);
 
   type mfelix_to_top_at is array(0 to DAQ_MAX_BRANCHES-1) of felix_to_daq_rt;
   function len(x: mfelix_to_top_at) return natural;
@@ -608,7 +622,6 @@ package daq_defs is
   function nullify(x: top_to_status_at) return top_to_status_at;
 
   type daq_top_grt is record
-    PIPELINES : natural;
     BRANCHES_STRUCT : daq_branches_map_at;
     COUNTER_WIDTH : natural;
   end record daq_top_grt;
@@ -647,11 +660,11 @@ package daq_defs is
   function structify(x: in std_logic_vector; t: daq_top_ert) return daq_top_ert;
   function nullify(t: daq_top_ert) return daq_top_ert;
 
-  subtype daq_top_gvt is std_logic_vector(256-1 downto 0);
+  subtype daq_top_gvt is std_logic_vector(224-1 downto 0);
 
-  subtype daq_top_ivt is std_logic_vector(1164-1 downto 0);
+  subtype daq_top_ivt is std_logic_vector(3276-1 downto 0);
 
-  subtype daq_top_ovt is std_logic_vector(984-1 downto 0);
+  subtype daq_top_ovt is std_logic_vector(420-1 downto 0);
 
   type daq_usr_irt is record
     sys : ttc_sys_rt;
@@ -2018,6 +2031,86 @@ package body daq_defs is
     return y;
   end function nullify;
 
+  function len(x: pbldr_forward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.nempty);
+    l := l + len(x.data);
+    return l;
+  end function len;
+  function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.nempty)-1) := vectorify(x.nempty, y(left to left+len(x.nempty)-1));
+      left := left + len(x.nempty);
+      y(left to left+len(x.data)-1) := vectorify(x.data, y(left to left+len(x.data)-1));
+    else
+      y(left downto left-len(x.nempty)+1) := vectorify(x.nempty, y(left downto left-len(x.nempty)+1));
+      left := left - len(x.nempty);
+      y(left downto left-len(x.data)+1) := vectorify(x.data, y(left downto left-len(x.data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt is
+    variable y: pbldr_forward_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.nempty := structify(x(left to left+len(y.nempty)-1), y.nempty);
+      left := left + len(y.nempty);
+      y.data := structify(x(left to left+len(y.data)-1), y.data);
+    else
+      y.nempty := structify(x(left downto left-len(y.nempty)+1), y.nempty);
+      left := left - len(y.nempty);
+      y.data := structify(x(left downto left-len(y.data)+1), y.data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: pbldr_forward_rt) return pbldr_forward_rt is
+  variable y: pbldr_forward_rt;
+  begin
+    y.nempty := nullify(t.nempty);
+    y.data := nullify(t.data);
+    return y;
+  end function nullify;
+
+  function len(x: pbldr_backward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_strb);
+    return l;
+  end function len;
+  function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_strb)-1) := vectorify(x.rd_strb, y(left to left+len(x.rd_strb)-1));
+    else
+      y(left downto left-len(x.rd_strb)+1) := vectorify(x.rd_strb, y(left downto left-len(x.rd_strb)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt is
+    variable y: pbldr_backward_rt;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_strb := structify(x(left to left+len(y.rd_strb)-1), y.rd_strb);
+    else
+      y.rd_strb := structify(x(left downto left-len(y.rd_strb)+1), y.rd_strb);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: pbldr_backward_rt) return pbldr_backward_rt is
+  variable y: pbldr_backward_rt;
+  begin
+    y.rd_strb := nullify(t.rd_strb);
+    return y;
+  end function nullify;
+
   function len(x: row_to_pbldr_rt) return natural is
     variable l : natural := 0;
   begin
@@ -2691,7 +2784,6 @@ package body daq_defs is
   function len(x: daq_row_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.PIPELINES);
     l := l + len(x.INPUT_DATA_WIDTH);
     l := l + len(x.COUNTER_WIDTH);
     return l;
@@ -2701,14 +2793,10 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.PIPELINES)-1) := vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1));
-      left := left + len(x.PIPELINES);
       y(left to left+len(x.INPUT_DATA_WIDTH)-1) := vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1));
       left := left + len(x.INPUT_DATA_WIDTH);
       y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
-      y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
-      left := left - len(x.PIPELINES);
       y(left downto left-len(x.INPUT_DATA_WIDTH)+1) := vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1));
       left := left - len(x.INPUT_DATA_WIDTH);
       y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
@@ -2720,14 +2808,10 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
       y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
       left := left + len(y.INPUT_DATA_WIDTH);
       y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
       y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
       left := left - len(y.INPUT_DATA_WIDTH);
       y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
@@ -2737,7 +2821,6 @@ package body daq_defs is
   function nullify(t: daq_row_grt) return daq_row_grt is
   variable y: daq_row_grt;
   begin
-    y.PIPELINES := nullify(t.PIPELINES);
     y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
@@ -3177,7 +3260,6 @@ package body daq_defs is
     variable l : natural := 0;
   begin
     l := l + len(x.STREAMS);
-    l := l + len(x.PIPELINES);
     return l;
   end function len;
   function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector is
@@ -3186,12 +3268,8 @@ package body daq_defs is
   begin
     if t'ascending then
       y(left to left+len(x.STREAMS)-1) := vectorify(x.STREAMS, y(left to left+len(x.STREAMS)-1));
-      left := left + len(x.STREAMS);
-      y(left to left+len(x.PIPELINES)-1) := vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1));
     else
       y(left downto left-len(x.STREAMS)+1) := vectorify(x.STREAMS, y(left downto left-len(x.STREAMS)+1));
-      left := left - len(x.STREAMS);
-      y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
     end if;
     return y;
   end function vectorify;
@@ -3201,12 +3279,8 @@ package body daq_defs is
   begin
     if x'ascending then
       y.STREAMS := structify(x(left to left+len(y.STREAMS)-1), y.STREAMS);
-      left := left + len(y.STREAMS);
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
     else
       y.STREAMS := structify(x(left downto left-len(y.STREAMS)+1), y.STREAMS);
-      left := left - len(y.STREAMS);
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
     end if;
     return y;
   end function structify;
@@ -3214,7 +3288,6 @@ package body daq_defs is
   variable y: daq_mngt_grt;
   begin
     y.STREAMS := nullify(t.STREAMS);
-    y.PIPELINES := nullify(t.PIPELINES);
     return y;
   end function nullify;
 
@@ -3376,7 +3449,6 @@ package body daq_defs is
   function len(x: daq_algo_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.PIPELINES);
     l := l + len(x.BRANCH_STRUCT);
     l := l + len(x.COUNTER_WIDTH);
     return l;
@@ -3386,14 +3458,10 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.PIPELINES)-1) := vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1));
-      left := left + len(x.PIPELINES);
       y(left to left+len(x.BRANCH_STRUCT)-1) := vectorify(x.BRANCH_STRUCT, y(left to left+len(x.BRANCH_STRUCT)-1));
       left := left + len(x.BRANCH_STRUCT);
       y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
-      y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
-      left := left - len(x.PIPELINES);
       y(left downto left-len(x.BRANCH_STRUCT)+1) := vectorify(x.BRANCH_STRUCT, y(left downto left-len(x.BRANCH_STRUCT)+1));
       left := left - len(x.BRANCH_STRUCT);
       y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
@@ -3405,14 +3473,10 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
       y.BRANCH_STRUCT := structify(x(left to left+len(y.BRANCH_STRUCT)-1), y.BRANCH_STRUCT);
       left := left + len(y.BRANCH_STRUCT);
       y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
       y.BRANCH_STRUCT := structify(x(left downto left-len(y.BRANCH_STRUCT)+1), y.BRANCH_STRUCT);
       left := left - len(y.BRANCH_STRUCT);
       y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
@@ -3422,7 +3486,6 @@ package body daq_defs is
   function nullify(t: daq_algo_grt) return daq_algo_grt is
   variable y: daq_algo_grt;
   begin
-    y.PIPELINES := nullify(t.PIPELINES);
     y.BRANCH_STRUCT := nullify(t.BRANCH_STRUCT);
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
@@ -3767,7 +3830,6 @@ package body daq_defs is
   function len(x: daq_top_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.PIPELINES);
     l := l + len(x.BRANCHES_STRUCT);
     l := l + len(x.COUNTER_WIDTH);
     return l;
@@ -3777,14 +3839,10 @@ package body daq_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.PIPELINES)-1) := vectorify(x.PIPELINES, y(left to left+len(x.PIPELINES)-1));
-      left := left + len(x.PIPELINES);
       y(left to left+len(x.BRANCHES_STRUCT)-1) := vectorify(x.BRANCHES_STRUCT, y(left to left+len(x.BRANCHES_STRUCT)-1));
       left := left + len(x.BRANCHES_STRUCT);
       y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
-      y(left downto left-len(x.PIPELINES)+1) := vectorify(x.PIPELINES, y(left downto left-len(x.PIPELINES)+1));
-      left := left - len(x.PIPELINES);
       y(left downto left-len(x.BRANCHES_STRUCT)+1) := vectorify(x.BRANCHES_STRUCT, y(left downto left-len(x.BRANCHES_STRUCT)+1));
       left := left - len(x.BRANCHES_STRUCT);
       y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
@@ -3796,14 +3854,10 @@ package body daq_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.PIPELINES := structify(x(left to left+len(y.PIPELINES)-1), y.PIPELINES);
-      left := left + len(y.PIPELINES);
       y.BRANCHES_STRUCT := structify(x(left to left+len(y.BRANCHES_STRUCT)-1), y.BRANCHES_STRUCT);
       left := left + len(y.BRANCHES_STRUCT);
       y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
-      y.PIPELINES := structify(x(left downto left-len(y.PIPELINES)+1), y.PIPELINES);
-      left := left - len(y.PIPELINES);
       y.BRANCHES_STRUCT := structify(x(left downto left-len(y.BRANCHES_STRUCT)+1), y.BRANCHES_STRUCT);
       left := left - len(y.BRANCHES_STRUCT);
       y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
@@ -3813,7 +3867,6 @@ package body daq_defs is
   function nullify(t: daq_top_grt) return daq_top_grt is
   variable y: daq_top_grt;
   begin
-    y.PIPELINES := nullify(t.PIPELINES);
     y.BRANCHES_STRUCT := nullify(t.BRANCHES_STRUCT);
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;

@@ -23,15 +23,15 @@ end entity daq_drow;
 
 architecture V2 of daq_drow is
 
-  type hnode_airt is array (0 to G.PIPELINES-1) of hnode_irt;
+  type hnode_airt is array (0 to DAQ_PIPELINES-1) of hnode_irt;
   signal hnode_air : hnode_airt;
-  
-  type dnode_airt is array (0 to G.PIPELINES-1) of dnode_irt;
+
+  type dnode_airt is array (0 to DAQ_PIPELINES-1) of dnode_irt;
   signal dnode_air : dnode_airt;
 
-  type node_aort is array (0 to G.PIPELINES-1) of node_ort;
+  type node_aort is array (0 to DAQ_PIPELINES-1) of node_ort;
   signal node_aor : node_aort;
-  
+
   type bconvs is (cnt, pld);
 
   type bconv_lrt is record
@@ -42,7 +42,7 @@ architecture V2 of daq_drow is
 
   type bconv_art is array(bconvs) of bconv_ert;
   type bconv_lart is array(bconvs) of bconv_lrt;
-  
+
   signal bconv_ar : bconv_art;
   signal bconv_lar : bconv_lart;
 
@@ -56,7 +56,7 @@ architecture V2 of daq_drow is
          else DAQ_FELIX_STREAM_WIDTH;
     return y;
   end function NODE_OUTPUT_WIDTH;
-  
+
   type bconv_agrt is array(bconvs) of bconv_grt;
   constant bconv_agr : bconv_agrt := (cnt => (INPUT_DATA_WIDTH => G.COUNTER_WIDTH),
                                       pld => (INPUT_DATA_WIDTH => NODE_OUTPUT_WIDTH));
@@ -67,20 +67,20 @@ begin
 
   u_hub : entity work.daq_hub
     port map (port_ir => hub_er.i, port_or => hub_er.o);
-  
+
   hub_er.i.dst <= port_ir.pbldr.payload;
   port_or.pbldr.payload <= hub_er.o.dst;
 
   -- bus converters ------------------------------------------------------------
 
   gen_bconvs: for j in bconv_ar'range generate
-    
+
     u_bconv : entity work.daq_bus_conv
       generic map(G => bconv_agr(j))
       port map (port_ir => bconv_ar(j).i, port_or => bconv_ar(j).o);
 
     bconv_ar(j).i.sys <= port_ir.sys;
-    
+
   end generate gen_bconvs;
 
   hub_er.i.cnt <= bconv_ar(cnt).o.dst;
@@ -90,55 +90,55 @@ begin
   bconv_ar(pld).i.dst <= hub_er.o.pld;
 
   -- header nodes --------------------------------------------------------------
-  
-  dnodes : for j in 0 to G.PIPELINES-1 generate
-    
+
+  dnodes : for j in 0 to DAQ_PIPELINES-1 generate
+
     u_dnode : entity work.daq_data_node
       generic map(G => (INPUT_DATA_WIDTH => G.INPUT_DATA_WIDTH,
                         COUNTER_WIDTH => G.COUNTER_WIDTH))
       port map (port_ir => dnode_air(j), port_or => node_aor(j));
-      
+
     dnode_air(j).sys        <= port_ir.sys;
     dnode_air(j).mngt.en    <= port_ir.mngt.en(j);
     dnode_air(j).mngt.rd_en <= port_ir.mngt.rd_en(j);
     dnode_air(j).req        <= port_ir.req;
     dnode_air(j).stream     <= port_ir.stream;
-    
+
     port_or.mngt.nempty(j) <= node_aor(j).mngt.nempty;
 
     dnode_air(j).bconv.payload <= bconv_ar(pld).o.src
                                   when (port_ir.pbldr.sel = '1'
                                         and port_ir.mngt.rd_en(j) = '1')
                                   else nullify(dnode_air(j).bconv.payload);
-      
+
     dnode_air(j).bconv.counter <= bconv_ar(cnt).o.src
                                   when (port_ir.pbldr.sel = '1'
                                         and port_ir.mngt.rd_en(j) = '1')
-                                  else nullify(dnode_air(j).bconv.counter);    
+                                  else nullify(dnode_air(j).bconv.counter);
   end generate dnodes;
 
   -- connections ===============================================================
 
-  gen_conn : for j in 0 to G.PIPELINES-1 generate
+  gen_conn : for j in 0 to DAQ_PIPELINES-1 generate
 
     -- node | bconv (payload) --------------------------------------------------
     bconv_ar(pld).i.src <= node_aor(j).bconv.payload
                            when (port_ir.pbldr.sel = '1'
                                  and port_ir.mngt.rd_en(j) = '1')
                            else nullify(bconv_ar(pld).i.src);
-    
+
     -- node | bconv (counter) --------------------------------------------------
     bconv_ar(cnt).i.src <= node_aor(j).bconv.counter
                            when (port_ir.pbldr.sel = '1'
                                  and port_ir.mngt.rd_en(j) = '1')
                            else nullify(bconv_ar(cnt).i.src);
-    
+
     -- node | done -------------------------------------------------------------
     port_or.mngt.done(j) <= node_aor(j).mngt.done
                             when (port_ir.pbldr.sel = '1'
                                   and port_ir.mngt.rd_en(j) = '1')
                             else '0';
-  
+
   end generate gen_conn;
 
   -- no error handling for now
@@ -175,4 +175,3 @@ begin
   u_hrow : entity work.daq_drow
     generic map (G) port map (port_ir, port_or);
 end V2;
-  

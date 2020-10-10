@@ -14,22 +14,17 @@ hdl:
 
 - DAQ_MAX_ROWS: [qualifier: constant, type: integer, value: DAQ_MAX_STREAMS + 1]
 
-- DAQ_MAX_PIPELINES: [qualifier: constant, type: integer, value: 40]
+- DAQ_PIPELINES: [qualifier: constant, type: integer, value: 32]
 
 - DAQ_MAX_COUNTER_WIDTH: [qualifier: constant, type: integer, value: 32]
-  
-- DAQ_MAX_DATA_WIDTH: [qualifier: constant, type: integer, value: 160]
 
-- DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 16]
+- DAQ_MAX_DATA_WIDTH: [qualifier: constant, type: integer, value: 512]
 
-  
+- DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 64]
+
+
 # FIFOs ------------------------------------------------------------------------
 
 - DAQ_NODE_WRITE_DATA_WIDTH: [qualifier: constant, type: integer, value: 42]
 
 - DAQ_NODE_FIFO_DEPTH: [qualifier: constant, type: integer, value: 1024]
-    
-
-
-
-

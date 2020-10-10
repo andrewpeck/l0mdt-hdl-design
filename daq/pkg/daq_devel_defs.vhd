@@ -19,13 +19,13 @@ package daq_devel_defs is
 
   constant DAQ_MAX_ROWS : integer := DAQ_MAX_STREAMS + 1;
 
-  constant DAQ_MAX_PIPELINES : integer := 40;
+  constant DAQ_PIPELINES : integer := 32;
 
   constant DAQ_MAX_COUNTER_WIDTH : integer := 32;
 
-  constant DAQ_MAX_DATA_WIDTH : integer := 160;
+  constant DAQ_MAX_DATA_WIDTH : integer := 512;
 
-  constant DAQ_FELIX_STREAM_WIDTH : integer := 16;
+  constant DAQ_FELIX_STREAM_WIDTH : integer := 64;
 
   constant DAQ_NODE_WRITE_DATA_WIDTH : integer := 42;
 

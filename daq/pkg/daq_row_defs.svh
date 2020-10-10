@@ -95,12 +95,12 @@
   typedef struct packed {
     daq_sys_rt   sys;
     forward_rt   src;
-    backward_rt   dst;
+    pbldr_backward_rt   dst;
   } bconv_irt;
 
   typedef struct packed {
     backward_rt   src;
-    forward_rt   dst;
+    pbldr_forward_rt   dst;
   } bconv_ort;
 
   typedef struct packed {
@@ -113,15 +113,15 @@
   typedef logic [$bits(bconv_ort)-1:0] bconv_ovt;
 
   typedef struct packed {
-    forward_rt   cnt;
-    forward_rt   pld;
-    backward_rt   dst;
+    pbldr_forward_rt   cnt;
+    pbldr_forward_rt   pld;
+    pbldr_backward_rt   dst;
   } hub_irt;
 
   typedef struct packed {
-    backward_rt   cnt;
-    backward_rt   pld;
-    forward_rt   dst;
+    pbldr_backward_rt   cnt;
+    pbldr_backward_rt   pld;
+    pbldr_forward_rt   dst;
   } hub_ort;
 
   typedef struct packed {

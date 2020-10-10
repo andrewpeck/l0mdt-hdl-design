@@ -96,7 +96,7 @@ begin
               previous <= IDLE;
             elsif port_ir.mngt.en = '1' then
               -- start packet word...
-              port_or.f2e.data <= ((port_or.f2e.data'left downto STA'length => '0'), STA);
+              port_or.f2e.data <= STA;
               -- inform fifo2elink that data is available
               port_or.f2e.wr_en <= '1';
               -- move to next state
@@ -125,7 +125,7 @@ begin
                 port_or.row.payload.rd_strb <= '1';
                 -- expose data to the elink interface
                 port_or.f2e.wr_en <= '1';
-                port_or.f2e.data <= port_ir.row.payload.data;
+                port_or.f2e.data <= "00" & port_ir.row.payload.data;
                 
               -- if there are no more data in the current row
               else
@@ -136,7 +136,7 @@ begin
                 else
                   -- enfure that stop word is sent just once
                   if sto_sent = '0' then
-                    port_or.f2e.data <= ((port_or.f2e.data'left downto STO'length => '0'), STO);
+                    port_or.f2e.data <= STO;
                     port_or.f2e.wr_en <= '1';
                     sto_sent <= '1';
                   end if;

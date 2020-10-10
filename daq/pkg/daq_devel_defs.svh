@@ -13,13 +13,13 @@
 
   parameter int  DAQ_MAX_ROWS = DAQ_MAX_STREAMS + 1;
 
-  parameter int  DAQ_MAX_PIPELINES = 40;
+  parameter int  DAQ_PIPELINES = 32;
 
   parameter int  DAQ_MAX_COUNTER_WIDTH = 32;
 
-  parameter int  DAQ_MAX_DATA_WIDTH = 160;
+  parameter int  DAQ_MAX_DATA_WIDTH = 512;
 
-  parameter int  DAQ_FELIX_STREAM_WIDTH = 16;
+  parameter int  DAQ_FELIX_STREAM_WIDTH = 64;
 
   parameter int  DAQ_NODE_WRITE_DATA_WIDTH = 42;
 

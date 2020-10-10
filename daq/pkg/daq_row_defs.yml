@@ -50,13 +50,13 @@ hdl:
   - bconv: [type: node_to_bconv_rt]
 
 - node_ovt: [type: logic, length: node_ort]
-      
+
 # data node --------------------------------------------------------------------
 
 - dnode_grt:
     - INPUT_DATA_WIDTH: [type: natural]
     - COUNTER_WIDTH: [type: natural]
- 
+
 - dnode_irt:
     - sys: [type: daq_sys_rt]
     - mngt: [type: mngt_to_node_rt]
@@ -69,12 +69,12 @@ hdl:
     - o : [type: node_ort]
 
 - dnode_ivt: [type: logic, length: dnode_irt]
-      
+
 # header node ------------------------------------------------------------------
 
 - hnode_grt:
     - COUNTER_WIDTH: [type: natural]
- 
+
 - hnode_irt:
     - sys: [type: daq_sys_rt]
     - mngt: [type: mngt_to_node_rt]
@@ -86,7 +86,7 @@ hdl:
     - o : [type: node_ort]
 
 - hnode_ivt: [type: logic, length: hnode_irt]
-      
+
 # bus converter --------------------------------------------------------------
 
 - bconv_grt:
@@ -95,11 +95,11 @@ hdl:
 - bconv_irt:
   - sys: [type: daq_sys_rt]
   - src: [type: forward_rt]
-  - dst: [type: backward_rt]
+  - dst: [type: pbldr_backward_rt]
 
 - bconv_ort:
   - src: [type: backward_rt]
-  - dst: [type: forward_rt]
+  - dst: [type: pbldr_forward_rt]
 
 - bconv_ert:
     - i: [type: bconv_irt]
@@ -108,18 +108,18 @@ hdl:
 - bconv_ivt: [type: logic, length: bconv_irt]
 
 - bconv_ovt: [type: logic, length: bconv_ort]
-      
+
 # hub --------------------------------------------------------------------------
 
 - hub_irt:
-  - cnt: [type: forward_rt]
-  - pld: [type: forward_rt]
-  - dst: [type: backward_rt]
+  - cnt: [type: pbldr_forward_rt]
+  - pld: [type: pbldr_forward_rt]
+  - dst: [type: pbldr_backward_rt]
 
 - hub_ort:
-  - cnt: [type: backward_rt]
-  - pld: [type: backward_rt]
-  - dst: [type: forward_rt]
+  - cnt: [type: pbldr_backward_rt]
+  - pld: [type: pbldr_backward_rt]
+  - dst: [type: pbldr_forward_rt]
 
 - hub_ert:
   - i: [type: hub_irt]
@@ -128,4 +128,3 @@ hdl:
 - hub_ivt: [type: logic, length: hub_irt]
 
 - hub_ovt: [type: logic, length: hub_ort]
-  

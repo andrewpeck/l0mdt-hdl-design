@@ -63,7 +63,7 @@ begin
 
   wr_clk <= port_ir.sys.clk320;
   rst <= port_ir.sys.rst;
-  
+
   wr_en <= port_ir.src.wr_en
            when (rst = '0'
                  and rd_rst_busy = '0'

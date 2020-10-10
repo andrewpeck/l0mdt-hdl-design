@@ -27,7 +27,7 @@ architecture V2 of daq_data_node is
   signal remaining : bcid_t;
 
   signal done : std_logic;
-  
+
   -- FIFO related signals ------------------------------------------------------
 
   signal fifo_er : daq_node_fifo_ert;
@@ -38,14 +38,14 @@ architecture V2 of daq_data_node is
     rd_strb : std_logic;
   end record cnt_rt;
   signal cnt_r : cnt_rt := ('0', (others => '0'), '0');
-  
+
   type pld_out_rt is record
     nempty : std_logic;
     data   : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
     rd_strb : std_logic;
   end record pld_out_rt;
   signal pld_out_r : pld_out_rt := ('0', (others => '0'), '0');
-  
+
   type pld_in_rt is record
     bcid  : bcid_t;
     data  : std_logic_vector(G.INPUT_DATA_WIDTH-1 downto 0);
@@ -57,17 +57,27 @@ architecture V2 of daq_data_node is
   -- start  : waiting for window to open
   -- gather : data gathering in process (window is open)
   -- send   : gathering is finished (data to be retrieved)
-  -- halt   : wait for other streams 
+  -- halt   : wait for other streams
   type pld_st_t is (idle, start, gather, send, halt);
   signal pld_st : pld_st_t := idle;
-  
+
   type cnt_st_t is (idle, send, halt);
   signal cnt_st : cnt_st_t := idle;
+
+
+  impure function FIFO_READ_DATA_WIDTH return integer is
+    variable y : integer := G.INPUT_DATA_WIDTH;
+  begin
+    while y < DAQ_FELIX_STREAM_WIDTH loop
+      y := y * 2;
+    end loop;
+    return y;
+  end function FIFO_READ_DATA_WIDTH;
 
 begin
 
   -- mapping ports -------------------------------------------------------------
-  
+
   pld_out_r.nempty <= not fifo_er.o.dst.nempty;
 
   port_or.mngt.done <= done;
@@ -86,34 +96,34 @@ begin
     <= (port_or.bconv.payload.data'left downto pld_out_r.data'length => '0')
     & pld_out_r.data;
 
-  
+
   -- FIFO ----------------------------------------------------------------------
 
   data_fifo_u : entity work.daq_node_fifo
     generic map (G => (WRITE_DATA_WIDTH => G.INPUT_DATA_WIDTH,
-                       READ_DATA_WIDTH => G.INPUT_DATA_WIDTH,
+                       READ_DATA_WIDTH => FIFO_READ_DATA_WIDTH,
                        READ_COUNT_WIDTH => G.COUNTER_WIDTH))
     port map (port_ir => fifo_er.i, port_or => fifo_er.o);
-  
+
   -- converting widths
   ig0 : if cnt_r.data'length >= fifo_er.o.dst.count'length generate
     cnt_r.data(fifo_er.o.dst.count'range) <= fifo_er.o.dst.count;
   end generate ig0;
-  
+
   ig1: if cnt_r.data'length < fifo_er.o.dst.count'length generate
     cnt_r.data <= fifo_er.o.dst.count(cnt_r.data'range);
   end generate ig1;
-  
+
   -- Logic ---------------------------------------------------------------------
 
   ig2: if pld_out_r.data'length < fifo_er.o.dst.data'length generate
     pld_out_r.data <= fifo_er.o.dst.data(pld_out_r.data'range);
   end generate ig2;
-  
+
   ig3: if pld_out_r.data'length >= fifo_er.o.dst.data'length generate
     pld_out_r.data(fifo_er.o.dst.data'range) <= fifo_er.o.dst.data;
   end generate ig3;
-  
+
   fifo_er.i.src.wr_en <= stream_dr.valid;
   fifo_er.i.dst.rd_en <= '1'
                          when (port_ir.bconv.payload.rd_strb = '1'
@@ -208,7 +218,7 @@ begin
   -- process (port_ir.sys.clk320)
   -- begin
   --   if rising_edge(port_ir.sys.clk320) then
-  --     
+  --
   --     -- Whenever the processing node is disabled, it must be in the
   --     -- reset state: not busy, not active, not done, and no errors.
   --     if port_ir.mngt.en = '0' then
@@ -217,15 +227,15 @@ begin
   --       done   <= '0';
   --       port_or.mngt.unexpected <= '0';
   --       cnt_r.nempty <= '0';
-  -- 
+  --
   --     -- When node is enabled, load the window limit values and start
   --     -- gathering.
   --     else
-  -- 
+  --
   --       if cnt_r.rd_strb = '1' then
   --         cnt_r.nempty <= '0';
   --       end if;
-  -- 
+  --
   --       -- `busy` signal ensures that window limits are loaded just
   --       -- once. It is assumed that window limits will be configured
   --       -- before data comes, the overhead of a fast clock should not
@@ -235,11 +245,11 @@ begin
   --         remaining <= port_ir.req.win_zwidth;
   --         busy <= '1';
   --       end if;
-  -- 
+  --
   --       -- With window configured and while window is open, data
   --       -- should be gathered.
   --       if busy = '1' and remaining > 0 then
-  -- 
+  --
   --         -- look for lower edge of the window. If found, open window
   --         -- and start recording data. After that point, all data is
   --         -- forwarded to the FIFOs
@@ -249,19 +259,19 @@ begin
   --           stream_dr.bcid <= port_ir.stream.bcid;
   --           stream_dr.data <= port_ir.stream.data(stream_dr.data'range);
   --         end if;
-  -- 
+  --
   --         -- if window is active, decrement window width in the case
   --         -- of changed bcid and keep recording data. Deactivate
   --         -- window when finished and set done.
   --         if active = '1' then
-  -- 
+  --
   --           -- Window width cannot be decremented for every clock. It
   --           -- should count the actual BCID values passing through.
   --           -- It cannot be compared with bcid+1 due to bcid wrapping.
   --           if port_ir.stream.bcid /= stream_dr.bcid then
   --             remaining <= remaining - 1;
   --           end if;
-  -- 
+  --
   --           -- When width is greater than 1, all data should be
   --           -- forwarded. If it is 1, the data should be forwarded
   --           -- only if bcid did not change. Width of 0 is not allowed
@@ -273,20 +283,20 @@ begin
   --             stream_dr.data <= port_ir.stream.data(stream_dr.data'range);
   --           else
   --             port_or.mngt.unexpected <= '1';
-  --           end if;              
-  -- 
+  --           end if;
+  --
   --         end if;
-  --         
+  --
   --       elsif busy = '1' and remaining = 0 then
   --         done <= '1';
   --         cnt_r.nempty <= '1';
   --         active <= '0';
-  --       end if;        
+  --       end if;
   --     end if;
-  --     
+  --
   --   end if;
   -- end process;
-  
+
 end V2;
 
 --------------------------------------------------------------------------------
