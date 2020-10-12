@@ -46,7 +46,8 @@ package body gldl_l0mdt_textio_pkg is
     -- variable space        : string(8 downto 1);
     -- variable c_Station    : string(1 downto 1);
     variable i_station    : integer;
-    variable Chamber      : integer;
+    variable Chamber_id      : integer;
+    variable Chamber_ieta      : integer;
     variable mdt_time_coarse  : integer;
     variable mdt_time_fine  : integer;
     variable tube_global  : integer;
@@ -57,6 +58,9 @@ package body gldl_l0mdt_textio_pkg is
     variable tube_radius  : integer;
     variable event        : integer;
 
+    variable dummy_text  : string(0 to 100);
+    variable ok : boolean;
+
     -- variable
   begin
     READ(L, mdt_ToA);
@@ -65,14 +69,14 @@ package body gldl_l0mdt_textio_pkg is
     READ(L, tube_global);
     READ(L, tube_local);
     READ(L, tube_layer);
-    READ(L, Chamber);
-    -- READ(L, space); -- in string we need to read spaces before
-    -- READ(L, c_Station);
+    READ(L, Chamber_id);
+    READ(L, Chamber_ieta);
     READ(L, i_station);
-    READ(L, tube_z);
-    READ(L, tube_rho);
-    READ(L, tube_radius);
-    READ(L, event);
+    READ(L, dummy_text,ok);
+    -- READ(L, tube_z);
+    -- READ(L, tube_rho);
+    -- READ(L, tube_radius);
+    -- READ(L, event);
 
     -- if c_station = "I" then 
     --   i_station := 0;
@@ -87,11 +91,11 @@ package body gldl_l0mdt_textio_pkg is
     VALUE := (
       ToA => to_unsigned(mdt_ToA,64),
       Station => to_unsigned(i_Station,8),
-      Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
+      Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-        chamber_ieta => to_unsigned(chamber,SLC_CHAMBER_LEN),
+        chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
         time => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN) & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
         data_valid => '1'
       )
@@ -103,12 +107,13 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(tube_global) &
     " - " & integer'image(tube_local) &
     " - " & integer'image(tube_layer) &
-    " - " & integer'image(Chamber) &
-    " - " & integer'image(i_station) &
+    " - " & integer'image(Chamber_id) &
+    " - " & integer'image(Chamber_ieta) &
+    " - " & integer'image(i_station);
     -- " - " & c_station &
-    " - " & integer'image(tube_z) &
-    " - " & integer'image(tube_rho) &
-    " - " & integer'image(tube_radius);
+    -- " - " & integer'image(tube_z) &
+    -- " - " & integer'image(tube_rho) &
+    -- " - " & integer'image(tube_radius);
 
   end procedure;
 
