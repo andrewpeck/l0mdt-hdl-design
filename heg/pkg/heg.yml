@@ -39,11 +39,14 @@ HDL_Types:
 # -----------------------------------------------------------
 #  heg: heg control 2 sf
 # -----------------------------------------------------------
+
+- CSF_SLOPE_LEN : [ qualifier: constant , type: integer , value: 11 ]
   
 - heg_ctrl2sf:
   - rst           : [ type : logic ]
   - eof           : [ type : logic ]
   - enable        : [ type : logic ]
+  - slope         : [ type : unsigned , length : CSF_SLOPE_LEN]
   # - window_valid  : [ type : logic ]
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data

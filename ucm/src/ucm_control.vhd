@@ -39,6 +39,8 @@ entity ucm_ctrl is
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
     o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    --
+    o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
     -- o_pam2heg           : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0)    
   );
@@ -67,13 +69,16 @@ architecture beh of ucm_ctrl is
       rst                 : in std_logic;
       glob_en             : in std_logic;
       --
+      i_num_cand          : in unsigned(3 downto 0);
+      i_pam_update        : in std_logic;
+      --
       o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
       o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
-      o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+      --
+      o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+      o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
       -- o_pam2heg           : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0);
       -- internals
-      i_num_cand          : in unsigned(3 downto 0);
-      i_pam_update        : in std_logic
     );
   end component;
 
@@ -102,13 +107,17 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     --
-    o_pam_ctrl            => o_pam_ctrl,
-    o_proc_info           => o_proc_info,
-    o_cvp_ctrl            => o_cvp_ctrl,
+    i_num_cand          => num_cand,
+    i_pam_update        => pam_update,
+    --
+    o_pam_ctrl          => o_pam_ctrl,
+    o_proc_info         => o_proc_info,
+    --
+    o_cvp_rst           => o_cvp_rst,
+    o_cvp_ctrl          => o_cvp_ctrl
     -- o_pam2heg             => o_pam2heg,
     -- internals
-    i_num_cand            => num_cand,
-    i_pam_update          => pam_update
+
   );
 
 end beh;
@@ -317,15 +326,14 @@ entity ucm_ctrl_pam is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    -- i_data              : in ucm_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+    i_num_cand          : in unsigned(3 downto 0);
+    i_pam_update        : in std_logic;
     --
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
     o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
-    o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0);
-    -- o_pam2heg           : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0);
-    -- internals
-    i_num_cand          : in unsigned(3 downto 0);
-    i_pam_update        : in std_logic
+    --
+    o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
   );
 end entity ucm_ctrl_pam;
 
@@ -354,11 +362,14 @@ begin
     if rising_edge(clk) then
       if(rst= '1') then
         o_cvp_ctrl <= (others => '0');
+        o_cvp_rst <= (others => '1');
+
         ch_busy <= (others => '0');
         ch_count <= (others => (others => '0'));
         o_pam_ctrl <= nullify(o_pam_ctrl);-- ((others => '0'),(others => (others => '0')));
         -- o_pam2heg <= (others =>( (others => '0') , '0') );
         o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
+        
       else
 
         o_pam_ctrl <= buff_pam_ctrl;
@@ -370,11 +381,17 @@ begin
             o_proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
             o_proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
             -- o_cvp_ctrl(ch_i) <= '0';
+          
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
               buff_pam_ctrl(ch_i).data_present <= '0';
               processed := processed + 1;
             else
+              if ch_count(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
+                o_cvp_rst(ch_i) <= '1';
+              else
+                o_cvp_rst(ch_i) <= '1';
+              end if;
               o_cvp_ctrl(ch_i) <= '0';
               ch_busy(ch_i) <= '0';
               ch_count(ch_i) <= (others => '0');
@@ -382,6 +399,7 @@ begin
             end if;
             
           else
+            
             if i_pam_update = '1' then
               
               if processed < to_integer(i_num_cand) then

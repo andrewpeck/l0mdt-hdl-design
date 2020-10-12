@@ -38,6 +38,7 @@ entity ucm_cvp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
+    i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
     --
     i_data_v            : in ucm_cde_rvt;
@@ -48,7 +49,8 @@ end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
 
-  signal i_data_r     : ucm_cde_rt;
+  signal int_data_r     : ucm_cde_rt;
+  signal int_data_v     : ucm_cde_rvt;
   
   signal data_v       : ucm_cde_rvt;
   signal data_v_2     : ucm_cde_rvt;
@@ -62,6 +64,11 @@ architecture beh of ucm_cvp is
   signal offset       : signed(126 -1 downto 0);
   signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
   signal slope_dv     : std_logic;
+
+  constant ATAN_SLOPE_LEN : integer := 20;
+  signal atan_slope   : unsigned(ATAN_SLOPE_LEN - 1 downto 0);
+  signal atan_mbar    : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+  signal atan_dv      : std_logic;
 
   type vec_pos_array_t  is array (0 to c_MAX_POSSIBLE_HPS -1) of unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
   signal vec_pos_array  : vec_pos_array_t;
@@ -78,9 +85,9 @@ begin
       rst           => rst,
       glob_en       => glob_en,
       --
-      i_cointype    => i_data_r.cointype,
-      i_data_v      => i_data_r.specific,
-      i_data_Valid  => i_data_r.data_valid,
+      i_cointype    => int_data_r.cointype,
+      i_data_v      => int_data_r.specific,
+      i_data_Valid  => int_data_r.data_valid,
       o_offset      => offset,
       o_slope       => slope,
       o_data_valid  => slope_dv
@@ -88,17 +95,35 @@ begin
 
   end generate;
 
+  atan_slope <= resize(unsigned(slope),ATAN_SLOPE_LEN) when to_integer(unsigned(slope)) < 732387 else to_unsigned(732387,ATAN_SLOPE_LEN);
+
+  ATAN : entity shared_lib.roi_atan
+  generic map(
+    g_INPUT_LEN   => ATAN_SLOPE_LEN,
+    g_OUTPUT_LEN  => UCM2HPS_VEC_POS_LEN
+  )
+  port map(
+    clk           => clk,
+    rst           => rst,
+    glob_en       => glob_en,
+    --
+    i_slope       => atan_slope,
+    i_dv          => slope_dv,
+    o_mbar        => vec_ang_pl,
+    o_dv          => atan_dv
+  );
+
   PL_in : entity shared_lib.std_pipeline
   generic map(
     num_delays  => 5,
-    num_bits    => i_data_v'length
+    num_bits    => int_data_v'length
   )
   port map(
     clk         => clk,
     rst         => rst,
     glob_en     => glob_en,
     --
-    i_data      => i_data_v,
+    i_data      => int_data_v,
     o_data      => data_v
   );
 
@@ -150,7 +175,7 @@ begin
   --   end generate;
   -- end generate;
 
-  i_data_r <= structify(i_data_v);
+  int_data_r <= structify(int_data_v);
 
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
@@ -161,23 +186,36 @@ begin
   UCM_CVP : process(rst,clk) begin
     if rising_edge(clk) then
 
-      if slope < 2047 then
-        vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
-      else
-        vec_ang_pl <= (others => '1');
-      end if;
+      -- if slope < 2047 then
+      --   vec_ang_pl <= resize(unsigned(slope),UCM2HPS_VEC_ANG_LEN);
+      -- else
+      --   vec_ang_pl <= (others => '1');
+      -- end if;
       
-      if rst= '1' then
+      if rst= '1' or i_local_rst = '1' then
+
+
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
           ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
         end loop;
-      elsif i_in_en = '1' then
-        -- como usar i_in_en? si ocupado deberia mantenerse desactivado
+
+      else 
+
+        if i_in_en = '1' then
+          -- como usar i_in_en? si ocupado deberia mantenerse desactivado
           -- ojo se tiene qu eser previsor para poder empezar a calcular candidato si el proceso esta apunto de acabarse
-      
+          -- update i_in_en only controls input data and allows the rest to continue processing
+          
+          int_data_v <= i_data_v;
+        end if;
+
+
+
+
+
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
-          if c_SF_TYPE = '0' then --CSF
-            -- if i_data_r.data_valid = '1' then
+          -- if c_SF_TYPE = '0' then --CSF
+            -- if int_data_r.data_valid = '1' then
               for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
                 if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
 
@@ -199,9 +237,9 @@ begin
                   
                   else
 
-                    for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-                      ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-                    end loop;
+                    -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    -- end loop;
 
                   end if;
 
@@ -214,15 +252,15 @@ begin
               --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
               -- end loop;
             -- end if;
-          else --LSF
-          end if;
+          -- else --LSF
+          -- end if;
         else -- Endcap
         end if;
         
-      else
-        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-        end loop;
+        -- else
+        -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+        --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+        -- end loop;
         -- block dissabled
       end if;
     end if;
