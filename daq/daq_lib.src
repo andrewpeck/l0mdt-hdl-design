@@ -1,16 +1,17 @@
+daq/types_def.src                lib=types_def
+daq/daq_def.src                    lib=daq_def
+daq/ttc_def.src                    lib=ttc_def
+
 IP/daq/data_fifo/data_fifo.xci
-IP/daq/fifo_daq_req/fifo_daq_req.xci
 
-daq/pkg/daq_devel_defs_pkg.vhd 2008
-daq/pkg/daq_defs_pkg.vhd       2008
-daq/pkg/daq_row_defs_pkg.vhd   2008
-
-daq/src/daq_algo.vhd           2008
-daq/src/daq_bus_conv.vhd       2008
-daq/src/daq_data_cell.vhd      2008
-daq/src/daq_header_cell.vhd    2008
-daq/src/daq_packet_builder.vhd 2008
-daq/src/daq_row.vhd            2008
-daq/src/top_daq.vhd            2008
-
-
+daq/src/daq_req.vhd
+daq/src/daq_mngt.vhd
+daq/src/daq_header_node.vhd
+daq/src/daq_data_node.vhd
+daq/src/daq_bus_conv.vhd
+daq/src/daq_hub.vhd
+daq/src/daq_hrow.vhd
+daq/src/daq_drow.vhd
+daq/src/daq_packet_builder.vhd
+daq/src/daq_algo.vhd
+daq/src/daq_top.vhd

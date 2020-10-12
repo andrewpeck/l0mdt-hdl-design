@@ -94,7 +94,7 @@ package config_pkg is
 
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
 
-  constant c_H2S_ENABLED            : std_logic := '1';
+  constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
   
   constant c_MPL_ENABLED            : std_logic := CFG.ENABLE_MPL;
   --
@@ -107,7 +107,10 @@ package config_pkg is
   constant c_MTC_ENABLED             : std_logic := CFG.ENABLE_MTC;
   --
   constant c_DAQ_ENABLED            : std_logic := CFG.ENABLE_DAQ;
-  constant c_NUM_DAQ_STREAMS        : integer := 1;
+  constant c_NUM_DAQ_STREAMS        : integer := c_HPS_NUM_MDT_CH_INN
+                                                 + c_HPS_NUM_MDT_CH_MID
+                                                 + c_HPS_NUM_MDT_CH_OUT
+                                                 + c_HPS_NUM_MDT_CH_EXT;
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 
   --------------------------------------------------------------------------------

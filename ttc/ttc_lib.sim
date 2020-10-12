@@ -1,0 +1,4 @@
+daq/pkg/common_defs_pkg.svh
+ttc/pkg/ttc_defs_pkg.svh
+ttc/sim/tb_top.sv topsim=ttc_tb
+ttc/sim/tb.wcfg wavefile

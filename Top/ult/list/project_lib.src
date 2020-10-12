@@ -16,3 +16,4 @@ ptc_mpi/ptc_lib.src lib=ptc_lib
 upt/upt_lib.src lib=upt_lib
 mtc/mtc_lib.src lib=mtc_lib
 lsf/lsf_lib.src lib=lsf_lib
+daq/daq_lib.src lib=daq_lib
