@@ -48,8 +48,8 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 entity ult_tp is
   generic (
     DUMMY       : boolean := false;
-    IN_SLC_FILE : string  := "slc_TB_A3_Barrel_d_new.txt";
-    IN_MDT_FILE : string  := "csm_TB_A3_Barrel_d_new.txt"
+    IN_SLC_FILE : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    IN_MDT_FILE : string  := "csm_TB_A3_Barrel_yt_v04.txt"
     );
 end entity ult_tp;
 

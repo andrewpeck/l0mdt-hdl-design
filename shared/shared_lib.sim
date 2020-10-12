@@ -20,3 +20,6 @@ shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt
 
 shared/sim/vhdl_input_vect/csm_TB_A3_Barrel_d_new.txt
 shared/sim/vhdl_input_vect/slc_TB_A3_Barrel_d_new.txt
+
+shared/sim/vhdl_input_vect/csm_TB_A3_Barrel_yt_v04.txt
+shared/sim/vhdl_input_vect/slc_TB_A3_Barrel_yt_v04.txt

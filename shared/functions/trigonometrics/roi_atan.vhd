@@ -16,9 +16,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library heg_roi_lib;
-use heg_roi_lib.roi_types_pkg.all;
-
 package roi_atan is
 
     -- add length of constant array
