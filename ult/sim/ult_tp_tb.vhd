@@ -56,6 +56,9 @@ end entity ult_tp;
 
 architecture beh of ult_tp is
 
+  signal enable_mdt : integer := 0;
+  signal enable_slc : integer := 1;
+
   ---------------------------------------------------------------------------
   -- signals related to DUT ports
   ---------------------------------------------------------------------------
@@ -356,60 +359,64 @@ begin
 
       else
 
-        -- write to DUT
+        if enable_slc = 1 then
 
-        for wr_i in 2 downto 0 loop
-          if(v_slc_main_prim_counts(wr_i) > 0) then
-            i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
-            -- for test input read
-            i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
-            --
-            for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
-              slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
-            end loop;
-            v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
-          else
-            i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
-            i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
-          end if;
-        end loop;
+          -- write to DUT
 
-        -- read from file
-        -- first read from input vector file
-        if (not endfile(input_slc_file)) and first_read = '1' then
-          row_counter := row_counter +1;
-          readline(input_slc_file,row); -- reads header and ignores
-          readline(input_slc_file,row);
-          read(row, v_slc_event);
-          slc_event_r <= v_slc_event;
-          report "Read line : " & integer'image(row_counter);
-          first_read := '0';
-        end if;
-
-        -- read from input vector file
-        RL : while true loop
-          if (v_slc_event.ToA < tb_curr_time) then
-            -- i_mdt_tar_av <= mdt_tar_event_r.tar;
-            if (endfile(input_slc_file) = false) then
-
-              if v_slc_event.slc.common.slcid < 3 then
-                slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
-                v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
-              end if;
-
-              row_counter := row_counter +1;
-              readline(input_slc_file,row);
-              read(row, v_slc_event);
-              slc_event_r <= v_slc_event;
-              report "Read line : " & integer'image(row_counter);
+          for wr_i in 2 downto 0 loop
+            if(v_slc_main_prim_counts(wr_i) > 0) then
+              i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              -- for test input read
+              i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
+              --
+              for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
+                slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
+              end loop;
+              v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
+              i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
+              i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+            end if;
+          end loop;
+
+          -- read from file
+          -- first read from input vector file
+          if (not endfile(input_slc_file)) and first_read = '1' then
+            row_counter := row_counter +1;
+            readline(input_slc_file,row); -- reads header and ignores
+            readline(input_slc_file,row);
+            read(row, v_slc_event);
+            slc_event_r <= v_slc_event;
+            report "Read line : " & integer'image(row_counter);
+            first_read := '0';
+          end if;
+
+          -- read from input vector file
+          RL : while true loop
+            if (v_slc_event.ToA < tb_curr_time) then
+              -- i_mdt_tar_av <= mdt_tar_event_r.tar;
+              if (endfile(input_slc_file) = false) then
+
+                if v_slc_event.slc.common.slcid < 3 then
+                  slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+                  v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
+                end if;
+
+                row_counter := row_counter +1;
+                readline(input_slc_file,row);
+                read(row, v_slc_event);
+                slc_event_r <= v_slc_event;
+                report "Read line : " & integer'image(row_counter);
+              else
+                exit;
+              end if;
+            else
+              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
               exit;
             end if;
-          else
-            -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
-            exit;
-          end if;
-        end loop;
+          end loop;
+
+        end if;
 
       end if;
     end if;
@@ -448,132 +455,135 @@ begin
       if(rst= '1') then
 
       else
+
+        if enable_mdt = 1 then
         -- write to DUT
 
-        for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
-          if(v_mdt_inn_counts(wr_i) > 0) then
-            i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0));
-             -- for test input read
-             i_mdt_tar_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0);
-             --
-            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
-            end loop;
-            v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
-          else
-            i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
-            i_mdt_tar_inn_ar(wr_i) <= nullify(i_mdt_tar_inn_ar(wr_i));
-          end if;
-        end loop;
-
-        for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
-          if(v_mdt_mid_counts(wr_i) > 0) then
-            i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0));
-            -- for test input read
-            i_mdt_tar_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0);
-            --
-            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_mid_fifo(wr_i)(mv_i);
-            end loop;
-            v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
-          else
-            i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
-            i_mdt_tar_mid_ar(wr_i) <= nullify(i_mdt_tar_mid_ar(wr_i));
-          end if;
-        end loop;
-
-        for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
-          if(v_mdt_out_counts(wr_i) > 0) then
-            i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0));
-            -- for test input read
-            i_mdt_tar_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0);
-            --
-            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
-            end loop;
-            v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
-          else
-            i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
-            i_mdt_tar_out_ar(wr_i) <= nullify(i_mdt_tar_out_ar(wr_i));
-          end if;
-        end loop;
-
-        for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
-          if(v_mdt_ext_counts(wr_i) > 0) then
-            i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0));
-            -- for test input read
-            i_mdt_tar_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0);
-            --
-            for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
-              mdt_ext_fifo(wr_i)(mv_i - 1) <= mdt_ext_fifo(wr_i)(mv_i);
-            end loop;
-            v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
-          else
-            i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
-            i_mdt_tar_ext_ar(wr_i) <= nullify(i_mdt_tar_ext_ar(wr_i));
-          end if;
-        end loop;
-
-        -- first read from input vector file
-        if (not endfile(input_mdt_tar_file)) and first_read = '1' then
-          row_counter := row_counter +1;
-          readline(input_mdt_tar_file,row); -- reads header and ignores
-          readline(input_mdt_tar_file,row);
-          read(row, v_mdt_event);
-          mdt_tar_event_r <= v_mdt_event;
-          report "Read line : " & integer'image(row_counter);
-          first_read := '0';
-        end if;
-
-        -- read from input vector file
-        RL : while true loop
-          if (v_mdt_event.ToA < tb_curr_tdc_time) then
-            -- i_mdt_tar_av <= mdt_tar_event_r.tar;
-            if (endfile(input_mdt_tar_file) = false) then
-
-              if to_integer(v_mdt_event.station) = 0 then
-                mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
-                v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
-              elsif to_integer(v_mdt_event.station) = 1 then
-                mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
-                v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
-              elsif to_integer(v_mdt_event.station) = 2 then
-                mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
-                v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
-              elsif to_integer(v_mdt_event.station) = 3 then
-                mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
-                v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
-              else
-                -- ERROR
-              end if;
-              row_counter := row_counter +1;
-              readline(input_mdt_tar_file,row);
-              read(row, v_mdt_event);
-              mdt_tar_event_r <= v_mdt_event;
-              report "Read line : " & integer'image(row_counter);
+          for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop
+            if(v_mdt_inn_counts(wr_i) > 0) then
+              i_mdt_tar_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0));
+              -- for test input read
+              i_mdt_tar_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0);
+              --
+              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
+              end loop;
+              v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
             else
+              i_mdt_tar_inn_av(wr_i) <= nullify(i_mdt_tar_inn_av(wr_i));
+              i_mdt_tar_inn_ar(wr_i) <= nullify(i_mdt_tar_inn_ar(wr_i));
+            end if;
+          end loop;
+
+          for wr_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 loop
+            if(v_mdt_mid_counts(wr_i) > 0) then
+              i_mdt_tar_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0));
+              -- for test input read
+              i_mdt_tar_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0);
+              --
+              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_mid_fifo(wr_i)(mv_i);
+              end loop;
+              v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
+            else
+              i_mdt_tar_mid_av(wr_i) <= nullify(i_mdt_tar_mid_av(wr_i));
+              i_mdt_tar_mid_ar(wr_i) <= nullify(i_mdt_tar_mid_ar(wr_i));
+            end if;
+          end loop;
+
+          for wr_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 loop
+            if(v_mdt_out_counts(wr_i) > 0) then
+              i_mdt_tar_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0));
+              -- for test input read
+              i_mdt_tar_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0);
+              --
+              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
+              end loop;
+              v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
+            else
+              i_mdt_tar_out_av(wr_i) <= nullify(i_mdt_tar_out_av(wr_i));
+              i_mdt_tar_out_ar(wr_i) <= nullify(i_mdt_tar_out_ar(wr_i));
+            end if;
+          end loop;
+
+          for wr_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 loop
+            if(v_mdt_ext_counts(wr_i) > 0) then
+              i_mdt_tar_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0));
+              -- for test input read
+              i_mdt_tar_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0);
+              --
+              for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
+                mdt_ext_fifo(wr_i)(mv_i - 1) <= mdt_ext_fifo(wr_i)(mv_i);
+              end loop;
+              v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
+            else
+              i_mdt_tar_ext_av(wr_i) <= nullify(i_mdt_tar_ext_av(wr_i));
+              i_mdt_tar_ext_ar(wr_i) <= nullify(i_mdt_tar_ext_ar(wr_i));
+            end if;
+          end loop;
+
+          -- first read from input vector file
+          if (not endfile(input_mdt_tar_file)) and first_read = '1' then
+            row_counter := row_counter +1;
+            readline(input_mdt_tar_file,row); -- reads header and ignores
+            readline(input_mdt_tar_file,row);
+            read(row, v_mdt_event);
+            mdt_tar_event_r <= v_mdt_event;
+            report "Read line : " & integer'image(row_counter);
+            first_read := '0';
+          end if;
+
+          -- read from input vector file
+          RL : while true loop
+            if (v_mdt_event.ToA < tb_curr_tdc_time) then
+              -- i_mdt_tar_av <= mdt_tar_event_r.tar;
+              if (endfile(input_mdt_tar_file) = false) then
+
+                if to_integer(v_mdt_event.station) = 0 then
+                  mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                  v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                elsif to_integer(v_mdt_event.station) = 1 then
+                  mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                  v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                elsif to_integer(v_mdt_event.station) = 2 then
+                  mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                  v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                elsif to_integer(v_mdt_event.station) = 3 then
+                  mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                  v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
+                else
+                  -- ERROR
+                end if;
+                row_counter := row_counter +1;
+                readline(input_mdt_tar_file,row);
+                read(row, v_mdt_event);
+                mdt_tar_event_r <= v_mdt_event;
+                report "Read line : " & integer'image(row_counter);
+              else
+                exit;
+              end if;
+            else
+              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
               exit;
             end if;
-          else
-            -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
-            exit;
-          end if;
-        end loop;
+          end loop;
 
 
 
 
 
+        end if;
+
+        mdt_inn_counts <= v_mdt_inn_counts;
+        mdt_mid_counts <= v_mdt_mid_counts;
+        mdt_out_counts <= v_mdt_out_counts;
+        mdt_ext_counts <= v_mdt_ext_counts;
+
+
+
+        -- tb_curr_time <= tb_curr_time + '1';
       end if;
-
-      mdt_inn_counts <= v_mdt_inn_counts;
-      mdt_mid_counts <= v_mdt_mid_counts;
-      mdt_out_counts <= v_mdt_out_counts;
-      mdt_ext_counts <= v_mdt_ext_counts;
-
-
-
-      -- tb_curr_time <= tb_curr_time + '1';
     end if;
 
   end process;
