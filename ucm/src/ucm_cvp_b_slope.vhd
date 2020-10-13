@@ -256,9 +256,9 @@ begin
           -- end if;
 
           if dv_chain(2) = '1' then
-            int_slope <= (b_nom * 1024)/b_den;
+            int_slope <= (b_nom * 2048)/b_den;
             --
-            e_y <= (sum_y(1) * 1024) / num_h(2);
+            e_y <= (sum_y(1) * 2048) / num_h(2);
             e_z <= sum_Z(1) / num_h(2);
           else
             int_slope <= (others => '0');

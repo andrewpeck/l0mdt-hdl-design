@@ -97,18 +97,18 @@ architecture beh of ult_tp is
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
   signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc       : slc_rx_rvt;
-  signal i_minus_neighbor_slc      : slc_rx_rvt;
+  signal i_plus_neighbor_slc       : slc_rx_rvt := (others => '0');
+  signal i_minus_neighbor_slc      : slc_rx_rvt := (others => '0');
   -- Segments in from neighbor
-  signal plus_neighbor_segments_i  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-  signal minus_neighbor_segments_i : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal plus_neighbor_segments_i  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal minus_neighbor_segments_i : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-  signal daq_streams_o :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+  signal daq_streams_o :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal plus_neighbor_segments_o  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  signal minus_neighbor_segments_o :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal plus_neighbor_segments_o  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal minus_neighbor_segments_o :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
   signal MTC_o :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);

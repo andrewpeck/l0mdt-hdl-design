@@ -199,6 +199,7 @@ begin
         o_csw_ctrl <= nullify(o_csw_ctrl);--((others => '0'), (others => ( others => '0')));
         o_pam_update <= '0';
         o_num_cand <= (others => '0');
+        data_ar <= nullify(data_ar);
       else
         case alg_status is
           when ALG_IDLE =>
@@ -357,16 +358,18 @@ begin
   
   PAM_logic : process(rst,clk) 
     variable processed : integer := 0;
+    variable busy  : integer := 0;
   begin
 
     if rising_edge(clk) then
       if(rst= '1') then
         o_cvp_ctrl <= (others => '0');
-        o_cvp_rst <= (others => '1');
+        o_cvp_rst <= (others => '0');
 
         ch_busy <= (others => '0');
         ch_count <= (others => (others => '0'));
         o_pam_ctrl <= nullify(o_pam_ctrl);-- ((others => '0'),(others => (others => '0')));
+        buff_pam_ctrl <= nullify(buff_pam_ctrl);
         -- o_pam2heg <= (others =>( (others => '0') , '0') );
         o_proc_info <= nullify(o_proc_info);-- (others =>( (others => '0') , '0') );
         
@@ -375,24 +378,38 @@ begin
         o_pam_ctrl <= buff_pam_ctrl;
 
         processed := 0;
+        busy := 0;
 
         for ch_i in c_NUM_THREADS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
-            o_proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
-            o_proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
+            o_proc_info(c_NUM_THREADS -1 - busy).ch <= (others => '0');
+            o_proc_info(c_NUM_THREADS -1 - busy).processed <= '0';
             -- o_cvp_ctrl(ch_i) <= '0';
           
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
               buff_pam_ctrl(ch_i).data_present <= '0';
-              processed := processed + 1;
-            else
+              buff_pam_ctrl(ch_i).addr_orig <= (others => '0');
+              busy := busy + 1;
+
               if ch_count(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
-                o_cvp_rst(ch_i) <= '1';
+                o_cvp_rst(ch_i) <= '0';
               else
                 o_cvp_rst(ch_i) <= '1';
               end if;
-              o_cvp_ctrl(ch_i) <= '0';
+
+              if ch_count(ch_i) < 3 then
+                o_cvp_ctrl(ch_i) <= '1';
+              else
+                o_cvp_ctrl(ch_i) <= '0';
+              end if;
+
+
+
+            else
+
+             
+              
               ch_busy(ch_i) <= '0';
               ch_count(ch_i) <= (others => '0');
               -- processed := processed - 1;
@@ -402,7 +419,7 @@ begin
             
             if i_pam_update = '1' then
               
-              if processed < to_integer(i_num_cand) then
+              if processed < to_integer(i_num_cand) and processed < (c_NUM_THREADS - busy) then
                 o_cvp_ctrl(ch_i) <= '1';
                 buff_pam_ctrl(ch_i).data_present <= '1';
                 buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
@@ -418,7 +435,7 @@ begin
             end if;
           end if;
         end loop;
-        processing <= processed;
+        processing <= processed + busy;
       end if;
     end if;
   end process;
