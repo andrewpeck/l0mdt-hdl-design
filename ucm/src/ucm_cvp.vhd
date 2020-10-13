@@ -104,7 +104,7 @@ begin
   ATAN : entity shared_lib.roi_atan
   generic map(
     g_INPUT_LEN   => ATAN_SLOPE_LEN,
-    g_OUTPUT_LEN  => UCM2HPS_VEC_POS_LEN
+    g_OUTPUT_LEN  => UCM2HPS_VEC_ANG_LEN
   )
   port map(
     clk           => clk,

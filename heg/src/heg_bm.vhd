@@ -215,6 +215,8 @@ begin
         --   last_read_v := 0;
         -- end if;
 
+        -- if g_HPS_NUM_MDT_CH < 5 then
+
         if fifo_empty(next_read(5)) = '0' then
           if lasthit = next_read(5) then
             if fifo_used(5) > 1 then
