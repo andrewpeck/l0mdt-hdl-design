@@ -60,16 +60,19 @@ architecture behavioral of daq is
   -- actual
 
 
-  constant TOP_gr : daq_top_grt := (
-    BRANCHES_STRUCT => ((TDCPOLMUX2TAR_LEN, others => 0),
-                        (TDCPOLMUX2TAR_LEN, others => 0),
-                        (TDCPOLMUX2TAR_LEN, others => 0),
-                        (TDCPOLMUX2TAR_LEN, others => 0),
-                        (TDCPOLMUX2TAR_LEN, others => 0),
-                        (TDCPOLMUX2TAR_LEN, others => 0),
-                        others => (others => 0)),
-    COUNTER_WIDTH     => 32);
-
+  function get_branches_struct (N: integer) return daq_branches_map_at is
+    variable y : daq_branches_map_at;
+  begin
+    for j in y'range loop
+      if j < N then
+        y(j) := (TDCPOLMUX2TAR_LEN, others => 0);
+      else
+        y(j) := (others => 0);
+      end if;
+    end loop;
+    return y;
+  end function get_branches_struct;
+  
   signal inner_er : daq_top_ert;
   signal middle_er : daq_top_ert;
   signal outer_er : daq_top_ert;
@@ -78,7 +81,6 @@ architecture behavioral of daq is
   type stations is (inner, middle, outer, extra);
   type trunk_t is array(stations) of daq_branches_t;
   signal trunk : trunk_t;
-
 
   signal inner_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_INN-1 downto 0);
   signal middle_tdc_hits : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_MID-1 downto 0);
@@ -117,7 +119,8 @@ begin
 
     gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
       u_daq_inner: entity daq_lib.daq_top
-        generic map (G => TOP_gr)
+        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_INN),
+                           COUNTER_WIDTH => 32))
         port map (port_ir => inner_er.i, port_or =>  inner_er.o);
       
       inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -137,9 +140,10 @@ begin
       end generate gen_daq_conn_inner;
     end generate gen_daq_inner;
       
-    gen_daq_middle : if   c_HPS_ENABLE_ST_INN = '1' generate
+    gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
       u_daq_middle: entity daq_lib.daq_top
-        generic map (G => TOP_gr)
+        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_MID),
+                           COUNTER_WIDTH => 32))
         port map (port_ir => middle_er.i, port_or =>  middle_er.o);
       
       middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -159,9 +163,10 @@ begin
       end generate gen_daq_conn_middle;
     end generate gen_daq_middle;
       
-    gen_daq_outer : if   c_HPS_ENABLE_ST_INN = '1' generate
+    gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
       u_daq_outer: entity daq_lib.daq_top
-        generic map (G => TOP_gr)
+        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_OUT),
+                           COUNTER_WIDTH => 32))
         port map (port_ir => outer_er.i, port_or =>  outer_er.o);
       
       outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
@@ -182,9 +187,10 @@ begin
       end generate gen_daq_conn_outer;
     end generate gen_daq_outer;
       
-    gen_daq_extra : if   c_HPS_ENABLE_ST_INN = '1' generate
+    gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
       u_daq_extra: entity daq_lib.daq_top
-        generic map (G => TOP_gr)
+        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_EXT),
+                           COUNTER_WIDTH => 32))
         port map (port_ir => extra_er.i, port_or =>  extra_er.o);
       
       extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
