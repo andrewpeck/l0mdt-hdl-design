@@ -24,9 +24,6 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.roi_atan_pkg.all;
 
-library heg_lib;
-use heg_lib.heg_pkg.all;
-
 
 entity roi_atan is
   generic(

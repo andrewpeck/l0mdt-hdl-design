@@ -24,10 +24,6 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.roi_tan_pkg.all;
 
-library heg_lib;
-use heg_lib.heg_pkg.all;
-
-
 entity roi_tan is
   generic(
     g_INPUT_LEN         : integer := 11;
