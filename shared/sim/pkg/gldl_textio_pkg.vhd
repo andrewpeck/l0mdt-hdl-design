@@ -66,8 +66,8 @@ package body gldl_l0mdt_textio_pkg is
     READ(L, mdt_ToA);
     READ(L, mdt_time_coarse);
     READ(L, mdt_time_fine);
-    READ(L, tube_global);
     READ(L, tube_local);
+    READ(L, tube_global);
     READ(L, tube_layer);
     READ(L, Chamber_id);
     READ(L, Chamber_ieta);
@@ -94,7 +94,7 @@ package body gldl_l0mdt_textio_pkg is
       Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-        layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+        layer => to_unsigned(tube_layer - 1,MDT_LAYER_LEN),
         chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
         time => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN) & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
         data_valid => '1'

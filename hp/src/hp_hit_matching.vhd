@@ -98,26 +98,34 @@ begin
         time_valid <= '0';
       else
 
-        o_data_valid <= i_data_valid;
+        if glob_en = '1' then
 
-        if i_data_valid = '1' then
-          -- space
-          if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
-            space_valid <= '1';
+          o_data_valid <= i_data_valid;
+
+          if i_data_valid = '1' then
+            -- space
+            if i_mdt_tube >= Roi_window(to_integer( i_mdt_layer)).lo and i_mdt_tube <= Roi_window(to_integer( i_mdt_layer)).hi then
+              space_valid <= '1';
+            else
+              space_valid <= '0';
+            end if;
+            -- time
+            if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
+              time_valid <= '1';
+            else
+              time_valid <= '0';
+            end if;
+            --valid
+            -- o_data_valid <= trLUT_valid;
           else
             space_valid <= '0';
-          end if;
-          -- time
-          if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
-            time_valid <= '1';
-          else
             time_valid <= '0';
           end if;
-          --valid
-          -- o_data_valid <= trLUT_valid;
         else
+          o_data_valid <= '0';
           space_valid <= '0';
           time_valid <= '0';
+
         end if;
       end if;
     end if;

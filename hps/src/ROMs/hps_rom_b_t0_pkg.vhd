@@ -29,7 +29,7 @@ package hps_rom_b_t0_pkg is
   -- T0 = ToF + t0
   -- t0 = 817
 
-  type t0LUT_chamber_t is array (1 to 8) of integer;
+  type t0LUT_chamber_t is array (0 to 7) of integer;
   type t0LUT_station_t is array (1 to 16) of t0LUT_chamber_t;
   
   constant c_BI_T0 : t0LUT_station_t :=(

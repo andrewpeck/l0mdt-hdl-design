@@ -56,7 +56,7 @@ end entity ult_tp;
 
 architecture beh of ult_tp is
 
-  signal enable_mdt : integer := 0;
+  signal enable_mdt : integer := 1;
   signal enable_slc : integer := 1;
 
   ---------------------------------------------------------------------------
@@ -83,20 +83,20 @@ architecture beh of ult_tp is
   signal mpl_mon  :  MPL_MON_t;
 
   -- TDC Hits from Polmux
-  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
   signal i_plus_neighbor_slc       : slc_rx_rvt;
   signal i_minus_neighbor_slc      : slc_rx_rvt;
   -- Segments in from neighbor
@@ -393,7 +393,7 @@ begin
 
           -- read from input vector file
           RL : while true loop
-            if (v_slc_event.ToA < tb_curr_time) then
+            if (v_slc_event.ToA < tb_curr_tdc_time) then
               -- i_mdt_tar_av <= mdt_tar_event_r.tar;
               if (endfile(input_slc_file) = false) then
 

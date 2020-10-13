@@ -82,7 +82,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    glob_en             => glob_en and local_en,
     -- configuration
     -- time_offset         => time_offset,
     -- RoI_size            => RoI_size,
@@ -108,7 +108,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    glob_en             => glob_en and local_en,
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_specific      => slc_data.specific,
