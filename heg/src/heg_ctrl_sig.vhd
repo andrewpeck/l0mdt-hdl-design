@@ -73,6 +73,9 @@ architecture beh of heg_ctrl_sig is
   -- signal z_win_org        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal z_win_org_dv     : std_logic;
 
+  signal csf_slope        : unsigned(CSF_SLOPE_LEN-1 downto 0);
+  signal csf_slope_dv     : std_logic;
+
 begin
 
   ZH : entity shared_lib.barrel_zholes
@@ -89,6 +92,22 @@ begin
     i_dv                => i_Roi_win_valid,
     o_spaces            => holesize,
     o_dv                => holesize_dv
+  );
+
+  TAN : entity shared_lib.roi_tan
+  generic map(
+    g_INPUT_LEN   => UCM2HPS_VEC_ANG_LEN,
+    g_OUTPUT_LEN  => CSF_SLOPE_LEN
+  )
+  port map(
+    clk           => clk,
+    rst           => rst,
+    glob_en       => glob_en,
+    --
+    i_mbar        => i_uCM_data_r.vec_ang,
+    i_dv          => i_uCM_data_r.data_valid,
+    o_slope       => csf_slope,
+    o_dv          => csf_slope_dv
   );
 
   o_uCM2sf_data_v <= vectorify(o_uCM2sf_data_r);
@@ -109,6 +128,7 @@ begin
         o_sf_control_r.enable <= '0';
         o_sf_control_r.rst <= '0';
         o_sf_control_r.eof <= '0';
+        o_sf_control_r.slope <= (others => '0');
         -- o_sf_control_r.window_valid <= '0';
         -- hp control reset
         for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
