@@ -32,7 +32,7 @@ package constants_pkg is
 
   -- Total number of user requested active CSMs
   constant c_NUM_CSMS_ACTIVE : integer :=
-    func_count_lpgbt_link_mapped_to_csm (c_MDT_CONFIG, c_NUM_TDC_INPUTS);
+    func_count_csms_active (c_MDT_CONFIG, c_NUM_TDC_INPUTS);
 
   constant c_NUM_CSM_UPLINKS   : integer := set_user_const (user_LPGBT_UPLINKS, c_NUM_CSMS_ACTIVE*2);
   constant c_NUM_CSM_DOWNLINKS : integer := set_user_const (user_LPGBT_DOWNLINKS, c_NUM_CSMS_ACTIVE);
