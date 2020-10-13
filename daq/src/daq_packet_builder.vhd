@@ -22,7 +22,6 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq_packet_builder is
-  generic (G: daq_pbldr_grt);
   port(port_ir: in daq_pbldr_irt; port_or: out daq_pbldr_ort);
 end entity daq_packet_builder;
 
@@ -42,9 +41,11 @@ architecture V2 of daq_packet_builder is
   signal sto_sent : std_logic := '0';
 
   -- start of packet word in f2e
-  constant STA : std_logic_vector(G.DATA_LEN+1 downto 0) := "10" & (G.DATA_LEN-1 downto 0 => '0');
+  constant STA : std_logic_vector(DAQ_FELIX_STREAM_WIDTH+1 downto 0)
+    := "10" & (DAQ_FELIX_STREAM_WIDTH-1 downto 0 => '0');
   -- end of packet word in f2e
-  constant STO : std_logic_vector(G.DATA_LEN+1 downto 0) := "01" & (G.DATA_LEN-1 downto 0 => '0');
+  constant STO : std_logic_vector(DAQ_FELIX_STREAM_WIDTH+1 downto 0)
+    := "01" & (DAQ_FELIX_STREAM_WIDTH-1 downto 0 => '0');
 
 begin
 
@@ -95,7 +96,7 @@ begin
               previous <= IDLE;
             elsif port_ir.mngt.en = '1' then
               -- start packet word...
-              port_or.f2e.data <= ((port_or.f2e.data'left downto STA'length => '0'), STA);
+              port_or.f2e.data <= STA;
               -- inform fifo2elink that data is available
               port_or.f2e.wr_en <= '1';
               -- move to next state
@@ -124,7 +125,7 @@ begin
                 port_or.row.payload.rd_strb <= '1';
                 -- expose data to the elink interface
                 port_or.f2e.wr_en <= '1';
-                port_or.f2e.data <= port_ir.row.payload.data;
+                port_or.f2e.data <= "00" & port_ir.row.payload.data;
                 
               -- if there are no more data in the current row
               else
@@ -135,7 +136,7 @@ begin
                 else
                   -- enfure that stop word is sent just once
                   if sto_sent = '0' then
-                    port_or.f2e.data <= ((port_or.f2e.data'left downto STO'length => '0'), STO);
+                    port_or.f2e.data <= STO;
                     port_or.f2e.wr_en <= '1';
                     sto_sent <= '1';
                   end if;
@@ -178,7 +179,6 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq_packet_builder_wrap is
-  generic (G: daq_pbldr_grt);
   port(port_iv: in daq_pbldr_ivt; port_ov: out daq_pbldr_ovt);
 end entity daq_packet_builder_wrap;
 
@@ -189,6 +189,5 @@ begin
   port_ir <= structify(port_iv, port_ir);
   port_ov <= vectorify(port_or, port_ov);
   u_pbldr : entity work.daq_packet_builder
-    generic map (G => G)
     port map (port_ir => port_ir, port_or => port_or);
 end architecture V2;

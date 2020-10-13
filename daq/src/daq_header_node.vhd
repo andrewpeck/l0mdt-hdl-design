@@ -25,10 +25,10 @@ architecture V2 of daq_header_node is
 
   type cnt_rt is record
     nempty    : std_logic;
-    data      : std_logic_vector(G.COUNTER_LEN-1 downto 0);
+    data      : std_logic_vector(G.COUNTER_WIDTH-1 downto 0);
     rd_strb   : std_logic;
   end record cnt_rt;
-  signal cnt_r : cnt_rt := ('0', std_logic_vector(to_unsigned(1, G.COUNTER_LEN)), '0');
+  signal cnt_r : cnt_rt := ('0', std_logic_vector(to_unsigned(1, G.COUNTER_WIDTH)), '0');
 
   type pld_out_rt is record
     nempty : std_logic;

@@ -16,7 +16,7 @@
 -- Upon receiving an L1A request, a processing column will be
 -- activated, which will happen always from left to right. If all the
 -- columns are busy, it will wait for the current pointed column to be
--- released. 
+-- released.
 --
 -- In the L1A processing matrix, multiple columns can be activated in
 -- parallel, however there is just one lane to send data out, which is
@@ -45,13 +45,11 @@ use daq_def.daq_defs.all;
 use daq_def.daq_row_defs.all;
 
 entity daq_top is
-  generic(G: daq_top_grt := (PIPELINES => 4,
-                             BRANCHES_STRUCT => (
+  generic(G: daq_top_grt := (BRANCHES_STRUCT => (
                                (96, 128, others => 0),
                                (96, 128, others => 0),
                                others => (others => 0)),
-                             COUNTER_LEN => 64,
-                             OUTPUT_DATA_LEN => 16));
+                             COUNTER_WIDTH => 64));
   port(port_ir: in daq_top_irt; port_or: out daq_top_ort);
 end entity daq_top;
 
@@ -61,18 +59,16 @@ architecture V2 of daq_top is
   signal algo_ar : algo_art;
 
   signal ttc_er : ttc_ert;
-  
+
 begin
 
   gen_daq_algo_mask: for j in G.BRANCHES_STRUCT'range generate
     gen_daq_algo_map: if (G.BRANCHES_STRUCT(j)
                           /= (daq_branch_struct_t'range => 0))  generate
-      
+
       u_daq_algo : entity work.daq_algo
-        generic map(G => (PIPELINES       => G.PIPELINES,
-                          BRANCH_STRUCT   => G.BRANCHES_STRUCT(j),
-                          COUNTER_LEN     => G.COUNTER_LEN,
-                          OUTPUT_DATA_LEN => G.OUTPUT_DATA_LEN))
+        generic map(G => (BRANCH_STRUCT   => G.BRANCHES_STRUCT(j),
+                          COUNTER_WIDTH   => G.COUNTER_WIDTH))
         port map (port_ir => algo_ar(j).i, port_or => algo_ar(j).o);
 
       algo_ar(j).i.sys <= port_ir.sys;
@@ -83,20 +79,20 @@ begin
       port_or.f2e_bus(j) <= algo_ar(j).o.f2e;
 
       port_or.status_bus(j) <= algo_ar(j).o.status;
-      
+
       gen_streams: for k in G.BRANCHES_STRUCT(j)'range generate
         gen_stream: if G.BRANCHES_STRUCT(j)(k) /= 0 generate
           algo_ar(j).i.branch(k) <= port_ir.branches(j)(k);
         end generate gen_stream;
       end generate gen_streams;
-      
-      
+
+
     end generate gen_daq_algo_map;
   end generate gen_daq_algo_mask;
 
-  
 
-  
+
+
   -- snake_ar <= structify(snake_av, snake_ar);
 
 
@@ -106,7 +102,7 @@ begin
   --                                             --FIFO2Elink_MON_F2E : entity work.MON_FIFO2Elink
   --   generic map (
   --     OutputDataRate => 320, --nf switch to 2 bit 320,
-  --     elinkEncoding  => "01" -- 8b10b encoding 
+  --     elinkEncoding  => "01" -- 8b10b encoding
   --   )
   --   port map (
   --     clk40       => clk40_i,
@@ -114,23 +110,23 @@ begin
   --     clk160      => clk160_i,
   --     clk320      => clk320_i,
   --     rst         => f2e_rst_i,
-  --     fifo_flush  => f2e_flush_i,   
-  --     reverse_tx  => f2e_reverse_tx_i, 
+  --     fifo_flush  => f2e_flush_i,
+  --     reverse_tx  => f2e_reverse_tx_i,
   --     swap_output => f2e_swap_output_i,
-  -- 
+  --
   --     efifoDin   => f2e_data,
   --     efifoWe    => f2e_wren,
   --     efifoPfull => f2e_hfull,
   --     efifoWclk  => clk320_i,
-  -- 
+  --
   --     DATA1bitOUT => open,
   --     elink2bit   => open,
   --     elink4bit   => open,
   --     elink8bit   => elink8bit_o
-  --   );  
+  --   );
 
 end architecture V2;
-  
+
 
 --------------------------------------------------------------------------------
 
@@ -164,7 +160,7 @@ architecture V2 of daq_top_wrap is
   begin
     return structify(G_v, aux);
   end function G;
-  
+
   signal port_ir : daq_top_irt;
   signal port_or : daq_top_ort;
 begin

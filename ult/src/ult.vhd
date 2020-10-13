@@ -3,13 +3,13 @@
 --
 --
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: User Logic Top 
+--  Project: ATLAS L0MDT Trigger
+--  Module: User Logic Top
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_misc.all;
@@ -169,7 +169,7 @@ begin
         i_middle_tar_hits => i_middle_tar_hits,
         i_outer_tar_hits  => i_outer_tar_hits,
         i_extra_tar_hits  => i_extra_tar_hits,
-        -- 
+        --
         o_inner_tdc_hits  => inner_tdc_hits,
         o_middle_tdc_hits => middle_tdc_hits,
         o_outer_tdc_hits  => outer_tdc_hits,

@@ -18,16 +18,16 @@ end entity daq_bus_conv;
 
 architecture V2 of daq_bus_conv is
 
-  constant K : natural := ((G.INPUT_DATA_LEN-1) / G.OUTPUT_DATA_LEN) + 1;
+  constant K : natural := ((G.INPUT_DATA_WIDTH-1) / DAQ_FELIX_STREAM_WIDTH) + 1;
 
-  subtype pld_src_t is std_logic_vector(K*G.OUTPUT_DATA_LEN-1 downto 0);
-  subtype pld_dst_t is std_logic_vector(G.OUTPUT_DATA_LEN-1 downto 0);
+  subtype pld_src_t is std_logic_vector(K*DAQ_FELIX_STREAM_WIDTH-1 downto 0);
+  subtype pld_dst_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
   type mux_at is array(K-1 downto 0) of pld_dst_t;
 
   signal pld_src : pld_src_t := (others => '0');
   signal mux_a : mux_at := (others => (others => '0'));
-  
+
   signal sel : natural := K-1;
 
   signal src_rd_strb : std_logic;
@@ -35,11 +35,18 @@ architecture V2 of daq_bus_conv is
 
   signal src_nempty : std_logic;
   signal dst_nempty : std_logic;
-  
+
 begin
 
   -- port assignments
-  port_or.dst.data <= ((port_or.dst.data'left downto mux_a(sel)'length => '0') & mux_a(sel));
+  ig0: if port_or.dst.data'length > mux_a(sel)'length generate
+    port_or.dst.data <= ((port_or.dst.data'left downto mux_a(sel)'length => '0') & mux_a(sel));
+  end generate ig0;
+
+  ig1: if port_or.dst.data'length = mux_a(sel)'length generate
+    port_or.dst.data <= mux_a(sel);
+  end generate ig1;
+
   pld_src <= port_ir.src.data(pld_src'range);
 
   port_or.dst.nempty <= dst_nempty;
@@ -47,7 +54,7 @@ begin
 
   dst_rd_strb <=  port_ir.dst.rd_strb;
   port_or.src.rd_strb <= src_rd_strb;
-  
+
   -- nempty signal from src is sent directly to the dst
   dst_nempty <= src_nempty;
 
@@ -57,12 +64,12 @@ begin
 
   -- expose rd strb
   src_rd_strb <= dst_rd_strb when (K > 1 and sel = 0) or K = 1 else '0';
-  
+
   -- exposing data
   process (port_ir.sys.clk320)
   begin
     if rising_edge(port_ir.sys.clk320) then
-   
+
       if port_ir.sys.rst = '1' then
         sel <= K-1;
       else
@@ -71,11 +78,11 @@ begin
             sel <= sel - 1;
           else
             sel <= K-1;
-          end if; 
+          end if;
         end if; -- pkt bldr rd strb
       end if; -- sync reset
     end if; -- rising edge
-      
+
   end process; -- clock
 end V2;
 

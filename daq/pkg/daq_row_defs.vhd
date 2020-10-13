@@ -86,11 +86,11 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: node_ort) return node_ort;
   function nullify(t: node_ort) return node_ort;
 
-  subtype node_ovt is std_logic_vector(325-1 downto 0);
+  subtype node_ovt is std_logic_vector(1029-1 downto 0);
 
   type dnode_grt is record
-    DATA_LEN : natural;
-    COUNTER_LEN : natural;
+    INPUT_DATA_WIDTH : natural;
+    COUNTER_WIDTH : natural;
   end record dnode_grt;
   function len(x: dnode_grt) return natural;
   function vectorify(x: dnode_grt; t: std_logic_vector) return std_logic_vector;
@@ -118,10 +118,10 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: dnode_ert) return dnode_ert;
   function nullify(t: dnode_ert) return dnode_ert;
 
-  subtype dnode_ivt is std_logic_vector(204-1 downto 0);
+  subtype dnode_ivt is std_logic_vector(556-1 downto 0);
 
   type hnode_grt is record
-    COUNTER_LEN : natural;
+    COUNTER_WIDTH : natural;
   end record hnode_grt;
   function len(x: hnode_grt) return natural;
   function vectorify(x: hnode_grt; t: std_logic_vector) return std_logic_vector;
@@ -151,8 +151,7 @@ package daq_row_defs is
   subtype hnode_ivt is std_logic_vector(123-1 downto 0);
 
   type bconv_grt is record
-    INPUT_DATA_LEN : natural;
-    OUTPUT_DATA_LEN : natural;
+    INPUT_DATA_WIDTH : natural;
   end record bconv_grt;
   function len(x: bconv_grt) return natural;
   function vectorify(x: bconv_grt; t: std_logic_vector) return std_logic_vector;
@@ -162,7 +161,7 @@ package daq_row_defs is
   type bconv_irt is record
     sys : daq_sys_rt;
     src : forward_rt;
-    dst : backward_rt;
+    dst : pbldr_backward_rt;
   end record bconv_irt;
   function len(x: bconv_irt) return natural;
   function vectorify(x: bconv_irt; t: std_logic_vector) return std_logic_vector;
@@ -171,7 +170,7 @@ package daq_row_defs is
 
   type bconv_ort is record
     src : backward_rt;
-    dst : forward_rt;
+    dst : pbldr_forward_rt;
   end record bconv_ort;
   function len(x: bconv_ort) return natural;
   function vectorify(x: bconv_ort; t: std_logic_vector) return std_logic_vector;
@@ -187,22 +186,14 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: bconv_ert) return bconv_ert;
   function nullify(t: bconv_ert) return bconv_ert;
 
-  subtype bconv_ivt is std_logic_vector(164-1 downto 0);
+  subtype bconv_ivt is std_logic_vector(516-1 downto 0);
 
-  subtype bconv_ovt is std_logic_vector(162-1 downto 0);
-
-  type hub_grt is record
-    DATA_LEN : natural;
-  end record hub_grt;
-  function len(x: hub_grt) return natural;
-  function vectorify(x: hub_grt; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: hub_grt) return hub_grt;
-  function nullify(t: hub_grt) return hub_grt;
+  subtype bconv_ovt is std_logic_vector(66-1 downto 0);
 
   type hub_irt is record
-    cnt : forward_rt;
-    pld : forward_rt;
-    dst : backward_rt;
+    cnt : pbldr_forward_rt;
+    pld : pbldr_forward_rt;
+    dst : pbldr_backward_rt;
   end record hub_irt;
   function len(x: hub_irt) return natural;
   function vectorify(x: hub_irt; t: std_logic_vector) return std_logic_vector;
@@ -210,9 +201,9 @@ package daq_row_defs is
   function nullify(t: hub_irt) return hub_irt;
 
   type hub_ort is record
-    cnt : backward_rt;
-    pld : backward_rt;
-    dst : forward_rt;
+    cnt : pbldr_backward_rt;
+    pld : pbldr_backward_rt;
+    dst : pbldr_forward_rt;
   end record hub_ort;
   function len(x: hub_ort) return natural;
   function vectorify(x: hub_ort; t: std_logic_vector) return std_logic_vector;
@@ -228,9 +219,9 @@ package daq_row_defs is
   function structify(x: in std_logic_vector; t: hub_ert) return hub_ert;
   function nullify(t: hub_ert) return hub_ert;
 
-  subtype hub_ivt is std_logic_vector(323-1 downto 0);
+  subtype hub_ivt is std_logic_vector(131-1 downto 0);
 
-  subtype hub_ovt is std_logic_vector(163-1 downto 0);
+  subtype hub_ovt is std_logic_vector(67-1 downto 0);
 
 end package daq_row_defs;
 
@@ -566,8 +557,8 @@ package body daq_row_defs is
   function len(x: dnode_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.DATA_LEN);
-    l := l + len(x.COUNTER_LEN);
+    l := l + len(x.INPUT_DATA_WIDTH);
+    l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
   function vectorify(x: dnode_grt; t: std_logic_vector) return std_logic_vector is
@@ -575,13 +566,13 @@ package body daq_row_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.DATA_LEN)-1) := vectorify(x.DATA_LEN, y(left to left+len(x.DATA_LEN)-1));
-      left := left + len(x.DATA_LEN);
-      y(left to left+len(x.COUNTER_LEN)-1) := vectorify(x.COUNTER_LEN, y(left to left+len(x.COUNTER_LEN)-1));
+      y(left to left+len(x.INPUT_DATA_WIDTH)-1) := vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1));
+      left := left + len(x.INPUT_DATA_WIDTH);
+      y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
-      y(left downto left-len(x.DATA_LEN)+1) := vectorify(x.DATA_LEN, y(left downto left-len(x.DATA_LEN)+1));
-      left := left - len(x.DATA_LEN);
-      y(left downto left-len(x.COUNTER_LEN)+1) := vectorify(x.COUNTER_LEN, y(left downto left-len(x.COUNTER_LEN)+1));
+      y(left downto left-len(x.INPUT_DATA_WIDTH)+1) := vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1));
+      left := left - len(x.INPUT_DATA_WIDTH);
+      y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -590,21 +581,21 @@ package body daq_row_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.DATA_LEN := structify(x(left to left+len(y.DATA_LEN)-1), y.DATA_LEN);
-      left := left + len(y.DATA_LEN);
-      y.COUNTER_LEN := structify(x(left to left+len(y.COUNTER_LEN)-1), y.COUNTER_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
+      left := left + len(y.INPUT_DATA_WIDTH);
+      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
-      y.DATA_LEN := structify(x(left downto left-len(y.DATA_LEN)+1), y.DATA_LEN);
-      left := left - len(y.DATA_LEN);
-      y.COUNTER_LEN := structify(x(left downto left-len(y.COUNTER_LEN)+1), y.COUNTER_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
+      left := left - len(y.INPUT_DATA_WIDTH);
+      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
     end if;
     return y;
   end function structify;
   function nullify(t: dnode_grt) return dnode_grt is
   variable y: dnode_grt;
   begin
-    y.DATA_LEN := nullify(t.DATA_LEN);
-    y.COUNTER_LEN := nullify(t.COUNTER_LEN);
+    y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
+    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
 
@@ -731,7 +722,7 @@ package body daq_row_defs is
   function len(x: hnode_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.COUNTER_LEN);
+    l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
   function vectorify(x: hnode_grt; t: std_logic_vector) return std_logic_vector is
@@ -739,9 +730,9 @@ package body daq_row_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.COUNTER_LEN)-1) := vectorify(x.COUNTER_LEN, y(left to left+len(x.COUNTER_LEN)-1));
+      y(left to left+len(x.COUNTER_WIDTH)-1) := vectorify(x.COUNTER_WIDTH, y(left to left+len(x.COUNTER_WIDTH)-1));
     else
-      y(left downto left-len(x.COUNTER_LEN)+1) := vectorify(x.COUNTER_LEN, y(left downto left-len(x.COUNTER_LEN)+1));
+      y(left downto left-len(x.COUNTER_WIDTH)+1) := vectorify(x.COUNTER_WIDTH, y(left downto left-len(x.COUNTER_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -750,16 +741,16 @@ package body daq_row_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.COUNTER_LEN := structify(x(left to left+len(y.COUNTER_LEN)-1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left to left+len(y.COUNTER_WIDTH)-1), y.COUNTER_WIDTH);
     else
-      y.COUNTER_LEN := structify(x(left downto left-len(y.COUNTER_LEN)+1), y.COUNTER_LEN);
+      y.COUNTER_WIDTH := structify(x(left downto left-len(y.COUNTER_WIDTH)+1), y.COUNTER_WIDTH);
     end if;
     return y;
   end function structify;
   function nullify(t: hnode_grt) return hnode_grt is
   variable y: hnode_grt;
   begin
-    y.COUNTER_LEN := nullify(t.COUNTER_LEN);
+    y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
 
@@ -876,8 +867,7 @@ package body daq_row_defs is
   function len(x: bconv_grt) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.INPUT_DATA_LEN);
-    l := l + len(x.OUTPUT_DATA_LEN);
+    l := l + len(x.INPUT_DATA_WIDTH);
     return l;
   end function len;
   function vectorify(x: bconv_grt; t: std_logic_vector) return std_logic_vector is
@@ -885,13 +875,9 @@ package body daq_row_defs is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.INPUT_DATA_LEN)-1) := vectorify(x.INPUT_DATA_LEN, y(left to left+len(x.INPUT_DATA_LEN)-1));
-      left := left + len(x.INPUT_DATA_LEN);
-      y(left to left+len(x.OUTPUT_DATA_LEN)-1) := vectorify(x.OUTPUT_DATA_LEN, y(left to left+len(x.OUTPUT_DATA_LEN)-1));
+      y(left to left+len(x.INPUT_DATA_WIDTH)-1) := vectorify(x.INPUT_DATA_WIDTH, y(left to left+len(x.INPUT_DATA_WIDTH)-1));
     else
-      y(left downto left-len(x.INPUT_DATA_LEN)+1) := vectorify(x.INPUT_DATA_LEN, y(left downto left-len(x.INPUT_DATA_LEN)+1));
-      left := left - len(x.INPUT_DATA_LEN);
-      y(left downto left-len(x.OUTPUT_DATA_LEN)+1) := vectorify(x.OUTPUT_DATA_LEN, y(left downto left-len(x.OUTPUT_DATA_LEN)+1));
+      y(left downto left-len(x.INPUT_DATA_WIDTH)+1) := vectorify(x.INPUT_DATA_WIDTH, y(left downto left-len(x.INPUT_DATA_WIDTH)+1));
     end if;
     return y;
   end function vectorify;
@@ -900,21 +886,16 @@ package body daq_row_defs is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.INPUT_DATA_LEN := structify(x(left to left+len(y.INPUT_DATA_LEN)-1), y.INPUT_DATA_LEN);
-      left := left + len(y.INPUT_DATA_LEN);
-      y.OUTPUT_DATA_LEN := structify(x(left to left+len(y.OUTPUT_DATA_LEN)-1), y.OUTPUT_DATA_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left to left+len(y.INPUT_DATA_WIDTH)-1), y.INPUT_DATA_WIDTH);
     else
-      y.INPUT_DATA_LEN := structify(x(left downto left-len(y.INPUT_DATA_LEN)+1), y.INPUT_DATA_LEN);
-      left := left - len(y.INPUT_DATA_LEN);
-      y.OUTPUT_DATA_LEN := structify(x(left downto left-len(y.OUTPUT_DATA_LEN)+1), y.OUTPUT_DATA_LEN);
+      y.INPUT_DATA_WIDTH := structify(x(left downto left-len(y.INPUT_DATA_WIDTH)+1), y.INPUT_DATA_WIDTH);
     end if;
     return y;
   end function structify;
   function nullify(t: bconv_grt) return bconv_grt is
   variable y: bconv_grt;
   begin
-    y.INPUT_DATA_LEN := nullify(t.INPUT_DATA_LEN);
-    y.OUTPUT_DATA_LEN := nullify(t.OUTPUT_DATA_LEN);
+    y.INPUT_DATA_WIDTH := nullify(t.INPUT_DATA_WIDTH);
     return y;
   end function nullify;
 
@@ -1060,41 +1041,6 @@ package body daq_row_defs is
   begin
     y.i := nullify(t.i);
     y.o := nullify(t.o);
-    return y;
-  end function nullify;
-
-  function len(x: hub_grt) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.DATA_LEN);
-    return l;
-  end function len;
-  function vectorify(x: hub_grt; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      y(left to left+len(x.DATA_LEN)-1) := vectorify(x.DATA_LEN, y(left to left+len(x.DATA_LEN)-1));
-    else
-      y(left downto left-len(x.DATA_LEN)+1) := vectorify(x.DATA_LEN, y(left downto left-len(x.DATA_LEN)+1));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: hub_grt) return hub_grt is
-    variable y: hub_grt;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.DATA_LEN := structify(x(left to left+len(y.DATA_LEN)-1), y.DATA_LEN);
-    else
-      y.DATA_LEN := structify(x(left downto left-len(y.DATA_LEN)+1), y.DATA_LEN);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: hub_grt) return hub_grt is
-  variable y: hub_grt;
-  begin
-    y.DATA_LEN := nullify(t.DATA_LEN);
     return y;
   end function nullify;
 

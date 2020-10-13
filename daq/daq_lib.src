@@ -2,11 +2,10 @@ daq/types_def.src                lib=types_def
 daq/daq_def.src                    lib=daq_def
 daq/ttc_def.src                    lib=ttc_def
 
-IP/daq/data_fifo/data_fifo.xci
-
 daq/src/daq_req.vhd
 daq/src/daq_mngt.vhd
 daq/src/daq_header_node.vhd
+daq/src/daq_node_fifo.vhd
 daq/src/daq_data_node.vhd
 daq/src/daq_bus_conv.vhd
 daq/src/daq_hub.vhd
