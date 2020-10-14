@@ -32,6 +32,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
+use heg_lib.heg_custom_pkg.all;
 
 entity heg_ctrl_sig is
   generic(
@@ -58,9 +59,12 @@ end entity heg_ctrl_sig;
 
 architecture beh of heg_ctrl_sig is
 
+  signal heg_times : heg_times_rt := get_heg_times(0);
+
   type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
   signal heg_ctrl_motor   : heg_ctrl_motor_t;
   
+  signal heg_count_en     : std_logic;
   signal busy_count       : std_logic_vector(11 downto 0);
   signal enables_a        : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
 
@@ -122,6 +126,8 @@ begin
     if rising_edge(clk) then
       if(rst= '1') then
 
+        heg_count_en <= '0';
+
         o_uCM2sf_data_r <= nullify(o_uCM2sf_data_r);
         o_uCM2hp_data_r <= nullify(o_uCM2hp_data_r);
         -- hp control resets
@@ -158,7 +164,7 @@ begin
         end if;
 
         -- time counter
-        if or_reduce(enables_a) = '1' then
+        if heg_count_en = '1' then
           busy_count <= busy_count + '1';
         else
           busy_count <= (others => '0');
@@ -175,8 +181,9 @@ begin
               o_uCM2sf_data_r.mdtseg_dest <= i_uCM_data_r.mdtseg_dest;
               o_uCM2sf_data_r.mdtid       <= i_uCM_data_r.mdtid;
               o_uCM2sf_data_r.vec_pos     <= i_uCM_data_r.vec_pos;
-              o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
-              
+              if c_SF_TYPE = '1' then
+                o_uCM2sf_data_r.vec_ang     <= i_uCM_data_r.vec_ang;
+              end if;
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '0';
@@ -199,6 +206,9 @@ begin
 
             if csf_slope_dv = '1' then
               o_sf_control_r.slope <= csf_slope;
+              if c_SF_TYPE = '0' then
+                o_uCM2sf_data_r.vec_ang     <= csf_slope;
+              end if;
             end if;
 
             if z_win_org_dv = '1' then
@@ -217,32 +227,45 @@ begin
               else --endcap
 
               end if;
+              o_uCM2sf_data_r.data_valid <= '1';
+              heg_count_en <= '1';
               heg_ctrl_motor <= HEG_BUSY;
             end if;
-          -- uCM_data_r <= ucm2heg_slc_f_std2rt(i_uCM_data_v);
-          -- o_uCM_data <= int_uCM_data;
-          -- o_hp_control_r.loc_enable <= '1';
-          -- o_hp_control_r.enable <= (others => '1');
-          -- o_hp_control_r.rst<= (others => '0');
+
+            -- if c_SF_TYPE = '0' then
+
+            -- else
+
+            -- end if;
+
           when HEG_BUSY =>
-            if to_integer(unsigned(busy_count)) < HEG_BUSY_CLOCKS then
+          o_uCM2sf_data_r.data_valid <= '0';
+
+            if to_integer(unsigned(busy_count)) < heg_times.load then
+            elsif to_integer(unsigned(busy_count)) < heg_times.busy then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';
                 o_hp_control_r(hp_i).rst <= '0';
               end loop;
               o_sf_control_r.enable <= '1';
-              o_sf_control_r.rst <= '0';
-              o_sf_control_r.eof <= '0';
-            else
+              o_sf_control_r.rst    <= '0';
+              o_sf_control_r.eof    <= '0';
+            elsif to_integer(unsigned(busy_count)) = heg_times.busy then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '0';
                 o_hp_control_r(hp_i).rst <= '0';
               end loop;
               o_sf_control_r.enable <= '0';
-              o_sf_control_r.rst <= '0';
-              o_sf_control_r.eof <= '1';
+              o_sf_control_r.rst    <= '0';
+              o_sf_control_r.eof    <= '1';
               -- busy_count <= (others => '0');
               heg_ctrl_motor <= IDLE;
+            elsif to_integer(unsigned(busy_count)) < heg_times.unload then
+              o_sf_control_r.enable <= '0';
+              o_sf_control_r.rst    <= '0';
+              o_sf_control_r.eof    <= '0';
+            else
+              heg_count_en <= '0';
             end if;
 
         end case;
