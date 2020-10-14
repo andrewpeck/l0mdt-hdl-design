@@ -131,6 +131,8 @@ begin
         o_sf_control_r.slope <= (others => '0');
         -- o_sf_control_r.window_valid <= '0';
         -- hp control reset
+        b_data <= nullify(b_data);
+
         for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
           o_hp_control_r(hp_i).enable <= '0';
           o_hp_control_r(hp_i).rst <= '0';
@@ -193,6 +195,10 @@ begin
           when SET_WINDOW =>
             if holesize_dv = '1' then
               o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
+            end if;
+
+            if csf_slope_dv = '1' then
+              o_sf_control_r.slope <= csf_slope;
             end if;
 
             if z_win_org_dv = '1' then
