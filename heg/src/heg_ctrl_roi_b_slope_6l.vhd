@@ -57,7 +57,7 @@ architecture beh of b_slope2roi_6l is
   signal mem  : roi_mbar_lut_small_t(2048 - 1 downto 0) := get_roi_mbar_tubes(g_STATION_RADIUS);
   
   -- VHDL2008 -- signal mem_ouput : roi_mbar_layer_t(0 to get_num_layers(g_STATION_RADIUS) -1);
-  signal mem_ouput_small : roi_mbar_layer_small_t;
+  signal mem_ouput : roi_mbar_layer_small_t;
 
   signal addr_mem : unsigned(UCM_VEC_ANG_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
@@ -90,19 +90,20 @@ begin
       if rst= '1' then
         -- o_spaces <= (others => '0');
         o_dv <= '0';
+        mem_ouput <= (others => (others => 0));
       else
         o_dv <= int_data_valid;
         if(int_data_valid = '1') then
-          -- mem_ouput_small <= get_win_slope_6l(g_STATION_RADIUS,to_integer(addr_mem));
-          mem_ouput_small <= mem(to_integer(addr_mem));
+          -- mem_ouput <= get_win_slope_6l(g_STATION_RADIUS,to_integer(addr_mem));
+          mem_ouput <= mem(to_integer(addr_mem));
         end if;
       end if;
     end if ;
   end process;
 
   OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
-    o_roi_edges(l_i).lo <= to_signed(mem_ouput_small(l_i)(0),MDT_TUBE_LEN);
-    o_roi_edges(l_i).hi <= to_signed(mem_ouput_small(l_i)(1),MDT_TUBE_LEN);
+    o_roi_edges(l_i).lo <= to_signed(mem_ouput(l_i)(0),MDT_TUBE_LEN);
+    o_roi_edges(l_i).hi <= to_signed(mem_ouput(l_i)(1),MDT_TUBE_LEN);
   end generate;
 
 
