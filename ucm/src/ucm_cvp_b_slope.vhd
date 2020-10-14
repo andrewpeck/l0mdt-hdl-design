@@ -58,7 +58,7 @@ architecture beh of ucm_cvp_b_slope is
   signal e_z                  : signed(SLC_Z_RPC_LEN + 2 -1 downto 0);
   signal e_y , e_y_2          : signed(2*(SLC_Z_RPC_LEN + 2) -1 downto 0);
   signal int_offset           : signed(126 -1 downto 0);
-  type sum_pl_st is array (0 to 5) of signed(SLC_Z_RPC_LEN   + 2 -1 downto 0);
+  type sum_pl_st is array (0 to 1) of signed(SLC_Z_RPC_LEN   + 2 -1 downto 0);
   signal sum_y                : sum_pl_st;
   signal sum_z                : sum_pl_st;
   signal sum_zy               : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
@@ -72,7 +72,7 @@ architecture beh of ucm_cvp_b_slope is
 
   signal dv_chain   : std_logic_vector(7 downto 0);
 
-  type num_at is array ( 0 to 5) of integer;
+  type num_at is array ( 0 to 2) of integer;
   signal num_h : num_at;
 
 
@@ -109,9 +109,9 @@ begin
 
           dv_chain(7 downto 0) <= dv_chain(6 downto 0) & i_data_valid;
 
-          num_h(1 to 5) <= num_h(0 to 4);
-          sum_y(1 to 5) <= sum_y(0 to 4);
-          sum_z(1 to 5) <= sum_z(0 to 4);
+          num_h(1 to 2) <= num_h(0 to 1);
+          sum_y(1) <= sum_y(0);
+          sum_z(1) <= sum_z(0);
 
           if i_data_valid = '1' then
             -- coin type
