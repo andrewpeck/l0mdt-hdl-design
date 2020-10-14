@@ -59,11 +59,14 @@ architecture beh of hps_pc is
   --t0
   signal t0_dv : std_logic;
   signal time_t0 : unsigned(MDT_TIME_LEN-1 downto 0);
+  signal time_t0_pl : unsigned(MDT_TIME_LEN-1 downto 0);
   -- global position
   constant tubesize : unsigned(9 downto 0) := to_unsigned(integer(30.0 * MDT_GLOBAL_AXI_MULT),10); -- constant in 0.03125 mm resolution
 
   signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
+  -- signal holesize_pl : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
   signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  -- signal r_pos_pl : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   -- signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -132,12 +135,15 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         -- reset
-        mdt_full_data_r.layer   <= (others => '0');
-        mdt_full_data_r.tube    <= (others => '0');
-        mdt_full_data_r.time_t0 <= (others => '0');
-        mdt_full_data_r.global_z <= (others => '0');
-        mdt_full_data_r.global_x <= (others => '0');
-        mdt_full_data_r.data_valid <= '0';
+        global_z                    <= (others => '0');
+        global_x                    <= (others => '0');
+        time_t0_pl                  <= (others => '0');
+        mdt_full_data_r.layer       <= (others => '0');
+        mdt_full_data_r.tube        <= (others => '0');
+        mdt_full_data_r.time_t0     <= (others => '0');
+        mdt_full_data_r.global_z    <= (others => '0');
+        mdt_full_data_r.global_x    <= (others => '0');
+        mdt_full_data_r.data_valid  <= '0';
       else
 
         dv_pl(c_HPS_PC_PL_LEN -1 downto 1) <= dv_pl(c_HPS_PC_PL_LEN - 2 downto 0);
@@ -147,15 +153,20 @@ begin
         if dv_pl(1) = '1' then
           global_z <= mdt_tar_data(1).tube * tubesize; 
           global_x <= r_pos;
-          -- write to out
+
+          time_t0_pl <= time_t0;
           
+        else
+          time_t0_pl <= (others => '0');
+          global_z <= (others => '0');
+          global_x <= (others => '0');
         end if;
 
         if dv_pl(2) = '1' then
           mdt_full_data_r.global_z <= global_z + holesize;
           mdt_full_data_r.global_x <= global_x;
           --
-          mdt_full_data_r.time_t0 <= mdt_tar_data(2).time - time_t0;
+          mdt_full_data_r.time_t0 <= mdt_tar_data(2).time - time_t0_pl;
           --
           mdt_full_data_r.layer   <= mdt_tar_data(2).layer;
           mdt_full_data_r.tube    <= mdt_tar_data(2).tube;

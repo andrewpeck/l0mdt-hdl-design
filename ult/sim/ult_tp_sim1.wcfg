@@ -59,13 +59,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="1321344fs"></ZoomStartTime>
-      <ZoomEndTime time="3749345fs"></ZoomEndTime>
-      <Cursor1Time time="1726010fs"></Cursor1Time>
+      <ZoomStartTime time="1723838fs"></ZoomStartTime>
+      <ZoomEndTime time="1748199fs"></ZoomEndTime>
+      <Cursor1Time time="1732258fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="311"></NameColumnWidth>
-      <ValueColumnWidth column_width="129"></ValueColumnWidth>
+      <ValueColumnWidth column_width="125"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="11" />
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
@@ -675,13 +675,13 @@
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/b_slope/SLOPE_CALC/sum_y">
-               <obj_property name="ElementShortName">sum_y[0:5][13:0]</obj_property>
-               <obj_property name="ObjectShortName">sum_y[0:5][13:0]</obj_property>
+               <obj_property name="ElementShortName">sum_y[0:1][13:0]</obj_property>
+               <obj_property name="ObjectShortName">sum_y[0:1][13:0]</obj_property>
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/b_slope/SLOPE_CALC/sum_z">
-               <obj_property name="ElementShortName">sum_z[0:5][13:0]</obj_property>
-               <obj_property name="ObjectShortName">sum_z[0:5][13:0]</obj_property>
+               <obj_property name="ElementShortName">sum_z[0:1][13:0]</obj_property>
+               <obj_property name="ObjectShortName">sum_z[0:1][13:0]</obj_property>
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/b_slope/SLOPE_CALC/sum_zy">
@@ -730,8 +730,8 @@
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/b_slope/SLOPE_CALC/num_h">
-               <obj_property name="ElementShortName">num_h[0:5]</obj_property>
-               <obj_property name="ObjectShortName">num_h[0:5]</obj_property>
+               <obj_property name="ElementShortName">num_h[0:2]</obj_property>
+               <obj_property name="ObjectShortName">num_h[0:2]</obj_property>
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
          </wvobject>
@@ -1174,6 +1174,7 @@
          <wvobject type="group" fp_name="group779">
             <obj_property name="label">PC_2</obj_property>
             <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/clk">
                <obj_property name="ElementShortName">clk</obj_property>
                <obj_property name="ObjectShortName">clk</obj_property>
@@ -1210,13 +1211,17 @@
                <obj_property name="ElementShortName">time_t0[16:0]</obj_property>
                <obj_property name="ObjectShortName">time_t0[16:0]</obj_property>
             </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/holesize">
-               <obj_property name="ElementShortName">holesize[18:0]</obj_property>
-               <obj_property name="ObjectShortName">holesize[18:0]</obj_property>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/time_t0_pl">
+               <obj_property name="ElementShortName">time_t0_pl[16:0]</obj_property>
+               <obj_property name="ObjectShortName">time_t0_pl[16:0]</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/r_pos">
                <obj_property name="ElementShortName">r_pos[18:0]</obj_property>
                <obj_property name="ObjectShortName">r_pos[18:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/holesize">
+               <obj_property name="ElementShortName">holesize[18:0]</obj_property>
+               <obj_property name="ObjectShortName">holesize[18:0]</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\pc_gen(2)\/PC/global_x">
                <obj_property name="ElementShortName">global_x[18:0]</obj_property>
