@@ -285,26 +285,25 @@ begin
     );
 
     daq_inst : entity work.daq
-    port map (
-      -- clock, control, and monitoring
-      clock_and_control => clock_and_control,
-      ttc_commands      => ttc_commands,
-      ctrl              => daq_ctrl,
-      mon               => daq_mon,
-
-      -- TDC Hits from Polmux
-      i_inner_tdc_hits  => inner_tdc_hits,
-      i_middle_tdc_hits => middle_tdc_hits,
-      i_outer_tdc_hits  => outer_tdc_hits,
-      i_extra_tdc_hits  => extra_tdc_hits,
-
-      -- Tracks from MTC
-      -- ???
-
-      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-      daq_streams_o => daq_streams_o
-    );
-
+      generic map(DELAY => 9600)
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control => clock_and_control,
+        ttc_commands      => ttc_commands,
+        ctrl              => daq_ctrl,
+        mon               => daq_mon,
+        
+        -- TDC Hits from Polmux
+        i_inner_tdc_hits  => inner_tdc_hits,
+        i_middle_tdc_hits => middle_tdc_hits,
+        i_outer_tdc_hits  => outer_tdc_hits,
+        i_extra_tdc_hits  => extra_tdc_hits,
+        
+        -- Tracks from MTC
+        -- ???
+        
+        -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
+        daq_streams_o => daq_streams_o);
 
     sump <= '0';
 

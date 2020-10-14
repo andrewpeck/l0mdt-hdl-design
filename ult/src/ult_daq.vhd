@@ -28,7 +28,7 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq is
-
+  generic (DELAY : integer);
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
@@ -40,9 +40,7 @@ entity daq is
     i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
     i_outer_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
     i_extra_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
-    daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0)
-    );
-
+    daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0));
 end entity daq;
 
 architecture behavioral of daq is
@@ -82,6 +80,11 @@ architecture behavioral of daq is
   type trunk_t is array(stations) of daq_branches_t;
   signal trunk : trunk_t;
 
+  signal inner_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
+  signal middle_tdc_hits_v : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
+  signal outer_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
+  signal extra_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  
   signal inner_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_INN-1 downto 0);
   signal middle_tdc_hits : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_MID-1 downto 0);
   signal outer_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
@@ -108,16 +111,17 @@ architecture behavioral of daq is
 
 begin
 
-  inner_tdc_hits  <=  structify(i_inner_tdc_hits);
-  middle_tdc_hits <=  structify(i_middle_tdc_hits);
-  outer_tdc_hits  <=  structify(i_outer_tdc_hits);
-  extra_tdc_hits  <=  structify(i_extra_tdc_hits);
+  inner_tdc_hits  <=  structify(inner_tdc_hits_v);
+  middle_tdc_hits <=  structify(middle_tdc_hits_v);
+  outer_tdc_hits  <=  structify(outer_tdc_hits_v);
+  extra_tdc_hits  <=  structify(extra_tdc_hits_v);
   daq_streams_o   <=  vectorify(daq_streams);
 
 
   DAQ_GEN : if c_DAQ_ENABLED generate
 
     gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
+
       u_daq_inner: entity daq_lib.daq_top
         generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_INN),
                            COUNTER_WIDTH => 32))
@@ -135,7 +139,16 @@ begin
       inner_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_inner: for j in inner_tdc_hits'range generate
-        inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), i_inner_tdc_hits(j));
+        u_daq_inner_delay: entity shared_lib.std_pipeline
+          generic map (type_memory => "bram",
+                       num_delays => DELAY,
+                       num_bits => i_inner_tdc_hits(j)'length)
+          port map (clk => clock_and_control.clk,
+                    rst => clock_and_control.rst,
+                    glob_en => '1',
+                    i_data => i_inner_tdc_hits(j),
+                    o_data => inner_tdc_hits_v(j));
+        inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), inner_tdc_hits_v(j));
         daq_streams(j) <= outputify(inner_er.o.f2e_bus(j));
       end generate gen_daq_conn_inner;
     end generate gen_daq_inner;
@@ -158,7 +171,16 @@ begin
       middle_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_middle: for j in middle_tdc_hits'range generate
-        middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), i_middle_tdc_hits(j));
+        u_daq_middle_delay: entity shared_lib.std_pipeline
+          generic map (type_memory => "bram",
+                       num_delays => DELAY,
+                       num_bits => i_middle_tdc_hits(j)'length)
+          port map (clk => clock_and_control.clk,
+                    rst => clock_and_control.rst,
+                    glob_en => '1',
+                    i_data => i_middle_tdc_hits(j),
+                    o_data => middle_tdc_hits_v(j));
+        middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
       end generate gen_daq_conn_middle;
     end generate gen_daq_middle;
@@ -181,7 +203,16 @@ begin
       outer_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_outer: for j in outer_tdc_hits'range generate
-        outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), i_outer_tdc_hits(j));
+        u_daq_outer_delay: entity shared_lib.std_pipeline
+          generic map (type_memory => "bram",
+                       num_delays => DELAY,
+                       num_bits => i_outer_tdc_hits(j)'length)
+          port map (clk => clock_and_control.clk,
+                    rst => clock_and_control.rst,
+                    glob_en => '1',
+                    i_data => i_outer_tdc_hits(j),
+                    o_data => outer_tdc_hits_v(j));
+        outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
       end generate gen_daq_conn_outer;
@@ -205,7 +236,16 @@ begin
       extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_extra: for j in extra_tdc_hits'range generate
-        extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), i_extra_tdc_hits(j));
+        u_daq_extra_delay: entity shared_lib.std_pipeline
+          generic map (type_memory => "bram",
+                       num_delays => DELAY,
+                       num_bits => i_extra_tdc_hits(j)'length)
+          port map (clk => clock_and_control.clk,
+                    rst => clock_and_control.rst,
+                    glob_en => '1',
+                    i_data => i_extra_tdc_hits(j),
+                    o_data => extra_tdc_hits_v(j));
+        extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID
                     + c_HPS_NUM_MDT_CH_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
