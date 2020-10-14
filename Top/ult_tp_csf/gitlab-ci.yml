@@ -1,13 +1,13 @@
-#################### ult_tp_lsf Project ###########################
-generate_project:ult_tp_lsf:
+#################### ult_tp_csf Project ###########################
+generate_project:ult_tp_csf:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_lsf
+      PROJECT_NAME: ult_tp_csf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ult_tp_lsf:
+simulate_project:ult_tp_csf:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_lsf
+      PROJECT_NAME: ult_tp_csf
