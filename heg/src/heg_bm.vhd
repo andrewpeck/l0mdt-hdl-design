@@ -75,7 +75,7 @@ architecture beh of heg_buffermux is
   end component heg_buffermux_infifo;
 
   -- TEMP ---------------------------------
-  constant gc_HPS_NUM_MDT_CH    : integer := 6
+  constant gc_HPS_NUM_MDT_CH    : integer := 6;
   ---------------------------------------------
 
 
