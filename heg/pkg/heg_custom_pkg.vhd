@@ -66,6 +66,7 @@ package body heg_custom_pkg is
       end if;
   
     end if;
+    return times;
   end function;
   
   
