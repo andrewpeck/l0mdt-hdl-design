@@ -259,13 +259,14 @@ begin
               o_sf_control_r.rst    <= '0';
               o_sf_control_r.eof    <= '1';
               -- busy_count <= (others => '0');
-              heg_ctrl_motor <= IDLE;
+              -- heg_ctrl_motor <= IDLE;
             elsif to_integer(unsigned(busy_count)) < heg_times.unload then
               o_sf_control_r.enable <= '0';
               o_sf_control_r.rst    <= '0';
               o_sf_control_r.eof    <= '0';
             else
               heg_count_en <= '0';
+              heg_ctrl_motor <= IDLE;
             end if;
 
         end case;
