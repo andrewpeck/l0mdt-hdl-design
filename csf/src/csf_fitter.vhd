@@ -176,7 +176,7 @@ begin
             dsp_start <= '0';
             finalhit <= hit1.valid or hit2.valid;
 
-            if hit1.valid = '1' and hit2.valid = '1' then
+            if hit1.valid = '1' or hit2.valid = '1' then
                 event_valid <= '1';
             end if;
 
