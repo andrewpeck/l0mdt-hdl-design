@@ -1,4 +1,5 @@
 vivado*
+*.jou
 *.o
 *~ 
 *.pyc 
