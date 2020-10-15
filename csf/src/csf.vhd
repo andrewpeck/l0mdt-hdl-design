@@ -141,7 +141,6 @@ begin
             i_bfit         => bfits(i),
             i_nhits        => nhits(i),
             i_fit_valid    => fit_valids(i),
-            i_rst          => rst_chi2,
             o_seg          => chi2_segs(i)
         );
     end generate ;
@@ -184,9 +183,7 @@ begin
         end if;
 
         -- Reset the Chi2 and Output
-        if out_seg.valid = '1' and out_seg.ndof /= 0 then
-            rst_chi2 <= '1';
-        elsif i_rst = '1' then
+        if i_rst = '1' then
             seed <= (others => '0');
         end if;
     end if;

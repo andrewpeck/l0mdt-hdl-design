@@ -194,7 +194,7 @@ begin
 
             if startCounter = '1' then
                 counter <= counter + 1;
-                if counter = 8 or finalhit = '0' then
+                if counter = 8 then
                     dsp_start    <= '1';
                     startCounter <= '0';
                     counter      <= 0;

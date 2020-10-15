@@ -50,12 +50,13 @@ entity csf_chi2 is
     i_bfit         : in signed(CSF_SEG_B_LEN-1 downto 0);
     i_nhits        : in unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
     i_fit_valid    : in std_logic;
-    i_rst          : in std_logic;
     o_seg          : out csf_locseg_rvt
   );
 end csf_chi2; -- csf_chi2
 
 architecture Behavioral of csf_chi2 is
+    -- Reset
+    signal rst : std_logic := '0';
     -- Hit Buffer signals
     signal w_addr1, w_addr2   : std_logic_vector(CSF_MAXHITS_ML_LEN-1 downto 0)
                                                 := (others => '0');
@@ -248,10 +249,12 @@ begin
                 counter <= counter+1;
             end if;
 
+            
             if counter = 8 then
                 counter <= 0;
                 startCounter <= '0';
                 output_seg.valid <= '1';
+                rst <= '1';
                 output_seg.chi2 <= dsp_chi(CSF_SEG_CHI2_LEN-1 downto 0);
 
                 if dsp_chi > 2**CSF_SEG_CHI2_LEN-1 then
@@ -263,11 +266,12 @@ begin
 
             end if;
 
-            if i_rst = '1' then
+            if rst = '1' then
                 dsp_chi <= (others => '0');
                 w_addr1 <= (others => '0');
                 w_addr2 <= (others => '0');
                 start_read <= '0';
+                rst <= '0';
             end if;
 
         end if ;
