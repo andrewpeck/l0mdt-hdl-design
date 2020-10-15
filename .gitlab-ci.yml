@@ -16,7 +16,7 @@ include:
     # - local: '/Top/daq/gitlab-ci.yml'
     - local: '/Top/mpl/gitlab-ci.yml'
     - local: '/Top/ult/gitlab-ci.yml'
-    - local: '/Top/ult_tp/gitlab-ci.yml'
+    - local: '/Top/ult_tp_dev/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf/gitlab-ci.yml'
     - local: '/Top/ult_tp_lsf/gitlab-ci.yml'
     - local: '/Top/ult_daq/gitlab-ci.yml'
