@@ -28,7 +28,7 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq is
-  generic (DELAY : integer);
+  generic (DELAY : integer; memory_type: string);
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
@@ -140,7 +140,7 @@ begin
       
       gen_daq_conn_inner: for j in inner_tdc_hits'range generate
         u_daq_inner_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => "bram",
+          generic map (type_memory => memory_type,
                        num_delays => DELAY,
                        num_bits => i_inner_tdc_hits(j)'length)
           port map (clk => clock_and_control.clk,
@@ -172,7 +172,7 @@ begin
       
       gen_daq_conn_middle: for j in middle_tdc_hits'range generate
         u_daq_middle_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => "bram",
+          generic map (type_memory => memory_type,
                        num_delays => DELAY,
                        num_bits => i_middle_tdc_hits(j)'length)
           port map (clk => clock_and_control.clk,
@@ -204,7 +204,7 @@ begin
       
       gen_daq_conn_outer: for j in outer_tdc_hits'range generate
         u_daq_outer_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => "bram",
+          generic map (type_memory => memory_type,
                        num_delays => DELAY,
                        num_bits => i_outer_tdc_hits(j)'length)
           port map (clk => clock_and_control.clk,
@@ -237,7 +237,7 @@ begin
       
       gen_daq_conn_extra: for j in extra_tdc_hits'range generate
         u_daq_extra_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => "bram",
+          generic map (type_memory => memory_type,
                        num_delays => DELAY,
                        num_bits => i_extra_tdc_hits(j)'length)
           port map (clk => clock_and_control.clk,

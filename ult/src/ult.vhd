@@ -285,7 +285,7 @@ begin
     );
 
     daq_inst : entity work.daq
-      generic map(DELAY => 9600)
+      generic map(DELAY => 9600, memory_type => "ultra")
       port map (
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
