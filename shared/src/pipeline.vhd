@@ -25,7 +25,7 @@ entity std_pipeline is
   );
   port (
     clk                 : in std_logic;
-    rst            : in std_logic;
+    rst                 : in std_logic;
     glob_en             : in std_logic;
     --
     i_data              : in std_logic_vector(num_bits -1 downto 0);

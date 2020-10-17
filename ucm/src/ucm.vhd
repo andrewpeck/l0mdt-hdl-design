@@ -75,7 +75,9 @@ architecture beh of ucm is
   signal csw_control          : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
   signal proc_info            : ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
-  signal cvp_control          : std_logic_vector(c_NUM_THREADS -1 downto 0);
+
+  signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
@@ -108,7 +110,9 @@ begin
     o_csw_ctrl        => csw_control,
     o_pam_ctrl        => pam_CSW_control,
     o_proc_info       => proc_info,
-    o_cvp_ctrl        => cvp_control
+
+    o_cvp_rst         => cvp_loc_rst,
+    o_cvp_ctrl        => cvp_in_en
     -- o_pam2heg         => o_uCM2hps_pam_ar
   );
 
@@ -191,7 +195,8 @@ begin
       rst           => rst,
       glob_en       => glob_en,
       --
-      i_in_en       => cvp_control(vp_i),
+      i_local_rst   => cvp_loc_rst(vp_i),
+      i_in_en       => cvp_in_en(vp_i),
       --
       i_data_v      => cpam_out_av(vp_i),
       o_uCM2hps_av  => uCM2hps_data(vp_i)

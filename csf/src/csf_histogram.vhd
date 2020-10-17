@@ -406,11 +406,11 @@ begin
           if eof8 = '1' then
               start_read <= '1';
               has_max <= '0';
-              if unsigned(max_counter_1) > 1 then
+              if unsigned(max_counter_1) > 0 then
                   r_addr(to_integer(max_bin1_s)) <= (others => '0');
                   has_max <= '1';
               end if;
-              if unsigned(max_counter_2) > 1 and max_counter_1 = max_counter_2 then
+              if unsigned(max_counter_2) > 0 and max_counter_1 = max_counter_2 then
                   r_addr(to_integer(max_bin2_s)) <= (others => '0');
               end if;
               mbar <= (others => '0');
@@ -421,7 +421,7 @@ begin
 
           if start_read0 = '1' and has_max = '1' then
               if unsigned(r_addr(to_integer(max_bin1))) < unsigned(max_counter_1) - 1
-                  and unsigned(max_counter_1) > 1 then
+                  and unsigned(max_counter_1) > 0 then
                   r_addr(to_integer(max_bin1)) <=
                       std_logic_vector(unsigned(r_addr(to_integer(max_bin1))) + 1);
               else
@@ -435,7 +435,7 @@ begin
               end if;
 
               if unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                  and unsigned(max_counter_2) > 1 and max_counter_2 = max_counter_1 then
+                  and unsigned(max_counter_2) > 0 and max_counter_2 = max_counter_1 then
                   r_addr(to_integer(max_bin2)) <=
                       std_logic_vector(unsigned(r_addr(to_integer(max_bin2))) + 1);
               else

@@ -176,7 +176,7 @@ begin
             dsp_start <= '0';
             finalhit <= hit1.valid or hit2.valid;
 
-            if hit1.valid = '1' and hit2.valid = '1' then
+            if hit1.valid = '1' or hit2.valid = '1' then
                 event_valid <= '1';
             end if;
 
@@ -194,7 +194,7 @@ begin
 
             if startCounter = '1' then
                 counter <= counter + 1;
-                if counter = 8 or finalhit = '0' then
+                if counter = 8 then
                     dsp_start    <= '1';
                     startCounter <= '0';
                     counter      <= 0;

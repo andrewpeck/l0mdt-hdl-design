@@ -74,8 +74,13 @@ architecture beh of heg_buffermux is
     );
   end component heg_buffermux_infifo;
 
-  constant BM_FIFO_DEPTH : integer := 32;
+  -- TEMP ---------------------------------
+  constant gc_HPS_NUM_MDT_CH    : integer := 6;
+  ---------------------------------------------
 
+
+  constant BM_FIFO_DEPTH : integer := 32;
+  
   signal i_mdt_hits_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
 
   signal fifo_wr    : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
@@ -214,6 +219,8 @@ begin
         --   lasthit <= 10;
         --   last_read_v := 0;
         -- end if;
+
+        -- if g_HPS_NUM_MDT_CH < 5 then
 
         if fifo_empty(next_read(5)) = '0' then
           if lasthit = next_read(5) then

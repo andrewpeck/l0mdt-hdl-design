@@ -27,11 +27,20 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Some constants
   -------------------------------------------------------------------------
-  constant TIME_SLC_MDT_DELAY   : integer := 967; -- ns => 309.44 cycles
-  constant TAR_PL_A_LATENCY     : integer := 310; -- cycles => 968.75 ns
+  constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
+  constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
   --
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
+  ---
+  constant HEG_CSF_START_DELAY  : integer := 5;
+  constant HEG_CSF_END_DELAY    : integer := 10;
+  constant HEG_LSF_START_DELAY  : integer := 18;
+  constant HEG_LSF_END_DELAY    : integer := 10;
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
+  --
+  constant HP_LATENCY           : integer := 3;
+  constant BM_MIN_LATENCY       : integer := 3;
+  --
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
   -------------------------------------------------------------------------

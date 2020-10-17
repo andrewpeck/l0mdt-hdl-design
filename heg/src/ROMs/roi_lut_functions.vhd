@@ -30,9 +30,9 @@ use heg_roi_lib.roi_types_pkg.all;
 use heg_roi_lib.ROI_LUT_BILA3.all;
 use heg_roi_lib.ROI_LUT_BMLA3.all;
 use heg_roi_lib.ROI_LUT_BOLA3.all;
-use heg_roi_lib.ROI_LUT_BILA3_slope.all;
-use heg_roi_lib.ROI_LUT_BMLA3_slope.all;
-use heg_roi_lib.ROI_LUT_BOLA3_slope.all;
+use heg_roi_lib.ROI_LUT_BILA3_angle.all;
+use heg_roi_lib.ROI_LUT_BMLA3_angle.all;
+use heg_roi_lib.ROI_LUT_BOLA3_angle.all;
 
 package roi_func_pkg is
 

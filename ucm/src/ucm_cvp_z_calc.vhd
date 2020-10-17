@@ -56,7 +56,7 @@ architecture beh of ucm_cvp_z_calc is
 
   -- signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
 
-  constant resolution_change : integer := integer( (1024.0 * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
+  constant resolution_change : integer := integer( (2048.0 * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
 
   signal vec_pos : signed(141-1 downto 0);
 
