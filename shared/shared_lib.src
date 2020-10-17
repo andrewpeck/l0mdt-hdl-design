@@ -41,6 +41,7 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 # shared source code for multiple blocks
 #---------------------------------
 shared/src/pipeline.vhd
+shared/src/ring_buffer.vhd
 
 shared/src/bram.vhd
 shared/src/rom.v
