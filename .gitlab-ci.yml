@@ -22,7 +22,7 @@ include:
     - local: '/Top/ult_daq/gitlab-ci.yml'
     - local: '/Top/mtc/gitlab-ci.yml'
     # - local: '/Top/hal/gitlab-ci.yml'
-    # - local: '/Top/l0mdt/gitlab-ci.yml'
+    - local: '/Top/l0mdt/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
     # - local: '/Top/csf_plus_pt/gitlab-ci.yml'
     # - local: '/Top/profpga_duo_test/gitlab-ci.yml'
