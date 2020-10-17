@@ -151,19 +151,19 @@ begin
             RAM_DEPTH   => DELAY_MAX,
             FIXED_DELAY   => true)
           port map (
-            clk        => clock_and_control.clk,
-            rst        => clock_and_control.rst,
-            delay      => DELAY-1-PIPELINE_REGS*2,
-            wr_en      => '1',
-            wr_data    => i_inner_tdc_hits(j),
-            rd_en      => '1',
-            rd_valid   => open,
-            rd_data    => inner_tdc_hits_v(j),
-            empty      => open,
-            empty_next => open,
-            full       => open,
-            full_next  => open,
-            fill_count => open);
+            clk          => clock_and_control.clk,
+            rst          => clock_and_control.rst,
+            delay        => DELAY-1-PIPELINE_REGS*2,
+            wr_en_i      => '1',
+            wr_data_i    => i_inner_tdc_hits(j),
+            rd_en_i      => '1',
+            rd_valid_o   => open,
+            rd_data_o    => inner_tdc_hits_v(j),
+            empty_o      => open,
+            empty_next_o => open,
+            full_o       => open,
+            full_next_o  => open,
+            fill_count_o => open);
 
         inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), inner_tdc_hits_v(j));
         daq_streams(j) <= outputify(inner_er.o.f2e_bus(j));
@@ -196,19 +196,19 @@ begin
             RAM_DEPTH     => DELAY_MAX,
             FIXED_DELAY   => true)
           port map (
-            clk        => clock_and_control.clk,
-            rst        => clock_and_control.rst,
-            delay      => DELAY-1-PIPELINE_REGS*2,
-            wr_en      => '1',
-            wr_data    => i_middle_tdc_hits(j),
-            rd_en      => '1',
-            rd_valid   => open,
-            rd_data    => middle_tdc_hits_v(j),
-            empty      => open,
-            empty_next => open,
-            full       => open,
-            full_next  => open,
-            fill_count => open);
+            clk          => clock_and_control.clk,
+            rst          => clock_and_control.rst,
+            delay        => DELAY-1-PIPELINE_REGS*2,
+            wr_en_i      => '1',
+            wr_data_i    => i_middle_tdc_hits(j),
+            rd_en_i      => '1',
+            rd_valid_o   => open,
+            rd_data_o    => middle_tdc_hits_v(j),
+            empty_o      => open,
+            empty_next_o => open,
+            full_o       => open,
+            full_next_o  => open,
+            fill_count_o => open);
         middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
       end generate gen_daq_conn_middle;
@@ -240,19 +240,19 @@ begin
             RAM_DEPTH   => DELAY_MAX,
             FIXED_DELAY   => true)
           port map (
-            clk        => clock_and_control.clk,
-            rst        => clock_and_control.rst,
-            delay      => DELAY-1-PIPELINE_REGS*2,
-            wr_en      => '1',
-            wr_data    => i_outer_tdc_hits(j),
-            rd_en      => '1',
-            rd_valid   => open,
-            rd_data    => outer_tdc_hits_v(j),
-            empty      => open,
-            empty_next => open,
-            full       => open,
-            full_next  => open,
-            fill_count => open);
+            clk          => clock_and_control.clk,
+            rst          => clock_and_control.rst,
+            delay        => DELAY-1-PIPELINE_REGS*2,
+            wr_en_i      => '1',
+            wr_data_i    => i_outer_tdc_hits(j),
+            rd_en_i      => '1',
+            rd_valid_o   => open,
+            rd_data_o    => outer_tdc_hits_v(j),
+            empty_o      => open,
+            empty_next_o => open,
+            full_o       => open,
+            full_next_o  => open,
+            fill_count_o => open);
         outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
@@ -285,19 +285,19 @@ begin
             RAM_DEPTH   => DELAY_MAX,
             FIXED_DELAY   => true)
           port map (
-            clk        => clock_and_control.clk,
-            rst        => clock_and_control.rst,
-            delay      => DELAY-1-PIPELINE_REGS*2,
-            wr_en      => '1',
-            wr_data    => i_extra_tdc_hits(j),
-            rd_en      => '1',
-            rd_valid   => open,
-            rd_data    => extra_tdc_hits_v(j),
-            empty      => open,
-            empty_next => open,
-            full       => open,
-            full_next  => open,
-            fill_count => open);
+            clk          => clock_and_control.clk,
+            rst          => clock_and_control.rst,
+            delay        => DELAY-1-PIPELINE_REGS*2,
+            wr_en_i      => '1',
+            wr_data_i    => i_extra_tdc_hits(j),
+            rd_en_i      => '1',
+            rd_valid_o   => open,
+            rd_data_o    => extra_tdc_hits_v(j),
+            empty_o      => open,
+            empty_next_o => open,
+            full_o       => open,
+            full_next_o  => open,
+            fill_count_o => open);
         extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID
