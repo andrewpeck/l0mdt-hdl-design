@@ -10,6 +10,7 @@ ctrl/src/top_control.vhd
 shared/shared_lib.src lib=shared_lib
 mpl/mpl_lib.src lib=mpl_lib
 ult/ult_lib.src lib=ult_lib
+daq/daq_lib.src lib=daq_lib
 ucm/ucm_lib.src lib=ucm_lib
 hp/hp_lib.src lib=hp_lib
 heg/heg_lib.src lib=heg_lib
