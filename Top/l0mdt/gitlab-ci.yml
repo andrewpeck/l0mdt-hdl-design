@@ -6,8 +6,8 @@ generate_project:l0mdt:
       PROJECT_NAME: l0mdt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:l0mdt:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: l0mdt
+#simulate_project:l0mdt:
+#    extends: .simulate_project
+#    variables:
+#      extends: .vars
+#      PROJECT_NAME: l0mdt
