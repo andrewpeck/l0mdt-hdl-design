@@ -28,7 +28,11 @@ use daq_def.daq_devel_defs.all;
 use daq_def.daq_defs.all;
 
 entity daq is
-  generic (DELAY : integer; memory_type: string);
+  generic (
+    PIPELINE_REGS : integer := 2;
+    DELAY_MAX     : integer := 9600;
+    DELAY         : integer := 9600;
+    memory_type   : string  := "ultra");
   port (
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
@@ -139,15 +143,28 @@ begin
       inner_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_inner: for j in inner_tdc_hits'range generate
-        u_daq_inner_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_inner_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_inner_tdc_hits(j),
-                    o_data => inner_tdc_hits_v(j));
+        u_daq_inner_delay : entity shared_lib.ring_buffer
+          generic map (
+            MEMORY_TYPE => memory_type,
+            PIPELINE_REGS => PIPELINE_REGS,
+            RAM_WIDTH   => i_inner_tdc_hits(j)'length,
+            RAM_DEPTH   => DELAY_MAX,
+            FIXED_DELAY   => true)
+          port map (
+            clk        => clock_and_control.clk,
+            rst        => clock_and_control.rst,
+            delay      => DELAY-1-PIPELINE_REGS*2,
+            wr_en      => '1',
+            wr_data    => i_inner_tdc_hits(j),
+            rd_en      => '1',
+            rd_valid   => open,
+            rd_data    => inner_tdc_hits_v(j),
+            empty      => open,
+            empty_next => open,
+            full       => open,
+            full_next  => open,
+            fill_count => open);
+
         inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), inner_tdc_hits_v(j));
         daq_streams(j) <= outputify(inner_er.o.f2e_bus(j));
       end generate gen_daq_conn_inner;
@@ -171,15 +188,27 @@ begin
       middle_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_middle: for j in middle_tdc_hits'range generate
-        u_daq_middle_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_middle_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_middle_tdc_hits(j),
-                    o_data => middle_tdc_hits_v(j));
+        u_daq_middle_delay : entity shared_lib.ring_buffer
+          generic map (
+            MEMORY_TYPE   => memory_type,
+            PIPELINE_REGS => PIPELINE_REGS,
+            RAM_WIDTH     => i_middle_tdc_hits(j)'length,
+            RAM_DEPTH     => DELAY_MAX,
+            FIXED_DELAY   => true)
+          port map (
+            clk        => clock_and_control.clk,
+            rst        => clock_and_control.rst,
+            delay      => DELAY-1-PIPELINE_REGS*2,
+            wr_en      => '1',
+            wr_data    => i_middle_tdc_hits(j),
+            rd_en      => '1',
+            rd_valid   => open,
+            rd_data    => middle_tdc_hits_v(j),
+            empty      => open,
+            empty_next => open,
+            full       => open,
+            full_next  => open,
+            fill_count => open);
         middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
       end generate gen_daq_conn_middle;
@@ -203,15 +232,27 @@ begin
       outer_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_outer: for j in outer_tdc_hits'range generate
-        u_daq_outer_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_outer_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_outer_tdc_hits(j),
-                    o_data => outer_tdc_hits_v(j));
+        u_daq_outer_delay : entity shared_lib.ring_buffer
+          generic map (
+            MEMORY_TYPE => memory_type,
+            PIPELINE_REGS => PIPELINE_REGS,
+            RAM_WIDTH   => i_middle_tdc_hits(j)'length,
+            RAM_DEPTH   => DELAY_MAX,
+            FIXED_DELAY   => true)
+          port map (
+            clk        => clock_and_control.clk,
+            rst        => clock_and_control.rst,
+            delay      => DELAY-1-PIPELINE_REGS*2,
+            wr_en      => '1',
+            wr_data    => i_outer_tdc_hits(j),
+            rd_en      => '1',
+            rd_valid   => open,
+            rd_data    => outer_tdc_hits_v(j),
+            empty      => open,
+            empty_next => open,
+            full       => open,
+            full_next  => open,
+            fill_count => open);
         outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
@@ -236,15 +277,27 @@ begin
       extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
       gen_daq_conn_extra: for j in extra_tdc_hits'range generate
-        u_daq_extra_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_extra_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_extra_tdc_hits(j),
-                    o_data => extra_tdc_hits_v(j));
+        u_daq_extra_delay : entity shared_lib.ring_buffer
+          generic map (
+            MEMORY_TYPE => memory_type,
+            PIPELINE_REGS => PIPELINE_REGS,
+            RAM_WIDTH   => i_extra_tdc_hits(j)'length,
+            RAM_DEPTH   => DELAY_MAX,
+            FIXED_DELAY   => true)
+          port map (
+            clk        => clock_and_control.clk,
+            rst        => clock_and_control.rst,
+            delay      => DELAY-1-PIPELINE_REGS*2,
+            wr_en      => '1',
+            wr_data    => i_extra_tdc_hits(j),
+            rd_en      => '1',
+            rd_valid   => open,
+            rd_data    => extra_tdc_hits_v(j),
+            empty      => open,
+            empty_next => open,
+            full       => open,
+            full_next  => open,
+            fill_count => open);
         extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
         daq_streams(c_HPS_NUM_MDT_CH_INN
                     + c_HPS_NUM_MDT_CH_MID
