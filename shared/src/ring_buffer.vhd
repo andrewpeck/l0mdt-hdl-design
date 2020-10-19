@@ -12,7 +12,7 @@ entity ring_buffer is
     PIPELINE_REGS : natural := 2;
 
     RAM_WIDTH     : natural := 64;
-    RAM_DEPTH     : natural := 9600     -- maximum depth of the ram, also the maximum delay
+    RAM_DEPTH     : integer := 9600     -- maximum depth of the ram, also the maximum delay
     );
   port (
     clk : in std_logic;

@@ -59,6 +59,8 @@ begin
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
+      type_memory => "ultra",
+      logic_type  => "ring_buffer",
       num_delays  => MPL_PL_A_LATENCY,
       num_bits    => i_uCM2pl_av(sl_i)'length
     )

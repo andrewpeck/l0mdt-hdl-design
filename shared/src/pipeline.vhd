@@ -12,14 +12,17 @@
 --      
 --------------------------------------------------------------------------------
 
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+-- use ieee.math_real.all;
 
+library shared_lib;
 
 entity std_pipeline is
   generic(
-    type_memory         : string := "distributed" ;
+    type_memory         : string := "distributed" ;-- auto, ultra, block, distributed
+    logic_type          : string := "shift_reg";-- shift_reg , ring_buffer 
     num_delays          : integer; 
     num_bits            : integer
   );
@@ -47,19 +50,49 @@ begin
   
   o_data <= data_pl(0);
 
-  valid_pipe : process(rst,clk) begin
-    if rising_edge(clk)then
-      if rst= '1' then
-        data_pl <= (others => (others => '0'));
-      else
-        if glob_en = '1' then
-          for num_delays in num_delays - 1 downto 1 loop
-            data_pl(num_delays - 1) <= data_pl(num_delays);
-          end loop;
-          data_pl(num_delays -1) <= i_data;
+  SHIFT : if logic_type = "shift_reg" generate
+
+    valid_pipe : process(rst,clk) begin
+      if rising_edge(clk)then
+        if rst= '1' then
+          data_pl <= (others => (others => '0'));
+        else
+          if glob_en = '1' then
+            for num_delays in num_delays - 1 downto 1 loop
+              data_pl(num_delays - 1) <= data_pl(num_delays);
+            end loop;
+            data_pl(num_delays -1) <= i_data;
+          end if;
         end if;
       end if;
-    end if;
-  end process;
+    end process;
+
+end generate;
+
+RING : if logic_type = "shift_reg" generate
+  u_daq_inner_delay : entity shared_lib.ring_buffer
+    generic map (
+      MEMORY_TYPE => type_memory,
+      -- PIPELINE_REGS => num_delays,
+      RAM_WIDTH   => num_bits,
+      RAM_DEPTH   => num_delays - 2,
+      FIXED_DELAY   => true
+    )
+    port map (
+      clk          => clk,
+      rst          => rst,
+      delay        => num_delays-1-2,
+      wr_en_i      => '1',
+      wr_data_i    => i_data,
+      rd_en_i      => '1',
+      rd_valid_o   => open,
+      rd_data_o    => o_data,
+      empty_o      => open,
+      empty_next_o => open,
+      full_o       => open,
+      full_next_o  => open,
+      fill_count_o => open
+    );
+end generate;
 
 end beh;

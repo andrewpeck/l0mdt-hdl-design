@@ -67,6 +67,8 @@ begin
     INN_DELAY : for b_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
+        type_memory => "ultra",
+        logic_type  => "ring_buffer",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_inn_tar_hits(b_i)'length
       )
@@ -85,6 +87,8 @@ begin
     MID_DELAY : for b_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
+        type_memory => "ultra",
+        logic_type  => "ring_buffer",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_mid_tar_hits(b_i)'length
       )
@@ -103,6 +107,8 @@ begin
     OUT_DELAY : for b_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
+        type_memory => "ultra",
+        logic_type  => "ring_buffer",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_out_tar_hits(b_i)'length
       )
@@ -121,6 +127,8 @@ begin
     EXT_DELAY : for b_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
+        type_memory => "ultra",
+        logic_type  => "ring_buffer",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_ext_tar_hits(b_i)'length
       )
