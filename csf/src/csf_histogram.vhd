@@ -213,7 +213,8 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => INV_SQRT_M_LEN,
-      ROM_FILE => "invsqrt_mbar.mem"
+      ROM_FILE => "invsqrt_mbar.mem",
+      ROM_STYLE => "distributed"
   )
   PORT MAP (
       ena    => '1',
@@ -226,7 +227,8 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => SQU_M_LEN,
-      ROM_FILE => "sqrt_mbar.mem"
+      ROM_FILE => "sqrt_mbar.mem",
+      ROM_STYLE => "distributed"
   )
   port map(
       ena    => '1',
