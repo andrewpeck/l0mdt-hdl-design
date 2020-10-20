@@ -41,7 +41,7 @@ entity ring_buffer is
     delay : in integer range RAM_DEPTH - 1 downto 0 := RAM_DEPTH-1;
 
     -- The number of elements in the FIFO
-    fill_count_o : out integer range (RAM_DEPTH - PIPELINE_REGS) - 1 downto 0
+    fill_count_o : out integer range RAM_DEPTH - 1 downto 0
     );
 end ring_buffer;
 
@@ -65,7 +65,7 @@ architecture rtl of ring_buffer is
   signal rd_en_pipe    : std_logic_vector (PIPELINE_REGS-1 downto 0);
   signal rd_valid_pipe : std_logic_vector (PIPELINE_REGS-1 downto 0);
 
-  type ram_type is array (0 to (RAM_DEPTH - PIPELINE_REGS) - 1) of
+  type ram_type is array (0 to RAM_DEPTH - 1) of
     std_logic_vector(wr_data'range);
   signal ram : ram_type;
 
@@ -78,7 +78,7 @@ architecture rtl of ring_buffer is
 
   signal empty      : std_logic;
   signal full       : std_logic;
-  signal fill_count : integer range (RAM_DEPTH - PIPELINE_REGS) - 1 downto 0;
+  signal fill_count : integer range RAM_DEPTH - 1 downto 0;
 
   -- Increment and wrap
   procedure incr(signal index : inout index_type) is
@@ -113,8 +113,8 @@ begin
   -- Set the flags
   empty        <= '1' when fill_count = 0              else '0';
   empty_next_o <= '1' when fill_count <= 1             else '0';
-  full         <= '1' when fill_count >= (RAM_DEPTH - PIPELINE_REGS) - 1 else '0';
-  full_next_o  <= '1' when fill_count >= (RAM_DEPTH - PIPELINE_REGS) - 2 else '0';
+  full         <= '1' when fill_count >= RAM_DEPTH - 1 else '0';
+  full_next_o  <= '1' when fill_count >= RAM_DEPTH - 2 else '0';
 
   nopipe : if (PIPELINE_REGS = 0) generate
     wr_en      <= wr_en_i;
@@ -175,12 +175,12 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          tail     <= wrap_around_tail(0, delay - PIPELINE_REGS, (RAM_DEPTH - PIPELINE_REGS));
+          tail     <= wrap_around_tail(0, delay, RAM_DEPTH);
           rd_valid <= '0';
         else
           rd_valid <= '0';
           if wr_en = '1' then
-            tail     <= wrap_around_tail(head, delay - PIPELINE_REGS, (RAM_DEPTH - PIPELINE_REGS));
+            tail     <= wrap_around_tail(head, delay, RAM_DEPTH);
             rd_valid <= '1';
           end if;
 
@@ -223,7 +223,7 @@ begin
   PROC_COUNT : process(head, tail)
   begin
     if head < tail then
-      fill_count <= head - tail + (RAM_DEPTH - PIPELINE_REGS);
+      fill_count <= head - tail + RAM_DEPTH;
     else
       fill_count <= head - tail;
     end if;

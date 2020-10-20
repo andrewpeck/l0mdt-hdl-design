@@ -56,6 +56,30 @@ package gldl_ult_tp_sim_pkg is
   function nullify(x: slc_tb_at) return slc_tb_at;
   function nullify(x: slc_tb_avt) return slc_tb_avt;
 
+  type out_heg_bm_hit_sim_rt is record
+    ToA : unsigned(64-1 downto 0);
+    station : unsigned(4-1 downto 0);
+    thread : unsigned(4-1 downto 0);
+    heg_bm : heg2sfhit_rt;
+  end record out_heg_bm_hit_sim_rt;
+  constant OUT_HEG_BM_HIT_SIM_LEN : integer := 113;
+  subtype out_heg_bm_hit_sim_rvt is std_logic_vector(OUT_HEG_BM_HIT_SIM_LEN-1 downto 0);
+  function vectorify(x: out_heg_bm_hit_sim_rt) return out_heg_bm_hit_sim_rvt;
+  function structify(x: out_heg_bm_hit_sim_rvt) return out_heg_bm_hit_sim_rt;
+  function nullify(x: out_heg_bm_hit_sim_rt) return out_heg_bm_hit_sim_rt;
+
+  type out_heg_bm_slc_sim_rt is record
+    ToA : unsigned(64-1 downto 0);
+    station : unsigned(4-1 downto 0);
+    thread : unsigned(4-1 downto 0);
+    heg_bm : heg2sfslc_rt;
+  end record out_heg_bm_slc_sim_rt;
+  constant OUT_HEG_BM_SLC_SIM_LEN : integer := 144;
+  subtype out_heg_bm_slc_sim_rvt is std_logic_vector(OUT_HEG_BM_SLC_SIM_LEN-1 downto 0);
+  function vectorify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rvt;
+  function structify(x: out_heg_bm_slc_sim_rvt) return out_heg_bm_slc_sim_rt;
+  function nullify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rt;
+
 end package gldl_ult_tp_sim_pkg;
 
 ------------------------------------------------------------
@@ -215,6 +239,62 @@ package body gldl_ult_tp_sim_pkg is
     l: for i in y'range loop
       y(i) := nullify(x(i));
     end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: out_heg_bm_hit_sim_rt) return out_heg_bm_hit_sim_rvt is
+    variable y : out_heg_bm_hit_sim_rvt;
+  begin
+    y(112 downto 49)           := vectorify(x.ToA);
+    y(48 downto 45)            := vectorify(x.station);
+    y(44 downto 41)            := vectorify(x.thread);
+    y(40 downto 0)             := vectorify(x.heg_bm);
+    return y;
+  end function vectorify;
+  function structify(x: out_heg_bm_hit_sim_rvt) return out_heg_bm_hit_sim_rt is
+    variable y : out_heg_bm_hit_sim_rt;
+  begin
+    y.ToA                      := structify(x(112 downto 49));
+    y.station                  := structify(x(48 downto 45));
+    y.thread                   := structify(x(44 downto 41));
+    y.heg_bm                   := structify(x(40 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: out_heg_bm_hit_sim_rt) return out_heg_bm_hit_sim_rt is
+    variable y : out_heg_bm_hit_sim_rt;
+  begin
+    y.ToA                      := nullify(x.ToA);
+    y.station                  := nullify(x.station);
+    y.thread                   := nullify(x.thread);
+    y.heg_bm                   := nullify(x.heg_bm);
+    return y;
+  end function nullify;
+
+  function vectorify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rvt is
+    variable y : out_heg_bm_slc_sim_rvt;
+  begin
+    y(143 downto 80)           := vectorify(x.ToA);
+    y(79 downto 76)            := vectorify(x.station);
+    y(75 downto 72)            := vectorify(x.thread);
+    y(71 downto 0)             := vectorify(x.heg_bm);
+    return y;
+  end function vectorify;
+  function structify(x: out_heg_bm_slc_sim_rvt) return out_heg_bm_slc_sim_rt is
+    variable y : out_heg_bm_slc_sim_rt;
+  begin
+    y.ToA                      := structify(x(143 downto 80));
+    y.station                  := structify(x(79 downto 76));
+    y.thread                   := structify(x(75 downto 72));
+    y.heg_bm                   := structify(x(71 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rt is
+    variable y : out_heg_bm_slc_sim_rt;
+  begin
+    y.ToA                      := nullify(x.ToA);
+    y.station                  := nullify(x.station);
+    y.thread                   := nullify(x.thread);
+    y.heg_bm                   := nullify(x.heg_bm);
     return y;
   end function nullify;
 

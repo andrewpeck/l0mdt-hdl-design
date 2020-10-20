@@ -48,9 +48,10 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
-    DUMMY       : boolean := false;
-    IN_SLC_FILE : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_MDT_FILE : string  := "csm_TB_A3_Barrel_yt_v04.txt"
+    IN_SLC_FILE       : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    IN_MDT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
+    OUT_HEG_BM_FILE   : string  := "hps_heg_bm_A3_Barrel_yt_v04.txt";
+    DUMMY             : boolean := false
     );
 end entity ult_tp;
 
@@ -161,7 +162,7 @@ architecture beh of ult_tp is
 
   type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
 
-  signal slc_element          : slc_tb_at;
+  signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
 
   signal slc_event_r          : input_slc_b_rt;
   signal slc_new_event        : input_slc_b_rt;
@@ -203,6 +204,38 @@ architecture beh of ult_tp is
   signal mdt_mid_counts : infifo_hit_counts(c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => 0);
   signal mdt_out_counts : infifo_hit_counts(c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => 0);
   signal mdt_ext_counts : infifo_hit_counts(c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => 0);
+
+  ---------------------------------------------------------------------------
+  -- simulation output aliases
+  ---------------------------------------------------------------------------
+
+  -- alias heg2sf_inn_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_inn.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_inn_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_inn.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_mid_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_mid_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_out_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_out_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_inn_slc_av is << signal.Compactor_tb.CompactorDUT.UT_DP_TOP.OutputFifoWreq : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_inn_hit_av is << signal.Compactor_tb.CompactorDUT.UT_DP_TOP.OutputFifoWreq : heg2sfhit_bus_avt >>;
+
+  signal dummy_hit : out_heg_bm_hit_sim_rt;
+  signal fummy_slc : out_heg_bm_slc_sim_rt;
+
+  signal read_slc : heg2sfslc_rt;
+  signal read_hit : heg2sfhit_rt;
+
+  -- constant OUTPUT_FIFO_LEN : integer := 128;
+  -- type heg2sf_rt is record
+  --   typ : std_logic; --0 : slc ; 1 : hit
+  --   slc : out_heg_bm_slc_sim_rt;
+  --   hit : out_heg_bm_hit_sim_rt;
+  -- end record;
+  -- type heg2sf_hits_fifo_at is array (integer range <>) of heg2sf_rt;
+  -- signal heg2sf_hits_fifo : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
+
+  -- signal heg2sf_counter : integer;
+
+  -- signal 
 
 
 begin
@@ -304,8 +337,7 @@ begin
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
 	-------------------------------------------------------------------------------------
-	rst_process: process
-	begin
+	rst_process: process begin
 		rst<='0';
 		wait for CLK_period;
 		rst<='1';
@@ -317,8 +349,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- Test Bench time
   -------------------------------------------------------------------------------------
-  ToA: process(clk_time)
-  begin
+  ToA: process(clk_time) begin
     if rising_edge(clk_time) then
       tb_curr_time <= tb_curr_time + '1';
     end if;
@@ -326,8 +357,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- Test Bench tdc time
   -------------------------------------------------------------------------------------
-  ToA_tdc: process(clk_tdc_time)
-  begin
+  ToA_tdc: process(clk_tdc_time) begin
     if rising_edge(clk_tdc_time) then
       tb_curr_tdc_time <= tb_curr_tdc_time + '1';
     end if;
@@ -425,7 +455,6 @@ begin
   -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
-
 
   HIT_READ: process ( rst, clk)
 
@@ -588,5 +617,90 @@ begin
 
   end process;
 
+  -------------------------------------------------------------------------------------
+	-- Output HEG BM
+  -------------------------------------------------------------------------------------
+
+  HEG_BM: process(clk)
+
+    file file_handler : text open write_mode is OUT_HEG_BM_FILE;
+    variable row 		: line;
+
+    alias heg2sf_inn_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_inn.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+    alias heg2sf_inn_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_inn.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+    alias heg2sf_mid_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+    alias heg2sf_mid_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+    alias heg2sf_out_slc_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+    alias heg2sf_out_hit_av is << signal.ult_tp.ULT.logic_gen.H2S.h2s_gen.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+
+    -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
+    variable fifo_count : integer := 0;
+
+    variable hit2write : out_heg_bm_hit_sim_rt;
+    variable slc2write : out_heg_bm_slc_sim_rt;
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        -- heg2sf_hits_fifo <= (others => (others => '0'));        
+      else
+
+        -- fifo_mem_v := (others => ('0',nullify(dummy_slc),nullify(dummy_hit)));
+        fifo_count := 0;
+
+        -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+          if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_hit <= structify(heg2sf_inn_hit_av(heg_i));
+              if read_hit.data_valid = '1' then
+                -- hit2write.typ          := '1';
+                hit2write.ToA      := tb_curr_tdc_time;
+                hit2write.station  := to_unsigned(0,4);
+                hit2write.thread   := to_unsigned(heg_i,4);
+                hit2write.HEG_BM   := structify(heg2sf_inn_hit_av(heg_i));
+                -- fifo_count := fifo_count + 1;
+              end if;
+            end loop;
+          end if;
+          -- if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
+          --   for heg_i in c_NUM_THREADS -1 downto 0 loop
+          --     read_hit <= structify(heg2sf_mid_hit_av(heg_i));
+          --     if read_hit.data_valid = '1' then
+          --       -- hit2write.typ          := '1';
+          --       hit2write.ToA      := tb_curr_tdc_time;
+          --       hit2write.station  := to_unsigned(1,4);
+          --       hit2write.thread   := to_unsigned(heg_i,4);
+          --       hit2write.HEG_BM   := structify(heg2sf_mid_hit_av(heg_i));
+          --       fifo_count := fifo_count + 1;
+          --     end if;
+          --   end loop;
+          -- end if;
+          -- if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
+          --   for heg_i in c_NUM_THREADS -1 downto 0 loop
+          --     read_hit <= structify(heg2sf_out_hit_av(heg_i));
+          --     if read_hit.data_valid = '1' then
+          --       -- hit2write.typ          := '1';
+          --       hit2write.ToA      := tb_curr_tdc_time;
+          --       hit2write.station  := to_unsigned(2,4);
+          --       hit2write.thread   := to_unsigned(heg_i,4);
+          --       hit2write.HEG_BM   := structify(heg2sf_out_hit_av(heg_i));
+          --       fifo_count := fifo_count + 1;
+          --     end if;
+          --   end loop;
+          -- end if;
+        -- end loop;
+
+        -- for ff_i in 0 to fifo_count -1 loop
+        --   if fifo_mem_v(ff_i).typ = '0' then
+        --     -- write(row,fifo_mem_v(ff_i).slc);
+        --   else
+        --     -- write(row,fifo_mem_v(ff_i).hit);
+        --   end if;
+        --   -- writeline(file_handler,row);
+
+        -- end loop;
+
+      end if;
+    end if;
+  end process HEG_BM;
 
 end architecture beh;

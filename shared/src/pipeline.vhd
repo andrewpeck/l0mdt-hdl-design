@@ -75,13 +75,13 @@ RING : if logic_type = "ring_buffer" generate
       MEMORY_TYPE => type_memory,
       -- PIPELINE_REGS => num_delays,
       RAM_WIDTH   => num_bits,
-      RAM_DEPTH   => num_delays + 4, -- - 2,
+      RAM_DEPTH   => num_delays,-- + 4, -- - 2,
       FIXED_DELAY   => true
     )
     port map (
       clk          => clk,
       rst          => rst,
-      delay        => num_delays,-- -1-2,
+      delay        => num_delays - 2,-- -1-2,
       wr_en_i      => '1',
       wr_data_i    => i_data,
       rd_en_i      => '1',

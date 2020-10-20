@@ -30,7 +30,9 @@ package gldl_l0mdt_textio_pkg is
   procedure READ(L:inout LINE; VALUE : out input_slc_b_rt);
 
   -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
-  -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
+
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt);
+  -- procedure WRITE(L:inout LINE; VALUE : in heg2sfslc_rt);
 
 end gldl_l0mdt_textio_pkg;
 
@@ -58,7 +60,7 @@ package body gldl_l0mdt_textio_pkg is
     variable tube_radius  : integer;
     variable event        : integer;
 
-    variable dummy_text  : string(0 to 100);
+    variable dummy_text  : string(1 to 100);
     variable ok : boolean;
 
     -- variable
@@ -77,16 +79,6 @@ package body gldl_l0mdt_textio_pkg is
     -- READ(L, tube_rho);
     -- READ(L, tube_radius);
     -- READ(L, event);
-
-    -- if c_station = "I" then 
-    --   i_station := 0;
-    -- elsif c_station = "M" then 
-    --   i_station := 1;
-    -- elsif c_station = "O" then 
-    --   i_station := 2;
-    -- else
-    --   i_station := 3;
-    -- end if;
 
     VALUE := (
       ToA => to_unsigned(mdt_ToA,64),
@@ -213,20 +205,6 @@ package body gldl_l0mdt_textio_pkg is
       )
     );
 
-    -- BCID        => to_unsigned(BCID       , SL_HEADER_BCID_LEN) , 
-    -- nTC         => to_unsigned(nTC        , SL_HEADER_NSLC_LEN) , 
-    -- TC_sent     => to_unsigned(TC_sent    , SL_HEADER_NMTC_SL_LEN) , 
-    -- TC_id       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN) , 
-    -- Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
-    -- Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
-    -- pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
-    -- Charge      => std_logic(to_unsigned(Charge     ,1)(0)), 
-    -- Coincidence => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)) , 
-    -- z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
-    -- z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
-    -- z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
-    -- z_RPC3      => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
-
     report "##### SLC : " & integer'image(BCID) &
     " - " & integer'image(ToA) &
     " - " & integer'image(nTC) &
@@ -247,23 +225,23 @@ package body gldl_l0mdt_textio_pkg is
   -- read TDC record type as 5 decimal numbers
   -----------------------------------------------
   -- procedure READ(L : inout LINE; VALUE : out TDC_rt) is
-
+  --
   --   variable i_chanid     : integer;
   --   variable i_edgemode   : integer;
   --   variable i_coarsetime : integer;
   --   variable i_finetime   : integer;
   --   variable i_pulsewidth : integer;
-
+  --
   --   variable v_chanid     : std_logic_vector(TDC_CHANID_LEN-1 downto 0);    -- 4
   --   variable v_edgemode   : std_logic_vector(TDC_EDGEMODE_LEN-1 downto 0);  -- 1
   --   variable v_coarsetime : std_logic_vector(TDC_COARSETIME_LEN-1 downto 0);  -- 11
   --   variable v_finetime   : std_logic_vector(TDC_FINETIME_LEN-1 downto 0);  -- 4
   --   variable v_pulsewidth : std_logic_vector(TDC_PULSEWIDTH_LEN-1 downto 0);  -- 7
-
+  --
   --   variable v_SPACE : character;
-
+  -- 
   -- begin
-
+  --
   --   READ(L, i_chanid);
   --   READ(L, v_SPACE);           -- read in the space character
   --   READ(L, i_edgemode);
@@ -273,20 +251,20 @@ package body gldl_l0mdt_textio_pkg is
   --   READ(L, i_finetime);
   --   READ(L, v_SPACE);
   --   READ(L, i_pulsewidth);
-
+  --
   --   v_chanid := std_logic_vector( to_unsigned( i_chanid, TDC_CHANID_LEN));
   --   v_edgemode := std_logic_vector( to_unsigned( i_edgemode, TDC_EDGEMODE_LEN));
   --   v_coarsetime := std_logic_vector( to_unsigned( i_coarsetime, TDC_COARSETIME_LEN));
   --   v_finetime := std_logic_vector( to_unsigned( i_finetime, TDC_FINETIME_LEN));
   --   v_pulsewidth := std_logic_vector( to_unsigned( i_pulsewidth, TDC_PULSEWIDTH_LEN));
-
+  --
   --   VALUE := ( chanid => v_chanid,
   --              edgemode => v_edgemode,
   --              coarsetime => v_coarsetime,
   --              finetime => v_finetime,
   --              pulsewidth => v_pulsewidth);
   -- end READ;
-
+ 
 
 
   -----------------------------------------------
@@ -319,5 +297,48 @@ package body gldl_l0mdt_textio_pkg is
   --   WRITE(L, to_integer( unsigned(v_pulsewidth)));
 
   -- end WRITE;
+
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt) is
+
+    variable ToA      : unsigned(64-1 downto 0);
+    variable station  : unsigned(4-1 downto 0);
+    variable thread   : unsigned(4-1 downto 0);
+    variable mlayer   : std_logic;
+    variable localx   : unsigned(HEG2SFHIT_LOCALX_LEN-1 downto 0);
+    variable localy   : unsigned(HEG2SFHIT_LOCALY_LEN-1 downto 0);
+    variable radius   : unsigned(HEG2SFHIT_RADIUS_LEN-1 downto 0);
+
+  begin
+
+    ToA     := VALUE.ToA;
+    station := VALUE.station;
+    thread  := VALUE.thread;
+    mlayer  := VALUE.heg_bm.mlayer;
+    localx  := VALUE.heg_bm.localx;
+    localy  := VALUE.heg_bm.localy;
+    radius  := VALUE.heg_bm.radius;
+
+    SWRITE(L, "HIT: ",right,5);
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ' ');
+    WRITE(L, to_integer( station));
+    WRITE(L, ' ');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ' ');
+    WRITE(L, mlayer);
+    WRITE(L, ' ');
+    WRITE(L, to_integer( localx));
+    WRITE(L, ' ');
+    WRITE(L, to_integer( localy));
+    WRITE(L, ' ');
+    WRITE(L, to_integer( radius));
+
+  end procedure;
+
+  -- procedure WRITE(L:inout LINE; VALUE : in heg2sfslc_rt) is
+
+  -- begin
+
+  -- end procedure;
 
 end gldl_l0mdt_textio_pkg;
