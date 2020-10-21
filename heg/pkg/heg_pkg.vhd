@@ -57,9 +57,8 @@ package heg_pkg is
     rst : std_logic;
     eof : std_logic;
     enable : std_logic;
-    slope : unsigned(CSF_SLOPE_LEN-1 downto 0);
   end record heg_ctrl2sf_rt;
-  constant HEG_CTRL2SF_LEN : integer := 14;
+  constant HEG_CTRL2SF_LEN : integer := 3;
   subtype heg_ctrl2sf_rvt is std_logic_vector(HEG_CTRL2SF_LEN-1 downto 0);
   function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt;
   function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt;
@@ -249,19 +248,17 @@ package body heg_pkg is
   function vectorify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rvt is
     variable y : heg_ctrl2sf_rvt;
   begin
-    y(13 downto 13)            := vectorify(x.rst);
-    y(12 downto 12)            := vectorify(x.eof);
-    y(11 downto 11)            := vectorify(x.enable);
-    y(10 downto 0)             := vectorify(x.slope);
+    y(2 downto 2)              := vectorify(x.rst);
+    y(1 downto 1)              := vectorify(x.eof);
+    y(0 downto 0)              := vectorify(x.enable);
     return y;
   end function vectorify;
   function structify(x: heg_ctrl2sf_rvt) return heg_ctrl2sf_rt is
     variable y : heg_ctrl2sf_rt;
   begin
-    y.rst                      := structify(x(13 downto 13));
-    y.eof                      := structify(x(12 downto 12));
-    y.enable                   := structify(x(11 downto 11));
-    y.slope                    := structify(x(10 downto 0));
+    y.rst                      := structify(x(2 downto 2));
+    y.eof                      := structify(x(1 downto 1));
+    y.enable                   := structify(x(0 downto 0));
     return y;
   end function structify;
   function nullify(x: heg_ctrl2sf_rt) return heg_ctrl2sf_rt is
@@ -270,7 +267,6 @@ package body heg_pkg is
     y.rst                      := nullify(x.rst);
     y.eof                      := nullify(x.eof);
     y.enable                   := nullify(x.enable);
-    y.slope                    := nullify(x.slope);
     return y;
   end function nullify;
 

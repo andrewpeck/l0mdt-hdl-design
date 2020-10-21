@@ -46,7 +46,7 @@ HDL_Types:
   - rst           : [ type : logic ]
   - eof           : [ type : logic ]
   - enable        : [ type : logic ]
-  - slope         : [ type : unsigned , length : CSF_SLOPE_LEN]
+  # - slope         : [ type : unsigned , length : CSF_SLOPE_LEN]
   # - window_valid  : [ type : logic ]
 # -----------------------------------------------------------
 #  heg: heg control 2 hp slc data

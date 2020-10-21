@@ -134,7 +134,7 @@ begin
         o_sf_control_r.enable <= '0';
         o_sf_control_r.rst <= '0';
         o_sf_control_r.eof <= '0';
-        o_sf_control_r.slope <= (others => '0');
+        -- o_sf_control_r.slope <= (others => '0');
         -- o_sf_control_r.window_valid <= '0';
         -- hp control reset
         b_data <= nullify(b_data);
@@ -205,7 +205,7 @@ begin
             end if;
 
             if csf_slope_dv = '1' then
-              o_sf_control_r.slope <= csf_slope;
+              -- o_sf_control_r.slope <= csf_slope;
               if c_SF_TYPE = '0' then
                 o_uCM2sf_data_r.vec_ang     <= csf_slope;
               end if;
@@ -242,6 +242,7 @@ begin
           o_uCM2sf_data_r.data_valid <= '0';
 
             if to_integer(unsigned(busy_count)) < heg_times.load then
+              -- WAITING SF TO LOAD
             elsif to_integer(unsigned(busy_count)) < heg_times.busy then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';

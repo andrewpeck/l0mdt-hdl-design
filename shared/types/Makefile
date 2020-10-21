@@ -200,4 +200,6 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
+	-e ../../hp/pkg/hp.yml   \
+	-e ../../heg/pkg/heg.yml \
 	../../shared/sim/pkg/gldl_ult_tp_sim.yml

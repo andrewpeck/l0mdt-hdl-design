@@ -66,7 +66,7 @@ architecture beh of hps is
   -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
   -- signal control_enable(c_NUM_THREADS -1 downto 0);
 
-  signal heg2sf_control : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
+  signal heg2sf_ctrl_av : hps_ctrl2sf_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfslc_av   : heg2sfslc_bus_avt(c_NUM_THREADS -1 downto 0);
   signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
 
@@ -108,7 +108,7 @@ begin
         -- MDT hit
         i_mdt_full_data_av => mdt_full_data_av,
         -- to Segment finder
-        o_sf_control_v     => heg2sf_control(heg_i),
+        o_sf_control_v     => heg2sf_ctrl_av(heg_i),
         o_sf_slc_data_v    => heg2sfslc_av(heg_i),
         o_sf_mdt_data_v    => heg2sfhit_av(heg_i)
         );
@@ -129,7 +129,7 @@ begin
         rst          => rst,
         glob_en      => glob_en,
         -- to Segment finder
-        i_control_v  => heg2sf_control(heg_i),
+        i_control_v  => heg2sf_ctrl_av(heg_i),
         i_slc_data_v => heg2sfslc_av(heg_i),
         i_mdt_data_v => heg2sfhit_av(heg_i),
         --

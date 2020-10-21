@@ -9,6 +9,8 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
 
 package gldl_ult_tp_sim_pkg is
 
@@ -79,6 +81,19 @@ package gldl_ult_tp_sim_pkg is
   function vectorify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rvt;
   function structify(x: out_heg_bm_slc_sim_rvt) return out_heg_bm_slc_sim_rt;
   function nullify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rt;
+
+  type out_heg_bm_ctrl_sim_rt is record
+    ToA : unsigned(64-1 downto 0);
+    station : unsigned(4-1 downto 0);
+    thread : unsigned(4-1 downto 0);
+    heg_ctrl : heg_ctrl2sf_rt;
+    heg_bm : heg2sfslc_rt;
+  end record out_heg_bm_ctrl_sim_rt;
+  constant OUT_HEG_BM_CTRL_SIM_LEN : integer := 147;
+  subtype out_heg_bm_ctrl_sim_rvt is std_logic_vector(OUT_HEG_BM_CTRL_SIM_LEN-1 downto 0);
+  function vectorify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rvt;
+  function structify(x: out_heg_bm_ctrl_sim_rvt) return out_heg_bm_ctrl_sim_rt;
+  function nullify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rt;
 
 end package gldl_ult_tp_sim_pkg;
 
@@ -294,6 +309,37 @@ package body gldl_ult_tp_sim_pkg is
     y.ToA                      := nullify(x.ToA);
     y.station                  := nullify(x.station);
     y.thread                   := nullify(x.thread);
+    y.heg_bm                   := nullify(x.heg_bm);
+    return y;
+  end function nullify;
+
+  function vectorify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rvt is
+    variable y : out_heg_bm_ctrl_sim_rvt;
+  begin
+    y(146 downto 83)           := vectorify(x.ToA);
+    y(82 downto 79)            := vectorify(x.station);
+    y(78 downto 75)            := vectorify(x.thread);
+    y(74 downto 72)            := vectorify(x.heg_ctrl);
+    y(71 downto 0)             := vectorify(x.heg_bm);
+    return y;
+  end function vectorify;
+  function structify(x: out_heg_bm_ctrl_sim_rvt) return out_heg_bm_ctrl_sim_rt is
+    variable y : out_heg_bm_ctrl_sim_rt;
+  begin
+    y.ToA                      := structify(x(146 downto 83));
+    y.station                  := structify(x(82 downto 79));
+    y.thread                   := structify(x(78 downto 75));
+    y.heg_ctrl                 := structify(x(74 downto 72));
+    y.heg_bm                   := structify(x(71 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rt is
+    variable y : out_heg_bm_ctrl_sim_rt;
+  begin
+    y.ToA                      := nullify(x.ToA);
+    y.station                  := nullify(x.station);
+    y.thread                   := nullify(x.thread);
+    y.heg_ctrl                 := nullify(x.heg_ctrl);
     y.heg_bm                   := nullify(x.heg_bm);
     return y;
   end function nullify;
