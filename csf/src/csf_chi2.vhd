@@ -118,7 +118,7 @@ begin
     generic map(
         ADDR => CSF_MAXHITS_ML_LEN,
         DATA => CSF_HIT_LEN,
-        ram_type => "block"
+        ram_type => "distributed"
         )
     port map(
         a_clk  => clk,
@@ -134,7 +134,7 @@ begin
     generic map(
         ADDR => CSF_MAXHITS_ML_LEN,
         DATA => CSF_HIT_LEN,
-        ram_type => "block"
+        ram_type => "distributed"
         )
     port map(
         a_clk  => clk,
