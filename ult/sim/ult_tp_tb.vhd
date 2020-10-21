@@ -734,14 +734,14 @@ begin
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
           for heg_i in c_NUM_THREADS -1 downto 0 loop
             read_ctrl := structify(heg2sf_inn_ctrl_av(heg_i));
-            read_slc := structify(heg2sf_inn_slc_av(heg_i));
+            -- read_slc := structify(heg2sf_inn_slc_av(heg_i));
             if read_ctrl.eof = '1' then
-
+              read_slc := structify(heg2sf_inn_slc_av(heg_i));
               ctrl2write.ToA      := tb_curr_tdc_time;
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              slc2write.HEG_BM    := read_slc;
+              ctrl2write.HEG_BM    := read_slc;
               write(row,ctrl2write);
               writeline(file_handler,row);
 
@@ -751,14 +751,14 @@ begin
         if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
           for heg_i in c_NUM_THREADS -1 downto 0 loop
             read_ctrl := structify(heg2sf_mid_ctrl_av(heg_i));
-            read_slc := structify(heg2sf_mid_slc_av(heg_i));
+            -- read_slc := structify(heg2sf_mid_slc_av(heg_i));
             if read_ctrl.eof = '1' then
-
+              read_slc := structify(heg2sf_mid_slc_av(heg_i));
               ctrl2write.ToA      := tb_curr_tdc_time;
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              slc2write.HEG_BM    := read_slc;
+              ctrl2write.HEG_BM    := read_slc;
               write(row,ctrl2write);
               writeline(file_handler,row);
 
@@ -768,14 +768,14 @@ begin
         if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
           for heg_i in c_NUM_THREADS -1 downto 0 loop
             read_ctrl := structify(heg2sf_out_ctrl_av(heg_i));
-            read_slc := structify(heg2sf_out_slc_av(heg_i));
+            -- read_slc := structify(heg2sf_out_slc_av(heg_i));
             if read_ctrl.eof = '1' then
-
+              read_slc := structify(heg2sf_out_slc_av(heg_i));
               ctrl2write.ToA      := tb_curr_tdc_time;
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              slc2write.HEG_BM    := read_slc;
+              ctrl2write.HEG_BM    := read_slc;
               write(row,ctrl2write);
               writeline(file_handler,row);
 
