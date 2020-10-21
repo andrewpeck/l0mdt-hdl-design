@@ -181,7 +181,8 @@ architecture Behavioral of csf_histogram is
   GENERIC (
       MXADRB   : integer;
       MXDATB   : integer;
-      ROM_FILE : string
+      ROM_FILE : string;
+      ROM_STYLE : string
   );
   PORT (
       clka  : in std_logic;
