@@ -84,7 +84,8 @@ architecture Behavioral of seg_coord_transform is
     GENERIC (
         MXADRB   : integer;
         MXDATB   : integer;
-        ROM_FILE : string
+        ROM_FILE : string;
+        ROM_STYLE : string
     );
     PORT (
         clka  : in std_logic;
@@ -104,7 +105,8 @@ begin
     GENERIC MAP(
         MXADRB => CSF_SEG_M_LEN+1,
         MXDATB => SF2PTCALC_SEGANGLE_LEN,
-        ROM_FILE => "m_to_theta.mem"
+        ROM_FILE => "m_to_theta.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP(
         clka => clk,
