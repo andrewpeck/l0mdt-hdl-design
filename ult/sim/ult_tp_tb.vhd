@@ -221,8 +221,8 @@ architecture beh of ult_tp is
   signal dummy_hit : out_heg_bm_hit_sim_rt;
   signal fummy_slc : out_heg_bm_slc_sim_rt;
 
-  signal read_slc : heg2sfslc_rt;
-  signal read_hit : heg2sfhit_rt;
+  -- signal read_slc : heg2sfslc_rt;
+  -- signal read_hit : heg2sfhit_rt;
 
   -- constant OUTPUT_FIFO_LEN : integer := 128;
   -- type heg2sf_rt is record
@@ -638,11 +638,28 @@ begin
 
     variable hit2write : out_heg_bm_hit_sim_rt;
     variable slc2write : out_heg_bm_slc_sim_rt;
+
+    variable read_slc : heg2sfslc_rt;
+    variable read_hit : heg2sfhit_rt;
+
+    variable header2write : std_logic := '0';
+
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        -- heg2sf_hits_fifo <= (others => (others => '0'));        
+        -- heg2sf_hits_fifo <= (others => (others => '0'));    
+            
       else
+
+        if header2write = '0' then
+          SWRITE(row, "# Output of the HEG buffer mux for ");
+          writeline(file_handler,row);
+          WRITEHEADER(row,slc2write);
+          writeline(file_handler,row);
+          WRITEHEADER(row,hit2write);
+          writeline(file_handler,row);
+          header2write := '1';
+        end if;
 
         -- fifo_mem_v := (others => ('0',nullify(dummy_slc),nullify(dummy_hit)));
         fifo_count := 0;
@@ -650,43 +667,97 @@ begin
         -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
           if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
             for heg_i in c_NUM_THREADS -1 downto 0 loop
-              read_hit <= structify(heg2sf_inn_hit_av(heg_i));
+              read_slc := structify(heg2sf_inn_slc_av(heg_i));
+              if read_slc.data_valid = '1' then
+
+                slc2write.ToA      := tb_curr_tdc_time;
+                slc2write.station  := to_unsigned(0,4);
+                slc2write.thread   := to_unsigned(heg_i,4);
+                slc2write.HEG_BM   := read_slc;
+                write(row,slc2write);
+                writeline(file_handler,row);
+
+              end if;
+            end loop;
+          end if;
+          if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_slc := structify(heg2sf_mid_slc_av(heg_i));
+              if read_slc.data_valid = '1' then
+
+                slc2write.ToA      := tb_curr_tdc_time;
+                slc2write.station  := to_unsigned(1,4);
+                slc2write.thread   := to_unsigned(heg_i,4);
+                slc2write.HEG_BM   := read_slc;
+                write(row,slc2write);
+                writeline(file_handler,row);
+
+              end if;
+            end loop;
+          end if;
+          if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_slc := structify(heg2sf_out_slc_av(heg_i));
+              if read_slc.data_valid = '1' then
+
+                slc2write.ToA      := tb_curr_tdc_time;
+                slc2write.station  := to_unsigned(2,4);
+                slc2write.thread   := to_unsigned(heg_i,4);
+                slc2write.HEG_BM   := read_slc;
+                write(row,slc2write);
+                writeline(file_handler,row);
+
+              end if;
+            end loop;
+          end if;
+
+
+
+          if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_hit := structify(heg2sf_inn_hit_av(heg_i));
               if read_hit.data_valid = '1' then
                 -- hit2write.typ          := '1';
                 hit2write.ToA      := tb_curr_tdc_time;
                 hit2write.station  := to_unsigned(0,4);
                 hit2write.thread   := to_unsigned(heg_i,4);
-                hit2write.HEG_BM   := structify(heg2sf_inn_hit_av(heg_i));
+                hit2write.HEG_BM   := read_hit;
+                write(row,hit2write);
+                writeline(file_handler,row);
                 -- fifo_count := fifo_count + 1;
               end if;
             end loop;
           end if;
-          -- if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-          --   for heg_i in c_NUM_THREADS -1 downto 0 loop
-          --     read_hit <= structify(heg2sf_mid_hit_av(heg_i));
-          --     if read_hit.data_valid = '1' then
-          --       -- hit2write.typ          := '1';
-          --       hit2write.ToA      := tb_curr_tdc_time;
-          --       hit2write.station  := to_unsigned(1,4);
-          --       hit2write.thread   := to_unsigned(heg_i,4);
-          --       hit2write.HEG_BM   := structify(heg2sf_mid_hit_av(heg_i));
-          --       fifo_count := fifo_count + 1;
-          --     end if;
-          --   end loop;
-          -- end if;
-          -- if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-          --   for heg_i in c_NUM_THREADS -1 downto 0 loop
-          --     read_hit <= structify(heg2sf_out_hit_av(heg_i));
-          --     if read_hit.data_valid = '1' then
-          --       -- hit2write.typ          := '1';
-          --       hit2write.ToA      := tb_curr_tdc_time;
-          --       hit2write.station  := to_unsigned(2,4);
-          --       hit2write.thread   := to_unsigned(heg_i,4);
-          --       hit2write.HEG_BM   := structify(heg2sf_out_hit_av(heg_i));
-          --       fifo_count := fifo_count + 1;
-          --     end if;
-          --   end loop;
-          -- end if;
+          if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_hit := structify(heg2sf_mid_hit_av(heg_i));
+              if read_hit.data_valid = '1' then
+                -- hit2write.typ          := '1';
+                hit2write.ToA      := tb_curr_tdc_time;
+                hit2write.station  := to_unsigned(1,4);
+                hit2write.thread   := to_unsigned(heg_i,4);
+                hit2write.HEG_BM   := read_hit;
+                write(row,hit2write);
+                writeline(file_handler,row);
+                -- fifo_count := fifo_count + 1;
+              end if;
+            end loop;
+          end if;
+          if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
+            for heg_i in c_NUM_THREADS -1 downto 0 loop
+              read_hit := structify(heg2sf_out_hit_av(heg_i));
+              if read_hit.data_valid = '1' then
+                -- hit2write.typ          := '1';
+                hit2write.ToA      := tb_curr_tdc_time;
+                hit2write.station  := to_unsigned(2,4);
+                hit2write.thread   := to_unsigned(heg_i,4);
+                hit2write.HEG_BM   := read_hit;
+                write(row,hit2write);
+                writeline(file_handler,row);
+                -- fifo_count := fifo_count + 1;
+              end if;
+            end loop;
+          end if;
         -- end loop;
 
         -- for ff_i in 0 to fifo_count -1 loop

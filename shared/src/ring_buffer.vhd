@@ -69,6 +69,8 @@ architecture rtl of ring_buffer is
     std_logic_vector(wr_data'range);
   signal ram : ram_type;
 
+  signal dv_ram : std_logic_vector(0 to RAM_DEPTH - 1) := (others => '0');
+
   attribute ram_style        : string;
   attribute ram_style of ram : signal is MEMORY_TYPE;
 
@@ -96,10 +98,10 @@ architecture rtl of ring_buffer is
   function wrap_around_tail (ptr : integer; dly : integer; max : integer)
     return integer is
   begin
-    if (ptr >= dly-1) then
-      return (ptr-dly-1);
+    if (ptr >= dly) then
+      return (ptr-dly);
     else
-      return (ptr+dly-1);
+      return (max -1 - dly + ptr);
     end if;
   end;
 

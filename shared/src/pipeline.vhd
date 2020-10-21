@@ -72,26 +72,26 @@ end generate;
 RING : if logic_type = "ring_buffer" generate
   u_daq_inner_delay : entity shared_lib.ring_buffer
     generic map (
-      MEMORY_TYPE => type_memory,
+      MEMORY_TYPE   => type_memory,
       -- PIPELINE_REGS => num_delays,
-      RAM_WIDTH   => num_bits,
-      RAM_DEPTH   => num_delays,-- + 4, -- - 2,
+      RAM_WIDTH     => num_bits,
+      RAM_DEPTH     => num_delays,-- + 4, -- - 2,
       FIXED_DELAY   => true
     )
     port map (
-      clk          => clk,
-      rst          => rst,
-      delay        => num_delays - 2,-- -1-2,
-      wr_en_i      => '1',
-      wr_data_i    => i_data,
-      rd_en_i      => '1',
-      rd_valid_o   => open,
-      rd_data_o    => o_data,
-      empty_o      => open,
-      empty_next_o => open,
-      full_o       => open,
-      full_next_o  => open,
-      fill_count_o => open
+      clk           => clk,
+      rst           => rst,
+      delay         => num_delays - 2,-- -1-2,
+      wr_en_i       => '1',
+      wr_data_i     => i_data,
+      rd_en_i       => '1',
+      rd_valid_o    => open,
+      rd_data_o     => o_data,
+      empty_o       => open,
+      empty_next_o  => open,
+      full_o        => open,
+      full_next_o   => open,
+      fill_count_o  => open
     );
 end generate;
 

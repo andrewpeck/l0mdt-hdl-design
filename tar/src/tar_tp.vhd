@@ -68,7 +68,7 @@ begin
       PL : entity shared_lib.std_pipeline
       generic map(
         type_memory => "ultra",
-        logic_type  => "ring_buffer",
+        logic_type  => "shift_reg",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_inn_tar_hits(b_i)'length
       )
@@ -88,7 +88,7 @@ begin
       PL : entity shared_lib.std_pipeline
       generic map(
         type_memory => "ultra",
-        logic_type  => "ring_buffer",
+        logic_type  => "shift_reg",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_mid_tar_hits(b_i)'length
       )
@@ -108,7 +108,7 @@ begin
       PL : entity shared_lib.std_pipeline
       generic map(
         type_memory => "ultra",
-        logic_type  => "ring_buffer",
+        logic_type  => "shift_reg",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_out_tar_hits(b_i)'length
       )
@@ -128,7 +128,7 @@ begin
       PL : entity shared_lib.std_pipeline
       generic map(
         type_memory => "ultra",
-        logic_type  => "ring_buffer",
+        logic_type  => "shift_reg",
         num_delays  => TAR_PL_A_LATENCY,
         num_bits    => i_ext_tar_hits(b_i)'length
       )

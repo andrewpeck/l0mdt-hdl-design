@@ -93,6 +93,46 @@ begin
         else
           o_dv <= int_data_valid;
           if(int_data_valid = '1') then
+            o_time_t0 <= to_unsigned(integer(BM_T0_mem(to_integer(addr_mem))),MDT_TIME_LEN);
+          else
+            o_time_t0 <= (others => '0');
+          end if;
+        end if;
+      end if ;
+    end process;
+  end generate;
+
+  MID_GEN: if g_STATION_RADIUS = 1 generate
+    DT2R : process(clk)
+
+    begin
+      if rising_edge(clk) then
+        if rst= '1' then
+          o_time_t0 <= (others => '0');
+          o_dv <= '0';
+        else
+          o_dv <= int_data_valid;
+          if(int_data_valid = '1') then
+            o_time_t0 <= to_unsigned(integer(BO_T0_mem(to_integer(addr_mem))),MDT_TIME_LEN);
+          else
+            o_time_t0 <= (others => '0');
+          end if;
+        end if;
+      end if ;
+    end process;
+  end generate;
+
+  OUT_GEN: if g_STATION_RADIUS = 2 generate
+    DT2R : process(clk)
+
+    begin
+      if rising_edge(clk) then
+        if rst= '1' then
+          o_time_t0 <= (others => '0');
+          o_dv <= '0';
+        else
+          o_dv <= int_data_valid;
+          if(int_data_valid = '1') then
             o_time_t0 <= to_unsigned(integer(BI_T0_mem(to_integer(addr_mem))),MDT_TIME_LEN);
           else
             o_time_t0 <= (others => '0');

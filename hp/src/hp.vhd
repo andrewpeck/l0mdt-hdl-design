@@ -56,8 +56,8 @@ architecture beh of hit_processor is
   signal mdt_data             : hp_hpsPc2hp_rt;
   -- signal tdc_time_t0          : mdt_time_le_st;
   -- signal tdc_time_comp_valid  : std_logic;
-  signal tdc_hitmatch_valid   : std_logic;
-  signal tdc_hitmatch_valid_pl: std_logic;
+  -- signal tdc_hitmatch_valid   : std_logic;
+  -- signal tdc_hitmatch_valid_pl: std_logic;
   signal tdc_paramcalc_valid  : std_logic;
 
   signal hm2pl      : std_logic_vector(1 downto 0);
