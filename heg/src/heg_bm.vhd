@@ -52,34 +52,11 @@ end entity heg_buffermux;
 
 architecture beh of heg_buffermux is
 
-  -- component heg_buffermux_infifo is
-  --   generic( 
-  --     BM_FIFO_DEPTH : integer := 4;
-  --     BM_FIFO_WIDTH : integer := 4
-  --   );
-  --   port (
-  --     clk                 : in std_logic;
-
-  --     rst                 : in std_logic;
-  --     glob_en             : in std_logic;
-  --     -- in
-  --     i_mdt_hit           : in std_logic_vector(BM_FIFO_WIDTH -1 downto 0);
-  --     i_wr                : in std_logic;
-  --     i_rd                : in std_logic;
-  --     -- out
-  --     o_used              : out unsigned(integer(log2(real(BM_FIFO_DEPTH))) -1 downto 0);
-  --     o_empty             : out std_logic;
-  --     o_mdt_hit           : out std_logic_vector(BM_FIFO_WIDTH -1 downto 0)
-  
-  --   );
-  -- end component heg_buffermux_infifo;
-
   -- TEMP ---------------------------------
   constant gc_HPS_NUM_MDT_CH    : integer := 6;
   ---------------------------------------------
 
-
-  constant BM_FIFO_DEPTH : integer := 32;
+  constant BM_FIFO_DEPTH : integer := 8;
   
   signal i_mdt_hits_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
 
@@ -88,20 +65,19 @@ architecture beh of heg_buffermux is
 
   signal o_mdt_hits_r : heg2sfhit_rt; 
 
-  -- signal ff_i_mdt_hit_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
-  -- signal ff_i_mdt_hit_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_o_mdt_hit_av  : heg_hp2bm_data_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal ff_o_mdt_hit_dv  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal ff_o_mdt_hit_av : heg_hp2bm_data_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
-  -- signal ff_o_mdt_hit_ar  : heg_hp2bm_data_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
-
-  signal buff_mdt_hit_v : hp_hp2sf_data_rvt;
-  signal buff_mdt_hit_r : hp_hp2sf_data_rt;
-  signal buff_mdt_dv    : std_logic;
+  signal buff_mdt_hit_v   : hp_hp2sf_data_rvt;
+  signal buff_mdt_hit_r   : hp_hp2sf_data_rt;
+  signal buff_mdt_dv      : std_logic;
   
-  type fifo_used_at is array (g_HPS_NUM_MDT_CH -1 downto 0) of unsigned(integer(log2(real(BM_FIFO_DEPTH))) -1 downto 0);
+  type fifo_used_at is array (g_HPS_NUM_MDT_CH -1 downto 0) of integer;--unsigned(integer(log2(real(BM_FIFO_DEPTH))) -1 downto 0);
   signal fifo_used        : fifo_used_at;
   signal fifo_empty       : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
-  -- signal fifo_empty_next  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_empty_next  : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_full        : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
+  signal fifo_full_next   : std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
 
   type read_index_a is array (5 downto 0) of integer;
   signal next_read : read_index_a := (5,4,3,2,1,0);
@@ -109,6 +85,7 @@ architecture beh of heg_buffermux is
   signal nexthit  : integer := 0; --std_logic_vector(g_HPS_NUM_MDT_CH-1 downto 0);
   signal lasthit  : integer := 0;
   signal readhit  : std_logic;
+  signal last_read : integer;
 begin
 
   o_mdt_hits_v <= vectorify(o_mdt_hits_r);
@@ -127,31 +104,33 @@ begin
 
     fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 
-  --   BM_IN_FIFO : heg_buffermux_infifo
-  --   generic map(
-  --     BM_FIFO_DEPTH   => BM_FIFO_DEPTH,
-  --     BM_FIFO_WIDTH   => HP_HP2SF_DATA_LEN
-  --   )
-  --   port map(
-  --     clk                 => clk,
-  --     rst                 => rst,
-  --     glob_en             => i_control(hp_i).enable,
-  --     --
-  --     i_mdt_hit           => vectorify(i_mdt_hits_ar(hp_i).data),
-  --     i_wr                => fifo_wr(hp_i),
-  --     i_rd                => fifo_rd(hp_i),
-  --     --
-  --     o_used              => fifo_used(hp_i),
-  --     o_empty             => fifo_empty(hp_i),
-  --     o_mdt_hit           => ff_o_mdt_hit_av(hp_i)
-  --   );
-  -- end generate;
+    rb : entity shared_lib.ring_buffer_v2
+    generic map (
+      LOGIC_TYPE    => "fifo",
+      FIFO_TYPE     => "read_ahead",
+      MEMORY_TYPE   => "distributed",
+      -- PIPELINE_IN_REGS => 1,
+      -- PIPELINE_OUT_REGS => 1,
+      RAM_WIDTH     => HP_HP2SF_DATA_LEN,
+      RAM_DEPTH     => BM_FIFO_DEPTH
+    )
+    port map (
+      clk           => clk,
+      rst           => rst,
+      -- delay         => num_delays - 2,
+      i_wr          => fifo_wr(hp_i),
+      i_wr_data     => vectorify(i_mdt_hits_ar(hp_i).data),
+      i_rd          => fifo_rd(hp_i),
+      o_rd_dv       => ff_o_mdt_hit_dv(hp_i),
+      o_rd_data     => ff_o_mdt_hit_av(hp_i),
+      o_empty       => fifo_empty(hp_i),
+      o_empty_next  => fifo_empty_next(hp_i),
+      o_full        => fifo_full(hp_i),
+      o_full_next   => fifo_full_next(hp_i),
+      o_used        => fifo_used(hp_i)
+    );
 
-    
-
-
-
-
+  end generate;
 
   BM_proc : process(rst,clk) 
     variable index_offset_v   : integer := 0;
@@ -227,6 +206,8 @@ begin
         -- end if;
 
         -- if g_HPS_NUM_MDT_CH < 5 then
+
+        last_read_v := 0;
 
         if fifo_empty(next_read(5)) = '0' then
           if lasthit = next_read(5) then
@@ -327,6 +308,8 @@ begin
           lasthit <= 10;
           last_read_v := 0;
         end if;
+
+        last_read <= last_read_v;
 
         for index_i in 5 downto 0 loop
           if next_read(index_i) + last_read_v < 6 then
@@ -548,7 +531,7 @@ end beh;
 --   end process;
 
 
-end beh;
+-- end beh;
 
 
 

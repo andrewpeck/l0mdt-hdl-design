@@ -11,11 +11,16 @@
 --  Revisions:
 --
 --------------------------------------------------------------------------------
-
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
+-- use ieee.math_real.all;
 
 entity ring_buffer_v2 is
   generic(
     LOGIC_TYPE    : string := "fifo"; -- fifo, pipeline
+    FIFO_TYPE     : string := "normal"; -- normal , read_ahead
     MEMORY_TYPE   : string := "auto"; -- auto, ultra, block, distributed
     --
     PIPELINE_IN_REGS  : natural := 0;
@@ -40,10 +45,10 @@ entity ring_buffer_v2 is
     o_empty_next  : out std_logic;
     o_full        : out std_logic;
     o_full_next   : out std_logic;
+    -- used counter
+    o_used        : out integer range RAM_DEPTH - 1 downto 0;
     -- The delay can be changed by the offset and resetting the module
-    i_delay       : in integer range RAM_DEPTH - 1 downto 0 := RAM_DEPTH-1;
-    -- The number of elements in the FIFO
-    fill_count_o  : out integer range RAM_DEPTH - 1 downto 0
+    i_delay       : in integer range RAM_DEPTH - 1 downto 0 := RAM_DEPTH-1    
   );
 end entity ring_buffer_v2;
 
@@ -51,7 +56,7 @@ architecture rtl of ring_buffer_v2 is
   --------------------------------
   -- memory
   --------------------------------
-  type mem_avt is array (0 to RAM_DEPTH - 1) of std_logic_vector(wr_data'range);
+  type mem_avt is array (0 to RAM_DEPTH - 1) of std_logic_vector(RAM_WIDTH - 1 downto 0);
   signal mem    : mem_avt;
   signal mem_dv : std_logic_vector(0 to RAM_DEPTH - 1);
   attribute ram_style        : string;
@@ -59,6 +64,8 @@ architecture rtl of ring_buffer_v2 is
   --------------------------------
   -- signals
   --------------------------------
+  signal case_options : std_logic_vector(1 downto 0);
+
   signal wr_index : integer range 0 to RAM_DEPTH -1 := 0;
   signal rd_index : integer range 0 to RAM_DEPTH -1 := 0;
 
@@ -84,7 +91,7 @@ architecture rtl of ring_buffer_v2 is
     else
       -- ERROR
     end if;
-    return o_wr_index;
+    return o_rd_index;
 
   end function;
 
@@ -101,13 +108,22 @@ architecture rtl of ring_buffer_v2 is
 
 begin
 
+  o_used <= used_data;
+
   case_options <= i_wr & i_rd;
 
-  MEM: process(clk)
+  MEM_PROC: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
         mem_dv <= (others => '0');
+        rd_index <= 0;
+        wr_index <= 0;
+        o_empty       <= '1';
+        o_empty_next  <= '0';
+        o_full        <= '0';
+        o_full_next   <= '0';
+        used_data <= 0;
       else
         --------------------------------
         -- PIPELINES CTRL
@@ -155,11 +171,20 @@ begin
         --------------------------------
         -- INPUT SIGNALS CTRL
         --------------------------------
+        if LOGIC_TYPE = "fifo" and FIFO_TYPE = "read_ahead" then
+          o_rd_data <= mem(rd_index);
+        end if;
 
         case case_options is
           when b"00" => -- idle
+            if FIFO_TYPE /= "read_ahead" then
+              o_rd_data <= (others => '0');
+            end if;
 
           when b"10" => -- write
+            if FIFO_TYPE /= "read_ahead" then
+              o_rd_data <= (others => '0');
+            end if;
 
             if used_data < RAM_DEPTH - 1 then
               mem(wr_index) <= i_wr_data;
@@ -170,8 +195,10 @@ begin
           when b"01" => -- read
           
           if used_data > 0 then
-            o_rd_data <= mem(rd_index);
-            rd_index <= get_read_index(rd_index);
+            if FIFO_TYPE /= "read_ahead" then
+              o_rd_data <= mem(rd_index);
+            end if;
+            rd_index <= get_read_index(rd_index,wr_index);
             used_data <= used_data - 1;
           end if;
 
@@ -179,8 +206,10 @@ begin
           when b"11" => -- read & write 
 
             if used_data > 0 then
-              o_rd_data <= mem(rd_index);
-              rd_index <= get_read_index(rd_index)
+              if FIFO_TYPE /= "read_ahead" then
+                o_rd_data <= mem(rd_index);
+              end if;
+              rd_index <= get_read_index(rd_index,wr_index);
             end if;
 
             mem(wr_index) <= i_wr_data;
@@ -200,7 +229,7 @@ begin
 
       end if;
     end if;
-  end process MEM;
+  end process MEM_PROC;
   
   
   
