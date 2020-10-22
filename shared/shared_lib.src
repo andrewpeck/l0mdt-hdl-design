@@ -42,6 +42,7 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
 shared/src/pipeline.vhd
 shared/src/ring_buffer.vhd
+shared/src/ring_buffer_v2.vhd
 
 shared/src/bram.vhd
 shared/src/rom.v
