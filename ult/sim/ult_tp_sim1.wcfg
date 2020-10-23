@@ -59,15 +59,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="155246fs"></ZoomEndTime>
-      <Cursor1Time time="23430fs"></Cursor1Time>
+      <ZoomStartTime time="751154fs"></ZoomStartTime>
+      <ZoomEndTime time="778075fs"></ZoomEndTime>
+      <Cursor1Time time="760694fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="258"></NameColumnWidth>
+      <NameColumnWidth column_width="242"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="15" />
+   <WVObjectSize size="14" />
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
       <obj_property name="ObjectShortName">.clk</obj_property>
@@ -958,6 +958,9 @@
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/i_wr_data">
                <obj_property name="ElementShortName">i_wr_data[35:0]</obj_property>
                <obj_property name="ObjectShortName">i_wr_data[35:0]</obj_property>
+               <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="Radix">HEXRADIX</obj_property>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/i_rd">
                <obj_property name="ElementShortName">i_rd</obj_property>
@@ -996,13 +999,14 @@
                <obj_property name="ObjectShortName">i_delay</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/mem">
-               <obj_property name="ElementShortName">mem[0:4][35:0]</obj_property>
-               <obj_property name="ObjectShortName">mem[0:4][35:0]</obj_property>
+               <obj_property name="ElementShortName">mem[0:397][35:0]</obj_property>
+               <obj_property name="ObjectShortName">mem[0:397][35:0]</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/mem_dv">
-               <obj_property name="ElementShortName">mem_dv[0:4]</obj_property>
-               <obj_property name="ObjectShortName">mem_dv[0:4]</obj_property>
-               <obj_property name="isExpanded"></obj_property>
+               <obj_property name="ElementShortName">mem_dv[0:397]</obj_property>
+               <obj_property name="ObjectShortName">mem_dv[0:397]</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/case_options">
                <obj_property name="ElementShortName">case_options[1:0]</obj_property>
@@ -1018,14 +1022,6 @@
                <obj_property name="ElementShortName">rd_index</obj_property>
                <obj_property name="ObjectShortName">rd_index</obj_property>
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-            </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/wr_dv">
-               <obj_property name="ElementShortName">wr_dv</obj_property>
-               <obj_property name="ObjectShortName">wr_dv</obj_property>
-            </wvobject>
-            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/rd_dv">
-               <obj_property name="ElementShortName">rd_dv</obj_property>
-               <obj_property name="ObjectShortName">rd_dv</obj_property>
             </wvobject>
             <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/used_data">
                <obj_property name="ElementShortName">used_data</obj_property>
@@ -2713,14 +2709,6 @@
                   <obj_property name="ElementShortName">rd_index</obj_property>
                   <obj_property name="ObjectShortName">rd_index</obj_property>
                </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/wr_dv">
-                  <obj_property name="ElementShortName">wr_dv</obj_property>
-                  <obj_property name="ObjectShortName">wr_dv</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/rd_dv">
-                  <obj_property name="ElementShortName">rd_dv</obj_property>
-                  <obj_property name="ObjectShortName">rd_dv</obj_property>
-               </wvobject>
                <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/used_data">
                   <obj_property name="ElementShortName">used_data</obj_property>
                   <obj_property name="ObjectShortName">used_data</obj_property>
@@ -3662,14 +3650,6 @@
                   <obj_property name="ElementShortName">rd_index</obj_property>
                   <obj_property name="ObjectShortName">rd_index</obj_property>
                </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/wr_dv">
-                  <obj_property name="ElementShortName">wr_dv</obj_property>
-                  <obj_property name="ObjectShortName">wr_dv</obj_property>
-               </wvobject>
-               <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/rd_dv">
-                  <obj_property name="ElementShortName">rd_dv</obj_property>
-                  <obj_property name="ObjectShortName">rd_dv</obj_property>
-               </wvobject>
                <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/used_data">
                   <obj_property name="ElementShortName">used_data</obj_property>
                   <obj_property name="ObjectShortName">used_data</obj_property>
@@ -4154,10 +4134,6 @@
          <obj_property name="ElementShortName">g_HPS_NUM_MDT_CH</obj_property>
          <obj_property name="ObjectShortName">g_HPS_NUM_MDT_CH</obj_property>
       </wvobject>
-   </wvobject>
-   <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_out/HPS/\pc_gen(2)\/PC/tubesize">
-      <obj_property name="ElementShortName">tubesize[9:0]</obj_property>
-      <obj_property name="ObjectShortName">tubesize[9:0]</obj_property>
    </wvobject>
    <wvobject type="group" fp_name="group701">
       <obj_property name="label">mpl</obj_property>

@@ -242,7 +242,7 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          mem <= (others => (others => '0'));
+          -- mem <= (others => (others => '0'));
           mem_dv <= (others => '0');
           rd_index <= get_read_index(rd_index,wr_index);
           wr_index <= 0;
@@ -294,36 +294,42 @@ begin
           --------------------------------
           -- INPUT SIGNALS CTRL
           --------------------------------
+          -- if i_wr = '1' then
+            mem_dv(wr_index) <= i_wr;
+            mem(wr_index) <= i_wr_data;
+          -- end if;
+
+
           o_rd_data <= mem(rd_index);
           o_rd_dv <= mem_dv(rd_index);
 
-          case case_options is
-            when b"00" => -- idle
+          -- case case_options is
+          --   when b"00" => -- idle
 
-            when b"10" => -- write
+          --   when b"10" => -- write
 
-              mem_dv(wr_index) <= i_wr;
-              mem(wr_index) <= i_wr_data;
-              used_data <= used_data + 1;
+          --     -- mem_dv(wr_index) <= i_wr;
+          --     -- mem(wr_index) <= i_wr_data;
+          --     used_data <= used_data + 1;
 
-            when b"01" => -- read
+          --   when b"01" => -- read
             
-              -- o_rd_data <= mem(rd_index);
-              -- o_rd_dv <= mem_dv(rd_index);
-              mem_dv(rd_index) <= '0';
-              used_data <= used_data - 1;
+          --     -- o_rd_data <= mem(rd_index);
+          --     -- o_rd_dv <= mem_dv(rd_index);
+          --     -- mem_dv(rd_index) <= '0';
+          --     used_data <= used_data - 1;
               
-            when b"11" => -- read & write 
+          --   when b"11" => -- read & write 
 
-              -- o_rd_data <= mem(rd_index);
-              -- o_rd_dv <= mem_dv(rd_index);
-              mem_dv(wr_index) <= '1';
-              mem(wr_index) <= i_wr_data;
+          --     -- o_rd_data <= mem(rd_index);
+          --     -- o_rd_dv <= mem_dv(rd_index);
+          --     mem_dv(wr_index) <= '1';
+          --     mem(wr_index) <= i_wr_data;
 
-            when others =>
-              -- ERROR
+          --   when others =>
+          --     -- ERROR
             
-          end case;
+          -- end case;
           
           --------------------------------
           -- index  CTRL

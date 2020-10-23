@@ -48,9 +48,11 @@ architecture beh of std_pipeline is
 
 begin
   
-  o_data <= data_pl(0);
+  
 
   SHIFT : if logic_type = "shift_reg" generate
+
+    o_data <= data_pl(0);
 
     valid_pipe : process(rst,clk) begin
       if rising_edge(clk)then
@@ -73,17 +75,17 @@ RING : if logic_type = "ring_buffer" generate
   ring_mem : entity shared_lib.ring_buffer_v2
     generic map (
       LOGIC_TYPE    => "pipeline",
-      MEMORY_TYPE   => "distributed",
+      MEMORY_TYPE   => "block",
       -- PIPELINE_IN_REGS => 1,
       -- PIPELINE_OUT_REGS => 1,
       RAM_WIDTH     => num_bits,
-      RAM_DEPTH     => 4 + 1 
+      RAM_DEPTH     => num_delays + 1 
     )
     port map (
       clk           => clk,
       rst           => rst,
       --
-      i_delay         => 4,
+      i_delay         => num_delays,
       --
       i_wr          => '1',
       i_wr_data     => i_data,
