@@ -207,11 +207,11 @@ begin
 
         -- if g_HPS_NUM_MDT_CH < 5 then
 
-        last_read_v := 0;
+        -- last_read_v := 0;
 
         if fifo_empty(next_read(5)) = '0' then
           if lasthit = next_read(5) then
-            if fifo_used(5) > 1 then
+            if fifo_used(next_read(5)) > 1 then
               fifo_rd(next_read(5)) <= '1';
               lasthit <= next_read(5);
               last_read_v := 5;
@@ -226,7 +226,7 @@ begin
 
         elsif fifo_empty(next_read(4)) = '0' then
           if lasthit = next_read(4) then
-            if fifo_used(4) > 1 then
+            if fifo_used(next_read(4)) > 1 then
               fifo_rd(next_read(4)) <= '1';
               lasthit <= next_read(4);
               last_read_v := 4;
@@ -241,7 +241,7 @@ begin
 
         elsif fifo_empty(next_read(3)) = '0' then
           if lasthit = next_read(3) then
-            if fifo_used(3) > 1 then
+            if fifo_used(next_read(3)) > 1 then
               fifo_rd(next_read(3)) <= '1';
               lasthit <= next_read(3);
               last_read_v := 3;
@@ -256,7 +256,7 @@ begin
 
         elsif fifo_empty(next_read(2)) = '0' then
           if lasthit = next_read(2) then
-            if fifo_used(2) > 1 then
+            if fifo_used(next_read(2)) > 1 then
               fifo_rd(next_read(2)) <= '1';
               lasthit <= next_read(2);
               last_read_v := 2;
@@ -271,7 +271,7 @@ begin
 
         elsif fifo_empty(next_read(1)) = '0' then
           if lasthit = next_read(1) then
-            if fifo_used(1) > 1 then
+            if fifo_used(next_read(1)) > 1 then
               fifo_rd(next_read(1)) <= '1';
               lasthit <= next_read(1);
               last_read_v := 1;
@@ -287,12 +287,13 @@ begin
         elsif fifo_empty(next_read(0)) = '0' then
 
           if lasthit = next_read(0) then
-            if fifo_used(0) > 1 then
+            if fifo_used(next_read(0)) > 1 then
               fifo_rd(next_read(0)) <= '1';
               lasthit <= next_read(0);
               last_read_v := 0;
             else
               fifo_rd(next_read(0)) <= '0';
+              -- last_read_v := 7;
             end if;
           else
             fifo_rd(next_read(0)) <= '1';
@@ -302,7 +303,7 @@ begin
 
           -- fifo_rd(next_read(0)) <= '1';
           -- lasthit <= next_read(0);
-          -- last_read_v := 0;
+          -- last_read_v := 7;
         else
           fifo_rd <= (others => '0');
           lasthit <= 10;
