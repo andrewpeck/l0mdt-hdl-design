@@ -18,6 +18,7 @@ library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.numeric_std_unsigned.all;
 use std.textio.all;
 use std.standard.all;
 
@@ -31,36 +32,20 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library ult_lib;
-
-library heg_lib;
-use heg_lib.heg_pkg.all;
-library hps_lib;
-use hps_lib.hps_pkg.all;
-
-library ctrl_lib;
-use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.TAR_CTRL.all;
-use ctrl_lib.MTC_CTRL.all;
-use ctrl_lib.UCM_CTRL.all;
-use ctrl_lib.DAQ_CTRL.all;
-use ctrl_lib.TF_CTRL.all;
-use ctrl_lib.MPL_CTRL.all;
-
 library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+-- use project_lib.gldl_ult_tp_sim_pkg.all;
+-- use project_lib.gldl_l0mdt_textio_pkg.all;
 
-entity ult_tp is
+entity gldl_test_tb is
   generic (
-    IN_SLC_FILE       : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_MDT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_HEG_BM_FILE   : string  := "hps_heg_bm_A3_Barrel_yt_v04.txt";
+    -- IN_SLC_FILE       : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    -- IN_MDT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
+    -- OUT_HEG_BM_FILE   : string  := "hps_heg_bm_A3_Barrel_yt_v04.txt";
     DUMMY             : boolean := false
     );
-end entity ult_tp;
+end entity gldl_test_tb;
 
-architecture beh of ult_tp is
+architecture beh of gldl_test_tb is
 
   signal enable_mdt : integer := 1;
   signal enable_slc : integer := 1;
@@ -95,19 +80,11 @@ architecture beh of ult_tp is
 
   signal glob_en : std_logic := '1';
 
-  
-  ---------------------------------------------------------------------------
-  -- simulation signals
-  ---------------------------------------------------------------------------
-
-  ---------------------------------------------------------------------------
-  -- simulation signals
-  ---------------------------------------------------------------------------
-
   --------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
-
+  signal i_test_signal : std_logic_vector(31 downto 0) := (others => '0');
+  signal o_test_signal : std_logic_vector(31 downto 0);
 
   ---------------------------------------------------------------------------
   -- simulation output aliases
@@ -115,65 +92,19 @@ architecture beh of ult_tp is
 
 begin
 
-  ULT : entity ult_lib.ult
+  ULT : entity project_lib.gldl_tests_top
     generic map(
       DUMMY       => false
       )
     port map(
       -- pipeline clock
-      clock_and_control => clock_and_control,
-      ttc_commands      => ttc_commands,
+      clk           => clk,
+      rst           => rst,
 
       -- TDC Hits from Polmux
-      i_inner_tdc_hits  => i_inner_tdc_hits,
-      i_middle_tdc_hits => i_middle_tdc_hits,
-      i_outer_tdc_hits  => i_outer_tdc_hits,
-      i_extra_tdc_hits  => i_extra_tdc_hits,
-
-      -- TAR Hits for simulation
-      i_inner_tar_hits  => i_mdt_tar_inn_av,
-      i_middle_tar_hits => i_mdt_tar_mid_av,
-      i_outer_tar_hits  => i_mdt_tar_out_av,
-      i_extra_tar_hits  => i_mdt_tar_ext_av,
-
-      -- Sector Logic Candidates
-      i_main_primary_slc   => i_main_primary_slc,
-      i_main_secondary_slc => i_main_secondary_slc,
-      i_plus_neighbor_slc  => i_plus_neighbor_slc,
-      i_minus_neighbor_slc => i_minus_neighbor_slc,
-
-      -- Segments in from neighbor
-      plus_neighbor_segments_i  => plus_neighbor_segments_i,
-      minus_neighbor_segments_i => minus_neighbor_segments_i,
-
-      -- ULT Control
-
-      h2s_ctrl => h2s_ctrl,
-      h2s_mon  => h2s_mon,
-      tar_ctrl => tar_ctrl,
-      tar_mon  => tar_mon,
-      mtc_ctrl => mtc_ctrl,
-      mtc_mon  => mtc_mon,
-      ucm_ctrl => ucm_ctrl,
-      ucm_mon  => ucm_mon,
-      daq_ctrl => daq_ctrl,
-      daq_mon  => daq_mon,
-      tf_ctrl  => tf_ctrl,
-      tf_mon   => tf_mon,
-      mpl_ctrl => mpl_ctrl,
-      mpl_mon  => mpl_mon,
-
-      -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-      daq_streams_o => daq_streams_o,
-
-      -- Segments Out to Neighbor
-      plus_neighbor_segments_o  => plus_neighbor_segments_o,
-      minus_neighbor_segments_o => minus_neighbor_segments_o,
-
-      -- MUCTPI
-      MTC_o => MTC_o,
-      NSP_o => NSP_o,
-
+      i_test_signal => i_test_signal,
+      o_test_signal => o_test_signal,
+      
       sump => sump
       );
 
@@ -238,5 +169,18 @@ begin
     end if;
   end process;
 
+  -------------------------------------------------------------------------------------
+	-- Signal gen
+  -------------------------------------------------------------------------------------
+  SIG_GEN: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        i_test_signal <= (others => '0');
+      else
+        i_test_signal <= i_test_signal + '1';
+      end if;
+    end if;
+  end process SIG_GEN;
 
 end architecture beh;

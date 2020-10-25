@@ -1,10 +1,13 @@
-#Simulator xsim
-#shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
-#shared/sim/pkg/gldl_textio_pkg.vhd
+#####################
+# Simulator xsim
+#####################
+
+# shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
+# shared/sim/pkg/gldl_textio_pkg.vhd
 
 shared/shared_lib.sim
 
-ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=5us
+Top/gldl_tests/src/gldl_tests_tb.vhd topsim=gldl_test_tb runtime=5us
 
 # Waveform 
-ult/sim/ult_tp_sim1.wcfg
+Top/gldl_tests/sim/gldl_test_wave.wcfg

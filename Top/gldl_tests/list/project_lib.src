@@ -1,6 +1,6 @@
 # project files
 Top/gldl_tests/prj_cfg.vhd
-Top/gldl_tests/gldl_tests_top.vhd
+Top/gldl_tests/src/gldl_tests_top.vhd
 # modules included
 shared/shared_lib.src lib=shared_lib
 

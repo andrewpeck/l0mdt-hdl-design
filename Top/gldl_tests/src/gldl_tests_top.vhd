@@ -17,49 +17,68 @@ use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 -- use ieee.math_real.all;
 
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
+-- use shared_lib.vhdl2008_functions_pkg.all;
+use shared_lib.detector_param_pkg.all;
+
 entity gldl_tests_top is
+  generic (
+    DUMMY             : boolean := false
+  );
   port (
     clk               : in std_logic;
     rst               : in std_logic;
     --
-    i_test_signal     : in std_logic_vector(31 downto 0)
+    i_test_signal     : in std_logic_vector(31 downto 0);
+    o_test_signal     : out std_logic_vector(31 downto 0);
+
+    sump              : in std_logic
   );
 end entity gldl_tests_top;
 
 architecture beh of gldl_tests_top is
+
+  constant RAM_DEPTH : integer := 10;
+
+  signal num_delays : integer := RAM_DEPTH;
   
 begin
-  
-  RING : if logic_type = "ring_buffer" generate
-    ring_mem : entity shared_lib.ring_buffer_v2
-      generic map (
-        LOGIC_TYPE    => "pipeline",
-        MEMORY_TYPE   => "block",
-        -- PIPELINE_IN_REGS => 1,
-        -- PIPELINE_OUT_REGS => 1,
-        RAM_WIDTH     => num_bits,
-        RAM_DEPTH     => num_delays + 1 
-      )
-      port map (
-        clk           => clk,
-        rst           => rst,
-        --
-        i_delay         => num_delays,
-        --
-        i_wr          => '1',
-        i_wr_data     => i_data,
-        --
-        i_rd          => '1',
-        o_rd_dv       => open,
-        o_rd_data     => o_data,
-        --
-        o_empty       => open,
-        o_empty_next  => open,
-        o_full        => open,
-        o_full_next   => open,
-        o_used        => open
-      );
-  end generate;
+
+  ring_mem : entity shared_lib.ring_buffer_v2
+    generic map (
+      LOGIC_TYPE    => "pipeline",
+      MEMORY_TYPE   => "block",
+      -- PIPELINE_IN_REGS => 1,
+      -- PIPELINE_OUT_REGS => 1,
+      RAM_WIDTH     => i_test_signal'length,
+      RAM_DEPTH     => RAM_DEPTH + 1 
+    )
+    port map (
+      clk           => clk,
+      rst           => rst,
+      --
+      i_delay         => num_delays,
+      --
+      i_wr          => '1',
+      i_wr_data     => i_test_signal,
+      --
+      i_rd          => '1',
+      o_rd_dv       => open,
+      o_rd_data     => o_test_signal,
+      --
+      o_empty       => open,
+      o_empty_next  => open,
+      o_full        => open,
+      o_full_next   => open,
+      o_used        => open
+    );
+
   
   
 end architecture beh;
