@@ -1,4 +1,10 @@
-module rom_dp (
+module rom_dp #(parameter FALLING_EDGE = 0,
+parameter MXADRB       = 12,
+parameter MXDATB       = 9,
+parameter ROMLENGTH    = 1 << MXADRB,
+parameter ROM_FILE     = "rom_dp.mem",
+parameter ROM_STYLE    = "auto")
+(
   input clka,
   input clkb,
   input  [MXADRB-1:0] addra, addrb,
@@ -8,13 +14,6 @@ module rom_dp (
 //----------------------------------------------------------------------------------------------------------------------
 // Parameters
 //----------------------------------------------------------------------------------------------------------------------
-
-parameter FALLING_EDGE = 0;
-parameter MXADRB       = 12;
-parameter MXDATB       = 9;
-parameter ROMLENGTH    = 1 << MXADRB;
-parameter ROM_FILE     = "rom_dp.mem";
-parameter ROM_STYLE    = "auto";
 
 //----------------------------------------------------------------------------------------------------------------------
 // Signals
