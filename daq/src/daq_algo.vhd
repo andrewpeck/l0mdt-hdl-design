@@ -66,7 +66,8 @@ use daq_def.daq_defs.all;
 use daq_def.daq_row_defs.all;
 
 entity daq_algo is
-  generic(G: daq_algo_grt := (BRANCH_STRUCT => (96, 128, others => 0),
+  -- generic(G: daq_algo_grt := (BRANCH_STRUCT => (96, 128, others => 0),
+  generic(G: daq_algo_grt := (BRANCH_STRUCT => (96, others => 0),
                               COUNTER_WIDTH => 64));
   port(port_ir: in daq_algo_irt; port_or: out daq_algo_ort);
 end entity daq_algo;

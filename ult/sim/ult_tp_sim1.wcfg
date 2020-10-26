@@ -59,12 +59,12 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="751154fs"></ZoomStartTime>
-      <ZoomEndTime time="778075fs"></ZoomEndTime>
+      <ZoomStartTime time="749444fs"></ZoomStartTime>
+      <ZoomEndTime time="816945fs"></ZoomEndTime>
       <Cursor1Time time="760694fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="242"></NameColumnWidth>
+      <NameColumnWidth column_width="238"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="14" />
@@ -866,6 +866,7 @@
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/i_inn_tar_hits">
          <obj_property name="ElementShortName">i_inn_tar_hits[5:0][35:0]</obj_property>
          <obj_property name="ObjectShortName">i_inn_tar_hits[5:0][35:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/i_mid_tar_hits">
          <obj_property name="ElementShortName">i_mid_tar_hits[5:0][35:0]</obj_property>
@@ -923,21 +924,21 @@
             <obj_property name="ElementShortName">data_pl[396:0][35:0]</obj_property>
             <obj_property name="ObjectShortName">data_pl[396:0][35:0]</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/type_memory">
-            <obj_property name="ElementShortName">type_memory[1:5]</obj_property>
-            <obj_property name="ObjectShortName">type_memory[1:5]</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/g_MEMORY_TYPE">
+            <obj_property name="ElementShortName">g_MEMORY_TYPE[1:5]</obj_property>
+            <obj_property name="ObjectShortName">g_MEMORY_TYPE[1:5]</obj_property>
          </wvobject>
-         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/logic_type">
-            <obj_property name="ElementShortName">logic_type[1:11]</obj_property>
-            <obj_property name="ObjectShortName">logic_type[1:11]</obj_property>
+         <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/g_PIPELINE_TYPE">
+            <obj_property name="ElementShortName">g_PIPELINE_TYPE[1:11]</obj_property>
+            <obj_property name="ObjectShortName">g_PIPELINE_TYPE[1:11]</obj_property>
          </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/num_delays">
-            <obj_property name="ElementShortName">num_delays</obj_property>
-            <obj_property name="ObjectShortName">num_delays</obj_property>
+         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/g_DELAY_CYCLES">
+            <obj_property name="ElementShortName">g_DELAY_CYCLES</obj_property>
+            <obj_property name="ObjectShortName">g_DELAY_CYCLES</obj_property>
          </wvobject>
-         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/num_bits">
-            <obj_property name="ElementShortName">num_bits</obj_property>
-            <obj_property name="ObjectShortName">num_bits</obj_property>
+         <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(0)\/PL/g_PIPELINE_WIDTH">
+            <obj_property name="ElementShortName">g_PIPELINE_WIDTH</obj_property>
+            <obj_property name="ObjectShortName">g_PIPELINE_WIDTH</obj_property>
          </wvobject>
          <wvobject type="group" fp_name="group4258">
             <obj_property name="label">ring</obj_property>
@@ -1003,10 +1004,12 @@
                <obj_property name="ObjectShortName">mem[0:397][35:0]</obj_property>
                <obj_property name="CustomSignalColor">#FF00FF</obj_property>
                <obj_property name="UseCustomSignalColor">true</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/mem_dv">
                <obj_property name="ElementShortName">mem_dv[0:397]</obj_property>
                <obj_property name="ObjectShortName">mem_dv[0:397]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
             </wvobject>
             <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/case_options">
                <obj_property name="ElementShortName">case_options[1:0]</obj_property>
@@ -1026,34 +1029,6 @@
             <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/used_data">
                <obj_property name="ElementShortName">used_data</obj_property>
                <obj_property name="ObjectShortName">used_data</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/LOGIC_TYPE">
-               <obj_property name="ElementShortName">LOGIC_TYPE[1:8]</obj_property>
-               <obj_property name="ObjectShortName">LOGIC_TYPE[1:8]</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/FIFO_TYPE">
-               <obj_property name="ElementShortName">FIFO_TYPE[1:6]</obj_property>
-               <obj_property name="ObjectShortName">FIFO_TYPE[1:6]</obj_property>
-            </wvobject>
-            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/MEMORY_TYPE">
-               <obj_property name="ElementShortName">MEMORY_TYPE[1:5]</obj_property>
-               <obj_property name="ObjectShortName">MEMORY_TYPE[1:5]</obj_property>
-            </wvobject>
-            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/PIPELINE_IN_REGS">
-               <obj_property name="ElementShortName">PIPELINE_IN_REGS</obj_property>
-               <obj_property name="ObjectShortName">PIPELINE_IN_REGS</obj_property>
-            </wvobject>
-            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/PIPELINE_OUT_REGS">
-               <obj_property name="ElementShortName">PIPELINE_OUT_REGS</obj_property>
-               <obj_property name="ObjectShortName">PIPELINE_OUT_REGS</obj_property>
-            </wvobject>
-            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/RAM_WIDTH">
-               <obj_property name="ElementShortName">RAM_WIDTH</obj_property>
-               <obj_property name="ObjectShortName">RAM_WIDTH</obj_property>
-            </wvobject>
-            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/TAR/tar_gen/tar_inputs_gen/TAR/inn_en/\INN_DELAY(2)\/PL/ring/ring_mem/RAM_DEPTH">
-               <obj_property name="ElementShortName">RAM_DEPTH</obj_property>
-               <obj_property name="ObjectShortName">RAM_DEPTH</obj_property>
             </wvobject>
          </wvobject>
       </wvobject>
@@ -2713,34 +2688,6 @@
                   <obj_property name="ElementShortName">used_data</obj_property>
                   <obj_property name="ObjectShortName">used_data</obj_property>
                </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/LOGIC_TYPE">
-                  <obj_property name="ElementShortName">LOGIC_TYPE[1:4]</obj_property>
-                  <obj_property name="ObjectShortName">LOGIC_TYPE[1:4]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/FIFO_TYPE">
-                  <obj_property name="ElementShortName">FIFO_TYPE[1:10]</obj_property>
-                  <obj_property name="ObjectShortName">FIFO_TYPE[1:10]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/MEMORY_TYPE">
-                  <obj_property name="ElementShortName">MEMORY_TYPE[1:11]</obj_property>
-                  <obj_property name="ObjectShortName">MEMORY_TYPE[1:11]</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/PIPELINE_IN_REGS">
-                  <obj_property name="ElementShortName">PIPELINE_IN_REGS</obj_property>
-                  <obj_property name="ObjectShortName">PIPELINE_IN_REGS</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/PIPELINE_OUT_REGS">
-                  <obj_property name="ElementShortName">PIPELINE_OUT_REGS</obj_property>
-                  <obj_property name="ObjectShortName">PIPELINE_OUT_REGS</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/RAM_WIDTH">
-                  <obj_property name="ElementShortName">RAM_WIDTH</obj_property>
-                  <obj_property name="ObjectShortName">RAM_WIDTH</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/RAM_DEPTH">
-                  <obj_property name="ElementShortName">RAM_DEPTH</obj_property>
-                  <obj_property name="ObjectShortName">RAM_DEPTH</obj_property>
-               </wvobject>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_inn/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/clk">
                <obj_property name="ElementShortName">clk</obj_property>
@@ -3653,34 +3600,6 @@
                <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/used_data">
                   <obj_property name="ElementShortName">used_data</obj_property>
                   <obj_property name="ObjectShortName">used_data</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/LOGIC_TYPE">
-                  <obj_property name="ElementShortName">LOGIC_TYPE[1:4]</obj_property>
-                  <obj_property name="ObjectShortName">LOGIC_TYPE[1:4]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/FIFO_TYPE">
-                  <obj_property name="ElementShortName">FIFO_TYPE[1:10]</obj_property>
-                  <obj_property name="ObjectShortName">FIFO_TYPE[1:10]</obj_property>
-               </wvobject>
-               <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/MEMORY_TYPE">
-                  <obj_property name="ElementShortName">MEMORY_TYPE[1:11]</obj_property>
-                  <obj_property name="ObjectShortName">MEMORY_TYPE[1:11]</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/PIPELINE_IN_REGS">
-                  <obj_property name="ElementShortName">PIPELINE_IN_REGS</obj_property>
-                  <obj_property name="ObjectShortName">PIPELINE_IN_REGS</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/PIPELINE_OUT_REGS">
-                  <obj_property name="ElementShortName">PIPELINE_OUT_REGS</obj_property>
-                  <obj_property name="ObjectShortName">PIPELINE_OUT_REGS</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/RAM_WIDTH">
-                  <obj_property name="ElementShortName">RAM_WIDTH</obj_property>
-                  <obj_property name="ObjectShortName">RAM_WIDTH</obj_property>
-               </wvobject>
-               <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/\FIFOS(2)\/rb/RAM_DEPTH">
-                  <obj_property name="ElementShortName">RAM_DEPTH</obj_property>
-                  <obj_property name="ObjectShortName">RAM_DEPTH</obj_property>
                </wvobject>
             </wvobject>
             <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/\heg_gen(2)\/HEG/Heg_buffer_mux/clk">

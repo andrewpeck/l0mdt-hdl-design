@@ -59,10 +59,10 @@ begin
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
-      type_memory => "ultra",
-      logic_type  => "ring_buffer",
-      num_delays  => MPL_PL_A_LATENCY,
-      num_bits    => i_uCM2pl_av(sl_i)'length
+      g_MEMORY_TYPE     => "ultra",
+      g_PIPELINE_TYPE   => "ring_buffer",
+      g_DELAY_CYCLES    => MPL_PL_A_LATENCY,
+      g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
     )
     port map(
       clk         => clk,
@@ -89,8 +89,8 @@ begin
   MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     PL : entity shared_lib.std_pipeline
     generic map(
-      num_delays  => MPL_PL_B_LATENCY,
-      num_bits    => pl2mtc_av(sl_i)'length
+      g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
+      g_PIPELINE_WIDTH    => pl2mtc_av(sl_i)'length
     )
     port map(
       clk         => clk,

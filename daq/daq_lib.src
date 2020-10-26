@@ -1,6 +1,6 @@
-daq/types_def.src                lib=types_def
-daq/daq_def.src                    lib=daq_def
-daq/ttc_def.src                    lib=ttc_def
+daq/types_def.src lib=types_def
+daq/daq_def.src lib=daq_def
+daq/ttc_def.src lib=ttc_def
 
 daq/src/daq_req.vhd
 daq/src/daq_mngt.vhd

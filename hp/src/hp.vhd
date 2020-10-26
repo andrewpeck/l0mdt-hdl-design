@@ -130,8 +130,8 @@ begin
 
   dv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 1,
-    num_bits      => 2
+    g_DELAY_CYCLES    => 1,
+    g_PIPELINE_WIDTH      => 2
   )
   port map(
     clk               => clk,
@@ -144,8 +144,8 @@ begin
 
   -- hv_delay : entity shared_lib.std_pipeline
   -- generic map(
-  --   num_delays    => 2,
-  --   num_bits      => 1
+  --   g_DELAY_CYCLES    => 2,
+  --   g_PIPELINE_WIDTH      => 1
   -- )
   -- port map(
   --   clk               => clk,

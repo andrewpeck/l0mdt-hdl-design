@@ -19,25 +19,25 @@ use ieee.std_logic_misc.all;
 
 entity ring_buffer_v2 is
   generic(
-    LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline
-    FIFO_TYPE         : string := "normal"; -- normal , read_ahead
-    MEMORY_TYPE       : string := "auto"; -- auto, ultra, block, distributed
+    g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline
+    g_FIFO_TYPE         : string := "normal"; -- normal , read_ahead
+    g_MEMORY_TYPE       : string := "auto"; -- auto, ultra, block, distributed
     --
-    PIPELINE_IN_REGS  : natural := 0;
-    PIPELINE_OUT_REGS : natural := 0;
+    g_PIPELINE_IN_REGS  : natural := 0;
+    g_PIPELINE_OUT_REGS : natural := 0;
 
-    RAM_WIDTH         : natural := 64;
-    RAM_DEPTH         : integer := 9600     -- maximum depth of the ram, also the maximum delay
+    g_RAM_WIDTH         : natural := 64;
+    g_RAM_DEPTH         : integer := 9600     -- maximum depth of the ram, also the maximum delay
   );
   port (
     clk               : in std_logic;
     rst               : in std_logic;
     -- Write port
     i_wr              : in std_logic; -- in pipeline mode behaves as i_wr_data data valid
-    i_wr_data         : in std_logic_vector(RAM_WIDTH - 1 downto 0);
+    i_wr_data         : in std_logic_vector(g_RAM_WIDTH - 1 downto 0);
     -- Read port
     i_rd              : in  std_logic;
-    o_rd_data         : out std_logic_vector(RAM_WIDTH - 1 downto 0);
+    o_rd_data         : out std_logic_vector(g_RAM_WIDTH - 1 downto 0);
     o_rd_dv           : out std_logic;
     -- Flags
     o_empty           : out std_logic;
@@ -45,9 +45,9 @@ entity ring_buffer_v2 is
     o_full            : out std_logic;
     o_full_next       : out std_logic;
     -- used counter
-    o_used            : out integer range RAM_DEPTH - 1 downto 0;
+    o_used            : out integer range g_RAM_DEPTH - 1 downto 0;
     -- The delay can be changed by the offset and resetting the module
-    i_delay           : in integer range RAM_DEPTH - 1 downto 0 := RAM_DEPTH-1    
+    i_delay           : in integer range g_RAM_DEPTH - 1 downto 0 := g_RAM_DEPTH-1    
   );
 end entity ring_buffer_v2;
 
@@ -55,23 +55,23 @@ architecture beh of ring_buffer_v2 is
   --------------------------------
   -- memory
   --------------------------------
-  type mem_avt is array (0 to RAM_DEPTH - 1) of std_logic_vector(RAM_WIDTH - 1 downto 0);
+  type mem_avt is array (0 to g_RAM_DEPTH - 1) of std_logic_vector(g_RAM_WIDTH - 1 downto 0);
   signal mem    : mem_avt;
-  signal mem_dv : std_logic_vector(0 to RAM_DEPTH - 1);
+  signal mem_dv : std_logic_vector(0 to g_RAM_DEPTH - 1);
   attribute ram_style        : string;
-  attribute ram_style of mem : signal is MEMORY_TYPE;
+  attribute ram_style of mem : signal is g_MEMORY_TYPE;
   --------------------------------
   -- signals
   --------------------------------
   signal case_options : std_logic_vector(1 downto 0);
 
-  signal wr_index : integer range 0 to RAM_DEPTH -1 := 0;
-  signal rd_index : integer range 0 to RAM_DEPTH -1 := 0;
+  signal wr_index : integer range 0 to g_RAM_DEPTH -1 := 0;
+  signal rd_index : integer range 0 to g_RAM_DEPTH -1 := 0;
 
   -- signal wr_dv : std_logic;
   -- signal rd_dv : std_logic;
 
-  signal used_data : integer range RAM_DEPTH - 1 downto 0 := 0;
+  signal used_data : integer range g_RAM_DEPTH - 1 downto 0 := 0;
   --------------------------------
   -- functions
   --------------------------------
@@ -83,17 +83,17 @@ architecture beh of ring_buffer_v2 is
     variable o_rd_index : integer := 0;
   begin
 
-    if LOGIC_TYPE = "fifo" then
-      if read_index < RAM_DEPTH - 1 then
+    if g_LOGIC_TYPE = "fifo" then
+      if read_index < g_RAM_DEPTH - 1 then
         o_rd_index := read_index + 1;
       else
         o_rd_index := 0;
       end if;
-    elsif LOGIC_TYPE = "pipeline" then
+    elsif g_LOGIC_TYPE = "pipeline" then
       if write_index - fi_delay >= 0 then
         o_rd_index := write_index - fi_delay;
       else
-        o_rd_index := (RAM_DEPTH - 1) - (fi_delay - 1)  + write_index;
+        o_rd_index := (g_RAM_DEPTH - 1) - (fi_delay - 1)  + write_index;
       end if;
     else
       -- ERROR
@@ -105,7 +105,7 @@ architecture beh of ring_buffer_v2 is
   function get_write_index(write_index : integer) return integer is
     variable o_wr_index : integer := 0;
   begin
-    if write_index < RAM_DEPTH - 1 then
+    if write_index < g_RAM_DEPTH - 1 then
       o_wr_index := write_index + 1;
     else
       o_wr_index := 0;
@@ -118,7 +118,7 @@ begin
   o_used <= used_data;
 
 
-  FIFO_GEN : if LOGIC_TYPE = "fifo" generate
+  FIFO_GEN : if g_LOGIC_TYPE = "fifo" generate
     case_options <= i_wr & i_rd;
 
     MEM_PROC: process(clk)
@@ -137,13 +137,13 @@ begin
           --------------------------------
           -- PIPELINES CTRL
           --------------------------------
-          -- if PIPELINE_IN_REGS = 0 then
+          -- if g_PIPELINE_IN_REGS = 0 then
 
           -- else
 
           -- end if;
 
-          -- if PIPELINE_OUT_REGS = 0 then
+          -- if g_PIPELINE_OUT_REGS = 0 then
 
           -- else
 
@@ -163,12 +163,12 @@ begin
             o_empty_next  <= '1';
             o_full        <= '0';
             o_full_next   <= '0';
-          elsif used_data < RAM_DEPTH - 2  then
+          elsif used_data < g_RAM_DEPTH - 2  then
             o_empty       <= '0';
             o_empty_next  <= '0';
             o_full        <= '0';
             o_full_next   <= '1';
-          elsif used_data < RAM_DEPTH - 1  then
+          elsif used_data < g_RAM_DEPTH - 1  then
             o_empty       <= '0';
             o_empty_next  <= '0';
             o_full        <= '1';
@@ -180,22 +180,22 @@ begin
           --------------------------------
           -- INPUT SIGNALS CTRL
           --------------------------------
-          if LOGIC_TYPE = "fifo" and FIFO_TYPE = "read_ahead" then
+          if g_LOGIC_TYPE = "fifo" and g_FIFO_TYPE = "read_ahead" then
             o_rd_data <= mem(rd_index);
           end if;
 
           case case_options is
             when b"00" => -- idle
-              if FIFO_TYPE /= "read_ahead" then
+              if g_FIFO_TYPE /= "read_ahead" then
                 o_rd_data <= (others => '0');
               end if;
 
             when b"10" => -- write
-              if FIFO_TYPE /= "read_ahead" then
+              if g_FIFO_TYPE /= "read_ahead" then
                 o_rd_data <= (others => '0');
               end if;
 
-              if used_data < RAM_DEPTH - 1 then
+              if used_data < g_RAM_DEPTH - 1 then
                 mem(wr_index) <= i_wr_data;
                 wr_index <= get_write_index(wr_index);
                 used_data <= used_data + 1;
@@ -204,7 +204,7 @@ begin
             when b"01" => -- read
             
             if used_data > 0 then
-              if FIFO_TYPE /= "read_ahead" then
+              if g_FIFO_TYPE /= "read_ahead" then
                 o_rd_data <= mem(rd_index);
               end if;
               rd_index <= get_read_index(rd_index,wr_index);
@@ -215,7 +215,7 @@ begin
             when b"11" => -- read & write 
 
               if used_data > 0 then
-                if FIFO_TYPE /= "read_ahead" then
+                if g_FIFO_TYPE /= "read_ahead" then
                   o_rd_data <= mem(rd_index);
                 end if;
                 rd_index <= get_read_index(rd_index,wr_index);
@@ -234,7 +234,7 @@ begin
     end process MEM_PROC;
   end generate;
 
-  PIPE_GEN : if LOGIC_TYPE = "pipeline" generate
+  PIPE_GEN : if g_LOGIC_TYPE = "pipeline" generate
 
     case_options <= i_wr & mem_dv(rd_index);
 
@@ -257,10 +257,10 @@ begin
           --------------------------------
           -- PIPELINES CTRL
           --------------------------------
-          -- if PIPELINE_IN_REGS = 0 then
+          -- if g_PIPELINE_IN_REGS = 0 then
           -- else
           -- end if;
-          -- if PIPELINE_OUT_REGS = 0 then
+          -- if g_PIPELINE_OUT_REGS = 0 then
           -- else
           -- end if;
           --------------------------------
@@ -277,12 +277,12 @@ begin
             o_empty_next  <= '1';
             o_full        <= '0';
             o_full_next   <= '0';
-          elsif used_data < RAM_DEPTH - 2  then
+          elsif used_data < g_RAM_DEPTH - 2  then
             o_empty       <= '0';
             o_empty_next  <= '0';
             o_full        <= '0';
             o_full_next   <= '1';
-          elsif used_data < RAM_DEPTH - 1  then
+          elsif used_data < g_RAM_DEPTH - 1  then
             o_empty       <= '0';
             o_empty_next  <= '0';
             o_full        <= '1';

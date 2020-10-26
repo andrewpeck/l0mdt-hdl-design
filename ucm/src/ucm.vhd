@@ -134,8 +134,8 @@ begin
   SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
-      num_delays  => UCM_INPUT_PL_LATENCY,
-      num_bits    => SLC_RX_LEN
+      g_DELAY_CYCLES  => UCM_INPUT_PL_LATENCY,
+      g_PIPELINE_WIDTH    => SLC_RX_LEN
     )
     port map(
       clk         => clk,
@@ -208,8 +208,8 @@ begin
   SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
-      num_delays  => UCM_OUTPUT_PL_LATENCY,
-      num_bits    => UCM2PL_LEN
+      g_DELAY_CYCLES  => UCM_OUTPUT_PL_LATENCY,
+      g_PIPELINE_WIDTH    => UCM2PL_LEN
     )
     port map(
       clk         => clk,

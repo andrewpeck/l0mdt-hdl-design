@@ -14,18 +14,18 @@ use shared_lib.config_pkg.all;
 library ctrl_lib;
 use ctrl_lib.DAQ_CTRL.all;
 
-library types_def;
-library ttc_def;
-library daq_def;
-library ttc_lib;
-library daq_lib;
+-- library types_def;
+-- library ttc_def;
+-- library daq_def;
+-- library ttc_lib;
+-- library daq_lib;
 
-use types_def.common_defs.all;
+-- use types_def.common_defs.all;
 
-use ttc_def.ttc_defs.all;
+-- use ttc_def.ttc_defs.all;
 
-use daq_def.daq_devel_defs.all;
-use daq_def.daq_defs.all;
+-- use daq_def.daq_devel_defs.all;
+-- use daq_def.daq_defs.all;
 
 entity daq is
   generic (DELAY : integer; memory_type: string);
@@ -58,27 +58,27 @@ architecture behavioral of daq is
   -- actual
 
 
-  function get_branches_struct (N: integer) return daq_branches_map_at is
-    variable y : daq_branches_map_at;
-  begin
-    for j in y'range loop
-      if j < N then
-        y(j) := (TDCPOLMUX2TAR_LEN, others => 0);
-      else
-        y(j) := (others => 0);
-      end if;
-    end loop;
-    return y;
-  end function get_branches_struct;
+  -- function get_branches_struct (N: integer) return daq_branches_map_at is
+  --   variable y : daq_branches_map_at;
+  -- begin
+  --   for j in y'range loop
+  --     if j < N then
+  --       y(j) := (TDCPOLMUX2TAR_LEN, others => 0);
+  --     else
+  --       y(j) := (others => 0);
+  --     end if;
+  --   end loop;
+  --   return y;
+  -- end function get_branches_struct;
   
-  signal inner_er : daq_top_ert;
-  signal middle_er : daq_top_ert;
-  signal outer_er : daq_top_ert;
-  signal extra_er : daq_top_ert;
+  -- signal inner_er : daq_top_ert;
+  -- signal middle_er : daq_top_ert;
+  -- signal outer_er : daq_top_ert;
+  -- signal extra_er : daq_top_ert;
 
-  type stations is (inner, middle, outer, extra);
-  type trunk_t is array(stations) of daq_branches_t;
-  signal trunk : trunk_t;
+  -- type stations is (inner, middle, outer, extra);
+  -- type trunk_t is array(stations) of daq_branches_t;
+  -- signal trunk : trunk_t;
 
   signal inner_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
   signal middle_tdc_hits_v : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
@@ -91,23 +91,23 @@ architecture behavioral of daq is
   signal extra_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
   signal daq_streams     : felix_stream_bus_at (c_NUM_DAQ_STREAMS-1 downto 0);
 
-  function streamify (x: tdcpolmux2tar_rt;
-                      v: tdcpolmux2tar_rvt) return daq_stream_rt is
-    variable y : daq_stream_rt;
-  begin
-    y.bcid := x.tdc.coarsetime;
-    y.valid := x.data_valid;
-    y.data := (y.data'left downto v'length => '0') & v;
-    return y;
-  end function streamify;
+  -- function streamify (x: tdcpolmux2tar_rt;
+  --                     v: tdcpolmux2tar_rvt) return daq_stream_rt is
+  --   variable y : daq_stream_rt;
+  -- begin
+  --   y.bcid := x.tdc.coarsetime;
+  --   y.valid := x.data_valid;
+  --   y.data := (y.data'left downto v'length => '0') & v;
+  --   return y;
+  -- end function streamify;
 
-  function outputify(x: daq_to_felix_rt) return felix_stream_rt is
-    variable y : felix_stream_rt;
-  begin
-    y.valid := x.wr_en;
-    y.data := x.data;
-    return y;
-  end function outputify;
+  -- function outputify(x: daq_to_felix_rt) return felix_stream_rt is
+  --   variable y : felix_stream_rt;
+  -- begin
+  --   y.valid := x.wr_en;
+  --   y.data := x.data;
+  --   return y;
+  -- end function outputify;
 
 begin
 
@@ -118,141 +118,141 @@ begin
   daq_streams_o   <=  vectorify(daq_streams);
 
 
-  DAQ_GEN : if c_DAQ_ENABLED generate
+  -- DAQ_GEN : if c_DAQ_ENABLED generate
 
-    gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
+  --   gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
 
-      u_daq_inner: entity daq_lib.daq_top
-        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_INN),
-                           COUNTER_WIDTH => 32))
-        port map (port_ir => inner_er.i, port_or =>  inner_er.o);
+  --     u_daq_inner: entity daq_lib.daq_top
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_INN),
+  --                          COUNTER_WIDTH => 32))
+  --       port map (port_ir => inner_er.i, port_or =>  inner_er.o);
       
-      inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
-      inner_er.i.ttc.cmds.bx <= clock_and_control.bx;
-      inner_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
-      inner_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
-      inner_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
-      inner_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
+  --     inner_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
+  --     inner_er.i.ttc.cmds.bx <= clock_and_control.bx;
+  --     inner_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
+  --     inner_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
+  --     inner_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
+  --     inner_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
       
-      inner_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
-      inner_er.i.ttc.cnt.evid <= ttc_commands.evid;
-      inner_er.i.ttc.cnt.orid <= ttc_commands.orid;
+  --     inner_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
+  --     inner_er.i.ttc.cnt.evid <= ttc_commands.evid;
+  --     inner_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
-      gen_daq_conn_inner: for j in inner_tdc_hits'range generate
-        u_daq_inner_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_inner_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_inner_tdc_hits(j),
-                    o_data => inner_tdc_hits_v(j));
-        inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), inner_tdc_hits_v(j));
-        daq_streams(j) <= outputify(inner_er.o.f2e_bus(j));
-      end generate gen_daq_conn_inner;
-    end generate gen_daq_inner;
+  --     gen_daq_conn_inner: for j in inner_tdc_hits'range generate
+  --       u_daq_inner_delay: entity shared_lib.std_pipeline
+  --         generic map (g_MEMORY_TYPE => memory_type,
+  --                      g_DELAY_CYCLES => DELAY,
+  --                      g_PIPELINE_WIDTH => i_inner_tdc_hits(j)'length)
+  --         port map (clk => clock_and_control.clk,
+  --                   rst => clock_and_control.rst,
+  --                   glob_en => '1',
+  --                   i_data => i_inner_tdc_hits(j),
+  --                   o_data => inner_tdc_hits_v(j));
+  --       inner_er.i.branches(j)(0) <= streamify(inner_tdc_hits(j), inner_tdc_hits_v(j));
+  --       daq_streams(j) <= outputify(inner_er.o.f2e_bus(j));
+  --     end generate gen_daq_conn_inner;
+  --   end generate gen_daq_inner;
       
-    gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
-      u_daq_middle: entity daq_lib.daq_top
-        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_MID),
-                           COUNTER_WIDTH => 32))
-        port map (port_ir => middle_er.i, port_or =>  middle_er.o);
+  --   gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
+  --     u_daq_middle: entity daq_lib.daq_top
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_MID),
+  --                          COUNTER_WIDTH => 32))
+  --       port map (port_ir => middle_er.i, port_or =>  middle_er.o);
       
-      middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
-      middle_er.i.ttc.cmds.bx <= clock_and_control.bx;
-      middle_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
-      middle_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
-      middle_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
-      middle_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
+  --     middle_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
+  --     middle_er.i.ttc.cmds.bx <= clock_and_control.bx;
+  --     middle_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
+  --     middle_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
+  --     middle_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
+  --     middle_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
       
-      middle_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
-      middle_er.i.ttc.cnt.evid <= ttc_commands.evid;
-      middle_er.i.ttc.cnt.orid <= ttc_commands.orid;
+  --     middle_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
+  --     middle_er.i.ttc.cnt.evid <= ttc_commands.evid;
+  --     middle_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
-      gen_daq_conn_middle: for j in middle_tdc_hits'range generate
-        u_daq_middle_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_middle_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_middle_tdc_hits(j),
-                    o_data => middle_tdc_hits_v(j));
-        middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
-        daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
-      end generate gen_daq_conn_middle;
-    end generate gen_daq_middle;
+  --     gen_daq_conn_middle: for j in middle_tdc_hits'range generate
+  --       u_daq_middle_delay: entity shared_lib.std_pipeline
+  --         generic map (g_MEMORY_TYPE => memory_type,
+  --                      g_DELAY_CYCLES => DELAY,
+  --                      g_PIPELINE_WIDTH => i_middle_tdc_hits(j)'length)
+  --         port map (clk => clock_and_control.clk,
+  --                   rst => clock_and_control.rst,
+  --                   glob_en => '1',
+  --                   i_data => i_middle_tdc_hits(j),
+  --                   o_data => middle_tdc_hits_v(j));
+  --       middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
+  --       daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
+  --     end generate gen_daq_conn_middle;
+  --   end generate gen_daq_middle;
       
-    gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
-      u_daq_outer: entity daq_lib.daq_top
-        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_OUT),
-                           COUNTER_WIDTH => 32))
-        port map (port_ir => outer_er.i, port_or =>  outer_er.o);
+  --   gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
+  --     u_daq_outer: entity daq_lib.daq_top
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_OUT),
+  --                          COUNTER_WIDTH => 32))
+  --       port map (port_ir => outer_er.i, port_or =>  outer_er.o);
       
-      outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
-      outer_er.i.ttc.cmds.bx <= clock_and_control.bx;
-      outer_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
-      outer_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
-      outer_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
-      outer_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
+  --     outer_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
+  --     outer_er.i.ttc.cmds.bx <= clock_and_control.bx;
+  --     outer_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
+  --     outer_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
+  --     outer_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
+  --     outer_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
       
-      outer_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
-      outer_er.i.ttc.cnt.evid <= ttc_commands.evid;
-      outer_er.i.ttc.cnt.orid <= ttc_commands.orid;
+  --     outer_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
+  --     outer_er.i.ttc.cnt.evid <= ttc_commands.evid;
+  --     outer_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
-      gen_daq_conn_outer: for j in outer_tdc_hits'range generate
-        u_daq_outer_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_outer_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_outer_tdc_hits(j),
-                    o_data => outer_tdc_hits_v(j));
-        outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
-        daq_streams(c_HPS_NUM_MDT_CH_INN
-                    + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
-      end generate gen_daq_conn_outer;
-    end generate gen_daq_outer;
+  --     gen_daq_conn_outer: for j in outer_tdc_hits'range generate
+  --       u_daq_outer_delay: entity shared_lib.std_pipeline
+  --         generic map (g_MEMORY_TYPE => memory_type,
+  --                      g_DELAY_CYCLES => DELAY,
+  --                      g_PIPELINE_WIDTH => i_outer_tdc_hits(j)'length)
+  --         port map (clk => clock_and_control.clk,
+  --                   rst => clock_and_control.rst,
+  --                   glob_en => '1',
+  --                   i_data => i_outer_tdc_hits(j),
+  --                   o_data => outer_tdc_hits_v(j));
+  --       outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
+  --       daq_streams(c_HPS_NUM_MDT_CH_INN
+  --                   + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
+  --     end generate gen_daq_conn_outer;
+  --   end generate gen_daq_outer;
       
-    gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
-      u_daq_extra: entity daq_lib.daq_top
-        generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_EXT),
-                           COUNTER_WIDTH => 32))
-        port map (port_ir => extra_er.i, port_or =>  extra_er.o);
+  --   gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
+  --     u_daq_extra: entity daq_lib.daq_top
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_EXT),
+  --                          COUNTER_WIDTH => 32))
+  --       port map (port_ir => extra_er.i, port_or =>  extra_er.o);
       
-      extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
-      extra_er.i.ttc.cmds.bx <= clock_and_control.bx;
-      extra_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
-      extra_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
-      extra_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
-      extra_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
+  --     extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
+  --     extra_er.i.ttc.cmds.bx <= clock_and_control.bx;
+  --     extra_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
+  --     extra_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
+  --     extra_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
+  --     extra_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
       
-      extra_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
-      extra_er.i.ttc.cnt.evid <= ttc_commands.evid;
-      extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
+  --     extra_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
+  --     extra_er.i.ttc.cnt.evid <= ttc_commands.evid;
+  --     extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
       
-      gen_daq_conn_extra: for j in extra_tdc_hits'range generate
-        u_daq_extra_delay: entity shared_lib.std_pipeline
-          generic map (type_memory => memory_type,
-                       num_delays => DELAY,
-                       num_bits => i_extra_tdc_hits(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_extra_tdc_hits(j),
-                    o_data => extra_tdc_hits_v(j));
-        extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
-        daq_streams(c_HPS_NUM_MDT_CH_INN
-                    + c_HPS_NUM_MDT_CH_MID
-                    + c_HPS_NUM_MDT_CH_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
-      end generate gen_daq_conn_extra;
-    end generate gen_daq_extra;
+  --     gen_daq_conn_extra: for j in extra_tdc_hits'range generate
+  --       u_daq_extra_delay: entity shared_lib.std_pipeline
+  --         generic map (g_MEMORY_TYPE => memory_type,
+  --                      g_DELAY_CYCLES => DELAY,
+  --                      g_PIPELINE_WIDTH => i_extra_tdc_hits(j)'length)
+  --         port map (clk => clock_and_control.clk,
+  --                   rst => clock_and_control.rst,
+  --                   glob_en => '1',
+  --                   i_data => i_extra_tdc_hits(j),
+  --                   o_data => extra_tdc_hits_v(j));
+  --       extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
+  --       daq_streams(c_HPS_NUM_MDT_CH_INN
+  --                   + c_HPS_NUM_MDT_CH_MID
+  --                   + c_HPS_NUM_MDT_CH_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
+  --     end generate gen_daq_conn_extra;
+  --   end generate gen_daq_extra;
       
-  end generate;
+  -- end generate;
 
   DAQ_EMU : if not c_DAQ_ENABLED generate
 

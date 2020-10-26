@@ -67,10 +67,10 @@ begin
     INN_DELAY : for b_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        type_memory => "ultra",
-        logic_type  => "ring_buffer",
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_inn_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  =>  i_inn_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -87,10 +87,10 @@ begin
     MID_DELAY : for b_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        type_memory => "ultra",
-        logic_type  => "ring_buffer",
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_mid_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_mid_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -107,10 +107,10 @@ begin
     OUT_DELAY : for b_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        type_memory => "ultra",
-        logic_type  => "ring_buffer",
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_out_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_out_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -127,10 +127,10 @@ begin
     EXT_DELAY : for b_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        type_memory => "ultra",
-        logic_type  => "ring_buffer",
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_ext_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_ext_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,

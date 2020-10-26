@@ -21,28 +21,28 @@ library shared_lib;
 
 entity std_pipeline is
   generic(
-    type_memory         : string := "distributed" ;-- auto, ultra, block, distributed
-    logic_type          : string := "shift_reg";-- shift_reg , ring_buffer 
-    num_delays          : integer; 
-    num_bits            : integer
+    g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
+    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer 
+    g_DELAY_CYCLES      : integer; 
+    g_PIPELINE_WIDTH    : integer
   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_data              : in std_logic_vector(num_bits -1 downto 0);
-    o_data              :out std_logic_vector(num_bits -1 downto 0)
+    i_data              : in std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
+    o_data              :out std_logic_vector(g_PIPELINE_WIDTH -1 downto 0)
   );
 end entity std_pipeline;
 
 architecture beh of std_pipeline is
 
-  type data_pl_at is array (num_delays -1 downto 0) of std_logic_vector(num_bits -1 downto 0);
+  type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
   signal data_pl : data_pl_at;
 
   attribute ram_style : string;
-  attribute ram_style of data_pl : signal is type_memory;
+  attribute ram_style of data_pl : signal is g_MEMORY_TYPE;
   -- "ultra" for ultra ram
   -- "distributed" for normal logic cells
 
@@ -50,7 +50,7 @@ begin
   
   
 
-  SHIFT : if logic_type = "shift_reg" generate
+  SHIFT : if g_PIPELINE_TYPE = "shift_reg" generate
 
     o_data <= data_pl(0);
 
@@ -60,10 +60,10 @@ begin
           data_pl <= (others => (others => '0'));
         else
           if glob_en = '1' then
-            for num_delays in num_delays - 1 downto 1 loop
-              data_pl(num_delays - 1) <= data_pl(num_delays);
+            for g_DELAY_CYCLES in g_DELAY_CYCLES - 1 downto 1 loop
+              data_pl(g_DELAY_CYCLES - 1) <= data_pl(g_DELAY_CYCLES);
             end loop;
-            data_pl(num_delays -1) <= i_data;
+            data_pl(g_DELAY_CYCLES -1) <= i_data;
           end if;
         end if;
       end if;
@@ -71,21 +71,21 @@ begin
 
 end generate;
 
-RING : if logic_type = "ring_buffer" generate
+RING : if g_PIPELINE_TYPE = "ring_buffer" generate
   ring_mem : entity shared_lib.ring_buffer_v2
     generic map (
-      LOGIC_TYPE    => "pipeline",
-      MEMORY_TYPE   => "block",
-      -- PIPELINE_IN_REGS => 1,
-      -- PIPELINE_OUT_REGS => 1,
-      RAM_WIDTH     => num_bits,
-      RAM_DEPTH     => num_delays + 1 
+      g_LOGIC_TYPE    => "pipeline",
+      g_MEMORY_TYPE   => "block",
+      -- g_PIPELINE_IN_REGS => 1,
+      -- g_PIPELINE_OUT_REGS => 1,
+      g_RAM_WIDTH     => g_PIPELINE_WIDTH,
+      g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
     )
     port map (
       clk           => clk,
       rst           => rst,
       --
-      i_delay         => num_delays,
+      i_delay         => g_DELAY_CYCLES,
       --
       i_wr          => '1',
       i_wr_data     => i_data,

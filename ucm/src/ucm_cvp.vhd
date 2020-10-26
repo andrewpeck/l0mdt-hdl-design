@@ -30,7 +30,7 @@ use ucm_lib.ucm_function_pkg.all;
 
 entity ucm_cvp is
   -- generic(
-  --   num_delays          : integer; 
+  --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
   -- );
   port (
@@ -119,8 +119,8 @@ begin
 
   PL_in : entity shared_lib.std_pipeline
   generic map(
-    num_delays  => 5,
-    num_bits    => int_data_v'length
+    g_DELAY_CYCLES  => 5,
+    g_PIPELINE_WIDTH    => int_data_v'length
   )
   port map(
     clk         => clk,
@@ -135,8 +135,8 @@ begin
 
   PL : entity shared_lib.std_pipeline
   generic map(
-    num_delays  => 2,
-    num_bits    => data_v'length
+    g_DELAY_CYCLES  => 2,
+    g_PIPELINE_WIDTH    => data_v'length
   )
   port map(
     clk         => clk,

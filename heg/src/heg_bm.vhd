@@ -106,13 +106,13 @@ begin
 
     rb : entity shared_lib.ring_buffer_v2
     generic map (
-      LOGIC_TYPE    => "fifo",
-      FIFO_TYPE     => "read_ahead",
-      MEMORY_TYPE   => "distributed",
+      g_LOGIC_TYPE    => "fifo",
+      g_FIFO_TYPE     => "read_ahead",
+      g_MEMORY_TYPE   => "distributed",
       -- PIPELINE_IN_REGS => 1,
       -- PIPELINE_OUT_REGS => 1,
-      RAM_WIDTH     => HP_HP2SF_DATA_LEN,
-      RAM_DEPTH     => BM_FIFO_DEPTH
+      g_RAM_WIDTH     => HP_HP2SF_DATA_LEN,
+      g_RAM_DEPTH     => BM_FIFO_DEPTH
     )
     port map (
       clk           => clk,
