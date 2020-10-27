@@ -31,7 +31,7 @@
             fi;
           fi
     artifacts:
-        name: sim_ult_tp_dev_files
+        name: user_sim
         paths:
             - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME/$PROJECT_NAME.sim
             - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
