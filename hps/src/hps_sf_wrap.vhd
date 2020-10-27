@@ -37,7 +37,7 @@ use csf_lib.csf_pkg.all;
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
-library lsf_lib;
+-- library lsf_lib;
 
 entity hps_sf_wrap is
   generic(
