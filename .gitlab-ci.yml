@@ -3,6 +3,7 @@ include:
       file: '/hog.yml'
       ref: 'v2.15.0'
     # - local: '/.before_script.yml'
+    - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
     # - local: '/Top/csf/gitlab-ci.yml'
     - local: '/Top/ptc_mpi/gitlab-ci.yml'
@@ -29,45 +30,5 @@ include:
     # - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
     # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
 
-.only-default: &only-default
-    only:
-      refs:
-        - merge_requests
-    except:
-      variables:
-        - $CI_COMMIT_REF_NAME =~ /^test\/.*$/i
-        - $CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/
 
-.tag-hog: &tag-hog
-        tags:
-           - hog
-      
-
-sim_ult_tp_dev:
-    <<: *only-default
-    <<: *tag-hog
-    stage: user_pre
-    variables:
-        PROJECT_NAME: ult_tp_dev
-    script:
-        - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
-            vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
-          else
-            echo "Project version checker is disabled.";
-          fi
-        - if [ -f "./VivadoProjects/$PROJECT_NAME/skip.me" ]; then
-            echo "CI disabled for $PROJECT_NAME";
-          else
-            if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
-              echo 'Simulation library path is not defined';
-            else
-              vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
-            fi;
-          fi
-    artifacts:
-        name: sim_ult_tp_dev_files
-        paths:
-            - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME/$PROJECT_NAME.sim
-            - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
-        expire_in: 30 day
 
