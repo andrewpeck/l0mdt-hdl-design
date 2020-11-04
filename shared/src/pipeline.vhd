@@ -60,10 +60,10 @@ begin
           data_pl <= (others => (others => '0'));
         else
           if glob_en = '1' then
-            for g_DELAY_CYCLES in g_DELAY_CYCLES - 1 downto 1 loop
-              data_pl(g_DELAY_CYCLES - 1) <= data_pl(g_DELAY_CYCLES);
+            for delay_i in g_DELAY_CYCLES - 1 downto 1 loop
+              data_pl(delay_i - 1) <= data_pl(delay_i);
             end loop;
-            data_pl(g_DELAY_CYCLES -1) <= i_data;
+            data_pl(g_DELAY_CYCLES - 1) <= i_data;
           end if;
         end if;
       end if;

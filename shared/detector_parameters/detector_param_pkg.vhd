@@ -28,7 +28,7 @@ package detector_param_pkg is
   -- Some constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
-  constant TAR_PL_A_LATENCY     : integer := 32;  --310; -- cycles => 968.75 ns
+  constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
   --
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
   --
