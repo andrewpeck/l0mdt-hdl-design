@@ -1,0 +1,13 @@
+#################### ult_tp_dev_questa Project ###########################
+generate_project:ult_tp_dev_questa:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_dev_questa
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
+user_sim:ult_tp_dev_questa:
+    extends: .user_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_dev_questa
