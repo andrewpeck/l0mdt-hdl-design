@@ -13,7 +13,7 @@
 
 .user_sim: &user_sim
     <<: *only-default
-    image: gitlab-registry.cern.ch/hog/hog-docker
+    <<: *tag-hog
     stage: user_pre
     script:
         - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
