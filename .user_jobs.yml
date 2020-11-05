@@ -39,7 +39,7 @@
 
 .sim_check: &sim_check
     <<: *only-default
-    image: gitlab-registry.cern.ch/hog/hog-docker
+    <<: *tag-hog
     stage: user_proj
     script:
         - cd tools/post_scripts
