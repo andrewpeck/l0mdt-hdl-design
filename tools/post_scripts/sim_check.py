@@ -19,6 +19,10 @@ output_vector_path = ".sim/project_lib_sim/behav/"
 #
 #-----------------------------------------------------------
 def read_vectors(prj_data,sim,ov_file):
+
+  ov_data = {}
+  
+  
   verb("------------------- read vectors -------------------")
   if where == "local":
     full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
@@ -28,12 +32,14 @@ def read_vectors(prj_data,sim,ov_file):
 
   with open(full_path, newline='') as f:
     bytes = f.read() # read entire file as bytes
-    readable_hash = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
-    verb(readable_hash)
+    ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
+    verb(ov_data['hash'])
 
     reader = csv.reader(f)
     for l in reader:
       verb(l[0].split())
+
+  return ov_data
     
   
 
@@ -52,15 +58,21 @@ def main_script(args):
   Data['xsim'] = {}
   Data['questa'] = {}
 
-  if project_name[-1] == "questa":
-    del project_name[-1]
-    Data['xsim']['subprj_name'] = '_'.join(project_name) + "_xsim"
-    Data['questa']['subprj_name'] = '_'.join(project_name) + "_questa"
-    verb(project_name)
-    verb(Data)
+  # if project_name[-1] == "questa":
+  del project_name[-1]
+  Data['xsim']['subprj_name'] = '_'.join(project_name) + "_xsim"
+  Data['questa']['subprj_name'] = '_'.join(project_name) + "_questa"
+  verb(project_name)
+  verb(Data)
 
-    Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
-    Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
+
+  if Data['xsim']['ov']['hash'] == Data['questa']['ov']['hash'] :
+    verb("same hash")
+  else:
+    print(exit)
+    exit(1)
 
 
 #-----------------------------------------------------------
