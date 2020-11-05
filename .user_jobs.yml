@@ -44,4 +44,5 @@
     script:
         - cd tools/post_scripts
         - python3 sim_check.py $PROJECT_NAME
+    allow_failure: true
 
