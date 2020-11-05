@@ -11,3 +11,9 @@ user_sim:ult_tp_dev_questa:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_dev_questa
+
+check_sim:ult_tp_dev_questa:
+    extends: .check_sim
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_dev_questa

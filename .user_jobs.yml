@@ -13,7 +13,7 @@
 
 .user_sim: &user_sim
     <<: *only-default
-    <<: *tag-hog
+    image: gitlab-registry.cern.ch/hog/hog-docker
     stage: user_pre
     script:
         - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
@@ -37,3 +37,11 @@
             - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
         expire_in: 30 day
 
+.sim_check: &sim_check
+    <<: *only-default
+    image: gitlab-registry.cern.ch/hog/hog-docker
+    stage: user_proj
+    script:
+        - cd tools/post_scripts
+        - python sim_check.py $PROJECT_NAME
+        
