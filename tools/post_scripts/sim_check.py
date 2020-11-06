@@ -28,21 +28,47 @@ def read_vectors(prj_data,sim,ov_file):
     full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
   else:
     full_path = ""
-  verb(full_path)
+  verb("full path  :  " + full_path)
+
+  ov_data['full_path'] = full_path
 
   with open(full_path, newline='') as f:
     bytes = f.read() # read entire file as bytes
     ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
-    verb(ov_data['hash'])
-
+    verb("hash  :  " + ov_data['hash'])
+  
+  ov_data['num_lines'] = 0
+  with open(full_path, newline='') as f:
     reader = csv.reader(f)
     for l in reader:
+      ov_data['num_lines'] += 1
       verb(l[0].split())
 
+  verb("num lines" + str(ov_data['num_lines']))
   return ov_data
     
   
+#-----------------------------------------------------------
+#
+#-----------------------------------------------------------
+def report(Data):
+  print("====================================================")
+  print("==                     REPORT                     ==")
+  print("====================================================")
+  print("Project Base Name : " + Data['project_name'])
+  print("        Xsim file : " + Data['xsim']['ov']['full_path'])
+  print("   Xsim file hash : " + Data['xsim']['ov']['hash'])
+  print("        Num lines : " + str(Data['xsim']['ov']['num_lines']))
 
+  print("      Questa file : " + Data['questa']['ov']['full_path'])
+  print(" Questa file hash : " + Data['questa']['ov']['hash'])
+  print("        Num lines : " + str(Data['questa']['ov']['num_lines']))
+
+  if Data['xsim']['ov']['hash'] == Data['questa']['ov']['hash'] :
+    print("same hash")
+  else:
+    print(exit)
+    exit(1)
 
 #-----------------------------------------------------------
 #
@@ -68,11 +94,7 @@ def main_script(args):
   Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
   Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
 
-  if Data['xsim']['ov']['hash'] == Data['questa']['ov']['hash'] :
-    verb("same hash")
-  else:
-    print(exit)
-    exit(1)
+  report(Data)
 
 
 #-----------------------------------------------------------
