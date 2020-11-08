@@ -43,6 +43,6 @@
     stage: user_proj
     script:
         - cd tools/post_scripts
-        - python3 sim_check.py $PROJECT_NAME
+        - python3 sim_check.py $PROJECT_NAME -v 1
     allow_failure: true
 

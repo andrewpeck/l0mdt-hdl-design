@@ -227,6 +227,7 @@ package body gldl_l0mdt_textio_pkg is
   procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt) is
   begin
     SWRITE(L, "#HIT:",left,12);
+    SWRITE(L, "FLAG",left,12);
     SWRITE(L, "ToA",left,12);
     -- WRITE(L, ' ');
     SWRITE(L, "station",left,12);
@@ -247,7 +248,8 @@ package body gldl_l0mdt_textio_pkg is
   procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt) is
   begin
 
-    SWRITE(L, "#SLC:(FLAG) ",left,12);
+    SWRITE(L, "#SLC: ",left,12);
+    SWRITE(L, "FLAG",left,12);
     SWRITE(L, "ToA",left,12);
     -- WRITE(L, ' ');
     SWRITE(L, "station",left,12);
@@ -296,6 +298,7 @@ package body gldl_l0mdt_textio_pkg is
     radius  := VALUE.heg_bm.radius;
 
     SWRITE(L, " HIT: ",left,12);
+    SWRITE(L, "NONE",left,12);
     WRITE(L, to_integer( ToA),left,12);
     -- WRITE(L, ' ');
     WRITE(L, to_integer( station),left,12);
@@ -345,7 +348,8 @@ package body gldl_l0mdt_textio_pkg is
     vec_ang       := VALUE.heg_bm.vec_ang;
     hewindow_pos  := VALUE.heg_bm.hewindow_pos;
 
-    SWRITE(L, " SLC:(SOF) ",left,12);
+    SWRITE(L, " SLC: ",left,12);
+    SWRITE(L, "SOF",left,12);
     WRITE(L, to_integer( ToA),left,12);
     -- WRITE(L, ' ');
     WRITE(L, to_integer( station),left,12);
@@ -402,7 +406,8 @@ package body gldl_l0mdt_textio_pkg is
     vec_ang       := VALUE.heg_bm.vec_ang;
     hewindow_pos  := VALUE.heg_bm.hewindow_pos;
 
-    SWRITE(L, " SLC:(EOF) ",left,12);
+    SWRITE(L, " SLC: ",left,12);
+    SWRITE(L, "EOF",left,12);
     WRITE(L, to_integer( ToA),left,12);
     -- WRITE(L, ' ');
     WRITE(L, to_integer( station),left,12);
