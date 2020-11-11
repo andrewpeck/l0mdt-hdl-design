@@ -128,10 +128,10 @@ architecture behavioral of ult is
   signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inner_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_segments_to_pt : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
   signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -222,10 +222,10 @@ begin
       i_out_slc                 => outer_slc_to_hts,
       i_ext_slc                 => extra_slc_to_hts,
       -- Segments Out to pt calculation
-      o_inn_segments            => inner_segments_to_pt,
-      o_mid_segments            => middle_segments_to_pt,
-      o_out_segments            => outer_segments_to_pt,
-      o_ext_segments            => extra_segments_to_pt,
+      o_inn_segments            => inn_segments_to_pt,
+      o_mid_segments            => mid_segments_to_pt,
+      o_out_segments            => out_segments_to_pt,
+      o_ext_segments            => ext_segments_to_pt,
       -- Segment outputs to HAL
       plus_neighbor_segments_o  => plus_neighbor_segments_o,
       minus_neighbor_segments_o => minus_neighbor_segments_o
@@ -259,10 +259,10 @@ begin
       plus_neighbor_segments_i  => plus_neighbor_segments_i,
       minus_neighbor_segments_i => minus_neighbor_segments_i,
       -- segments from hps
-      inner_segments_i          => inner_segments_to_pt,
-      middle_segments_i         => middle_segments_to_pt,
-      outer_segments_i          => outer_segments_to_pt,
-      extra_segments_i          => extra_segments_to_pt,
+      inner_segments_i          => inn_segments_to_pt,
+      middle_segments_i         => mid_segments_to_pt,
+      outer_segments_i          => out_segments_to_pt,
+      extra_segments_i          => ext_segments_to_pt,
       -- from pipeline
       i_pl2pt_av                => pl2pt_av,
       -- to mtc

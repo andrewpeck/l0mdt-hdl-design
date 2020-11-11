@@ -45,23 +45,38 @@ HDL_Types:
 
 - slc_tb    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx]
 
-
+#####################################################
 
 - out_heg_bm_hit_sim:
   - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 4]
   - thread      : [ type : unsigned , length : 4]
-  - heg_bm      : [ type : heg2sfhit]
+  - data        : [ type : heg2sfhit]
 
 - out_heg_bm_slc_sim:
   - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 4]
   - thread      : [ type : unsigned , length : 4]
-  - heg_bm      : [ type : heg2sfslc]
+  - data      : [ type : heg2sfslc]
 
 - out_heg_bm_ctrl_sim:
   - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 4]
   - thread      : [ type : unsigned , length : 4]
   - heg_ctrl    : [ type : heg_ctrl2sf]
-  - heg_bm      : [ type : heg2sfslc]
+  - data      : [ type : heg2sfslc]
+
+
+#####################################################
+
+- in_pt_pt2sf_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : sf2ptcalc]
+
+- in_pt_mpl_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : pl2ptcalc]

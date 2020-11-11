@@ -18,92 +18,85 @@ output_vector_path = ".sim/project_lib_sim/behav/"
 #-----------------------------------------------------------
 #
 #-----------------------------------------------------------
-def read_vectors(prj_data,sim,ov_file):
+# def read_vectors(prj_data,sim,ov_file):
 
-  ov_data = {}
+#   ov_data = {}
   
   
-  verb(1,"------------------- read vectors -------------------")
-  if where == "local":
-    full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
-  else:
-    full_path = ""
-  # verb(1,"full path  :  " + full_path)
+#   verb(1,"------------------- read vectors -------------------")
+#   if where == "local":
+#     full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
+#   else:
+#     full_path = ""
+#   # verb(1,"full path  :  " + full_path)
 
-  ov_data['full_path'] = full_path
+#   ov_data['full_path'] = full_path
 
-  with open(full_path, newline='') as f:
-    bytes = f.read() # read entire file as bytes
-    ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
-    # verb(1,"hash  :  " + ov_data['hash'])
+#   with open(full_path, newline='') as f:
+#     bytes = f.read() # read entire file as bytes
+#     ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
+#     # verb(1,"hash  :  " + ov_data['hash'])
   
-  ov_data['num_lines'] = 0
-  f_head = []
-  ov_data['headers'] = {}
+#   ov_data['num_lines'] = 0
+#   f_head = []
+#   ov_data['headers'] = {}
 
-  with open(full_path, newline='') as f:
-    reader = csv.reader(f)
-    for l in reader:
-      ov_data['num_lines'] += 1
+#   with open(full_path, newline='') as f:
+#     reader = csv.reader(f)
+#     for l in reader:
+#       ov_data['num_lines'] += 1
       
-      line = l[0].split()
-      # verb(1,l[0])
-      if(l[0][0] == '#'): # Read headers 
+#       line = l[0].split()
+#       # verb(1,l[0])
+#       if(l[0][0] == '#'): # Read headers 
         
-        if ov_data['num_lines'] > 1: 
-          headers = []
-          # verb(1,line[0])
-          num_field = 0
-          for field in line:
-            num_field += 1
-            if num_field == 1:
-              head = field[field.find('#')+1 : field.find(':')]
-              ov_data[head] = {}
-              # verb(1,field.find("FLAG"))
-              # if field.find("FLAG") > 0:
-              #   ov_data[head]['FLAG'] = []
-              #   headers.append('FLAG')
-            else:
-              ov_data[head][field] = []
-              headers.append(field)
-            # verb(1,headers)
-          ov_data['headers'][head] = headers
-      else:
-        # verb(1,line[0])
-        for key in ov_data['headers']:
-          # verb(1,"................")
-          # verb(1,line[0].find(key))
-          if line[0].find(key) >= 0:
-            # verb(1,key)
-            field_cnt = 0
-            for head_key in ov_data['headers'][key]:
-              # verb(1,"::::::::::::::::")
-              # field_cnt += 1
-              # if field_cnt == 0:
-              #   verb(1,head_key)
-              # else:
-              # verb(1,key)
-              # verb(1,head_key)
-              # verb(1,field_cnt)
-              # verb(1,line[field_cnt])
-              ov_data[key][ov_data['headers'][key][field_cnt - 1]].append(line[field_cnt])
+#         if ov_data['num_lines'] > 1: 
+#           headers = []
+#           # verb(1,line[0])
+#           num_field = 0
+#           for field in line:
+#             num_field += 1
+#             if num_field == 1:
+#               head = field[field.find('#')+1 : field.find(':')]
+#               ov_data[head] = {}
+#               # verb(1,field.find("FLAG"))
+#               # if field.find("FLAG") > 0:
+#               #   ov_data[head]['FLAG'] = []
+#               #   headers.append('FLAG')
+#             else:
+#               ov_data[head][field] = []
+#               headers.append(field)
+#             # verb(1,headers)
+#           ov_data['headers'][head] = headers
+#       else:
+#         # verb(1,line[0])
+#         for key in ov_data['headers']:
+#           # verb(1,"................")
+#           # verb(1,line[0].find(key))
+#           if line[0].find(key) >= 0:
+#             # verb(1,key)
+#             field_cnt = 0
+#             for head_key in ov_data['headers'][key]:
+#               # verb(1,"::::::::::::::::")
+#               # field_cnt += 1
+#               # if field_cnt == 0:
+#               #   verb(1,head_key)
+#               # else:
+#               # verb(1,key)
+#               # verb(1,head_key)
+#               # verb(1,field_cnt)
+#               # verb(1,line[field_cnt])
+#               ov_data[key][ov_data['headers'][key][field_cnt - 1]].append(line[field_cnt])
 
-              field_cnt += 1
-
-
-
-
-
-
-
+#               field_cnt += 1
 
   # verb(1," num lines : " + str(ov_data['num_lines']))
   # verb(1,ov_data)
-  for key in ov_data:
-    ob_str = str(key).rjust(10) + " : " + str(ov_data[key])
-    verb(1,ob_str)
+  # for key in ov_data:
+  #   ob_str = str(key).rjust(10) + " : " + str(ov_data[key])
+  #   verb(1,ob_str)
 
-  return ov_data
+  # return ov_data
     
 #-----------------------------------------------------------
 #
@@ -156,12 +149,12 @@ def main_script(args):
   verb(1,project_name)
   verb(1,Data)
 
-  Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
-  Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  # Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  # Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
 
-  Data['comp'] = compare(Data)
+  # Data['comp'] = compare(Data)
 
-  report(Data)
+  # report(Data)
 
 
 #-----------------------------------------------------------

@@ -53,10 +53,13 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
-    IN_SLC_FILE       : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_MDT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_HEG_BM_FILE   : string  := "hps_heg_bm_A3_Barrel_yt_v04.txt";
-    DUMMY             : boolean := false
+    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
+    OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.txt";
+    OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.txt";
+    OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.txt";
+    OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.txt";
+    DUMMY               : boolean := false
     );
 end entity ult_tp;
 
@@ -464,7 +467,7 @@ begin
   HIT_READ: process ( rst, clk)
 
     -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
-    file input_mdt_tar_file       : text open read_mode is IN_MDT_FILE;
+    file input_mdt_tar_file       : text open read_mode is IN_HIT_FILE;
     variable row                  : line;
     variable row_counter          : integer := 0;
 
@@ -628,7 +631,9 @@ begin
 
   HEG_BM: process(clk)
 
-    file file_handler : text open write_mode is OUT_HEG_BM_FILE;
+    file file_slc_handler : text open write_mode is OUT_HEG_BM_SLC_FILE;
+    file file_hit_handler : text open write_mode is OUT_HEG_BM_HIT_FILE;
+
     variable row 		: line;
 
     -- o_sf_control_v
@@ -666,12 +671,35 @@ begin
       else
 
         if header2write = '0' then
-          SWRITE(row, "# Output of the HEG buffer mux for ");
-          writeline(file_handler,row);
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_slc_handler,row);
+          SWRITE(row, "# Output : HEG buffer mux");
+          writeline(file_slc_handler,row);
+          SWRITE(row, "# BUS : heg2sfslc_rt ");
+          writeline(file_slc_handler,row);
+          SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
+          writeline(file_slc_handler,row);
+          SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
+          writeline(file_slc_handler,row);
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_slc_handler,row);
           WRITEHEADER(row,slc2write);
-          writeline(file_handler,row);
+          writeline(file_slc_handler,row);
+          ----------------------------------------
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_hit_handler,row);
+          SWRITE(row, "# Output : HEG buffer mux");
+          writeline(file_hit_handler,row);
+          SWRITE(row, "# BUS : heg2sfhit_rt ");
+          writeline(file_hit_handler,row);
+          SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
+          writeline(file_hit_handler,row);
+          SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
+          writeline(file_hit_handler,row);
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_hit_handler,row);
           WRITEHEADER(row,hit2write);
-          writeline(file_handler,row);
+          writeline(file_hit_handler,row);
           header2write := '1';
         end if;
 
@@ -689,9 +717,9 @@ begin
               slc2write.ToA      := tb_curr_tdc_time;
               slc2write.station  := to_unsigned(0,4);
               slc2write.thread   := to_unsigned(heg_i,4);
-              slc2write.HEG_BM   := read_slc;
+              slc2write.data   := read_slc;
               write(row,slc2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -704,9 +732,9 @@ begin
               slc2write.ToA      := tb_curr_tdc_time;
               slc2write.station  := to_unsigned(1,4);
               slc2write.thread   := to_unsigned(heg_i,4);
-              slc2write.HEG_BM   := read_slc;
+              slc2write.data   := read_slc;
               write(row,slc2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -719,9 +747,9 @@ begin
               slc2write.ToA      := tb_curr_tdc_time;
               slc2write.station  := to_unsigned(2,4);
               slc2write.thread   := to_unsigned(heg_i,4);
-              slc2write.HEG_BM   := read_slc;
+              slc2write.data   := read_slc;
               write(row,slc2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -741,9 +769,9 @@ begin
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              ctrl2write.HEG_BM    := read_slc;
+              ctrl2write.data    := read_slc;
               write(row,ctrl2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -758,9 +786,9 @@ begin
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              ctrl2write.HEG_BM    := read_slc;
+              ctrl2write.data    := read_slc;
               write(row,ctrl2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -775,9 +803,9 @@ begin
               ctrl2write.station  := to_unsigned(0,4);
               ctrl2write.thread   := to_unsigned(heg_i,4);
               ctrl2write.HEG_ctrl := read_ctrl;
-              ctrl2write.HEG_BM    := read_slc;
+              ctrl2write.data    := read_slc;
               write(row,ctrl2write);
-              writeline(file_handler,row);
+              writeline(file_slc_handler,row);
 
             end if;
           end loop;
@@ -794,9 +822,9 @@ begin
               hit2write.ToA      := tb_curr_tdc_time;
               hit2write.station  := to_unsigned(0,4);
               hit2write.thread   := to_unsigned(heg_i,4);
-              hit2write.HEG_BM   := read_hit;
+              hit2write.data   := read_hit;
               write(row,hit2write);
-              writeline(file_handler,row);
+              writeline(file_hit_handler,row);
             end if;
           end loop;
         end if;
@@ -807,9 +835,9 @@ begin
               hit2write.ToA      := tb_curr_tdc_time;
               hit2write.station  := to_unsigned(1,4);
               hit2write.thread   := to_unsigned(heg_i,4);
-              hit2write.HEG_BM   := read_hit;
+              hit2write.data   := read_hit;
               write(row,hit2write);
-              writeline(file_handler,row);
+              writeline(file_hit_handler,row);
             end if;
           end loop;
         end if;
@@ -820,9 +848,9 @@ begin
               hit2write.ToA      := tb_curr_tdc_time;
               hit2write.station  := to_unsigned(2,4);
               hit2write.thread   := to_unsigned(heg_i,4);
-              hit2write.HEG_BM   := read_hit;
+              hit2write.data   := read_hit;
               write(row,hit2write);
-              writeline(file_handler,row);
+              writeline(file_hit_handler,row);
             end if;
           end loop;
         end if;
@@ -830,5 +858,153 @@ begin
       end if;
     end if;
   end process HEG_BM;
+
+
+
+
+ -------------------------------------------------------------------------------------
+	-- Input of PT CALC
+  -------------------------------------------------------------------------------------
+
+  SF_MPL_PT: process(clk)
+
+    file file_sf_handler : text open write_mode is OUT_PTIN_SF_FILE ;
+    file file_mpl_handler : text open write_mode is OUT_PTIN_MPL_FILE;
+
+    variable row 		: line;
+
+    alias inn_segments_to_pt_av is << signal.ult_tp.ULT.inn_segments_to_pt : sf2pt_bus_avt >>;
+    alias mid_segments_to_pt_av is << signal.ult_tp.ULT.mid_segments_to_pt : sf2pt_bus_avt >>;
+    alias out_segments_to_pt_av is << signal.ult_tp.ULT.out_segments_to_pt : sf2pt_bus_avt >>;
+    alias ext_segments_to_pt_av is << signal.ult_tp.ULT.ext_segments_to_pt : sf2pt_bus_avt >>;
+
+    alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2pt_bus_avt >>;
+
+    -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
+    variable fifo_count : integer := 0;
+
+    variable sf2pt : sf2ptcalc_rt;
+
+    variable sf_2write : in_pt_pt2sf_sim_rt;
+    variable mpl_2write : in_pt_mpl_sim_rt;
+
+    variable read_sf  : sf2ptcalc_rt;
+    variable read_mpl : pl2ptcalc_rt;
+    -- variable read_hit   : heg2sfhit_rt;
+
+    variable header2write : std_logic := '0';
+
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+            
+      else
+
+        if header2write = '0' then
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_sf_handler,row);
+          SWRITE(row, "# Output : SF 2 PTCALC");
+          writeline(file_sf_handler,row);
+          SWRITE(row, "# BUS : sf2ptcalc_rt ");
+          writeline(file_sf_handler,row);
+          SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
+          writeline(file_sf_handler,row);
+          SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
+          writeline(file_sf_handler,row);
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_sf_handler,row);
+          WRITEHEADER(row,sf_2write);
+          writeline(file_sf_handler,row);
+          ----------------------------------------
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_mpl_handler,row);
+          SWRITE(row, "# Output : SF 2 PTCALC");
+          writeline(file_mpl_handler,row);
+          SWRITE(row, "# BUS : pl2ptcalc_rt ");
+          writeline(file_mpl_handler,row);
+          SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
+          writeline(file_mpl_handler,row);
+          SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
+          writeline(file_mpl_handler,row);
+          SWRITE(row, "#----------------------------------------");
+          writeline(file_mpl_handler,row);
+          WRITEHEADER(row,mpl_2write);
+          writeline(file_mpl_handler,row);
+          header2write := '1';
+        end if;
+
+        fifo_count := 0;
+
+        -------------------------------------------------------------------
+        -- new SF
+        -------------------------------------------------------------------
+
+        if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+          for heg_i in c_NUM_THREADS -1 downto 0 loop
+            read_sf := structify(inn_segments_to_pt_av(heg_i));
+            if read_sf.data_valid = '1' then
+
+              sf_2write.ToA      := tb_curr_tdc_time;
+              sf_2write.station  := to_unsigned(0,4);
+              sf_2write.thread   := to_unsigned(heg_i,4);
+              sf_2write.data   := read_sf;
+              write(row,sf_2write);
+              writeline(file_sf_handler,row);
+
+            end if;
+          end loop;
+        end if;
+        if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
+          for heg_i in c_NUM_THREADS -1 downto 0 loop
+            read_sf := structify(mid_segments_to_pt_av(heg_i));
+            if read_sf.data_valid = '1' then
+
+              sf_2write.ToA      := tb_curr_tdc_time;
+              sf_2write.station  := to_unsigned(1,4);
+              sf_2write.thread   := to_unsigned(heg_i,4);
+              sf_2write.data   := read_sf;
+              write(row,sf_2write);
+              writeline(file_sf_handler,row);
+
+            end if;
+          end loop;
+        end if;
+        if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
+          for heg_i in c_NUM_THREADS -1 downto 0 loop
+            read_sf := structify(out_segments_to_pt_av(heg_i));
+            if read_sf.data_valid = '1' then
+
+              sf_2write.ToA      := tb_curr_tdc_time;
+              sf_2write.station  := to_unsigned(2,4);
+              sf_2write.thread   := to_unsigned(heg_i,4);
+              sf_2write.data   := read_sf;
+              write(row,sf_2write);
+              writeline(file_sf_handler,row);
+
+            end if;
+          end loop;
+        end if;
+
+        -------------------------------------------------------------------
+        -- new HIT
+        -------------------------------------------------------------------
+
+        if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+          for heg_i in c_NUM_THREADS -1 downto 0 loop
+            read_mpl := structify(pl2pt_av(heg_i));
+            if read_mpl.data_valid = '1' then
+              mpl_2write.ToA      := tb_curr_tdc_time;
+              -- mpl_2write.station  := to_unsigned(0,4);
+              mpl_2write.thread   := to_unsigned(heg_i,4);
+              mpl_2write.data   := read_mpl;
+              write(row,mpl_2write);
+              writeline(file_mpl_handler,row);
+            end if;
+          end loop;
+        end if;
+
+      end if;
+    end if;
+  end process SF_MPL_PT;
 
 end architecture beh;
