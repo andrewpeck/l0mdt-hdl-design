@@ -154,7 +154,7 @@ def main_script(args):
 
   # Data['comp'] = compare(Data)
 
-  # report(Data)
+  report(Data)
 
 
 #-----------------------------------------------------------
