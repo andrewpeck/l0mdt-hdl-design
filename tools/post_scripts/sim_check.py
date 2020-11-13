@@ -18,24 +18,24 @@ output_vector_path = ".sim/project_lib_sim/behav/"
 #-----------------------------------------------------------
 #
 #-----------------------------------------------------------
-# def read_vectors(prj_data,sim,ov_file):
+def read_vectors(prj_data,sim,ov_file):
 
-#   ov_data = {}
+  ov_data = {}
   
   
-#   verb(1,"------------------- read vectors -------------------")
-#   if where == "local":
-#     full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
-#   else:
-#     full_path = ""
-#   # verb(1,"full path  :  " + full_path)
+  verb(1,"------------------- read vectors -------------------")
+  if where == "local":
+    full_path = "../../VivadoProject/" + prj_data[sim]['subprj_name'] + "/"+ prj_data[sim]['subprj_name'] + output_vector_path + sim + "/" + ov_file
+  else:
+    full_path = ""
+  # verb(1,"full path  :  " + full_path)
 
-#   ov_data['full_path'] = full_path
+  ov_data['full_path'] = full_path
 
-#   with open(full_path, newline='') as f:
-#     bytes = f.read() # read entire file as bytes
-#     ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
-#     # verb(1,"hash  :  " + ov_data['hash'])
+  with open(full_path, newline='') as f:
+    bytes = f.read() # read entire file as bytes
+    ov_data['hash'] = hashlib.sha256(bytes.encode('utf-8')).hexdigest()
+    # verb(1,"hash  :  " + ov_data['hash'])
   
 #   ov_data['num_lines'] = 0
 #   f_head = []
@@ -149,10 +149,10 @@ def main_script(args):
   verb(1,project_name)
   verb(1,Data)
 
-  # Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
-  # Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  Data['xsim']['ov'] = read_vectors(Data,"xsim","hps_heg_bm_A3_Barrel_yt_v04.txt")
+  Data['questa']['ov'] = read_vectors(Data,"questa","hps_heg_bm_A3_Barrel_yt_v04.txt")
 
-  # Data['comp'] = compare(Data)
+  Data['comp'] = compare(Data)
 
   report(Data)
 
