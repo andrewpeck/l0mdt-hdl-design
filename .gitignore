@@ -34,3 +34,4 @@ modelsim.ini
 _hdl_checker/
 *.o
 *.cf
+env/
