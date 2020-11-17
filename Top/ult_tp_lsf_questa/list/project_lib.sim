@@ -1,10 +1,7 @@
-#Simulator xsim
-#shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
-#shared/sim/pkg/gldl_textio_pkg.vhd
-
+#Simulator questa
 shared/shared_lib.sim
 
 ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=5us
 
 # Waveform 
-ult/sim/ult_tp_sim1.wcfg
+# ult/sim/ult_tp_sim1.wcfg
