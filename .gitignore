@@ -35,3 +35,4 @@ _hdl_checker/
 *.o
 *.cf
 env/
+.cxl.questasim.*
