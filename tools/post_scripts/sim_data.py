@@ -64,7 +64,10 @@ class simData:
         verb(0,"       Hash check : " + "Missing file")
         flag += 1
     verb(0,"====================================================")
-    exit(flag)
+
+    if flag > 0:
+      verb(0,"WARNING : simulation output vectors differ between simulations")
+      exit(flag)
 
 
 #-----------------------------------------------------------
