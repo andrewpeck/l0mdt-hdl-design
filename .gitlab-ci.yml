@@ -40,10 +40,7 @@ include:
     - local: '/Top/ult_tp_csf_xsim/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf/gitlab-ci.yml'
-
     # - local: '/Top/ult_daq/gitlab-ci.yml'
-    
-    
     # - local: '/Top/csf_plus_pt/gitlab-ci.yml'
 
 
