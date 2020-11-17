@@ -101,7 +101,7 @@ def main_script(args):
   Data.read_vector("pt_in_sf_A3_Barrel_yt_v04.txt")
 
   
-  # Data.report()
+  Data.report()
 
 
 #-----------------------------------------------------------
