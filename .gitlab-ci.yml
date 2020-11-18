@@ -16,7 +16,7 @@ include:
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
-    # - local: '/Top/csf/gitlab-ci.yml'
+    - local: '/Top/csf/gitlab-ci.yml'
     # - local: '/Top/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/lsf/gitlab-ci.yml'
     # - local: '/Top/upt/gitlab-ci.yml'
@@ -36,7 +36,7 @@ include:
     # - local: '/Top/ult_tp_dev/gitlab-ci.yml'
     - local: '/Top/ult_tp_dev_xsim/gitlab-ci.yml'
     - local: '/Top/ult_tp_dev_questa/gitlab-ci.yml'
-    # - local: '/Top/ult_tp_csf/gitlab-ci.yml'
+    - local: '/Top/ult_tp_csf/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_xsim/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf/gitlab-ci.yml'
