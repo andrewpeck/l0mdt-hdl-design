@@ -54,7 +54,7 @@ class simData:
       else:
         verb(0,"File not found")
       
-      if files['xsim']['exist'] == files['questa']['exist'] :
+      if files['xsim']['exist'] + files['questa']['exist'] == 2 :
         if files['xsim']['hash'] == files['questa']['hash'] :
           verb(0,"       Hash check : " + "same hash")
         else:
