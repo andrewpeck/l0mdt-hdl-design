@@ -18,4 +18,4 @@ simulate_project:ult_tp_dev_xsim:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_dev_xsim
-      HOG_CHECK_PROJVER : 0
+      HOG_CHECK_PROJVER: 0
