@@ -43,7 +43,7 @@
     image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
     stage: user_proj
     script:
-        - ll
+        - sleep 1h
         - cd tools/simCheck
         - python3 checker.py $PROJECT_NAME -v 1
     allow_failure: true
