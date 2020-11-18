@@ -81,7 +81,7 @@ def load_vector_file(prj_data, mode, sim, file_name):
   verb(1,"------------------- read vectors -------------------")
   verb(1, "laod mode : " + mode)
   # if where == "local":
-  full_path = "../../VivadoProject/" + prj_data['subprj_name'][sim] + "/"+ prj_data['subprj_name'][sim] + output_vector_path + sim + "/" + file_name
+  full_path = "../../Projects/" + prj_data['subprj_name'][sim] + "/"+ prj_data['subprj_name'][sim] + output_vector_path + sim + "/" + file_name
   # else:
   #   full_path = ""
   verb(1,"full path  :  " + full_path)

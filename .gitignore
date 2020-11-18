@@ -36,3 +36,4 @@ _hdl_checker/
 *.cf
 env/
 .cxl.questasim.*
+Projects/
