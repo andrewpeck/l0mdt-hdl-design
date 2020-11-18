@@ -44,6 +44,6 @@
     stage: user_proj
     script:
         - cd tools/simCheck
-        - python3 checker.py $PROJECT_NAME
+        - python3 checker.py $PROJECT_NAME -v 1
     allow_failure: true
 
