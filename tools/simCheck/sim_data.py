@@ -47,7 +47,7 @@ class simData:
       else:
         verb(0,"File not found")
 
-      if files['xsim']['exist'] == 1:
+      if files['questa']['exist'] == 1:
         verb(0,"        Xsim file : " + files['questa']['full_path'])
         verb(0,"   Xsim file hash : " + str(files['questa']['hash']))
         verb(0,"        Num lines : " + str(files['questa']['num_lines']))

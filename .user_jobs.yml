@@ -45,6 +45,5 @@
     script:
         - cd tools/simCheck
         - python3 checker.py $PROJECT_NAME -v 1
-        - sleep 1h
     allow_failure: true
 
