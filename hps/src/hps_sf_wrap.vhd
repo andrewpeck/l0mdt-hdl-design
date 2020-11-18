@@ -94,7 +94,9 @@ begin
     ------------------------------------------------------------------
 
 
-    lsf_mon <= ('0',(others =>'0'), (others => '0'));
+    lsf_mon.STATUS <= '0';
+    lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+    lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
 
 
    
