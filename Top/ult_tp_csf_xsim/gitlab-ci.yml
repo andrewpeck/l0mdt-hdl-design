@@ -11,3 +11,4 @@ simulate_project:ult_tp_csf_xsim:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_csf_xsim
+      HOG_CHECK_PROJVER : 0
