@@ -25,7 +25,7 @@ use shared_lib.common_constants_pkg.all;
 package detector_param_pkg is
 
   -------------------------------------------------------------------------
-  -- Some constants
+  -- Time & cycles constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
   constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
@@ -43,6 +43,9 @@ package detector_param_pkg is
   --
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
+
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer; 
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer; 
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------
@@ -227,6 +230,31 @@ package detector_param_pkg is
 end package detector_param_pkg;
 
 package body detector_param_pkg is
+
+  -------------------------------------------------------------------------
+  -- Time & cycles constants
+  -------------------------------------------------------------------------
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer is
+    variable t_o : integer;
+  begin
+    if SF_t = '0' then
+      t_o := t_CSF;
+    else
+      t_o := t_LSF;
+    end if;
+    return t_o;
+  end function;
+
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer is
+    variable t_o : integer;
+  begin
+    if PT_t = '0' then
+      t_o := t_MPI;
+    else
+      t_o := t_UCI;
+    end if;
+    return t_o;
+  end function;
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------
