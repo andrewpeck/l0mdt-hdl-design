@@ -40,6 +40,10 @@ package detector_param_pkg is
   
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
   --
+  constant CSF_POST_PROCESSING  : integer := 56;
+  constant LSF_POST_PROCESSING  : integer := 50;
+
+  --
   constant HP_LATENCY           : integer := 3;
   constant BM_MIN_LATENCY       : integer := 3;
   --

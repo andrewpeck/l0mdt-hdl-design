@@ -61,7 +61,7 @@ begin
     generic map(
       g_MEMORY_TYPE     => "ultra",
       g_PIPELINE_TYPE   => "ring_buffer",
-      g_DELAY_CYCLES    => MPL_PL_A_LATENCY,
+      g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
       g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
     )
     port map(
