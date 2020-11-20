@@ -104,31 +104,7 @@ def mtc_test(dut):
     outputs     = testvectors["outputs"]
     output_tvformat = outputs[0]["tv_format"]
 
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKmtc_block_instance = mtc_block.MtcBlock(dut.clock, "MtcBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    mtc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    mtc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKmtc_block_instance.start()
 
-    ##
-    ## mark the current board
-    ##
 
     board_id = 0  # autogen
     dut._log.info(f"Instantiated Mtc block with BOARD_ID = {board_id}")
@@ -167,21 +143,14 @@ def mtc_test(dut):
         outputs_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
-    master_tv_file = test_config.get_testvector_file_from_config(config)
+    run_config                       = config["run_config"]
+    output_dir_name                  = run_config["output_directory_name"]
+    master_tv_file                   = test_config.get_testvector_file_from_config(config)
+    output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
+
 #    print("TV FORMATS = ", inputs_tvformats, outputs_tvformats)
 #    print("MASTER TV FILE = ",master_tv_file)
 
-
-
-
-    ###
-    ### alternative method for getting testvectors:
-    ###
-    # testvector_dir = config["testvectors"]["testvector_dir"]
-    # (
-    #   input_testvector_files,
-    #   output_testvector_files,
-    # ) = mtc_utils.get_testvector_files(testvector_dir)
 
     ##
     ## initialize the Mtc block wrapper
@@ -198,6 +167,7 @@ def mtc_test(dut):
             "slcpipeline",
             io,
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_input_driver(slcpipeline_driver, 0,io)
 
@@ -208,6 +178,7 @@ def mtc_test(dut):
             "ptcalc",
             io,
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_input_driver(ptcalc_driver, 1,io)
 
@@ -220,6 +191,7 @@ def mtc_test(dut):
             io,
             callbacks=[],
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_output_monitor(monitor, 0, io, active=active)
     mtc_wrapper.sort_ports()
@@ -338,39 +310,9 @@ def mtc_test(dut):
 
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
-        ##
-        ## perform test by comparison with expected testvectors
-        ##
-        #events_are_equal, test_results = tb_diff.my_events_are_equal(
-        #    recvd_events, expected_output_events, verbose=False
-        #)
-
-
-
-  #      result_summary = result_handler.my_result_summary_dict(
-   #         str(output_testvector_files[0]), str(output_testvector_files[0]),
-    #        test_name=f"TEST_{str('Mtc').upper()}_SRC{this_tp.value:02}_DEST{io.value:02}",
-     #       test_results=test_results,
-      #  )
-        #result_summary = events_are_equal
-        #all_test_results.append(result_summary)
-        #all_tests_passed = (
-        #    all_tests_passed and result_summary
-        #    #all_tests_passed and result_summary["test_results"]["test_success"]
-        #)
-
-        #this_tp_name = (
-        #    f"{this_tp.name.split('_')[0]}{int(this_tp.name.split('_')[1]):02}"
-        #)
-        #out_io_name = f"{io.name.split('_')[0]}{int(io.name.split('_')[1]):02}"
-        #output_json_name = f"test_results_summary_Mtc_src{this_tp_name}_dest{out_io_name}.json"
-#       # print("OUTPUT_JSON_NAME=%s"%(output_json_name))
-        #with open(output_json_name, "w", encoding="utf-8") as f:
-        #    json.dump(result_summary, f, ensure_ascii=False, indent=4)
-
-    # result_handler.dump_test_results(
-    #     all_test_results, event_detail=event_level_detail_in_sumary
-    # )
+    ##
+    ## perform test by comparison with expected testvectors
+    ##
 
     #Ordering based on events
     for i in range(num_events_to_process):

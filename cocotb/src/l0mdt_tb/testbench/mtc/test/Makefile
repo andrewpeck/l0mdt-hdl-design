@@ -61,7 +61,7 @@ VERILOG_SOURCES = \
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR) +incdir+$(DFDIR) +incdir+$(MTCDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver
-VSIM_ARGS  += -debugDB -voptargs="+acc"
+VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/mtc.wlf
 
 ##############################################################################
 #
