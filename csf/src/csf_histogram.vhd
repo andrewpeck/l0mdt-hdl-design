@@ -55,7 +55,8 @@ architecture Behavioral of csf_histogram is
   -- Histogram parameters
   constant HISTO_FULL_MULTI : real := real(HEG2SFHIT_LOCALX_MULT * UCM_MBAR_MULT);
   constant HISTO_LEN       : integer := 6;
-  constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * (2.0 ** real(HISTO_LEN + 1))));
+  constant HISTO_RANGE     : real := 256.0;
+  constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * HISTO_RANGE));
   constant MAX_HITS_PER_BIN  : real    := 8.0;
   constant BIN_DEPTH         : integer := integer(log2(max_hits_per_bin));
   constant INV_SQRT_M_LEN  : integer := 18;

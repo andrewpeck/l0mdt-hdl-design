@@ -21,7 +21,7 @@
           else
             echo "Project version checker is disabled.";
           fi
-        - if [ -f "./VivadoProjects/$PROJECT_NAME/skip.me" ]; then
+        - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
             echo "CI disabled for $PROJECT_NAME";
           else
             if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
@@ -33,7 +33,7 @@
     artifacts:
         name: user_sim
         paths:
-            - $CI_PROJECT_DIR/VivadoProject/$PROJECT_NAME/$PROJECT_NAME.sim
+            - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
             - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
         expire_in: 30 day
     allow_failure: true
@@ -44,6 +44,6 @@
     stage: user_proj
     script:
         - cd tools/simCheck
-        - python3 checker.py $PROJECT_NAME
+        - python3 checker.py $PROJECT_NAME -v 1
     allow_failure: true
 

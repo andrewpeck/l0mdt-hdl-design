@@ -6,8 +6,8 @@ generate_project:ult_tp_dev:
       PROJECT_NAME: ult_tp_dev
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-user_sim:ult_tp_dev:
-    extends: .user_sim
-    variables:
-      extends: .vars
-      PROJECT_NAME: ult_tp_dev
+# user_sim:ult_tp_dev:
+#     extends: .user_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ult_tp_dev

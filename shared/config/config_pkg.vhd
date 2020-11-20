@@ -150,6 +150,17 @@ package config_pkg is
   constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
 
   ---------------------------------------------------------
+  -- DELAYS & TIME CONSTANTS 
+  ---------------------------------------------------------
+  constant c_HEG_SF_START_DELAY : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_START_DELAY,HEG_LSF_START_DELAY);
+  constant c_HEG_SF_END_DELAY   : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_END_DELAY,HEG_LSF_END_DELAY);
+  
+  constant c_HEG_TIME_LOAD      : integer := get_heg_load_time(c_HEG_SF_START_DELAY);
+  constant c_HEG_TIME_BUSY      : integer := get_heg_busy_time(c_HEG_SF_START_DELAY);
+  constant c_HEG_TIME_UNLOAD    : integer := get_heg_unload_time(c_HEG_SF_START_DELAY,c_HEG_SF_END_DELAY);
+  
+
+  ---------------------------------------------------------
   -- FUNCTIONS
   ---------------------------------------------------------
 
