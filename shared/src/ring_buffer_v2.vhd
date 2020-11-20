@@ -57,7 +57,7 @@ architecture beh of ring_buffer_v2 is
   --------------------------------
   type mem_avt is array (0 to g_RAM_DEPTH - 1) of std_logic_vector(g_RAM_WIDTH - 1 downto 0);
   signal mem    : mem_avt;
-  signal mem_dv : std_logic_vector(0 to g_RAM_DEPTH - 1);
+  signal mem_dv : std_logic_vector(0 to g_RAM_DEPTH - 1) := (others => '0');
   attribute ram_style        : string;
   attribute ram_style of mem : signal is g_MEMORY_TYPE;
   --------------------------------
@@ -299,8 +299,11 @@ begin
             mem(wr_index) <= i_wr_data;
           -- end if;
 
-
-          o_rd_data <= mem(rd_index);
+          if mem_dv(rd_index) = '1' then
+            o_rd_data <= mem(rd_index);
+          else
+            o_rd_data <= (others => '0');
+          end if;
           o_rd_dv <= mem_dv(rd_index);
 
           -- case case_options is
