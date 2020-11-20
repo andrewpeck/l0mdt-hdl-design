@@ -59,7 +59,7 @@ end entity heg_ctrl_sig;
 
 architecture beh of heg_ctrl_sig is
 
-  signal heg_times : heg_times_rt := get_heg_times(0);
+  -- signal heg_times : heg_times_rt := get_heg_times(0);
 
   type heg_ctrl_motor_t is ( IDLE, SET_WINDOW, HEG_BUSY );
   signal heg_ctrl_motor   : heg_ctrl_motor_t;
@@ -241,9 +241,9 @@ begin
           when HEG_BUSY =>
           o_uCM2sf_data_r.data_valid <= '0';
 
-            if to_integer(unsigned(busy_count)) < heg_times.load then
+            if to_integer(unsigned(busy_count)) < c_HEG_TIME_LOAD then
               -- WAITING SF TO LOAD
-            elsif to_integer(unsigned(busy_count)) < heg_times.busy then
+            elsif to_integer(unsigned(busy_count)) < c_HEG_TIME_BUSY then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';
                 o_hp_control_r(hp_i).rst <= '0';
@@ -251,7 +251,7 @@ begin
               o_sf_control_r.enable <= '1';
               o_sf_control_r.rst    <= '0';
               o_sf_control_r.eof    <= '0';
-            elsif to_integer(unsigned(busy_count)) = heg_times.busy then
+            elsif to_integer(unsigned(busy_count)) = c_HEG_TIME_BUSY then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '0';
                 o_hp_control_r(hp_i).rst <= '0';
@@ -261,7 +261,7 @@ begin
               o_sf_control_r.eof    <= '1';
               -- busy_count <= (others => '0');
               -- heg_ctrl_motor <= IDLE;
-            elsif to_integer(unsigned(busy_count)) < heg_times.unload then
+            elsif to_integer(unsigned(busy_count)) < c_HEG_TIME_UNLOAD then
               o_sf_control_r.enable <= '0';
               o_sf_control_r.rst    <= '0';
               o_sf_control_r.eof    <= '0';
