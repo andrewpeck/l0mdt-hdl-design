@@ -43,7 +43,6 @@ TOPLEVEL_LANG=verilog
 VERILOG_SOURCES = \
     $(DFDIR)/l0mdt_buses_constants.svh \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v \
-    $(MTCDIR)/format_mtc_pkt.sv \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files
