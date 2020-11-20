@@ -7,7 +7,7 @@ TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
 TV_tag="master"
 
 dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
-dataformats_tag= "AT/devel1h"
+#dataformats_tag= "AT/devel1h"
 
 function print_usage {
     echo "---------------------------------------------------------"
@@ -96,7 +96,7 @@ function install_tv {
     echo "Installing TV environment"
     python3 -m pip install pandas
     python3 -m pip install tabulate
-    python3 -m pip install termcolor    
+    python3 -m pip install termcolor
     python3 -m pip install -e ./../dataformats
     python3 -m pip install -e ../tv/TVReader
     python3 -m pip install -e ../tv/TVMaker
@@ -171,7 +171,7 @@ function main {
 #            return 1
 #        fi
 #    fi
-  
+
     ##
     ## setup
     ##
@@ -186,7 +186,7 @@ function main {
 
     else
 	echo "Setting up Python environment"
-	 
+
         python3 -m venv ${venv_dir_name}
         if [ ! -d ${venv_dir_name} ]; then
             echo "ERROR Problem setting up virtual environment \"${venv_dir_name}\""
@@ -217,7 +217,7 @@ function main {
             #if ! pre_commit_setup; then
             #   return 1
             #fi
-	  
+
 
 
             echo "Installation successful"
