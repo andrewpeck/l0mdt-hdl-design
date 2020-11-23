@@ -101,7 +101,7 @@ package body gldl_l0mdt_textio_pkg is
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
         chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-        time => to_unsigned((mdt_time_coarse * 25) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+        time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
         data_valid => '1'
       )
     );

@@ -133,6 +133,7 @@ begin
           o_full        <= '0';
           o_full_next   <= '0';
           used_data <= 0;
+          o_rd_dv <= '0';
         else
           --------------------------------
           -- PIPELINES CTRL
@@ -181,7 +182,11 @@ begin
           -- INPUT SIGNALS CTRL
           --------------------------------
           if g_LOGIC_TYPE = "fifo" and g_FIFO_TYPE = "read_ahead" then
-            o_rd_data <= mem(rd_index);
+            if used_data > 0 then
+              o_rd_data <= mem(rd_index);
+            else
+              o_rd_data <= (others => '0');
+            end if;
           end if;
 
           case case_options is
