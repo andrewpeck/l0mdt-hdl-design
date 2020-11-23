@@ -37,7 +37,7 @@ use csf_lib.csf_pkg.all;
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
--- library lsf_lib;
+library lsf_lib;
 
 entity hps_sf_wrap is
   generic(
@@ -86,6 +86,12 @@ begin
           i_rst     => rst,
           o_seg     => o_sf_data_v
           );
+
+          lsf_mon.STATUS <= '0';
+          lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+          lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+
+
     end generate;
 
 
@@ -94,30 +100,30 @@ begin
     ------------------------------------------------------------------
 
 
-    lsf_mon <= ('0',(others =>'0'), (others => '0'));
+
 
 
    
-  --   EN_LSF : if c_SF_TYPE = '1' generate
-  --     LSF : entity lsf_lib.top_lsf
-  --       -- generic map(
-  --       --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
-  --       --   )
-  --       port map(
-  --         clock                               => clk,
-  --         reset                               => rst,
-  --         slc_roi                             => i_slc_data_v,
-  --         mdt_hit                             => i_mdt_data_v,
-  --         lsf                                 => o_sf_data_v,
-  --         hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
-  --         --SpyBuffer 
-  --         sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
-  --         sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
-  --         sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
-  --         sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
-  --         sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
-  --         );
-  --   end generate;
+    EN_LSF : if c_SF_TYPE = '1' generate
+      LSF : entity lsf_lib.top_lsf
+        -- generic map(
+        --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+        --   )
+        port map(
+          clock                               => clk,
+          reset                               => rst,
+          slc_roi                             => i_slc_data_v,
+          mdt_hit                             => i_mdt_data_v,
+          lsf                                 => o_sf_data_v,
+          hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
+          --SpyBuffer 
+          sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
+          sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
+          sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
+          sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
+          sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
+          );
+    end generate;
 
 
 

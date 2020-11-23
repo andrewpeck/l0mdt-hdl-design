@@ -59,7 +59,7 @@ package cfg_global_pkg is
     SF_TYPE                       : std_logic;  -- select the type of segment finder
     -- pt-calc
     ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
-    PT_type                       : std_logic;  -- select the type of pt calculator
+    PT_TYPE                       : std_logic;  -- select the type of pt calculator
     -- DAQ
     ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
     -- MTC
@@ -113,7 +113,7 @@ package cfg_global_pkg is
     SF_TYPE                       => '0', -- default CSF
     -- pt-calc
     ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
-    PT_type                       => '0', -- default 0
+    PT_TYPE                       => '0', -- default 0
     -- DAQ
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- MTC
@@ -196,7 +196,7 @@ end package cfg_global_pkg;
 --     proj_cfg.SF_TYPE                       => '0'; -- default CSF
 --     -- pt-calc
 --     proj_cfg.ENABLE_PT                     => '1'; -- default enable
---     proj_cfg.PT_type                       => '0'; -- default 0
+--     proj_cfg.PT_TYPE                       => '0'; -- default 0
 --     -- DAQ
 --     proj_cfg.ENABLE_DAQ                    => '1'; -- default enabled
 --     --------------------------------------------------------------------------------
