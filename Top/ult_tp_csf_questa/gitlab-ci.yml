@@ -13,6 +13,12 @@ user_sim:ult_tp_csf_questa:
       PROJECT_NAME: ult_tp_csf_questa
       HOG_CHECK_PROJVER: 0
 
+sim_comp:ult_tp_csf_questa:
+    extends: .sim_comp
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_csf_questa
+
 sim_check:ult_tp_csf_questa:
     extends: .sim_check
     variables:

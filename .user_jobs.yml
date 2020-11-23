@@ -38,12 +38,21 @@
         expire_in: 30 day
     allow_failure: true
 
-.sim_check: &sim_check
+.sim_comp: &sim_comp
     <<: *only-default
     image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
     stage: user_proj
     script:
-        - cd tools/simCheck
+        - cd tools/simComp
         - python3 checker.py $PROJECT_NAME -v 1
+    allow_failure: true
+
+.sim_check: &sim_check
+    <<: *only-default
+    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+    stage: user_post
+    script:
+        # - cd tools/simComp
+        # - python3 checker.py $PROJECT_NAME -v 1
     allow_failure: true
 
