@@ -44,7 +44,7 @@
     stage: user_proj
     script:
         - cd tools/simComp
-        - python3 checker.py $PROJECT_NAME -v 1
+        - python3 comparator.py $PROJECT_NAME
     allow_failure: true
 
 .sim_check: &sim_check
@@ -53,6 +53,6 @@
     stage: user_post
     script:
         - cd tools/simCheck
-        # - python3 checker.py $PROJECT_NAME -v 1
+        - python3 checker.py $PROJECT_NAME -v 1
     allow_failure: true
 

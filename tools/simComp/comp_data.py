@@ -16,7 +16,7 @@
 import sys
 import os
 import hashlib
-from sim_options import verb
+from comp_options import verb
 
 
 output_vector_path = ".sim/project_lib_sim/behav/"

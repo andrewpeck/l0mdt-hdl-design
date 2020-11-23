@@ -53,6 +53,9 @@ def main_script(args):
 #
 #-----------------------------------------------------------
 if __name__ == "__main__":
+  print("====================================================")
+  print("==             SIMULATION COMPARATOR              ==")
+  print("====================================================")
   parser = argparse.ArgumentParser(description='Script to compare simulation Output Vectors')
   parser.add_argument("project", help="input project name")
   parser.add_argument("-t", "--type"    , type=int  , default=0 , help="Select the type of comparision to do")
@@ -60,7 +63,7 @@ if __name__ == "__main__":
   # parser.add_argument("-w", "--where"   , default = "local"     , help= "Select if the script is run in local or in gitlab" )
   args = parser.parse_args()
 
-  sim_options.set_verbose_level(args.verbose)
+  comp_options.set_verbose_level(args.verbose)
   # where = args.where
 
   verb(1,platform.python_version())
