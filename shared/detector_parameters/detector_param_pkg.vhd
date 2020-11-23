@@ -33,14 +33,14 @@ package detector_param_pkg is
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
   --
   constant HEG_CSF_START_DELAY  : integer := 5;
-  constant HEG_CSF_END_DELAY    : integer := 10;
+  constant HEG_CSF_END_DELAY    : integer := 57;
 
   constant HEG_LSF_START_DELAY  : integer := 18;
   constant HEG_LSF_END_DELAY    : integer := 10;
   
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
   --
-  constant CSF_POST_PROCESSING  : integer := 56;
+  constant CSF_POST_PROCESSING  : integer := 57;
   constant LSF_POST_PROCESSING  : integer := 50;
 
   --
