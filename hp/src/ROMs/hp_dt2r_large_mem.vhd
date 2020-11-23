@@ -20,7 +20,7 @@ package hp_dt2r_large_mem is
 
   constant DT2R_LARGE_ADDR_LEN : integer := 10;
   constant DT2R_LARGE_DATA_LEN : integer := 9;
-  constant DT2R_LARGE_MEM_SIZE : integer := 988;
+  constant DT2R_LARGE_MEM_SIZE : integer := 1024;
 
   type mem_array is array (0 to DT2R_LARGE_MEM_SIZE-1) of integer;
   constant mem_data : mem_array := (
@@ -122,7 +122,8 @@ package hp_dt2r_large_mem is
     947 to 956 =>457,
     957 to 966 =>459,
     967 to 976 =>462,
-    977 to 987 =>464
+    977 to 1023 =>464 -- original was 987 but simulation gives numbers higher than 987 with very low rate, so we are in hte limit
+                      -- I saturate 987 to 1023 until we do more precioson calculations
   );
 
  end package hp_dt2r_large_mem;
