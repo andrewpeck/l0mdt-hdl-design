@@ -1,7 +1,18 @@
 #!/usr/bin/python3
-#
-#
-#
+# --------------------------------------------------------------------------------
+# --  UMass , Physics Department
+# --  Guillermo Loustau de Linares
+# --  gloustau@cern.ch
+# --------------------------------------------------------------------------------
+# --  Project: ATLAS L0MDT Trigger 
+# --  Module: Simulation analysis
+# --  Description: runs analysis over the simulation input/output vectors
+# --
+# --------------------------------------------------------------------------------
+# --  Revisions: 
+# --    v0  - 2020.11.23 creation
+# --      
+# --------------------------------------------------------------------------------
 import platform
 import argparse
 import sys
@@ -27,14 +38,14 @@ def main_script(args):
 
   Data = simData('_'.join(project_name))
 
-  Data.read_vector("hps_heg_bm_hit_A3_Barrel_yt_v04.txt")
-  Data.read_vector("hps_heg_bm_slc_A3_Barrel_yt_v04.txt")
+  # Data.read_vector("hps_heg_bm_hit_A3_Barrel_yt_v04.txt")
+  # Data.read_vector("hps_heg_bm_slc_A3_Barrel_yt_v04.txt")
 
-  Data.read_vector("pt_in_mpl_A3_Barrel_yt_v04.txt")
-  Data.read_vector("pt_in_sf_A3_Barrel_yt_v04.txt")
+  # Data.read_vector("pt_in_mpl_A3_Barrel_yt_v04.txt")
+  # Data.read_vector("pt_in_sf_A3_Barrel_yt_v04.txt")
 
   
-  Data.report()
+  # Data.report()
 
 
 #-----------------------------------------------------------

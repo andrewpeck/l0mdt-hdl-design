@@ -1,4 +1,18 @@
-#
+#------------------------------------------------------------------------------
+#  UMass , Physics Department
+#  Guillermo Loustau de Linares
+#  gloustau@cern.ch
+#------------------------------------------------------------------------------
+#  Project: ATLAS L0MDT Trigger 
+#  Module: Simulation comparator
+#  Description: run comparision of the output vectors of the different simulation softwares
+#  Supported simulators : xsim(vivado), questa
+#------------------------------------------------------------------------------
+#  Revisions: 
+#    v0  - 2020.11.2 creation
+#      
+#------------------------------------------------------------------------------
+
 import sys
 import os
 import hashlib
