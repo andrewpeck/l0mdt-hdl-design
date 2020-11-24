@@ -5,16 +5,13 @@
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Test Bench Module for Logic Trigger Path
---  Description: Hit input vector reader and injector
+--  Description: SLC input vector reader and injector
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      2020.11.23 Creation 
+--      2020.11.24 Creation 
 --
 --------------------------------------------------------------------------------
-
-
-
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
