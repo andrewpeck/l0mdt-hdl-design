@@ -26,6 +26,9 @@
 [submodule "tools/yml2hdl"]
 	path = tools/yml2hdl
 	url = https://gitlab.com/tcpaiva/yml2hdl.git
+[submodule "tools/simCheck"]
+	path = tools/simCheck
+	url = https://gitlab.cern.ch/umass-l0mdt/software/l0mdt-ov-analysis.git
 [submodule "c2c/src/bd"]
 	path = c2c/src/bd
 	url = https://github.com/dgastler/BU_BUILD
