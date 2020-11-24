@@ -31,4 +31,4 @@
 	url = https://github.com/dgastler/BU_BUILD
 [submodule "tools/simCheck"]
 	path = tools/simCheck
-	url = https://gitlab.cern.ch/umass-l0mdt/software/l0mdt-ov-analysis.git
+	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
