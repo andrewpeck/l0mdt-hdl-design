@@ -82,7 +82,7 @@ class mtc_builderWrapper:
 
     @property
     def io_port_num(self):
-        return int(self._io_enum.value)
+        return int(self._io_enum)
 
     @property
     def is_active(self):
@@ -211,7 +211,7 @@ class mtc_builderDriver(mtc_builderWrapper, Driver):
 
         if "slcpipeline" in kwargs:
             self.mtc_builder.slcpipeline[self.io_port_num]   <= (transaction  | (1<<112))
-          
+
         if "ptcalc" in kwargs:
             self.mtc_builder.ptcalc[self.io_port_num]   <= transaction
 
@@ -222,7 +222,7 @@ class mtc_builderDriver(mtc_builderWrapper, Driver):
             self.clock
         )  # latch write data register on next clock rising edge
         if "slcpipeline" in kwargs:
-            self.mtc_builder.slcpipeline[self.io_port_num] <= 0         
+            self.mtc_builder.slcpipeline[self.io_port_num] <= 0
         if "ptcalc" in kwargs:
             self.mtc_builder.ptcalc[self.io_port_num]   <= 0
 
