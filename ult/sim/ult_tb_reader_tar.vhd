@@ -43,7 +43,7 @@ entity ult_tb_reader_tar is
   port (
     clk               : in std_logic;
     rst               : in std_logic;
-    enable_mdt        : in integer;
+    enable            : in integer;
     --
     tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
     -- Hits from Tar
@@ -114,7 +114,7 @@ begin
 
       else
 
-        if enable_mdt = 1 then
+        if enable = 1 then
         -- write to DUT
 
           for wr_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 loop

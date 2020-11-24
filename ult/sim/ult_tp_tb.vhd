@@ -157,35 +157,35 @@ architecture beh of ult_tp is
   -- signal i_mdt_tar_out_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
   -- signal i_mdt_tar_ext_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
 
-  -- Sector Logic Candidates
-  signal i_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc_ar     : slc_rx_rt;
-  signal i_minus_neighbor_slc_ar    : slc_rx_rt;
+  -- -- Sector Logic Candidates
+  -- signal i_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
+  -- signal i_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
+  -- signal i_plus_neighbor_slc_ar     : slc_rx_rt;
+  -- signal i_minus_neighbor_slc_ar    : slc_rx_rt;
   ---------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
 
 
-  type infifo_slc_counts is array (integer range <>) of integer;
+  -- type infifo_slc_counts is array (integer range <>) of integer;
 
-  type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
+  -- type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
 
-  signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
+  -- signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
 
-  signal slc_event_r          : input_slc_b_rt;
-  signal slc_new_event        : input_slc_b_rt;
+  -- signal slc_event_r          : input_slc_b_rt;
+  -- signal slc_new_event        : input_slc_b_rt;
 
-  signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
-  signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
-  signal slc_neig_plus_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
-  signal slc_neig_minu_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
+  -- signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
+  -- signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
+  -- signal slc_neig_plus_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
+  -- signal slc_neig_minu_fifo   : infifo_slc_mem_at(0 downto 0) := (others => nullify(slc_element));
 
-  signal slc_main_prim_counts : infifo_slc_counts(2 downto 0) := (others => 0);
-  signal slc_main_seco_counts : infifo_slc_counts(2 downto 0) := (others => 0);
-  signal slc_neig_plus_counts : infifo_slc_counts(0 downto 0) := (others => 0);
-  signal slc_neig_minu_counts : infifo_slc_counts(0 downto 0) := (others => 0);
-  --------------------------------------------------------------------------
+  -- signal slc_main_prim_counts : infifo_slc_counts(2 downto 0) := (others => 0);
+  -- signal slc_main_seco_counts : infifo_slc_counts(2 downto 0) := (others => 0);
+  -- signal slc_neig_plus_counts : infifo_slc_counts(0 downto 0) := (others => 0);
+  -- signal slc_neig_minu_counts : infifo_slc_counts(0 downto 0) := (others => 0);
+  -- --------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
 
@@ -318,7 +318,7 @@ begin
   port map(
     clk => clk,
     rst => rst,
-    enable_mdt => enable_mdt,
+    enable => enable_mdt,
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
     -- TAR Hits for simulation
@@ -326,6 +326,23 @@ begin
     i_mdt_tar_mid_av => i_mdt_tar_mid_av,
     i_mdt_tar_out_av => i_mdt_tar_out_av,
     i_mdt_tar_ext_av => i_mdt_tar_ext_av
+  );
+
+  SLC : entity project_lib.ult_tb_reader_slc 
+  generic map (
+    IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_slc,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time,
+    -- TAR Hits for simulation
+    i_main_primary_slc    => i_main_primary_slc  ,
+    i_main_secondary_slc  => i_main_secondary_slc,
+    i_plus_neighbor_slc   => i_plus_neighbor_slc ,
+    i_minus_neighbor_slc  => i_minus_neighbor_slc
   );
 
 
@@ -391,93 +408,93 @@ begin
  	-------------------------------------------------------------------------------------
 	-- candidates
   -------------------------------------------------------------------------------------
-  SLC_READ: process ( rst, clk)
+  -- SLC_READ: process ( rst, clk)
 
-    -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
-    file input_slc_file         : text open read_mode is IN_SLC_FILE;
-    variable row                : line;
-    variable row_counter        : integer := 0;
-    -- variable tdc_time           : UNSIG_64;
-    variable v_slc_event        : input_slc_b_rt;
-    -- variable next_event_time    : integer := 0;
-    -- variable tb_time            : integer := 0;
-    variable first_read         : std_logic := '1';
+  --   -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
+  --   file input_slc_file         : text open read_mode is IN_SLC_FILE;
+  --   variable row                : line;
+  --   variable row_counter        : integer := 0;
+  --   -- variable tdc_time           : UNSIG_64;
+  --   variable v_slc_event        : input_slc_b_rt;
+  --   -- variable next_event_time    : integer := 0;
+  --   -- variable tb_time            : integer := 0;
+  --   variable first_read         : std_logic := '1';
 
-    variable v_slc_main_prim_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
-    variable v_slc_main_seco_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
-    variable v_slc_neig_plus_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
-    variable v_slc_neig_minu_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
+  --   variable v_slc_main_prim_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
+  --   variable v_slc_main_seco_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
+  --   variable v_slc_neig_plus_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
+  --   variable v_slc_neig_minu_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
 
-  begin
+  -- begin
 
-    if rising_edge(clk) then
-      if rst = '1' then
+  --   if rising_edge(clk) then
+  --     if rst = '1' then
 
-      else
+  --     else
 
-        if enable_slc = 1 then
+  --       if enable_slc = 1 then
 
-          -- write to DUT
+  --         -- write to DUT
 
-          for wr_i in 2 downto 0 loop
-            if(v_slc_main_prim_counts(wr_i) > 0) then
-              i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
-              -- for test input read
-              i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
-              --
-              for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
-                slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
-              end loop;
-              v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
-            else
-              i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
-              i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
-            end if;
-          end loop;
+  --         for wr_i in 2 downto 0 loop
+  --           if(v_slc_main_prim_counts(wr_i) > 0) then
+  --             i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+  --             -- for test input read
+  --             i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
+  --             --
+  --             for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
+  --               slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
+  --             end loop;
+  --             v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
+  --           else
+  --             i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
+  --             i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+  --           end if;
+  --         end loop;
 
-          -- read from file
-          -- first read from input vector file
-          if (not endfile(input_slc_file)) and first_read = '1' then
-            row_counter := row_counter +1;
-            readline(input_slc_file,row); -- reads header and ignores
-            readline(input_slc_file,row);
-            read(row, v_slc_event);
-            slc_event_r <= v_slc_event;
-            report "Read line : " & integer'image(row_counter);
-            first_read := '0';
-          end if;
+  --         -- read from file
+  --         -- first read from input vector file
+  --         if (not endfile(input_slc_file)) and first_read = '1' then
+  --           row_counter := row_counter +1;
+  --           readline(input_slc_file,row); -- reads header and ignores
+  --           readline(input_slc_file,row);
+  --           read(row, v_slc_event);
+  --           slc_event_r <= v_slc_event;
+  --           report "Read line : " & integer'image(row_counter);
+  --           first_read := '0';
+  --         end if;
 
-          -- read from input vector file
-          RL : while true loop
-            if (v_slc_event.ToA < tb_curr_tdc_time) then
-              -- i_mdt_tar_av <= mdt_tar_event_r.tar;
-              if (endfile(input_slc_file) = false) then
+  --         -- read from input vector file
+  --         RL : while true loop
+  --           if (v_slc_event.ToA < tb_curr_tdc_time) then
+  --             -- i_mdt_tar_av <= mdt_tar_event_r.tar;
+  --             if (endfile(input_slc_file) = false) then
 
-                if v_slc_event.slc.common.slcid < 3 then
-                  slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
-                  v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
-                end if;
+  --               if v_slc_event.slc.common.slcid < 3 then
+  --                 slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+  --                 v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
+  --               end if;
 
-                row_counter := row_counter +1;
-                readline(input_slc_file,row);
-                read(row, v_slc_event);
-                slc_event_r <= v_slc_event;
-                report "Read line : " & integer'image(row_counter);
-              else
-                exit;
-              end if;
-            else
-              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
-              exit;
-            end if;
-          end loop;
+  --               row_counter := row_counter +1;
+  --               readline(input_slc_file,row);
+  --               read(row, v_slc_event);
+  --               slc_event_r <= v_slc_event;
+  --               report "Read line : " & integer'image(row_counter);
+  --             else
+  --               exit;
+  --             end if;
+  --           else
+  --             -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+  --             exit;
+  --           end if;
+  --         end loop;
 
-        end if;
+  --       end if;
 
-      end if;
-    end if;
+  --     end if;
+  --   end if;
 
-  end process;
+  -- end process;
   -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
