@@ -23,7 +23,7 @@ MODULE=$(TESTBENCH_TEST_MODULE)
 SIM ?= questa
 
 # Location of HDL source files
-SRCDIR = $(PWD)/../../../../../../src
+SRCDIR = $(PWD)/../../../../../../IP_repository
 SBDIR = $(SRCDIR)/SpyBuffer
 
 # Specify TopLevel language for cocotb
@@ -35,6 +35,7 @@ VERILOG_SOURCES = \
     $(SBDIR)/SpyBuffer.v \
     $(SBDIR)/SpyController.v \
     $(SBDIR)/SpyMemory.v \
+    $(SBDIR)/SpyPlayback.v \
     $(SBDIR)/aFifo/aFifo.v \
     $(SBDIR)/aFifo/fifomem.v \
     $(SBDIR)/aFifo/rptr_empty.v \

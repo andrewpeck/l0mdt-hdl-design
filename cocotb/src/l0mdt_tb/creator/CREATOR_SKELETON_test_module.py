@@ -28,14 +28,22 @@ def initialize_spybuffers(fifos=[]):
         fifo.write_data <= 0
 
 
-def initialize_dut(dut):
+def initialize_dut(dut,config):
 
     ##
     ## initialize the FIFOs
     ##
+    cocotb_inputs = 0
+    for i in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)):
+        cocotb_inputs = config["testvectors"]["inputs"][i]["ports"] + cocotb_inputs
+
+
 
     input_fifos = [x.spybuffer for x in dut.input_spybuffers]
-    n_inputs_ok = len(input_fifos) == len(CREATORCLASSNAMEPorts.Inputs)
+
+    cocotb_input_interfaces = CREATORCLASSNAMEPorts.n_input_interfaces;
+
+    n_inputs_ok             = len(input_fifos) == cocotb_inputs
 
     output_fifos = [x.spybuffer for x in dut.output_spybuffers]
     n_outputs_ok = len(output_fifos) == len(CREATORCLASSNAMEPorts.Outputs)
@@ -133,7 +141,7 @@ def CREATORTESTNAME_test(dut):
     ##
     ## initialize the DUT to known state
     ##
-    initialize_dut(dut)
+    initialize_dut(dut,config)
 
     ##
     ## reset
@@ -147,7 +155,7 @@ def CREATORTESTNAME_test(dut):
     (
         input_testvector_files,
         output_testvector_files,
-    ) = test_config.get_testvector_files_from_config(config)
+    ) = test_config.get_tvformats_from_config(config)
 
     ###
     ### alternative method for getting testvectors:

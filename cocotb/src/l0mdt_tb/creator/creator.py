@@ -173,13 +173,17 @@ def create_test_ports_file(test_name, n_inputs, n_outputs):
     lines.append("\tdef __init__(self):")
     lines.append("\t\tsuper().__init__()")
     lines.append("")
-    lines.append("\tclass Inputs(enum.Enum):")
     for i in range(n_inputs):
-        lines.append(f"\t\tInput_{i} = {i}")
+        lines.append(f"\tclass Inputs_{i}(enum.Enum):")
+        lines.append(f"\t\tInput_{0} = {0}")
     lines.append("")
     lines.append("\tclass Outputs(enum.Enum):")
     for i in range(n_outputs):
         lines.append(f"\t\tOutput_{i} = {i}")
+
+    lines.append("")
+    lines.append("\tdef n_input_interfaces(self):")
+    lines.append(f"\t\treturn {n_inputs}")
 
     with open(str(p_ports_file), "w") as ofile:
         for line in lines:
@@ -337,7 +341,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
 #    p_config = p_tp_fw / "tb" / "test_config"
     p_config = p_tp_fw / "cocotb" / "test_config"
 
-    p_test_dir = test_dir_from_test_name(test_name)
+    p_test_dir = f"src/l0mdt_tb/testbench/{str(test_name)}"
 
     ##
     ## input_args
@@ -356,7 +360,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
         "output_directory_name": test_name,
         "test_location": f"{str(p_test_dir)}/test",
         "expected_is_observed": False,
-        "components_lib_dir": "/home/dantrim/work/tdaq-htt-firmware/priya_stuff/xilinx/compiled_libraries/v2019.1/",
+        "components_lib_dir": "/home/psundara/xilinx/compiled_libraries/v2019.1/",
     }
 
     ##
@@ -364,15 +368,18 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
     ##
     input_list = []
     for i in range(n_inputs):
-        input_list.append({f"{i}": f"INPUT_FILENAME_{i}.evt"})
+        local_port = {f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":1}
+
+        input_list.append(local_port)
     output_list = []
     for i in range(n_outputs):
-        output_list.append({f"{i}": f"OUTPUT_FILENAME_{i}.evt"})
+        output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}"})
 
     config_testvectors = {
         "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",
-        "input": input_list,
-        "output": output_list,
+        "testvector_file": "TV.pkl",
+        "inputs": input_list,
+        "outputs": output_list,
     }
 
     ##

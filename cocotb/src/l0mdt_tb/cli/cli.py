@@ -9,7 +9,7 @@ from . import creator
 
 @click.group(context_settings=dict(help_option_names=["-h", "--help"]))
 def tb():
-    """Top-level entrypoint into TP fw cocotb test-bench infrastructure."""
+    """Top-level entrypoint into L0MDT fw cocotb test-bench infrastructure."""
 
 
 tb.add_command(testbench.run)
