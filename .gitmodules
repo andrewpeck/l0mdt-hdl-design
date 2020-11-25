@@ -32,3 +32,6 @@
 [submodule "tools/simCheck"]
 	path = tools/simCheck
 	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
+[submodule "tools/gldl-scripts"]
+	path = tools/gldl-scripts
+	url = ssh://git@gitlab.cern.ch:7999/gloustau/l0mdt-scripts.git
