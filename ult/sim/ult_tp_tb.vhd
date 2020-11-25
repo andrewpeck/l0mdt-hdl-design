@@ -110,19 +110,19 @@ architecture beh of ult_tp is
   signal i_plus_neighbor_slc       : slc_rx_rvt := (others => '0');
   signal i_minus_neighbor_slc      : slc_rx_rvt := (others => '0');
   -- Segments in from neighbor
-  signal plus_neighbor_segments_i  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
-  signal minus_neighbor_segments_i : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
+  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-  signal daq_streams_o :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
+  signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal plus_neighbor_segments_o  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
-  signal minus_neighbor_segments_o :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_plus_neighbor_segments  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_minus_neighbor_segments :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
-  signal MTC_o :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-  signal NSP_o :  mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+  signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+  signal o_NSP :  mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
   signal sump : std_logic;
 
@@ -158,6 +158,22 @@ begin
     clock_and_control => clock_and_control,
     ttc_commands      => ttc_commands,
 
+    -- ULT Control
+    h2s_ctrl => h2s_ctrl,
+    h2s_mon  => h2s_mon,
+    tar_ctrl => tar_ctrl,
+    tar_mon  => tar_mon,
+    mtc_ctrl => mtc_ctrl,
+    mtc_mon  => mtc_mon,
+    ucm_ctrl => ucm_ctrl,
+    ucm_mon  => ucm_mon,
+    daq_ctrl => daq_ctrl,
+    daq_mon  => daq_mon,
+    tf_ctrl  => tf_ctrl,
+    tf_mon   => tf_mon,
+    mpl_ctrl => mpl_ctrl,
+    mpl_mon  => mpl_mon,
+
     -- TDC Hits from Polmux
     i_inner_tdc_hits  => i_inner_tdc_hits,
     i_middle_tdc_hits => i_middle_tdc_hits,
@@ -177,36 +193,19 @@ begin
     i_minus_neighbor_slc => i_minus_neighbor_slc,
 
     -- Segments in from neighbor
-    plus_neighbor_segments_i  => plus_neighbor_segments_i,
-    minus_neighbor_segments_i => minus_neighbor_segments_i,
-
-    -- ULT Control
-
-    h2s_ctrl => h2s_ctrl,
-    h2s_mon  => h2s_mon,
-    tar_ctrl => tar_ctrl,
-    tar_mon  => tar_mon,
-    mtc_ctrl => mtc_ctrl,
-    mtc_mon  => mtc_mon,
-    ucm_ctrl => ucm_ctrl,
-    ucm_mon  => ucm_mon,
-    daq_ctrl => daq_ctrl,
-    daq_mon  => daq_mon,
-    tf_ctrl  => tf_ctrl,
-    tf_mon   => tf_mon,
-    mpl_ctrl => mpl_ctrl,
-    mpl_mon  => mpl_mon,
+    i_plus_neighbor_segments  => i_plus_neighbor_segments,
+    i_minus_neighbor_segments => i_minus_neighbor_segments,
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o => daq_streams_o,
+    o_daq_streams => o_daq_streams,
 
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  => plus_neighbor_segments_o,
-    minus_neighbor_segments_o => minus_neighbor_segments_o,
+    o_plus_neighbor_segments  => o_plus_neighbor_segments,
+    o_minus_neighbor_segments => o_minus_neighbor_segments,
 
     -- MUCTPI
-    MTC_o => MTC_o,
-    NSP_o => NSP_o,
+    o_MTC => o_MTC,
+    o_NSP => o_NSP,
 
     sump => sump
   );

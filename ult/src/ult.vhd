@@ -86,19 +86,19 @@ entity ult is
     i_minus_neighbor_slc      : in  slc_rx_rvt;
 
     -- Segments in from neighbor
-    plus_neighbor_segments_i  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    minus_neighbor_segments_i : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- -- MUCTPI
-    MTC_o                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_o                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    o_NSP                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic
@@ -227,8 +227,8 @@ begin
       o_out_segments            => out_segments_to_pt,
       o_ext_segments            => ext_segments_to_pt,
       -- Segment outputs to HAL
-      plus_neighbor_segments_o  => plus_neighbor_segments_o,
-      minus_neighbor_segments_o => minus_neighbor_segments_o
+      o_plus_neighbor_segments  => o_plus_neighbor_segments,
+      o_minus_neighbor_segments => o_minus_neighbor_segments
     );
 
     pipeline_inst : entity ult_lib.pipeline
@@ -256,8 +256,8 @@ begin
       ctrl                      => tf_ctrl,
       mon                       => tf_mon,
       --  segments from neighbors
-      plus_neighbor_segments_i  => plus_neighbor_segments_i,
-      minus_neighbor_segments_i => minus_neighbor_segments_i,
+      plus_neighbor_segments_i  => i_plus_neighbor_segments,
+      minus_neighbor_segments_i => i_minus_neighbor_segments,
       -- segments from hps
       inner_segments_i          => inn_segments_to_pt,
       middle_segments_i         => mid_segments_to_pt,
@@ -280,8 +280,8 @@ begin
       i_ptcalc          => pt2mtc_av,
       i_pl2mtc          => pl2mtc_av,
       -- outputs
-      o_mtc             => mtc_o,
-      o_nsp             => nsp_o
+      o_mtc             => o_mtc,
+      o_nsp             => o_nsp
     );
 
     daq_inst : entity work.daq
@@ -303,7 +303,7 @@ begin
         -- ???
         
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-        daq_streams_o => daq_streams_o);
+        daq_streams_o => o_daq_streams);
 
     sump <= '0';
 

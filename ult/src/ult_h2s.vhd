@@ -57,8 +57,8 @@ entity hits_to_segments is
     o_out_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
     o_ext_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
+    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
     );
 
 end entity hits_to_segments;
