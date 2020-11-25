@@ -10,19 +10,20 @@ from l0mdt_tb.creator import creator
 def cli():
     """The create CLI group."""
 
-
+@click.option("-ip", "--ports_in_input_interface", help="Give number of ports in input interface (E.g 3,3,3 if n_inputs=3)", required=False)
+@click.option("-op", "--ports_in_output_interface", help="Give number of ports in output interface (E.g 3 if n_outputs=1", required=False)
 @click.option("-t", "--test-name", help="Give the test a name", required=True)
 @click.option(
     "-i",
     "--n-inputs",
-    help="Specify the number of input ports for the DUT",
+    help="Specify the number of input interfaces for the DUT",
     type=int,
     required=True,
 )
 @click.option(
     "-o",
     "--n-outputs",
-    help="Specify the number of output ports for the DUT",
+    help="Specify the number of output interfaces for the DUT",
     type=int,
     required=True,
 )
@@ -32,13 +33,29 @@ def cli():
     help="Indicate if you require a software block to be generated",
 )
 @cli.command()
-def create(test_name, n_inputs, n_outputs, software_block):
-    """Create a new test."""
+def create(ports_in_input_interface, ports_in_output_interface, test_name, n_inputs, n_outputs, software_block):
+    input_ports = []
+    output_ports = []
+    if ports_in_input_interface == None:
+        for i in range(n_inputs):
+            input_ports.append(1)
+    else:
+        x = ports_in_input_interface.split(",")
+        for i in range(n_inputs):
+            input_ports.append(int(x[i]))
+    if ports_in_output_interface == None:
+        for i in range(n_outputs):
+            output_ports.append(1)
+    else:
+        x = ports_in_output_interface.split(",")
+        for i in range(n_outputs):
+            output_ports.append(int(x[i]))
 
+    """Create a new test."""
     test_name = test_name.lower()
     test_name = test_name.replace("-", "_")
     print(
-        f'Creating test "{test_name}" with {n_inputs} inputs and {n_outputs} outputs.'
+        f'Creating test "{test_name}" with {n_inputs} input interface(s) and {n_outputs} output interface(s).'
     )
 
     ##
@@ -60,7 +77,7 @@ def create(test_name, n_inputs, n_outputs, software_block):
     ##
     ## create test ports file
     ##
-    ok, err = creator.create_test_ports_file(test_name, n_inputs, n_outputs)
+    ok, err = creator.create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_ports)
     if not ok:
         print(err)
         sys.exit(1)
@@ -84,7 +101,7 @@ def create(test_name, n_inputs, n_outputs, software_block):
     ##
     ## create test/TopLevel
     ##
-    ok, err = creator.create_test_toplevel(test_name, n_inputs, n_outputs)
+    ok, err = creator.create_test_toplevel(test_name, n_inputs, n_outputs, input_ports, output_ports)
     if not ok:
         print(err)
         sys.exit(1)
@@ -100,7 +117,7 @@ def create(test_name, n_inputs, n_outputs, software_block):
     ##
     ## create test configuration file
     ##
-    ok, err = creator.create_test_configuration(test_name, n_inputs, n_outputs)
+    ok, err = creator.create_test_configuration(test_name, n_inputs, n_outputs, input_ports, output_ports)
     if not ok:
         print(err)
         sys.exit(1)

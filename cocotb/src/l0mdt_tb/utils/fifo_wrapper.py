@@ -11,13 +11,13 @@ from l0mdt_tb.utils import utils
 
 class FifoWrapper:
     def __init__(
-        self, fifo_block, clock, block_name, io_enum, write_out=True, out_dir=""
+        self, fifo_block, clock, block_name, tv_format, io_port, write_out=True, out_dir=""
     ):
 
         self._fifo = fifo_block
         self._clock = clock
         self._block_name = block_name
-        self._io_enum = io_enum
+        self._io_port = io_port
         self._io_type = None
         self._is_active = False
         self._observed_words = []
@@ -43,7 +43,7 @@ class FifoWrapper:
                 out_path = Path("./")
 
             # construct full output filename
-            io_name = io_enum.name
+            io_name = f"{tv_format}_{io_port}"
             name_num = io_name.split("_")[-1]
             if name_num.isdigit():
                 name_num = f"{int(name_num):02}"
@@ -54,7 +54,7 @@ class FifoWrapper:
             self._output_directory = str(out_path)
             out_path = (
                 out_path
-                / f"{str(type(self).__name__.lower())}_{self.block_name}_{int(io_enum.value):02}_{io_name}.evt"
+                / f"{str(type(self).__name__.lower())}_{self.block_name}_{io_name}.evt"
             )
             self._output_filename = str(out_path)
 
@@ -145,11 +145,11 @@ class FifoWrapper:
 
 class FifoDriver(FifoWrapper, Driver):
     def __init__(
-        self, fifo_block, clock, block_name, io_enum, write_out=True, out_dir=""
+        self, fifo_block, clock, block_name, tv_format, io_port, write_out=True, out_dir=""
     ):
 
         FifoWrapper.__init__(
-            self, fifo_block, clock, block_name, io_enum, write_out, out_dir
+            self, fifo_block, clock, block_name, tv_format, io_port, write_out, out_dir
         )
         Driver.__init__(self)
 

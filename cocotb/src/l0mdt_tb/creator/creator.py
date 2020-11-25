@@ -153,14 +153,13 @@ def create_test_utils_file(test_name):
     return True, None
 
 
-def create_test_ports_file(test_name, n_inputs, n_outputs):
+def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_ports):
 
     p_test_dir = test_dir_from_test_name(test_name)
     p_ports_file = p_test_dir / f"{test_name}_ports.py"
     class_name = test_class_name(test_name)
 
-    lines = []
-
+    lines         = []
     autogen_lines = autogen_string(test_name)
     lines += autogen_lines
 
@@ -184,6 +183,31 @@ def create_test_ports_file(test_name, n_inputs, n_outputs):
     lines.append("")
     lines.append("\tdef n_input_interfaces(self):")
     lines.append(f"\t\treturn {n_inputs}")
+    lines.append("")
+
+    lines.append("\tdef n_output_interfaces(self):")
+    lines.append(f"\t\treturn {n_outputs}")
+    lines.append("")
+
+    lines.append("\tdef get_input_interface_ports(interface):")
+    lines.append(f"\t\tinput_ports = {input_ports}")
+    lines.append(f"\t\treturn input_ports[interface]")
+    lines.append("")
+
+    lines.append("\tdef get_all_input_interface_ports():")
+    lines.append(f"\t\tinput_ports = {input_ports}")
+    lines.append(f"\t\treturn input_ports")
+    lines.append("")
+
+    lines.append("\tdef get_output_interface_ports(interface):")
+    lines.append(f"\t\toutput_ports = {output_ports}")
+    lines.append(f"\t\treturn output_ports[interface]")
+    lines.append("")
+
+    lines.append("\tdef get_all_output_interface_ports():")
+    lines.append(f"\t\toutput_ports = {output_ports}")
+    lines.append(f"\t\treturn output_ports")
+    lines.append("")
 
     with open(str(p_ports_file), "w") as ofile:
         for line in lines:
@@ -263,7 +287,16 @@ def create_test_makefile(test_name):
     return True, None
 
 
-def create_test_toplevel(test_name, n_inputs, n_outputs):
+def create_test_toplevel(test_name, n_inputs, n_outputs, input_ports, output_ports):
+
+    total_inputs  = 0;
+    total_outputs = 0;
+
+    for i in range(n_inputs):
+        total_inputs = input_ports[i] + total_inputs
+
+    for i in range(n_outputs):
+        total_outputs = output_ports[i] + total_outputs
 
     p_test_dir = test_dir_from_test_name(test_name)
     p_toplevel_file = p_test_dir / "test" / f"TopLevel_{test_name}.v"
@@ -287,8 +320,8 @@ def create_test_toplevel(test_name, n_inputs, n_outputs):
                 new_line = skeleton_line.replace("CREATORTESTNAME", test_name).replace(
                     "CREATORCLASSNAME", class_name
                 )
-                new_line = new_line.replace("CREATORNINPUTS", f"{n_inputs}").replace(
-                    "CREATORNOUTPUTS", f"{n_outputs}"
+                new_line = new_line.replace("CREATORNINPUTS", f"{total_inputs}").replace(
+                    "CREATORNOUTPUTS", f"{total_outputs}"
                 )
                 ofile.write(new_line)
     file_ok = p_toplevel_file.exists() and p_toplevel_file.is_file()
@@ -335,13 +368,12 @@ def create_test_module(test_name, do_software_block=False):
     return True, None
 
 
-def create_test_configuration(test_name, n_inputs, n_outputs):
+def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, output_ports):
 
-    p_tp_fw = utils.tp_fw_path()
-#    p_config = p_tp_fw / "tb" / "test_config"
-    p_config = p_tp_fw / "cocotb" / "test_config"
+    p_tp_fw   = utils.tp_fw_path()
+    p_config  = p_tp_fw / "cocotb" / "test_config"
 
-    p_test_dir = f"src/l0mdt_tb/testbench/{str(test_name)}"
+    p_test_dir  = f"src/l0mdt_tb/testbench/{str(test_name)}"
 
     ##
     ## input_args
@@ -368,12 +400,12 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
     ##
     input_list = []
     for i in range(n_inputs):
-        local_port = {f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":1}
+        local_port = {f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":input_ports[i]}
 
         input_list.append(local_port)
     output_list = []
     for i in range(n_outputs):
-        output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}"})
+        output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":output_ports[i]})
 
     config_testvectors = {
         "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",

@@ -33,10 +33,13 @@ def initialize_dut(dut,config):
     ##
     ## initialize the FIFOs
     ##
-    cocotb_inputs = 0
+    cocotb_inputs  = 0
+    cocotb_outputs = 0
     for i in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)):
-        cocotb_inputs = config["testvectors"]["inputs"][i]["ports"] + cocotb_inputs
+        cocotb_inputs = CREATORCLASSNAMEPorts.get_input_interface_ports(i) + cocotb_inputs
 
+    for i in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+        cocotb_outputs = CREATORCLASSNAMEPorts.get_output_interface_ports(i) + cocotb_outputs
 
 
     input_fifos = [x.spybuffer for x in dut.input_spybuffers]
@@ -46,11 +49,11 @@ def initialize_dut(dut,config):
     n_inputs_ok             = len(input_fifos) == cocotb_inputs
 
     output_fifos = [x.spybuffer for x in dut.output_spybuffers]
-    n_outputs_ok = len(output_fifos) == len(CREATORCLASSNAMEPorts.Outputs)
+    n_outputs_ok = len(output_fifos) == cocotb_outputs
     n_io_ports_ok = n_inputs_ok and n_outputs_ok
     if not n_io_ports_ok:
         raise Exception(
-            f"ERROR # of CREATORCLASSNAME io ports differ between CocoTB and RTL simulation:\n -> CocoTB expects (IN,OUT)=({len(CREATORCLASSNAMEPorts.Inputs)},{len(CREATORCLASSNAMEPorts.Outputs)})\n -> RTL expects (IN,OUT)=({len(input_fifos)},{len(output_fifos)})"
+            f"ERROR # of CREATORCLASSNAME io ports differ between CocoTB and RTL simulation:\n -> CocoTB expects (IN,OUT)=({cocotb_inputs},{cocotb_outputs})\n -> RTL expects (IN,OUT)=({len(input_fifos)},{len(output_fifos)})"
         )
 
     initialize_spybuffers(fifos=input_fifos)
@@ -88,11 +91,13 @@ def CREATORTESTNAME_test(dut):
     input_args = config["input_args"]
     num_events_to_process = int(input_args["n_events"])
     event_level_detail_in_sumary = bool(input_args["event_detail"])
-
+    run_config                       = config["run_config"]
+    output_dir_name                  = run_config["output_directory_name"]
+    output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKCREATORTESTNAME_block_instance = CREATORTESTNAME_block.CREATORCLASSNAMEBlock(dut.clock, "CREATORCLASSNAMEBlock")
+    # CREATORSOFTWAREBLOCKCREATORTESTNAME_block_instance = CREATORTESTNAME_block.CREATORTESTNAMEBlock(dut.clock, "CREATORTESTNAMEBlock")
     # CREATORSOFTWAREBLOCKfor i, io in enumerate(CREATORCLASSNAMEPorts.Inputs):
     # CREATORSOFTWAREBLOCK    CREATORTESTNAME_block_instance.add_fifo(
     # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
@@ -111,24 +116,7 @@ def CREATORTESTNAME_test(dut):
     # CREATORSOFTWAREBLOCK    )
     # CREATORSOFTWAREBLOCKCREATORTESTNAME_block_instance.start()
 
-    ##
-    ## mark the current board
-    ##
-    for i in range(20):
-        dut._log.warning(
-            "AUTOGEN WARNING User should explicitly check the DUT board identifier"
-        )
-    board_id = 0  # autogen
-    dut._log.info(f"Instantiated CREATORCLASSNAME block with BOARD_ID = {board_id}")
-    for io in CREATORCLASSNAMEPorts.Outputs:
-        if int(io.value) == board_id:
-            this_tp = io
-            break
-    if not this_tp:
-        raise ValueError(
-            f"Unable to find assocated IO for CREATORCLASSNAME BOARD_ID={board_id}"
-        )
-    dut._log.info(f"Setting test IO with base port_name = {this_tp.name}")
+
 
     ##
     ## setup the clock and start it
@@ -153,55 +141,55 @@ def CREATORTESTNAME_test(dut):
     ## get testvectors
     ##
     (
-        input_testvector_files,
-        output_testvector_files,
+        input_tvformats,
+        output_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
-    ###
-    ### alternative method for getting testvectors:
-    ###
-    # testvector_dir = config["testvectors"]["testvector_dir"]
-    # (
-    #   input_testvector_files,
-    #   output_testvector_files,
-    # ) = CREATORTESTNAME_utils.get_testvector_files(testvector_dir)
 
     ##
     ## initialize the CREATORCLASSNAME block wrapper
     ##
     CREATORTESTNAME_wrapper = wrapper.CREATORCLASSNAMEWrapper(
         clock=dut.clock,
-        name=f"CREATORCLASSNAMEWrapper_{CREATORCLASSNAMEPorts.simplename(this_tp)}",
+        name=f"CREATORCLASSNAMEWrapper",
     )
-    for i, io in enumerate(CREATORCLASSNAMEPorts.Inputs):
-        driver = FifoDriver(
-            dut.input_spybuffers[io.value].spybuffer,
-            dut.clock,
-            "CREATORCLASSNAME",
-            io,
-            write_out=True,
-        )
-        CREATORTESTNAME_wrapper.add_input_driver(driver, io)
-    for i, io in enumerate(CREATORCLASSNAMEPorts.Outputs):
-        active = True
-        monitor = FifoMonitor(
-            dut.output_spybuffers[i].spybuffer,
-            dut.clock,
-            "CREATORCLASSNAME",
-            io,
-            callbacks=[],
-            write_out=True,
-        )
-        CREATORTESTNAME_wrapper.add_output_monitor(monitor, io, active=active)
+    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)): # Add concept of interface
+        for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)):
+            driver = FifoDriver(
+                dut.input_spybuffers[CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)* n_ip_intf + io].spybuffer,
+                dut.clock,
+                "CREATORCLASSNAME",
+                input_tvformats[n_ip_intf],
+                str(io),
+                write_out=True,
+                out_dir=output_dir
+            )
+            CREATORTESTNAME_wrapper.add_input_driver(driver, n_ip_intf, io) #Add interface
+
+    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+        for io in range(CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf)): #Outputs):
+            active = True
+            monitor = FifoMonitor(
+                dut.output_spybuffers[CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf)*n_op_intf + io].spybuffer,
+                dut.clock,
+                "CREATORCLASSNAME",
+                io,
+                callbacks=[],
+                write_out=True,
+            )
+            CREATORTESTNAME_wrapper.add_output_monitor(monitor, n_op_intf, io, active=active)
     CREATORTESTNAME_wrapper.sort_ports()
 
     ##
     ## send input events
     ##
     dut._log.info("Sending input events")
-    send_finished_signal = CREATORTESTNAME_wrapper.send_input_events(
-        input_testvector_files, n_to_send=num_events_to_process
-    )
+    send_finished_signal = [0]
+    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)): # Add concept of interface
+        send_finished_signal[n_ip_intf] = CREATORTESTNAME_wrapper.send_input_events(
+            input_tvformats, n_ip_intf, n_to_send=num_events_to_process
+        )
+
     if not send_finished_signal:
         raise cocotb.result.TestFailure(
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
@@ -246,7 +234,7 @@ def CREATORTESTNAME_test(dut):
             output_testvector_file = "expected_is_observed"
             expected_output_events = recvd_events
         else:
-            output_testvector_file = output_testvector_files[io.value]
+            output_testvector_file = output_tvformats[io.value]
             expected_output_events = events.load_events_from_file(
                 output_testvector_file, n_to_load=num_events_to_process
             )
@@ -260,7 +248,7 @@ def CREATORTESTNAME_test(dut):
         result_summary = result_handler.result_summary_dict(
             f"{str('CREATORCLASSNAME').upper()}_Output_{io.value:02}",
             str(output_testvector_file),
-            test_name=f"TEST_{str('CREATORCLASSNAME').upper()}_SRC{this_tp.value:02}_DEST{io.value:02}",
+            test_name=f"TEST_{str('CREATORCLASSNAME').upper()}",
             test_results=test_results,
         )
         all_test_results.append(result_summary)
@@ -268,11 +256,7 @@ def CREATORTESTNAME_test(dut):
             all_tests_passed and result_summary["test_results"]["test_success"]
         )
 
-        this_tp_name = (
-            f"{this_tp.name.split('_')[0]}{int(this_tp.name.split('_')[1]):02}"
-        )
-        out_io_name = f"{io.name.split('_')[0]}{int(io.name.split('_')[1]):02}"
-        output_json_name = f"test_results_summary_CREATORCLASSNAME_src{this_tp_name}_dest{out_io_name}.json"
+        output_json_name = f"test_results_summary_CREATORCLASSNAME_{io}.json"
         with open(output_json_name, "w", encoding="utf-8") as f:
             json.dump(result_summary, f, ensure_ascii=False, indent=4)
 
