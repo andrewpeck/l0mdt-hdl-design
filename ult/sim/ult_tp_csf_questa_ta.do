@@ -2,6 +2,18 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -expand -group ult_DUT_TB /ult_tp/ULT/clock_and_control
 add wave -noupdate -expand -group ult_DUT_TB /ult_tp/ULT/ttc_commands
+add wave -noupdate -expand -group ult_DUT_TB -group SLC_IN /ult_tp/ULT/i_main_primary_slc
+add wave -noupdate -expand -group ult_DUT_TB -group SLC_IN /ult_tp/ULT/i_main_secondary_slc
+add wave -noupdate -expand -group ult_DUT_TB -group SLC_IN /ult_tp/ULT/i_plus_neighbor_slc
+add wave -noupdate -expand -group ult_DUT_TB -group SLC_IN /ult_tp/ULT/i_minus_neighbor_slc
+add wave -noupdate -expand -group ult_DUT_TB -group TAR_IN /ult_tp/ULT/i_inner_tar_hits
+add wave -noupdate -expand -group ult_DUT_TB -group TAR_IN /ult_tp/ULT/i_middle_tar_hits
+add wave -noupdate -expand -group ult_DUT_TB -group TAR_IN /ult_tp/ULT/i_outer_tar_hits
+add wave -noupdate -expand -group ult_DUT_TB -group TAR_IN /ult_tp/ULT/i_extra_tar_hits
+add wave -noupdate -expand -group ult_DUT_TB -group neighbor_seg /ult_tp/ULT/i_plus_neighbor_segments
+add wave -noupdate -expand -group ult_DUT_TB -group neighbor_seg /ult_tp/ULT/i_minus_neighbor_segments
+add wave -noupdate -expand -group ult_DUT_TB -group neighbor_seg /ult_tp/ULT/o_plus_neighbor_segments
+add wave -noupdate -expand -group ult_DUT_TB -group neighbor_seg /ult_tp/ULT/o_minus_neighbor_segments
 add wave -noupdate -expand -group ult_DUT_TB -group controlandmonitoring /ult_tp/ULT/h2s_ctrl
 add wave -noupdate -expand -group ult_DUT_TB -group controlandmonitoring /ult_tp/ULT/h2s_mon
 add wave -noupdate -expand -group ult_DUT_TB -group controlandmonitoring /ult_tp/ULT/tar_ctrl
@@ -1396,4 +1408,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {0 fs} {3946656977 fs}
