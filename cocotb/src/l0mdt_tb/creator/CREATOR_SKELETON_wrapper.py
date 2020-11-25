@@ -12,24 +12,26 @@ class CREATORCLASSNAMEWrapper(block_wrapper.BlockWrapper):
         super().__init__(
             clock,
             name,
-            len(CREATORCLASSNAMEPorts.Inputs),
-            len(CREATORCLASSNAMEPorts.Outputs),
+            #[len(CREATORCLASSNAMEPorts.Input_Interface_0), len(CREATORCLASSNAMEPorts.Input_Interface_1)], #Make this an array
+            CREATORCLASSNAMEPorts.get_all_input_interface_ports(),
+            CREATORCLASSNAMEPorts.get_all_output_interface_ports(),
         )
 
     def send_input_events(
-        self, input_testvectors, n_to_send=-1, l0id_request=-1, event_delays=False
+        self, input_testvectors,input_interface, n_to_send=-1, l0id_request=-1, event_delays=False
     ):
 
-        n_input_files = len(input_testvectors)
-        if n_input_files != self.n_input_ports:
-            raise ValueError(
-                f"Number of input event tables (={n_input_files}) is not equal to number of CREATORCLASSNAME input ports (={self.n_input_ports})"
-            )
+#Moving to dataformat, so don't do file comparison
+#        n_input_files = len(input_testvectors)
+#        if n_input_files != self.n_input_ports:
+#            raise ValueError(
+#                f"Number of input event tables (={n_input_files}) is not equal to number of CREATORCLASSNAME input ports (={self.n_input_ports})"
+#            )
 
         hooks = []
         for port_num, testvector_file in enumerate(input_testvectors):
 
-            driver, io, active = self.input_ports[port_num]
+            driver, io, active = self.input_ports[input_interface][port_num]
 
             input_events = events.load_events_from_file(
                 filename=testvector_file, n_to_load=n_to_send, l0id_request=l0id_request
