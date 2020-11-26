@@ -90,19 +90,19 @@ entity top_ult is
     i_plus_neighbor_slc       : in slc_rx_rvt;
     i_minus_neighbor_slc      : in slc_rx_rvt;
     -- Segments in from neighbor
-    plus_neighbor_segments_i  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    minus_neighbor_segments_i : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     daq_streams_o : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- MUCTPI
-    MTC_o : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_o : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    o_NSP : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
     sump : out std_logic
 
@@ -142,8 +142,8 @@ begin
       i_minus_neighbor_slc => i_minus_neighbor_slc,
 
       -- Segments in from neighbor
-      plus_neighbor_segments_i  => plus_neighbor_segments_i,
-      minus_neighbor_segments_i => minus_neighbor_segments_i,
+      i_plus_neighbor_segments  => i_plus_neighbor_segments,
+      i_minus_neighbor_segments => i_minus_neighbor_segments,
 
       -- ULT Control
 
@@ -166,12 +166,12 @@ begin
       daq_streams_o => daq_streams_o,
 
       -- Segments Out to Neighbor
-      plus_neighbor_segments_o  => plus_neighbor_segments_o,
-      minus_neighbor_segments_o => minus_neighbor_segments_o,
+      o_plus_neighbor_segments  => o_plus_neighbor_segments,
+      o_minus_neighbor_segments => o_minus_neighbor_segments,
 
       -- MUCTPI
-      MTC_o => MTC_o,
-      NSP_o => NSP_o,
+      o_MTC => o_MTC,
+      o_NSP => o_NSP,
 
       sump => sump
       );
