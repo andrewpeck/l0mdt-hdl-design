@@ -138,6 +138,9 @@ begin
     variable loop_done_v      : integer := 0;
     variable nexthit_v        : integer := 0;
     variable last_read_v      : integer := 0;
+
+    variable done_v           : std_logic := '0';
+    variable rd_done_v        : std_logic := '0';
   begin
     
     if rising_edge(clk) then
@@ -163,140 +166,201 @@ begin
       else
 
         fifo_rd <= (others => '0');
+        -- dynamic 
 
-        if fifo_empty(next_read(5)) = '0' then
-          if lasthit = next_read(5) then
-            if fifo_used(next_read(5)) > 1 then
-              fifo_rd(next_read(5)) <= '1';
-              lasthit <= next_read(5);
-              last_read_v := 5;
+        done_v := '0';
+
+        for hp_i in g_HPS_NUM_MDT_CH - 1 downto 0 loop
+
+          if done_v = '0' then
+            if fifo_empty(next_read(hp_i)) = '0' then
+              done_v := '1';
+              if lasthit = next_read(hp_i) then
+                if fifo_used(next_read(hp_i)) > 1 then
+                  fifo_rd(next_read(hp_i)) <= '1';
+                  lasthit <= next_read(hp_i);
+                  last_read_v := hp_i;
+                else
+                  fifo_rd(next_read(hp_i)) <= '0';
+                end if;
+              else
+                fifo_rd(next_read(hp_i)) <= '1';
+                lasthit <= next_read(hp_i);
+                last_read_v := hp_i;
+              end if;
             else
-              fifo_rd(next_read(5)) <= '0';
+              if hp_i = 0 then
+                fifo_rd <= (others => '0');
+                lasthit <= 10;
+                last_read_v := 0;
+              end if;
             end if;
-          else
-            fifo_rd(next_read(5)) <= '1';
-            lasthit <= next_read(5);
-            last_read_v := 5;
-          end if;
-
-        elsif fifo_empty(next_read(4)) = '0' then
-          if lasthit = next_read(4) then
-            if fifo_used(next_read(4)) > 1 then
-              fifo_rd(next_read(4)) <= '1';
-              lasthit <= next_read(4);
-              last_read_v := 4;
-            else
-              fifo_rd(next_read(4)) <= '0';
-            end if;
-          else
-            fifo_rd(next_read(4)) <= '1';
-            lasthit <= next_read(4);
-            last_read_v := 4;
-          end if;
-
-        elsif fifo_empty(next_read(3)) = '0' then
-          if lasthit = next_read(3) then
-            if fifo_used(next_read(3)) > 1 then
-              fifo_rd(next_read(3)) <= '1';
-              lasthit <= next_read(3);
-              last_read_v := 3;
-            else
-              fifo_rd(next_read(3)) <= '0';
-            end if;
-          else
-            fifo_rd(next_read(3)) <= '1';
-            lasthit <= next_read(3);
-            last_read_v := 3;
-          end if;
-
-        elsif fifo_empty(next_read(2)) = '0' then
-          if lasthit = next_read(2) then
-            if fifo_used(next_read(2)) > 1 then
-              fifo_rd(next_read(2)) <= '1';
-              lasthit <= next_read(2);
-              last_read_v := 2;
-            else
-              fifo_rd(next_read(2)) <= '0';
-            end if;
-          else
-            fifo_rd(next_read(2)) <= '1';
-            lasthit <= next_read(2);
-            last_read_v := 2;
-          end if;
-
-        elsif fifo_empty(next_read(1)) = '0' then
-          if lasthit = next_read(1) then
-            if fifo_used(next_read(1)) > 1 then
-              fifo_rd(next_read(1)) <= '1';
-              lasthit <= next_read(1);
-              last_read_v := 1;
-            else
-              fifo_rd(next_read(1)) <= '0';
-            end if;
-          else
-            fifo_rd(next_read(1)) <= '1';
-            lasthit <= next_read(1);
-            last_read_v := 1;
-          end if;
-
-        elsif fifo_empty(next_read(0)) = '0' then
-
-          if lasthit = next_read(0) then
-            if fifo_used(next_read(0)) > 1 then
-              fifo_rd(next_read(0)) <= '1';
-              lasthit <= next_read(0);
-              last_read_v := 0;
-            else
-              fifo_rd(next_read(0)) <= '0';
-              -- last_read_v := 7;
-            end if;
-          else
-            fifo_rd(next_read(0)) <= '1';
-            lasthit <= next_read(0);
-            last_read_v := 0;
-          end if;
-
-          -- fifo_rd(next_read(0)) <= '1';
-          -- lasthit <= next_read(0);
-          -- last_read_v := 7;
-        else
-          fifo_rd <= (others => '0');
-          lasthit <= 10;
-          last_read_v := 0;
-        end if;
-
-        last_read <= last_read_v;
-
-        for index_i in 5 downto 0 loop
-          if next_read(index_i) + last_read_v < 6 then
-            next_read(index_i) <= next_read(index_i) + last_read_v;
-          else
-            next_read(index_i) <= next_read(index_i) + last_read_v - 6 ;
           end if;
         end loop;
 
+        last_read <= last_read_v;
 
-        if fifo_rd(5) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(5);
-          buff_mdt_dv <= '1';
-        elsif fifo_rd(4) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(4);
-        elsif fifo_rd(3) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(3);
-          buff_mdt_dv <= '1';
-        elsif fifo_rd(2) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(2);
-          buff_mdt_dv <= '1';
-        elsif fifo_rd(1) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(1);
-          buff_mdt_dv <= '1';
-        elsif fifo_rd(0) = '1' then
-          buff_mdt_hit_v <= ff_o_mdt_hit_av(0);
-          buff_mdt_dv <= '1';
-        else
-          buff_mdt_hit_v <= (others => '0');
-          buff_mdt_dv <= '0';
-        end if;
+        for index_i in g_HPS_NUM_MDT_CH - 1 downto 0 loop
+          if next_read(index_i) + last_read_v < g_HPS_NUM_MDT_CH then
+            next_read(index_i) <= next_read(index_i) + last_read_v;
+          else
+            next_read(index_i) <= next_read(index_i) + last_read_v - g_HPS_NUM_MDT_CH ;
+          end if;
+        end loop;
+
+        rd_done_v := '0';
+        for hp_i in g_HPS_NUM_MDT_CH - 1 downto 0 loop
+          if rd_done_v = '0' then
+            if fifo_rd(hp_i) = '1' then
+              rd_done_v := '1';
+              buff_mdt_hit_v <= ff_o_mdt_hit_av(hp_i);
+              buff_mdt_dv <= '1';
+            else
+              if hp_i = 0 then
+                buff_mdt_hit_v <= (others => '0');
+                buff_mdt_dv <= '0';
+              end if;
+            end if;
+          end if;
+        end loop;
+
+        -- static
+
+        -- fifo_rd <= (others => '0');
+
+        -- if fifo_empty(next_read(5)) = '0' then
+        --   if lasthit = next_read(5) then
+        --     if fifo_used(next_read(5)) > 1 then
+        --       fifo_rd(next_read(5)) <= '1';
+        --       lasthit <= next_read(5);
+        --       last_read_v := 5;
+        --     else
+        --       fifo_rd(next_read(5)) <= '0';
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(5)) <= '1';
+        --     lasthit <= next_read(5);
+        --     last_read_v := 5;
+        --   end if;
+
+        -- elsif fifo_empty(next_read(4)) = '0' then
+        --   if lasthit = next_read(4) then
+        --     if fifo_used(next_read(4)) > 1 then
+        --       fifo_rd(next_read(4)) <= '1';
+        --       lasthit <= next_read(4);
+        --       last_read_v := 4;
+        --     else
+        --       fifo_rd(next_read(4)) <= '0';
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(4)) <= '1';
+        --     lasthit <= next_read(4);
+        --     last_read_v := 4;
+        --   end if;
+
+        -- elsif fifo_empty(next_read(3)) = '0' then
+        --   if lasthit = next_read(3) then
+        --     if fifo_used(next_read(3)) > 1 then
+        --       fifo_rd(next_read(3)) <= '1';
+        --       lasthit <= next_read(3);
+        --       last_read_v := 3;
+        --     else
+        --       fifo_rd(next_read(3)) <= '0';
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(3)) <= '1';
+        --     lasthit <= next_read(3);
+        --     last_read_v := 3;
+        --   end if;
+
+        -- elsif fifo_empty(next_read(2)) = '0' then
+        --   if lasthit = next_read(2) then
+        --     if fifo_used(next_read(2)) > 1 then
+        --       fifo_rd(next_read(2)) <= '1';
+        --       lasthit <= next_read(2);
+        --       last_read_v := 2;
+        --     else
+        --       fifo_rd(next_read(2)) <= '0';
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(2)) <= '1';
+        --     lasthit <= next_read(2);
+        --     last_read_v := 2;
+        --   end if;
+
+        -- elsif fifo_empty(next_read(1)) = '0' then
+        --   if lasthit = next_read(1) then
+        --     if fifo_used(next_read(1)) > 1 then
+        --       fifo_rd(next_read(1)) <= '1';
+        --       lasthit <= next_read(1);
+        --       last_read_v := 1;
+        --     else
+        --       fifo_rd(next_read(1)) <= '0';
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(1)) <= '1';
+        --     lasthit <= next_read(1);
+        --     last_read_v := 1;
+        --   end if;
+
+        -- elsif fifo_empty(next_read(0)) = '0' then
+
+        --   if lasthit = next_read(0) then
+        --     if fifo_used(next_read(0)) > 1 then
+        --       fifo_rd(next_read(0)) <= '1';
+        --       lasthit <= next_read(0);
+        --       last_read_v := 0;
+        --     else
+        --       fifo_rd(next_read(0)) <= '0';
+        --       -- last_read_v := 7;
+        --     end if;
+        --   else
+        --     fifo_rd(next_read(0)) <= '1';
+        --     lasthit <= next_read(0);
+        --     last_read_v := 0;
+        --   end if;
+
+        --   -- fifo_rd(next_read(0)) <= '1';
+        --   -- lasthit <= next_read(0);
+        --   -- last_read_v := 7;
+        -- else
+        --   fifo_rd <= (others => '0');
+        --   lasthit <= 10;
+        --   last_read_v := 0;
+        -- end if;
+
+        -- last_read <= last_read_v;
+
+        -- for index_i in 5 downto 0 loop
+        --   if next_read(index_i) + last_read_v < 6 then
+        --     next_read(index_i) <= next_read(index_i) + last_read_v;
+        --   else
+        --     next_read(index_i) <= next_read(index_i) + last_read_v - 6 ;
+        --   end if;
+        -- end loop;
+
+
+        -- if fifo_rd(5) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(5);
+        --   buff_mdt_dv <= '1';
+        -- elsif fifo_rd(4) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(4);
+        -- elsif fifo_rd(3) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(3);
+        --   buff_mdt_dv <= '1';
+        -- elsif fifo_rd(2) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(2);
+        --   buff_mdt_dv <= '1';
+        -- elsif fifo_rd(1) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(1);
+        --   buff_mdt_dv <= '1';
+        -- elsif fifo_rd(0) = '1' then
+        --   buff_mdt_hit_v <= ff_o_mdt_hit_av(0);
+        --   buff_mdt_dv <= '1';
+        -- else
+        --   buff_mdt_hit_v <= (others => '0');
+        --   buff_mdt_dv <= '0';
+        -- end if;
 
       end if;
     end if;
