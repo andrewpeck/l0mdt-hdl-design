@@ -18,6 +18,8 @@ use ieee.numeric_std.all;
 
 package cfg_global_pkg is
 
+  constant CFG_MAX_HP : integer := 6;
+
   type cfg_rt is record
     --------------------------------------------------------------------------------
     -- Sector information
@@ -26,7 +28,7 @@ package cfg_global_pkg is
     SECTOR_SIDE                   : std_logic;  -- selects the side of the sector - 0:A          1:C
     ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector - 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap - 0: small     1: large
-    ENABLE_NEIGHBORS             : std_logic;  -- enables or disables the processing of SL neighbors
+    ENABLE_NEIGHBORS              : std_logic;  -- enables or disables the processing of SL neighbors
     --------------------------------------------------------------------------------
     -- blocks configuration
     --------------------------------------------------------------------------------
@@ -35,13 +37,20 @@ package cfg_global_pkg is
     HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation  
     -- Processing channels
     ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
-    NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
+    EN_MDT_CH_INN                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_INN                : integer;    -- set the number of hir processors on the station
+
     ENABLE_ST_EXT                 : std_logic;  -- enable or disable extra processing station
-    NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
+    EN_MDT_CH_EXT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_EXT                : integer;    -- set the number of hir processors on the station
+
     ENABLE_ST_MID                 : std_logic;  -- enable or disable middle processing station
-    NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
+    EN_MDT_CH_MID                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_MID                : integer;    -- set the number of hir processors on the station
+
     ENABLE_ST_OUT                 : std_logic;  -- enable or disable outer processing station
-    NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
+    EN_MDT_CH_OUT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
+    -- NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
     -- stations in current fpga
     FPGA_EN_ST_INN                 : std_logic;  
     FPGA_EN_ST_EXT                 : std_logic;  
@@ -90,13 +99,17 @@ package cfg_global_pkg is
     HW_PRESENT                    => '0', -- 0: disabled  1: enabled -- default disabled
     -- Processing channels
     ENABLE_ST_INN                 => '1', -- 0: disabled  1: enabled -- default enabled
-    NUM_MDT_CH_INN                => 6,   -- default 6            
+    EN_MDT_CH_INN                 => (others => '1'),
+    -- NUM_MDT_CH_INN                => 6,   -- default 6            
     ENABLE_ST_EXT                 => '0', -- 0: disabled  1: enabled -- default disabled
-    NUM_MDT_CH_EXT                => 6,   -- default 6  
+    EN_MDT_CH_EXT                 => (others => '0'),
+    -- NUM_MDT_CH_EXT                => 6,   -- default 6  
     ENABLE_ST_MID                 => '1', -- 0: disabled  1: enabled -- default enabled
-    NUM_MDT_CH_MID                => 6,   -- default 6  
+    EN_MDT_CH_MID                 => (others => '1'),
+    -- NUM_MDT_CH_MID                => 6,   -- default 6  
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
-    NUM_MDT_CH_OUT                => 6,   -- default 6  
+    EN_MDT_CH_OUT                 => (others => '1'),
+    -- NUM_MDT_CH_OUT                => 6,   -- default 6  
     -- stations enabled in hte fpga
     FPGA_EN_ST_INN                => '1',
     FPGA_EN_ST_EXT                => '0',
@@ -126,9 +139,25 @@ package cfg_global_pkg is
     NUM_THREADS                   => 3    -- default 3
   );
 
-  -- function set_configuration() return cfg_rt;
+  function get_num_HP(enable_list : std_logic_vector) return integer;
 
 end package cfg_global_pkg;
+
+package body cfg_global_pkg is
+  
+  function get_num_HP(enable_list : std_logic_vector) return integer is
+    variable num : integer := 0;
+  begin
+    for en_i in 0 to enable_list'length - 1 loop
+      if enable_list(en_i) = '1' then
+        num := num + 1;
+      end if;
+    end loop;
+    return num;
+  end function;
+  
+  
+end package body cfg_global_pkg;
 
 -- --------------------------------------------------------------------------------
 -- WHEN CREATING A NEW PROJECT

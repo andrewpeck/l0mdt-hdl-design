@@ -93,16 +93,16 @@ architecture beh of ult_tp is
   signal mpl_mon  :  MPL_MON_t;
 
   -- TDC Hits from Polmux
-  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
-  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
-  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_inner_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  signal i_middle_tdc_hits :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  signal i_outer_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_extra_tdc_hits  :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used

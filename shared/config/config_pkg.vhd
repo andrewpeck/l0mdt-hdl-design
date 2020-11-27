@@ -63,15 +63,22 @@ package config_pkg is
   constant PHY_BARREL_R3            : signed(SLC_Z_RPC_LEN-1 downto 0) := get_barrel_radius(CFG.SECTOR_ID,3);
 
   -- Processing channel/stations
-  constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN;              
-  constant c_HPS_NUM_MDT_CH_INN         : integer   := CFG.NUM_MDT_CH_INN;              
-  constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT;              
-  constant c_HPS_NUM_MDT_CH_EXT         : integer   := CFG.NUM_MDT_CH_EXT;              
-  constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID;              
-  constant c_HPS_NUM_MDT_CH_MID         : integer   := CFG.NUM_MDT_CH_MID;              
-  constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT;              
-  constant c_HPS_NUM_MDT_CH_OUT         : integer   := CFG.NUM_MDT_CH_OUT;    
-  
+  constant c_HPS_ENABLE_ST_INN          : std_logic := CFG.ENABLE_ST_INN;
+  constant c_HPS_ENABLED_HP_INN         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_INN;
+  constant c_HPS_NUM_MDT_CH_INN         : integer := get_num_HP(CFG.EN_MDT_CH_INN);--CFG.NUM_MDT_CH_INN;
+  constant c_HPS_MAX_HP_INN             : integer := 6;
+  constant c_HPS_ENABLE_ST_EXT          : std_logic := CFG.ENABLE_ST_EXT;
+  constant c_HPS_ENABLED_HP_EXT         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_EXT;
+  constant c_HPS_NUM_MDT_CH_EXT         : integer   := get_num_HP(CFG.EN_MDT_CH_EXT);--CFG.NUM_MDT_CH_EXT;
+  constant c_HPS_MAX_HP_EXT             : integer := 6;
+  constant c_HPS_ENABLE_ST_MID          : std_logic := CFG.ENABLE_ST_MID;
+  constant c_HPS_ENABLED_HP_MID         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_MID;
+  constant c_HPS_NUM_MDT_CH_MID         : integer   := get_num_HP(CFG.EN_MDT_CH_MID);--CFG.NUM_MDT_CH_MID;
+  constant c_HPS_MAX_HP_MID             : integer := 6;
+  constant c_HPS_ENABLE_ST_OUT          : std_logic := CFG.ENABLE_ST_OUT;
+  constant c_HPS_ENABLED_HP_OUT         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_OUT;
+  constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
+  constant c_HPS_MAX_HP_OUT             : integer := 6;
   constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) := 
       CFG.ENABLE_ST_INN & CFG.ENABLE_ST_MID & CFG.ENABLE_ST_OUT & CFG.ENABLE_ST_EXT;
 
@@ -114,13 +121,13 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- IN COMPILATION CONFIGURATIONS 
   --------------------------------------------------------------------------------
-  constant MAX_NUM_HP   : integer := 
-        max(to_integer(unsigned'('0' & CFG.ENABLE_ST_INN))*CFG.NUM_MDT_CH_INN,
-          max(to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT))*CFG.NUM_MDT_CH_EXT,
-            max(to_integer(unsigned'('0' & CFG.ENABLE_ST_MID))*CFG.NUM_MDT_CH_MID,
-            to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
-          )
-        );
+  -- constant MAX_NUM_HP   : integer := 
+  --       max(to_integer(unsigned'('0' & CFG.ENABLE_ST_INN))*CFG.NUM_MDT_CH_INN,
+  --         max(to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT))*CFG.NUM_MDT_CH_EXT,
+  --           max(to_integer(unsigned'('0' & CFG.ENABLE_ST_MID))*CFG.NUM_MDT_CH_MID,
+  --           to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
+  --         )
+  --       );
 
   constant c_MAX_POSSIBLE_HPS : integer := 4;
         
@@ -167,6 +174,8 @@ package config_pkg is
   ---------------------------------------------------------
 
   function get_num_layers(station : integer) return integer;
+
+  function get_proper_chamber(in_chamber : integer) return integer;
   
 
 end package config_pkg;
@@ -188,6 +197,12 @@ package body config_pkg is
     end if;
 
     return layers;
+  end function;
+
+  function get_proper_chamber(in_chamber : integer) return integer is
+    variable out_chamber : integer := 0;
+  begin
+    return out_chamber;
   end function;
 
   
