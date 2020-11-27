@@ -79,12 +79,14 @@ package config_pkg is
   constant c_HPS_ENABLED_HP_OUT         : std_logic_vector(CFG_MAX_HP -1 downto 0) := CFG.EN_MDT_CH_OUT;
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
   constant c_HPS_MAX_HP_OUT             : integer := 6;
+
   constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) := 
       CFG.ENABLE_ST_INN & CFG.ENABLE_ST_MID & CFG.ENABLE_ST_OUT & CFG.ENABLE_ST_EXT;
 
   constant c_STATIONS_IN_FPGA           : std_logic_vector(0 to 3) := 
       CFG.FPGA_EN_ST_INN & CFG.FPGA_EN_ST_MID & CFG.FPGA_EN_ST_OUT & CFG.FPGA_EN_ST_EXT;
-  
+
+
   ---------------------------------------------------------
   -- PORTS CONFIG
   ---------------------------------------------------------
@@ -128,6 +130,15 @@ package config_pkg is
   --           to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT))*CFG.NUM_MDT_CH_OUT)
   --         )
   --       );
+  
+  type hp_in_station_a is array (0 to 3) of std_logic_vector(CFG_MAX_HP -1 downto 0);
+  constant c_HP_SECTOR_STATION : hp_in_station_a := (
+    c_HPS_ENABLED_HP_INN,
+    c_HPS_ENABLED_HP_MID,
+    c_HPS_ENABLED_HP_OUT,
+    c_HPS_ENABLED_HP_EXT
+  );
+        
 
   constant c_MAX_POSSIBLE_HPS : integer := 4;
         

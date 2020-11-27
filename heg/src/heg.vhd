@@ -90,30 +90,32 @@ begin
   );
 
   hp_gen: for i_hp in g_HPS_NUM_MDT_CH-1 downto 0 generate
-    Hit_Processor : entity hp_lib.hit_processor
-    generic map(
-      g_STATION_RADIUS    => g_STATION_RADIUS
-    )
-    port map(
-      clk                 => clk,
-      rst                 => rst,
-      glob_en             => glob_en,
-      -- configuration
-      local_rst           => hegC_control(i_hp).rst,
-      local_en            => hegC_control(i_hp).enable,
-      -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
+    hp_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(i_hp) = '1' generate
+      Hit_Processor : entity hp_lib.hit_processor
+      generic map(
+        g_STATION_RADIUS    => g_STATION_RADIUS
+      )
+      port map(
+        clk                 => clk,
+        rst                 => rst,
+        glob_en             => glob_en,
+        -- configuration
+        local_rst           => hegC_control(i_hp).rst,
+        local_en            => hegC_control(i_hp).enable,
+        -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
 
-      -- SLc
-      i_SLC_Window        => roi_b_Window,
-      i_slc_data_v        => hegC2hp_uCM_data,
-      -- MDT hit
-      i_mdt_data          => i_mdt_full_data_av(i_hp),
-      -- i_mdt_valid         => i_mdt_valid,
-      -- i_mdt_time_real     => i_mdt_time_real,
-      -- to Segment finder
-      -- o_sf_slc_data_v       => o_sf_slc_data_v,
-      o_hit_data       => hp2bm_av(i_hp)
-    );
+        -- SLc
+        i_SLC_Window        => roi_b_Window,
+        i_slc_data_v        => hegC2hp_uCM_data,
+        -- MDT hit
+        i_mdt_data          => i_mdt_full_data_av(i_hp),
+        -- i_mdt_valid         => i_mdt_valid,
+        -- i_mdt_time_real     => i_mdt_time_real,
+        -- to Segment finder
+        -- o_sf_slc_data_v       => o_sf_slc_data_v,
+        o_hit_data       => hp2bm_av(i_hp)
+      );
+    end generate;
   end generate;
 
   Heg_buffer_mux : entity heg_lib.heg_buffermux

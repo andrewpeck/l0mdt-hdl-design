@@ -36,7 +36,7 @@ include:
     # - local: '/Top/ult_tp_dev/gitlab-ci.yml'
     - local: '/Top/ult_tp_dev_xsim/gitlab-ci.yml'
     - local: '/Top/ult_tp_dev_questa/gitlab-ci.yml'
-    # - local: '/Top/ult_tp_csf/gitlab-ci.yml'
+    - local: '/Top/ult_tp_csf/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_xsim/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_questa/gitlab-ci.yml'
     - local: '/Top/ult_tp_csf_ptmpi/gitlab-ci.yml'
