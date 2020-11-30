@@ -64,13 +64,110 @@ entity tar is
 end entity tar;
 
 architecture beh of tar is
-  
+
+  -- TDC polmux from Tar
+  signal int_inn_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal int_mid_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal int_out_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal int_ext_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- TDC Hits from Tar
+  signal int_inn_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal int_mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal int_out_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal int_ext_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+
 begin
   
   TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
     -- pipelines
-
+    INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
+      INN_DELAY : for b_i in c_HPS_MAX_HP_INN -1 downto 0 generate
+        INN_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
+          PL : entity shared_lib.std_pipeline
+          generic map(
+            g_MEMORY_TYPE     => "ultra",
+            g_PIPELINE_TYPE   => "ring_buffer",
+            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_PIPELINE_WIDTH  =>  i_inn_tdc_hits(b_i)'length
+          )
+          port map(
+            clk         => clk,
+            rst         => rst,
+            glob_en     => glob_en,
+            --
+            i_data      => i_inn_tdc_hits(b_i),
+            o_data      => int_inn_tdc_hits(b_i)
+          );
+        end generate;
+      end generate;
+    end generate;
+  
+    MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
+      MID_DELAY : for b_i in c_HPS_MAX_HP_MID -1 downto 0 generate
+        MID_EN : if c_HP_SECTOR_STATION(1)(b_i) = '1' generate
+          PL : entity shared_lib.std_pipeline
+          generic map(
+            g_MEMORY_TYPE     => "ultra",
+            g_PIPELINE_TYPE   => "ring_buffer",
+            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_PIPELINE_WIDTH  => i_mid_tdc_hits(b_i)'length
+          )
+          port map(
+            clk         => clk,
+            rst         => rst,
+            glob_en     => glob_en,
+            --
+            i_data      => i_mid_tdc_hits(b_i),
+            o_data      => int_mid_tdc_hits(b_i)
+          );
+        end generate;
+      end generate;
+    end generate;
+  
+    OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
+      OUT_DELAY : for b_i in c_HPS_MAX_HP_OUT -1 downto 0 generate
+        OUT_EN : if c_HP_SECTOR_STATION(2)(b_i) = '1' generate
+          PL : entity shared_lib.std_pipeline
+          generic map(
+            g_MEMORY_TYPE     => "ultra",
+            g_PIPELINE_TYPE   => "ring_buffer",
+            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_PIPELINE_WIDTH  => i_out_tdc_hits(b_i)'length
+          )
+          port map(
+            clk         => clk,
+            rst         => rst,
+            glob_en     => glob_en,
+            --
+            i_data      => i_out_tdc_hits(b_i),
+            o_data      => int_out_tdc_hits(b_i)
+          );
+        end generate;
+      end generate;
+    end generate;
+  
+    EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
+      EXT_DELAY : for b_i in c_HPS_MAX_HP_EXT -1 downto 0 generate
+        EXT_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
+          PL : entity shared_lib.std_pipeline
+          generic map(
+            g_MEMORY_TYPE     => "ultra",
+            g_PIPELINE_TYPE   => "ring_buffer",
+            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_PIPELINE_WIDTH  => i_ext_tdc_hits(b_i)'length
+          )
+          port map(
+            clk         => clk,
+            rst         => rst,
+            glob_en     => glob_en,
+            --
+            i_data      => i_ext_tdc_hits(b_i),
+            o_data      => int_ext_tdc_hits(b_i)
+          );
+        end generate;
+      end generate;
+    end generate;
     -- remapping 
 
   end generate;
@@ -92,7 +189,7 @@ begin
             glob_en     => glob_en,
             --
             i_data      => i_inn_tar_hits(b_i),
-            o_data      => o_inn_tar_hits(b_i)
+            o_data      => int_inn_tar_hits(b_i)
           );
         end generate;
       end generate;
@@ -114,7 +211,7 @@ begin
             glob_en     => glob_en,
             --
             i_data      => i_mid_tar_hits(b_i),
-            o_data      => o_mid_tar_hits(b_i)
+            o_data      => int_mid_tar_hits(b_i)
           );
         end generate;
       end generate;
@@ -136,7 +233,7 @@ begin
             glob_en     => glob_en,
             --
             i_data      => i_out_tar_hits(b_i),
-            o_data      => o_out_tar_hits(b_i)
+            o_data      => int_out_tar_hits(b_i)
           );
         end generate;
       end generate;
@@ -158,12 +255,41 @@ begin
             glob_en     => glob_en,
             --
             i_data      => i_ext_tar_hits(b_i),
-            o_data      => o_ext_tar_hits(b_i)
+            o_data      => int_ext_tar_hits(b_i)
           );
         end generate;
       end generate;
     end generate;
 
   end generate;
+
+  REMAP : entity tar_lib.tar_remap
+  port map (
+    -- clock, control, and monitoring
+    clk             => clk,
+    rst             => rst,
+    glob_en         => glob_en,
+    -- TDC Hits from Polmux
+    i_inn_tdc_hits  => int_inn_tdc_hits,
+    i_mid_tdc_hits  => int_mid_tdc_hits,
+    i_out_tdc_hits  => int_out_tdc_hits,
+    i_ext_tdc_hits  => int_ext_tdc_hits,
+    -- candidates in from hal
+    i_inn_tar_hits  => int_inn_tar_hits,
+    i_mid_tar_hits  => int_mid_tar_hits,
+    i_out_tar_hits  => int_out_tar_hits,
+    i_ext_tar_hits  => int_ext_tar_hits,
+    -- 
+    o_inn_tdc_hits  => o_inn_tdc_hits,
+    o_mid_tdc_hits  => o_mid_tdc_hits,
+    o_out_tdc_hits  => o_out_tdc_hits,
+    o_ext_tdc_hits  => o_ext_tdc_hits,
+    -- outputs to ucm
+    o_inn_tar_hits  => o_inn_tar_hits,
+    o_mid_tar_hits  => o_mid_tar_hits,
+    o_out_tar_hits  => o_out_tar_hits,
+    o_ext_tar_hits  => o_ext_tar_hits
+
+  );
   
 end architecture beh;
