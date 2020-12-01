@@ -19,7 +19,7 @@ module SpyPlayback #(
     parameter MEMWIDTH = 6
 ) (
     input wire clock,
-    input wire reset,
+    input wire resetbar,
 
     // Is the flow control FIFO full?
     input wire full,
@@ -57,7 +57,7 @@ module SpyPlayback #(
     localparam INITIAL_ADDR = 2**MEMWIDTH - 1;
 
     // Include the SpyProtocol.vh file.
-    `include "SpyProtocol.vh"
+    `include "SpyBuffer/SpyProtocol.vh"
 
     // It's been a while; I'm somewhat worried about the sequencing here.
 
@@ -68,10 +68,10 @@ module SpyPlayback #(
     reg running = 0;
 
     always @(posedge clock) begin
-        // If we're in a reset state, OR if we're not in playback mode,
+        // If we're in a resetbar state, OR if we're not in playback mode,
         // reset internal state (the playback address to 0).
-        if (!reset || playback == NO_PLAYBACK) begin
-            // Reset playback and spy signals.
+        if (!resetbar || playback == NO_PLAYBACK) begin
+            // resetbar playback and spy signals.
             spy_read_addr <= INITIAL_ADDR;
             spy_read_enable <= 0;
             ram_write_enable <= 0;
@@ -156,7 +156,7 @@ module SpyPlayback #(
     // one clock behind reading from the spy memory, so we introduce a register
     // (flip-flop) that I called "running" to implement the delay in starting up.
     always @(posedge clock) begin
-        if (!reset) begin
+        if (!resetbar) begin
             playback_enable <= 0;
         end else begin
             case (playback)

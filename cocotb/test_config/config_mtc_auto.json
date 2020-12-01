@@ -1,0 +1,37 @@
+{
+    "testbench_config": {
+        "test_name": "mtc_auto",
+        "input_args": {
+            "n_events": 2,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns"
+        },
+        "run_config": {
+            "output_directory_name": "mtc_auto",
+            "test_location": "src/l0mdt_tb/testbench/mtc_auto/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "/home/psundara/xilinx/compiled_libraries/v2019.1/"
+        },
+        "testvectors": {
+            "testvector_dir": "/home/psundara/L0MDT/psundara/l0mdt-hdl-design/tv/TVOutputs/TV_RAND_1624ce56_2020-09-17_v01",
+	    "testvector_file": "B_A_03.pkl",
+	    "inputs": [
+		{
+		    "tv_format": "PL2MTC",
+		    "ports": 3
+		},
+		{
+		    "tv_format": "PTCALC2MTC_LSF",
+		    "ports": 3
+		}
+	    ],
+	    "outputs": [
+		{
+		    "tv_format": "MTC2SL_LSF",
+		    "ports": 3
+		}
+	    ]
+        }
+    }
+}

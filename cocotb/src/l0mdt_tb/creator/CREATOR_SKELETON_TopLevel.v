@@ -2,7 +2,7 @@
 `default_nettype wire
 
 module TopLevel_CREATORTESTNAME #(
-    parameter DATA_WIDTH = 65,
+    parameter DATA_WIDTH = 256, //65,
     parameter FIFO_DEPTH = 6,
     parameter N_OUTPUTS = CREATORNOUTPUTS,
     parameter N_INPUTS = CREATORNINPUTS
@@ -37,24 +37,27 @@ module TopLevel_CREATORTESTNAME #(
     // Input buffers
     //
     generate
-        for(genvar i = 0; i < CREATORNINPUTS; i++)
-            begin:input_spybuffers
-                SpyBuffer #(
-                    .DATA_WIDTH(DATA_WIDTH-1),
-                    .FC_FIFO_WIDTH(FIFO_DEPTH)
-                    ) spybuffer (
-                        .rclock(clock),
-                        .wclock(clock),
-                        .rreset(reset_n),
-                        .wreset(reset_n),
-                        .write_data(input_data[i]),
-                        .write_enable(BLOCK_input_write_enable[i]),
-                        .read_data(BLOCK_input_data[i]),
-                        .read_enable(BLOCK_input_read_enable[i]),
-                        .almost_full(BLOCK_input_almost_full[i]),
-                        .empty(BLOCK_input_empty[i])
-                    );
-            end
+       for(genvar i = 0; i < CREATORNINPUTS; i++)
+         begin:input_spybuffers
+            SpyBuffer #(
+			.DATA_WIDTH(DATA_WIDTH-1),
+			.FC_FIFO_WIDTH(FIFO_DEPTH),
+			.PASSTHROUGH(1)
+			) spybuffer (
+				     .rclock(clock),
+				     .wclock(clock),
+				     .rresetbar(reset_n),
+				     .wresetbar(reset_n),
+				     .write_data(input_data[i]),
+				     .write_enable(BLOCK_input_write_enable[i]),
+				     .read_data(BLOCK_input_data[i]),
+				     .read_enable(BLOCK_input_read_enable[i]),
+				     .almost_full(BLOCK_input_almost_full[i]),
+				     .empty(BLOCK_input_empty[i]),
+				     .freeze(0),
+				     .playback(0)
+				     );
+         end
     endgenerate // end input_spybuffers generate
 
     //
@@ -64,25 +67,28 @@ module TopLevel_CREATORTESTNAME #(
     //
     // Output buffers
     //
-    generate
-        for(genvar i = 0; i < CREATORNOUTPUTS; i++)
-            begin:output_spybuffers
-                SpyBuffer #(
-                     .DATA_WIDTH(DATA_WIDTH-1),
-                     .FC_FIFO_WIDTH(FIFO_DEPTH)
-                    ) spybuffer (
-                        .rclock(clock),
-                        .wclock(clock),
-                        .rreset(reset_n),
-                        .wreset(reset_n),
-                        .write_data(BLOCK_output_data[i]),
-                        .write_enable(BLOCK_output_write_enable[i]),
-                        .read_data(output_data[i]),
-                        .read_enable(BLOCK_output_read_enable[i]),
-                        .almost_full(BLOCK_output_almost_full[i]),
-                        .empty(BLOCK_output_empty[i])
-                    );
-            end
-    endgenerate // end output_spybuffers generate
+   generate
+      for(genvar i = 0; i < CREATORNOUTPUTS; i++)
+        begin:output_spybuffers
+           SpyBuffer #(
+		       .DATA_WIDTH(DATA_WIDTH-1),
+		       .FC_FIFO_WIDTH(FIFO_DEPTH),
+		       .PASSTHROUGH(1)
+                       ) spybuffer (
+				    .rclock(clock),
+				    .wclock(clock),
+				    .rresetbar(reset_n),
+				    .wresetbar(reset_n),
+				    .write_data(BLOCK_output_data[i]),
+				    .write_enable(BLOCK_output_write_enable[i]),
+				    .read_data(output_data[i]),
+				    .read_enable(BLOCK_output_read_enable[i]),
+				    .almost_full(BLOCK_output_almost_full[i]),
+				    .empty(BLOCK_output_empty[i]),
+				    .freeze(0),
+				    .playback(0)
+				    );
+        end
+   endgenerate // end output_spybuffers generate
 
 endmodule // end TopLevel module definition
