@@ -172,13 +172,6 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append("\tdef __init__(self):")
     lines.append("\t\tsuper().__init__()")
     lines.append("")
-    for i in range(n_inputs):
-        lines.append(f"\tclass Inputs_{i}(enum.Enum):")
-        lines.append(f"\t\tInput_{0} = {0}")
-    lines.append("")
-    lines.append("\tclass Outputs(enum.Enum):")
-    for i in range(n_outputs):
-        lines.append(f"\t\tOutput_{i} = {i}")
 
     lines.append("")
     lines.append("\tdef n_input_interfaces(self):")
@@ -208,6 +201,20 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append(f"\t\toutput_ports = {output_ports}")
     lines.append(f"\t\treturn output_ports")
     lines.append("")
+
+    lines.append("\tdef n_input_ports():")
+    lines.append(f"\t\tinput_ports = 0")
+    lines.append(f"\t\tfor i in range(2):")
+    lines.append(f"\t\t\tinput_ports = input_ports + 3")
+    lines.append(f"\t\treturn input_ports")
+
+    lines.append("\tdef n_output_ports():")
+    lines.append(f"\t\toutput_ports = 0")
+    lines.append(f"\t\tfor i in range(2):")
+    lines.append(f"\t\t\toutput_ports = output_ports + 3")
+    lines.append(f"\t\treturn output_ports")
+
+
 
     with open(str(p_ports_file), "w") as ofile:
         for line in lines:
@@ -379,7 +386,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
     ## input_args
     ##
     config_input_args = {
-        "n_events": 5,
+        "n_events": 2,
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",

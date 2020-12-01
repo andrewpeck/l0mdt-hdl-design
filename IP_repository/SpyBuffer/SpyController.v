@@ -28,9 +28,9 @@ module SpyController #(
     parameter METASIZE = 16,
     parameter METAWIDTH = 4
 ) (
-    // Input wires -- clock, reset.
+    // Input wires -- clock, resetbar.
     input wire clock,
-    input wire reset,
+    input wire resetbar,
 
     // Input -- control signal to freeze.
     input wire freeze,
@@ -59,7 +59,7 @@ module SpyController #(
 );
 
     // Include the SpyProtocol.vh file.
-    `include "SpyProtocol.vh"
+    `include "SpyBuffer/SpyProtocol.vh"
 
     // Define the states of the state machine
     // that controls the metadata FIFO.
@@ -97,8 +97,8 @@ module SpyController #(
     reg start_event_reg = 0;
 
     // At the rising edge of the clock-- propagate state.
-    always @(posedge clock, negedge reset) begin
-        if (!reset) begin
+    always @(posedge clock, negedge resetbar) begin
+        if (!resetbar) begin
             state_reg <= STATE_RESET;
             start_event_reg <= 0;
             mem_wptr_reg <= 0;
@@ -213,7 +213,7 @@ module SpyController #(
         .DATAWIDTH(MEMWIDTH+1)
     ) metalist (
         .clock(clock),
-        .reset(reset),
+        .resetbar(resetbar),
         .write_enable(ml_push),
         .write_data(ml_data),
         .read_addr(meta_read_addr),
@@ -231,7 +231,7 @@ module SpyController #(
         .DATAWIDTH(DATAWIDTH+1)
     ) memory (
         .clock(clock),
-        .reset(reset),
+        .resetbar(resetbar),
         .write_enable(write_enable_in && (state_reg != STATE_FROZEN)),
         .write_data(data),
         .read_addr(read_addr),
