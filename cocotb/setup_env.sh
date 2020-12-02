@@ -11,7 +11,7 @@ dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dat
 
 function print_usage {
     echo "---------------------------------------------------------"
-    echo " setup for cocotb-based testbench(es) are for TP-FW"
+    echo " setup for cocotb-based testbench(es) are for L0MDT-FW"
     echo ""
     echo " This script initializes a python virtual environment"
     echo " in which to run the testbench infrastructure."
@@ -26,6 +26,9 @@ function print_usage {
     echo " installed in the virtual environment"
     echo ""
     echo " Options:"
+    echo "  -c|--componentslibs   path to directory containing the compiled libaries"
+    echo "  -t|--testvectors      path to directory containing the testvectors"
+    echo "  -h|--help             print this help message"
     echo "  --skip-deps     do not install any of the external (to TVMaker) packages"
     echo "  -h|--help       print this help message"
     echo ""
@@ -149,6 +152,22 @@ function main {
                 ;;
 	    --skip-deps)
                 skip_deps=1
+                ;;
+           -c)
+                export COMPONENTS_LIB_DIR=$2
+                shift
+                ;;
+            --componentslibs)
+                export COMPONENTS_LIB_DIR=$2
+                shift
+                ;;
+            -t)
+                export L0MDT_TESTVECTOR_DIR=$2
+                shift
+                ;;
+            --testvectors)
+                export L0MDT_TESTVECTOR_DIR=$2
+                shift
                 ;;
             *)
                 echo "ERROR Invalid argument: $1"

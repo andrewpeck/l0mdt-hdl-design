@@ -26,14 +26,6 @@ def run(config):
         print(f"Cannot run test: {err}")
         sys.exit(1)
 
-    ##
-    ## update the makefile
-    ##
-    updated_ok, err = simulator_support.update_questa_makefile()
-    if not updated_ok:
-        print(
-            f"WARNING Could not update QuestaSim makefile used by CocoTB, will use default:\n -> {err}"
-        )
 
     run_config = config_data["run_config"]
     test_name = config_data["test_name"]

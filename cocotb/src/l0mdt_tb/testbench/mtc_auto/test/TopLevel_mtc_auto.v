@@ -109,7 +109,7 @@ module TopLevel_mtc_auto #(
    for(genvar i=0; i<MAX_MTC_PER_BCID;i++)
      begin
 	assign BLOCK_output_data[i][MTC_LEN-1:0]           = mtc_out[i];
-	assign BLOCK_output_data[i][DATA_WIDTH-1:MTC_LEN]  = mtc_out[i];
+	assign BLOCK_output_data[i][DATA_WIDTH-1:MTC_LEN]  = 0;
 	assign BLOCK_output_write_enable[i]                = mtc_out[i][MTC_LEN-1];
      end
     //

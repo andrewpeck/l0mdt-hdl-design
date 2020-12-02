@@ -390,6 +390,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",
+        "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
     }
 
     ##
