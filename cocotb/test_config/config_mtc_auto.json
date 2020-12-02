@@ -5,7 +5,8 @@
             "n_events": 2,
             "event_detail": false,
             "clock_period": 5,
-            "clock_time_unit": "ns"
+            "clock_time_unit": "ns",
+	    "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
         "run_config": {
             "output_directory_name": "mtc_auto",

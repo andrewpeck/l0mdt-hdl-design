@@ -10,8 +10,8 @@ from l0mdt_tb.creator import creator
 def cli():
     """The create CLI group."""
 
-@click.option("-ip", "--ports_in_input_interface", help="Give number of ports in input interface (E.g 3,3,3 if n_inputs=3)", required=False)
-@click.option("-op", "--ports_in_output_interface", help="Give number of ports in output interface (E.g 3 if n_outputs=1", required=False)
+@click.option("-ip", "--ports_in_input_interface", help="Give number of ports(comma separated) in each input interface (E.g 3,3,3 if n_inputs=3). Default is 1", required=False)
+@click.option("-op", "--ports_in_output_interface", help="Give number of ports(comma separated) in each output interface (E.g 3 if n_outputs=1. Default is 1", required=False)
 @click.option("-t", "--test-name", help="Give the test a name", required=True)
 @click.option(
     "-i",
@@ -44,7 +44,7 @@ def create(ports_in_input_interface, ports_in_output_interface, test_name, n_inp
         for i in range(n_input_interfaces):
             input_ports.append(int(x[i]))
     if ports_in_output_interface == None:
-        for i in range(n_outputs):
+        for i in range(n_output_interfaces):
             output_ports.append(1)
     else:
         x = ports_in_output_interface.split(",")
