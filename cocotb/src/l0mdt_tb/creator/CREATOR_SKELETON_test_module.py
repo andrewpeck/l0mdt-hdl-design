@@ -42,10 +42,10 @@ def initialize_dut(dut,config):
     ##
     cocotb_inputs  = 0
     cocotb_outputs = 0
-    for i in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)):
+    for i in range(CREATORCLASSNAMEPorts.n_input_interfaces):
         cocotb_inputs = CREATORCLASSNAMEPorts.get_input_interface_ports(i) + cocotb_inputs
 
-    for i in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+    for i in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         cocotb_outputs = CREATORCLASSNAMEPorts.get_output_interface_ports(i) + cocotb_outputs
 
 
@@ -164,11 +164,11 @@ def CREATORTESTNAME_test(dut):
         output_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
-
-    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)): # Add concept of interface
+    sb_iport_index = 0
+    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces): # Add concept of interface
         for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)):
             driver = FifoDriver(
-                dut.input_spybuffers[CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)* n_ip_intf + io].spybuffer,
+                dut.input_spybuffers[sb_iport_index].spybuffer,
                 dut.clock,
                 "CREATORCLASSNAME",
                 input_tvformats[n_ip_intf],
@@ -176,13 +176,15 @@ def CREATORTESTNAME_test(dut):
                 write_out=True,
                 out_dir=output_dir
             )
+            sb_iport_index = sb_iport_index + 1
             CREATORTESTNAME_wrapper.add_input_driver(driver, n_ip_intf, io) #Add interface
 
-    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+    sb_oport_index = 0
+    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         for io in range(CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf)): #Outputs):
             active = True
             monitor = FifoMonitor(
-                dut.output_spybuffers[CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf)*n_op_intf + io].spybuffer,
+                dut.output_spybuffers[sb_oport_index].spybuffer,
                 dut.clock,
                 "CREATORCLASSNAME",
                 io,
@@ -190,6 +192,7 @@ def CREATORTESTNAME_test(dut):
                 write_out=True,
                 out_dir=output_dir
             )
+            sb_oport_index = sb_oport_index + 1
             CREATORTESTNAME_wrapper.add_output_monitor(monitor, n_op_intf, io, active=active)
     CREATORTESTNAME_wrapper.sort_ports()
 
@@ -197,7 +200,7 @@ def CREATORTESTNAME_test(dut):
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
     single_interface_list = []
-    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces(CREATORCLASSNAMEPorts)): # Add concept of interface
+    for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_file_for_testvectors(
             filename=master_tv_file,
             tvformat=input_tvformats[n_ip_intf],
@@ -210,7 +213,7 @@ def CREATORTESTNAME_test(dut):
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
-    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)): # Add concept of interface
+    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces): # Add concept of interface
         single_interface_list = (events.parse_file_for_testvectors(
             filename=master_tv_file,
             tvformat=output_tvformats[n_op_intf],
@@ -252,7 +255,7 @@ def CREATORTESTNAME_test(dut):
     all_tests_passed = True
     all_test_results = []
     recvd_events_intf = []
-    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+    for n_op_intf in range(CREATORCLASSNAMEPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(CREATORTESTNAME_wrapper.output_ports(n_op_intf)):
 
@@ -287,7 +290,7 @@ def CREATORTESTNAME_test(dut):
     #Ordering based on events (Required by TV package)
     event_ordering  = [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
 
-    for n_op_intf in range (CREATORCLASSNAMEPorts.n_output_interfaces(CREATORCLASSNAMEPorts)):
+    for n_op_intf in range (CREATORCLASSNAMEPorts.n_output_interfaces):
         for e_idx in range(num_events_to_process):
             for o_port in range (CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf)):
                 event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][o_port][e_idx]

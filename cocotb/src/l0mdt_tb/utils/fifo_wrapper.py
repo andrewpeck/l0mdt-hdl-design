@@ -77,7 +77,7 @@ class FifoWrapper:
 
     @property
     def io_port_num(self):
-        return int(self._io_enum.value)
+        return int(self._io_port)
 
     @property
     def is_active(self):

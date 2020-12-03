@@ -174,13 +174,12 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append("")
 
     lines.append("")
-    lines.append("\tdef n_input_interfaces(self):")
-    lines.append(f"\t\treturn {n_inputs}")
+    lines.append("\tn_input_interfaces = {n_input}")
     lines.append("")
 
-    lines.append("\tdef n_output_interfaces(self):")
-    lines.append(f"\t\treturn {n_outputs}")
+    lines.append("\tn_output_interfaces = {n_outputs}")
     lines.append("")
+
 
     lines.append("\tdef get_input_interface_ports(interface):")
     lines.append(f"\t\tinput_ports = {input_ports}")
@@ -202,17 +201,18 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append(f"\t\treturn output_ports")
     lines.append("")
 
-    lines.append("\tdef n_input_ports():")
+    lines.append("\tdef n_input_ports(self):")
     lines.append(f"\t\tinput_ports = 0")
-    lines.append(f"\t\tfor i in range(2):")
-    lines.append(f"\t\t\tinput_ports = input_ports + 3")
+    lines.append(f"\t\tfor i in range(self.n_input_interfaces):")
+    lines.append(f"\t\t\tinput_ports = input_ports + self.get_input_interfaces_port(i)")
     lines.append(f"\t\treturn input_ports")
 
-    lines.append("\tdef n_output_ports():")
+    lines.append("\tdef n_output_ports(self):")
     lines.append(f"\t\toutput_ports = 0")
-    lines.append(f"\t\tfor i in range(2):")
-    lines.append(f"\t\t\toutput_ports = output_ports + 3")
+    lines.append(f"\t\tfor i in range(self.n_output_interfaces):")
+    lines.append(f"\t\t\toutput_ports = output_ports + self.n_output_interfaces")
     lines.append(f"\t\treturn output_ports")
+
 
 
 
