@@ -54,8 +54,8 @@ module TopLevel_CREATORTESTNAME #(
 				     .read_enable(BLOCK_input_read_enable[i]),
 				     .almost_full(BLOCK_input_almost_full[i]),
 				     .empty(BLOCK_input_empty[i]),
-				     .freeze(0),
-				     .playback(0)
+				     .freeze(1'b0),
+				     .playback(2'b0)
 				     );
          end
     endgenerate // end input_spybuffers generate
@@ -85,8 +85,8 @@ module TopLevel_CREATORTESTNAME #(
 				    .read_enable(BLOCK_output_read_enable[i]),
 				    .almost_full(BLOCK_output_almost_full[i]),
 				    .empty(BLOCK_output_empty[i]),
-				    .freeze(0),
-				    .playback(0)
+				    .freeze(1'b0),
+				    .playback(2'b0)
 				    );
         end
    endgenerate // end output_spybuffers generate

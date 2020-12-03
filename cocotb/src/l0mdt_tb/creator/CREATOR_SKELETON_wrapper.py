@@ -39,13 +39,15 @@ class CREATORCLASSNAMEWrapper(block_wrapper.BlockWrapper):
         port_index      = 0
         interface_port  = 0
 
-        for port_num in range(CREATORCLASSNAMEPorts.n_input_ports()):
+        for port_num in range(CREATORCLASSNAMEPorts.n_input_ports(CREATORCLASSNAMEPorts)):
             if port_num == (port_index + CREATORCLASSNAMEPorts.get_input_interface_ports(input_interface)) :
-                input_interface = input_interface + 1
                 port_index      = (port_index + CREATORCLASSNAMEPorts.get_input_interface_ports(input_interface))
+                input_interface = input_interface + 1
 
             if port_num >= port_index:
                 interface_port = port_num - port_index
+            else:
+                interface_port = interface_port + 1
 
             input_events = input_testvectors[port_num]
             driver, io, active = self.input_ports[input_interface][interface_port]
