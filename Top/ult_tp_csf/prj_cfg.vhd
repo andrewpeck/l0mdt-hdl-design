@@ -54,6 +54,7 @@ package body prj_cfg is
     proj_cfg.EN_MDT_CH_MID           := "000010";
     proj_cfg.EN_MDT_CH_OUT           := "000010";
 
+    proj_cfg.NUM_THREADS := 1;
  
     return proj_cfg;
   end function set_project_cfg;
