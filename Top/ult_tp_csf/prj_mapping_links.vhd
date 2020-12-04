@@ -33,7 +33,7 @@ package detector_mapping_pkg is
   constant MAX_CH_TDC : integer := 24;
   constant MAX_TDC_CSM : integer := 18;
   
-  type geodata_t is array(MAX_NUM_ELEMENTS -1 downto 0) of integer; --(chamber,layer,tube)
+  -- type geodata_t is array(MAX_NUM_ELEMENTS -1 downto 0) of integer; --(chamber,layer,tube)
   -- type tdc_map_t is array(MAX_CH_TDC - 1 downto 0) of integer;
   -- type csm_map_t is array(MAX_TDC_POLMUX - 1 downto 0) of tdc_map_t;
   -- type polmux_map_t is array(MAX_TDC_POLMUX -1 downto 0) of csm_map_t;
