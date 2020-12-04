@@ -108,6 +108,24 @@ function install_tv {
     return 0
 }
 
+
+function update_makefile_questa() {
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VHDL_SOURCES),) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            := $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
+
+
+    sed -i '/\\t\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" >> $@/ a endif'  $(find ./env -name Makefile.questa)
+
+
+    sed -i '/vcom -work / i \\tfor SOURCES_VAR in $(VHDL_LIB); do \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\techo \"vlib -dirpath $(SIM_BUILD)\/$$SOURCES_VAR $$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t$(foreach SOURCES_VAR, $(VHDL_LIB), \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SIM_BUILD)/$(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
+    return 0
+}
+
 function checkout_deps {
     ## dataformats package
     if [ ! -d "../dataformats" ]; then
@@ -227,6 +245,11 @@ function main {
             if ! install_tv; then
                 return 1
             fi
+
+	    echo "Updating makefile to support mixed language compilation"
+	    if ! update_makefile_questa; then
+		return 1
+	    fi
             echo "Installation successful"
 
 
