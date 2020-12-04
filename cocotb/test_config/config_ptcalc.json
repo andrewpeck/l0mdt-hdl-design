@@ -16,7 +16,7 @@
         },
         "testvectors": {
             "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",
-            "testvector_file": "B_A_03.pkl",
+            "testvector_file": "B.pkl",
             "inputs": [
                 {
                     "tv_format": "SF2PTCALC",

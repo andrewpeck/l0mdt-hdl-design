@@ -760,7 +760,7 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0):
 
 def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     path = Path(filename)
-    ok = path.exists() and path.is_file()    
+    ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
 
@@ -802,7 +802,7 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
             #print("\n%s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
             results = local_sl1[i].compare_bitwordvalue(local_sl2[i])
- 
+
             if results[0]:
                 cprint("The 2 BitFieldWords are identical ", "green")
             else:
@@ -811,7 +811,7 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
                 #print(results[1])
                 print(tabulate(results[1], results[2], tablefmt="psql"))
 
-            
+
     return ret_val
 
 
@@ -844,12 +844,13 @@ def parse_file_for_testvectors(
     tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
     #    tv_reader_pkl.dump_event(events_list[0])
     for ievent,DF in enumerate(events_list): #range(total_transactions):
-        for icand in range(n_ports):
-           #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,icand,total_transactions,tvformat))
-           tv[icand][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,icand)
-           #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[icand][ievent])
-           #tv[icand][i] = getattr(DF,tvformat)
-           #tv[icand][i] = DF.SLCPIPE_MTC
+        if ievent < total_transactions:
+            for icand in range(n_ports):
+                print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,icand,total_transactions,tvformat))
+                tv[icand][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,icand)
+                #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[icand][ievent])
+                #tv[icand][i] = getattr(DF,tvformat)
+                #tv[icand][i] = DF.SLCPIPE_MTC
 
-           #tv[icand][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, icand)
-    return tv
+                #tv[icand][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, icand)
+        return tv
