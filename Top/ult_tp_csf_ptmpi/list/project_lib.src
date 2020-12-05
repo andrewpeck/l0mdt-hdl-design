@@ -1,6 +1,13 @@
-# project files
+# project mapping files
+#Top/ult_tp_csf/prj_mapping_links.vhd
+#Top/ult_tp_csf/prj_mapping_tar.vhd
+
+# project local configuration files
 Top/ult_tp_csf_ptmpi/prj_cfg.vhd
-ult/top_ult_tp.vhd
+
+#top 
+ult/top_ult_tp.vhd top=top_ult_tp
+
 # modules included
 shared/shared_lib.src lib=shared_lib
 mpl/mpl_lib.src lib=mpl_lib

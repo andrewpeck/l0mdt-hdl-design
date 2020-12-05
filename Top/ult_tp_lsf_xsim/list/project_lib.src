@@ -1,8 +1,20 @@
-# project files
+#_project mapping files
+Top/ult_tp_lsf/prj_mapping_links.vhd
+Top/ult_tp_lsf/prj_mapping_tar.vhd
+
+#_project local configuration files
 Top/ult_tp_lsf/prj_cfg.vhd
-ult/top_ult_tp.vhd
-# modules included
+
+#_top 
+ult/top_ult_tp.vhd top=top_ult_tp
+
+#_hal
+ctrl/ctrl_lib.src lib=ctrl_lib
+
+#_shared
 shared/shared_lib.src lib=shared_lib
+
+# modules included
 mpl/mpl_lib.src lib=mpl_lib
 ult/ult_lib.src lib=ult_lib
 ucm/ucm_lib.src lib=ucm_lib
@@ -10,7 +22,6 @@ hp/hp_lib.src lib=hp_lib
 heg/heg_lib.src lib=heg_lib
 hps/hps_lib.src lib=hps_lib
 csf/csf_lib.src lib=csf_lib
-ctrl/ctrl_lib.src lib=ctrl_lib
 tar/tar_lib.src lib=tar_lib
 ptc_mpi/ptc_lib.src lib=ptc_lib
 lsf/lsf_lib.src lib=lsf_lib
