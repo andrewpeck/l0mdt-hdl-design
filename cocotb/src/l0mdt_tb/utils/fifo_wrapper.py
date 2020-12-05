@@ -63,6 +63,7 @@ class FifoWrapper:
                     ".evt", "_timing.txt"
                 )
 
+
     @property
     def fifo(self):
         return self._fifo
@@ -204,13 +205,14 @@ class FifoMonitor(FifoWrapper, Monitor):
         fifo_block,
         clock,
         block_name,
+        tv_format,
         io_enum,
         callbacks=[],
         write_out=True,
         out_dir="",
     ):
         FifoWrapper.__init__(
-            self, fifo_block, clock, block_name, io_enum, write_out, out_dir
+            self, fifo_block, clock, block_name, tv_format, io_enum, write_out, out_dir
         )
         Monitor.__init__(self)
 

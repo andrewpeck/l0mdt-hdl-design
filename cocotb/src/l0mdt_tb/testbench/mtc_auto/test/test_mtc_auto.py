@@ -190,13 +190,15 @@ def mtc_auto_test(dut):
     for n_op_intf in range(MtcAutoPorts.n_output_interfaces):
         for io in range(MtcAutoPorts.get_output_interface_ports(n_op_intf)): #Outputs):
             active = True
+
             monitor = FifoMonitor(
-                dut.output_spybuffers[MtcAutoPorts.get_output_interface_ports(n_op_intf)*n_op_intf + io].spybuffer,
+                dut.output_spybuffers[sb_oport_index].spybuffer,
                 dut.clock,
                 "MtcAuto",
-                io,
+                output_tvformats[n_op_intf],
+                str(io),
                 callbacks=[],
-                write_out=True,
+                write_out=True ,
                 out_dir=output_dir
             )
             sb_oport_index = sb_oport_index + 1
@@ -215,12 +217,14 @@ def mtc_auto_test(dut):
             n_ports = MtcAutoPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process
             ))
-        #HACK-> TILL TV updates process_ch
+
+        #print("################\n n_to_load = ",num_events_to_process, "single_interface_list = ",single_interface_list)
+        ################HACK-> TILL TV updates process_ch
         if(n_ip_intf == 0): #PL2MTC
             for i in range(3): # Update PL2MTC dataformat with process_ch values
                 for j in range(num_events_to_process):
                     single_interface_list[i][j] = (single_interface_list[i][j] | (i << 107))
-        print("################\n single_interface_list = ",single_interface_list)
+
         for io in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list[sb_port_index] = (single_interface_list[io])
             sb_port_index                = sb_port_index + 1
