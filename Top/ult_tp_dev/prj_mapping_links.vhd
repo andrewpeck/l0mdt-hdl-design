@@ -4,12 +4,12 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: Tube address map for 
---  Description: this file will be auto generated ( in the future) 
+--  Module: Tube Address Remap
+--  Description: link information to tube mapper 
 --
 --------------------------------------------------------------------------------
---  Sector : 3 
---  Side   : A
+--  Revisions: 
+--    v0  - 2020.11.30 creation
 --      
 --------------------------------------------------------------------------------
 
@@ -17,15 +17,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
--- library shared_lib;
--- use shared_lib.common_ieee_pkg.all;
--- use shared_lib.l0mdt_constants_pkg.all;
--- use shared_lib.l0mdt_dataformats_pkg.all;
--- use shared_lib.common_constants_pkg.all;
--- use shared_lib.common_types_pkg.all;
--- use shared_lib.config_pkg.all;
+library shared_lib;
+use shared_lib.common_ieee_pkg.all;
+use shared_lib.l0mdt_constants_pkg.all;
+use shared_lib.l0mdt_dataformats_pkg.all;
+use shared_lib.common_constants_pkg.all;
+use shared_lib.common_types_pkg.all;
+use shared_lib.config_pkg.all;
 
--- use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 package detector_mapping_pkg is
 
@@ -39,8 +39,8 @@ package detector_mapping_pkg is
   -- type polmux_map_t is array(MAX_TDC_POLMUX -1 downto 0) of csm_map_t;
   -- type mapping_tar_t is array(range integer <>) of polmux_map_t;
 
-  -- constant station_inn_layer : mapping_tar_t() :=(
-
+  -- constant sec3b_inn : mapping_tar_t() :=(
+  --   X"000" => (0,0,0),
   -- );
 
 
