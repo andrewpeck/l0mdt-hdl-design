@@ -846,11 +846,11 @@ def parse_file_for_testvectors(
     for ievent,DF in enumerate(events_list): #range(total_transactions):
         if ievent < total_transactions:
             for icand in range(n_ports):
-                print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,icand,total_transactions,tvformat))
+                #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,icand,total_transactions,tvformat))
                 tv[icand][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,icand)
                 #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[icand][ievent])
                 #tv[icand][i] = getattr(DF,tvformat)
                 #tv[icand][i] = DF.SLCPIPE_MTC
 
                 #tv[icand][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, icand)
-        return tv
+    return tv

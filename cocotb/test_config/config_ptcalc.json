@@ -19,7 +19,7 @@
             "testvector_file": "B.pkl",
             "inputs": [
                 {
-                    "tv_format": "SF2PTCALC",
+                    "tv_format": "SF2PTCALC_LSF_INN",
                     "ports": 3
                 },
                 {

@@ -174,10 +174,10 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append("")
 
     lines.append("")
-    lines.append("\tn_input_interfaces = {n_input}")
+    lines.append(f"\tn_input_interfaces = {n_inputs}")
     lines.append("")
 
-    lines.append("\tn_output_interfaces = {n_outputs}")
+    lines.append(f"\tn_output_interfaces = {n_outputs}")
     lines.append("")
 
 
@@ -400,7 +400,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         "output_directory_name": test_name,
         "test_location": f"{str(p_test_dir)}/test",
         "expected_is_observed": False,
-        "components_lib_dir": "/home/psundara/xilinx/compiled_libraries/v2019.1/",
+        "components_lib_dir": "set_COMPONENTS_LIB_DIR_or_update_location_of_xilinx_compiled_library",
     }
 
     ##
@@ -416,7 +416,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":output_ports[i]})
 
     config_testvectors = {
-        "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",
+        "testvector_dir": "set_L0MDT_TESTVECTOR_DIR_or_update_json_file_with_testvector_directory",
         "testvector_file": "TV.pkl",
         "inputs": input_list,
         "outputs": output_list,

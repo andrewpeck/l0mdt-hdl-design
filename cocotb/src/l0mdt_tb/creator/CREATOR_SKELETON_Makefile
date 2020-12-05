@@ -44,6 +44,7 @@ UCMDIR    = $(SRCDIR)/ucm/src
 UCMHPSDIR = $(SRCDIR)/ucm_hps/src
 ULTDIR    = $(SRCDIR)/ult/src
 UPTDIR    = $(SRCDIR)/upt/src
+SHAREDDIR = $(SRCDIR)/shared
 
 
 # Verilog source files
@@ -64,8 +65,19 @@ VERILOG_SOURCES = \
 # VHDL source files
 VHDL_SOURCES =
 
+VHDL_SOURCES_shared_lib = \
+	$(SHAREDDIR)/functions/vhdl2008_functions_pkg.vhd \
+	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
+	$(DFDIR)/l0mdt_constants_pkg.vhd \
+	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
+	$(SHAREDDIR)/types/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/common_types_pkg.vhd \
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd
+
+
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository -L $(COMPONENTS_LIB_DIR)/unisims_ver
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 
 ##############################################################################
