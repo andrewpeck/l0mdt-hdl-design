@@ -187,7 +187,8 @@ def CREATORTESTNAME_test(dut):
                 dut.output_spybuffers[sb_oport_index].spybuffer,
                 dut.clock,
                 "CREATORCLASSNAME",
-                io,
+                output_tvformats[n_op_intf],
+                str(io),
                 callbacks=[],
                 write_out=True,
                 out_dir=output_dir
