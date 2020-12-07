@@ -60,12 +60,7 @@ class PtcalcWrapper(block_wrapper.BlockWrapper):
             driver, io, active = self.input_ports[input_interface][interface_port]
 
             cocotb.log.info(
-                f"ptcalc_wrapper: port_num ={port_num}, input_interface={input_interface}, interface_port={interface_port}, input_testvectors = {input_events}"
-                f"ptcalc_wrapper: self.input_ports = {self.input_ports}********"
-            )
-
-            cocotb.log.info(
-                f"Sending {len(input_events)} events to input (port_num) = ({io})"
+                f"Sending {len(input_events)} events to input interface with (port_num) = ({io})"
             )
 
             hook = None

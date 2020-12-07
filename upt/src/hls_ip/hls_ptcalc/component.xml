@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spirit:component xmlns:xilinx="http://www.xilinx.com" xmlns:spirit="http://www.spiritconsortium.org/XMLSchema/SPIRIT/1685-2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <spirit:vendor>UCI</spirit:vendor>
+  <spirit:vendor>xilinx.com</spirit:vendor>
   <spirit:library>hls</spirit:library>
   <spirit:name>ptcalc_top</spirit:name>
   <spirit:version>1.0</spirit:version>
@@ -48,6 +48,46 @@
           <spirit:value spirit:id="BUSIFPARAM_VALUE.AP_RST.POLARITY">ACTIVE_HIGH</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
+    </spirit:busInterface>
+    <spirit:busInterface>
+      <spirit:name>ap_ctrl</spirit:name>
+      <spirit:busType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="acc_handshake" spirit:version="1.0"/>
+      <spirit:abstractionType spirit:vendor="xilinx.com" spirit:library="interface" spirit:name="acc_handshake_rtl" spirit:version="1.0"/>
+      <spirit:slave/>
+      <spirit:portMaps>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>start</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>ap_start</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>done</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>ap_done</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>idle</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>ap_idle</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+        <spirit:portMap>
+          <spirit:logicalPort>
+            <spirit:name>ready</spirit:name>
+          </spirit:logicalPort>
+          <spirit:physicalPort>
+            <spirit:name>ap_ready</spirit:name>
+          </spirit:physicalPort>
+        </spirit:portMap>
+      </spirit:portMaps>
     </spirit:busInterface>
     <spirit:busInterface>
       <spirit:name>pl2ptcalc_V</spirit:name>
@@ -144,7 +184,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>97e669d4</spirit:value>
+            <spirit:value>5d5a7b5b</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -160,7 +200,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>c6ebe461</spirit:value>
+            <spirit:value>497b9c18</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -176,7 +216,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>6e65b6cf</spirit:value>
+            <spirit:value>9500676e</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -192,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>62bc0110</spirit:value>
+            <spirit:value>798e9f22</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -278,6 +318,58 @@
         <spirit:name>ap_rst</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>ap_start</spirit:name>
+        <spirit:wire>
+          <spirit:direction>in</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>ap_done</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>ap_idle</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
+          <spirit:wireTypeDefs>
+            <spirit:wireTypeDef>
+              <spirit:typeName>std_logic</spirit:typeName>
+              <spirit:viewNameRef>xilinx_verilogsynthesis</spirit:viewNameRef>
+              <spirit:viewNameRef>xilinx_verilogbehavioralsimulation</spirit:viewNameRef>
+            </spirit:wireTypeDef>
+          </spirit:wireTypeDefs>
+        </spirit:wire>
+      </spirit:port>
+      <spirit:port>
+        <spirit:name>ap_ready</spirit:name>
+        <spirit:wire>
+          <spirit:direction>out</spirit:direction>
           <spirit:wireTypeDefs>
             <spirit:wireTypeDef>
               <spirit:typeName>std_logic</spirit:typeName>
@@ -383,131 +475,131 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_eta_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_eta_tacud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_eta_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_eta_tacud_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_2_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_tajbC.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_2_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_tajbC_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_takbM.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_takbM_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_30ns_24s_53_2_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_30lbW.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_35ns_33ns_67_2_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_35mb6.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_15s_15s_30_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muncg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muocq.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_16ns_28s_44_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_mupcA.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muqcK.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_murcU.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_musc4.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_mutde.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_15s_39_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muudo.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_16s_42_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muvdy.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_26ns_16s_42_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muwdI.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsdEe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsdEe_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramseOg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramseOg_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsfYi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsfYi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsg8j.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsg8j_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramshbi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramshbi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsibs.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsibs_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_rsp_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_rsp_tabkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_rsp_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_rsp_tabkb_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
@@ -518,153 +610,153 @@
     <spirit:fileSet>
       <spirit:name>xilinx_verilogbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_eta_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_eta_tacud.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_eta_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_eta_tacud_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_2_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_tajbC.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_2_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_tajbC_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_takbM.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_inv_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_inv_takbM_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_30ns_24s_53_2_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_30lbW.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_35ns_33ns_67_2_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_35mb6.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_15s_15s_30_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muncg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muocq.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_16ns_28s_44_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_mupcA.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muqcK.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_murcU.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_musc4.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_mutde.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_15s_39_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muudo.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_24s_16s_42_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muvdy.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_mul_mul_26ns_16s_42_1_1.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_mul_muwdI.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsdEe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsdEe_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramseOg.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_a_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramseOg_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsfYi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsfYi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsg8j.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_e_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsg8j_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_2s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramshbi.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_2s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramshbi_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_3s_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsibs.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_params_p_3s_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_paramsibs_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_rsp_table_V.v</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_rsp_tabkb.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/verilog/ptcalc_top_rsp_table_V_rom.dat</spirit:name>
+        <spirit:name>hdl/verilog/ptcalc_top_rsp_tabkb_rom.dat</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
@@ -681,208 +773,208 @@
         <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_eta_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_eta_tacud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_inv_table_2_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_inv_tajbC.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_inv_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_inv_takbM.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_30ns_24s_53_2_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_30lbW.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_35ns_33ns_67_2_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_35mb6.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_15s_15s_30_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muncg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_16ns_16ns_31_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muocq.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_16ns_28s_44_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_mupcA.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_19s_12s_31_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muqcK.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_21s_12s_33_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_murcU.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_22s_7ns_29_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_musc4.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_15ns_39_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_mutde.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_15s_39_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muudo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_16s_42_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muvdy.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_26ns_16s_42_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muwdI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_a_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsdEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_a_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramseOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_e_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsfYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_e_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsg8j.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_p_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramshbi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_p_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsibs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_rsp_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_rsp_tabkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/vhdl/ptcalc_top.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_e8f93dec</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_d7f1366e</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_vhdlbehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_eta_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_eta_tacud.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_inv_table_2_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_inv_tajbC.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_inv_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_inv_takbM.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_30ns_24s_53_2_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_30lbW.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_35ns_33ns_67_2_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_35mb6.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_15s_15s_30_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muncg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_16ns_16ns_31_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muocq.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_16ns_28s_44_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_mupcA.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_19s_12s_31_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muqcK.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_21s_12s_33_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_murcU.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_22s_7ns_29_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_musc4.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_15ns_39_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_mutde.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_15s_39_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muudo.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_24s_16s_42_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muvdy.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_mul_mul_26ns_16s_42_1_1.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_mul_muwdI.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_a_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsdEe.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_a_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramseOg.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_e_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsfYi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_e_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsg8j.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_p_2s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramshbi.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_params_p_3s_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_paramsibs.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/vhdl/ptcalc_top_rsp_table_V.vhd</spirit:name>
+        <spirit:name>hdl/vhdl/ptcalc_top_rsp_tabkb.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
         <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
       </spirit:file>
@@ -954,21 +1046,21 @@
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
-        <xilinx:family xilinx:lifeCycle="Pre-Production">kintexuplus</xilinx:family>
+        <xilinx:family xilinx:lifeCycle="Pre-Production">zynquplus</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>/VIVADO_HLS_IP</xilinx:taxonomy>
       </xilinx:taxonomies>
-      <xilinx:displayName>Pt Calculation</xilinx:displayName>
+      <xilinx:displayName>Ptcalc_top</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2009220828</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-09-22T15:28:33Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2012052018</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2020-12-06T04:18:52Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
-      <xilinx:xilinxVersion>2019.1.1</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4c59ebd2"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="ef6186d8"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="06dccbeb"/>
+      <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="4e7f8922"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="4adf303f"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="3867bced"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="a24c5136"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
