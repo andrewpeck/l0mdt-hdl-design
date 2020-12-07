@@ -15,6 +15,7 @@
 import sys
 import os
 import json
+from termcolor import colored, cprint
 
 import cocotb
 from cocotb.clock import Clock
@@ -86,6 +87,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
+    yield ClockCycles(dut.clock, 20)
 
 
 ##
@@ -94,6 +96,8 @@ def reset(dut):
 @cocotb.test()
 def ptcalc_test(dut):
 
+
+    cprint('**************Test START************ ', 'green')
     ##
     ## first grab the testbench configuration
     ##
@@ -105,10 +109,17 @@ def ptcalc_test(dut):
     input_args                       = config["input_args"]
     num_events_to_process            = int(input_args["n_events"])
     event_level_detail_in_sumary     = bool(input_args["event_detail"])
+    ptcalc_ii                        = int(input_args["ptcalc_ii"])
     run_config                       = config["run_config"]
     output_dir_name                  = run_config["output_directory_name"]
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
+    testvector_config                = config["testvectors"]
+    testvector_config_inputs         = testvector_config["inputs"]
+    inputs_station_id= [["" for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
+    for i in range(PtcalcPorts.n_input_interfaces):
+        inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]
+
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -185,7 +196,7 @@ def ptcalc_test(dut):
             )
             sb_iport_index = sb_iport_index + 1
             ptcalc_wrapper.add_input_driver(driver, n_ip_intf, io) #Add interface
-            print("Driver interface = ",n_ip_intf," io = ",io, "SB index =",sb_iport_index)
+
 
     sb_oport_index = 0
     for n_op_intf in range(PtcalcPorts.n_output_interfaces):
@@ -207,19 +218,30 @@ def ptcalc_test(dut):
 
 
     ###Get Input Test Vector List for Ports across all input interfaces##
-    input_tv_list         =  []
-    single_interface_list = []
+    input_tv_list                  =  []
+    single_interface_list          =  []
+    single_interface_list_ii_delay =  []
+
     for n_ip_intf in range(PtcalcPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_file_for_testvectors(
             filename=master_tv_file,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PtcalcPorts.get_input_interface_ports(n_ip_intf),
-            n_to_load=num_events_to_process
+            n_to_load=num_events_to_process,
+            station_ID=inputs_station_id[n_ip_intf]
             ))
-        print("SINGLE INTERFACE LIST:",n_ip_intf,":",input_tvformats[n_ip_intf]," = ",single_interface_list)
+
+        single_interface_list_ii_delay = events.modify_tv(single_interface_list, ptcalc_ii)
+        #print("SINGLE INTERFACE LIST_II_DELAY:",n_ip_intf,":",input_tvformats[n_ip_intf]," = ",single_interface_list_ii_delay)
         for io in range(PtcalcPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
-            input_tv_list.append(single_interface_list[io])
-        print("INPUT_TV_LIST:",input_tv_list,"########")
+            input_tv_list.append(single_interface_list_ii_delay[io])
+
+    #HLS TB INPUT
+    #input_tv_list[0][0] = 4613885293049446932
+    #input_tv_list[1][0] = 4613885408652818996
+    #input_tv_list[2][0] = 4613885537627640404
+    #input_tv_list[3][0] = 4611754738440994816
+    #print("INPUT_TV_LIST:",input_tv_list,"########")
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
@@ -231,7 +253,9 @@ def ptcalc_test(dut):
             n_to_load=num_events_to_process
             ))
         output_tv_list.append(single_interface_list)
-
+    #HLS TB OUTPUT
+    #output_tv_list[0] = 9011494602712095
+    #print("OUTPUT_TV_LIST:",output_tv_list,"########")
 
 
     ##
@@ -240,7 +264,7 @@ def ptcalc_test(dut):
     dut._log.info("Sending input events")
     send_finished_signal = ptcalc_wrapper.send_input_events(
         input_tv_list,
-        n_to_send=num_events_to_process
+        n_to_send=( (num_events_to_process-1)*(ptcalc_ii) + 1)
     )
 
     if not send_finished_signal:
@@ -266,7 +290,7 @@ def ptcalc_test(dut):
     all_test_results = []
     recvd_events_intf = []
     for n_op_intf in range(PtcalcPorts.n_output_interfaces):
-        recvd_events     = [["" for x in range(num_events_to_process)]for y in range(PtcalcPorts.get_output_interface_ports(n_op_intf))]
+        recvd_events     = [[0 for x in range(num_events_to_process)]for y in range(PtcalcPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(ptcalc_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -298,15 +322,18 @@ def ptcalc_test(dut):
 
 
     #Ordering based on events (Required by TV package)
-    event_ordering  = [["" for x in range(PtcalcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
+    event_ordering  = [[0 for x in range(PtcalcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
 
     for n_op_intf in range (PtcalcPorts.n_output_interfaces):
         for e_idx in range(num_events_to_process):
             for o_port in range (PtcalcPorts.get_output_interface_ports(n_op_intf)):
+                #print("(e_idx,o_port,n_op_intf)=(",e_idx,o_port,n_op_intf,")")
                 event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][o_port][e_idx]
 
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , e_idx , event_ordering[e_idx]);
-        all_tests_passed = (all_tests_passed and events_are_equal)
+            events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , e_idx , event_ordering[e_idx]);
+            all_tests_passed = (all_tests_passed and events_are_equal)
+    #print("recvd_events_intf = ",recvd_events_intf)
+    #print("event_ordering    = ", event_ordering)
 
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[

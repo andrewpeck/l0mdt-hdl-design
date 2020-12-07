@@ -68,28 +68,28 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_eta_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_table_2_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_30ns_24s_53_2_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_35ns_33ns_67_2_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_15s_15s_30_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_16ns_28s_44_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_24s_15s_39_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_24s_16s_42_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mul_26ns_16s_42_1_1.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_a_2s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_a_3s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_e_2s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_e_3s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_p_2s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_params_p_3s_table_V.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_rsp_table_V.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_musc4.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_murcU.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muqcK.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mupcA.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muocq.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muncg.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_35mb6.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_30lbW.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_rsp_tabkb.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muwdI.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muvdy.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muudo.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mutde.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_eta_tacud.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramshbi.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsg8j.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsfYi.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramseOg.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsdEe.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsibs.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_takbM.v \
+    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_tajbC.v \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top.v \
     $(IPDIR)/upt/hls_upt.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v

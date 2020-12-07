@@ -6,6 +6,7 @@
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
+	    "ptcalc_ii": 24,
             "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
         "run_config": {
@@ -19,17 +20,19 @@
             "testvector_file": "B.pkl",
             "inputs": [
                 {
-                    "tv_format": "SF2PTCALC_LSF_INN",
-                    "ports": 3
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 3,
+		    "station_ID":["INN","MID","OUT"]
                 },
                 {
                     "tv_format": "PL2PTCALC",
-                    "ports": 1
+                    "ports": 1,
+		    "station_ID":[""]
                 }
             ],
             "outputs": [
                 {
-                    "tv_format": "PTCALC2MTC",
+                    "tv_format": "PTCALC2MTC_LSF",
                     "ports": 1
                 }
             ]
