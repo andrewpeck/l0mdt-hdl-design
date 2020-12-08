@@ -26,9 +26,9 @@ end
 
 
 
-always @(posedge clk)  
-begin 
-    if (ce0) 
+always @(posedge clk)
+begin
+    if (ce0)
     begin
         q0 <= ram[addr0];
     end
@@ -36,9 +36,9 @@ end
 
 
 
-always @(posedge clk)  
-begin 
-    if (ce1) 
+always @(posedge clk)
+begin
+    if (ce1)
     begin
         q1 <= ram[addr1];
     end
@@ -83,4 +83,3 @@ ptcalc_top_params_p_3s_table_V_rom ptcalc_top_params_p_3s_table_V_rom_U(
     .q1( q1 ));
 
 endmodule
-

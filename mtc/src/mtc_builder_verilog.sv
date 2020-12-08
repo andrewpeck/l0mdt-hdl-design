@@ -22,7 +22,7 @@ module mtc_builder_verilog#(
 			    parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
 			    parameter TOTAL_PTCALC_BLKS=3,
 			    parameter MTC_PER_BCID = 3,
-	 		    parameter n_PRIMARY_MTC = 1
+	 		    parameter n_PRIMARY_MTC = 3
 		    )
    (
     input logic 		       clock,

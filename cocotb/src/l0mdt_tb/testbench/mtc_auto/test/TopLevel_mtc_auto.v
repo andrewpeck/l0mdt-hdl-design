@@ -92,7 +92,8 @@ module TopLevel_mtc_auto #(
    mtc_builder_verilog#(
 			.PTCALC_WIDTH(PTCALC_LEN),
 			.SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-			.TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS)
+			.TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS),
+      .n_PRIMARY_MTC(3)
 			)
    mtc_builder_inst(
     		    .clock(clock),

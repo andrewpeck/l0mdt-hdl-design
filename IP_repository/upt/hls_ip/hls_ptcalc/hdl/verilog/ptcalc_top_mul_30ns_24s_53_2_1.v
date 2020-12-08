@@ -52,4 +52,3 @@ ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0 ptcalc_top_mul_30ns_24s_53_2_1_MulnS_0_U(
     .p( dout ));
 
 endmodule
-
