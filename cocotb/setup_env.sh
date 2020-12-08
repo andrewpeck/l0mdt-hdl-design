@@ -119,10 +119,11 @@ function update_makefile_questa() {
 
 
     sed -i '/vcom -work / i \\tfor SOURCES_VAR in $(VHDL_LIB); do \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work / i \\t\techo \"vlib -dirpath $(SIM_BUILD)\/$$SOURCES_VAR $$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\techo \"vlib $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\techo \"vmap $$SOURCES_VAR $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work / i \\t$(foreach SOURCES_VAR, $(VHDL_LIB), \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SIM_BUILD)/$(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
     return 0
 }
 
