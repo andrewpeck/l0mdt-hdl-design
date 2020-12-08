@@ -100,14 +100,13 @@ VHDL_SOURCES = \
 	$(SRCDIR)//upt/top_upt.vhd
 
 VHDL_SOURCES_shared_lib = \
-	$(SHAREDDIR)/functions/vhdl2008_functions_pkg.vhd \
+	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
 	$(DFDIR)/l0mdt_constants_pkg.vhd \
 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
-	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
-	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
 
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))

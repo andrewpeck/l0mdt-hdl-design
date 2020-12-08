@@ -204,7 +204,7 @@ def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_p
     lines.append("\tdef n_input_ports(self):")
     lines.append(f"\t\tinput_ports = 0")
     lines.append(f"\t\tfor i in range(self.n_input_interfaces):")
-    lines.append(f"\t\t\tinput_ports = input_ports + self.get_input_interfaces_port(i)")
+    lines.append(f"\t\t\tinput_ports = input_ports + self.get_input_interface_ports(i)")
     lines.append(f"\t\treturn input_ports")
 
     lines.append("\tdef n_output_ports(self):")

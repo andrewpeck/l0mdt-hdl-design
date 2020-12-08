@@ -122,7 +122,7 @@ function update_makefile_questa() {
     sed -i '/vcom -work / i \\t\techo \"vlib -dirpath $(SIM_BUILD)\/$$SOURCES_VAR $$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work / i \\t$(foreach SOURCES_VAR, $(VHDL_LIB), \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SIM_BUILD)/$(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
     return 0
 }
 
@@ -246,7 +246,7 @@ function main {
                 return 1
             fi
 
-	    echo "Updating makefile to support mixed language compilation"
+	    echo "Updating cocotb Makefile.questa to support mixed language compilation"
 	    if ! update_makefile_questa; then
 		return 1
 	    fi

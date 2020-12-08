@@ -66,7 +66,7 @@ VERILOG_SOURCES = \
 VHDL_SOURCES =
 
 VHDL_SOURCES_shared_lib = \
-	$(SHAREDDIR)/functions/vhdl2008_functions_pkg.vhd \
+	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
 	$(DFDIR)/l0mdt_constants_pkg.vhd \
 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
