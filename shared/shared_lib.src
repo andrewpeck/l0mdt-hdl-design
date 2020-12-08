@@ -10,7 +10,7 @@ shared/config/config_pkg.vhd
 # Detector shared ROMs
 #---------------------------------
 
-shared/detector_parameters/hedgehog_mezzanines_mapping_pkg.vhd
+shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 
 shared/detector_parameters/detector_param_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd

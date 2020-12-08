@@ -27,74 +27,125 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
+use shared_lib.tdc_mezz_mapping_pkg.all;
 
 library tar_lib;
 use tar_lib.tar_pkg.all;
 
 entity tar_remap is
   generic (
-    EN_TAR_HITS : integer := 1;
-    EN_MDT_HITS : integer := 0
-    );
+    -- g_EN_TAR_HITS : integer := 1;
+    -- g_EN_MDT_HITS : integer := 0;
+    g_STATION : integer := 0
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_inn_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_tdc_hits    : in  tdcpolmux2tar_rvt := (others => '0');
+    -- i_mid_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inn_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_tar_hits    : in  tar2hps_rvt := (others => '0');
+    -- i_mid_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC polmux from Tar
-    o_inn_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+    o_tdc_hits    : out tdcpolmux2tar_rvt;
+    -- o_mid_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    -- o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    -- o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_inn_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-    o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
+    o_tar_hits    : out tar2hps_rvt
+    -- o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    -- o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    -- o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
   );
 end entity tar_remap;
 
 architecture beh of tar_remap is
 
+  signal i_tdc_hits_r : tdcpolmux2tar_rt;
+  -- signal i_tar_hits_r : tar2hps_rt;
+  -- signal o_tdc_hits_r : tdcpolmux2tar_rt;
+  signal o_tar_hits_r : tar2hps_rt;
 
+  signal ml1_tubes : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,0,1); -- station , ml, t_nl
+  signal ml1_layer : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,0,0);
+  signal ml2_tubes : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,1,1);
+  signal ml2_layer : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,1,0);
+
+  signal csm_offset_mem : mezz_b_chamber_dist_chamber_t := get_csm_accumulated_tubes(g_STATION);
+  signal tdc_offset_mem : tdc_accumulated_tubes_t := get_tdc_accumulated_tubes(g_STATION);
+
+  signal csm_offset : integer;
+  signal tdc_offset : integer;
+  signal layer  : unsigned(TAR2HPS_LAYER_LEN-1 downto 0);
+  signal tube   : unsigned(TAR2HPS_TUBE_LEN-1 downto 0);
+  signal time   : unsigned(TAR2HPS_TIME_LEN-1 downto 0);
   
 begin
+
+  i_tdc_hits_r <= structify(i_tdc_hits);
+  o_tar_hits <= vectorify(o_tar_hits_r);
   
   TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
-    o_inn_tdc_hits <= i_inn_tdc_hits;
-    o_mid_tdc_hits <= i_mid_tdc_hits;
-    o_out_tdc_hits <= i_out_tdc_hits;
-    o_ext_tdc_hits <= i_ext_tdc_hits;
+    -- o_tdc_hits <= i_tdc_hits;
+    -- o_mid_tdc_hits <= i_mid_tdc_hits;
+    -- o_out_tdc_hits <= i_out_tdc_hits;
+    -- o_ext_tdc_hits <= i_ext_tdc_hits;
+
+
+    GET : process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          
+        else
+          if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
+            
+            if i_tdc_hits_r.data_valid = '1' then
+              csm_offset <= csm_offset_mem(to_integer(i_tdc_hits_r.csmid));
+              tdc_offset <= tdc_offset_mem(to_integer(i_tdc_hits_r.tdcid));
+              -- tdc_offset <= tdc_offset_mem(to_integer(shift_right(to_unsigned(i_tdc_hits_r.tdc_id),1)));
+
+            else
+              csm_offset <= 0;
+              tdc_offset <= 0;
+            end if;
+
+
+
+
+
+
+            -- o_tar_hits_r.data_valid   <=
+            -- o_tar_hits_r.chamber_ieta <=
+            -- o_tar_hits_r.layer        <= 
+            -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+            -- o_tar_hits_r.time         <= full_time;
+
+          else-- ENDCAP
+
+          end if;
+
+        end if;
+      end if;
+    end process GET;
+
+
+
+
+
   end generate;
 
   TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
-    o_inn_tar_hits <= i_inn_tar_hits;
-    o_mid_tar_hits <= i_mid_tar_hits;
-    o_out_tar_hits <= i_out_tar_hits;
-    o_ext_tar_hits <= i_ext_tar_hits;
-
-    -- ST_EN : if c_HPS_ENABLE_ST_INN = '1' generate
-    --   HP_LOOP : for hp_i in c_HPS_MAX_HP_INN -1 downto 0 generate
-    --     HP_EN : if c_HPS_ENABLED_HP_INN(hp_i) = '1' generate
-    --       -- TAR
-    --       o_inn_tar_hits(hp_i) <= i_inn_tar_hits(hp_i);
-    --       -- TDC
-    --       o_inn_tdc_hits(hp_i).csmid <= resize(i_inn_tar_hits(hp_i).layer,TDCPOLMUX2TAR_CSMID_LEN);
-    --     end generate;
-    --   end generate;
-    -- end generate;
-
-
-
+    o_tar_hits <= i_tar_hits;
+    -- o_mid_tar_hits <= i_mid_tar_hits;
+    -- o_out_tar_hits <= i_out_tar_hits;
+    -- o_ext_tar_hits <= i_ext_tar_hits;
   end generate;
 
   
