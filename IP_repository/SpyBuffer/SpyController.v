@@ -59,7 +59,7 @@ module SpyController #(
 );
 
     // Include the SpyProtocol.vh file.
-    `include "SpyBuffer/SpyProtocol.vh"
+    `include "SpyProtocol.vh"
 
     // Define the states of the state machine
     // that controls the metadata FIFO.

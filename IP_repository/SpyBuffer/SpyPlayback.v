@@ -57,7 +57,7 @@ module SpyPlayback #(
     localparam INITIAL_ADDR = 2**MEMWIDTH - 1;
 
     // Include the SpyProtocol.vh file.
-    `include "SpyBuffer/SpyProtocol.vh"
+    `include "SpyProtocol.vh"
 
     // It's been a while; I'm somewhat worried about the sequencing here.
 
