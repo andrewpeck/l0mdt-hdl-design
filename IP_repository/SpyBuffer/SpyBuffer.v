@@ -86,7 +86,7 @@ module SpyBuffer #(
 );
 
     // Include the SpyProtocol.vh file.
-    `include "SpyBuffer/SpyProtocol.vh"
+    `include "SpyProtocol.vh"
 
     // Internal data read from the spy buffer.
     // In NO_PLAYBACK mode, this is connected to the outside world. In any playback state, it is not.
