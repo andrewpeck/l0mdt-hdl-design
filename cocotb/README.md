@@ -39,7 +39,7 @@ Table of Contents
 <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
 # Requirements
-In order to run the testbenches defined here you must have Python3 (>=3.6) installed
+In order to run the testbenches defined here you must have Python3 (>=3.8.2) installed
 on your machine and accessible via the `python3` command in your `$PATH`.
 
 
