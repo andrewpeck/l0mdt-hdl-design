@@ -82,9 +82,12 @@ architecture beh of tar_remap is
 
   signal csm_offset : integer;
   signal tdc_offset : integer;
-  signal layer  : unsigned(TAR2HPS_LAYER_LEN-1 downto 0);
-  signal tube   : unsigned(TAR2HPS_TUBE_LEN-1 downto 0);
-  signal time   : unsigned(TAR2HPS_TIME_LEN-1 downto 0);
+  signal tdc_layer  : unsigned(TAR2HPS_LAYER_LEN-1 downto 0);
+  signal tdc_tube   : unsigned(TAR2HPS_TUBE_LEN-1 downto 0);
+  signal full_time  : unsigned(TAR2HPS_TIME_LEN-1 downto 0);
+
+  signal dv_pl : std_logic_vector(1 downto 0);
+  signal csm_pl : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
   
 begin
 
@@ -105,11 +108,26 @@ begin
           
         else
           if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
-            
+            dv_pl(0) <= dv_pl(1);
+            dv_pl(1) <=  i_tdc_hits_r.data_valid;
             if i_tdc_hits_r.data_valid = '1' then
+              csm_pl <= i_tdc_hits_r.csmid;
               csm_offset <= csm_offset_mem(to_integer(i_tdc_hits_r.csmid));
               tdc_offset <= tdc_offset_mem(to_integer(i_tdc_hits_r.tdcid));
               -- tdc_offset <= tdc_offset_mem(to_integer(shift_right(to_unsigned(i_tdc_hits_r.tdc_id),1)));
+              if c_SECTOR_SIDE = '0' then -- SIDE A
+                if i_tdc_hits_r.tdcid(0) = '0' then -- even
+                  tdc_tube <= to_unsigned(ml1_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
+                  tdc_layer <= to_unsigned(ml1_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
+                else -- odd
+                  tdc_tube <= to_unsigned(ml2_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
+                  tdc_layer <= to_unsigned(ml2_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
+                end if;
+              else -- SIDE C
+
+              end if;
+
+              full_time <= i_tdc_hits_r.tdc.coarsetime & i_tdc_hits_r.tdc.finetime;
 
             else
               csm_offset <= 0;
@@ -118,14 +136,19 @@ begin
 
 
 
-
-
-
-            -- o_tar_hits_r.data_valid   <=
-            -- o_tar_hits_r.chamber_ieta <=
-            -- o_tar_hits_r.layer        <= 
-            -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
-            -- o_tar_hits_r.time         <= full_time;
+            if dv_pl(0) = '1' then
+              o_tar_hits_r.data_valid   <= '1';
+              o_tar_hits_r.chamber_ieta <= csm_pl;
+              o_tar_hits_r.layer        <= tdc_layer;
+              o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+              o_tar_hits_r.time         <= full_time;
+            else
+              o_tar_hits_r.data_valid   <= '0';
+              -- o_tar_hits_r.chamber_ieta <= 
+              -- o_tar_hits_r.layer        <= 
+              -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+              -- o_tar_hits_r.time         <= full_time;
+            end if;
 
           else-- ENDCAP
 
