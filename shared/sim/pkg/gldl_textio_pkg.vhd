@@ -78,6 +78,25 @@ package body gldl_l0mdt_textio_pkg is
 
     -- variable
   begin
+    -- ToA
+    -- coarse_time
+    -- fine_time
+    -- Local_Tube_Number
+    -- Tube_Number
+    -- Tube_Layer
+    -- ChamberId
+    -- Chamber_iEta
+    -- Station_Type
+    -- tube_z
+    -- tube_rho
+    -- drift_time
+    -- event
+    -- muonFixedId
+    -- csm  
+    -- mezz  
+    -- channel  
+    -- t0     
+    -- TOF   
     READ(L, mdt_ToA);
     READ(L, mdt_time_coarse);
     READ(L, mdt_time_fine);

@@ -213,22 +213,43 @@ begin
   -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
-  HIT : entity project_lib.ult_tb_reader_tar 
-  generic map (
-    IN_HIT_FILE => IN_HIT_FILE
-  )
-  port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_mdt,
-    --
-    tb_curr_tdc_time => tb_curr_tdc_time,
-    -- TAR Hits for simulation
-    i_mdt_tar_inn_av => i_mdt_tar_inn_av,
-    i_mdt_tar_mid_av => i_mdt_tar_mid_av,
-    i_mdt_tar_out_av => i_mdt_tar_out_av,
-    i_mdt_tar_ext_av => i_mdt_tar_ext_av
-  );
+  TAR_HIT : if c_EN_TAR_HITS = '1' generate -- TAR data injection
+    HIT : entity project_lib.ult_tb_reader_tar 
+    generic map (
+      IN_HIT_FILE => IN_HIT_FILE
+    )
+    port map(
+      clk => clk,
+      rst => rst,
+      enable => enable_mdt,
+      --
+      tb_curr_tdc_time => tb_curr_tdc_time,
+      -- TAR Hits for simulation
+      i_mdt_tar_inn_av => i_mdt_tar_inn_av,
+      i_mdt_tar_mid_av => i_mdt_tar_mid_av,
+      i_mdt_tar_out_av => i_mdt_tar_out_av,
+      i_mdt_tar_ext_av => i_mdt_tar_ext_av
+    );
+  end generate;
+
+  TDC_HIT : if c_EN_MDT_HITS = '1' generate -- TAR data injection
+    HIT : entity project_lib.ult_tb_reader_tdc 
+    generic map (
+      IN_HIT_FILE => IN_HIT_FILE
+    )
+    port map(
+      clk => clk,
+      rst => rst,
+      enable => enable_mdt,
+      --
+      tb_curr_tdc_time => tb_curr_tdc_time,
+      -- TAR Hits for simulation
+      i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
+      i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
+      i_mdt_tdc_out_av => i_mdt_tdc_out_av,
+      i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
+    );
+  end generate;
 
  	-------------------------------------------------------------------------------------
 	-- candidates
