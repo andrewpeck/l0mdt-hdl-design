@@ -38,3 +38,6 @@
 [submodule "tools/simCheck"]
 	path = tools/simCheck
 	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
+[submodule "l0mdt-hls"]
+	path = l0mdt-hls
+	url = ../l0mdt-hls
