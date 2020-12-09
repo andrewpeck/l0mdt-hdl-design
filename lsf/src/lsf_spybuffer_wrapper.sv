@@ -3,12 +3,12 @@
 //--  Priya Sundararajan
 //--  priya.sundararajan@cern.ch
 //--------------------------------------------------------------------------------
-//--  Project: ATLAS L0MDT Trigger 
+//--  Project: ATLAS L0MDT Trigger
 //--  Description:
 //--
 //--------------------------------------------------------------------------------
 //--  Revisions:
-//--      
+//--
 //--------------------------------------------------------------------------------
 
 `timescale 1ns/1ps
@@ -19,7 +19,7 @@
 `endif
 
 module lsf_spybuffer_wrapper #(
-			       parameter LSF_SB_MEM_WIDTH    = 10,			       
+			       parameter LSF_SB_MEM_WIDTH    = 10,
 			       parameter LSF_SB_EL_MEM_WIDTH = 10
 			       )
   (
@@ -51,30 +51,30 @@ module lsf_spybuffer_wrapper #(
    output [HEG2SFHIT_LEN-1:0] 	   sb_lsf_mdt_hits_rdata
  //  output [LSF_SB_MEM_WIDTH-1:0]   sb_lsf_mdt_hits_meta_rdata
    );
-   
+
    logic [HEG2SFSLC_LEN-1:0] 	       lsf_roi;
    logic 			       lsf_roi_re;
    logic 			       lsf_roi_empty;
-   
+
    logic [HEG2SFHIT_LEN-1:0] 	       lsf_mdt_hit;
    logic 			       lsf_mdt_hit_re;
    logic 			       lsf_mdt_hit_empty;
-   
-   
+
+
    logic [SF2PTCALC_LEN -1:0] 	       lsf;
    logic 			       lsf_we;
-   
-   
-   
-   
+
+
+
+
    SpyBuffer #(
 	       .DATA_WIDTH(HEG2SFSLC_LEN-1),
 	       .SPY_MEM_WIDTH(LSF_SB_MEM_WIDTH)
 	       ) roi_buffer (
 			     .rclock(clock),
 			     .wclock(clock),
-			     .rreset(~reset),
-			     .wreset(~reset),
+			     .rresetbar(~reset),
+			     .wresetbar(~reset),
 			     .write_data(roi),//ToUpdate
 			     .write_enable(roi_we),//ToUpdate
 			     .read_data(lsf_roi),
@@ -97,7 +97,7 @@ module lsf_spybuffer_wrapper #(
 			     .spy_data(),
 			     .spy_meta_read_data()
 			     );
-   
+
 
     SpyBuffer #(
 		.DATA_WIDTH(HEG2SFHIT_LEN-1),
@@ -106,8 +106,8 @@ module lsf_spybuffer_wrapper #(
 	       ) mdt_hit_buffer (
 				 .rclock(clock),
 				 .wclock(clock),
-				 .rreset(~reset),
-				 .wreset(~reset),
+				 .rresetbar(~reset),
+				 .wresetbar(~reset),
 				 .write_data(mdt_hit),//ToUpdate
 				 .write_enable(mdt_hit_we),//ToUpdate
 				 .read_data(lsf_mdt_hit),
@@ -130,8 +130,8 @@ module lsf_spybuffer_wrapper #(
 				 .spy_data(sb_lsf_mdt_hits_rdata),
 				 .spy_meta_read_data(sb_lsf_mdt_hits_meta_rdata)
 				 );
-   
-   
+
+
    legendreEngine  legendreEngine_inst(
 					      .clk(clock),
 					      .rst(reset),
@@ -145,7 +145,7 @@ module lsf_spybuffer_wrapper #(
 					      .histogram_accumulation_count(histogram_accumulation_count),
 					      .le_output(lsf),
 					      .le_output_vld(lsf_we)
-					      /* 
+					      /*
 					       .le_tb_output(),
 					       .le_tb_output_vld()
 					       */
@@ -161,8 +161,8 @@ module lsf_spybuffer_wrapper #(
 	       ) lsf_output_buffer (
 				    .rclock(clock),
 				    .wclock(clock),
-				    .rreset(~reset),
-				    .wreset(~reset),
+				    .rresetbar(~reset),
+				    .wresetbar(~reset),
 				    .write_data(lsf),//ToUpdate
 				    .write_enable(lsf_we),//ToUpdate
 				    .read_data(lsf_output),
@@ -187,5 +187,5 @@ module lsf_spybuffer_wrapper #(
 				    );
 
 
-   
+
   endmodule // lsf_spybuffer_wrapper
