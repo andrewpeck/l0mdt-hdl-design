@@ -32,19 +32,19 @@ library tar_lib;
 use tar_lib.tar_pkg.all;
 
 entity tar is
-  generic (
-    EN_TAR_HITS : integer := 0;
-    EN_MDT_HITS : integer := 1
-    );
+  -- generic (
+  --   EN_TAR_HITS : integer := 0;
+  --   EN_MDT_HITS : integer := 1
+  --   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_inn_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits    : in  mdt_polmux_bus_avt (EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
     i_inn_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
@@ -89,7 +89,7 @@ begin
           generic map(
             g_MEMORY_TYPE     => "ultra",
             g_PIPELINE_TYPE   => "ring_buffer",
-            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH  =>  i_inn_tdc_hits(b_i)'length
           )
           port map(
@@ -129,7 +129,7 @@ begin
           generic map(
             g_MEMORY_TYPE     => "ultra",
             g_PIPELINE_TYPE   => "ring_buffer",
-            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH  => i_mid_tdc_hits(b_i)'length
           )
           port map(
@@ -167,7 +167,7 @@ begin
           generic map(
             g_MEMORY_TYPE     => "ultra",
             g_PIPELINE_TYPE   => "ring_buffer",
-            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH  => i_out_tdc_hits(b_i)'length
           )
           port map(
@@ -205,7 +205,7 @@ begin
           generic map(
             g_MEMORY_TYPE     => "ultra",
             g_PIPELINE_TYPE   => "ring_buffer",
-            g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+            g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH  => i_ext_tdc_hits(b_i)'length
           )
           port map(
@@ -242,10 +242,21 @@ begin
 
 
 
-
-
+--------------------------------------------------------------------
+--
+--                TAR INPUT
+--
+--------------------------------------------------------------------
+-- no DAQ output implemented
 
   TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
+
+    o_inn_tar_hits <= int_inn_tar_hits;
+    o_mid_tar_hits <= int_mid_tar_hits;
+    o_out_tar_hits <= int_out_tar_hits;
+    o_ext_tar_hits <= int_ext_tar_hits;
+
+
     -- pipeline
     INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
       INN_DELAY : for b_i in c_HPS_MAX_HP_INN -1 downto 0 generate
