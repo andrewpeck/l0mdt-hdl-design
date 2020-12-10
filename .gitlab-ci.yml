@@ -1,5 +1,4 @@
 include:
-<<<<<<< HEAD
     - project: 'hog/Hog'
       file: '/hog.yml'
       ref: 'v2.27.0'
@@ -50,58 +49,3 @@ include:
     # - local: '/Top/csf_plus_pt/gitlab-ci.yml'
 
     # writer
-
-
-
-
-=======
-  - project: "hog/Hog"
-    file: "/hog.yml"
-    ref: "v2.23.0"
-  # - local: '/.before_script.yml'
-  - local: "/.user_jobs.yml"
-  - local: "/.devel_to_master.yml"
-  #---------------------------------------------
-  #         HW
-  #---------------------------------------------
-  # - local: '/Top/profpga_duo_test/gitlab-ci.yml'
-  # - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
-  # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
-  # - local: '/Top/hal/gitlab-ci.yml'
-  # - local: '/Top/l0mdt/gitlab-ci.yml'
-  #---------------------------------------------
-  #         Modules
-  #---------------------------------------------
-  # - local: '/Top/csf/gitlab-ci.yml'
-  # - local: '/Top/ptc_mpi/gitlab-ci.yml'
-  # - local: '/Top/lsf/gitlab-ci.yml'
-  # - local: '/Top/upt/gitlab-ci.yml'
-  # - local: '/Top/ucm/gitlab-ci.yml'
-  # - local: '/Top/hp/gitlab-ci.yml'
-  # - local: '/Top/heg/gitlab-ci.yml'
-  # - local: '/Top/hps_csf/gitlab-ci.yml'
-  # - local: '/Top/hps_lsf/gitlab-ci.yml'
-  # - local: '/Top/daq/gitlab-ci.yml'
-  # - local: '/Top/mpl/gitlab-ci.yml'
-  # - local: '/Top/tdc/gitlab-ci.yml'
-  # - local: '/Top/mtc/gitlab-ci.yml'
-  #---------------------------------------------
-  #         Builds
-  #---------------------------------------------
-  # - local: '/Top/ult/gitlab-ci.yml'
-  # - local: '/Top/ult_tp_dev/gitlab-ci.yml'
-  - local: "/Top/ult_tp_dev_xsim/gitlab-ci.yml"
-  - local: "/Top/ult_tp_dev_questa/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf_xsim/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf_questa/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf_ptmpi/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf_ptmpi_xsim/gitlab-ci.yml"
-  - local: "/Top/ult_tp_csf_ptmpi_questa/gitlab-ci.yml"
-  # - local: '/Top/ult_tp_lsf/gitlab-ci.yml'
-  - local: "/Top/ult_tp_lsf_questa/gitlab-ci.yml"
-  - local: "/Top/ult_tp_lsf_xsim/gitlab-ci.yml"
-  # - local: '/Top/ult_daq/gitlab-ci.yml'
-  # - local: '/Top/csf_plus_pt/gitlab-ci.yml'
-  - local: "/Top/lsf-hls/gitlab-ci.yml"
->>>>>>> added one hls example in .user_jobs.yml for testing
