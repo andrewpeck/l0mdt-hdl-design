@@ -1,3 +1,0 @@
- BCID  ToA     Eta    Phi  pT_thr  Charge  Coincidence  z_RPC0  z_RPC1  z_RPC2  z_RPC3  
- 477   14390   -1355  292  11      0       3            -2079   0       -3858   -4806   
- 3795  120566  -2702  300  11      0       3            -4538   0       -8431   -10335  

@@ -14,17 +14,18 @@ use heg_lib.heg_pkg.all;
 
 package gldl_ult_tp_sim_pkg is
 
-  type input_tar_rt is record
+  type input_mdt_rt is record
     ToA : unsigned(64-1 downto 0);
     station : unsigned(8-1 downto 0);
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
     tar : tar2hps_rt;
-  end record input_tar_rt;
-  constant INPUT_TAR_LEN : integer := 112;
-  subtype input_tar_rvt is std_logic_vector(INPUT_TAR_LEN-1 downto 0);
-  function vectorify(x: input_tar_rt) return input_tar_rvt;
-  function structify(x: input_tar_rvt) return input_tar_rt;
-  function nullify(x: input_tar_rt) return input_tar_rt;
+    tdc : tdcpolmux2tar_rt;
+  end record input_mdt_rt;
+  constant INPUT_MDT_LEN : integer := 154;
+  subtype input_mdt_rvt is std_logic_vector(INPUT_MDT_LEN-1 downto 0);
+  function vectorify(x: input_mdt_rt) return input_mdt_rvt;
+  function structify(x: input_mdt_rvt) return input_mdt_rt;
+  function nullify(x: input_mdt_rt) return input_mdt_rt;
 
   constant TB_TAR_FIFO_WIDTH : integer := 32;
 
@@ -36,6 +37,15 @@ package gldl_ult_tp_sim_pkg is
   function structify(x: std_logic_vector) return tar2hps_tb_at;
   function nullify(x: tar2hps_tb_at) return tar2hps_tb_at;
   function nullify(x: tar2hps_tb_avt) return tar2hps_tb_avt;
+
+  type pol2tar_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tdcpolmux2tar_rt;
+  type pol2tar_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tdcpolmux2tar_rvt;
+  function vectorify(x: pol2tar_tb_at) return pol2tar_tb_avt;
+  function vectorify(x: pol2tar_tb_at) return std_logic_vector;
+  function structify(x: pol2tar_tb_avt) return pol2tar_tb_at;
+  function structify(x: std_logic_vector) return pol2tar_tb_at;
+  function nullify(x: pol2tar_tb_at) return pol2tar_tb_at;
+  function nullify(x: pol2tar_tb_avt) return pol2tar_tb_avt;
 
   type input_slc_b_rt is record
     ToA : unsigned(64-1 downto 0);
@@ -124,31 +134,34 @@ end package gldl_ult_tp_sim_pkg;
 
 package body gldl_ult_tp_sim_pkg is
 
-  function vectorify(x: input_tar_rt) return input_tar_rvt is
-    variable y : input_tar_rvt;
+  function vectorify(x: input_mdt_rt) return input_mdt_rvt is
+    variable y : input_mdt_rvt;
   begin
-    y(111 downto 48)           := vectorify(x.ToA);
-    y(47 downto 40)            := vectorify(x.station);
-    y(39 downto 36)            := vectorify(x.chamber);
-    y(35 downto 0)             := vectorify(x.tar);
+    y(153 downto 90)           := vectorify(x.ToA);
+    y(89 downto 82)            := vectorify(x.station);
+    y(81 downto 78)            := vectorify(x.chamber);
+    y(77 downto 42)            := vectorify(x.tar);
+    y(41 downto 0)             := vectorify(x.tdc);
     return y;
   end function vectorify;
-  function structify(x: input_tar_rvt) return input_tar_rt is
-    variable y : input_tar_rt;
+  function structify(x: input_mdt_rvt) return input_mdt_rt is
+    variable y : input_mdt_rt;
   begin
-    y.ToA                      := structify(x(111 downto 48));
-    y.station                  := structify(x(47 downto 40));
-    y.chamber                  := structify(x(39 downto 36));
-    y.tar                      := structify(x(35 downto 0));
+    y.ToA                      := structify(x(153 downto 90));
+    y.station                  := structify(x(89 downto 82));
+    y.chamber                  := structify(x(81 downto 78));
+    y.tar                      := structify(x(77 downto 42));
+    y.tdc                      := structify(x(41 downto 0));
     return y;
   end function structify;
-  function nullify(x: input_tar_rt) return input_tar_rt is
-    variable y : input_tar_rt;
+  function nullify(x: input_mdt_rt) return input_mdt_rt is
+    variable y : input_mdt_rt;
   begin
     y.ToA                      := nullify(x.ToA);
     y.station                  := nullify(x.station);
     y.chamber                  := nullify(x.chamber);
     y.tar                      := nullify(x.tar);
+    y.tdc                      := nullify(x.tdc);
     return y;
   end function nullify;
 
@@ -198,6 +211,59 @@ package body gldl_ult_tp_sim_pkg is
   end function nullify;
   function nullify(x: tar2hps_tb_avt) return tar2hps_tb_avt is
     variable y :  tar2hps_tb_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: pol2tar_tb_at) return pol2tar_tb_avt is
+    variable y :  pol2tar_tb_avt;
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: pol2tar_tb_at) return std_logic_vector is
+    variable msb : integer := x'length*42-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-42+1) := vectorify(x(i));
+      msb := msb - 42;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: pol2tar_tb_avt) return pol2tar_tb_at is
+    variable y :  pol2tar_tb_at;
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return pol2tar_tb_at is
+    variable y :  pol2tar_tb_at;
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-42+1));
+      msb := msb - 42;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: pol2tar_tb_at) return pol2tar_tb_at is
+    variable y :  pol2tar_tb_at;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: pol2tar_tb_avt) return pol2tar_tb_avt is
+    variable y :  pol2tar_tb_avt;
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

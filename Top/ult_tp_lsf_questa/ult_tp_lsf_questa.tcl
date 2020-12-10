@@ -43,7 +43,7 @@ source $PATH_REPO/Hog/Tcl/create_project.tcl
 set_property  ip_repo_paths  {../../lsf/src/hls_ip ../../upt/src/hls_ip ../../IP/lsf ../../IP/upt} [current_project]
 update_ip_catalog
 
-set_property top top_ult_tp [current_fileset]
+# set_property top top_ult_tp [current_fileset]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs synth_1]
 

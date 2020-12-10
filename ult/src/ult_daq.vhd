@@ -36,10 +36,10 @@ entity daq is
     ctrl              : in  DAQ_CTRL_t;
     mon               : out DAQ_MON_t;
 
-    i_inner_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0));
 end entity daq;
 
@@ -49,10 +49,10 @@ architecture behavioral of daq is
 
   signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
   signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
-  signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-  signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-  signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-  signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+  signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+  signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+  signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+  signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
 
 
   -- actual
@@ -80,15 +80,15 @@ architecture behavioral of daq is
   -- type trunk_t is array(stations) of daq_branches_t;
   -- signal trunk : trunk_t;
 
-  signal inner_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tdc_hits_v : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits_v : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits_v  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   
-  signal inner_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_INN-1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_MID-1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_at(c_HPS_NUM_MDT_CH_EXT-1 downto 0);
+  signal inner_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_INN-1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_at(c_HPS_MAX_HP_MID-1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_OUT-1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT-1 downto 0);
   signal daq_streams     : felix_stream_bus_at (c_NUM_DAQ_STREAMS-1 downto 0);
 
   -- function streamify (x: tdcpolmux2tar_rt;
@@ -123,7 +123,7 @@ begin
   --   gen_daq_inner : if   c_HPS_ENABLE_ST_INN = '1' generate
 
   --     u_daq_inner: entity daq_lib.daq_top
-  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_INN),
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_INN),
   --                          COUNTER_WIDTH => 32))
   --       port map (port_ir => inner_er.i, port_or =>  inner_er.o);
       
@@ -155,7 +155,7 @@ begin
       
   --   gen_daq_middle : if   c_HPS_ENABLE_ST_MID = '1' generate
   --     u_daq_middle: entity daq_lib.daq_top
-  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_MID),
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_MID),
   --                          COUNTER_WIDTH => 32))
   --       port map (port_ir => middle_er.i, port_or =>  middle_er.o);
       
@@ -181,13 +181,13 @@ begin
   --                   i_data => i_middle_tdc_hits(j),
   --                   o_data => middle_tdc_hits_v(j));
   --       middle_er.i.branches(j)(0) <= streamify(middle_tdc_hits(j), middle_tdc_hits_v(j));
-  --       daq_streams(c_HPS_NUM_MDT_CH_INN + j) <= outputify(middle_er.o.f2e_bus(j));
+  --       daq_streams(c_HPS_MAX_HP_INN + j) <= outputify(middle_er.o.f2e_bus(j));
   --     end generate gen_daq_conn_middle;
   --   end generate gen_daq_middle;
       
   --   gen_daq_outer : if   c_HPS_ENABLE_ST_OUT = '1' generate
   --     u_daq_outer: entity daq_lib.daq_top
-  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_OUT),
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_OUT),
   --                          COUNTER_WIDTH => 32))
   --       port map (port_ir => outer_er.i, port_or =>  outer_er.o);
       
@@ -213,14 +213,14 @@ begin
   --                   i_data => i_outer_tdc_hits(j),
   --                   o_data => outer_tdc_hits_v(j));
   --       outer_er.i.branches(j)(0) <= streamify(outer_tdc_hits(j), outer_tdc_hits_v(j));
-  --       daq_streams(c_HPS_NUM_MDT_CH_INN
-  --                   + c_HPS_NUM_MDT_CH_MID +j) <= outputify(outer_er.o.f2e_bus(j));
+  --       daq_streams(c_HPS_MAX_HP_INN
+  --                   + c_HPS_MAX_HP_MID +j) <= outputify(outer_er.o.f2e_bus(j));
   --     end generate gen_daq_conn_outer;
   --   end generate gen_daq_outer;
       
   --   gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
   --     u_daq_extra: entity daq_lib.daq_top
-  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_NUM_MDT_CH_EXT),
+  --       generic map (G => (BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_EXT),
   --                          COUNTER_WIDTH => 32))
   --       port map (port_ir => extra_er.i, port_or =>  extra_er.o);
       
@@ -246,9 +246,9 @@ begin
   --                   i_data => i_extra_tdc_hits(j),
   --                   o_data => extra_tdc_hits_v(j));
   --       extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
-  --       daq_streams(c_HPS_NUM_MDT_CH_INN
-  --                   + c_HPS_NUM_MDT_CH_MID
-  --                   + c_HPS_NUM_MDT_CH_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
+  --       daq_streams(c_HPS_MAX_HP_INN
+  --                   + c_HPS_MAX_HP_MID
+  --                   + c_HPS_MAX_HP_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
   --     end generate gen_daq_conn_extra;
   --   end generate gen_daq_extra;
       
@@ -260,16 +260,16 @@ begin
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
-        inner_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_INN-1 loop
+        inner_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
           tdc_hit_inner_sump(I) <= xor_reduce(i_inner_tdc_hits(I));
         end loop;
-        middle_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_MID-1 loop
+        middle_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
           tdc_hit_middle_sump(I) <= xor_reduce(i_middle_tdc_hits(I));
         end loop;
-        outer_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 loop
+        outer_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
           tdc_hit_outer_sump(I) <= xor_reduce(i_outer_tdc_hits(I));
         end loop;
-        extra_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 loop
+        extra_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
           tdc_hit_extra_sump(I) <= xor_reduce(i_extra_tdc_hits(I));
         end loop;
 

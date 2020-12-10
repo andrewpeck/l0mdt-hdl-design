@@ -42,10 +42,10 @@ entity hits_to_segments is
     mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mid_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_out_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_ext_tar_hits  : in tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
     i_inn_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
     i_mid_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -75,7 +75,7 @@ begin
       HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS    => 0,
-        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_INN
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
         clk                 => clock_and_control.clk,
@@ -100,7 +100,7 @@ begin
       HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS    => 1,
-        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_MID
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_MID
       )
       port map(
         clk                 => clock_and_control.clk,
@@ -125,7 +125,7 @@ begin
       HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS    => 2,
-        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_OUT
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_OUT
       )
       port map(
         clk                 => clock_and_control.clk,
@@ -150,7 +150,7 @@ begin
       HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS    => 3,
-        g_HPS_NUM_MDT_CH     => c_HPS_NUM_MDT_CH_EXT
+        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_EXT
       )
       port map(
         clk                 => clock_and_control.clk,
