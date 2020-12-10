@@ -63,8 +63,8 @@ architecture sim of ult_tb_reader_tar is
 
   type infifo_hit_mem_at is array (integer range <>) of tar2hps_tb_at;
 
-  signal mdt_tar_event_r  : input_tar_rt;
-  signal mdt_new_event    : input_tar_rt;
+  signal mdt_tar_event_r  : input_mdt_rt;
+  signal mdt_new_event    : input_mdt_rt;
 
   -- TDC Hits from Tar
   signal i_mdt_tar_inn_ar :  tar2hps_bus_at (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -93,7 +93,7 @@ begin
     variable row_counter          : integer := 0;
 
     -- variable tdc_time             : UNSIG_64;
-    variable v_mdt_event            : input_tar_rt;
+    variable v_mdt_event            : input_mdt_rt;
 
     variable next_event_time      : integer := 0;
     variable tb_time              : integer := 0;

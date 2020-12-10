@@ -12,15 +12,17 @@ __config__:
 
 HDL_Types:
 
-- input_tar:
+- input_mdt:
   - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 8]
   - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
   - tar         : [ type : tar2hps ]
+  - tdc         : [ type : tdcpolmux2tar ]
 
 - TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
 
 - tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps]
+- pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar]
 
 
 - input_slc_b:

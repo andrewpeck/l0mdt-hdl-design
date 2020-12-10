@@ -57,20 +57,20 @@ end entity ult_tb_reader_tdc;
 
 architecture sim of ult_tb_reader_tdc is
 
-  signal mdt_tdc_station  : tar2hps_tb_at;
+  signal mdt_tdc_station  : pol2tar_tb_at;
 
   type infifo_hit_counts is array (integer range <>) of integer;
 
-  type infifo_hit_mem_at is array (integer range <>) of tar2hps_tb_at;
+  type infifo_hit_mem_at is array (integer range <>) of pol2tar_tb_at;
 
-  signal mdt_tdc_event_r  : input_tar_rt;
-  signal mdt_new_event    : input_tar_rt;
+  signal mdt_tdc_event_r  : input_mdt_rt;
+  signal mdt_new_event    : input_mdt_rt;
 
   -- TDC Hits from Tar
-  signal i_mdt_tdc_inn_ar :  tar2hps_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mdt_tdc_mid_ar :  tar2hps_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_mdt_tdc_out_ar :  tar2hps_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_mdt_tdc_ext_ar :  tar2hps_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mdt_tdc_mid_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_mdt_tdc_out_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
   signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => nullify(mdt_tdc_station));
   signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => nullify(mdt_tdc_station));
@@ -93,7 +93,7 @@ begin
     variable row_counter          : integer := 0;
 
     -- variable tdc_time             : UNSIG_64;
-    variable v_mdt_event            : input_tar_rt;
+    variable v_mdt_event            : input_mdt_rt;
 
     variable next_event_time      : integer := 0;
     variable tb_time              : integer := 0;
@@ -201,22 +201,22 @@ begin
 
                 if to_integer(v_mdt_event.station) = 0 then
                   if c_HPS_ENABLED_HP_INN(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                    mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
                     v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 1 then
                   if c_HPS_ENABLED_HP_MID(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                    mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
                     v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 2 then
                   if c_HPS_ENABLED_HP_OUT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                    mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
                     v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 3 then
                   if c_HPS_ENABLED_HP_EXT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tar;
+                    mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
                     v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 else
