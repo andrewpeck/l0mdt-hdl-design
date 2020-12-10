@@ -1,6 +1,6 @@
 user_sim:lsf_hls:
-    extends: .user_sim
-    variables:
-      extends: .vars
-      PROJECT_NAME: lsf_hls
-      HOG_CHECK_PROJVER: 0
+  extends: .user_hls
+  variables:
+    extends: .vars
+    PROJECT_NAME: lsf_hls
+    HOG_CHECK_PROJVER: 0
