@@ -44,7 +44,7 @@
   stage: user_pre
   script:
     - cd l0mdt-hls/LSF/Run
-      source run.sh -f calc_LE_r_offset_barrel
+    - source run.sh -f calc_LE_r_offset_barrel
   allow_failure: true
 
 .sim_comp: &sim_comp
