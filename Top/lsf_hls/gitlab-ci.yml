@@ -1,6 +1,6 @@
-user_sim:lsf_hls:
+user_hls:lsf_hls:
   extends: .user_hls
   variables:
     extends: .vars
     PROJECT_NAME: lsf_hls
-    HOG_CHECK_PROJVER: 0
+    HOG_ONLY_SYNTH: 1
