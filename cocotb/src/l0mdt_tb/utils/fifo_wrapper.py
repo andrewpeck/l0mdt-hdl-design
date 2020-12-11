@@ -11,13 +11,13 @@ from l0mdt_tb.utils import utils
 
 class FifoWrapper:
     def __init__(
-        self, fifo_block, clock, block_name, io_enum, write_out=True, out_dir=""
+        self, fifo_block, clock, block_name, tv_format, io_port, write_out=True, out_dir=""
     ):
 
         self._fifo = fifo_block
         self._clock = clock
         self._block_name = block_name
-        self._io_enum = io_enum
+        self._io_port = io_port
         self._io_type = None
         self._is_active = False
         self._observed_words = []
@@ -43,7 +43,7 @@ class FifoWrapper:
                 out_path = Path("./")
 
             # construct full output filename
-            io_name = io_enum.name
+            io_name = f"{tv_format}_{io_port}"
             name_num = io_name.split("_")[-1]
             if name_num.isdigit():
                 name_num = f"{int(name_num):02}"
@@ -54,7 +54,7 @@ class FifoWrapper:
             self._output_directory = str(out_path)
             out_path = (
                 out_path
-                / f"{str(type(self).__name__.lower())}_{self.block_name}_{int(io_enum.value):02}_{io_name}.evt"
+                / f"{str(type(self).__name__.lower())}_{self.block_name}_{io_name}.evt"
             )
             self._output_filename = str(out_path)
 
@@ -62,6 +62,7 @@ class FifoWrapper:
                 self._output_filename_time = self._output_filename.replace(
                     ".evt", "_timing.txt"
                 )
+
 
     @property
     def fifo(self):
@@ -77,7 +78,7 @@ class FifoWrapper:
 
     @property
     def io_port_num(self):
-        return int(self._io_enum.value)
+        return int(self._io_port)
 
     @property
     def is_active(self):
@@ -120,18 +121,17 @@ class FifoWrapper:
     def store_word(self, transaction_tuple):
 
         transaction, time_ns = transaction_tuple
-        dword = utils.transaction_to_data_word(transaction)
-        dword.set_timestamp(time_ns, units="ns")
-        self._observed_words.append(dword)
+        #dword.set_timestamp(time_ns, units="ns")
+        self._observed_words.append(transaction)
 
-    def write_word(self, transaction_tuple):
-
+    def write_transaction(self, transaction_tuple):
         transaction, time_ns = transaction_tuple
-        word = utils.transaction_to_data_word(transaction)
-        word.set_timestamp(time_ns, units="ns")
-        wfmt = {True: "wb", False: "ab"}[self._first_write]
+        #word = utils.transaction_to_data_word(transaction)
+        #word.set_timestamp(time_ns, units="ns")
+        wfmt = {True: "w", False: "a"}[self._first_write]
         with open(self.output_filename, wfmt) as ofile:
-            word.write_testvec_fmt(ofile)
+            ofile.write(str(transaction))
+            #word.write_testvec_fmt(ofile)
 
         wfmt = {True: "w", False: "a"}[self._first_write]
         if self.write_out_time:
@@ -145,11 +145,11 @@ class FifoWrapper:
 
 class FifoDriver(FifoWrapper, Driver):
     def __init__(
-        self, fifo_block, clock, block_name, io_enum, write_out=True, out_dir=""
+        self, fifo_block, clock, block_name, tv_format, io_port, write_out=True, out_dir=""
     ):
 
         FifoWrapper.__init__(
-            self, fifo_block, clock, block_name, io_enum, write_out, out_dir
+            self, fifo_block, clock, block_name, tv_format, io_port, write_out, out_dir
         )
         Driver.__init__(self)
 
@@ -184,9 +184,7 @@ class FifoDriver(FifoWrapper, Driver):
             yield RisingEdge(self.clock)
 
         self.fifo.write_enable <= 1  # strobe the FIFO write enable signal
-        self.fifo.write_data <= int(
-            transaction
-        )  # write data to FIFO write_data register
+        self.fifo.write_data   <= transaction  # write data to FIFO write_data register
 
         # keep track of the simulation time (this time coincides with what appears in the waveforms)
         time = cocotb.utils.get_sim_time(units="ns")
@@ -198,7 +196,7 @@ class FifoDriver(FifoWrapper, Driver):
 
         # dump written words and times to output file for later analysis
         if self.write_out:
-            self.write_word((int(transaction), time))
+            self.write_transaction((transaction, time))
 
 
 class FifoMonitor(FifoWrapper, Monitor):
@@ -207,19 +205,20 @@ class FifoMonitor(FifoWrapper, Monitor):
         fifo_block,
         clock,
         block_name,
+        tv_format,
         io_enum,
         callbacks=[],
         write_out=True,
         out_dir="",
     ):
         FifoWrapper.__init__(
-            self, fifo_block, clock, block_name, io_enum, write_out, out_dir
+            self, fifo_block, clock, block_name, tv_format, io_enum, write_out, out_dir
         )
         Monitor.__init__(self)
 
         self.add_callback(self.store_word)
         if write_out:
-            self.add_callback(self.write_word)
+            self.add_callback(self.write_transaction)
         if callbacks:
             for cb in callbacks:
                 self.add_callback(cb)
@@ -231,7 +230,6 @@ class FifoMonitor(FifoWrapper, Monitor):
     def _monitor_recv(self):
 
         while True:
-
             # wait until rising edge of clock
             yield RisingEdge(self.clock)
 
@@ -252,6 +250,7 @@ class FifoMonitor(FifoWrapper, Monitor):
                 self._recv(
                     (transaction, time)
                 )  # store the FIFO data and time for use by registered callbacks
+
             else:
                 yield NextTimeStep()
                 self.fifo.read_enable <= 0

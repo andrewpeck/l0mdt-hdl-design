@@ -63,7 +63,7 @@ class BlockWrapper:
 
 
     def add_output_monitor(self, monitor, output_interface,IO, active=True):
-        io_num = IO.value
+        io_num = IO
         if io_num > self._n_output_ports[output_interface]:
             raise ValueError(
                 f'Provided output monitor "{monitor.name}" is registered for invalid IO port {io_num}, {self.name} block only has {self.n_output_ports} output ports'
@@ -89,12 +89,12 @@ class BlockWrapper:
 
     def sort_ports(self):
         for s in range(self.n_input_interfaces):
-            self._input_ports[s] = tuple(sorted(self._input_ports[s], key=lambda x: x[1].value))
+            self._input_ports[s] = tuple(sorted(self._input_ports[s], key=lambda x: x[1]))
         for s in range(self.n_output_interfaces):
-            self._output_ports[s] = tuple(sorted(self._output_ports[s], key=lambda x: x[1].value))
+            self._output_ports[s] = tuple(sorted(self._output_ports[s], key=lambda x: x[1]))
 
     def add_input_driver(self, driver, input_interface, IO, active=True):
-        io_num = IO.value
+        io_num = IO
         if io_num > self._n_input_ports[input_interface]:
             raise ValueError(
                 f'Provided input driver "{driver.name}" is registered for invalid IO port {io_num}, {self.name} block only has {self.n_input_ports} input ports'

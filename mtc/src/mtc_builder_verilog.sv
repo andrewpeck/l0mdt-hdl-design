@@ -22,7 +22,7 @@ module mtc_builder_verilog#(
 			    parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
 			    parameter TOTAL_PTCALC_BLKS=3,
 			    parameter MTC_PER_BCID = 3,
-	 		    parameter n_PRIMARY_MTC = 1
+	 		    parameter n_PRIMARY_MTC = 3
 		    )
    (
     input logic 		       clock,
@@ -137,7 +137,7 @@ module format_mtc_pkt #(
 	     mtc[MTC2SL_COMMON_LSB - 1 : MTC2SL_MDT_CHARGE_LSB]       = ptcalc[PTCALC2MTC_MDT_ETA_MSB : PTCALC2MTC_MDT_CHARGE_LSB];
 	     mtc[ MTC2SL_MDT_NSEGMENTS_MSB : MTC2SL_MDT_QUALITY_LSB]  = ptcalc[PTCALC2MTC_MDT_NSEGMENTS_MSB : PTCALC2MTC_MDT_QUALITY_LSB];
 
-	     if(ptcalc[PTCALC2MTC_MUID_LSB + SLC_MUID_SLID_LSB + SLC_MUID_SLID_LEN -1:PTCALC2MTC_MUID_LSB + SLC_MUID_SLID_LSB ] != 0) //FIND OUT BOARD ID MAPPING
+	     if(ptcalc[PTCALC2MTC_MUID_LSB + SLC_MUID_SLID_MSB : PTCALC2MTC_MUID_LSB + SLC_MUID_SLID_LSB ] != 0) //FIND OUT BOARD ID MAPPING
 	       mtc[MTC2SL_MDT_PROCFLAGS_MSB :MTC2SL_MDT_PROCFLAGS_LSB] = 3;
 	     //else if(ptcalc[PTCALC2MTC_MDT_PTTHRESH_MSB:PTCALC2MTC_MDT_PTTHRESH_LSB] != 0) //Pass
 	       else if(ptcalc[PTCALC2MTC_MDT_PT_MSB:PTCALC2MTC_MDT_PT_LSB] != 0) //Pass

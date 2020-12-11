@@ -78,5 +78,3 @@ begin
         p => dout);
 
 end architecture;
-
-

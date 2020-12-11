@@ -24,11 +24,16 @@ use shared_lib.common_constants_pkg.all;
 
 package detector_param_pkg is
 
+  constant MAX_NUM_CHAMBER_POS : integer := 8;
+
   -------------------------------------------------------------------------
   -- Time & cycles constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
+  
+  -- TAR PIPELINE
   constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
+  constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
   --
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
   --
@@ -74,7 +79,7 @@ package detector_param_pkg is
     -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  constant MAX_NUM_CHAMBER_POS : integer := 8;
+  
   type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;

@@ -20,10 +20,11 @@ use ieee.math_real.all;
 library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 package gtube2chamber_pkg is
   
-  type tubes_per_chamber_t is array (0 to 7) of integer;
+  type tubes_per_chamber_t is array (0 to MAX_NUM_CHAMBER_POS - 1) of integer;
   type tubes_per_chamber_station_t is array (1 to 16) of tubes_per_chamber_t;
   
   constant t2c_BI_A : tubes_per_chamber_station_t :=(

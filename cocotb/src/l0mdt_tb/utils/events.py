@@ -11,9 +11,10 @@ from TVReader import tv_reader_pkl
 from DataFormats.data_format import DataFormat
 from TVDataFormat.bit_stream import BitFieldWord
 from TVDataFormat.BX_data import BXData
-from prettytable import PrettyTable
+import pandas as pd
 from tabulate import tabulate
 from termcolor import colored, cprint
+
 
 # def raw_to_word(word, endian = "little"):
 #    fmt = {"little": "<?Q", "big": ">?Q"}[endian]
@@ -740,12 +741,12 @@ def load_events_from_file(
     return events
 
 
-def get_bitfield_element(DF_list, bitfieldname, candidate=0):
+def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
     bf_list = []
     for DF in DF_list:
-        bf_list.append(DF.getBitFieldWord(bitfieldname))
+        bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
         #bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
-#    print("KEY=",bitfieldname)
+        #    print("KEY=",bitfieldname)
 
     for i in range(len(bf_list)):
         for bf in bf_list[i]:
@@ -760,7 +761,7 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0):
 
 def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     path = Path(filename)
-    ok = path.exists() and path.is_file()    
+    ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
 
@@ -771,12 +772,14 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     RTL_DF_list = []
     RTL_BF_LIST = []
     for evt in range(e_idx+1):
-        RTL_DF = BXData()
+        RTL_DF = BXData(n_candidates)
+        #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
         if evt == e_idx:
             for i in range(n_candidates):
                 attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
                 attr_value_bitword.set_bit_value(expected_tv[i]) #(0xbabecafebabecafe) #expected_tv)
-                #print("RTL_BF_LIST*********** expected_tv = 0x%x"%(expected_tv[i]))
+                #print("n_candidates = ",n_candidates," i = ",i)
+                #print("RTL_BF_LIST***********= expected_tv = 0x%x"%(expected_tv[i]))
                 #RTL_BF_LIST = RTL_DF.DF_SL.getBitFieldWord(tvformat)
         RTL_DF_list.append(RTL_DF)
 
@@ -787,36 +790,31 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     #    print(SL1[0])
     ret_val = 1
 
-    #Color
-    R = "\033[0;31;40m" #RED
-    G = "\033[0;32;40m" # GREEN
-    Y = "\033[0;33;40m" # Yellow
-    B = "\033[0;34;40m" # Blue
-    N = "\033[0m" # Reset
 
+    this_candidate = 0
     for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
         local_sl1 = SL1.getBitFieldWord(tvformat)
         local_sl2 = RTL1.getBitFieldWord(tvformat)
+
+        #print("local_sl1 = ",local_sl1)
         for i in range(len(local_sl1)):
-            #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bit_value())
+            hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bit_value())
             #print("\n%s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
             results = local_sl1[i].compare_bitwordvalue(local_sl2[i])
- 
-            if results[0]:
-                cprint("The 2 BitFieldWords are identical ", "green")
-            else:
-                ret_val = 0
-                cprint("The 2 BitFieldWords differ", "red")
-                #print(results[1])
-                print(tabulate(results[1], results[2], tablefmt="psql"))
+        if results[0]:
+            cprint("The 2 BitFieldWords are identical ", "green")
+        else:
+            cprint("The 2 BitFieldWords differ", "red")
+            #print(results[1])
+            print(tabulate(results[1], results[2], tablefmt="psql"))
+            ret_val = 0
 
-            
     return ret_val
 
 
 def parse_file_for_testvectors(
-    filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False
+        filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
 ):
 
     path = Path(filename)
@@ -832,24 +830,48 @@ def parse_file_for_testvectors(
 
    # events = []
     l0ids_loaded = set()
-#    print("PARSING FOR TVFORMAT = ",tvformat)
+    #    print("PARSING FOR TVFORMAT = ",tvformat)
    # tv_reader_pkl.setup_debug_devel(10)
     events_list = tv_reader_pkl.read_TV(path)
-   # print(events_list[0][0])
 
    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
- #   print("VALUE for dataformat ", tvformat, " = ", DataFormat.get_attr_val(events_list[0][0],"BitFieldWord","HPS_LSF", 0))
+   #   print("VALUE for dataformat ", tvformat, " = ", DataFormat.get_attr_val(events_list[0][0],"BitFieldWord","HPS_LSF", 0))
 
     total_transactions =  n_to_load #len(events_list)
     tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
     #    tv_reader_pkl.dump_event(events_list[0])
     for ievent,DF in enumerate(events_list): #range(total_transactions):
-        for icand in range(n_ports):
-           #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,icand,total_transactions,tvformat))
-           tv[icand][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,icand)
-           #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[icand][ievent])
-           #tv[icand][i] = getattr(DF,tvformat)
-           #tv[icand][i] = DF.SLCPIPE_MTC
+        if ievent < total_transactions:
+            for my_port in range(n_ports):
+                if(station_ID == [""]):
+                    this_station_ID = ""
+                else:
+                    this_station_ID = station_ID[my_port]
+                #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                if(this_station_ID == ""):
+                    tv[my_port][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                else:
+                    tv[my_port][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,ievent,this_station_ID)
+                #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[my_port][ievent])
+                #tv[my_port][i] = getattr(DF,tvformat)
+                #tv[my_port][i] = DF.SLCPIPE_MTC
 
-           #tv[icand][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, icand)
+                #tv[my_port][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, my_port)
     return tv
+
+
+def modify_tv (tv, ii):
+    tv_out   = []
+
+    for io in range (len(tv)):
+        tv_port  = []
+        tv_index = 0
+        #print("modify_tv (tv,ii) =", tv , ii)
+        for i in range(len(tv[io])):
+            #print("modify_tv (io,i) = (",io,i,")")
+            tv_port.append(tv[io][i])
+            for j in range (ii - 1):
+                tv_index             = tv_index + 1
+                tv_port.append(0)
+        tv_out.append(tv_port)
+    return tv_out

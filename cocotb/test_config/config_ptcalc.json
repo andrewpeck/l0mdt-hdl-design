@@ -1,0 +1,41 @@
+{
+    "testbench_config": {
+        "test_name": "ptcalc",
+        "input_args": {
+            "n_events": 2,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+	    "ptcalc_ii": 24,
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "ptcalc",
+            "test_location": "src/l0mdt_tb/testbench/ptcalc/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "/home/psundara/xilinx/compiled_libraries/v2019.1/"
+        },
+        "testvectors": {
+            "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",
+            "testvector_file": "B.pkl",
+            "inputs": [
+                {
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 3,
+		    "station_ID":["INN","MID","OUT"]
+                },
+                {
+                    "tv_format": "PL2PTCALC",
+                    "ports": 1,
+		    "station_ID":[""]
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "PTCALC2MTC_LSF",
+                    "ports": 1
+                }
+            ]
+        }
+    }
+}
