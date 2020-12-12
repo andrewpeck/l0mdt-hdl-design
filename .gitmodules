@@ -29,9 +29,6 @@
 [submodule "c2c/src/bd"]
 	path = c2c/src/bd
 	url = https://github.com/dgastler/BU_BUILD
-[submodule "tools/simCheck"]
-	path = tools/simCheck
-	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
 [submodule "tools/gldl-scripts"]
 	path = tools/gldl-scripts
 	url = ../../gloustau/l0mdt-scripts.git
