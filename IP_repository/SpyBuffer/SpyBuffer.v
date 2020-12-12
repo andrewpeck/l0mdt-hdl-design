@@ -42,8 +42,9 @@ module SpyBuffer #(
     // Support for clock domain crossings will need to be added.
 
     // Read- and write-side resets. It may not be necessary to have two.
-    input wire rreset,
-    input wire wreset,
+    // These are really "resetbar" (aka "rstb")-- they reset on the negative edge.
+    input wire rresetbar,
+    input wire wresetbar,
 
     // Inputs to the flow control FIFO.
     input wire [DATA_WIDTH:0] write_data,
@@ -119,7 +120,7 @@ module SpyBuffer #(
         .MEMWIDTH(SPY_MEM_WIDTH)
     ) playbackControl (
         .clock(wclock),
-        .reset(wreset),
+        .resetbar(wresetbar),
         .full(almost_full),
         .playback(playback),
         .playback_enable(playback_enable),
@@ -155,7 +156,7 @@ module SpyBuffer #(
             // In passthrough mode, the enables are used as valid flags.
             assign empty = !fc_write_enable;
             assign almost_full = 0;
-            assign read_data = fc_write_data;
+            assign read_data = (fc_write_enable == 1'b1)? fc_write_data : 0;
         end else begin
             // Flow control buffer, provided by an aFifo. This is a block I took
             // from the HCCStar (ASIC designed for ITK strips). It could be replaced
@@ -172,8 +173,8 @@ module SpyBuffer #(
                 .walmostfull(almost_full),
                 .wfull(),
                 .ralmostempty(),
-                .wrst_n(wreset),
-                .rrst_n(rreset),
+                .wrst_n(wresetbar),
+                .rrst_n(rresetbar),
                 .winc(fc_write_enable),
                 .rinc(read_enable)
             );
@@ -197,7 +198,7 @@ module SpyBuffer #(
         .METAWIDTH(EL_MEM_WIDTH)
     ) spy (
         .clock(wclock),
-        .reset(wreset),
+        .resetbar(wresetbar),
         .freeze(freeze),
         .data_in(sb_write_data),
         .write_enable_in(sb_write_enable),

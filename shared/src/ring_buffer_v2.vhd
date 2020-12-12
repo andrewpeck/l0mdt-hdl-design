@@ -19,7 +19,6 @@ use ieee.std_logic_misc.all;
 
 entity ring_buffer_v2 is
   generic(
-    g_SIMULATION        : std_logic := '0';
     g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline
     g_FIFO_TYPE         : string := "normal"; -- normal , read_ahead
     g_MEMORY_TYPE       : string := "auto"; -- auto, ultra, block, distributed
@@ -29,8 +28,6 @@ entity ring_buffer_v2 is
 
     g_RAM_WIDTH         : natural := 64;
     g_RAM_DEPTH         : integer := 9600     -- maximum depth of the ram, also the maximum delay
-
-    
   );
   port (
     clk               : in std_logic;
@@ -66,8 +63,6 @@ architecture beh of ring_buffer_v2 is
   --------------------------------
   -- signals
   --------------------------------
-  signal int_wr_data         : std_logic_vector(g_RAM_WIDTH - 1 downto 0);
-
   signal case_options : std_logic_vector(1 downto 0);
 
   signal wr_index : integer range 0 to g_RAM_DEPTH -1 := 0;
@@ -121,14 +116,6 @@ architecture beh of ring_buffer_v2 is
 begin
 
   o_used <= used_data;
-
-  SIM_OFF : if g_SIMULATION = '0' generate
-    int_wr_data <= i_wr_data;
-  end generate;
-
-  SIM_OB : if g_SIMULATION = '1' generate
-    int_wr_data <= transport i_wr_data after 1 ns;
-  end generate;
 
 
   FIFO_GEN : if g_LOGIC_TYPE = "fifo" generate

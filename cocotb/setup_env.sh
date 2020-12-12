@@ -7,11 +7,11 @@ TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
 TV_tag="master"
 
 dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
-dataformats_tag= "AT/devel1h"
+#dataformats_tag= "AT/devel1h"
 
 function print_usage {
     echo "---------------------------------------------------------"
-    echo " setup for cocotb-based testbench(es) are for TP-FW"
+    echo " setup for cocotb-based testbench(es) are for L0MDT-FW"
     echo ""
     echo " This script initializes a python virtual environment"
     echo " in which to run the testbench infrastructure."
@@ -26,6 +26,9 @@ function print_usage {
     echo " installed in the virtual environment"
     echo ""
     echo " Options:"
+    echo "  -c|--componentslibs   path to directory containing the compiled libaries"
+    echo "  -t|--testvectors      path to directory containing the testvectors"
+    echo "  -h|--help             print this help message"
     echo "  --skip-deps     do not install any of the external (to TVMaker) packages"
     echo "  -h|--help       print this help message"
     echo ""
@@ -96,12 +99,31 @@ function install_tv {
     echo "Installing TV environment"
     python3 -m pip install pandas
     python3 -m pip install tabulate
-    python3 -m pip install termcolor    
+    python3 -m pip install termcolor
     python3 -m pip install -e ./../dataformats
     python3 -m pip install -e ../tv/TVReader
     python3 -m pip install -e ../tv/TVMaker
     python3 -m pip install -e ../tv/TVDataFormat
     python3 -m pip install -e ../tv
+    return 0
+}
+
+
+function update_makefile_questa() {
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VHDL_SOURCES),) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            := $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
+
+
+    sed -i '/\\t\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" >> $@/ a endif'  $(find ./env -name Makefile.questa)
+
+
+    sed -i '/vcom -work / i \\tfor SOURCES_VAR in $(VHDL_LIB); do \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\techo \"vlib $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\techo \"vmap $$SOURCES_VAR $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work / i \\t$(foreach SOURCES_VAR, $(VHDL_LIB), \\'  $(find ./env -name Makefile.questa)
+    sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
     return 0
 }
 
@@ -150,6 +172,22 @@ function main {
 	    --skip-deps)
                 skip_deps=1
                 ;;
+           -c)
+                export COMPONENTS_LIB_DIR=$2
+                shift
+                ;;
+            --componentslibs)
+                export COMPONENTS_LIB_DIR=$2
+                shift
+                ;;
+            -t)
+                export L0MDT_TESTVECTOR_DIR=$2
+                shift
+                ;;
+            --testvectors)
+                export L0MDT_TESTVECTOR_DIR=$2
+                shift
+                ;;
             *)
                 echo "ERROR Invalid argument: $1"
                 return 1
@@ -171,7 +209,7 @@ function main {
 #            return 1
 #        fi
 #    fi
-  
+
     ##
     ## setup
     ##
@@ -186,7 +224,7 @@ function main {
 
     else
 	echo "Setting up Python environment"
-	 
+
         python3 -m venv ${venv_dir_name}
         if [ ! -d ${venv_dir_name} ]; then
             echo "ERROR Problem setting up virtual environment \"${venv_dir_name}\""
@@ -208,6 +246,11 @@ function main {
             if ! install_tv; then
                 return 1
             fi
+
+	    echo "Updating cocotb Makefile.questa to support mixed language compilation"
+	    if ! update_makefile_questa; then
+		return 1
+	    fi
             echo "Installation successful"
 
 
@@ -217,7 +260,7 @@ function main {
             #if ! pre_commit_setup; then
             #   return 1
             #fi
-	  
+
 
 
             echo "Installation successful"

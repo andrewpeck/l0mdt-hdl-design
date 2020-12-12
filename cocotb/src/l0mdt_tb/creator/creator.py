@@ -153,14 +153,13 @@ def create_test_utils_file(test_name):
     return True, None
 
 
-def create_test_ports_file(test_name, n_inputs, n_outputs):
+def create_test_ports_file(test_name, n_inputs, n_outputs, input_ports, output_ports):
 
     p_test_dir = test_dir_from_test_name(test_name)
     p_ports_file = p_test_dir / f"{test_name}_ports.py"
     class_name = test_class_name(test_name)
 
-    lines = []
-
+    lines         = []
     autogen_lines = autogen_string(test_name)
     lines += autogen_lines
 
@@ -173,13 +172,49 @@ def create_test_ports_file(test_name, n_inputs, n_outputs):
     lines.append("\tdef __init__(self):")
     lines.append("\t\tsuper().__init__()")
     lines.append("")
-    lines.append("\tclass Inputs(enum.Enum):")
-    for i in range(n_inputs):
-        lines.append(f"\t\tInput_{i} = {i}")
+
     lines.append("")
-    lines.append("\tclass Outputs(enum.Enum):")
-    for i in range(n_outputs):
-        lines.append(f"\t\tOutput_{i} = {i}")
+    lines.append(f"\tn_input_interfaces = {n_inputs}")
+    lines.append("")
+
+    lines.append(f"\tn_output_interfaces = {n_outputs}")
+    lines.append("")
+
+
+    lines.append("\tdef get_input_interface_ports(interface):")
+    lines.append(f"\t\tinput_ports = {input_ports}")
+    lines.append(f"\t\treturn input_ports[interface]")
+    lines.append("")
+
+    lines.append("\tdef get_all_input_interface_ports():")
+    lines.append(f"\t\tinput_ports = {input_ports}")
+    lines.append(f"\t\treturn input_ports")
+    lines.append("")
+
+    lines.append("\tdef get_output_interface_ports(interface):")
+    lines.append(f"\t\toutput_ports = {output_ports}")
+    lines.append(f"\t\treturn output_ports[interface]")
+    lines.append("")
+
+    lines.append("\tdef get_all_output_interface_ports():")
+    lines.append(f"\t\toutput_ports = {output_ports}")
+    lines.append(f"\t\treturn output_ports")
+    lines.append("")
+
+    lines.append("\tdef n_input_ports(self):")
+    lines.append(f"\t\tinput_ports = 0")
+    lines.append(f"\t\tfor i in range(self.n_input_interfaces):")
+    lines.append(f"\t\t\tinput_ports = input_ports + self.get_input_interface_ports(i)")
+    lines.append(f"\t\treturn input_ports")
+
+    lines.append("\tdef n_output_ports(self):")
+    lines.append(f"\t\toutput_ports = 0")
+    lines.append(f"\t\tfor i in range(self.n_output_interfaces):")
+    lines.append(f"\t\t\toutput_ports = output_ports + self.n_output_interfaces")
+    lines.append(f"\t\treturn output_ports")
+
+
+
 
     with open(str(p_ports_file), "w") as ofile:
         for line in lines:
@@ -259,7 +294,16 @@ def create_test_makefile(test_name):
     return True, None
 
 
-def create_test_toplevel(test_name, n_inputs, n_outputs):
+def create_test_toplevel(test_name, n_inputs, n_outputs, input_ports, output_ports):
+
+    total_inputs  = 0;
+    total_outputs = 0;
+
+    for i in range(n_inputs):
+        total_inputs = input_ports[i] + total_inputs
+
+    for i in range(n_outputs):
+        total_outputs = output_ports[i] + total_outputs
 
     p_test_dir = test_dir_from_test_name(test_name)
     p_toplevel_file = p_test_dir / "test" / f"TopLevel_{test_name}.v"
@@ -283,8 +327,8 @@ def create_test_toplevel(test_name, n_inputs, n_outputs):
                 new_line = skeleton_line.replace("CREATORTESTNAME", test_name).replace(
                     "CREATORCLASSNAME", class_name
                 )
-                new_line = new_line.replace("CREATORNINPUTS", f"{n_inputs}").replace(
-                    "CREATORNOUTPUTS", f"{n_outputs}"
+                new_line = new_line.replace("CREATORNINPUTS", f"{total_inputs}").replace(
+                    "CREATORNOUTPUTS", f"{total_outputs}"
                 )
                 ofile.write(new_line)
     file_ok = p_toplevel_file.exists() and p_toplevel_file.is_file()
@@ -331,22 +375,22 @@ def create_test_module(test_name, do_software_block=False):
     return True, None
 
 
-def create_test_configuration(test_name, n_inputs, n_outputs):
+def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, output_ports):
 
-    p_tp_fw = utils.tp_fw_path()
-#    p_config = p_tp_fw / "tb" / "test_config"
-    p_config = p_tp_fw / "cocotb" / "test_config"
+    p_tp_fw   = utils.tp_fw_path()
+    p_config  = p_tp_fw / "cocotb" / "test_config"
 
-    p_test_dir = test_dir_from_test_name(test_name)
+    p_test_dir  = f"src/l0mdt_tb/testbench/{str(test_name)}"
 
     ##
     ## input_args
     ##
     config_input_args = {
-        "n_events": 5,
+        "n_events": 2,
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",
+        "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
     }
 
     ##
@@ -356,7 +400,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
         "output_directory_name": test_name,
         "test_location": f"{str(p_test_dir)}/test",
         "expected_is_observed": False,
-        "components_lib_dir": "/home/dantrim/work/tdaq-htt-firmware/priya_stuff/xilinx/compiled_libraries/v2019.1/",
+        "components_lib_dir": "set_COMPONENTS_LIB_DIR_or_update_location_of_xilinx_compiled_library",
     }
 
     ##
@@ -364,15 +408,18 @@ def create_test_configuration(test_name, n_inputs, n_outputs):
     ##
     input_list = []
     for i in range(n_inputs):
-        input_list.append({f"{i}": f"INPUT_FILENAME_{i}.evt"})
+        local_port = {f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":input_ports[i]}
+
+        input_list.append(local_port)
     output_list = []
     for i in range(n_outputs):
-        output_list.append({f"{i}": f"OUTPUT_FILENAME_{i}.evt"})
+        output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":output_ports[i]})
 
     config_testvectors = {
-        "testvector_dir": "/home/dantrim/work/tdaq-htt-firmware/testvecs/20200410/",
-        "input": input_list,
-        "output": output_list,
+        "testvector_dir": "set_L0MDT_TESTVECTOR_DIR_or_update_json_file_with_testvector_directory",
+        "testvector_file": "TV.pkl",
+        "inputs": input_list,
+        "outputs": output_list,
     }
 
     ##

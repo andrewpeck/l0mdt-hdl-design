@@ -15,7 +15,7 @@
         },
         "testvectors": {
             "testvector_dir": "/home/psundara/L0MDT/psundara/l0mdt-hdl-design/tv/TVOutputs/TV_RAND_1624ce56_2020-09-17_v01",
-	    "testvector_file": "B_A_03.pkl",
+	    "testvector_file": "B.pkl",
 	    "inputs": [
 		{
 		    "tv_format": "PL2MTC",

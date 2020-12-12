@@ -3,12 +3,12 @@
 //--  Priya Sundararajan
 //--  priya.sundararajan@cern.ch
 //--------------------------------------------------------------------------------
-//--  Project: ATLAS L0MDT Trigger 
+//--  Project: ATLAS L0MDT Trigger
 //--  Description:
 //--
 //--------------------------------------------------------------------------------
 //--  Revisions:
-//--      
+//--
 //--------------------------------------------------------------------------------
 
 
@@ -80,16 +80,17 @@
 
 
 
-  
+
     //
     // Here place the DUT block(s)
     //
-   
+
     //Verilog Model
    mtc_builder_verilog#(
 		   .PTCALC_WIDTH(PTCALC_LEN),
 		    .SLCPIPELINE_WIDTH(SLCPIPELINE_WIDTH),
-		    .TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS)
+		    .TOTAL_PTCALC_BLKS(TOTAL_PTCALC_BLKS),
+        .n_PRIMARY_MTC(3)
 		    )
    mtc_builder_inst(
     		    .clock(clock),
@@ -109,7 +110,7 @@
    //VHDL Wrapper
    mtc_builder mtc_builer_inst(
 			       .clock_and_control(),
-			       .ttc_commands(),     
+			       .ttc_commands(),
 			       .ctrl(),
 			       .mon(),
 			       .i_ptcalc(),

@@ -21,7 +21,7 @@ module SpyMemory #(
     parameter DATAWIDTH=64
 ) (
     input wire clock,
-    input wire reset,
+    input wire resetbar,
 
     // Write enable and write data.
     input wire write_enable,
@@ -59,7 +59,7 @@ module SpyMemory #(
 
     // Handle writes to memory.
     always @(posedge clock) begin
-        if (!reset) begin
+        if (!resetbar) begin
             wptr <= 0;
         end else begin
             if (write_enable) begin
@@ -75,7 +75,7 @@ module SpyMemory #(
     // There's a race condition here if wptr = read_addr. I think it's
     // okay if we require that never happen.
     always @(posedge clock) begin
-        if (!reset) begin
+        if (!resetbar) begin
             read_data <= 0;
         end else begin
             if (read_enable) begin

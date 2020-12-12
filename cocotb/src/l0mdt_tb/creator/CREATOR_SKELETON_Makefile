@@ -23,18 +23,38 @@ MODULE=$(TESTBENCH_TEST_MODULE)
 SIM ?= questa
 
 # Location of HDL source files
-SRCDIR = $(PWD)/../../../../../../src
-SBDIR = $(SRCDIR)/SpyBuffer
+SRCDIR = $(PWD)/../../../../../../
+SBDIR = $(SRCDIR)/IP_repository/SpyBuffer
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
+DFDIR     = $(SRCDIR)/dataformats
+MTCDIR    = $(SRCDIR)/mtc/src
+LSFDIR    = $(SRCDIR)/lsf/src
+CSFDIR    = $(SRCDIR)/csf/src
+MPTDIR    = $(SRCDIR)/ptc_mpi/src
+HPSDIR    = $(SRCDIR)/hps/src
+HPDIR     = $(SRCDIR)/hp/src
+HEGDIR    = $(SRCDIR)/heg/src
+MPLDIR    = $(SRCDIR)/mpl/src
+SLDIR     = $(SRCDIR)/sl/src
+TARDIR    = $(SRCDIR)/tar/src
+TDCDIR    = $(SRCDIR)/tdc/src
+UCMDIR    = $(SRCDIR)/ucm/src
+UCMHPSDIR = $(SRCDIR)/ucm_hps/src
+ULTDIR    = $(SRCDIR)/ult/src
+UPTDIR    = $(SRCDIR)/upt/src
+SHAREDDIR = $(SRCDIR)/shared
+
 
 # Verilog source files
 VERILOG_SOURCES = \
+    $(DFDIR)/l0mdt_buses_constants.svh \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v \
     $(SBDIR)/SpyBuffer.v \
     $(SBDIR)/SpyController.v \
     $(SBDIR)/SpyMemory.v \
+    $(SBDIR)/SpyPlayback.v \
     $(SBDIR)/aFifo/aFifo.v \
     $(SBDIR)/aFifo/fifomem.v \
     $(SBDIR)/aFifo/rptr_empty.v \
@@ -45,9 +65,20 @@ VERILOG_SOURCES = \
 # VHDL source files
 VHDL_SOURCES =
 
+VHDL_SOURCES_shared_lib = \
+	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
+	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
+	$(DFDIR)/l0mdt_constants_pkg.vhd \
+	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
+	$(SHAREDDIR)/types/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/common_types_pkg.vhd \
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd
+
+
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)
-VSIM_ARGS  += -debugDB -voptargs="+acc"
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver
+VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 
 ##############################################################################
 #

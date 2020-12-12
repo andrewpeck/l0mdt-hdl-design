@@ -74,16 +74,12 @@ end generate;
 RING : if g_PIPELINE_TYPE = "ring_buffer" generate
   ring_mem : entity shared_lib.ring_buffer_v2
     generic map (
-      -- pragma  translate_off
-      g_SIMULATION => '1',
-      -- pragma  translate_on
       g_LOGIC_TYPE    => "pipeline",
       g_MEMORY_TYPE   => "block",
       -- g_PIPELINE_IN_REGS => 1,
       -- g_PIPELINE_OUT_REGS => 1,
       g_RAM_WIDTH     => g_PIPELINE_WIDTH,
-      g_RAM_DEPTH     => g_DELAY_CYCLES + 1
-
+      g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
     )
     port map (
       clk           => clk,

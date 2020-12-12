@@ -26,14 +26,6 @@ def run(config):
         print(f"Cannot run test: {err}")
         sys.exit(1)
 
-    ##
-    ## update the makefile
-    ##
-    updated_ok, err = simulator_support.update_questa_makefile()
-    if not updated_ok:
-        print(
-            f"WARNING Could not update QuestaSim makefile used by CocoTB, will use default:\n -> {err}"
-        )
 
     run_config = config_data["run_config"]
     test_name = config_data["test_name"]
@@ -60,7 +52,9 @@ def run(config):
 
     makefile = "Makefile"
     sim_build_out = f"{relative_output_path}/test_output/{output_dir_name}"
-    cmd = f"SIM_BUILD={sim_build_out} TESTBENCH_TOPLEVEL=TopLevel_{test_name} TESTBENCH_TEST_MODULE=test_{test_name}"  # WAVES=1 make -f {makefile}"
+    cocotb_results_file =f"{relative_output_path}/test_output/{output_dir_name}/{test_name}_results.xml"
+    cmd = f"SIM_BUILD={sim_build_out} TESTBENCH_TOPLEVEL=TopLevel_{test_name} TESTBENCH_TEST_MODULE=test_{test_name} COCOTB_RESULTS_FILE={cocotb_results_file}"  # WAVES=1 make -f {makefile}"
+
     for rc, rc_val in run_config.items():
         if rc in ["output_directory", "test_location"]:
             continue
