@@ -106,6 +106,9 @@ begin
 
     rb : entity shared_lib.ring_buffer_v2
     generic map (
+      -- pragma translate_off
+      g_SIMULATION => '1',
+      -- pragma translate_off
       g_LOGIC_TYPE    => "fifo",
       g_FIFO_TYPE     => "read_ahead",
       g_MEMORY_TYPE   => "distributed",
