@@ -35,7 +35,7 @@
 
 [submodule "tools/simComp"]
 	path = tools/simComp
-	url = https://gitlab.cern.ch/gloustau/l0mdt-sim-comp.git
+	url = ../../gloustau/l0mdt-sim-comp.git
 [submodule "tools/simCheck"]
 	path = tools/simCheck
-	url = https://gitlab.cern.ch/umass-l0mdt/software/l0mdt-ov-analysis.git
+	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
