@@ -108,7 +108,7 @@ begin
     generic map (
       -- pragma translate_off
       g_SIMULATION => '1',
-      -- pragma translate_off
+      -- pragma translate_on
       g_LOGIC_TYPE    => "fifo",
       g_FIFO_TYPE     => "read_ahead",
       g_MEMORY_TYPE   => "distributed",
