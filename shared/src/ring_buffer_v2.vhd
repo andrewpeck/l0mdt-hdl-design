@@ -86,10 +86,6 @@ architecture beh of ring_buffer_v2 is
   ) return integer is
     variable o_rd_index : integer := 0;
   begin
-
-    int_wr_data <= transport i_wr_data after 1 ns;
-
-
     if g_LOGIC_TYPE = "fifo" then
       if read_index < g_RAM_DEPTH - 1 then
         o_rd_index := read_index + 1;
@@ -121,6 +117,12 @@ architecture beh of ring_buffer_v2 is
   end function;
 
 begin
+
+  if g_SIMULATION = '0' then
+    int_wr_data <= i_wr_data;
+  else
+    int_wr_data <= transport i_wr_data after 1 ns;
+  end if;
 
   o_used <= used_data;
 
