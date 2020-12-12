@@ -1,0 +1,129 @@
+__config__:
+    basic_convert_functions : off
+    packages:
+      - ieee: [std_logic_1164, numeric_std]
+      - shared_lib:
+        - common_ieee_pkg
+        - l0mdt_constants_pkg
+        - l0mdt_dataformats_pkg
+        - common_constants_pkg
+
+HDL_Types:
+
+#############################################################
+# BASIC TYPES
+#############################################################
+
+- bcid_t : [type: unsigned, length: 12]
+
+- evid_t : [type: unsigned, length: 32]
+
+- orid_t : [type: unsigned, length: 32]
+
+- integer_bus_at: [array: open, type: integer]
+
+
+#############################################################
+# L0MDT CONTROL TYPES
+#############################################################
+
+- l0mdt_control_rt:
+  - clk       : [type: logic]
+  - rst       : [type: logic]
+  - bx        : [type: logic]
+
+- l0mdt_ttc_rt:
+  - bcr       : [type: logic]
+  - ocr       : [type: logic]
+  - ecr       : [type: logic]
+  - l0a       : [type: logic]
+  - l1a       : [type: logic]
+  - bcid      : [type: bcid_t]
+  - evid      : [type: evid_t]
+  - orid      : [type: orid_t]
+
+#############################################################
+# INTERFACES TYPES
+#############################################################
+
+# -----------------------------------------------------------
+#       Sector Logic Rx interface ouytput signal types
+# -----------------------------------------------------------
+
+- slc_rx_bus_at: [array: open , type: slc_rx_rt]
+- slc_rx_bus_art: [array: open , type: slc_rx_rt]
+- slc_rx_bus_avt: [array: open , type: slc_rx_vt]
+  
+- slc_endcap_bus_at: [array: open , type: slc_endcap_rt]
+- slc_endcap_bus_art: [array: open , type: slc_endcap_rt]
+- slc_endcap_bus_avt: [array: open , type: slc_endcap_vt]
+
+
+# -----------------------------------------------------------
+#   MDT tdc, polmux & TAR
+# -----------------------------------------------------------
+
+- mdt_polmux_bus_art: [array: open, type: tdcpolmux2tar_rt]
+- mdt_polmux_bus_avt: [array: open, type: tdcpolmux2tar_vt]
+
+- tar2hps_bus_at: [array: open , type: tar2hps_rt]
+- tar2hps_bus_avt: [array: open , type: tar2hps_vt]
+
+#############################################################
+# INTERBLOCK TYPES
+#############################################################
+
+# -----------------------------------------------------------
+#       UCM : Muon candidate manager output signal types
+# -----------------------------------------------------------
+
+- ucm2hps_bus_at : [array: open , type: ucm2hps_rt]
+- ucm2hps_bus_art : [array: open , type: ucm2hps_rt]
+- ucm2hps_bus_avt : [array: open , type: ucm2hps_vt]
+
+- heg2sfslc_bus_at : [ array : open , type : heg2sfslc_rt]
+- heg2sfhit_bus_at : [ array : open , type : heg2sfhit_rt]
+
+# -----------------------------------------------------------
+#       HEG 2 SF
+# -----------------------------------------------------------
+
+- sf2pt_bus_at: [ array: open , type : sf2ptcalc_rt]
+
+# -----------------------------------------------------------
+# slc ucm pipeline
+# -----------------------------------------------------------
+
+- ucm2pl_bus_at: [array: open , type: ucm2pl_rt]
+- ucm2pl_bus_art: [array: open , type: ucm2pl_rt]
+- ucm2pl_bus_avt: [array: open , type: ucm2pl_vt]
+
+- pl2pt_bus_at: [array: open , type: pl2ptcalc_rt]
+
+- pl2mtc_bus_at: [array: open , type: pl2mtc_rt]
+
+# -----------------------------------------------------------
+# TF 2 MTC
+# -----------------------------------------------------------
+
+- tf2mtc_bus_at: [array: open , type: ptcalc2mtc_rt]
+
+# -----------------------------------------------------------
+# MTC out
+# -----------------------------------------------------------
+
+- mtc_out_bus_at: [array: open , type: mtc2sl_rt]
+
+- mtc2nsp_bus_at: [array: open , type: mtc2sl_rt]
+
+# -----------------------------------------------------------
+# DAQ out
+# -----------------------------------------------------------
+
+- felix_data_t: [type: logic, length: 66]
+
+- felix_stream_rt:
+    - valid: [type: logic]
+    - data: [type: felix_data_t]
+
+- felix_stream_bus_at : [array: open , type: felix_stream_rt]

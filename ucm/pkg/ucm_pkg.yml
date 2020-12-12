@@ -1,0 +1,67 @@
+__config__:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std]
+    - shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+      - l0mdt_dataformats_pkg
+      - common_constants_pkg
+      - common_types_pkg
+
+HDL_Types:
+
+- UCM_INPUT_PL_LATENCY  : [ qualifier: constant , type: integer , value: 2 ]
+- UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
+
+- SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
+
+- ucm_prepro2ctrl_rt:
+  - data_valid  : [type: logic]
+
+- ucm_prepro2ctrl_vt: [type: logic, length: ucm_prepro2ctrl_rt]
+- ucm_prepro2ctrl_rvt: [type: logic, length: ucm_prepro2ctrl_rt]
+    
+- ucm_prepro2ctrl_bus_art : [array: open , type: ucm_prepro2ctrl_rt]
+- ucm_prepro2ctrl_bus_at : [array: open , type: ucm_prepro2ctrl_rt]
+
+- ucm_prepro2ctrl_bus_avt : [array: open , type: ucm_prepro2ctrl_vt]
+
+- chamb_ieta_rpc_t : [type : unsigned , length : 4]
+
+- chamb_ieta_rpc_bus_at : [array : 4 , type : chamb_ieta_rpc_t]
+
+- ucm_cde_rt:
+  - muid        : [type : slc_muid_rt]
+  - mdtid       : [type : vec_mdtid_rt]
+  - chamb_ieta  : [type : chamb_ieta_rpc_bus_at]
+  - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
+  - data_valid  : [type : logic]
+
+- ucm_cde_vt: [type: logic, length: ucm_cde_rt]
+- ucm_cde_rvt: [type: logic, length: ucm_cde_rt]
+    
+- ucm_cde_bus_at : [array: open , type: ucm_cde_rt]
+- ucm_cde_bus_avt : [array: open , type: ucm_cde_vt]
+
+- ucm_csw_ch_control_rt:
+  - data_present: [ type: logic ]
+  - addr_orig:    [ type: logic, length: 4]
+
+- ucm_csw_control_art: [array: open , type: ucm_csw_ch_control_rt]
+- ucm_csw_control_at: [array: open , type: ucm_csw_ch_control_rt]
+
+- ucm_pam_ch_control_rt:
+  - data_present: [ type: logic]
+  - addr_orig:    [ type: logic, length: 4]
+
+- ucm_pam_control_art: [ array: open, type: ucm_pam_ch_control_rt]
+- ucm_pam_control_at: [ array: open, type: ucm_pam_ch_control_rt]
+
+- ucm_proc_info_ch_rt:
+  - ch :        [ type: logic , length: 4 ]
+  - processed:  [ type: logic]
+
+- ucm_proc_info_art: [array: open , type: ucm_proc_info_ch_rt]
+- ucm_proc_info_at: [array: open , type: ucm_proc_info_ch_rt]

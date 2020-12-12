@@ -183,7 +183,7 @@ architecture beh of ucm_ctrl_main is
 begin
   
   pre_op: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    i_data_ar(sl_i) <= structify(i_data(sl_i));
+    i_data_ar(sl_i) <= structify(i_data(sl_i), i_data_ar(sl_i));
     input_Valids(sl_i) <= i_data_ar(sl_i).data_valid;
   end generate;
 

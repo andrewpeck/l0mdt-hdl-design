@@ -131,7 +131,7 @@ begin
     o_data      => data_v
   );
 
-  chamber_ieta_r <= structify(data_v).chamb_ieta;
+  chamber_ieta_r <= structify(data_v, data_r).chamb_ieta;
 
   PL : entity shared_lib.std_pipeline
   generic map(
@@ -147,7 +147,7 @@ begin
     o_data      => data_v_2
   );
 
-  data_r <= structify(data_v_2);
+  data_r <= structify(data_v_2, data_r);
   -- 
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
@@ -181,11 +181,11 @@ begin
   
   int_data_v <= i_data_v;
 
-  int_data_r <= structify(int_data_v);
+  int_data_r <= structify(int_data_v, int_data_r);
 
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
-      o_ucm2hps_av(hps_i) <= vectorify(ucm2hps_ar(hps_i));
+      o_ucm2hps_av(hps_i) <= vectorify(ucm2hps_ar(hps_i), o_ucm2hps_av(hps_i));
     end generate;
     DIS : if c_STATIONS_IN_SECTOR(hps_i) = '0' generate
       o_ucm2hps_av(hps_i) <= nullify(o_ucm2hps_av(hps_i));

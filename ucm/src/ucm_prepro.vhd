@@ -54,10 +54,10 @@ architecture beh of ucm_prepro is
 
 begin
   
-  i_slc_data_r <= structify(i_slc_data_v);
-  o_prepro_data_v <= vectorify(o_prepro_data_r);
+  i_slc_data_r <= structify(i_slc_data_v, i_slc_data_r);
+  o_prepro_data_v <= vectorify(o_prepro_data_r, o_prepro_data_v);
 
-  o_prepro2ctrl_v <= vectorify(o_prepro2ctrl_r);
+  o_prepro2ctrl_v <= vectorify(o_prepro2ctrl_r, o_prepro2ctrl_v);
 
   o_prepro_data_r.data_valid                <= i_slc_data_r.data_valid;
   o_prepro_data_r.common.header.h_reserved  <= (others => '0');
@@ -82,8 +82,8 @@ begin
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    i_barrel <= structify(i_slc_data_r.specific);
-    o_prepro_data_r.specific <= vectorify(o_barrel);
+    i_barrel <= structify(i_slc_data_r.specific, i_barrel);
+    o_prepro_data_r.specific <= vectorify(o_barrel, o_prepro_data_r.specific);
 
     o_barrel.b_reserved <= (others => '0');
     o_barrel.rpc3_posz  <= i_barrel.rpc3_posz;

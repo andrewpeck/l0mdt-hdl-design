@@ -80,7 +80,7 @@ begin
 
   BARREL: if c_ST_nBARREL_ENDCAP = '0' generate
 
-    barrel_r <= structify(i_data_v);
+    barrel_r <= structify(i_data_v, barrel_r);
 
     coin <= to_integer(unsigned(i_cointype));
     

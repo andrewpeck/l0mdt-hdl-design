@@ -63,12 +63,12 @@ architecture beh of ucm_cde is
 
 begin
   
-  i_slc_data_r <= structify(i_slc_data_v);
-  o_cde_data_v <= vectorify(o_cde_data_r);
+  i_slc_data_r <= structify(i_slc_data_v, i_slc_data_r);
+  o_cde_data_v <= vectorify(o_cde_data_r, o_cde_data_v);
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
-    barrel_r <= structify(i_slc_data_r.specific);
+    barrel_r <= structify(i_slc_data_r.specific, barrel_r);
 
     rpc_z_a <= (
       unsigned(barrel_r.rpc3_posz),

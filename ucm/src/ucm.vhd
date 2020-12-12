@@ -135,7 +135,7 @@ begin
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
       g_DELAY_CYCLES  => UCM_INPUT_PL_LATENCY,
-      g_PIPELINE_WIDTH    => SLC_RX_LEN
+      g_PIPELINE_WIDTH    => slc_rx_vt'length
     )
     port map(
       clk         => clk,
@@ -209,7 +209,7 @@ begin
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
       g_DELAY_CYCLES  => UCM_OUTPUT_PL_LATENCY,
-      g_PIPELINE_WIDTH    => UCM2PL_LEN
+      g_PIPELINE_WIDTH    => ucm2pl_vt'length
     )
     port map(
       clk         => clk,
@@ -254,7 +254,7 @@ begin
 
 
   PL_PROC_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
+    csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i), csw_main_out_ar(sl_i));
     
     BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
       -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
@@ -264,7 +264,7 @@ begin
     end generate;
 
     ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
-      slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
+      slc_endcap_ar(sl_i) <= structify(csw_main_out_ar(sl_i).specific, slc_endcap_ar(sl_i));
       o_uCM2pl_ar(sl_i).nswseg_poseta     <= slc_endcap_ar(sl_i).nswseg_poseta;
       o_uCM2pl_ar(sl_i).nswseg_posphi     <= slc_endcap_ar(sl_i).nswseg_posphi;
       o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= slc_endcap_ar(sl_i).nswseg_angdtheta;
@@ -285,7 +285,7 @@ begin
       o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
     end generate;
 
-    uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i));
+    uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i), uCM2pl_av(sl_i));
   end generate;
 
 end beh;
