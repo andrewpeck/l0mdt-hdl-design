@@ -19,8 +19,8 @@ class MtcWrapper(block_wrapper.BlockWrapper):
         super().__init__(
             clock,
             name,
-            [len(MtcPorts.SlcPipeline_Inputs),len(MtcPorts.Ptcalc_Inputs)],
-            [len(MtcPorts.Mtc_Outputs)],
+            MtcPorts.get_all_input_interface_ports(), #[len(MtcPorts.SlcPipeline_Inputs),len(MtcPorts.Ptcalc_Inputs)],
+            MtcPorts.get_all_output_interface_ports(), #[len(MtcPorts.Mtc_Outputs)],
        #    len(MtcPorts.Ptcalc_Inputs),
         )
 
@@ -52,7 +52,7 @@ class MtcWrapper(block_wrapper.BlockWrapper):
 
             input_events = len(port_tv_list) #input_tv_list[port_num])
             cocotb.log.info(
-                f"Sending {input_events} events to input (interface,port_num, port_name) = ({input_interface},{io.value}, {io.name}) "
+                f"Sending {input_events} events to input (interface,port_num, port_name) = ({input_interface},{io}) "
             )
 
             hook = None

@@ -14,22 +14,21 @@ class MtcPorts(port_descriptor.PortDescriptor):
 	def __init__(self):
 		super().__init__()
 
-
-	class SlcPipeline_Inputs(enum.Enum):
-		Input_0 = 0
-		Input_1 = 1
-		Input_2 = 2
-
-	class Ptcalc_Inputs(enum.Enum):
-		Input_0 = 0
-		Input_1 = 1
-		Input_2 = 2
-
-
-	class Mtc_Outputs(enum.Enum):
-		Output_0 = 0
-		Output_1 = 1
-		Output_2 = 2
-
 	def n_input_interfaces(self):
 		return 2
+
+	def get_input_interface_ports(interface):
+                ports = [3,3]
+                return ports[interface]
+
+	def get_all_input_interface_ports():
+                ports = [3,3]
+                return ports
+
+	def get_output_interface_ports(interface):
+                ports = [3]
+                return ports[interface]
+
+	def get_all_output_interface_ports():
+                ports = [3]
+                return ports

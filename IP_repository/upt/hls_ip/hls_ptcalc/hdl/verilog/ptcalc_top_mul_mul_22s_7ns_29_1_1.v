@@ -32,4 +32,3 @@ ptcalc_top_mul_mul_22s_7ns_29_1_1_DSP48_3 ptcalc_top_mul_mul_22s_7ns_29_1_1_DSP4
     .p( dout ));
 
 endmodule
-

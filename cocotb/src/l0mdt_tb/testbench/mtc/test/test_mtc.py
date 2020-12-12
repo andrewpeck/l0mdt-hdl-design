@@ -37,20 +37,20 @@ def initialize_spybuffers(fifos=[]):
 
 def initialize_dut(dut):
     input_slcpipeline = dut.MAX_MTC_PER_BCID.value.integer
-    if(input_slcpipeline != len(MtcPorts.SlcPipeline_Inputs)):
+    if(input_slcpipeline != MtcPorts.get_input_interface_ports(0)): #len(MtcPorts.SlcPipeline_Inputs)):
        n_slcpipeline_inputs_ok = 0
     else:
         n_slcpipeline_inputs_ok = 1
 
 
     input_ptcalc = dut.TOTAL_PTCALC_BLKS.value.integer
-    if(input_ptcalc != len(MtcPorts.Ptcalc_Inputs)):
+    if(input_ptcalc != MtcPorts.get_input_interface_ports(1)): #len(MtcPorts.Ptcalc_Inputs)):
         n_ptcalc_inputs_ok = 0
     else:
         n_ptcalc_inputs_ok = 1
 
     output_mtc = dut.MAX_MTC_PER_BCID.value.integer
-    if(output_mtc != len(MtcPorts.Mtc_Outputs)):
+    if(output_mtc != MtcPorts.get_output_interface_ports(0)): #len(MtcPorts.Mtc_Outputs)):
         n_mtc_outputs_ok = 0
     else:
         n_mtc_outputs_ok = 1
@@ -104,43 +104,8 @@ def mtc_test(dut):
     outputs     = testvectors["outputs"]
     output_tvformat = outputs[0]["tv_format"]
 
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKmtc_block_instance = mtc_block.MtcBlock(dut.clock, "MtcBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    mtc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    mtc_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKmtc_block_instance.start()
 
-    ##
-    ## mark the current board
-    ##
 
-    board_id = 0  # autogen
-    dut._log.info(f"Instantiated Mtc block with BOARD_ID = {board_id}")
-    for io in MtcPorts.Mtc_Outputs: #Remove this_tp
-        if int(io.value) == board_id:
-            this_tp = io
-            break
-    if not this_tp:
-        raise ValueError(
-            f"Unable to find assocated IO for Mtc BOARD_ID={board_id}"
-        )
-    dut._log.info(f"Setting test IO with base port_name = {this_tp.name}")
 
     ##
     ## setup the clock and start it
@@ -167,21 +132,14 @@ def mtc_test(dut):
         outputs_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
-    master_tv_file = test_config.get_testvector_file_from_config(config)
+    run_config                       = config["run_config"]
+    output_dir_name                  = run_config["output_directory_name"]
+    master_tv_file                   = test_config.get_testvector_file_from_config(config)
+    output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
+
 #    print("TV FORMATS = ", inputs_tvformats, outputs_tvformats)
 #    print("MASTER TV FILE = ",master_tv_file)
 
-
-
-
-    ###
-    ### alternative method for getting testvectors:
-    ###
-    # testvector_dir = config["testvectors"]["testvector_dir"]
-    # (
-    #   input_testvector_files,
-    #   output_testvector_files,
-    # ) = mtc_utils.get_testvector_files(testvector_dir)
 
     ##
     ## initialize the Mtc block wrapper
@@ -190,7 +148,7 @@ def mtc_test(dut):
         clock=dut.clock,
         name=f"MtcWrapper_SlcPipeline_Inputs",
     )
-    for i, io in enumerate(MtcPorts.SlcPipeline_Inputs):
+    for io in range(MtcPorts.get_input_interface_ports(0)): #SlcPipeline_Inputs):
 
         slcpipeline_driver = mtc_builderDriver(
             dut, #dut.slcpipeline[io],
@@ -198,20 +156,22 @@ def mtc_test(dut):
             "slcpipeline",
             io,
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_input_driver(slcpipeline_driver, 0,io)
 
-    for i, io in enumerate(MtcPorts.Ptcalc_Inputs):
+    for io in range(MtcPorts.get_input_interface_ports(1)): #Ptcalc_Inputs):
         ptcalc_driver = mtc_builderDriver(
             dut, #dut.slcpipeline[io],
             dut.clock,
             "ptcalc",
             io,
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_input_driver(ptcalc_driver, 1,io)
 
-    for i, io in enumerate(MtcPorts.Mtc_Outputs):
+    for io in range(MtcPorts.get_output_interface_ports(0)): #Mtc_Outputs):
         active = True
         monitor = mtc_builderMonitor(
             dut, #io, #dut.mtc[io],
@@ -220,6 +180,7 @@ def mtc_test(dut):
             io,
             callbacks=[],
             write_out=True,
+            out_dir=output_dir
         )
         mtc_wrapper.add_output_monitor(monitor, 0, io, active=active)
     mtc_wrapper.sort_ports()
@@ -230,7 +191,7 @@ def mtc_test(dut):
     slcpipeline_tv_list   = [["" for x in range(num_events_to_process)] for y in range(3)]
 
     slcpipeline_tv_list_i = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[0],n_ports = len(MtcPorts.SlcPipeline_Inputs), n_to_load=num_events_to_process
+        filename=master_tv_file,tvformat=inputs_tvformats[0],n_ports = MtcPorts.get_input_interface_ports(0), n_to_load=num_events_to_process
 )
     for i in range(3): # Update PL2MTC dataformat with process_ch values
         for j in range(num_events_to_process):
@@ -238,7 +199,7 @@ def mtc_test(dut):
 
 
     ptcalc_tv_list = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[1],n_ports = len(MtcPorts.Ptcalc_Inputs), n_to_load=num_events_to_process
+        filename=master_tv_file,tvformat=inputs_tvformats[1],n_ports = MtcPorts.get_input_interface_ports(1), n_to_load=num_events_to_process
     )
 #    print("len=" ,len(slcpipeline_tv_list),"slcpipeline_tv_list = " ,slcpipeline_tv_list[0])
 #    print("ptcalc_tv_list = ", ptcalc_tv_list[0])
@@ -308,8 +269,8 @@ def mtc_test(dut):
 
     #    print("EXP OUTPUT %d 0x%x  0x%x"%(len(exp_output_tv[0]), exp_output_tv[0][0], exp_output_tv[0][1]))
 
-    recvd_events_all_ports = [["" for x in range(num_events_to_process)]for y in range(len(MtcPorts.Mtc_Outputs))]
-    event_ordering  = [["" for x in range(len(MtcPorts.Mtc_Outputs))]for y in range(num_events_to_process)]
+    recvd_events_all_ports = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
+    event_ordering  = [["" for x in range(MtcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
     for n_oport,oport in enumerate(mtc_wrapper.output_ports(0)):
 
         ##
@@ -319,9 +280,9 @@ def mtc_test(dut):
         words = monitor.observed_words
         recvd_events = words #events.load_events(words, "little")
         for index, val in enumerate(recvd_events):
-            recvd_events_all_ports[io.value][index] = val
+            recvd_events_all_ports[io][index] = val
         cocotb.log.info(
-          f"Output for {io.name} (output port num {io.value}) received {len(recvd_events)} events"
+          f"Output for MTC Interface (output port num {io}) received {len(recvd_events)} events"
         )
         ##
         ## extract the expected data for this output
@@ -338,48 +299,18 @@ def mtc_test(dut):
 
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
-        ##
-        ## perform test by comparison with expected testvectors
-        ##
-        #events_are_equal, test_results = tb_diff.my_events_are_equal(
-        #    recvd_events, expected_output_events, verbose=False
-        #)
-
-
-
-  #      result_summary = result_handler.my_result_summary_dict(
-   #         str(output_testvector_files[0]), str(output_testvector_files[0]),
-    #        test_name=f"TEST_{str('Mtc').upper()}_SRC{this_tp.value:02}_DEST{io.value:02}",
-     #       test_results=test_results,
-      #  )
-        #result_summary = events_are_equal
-        #all_test_results.append(result_summary)
-        #all_tests_passed = (
-        #    all_tests_passed and result_summary
-        #    #all_tests_passed and result_summary["test_results"]["test_success"]
-        #)
-
-        #this_tp_name = (
-        #    f"{this_tp.name.split('_')[0]}{int(this_tp.name.split('_')[1]):02}"
-        #)
-        #out_io_name = f"{io.name.split('_')[0]}{int(io.name.split('_')[1]):02}"
-        #output_json_name = f"test_results_summary_Mtc_src{this_tp_name}_dest{out_io_name}.json"
-#       # print("OUTPUT_JSON_NAME=%s"%(output_json_name))
-        #with open(output_json_name, "w", encoding="utf-8") as f:
-        #    json.dump(result_summary, f, ensure_ascii=False, indent=4)
-
-    # result_handler.dump_test_results(
-    #     all_test_results, event_detail=event_level_detail_in_sumary
-    # )
+    ##
+    ## perform test by comparison with expected testvectors
+    ##
 
     #Ordering based on events
     for i in range(num_events_to_process):
-        for j in range (len(MtcPorts.Mtc_Outputs)):
+        for j in range (MtcPorts.get_output_interface_ports(0)):
             event_ordering[i][j] = recvd_events_all_ports[j][i]
 
     for e_idx in range(num_events_to_process):
 #        events_are_equal = events.compare_BitFields(master_tv_file, 'MTC2SL',len(MtcPorts.Mtc_Outputs) , e_idx , event_ordering[e_idx]);
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat,len(MtcPorts.Mtc_Outputs) , e_idx , event_ordering[e_idx]);
+        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat,MtcPorts.get_output_interface_ports(0) , e_idx , event_ordering[e_idx]);
         all_tests_passed = (all_tests_passed and events_are_equal)
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
