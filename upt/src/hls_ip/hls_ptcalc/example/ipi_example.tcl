@@ -1,5 +1,5 @@
 # ==============================================================
-# Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1.1 (64-bit)
+# Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.2.1 (64-bit)
 # Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
 # ==============================================================
 
@@ -23,8 +23,8 @@ proc create_ipi_example {part zipfile} {
 
     create_bd_design hls_bd_0
     instantiate_hls_ip $vlnv
-    
-    set target [get_target_device $vlnv] 
+
+    set target [get_target_device $vlnv]
 
     if {$target == "zynq"} {
         setup_arm
@@ -128,12 +128,12 @@ proc setup_microblaze {} {
         clk "New Clocking Wizard (100 MHz)"
     ] [get_bd_cells /$MB_INST]
 
-    #Following lines have a lot of hardcoding to make the design functional and useful 
-    # By default Block Automation of Microblaze instances an AXI Interconnect with two 
+    #Following lines have a lot of hardcoding to make the design functional and useful
+    # By default Block Automation of Microblaze instances an AXI Interconnect with two
     # Masters So We Reconfigure it to have only One Master
     set_property -dict [list CONFIG.NUM_MI {1}] [get_bd_cells /${MB_INST}_axi_periph]
 
-    # By default Block Automation of Microblaze instances a Clock Wizard with 
+    # By default Block Automation of Microblaze instances a Clock Wizard with
     # differential pins but does not make them external so we reconfigure it
     # to make both the reset and the diff pairs external
     set clk_wiz_inst clk_wiz_1
@@ -142,14 +142,14 @@ proc setup_microblaze {} {
 
     # By default Block Automation of Microblaze instances a proc_sys_reset port
     # with dangling ext_reset_in and aux_reset_in. aux_reset_in is left unconnected
-    # because it gets a good default value. ext_reset_in is connected to 
+    # because it gets a good default value. ext_reset_in is connected to
     # reset_rtl port that is an external port. The reset pin of clk_wiz is
     # also connected to the same port. This reset pin is Active High
     set proc_sys_reset_inst rst_clk_wiz_1_*
     create_bd_port -dir I reset_rtl -type rst
     set_property CONFIG.POLARITY ACTIVE_HIGH [get_bd_ports /reset_rtl]
     connect_bd_net [get_bd_ports /reset_rtl] [get_bd_pins /$proc_sys_reset_inst/ext_reset_in]
-    connect_bd_net [get_bd_ports /reset_rtl] [get_bd_pins /$clk_wiz_inst/reset] 
+    connect_bd_net [get_bd_ports /reset_rtl] [get_bd_pins /$clk_wiz_inst/reset]
 
     # By default concat has two input ports. Since HLS IP has only one interrupt,
     # set it to 1.
@@ -184,7 +184,7 @@ proc setup_hls_ip_for_microblaze {} {
                     # axi4lite slave
                     apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config [list \
                         Master "/$MB_INST (Periph)" \
-                    ] $intf 
+                    ] $intf
                 }
             }
             default {
@@ -210,12 +210,12 @@ proc setup_hls_ip_for_microblaze {} {
         if {$name == "interrupt"} {
             connect_bd_net $pin [get_bd_pins /${MB_INST}_xlconcat/In0]
             continue
-        } 
+        }
 
         if {$name == "ce"} {
             connect_to_vcc $pin
             continue
-        } 
+        }
 
         if {$left == ""} {
             set net [create_bd_port -dir $dir -type data $name]
@@ -334,12 +334,12 @@ proc setup_hls_ip_for_arm {} {
         if {$name == "interrupt"} {
             connect_bd_net $pin [get_bd_pins /$PS_INST/IRQ_F2P]
             continue
-        } 
+        }
 
         if {$name == "ce"} {
             connect_to_vcc $pin
             continue
-        } 
+        }
 
         if {$left == ""} {
             set net [create_bd_port -dir $dir -type data $name]
@@ -465,7 +465,7 @@ proc hls_ip_has_interrupt {} {
         set name [get_property NAME $pin]
         if {$name == "interrupt"} {
             return 1
-        } 
+        }
     }
 
     return 0
