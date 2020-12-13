@@ -106,6 +106,7 @@ begin
 
     rb : entity shared_lib.ring_buffer_v2
     generic map (
+      g_SIMULATION => '1',
       g_LOGIC_TYPE    => "fifo",
       g_FIFO_TYPE     => "read_ahead",
       g_MEMORY_TYPE   => "distributed",

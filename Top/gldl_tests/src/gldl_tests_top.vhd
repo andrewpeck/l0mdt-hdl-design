@@ -52,6 +52,7 @@ begin
 
   ring_mem : entity shared_lib.ring_buffer_v2
     generic map (
+      g_SIMULATION => '1',
       LOGIC_TYPE    => "pipeline",
       MEMORY_TYPE   => "block",
       -- PIPELINE_IN_REGS => 1,

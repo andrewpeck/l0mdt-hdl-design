@@ -19,6 +19,7 @@ use ieee.std_logic_misc.all;
 
 entity ring_buffer_v2 is
   generic(
+    g_SIMULATION        : std_logic := '0';
     g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline
     g_FIFO_TYPE         : string := "normal"; -- normal , read_ahead
     g_MEMORY_TYPE       : string := "auto"; -- auto, ultra, block, distributed
@@ -68,6 +69,8 @@ architecture beh of ring_buffer_v2 is
   signal wr_index : integer range 0 to g_RAM_DEPTH -1 := 0;
   signal rd_index : integer range 0 to g_RAM_DEPTH -1 := 0;
 
+  signal  int_wr_data         : std_logic_vector(g_RAM_WIDTH - 1 downto 0);
+
   -- signal wr_dv : std_logic;
   -- signal rd_dv : std_logic;
 
@@ -114,6 +117,15 @@ architecture beh of ring_buffer_v2 is
   end function;
 
 begin
+
+  SIM_EN : if g_SIMULATION = '1' generate
+    int_wr_data <= transport i_wr_data after 0.1 ns ; 
+  end generate;
+
+  SIM_DIS : if g_SIMULATION = '0' generate
+    int_wr_data <= i_wr_data; 
+
+  end generate;
 
   o_used <= used_data;
 
@@ -201,7 +213,7 @@ begin
               end if;
 
               if used_data < g_RAM_DEPTH - 1 then
-                mem(wr_index) <= i_wr_data;
+                mem(wr_index) <= int_wr_data;
                 wr_index <= get_write_index(wr_index);
                 used_data <= used_data + 1;
               end if;
@@ -226,7 +238,7 @@ begin
                 rd_index <= get_read_index(rd_index,wr_index);
               end if;
 
-              mem(wr_index) <= i_wr_data;
+              mem(wr_index) <= int_wr_data;
               wr_index <= get_write_index(wr_index);
               
 
@@ -301,7 +313,7 @@ begin
           --------------------------------
           -- if i_wr = '1' then
             mem_dv(wr_index) <= i_wr;
-            mem(wr_index) <= i_wr_data;
+            mem(wr_index) <= int_wr_data;
           -- end if;
 
           if mem_dv(rd_index) = '1' then
@@ -317,7 +329,7 @@ begin
           --   when b"10" => -- write
 
           --     -- mem_dv(wr_index) <= i_wr;
-          --     -- mem(wr_index) <= i_wr_data;
+          --     -- mem(wr_index) <= int_wr_data;
           --     used_data <= used_data + 1;
 
           --   when b"01" => -- read
@@ -332,7 +344,7 @@ begin
           --     -- o_rd_data <= mem(rd_index);
           --     -- o_rd_dv <= mem_dv(rd_index);
           --     mem_dv(wr_index) <= '1';
-          --     mem(wr_index) <= i_wr_data;
+          --     mem(wr_index) <= int_wr_data;
 
           --   when others =>
           --     -- ERROR

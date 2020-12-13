@@ -41,12 +41,12 @@ package body prj_cfg is
     proj_cfg.ENABLE_NEIGHBORS         := '1'; -- 0: disabled  1: enabled
 
     -- Blocks
-    proj_cfg.INSEL_MDT_nTAR           := '0';
+    -- proj_cfg.INSEL_MDT_nTAR           := '0'; -- Default '1'
     proj_cfg.ENABLE_UCM               := '1';
     proj_cfg.ENABLE_SF                := '1';
     proj_cfg.SF_TYPE                  := '0';  -- 0: CSF 1:LSF
     proj_cfg.ENABLE_PT                := '1';
-    proj_cfg.PT_TYPE                  := '0';
+    proj_cfg.PT_TYPE                  := '0';  -- 0: MPI
     proj_cfg.ENABLE_DAQ               := '0';
     proj_cfg.ENABLE_MTC               := '0';
 
