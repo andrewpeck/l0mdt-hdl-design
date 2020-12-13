@@ -740,25 +740,53 @@ def load_events_from_file(
 
     return events
 
+def _event_belongs_to_sectorID(DF, sectorID=3, icand=0):
+
+    sl_trailer    = DF[icand].getBitFieldWord("SL_TRAILER","")
+    fiber_id      = sl_trailer[0].get_field_bits("fiberid")
+    evt_sector_id = fiber_id + 1
+
+    if(sectorID == evt_sector_id):
+        #print("events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
+        return 1
+    else:
+        return 0
+
+
+
 
 def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
-    bf_list = []
+    bf_list    = []
+    sl_trailer = []
     for DF in DF_list:
         bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
         #bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
         #    print("KEY=",bitfieldname)
 
-    for i in range(len(bf_list)):
-        for bf in bf_list[i]:
-            #hex_wordvalue = "{:#40X}".format(bf.get_bit_value())
-            #hex_wordvalue = bf.get_bit_value()
-            #print("%s: %s" %(bf.wordname, hex_wordvalue))
-            if i == candidate:
-                return bf.get_bit_value() #hex_wordvalue
-    print("ERROR.. candidate not present in RAW TV file")
-    return -1
+    if candidate < len(bf_list):
+        for bf in bf_list[candidate]:
+            return bf.get_bit_value();
+    else:
+        #print("ERROR.. candidate not present in RAW TV file")
+        return -1
 
 
+    #    for i in range(len(bf_list)):
+    #    for bf in bf_list[i]:
+    #        #hex_wordvalue = "{:#40X}".format(bf.get_bit_value())
+    #        #hex_wordvalue = bf.get_bit_value()
+    #        #print("%s: %s" %(bf.wordname, hex_wordvalue))
+    #        if i == candidate:
+    #            return bf.get_bit_value() #hex_wordvalue
+    #print("ERROR.. candidate not present in RAW TV file")
+    #return -1
+
+#/*************
+#expected_tv is two dimensional array for each interface
+#Array size is defined by -> expected_tv[number of events][number of ports in interfaces]
+#For Example for ptcalc it would be expected_tv[events run][1],as output event has only one port
+
+#**************/
 def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     path = Path(filename)
     ok = path.exists() and path.is_file()
@@ -769,18 +797,18 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     #tv_reader_pkl.setup_debug_devel(10)
     events_list = tv_reader_pkl.read_TV(path)
 
+
     RTL_DF_list = []
     RTL_BF_LIST = []
-    for evt in range(e_idx+1):
+    for evt in range(e_idx):
         RTL_DF = BXData(n_candidates)
         #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
-        if evt == e_idx:
-            for i in range(n_candidates):
-                attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
-                attr_value_bitword.set_bit_value(expected_tv[i]) #(0xbabecafebabecafe) #expected_tv)
-                #print("n_candidates = ",n_candidates," i = ",i)
-                #print("RTL_BF_LIST***********= expected_tv = 0x%x"%(expected_tv[i]))
-                #RTL_BF_LIST = RTL_DF.DF_SL.getBitFieldWord(tvformat)
+        for i in range(n_candidates):
+            #print("{n_candidates,e_idx} = {",n_candidates,",",e_idx,"}, {i,evt} = {",i,",",evt, "} len(expected_tv[",i,"] = ",len(expected_tv[i]))
+            attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
+            attr_value_bitword.set_bit_value(expected_tv[i][evt]) #(0xbabecafebabecafe) #expected_tv)
+            #print("RTL_BF_LIST***********= expected_tv = 0x%x"%(expected_tv[i]))
+            #RTL_BF_LIST = RTL_DF.DF_SL.getBitFieldWord(tvformat)
         RTL_DF_list.append(RTL_DF)
 
 
@@ -788,27 +816,35 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
 
     #print("Comparing %s LENGTH of SL1 = %d RTL_DF_LIST len = %d" % (tvformat, len(SL1), len(RTL_DF_list)))
     #    print(SL1[0])
+
+
+
+    evt     = 0
     ret_val = 1
+    #for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
+    for ievent in range(len(events_list)): #range(total_transactions):
+        for this_candidate in range(n_candidates):
+            #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
+            RTL1  = RTL_DF_list[evt].DF_SL[this_candidate]
+            if _event_belongs_to_sectorID(events_list[ievent].DF_SL,sectorID=3,icand=this_candidate):
+                if evt < e_idx:
+                    SL1   = events_list[ievent].DF_SL[this_candidate]
+                    local_sl1 = SL1.getBitFieldWord(tvformat)
+                    local_sl2 = RTL1.getBitFieldWord(tvformat)
+                    #print ("events.py: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"} local_sl1 = ",local_sl1, "Length = ",len(local_sl1), " Length sl2 = ",len(local_sl2))
+                    #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bit_value())
+                    #print("\nEvents.py: %s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
-
-    this_candidate = 0
-    for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
-        local_sl1 = SL1.getBitFieldWord(tvformat)
-        local_sl2 = RTL1.getBitFieldWord(tvformat)
-
-        #print("local_sl1 = ",local_sl1)
-        for i in range(len(local_sl1)):
-            hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bit_value())
-            #print("\n%s: %s" % (local_sl2[i].wordname, hex_wordvalue))
-
-            results = local_sl1[i].compare_bitwordvalue(local_sl2[i])
-        if results[0]:
-            cprint("The 2 BitFieldWords are identical ", "green")
-        else:
-            cprint("The 2 BitFieldWords differ", "red")
-            #print(results[1])
-            print(tabulate(results[1], results[2], tablefmt="psql"))
-            ret_val = 0
+                    results = local_sl1[this_candidate].compare_bitwordvalue(local_sl2[this_candidate])
+                    if results[0]:
+                        cprint("The 2 BitFieldWords are identical ", "green")
+                    else:
+                        cprint("The 2 BitFieldWords differ", "red")
+                        #print(results[1])
+                        print(tabulate(results[1], results[2], tablefmt="psql"))
+                        ret_val = 0
+                if this_candidate == 0:
+                    evt = evt + 1
 
     return ret_val
 
@@ -828,35 +864,41 @@ def parse_file_for_testvectors(
         timing_gen = timing_info_gen(filename)
         time_units = next(timing_gen)  # first one returned is the time unit (str)
 
-   # events = []
+    # AT temp to select the relevant event from Barrel Sector 3
+    B3_event_list = [107, 153, 10, 3] #220, 189
+
     l0ids_loaded = set()
     #    print("PARSING FOR TVFORMAT = ",tvformat)
-   # tv_reader_pkl.setup_debug_devel(10)
+    # tv_reader_pkl.setup_debug_devel(10)
     events_list = tv_reader_pkl.read_TV(path)
 
-   # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
-   #   print("VALUE for dataformat ", tvformat, " = ", DataFormat.get_attr_val(events_list[0][0],"BitFieldWord","HPS_LSF", 0))
-
+    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
     tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
-    #    tv_reader_pkl.dump_event(events_list[0])
-    for ievent,DF in enumerate(events_list): #range(total_transactions):
-        if ievent < total_transactions:
-            for my_port in range(n_ports):
-                if(station_ID == [""]):
-                    this_station_ID = ""
-                else:
-                    this_station_ID = station_ID[my_port]
-                #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
-                if(this_station_ID == ""):
-                    tv[my_port][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
-                else:
-                    tv[my_port][ievent] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,ievent,this_station_ID)
-                #print("PARSING FOR TVFORMAT = ",tvformat,"=",tv[my_port][ievent])
-                #tv[my_port][i] = getattr(DF,tvformat)
-                #tv[my_port][i] = DF.SLCPIPE_MTC
+    b3_events_i = 0;
 
-                #tv[my_port][i] = DataFormat.get_attr_val(DF,"BitFieldWord",tvformat, my_port)
+    #    tv_reader_pkl.dump_event(events_list[0])
+    for ievent in range(len(events_list)): #range(total_transactions):
+        if b3_events_i < total_transactions:
+            event_found_for_port_interface = 0
+            for my_port in range(n_ports):
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL,sectorID=3,icand=my_port):
+                    #print ("parse_file_for_testvectors: ievent = ", ievent)
+                    event_found_for_port_interface = 1
+                    if(station_ID == [""]):
+                        this_station_ID = ""
+                    else:
+                        this_station_ID = station_ID[my_port]
+
+                        #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    if(this_station_ID == ""):
+                        tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                    else:
+                        tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
+                    #print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+            if event_found_for_port_interface :
+                b3_events_i = b3_events_i + 1
+
     return tv
 
 
