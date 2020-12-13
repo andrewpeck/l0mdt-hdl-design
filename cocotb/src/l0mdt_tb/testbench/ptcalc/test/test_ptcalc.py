@@ -304,7 +304,7 @@ def ptcalc_test(dut):
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
         recvd_events_intf.append(recvd_events)
-
+    #print("RTL_OUTPUT_TV_LIST:",recvd_events_intf,"########")
     ##
     ## extract the expected data for this output
     ##
@@ -322,17 +322,18 @@ def ptcalc_test(dut):
 
 
     #Ordering based on events (Required by TV package)
-    event_ordering  = [[0 for x in range(PtcalcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
+
 
     for n_op_intf in range (PtcalcPorts.n_output_interfaces):
-        for e_idx in range(num_events_to_process):
-            for o_port in range (PtcalcPorts.get_output_interface_ports(n_op_intf)):
+        event_ordering  = [[0 for x in  range(num_events_to_process)]for y in range(PtcalcPorts.get_output_interface_ports(0))]
+        for o_port in range (PtcalcPorts.get_output_interface_ports(n_op_intf)):
+            for e_idx in range(num_events_to_process):
                 #print("(e_idx,o_port,n_op_intf)=(",e_idx,o_port,n_op_intf,")")
-                event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][o_port][e_idx]
+                event_ordering[o_port][e_idx] = recvd_events_intf[n_op_intf][o_port][e_idx]
+        #print("recvd_events_intf = ",recvd_events_intf[n_op_intf])
+        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+    all_tests_passed = (all_tests_passed and events_are_equal)
 
-            events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , e_idx , event_ordering[e_idx]);
-            all_tests_passed = (all_tests_passed and events_are_equal)
-    #print("recvd_events_intf = ",recvd_events_intf)
     #print("event_ordering    = ", event_ordering)
 
 
