@@ -823,12 +823,14 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
     ret_val = 1
     #for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
     for ievent in range(len(events_list)): #range(total_transactions):
-        for this_candidate in range(n_candidates):
-            #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
-            RTL1  = RTL_DF_list[evt].DF_SL[this_candidate]
-            if _event_belongs_to_sectorID(events_list[ievent].DF_SL,sectorID=3,icand=this_candidate):
-                if evt < e_idx:
+        if(evt == e_idx):
+            break
+        else:
+            for this_candidate in range(n_candidates):
+                #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL,sectorID=3,icand=this_candidate):
                     SL1   = events_list[ievent].DF_SL[this_candidate]
+                    RTL1  = RTL_DF_list[evt].DF_SL[this_candidate]
                     local_sl1 = SL1.getBitFieldWord(tvformat)
                     local_sl2 = RTL1.getBitFieldWord(tvformat)
                     #print ("events.py: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"} local_sl1 = ",local_sl1, "Length = ",len(local_sl1), " Length sl2 = ",len(local_sl2))
@@ -843,8 +845,8 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, expected_tv):
                         #print(results[1])
                         print(tabulate(results[1], results[2], tablefmt="psql"))
                         ret_val = 0
-                if this_candidate == 0:
-                    evt = evt + 1
+                    if this_candidate == 0:
+                        evt = evt + 1
 
     return ret_val
 
@@ -898,6 +900,8 @@ def parse_file_for_testvectors(
                     #print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
             if event_found_for_port_interface :
                 b3_events_i = b3_events_i + 1
+        else:
+            break
 
     return tv
 
