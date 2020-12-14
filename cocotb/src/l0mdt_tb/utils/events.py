@@ -210,7 +210,7 @@ def parse_file_for_testvectors(
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
-                    #print ("parse_file_for_testvectors: ievent = ", ievent)
+                    #print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
                     event_found_for_port_interface = 1
                     if(station_ID == [""]):
                         this_station_ID = ""
