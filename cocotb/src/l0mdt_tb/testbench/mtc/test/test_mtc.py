@@ -270,7 +270,7 @@ def mtc_test(dut):
     #    print("EXP OUTPUT %d 0x%x  0x%x"%(len(exp_output_tv[0]), exp_output_tv[0][0], exp_output_tv[0][1]))
 
     recvd_events_all_ports = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
-    event_ordering  = [["" for x in range(MtcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
+
     for n_oport,oport in enumerate(mtc_wrapper.output_ports(0)):
 
         ##
@@ -278,11 +278,9 @@ def mtc_test(dut):
         ##
         monitor, io, is_active = oport
         words = monitor.observed_words
-        recvd_events = words #events.load_events(words, "little")
-        for index, val in enumerate(recvd_events):
-            recvd_events_all_ports[io][index] = val
+        recvd_events_all_ports[n_oport] = words
         cocotb.log.info(
-          f"Output for MTC Interface (output port num {io}) received {len(recvd_events)} events"
+          f"Output for MTC Interface (output port num {io}) received {len(recvd_events_all_ports[n_oport])} events"
         )
         ##
         ## extract the expected data for this output
@@ -302,16 +300,10 @@ def mtc_test(dut):
     ##
     ## perform test by comparison with expected testvectors
     ##
+    events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_events_all_ports);
+    all_tests_passed = (all_tests_passed and events_are_equal)
 
-    #Ordering based on events
-    for i in range(num_events_to_process):
-        for j in range (MtcPorts.get_output_interface_ports(0)):
-            event_ordering[i][j] = recvd_events_all_ports[j][i]
 
-    for e_idx in range(num_events_to_process):
-#        events_are_equal = events.compare_BitFields(master_tv_file, 'MTC2SL',len(MtcPorts.Mtc_Outputs) , e_idx , event_ordering[e_idx]);
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat,MtcPorts.get_output_interface_ports(0) , e_idx , event_ordering[e_idx]);
-        all_tests_passed = (all_tests_passed and events_are_equal)
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
