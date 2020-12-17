@@ -220,10 +220,10 @@ def mtc_auto_test(dut):
 
         #print("################\n n_to_load = ",num_events_to_process, "single_interface_list = ",single_interface_list)
         ################HACK-> TILL TV updates process_ch
-        if(n_ip_intf == 0): #PL2MTC
-            for i in range(3): # Update PL2MTC dataformat with process_ch values
-                for j in range(num_events_to_process):
-                    single_interface_list[i][j] = (single_interface_list[i][j] | (i << 107))
+        #if(n_ip_intf == 0): #PL2MTC
+        #    for i in range(3): # Update PL2MTC dataformat with process_ch values
+        #        for j in range(num_events_to_process):
+        #            single_interface_list[i][j] = (single_interface_list[i][j] | (i << 107))
 
         for io in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list[sb_port_index] = (single_interface_list[io])
@@ -243,8 +243,8 @@ def mtc_auto_test(dut):
 
 
 
-    print("################\n input_tv_list = ",input_tv_list)
-    print("################\n output_tv_list = ",output_tv_list)
+    #print("################\n input_tv_list = ",input_tv_list)
+    #print("################\n output_tv_list = ",output_tv_list)
     ##
     ## send input events
     ##
