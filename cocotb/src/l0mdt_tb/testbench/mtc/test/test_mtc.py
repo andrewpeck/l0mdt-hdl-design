@@ -273,6 +273,8 @@ def mtc_test(dut):
     #    print("EXP OUTPUT %d 0x%x  0x%x"%(len(exp_output_tv[0]), exp_output_tv[0][0], exp_output_tv[0][1]))
 
     recvd_events_all_ports = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
+    recvd_lineup           = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
+    recvd_time             = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
 
     for n_oport,oport in enumerate(mtc_wrapper.output_ports(0)):
 
@@ -281,7 +283,9 @@ def mtc_test(dut):
         ##
         monitor, io, is_active = oport
         words = monitor.observed_words
+        time  = monitor.observed_time
         recvd_events_all_ports[n_oport] = words
+        recvd_time[n_oport]             = time
         cocotb.log.info(
           f"Output for MTC Interface (output port num {io}) received {len(recvd_events_all_ports[n_oport])} events"
         )
@@ -300,10 +304,13 @@ def mtc_test(dut):
 
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
+    #Multiple ports in this interface, need to lineup events across ports based on time
+    recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+
     ##
     ## perform test by comparison with expected testvectors
     ##
-    events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_events_all_ports);
+    events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
 
