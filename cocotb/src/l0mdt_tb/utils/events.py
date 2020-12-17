@@ -127,7 +127,11 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
         #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
         for i in range(n_candidates):
             attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
-            attr_value_bitword.set_bit_value(rtl_tv[i][evt]) #(0xbabecafebabecafe) #rtl_tv)
+            if evt < len(rtl_tv[i]):
+                rtl_val = rtl_tv[i][evt]
+            else:
+                rtl_val = 0
+            attr_value_bitword.set_bit_value(rtl_val) #(0xbabecafebabecafe) #rtl_tv)
             RTL_BF_LIST = RTL_DF.DF_SL[i].getBitFieldWord(tvformat)
             #print("RTL_BF_LIST***********= rtl_tv[i][evt] = 0x%x"%(rtl_tv[i][evt]))
             #print("RTL_BF_LIST[] = ",RTL_BF_LIST)
@@ -161,7 +165,7 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
                     #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bit_value())
                     #print("\nEvents.py: %s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
-                    print("Sector 3 Event:",evt," Candidate=",this_candidate, "TVFORMAT=",tvformat)
+                    print("***************************\nSector 3 Event:",evt," Candidate=",this_candidate, "TVFORMAT=",tvformat)
                     results = local_sl1[0].compare_bitwordvalue(local_sl2[0])  #compare_bitfieldwordvalue returns list
                     if results[0]:
                         cprint("The 2 BitFieldWords are identical ", "green")
@@ -170,6 +174,7 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
                         #print(results[1])
                         print(tabulate(results[1], results[2], tablefmt="psql"))
                         ret_val = 0
+
                     if this_candidate == n_candidates - 1:
                         evt = evt + 1
 
