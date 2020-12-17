@@ -37,4 +37,4 @@
 	url = ../../gloustau/l0mdt-scripts.git
 [submodule "l0mdt-hls"]
 	path = l0mdt-hls
-	url = ../l0mdt-hls
+	url = ../l0mdt-hls.git
