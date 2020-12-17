@@ -210,7 +210,8 @@ class mtc_builderDriver(mtc_builderWrapper, Driver):
             yield RisingEdge(self.clock)
 
         if "slcpipeline" in kwargs:
-            self.mtc_builder.slcpipeline[self.io_port_num]   <= (transaction  | (1<<112))
+            self.mtc_builder.slcpipeline[self.io_port_num] <= transaction
+            #(transaction  | (1<<112))
 
         if "ptcalc" in kwargs:
             self.mtc_builder.ptcalc[self.io_port_num]   <= transaction
