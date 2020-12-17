@@ -133,12 +133,8 @@ Options:
 Commands:
   check-config     Check/inspect a testbench's configuration (*.json) file.
   create           Create a new test.
-  diff             Diff two *.evt files and test for differences.
-  dump             Dump the contents of an *.evt file.
   list             List all available testbenches and their status.
   run              Setup and run cocotb-based testbenches.
-  test-summary     Dump the test results *.json file.
-  update-makefile  Update the QuestaSim makefile used by CocoTB
 ```
 If you see the above help message after running the top-level "`tb`" command then
 you should be on your way to running the testbench infrastructure.
@@ -174,21 +170,16 @@ $ source setup_env.sh
 
 The `cocotb`-based testbench infrastructure laid out in this repository is based
 around testing logic blocks that are interfaced to Spybuffer (`"Spy+FIFO"`) blocks.
-This is motivated by the fact that in the Trigger Processor, at least in the
-development/debugging phase, `Spy+FIFO` blocks will be interspersed throughout
-the logic and between functional blocks.
-This is illustrated in the high-level TP block diagram:
+This is motivated by the fact that the testbench would need to support driver, monitor routines only for the FIFO within the SpyBuffer block.
+This would results in a quick turnaround for testbench creation of different blocks, integration of blocks in the firmware
 
-<div align="center">
-<img src="doc/figures/tp_fw_tp_overview.png" height = "400">
-</div>
 
 Given this design consideration, the testbench infrastructure here laid out is
 based around designers providing their logic block that they wish to test and
 having it's inputs and outputs interfaced directly to `Spy+FIFO` blocks.
 This is illustrated in the figure below:
 <div align="center">
-<img src="doc/figures/tp_fw_hdl_onlyPNG.png" height="400">
+<img src="doc/figures/mtc_tb.png" height="400">
 </div>
 
 Once the `DUT` is interfaced to `Spy+FIFO` blocks as in the above, the
