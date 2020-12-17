@@ -191,11 +191,14 @@ def mtc_test(dut):
     slcpipeline_tv_list   = [["" for x in range(num_events_to_process)] for y in range(3)]
 
     slcpipeline_tv_list_i = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[0],n_ports = MtcPorts.get_input_interface_ports(0), n_to_load=num_events_to_process
-)
-    for i in range(3): # Update PL2MTC dataformat with process_ch values
-        for j in range(num_events_to_process):
-            slcpipeline_tv_list[i][j] = (slcpipeline_tv_list_i[i][j] | (i << 107))
+        filename=master_tv_file,
+        tvformat=inputs_tvformats[0],
+        n_ports = MtcPorts.get_input_interface_ports(0),
+        n_to_load=num_events_to_process
+    )
+    #for i in range(3): # Update PL2MTC dataformat with process_ch values
+    #    for j in range(num_events_to_process):
+    #        slcpipeline_tv_list[i][j] = (slcpipeline_tv_list_i[i][j] | (i << 107))
 
 
     ptcalc_tv_list = events.parse_file_for_testvectors(
@@ -209,11 +212,11 @@ def mtc_test(dut):
     ## send input events
     ##
     my_input_tvs = [[["0" for x in range(num_events_to_process)] for y in range(3)] for z in range(len(slcpipeline_tv_list))]
-    my_input_tvs[0] = slcpipeline_tv_list
+    my_input_tvs[0] = slcpipeline_tv_list_i
     my_input_tvs[1] = ptcalc_tv_list
 
 
-#    print("INPUT VECTORS = ", my_input_tvs[0], my_input_tvs[1])
+    #print("INPUT VECTORS = ", my_input_tvs[0], my_input_tvs[1])
     dut._log.info("Sending input events")
 
     send_finished_signal = mtc_wrapper.drive_input_interface(

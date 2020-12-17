@@ -241,7 +241,7 @@ def ptcalc_test(dut):
     #input_tv_list[1][0] = 4613885408652818996
     #input_tv_list[2][0] = 4613885537627640404
     #input_tv_list[3][0] = 4611754738440994816
-    print("INPUT_TV_LIST:",input_tv_list,"########")
+    #print("INPUT_TV_LIST:",input_tv_list,"########")
 
 
    ###Get Output Test Vector List for Ports across all output interfaces##
@@ -257,7 +257,7 @@ def ptcalc_test(dut):
         output_tv_list.append(single_interface_list)
     #HLS TB OUTPUT
     #output_tv_list[0] = 9011494602712095
-    print("OUTPUT_TV_LIST:",output_tv_list,"########")
+    #print("OUTPUT_TV_LIST:",output_tv_list,"########")
 
 
     ##
