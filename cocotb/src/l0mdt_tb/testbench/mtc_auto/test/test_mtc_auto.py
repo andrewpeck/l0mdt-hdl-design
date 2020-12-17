@@ -276,8 +276,11 @@ def mtc_auto_test(dut):
     all_tests_passed = True
     all_test_results = []
     recvd_events_intf = []
+
     for n_op_intf in range(MtcAutoPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(MtcAutoPorts.get_output_interface_ports(n_op_intf))]
+        recvd_lineup     = [["" for x in range(num_events_to_process)]for y in range(MtcAutoPorts.get_output_interface_ports(n_op_intf))]
+        recvd_time       = [["" for x in range(num_events_to_process)]for y in range(MtcAutoPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(mtc_auto_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -285,13 +288,17 @@ def mtc_auto_test(dut):
             ##
             monitor, io, is_active = oport
             words = monitor.observed_words
-
+            time  = monitor.observed_time
+            print("TIME - ",time)
             recvd_events[n_oport] = words
+            recvd_time[n_oport]   = time
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
-        recvd_events_intf.append(recvd_events)
-        #print("RECVD_EVENTS_INTF :",recvd_events_intf)
+        #Multiple ports in this interface, need to lineup events across ports based on time
+        recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcAutoPorts.get_output_interface_ports(n_op_intf))
+        recvd_events_intf.append(recvd_lineup)
+        #print("RECVD_LINEUP :",recvd_lineup)
 
     ##
     ## extract the expected data for this output

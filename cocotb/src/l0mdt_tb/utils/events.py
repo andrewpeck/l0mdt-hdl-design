@@ -127,11 +127,11 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
         #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
         for i in range(n_candidates):
             attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
-            if evt < len(rtl_tv[i]):
-                rtl_val = rtl_tv[i][evt]
-            else:
-                rtl_val = 0
-            attr_value_bitword.set_bit_value(rtl_val) #(0xbabecafebabecafe) #rtl_tv)
+            #if evt < len(rtl_tv[i]):
+            #    rtl_val = rtl_tv[i][evt]
+            #else:
+            #    rtl_val = 0
+            attr_value_bitword.set_bit_value(rtl_tv[i][evt]) #(0xbabecafebabecafe) #rtl_tv)
             RTL_BF_LIST = RTL_DF.DF_SL[i].getBitFieldWord(tvformat)
             #print("RTL_BF_LIST***********= rtl_tv[i][evt] = 0x%x"%(rtl_tv[i][evt]))
             #print("RTL_BF_LIST[] = ",RTL_BF_LIST)
@@ -251,3 +251,30 @@ def modify_tv (tv, ii):
                 tv_port.append(0)
         tv_out.append(tv_port)
     return tv_out
+
+
+def timebased_lineup (observed_events, observed_time, num_events_to_process, n_ports):
+
+    print ("events.py: num_events_to_process = ",num_events_to_process," n_ports = ",n_ports)
+    max_len = 0
+    observed_events_o     = [[0 for x in range(0,num_events_to_process)]for y in range(0,n_ports)]
+    time_list             = []
+
+    for itime, time in enumerate(observed_time) :
+        time_list.extend(observed_time[itime])
+
+    #Sort and remove duplicates in time_list
+    sorted_time_list = sorted(set(time_list), key = lambda ele: time_list.count(ele))
+
+
+    for port_o in range(len(observed_events)):
+        for evt in range(num_events_to_process):
+            if evt >= len(observed_time[port_o]) or len(observed_time[port_o]) == 0:
+                observed_events_o[port_o][evt] = 0
+            else :
+                if observed_time[port_o][evt] == sorted_time_list[evt]:
+                    observed_events_o[port_o][evt] = observed_events[port_o][evt]
+                else:
+                    observed_events_o[port_o][evt] = 0
+
+    return observed_events_o
