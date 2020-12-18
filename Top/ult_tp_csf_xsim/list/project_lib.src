@@ -10,6 +10,7 @@ ult/top_ult_tp.vhd top=top_ult_tp
 
 # modules included
 shared/shared_lib.src lib=shared_lib
+ctrl/ctrl_lib.src lib=ctrl_lib
 mpl/mpl_lib.src lib=mpl_lib
 ult/ult_lib.src lib=ult_lib
 ucm/ucm_lib.src lib=ucm_lib
@@ -17,7 +18,6 @@ hp/hp_lib.src lib=hp_lib
 heg/heg_lib.src lib=heg_lib
 hps/hps_lib.src lib=hps_lib
 csf/csf_lib.src lib=csf_lib
-ctrl/ctrl_lib.src lib=ctrl_lib
 tar/tar_lib.src lib=tar_lib
 ptc_mpi/ptc_lib.src lib=ptc_lib
 lsf/lsf_lib.src lib=lsf_lib

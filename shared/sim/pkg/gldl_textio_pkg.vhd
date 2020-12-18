@@ -44,6 +44,12 @@ package gldl_l0mdt_textio_pkg is
   procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_mpl_sim_rt);
   procedure WRITE(L:inout LINE; VALUE : in in_pt_mpl_sim_rt);
 
+  -- MTC IN
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_pt_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_pt_sim_rt);
+
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt);
 
 
 
@@ -283,7 +289,9 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(z_RPC2) &
     " - " & integer'image(z_RPC3);
   end procedure;
-
+  -----------------------------------------------
+  -- HEG(HIT) 2 SF
+  -----------------------------------------------  
   procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt) is
   begin
     -- SWRITE(L, "#");
@@ -346,7 +354,9 @@ package body gldl_l0mdt_textio_pkg is
     WRITE(L, to_integer( radius));
 
   end procedure;
-
+  -----------------------------------------------
+  -- HEG(SLC) 2 SF 
+  -----------------------------------------------  
   procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt) is
   begin
 
@@ -494,7 +504,9 @@ package body gldl_l0mdt_textio_pkg is
 
   end procedure;
 
-
+  -----------------------------------------------
+  -- SF 2 PT 
+  -----------------------------------------------  
 
 
   procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_pt2sf_sim_rt) is
@@ -588,6 +600,10 @@ package body gldl_l0mdt_textio_pkg is
 
   end procedure;
 
+  -----------------------------------------------
+  -- MPL 2 PT 
+  -----------------------------------------------  
+
   procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_mpl_sim_rt) is
   begin
 
@@ -679,6 +695,156 @@ package body gldl_l0mdt_textio_pkg is
     WRITE(L, to_integer( nswseg_posphi));
     WRITE(L, ',');
     WRITE(L, to_integer( nswseg_angdtheta));
+
+  end procedure;
+  -----------------------------------------------
+  -- PT 2 MTCB
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_pt_sim_rt) is
+  begin
+
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "slid");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_eta");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_pt");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_ptthresh");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_charge");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_nsegments");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_quality");
+
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_pt_sim_rt) is
+
+
+  begin
+
+    WRITE(L, to_integer( VALUE.ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.thread));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.muid.slcid);
+    WRITE(L, ',');      
+    WRITE(L, VALUE.data.muid.slid);
+    WRITE(L, ',');      
+    WRITE(L, VALUE.data.muid.bcid);
+    WRITE(L, ',');    
+    WRITE(L, to_integer( VALUE.data.mdt_eta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_pt));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_ptthresh));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.mdt_charge);
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_nsegments));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(VALUE.data.mdt_quality)));
+
+  end procedure;
+  -----------------------------------------------
+  -- MPL 2 MTCB
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt) is
+  begin
+
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+
+    SWRITE(L, "busy");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+
+    SWRITE(L, "tcoverflow");
+    WRITE(L, ',');
+    SWRITE(L, "nmtc_sl");
+    WRITE(L, ',');
+    SWRITE(L, "nmtc_mdt");
+    WRITE(L, ',');
+    SWRITE(L, "nslc");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "tcsent");
+    WRITE(L, ',');
+    SWRITE(L, "poseta");
+    WRITE(L, ',');
+    SWRITE(L, "posphi");
+    WRITE(L, ',');
+    SWRITE(L, "sl_pt");
+    WRITE(L, ',');
+    SWRITE(L, "sl_ptthresh");
+    WRITE(L, ',');
+    SWRITE(L, "sl_charge");
+    WRITE(L, ',');
+    SWRITE(L, "cointype");
+
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt) is
+    -- variable ToA              : unsigned(64-1 downto 0);
+    -- variable station          : unsigned(4-1 downto 0);
+    -- variable thread           : unsigned(4-1 downto 0);
+
+    variable slc_common_r     : slc_common_rt;
+    variable sl_header_r      : sl_header_rt;
+
+  begin
+
+    slc_common_r  := VALUE.data.common;
+    sl_header_r   := slc_common_r.header;
+
+    WRITE(L, to_integer( VALUE.ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.thread));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.busy);
+    WRITE(L, ',');    
+    WRITE(L, to_integer( unsigned( VALUE.data.process_ch)));
+    WRITE(L, ',');
+
+    WRITE(L, sl_header_r.tcoverflow);
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nmtc_sl)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nmtc_mdt)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nslc)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.bcid)));
+    WRITE(L, ',');
+
+    WRITE(L, to_integer( slc_common_r.slcid));
+    WRITE(L, ',');
+    WRITE(L, slc_common_r.tcsent);
+    WRITE(L, ',');
+    WRITE(L, to_integer( slc_common_r.poseta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slc_common_r.posphi));
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(slc_common_r.sl_pt)));
+    WRITE(L, ',');    
+    WRITE(L, to_integer(unsigned(slc_common_r.sl_ptthresh)));
+    WRITE(L, ',');
+    WRITE(L, slc_common_r.sl_charge );
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(slc_common_r.cointype)));
 
   end procedure;
 

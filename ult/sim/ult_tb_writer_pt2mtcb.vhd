@@ -55,8 +55,8 @@ begin
   
   SF_MPL_PT: process(clk)
 
-  file file_sf_handler : text open write_mode is OUT_PTIN_SF_FILE ;
-  file file_mpl_handler : text open write_mode is OUT_PTIN_MPL_FILE;
+  file file_pt_handler : text open write_mode is OUT_MTCIN_PT_FILE ;
+  file file_mpl_handler : text open write_mode is OUT_MTCIN_MPL_FILE;
 
   variable row 		: line;
 
@@ -68,8 +68,8 @@ begin
 
   -- variable sf2pt : sf2ptcalc_rt;
 
-  variable sf_2write : in_pt_pt2sf_sim_rt;
-  variable mpl_2write : in_pt_mpl_sim_rt;
+  variable sf_2write : in_mtc_pt_sim_rt;
+  variable mpl_2write : in_mtc_mpl_sim_rt;
 
   variable read_pt  : ptcalc2mtc_rt;
   variable read_mpl : pl2mtc_rt;
@@ -85,19 +85,19 @@ begin
 
       if header2write = '0' then
         SWRITE(row, "#----------------------------------------");
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         SWRITE(row, "# Output : PTCALC 2 MTC BUILDER");
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         SWRITE(row, "# BUS : ptcalc2mtc_rt ");
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         SWRITE(row, "#----------------------------------------");
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         WRITEHEADER(row,sf_2write);
-        writeline(file_sf_handler,row);
+        writeline(file_pt_handler,row);
         ----------------------------------------
         SWRITE(row, "#----------------------------------------");
         writeline(file_mpl_handler,row);
@@ -124,14 +124,14 @@ begin
 
       if c_MTC_ENABLED = '1' then 
         for heg_i in c_NUM_THREADS -1 downto 0 loop
-          read_sf := structify(inn_segments_to_pt_av(heg_i));
-          if read_sf.data_valid = '1' then
+          read_pt := structify(pt2mtc_av(heg_i));
+          if read_pt.data_valid = '1' then
             sf_2write.ToA      := tb_curr_tdc_time;
-            sf_2write.station  := to_unsigned(0,4);
+            -- sf_2write.station  := to_unsigned(0,4);
             sf_2write.thread   := to_unsigned(heg_i,4);
-            sf_2write.data   := read_sf;
+            sf_2write.data   := read_pt;
             write(row,sf_2write);
-            writeline(file_sf_handler,row);
+            writeline(file_pt_handler,row);
           end if;
         end loop;
       end if;
@@ -141,8 +141,8 @@ begin
       -------------------------------------------------------------------
 
 
-      for heg_i in c_NUM_THREADS -1 downto 0 loop
-        read_mpl := structify(pl2pt_av(heg_i));
+      for heg_i in c_MAX_NUM_SL -1 downto 0 loop
+        read_mpl := structify(pl2mtc_av(heg_i));
         if read_mpl.data_valid = '1' then
           mpl_2write.ToA      := tb_curr_tdc_time;
           -- mpl_2write.station  := to_unsigned(0,4);

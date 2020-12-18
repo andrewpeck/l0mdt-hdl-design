@@ -61,7 +61,7 @@ entity ult_tp is
     OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
     OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
     OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv"
+    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
 end entity ult_tp;
@@ -314,7 +314,7 @@ begin
     -- Input of MTC Builder
     -------------------------------------------------------------------------------------
 
-  SF_2_PT : entity project_lib.ult_tb_writer_pt2mtcb
+  PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
   generic map (
     IN_HIT_FILE => IN_HIT_FILE,
     IN_SLC_FILE => IN_SLC_FILE,
