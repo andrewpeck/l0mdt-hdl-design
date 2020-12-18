@@ -128,6 +128,28 @@ package gldl_ult_tp_sim_pkg is
   function structify(x: in_pt_mpl_sim_rvt) return in_pt_mpl_sim_rt;
   function nullify(x: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rt;
 
+  type in_mtc_pt_sim_rt is record
+    ToA : unsigned(64-1 downto 0);
+    thread : unsigned(4-1 downto 0);
+    data : ptcalc2mtc_rt;
+  end record in_mtc_pt_sim_rt;
+  constant IN_MTC_PT_SIM_LEN : integer := 122;
+  subtype in_mtc_pt_sim_rvt is std_logic_vector(IN_MTC_PT_SIM_LEN-1 downto 0);
+  function vectorify(x: in_mtc_pt_sim_rt) return in_mtc_pt_sim_rvt;
+  function structify(x: in_mtc_pt_sim_rvt) return in_mtc_pt_sim_rt;
+  function nullify(x: in_mtc_pt_sim_rt) return in_mtc_pt_sim_rt;
+
+  type in_mtc_mpl_sim_rt is record
+    ToA : unsigned(64-1 downto 0);
+    thread : unsigned(4-1 downto 0);
+    data : pl2mtc_rt;
+  end record in_mtc_mpl_sim_rt;
+  constant IN_MTC_MPL_SIM_LEN : integer := 181;
+  subtype in_mtc_mpl_sim_rvt is std_logic_vector(IN_MTC_MPL_SIM_LEN-1 downto 0);
+  function vectorify(x: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rvt;
+  function structify(x: in_mtc_mpl_sim_rvt) return in_mtc_mpl_sim_rt;
+  function nullify(x: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rt;
+
 end package gldl_ult_tp_sim_pkg;
 
 ------------------------------------------------------------
@@ -479,6 +501,56 @@ package body gldl_ult_tp_sim_pkg is
   end function structify;
   function nullify(x: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rt is
     variable y : in_pt_mpl_sim_rt;
+  begin
+    y.ToA                      := nullify(x.ToA);
+    y.thread                   := nullify(x.thread);
+    y.data                     := nullify(x.data);
+    return y;
+  end function nullify;
+
+  function vectorify(x: in_mtc_pt_sim_rt) return in_mtc_pt_sim_rvt is
+    variable y : in_mtc_pt_sim_rvt;
+  begin
+    y(121 downto 58)           := vectorify(x.ToA);
+    y(57 downto 54)            := vectorify(x.thread);
+    y(53 downto 0)             := vectorify(x.data);
+    return y;
+  end function vectorify;
+  function structify(x: in_mtc_pt_sim_rvt) return in_mtc_pt_sim_rt is
+    variable y : in_mtc_pt_sim_rt;
+  begin
+    y.ToA                      := structify(x(121 downto 58));
+    y.thread                   := structify(x(57 downto 54));
+    y.data                     := structify(x(53 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: in_mtc_pt_sim_rt) return in_mtc_pt_sim_rt is
+    variable y : in_mtc_pt_sim_rt;
+  begin
+    y.ToA                      := nullify(x.ToA);
+    y.thread                   := nullify(x.thread);
+    y.data                     := nullify(x.data);
+    return y;
+  end function nullify;
+
+  function vectorify(x: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rvt is
+    variable y : in_mtc_mpl_sim_rvt;
+  begin
+    y(180 downto 117)          := vectorify(x.ToA);
+    y(116 downto 113)          := vectorify(x.thread);
+    y(112 downto 0)            := vectorify(x.data);
+    return y;
+  end function vectorify;
+  function structify(x: in_mtc_mpl_sim_rvt) return in_mtc_mpl_sim_rt is
+    variable y : in_mtc_mpl_sim_rt;
+  begin
+    y.ToA                      := structify(x(180 downto 117));
+    y.thread                   := structify(x(116 downto 113));
+    y.data                     := structify(x(112 downto 0));
+    return y;
+  end function structify;
+  function nullify(x: in_mtc_mpl_sim_rt) return in_mtc_mpl_sim_rt is
+    variable y : in_mtc_mpl_sim_rt;
   begin
     y.ToA                      := nullify(x.ToA);
     y.thread                   := nullify(x.thread);
