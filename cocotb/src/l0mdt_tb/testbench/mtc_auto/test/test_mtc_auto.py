@@ -289,7 +289,6 @@ def mtc_auto_test(dut):
             monitor, io, is_active = oport
             words = monitor.observed_words
             time  = monitor.observed_time
-            print("TIME - ",time)
             recvd_events[n_oport] = words
             recvd_time[n_oport]   = time
             cocotb.log.info(

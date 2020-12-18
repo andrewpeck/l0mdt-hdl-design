@@ -136,7 +136,7 @@ class FifoWrapper:
         #word.set_timestamp(time_ns, units="ns")
         wfmt = {True: "w", False: "a"}[self._first_write]
         with open(self.output_filename, wfmt) as ofile:
-            ofile.write(str(transaction))
+            ofile.write(f"{str(transaction)}\n")
             #word.write_testvec_fmt(ofile)
 
         wfmt = {True: "w", False: "a"}[self._first_write]
