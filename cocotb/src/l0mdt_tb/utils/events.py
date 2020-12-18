@@ -255,7 +255,7 @@ def modify_tv (tv, ii):
 
 def timebased_lineup (observed_events, observed_time, num_events_to_process, n_ports):
 
-    print ("events.py: num_events_to_process = ",num_events_to_process," n_ports = ",n_ports)
+    #print ("events.py: num_events_to_process = ",num_events_to_process," n_ports = ",n_ports)
     max_len = 0
     observed_events_o     = [[0 for x in range(0,num_events_to_process)]for y in range(0,n_ports)]
     time_list             = []
