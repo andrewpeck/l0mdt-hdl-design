@@ -60,6 +60,8 @@ entity ult_tp is
     OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
     OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
     OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
+    OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
+    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv"
     DUMMY               : boolean := false
     );
 end entity ult_tp;
@@ -307,6 +309,26 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time
   );
+
+    -------------------------------------------------------------------------------------
+    -- Input of MTC Builder
+    -------------------------------------------------------------------------------------
+
+  SF_2_PT : entity project_lib.ult_tb_writer_pt2mtcb
+  generic map (
+    IN_HIT_FILE => IN_HIT_FILE,
+    IN_SLC_FILE => IN_SLC_FILE,
+    OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
+    OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_slc,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time
+  );
+
 
 
 
