@@ -95,7 +95,7 @@ testbenches is to run,
 $ source setup_env.sh -c <XILINX SIMULATION LIBRARIES> -t <TEST VECTOR DIRECTORY>
 (env) $
 ```
-The -c and -t options are optional and help set environment variables COMPONENTS_LIB_DIR and L0MDT_TESTVECTOR_DIR which point to Xilinx compiled libraries(unisim) and directory location of testvectors. The environment variables `COMPONENTS_LIB_DIR` and `L0MDT_TESTVECTOR_DIR` can also be setup manually. Simulation library locations in UCI machines
+The -c and -t options are optional and help set environment variables COMPONENTS_LIB_DIR and L0MDT_TESTVECTOR_DIR which point to Xilinx compiled libraries for Questa and directory location of testvectors. The environment variables `COMPONENTS_LIB_DIR` and `L0MDT_TESTVECTOR_DIR` can also be setup manually. Simulation library locations in UCI machines
 uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2019.2.1
 uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/
 
