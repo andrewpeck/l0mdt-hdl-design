@@ -763,12 +763,10 @@ package body gldl_l0mdt_textio_pkg is
 
     SWRITE(L, "ToA");
     WRITE(L, ',');
-
-    SWRITE(L, "busy");
-    WRITE(L, ',');
     SWRITE(L, "thread");
     WRITE(L, ',');
-
+    SWRITE(L, "processed");
+    WRITE(L, ',');
     SWRITE(L, "tcoverflow");
     WRITE(L, ',');
     SWRITE(L, "nmtc_sl");

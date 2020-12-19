@@ -122,7 +122,7 @@ begin
       -- new PT
       -------------------------------------------------------------------
 
-      if c_MTC_ENABLED = '1' then 
+      -- if c_MTC_ENABLED = '1' then 
         for heg_i in c_NUM_THREADS -1 downto 0 loop
           read_pt := structify(pt2mtc_av(heg_i));
           if read_pt.data_valid = '1' then
@@ -134,19 +134,19 @@ begin
             writeline(file_pt_handler,row);
           end if;
         end loop;
-      end if;
+      -- end if;
 
       -------------------------------------------------------------------
       -- new CANDIDATE from pipeline
       -------------------------------------------------------------------
 
 
-      for heg_i in c_MAX_NUM_SL -1 downto 0 loop
-        read_mpl := structify(pl2mtc_av(heg_i));
+      for sl_i in c_MAX_NUM_SL -1 downto 0 loop
+        read_mpl := structify(pl2mtc_av(sl_i));
         if read_mpl.data_valid = '1' then
           mpl_2write.ToA      := tb_curr_tdc_time;
           -- mpl_2write.station  := to_unsigned(0,4);
-          mpl_2write.thread   := to_unsigned(heg_i,4);
+          mpl_2write.thread   := to_unsigned(sl_i,4);
           mpl_2write.data   := read_mpl;
           write(row,mpl_2write);
           writeline(file_mpl_handler,row);
