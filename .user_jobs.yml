@@ -44,13 +44,13 @@
   stage: user_pre
   script:
     - cd l0mdt-hls/LSF/Run
-    - source run.sh -f calc_LE_r_offset_barrel
-    - source run.sh -f compute_r_bins
-    - source run.sh -f find_max_bin
-    - source run.sh -f get_legendre_segment_barrel
-    - source run.sh -f get_rom_addr
-    - source run.sh -f trig_vals
-    - source run.sh -f load_LE_refPos
+    - source run.sh calc_LE_r_offset_barrel
+    - source run.sh compute_r_bins
+    - source run.sh find_max_bin
+    - source run.sh get_legendre_segment_barrel
+    - source run.sh get_rom_addr
+    - source run.sh trig_vals
+    - source run.sh load_LE_refPos
   allow_failure: true
 
 .sim_comp: &sim_comp
