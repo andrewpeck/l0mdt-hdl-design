@@ -4,9 +4,11 @@
     <node id="RESET"          mask="0x00000001" permission="w"/>
     <node id="ENABLE"         mask="0x00000010" permission="w"/>
     <node id="DISABLE"        mask="0x00000020" permission="w"/>
-    <node id="THREADS"        mask="0x00000F00" permission="rw"/>
-  </node>
+      </node>
   <node id="STATUS" address="0x00000001">
+    <node id="THREADS"        mask="0x00000000F" permission="rw"/>
+  </node>
+  <node id="STATUS" address="0x00000002">
     <node id="STATUS_ENABLED" mask="0x00000001" permission="r"/>
     <node id="STATUS_READY"   mask="0x00000002" permission="r"/>
     <node id="STATUS_ERROR"   mask="0x00000004" permission="r"/>
