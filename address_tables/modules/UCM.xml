@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="UCM" address="0x0">
-  <node id="RESET"          address="0x0" mask="0x1" permission="w"/>
-  <node id="STATUS"         address="0x1" mask="0x1" permission="r"/>
-  <node id="READY"          address="0x1" mask="0x2" permission="r"/>
+  <node id="RESET"          address="0x00" mask="0x1" permission="w"/>
+  <node id="STATUS_ENABLED" address="0x01" mask="0x1" permission="r"/>
+  <node id="STATUS_READY"   address="0x01" mask="0x2" permission="r"/>
+  <node id="STATUS_ERROR"   address="0x01" mask="0x3" permission="r"/>
+
+  <!-- CONTROL -->
+  <node id="ENABLE"         address="0x02" mask="0x1" permission="w"/>
+  <node id="DISABLE"        address="0x02" mask="0x2" permission="w"/>
+  <node id="THREADS"        address="0x02" mask="0xF0" permission="rw"/>
+
+
+  <!-- CHAMBERS CENTER PHI -->
+  <node id="PHICENTER0"  address="0x10" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER1"  address="0x11" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER2"  address="0x12" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER3"  address="0x13" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER4"  address="0x14" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER5"  address="0x15" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER6"  address="0x16" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER7"  address="0x17" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+
+  <node id="MODE"     address="0x20" mask="0x0000FFFF" permission="rw" description="Module 16 bit mode"/>
+
 </node>
