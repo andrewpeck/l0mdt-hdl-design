@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="UCM" address="0x0">
-  <node id="RESET"          address="0x00" mask="0x1" permission="w"/>
-  <node id="STATUS_ENABLED" address="0x01" mask="0x1" permission="r"/>
-  <node id="STATUS_READY"   address="0x01" mask="0x2" permission="r"/>
-  <node id="STATUS_ERROR"   address="0x01" mask="0x3" permission="r"/>
-
+<node id="UCM" >
+  <node id="ACTIONS" address="0x00000000">
+    <node id="RESET"          mask="0x00000001" permission="w"/>
+    <node id="ENABLE"         mask="0x00000010" permission="w"/>
+    <node id="DISABLE"        mask="0x00000020" permission="w"/>
+    <node id="THREADS"        mask="0x00000F00" permission="rw"/>
+  </node>
+  <node id="STATUS" address="0x00000001">
+    <node id="STATUS_ENABLED" mask="0x00000001" permission="r"/>
+    <node id="STATUS_READY"   mask="0x00000002" permission="r"/>
+    <node id="STATUS_ERROR"   mask="0x00000004" permission="r"/>
+  </node>
   <!-- CONTROL -->
-  <node id="ENABLE"         address="0x02" mask="0x1" permission="w"/>
-  <node id="DISABLE"        address="0x02" mask="0x2" permission="w"/>
-  <node id="THREADS"        address="0x02" mask="0xF0" permission="rw"/>
+
 
 
   <!-- CHAMBERS CENTER PHI -->
