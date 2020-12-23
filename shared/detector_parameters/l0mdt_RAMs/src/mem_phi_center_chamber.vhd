@@ -23,7 +23,7 @@ entity mem_phi_center_chamber is
     
     --
     i_rd_addr         : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
-    o_rd_data         : out unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
+    o_rd_data         : out unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0)
   );
 end entity mem_phi_center_chamber;
 
@@ -44,3 +44,6 @@ begin
   
   
 end architecture beh;
+
+
+
