@@ -71,7 +71,10 @@ begin  -- architecture behavioral
           localRdData(15 downto  0)  <=  reg_data(32)(15 downto  0);      --Module 16 bit mode
         when 1 => --0x1
           localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);      --
-          localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);      --
+        when 2 => --0x2
+          localRdData( 0)            <=  Mon.STATUS.STATUS_ENABLED;       --
+          localRdData( 1)            <=  Mon.STATUS.STATUS_READY;         --
+          localRdData( 2)            <=  Mon.STATUS.STATUS_ERROR;         --
         when 16 => --0x10
           localRdData(31 downto  0)  <=  reg_data(16)(31 downto  0);      --Phi to Center of chamber
         when 17 => --0x11
@@ -100,25 +103,23 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
-  Ctrl.MODE            <=  reg_data(32)(15 downto  0);     
-  Ctrl.STATUS.THREADS  <=  reg_data( 1)( 3 downto  0);     
-  Ctrl.STATUS.THREADS  <=  reg_data( 1)( 3 downto  0);     
-  Ctrl.PHICENTER0      <=  reg_data(16)(31 downto  0);     
-  Ctrl.PHICENTER1      <=  reg_data(17)(31 downto  0);     
-  Ctrl.PHICENTER2      <=  reg_data(18)(31 downto  0);     
-  Ctrl.PHICENTER3      <=  reg_data(19)(31 downto  0);     
-  Ctrl.PHICENTER4      <=  reg_data(20)(31 downto  0);     
-  Ctrl.PHICENTER5      <=  reg_data(21)(31 downto  0);     
-  Ctrl.PHICENTER6      <=  reg_data(22)(31 downto  0);     
-  Ctrl.PHICENTER7      <=  reg_data(23)(31 downto  0);     
+  Ctrl.MODE             <=  reg_data(32)(15 downto  0);     
+  Ctrl.CONFIGS.THREADS  <=  reg_data( 1)( 3 downto  0);     
+  Ctrl.PHICENTER0       <=  reg_data(16)(31 downto  0);     
+  Ctrl.PHICENTER1       <=  reg_data(17)(31 downto  0);     
+  Ctrl.PHICENTER2       <=  reg_data(18)(31 downto  0);     
+  Ctrl.PHICENTER3       <=  reg_data(19)(31 downto  0);     
+  Ctrl.PHICENTER4       <=  reg_data(20)(31 downto  0);     
+  Ctrl.PHICENTER5       <=  reg_data(21)(31 downto  0);     
+  Ctrl.PHICENTER6       <=  reg_data(22)(31 downto  0);     
+  Ctrl.PHICENTER7       <=  reg_data(23)(31 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
       reg_data(32)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.MODE;
-      reg_data( 1)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.STATUS.THREADS;
-      reg_data( 1)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.STATUS.THREADS;
+      reg_data( 1)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.CONFIGS.THREADS;
       reg_data(16)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER0;
       reg_data(17)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER1;
       reg_data(18)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER2;
@@ -144,7 +145,6 @@ begin  -- architecture behavioral
         when 32 => --0x20
           reg_data(32)(15 downto  0)  <=  localWrData(15 downto  0);      --Module 16 bit mode
         when 1 => --0x1
-          reg_data( 1)( 3 downto  0)  <=  localWrData( 3 downto  0);      --
           reg_data( 1)( 3 downto  0)  <=  localWrData( 3 downto  0);      --
         when 16 => --0x10
           reg_data(16)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber

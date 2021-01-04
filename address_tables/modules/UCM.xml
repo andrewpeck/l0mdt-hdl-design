@@ -4,8 +4,8 @@
     <node id="RESET"          mask="0x00000001" permission="w"/>
     <node id="ENABLE"         mask="0x00000010" permission="w"/>
     <node id="DISABLE"        mask="0x00000020" permission="w"/>
-      </node>
-  <node id="STATUS" address="0x00000001">
+  </node>
+  <node id="CONFIGS" address="0x00000001">
     <node id="THREADS"        mask="0x00000000F" permission="rw"/>
   </node>
   <node id="STATUS" address="0x00000002">
@@ -18,15 +18,15 @@
 
 
   <!-- CHAMBERS CENTER PHI -->
-  <node id="PHICENTER0"  address="0x10" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER1"  address="0x11" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER2"  address="0x12" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER3"  address="0x13" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER4"  address="0x14" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER5"  address="0x15" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER6"  address="0x16" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER7"  address="0x17" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER0"  address="0x00000010" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER1"  address="0x00000011" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER2"  address="0x00000012" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER3"  address="0x00000013" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER4"  address="0x00000014" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER5"  address="0x00000015" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER6"  address="0x00000016" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="PHICENTER7"  address="0x00000017" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
 
-  <node id="MODE"     address="0x20" mask="0x0000FFFF" permission="rw" description="Module 16 bit mode"/>
+  <node id="MODE"     address="0x00000020" mask="0x0000FFFF" permission="rw" description="Module 16 bit mode"/>
 
 </node>
