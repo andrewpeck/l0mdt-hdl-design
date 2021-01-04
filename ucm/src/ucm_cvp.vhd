@@ -42,6 +42,8 @@ entity ucm_cvp is
     i_in_en             : in std_logic;
     --
     i_data_v            : in ucm_cde_rvt;
+    --
+    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_ucm2hps_av        : out ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
       
   );

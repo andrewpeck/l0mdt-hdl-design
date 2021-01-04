@@ -17,25 +17,29 @@ package UCM_CTRL is
                                                                DISABLE => '0',
                                                                ENABLE => '0'
                                                               );
-  type UCM_STATUS_CTRL_t is record
+  type UCM_CONFIGS_CTRL_t is record
     THREADS                    :std_logic_vector( 3 downto 0);
-  end record UCM_STATUS_CTRL_t;
+  end record UCM_CONFIGS_CTRL_t;
 
 
-  constant DEFAULT_UCM_STATUS_CTRL_t : UCM_STATUS_CTRL_t := (
-                                                             THREADS => (others => '0')
-                                                            );
-  type UCM_STATUS_CTRL_t is record
-    THREADS                    :std_logic_vector( 3 downto 0);
-  end record UCM_STATUS_CTRL_t;
+  constant DEFAULT_UCM_CONFIGS_CTRL_t : UCM_CONFIGS_CTRL_t := (
+                                                               THREADS => (others => '0')
+                                                              );
+  type UCM_STATUS_MON_t is record
+    STATUS_ENABLED             :std_logic;   
+    STATUS_READY               :std_logic;   
+    STATUS_ERROR               :std_logic;   
+  end record UCM_STATUS_MON_t;
 
 
-  constant DEFAULT_UCM_STATUS_CTRL_t : UCM_STATUS_CTRL_t := (
-                                                             THREADS => (others => '0')
-                                                            );
+  type UCM_MON_t is record
+    STATUS                     :UCM_STATUS_MON_t;
+  end record UCM_MON_t;
+
+
   type UCM_CTRL_t is record
     ACTIONS                    :UCM_ACTIONS_CTRL_t;
-    STATUS                     :UCM_STATUS_CTRL_t; 
+    CONFIGS                    :UCM_CONFIGS_CTRL_t;
     PHICENTER0                 :std_logic_vector(31 downto 0);  -- Phi to Center of chamber
     PHICENTER1                 :std_logic_vector(31 downto 0);  -- Phi to Center of chamber
     PHICENTER2                 :std_logic_vector(31 downto 0);  -- Phi to Center of chamber
@@ -49,7 +53,6 @@ package UCM_CTRL is
 
 
   constant DEFAULT_UCM_CTRL_t : UCM_CTRL_t := (
-                                               STATUS => DEFAULT_UCM_STATUS_CTRL_t,
                                                PHICENTER4 => (others => '0'),
                                                PHICENTER5 => (others => '0'),
                                                PHICENTER6 => (others => '0'),
@@ -59,6 +62,7 @@ package UCM_CTRL is
                                                PHICENTER2 => (others => '0'),
                                                PHICENTER1 => (others => '0'),
                                                MODE => (others => '0'),
+                                               CONFIGS => DEFAULT_UCM_CONFIGS_CTRL_t,
                                                PHICENTER3 => (others => '0')
                                               );
 

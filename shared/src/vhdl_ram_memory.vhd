@@ -66,10 +66,9 @@ architecture beh of vhdl_ram_memory is
       new_mem := (others => (others => '0'));
     elsif mode = "l0mdt" then
       new_mem := (others => (others => '0'));
-
     else
+      -- ERROR: wrong mode
       new_mem := (others => (others => '0'));
-
     end if;
 
     return new_mem;

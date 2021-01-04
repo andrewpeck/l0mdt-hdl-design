@@ -27,12 +27,18 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.UCM_CTRL.all;
+
 entity ucm is
   port (
     clk                     : in std_logic;
     rst                     : in std_logic;
     glob_en                 : in std_logic;
+    ttc_commands            : in l0mdt_ttc_rt;
     -- configuration, control & Monitoring
+    ctrl                    : in  UCM_CTRL_t;
+    mon                     : out UCM_MON_t;
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
