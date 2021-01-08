@@ -25,14 +25,7 @@ UCM_MON_t:
 
 UCM_CTRL_t:
   - ACTIONS : { type: UCM_ACTIONS_CTRL_t }
-  - PHICENTER0 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER1 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER2 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER3 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER4 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER5 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER6 : { type: logic, length: 32, description:Phi to Center of chamber }
-  - PHICENTER7 : { type: logic, length: 32, description:Phi to Center of chamber }
+  - SECTOR_PHI : { type: logic, length: 32, description:Phi to Center of chamber }
   - MODE : { type: logic, length: 16, description:Module 16 bit mode }
 
 

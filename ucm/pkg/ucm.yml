@@ -42,6 +42,7 @@ HDL_Types:
   - mdtid       : [type : vec_mdtid]
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - posphi      : [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
   - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type : logic]
 

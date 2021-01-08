@@ -201,6 +201,8 @@ begin
       rst           => rst,
       glob_en       => glob_en,
       --
+      SECTOR_PHI    => ctrl.SECTOR_PHI,
+      --
       i_local_rst   => cvp_loc_rst(vp_i),
       i_in_en       => cvp_in_en(vp_i),
       --

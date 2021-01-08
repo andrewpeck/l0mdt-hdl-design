@@ -52,10 +52,11 @@ package ucm_pkg is
     mdtid : vec_mdtid_rt;
     chamb_ieta : chamb_ieta_rpc_bus_at;
     cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
+    posphi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
     specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
   end record ucm_cde_rt;
-  constant UCM_CDE_LEN : integer := 135;
+  constant UCM_CDE_LEN : integer := 144;
   subtype ucm_cde_rvt is std_logic_vector(UCM_CDE_LEN-1 downto 0);
   function vectorify(x: ucm_cde_rt) return ucm_cde_rvt;
   function structify(x: ucm_cde_rvt) return ucm_cde_rt;
@@ -261,10 +262,11 @@ package body ucm_pkg is
   function vectorify(x: ucm_cde_rt) return ucm_cde_rvt is
     variable y : ucm_cde_rvt;
   begin
-    y(134 downto 114)          := vectorify(x.muid);
-    y(113 downto 105)          := vectorify(x.mdtid);
-    y(104 downto 89)           := vectorify(x.chamb_ieta);
-    y(88 downto 86)            := vectorify(x.cointype);
+    y(143 downto 123)          := vectorify(x.muid);
+    y(122 downto 114)          := vectorify(x.mdtid);
+    y(113 downto 98)           := vectorify(x.chamb_ieta);
+    y(97 downto 95)            := vectorify(x.cointype);
+    y(94 downto 86)            := vectorify(x.posphi);
     y(85 downto 1)             := vectorify(x.specific);
     y(0 downto 0)              := vectorify(x.data_valid);
     return y;
@@ -272,10 +274,11 @@ package body ucm_pkg is
   function structify(x: ucm_cde_rvt) return ucm_cde_rt is
     variable y : ucm_cde_rt;
   begin
-    y.muid                     := structify(x(134 downto 114));
-    y.mdtid                    := structify(x(113 downto 105));
-    y.chamb_ieta               := structify(x(104 downto 89));
-    y.cointype                 := structify(x(88 downto 86));
+    y.muid                     := structify(x(143 downto 123));
+    y.mdtid                    := structify(x(122 downto 114));
+    y.chamb_ieta               := structify(x(113 downto 98));
+    y.cointype                 := structify(x(97 downto 95));
+    y.posphi                   := structify(x(94 downto 86));
     y.specific                 := structify(x(85 downto 1));
     y.data_valid               := structify(x(0 downto 0));
     return y;
@@ -287,6 +290,7 @@ package body ucm_pkg is
     y.mdtid                    := nullify(x.mdtid);
     y.chamb_ieta               := nullify(x.chamb_ieta);
     y.cointype                 := nullify(x.cointype);
+    y.posphi                   := nullify(x.posphi);
     y.specific                 := nullify(x.specific);
     y.data_valid               := nullify(x.data_valid);
     return y;
@@ -301,12 +305,12 @@ package body ucm_pkg is
     return y;
   end function vectorify;
   function vectorify(x: ucm_cde_bus_at) return std_logic_vector is
-    variable msb : integer := x'length*135-1;
+    variable msb : integer := x'length*144-1;
     variable y : std_logic_vector(msb downto 0);
   begin
     l: for i in x'range loop
-      y(msb downto msb-135+1) := vectorify(x(i));
-      msb := msb - 135;
+      y(msb downto msb-144+1) := vectorify(x(i));
+      msb := msb - 144;
     end loop l;
     return y;
   end function vectorify;
@@ -323,8 +327,8 @@ package body ucm_pkg is
     variable msb : integer := x'left;
   begin
     l: for i in y'range loop
-      y(i) := structify(x(msb downto msb-135+1));
-      msb := msb - 135;
+      y(i) := structify(x(msb downto msb-144+1));
+      msb := msb - 144;
     end loop l;
     return y;
   end function structify;

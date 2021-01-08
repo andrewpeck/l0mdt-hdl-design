@@ -92,6 +92,7 @@ begin
             o_cde_data_r.cointype     <= i_slc_data_r.common.cointype;
             o_cde_data_r.specific     <= i_slc_data_r.specific;
             o_cde_data_r.data_valid   <= i_slc_data_r.data_valid;
+            o_cde_data_r.posphi       <= i_slc_data_r.common.posphi;
 
 
             -- INN

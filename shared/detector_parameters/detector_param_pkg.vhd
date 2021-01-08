@@ -76,7 +76,24 @@ package detector_param_pkg is
 
   function get_barrel_radius ( sector, r_i: integer) return signed;
 
-    -------------------------------------------------------------------------
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  --UCM2PL_PHIMOD_MULT
+  subtype sector_phi_center_t is unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+  type sector_phi_center_default_t is array ( 0 to 15) of real;
+  constant sector_phi_center_default : sector_phi_center_default_t :=(
+    -- -pi to pi ; signed
+    -- 0.       ,0.392699 ,0.785398 ,1.178097 , 1.570796 ,1.963495 ,2.356194 ,2.748894 ,
+    -- 3.141593 ,-2.748894,-2.356194,-1.963495, -1.570796,-1.178097,-0.785398,-0.392699
+    -- 0 to 2pi ; unsigned
+    0.0,0.392699082,0.785398163,1.178097245,1.570796327,1.963495408,2.35619449,2.748893572,
+    3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
+
+  );
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t; 
+  
+  -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
   
@@ -245,6 +262,19 @@ package detector_param_pkg is
 end package detector_param_pkg;
 
 package body detector_param_pkg is
+
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t is
+    variable mem_out : sector_phi_center_t;
+    variable a , b : real;
+  begin
+    a := sector_phi_center_default(sector);
+    b := SLC_COMMON_POSPHI_MULT;
+    mem_out := to_unsigned( integer(a * b),UCM2PL_PHIMOD_LEN);
+    return mem_out;
+  end function;
 
   -------------------------------------------------------------------------
   -- Time & cycles constants
