@@ -49,12 +49,15 @@ end entity ucm_cvp_phimod;
 
 architecture beh of ucm_cvp_phimod is
 
+
+
   type phimod_buff_at is array (g_PIPELINE downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal phimod_buff : phimod_buff_at;
 
   signal sphi_buff : integer;--unsigned(18 -1 downto 0);
   signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := (others => '0');
+  signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
 
   constant reschanger : real := SLC_COMMON_POSPHI_MULT/UCM2PL_PHIMOD_MULT;
   
@@ -66,7 +69,7 @@ begin
       if SECTOR_PHI.OVERRIDE = '1' then
         phicenter <= unsigned(SECTOR_PHI.VALUE);
       else
-        phicenter <= get_sector_phi_center(c_SECTOR_ID);
+        phicenter <= phicenter_Default;
       end if;
     end if;
   end process;
