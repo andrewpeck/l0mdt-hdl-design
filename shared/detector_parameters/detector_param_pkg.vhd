@@ -272,7 +272,7 @@ package body detector_param_pkg is
   begin
     a := sector_phi_center_default(sector);
     b := SLC_COMMON_POSPHI_MULT;
-    mem_out := to_unsigned( integer(a * b),UCM2PL_PHIMOD_LEN);
+    mem_out := to_unsigned( integer(a * b),SLC_COMMON_POSPHI_LEN);
     return mem_out;
   end function;
 

@@ -67,7 +67,7 @@ begin
   begin
     if rising_edge(clk) then
       if SECTOR_PHI.OVERRIDE = '1' then
-        phicenter <= unsigned(SECTOR_PHI.VALUE);
+        phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
       else
         phicenter <= phicenter_Default;
       end if;
