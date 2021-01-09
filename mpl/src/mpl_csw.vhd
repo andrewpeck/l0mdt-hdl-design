@@ -26,6 +26,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 library mpl_lib;
+use mpl_lib.mpl_pkg.all;
 
 
 entity mpl_csw is
@@ -36,7 +37,7 @@ entity mpl_csw is
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_ucm_av            : in pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+    i_ucm_av            : in mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
     o_tf_av             : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0)
     -- o_mtc_av          : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
   );
@@ -44,12 +45,14 @@ end entity mpl_csw;
 
 architecture beh of mpl_csw is
 
-  signal slc_pl : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
+  signal slc_pl     : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
+  signal csw2tf_ar  : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
   
 begin
 
   V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
     slc_pl(sl_i) <= structify(i_ucm_av(sl_i));
+    o_tf_av(sl_i) <= vectorify(csw2tf_ar(sl_i));
   end generate V2R;
 
   MP2TF_CSW: process(clk)
@@ -64,7 +67,16 @@ begin
           slo_found := '0';
           for sli_i in c_NUM_THREADS -1 downto 0 loop
             if ((slc_pl(sli_i).busy = '1') and (to_integer(unsigned(slc_pl(sli_i).process_ch)) = slo_i)) then
-              o_tf_av(slo_i) <= i_ucm_av(sli_i);
+              csw2tf_ar(slo_i).muid <= slc_pl(sli_i).muid;
+              csw2tf_ar(slo_i).phimod <= slc_pl(sli_i).phimod;
+              csw2tf_ar(slo_i).sl_charge <= slc_pl(sli_i).sl_charge;
+              csw2tf_ar(slo_i).data_valid <= slc_pl(sli_i).data_valid;
+              csw2tf_ar(slo_i).nswseg_poseta <= slc_pl(sli_i).nswseg_poseta;
+              csw2tf_ar(slo_i).nswseg_posphi <= slc_pl(sli_i).nswseg_posphi;
+              csw2tf_ar(slo_i).nswseg_angdtheta <= slc_pl(sli_i).nswseg_angdtheta;
+              -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
+              -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
+
               slo_found := '1';
             end if;
           end loop;

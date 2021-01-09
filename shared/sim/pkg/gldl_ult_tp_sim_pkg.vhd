@@ -111,7 +111,7 @@ package gldl_ult_tp_sim_pkg is
     thread : unsigned(4-1 downto 0);
     data : sf2ptcalc_rt;
   end record in_pt_pt2sf_sim_rt;
-  constant IN_PT_PT2SF_SIM_LEN : integer := 135;
+  constant IN_PT_PT2SF_SIM_LEN : integer := 136;
   subtype in_pt_pt2sf_sim_rvt is std_logic_vector(IN_PT_PT2SF_SIM_LEN-1 downto 0);
   function vectorify(x: in_pt_pt2sf_sim_rt) return in_pt_pt2sf_sim_rvt;
   function structify(x: in_pt_pt2sf_sim_rvt) return in_pt_pt2sf_sim_rt;
@@ -122,7 +122,7 @@ package gldl_ult_tp_sim_pkg is
     thread : unsigned(4-1 downto 0);
     data : pl2ptcalc_rt;
   end record in_pt_mpl_sim_rt;
-  constant IN_PT_MPL_SIM_LEN : integer := 131;
+  constant IN_PT_MPL_SIM_LEN : integer := 126;
   subtype in_pt_mpl_sim_rvt is std_logic_vector(IN_PT_MPL_SIM_LEN-1 downto 0);
   function vectorify(x: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rvt;
   function structify(x: in_pt_mpl_sim_rvt) return in_pt_mpl_sim_rt;
@@ -458,19 +458,19 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: in_pt_pt2sf_sim_rt) return in_pt_pt2sf_sim_rvt is
     variable y : in_pt_pt2sf_sim_rvt;
   begin
-    y(134 downto 71)           := vectorify(x.ToA);
-    y(70 downto 67)            := vectorify(x.station);
-    y(66 downto 63)            := vectorify(x.thread);
-    y(62 downto 0)             := vectorify(x.data);
+    y(135 downto 72)           := vectorify(x.ToA);
+    y(71 downto 68)            := vectorify(x.station);
+    y(67 downto 64)            := vectorify(x.thread);
+    y(63 downto 0)             := vectorify(x.data);
     return y;
   end function vectorify;
   function structify(x: in_pt_pt2sf_sim_rvt) return in_pt_pt2sf_sim_rt is
     variable y : in_pt_pt2sf_sim_rt;
   begin
-    y.ToA                      := structify(x(134 downto 71));
-    y.station                  := structify(x(70 downto 67));
-    y.thread                   := structify(x(66 downto 63));
-    y.data                     := structify(x(62 downto 0));
+    y.ToA                      := structify(x(135 downto 72));
+    y.station                  := structify(x(71 downto 68));
+    y.thread                   := structify(x(67 downto 64));
+    y.data                     := structify(x(63 downto 0));
     return y;
   end function structify;
   function nullify(x: in_pt_pt2sf_sim_rt) return in_pt_pt2sf_sim_rt is
@@ -486,17 +486,17 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rvt is
     variable y : in_pt_mpl_sim_rvt;
   begin
-    y(130 downto 67)           := vectorify(x.ToA);
-    y(66 downto 63)            := vectorify(x.thread);
-    y(62 downto 0)             := vectorify(x.data);
+    y(125 downto 62)           := vectorify(x.ToA);
+    y(61 downto 58)            := vectorify(x.thread);
+    y(57 downto 0)             := vectorify(x.data);
     return y;
   end function vectorify;
   function structify(x: in_pt_mpl_sim_rvt) return in_pt_mpl_sim_rt is
     variable y : in_pt_mpl_sim_rt;
   begin
-    y.ToA                      := structify(x(130 downto 67));
-    y.thread                   := structify(x(66 downto 63));
-    y.data                     := structify(x(62 downto 0));
+    y.ToA                      := structify(x(125 downto 62));
+    y.thread                   := structify(x(61 downto 58));
+    y.data                     := structify(x(57 downto 0));
     return y;
   end function structify;
   function nullify(x: in_pt_mpl_sim_rt) return in_pt_mpl_sim_rt is
