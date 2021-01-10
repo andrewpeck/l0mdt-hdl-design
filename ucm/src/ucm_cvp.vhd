@@ -102,6 +102,7 @@ begin
     SECTOR_PHI  => SECTOR_PHI,
     --
     i_posphi    => data_r.posphi,
+    i_dv        => data_r.data_valid,
     --
     o_phimod    => o_phimod
   );

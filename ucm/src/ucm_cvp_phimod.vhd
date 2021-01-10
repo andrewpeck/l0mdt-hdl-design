@@ -42,8 +42,10 @@ entity ucm_cvp_phimod is
     SECTOR_PHI          : in UCM_SECTOR_PHI_CTRL_t;
     --
     i_posphi            : in unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
+    i_dv                : in std_logic;
     --
     o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
+    -- o_dv                : out std_logic;
   );
 end entity ucm_cvp_phimod;
 
@@ -52,10 +54,10 @@ architecture beh of ucm_cvp_phimod is
 
 
   type phimod_buff_at is array (g_PIPELINE downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-  signal phimod_buff : phimod_buff_at;
+  signal phimod_buff : phimod_buff_at := ( others =>  (others => '0'));
 
-  signal sphi_buff : integer;--unsigned(18 -1 downto 0);
-  signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  signal sphi_buff : integer := 0;--unsigned(18 -1 downto 0);
+  -- signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := (others => '0');
   signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
 
@@ -82,12 +84,17 @@ begin
       if rst = '1' then
         -- sphi <= sphi_buff;
         -- phicenter <= 
+        sphi_buff <= 0;
         phimod_buff <= ( others =>  (others => '0'));
       else
         -- sphi_buff <= i_posphi * to_unsigned(integer(reschanger),9);
         -- phimod_buff(g_PIPELINE) <= resize(signed(resize(signed(SECTOR_PHI),32) - signed(sphi_buff)),UCM2PL_PHIMOD_LEN);
         --
-        sphi_buff <= to_integer(i_posphi) * integer(reschanger);
+        if i_dv = '1' then
+          sphi_buff <= to_integer(i_posphi) * integer(reschanger);
+        else
+          sphi_buff <= 0;
+        end if;
         phimod_buff(g_PIPELINE) <= to_signed(to_integer(unsigned(phicenter) - sphi_buff),UCM2PL_PHIMOD_LEN);
         --
         --resize(signed(sphi_buff),32)),UCM2PL_PHIMOD_LEN);
