@@ -70,7 +70,11 @@ architecture beh of ucm is
 
   signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
 
+  signal int_uCM2pl_av        : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal int_uCM2pl_ar        : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal pl_o_uCM2pl_ar       : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal pl_o_uCM2pl_av       : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -84,6 +88,9 @@ architecture beh of ucm is
 
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
+
+  type cvp_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal cvp_phimod           : cvp_phimod_at;
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
@@ -207,6 +214,8 @@ begin
       i_in_en       => cvp_in_en(vp_i),
       --
       i_data_v      => cpam_out_av(vp_i),
+      --
+      o_phimod      => cvp_phimod(vp_i),
       o_uCM2hps_av  => uCM2hps_data(vp_i)
 
     );
@@ -224,8 +233,8 @@ begin
       rst         => rst,
       glob_en     => glob_en,
       --
-      i_data      => uCM2pl_av(sl_i),
-      o_data      => o_uCM2pl_av(sl_i)
+      i_data      => int_uCM2pl_av(sl_i),
+      o_data      => pl_o_uCM2pl_av(sl_i)
     );
   end generate;
 
@@ -266,34 +275,64 @@ begin
     
     BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
       -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
-      o_uCM2pl_ar(sl_i).nswseg_poseta     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_poseta;
-      o_uCM2pl_ar(sl_i).nswseg_posphi     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_posphi;
-      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= (others => '0');--slc_endcap_ar(sl_i).nswseg_angdtheta;
+      int_uCM2pl_ar(sl_i).nswseg_poseta     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_poseta;
+      int_uCM2pl_ar(sl_i).nswseg_posphi     <= (others => '0');--slc_endcap_ar(sl_i).nswseg_posphi;
+      int_uCM2pl_ar(sl_i).nswseg_angdtheta  <= (others => '0');--slc_endcap_ar(sl_i).nswseg_angdtheta;
     end generate;
 
     ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
       slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
-      o_uCM2pl_ar(sl_i).nswseg_poseta     <= slc_endcap_ar(sl_i).nswseg_poseta;
-      o_uCM2pl_ar(sl_i).nswseg_posphi     <= slc_endcap_ar(sl_i).nswseg_posphi;
-      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= slc_endcap_ar(sl_i).nswseg_angdtheta;
+      int_uCM2pl_ar(sl_i).nswseg_poseta     <= slc_endcap_ar(sl_i).nswseg_poseta;
+      int_uCM2pl_ar(sl_i).nswseg_posphi     <= slc_endcap_ar(sl_i).nswseg_posphi;
+      int_uCM2pl_ar(sl_i).nswseg_angdtheta  <= slc_endcap_ar(sl_i).nswseg_angdtheta;
     end generate;
 
-    -- o_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
-    o_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
-    -- o_uCM2pl_ar(sl_i).chambers    <= csw_main_out_ar(sl_i).chambers;
-    -- o_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
-    o_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
+    -- int_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
+    int_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
+    -- if proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed = '1' then
+    int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+    -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
+    int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
     PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).busy   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
-      o_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
+      int_uCM2pl_ar(sl_i).busy   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
+      int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
+      -- int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
     PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).busy   <= '0';
-      o_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
+      int_uCM2pl_ar(sl_i).busy   <= '0';
+      int_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
+      -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+
     end generate;
 
-    uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i));
+    int_uCM2pl_av(sl_i) <= vectorify(int_uCM2pl_ar(sl_i));
+
+  end generate;
+
+  POST_PL: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    pl_o_uCM2pl_ar(sl_i) <= structify(pl_o_uCM2pl_av(sl_i));
+    --
+    o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
+    o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
+    o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
+    o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
+    PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).phimod    <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+    end generate;
+    PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
+    end generate;
+    -- ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
+      -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
+      o_uCM2pl_ar(sl_i).nswseg_poseta     <= pl_o_uCM2pl_ar(sl_i).nswseg_poseta;
+      o_uCM2pl_ar(sl_i).nswseg_posphi     <= pl_o_uCM2pl_ar(sl_i).nswseg_posphi;
+      o_uCM2pl_ar(sl_i).nswseg_angdtheta  <= pl_o_uCM2pl_ar(sl_i).nswseg_angdtheta;
+    -- end generate;
+
+    --
+    o_uCM2pl_av(sl_i) <= vectorify(o_uCM2pl_ar(sl_i));
+
   end generate;
 
 end beh;

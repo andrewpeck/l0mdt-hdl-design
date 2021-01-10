@@ -61,7 +61,7 @@ architecture beh of ucm_cvp_phimod is
   signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := (others => '0');
   signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
 
-  constant reschanger : real := SLC_COMMON_POSPHI_MULT/UCM2PL_PHIMOD_MULT;
+  constant reschanger : integer := integer((1024.0 * SLC_COMMON_POSPHI_MULT)/UCM2PL_PHIMOD_MULT);
   
 begin
 
@@ -91,7 +91,7 @@ begin
         -- phimod_buff(g_PIPELINE) <= resize(signed(resize(signed(SECTOR_PHI),32) - signed(sphi_buff)),UCM2PL_PHIMOD_LEN);
         --
         if i_dv = '1' then
-          sphi_buff <= to_integer(i_posphi) * integer(reschanger);
+          sphi_buff <= (to_integer(i_posphi) * integer(reschanger))/1024;
         else
           sphi_buff <= 0;
         end if;

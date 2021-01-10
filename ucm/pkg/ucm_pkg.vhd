@@ -14,7 +14,7 @@ package ucm_pkg is
 
   constant UCM_INPUT_PL_LATENCY : integer := 2;
 
-  constant UCM_OUTPUT_PL_LATENCY : integer := 2;
+  constant UCM_OUTPUT_PL_LATENCY : integer := 6;
 
   constant SLC_SPECIFIC_LEN : integer := 85;
 
