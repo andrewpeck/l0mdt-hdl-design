@@ -28,8 +28,8 @@ architecture behavioral of UCM_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 32);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 32) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 768);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 768) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -65,32 +65,22 @@ begin  -- architecture behavioral
     localRdData <= x"00000000";
     if localRdReq = '1' then
       localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(5 downto 0))) is
+      case to_integer(unsigned(localAddress(9 downto 0))) is
 
-        when 32 => --0x20
-          localRdData(15 downto  0)  <=  reg_data(32)(15 downto  0);      --Module 16 bit mode
-        when 1 => --0x1
-          localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);      --
-        when 2 => --0x2
-          localRdData( 0)            <=  Mon.STATUS.STATUS_ENABLED;       --
-          localRdData( 1)            <=  Mon.STATUS.STATUS_READY;         --
-          localRdData( 2)            <=  Mon.STATUS.STATUS_ERROR;         --
         when 16 => --0x10
-          localRdData(31 downto  0)  <=  reg_data(16)(31 downto  0);      --Phi to Center of chamber
-        when 17 => --0x11
-          localRdData(31 downto  0)  <=  reg_data(17)(31 downto  0);      --Phi to Center of chamber
-        when 18 => --0x12
-          localRdData(31 downto  0)  <=  reg_data(18)(31 downto  0);      --Phi to Center of chamber
-        when 19 => --0x13
-          localRdData(31 downto  0)  <=  reg_data(19)(31 downto  0);      --Phi to Center of chamber
-        when 20 => --0x14
-          localRdData(31 downto  0)  <=  reg_data(20)(31 downto  0);      --Phi to Center of chamber
-        when 21 => --0x15
-          localRdData(31 downto  0)  <=  reg_data(21)(31 downto  0);      --Phi to Center of chamber
-        when 22 => --0x16
-          localRdData(31 downto  0)  <=  reg_data(22)(31 downto  0);      --Phi to Center of chamber
-        when 23 => --0x17
-          localRdData(31 downto  0)  <=  reg_data(23)(31 downto  0);      --Phi to Center of chamber
+          localRdData( 0)            <=  Mon.STATUS.MAIN_ENABLED;          --
+          localRdData( 1)            <=  Mon.STATUS.MAIN_READY;            --
+          localRdData( 2)            <=  Mon.STATUS.MAIN_ERROR;            --
+        when 1 => --0x1
+          localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);       --
+          localRdData( 4)            <=  reg_data( 1)( 4);                 --
+          localRdData( 5)            <=  reg_data( 1)( 5);                 --
+        when 256 => --0x100
+          localRdData(15 downto  0)  <=  reg_data(256)(15 downto  0);      --Phi to Center of chamber
+          localRdData(16)            <=  reg_data(256)(16);                --Phi to Center of chamber
+        when 768 => --0x300
+          localRdData(15 downto  0)  <=  Mon.IETA_CALC_RD.VALUE;           --Phi to Center of chamber
+          localRdData(27)            <=  Mon.IETA_CALC_RD.RST_REQ;         --Phi to Center of chamber
 
 
         when others =>
@@ -103,65 +93,49 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
-  Ctrl.MODE             <=  reg_data(32)(15 downto  0);     
-  Ctrl.CONFIGS.THREADS  <=  reg_data( 1)( 3 downto  0);     
-  Ctrl.PHICENTER0       <=  reg_data(16)(31 downto  0);     
-  Ctrl.PHICENTER1       <=  reg_data(17)(31 downto  0);     
-  Ctrl.PHICENTER2       <=  reg_data(18)(31 downto  0);     
-  Ctrl.PHICENTER3       <=  reg_data(19)(31 downto  0);     
-  Ctrl.PHICENTER4       <=  reg_data(20)(31 downto  0);     
-  Ctrl.PHICENTER5       <=  reg_data(21)(31 downto  0);     
-  Ctrl.PHICENTER6       <=  reg_data(22)(31 downto  0);     
-  Ctrl.PHICENTER7       <=  reg_data(23)(31 downto  0);     
+  Ctrl.CONFIGS.THREADS      <=  reg_data( 1)( 3 downto  0);      
+  Ctrl.CONFIGS.INPUT_EN     <=  reg_data( 1)( 4);                
+  Ctrl.CONFIGS.OUTPUT_EN    <=  reg_data( 1)( 5);                
+  Ctrl.SECTOR_PHI.VALUE     <=  reg_data(256)(15 downto  0);     
+  Ctrl.SECTOR_PHI.OVERRIDE  <=  reg_data(256)(16);               
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(32)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.MODE;
       reg_data( 1)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.CONFIGS.THREADS;
-      reg_data(16)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER0;
-      reg_data(17)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER1;
-      reg_data(18)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER2;
-      reg_data(19)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER3;
-      reg_data(20)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER4;
-      reg_data(21)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER5;
-      reg_data(22)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER6;
-      reg_data(23)(31 downto  0)  <= DEFAULT_UCM_CTRL_t.PHICENTER7;
+      reg_data( 1)( 4)  <= DEFAULT_UCM_CTRL_t.CONFIGS.INPUT_EN;
+      reg_data( 1)( 5)  <= DEFAULT_UCM_CTRL_t.CONFIGS.OUTPUT_EN;
+      reg_data(256)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SECTOR_PHI.VALUE;
+      reg_data(256)(16)  <= DEFAULT_UCM_CTRL_t.SECTOR_PHI.OVERRIDE;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.ACTIONS.RESET <= '0';
       Ctrl.ACTIONS.ENABLE <= '0';
       Ctrl.ACTIONS.DISABLE <= '0';
+      Ctrl.IETA_CALC_WR.VALUE <= (others => '0');
+      Ctrl.IETA_CALC_WR.ADDR <= (others => '0');
+      Ctrl.IETA_CALC_WR.WR_EN <= '0';
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(5 downto 0))) is
+        case to_integer(unsigned(localAddress(9 downto 0))) is
         when 0 => --0x0
-          Ctrl.ACTIONS.RESET          <=  localWrData( 0);               
-          Ctrl.ACTIONS.ENABLE         <=  localWrData( 4);               
-          Ctrl.ACTIONS.DISABLE        <=  localWrData( 5);               
-        when 32 => --0x20
-          reg_data(32)(15 downto  0)  <=  localWrData(15 downto  0);      --Module 16 bit mode
+          Ctrl.ACTIONS.RESET           <=  localWrData( 0);               
+          Ctrl.ACTIONS.ENABLE          <=  localWrData( 4);               
+          Ctrl.ACTIONS.DISABLE         <=  localWrData( 5);               
         when 1 => --0x1
-          reg_data( 1)( 3 downto  0)  <=  localWrData( 3 downto  0);      --
-        when 16 => --0x10
-          reg_data(16)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 17 => --0x11
-          reg_data(17)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 18 => --0x12
-          reg_data(18)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 19 => --0x13
-          reg_data(19)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 20 => --0x14
-          reg_data(20)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 21 => --0x15
-          reg_data(21)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 22 => --0x16
-          reg_data(22)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
-        when 23 => --0x17
-          reg_data(23)(31 downto  0)  <=  localWrData(31 downto  0);      --Phi to Center of chamber
+          reg_data( 1)( 3 downto  0)   <=  localWrData( 3 downto  0);      --
+          reg_data( 1)( 4)             <=  localWrData( 4);                --
+          reg_data( 1)( 5)             <=  localWrData( 5);                --
+        when 256 => --0x100
+          reg_data(256)(15 downto  0)  <=  localWrData(15 downto  0);      --Phi to Center of chamber
+          reg_data(256)(16)            <=  localWrData(16);                --Phi to Center of chamber
+        when 512 => --0x200
+          Ctrl.IETA_CALC_WR.VALUE      <=  localWrData(15 downto  0);     
+          Ctrl.IETA_CALC_WR.ADDR       <=  localWrData(23 downto 16);     
+          Ctrl.IETA_CALC_WR.WR_EN      <=  localWrData(24);               
 
           when others => null;
         end case;
