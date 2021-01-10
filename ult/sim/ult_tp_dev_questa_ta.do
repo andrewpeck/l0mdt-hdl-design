@@ -61,21 +61,21 @@ add wave -noupdate -group ULT_TOP /ult_tp/ULT/extra_slc_to_pt
 add wave -noupdate -group ULT_TOP /ult_tp/ULT/pl2pt_av
 add wave -noupdate -group ULT_TOP /ult_tp/ULT/pl2mtc_av
 add wave -noupdate -group ULT_TOP /ult_tp/ULT/pt2mtc_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/clk
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/rst
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/glob_en
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/ttc_commands
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/ctrl
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/mon
-add wave -noupdate -expand -group UCM_TOP -expand -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_mainA_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_mainB_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborA_v
-add wave -noupdate -expand -group UCM_TOP -expand -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborB_v
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_inn_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_mid_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_out_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_ext_av
-add wave -noupdate -expand -group UCM_TOP -expand -group port -color Coral /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_av
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/clk
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/rst
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/glob_en
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/ttc_commands
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/ctrl
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/mon
+add wave -noupdate -expand -group UCM_TOP -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_mainA_av
+add wave -noupdate -expand -group UCM_TOP -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_mainB_av
+add wave -noupdate -expand -group UCM_TOP -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborA_v
+add wave -noupdate -expand -group UCM_TOP -group port -color {Medium Violet Red} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborB_v
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_inn_av
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_mid_av
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_out_av
+add wave -noupdate -expand -group UCM_TOP -group port /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_ext_av
+add wave -noupdate -expand -group UCM_TOP -group port -color Coral /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_av
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_av
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/prepro2ctrl_av
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/ucm_prepro_av
@@ -85,8 +85,8 @@ add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/csw_
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/slc_endcap_ar
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_in_av
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av
-add wave -noupdate -expand -group UCM_TOP -color Goldenrod -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4) {-color Goldenrod -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).data_valid {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).busy {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).process_ch {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common {-color Goldenrod -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.header {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.slcid {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.tcsent {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.poseta {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.posphi {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.sl_pt {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.sl_ptthresh {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.sl_charge {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.cointype {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common.trailer {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).phimod {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_angdtheta {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_posphi {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_poseta {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(3) {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(2) {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(1) {-color Goldenrod} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(0) {-color Goldenrod}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
-add wave -noupdate -expand -group UCM_TOP -color Cyan -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4) {-color Cyan -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).data_valid {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).busy {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).process_ch {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common {-color Cyan -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.header {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.slcid {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.tcsent {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.poseta {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.posphi {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.sl_pt {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.sl_ptthresh {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.sl_charge {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.cointype {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).common.trailer {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).phimod {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).nswseg_angdtheta {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).nswseg_posphi {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4).nswseg_poseta {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(3) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(2) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(1) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(0) {-color Cyan}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar
+add wave -noupdate -expand -group UCM_TOP -color Goldenrod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
+add wave -noupdate -expand -group UCM_TOP -color Cyan /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_ar
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_av
 add wave -noupdate -expand -group UCM_TOP /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cpam_in_av
@@ -122,13 +122,13 @@ add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phi
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/rst
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/SECTOR_PHI
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/i_dv
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/i_posphi
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/o_phimod
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/sphi_buff
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phicenter
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phicenter_Default
-add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/reschanger
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/i_posphi
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix decimal /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/o_phimod
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(2) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(1) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(2) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(1) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff(0) {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phimod_buff
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/sphi_buff
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phicenter
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/phicenter_Default
+add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -expand -group phimod -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/PHIMOD/reschanger
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -group SLOPE_CALC /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/B_SLOPE/SLOPE_CALC/clk
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -group SLOPE_CALC /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/B_SLOPE/SLOPE_CALC/rst
 add wave -noupdate -expand -group UCM_TOP -expand -group CVP2 -group SLOPE_CALC /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/B_SLOPE/SLOPE_CALC/glob_en
@@ -274,9 +274,9 @@ add wave -noupdate -group tar -expand -group TAR_REMAP /ult_tp/ULT/logic_gen/TAR
 add wave -noupdate -group tar -expand -group TAR_REMAP /ult_tp/ULT/logic_gen/TAR/TAR_GEN/TAR/TDC_INPUTS_GEN/OUT_EN/OUT_DELAY(2)/OUT_EN/REMAP_OUT/dv_pl
 add wave -noupdate -group tar -expand -group TAR_REMAP /ult_tp/ULT/logic_gen/TAR/TAR_GEN/TAR/TDC_INPUTS_GEN/OUT_EN/OUT_DELAY(2)/OUT_EN/REMAP_OUT/csm_pl
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2004687500 fs} 1} {{Cursor 2} {1887032933 fs} 0}
-quietly wave cursor active 2
-configure wave -namecolwidth 134
+WaveRestoreCursors {{Cursor 1} {1892022187 fs} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 238
 configure wave -valuecolwidth 218
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
@@ -290,4 +290,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1875017031 fs} {1921857970 fs}
+WaveRestoreZoom {1887016446 fs} {1911368048 fs}

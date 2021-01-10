@@ -65,16 +65,16 @@ architecture beh of ucm_cvp_phimod is
   
 begin
 
-  OVERRIDES : process(clk)
-  begin
-    if rising_edge(clk) then
-      if SECTOR_PHI.OVERRIDE = '1' then
-        phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
-      else
-        phicenter <= phicenter_Default;
-      end if;
-    end if;
-  end process;
+  -- OVERRIDES : process(clk)
+  -- begin
+  --   if rising_edge(clk) then
+  --     if SECTOR_PHI.OVERRIDE = '1' then
+  --       phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+  --     else
+  --       phicenter <= phicenter_Default;
+  --     end if;
+  --   end if;
+  -- end process;
 
   o_phimod <= phimod_buff(0);
 
@@ -82,8 +82,12 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        -- sphi <= sphi_buff;
-        -- phicenter <= 
+        if SECTOR_PHI.OVERRIDE = '1' then
+          phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+        else
+          phicenter <= phicenter_Default;
+        end if;
+        
         sphi_buff <= 0;
         phimod_buff <= ( others =>  (others => '0'));
       else
