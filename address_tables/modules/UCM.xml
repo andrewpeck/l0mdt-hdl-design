@@ -22,4 +22,14 @@
     <node id="VALUE"    mask="0x0000FFFF" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
     <node id="OVERRIDE" mask="0x00010000" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
   </node>
+
+  <!-- CHAMBER IETA MEMORY CONTROLS -->
+  <node id="IETA_CALC_WR"  address="0x00000200">
+    <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
+    <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
+    <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Phi to Center of chamber"/>
+  </node>
+  <node id="IETA_CALC_RD"  address="0x00000300">
+    <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
+  </node>
 </node>

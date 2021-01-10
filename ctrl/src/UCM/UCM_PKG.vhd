@@ -46,8 +46,24 @@ package UCM_CTRL is
                                                                      OVERRIDE => '0',
                                                                      VALUE => x"0000"
                                                                     );
+  type UCM_IETA_CALC_WR_CTRL_t is record
+    VALUE                      :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+    ADDR                       :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+  end record UCM_IETA_CALC_WR_CTRL_t;
+
+
+  constant DEFAULT_UCM_IETA_CALC_WR_CTRL_t : UCM_IETA_CALC_WR_CTRL_t := (
+                                                                         ADDR => (others => '0'),
+                                                                         VALUE => (others => '0')
+                                                                        );
+  type UCM_IETA_CALC_RD_MON_t is record
+    VALUE_RD                   :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+  end record UCM_IETA_CALC_RD_MON_t;
+
+
   type UCM_MON_t is record
     STATUS                     :UCM_STATUS_MON_t;
+    IETA_CALC_RD               :UCM_IETA_CALC_RD_MON_t;
   end record UCM_MON_t;
 
 
@@ -55,11 +71,13 @@ package UCM_CTRL is
     ACTIONS                    :UCM_ACTIONS_CTRL_t;
     CONFIGS                    :UCM_CONFIGS_CTRL_t;
     SECTOR_PHI                 :UCM_SECTOR_PHI_CTRL_t;
+    IETA_CALC_WR               :UCM_IETA_CALC_WR_CTRL_t;
   end record UCM_CTRL_t;
 
 
   constant DEFAULT_UCM_CTRL_t : UCM_CTRL_t := (
                                                CONFIGS => DEFAULT_UCM_CONFIGS_CTRL_t,
+                                               IETA_CALC_WR => DEFAULT_UCM_IETA_CALC_WR_CTRL_t,
                                                SECTOR_PHI => DEFAULT_UCM_SECTOR_PHI_CTRL_t,
                                                ACTIONS => DEFAULT_UCM_ACTIONS_CTRL_t
                                               );

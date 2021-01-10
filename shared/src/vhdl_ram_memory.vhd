@@ -1,4 +1,3 @@
-
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Memory Logic
@@ -31,7 +30,7 @@ entity vhdl_ram_memory is
     rst                 : in std_logic;
     -- SC ports
     i_ctrl_wr_req       : in std_logic; -- in pipeline mode behaves as i_wr_data data valid
-    i_ctrl_rd_en       : in std_logic := '1'; -- in pipeline mode behaves as i_wr_data data valid
+    i_ctrl_rd_en        : in std_logic := '1'; -- in pipeline mode behaves as i_wr_data data valid
     i_ctrl_addr         : in std_logic_vector(integer(log2(real(g_RAM_DEPTH))) -1 downto 0);
     i_ctrl_data_in      : in std_logic_vector(g_RAM_WIDTH - 1 downto 0);
     o_ctrl_data_out     : out std_logic_vector(g_RAM_WIDTH - 1 downto 0);
@@ -58,7 +57,7 @@ architecture beh of vhdl_ram_memory is
   -- memory
   --------------------------------
   type mem_ram_avt is array (0 to g_RAM_DEPTH - 1) of std_logic_vector(g_RAM_WIDTH - 1 downto 0);
-  function init_ram_mem(mode : string := "zeros";filename : string := "mem_ini_file.dat") return mem_ram_avt is
+  function init_ram_mem(mode : string := "zeros";filename : string := "mem_ini_file.dat";ext_mem : mem_ram_avt := (others => (others => '0'))) return mem_ram_avt is
     variable new_mem : mem_ram_avt;
   begin
 
