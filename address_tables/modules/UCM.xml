@@ -31,5 +31,6 @@
   </node>
   <node id="IETA_CALC_RD"  address="0x00000300">
     <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
+    <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
   </node>
 </node>

@@ -42,9 +42,9 @@ entity ucm_ieta_calc is
     rst                 : in std_logic;
     --
     IETA_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
-    IETA_CALC_WR        : in UCM_IETA_CALC_RD_MON_t;
+    IETA_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
     --
-    i_z                 : in unsigned (32 -1 downto 0);;
+    i_z                 : in unsigned (32 -1 downto 0);
     i_z_dv              : in std_logic;
     --
     o_ieta              : out unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
@@ -55,19 +55,19 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(sector,station,mult);
+  signal chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
 
-  signal ctrl_wr_req       : std_logic; -- in pipeline mode behaves as i_wr_data data valid
-  signal ctrl_rd_en        : std_logic := '1'; -- in pipeline mode behaves as i_wr_data data valid
-  signal ctrl_addr         : std_logic_vector(integer(log2(real(g_RAM_DEPTH))) -1 downto 0);
-  signal ctrl_data_in      : std_logic_vector(g_RAM_WIDTH - 1 downto 0);
-  signal ctrl_data_out     : std_logic_vector(g_RAM_WIDTH - 1 downto 0);
+  signal ctrl_wr_req       : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
+  signal ctrl_rd_en        : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
+  signal ctrl_addr         : std_logic_vector(integer(log2(real(VEC_MDTID_CHAMBER_IETA_LEN))) -1 downto 0);
+  signal ctrl_data_in      : std_logic_vector(integer(i_z'range) - 1 downto 0);
+  signal ctrl_data_out     : std_logic_vector(integer(i_z'range)  - 1 downto 0);
   
 begin
 
   PL : entity shared_lib.vhdl_ram_memory
   generic map(
-    g_MEMORY_TYPE       => "distributed",
+    g_MEMORY_TYPE       => "auto",
     g_PIPELINE_LATENCY  => 0,
     g_RAM_WIDTH         => VEC_MDTID_CHAMBER_IETA_LEN,
     g_RAM_DEPTH         => VEC_MDTID_CHAMBER_IETA_LEN
