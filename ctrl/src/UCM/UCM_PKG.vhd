@@ -48,16 +48,19 @@ package UCM_CTRL is
                                                                     );
   type UCM_IETA_CALC_WR_CTRL_t is record
     VALUE                      :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
-    ADDR                       :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+    ADDR                       :std_logic_vector( 7 downto 0);  -- Phi to Center of chamber
+    WR_EN                      :std_logic;                      -- Phi to Center of chamber
   end record UCM_IETA_CALC_WR_CTRL_t;
 
 
   constant DEFAULT_UCM_IETA_CALC_WR_CTRL_t : UCM_IETA_CALC_WR_CTRL_t := (
+                                                                         WR_EN => '0',
                                                                          ADDR => (others => '0'),
                                                                          VALUE => (others => '0')
                                                                         );
   type UCM_IETA_CALC_RD_MON_t is record
-    VALUE_RD                   :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+    VALUE                      :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
+    RST_REQ                    :std_logic;                      -- Phi to Center of chamber
   end record UCM_IETA_CALC_RD_MON_t;
 
 
