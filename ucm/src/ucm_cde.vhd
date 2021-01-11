@@ -62,6 +62,25 @@ architecture beh of ucm_cde is
   signal rpc_z_a : rpc_z_at;
 
 begin
+
+  IETA_00 : ucm_lib.ucm_ieta_calc
+  generic map(
+    g_STATION <= 0,
+    g_RESOLUTION_SCALE
+  )
+  port map(
+    clk         => clk,
+    rst         => rst,
+    --
+    IETA_CALC_WR =>
+    IETA_CALC_RD =>
+    --
+    i_z          =>
+    i_z_dv       =>
+    --
+    o_ieta       =>
+    o_ieta_dv    =>
+  )
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_cde_data_v <= vectorify(o_cde_data_r);
