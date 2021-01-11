@@ -35,7 +35,7 @@ use ctrl_lib.UCM_CTRL.all;
 entity ucm_ieta_calc is
   generic(
     g_STATION : integer := 0;
-    g_RESOLUTION_SCALE : real
+    g_RESOLUTION_SCALE : real := 1.0
   );
   port (
     clk                 : in std_logic;
