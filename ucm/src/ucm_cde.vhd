@@ -36,6 +36,14 @@ entity ucm_cde is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
+    IETA_INN_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
+    IETA_INN_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
+    IETA_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
+    IETA_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
+    IETA_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
+    IETA_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
+    IETA_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
+    IETA_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
     -- SLc in
     i_slc_data_v        : in slc_rx_rvt;
     -- pam out

@@ -10,17 +10,6 @@ UCM_ACTIONS_CTRL_t:
   - RESET : { type: logic }
   - ENABLE : { type: logic }
   - DISABLE : { type: logic }
-  - THREADS : { type: logic, length: 4 }
-
-
-UCM_STATUS_MON_t:
-  - STATUS_ENABLED : { type: logic }
-  - STATUS_READY : { type: logic }
-  - STATUS_ERROR : { type: logic }
-
-
-UCM_MON_t:
-  - STATUS : { type: UCM_STATUS_MON_t }
 
 
 UCM_CTRL_t:
