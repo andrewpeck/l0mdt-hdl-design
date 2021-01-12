@@ -24,6 +24,16 @@
   </node>
 
   <!-- CHAMBER IETA MEMORY CONTROLS -->
+  <node id="CHAMBER_Z0" address="0x00000200">
+    <node id="INN" fwinfo="type=array" address="0x00000000" module="file://DP_CHAMB_Z0.xml"/>
+    <node id="MID" fwinfo="type=array" address="0x00001000" module="file://DP_CHAMB_Z0.xml"/>
+    <node id="OUT" fwinfo="type=array" address="0x00002000" module="file://DP_CHAMB_Z0.xml"/>
+    <node id="EXT" fwinfo="type=array" address="0x00004000" module="file://DP_CHAMB_Z0.xml"/>
+  </node>
+
+
+<!-- 
+
   <node id="CHAMBER_Z0_INN_CALC_WR"  address="0x00000200">
     <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
     <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
@@ -59,7 +69,7 @@
   <node id="CHAMBER_Z0_EXT_CALC_RD"  address="0x00000900">
     <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
     <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-  </node>
+  </node> -->
 
 
 </node>
