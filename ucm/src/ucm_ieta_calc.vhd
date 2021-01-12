@@ -41,8 +41,8 @@ entity ucm_ieta_calc is
     clk                 : in std_logic;
     rst                 : in std_logic;
     --
-    IETA_CALC_WR        : in UCM_IETA_CALC_WR_CTRL_t;
-    IETA_CALC_RD        : in UCM_IETA_CALC_RD_MON_t;
+    CHAMBER_Z0_CALC_WR  : in UCM_IETA_CALC_WR_CTRL_t;
+    CHAMBER_Z0_CALC_RD  : in UCM_IETA_CALC_RD_MON_t;
     --
     i_z                 : in unsigned (32 -1 downto 0);
     i_z_dv              : in std_logic;
@@ -56,55 +56,52 @@ end entity ucm_ieta_calc;
 architecture beh of ucm_ieta_calc is
 
   signal chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
+  -- signal chamber_z_org_toload : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
+  -- signal mem_a : b_chamber_z_origin_ait <= (others => (others => '0'));
+  -- signal ctrl_wr_req       : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
+  -- signal ctrl_rd_en        : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
+  -- signal ctrl_addr         : std_logic_vector(integer(log2(real(VEC_MDTID_CHAMBER_IETA_LEN))) -1 downto 0);
+  -- signal ctrl_data_in      : std_logic_vector(integer(i_z'range) - 1 downto 0);
+  -- signal ctrl_data_out     : std_logic_vector(integer(i_z'range)  - 1 downto 0);
 
-  signal ctrl_wr_req       : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
-  signal ctrl_rd_en        : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
-  signal ctrl_addr         : std_logic_vector(integer(log2(real(VEC_MDTID_CHAMBER_IETA_LEN))) -1 downto 0);
-  signal ctrl_data_in      : std_logic_vector(integer(i_z'range) - 1 downto 0);
-  signal ctrl_data_out     : std_logic_vector(integer(i_z'range)  - 1 downto 0);
+  signal wr_addr : integer := 0;
   
 begin
 
-  PL : entity shared_lib.vhdl_ram_memory
-  generic map(
-    g_MEMORY_TYPE       => "auto",
-    g_PIPELINE_LATENCY  => 0,
-    g_RAM_WIDTH         => VEC_MDTID_CHAMBER_IETA_LEN,
-    g_RAM_DEPTH         => VEC_MDTID_CHAMBER_IETA_LEN
-  )
-  port map(
-    clk         => clk,
-    rst         => rst,
-    -- SC ports
-    i_ctrl_wr_req   => ctrl_wr_req  ,
-    i_ctrl_rd_en    => ctrl_rd_en   ,
-    i_ctrl_addr     => ctrl_addr    ,
-    i_ctrl_data_in  => ctrl_data_in ,
-    o_ctrl_data_out => ctrl_data_out,
-    -- fw ports
-    i_rd_en         => '1',
-    i_rd_addr       => i_z ,
-    o_rd_data       => ieta_limit
-  );
+  -- PL : entity shared_lib.vhdl_ram_memory
+  -- generic map(
+  --   g_MEMORY_TYPE       => "auto",
+  --   g_PIPELINE_LATENCY  => 0,
+  --   g_RAM_WIDTH         => VEC_MDTID_CHAMBER_IETA_LEN,
+  --   g_RAM_DEPTH         => VEC_MDTID_CHAMBER_IETA_LEN
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => rst,
+  --   -- SC ports
+  --   i_ctrl_wr_req   => ctrl_wr_req  ,
+  --   i_ctrl_rd_en    => ctrl_rd_en   ,
+  --   i_ctrl_addr     => ctrl_addr    ,
+  --   i_ctrl_data_in  => ctrl_data_in ,
+  --   o_ctrl_data_out => ctrl_data_out,
+  --   -- fw ports
+  --   i_rd_en         => '1',
+  --   i_rd_addr       => i_z ,
+  --   o_rd_data       => ieta_limit
+  -- );
 
   WRITE_MEM: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        IETA_CALC_RD.RST_NEEDED <= '0';
+        CHAMBER_Z0_CALC_RD.RST_REQ <= '0';
       else
-
-        if IETA_CALC_WR.ADDR = x"00" then
-          i_ctrl_rd_en <= '0';
-          i_ctrl_wr_req <= '0';
+        if CHAMBER_Z0_CALC_WR.ADDR = x"00" then
         else
-          i_ctrl_rd_en <= '1';
-          i_ctrl_addr <= IETA_CALC_WR.ADDR;
-          IETA_CALC_RD.VALUE <= ctrl_data_out;
-          if IETA_CALC_WR.WR_EN = '1' then
-            IETA_CALC_RD.RST_NEEDED <= '1';
-            i_ctrl_wr_req <= '1';
-            i_ctrl_data_in <= IETA_CALC_WR.VALUE;
+          CHAMBER_Z0_CALC_RD.VALUE <= ctrl_data_out;
+          if CHAMBER_Z0_CALC_WR.WR_EN = '1' then
+            CHAMBER_Z0_CALC_RD.RST_REQ <= '1';
+            chamber_z_org_a(to_integer(CHAMBER_Z0_CALC_WR.ADDR)) <= CHAMBER_Z0_CALC_WR.VALUE;
           end if;
         end if;
         
@@ -112,21 +109,22 @@ begin
     end if;
   end process;
 
-  -- READ_MEM: process(clk)
-  -- begin
-  --   if rising_edge(clk) then
-  --     if rst = '1' then
-
-  --     else
-  --       if i_z_dv = '1' then
-  --         ieta_limit
-  --       else
-
-  --       end if;
+  READ_MEM: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        -- chamber_z_org_a <= chamber_z_org_a
+      else
+        o_ieta_dv <= i_z_dv;
+        if i_z_dv = '1' then
+          o_ieta <= chamber_z_org_a(to_integer(i_z));
+        else
+          o_ieta <= (others => '0');
+        end if;
         
-  --     end if;
-  --   end if;
-  -- end process;
+      end if;
+    end if;
+  end process;
   
   
 
