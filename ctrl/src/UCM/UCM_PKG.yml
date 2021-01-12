@@ -14,7 +14,7 @@ UCM_ACTIONS_CTRL_t:
 
 UCM_CTRL_t:
   - ACTIONS : { type: UCM_ACTIONS_CTRL_t }
-  - SECTOR_PHI : { type: logic, length: 32, description:Phi to Center of chamber }
+  - PHICENTER0 : { type: logic, length: 32, description:Phi to Center of chamber }
   - MODE : { type: logic, length: 16, description:Module 16 bit mode }
 
 
