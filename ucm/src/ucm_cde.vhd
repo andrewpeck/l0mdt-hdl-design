@@ -30,20 +30,17 @@ library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_function_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.UCM_CTRL.all;
+
 entity ucm_cde is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- configuration, control & Monitoring
-    CHAMBER_Z0_INN_CALC_WR    : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
-    CHAMBER_Z0_INN_CALC_RD    : in UCM_CHAMBER_Z0_CALC_RD_MON_t;
-    CHAMBER_Z0_MID_CALC_WR    : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
-    CHAMBER_Z0_MID_CALC_RD    : in UCM_CHAMBER_Z0_CALC_RD_MON_t;
-    CHAMBER_Z0_OUT_CALC_WR    : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
-    CHAMBER_Z0_OUT_CALC_RD    : in UCM_CHAMBER_Z0_CALC_RD_MON_t;
-    CHAMBER_Z0_EXT_CALC_WR    : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
-    CHAMBER_Z0_EXT_CALC_RD    : in UCM_CHAMBER_Z0_CALC_RD_MON_t;
+    CHAMBER_Z0_ARRAY    : in UCM_CHAMBER_Z0_CHAMBER_Z0_CTRL_t_ARRAY;
+
     -- SLc in
     i_slc_data_v        : in slc_rx_rvt;
     -- pam out
@@ -82,16 +79,16 @@ begin
     IETA_00 : ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION <= 0,
-      g_RESOLUTION_SCALE
+      g_RESOLUTION_SCALE <= 1.0
     )
     port map(
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_INN_CALC_WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_INN_CALC_RD,
+      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_ARRAY(0).CALC_WR,
+      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_ARRAY(0).CALC_RD,
       --
-      i_z           => barrel_r.rpc0_posz,
+      i_z           => rpc_z_a(0),
       i_z_dv        => i_slc_data_r.data_valid,
       --
       o_ieta        => o_cde_data_r.chamb_ieta(0),
@@ -101,16 +98,16 @@ begin
     IETA_10 : ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION <= 1,
-      g_RESOLUTION_SCALE
+      g_RESOLUTION_SCALE <= 1.0
     )
     port map(
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_MID_CALC_WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MID_CALC_RD,
+      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_ARRAY(1).CALC_WR,
+      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_ARRAY(1).CALC_RD,
       --
-      i_z           => barrel_r.rpc1_posz,
+      i_z           => rpc_z_a(1),
       i_z_dv        => i_slc_data_r.data_valid,
       --
       o_ieta        => o_cde_data_r.chamb_ieta(1),
@@ -120,16 +117,16 @@ begin
     IETA_11 : ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION <= 1,
-      g_RESOLUTION_SCALE
+      g_RESOLUTION_SCALE <= 1.0
     )
     port map(
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_MID_CALC_WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MID_CALC_RD,
+      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_ARRAY(1).CALC_WR,
+      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_ARRAY(1).CALC_RD,
       --
-      i_z           => barrel_r.rpc2_posz,
+      i_z           => rpc_z_a(2),
       i_z_dv        => i_slc_data_r.data_valid,
       --
       o_ieta        => o_cde_data_r.chamb_ieta(2),
@@ -139,16 +136,16 @@ begin
     IETA_20 : ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION <= 2,
-      g_RESOLUTION_SCALE
+      g_RESOLUTION_SCALE <= 1.0
     )
     port map(
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_OUT_CALC_WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_OUT_CALC_RD,
+      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_ARRAY(2).CALC_WR,
+      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_ARRAY(2).CALC_RD,
       --
-      i_z           => barrel_r.rpc3_posz,
+      i_z           => rpc_z_a(3),
       i_z_dv        => i_slc_data_r.data_valid,
       --
       o_ieta        => o_cde_data_r.chamb_ieta(3),

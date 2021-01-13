@@ -18,59 +18,6 @@
 
 
   <!-- CHAMBERS CENTER PHI -->
-<<<<<<< HEAD
-  <node id="SECTOR_PHI"  address="0x00000100">
-    <node id="VALUE"    mask="0x0000FFFF" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
-    <node id="OVERRIDE" mask="0x00010000" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
-  </node>
-
-  <!-- CHAMBER IETA MEMORY CONTROLS -->
-  <node id="IETA_INN_CALC_WR"  address="0x00000200">
-    <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_INN_CALC_RD"  address="0x00000300">
-    <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-    <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_MID_CALC_WR"  address="0x00000400">
-    <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_MID_CALC_RD"  address="0x00000500">
-    <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-    <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_OUT_CALC_WR"  address="0x00000600">
-    <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_OUT_CALC_RD"  address="0x00000700">
-    <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-    <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_EXT_CALC_WR"  address="0x00000800">
-    <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="Phi to Center of chamber"/>
-    <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Phi to Center of chamber"/>
-  </node>
-  <node id="IETA_EXT_CALC_RD"  address="0x00000900">
-    <node id="VALUE" mask="0x0000FFFF" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-    <node id="RST_REQ" mask="0x8000000" parameters="default=0" permission="r"  description="Phi to Center of chamber"/>
-  </node>
-||||||| merged common ancestors
-  <node id="PHICENTER0"  address="0x00000010" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER1"  address="0x00000011" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER2"  address="0x00000012" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER3"  address="0x00000013" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER4"  address="0x00000014" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER5"  address="0x00000015" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER6"  address="0x00000016" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-  <node id="PHICENTER7"  address="0x00000017" mask="0xFFFFFFFF" permission="rw"  description="Phi to Center of chamber"/>
-=======
   <node id="SECTOR_PHI"  address="0x00000100">
     <node id="VALUE"    mask="0x0000FFFF" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
     <node id="OVERRIDE" mask="0x00010000" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
@@ -83,7 +30,6 @@
     <node id="CHAMBER_Z0_2" fwinfo="type=array" address="0x00002000" module="file://DP_CHAMB_Z0.xml"/>
     <node id="CHAMBER_Z0_3" fwinfo="type=array" address="0x00004000" module="file://DP_CHAMB_Z0.xml"/>
   </node>
->>>>>>> testing/ctrl_ucm
 
 
 </node>

@@ -180,6 +180,7 @@ begin
       clk               => clk,
       rst               => rst,
       glob_en           => glob_en,
+      CHAMBER_Z0_ARRAY  => ctrl.CHAMBER_Z0,
       --                =>
       i_slc_data_v      => cde_in_av(sl_i),
       o_cde_data_v      => cpam_in_av(sl_i)
