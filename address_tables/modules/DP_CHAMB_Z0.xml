@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="DP_CHAMB_Z0">
-  <node id="CALC_WR"  address="0x00000000">
+  <node id="WR"  address="0x00000000">
     <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="New value to write"/>
     <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="position or chamber to r/w value"/>
     <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Write Enable"/>
   </node>
-  <node id="CALC_RD"  address="0x00000001">
+  <node id="RD"  address="0x00000001">
     <node id="VALUE" mask="0x0000FFFF" permission="r"  description="Read Value id position selected"/>
     <node id="RST_REQ" mask="0x8000000" permission="r"  description="Reset request after changes in the mem"/>
   </node>
