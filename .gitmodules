@@ -41,3 +41,6 @@
 [submodule "l0mdt-hls"]
 	path = l0mdt-hls
 	url = ../l0mdt-hls.git
+[submodule "IP_repository/SpyBuffer"]
+	path = IP_repository/SpyBuffer
+	url = https://gitlab.cern.ch/atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
