@@ -5,23 +5,23 @@ use IEEE.numeric_std.all;
 
 entity get_legendre_segmdEe_DSP48_1 is
 port (
-    a: in std_logic_vector(13 - 1 downto 0);
+    a: in std_logic_vector(15 - 1 downto 0);
     b: in std_logic_vector(18 - 1 downto 0);
-    p: out std_logic_vector(31 - 1 downto 0));
+    p: out std_logic_vector(33 - 1 downto 0));
 
 end entity;
 
 architecture behav of get_legendre_segmdEe_DSP48_1 is
-    signal a_cvt: unsigned(13 - 1 downto 0);
+    signal a_cvt: unsigned(15 - 1 downto 0);
     signal b_cvt: signed(18 - 1 downto 0);
-    signal p_cvt: signed(31 - 1 downto 0);
+    signal p_cvt: signed(33 - 1 downto 0);
 
 
 begin
 
     a_cvt <= unsigned(a);
     b_cvt <= signed(b);
-    p_cvt <= signed (resize(unsigned (signed ('0' & a_cvt) * signed (b_cvt)), 31));
+    p_cvt <= signed (resize(unsigned (signed ('0' & a_cvt) * signed (b_cvt)), 33));
     p <= std_logic_vector(p_cvt);
 
 end architecture;
@@ -59,5 +59,3 @@ begin
         p => dout);
 
 end architecture;
-
-
