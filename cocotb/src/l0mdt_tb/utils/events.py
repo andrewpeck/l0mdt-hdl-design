@@ -69,22 +69,26 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0):
     evt_sector_id = fiber_id + 1
 
     if(sectorID == evt_sector_id):
-        #print("events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
+        # print("events.py: sectorID = ",sectorID," fiber_id = ",fiber_id," evt_sector_id =",evt_sector_id)
         return 1
     else:
         return 0
 
 
-
-
 def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
     bf_list    = []
     sl_trailer = []
+    bf_hit_list = []
+    hit_list = []
     for DF in DF_list:
         bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
+        hit_list.clear()
+        for DF_hit in DF.av_HEG2SFHIT[0]:
+            hit_list.append(DF_hit)
+
+        bf_hit_list.append(hit_list)
         #bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
         #    print("KEY=",bitfieldname)
-
     if candidate < len(bf_list):
         for bf in bf_list[candidate]:
             return bf.get_bit_value();
@@ -93,20 +97,27 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
         return -1
 
 
-    #    for i in range(len(bf_list)):
-    #    for bf in bf_list[i]:
-    #        #hex_wordvalue = "{:#40X}".format(bf.get_bit_value())
-    #        #hex_wordvalue = bf.get_bit_value()
-    #        #print("%s: %s" %(bf.wordname, hex_wordvalue))
-    #        if i == candidate:
-    #            return bf.get_bit_value() #hex_wordvalue
-    #print("ERROR.. candidate not present in RAW TV file")
-    #return -1
+def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
+    bf_list    = []
+    sl_trailer = []
+    bf_hit_list = []
+    candidate_id=0
+    for DF in DF_list:
+        candidate_id += 1
+        bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
+        hit_list = []
+        for DF_hit in DF.av_HEG2SFHIT[station_name_to_id(station_id)]:
+            hit_list.append(DF_hit.bitwordvalue)
 
-#/*************
-#rtl_tv is two dimensional array for each interface. It it data received from Monitors for all ports across single output interface
-#Array size is defined by -> rtl_tv[number of ports in interfaces][number_of_events]
-#For Example for ptcalc it would be expected_tv[events run][1],as output event has only one port
+        bf_hit_list.append(hit_list)
+        # print("PRINT LIST OF HITS FOR CANDIDATE",candidate_id,"station_id",station_id)
+        # print(hit_list)
+
+    if candidate < len(bf_list):
+        return bf_hit_list[candidate]
+    else:
+        #print("ERROR.. candidate not present in RAW TV file")
+        return -1
 
 #**************/
 def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
@@ -180,6 +191,19 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
 
     return ret_val
 
+def read_tv(filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""], tv_type=""):
+    tv_list=[]
+    if (tv_type=="list"):
+        # print("read_tv","tv_type==list","STARTING")
+        tv_list = parse_file_for_testvectors_list(
+        filename, tvformat, n_ports, n_to_load, endian, load_timing_info, station_ID)
+        # print("read_tv","tv_type==list","DONE")
+    else:
+        # print("read_tv","tv_type==value","STARTING")
+        tv_list = parse_file_for_testvectors(
+        filename, tvformat, n_ports, n_to_load, endian, load_timing_info, station_ID)
+        # print("read_tv","tv_type==value","DONE")
+    return tv_list
 
 def parse_file_for_testvectors(
         filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
@@ -215,19 +239,74 @@ def parse_file_for_testvectors(
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
-                    #print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    # print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
                     event_found_for_port_interface = 1
                     if(station_ID == [""]):
                         this_station_ID = ""
                     else:
                         this_station_ID = station_ID[my_port]
 
-                        #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                        # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
                     if(this_station_ID == ""):
                         tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
                     else:
                         tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
-                    #print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+                    # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+            if event_found_for_port_interface :
+                b3_events_i = b3_events_i + 1
+        else:
+            break
+
+    return tv
+
+
+def parse_file_for_testvectors_list(
+        filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
+):
+
+    path = Path(filename)
+    ok = path.exists() and path.is_file()
+    if not ok:
+        raise Exception(f"Cannot find provided file {filename}")
+
+    timing_gen = None
+    time_units = None
+    if load_timing_info:
+        timing_gen = timing_info_gen(filename)
+        time_units = next(timing_gen)  # first one returned is the time unit (str)
+
+    # AT temp to select the relevant event from Barrel Sector 3
+    #B3_event_list = [107, 153, 10, 3] #220, 189
+
+    #l0ids_loaded = set()
+    #    print("PARSING FOR TVFORMAT = ",tvformat)
+    # tv_reader_pkl.setup_debug_devel(10)
+    events_list = tv_reader_pkl.read_TV(path)
+
+    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+    total_transactions =  n_to_load #len(events_list)
+    tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
+    b3_events_i = 0;
+
+    #    tv_reader_pkl.dump_event(events_list[0])
+    for ievent in range(len(events_list)): #range(total_transactions):
+        if b3_events_i < total_transactions:
+            event_found_for_port_interface = 0
+            for my_port in range(n_ports):
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
+                    # print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    event_found_for_port_interface = 1
+                    if(station_ID == [""]):
+                        this_station_ID = ""
+                    else:
+                        this_station_ID = station_ID[my_port]
+
+                        # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    if(this_station_ID == ""):
+                        tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                    else:
+                        tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
+                    # print("PARSING parse_file_for_testvectors_list"," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
             if event_found_for_port_interface :
                 b3_events_i = b3_events_i + 1
         else:
@@ -278,3 +357,12 @@ def timebased_lineup (observed_events, observed_time, num_events_to_process, n_p
                     observed_events_o[port_o][evt] = 0
 
     return observed_events_o
+
+def station_name_to_id(station_id=""):
+    switcher = {
+        "INN" : 0,
+        "MID" : 1,
+        "OUT" : 2,
+        "EXT" : 3
+    }
+    return switcher.get(station_id, "Invalid station")

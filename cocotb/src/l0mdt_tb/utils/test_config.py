@@ -46,7 +46,21 @@ def get_tvformats_from_config(test_config):
     return inputs_tvformats, outputs_tvformats
 
 
+def get_tvtype_from_config(test_config):
 
+    testvector_config = test_config["testvectors"]
+
+    inputs_tvtype = []
+    inputs = []
+
+    inputs       = testvector_config["inputs"]
+
+    for i, input_interface in enumerate(inputs):
+        inputs_tvtype.append(input_interface["tv_type"])
+
+#    print(inputs_tvformats)
+
+    return inputs_tvtype
 
 
 
