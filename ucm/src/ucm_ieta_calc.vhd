@@ -11,7 +11,7 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
@@ -34,17 +34,18 @@ use ctrl_lib.UCM_CTRL.all;
 
 entity ucm_ieta_calc is
   generic(
-    g_STATION : integer := 0;
-    g_RESOLUTION_SCALE : real := 1.0
+    g_STATION           : integer := 0;
+    g_RESOLUTION_SCALE  : real := 1.0;
+    g_INPUT_WIDTH       : integer := 32
   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     --
-    CHAMBER_Z0_CALC_WR  : in UCM_IETA_CALC_WR_CTRL_t;
-    CHAMBER_Z0_CALC_RD  : in UCM_IETA_CALC_RD_MON_t;
+    CHAMBER_Z0_CALC_WR  : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
+    CHAMBER_Z0_CALC_RD  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
     --
-    i_z                 : in unsigned (32 -1 downto 0);
+    i_z                 : in unsigned (g_INPUT_WIDTH -1 downto 0);
     i_z_dv              : in std_logic;
     --
     o_ieta              : out unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
@@ -55,40 +56,11 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
-  -- signal chamber_z_org_toload : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
-  -- signal mem_a : b_chamber_z_origin_ait <= (others => (others => '0'));
-  -- signal ctrl_wr_req       : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
-  -- signal ctrl_rd_en        : std_logic := '0'; -- in pipeline mode behaves as i_wr_data data valid
-  -- signal ctrl_addr         : std_logic_vector(integer(log2(real(VEC_MDTID_CHAMBER_IETA_LEN))) -1 downto 0);
-  -- signal ctrl_data_in      : std_logic_vector(integer(i_z'range) - 1 downto 0);
-  -- signal ctrl_data_out     : std_logic_vector(integer(i_z'range)  - 1 downto 0);
-
+  signal chamber_z_org_a : b_chamber_z_origin_aut := get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE);
+  -- signal i_z_i : integer;
   signal wr_addr : integer := 0;
   
 begin
-
-  -- PL : entity shared_lib.vhdl_ram_memory
-  -- generic map(
-  --   g_MEMORY_TYPE       => "auto",
-  --   g_PIPELINE_LATENCY  => 0,
-  --   g_RAM_WIDTH         => VEC_MDTID_CHAMBER_IETA_LEN,
-  --   g_RAM_DEPTH         => VEC_MDTID_CHAMBER_IETA_LEN
-  -- )
-  -- port map(
-  --   clk         => clk,
-  --   rst         => rst,
-  --   -- SC ports
-  --   i_ctrl_wr_req   => ctrl_wr_req  ,
-  --   i_ctrl_rd_en    => ctrl_rd_en   ,
-  --   i_ctrl_addr     => ctrl_addr    ,
-  --   i_ctrl_data_in  => ctrl_data_in ,
-  --   o_ctrl_data_out => ctrl_data_out,
-  --   -- fw ports
-  --   i_rd_en         => '1',
-  --   i_rd_addr       => i_z ,
-  --   o_rd_data       => ieta_limit
-  -- );
 
   WRITE_MEM: process(clk)
   begin
@@ -98,10 +70,10 @@ begin
       else
         if CHAMBER_Z0_CALC_WR.ADDR = x"00" then
         else
-          CHAMBER_Z0_CALC_RD.VALUE <= ctrl_data_out;
+          CHAMBER_Z0_CALC_RD.VALUE <=std_logic_vector(resize(chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))),16));
           if CHAMBER_Z0_CALC_WR.WR_EN = '1' then
             CHAMBER_Z0_CALC_RD.RST_REQ <= '1';
-            chamber_z_org_a(to_integer(CHAMBER_Z0_CALC_WR.ADDR)) <= CHAMBER_Z0_CALC_WR.VALUE;
+            chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))) <= resize(unsigned(CHAMBER_Z0_CALC_WR.VALUE),chamber_z_org_a(0)'length);
           end if;
         end if;
         
@@ -110,16 +82,42 @@ begin
   end process;
 
   READ_MEM: process(clk)
+    variable found : std_logic := '0';
+    variable ieta : unsigned(VEC_MDTID_CHAMBER_IETA_LEN -1 downto 0);
   begin
     if rising_edge(clk) then
       if rst = '1' then
         -- chamber_z_org_a <= chamber_z_org_a
+        found := '0';
+        o_ieta <= to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
+        ieta := (others => '0');
+
       else
+
         o_ieta_dv <= i_z_dv;
         if i_z_dv = '1' then
-          o_ieta <= chamber_z_org_a(to_integer(i_z));
+          for i_ch in 0 to MAX_NUM_CHAMBER_POS -1 loop
+            if to_integer(i_z) < to_integer(chamber_z_org_a(i_ch)) then
+              if found = '0' then
+                ieta := to_unsigned(i_ch,VEC_MDTID_CHAMBER_IETA_LEN);
+                found := '1';
+              else
+                --
+              end if;
+            else
+              --
+            end if;
+          end loop;
+          if found = '0' then
+            o_ieta <= to_unsigned(8,4);
+          else
+            o_ieta <= ieta;
+            ieta := to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
+
+          end if;
+
         else
-          o_ieta <= (others => '0');
+          o_ieta <= to_unsigned(15,4);
         end if;
         
       end if;

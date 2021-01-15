@@ -96,6 +96,9 @@ architecture beh of ucm is
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
+  type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  signal cde_cz0_a : cde_cz0_at;
+
 begin
 
 
@@ -174,18 +177,22 @@ begin
   );
 
   -- Candidate Data Extractor
-  SLC_CDE_A : for sl_i in c_NUM_THREADS -1 downto 0 generate
+  SLC_CDE_A : for th_i in c_NUM_THREADS -1 downto 0 generate
     SLC_CDE : entity ucm_lib.ucm_cde
     port map(
-      clk               => clk,
-      rst               => rst,
-      glob_en           => glob_en,
-      CHAMBER_Z0_ARRAY  => ctrl.CHAMBER_Z0,
-      --                =>
-      i_slc_data_v      => cde_in_av(sl_i),
-      o_cde_data_v      => cpam_in_av(sl_i)
+      clk                   => clk,
+      rst                   => rst,
+      glob_en               => glob_en,
+      --
+      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
+      CHAMBER_Z0_MON_ARRAY  => cde_cz0_a(th_i), --mon.DP_CHAMB_Z0.DP_CHAMB_Z0,
+      --
+      i_slc_data_v          => cde_in_av(th_i),
+      o_cde_data_v          => cpam_in_av(th_i)
     );
   end generate;
+
+  mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
 
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw

@@ -39,7 +39,7 @@ HDL_Types:
 
 - ucm_cde:
   - muid        : [type : slc_muid]
-  - mdtid       : [type : vec_mdtid]
+  # - mdtid       : [type : vec_mdtid]
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
   - posphi      : [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
