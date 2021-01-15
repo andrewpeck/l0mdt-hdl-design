@@ -328,9 +328,35 @@ def modify_tv (tv, ii):
             for j in range (ii - 1):
                 tv_index             = tv_index + 1
                 tv_port.append(0)
+        #TODO : fix this 100 to be given as input. Maybe make new function        
+        while(len(tv_port)<100):
+            tv_port.append(0)            
         tv_out.append(tv_port)
     return tv_out
 
+def merge_lists (tv):
+    # tv_out = []
+    tv_flat = [y for x in tv for y in x]
+    tv_out = []
+    tv_out.append(tv_flat)
+    return tv_out
+
+# def modify_tv_list (tv, ii):
+#     tv_out   = []
+
+#     for io_list in range (len(tv)):
+#         for io in range (len(tv[io_list])):
+#             tv_port  = []
+#             tv_index = 0
+#             #print("modify_tv (tv,ii) =", tv , ii)
+#             for i in range(len(tv[io])):
+#                 #print("modify_tv (io,i) = (",io,i,")")
+#                 tv_port.append(tv[io][i])
+#                 for j in range (ii - 1):
+#                     tv_index             = tv_index + 1
+#                     tv_port.append(0)
+#             tv_out.append(tv_port)
+#     return tv_out
 
 def timebased_lineup (observed_events, observed_time, num_events_to_process, n_ports):
 
