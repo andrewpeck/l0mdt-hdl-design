@@ -7,8 +7,8 @@
   <xd:arg xd:name="slcvec_pos_R" xd:originalName="slcvec_pos_R" xd:direction="in" xd:interfaceRef="slcvec_pos_R_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
   <xd:arg xd:name="hewindow_pos_Z" xd:originalName="hewindow_pos_Z" xd:direction="in" xd:interfaceRef="hewindow_pos_Z_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
   <xd:arg xd:name="hewindow_pos_R" xd:originalName="hewindow_pos_R" xd:direction="in" xd:interfaceRef="hewindow_pos_R_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
+  <xd:arg xd:name="hls_LT_theta_global" xd:originalName="hls_LT_theta_global" xd:direction="in" xd:interfaceRef="hls_LT_theta_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="14"/>
   <xd:arg xd:name="*(segpos)" xd:originalName="segpos" xd:direction="out" xd:interfaceRef="segpos_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="18" xd:firstOut="5"/>
-  <xd:arg xd:name="hls_LT_theta_global" xd:originalName="hls_LT_theta_global" xd:direction="in" xd:interfaceRef="hls_LT_theta_global_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
   <xd:latencyEstimates xd:best-case="6" xd:worst-case="6" xd:average-case="6"/>
-  <xd:resourceEstimates xd:LUT="145" xd:FF="428" xd:BRAM="6" xd:DSP="4"/>
+  <xd:resourceEstimates xd:LUT="151" xd:FF="430" xd:BRAM="16" xd:DSP="4"/>
 </xd:acceleratorMap>

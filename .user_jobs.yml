@@ -1,58 +1,72 @@
 .only-default: &only-default
-    only:
-      refs:
-        - merge_requests
-    except:
-      variables:
-        - $CI_COMMIT_REF_NAME =~ /^test\/.*$/i
-        - $CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/
+  only:
+    refs:
+      - merge_requests
+  except:
+    variables:
+      - $CI_COMMIT_REF_NAME =~ /^test\/.*$/i
+      - $CI_MERGE_REQUEST_TITLE =~ /^Draft:.*$/ && $CI_COMMIT_MESSAGE !~ /^RESOLVE_WIP:/
 
 .tag-hog: &tag-hog
-        tags:
-           - hog
+  tags:
+    - hog
 
 .user_sim: &user_sim
-    <<: *only-default
-    <<: *tag-hog
-    stage: user_pre
-    script:
-        - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
-            vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
-          else
-            echo "Project version checker is disabled.";
-          fi
-        - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
-            echo "CI disabled for $PROJECT_NAME";
-          else
-            if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
-              echo 'Simulation library path is not defined';
-            else
-              vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
-            fi;
-          fi
-    artifacts:
-        name: user_sim
-        paths:
-            - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
-            - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
-        expire_in: 30 day
-    allow_failure: false
+  <<: *only-default
+  <<: *tag-hog
+  stage: user_pre
+  script:
+    - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
+      vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
+      else
+      echo "Project version checker is disabled.";
+      fi
+    - if [ -f "./Projects/$PROJECT_NAME/skip.me" ]; then
+      echo "CI disabled for $PROJECT_NAME";
+      else
+      if [ -z ${HOG_SIMULATION_LIB_PATH+x} ]; then
+      echo 'Simulation library path is not defined';
+      else
+      vivado -mode batch -notrace -source ./Hog/Tcl/launchers/launch_simulation.tcl -tclargs -lib_path $HOG_SIMULATION_LIB_PATH $PROJECT_NAME ;
+      fi;
+      fi
+  artifacts:
+    name: user_sim
+    paths:
+      - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+      - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+    expire_in: 30 day
+  allow_failure: true
+
+.user_hls: &user_hls
+  <<: *only-default
+  <<: *tag-hog
+  stage: user_pre
+  script:
+    - cd l0mdt-hls/LSF/Run
+    - source run.sh calc_LE_r_offset_barrel
+    - source run.sh compute_r_bins
+    - source run.sh find_max_bin
+    - source run.sh get_legendre_segment_barrel
+    - source run.sh get_rom_addr
+    - source run.sh trig_vals
+    - source run.sh load_LE_refPos
+  allow_failure: true
 
 .sim_comp: &sim_comp
-    <<: *only-default
-    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
-    stage: user_proj
-    script:
-        - cd tools/simComp
-        - python3 comparator.py $PROJECT_NAME
-    allow_failure: true
+  <<: *only-default
+  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  stage: user_proj
+  script:
+    - cd tools/simComp
+    - python3 comparator.py $PROJECT_NAME
+  allow_failure: true
 
 .sim_check: &sim_check
-    <<: *only-default
-    image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
-    stage: user_post
-    script:
-        - cd tools/simCheck
-        - python3 checker.py $PROJECT_NAME -v 1
-    allow_failure: true
-
+  <<: *only-default
+  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  stage: user_post
+  script:
+    - cd tools/simCheck
+    - python3 checker.py $PROJECT_NAME -v 1
+  allow_failure: true

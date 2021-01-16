@@ -31,7 +31,7 @@ SIM ?= questa
 
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../
-SBDIR = $(SRCDIR)/IP_repository/SpyBuffer
+SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 
 # Specify TopLevel language for cocotb
