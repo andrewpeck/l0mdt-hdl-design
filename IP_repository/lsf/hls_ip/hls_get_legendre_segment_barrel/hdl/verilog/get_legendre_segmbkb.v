@@ -7,8 +7,8 @@ module get_legendre_segmbkb_rom (
 addr0, ce0, q0, clk);
 
 parameter DWIDTH = 26;
-parameter AWIDTH = 12;
-parameter MEM_SIZE = 3361;
+parameter AWIDTH = 14;
+parameter MEM_SIZE = 10083;
 
 input[AWIDTH-1:0] addr0;
 input ce0;
@@ -23,9 +23,9 @@ end
 
 
 
-always @(posedge clk)  
-begin 
-    if (ce0) 
+always @(posedge clk)
+begin
+    if (ce0)
     begin
         q0 <= ram[addr0];
     end
@@ -44,8 +44,8 @@ module get_legendre_segmbkb(
     q0);
 
 parameter DataWidth = 32'd26;
-parameter AddressRange = 32'd3361;
-parameter AddressWidth = 32'd12;
+parameter AddressRange = 32'd10083;
+parameter AddressWidth = 32'd14;
 input reset;
 input clk;
 input[AddressWidth - 1:0] address0;
@@ -61,4 +61,3 @@ get_legendre_segmbkb_rom get_legendre_segmbkb_rom_U(
     .q0( q0 ));
 
 endmodule
-

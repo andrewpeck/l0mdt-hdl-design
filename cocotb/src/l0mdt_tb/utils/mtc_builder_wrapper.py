@@ -22,6 +22,7 @@ class mtc_builderWrapper:
         self._io_type = None
         self._is_active = False
         self._observed_words = []
+        self._observed_time  = []
         self._delay = Event()
         self._in_delay = False
 
@@ -97,6 +98,11 @@ class mtc_builderWrapper:
         return self._observed_words
 
     @property
+    def observed_time(self):
+        return self._observed_time
+
+
+    @property
     def write_out(self):
         return self._write_out
 
@@ -121,40 +127,13 @@ class mtc_builderWrapper:
     ##
     ## callbacks/methods
     ##
-
-    def store_word(self, transaction_tuple):
-
-        transaction, time_ns = transaction_tuple
-        dword = utils.transaction_to_data_word(transaction)
-        dword.set_timestamp(time_ns, units="ns")
-        self._observed_words.append(dword)
-
-    def write_word(self, transaction_tuple):
-
-        transaction, time_ns = transaction_tuple
-
-        word = utils.transaction_to_data_word(transaction)
-        word.set_timestamp(time_ns, units="ns")
-        wfmt = {True: "wb", False: "ab"}[self._first_write]
-        with open(self.output_filename, wfmt) as ofile:
-            word.write_testvec_fmt(ofile)
-
-        wfmt = {True: "w", False: "a"}[self._first_write]
-        if self.write_out_time:
-            with open(self._output_filename_time, wfmt) as ofile:
-                if self._first_write:
-                    ofile.write(f"info_data_file:{self.output_filename}\n")
-                    ofile.write(f"info_time_unit:{'ns'}\n")
-                ofile.write(f"{time_ns}\n")
-        self._first_write = False
-
-
-    def my_store_word(self, transaction_tuple):
+    def mtc_store_word(self, transaction_tuple):
 
         transaction, time_ns = transaction_tuple
         self._observed_words.append(transaction)
+        self._observed_time.append(time_ns)
 
-    def my_write_word(self, transaction_tuple):
+    def mtc_write_word(self, transaction_tuple):
 
         transaction, time_ns = transaction_tuple
         #print(time_ns,"ns TRANSACTION=0x%x"%(transaction))
@@ -210,7 +189,8 @@ class mtc_builderDriver(mtc_builderWrapper, Driver):
             yield RisingEdge(self.clock)
 
         if "slcpipeline" in kwargs:
-            self.mtc_builder.slcpipeline[self.io_port_num]   <= (transaction  | (1<<112))
+            self.mtc_builder.slcpipeline[self.io_port_num] <= transaction
+            #(transaction  | (1<<112))
 
         if "ptcalc" in kwargs:
             self.mtc_builder.ptcalc[self.io_port_num]   <= transaction
@@ -229,7 +209,7 @@ class mtc_builderDriver(mtc_builderWrapper, Driver):
 
         # dump written words and times to output file for later analysis
         if self.write_out:
-            self.my_write_word((int(transaction), time))
+            self.mtc_write_word((int(transaction), time))
 
 
 class mtc_builderMonitor(mtc_builderWrapper, Monitor):
@@ -248,9 +228,9 @@ class mtc_builderMonitor(mtc_builderWrapper, Monitor):
         )
         Monitor.__init__(self)
 
-        self.add_callback(self.my_store_word)
+        self.add_callback(self.mtc_store_word)
         if write_out:
-            self.add_callback(self.my_write_word)
+            self.add_callback(self.mtc_write_word)
         if callbacks:
             for cb in callbacks:
                 self.add_callback(cb)

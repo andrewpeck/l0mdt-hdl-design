@@ -21,6 +21,7 @@ class FifoWrapper:
         self._io_type = None
         self._is_active = False
         self._observed_words = []
+        self._observed_time  = []
         self._delay = Event()
         self._in_delay = False
 
@@ -93,6 +94,10 @@ class FifoWrapper:
         return self._observed_words
 
     @property
+    def observed_time(self):
+        return self._observed_time
+
+    @property
     def write_out(self):
         return self._write_out
 
@@ -123,6 +128,7 @@ class FifoWrapper:
         transaction, time_ns = transaction_tuple
         #dword.set_timestamp(time_ns, units="ns")
         self._observed_words.append(transaction)
+        self._observed_time.append(time_ns)
 
     def write_transaction(self, transaction_tuple):
         transaction, time_ns = transaction_tuple
@@ -130,7 +136,7 @@ class FifoWrapper:
         #word.set_timestamp(time_ns, units="ns")
         wfmt = {True: "w", False: "a"}[self._first_write]
         with open(self.output_filename, wfmt) as ofile:
-            ofile.write(str(transaction))
+            ofile.write(f"{str(transaction)}\n")
             #word.write_testvec_fmt(ofile)
 
         wfmt = {True: "w", False: "a"}[self._first_write]

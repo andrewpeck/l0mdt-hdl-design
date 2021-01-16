@@ -7,8 +7,8 @@ module get_trig_vals_lutbkb_rom (
 addr0, ce0, q0, addr1, ce1, q1, clk);
 
 parameter DWIDTH = 36;
-parameter AWIDTH = 9;
-parameter MEM_SIZE = 394;
+parameter AWIDTH = 8;
+parameter MEM_SIZE = 197;
 
 input[AWIDTH-1:0] addr0;
 input ce0;
@@ -26,9 +26,9 @@ end
 
 
 
-always @(posedge clk)  
-begin 
-    if (ce0) 
+always @(posedge clk)
+begin
+    if (ce0)
     begin
         q0 <= ram[addr0];
     end
@@ -36,9 +36,9 @@ end
 
 
 
-always @(posedge clk)  
-begin 
-    if (ce1) 
+always @(posedge clk)
+begin
+    if (ce1)
     begin
         q1 <= ram[addr1];
     end
@@ -60,8 +60,8 @@ module get_trig_vals_lutbkb(
     q1);
 
 parameter DataWidth = 32'd36;
-parameter AddressRange = 32'd394;
-parameter AddressWidth = 32'd9;
+parameter AddressRange = 32'd197;
+parameter AddressWidth = 32'd8;
 input reset;
 input clk;
 input[AddressWidth - 1:0] address0;
@@ -83,4 +83,3 @@ get_trig_vals_lutbkb_rom get_trig_vals_lutbkb_rom_U(
     .q1( q1 ));
 
 endmodule
-
