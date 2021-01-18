@@ -317,7 +317,6 @@ def parse_file_for_testvectors_list(
 
 def modify_tv (tv, ii):
     tv_out   = []
-
     for io in range (len(tv)):
         tv_port  = []
         tv_index = 0
@@ -328,13 +327,12 @@ def modify_tv (tv, ii):
             for j in range (ii - 1):
                 tv_index             = tv_index + 1
                 tv_port.append(0)
-        #TODO : fix this 100 to be given as input. Maybe make new function        
-        while(len(tv_port)<100):
+        while(len(tv_port)<ii):
             tv_port.append(0)            
         tv_out.append(tv_port)
     return tv_out
 
-def merge_lists (tv):
+def flatten_list (tv):
     # tv_out = []
     tv_flat = [y for x in tv for y in x]
     tv_out = []
