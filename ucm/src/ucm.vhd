@@ -99,6 +99,9 @@ architecture beh of ucm is
   type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
   signal cde_cz0_a : cde_cz0_at;
 
+  type cvp_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  signal cvp_cz0_a : cvp_cz0_at;
+
 begin
 
 
@@ -216,7 +219,9 @@ begin
       rst           => rst,
       glob_en       => glob_en,
       --
-      SECTOR_PHI    => ctrl.SECTOR_PHI,
+      SECTOR_PHI            => ctrl.SECTOR_PHI,
+      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
+      CHAMBER_Z0_MON_ARRAY  => cvp_cz0_a(vp_i),
       --
       i_local_rst   => cvp_loc_rst(vp_i),
       i_in_en       => cvp_in_en(vp_i),

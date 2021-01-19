@@ -43,7 +43,8 @@ entity ucm_cvp_z_calc is
     i_slope       : in signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;
     --
-    o_vec_z_pos   : out unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0)
+    o_vec_z_pos     : out unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+    o_vec_z_pos_dv  : out std_logic
     
   );
 end entity ucm_cvp_z_calc;
@@ -73,7 +74,10 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         vec_pos <= (others => '0');
+        
       else
+        
+        o_vec_z_pos_dv <= i_data_valid;
 
         if i_data_valid = '1' then
           vec_pos <= ((signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024) - i_offset) * to_signed(resolution_change,15)) / i_slope;
