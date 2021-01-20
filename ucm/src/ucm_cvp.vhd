@@ -98,6 +98,20 @@ begin
   local_rst <= rst or i_local_rst;
   data_r <= structify(i_data_v);
 
+  PL_in : entity shared_lib.std_pipeline
+  generic map(
+    g_DELAY_CYCLES  => 6,
+    g_PIPELINE_WIDTH    => int_data_v'length
+  )
+  port map(
+    clk         => clk,
+    rst         => local_rst,
+    glob_en     => glob_en,
+    --
+    i_data      => int_data_v,
+    o_data      => data_v
+  );
+
   PHIMOD : entity ucm_lib.ucm_cvp_phimod
   generic map(
     g_PIPELINE => 2
@@ -237,19 +251,7 @@ begin
     o_dv          => atan_dv
   );
 
-  PL_in : entity shared_lib.std_pipeline
-  generic map(
-    g_DELAY_CYCLES  => 5,
-    g_PIPELINE_WIDTH    => int_data_v'length
-  )
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    glob_en     => glob_en,
-    --
-    i_data      => int_data_v,
-    o_data      => data_v
-  );
+
 
   chamber_ieta_r <= structify(data_v).chamb_ieta;
 
@@ -270,26 +272,26 @@ begin
   data_r_2 <= structify(data_v_2);
   -- 
 
-  Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
-    Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
-      Z_CALC : entity ucm_lib.ucm_cvp_z_calc
-      generic map(
-        g_STATION_RADIUS    => st_i
-      )
-      port map(
-        clk           => clk,
-        rst           => local_rst,
-        glob_en       => glob_en,
-        --
-        i_chamb_ieta  => chamber_ieta_r(st_i),
-        i_offset      => offset,
-        i_slope       => slope,
-        i_data_valid  => slope_dv,
-        --
-        o_vec_z_pos   => vec_pos_array(st_i)
-      );
-    end generate;
-  end generate;
+  -- Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+  --   Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
+  --     Z_CALC : entity ucm_lib.ucm_cvp_z_calc
+  --     generic map(
+  --       g_STATION_RADIUS    => st_i
+  --     )
+  --     port map(
+  --       clk           => clk,
+  --       rst           => local_rst,
+  --       glob_en       => glob_en,
+  --       --
+  --       i_chamb_ieta  => chamber_ieta_r(st_i),
+  --       i_offset      => offset,
+  --       i_slope       => slope,
+  --       i_data_valid  => slope_dv,
+  --       --
+  --       o_vec_z_pos   => vec_pos_array(st_i)
+  --     );
+  --   end generate;
+  -- end generate;
 
   -- A_GEN : for o_i in 0 to c_MAX_NUM_HPS - 1 generate
   --   B_GEN : for i_i in o_i to c_MAX_POSSIBLE_HPS - 1 generate
