@@ -85,7 +85,7 @@ architecture beh of ult_tp is
   signal tar_mon  :  TAR_MON_t;
   signal mtc_ctrl :  MTC_CTRL_t;
   signal mtc_mon  :  MTC_MON_t;
-  signal ucm_ctrl :  UCM_CTRL_t;
+  signal ucm_ctrl :  UCM_CTRL_t := DEFAULT_UCM_CTRL_t;
   signal ucm_mon  :  UCM_MON_t;
   signal daq_ctrl :  DAQ_CTRL_t;
   signal daq_mon  :  DAQ_MON_t;
@@ -213,6 +213,65 @@ begin
   );
 
   -------------------------------------------------------------------------------------
+	-- clock Generator
+	-------------------------------------------------------------------------------------
+  CLK_RT : process begin
+    clk_time <= '0';
+    wait for CLK_time_period/2;
+    clk_time <= '1';
+    wait for CLK_time_period/2;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- clock tdc Generator
+	-------------------------------------------------------------------------------------
+  CLK_TDC : process begin
+    clk_tdc_time <= '0';
+    wait for CLK_tdc_time_period/2;
+    clk_tdc_time <= '1';
+    wait for CLK_tdc_time_period/2;
+  end process;
+  -- clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+	-- Main FPGA clock
+	-------------------------------------------------------------------------------------
+  CLK_MAIN : process begin
+    clk <= '0';
+    wait for CLK_period/2;
+    clk <= '1';
+    wait for CLK_period/2;
+  end process;
+  clock_and_control.clk <= clk;
+ 	-------------------------------------------------------------------------------------
+	-- Reset Generator
+	-------------------------------------------------------------------------------------
+	rst_process: process begin
+		rst<='0';
+		wait for CLK_period;
+		rst<='1';
+		wait for CLK_period*reset_init_cycles;
+		rst<= '0';
+		wait;
+  end process;
+  clock_and_control.rst <= rst;
+  -------------------------------------------------------------------------------------
+	-- Test Bench time
+  -------------------------------------------------------------------------------------
+  ToA: process(clk_time) begin
+    if rising_edge(clk_time) then
+      tb_curr_time <= tb_curr_time + '1';
+    end if;
+  end process;
+  -------------------------------------------------------------------------------------
+	-- Test Bench tdc time
+  -------------------------------------------------------------------------------------
+  ToA_tdc: process(clk_tdc_time) begin
+    if rising_edge(clk_tdc_time) then
+      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
+    end if;
+  end process;
+
+
+  -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
   TAR_HIT : if c_EN_TAR_HITS = 1 generate -- TAR data injection
@@ -333,63 +392,7 @@ begin
 
 
 
- 	-------------------------------------------------------------------------------------
-	-- clock Generator
-	-------------------------------------------------------------------------------------
-  CLK_RT : process begin
-    clk_time <= '0';
-    wait for CLK_time_period/2;
-    clk_time <= '1';
-    wait for CLK_time_period/2;
-  end process;
-  -------------------------------------------------------------------------------------
-	-- clock tdc Generator
-	-------------------------------------------------------------------------------------
-  CLK_TDC : process begin
-    clk_tdc_time <= '0';
-    wait for CLK_tdc_time_period/2;
-    clk_tdc_time <= '1';
-    wait for CLK_tdc_time_period/2;
-  end process;
-  -- clock_and_control.clk <= clk;
-  -------------------------------------------------------------------------------------
-	-- Main FPGA clock
-	-------------------------------------------------------------------------------------
-  CLK_MAIN : process begin
-    clk <= '0';
-    wait for CLK_period/2;
-    clk <= '1';
-    wait for CLK_period/2;
-  end process;
-  clock_and_control.clk <= clk;
- 	-------------------------------------------------------------------------------------
-	-- Reset Generator
-	-------------------------------------------------------------------------------------
-	rst_process: process begin
-		rst<='0';
-		wait for CLK_period;
-		rst<='1';
-		wait for CLK_period*reset_init_cycles;
-		rst<= '0';
-		wait;
-  end process;
-  clock_and_control.rst <= rst;
-  -------------------------------------------------------------------------------------
-	-- Test Bench time
-  -------------------------------------------------------------------------------------
-  ToA: process(clk_time) begin
-    if rising_edge(clk_time) then
-      tb_curr_time <= tb_curr_time + '1';
-    end if;
-  end process;
-  -------------------------------------------------------------------------------------
-	-- Test Bench tdc time
-  -------------------------------------------------------------------------------------
-  ToA_tdc: process(clk_tdc_time) begin
-    if rising_edge(clk_tdc_time) then
-      tb_curr_tdc_time <= tb_curr_tdc_time + '1';
-    end if;
-  end process;
+
 
 
 end architecture beh;
