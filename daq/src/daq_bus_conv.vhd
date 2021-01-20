@@ -1,212 +1,117 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
-
-library daq_lib;
-use daq_lib.daq_devel_defs_pkg.all;
-use daq_lib.daq_defs_pkg.all;
-use daq_lib.daq_row_defs_pkg.all;
-
-package daq_bus_conv_pkg is
-  component daq_bus_conv is
-    generic(G : bconv_generics_rt);
-    port (i : in bconv_irt; o : out bconv_ort); 
-  end component daq_bus_conv;
-end package daq_bus_conv_pkg;
-
------------------------------------------------------------
-
 library IEEE;
+library types_def;
+library daq_def;
+
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
 
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
+use types_def.common_defs.all;
 
-library daq_lib;
-use daq_lib.daq_devel_defs_pkg.all;
-use daq_lib.daq_defs_pkg.all;
-use daq_lib.daq_row_defs_pkg.all;
+use daq_def.daq_devel_defs.all;
+use daq_def.daq_defs.all;
+use daq_def.daq_row_defs.all;
 
 entity daq_bus_conv is
-  generic(G : bconv_generics_rt := (INPUT_DATA_LEN => daq_hdr_rvt'length,
-                                    OUTPUT_DATA_LEN => 16,
-                                    COUNTER_LEN => 16));
-  port (i : in bconv_irt; o : out bconv_ort);    
+  generic (G : bconv_grt);
+  port (port_ir : in  bconv_irt; port_or : out bconv_ort);
 end entity daq_bus_conv;
 
 architecture V2 of daq_bus_conv is
 
-  -- K is the number of words needed for the packet builder to send
-  -- the input data out.
-  constant K : integer := ((i.cell.data'length-1) / o.pkt_bldr.data'length)+1;
-  constant ADJUSTED_LEN : integer := K * o.pkt_bldr.data'length;
+  constant K : natural := ((G.INPUT_DATA_WIDTH-1) / DAQ_FELIX_STREAM_WIDTH) + 1;
 
-  -- word map is a one-hot map to address the words
-  signal word_map
-    : std_logic_vector(K-1 downto 0)
-    := '1' & (K-2 downto 0 => '0');
+  subtype pld_src_t is std_logic_vector(K*DAQ_FELIX_STREAM_WIDTH-1 downto 0);
+  subtype pld_dst_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
-  -- adjusting word size to multiple of "G.read_len"
-  signal aligned: std_logic_vector(ADJUSTED_LEN-1 downto 0) := (others => '0');
-  
-  -- -- reading control counter and related registered signal (delayed)
-  signal rd_cnt   : natural := 0;
-  signal rd_cnt_r : natural;
+  type mux_at is array(K-1 downto 0) of pld_dst_t;
 
-  -- holding the data to be received by pkt_builder
-  signal data : std_logic_vector(o.pkt_bldr.data'range);
+  signal pld_src : pld_src_t := (others => '0');
+  signal mux_a : mux_at := (others => (others => '0'));
 
-  -- registered nempty signal.
-  -- signal nempty_r : std_logic;
+  signal sel : natural := K-1;
 
-  function get_onehot_index(onehot : std_logic_vector) return integer is
-  begin
-    for i in onehot'range loop
-      if (onehot(i) = '1') then
-        return i;
-      end if;
-    end loop;
-    return -1;
-  end function;
-  
+  signal src_rd_strb : std_logic;
+  signal dst_rd_strb : std_logic;
+
+  signal src_nempty : std_logic;
+  signal dst_nempty : std_logic;
+
 begin
 
-  -- output signals cannot be read inside block.
-  o.pkt_bldr.data <= data;
+  -- port assignments
+  ig0: if port_or.dst.data'length > mux_a(sel)'length generate
+    port_or.dst.data <= ((port_or.dst.data'left downto mux_a(sel)'length => '0') & mux_a(sel));
+  end generate ig0;
 
-  -- received data is kept left aligned in the following vector
-  aligned(aligned'left downto aligned'length - i.cell.data'length)
-    <= i.cell.data;
-  
-  -- nempty signal is just mirrored from the local FIFO. This is
-  -- possible if the read strobe sent to the prior FIFO happens only
-  -- when the last slice of the current information is being
-  -- retrieved. Input nempty signal is kept for one extra cycle to the
-  -- receiving module be able to register the data.
-  -- nempty_r <= nempty_i when rising_edge(clk320_i);
-  -- nempty_o <= nempty_i or nempty_r;
-  o.pkt_bldr.nempty <= i.cell.nempty;
+  ig1: if port_or.dst.data'length = mux_a(sel)'length generate
+    port_or.dst.data <= mux_a(sel);
+  end generate ig1;
 
-  -- convert one hot bit to an word index during bus conversion
-  rd_cnt <= get_onehot_index(word_map);
+  pld_src <= port_ir.src.data(pld_src'range);
 
+  port_or.dst.nempty <= dst_nempty;
+  src_nempty <= port_ir.src.nempty;
 
-  -- output bus always slides over the input bus controlled by the
-  -- read counter. The number of times that this happens varies
-  -- according to the output bus width.
-  data <= aligned(rd_cnt * o.pkt_bldr.data'length + o.pkt_bldr.data'left
-                  downto rd_cnt * o.pkt_bldr.data'length);
+  dst_rd_strb <=  port_ir.dst.rd_strb;
+  port_or.src.rd_strb <= src_rd_strb;
 
-  
-  
+  -- nempty signal from src is sent directly to the dst
+  dst_nempty <= src_nempty;
+
+  fg: for i in 0 to K-1 generate
+    mux_a(i) <= pld_src((i+1)*pld_dst_t'length-1 downto i*pld_dst_t'length);
+  end generate fg;
+
+  -- expose rd strb
+  src_rd_strb <= dst_rd_strb when (K > 1 and sel = 0) or K = 1 else '0';
+
   -- exposing data
-  process (i.sys.clk320)
+  process (port_ir.sys.clk320)
   begin
-    if rising_edge(i.sys.clk320) then
+    if rising_edge(port_ir.sys.clk320) then
 
-      if i.sys.rst = '1' then
-
-        -- one_hot should start from the left as well
-        -- word_map <= (word_map'left downto 1 => '0') & '1'; 
-        word_map <= '1' & (word_map'left-1 downto 0 => '0'); 
-
-        -- rd_cnt <= 0;
-        -- rd_cnt_r <= 0;
-
+      if port_ir.sys.rst = '1' then
+        sel <= K-1;
       else
+        if (dst_rd_strb = '1' and src_nempty = '1') then
+          if sel > 0 then
+            sel <= sel - 1;
+          else
+            sel <= K-1;
+          end if;
+        end if; -- pkt bldr rd strb
+      end if; -- sync reset
+    end if; -- rising edge
 
+  end process; -- clock
+end V2;
 
-        -- output data is one clock delayed
-        -- data_o <= data;
+--------------------------------------------------------------------------------
 
-        -- generating a delayed counter to detect end of word.
-        rd_cnt_r <= rd_cnt;
+library IEEE;
+library types_def;
+library daq_def;
 
-        -- receiving a read strobe from the Packet Builder means that it
-        -- already have used that piece of information.
-        if i.pkt_bldr.rd_strb = '1' then
+use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
 
-          -- thus we have to update the output payload slice. If it is
-          -- in the last slice of data, it shall restart.
+use types_def.common_defs.all;
 
-          -- wrong order...
-          -- word_map(word_map'left downto 1) <= word_map(word_map'left-1 downto 0);
-          -- word_map(0) <= word_map(word_map'left);
+use daq_def.daq_devel_defs.all;
+use daq_def.daq_defs.all;
+use daq_def.daq_row_defs.all;
 
-          -- must be from right to left
-          word_map(word_map'left-1 downto 0) <= word_map(word_map'left downto 1);
-          word_map(word_map'left) <= word_map(0);
+entity daq_bus_conv_wrap is
+  generic (G : bconv_grt);
+  port (port_iv : in  bconv_ivt; port_ov : out bconv_ovt);
+end entity daq_bus_conv_wrap;
 
-          -- if rd_cnt+1 < K then 
-          --   rd_cnt <= rd_cnt + 1;
-          -- else
-          --   rd_cnt <= 0;
-          -- end if;
-          
-        end if;
-
-        -- read enable is sent to the previous node to inform it that the
-        -- current data is done. It is tied to the read enable coming from the
-        -- next node, which will only happen if there is data available still
-        -- (mirrored nempty signals).
-
-        -- when sending right to left
-        -- if K >= 3 then
-        --   if rd_cnt_r = K-3 and rd_cnt = K-2 then
-        --     rd_en_o <= rd_en_i;
-        --   else
-        --     rd_en_o <= '0';
-        --   end if;
-        -- elsif K = 2 then
-        --   if rd_cnt = 0 then
-        --     rd_en_o <= rd_en_i;
-        --   else
-        --     rd_en_o <= '0';
-        --   end if;
-        -- else
-        --   rd_en_o <= rd_en_i;
-        -- end if;
-
-
-        if rd_cnt = 1 then
-          o.cell.rd_strb <= i.pkt_bldr.rd_strb;
-        else
-          o.cell.rd_strb <= '0';
-        end if;       
-
-        -- stop logic also needs to be inverted...
-        -- sending left to right
-        -- if K >= 2 then
-        --   if rd_cnt_r = 1 and rd_cnt = 0 then
-        --     rd_en_o <= rd_en_i;
-        --   else
-        --     rd_en_o <= '0';
-        --   end if;
-        -- elsif K = 2 then
-        --   if rd_cnt = 0 then
-        --     rd_en_o <= rd_en_i;
-        --   else
-        --     rd_en_o <= '0';
-        --   end if;
-        -- else
-        --   rd_en_o <= rd_en_i;
-        -- end if;
-        
-      end if;
-      
-    end if;
-  end process;
-
+architecture V2 of daq_bus_conv_wrap is
+  signal port_ir : bconv_irt;
+  signal port_or : bconv_ort;
+begin
+  port_ir <= structify(port_iv, port_ir);
+  port_ov <= vectorify(port_or, port_ov);
+  u_bconv : entity work.daq_bus_conv
+    generic map (G) port map (port_ir, port_or);
 end V2;

@@ -11,7 +11,7 @@ __config__:
 HDL_Types:
 
 - UCM_INPUT_PL_LATENCY  : [ qualifier: constant , type: integer , value: 2 ]
-- UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 2 ]
+- UCM_OUTPUT_PL_LATENCY : [ qualifier: constant , type: integer , value: 6 ]
 # - UCM_LATENCY_HPS_CH    : [ qualifier: constant , type: integer , value: 100 ]
 
 - SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 85 ]
@@ -39,9 +39,10 @@ HDL_Types:
 
 - ucm_cde:
   - muid        : [type : slc_muid]
-  - mdtid       : [type : vec_mdtid]
+  # - mdtid       : [type : vec_mdtid]
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - posphi      : [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
   - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type : logic]
 

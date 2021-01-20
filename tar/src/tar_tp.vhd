@@ -37,25 +37,25 @@ entity tar_tp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    -- i_inn_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    -- i_mid_tdc_hits   : in  mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    -- i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    -- i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- i_inn_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_mid_tdc_hits   : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inn_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_mid_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inn_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC polmux from Tar
-    -- o_inn_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    -- o_mid_tdc_hits   : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    -- o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    -- o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    -- o_inn_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    -- o_mid_tdc_hits   : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    -- o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    -- o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    o_inn_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0)
+    o_inn_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+    o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+    o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+    o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
   );
 end entity tar_tp;
 
@@ -64,11 +64,13 @@ architecture beh of tar_tp is
 begin
 
   INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
-    INN_DELAY : for b_i in c_HPS_NUM_MDT_CH_INN -1 downto 0 generate
+    INN_DELAY : for b_i in c_HPS_MAX_HP_INN -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_inn_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  =>  i_inn_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -82,11 +84,13 @@ begin
   end generate;
 
   MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
-    MID_DELAY : for b_i in c_HPS_NUM_MDT_CH_MID -1 downto 0 generate
+    MID_DELAY : for b_i in c_HPS_MAX_HP_MID -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_mid_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_mid_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -100,11 +104,13 @@ begin
   end generate;
 
   OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
-    OUT_DELAY : for b_i in c_HPS_NUM_MDT_CH_OUT -1 downto 0 generate
+    OUT_DELAY : for b_i in c_HPS_MAX_HP_OUT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_out_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_out_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,
@@ -118,11 +124,13 @@ begin
   end generate;
 
   EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
-    EXT_DELAY : for b_i in c_HPS_NUM_MDT_CH_EXT -1 downto 0 generate
+    EXT_DELAY : for b_i in c_HPS_MAX_HP_EXT -1 downto 0 generate
       PL : entity shared_lib.std_pipeline
       generic map(
-        num_delays  => TAR_PL_A_LATENCY,
-        num_bits    => i_ext_tar_hits(b_i)'length
+        g_MEMORY_TYPE     => "ultra",
+        g_PIPELINE_TYPE   => "ring_buffer",
+        g_DELAY_CYCLES    => TAR_PL_A_LATENCY,
+        g_PIPELINE_WIDTH  => i_ext_tar_hits(b_i)'length
       )
       port map(
         clk         => clk,

@@ -43,7 +43,6 @@ TOPLEVEL_LANG=verilog
 VERILOG_SOURCES = \
     $(DFDIR)/l0mdt_buses_constants.svh \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v \
-    $(MTCDIR)/format_mtc_pkt.sv \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files
@@ -62,7 +61,7 @@ VERILOG_SOURCES = \
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR) +incdir+$(DFDIR) +incdir+$(MTCDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver
-VSIM_ARGS  += -debugDB -voptargs="+acc"
+VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/mtc.wlf
 
 ##############################################################################
 #

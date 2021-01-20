@@ -1,4 +1,5 @@
 vivado*
+*.jou
 *.o
 *~ 
 *.pyc 
@@ -33,3 +34,6 @@ modelsim.ini
 _hdl_checker/
 *.o
 *.cf
+env/
+.cxl.questasim.*
+Projects/

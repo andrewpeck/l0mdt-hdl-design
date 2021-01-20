@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="\$unit_tb_top_sv " />
+            <top_module name="common_defs" />
+            <top_module name="daq_defs" />
+            <top_module name="daq_devel_defs" />
+            <top_module name="daq_row_defs" />
+            <top_module name="glbl" />
+            <top_module name="std" />
+            <top_module name="tb" />
+            <top_module name="ttc_defs" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="22535500000fs"></ZoomStartTime>
+      <ZoomEndTime time="22959000001fs"></ZoomEndTime>
+      <Cursor1Time time="21700000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="213"></NameColumnWidth>
+      <ValueColumnWidth column_width="155"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="25" />
+   <wvobject type="logic" fp_name="/tb/rst">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/clk40">
+      <obj_property name="ElementShortName">clk40</obj_property>
+      <obj_property name="ObjectShortName">clk40</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/bcid_cnt">
+      <obj_property name="ElementShortName">bcid_cnt[11:0]</obj_property>
+      <obj_property name="ObjectShortName">bcid_cnt[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/daq_bcid_cnt">
+      <obj_property name="ElementShortName">daq_bcid_cnt[11:0]</obj_property>
+      <obj_property name="ObjectShortName">daq_bcid_cnt[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/lat">
+      <obj_property name="ElementShortName">lat[31:0]</obj_property>
+      <obj_property name="ObjectShortName">lat[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/daq_latency">
+      <obj_property name="ElementShortName">daq_latency[11:0]</obj_property>
+      <obj_property name="ObjectShortName">daq_latency[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/bcid_daq_init">
+      <obj_property name="ElementShortName">bcid_daq_init</obj_property>
+      <obj_property name="ObjectShortName">bcid_daq_init</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/clk320">
+      <obj_property name="ElementShortName">clk320</obj_property>
+      <obj_property name="ObjectShortName">clk320</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider1486" type="divider">
+      <obj_property name="label">_</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/i">
+      <obj_property name="ElementShortName">i</obj_property>
+      <obj_property name="ObjectShortName">i</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.sys">
+         <obj_property name="ElementShortName">.sys</obj_property>
+         <obj_property name="ObjectShortName">.sys</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.stream">
+         <obj_property name="ElementShortName">.stream</obj_property>
+         <obj_property name="ObjectShortName">.stream</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.sys">
+         <obj_property name="ElementShortName">.sys</obj_property>
+         <obj_property name="ObjectShortName">.sys</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.stream">
+         <obj_property name="ElementShortName">.stream</obj_property>
+         <obj_property name="ObjectShortName">.stream</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/u_dnode/i.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/o">
+      <obj_property name="ElementShortName">o</obj_property>
+      <obj_property name="ObjectShortName">o</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/active">
+      <obj_property name="ElementShortName">active</obj_property>
+      <obj_property name="ObjectShortName">active</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/busy">
+      <obj_property name="ElementShortName">busy</obj_property>
+      <obj_property name="ObjectShortName">busy</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/done">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/remaining">
+      <obj_property name="ElementShortName">remaining[11:0]</obj_property>
+      <obj_property name="ObjectShortName">remaining[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/win_start">
+      <obj_property name="ElementShortName">win_start[11:0]</obj_property>
+      <obj_property name="ObjectShortName">win_start[11:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/debug">
+      <obj_property name="ElementShortName">debug</obj_property>
+      <obj_property name="ObjectShortName">debug</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider2392" type="divider">
+      <obj_property name="label">FIFO</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/fifo_counter">
+      <obj_property name="ElementShortName">fifo_counter[10:0]</obj_property>
+      <obj_property name="ObjectShortName">fifo_counter[10:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/fifo_empty">
+      <obj_property name="ElementShortName">fifo_empty</obj_property>
+      <obj_property name="ObjectShortName">fifo_empty</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/data_fifo_u/rd_en">
+      <obj_property name="ElementShortName">rd_en</obj_property>
+      <obj_property name="ObjectShortName">rd_en</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/data_fifo_u/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/data_fifo_u/srst">
+      <obj_property name="ElementShortName">srst</obj_property>
+      <obj_property name="ObjectShortName">srst</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/u_dnode/data_fifo_u/wr_en">
+      <obj_property name="ElementShortName">wr_en</obj_property>
+      <obj_property name="ObjectShortName">wr_en</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/u_dnode/stream_dr">
+      <obj_property name="ElementShortName">stream_dr</obj_property>
+      <obj_property name="ObjectShortName">stream_dr</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+   </wvobject>
+</wave_config>

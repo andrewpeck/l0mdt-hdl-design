@@ -6,14 +6,15 @@ __config__:
     shared_lib:
         - common_ieee_pkg
 
-HDL_Types:
+UCM_ACTIONS_CTRL_t:
+  - RESET : { type: logic }
+  - ENABLE : { type: logic }
+  - DISABLE : { type: logic }
 
-- UCM_MON_t:
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
 
-
-- UCM_CTRL_t:
-  - RESET : [ type: logic ]
+UCM_CTRL_t:
+  - ACTIONS : { type: UCM_ACTIONS_CTRL_t }
+  - PHICENTER0 : { type: logic, length: 32, description:Phi to Center of chamber }
+  - MODE : { type: logic, length: 16, description:Module 16 bit mode }
 
 

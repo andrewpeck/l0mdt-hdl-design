@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="ttc_tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="\$unit_tb_top_sv " />
+            <top_module name="common_defs_pkg" />
+            <top_module name="glbl" />
+            <top_module name="ttc_defs_pkg" />
+            <top_module name="ttc_tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="4068000001fs"></ZoomEndTime>
+      <Cursor1Time time="650000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="232"></NameColumnWidth>
+      <ValueColumnWidth column_width="169"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject type="logic" fp_name="/ttc_tb/clk40">
+      <obj_property name="ElementShortName">clk40</obj_property>
+      <obj_property name="ObjectShortName">clk40</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/clk320">
+      <obj_property name="ElementShortName">clk320</obj_property>
+      <obj_property name="ObjectShortName">clk320</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/rst">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/rst_r">
+      <obj_property name="ElementShortName">rst_r</obj_property>
+      <obj_property name="ObjectShortName">rst_r</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/latency">
+      <obj_property name="ElementShortName">latency[31:0]</obj_property>
+      <obj_property name="ObjectShortName">latency[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/dead">
+      <obj_property name="ElementShortName">dead[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dead[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/ttc_l1a">
+      <obj_property name="ElementShortName">ttc_l1a</obj_property>
+      <obj_property name="ObjectShortName">ttc_l1a</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/ttc_bcr">
+      <obj_property name="ElementShortName">ttc_bcr</obj_property>
+      <obj_property name="ObjectShortName">ttc_bcr</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/ttc_ecr">
+      <obj_property name="ElementShortName">ttc_ecr</obj_property>
+      <obj_property name="ObjectShortName">ttc_ecr</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/bcid_cnt">
+      <obj_property name="ElementShortName">bcid_cnt[11:0]</obj_property>
+      <obj_property name="ObjectShortName">bcid_cnt[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/bcid_l1a">
+      <obj_property name="ElementShortName">bcid_l1a[11:0]</obj_property>
+      <obj_property name="ObjectShortName">bcid_l1a[11:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/ttc_tb/bcid_daq_init">
+      <obj_property name="ElementShortName">bcid_daq_init</obj_property>
+      <obj_property name="ObjectShortName">bcid_daq_init</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/ttc_fmt_r">
+      <obj_property name="ElementShortName">ttc_fmt_r</obj_property>
+      <obj_property name="ObjectShortName">ttc_fmt_r</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/tb_to_ttc_r">
+      <obj_property name="ElementShortName">tb_to_ttc_r</obj_property>
+      <obj_property name="ObjectShortName">tb_to_ttc_r</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/tb_to_ttc_v">
+      <obj_property name="ElementShortName">tb_to_ttc_v[10:0]</obj_property>
+      <obj_property name="ObjectShortName">tb_to_ttc_v[10:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/ttc_to_tb_r">
+      <obj_property name="ElementShortName">ttc_to_tb_r</obj_property>
+      <obj_property name="ObjectShortName">ttc_to_tb_r</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/ttc_tb/ttc_to_tb_r.cmds">
+         <obj_property name="ElementShortName">.cmds</obj_property>
+         <obj_property name="ObjectShortName">.cmds</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ttc_tb/ttc_to_tb_r.cnt">
+         <obj_property name="ElementShortName">.cnt</obj_property>
+         <obj_property name="ObjectShortName">.cnt</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttc_tb/ttc_to_tb_v">
+      <obj_property name="ElementShortName">ttc_to_tb_v[80:0]</obj_property>
+      <obj_property name="ObjectShortName">ttc_to_tb_v[80:0]</obj_property>
+   </wvobject>
+</wave_config>

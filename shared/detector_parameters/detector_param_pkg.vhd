@@ -24,16 +24,43 @@ use shared_lib.common_constants_pkg.all;
 
 package detector_param_pkg is
 
+  constant MAX_NUM_CHAMBER_POS : integer := 8;
+
   -------------------------------------------------------------------------
-  -- Some constants
+  -- Time & cycles constants
   -------------------------------------------------------------------------
-  constant TIME_SLC_MDT_DELAY   : integer := 967; -- ns => 309.44 cycles
-  constant TAR_PL_A_LATENCY     : integer := 310; -- cycles => 968.75 ns
+  constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
+  
+  -- TAR PIPELINE
+  constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
+  constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
   --
   constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
+  --
+  constant HEG_CSF_START_DELAY  : integer := 5;
+  constant HEG_CSF_END_DELAY    : integer := 57;
+
+  constant HEG_LSF_START_DELAY  : integer := 18;
+  constant HEG_LSF_END_DELAY    : integer := 10;
+  
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
+  --
+  constant CSF_POST_PROCESSING  : integer := 57;
+  constant LSF_POST_PROCESSING  : integer := 50;
+
+  --
+  constant HP_LATENCY           : integer := 3;
+  constant BM_MIN_LATENCY       : integer := 3;
+  --
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
+
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer; 
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer; 
+  
+  function get_heg_load_time(start_delay : integer) return integer;
+  function get_heg_busy_time(start_delay : integer) return integer;
+  function get_heg_unload_time(start_delay, end_delay : integer) return integer;
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------
@@ -49,10 +76,27 @@ package detector_param_pkg is
 
   function get_barrel_radius ( sector, r_i: integer) return signed;
 
-    -------------------------------------------------------------------------
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  --UCM2PL_PHIMOD_MULT
+  subtype sector_phi_center_t is unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+  type sector_phi_center_default_t is array ( 0 to 15) of real;
+  constant sector_phi_center_default : sector_phi_center_default_t :=(
+    -- -pi to pi ; signed
+    -- 0.       ,0.392699 ,0.785398 ,1.178097 , 1.570796 ,1.963495 ,2.356194 ,2.748894 ,
+    -- 3.141593 ,-2.748894,-2.356194,-1.963495, -1.570796,-1.178097,-0.785398,-0.392699
+    -- 0 to 2pi ; unsigned
+    0.0,0.392699082,0.785398163,1.178097245,1.570796327,1.963495408,2.35619449,2.748893572,
+    3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
+
+  );
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t; 
+  
+  -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  constant MAX_NUM_CHAMBER_POS : integer := 8;
+  
   type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;
@@ -114,7 +158,8 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  subtype b_chamber_z_origin_ut is unsigned (SLC_Z_RPC_LEN -1 downto 0); --old length : SLC_Z_RPC_LEN
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of b_chamber_z_origin_ut;
   type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
@@ -142,7 +187,7 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_origin_z_u( sector, station : integer) return b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut;
   function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
   -- Chamber type from 
@@ -218,6 +263,108 @@ package detector_param_pkg is
 end package detector_param_pkg;
 
 package body detector_param_pkg is
+
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t is
+    variable mem_out : sector_phi_center_t;
+    variable a , b : real;
+  begin
+    a := sector_phi_center_default(sector);
+    b := SLC_COMMON_POSPHI_MULT;
+    mem_out := to_unsigned( integer((1000.0 * a) * b),SLC_COMMON_POSPHI_LEN);
+    return mem_out;
+  end function;
+
+  -------------------------------------------------------------------------
+  -- Time & cycles constants
+  -------------------------------------------------------------------------
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer is
+    variable t_o : integer;
+  begin
+    if SF_t = '0' then
+      t_o := t_CSF;
+    else
+      t_o := t_LSF;
+    end if;
+    return t_o;
+  end function;
+
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer is
+    variable t_o : integer;
+  begin
+    if PT_t = '0' then
+      t_o := t_MPI;
+    else
+      t_o := t_UCI;
+    end if;
+    return t_o;
+  end function;
+
+  function get_heg_load_time(start_delay : integer) return integer is
+    variable time_out : integer;
+  begin
+    if start_delay < HP_LATENCY + BM_MIN_LATENCY then
+      time_out    := 0;
+    else
+      time_out    := start_delay - (HP_LATENCY + BM_MIN_LATENCY);
+    end if;
+    return time_out;
+  end function;
+
+  function get_heg_busy_time(start_delay : integer) return integer is
+    variable time_out : integer;
+  begin
+    if start_delay < HP_LATENCY + BM_MIN_LATENCY then
+      time_out    := HEG_BUSY_CLOCKS;
+    else
+      time_out    := start_delay - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
+    end if;
+    return time_out;
+  end function;
+
+  function get_heg_unload_time(start_delay, end_delay : integer) return integer is
+    variable time_out : integer;
+  begin
+    if start_delay < HP_LATENCY + BM_MIN_LATENCY then
+      time_out    := HEG_BUSY_CLOCKS + end_delay;
+    else
+      time_out    := start_delay - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + end_delay;
+    end if;
+    return time_out;
+  end function;
+  
+
+
+  -- function get_heg_times(dummy : integer) return heg_times_rt is
+  --   variable times : heg_times_rt;
+  -- begin
+  --   if c_SF_TYPE = '0' then
+  --     if HEG_CSF_START_DELAY < HP_LATENCY + BM_MIN_LATENCY then
+  --       times.load    := 0;
+  --       times.busy    := HEG_BUSY_CLOCKS;
+  --       times.unload  := HEG_BUSY_CLOCKS +HEG_CSF_END_DELAY;
+  --     else
+  --       times.load    := HEG_CSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY);
+  --       times.busy    := HEG_CSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
+  --       times.unload  := HEG_CSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + HEG_CSF_END_DELAY;
+  --     end if;
+
+  --   else
+  --     if HEG_LSF_START_DELAY < HP_LATENCY + BM_MIN_LATENCY then
+  --       times.load    := 0;
+  --       times.busy    := HEG_BUSY_CLOCKS;
+  --       times.unload  := HEG_BUSY_CLOCKS + HEG_LSF_END_DELAY;
+  --     else
+  --       times.load    := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY);
+  --       times.busy    := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
+  --       times.unload  := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + HEG_LSF_END_DELAY;
+  --     end if;
+  
+  --   end if;
+  --   return times;
+  -- end function;
   -------------------------------------------------------------------------
   -- Radius to RPC hit
   -------------------------------------------------------------------------
@@ -261,11 +408,11 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_origin_z_u( sector, station: integer) return b_chamber_z_origin_aut is
+  function get_b_chamber_origin_z_u( sector, station: integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut is
     variable y : b_chamber_z_origin_aut;
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult) , out_width);
     end loop;
     return y;
   end function;

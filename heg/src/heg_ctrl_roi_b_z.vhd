@@ -57,7 +57,7 @@ architecture beh of b_z2roi is
   signal rom_mem        : roi_z_lut_t(0 to get_roi_z_max(g_STATION_RADIUS) - 1);
   signal addr_mem       : unsigned(UCM_Z_ROI_LEN-1 downto 0); 
   signal int_data_valid : std_logic;
-  signal centers        : roi_z_centers;
+  signal centers        : roi_z_centers := (others => 0);
 
   attribute ROM_STYLE : string;
   attribute ROM_STYLE of rom_mem : signal is "distributed";
@@ -97,6 +97,7 @@ begin
   -- end generate;
 
   OUT_GEN : for l_i in 0 to get_num_layers(g_STATION_RADIUS) -1 generate
+
       o_roi_center(l_i) <= to_unsigned(centers(0),MDT_TUBE_LEN) when (l_i mod 2) = 0 else
                            to_unsigned(centers(1),MDT_TUBE_LEN);
   end generate;

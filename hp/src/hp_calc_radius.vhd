@@ -105,6 +105,7 @@ begin
     if rising_edge(clk) then
       if rst= '1' then
         drift_time <= (others => '0');
+        int_dv <= '0';
       else
 
         int_dv <= i_data_valid;

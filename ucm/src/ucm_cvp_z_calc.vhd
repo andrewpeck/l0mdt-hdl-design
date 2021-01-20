@@ -66,7 +66,7 @@ begin
   o_vec_z_pos <= resize(unsigned(vec_pos/1024),UCM2HPS_VEC_POS_LEN);
 
   -- chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))),SLC_Z_RPC_LEN +1));
-  chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024);
+  -- chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024);
   
   Z_CALC: process(clk)
   begin
@@ -76,7 +76,7 @@ begin
       else
 
         if i_data_valid = '1' then
-          vec_pos <= ((chamb_h - i_offset) * to_signed(resolution_change,15)) / i_slope;
+          vec_pos <= ((signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024) - i_offset) * to_signed(resolution_change,15)) / i_slope;
         else
           vec_pos <= (others => '0');
         end if;

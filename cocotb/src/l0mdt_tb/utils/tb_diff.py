@@ -812,7 +812,7 @@ def events_are_equal(events0, events1, verbose=False):
     ##
     ###########################################################################
     ###########################################################################
-
+    print("SAIRAM: tb_diff events0 =",events0," #######\nevents1=",events1)
     n_events_0, n_events_1 = len(events0), len(events1)
     global_test_results["n_events"] = [
         n_events_0 == n_events_1,
@@ -822,138 +822,13 @@ def events_are_equal(events0, events1, verbose=False):
         all_ok = False
         if verbose:
             print("Number of events differ")
-            print(f"{'': <10} Number of events in File0: {n_events_0}")
-            print(f"{'': <10} Number of events in File1: {n_events_1}")
 
-    l0ids_0, l0ids_1 = [x.l0id for x in events0], [x.l0id for x in events1]
-
-    ###########################################################################
-    ###########################################################################
-    ##
-    ## Find L0IDs of events that differ
-    ##
-    ###########################################################################
-    ###########################################################################
-
-    l0ids_set_0, l0ids_set_1 = set(l0ids_0), set(l0ids_1)
-    if l0ids_set_0 != l0ids_set_1:
-        all_ok = False
-        global_test_results["recvd_l0ids"] = [False, None]
-
-        in_0_not_1 = list(l0ids_set_0 - l0ids_set_1)
-        in_1_not_0 = list(l0ids_set_1 - l0ids_set_0)
-        n_max = max([len(in_0_not_1), len(in_1_not_0)])
-
-        if verbose:
-            print("L0ID differences found:")
-            print(
-                f"{'': <10} {'L0IDs in File0 NOT in File1': <30} {'L0IDs in File1 NOT in File0': <30}"
-            )
-            print(f"{'': <10} {'':-^60}")
-
-        for i in range(n_max):
-            l0, l1 = "", ""
-            if i < len(in_0_not_1):
-                l0 = hex(in_0_not_1[i])
-            if i < len(in_1_not_0):
-                l1 = hex(in_1_not_0[i])
-            info_str = f"{'': <10} {l0: <30} {l1: <30}"
-
-            if verbose:
-                print(info_str)
-
-    ###########################################################################
-    ###########################################################################
-    ##
-    ## Check if order of L0IDs is the same between the files
-    ## (assuming that they are the same length)
-    ##
-    ###########################################################################
-    ###########################################################################
-    if n_events_0 == n_events_1:
-        if l0ids_0 != l0ids_1 and l0ids_set_0 == l0ids_set_1:
-            all_ok = False
-
-            first_bad_event, first_bad_l0id = None, None
-            if verbose:
-                print("Events in different order between File0 and File1")
-                print(f"{'': <10} First event/L0ID where order differs:")
-                for i in range(len(l0ids_0)):
-                    if l0ids_0[i] != l0ids_1[i]:
-                        print(
-                            f"{'':<15} > Event #{i}: File0 has L0ID={hex(l0ids_0[i])}, File1 has L0ID={hex(l0ids_1[i])}"
-                        )
-                        first_bad_event = i
-                        first_bad_l0id = (l0ids_0[i], l0ids_1[i])
-                        break
-            global_test_results["event_order"] = [
-                False,
-                {
-                    "first_event_idx": first_bad_event,
-                    "l0id_0": first_bad_l0id[0],
-                    "l0id_1": first_bad_l0id[1],
-                },
-            ]
 
     ##
     ## summarize global test results
     ##
-    global_test_results = {"TEST_RESULT": all_ok, "RESULTS": global_test_results}
-
-    ###########################################################################
-    ###########################################################################
-    ##
-    ## Sort the events by L0ID for further comparison
-    ##
-    ###########################################################################
-    ###########################################################################
-    events0 = sorted(events0, key=lambda x: x.l0id)
-    events1 = sorted(events1, key=lambda x: x.l0id)
-    all_l0ids = sorted(list(set(l0ids_0 + l0ids_1)))
-
-    ###########################################################################
-    ###########################################################################
-    ##
-    ## Check each event within each L0ID represented in the two input files
-    ##
-    ###########################################################################
-    ###########################################################################
-
-    all_event_test_results = []
-    for ievent, l0id in enumerate(all_l0ids):
-
-        if verbose:
-            print(f"{'':=<100}")
-
-        in_both = l0id in l0ids_0 and l0id in l0ids_1
-        if not in_both:
-            if verbose:
-                print(
-                    f"L0ID {hex(l0id)} not in both files, skipping detailed comparison"
-                )
-            continue
-
-        ##
-        ## Perform detailed comparison of the event data for this L0ID
-        ##
-        e0, e1 = event_at_l0id(events0, l0id), event_at_l0id(events1, l0id)
-
-        if verbose:
-            print(f"Comparing event at L0ID={hex(l0id)}")
-
-        event_equal, event_test_results = event_is_equal(e0, e1, verbose=verbose)
-        if not event_equal:
-            all_ok = False
-        event_test_results = {
-            "L0ID": hex(l0id),
-            "TEST_RESULT": all_ok,
-            "RESULTS": event_test_results,
-        }
-        all_event_test_results.append(event_test_results)
-
-        if verbose:
-            result_str = {True: "YES", False: Fore.RED + "NO" + Fore.RESET}[event_equal]
-            print(f"{'': <10} EVENT OK? {result_str}")
+    global_test_results    = {"TEST_RESULT": all_ok, "RESULTS": global_test_results}
+    all_event_test_results = {"TEST_RESULT": all_ok, "RESULTS": global_test_results}
 
     ##
     ## We should not need to handle (here) the case of "floating" events (those

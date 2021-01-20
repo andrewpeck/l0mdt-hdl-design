@@ -84,7 +84,7 @@ begin
     end if;
   end process;
 
-  INN_GEN: if g_STATION_RADIUS = 0 generate
+  -- INN_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
 
     begin
@@ -97,13 +97,15 @@ begin
           if(int_data_valid = '1') then
             o_r_pos <= to_unsigned(R_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
             -- o_r_pos <= to_unsigned(integer(r_pos),MDT_LOCAL_AXI_LEN);
+            o_dv <= '1';
           else
             o_r_pos <= (others => '0');
+            o_dv <= '0';
           end if;
         end if;
       end if ;
     end process;
-  end generate;
+  -- end generate;
 end architecture beh;
 
 

@@ -55,7 +55,8 @@ architecture Behavioral of csf_histogram is
   -- Histogram parameters
   constant HISTO_FULL_MULTI : real := real(HEG2SFHIT_LOCALX_MULT * UCM_MBAR_MULT);
   constant HISTO_LEN       : integer := 6;
-  constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * (2.0 ** real(HISTO_LEN + 1))));
+  constant HISTO_RANGE     : real := 256.0;
+  constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * HISTO_RANGE));
   constant MAX_HITS_PER_BIN  : real    := 8.0;
   constant BIN_DEPTH         : integer := integer(log2(max_hits_per_bin));
   constant INV_SQRT_M_LEN  : integer := 18;
@@ -181,7 +182,8 @@ architecture Behavioral of csf_histogram is
   GENERIC (
       MXADRB   : integer;
       MXDATB   : integer;
-      ROM_FILE : string
+      ROM_FILE : string;
+      ROM_STYLE : string
   );
   PORT (
       clka  : in std_logic;
@@ -213,7 +215,8 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => INV_SQRT_M_LEN,
-      ROM_FILE => "invsqrt_mbar.mem"
+      ROM_FILE => "invsqrt_mbar.mem",
+      ROM_STYLE => "distributed"
   )
   PORT MAP (
       ena    => '1',
@@ -226,7 +229,8 @@ begin
   generic map(
       MXADRB => UCM_MBAR_LEN,
       MXDATB => SQU_M_LEN,
-      ROM_FILE => "sqrt_mbar.mem"
+      ROM_FILE => "sqrt_mbar.mem",
+      ROM_STYLE => "distributed"
   )
   port map(
       ena    => '1',
@@ -406,11 +410,11 @@ begin
           if eof8 = '1' then
               start_read <= '1';
               has_max <= '0';
-              if unsigned(max_counter_1) > 1 then
+              if unsigned(max_counter_1) > 0 then
                   r_addr(to_integer(max_bin1_s)) <= (others => '0');
                   has_max <= '1';
               end if;
-              if unsigned(max_counter_2) > 1 and max_counter_1 = max_counter_2 then
+              if unsigned(max_counter_2) > 0 and max_counter_1 = max_counter_2 then
                   r_addr(to_integer(max_bin2_s)) <= (others => '0');
               end if;
               mbar <= (others => '0');
@@ -421,7 +425,7 @@ begin
 
           if start_read0 = '1' and has_max = '1' then
               if unsigned(r_addr(to_integer(max_bin1))) < unsigned(max_counter_1) - 1
-                  and unsigned(max_counter_1) > 1 then
+                  and unsigned(max_counter_1) > 0 then
                   r_addr(to_integer(max_bin1)) <=
                       std_logic_vector(unsigned(r_addr(to_integer(max_bin1))) + 1);
               else
@@ -435,7 +439,7 @@ begin
               end if;
 
               if unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                  and unsigned(max_counter_2) > 1 and max_counter_2 = max_counter_1 then
+                  and unsigned(max_counter_2) > 0 and max_counter_2 = max_counter_1 then
                   r_addr(to_integer(max_bin2)) <=
                       std_logic_vector(unsigned(r_addr(to_integer(max_bin2))) + 1);
               else

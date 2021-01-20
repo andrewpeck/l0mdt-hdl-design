@@ -3,13 +3,13 @@
 --
 --
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: User Logic Top 
+--  Project: ATLAS L0MDT Trigger
+--  Module: User Logic Top
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_misc.all;
@@ -68,16 +68,16 @@ entity ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc        : in  slc_rx_bus_avt(2 downto 0);  -- is the main SL used
@@ -86,19 +86,19 @@ entity ult is
     i_minus_neighbor_slc      : in  slc_rx_rvt;
 
     -- Segments in from neighbor
-    plus_neighbor_segments_i  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    minus_neighbor_segments_i : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    plus_neighbor_segments_o  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    minus_neighbor_segments_o : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- -- MUCTPI
-    MTC_o                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    NSP_o                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    o_NSP                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
 
     sump : out std_logic
@@ -116,22 +116,22 @@ architecture behavioral of ult is
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal inner_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tar_hits : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tar_hits  : tar2hps_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- TDC Hits from tar 2 daq
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_NUM_MDT_CH_EXT -1 downto 0);
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
-  signal inner_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_segments_to_pt : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
   signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
@@ -169,7 +169,7 @@ begin
         i_middle_tar_hits => i_middle_tar_hits,
         i_outer_tar_hits  => i_outer_tar_hits,
         i_extra_tar_hits  => i_extra_tar_hits,
-        -- 
+        --
         o_inner_tdc_hits  => inner_tdc_hits,
         o_middle_tdc_hits => middle_tdc_hits,
         o_outer_tdc_hits  => outer_tdc_hits,
@@ -222,13 +222,13 @@ begin
       i_out_slc                 => outer_slc_to_hts,
       i_ext_slc                 => extra_slc_to_hts,
       -- Segments Out to pt calculation
-      o_inn_segments            => inner_segments_to_pt,
-      o_mid_segments            => middle_segments_to_pt,
-      o_out_segments            => outer_segments_to_pt,
-      o_ext_segments            => extra_segments_to_pt,
+      o_inn_segments            => inn_segments_to_pt,
+      o_mid_segments            => mid_segments_to_pt,
+      o_out_segments            => out_segments_to_pt,
+      o_ext_segments            => ext_segments_to_pt,
       -- Segment outputs to HAL
-      plus_neighbor_segments_o  => plus_neighbor_segments_o,
-      minus_neighbor_segments_o => minus_neighbor_segments_o
+      o_plus_neighbor_segments  => o_plus_neighbor_segments,
+      o_minus_neighbor_segments => o_minus_neighbor_segments
     );
 
     pipeline_inst : entity ult_lib.pipeline
@@ -256,13 +256,13 @@ begin
       ctrl                      => tf_ctrl,
       mon                       => tf_mon,
       --  segments from neighbors
-      plus_neighbor_segments_i  => plus_neighbor_segments_i,
-      minus_neighbor_segments_i => minus_neighbor_segments_i,
+      plus_neighbor_segments_i  => i_plus_neighbor_segments,
+      minus_neighbor_segments_i => i_minus_neighbor_segments,
       -- segments from hps
-      inner_segments_i          => inner_segments_to_pt,
-      middle_segments_i         => middle_segments_to_pt,
-      outer_segments_i          => outer_segments_to_pt,
-      extra_segments_i          => extra_segments_to_pt,
+      inner_segments_i          => inn_segments_to_pt,
+      middle_segments_i         => mid_segments_to_pt,
+      outer_segments_i          => out_segments_to_pt,
+      extra_segments_i          => ext_segments_to_pt,
       -- from pipeline
       i_pl2pt_av                => pl2pt_av,
       -- to mtc
@@ -280,57 +280,56 @@ begin
       i_ptcalc          => pt2mtc_av,
       i_pl2mtc          => pl2mtc_av,
       -- outputs
-      o_mtc             => mtc_o,
-      o_nsp             => nsp_o
+      o_mtc             => o_mtc,
+      o_nsp             => o_nsp
     );
 
     daq_inst : entity work.daq
-    port map (
-      -- clock, control, and monitoring
-      clock_and_control => clock_and_control,
-      ttc_commands      => ttc_commands,
-      ctrl              => daq_ctrl,
-      mon               => daq_mon,
-
-      -- TDC Hits from Polmux
-      i_inner_tdc_hits  => inner_tdc_hits,
-      i_middle_tdc_hits => middle_tdc_hits,
-      i_outer_tdc_hits  => outer_tdc_hits,
-      i_extra_tdc_hits  => extra_tdc_hits,
-
-      -- Tracks from MTC
-      -- ???
-
-      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-      daq_streams_o => daq_streams_o
-    );
-
+      generic map(DELAY => 9600, memory_type => "ultra")
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control => clock_and_control,
+        ttc_commands      => ttc_commands,
+        ctrl              => daq_ctrl,
+        mon               => daq_mon,
+        
+        -- TDC Hits from Polmux
+        i_inner_tdc_hits  => inner_tdc_hits,
+        i_middle_tdc_hits => middle_tdc_hits,
+        i_outer_tdc_hits  => outer_tdc_hits,
+        i_extra_tdc_hits  => extra_tdc_hits,
+        
+        -- Tracks from MTC
+        -- ???
+        
+        -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
+        daq_streams_o => o_daq_streams);
 
     sump <= '0';
 
   end generate;
 
   dummy_gen : if (DUMMY) generate
-    signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_INN-1 downto 0);
-    signal tdc_hit_middle_sump : std_logic_vector (c_HPS_NUM_MDT_CH_MID-1 downto 0);
-    signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
-    signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_NUM_MDT_CH_OUT-1 downto 0);
+    signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+    signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+    signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+    signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
   begin
 
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
-        inner_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_INN-1 loop
+        inner_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
           tdc_hit_inner_sump(I) <= xor_reduce(vectorify(i_inner_tdc_hits(I)));
         end loop;
-        middle_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_MID-1 loop
+        middle_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
           tdc_hit_middle_sump(I) <= xor_reduce(vectorify(i_middle_tdc_hits(I)));
         end loop;
-        outer_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_OUT-1 loop
+        outer_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
           tdc_hit_outer_sump(I) <= xor_reduce(vectorify(i_outer_tdc_hits(I)));
         end loop;
-        extra_tdc_sump_loop : for I in 0 to c_HPS_NUM_MDT_CH_EXT-1 loop
+        extra_tdc_sump_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
           tdc_hit_extra_sump(I) <= xor_reduce(vectorify(i_extra_tdc_hits(I)));
         end loop;
 

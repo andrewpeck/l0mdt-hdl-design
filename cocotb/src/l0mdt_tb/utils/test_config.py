@@ -140,6 +140,16 @@ def testbench_config_from_file(config_file):
     with open(config_file, "r") as infile:
         config_data = json.load(infile)
         config = config_data["testbench_config"]
+
+    try:
+        config["run_config"]["components_lib_dir"] = os.environ["COMPONENTS_LIB_DIR"]
+    except:
+        None
+    try:
+        config["testvectors"]["testvector_dir"] = os.environ["L0MDT_TESTVECTOR_DIR"]
+    except:
+        None
+
     return config
 
 

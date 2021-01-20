@@ -1,0 +1,6 @@
+user_hls:lsf_hls:
+  extends: .user_hls
+  variables:
+    extends: .vars
+    PROJECT_NAME: lsf_hls
+    HOG_ONLY_SYNTH: 1

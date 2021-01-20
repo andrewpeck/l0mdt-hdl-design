@@ -162,13 +162,13 @@ all:
 	-e ../../heg/pkg/heg.yml \
 	../../hps/pkg/hps.yml
 	# ucm_hps
-	python3 $(yml2hdl)       \
-	-e common_ieee.yml       \
-	-e ../../dataformats/l0mdt_constants.yml \
-	-e common_constants.yml  \
-	-e ../../dataformats/l0mdt_dataformats.yml \
-	-e common_types.yml      \
-	../../ucm_hps/pkg/ucm_hps.yml
+	# python3 $(yml2hdl)       \
+	# -e common_ieee.yml       \
+	# -e ../../dataformats/l0mdt_constants.yml \
+	# -e common_constants.yml  \
+	# -e ../../dataformats/l0mdt_dataformats.yml \
+	# -e common_types.yml      \
+	# ../../ucm_hps/pkg/ucm_hps.yml
 	# main pipeline
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -200,4 +200,6 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
+	-e ../../hp/pkg/hp.yml   \
+	-e ../../heg/pkg/heg.yml \
 	../../shared/sim/pkg/gldl_ult_tp_sim.yml

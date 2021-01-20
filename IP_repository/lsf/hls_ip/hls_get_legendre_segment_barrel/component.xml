@@ -232,7 +232,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>76464422</spirit:value>
+            <spirit:value>40076bbd</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>2b3c05cc</spirit:value>
+            <spirit:value>f273b899</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -264,7 +264,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>27aa3b32</spirit:value>
+            <spirit:value>5d6ddd75</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -280,7 +280,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>398aad08</spirit:value>
+            <spirit:value>376dfeb3</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -534,7 +534,7 @@
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:vector>
-            <spirit:left spirit:format="long">17</spirit:left>
+            <spirit:left spirit:format="long">13</spirit:left>
             <spirit:right spirit:format="long">0</spirit:right>
           </spirit:vector>
           <spirit:wireTypeDefs>
@@ -656,7 +656,7 @@
       <spirit:file>
         <spirit:name>hdl/vhdl/get_legendre_segment_barrel.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_f65701d3</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_b5112167</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
@@ -756,14 +756,14 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Get_legendre_segment_barrel</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2010011812</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2020-10-02T01:13:01Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2101041537</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-01-04T23:37:48Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="5937d2f8"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="df1e7cf0"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="7ee4c868"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="745cbfcc"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c3b1ac66"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="9a9b2f5c"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>

@@ -56,8 +56,8 @@ architecture beh of hit_processor is
   signal mdt_data             : hp_hpsPc2hp_rt;
   -- signal tdc_time_t0          : mdt_time_le_st;
   -- signal tdc_time_comp_valid  : std_logic;
-  signal tdc_hitmatch_valid   : std_logic;
-  signal tdc_hitmatch_valid_pl: std_logic;
+  -- signal tdc_hitmatch_valid   : std_logic;
+  -- signal tdc_hitmatch_valid_pl: std_logic;
   signal tdc_paramcalc_valid  : std_logic;
 
   signal hm2pl      : std_logic_vector(1 downto 0);
@@ -82,7 +82,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    glob_en             => glob_en and local_en,
     -- configuration
     -- time_offset         => time_offset,
     -- RoI_size            => RoI_size,
@@ -108,7 +108,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    glob_en             => glob_en and local_en,
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_specific      => slc_data.specific,
@@ -130,8 +130,8 @@ begin
 
   dv_delay : entity shared_lib.std_pipeline
   generic map(
-    num_delays    => 1,
-    num_bits      => 2
+    g_DELAY_CYCLES    => 1,
+    g_PIPELINE_WIDTH      => 2
   )
   port map(
     clk               => clk,
@@ -144,8 +144,8 @@ begin
 
   -- hv_delay : entity shared_lib.std_pipeline
   -- generic map(
-  --   num_delays    => 2,
-  --   num_bits      => 1
+  --   g_DELAY_CYCLES    => 2,
+  --   g_PIPELINE_WIDTH      => 1
   -- )
   -- port map(
   --   clk               => clk,

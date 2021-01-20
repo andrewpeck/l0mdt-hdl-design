@@ -83,7 +83,7 @@ begin
     end if;
   end process;
 
-  INN_GEN: if g_STATION_RADIUS = 0 generate
+  -- INN_GEN: if g_STATION_RADIUS = 0 generate
     DT2R : process(clk)
 
     begin
@@ -101,7 +101,7 @@ begin
         end if;
       end if ;
     end process;
-  end generate;
+  -- end generate;
 
   -- MID_GEN: if g_STATION_RADIUS = 1 generate
   --   DT2R : process(clk)
@@ -114,7 +114,9 @@ begin
   --       else
   --         o_dv <= int_data_valid;
   --         if(int_data_valid = '1') then
-  --           o_spaces <= to_unsigned(BM_A_zh_mem(to_integer(unsigned(addr_mem))),10);
+  --           o_spaces <= to_unsigned(zh_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+  --         else
+  --           o_spaces <= (others => '0');
   --         end if;
   --       end if;
   --     end if ;
@@ -132,7 +134,9 @@ begin
   --       else
   --         o_dv <= int_data_valid;
   --         if(int_data_valid = '1') then
-  --           o_spaces <= to_unsigned(BO_A_zh_mem(to_integer(unsigned(addr_mem))),10);
+  --           o_spaces <= to_unsigned(zh_mem(to_integer(addr_mem)),MDT_GLOBAL_AXI_LEN);
+  --         else
+  --           o_spaces <= (others => '0');
   --         end if;
   --       end if;
   --     end if ;

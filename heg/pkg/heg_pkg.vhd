@@ -51,6 +51,8 @@ package heg_pkg is
   function structify(x: heg_ctrl2hp_all_rvt) return heg_ctrl2hp_all_rt;
   function nullify(x: heg_ctrl2hp_all_rt) return heg_ctrl2hp_all_rt;
 
+  constant CSF_SLOPE_LEN : integer := 11;
+
   type heg_ctrl2sf_rt is record
     rst : std_logic;
     eof : std_logic;

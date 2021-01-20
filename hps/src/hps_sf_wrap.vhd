@@ -86,9 +86,24 @@ begin
           i_rst     => rst,
           o_seg     => o_sf_data_v
           );
+
+          lsf_mon.STATUS <= '0';
+          lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+          lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+
+
     end generate;
 
+
+    ------------------------------------------------------------------
     -- LSF
+    ------------------------------------------------------------------
+
+
+
+
+
+   
     EN_LSF : if c_SF_TYPE = '1' generate
       LSF : entity lsf_lib.top_lsf
         -- generic map(
@@ -109,6 +124,11 @@ begin
           sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
           );
     end generate;
+
+
+
+
+
   end generate;
 
   DIS_SF : if c_SF_ENABLED = '0' generate

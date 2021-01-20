@@ -2,12 +2,25 @@
 # Configuration
 #---------------------------------
 
+shared/config/detector_mapping_pkg.vhd
 shared/config/config_defaults_pkg.vhd
 shared/config/config_pkg.vhd
 
 #---------------------------------
-# Detector shared ROMs
+# Detector shared RAMs ( Under dev)
 #---------------------------------
+shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
+shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
+
+shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
+
+
+#---------------------------------
+# Detector shared RAMs
+#---------------------------------
+
+
+shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 
 shared/detector_parameters/detector_param_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd
@@ -15,6 +28,7 @@ shared/detector_parameters/gtube2chamber_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
+
 
 #---------------------------------
 # common constants and types
@@ -35,13 +49,27 @@ shared/types/common_types_pkg.vhd
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
 #---------------------------------
-shared/functions/vhdl2008_functions_pkg.vhd
+shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 
 #---------------------------------
 # shared source code for multiple blocks
 #---------------------------------
 shared/src/pipeline.vhd
+shared/src/ring_buffer.vhd #Deprectated, need to clean
+shared/src/ring_buffer_v2.vhd
+shared/src/vhdl_ram_memory.vhd
 
+
+#who use these?
 shared/src/bram.vhd
 shared/src/rom.v
 shared/src/rom_dp.v
+
+#---------------------------------
+# trigonometrics
+#---------------------------------
+shared/functions/trigonometrics/roi_atan_pkg.vhd
+shared/functions/trigonometrics/roi_atan.vhd
+shared/functions/trigonometrics/roi_tan_pkg.vhd
+shared/functions/trigonometrics/roi_tan.vhd
+# shared/functions/trigonometrics/roi_trig_functions.vhd

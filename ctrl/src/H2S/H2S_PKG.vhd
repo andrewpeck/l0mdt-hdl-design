@@ -23,10 +23,10 @@ package H2S_CTRL is
 
   constant DEFAULT_H2S_HPS_LSF_LSF_CTRL_t : H2S_HPS_LSF_LSF_CTRL_t := (
                                                                        RESET => '0',
-                                                                       sb_lsf_mdt_hits_freeze => '0',
                                                                        sb_lsf_mdt_hits_re => '0',
                                                                        HBA_MAX_CLOCKS => "0010000000",
-                                                                       sb_lsf_mdt_hits_raddr => (others => '0')
+                                                                       sb_lsf_mdt_hits_raddr => (others => '0'),
+                                                                       sb_lsf_mdt_hits_freeze => '0'
                                                                       );
   type H2S_HPS_LSF_MON_t is record
     LSF                        :H2S_HPS_LSF_LSF_MON_t_ARRAY;

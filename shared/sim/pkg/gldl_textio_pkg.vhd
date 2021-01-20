@@ -25,12 +25,33 @@ use project_lib.gldl_ult_tp_sim_pkg.all;
 
 package gldl_l0mdt_textio_pkg is
 
-  procedure READ(L:inout LINE; VALUE : out input_tar_rt);
+  procedure READ(L:inout LINE; VALUE : out input_mdt_rt);
 
   procedure READ(L:inout LINE; VALUE : out input_slc_b_rt);
 
-  -- procedure READ(L:inout LINE; VALUE : out TDC_rt);
-  -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt);
+  -- HEG 2 SF
+  procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt);
+
+  procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_ctrl_sim_rt);
+  
+  -- PT IN
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_pt2sf_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_pt_pt2sf_sim_rt);
+
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_mpl_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_pt_mpl_sim_rt);
+
+  -- MTC IN
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_pt_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_pt_sim_rt);
+
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt);
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt);
+
+
 
 end gldl_l0mdt_textio_pkg;
 
@@ -40,60 +61,104 @@ package body gldl_l0mdt_textio_pkg is
   -----------------------------------------------
   -- read TAR 
   -----------------------------------------------  
-  procedure READ(L:inout LINE; VALUE : out input_tar_rt) is
+  procedure READ(L:inout LINE; VALUE : out input_mdt_rt) is
     variable mdt_ToA  : integer;
     -- variable tdc_time     : integer;
     -- variable space        : string(8 downto 1);
     -- variable c_Station    : string(1 downto 1);
-    variable i_station    : integer;
-    variable Chamber      : integer;
+    variable i_station        : integer;
+    variable Chamber_id       : integer;
+    variable Chamber_ieta     : integer;
     variable mdt_time_coarse  : integer;
-    variable mdt_time_fine  : integer;
-    variable tube_global  : integer;
-    variable tube_local   : integer;
-    variable tube_layer   : integer;
-    variable tube_z       : integer;
-    variable tube_rho     : integer;
-    variable tube_radius  : integer;
-    variable event        : integer;
+    variable mdt_time_fine    : integer;
+    variable tube_global      : integer;
+    variable tube_local       : integer;
+    variable tube_layer       : integer;
+    variable tube_z           : integer;
+    variable tube_rho         : integer;
+    variable drift_time       : real;
+    variable event            : integer;
+    variable muonFixedId      : integer;
+    variable csm              : integer;
+    variable mezz             : integer;
+    variable channel          : integer;
+    variable t0               : real;
+    variable TOF              : real;
+
+    variable dummy_text  : string(1 to 100);
+    variable ok : boolean;
 
     -- variable
   begin
+    -- Event
+    -- READ(L, event);
+    -- ToA
     READ(L, mdt_ToA);
+    -- coarse_time
     READ(L, mdt_time_coarse);
+    -- fine_time
     READ(L, mdt_time_fine);
-    READ(L, tube_global);
+    -- Local_Tube_Number
     READ(L, tube_local);
+    -- Tube_Number 
+    READ(L, tube_global);
+    -- Tube_Layer < layer [0,7]
     READ(L, tube_layer);
-    READ(L, Chamber);
-    -- READ(L, space); -- in string we need to read spaces before
-    -- READ(L, c_Station);
+    -- ChamberId < Chamber ID using L0MDT numbering scheme
+    READ(L, Chamber_id);
+    -- Chamber_iEta < iEta index of the chamber [0,7]. Based on 1st layer of tube.
+    READ(L, Chamber_ieta);
+    -- Station_Type < station ID Inner=0, middle, outer, extra
     READ(L, i_station);
+    -- tube_z
     READ(L, tube_z);
+    -- tube_rho
     READ(L, tube_rho);
-    READ(L, tube_radius);
+    -- drift_time
+    READ(L, drift_time);
+    -- event
     READ(L, event);
-
-    -- if c_station = "I" then 
-    --   i_station := 0;
-    -- elsif c_station = "M" then 
-    --   i_station := 1;
-    -- elsif c_station = "O" then 
-    --   i_station := 2;
-    -- else
-    --   i_station := 3;
-    -- end if;
+    -- muonFixedId
+    READ(L, muonFixedId);
+    -- csm  
+    READ(L, csm);
+    -- mezz  
+    READ(L, mezz);
+    -- channel  
+    READ(L, channel);
+    -- t0     
+    READ(L, t0);
+    -- TOF   
+    READ(L, TOF);
+    
+    READ(L, dummy_text,ok);
+    -- 
+    -- 
+    -- READ(L, tube_radius);
+    -- 
 
     VALUE := (
       ToA => to_unsigned(mdt_ToA,64),
       Station => to_unsigned(i_Station,8),
-      Chamber => to_unsigned(chamber,SLC_CHAMBER_LEN),
+      Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
       tar => (  
         tube => to_unsigned(tube_global,MDT_TUBE_LEN),
         layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-        chamber_ieta => to_unsigned(chamber,SLC_CHAMBER_LEN),
-        time => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN) & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+        chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+        time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
         data_valid => '1'
+      ),
+      tdc => (
+        data_valid => '1',
+        tdc => (
+          chanid => to_unsigned(channel,TDC_CHANID_LEN),
+          edgemode => (others => '0'),
+          coarsetime => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN),
+          finetime => to_unsigned(mdt_time_fine,TDC_FINETIME_LEN),
+          pulsewidth => ( others => '0')
+        ),
+        csmid => to_unsigned( chamber_ieta, TDCPOLMUX2TAR_CSMID_LEN),
+        tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
       )
     );
 
@@ -103,12 +168,13 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(tube_global) &
     " - " & integer'image(tube_local) &
     " - " & integer'image(tube_layer) &
-    " - " & integer'image(Chamber) &
-    " - " & integer'image(i_station) &
+    " - " & integer'image(Chamber_id) &
+    " - " & integer'image(Chamber_ieta) &
+    " - " & integer'image(i_station);
     -- " - " & c_station &
-    " - " & integer'image(tube_z) &
-    " - " & integer'image(tube_rho) &
-    " - " & integer'image(tube_radius);
+    -- " - " & integer'image(tube_z) &
+    -- " - " & integer'image(tube_rho) &
+    -- " - " & integer'image(tube_radius);
 
   end procedure;
 
@@ -208,20 +274,6 @@ package body gldl_l0mdt_textio_pkg is
       )
     );
 
-    -- BCID        => to_unsigned(BCID       , SL_HEADER_BCID_LEN) , 
-    -- nTC         => to_unsigned(nTC        , SL_HEADER_NSLC_LEN) , 
-    -- TC_sent     => to_unsigned(TC_sent    , SL_HEADER_NMTC_SL_LEN) , 
-    -- TC_id       => to_unsigned(TC_id      , SL_HEADER_NSLC_LEN) , 
-    -- Eta         => to_signed(Eta          , SLC_COMMON_POSETA_LEN) , 
-    -- Phi         => to_unsigned(Phi        , SLC_COMMON_POSPHI_LEN) , 
-    -- pT_thr      => to_unsigned(pT_thr     , SLC_COMMON_SL_PTTHRESH_LEN) , 
-    -- Charge      => std_logic(to_unsigned(Charge     ,1)(0)), 
-    -- Coincidence => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)) , 
-    -- z_RPC0      => to_signed(z_RPC0     ,SLC_BARREL_RPC0_POSZ_LEN) , 
-    -- z_RPC1      => to_signed(z_RPC1     ,SLC_BARREL_RPC1_POSZ_LEN) , 
-    -- z_RPC2      => to_signed(z_RPC2     ,SLC_BARREL_RPC2_POSZ_LEN) , 
-    -- z_RPC3      => to_signed(z_RPC3     ,SLC_BARREL_RPC3_POSZ_LEN)
-
     report "##### SLC : " & integer'image(BCID) &
     " - " & integer'image(ToA) &
     " - " & integer'image(nTC) &
@@ -237,82 +289,562 @@ package body gldl_l0mdt_textio_pkg is
     " - " & integer'image(z_RPC2) &
     " - " & integer'image(z_RPC3);
   end procedure;
+  -----------------------------------------------
+  -- HEG(HIT) 2 SF
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt) is
+  begin
+    -- SWRITE(L, "#");
+    -- SWRITE(L, "FLAG");
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "station");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "data_valid");
+    WRITE(L, ',');
+    SWRITE(L, "mlayer");
+    WRITE(L, ',');
+    SWRITE(L, "localx");
+    WRITE(L, ',');
+    SWRITE(L, "localy");
+    WRITE(L, ',');
+    SWRITE(L, "radius");
+  end procedure;
+  
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_hit_sim_rt) is
+
+    variable ToA      : unsigned(64-1 downto 0);
+    variable station  : unsigned(4-1 downto 0);
+    variable thread   : unsigned(4-1 downto 0);
+    variable mlayer   : std_logic;
+    variable localx   : unsigned(HEG2SFHIT_LOCALX_LEN-1 downto 0);
+    variable localy   : unsigned(HEG2SFHIT_LOCALY_LEN-1 downto 0);
+    variable radius   : unsigned(HEG2SFHIT_RADIUS_LEN-1 downto 0);
+    variable data_valid : std_logic;
+
+  begin
+
+    ToA     := VALUE.ToA;
+    station := VALUE.station;
+    thread  := VALUE.thread;
+    data_valid  := VALUE.data.data_valid;
+    mlayer  := VALUE.data.mlayer;
+    localx  := VALUE.data.localx;
+    localy  := VALUE.data.localy;
+    radius  := VALUE.data.radius;
+
+    -- SWRITE(L, " HIT: ");
+    -- SWRITE(L, "NONE");
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( station));
+    WRITE(L, ',');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ',');
+    WRITE(L, data_valid);
+    WRITE(L, ',');
+    WRITE(L, mlayer);
+    WRITE(L, ',');
+    WRITE(L, to_integer( localx));
+    WRITE(L, ',');
+    WRITE(L, to_integer( localy));
+    WRITE(L, ',');
+    WRITE(L, to_integer( radius));
+
+  end procedure;
+  -----------------------------------------------
+  -- HEG(SLC) 2 SF 
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt) is
+  begin
+
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "FLAG");
+    WRITE(L, ',');
+
+    SWRITE(L, "station");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "slid");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    SWRITE(L, "mdtseg_dest");
+    WRITE(L, ',');
+    SWRITE(L, "chamber_id");
+    WRITE(L, ',');
+    SWRITE(L, "chamber_ieta");
+    WRITE(L, ',');
+    SWRITE(L, "vec_pos");
+    WRITE(L, ',');
+    SWRITE(L, "vec_ang");
+    WRITE(L, ',');
+    SWRITE(L, "hewindow_pos");
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_slc_sim_rt) is
+
+    variable ToA          : unsigned(64-1 downto 0);
+    variable station      : unsigned(4-1 downto 0);
+    variable thread       : unsigned(4-1 downto 0);
+    variable slcid        : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
+    variable slid         : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
+    variable bcid         : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+    variable mdtseg_dest  : std_logic_vector(HEG2SFSLC_MDTSEG_DEST_LEN-1 downto 0);
+    variable chamber_id   : unsigned(VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
+    variable chamber_ieta : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    variable vec_pos      : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+    variable vec_ang      : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
+    variable hewindow_pos : unsigned(HEG2SFSLC_HEWINDOW_POS_LEN-1 downto 0);
+
+  begin
+
+    ToA           := VALUE.ToA;
+    station       := VALUE.station;
+    thread        := VALUE.thread;
+    slcid         := VALUE.data.muid.slcid;
+    slid          := VALUE.data.muid.slid;
+    bcid          := VALUE.data.muid.bcid;
+    mdtseg_dest   := VALUE.data.mdtseg_dest; 
+    chamber_id    := VALUE.data.mdtid.chamber_id;
+    chamber_ieta  := VALUE.data.mdtid.chamber_ieta;
+    vec_pos       := VALUE.data.vec_pos;
+    vec_ang       := VALUE.data.vec_ang;
+    hewindow_pos  := VALUE.data.hewindow_pos;
+
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ',');
+    SWRITE(L, "SOF");
+    WRITE(L, ',');
+    WRITE(L, to_integer( station));
+    WRITE(L, ',');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( bcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(mdtseg_dest)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( chamber_id));
+    WRITE(L, ',');
+    WRITE(L, to_integer( chamber_ieta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( vec_pos));
+    WRITE(L, ',');
+    WRITE(L, to_integer( vec_ang));
+    WRITE(L, ',');
+    WRITE(L, to_integer( hewindow_pos));
+
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in out_heg_bm_ctrl_sim_rt) is
+
+    variable ToA          : unsigned(64-1 downto 0);
+    variable station      : unsigned(4-1 downto 0);
+    variable thread       : unsigned(4-1 downto 0);
+    variable slcid        : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
+    variable slid         : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
+    variable bcid         : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+    variable mdtseg_dest  : std_logic_vector(HEG2SFSLC_MDTSEG_DEST_LEN-1 downto 0);
+    variable chamber_id   : unsigned(VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
+    variable chamber_ieta : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    variable vec_pos      : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+    variable vec_ang      : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
+    variable hewindow_pos : unsigned(HEG2SFSLC_HEWINDOW_POS_LEN-1 downto 0);
+
+  begin
+
+    ToA           := VALUE.ToA;
+    station       := VALUE.station;
+    thread        := VALUE.thread;
+    slcid         := VALUE.data.muid.slcid;
+    slid          := VALUE.data.muid.slid;
+    bcid          := VALUE.data.muid.bcid;
+    mdtseg_dest   := VALUE.data.mdtseg_dest; 
+    chamber_id    := VALUE.data.mdtid.chamber_id;
+    chamber_ieta  := VALUE.data.mdtid.chamber_ieta;
+    vec_pos       := VALUE.data.vec_pos;
+    vec_ang       := VALUE.data.vec_ang;
+    hewindow_pos  := VALUE.data.hewindow_pos;
+
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ',');
+    SWRITE(L, "EOF");
+    WRITE(L, ',');
+    WRITE(L, to_integer( station));
+    WRITE(L, ',');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( bcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(mdtseg_dest)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( chamber_id));
+    WRITE(L, ',');
+    WRITE(L, to_integer( chamber_ieta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( vec_pos));
+    WRITE(L, ',');
+    WRITE(L, to_integer( vec_ang));
+    WRITE(L, ',');
+    WRITE(L, to_integer( hewindow_pos));
+
+  end procedure;
 
   -----------------------------------------------
-  -- read TDC record type as 5 decimal numbers
+  -- SF 2 PT 
+  -----------------------------------------------  
+
+
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_pt2sf_sim_rt) is
+  begin
+
+    -- SWRITE(L, "# ");
+    -- SWRITE(L, "FLAG");
+    -- WRITE(L, ',');
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "station");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "slid");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    -- WRITE(L, ',');
+    -- SWRITE(L, "mdtseg_dest");
+    WRITE(L, ',');
+    SWRITE(L, "chamber_id");
+    WRITE(L, ',');
+    SWRITE(L, "chamber_ieta");
+    WRITE(L, ',');
+    SWRITE(L, "segpos");
+    WRITE(L, ',');
+    SWRITE(L, "segangle");
+    WRITE(L, ',');
+    SWRITE(L, "segquality");
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in in_pt_pt2sf_sim_rt) is
+
+    variable ToA          : unsigned(64-1 downto 0);
+    variable station      : unsigned(4-1 downto 0);
+    variable thread       : unsigned(4-1 downto 0);
+    variable slcid        : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
+    variable slid         : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
+    variable bcid         : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+    -- variable mdtseg_dest  : std_logic_vector(HEG2SFSLC_MDTSEG_DEST_LEN-1 downto 0);
+    variable chamber_id   : unsigned(VEC_MDTID_CHAMBER_ID_LEN-1 downto 0);
+    variable chamber_ieta : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    -- variable vec_pos      : unsigned(UCM2HPS_VEC_POS_LEN-1 downto 0);
+    -- variable vec_ang      : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
+    -- variable hewindow_pos : unsigned(HEG2SFSLC_HEWINDOW_POS_LEN-1 downto 0);
+    variable segpos       : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0);
+    variable segangle     : unsigned(SF2PTCALC_SEGANGLE_LEN-1 downto 0);
+    variable segquality   : std_logic;
+
+  begin
+
+    ToA           := VALUE.ToA;
+    station       := VALUE.station;
+    thread        := VALUE.thread;
+    slcid         := VALUE.data.muid.slcid;
+    slid          := VALUE.data.muid.slid;
+    bcid          := VALUE.data.muid.bcid;
+    -- mdtseg_dest   := VALUE.data.mdtseg_dest; 
+    chamber_id    := VALUE.data.mdtid.chamber_id;
+    chamber_ieta  := VALUE.data.mdtid.chamber_ieta;
+    segpos        := VALUE.data.segpos;
+    segangle      := VALUE.data.segangle;
+    segquality    := VALUE.data.segquality;
+
+
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( station));
+    WRITE(L, ',');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( bcid));
+    WRITE(L, ',');
+    -- WRITE(L, to_integer(unsigned(mdtseg_dest)));
+    -- WRITE(L, ',');
+    WRITE(L, to_integer( chamber_id));
+    WRITE(L, ',');
+    WRITE(L, to_integer( chamber_ieta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( segpos));
+    WRITE(L, ',');
+    WRITE(L, to_integer( segangle));
+    WRITE(L, ',');
+    WRITE(L, segquality);
+
+  end procedure;
+
   -----------------------------------------------
-  -- procedure READ(L : inout LINE; VALUE : out TDC_rt) is
+  -- MPL 2 PT 
+  -----------------------------------------------  
 
-  --   variable i_chanid     : integer;
-  --   variable i_edgemode   : integer;
-  --   variable i_coarsetime : integer;
-  --   variable i_finetime   : integer;
-  --   variable i_pulsewidth : integer;
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_pt_mpl_sim_rt) is
+  begin
 
-  --   variable v_chanid     : std_logic_vector(TDC_CHANID_LEN-1 downto 0);    -- 4
-  --   variable v_edgemode   : std_logic_vector(TDC_EDGEMODE_LEN-1 downto 0);  -- 1
-  --   variable v_coarsetime : std_logic_vector(TDC_COARSETIME_LEN-1 downto 0);  -- 11
-  --   variable v_finetime   : std_logic_vector(TDC_FINETIME_LEN-1 downto 0);  -- 4
-  --   variable v_pulsewidth : std_logic_vector(TDC_PULSEWIDTH_LEN-1 downto 0);  -- 7
+    -- SWRITE(L, "# ");
+    -- SWRITE(L, "FLAG");
+    -- WRITE(L, ',');
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    -- SWRITE(L, "station");
+    -- WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "slid");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    -- SWRITE(L, "mdtseg_dest");
+    -- WRITE(L, ',');
+    SWRITE(L, "phimod");
+    WRITE(L, ',');
+    SWRITE(L, "sl_charge");
+    WRITE(L, ',');
+    SWRITE(L, "nswseg_poseta");
+    WRITE(L, ',');
+    SWRITE(L, "nswseg_posphi");
+    WRITE(L, ',');
+    SWRITE(L, "nswseg_angdtheta");
+  end procedure;
 
-  --   variable v_SPACE : character;
+  procedure WRITE(L:inout LINE; VALUE : in in_pt_mpl_sim_rt) is
 
-  -- begin
+    variable ToA              : unsigned(64-1 downto 0);
+    variable station          : unsigned(4-1 downto 0);
+    variable thread           : unsigned(4-1 downto 0);
+    -- variable busy             : std_logic;
+    -- variable process_ch       : std_logic_vector(UCM2PL_PROCESS_CH_LEN-1 downto 0);
+    variable slcid            : unsigned(SLC_COMMON_SLCID_LEN-1 downto 0);
+    variable slid             : unsigned(SL_TRAILER_SLID_LEN-1 downto 0);
+    variable bcid             : unsigned(SL_HEADER_BCID_LEN-1 downto 0);
+    variable phimod           : signed(UCM2PL_PHIMOD_LEN-1 downto 0);
+    variable sl_charge        : std_logic;
+    variable nswseg_poseta    : unsigned(SLC_ENDCAP_NSWSEG_POSETA_LEN-1 downto 0);
+    variable nswseg_posphi    : unsigned(SLC_ENDCAP_NSWSEG_POSPHI_LEN-1 downto 0);
+    variable nswseg_angdtheta : signed(SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN-1 downto 0);
+  
 
-  --   READ(L, i_chanid);
-  --   READ(L, v_SPACE);           -- read in the space character
-  --   READ(L, i_edgemode);
-  --   READ(L, v_SPACE);
-  --   READ(L, i_coarsetime);
-  --   READ(L, v_SPACE);
-  --   READ(L, i_finetime);
-  --   READ(L, v_SPACE);
-  --   READ(L, i_pulsewidth);
+  begin
 
-  --   v_chanid := std_logic_vector( to_unsigned( i_chanid, TDC_CHANID_LEN));
-  --   v_edgemode := std_logic_vector( to_unsigned( i_edgemode, TDC_EDGEMODE_LEN));
-  --   v_coarsetime := std_logic_vector( to_unsigned( i_coarsetime, TDC_COARSETIME_LEN));
-  --   v_finetime := std_logic_vector( to_unsigned( i_finetime, TDC_FINETIME_LEN));
-  --   v_pulsewidth := std_logic_vector( to_unsigned( i_pulsewidth, TDC_PULSEWIDTH_LEN));
+    ToA               := VALUE.ToA;
+    -- station           := VALUE.station;
+    thread            := VALUE.thread;
+    -- busy          := VALUE.data.busy;
+    -- process_ch    := VALUE.data.process_ch;
+    slcid             := VALUE.data.muid.slcid;
+    slid              := VALUE.data.muid.slid;
+    bcid              := VALUE.data.muid.bcid;
+    phimod            := VALUE.data.phimod; 
+    sl_charge         := VALUE.data.sl_charge;
+    nswseg_poseta     := VALUE.data.nswseg_poseta;
+    nswseg_posphi     := VALUE.data.nswseg_posphi;
+    nswseg_angdtheta  := VALUE.data.nswseg_angdtheta;
 
-  --   VALUE := ( chanid => v_chanid,
-  --              edgemode => v_edgemode,
-  --              coarsetime => v_coarsetime,
-  --              finetime => v_finetime,
-  --              pulsewidth => v_pulsewidth);
-  -- end READ;
+    WRITE(L, to_integer( ToA));
+    WRITE(L, ',');
+    -- WRITE(L, to_integer( station));
+    -- WRITE(L, ',');
+    WRITE(L, to_integer( thread));
+    WRITE(L, ',');
+    -- WRITE(L, to_integer( slcid));
+    -- WRITE(L, ',');
+    -- WRITE(L, to_integer( slcid));
+    -- WRITE(L, ',');
+    WRITE(L, to_integer( slcid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slid));
+    WRITE(L, ',');
+    WRITE(L, to_integer( bcid));
+    WRITE(L, ',');
+    -- WRITE(L, to_integer(unsigned(mdtseg_dest)));
+    -- WRITE(L, ',');
+    WRITE(L, to_integer( phimod));
+    WRITE(L, ',');
+    WRITE(L, sl_charge);
+    WRITE(L, ',');
+    WRITE(L, to_integer( nswseg_poseta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( nswseg_posphi));
+    WRITE(L, ',');
+    WRITE(L, to_integer( nswseg_angdtheta));
 
-
-
+  end procedure;
   -----------------------------------------------
-  -- write TDC record type as 5 decimal numbers
+  -- PT 2 MTCB
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_pt_sim_rt) is
+  begin
+
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "slid");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_eta");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_pt");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_ptthresh");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_charge");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_nsegments");
+    WRITE(L, ',');
+    SWRITE(L, "mdt_quality");
+
+  end procedure;
+
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_pt_sim_rt) is
+
+
+  begin
+
+    WRITE(L, to_integer( VALUE.ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.thread));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.muid.slcid);
+    WRITE(L, ',');      
+    WRITE(L, VALUE.data.muid.slid);
+    WRITE(L, ',');      
+    WRITE(L, VALUE.data.muid.bcid);
+    WRITE(L, ',');    
+    WRITE(L, to_integer( VALUE.data.mdt_eta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_pt));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_ptthresh));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.mdt_charge);
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.data.mdt_nsegments));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(VALUE.data.mdt_quality)));
+
+  end procedure;
   -----------------------------------------------
-  -- procedure WRITE(L:inout LINE; VALUE : in TDC_rt) is
+  -- MPL 2 MTCB
+  -----------------------------------------------  
+  procedure WRITEHEADER(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt) is
+  begin
 
-  --   variable v_chanid     : std_logic_vector(TDC_CHANID_LEN-1 downto 0);    -- 4
-  --   variable v_edgemode   : std_logic_vector(TDC_EDGEMODE_LEN-1 downto 0);  -- 1
-  --   variable v_coarsetime : std_logic_vector(TDC_COARSETIME_LEN-1 downto 0);  -- 11
-  --   variable v_finetime   : std_logic_vector(TDC_FINETIME_LEN-1 downto 0);  -- 4
-  --   variable v_pulsewidth : std_logic_vector(TDC_PULSEWIDTH_LEN-1 downto 0);  -- 7
+    SWRITE(L, "ToA");
+    WRITE(L, ',');
+    SWRITE(L, "thread");
+    WRITE(L, ',');
+    SWRITE(L, "processed");
+    WRITE(L, ',');
+    SWRITE(L, "tcoverflow");
+    WRITE(L, ',');
+    SWRITE(L, "nmtc_sl");
+    WRITE(L, ',');
+    SWRITE(L, "nmtc_mdt");
+    WRITE(L, ',');
+    SWRITE(L, "nslc");
+    WRITE(L, ',');
+    SWRITE(L, "bcid");
+    WRITE(L, ',');
+    SWRITE(L, "slcid");
+    WRITE(L, ',');
+    SWRITE(L, "tcsent");
+    WRITE(L, ',');
+    SWRITE(L, "poseta");
+    WRITE(L, ',');
+    SWRITE(L, "posphi");
+    WRITE(L, ',');
+    SWRITE(L, "sl_pt");
+    WRITE(L, ',');
+    SWRITE(L, "sl_ptthresh");
+    WRITE(L, ',');
+    SWRITE(L, "sl_charge");
+    WRITE(L, ',');
+    SWRITE(L, "cointype");
 
-  -- begin
+  end procedure;
 
-  --   v_chanid := VALUE.chanid;
-  --   v_edgemode := VALUE.edgemode;
-  --   v_coarsetime := VALUE.coarsetime;
-  --   v_finetime := VALUE.finetime;
-  --   v_pulsewidth := VALUE.pulsewidth;
+  procedure WRITE(L:inout LINE; VALUE : in in_mtc_mpl_sim_rt) is
+    -- variable ToA              : unsigned(64-1 downto 0);
+    -- variable station          : unsigned(4-1 downto 0);
+    -- variable thread           : unsigned(4-1 downto 0);
 
-  --   WRITE(L, to_integer( unsigned(v_chanid)));
-  --   WRITE(L, ' ');
-  --   WRITE(L, to_integer( unsigned(v_edgemode)));
-  --   WRITE(L, ' ');
-  --   WRITE(L, to_integer( unsigned(v_coarsetime)));
-  --   WRITE(L, ' ');
-  --   WRITE(L, to_integer( unsigned(v_finetime)));
-  --   WRITE(L, ' ');
-  --   WRITE(L, to_integer( unsigned(v_pulsewidth)));
+    variable slc_common_r     : slc_common_rt;
+    variable sl_header_r      : sl_header_rt;
 
-  -- end WRITE;
+  begin
+
+    slc_common_r  := VALUE.data.common;
+    sl_header_r   := slc_common_r.header;
+
+    WRITE(L, to_integer( VALUE.ToA));
+    WRITE(L, ',');
+    WRITE(L, to_integer( VALUE.thread));
+    WRITE(L, ',');
+    WRITE(L, VALUE.data.busy);
+    WRITE(L, ',');    
+    WRITE(L, to_integer( unsigned( VALUE.data.process_ch)));
+    WRITE(L, ',');
+
+    WRITE(L, sl_header_r.tcoverflow);
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nmtc_sl)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nmtc_mdt)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.nslc)));
+    WRITE(L, ',');
+    WRITE(L, to_integer( unsigned(sl_header_r.bcid)));
+    WRITE(L, ',');
+
+    WRITE(L, to_integer( slc_common_r.slcid));
+    WRITE(L, ',');
+    WRITE(L, slc_common_r.tcsent);
+    WRITE(L, ',');
+    WRITE(L, to_integer( slc_common_r.poseta));
+    WRITE(L, ',');
+    WRITE(L, to_integer( slc_common_r.posphi));
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(slc_common_r.sl_pt)));
+    WRITE(L, ',');    
+    WRITE(L, to_integer(unsigned(slc_common_r.sl_ptthresh)));
+    WRITE(L, ',');
+    WRITE(L, slc_common_r.sl_charge );
+    WRITE(L, ',');
+    WRITE(L, to_integer(unsigned(slc_common_r.cointype)));
+
+  end procedure;
+
 
 end gldl_l0mdt_textio_pkg;

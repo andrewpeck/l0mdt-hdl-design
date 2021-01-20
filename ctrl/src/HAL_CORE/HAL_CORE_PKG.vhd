@@ -51,8 +51,8 @@ package HAL_CORE_CTRL is
 
 
   constant DEFAULT_HAL_CORE_MGT_MGT_DRP_CTRL_t : HAL_CORE_MGT_MGT_DRP_CTRL_t := (
-                                                                                 wr_en => '0',
                                                                                  wr_addr => (others => '0'),
+                                                                                 wr_en => '0',
                                                                                  en => '0',
                                                                                  wr_data => (others => '0')
                                                                                 );
@@ -66,9 +66,9 @@ package HAL_CORE_CTRL is
 
   constant DEFAULT_HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t : HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t := (
                                                                                              reset => '0',
+                                                                                             reset_bufbypass => '0',
                                                                                              reset_pll_and_datapath => '0',
-                                                                                             reset_datapath => '0',
-                                                                                             reset_bufbypass => '0'
+                                                                                             reset_datapath => '0'
                                                                                             );
   type HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t is record
     reset                      :std_logic;   
@@ -80,9 +80,9 @@ package HAL_CORE_CTRL is
 
   constant DEFAULT_HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t : HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t := (
                                                                                              reset => '0',
+                                                                                             reset_bufbypass => '0',
                                                                                              reset_pll_and_datapath => '0',
-                                                                                             reset_datapath => '0',
-                                                                                             reset_bufbypass => '0'
+                                                                                             reset_datapath => '0'
                                                                                             );
   type HAL_CORE_MGT_MGT_MON_t is record
     STATUS                     :HAL_CORE_MGT_MGT_STATUS_MON_t;
@@ -99,8 +99,8 @@ package HAL_CORE_CTRL is
 
   constant DEFAULT_HAL_CORE_MGT_MGT_CTRL_t : HAL_CORE_MGT_MGT_CTRL_t := (
                                                                          DRP => DEFAULT_HAL_CORE_MGT_MGT_DRP_CTRL_t,
-                                                                         TX_RESETS => DEFAULT_HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t,
-                                                                         RX_RESETS => DEFAULT_HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t
+                                                                         RX_RESETS => DEFAULT_HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t,
+                                                                         TX_RESETS => DEFAULT_HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t
                                                                         );
   type HAL_CORE_MGT_MON_t is record
     MGT                        :HAL_CORE_MGT_MGT_MON_t_ARRAY;

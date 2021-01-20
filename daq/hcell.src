@@ -1,0 +1,5 @@
+types/types.src                lib=types_lib
+ttc/pkg.src                    lib=ttc_lib
+daq/pkg.src                    lib=daq_lib
+
+daq/src/daq_header_node.vhd

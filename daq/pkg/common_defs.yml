@@ -1,0 +1,11 @@
+config:
+  basic_convert_functions: on
+  packages:
+    - ieee: [std_logic_1164, numeric_std]
+
+hdl:
+
+- integer_at: [array: open, type: integer]
+
+- bcid_t: [type: unsigned, length: 12]
+

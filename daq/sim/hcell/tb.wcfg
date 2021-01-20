@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="\$unit_tb_top_sv " />
+            <top_module name="common_defs_pkg" />
+            <top_module name="daq_defs_pkg" />
+            <top_module name="daq_devel_defs_pkg" />
+            <top_module name="daq_row_defs_pkg" />
+            <top_module name="glbl" />
+            <top_module name="tb" />
+            <top_module name="ttc_defs_pkg" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="195210000fs"></ZoomStartTime>
+      <ZoomEndTime time="210110001fs"></ZoomEndTime>
+      <Cursor1Time time="354010000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="232"></NameColumnWidth>
+      <ValueColumnWidth column_width="139"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="3" />
+   <wave_markers>
+      <marker label="" time="6250000" />
+      <marker label="" time="131250000" />
+      <marker label="" time="137500000" />
+      <marker label="" time="206250000" />
+      <marker label="" time="425000000" />
+      <marker label="" time="275000000" />
+      <marker label="" time="350000000" />
+   </wave_markers>
+   <wvobject type="logic" fp_name="/tb/clk320">
+      <obj_property name="ElementShortName">clk320</obj_property>
+      <obj_property name="ObjectShortName">clk320</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i">
+      <obj_property name="ElementShortName">i</obj_property>
+      <obj_property name="ObjectShortName">i</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.sys">
+         <obj_property name="ElementShortName">.sys</obj_property>
+         <obj_property name="ObjectShortName">.sys</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.stream">
+         <obj_property name="ElementShortName">.stream</obj_property>
+         <obj_property name="ObjectShortName">.stream</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.stream.bcid">
+            <obj_property name="ElementShortName">.bcid[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.bcid[11:0]</obj_property>
+         </wvobject>
+         <wvobject type="logic" fp_name="/tb/genblk1[0].u_hnode/i.stream.valid">
+            <obj_property name="ElementShortName">.valid</obj_property>
+            <obj_property name="ObjectShortName">.valid</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.stream.data">
+            <obj_property name="ElementShortName">.data[511:0]</obj_property>
+            <obj_property name="ObjectShortName">.data[511:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.sys">
+         <obj_property name="ElementShortName">.sys</obj_property>
+         <obj_property name="ObjectShortName">.sys</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.stream">
+         <obj_property name="ElementShortName">.stream</obj_property>
+         <obj_property name="ObjectShortName">.stream</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/i.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o">
+      <obj_property name="ElementShortName">o</obj_property>
+      <obj_property name="ObjectShortName">o</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="logic" fp_name="/tb/genblk1[0].u_hnode/o.bconv.nempty">
+            <obj_property name="ElementShortName">.nempty</obj_property>
+            <obj_property name="ObjectShortName">.nempty</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.bconv.data">
+            <obj_property name="ElementShortName">.data[511:0]</obj_property>
+            <obj_property name="ObjectShortName">.data[511:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.bconv.counter">
+            <obj_property name="ElementShortName">.counter[11:0]</obj_property>
+            <obj_property name="ObjectShortName">.counter[11:0]</obj_property>
+            <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.mngt">
+         <obj_property name="ElementShortName">.mngt</obj_property>
+         <obj_property name="ObjectShortName">.mngt</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/genblk1[0].u_hnode/o.bconv">
+         <obj_property name="ElementShortName">.bconv</obj_property>
+         <obj_property name="ObjectShortName">.bconv</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

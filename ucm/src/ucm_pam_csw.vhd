@@ -28,7 +28,7 @@ use ucm_lib.ucm_pkg.all;
 
 entity ucm_pam_csw is
   -- generic(
-  --   num_delays          : integer; 
+  --   g_DELAY_CYCLES          : integer; 
   --   num_bits            : integer
   -- );
   port (
