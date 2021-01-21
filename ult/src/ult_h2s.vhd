@@ -171,6 +171,10 @@ begin
       );
     end generate;
 
+    DIS_HPS_EXT : if c_HPS_ENABLE_ST_EXT = '0' generate
+      o_ext_segments <= (others => ( others => '0'));
+    end generate;
+
   end generate;
 
   
