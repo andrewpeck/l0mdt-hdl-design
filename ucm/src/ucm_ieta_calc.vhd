@@ -108,15 +108,16 @@ begin
               --
             end if;
           end loop;
+
           if found = '0' then
             o_ieta <= to_unsigned(8,4);
           else
             o_ieta <= ieta;
             ieta := to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
-
           end if;
 
         else
+          found := '0';
           o_ieta <= to_unsigned(15,4);
         end if;
         
