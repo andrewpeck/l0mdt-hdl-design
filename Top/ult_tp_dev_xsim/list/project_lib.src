@@ -1,7 +1,9 @@
 #_project mapping files
-Top/ult_tp_dev/prj_mapping_links.vhd
-Top/ult_tp_dev/prj_mapping_tar.vhd
+# Top/ult_tp_dev/prj_mapping_links.vhd
+# Top/ult_tp_dev/prj_mapping_tar.vhd
 
+# default config parameters
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #_project local configuration files
 Top/ult_tp_dev/prj_cfg.vhd
 
