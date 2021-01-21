@@ -1,0 +1,5 @@
+#---------------------------------
+# Configuration
+#---------------------------------
+
+shared/config/config_defaults_pkg.vhd

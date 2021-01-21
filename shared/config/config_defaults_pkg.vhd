@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package cfg_global_pkg is
+package cfg_global_default_pkg is
 
   constant CFG_MAX_HP : integer := 6;
 
@@ -141,9 +141,9 @@ package cfg_global_pkg is
 
   function get_num_HP(enable_list : std_logic_vector) return integer;
 
-end package cfg_global_pkg;
+end package cfg_global_default_pkg;
 
-package body cfg_global_pkg is
+package body cfg_global_default_pkg is
   
   function get_num_HP(enable_list : std_logic_vector) return integer is
     variable num : integer := 0;
@@ -157,7 +157,7 @@ package body cfg_global_pkg is
   end function;
   
   
-end package body cfg_global_pkg;
+end package body cfg_global_default_pkg;
 
 -- --------------------------------------------------------------------------------
 -- WHEN CREATING A NEW PROJECT
@@ -186,7 +186,7 @@ end package body cfg_global_pkg;
 -- use ieee.numeric_std.all;
 
 -- library shared_lib;
--- use shared_lib.cfg_global_pkg.all;
+-- use shared_lib.cfg_global_default_pkg.all;
 
 -- package prj_cfg is
 --   function set_project_cfg return cfg_rt;

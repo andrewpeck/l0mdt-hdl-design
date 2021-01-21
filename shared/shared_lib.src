@@ -3,7 +3,7 @@
 #---------------------------------
 
 shared/config/detector_mapping_pkg.vhd
-shared/config/config_defaults_pkg.vhd
+# shared/config/config_defaults_pkg.vhd
 shared/config/config_pkg.vhd
 
 #---------------------------------
