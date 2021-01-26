@@ -44,7 +44,15 @@
                     "ports": 1,
                     "station_ID": [
                         "INN"
-                    ]
+                    ],
+                    "tol_abs": {
+                        "segpos": 0,
+                        "segangle": 5
+                    },
+                    "tol_per": {
+                        "segpos": 0.01,
+                        "segangle": 0.01
+                    }
                 }
             ]
         }

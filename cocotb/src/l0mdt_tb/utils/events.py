@@ -91,7 +91,7 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
         #    print("KEY=",bitfieldname)
     if candidate < len(bf_list):
         for bf in bf_list[candidate]:
-            return bf.get_bit_value();
+            return bf.get_bitwordvalue();
     else:
         #print("ERROR.. candidate not present in RAW TV file")
         return -1
@@ -128,21 +128,26 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
 
     #print("compare_BitFields: PARSING FOR TVFORMAT  = ",tvformat, " ", path)
     #tv_reader_pkl.setup_debug_devel(10)
-    events_list = tv_reader_pkl.read_TV(path)
+    events_list = tv_reader_pkl.read_TV(path,2,3,3)
 
 
     RTL_DF_list = []
     RTL_BF_LIST = []
     for evt in range(e_idx):
         RTL_DF = BXData(NSLMAX=n_candidates)
+        # RTL_DF = BXData()
+        print("RTL_DF.DF_SL",RTL_DF.DF_SL)
         #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
         for i in range(n_candidates):
-            attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
+            ## print("RTL_DF.DF_SL[i]",RTL_DF.DF_SL[i],"tvformat",tvformat)
+            ## attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
+            
             #if evt < len(rtl_tv[i]):
             #    rtl_val = rtl_tv[i][evt]
             #else:
             #    rtl_val = 0
-            attr_value_bitword.set_bit_value(rtl_tv[i][evt]) #(0xbabecafebabecafe) #rtl_tv)
+            
+            ##attr_value_bitword.set_bit_value(rtl_tv[i][evt]) #(0xbabecafebabecafe) #rtl_tv)
             RTL_BF_LIST = RTL_DF.DF_SL[i].getBitFieldWord(tvformat)
             #print("RTL_BF_LIST***********= rtl_tv[i][evt] = 0x%x"%(rtl_tv[i][evt]))
             #print("RTL_BF_LIST[] = ",RTL_BF_LIST)
@@ -226,7 +231,7 @@ def parse_file_for_testvectors(
     #l0ids_loaded = set()
     #    print("PARSING FOR TVFORMAT = ",tvformat)
     # tv_reader_pkl.setup_debug_devel(10)
-    events_list = tv_reader_pkl.read_TV(path)
+    events_list = tv_reader_pkl.read_TV(path,2,3,3)
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
@@ -281,7 +286,7 @@ def parse_file_for_testvectors_list(
     #l0ids_loaded = set()
     #    print("PARSING FOR TVFORMAT = ",tvformat)
     # tv_reader_pkl.setup_debug_devel(10)
-    events_list = tv_reader_pkl.read_TV(path)
+    events_list = tv_reader_pkl.read_TV(path,2,3,3)
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
@@ -327,7 +332,8 @@ def modify_tv (tv, ii):
             for j in range (ii - 1):
                 tv_index             = tv_index + 1
                 tv_port.append(0)
-        while(len(tv_port)<ii):
+        #TODO: Replace 100 with an input variable        
+        while(len(tv_port)<100):
             tv_port.append(0)            
         tv_out.append(tv_port)
     return tv_out
