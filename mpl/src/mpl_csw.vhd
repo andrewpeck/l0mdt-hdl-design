@@ -61,7 +61,10 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        
+        for slo_i in c_NUM_THREADS -1 downto 0 loop
+          csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
+          -- csw2tf_ar(slo_i).data_valid <= '0';
+        end loop;
       else
         for slo_i in c_NUM_THREADS -1 downto 0 loop
           slo_found := '0';
@@ -81,7 +84,8 @@ begin
             end if;
           end loop;
           if slo_found = '0' then
-            o_tf_av(slo_i) <= nullify(o_tf_av(slo_i));
+            -- csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
+            csw2tf_ar(slo_i).data_valid <= '0';
           end if;
         end loop;
         
