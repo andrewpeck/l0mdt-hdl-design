@@ -2,14 +2,14 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---  
---  Project: ATLAS L0MDT Trigger 
+--
+--  Project: ATLAS L0MDT Trigger
 --  Module: Detector parameters
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---    
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -30,7 +30,7 @@ package detector_param_pkg is
   -- Time & cycles constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
-  
+
   -- TAR PIPELINE
   constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
   constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
@@ -42,7 +42,7 @@ package detector_param_pkg is
 
   constant HEG_LSF_START_DELAY  : integer := 18;
   constant HEG_LSF_END_DELAY    : integer := 10;
-  
+
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
   --
   constant CSF_POST_PROCESSING  : integer := 57;
@@ -55,9 +55,9 @@ package detector_param_pkg is
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
 
-  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer; 
-  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer; 
-  
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer;
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer;
+
   function get_heg_load_time(start_delay : integer) return integer;
   function get_heg_busy_time(start_delay : integer) return integer;
   function get_heg_unload_time(start_delay, end_delay : integer) return integer;
@@ -91,12 +91,12 @@ package detector_param_pkg is
     3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
 
   );
-  function get_sector_phi_center( sector : integer) return sector_phi_center_t; 
-  
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t;
+
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  
+
   type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;
@@ -190,7 +190,7 @@ package detector_param_pkg is
   function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut;
   function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   type b_chamber_type_station_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_type_sector_at is array (0 to 3) of b_chamber_type_station_ait;
@@ -218,7 +218,7 @@ package detector_param_pkg is
  );
  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
  function get_b_chamber_type( sector,station,ieta : integer) return integer;
-  
+
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
@@ -240,26 +240,26 @@ package detector_param_pkg is
     (0 , 0   , 0    , 0     , 0    , 0      , 0     , 0    ), -- BOH
     (0 , 0   , 0    , 0     , 0    , 0      , 0     , 0    )  -- BIM
   );
-  /*
-  constant rom_b_layer_height : b_layer_dist_types :=(
-    (0.0 , 26.0 , 52.0 , 78.0  , 278.0 , 304.0 , 330.0 , 356.0), -- BIL MDT
-    (0.0 , 13.0 , 26.0 , 39.0  , 84.6  , 97.6  , 110.6 , 123.0), -- BIS sMDT
-    (0.0 , 26.0 , 52.0 , 399.0 , 425.0 , 451.0 , 0.0   , 0.0  ), -- BML
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BMS
-    (0.0 , 26.0 , 52.0 , 399.0 , 425.0 , 451.0 , 0.0   , 0.0  ), -- BOL
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOS
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BEE
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BIR
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BMF
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOF
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOG
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOH
-    (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  )  -- BIM
-  );*/
+  --/*
+  --constant rom_b_layer_height : b_layer_dist_types :=(
+  --  (0.0 , 26.0 , 52.0 , 78.0  , 278.0 , 304.0 , 330.0 , 356.0), -- BIL MDT
+  --  (0.0 , 13.0 , 26.0 , 39.0  , 84.6  , 97.6  , 110.6 , 123.0), -- BIS sMDT
+  --  (0.0 , 26.0 , 52.0 , 399.0 , 425.0 , 451.0 , 0.0   , 0.0  ), -- BML
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BMS
+  --  (0.0 , 26.0 , 52.0 , 399.0 , 425.0 , 451.0 , 0.0   , 0.0  ), -- BOL
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOS
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BEE
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BIR
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BMF
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOF
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOG
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  ), -- BOH
+  --  (0.0 , 0.0  , 0.0  , 0.0   , 0.0   , 0.0   , 0.0   , 0.0  )  -- BIM
+  --);*/
 
   function get_b_layer_height ( chamber_id , layer : integer) return unsigned;
 
-  
+
 end package detector_param_pkg;
 
 package body detector_param_pkg is
@@ -334,7 +334,7 @@ package body detector_param_pkg is
     end if;
     return time_out;
   end function;
-  
+
 
 
   -- function get_heg_times(dummy : integer) return heg_times_rt is
@@ -361,7 +361,7 @@ package body detector_param_pkg is
   --       times.busy    := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
   --       times.unload  := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + HEG_LSF_END_DELAY;
   --     end if;
-  
+
   --   end if;
   --   return times;
   -- end function;
@@ -425,7 +425,7 @@ package body detector_param_pkg is
     return y;
   end function;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
     variable y : b_chamber_type_sector_at;
@@ -455,5 +455,5 @@ package body detector_param_pkg is
     return y;
 
   end function get_b_layer_height;
-  
+
 end package body detector_param_pkg;

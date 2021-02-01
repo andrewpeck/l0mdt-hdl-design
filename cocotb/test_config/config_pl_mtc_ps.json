@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "pl_mtc_ps",
         "input_args": {
-            "n_events": 2,
+            "n_events": 3,
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
@@ -24,7 +24,8 @@
                 },
                 {
                     "tv_format": "PTCALC2MTC_LSF",
-                    "ports": 3
+                    "ports"    : 3,
+		    "pl_latency"  : 695
                 }
             ],
             "outputs": [

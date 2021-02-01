@@ -3,12 +3,12 @@
 //--  Priya Sundararajan
 //--  priya.sundararajan@cern.ch
 //--------------------------------------------------------------------------------
-//--  Project: ATLAS L0MDT Trigger 
+//--  Project: ATLAS L0MDT Trigger
 //--  Description:
 //--
 //--------------------------------------------------------------------------------
 //--  Revisions:
-//--      
+//--
 //--------------------------------------------------------------------------------
 
 
@@ -16,7 +16,7 @@
 `include "l0mdt_buses_constants.svh"
 `default_nettype wire
 
-  
+
 module mtc_builder_verilog#(
 			    parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
 			    parameter SLCPIPELINE_WIDTH=PL2MTC_LEN ,
@@ -37,13 +37,13 @@ module mtc_builder_verilog#(
    logic [PL2MTC_PROCESS_CH_LEN-1:0]   ptcalc_sel[MTC_PER_BCID];
    logic [MTC_PKT_WIDTH-1:0] 	       mtc_inter[TOTAL_PTCALC_BLKS];
    logic [MTC2SL_LEN-2:0] 	       mtc_pkt[n_PRIMARY_MTC];
-   
+
    logic 			       mtc_valid[n_PRIMARY_MTC];
    logic 			       slcpipeline_vld[MTC_PER_BCID];
-   
+
    genvar 			       p;
- 
-  
+
+
 
 
    generate
@@ -64,7 +64,7 @@ module mtc_builder_verilog#(
 	   assign mtc_pkt[p]         = mtc[p][MTC2SL_LEN-2:0];
 	   assign slcpipeline_vld[p] = slcpipeline[p][PL2MTC_DATA_VALID_MSB];
 	   assign ptcalc_sel[p]      = slcpipeline[p][PL2MTC_PROCESS_CH_MSB:PL2MTC_PROCESS_CH_LSB];
-	   
+
 	end
    endgenerate
 
@@ -132,7 +132,7 @@ module format_mtc_pkt #(
 
 	mtc[MTC2SL_COMMON_LSB +  SLC_COMMON_LEN - 1: MTC2SL_COMMON_LSB] = slcpipeline[PL2MTC_COMMON_MSB : PL2MTC_COMMON_LSB];
 
-	if(slcpipeline[PL2MTC_BUSY_LSB] == 0)
+	if(slcpipeline[PL2MTC_BUSY_LSB] == 1)
 	  begin
 	     mtc[MTC2SL_COMMON_LSB - 1 : MTC2SL_MDT_CHARGE_LSB]       = ptcalc[PTCALC2MTC_MDT_ETA_MSB : PTCALC2MTC_MDT_CHARGE_LSB];
 	     mtc[ MTC2SL_MDT_NSEGMENTS_MSB : MTC2SL_MDT_QUALITY_LSB]  = ptcalc[PTCALC2MTC_MDT_NSEGMENTS_MSB : PTCALC2MTC_MDT_QUALITY_LSB];

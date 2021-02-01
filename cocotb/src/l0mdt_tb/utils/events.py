@@ -127,15 +127,16 @@ def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
         #print( "compare_BitFields: Create RTL_DF_list entry for event ",evt, "n_candidates = ",n_candidates)
         for i in range(n_candidates):
             attr_value_bitword = getattr(RTL_DF.DF_SL[i], tvformat)  # BitFieldWord
-            #if evt < len(rtl_tv[i]):
-            #    rtl_val = rtl_tv[i][evt]
-            #else:
-            #    rtl_val = 0
-            attr_value_bitword.set_bit_value(rtl_tv[i][evt]) #(0xbabecafebabecafe) #rtl_tv)
-            RTL_BF_LIST = RTL_DF.DF_SL[i].getBitFieldWord(tvformat)
-            #print("RTL_BF_LIST***********= rtl_tv[i][evt] = 0x%x"%(rtl_tv[i][evt]))
-            #print("RTL_BF_LIST[] = ",RTL_BF_LIST)
+            if evt+1 <= len(rtl_tv[i]):
+                rtl_val = rtl_tv[i][evt]
+            else:
+                rtl_val = 0
             #print("{n_candidates,e_idx} = {",n_candidates,",",e_idx,"}, {i,evt} = {",i,",",evt, "} len(rtl_tv[",i,"] = ",len(rtl_tv[i])," len(RTL_DF) = ",len(RTL_DF.DF_SL))
+            #print("RTL_BF_LIST***********= rtl_tv[i][evt] = 0x%x"%(rtl_val))
+            attr_value_bitword.set_bit_value(rtl_val) #(0xbabecafebabecafe) #rtl_tv)
+            RTL_BF_LIST = RTL_DF.DF_SL[i].getBitFieldWord(tvformat)
+            #print("RTL_BF_LIST[] = ",RTL_BF_LIST)
+
         RTL_DF_list.append(RTL_DF)
         #print("RTL_DF_list[",evt,"] = ",RTL_DF_list)
 
@@ -250,6 +251,39 @@ def modify_tv (tv, ii):
                 tv_index             = tv_index + 1
                 tv_port.append(0)
         tv_out.append(tv_port)
+    return tv_out
+
+def prepend_zeroes(tv,num=1):
+    tv_out   = []
+
+    for i in range(num):
+        tv_out.append(0)
+    for i in range(len(tv)):
+        tv_out.append(tv[i])
+
+
+    #print("modify_tv prepend (tv) =", tv )
+    #print("modify_tv prepend (tv_out) =", tv_out )
+    return tv_out
+
+def modify_tv_padzeroes (tv, location='end', num=1):
+    tv_out   = []
+
+    for io in range (len(tv)):
+        tv_port  = []
+        tv_index = 0
+        if(location == 'begin'):
+            for i in range(num):
+                tv_port.append(0)
+        for i in range(len(tv[io])):
+            #print("modify_tv (io,i) = (",io,i,")")
+            tv_port.append(tv[io][i])
+        if(location == 'end'):
+            for i in range(num):
+                tv_port.append(0)
+        tv_out.append(tv_port)
+    #print("modify_tv_padzeroes (tv) =", tv )
+    #print("modify_tv_padzeroes (tv_out) =", tv_out )
     return tv_out
 
 

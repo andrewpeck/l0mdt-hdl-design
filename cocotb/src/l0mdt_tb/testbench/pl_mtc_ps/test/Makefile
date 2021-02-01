@@ -86,13 +86,15 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
-	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/src/ring_buffer_v2.vhd \
 	$(SHAREDDIR)/src/pipeline.vhd
 
+
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd \
-    $(SHAREDDIR)/config/config_pkg.vhd \
+
+VHDL_SOURCES_shared_cfg_def_lib = \
+	$(SHAREDDIR)/config/config_pkg.vhd \
 
 
 VHDL_SOURCES_mpl_lib = \
