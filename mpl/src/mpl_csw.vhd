@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: Main pipe line cross switch to track fitter
---  Description: 
+--  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 
@@ -23,7 +23,10 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.config_pkg.all;
+
+
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.config_pkg.all;
 
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
@@ -47,7 +50,7 @@ architecture beh of mpl_csw is
 
   signal slc_pl     : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
   signal csw2tf_ar  : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
-  
+
 begin
 
   V2R: for sl_i in c_NUM_THREADS - 1 downto 0 generate
@@ -88,12 +91,11 @@ begin
             csw2tf_ar(slo_i).data_valid <= '0';
           end if;
         end loop;
-        
+
       end if;
     end if;
   end process MP2TF_CSW;
-  
-  -- 
-  
-end architecture beh;
 
+  --
+
+end architecture beh;
