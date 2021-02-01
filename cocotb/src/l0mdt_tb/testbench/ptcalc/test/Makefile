@@ -106,8 +106,14 @@ VHDL_SOURCES_shared_lib = \
 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
-	$(SHAREDDIR)/config/config_defaults_pkg.vhd
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
 
+VHDL_SOURCES_shared_cfg_def_lib = \
+	$(SHAREDDIR)/config/config_pkg.vhd \
+
+VHDL_SOURCES_project_lib = \
+    $(PWD)/prj_cfg.vhd \
 
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))
 

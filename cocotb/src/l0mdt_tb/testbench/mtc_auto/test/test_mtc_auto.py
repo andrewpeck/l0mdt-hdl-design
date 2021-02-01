@@ -109,27 +109,6 @@ def mtc_auto_test(dut):
     output_dir_name                  = run_config["output_directory_name"]
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKmtc_auto_block_instance = mtc_auto_block.mtc_autoBlock(dut.clock, "mtc_autoBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcAutoPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    mtc_auto_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_auto_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(MtcAutoPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    mtc_auto_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{mtc_auto_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKmtc_auto_block_instance.start()
 
 
 
@@ -171,6 +150,7 @@ def mtc_auto_test(dut):
         output_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
+    #Attach input RTL SPyBuffer to CocoTB FifoDriver
     sb_iport_index = 0
     for n_ip_intf in range(MtcAutoPorts.n_input_interfaces): # Add concept of interface
         for io in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf)):
@@ -186,6 +166,7 @@ def mtc_auto_test(dut):
             sb_iport_index = sb_iport_index + 1
             mtc_auto_wrapper.add_input_driver(driver, n_ip_intf, io) #Add interface
 
+    #Attach output RTL SPyBuffer to CocoTB FifoMonitor
     sb_oport_index = 0
     for n_op_intf in range(MtcAutoPorts.n_output_interfaces):
         for io in range(MtcAutoPorts.get_output_interface_ports(n_op_intf)): #Outputs):
@@ -208,6 +189,7 @@ def mtc_auto_test(dut):
 
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  [["" for x in range(num_events_to_process)] for y in range (MtcAutoPorts.n_input_ports(MtcAutoPorts))]
+    input_tv_list_i       =  [["" for x in range(num_events_to_process)] for y in range (MtcAutoPorts.n_input_ports(MtcAutoPorts))]
     sb_port_index = 0
     for n_ip_intf in range(MtcAutoPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = [["" for x in range(num_events_to_process)] for y in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf))]
@@ -226,8 +208,11 @@ def mtc_auto_test(dut):
         #            single_interface_list[i][j] = (single_interface_list[i][j] | (i << 107))
 
         for io in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
-            input_tv_list[sb_port_index] = (single_interface_list[io])
+            input_tv_list_i[sb_port_index] = (single_interface_list[io])
             sb_port_index                = sb_port_index + 1
+
+        input_tv_list = events.modify_tv_padzeroes(input_tv_list_i)
+
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
@@ -274,9 +259,8 @@ def mtc_auto_test(dut):
     ## perform testvector comparison test
     ##
     all_tests_passed = True
-    all_test_results = []
     recvd_events_intf = []
-
+    #Load observed data from CocoTB FifoMonitor for each RTL SpyBuffer Output
     for n_op_intf in range(MtcAutoPorts.n_output_interfaces):
         recvd_events     = [["" for x in range(num_events_to_process)]for y in range(MtcAutoPorts.get_output_interface_ports(n_op_intf))]
         recvd_lineup     = [["" for x in range(num_events_to_process)]for y in range(MtcAutoPorts.get_output_interface_ports(n_op_intf))]
