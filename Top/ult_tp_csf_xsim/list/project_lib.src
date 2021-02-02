@@ -1,16 +1,22 @@
-# project mapping files
-Top/ult_tp_csf/prj_mapping_links.vhd
-Top/ult_tp_csf/prj_mapping_tar.vhd
+#### project mapping files ####
+# Top/ult_tp_dev/prj_mapping_links.vhd
+# Top/ult_tp_dev/prj_mapping_tar.vhd
 
-# project local configuration files
-Top/ult_tp_csf/prj_cfg.vhd
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
+shared/shared_lib.src lib=shared_lib
 
-#top 
+#_project local configuration files
+Top/ult_tp_dev/prj_cfg.vhd
+
+#### top  ####
 ult/top_ult_tp.vhd top=top_ult_tp
 
-# modules included
-shared/shared_lib.src lib=shared_lib
+#### hal ####
 ctrl/ctrl_lib.src lib=ctrl_lib
+
+#### modules included ####
 mpl/mpl_lib.src lib=mpl_lib
 ult/ult_lib.src lib=ult_lib
 ucm/ucm_lib.src lib=ucm_lib
