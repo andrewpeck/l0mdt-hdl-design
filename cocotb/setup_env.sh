@@ -7,7 +7,7 @@ TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
 TV_tag="master"
 
 dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
-#dataformats_tag= "AT/devel1h"
+dataformats_tag= "v4.0.1"
 
 function print_usage {
     echo "---------------------------------------------------------"
