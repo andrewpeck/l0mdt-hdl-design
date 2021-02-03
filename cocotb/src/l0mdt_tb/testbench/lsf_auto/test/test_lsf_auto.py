@@ -129,27 +129,6 @@ def lsf_auto_test(dut):
         sf2ptcalc_tol_per[i] = testvector_config_outputs[i]["tol_per"]
         sf2ptcalc_tol_abs[i] = testvector_config_outputs[i]["tol_abs"]
 
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKlsf_auto_block_instance = lsf_auto_block.lsf_autoBlock(dut.clock, "lsf_autoBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(LsfAutoPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    lsf_auto_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{lsf_auto_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(LsfAutoPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    lsf_auto_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{lsf_auto_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKlsf_auto_block_instance.start()
-
     ##
     ## setup the clock and start it
     ##
@@ -171,6 +150,7 @@ def lsf_auto_test(dut):
     ##
     ## initialize the LsfAuto block wrapper
     ##
+    ## TODO : Needed?
     lsf_auto_wrapper = wrapper.LsfAutoWrapper(
         clock=dut.clock,
         name=f"LsfAutoWrapper",
@@ -224,14 +204,24 @@ def lsf_auto_test(dut):
                                                 active=active)
     lsf_auto_wrapper.sort_ports()
 
+    #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
+
+
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list = []
     single_interface_list = []
     single_interface_list_ii_delay =  []
 
     for n_ip_intf in range(LsfAutoPorts.n_input_interfaces):  # Add concept of interface
-        single_interface_list = (events.read_tv(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports=LsfAutoPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
@@ -243,15 +233,17 @@ def lsf_auto_test(dut):
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, heg2sfslc_ii)
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay[io])
-            print(n_ip_intf,"single_interface_list_ii_delay",single_interface_list_ii_delay)    
+            # print(n_ip_intf,"single_interface_list_ii_delay",single_interface_list_ii_delay)    
         elif(n_ip_intf == 1):
             for io in range (len(single_interface_list)):
                 single_interface_list_ii_delay = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
             single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)        
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay_flat[io])
-            print(n_ip_intf,"single_interface_list_ii_delay_flat",single_interface_list_ii_delay_flat)    
+            # print(n_ip_intf,"single_interface_list_ii_delay_flat",single_interface_list_ii_delay_flat)    
     # print("input_tv_list",input_tv_list)   
+
+
 
 ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list = []
@@ -259,19 +251,14 @@ def lsf_auto_test(dut):
     # for n_op_intf in range(LsfAutoPorts.n_output_interfaces(
     #         LsfAutoPorts)):  # Add concept of interface
     for n_op_intf in range(LsfAutoPorts.n_output_interfaces):  # Add concept of interface
-        # single_interface_list = (events.parse_file_for_testvectors(
-        #     filename=master_tv_file,
-        #     tvformat=output_tvformats[n_op_intf],
-        #     n_ports=LsfAutoPorts.get_output_interface_ports(n_op_intf),
-        #     n_to_load=num_events_to_process))
-        single_interface_list = (events.read_tv(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports=LsfAutoPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_op_intf],
-            tv_type="value"))
-        output_tv_list.append(single_interface_list)
+            station_ID=inputs_station_id[n_ip_intf],
+            tv_type="value"
+        ))        
     # print("output_tv_list",output_tv_list)
 
     ##
@@ -296,12 +283,12 @@ def lsf_auto_test(dut):
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
+    all_tests_passed = True
+    recvd_events_intf = []
     ##
     ## perform testvector comparison test
     ##
-    all_tests_passed = True
-    all_test_results = []
-    recvd_events_intf = []
+    #Load observed data from CocoTB FifoMonitor for each RTL SpyBuffer Output
     for n_op_intf in range(LsfAutoPorts.n_output_interfaces):
         recvd_events = [[
             "" for x in range(num_events_to_process)
@@ -335,32 +322,40 @@ def lsf_auto_test(dut):
         output_testvector_file = master_tv_file
         expected_output_events = output_tv_list
 
-    #Ordering based on events (Required by TV package)
-    event_ordering = [[
-        "" for x in range(LsfAutoPorts.get_output_interface_ports(0))
-    ] for y in range(num_events_to_process)]
+#     #Ordering based on events (Required by TV package)
+#     event_ordering = [[
+#         "" for x in range(LsfAutoPorts.get_output_interface_ports(0))
+#     ] for y in range(num_events_to_process)]
 
-    # hexlist = [hex(int(str(x),2)) for x in recvd_events_intf]
-    print("recvd_events_intf",recvd_events_intf)
+#     # hexlist = [hex(int(str(x),2)) for x in recvd_events_intf]
+#     # print("recvd_events_intf",recvd_events_intf)
 
-    for n_op_intf in range(LsfAutoPorts.n_output_interfaces):
-        for e_idx in range(num_events_to_process):
-            for o_port in range(
-                    LsfAutoPorts.get_output_interface_ports(n_op_intf)):
-                event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][
-                    o_port][e_idx]
+#     for n_op_intf in range(LsfAutoPorts.n_output_interfaces):
+#         for e_idx in range(num_events_to_process):
+#             for o_port in range(
+#                     LsfAutoPorts.get_output_interface_ports(n_op_intf)):
+#                 event_ordering[e_idx][o_port] = recvd_events_intf[n_op_intf][
+#                     o_port][e_idx]
 
-            print("events_are_equal = events.compare_BitFields","output_tvformats[n_op_intf]",output_tvformats[n_op_intf])
-            events_are_equal = events.compare_BitFields(
-                master_tv_file, output_tvformats[n_op_intf],
-                LsfAutoPorts.get_output_interface_ports(n_op_intf), e_idx,
-                event_ordering[e_idx])
-            print("event_ordering[e_idx]",event_ordering[e_idx]);    
-            all_tests_passed = (all_tests_passed and events_are_equal)
-            # define requirements for the bitfield package for comparisons
-            # use sf2ptcalc_tolerances to find falures
-            # bitfield function (SF2PTCALC_LSF) that compares all the fields and returns percentage of disagreement for each field
-            #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
+#             # print(output_tvformats[n_op_intf],"event_ordering[e_idx]",event_ordering[e_idx]);
+#             events_are_equal = events.compare_BitFields(
+#                 master_tv_file, output_tvformats[n_op_intf],
+#                 LsfAutoPorts.get_output_interface_ports(n_op_intf), e_idx,
+#                 event_ordering[e_idx],
+#                 outputs_station_id[n_op_intf][0]
+#                 )
+                
+#             all_tests_passed = (all_tests_passed and events_are_equal)
+#             # define requirements for the bitfield package for comparisons
+#             # use sf2ptcalc_tolerances to find falures
+#             # bitfield function (SF2PTCALC_LSF) that compares all the fields and returns percentage of disagreement for each field
+#             #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
+    
+    for n_op_intf in range (LsfAutoPorts.n_output_interfaces):
+        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        all_tests_passed = (all_tests_passed and events_are_equal)
+
+
     cocotb_result = {
         True: cocotb.result.TestSuccess,
         False: cocotb.result.TestFailure
