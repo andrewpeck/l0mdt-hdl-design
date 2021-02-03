@@ -187,14 +187,23 @@ def mtc_auto_test(dut):
     mtc_auto_wrapper.sort_ports()
 
 
+    #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
+
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  [["" for x in range(num_events_to_process)] for y in range (MtcAutoPorts.n_input_ports(MtcAutoPorts))]
     input_tv_list_i       =  [["" for x in range(num_events_to_process)] for y in range (MtcAutoPorts.n_input_ports(MtcAutoPorts))]
     sb_port_index = 0
     for n_ip_intf in range(MtcAutoPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = [["" for x in range(num_events_to_process)] for y in range(MtcAutoPorts.get_input_interface_ports(n_ip_intf))]
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = MtcAutoPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process
@@ -218,8 +227,8 @@ def mtc_auto_test(dut):
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(MtcAutoPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports = MtcAutoPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process
@@ -281,7 +290,7 @@ def mtc_auto_test(dut):
         #Multiple ports in this interface, need to lineup events across ports based on time
         recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcAutoPorts.get_output_interface_ports(n_op_intf))
         recvd_events_intf.append(recvd_lineup)
-        #print("RECVD_LINEUP :",recvd_lineup)
+
 
     ##
     ## extract the expected data for this output
@@ -298,9 +307,9 @@ def mtc_auto_test(dut):
         expected_output_events = output_tv_list
 
 
-
+    #print("RECVD_LINEUP :",recvd_lineup)
     for n_op_intf in range (MtcAutoPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
 

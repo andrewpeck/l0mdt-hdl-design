@@ -185,13 +185,21 @@ def mtc_test(dut):
         mtc_wrapper.add_output_monitor(monitor, 0, io, active=active)
     mtc_wrapper.sort_ports()
 
+    #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
 
     ###Get Input Test Vectors for all input Ports ##
     slcpipeline_tv_list_i = [["" for x in range(num_events_to_process)] for y in range(3)]
     slcpipeline_tv_list   = [["" for x in range(num_events_to_process)] for y in range(3)]
 
-    slcpipeline_tv_list_i = events.parse_file_for_testvectors(
-        filename=master_tv_file,
+    slcpipeline_tv_list_i = events.parse_tvlist(
+        tv_bcid_list,
         tvformat=inputs_tvformats[0],
         n_ports = MtcPorts.get_input_interface_ports(0),
         n_to_load=num_events_to_process
@@ -201,8 +209,8 @@ def mtc_test(dut):
     #        slcpipeline_tv_list[i][j] = (slcpipeline_tv_list_i[i][j] | (i << 107))
 
 
-    ptcalc_tv_list = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[1],n_ports = MtcPorts.get_input_interface_ports(1), n_to_load=num_events_to_process
+    ptcalc_tv_list = events.parse_tvlist(
+        tv_bcid_list,tvformat=inputs_tvformats[1],n_ports = MtcPorts.get_input_interface_ports(1), n_to_load=num_events_to_process
     )
 #    print("len=" ,len(slcpipeline_tv_list),"slcpipeline_tv_list = " ,slcpipeline_tv_list[0])
 #    print("ptcalc_tv_list = ", ptcalc_tv_list[0])
@@ -248,6 +256,16 @@ def mtc_test(dut):
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
+
+    #Read TV file
+    tv_events_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
+
     ##
     ## perform testvector comparison test
     ##
@@ -255,8 +273,8 @@ def mtc_test(dut):
     all_test_results = []
     output_tv_list = [["" for x in range(num_events_to_process)] for y in range(mtc_wrapper.n_output_ports(0))]
 
-    output_tv_list = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=outputs_tvformats[0],n_ports = mtc_wrapper.n_output_ports(0), n_to_load=num_events_to_process
+    output_tv_list = events.parse_tvlist(
+        tv_bcid_list,tvformat=outputs_tvformats[0],n_ports = mtc_wrapper.n_output_ports(0), n_to_load=num_events_to_process
     )
 
     exp_output_tv = [[0 for x in range(num_events_to_process)] for y in range(mtc_wrapper.n_output_ports(0))]
@@ -310,7 +328,7 @@ def mtc_test(dut):
     ##
     ## perform test by comparison with expected testvectors
     ##
-    events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup);
+    events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
 
