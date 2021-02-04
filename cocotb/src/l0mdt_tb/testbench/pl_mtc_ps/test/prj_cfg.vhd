@@ -16,13 +16,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library shared_lib;
-use shared_lib.cfg_global_default_pkg.all;
-
+--library shared_lib;
+--use shared_lib.cfg_global_default_pkg.all;
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 package prj_cfg is
 
-  constant c_MAX_NUM_SL   : integer := 3;
+  --constant c_MAX_NUM_SL   : integer := 3;
+  constant c_NUM_THREADS  : integer := 3;
   function set_project_cfg return cfg_rt;
 
 end package prj_cfg;
@@ -42,8 +44,9 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- IN COMPILATION CONFIGURATIONS
   --   --------------------------------------------------------------------------------
-    proj_cfg.NUM_THREADS             := 3;
+    proj_cfg.NUM_THREADS             := c_NUM_THREADS; --3;
     proj_cfg.NUM_MTC                 := 3;
+
   --   proj_cfg.MAX_NUM_HPS             := 3,
     -- proj_cfg.MAX_NUM_SL              := 5,--3 + to_integer(unsigned'("" & CFG_DEFAULTS.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG_DEFAULTS.ENDCAP_nSMALL_LARGE))*3 + to_integer(unsigned'("" & CFG_DEFAULTS.ENABLE_NEIGHBORS))*2,
   --   --------------------------------------------------------------------------------
