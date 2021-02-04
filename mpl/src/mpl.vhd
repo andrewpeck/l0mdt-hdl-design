@@ -23,10 +23,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
---use shared_lib.config_pkg.all;
-
-library shared_cfg_def_lib;
-use shared_cfg_def_lib.config_pkg.all;
+use shared_lib.config_pkg.all;
 
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;

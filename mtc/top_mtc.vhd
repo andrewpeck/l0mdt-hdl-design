@@ -23,8 +23,10 @@ use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-library shared_cfg_def_lib;
-use shared_cfg_def_lib.config_pkg.all;
+use shared_lib.config_pkg.all;
+
+
+
 
 --library ctrl_lib;
 --use ctrl_lib.MTC_CTRL.all;

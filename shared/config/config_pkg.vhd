@@ -27,12 +27,14 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-use shared_lib.cfg_global_default_pkg.all;
+--use shared_lib.cfg_global_default_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
---library shared_cfg_def_lib;
---use shared_cfg_def_lib.cfg_global_default_pkg.all;
+
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
+
 
 library project_lib;
 use project_lib.prj_cfg.all;
