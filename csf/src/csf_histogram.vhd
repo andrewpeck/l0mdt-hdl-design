@@ -32,13 +32,6 @@ use shared_lib.common_types_pkg.all;
 library csf_lib;
 use csf_lib.csf_pkg.all;
 use csf_lib.csf_custom_pkg.all;
--- library ieee, csf_lib, shared_lib;
--- use ieee.STD_LOGIC_1164.ALL;
--- use ieee.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use csf_lib.csf_pkg.all;
--- use shared_lib.custom_types_davide_pkg.all;
--- use csf_lib.custom_types_csf_pkg.all;
 
 entity csf_histogram is
   Port (
