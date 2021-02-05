@@ -1,13 +1,13 @@
 # #################### CSF Project ###########################
-generate_project:csf:
+generate_project:csf.1:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: csf
+      PROJECT_NAME: csf.1
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:csf:
+simulate_project:csf.1:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: csf
+      PROJECT_NAME: csf.1
