@@ -128,7 +128,7 @@ module TopLevel_pl_mtc_ps #(
 	     begin
 		assign BLOCK_output_data[i][PL2PTCALC_LEN-1:0]          = pl2ptcalc[i];
 		assign BLOCK_output_data[i][DATA_WIDTH-1:PL2PTCALC_LEN] = 0;
-		assign BLOCK_output_write_enable[i]                     = pl2ptcalc[PL2PTCALC_LEN-1];
+		assign BLOCK_output_write_enable[i]                     = (pl2ptcalc[i][PL2PTCALC_LEN-1] == 1'b1)? 1'b1 : 1'b0;
 
 	     end
 	   else
@@ -141,7 +141,7 @@ module TopLevel_pl_mtc_ps #(
            SpyBuffer #(
 		       .DATA_WIDTH(DATA_WIDTH-1),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
-		       .PASSTHROUGH(1)
+		       .PASSTHROUGH(0)
                        ) spybuffer (
 				    .rclock(clock),
 				    .wclock(clock),

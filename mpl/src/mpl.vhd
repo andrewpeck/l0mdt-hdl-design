@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: Main pipe line
 --  Description: pipelines between UCM - TF - MTC
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 
@@ -44,7 +44,7 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
-  
+
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal pl2pt_av       : mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -53,7 +53,7 @@ architecture beh of mpl is
   signal main_pl_out_ar : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal pl2pt_ar : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
   signal pl2mtc_ar : pl2mtc_bus_at(c_MAX_NUM_SL -1 downto 0);
-  
+
 begin
 
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -83,7 +83,7 @@ begin
     -- SLc pipeline
     i_ucm_av       => pl2pt_av,
     o_tf_av       => o_pl2tf_av
-    -- o_mtc_av      => pl2mtc_av 
+    -- o_mtc_av      => pl2mtc_av
   );
 
   MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -125,22 +125,9 @@ begin
     pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
     pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
   end generate;
-  
+
   pl2pt_av <= vectorify(pl2pt_ar);
   pl2mtc_av <= vectorify(pl2mtc_ar);
   main_pl_out_ar <= structify(main_pl_out_av);
-  
+
 end architecture beh;
-
-
-
-
-
-
-
-
-
-
-
-
-

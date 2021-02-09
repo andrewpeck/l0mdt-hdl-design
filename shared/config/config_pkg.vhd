@@ -2,16 +2,16 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---  
---  Project: ATLAS L0MDT Trigger 
+--
+--  Project: ATLAS L0MDT Trigger
 --  Module: configuration constants generation
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---    
+--
 --------------------------------------------------------------------------------
--- ***************************************************************************** 
+-- *****************************************************************************
 -- ** DO NOT EDIT THE VALUES OF THIS FILE MANUALY, USE THE CONFIGURATION FLOW **
 -- *****************************************************************************
 --------------------------------------------------------------------------------
@@ -27,12 +27,14 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
--- use shared_lib.cfg_global_pkg.all;
+--use shared_lib.cfg_global_default_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+
 library shared_cfg_def_lib;
 use shared_cfg_def_lib.cfg_global_default_pkg.all;
+
 
 library project_lib;
 use project_lib.prj_cfg.all;
@@ -42,7 +44,7 @@ package config_pkg is
   constant CFG : cfg_rt := set_project_cfg;
 
 -- =============================================================================
--- SETTING CONSTANTS FROM CONFIGURATION FILE 
+-- SETTING CONSTANTS FROM CONFIGURATION FILE
 -- =============================================================================
   --------------------------------------------------------------------------------
   -- Sector information
@@ -83,7 +85,7 @@ package config_pkg is
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
   constant c_HPS_MAX_HP_OUT             : integer := 6;
 
-  constant c_TOTAL_MAX_NUM_HP   : integer := 
+  constant c_TOTAL_MAX_NUM_HP   : integer :=
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_INN))*c_HPS_NUM_MDT_CH_INN,
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_EXT))*c_HPS_NUM_MDT_CH_EXT,
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_MID))*c_HPS_NUM_MDT_CH_MID,
@@ -107,17 +109,16 @@ package config_pkg is
     c_HPS_ENABLED_HP_EXT
   );
 
-  constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) := 
+  constant c_STATIONS_IN_SECTOR         : std_logic_vector(0 to 3) :=
       CFG.ENABLE_ST_INN & CFG.ENABLE_ST_MID & CFG.ENABLE_ST_OUT & CFG.ENABLE_ST_EXT;
 
-  constant c_STATIONS_IN_FPGA           : std_logic_vector(0 to 3) := 
+  constant c_STATIONS_IN_FPGA           : std_logic_vector(0 to 3) :=
       CFG.FPGA_EN_ST_INN & CFG.FPGA_EN_ST_MID & CFG.FPGA_EN_ST_OUT & CFG.FPGA_EN_ST_EXT;
 
 
   ---------------------------------------------------------
   -- PORTS CONFIG
   ---------------------------------------------------------
-  constant c_NUM_MTC                    : integer := 1;
   constant c_NUM_NSP                    : integer := 2;
 
   --------------------------------------------------------------------------------
@@ -131,7 +132,7 @@ package config_pkg is
   constant c_UCM_ENABLED            : std_logic := CFG.ENABLE_UCM;
 
   constant c_H2S_ENABLED            : std_logic := CFG.ENABLE_H2S;
-  
+
   constant c_MPL_ENABLED            : std_logic := CFG.ENABLE_MPL;
   --
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
@@ -148,21 +149,21 @@ package config_pkg is
                                                  + c_HPS_NUM_MDT_CH_OUT
                                                  + c_HPS_NUM_MDT_CH_EXT;
   --------------------------------------------------------------------------------
-  -- IN COMPILATION CONFIGURATIONS 
+  -- IN COMPILATION CONFIGURATIONS
   --------------------------------------------------------------------------------
 
-        
+
 
   constant c_MAX_POSSIBLE_HPS : integer := 4;
-        
-  constant c_MAX_NUM_HPS  : integer := 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) + 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) + 
-          to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) + 
+
+  constant c_MAX_NUM_HPS  : integer :=
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_INN)) +
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_EXT)) +
+          to_integer(unsigned'('0' & CFG.ENABLE_ST_MID)) +
           to_integer(unsigned'('0' & CFG.ENABLE_ST_OUT));
 
   -- type constant_order_array is array(0 to c_MAX_POSSIBLE_HPS - 1) of integer;
-  -- constant c_STATION_ORDER : integer : 
+  -- constant c_STATION_ORDER : integer :
 
   -- constant EN_HPS_VECTOR : std_logic_vector(CFG.MAX_NUM_HPS -1 downto 0) :=
   --         CFG.ENABLE_ST_INN &
@@ -173,23 +174,23 @@ package config_pkg is
   constant c_NUM_SF_INPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
   constant c_NUM_SF_OUTPUTS : integer := to_integer(unsigned'("0" & CFG.ENABLE_NEIGHBORS));
 
-  constant c_MAX_NUM_SL   : integer := 3 + 
-  to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 + 
+  constant c_MAX_NUM_SL   : integer := 3 +
+  to_integer(unsigned'("" & CFG.ST_nBARREL_ENDCAP))*to_integer(unsigned'("" & CFG.ENDCAP_nSMALL_LARGE))*3 +
   to_integer(unsigned'("" & CFG.ENABLE_NEIGHBORS))*2;
 
   -- parallel channels
   constant c_NUM_THREADS  : integer := CFG.NUM_THREADS;
-
+  constant c_NUM_MTC      : integer := CFG.NUM_MTC; --1;
   ---------------------------------------------------------
-  -- DELAYS & TIME CONSTANTS 
+  -- DELAYS & TIME CONSTANTS
   ---------------------------------------------------------
   constant c_HEG_SF_START_DELAY : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_START_DELAY,HEG_LSF_START_DELAY);
   constant c_HEG_SF_END_DELAY   : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_END_DELAY,HEG_LSF_END_DELAY);
-  
+
   constant c_HEG_TIME_LOAD      : integer := get_heg_load_time(c_HEG_SF_START_DELAY);
   constant c_HEG_TIME_BUSY      : integer := get_heg_busy_time(c_HEG_SF_START_DELAY);
   constant c_HEG_TIME_UNLOAD    : integer := get_heg_unload_time(c_HEG_SF_START_DELAY,c_HEG_SF_END_DELAY);
-  
+
   constant c_MPL_PL_A_LATENCY   : integer := c_HEG_TIME_UNLOAD + get_sf_time(CFG.SF_TYPE,CSF_POST_PROCESSING,LSF_POST_PROCESSING);
   constant c_MPL_PL_B_LATENCY     : integer := 5;
 
@@ -200,12 +201,12 @@ package config_pkg is
   function get_num_layers(station : integer) return integer;
 
   function get_proper_chamber(in_chamber : integer) return integer;
-  
+
 
 end package config_pkg;
 
 package body config_pkg is
-  
+
   function get_num_layers(station : integer) return integer is
     variable layers : integer;
   begin
@@ -229,6 +230,5 @@ package body config_pkg is
     return out_chamber;
   end function;
 
-  
-end package body config_pkg;
 
+end package body config_pkg;

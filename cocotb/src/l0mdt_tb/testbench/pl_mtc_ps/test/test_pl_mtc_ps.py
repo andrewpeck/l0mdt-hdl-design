@@ -109,27 +109,9 @@ def pl_mtc_ps_test(dut):
     output_dir_name                  = run_config["output_directory_name"]
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCK## start the software block instance
-    # CREATORSOFTWAREBLOCK##
-    # CREATORSOFTWAREBLOCKpl_mtc_ps_block_instance = pl_mtc_ps_block.pl_mtc_psBlock(dut.clock, "pl_mtc_psBlock")
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PlMtcPsPorts.Inputs):
-    # CREATORSOFTWAREBLOCK    pl_mtc_ps_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.input_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{pl_mtc_ps_block_instance.name}_Input_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="in",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKfor i, io in enumerate(PlMtcPsPorts.Outputs):
-    # CREATORSOFTWAREBLOCK    pl_mtc_ps_block_instance.add_fifo(
-    # CREATORSOFTWAREBLOCK        dut.output_spybuffers[i].spybuffer,
-    # CREATORSOFTWAREBLOCK        dut.clock,
-    # CREATORSOFTWAREBLOCK        f"{pl_mtc_ps_block_instance.name}_Output_{i}",
-    # CREATORSOFTWAREBLOCK        io,
-    # CREATORSOFTWAREBLOCK        direction="out",
-    # CREATORSOFTWAREBLOCK    )
-    # CREATORSOFTWAREBLOCKpl_mtc_ps_block_instance.start()
+    testvectors                      = config["testvectors"]
+    inputs                           = testvectors["inputs"]
+    pl_latency                       = inputs[1]["pl_latency"]
 
 
 
@@ -171,6 +153,7 @@ def pl_mtc_ps_test(dut):
         output_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
+    #Attach input RTL SPyBuffer to CocoTB FifoDriver
     sb_iport_index = 0
     for n_ip_intf in range(PlMtcPsPorts.n_input_interfaces): # Add concept of interface
         for io in range(PlMtcPsPorts.get_input_interface_ports(n_ip_intf)):
@@ -186,6 +169,7 @@ def pl_mtc_ps_test(dut):
             sb_iport_index = sb_iport_index + 1
             pl_mtc_ps_wrapper.add_input_driver(driver, n_ip_intf, io) #Add interface
 
+    #Attach output RTL SPyBuffer to CocoTB FifoMonitor
     sb_oport_index = 0
     for n_op_intf in range(PlMtcPsPorts.n_output_interfaces):
         for io in range(PlMtcPsPorts.get_output_interface_ports(n_op_intf)): #Outputs):
@@ -204,26 +188,46 @@ def pl_mtc_ps_test(dut):
             pl_mtc_ps_wrapper.add_output_monitor(monitor, n_op_intf, io, active=active)
     pl_mtc_ps_wrapper.sort_ports()
 
+   #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
+    input_tv_list_i       =  []
+    input_tv_list_j       =  []
     input_tv_list         =  []
-    single_interface_list = []
+    single_interface_list_i = []
+
     for n_ip_intf in range(PlMtcPsPorts.n_input_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list_i = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = PlMtcPsPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process
             ))
-        for io in range(PlMtcPsPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
-            input_tv_list.append(single_interface_list[io])
+        single_interface_list = []
+        if n_ip_intf == 1 : #"PTCALC2MTC_LSF", delay inputs based on pl block latency
+            for port_n in range(PlMtcPsPorts.get_input_interface_ports(n_ip_intf)):
+                single_interface_list.append(events.prepend_zeroes(single_interface_list_i[port_n], num=pl_latency))
+        else:
+            single_interface_list = single_interface_list_i
 
+        for io in range(PlMtcPsPorts.get_input_interface_ports(n_ip_intf)):
+            input_tv_list_i.append(single_interface_list[io])
+
+
+        input_tv_list = events.modify_tv_padzeroes(input_tv_list_i)
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(PlMtcPsPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports = PlMtcPsPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process
@@ -231,7 +235,7 @@ def pl_mtc_ps_test(dut):
         output_tv_list.append(single_interface_list)
 
 
-
+    #print ("INPUT_TV_LIST = ", input_tv_list)
     ##
     ## send input events
     ##
@@ -257,14 +261,12 @@ def pl_mtc_ps_test(dut):
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
-    ##
-    ## perform testvector comparison test
-    ##
+
     all_tests_passed = True
-    all_test_results = []
     recvd_events_intf = []
+    #Load observed data from CocoTB FifoMonitor for each RTL SpyBuffer Output
     for n_op_intf in range(PlMtcPsPorts.n_output_interfaces):
-        recvd_events     = [["" for x in range(num_events_to_process)]for y in range(PlMtcPsPorts.get_output_interface_ports(n_op_intf))]
+        recvd_events     = [[0 for x in range(num_events_to_process)]for y in range(PlMtcPsPorts.get_output_interface_ports(n_op_intf))]
         for n_oport, oport in enumerate(pl_mtc_ps_wrapper.output_ports(n_op_intf)):
 
             ##
@@ -294,11 +296,13 @@ def pl_mtc_ps_test(dut):
         expected_output_events = output_tv_list
 
 
-
-
+    ##
+    ## perform testvector comparison test
+    ##
+    #print("RECVD_EVTS = ",recvd_events_intf)
     for n_op_intf in range (PlMtcPsPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
-    all_tests_passed = (all_tests_passed and events_are_equal)
+        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        all_tests_passed = (all_tests_passed and events_are_equal)
 
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
