@@ -59,6 +59,7 @@ package tdc_mezz_mapping_pkg is
    22 => (0,4),
    23 => (0,3)
   );
+
   constant hh_mdt_mezz_type_I_left : hh_mezz_t := (
     -- 2 -   | 18 | 20 | 16 | 22 | 23 | 21 | 19 | 17 |
     -- 1 - | 10 | 12 | 08 | 14 | 15 | 13 | 11 | 09 |
@@ -89,6 +90,7 @@ package tdc_mezz_mapping_pkg is
     22 => (2,4),
     23 => (2,3)
   );
+
   constant hh_mdt_mezz_type_II_right : hh_mezz_t := (
     -- 2 - | 01 | 03 | 05 | 07 | 06 | 04 | 02 | 00 |
     -- 1 -   | 09 | 11 | 13 | 15 | 14 | 12 | 10 | 08 |
@@ -119,6 +121,7 @@ package tdc_mezz_mapping_pkg is
     22 => (0,4),
     23 => (0,3)
   );
+
   constant hh_mdt_mezz_type_II_left : hh_mezz_t := (
     -- 2 -   | 16 | 18 | 20 | 22 | 23 | 21 | 19 | 17 |
     -- 1 - | 08 | 10 | 12 | 14 | 15 | 13 | 11 | 09 |
@@ -182,6 +185,7 @@ package tdc_mezz_mapping_pkg is
     22 => (3,3),
     23 => (3,5)
   );
+
   constant hh_mdt_mezz_type_III_left : hh_mezz_t := (
     -- 3 -   | 05 | 03 | 04 | 02 | 00 | 01 |
     -- 2 - | 11 | 09 | 10 | 08 | 06 | 07 |
@@ -438,12 +442,12 @@ package tdc_mezz_mapping_pkg is
   );
 
 
- function get_csm_accumulated_tubes(station : integer) return mezz_b_chamber_dist_chamber_t;
+  function get_csm_accumulated_tubes(station : integer) return mezz_b_chamber_dist_chamber_t;
 
- type tdc_accumulated_tubes_t is array ( 0 to 17) of integer;
- constant tdc_inn_accumulated : tdc_accumulated_tubes_t := (0,0,6,6,12,12,18,18,24,24,30,30,36,36,42,42,48,48);
- constant tdc_mid_out_accumulated : tdc_accumulated_tubes_t := (0,0,8,8,16,16,24,24,32,32,40,40,48,48,56,56,64,64);
- function get_tdc_accumulated_tubes(station : integer) return tdc_accumulated_tubes_t;
+  type tdc_accumulated_tubes_t is array ( 0 to 17) of integer;
+  constant tdc_inn_accumulated : tdc_accumulated_tubes_t := (0,0,6,6,12,12,18,18,24,24,30,30,36,36,42,42,48,48);
+  constant tdc_mid_out_accumulated : tdc_accumulated_tubes_t := (0,0,8,8,16,16,24,24,32,32,40,40,48,48,56,56,64,64);
+  function get_tdc_accumulated_tubes(station : integer) return tdc_accumulated_tubes_t;
 
 
   
