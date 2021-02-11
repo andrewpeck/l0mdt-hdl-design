@@ -145,11 +145,47 @@ begin
                 o_seg          => chi2_segs(i)
             );
         end generate ;
+    else generate
+        -- Endcap
+        Histogram : entity csf_lib.csf_histogram
+            generic map(
+                MAX_HITS_PER_BIN => 16.0
+            )
+            port map(
+            clk           => clk,
+            i_mdthit      => i_mdt_hit,
+            i_seed        => i_seed,
+            i_eof         => i_eof,
+            o_histo_hit0  => fit_hit_histo0(0),
+            o_histo_hit1  => fit_hit_histo0(1)
+            );
+        
+        Fitters : for i in 0 to NUM_FITTERS/2-1 generate
+        begin
+            Fitter0 : entity csf_lib.csf_fitter
+            port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                o_mfit         => mfits(i),
+                o_bfit         => bfits(i),
+                o_fit_valid    => fit_valids(i),
+                o_nhits        => nhits(i)
+            );
+
+            chi2 : entity csf_lib.csf_chi2
+            Port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                i_mfit         => mfits(i),
+                i_bfit         => bfits(i),
+                i_nhits        => nhits(i),
+                i_fit_valid    => fit_valids(i),
+                o_seg          => chi2_segs(i)
+            );
+        end generate ;
     end generate B_E_generate;
-
-
-    
-
     
     -- Chi2 comparator
     Chi2Compare : entity csf_lib.csf_chi2_comparison
