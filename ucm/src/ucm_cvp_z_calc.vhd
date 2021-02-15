@@ -55,6 +55,9 @@ end entity ucm_cvp_z_calc;
 architecture beh of ucm_cvp_z_calc is
 
   constant scaler : integer := 2048;
+  constant int_size : integer := 32;
+
+  signal offset : signed(int_size -1 downto 0);
 
   signal chamber_center_Y : b_chamber_center_radius_unsigned_aut(open)(g_OUTPUT_WIDTH -1 downto 0) := 
         get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS,g_OUTPUT_WIDTH,g_OUTPUT_RESOLUTION);
@@ -65,7 +68,7 @@ architecture beh of ucm_cvp_z_calc is
 
   constant resolution_change : integer := integer( (real(scaler) * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
 
-  signal vec_pos : signed(126-1 downto 0);
+  signal vec_pos : signed(int_size-1 downto 0);
 
   
 begin
@@ -74,6 +77,8 @@ begin
 
   -- chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))),SLC_Z_RPC_LEN +1));
   -- chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * scaler);
+
+  offset <= resize(i_offset * to_signed(integer(1.0/g_INPUT_RESOLUTION), int_size),int_size);
   
   Z_CALC: process(clk)
   begin
@@ -87,9 +92,11 @@ begin
 
         if i_data_valid = '1' then
 
+          -- offset <= resize(i_offset * to_signed(integer(1.0/g_INPUT_RESOLUTION), int_size),int_size);
+
           chamb_h <= chamber_center_Y(to_integer(unsigned(i_chamb_ieta)));
 
-          vec_pos <= (signed(scaler * chamber_center_Y(to_integer(unsigned(i_chamb_ieta)))) - i_offset) / i_slope;
+          vec_pos <= (signed(scaler * chamber_center_Y(to_integer(unsigned(i_chamb_ieta)))) - offset) / i_slope;
           -- vec_pos <= ((signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * scaler) - i_offset) * to_signed(resolution_change,15)) / i_slope;
         else
           vec_pos <= (others => '0');

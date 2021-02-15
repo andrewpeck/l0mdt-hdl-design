@@ -56,7 +56,8 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
+  signal chamber_z_org_a : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
+        get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
   -- signal i_z_i : integer;
   signal wr_addr : integer := 0;
   
@@ -99,7 +100,7 @@ begin
           for i_ch in 0 to MAX_NUM_CHAMBER_POS -1 loop
             if to_integer(i_z) < to_integer(chamber_z_org_a(i_ch)) then
               if found = '0' then
-                ieta := to_unsigned(i_ch,VEC_MDTID_CHAMBER_IETA_LEN);
+                ieta := to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);
                 found := '1';
               else
                 --
