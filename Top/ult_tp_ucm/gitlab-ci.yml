@@ -1,0 +1,13 @@
+#################### ult_tp_dev Project ###########################
+generate_project:ult_tp_dev:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_dev
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
+# user_sim:ult_tp_dev:
+#     extends: .user_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ult_tp_dev
