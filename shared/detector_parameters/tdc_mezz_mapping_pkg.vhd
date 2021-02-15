@@ -488,7 +488,17 @@ package body tdc_mezz_mapping_pkg is
             end if;
           end if;
         elsif station = 2 then -- OUT STATION
-
+          if c_SECTOR_ID = 3 then
+            if multilayer = 0 then
+              for mem_i in 0 to 23 loop
+                out_mem(mem_i) := hh_mdt_mezz_type_II_right(mem_i)(t_nl);
+              end loop;
+            else
+              for mem_i in 0 to 23 loop
+                out_mem(mem_i) := hh_mdt_mezz_type_I_right(mem_i)(t_nl);
+              end loop;
+            end if;
+          end if;
         else -- EXT STATION
 
         end if;

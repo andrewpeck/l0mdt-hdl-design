@@ -35,9 +35,7 @@ update_ip_catalog
 
 
 source $PATH_REPO/Hog/Tcl/create_project.tcl
-set_property  ip_repo_paths  {../../IP ../../lsf/src/hls_ip} [current_project]
+set_property  ip_repo_paths  {../../IP ../../IP_repository} [current_project]
 update_ip_catalog
 
 set_property target_language VHDL [current_project]
-
- 

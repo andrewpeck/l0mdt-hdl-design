@@ -28,6 +28,9 @@ library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_function_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.UCM_CTRL.all;
+
 entity ucm_cvp is
   -- generic(
   --   g_DELAY_CYCLES          : integer; 
@@ -38,10 +41,14 @@ entity ucm_cvp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
+    SECTOR_PHI          : in UCM_SECTOR_PHI_CTRL_t;
+    --
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
     --
     i_data_v            : in ucm_cde_rvt;
+    --
+    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_ucm2hps_av        : out ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
       
   );
@@ -55,8 +62,10 @@ architecture beh of ucm_cvp is
   signal int_data_v     : ucm_cde_rvt;
   
   signal data_v       : ucm_cde_rvt;
-  signal data_v_2     : ucm_cde_rvt;
   signal data_r       : ucm_cde_rt;
+
+  signal data_v_2     : ucm_cde_rvt;
+  signal data_r_2       : ucm_cde_rt;
   
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
@@ -80,6 +89,23 @@ architecture beh of ucm_cvp is
 begin
 
   local_rst <= rst or i_local_rst;
+  data_r <= structify(i_data_v);
+
+  PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  generic map(
+    g_PIPELINE => 2
+  )
+  port map(
+    clk         =>clk,
+    rst         =>local_rst,
+    --
+    SECTOR_PHI  => SECTOR_PHI,
+    --
+    i_posphi    => data_r.posphi,
+    i_dv        => data_r.data_valid,
+    --
+    o_phimod    => o_phimod
+  );
 
   B_SLOPE : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -147,7 +173,7 @@ begin
     o_data      => data_v_2
   );
 
-  data_r <= structify(data_v_2);
+  data_r_2 <= structify(data_v_2);
   -- 
 
   Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
@@ -228,9 +254,9 @@ begin
               for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
                 if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
 
-                  if data_r.data_valid = '1' then
+                  if data_r_2.data_valid = '1' then
 
-                    ucm2hps_ar(hps_i).muid                <= data_r.muid;
+                    ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
                     ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
                     ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT);
                     ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(

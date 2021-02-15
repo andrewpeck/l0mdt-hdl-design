@@ -28,8 +28,8 @@ architecture behavioral of UCM_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 1);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 16897);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 16897) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -65,11 +65,31 @@ begin  -- architecture behavioral
     localRdData <= x"00000000";
     if localRdReq = '1' then
       localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(0 downto 0))) is
+      case to_integer(unsigned(localAddress(14 downto 0))) is
 
+        when 256 => --0x100
+          localRdData(15 downto  0)  <=  reg_data(256)(15 downto  0);                    --Phi to Center of chamber
+          localRdData(16)            <=  reg_data(256)(16);                              --Phi to Center of chamber
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.STATUS;      --
-          localRdData( 1)  <=  Mon.READY;       --
+          localRdData( 3 downto  0)  <=  reg_data( 1)( 3 downto  0);                     --
+          localRdData( 4)            <=  reg_data( 1)( 4);                               --
+          localRdData( 5)            <=  reg_data( 1)( 5);                               --
+        when 513 => --0x201
+          localRdData(15 downto  0)  <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(0).RD.VALUE;        --Read Value id position selected
+          localRdData(27)            <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(0).RD.RST_REQ;      --Reset request after changes in the mem
+        when 4609 => --0x1201
+          localRdData(15 downto  0)  <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(1).RD.VALUE;        --Read Value id position selected
+          localRdData(27)            <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(1).RD.RST_REQ;      --Reset request after changes in the mem
+        when 16 => --0x10
+          localRdData( 0)            <=  Mon.STATUS.MAIN_ENABLED;                        --
+          localRdData( 1)            <=  Mon.STATUS.MAIN_READY;                          --
+          localRdData( 2)            <=  Mon.STATUS.MAIN_ERROR;                          --
+        when 8705 => --0x2201
+          localRdData(15 downto  0)  <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(2).RD.VALUE;        --Read Value id position selected
+          localRdData(27)            <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(2).RD.RST_REQ;      --Reset request after changes in the mem
+        when 16897 => --0x4201
+          localRdData(15 downto  0)  <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(3).RD.VALUE;        --Read Value id position selected
+          localRdData(27)            <=  Mon.DP_CHAMB_Z0.DP_CHAMB_Z0(3).RD.RST_REQ;      --Reset request after changes in the mem
 
 
         when others =>
@@ -82,21 +102,70 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
+  Ctrl.CONFIGS.THREADS      <=  reg_data( 1)( 3 downto  0);      
+  Ctrl.CONFIGS.INPUT_EN     <=  reg_data( 1)( 4);                
+  Ctrl.CONFIGS.OUTPUT_EN    <=  reg_data( 1)( 5);                
+  Ctrl.SECTOR_PHI.VALUE     <=  reg_data(256)(15 downto  0);     
+  Ctrl.SECTOR_PHI.OVERRIDE  <=  reg_data(256)(16);               
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 1)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.CONFIGS.THREADS;
+      reg_data( 1)( 4)  <= DEFAULT_UCM_CTRL_t.CONFIGS.INPUT_EN;
+      reg_data( 1)( 5)  <= DEFAULT_UCM_CTRL_t.CONFIGS.OUTPUT_EN;
+      reg_data(256)(15 downto  0)  <= DEFAULT_UCM_CTRL_t.SECTOR_PHI.VALUE;
+      reg_data(256)(16)  <= DEFAULT_UCM_CTRL_t.SECTOR_PHI.OVERRIDE;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.RESET <= '0';
+      Ctrl.ACTIONS.RESET <= '0';
+      Ctrl.ACTIONS.ENABLE <= '0';
+      Ctrl.ACTIONS.DISABLE <= '0';
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(0).WR.VALUE <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(0).WR.ADDR <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(0).WR.WR_EN <= '0';
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(1).WR.VALUE <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(1).WR.ADDR <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(1).WR.WR_EN <= '0';
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(2).WR.VALUE <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(2).WR.ADDR <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(2).WR.WR_EN <= '0';
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(3).WR.VALUE <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(3).WR.ADDR <= (others => '0');
+      Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(3).WR.WR_EN <= '0';
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(0 downto 0))) is
+        case to_integer(unsigned(localAddress(14 downto 0))) is
         when 0 => --0x0
-          Ctrl.RESET  <=  localWrData( 0);     
+          Ctrl.ACTIONS.RESET                        <=  localWrData( 0);               
+          Ctrl.ACTIONS.ENABLE                       <=  localWrData( 4);               
+          Ctrl.ACTIONS.DISABLE                      <=  localWrData( 5);               
+        when 1 => --0x1
+          reg_data( 1)( 3 downto  0)                <=  localWrData( 3 downto  0);      --
+          reg_data( 1)( 4)                          <=  localWrData( 4);                --
+          reg_data( 1)( 5)                          <=  localWrData( 5);                --
+        when 256 => --0x100
+          reg_data(256)(15 downto  0)               <=  localWrData(15 downto  0);      --Phi to Center of chamber
+          reg_data(256)(16)                         <=  localWrData(16);                --Phi to Center of chamber
+        when 512 => --0x200
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(0).WR.VALUE  <=  localWrData(15 downto  0);     
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.ADDR      <=  localWrData(23 downto 16);     
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.WR_EN     <=  localWrData(24);               
+        when 4608 => --0x1200
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.ADDR      <=  localWrData(23 downto 16);     
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.WR_EN     <=  localWrData(24);               
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(1).WR.VALUE  <=  localWrData(15 downto  0);     
+        when 8704 => --0x2200
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.ADDR      <=  localWrData(23 downto 16);     
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.WR_EN     <=  localWrData(24);               
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(2).WR.VALUE  <=  localWrData(15 downto  0);     
+        when 16896 => --0x4200
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.ADDR      <=  localWrData(23 downto 16);     
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0.WR.WR_EN     <=  localWrData(24);               
+          Ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0(3).WR.VALUE  <=  localWrData(15 downto  0);     
 
           when others => null;
         end case;

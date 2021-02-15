@@ -176,7 +176,7 @@ begin
       -- new HIT
       -------------------------------------------------------------------
 
-      if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+      -- if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
         for heg_i in c_NUM_THREADS -1 downto 0 loop
           read_mpl := structify(pl2pt_av(heg_i));
           if read_mpl.data_valid = '1' then
@@ -188,7 +188,7 @@ begin
             writeline(file_mpl_handler,row);
           end if;
         end loop;
-      end if;
+      -- end if;
 
     end if;
   end if;

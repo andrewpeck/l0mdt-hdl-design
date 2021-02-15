@@ -82,3 +82,17 @@ HDL_Types:
   # - station     : [ type : unsigned , length : 4]
   - thread      : [ type : unsigned , length : 4]
   - data      : [ type : pl2ptcalc]
+
+  #####################################################
+
+- in_mtc_pt_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : ptcalc2mtc]
+
+- in_mtc_mpl_sim:
+  - ToA         : [ type : unsigned , length : 64]
+  # - station     : [ type : unsigned , length : 4]
+  - thread      : [ type : unsigned , length : 4]
+  - data      : [ type : pl2mtc]

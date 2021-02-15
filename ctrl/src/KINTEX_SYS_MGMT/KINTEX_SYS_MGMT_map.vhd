@@ -72,14 +72,6 @@ begin  -- architecture behavioral
           localRdData(15 downto  6)  <=  Mon.VCCINT;           --
         when 258 => --0x102
           localRdData(15 downto  6)  <=  Mon.VCCAUX;           --
-        when 263 => --0x107
-          localRdData(15 downto  6)  <=  Mon.VCCBRAM;          --
-        when 288 => --0x120
-          localRdData(15 downto  6)  <=  Mon.TEMP_MAX;         --
-        when 289 => --0x121
-          localRdData(15 downto  6)  <=  Mon.VCCINT_MAX;       --
-        when 290 => --0x122
-          localRdData(15 downto  6)  <=  Mon.VCCAUX_MAX;       --
         when 291 => --0x123
           localRdData(15 downto  6)  <=  Mon.VCCBRAM_MAX;      --
         when 292 => --0x124
@@ -88,6 +80,14 @@ begin  -- architecture behavioral
           localRdData(15 downto  6)  <=  Mon.VCCINT_MIN;       --
         when 294 => --0x126
           localRdData(15 downto  6)  <=  Mon.VCCAUX_MIN;       --
+        when 289 => --0x121
+          localRdData(15 downto  6)  <=  Mon.VCCINT_MAX;       --
+        when 263 => --0x107
+          localRdData(15 downto  6)  <=  Mon.VCCBRAM;          --
+        when 290 => --0x122
+          localRdData(15 downto  6)  <=  Mon.VCCAUX_MAX;       --
+        when 288 => --0x120
+          localRdData(15 downto  6)  <=  Mon.TEMP_MAX;         --
         when 295 => --0x127
           localRdData(15 downto  6)  <=  Mon.VCCBRAM_MIN;      --
 

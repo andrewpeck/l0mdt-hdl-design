@@ -2,8 +2,8 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---  
---  Project: ATLAS L0MDT Trigger 
+--
+--  Project: ATLAS L0MDT Trigger
 --  Module: configuration file
 --  Description:
 --
@@ -16,7 +16,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package cfg_global_pkg is
+package cfg_global_default_pkg is
 
   constant CFG_MAX_HP : integer := 6;
 
@@ -33,8 +33,8 @@ package cfg_global_pkg is
     -- blocks configuration
     --------------------------------------------------------------------------------
     -- hardware modules
-    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation 
-    HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation  
+    UL_PRESENT                    : std_logic;  -- enables or disables the user logic modul on compilation
+    HW_PRESENT                    : std_logic;  -- enables or disables the hardware modules on compilation
     -- Processing channels
     ENABLE_ST_INN                 : std_logic;  -- enable or disable inner processing station
     EN_MDT_CH_INN                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
@@ -52,10 +52,10 @@ package cfg_global_pkg is
     EN_MDT_CH_OUT                 : std_logic_vector(CFG_MAX_HP -1 downto 0);
     -- NUM_MDT_CH_OUT                : integer;    -- set the number of hir processors on the station
     -- stations in current fpga
-    FPGA_EN_ST_INN                 : std_logic;  
-    FPGA_EN_ST_EXT                 : std_logic;  
-    FPGA_EN_ST_MID                 : std_logic;  
-    FPGA_EN_ST_OUT                 : std_logic;  
+    FPGA_EN_ST_INN                 : std_logic;
+    FPGA_EN_ST_EXT                 : std_logic;
+    FPGA_EN_ST_MID                 : std_logic;
+    FPGA_EN_ST_OUT                 : std_logic;
     -- tube address remap
     ENABLE_TAR                    : std_logic;
     INSEL_MDT_nTAR                : std_logic;
@@ -75,6 +75,9 @@ package cfg_global_pkg is
     ENABLE_MTC                    : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
+    -- MTC configuration based on links to primary, neighboring sectors
+    -- (barrel, endcap)
+    NUM_MTC                       : integer;
     --
     ENABLE_H2S                    : std_logic;
     --------------------------------------------------------------------------------
@@ -100,16 +103,16 @@ package cfg_global_pkg is
     -- Processing channels
     ENABLE_ST_INN                 => '1', -- 0: disabled  1: enabled -- default enabled
     EN_MDT_CH_INN                 => (others => '1'),
-    -- NUM_MDT_CH_INN                => 6,   -- default 6            
+    -- NUM_MDT_CH_INN                => 6,   -- default 6
     ENABLE_ST_EXT                 => '0', -- 0: disabled  1: enabled -- default disabled
     EN_MDT_CH_EXT                 => (others => '0'),
-    -- NUM_MDT_CH_EXT                => 6,   -- default 6  
+    -- NUM_MDT_CH_EXT                => 6,   -- default 6
     ENABLE_ST_MID                 => '1', -- 0: disabled  1: enabled -- default enabled
     EN_MDT_CH_MID                 => (others => '1'),
-    -- NUM_MDT_CH_MID                => 6,   -- default 6  
+    -- NUM_MDT_CH_MID                => 6,   -- default 6
     ENABLE_ST_OUT                 => '1', -- 0: disabled  1: enabled -- default enabled
     EN_MDT_CH_OUT                 => (others => '1'),
-    -- NUM_MDT_CH_OUT                => 6,   -- default 6  
+    -- NUM_MDT_CH_OUT                => 6,   -- default 6
     -- stations enabled in hte fpga
     FPGA_EN_ST_INN                => '1',
     FPGA_EN_ST_EXT                => '0',
@@ -136,15 +139,18 @@ package cfg_global_pkg is
     --------------------------------------------------------------------------------
     --  Thread configuration
     --------------------------------------------------------------------------------
-    NUM_THREADS                   => 3    -- default 3
+    NUM_THREADS                   => 3 ,   -- default 3
+    -- MTC configuration based on links to primary, neighboring sectors
+    -- (barrel, endcap)
+    NUM_MTC                       => 1    -- default 3, connecting to primary SL
   );
 
   function get_num_HP(enable_list : std_logic_vector) return integer;
 
-end package cfg_global_pkg;
+end package cfg_global_default_pkg;
 
-package body cfg_global_pkg is
-  
+package body cfg_global_default_pkg is
+
   function get_num_HP(enable_list : std_logic_vector) return integer is
     variable num : integer := 0;
   begin
@@ -155,9 +161,9 @@ package body cfg_global_pkg is
     end loop;
     return num;
   end function;
-  
-  
-end package body cfg_global_pkg;
+
+
+end package body cfg_global_default_pkg;
 
 -- --------------------------------------------------------------------------------
 -- WHEN CREATING A NEW PROJECT
@@ -172,8 +178,8 @@ end package body cfg_global_pkg;
 -- --  UMass , Physics Department
 -- --  Guillermo Loustau de Linares
 -- --  gloustau@cern.ch
--- --  
--- --  Project: ATLAS L0MDT Trigger 
+-- --
+-- --  Project: ATLAS L0MDT Trigger
 -- --  Module: project configurations customization
 -- --  Description:
 -- --
@@ -186,7 +192,7 @@ end package body cfg_global_pkg;
 -- use ieee.numeric_std.all;
 
 -- library shared_lib;
--- use shared_lib.cfg_global_pkg.all;
+-- use shared_lib.cfg_global_default_pkg.all;
 
 -- package prj_cfg is
 --   function set_project_cfg return cfg_rt;
@@ -211,13 +217,13 @@ end package body cfg_global_pkg;
 --     proj_cfg.HW_PRESENT                    => '0'; -- default disabled
 --     -- Processing channels
 --     proj_cfg.ENABLE_ST_INN                 => '1'; -- default enable
---     proj_cfg.NUM_MDT_CH_INN                => 6;   -- default 6            
+--     proj_cfg.NUM_MDT_CH_INN                => 6;   -- default 6
 --     proj_cfg.ENABLE_ST_EXT                 => '0'; -- default disabled
---     proj_cfg.NUM_MDT_CH_EXT                => 6;   -- default 6  
+--     proj_cfg.NUM_MDT_CH_EXT                => 6;   -- default 6
 --     proj_cfg.ENABLE_ST_MID                 => '1'; -- default enable
---     proj_cfg.NUM_MDT_CH_MID                => 6;   -- default 6  
+--     proj_cfg.NUM_MDT_CH_MID                => 6;   -- default 6
 --     proj_cfg.ENABLE_ST_OUT                 => '1'; -- default enable
---     proj_cfg.NUM_MDT_CH_OUT                => 6;   -- default 6  
+--     proj_cfg.NUM_MDT_CH_OUT                => 6;   -- default 6
 --     -- muon control manager
 --     proj_cfg.ENABLE_UCM                    => '1'; -- default
 --     -- Segment Finder
@@ -232,7 +238,7 @@ end package body cfg_global_pkg;
 --     --  Thread configuration
 --     --------------------------------------------------------------------------------
 --     proj_cfg.NUM_THREADS                   => 3;    -- default 3
-   
+
 --     return proj_cfg;
 --   end function set_configuration;
 -- end package body prj_cfg;

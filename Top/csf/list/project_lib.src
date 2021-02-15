@@ -1,5 +1,0 @@
-shared/shared_lib.src lib=shared_lib
-Top/csf/prj_cfg.vhd
-csf/csf_lib.src lib=csf_lib
-csf/top_csf.vhd
-
