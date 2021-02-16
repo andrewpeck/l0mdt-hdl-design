@@ -59,7 +59,8 @@
     # - source run.sh load_LE_refPos
   artifacts:
     name: user_hls
-    paths: l0mdt-hls/LSF/Proj
+    paths:
+      - l0mdt-hls/LSF/Proj
     expire_in: 30 day
   allow_failure: true
 
