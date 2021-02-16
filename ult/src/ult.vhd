@@ -147,6 +147,8 @@ architecture behavioral of ult is
   signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
+  signal pt_sump : std_logic;
+
 begin
 
   logic_gen : if (not DUMMY) generate
@@ -256,17 +258,19 @@ begin
       ctrl                      => tf_ctrl,
       mon                       => tf_mon,
       --  segments from neighbors
-      plus_neighbor_segments_i  => i_plus_neighbor_segments,
-      minus_neighbor_segments_i => i_minus_neighbor_segments,
+      i_plus_neighbor_segments  => i_plus_neighbor_segments,
+      i_minus_neighbor_segments => i_minus_neighbor_segments,
       -- segments from hps
-      inner_segments_i          => inn_segments_to_pt,
-      middle_segments_i         => mid_segments_to_pt,
-      outer_segments_i          => out_segments_to_pt,
-      extra_segments_i          => ext_segments_to_pt,
+      i_inn_segments            => inn_segments_to_pt,
+      i_mid_segments            => mid_segments_to_pt,
+      i_out_segments            => out_segments_to_pt,
+      i_ext_segments            => ext_segments_to_pt,
       -- from pipeline
       i_pl2pt_av                => pl2pt_av,
       -- to mtc
-      o_pt2mtc                  => pt2mtc_av
+      o_pt2mtc                  => pt2mtc_av,
+      -- dummy
+      o_sump                    => pt_sump
     );
 
     mtc_builder_inst : entity work.mtc_builder
@@ -305,7 +309,7 @@ begin
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
         daq_streams_o => o_daq_streams);
 
-    sump <= '0';
+    sump <= '0' xor pt_sump;
 
   end generate;
 
