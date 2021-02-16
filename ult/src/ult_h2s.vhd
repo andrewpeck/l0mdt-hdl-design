@@ -12,6 +12,7 @@
 --      
 --------------------------------------------------------------------------------
 library ieee;
+use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
@@ -60,7 +61,7 @@ entity hits_to_segments is
     o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     
-    sump : out std_logic
+    o_sump : out std_logic
     );
 
 end entity hits_to_segments;
@@ -71,7 +72,7 @@ begin
 
   glob_en <= '1';
 
-  H2S_GEN : if c_H2S_ENABLED generate
+  H2S_GEN : if c_H2S_ENABLED = '1' generate
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
       HPS : entity hps_lib.hps
@@ -179,7 +180,58 @@ begin
 
   end generate;
 
-  
+  H2S_NO_GEN : if c_H2S_ENABLED = '0' generate
+    signal inn_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+    signal mid_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+    signal out_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+    signal ext_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+    signal inn_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+    signal mid_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+    signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+    signal ext_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  begin
+    sump_proc : process (clock_and_control.clk) is
+    begin  -- process tdc_hit_sump_proc
+      if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+
+        inn_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
+          inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I));
+        end loop;
+        mid_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
+          mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I));
+        end loop;
+        out_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
+          out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I));
+        end loop;
+        ext_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
+          ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I));
+        end loop;
+
+        slc_inn_loop : for I in 0 to c_NUM_THREADS-1 loop
+          inn_slc_sump(I) <= xor_reduce(i_inn_slc(I));
+        end loop;
+        slc_mid_loop : for I in 0 to c_NUM_THREADS-1 loop
+          mid_slc_sump(I) <= xor_reduce(i_mid_slc(I));
+        end loop;
+        slc_out_loop : for I in 0 to c_NUM_THREADS-1 loop
+          out_slc_sump(I) <= xor_reduce(i_out_slc(I));
+        end loop;
+        slc_ext_loop : for I in 0 to c_NUM_THREADS-1 loop
+          ext_slc_sump(I) <= xor_reduce(i_ext_slc(I));
+        end loop;
+        
+
+        o_sump <=   xor_reduce(inn_tar_hits_sump)
+                xor xor_reduce(mid_tar_hits_sump)
+                xor xor_reduce(out_tar_hits_sump)
+                xor xor_reduce(ext_tar_hits_sump)
+                xor xor_reduce(inn_slc_sump     )
+                xor xor_reduce(mid_slc_sump     )
+                xor xor_reduce(out_slc_sump     )
+                xor xor_reduce(ext_slc_sump     );
+      end if;
+    end process;
+  end generate;
   
 end architecture beh;
 

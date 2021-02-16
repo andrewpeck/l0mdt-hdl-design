@@ -148,6 +148,7 @@ architecture behavioral of ult is
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
   signal pt_sump : std_logic;
+  signal h2s_sump : std_logic;
 
 begin
 
@@ -230,7 +231,9 @@ begin
       o_ext_segments            => ext_segments_to_pt,
       -- Segment outputs to HAL
       o_plus_neighbor_segments  => o_plus_neighbor_segments,
-      o_minus_neighbor_segments => o_minus_neighbor_segments
+      o_minus_neighbor_segments => o_minus_neighbor_segments,
+
+      o_sump                    => h2s_sump
     );
 
     pipeline_inst : entity ult_lib.pipeline
@@ -309,7 +312,7 @@ begin
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
         daq_streams_o => o_daq_streams);
 
-    sump <= '0' xor pt_sump;
+    sump <= h2s_sump xor pt_sump;
 
   end generate;
 
