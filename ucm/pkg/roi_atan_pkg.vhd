@@ -19,7 +19,7 @@ use ieee.numeric_std.all;
 -- library heg_roi_lib;
 -- use heg_roi_lib.roi_types_pkg.all;
 
-package roi_atan is
+package roi_atan_pkg is
 
   -- add length of constant array
   constant ROM_ATAN_MAX_SIZE : integer := 111638;
@@ -2078,4 +2078,4 @@ package roi_atan is
     111628 to 111637 => 2047
   );
 
- end package roi_atan;
+ end package roi_atan_pkg;
