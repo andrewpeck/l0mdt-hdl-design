@@ -56,6 +56,9 @@ end entity ucm;
 
 architecture beh of ucm is
 
+  signal local_en   : std_logic;
+  signal local_rst  : std_logic;
+
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
   signal prepro2ctrl_av       : ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -115,21 +118,32 @@ begin
     end generate;
   end generate;
 
-
-
-  --control
-  SLC_CTRL : entity ucm_lib.ucm_ctrl
+  UCM_SUPERVISOR : entity ucm_lib.ucm_supervisor
   port map(
     clk               => clk,
     rst               => rst,
-    glob_en           => glob_en,
+    glob_en           => glob_en,      
+    -- AXI to SoC
+    ctrl              => ctrl,
+    mon               => mon,          
+    -- 
+    local_en          => local_en,
+    local_rst         => local_rst
+  );
+
+  --control
+  SLC_CTRL : entity ucm_lib.ucm_data_ctrl
+  port map(
+    clk               => clk,
+    rst               => local_rst,
+    glob_en           => local_en,
     --
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --
     o_csw_ctrl        => csw_control,
     o_pam_ctrl        => pam_CSW_control,
     o_proc_info       => proc_info,
-
+    --
     o_cvp_rst         => cvp_loc_rst,
     o_cvp_ctrl        => cvp_in_en
     -- o_pam2heg         => o_uCM2hps_pam_ar
@@ -140,8 +154,8 @@ begin
     SLC_PP : entity ucm_lib.ucm_prepro
     port map(
       clk               => clk,
-      rst               => rst,
-      glob_en           => glob_en,
+      rst               => local_rst,
+      glob_en           => local_en,
       --                =>
       i_slc_data_v      => i_slc_data_av(sl_i),
       o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
@@ -158,8 +172,8 @@ begin
     )
     port map(
       clk         => clk,
-      rst         => rst,
-      glob_en     => '1',
+      rst         => local_rst,
+      glob_en     => local_en,
       --
       i_data      => ucm_prepro_av(sl_i),
       o_data      => csw_main_in_av(sl_i)
@@ -170,8 +184,8 @@ begin
   SLC_CSW : entity ucm_lib.ucm_csw
   port map(
     clk         => clk,
-    rst         => rst,
-    glob_en     => glob_en,
+    rst         => local_rst,
+    glob_en     => local_en,
     
     i_control   => csw_control,
     -- data
@@ -184,8 +198,8 @@ begin
     SLC_CDE : entity ucm_lib.ucm_cde
     port map(
       clk                   => clk,
-      rst                   => rst,
-      glob_en               => glob_en,
+      rst                   => local_rst,
+      glob_en               => local_en,
       --
       CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
       CHAMBER_Z0_MON_ARRAY  => cde_cz0_a(th_i), --mon.DP_CHAMB_Z0.DP_CHAMB_Z0,
@@ -201,8 +215,8 @@ begin
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
   port map(
     clk         => clk,
-    rst         => rst,
-    glob_en     => glob_en,
+    rst         => local_rst,
+    glob_en     => local_en,
     
     i_control   => pam_CSW_control,
     -- data
@@ -216,8 +230,8 @@ begin
     SLC_VP : entity ucm_lib.ucm_cvp
     port map(
       clk           => clk,
-      rst           => rst,
-      glob_en       => glob_en,
+      rst           => local_rst,
+      glob_en       => local_en,
       --
       SECTOR_PHI            => ctrl.SECTOR_PHI,
       CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
@@ -243,8 +257,8 @@ begin
     )
     port map(
       clk         => clk,
-      rst         => rst,
-      glob_en     => glob_en,
+      rst         => local_rst,
+      glob_en     => local_en,
       --
       i_data      => int_uCM2pl_av(sl_i),
       o_data      => pl_o_uCM2pl_av(sl_i)
