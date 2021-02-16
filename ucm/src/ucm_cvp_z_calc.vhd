@@ -31,7 +31,10 @@ use ucm_lib.ucm_pkg.all;
 
 entity ucm_cvp_z_calc is
   generic(
-    g_STATION_RADIUS      : integer := 0  --station
+    g_STATION_RADIUS      : integer := 0;  --station
+    g_INPUT_RESOLUTION    : real := 1.0;
+    g_OUTPUT_RESOLUTION   : real := 1.0;
+    g_OUTPUT_WIDTH        : integer := 10
   );
   port (
     clk           : in std_logic;
@@ -51,23 +54,31 @@ end entity ucm_cvp_z_calc;
 
 architecture beh of ucm_cvp_z_calc is
 
-  signal chamber_center_Y : b_chamber_center_radius_unsigned_au := get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS);
+  constant scaler : integer := 2048;
+  constant int_size : integer := 32;
+
+  signal offset : signed(int_size -1 downto 0);
+
+  signal chamber_center_Y : b_chamber_center_radius_unsigned_aut(open)(g_OUTPUT_WIDTH -1 downto 0) := 
+        get_b_chamber_center_radius(c_SECTOR_ID,g_STATION_RADIUS,g_OUTPUT_WIDTH,g_OUTPUT_RESOLUTION);
   
-  signal chamb_h : signed (24 -1 downto 0);
+  signal chamb_h : unsigned  (g_OUTPUT_WIDTH -1 downto 0);
 
   -- signal vec_z_pos : signed(UCM_Z_ROI_LEN-1 downto 0);
 
-  constant resolution_change : integer := integer( (1024.0 * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
+  constant resolution_change : integer := integer( (real(scaler) * UCM2HPS_VEC_POS_MULT ) /  SLC_Z_RPC_MULT);
 
-  signal vec_pos : signed(141-1 downto 0);
+  signal vec_pos : signed(int_size-1 downto 0);
 
   
 begin
 
-  o_vec_z_pos <= resize(unsigned(vec_pos/1024),UCM2HPS_VEC_POS_LEN);
+  o_vec_z_pos <= resize(unsigned(vec_pos),UCM2HPS_VEC_POS_LEN);
 
   -- chamb_h <= signed(resize(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))),SLC_Z_RPC_LEN +1));
-  -- chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024);
+  -- chamb_h <= signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * scaler);
+
+  offset <= resize(i_offset * to_signed(integer(1.0/g_INPUT_RESOLUTION), int_size),int_size);
   
   Z_CALC: process(clk)
   begin
@@ -80,10 +91,21 @@ begin
         o_vec_z_pos_dv <= i_data_valid;
 
         if i_data_valid = '1' then
-          vec_pos <= ((signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * 1024) - i_offset) * to_signed(resolution_change,15)) / i_slope;
+
+          -- offset <= resize(i_offset * to_signed(integer(1.0/g_INPUT_RESOLUTION), int_size),int_size);
+
+          chamb_h <= chamber_center_Y(to_integer(unsigned(i_chamb_ieta)));
+
+          vec_pos <= (signed(scaler * chamber_center_Y(to_integer(unsigned(i_chamb_ieta)))) - offset) / i_slope;
+          -- vec_pos <= ((signed(chamber_center_Y(to_integer(unsigned(i_chamb_ieta))) * scaler) - i_offset) * to_signed(resolution_change,15)) / i_slope;
         else
           vec_pos <= (others => '0');
         end if;
+
+
+
+
+
       end if;
     end if;
   end process Z_CALC;

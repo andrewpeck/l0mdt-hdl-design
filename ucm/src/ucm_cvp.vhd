@@ -63,6 +63,7 @@ architecture beh of ucm_cvp is
 
   signal int_data_r     : ucm_cde_rt;
   signal int_data_v     : ucm_cde_rvt;
+  signal barrel_r       : slc_barrel_rt;
   
   signal data_v       : ucm_cde_rvt;
   signal data_r       : ucm_cde_rt;
@@ -98,6 +99,7 @@ begin
 
   local_rst <= rst or i_local_rst;
   data_r <= structify(i_data_v);
+  barrel_r <= structify(int_data_r.specific);
 
   PL_in : entity shared_lib.std_pipeline
   generic map(
@@ -129,7 +131,7 @@ begin
     o_phimod    => o_phimod
   );
 
-  B_SLOPE : if c_ST_nBARREL_ENDCAP = '0' generate
+  BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
@@ -151,7 +153,10 @@ begin
       Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
         Z_CALC : entity ucm_lib.ucm_cvp_z_calc
         generic map(
-          g_STATION_RADIUS    => st_i
+          g_STATION_RADIUS    => st_i,
+          g_INPUT_RESOLUTION  => SLC_Z_RPC_MULT,
+          g_OUTPUT_RESOLUTION => 1.0,
+          g_OUTPUT_WIDTH      => vec_pos_array(st_i)'length
         )
         port map(
           clk           => clk,
@@ -355,15 +360,8 @@ begin
 
                     ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
                     ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
-                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); --get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT);
-                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(
-                                                                get_b_chamber_type(c_SECTOR_ID,hps_i,
-                                                                  to_integer(
-                                                                    new_chamb_ieta_a(hps_i)
-                                                                    --get_chamber_ieta(c_SECTOR_ID,hps_i,to_integer(vec_pos_array(hps_i)),UCM2HPS_VEC_POS_MULT)
-                                                                  )
-                                                                ),VEC_MDTID_CHAMBER_ID_LEN
-                                                              );
+                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); 
+                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
                     ucm2hps_ar(hps_i).vec_pos       <= vec_pos_array(hps_i);
                     ucm2hps_ar(hps_i).vec_ang       <= vec_ang_pl;
                     ucm2hps_ar(hps_i).data_valid    <= '1';
@@ -402,68 +400,3 @@ begin
 
 
 end beh;
-
-
-
---------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: slc vector processor, chamber type extractor
---  Description:
---
---------------------------------------------------------------------------------
---  Revisions:
---      
---------------------------------------------------------------------------------
--- library ieee, shared_lib;
--- use ieee.std_logic_1164.all;
--- use ieee.numeric_std.all;
-
--- library shared_lib;
--- use shared_lib.common_ieee_pkg.all;
--- use shared_lib.l0mdt_constants_pkg.all;
--- use shared_lib.l0mdt_dataformats_pkg.all;
--- use shared_lib.common_constants_pkg.all;
--- use shared_lib.common_types_pkg.all;
--- use shared_lib.config_pkg.all;
-
--- use shared_lib.detector_param_pkg.all;
- 
--- library ucm_lib;
--- use ucm_lib.ucm_pkg.all;
-
--- entity ucm_cvp_chamber_id is
---   port (
---     clk                 : in std_logic;
---     rst                 : in std_logic;
---     glob_en             : in std_logic;
---     --
---     i_station           : in unsigned(3 downto 0);
---     i_chamber_ieta      : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
---     --
---     o_mdtid             : out vec_mdtid_rt
---   );
--- end entity ucm_cvp_chamber_id;
-
--- architecture beh of ucm_cvp_chamber_id is
-
---   signal mem : b_chamber_type_sector_at := get_b_chamber_type_sector(c_SECTOR_ID);
-  
--- begin
-
---   ID_CALC: process(clk)
---   begin
---     if rising_edge(clk) then
---       if rst = '1' then
-        
---       else
-
---         o_mdtid.chamber_ieta <= i_chamber_ieta;
---         o_mdtid.chamber_id <= to_unsigned(mem(to_integer(i_station))(to_integer(i_chamber_ieta)),VEC_MDTID_CHAMBER_ID_LEN);
-        
---       end if;
---     end if;
---   end process ID_CALC;
-  
-  
-  
--- end architecture beh;

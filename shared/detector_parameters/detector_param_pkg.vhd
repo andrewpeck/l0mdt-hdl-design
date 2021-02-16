@@ -97,9 +97,9 @@ package detector_param_pkg is
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
 
-  type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
-  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;
+  type b_chamber_center_radius_unsigned_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned;
+  type b_chamber_center_radius_integer_art is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_art;
   type b_chamber_center_chamber is array ( 0 to 15) of b_chamber_center_station;
   constant b_chamber_center_radius : b_chamber_center_chamber :=(
     --     INN MID OUT EXT
@@ -124,7 +124,7 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_center_radius( sector, station : integer) return b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( sector, station  : integer ; output_len : integer := SLC_Z_RPC_LEN ; scaler : real := 1.0) return b_chamber_center_radius_unsigned_aut;
   -------------------------------------------------------------------------
   -- Radius to the origin of the chamber
   -------------------------------------------------------------------------
@@ -158,8 +158,8 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  subtype b_chamber_z_origin_ut is unsigned (SLC_Z_RPC_LEN -1 downto 0); --old length : SLC_Z_RPC_LEN
-  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of b_chamber_z_origin_ut;
+  -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned; --b_chamber_z_origin_ut;
   type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
@@ -387,11 +387,16 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_center_radius( sector, station  : integer) return b_chamber_center_radius_unsigned_au is
-    variable y : b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( 
+    sector, station  : integer ; 
+    output_len : integer := SLC_Z_RPC_LEN ; 
+    scaler : real := 1.0) 
+  return b_chamber_center_radius_unsigned_aut is
+    variable y : b_chamber_center_radius_unsigned_aut(open)(output_len -1 downto 0);
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * scaler) , output_len);
+      -- y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
     end loop;
     return y;
   end function get_b_chamber_center_radius;
@@ -409,7 +414,7 @@ package body detector_param_pkg is
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
   function get_b_chamber_origin_z_u( sector, station: integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut is
-    variable y : b_chamber_z_origin_aut;
+    variable y : b_chamber_z_origin_aut(open)(out_width -1 downto 0);
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
       y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult) , out_width);
