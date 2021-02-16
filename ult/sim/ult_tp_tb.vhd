@@ -335,20 +335,22 @@ begin
   -------------------------------------------------------------------------------------
 	-- HEG_BM 2 SF
   -------------------------------------------------------------------------------------
-  HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
-  generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    IN_SLC_FILE => IN_SLC_FILE,
-    OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
-    OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
-  )
-  port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_slc,
-    --
-    tb_curr_tdc_time => tb_curr_tdc_time
-  );
+  HEG_2_SF_EN : if c_H2S_ENABLED = '1' generate
+    HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
+    generic map (
+      IN_HIT_FILE => IN_HIT_FILE,
+      IN_SLC_FILE => IN_SLC_FILE,
+      OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
+      OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
+    )
+    port map(
+      clk => clk,
+      rst => rst,
+      enable => enable_slc,
+      --
+      tb_curr_tdc_time => tb_curr_tdc_time
+    );
+  end generate;
   
   -------------------------------------------------------------------------------------
 	-- Input of PT CALC
