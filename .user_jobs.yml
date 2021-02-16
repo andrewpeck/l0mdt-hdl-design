@@ -52,11 +52,15 @@
     - cd l0mdt-hls/LSF/Run
     - source run.sh calc_LE_r_offset_barrel
     - source run.sh compute_r_bins
-    # - source run.sh find_max_bin
+    - source run.sh find_max_bin
     # - source run.sh get_legendre_segment_barrel
     # - source run.sh get_rom_addr
     # - source run.sh trig_vals
     # - source run.sh load_LE_refPos
+  artifacts:
+    name: user_hls
+    paths: l0mdt-hls/LSF/Proj
+    expire_in: 30 day
   allow_failure: true
 
 .sim_comp: &sim_comp
