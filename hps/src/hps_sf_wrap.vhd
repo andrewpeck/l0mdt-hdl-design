@@ -88,8 +88,8 @@ begin
     EN_CSF : if c_SF_TYPE = '0' generate
       CSF : entity csf_lib.csf
         generic map(
-          FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
-        )
+          IS_ENDCAP => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+          )
         port map(
           clk       => clk,
           i_seed    => i_slc_data_v,

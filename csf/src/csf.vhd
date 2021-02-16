@@ -35,8 +35,7 @@ use csf_lib.csf_custom_pkg.all;
 
 entity csf is
     generic(
-        -- Project flavour (0: Barrel, 1: Endcap)
-        FLAVOUR  : integer := 0
+        IS_ENDCAP  : integer := 0
     );
     Port (
         clk       : in std_logic;
@@ -93,58 +92,101 @@ architecture Behavioral of csf is
 begin
 
     
-    -- Histograms (1 per multilayer)
-    Histograms: for k in 1 downto 0 generate
-    begin
+    -- Barrel Case
+    B_E_generate: if IS_ENDCAP = 0 generate
+        -- Histograms (1 per multilayer)
+        Histograms: for k in 1 downto 0 generate
+        begin
+            Histogram : entity csf_lib.csf_histogram
+            port map(
+            clk           => clk,
+            i_mdthit      => mdt_hits(k),
+            i_seed        => i_seed,
+            i_eof         => i_eof,
+            o_histo_hit0  => histo_hit_max0(k),
+            o_histo_hit1  => histo_hit_max1(k)
+            );
+        end generate;
+    
+        -- Route hits from Histogram to Fitters
+        fit_hit_histo0(0) <= histo_hit_max0(0);
+        fit_hit_histo0(1) <= histo_hit_max1(0);
+        fit_hit_histo0(2) <= histo_hit_max0(0);
+        fit_hit_histo0(3) <= histo_hit_max1(0);
+
+        fit_hit_histo1(0) <= histo_hit_max0(1);
+        fit_hit_histo1(1) <= histo_hit_max0(1);
+        fit_hit_histo1(2) <= histo_hit_max1(1);
+        fit_hit_histo1(3) <= histo_hit_max1(1);
+
+        -- Fitters + Chi2
+        Fitters : for i in 0 to NUM_FITTERS-1 generate
+        begin
+            Fitter0 : entity csf_lib.csf_fitter
+            port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                o_mfit         => mfits(i),
+                o_bfit         => bfits(i),
+                o_fit_valid    => fit_valids(i),
+                o_nhits        => nhits(i)
+            );
+
+            chi2 : entity csf_lib.csf_chi2
+            Port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                i_mfit         => mfits(i),
+                i_bfit         => bfits(i),
+                i_nhits        => nhits(i),
+                i_fit_valid    => fit_valids(i),
+                o_seg          => chi2_segs(i)
+            );
+        end generate ;
+    else generate
+        -- Endcap
         Histogram : entity csf_lib.csf_histogram
-        port map(
-        clk           => clk,
-        i_mdthit      => mdt_hits(k),
-        i_seed        => i_seed,
-        i_eof         => i_eof,
-        o_histo_hit0  => histo_hit_max0(k),
-        o_histo_hit1  => histo_hit_max1(k)
-        );
-    end generate;
+            generic map(
+                MAX_HITS_PER_BIN => 16.0
+            )
+            port map(
+            clk           => clk,
+            i_mdthit      => i_mdt_hit,
+            i_seed        => i_seed,
+            i_eof         => i_eof,
+            o_histo_hit0  => fit_hit_histo0(0),
+            o_histo_hit1  => fit_hit_histo0(1)
+            );
+        
+        Fitters : for i in 0 to NUM_FITTERS/2-1 generate
+        begin
+            Fitter0 : entity csf_lib.csf_fitter
+            port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                o_mfit         => mfits(i),
+                o_bfit         => bfits(i),
+                o_fit_valid    => fit_valids(i),
+                o_nhits        => nhits(i)
+            );
 
-    -- Route hits from Histogram to Fitters
-    fit_hit_histo0(0) <= histo_hit_max0(0);
-    fit_hit_histo0(1) <= histo_hit_max1(0);
-    fit_hit_histo0(2) <= histo_hit_max0(0);
-    fit_hit_histo0(3) <= histo_hit_max1(0);
-
-    fit_hit_histo1(0) <= histo_hit_max0(1);
-    fit_hit_histo1(1) <= histo_hit_max0(1);
-    fit_hit_histo1(2) <= histo_hit_max1(1);
-    fit_hit_histo1(3) <= histo_hit_max1(1);
-
-    -- Fitters + Chi2
-    Fitters : for i in 0 to NUM_FITTERS-1 generate
-    begin
-        Fitter0 : entity csf_lib.csf_fitter
-        port map(
-            clk            => clk,
-            i_hit1         => fit_hit_histo0(i),
-            i_hit2         => fit_hit_histo1(i),
-            o_mfit         => mfits(i),
-            o_bfit         => bfits(i),
-            o_fit_valid    => fit_valids(i),
-            o_nhits        => nhits(i)
-        );
-
-        chi2 : entity csf_lib.csf_chi2
-        Port map(
-            clk            => clk,
-            i_hit1         => fit_hit_histo0(i),
-            i_hit2         => fit_hit_histo1(i),
-            i_mfit         => mfits(i),
-            i_bfit         => bfits(i),
-            i_nhits        => nhits(i),
-            i_fit_valid    => fit_valids(i),
-            o_seg          => chi2_segs(i)
-        );
-    end generate ;
-
+            chi2 : entity csf_lib.csf_chi2
+            Port map(
+                clk            => clk,
+                i_hit1         => fit_hit_histo0(i),
+                i_hit2         => fit_hit_histo1(i),
+                i_mfit         => mfits(i),
+                i_bfit         => bfits(i),
+                i_nhits        => nhits(i),
+                i_fit_valid    => fit_valids(i),
+                o_seg          => chi2_segs(i)
+            );
+        end generate ;
+    end generate B_E_generate;
+    
     -- Chi2 comparator
     Chi2Compare : entity csf_lib.csf_chi2_comparison
     Port map(
@@ -156,7 +198,7 @@ begin
     -- Coordinate tranformation
     CoordTransform: entity csf_lib.seg_coord_transform
     generic map(
-        FLAVOUR => FLAVOUR
+        IS_ENDCAP => IS_ENDCAP
     )
     port map (
         clk                => clk,

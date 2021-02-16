@@ -32,23 +32,19 @@ use shared_lib.common_types_pkg.all;
 library csf_lib;
 use csf_lib.csf_pkg.all;
 use csf_lib.csf_custom_pkg.all;
--- library ieee, csf_lib, shared_lib;
--- use ieee.STD_LOGIC_1164.ALL;
--- use ieee.NUMERIC_STD.ALL;
--- use ieee.math_real.all;
--- use csf_lib.csf_pkg.all;
--- use shared_lib.custom_types_davide_pkg.all;
--- use csf_lib.custom_types_csf_pkg.all;
 
 entity csf_histogram is
-  Port (
-    clk             : in std_logic;
-    i_mdthit        : in heg2sfhit_rvt;
-    i_seed          : in heg2sfslc_rvt;
-    i_eof           : in std_logic;
-    o_histo_hit0    : out csf_hit_rvt;
-    o_histo_hit1    : out csf_hit_rvt
-  );
+    generic(
+        MAX_HITS_PER_BIN  : real    := 8.0
+    );
+    Port (
+        clk             : in std_logic;
+        i_mdthit        : in heg2sfhit_rvt;
+        i_seed          : in heg2sfslc_rvt;
+        i_eof           : in std_logic;
+        o_histo_hit0    : out csf_hit_rvt;
+        o_histo_hit1    : out csf_hit_rvt
+    );
 end csf_histogram;
 
 architecture Behavioral of csf_histogram is
@@ -57,8 +53,7 @@ architecture Behavioral of csf_histogram is
   constant HISTO_LEN       : integer := 6;
   constant HISTO_RANGE     : real := 256.0;
   constant HISTO_FULL_LEN  : integer := integer(log2( HISTO_FULL_MULTI * HISTO_RANGE));
-  constant MAX_HITS_PER_BIN  : real    := 8.0;
-  constant BIN_DEPTH         : integer := integer(log2(max_hits_per_bin));
+  constant BIN_DEPTH         : integer := integer(log2(MAX_HITS_PER_BIN));
   constant INV_SQRT_M_LEN  : integer := 18;
   constant SQU_M_LEN       : integer := UCM_MBAR_LEN;
 
