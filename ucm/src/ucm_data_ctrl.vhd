@@ -28,7 +28,7 @@ use shared_lib.config_pkg.all;
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
-entity ucm_ctrl is
+entity ucm_data_ctrl is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -44,9 +44,9 @@ entity ucm_ctrl is
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
     -- o_pam2heg           : out ucm2heg_pam_art(c_NUM_THREADS -1 downto 0)    
   );
-end entity ucm_ctrl;
+end entity ucm_data_ctrl;
 
-architecture beh of ucm_ctrl is
+architecture beh of ucm_data_ctrl is
 
   component ucm_ctrl_main is
     port (
