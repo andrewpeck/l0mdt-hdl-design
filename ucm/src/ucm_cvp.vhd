@@ -187,8 +187,8 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(0).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(0).RD,
+      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(0).WR,
+      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(0).RD,
       --
       i_z           => vec_pos_array(0),
       i_z_dv        => vec_z_pos_dv(0),
@@ -207,8 +207,8 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
+      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
+      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
       --
       i_z           => vec_pos_array(1),
       i_z_dv        => vec_z_pos_dv(1),
@@ -227,8 +227,8 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(2).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(2).RD,
+      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(2).WR,
+      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(2).RD,
       --
       i_z           => vec_pos_array(2),
       i_z_dv        => vec_z_pos_dv(2),

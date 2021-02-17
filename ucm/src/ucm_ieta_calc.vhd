@@ -56,31 +56,31 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  signal chamber_z_org_a : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
-        get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
+  -- signal chamber_z_org_a : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
+  --       get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
   -- signal i_z_i : integer;
   signal wr_addr : integer := 0;
   
 begin
 
-  WRITE_MEM: process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        CHAMBER_Z0_CALC_RD.RST_REQ <= '0';
-      else
-        if CHAMBER_Z0_CALC_WR.ADDR = x"00" then
-        else
-          CHAMBER_Z0_CALC_RD.VALUE <=std_logic_vector(resize(chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))),16));
-          if CHAMBER_Z0_CALC_WR.WR_EN = '1' then
-            CHAMBER_Z0_CALC_RD.RST_REQ <= '1';
-            chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))) <= resize(unsigned(CHAMBER_Z0_CALC_WR.VALUE),chamber_z_org_a(0)'length);
-          end if;
-        end if;
+  -- WRITE_MEM: process(clk)
+  -- begin
+  --   if rising_edge(clk) then
+  --     if rst = '1' then
+  --       CHAMBER_Z0_CALC_RD.RST_REQ <= '0';
+  --     else
+  --       if CHAMBER_Z0_CALC_WR.ADDR = x"00" then
+  --       else
+  --         CHAMBER_Z0_CALC_RD.VALUE <=std_logic_vector(resize(chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))),16));
+  --         if CHAMBER_Z0_CALC_WR.WR_EN = '1' then
+  --           CHAMBER_Z0_CALC_RD.RST_REQ <= '1';
+  --           chamber_z_org_a(to_integer(unsigned(CHAMBER_Z0_CALC_WR.ADDR))) <= resize(unsigned(CHAMBER_Z0_CALC_WR.VALUE),chamber_z_org_a(0)'length);
+  --         end if;
+  --       end if;
         
-      end if;
-    end if;
-  end process;
+  --     end if;
+  --   end if;
+  -- end process;
 
   READ_MEM: process(clk)
     variable found : std_logic := '0';
