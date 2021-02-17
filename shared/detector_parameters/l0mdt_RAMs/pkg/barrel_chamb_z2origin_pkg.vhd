@@ -27,6 +27,7 @@ package barrel_chamb_z2origin_pkg is
   -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
   type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned(16 - 1 downto 0);
   subtype b_chamber_z_origin_avt is std_logic_vector(16 * MAX_NUM_CHAMBER_POS -1 downto 0);
+  type b_chamber_z_origin_station_aut is array (0 to 3) of b_chamber_z_origin_aut;
   type b_chamber_z_origin_station_avt is array (0 to 3) of b_chamber_z_origin_avt;
 
   type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
