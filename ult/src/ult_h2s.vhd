@@ -62,7 +62,9 @@ entity hits_to_segments is
     o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
     
     o_sump : out std_logic
-    );
+  );
+  
+
 
 end entity hits_to_segments;
 
@@ -73,6 +75,8 @@ begin
   glob_en <= '1';
 
   H2S_GEN : if c_H2S_ENABLED = '1' generate
+
+    o_sump <= '0';
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
       HPS : entity hps_lib.hps

@@ -151,6 +151,9 @@ begin
   
       );
 
+    o_sump <= '0';
+
+
   end generate;
 
   TAR_NO_GEN : if c_TAR_ENABLED = '0' generate

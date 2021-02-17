@@ -149,6 +149,9 @@ architecture behavioral of ult is
 
   signal pt_sump : std_logic;
   signal h2s_sump : std_logic;
+  signal tar_sump : std_logic;
+  signal mtc_sump : std_logic;
+  signal daq_sump : std_logic;
 
 begin
 
@@ -181,7 +184,9 @@ begin
         o_inn_tar_hits  => inn_tar_hits,
         o_mid_tar_hits  => mid_tar_hits,
         o_out_tar_hits  => out_tar_hits,
-        o_ext_tar_hits  => ext_tar_hits
+        o_ext_tar_hits  => ext_tar_hits,
+
+        o_sump          => tar_sump
 
       );
 
@@ -288,7 +293,9 @@ begin
       i_pl2mtc          => pl2mtc_av,
       -- outputs
       o_mtc             => o_mtc,
-      o_nsp             => o_nsp
+      o_nsp             => o_nsp,
+
+      o_sump            => mtc_sump
     );
 
     daq_inst : entity work.daq
@@ -310,9 +317,12 @@ begin
         -- ???
         
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-        daq_streams_o => o_daq_streams);
+        daq_streams_o => o_daq_streams,
+        
+        o_sump => daq_sump
+      );
 
-    sump <= h2s_sump xor pt_sump;
+    sump <= tar_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump;
 
   end generate;
 
