@@ -116,16 +116,16 @@ architecture behavioral of ult is
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal inner_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal out_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ext_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- TDC Hits from tar 2 daq
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal mid_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal out_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ext_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
   signal inn_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -162,26 +162,26 @@ begin
         ctrl              => tar_ctrl,
         mon               => tar_mon,
         -- TDC Hits from Polmux
-        i_inner_tdc_hits  => i_inner_tdc_hits,
-        i_middle_tdc_hits => i_middle_tdc_hits,
-        i_outer_tdc_hits  => i_outer_tdc_hits,
-        i_extra_tdc_hits  => i_extra_tdc_hits,
+        i_inn_tdc_hits  => i_inner_tdc_hits,
+        i_mid_tdc_hits  => i_middle_tdc_hits,
+        i_out_tdc_hits  => i_outer_tdc_hits,
+        i_ext_tdc_hits  => i_extra_tdc_hits,
 
         -- candidates in from hal
-        i_inner_tar_hits  => i_inner_tar_hits,
-        i_middle_tar_hits => i_middle_tar_hits,
-        i_outer_tar_hits  => i_outer_tar_hits,
-        i_extra_tar_hits  => i_extra_tar_hits,
+        i_inn_tar_hits  => i_inner_tar_hits,
+        i_mid_tar_hits  => i_middle_tar_hits,
+        i_out_tar_hits  => i_outer_tar_hits,
+        i_ext_tar_hits  => i_extra_tar_hits,
         --
-        o_inner_tdc_hits  => inner_tdc_hits,
-        o_middle_tdc_hits => middle_tdc_hits,
-        o_outer_tdc_hits  => outer_tdc_hits,
-        o_extra_tdc_hits  => extra_tdc_hits,
+        o_inn_tdc_hits  => inn_tdc_hits,
+        o_mid_tdc_hits  => mid_tdc_hits,
+        o_out_tdc_hits  => out_tdc_hits,
+        o_ext_tdc_hits  => ext_tdc_hits,
         -- outputs to ucm
-        o_inner_tar_hits  => inner_tar_hits,
-        o_middle_tar_hits => middle_tar_hits,
-        o_outer_tar_hits  => outer_tar_hits,
-        o_extra_tar_hits  => extra_tar_hits
+        o_inn_tar_hits  => inn_tar_hits,
+        o_mid_tar_hits  => mid_tar_hits,
+        o_out_tar_hits  => out_tar_hits,
+        o_ext_tar_hits  => ext_tar_hits
 
       );
 
@@ -215,10 +215,10 @@ begin
       ctrl                      => h2s_ctrl,
       mon                       => h2s_mon,
       -- inputs from hal
-      i_inn_tar_hits            => inner_tar_hits,
-      i_mid_tar_hits            => middle_tar_hits,
-      i_out_tar_hits            => outer_tar_hits,
-      i_ext_tar_hits            => extra_tar_hits,
+      i_inn_tar_hits            => inn_tar_hits,
+      i_mid_tar_hits            => mid_tar_hits,
+      i_out_tar_hits            => out_tar_hits,
+      i_ext_tar_hits            => ext_tar_hits,
       -- Sector Logic Candidates from uCM
       i_inn_slc                 => inner_slc_to_hts,
       i_mid_slc                 => middle_slc_to_hts,
@@ -301,10 +301,10 @@ begin
         mon               => daq_mon,
         
         -- TDC Hits from Polmux
-        i_inner_tdc_hits  => inner_tdc_hits,
-        i_middle_tdc_hits => middle_tdc_hits,
-        i_outer_tdc_hits  => outer_tdc_hits,
-        i_extra_tdc_hits  => extra_tdc_hits,
+        i_inner_tdc_hits  => inn_tdc_hits,
+        i_middle_tdc_hits => mid_tdc_hits,
+        i_outer_tdc_hits  => out_tdc_hits,
+        i_extra_tdc_hits  => ext_tdc_hits,
         
         -- Tracks from MTC
         -- ???
