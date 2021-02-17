@@ -159,7 +159,7 @@ package detector_param_pkg is
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
   -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
-  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned; --b_chamber_z_origin_ut;
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned(16 - 1 downto 0);
   type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
@@ -187,7 +187,7 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := 16) return b_chamber_z_origin_aut;
   function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
   -- Chamber type from

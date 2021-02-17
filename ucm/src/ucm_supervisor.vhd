@@ -39,7 +39,9 @@ entity ucm_supervisor is
     -- AXI to SoC
     ctrl                : in  UCM_CTRL_t;
     mon                 : out UCM_MON_t;
-    -- 
+    --
+    chamber_z_org_avt   : out  
+    --
     local_en            : out std_logic;
     local_rst           : out std_logic
 
@@ -50,8 +52,15 @@ end entity ucm_supervisor;
 architecture beh of ucm_supervisor is
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
+  --
+  signal cde_ch_z0_org : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
+  get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
+  signal CDE_CH_Z0_WR : UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
+  signal CDE_CH_Z0_RD : UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
 begin
-
+  --------------------------------------------
+  --    SIGNALING
+  --------------------------------------------
   local_en <= glob_en and int_en;
   local_rst <= rst and int_rst;
 
@@ -75,7 +84,34 @@ begin
       end if;
     end if;
   end process signaling;
-  
+  --------------------------------------------
+  --    FLAGS
+  --------------------------------------------
+
+  --------------------------------------------
+  -- CDE CHAMBER Z0
+  --------------------------------------------
+  CDE_CH_Z0_WR <= ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0;
+  mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= CDE_CH_Z0_RD;
+
+  CDE_CH_ZO_AXI: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        CDE_CH_Z0_RD.RST_REQ <= '0';
+      else
+        if CDE_CH_Z0_WR.ADDR = x"00" then
+        else
+          CDE_CH_Z0_RD.VALUE <=std_logic_vector(resize(cde_ch_z0_org(to_integer(unsigned(CDE_CH_Z0_WR.ADDR))),16));
+          if CDE_CH_Z0_WR.WR_EN = '1' then
+            CDE_CH_Z0_RD.RST_REQ <= '1';
+            cde_ch_z0_org(to_integer(unsigned(CDE_CH_Z0_WR.ADDR))) <= resize(unsigned(CDE_CH_Z0_WR.VALUE),cde_ch_z0_org(0)'length);
+          end if;
+        end if;
+        
+      end if;
+    end if;
+  end process;
   
   
 end architecture beh;
