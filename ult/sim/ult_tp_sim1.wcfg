@@ -56,15 +56,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0fs"></ZoomStartTime>
-      <ZoomEndTime time="37108fs"></ZoomEndTime>
-      <Cursor1Time time="7339fs"></Cursor1Time>
+      <ZoomStartTime time="1833998fs"></ZoomStartTime>
+      <ZoomEndTime time="1903099fs"></ZoomEndTime>
+      <Cursor1Time time="1849408fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="230"></NameColumnWidth>
+      <NameColumnWidth column_width="206"></NameColumnWidth>
       <ValueColumnWidth column_width="66"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="14" />
+   <wave_markers>
+      <marker label="" time="1891582" />
+   </wave_markers>
    <wvobject type="logic" fp_name="/ult_tp/clock_and_control.clk">
       <obj_property name="ElementShortName">.clk</obj_property>
       <obj_property name="ObjectShortName">.clk</obj_property>
@@ -96,10 +99,319 @@
    <wvobject type="group" fp_name="group218">
       <obj_property name="label">TB_IV</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject type="logic" fp_name="/ult_tp/SLC/clk">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/ult_tp/SLC/rst">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject type="other" fp_name="/ult_tp/SLC/enable">
+         <obj_property name="ElementShortName">enable</obj_property>
+         <obj_property name="ObjectShortName">enable</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/tb_curr_tdc_time">
+         <obj_property name="ElementShortName">tb_curr_tdc_time[63:0]</obj_property>
+         <obj_property name="ObjectShortName">tb_curr_tdc_time[63:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_main_primary_slc">
+         <obj_property name="ElementShortName">i_main_primary_slc[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">i_main_primary_slc[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_main_secondary_slc">
+         <obj_property name="ElementShortName">i_main_secondary_slc[2:0][192:0]</obj_property>
+         <obj_property name="ObjectShortName">i_main_secondary_slc[2:0][192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_plus_neighbor_slc">
+         <obj_property name="ElementShortName">i_plus_neighbor_slc[192:0]</obj_property>
+         <obj_property name="ObjectShortName">i_plus_neighbor_slc[192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_minus_neighbor_slc">
+         <obj_property name="ElementShortName">i_minus_neighbor_slc[192:0]</obj_property>
+         <obj_property name="ObjectShortName">i_minus_neighbor_slc[192:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_main_primary_slc_ar">
+         <obj_property name="ElementShortName">i_main_primary_slc_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">i_main_primary_slc_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_main_secondary_slc_ar">
+         <obj_property name="ElementShortName">i_main_secondary_slc_ar[2:0]</obj_property>
+         <obj_property name="ObjectShortName">i_main_secondary_slc_ar[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_plus_neighbor_slc_ar">
+         <obj_property name="ElementShortName">i_plus_neighbor_slc_ar</obj_property>
+         <obj_property name="ObjectShortName">i_plus_neighbor_slc_ar</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/i_minus_neighbor_slc_ar">
+         <obj_property name="ElementShortName">i_minus_neighbor_slc_ar</obj_property>
+         <obj_property name="ObjectShortName">i_minus_neighbor_slc_ar</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_element">
+         <obj_property name="ElementShortName">slc_element[31:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_element[31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_event_r">
+         <obj_property name="ElementShortName">slc_event_r</obj_property>
+         <obj_property name="ObjectShortName">slc_event_r</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_new_event">
+         <obj_property name="ElementShortName">slc_new_event</obj_property>
+         <obj_property name="ObjectShortName">slc_new_event</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo">
+         <obj_property name="ElementShortName">slc_main_prim_fifo[2:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_main_prim_fifo[2:0][31:0]</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2]">
+            <obj_property name="ElementShortName">[2][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[2][31:0]</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][31]">
+               <obj_property name="ElementShortName">[31]</obj_property>
+               <obj_property name="ObjectShortName">[31]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][30]">
+               <obj_property name="ElementShortName">[30]</obj_property>
+               <obj_property name="ObjectShortName">[30]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][29]">
+               <obj_property name="ElementShortName">[29]</obj_property>
+               <obj_property name="ObjectShortName">[29]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][28]">
+               <obj_property name="ElementShortName">[28]</obj_property>
+               <obj_property name="ObjectShortName">[28]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][27]">
+               <obj_property name="ElementShortName">[27]</obj_property>
+               <obj_property name="ObjectShortName">[27]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][26]">
+               <obj_property name="ElementShortName">[26]</obj_property>
+               <obj_property name="ObjectShortName">[26]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][25]">
+               <obj_property name="ElementShortName">[25]</obj_property>
+               <obj_property name="ObjectShortName">[25]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][24]">
+               <obj_property name="ElementShortName">[24]</obj_property>
+               <obj_property name="ObjectShortName">[24]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][23]">
+               <obj_property name="ElementShortName">[23]</obj_property>
+               <obj_property name="ObjectShortName">[23]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][22]">
+               <obj_property name="ElementShortName">[22]</obj_property>
+               <obj_property name="ObjectShortName">[22]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][21]">
+               <obj_property name="ElementShortName">[21]</obj_property>
+               <obj_property name="ObjectShortName">[21]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][20]">
+               <obj_property name="ElementShortName">[20]</obj_property>
+               <obj_property name="ObjectShortName">[20]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][19]">
+               <obj_property name="ElementShortName">[19]</obj_property>
+               <obj_property name="ObjectShortName">[19]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][18]">
+               <obj_property name="ElementShortName">[18]</obj_property>
+               <obj_property name="ObjectShortName">[18]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][17]">
+               <obj_property name="ElementShortName">[17]</obj_property>
+               <obj_property name="ObjectShortName">[17]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][16]">
+               <obj_property name="ElementShortName">[16]</obj_property>
+               <obj_property name="ObjectShortName">[16]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][15]">
+               <obj_property name="ElementShortName">[15]</obj_property>
+               <obj_property name="ObjectShortName">[15]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][14]">
+               <obj_property name="ElementShortName">[14]</obj_property>
+               <obj_property name="ObjectShortName">[14]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][13]">
+               <obj_property name="ElementShortName">[13]</obj_property>
+               <obj_property name="ObjectShortName">[13]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][12]">
+               <obj_property name="ElementShortName">[12]</obj_property>
+               <obj_property name="ObjectShortName">[12]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][11]">
+               <obj_property name="ElementShortName">[11]</obj_property>
+               <obj_property name="ObjectShortName">[11]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][10]">
+               <obj_property name="ElementShortName">[10]</obj_property>
+               <obj_property name="ObjectShortName">[10]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][9]">
+               <obj_property name="ElementShortName">[9]</obj_property>
+               <obj_property name="ObjectShortName">[9]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][8]">
+               <obj_property name="ElementShortName">[8]</obj_property>
+               <obj_property name="ObjectShortName">[8]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][7]">
+               <obj_property name="ElementShortName">[7]</obj_property>
+               <obj_property name="ObjectShortName">[7]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][6]">
+               <obj_property name="ElementShortName">[6]</obj_property>
+               <obj_property name="ObjectShortName">[6]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][5]">
+               <obj_property name="ElementShortName">[5]</obj_property>
+               <obj_property name="ObjectShortName">[5]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][4]">
+               <obj_property name="ElementShortName">[4]</obj_property>
+               <obj_property name="ObjectShortName">[4]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][3]">
+               <obj_property name="ElementShortName">[3]</obj_property>
+               <obj_property name="ObjectShortName">[3]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][2]">
+               <obj_property name="ElementShortName">[2]</obj_property>
+               <obj_property name="ObjectShortName">[2]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][1]">
+               <obj_property name="ElementShortName">[1]</obj_property>
+               <obj_property name="ObjectShortName">[1]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0]">
+               <obj_property name="ElementShortName">[0]</obj_property>
+               <obj_property name="ObjectShortName">[0]</obj_property>
+               <obj_property name="isExpanded"></obj_property>
+               <wvobject type="logic" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].data_valid">
+                  <obj_property name="ElementShortName">.data_valid</obj_property>
+                  <obj_property name="ObjectShortName">.data_valid</obj_property>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common">
+                  <obj_property name="ElementShortName">.common</obj_property>
+                  <obj_property name="ObjectShortName">.common</obj_property>
+                  <obj_property name="isExpanded"></obj_property>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.header">
+                     <obj_property name="ElementShortName">.header</obj_property>
+                     <obj_property name="ObjectShortName">.header</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.slcid">
+                     <obj_property name="ElementShortName">.slcid[2:0]</obj_property>
+                     <obj_property name="ObjectShortName">.slcid[2:0]</obj_property>
+                  </wvobject>
+                  <wvobject type="logic" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.tcsent">
+                     <obj_property name="ElementShortName">.tcsent</obj_property>
+                     <obj_property name="ObjectShortName">.tcsent</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.poseta">
+                     <obj_property name="ElementShortName">.poseta[13:0]</obj_property>
+                     <obj_property name="ObjectShortName">.poseta[13:0]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.posphi">
+                     <obj_property name="ElementShortName">.posphi[8:0]</obj_property>
+                     <obj_property name="ObjectShortName">.posphi[8:0]</obj_property>
+                     <obj_property name="CustomSignalColor">#FFA500</obj_property>
+                     <obj_property name="UseCustomSignalColor">true</obj_property>
+                     <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.sl_pt">
+                     <obj_property name="ElementShortName">.sl_pt[7:0]</obj_property>
+                     <obj_property name="ObjectShortName">.sl_pt[7:0]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.sl_ptthresh">
+                     <obj_property name="ElementShortName">.sl_ptthresh[3:0]</obj_property>
+                     <obj_property name="ObjectShortName">.sl_ptthresh[3:0]</obj_property>
+                  </wvobject>
+                  <wvobject type="logic" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.sl_charge">
+                     <obj_property name="ElementShortName">.sl_charge</obj_property>
+                     <obj_property name="ObjectShortName">.sl_charge</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.cointype">
+                     <obj_property name="ElementShortName">.cointype[2:0]</obj_property>
+                     <obj_property name="ObjectShortName">.cointype[2:0]</obj_property>
+                  </wvobject>
+                  <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].common.trailer">
+                     <obj_property name="ElementShortName">.trailer</obj_property>
+                     <obj_property name="ObjectShortName">.trailer</obj_property>
+                  </wvobject>
+               </wvobject>
+               <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2][0].specific">
+                  <obj_property name="ElementShortName">.specific[84:0]</obj_property>
+                  <obj_property name="ObjectShortName">.specific[84:0]</obj_property>
+               </wvobject>
+            </wvobject>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[1]">
+            <obj_property name="ElementShortName">[1][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[1][31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[0]">
+            <obj_property name="ElementShortName">[0][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[0][31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[2]">
+            <obj_property name="ElementShortName">[2][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[2][31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[1]">
+            <obj_property name="ElementShortName">[1][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[1][31:0]</obj_property>
+         </wvobject>
+         <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_fifo[0]">
+            <obj_property name="ElementShortName">[0][31:0]</obj_property>
+            <obj_property name="ObjectShortName">[0][31:0]</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_seco_fifo">
+         <obj_property name="ElementShortName">slc_main_seco_fifo[2:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_main_seco_fifo[2:0][31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_neig_plus_fifo">
+         <obj_property name="ElementShortName">slc_neig_plus_fifo[0:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_neig_plus_fifo[0:0][31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_neig_minu_fifo">
+         <obj_property name="ElementShortName">slc_neig_minu_fifo[0:0][31:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_neig_minu_fifo[0:0][31:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_prim_counts">
+         <obj_property name="ElementShortName">slc_main_prim_counts[2:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_main_prim_counts[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_main_seco_counts">
+         <obj_property name="ElementShortName">slc_main_seco_counts[2:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_main_seco_counts[2:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_neig_plus_counts">
+         <obj_property name="ElementShortName">slc_neig_plus_counts[0:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_neig_plus_counts[0:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/slc_neig_minu_counts">
+         <obj_property name="ElementShortName">slc_neig_minu_counts[0:0]</obj_property>
+         <obj_property name="ObjectShortName">slc_neig_minu_counts[0:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/ult_tp/SLC/IN_SLC_FILE">
+         <obj_property name="ElementShortName">IN_SLC_FILE[1:27]</obj_property>
+         <obj_property name="ObjectShortName">IN_SLC_FILE[1:27]</obj_property>
+      </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group2003">
       <obj_property name="label">UCM</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="group" fp_name="group114">
          <obj_property name="label">UCM_MAIN</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -196,12 +508,12 @@
             <obj_property name="ObjectShortName">pam_CSW_control[2:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/cpam_in_av">
-            <obj_property name="ElementShortName">cpam_in_av[2:0][134:0]</obj_property>
-            <obj_property name="ObjectShortName">cpam_in_av[2:0][134:0]</obj_property>
+            <obj_property name="ElementShortName">cpam_in_av[2:0][143:0]</obj_property>
+            <obj_property name="ObjectShortName">cpam_in_av[2:0][143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/cpam_out_av">
-            <obj_property name="ElementShortName">cpam_out_av[2:0][134:0]</obj_property>
-            <obj_property name="ObjectShortName">cpam_out_av[2:0][134:0]</obj_property>
+            <obj_property name="ElementShortName">cpam_out_av[2:0][143:0]</obj_property>
+            <obj_property name="ObjectShortName">cpam_out_av[2:0][143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/uCM2pl_av">
             <obj_property name="ElementShortName">uCM2pl_av[4:0][147:0]</obj_property>
@@ -382,8 +694,8 @@
             <obj_property name="ObjectShortName">i_slc_data_v[192:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/o_cde_data_v">
-            <obj_property name="ElementShortName">o_cde_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">o_cde_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">o_cde_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">o_cde_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(2)\/SLC_CDE/i_slc_data_r">
             <obj_property name="ElementShortName">i_slc_data_r</obj_property>
@@ -410,8 +722,8 @@
             <obj_property name="ObjectShortName">i_slc_data_v[192:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(1)\/SLC_CDE/o_cde_data_v">
-            <obj_property name="ElementShortName">o_cde_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">o_cde_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">o_cde_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">o_cde_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(1)\/SLC_CDE/i_slc_data_r">
             <obj_property name="ElementShortName">i_slc_data_r</obj_property>
@@ -438,8 +750,8 @@
             <obj_property name="ObjectShortName">i_slc_data_v[192:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/o_cde_data_v">
-            <obj_property name="ElementShortName">o_cde_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">o_cde_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">o_cde_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">o_cde_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_CDE_A(0)\/SLC_CDE/i_slc_data_r">
             <obj_property name="ElementShortName">i_slc_data_r</obj_property>
@@ -465,6 +777,7 @@
       <wvobject type="group" fp_name="group148">
          <obj_property name="label">ucm_cvp_2</obj_property>
          <obj_property name="DisplayName">label</obj_property>
+         <obj_property name="isExpanded"></obj_property>
          <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/clk">
             <obj_property name="ElementShortName">clk</obj_property>
             <obj_property name="ObjectShortName">clk</obj_property>
@@ -486,8 +799,8 @@
             <obj_property name="ObjectShortName">i_in_en</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/i_data_v">
-            <obj_property name="ElementShortName">i_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">i_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">i_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">i_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/o_ucm2hps_av">
             <obj_property name="ElementShortName">o_ucm2hps_av[3:0][57:0]</obj_property>
@@ -499,20 +812,21 @@
             <obj_property name="ObjectShortName">int_data_r</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/int_data_v">
-            <obj_property name="ElementShortName">int_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">int_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">int_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">int_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/data_v">
-            <obj_property name="ElementShortName">data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/data_v_2">
-            <obj_property name="ElementShortName">data_v_2[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v_2[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v_2[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v_2[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/data_r">
             <obj_property name="ElementShortName">data_r</obj_property>
             <obj_property name="ObjectShortName">data_r</obj_property>
+            <obj_property name="isExpanded"></obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/ucm2hps_ar">
             <obj_property name="ElementShortName">ucm2hps_ar[2:0]</obj_property>
@@ -695,6 +1009,54 @@
                <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
             </wvobject>
          </wvobject>
+         <wvobject type="group" fp_name="group1351">
+            <obj_property name="label">phimod</obj_property>
+            <obj_property name="DisplayName">label</obj_property>
+            <obj_property name="isExpanded"></obj_property>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/clk">
+               <obj_property name="ElementShortName">clk</obj_property>
+               <obj_property name="ObjectShortName">clk</obj_property>
+            </wvobject>
+            <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/rst">
+               <obj_property name="ElementShortName">rst</obj_property>
+               <obj_property name="ObjectShortName">rst</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/SECTOR_PHI">
+               <obj_property name="ElementShortName">SECTOR_PHI[31:0]</obj_property>
+               <obj_property name="ObjectShortName">SECTOR_PHI[31:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/i_posphi">
+               <obj_property name="ElementShortName">i_posphi[8:0]</obj_property>
+               <obj_property name="ObjectShortName">i_posphi[8:0]</obj_property>
+               <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+               <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+               <obj_property name="UseCustomSignalColor">true</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/o_phimod">
+               <obj_property name="ElementShortName">o_phimod[7:0]</obj_property>
+               <obj_property name="ObjectShortName">o_phimod[7:0]</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/phimod_buff">
+               <obj_property name="ElementShortName">phimod_buff[2:0][7:0]</obj_property>
+               <obj_property name="ObjectShortName">phimod_buff[2:0][7:0]</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/sphi_buff">
+               <obj_property name="ElementShortName">sphi_buff</obj_property>
+               <obj_property name="ObjectShortName">sphi_buff</obj_property>
+            </wvobject>
+            <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/sphi">
+               <obj_property name="ElementShortName">sphi[8:0]</obj_property>
+               <obj_property name="ObjectShortName">sphi[8:0]</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/g_PIPELINE">
+               <obj_property name="ElementShortName">g_PIPELINE</obj_property>
+               <obj_property name="ObjectShortName">g_PIPELINE</obj_property>
+            </wvobject>
+            <wvobject type="other" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(2)\/SLC_VP/PHIMOD/reschanger">
+               <obj_property name="ElementShortName">reschanger</obj_property>
+               <obj_property name="ObjectShortName">reschanger</obj_property>
+            </wvobject>
+         </wvobject>
       </wvobject>
       <wvobject type="group" fp_name="group1864">
          <obj_property name="label">ucm_cvp_1</obj_property>
@@ -704,20 +1066,20 @@
             <obj_property name="ObjectShortName">i_in_en</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(1)\/SLC_VP/i_data_v">
-            <obj_property name="ElementShortName">i_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">i_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">i_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">i_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(1)\/SLC_VP/o_ucm2hps_av">
             <obj_property name="ElementShortName">o_ucm2hps_av[3:0][57:0]</obj_property>
             <obj_property name="ObjectShortName">o_ucm2hps_av[3:0][57:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(1)\/SLC_VP/data_v">
-            <obj_property name="ElementShortName">data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(1)\/SLC_VP/data_v_2">
-            <obj_property name="ElementShortName">data_v_2[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v_2[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v_2[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v_2[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(1)\/SLC_VP/data_r">
             <obj_property name="ElementShortName">data_r</obj_property>
@@ -760,20 +1122,20 @@
             <obj_property name="ObjectShortName">i_in_en</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(0)\/SLC_VP/i_data_v">
-            <obj_property name="ElementShortName">i_data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">i_data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">i_data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">i_data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(0)\/SLC_VP/o_ucm2hps_av">
             <obj_property name="ElementShortName">o_ucm2hps_av[3:0][57:0]</obj_property>
             <obj_property name="ObjectShortName">o_ucm2hps_av[3:0][57:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(0)\/SLC_VP/data_v">
-            <obj_property name="ElementShortName">data_v[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(0)\/SLC_VP/data_v_2">
-            <obj_property name="ElementShortName">data_v_2[134:0]</obj_property>
-            <obj_property name="ObjectShortName">data_v_2[134:0]</obj_property>
+            <obj_property name="ElementShortName">data_v_2[143:0]</obj_property>
+            <obj_property name="ObjectShortName">data_v_2[143:0]</obj_property>
          </wvobject>
          <wvobject type="array" fp_name="/ult_tp/ULT/logic_gen/UCM/ucm/UCM/\SLC_VP_A(0)\/SLC_VP/data_r">
             <obj_property name="ElementShortName">data_r</obj_property>
@@ -812,7 +1174,6 @@
    <wvobject type="group" fp_name="group4206">
       <obj_property name="label">TAR</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="group" fp_name="group4223">
          <obj_property name="label">PL_2</obj_property>
          <obj_property name="DisplayName">label</obj_property>
@@ -1956,7 +2317,6 @@
    <wvobject type="group" fp_name="group7483">
       <obj_property name="label">HPS_MID</obj_property>
       <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="isExpanded"></obj_property>
       <wvobject type="logic" fp_name="/ult_tp/ULT/logic_gen/H2S/h2s_gen/hps_mid/HPS/clk">
          <obj_property name="ElementShortName">clk</obj_property>
          <obj_property name="ObjectShortName">clk</obj_property>

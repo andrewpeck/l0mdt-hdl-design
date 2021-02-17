@@ -35,8 +35,7 @@ use csf_lib.csf_custom_pkg.all;
 
 entity seg_coord_transform is
   generic (
-    -- Project flavour (0: Barrel, 1: Endcap)
-    FLAVOUR     : integer := 0
+    IS_ENDCAP : integer := 0
   );
   port (
     clk         : in  std_logic;

@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: Main pipe line
 --  Description: pipelines between UCM - TF - MTC
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 
@@ -44,16 +44,16 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
-  
+
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal pl2pt_av       : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal pl2pt_av       : mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
   signal pl2mtc_av      : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal main_pl_out_ar : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal pl2pt_ar : pl2pt_bus_at(c_NUM_THREADS -1 downto 0);
+  signal pl2pt_ar : mpl2csw_ptcalc_bus_at(c_NUM_THREADS -1 downto 0);
   signal pl2mtc_ar : pl2mtc_bus_at(c_MAX_NUM_SL -1 downto 0);
-  
+
 begin
 
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -83,7 +83,7 @@ begin
     -- SLc pipeline
     i_ucm_av       => pl2pt_av,
     o_tf_av       => o_pl2tf_av
-    -- o_mtc_av      => pl2mtc_av 
+    -- o_mtc_av      => pl2mtc_av
   );
 
   MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -104,30 +104,19 @@ begin
 
   PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate
     -- muid
-    pl2pt_ar(c_i).muid.slcid
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.slcid;
-    pl2pt_ar(c_i).muid.slid
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.trailer.slid;
-    pl2pt_ar(c_i).muid.bcid
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.header.bcid;
+    pl2pt_ar(c_i).muid.slcid        <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.slcid;
+    pl2pt_ar(c_i).muid.slid         <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.trailer.slid;
+    pl2pt_ar(c_i).muid.bcid         <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.header.bcid;
     -- proc control
-    pl2pt_ar(c_i).process_ch 
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).process_ch;
-    pl2pt_ar(c_i).busy 
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).busy;
-    pl2pt_ar(c_i).data_valid 
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).data_valid;
+    pl2pt_ar(c_i).process_ch        <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).process_ch;
+    pl2pt_ar(c_i).busy              <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).busy;
+    pl2pt_ar(c_i).data_valid        <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).data_valid;
     -- data
-    pl2pt_ar(c_i).phimod
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).phimod;
-    pl2pt_ar(c_i).sl_charge
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.sl_charge;
-    pl2pt_ar(c_i).nswseg_poseta
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_poseta;
-    pl2pt_ar(c_i).nswseg_posphi
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_posphi;
-    pl2pt_ar(c_i).nswseg_angdtheta
-      <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_angdtheta;
+    pl2pt_ar(c_i).phimod            <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).phimod;
+    pl2pt_ar(c_i).sl_charge         <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.sl_charge;
+    pl2pt_ar(c_i).nswseg_poseta     <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_poseta;
+    pl2pt_ar(c_i).nswseg_posphi     <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_posphi;
+    pl2pt_ar(c_i).nswseg_angdtheta  <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_angdtheta;
   end generate;
 
   PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -136,22 +125,9 @@ begin
     pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
     pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
   end generate;
-  
+
   pl2pt_av <= vectorify(pl2pt_ar);
   pl2mtc_av <= vectorify(pl2mtc_ar);
   main_pl_out_ar <= structify(main_pl_out_av);
-  
+
 end architecture beh;
-
-
-
-
-
-
-
-
-
-
-
-
-

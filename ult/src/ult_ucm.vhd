@@ -65,7 +65,10 @@ begin
       clk                     => clock_and_control.clk,
       rst                     => clock_and_control.rst,
       glob_en                 => glob_en,
+      ttc_commands            => ttc_commands, 
       -- configuration, control & Monitoring
+      ctrl                    => ctrl,
+      mon                     => mon,
       -- SLc in
       i_slc_data_mainA_av     => i_slc_data_mainA_av,
       i_slc_data_mainB_av     => i_slc_data_mainB_av,

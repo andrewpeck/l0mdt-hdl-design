@@ -1,0 +1,43 @@
+{
+    "testbench_config": {
+        "test_name": "pl_mtc_ps",
+        "input_args": {
+            "n_events": 3,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "pl_mtc_ps",
+            "test_location": "src/l0mdt_tb/testbench/pl_mtc_ps/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "set_COMPONENTS_LIB_DIR_or_update_location_of_xilinx_compiled_library"
+        },
+        "testvectors": {
+            "testvector_dir": "set_L0MDT_TESTVECTOR_DIR_or_update_json_file_with_testvector_directory",
+            "testvector_file": "B.pkl",
+            "inputs": [
+                {
+                    "tv_format": "UCM2PL",
+                    "ports": 3
+                },
+                {
+                    "tv_format": "PTCALC2MTC_LSF",
+                    "ports"    : 3,
+		    "pl_latency"  : 695
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "PL2PTCALC",
+                    "ports": 3
+                },
+                {
+                    "tv_format": "MTC2SL_LSF",
+                    "ports": 3
+                }
+            ]
+        }
+    }
+}

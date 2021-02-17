@@ -185,21 +185,32 @@ def mtc_test(dut):
         mtc_wrapper.add_output_monitor(monitor, 0, io, active=active)
     mtc_wrapper.sort_ports()
 
+    #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
 
     ###Get Input Test Vectors for all input Ports ##
     slcpipeline_tv_list_i = [["" for x in range(num_events_to_process)] for y in range(3)]
     slcpipeline_tv_list   = [["" for x in range(num_events_to_process)] for y in range(3)]
 
-    slcpipeline_tv_list_i = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[0],n_ports = MtcPorts.get_input_interface_ports(0), n_to_load=num_events_to_process
-)
-    for i in range(3): # Update PL2MTC dataformat with process_ch values
-        for j in range(num_events_to_process):
-            slcpipeline_tv_list[i][j] = (slcpipeline_tv_list_i[i][j] | (i << 107))
+    slcpipeline_tv_list_i = events.parse_tvlist(
+        tv_bcid_list,
+        tvformat=inputs_tvformats[0],
+        n_ports = MtcPorts.get_input_interface_ports(0),
+        n_to_load=num_events_to_process
+    )
+    #for i in range(3): # Update PL2MTC dataformat with process_ch values
+    #    for j in range(num_events_to_process):
+    #        slcpipeline_tv_list[i][j] = (slcpipeline_tv_list_i[i][j] | (i << 107))
 
 
-    ptcalc_tv_list = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=inputs_tvformats[1],n_ports = MtcPorts.get_input_interface_ports(1), n_to_load=num_events_to_process
+    ptcalc_tv_list = events.parse_tvlist(
+        tv_bcid_list,tvformat=inputs_tvformats[1],n_ports = MtcPorts.get_input_interface_ports(1), n_to_load=num_events_to_process
     )
 #    print("len=" ,len(slcpipeline_tv_list),"slcpipeline_tv_list = " ,slcpipeline_tv_list[0])
 #    print("ptcalc_tv_list = ", ptcalc_tv_list[0])
@@ -209,11 +220,11 @@ def mtc_test(dut):
     ## send input events
     ##
     my_input_tvs = [[["0" for x in range(num_events_to_process)] for y in range(3)] for z in range(len(slcpipeline_tv_list))]
-    my_input_tvs[0] = slcpipeline_tv_list
+    my_input_tvs[0] = slcpipeline_tv_list_i
     my_input_tvs[1] = ptcalc_tv_list
 
 
-#    print("INPUT VECTORS = ", my_input_tvs[0], my_input_tvs[1])
+    #print("INPUT VECTORS = ", my_input_tvs[0], my_input_tvs[1])
     dut._log.info("Sending input events")
 
     send_finished_signal = mtc_wrapper.drive_input_interface(
@@ -245,6 +256,16 @@ def mtc_test(dut):
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
+
+    #Read TV file
+    tv_events_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=3,
+        sector=3
+        )
+
     ##
     ## perform testvector comparison test
     ##
@@ -252,8 +273,8 @@ def mtc_test(dut):
     all_test_results = []
     output_tv_list = [["" for x in range(num_events_to_process)] for y in range(mtc_wrapper.n_output_ports(0))]
 
-    output_tv_list = events.parse_file_for_testvectors(
-        filename=master_tv_file,tvformat=outputs_tvformats[0],n_ports = mtc_wrapper.n_output_ports(0), n_to_load=num_events_to_process
+    output_tv_list = events.parse_tvlist(
+        tv_bcid_list,tvformat=outputs_tvformats[0],n_ports = mtc_wrapper.n_output_ports(0), n_to_load=num_events_to_process
     )
 
     exp_output_tv = [[0 for x in range(num_events_to_process)] for y in range(mtc_wrapper.n_output_ports(0))]
@@ -270,7 +291,9 @@ def mtc_test(dut):
     #    print("EXP OUTPUT %d 0x%x  0x%x"%(len(exp_output_tv[0]), exp_output_tv[0][0], exp_output_tv[0][1]))
 
     recvd_events_all_ports = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
-    event_ordering  = [["" for x in range(MtcPorts.get_output_interface_ports(0))]for y in range(num_events_to_process)]
+    recvd_lineup           = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
+    recvd_time             = [["" for x in range(num_events_to_process)]for y in range(MtcPorts.get_output_interface_ports(0))]
+
     for n_oport,oport in enumerate(mtc_wrapper.output_ports(0)):
 
         ##
@@ -278,11 +301,11 @@ def mtc_test(dut):
         ##
         monitor, io, is_active = oport
         words = monitor.observed_words
-        recvd_events = words #events.load_events(words, "little")
-        for index, val in enumerate(recvd_events):
-            recvd_events_all_ports[io][index] = val
+        time  = monitor.observed_time
+        recvd_events_all_ports[n_oport] = words
+        recvd_time[n_oport]             = time
         cocotb.log.info(
-          f"Output for MTC Interface (output port num {io}) received {len(recvd_events)} events"
+          f"Output for MTC Interface (output port num {io}) received {len(recvd_events_all_ports[n_oport])} events"
         )
         ##
         ## extract the expected data for this output
@@ -299,19 +322,16 @@ def mtc_test(dut):
 
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
+    #Multiple ports in this interface, need to lineup events across ports based on time
+    recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+
     ##
     ## perform test by comparison with expected testvectors
     ##
+    events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup);
+    all_tests_passed = (all_tests_passed and events_are_equal)
 
-    #Ordering based on events
-    for i in range(num_events_to_process):
-        for j in range (MtcPorts.get_output_interface_ports(0)):
-            event_ordering[i][j] = recvd_events_all_ports[j][i]
 
-    for e_idx in range(num_events_to_process):
-#        events_are_equal = events.compare_BitFields(master_tv_file, 'MTC2SL',len(MtcPorts.Mtc_Outputs) , e_idx , event_ordering[e_idx]);
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformat,MtcPorts.get_output_interface_ports(0) , e_idx , event_ordering[e_idx]);
-        all_tests_passed = (all_tests_passed and events_are_equal)
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed

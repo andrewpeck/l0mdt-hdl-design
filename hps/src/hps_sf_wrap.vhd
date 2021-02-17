@@ -70,13 +70,25 @@ begin
 
   i_control_r <= structify(i_control_v);
 
+  DIS_SF : if c_SF_ENABLED = '0' generate
+    --
+    o_sf_data_v <= (others => '0');
+    --CSF
+    csf_mon.STATUS <= '0';
+    csf_mon.READY <= '0';
+    --LSF
+    lsf_mon.STATUS <= '0';
+    lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+    lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+  end generate;
+
   EN_SF : if c_SF_ENABLED = '1' generate
 
     -- CSF
     EN_CSF : if c_SF_TYPE = '0' generate
       CSF : entity csf_lib.csf
         generic map(
-          FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+          IS_ENDCAP => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
           )
         port map(
           clk       => clk,
@@ -85,24 +97,17 @@ begin
           i_eof     => i_control_r.eof,
           i_rst     => rst,
           o_seg     => o_sf_data_v
-          );
+        );
 
-          lsf_mon.STATUS <= '0';
-          lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
-          lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
-
+      lsf_mon.STATUS <= '0';
+      lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+      lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
 
     end generate;
-
 
     ------------------------------------------------------------------
     -- LSF
     ------------------------------------------------------------------
-
-
-
-
-
    
     EN_LSF : if c_SF_TYPE = '1' generate
       LSF : entity lsf_lib.top_lsf
@@ -122,17 +127,15 @@ begin
           sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
           sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
           sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
-          );
+        );
+
+        csf_mon.STATUS <= '0';
+        csf_mon.READY <= '0';
     end generate;
-
-
-
-
-
   end generate;
 
-  DIS_SF : if c_SF_ENABLED = '0' generate
+  -- DIS_SF : if c_SF_ENABLED = '0' generate
 
-  end generate;
+  -- end generate;
 
 end beh;

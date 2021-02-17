@@ -11,10 +11,10 @@ module legendreEngine(
 		      input 			       rst,
 		      input 			       srst,
 		      input logic [HEG2SFHIT_LEN-1:0]  mdt_hit,
-		      input logic 		       mdt_hit_empty, 
+		      input logic 		       mdt_hit_empty,
 		      output logic 		       mdt_hit_re,
 		      input logic [HEG2SFSLC_LEN-1:0]  hit_extraction_roi,
-		      input 			       hit_extraction_roi_empty, 
+		      input 			       hit_extraction_roi_empty,
 		      output logic 		       hit_extraction_roi_re,
 		      input logic [9:0] 	       histogram_accumulation_count,
 		      output logic [SF2PTCALC_LEN-1:0] le_output,
@@ -22,26 +22,28 @@ module legendreEngine(
 		      output logic [1023:0] 	       le_tb_output,
 		      output logic 		       le_tb_output_vld
 		      );
-   
-   parameter THETA_BINS=128;
-   const int TRIG_BITS= 24;
- //  parameter HEG2SFSLC_VEC_ANG_LEN = 10; //TODO: FIX IN HEADER FILE:TALK TO KOSTAS
+
+   parameter THETA_BINS=64; //128;
+   parameter RBINS     = 128;
+
+   //   const int TRIG_BITS= 24;
+   //  parameter HEG2SFSLC_VEC_ANG_LEN = 10; //TODO: FIX IN HEADER FILE:TALK TO KOSTAS
    parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 7 ;
 
    //CONSTANT FROM HLS(ANGLE_MAX_HALF_MRAD + HALF_PI_MRAD)
-   parameter VEC_ANG_OFFSET = 1023+50265;  //typedef ap_fixed<W_slcproc_vec_ang+7, IW_slcproc_vec_ang+2> angle_t_mrad; 
-   
+//   parameter VEC_ANG_OFFSET = 1023+50265;  //typedef ap_fixed<W_slcproc_vec_ang+7, IW_slcproc_vec_ang+2> angle_t_mrad;
+
    logic [17:0] 		   hw_sin_val[THETA_BINS];
    logic [17:0] 		   hw_cos_val[THETA_BINS];
    logic [17:0] 		   hw_sin_val_gls;
- 
+
 
    logic [3:0] 			   trig_axis_cnt;
-   
 
 
-  
- 
+
+
+
    logic [3:0] 			   max_bin_count[THETA_BINS];
    logic [6:0] 			   max_bin_r[THETA_BINS];
 
@@ -50,25 +52,25 @@ module legendreEngine(
    logic [6:0] 			   max_bin_r_V[THETA_BINS];
    logic  			   max_bin_count_V_vld[THETA_BINS];
    logic  			   max_bin_r_V_vld[THETA_BINS];
-   
-   
+
+
    logic 			   ap_rst;
-   logic 			   ap_rst_n;   
+   logic 			   ap_rst_n;
    logic 			   results_ap_start;
    logic 			   results_ap_done;
     logic 			   results_ap_done_d;
    logic 			   results_ap_idle;
    logic 			   results_ap_idle_d0;
    logic 			   results_ap_ready;
- 
-   
-   
+
+
+
    logic [HEG2SFSLC_VEC_ANG_LEN  -1 :0] roi_seed_theta;
    logic [HEG2SFSLC_VEC_ANG_PREC_LEN -1 :0] roi_seed_theta_mrad;
-   logic [HEG2SFSLC_VEC_ANG_PREC_LEN -1 :0] roi_seed_theta_mrad_vld;
-   
+   logic 				    roi_seed_theta_mrad_vld;
+
    parameter W_r = 22;
-   
+
 
    logic [W_r-1:0] 				 roi_seed_r;
    logic [W_r-1:0] 				 roi_seed_r_fo[9];
@@ -79,12 +81,12 @@ module legendreEngine(
    logic [W_r+1:0] 				 mdt_radius[2]; //HLS adding extra bits in lsb
    logic [W_r+1:0] 				 mdt_radius_stream;
    logic 					 stream_input;
-   
- 
-   
-					
-   
-   
+
+
+
+
+
+
 /* -----\/----- EXCLUDED -----\/-----
    logic [HEG2SFSLC_VEC_POS_LEN - 1:0] roi_offset_z[9];
    logic [HEG2SFSLC_VEC_POS_LEN - 1:0] roi_offset_R[9];
@@ -97,10 +99,10 @@ module legendreEngine(
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 		 sf_segpos;
    logic 					 sf_segpos_vld;
 
-   
+
    logic [SF2PTCALC_SEGPOS_LEN+SF2PTCALC_SEGANGLE_LEN+SF2PTCALC_SEGQUALITY_LEN-1:0] le_results;
    logic 									    le_results_vld;
-   
+
    //Load Luts Control Signals
    logic 									    ll_ap_start;
    logic 									    ll_ap_done;
@@ -108,25 +110,25 @@ module legendreEngine(
    logic 									    ll_ap_ready;
    logic [3:0] 									    ll_ap_done_d;
    logic 									    ll_reset;
-   
-   
+
+
    logic 									    gra_ap_start;
    logic 									    gra_ap_done;
    logic 									    gra_ap_idle;
    //logic [HEG2SFSLC_VEC_ANG_PREC_LEN -1:0] gra_theta;
    logic [17:0] 								    gra_theta;
    logic 									    gra_theta_vld;
-   logic [13:0] 								    gra_total_bins; 		   
+   logic [13:0] 								    gra_total_bins;
    logic 									    gra_resource_sharing;
-   
-   
+
+
    logic 									    gtv_ap_idle;
    logic 									    gtv_ap_done;
    logic 									    gtv_ap_ready;
    logic 									    gtv_ap_idle_d0;
    logic 									    gtv_ap_idle_d1;
    logic 									    gtv_ap_idle_d2;
-   
+
    //Histogram Bin Accumulation Control Signals
    logic [15:0] 								    hba_ap_start;
    logic 									    hba_ap_done;
@@ -135,86 +137,88 @@ module legendreEngine(
    logic 									    hba_reset;
    logic [15:0] 								    hba_mem_enable;
    logic 									    histogram_reset_n;
-   
+
    logic 									    hba_ap_idle_d0;
    logic 									    hba_ap_ready_d0;
-   
+
    logic [HEG2SFSLC_LEN-1:0] 							    hit_extraction_roi_internal;
    logic 									    hit_extraction_roi_vld;
-   
-   
-   
+
+
+
    logic [9:0] 									    counter;
-   const logic [3:0] 								    hba_latency             = 6; //8;//7; //12;
-   const logic [3:0] 								    hba_mem_latency         = 4; //3;
-   const logic [3:0] 								    find_max_bin_latency    = 4;   
+   const logic [3:0] 								    hba_latency             = 5; //8;//7; //12;
+
+   const logic [3:0] 								    hba_mem_latency         = 4; //DMEM-4, REG-3; //4; //3;
+   const logic [3:0] 								    find_max_bin_latency    = 3; //2; //4;
    const logic [3:0] 								    reset_cycles = 10;
-   const logic [7:0] 								    hba_reset_clocks = 128;
-   
+   const logic [7:0] 								    hba_reset_clocks = 3; //RBINS;
+
+
    logic 									    get_first_hit;
    logic 									    get_first_hit_r;
    logic 									    get_next_hit;
-   
+
    logic 									    mdt_hit_vld_internal;
    logic [HEG2SFHIT_LEN-1:0] 							    mdt_hit_internal;
    logic [8:0] 									    mdt_hit_vld_internal_fo;
    logic 									    hba_reset_mode;
    logic 									    hba_results_rdy;
    logic 									    hba_ap_ready_reg;
-   
-   
+
+
    logic [2:0] 									    le_state_prev;
    logic [4:0] 									    latency_count;
    logic [3:0] 									    latency_count_vld;
    logic 									    flush_pipeline;
-   
+
    logic [THETA_BINS-1:0] 							    compute_rbin_ap_done;
    logic [THETA_BINS-1:0] 							    compute_rbin_ap_idle;
    logic [THETA_BINS-1:0] 							    compute_rbin_ap_ready;
-   
-   
+
+
    logic [THETA_BINS-1:0] 							    update_max_rbin_ap_done;
    logic [THETA_BINS-1:0] 							    update_max_rbin_ap_idle;
    logic [THETA_BINS-1:0] 							    update_max_rbin_ap_ready;
    logic 									    hba_update_max_rbin_ap_ready;
-   
-   
+
+
    logic [7:0] 									    r_bin[THETA_BINS];
    logic 									    r_bin_vld[THETA_BINS];
    logic 									    r_bin_rdy[THETA_BINS];
-   
+
    logic [7:0] 									    r_bin_d[THETA_BINS];
    logic 									    r_bin_d_vld[THETA_BINS];
-   
+
    logic [3:0] 									    r_val_hist[THETA_BINS];
    logic 									    r_val_hist_vld[THETA_BINS];
    logic 									    r_val_hist_rdy[THETA_BINS];
    logic 									    r_val_hist_vld_i[THETA_BINS];
-   
+
    logic 									    ap_rst_gra;
    /* -----\/----- EXCLUDED -----\/-----
     ENDCAP BITWIDTHS
     logic [SF2PTCALC_SEGPOS_LEN-1:0] slcvec_pos_ref;
     logic [SF2PTCALC_SEGPOS_LEN-1:0] hewindow_pos_ref;
-    
+
     logic [SF2PTCALC_SEGPOS_LEN-1:0] slcvec_pos;
     logic [SF2PTCALC_SEGPOS_LEN-1:0] hewindow_pos ;
     -----/\----- EXCLUDED -----/\----- */
-   
+
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos ;
-   
+
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos_ref;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_ref;
-   
-   
+
+
    enum 									    {IDLE, LOAD_LUTS_GRA, LOAD_LUTS, HISTOGRAM_BIN_ACCUMULATION, HISTOGRAM_BIN_FLUSH_PIPELINE, RESET_HISTOGRAM_BINS, COMPUTE_RESULTS, HBA_MEMORY_RESET} le_state;
 
 
-   
-   
-   
- 
+
+
+
+
    logic [1:0] 			   theta_offset_factor_sn;
    logic 			   theta_offset_factor_sn_vld;
 
@@ -226,7 +230,7 @@ module legendreEngine(
    logic 			   cos_rom_addr_vld_reg;
    logic [21:0] 		   theta_offset_factor_sn_reg;
    logic 			   theta_offset_factor_sn_vld_reg;
-   
+
    logic [14:0] 		   sin_addr_offset_V_TDATA;
    logic 			   sin_addr_offset_V_TVALID;
    logic 			   sin_addr_offset_V_TREADY;
@@ -235,46 +239,42 @@ module legendreEngine(
    logic 			   cos_addr_offset_V_TREADY;
    logic [2:0]			   sin_axis_fanout_index;
    logic [2:0] 			   cos_axis_fanout_index;
- 
+
 
    logic [7:0] 			   theta_offset_ceil;
    logic 			   theta_offset_ceil_ap_vld;
    logic 			   theta_offset_factor_sn_vld_128;
    logic 			   theta_offset_factor_sn_vld_127;
-   
+
    logic [2:0] 			   trig_val_counter;
    logic [3:0] 			   trig_val_counter_2;
    logic [6:0]			   rom_offset_i;
    logic [6:0] 			   rom_offset_i0;
    logic [6:0] 			   rom_offset;
-   
-   
+
+
 
    logic 			   trig_vals_loaded;
    logic [15:0] 		   hba_reset_fo;
-   
+
    logic 			   toggle_fp;
-  
+
 
    logic [11:0] 		   triglut_start_addr;
-   logic [11:0] 		   triglut_addr; 
+   logic [11:0] 		   triglut_addr;
    logic [2:0] 			   triglut_first_bank;
    logic [2:0] 			   triglut_first_bank_d;
-   logic [17:0] 		   hw_cos_val_32[32];
-   logic [17:0] 		   hw_sin_val_32[32];
-      logic [17:0] 		   hw_cos_val_reorder_32[32];
-   logic [17:0] 		   hw_sin_val_reorder_32[32];
    logic [35:0] 		   hw_trig_vals[16];
    logic [35:0] 		   hw_trig_vals_reorder[16];
 
-   
-   
-			  
+
+
+
    logic 			   get_next_rom_addr;
-   logic 			   get_next_rom_addr_d; 
-   logic  [17:0] theta_global;
+   logic 			   get_next_rom_addr_d;
+   logic  [13:0] theta_global;
    logic 	 theta_global_vld;
-   logic [17:0]  theta_global_gra;
+   logic [13:0]  theta_global_gra;
 
    logic [W_r:0]  r_global;
    logic 	 r_global_vld;
@@ -288,10 +288,10 @@ module legendreEngine(
    logic 	 res_max_bin_theta_vld;
    logic [6:0] 	 res_max_bin_r;
    logic 	 res_max_bin_r_vld;
-   
+
    logic [17:0]  gls_sin_val_V;
    logic [17:0]  gls_cos_val_V;
-   
+
    logic 	 gls_ap_start;
    logic 	 gls_ap_done;
    logic 	 gls_ap_idle;
@@ -303,24 +303,24 @@ module legendreEngine(
    logic [HEG2SFSLC_VEC_POS_LEN - 1:0] 	 hls_pos_Z;
    logic 		 hls_pos_Z_vld;
    logic [HEG2SFSLC_VEC_POS_LEN - 1:0] 	 hls_pos_R;
-   logic 		 hls_pos_R_vld;   
- 	 
-   
+   logic 		 hls_pos_R_vld;
+
+
 //`include "get_rom_addr_include.sv"
 //`include "compute_LE_interface.sv"
-   
+
    assign theta_offset_factor_sn_vld_128 = theta_offset_factor_sn_vld | theta_offset_factor_sn_vld_127;
    assign get_first_hit               = get_first_hit_r;
    assign mdt_hit_re                  = (le_state == HISTOGRAM_BIN_ACCUMULATION)? (~mdt_hit_empty & (get_next_hit | get_first_hit)) : 1'b0;
-   assign theta_global_gra            = (theta_global[17]== 0)? -theta_global  : theta_global;
-   assign hw_sin_val_gls              = (theta_global[17]== 0)? -hw_sin_val[0] : hw_sin_val[0];   
-   assign gra_theta                   = theta_global_gra;  
+   assign theta_global_gra            = (theta_global[13]== 0)? -theta_global  : theta_global;
+   assign hw_sin_val_gls              = (theta_global[13]== 0)? -hw_sin_val[0] : hw_sin_val[0];
+   assign gra_theta                   = theta_global_gra;
    assign gra_theta_vld               = theta_global_vld;
    assign hit_extraction_roi_vld      = hit_extraction_roi_re;
-   
 
 
-			
+
+
 
    assign gls_ap_start = gra_resource_sharing & (hw_sin_val_vld_sreg===3);
 //   assign gls_ap_start = gra_resource_sharing &  (hw_sin_val_vld_sreg===7); //(gtv_ap_done);
@@ -341,11 +341,11 @@ module legendreEngine(
 				      );
 
 
-`ifdef RUN_SIM	   
+`ifdef RUN_SIM
      get_legendre_segment_barrel get_legendre_segment_barrel_inst(
-`else								   
+`else
    hls_get_legendre_segment_barrel get_legendre_segment_barrel_inst(
-`endif								  
+`endif
 								  .ap_clk(clk),
 								  .ap_rst(ap_rst),
 								  .ap_start(gls_ap_start),
@@ -355,7 +355,7 @@ module legendreEngine(
 								  .hls_sin_val_V(hw_sin_val_gls),
 								  .hls_cos_val_V(hw_cos_val[0]),
 								  .hls_LT_r_global_V(r_global),
-								  
+
 								  .slcvec_pos_R_V(slcvec_pos_ref),
 								  .hewindow_pos_R_V(hewindow_pos_ref),
 								  .hewindow_pos_Z_V({hewindow_pos,3'b0}),
@@ -365,34 +365,34 @@ module legendreEngine(
 								 // .LE_output_V(le_results),
 								 // .LE_output_V_ap_vld(le_results_vld)
 								  );
-								    
+
    logic 		 cro_ap_done;
    logic 		 cro_ap_idle;
    logic 		 cro_ap_start;
    logic 		 cro_ap_ready;
-   
-  // assign slcvec_pos_ref   = 18'h8d50; //18'he1a3; 
- //  assign hewindow_pos_ref = 18'h8ab5; //18'hdda3; 
-   assign cro_ap_start     = (trig_val_counter_2 == 4);//3); //4);
+
+  // assign slcvec_pos_ref   = 18'h8d50; //18'he1a3;
+ //  assign hewindow_pos_ref = 18'h8ab5; //18'hdda3;
+   assign cro_ap_start     = (trig_val_counter_2 == 2);//3); //4);
 
 `ifdef RUN_SIM
    calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
-`else								    
+`else
    hls_calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
-`endif						    
+`endif
 					     .ap_clk(clk),
 					     .ap_rst(ap_rst),
 					     .ap_start(cro_ap_start),
 					     .ap_done(cro_ap_done),
 					     .ap_idle(cro_ap_idle),
 					     .ap_ready(cro_ap_ready),
-					     .hw_sin_val_V(hw_sin_val[63]),
-					     .hw_cos_val_V(hw_cos_val[63]),
+					     .hw_sin_val_V(hw_sin_val[31]),
+					     .hw_cos_val_V(hw_cos_val[31]),
 					     .roi_seed_r_V(roi_seed_r),
 					     //.roi_seed_r_V_ap_vld(roi_seed_r_vld),
 					     .slcvec_pos_V(slcvec_pos),
 					     .slcvec_pos_ref_V(slcvec_pos_ref), //Rho for barrel
-					     .hewindow_pos_V(hewindow_pos), 
+					     .hewindow_pos_V(hewindow_pos),
 					     .hewindow_pos_ref_V(hewindow_pos_ref) //Rho for barrel
 					    /*endcap connection
 					     .slcvec_pos_Z_V(slcvec_pos_ref),
@@ -401,38 +401,38 @@ module legendreEngine(
 					     .hewindow_pos_Rho_V(hewindow_pos)
 					     */
 					     );
-   
+
    assign latency_count_vld    = (latency_count != 4'hf);
    assign flush_pipeline       = (mdt_hit_re == 0) && latency_count_vld && (latency_count > 0) && (latency_count < hba_latency);
-   
- 
+
+
 //   assign mdt_hit_internal      = ( mdt_hit_re)? mdt_hit : 0;
 //   assign hba_ap_idle           = (compute_rbin_ap_idle[0] == 1 )? 1 : 0; //All bins have same latency, so look at only one
 //   assign hba_ap_done           = (compute_rbin_ap_done == ~0 )? 1 : 0;
-   
-//   assign hba_ap_ready          = (compute_rbin_ap_ready[0] == 1)? 1 : 0;//All bins have same latency, so look at only one
+
+   assign hba_ap_ready          = (compute_rbin_ap_ready[0] == 1)? 1 : 0;//All bins have same latency, so look at only one
    assign hba_update_max_rbin_ap_ready          = ( update_max_rbin_ap_ready == ~0)? 1 : 0;
    assign mdt_radius[0]                         = {mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB],1'b0};
    assign mdt_radius[1]                         = -{mdt_hit_internal[HEG2SFHIT_RADIUS_MSB:HEG2SFHIT_RADIUS_LSB],1'b0};
-   
-   
+
+
    generate
       for(genvar z=0;z<THETA_BINS;z++)
 	begin:theta_bins
 	   int k = z/16; // to reduce fanout of input signals
-	   int j = z/8; // increase fanout for hba_ap_start
-`ifdef RUN_SIM	   
+	   int j = z/4; // increase fanout for hba_ap_start
+`ifdef RUN_SIM
 	   compute_r_bins compute_r_bins_inst(
 `else
 	   hls_compute_r_bins compute_r_bins_inst(
 `endif
 					      .ap_clk(clk),
 					      .ap_rst_n(ap_rst_n),
-					     // .ap_start(hba_ap_start[0]),//j]),
-					     // .ap_done(compute_rbin_ap_done[z]),
-					     // .ap_idle(compute_rbin_ap_idle[z]),
-					    //  .ap_ready(compute_rbin_ap_ready[z]),
-					   
+					      .ap_start(hba_ap_start[j]),
+					      .ap_done(compute_rbin_ap_done[z]),
+					      .ap_idle(compute_rbin_ap_idle[z]),
+					      .ap_ready(compute_rbin_ap_ready[z]),
+
 					      .mdt_localx_V(mdt_local_x[k]),
 					      .mdt_localy_V(mdt_local_y[k]),
 					      .mdt_r_offset_V_TDATA(mdt_r_offset[k]),
@@ -445,9 +445,13 @@ module legendreEngine(
 					      .r_bin_V_TVALID(r_bin_vld[z]),
 					      .r_bin_V_TREADY(r_bin_rdy[z])
 					      );
-	   
-	   
-					      update_histogram update_histogram_ilenst(
+
+
+					      //update_histogram_reg  #(
+					      update_histogram_dmem  #(
+								  .RBINS(RBINS)
+								  )
+					      update_histogram_inst (
 						  .clk(clk),
 						  .rst_n(ap_rst_n),
 						  .r_bin_V_TVALID(r_bin_vld[z]),
@@ -459,12 +463,12 @@ module legendreEngine(
 						  .local_max_rbin(max_bin_r_V[z]),
 						  .reset_rbins(hba_reset_fo[j])
 						  );
-	   
-	   
+
+
 	end // block: theta_bins
-   endgenerate   
-   
-   
+   endgenerate
+
+
    always @ (posedge clk)
      begin
 	if(rst & srst)
@@ -472,14 +476,14 @@ module legendreEngine(
 	     ap_rst     <= 1'b1;
 	     ap_rst_n   <= 1'b0;
 	     ap_rst_gra <= 1'b1;
-	     
+
 	  end
 	else
 	  begin
 	     ap_rst     <= 1'b0;
 	     ap_rst_n   <= 1'b1;
 	     ap_rst_gra <= 1'b0; //(le_state == IDLE)? 1'b1 : 1'b0;
-	     
+
 	  end
      end // always @ (posedge clk)
 
@@ -491,9 +495,9 @@ module legendreEngine(
 	     roi_seed_theta              <= 0;
 	     roi_seed_theta_mrad_vld     <= 0;
 	     mdt_hit_internal            <= 0;
-	     mdt_hit_vld_internal        <= 0;   	     
- 	     stream_input                <= 0;					  
-	     
+	     mdt_hit_vld_internal        <= 0;
+ 	     stream_input                <= 0;
+
 	     for(int i=0; i< 8; i++)
 	       begin
 		  mdt_hit_vld_internal_fo[i]     <= 0;
@@ -512,7 +516,7 @@ module legendreEngine(
 		  slc_muid                    <= hit_extraction_roi_internal[HEG2SFSLC_MUID_MSB:HEG2SFSLC_MUID_LSB];
 		  slc_mdtid                   <= hit_extraction_roi_internal[HEG2SFSLC_MDTID_MSB:HEG2SFSLC_MDTID_LSB];
 		  slcvec_pos                  <= hit_extraction_roi_internal[HEG2SFSLC_VEC_POS_MSB:HEG2SFSLC_VEC_POS_LSB];
-		  hewindow_pos                <= hit_extraction_roi_internal[HEG2SFSLC_HEWINDOW_POS_MSB:HEG2SFSLC_HEWINDOW_POS_LSB];		
+		  hewindow_pos                <= hit_extraction_roi_internal[HEG2SFSLC_HEWINDOW_POS_MSB:HEG2SFSLC_HEWINDOW_POS_LSB];
 	       end
 	     else
 	       begin
@@ -527,15 +531,15 @@ module legendreEngine(
   	     mdt_hit_vld_internal               <= ( mdt_hit_re) | ( ~mdt_hit_vld_internal & flush_pipeline );
 	     mdt_hit_internal                   <=(flush_pipeline)? 0 : mdt_hit;
 
-             						  
-	     
-		      
+
+
+
 	     if(mdt_hit_vld_internal)
 	       begin
 		  mdt_hit_vld_internal_fo     <= 9'h1ff;
 		  mdt_radius_stream           <= mdt_radius[1];
-		  
-		  stream_input                <= 1;					  
+
+		  stream_input                <= 1;
 		  for(int i=0; i<8; i++)
 		    begin
 		       mdt_local_x[i]                 <= mdt_hit_internal[HEG2SFHIT_LOCALX_MSB:HEG2SFHIT_LOCALX_LSB];
@@ -544,18 +548,22 @@ module legendreEngine(
 		    end
 	       end
 	     else begin
-		
-   	        stream_input                <= 0;					  
-	
+
+   	        stream_input                <= 0;
+
 		if(stream_input == 0)
 		  begin
-		     mdt_hit_vld_internal_fo     <= 9'b0;						  
+		     mdt_hit_vld_internal_fo     <= 9'b0;
+ 		    for(int i=0; i<8; i++)
+		    begin
+	             mdt_r_offset[i] 	         <= 0;
+		    end
 		  end
 		else
 		  begin
   		    for(int i=0; i<8; i++)
 		    begin
-		     mdt_r_offset[i]             <= mdt_radius_stream - roi_seed_r;				  
+		     mdt_r_offset[i]             <= mdt_radius_stream - roi_seed_r;
 		    end
 		  end
 	     end // else: !if(mdt_hit_vld_internal)
@@ -568,11 +576,11 @@ module legendreEngine(
 		    end
 	       end
 	  end // else: !if(rst & srst)
-	
+
      end // always @ (posedge clk)
 
-  
-   
+
+
    always @ (posedge clk)
      begin
 	if(rst && srst)
@@ -585,7 +593,7 @@ module legendreEngine(
 	  end
 	else
 	  begin
-	     
+
 	     for(integer z=0;z<THETA_BINS;z++)
 	       begin
 		  if(max_bin_count_V_vld[z])
@@ -593,27 +601,27 @@ module legendreEngine(
 		       max_bin_count[z] <= max_bin_count_V[z];
 		       max_bin_r[z]     <= max_bin_r_V[z];
 		    end
-		
+
 	       end // for (integer z=0;z<THETA_BINS;z++)
-	     
+
 	  end // else: !if(rst && srst)
-	
+
      end // always @ (posedge clk)
-   
-   
-   
+
+
+
    always @ (posedge clk)
      begin
 	if(rst | srst)
 	  begin
 	     for(integer i=0;i<THETA_BINS;i++)
-	       begin		  
+	       begin
 		  hw_sin_val[i]   <= 0;
 		  hw_cos_val[i]   <= 0;
-						  
+
 	       end
              for(integer i=0;i<16;i++)
-	       begin		
+	       begin
 		  hw_trig_vals_reorder[i] = 0;
 	       end
 	     theta_offset_factor_sn_reg <= 0;
@@ -628,7 +636,7 @@ module legendreEngine(
 	     trig_val_counter_2             <= 0;
 	     rom_offset_i0                  <= 0;
 	     rom_offset_i                   <= 0;
-	     rom_offset                     <= 0;	     
+	     rom_offset                     <= 0;
 	     triglut_addr                   <= 0;
 	     triglut_first_bank_d           <= 0;
 	     toggle_fp                      <= 1;
@@ -639,27 +647,27 @@ module legendreEngine(
 	     get_next_rom_addr_d      <= get_next_rom_addr;
 	     hw_sin_val_vld_sreg[0]   <= gtv_ap_done; //hw_sin_val_vld;
 	     hw_sin_val_vld_sreg[15:1]<= hw_sin_val_vld_sreg[14:0];
-	     
-	     
+
+
 	     if(flush_pipeline)
 	       begin
 		  toggle_fp = ~toggle_fp;
 	       end
 	     else
 	       toggle_fp <= 1'b1;
-	     
-	
-	     
+
+
+
 	     if(gra_ap_done & get_next_rom_addr==0)
 	       begin
 		  get_next_rom_addr    <= 1'b1;
 		  trig_val_counter     <= 0;
-		  triglut_addr         <= triglut_start_addr;		  
+		  triglut_addr         <= triglut_start_addr;
 		  triglut_first_bank_d <= triglut_first_bank;
-		
+
 
 	       end
-	     else if(get_next_rom_addr & trig_val_counter < 7)//3)
+	     else if(get_next_rom_addr & trig_val_counter < 3)
 	       begin
 		  trig_val_counter   <= trig_val_counter + 1;
 		  triglut_addr       <=  (triglut_addr + 16 > 3343)? triglut_addr + 16 - 3343 : triglut_addr + 16;
@@ -672,7 +680,7 @@ module legendreEngine(
 		  trig_val_counter   <= 0;
 	       end // else: !if(get_next_rom_addr & trig_val_counter < 7)
 
-	   
+
 
 
 	     if(gtv_ap_done)
@@ -681,19 +689,19 @@ module legendreEngine(
 		  rom_offset         <= rom_offset + 16;
 
 
-		  for(integer i=0; i<8; i++) //8 clocks to load 128 vals
+		  for(integer i=0; i<8; i++) //8 clocks to load 128 vals, 4 clocks for 64 vals
 		    begin
 		       hw_trig_vals_reorder[i]     <= hw_trig_vals[(triglut_first_bank_d + i) & 3'h7];
 		       hw_trig_vals_reorder[8 + i] <= hw_trig_vals[8 + ((triglut_first_bank_d + i) & 3'h7)]; //hw_trig_vals[8 + ((triglut_first_bank_d + i) & 3'h7)];
 		    end
-		  
- 
-		  
+
+
+
 	       end // if (gtv_ap_done)
 	     else
 	       begin
-		  trig_val_counter_2 <= 4'hf; //(trig_val_counter_2  == 4)? 5 : 0;
-		  
+		  trig_val_counter_2 <= (trig_val_counter_2  == 3)? 4 : 4'hf;
+
 		  rom_offset         <= 0;
 	       end // else: !if(gtv_ap_done)
 
@@ -701,54 +709,18 @@ module legendreEngine(
 	     rom_offset_i <= rom_offset;
 	   //  rom_offset_i   <=  rom_offset_i0;
 
-	     if(trig_val_counter_2 < 8)
+	     if(trig_val_counter_2 < 4)
 	       begin
 		  for(integer i=0;i<16;i++)
 		  begin
 	 	     hw_sin_val[rom_offset_i | i]     <= hw_trig_vals_reorder[i][17:0];
 		     hw_cos_val[rom_offset_i | i]     <= hw_trig_vals_reorder[i][35:18];
 		  end
-		end				  
-/* -----\/----- EXCLUDED -----\/-----
-	     case(trig_val_counter_2[2:0])
-		    3'b001:
-		      begin
-			 for(integer i=0;i<16;i++)
-			 begin
-			    hw_sin_val[rom_offset_i | i]     <= hw_trig_vals_reorder[i][17:0];
-			    hw_cos_val[rom_offset_i | i]     <= hw_trig_vals_reorder[i][35:18];
-			 end
-		      end
-		    3'b010:
-		      begin
-			   for(integer i=0;i<16;i++) 
-			 begin
-			    hw_sin_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][17:0]; 
-			    hw_cos_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][35:18];
-			 end
-		      end
-		    3'b011:
-		      begin
-			 for(integer i=0;i<16;i++) 
-			 begin
-			    hw_sin_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][17:0]; 
-			    hw_cos_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][35:18];
-			 end
-		      end
-		    3'b100:
-		      begin
-			 for(integer i=0;i<16;i++) 
-			  begin
-			    hw_sin_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][17:0]; 
-			    hw_cos_val[(rom_offset_i| i)]     <= hw_trig_vals_reorder[i][35:18];
-			 end
-		      end
-		  endcase // case (trig_val_counter_2[3:1])
------/\----- EXCLUDED -----/\----- */
+		end
 
 	  end // else: !if(rst && srst)
      end // always @ (posedge clk)
-   
+
 
  always @ (posedge clk)
      begin
@@ -759,7 +731,7 @@ module legendreEngine(
 	     le_tb_output        <= 0;
 	     le_tb_output_vld    <= 0;
 	     sf_segquality       <= 0;
-  	     histogram_reset_n   <= 1'h0;						  
+  	     histogram_reset_n   <= 1'h0;
 	  end
 	else
 	  begin
@@ -774,7 +746,7 @@ module legendreEngine(
 		  le_output[SF2PTCALC_SEGPOS_MSB:SF2PTCALC_SEGPOS_LSB]         <= sf_segpos;
 		  le_output[SF2PTCALC_MUID_MSB:SF2PTCALC_MUID_LSB]             <= slc_muid;
 		  le_output[SF2PTCALC_DATA_VALID_MSB]                          <= 1'b1;
-						  
+
 		//  le_output    <= {1'b1,slc_muid,sf_segpos,theta_global,sf_segquality,slc_mdtid};
 		  le_tb_output[63:0] = res_max_bin_count;
 		end // if (sf_segpos_vld)
@@ -785,7 +757,7 @@ module legendreEngine(
 	  end // else: !if(rst && srst)
      end // always @ (posedge clk)
 
-   
+
      always @ (posedge clk)
      begin
 	if(rst && srst)
@@ -818,12 +790,12 @@ module legendreEngine(
 	     gra_resource_sharing   <= 0;
 	     gra_total_bins         <= THETA_BINS;
 	     results_ap_idle_d0     <= 0;
-  	     histogram_reset_n      <= 1'h0;						  	     
+  	     histogram_reset_n      <= 1'h0;
 	  end
 	else
 	  begin
 	     le_state_prev    <= le_state;
-	     			  
+
 	     results_ap_done_d <= results_ap_done;
 	     results_ap_idle_d0     <= results_ap_idle;
 	     ll_ap_done_d   <= {ll_ap_done_d[2:0],ll_ap_done};
@@ -832,12 +804,12 @@ module legendreEngine(
 	     gtv_ap_idle_d0   <= gtv_ap_idle;
 	     gtv_ap_idle_d1  <= gtv_ap_idle_d0;
 	     gtv_ap_idle_d2  <= gtv_ap_idle_d1;
-	     
+
 	     trig_vals_loaded <= ~gtv_ap_idle_d0 & gtv_ap_idle;
 	    // trig_vals_loaded <= ~gtv_ap_idle_d2 & gtv_ap_idle_d1;
-	     
-	     
-	     
+
+
+
 	     case(le_state)
 	       IDLE:
 		 begin
@@ -853,17 +825,17 @@ module legendreEngine(
 		    hba_reset_mode   <= 1'b0;
 		    hba_results_rdy  <= 1'b0;
 		    latency_count    <= 5'h1f;
-		    hba_mem_enable   <= 8'b0;		    
+		    hba_mem_enable   <= 8'b0;
 		    gra_resource_sharing <= 1'b0;
 		    gra_total_bins       <= THETA_BINS;
-  		    histogram_reset_n    <= 1'h0;						  	     
+  		    histogram_reset_n    <= 1'h0;
 		  //  if(hba_ap_idle_d0 & results_ap_idle_d0 & gtv_ap_idle_d0)
-		    if(results_ap_idle_d0 & gtv_ap_idle_d0)						  
+		    if(results_ap_idle_d0 & gtv_ap_idle_d0)
 		      begin
 			 if(~hit_extraction_roi_empty)
 			   begin
 			      hit_extraction_roi_re  <= (hit_extraction_roi_re)? 0 : 1;
-			      gra_ap_start           <= 1'b0; 
+			      gra_ap_start           <= 1'b0;
 			   end
 			 else
 			   begin
@@ -872,7 +844,7 @@ module legendreEngine(
 			 if(roi_seed_theta_mrad_vld) //hit_extraction_roi_re )
 			   begin
 			      le_state               <= LOAD_LUTS;
-			      gra_ap_start           <= 1'b1; 
+			      gra_ap_start           <= 1'b1;
 			   end
 		      end
 		 end // case: IDLE
@@ -894,13 +866,14 @@ module legendreEngine(
 
 		    // if(ll_ap_done_d[3])
 		  //  if(trig_vals_loaded)//~theta_offset_factor_sn_vld_128)
-	           if(trig_val_counter_2 == 7)
+	          // if(trig_val_counter_2 == 4)
+     	           if(cro_ap_done)
 		      begin
-			 le_state       <= HISTOGRAM_BIN_ACCUMULATION;		
+			 le_state       <= HISTOGRAM_BIN_ACCUMULATION;
 			 hba_ap_start   <= 16'hffff;
 			 get_first_hit_r<= 1'b1;
 			 hba_mem_enable   <= 0;//16'hffff;
-              	         histogram_reset_n  <= 1'h1;						  
+              	         histogram_reset_n  <= 1'h1;
 		      end
 		    else
 		      begin
@@ -915,34 +888,35 @@ module legendreEngine(
 		    ll_ap_start     <= 1'b0;
 		    hba_reset       <= 1'b0;
 		    hba_reset_fo    <= 16'b0;
-		    hba_reset_mode  <= 1'b0; 
+		    hba_reset_mode  <= 1'b0;
 		    hba_results_rdy <= 1'b0;
 		    gra_resource_sharing <= 1'b0;
 		    gra_total_bins       <= 0;
- 	            histogram_reset_n  <= 1'h1;						  	    
+ 	            histogram_reset_n  <= 1'h1;
 		    if(~get_first_hit_r)
 		      get_next_hit    <= ~get_next_hit;
-		    
+
 		    if(mdt_hit_re)
 		      begin
 			 latency_count   <= 0;
 			 get_first_hit_r <= 1'b0;
 			 hba_ap_start    <= 16'hffff;
+		         hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
 		      end
 		    else
- 		      begin		       
+ 		      begin
 			 if(latency_count == hba_latency + hba_mem_latency)
 			   begin
-			     hba_mem_enable  <= 16'h0;
+			     hba_mem_enable  <= 16'h1;
 			   end
 			  else
 			   begin
 			     latency_count   <= latency_count + 1;
 			     hba_ap_start    <= 16'hffff;
-			     hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
+			     hba_mem_enable  <= (counter == hba_latency + 2)? 16'hffff : hba_mem_enable;
 			  end
 		      end // else: !if(mdt_hit_vld)
-		    
+
 		    if(counter == histogram_accumulation_count-1)begin
 		       le_state       <= HISTOGRAM_BIN_FLUSH_PIPELINE;
 		       counter        <= 0;
@@ -956,8 +930,8 @@ module legendreEngine(
 		    ll_reset       <= 1'b1;
 		    hba_ap_start   <= 16'b0;
 		    gra_total_bins <= 0;
- 	            histogram_reset_n  <= 1'h1;						  	    		    
-		    
+ 	            histogram_reset_n  <= 1'h1;
+
 		    if(latency_count == hba_latency + hba_mem_latency)
 		      begin
 			 hba_results_rdy      <= 1'b1;
@@ -970,7 +944,7 @@ module legendreEngine(
 		      end
 		    else
 		      begin
-			 latency_count <= (latency_count == hba_latency)?latency_count : latency_count + 1;
+			 latency_count <= (latency_count == hba_latency + hba_mem_latency)?latency_count : latency_count + 1;
 		      end
 		 end
 	       COMPUTE_RESULTS:
@@ -981,17 +955,17 @@ module legendreEngine(
 		    gra_total_bins       <= 0;
 		    hba_ap_ready_reg     <= hba_ap_ready_d0;
  		   // gra_ap_start         <= (counter == find_max_bin_latency -1)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;
- 		    gra_ap_start         <= (counter ==  find_max_bin_latency - 1)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;						  
- 	            histogram_reset_n    <= 1'h1;						  	    		    
+ 		    gra_ap_start         <= (counter ==  find_max_bin_latency)? 1'b1 : 1'b0;//(gra_theta_vld)? 1'b0 : gra_ap_start;
+ 	            histogram_reset_n    <= 1'h1;
 		    if(hba_results_rdy)
 		    begin
 			 hba_reset_mode   <= 1'b1;
 		         hba_reset_fo     <= 16'hffff;
 			 hba_reset        <= 1'b1;
 			 results_ap_start <= 1'b1;//Start computing slope/intercept
-			 hba_ap_start     <= 16'hffff;
+ 		         hba_ap_start     <= 16'h0;//16'hffff;
 			 hba_mem_enable   <= 16'b0;
-		      end 
+		      end
 		    else
 		      begin
 			 results_ap_start <= 1'b0;
@@ -1000,7 +974,7 @@ module legendreEngine(
 
 		    if(gls_ap_done)
 		      begin
-			 le_state         <= HBA_MEMORY_RESET; 
+			 le_state         <= HBA_MEMORY_RESET;
 		      end
 		  end // case: COMPUTE_RESULTS
 	        HBA_MEMORY_RESET:
@@ -1010,7 +984,7 @@ module legendreEngine(
 		    begin
 		      hba_reset_fo     <= 16'hffff;
 		      le_state         <= IDLE;
-              	      histogram_reset_n <= 1'h0;						  
+              	      histogram_reset_n <= 1'h0;
 		    end
 		  end
 	     endcase
@@ -1018,7 +992,7 @@ module legendreEngine(
      end
 
 
-`ifdef RUN_SIM	   
+`ifdef RUN_SIM
 get_rom_addr get_rom_addr_inst(
 `else
 hls_get_rom_addr get_rom_addr_inst(
@@ -1041,7 +1015,7 @@ hls_get_rom_addr get_rom_addr_inst(
 
 				);
 
-`ifdef RUN_SIM	     
+`ifdef RUN_SIM
 get_trig_vals get_trig_vals_inst(
 `else
 hls_get_trig_vals get_trig_vals_inst(
@@ -1054,8 +1028,8 @@ hls_get_trig_vals get_trig_vals_inst(
 				 .ap_ready(gtv_ap_ready),
 				 .rom_idx_V(triglut_first_bank_d),
 				 .lut_start_addr_V(triglut_addr),
-			
-				 .hw_trig_vals_0_V(hw_trig_vals[0]),				
+
+				 .hw_trig_vals_0_V(hw_trig_vals[0]),
 				 .hw_trig_vals_1_V(hw_trig_vals[1]),
 				 .hw_trig_vals_2_V(hw_trig_vals[2]),
 				 .hw_trig_vals_3_V(hw_trig_vals[3]),
@@ -1078,7 +1052,7 @@ hls_get_trig_vals get_trig_vals_inst(
 find_max_bin find_max_bin_inst(
 `else
 hls_find_max_bin find_max_bin_inst(
-`endif			       
+`endif
 				  .ap_clk(clk),
 				  .ap_rst(ap_rst),
 				  .ap_start(results_ap_start),
@@ -1086,7 +1060,7 @@ hls_find_max_bin find_max_bin_inst(
 				  .ap_idle(results_ap_idle),
 				  .ap_ready(results_ap_ready),
 				  .slcvec_angle_polar_offset_mrad_V(roi_seed_theta_mrad),
-				  .roi_seed_r_V(roi_seed_r),	
+				  .roi_seed_r_V(roi_seed_r),
 .max_bin_count_0_V(max_bin_count[0]),
 .max_bin_r_0_V(max_bin_r[0]),
 .max_bin_count_1_V(max_bin_count[1]),
@@ -1215,6 +1189,7 @@ hls_find_max_bin find_max_bin_inst(
 .max_bin_r_62_V(max_bin_r[62]),
 .max_bin_count_63_V(max_bin_count[63]),
 .max_bin_r_63_V(max_bin_r[63]),
+				   /*
 .max_bin_count_64_V(max_bin_count[64]),
 .max_bin_r_64_V(max_bin_r[64]),
 .max_bin_count_65_V(max_bin_count[65]),
@@ -1343,6 +1318,7 @@ hls_find_max_bin find_max_bin_inst(
 .max_bin_r_126_V(max_bin_r[126]),
 .max_bin_count_127_V(max_bin_count[127]),
 .max_bin_r_127_V(max_bin_r[127]),
+				    */
 			       	  .hls_LT_theta_global_V(theta_global),
 				  .hls_LT_theta_global_V_ap_vld(theta_global_vld),
 				  .hls_LT_r_global_V(r_global),
@@ -1358,8 +1334,5 @@ hls_find_max_bin find_max_bin_inst(
 				  .res_max_bin_r_V(res_max_bin_r),
 				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
 				  );
-						  
+
   endmodule
-
-
-						  

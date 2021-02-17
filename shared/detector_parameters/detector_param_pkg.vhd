@@ -2,14 +2,14 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---  
---  Project: ATLAS L0MDT Trigger 
+--
+--  Project: ATLAS L0MDT Trigger
 --  Module: Detector parameters
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---    
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -30,7 +30,7 @@ package detector_param_pkg is
   -- Time & cycles constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
-  
+
   -- TAR PIPELINE
   constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
   constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
@@ -42,7 +42,7 @@ package detector_param_pkg is
 
   constant HEG_LSF_START_DELAY  : integer := 18;
   constant HEG_LSF_END_DELAY    : integer := 10;
-  
+
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
   --
   constant CSF_POST_PROCESSING  : integer := 57;
@@ -55,9 +55,9 @@ package detector_param_pkg is
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
 
-  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer; 
-  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer; 
-  
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer;
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer;
+
   function get_heg_load_time(start_delay : integer) return integer;
   function get_heg_busy_time(start_delay : integer) return integer;
   function get_heg_unload_time(start_delay, end_delay : integer) return integer;
@@ -76,13 +76,30 @@ package detector_param_pkg is
 
   function get_barrel_radius ( sector, r_i: integer) return signed;
 
-    -------------------------------------------------------------------------
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  --UCM2PL_PHIMOD_MULT
+  subtype sector_phi_center_t is unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+  type sector_phi_center_default_t is array ( 0 to 15) of real;
+  constant sector_phi_center_default : sector_phi_center_default_t :=(
+    -- -pi to pi ; signed
+    -- 0.       ,0.392699 ,0.785398 ,1.178097 , 1.570796 ,1.963495 ,2.356194 ,2.748894 ,
+    -- 3.141593 ,-2.748894,-2.356194,-1.963495, -1.570796,-1.178097,-0.785398,-0.392699
+    -- 0 to 2pi ; unsigned
+    0.0,0.392699082,0.785398163,1.178097245,1.570796327,1.963495408,2.35619449,2.748893572,
+    3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
+
+  );
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t;
+
+  -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  
-  type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
-  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;
+
+  type b_chamber_center_radius_unsigned_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned;
+  type b_chamber_center_radius_integer_art is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_art;
   type b_chamber_center_chamber is array ( 0 to 15) of b_chamber_center_station;
   constant b_chamber_center_radius : b_chamber_center_chamber :=(
     --     INN MID OUT EXT
@@ -107,7 +124,7 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_center_radius( sector, station : integer) return b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( sector, station  : integer ; output_len : integer := SLC_Z_RPC_LEN ; scaler : real := 1.0) return b_chamber_center_radius_unsigned_aut;
   -------------------------------------------------------------------------
   -- Radius to the origin of the chamber
   -------------------------------------------------------------------------
@@ -141,7 +158,8 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
+  -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
+  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned; --b_chamber_z_origin_ut;
   type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
   type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
@@ -169,10 +187,10 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_origin_z_u( sector, station : integer) return b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut;
   function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   type b_chamber_type_station_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_type_sector_at is array (0 to 3) of b_chamber_type_station_ait;
@@ -200,7 +218,7 @@ package detector_param_pkg is
  );
  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
  function get_b_chamber_type( sector,station,ieta : integer) return integer;
-  
+
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
@@ -241,10 +259,23 @@ package detector_param_pkg is
 
   function get_b_layer_height ( chamber_id , layer : integer) return unsigned;
 
-  
+
 end package detector_param_pkg;
 
 package body detector_param_pkg is
+
+  -------------------------------------------------------------------------
+  -- Phi center of sector
+  -------------------------------------------------------------------------
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t is
+    variable mem_out : sector_phi_center_t;
+    variable a , b : real;
+  begin
+    a := sector_phi_center_default(sector);
+    b := SLC_COMMON_POSPHI_MULT;
+    mem_out := to_unsigned( integer((1000.0 * a) * b),SLC_COMMON_POSPHI_LEN);
+    return mem_out;
+  end function;
 
   -------------------------------------------------------------------------
   -- Time & cycles constants
@@ -303,7 +334,7 @@ package body detector_param_pkg is
     end if;
     return time_out;
   end function;
-  
+
 
 
   -- function get_heg_times(dummy : integer) return heg_times_rt is
@@ -330,7 +361,7 @@ package body detector_param_pkg is
   --       times.busy    := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
   --       times.unload  := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + HEG_LSF_END_DELAY;
   --     end if;
-  
+
   --   end if;
   --   return times;
   -- end function;
@@ -356,11 +387,16 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_center_radius( sector, station  : integer) return b_chamber_center_radius_unsigned_au is
-    variable y : b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( 
+    sector, station  : integer ; 
+    output_len : integer := SLC_Z_RPC_LEN ; 
+    scaler : real := 1.0) 
+  return b_chamber_center_radius_unsigned_aut is
+    variable y : b_chamber_center_radius_unsigned_aut(open)(output_len -1 downto 0);
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * scaler) , output_len);
+      -- y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
     end loop;
     return y;
   end function get_b_chamber_center_radius;
@@ -377,11 +413,11 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_origin_z_u( sector, station: integer) return b_chamber_z_origin_aut is
-    variable y : b_chamber_z_origin_aut;
+  function get_b_chamber_origin_z_u( sector, station: integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut is
+    variable y : b_chamber_z_origin_aut(open)(out_width -1 downto 0);
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult) , out_width);
     end loop;
     return y;
   end function;
@@ -394,7 +430,7 @@ package body detector_param_pkg is
     return y;
   end function;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
     variable y : b_chamber_type_sector_at;
@@ -424,5 +460,5 @@ package body detector_param_pkg is
     return y;
 
   end function get_b_layer_height;
-  
+
 end package body detector_param_pkg;

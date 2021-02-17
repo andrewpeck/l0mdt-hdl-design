@@ -14,7 +14,7 @@ package ucm_pkg is
 
   constant UCM_INPUT_PL_LATENCY : integer := 2;
 
-  constant UCM_OUTPUT_PL_LATENCY : integer := 2;
+  constant UCM_OUTPUT_PL_LATENCY : integer := 6;
 
   constant SLC_SPECIFIC_LEN : integer := 85;
 
@@ -49,9 +49,9 @@ package ucm_pkg is
 
   type ucm_cde_rt is record
     muid : slc_muid_rt;
-    mdtid : vec_mdtid_rt;
     chamb_ieta : chamb_ieta_rpc_bus_at;
     cointype : std_logic_vector(SLC_COMMON_COINTYPE_LEN-1 downto 0);
+    posphi : unsigned(SLC_COMMON_POSPHI_LEN-1 downto 0);
     specific : std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     data_valid : std_logic;
   end record ucm_cde_rt;
@@ -262,9 +262,9 @@ package body ucm_pkg is
     variable y : ucm_cde_rvt;
   begin
     y(134 downto 114)          := vectorify(x.muid);
-    y(113 downto 105)          := vectorify(x.mdtid);
-    y(104 downto 89)           := vectorify(x.chamb_ieta);
-    y(88 downto 86)            := vectorify(x.cointype);
+    y(113 downto 98)           := vectorify(x.chamb_ieta);
+    y(97 downto 95)            := vectorify(x.cointype);
+    y(94 downto 86)            := vectorify(x.posphi);
     y(85 downto 1)             := vectorify(x.specific);
     y(0 downto 0)              := vectorify(x.data_valid);
     return y;
@@ -273,9 +273,9 @@ package body ucm_pkg is
     variable y : ucm_cde_rt;
   begin
     y.muid                     := structify(x(134 downto 114));
-    y.mdtid                    := structify(x(113 downto 105));
-    y.chamb_ieta               := structify(x(104 downto 89));
-    y.cointype                 := structify(x(88 downto 86));
+    y.chamb_ieta               := structify(x(113 downto 98));
+    y.cointype                 := structify(x(97 downto 95));
+    y.posphi                   := structify(x(94 downto 86));
     y.specific                 := structify(x(85 downto 1));
     y.data_valid               := structify(x(0 downto 0));
     return y;
@@ -284,9 +284,9 @@ package body ucm_pkg is
     variable y : ucm_cde_rt;
   begin
     y.muid                     := nullify(x.muid);
-    y.mdtid                    := nullify(x.mdtid);
     y.chamb_ieta               := nullify(x.chamb_ieta);
     y.cointype                 := nullify(x.cointype);
+    y.posphi                   := nullify(x.posphi);
     y.specific                 := nullify(x.specific);
     y.data_valid               := nullify(x.data_valid);
     return y;

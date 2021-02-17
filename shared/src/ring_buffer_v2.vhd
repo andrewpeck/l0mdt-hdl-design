@@ -20,7 +20,7 @@ use ieee.std_logic_misc.all;
 entity ring_buffer_v2 is
   generic(
     g_SIMULATION        : std_logic := '0';
-    g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline
+    g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline, ram
     g_FIFO_TYPE         : string := "normal"; -- normal , read_ahead
     g_MEMORY_TYPE       : string := "auto"; -- auto, ultra, block, distributed
     --

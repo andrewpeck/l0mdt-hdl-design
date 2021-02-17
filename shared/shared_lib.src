@@ -3,12 +3,22 @@
 #---------------------------------
 
 shared/config/detector_mapping_pkg.vhd
-shared/config/config_defaults_pkg.vhd
+# shared/config/config_defaults_pkg.vhd
 shared/config/config_pkg.vhd
 
 #---------------------------------
-# Detector shared ROMs
+# Detector shared RAMs ( Under dev)
 #---------------------------------
+shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
+shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
+
+shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
+
+
+#---------------------------------
+# Detector shared RAMs
+#---------------------------------
+
 
 shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 
@@ -45,9 +55,12 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 # shared source code for multiple blocks
 #---------------------------------
 shared/src/pipeline.vhd
-shared/src/ring_buffer.vhd
+shared/src/ring_buffer.vhd #Deprectated, need to clean
 shared/src/ring_buffer_v2.vhd
+shared/src/vhdl_ram_memory.vhd
 
+
+#who use these?
 shared/src/bram.vhd
 shared/src/rom.v
 shared/src/rom_dp.v

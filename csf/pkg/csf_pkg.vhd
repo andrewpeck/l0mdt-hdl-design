@@ -96,7 +96,7 @@ package csf_pkg is
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
   end record sf_seg_data_barrel_rt;
-  constant SF_SEG_DATA_BARREL_LEN : integer := 63;
+  constant SF_SEG_DATA_BARREL_LEN : integer := 64;
   subtype sf_seg_data_barrel_rvt is std_logic_vector(SF_SEG_DATA_BARREL_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt;
@@ -110,7 +110,7 @@ package csf_pkg is
     angle : signed(SF_SEG_ANG_LEN-1 downto 0);
     quality : std_logic;
   end record sf_seg_data_endcap_rt;
-  constant SF_SEG_DATA_ENDCAP_LEN : integer := 63;
+  constant SF_SEG_DATA_ENDCAP_LEN : integer := 64;
   subtype sf_seg_data_endcap_rvt is std_logic_vector(SF_SEG_DATA_ENDCAP_LEN-1 downto 0);
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt;
@@ -321,22 +321,22 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_barrel_rt) return sf_seg_data_barrel_rvt is
     variable y : sf_seg_data_barrel_rvt;
   begin
-    y(62 downto 62)            := vectorify(x.data_valid);
-    y(61 downto 41)            := vectorify(x.muid);
-    y(40 downto 32)            := vectorify(x.mdtid);
-    y(31 downto 14)            := vectorify(x.pos);
-    y(13 downto 1)             := vectorify(x.angle);
+    y(63 downto 63)            := vectorify(x.data_valid);
+    y(62 downto 42)            := vectorify(x.muid);
+    y(41 downto 33)            := vectorify(x.mdtid);
+    y(32 downto 15)            := vectorify(x.pos);
+    y(14 downto 1)             := vectorify(x.angle);
     y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf_seg_data_barrel_rvt) return sf_seg_data_barrel_rt is
     variable y : sf_seg_data_barrel_rt;
   begin
-    y.data_valid               := structify(x(62 downto 62));
-    y.muid                     := structify(x(61 downto 41));
-    y.mdtid                    := structify(x(40 downto 32));
-    y.pos                      := structify(x(31 downto 14));
-    y.angle                    := structify(x(13 downto 1));
+    y.data_valid               := structify(x(63 downto 63));
+    y.muid                     := structify(x(62 downto 42));
+    y.mdtid                    := structify(x(41 downto 33));
+    y.pos                      := structify(x(32 downto 15));
+    y.angle                    := structify(x(14 downto 1));
     y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;
@@ -355,22 +355,22 @@ package body csf_pkg is
   function vectorify(x: sf_seg_data_endcap_rt) return sf_seg_data_endcap_rvt is
     variable y : sf_seg_data_endcap_rvt;
   begin
-    y(62 downto 62)            := vectorify(x.data_valid);
-    y(61 downto 41)            := vectorify(x.muid);
-    y(40 downto 32)            := vectorify(x.mdtid);
-    y(31 downto 14)            := vectorify(x.pos);
-    y(13 downto 1)             := vectorify(x.angle);
+    y(63 downto 63)            := vectorify(x.data_valid);
+    y(62 downto 42)            := vectorify(x.muid);
+    y(41 downto 33)            := vectorify(x.mdtid);
+    y(32 downto 15)            := vectorify(x.pos);
+    y(14 downto 1)             := vectorify(x.angle);
     y(0 downto 0)              := vectorify(x.quality);
     return y;
   end function vectorify;
   function structify(x: sf_seg_data_endcap_rvt) return sf_seg_data_endcap_rt is
     variable y : sf_seg_data_endcap_rt;
   begin
-    y.data_valid               := structify(x(62 downto 62));
-    y.muid                     := structify(x(61 downto 41));
-    y.mdtid                    := structify(x(40 downto 32));
-    y.pos                      := structify(x(31 downto 14));
-    y.angle                    := structify(x(13 downto 1));
+    y.data_valid               := structify(x(63 downto 63));
+    y.muid                     := structify(x(62 downto 42));
+    y.mdtid                    := structify(x(41 downto 33));
+    y.pos                      := structify(x(32 downto 15));
+    y.angle                    := structify(x(14 downto 1));
     y.quality                  := structify(x(0 downto 0));
     return y;
   end function structify;

@@ -3,12 +3,12 @@
 --  Priya Sundararajan
 --  priya.sundararajan@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 -----------------------------------------------------------------------------------
 
 
@@ -24,6 +24,9 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+
+
+
 
 --library ctrl_lib;
 --use ctrl_lib.MTC_CTRL.all;
@@ -61,10 +64,10 @@ architecture mtc_builder_arch of top_mtc is
       ptcalc     : in tf2mtc_bus_avt(TOTAL_PTCALC_BLKS -1 downto 0);
       slcpipeline: in  pl2mtc_bus_avt(MTC_PER_BCID -1 downto 0);
       mtc        : out mtc_out_bus_avt(n_PRIMARY_MTC -1 downto 0)
-      );      
+      );
 end component;
 
-begin  
+begin
   mtc_builder_verilog_inst: component mtc_builder_verilog
     generic map (
       TOTAL_PTCALC_BLKS => c_NUM_THREADS,
