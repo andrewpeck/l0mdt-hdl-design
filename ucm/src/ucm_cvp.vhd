@@ -23,6 +23,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -43,8 +44,7 @@ entity ucm_cvp is
     glob_en             : in std_logic;
     --
     SECTOR_PHI            : in UCM_SECTOR_PHI_CTRL_t;
-    CHAMBER_Z0_CTRL_ARRAY : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_CTRL_t_ARRAY;
-    CHAMBER_Z0_MON_ARRAY  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+    chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
@@ -187,8 +187,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(0).WR,
-      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(0).RD,
+      chamber_z_org_bus => chamber_z_org_bus(0),
       --
       i_z           => vec_pos_array(0),
       i_z_dv        => vec_z_pos_dv(0),
@@ -207,8 +206,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
-      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
+      chamber_z_org_bus => chamber_z_org_bus(1),
       --
       i_z           => vec_pos_array(1),
       i_z_dv        => vec_z_pos_dv(1),
@@ -227,8 +225,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      -- CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(2).WR,
-      -- CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(2).RD,
+      chamber_z_org_bus => chamber_z_org_bus(2),
       --
       i_z           => vec_pos_array(2),
       i_z_dv        => vec_z_pos_dv(2),

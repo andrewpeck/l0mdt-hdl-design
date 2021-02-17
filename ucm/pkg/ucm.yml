@@ -33,6 +33,9 @@ HDL_Types:
 
 - ucm_prepro2ctrl_bus : [array: open , type: ucm_prepro2ctrl]
 
+# - b_chamber_z_origin : [array: MAX_NUM_CHAMBER_POS, type: unsigned, length: 16]
+# - b_chamber_z_origin_bus : [type: unsigned, length: 16 * MAX_NUM_CHAMBER_POS]
+
 - chamb_ieta_rpc : [type : unsigned , length : 4]
 
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]

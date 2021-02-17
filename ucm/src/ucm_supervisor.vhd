@@ -24,6 +24,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -40,7 +41,7 @@ entity ucm_supervisor is
     ctrl                : in  UCM_CTRL_t;
     mon                 : out UCM_MON_t;
     --
-    chamber_z_org_avt   : out  
+    chamber_z_org_bus   : out b_chamber_z_origin_station_avt;
     --
     local_en            : out std_logic;
     local_rst           : out std_logic
@@ -53,10 +54,9 @@ architecture beh of ucm_supervisor is
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
   --
-  signal cde_ch_z0_org : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
-  get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
-  signal CDE_CH_Z0_WR : UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
-  signal CDE_CH_Z0_RD : UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
+  signal cde_ch_z0_org : b_chamber_z_origin_aut :=  get_b_chamber_origin_z_u(c_SECTOR_ID,0,SLC_Z_RPC_MULT);
+  signal CDE_CH_Z0_WR : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_WR_CTRL_t;
+  signal CDE_CH_Z0_RD : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_RD_MON_t;
 begin
   --------------------------------------------
   --    SIGNALING
@@ -91,8 +91,8 @@ begin
   --------------------------------------------
   -- CDE CHAMBER Z0
   --------------------------------------------
-  CDE_CH_Z0_WR <= ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0;
-  mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= CDE_CH_Z0_RD;
+  CDE_CH_Z0_WR <= ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).WR;
+  mon.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).RD <= CDE_CH_Z0_RD;
 
   CDE_CH_ZO_AXI: process(clk)
   begin
@@ -110,6 +110,7 @@ begin
         end if;
         
       end if;
+      chamber_z_org_bus(0) <= vectorify(cde_ch_z0_org);
     end if;
   end process;
   

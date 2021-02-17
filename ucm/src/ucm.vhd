@@ -23,6 +23,8 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+
+use shared_lib.barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -99,11 +101,13 @@ architecture beh of ucm is
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
-  type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-  signal cde_cz0_a : cde_cz0_at;
+  signal chamber_z_org_bus   : b_chamber_z_origin_station_avt;
 
-  type cvp_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-  signal cvp_cz0_a : cvp_cz0_at;
+  -- type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  -- signal cde_cz0_a : cde_cz0_at;
+
+  -- type cvp_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  -- signal cvp_cz0_a : cvp_cz0_at;
 
 begin
 
@@ -125,7 +129,9 @@ begin
     glob_en           => glob_en,      
     -- AXI to SoC
     ctrl              => ctrl,
-    mon               => mon,          
+    mon               => mon,
+    --
+    chamber_z_org_bus => chamber_z_org_bus,
     -- 
     local_en          => local_en,
     local_rst         => local_rst
@@ -201,15 +207,14 @@ begin
       rst                   => local_rst,
       glob_en               => local_en,
       --
-      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
-      CHAMBER_Z0_MON_ARRAY  => cde_cz0_a(th_i), --mon.DP_CHAMB_Z0.DP_CHAMB_Z0,
+      chamber_z_org_bus => chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
       o_cde_data_v          => cpam_in_av(th_i)
     );
   end generate;
 
-  mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
+  -- mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
 
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
@@ -234,8 +239,7 @@ begin
       glob_en       => local_en,
       --
       SECTOR_PHI            => ctrl.SECTOR_PHI,
-      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
-      CHAMBER_Z0_MON_ARRAY  => cvp_cz0_a(vp_i),
+      chamber_z_org_bus => chamber_z_org_bus,
       --
       i_local_rst   => cvp_loc_rst(vp_i),
       i_in_en       => cvp_in_en(vp_i),

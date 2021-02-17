@@ -28,48 +28,48 @@ use shared_lib.detector_param_pkg.all;
 
 package ucm_function_pkg is
   
-  function get_chamber_ieta(
-     sector : integer ;
-     station: integer ; 
-     rpc : integer; --unsigned (SLC_Z_RPC_LEN -1 downto 0)
-     mult : real
-  ) return unsigned;
+  -- function get_chamber_ieta(
+  --    sector : integer ;
+  --    station: integer ; 
+  --    rpc : integer; --unsigned (SLC_Z_RPC_LEN -1 downto 0)
+  --    mult : real
+  -- ) return unsigned;
   
 end package ucm_function_pkg;
 
 package body ucm_function_pkg is
   
-  function get_chamber_ieta(
-     sector : integer ;
-     station: integer ; 
-     rpc : integer; -- unsigned (SLC_Z_RPC_LEN -1 downto 0)
-     mult : real
-  ) return unsigned is
-    variable y : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
-    variable chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(sector,station,mult);
-  begin
+  -- function get_chamber_ieta(
+  --    sector : integer ;
+  --    station: integer ; 
+  --    rpc : integer; -- unsigned (SLC_Z_RPC_LEN -1 downto 0)
+  --    mult : real
+  -- ) return unsigned is
+  --   variable y : unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+  --   variable chamber_z_org_a : b_chamber_z_origin_ait := get_b_chamber_origin_z_i(sector,station,mult);
+  -- begin
 
-    if rpc < chamber_z_org_a(0) then
-      y := to_unsigned(0,4);
-    elsif rpc < chamber_z_org_a(1) then
-      y := to_unsigned(1,4);
-    elsif rpc < chamber_z_org_a(2) then
-      y := to_unsigned(2,4);
-    elsif rpc < chamber_z_org_a(3) then
-      y := to_unsigned(3,4);
-    elsif rpc < chamber_z_org_a(4) then
-      y := to_unsigned(4,4);
-    elsif rpc < chamber_z_org_a(5) then
-      y := to_unsigned(5,4);
-    elsif rpc < chamber_z_org_a(6) then
-      y := to_unsigned(6,4);
-    elsif rpc < chamber_z_org_a(7) then
-      y := to_unsigned(7,4);
-    else
-      y := to_unsigned(8,4);
-    end if;
+  --   if rpc < chamber_z_org_a(0) then
+  --     y := to_unsigned(0,4);
+  --   elsif rpc < chamber_z_org_a(1) then
+  --     y := to_unsigned(1,4);
+  --   elsif rpc < chamber_z_org_a(2) then
+  --     y := to_unsigned(2,4);
+  --   elsif rpc < chamber_z_org_a(3) then
+  --     y := to_unsigned(3,4);
+  --   elsif rpc < chamber_z_org_a(4) then
+  --     y := to_unsigned(4,4);
+  --   elsif rpc < chamber_z_org_a(5) then
+  --     y := to_unsigned(5,4);
+  --   elsif rpc < chamber_z_org_a(6) then
+  --     y := to_unsigned(6,4);
+  --   elsif rpc < chamber_z_org_a(7) then
+  --     y := to_unsigned(7,4);
+  --   else
+  --     y := to_unsigned(8,4);
+  --   end if;
 
-    return y;
-  end function;
+  --   return y;
+  -- end function;
   
 end package body ucm_function_pkg;

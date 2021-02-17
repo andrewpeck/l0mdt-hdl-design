@@ -24,6 +24,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.barrel_chamb_z2origin_pkg.all;
 
  
 library ucm_lib;
@@ -42,8 +43,9 @@ entity ucm_ieta_calc is
     clk                 : in std_logic;
     rst                 : in std_logic;
     --
-    CHAMBER_Z0_CALC_WR  : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
-    CHAMBER_Z0_CALC_RD  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
+    -- CHAMBER_Z0_CALC_WR  : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
+    -- CHAMBER_Z0_CALC_RD  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
+    chamber_z_org_bus   : in b_chamber_z_origin_avt;
     --
     i_z                 : in unsigned (g_INPUT_WIDTH -1 downto 0);
     i_z_dv              : in std_logic;
@@ -56,7 +58,8 @@ end entity ucm_ieta_calc;
 
 architecture beh of ucm_ieta_calc is
 
-  -- signal chamber_z_org_a : b_chamber_z_origin_aut(open)(g_INPUT_WIDTH -1 downto 0) := 
+  signal chamber_z_org_a : b_chamber_z_origin_aut;
+  -- (open)(g_INPUT_WIDTH -1 downto 0) := 
   --       get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
   -- signal i_z_i : integer;
   signal wr_addr : integer := 0;
@@ -94,6 +97,8 @@ begin
         ieta := (others => '0');
 
       else
+
+        chamber_z_org_a <= structify(chamber_z_org_bus);
 
         o_ieta_dv <= i_z_dv;
         if i_z_dv = '1' then
