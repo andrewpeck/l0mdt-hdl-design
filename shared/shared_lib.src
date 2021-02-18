@@ -58,7 +58,7 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 # shared source code for multiple blocks
 #---------------------------------
 shared/src/pipeline.vhd
-shared/src/ring_buffer.vhd #Deprectated, need to clean
+# shared/src/ring_buffer.vhd #Deprectated, need to clean
 shared/src/ring_buffer_v2.vhd
 shared/src/vhdl_ram_memory.vhd
 
