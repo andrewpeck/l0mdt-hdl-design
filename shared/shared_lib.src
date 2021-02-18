@@ -49,6 +49,8 @@ dataformats/l0mdt_dataformats_pkg.vhd
 shared/types/common_constants_pkg.vhd
 shared/types/common_types_pkg.vhd
 
+dataformats/l0mdt_buses_constants.svh
+
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
 #---------------------------------
