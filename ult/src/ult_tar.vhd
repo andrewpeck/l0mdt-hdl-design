@@ -168,6 +168,15 @@ begin
 
   begin
 
+    o_inn_tdc_hits <= (others => ( others => '0'));
+    o_mid_tdc_hits <= (others => ( others => '0'));
+    o_out_tdc_hits <= (others => ( others => '0'));
+    o_ext_tdc_hits <= (others => ( others => '0'));
+    o_inn_tar_hits <= (others => ( others => '0'));
+    o_mid_tar_hits <= (others => ( others => '0'));
+    o_out_tar_hits <= (others => ( others => '0'));
+    o_ext_tar_hits <= (others => ( others => '0'));
+
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge

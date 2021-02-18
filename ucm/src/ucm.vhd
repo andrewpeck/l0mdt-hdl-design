@@ -284,8 +284,11 @@ begin
       VP2HPS_OUT : if c_HPS_ENABLE_ST_OUT generate
         o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
       end generate;
-      VP2HPS_EXT : if c_HPS_ENABLE_ST_EXT generate
+      VP2HPS_EXT_EN : if c_HPS_ENABLE_ST_EXT generate
         o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
+      end generate;
+      VP2HPS_EXT_DIS : if not c_HPS_ENABLE_ST_EXT generate
+        o_uCM2hps_ext_av(heg_i) <= (others => '0');
       end generate;
 
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
