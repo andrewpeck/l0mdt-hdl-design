@@ -45,7 +45,7 @@ entity ucm_ieta_calc is
     --
     -- CHAMBER_Z0_CALC_WR  : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_WR_CTRL_t;
     -- CHAMBER_Z0_CALC_RD  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_RD_MON_t;
-    chamber_z_org_bus   : in b_chamber_z_origin_avt;
+    i_chamber_z_org_bus   : in b_chamber_z_origin_avt;
     --
     i_z                 : in unsigned (g_INPUT_WIDTH -1 downto 0);
     i_z_dv              : in std_logic;
@@ -100,7 +100,7 @@ begin
 
       else
 
-        chamber_z_org_a <= structify(chamber_z_org_bus);
+        chamber_z_org_a <= structify(i_chamber_z_org_bus);
 
         o_ieta_dv <= i_z_dv;
         if i_z_dv = '1' then

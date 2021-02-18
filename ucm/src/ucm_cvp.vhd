@@ -43,8 +43,8 @@ entity ucm_cvp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    SECTOR_PHI            : in UCM_SECTOR_PHI_CTRL_t;
-    chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
+    i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
@@ -123,7 +123,7 @@ begin
     clk         =>clk,
     rst         =>local_rst,
     --
-    SECTOR_PHI  => SECTOR_PHI,
+    i_phicenter   => i_phicenter,
     --
     i_posphi    => data_r.posphi,
     i_dv        => data_r.data_valid,
@@ -187,7 +187,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(0),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(0),
       --
       i_z           => vec_pos_array(0),
       i_z_dv        => vec_z_pos_dv(0),
@@ -206,7 +206,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(1),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => vec_pos_array(1),
       i_z_dv        => vec_z_pos_dv(1),
@@ -225,7 +225,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(2),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(2),
       --
       i_z           => vec_pos_array(2),
       i_z_dv        => vec_z_pos_dv(2),

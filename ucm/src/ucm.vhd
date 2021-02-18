@@ -101,8 +101,9 @@ architecture beh of ucm is
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
   signal uCM2hps_data         : ucm2hps_aavt;
 
-  signal cde_chamber_z_org_bus   : b_chamber_z_origin_station_avt;
-  signal cvp_chamber_z_org_bus   : b_chamber_z_origin_station_avt;
+  signal cde_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
+  signal cvp_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
+  signal phicenter              : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
 
   -- type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
   -- signal cde_cz0_a : cde_cz0_at;
@@ -132,8 +133,9 @@ begin
     ctrl              => ctrl,
     mon               => mon,
     --
-    cde_chamber_z_org_bus => cde_chamber_z_org_bus,
-    cvp_chamber_z_org_bus => cvp_chamber_z_org_bus,
+    o_phicenter => phicenter,
+    o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
+    o_cvp_chamber_z_org_bus => cvp_chamber_z_org_bus,
     -- 
     local_en          => local_en,
     local_rst         => local_rst
@@ -209,7 +211,7 @@ begin
       rst                   => local_rst,
       glob_en               => local_en,
       --
-      chamber_z_org_bus => cde_chamber_z_org_bus,
+      i_chamber_z_org_bus => cde_chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
       o_cde_data_v          => cpam_in_av(th_i)
@@ -240,8 +242,8 @@ begin
       rst           => local_rst,
       glob_en       => local_en,
       --
-      SECTOR_PHI            => ctrl.SECTOR_PHI,
-      chamber_z_org_bus => cvp_chamber_z_org_bus,
+      i_phicenter            => phicenter,
+      i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --
       i_local_rst   => cvp_loc_rst(vp_i),
       i_in_en       => cvp_in_en(vp_i),

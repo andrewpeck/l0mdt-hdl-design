@@ -42,7 +42,7 @@ entity ucm_cde is
     -- configuration, control & Monitoring
     -- CHAMBER_Z0_CTRL_ARRAY : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_CTRL_t_ARRAY;
     -- CHAMBER_Z0_MON_ARRAY  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-    chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
+    i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
     -- pam out
@@ -90,7 +90,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(0),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(0),
       --
       i_z           => rpc_z_a(0),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -109,7 +109,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(1),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => rpc_z_a(1),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -128,7 +128,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(1),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => rpc_z_a(2),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -147,7 +147,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      chamber_z_org_bus => chamber_z_org_bus(2),
+      i_chamber_z_org_bus => i_chamber_z_org_bus(2),
       --
       i_z           => rpc_z_a(3),
       i_z_dv        => i_slc_data_r.data_valid,

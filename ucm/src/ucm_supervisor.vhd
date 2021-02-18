@@ -41,9 +41,9 @@ entity ucm_supervisor is
     ctrl                : in  UCM_CTRL_t;
     mon                 : out UCM_MON_t;
     --
-    phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
-    cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
-    cvp_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
+    o_phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    o_cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
+    o_cvp_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
     --
     local_en            : out std_logic;
     local_rst           : out std_logic
@@ -55,6 +55,9 @@ end entity ucm_supervisor;
 architecture beh of ucm_supervisor is
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
+  --
+  signal PHI_WR : UCM_SECTOR_PHI_CTRL_CTRL_t;
+  signal PHI_RD : UCM_SECTOR_PHI_MON_MON_t;
   --
   signal cde_ch_z0_org : b_chamber_z_origin_station_aut :=  (
     get_b_chamber_origin_z_u(c_SECTOR_ID,0,SLC_Z_RPC_MULT),
@@ -108,13 +111,19 @@ begin
   --------------------------------------------
   --    Chamber phi center
   --------------------------------------------
-  OVERRIDES : process(clk)
+  PHI_CENTER : process(clk)
   begin
     if rising_edge(clk) then
-      if SECTOR_PHI.OVERRIDE = '1' then
-        phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+      if rst = '1' then
+
       else
-        phicenter <= phicenter_Default;
+        if PHI_WR.WRITE = '1' then
+          o_phicenter <= unsigned(PHI_WR.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+        else
+          if PHI_WR.READ = '1' then
+            PHI_RD.VALUE <= resize(std_logic_vector(o_phicenter),integer(PHI_RD.VALUE'length));
+          end if;
+        end if;
       end if;
     end if;
   end process;
@@ -143,7 +152,7 @@ begin
           end if;
           
         end if;
-        cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
+        o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
       end if;
     end process;
 
@@ -174,7 +183,7 @@ begin
           end if;
           
         end if;
-        cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
+        o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
       end if;
     end process;
 

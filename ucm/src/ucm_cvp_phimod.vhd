@@ -39,7 +39,7 @@ entity ucm_cvp_phimod is
     clk                 : in std_logic;
     rst                 : in std_logic;
     --
-    SECTOR_PHI          : in UCM_SECTOR_PHI_CTRL_t;
+    i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     --
     i_posphi            : in unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
     i_dv                : in std_logic;
@@ -58,8 +58,8 @@ architecture beh of ucm_cvp_phimod is
 
   signal sphi_buff : integer := 0;--unsigned(18 -1 downto 0);
   -- signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := (others => '0');
-  signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
+  signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
+  -- signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
 
   constant reschanger : integer := integer((1024.0 * SLC_COMMON_POSPHI_MULT)/UCM2PL_PHIMOD_MULT);
   
@@ -76,21 +76,22 @@ begin
   --   end if;
   -- end process;
 
-  o_phimod <= phimod_buff(0);
+  -- o_phimod <= phimod_buff(0);
 
   PHIMOD: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        if SECTOR_PHI.OVERRIDE = '1' then
-          phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
-        else
-          phicenter <= phicenter_Default;
-        end if;
+        -- if SECTOR_PHI.OVERRIDE = '1' then
+        --   phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+        -- else
+        --   phicenter <= phicenter_Default;
+        -- end if;
         
         sphi_buff <= 0;
         phimod_buff <= ( others =>  (others => '0'));
       else
+        phicenter <= i_phicenter;
         -- sphi_buff <= i_posphi * to_unsigned(integer(reschanger),9);
         -- phimod_buff(g_PIPELINE) <= resize(signed(resize(signed(SECTOR_PHI),32) - signed(sphi_buff)),UCM2PL_PHIMOD_LEN);
         --
