@@ -37,14 +37,16 @@ package UCM_CTRL is
 
 
   type UCM_SECTOR_PHI_CTRL_t is record
-    VALUE                      :std_logic_vector(15 downto 0);  -- Phi to Center of chamber
-    OVERRIDE                   :std_logic;                      -- Phi to Center of chamber
+    VALUE                      :std_logic_vector(11 downto 0);  -- Phi to Center of chamber
+    READ                       :std_logic;                      -- Phi to Center of chamber
+    WRITE                      :std_logic;                      -- Phi to Center of chamber
   end record UCM_SECTOR_PHI_CTRL_t;
 
 
   constant DEFAULT_UCM_SECTOR_PHI_CTRL_t : UCM_SECTOR_PHI_CTRL_t := (
-                                                                     OVERRIDE => '0',
-                                                                     VALUE => x"0000"
+                                                                     READ => '0',
+                                                                     WRITE => '0',
+                                                                     VALUE => (others => '0')
                                                                     );
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_WR_CTRL_t is record
     VALUE                      :std_logic_vector(15 downto 0);  -- New value to write
