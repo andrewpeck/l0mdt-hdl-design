@@ -63,6 +63,8 @@ architecture beh of ucm_ieta_calc is
   --       get_b_chamber_origin_z_u(c_SECTOR_ID,g_STATION,g_RESOLUTION_SCALE,g_INPUT_WIDTH);
   -- signal i_z_i : integer;
   signal wr_addr : integer := 0;
+
+  signal found_u : unsigned(3 downto 0);
   
 begin
 
@@ -102,10 +104,13 @@ begin
 
         o_ieta_dv <= i_z_dv;
         if i_z_dv = '1' then
-          for i_ch in 0 to MAX_NUM_CHAMBER_POS -1 loop
+          found := '0';
+          o_ieta <= to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
+          for i_ch in 1 to MAX_NUM_CHAMBER_POS -1 loop
             if to_integer(i_z) < to_integer(chamber_z_org_a(i_ch)) then
               if found = '0' then
-                ieta := to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);
+                o_ieta <= to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);
+                -- found_u := to_unsigned(i_ch - 1,VEC_MDTID_CHAMBER_IETA_LEN);
                 found := '1';
               else
                 --
@@ -115,16 +120,18 @@ begin
             end if;
           end loop;
 
-          if found = '0' then
-            o_ieta <= to_unsigned(8,4);
-          else
-            o_ieta <= ieta;
-            ieta := to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
-          end if;
+          
+
+          -- if found = '0' then
+          --   o_ieta <= to_unsigned(8,4);
+          -- else
+          --   o_ieta <= ieta;
+          --   ieta := to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
+          -- end if;
 
         else
           found := '0';
-          o_ieta <= to_unsigned(15,4);
+          o_ieta <= to_unsigned(15,VEC_MDTID_CHAMBER_IETA_LEN);
         end if;
         
       end if;
