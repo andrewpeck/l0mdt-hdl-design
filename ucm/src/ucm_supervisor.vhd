@@ -41,8 +41,9 @@ entity ucm_supervisor is
     ctrl                : in  UCM_CTRL_t;
     mon                 : out UCM_MON_t;
     --
-    cde_chamber_z_org_bus   : out b_chamber_z_origin_station_avt;
-    cvp_chamber_z_org_bus   : out b_chamber_z_origin_station_avt;
+    phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
+    cvp_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
     --
     local_en            : out std_logic;
     local_rst           : out std_logic
@@ -102,6 +103,21 @@ begin
   --------------------------------------------
   --    FLAGS
   --------------------------------------------
+
+
+  --------------------------------------------
+  --    Chamber phi center
+  --------------------------------------------
+  OVERRIDES : process(clk)
+  begin
+    if rising_edge(clk) then
+      if SECTOR_PHI.OVERRIDE = '1' then
+        phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+      else
+        phicenter <= phicenter_Default;
+      end if;
+    end if;
+  end process;
 
   --------------------------------------------
   -- CDE CHAMBER Z0
