@@ -36,18 +36,23 @@ package UCM_CTRL is
   end record UCM_STATUS_MON_t;
 
 
-  type UCM_SECTOR_PHI_CTRL_t is record
+  type UCM_SECTOR_PHI_CTRL_CTRL_t is record
     VALUE                      :std_logic_vector(11 downto 0);  -- Phi to Center of chamber
     READ                       :std_logic;                      -- Phi to Center of chamber
     WRITE                      :std_logic;                      -- Phi to Center of chamber
-  end record UCM_SECTOR_PHI_CTRL_t;
+  end record UCM_SECTOR_PHI_CTRL_CTRL_t;
 
 
-  constant DEFAULT_UCM_SECTOR_PHI_CTRL_t : UCM_SECTOR_PHI_CTRL_t := (
-                                                                     READ => '0',
-                                                                     WRITE => '0',
-                                                                     VALUE => (others => '0')
-                                                                    );
+  constant DEFAULT_UCM_SECTOR_PHI_CTRL_CTRL_t : UCM_SECTOR_PHI_CTRL_CTRL_t := (
+                                                                               READ => '0',
+                                                                               WRITE => '0',
+                                                                               VALUE => (others => '0')
+                                                                              );
+  type UCM_SECTOR_PHI_MON_MON_t is record
+    VALUE                      :std_logic_vector(11 downto 0);  -- Phi to Center of chamber
+  end record UCM_SECTOR_PHI_MON_MON_t;
+
+
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_WR_CTRL_t is record
     VALUE                      :std_logic_vector(15 downto 0);  -- New value to write
     ADDR                       :std_logic_vector( 7 downto 0);  -- position or chamber to r/w value
@@ -138,25 +143,26 @@ package UCM_CTRL is
                                                                         );
   type UCM_MON_t is record
     STATUS                     :UCM_STATUS_MON_t;
-    CDE_CHAMB_Z0               :UCM_CDE_CHAMB_Z0_MON_t;
-    CVP_CHAMB_Z0               :UCM_CVP_CHAMB_Z0_MON_t;
+    SECTOR_PHI_MON             :UCM_SECTOR_PHI_MON_MON_t;
+    CDE_CHAMB_Z0               :UCM_CDE_CHAMB_Z0_MON_t;  
+    CVP_CHAMB_Z0               :UCM_CVP_CHAMB_Z0_MON_t;  
   end record UCM_MON_t;
 
 
   type UCM_CTRL_t is record
     ACTIONS                    :UCM_ACTIONS_CTRL_t;
     CONFIGS                    :UCM_CONFIGS_CTRL_t;
-    SECTOR_PHI                 :UCM_SECTOR_PHI_CTRL_t;
-    CDE_CHAMB_Z0               :UCM_CDE_CHAMB_Z0_CTRL_t;
-    CVP_CHAMB_Z0               :UCM_CVP_CHAMB_Z0_CTRL_t;
+    SECTOR_PHI_CTRL            :UCM_SECTOR_PHI_CTRL_CTRL_t;
+    CDE_CHAMB_Z0               :UCM_CDE_CHAMB_Z0_CTRL_t;   
+    CVP_CHAMB_Z0               :UCM_CVP_CHAMB_Z0_CTRL_t;   
   end record UCM_CTRL_t;
 
 
   constant DEFAULT_UCM_CTRL_t : UCM_CTRL_t := (
-                                               CVP_CHAMB_Z0 => DEFAULT_UCM_CVP_CHAMB_Z0_CTRL_t,
                                                CDE_CHAMB_Z0 => DEFAULT_UCM_CDE_CHAMB_Z0_CTRL_t,
                                                CONFIGS => DEFAULT_UCM_CONFIGS_CTRL_t,
-                                               SECTOR_PHI => DEFAULT_UCM_SECTOR_PHI_CTRL_t,
+                                               CVP_CHAMB_Z0 => DEFAULT_UCM_CVP_CHAMB_Z0_CTRL_t,
+                                               SECTOR_PHI_CTRL => DEFAULT_UCM_SECTOR_PHI_CTRL_CTRL_t,
                                                ACTIONS => DEFAULT_UCM_ACTIONS_CTRL_t
                                               );
 
