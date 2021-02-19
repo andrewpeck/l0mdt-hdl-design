@@ -111,6 +111,9 @@ begin
   --------------------------------------------
   --    Chamber phi center
   --------------------------------------------
+  PHI_WR <= ctrl.SECTOR_PHI_CTRL;
+  mon.SECTOR_PHI_MON <= PHI_RD;
+
   PHI_CENTER : process(clk)
   begin
     if rising_edge(clk) then
