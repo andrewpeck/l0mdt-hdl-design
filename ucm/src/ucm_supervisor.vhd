@@ -60,19 +60,19 @@ architecture beh of ucm_supervisor is
   signal PHI_RD : UCM_SECTOR_PHI_MON_MON_t;
   --
   signal cde_ch_z0_org : b_chamber_z_origin_station_aut :=  (
-    get_b_chamber_origin_z_u(c_SECTOR_ID,0,SLC_Z_RPC_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,1,SLC_Z_RPC_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,2,SLC_Z_RPC_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,3,SLC_Z_RPC_MULT)
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,SLC_Z_RPC_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,SLC_Z_RPC_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,SLC_Z_RPC_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,SLC_Z_RPC_MULT)
     );
   signal CDE_CH_Z0_WR : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
   signal CDE_CH_Z0_RD : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   --
   signal cvp_ch_z0_org : b_chamber_z_origin_station_aut :=  (
-    get_b_chamber_origin_z_u(c_SECTOR_ID,0,UCM2HPS_VEC_POS_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,1,UCM2HPS_VEC_POS_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,2,UCM2HPS_VEC_POS_MULT),
-    get_b_chamber_origin_z_u(c_SECTOR_ID,3,UCM2HPS_VEC_POS_MULT)
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,UCM2HPS_VEC_POS_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,UCM2HPS_VEC_POS_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,UCM2HPS_VEC_POS_MULT),
+    get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,UCM2HPS_VEC_POS_MULT)
     );
   signal CVP_CH_Z0_WR : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   signal CVP_CH_Z0_RD : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;

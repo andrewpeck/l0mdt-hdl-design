@@ -464,7 +464,7 @@ package body tdc_mezz_mapping_pkg is
   begin
 
     if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
-      if c_SECTOR_SIDE = '0' then -- SIDE A
+      if c_SECTOR_SIDE = 0 then -- SIDE A
         if station = 0 then -- INN STATION
           
           if c_SECTOR_ID = 3 then -- BIL
@@ -519,15 +519,15 @@ package body tdc_mezz_mapping_pkg is
   begin
     if station = 0 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(to_integer(unsigned'("0" & c_SECTOR_SIDE)))(ch_i) * 3;
+        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 3;
       end loop;
     elsif station = 1 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(to_integer(unsigned'("0" & c_SECTOR_SIDE)))(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 2 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(to_integer(unsigned'("0" & c_SECTOR_SIDE)))(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 4 then
 

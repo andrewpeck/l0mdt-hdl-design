@@ -117,7 +117,7 @@ begin
               csm_offset <= csm_offset_mem(to_integer(unsigned(i_tdc_hits_r.csmid)));
               tdc_offset <= tdc_offset_mem(to_integer(unsigned(i_tdc_hits_r.tdcid)));
               -- tdc_offset <= tdc_offset_mem(to_integer(shift_right(to_unsigned(i_tdc_hits_r.tdc_id),1)));
-              if c_SECTOR_SIDE = '0' then -- SIDE A
+              if c_SECTOR_SIDE = 0 then -- SIDE A
                 if i_tdc_hits_r.tdcid(0) = '0' then -- even
                   tdc_tube <= to_unsigned(ml1_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
                   tdc_layer <= to_unsigned(ml1_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
