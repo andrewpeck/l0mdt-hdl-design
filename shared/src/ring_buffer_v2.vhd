@@ -133,7 +133,7 @@ begin
         if rst = '1' then
           
         else
-          en_pipeline(i) <= ena;
+          en_pipeline(g_PIPELINE_OUT_REGS) <= ena;
           opl_loop : for i in g_PIPELINE_OUT_REGS downto 1 loop
             en_pipeline(i-1) <= en_pipeline(i);
             if en_pipeline(i-1) = '1' then
