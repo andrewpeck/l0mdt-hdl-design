@@ -68,6 +68,11 @@ begin
     signal ptcalc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal pl2mtc_sump            : std_logic_vector (c_MAX_NUM_SL-1 downto 0);
   begin
+
+    
+    o_mtc <= (others => (others => '0'));
+    o_nsp <= (others => (others => '0'));
+
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge

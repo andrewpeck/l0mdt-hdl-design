@@ -81,7 +81,7 @@ RING : if g_PIPELINE_TYPE = "ring_buffer" generate
       g_LOGIC_TYPE    => "pipeline",
       g_MEMORY_TYPE   => g_MEMORY_TYPE,--"block",
       -- g_PIPELINE_IN_REGS => 1,
-      -- g_PIPELINE_OUT_REGS => 1,
+      g_PIPELINE_OUT_REGS => 4,
       g_RAM_WIDTH     => g_PIPELINE_WIDTH,
       g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
     )

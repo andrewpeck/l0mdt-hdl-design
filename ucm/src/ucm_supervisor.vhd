@@ -104,9 +104,20 @@ begin
     end if;
   end process signaling;
   --------------------------------------------
-  --    FLAGS
+  --    status
   --------------------------------------------
+  status: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
 
+      else
+        mon.STATUS.MAIN_ENABLED <= local_en;
+        mon.STATUS.MAIN_READY <= not local_rst;
+        mon.STATUS.MAIN_ERROR <= '0';
+      end if;
+    end if;
+  end process status;
 
   --------------------------------------------
   --    Chamber phi center
@@ -147,10 +158,12 @@ begin
         else
           if CDE_CH_Z0_WR(st_i).WR.ADDR = x"00" then
           else
-            CDE_CH_Z0_RD(st_i).RD.VALUE <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_CH_Z0_WR(st_i).WR.ADDR))),16));
+            CDE_CH_Z0_RD(st_i).RD.VALUE <=
+              std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_CH_Z0_WR(st_i).WR.ADDR))),16));
             if CDE_CH_Z0_WR(st_i).WR.WR_EN = '1' then
               CDE_CH_Z0_RD(st_i).RD.RST_REQ <= '1';
-              cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_CH_Z0_WR(st_i).WR.ADDR))) <= resize(unsigned(CDE_CH_Z0_WR(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
+              cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_CH_Z0_WR(st_i).WR.ADDR))) <= 
+                resize(unsigned(CDE_CH_Z0_WR(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
             end if;
           end if;
           
