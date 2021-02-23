@@ -43,7 +43,7 @@ entity ucm_cvp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    -- i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
     i_local_rst         : in std_logic;
@@ -115,21 +115,21 @@ begin
     o_data      => data_v
   );
 
-  PHIMOD : entity ucm_lib.ucm_cvp_phimod
-  generic map(
-    g_PIPELINE => 2
-  )
-  port map(
-    clk         =>clk,
-    rst         =>local_rst,
-    --
-    i_phicenter   => i_phicenter,
-    --
-    i_posphi    => data_r.posphi,
-    i_dv        => data_r.data_valid,
-    --
-    o_phimod    => o_phimod
-  );
+  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- generic map(
+  --   g_PIPELINE => 2
+  -- )
+  -- port map(
+  --   clk         =>clk,
+  --   rst         =>local_rst,
+  --   --
+  --   i_phicenter   => i_phicenter,
+  --   --
+  --   i_posphi    => data_r.posphi,
+  --   i_dv        => data_r.data_valid,
+  --   --
+  --   o_phimod    => o_phimod
+  -- );
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 

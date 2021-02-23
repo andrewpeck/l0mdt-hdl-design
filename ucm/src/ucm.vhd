@@ -328,12 +328,12 @@ begin
     -- int_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     int_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
     -- if proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed = '1' then
-    int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+    -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
     -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
     PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      int_uCM2pl_ar(sl_i).busy   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
+      int_uCM2pl_ar(sl_i).busy        <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
       -- int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;

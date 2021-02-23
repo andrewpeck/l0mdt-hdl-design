@@ -40,8 +40,7 @@ entity ucm_cde is
     rst                   : in std_logic;
     glob_en               : in std_logic;
     -- configuration, control & Monitoring
-    -- CHAMBER_Z0_CTRL_ARRAY : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_CTRL_t_ARRAY;
-    -- CHAMBER_Z0_MON_ARRAY  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+    i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
@@ -77,6 +76,22 @@ begin
       unsigned(barrel_r.rpc2_posz),
       unsigned(barrel_r.rpc1_posz),
       unsigned(barrel_r.rpc0_posz)
+    );
+
+    PHIMOD : entity ucm_lib.ucm_cvp_phimod
+    generic map(
+      g_PIPELINE => 2
+    )
+    port map(
+      clk         =>clk,
+      rst         =>rst,
+      --
+      i_phicenter   => i_phicenter,
+      --
+      i_posphi    => i_slc_data_r.common.posphi,
+      i_dv        => i_slc_data_r.data_valid,
+      --
+      o_phimod    => o_phimod
     );
 
     IETA_00 : entity ucm_lib.ucm_ieta_calc
