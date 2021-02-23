@@ -25,6 +25,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.barrel_chamb_z2origin_pkg.all;
+
+use shared_lib.detector_param_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -126,17 +128,22 @@ begin
   PHI_WR <= ctrl.SECTOR_PHI_CTRL;
   mon.SECTOR_PHI_MON <= PHI_RD;
 
+
+
   PHI_CENTER : process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
 
       else
+
+        o_phicenter <= phicenter;
+
         if PHI_WR.WRITE = '1' then
-          o_phicenter <= unsigned(PHI_WR.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
+          phicenter <= unsigned(PHI_WR.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
         else
           if PHI_WR.READ = '1' then
-            PHI_RD.VALUE <= resize(std_logic_vector(o_phicenter),integer(PHI_RD.VALUE'length));
+            PHI_RD.VALUE <= resize(std_logic_vector(phicenter),integer(PHI_RD.VALUE'length));
           end if;
         end if;
       end if;

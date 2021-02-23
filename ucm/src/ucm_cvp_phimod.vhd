@@ -55,6 +55,10 @@ architecture beh of ucm_cvp_phimod is
 
   type phimod_buff_at is array (g_PIPELINE downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal phimod_buff : phimod_buff_at := ( others =>  (others => '0'));
+  signal dv_buff : std_logic_vector(g_PIPELINE - 1 downto 0);
+
+  signal phimod : signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal dv_first : std_logic;
 
   signal sphi_buff : integer := 0;--unsigned(18 -1 downto 0);
   -- signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
@@ -65,51 +69,62 @@ architecture beh of ucm_cvp_phimod is
   
 begin
 
-  -- OVERRIDES : process(clk)
-  -- begin
-  --   if rising_edge(clk) then
-  --     if SECTOR_PHI.OVERRIDE = '1' then
-  --       phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
-  --     else
-  --       phicenter <= phicenter_Default;
-  --     end if;
-  --   end if;
-  -- end process;
+  o_phimod <= phimod_buff(0);
 
-  -- o_phimod <= phimod_buff(0);
-
-  PHIMOD: process(clk)
+  PHIMOD_proc: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        -- if SECTOR_PHI.OVERRIDE = '1' then
-        --   phicenter <= unsigned(SECTOR_PHI.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
-        -- else
-        --   phicenter <= phicenter_Default;
-        -- end if;
         
         sphi_buff <= 0;
-        phimod_buff <= ( others =>  (others => '0'));
+        
       else
         phicenter <= i_phicenter;
-        -- sphi_buff <= i_posphi * to_unsigned(integer(reschanger),9);
-        -- phimod_buff(g_PIPELINE) <= resize(signed(resize(signed(SECTOR_PHI),32) - signed(sphi_buff)),UCM2PL_PHIMOD_LEN);
-        --
+
         if i_dv = '1' then
           sphi_buff <= (to_integer(i_posphi) * integer(reschanger))/1024;
+          phimod <= to_signed(to_integer(unsigned(phicenter) - sphi_buff),UCM2PL_PHIMOD_LEN);
+          dv_first <= '1';
         else
-          sphi_buff <= 0;
+          phimod <= (others => '0');
+          dv_first<= '0';
         end if;
-        phimod_buff(g_PIPELINE) <= to_signed(to_integer(unsigned(phicenter) - sphi_buff),UCM2PL_PHIMOD_LEN);
-        --
-        --resize(signed(sphi_buff),32)),UCM2PL_PHIMOD_LEN);
-        for i_p in g_PIPELINE downto 1 loop
-          phimod_buff(i_p - 1) <= phimod_buff(i_p);
-        end loop;
+
+        -- phimod_buff(g_PIPELINE - 1) <= to_signed(to_integer(unsigned(phicenter) - sphi_buff),UCM2PL_PHIMOD_LEN);
+
       end if;
     end if;
-  end process PHIMOD;
+  end process;
+
+  NO_PL_GEN: if g_PIPELINE = 0 generate
+    o_phimod <= phimod;
+  end generate NO_PL_GEN;
+
+  PL_GEN: if g_PIPELINE > 0 generate
+    phi_pl: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          dv_buff <= (others => '0');
+          phimod_buff <= ( others =>  (others => '0'));
+        else
+          phimod_buff(g_PIPELINE -1) <= phimod;
+          dv_buff(g_PIPELINE -1 ) <= dv_first;
+          if g_PIPELINE > 1 then
+
+            for i_p in g_PIPELINE - 1 downto 1 loop
+              phimod_buff(i_p - 1) <= phimod_buff(i_p);
+              dv_buff(i_p -1) <= dv_buff(i_p);
+            end loop;
+
+          end if;
+
+        end if;
+      end if;
+    end process phi_pl;
+  end generate PL_GEN;
   
+  o_phimod <= phimod_buff(0);
   
   
 end architecture beh;
