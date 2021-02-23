@@ -211,10 +211,13 @@ begin
       rst                   => local_rst,
       glob_en               => local_en,
       --
+      i_phicenter            => phicenter,
       i_chamber_z_org_bus => cde_chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
-      o_cde_data_v          => cpam_in_av(th_i)
+      o_cde_data_v          => cpam_in_av(th_i),
+      --
+      o_phimod      => cvp_phimod(th_i)
     );
   end generate;
 
@@ -242,7 +245,7 @@ begin
       rst           => local_rst,
       glob_en       => local_en,
       --
-      i_phicenter            => phicenter,
+      -- i_phicenter            => phicenter,
       i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --
       i_local_rst   => cvp_loc_rst(vp_i),
@@ -250,7 +253,7 @@ begin
       --
       i_data_v      => cpam_out_av(vp_i),
       --
-      o_phimod      => cvp_phimod(vp_i),
+      -- o_phimod      => cvp_phimod(vp_i),
       o_uCM2hps_av  => uCM2hps_data(vp_i)
 
     );
@@ -335,12 +338,12 @@ begin
     PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy        <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
-      -- int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
     PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy   <= '0';
       int_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
-      -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+      int_uCM2pl_ar(sl_i).phimod <= (others => '0');
 
     end generate;
 
@@ -355,12 +358,13 @@ begin
     o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
     o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
-    PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).phimod    <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
-    end generate;
-    PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
-    end generate;
+    o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
+    -- PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
+    --   o_uCM2pl_ar(sl_i).phimod    <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+    -- end generate;
+    -- PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
+    --   o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
+    -- end generate;
     -- ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
       -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
       o_uCM2pl_ar(sl_i).nswseg_poseta     <= pl_o_uCM2pl_ar(sl_i).nswseg_poseta;
