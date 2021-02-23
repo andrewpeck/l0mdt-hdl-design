@@ -22,7 +22,7 @@ library shared_lib;
 entity std_pipeline is
   generic(
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
-    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer 
+    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
     g_PIPELINE_WIDTH    : integer
   );
@@ -105,5 +105,26 @@ RING : if g_PIPELINE_TYPE = "ring_buffer" generate
       o_used        => open
     );
 end generate;
+
+MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
+  constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES -4;
+begin 
+  mpcvmem : entity shared_lib.mpcvmem
+  generic map(
+    g_LOGIC_TYPE    => "pipeline",
+    g_MEMORY_TYPE   => g_MEMORY_TYPE,
+
+    g_MEM_WIDTH     => g_PIPELINE_WIDTH,
+    g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+  )
+  port map(
+    clk           => clk,
+    rst           => rst,
+    ena           => glob_en,
+    --
+    i_din_a       => i_data,
+    o_dout_b      => o_data      
+  );
+end generate MPCVMEM_GEN;
 
 end beh;

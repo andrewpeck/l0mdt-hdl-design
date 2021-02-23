@@ -57,10 +57,11 @@ architecture beh of mpl is
 begin
 
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+
     PL : entity shared_lib.std_pipeline
     generic map(
       g_MEMORY_TYPE     => "ultra",
-      g_PIPELINE_TYPE   => "ring_buffer",
+      g_PIPELINE_TYPE   => "mpcvmem",
       g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
       g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
     )
@@ -72,6 +73,7 @@ begin
       i_data      => i_uCM2pl_av(sl_i),
       o_data      => main_pl_out_av(sl_i)
     );
+    
   end generate;
 
   PL_CSW : entity mpl_lib.mpl_csw

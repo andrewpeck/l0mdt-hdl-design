@@ -82,3 +82,4 @@ shared/functions/trigonometrics/roi_tan.vhd
 
 
 shared/mpcvmem/src/mpcvmem.vhd
+shared/mpcvmem/src/DualPortMem.vhd
