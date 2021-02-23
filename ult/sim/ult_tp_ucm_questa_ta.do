@@ -1,71 +1,71 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/DUMMY
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/clock_and_control
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ttc_commands
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/h2s_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/h2s_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/tar_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/tar_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mtc_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mtc_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ucm_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ucm_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/daq_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/daq_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/tf_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/tf_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mpl_ctrl
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mpl_mon
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_inner_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_middle_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_outer_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_extra_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_inner_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_middle_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_outer_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_extra_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_main_primary_slc
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_main_secondary_slc
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_plus_neighbor_slc
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_minus_neighbor_slc
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_plus_neighbor_segments
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/i_minus_neighbor_segments
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/o_daq_streams
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/o_plus_neighbor_segments
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/o_minus_neighbor_segments
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/o_MTC
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/o_NSP
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/sump
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/inner_slc_to_hts
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/middle_slc_to_hts
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/outer_slc_to_hts
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/extra_slc_to_hts
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ucm2pl_av
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/inn_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mid_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/out_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ext_tar_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/inn_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mid_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/out_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ext_tdc_hits
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/inn_segments_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mid_segments_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/out_segments_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/ext_segments_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/inner_slc_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/middle_slc_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/outer_slc_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/extra_slc_to_pt
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/pl2pt_av
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/pl2mtc_av
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/pt2mtc_av
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/pt_sump
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/h2s_sump
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/tar_sump
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/mtc_sump
-add wave -noupdate -expand -group ULT_TOP /ult_tp/ULT/daq_sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/DUMMY
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/clock_and_control
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ttc_commands
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/h2s_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/h2s_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/tar_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/tar_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mtc_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mtc_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ucm_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ucm_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/daq_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/daq_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/tf_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/tf_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mpl_ctrl
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mpl_mon
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_inner_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_middle_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_outer_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_extra_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_inner_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_middle_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_outer_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_extra_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_main_primary_slc
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_main_secondary_slc
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_plus_neighbor_slc
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_minus_neighbor_slc
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_plus_neighbor_segments
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/i_minus_neighbor_segments
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/o_daq_streams
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/o_plus_neighbor_segments
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/o_minus_neighbor_segments
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/o_MTC
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/o_NSP
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/inner_slc_to_hts
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/middle_slc_to_hts
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/outer_slc_to_hts
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/extra_slc_to_hts
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ucm2pl_av
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/inn_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mid_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/out_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ext_tar_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/inn_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mid_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/out_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ext_tdc_hits
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/inn_segments_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mid_segments_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/out_segments_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/ext_segments_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/inner_slc_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/middle_slc_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/outer_slc_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/extra_slc_to_pt
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/pl2pt_av
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/pl2mtc_av
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/pt2mtc_av
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/pt_sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/h2s_sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/tar_sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/mtc_sump
+add wave -noupdate -group ULT_TOP /ult_tp/ULT/daq_sump
 add wave -noupdate -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/clk
 add wave -noupdate -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/rst
 add wave -noupdate -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/glob_en
@@ -111,20 +111,35 @@ add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_S
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/glob_en
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/ctrl
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/mon
-add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/cde_chamber_z_org_bus
-add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/cvp_chamber_z_org_bus
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_phicenter
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cde_chamber_z_org_bus
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_bus
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/local_en
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/local_rst
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/int_en
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/int_rst
-add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/cvp_ch_z0_org
-add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CVP_CH_Z0_WR
-add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CVP_CH_Z0_RD
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/PHI_WR
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/PHI_RD
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/cde_ch_z0_org
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CDE_CH_Z0_WR
 add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CDE_CH_Z0_RD
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/cvp_ch_z0_org
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CVP_CH_Z0_WR
+add wave -noupdate -group UCM_SUPERVISOR /ult_tp/ULT/logic_gen/UCM/UCM/UCM/UCM_SUPERVISOR/CVP_CH_Z0_RD
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/clk
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/rst
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/glob_en
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/i_uCM2pl_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2tf_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2mtc_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_av
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_ar
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_ar
+add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_ar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4999999518 fs} 0}
+WaveRestoreCursors {{Cursor 1} {692969871 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
