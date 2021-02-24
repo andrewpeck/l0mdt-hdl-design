@@ -134,7 +134,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-
+        o_phicenter <= phicenter;
       else
 
         o_phicenter <= phicenter;
