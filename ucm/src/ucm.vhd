@@ -58,6 +58,10 @@ end entity ucm;
 
 architecture beh of ucm is
 
+  -- constant UCM_INPUT_PL_LATENCY : integer := 2;
+
+  -- constant UCM_OUTPUT_PL_LATENCY : integer := 6;
+
   signal local_en   : std_logic;
   signal local_rst  : std_logic;
 
@@ -177,7 +181,7 @@ begin
   SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
-      g_DELAY_CYCLES  => UCM_INPUT_PL_LATENCY,
+      g_DELAY_CYCLES  => 2,
       g_PIPELINE_WIDTH    => SLC_RX_LEN
     )
     port map(
@@ -263,7 +267,7 @@ begin
   SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
-      g_DELAY_CYCLES  => UCM_OUTPUT_PL_LATENCY,
+      g_DELAY_CYCLES  => 3,
       g_PIPELINE_WIDTH    => UCM2PL_LEN
     )
     port map(
@@ -311,7 +315,7 @@ begin
 
 
 
-  PL_PROC_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
     BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
@@ -335,15 +339,15 @@ begin
     -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
-    PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
+    PRE_PL_IF_0: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy        <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
-      int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      -- int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
-    PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
+    PRE_PL_IF_1: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy   <= '0';
       int_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
-      int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+      -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
 
     end generate;
 
@@ -351,20 +355,20 @@ begin
 
   end generate;
 
-  POST_PL: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  POST_OUTPL_LOOP_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     pl_o_uCM2pl_ar(sl_i) <= structify(pl_o_uCM2pl_av(sl_i));
     --
     o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
     o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
     o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
-    o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
-    -- PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-    --   o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
-    -- end generate;
-    -- PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
-    --   o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
-    -- end generate;
+    -- o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
+    PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+    end generate;
+    PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
+      o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
+    end generate;
     -- ENCAP_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
       -- slc_endcap_ar(sl_i)                 <= structify(csw_main_out_ar(sl_i).specific);
       o_uCM2pl_ar(sl_i).nswseg_poseta     <= pl_o_uCM2pl_ar(sl_i).nswseg_poseta;

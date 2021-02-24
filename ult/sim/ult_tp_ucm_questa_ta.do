@@ -101,20 +101,20 @@ add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_sl
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_mainB_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborA_v
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_neighborB_v
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/clk
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rst
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/glob_en
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_phicenter
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_chamber_z_org_bus
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_v
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_r
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 -expand /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_r
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_null
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/barrel_r
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/dv_bus
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rpc_z_a
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_v
-add wave -noupdate -expand -group UCM_Top -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_phimod
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/clk
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rst
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/glob_en
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_phicenter
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_chamber_z_org_bus
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_v
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_r
+add wave -noupdate -expand -group UCM_Top -group CDE2 -expand /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_r
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_null
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/barrel_r
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/dv_bus
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rpc_z_a
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_v
+add wave -noupdate -expand -group UCM_Top -group CDE2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_phimod
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/i_slc_data_av
 add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/clk
 add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/rst
@@ -160,8 +160,9 @@ add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/csw_
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/csw_main_out_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/slc_endcap_ar
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_in_av
+add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_phimod
+add wave -noupdate -expand -group UCM_Top -color Cyan -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4) {-color Cyan -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).data_valid {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).busy {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).process_ch {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).phimod {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_angdtheta {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_posphi {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_poseta {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(3) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(2) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(1) {-color Cyan} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(0) {-color Cyan}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
 add wave -noupdate -expand -group UCM_Top -color Cyan /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av
-add wave -noupdate -expand -group UCM_Top -color Cyan /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cpam_in_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cpam_out_av
@@ -171,22 +172,21 @@ add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pam_
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/proc_info
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cvp_in_en
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cvp_loc_rst
-add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_phimod
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2hps_data
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/clk
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/rst
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/glob_en
-add wave -noupdate -expand -group MPL -expand /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/i_uCM2pl_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2tf_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2mtc_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_av
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_ar
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_ar
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_ar
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/clk
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/rst
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/glob_en
+add wave -noupdate -group MPL -expand /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/i_uCM2pl_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2tf_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2mtc_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_av
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_ar
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_ar
+add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_ar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1895312500 fs} 0}
+WaveRestoreCursors {{Cursor 1} {1894777248 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -202,4 +202,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1845468449 fs} {1957520522 fs}
+WaveRestoreZoom {1877284420 fs} {1914400100 fs}
