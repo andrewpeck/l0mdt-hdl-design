@@ -49,7 +49,7 @@ begin
   UCM_MAIN_CSW : process(rst,clk) begin
     if rising_edge(clk) then
       if(rst= '1') then
-        o_data <= (others => (others => '0'));
+        -- o_data <= (others => (others => '0'));
       else
         for csw_i in c_MAX_NUM_SL -1 downto 0 loop
           if i_control(csw_i).data_present = '1' then

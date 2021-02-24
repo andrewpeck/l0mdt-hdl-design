@@ -57,7 +57,7 @@ begin
     valid_pipe : process(rst,clk) begin
       if rising_edge(clk)then
         if rst= '1' then
-          data_pl <= (others => (others => '0'));
+          -- data_pl <= (others => (others => '0'));
         else
           if glob_en = '1' then
             for delay_i in g_DELAY_CYCLES - 1 downto 1 loop
