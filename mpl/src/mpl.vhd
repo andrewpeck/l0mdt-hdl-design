@@ -45,6 +45,8 @@ end entity mpl;
 
 architecture beh of mpl is
 
+  signal i_uCM2pl_ar  : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal pl2pt_av       : mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -57,6 +59,8 @@ architecture beh of mpl is
 begin
 
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+
+    i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));
 
     PL : entity shared_lib.std_pipeline
     generic map(
@@ -71,6 +75,7 @@ begin
       glob_en     => glob_en,
       --
       i_data      => i_uCM2pl_av(sl_i),
+      i_dv        => i_uCM2pl_ar(sl_i).data_valid,
       o_data      => main_pl_out_av(sl_i)
     );
     

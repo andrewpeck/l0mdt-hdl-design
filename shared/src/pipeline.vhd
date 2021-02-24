@@ -32,6 +32,7 @@ entity std_pipeline is
     glob_en             : in std_logic;
     --
     i_data              : in std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
+    i_dv                : in std_logic := '0';
     o_data              :out std_logic_vector(g_PIPELINE_WIDTH -1 downto 0)
   );
 end entity std_pipeline;
@@ -108,7 +109,10 @@ end generate;
 
 MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
   constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES -4;
-begin 
+
+begin
+  
+  
   mpcvmem : entity shared_lib.mpcvmem
   generic map(
     g_LOGIC_TYPE    => "pipeline",
@@ -123,7 +127,9 @@ begin
     ena           => glob_en,
     --
     i_din_a       => i_data,
-    o_dout_b      => o_data      
+    i_dv_in_a     => i_dv,
+    o_dout_b      => o_data
+    -- o_dv_out_b     
   );
 end generate MPCVMEM_GEN;
 
