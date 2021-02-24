@@ -1,6 +1,10 @@
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
+shared/shared_lib.src lib=shared_lib
+
 dataformats/l0mdt_buses_constants.svh 
 Top/mtc/prj_cfg.vhd
-shared/shared_lib.src lib=shared_lib
 ctrl/ctrl_lib.src lib=ctrl_lib
 Top/mtc/prj_cfg.vhd
 mtc/src/mtc_builder_verilog.sv

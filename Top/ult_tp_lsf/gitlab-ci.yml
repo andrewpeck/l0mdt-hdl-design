@@ -6,8 +6,14 @@ generate_project:ult_tp_lsf:
       PROJECT_NAME: ult_tp_lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:ult_tp_lsf:
-#     extends: .simulate_project
+simulate_project:ult_tp_lsf:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_lsf
+
+# sim_comp:ult_tp_lsf:
+#     extends: .sim_comp
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ult_tp_lsf
