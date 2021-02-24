@@ -101,9 +101,9 @@ architecture beh of ucm is
   type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal cde_phimod           : cde_phimod_at;
 
-  -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
-  signal uCM2hps_data         : ucm2hps_aavt;
+  signal uCM2hps_data           : ucm2hps_aavt;
 
   signal cde_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
   signal cvp_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
@@ -335,7 +335,7 @@ begin
     -- int_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     int_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
     -- if proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed = '1' then
-    -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
+    int_uCM2pl_ar(sl_i).phimod <= (others => '0');
     -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
