@@ -18,17 +18,30 @@
 
 
   <!-- CHAMBERS CENTER PHI -->
-  <node id="SECTOR_PHI"  address="0x00000100">
-    <node id="VALUE"    mask="0x0000FFFF" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
-    <node id="OVERRIDE" mask="0x00010000" parameters="default=0" permission="rw"  description="Phi to Center of chamber"/>
+  <node id="SECTOR_PHI_CTRL"  address="0x00000100">
+    <node id="VALUE"    mask="0x00000FFF" permission="w"  description="Phi to Center of chamber"/>
+    <node id="READ"     mask="0x01000000" permission="w"  description="Phi to Center of chamber"/>
+    <node id="WRITE"    mask="0x02000000" permission="w"  description="Phi to Center of chamber"/>
+  </node>
+
+  <node id="SECTOR_PHI_MON"  address="0x00000101">
+    <node id="VALUE"    mask="0x00FFF000" permission="r"  description="Phi to Center of chamber"/>
   </node>
 
   <!-- CHAMBER IETA MEMORY CONTROLS -->
-  <node id="DP_CHAMB_Z0" address="0x00000200">
-    <node id="DP_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://DP_CHAMB_Z0.xml"/>
-    <node id="DP_CHAMB_Z0_1" fwinfo="type=array" address="0x00001000" module="file://DP_CHAMB_Z0.xml"/>
-    <node id="DP_CHAMB_Z0_2" fwinfo="type=array" address="0x00002000" module="file://DP_CHAMB_Z0.xml"/>
-    <node id="DP_CHAMB_Z0_3" fwinfo="type=array" address="0x00004000" module="file://DP_CHAMB_Z0.xml"/>
+  <node id="CDE_CHAMB_Z0" address="0x00000102">
+    <node id="CDE_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_RAM.xml"/>
+    <node id="CDE_CHAMB_Z0_1" fwinfo="type=array" address="0x00001000" module="file://MEM_RAM.xml"/>
+    <node id="CDE_CHAMB_Z0_2" fwinfo="type=array" address="0x00002000" module="file://MEM_RAM.xml"/>
+    <node id="CDE_CHAMB_Z0_3" fwinfo="type=array" address="0x00004000" module="file://MEM_RAM.xml"/>
+  </node>
+
+    <!-- CHAMBER IETA MEMORY CONTROLS -->
+  <node id="CVP_CHAMB_Z0" address="0x00000106">
+    <node id="CVP_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_RAM.xml"/>
+    <node id="CVP_CHAMB_Z0_1" fwinfo="type=array" address="0x00001000" module="file://MEM_RAM.xml"/>
+    <node id="CVP_CHAMB_Z0_2" fwinfo="type=array" address="0x00002000" module="file://MEM_RAM.xml"/>
+    <node id="CVP_CHAMB_Z0_3" fwinfo="type=array" address="0x00004000" module="file://MEM_RAM.xml"/>
   </node>
 
 

@@ -54,8 +54,8 @@ package config_pkg is
   --------------------------------------------------------------------------------
   -- Sector information
   --------------------------------------------------------------------------------
-  constant c_SECTOR_ID            : integer   := CFG.SECTOR_ID;
-  constant c_SECTOR_SIDE          : std_logic := CFG.SECTOR_SIDE;         -- 0:A          1:C
+  constant c_SECTOR_ID            : integer := CFG.SECTOR_ID;
+  constant c_SECTOR_SIDE          : integer := CFG.SECTOR_SIDE;         -- 0:A          1:C
   constant c_ST_nBARREL_ENDCAP    : std_logic := CFG.ST_nBARREL_ENDCAP;   -- 0: barrel    1: Endcap
   constant c_ENDCAP_nSMALL_LARGE  : std_logic := CFG.ENDCAP_nSMALL_LARGE; -- 0: small     1: large
   constant c_ENABLE_NEIGHBORS     : std_logic := CFG.ENABLE_NEIGHBORS;   -- 0: disabled  1: enabled

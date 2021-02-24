@@ -23,6 +23,8 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+
+use shared_lib.barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -55,6 +57,10 @@ entity ucm is
 end entity ucm;
 
 architecture beh of ucm is
+
+  -- constant UCM_INPUT_PL_LATENCY : integer := 2;
+
+  -- constant UCM_OUTPUT_PL_LATENCY : integer := 6;
 
   signal local_en   : std_logic;
   signal local_rst  : std_logic;
@@ -92,18 +98,22 @@ architecture beh of ucm is
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  type cvp_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-  signal cvp_phimod           : cvp_phimod_at;
+  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal cde_phimod           : cde_phimod_at;
 
-  -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
-  signal uCM2hps_data         : ucm2hps_aavt;
+  signal uCM2hps_data           : ucm2hps_aavt;
 
-  type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-  signal cde_cz0_a : cde_cz0_at;
+  signal cde_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
+  signal cvp_chamber_z_org_bus  : b_chamber_z_origin_station_avt;
+  signal phicenter              : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
 
-  type cvp_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-  signal cvp_cz0_a : cvp_cz0_at;
+  -- type cde_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  -- signal cde_cz0_a : cde_cz0_at;
+
+  -- type cvp_cz0_at is array(c_NUM_THREADS -1 downto 0) of UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+  -- signal cvp_cz0_a : cvp_cz0_at;
 
 begin
 
@@ -125,7 +135,11 @@ begin
     glob_en           => glob_en,      
     -- AXI to SoC
     ctrl              => ctrl,
-    mon               => mon,          
+    mon               => mon,
+    --
+    o_phicenter => phicenter,
+    o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
+    o_cvp_chamber_z_org_bus => cvp_chamber_z_org_bus,
     -- 
     local_en          => local_en,
     local_rst         => local_rst
@@ -167,7 +181,7 @@ begin
   SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_IN_PL : entity shared_lib.std_pipeline
     generic map(
-      g_DELAY_CYCLES  => UCM_INPUT_PL_LATENCY,
+      g_DELAY_CYCLES  => 2,
       g_PIPELINE_WIDTH    => SLC_RX_LEN
     )
     port map(
@@ -201,15 +215,17 @@ begin
       rst                   => local_rst,
       glob_en               => local_en,
       --
-      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
-      CHAMBER_Z0_MON_ARRAY  => cde_cz0_a(th_i), --mon.DP_CHAMB_Z0.DP_CHAMB_Z0,
+      i_phicenter            => phicenter,
+      i_chamber_z_org_bus => cde_chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
-      o_cde_data_v          => cpam_in_av(th_i)
+      o_cde_data_v          => cpam_in_av(th_i),
+      --
+      o_phimod      => cde_phimod(th_i)
     );
   end generate;
 
-  mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
+  -- mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
 
   -- PAM cross switch
   SLC_PAM_CSW : entity ucm_lib.ucm_pam_csw
@@ -233,16 +249,15 @@ begin
       rst           => local_rst,
       glob_en       => local_en,
       --
-      SECTOR_PHI            => ctrl.SECTOR_PHI,
-      CHAMBER_Z0_CTRL_ARRAY => ctrl.DP_CHAMB_Z0.DP_CHAMB_Z0,
-      CHAMBER_Z0_MON_ARRAY  => cvp_cz0_a(vp_i),
+      -- i_phicenter            => phicenter,
+      i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --
       i_local_rst   => cvp_loc_rst(vp_i),
       i_in_en       => cvp_in_en(vp_i),
       --
       i_data_v      => cpam_out_av(vp_i),
       --
-      o_phimod      => cvp_phimod(vp_i),
+      -- o_phimod      => cde_phimod(vp_i),
       o_uCM2hps_av  => uCM2hps_data(vp_i)
 
     );
@@ -252,7 +267,7 @@ begin
   SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
-      g_DELAY_CYCLES  => UCM_OUTPUT_PL_LATENCY,
+      g_DELAY_CYCLES  => 3,
       g_PIPELINE_WIDTH    => UCM2PL_LEN
     )
     port map(
@@ -278,8 +293,11 @@ begin
       VP2HPS_OUT : if c_HPS_ENABLE_ST_OUT generate
         o_uCM2hps_out_av(heg_i) <= uCM2hps_data(heg_i)(2);
       end generate;
-      VP2HPS_EXT : if c_HPS_ENABLE_ST_EXT generate
+      VP2HPS_EXT_EN : if c_HPS_ENABLE_ST_EXT generate
         o_uCM2hps_ext_av(heg_i) <= uCM2hps_data(heg_i)(3);
+      end generate;
+      VP2HPS_EXT_DIS : if not c_HPS_ENABLE_ST_EXT generate
+        o_uCM2hps_ext_av(heg_i) <= (others => '0');
       end generate;
 
       -- o_uCM2hps_data_av(hps_i)(heg_i) <= uCM2hps_data(heg_i)(hps_i);
@@ -297,7 +315,7 @@ begin
 
 
 
-  PL_PROC_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
     BARREL_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
@@ -321,12 +339,12 @@ begin
     -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
-    PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      int_uCM2pl_ar(sl_i).busy   <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
+    PRE_PL_IF_0: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
+      int_uCM2pl_ar(sl_i).busy        <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
-      -- int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      -- int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
-    PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
+    PRE_PL_IF_1: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy   <= '0';
       int_uCM2pl_ar(sl_i).process_ch  <= (others => '0');
       -- int_uCM2pl_ar(sl_i).phimod <= (others => '0');
@@ -337,15 +355,16 @@ begin
 
   end generate;
 
-  POST_PL: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  POST_OUTPL_LOOP_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     pl_o_uCM2pl_ar(sl_i) <= structify(pl_o_uCM2pl_av(sl_i));
     --
     o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
     o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
     o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
+    -- o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
     PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).phimod    <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
     PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       o_uCM2pl_ar(sl_i).phimod    <=(others => '0');

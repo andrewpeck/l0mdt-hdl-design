@@ -25,13 +25,14 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
- 
+use shared_lib.barrel_chamb_z2origin_pkg.all;
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 -- use ucm_lib.ucm_function_pkg.all;
 
-library ctrl_lib;
-use ctrl_lib.UCM_CTRL.all;
+-- library ctrl_lib;
+-- use ctrl_lib.UCM_CTRL.all;
 
 entity ucm_cde is
   port (
@@ -39,13 +40,14 @@ entity ucm_cde is
     rst                   : in std_logic;
     glob_en               : in std_logic;
     -- configuration, control & Monitoring
-    CHAMBER_Z0_CTRL_ARRAY : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_CTRL_t_ARRAY;
-    CHAMBER_Z0_MON_ARRAY  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
-
+    i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
     -- pam out
-    o_cde_data_v          : out ucm_cde_rvt
+    o_cde_data_v          : out ucm_cde_rvt;
+    -- to pipeline
+    o_phimod              : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
   );
 end entity ucm_cde;
 
@@ -62,10 +64,12 @@ architecture beh of ucm_cde is
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
 
+  signal int_phimod   : signed(UCM2PL_PHIMOD_LEN -1 downto 0);
 begin
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_cde_data_v <= vectorify(o_cde_data_r);
+  o_phimod <= int_phimod;
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -76,6 +80,22 @@ begin
       unsigned(barrel_r.rpc2_posz),
       unsigned(barrel_r.rpc1_posz),
       unsigned(barrel_r.rpc0_posz)
+    );
+
+    PHIMOD : entity ucm_lib.ucm_cvp_phimod
+    generic map(
+      g_PIPELINE => 2
+    )
+    port map(
+      clk         =>clk,
+      rst         =>rst,
+      --
+      i_phicenter   => i_phicenter,
+      --
+      i_posphi    => i_slc_data_r.common.posphi,
+      i_dv        => i_slc_data_r.data_valid,
+      --
+      o_phimod    => int_phimod
     );
 
     IETA_00 : entity ucm_lib.ucm_ieta_calc
@@ -89,8 +109,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(0).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(0).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(0),
       --
       i_z           => rpc_z_a(0),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -109,8 +128,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => rpc_z_a(1),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -129,8 +147,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => rpc_z_a(2),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -149,8 +166,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(2).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(2).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(2),
       --
       i_z           => rpc_z_a(3),
       i_z_dv        => i_slc_data_r.data_valid,
@@ -172,6 +188,7 @@ begin
           o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
           o_cde_data_r.specific     <= o_cde_data_null.specific  ;
           o_cde_data_r.data_valid   <= o_cde_data_null.data_valid;
+          o_cde_data_r.phimod       <= o_cde_data_null.phimod    ;
           o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
         else
           if i_slc_data_r.data_valid = '1' then
@@ -182,6 +199,7 @@ begin
             o_cde_data_r.specific     <= i_slc_data_r.specific;
             o_cde_data_r.data_valid   <= i_slc_data_r.data_valid;
             o_cde_data_r.posphi       <= i_slc_data_r.common.posphi;
+            o_cde_data_r.phimod       <= int_phimod;
 
 
             -- -- INN

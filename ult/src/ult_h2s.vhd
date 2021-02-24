@@ -194,6 +194,13 @@ begin
     signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal ext_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
   begin
+    o_inn_segments <= (others => (others => '0'));
+    o_mid_segments <= (others => (others => '0'));
+    o_out_segments <= (others => (others => '0'));
+    o_ext_segments <= (others => (others => '0'));
+    o_plus_neighbor_segments <= (others => (others => '0'));
+    o_minus_neighbor_segments <= (others => (others => '0'));
+
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge

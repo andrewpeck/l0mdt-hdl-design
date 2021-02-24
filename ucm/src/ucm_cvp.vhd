@@ -23,6 +23,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.barrel_chamb_z2origin_pkg.all;
  
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -42,9 +43,8 @@ entity ucm_cvp is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    SECTOR_PHI            : in UCM_SECTOR_PHI_CTRL_t;
-    CHAMBER_Z0_CTRL_ARRAY : in UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_CTRL_t_ARRAY;
-    CHAMBER_Z0_MON_ARRAY  : out UCM_DP_CHAMB_Z0_DP_CHAMB_Z0_MON_t_ARRAY;
+    -- i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
     i_local_rst         : in std_logic;
     i_in_en             : in std_logic;
@@ -115,21 +115,21 @@ begin
     o_data      => data_v
   );
 
-  PHIMOD : entity ucm_lib.ucm_cvp_phimod
-  generic map(
-    g_PIPELINE => 2
-  )
-  port map(
-    clk         =>clk,
-    rst         =>local_rst,
-    --
-    SECTOR_PHI  => SECTOR_PHI,
-    --
-    i_posphi    => data_r.posphi,
-    i_dv        => data_r.data_valid,
-    --
-    o_phimod    => o_phimod
-  );
+  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- generic map(
+  --   g_PIPELINE => 2
+  -- )
+  -- port map(
+  --   clk         =>clk,
+  --   rst         =>local_rst,
+  --   --
+  --   i_phicenter   => i_phicenter,
+  --   --
+  --   i_posphi    => data_r.posphi,
+  --   i_dv        => data_r.data_valid,
+  --   --
+  --   o_phimod    => o_phimod
+  -- );
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -187,8 +187,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(0).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(0).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(0),
       --
       i_z           => vec_pos_array(0),
       i_z_dv        => vec_z_pos_dv(0),
@@ -207,8 +206,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(1).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(1).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(1),
       --
       i_z           => vec_pos_array(1),
       i_z_dv        => vec_z_pos_dv(1),
@@ -227,8 +225,7 @@ begin
       clk           => clk,
       rst           => rst,
       --
-      CHAMBER_Z0_CALC_WR  => CHAMBER_Z0_CTRL_ARRAY(2).WR,
-      CHAMBER_Z0_CALC_RD  => CHAMBER_Z0_MON_ARRAY(2).RD,
+      i_chamber_z_org_bus => i_chamber_z_org_bus(2),
       --
       i_z           => vec_pos_array(2),
       i_z_dv        => vec_z_pos_dv(2),

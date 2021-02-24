@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="DP_CHAMB_Z0">
+<node id="MEM_RAM">
   <node id="WR"  address="0x00000000">
     <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="New value to write"/>
     <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="position or chamber to r/w value"/>
