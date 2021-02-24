@@ -124,9 +124,8 @@ add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/csw_
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/slc_endcap_ar
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_in_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_phimod
-add wave -noupdate -expand -group UCM_Top -color Cyan -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4) {-color Cyan -height 17 -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).data_valid {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).busy {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).process_ch {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).common {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).phimod {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_angdtheta {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_posphi {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(4).nswseg_poseta {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(3) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(2) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(1) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar(0) {-color Cyan -height 17}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
-add wave -noupdate -expand -group UCM_Top -color Cyan -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av(4) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av(3) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av(2) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av(1) {-color Cyan -height 17} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av(0) {-color Cyan -height 17}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av
-add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar
+add wave -noupdate -expand -group UCM_Top -color Cyan /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_ar
+add wave -noupdate -expand -group UCM_Top -color Cyan /ult_tp/ULT/logic_gen/UCM/UCM/UCM/int_uCM2pl_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cpam_in_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cpam_out_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2pl_av
@@ -165,19 +164,33 @@ add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/
 add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/vec_z_pos_dv
 add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/vec_ang_pl
 add wave -noupdate -expand -group UCM_Top -group CVP2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/ATAN_SLOPE_LEN
-add wave -noupdate -expand -group UCM_Top -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2hps_data(2) -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2hps_data
+add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2hps_data
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_inn_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_mid_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_out_av
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2hps_ext_av
 add wave -noupdate -expand -group UCM_Top -divider 2MPL
-add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_ar
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/g_MEMORY_TYPE
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/g_PIPELINE_TYPE
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/g_DELAY_CYCLES
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/g_PIPELINE_WIDTH
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/clk
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/rst
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/glob_en
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/i_data
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/i_dv
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/o_data
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/o_dv
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 -expand /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/SHIFT/data_pl
+add wave -noupdate -expand -group UCM_Top -expand -group OUTPL2PL4 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_OUT_PL_A(4)/SLC_OUT_PL/SHIFT/dv_pl
+add wave -noupdate -expand -group UCM_Top -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_ar(4) -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_ar
 add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/pl_o_uCM2pl_av
-add wave -noupdate -expand -group UCM_Top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_av
+add wave -noupdate -expand -group UCM_Top -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar(4) -expand} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_ar
+add wave -noupdate -expand -group UCM_Top -expand /ult_tp/ULT/logic_gen/UCM/UCM/UCM/o_uCM2pl_av
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/clk
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/rst
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/glob_en
-add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/i_uCM2pl_av
+add wave -noupdate -expand -group MPL -expand /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/i_uCM2pl_av
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2tf_av
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/o_pl2mtc_av
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/g_MEMORY_TYPE
@@ -230,7 +243,6 @@ add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVM
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/mem_out_b
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/used_data
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/o_data
-add wave -noupdate -expand -group MPL -expand -group MPL_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/data_pl
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/main_pl_out_av
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_av
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_av
@@ -238,7 +250,7 @@ add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_ar
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_ar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {Reset {7812500 fs} 1} {{Cursor 2} {11261829 fs} 0}
+WaveRestoreCursors {Reset {7812500 fs} 1 Red default} {{Cursor 2} {8393910 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 319
 configure wave -valuecolwidth 100
