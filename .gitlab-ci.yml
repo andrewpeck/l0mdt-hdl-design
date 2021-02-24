@@ -28,7 +28,7 @@ include:
     - local: '/Top/hps_lsf/gitlab-ci.yml'
     - local: '/Top/daq/gitlab-ci.yml'
     - local: '/Top/mpl/gitlab-ci.yml'
-    - local: '/Top/tdc/gitlab-ci.yml'
+    # - local: '/Top/tdc/gitlab-ci.yml'
     - local: '/Top/mtc/gitlab-ci.yml'
     #---------------------------------------------
     #         Builds
