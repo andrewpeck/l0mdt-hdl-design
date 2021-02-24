@@ -64,10 +64,12 @@ architecture beh of ucm_cde is
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
 
+  signal int_phimod   : signed(UCM2PL_PHIMOD_LEN -1 downto 0);
 begin
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_cde_data_v <= vectorify(o_cde_data_r);
+  o_phimod <= int_phimod;
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -93,7 +95,7 @@ begin
       i_posphi    => i_slc_data_r.common.posphi,
       i_dv        => i_slc_data_r.data_valid,
       --
-      o_phimod    => o_phimod
+      o_phimod    => int_phimod
     );
 
     IETA_00 : entity ucm_lib.ucm_ieta_calc
@@ -186,6 +188,7 @@ begin
           o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
           o_cde_data_r.specific     <= o_cde_data_null.specific  ;
           o_cde_data_r.data_valid   <= o_cde_data_null.data_valid;
+          o_cde_data_r.phimod       <= o_cde_data_null.phimod    ;
           o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
         else
           if i_slc_data_r.data_valid = '1' then
@@ -196,6 +199,7 @@ begin
             o_cde_data_r.specific     <= i_slc_data_r.specific;
             o_cde_data_r.data_valid   <= i_slc_data_r.data_valid;
             o_cde_data_r.posphi       <= i_slc_data_r.common.posphi;
+            o_cde_data_r.phimod       <= int_phimod;
 
 
             -- -- INN

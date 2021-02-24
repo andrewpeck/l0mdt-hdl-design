@@ -94,8 +94,8 @@ architecture beh of ucm is
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  type cvp_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
-  signal cvp_phimod           : cvp_phimod_at;
+  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal cde_phimod           : cde_phimod_at;
 
   -- signal int_slc_data         : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
@@ -217,7 +217,7 @@ begin
       i_slc_data_v          => cde_in_av(th_i),
       o_cde_data_v          => cpam_in_av(th_i),
       --
-      o_phimod      => cvp_phimod(th_i)
+      o_phimod      => cde_phimod(th_i)
     );
   end generate;
 
@@ -253,7 +253,7 @@ begin
       --
       i_data_v      => cpam_out_av(vp_i),
       --
-      -- o_phimod      => cvp_phimod(vp_i),
+      -- o_phimod      => cde_phimod(vp_i),
       o_uCM2hps_av  => uCM2hps_data(vp_i)
 
     );
@@ -338,7 +338,7 @@ begin
     PL_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy        <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
       int_uCM2pl_ar(sl_i).process_ch  <= proc_info(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
-      int_uCM2pl_ar(sl_i).phimod      <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     end generate;
     PL_PROC_0: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       int_uCM2pl_ar(sl_i).busy   <= '0';
@@ -360,7 +360,7 @@ begin
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
     o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
     -- PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-    --   o_uCM2pl_ar(sl_i).phimod    <= cvp_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+    --   o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     -- end generate;
     -- PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
     --   o_uCM2pl_ar(sl_i).phimod    <=(others => '0');
