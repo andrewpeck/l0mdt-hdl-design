@@ -58,6 +58,21 @@ architecture beh of mpl is
 
 begin
 
+  UCM_SUPERVISOR : entity mpl_lib.mpl_supervisor
+  port map(
+    clk               => clk,
+    rst               => rst,
+    glob_en           => glob_en,      
+    -- AXI to SoC
+    ctrl              => ctrl,
+    mon               => mon,
+    --
+
+    -- 
+    local_en          => local_en,
+    local_rst         => local_rst
+  );
+
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
 
     i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));

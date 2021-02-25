@@ -84,7 +84,7 @@ begin
   --    SIGNALING
   --------------------------------------------
   local_en <= glob_en and int_en;
-  local_rst <= rst and int_rst;
+  local_rst <= rst or int_rst;
 
   signaling: process(clk)
   begin
