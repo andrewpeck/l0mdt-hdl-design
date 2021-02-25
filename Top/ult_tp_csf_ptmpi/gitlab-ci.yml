@@ -6,8 +6,15 @@ generate_project:ult_tp_csf_ptmpi:
       PROJECT_NAME: ult_tp_csf_ptmpi
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:ult_tp_csf_ptmpi:
-#     extends: .simulate_project
+simulate_project:ult_tp_csf_ptmpi:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ult_tp_csf_ptmpi
+
+# sim_comp:ult_tp_csf_ptmpi:
+#     extends: .sim_comp
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ult_tp_csf_ptmpi
+

@@ -1,4 +1,9 @@
-Top/daq/prj_cfg.vhd
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
 shared/shared_lib.src lib=shared_lib
+
+Top/daq/prj_cfg.vhd
+
 ttc/ttc_lib.src lib=ttc_lib
 daq/daq_lib.src lib=daq_lib
