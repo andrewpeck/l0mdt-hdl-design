@@ -3,6 +3,6 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
 shared/shared_lib.src lib=shared_lib
 Top/ucm/prj_cfg.vhd 
-ucm/ucm_lib.src lib=ucm_lib
-ucm/top_ucm.vhd
+UserLogic/ucm/ucm_lib.src lib=ucm_lib
+UserLogic/ucm/top_ucm.vhd
 

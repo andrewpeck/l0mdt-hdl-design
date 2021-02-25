@@ -6,19 +6,19 @@
 	url = ../dataformats.git
 	branch = master
 [submodule "hal/sl/my-sl-gty-interface"]
-	path = sl/src/my-sl-gty-interface
+	path = HAL/sl/src/my-sl-gty-interface
 	url = ../../okumura/my-sl-gty-interface
 [submodule "hal/lpgbt/lpgbt-emul"]
-	path = lpgbt/src/lpgbt-emul
+	path = HAL/lpgbt/src/lpgbt-emul
 	url = ../lpgbt-emul.git
 [submodule "hal/lpgbt/lpgbt-fpga"]
-	path = lpgbt/src/lpgbt-fpga
+	path = HAL/lpgbt/src/lpgbt-fpga
 	url = ../../gbt-fpga/lpgbt-fpga.git
 [submodule "hal/mgt/tx_phase_aligner"]
-	path = hal/src/mgt/tx_phase_aligner
+	path = HAL/hal/src/mgt/tx_phase_aligner
 	url = ../../HPTD/tx_phase_aligner.git
 [submodule "hal/lpgbt/gbt-sc"]
-	path = lpgbt/src/gbt-sc
+	path = HAL/lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
 [submodule "regmap"]
 	path = regmap

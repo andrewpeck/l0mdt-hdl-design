@@ -1,6 +1,0 @@
-daq/types_def.src             lib=types_def
-daq/ttc_def.src                 lib=ttc_def
-
-daq/pkg/daq_devel_defs.vhd
-daq/pkg/daq_defs.vhd
-daq/pkg/daq_row_defs.vhd

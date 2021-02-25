@@ -1,0 +1,13 @@
+# IC / SCA
+HAL/lpgbt/src/gbt-sc/GBT-SC/gbtsc_top.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/IC/ic_deserializer.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/IC/ic_rx_fifo.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/IC/ic_rx.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/IC/ic_top.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/IC/ic_tx.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_deserializer.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_pkg.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_rx_fifo.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_rx.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_top.vhd
+HAL/lpgbt/src/gbt-sc/GBT-SC/SCA/sca_tx.vhd
