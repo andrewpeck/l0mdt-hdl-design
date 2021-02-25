@@ -29,12 +29,15 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
  
 library mpl_lib;
-use ucm_lib.mpl_pkg.all;
+use mpl_lib.mpl_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
 
 entity mpl_supervisor is
+  generic(
+    g_RESET_DELAY       : integer := 0
+  );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -54,13 +57,14 @@ architecture beh of mpl_supervisor is
   signal int_en   : std_logic := '0';
   signal int_rst  : std_logic := '1';
   --
+  signal mem_flush_on_Reset : std_logic := '1';
 begin
   
   --------------------------------------------
   --    SIGNALING
   --------------------------------------------
   local_en <= glob_en and int_en;
-  local_rst <= rst or int_rst;
+  -- local_rst <= rst or int_rst;
 
   signaling: process(clk)
   begin
@@ -101,6 +105,23 @@ begin
   --------------------------------------------
   --    RESET
   --------------------------------------------
+  FLUSH_DISABLED: if mem_flush_on_Reset = '0' generate
+    local_rst <= rst or int_rst;
+  end generate;
+  FLUSH_ENABLED: if mem_flush_on_Reset = '1' generate
+    MEM_RESET: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        local_rst <= '1';
+        rst_counter <= (others => '0');
+      else
+
+        
+      end if;
+    end if;
+  end process MEM_RESET;
+  end generate;
   
   
   
