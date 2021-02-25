@@ -28,6 +28,9 @@ use shared_lib.config_pkg.all;
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.MPL_CTRL.all;
+
 
 entity mpl is
 
@@ -35,6 +38,9 @@ entity mpl is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    -- AXI to SoC
+    ctrl                : in  MPL_CTRL_t;
+    mon                 : out MPL_MON_t;
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -44,6 +50,9 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
+
+  signal local_en            :  std_logic;
+  signal local_rst           :  std_logic;
 
   signal i_uCM2pl_ar  : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
 

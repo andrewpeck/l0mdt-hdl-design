@@ -54,17 +54,19 @@ entity mpl_supervisor is
 end entity mpl_supervisor;
 
 architecture beh of mpl_supervisor is
-  signal int_en   : std_logic := '0';
-  signal int_rst  : std_logic := '1';
+  signal int_en   : std_logic;
+  signal int_rst  : std_logic;
+  signal mem_rst  : std_logic;
   --
   signal mem_flush_on_Reset : std_logic := '1';
+  signal rst_counter : integer;
 begin
   
   --------------------------------------------
   --    SIGNALING
   --------------------------------------------
   local_en <= glob_en and int_en;
-  -- local_rst <= rst or int_rst;
+  local_rst <= rst or int_rst or mem_rst;
 
   signaling: process(clk)
   begin
@@ -95,9 +97,9 @@ begin
       if rst = '1' then
 
       else
-        mon.STATUS.MAIN_ENABLED <= local_en;
-        mon.STATUS.MAIN_READY <= not local_rst;
-        mon.STATUS.MAIN_ERROR <= '0';
+        mon.STATUS.G_ENABLED <= local_en;
+        mon.STATUS.G_READY <= not local_rst;
+        mon.STATUS.G_ERROR <= '0';
       end if;
     end if;
   end process status;
@@ -105,23 +107,24 @@ begin
   --------------------------------------------
   --    RESET
   --------------------------------------------
-  FLUSH_DISABLED: if mem_flush_on_Reset = '0' generate
-    local_rst <= rst or int_rst;
-  end generate;
-  FLUSH_ENABLED: if mem_flush_on_Reset = '1' generate
-    MEM_RESET: process(clk)
+  -- FLUSH_DISABLED: if mem_flush_on_Reset = '0' generate
+  --   local_rst <= rst or int_rst;
+  -- end generate;
+
+  -- FLUSH_ENABLED: if mem_flush_on_Reset = '1' generate
+  MEM_RESET: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        local_rst <= '1';
-        rst_counter <= (others => '0');
+        mem_rst <= '1';
+        rst_counter <= 0;
       else
 
         
       end if;
     end if;
   end process MEM_RESET;
-  end generate;
+  -- end generate;
   
   
   
