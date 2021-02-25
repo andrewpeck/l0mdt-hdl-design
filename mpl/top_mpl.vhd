@@ -28,13 +28,19 @@ use shared_lib.config_pkg.all;
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.MPL_CTRL.all;
+
 
 entity top_mpl is
 
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic := '1';
+    glob_en             : in std_logic;
+    -- AXI to SoC
+    ctrl                : in  MPL_CTRL_t;
+    mon                 : out MPL_MON_t;
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -49,12 +55,15 @@ begin
 
   MPL : entity mpl_lib.mpl
   port map(
-    clk             => clk,
-    rst             => rst,
+    clk             => clock_and_control.clk,
+    rst             => clock_and_control.rst,
     glob_en         => glob_en,
-
+    --
+    ctrl              => ctrl,
+    mon               => mon,
+    --
     i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2tf_av      => o_pl2tf_av,
+    o_pl2tf_av      => o_pl2pt_av,
     o_pl2mtc_av     => o_pl2mtc_av
   );
   
