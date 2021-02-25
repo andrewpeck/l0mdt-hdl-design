@@ -1,7 +1,12 @@
-Top/hp/prj_cfg.vhd 
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-shared/shared_lib.src lib=shared_lib
+Top/hp/list/shared_lib.src lib=shared_lib
+#### project local configuration files ####
+Top/hp/prj_cfg.vhd 
+#### AXI SC ####
+
+#### top  ####
 hp/top_hp.vhd
+#### modules included ####
 hp/hp_lib.src lib=hp_lib

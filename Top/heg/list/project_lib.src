@@ -1,8 +1,13 @@
-Top/heg/prj_cfg.vhd
 #### default config parameters ####
 shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 #### shared ####
-shared/shared_lib.src lib=shared_lib
+Top/heg/list/shared_lib.src lib=shared_lib
+#### project local configuration files ####
+Top/heg/prj_cfg.vhd
+#### AXI SC ####
+
+#### top  ####
 heg/top_heg.vhd
+#### modules included ####
 hp/hp_lib.src lib=hp_lib
 heg/heg_lib.src lib=heg_lib
