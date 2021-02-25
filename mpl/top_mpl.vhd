@@ -55,15 +55,15 @@ begin
 
   MPL : entity mpl_lib.mpl
   port map(
-    clk             => clock_and_control.clk,
-    rst             => clock_and_control.rst,
+    clk             => clk,
+    rst             => rst,
     glob_en         => glob_en,
     --
     ctrl              => ctrl,
     mon               => mon,
     --
     i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2tf_av      => o_pl2pt_av,
+    o_pl2tf_av      => o_pl2tf_av,
     o_pl2mtc_av     => o_pl2mtc_av
   );
   
