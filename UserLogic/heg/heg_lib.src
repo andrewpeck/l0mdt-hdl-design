@@ -1,4 +1,4 @@
-UserLogic/heg/src/ROMs/heg_roi_lib.src lib=heg_roi_lib.src
+UserLogic/heg/src/ROMs/heg_roi_lib.src lib=heg_roi_lib
 UserLogic/heg/src/ROMs/heg_rom_b_zholes_pkg.vhd
 UserLogic/heg/pkg/heg_pkg.vhd
 UserLogic/heg/pkg/heg_custom_pkg.vhd
