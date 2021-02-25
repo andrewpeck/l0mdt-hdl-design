@@ -45,9 +45,9 @@ shared/src/pipeline.vhd
 shared/src/ring_buffer_v2.vhd
 # shared/src/vhdl_ram_memory.vhd
 #who use these?
-shared/src/bram.vhd
-shared/src/rom.v
-shared/src/rom_dp.v
+# shared/src/bram.vhd
+# shared/src/rom.v
+# shared/src/rom_dp.v
 #---------------------------------
 # trigonometrics
 #---------------------------------

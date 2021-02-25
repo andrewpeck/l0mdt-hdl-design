@@ -9,17 +9,17 @@ shared/config/config_pkg.vhd
 #---------------------------------
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
-# shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
-# shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
+shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
+shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
 #---------------------------------
 # Detector shared RAMs
 #---------------------------------
 # shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 shared/detector_parameters/detector_param_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd
-shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd
-shared/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd
-shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
+# shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd
+# shared/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd
+# shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
 #---------------------------------
 # common constants and types
 #---------------------------------
@@ -45,9 +45,9 @@ shared/src/pipeline.vhd
 shared/src/ring_buffer_v2.vhd
 # shared/src/vhdl_ram_memory.vhd
 #who use these?
-shared/src/bram.vhd
-shared/src/rom.v
-shared/src/rom_dp.v
+# shared/src/bram.vhd
+# shared/src/rom.v
+# shared/src/rom_dp.v
 #---------------------------------
 # trigonometrics
 #---------------------------------

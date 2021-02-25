@@ -1,0 +1,13 @@
+#################### hps Project ###########################
+generate_project:hps:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: hps
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+
+# simulate_project:hps:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: hps
