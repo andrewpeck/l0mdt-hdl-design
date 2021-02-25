@@ -2,14 +2,14 @@
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
---  
---  Project: ATLAS L0MDT Trigger 
+--
+--  Project: ATLAS L0MDT Trigger
 --  Module: Detector parameters
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---    
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -30,7 +30,7 @@ package detector_param_pkg is
   -- Time & cycles constants
   -------------------------------------------------------------------------
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
-  
+
   -- TAR PIPELINE
   constant TAR_PL_A_LATENCY     : integer := 397;  --310; -- cycles => 968.75 ns
   constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
@@ -42,7 +42,7 @@ package detector_param_pkg is
 
   constant HEG_LSF_START_DELAY  : integer := 18;
   constant HEG_LSF_END_DELAY    : integer := 10;
-  
+
   constant HEG_BUSY_CLOCKS      : integer := UCM_LATENCY_HPS_CH;
   --
   constant CSF_POST_PROCESSING  : integer := 57;
@@ -55,9 +55,9 @@ package detector_param_pkg is
   constant HP_BCID_OFFSET_TIME  : real := 575.0; -- cycles
   constant HP_BCID_OFFSET_TIME_078res  : integer := integer(HP_BCID_OFFSET_TIME / 0.78125); -- cycles
 
-  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer; 
-  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer; 
-  
+  function get_sf_time ( SF_t : std_logic ; t_CSF , t_LSF : integer) return integer;
+  function get_pt_time ( PT_t : std_logic ; t_MPI , t_UCI : integer) return integer;
+
   function get_heg_load_time(start_delay : integer) return integer;
   function get_heg_busy_time(start_delay : integer) return integer;
   function get_heg_unload_time(start_delay, end_delay : integer) return integer;
@@ -91,15 +91,15 @@ package detector_param_pkg is
     3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
 
   );
-  function get_sector_phi_center( sector : integer) return sector_phi_center_t; 
-  
+  function get_sector_phi_center( sector : integer) return sector_phi_center_t;
+
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  
-  type b_chamber_center_radius_unsigned_au is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
-  type b_chamber_center_radius_integer_ar is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
-  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_ar;
+
+  type b_chamber_center_radius_unsigned_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned;
+  type b_chamber_center_radius_integer_art is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  type b_chamber_center_station is array (0 to 3) of b_chamber_center_radius_integer_art;
   type b_chamber_center_chamber is array ( 0 to 15) of b_chamber_center_station;
   constant b_chamber_center_radius : b_chamber_center_chamber :=(
     --     INN MID OUT EXT
@@ -124,7 +124,7 @@ package detector_param_pkg is
     15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
   );
 
-  function get_b_chamber_center_radius( sector, station : integer) return b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( sector, station  : integer ; output_len : integer := SLC_Z_RPC_LEN ; scaler : real := 1.0) return b_chamber_center_radius_unsigned_aut;
   -------------------------------------------------------------------------
   -- Radius to the origin of the chamber
   -------------------------------------------------------------------------
@@ -158,39 +158,44 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  subtype b_chamber_z_origin_ut is unsigned (SLC_Z_RPC_LEN -1 downto 0); --old length : SLC_Z_RPC_LEN
-  type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of b_chamber_z_origin_ut;
-  type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
-  type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
-  type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
-  type b_chamber_z_origin_detector_at is array ( 0 to 15) of b_chamber_z_origin_station_at;
-  constant b_chamber_z_origin_detector : b_chamber_z_origin_detector_at :=(
-    --     INN MID OUT EXT
-     0 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
-     1 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
-     2 => ( (330.0 , 1250.0 , 2350.0 , 3450.0 , 4550.0 , 5470.0 , 6566.2 , 0.0),
-            (150.0 , 1850.0 , 3550.0 , 5250.0 , 6470.0 , 7690.0 , 9660.0 , 0.0),
-            (150.0 , 2330.0 , 4510.0 , 6210.0 , 8390.0 , 10570.0, 12270.0, 0.0),
-            (0.0   , 0.0    , 0.0    , 0.0    , 0.0    , 0.0    , 0.0 , 0.0)), -- S3
-     3 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S4
-     4 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S5
-     5 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S6
-     6 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S7
-     7 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S8
-     8 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S9
-     9 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S10
-    10 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S11
-    11 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S12
-    12 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S13
-    13 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S14
-    14 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S15
-    15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
-  );
+  -- -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
+  -- type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned(16 - 1 downto 0);
+  -- subtype b_chamber_z_origin_avt is std_logic_vector(16 * MAX_NUM_CHAMBER_POS -1 downto 0);
 
-  function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut;
-  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
+  -- type b_chamber_z_origin_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
+  -- type b_chamber_z_origin_at is array (0 to MAX_NUM_CHAMBER_POS -1 ) of real;
+  -- type b_chamber_z_origin_station_at is array (0 to 3) of b_chamber_z_origin_at;
+  -- type b_chamber_z_origin_detector_at is array ( 0 to 15) of b_chamber_z_origin_station_at;
+  -- constant b_chamber_z_origin_detector : b_chamber_z_origin_detector_at :=(
+  --   --     INN MID OUT EXT
+  --    0 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
+  --    1 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
+  --    2 => ( (330.0 , 1250.0 , 2350.0 , 3450.0 , 4550.0 , 5470.0 , 6566.2 , 0.0),
+  --           (150.0 , 1850.0 , 3550.0 , 5250.0 , 6470.0 , 7690.0 , 9660.0 , 0.0),
+  --           (150.0 , 2330.0 , 4510.0 , 6210.0 , 8390.0 , 10570.0, 12270.0, 0.0),
+  --           (0.0   , 0.0    , 0.0    , 0.0    , 0.0    , 0.0    , 0.0 , 0.0)), -- S3
+  --    3 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S4
+  --    4 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S5
+  --    5 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S6
+  --    6 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S7
+  --    7 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S8
+  --    8 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S9
+  --    9 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S10
+  --   10 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S11
+  --   11 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S12
+  --   12 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S13
+  --   13 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S14
+  --   14 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S15
+  --   15 => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)) -- S16
+  -- );
+
+  -- function get_b_chamber_origin_z_u( sector, station : integer; mult : real; out_width : integer := 16) return b_chamber_z_origin_aut;
+  -- function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait;
+
+  -- function vectorify(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt;
+  -- -- function structify(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   type b_chamber_type_station_ait is array (0 to MAX_NUM_CHAMBER_POS -1 ) of integer;
   type b_chamber_type_sector_at is array (0 to 3) of b_chamber_type_station_ait;
@@ -218,7 +223,7 @@ package detector_param_pkg is
  );
  function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at;
  function get_b_chamber_type( sector,station,ieta : integer) return integer;
-  
+
   -------------------------------------------------------------------------
   -- Distance from layer 0 to layer n
   -------------------------------------------------------------------------
@@ -259,7 +264,7 @@ package detector_param_pkg is
 
   function get_b_layer_height ( chamber_id , layer : integer) return unsigned;
 
-  
+
 end package detector_param_pkg;
 
 package body detector_param_pkg is
@@ -334,7 +339,7 @@ package body detector_param_pkg is
     end if;
     return time_out;
   end function;
-  
+
 
 
   -- function get_heg_times(dummy : integer) return heg_times_rt is
@@ -361,7 +366,7 @@ package body detector_param_pkg is
   --       times.busy    := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS;
   --       times.unload  := HEG_LSF_START_DELAY - (HP_LATENCY + BM_MIN_LATENCY) + HEG_BUSY_CLOCKS + HEG_LSF_END_DELAY;
   --     end if;
-  
+
   --   end if;
   --   return times;
   -- end function;
@@ -387,11 +392,16 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_center_radius( sector, station  : integer) return b_chamber_center_radius_unsigned_au is
-    variable y : b_chamber_center_radius_unsigned_au;
+  function get_b_chamber_center_radius( 
+    sector, station  : integer ; 
+    output_len : integer := SLC_Z_RPC_LEN ; 
+    scaler : real := 1.0) 
+  return b_chamber_center_radius_unsigned_aut is
+    variable y : b_chamber_center_radius_unsigned_aut(open)(output_len -1 downto 0);
   begin
     for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
+      y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * scaler) , output_len);
+      -- y(ch_i) := to_unsigned(integer(b_chamber_center_radius(sector - 1)(station)(ch_i) * SLC_Z_RPC_MULT) , SLC_Z_RPC_LEN);
     end loop;
     return y;
   end function get_b_chamber_center_radius;
@@ -408,24 +418,37 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Z from IP to the origin of the chamber
   -------------------------------------------------------------------------
-  function get_b_chamber_origin_z_u( sector, station: integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut is
-    variable y : b_chamber_z_origin_aut;
-  begin
-    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult) , out_width);
-    end loop;
-    return y;
-  end function;
-  function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait is
-    variable y : b_chamber_z_origin_ait;
-  begin
-    for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
-      y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult);
-    end loop;
-    return y;
-  end function;
+  -- function get_b_chamber_origin_z_u( sector, station: integer; mult : real; out_width : integer := SLC_Z_RPC_LEN) return b_chamber_z_origin_aut is
+  --   variable y : b_chamber_z_origin_aut;
+  -- begin
+  --   for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+  --     y(ch_i) := to_unsigned(integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult) , out_width);
+  --   end loop;
+  --   return y;
+  -- end function;
+  -- function get_b_chamber_origin_z_i( sector, station : integer; mult : real) return b_chamber_z_origin_ait is
+  --   variable y : b_chamber_z_origin_ait;
+  -- begin
+  --   for ch_i in  0 to MAX_NUM_CHAMBER_POS -1 loop
+  --     y(ch_i) := integer(b_chamber_z_origin_detector(sector - 1)(station)(ch_i) * mult);
+  --   end loop;
+  --   return y;
+  -- end function;
+  -- function vectorify(x: b_chamber_z_origin_aut) return b_chamber_z_origin_avt is
+  --   variable msb : integer := x'length*16-1;
+  --   variable y : b_chamber_z_origin_avt;
+  -- begin
+  --   l : for i in x'range loop
+  --     y(msb downto msb-16+1) := std_logic_vector(x(i));
+  --     msb := msb - 16;
+  --   end loop;
+  --   return y;
+  -- end function;
+  -- -- function structify(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut is
+  -- -- begin
+  -- -- end function;
   -------------------------------------------------------------------------
-  -- Chamber type from 
+  -- Chamber type from
   -------------------------------------------------------------------------
   function get_b_chamber_type_sector( sector : integer) return b_chamber_type_sector_at is
     variable y : b_chamber_type_sector_at;
@@ -455,5 +478,5 @@ package body detector_param_pkg is
     return y;
 
   end function get_b_layer_height;
-  
+
 end package body detector_param_pkg;

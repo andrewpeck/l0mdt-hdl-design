@@ -116,16 +116,16 @@ architecture behavioral of ult is
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
-  signal inner_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal out_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ext_tar_hits  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- TDC Hits from tar 2 daq
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal mid_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal out_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ext_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- outputs from hits to segments
   signal inn_segments_to_pt  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -147,6 +147,12 @@ architecture behavioral of ult is
   signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
+  signal pt_sump : std_logic;
+  signal h2s_sump : std_logic;
+  signal tar_sump : std_logic;
+  signal mtc_sump : std_logic;
+  signal daq_sump : std_logic;
+
 begin
 
   logic_gen : if (not DUMMY) generate
@@ -159,26 +165,28 @@ begin
         ctrl              => tar_ctrl,
         mon               => tar_mon,
         -- TDC Hits from Polmux
-        i_inner_tdc_hits  => i_inner_tdc_hits,
-        i_middle_tdc_hits => i_middle_tdc_hits,
-        i_outer_tdc_hits  => i_outer_tdc_hits,
-        i_extra_tdc_hits  => i_extra_tdc_hits,
+        i_inn_tdc_hits  => i_inner_tdc_hits,
+        i_mid_tdc_hits  => i_middle_tdc_hits,
+        i_out_tdc_hits  => i_outer_tdc_hits,
+        i_ext_tdc_hits  => i_extra_tdc_hits,
 
         -- candidates in from hal
-        i_inner_tar_hits  => i_inner_tar_hits,
-        i_middle_tar_hits => i_middle_tar_hits,
-        i_outer_tar_hits  => i_outer_tar_hits,
-        i_extra_tar_hits  => i_extra_tar_hits,
+        i_inn_tar_hits  => i_inner_tar_hits,
+        i_mid_tar_hits  => i_middle_tar_hits,
+        i_out_tar_hits  => i_outer_tar_hits,
+        i_ext_tar_hits  => i_extra_tar_hits,
         --
-        o_inner_tdc_hits  => inner_tdc_hits,
-        o_middle_tdc_hits => middle_tdc_hits,
-        o_outer_tdc_hits  => outer_tdc_hits,
-        o_extra_tdc_hits  => extra_tdc_hits,
+        o_inn_tdc_hits  => inn_tdc_hits,
+        o_mid_tdc_hits  => mid_tdc_hits,
+        o_out_tdc_hits  => out_tdc_hits,
+        o_ext_tdc_hits  => ext_tdc_hits,
         -- outputs to ucm
-        o_inner_tar_hits  => inner_tar_hits,
-        o_middle_tar_hits => middle_tar_hits,
-        o_outer_tar_hits  => outer_tar_hits,
-        o_extra_tar_hits  => extra_tar_hits
+        o_inn_tar_hits  => inn_tar_hits,
+        o_mid_tar_hits  => mid_tar_hits,
+        o_out_tar_hits  => out_tar_hits,
+        o_ext_tar_hits  => ext_tar_hits,
+
+        o_sump          => tar_sump
 
       );
 
@@ -212,10 +220,10 @@ begin
       ctrl                      => h2s_ctrl,
       mon                       => h2s_mon,
       -- inputs from hal
-      i_inn_tar_hits            => inner_tar_hits,
-      i_mid_tar_hits            => middle_tar_hits,
-      i_out_tar_hits            => outer_tar_hits,
-      i_ext_tar_hits            => extra_tar_hits,
+      i_inn_tar_hits            => inn_tar_hits,
+      i_mid_tar_hits            => mid_tar_hits,
+      i_out_tar_hits            => out_tar_hits,
+      i_ext_tar_hits            => ext_tar_hits,
       -- Sector Logic Candidates from uCM
       i_inn_slc                 => inner_slc_to_hts,
       i_mid_slc                 => middle_slc_to_hts,
@@ -228,7 +236,9 @@ begin
       o_ext_segments            => ext_segments_to_pt,
       -- Segment outputs to HAL
       o_plus_neighbor_segments  => o_plus_neighbor_segments,
-      o_minus_neighbor_segments => o_minus_neighbor_segments
+      o_minus_neighbor_segments => o_minus_neighbor_segments,
+
+      o_sump                    => h2s_sump
     );
 
     pipeline_inst : entity ult_lib.pipeline
@@ -256,17 +266,19 @@ begin
       ctrl                      => tf_ctrl,
       mon                       => tf_mon,
       --  segments from neighbors
-      plus_neighbor_segments_i  => i_plus_neighbor_segments,
-      minus_neighbor_segments_i => i_minus_neighbor_segments,
+      i_plus_neighbor_segments  => i_plus_neighbor_segments,
+      i_minus_neighbor_segments => i_minus_neighbor_segments,
       -- segments from hps
-      inner_segments_i          => inn_segments_to_pt,
-      middle_segments_i         => mid_segments_to_pt,
-      outer_segments_i          => out_segments_to_pt,
-      extra_segments_i          => ext_segments_to_pt,
+      i_inn_segments            => inn_segments_to_pt,
+      i_mid_segments            => mid_segments_to_pt,
+      i_out_segments            => out_segments_to_pt,
+      i_ext_segments            => ext_segments_to_pt,
       -- from pipeline
       i_pl2pt_av                => pl2pt_av,
       -- to mtc
-      o_pt2mtc                  => pt2mtc_av
+      o_pt2mtc                  => pt2mtc_av,
+      -- dummy
+      o_sump                    => pt_sump
     );
 
     mtc_builder_inst : entity work.mtc_builder
@@ -281,7 +293,9 @@ begin
       i_pl2mtc          => pl2mtc_av,
       -- outputs
       o_mtc             => o_mtc,
-      o_nsp             => o_nsp
+      o_nsp             => o_nsp,
+
+      o_sump            => mtc_sump
     );
 
     daq_inst : entity work.daq
@@ -294,18 +308,21 @@ begin
         mon               => daq_mon,
         
         -- TDC Hits from Polmux
-        i_inner_tdc_hits  => inner_tdc_hits,
-        i_middle_tdc_hits => middle_tdc_hits,
-        i_outer_tdc_hits  => outer_tdc_hits,
-        i_extra_tdc_hits  => extra_tdc_hits,
+        i_inner_tdc_hits  => inn_tdc_hits,
+        i_middle_tdc_hits => mid_tdc_hits,
+        i_outer_tdc_hits  => out_tdc_hits,
+        i_extra_tdc_hits  => ext_tdc_hits,
         
         -- Tracks from MTC
         -- ???
         
         -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
-        daq_streams_o => o_daq_streams);
+        daq_streams_o => o_daq_streams,
+        
+        o_sump => daq_sump
+      );
 
-    sump <= '0';
+    sump <= tar_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump;
 
   end generate;
 

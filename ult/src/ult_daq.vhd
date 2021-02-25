@@ -40,19 +40,22 @@ entity daq is
     i_middle_tdc_hits : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
     i_outer_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
     i_extra_tdc_hits  : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0));
+    daq_streams_o     : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+
+    o_sump            : out std_logic
+  );
 end entity daq;
 
 architecture behavioral of daq is
 
   -- emulation
 
-  signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
-  signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
-  signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-  signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-  signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-  signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
+  -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
+  -- signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+  -- signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+  -- signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+  -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
 
 
   -- actual
@@ -111,11 +114,11 @@ architecture behavioral of daq is
 
 begin
 
-  inner_tdc_hits  <=  structify(inner_tdc_hits_v);
-  middle_tdc_hits <=  structify(middle_tdc_hits_v);
-  outer_tdc_hits  <=  structify(outer_tdc_hits_v);
-  extra_tdc_hits  <=  structify(extra_tdc_hits_v);
-  daq_streams_o   <=  vectorify(daq_streams);
+  -- inner_tdc_hits  <=  structify(inner_tdc_hits_v);
+  -- middle_tdc_hits <=  structify(middle_tdc_hits_v);
+  -- outer_tdc_hits  <=  structify(outer_tdc_hits_v);
+  -- extra_tdc_hits  <=  structify(extra_tdc_hits_v);
+  -- daq_streams_o   <=  vectorify(daq_streams);
 
 
   -- DAQ_GEN : if c_DAQ_ENABLED generate
@@ -255,8 +258,17 @@ begin
   -- end generate;
 
   DAQ_EMU : if not c_DAQ_ENABLED generate
+    -- signal ptcalc_sump         : std_logic_vector (c_NUM_THREADS -1 downto 0);
+    -- signal pl2mtc_sump         : std_logic_vector (c_MAX_NUM_SL -1 downto 0);
+    signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+    signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+    signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+    signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+    signal sump_v : std_logic_vector(c_NUM_DAQ_STREAMS - 1 downto 0);
+  begin
 
     sump_proc : process (clock_and_control.clk) is
+
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
@@ -279,7 +291,16 @@ begin
                                           xor_reduce(tdc_hit_middle_sump) xor
                                           xor_reduce(tdc_hit_outer_sump) xor
                                           xor_reduce(tdc_hit_extra_sump)));
+
+          -- sump_loop : for J in 0 to FELIX_STREAM_LEN-1 loop
+            sump_v(I) <= xor_reduce(daq_streams_o(I)) ;
+          -- end loop;
+
         end loop;
+
+        o_sump <= xor_reduce(sump_v);
+        
+
       end if;
     end process;
 

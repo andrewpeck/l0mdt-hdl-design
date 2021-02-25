@@ -15,9 +15,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-
-library shared_lib;
-use shared_lib.cfg_global_pkg.all;
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 package prj_cfg is
 

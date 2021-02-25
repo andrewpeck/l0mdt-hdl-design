@@ -16,8 +16,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library shared_lib;
-use shared_lib.cfg_global_pkg.all;
+ 
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 package prj_cfg is
 
@@ -35,7 +36,7 @@ package body prj_cfg is
     -- Sector information
     -- ------------------------------------------------------------------------------
     proj_cfg.SECTOR_ID                := 3;
-    proj_cfg.SECTOR_SIDE              := '0';
+    proj_cfg.SECTOR_SIDE              := 0;
     proj_cfg.ST_nBARREL_ENDCAP        := '0'; -- 0: barrel    1: Endcap
     -- proj_cfg.ENDCAP_nSMALL_LARGE     := '0'; -- 0: small     1: large
     proj_cfg.ENABLE_NEIGHBORS         := '1'; -- 0: disabled  1: enabled

@@ -75,24 +75,24 @@ component lsf_spybuffer_wrapper
     );
   end component;
 begin
-  lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper
-    generic map (
-      LSF_SB_MEM_WIDTH    => LSF_SB_MEM_WIDTH,
-      LSF_SB_EL_MEM_WIDTH => LSF_SB_EL_MEM_WIDTH    
-    )
-  port map (
-    clock         => clock,
-    reset         => reset,
-    mdt_hit       => mdt_hit,
-    mdt_hit_we    => mdt_hit(HEG2SFHIT_LEN-1),
-    roi           => slc_roi,
-    roi_we        => slc_roi(HEG2SFSLC_LEN-1),
-    lsf_output    => lsf,    
-    histogram_accumulation_count  => hba_max_clocks,
-    --SpyBuffer 
-    sb_lsf_mdt_hits_freeze        => sb_lsf_mdt_hits_freeze,
-    sb_lsf_mdt_hits_re            => sb_lsf_mdt_hits_re,
-    sb_lsf_mdt_hits_raddr         => sb_lsf_mdt_hits_raddr,
-    sb_lsf_mdt_hits_rdata         => sb_lsf_mdt_hits_rdata 
-    );
+  -- lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper
+  --   generic map (
+  --     LSF_SB_MEM_WIDTH    => LSF_SB_MEM_WIDTH,
+  --     LSF_SB_EL_MEM_WIDTH => LSF_SB_EL_MEM_WIDTH    
+  --   )
+  -- port map (
+  --   clock         => clock,
+  --   reset         => reset,
+  --   mdt_hit       => mdt_hit,
+  --   mdt_hit_we    => mdt_hit(HEG2SFHIT_LEN-1),
+  --   roi           => slc_roi,
+  --   roi_we        => slc_roi(HEG2SFSLC_LEN-1),
+  --   lsf_output    => lsf,    
+  --   histogram_accumulation_count  => hba_max_clocks,
+  --   --SpyBuffer 
+  --   sb_lsf_mdt_hits_freeze        => sb_lsf_mdt_hits_freeze,
+  --   sb_lsf_mdt_hits_re            => sb_lsf_mdt_hits_re,
+  --   sb_lsf_mdt_hits_raddr         => sb_lsf_mdt_hits_raddr,
+  --   sb_lsf_mdt_hits_rdata         => sb_lsf_mdt_hits_rdata 
+  --   );
   end architecture top_lsf_arch;

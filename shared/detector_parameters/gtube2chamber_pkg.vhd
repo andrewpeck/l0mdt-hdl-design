@@ -84,18 +84,18 @@ package gtube2chamber_pkg is
     16 => (0,0,0,0,0,0,0,0)
   );
     
-  function get_b_chamber_from_tubes(sector : integer ; s_side : std_logic ; station : integer ; tube : integer) return integer;
+  function get_b_chamber_from_tubes(sector : integer ; s_side : integer ; station : integer ; tube : integer) return integer;
   
 end package gtube2chamber_pkg;
 
 package body gtube2chamber_pkg is
   
-  function get_b_chamber_from_tubes(sector : integer ; s_side : std_logic ; station : integer ; tube : integer) return integer is
+  function get_b_chamber_from_tubes(sector : integer ; s_side : integer ; station : integer ; tube : integer) return integer is
     variable y : tubes_per_chamber_t;
     variable tubeacum : integer;
     variable ch : integer;
   begin
-    if s_side = '0' then -- side A
+    if s_side = 0 then -- side A
       if station = 0 then
         -- inner
         for l_i in 0 to 7 loop

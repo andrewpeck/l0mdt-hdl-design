@@ -1,4 +1,4 @@
-#Simulator xsim
+#Simulator questa
 #shared/sim/pkg/gldl_ult_tp_sim_pkg.vhd
 #shared/sim/pkg/gldl_textio_pkg.vhd
 
