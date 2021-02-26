@@ -11,7 +11,7 @@ Top/ult_tp_dev/prj_cfg.vhd
 #### top  ####
 UserLogic/ult/top_ult_tp.vhd top=top_ult_tp
 #### AXI SC ####
-hal/ctrl/ctrl_lib.src lib=ctrl_lib
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 #### modules included ####
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
