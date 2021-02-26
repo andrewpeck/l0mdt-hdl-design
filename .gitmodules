@@ -7,17 +7,17 @@
 	branch = master
 [submodule "HAL/sl/src/my-sl-gty-interface"]
 	path = HAL/sl/src/my-sl-gty-interface
-	url = ../../okumura/my-sl-gty-interface
-[submodule "HAL/hal/lpgbt/lpgbt-emul"]
+	url = ../../okumura/my-sl-gty-interface.git
+[submodule "HAL/hal/lpgbt/src/lpgbt-emul"]
 	path = HAL/lpgbt/src/lpgbt-emul
 	url = ../lpgbt-emul.git
-[submodule "HAL/lpgbt/lpgbt-fpga"]
+[submodule "HAL/lpgbt/src/lpgbt-fpga"]
 	path = HAL/lpgbt/src/lpgbt-fpga
 	url = ../../gbt-fpga/lpgbt-fpga.git
 [submodule "HAL/hal/src/mgt/tx_phase_aligner"]
 	path = HAL/hal/src/mgt/tx_phase_aligner
 	url = ../../HPTD/tx_phase_aligner.git
-[submodule "HAL/lpgbt/gbt-sc"]
+[submodule "HAL/lpgbt/src/gbt-sc"]
 	path = HAL/lpgbt/src/gbt-sc
 	url = ../gbt-sc.git
 [submodule "regmap"]
@@ -47,3 +47,6 @@
 [submodule "shared/mpcvmem"]
 	path = shared/mpcvmem
 	url = https://github.com/taquionbcn/mpcvmem.git
+[submodule "HAL/lpgbt/src/lpgbt-emul"]
+	path = HAL/lpgbt/src/lpgbt-emul
+	url = ../lpgbt-emul.git
