@@ -11,7 +11,7 @@ simulate_project:ult_tp_ucm:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_ucm
-      HOG_CHECK_PROJVER: 0
+    allow_failure: false
 
 # user_sim:ult_tp_ucm:
 #     extends: .user_sim

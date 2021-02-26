@@ -164,7 +164,7 @@ begin
       ucm_ctrl => ucm_ctrl,
       ucm_mon  => ucm_mon,
       daq_ctrl => daq_ctrl,
-      daq_mon  => daq_mona,
+      daq_mon  => daq_mon,
       tf_ctrl  => tf_ctrl,
       tf_mon   => tf_mon,
       mpl_ctrl => mpl_ctrl,

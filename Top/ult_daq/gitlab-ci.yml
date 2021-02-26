@@ -11,3 +11,4 @@ generate_project:ult_daq:
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ult_daq
+#     allow_failure: false

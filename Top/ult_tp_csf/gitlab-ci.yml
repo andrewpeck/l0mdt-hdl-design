@@ -11,6 +11,7 @@ simulate_project:ult_tp_csf:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_csf
+    allow_failure: false
 
 
 # sim_comp:ult_tp_csf_questa:
