@@ -11,6 +11,7 @@ simulate_project:ult_tp_dev:
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_dev
+    allow_failure: false
 
 # sim_comp:ult_tp_dev:
 #     extends: .sim_comp
