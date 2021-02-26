@@ -1,8 +1,10 @@
-#### default config parameters ####
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-#### shared ####
-shared/shared_lib.src lib=shared_lib
-Top/ucm/prj_cfg.vhd 
+#### project local configuration files ####
+Top/ucm/prj_cfg.vhd
+#### top  ####
+UserLogic/ucm/top_ucm.vhd top=top_ucm
+#### AXI SC ####
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+
 UserLogic/ucm/ucm_lib.src lib=ucm_lib
-UserLogic/ucm/top_ucm.vhd
+
 

@@ -1,7 +1,8 @@
+#### project local configuration files ####
 Top/hp/prj_cfg.vhd 
-#### default config parameters ####
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-#### shared ####
-shared/shared_lib.src lib=shared_lib
+#### AXI SC ####
+
+#### top  ####
 UserLogic/hp/top_hp.vhd
+#### modules included ####
 UserLogic/hp/hp_lib.src lib=hp_lib

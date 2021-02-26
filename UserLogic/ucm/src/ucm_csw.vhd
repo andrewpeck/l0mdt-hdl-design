@@ -44,23 +44,53 @@ entity ucm_csw is
 end entity ucm_csw;
 
 architecture beh of ucm_csw is
-
+  signal o_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+  signal i_data_ar : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
 begin
-  UCM_MAIN_CSW : process(rst,clk) begin
-    if rising_edge(clk) then
-      if(rst= '1') then
-        o_data <= (others => (others => '0'));
-      else
-        for csw_i in c_MAX_NUM_SL -1 downto 0 loop
-          if i_control(csw_i).data_present = '1' then
-            o_data(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
-          else
-            o_data(csw_i) <= (others => '0');
-          end if;
-        end loop;
+
+  generate_label: for sli in c_MAX_NUM_SL -1 downto 0 generate
+    i_data_ar(sli) <= structify(i_data(sli));
+    o_data(sli) <= vectorify(o_data_ar(sli));
+
+    UCM_MAIN_CSW : process(rst,clk) begin
+      if rising_edge(clk) then
+        if(rst= '1') then
+          -- o_data <= (others => (others => '0'));
+          o_data_ar(sli).data_valid <= '0';-- (others => '0');
+          
+        else
+          -- for csw_i in c_MAX_NUM_SL -1 downto 0 loop
+            if i_control(sli).data_present = '1' then
+              o_data_ar(sli) <= i_data_ar(to_integer(unsigned(i_control(sli).addr_orig)));
+            else
+              o_data_ar(sli).data_valid <= '0';-- (others => '0');
+            end if;
+          -- end loop;
+        end if;
       end if;
-    end if;
-  end process;
+    end process;
+
+
+
+
+  end generate ;
+
+  -- UCM_MAIN_CSW : process(rst,clk) begin
+  --   if rising_edge(clk) then
+  --     if(rst= '1') then
+  --       -- o_data <= (others => (others => '0'));
+        
+  --     else
+  --       for csw_i in c_MAX_NUM_SL -1 downto 0 loop
+  --         if i_control(csw_i).data_present = '1' then
+  --           o_data_ar(csw_i) <= i_data(to_integer(unsigned(i_control(csw_i).addr_orig)));
+  --         else
+  --           o_data_ar(csw_i) <= (others => '0');
+  --         end if;
+  --       end loop;
+  --     end if;
+  --   end if;
+  -- end process;
 end beh;
 
 

@@ -28,6 +28,9 @@ use shared_lib.config_pkg.all;
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.MPL_CTRL.all;
+
 
 entity mpl is
 
@@ -35,6 +38,9 @@ entity mpl is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    -- AXI to SoC
+    ctrl                : in  MPL_CTRL_t;
+    mon                 : out MPL_MON_t;
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -44,6 +50,11 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
+
+  signal local_en            :  std_logic;
+  signal local_rst           :  std_logic;
+
+  signal i_uCM2pl_ar  : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -56,7 +67,24 @@ architecture beh of mpl is
 
 begin
 
+  UCM_SUPERVISOR : entity mpl_lib.mpl_supervisor
+  port map(
+    clk               => clk,
+    rst               => rst,
+    glob_en           => glob_en,      
+    -- AXI to SoC
+    ctrl              => ctrl,
+    mon               => mon,
+    --
+
+    -- 
+    local_en          => local_en,
+    local_rst         => local_rst
+  );
+
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+
+    i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));
 
     PL : entity shared_lib.std_pipeline
     generic map(
@@ -71,6 +99,7 @@ begin
       glob_en     => glob_en,
       --
       i_data      => i_uCM2pl_av(sl_i),
+      i_dv        => i_uCM2pl_ar(sl_i).data_valid,
       o_data      => main_pl_out_av(sl_i)
     );
     

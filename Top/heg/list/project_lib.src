@@ -1,8 +1,10 @@
+#### project local configuration files ####
 Top/heg/prj_cfg.vhd
-#### default config parameters ####
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-#### shared ####
-shared/shared_lib.src lib=shared_lib
+#### AXI SC ####
+
+#### top  ####
 UserLogic/heg/top_heg.vhd
+#### modules included ####
 UserLogic/hp/hp_lib.src lib=hp_lib
 UserLogic/heg/heg_lib.src lib=heg_lib
+>>>>>>> origin/devel

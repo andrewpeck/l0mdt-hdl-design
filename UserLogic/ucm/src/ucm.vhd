@@ -263,22 +263,24 @@ begin
     );
   end generate;
 
-  -- output pipelines
-  SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_OUT_PL : entity shared_lib.std_pipeline
-    generic map(
-      g_DELAY_CYCLES  => 3,
-      g_PIPELINE_WIDTH    => UCM2PL_LEN
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      glob_en     => local_en,
-      --
-      i_data      => int_uCM2pl_av(sl_i),
-      o_data      => pl_o_uCM2pl_av(sl_i)
-    );
-  end generate;
+  -- -- output pipelines
+  -- SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   SLC_OUT_PL : entity shared_lib.std_pipeline
+  --   generic map(
+  --     g_DELAY_CYCLES  => 3,
+  --     g_PIPELINE_WIDTH    => UCM2PL_LEN
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => local_rst,
+  --     glob_en     => local_en,
+  --     --
+  --     i_data      => int_uCM2pl_av(sl_i),
+  --     i_dv        => int_uCM2pl_ar(sl_i).data_valid,
+  --     o_data      => pl_o_uCM2pl_av(sl_i),
+  --     o_dv        => pl_o_uCM2pl_ar(sl_i).data_valid
+  --   );
+  -- end generate;
 
   -- o_uCM2pl_av <= vectorify(o_uCM2pl_av);
 
@@ -355,10 +357,29 @@ begin
 
   end generate;
 
+  -- output pipelines
+  SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    SLC_OUT_PL : entity shared_lib.std_pipeline
+    generic map(
+      g_DELAY_CYCLES  => 3,
+      g_PIPELINE_WIDTH    => UCM2PL_LEN
+    )
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      glob_en     => local_en,
+      --
+      i_data      => int_uCM2pl_av(sl_i),
+      i_dv        => int_uCM2pl_ar(sl_i).data_valid,
+      o_data      => pl_o_uCM2pl_av(sl_i),
+      o_dv        => o_uCM2pl_ar(sl_i).data_valid
+    );
+  end generate;
+
   POST_OUTPL_LOOP_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     pl_o_uCM2pl_ar(sl_i) <= structify(pl_o_uCM2pl_av(sl_i));
     --
-    o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
+    -- o_uCM2pl_ar(sl_i).data_valid  <= pl_o_uCM2pl_ar(sl_i).data_valid;
     o_uCM2pl_ar(sl_i).busy        <= pl_o_uCM2pl_ar(sl_i).busy;
     o_uCM2pl_ar(sl_i).process_ch  <= pl_o_uCM2pl_ar(sl_i).process_ch ;
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;

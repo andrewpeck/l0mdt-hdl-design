@@ -182,14 +182,14 @@ begin
       if rising_edge(clk) then
         if(rst= '1') then
           -- o_cde_data_r <= nullify(o_cde_data_r);
-          o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
-          o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
-          o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
-          o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
-          o_cde_data_r.specific     <= o_cde_data_null.specific  ;
-          o_cde_data_r.data_valid   <= o_cde_data_null.data_valid;
-          o_cde_data_r.phimod       <= o_cde_data_null.phimod    ;
-          o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
+          -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
+          -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
+          -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
+          -- o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
+          -- o_cde_data_r.specific     <= o_cde_data_null.specific  ;
+          o_cde_data_r.data_valid     <= '0';--o_cde_data_null.data_valid;
+          -- o_cde_data_r.phimod       <= (others => '0');--o_cde_data_null.phimod    ;
+          -- o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
         else
           if i_slc_data_r.data_valid = '1' then
             o_cde_data_r.muid.slcid   <= i_slc_data_r.common.slcid;
@@ -222,13 +222,13 @@ begin
 
           else
             -- o_cde_data_r <= nullify(o_cde_data_r);
-            o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
-            o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
-            o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
-            o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
-            o_cde_data_r.specific     <= o_cde_data_null.specific  ;
-            o_cde_data_r.data_valid   <= o_cde_data_null.data_valid;
-            o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
+            -- o_cde_data_r.muid.slcid   <= o_cde_data_null.muid.slcid;
+            -- o_cde_data_r.muid.slid    <= o_cde_data_null.muid.slid ;
+            -- o_cde_data_r.muid.bcid    <= o_cde_data_null.muid.bcid ;
+            -- o_cde_data_r.cointype     <= o_cde_data_null.cointype  ;
+            -- o_cde_data_r.specific     <= o_cde_data_null.specific  ;
+            o_cde_data_r.data_valid   <= '0';--o_cde_data_null.data_valid;
+            -- o_cde_data_r.posphi       <= o_cde_data_null.posphi    ;
           end if;
         end if;
       end if;

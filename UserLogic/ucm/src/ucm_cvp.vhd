@@ -330,7 +330,8 @@ begin
 
 
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
-          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          -- ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
 
       else 
@@ -364,7 +365,7 @@ begin
                     ucm2hps_ar(hps_i).data_valid    <= '1';
                   
                   else
-
+                    ucm2hps_ar(hps_i).data_valid    <= '0';
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
                     --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
                     -- end loop;

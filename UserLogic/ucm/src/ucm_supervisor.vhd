@@ -55,8 +55,8 @@ entity ucm_supervisor is
 end entity ucm_supervisor;
 
 architecture beh of ucm_supervisor is
-  signal int_en   : std_logic;
-  signal int_rst  : std_logic;
+  signal int_en   : std_logic := '0';
+  signal int_rst  : std_logic := '1';
   --
   signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
   signal PHI_WR     : UCM_SECTOR_PHI_CTRL_CTRL_t;
@@ -84,7 +84,7 @@ begin
   --    SIGNALING
   --------------------------------------------
   local_en <= glob_en and int_en;
-  local_rst <= rst and int_rst;
+  local_rst <= rst or int_rst;
 
   signaling: process(clk)
   begin
@@ -134,7 +134,7 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-
+        o_phicenter <= phicenter;
       else
 
         o_phicenter <= phicenter;

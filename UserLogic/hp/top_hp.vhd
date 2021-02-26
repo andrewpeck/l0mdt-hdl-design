@@ -33,17 +33,16 @@ entity top_hp is
       -- num_layers  : integer := 8
     );
     Port(
-      clk                 : in std_logic;    
+      clk                 : in std_logic;
       rst                 : in std_logic;
       glob_en             : in std_logic := '1';
       -- configuration
       local_rst           : in std_logic;
       local_en            : in std_logic;
-
-      time_offset         : in unsigned(7 downto 0);
+      -- time_offset         : in unsigned(12 -1 downto 0);
   
       -- SLc
-      i_SLC_Window        : in hp_heg2hp_window_avt;
+      i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
       i_slc_data_v        : in hp_heg2hp_slc_rvt;
       -- MDT hit
       i_mdt_data          : in hp_hpsPc2hp_rvt;
@@ -71,7 +70,7 @@ begin
       -- configuration
       local_rst      => local_rst,
       local_en            => local_en,
-      time_offset         => time_offset,
+      -- time_offset         => time_offset,
       -- RoI_size            => RoI_size,
       -- SLc
       i_SLC_Window        => i_SLC_Window,

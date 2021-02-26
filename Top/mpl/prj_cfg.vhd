@@ -19,14 +19,14 @@ use ieee.numeric_std.all;
 library shared_cfg_def_lib;
 use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
-package config_pkg is
+package prj_cfg is
 
   -- constant CFG : cfg_rt := CFG_DEFAULTS;
   function set_project_cfg return cfg_rt;
 
-end package config_pkg;
+end package prj_cfg;
 
-package body config_pkg is
+package body prj_cfg is
 
   function set_project_cfg return cfg_rt is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
@@ -34,7 +34,7 @@ package body config_pkg is
   --   --------------------------------------------------------------------------------
   --   -- Sector information
   --   --------------------------------------------------------------------------------
-  --   proj_cfg.SECTOR_ID               := 3,
+    proj_cfg.SECTOR_ID               := 3;
   --   proj_cfg.ST_nBARREL_ENDCAP       := '0', -- 0: barrel    1: Endcap
   --   proj_cfg.ENDCAP_nSMALL_LARGE     := '0', -- 0: small     1: large
   --   proj_cfg.ENABLE_NEIGHBORS        := '1', -- 0: disabled  1: enabled
@@ -58,4 +58,4 @@ package body config_pkg is
     return proj_cfg;
   end function set_project_cfg;
 
-end package body config_pkg;
+end package body prj_cfg;

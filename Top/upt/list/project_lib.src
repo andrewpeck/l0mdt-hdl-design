@@ -1,8 +1,3 @@
 Top/upt/prj_cfg.vhd
-#### default config parameters ####
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-#### shared ####
-shared/shared_lib.src lib=shared_lib
-
 UserLogic/upt/IP/hls_upt/hls_upt.xci
 UserLogic/upt/top_upt.vhd

@@ -1,0 +1,34 @@
+#---------------------------------
+# Configuration
+#---------------------------------
+
+# shared/config/detector_mapping_pkg.vhd
+# shared/config/config_defaults_pkg.vhd
+shared/config/config_pkg.vhd
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+
+#---------------------------------
+# common constants and types
+#---------------------------------
+
+shared/types/common_ieee_pkg.vhd
+####### constant and types from dataformat folder ######
+dataformats/l0mdt_constants_pkg.vhd
+dataformats/l0mdt_dataformats_pkg.vhd
+####### constant and types from shared folder ######
+#shared/types/l0mdt_constants_pkg.vhd
+#shared/types/l0mdt_dataformats_pkg.vhd
+shared/types/common_constants_pkg.vhd
+shared/types/common_types_pkg.vhd
+dataformats/l0mdt_buses_constants.svh
+
+#---------------------------------
+# VHDL2008 functions not implemented in Vivado
+#---------------------------------
+shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+
+#-------------------
+# Detector shared RAMs
+#-------------------
+shared/detector_parameters/detector_param_pkg.vhd
