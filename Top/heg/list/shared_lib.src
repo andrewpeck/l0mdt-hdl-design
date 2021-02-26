@@ -34,6 +34,10 @@ shared/types/common_constants_pkg.vhd
 shared/types/common_types_pkg.vhd
 dataformats/l0mdt_buses_constants.svh
 #---------------------------------
+# VHDL2008 functions not implemented in Vivado
+#---------------------------------
+shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+#---------------------------------
 # shared source code for multiple blocks
 #---------------------------------
 shared/src/pipeline.vhd
