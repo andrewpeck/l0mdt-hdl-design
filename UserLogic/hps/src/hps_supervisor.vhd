@@ -12,6 +12,7 @@
 --      
 --------------------------------------------------------------------------------
 
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -35,3 +36,17 @@ use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
+
+entity hps_supervisor is
+  port (
+    
+  );
+end entity hps_supervisor;
+
+architecture beh of hps_supervisor is
+  
+begin
+  
+  
+  
+end architecture beh;
