@@ -31,7 +31,7 @@ include:
     # - local: '/Top/tdc/gitlab-ci.yml'
     - local: '/Top/mtc/gitlab-ci.yml'
     #---------------------------------------------
-    #         Builds
+    #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ult/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
@@ -43,5 +43,8 @@ include:
     # - local: '/Top/ult_tp_lsf_xsim/gitlab-ci.yml'
     # - local: '/Top/ult_daq/gitlab-ci.yml'
     # - local: '/Top/csf_plus_pt/gitlab-ci.yml'
-
+    #---------------------------------------------
+    #         VU13 Projects
+    #---------------------------------------------
+    - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
     # writer

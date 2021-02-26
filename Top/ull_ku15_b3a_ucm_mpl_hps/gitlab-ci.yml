@@ -1,21 +1,21 @@
-#################### ult_tp_dev Project ###########################
-generate_project:ult_tp_dev:
+#################### ull_ku15_b3a_ucm_mpl_hps Project ###########################
+generate_project:ull_ku15_b3a_ucm_mpl_hps:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_dev
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ult_tp_dev:
+simulate_project:ull_ku15_b3a_ucm_mpl_hps:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_dev
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
     allow_failure: false
 
-# sim_comp:ult_tp_dev:
+# sim_comp:ull_ku15_b3a_ucm_mpl_hps:
 #     extends: .sim_comp
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ult_tp_dev
+#       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
 

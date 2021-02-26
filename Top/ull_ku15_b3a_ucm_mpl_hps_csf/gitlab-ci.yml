@@ -1,27 +1,27 @@
-#################### ult_tp_csf Project ###########################
-generate_project:ult_tp_csf:
+#################### ull_ku15_b3a_ucm_mpl_hps_csf Project ###########################
+generate_project:ull_ku15_b3a_ucm_mpl_hps_csf:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_csf
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ult_tp_csf:
+simulate_project:ull_ku15_b3a_ucm_mpl_hps_csf:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_csf
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
     allow_failure: false
 
 
-# sim_comp:ult_tp_csf_questa:
+# sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .sim_comp
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ult_tp_csf_questa
+#       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_questa
 
-sim_check:ult_tp_csf:
+sim_check:ull_ku15_b3a_ucm_mpl_hps_csf:
     extends: .sim_check
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_csf
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf

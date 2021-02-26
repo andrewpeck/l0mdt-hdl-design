@@ -1,21 +1,21 @@
-#################### ult_tp_csf_ptmpi Project ###########################
-generate_project:ult_tp_csf_ptmpi:
+#################### ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi Project ###########################
+generate_project:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_csf_ptmpi
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ult_tp_csf_ptmpi:
+simulate_project:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp_csf_ptmpi
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
     allow_failure: false
 
-# sim_comp:ult_tp_csf_ptmpi:
+# sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
 #     extends: .sim_comp
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ult_tp_csf_ptmpi
+#       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
 
