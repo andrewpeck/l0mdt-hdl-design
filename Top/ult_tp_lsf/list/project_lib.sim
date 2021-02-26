@@ -3,8 +3,8 @@
 #shared/sim/pkg/gldl_textio_pkg.vhd
 
 shared/shared_lib.sim
-ult/ult_lib.sim
-ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=10us
+UserLogic/ult/ult_lib.sim
+UserLogic/ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=10us
 
 # Waveform 
-ult/sim/ult_tp_sim1.wcfg
+UserLogic/ult/sim/ult_tp_sim1.wcfg

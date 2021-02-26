@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="gtwizard_ultrascale_0_example_top_sim_func_synth.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="gtwizard_ultrascale_0_example_top_sim" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="1258199019966fs"></ZoomEndTime>
+      <Cursor1Time time="67000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <WVObjectSize size="38" />
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/ch0_gthxn" type="logic">
+      <obj_property name="ElementShortName">ch0_gthxn</obj_property>
+      <obj_property name="ObjectShortName">ch0_gthxn</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/ch0_gthxp" type="logic">
+      <obj_property name="ElementShortName">ch0_gthxp</obj_property>
+      <obj_property name="ObjectShortName">ch0_gthxp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/mgtrefclk1_x0y2" type="logic">
+      <obj_property name="ElementShortName">mgtrefclk1_x0y2</obj_property>
+      <obj_property name="ObjectShortName">mgtrefclk1_x0y2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/mgtrefclk0_x0y3" type="logic">
+      <obj_property name="ElementShortName">mgtrefclk0_x0y3</obj_property>
+      <obj_property name="ObjectShortName">mgtrefclk0_x0y3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/hb_gtwiz_reset_clk_freerun" type="logic">
+      <obj_property name="ElementShortName">hb_gtwiz_reset_clk_freerun</obj_property>
+      <obj_property name="ObjectShortName">hb_gtwiz_reset_clk_freerun</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/hb_gtwiz_reset_all" type="logic">
+      <obj_property name="ElementShortName">hb_gtwiz_reset_all</obj_property>
+      <obj_property name="ObjectShortName">hb_gtwiz_reset_all</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/link_down_latched_reset" type="logic">
+      <obj_property name="ElementShortName">link_down_latched_reset</obj_property>
+      <obj_property name="ObjectShortName">link_down_latched_reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/link_status" type="logic">
+      <obj_property name="ElementShortName">link_status</obj_property>
+      <obj_property name="ObjectShortName">link_status</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/link_down_latched" type="logic">
+      <obj_property name="ElementShortName">link_down_latched</obj_property>
+      <obj_property name="ObjectShortName">link_down_latched</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/simulation_timeout_check" type="logic">
+      <obj_property name="ElementShortName">simulation_timeout_check</obj_property>
+      <obj_property name="ObjectShortName">simulation_timeout_check</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/link_up_ctr" type="array">
+      <obj_property name="ElementShortName">link_up_ctr[10:0]</obj_property>
+      <obj_property name="ObjectShortName">link_up_ctr[10:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/link_stable" type="logic">
+      <obj_property name="ElementShortName">link_stable</obj_property>
+      <obj_property name="ObjectShortName">link_stable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/gtwiz_userclk_rx_usrclk2_int" type="logic">
+      <obj_property name="ElementShortName">gtwiz_userclk_rx_usrclk2_int</obj_property>
+      <obj_property name="ObjectShortName">gtwiz_userclk_rx_usrclk2_int</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/clk_sys_i" type="logic">
+      <obj_property name="ElementShortName">clk_sys_i</obj_property>
+      <obj_property name="ObjectShortName">clk_sys_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/reset_i" type="logic">
+      <obj_property name="ElementShortName">reset_i</obj_property>
+      <obj_property name="ObjectShortName">reset_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/rx_locked_out" type="logic">
+      <obj_property name="ElementShortName">rx_locked_out</obj_property>
+      <obj_property name="ObjectShortName">rx_locked_out</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_aligned_o" type="logic">
+      <obj_property name="ElementShortName">tx_aligned_o</obj_property>
+      <obj_property name="ObjectShortName">tx_aligned_o</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_pi_phase_calib_i" type="array">
+      <obj_property name="ElementShortName">tx_pi_phase_calib_i[6:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_pi_phase_calib_i[6:0]</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_ui_align_calib_i" type="logic">
+      <obj_property name="ElementShortName">tx_ui_align_calib_i</obj_property>
+      <obj_property name="ObjectShortName">tx_ui_align_calib_i</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_enable_reset_i" type="logic">
+      <obj_property name="ElementShortName">tx_enable_reset_i</obj_property>
+      <obj_property name="ObjectShortName">tx_enable_reset_i</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_fifo_fill_pd_max_i" type="array">
+      <obj_property name="ElementShortName">tx_fifo_fill_pd_max_i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_fifo_fill_pd_max_i[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_fine_realign_i" type="logic">
+      <obj_property name="ElementShortName">tx_fine_realign_i</obj_property>
+      <obj_property name="ObjectShortName">tx_fine_realign_i</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_pi_phase_o" type="array">
+      <obj_property name="ElementShortName">tx_pi_phase_o[6:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_pi_phase_o[6:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_fifo_fill_pd_o" type="array">
+      <obj_property name="ElementShortName">tx_fifo_fill_pd_o[31:0]</obj_property>
+      <obj_property name="ObjectShortName">tx_fifo_fill_pd_o[31:0]</obj_property>
+      <obj_property name="CustomSignalColor">#FAAFBE</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/clk_txusr_i" type="logic">
+      <obj_property name="ElementShortName">clk_txusr_i</obj_property>
+      <obj_property name="ObjectShortName">clk_txusr_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_fifo_fill_level_i" type="logic">
+      <obj_property name="ElementShortName">tx_fifo_fill_level_i</obj_property>
+      <obj_property name="ObjectShortName">tx_fifo_fill_level_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/txpippmen_o" type="logic">
+      <obj_property name="ElementShortName">txpippmen_o</obj_property>
+      <obj_property name="ObjectShortName">txpippmen_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/txpippmovrden_o" type="logic">
+      <obj_property name="ElementShortName">txpippmovrden_o</obj_property>
+      <obj_property name="ObjectShortName">txpippmovrden_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/txpippmsel_o" type="logic">
+      <obj_property name="ElementShortName">txpippmsel_o</obj_property>
+      <obj_property name="ObjectShortName">txpippmsel_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/txpippmpd_o" type="logic">
+      <obj_property name="ElementShortName">txpippmpd_o</obj_property>
+      <obj_property name="ObjectShortName">txpippmpd_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/txpippmstepsize_o" type="array">
+      <obj_property name="ElementShortName">txpippmstepsize_o[4:0]</obj_property>
+      <obj_property name="ObjectShortName">txpippmstepsize_o[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drpaddr_o" type="array">
+      <obj_property name="ElementShortName">drpaddr_o[8:0]</obj_property>
+      <obj_property name="ObjectShortName">drpaddr_o[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drpen_o" type="logic">
+      <obj_property name="ElementShortName">drpen_o</obj_property>
+      <obj_property name="ObjectShortName">drpen_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drpdi_o" type="array">
+      <obj_property name="ElementShortName">drpdi_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">drpdi_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drprdy_i" type="logic">
+      <obj_property name="ElementShortName">drprdy_i</obj_property>
+      <obj_property name="ObjectShortName">drprdy_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drpdo_i" type="array">
+      <obj_property name="ElementShortName">drpdo_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">drpdo_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/drpwe_o" type="logic">
+      <obj_property name="ElementShortName">drpwe_o</obj_property>
+      <obj_property name="ObjectShortName">drpwe_o</obj_property>
+   </wvobject>
+   <wvobject fp_name="/gtwizard_ultrascale_0_example_top_sim/example_top_inst/tx_phase_aligner_inst/tx_reset_o" type="logic">
+      <obj_property name="ElementShortName">tx_reset_o</obj_property>
+      <obj_property name="ObjectShortName">tx_reset_o</obj_property>
+   </wvobject>
+</wave_config>

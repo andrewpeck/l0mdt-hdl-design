@@ -1,6 +1,6 @@
-hal/constraints/timing.xdc
-hal/constraints/loc_mgts.tcl nosynth
-hal/constraints/pinouts_mpi_ku15p.xdc
-hal/constraints/region_constraints_toolbox.tcl nosynth
-hal/constraints/area_constraints.tcl nosynth
-lpgbt/constraints/lpgbt_multicycle.tcl
+HAL/hal/constraints/timing.xdc
+HAL/hal/constraints/loc_mgts.tcl nosynth
+HAL/hal/constraints/pinouts_mpi_ku15p.xdc
+HAL/hal/constraints/region_constraints_toolbox.tcl nosynth
+HAL/hal/constraints/area_constraints.tcl nosynth
+HAL/lpgbt/constraints/lpgbt_multicycle.tcl

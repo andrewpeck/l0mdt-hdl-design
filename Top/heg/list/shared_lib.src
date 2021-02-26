@@ -58,3 +58,6 @@ shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
 shared/mpcvmem/src/mpcvmem.vhd
 shared/mpcvmem/src/DualPortMem.vhd
+
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib

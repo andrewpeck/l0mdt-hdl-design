@@ -9,22 +9,21 @@ shared/shared_lib.src lib=shared_lib
 #### project local configuration files ####
 Top/ult_tp_dev/prj_cfg.vhd
 #### top  ####
-ult/top_ult_tp.vhd top=top_ult_tp
+UserLogic/ult/top_ult_tp.vhd top=top_ult_tp
 #### AXI SC ####
-ctrl/ctrl_lib.src lib=ctrl_lib
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 
 #### modules included ####
-mpl/mpl_lib.src lib=mpl_lib
-ult/ult_lib.src lib=ult_lib
-ucm/ucm_lib.src lib=ucm_lib
-hp/hp_lib.src lib=hp_lib
-heg/heg_lib.src lib=heg_lib
-hps/hps_lib.src lib=hps_lib
-csf/csf_lib.src lib=csf_lib
-tar/tar_lib.src lib=tar_lib
-ptc_mpi/ptc_lib.src lib=ptc_lib
-# lsf/lsf_lib.src lib=lsf_lib
-upt/upt_lib.src lib=upt_lib
-mtc/mtc_lib.src lib=mtc_lib
-# lsf/lsf_lib.src lib=lsf_lib
-daq/daq_lib.src lib=daq_lib
+UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ucm/ucm_lib.src lib=ucm_lib
+UserLogic/hp/hp_lib.src lib=hp_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+UserLogic/csf/csf_lib.src lib=csf_lib
+UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+# UserLogic/lsf/lsf_lib.src lib=lsf_lib
+UserLogic/upt/upt_lib.src lib=upt_lib
+UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/daq/daq_lib.src lib=daq_lib

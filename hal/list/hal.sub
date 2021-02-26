@@ -1,4 +1,0 @@
-lpgbt/list/gbt_sc.sub lib=gbt_sc
-lpgbt/list/lpgbt_emul.sub lib=lpgbt_emul
-lpgbt/list/lpgbt_fpga.sub lib=lpgbt_fpga
-sl/list/sl.sub lib=sl
