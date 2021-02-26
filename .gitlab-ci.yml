@@ -30,7 +30,6 @@ include:
     - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
     - local: '/Top/mtc/gitlab-ci.yml'
-    - local: '/Top/upt/gitlab-ci.yml'
     #---------------------------------------------
     #         Builds
     #---------------------------------------------
