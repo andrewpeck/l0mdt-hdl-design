@@ -70,8 +70,8 @@ begin
   begin
 
     
-    o_mtc <= (others => (others => '0'));
-    o_nsp <= (others => (others => '0'));
+    -- o_mtc <= (others => (others => '0'));
+    -- o_nsp <= (others => (others => '0'));
 
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
