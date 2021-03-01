@@ -1,13 +1,13 @@
 #################### ult_tp_ucm_questa Project ###########################
-generate_project:ult_tp_ucm:
-    extends: .generate_project
+GEN:ult_tp_ucm:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ult_tp_ucm:
-    extends: .simulate_project
+SIM:ult_tp_ucm:
+    extends: .SIM
     variables:
       extends: .vars
       PROJECT_NAME: ult_tp_ucm
