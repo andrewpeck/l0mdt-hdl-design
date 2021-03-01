@@ -4,6 +4,10 @@
 shared/shared_lib_basic.src
 
 #---------------------------------
+# mdt tube mapping
+#---------------------------------
+# shared/detector_parameters/tube_coordinates/tube_coord_lib.src lib=tube_coord_lib
+#---------------------------------
 # Detector shared RAMs ( Under dev)
 #---------------------------------
 
@@ -13,7 +17,7 @@ shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
 shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
 
 #---------------------------------
-# Detector shared RAMs
+# Detector shared ROMs
 #---------------------------------
 shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd
@@ -35,6 +39,8 @@ shared/src/pipeline.vhd
 # shared/src/ring_buffer.vhd #Deprectated, need to clean
 shared/src/ring_buffer_v2.vhd
 shared/src/vhdl_ram_memory.vhd
+shared/mpcvmem/src/mpcvmem.vhd
+shared/mpcvmem/src/DualPortMem.vhd
 
 #CSF/PT memories
 shared/src/bram.vhd
@@ -50,5 +56,4 @@ shared/functions/trigonometrics/roi_atan.vhd
 shared/functions/trigonometrics/roi_tan_pkg.vhd
 shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
-shared/mpcvmem/src/mpcvmem.vhd
-shared/mpcvmem/src/DualPortMem.vhd
+

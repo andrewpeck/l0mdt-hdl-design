@@ -2,7 +2,7 @@
 shared/detector_parameters/tube_coordinates/tube_coord_lib.src lib=tube_coord_lib
 # Module includes
 UserLogic/hps/pkg/hps_pkg.vhd
-UserLogic/hps/src/hps_sf_wrap.vhd
+UserLogic/hps/src/hps_SA_sf_wrap.vhd
 UserLogic/hps/src/hps_pc.vhd
 UserLogic/hps/src/ROMs/hps_rom_b_zholes_pkg.vhd
 UserLogic/hps/src/hps_pc_b_zholes.vhd
