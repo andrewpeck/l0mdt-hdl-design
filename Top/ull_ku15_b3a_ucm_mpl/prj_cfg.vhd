@@ -41,6 +41,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_NEIGHBORS         := '1'; -- 0: disabled  1: enabled
 
     -- Blocks
+    proj_cfg.ENABLE_TAR               := '0';
     proj_cfg.INSEL_MDT_nTAR           := '1';
     proj_cfg.ENABLE_UCM               := '1';
     proj_cfg.ENABLE_H2S               := '0';
