@@ -1,0 +1,13 @@
+# -*- mode: TCL;-*-
+#HAL/tdc/src/top_tdc_decoder.vhd
+HAL/tdc/src/csm_pkg.vhd
+HAL/tdc/src/polling_mux.vhd
+#HAL/tdc/src/top_tdc_control.vhd
+HAL/tdc/src/tdc_encoded_control.vhd
+HAL/tdc/src/tdc_decoder/dec8b10b.v
+HAL/tdc/src/tdc_decoder/dec_8b10b.vhd
+HAL/tdc/src/tdc_decoder/tdc_decoder.vhd
+HAL/tdc/src/tdc_decoder/alignment_buffer.vhd
+HAL/tdc/src/tdc_decoder/decoder_framer.vhd
+HAL/tdc/src/tdc_decoder/tdc_packet_processor.vhd
+HAL/tdc/src/fifo_async.vhd

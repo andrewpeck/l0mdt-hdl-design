@@ -1,13 +1,13 @@
 #################### HPS Project ###########################
-generate_project:hps_lsf:
-    extends: .generate_project
+GEN:hps_lsf:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: hps_lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:hps_lsf:
-#     extends: .simulate_project
+# SIM:hps_lsf:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hps_lsf

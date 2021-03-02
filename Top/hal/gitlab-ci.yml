@@ -1,13 +1,13 @@
 #################### hal Project ###########################
-generate_project:hal:
-    extends: .generate_project
+GEN:hal:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: hal
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:hal:
-#     extends: .simulate_project
+# SIM:hal:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hal

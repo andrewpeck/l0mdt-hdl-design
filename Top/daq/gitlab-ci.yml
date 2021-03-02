@@ -1,12 +1,12 @@
-generate_project:daq:
-    extends: .generate_project
+GEN:daq:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: daq
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:daq:
-#     extends: .simulate_project
+# SIM:daq:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: daq

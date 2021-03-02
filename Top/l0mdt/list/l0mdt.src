@@ -1,22 +1,22 @@
 # -*- mode: TCL;-*-
 Top/l0mdt/top_l0mdt.vhd
-ctrl/src/top_control.vhd
+HAL/ctrl/src/top_control.vhd
 
 # Other libraries
 # for some reason, it seems HOG requires hal.src to be double listed here and in l0mdt.src???
-hal/list/hal.src lib=hal
-ctrl/ctrl_lib.src lib=ctrl_lib
-ctrl/src/top_control.vhd
+HAL/hal/list/hal.src lib=hal
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+HAL/ctrl/src/top_control.vhd
 shared/shared_lib.src lib=shared_lib
-mpl/mpl_lib.src lib=mpl_lib
-ult/ult_lib.src lib=ult_lib
-ucm/ucm_lib.src lib=ucm_lib
-hp/hp_lib.src lib=hp_lib
-heg/heg_lib.src lib=heg_lib
-hps/hps_lib.src lib=hps_lib
-csf/csf_lib.src lib=csf_lib
-lsf/lsf_lib.src lib=lsf_lib
-tar/tar_lib.src lib=tar_lib
-upt/upt_lib.src lib=upt_lib
-mtc/mtc_lib.src lib=mtc_lib
-ptc_mpi/ptc_lib.src lib=ptc_lib
+UserLogic/mpl/mpl_lib.src lib=mpl_lib
+UserLogic/ult/ult_lib.src lib=ult_lib
+UserLogic/ucm/ucm_lib.src lib=ucm_lib
+UserLogic/hp/hp_lib.src lib=hp_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+UserLogic/csf/csf_lib.src lib=csf_lib
+UserLogic/lsf/lsf_lib.src lib=lsf_lib
+UserLogic/tar/tar_lib.src lib=tar_lib
+UserLogic/upt/upt_lib.src lib=upt_lib
+UserLogic/mtc/mtc_lib.src lib=mtc_lib
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib

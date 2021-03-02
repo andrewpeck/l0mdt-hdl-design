@@ -1,14 +1,14 @@
 # -*- mode: TCL;-*-
 
-tdc/list/tdc.src lib=tdc
+HAL/tdc/list/tdc.src lib=tdc
 
 # LPGBT
-lpgbt/list/lpgbt_fpga.src
-lpgbt/src/lpgbt_pkg.vhd
+HAL/lpgbt/list/lpgbt_fpga.src
+HAL/lpgbt/src/lpgbt_pkg.vhd
 
 # Framework
-hal/src/board_pkg.vhd
-hal/src/board_pkg_common.vhd
-hal/src/constants_pkg.vhd
-hal/src/user_pkg.vhd
-hal/src/system_types_pkg.vhd
+HAL/hal/src/board_pkg.vhd
+HAL/hal/src/board_pkg_common.vhd
+HAL/hal/src/constants_pkg.vhd
+HAL/hal/src/user_pkg.vhd
+HAL/hal/src/system_types_pkg.vhd

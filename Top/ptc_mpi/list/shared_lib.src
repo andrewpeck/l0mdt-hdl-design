@@ -1,0 +1,4 @@
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
+shared/shared_lib_basic.src

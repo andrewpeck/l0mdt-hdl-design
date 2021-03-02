@@ -1,0 +1,4 @@
+UserLogic/daq/pkg/common_defs_pkg.svh
+HAL/ttc/pkg/ttc_defs_pkg.svh
+HAL/ttc/sim/tb_top.sv topsim=ttc_tb
+HAL/ttc/sim/tb.wcfg wavefile

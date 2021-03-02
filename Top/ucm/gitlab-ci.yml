@@ -1,13 +1,13 @@
 #################### ucm Project ###########################
-generate_project:ucm:
-    extends: .generate_project
+GEN:ucm:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:ucm:
-#     extends: .simulate_project
+# SIM:ucm:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ucm

@@ -1,8 +1,3 @@
-#### default config parameters ####
-shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
-#### shared ####
-shared/shared_lib.src lib=shared_lib
-
 Top/ptc_mpi/prj_cfg.vhd 
-ptc_mpi/ptc_lib.src lib=ptc_lib
-ptc_mpi/top_ptc_mpi.vhd 
+UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
+UserLogic/ptc_mpi/top_ptc_mpi.vhd 

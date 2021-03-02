@@ -1,8 +1,0 @@
-heg/src/ROMs/roi_types_pkg.vhd
-heg/src/ROMs/roi_lut_BILA3.vhd
-heg/src/ROMs/roi_lut_BMLA3.vhd
-heg/src/ROMs/roi_lut_BOLA3.vhd
-heg/src/ROMs/roi_lut_BILA3_angle.vhd
-heg/src/ROMs/roi_lut_BMLA3_angle.vhd
-heg/src/ROMs/roi_lut_BOLA3_angle.vhd
-heg/src/ROMs/roi_lut_functions.vhd

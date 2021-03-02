@@ -1,13 +1,13 @@
 #################### hp Project ###########################
-generate_project:hp:
-    extends: .generate_project
+GEN:hp:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: hp
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:hp:
-#     extends: .simulate_project
+# SIM:hp:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: hp

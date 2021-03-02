@@ -5,5 +5,5 @@ shared/shared_lib.src lib=shared_lib
 
 Top/daq/prj_cfg.vhd
 
-ttc/ttc_lib.src lib=ttc_lib
-daq/daq_lib.src lib=daq_lib
+HAL/ttc/ttc_lib.src lib=ttc_lib
+UserLogic/daq/daq_lib.src lib=daq_lib

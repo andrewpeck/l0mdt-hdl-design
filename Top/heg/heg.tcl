@@ -1,6 +1,6 @@
 ############# modify these to match project ################
 set BIN_FILE 1
-set USE_QUESTA_SIMULATOR 0
+set USE_QUESTA_SIMULATOR 1
 # set AUTO_INCREMENTAL_CHECKPOINT 1 
 
 ## FPGA and Vivado strategies and flows

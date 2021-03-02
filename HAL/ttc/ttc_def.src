@@ -1,0 +1,2 @@
+UserLogic/daq/types_def.src lib=types_def
+HAL/ttc/pkg/ttc_defs.vhd
