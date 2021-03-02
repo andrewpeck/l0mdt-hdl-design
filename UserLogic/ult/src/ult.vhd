@@ -109,10 +109,10 @@ end entity ult;
 architecture behavioral of ult is
 
   -- outputs from candidate manager
-  signal inner_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_hts : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_hts  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal inn_slc_to_h2s  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal mid_slc_to_h2s : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal out_slc_to_h2s  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+  signal ext_slc_to_h2s  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
   signal ucm2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   -- TDC Hits from tar 2 hps
@@ -203,10 +203,10 @@ begin
       i_slc_data_neighborA_v => i_plus_neighbor_slc,
       i_slc_data_neighborB_v => i_minus_neighbor_slc,
       -- outputs to ucm
-      o_uCM2hps_inn_av        => inner_slc_to_hts,
-      o_uCM2hps_mid_av        => middle_slc_to_hts,
-      o_uCM2hps_out_av        => outer_slc_to_hts,
-      o_uCM2hps_ext_av        => extra_slc_to_hts,
+      o_uCM2hps_inn_av        => inn_slc_to_h2s,
+      o_uCM2hps_mid_av        => mid_slc_to_h2s,
+      o_uCM2hps_out_av        => out_slc_to_h2s,
+      o_uCM2hps_ext_av        => ext_slc_to_h2s,
       -- pipeline
       o_uCM2pl_av             => ucm2pl_av
     );
@@ -225,10 +225,10 @@ begin
       i_out_tar_hits            => out_tar_hits,
       i_ext_tar_hits            => ext_tar_hits,
       -- Sector Logic Candidates from uCM
-      i_inn_slc                 => inner_slc_to_hts,
-      i_mid_slc                 => middle_slc_to_hts,
-      i_out_slc                 => outer_slc_to_hts,
-      i_ext_slc                 => extra_slc_to_hts,
+      i_inn_slc                 => inn_slc_to_h2s,
+      i_mid_slc                 => mid_slc_to_h2s,
+      i_out_slc                 => out_slc_to_h2s,
+      i_ext_slc                 => ext_slc_to_h2s,
       -- Segments Out to pt calculation
       o_inn_segments            => inn_segments_to_pt,
       o_mid_segments            => mid_segments_to_pt,

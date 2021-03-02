@@ -55,7 +55,7 @@ architecture beh of ucm_cde is
   
   signal i_slc_data_r     : slc_rx_rt;
   signal o_cde_data_r     : ucm_cde_rt;
-  signal o_cde_data_null  : ucm_cde_rt := nullify(o_cde_data_r);
+  -- signal o_cde_data_null  : ucm_cde_rt;-- := nullify(o_cde_data_r);
 
   signal barrel_r : slc_barrel_rt;
 
