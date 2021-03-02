@@ -1,13 +1,13 @@
 #################### ull_vu13_b3a_ucm_mpl Project ###########################
-generate_project:ull_vu13_b3a_ucm_mpl:
-    extends: .generate_project
+GEN:ull_vu13_b3a_ucm_mpl:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ull_vu13_b3a_ucm_mpl:
-    extends: .simulate_project
+SIM:ull_vu13_b3a_ucm_mpl:
+    extends: .SIM
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl

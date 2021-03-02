@@ -1,13 +1,13 @@
 #################### ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi Project ###########################
-generate_project:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
-    extends: .generate_project
+GEN:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
-    extends: .simulate_project
+SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
+    extends: .SIM
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
