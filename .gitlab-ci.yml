@@ -3,7 +3,7 @@ include:
       file: '/hog.yml'
       ref: 'v3.10.0'
     # - local: '/.before_script.yml'
-    # - local: "/.user_jobs.yml"
+    - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
     #---------------------------------------------
     #         HW
