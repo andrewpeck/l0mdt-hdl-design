@@ -47,6 +47,3 @@
 [submodule "shared/mpcvmem"]
 	path = shared/mpcvmem
 	url = https://github.com/taquionbcn/mpcvmem.git
-[submodule "HAL/lpgbt/src/lpgbt-emul"]
-	path = HAL/lpgbt/src/lpgbt-emul
-	url = ../lpgbt-emul.git
