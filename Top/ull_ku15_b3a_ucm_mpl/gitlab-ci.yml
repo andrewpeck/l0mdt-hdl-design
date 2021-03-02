@@ -12,7 +12,8 @@ simulate_project:ull_ku15_b3a_ucm_mpl:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl
       HOG_CHECK_PROJVER: 0
-
+    allow_failure: false
+    
 # user_sim:ull_ku15_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:
