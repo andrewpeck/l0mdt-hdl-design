@@ -143,8 +143,8 @@ begin
     --
     i_din_a       => i_data,
     i_dv_in_a     => i_dv,
-    o_dout_b      => o_data
-    -- o_dv_out_b     
+    o_dout_b      => o_data,
+    o_dv_out_b    => o_dv    
   );
 end generate MPCVMEM_GEN;
 
