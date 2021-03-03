@@ -106,6 +106,7 @@ begin  -- architecture behavioral
       Ctrl.ACTIONS.RESET <= '0';
       Ctrl.ACTIONS.ENABLE <= '0';
       Ctrl.ACTIONS.DISABLE <= '0';
+      Ctrl.ACTIONS.FREEZE <= '0';
       
 
       
@@ -113,8 +114,9 @@ begin  -- architecture behavioral
         case to_integer(unsigned(localAddress(4 downto 0))) is
         when 0 => --0x0
           Ctrl.ACTIONS.RESET          <=  localWrData( 0);               
-          Ctrl.ACTIONS.ENABLE         <=  localWrData( 4);               
-          Ctrl.ACTIONS.DISABLE        <=  localWrData( 5);               
+          Ctrl.ACTIONS.ENABLE         <=  localWrData( 1);               
+          Ctrl.ACTIONS.DISABLE        <=  localWrData( 2);               
+          Ctrl.ACTIONS.FREEZE         <=  localWrData( 3);               
         when 1 => --0x1
           reg_data( 1)( 3 downto  0)  <=  localWrData( 3 downto  0);      --
           reg_data( 1)( 4)            <=  localWrData( 4);                --

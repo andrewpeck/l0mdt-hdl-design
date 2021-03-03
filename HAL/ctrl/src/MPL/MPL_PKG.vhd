@@ -9,13 +9,15 @@ package MPL_CTRL is
     RESET                      :std_logic;   
     ENABLE                     :std_logic;   
     DISABLE                    :std_logic;   
+    FREEZE                     :std_logic;   
   end record MPL_ACTIONS_CTRL_t;
 
 
   constant DEFAULT_MPL_ACTIONS_CTRL_t : MPL_ACTIONS_CTRL_t := (
                                                                RESET => '0',
                                                                DISABLE => '0',
-                                                               ENABLE => '0'
+                                                               ENABLE => '0',
+                                                               FREEZE => '0'
                                                               );
   type MPL_CONFIGS_CTRL_t is record
     THREADS                    :std_logic_vector( 3 downto 0);

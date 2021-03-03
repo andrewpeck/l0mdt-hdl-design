@@ -9,13 +9,15 @@ package UCM_CTRL is
     RESET                      :std_logic;   
     ENABLE                     :std_logic;   
     DISABLE                    :std_logic;   
+    FREEZE                     :std_logic;   
   end record UCM_ACTIONS_CTRL_t;
 
 
   constant DEFAULT_UCM_ACTIONS_CTRL_t : UCM_ACTIONS_CTRL_t := (
                                                                RESET => '0',
                                                                DISABLE => '0',
-                                                               ENABLE => '0'
+                                                               ENABLE => '0',
+                                                               FREEZE => '0'
                                                               );
   type UCM_CONFIGS_CTRL_t is record
     THREADS                    :std_logic_vector( 3 downto 0);
