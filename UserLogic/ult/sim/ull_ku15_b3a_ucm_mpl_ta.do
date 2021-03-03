@@ -210,7 +210,6 @@ add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVM
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/g_MEM_WIDTH
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/g_MEM_DEPTH
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/g_DV_TYPE
-add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/ENABLE_SECOND_PORT
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/ADD_WIDTH
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/MEM_DEPTH
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/MEM_WIDTH
@@ -232,6 +231,24 @@ add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVM
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/o_full
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/o_full_next
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/o_used
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_MEMORY_TYPE
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ENABLE_SECOND_PORT
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_RAM_WIDTH
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ADD_WIDTH
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/clk
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/rst
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/ena
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_a
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_a
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_a
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_a
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_b
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_b
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_b
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_b
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_a
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_b
+add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -expand -group DPM /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/PIPE_GEN/PL_ULTRA/RAM_MEM/mem
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/ena_pipes
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/data_pipes
 add wave -noupdate -expand -group MPL -expand -group MPL_A4 -expand -group MPCVMEM_A4 -radix unsigned /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/MPL_A(4)/PL/MPCVMEM_GEN/mpcvmem/wr_index
@@ -251,7 +268,7 @@ add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2pt_ar
 add wave -noupdate -expand -group MPL /ult_tp/ULT/logic_gen/pipeline_inst/MPL_EN/MPL/pl2mtc_ar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {Reset {7812500 fs} 1 Red default} {{Cursor 2} {674827 fs} 0}
+WaveRestoreCursors {Reset {7812500 fs} 1 Red default} {{Cursor 2} {24788500 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 319
 configure wave -valuecolwidth 100
@@ -267,4 +284,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {1640625 fs}
+WaveRestoreZoom {2641 ps} {89308227 fs}
