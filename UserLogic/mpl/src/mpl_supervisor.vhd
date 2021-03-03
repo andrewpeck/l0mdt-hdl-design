@@ -16,6 +16,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.numeric_std_unsigned.all;
 use ieee.std_logic_misc.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -24,7 +25,6 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
-
 
 use shared_lib.detector_param_pkg.all;
  
@@ -48,37 +48,65 @@ entity mpl_supervisor is
     --
 
     --
+    i_freeze            : in std_logic;
+    o_freeze            : out std_logic;
+    --
     local_en            : out std_logic;
     local_rst           : out std_logic
   );
 end entity mpl_supervisor;
 
 architecture beh of mpl_supervisor is
+
+  signal clk_axi      : std_logic;
+  signal clk_axi_cnt  : integer;
+  constant c_CLK_AXI_MULT : integer := 5: 
+
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
-  signal mem_rst  : std_logic;
+  -- signal mem_rst  : std_logic;
   --
   signal mem_flush_on_Reset : std_logic := '1';
-  signal rst_counter : integer;
+  signal rst_counter        : integer;
+  signal rst_trig           : std_logic;
+  constant RST_Latency      : integer := integer(ceil(log2(real(c_MPL_PL_A_LATENCY))));
+  signal rst_done           : std_logic;
+  signal rst_states         : std_logic_vector(3 downto 0);
 begin
-  
   --------------------------------------------
-  --    SIGNALING
+  --    AXI CLK
+  --------------------------------------------
+  axi_clk: process(clk)
+    begin
+    if rising_edge(clk) then
+      if rst = rst_val then
+        clk_axi <= '0';
+        clk_axi_cnt <= 0;
+      else
+        if clk_axi_cnt < c_CLK_AXI_MULT then
+          clk_axi_cnt <= clk_axi_cnt + 1;
+        else
+          clk_axi_cnt <= 0;
+          clk_axi <= not clk_axi;
+      end if;
+    end if;
+  end process axi_clk;
+  --------------------------------------------
+  --    CTRL
   --------------------------------------------
   local_en <= glob_en and int_en;
-  local_rst <= rst or int_rst or mem_rst;
 
-  signaling: process(clk)
-  begin
-    if rising_edge(clk) then
+  signaling: process(clk_axi)
+    begin
+    if rising_edge(clk_axi) then
       if rst = '1' then
         int_en <= glob_en;
-        int_rst <= rst;
+        rst_trig <= rst;
       else
         if ctrl.actions.reset = '1' then
-          int_rst <= '1';
+          rst_trig <= '1';
         else
-          int_rst <= '0';
+          rst_trig <= '0';
         end if;
         if ctrl.actions.enable = '1' then
           int_en <= '1';
@@ -89,11 +117,49 @@ begin
     end if;
   end process signaling;
   --------------------------------------------
-  --    status
+  --    RESET
   --------------------------------------------
-  status: process(clk)
+  local_rst <= rst or int_rst or mem_rst;
+  
+  rst_cnt: process(clk)
   begin
     if rising_edge(clk) then
+      if rst = '1' then
+        rst_States <= x"0"
+      else
+        case rst_states is
+          when x"0" =>
+            
+        
+          when others =>
+            
+        
+        end case;
+      end if;
+
+      if mem_flush_on_Reset = '0' then
+        int_rst <= rst_trig;
+      else
+        if rst_trig = '1' then
+          rst_counter <= 0;
+        else
+          if rst_counter < RST_Latency then
+            mem_rst <= '1';
+            rst_counter <= rst_counter + 1;
+          else
+            mem_rst <= '0';
+          end if;
+        end if;
+      end if;
+    end if;
+  end process rst_cnt;
+
+  --------------------------------------------
+  --    status
+  --------------------------------------------
+  status: process(clk_axi)
+  begin
+    if rising_edge(clk_axi) then
       if rst = '1' then
 
       else
@@ -104,27 +170,7 @@ begin
     end if;
   end process status;
 
-  --------------------------------------------
-  --    RESET
-  --------------------------------------------
-  -- FLUSH_DISABLED: if mem_flush_on_Reset = '0' generate
-  --   local_rst <= rst or int_rst;
-  -- end generate;
 
-  -- FLUSH_ENABLED: if mem_flush_on_Reset = '1' generate
-  MEM_RESET: process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        mem_rst <= '1';
-        rst_counter <= 0;
-      else
-
-        
-      end if;
-    end if;
-  end process MEM_RESET;
-  -- end generate;
   
   
   

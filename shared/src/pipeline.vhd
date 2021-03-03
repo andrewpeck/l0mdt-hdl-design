@@ -82,70 +82,72 @@ begin
       end if;
     end process;
 
-end generate;
+  end generate;
 
-RING : if g_PIPELINE_TYPE = "ring_buffer" generate
-  ring_mem : entity shared_lib.ring_buffer_v2
-    generic map (
-      -- pragma translate_off
-      g_SIMULATION => '1',
-      -- pragma translate_on
+  RING : if g_PIPELINE_TYPE = "ring_buffer" generate
+    ring_mem : entity shared_lib.ring_buffer_v2
+      generic map (
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
 
+        g_LOGIC_TYPE    => "pipeline",
+        g_MEMORY_TYPE   => g_MEMORY_TYPE,--"block",
+        -- g_PIPELINE_IN_REGS => 1,
+        g_PIPELINE_OUT_REGS => 4,
+        g_RAM_WIDTH     => g_PIPELINE_WIDTH,
+        g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
+      )
+      port map (
+        clk           => clk,
+        rst           => rst,
+        --
+        i_delay         => g_DELAY_CYCLES,
+        --
+        i_wr          => '1',
+        i_wr_data     => i_data,
+        --
+        i_rd          => '1',
+        o_rd_dv       => open,
+        o_rd_data     => o_data,
+        --
+        o_empty       => open,
+        o_empty_next  => open,
+        o_full        => open,
+        o_full_next   => open,
+        o_used        => open
+      );
+  end generate;
+
+  MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
+    -- DC4_GEN: if condition generate
+      
+    -- end generate DC4_GEN;
+    -- constant OUT_PIPELINE
+    constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+
+  begin
+    
+    
+    mpcvmem : entity shared_lib.mpcvmem
+    generic map(
       g_LOGIC_TYPE    => "pipeline",
-      g_MEMORY_TYPE   => g_MEMORY_TYPE,--"block",
-      -- g_PIPELINE_IN_REGS => 1,
-      g_PIPELINE_OUT_REGS => 4,
-      g_RAM_WIDTH     => g_PIPELINE_WIDTH,
-      g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
+      g_MEMORY_TYPE   => g_MEMORY_TYPE,
+
+
+      g_MEM_WIDTH     => g_PIPELINE_WIDTH,
+      g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
     )
-    port map (
+    port map(
       clk           => clk,
       rst           => rst,
+      ena           => glob_en,
       --
-      i_delay         => g_DELAY_CYCLES,
-      --
-      i_wr          => '1',
-      i_wr_data     => i_data,
-      --
-      i_rd          => '1',
-      o_rd_dv       => open,
-      o_rd_data     => o_data,
-      --
-      o_empty       => open,
-      o_empty_next  => open,
-      o_full        => open,
-      o_full_next   => open,
-      o_used        => open
+      i_din_a       => i_data,
+      i_dv_in_a     => i_dv,
+      o_dout_b      => o_data,
+      o_dv_out_b    => o_dv    
     );
-end generate;
-
-MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
-  -- DC4_GEN: if condition generate
-    
-  -- end generate DC4_GEN;
-  constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES -4;
-
-begin
-  
-  
-  mpcvmem : entity shared_lib.mpcvmem
-  generic map(
-    g_LOGIC_TYPE    => "pipeline",
-    g_MEMORY_TYPE   => g_MEMORY_TYPE,
-
-    g_MEM_WIDTH     => g_PIPELINE_WIDTH,
-    g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
-  )
-  port map(
-    clk           => clk,
-    rst           => rst,
-    ena           => glob_en,
-    --
-    i_din_a       => i_data,
-    i_dv_in_a     => i_dv,
-    o_dout_b      => o_data,
-    o_dv_out_b    => o_dv    
-  );
-end generate MPCVMEM_GEN;
+  end generate MPCVMEM_GEN;
 
 end beh;

@@ -95,8 +95,8 @@ begin
     )
     port map(
       clk         => clk,
-      rst         => rst,
-      glob_en     => glob_en,
+      rst         => local_rst,
+      glob_en     => local_en,
       --
       i_data      => i_uCM2pl_av(sl_i),
       i_dv        => i_uCM2pl_ar(sl_i).data_valid,
@@ -108,8 +108,8 @@ begin
   PL_CSW : entity mpl_lib.mpl_csw
   port map(
     clk                 => clk,
-    rst                 => rst,
-    glob_en             => glob_en,
+    rst         => local_rst,
+    glob_en     => local_en,
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_ucm_av       => pl2pt_av,
@@ -125,8 +125,8 @@ begin
     )
     port map(
       clk         => clk,
-      rst         => rst,
-      glob_en     => glob_en,
+      rst         => local_rst,
+      glob_en     => local_en,
       --
       i_data      => pl2mtc_av(sl_i),
       o_data      => o_pl2mtc_av(sl_i)

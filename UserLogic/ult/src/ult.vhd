@@ -241,7 +241,7 @@ begin
       o_sump                    => h2s_sump
     );
 
-    pipeline_inst : entity ult_lib.pipeline
+    MPL : entity ult_lib.pipeline
     port map (
       -- clock, control, and monitoring
       clock_and_control => clock_and_control,
