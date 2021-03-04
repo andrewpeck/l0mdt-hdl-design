@@ -34,24 +34,65 @@ package MPL_CTRL is
                                                                FLUSH_MEM_RESET => '1'
                                                               );
   type MPL_STATUS_MON_t is record
-    G_ENABLED                  :std_logic;   
-    G_READY                    :std_logic;   
-    G_ERROR                    :std_logic;   
+    ENABLED                    :std_logic;   
+    READY                      :std_logic;   
+    ERROR                      :std_logic;   
   end record MPL_STATUS_MON_t;
 
 
+  type MPL_PL_MEM_PL_MEM_MON_t is record
+    rd_rdy                     :std_logic;     -- Read ready
+    rd_data_0                  :std_logic_vector(31 downto 0);  -- Read Data 0
+    rd_data_1                  :std_logic_vector(25 downto 0);  -- Read Data 1
+  end record MPL_PL_MEM_PL_MEM_MON_t;
+  type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(0 to 4) of MPL_PL_MEM_PL_MEM_MON_t;
+
+  type MPL_PL_MEM_PL_MEM_CTRL_t is record
+    wr_en                      :std_logic;     -- Write Enable
+    rd_ack                     :std_logic;     -- Read Ack
+    wr_addr                    :std_logic_vector( 9 downto 0);  -- Address
+    en                         :std_logic;                      -- Enable
+    wr_data_0                  :std_logic_vector(31 downto 0);  -- Write Data 0
+    wr_data_1                  :std_logic_vector(25 downto 0);  -- Write Data 1
+  end record MPL_PL_MEM_PL_MEM_CTRL_t;
+  type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(0 to 4) of MPL_PL_MEM_PL_MEM_CTRL_t;
+
+  constant DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t : MPL_PL_MEM_PL_MEM_CTRL_t := (
+                                                                           rd_ack => '0',
+                                                                           en => '0',
+                                                                           wr_addr => (others => '0'),
+                                                                           wr_en => '0',
+                                                                           wr_data_1 => (others => '0'),
+                                                                           wr_data_0 => (others => '0')
+                                                                          );
+  type MPL_PL_MEM_MON_t is record
+    PL_MEM                     :MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
+  end record MPL_PL_MEM_MON_t;
+
+
+  type MPL_PL_MEM_CTRL_t is record
+    PL_MEM                     :MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
+  end record MPL_PL_MEM_CTRL_t;
+
+
+  constant DEFAULT_MPL_PL_MEM_CTRL_t : MPL_PL_MEM_CTRL_t := (
+                                                             PL_MEM => (others => DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t )
+                                                            );
   type MPL_MON_t is record
     STATUS                     :MPL_STATUS_MON_t;
+    PL_MEM                     :MPL_PL_MEM_MON_t;
   end record MPL_MON_t;
 
 
   type MPL_CTRL_t is record
     ACTIONS                    :MPL_ACTIONS_CTRL_t;
     CONFIGS                    :MPL_CONFIGS_CTRL_t;
+    PL_MEM                     :MPL_PL_MEM_CTRL_t; 
   end record MPL_CTRL_t;
 
 
   constant DEFAULT_MPL_CTRL_t : MPL_CTRL_t := (
+                                               PL_MEM => DEFAULT_MPL_PL_MEM_CTRL_t,
                                                CONFIGS => DEFAULT_MPL_CONFIGS_CTRL_t,
                                                ACTIONS => DEFAULT_MPL_ACTIONS_CTRL_t
                                               );

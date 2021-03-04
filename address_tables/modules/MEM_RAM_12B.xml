@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="MEM_RAM_12B">
-  <node id="WR"  address="0x00000000" mask="0x01FF0FFF"  permission="w"  description="rd_en + wr_en + addr + value"/>
-    <!--          <node id="VALUE"    mask="0x0000FFFF"  permission="w"  description="New value to write"/>
-                  <node id="ADDR"     mask="0x00FF0000"  permission="w"  description="position or chamber to r/w value"/>
-                  <node id="WR_EN"    mask="0x01000000"  permission="w"  description="Write Enable"/>
-                  <node id="RD_EN"    mask="0x02000000"  permission="w"  description="Write Enable"/> -->
-  <!-- </node> -->
-  <node id="RD"  address="0x00000001" mask="0x80000FFF" permission="r"  description="Read Value id position selected"/>
-    <!--          <node id="VALUE"    mask="0x0000FFFF" permission="r"  description="Read Value id position selected"/>
-                  <node id="RST_REQ"  mask="0x80000000" permission="r"  description="Reset request after changes in the mem"/> -->
-  <!-- </node> -->
+  <node id="wr_en"   address="0x0" mask="0x00000001" permission="w"   description="Write Enable"/>
+  <node id="rd_ack"  address="0x0" mask="0x00000002" permission="w"   description="Read Ack"/>
+  <node id="wr_addr" address="0x1" mask="0x000000FF" permission="rw"  description="Address"/>
+  <node id="en"      address="0x1" mask="0x00001000" permission="rw"  description="Enable"/>
+  <node id="rd_rdy"  address="0x1" mask="0x00002000" permission="r"   description="Read ready"/>
+  <node id="wr_data" address="0x2" mask="0x0fff0000" permission="rw"  description="Write Data"/>
+  <node id="rd_data" address="0x2" mask="0x00000fff" permission="r"   description="Read Data"/>
 </node>

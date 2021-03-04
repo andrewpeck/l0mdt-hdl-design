@@ -39,30 +39,48 @@ package UCM_CTRL is
 
 
   type UCM_SECTOR_PHI_MON_t is record
-    RD                         :std_logic_vector(12 downto 0);  -- Read Value id position selected
+    rd_rdy                     :std_logic;     -- Read ready
+    rd_data                    :std_logic_vector(11 downto 0);  -- Read Data
   end record UCM_SECTOR_PHI_MON_t;
 
 
   type UCM_SECTOR_PHI_CTRL_t is record
-    WR                         :std_logic_vector(20 downto 0);  -- rd_en + wr_en + addr + value
+    wr_en                      :std_logic;     -- Write Enable
+    rd_ack                     :std_logic;     -- Read Ack
+    wr_addr                    :std_logic_vector( 7 downto 0);  -- Address
+    en                         :std_logic;                      -- Enable
+    wr_data                    :std_logic_vector(11 downto 0);  -- Write Data
   end record UCM_SECTOR_PHI_CTRL_t;
 
 
   constant DEFAULT_UCM_SECTOR_PHI_CTRL_t : UCM_SECTOR_PHI_CTRL_t := (
-                                                                     WR => (others => '0')
+                                                                     wr_addr => (others => '0'),
+                                                                     wr_en => '0',
+                                                                     en => '0',
+                                                                     rd_ack => '0',
+                                                                     wr_data => (others => '0')
                                                                     );
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
-    RD                         :std_logic_vector(16 downto 0);  -- Read Value id position selected
+    rd_rdy                     :std_logic;     -- Read ready
+    rd_data                    :std_logic_vector(15 downto 0);  -- Read Data
   end record UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(0 to 3) of UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
-    WR                         :std_logic_vector(24 downto 0);  -- rd_en + wr_en + addr + value
+    wr_en                      :std_logic;     -- Write Enable
+    rd_ack                     :std_logic;     -- Read Ack
+    wr_addr                    :std_logic_vector( 7 downto 0);  -- Address
+    en                         :std_logic;                      -- Enable
+    wr_data                    :std_logic_vector(15 downto 0);  -- Write Data
   end record UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(0 to 3) of UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
   constant DEFAULT_UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t := (
-                                                                                                   WR => (others => '0')
+                                                                                                   wr_addr => (others => '0'),
+                                                                                                   wr_en => '0',
+                                                                                                   en => '0',
+                                                                                                   rd_ack => '0',
+                                                                                                   wr_data => (others => '0')
                                                                                                   );
   type UCM_CDE_CHAMB_Z0_MON_t is record
     CDE_CHAMB_Z0               :UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
@@ -78,17 +96,26 @@ package UCM_CTRL is
                                                                          CDE_CHAMB_Z0 => (others => DEFAULT_UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t )
                                                                         );
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
-    RD                         :std_logic_vector(16 downto 0);  -- Read Value id position selected
+    rd_rdy                     :std_logic;     -- Read ready
+    rd_data                    :std_logic_vector(15 downto 0);  -- Read Data
   end record UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(0 to 3) of UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
-    WR                         :std_logic_vector(24 downto 0);  -- rd_en + wr_en + addr + value
+    wr_en                      :std_logic;     -- Write Enable
+    rd_ack                     :std_logic;     -- Read Ack
+    wr_addr                    :std_logic_vector( 7 downto 0);  -- Address
+    en                         :std_logic;                      -- Enable
+    wr_data                    :std_logic_vector(15 downto 0);  -- Write Data
   end record UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(0 to 3) of UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
   constant DEFAULT_UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t := (
-                                                                                                   WR => (others => '0')
+                                                                                                   wr_addr => (others => '0'),
+                                                                                                   wr_en => '0',
+                                                                                                   en => '0',
+                                                                                                   rd_ack => '0',
+                                                                                                   wr_data => (others => '0')
                                                                                                   );
   type UCM_CVP_CHAMB_Z0_MON_t is record
     CVP_CHAMB_Z0               :UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
