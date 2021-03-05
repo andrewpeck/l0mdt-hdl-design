@@ -62,8 +62,8 @@ package UCM_CTRL is
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(0 to 3) of UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
-    wr_en                      :std_logic;     -- Write Enable
-    rd_ack                     :std_logic;     -- Read Ack
+    wr_req                     :std_logic;     -- Write Request
+    rd_req                     :std_logic;     -- Read Request
     wr_addr                    :std_logic_vector( 7 downto 0);  -- Write Address
     rd_addr                    :std_logic_vector( 7 downto 0);  -- Read Address
     wr_data                    :std_logic_vector(15 downto 0);  -- Write Data
@@ -72,9 +72,9 @@ package UCM_CTRL is
 
   constant DEFAULT_UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t := (
                                                                                                    wr_addr => (others => '0'),
-                                                                                                   wr_en => '0',
                                                                                                    rd_addr => (others => '0'),
-                                                                                                   rd_ack => '0',
+                                                                                                   wr_req => '0',
+                                                                                                   rd_req => '0',
                                                                                                    wr_data => (others => '0')
                                                                                                   );
   type UCM_CDE_CHAMB_Z0_MON_t is record
@@ -97,8 +97,8 @@ package UCM_CTRL is
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(0 to 3) of UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
   type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
-    wr_en                      :std_logic;     -- Write Enable
-    rd_ack                     :std_logic;     -- Read Ack
+    wr_req                     :std_logic;     -- Write Request
+    rd_req                     :std_logic;     -- Read Request
     wr_addr                    :std_logic_vector( 7 downto 0);  -- Write Address
     rd_addr                    :std_logic_vector( 7 downto 0);  -- Read Address
     wr_data                    :std_logic_vector(15 downto 0);  -- Write Data
@@ -107,9 +107,9 @@ package UCM_CTRL is
 
   constant DEFAULT_UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t := (
                                                                                                    wr_addr => (others => '0'),
-                                                                                                   wr_en => '0',
                                                                                                    rd_addr => (others => '0'),
-                                                                                                   rd_ack => '0',
+                                                                                                   wr_req => '0',
+                                                                                                   rd_req => '0',
                                                                                                    wr_data => (others => '0')
                                                                                                   );
   type UCM_CVP_CHAMB_Z0_MON_t is record

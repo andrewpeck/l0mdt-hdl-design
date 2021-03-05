@@ -26,7 +26,6 @@
     <node id="rd_data" address="0x2" mask="0x000003ff" permission="r"   description="Read Data"/>
   </node>
 
-
   <!-- CHAMBER IETA MEMORY CONTROLS -->
   <node id="CDE_CHAMB_Z0" address="0x00000104">
     <node id="CDE_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_RAM_8A16D.xml"/>
