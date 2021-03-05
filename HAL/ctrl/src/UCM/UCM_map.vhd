@@ -213,7 +213,8 @@ begin  -- architecture behavioral
       Ctrl.ACTIONS.ENABLE <= '0';
       Ctrl.ACTIONS.DISABLE <= '0';
       Ctrl.ACTIONS.FREEZE <= '0';
-      Ctrl.SECTOR_PHI.wr_en <= '0';
+      Ctrl.SECTOR_PHI.wr_req <= '0';
+      Ctrl.SECTOR_PHI.rd_req <= '0';
       Ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).wr_en <= '0';
       Ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0(0).rd_ack <= '0';
       Ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0(1).wr_en <= '0';
@@ -266,7 +267,8 @@ begin  -- architecture behavioral
         when 266 => --0x10a
           reg_data(266)(31 downto 16)              <=  localWrData(31 downto 16);      --Write Data
         when 256 => --0x100
-          Ctrl.SECTOR_PHI.wr_en                    <=  localWrData( 0);               
+          Ctrl.SECTOR_PHI.wr_req                   <=  localWrData( 0);               
+          Ctrl.SECTOR_PHI.rd_req                   <=  localWrData( 1);               
         when 8452 => --0x2104
           Ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0.rd_ack    <=  localWrData( 1);               
           Ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0(2).wr_en  <=  localWrData( 0);               
