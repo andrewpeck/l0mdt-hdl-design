@@ -55,6 +55,7 @@ entity ucm_supervisor is
 end entity ucm_supervisor;
 
 architecture beh of ucm_supervisor is
+  signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
   constant c_CLK_AXI_MULT : integer := 5; 
@@ -84,8 +85,8 @@ architecture beh of ucm_supervisor is
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,UCM2HPS_VEC_POS_MULT)
     );
-  signal CVP_CH_Z0_WR : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  signal CVP_CH_Z0_RD : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  signal CVP_Z0_CTRL : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  signal CVP_Z0_MON : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 begin
   --------------------------------------------
   --    AXI CLK
@@ -96,12 +97,15 @@ begin
       if rst = '1' then
         clk_axi <= '0';
         clk_axi_cnt <= 0;
+        axi_rst <= '1';
       else
+        --sync?
         if clk_axi_cnt < c_CLK_AXI_MULT then
           clk_axi_cnt <= clk_axi_cnt + 1;
         else
           clk_axi_cnt <= 0;
           clk_axi <= not clk_axi;
+          axi_rst <= int_rst;
         end if;
       end if;
     end if;
@@ -115,7 +119,7 @@ begin
   signaling: process(clk_axi)
   begin
     if rising_edge(clk_axi) then
-      if rst = '1' then
+      if axi_rst = '1' then
         int_en <= glob_en;
         int_rst <= rst;
       else
@@ -138,12 +142,12 @@ begin
   status: process(clk_axi)
   begin
     if rising_edge(clk_axi) then
-      if rst = '1' then
+      if axi_rst = '1' then
 
       else
-        mon.STATUS.MAIN_ENABLED <= local_en;
-        mon.STATUS.MAIN_READY <= not local_rst;
-        mon.STATUS.MAIN_ERROR <= '0';
+        mon.STATUS.ENABLED  <= b"0000000" & local_en;
+        mon.STATUS.READY    <= b"0000000" & local_rst;
+        mon.STATUS.ERROR    <= x"00";
       end if;
     end if;
   end process status;
@@ -154,69 +158,106 @@ begin
   PHI_CTRL <= ctrl.SECTOR_PHI;
   mon.SECTOR_PHI <= PHI_MON;
 
-  -- PHI_CENTER : process(clk)
-  -- begin
-  --   if rising_edge(clk) then
-  --     o_phicenter <= phicenter;
+  PHI_CENTER : process(clk_axi)
+  begin
+    if rising_edge(clk_axi) then
+      o_phicenter <= phicenter;
 
-  --     if rst = '1' then
+      if axi_rst = '1' then
 
-  --     else
-  --       if PHI_CTRL.wr_en = '1' then
-  --         phicenter <= unsigned(PHI_CTRL.VALUE(SLC_COMMON_POSPHI_LEN -1 downto 0));
-  --       else
-  --         if PHI_CTRL.READ = '1' then
-  --           PHI_MON.VALUE <= resize(std_logic_vector(phicenter),integer(PHI_MON.VALUE'length));
-  --         end if;
-  --       end if;
-  --     end if;
-  --   end if;
-  -- end process;
+      else
+        if PHI_CTRL.rd_req = '1' then
+          PHI_MON.rd_data <= resize(std_logic_vector(phicenter),integer(PHI_MON.rd_data'length));
+        end if;
+        if PHI_CTRL.wr_req = '1' then
+          phicenter <= unsigned(PHI_CTRL.wr_data(SLC_COMMON_POSPHI_LEN -1 downto 0));
+        end if;
+      end if;
+    end if;
+  end process;
 
   --------------------------------------------
   -- CDE CHAMBER Z0
   --------------------------------------------
-  -- CDE_Z0_CTRL <= ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0;
-  -- mon.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= CDE_Z0_MON;
+  CDE_Z0_CTRL <= ctrl.CDE_CHAMB_Z0.CDE_CHAMB_Z0;
+  mon.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= CDE_Z0_MON;
 
-  -- CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
-  --   -- CDE_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
-  --   CDE_CH_ZO_AXI: process(clk)
-  --   begin
-  --     if rising_edge(clk) then
-  --       if rst = '1' then
-  --         -- CDE_Z0_MON(st_i).RD.RST_REQ <= '0';
-  --       else
+  CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+    -- CDE_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
+    CDE_CH_ZO_AXI: process(clk_axi)
+    begin
+      if rising_edge(clk_axi) then
+        if axi_rst = '1' then
+          -- CDE_Z0_MON(st_i).RD.RST_REQ <= '0';
+        else
+          if CDE_Z0_CTRL(st_i).rd_req then
+            CDE_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).rd_addr))),integer(CDE_Z0_MON(st_i).rd_data'length)));
+            -- CDE_Z0_MON(st_i).rd_rdy <= '1';
+          end if;
+          if CDE_Z0_CTRL(st_i).wr_req then
+            cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CDE_Z0_CTRL(st_i).wr_data),cde_ch_z0_org(st_i)(0)'length);
+          end if;
 
-  --         if CDE_Z0_CTRL(st_i).wr_en then
-  --           cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).wr_addr))) <=
-  --             resize(unsigned(CDE_Z0_CTRL(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
-  --         else
-
-  --         end if;
 
 
-
-  --         if CDE_Z0_CTRL(st_i).WR.ADDR = x"00" then
-  --         else
-  --           CDE_Z0_MON(st_i).RD.VALUE <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).WR.ADDR))),16));
-  --           if CDE_Z0_CTRL(st_i).WR.WR_EN = '1' then
-  --             CDE_Z0_MON(st_i).RD.RST_REQ <= '1';
-  --             cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).WR.ADDR))) <=resize(unsigned(CDE_Z0_CTRL(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
-  --           end if;
-  --         end if;
+          -- if CDE_Z0_CTRL(st_i).WR.ADDR = x"00" then
+          -- else
+          --   CDE_Z0_MON(st_i).RD.VALUE <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).WR.ADDR))),16));
+          --   if CDE_Z0_CTRL(st_i).WR.WR_EN = '1' then
+          --     CDE_Z0_MON(st_i).RD.RST_REQ <= '1';
+          --     cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).WR.ADDR))) <=resize(unsigned(CDE_Z0_CTRL(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
+          --   end if;
+          -- end if;
           
-  --       end if;
-  --       o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
-  --     end if;
-  --   end process;
+        end if;
+        o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
+      end if;
+    end process;
 
-  --   -- end generate;
-  -- end generate;
+    -- end generate;
+  end generate;
 
   --------------------------------------------
   -- CVP CHAMBER Z0
   --------------------------------------------
+  CVP_Z0_CTRL <= ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0;
+  mon.CVP_CHAMB_Z0.CVP_CHAMB_Z0 <= CVP_Z0_MON;
+
+  CVP_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+    -- CVP_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
+    CVP_CH_ZO_AXI: process(clk_axi)
+    begin
+      if rising_edge(clk_axi) then
+        if axi_rst = '1' then
+          -- CVP_Z0_MON(st_i).RD.RST_REQ <= '0';
+        else
+          if CVP_Z0_CTRL(st_i).rd_req then
+            CVP_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).rd_addr))),integer(CVP_Z0_MON(st_i).rd_data'length)));
+            -- CVP_Z0_MON(st_i).rd_rdy <= '1';
+          end if;
+          if CVP_Z0_CTRL(st_i).wr_req then
+            cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CVP_Z0_CTRL(st_i).wr_data),cde_ch_z0_org(st_i)(0)'length);
+          end if;
+
+
+
+          -- if CVP_Z0_CTRL(st_i).WR.ADDR = x"00" then
+          -- else
+          --   CVP_Z0_MON(st_i).RD.VALUE <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).WR.ADDR))),16));
+          --   if CVP_Z0_CTRL(st_i).WR.WR_EN = '1' then
+          --     CVP_Z0_MON(st_i).RD.RST_REQ <= '1';
+          --     cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).WR.ADDR))) <=resize(unsigned(CVP_Z0_CTRL(st_i).WR.VALUE),cde_ch_z0_org(st_i)(0)'length);
+          --   end if;
+          -- end if;
+          
+        end if;
+        o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
+      end if;
+    end process;
+
+    -- end generate;
+  end generate;
+
   -- CVP_CH_Z0_WR <= ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0;--(0).WR;
   -- mon.CVP_CHAMB_Z0.CVP_CHAMB_Z0 <= CVP_CH_Z0_RD;
 
