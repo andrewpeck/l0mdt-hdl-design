@@ -48,7 +48,7 @@ entity mpl_supervisor is
     --
 
     --
-    i_freeze            : in std_logic;
+    i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;
     --
     local_en            : out std_logic;
@@ -60,7 +60,7 @@ architecture beh of mpl_supervisor is
 
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
-  constant c_CLK_AXI_MULT : integer := 5: 
+  constant c_CLK_AXI_MULT : integer := 5; 
 
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
@@ -76,10 +76,10 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  axi_clk: process(clk)
-    begin
+  axi_clk_proc : process(clk)
+  begin
     if rising_edge(clk) then
-      if rst = rst_val then
+      if rst = '1' then
         clk_axi <= '0';
         clk_axi_cnt <= 0;
       else
@@ -88,9 +88,10 @@ begin
         else
           clk_axi_cnt <= 0;
           clk_axi <= not clk_axi;
+        end if;
       end if;
     end if;
-  end process axi_clk;
+  end process axi_clk_proc;
   --------------------------------------------
   --    CTRL
   --------------------------------------------
@@ -119,40 +120,40 @@ begin
   --------------------------------------------
   --    RESET
   --------------------------------------------
-  local_rst <= rst or int_rst or mem_rst;
+--  local_rst <= rst or int_rst or mem_rst;
   
-  rst_cnt: process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        rst_States <= x"0"
-      else
-        case rst_states is
-          when x"0" =>
+--  rst_cnt: process(clk)
+--  begin
+--    if rising_edge(clk) then
+--      if rst = '1' then
+--        rst_States <= x"0"
+--      else
+--        case rst_states is
+--          when x"0" =>
             
         
-          when others =>
+--          when others =>
             
         
-        end case;
-      end if;
+--        end case;
+--      end if;
 
-      if mem_flush_on_Reset = '0' then
-        int_rst <= rst_trig;
-      else
-        if rst_trig = '1' then
-          rst_counter <= 0;
-        else
-          if rst_counter < RST_Latency then
-            mem_rst <= '1';
-            rst_counter <= rst_counter + 1;
-          else
-            mem_rst <= '0';
-          end if;
-        end if;
-      end if;
-    end if;
-  end process rst_cnt;
+--      if mem_flush_on_Reset = '0' then
+--        int_rst <= rst_trig;
+--      else
+--        if rst_trig = '1' then
+--          rst_counter <= 0;
+--        else
+--          if rst_counter < RST_Latency then
+--            mem_rst <= '1';
+--            rst_counter <= rst_counter + 1;
+--          else
+--            mem_rst <= '0';
+--          end if;
+--        end if;
+--      end if;
+--    end if;
+--  end process rst_cnt;
 
   --------------------------------------------
   --    status
@@ -163,9 +164,9 @@ begin
       if rst = '1' then
 
       else
-        mon.STATUS.G_ENABLED <= local_en;
-        mon.STATUS.G_READY <= not local_rst;
-        mon.STATUS.G_ERROR <= '0';
+        -- mon.STATUS.G_ENABLED <= local_en;
+        -- mon.STATUS.G_READY <= not local_rst;
+        -- mon.STATUS.G_ERROR <= '0';
       end if;
     end if;
   end process status;
