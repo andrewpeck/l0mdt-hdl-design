@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<node id="MEM_RAM_16B">
+<!-- Direct memory access 8 bits addres & 16 bit data -->
+<node id="MEM_RAM_8A16D">
   <node id="wr_en"   address="0x0" mask="0x00000001" permission="w"   description="Write Enable"/>
   <node id="rd_ack"  address="0x0" mask="0x00000002" permission="w"   description="Read Ack"/>
-  <node id="wr_addr" address="0x1" mask="0x000000FF" permission="rw"  description="Address"/>
-  <node id="en"      address="0x1" mask="0x00001000" permission="rw"  description="Enable"/>
+  <node id="wr_addr" address="0x1" mask="0x000000FF" permission="rw"  description="Write Address"/>
+  <node id="rd_addr" address="0x1" mask="0x00FF0000" permission="rw"  description="Read Address"/>
   <node id="rd_rdy"  address="0x1" mask="0x00002000" permission="r"   description="Read ready"/>
   <node id="wr_data" address="0x2" mask="0xffff0000" permission="rw"  description="Write Data"/>
   <node id="rd_data" address="0x2" mask="0x0000ffff" permission="r"   description="Read Data"/>

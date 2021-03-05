@@ -43,26 +43,35 @@ package MPL_CTRL is
   type MPL_PL_MEM_PL_MEM_MON_t is record
     rd_rdy                     :std_logic;     -- Read ready
     rd_data_0                  :std_logic_vector(31 downto 0);  -- Read Data 0
-    rd_data_1                  :std_logic_vector(25 downto 0);  -- Read Data 1
+    rd_data_1                  :std_logic_vector(31 downto 0);  -- Read Data 1
+    rd_data_2                  :std_logic_vector(31 downto 0);  -- Read Data 2
+    rd_data_3                  :std_logic_vector(31 downto 0);  -- Read Data 3
+    rd_data_4                  :std_logic_vector(19 downto 0);  -- Read Data 4
   end record MPL_PL_MEM_PL_MEM_MON_t;
   type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(0 to 4) of MPL_PL_MEM_PL_MEM_MON_t;
 
   type MPL_PL_MEM_PL_MEM_CTRL_t is record
-    wr_en                      :std_logic;     -- Write Enable
+    wr_req                     :std_logic;     -- Write Enable
     rd_ack                     :std_logic;     -- Read Ack
-    wr_addr                    :std_logic_vector( 9 downto 0);  -- Address
-    en                         :std_logic;                      -- Enable
+    wr_addr                    :std_logic_vector( 9 downto 0);  -- wr_Address
+    rd_addr                    :std_logic_vector( 9 downto 0);  -- rd_Address
     wr_data_0                  :std_logic_vector(31 downto 0);  -- Write Data 0
-    wr_data_1                  :std_logic_vector(25 downto 0);  -- Write Data 1
+    wr_data_1                  :std_logic_vector(31 downto 0);  -- Write Data 1
+    wr_data_2                  :std_logic_vector(31 downto 0);  -- Write Data 2
+    wr_data_3                  :std_logic_vector(31 downto 0);  -- Write Data 3
+    wr_data_4                  :std_logic_vector(19 downto 0);  -- Write Data 4
   end record MPL_PL_MEM_PL_MEM_CTRL_t;
   type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(0 to 4) of MPL_PL_MEM_PL_MEM_CTRL_t;
 
   constant DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t : MPL_PL_MEM_PL_MEM_CTRL_t := (
-                                                                           rd_ack => '0',
-                                                                           en => '0',
+                                                                           wr_req => '0',
                                                                            wr_addr => (others => '0'),
-                                                                           wr_en => '0',
+                                                                           wr_data_3 => (others => '0'),
+                                                                           rd_ack => '0',
                                                                            wr_data_1 => (others => '0'),
+                                                                           wr_data_4 => (others => '0'),
+                                                                           wr_data_2 => (others => '0'),
+                                                                           rd_addr => (others => '0'),
                                                                            wr_data_0 => (others => '0')
                                                                           );
   type MPL_PL_MEM_MON_t is record
