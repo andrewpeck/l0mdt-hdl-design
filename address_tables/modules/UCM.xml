@@ -20,7 +20,8 @@
 
   <!-- CHAMBERS CENTER PHI -->
   <node id="SECTOR_PHI"  address="0x00000100">
-    <node id="wr_en"   address="0x0" mask="0x00000001" permission="w"   description="Write Enable"/>
+    <node id="wr_req"   address="0x0" mask="0x00000001" permission="w"   description="Write Enable"/>
+    <node id="rd_req"   address="0x0" mask="0x00000002" permission="w"   description="Write Enable"/>
     <node id="wr_data" address="0x2" mask="0x03ff0000" permission="rw"  description="Write Data"/>
     <node id="rd_data" address="0x2" mask="0x000003ff" permission="r"   description="Read Data"/>
   </node>

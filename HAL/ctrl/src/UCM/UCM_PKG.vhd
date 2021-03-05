@@ -44,13 +44,15 @@ package UCM_CTRL is
 
 
   type UCM_SECTOR_PHI_CTRL_t is record
-    wr_en                      :std_logic;     -- Write Enable
+    wr_req                     :std_logic;     -- Write Enable
+    rd_req                     :std_logic;     -- Write Enable
     wr_data                    :std_logic_vector( 9 downto 0);  -- Write Data
   end record UCM_SECTOR_PHI_CTRL_t;
 
 
   constant DEFAULT_UCM_SECTOR_PHI_CTRL_t : UCM_SECTOR_PHI_CTRL_t := (
-                                                                     wr_en => '0',
+                                                                     wr_req => '0',
+                                                                     rd_req => '0',
                                                                      wr_data => (others => '0')
                                                                     );
   type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
