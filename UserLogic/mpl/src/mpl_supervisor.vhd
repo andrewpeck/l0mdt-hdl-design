@@ -61,8 +61,8 @@ architecture beh of mpl_supervisor is
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
 
-  signal int_en   : std_logic;
-  signal int_rst  : std_logic;
+  signal int_en   : std_logic := '0';
+  signal int_rst  : std_logic := '1';
   -- signal mem_rst  : std_logic;
   --
   signal mem_flush_on_Reset : std_logic := '1';
@@ -89,7 +89,7 @@ begin
         else
           clk_axi_cnt <= 0;
           clk_axi <= not clk_axi;
-          axi_rst <= int_rst;
+          axi_rst <= rst;
         end if;
       end if;
     end if;
@@ -98,18 +98,19 @@ begin
   --    CTRL
   --------------------------------------------
   local_en <= glob_en and int_en;
+  local_rst <= rst or int_rst;
 
   signaling: process(clk_axi)
     begin
     if rising_edge(clk_axi) then
-      if rst = '1' then
+      if axi_rst = '1' then
         int_en <= glob_en;
-        rst_trig <= rst;
+        int_rst <= '1';
       else
         if ctrl.actions.reset = '1' then
-          rst_trig <= '1';
+          int_rst <= '1';
         else
-          rst_trig <= '0';
+          int_rst <= '0';
         end if;
         if ctrl.actions.enable = '1' then
           int_en <= '1';
