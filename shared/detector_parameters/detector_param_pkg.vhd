@@ -29,6 +29,9 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Time & cycles constants
   -------------------------------------------------------------------------
+  constant c_CLK_AXI_MULT       : integer := 5; 
+
+  --
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
 
   -- TAR PIPELINE

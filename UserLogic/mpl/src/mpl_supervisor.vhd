@@ -57,10 +57,9 @@ entity mpl_supervisor is
 end entity mpl_supervisor;
 
 architecture beh of mpl_supervisor is
-
+  signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
-  constant c_CLK_AXI_MULT : integer := 5; 
 
   signal int_en   : std_logic;
   signal int_rst  : std_logic;
@@ -82,12 +81,15 @@ begin
       if rst = '1' then
         clk_axi <= '0';
         clk_axi_cnt <= 0;
+        axi_rst <= '1';
       else
+        --sync?
         if clk_axi_cnt < c_CLK_AXI_MULT then
           clk_axi_cnt <= clk_axi_cnt + 1;
         else
           clk_axi_cnt <= 0;
           clk_axi <= not clk_axi;
+          axi_rst <= int_rst;
         end if;
       end if;
     end if;
