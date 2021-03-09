@@ -58,6 +58,7 @@ architecture beh of mpl is
 
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal main_pl_out_av : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal pl2csw_av       : mpl2csw_ptcalc_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal pl2pt_av       : mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
   signal pl2mtc_av      : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
@@ -73,8 +74,9 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    ctrl              => ctrl,
-    mon               => mon,
+    actions           => ctrl.actions,
+    configs           => ctrl.configs,
+    status            => mon.status ,
     --
 
     -- 
@@ -82,26 +84,44 @@ begin
     local_rst         => local_rst
   );
 
+  MPL_PL : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+
+    PL : entity mpl_lib.mpl_pl
+    port map(
+      clk           => clk,
+      rst           => local_rst,
+      enable        => local_en,
+      --
+      ctrl          => ctrl.PL_MEM.PL_MEM(sl_i),
+      mon           => mon.PL_MEM.PL_MEM(sl_i),
+      --
+      i_uCM2pl      => i_uCM2pl_av(sl_i),
+      o_pl2tf       => pl2csw_av(sl_i),
+      o_pl2mtc      => main_pl_out_av(sl_i)
+    );
+
+  end generate;
+
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
 
     i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));
 
-    PL : entity shared_lib.std_pipeline
-    generic map(
-      g_MEMORY_TYPE     => "ultra",
-      g_PIPELINE_TYPE   => "mpcvmem",
-      g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
-      g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      glob_en     => local_en,
-      --
-      i_data      => i_uCM2pl_av(sl_i),
-      i_dv        => i_uCM2pl_ar(sl_i).data_valid,
-      o_data      => main_pl_out_av(sl_i)
-    );
+  --   PL : entity shared_lib.std_pipeline
+  --   generic map(
+  --     g_MEMORY_TYPE     => "ultra",
+  --     g_PIPELINE_TYPE   => "mpcvmem",
+  --     g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
+  --     g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => local_rst,
+  --     glob_en     => local_en,
+  --     --
+  --     i_data      => i_uCM2pl_av(sl_i),
+  --     i_dv        => i_uCM2pl_ar(sl_i).data_valid,
+  --     o_data      => main_pl_out_av(sl_i)
+  --   );
     
   end generate;
 
@@ -118,19 +138,19 @@ begin
   );
 
   MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    PL : entity shared_lib.std_pipeline
-    generic map(
-      g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
-      g_PIPELINE_WIDTH    => pl2mtc_av(sl_i)'length
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      glob_en     => local_en,
-      --
-      i_data      => pl2mtc_av(sl_i),
-      o_data      => o_pl2mtc_av(sl_i)
-    );
+    -- PL : entity shared_lib.std_pipeline
+    -- generic map(
+    --   g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
+    --   g_PIPELINE_WIDTH    => pl2mtc_av(sl_i)'length
+    -- )
+    -- port map(
+    --   clk         => clk,
+    --   rst         => local_rst,
+    --   glob_en     => local_en,
+    --   --
+    --   i_data      => pl2mtc_av(sl_i),
+    --   o_data      => o_pl2mtc_av(sl_i)
+    -- );
   end generate;
 
   PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate

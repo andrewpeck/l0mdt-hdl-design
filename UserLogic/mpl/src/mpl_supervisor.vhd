@@ -43,8 +43,9 @@ entity mpl_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- AXI to SoC
-    ctrl                : in  MPL_CTRL_t;
-    mon                 : out MPL_MON_t;
+    actions             : in  MPL_ACTIONS_CTRL_t;
+    configs             : in  MPL_CONFIGS_CTRL_t;
+    status              : out MPL_STATUS_MON_t;
     --
 
     --
@@ -75,7 +76,7 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  axi_clk_proc : process(clk)
+  AXI_PROC : process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
@@ -93,33 +94,33 @@ begin
         end if;
       end if;
     end if;
-  end process axi_clk_proc;
+  end process;
   --------------------------------------------
   --    CTRL
   --------------------------------------------
   local_en <= glob_en and int_en;
   local_rst <= rst or int_rst;
 
-  signaling: process(clk_axi)
+  SIG_PROC: process(clk_axi)
     begin
     if rising_edge(clk_axi) then
       if axi_rst = '1' then
         int_en <= glob_en;
         int_rst <= '1';
       else
-        if ctrl.actions.reset = '1' then
+        if actions.reset = '1' then
           int_rst <= '1';
         else
           int_rst <= '0';
         end if;
-        if ctrl.actions.enable = '1' then
+        if actions.enable = '1' then
           int_en <= '1';
-        elsif ctrl.actions.disable = '1' then
+        elsif actions.disable = '1' then
           int_en <= '0';
         end if;
       end if;
     end if;
-  end process signaling;
+  end process;
   --------------------------------------------
   --    RESET
   --------------------------------------------
@@ -161,7 +162,7 @@ begin
   --------------------------------------------
   --    status
   --------------------------------------------
-  status: process(clk_axi)
+  ST_PROC: process(clk_axi)
   begin
     if rising_edge(clk_axi) then
       if rst = '1' then
@@ -172,7 +173,7 @@ begin
         -- mon.STATUS.G_ERROR <= '0';
       end if;
     end if;
-  end process status;
+  end process;
 
 
   
