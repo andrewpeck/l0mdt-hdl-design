@@ -24,12 +24,15 @@ entity std_pipeline is
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
+    g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer
   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    i_freeze            : in std_logic := '0';
     --
     i_data              : in std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
     i_dv                : in std_logic := '0';
@@ -42,8 +45,6 @@ architecture beh of std_pipeline is
 
   -- type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
   -- signal data_pl : data_pl_at;
-
-
   -- attribute ram_style : string;
   -- attribute ram_style of data_pl : signal is g_MEMORY_TYPE;
   -- "ultra" for ultra ram
@@ -53,7 +54,7 @@ begin
   
   
 
-  SHIFT : if g_PIPELINE_TYPE = "shift_reg" generate
+  SHIFT_GEN : if g_PIPELINE_TYPE = "shift_reg" generate
     type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
     signal data_pl : data_pl_at;
     signal dv_pl : std_logic_vector(g_DELAY_CYCLES -1 downto 0);
@@ -84,7 +85,7 @@ begin
 
   end generate;
 
-  RING : if g_PIPELINE_TYPE = "ring_buffer" generate
+  RING_GEN : if g_PIPELINE_TYPE = "ring_buffer" generate
     ring_mem : entity shared_lib.ring_buffer_v2
       generic map (
         -- pragma translate_off

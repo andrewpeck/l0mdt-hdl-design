@@ -40,6 +40,8 @@ entity mpl_pl is
     ctrl                : in  MPL_PL_MEM_PL_MEM_CTRL_t;
     mon                 : out MPL_PL_MEM_PL_MEM_MON_t;
     --
+    i_freeze            : in std_logic := '0';
+    --
     i_uCM2pl_v       : in  ucm2pl_rvt;
     o_pl2ptcalc_v    : out ucm2pl_rvt;
     o_pl2mtc_v       : out pl2mtc_rvt
@@ -70,6 +72,8 @@ begin
       clk         => clk,
       rst         => rst,
       glob_en     => enable,
+      --
+      i_freeze    => i_freeze,
       --
       i_data      => i_uCM2pl_v,
       i_dv        => i_uCM2pl_r.data_valid,
