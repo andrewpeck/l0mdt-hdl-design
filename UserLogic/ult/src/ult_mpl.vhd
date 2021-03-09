@@ -62,7 +62,7 @@ begin
       mon               => mon,
       --
       i_uCM2pl_av     => i_uCM2pl_av,
-      o_pl2tf_av      => o_pl2pt_av,
+      o_pl2ptcalc_av  => o_pl2pt_av,
       o_pl2mtc_av     => o_pl2mtc_av
     );
   end generate;
