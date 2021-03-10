@@ -135,7 +135,7 @@ begin
       g_LOGIC_TYPE    => "pipeline",
       g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
-
+      g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
       g_MEM_WIDTH     => g_PIPELINE_WIDTH,
       g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
     )

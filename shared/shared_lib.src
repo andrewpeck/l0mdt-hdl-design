@@ -22,8 +22,15 @@ shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
 #---------------------------------
 shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
-# MPCVMEM
+# Boston University axi Bus Blocks
 #---------------------------------
+shared/bubus/bubus_lib.src lib=bubus_lib
+#---------------------------------
+# Advanced Memory Controller
+#---------------------------------
+shared/vhdl_amc/vamc_lib.src lib=vamc_lib
+
+shared/mpcvmem/pkg/mpcvmem_pkg.vhd
 shared/mpcvmem/src/mpcvmem.vhd
 shared/mpcvmem/src/DualPortMem.vhd
 #---------------------------------
