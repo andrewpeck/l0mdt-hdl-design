@@ -27,6 +27,9 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
+
+library bubus_lib;
+-- use mpl_lib.mpl_pkg.all;
  
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
@@ -41,7 +44,7 @@ entity mpl_supervisor is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    glob_en             : in std_logic := '1';
     -- AXI to SoC
     actions             : in  MPL_ACTIONS_CTRL_t;
     configs             : in  MPL_CONFIGS_CTRL_t;
@@ -76,25 +79,36 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  AXI_PROC : process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        clk_axi <= '0';
-        clk_axi_cnt <= 0;
-        axi_rst <= '1';
-      else
-        --sync?
-        if clk_axi_cnt < c_CLK_AXI_MULT then
-          clk_axi_cnt <= clk_axi_cnt + 1;
-        else
-          clk_axi_cnt <= 0;
-          clk_axi <= not clk_axi;
-          axi_rst <= rst;
-        end if;
-      end if;
-    end if;
-  end process;
+
+    PL : entity bubus_lib.bubus_main_sig
+    port map(
+      clk           => clk,
+      rst           => rst,
+      ena           => glob_en,
+      --
+      o_axi_clk     => clk_axi,
+      o_axi_rst     => axi_rst
+    );
+
+  -- AXI_PROC : process(clk)
+  -- begin
+  --   if rising_edge(clk) then
+  --     if rst = '1' then
+  --       clk_axi <= '0';
+  --       clk_axi_cnt <= 0;
+  --       axi_rst <= '1';
+  --     else
+  --       --sync?
+  --       if clk_axi_cnt < c_CLK_AXI_MULT then
+  --         clk_axi_cnt <= clk_axi_cnt + 1;
+  --       else
+  --         clk_axi_cnt <= 0;
+  --         clk_axi <= not clk_axi;
+  --         axi_rst <= rst;
+  --       end if;
+  --     end if;
+  --   end if;
+  -- end process;
   --------------------------------------------
   --    CTRL
   --------------------------------------------

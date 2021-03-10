@@ -54,6 +54,8 @@ architecture beh of mpl is
   signal local_en         :  std_logic;
   signal local_rst        :  std_logic;
 
+  signal int_freeze       : std_logic;
+
   signal i_uCM2pl_ar      : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   -- signal pl1out_av : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
@@ -78,7 +80,7 @@ begin
     configs           => ctrl.configs,
     status            => mon.status ,
     --
-
+    o_freeze          => int_freeze,
     -- 
     local_en          => local_en,
     local_rst         => local_rst
@@ -94,6 +96,8 @@ begin
       --
       ctrl          => ctrl.PL_MEM.PL_MEM(sl_i),
       mon           => mon.PL_MEM.PL_MEM(sl_i),
+      --
+      i_freeze      => int_freeze,
       --
       i_uCM2pl_v    => i_uCM2pl_av(sl_i),
       o_pl2ptcalc_v => main_pl_out_av(sl_i),
