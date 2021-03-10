@@ -1,0 +1,2 @@
+shared/bubus/src/bubus_main_sig.vhd
+shared/bubus/src/bubus_mem_int.vhd
