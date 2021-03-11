@@ -25,6 +25,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+library vamc_lib;
+
 library mpl_lib;
 use mpl_lib.mpl_pkg.all;
 
@@ -61,7 +63,7 @@ begin
 
   i_uCM2pl_r <= structify(i_uCM2pl_v);
   
-  PL_A : entity shared_lib.std_pipeline
+  PL_A : entity vamc_lib.vamc_pl
     generic map(
       g_MEMORY_TYPE     => "ultra",
       g_PIPELINE_TYPE   => "mpcvmem",
@@ -93,7 +95,7 @@ begin
 
   pl2mtc_v <= vectorify(pl2mtc_r);
 
-  PL_B : entity shared_lib.std_pipeline
+  PL_B : entity vamc_lib.vamc_sr
     generic map(
       g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
       g_PIPELINE_WIDTH    => pl2mtc_v'length

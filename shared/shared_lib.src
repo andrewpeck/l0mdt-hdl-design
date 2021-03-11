@@ -29,10 +29,6 @@ shared/bubus/bubus_lib.src lib=bubus_lib
 # Advanced Memory Controller
 #---------------------------------
 shared/vhdl_amc/vamc_lib.src lib=vamc_lib
-
-shared/mpcvmem/pkg/mpcvmem_pkg.vhd
-shared/mpcvmem/src/mpcvmem.vhd
-shared/mpcvmem/src/DualPortMem.vhd
 #---------------------------------
 # shared memory files
 #---------------------------------

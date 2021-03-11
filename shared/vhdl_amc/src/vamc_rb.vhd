@@ -5,10 +5,10 @@
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Memory Logic
---  Description:
+--  Description: Ring buffer
 --
 --------------------------------------------------------------------------------
---  Revisions:
+--  Revisions: v 0.1 - this ring buffer is cloned from ring_buffer_v2.vhd
 --
 --------------------------------------------------------------------------------
 library ieee;
@@ -17,7 +17,7 @@ use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
 -- use ieee.math_real.all;
 
-entity ring_buffer_v2 is
+entity vamc_rb is
   generic(
     g_SIMULATION        : std_logic := '0';
     g_LOGIC_TYPE        : string := "fifo"; -- fifo, pipeline, ram
@@ -51,9 +51,9 @@ entity ring_buffer_v2 is
     -- The delay can be changed by the offset and resetting the module
     i_delay           : in integer range g_RAM_DEPTH - 1 downto 0 := g_RAM_DEPTH-1    
   );
-end entity ring_buffer_v2;
+end entity vamc_rb;
 
-architecture beh of ring_buffer_v2 is
+architecture beh of vamc_rb is
   --------------------------------
   -- memory
   --------------------------------

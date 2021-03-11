@@ -1,3 +1,12 @@
+#---------------------------------
+# MAIN VHDL AMC FILES
+#---------------------------------
 shared/vhdl_amc/src/vamc_pl.vhd
 shared/vhdl_amc/src/vamc_rb.vhd
 shared/vhdl_amc/src/vamc_sr.vhd
+#---------------------------------
+#  MPCVMEM
+#---------------------------------
+shared/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd
+shared/vhdl_amc/mpcvmem/src/mpcvmem.vhd
+shared/vhdl_amc/mpcvmem/src/DualPortMem.vhd
