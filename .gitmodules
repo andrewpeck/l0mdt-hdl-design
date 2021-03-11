@@ -8,9 +8,6 @@
 [submodule "HAL/sl/src/my-sl-gty-interface"]
 	path = HAL/sl/src/my-sl-gty-interface
 	url = ../../okumura/my-sl-gty-interface.git
-[submodule "HAL/hal/lpgbt/src/lpgbt-emul"]
-	path = HAL/lpgbt/src/lpgbt-emul
-	url = ../lpgbt-emul.git
 [submodule "HAL/lpgbt/src/lpgbt-fpga"]
 	path = HAL/lpgbt/src/lpgbt-fpga
 	url = ../../gbt-fpga/lpgbt-fpga.git
