@@ -44,7 +44,7 @@
 [submodule "IP_repository/SpyBuffer"]
 	path = IP_repository/SpyBuffer
 	url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
-[submodule "shared/mpcvmem"]
+[submodule "shared/vhdl_amc/mpcvmem"]
 	path = shared/vhdl_amc/mpcvmem
 	url = https://github.com/taquionbcn/mpcvmem.git
 [submodule "HAL/lpgbt/src/lpgbt-emul"]
