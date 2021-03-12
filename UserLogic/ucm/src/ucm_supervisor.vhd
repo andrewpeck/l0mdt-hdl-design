@@ -27,7 +27,9 @@ use shared_lib.config_pkg.all;
 use shared_lib.barrel_chamb_z2origin_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
- 
+
+library bubus_lib;
+
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 
@@ -57,7 +59,7 @@ end entity ucm_supervisor;
 architecture beh of ucm_supervisor is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
-  signal clk_axi_cnt  : integer;
+  -- signal clk_axi_cnt  : integer;
   
   --
   signal int_en   : std_logic := '0';
@@ -91,25 +93,34 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  axi_clk_proc : process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        clk_axi <= '0';
-        clk_axi_cnt <= 0;
-        axi_rst <= '1';
-      else
-        --sync?
-        if clk_axi_cnt < c_CLK_AXI_MULT then
-          clk_axi_cnt <= clk_axi_cnt + 1;
-        else
-          clk_axi_cnt <= 0;
-          clk_axi <= not clk_axi;
-          axi_rst <= int_rst;
-        end if;
-      end if;
-    end if;
-  end process axi_clk_proc;
+  PL : entity bubus_lib.bubus_main_sig
+  port map(
+    clk           => clk,
+    rst           => rst,
+    ena           => glob_en,
+    --
+    o_axi_clk     => clk_axi,
+    o_axi_rst     => axi_rst
+  );
+  -- axi_clk_proc : process(clk)
+  -- begin
+  --   if rising_edge(clk) then
+  --     if rst = '1' then
+  --       clk_axi <= '0';
+  --       clk_axi_cnt <= 0;
+  --       axi_rst <= '1';
+  --     else
+  --       --sync?
+  --       if clk_axi_cnt < c_CLK_AXI_MULT then
+  --         clk_axi_cnt <= clk_axi_cnt + 1;
+  --       else
+  --         clk_axi_cnt <= 0;
+  --         clk_axi <= not clk_axi;
+  --         axi_rst <= int_rst;
+  --       end if;
+  --     end if;
+  --   end if;
+  -- end process axi_clk_proc;
   --------------------------------------------
   --    SIGNALING
   --------------------------------------------

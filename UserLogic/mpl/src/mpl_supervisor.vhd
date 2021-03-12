@@ -63,7 +63,7 @@ end entity mpl_supervisor;
 architecture beh of mpl_supervisor is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
-  signal clk_axi_cnt  : integer;
+  -- signal clk_axi_cnt  : integer;
 
   signal int_en   : std_logic := '0';
   signal int_rst  : std_logic := '1';
