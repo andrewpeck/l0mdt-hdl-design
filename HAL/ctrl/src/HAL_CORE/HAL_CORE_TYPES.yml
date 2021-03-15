@@ -33,15 +33,15 @@ HDL_Types:
 
 
 - HAL_CORE_MGT_MGT_DRP_MON_t:
-  - rd_rdy : [ type: logic, description:DRP Enable ]
-  - rd_data : [ type: logic, length: 16, description:DRP Read Data ]
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: logic, length: 16 ]
 
 
 - HAL_CORE_MGT_MGT_DRP_CTRL_t:
-  - wr_en : [ type: logic, description:DRP Write Enable ]
-  - wr_addr : [ type: logic, length: 10, description:DRP Address ]
-  - en : [ type: logic, description:DRP Enable ]
-  - wr_data : [ type: logic, length: 16, description:DRP Write Data ]
+  - wr_en : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - en : [ type: logic ]
+  - wr_data : [ type: logic, length: 16 ]
 
 
 - HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t:

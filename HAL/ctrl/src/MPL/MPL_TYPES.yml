@@ -1,0 +1,72 @@
+# This file was auto-generated.
+# Modifications might be lost.
+__config__:
+    basic_convert_functions : off
+    packages:
+    shared_lib:
+        - common_ieee_pkg
+
+HDL_Types:
+
+- MPL_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- MPL_CONFIGS_CTRL_t:
+  - THREADS : [ type: logic, length: 4 ]
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- MPL_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- MPL_PL_MEM_PL_MEM_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data_0 : [ type: logic, length: 32 ]
+  - rd_data_1 : [ type: logic, length: 32 ]
+  - rd_data_2 : [ type: logic, length: 32 ]
+  - rd_data_3 : [ type: logic, length: 32 ]
+  - rd_data_4 : [ type: logic, length: 20 ]
+
+- MPL_PL_MEM_PL_MEM_MON_t_ARRAY: [array: 4, type: MPL_PL_MEM_PL_MEM_MON_t]
+
+- MPL_PL_MEM_PL_MEM_CTRL_t:
+  - wr_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data_0 : [ type: logic, length: 32 ]
+  - wr_data_1 : [ type: logic, length: 32 ]
+  - wr_data_2 : [ type: logic, length: 32 ]
+  - wr_data_3 : [ type: logic, length: 32 ]
+  - wr_data_4 : [ type: logic, length: 20 ]
+
+- MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: [array: 4, type: MPL_PL_MEM_PL_MEM_CTRL_t]
+
+- MPL_PL_MEM_MON_t:
+  - PL_MEM : [ type: MPL_PL_MEM_PL_MEM_MON_t_ARRAY ]
+
+
+- MPL_PL_MEM_CTRL_t:
+  - PL_MEM : [ type: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY ]
+
+
+- MPL_MON_t:
+  - STATUS : [ type: MPL_STATUS_MON_t ]
+  - PL_MEM : [ type: MPL_PL_MEM_MON_t ]
+
+
+- MPL_CTRL_t:
+  - ACTIONS : [ type: MPL_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: MPL_CONFIGS_CTRL_t ]
+  - PL_MEM : [ type: MPL_PL_MEM_CTRL_t ]
+
+
