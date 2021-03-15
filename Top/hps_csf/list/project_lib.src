@@ -1,8 +1,12 @@
-Top/hps_csf/prj_cfg.vhd 
-hps/top_hps.vhd
+#### default config parameters ####
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+#### shared ####
 shared/shared_lib.src lib=shared_lib
-hp/hp_lib.src lib=hp_lib
-heg/heg_lib.src lib=heg_lib
-hps/hps_lib.src lib=hps_lib
-csf/csf_lib.src lib=csf_lib
-ctrl/ctrl_lib.src lib=ctrl_lib
+
+Top/hps_csf/prj_cfg.vhd 
+UserLogic/hps/top_hps.vhd
+UserLogic/hp/hp_lib.src lib=hp_lib
+UserLogic/heg/heg_lib.src lib=heg_lib
+UserLogic/hps/hps_lib.src lib=hps_lib
+UserLogic/csf/csf_lib.src lib=csf_lib
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib

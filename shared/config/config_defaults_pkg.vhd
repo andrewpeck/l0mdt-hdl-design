@@ -25,7 +25,7 @@ package cfg_global_default_pkg is
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     : integer;    -- selects the number of sector
-    SECTOR_SIDE                   : std_logic;  -- selects the side of the sector - 0:A          1:C
+    SECTOR_SIDE                   : integer;  -- selects the side of the sector - 0:A          1:C
     ST_nBARREL_ENDCAP             : std_logic;  -- selects the part of detector   - 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           : std_logic;  -- select the type of endcap      - 0: small     1: large
     ENABLE_NEIGHBORS              : std_logic;  -- enables or disables the processing of SL neighbors
@@ -91,7 +91,7 @@ package cfg_global_default_pkg is
     -- Sector information
     --------------------------------------------------------------------------------
     SECTOR_ID                     => 3,   -- default sector 3
-    SECTOR_SIDE                   => '0', -- 0:A          1:C
+    SECTOR_SIDE                   => 0, -- 0:A          1:C
     ST_nBARREL_ENDCAP             => '0', -- 0: barrel    1: Endcap
     ENDCAP_nSMALL_LARGE           => '0', -- 0: small     1: large
     ENABLE_NEIGHBORS              => '1', -- 0: disabled  1: enabled

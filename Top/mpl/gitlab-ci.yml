@@ -1,13 +1,13 @@
 #################### mpl Project ###########################
-generate_project:mpl:
-    extends: .generate_project
+GEN:mpl:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: mpl
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:mpl:
-#     extends: .simulate_project
+# SIM:mpl:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: mpl

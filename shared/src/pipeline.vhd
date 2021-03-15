@@ -22,7 +22,7 @@ library shared_lib;
 entity std_pipeline is
   generic(
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
-    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer 
+    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
     g_PIPELINE_WIDTH    : integer
   );
@@ -32,17 +32,20 @@ entity std_pipeline is
     glob_en             : in std_logic;
     --
     i_data              : in std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
-    o_data              :out std_logic_vector(g_PIPELINE_WIDTH -1 downto 0)
+    i_dv                : in std_logic := '0';
+    o_data              : out std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
+    o_dv                : out std_logic
   );
 end entity std_pipeline;
 
 architecture beh of std_pipeline is
 
-  type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
-  signal data_pl : data_pl_at;
+  -- type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
+  -- signal data_pl : data_pl_at;
 
-  attribute ram_style : string;
-  attribute ram_style of data_pl : signal is g_MEMORY_TYPE;
+
+  -- attribute ram_style : string;
+  -- attribute ram_style of data_pl : signal is g_MEMORY_TYPE;
   -- "ultra" for ultra ram
   -- "distributed" for normal logic cells
 
@@ -51,19 +54,29 @@ begin
   
 
   SHIFT : if g_PIPELINE_TYPE = "shift_reg" generate
+    type data_pl_at is array (g_DELAY_CYCLES -1 downto 0) of std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
+    signal data_pl : data_pl_at;
+    signal dv_pl : std_logic_vector(g_DELAY_CYCLES -1 downto 0);
+    attribute ram_style : string;
+    attribute ram_style of data_pl : signal is g_MEMORY_TYPE;
+  begin
 
     o_data <= data_pl(0);
+    o_dv <= dv_pl(0);
 
     valid_pipe : process(rst,clk) begin
       if rising_edge(clk)then
         if rst= '1' then
-          data_pl <= (others => (others => '0'));
+          -- data_pl <= (others => (others => '0'));
+          dv_pl <= (others => '0');
         else
           if glob_en = '1' then
             for delay_i in g_DELAY_CYCLES - 1 downto 1 loop
               data_pl(delay_i - 1) <= data_pl(delay_i);
+              dv_pl(delay_i - 1) <= dv_pl(delay_i);
             end loop;
             data_pl(g_DELAY_CYCLES - 1) <= i_data;
+            dv_pl(g_DELAY_CYCLES - 1) <= i_dv;
           end if;
         end if;
       end if;
@@ -79,9 +92,9 @@ RING : if g_PIPELINE_TYPE = "ring_buffer" generate
       -- pragma translate_on
 
       g_LOGIC_TYPE    => "pipeline",
-      g_MEMORY_TYPE   => "block",
+      g_MEMORY_TYPE   => g_MEMORY_TYPE,--"block",
       -- g_PIPELINE_IN_REGS => 1,
-      -- g_PIPELINE_OUT_REGS => 1,
+      g_PIPELINE_OUT_REGS => 4,
       g_RAM_WIDTH     => g_PIPELINE_WIDTH,
       g_RAM_DEPTH     => g_DELAY_CYCLES + 1 
     )
@@ -105,5 +118,34 @@ RING : if g_PIPELINE_TYPE = "ring_buffer" generate
       o_used        => open
     );
 end generate;
+
+MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
+  -- DC4_GEN: if condition generate
+    
+  -- end generate DC4_GEN;
+  constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES -4;
+
+begin
+  
+  
+  mpcvmem : entity shared_lib.mpcvmem
+  generic map(
+    g_LOGIC_TYPE    => "pipeline",
+    g_MEMORY_TYPE   => g_MEMORY_TYPE,
+
+    g_MEM_WIDTH     => g_PIPELINE_WIDTH,
+    g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+  )
+  port map(
+    clk           => clk,
+    rst           => rst,
+    ena           => glob_en,
+    --
+    i_din_a       => i_data,
+    i_dv_in_a     => i_dv,
+    o_dout_b      => o_data
+    -- o_dv_out_b     
+  );
+end generate MPCVMEM_GEN;
 
 end beh;

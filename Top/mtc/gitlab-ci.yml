@@ -1,13 +1,13 @@
 #################### MTC Project ###########################
-generate_project:mtc:
-    extends: .generate_project
+GEN:mtc:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: mtc
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-# simulate_project:example:
-#     extends: .simulate_project
+# SIM:example:
+#     extends: .SIM
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: example

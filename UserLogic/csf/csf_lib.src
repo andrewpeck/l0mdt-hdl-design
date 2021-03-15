@@ -1,0 +1,17 @@
+UserLogic/csf/pkg/csf_pkg.vhd
+UserLogic/csf/pkg/csf_custom_pkg.vhd
+UserLogic/csf/src/csf.vhd
+UserLogic/csf/src/csf_chi2.vhd
+UserLogic/csf/src/csf_chi2_comparison.vhd
+UserLogic/csf/src/csf_fitter.vhd
+UserLogic/csf/src/csf_histogram.vhd
+UserLogic/csf/src/seg_coord_transform.vhd
+UserLogic/csf/src/sqrt_mbar.mem
+UserLogic/csf/src/invsqrt_mbar.mem
+UserLogic/csf/src/fitter_reciprocal.mem
+UserLogic/csf/src/m_to_theta.mem
+#IP/sqrt_mbar_rom/sqrt_mbar_rom.xci
+#IP/invsqrt_mbar_rom/invsqrt_mbar_rom.xci
+#IP/fitter_reciprocal_rom/fitter_reciprocal_rom.xci
+#IP/arctan_rom/arctan_rom.xci
+#IP/UserLogic/csf/Chamber_pos_ROM_1/Chamber_pos_ROM_1.xci

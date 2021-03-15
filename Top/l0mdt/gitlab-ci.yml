@@ -1,13 +1,13 @@
 #################### l0mdt Project ###########################
-generate_project:l0mdt:
-    extends: .generate_project
+GEN:l0mdt:
+    extends: .GEN
     variables:
       extends: .vars
       PROJECT_NAME: l0mdt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-simulate_project:l0mdt:
-    extends: .simulate_project
+SIM:l0mdt:
+    extends: .SIM
     variables:
       extends: .vars
       PROJECT_NAME: l0mdt
