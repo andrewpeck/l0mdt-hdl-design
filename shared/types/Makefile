@@ -133,7 +133,7 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	../../ucm/pkg/ucm.yml
+	../../UserLogic/ucm/pkg/ucm.yml
 	# hp
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -141,7 +141,7 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	../../hp/pkg/hp.yml
+	../../UserLogic/hp/pkg/hp.yml
 	# heg
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -149,8 +149,8 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	-e ../../hp/pkg/hp.yml   \
-	../../heg/pkg/heg.yml
+	-e ../../UserLogic/hp/pkg/hp.yml   \
+	../../UserLogic/heg/pkg/heg.yml
 	# hps
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -158,9 +158,9 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	-e ../../hp/pkg/hp.yml   \
-	-e ../../heg/pkg/heg.yml \
-	../../hps/pkg/hps.yml
+	-e ../../UserLogic/hp/pkg/hp.yml   \
+	-e ../../UserLogic/heg/pkg/heg.yml \
+	../../UserLogic/hps/pkg/hps.yml
 	# ucm_hps
 	# python3 $(yml2hdl)       \
 	# -e common_ieee.yml       \
@@ -176,7 +176,7 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	../../mpl/pkg/mpl.yml
+	../../UserLogic/mpl/pkg/mpl.yml
 	# csf
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -184,7 +184,7 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	../../csf/pkg/csf.yml
+	../../UserLogic/csf/pkg/csf.yml
 	# TAR
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -192,7 +192,7 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	../../tar/pkg/tar.yml
+	../../UserLogic/tar/pkg/tar.yml
 		# ULT simulation package
 	python3 $(yml2hdl)       \
 	-e common_ieee.yml       \
@@ -200,6 +200,6 @@ all:
 	-e common_constants.yml  \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e common_types.yml      \
-	-e ../../hp/pkg/hp.yml   \
-	-e ../../heg/pkg/heg.yml \
+	-e ../../UserLogic/hp/pkg/hp.yml   \
+	-e ../../UserLogic/heg/pkg/heg.yml \
 	../../shared/sim/pkg/gldl_ult_tp_sim.yml
