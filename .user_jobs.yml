@@ -54,7 +54,7 @@
     # - source run.sh compute_r_bins #OK
     # - source run.sh find_max_bin #OK
     # - source run.sh get_legendre_segment_barrel #OK
-   - source run.sh get_rom_addr #NOTOK
+    - source run.sh get_rom_addr #NOTOK
     # - source run.sh get_trig_vals #OK
     # - source run.sh load_LE_refPos #OK
   artifacts:
