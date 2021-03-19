@@ -32,26 +32,28 @@ SIM ?= questa
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../
 SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
+USERLOGIC = $(SRCDIR)/UserLogic
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
 DFDIR     = $(SRCDIR)/dataformats
-MTCDIR    = $(SRCDIR)/mtc/src
-LSFDIR    = $(SRCDIR)/lsf/src
-CSFDIR    = $(SRCDIR)/csf/src
-MPTDIR    = $(SRCDIR)/ptc_mpi/src
-HPSDIR    = $(SRCDIR)/hps/src
-HPDIR     = $(SRCDIR)/hp/src
-HEGDIR    = $(SRCDIR)/heg/src
-MPLDIR    = $(SRCDIR)/mpl/src
-SLDIR     = $(SRCDIR)/sl/src
-TARDIR    = $(SRCDIR)/tar/src
-TDCDIR    = $(SRCDIR)/tdc/src
-UCMDIR    = $(SRCDIR)/ucm/src
-UCMHPSDIR = $(SRCDIR)/ucm_hps/src
-ULTDIR    = $(SRCDIR)/ult/src
-UPTDIR    = $(SRCDIR)/upt/src
+MTCDIR    = $(USERLOGIC)/mtc/src
+LSFDIR    = $(USERLOGIC)/lsf/src
+CSFDIR    = $(USERLOGIC)/csf/src
+MPTDIR    = $(USERLOGIC)/ptc_mpi/src
+HPSDIR    = $(USERLOGIC)/hps/src
+HPDIR     = $(USERLOGIC)/hp/src
+HEGDIR    = $(USERLOGIC)/heg/src
+MPLDIR    = $(USERLOGIC)/mpl/src
+SLDIR     = $(USERLOGIC)/sl/src
+TARDIR    = $(USERLOGIC)/tar/src
+TDCDIR    = $(USERLOGIC)/tdc/src
+UCMDIR    = $(USERLOGIC)/ucm/src
+UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
+ULTDIR    = $(USERLOGIC)/ult/src
+UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
+HAL       = $(SRCDIR)/HAL
 
 
 # Verilog source files
@@ -87,6 +89,10 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
 	$(SHAREDDIR)/src/ring_buffer_v2.vhd \
+	$(SHAREDDIR)/src/vhdl_ram_memory.vhd \
+	$(SHAREDDIR)/src/bram.vhd \
+	$(SHAREDDIR)/mpcvmem/src/mpcvmem.vhd \
+	$(SHAREDDIR)/mpcvmem/src/DualPortMem.vhd \
 	$(SHAREDDIR)/src/pipeline.vhd \
 	$(SHAREDDIR)/config/config_pkg.vhd
 
@@ -97,13 +103,19 @@ VHDL_SOURCES_project_lib = \
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
-
+VHDL_SOURCES_ctrl_lib = \
+	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/axi/axiRegPkg.vhd \
+	$(HAL)/ctrl/src/axi/axiReg.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_map.vhd 
 
 VHDL_SOURCES_mpl_lib = \
     $(PWD)/prj_cfg.vhd \
     $(SHAREDDIR)/config/config_pkg.vhd 	\
     $(MPLDIR)/../pkg/mpl_pkg.vhd \
     $(MPLDIR)/mpl_csw.vhd \
+    $(MPLDIR)/mpl_supervisor.vhd \
     $(MPLDIR)/mpl.vhd
 
 
