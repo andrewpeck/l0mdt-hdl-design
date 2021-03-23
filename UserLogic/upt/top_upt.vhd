@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2020-12-10
+-- last update: 2021-03-23
 -- ===========================================================
 
 library ieee;
@@ -48,7 +48,7 @@ architecture behav of top_upt is
     signal ptcalc_segment_m : sf2ptcalc_rvt;
     signal ptcalc_segment_o : sf2ptcalc_rvt;
 
-    component ptcalc_top
+    component hls_ptcalc_top
         port (
             ap_clk : in std_logic;
             ap_rst : in std_logic;
@@ -69,7 +69,7 @@ begin
     o_mtc           <= ptcalc2mtc_done & ptcalc2mtc_data(PTCALC2MTC_LEN-2 downto 0);
     --ptcalc_ap_start <= ptcalc_ap_ready and i_slc(PL2PTCALC_LEN-1);
 
-    ptcalc_top_inst : ptcalc_top port map (
+    ptcalc_top_inst : hls_ptcalc_top port map (
         ap_clk => clk,
         ap_rst => i_rst,
         ap_start        => ptcalc_ap_start, --i_slc(PL2PTCALC_LEN-1), -- hls control signal: goes high 1 clk after rst goes low
