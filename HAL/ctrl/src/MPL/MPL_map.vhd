@@ -3,9 +3,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.AXIRegPkg.all;
-use work.types.all;
-use work.MPL_Ctrl.all;
+library ctrl_lib;
+use ctrl_lib.AXIRegPkg.all;
+use ctrl_lib.types.all;
+use ctrl_lib.MPL_Ctrl.all;
 entity MPL_interface is
   port (
     clk_axi          : in  std_logic;
@@ -33,10 +34,10 @@ architecture behavioral of MPL_interface is
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
-  -- AXI 
+  -- AXI
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  AXIRegBridge : entity work.axiLiteReg
+  AXIRegBridge : entity ctrl_lib.axiLiteReg
     port map (
       clk_axi     => clk_axi,
       reset_axi_n => reset_axi_n,
@@ -55,7 +56,7 @@ begin  -- architecture behavioral
   begin  -- process latch_reads
     if clk_axi'event and clk_axi = '1' then  -- rising clock edge
       if localRdReq = '1' then
-        localRdData_latch <= localRdData;        
+        localRdData_latch <= localRdData;
       end if;
     end if;
   end process latch_reads;
@@ -88,10 +89,10 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
-  Ctrl.CONFIGS.THREADS          <=  reg_data( 1)( 3 downto  0);     
-  Ctrl.CONFIGS.INPUT_EN         <=  reg_data( 1)( 4);               
-  Ctrl.CONFIGS.OUTPUT_EN        <=  reg_data( 1)( 5);               
-  Ctrl.CONFIGS.FLUSH_MEM_RESET  <=  reg_data( 1)( 6);               
+  Ctrl.CONFIGS.THREADS          <=  reg_data( 1)( 3 downto  0);
+  Ctrl.CONFIGS.INPUT_EN         <=  reg_data( 1)( 4);
+  Ctrl.CONFIGS.OUTPUT_EN        <=  reg_data( 1)( 5);
+  Ctrl.CONFIGS.FLUSH_MEM_RESET  <=  reg_data( 1)( 6);
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -106,15 +107,15 @@ begin  -- architecture behavioral
       Ctrl.ACTIONS.RESET <= '0';
       Ctrl.ACTIONS.ENABLE <= '0';
       Ctrl.ACTIONS.DISABLE <= '0';
-      
 
-      
+
+
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(4 downto 0))) is
         when 0 => --0x0
-          Ctrl.ACTIONS.RESET          <=  localWrData( 0);               
-          Ctrl.ACTIONS.ENABLE         <=  localWrData( 4);               
-          Ctrl.ACTIONS.DISABLE        <=  localWrData( 5);               
+          Ctrl.ACTIONS.RESET          <=  localWrData( 0);
+          Ctrl.ACTIONS.ENABLE         <=  localWrData( 4);
+          Ctrl.ACTIONS.DISABLE        <=  localWrData( 5);
         when 1 => --0x1
           reg_data( 1)( 3 downto  0)  <=  localWrData( 3 downto  0);      --
           reg_data( 1)( 4)            <=  localWrData( 4);                --
