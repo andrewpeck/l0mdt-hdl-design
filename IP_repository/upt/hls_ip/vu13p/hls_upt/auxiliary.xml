@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="ptcalc_top" xd:componentRef="ptcalc_top" xd:initiationInterval="4" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="pl2ptcalc" xd:originalName="pl2ptcalc" xd:direction="in" xd:interfaceRef="pl2ptcalc_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="58"/>
+  <xd:arg xd:name="sf2ptcalc_inn" xd:originalName="sf2ptcalc_inn" xd:direction="in" xd:interfaceRef="sf2ptcalc_inn_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="64"/>
+  <xd:arg xd:name="sf2ptcalc_mid" xd:originalName="sf2ptcalc_mid" xd:direction="in" xd:interfaceRef="sf2ptcalc_mid_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="64"/>
+  <xd:arg xd:name="sf2ptcalc_out" xd:originalName="sf2ptcalc_out" xd:direction="in" xd:interfaceRef="sf2ptcalc_out_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="64"/>
+  <xd:arg xd:name="*(ptcalc2mtc)" xd:originalName="ptcalc2mtc" xd:direction="out" xd:interfaceRef="ptcalc2mtc_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="54" xd:firstOut="22"/>
+  <xd:arg xd:name="is_C_side" xd:originalName="is_C_side" xd:direction="in" xd:interfaceRef="is_C_side" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1" xd:firstOut="22"/>
+  <xd:latencyEstimates xd:best-case="26" xd:worst-case="26" xd:average-case="26"/>
+  <xd:resourceEstimates xd:LUT="3249" xd:FF="3337" xd:BRAM="26" xd:DSP="22"/>
+</xd:acceleratorMap>

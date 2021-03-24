@@ -1,0 +1,9 @@
+hls_calc_LE_r_offset_barrel
+hls_compute_r_bins
+hls_find_max_bin
+hls_get_legendre_segment_barrel
+hls_get_rom_addr
+hls_get_trig_vals
+hls_load_LE_refPos
+hls_xci_run
+tmp
