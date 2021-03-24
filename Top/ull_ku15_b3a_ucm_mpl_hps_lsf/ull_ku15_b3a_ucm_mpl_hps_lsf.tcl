@@ -43,5 +43,7 @@ source $PATH_REPO/Hog/Tcl/create_project.tcl
 # set_property top top_ult_tp [current_fileset]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs synth_1]
+set_property  ip_repo_paths  {../../UserLogic/upt/IP/ku15p ../../UserLogic/lsf/IP/ku15p } [current_project]
+update_ip_catalog
 
 # synth_design -rtl -name rtl_1

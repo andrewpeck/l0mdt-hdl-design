@@ -39,8 +39,8 @@ set PROPERTIES [dict create \
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 source $PATH_REPO/Hog/Tcl/create_project.tcl
-set_property  ip_repo_paths  {../../UserLogic/lsf/IP/vu13p ../../UserLogic/upt/IP/vu13p ../../IP_repository} [current_project]
-update_ip_catalog
+#set_property  ip_repo_paths  {../../UserLogic/lsf/IP/vu13p ../../UserLogic/upt/IP/vu13p ../../IP_repository} [current_project]
+#update_ip_catalog
 
 # set_property top top_ult_tp [current_fileset]
 set_property AUTO_INCREMENTAL_CHECKPOINT 1 [get_runs impl_1]
