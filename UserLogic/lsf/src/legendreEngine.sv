@@ -77,7 +77,7 @@ module legendreEngine(
    logic 					 roi_seed_r_vld;
    logic [W_r+1:0] 				 mdt_r_offset[8];
    logic [HEG2SFHIT_LOCALX_LEN-1:0] 		 mdt_local_x[8];
-   logic [HEG2SFHIT_LOCALY_LEN:0] 		 mdt_local_y[8];
+   logic [HEG2SFHIT_LOCALY_LEN-1:0] 		 mdt_local_y[8];
    logic [W_r+1:0] 				 mdt_radius[2]; //HLS adding extra bits in lsb
    logic [W_r+1:0] 				 mdt_radius_stream;
    logic 					 stream_input;
