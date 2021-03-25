@@ -213,6 +213,8 @@ module legendreEngine(
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos_ref;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_ref;
 
+   logic [HEG2SFSLC_HEWINDOW_POS_LEN-1:0] 					    hewindow_pos_V_barrel;
+
 
    enum 									    {IDLE, LOAD_LUTS_GRA, LOAD_LUTS, HISTOGRAM_BIN_ACCUMULATION, HISTOGRAM_BIN_FLUSH_PIPELINE, RESET_HISTOGRAM_BINS, COMPUTE_RESULTS, HBA_MEMORY_RESET} le_state;
 
@@ -376,7 +378,7 @@ module legendreEngine(
   // assign slcvec_pos_ref   = 18'h8d50; //18'he1a3;
  //  assign hewindow_pos_ref = 18'h8ab5; //18'hdda3;
    assign cro_ap_start     = (trig_val_counter_2 == 2);//3); //4);
-
+   assign hewindow_pos_V_barrel = hewindow_pos;
 `ifdef RUN_SIM
    calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
 `else
@@ -394,7 +396,7 @@ module legendreEngine(
 					     //.roi_seed_r_V_ap_vld(roi_seed_r_vld),
 					     .slcvec_pos_V(slcvec_pos),
 					     .slcvec_pos_ref_V(slcvec_pos_ref), //Rho for barrel
-					     .hewindow_pos_V(hewindow_pos),
+					     .hewindow_pos_V(hewindow_pos_V_barrel),
 					     .hewindow_pos_ref_V(hewindow_pos_ref) //Rho for barrel
 					    /*endcap connection
 					     .slcvec_pos_Z_V(slcvec_pos_ref),
