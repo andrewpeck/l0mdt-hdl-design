@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-03-23
+-- last update: 2021-03-24
 -- ===========================================================
 
 library ieee;
@@ -48,6 +48,9 @@ architecture behav of top_upt is
     signal ptcalc_segment_m : sf2ptcalc_rvt;
     signal ptcalc_segment_o : sf2ptcalc_rvt;
 
+    constant ap_const_logic_1 : STD_LOGIC := '1';
+    constant ap_const_logic_0 : STD_LOGIC := '0';
+
     component hls_ptcalc_top
         port (
             ap_clk : in std_logic;
@@ -61,7 +64,8 @@ architecture behav of top_upt is
             sf2ptcalc_mid_v : in sf2ptcalc_rvt;
             sf2ptcalc_out_v : in sf2ptcalc_rvt;
             ptcalc2mtc_v : out ptcalc2mtc_rvt;
-            ptcalc2mtc_v_ap_vld : out std_logic
+            ptcalc2mtc_v_ap_vld : out std_logic;
+            is_C_side           : in std_logic;
             );
     end component;
 
@@ -81,7 +85,8 @@ begin
         sf2ptcalc_mid_v => ptcalc_segment_m,
         sf2ptcalc_out_v => ptcalc_segment_o,
         ptcalc2mtc_v    => ptcalc2mtc_data,
-        ptcalc2mtc_v_ap_vld => ptcalc2mtc_valid -- hls control signal: probably not needed?
+        ptcalc2mtc_v_ap_vld => ptcalc2mtc_valid, -- hls control signal: probably not needed?
+        is_C_side           => ap_const_logic_1
         );
 
     hls_ap_ready: process(clk)
