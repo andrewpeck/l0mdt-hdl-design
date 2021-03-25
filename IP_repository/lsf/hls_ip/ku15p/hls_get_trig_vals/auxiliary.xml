@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="get_trig_vals" xd:componentRef="get_trig_vals" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="hw_trig_vals[0]" xd:originalName="hw_trig_vals0" xd:direction="out" xd:interfaceRef="hw_trig_vals_0_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[1]" xd:originalName="hw_trig_vals1" xd:direction="out" xd:interfaceRef="hw_trig_vals_1_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[2]" xd:originalName="hw_trig_vals2" xd:direction="out" xd:interfaceRef="hw_trig_vals_2_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[3]" xd:originalName="hw_trig_vals3" xd:direction="out" xd:interfaceRef="hw_trig_vals_3_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[4]" xd:originalName="hw_trig_vals4" xd:direction="out" xd:interfaceRef="hw_trig_vals_4_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[5]" xd:originalName="hw_trig_vals5" xd:direction="out" xd:interfaceRef="hw_trig_vals_5_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[6]" xd:originalName="hw_trig_vals6" xd:direction="out" xd:interfaceRef="hw_trig_vals_6_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[7]" xd:originalName="hw_trig_vals7" xd:direction="out" xd:interfaceRef="hw_trig_vals_7_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[8]" xd:originalName="hw_trig_vals8" xd:direction="out" xd:interfaceRef="hw_trig_vals_8_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[9]" xd:originalName="hw_trig_vals9" xd:direction="out" xd:interfaceRef="hw_trig_vals_9_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[10]" xd:originalName="hw_trig_vals10" xd:direction="out" xd:interfaceRef="hw_trig_vals_10_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[11]" xd:originalName="hw_trig_vals11" xd:direction="out" xd:interfaceRef="hw_trig_vals_11_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[12]" xd:originalName="hw_trig_vals12" xd:direction="out" xd:interfaceRef="hw_trig_vals_12_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[13]" xd:originalName="hw_trig_vals13" xd:direction="out" xd:interfaceRef="hw_trig_vals_13_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[14]" xd:originalName="hw_trig_vals14" xd:direction="out" xd:interfaceRef="hw_trig_vals_14_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_trig_vals[15]" xd:originalName="hw_trig_vals15" xd:direction="out" xd:interfaceRef="hw_trig_vals_15_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="36" xd:firstOut="3" xd:arraySize="1"/>
+  <xd:arg xd:name="rom_idx" xd:originalName="rom_idx" xd:direction="in" xd:interfaceRef="rom_idx_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="3" xd:firstOut="3"/>
+  <xd:arg xd:name="lut_start_addr" xd:originalName="lut_start_addr" xd:direction="in" xd:interfaceRef="lut_start_addr_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="12" xd:firstOut="3"/>
+  <xd:latencyEstimates xd:best-case="4" xd:worst-case="4" xd:average-case="4"/>
+  <xd:resourceEstimates xd:LUT="1475" xd:FF="909" xd:BRAM="8" xd:DSP="0"/>
+</xd:acceleratorMap>

@@ -61,18 +61,18 @@ wire   [16:0] lut_mdt_ref_pos_V_q0;
 wire   [9:0] lut_mdt_ref_pos_V_address1;
 reg    lut_mdt_ref_pos_V_ce1;
 wire   [16:0] lut_mdt_ref_pos_V_q1;
-wire   [17:0] zext_ln356_fu_131_p1;
-wire   [17:0] zext_ln356_1_fu_136_p1;
+wire   [17:0] zext_ln356_fu_129_p1;
+wire   [17:0] zext_ln356_1_fu_134_p1;
 reg    ap_block_pp0_stage0_subdone;
-wire  signed [63:0] sext_ln559_fu_103_p1;
+wire  signed [63:0] sext_ln559_fu_101_p1;
 wire    ap_block_pp0_stage0;
-wire  signed [63:0] sext_ln559_1_fu_126_p1;
+wire  signed [63:0] sext_ln559_1_fu_124_p1;
 reg    ap_block_pp0_stage0_01001;
-wire   [9:0] zext_ln703_fu_93_p1;
-wire   [9:0] ret_V_fu_97_p2;
-wire   [9:0] ret_V_4_fu_108_p3;
-wire   [10:0] zext_ln703_1_fu_116_p1;
-wire   [10:0] ret_V_3_fu_120_p2;
+wire   [9:0] zext_ln703_fu_91_p1;
+wire   [9:0] ret_V_fu_95_p2;
+wire   [9:0] ret_V_4_fu_106_p3;
+wire   [10:0] zext_ln703_1_fu_114_p1;
+wire   [10:0] ret_V_3_fu_118_p2;
 reg   [0:0] ap_NS_fsm;
 reg    ap_idle_pp0_0to1;
 reg    ap_reset_idle_pp0;
@@ -134,13 +134,13 @@ end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (hewindow_pos_ref_V_1_vld_reg == 1'b0) & (hewindow_pos_ref_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (hewindow_pos_ref_V_1_vld_in == 1'b1) & (hewindow_pos_ref_V_1_vld_reg == 1'b1)))) begin
-        hewindow_pos_ref_V_1_data_reg[16 : 0] <= zext_ln356_1_fu_136_p1[16 : 0];
+        hewindow_pos_ref_V_1_data_reg[16 : 0] <= zext_ln356_1_fu_134_p1[16 : 0];
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (slcvec_pos_ref_V_1_vld_reg == 1'b0) & (slcvec_pos_ref_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (slcvec_pos_ref_V_1_vld_in == 1'b1) & (slcvec_pos_ref_V_1_vld_reg == 1'b1)))) begin
-        slcvec_pos_ref_V_1_data_reg[16 : 0] <= zext_ln356_fu_131_p1[16 : 0];
+        slcvec_pos_ref_V_1_data_reg[16 : 0] <= zext_ln356_fu_129_p1[16 : 0];
     end
 end
 
@@ -283,29 +283,29 @@ assign ap_enable_reg_pp0_iter0 = ap_start;
 
 assign hewindow_pos_ref_V = hewindow_pos_ref_V_1_data_reg;
 
-assign lut_mdt_ref_pos_V_address0 = sext_ln559_fu_103_p1;
+assign lut_mdt_ref_pos_V_address0 = sext_ln559_fu_101_p1;
 
-assign lut_mdt_ref_pos_V_address1 = sext_ln559_1_fu_126_p1;
+assign lut_mdt_ref_pos_V_address1 = sext_ln559_1_fu_124_p1;
 
-assign ret_V_3_fu_120_p2 = ($signed(zext_ln703_1_fu_116_p1) + $signed(11'd2047));
+assign ret_V_3_fu_118_p2 = ($signed(zext_ln703_1_fu_114_p1) + $signed(11'd2047));
 
-assign ret_V_4_fu_108_p3 = {{1'd1}, {mdtid_V}};
+assign ret_V_4_fu_106_p3 = {{1'd1}, {mdtid_V}};
 
-assign ret_V_fu_97_p2 = ($signed(zext_ln703_fu_93_p1) + $signed(10'd1023));
+assign ret_V_fu_95_p2 = ($signed(zext_ln703_fu_91_p1) + $signed(10'd1023));
 
-assign sext_ln559_1_fu_126_p1 = $signed(ret_V_3_fu_120_p2);
+assign sext_ln559_1_fu_124_p1 = $signed(ret_V_3_fu_118_p2);
 
-assign sext_ln559_fu_103_p1 = $signed(ret_V_fu_97_p2);
+assign sext_ln559_fu_101_p1 = $signed(ret_V_fu_95_p2);
 
 assign slcvec_pos_ref_V = slcvec_pos_ref_V_1_data_reg;
 
-assign zext_ln356_1_fu_136_p1 = lut_mdt_ref_pos_V_q1;
+assign zext_ln356_1_fu_134_p1 = lut_mdt_ref_pos_V_q1;
 
-assign zext_ln356_fu_131_p1 = lut_mdt_ref_pos_V_q0;
+assign zext_ln356_fu_129_p1 = lut_mdt_ref_pos_V_q0;
 
-assign zext_ln703_1_fu_116_p1 = ret_V_4_fu_108_p3;
+assign zext_ln703_1_fu_114_p1 = ret_V_4_fu_106_p3;
 
-assign zext_ln703_fu_93_p1 = mdtid_V;
+assign zext_ln703_fu_91_p1 = mdtid_V;
 
 always @ (posedge ap_clk) begin
     slcvec_pos_ref_V_1_data_reg[17] <= 1'b0;
