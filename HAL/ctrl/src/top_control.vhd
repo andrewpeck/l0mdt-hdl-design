@@ -20,6 +20,8 @@ use ctrl_lib.MPL_CTRL.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
 
+use ctrl_lib.spy_package.all;
+
 entity top_control is
   port (
     -- axi
@@ -73,6 +75,10 @@ entity top_control is
     hal_core_mon  : in HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
+    -- spybuffers
+    user_spy_mon  : in spy_mon_t;
+    user_spy_ctrl : out spy_ctrl_t;
+
     -- system management
     sys_mgmt_scl            : inout std_logic;
     sys_mgmt_sda            : inout std_logic;
@@ -85,6 +91,9 @@ entity top_control is
 end top_control;
 
 architecture control_arch of top_control is
+
+  signal axi_spy_ctrl : spy_ctrl_t;
+  signal axi_spy_mon  : spy_mon_t;
 
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
@@ -135,6 +144,9 @@ architecture control_arch of top_control is
   signal mpl_readmiso  : axireadmiso;
   signal mpl_writemosi : axiwritemosi;
   signal mpl_writemiso : axiwritemiso;
+
+  signal spy_i : spy_i_t;
+  signal spy_o : spy_o_t;
 
 begin
 
@@ -391,8 +403,32 @@ begin
       kintex_sys_mgmt_scl            => sys_mgmt_scl,
       kintex_sys_mgmt_sda            => sys_mgmt_sda,
       kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
-      kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm
+      kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm,
 
+      -- spy buffers
+      tar_spy_port_we   => axi_spy_ctrl.tar.we, -- out
+      tar_spy_port_din  => axi_spy_ctrl.tar.din, -- out
+      tar_spy_port_en   => axi_spy_ctrl.tar.en, -- out
+      tar_spy_port_rst  => axi_spy_ctrl.tar.rst, -- out
+      tar_spy_port_clk  => axi_spy_ctrl.tar.clk, -- out
+      tar_spy_port_addr => axi_spy_ctrl.tar.addr, -- out
+      tar_spy_port_dout => axi_spy_mon.tar.dout -- in
+
+      );
+
+  --------------------------------------------------------------------------------
+  -- Spybuffer Controller
+  --------------------------------------------------------------------------------
+
+  spybuffer_controller : entity work.spybuffer_controller
+    port map (
+      clock         => clk40,
+      freeze        => '0',
+      playback_mode => "00",
+      axi_spy_ctrl  => axi_spy_ctrl,
+      axi_spy_mon   => axi_spy_mon,
+      user_spy_ctrl => user_spy_ctrl,
+      user_spy_mon  => user_spy_mon
       );
 
   --------------------------------------------------------------------------------

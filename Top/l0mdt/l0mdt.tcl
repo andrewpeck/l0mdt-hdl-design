@@ -45,9 +45,12 @@ set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 # TODO: uncomment when CI machine has uHAL
 #eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
 
-source $PATH_REPO/Hog/Tcl/create_project.tcl
+source -notrace $PATH_REPO/Hog/Tcl/create_project.tcl
 
-set C2C_PATH $PATH_REPO/c2c/src/c2c
-set BD_PATH $PATH_REPO/c2c/src/bd
-cd     $PATH_REPO/c2c/src/c2c
-source createC2CSlaveInterconnect.tcl
+set apollo_root_path $PATH_REPO
+set C2C_PATH $PATH_REPO/HAL/c2c/src/c2c
+set BD_PATH $PATH_REPO/HAL/c2c/src/bd
+
+source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
+
+exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"

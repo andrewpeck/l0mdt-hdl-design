@@ -1,0 +1,141 @@
+AXI_CONTROL_SETS:
+  AXI_MASTER_CTRL:
+      axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
+      axi_clk: "${::AXI_MASTER_CLK}"
+      axi_rstn: "${::AXI_MASTER_RSTN}"
+      axi_freq: "${::AXI_MASTER_CLK_FREQ}"
+  AXI_LHC_CTRL:
+      axi_interconnect: "${::AXI_INTERCONNECT_NAME}"
+      axi_clk: clk40
+      axi_rstn: "${::AXI_MASTER_RSTN}"
+      axi_freq: 40000000
+  AXI_SPYBUFFER_CTRL:
+      axi_interconnect: "SPYBUFFER_INTERCONNECT_0"
+      axi_clk: "${::AXI_MASTER_CLK}"
+      axi_rstn: "${::AXI_MASTER_RSTN}"
+      axi_freq: "${::AXI_MASTER_CLK_FREQ}"
+
+AXI_SLAVES:
+  KINTEX_SYS_MGMT:
+    TCL_CALL:
+      command: "AXI_IP_SYS_MGMT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+      addr:
+        offset: "0x83c45000"
+        range: "4K"
+
+  FW_INFO:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+      addr:
+        offset: "0x83c46000"
+        range: "4K"
+
+  HAL_CORE:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_MASTER_CTRL}"
+      addr:
+        offset: "0x83c47000"
+        range: "4K"
+
+  HAL:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c48000"
+        range: "4K"
+
+  H2S:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c49000"
+        range: "4K"
+
+  MTC:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4a000"
+        range: "4K"
+
+  TF:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4b000"
+        range: "4K"
+
+  UCM:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4c000"
+        range: "4K"
+
+  DAQ:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4d000"
+        range: "4K"
+
+  TAR:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4e000"
+        range: "4K"
+
+  MPL:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c4f000"
+        range: "4K"
+
+  INTERCONNECT_1:
+
+    TCL_CALL:
+      command: "BUILD_CHILD_AXI_INTERCONNECT"
+      name: "SPYBUFFER_INTERCONNECT_0"
+      axi_clk: "${::AXI_MASTER_CLK}"
+      axi_rstn: "${::AXI_MASTER_RSTN}"
+      parent: "${::AXI_INTERCONNECT_NAME}"
+      master_clk: "${::AXI_MASTER_CLK}"
+      master_rstn: "${::AXI_MASTER_RSTN}"
+      firewall: "0"
+
+    SUB_SLAVES:
+
+      TAR_SPY:
+        SPYBUFFER: true
+        TCL_CALL:
+          command: "AXI_IP_BRAM_CONTROL"
+          axi_control: "${::AXI_SPYBUFFER_CTRL}"
+          width: 32
+          latency: 2
+          addr:
+            offset: "0x83c50000"
+            range: "64K"
+
+      MPL_SPY:
+        SPYBUFFER: true
+        TCL_CALL:
+          command: "AXI_IP_BRAM_CONTROL"
+          axi_control: "${::AXI_SPYBUFFER_CTRL}"
+          width: 32
+          latency: 2
+          addr:
+            offset: "0x83c60000"
+            range: "32K"

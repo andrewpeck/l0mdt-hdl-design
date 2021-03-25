@@ -1,11 +1,16 @@
+# Top Level
+HAL/lpgbt/src/lpgbt-fpga/lpgbtfpga_uplink.vhd
+HAL/lpgbt/src/lpgbt-fpga/lpgbtfpga_downlink.vhd
+HAL/lpgbt/src/lpgbt-fpga/lpgbtfpga_package.vhd
+
+# Downlink
 HAL/lpgbt/src/lpgbt-fpga/downlink/lpgbtfpga_encoder.vhd
 HAL/lpgbt/src/lpgbt-fpga/downlink/lpgbtfpga_interleaver.vhd
 HAL/lpgbt/src/lpgbt-fpga/downlink/lpgbtfpga_scrambler.vhd
 HAL/lpgbt/src/lpgbt-fpga/downlink/lpgbtfpga_txgearbox.vhd
 HAL/lpgbt/src/lpgbt-fpga/downlink/rs_encoder_N7K5.vhd
-HAL/lpgbt/src/lpgbt-fpga/lpbgtfpga_downlink.vhd
-HAL/lpgbt/src/lpgbt-fpga/lpgbtfpga_package.vhd
-HAL/lpgbt/src/lpgbt-fpga/lpgbtfpga_uplink.vhd
+
+# Uplink
 HAL/lpgbt/src/lpgbt-fpga/uplink/descrambler_51bitOrder49.vhd
 HAL/lpgbt/src/lpgbt-fpga/uplink/descrambler_53bitOrder49.vhd
 HAL/lpgbt/src/lpgbt-fpga/uplink/descrambler_58bitOrder58.vhd
