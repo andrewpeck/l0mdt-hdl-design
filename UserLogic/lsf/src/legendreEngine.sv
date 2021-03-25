@@ -28,7 +28,7 @@ module legendreEngine(
 
    //   const int TRIG_BITS= 24;
    //  parameter HEG2SFSLC_VEC_ANG_LEN = 10; //TODO: FIX IN HEADER FILE:TALK TO KOSTAS
-   parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 7 ;
+   parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 3; //7 ;
 
    //CONSTANT FROM HLS(ANGLE_MAX_HALF_MRAD + HALF_PI_MRAD)
 //   parameter VEC_ANG_OFFSET = 1023+50265;  //typedef ap_fixed<W_slcproc_vec_ang+7, IW_slcproc_vec_ang+2> angle_t_mrad;
