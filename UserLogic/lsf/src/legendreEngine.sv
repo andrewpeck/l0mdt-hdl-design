@@ -207,6 +207,8 @@ module legendreEngine(
 
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos ;
+   //logic [HEG2SFSLC_VEC_ANG_LEN-1:0] 						    slcvec_pos;
+   logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_Z ;
 
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos_ref;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_ref;
@@ -340,7 +342,7 @@ module legendreEngine(
 				      .hewindow_pos_ref_V(hewindow_pos_ref)
 				      );
 
-
+				      assign hewindow_pos_Z = {hewindow_pos,3'b0};
 `ifdef RUN_SIM
      get_legendre_segment_barrel get_legendre_segment_barrel_inst(
 `else
@@ -358,7 +360,7 @@ module legendreEngine(
 
 								  .slcvec_pos_R_V(slcvec_pos_ref),
 								  .hewindow_pos_R_V(hewindow_pos_ref),
-								  .hewindow_pos_Z_V({hewindow_pos,3'b0}),
+								  .hewindow_pos_Z_V( hewindow_pos_Z),
 								  .hls_LT_theta_global_V(theta_global),
 								  .segpos_V(sf_segpos),
 								  .segpos_V_ap_vld(sf_segpos_vld)
