@@ -65,7 +65,7 @@ architecture behav of top_upt is
             sf2ptcalc_out_v : in sf2ptcalc_rvt;
             ptcalc2mtc_v : out ptcalc2mtc_rvt;
             ptcalc2mtc_v_ap_vld : out std_logic;
-            is_C_side           : in std_logic;
+            is_C_side           : in std_logic
             );
     end component;
 
