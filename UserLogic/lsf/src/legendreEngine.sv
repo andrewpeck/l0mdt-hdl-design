@@ -283,7 +283,7 @@ module legendreEngine(
 
    logic [W_r-1:0]  r_global;
    logic 	 r_global_vld;
-   logic [17:0]  theta;
+   logic [13:0]  theta;
    logic 	 theta_vld;
    logic [21:0]  r;
    logic 	 r_vld;
