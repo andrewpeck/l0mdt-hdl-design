@@ -69,8 +69,8 @@ entity top_l0mdt is
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
 
-    sys_mgmt_scl : inout std_logic;
-    sys_mgmt_sda : inout std_logic;
+    --sys_mgmt_scl : inout std_logic;
+    --sys_mgmt_sda : inout std_logic;
 
     -- cornell only
     --cornell_cm_led_o : out std_logic_vector (c_NUM_CORNELL_LEDS-1 downto 0);
@@ -335,8 +335,8 @@ begin
       reset_n                 => '1',
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
-      sys_mgmt_scl            => sys_mgmt_scl,
-      sys_mgmt_sda            => sys_mgmt_sda,
+      --sys_mgmt_scl            => sys_mgmt_scl,
+      --sys_mgmt_sda            => sys_mgmt_sda,
       sys_mgmt_vccaux_alarm   => open,
       sys_mgmt_vccint_alarm   => open
       );

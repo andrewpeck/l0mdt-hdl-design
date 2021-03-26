@@ -2,8 +2,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library shared_lib;
-use shared_lib.cfg_global_pkg.all;
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 library hal;
 use hal.constants_pkg.all;
@@ -29,10 +29,10 @@ package body prj_cfg is
     proj_cfg.PT_TYPE   := '0'; -- 0: MPT 1:UPT
 
     -- take these values from HAL, derived from the link mapping
-    proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
-    proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
-    proj_cfg.NUM_MDT_CH_OUT  := c_NUM_POLMUX_OUTER;
-    proj_cfg.NUM_MDT_CH_EXT  := c_NUM_POLMUX_EXTRA;
+    -- proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
+    -- proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
+    -- proj_cfg.NUM_MDT_CH_OUT  := c_NUM_POLMUX_OUTER;
+    -- proj_cfg.NUM_MDT_CH_EXT  := c_NUM_POLMUX_EXTRA;
 
     if (c_NUM_POLMUX_INNER > 0) then
       proj_cfg.ENABLE_ST_INN := '1';

@@ -225,11 +225,9 @@ begin
         )
 
       port map (
-        clk_freerunningclk_i       => std_logic0,  -- not used since reset on even feature is
-                                                   -- disabled in frame aligner
         uplinkclk_i                => uplink_clk,
         uplinkrst_n_i              => uplink_reset,
-        mgt_word_o                 => mgt_data,
+        mgt_word_i                 => mgt_data,
         bypassinterleaver_i        => g_LPGBT_BYPASS_INTERLEAVER,
         bypassfecencoder_i         => g_LPGBT_BYPASS_FEC,
         bypassscrambler_i          => g_LPGBT_BYPASS_SCRAMBLER,

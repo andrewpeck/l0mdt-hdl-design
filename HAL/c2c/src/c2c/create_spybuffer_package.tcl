@@ -50,7 +50,7 @@ proc create_package {spies fname} {
     puts $fp "use ieee.std_logic_1164.all;"
     puts $fp ""
 
-    puts $fp "package spy_package is"
+    puts $fp "package spies_pkg is"
     foreach key [dict keys $spies] {
 
         #puts $key
@@ -96,6 +96,7 @@ proc create_package {spies fname} {
 
     }
 
+    puts $fp ""
     puts $fp "  -------------------------"
     puts $fp "  -- Zipped up records"
     puts $fp "  -------------------------"

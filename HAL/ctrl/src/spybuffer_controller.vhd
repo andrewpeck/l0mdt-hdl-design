@@ -25,9 +25,9 @@ end spybuffer_controller;
 architecture behavioral of spybuffer_controller is
 begin
 
-  user_spy_ctrl.tar_spy_ctrl.freeze   <= freeze;                     --ctrl
-  user_spy_ctrl.tar_spy_ctrl.playback <= playback_mode;              --ctrl
-  user_spy_ctrl.tar_spy_ctrl.bram     <= axi_spy_ctrl.tar_spy.bram;  --ctrl
-  axi_spy_mon.tar_spy_mon.dout        <= user_spy_mon.tar_spy.dout;  --mon
+  user_spy_ctrl.tar_spy.freeze   <= freeze;                     --ctrl
+  user_spy_ctrl.tar_spy.playback <= playback_mode;              --ctrl
+  user_spy_ctrl.tar_spy.bram     <= axi_spy_ctrl.tar_spy.bram;  --ctrl
+  axi_spy_mon.tar_spy.dout       <= user_spy_mon.tar_spy.dout;  --mon
 
 end behavioral;

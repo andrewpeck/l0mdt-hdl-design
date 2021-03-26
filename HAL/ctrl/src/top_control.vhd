@@ -19,15 +19,14 @@ use ctrl_lib.MPL_CTRL.all;
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
-
-use ctrl_lib.spy_package.all;
+use ctrl_lib.spies_pkg.all;
 
 entity top_control is
   port (
     -- axi
     axi_clk : in std_logic;
     clk320  : in std_logic;
-    clk40  : in std_logic;
+    clk40   : in std_logic;
     clkpipe : in std_logic;
 
     -- system clock
@@ -49,39 +48,39 @@ entity top_control is
     -- control
 
     h2s_ctrl : out H2S_CTRL_t;
-    h2s_mon : in  H2S_MON_t;
+    h2s_mon  : in  H2S_MON_t;
 
     tar_ctrl : out TAR_CTRL_t;
-    tar_mon : in  TAR_MON_t;
+    tar_mon  : in  TAR_MON_t;
 
     mtc_ctrl : out MTC_CTRL_t;
-    mtc_mon : in  MTC_MON_t;
+    mtc_mon  : in  MTC_MON_t;
 
     ucm_ctrl : out UCM_CTRL_t;
-    ucm_mon : in  UCM_MON_t;
+    ucm_mon  : in  UCM_MON_t;
 
     daq_ctrl : out DAQ_CTRL_t;
-    daq_mon : in  DAQ_MON_t;
+    daq_mon  : in  DAQ_MON_t;
 
     tf_ctrl : out TF_CTRL_t;
-    tf_mon : in  TF_MON_t;
+    tf_mon  : in  TF_MON_t;
 
     mpl_ctrl : out MPL_CTRL_t;
-    mpl_mon : in  MPL_MON_t;
+    mpl_mon  : in  MPL_MON_t;
 
-    hal_mon  : in HAL_MON_t;
+    hal_mon  : in  HAL_MON_t;
     hal_ctrl : out HAL_CTRL_t;
 
-    hal_core_mon  : in HAL_CORE_MON_t;
+    hal_core_mon  : in  HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
     -- spybuffers
-    user_spy_mon  : in spy_mon_t;
+    user_spy_mon  : in  spy_mon_t;
     user_spy_ctrl : out spy_ctrl_t;
 
     -- system management
-    sys_mgmt_scl            : inout std_logic;
-    sys_mgmt_sda            : inout std_logic;
+    --sys_mgmt_scl            : inout std_logic;
+    --sys_mgmt_sda            : inout std_logic;
     sys_mgmt_alarm          : out   std_logic;
     sys_mgmt_overtemp_alarm : out   std_logic;
     sys_mgmt_vccaux_alarm   : out   std_logic;
@@ -91,9 +90,6 @@ entity top_control is
 end top_control;
 
 architecture control_arch of top_control is
-
-  signal axi_spy_ctrl : spy_ctrl_t;
-  signal axi_spy_mon  : spy_mon_t;
 
   constant std_logic1 : std_logic := '1';
   constant std_logic0 : std_logic := '0';
@@ -145,8 +141,8 @@ architecture control_arch of top_control is
   signal mpl_writemosi : axiwritemosi;
   signal mpl_writemiso : axiwritemiso;
 
-  signal spy_i : spy_i_t;
-  signal spy_o : spy_o_t;
+  signal axi_spy_ctrl : spy_ctrl_t;
+  signal axi_spy_mon  : spy_mon_t;
 
 begin
 
@@ -400,19 +396,19 @@ begin
 
       kintex_sys_mgmt_alarm          => sys_mgmt_alarm,
       kintex_sys_mgmt_overtemp_alarm => sys_mgmt_overtemp_alarm,
-      kintex_sys_mgmt_scl            => sys_mgmt_scl,
-      kintex_sys_mgmt_sda            => sys_mgmt_sda,
+      --kintex_sys_mgmt_scl            => sys_mgmt_scl,
+      --kintex_sys_mgmt_sda            => sys_mgmt_sda,
       kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
       kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm,
 
       -- spy buffers
-      tar_spy_port_we   => axi_spy_ctrl.tar.we, -- out
-      tar_spy_port_din  => axi_spy_ctrl.tar.din, -- out
-      tar_spy_port_en   => axi_spy_ctrl.tar.en, -- out
-      tar_spy_port_rst  => axi_spy_ctrl.tar.rst, -- out
-      tar_spy_port_clk  => axi_spy_ctrl.tar.clk, -- out
-      tar_spy_port_addr => axi_spy_ctrl.tar.addr, -- out
-      tar_spy_port_dout => axi_spy_mon.tar.dout -- in
+      tar_spy_port_we   => axi_spy_ctrl.tar_spy.bram.we,    -- out
+      tar_spy_port_din  => axi_spy_ctrl.tar_spy.bram.din,   -- out
+      tar_spy_port_en   => axi_spy_ctrl.tar_spy.bram.en,    -- out
+      tar_spy_port_rst  => axi_spy_ctrl.tar_spy.bram.rst,   -- out
+      tar_spy_port_clk  => axi_spy_ctrl.tar_spy.bram.clk,   -- out
+      tar_spy_port_addr => axi_spy_ctrl.tar_spy.bram.addr,  -- out
+      tar_spy_port_dout => axi_spy_mon.tar_spy.dout    -- in
 
       );
 

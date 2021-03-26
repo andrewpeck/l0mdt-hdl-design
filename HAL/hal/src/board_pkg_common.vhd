@@ -274,6 +274,7 @@ package body board_pkg_common is
         return csm_count;
       end if;
     end loop;
+    return -1;
   end func_count_csms_active;
 
 end package body;
