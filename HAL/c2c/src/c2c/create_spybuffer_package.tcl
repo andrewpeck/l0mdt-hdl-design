@@ -85,7 +85,7 @@ proc create_package {spies fname} {
         puts $fp "  type ${name}_ctrl_t is record"
         puts $fp "    bram     : ${name}_bram_ctrl_t;"
         puts $fp "    freeze   : std_logic;"
-        puts $fp "    playback : std_logic_vector (2 downto 0);"
+        puts $fp "    playback : std_logic_vector (1 downto 0);"
         puts $fp "  end record;"
 
         puts $fp ""

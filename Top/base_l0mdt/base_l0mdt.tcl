@@ -5,10 +5,12 @@ set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
+
+regexp -- {Vivado v([0-9]{4})\.[0-9]} [version] -> VIVADO_YEAR
 set SYNTH_STRATEGY "Vivado Synthesis Defaults"
-set SYNTH_FLOW "Vivado Synthesis 2019"
+set SYNTH_FLOW "Vivado Synthesis $VIVADO_YEAR"
 set IMPL_STRATEGY "Vivado Implementation Defaults"
-set IMPL_FLOW "Vivado Implementation 2019"
+set IMPL_FLOW "Vivado Implementation $VIVADO_YEAR"
 
 ### Set Vivado Runs Properties ###
 #
@@ -51,6 +53,7 @@ set apollo_root_path $PATH_REPO
 set C2C_PATH $PATH_REPO/HAL/c2c/src/c2c
 set BD_PATH $PATH_REPO/HAL/c2c/src/bd
 
+cd $C2C_PATH
 source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
 
 exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"

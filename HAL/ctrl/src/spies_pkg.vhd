@@ -21,7 +21,7 @@ package spies_pkg is
   type tar_spy_ctrl_t is record
     bram     : tar_spy_bram_ctrl_t;
     freeze   : std_logic;
-    playback : std_logic_vector (2 downto 0);
+    playback : std_logic_vector (1 downto 0);
   end record;
 
   -- spybuffer readout
@@ -47,13 +47,14 @@ package spies_pkg is
   type mpl_spy_ctrl_t is record
     bram     : mpl_spy_bram_ctrl_t;
     freeze   : std_logic;
-    playback : std_logic_vector (2 downto 0);
+    playback : std_logic_vector (1 downto 0);
   end record;
 
   -- spybuffer readout
   type mpl_spy_mon_t is record
     dout : std_logic_vector (31 downto 0);
   end record;
+
   -------------------------
   -- Zipped up records
   -------------------------

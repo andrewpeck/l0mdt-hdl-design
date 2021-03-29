@@ -12,6 +12,7 @@ use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
 library ctrl_lib;
+use ctrl_lib.spies_pkg.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
@@ -157,17 +158,17 @@ architecture structural of top_l0mdt is
   signal hal_core_mon  : HAL_CORE_MON_t;
   signal hal_core_ctrl : HAL_CORE_CTRL_t;
 
-  -- AXI interfaces
+  signal fw_info_mon  : FW_INFO_MON_t;
 
-  signal fw_info_readmosi  : axireadmosi;
-  signal fw_info_readmiso  : axireadmiso;
-  signal fw_info_writemosi : axiwritemosi;
-  signal fw_info_writemiso : axiwritemiso;
-
-  --
+  -- sumps
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
+
+  -- spybuffers
+
+  signal user_spy_mon  : spy_mon_t;
+  signal user_spy_ctrl : spy_ctrl_t;
 
 begin
 
@@ -231,7 +232,8 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY       => false)
+      DUMMY => false
+      )
     port map (
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
@@ -246,10 +248,10 @@ begin
       i_outer_tar_hits  => i_outer_tar_hits,
       i_extra_tar_hits  => i_extra_tar_hits,
 
-      plus_neighbor_segments_i  => plus_neighbor_segments_i,
-      minus_neighbor_segments_i => minus_neighbor_segments_i,
-      plus_neighbor_segments_o  => plus_neighbor_segments_o,
-      minus_neighbor_segments_o => minus_neighbor_segments_o,
+      i_plus_neighbor_segments  => plus_neighbor_segments_i,
+      i_minus_neighbor_segments => minus_neighbor_segments_i,
+      o_plus_neighbor_segments  => plus_neighbor_segments_o,
+      o_minus_neighbor_segments => minus_neighbor_segments_o,
 
       -- SLC
       i_main_primary_slc   => main_primary_slc,
@@ -257,10 +259,10 @@ begin
       i_plus_neighbor_slc  => plus_neighbor_slc,
       i_minus_neighbor_slc => minus_neighbor_slc,
 
-      mtc_o => mtc,
-      nsp_o => nsp,
+      o_mtc => mtc,
+      o_nsp => nsp,
 
-      daq_streams_o => daq_streams,
+      o_daq_streams => daq_streams,
 
       -- Control and Monitoring
 
@@ -283,6 +285,9 @@ begin
       sump => user_sump
       );
 
+  user_spy_mon.mpl_spy.dout <= (others => '0');
+  user_spy_mon.tar_spy.dout <= (others => '0');
+
   top_control_inst : entity work.top_control
     port map (
 
@@ -304,27 +309,26 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl => h2s_ctrl,
-      h2s_mon  => h2s_mon,
-      tar_ctrl => tar_ctrl,
-      tar_mon  => tar_mon,
-      mtc_ctrl => mtc_ctrl,
-      mtc_mon  => mtc_mon,
-      ucm_ctrl => ucm_ctrl,
-      ucm_mon  => ucm_mon,
-      daq_ctrl => daq_ctrl,
-      daq_mon  => daq_mon,
-      tf_ctrl  => tf_ctrl,
-      tf_mon   => tf_mon,
-      mpl_ctrl => mpl_ctrl,
-      mpl_mon  => mpl_mon,
+      h2s_ctrl    => h2s_ctrl,
+      h2s_mon     => h2s_mon,
+      tar_ctrl    => tar_ctrl,
+      tar_mon     => tar_mon,
+      mtc_ctrl    => mtc_ctrl,
+      mtc_mon     => mtc_mon,
+      ucm_ctrl    => ucm_ctrl,
+      ucm_mon     => ucm_mon,
+      daq_ctrl    => daq_ctrl,
+      daq_mon     => daq_mon,
+      tf_ctrl     => tf_ctrl,
+      tf_mon      => tf_mon,
+      mpl_ctrl    => mpl_ctrl,
+      mpl_mon     => mpl_mon,
+      fw_info_mon => fw_info_mon,
 
-      -- axi slaves
+      -- spybuffers
 
-      fw_info_readmosi  => fw_info_readmosi,
-      fw_info_readmiso  => fw_info_readmiso,
-      fw_info_writemosi => fw_info_writemosi,
-      fw_info_writemiso => fw_info_writemiso,
+      user_spy_ctrl => user_spy_ctrl,
+      user_spy_mon  => user_spy_mon,
 
       -- axi common
       clk320                  => clk320,
@@ -341,76 +345,63 @@ begin
       sys_mgmt_vccint_alarm   => open
       );
 
-  fw_info_interface_inst : entity ctrl_lib.fw_info_interface
-    port map (
-      clk_axi         => axi_clk,
-      reset_axi_n     => '1',
-      slave_readmosi  => fw_info_readmosi,
-      slave_readmiso  => fw_info_readmiso,
-      slave_writemosi => fw_info_writemosi,
-      slave_writemiso => fw_info_writemiso,
-
-      mon.FW_INFO.GIT_VALID                    => '0',              -- FW_HASH_VALID,
-      mon.FW_INFO.GIT_HASH_1                   => (others => '0'),  -- FW_HASH_1,
-      mon.FW_INFO.GIT_HASH_2                   => (others => '0'),  -- FW_HASH_2,
-      mon.FW_INFO.GIT_HASH_3                   => (others => '0'),  -- FW_HASH_3,
-      mon.FW_INFO.GIT_HASH_4                   => (others => '0'),  -- FW_HASH_4,
-      mon.FW_INFO.GIT_HASH_5                   => (others => '0'),  -- FW_HASH_5,
-      mon.FW_INFO.BUILD_DATE.DAY               => (others => '0'),  -- TS_DAY,
-      mon.FW_INFO.BUILD_DATE.MONTH             => (others => '0'),  -- TS_MONTH,
-      mon.FW_INFO.BUILD_DATE.YEAR(7 downto 0)  => (others => '0'),  -- TS_YEAR,
-      mon.FW_INFO.BUILD_DATE.YEAR(15 downto 8) => (others => '0'),  -- TS_CENT,
-      mon.FW_INFO.BUILD_TIME.sec               => (others => '0'),  -- TS_SEC,
-      mon.FW_INFO.BUILD_TIME.min               => (others => '0'),  -- TS_MIN,
-      mon.FW_INFO.BUILD_TIME.HOUR              => (others => '0'),  -- TS_HOUR
-
-      mon.HOG_INFO.GLOBAL_FWDATE       => GLOBAL_FWDATE,
-      mon.HOG_INFO.GLOBAL_FWTIME       => GLOBAL_FWTIME,
-      mon.HOG_INFO.OFFICIAL            => OFFICIAL,
-      mon.HOG_INFO.GLOBAL_FWHASH       => GLOBAL_FWHASH,
-      mon.HOG_INFO.TOP_FWHASH          => TOP_FWHASH,
-      mon.HOG_INFO.XML_HASH            => XML_HASH,
-      mon.HOG_INFO.GLOBAL_FWVERSION    => GLOBAL_FWVERSION,
-      mon.HOG_INFO.TOP_FWVERSION       => TOP_FWVERSION,
-      mon.HOG_INFO.XML_VERSION         => XML_VERSION,
-      mon.HOG_INFO.HOG_FWHASH          => HOG_FWHASH,
-      mon.HOG_INFO.FRAMEWORK_FWVERSION => FRAMEWORK_FWVERSION,
-      mon.HOG_INFO.FRAMEWORK_FWHASH    => FRAMEWORK_FWHASH,
-
-      mon.CONFIG.MAIN_CFG_COMPILE_HW => MAIN_CFG_COMPILE_HW,
-      mon.CONFIG.MAIN_CFG_COMPILE_UL => MAIN_CFG_COMPILE_UL,
-      mon.CONFIG.SECTOR_SIDE         => c_SECTOR_SIDE,
-      mon.CONFIG.ST_nBARREL_ENDCAP   => c_ST_nBARREL_ENDCAP,
-      mon.CONFIG.ENABLE_NEIGHBORS    => c_ENABLE_NEIGHBORS,
-      mon.CONFIG.SECTOR_ID           => std_logic_vector(to_unsigned(c_SECTOR_ID, 32)),
-      mon.CONFIG.ENDCAP_nSMALL_LARGE => c_ENDCAP_nSMALL_LARGE,
-      mon.CONFIG.PHY_BARREL_R0       => std_logic_vector(resize(PHY_BARREL_R0, 32)),
-      mon.CONFIG.PHY_BARREL_R1       => std_logic_vector(resize(PHY_BARREL_R1, 32)),
-      mon.CONFIG.PHY_BARREL_R2       => std_logic_vector(resize(PHY_BARREL_R2, 32)),
-      mon.CONFIG.PHY_BARREL_R3       => std_logic_vector(resize(PHY_BARREL_R3, 32)),
-      mon.CONFIG.HPS_ENABLE_ST_INN   => c_HPS_ENABLE_ST_INN,
-      mon.CONFIG.HPS_ENABLE_ST_EXT   => c_HPS_ENABLE_ST_EXT,
-      mon.CONFIG.HPS_ENABLE_ST_MID   => c_HPS_ENABLE_ST_MID,
-      mon.CONFIG.HPS_ENABLE_ST_OUT   => c_HPS_ENABLE_ST_OUT,
-      mon.CONFIG.HPS_NUM_MDT_CH_INN  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_EXT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_MID  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8)),
-      mon.CONFIG.HPS_NUM_MDT_CH_OUT  => std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8)),
-      mon.CONFIG.NUM_MTC             => std_logic_vector(to_unsigned(c_NUM_MTC, 8)),
-      mon.CONFIG.NUM_NSP             => std_logic_vector(to_unsigned(c_NUM_NSP, 8)),
-      mon.CONFIG.UCM_ENABLED         => c_UCM_ENABLED,
-      mon.CONFIG.MPL_ENABLED         => c_MPL_ENABLED,
-      mon.CONFIG.SF_ENABLED          => c_SF_ENABLED,
-      mon.CONFIG.SF_TYPE             => c_SF_TYPE,
-      mon.CONFIG.NUM_DAQ_STREAMS     => std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8)),
-      mon.CONFIG.MAX_NUM_HP          => std_logic_vector(to_unsigned(MAX_NUM_HP, 8)),
-      mon.CONFIG.MAX_NUM_HPS         => std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8)),
-      mon.CONFIG.NUM_SF_INPUTS       => std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8)),
-      mon.CONFIG.NUM_SF_OUTPUTS      => std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8)),
-      mon.CONFIG.MAX_NUM_SL          => std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8)),
-      mon.CONFIG.NUM_THREADS         => std_logic_vector(to_unsigned(c_NUM_THREADS, 8))
-
-      );
+  fw_info_mon.FW_INFO.GIT_VALID                    <= '0';              -- FW_HASH_VALID;
+  fw_info_mon.FW_INFO.GIT_HASH_1                   <= (others => '0');  -- FW_HASH_1;
+  fw_info_mon.FW_INFO.GIT_HASH_2                   <= (others => '0');  -- FW_HASH_2;
+  fw_info_mon.FW_INFO.GIT_HASH_3                   <= (others => '0');  -- FW_HASH_3;
+  fw_info_mon.FW_INFO.GIT_HASH_4                   <= (others => '0');  -- FW_HASH_4;
+  fw_info_mon.FW_INFO.GIT_HASH_5                   <= (others => '0');  -- FW_HASH_5;
+  fw_info_mon.FW_INFO.BUILD_DATE.DAY               <= (others => '0');  -- TS_DAY;
+  fw_info_mon.FW_INFO.BUILD_DATE.MONTH             <= (others => '0');  -- TS_MONTH;
+  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(7 downto 0)  <= (others => '0');  -- TS_YEAR;
+  fw_info_mon.FW_INFO.BUILD_DATE.YEAR(15 downto 8) <= (others => '0');  -- TS_CENT;
+  fw_info_mon.FW_INFO.BUILD_TIME.sec               <= (others => '0');  -- TS_SEC;
+  fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
+  fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE               <= GLOBAL_FWDATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWTIME               <= GLOBAL_FWTIME;
+  fw_info_mon.HOG_INFO.OFFICIAL                    <= OFFICIAL;
+  fw_info_mon.HOG_INFO.GLOBAL_FWHASH               <= GLOBAL_FWHASH;
+  fw_info_mon.HOG_INFO.TOP_FWHASH                  <= TOP_FWHASH;
+  fw_info_mon.HOG_INFO.XML_HASH                    <= XML_HASH;
+  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION            <= GLOBAL_FWVERSION;
+  fw_info_mon.HOG_INFO.TOP_FWVERSION               <= TOP_FWVERSION;
+  fw_info_mon.HOG_INFO.XML_VERSION                 <= XML_VERSION;
+  fw_info_mon.HOG_INFO.HOG_FWHASH                  <= HOG_FWHASH;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION         <= FRAMEWORK_FWVERSION;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH            <= FRAMEWORK_FWHASH;
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW           <= MAIN_CFG_COMPILE_HW;
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL           <= MAIN_CFG_COMPILE_UL;
+  --fw_info_mon.CONFIG.SECTOR_SIDE         <= c_SECTOR_SIDE;
+  fw_info_mon.CONFIG.ST_nBARREL_ENDCAP             <= c_ST_nBARREL_ENDCAP;
+  fw_info_mon.CONFIG.ENABLE_NEIGHBORS              <= c_ENABLE_NEIGHBORS;
+  fw_info_mon.CONFIG.SECTOR_ID                     <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
+  fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE           <= c_ENDCAP_nSMALL_LARGE;
+  fw_info_mon.CONFIG.PHY_BARREL_R0                 <= std_logic_vector(resize(PHY_BARREL_R0, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R1                 <= std_logic_vector(resize(PHY_BARREL_R1, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R2                 <= std_logic_vector(resize(PHY_BARREL_R2, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R3                 <= std_logic_vector(resize(PHY_BARREL_R3, 32));
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_INN             <= c_HPS_ENABLE_ST_INN;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT             <= c_HPS_ENABLE_ST_EXT;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_MID             <= c_HPS_ENABLE_ST_MID;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT             <= c_HPS_ENABLE_ST_OUT;
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
+  fw_info_mon.CONFIG.NUM_MTC                       <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
+  fw_info_mon.CONFIG.NUM_NSP                       <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
+  fw_info_mon.CONFIG.UCM_ENABLED                   <= c_UCM_ENABLED;
+  fw_info_mon.CONFIG.MPL_ENABLED                   <= c_MPL_ENABLED;
+  fw_info_mon.CONFIG.SF_ENABLED                    <= c_SF_ENABLED;
+  fw_info_mon.CONFIG.SF_TYPE                       <= c_SF_TYPE;
+  fw_info_mon.CONFIG.NUM_DAQ_STREAMS               <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
+  --fw_info_mon.CONFIG.MAX_NUM_HP          <= std_logic_vector(to_unsigned(MAX_NUM_HP, 8));
+  --fw_info_mon.CONFIG.MAX_NUM_HPS         <= std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8));
+  fw_info_mon.CONFIG.NUM_SF_INPUTS                 <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
+  fw_info_mon.CONFIG.NUM_SF_OUTPUTS                <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
+  fw_info_mon.CONFIG.MAX_NUM_SL                    <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
+  fw_info_mon.CONFIG.NUM_THREADS                   <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
 
   sump <= hal_sump xor user_sump;
 

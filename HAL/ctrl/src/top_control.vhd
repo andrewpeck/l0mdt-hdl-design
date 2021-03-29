@@ -40,11 +40,6 @@ entity top_control is
     c2c_refclkp : in  std_logic;
     c2c_refclkn : in  std_logic;
 
-    fw_info_readmosi  : out axireadmosi;
-    fw_info_readmiso  : in  axireadmiso;
-    fw_info_writemosi : out axiwritemosi;
-    fw_info_writemiso : in  axiwritemiso;
-
     -- control
 
     h2s_ctrl : out H2S_CTRL_t;
@@ -74,6 +69,8 @@ entity top_control is
     hal_core_mon  : in  HAL_CORE_MON_t;
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
+    fw_info_mon : in FW_INFO_MON_t;
+
     -- spybuffers
     user_spy_mon  : in  spy_mon_t;
     user_spy_ctrl : out spy_ctrl_t;
@@ -81,10 +78,10 @@ entity top_control is
     -- system management
     --sys_mgmt_scl            : inout std_logic;
     --sys_mgmt_sda            : inout std_logic;
-    sys_mgmt_alarm          : out   std_logic;
-    sys_mgmt_overtemp_alarm : out   std_logic;
-    sys_mgmt_vccaux_alarm   : out   std_logic;
-    sys_mgmt_vccint_alarm   : out   std_logic
+    sys_mgmt_alarm          : out std_logic;
+    sys_mgmt_overtemp_alarm : out std_logic;
+    sys_mgmt_vccaux_alarm   : out std_logic;
+    sys_mgmt_vccint_alarm   : out std_logic
 
     );
 end top_control;
@@ -95,6 +92,11 @@ architecture control_arch of top_control is
   constant std_logic0 : std_logic := '0';
 
   signal axi_reset_n : std_logic := '0';
+
+  signal fw_info_readmosi  : axireadmosi;
+  signal fw_info_readmiso  : axireadmiso;
+  signal fw_info_writemosi : axiwritemosi;
+  signal fw_info_writemiso : axiwritemiso;
 
   signal hal_core_readmosi  : axireadmosi;
   signal hal_core_readmiso  : axireadmiso;
@@ -408,7 +410,16 @@ begin
       tar_spy_port_rst  => axi_spy_ctrl.tar_spy.bram.rst,   -- out
       tar_spy_port_clk  => axi_spy_ctrl.tar_spy.bram.clk,   -- out
       tar_spy_port_addr => axi_spy_ctrl.tar_spy.bram.addr,  -- out
-      tar_spy_port_dout => axi_spy_mon.tar_spy.dout    -- in
+      tar_spy_port_dout => axi_spy_mon.tar_spy.dout,        -- in
+
+      -- spy buffers
+      mpl_spy_port_we   => axi_spy_ctrl.mpl_spy.bram.we,    -- out
+      mpl_spy_port_din  => axi_spy_ctrl.mpl_spy.bram.din,   -- out
+      mpl_spy_port_en   => axi_spy_ctrl.mpl_spy.bram.en,    -- out
+      mpl_spy_port_rst  => axi_spy_ctrl.mpl_spy.bram.rst,   -- out
+      mpl_spy_port_clk  => axi_spy_ctrl.mpl_spy.bram.clk,   -- out
+      mpl_spy_port_addr => axi_spy_ctrl.mpl_spy.bram.addr,  -- out
+      mpl_spy_port_dout => axi_spy_mon.mpl_spy.dout         -- in
 
       );
 
@@ -565,5 +576,19 @@ begin
       -- control signals out
       ctrl => mpl_ctrl
       );
+
+  fw_info_interface_inst : entity ctrl_lib.fw_info_interface
+    port map (
+      clk_axi         => axi_clk,
+      reset_axi_n     => '1',
+      slave_readmosi  => fw_info_readmosi,
+      slave_readmiso  => fw_info_readmiso,
+      slave_writemosi => fw_info_writemosi,
+      slave_writemiso => fw_info_writemiso,
+
+      mon => fw_info_mon
+
+      );
+
 
 end control_arch;
