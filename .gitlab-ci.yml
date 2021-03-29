@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: '285978433b0d54313068e429696a6063172f8a77'
+      ref: 'v4.1.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
