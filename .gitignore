@@ -1,9 +1,9 @@
 vivado*
 *.jou
 *.o
-*~ 
-*.pyc 
-.cxl.ip/ 
+*~
+*.pyc
+.cxl.ip/
 cxl_error.log
 *.log
 Vivado*
@@ -20,7 +20,7 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-#**/IP/**/*
+**/IP/**/*
 !IP/**/*.xci
 !IP/**.xci
 *.dbg
