@@ -56,4 +56,4 @@ set BD_PATH $PATH_REPO/HAL/c2c/src/bd
 cd $C2C_PATH
 source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
 
-exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"
+#exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"
