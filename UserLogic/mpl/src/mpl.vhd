@@ -109,23 +109,6 @@ begin
   MPL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
 
     i_uCM2pl_ar(sl_i) <= structify(i_uCM2pl_av(sl_i));
-
-  --   PL : entity shared_lib.std_pipeline
-  --   generic map(
-  --     g_MEMORY_TYPE     => "ultra",
-  --     g_PIPELINE_TYPE   => "mpcvmem",
-  --     g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
-  --     g_PIPELINE_WIDTH  => i_uCM2pl_av(sl_i)'length
-  --   )
-  --   port map(
-  --     clk         => clk,
-  --     rst         => local_rst,
-  --     glob_en     => local_en,
-  --     --
-  --     i_data      => i_uCM2pl_av(sl_i),
-  --     i_dv        => i_uCM2pl_ar(sl_i).data_valid,
-  --     o_data      => main_pl_out_av(sl_i)
-  --   );
     
   end generate;
 
@@ -174,15 +157,15 @@ begin
     pl2ptcalc_ar(c_i).nswseg_angdtheta  <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).nswseg_angdtheta;
   end generate;
 
-  -- PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   pl2mtc_ar(sl_i).common <= main_pl_out_ar(sl_i).common;
-  --   pl2mtc_ar(sl_i).process_ch <= main_pl_out_ar(sl_i).process_ch;
-  --   pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
-  --   pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
-  -- end generate;
+  PL_2_MTC : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    pl2mtc_ar(sl_i).common <= main_pl_out_ar(sl_i).common;
+    pl2mtc_ar(sl_i).process_ch <= main_pl_out_ar(sl_i).process_ch;
+    pl2mtc_ar(sl_i).busy <= main_pl_out_ar(sl_i).busy;
+    pl2mtc_ar(sl_i).data_valid <= main_pl_out_ar(sl_i).data_valid;
+  end generate;
 
   pl2ptcalc_av <= vectorify(pl2ptcalc_ar);
-  -- pl2mtc_av <= vectorify(pl2mtc_ar);
+  pl2mtc_av <= vectorify(pl2mtc_ar);
   main_pl_out_ar <= structify(main_pl_out_av);
 
 end architecture beh;

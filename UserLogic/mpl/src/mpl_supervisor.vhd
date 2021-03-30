@@ -73,7 +73,7 @@ architecture beh of mpl_supervisor is
   signal mem_flush_on_Reset : std_logic := '1';
   signal rst_counter        : integer;
   signal rst_trig           : std_logic;
-  constant RST_Latency      : integer := integer(ceil(log2(real(c_MPL_PL_A_LATENCY))));
+  -- constant RST_Latency      : integer := integer(ceil(log2(real(c_MPL_PL_A_LATENCY))));
   signal rst_done           : std_logic;
   signal rst_states         : std_logic_vector(3 downto 0);
 begin

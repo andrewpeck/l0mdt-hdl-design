@@ -25,6 +25,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.detector_param_pkg.all;
 
 library vamc_lib;
 
@@ -75,7 +76,7 @@ begin
     generic map(
       g_MEMORY_TYPE     => "ultra",
       g_PIPELINE_TYPE   => "mpcvmem",
-      g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
+      g_DELAY_CYCLES    => UCM_LATENCY_HPS_CH,
       g_PIPELINE_WIDTH  => i_uCM2pl_v'length,
       -- BU bus
       g_APBUS_ENABLED    => 1,
