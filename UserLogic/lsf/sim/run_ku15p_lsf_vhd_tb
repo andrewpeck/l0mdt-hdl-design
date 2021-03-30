@@ -1,0 +1,3 @@
+vsim -c -t ps -do ./ku15p_lsf_sb_vhd_tb.do
+#vcd2wlf legendre.vcd legendre.wlf
+#vsim -view legendre_top.wlf

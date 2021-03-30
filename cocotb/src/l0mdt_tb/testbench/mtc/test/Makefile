@@ -31,7 +31,7 @@ SIM ?= questa
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../
 SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
-MTCDIR = $(SRCDIR)/mtc/src
+MTCDIR = $(SRCDIR)/UserLogic/mtc/src
 DFDIR  = $(SRCDIR)/dataformats
 
 RTL_LIBRARY = shared_lib

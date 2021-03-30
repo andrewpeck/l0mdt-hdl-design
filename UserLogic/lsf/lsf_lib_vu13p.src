@@ -1,0 +1,25 @@
+# dataformats/l0mdt_buses_constants.svh
+UserLogic/lsf/IP/histogram_memory_128x4/histogram_memory_128x4.xci
+UserLogic/lsf/IP/vu13p/hls_compute_r_bins/hls_compute_r_bins.xci
+UserLogic/lsf/IP/vu13p/hls_get_legendre_segment_barrel/hls_get_legendre_segment_barrel.xci
+UserLogic/lsf/IP/vu13p/hls_get_rom_addr/hls_get_rom_addr.xci
+UserLogic/lsf/IP/vu13p/hls_get_trig_vals/hls_get_trig_vals.xci
+UserLogic/lsf/IP/vu13p/hls_find_max_bin/hls_find_max_bin.xci
+UserLogic/lsf/IP/vu13p/hls_calc_LE_r_offset_barrel/hls_calc_LE_r_offset_barrel.xci
+UserLogic/lsf/IP/vu13p/hls_load_LE_refPos/hls_load_LE_refPos.xci
+UserLogic/lsf/src/update_histogram_dmem.sv
+UserLogic/lsf/src/update_histogram_reg.sv
+UserLogic/lsf/src/legendreEngine.sv
+tools/SpyBuffer/src/aFifo/aFifo.v
+tools/SpyBuffer/src/aFifo/fifomem.v
+tools/SpyBuffer/src/aFifo/rptr_empty.v
+tools/SpyBuffer/src/aFifo/sync_r2w.v
+tools/SpyBuffer/src/aFifo/sync_w2r.v
+tools/SpyBuffer/src/aFifo/wptr_full.v
+tools/SpyBuffer/src/SpyProtocol.vh
+tools/SpyBuffer/src/SpyController.v
+tools/SpyBuffer/src/SpyMemory.v
+tools/SpyBuffer/src/SpyPlayback.v
+tools/SpyBuffer/src/SpyBuffer.v
+UserLogic/lsf/src/lsf_spybuffer_wrapper.sv
+UserLogic/lsf/top_lsf.vhd

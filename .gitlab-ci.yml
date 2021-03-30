@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v3.10.0'
+      ref: 'v4.3.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -48,3 +48,4 @@ include:
     #---------------------------------------------
     # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
     # writer
+

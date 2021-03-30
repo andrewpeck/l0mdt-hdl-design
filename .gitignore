@@ -1,9 +1,9 @@
 vivado*
 *.jou
 *.o
-*~ 
-*.pyc 
-.cxl.ip/ 
+*~
+*.pyc
+.cxl.ip/
 cxl_error.log
 *.log
 Vivado*
@@ -20,11 +20,10 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-HAL/IP/*/*
+**/IP/**/*
+!IP/**/*.xci
+!IP/**.xci
 !HAL/IP/*/*.xci
-IP/*/*/*
-!IP/*/*/*.xci
-!IP/*/*.xci
 *.dbg
 *.zip
 work/
