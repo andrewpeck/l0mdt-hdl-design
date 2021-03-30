@@ -3,6 +3,30 @@
 # https://forums.xilinx.com/t5/Synthesis/Vivado-Implementation-Duplicates-Clocks-and-Creates-Unsafe/td-p/856321
 set_case_analysis 0  [get_pins top_hal/top_clocking_inst/*/*/CLKINSEL ]
 
+#################################################################################
+# GT to AXI Clock Exceptions
+#################################################################################
+
+set_max_delay -datapath_only \
+    -from [get_clocks GTYE4_CHANNEL_TXOUTCLKPCS*] \
+    -to [get_clocks clock_100] 2.5
+
+set_max_delay -datapath_only \
+    -from [get_clocks GTYE4_CHANNEL_TXOUTCLKPCS*] \
+    -to [get_clocks axi_clk] 2.5
+
+set_max_delay -datapath_only \
+    -from [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
+    -to [get_clocks clock_100] 2.5
+
+set_max_delay -datapath_only \
+    -from [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
+    -to [get_clocks axi_clk] 2.5
+
+#################################################################################
+#
+#################################################################################
+
 set_max_delay -datapath_only \
     -from [get_clocks *] \
     -to [get_pins -hierarchical -filter {NAME =~ *s_resync_reg*/D}] 2.5
@@ -46,3 +70,6 @@ set_false_path \
 
 set_false_path \
     -from [get_pins {top_hal/mgt_wrapper_inst/*reset_bufbypass*/C}]
+
+set_false_path \
+    -from [get_pins {top_control_inst/hal_core_ctrl_reg[CLOCKING][SELECT_FELIX_CLK]*/C}]
