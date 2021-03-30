@@ -318,7 +318,6 @@ begin
   end generate;
 
 
-
   PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     

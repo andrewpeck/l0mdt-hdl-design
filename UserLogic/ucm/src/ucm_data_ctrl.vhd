@@ -122,6 +122,7 @@ begin
 
 end beh;
 
+
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Main control aka algorithm
@@ -348,6 +349,7 @@ architecture beh of ucm_ctrl_pam is
   signal ch_count     : ch_count_avt(c_NUM_THREADS -1 downto 0);
 
   signal processing   : integer;
+  signal processed_s : integer;
 
   signal buff_pam_ctrl : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
 
@@ -385,15 +387,17 @@ begin
 
         for ch_i in c_NUM_THREADS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
-            proc_info(c_NUM_THREADS -1 - busy).ch <= (others => '0');
-            proc_info(c_NUM_THREADS -1 - busy).processed <= '0';
+            -- proc_info(c_NUM_THREADS -1 - busy).ch <= (others => '0');
+            -- proc_info(c_NUM_THREADS -1 - busy).processed <= '1';
             -- o_cvp_ctrl(ch_i) <= '0';
+            -- processed := processed + 1;
+            busy := busy + 1;
           
             if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
               ch_count(ch_i) <= ch_count(ch_i) + '1';
               buff_pam_ctrl(ch_i).data_present <= '0';
               buff_pam_ctrl(ch_i).addr_orig <= (others => '0');
-              busy := busy + 1;
+              -- busy := busy + 1;
 
               if ch_count(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
                 o_cvp_rst(ch_i) <= '0';
@@ -407,18 +411,18 @@ begin
                 o_cvp_ctrl(ch_i) <= '0';
               end if;
 
-
-
             else
 
-             
-              
               ch_busy(ch_i) <= '0';
               ch_count(ch_i) <= (others => '0');
               -- processed := processed - 1;
             end if;
             
           else
+
+            -- for uc_i in c_NUM_THREADS loop
+              
+            -- end loop;
             
             if i_pam_update = '1' then
               
@@ -433,12 +437,13 @@ begin
               else
               end if;
             else
-              proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
-              proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
+              -- proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
+              -- proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
             end if;
           end if;
         end loop;
         processing <= processed + busy;
+        processed_s <= processed ;
       end if;
     end if;
   end process;
