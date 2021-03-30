@@ -24,7 +24,7 @@ shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 #---------------------------------
 # Boston University axi Bus Blocks
 #---------------------------------
-shared/bubus/bubus_lib.src lib=bubus_lib
+shared/APBus/apbus_lib.src lib=apbus_lib
 #---------------------------------
 # Advanced Memory Controller
 #---------------------------------
