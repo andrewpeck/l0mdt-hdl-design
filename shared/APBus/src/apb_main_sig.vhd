@@ -4,7 +4,7 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: BUBus signal main signals generator 
+--  Module: apbus signal main signals generator 
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -14,8 +14,21 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+-- use ieee.numeric_std_unsigned.all;
+-- use ieee.std_logic_misc.all;
+-- use ieee.math_real.all;
 
-entity bubus_mem_int is
+library shared_lib;
+-- use shared_lib.common_ieee_pkg.all;
+-- use shared_lib.l0mdt_constants_pkg.all;
+-- use shared_lib.l0mdt_dataformats_pkg.all;
+-- use shared_lib.common_constants_pkg.all;
+-- use shared_lib.common_types_pkg.all;
+-- use shared_lib.config_pkg.all;
+
+use shared_lib.detector_param_pkg.all;
+
+entity apbus_main_sig is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
@@ -24,9 +37,9 @@ entity bubus_mem_int is
     o_axi_clk             : out std_logic;
     o_axi_rst             : out std_logic
   );
-end entity bubus_mem_int;
+end entity apbus_main_sig;
 
-architecture beh of bubus_mem_int is
+architecture beh of apbus_main_sig is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
