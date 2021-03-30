@@ -41,4 +41,5 @@ HAL/ctrl/src/TF/TF_PKG.vhd
 HAL/ctrl/src/TF/TF_map.vhd
 
 HAL/ctrl/src/MPL/MPL_PKG.vhd
+HAL/ctrl/src/MPL/MPL_PKG_DEF.vhd
 HAL/ctrl/src/MPL/MPL_map.vhd

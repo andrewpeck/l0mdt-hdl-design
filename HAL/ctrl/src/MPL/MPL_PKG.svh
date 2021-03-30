@@ -4,6 +4,8 @@
 `ifndef MPL_PKG_SVH
 `define MPL_PKG_SVH
 
+`include <common_ieee.svh>
+
 
   typedef struct packed {
     logic  RESET;
@@ -26,29 +28,37 @@
   } MPL_STATUS_MON_t;
 
   typedef struct packed {
-    logic  rd_rdy;
+    logic [32-1:0] wr_data_0;
+    logic [32-1:0] wr_data_1;
+    logic [32-1:0] wr_data_2;
+    logic [32-1:0] wr_data_3;
+    logic [20-1:0] wr_data_4;
+  } MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+
+  typedef struct packed {
     logic [32-1:0] rd_data_0;
     logic [32-1:0] rd_data_1;
     logic [32-1:0] rd_data_2;
     logic [32-1:0] rd_data_3;
     logic [20-1:0] rd_data_4;
+  } MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+
+  typedef struct packed {
+    logic  rd_rdy;
+    MPL_PL_MEM_PL_MEM_rd_data_MON_t   rd_data;
   } MPL_PL_MEM_PL_MEM_MON_t;
 
-  typedef MPL_PL_MEM_PL_MEM_MON_t  [4-1:0] MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
+  typedef MPL_PL_MEM_PL_MEM_MON_t  [5-1:0] MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
 
   typedef struct packed {
     logic  wr_req;
     logic  rd_ack;
     logic [10-1:0] wr_addr;
     logic [10-1:0] rd_addr;
-    logic [32-1:0] wr_data_0;
-    logic [32-1:0] wr_data_1;
-    logic [32-1:0] wr_data_2;
-    logic [32-1:0] wr_data_3;
-    logic [20-1:0] wr_data_4;
+    MPL_PL_MEM_PL_MEM_wr_data_CTRL_t   wr_data;
   } MPL_PL_MEM_PL_MEM_CTRL_t;
 
-  typedef MPL_PL_MEM_PL_MEM_CTRL_t  [4-1:0] MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
+  typedef MPL_PL_MEM_PL_MEM_CTRL_t  [5-1:0] MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
 
   typedef struct packed {
     MPL_PL_MEM_PL_MEM_MON_t_ARRAY   PL_MEM;

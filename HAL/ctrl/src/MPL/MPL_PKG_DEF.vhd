@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-03-26 17:06:37.489444.
+-- Created : 2021-03-30 12:17:24.943209.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -21,16 +21,19 @@ package MPL_CTRL_DEF is
                                                                OUTPUT_EN => '1',
                                                                FLUSH_MEM_RESET => '1'
                                                               );
+  constant DEFAULT_MPL_PL_MEM_PL_MEM_wr_data_CTRL_t : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t := (
+                                                                                           wr_data_2 => (others => '0'),
+                                                                                           wr_data_3 => (others => '0'),
+                                                                                           wr_data_0 => (others => '0'),
+                                                                                           wr_data_1 => (others => '0'),
+                                                                                           wr_data_4 => (others => '0')
+                                                                                          );
   constant DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t : MPL_PL_MEM_PL_MEM_CTRL_t := (
-                                                                           wr_req => '0',
                                                                            wr_addr => (others => '0'),
-                                                                           wr_data_3 => (others => '0'),
                                                                            rd_ack => '0',
-                                                                           wr_data_1 => (others => '0'),
-                                                                           wr_data_4 => (others => '0'),
-                                                                           wr_data_2 => (others => '0'),
                                                                            rd_addr => (others => '0'),
-                                                                           wr_data_0 => (others => '0')
+                                                                           wr_req => '0',
+                                                                           wr_data => DEFAULT_MPL_PL_MEM_PL_MEM_wr_data_CTRL_t
                                                                           );
   constant DEFAULT_MPL_PL_MEM_CTRL_t : MPL_PL_MEM_CTRL_t := (
                                                              PL_MEM => (others => DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t )

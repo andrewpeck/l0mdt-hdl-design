@@ -7,7 +7,11 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-package MPL_PKG is
+library shared_lib;
+
+use shared_lib.common_ieee.all;
+
+package MPL_CTRL is
 
   type MPL_ACTIONS_CTRL_t is record
     RESET : std_logic;
@@ -41,20 +45,40 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
   function nullify(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
 
-  type MPL_PL_MEM_PL_MEM_MON_t is record
-    rd_rdy : std_logic;
+  type MPL_PL_MEM_PL_MEM_wr_data_CTRL_t is record
+    wr_data_0 : std_logic_vector(32-1 downto 0);
+    wr_data_1 : std_logic_vector(32-1 downto 0);
+    wr_data_2 : std_logic_vector(32-1 downto 0);
+    wr_data_3 : std_logic_vector(32-1 downto 0);
+    wr_data_4 : std_logic_vector(20-1 downto 0);
+  end record MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+  function len(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural;
+  function vectorify(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+  function nullify(t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+
+  type MPL_PL_MEM_PL_MEM_rd_data_MON_t is record
     rd_data_0 : std_logic_vector(32-1 downto 0);
     rd_data_1 : std_logic_vector(32-1 downto 0);
     rd_data_2 : std_logic_vector(32-1 downto 0);
     rd_data_3 : std_logic_vector(32-1 downto 0);
     rd_data_4 : std_logic_vector(20-1 downto 0);
+  end record MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+  function len(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural;
+  function vectorify(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+  function nullify(t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+
+  type MPL_PL_MEM_PL_MEM_MON_t is record
+    rd_rdy : std_logic;
+    rd_data : MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   end record MPL_PL_MEM_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_MON_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
 
-  type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(4-1 downto 0) of MPL_PL_MEM_PL_MEM_MON_t;
+  type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
@@ -65,18 +89,14 @@ package MPL_PKG is
     rd_ack : std_logic;
     wr_addr : std_logic_vector(10-1 downto 0);
     rd_addr : std_logic_vector(10-1 downto 0);
-    wr_data_0 : std_logic_vector(32-1 downto 0);
-    wr_data_1 : std_logic_vector(32-1 downto 0);
-    wr_data_2 : std_logic_vector(32-1 downto 0);
-    wr_data_3 : std_logic_vector(32-1 downto 0);
-    wr_data_4 : std_logic_vector(20-1 downto 0);
+    wr_data : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   end record MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
 
-  type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(4-1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
+  type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
@@ -117,11 +137,11 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t;
 
-end package MPL_PKG;
+end package MPL_CTRL;
 
 ------------------------------------------------------------
 
-package body MPL_PKG is
+package body MPL_CTRL is
 
   function len(x: MPL_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -308,10 +328,84 @@ package body MPL_PKG is
     return y;
   end function nullify;
 
-  function len(x: MPL_PL_MEM_PL_MEM_MON_t) return natural is
+  function len(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.rd_rdy);
+    l := l + len(x.wr_data_0);
+    l := l + len(x.wr_data_1);
+    l := l + len(x.wr_data_2);
+    l := l + len(x.wr_data_3);
+    l := l + len(x.wr_data_4);
+    return l;
+  end function len;
+  function vectorify(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+      left := left + len(x.wr_data_0);
+      y(left to left+len(x.wr_data_1)-1) := vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1));
+      left := left + len(x.wr_data_1);
+      y(left to left+len(x.wr_data_2)-1) := vectorify(x.wr_data_2, y(left to left+len(x.wr_data_2)-1));
+      left := left + len(x.wr_data_2);
+      y(left to left+len(x.wr_data_3)-1) := vectorify(x.wr_data_3, y(left to left+len(x.wr_data_3)-1));
+      left := left + len(x.wr_data_3);
+      y(left to left+len(x.wr_data_4)-1) := vectorify(x.wr_data_4, y(left to left+len(x.wr_data_4)-1));
+    else
+      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+      left := left - len(x.wr_data_0);
+      y(left downto left-len(x.wr_data_1)+1) := vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1));
+      left := left - len(x.wr_data_1);
+      y(left downto left-len(x.wr_data_2)+1) := vectorify(x.wr_data_2, y(left downto left-len(x.wr_data_2)+1));
+      left := left - len(x.wr_data_2);
+      y(left downto left-len(x.wr_data_3)+1) := vectorify(x.wr_data_3, y(left downto left-len(x.wr_data_3)+1));
+      left := left - len(x.wr_data_3);
+      y(left downto left-len(x.wr_data_4)+1) := vectorify(x.wr_data_4, y(left downto left-len(x.wr_data_4)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t is
+    variable y: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
+      left := left + len(y.wr_data_0);
+      y.wr_data_1 := structify(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
+      left := left + len(y.wr_data_1);
+      y.wr_data_2 := structify(x(left to left+len(y.wr_data_2)-1), y.wr_data_2);
+      left := left + len(y.wr_data_2);
+      y.wr_data_3 := structify(x(left to left+len(y.wr_data_3)-1), y.wr_data_3);
+      left := left + len(y.wr_data_3);
+      y.wr_data_4 := structify(x(left to left+len(y.wr_data_4)-1), y.wr_data_4);
+    else
+      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
+      left := left - len(y.wr_data_0);
+      y.wr_data_1 := structify(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
+      left := left - len(y.wr_data_1);
+      y.wr_data_2 := structify(x(left downto left-len(y.wr_data_2)+1), y.wr_data_2);
+      left := left - len(y.wr_data_2);
+      y.wr_data_3 := structify(x(left downto left-len(y.wr_data_3)+1), y.wr_data_3);
+      left := left - len(y.wr_data_3);
+      y.wr_data_4 := structify(x(left downto left-len(y.wr_data_4)+1), y.wr_data_4);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t is
+  variable y: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+  begin
+    y.wr_data_0 := nullify(t.wr_data_0);
+    y.wr_data_1 := nullify(t.wr_data_1);
+    y.wr_data_2 := nullify(t.wr_data_2);
+    y.wr_data_3 := nullify(t.wr_data_3);
+    y.wr_data_4 := nullify(t.wr_data_4);
+    return y;
+  end function nullify;
+
+  function len(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural is
+    variable l : natural := 0;
+  begin
     l := l + len(x.rd_data_0);
     l := l + len(x.rd_data_1);
     l := l + len(x.rd_data_2);
@@ -319,13 +413,11 @@ package body MPL_PKG is
     l := l + len(x.rd_data_4);
     return l;
   end function len;
-  function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
-      left := left + len(x.rd_rdy);
       y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
       left := left + len(x.rd_data_0);
       y(left to left+len(x.rd_data_1)-1) := vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1));
@@ -336,8 +428,6 @@ package body MPL_PKG is
       left := left + len(x.rd_data_3);
       y(left to left+len(x.rd_data_4)-1) := vectorify(x.rd_data_4, y(left to left+len(x.rd_data_4)-1));
     else
-      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
-      left := left - len(x.rd_rdy);
       y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
       left := left - len(x.rd_data_0);
       y(left downto left-len(x.rd_data_1)+1) := vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1));
@@ -350,13 +440,11 @@ package body MPL_PKG is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t is
-    variable y: MPL_PL_MEM_PL_MEM_MON_t;
+  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t is
+    variable y: MPL_PL_MEM_PL_MEM_rd_data_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
       y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
       left := left + len(y.rd_data_0);
       y.rd_data_1 := structify(x(left to left+len(y.rd_data_1)-1), y.rd_data_1);
@@ -367,8 +455,6 @@ package body MPL_PKG is
       left := left + len(y.rd_data_3);
       y.rd_data_4 := structify(x(left to left+len(y.rd_data_4)-1), y.rd_data_4);
     else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
       y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
       left := left - len(y.rd_data_0);
       y.rd_data_1 := structify(x(left downto left-len(y.rd_data_1)+1), y.rd_data_1);
@@ -381,15 +467,59 @@ package body MPL_PKG is
     end if;
     return y;
   end function structify;
-  function nullify(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t is
-  variable y: MPL_PL_MEM_PL_MEM_MON_t;
+  function nullify(t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t is
+  variable y: MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   begin
-    y.rd_rdy := nullify(t.rd_rdy);
     y.rd_data_0 := nullify(t.rd_data_0);
     y.rd_data_1 := nullify(t.rd_data_1);
     y.rd_data_2 := nullify(t.rd_data_2);
     y.rd_data_3 := nullify(t.rd_data_3);
     y.rd_data_4 := nullify(t.rd_data_4);
+    return y;
+  end function nullify;
+
+  function len(x: MPL_PL_MEM_PL_MEM_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    l := l + len(x.rd_data);
+    return l;
+  end function len;
+  function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
+      left := left + len(x.rd_rdy);
+      y(left to left+len(x.rd_data)-1) := vectorify(x.rd_data, y(left to left+len(x.rd_data)-1));
+    else
+      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
+      left := left - len(x.rd_rdy);
+      y(left downto left-len(x.rd_data)+1) := vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t is
+    variable y: MPL_PL_MEM_PL_MEM_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t is
+  variable y: MPL_PL_MEM_PL_MEM_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
 
@@ -457,11 +587,7 @@ package body MPL_PKG is
     l := l + len(x.rd_ack);
     l := l + len(x.wr_addr);
     l := l + len(x.rd_addr);
-    l := l + len(x.wr_data_0);
-    l := l + len(x.wr_data_1);
-    l := l + len(x.wr_data_2);
-    l := l + len(x.wr_data_3);
-    l := l + len(x.wr_data_4);
+    l := l + len(x.wr_data);
     return l;
   end function len;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector is
@@ -477,15 +603,7 @@ package body MPL_PKG is
       left := left + len(x.wr_addr);
       y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
       left := left + len(x.rd_addr);
-      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
-      left := left + len(x.wr_data_0);
-      y(left to left+len(x.wr_data_1)-1) := vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1));
-      left := left + len(x.wr_data_1);
-      y(left to left+len(x.wr_data_2)-1) := vectorify(x.wr_data_2, y(left to left+len(x.wr_data_2)-1));
-      left := left + len(x.wr_data_2);
-      y(left to left+len(x.wr_data_3)-1) := vectorify(x.wr_data_3, y(left to left+len(x.wr_data_3)-1));
-      left := left + len(x.wr_data_3);
-      y(left to left+len(x.wr_data_4)-1) := vectorify(x.wr_data_4, y(left to left+len(x.wr_data_4)-1));
+      y(left to left+len(x.wr_data)-1) := vectorify(x.wr_data, y(left to left+len(x.wr_data)-1));
     else
       y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
       left := left - len(x.wr_req);
@@ -495,15 +613,7 @@ package body MPL_PKG is
       left := left - len(x.wr_addr);
       y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
       left := left - len(x.rd_addr);
-      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
-      left := left - len(x.wr_data_0);
-      y(left downto left-len(x.wr_data_1)+1) := vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1));
-      left := left - len(x.wr_data_1);
-      y(left downto left-len(x.wr_data_2)+1) := vectorify(x.wr_data_2, y(left downto left-len(x.wr_data_2)+1));
-      left := left - len(x.wr_data_2);
-      y(left downto left-len(x.wr_data_3)+1) := vectorify(x.wr_data_3, y(left downto left-len(x.wr_data_3)+1));
-      left := left - len(x.wr_data_3);
-      y(left downto left-len(x.wr_data_4)+1) := vectorify(x.wr_data_4, y(left downto left-len(x.wr_data_4)+1));
+      y(left downto left-len(x.wr_data)+1) := vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1));
     end if;
     return y;
   end function vectorify;
@@ -520,15 +630,7 @@ package body MPL_PKG is
       left := left + len(y.wr_addr);
       y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
       left := left + len(y.rd_addr);
-      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
-      left := left + len(y.wr_data_0);
-      y.wr_data_1 := structify(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
-      left := left + len(y.wr_data_1);
-      y.wr_data_2 := structify(x(left to left+len(y.wr_data_2)-1), y.wr_data_2);
-      left := left + len(y.wr_data_2);
-      y.wr_data_3 := structify(x(left to left+len(y.wr_data_3)-1), y.wr_data_3);
-      left := left + len(y.wr_data_3);
-      y.wr_data_4 := structify(x(left to left+len(y.wr_data_4)-1), y.wr_data_4);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
     else
       y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
       left := left - len(y.wr_req);
@@ -538,15 +640,7 @@ package body MPL_PKG is
       left := left - len(y.wr_addr);
       y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
       left := left - len(y.rd_addr);
-      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
-      left := left - len(y.wr_data_0);
-      y.wr_data_1 := structify(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
-      left := left - len(y.wr_data_1);
-      y.wr_data_2 := structify(x(left downto left-len(y.wr_data_2)+1), y.wr_data_2);
-      left := left - len(y.wr_data_2);
-      y.wr_data_3 := structify(x(left downto left-len(y.wr_data_3)+1), y.wr_data_3);
-      left := left - len(y.wr_data_3);
-      y.wr_data_4 := structify(x(left downto left-len(y.wr_data_4)+1), y.wr_data_4);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
     end if;
     return y;
   end function structify;
@@ -557,11 +651,7 @@ package body MPL_PKG is
     y.rd_ack := nullify(t.rd_ack);
     y.wr_addr := nullify(t.wr_addr);
     y.rd_addr := nullify(t.rd_addr);
-    y.wr_data_0 := nullify(t.wr_data_0);
-    y.wr_data_1 := nullify(t.wr_data_1);
-    y.wr_data_2 := nullify(t.wr_data_2);
-    y.wr_data_3 := nullify(t.wr_data_3);
-    y.wr_data_4 := nullify(t.wr_data_4);
+    y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
 
@@ -792,4 +882,4 @@ package body MPL_PKG is
     return y;
   end function nullify;
 
-end package body MPL_PKG;
+end package body MPL_CTRL;
