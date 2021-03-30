@@ -41,7 +41,7 @@ entity vamc_pl is
     rst                 : in std_logic;
     ena                 : in std_logic;
     -- Ctrl/Mon
-    i_ctrl_mem_v        : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    i_ctrl_mem_v        : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0) := (others => '0');
     o_mon_mem_v         : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
     i_freeze            : in std_logic := '0';
     --

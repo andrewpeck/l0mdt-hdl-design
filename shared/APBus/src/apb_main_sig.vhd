@@ -41,26 +41,33 @@ end entity apbus_main_sig;
 
 architecture beh of apbus_main_sig is
   signal axi_rst      : std_logic;
+  signal int_rst      : std_logic;
+  signal int2_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
 begin
 
   o_axi_clk <= clk_axi;
-  o_axi_rst <= axi_rst; 
+  o_axi_rst <= int_rst or axi_rst; 
   
   AXI_PROC : process(clk)
   begin
     if rising_edge(clk) then
+      
       if rst = '1' then
         clk_axi <= '0';
         clk_axi_cnt <= 0;
         axi_rst <= '1';
+        int_rst <= '1';
+        int2_rst <= '1';
       else
         -- com sincronitzar-ho amb el rellotge master?
         if clk_axi_cnt < c_CLK_AXI_MULT then
           clk_axi_cnt <= clk_axi_cnt + 1;
         else
           clk_axi_cnt <= 0;
+          int2_rst <= axi_rst;
+          int_rst <= int2_rst;
           clk_axi <= not clk_axi;
           axi_rst <= rst;
         end if;

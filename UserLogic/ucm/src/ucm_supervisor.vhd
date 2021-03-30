@@ -62,7 +62,7 @@ architecture beh of ucm_supervisor is
   -- signal clk_axi_cnt  : integer;
   
   --
-  signal int_en   : std_logic := '0';
+  signal int_en   : std_logic;
   signal int_rst  : std_logic := '1';
   --
   signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
@@ -93,7 +93,7 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  PL : entity apbus_lib.apbus_main_sig
+  APB_MS : entity apbus_lib.apbus_main_sig
   port map(
     clk           => clk,
     rst           => rst,
@@ -102,25 +102,7 @@ begin
     o_axi_clk     => clk_axi,
     o_axi_rst     => axi_rst
   );
-  -- axi_clk_proc : process(clk)
-  -- begin
-  --   if rising_edge(clk) then
-  --     if rst = '1' then
-  --       clk_axi <= '0';
-  --       clk_axi_cnt <= 0;
-  --       axi_rst <= '1';
-  --     else
-  --       --sync?
-  --       if clk_axi_cnt < c_CLK_AXI_MULT then
-  --         clk_axi_cnt <= clk_axi_cnt + 1;
-  --       else
-  --         clk_axi_cnt <= 0;
-  --         clk_axi <= not clk_axi;
-  --         axi_rst <= int_rst;
-  --       end if;
-  --     end if;
-  --   end if;
-  -- end process axi_clk_proc;
+
   --------------------------------------------
   --    SIGNALING
   --------------------------------------------
@@ -131,7 +113,7 @@ begin
   begin
     if rising_edge(clk_axi) then
       if axi_rst = '1' then
-        int_en <= glob_en;
+        int_en <= '1';
         int_rst <= rst;
       else
         if ctrl.actions.reset = '1' then
