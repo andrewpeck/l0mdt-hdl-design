@@ -146,7 +146,38 @@ architecture control_arch of top_control is
   signal axi_spy_ctrl : spy_ctrl_t;
   signal axi_spy_mon  : spy_mon_t;
 
+  signal h2s_mon_reg      : H2S_MON_t;
+  signal tar_mon_reg      : TAR_MON_t;
+  signal mtc_mon_reg      : MTC_MON_t;
+  signal ucm_mon_reg      : UCM_MON_t;
+  signal daq_mon_reg      : DAQ_MON_t;
+  signal tf_mon_reg       : TF_MON_t;
+  signal mpl_mon_reg      : MPL_MON_t;
+  signal hal_mon_reg      : HAL_MON_t;
+  signal hal_core_mon_reg : HAL_CORE_MON_t;
+
 begin
+
+  process (clk40) is
+  begin
+    if (rising_edge(clk40)) then
+      h2s_mon_reg      <= h2s_mon;
+      tar_mon_reg      <= tar_mon;
+      mtc_mon_reg      <= mtc_mon;
+      ucm_mon_reg      <= ucm_mon;
+      daq_mon_reg      <= daq_mon;
+      tf_mon_reg       <= tf_mon;
+      mpl_mon_reg      <= mpl_mon;
+      hal_mon_reg      <= hal_mon;
+    end if;
+  end process;
+
+  process (axi_clk) is
+  begin
+    if (rising_edge(axi_clk)) then
+      hal_core_mon_reg <= hal_core_mon;
+    end if;
+  end process;
 
   c2cslave_wrapper_inst : entity xil_defaultlib.c2cslave_wrapper
     port map (
@@ -453,7 +484,7 @@ begin
       slave_writemiso => hal_core_writemiso,
 
       -- monitor signals in
-      mon  => hal_core_mon,
+      mon  => hal_core_mon_reg,
       -- control signals out
       ctrl => hal_core_ctrl
       );
@@ -468,7 +499,7 @@ begin
       slave_writemiso => hal_writemiso,
 
       -- monitor signals in
-      mon  => hal_mon,
+      mon  => hal_mon_reg,
       -- control signals out
       ctrl => hal_ctrl
       );
@@ -483,7 +514,7 @@ begin
       slave_writemiso => h2s_writemiso,
 
       -- monitor signals in
-      mon  => h2s_mon,
+      mon  => h2s_mon_reg,
       -- control signals out
       ctrl => h2s_ctrl
       );
@@ -498,7 +529,7 @@ begin
       slave_writemiso => tar_writemiso,
 
       -- monitor signals in
-      mon  => tar_mon,
+      mon  => tar_mon_reg,
       -- control signals out
       ctrl => tar_ctrl
       );
@@ -513,7 +544,7 @@ begin
       slave_writemiso => mtc_writemiso,
 
       -- monitor signals in
-      mon  => mtc_mon,
+      mon  => mtc_mon_reg,
       -- control signals out
       ctrl => mtc_ctrl
       );
@@ -528,7 +559,7 @@ begin
       slave_writemiso => ucm_writemiso,
 
       -- monitor signals in
-      mon  => ucm_mon,
+      mon  => ucm_mon_reg,
       -- control signals out
       ctrl => ucm_ctrl
       );
@@ -543,7 +574,7 @@ begin
       slave_writemiso => daq_writemiso,
 
       -- monitor signals in
-      mon  => daq_mon,
+      mon  => daq_mon_reg,
       -- control signals out
       ctrl => daq_ctrl
       );
@@ -558,7 +589,7 @@ begin
       slave_writemiso => tf_writemiso,
 
       -- monitor signals in
-      mon  => tf_mon,
+      mon  => tf_mon_reg,
       -- control signals out
       ctrl => tf_ctrl
       );
@@ -573,7 +604,7 @@ begin
       slave_writemiso => mpl_writemiso,
 
       -- monitor signals in
-      mon  => mpl_mon,
+      mon  => mpl_mon_reg,
       -- control signals out
       ctrl => mpl_ctrl
       );
