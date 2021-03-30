@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'devel_hotfix_ip_eos_cp'
+      ref: 'v4.2.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -16,29 +16,29 @@ include:
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
-    # - local: '/Top/csf.0/gitlab-ci.yml'
-    # - local: '/Top/csf.1/gitlab-ci.yml'
-    # - local: '/Top/ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/csf.0/gitlab-ci.yml'
+    - local: '/Top/csf.1/gitlab-ci.yml'
+    - local: '/Top/ptc_mpi/gitlab-ci.yml'
     - local: '/Top/lsf/gitlab-ci.yml'
-    - local: '/Top/upt/gitlab-ci.yml'
+    # - local: '/Top/upt/gitlab-ci.yml'
     # - local: '/Top/ucm/gitlab-ci.yml'
     # - local: '/Top/hp/gitlab-ci.yml'
     # - local: '/Top/heg/gitlab-ci.yml'
-    # - local: '/Top/hps_csf/gitlab-ci.yml'
-    # - local: '/Top/hps_lsf/gitlab-ci.yml'
+    - local: '/Top/hps_csf/gitlab-ci.yml'
+    - local: '/Top/hps_lsf/gitlab-ci.yml'
     # - local: '/Top/daq/gitlab-ci.yml'
     # - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
-    # - local: '/Top/mtc/gitlab-ci.yml'
+    - local: '/Top/mtc/gitlab-ci.yml'
     #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ult/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_xsim/gitlab-ci.yml'
     # - local: '/Top/ult_daq/gitlab-ci.yml'
@@ -47,5 +47,5 @@ include:
     #         VU13 Projects
     #---------------------------------------------
     # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
-    # - local: 'Top/ull_vu13p_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: 'Top/ull_vu13p_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # writer
