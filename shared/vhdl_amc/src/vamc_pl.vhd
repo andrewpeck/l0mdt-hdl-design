@@ -27,13 +27,22 @@ entity vamc_pl is
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;
-    g_PIPELINE_WIDTH    : integer
+    g_PIPELINE_WIDTH    : integer;
+    -- 
+    -- BU bus
+    g_APBUS_ENABLED     : integer := 0;
+    g_APBUS_CTRL_WIDTH  : integer := 8;
+    g_APBUS_MON_WIDTH   : integer := 4
+    
+ 
   );
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
-    --
+    ena                 : in std_logic;
+    -- Ctrl/Mon
+    i_ctrl_mem_v        : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    o_mon_mem_v         : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
     i_freeze            : in std_logic := '0';
     --
     i_data              : in std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
@@ -73,7 +82,7 @@ begin
           -- data_pl <= (others => (others => '0'));
           dv_pl <= (others => '0');
         else
-          if glob_en = '1' then
+          if ena = '1' then
             for delay_i in g_DELAY_CYCLES - 1 downto 1 loop
               data_pl(delay_i - 1) <= data_pl(delay_i);
               dv_pl(delay_i - 1) <= dv_pl(delay_i);
@@ -144,7 +153,7 @@ begin
     port map(
       clk           => clk,
       rst           => rst,
-      ena           => glob_en,
+      ena           => ena,
       --
       i_din_a       => i_data,
       i_dv_in_a     => i_dv,
