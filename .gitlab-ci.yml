@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v4.2.0'
+      ref: 'ip_pull_check'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
