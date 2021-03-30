@@ -18,7 +18,8 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library shared_lib;
-use shared_lib.common_ieee_pkg.all;
+use shared_lib.common_ieee.all;
+-- use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
@@ -32,6 +33,7 @@ use mpl_lib.mpl_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.MPL_CTRL_DEF.all;
 
 entity mpl_pl is
   port (
@@ -58,8 +60,14 @@ architecture beh of mpl_pl is
   signal pl2pl_r    : ucm2pl_rt;
   signal pl2mtc_r   : pl2mtc_rt;
   signal pl2mtc_v   : pl2mtc_rvt;
+
+  signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
+  signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
   
 begin
+
+  apb_ctrl_mem_v <= vectorify(ctrl,apb_ctrl_mem_v);
+  mon <= structify(apb_mon_mem_v,mon);
 
   i_uCM2pl_r <= structify(i_uCM2pl_v);
   
@@ -68,14 +76,21 @@ begin
       g_MEMORY_TYPE     => "ultra",
       g_PIPELINE_TYPE   => "mpcvmem",
       g_DELAY_CYCLES    => c_MPL_PL_A_LATENCY,
-      g_PIPELINE_WIDTH  => i_uCM2pl_v'length
-    )
+      g_PIPELINE_WIDTH  => i_uCM2pl_v'length,
+      -- BU bus
+      g_APBUS_ENABLED    => 1,
+      g_APBUS_CTRL_WIDTH => len(ctrl),
+      g_APBUS_MON_WIDTH  => len(mon)
+    ) 
     port map(
       clk         => clk,
       rst         => rst,
-      glob_en     => enable,
-      --
+      ena         => enable,
+      -- Ctrl/Mon 
+      i_ctrl_mem_v  => apb_ctrl_mem_v,
+      o_mon_mem_v   => apb_mon_mem_v,
       i_freeze    => i_freeze,
+
       --
       i_data      => i_uCM2pl_v,
       i_dv        => i_uCM2pl_r.data_valid,

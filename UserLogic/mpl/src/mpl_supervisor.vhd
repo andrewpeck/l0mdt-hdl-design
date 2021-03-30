@@ -28,7 +28,7 @@ use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
 
-library bubus_lib;
+library apbus_lib;
 -- use mpl_lib.mpl_pkg.all;
  
 library mpl_lib;
@@ -36,6 +36,7 @@ use mpl_lib.mpl_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.MPL_CTRL_DEF.all;
 
 entity mpl_supervisor is
   generic(
@@ -80,7 +81,7 @@ begin
   --    AXI CLK
   --------------------------------------------
 
-    PL : entity bubus_lib.bubus_main_sig
+    PL : entity apbus_lib.apbus_main_sig
     port map(
       clk           => clk,
       rst           => rst,

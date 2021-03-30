@@ -28,7 +28,7 @@ use shared_lib.barrel_chamb_z2origin_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
 
-library bubus_lib;
+library apbus_lib;
 
 library ucm_lib;
 use ucm_lib.ucm_pkg.all;
@@ -93,7 +93,7 @@ begin
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------
-  PL : entity bubus_lib.bubus_main_sig
+  PL : entity apbus_lib.apbus_main_sig
   port map(
     clk           => clk,
     rst           => rst,
