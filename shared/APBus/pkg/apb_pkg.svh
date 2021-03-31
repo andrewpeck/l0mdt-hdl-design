@@ -4,6 +4,8 @@
 `ifndef APB_PKG_SVH
 `define APB_PKG_SVH
 
+`include <common_ieee.svh>
+
 
   typedef struct packed {
     logic [32-1:0] wr_data_0;
@@ -26,7 +28,7 @@
     MEM_INT_10A148D_rd_data_MON_t   rd_data;
   } MEM_INT_10A148D_MON_t;
 
-  typedef MEM_INT_10A148D_MON_t  [4-1:0] MEM_INT_10A148D_MON_t_ARRAY;
+  typedef MEM_INT_10A148D_MON_t  [5-1:0] MEM_INT_10A148D_MON_t_ARRAY;
 
   typedef struct packed {
     logic  wr_req;
@@ -36,7 +38,7 @@
     MEM_INT_10A148D_wr_data_CTRL_t   wr_data;
   } MEM_INT_10A148D_CTRL_t;
 
-  typedef MEM_INT_10A148D_CTRL_t  [4-1:0] MEM_INT_10A148D_CTRL_t_ARRAY;
+  typedef MEM_INT_10A148D_CTRL_t  [5-1:0] MEM_INT_10A148D_CTRL_t_ARRAY;
 
 
 

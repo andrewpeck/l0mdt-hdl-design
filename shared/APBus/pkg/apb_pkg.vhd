@@ -7,6 +7,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
+library shared_lib;
+
+use shared_lib.common_ieee.all;
+
 package apb_pkg is
 
   type MEM_INT_10A148D_wr_data_CTRL_t is record
@@ -42,7 +46,7 @@ package apb_pkg is
   function structify(x: in std_logic_vector; t: MEM_INT_10A148D_MON_t) return MEM_INT_10A148D_MON_t;
   function nullify(t: MEM_INT_10A148D_MON_t) return MEM_INT_10A148D_MON_t;
 
-  type MEM_INT_10A148D_MON_t_ARRAY is array(4-1 downto 0) of MEM_INT_10A148D_MON_t;
+  type MEM_INT_10A148D_MON_t_ARRAY is array(5-1 downto 0) of MEM_INT_10A148D_MON_t;
   function len(x: MEM_INT_10A148D_MON_t_ARRAY) return natural;
   function vectorify(x: MEM_INT_10A148D_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY;
@@ -60,7 +64,7 @@ package apb_pkg is
   function structify(x: in std_logic_vector; t: MEM_INT_10A148D_CTRL_t) return MEM_INT_10A148D_CTRL_t;
   function nullify(t: MEM_INT_10A148D_CTRL_t) return MEM_INT_10A148D_CTRL_t;
 
-  type MEM_INT_10A148D_CTRL_t_ARRAY is array(4-1 downto 0) of MEM_INT_10A148D_CTRL_t;
+  type MEM_INT_10A148D_CTRL_t_ARRAY is array(5-1 downto 0) of MEM_INT_10A148D_CTRL_t;
   function len(x: MEM_INT_10A148D_CTRL_t_ARRAY) return natural;
   function vectorify(x: MEM_INT_10A148D_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MEM_INT_10A148D_CTRL_t_ARRAY) return MEM_INT_10A148D_CTRL_t_ARRAY;

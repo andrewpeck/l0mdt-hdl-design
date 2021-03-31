@@ -19,39 +19,46 @@ library apbus_lib;
 use apbus_lib.apb_pkg.all;
 
 
-entity apbus_mem_int is
+entity apb_mem_int is
   generic(
+    g_XML_NODE_NAME     : string := "MEM_INT_10A148D";
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 1;
-    g_DATA_WIDTH        : integer := 1
+    g_DATA_WIDTH        : integer := 1;
+    g_APBUS_CTRL_WIDTH  : integer := 8;
+    g_APBUS_MON_WIDTH   : integer := 4
   );
   port (
     clk           : in std_logic;
     rst           : in std_logic;
     ena           : in std_logic := '1';
     --
+    ctrl                : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    mon                 : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
+    --
     i_axi_clk     : in std_logic := '0';
     i_axi_rst     : in std_logic := '0';
+    -- --
+    -- rd_rdy        : out std_logic;
+    -- rd_data       : out std_logic_vector(g_DATA_WIDTH -1 downto 0);
+    -- --
+    -- wr_req        : in std_logic;
+    -- rd_ack        : in std_logic;
+    -- wr_addr       : in std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+    -- rd_addr       : in std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+    -- wr_data       : in std_logic_vector(g_DATA_WIDTH-1 downto 0);
     --
-    rd_rdy        : out std_logic;
-    rd_data       : out std_logic_vector(g_DATA_WIDTH -1 downto 0);
-    --
-    wr_req        : in std_logic;
-    rd_ack        : in std_logic;
-    wr_addr       : in std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-    rd_addr       : in std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-    wr_data       : in std_logic_vector(g_DATA_WIDTH-1 downto 0);
-    --
-    o_addr_b      : out  std_logic_vector(g_ADDR_WIDTH-1 downto 0):= (others => '0');
-    o_din_b       : out  std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
-    o_dv_in_b     : out  std_logic := '1';
-    i_dout_b      : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    i_dv_out_b    : in  std_logic := '1'
+
+    o_addr      : out std_logic_vector(g_ADDR_WIDTH-1 downto 0):= (others => '0');
+    o_din       : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
+    o_dv_in     : out std_logic := '1';
+    i_dout      : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    i_dv_out    : in  std_logic := '1'
 
   );
-end entity apbus_mem_int;
+end entity apb_mem_int;
 
-architecture beh of apbus_mem_int is
+architecture beh of apb_mem_int is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
 
@@ -78,6 +85,27 @@ begin
 
   end generate INT_CLK_DIS;
 
+  MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
+
+    MEM_CTRL_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          
+        else
+          
+        end if;
+      end if;
+    end process MEM_CTRL_INT;
+
+
+
+
+
+
+
+    
+  end generate MEM_INT_10A148D;
 
 
 
