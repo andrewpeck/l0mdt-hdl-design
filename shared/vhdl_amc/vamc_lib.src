@@ -1,6 +1,7 @@
 #---------------------------------
 # MAIN VHDL AMC FILES
 #---------------------------------
+shared/vhdl_amc/src/vamc_controller.vhd
 shared/vhdl_amc/src/vamc_pl.vhd
 shared/vhdl_amc/src/vamc_rb.vhd
 shared/vhdl_amc/src/vamc_sr.vhd

@@ -15,12 +15,13 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
--- use ieee.math_real.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee.all;
 
 library vamc_lib;
+library apbus_lib;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
@@ -29,14 +30,17 @@ entity vamc_controller is
   generic(
     g_MEMORY_MODE       : string := "pipeline";
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
+    g_ADDR_WIDTH        : integer := 0;
+    g_DATA_WIDTH        : integer := 0;
     -- pipeline
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer;
-    -- 
+    -- INT CTRL
+    g_FREEZE_ENABLED    : std_logic := '0';
     -- BU bus
-    g_APBUS_ENABLED     : integer := 0;
+    g_APBUS_ENABLED     : std_logic := '0';
     g_APBUS_CTRL_WIDTH  : integer := 8;
     g_APBUS_MON_WIDTH   : integer := 4
   
@@ -60,44 +64,77 @@ end entity vamc_controller;
 
 architecture beh of vamc_controller is
 
-  signal  
+  function init_ADDR_WIDTH(m : integer; x : integer) return integer is
+    variable y : integer;
+  begin
+    if m /= 0 then
+      y := m;
+    else
+      y := integer(ceil(log2(real(x))));
+    end if;
+    return y;
+  end function;
+
+  constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
+  constant DATA_WIDTH : integer := g_DATA_WIDTH;
+
+  signal mem_empty               : std_logic;
+  signal mem_empty_next          : std_logic;
+  signal mem_full                : std_logic;
+  signal mem_full_next           : std_logic;
+  signal mem_used                : integer ;--range integer(log2(real(g_PIPELINE_WIDTH) - 1 downto 0));
+
+  signal apb_addr_b              : std_logic_vector(ADDR_WIDTH - 1 downto 0):= (others => '0');
+  signal apb_din_b               : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+  signal apb_dv_in_b             : std_logic := '1';
+  signal apb_dout_b              : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_dv_out_b            : std_logic := '1';
+
 
 begin
 
   APB_INT_EN: if g_APBUS_ENABLED generate
-    signal mem_empty               : std_logic;
-    signal mem_empty_next          : std_logic;
-    signal mem_full                : std_logic;
-    signal mem_full_next           : std_logic;
-    signal mem_used                : integer range integer(log2(real(g_MEM_DEPTH))) - 1 downto 0);
+  --   signal mem_empty               : std_logic;
+  --   signal mem_empty_next          : std_logic;
+  --   signal mem_full                : std_logic;
+  --   signal mem_full_next           : std_logic;
+  --   signal mem_used                : integer ;--range integer(log2(real(g_PIPELINE_WIDTH) - 1 downto 0));
 
-    signal apb_addr_b              : std_logic_vector(integer(ceil(log2(real(g_MEM_DEPTH))))-1 downto 0):= (others => '0');
-    signal apb_din_b               : std_logic_vector(g_MEM_WIDTH - 1 downto 0) := (others => '0');
-    signal apb_dv_in_b             : std_logic := '1';
-    signal apb_dout_b              : std_logic_vector(g_MEM_WIDTH - 1 downto 0);
-    signal apb_dv_out_b            : std_logic := '1';
-  begin
+  --   signal apb_addr_b              : std_logic_vector(ADDR_WIDTH-1 downto 0):= (others => '0');
+  --   signal apb_din_b               : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+  --   signal apb_dv_in_b             : std_logic := '1';
+  --   signal apb_dout_b              : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  --   signal apb_dv_out_b            : std_logic := '1';
+  -- begin
 
-    apb_mem_int : entity apbus_mem_int is
+    apb_interface : entity apbus_lib.apb_mem_int
       generic map(
-        g_INTERNAL_CLK => '1'
+        g_XML_NODE_NAME         => "MEM_INT_10A148D",
+        g_INTERNAL_CLK          => '1',
+        g_ADDR_WIDTH            => ADDR_WIDTH,
+        g_DATA_WIDTH            => DATA_WIDTH,
+        g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
+        g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
       )
       port map (
         clk           => clk,
         rst           => rst,
-        ena           => glob_en,
+        ena           => ena,
+        --
+        ctrl          => ctrl,
+        mon           => mon,
         --
         -- i_axi_clk     => ,
         -- i_axi_rst     => ,
         -- mon
-        rd_rdy        => mon.rd_rdy,  
-        rd_data       => mon.rd_data,
-        -- ctrl
-        wr_req        => ctrl.wr_req,
-        rd_ack        => ctrl.rd_ack,
-        wr_addr       => ctrl.wr_addr,
-        rd_addr       => ctrl.rd_addr,
-        wr_data       => ctrl.wr_data,
+        -- rd_rdy        => mon.rd_rdy,  
+        -- rd_data       => mon.rd_data,
+        -- -- ctrl
+        -- wr_req        => ctrl.wr_req,
+        -- rd_ack        => ctrl.rd_ack,
+        -- wr_addr       => ctrl.wr_addr,
+        -- rd_addr       => ctrl.rd_addr,
+        -- wr_data       => ctrl.wr_data,
         --
         o_addr        => apb_addr_b,  
         o_din         => apb_din_b,   
@@ -126,20 +163,20 @@ begin
             g_MEMORY_TYPE   => g_MEMORY_TYPE,
   
             g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-            g_MEM_WIDTH     => g_PIPELINE_WIDTH,
+            g_MEM_WIDTH     => DATA_WIDTH,
             g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
           )
           port map(
             clk           => clk,
             rst           => rst,
-            ena           => glob_en,
+            ena           => ena,
             --
             i_freeze      => i_freeze,
             -- Port A
             i_din_a       => i_data,
             i_dv_in_a     => i_dv,
-            o_dout_b      => o_data,
-            o_dv_out_b    => o_dv
+            o_dout_a      => o_data,
+            o_dv_out_a    => o_dv,
             -- Port B
             i_addr_b      => apb_addr_b,  
             i_din_b       => apb_din_b,   
@@ -183,13 +220,13 @@ begin
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-          g_MEM_WIDTH     => g_PIPELINE_WIDTH,
+          g_MEM_WIDTH     => DATA_WIDTH,
           g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
         )
         port map(
           clk           => clk,
           rst           => rst,
-          ena           => glob_en,
+          ena           => ena,
           --
           i_din_a       => i_data,
           i_dv_in_a     => i_dv,
