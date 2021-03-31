@@ -39,7 +39,7 @@ url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
 path = l0mdt-hls
 url = ../l0mdt-hls.git
 [submodule "shared/mpcvmem"]
-path = shared/mpcvmem
+	path = shared/vhdl_amc/mpcvmem/mpcvmem
 url = https://github.com/taquionbcn/mpcvmem.git
 [submodule "HAL/lpgbt/src/lpgbt-emul"]
 path = HAL/lpgbt/src/lpgbt-emul
