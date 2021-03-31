@@ -3,9 +3,10 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.AXIRegPkg.all;
-use work.types.all;
-use work.MPL_Ctrl.all;
+library ctrl_lib;
+use ctrl_lib.AXIRegPkg.all;
+use ctrl_lib.types.all;
+use ctrl_lib.MPL_Ctrl.all;
 entity MPL_interface is
   port (
     clk_axi          : in  std_logic;
@@ -33,10 +34,10 @@ architecture behavioral of MPL_interface is
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
-  -- AXI 
+  -- AXI
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  AXIRegBridge : entity work.axiLiteReg
+  AXIRegBridge : entity ctrl_lib.axiLiteReg
     port map (
       clk_axi     => clk_axi,
       reset_axi_n => reset_axi_n,
@@ -55,7 +56,7 @@ begin  -- architecture behavioral
   begin  -- process latch_reads
     if clk_axi'event and clk_axi = '1' then  -- rising clock edge
       if localRdReq = '1' then
-        localRdData_latch <= localRdData;        
+        localRdData_latch <= localRdData;
       end if;
     end if;
   end process latch_reads;
@@ -309,7 +310,8 @@ begin  -- architecture behavioral
       Ctrl.PL_MEM.PL_MEM(4).rd_ack <= '0';
       
 
-      
+
+
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(14 downto 0))) is
         when 0 => --0x0

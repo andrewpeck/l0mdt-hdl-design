@@ -15,7 +15,7 @@ library ctrl_lib;
 use ctrl_lib.TF_CTRL.all;
 
 library ptc_lib;
--- library upt_lib;
+library upt_lib;
 
 entity ptcalc is
 
@@ -69,19 +69,19 @@ begin
       end generate;
 
       upt : if (c_PT_TYPE = '1') generate
-        -- pt_1 : entity upt_lib.top_upt
-        --   generic map (
-        --     FLAVOUR => 0,
-        --     SECTOR  => I)
-        --   port map (
-        --     clk         => clock_and_control.clk,
-        --     i_rst       => clock_and_control.rst,
-        --     i_segment_i => i_inn_segments(i),
-        --     i_segment_m => i_mid_segments(i),
-        --     i_segment_o => i_out_segments(i),
-        --     i_slc       => i_pl2pt_av(i),
-        --     o_mtc       => o_pt2mtc(i)
-        --     );
+         pt_1 : entity upt_lib.top_upt
+           generic map (
+             FLAVOUR => 0,
+             SECTOR  => I)
+           port map (
+             clk         => clock_and_control.clk,
+             i_rst       => clock_and_control.rst,
+             i_segment_i => i_inn_segments(I),
+             i_segment_m => i_mid_segments(I),
+             i_segment_o => i_out_segments(I),
+             i_slc       => i_pl2pt_av(I),
+             o_mtc       => o_pt2mtc(I)
+            );
       end generate;
 
     end generate;

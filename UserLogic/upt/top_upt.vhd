@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2020-12-10
+-- last update: 2021-03-24
 -- ===========================================================
 
 library ieee;
@@ -48,7 +48,10 @@ architecture behav of top_upt is
     signal ptcalc_segment_m : sf2ptcalc_rvt;
     signal ptcalc_segment_o : sf2ptcalc_rvt;
 
-    component ptcalc_top
+    constant ap_const_logic_1 : STD_LOGIC := '1';
+    constant ap_const_logic_0 : STD_LOGIC := '0';
+
+    component hls_ptcalc_top
         port (
             ap_clk : in std_logic;
             ap_rst : in std_logic;
@@ -61,7 +64,8 @@ architecture behav of top_upt is
             sf2ptcalc_mid_v : in sf2ptcalc_rvt;
             sf2ptcalc_out_v : in sf2ptcalc_rvt;
             ptcalc2mtc_v : out ptcalc2mtc_rvt;
-            ptcalc2mtc_v_ap_vld : out std_logic
+            ptcalc2mtc_v_ap_vld : out std_logic;
+            is_C_side           : in std_logic
             );
     end component;
 
@@ -69,7 +73,7 @@ begin
     o_mtc           <= ptcalc2mtc_done & ptcalc2mtc_data(PTCALC2MTC_LEN-2 downto 0);
     --ptcalc_ap_start <= ptcalc_ap_ready and i_slc(PL2PTCALC_LEN-1);
 
-    ptcalc_top_inst : ptcalc_top port map (
+    ptcalc_top_inst : hls_ptcalc_top port map (
         ap_clk => clk,
         ap_rst => i_rst,
         ap_start        => ptcalc_ap_start, --i_slc(PL2PTCALC_LEN-1), -- hls control signal: goes high 1 clk after rst goes low
@@ -81,7 +85,8 @@ begin
         sf2ptcalc_mid_v => ptcalc_segment_m,
         sf2ptcalc_out_v => ptcalc_segment_o,
         ptcalc2mtc_v    => ptcalc2mtc_data,
-        ptcalc2mtc_v_ap_vld => ptcalc2mtc_valid -- hls control signal: probably not needed?
+        ptcalc2mtc_v_ap_vld => ptcalc2mtc_valid, -- hls control signal: probably not needed?
+        is_C_side           => ap_const_logic_1
         );
 
     hls_ap_ready: process(clk)
