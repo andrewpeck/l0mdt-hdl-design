@@ -45,5 +45,5 @@ url = https://github.com/taquionbcn/mpcvmem.git
 path = HAL/lpgbt/src/lpgbt-emul
 url = ../lpgbt-emul.git
 [submodule "tools/SpyBuffer"]
-path = tools/SpyBuffer
+	path = shared/SpyBuffer
 url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
