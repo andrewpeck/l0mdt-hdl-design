@@ -76,6 +76,8 @@ architecture beh of mpl_supervisor is
   -- constant RST_Latency      : integer := integer(ceil(log2(real(c_MPL_PL_A_LATENCY))));
   signal rst_done           : std_logic;
   signal rst_states         : std_logic_vector(3 downto 0);
+
+  signal apb_freeze : std_logic;
 begin
   --------------------------------------------
   --    AXI CLK
@@ -91,25 +93,6 @@ begin
       o_axi_rst     => axi_rst
     );
 
-  -- AXI_PROC : process(clk)
-  -- begin
-  --   if rising_edge(clk) then
-  --     if rst = '1' then
-  --       clk_axi <= '0';
-  --       clk_axi_cnt <= 0;
-  --       axi_rst <= '1';
-  --     else
-  --       --sync?
-  --       if clk_axi_cnt < c_CLK_AXI_MULT then
-  --         clk_axi_cnt <= clk_axi_cnt + 1;
-  --       else
-  --         clk_axi_cnt <= 0;
-  --         clk_axi <= not clk_axi;
-  --         axi_rst <= rst;
-  --       end if;
-  --     end if;
-  --   end if;
-  -- end process;
   --------------------------------------------
   --    CTRL
   --------------------------------------------
@@ -122,6 +105,7 @@ begin
       if axi_rst = '1' then
         int_en <= glob_en;
         int_rst <= '1';
+        apb_freeze <= '0';
       else
         if actions.reset = '1' then
           int_rst <= '1';
@@ -133,47 +117,18 @@ begin
         elsif actions.disable = '1' then
           int_en <= '0';
         end if;
+        if actions.freeze = '1' then
+          apb_freeze <= '1';
+        else
+          apb_freeze <= '0';
+        end if;
       end if;
     end if;
   end process;
   --------------------------------------------
-  --    RESET
+  --    INTERNAL CTRL
   --------------------------------------------
---  local_rst <= rst or int_rst or mem_rst;
-  
---  rst_cnt: process(clk)
---  begin
---    if rising_edge(clk) then
---      if rst = '1' then
---        rst_States <= x"0"
---      else
---        case rst_states is
---          when x"0" =>
-            
-        
---          when others =>
-            
-        
---        end case;
---      end if;
-
---      if mem_flush_on_Reset = '0' then
---        int_rst <= rst_trig;
---      else
---        if rst_trig = '1' then
---          rst_counter <= 0;
---        else
---          if rst_counter < RST_Latency then
---            mem_rst <= '1';
---            rst_counter <= rst_counter + 1;
---          else
---            mem_rst <= '0';
---          end if;
---        end if;
---      end if;
---    end if;
---  end process rst_cnt;
-
+  o_freeze <= i_freeze or apb_freeze;
   --------------------------------------------
   --    status
   --------------------------------------------

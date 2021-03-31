@@ -70,7 +70,7 @@ architecture beh of mpl is
 
 begin
 
-  UCM_SUPERVISOR : entity mpl_lib.mpl_supervisor
+  MPL_SUPERVISOR : entity mpl_lib.mpl_supervisor
   port map(
     clk               => clk,
     rst               => rst,

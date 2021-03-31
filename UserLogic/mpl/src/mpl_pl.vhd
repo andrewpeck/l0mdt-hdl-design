@@ -72,14 +72,16 @@ begin
 
   i_uCM2pl_r <= structify(i_uCM2pl_v);
   
-  PL_A : entity vamc_lib.vamc_pl
+  PL_A : entity vamc_lib.vamc_controller
     generic map(
-      g_MEMORY_TYPE     => "ultra",
-      g_PIPELINE_TYPE   => "mpcvmem",
-      g_DELAY_CYCLES    => UCM_LATENCY_HPS_CH,
-      g_PIPELINE_WIDTH  => i_uCM2pl_v'length,
+      g_MEMORY_MODE       => "pipeline",
+      g_MEMORY_TYPE       => "ultra",
+      g_DATA_WIDTH        => i_uCM2pl_v'length,
+      g_PIPELINE_TYPE     => "mpcvmem",
+      g_DELAY_CYCLES      => UCM_LATENCY_HPS_CH,
+      g_PIPELINE_WIDTH    => i_uCM2pl_v'length, -- necesario?
       -- BU bus
-      g_APBUS_ENABLED    => 1,
+      g_APBUS_ENABLED    => '1',
       g_APBUS_CTRL_WIDTH => len(ctrl),
       g_APBUS_MON_WIDTH  => len(mon)
     ) 
@@ -88,8 +90,8 @@ begin
       rst         => rst,
       ena         => enable,
       -- Ctrl/Mon 
-      i_ctrl_mem_v  => apb_ctrl_mem_v,
-      o_mon_mem_v   => apb_mon_mem_v,
+      ctrl  => apb_ctrl_mem_v,
+      mon   => apb_mon_mem_v,
       i_freeze    => i_freeze,
 
       --
