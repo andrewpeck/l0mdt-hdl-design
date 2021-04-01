@@ -27,5 +27,4 @@
     <node id="PL_MEM_4" fwinfo="type=array" address="0x00004000" module="file://MEM_INT_10A148D.xml"/>
   </node>
 
-
 </node>

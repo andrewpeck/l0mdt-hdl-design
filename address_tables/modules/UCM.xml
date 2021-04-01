@@ -42,5 +42,4 @@
     <node id="CVP_CHAMB_Z0_3" fwinfo="type=array" address="0x00004000" module="file://MEM_RAM_8A16D.xml"/>
   </node>
 
-
 </node>
