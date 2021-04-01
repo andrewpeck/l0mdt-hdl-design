@@ -76,6 +76,8 @@ architecture beh of vamc_controller is
     return y;
   end function;
 
+  constant FREEZE_EN : std_logic := g_FREEZE_ENABLED OR g_APBUS_ENABLED;
+
   constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
   constant DATA_WIDTH : integer := g_DATA_WIDTH;
 
@@ -91,8 +93,14 @@ architecture beh of vamc_controller is
   signal apb_dout_b              : std_logic_vector(DATA_WIDTH - 1 downto 0);
   signal apb_dv_out_b            : std_logic := '1';
 
+  signal freeze_0, freeze_1      : std_logic;
+
 
 begin
+
+  -----------------------------------------------
+  -- SINGLE MEMORY WITH MONITORING
+  -----------------------------------------------
 
   APB_INT_EN: if g_APBUS_ENABLED generate
 
@@ -117,6 +125,8 @@ begin
         -- i_axi_rst     => ,
         --
         i_freeze      => i_freeze,
+        o_freeze_0    => freeze_0,
+        o_freeze_1    => freeze_1,
         --
         o_addr        => apb_addr_b,  
         o_din         => apb_din_b,   
@@ -153,7 +163,7 @@ begin
             rst           => rst,
             ena           => ena,
             --
-            i_freeze      => i_freeze,
+            i_freeze      => freeze_0,
             -- Port A
             i_din_a       => i_data,
             i_dv_in_a     => i_dv,
@@ -181,6 +191,14 @@ begin
       end generate MODE_MEM;
    
   end generate APB_INT_EN;
+
+
+  -----------------------------------------------
+  -- SINGLE MEMORY NO MONITORING
+  -----------------------------------------------
+
+
+
 
   APB_INT_DIS: if not g_APBUS_ENABLED generate
 
