@@ -17,21 +17,21 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
 
-library csf_lib;
-use csf_lib.csf_pkg.all;
-use csf_lib.csf_custom_pkg.all;
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
+USE csf_lib.csf_custom_pkg.ALL;
 
 -- library ieee, csf_lib, shared_lib;
 -- use ieee.std_logic_1164.all;
@@ -41,267 +41,261 @@ use csf_lib.csf_custom_pkg.all;
 -- use csf_lib.custom_types_csf_pkg.all;
 -- use shared_lib.custom_types_davide_pkg.all;
 
-entity csf_fitter is
-Port (
-    clk             : in std_logic;
-    i_hit1          : in csf_hit_rvt;
-    i_hit2          : in csf_hit_rvt;
-    o_mfit          : out signed(CSF_SEG_M_LEN-1 downto 0);
-    o_bfit          : out signed(CSF_SEG_B_LEN-1 downto 0);
-    o_fit_valid     : out std_logic;
-    o_nhits         : out unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0)
-);
-end csf_fitter;
+ENTITY csf_fitter IS
+    PORT (
+        clk : IN STD_LOGIC;
+        i_hit1 : IN csf_hit_rvt;
+        i_hit2 : IN csf_hit_rvt;
+        o_mfit : OUT signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
+        o_bfit : OUT signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
+        o_fit_valid : OUT STD_LOGIC;
+        o_nhits : OUT unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0)
+    );
+END csf_fitter;
 
-architecture Behavioral of csf_fitter is
-
-
+ARCHITECTURE Behavioral OF csf_fitter IS
     -- Hits signals shifted
-    signal hit1, hit2       : csf_hit_rt;
-    signal hit1_s, hit2_s   : csf_hit_rt;
+    SIGNAL hit1, hit2 : csf_hit_rt;
+    SIGNAL hit1_s, hit2_s : csf_hit_rt;
 
     -- Signal declaring last hits from Histograms
-    signal finalhit : std_logic := '0';
+    SIGNAL finalhit : STD_LOGIC := '0';
 
     -- Summation signal widths
-    constant SUM_YZ_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_Y_LEN*2;
-    constant SUM_Y_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_Y_LEN;
-    constant SUM_X_LEN   : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_X_LEN;
-    constant SUM_X2_LEN  : integer := CSF_MAXHITS_SEG_LEN+MDT_LOCAL_X_LEN*2;
+    CONSTANT SUM_YZ_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN * 2;
+    CONSTANT SUM_Y_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_Y_LEN;
+    CONSTANT SUM_X_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN;
+    CONSTANT SUM_X2_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + MDT_LOCAL_X_LEN * 2;
 
     -- Summation signals
-    signal dsp_SumXY,dsp_SumXY_s    : unsigned(SUM_YZ_LEN-1 downto 0)
-        := (others => '0');
-    signal dsp_SumY ,dsp_SumY_s     : unsigned(SUM_Y_LEN-1 downto 0 )
-        := (others => '0');
-    signal dsp_SumX ,dsp_SumX_s     : unsigned(SUM_X_LEN-1 downto 0 )
-        := (others => '0');
-    signal dsp_SumX2 ,dsp_SumX2_s   : unsigned(SUM_X2_LEN-1 downto 0 )
-        := (others => '0');
-    signal dsp_nhits,dsp_nhits_s    : unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0)
-        := (others => '0');
+    SIGNAL dsp_SumXY, dsp_SumXY_s : unsigned(SUM_YZ_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL dsp_SumY, dsp_SumY_s : unsigned(SUM_Y_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL dsp_SumX, dsp_SumX_s : unsigned(SUM_X_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL dsp_SumX2, dsp_SumX2_s : unsigned(SUM_X2_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL dsp_nhits, dsp_nhits_s : unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
 
     -- Numerator/Denominator widths
-    constant NSUM_YZ_LEN      : integer := SUM_YZ_LEN + CSF_MAXHITS_SEG_LEN;
-    constant SUM_Y_SUM_X_LEN  : integer := SUM_Y_LEN  + SUM_X_LEN;
-    constant SUM_Y_SUM_X2_LEN : integer := SUM_Y_LEN  + SUM_X2_LEN;
-    constant SUM_XZ_SUM_X_LEN : integer := SUM_YZ_LEN + SUM_X_LEN;
-    constant SUM_X_SUM_X_LEN  : integer := SUM_X_LEN*2;
-    constant NSUM_X2_LEN      : integer := CSF_MAXHITS_SEG_LEN + SUM_X2_LEN;
-    constant NUM_M_LEN        : integer := NSUM_YZ_LEN + 1;
-    constant NUM_B_LEN        : integer := SUM_Y_SUM_X2_LEN + 1;
-    constant DEN_LEN          : integer := NSUM_X2_LEN;
+    CONSTANT NSUM_YZ_LEN : INTEGER := SUM_YZ_LEN + CSF_MAXHITS_SEG_LEN;
+    CONSTANT SUM_Y_SUM_X_LEN : INTEGER := SUM_Y_LEN + SUM_X_LEN;
+    CONSTANT SUM_Y_SUM_X2_LEN : INTEGER := SUM_Y_LEN + SUM_X2_LEN;
+    CONSTANT SUM_XZ_SUM_X_LEN : INTEGER := SUM_YZ_LEN + SUM_X_LEN;
+    CONSTANT SUM_X_SUM_X_LEN : INTEGER := SUM_X_LEN * 2;
+    CONSTANT NSUM_X2_LEN : INTEGER := CSF_MAXHITS_SEG_LEN + SUM_X2_LEN;
+    CONSTANT NUM_M_LEN : INTEGER := NSUM_YZ_LEN + 1;
+    CONSTANT NUM_B_LEN : INTEGER := SUM_Y_SUM_X2_LEN + 1;
+    CONSTANT DEN_LEN : INTEGER := NSUM_X2_LEN;
 
     -- Numerator/Denominator constants
-    constant SHIFT_NUM_M            : integer := 15;
-    constant SHIFT_NUM_B            : integer := 28;
-    constant SHIFT_DEN              : integer := 21;
-    constant RECIPROCAL_LEN         : integer := 22;
-    constant B_OVER_Z_MULTI_LEN     : integer
-        := integer(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
+    CONSTANT SHIFT_NUM_M : INTEGER := 15;
+    CONSTANT SHIFT_NUM_B : INTEGER := 28;
+    CONSTANT SHIFT_DEN : INTEGER := 21;
+    CONSTANT RECIPROCAL_LEN : INTEGER := 22;
+    CONSTANT B_OVER_Z_MULTI_LEN : INTEGER
+    := INTEGER(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
 
     -- Numerator/Denominator signals
-    signal dsp_NSumXY, dsp_NSumXY_s, dsp_NSumXY_ss
-        : unsigned(NSUM_YZ_LEN-1 downto 0) := (others => '0');
-    signal dsp_SumYSumX , dsp_SumYSumX_s, dsp_SumYSumX_ss
-        : unsigned(SUM_Y_SUM_X_LEN-1 downto 0) := (others => '0');
-    signal dsp_SumYSumX2, dsp_SumYSumX2_s, dsp_SumYSumX2_ss
-        : unsigned(SUM_Y_SUM_X2_LEN-1 downto 0 ) := (others => '0');
-    signal dsp_SumXYSumX, dsp_SumXYSumX_s, dsp_SumXYSumX_ss
-        : unsigned(SUM_XZ_SUM_X_LEN-1 downto 0 ) := (others => '0');
-    signal dsp_NSumX2   , dsp_NSumX2_s, dsp_NSumX2_ss
-        : unsigned(NSUM_X2_LEN-1 downto 0 ) := (others => '0');
-    signal dsp_SumXSumX , dsp_SumXSumX_s, dsp_SumXSumX_ss
-        : unsigned(SUM_X_SUM_X_LEN-1 downto 0 ) := (others => '0');
+    SIGNAL dsp_NSumXY, dsp_NSumXY_s, dsp_NSumXY_ss
+    : unsigned(NSUM_YZ_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL dsp_SumYSumX, dsp_SumYSumX_s, dsp_SumYSumX_ss
+    : unsigned(SUM_Y_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL dsp_SumYSumX2, dsp_SumYSumX2_s, dsp_SumYSumX2_ss
+    : unsigned(SUM_Y_SUM_X2_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL dsp_SumXYSumX, dsp_SumXYSumX_s, dsp_SumXYSumX_ss
+    : unsigned(SUM_XZ_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL dsp_NSumX2, dsp_NSumX2_s, dsp_NSumX2_ss
+    : unsigned(NSUM_X2_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL dsp_SumXSumX, dsp_SumXSumX_s, dsp_SumXSumX_ss
+    : unsigned(SUM_X_SUM_X_LEN - 1 DOWNTO 0) := (OTHERS => '0');
 
-    signal numerator_m  : signed(NUM_M_LEN-1 downto 0) := (others => '0');
-    signal numerator_b  : signed(NUM_B_LEN-1 downto 0 ) := (others => '0');
-    signal denominator  : unsigned(DEN_LEN-1 downto 0 ) := (others => '0');
-    signal numerator_m_red, numerator_m_red_s,
-           numerator_m_red_ss, numerator_m_red_sss:
-            signed(NUM_M_LEN-SHIFT_NUM_M-1 downto 0):= (others => '0');
-    signal numerator_b_red, numerator_b_red_s,
-           numerator_b_red_ss, numerator_b_red_sss:
-            signed(NUM_B_LEN-SHIFT_NUM_B-1 downto 0 ) := (others => '0');
-    signal denominator_red  : unsigned(DEN_LEN-SHIFT_DEN-1 downto 0 )
-        := (others => '0');
-    signal reciprocal_addr  : std_logic_vector(DEN_LEN-SHIFT_DEN-1 downto 0 )
-        := (others => '0');
-    signal reciprocal_den, reciprocal_den_s : signed(RECIPROCAL_LEN downto 0)
-        := (others => '0');
-
-
-    type t_reciprocalROM is array ( natural range <> ) of
-            std_logic_vector( RECIPROCAL_LEN-1 downto 0 );
-    function reciprocalROM return t_reciprocalROM is
-        variable temp: t_reciprocalROM(2**16-1 downto 0)
-            := (others => (others => '0'));
-    begin
-        for k in 2 ** 16 - 1 downto 0 loop
-            temp( k ) := std_logic_vector( to_unsigned(
-                integer( floor(
-                    (( 2.0 ** RECIPROCAL_LEN )) / ( real( k ) + 0.5 )
-                )), RECIPROCAL_LEN ));
-        end loop;
-    return temp;
-    end function;
+    SIGNAL numerator_m : signed(NUM_M_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL numerator_b : signed(NUM_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL denominator : unsigned(DEN_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL numerator_m_red, numerator_m_red_s,
+    numerator_m_red_ss, numerator_m_red_sss :
+    signed(NUM_M_LEN - SHIFT_NUM_M - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL numerator_b_red, numerator_b_red_s,
+    numerator_b_red_ss, numerator_b_red_sss :
+    signed(NUM_B_LEN - SHIFT_NUM_B - 1 DOWNTO 0) := (OTHERS => '0');
+    SIGNAL denominator_red : unsigned(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL reciprocal_den, reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
+    := (OTHERS => '0');
+    TYPE t_reciprocalROM IS ARRAY (NATURAL RANGE <>) OF
+    STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
+    FUNCTION reciprocalROM RETURN t_reciprocalROM IS
+        VARIABLE temp : t_reciprocalROM(2 ** 16 - 1 DOWNTO 0)
+        := (OTHERS => (OTHERS => '0'));
+    BEGIN
+        FOR k IN 2 ** 16 - 1 DOWNTO 0 LOOP
+            temp(k) := STD_LOGIC_VECTOR(to_unsigned(
+            INTEGER(floor(
+            ((2.0 ** RECIPROCAL_LEN)) / (real(k) + 0.5)
+            )), RECIPROCAL_LEN));
+        END LOOP;
+        RETURN temp;
+    END FUNCTION;
 
     -- Fit result widths
-    constant MFIT_FULL_LEN : integer := NUM_M_LEN-SHIFT_NUM_M+RECIPROCAL_LEN+1;
-    constant BFIT_FULL_LEN : integer := NUM_B_LEN-SHIFT_NUM_B+RECIPROCAL_LEN+1;
+    CONSTANT MFIT_FULL_LEN : INTEGER := NUM_M_LEN - SHIFT_NUM_M + RECIPROCAL_LEN + 1;
+    CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
 
     -- Fit result signals
-    signal mfit_full, mfit_full_s : signed(MFIT_FULL_LEN-1 downto 0)
-        := (others => '0');
-    signal bfit_full, bfit_full_s : signed(BFIT_FULL_LEN-1 downto 0)
-        := (others => '0');
+    SIGNAL mfit_full, mfit_full_s : signed(MFIT_FULL_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL bfit_full, bfit_full_s : signed(BFIT_FULL_LEN - 1 DOWNTO 0)
+    := (OTHERS => '0');
 
     -- DSP valid signals
-    signal dsp_start, dsp_start_s : std_logic := '0';
-    signal counter : integer := 0;
-    signal startCounter : std_logic := '0';
-    signal dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : std_logic := '0';
-    signal event_valid : std_logic := '0';
+    SIGNAL dsp_start, dsp_start_s : STD_LOGIC := '0';
+    SIGNAL counter : INTEGER := 0;
+    SIGNAL startCounter : STD_LOGIC := '0';
+    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : STD_LOGIC := '0';
+    SIGNAL event_valid : STD_LOGIC := '0';
 
-begin
+BEGIN
 
     hit1 <= structify(i_hit1);
     hit2 <= structify(i_hit2);
 
-    Fitter : process( clk )
-    begin
-        if rising_edge(clk) then
+    Fitter : PROCESS (clk)
+    BEGIN
+        IF rising_edge(clk) THEN
             hit1_s <= hit1;
             hit2_s <= hit2;
             dsp_start <= '0';
-            finalhit <= hit1.valid or hit2.valid;
+            finalhit <= hit1.valid OR hit2.valid;
 
-            if hit1.valid = '1' or hit2.valid = '1' then
+            IF hit1.valid = '1' OR hit2.valid = '1' THEN
                 event_valid <= '1';
-            end if;
+            END IF;
 
-            if (hit1_s.valid = '1' or hit2_s.valid = '1')
-                and event_valid = '1' then
-                dsp_SumXY <= dsp_SumXY + hit1_s.x*hit1_s.y +
-                             hit2_s.x*hit2_s.y;
-                dsp_SumY  <= dsp_SumY + hit1_s.y + hit2_s.y;
-                dsp_SumX  <= dsp_SumX + hit1_s.x + hit2_s.x;
-                dsp_SumX2 <= dsp_SumX2 + hit1_s.x*hit1_s.x + hit2_s.x*hit2_s.x;
+            IF (hit1_s.valid = '1' OR hit2_s.valid = '1')
+                AND event_valid = '1' THEN
+                dsp_SumXY <= dsp_SumXY + hit1_s.x * hit1_s.y +
+                    hit2_s.x * hit2_s.y;
+                dsp_SumY <= dsp_SumY + hit1_s.y + hit2_s.y;
+                dsp_SumX <= dsp_SumX + hit1_s.x + hit2_s.x;
+                dsp_SumX2 <= dsp_SumX2 + hit1_s.x * hit1_s.x + hit2_s.x * hit2_s.x;
                 dsp_nhits <= dsp_nhits + stdlogic_integer(hit1_s.valid) +
-                             stdlogic_integer(hit2_s.valid);
+                    stdlogic_integer(hit2_s.valid);
                 startCounter <= '1';
-            end if;
+            END IF;
 
-            if startCounter = '1' then
+            IF startCounter = '1' THEN
                 counter <= counter + 1;
-                if counter = 8 then
-                    dsp_start    <= '1';
+                IF counter = 8 THEN
+                    dsp_start <= '1';
                     startCounter <= '0';
-                    counter      <= 0;
-                end if;
-            end if;
+                    counter <= 0;
+                END IF;
+            END IF;
 
             -- Clock 0
             --dv0 <= dsp_start;
-            dsp_NSumXY      <= dsp_nhits*dsp_SumXY;
-            dsp_SumYSumX    <= dsp_SumY*dsp_SumX;
-            dsp_SumYSumX2   <= dsp_SumY*dsp_SumX2;
-            dsp_SumXYSumX   <= dsp_SumXY*dsp_SumX;
-            dsp_NSumX2      <= dsp_nhits*dsp_SumX2;
-            dsp_SumXSumX    <= dsp_SumX*dsp_SumX;
+            dsp_NSumXY <= dsp_nhits * dsp_SumXY;
+            dsp_SumYSumX <= dsp_SumY * dsp_SumX;
+            dsp_SumYSumX2 <= dsp_SumY * dsp_SumX2;
+            dsp_SumXYSumX <= dsp_SumXY * dsp_SumX;
+            dsp_NSumX2 <= dsp_nhits * dsp_SumX2;
+            dsp_SumXSumX <= dsp_SumX * dsp_SumX;
             --end if;
 
             -- Clock 1
             dv1 <= dsp_start;
-            dsp_NSumXY_s        <= dsp_NSumXY   ;
-            dsp_SumYSumX_s      <= dsp_SumYSumX ;
-            dsp_SumYSumX2_s     <= dsp_SumYSumX2;
-            dsp_SumXYSumX_s     <= dsp_SumXYSumX;
-            dsp_NSumX2_s        <= dsp_NSumX2   ;
-            dsp_SumXSumX_s      <= dsp_SumXSumX ;
+            dsp_NSumXY_s <= dsp_NSumXY;
+            dsp_SumYSumX_s <= dsp_SumYSumX;
+            dsp_SumYSumX2_s <= dsp_SumYSumX2;
+            dsp_SumXYSumX_s <= dsp_SumXYSumX;
+            dsp_NSumX2_s <= dsp_NSumX2;
+            dsp_SumXSumX_s <= dsp_SumXSumX;
 
             -- Clock 2
             dv2 <= dv1;
-            dsp_NSumXY_ss       <= dsp_NSumXY_s     ;
-            dsp_SumYSumX_ss     <= dsp_SumYSumX_s ;
-            dsp_SumYSumX2_ss    <= dsp_SumYSumX2_s;
-            dsp_SumXYSumX_ss    <= dsp_SumXYSumX_s;
-            dsp_NSumX2_ss       <= dsp_NSumX2_s     ;
-            dsp_SumXSumX_ss     <= dsp_SumXSumX_s ;
+            dsp_NSumXY_ss <= dsp_NSumXY_s;
+            dsp_SumYSumX_ss <= dsp_SumYSumX_s;
+            dsp_SumYSumX2_ss <= dsp_SumYSumX2_s;
+            dsp_SumXYSumX_ss <= dsp_SumXYSumX_s;
+            dsp_NSumX2_ss <= dsp_NSumX2_s;
+            dsp_SumXSumX_ss <= dsp_SumXSumX_s;
 
             -- Clock 3
             dv3 <= dv2;
-            numerator_m         <= signed('0' & dsp_NSumXY_ss) - signed('0' & dsp_SumYSumX_ss);
-            numerator_b         <= signed('0' & dsp_SumYSumX2_ss) - signed('0' & dsp_SumXYSumX_ss);
-            denominator         <= dsp_NSumX2_ss - dsp_SumXSumX_ss;
+            numerator_m <= signed('0' & dsp_NSumXY_ss) - signed('0' & dsp_SumYSumX_ss);
+            numerator_b <= signed('0' & dsp_SumYSumX2_ss) - signed('0' & dsp_SumXYSumX_ss);
+            denominator <= dsp_NSumX2_ss - dsp_SumXSumX_ss;
 
             -- Clock 4
             dv4 <= dv3;
-            numerator_m_red     <= resize(shift_right(numerator_m, SHIFT_NUM_M),
-                                     NUM_M_LEN-SHIFT_NUM_M);
-            numerator_b_red     <= resize(shift_right(numerator_b, SHIFT_NUM_B),
-                                     NUM_B_LEN-SHIFT_NUM_B);
-            denominator_red     <= resize(shift_right(denominator, SHIFT_DEN),
-                                     DEN_LEN-SHIFT_DEN);
+            numerator_m_red <= resize(shift_right(numerator_m, SHIFT_NUM_M),
+                NUM_M_LEN - SHIFT_NUM_M);
+            numerator_b_red <= resize(shift_right(numerator_b, SHIFT_NUM_B),
+                NUM_B_LEN - SHIFT_NUM_B);
+            denominator_red <= resize(shift_right(denominator, SHIFT_DEN),
+                DEN_LEN - SHIFT_DEN);
             -- Clock 5
             dv5 <= dv4;
-            reciprocal_addr     <= std_logic_vector(denominator_red);
-            numerator_b_red_s   <= numerator_b_red;
-            numerator_m_red_s   <= numerator_m_red;
+            reciprocal_addr <= STD_LOGIC_VECTOR(denominator_red);
+            numerator_b_red_s <= numerator_b_red;
+            numerator_m_red_s <= numerator_m_red;
 
             -- Clock 6
             dv6 <= dv5;
-            reciprocal_den      <= signed('0' &
+            reciprocal_den <= signed('0' &
                 reciprocalROM(to_integer(unsigned(reciprocal_addr))));
-            numerator_b_red_ss  <= numerator_b_red_s;
-            numerator_m_red_ss  <= numerator_m_red_s;
+            numerator_b_red_ss <= numerator_b_red_s;
+            numerator_m_red_ss <= numerator_m_red_s;
 
             --Clock 7
             dv7 <= dv6;
-            numerator_b_red_sss  <= numerator_b_red_ss;
-            numerator_m_red_sss  <= numerator_m_red_ss;
-            reciprocal_den_s     <= reciprocal_den;
+            numerator_b_red_sss <= numerator_b_red_ss;
+            numerator_m_red_sss <= numerator_m_red_ss;
+            reciprocal_den_s <= reciprocal_den;
 
             --Clock 8
             dv8 <= dv7;
-            mfit_full           <= numerator_m_red_sss*signed(reciprocal_den_s);
-            bfit_full           <= numerator_b_red_sss*signed(reciprocal_den_s);
+            mfit_full <= numerator_m_red_sss * signed(reciprocal_den_s);
+            bfit_full <= numerator_b_red_sss * signed(reciprocal_den_s);
 
             --Clock 9
-            dv9       <= dv8;
-            mfit_full_s         <= mfit_full;
-            bfit_full_s         <= bfit_full;
+            dv9 <= dv8;
+            mfit_full_s <= mfit_full;
+            bfit_full_s <= bfit_full;
 
             o_fit_valid <= dv9;
-            o_mfit  <=
-            resize(
+            o_mfit <=
+                resize(
                 shift_right(
                 mfit_full_s,
                 RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_M - MFIT_MULTI_LEN
                 ),
-            CSF_SEG_M_LEN);
+                CSF_SEG_M_LEN);
 
             o_bfit <=
-            resize(
+                resize(
                 shift_right(
                 bfit_full_s,
                 RECIPROCAL_LEN + SHIFT_DEN - SHIFT_NUM_B - B_OVER_Z_MULTI_LEN
                 ),
-            CSF_SEG_B_LEN);
+                CSF_SEG_B_LEN);
             o_nhits <= dsp_nhits;
 
             -- Reset
-            if dv9 = '1' then
-                dsp_SumXY <= (others => '0');
-                dsp_SumY  <= (others => '0');
-                dsp_SumX  <= (others => '0');
-                dsp_SumX2 <= (others => '0');
-                dsp_nhits <= (others => '0');
+            IF dv9 = '1' THEN
+                dsp_SumXY <= (OTHERS => '0');
+                dsp_SumY <= (OTHERS => '0');
+                dsp_SumX <= (OTHERS => '0');
+                dsp_SumX2 <= (OTHERS => '0');
+                dsp_nhits <= (OTHERS => '0');
                 event_valid <= '0';
-            end if;
+            END IF;
 
-        end if ;
-    end process ; -- Fitter
-
-
-end Behavioral;
+        END IF;
+    END PROCESS; -- Fitter
+END Behavioral;
