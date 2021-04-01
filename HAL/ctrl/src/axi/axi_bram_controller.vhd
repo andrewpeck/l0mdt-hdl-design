@@ -21,22 +21,22 @@ entity axi_bram_controller is
     --------------------------------------------------------------------------------
 
     --determines whether the bmg is external or internal to axi bram ctrl wrapper
-    C_BRAM_INST_MODE   : string  := "EXTERNAL";  -- external ; internal
-    C_MEMORY_DEPTH     : integer := 4096;        --Memory depth specified by the user
-    C_BRAM_ADDR_WIDTH  : integer := 12;          -- Width of bram address bus (in bits)
-    C_SINGLE_PORT_BRAM : integer := 1;           -- Enable single port usage of BRAM
-    C_READ_LATENCY     : integer := 1;
-    C_RD_CMD_OPTIMIZATION  : integer := 1;
+    C_BRAM_INST_MODE      : string  := "EXTERNAL";  -- external ; internal
+    C_MEMORY_DEPTH        : integer := 4096;  --Memory depth specified by the user
+    C_BRAM_ADDR_WIDTH     : integer := 12;  -- Width of bram address bus (in bits)
+    C_SINGLE_PORT_BRAM    : integer := 1;   -- Enable single port usage of BRAM
+    C_READ_LATENCY        : integer := 1;
+    C_RD_CMD_OPTIMIZATION : integer := 1;
 
     --------------------------------------------------------------------------------
     -- AXI Configuration
     --------------------------------------------------------------------------------
 
     C_S_AXI_ID_WIDTH              : integer := AXI_ID_BIT_COUNT;  --  AXI ID vector width
-    C_S_AXI_ADDR_WIDTH            : integer := 32;                -- Width of AXI address bus (in bits)
-    C_S_AXI_DATA_WIDTH            : integer := 32;                -- Width of AXI data bus (in bits)
-    C_S_AXI_PROTOCOL              : string  := "AXI4LITE";        -- Set to AXI4LITE to optimize out burst transaction support
-    C_S_AXI_SUPPORTS_NARROW_BURST : integer := 1;                 -- Support for narrow burst operations
+    C_S_AXI_ADDR_WIDTH            : integer := 32;  -- Width of AXI address bus (in bits)
+    C_S_AXI_DATA_WIDTH            : integer := 32;  -- Width of AXI data bus (in bits)
+    C_S_AXI_PROTOCOL              : string  := "AXI4LITE";  -- Set to AXI4LITE to optimize out burst transaction support
+    C_S_AXI_SUPPORTS_NARROW_BURST : integer := 1;  -- Support for narrow burst operations
 
     --------------------------------------------------------------------------------
     -- ECC Configuration
@@ -50,7 +50,7 @@ entity axi_bram_controller is
     C_ECC                   : integer := 0;  -- Enables or disables ECC functionality
     C_ECC_TYPE              : integer := 1;  -- ECC algorithm
     C_FAULT_INJECT          : integer := 0;  -- Enable fault injection registers (default = disabled)
-    C_ECC_ONOFF_RESET_VALUE : integer := 1   -- By default, ECC checking is on (can disable ECC @ reset by setting this to 0)
+    C_ECC_ONOFF_RESET_VALUE : integer := 1  -- By default, ECC checking is on (can disable ECC @ reset by setting this to 0)
     );
   port (
 

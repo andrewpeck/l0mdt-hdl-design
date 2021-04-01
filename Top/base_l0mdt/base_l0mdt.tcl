@@ -5,10 +5,12 @@ set USE_QUESTA_SIMULATOR 0
 
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
+
+regexp -- {Vivado v([0-9]{4})\.[0-9]} [version] -> VIVADO_YEAR
 set SYNTH_STRATEGY "Vivado Synthesis Defaults"
-set SYNTH_FLOW "Vivado Synthesis 2019"
+set SYNTH_FLOW "Vivado Synthesis $VIVADO_YEAR"
 set IMPL_STRATEGY "Vivado Implementation Defaults"
-set IMPL_FLOW "Vivado Implementation 2019"
+set IMPL_FLOW "Vivado Implementation $VIVADO_YEAR"
 
 ### Set Vivado Runs Properties ###
 #
@@ -42,12 +44,22 @@ set SIMULATOR  xsim
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
-# TODO: uncomment when CI machine has uHAL
+source -notrace $PATH_REPO/Hog/Tcl/create_project.tcl
+
+set apollo_root_path $PATH_REPO
+
+set C2C_PATH $PATH_REPO/HAL/c2c
+set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
+set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
+set BD_SUFFIX [lindex [split $FPGA "-"] 0]
+
+set bd_design_name "c2cSlave"
+make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
+
+#source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
+
+# TODO: add this to a makefile and run manually
 #eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
 
-source $PATH_REPO/Hog/Tcl/create_project.tcl
-
-set C2C_PATH $PATH_REPO/c2c/src/c2c
-set BD_PATH $PATH_REPO/c2c/src/bd
-cd     $PATH_REPO/c2c/src/c2c
-source createC2CSlaveInterconnect.tcl
+# this fails when executed from vivado tcl... add it to a makefile and run manually
+#exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"

@@ -95,11 +95,9 @@ begin
       )
 
     port map (
-      clk_freerunningclk_i       => std_logic0,  -- not used since reset on even feature is
-                                                 -- disabled in frame aligner
       uplinkclk_i                => clock,
       uplinkrst_n_i              => not reset,       -- TODO: axi
-      mgt_word_o                 => ttc_mgt_data_i,
+      mgt_word_i                 => ttc_mgt_data_i,
       bypassinterleaver_i        => c_BYPASS_INTERLEAVER,
       bypassfecencoder_i         => c_BYPASS_FEC,
       bypassscrambler_i          => c_BYPASS_SCRAMBLER,

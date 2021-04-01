@@ -2,5 +2,5 @@
 # for some reason, it seems HOG requires hal.src to be double listed here and in l0mdt.src???
 # otherwise it adds only the 2 .vhd files listed below and ignores the entire library
 HAL/hal/list/hal.src
-Top/l0mdt/hal_user_pkg.vhd
-HAL/hal/src/boards/board_pkg_mpi_ku15p.vhd
+HAL/hal_user_pkg.vhd
+HAL/boards/board_pkg_mpi_ku15p.vhd

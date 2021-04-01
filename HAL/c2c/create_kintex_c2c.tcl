@@ -1,52 +1,3 @@
-source ../bd/axi_helpers.tcl
-source ../bd/Xilinx_AXI_slaves.tcl
-
-#create a block design called "c2cSlave"
-#directory and name must be the same
-set bd_design_name "c2cSlave"
-create_bd_design -dir ./ ${bd_design_name}
-
-set EXT_CLK clk50Mhz
-set EXT_RESET reset_n
-
-set AXI_MASTER_CLK AXI_CLK
-set AXI_MASTER_RSTN AXI_RST_N
-set AXI_MASTER_CLK_MHZ 50
-
-set AXI_INTERCONNECT_NAME slave_interconnect
-
-#================================================================================
-#  Setup external clock and reset
-#================================================================================
-create_bd_port -dir I -type clk $EXT_CLK
-set_property CONFIG.FREQ_HZ 50000000 [get_bd_ports ${EXT_CLK}]
-create_bd_port -dir I -type rst $EXT_RESET
-
-#================================================================================
-#  Create an AXI interconnect
-#================================================================================
-puts "Building AXI C2C slave interconnect"
-
-#create AXI clock & reset ports
-create_bd_port -dir I -type clk $AXI_MASTER_CLK
-create_bd_port -dir O -type rst $AXI_MASTER_RSTN
-
-#create the reset logic
-set SYS_RESETER sys_reseter
-create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == proc_sys_reset}] $SYS_RESETER
-#connect external reset
-connect_bd_net [get_bd_ports $EXT_RESET] [get_bd_pins $SYS_RESETER/ext_reset_in]
-#connect clock
-connect_bd_net [get_bd_ports $AXI_MASTER_CLK] [get_bd_pins $SYS_RESETER/slowest_sync_clk]
-
-
-set SYS_RESETER_AXI_RSTN $SYS_RESETER/interconnect_aresetn
-#create the reset to sys reseter and slave interconnect
-connect_bd_net [get_bd_ports $AXI_MASTER_RSTN] [get_bd_pins $SYS_RESETER_AXI_RSTN]
-
-#================================================================================
-#  Configure chip 2 chip links
-#================================================================================
 set C2C K_C2CLINK
 set C2C_PHY ${C2C}_PHY
 
@@ -74,7 +25,7 @@ make_bd_pins_external -name ${C2C}_axi_c2c_link_error_out      [get_bd_pins ${C2
 
 endgroup
 
-#create chip-2-chip aurora 
+#create chip-2-chip aurora
 startgroup
 create_bd_cell -type ip -vlnv [get_ipdefs -filter {NAME == aurora_64b66b}] ${C2C_PHY}
 set_property CONFIG.C_INIT_CLK.VALUE_SRC PROPAGATED   [get_bd_cells ${C2C_PHY}]
@@ -126,30 +77,3 @@ connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_aclk]
 connect_bd_net [get_bd_ports ${AXI_MASTER_CLK}] [get_bd_pins ${C2C}/m_axi_lite_aclk]
 
 endgroup
-
-
-#================================================================================
-#  Connect C2C master port to interconnect slave port
-#================================================================================
-set mAXI [list ${C2C}/m_axi      ${C2C}/m_axi_lite]
-set mCLK [list ${AXI_MASTER_CLK} ${AXI_MASTER_CLK}]
-set mRST [list $AXI_MASTER_RSTN  $AXI_MASTER_RSTN]
-
-[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
-[AXI_DEV_CONNECT ${C2C_PHY} ${AXI_INTERCONNECT_NAME} ${EXT_CLK} ${EXT_RESET} 50000000 0x83c44000 4K 0]
-
-#================================================================================
-#  Configure and add AXI slaves
-#================================================================================
-set c2cpath [file normalize [file dirname [info script]]]
-source $c2cpath/AddSlaves.tcl
-
-#========================================
-#  Finish up
-#========================================
-validate_bd_design
-
-make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
-save_bd_design
-
-close_bd_design ${bd_design_name}

@@ -1,7 +1,11 @@
 --This file was auto-generated.
 --Modifications might be lost.
+-- Created : 2021-04-01 18:20:41.155550.
 library IEEE;
 use IEEE.std_logic_1164.all;
+
+library shared_lib;
+use shared_lib.common_ieee.all;
 
 
 package UCM_CTRL is

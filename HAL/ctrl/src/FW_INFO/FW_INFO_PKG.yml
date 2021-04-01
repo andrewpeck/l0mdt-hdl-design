@@ -1,0 +1,88 @@
+# yml2hdl v2
+# This file was auto-generated.
+# Modifications might be lost.
+# Created : 2021-04-01 18:20:06.605441.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
+
+hdl:
+
+- FW_INFO_FW_INFO_BUILD_DATE_MON_t:
+  - DAY : [ type: logic, length: 8 ]
+  - MONTH : [ type: logic, length: 8 ]
+  - YEAR : [ type: logic, length: 16 ]
+
+
+- FW_INFO_FW_INFO_BUILD_TIME_MON_t:
+  - SEC : [ type: logic, length: 8 ]
+  - MIN : [ type: logic, length: 8 ]
+  - HOUR : [ type: logic, length: 8 ]
+
+
+- FW_INFO_FW_INFO_MON_t:
+  - GIT_VALID : [ type: logic ]
+  - GIT_HASH_1 : [ type: logic, length: 32 ]
+  - GIT_HASH_2 : [ type: logic, length: 32 ]
+  - GIT_HASH_3 : [ type: logic, length: 32 ]
+  - GIT_HASH_4 : [ type: logic, length: 32 ]
+  - GIT_HASH_5 : [ type: logic, length: 32 ]
+  - BUILD_DATE : [ type: FW_INFO_FW_INFO_BUILD_DATE_MON_t ]
+  - BUILD_TIME : [ type: FW_INFO_FW_INFO_BUILD_TIME_MON_t ]
+
+
+- FW_INFO_HOG_INFO_MON_t:
+  - GLOBAL_FWDATE : [ type: logic, length: 32 ]
+  - GLOBAL_FWTIME : [ type: logic, length: 32 ]
+  - OFFICIAL : [ type: logic, length: 32 ]
+  - GLOBAL_FWHASH : [ type: logic, length: 32 ]
+  - TOP_FWHASH : [ type: logic, length: 32 ]
+  - XML_HASH : [ type: logic, length: 32 ]
+  - GLOBAL_FWVERSION : [ type: logic, length: 32 ]
+  - TOP_FWVERSION : [ type: logic, length: 32 ]
+  - XML_VERSION : [ type: logic, length: 32 ]
+  - HOG_FWHASH : [ type: logic, length: 32 ]
+  - FRAMEWORK_FWVERSION : [ type: logic, length: 32 ]
+  - FRAMEWORK_FWHASH : [ type: logic, length: 32 ]
+
+
+- FW_INFO_CONFIG_MON_t:
+  - MAIN_CFG_COMPILE_HW : [ type: logic ]
+  - MAIN_CFG_COMPILE_UL : [ type: logic ]
+  - ST_nBARREL_ENDCAP : [ type: logic ]
+  - ENDCAP_nSMALL_LARGE : [ type: logic ]
+  - ENABLE_NEIGHBORS : [ type: logic ]
+  - SECTOR_ID : [ type: logic, length: 32 ]
+  - PHY_BARREL_R0 : [ type: logic, length: 32 ]
+  - PHY_BARREL_R1 : [ type: logic, length: 32 ]
+  - PHY_BARREL_R2 : [ type: logic, length: 32 ]
+  - PHY_BARREL_R3 : [ type: logic, length: 32 ]
+  - HPS_ENABLE_ST_INN : [ type: logic ]
+  - HPS_ENABLE_ST_EXT : [ type: logic ]
+  - HPS_ENABLE_ST_MID : [ type: logic ]
+  - HPS_ENABLE_ST_OUT : [ type: logic ]
+  - HPS_NUM_MDT_CH_INN : [ type: logic, length: 8 ]
+  - HPS_NUM_MDT_CH_EXT : [ type: logic, length: 8 ]
+  - HPS_NUM_MDT_CH_MID : [ type: logic, length: 8 ]
+  - HPS_NUM_MDT_CH_OUT : [ type: logic, length: 8 ]
+  - NUM_MTC : [ type: logic, length: 8 ]
+  - NUM_NSP : [ type: logic, length: 8 ]
+  - UCM_ENABLED : [ type: logic ]
+  - MPL_ENABLED : [ type: logic ]
+  - SF_ENABLED : [ type: logic ]
+  - SF_TYPE : [ type: logic ]
+  - NUM_DAQ_STREAMS : [ type: logic, length: 8 ]
+  - NUM_SF_INPUTS : [ type: logic, length: 8 ]
+  - NUM_SF_OUTPUTS : [ type: logic, length: 8 ]
+  - MAX_NUM_SL : [ type: logic, length: 8 ]
+  - NUM_THREADS : [ type: logic, length: 8 ]
+
+
+- FW_INFO_MON_t:
+  - FW_INFO : [ type: FW_INFO_FW_INFO_MON_t ]
+  - HOG_INFO : [ type: FW_INFO_HOG_INFO_MON_t ]
+  - CONFIG : [ type: FW_INFO_CONFIG_MON_t ]
+
+

@@ -23,6 +23,7 @@ BD/*
 **/IP/**/*
 !IP/**/*.xci
 !IP/**.xci
+!HAL/IP/*/*.xci
 *.dbg
 *.zip
 work/
