@@ -17,84 +17,84 @@
 -- Additional Comments:
 --
 ---------------------------------------------------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
 
-library csf_lib;
-use csf_lib.csf_pkg.all;
-use csf_lib.csf_custom_pkg.all;
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
+USE csf_lib.csf_custom_pkg.ALL;
 
-entity seg_coord_transform is
-  generic (
-    IS_ENDCAP : integer := 0
-  );
-  port (
-    clk         : in  std_logic;
-    i_locseg    : in  csf_locseg_rvt;
-    i_seed      : in  heg2sfslc_rvt;
-    o_globseg   : out sf2ptcalc_rvt
-  );
-end seg_coord_transform; -- seg_coord_transform
+ENTITY seg_coord_transform IS
+    GENERIC (
+        IS_ENDCAP : INTEGER := 0
+    );
+    PORT (
+        clk : IN STD_LOGIC;
+        i_locseg : IN csf_locseg_rvt;
+        i_seed : IN heg2sfslc_rvt;
+        o_globseg : OUT sf2ptcalc_rvt
+    );
+END seg_coord_transform; -- seg_coord_transform
 
-architecture Behavioral of seg_coord_transform is
+ARCHITECTURE Behavioral OF seg_coord_transform IS
 
     -- Pos HE Window shift
-    constant HE_POS_SHIFT : integer := integer(log2(SF2PTCALC_SEGPOS_MULT/HEG2SFSLC_HEWINDOW_POS_MULT ));
+    CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(SF2PTCALC_SEGPOS_MULT/HEG2SFSLC_HEWINDOW_POS_MULT));
     -- Local Pos shift
-    constant LOC_POS_SHIFT : integer := integer(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
+    CONSTANT LOC_POS_SHIFT : INTEGER := INTEGER(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
     -- HE window pos in global segment format
-    signal he_window_pos : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    SIGNAL he_window_pos : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Absolute local segment pos in global segment format
-    signal abs_loc_pos : unsigned(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    SIGNAL abs_loc_pos : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- local segment position sign 
-    signal loc_pos_sign : std_logic := '0';
+    SIGNAL loc_pos_sign : STD_LOGIC := '0';
 
     -- Store roi information
-    signal seed, seed_i : heg2sfslc_rt;
+    SIGNAL seed, seed_i : heg2sfslc_rt;
     -- Store seg information
-    signal locseg, locseg_i : csf_locseg_rt;
+    SIGNAL locseg, locseg_i : csf_locseg_rt;
     -- Extrapolated coordinate (z_ext = z_fit + z_ref - x_ref*m_fit)
-    signal z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN-1 downto 0) := (others => '0');
+    SIGNAL z_ext, z_ext_s, z_ext_ss, z_loc, mx : signed(CSF_SEG_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Theta angle
-    signal theta, theta_s, theta_ss : std_logic_vector(SF_SEG_ANG_LEN-1 downto 0) := (others => '0');
+    SIGNAL theta, theta_s, theta_ss : STD_LOGIC_VECTOR(SF_SEG_ANG_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- chamber_ieta
-    signal chamber_ieta : std_logic_vector(SLC_CHAMBER_LEN-1 downto 0) := (others => '0');
+    SIGNAL chamber_ieta : STD_LOGIC_VECTOR(SLC_CHAMBER_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Chamber pos
-    signal chamber_pos : std_logic_vector(SF2PTCALC_SEGPOS_LEN-1 downto 0) := (others => '0');
+    SIGNAL chamber_pos : STD_LOGIC_VECTOR(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Global seg
-    signal globseg : sf2ptcalc_rt;
+    SIGNAL globseg : sf2ptcalc_rt;
 
-    signal addr : std_logic_vector(CSF_SEG_M_LEN downto 0) := (others => '0');
+    SIGNAL addr : STD_LOGIC_VECTOR(CSF_SEG_M_LEN DOWNTO 0) := (OTHERS => '0');
 
     -- Valid signals
-    signal dv0, dv1, dv2, dv3 : std_logic := '0';
+    SIGNAL dv0, dv1, dv2, dv3 : STD_LOGIC := '0';
 
     -------------------------------------------------------------------------------- COMPONENTS --------
     COMPONENT rom
-    GENERIC (
-        MXADRB   : integer;
-        MXDATB   : integer;
-        ROM_FILE : string;
-        ROM_STYLE : string
-    );
-    PORT (
-        clka  : in std_logic;
-        ena   : in std_logic;
-        addra : in std_logic_vector;
-        douta : out std_logic_vector
-    );
+        GENERIC (
+            MXADRB : INTEGER;
+            MXDATB : INTEGER;
+            ROM_FILE : STRING;
+            ROM_STYLE : STRING
+        );
+        PORT (
+            clka : IN STD_LOGIC;
+            ena : IN STD_LOGIC;
+            addra : IN STD_LOGIC_VECTOR;
+            douta : OUT STD_LOGIC_VECTOR
+        );
     END COMPONENT;
 
-begin
+BEGIN
 
     seed_i <= structify(i_seed);
     locseg_i <= structify(i_locseg);
@@ -102,54 +102,52 @@ begin
 
     ARCTAN : rom
     GENERIC MAP(
-        MXADRB => CSF_SEG_M_LEN+1,
+        MXADRB => CSF_SEG_M_LEN + 1,
         MXDATB => SF2PTCALC_SEGANGLE_LEN,
         ROM_FILE => "m_to_theta.mem",
         ROM_STYLE => "distributed"
     )
     PORT MAP(
         clka => clk,
-        ena  => '1',
+        ena => '1',
         --addra => std_logic_vector(to_unsigned(to_integer(locseg_i.m) + 2**(CSF_SEG_M_LEN-1), CSF_SEG_M_LEN+1)),
         addra => addr,
         douta => theta
     );
 
-    addr <= std_logic_vector(to_unsigned(to_integer(locseg_i.m) + 2**(CSF_SEG_M_LEN-1), CSF_SEG_M_LEN+1)); 
+    addr <= STD_LOGIC_VECTOR(to_unsigned(to_integer(locseg_i.m) + 2 ** (CSF_SEG_M_LEN - 1), CSF_SEG_M_LEN + 1));
 
-    CoordProc : process( clk )
-    begin
-        if rising_edge(clk) then
+    CoordProc : PROCESS (clk)
+    BEGIN
+        IF rising_edge(clk) THEN
             -- Clock 0
             dv0 <= locseg_i.valid;
-            if seed_i.data_valid = '1' and locseg_i.valid = '1' then
+            IF seed_i.data_valid = '1' AND locseg_i.valid = '1' THEN
                 seed <= seed_i;
                 locseg <= locseg_i;
-                chamber_ieta <= std_logic_vector(seed_i.mdtid.chamber_ieta);
+                chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
                 he_window_pos <= shift_left(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
-            end if;
+            END IF;
 
             -- Clock 1
             dv1 <= dv0;
-            abs_loc_pos <= resize(shift_right(unsigned(abs(locseg.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
-            loc_pos_sign <= locseg.b(CSF_SEG_B_LEN-1);
+            abs_loc_pos <= resize(shift_right(unsigned(ABS(locseg.b)), LOC_POS_SHIFT), SF2PTCALC_SEGPOS_LEN);
+            loc_pos_sign <= locseg.b(CSF_SEG_B_LEN - 1);
 
             -- Clock 2
             globseg.data_valid <= dv1;
-            if loc_pos_sign = '1' then
+            IF loc_pos_sign = '1' THEN
                 globseg.segpos <= he_window_pos - abs_loc_pos;
-            else
+            ELSE
                 globseg.segpos <= he_window_pos + abs_loc_pos;
-            end if;
+            END IF;
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
             globseg.muid <= seed.muid;
             globseg.segquality <= '1';
             globseg.mdtid <= seed.mdtid;
 
-        end if ;
-    end process ; -- CoordProc
+        END IF;
+    END PROCESS; -- CoordProc
 
-
-
-end Behavioral;
+END Behavioral;

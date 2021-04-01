@@ -17,46 +17,44 @@
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
+LIBRARY IEEE, csf_lib, pt_lib;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.NUMERIC_STD.ALL;
+USE csf_lib.csf_pkg.ALL;
+USE pt_lib.pt_pkg.ALL;
 
+ENTITY csf_tb IS
+    --  Port ( );
+END csf_tb;
 
-library IEEE, csf_lib, pt_lib;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
-use csf_lib.csf_pkg.all;
-use pt_lib.pt_pkg.all;
+ARCHITECTURE Behavioral OF csf_tb IS
+    SIGNAL clk : STD_LOGIC := '0';
+    SIGNAL seed : t_seed := null_seed;
+    SIGNAL mdt_hit : t_mdt_hit := null_mdt_hit;
+    SIGNAL seg : t_globalseg := null_globalseg;
+    CONSTANT clk_period : TIME := 4.0 ns;
+    SIGNAL eof : STD_LOGIC := '0';
+    SIGNAL rst : STD_LOGIC := '0';
+BEGIN
 
-entity csf_tb is
---  Port ( );
-end csf_tb;
+    csftop : ENTITY work.top_csf
+        PORT MAP(
+            clk => clk,
+            i_seed => seed,
+            i_mdt_hit => mdt_hit,
+            i_eof => eof,
+            o_seg => seg,
+            i_rst => rst
+        );
 
-architecture Behavioral of csf_tb is
-    signal clk : std_logic := '0';
-    signal seed : t_seed := null_seed;
-    signal mdt_hit : t_mdt_hit := null_mdt_hit;
-    signal seg : t_globalseg := null_globalseg;
-    constant clk_period : time := 4.0 ns;
-    signal eof          :  std_logic := '0';
-    signal rst : std_logic := '0';
-begin
-
-    csftop : entity work.top_csf
-    Port map(
-        clk       => clk,
-        i_seed    => seed,
-        i_mdt_hit => mdt_hit,
-        i_eof     => eof,
-        o_seg     => seg,
-        i_rst     => rst
-    );
-
-    CLK_process :process
-    begin
+    CLK_process : PROCESS
+    BEGIN
         CLK <= '0';
-        wait for CLK_period/2;
+        WAIT FOR CLK_period/2;
         CLK <= '1';
-        wait for CLK_period/2;
-    end process;
+        WAIT FOR CLK_period/2;
+    END PROCESS;
 
     --layerId 3 driftRadius 372 bplus 29 bminus 12 x 2128 z 934 isOnSegment 1
     --layerId 3 driftRadius 280 bplus 42 bminus 29 x 2128 z 1415 isOnSegment 1
@@ -70,47 +68,43 @@ begin
     --layerId 7 driftRadius 151 bplus 29 bminus 22 x 3962 z 3097 isOnSegment 1
     --layerId 0 driftRadius 94 bplus 33 bminus 29 x 880 z -90 isOnSegment 1
     --layerId 1 driftRadius 205 bplus 29 bminus 19 x 1296 z 150 isOnSegment 1
-
-
-    Pulse : process
-    begin
-        wait for clk_period*5;
+    Pulse : PROCESS
+    BEGIN
+        WAIT FOR clk_period * 5;
         seed.valid <= '1';
-        seed.mbar <= to_signed(1112,mbar_width);
-        seed.z    <= to_signed(-76906, z_roi_width);
-        seed.r    <= to_unsigned(71019, r_roi_width);
-        
-        wait for clk_period;
+        seed.mbar <= to_signed(1112, mbar_width);
+        seed.z <= to_signed(-76906, z_roi_width);
+        seed.r <= to_unsigned(71019, r_roi_width);
+
+        WAIT FOR clk_period;
         seed <= null_seed;
-        wait for clk_period*5;
+        WAIT FOR clk_period * 5;
 
-        mdt_hit <= ('1', to_signed(934, z_width), to_unsigned(2128, x_width), '0', to_unsigned(372, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(1415, z_width), to_unsigned(2128, x_width), '0', to_unsigned(280, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(1895, z_width), to_unsigned(2713, x_width), '1', to_unsigned(69, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(2136, z_width), to_unsigned(3129, x_width), '1', to_unsigned(227, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(2616, z_width), to_unsigned(3129, x_width), '1', to_unsigned(429, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(2856, z_width), to_unsigned(3545, x_width), '1', to_unsigned(135, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(3097, z_width), to_unsigned(3962, x_width), '1' , to_unsigned(151, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(-90, z_width), to_unsigned(880, x_width), '0', to_unsigned(94, r_width), (others => '0'));
-        wait for clk_period;
-        mdt_hit <= ('1', to_signed(150, z_width), to_unsigned(1296, x_width), '0', to_unsigned(205, r_width), (others => '0'));
+        mdt_hit <= ('1', to_signed(934, z_width), to_unsigned(2128, x_width), '0', to_unsigned(372, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(1415, z_width), to_unsigned(2128, x_width), '0', to_unsigned(280, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(1895, z_width), to_unsigned(2713, x_width), '1', to_unsigned(69, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(2136, z_width), to_unsigned(3129, x_width), '1', to_unsigned(227, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(2616, z_width), to_unsigned(3129, x_width), '1', to_unsigned(429, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(2856, z_width), to_unsigned(3545, x_width), '1', to_unsigned(135, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(3097, z_width), to_unsigned(3962, x_width), '1', to_unsigned(151, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(-90, z_width), to_unsigned(880, x_width), '0', to_unsigned(94, r_width), (OTHERS => '0'));
+        WAIT FOR clk_period;
+        mdt_hit <= ('1', to_signed(150, z_width), to_unsigned(1296, x_width), '0', to_unsigned(205, r_width), (OTHERS => '0'));
 
-        wait for clk_period;
+        WAIT FOR clk_period;
         mdt_hit <= null_mdt_hit;
-        wait for clk_period*5;
+        WAIT FOR clk_period * 5;
         eof <= '1';
-        wait for clk_period;
+        WAIT FOR clk_period;
         eof <= '0';
-        wait;
+        WAIT;
 
-    end process;
-
-
-end Behavioral;
+    END PROCESS;
+END Behavioral;
