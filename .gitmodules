@@ -23,7 +23,7 @@ url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
 path = tools/yml2hdl
 url = https://gitlab.com/tcpaiva/yml2hdl.git
-[submodule "HAL/c2c/src/bd"]
+[submodule "HAL/c2c/bd_helper"]
 path = HAL/c2c/bd_helper
 url = https://github.com/dgastler/BU_BUILD.git
 [submodule "tools/gldl-scripts"]
