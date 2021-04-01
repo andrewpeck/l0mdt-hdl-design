@@ -47,7 +47,7 @@ entity vamc_csw_out is
     o_data_a      : out std_logic_vector(g_DATA_WIDTH  - 1 downto 0);
     o_addr_a      : out std_logic_vector(g_ADDR_WIDTH  - 1 downto 0);
     o_data_b      : out std_logic_vector(g_DATA_WIDTH  - 1 downto 0);
-    o_addr_b      : out std_logic_vector(g_ADDR_WIDTH  - 1 downto 0);
+    o_addr_b      : out std_logic_vector(g_ADDR_WIDTH  - 1 downto 0)
 
   );
 end entity vamc_csw_out;
