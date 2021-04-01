@@ -93,6 +93,7 @@ architecture Behavioral of csf_histogram is
 
   -- Data Valid signals
   signal dv0, dv1, dv2, dv3, dv4, dv5, dv6           : std_logic := '0';
+  signal fill_minus, fill_plus                       : std_logic := '0';
   signal eof0, eof1, eof2,
           eof3, eof4, eof5,
           eof6, eof7, eof8                            : std_logic := '0';
@@ -314,6 +315,15 @@ begin
 
           -- Clock 4
           dv4 <= dv3;
+          fill_plus <= '0';
+          if bplus > -1 and bplus < HISTO_LEN  then
+            fill_plus <= '1';              
+          end if ;
+        
+          if bminus > -1 and bminus < HISTO_LEN  then
+            fill_minus <= '1';              
+          end if ;
+
           bplus_s <= unsigned(bplus(HISTO_LEN-1 downto 0));
           bminus_s <= unsigned(bminus(HISTO_LEN-1 downto 0));
 
@@ -329,9 +339,9 @@ begin
           -- Clock 5
           dv5 <= dv4;
           w_en <= (others => '0');
-          w_en(to_integer(bminus_s)) <= dv4;
+          w_en(to_integer(bminus_s)) <= fill_minus;
           w_hit_vec(to_integer(bminus_s)) <= vectorify(hit_minus);
-          w_en(to_integer(bplus_s)) <= dv4;
+          w_en(to_integer(bplus_s)) <= fill_plus;
           w_hit_vec(to_integer(bplus_s)) <= vectorify(hit_plus);
           bplus_ss <= bplus_s;
           bminus_ss <= bminus_s;
@@ -409,7 +419,7 @@ begin
                   r_addr(to_integer(max_bin1_s)) <= (others => '0');
                   has_max <= '1';
               end if;
-              if unsigned(max_counter_2) > 0 and max_counter_1 = max_counter_2 then
+              if unsigned(max_counter_2) > 0 then
                   r_addr(to_integer(max_bin2_s)) <= (others => '0');
               end if;
               mbar <= (others => '0');
@@ -434,7 +444,7 @@ begin
               end if;
 
               if unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                  and unsigned(max_counter_2) > 0 and max_counter_2 = max_counter_1 then
+                  and unsigned(max_counter_2) > 0 then
                   r_addr(to_integer(max_bin2)) <=
                       std_logic_vector(unsigned(r_addr(to_integer(max_bin2))) + 1);
               else
