@@ -39,6 +39,7 @@ entity vamc_controller is
     g_PIPELINE_WIDTH    : integer;
     -- INT CTRL
     g_FREEZE_ENABLED    : std_logic := '0';
+    g_DUAL_MEM          : std_logic := '0';
     -- BU bus
     g_APBUS_ENABLED     : std_logic := '0';
     g_APBUS_CTRL_WIDTH  : integer := 8;
@@ -66,7 +67,7 @@ architecture beh of vamc_controller is
 
   function init_ADDR_WIDTH(m : integer; x : integer) return integer is
     variable y : integer;
-  begin
+   begin
     if m /= 0 then
       y := m;
     else
@@ -94,18 +95,6 @@ architecture beh of vamc_controller is
 begin
 
   APB_INT_EN: if g_APBUS_ENABLED generate
-  --   signal mem_empty               : std_logic;
-  --   signal mem_empty_next          : std_logic;
-  --   signal mem_full                : std_logic;
-  --   signal mem_full_next           : std_logic;
-  --   signal mem_used                : integer ;--range integer(log2(real(g_PIPELINE_WIDTH) - 1 downto 0));
-
-  --   signal apb_addr_b              : std_logic_vector(ADDR_WIDTH-1 downto 0):= (others => '0');
-  --   signal apb_din_b               : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
-  --   signal apb_dv_in_b             : std_logic := '1';
-  --   signal apb_dout_b              : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  --   signal apb_dv_out_b            : std_logic := '1';
-  -- begin
 
     apb_interface : entity apbus_lib.apb_mem_int
       generic map(
@@ -126,15 +115,8 @@ begin
         --
         -- i_axi_clk     => ,
         -- i_axi_rst     => ,
-        -- mon
-        -- rd_rdy        => mon.rd_rdy,  
-        -- rd_data       => mon.rd_data,
-        -- -- ctrl
-        -- wr_req        => ctrl.wr_req,
-        -- rd_ack        => ctrl.rd_ack,
-        -- wr_addr       => ctrl.wr_addr,
-        -- rd_addr       => ctrl.rd_addr,
-        -- wr_data       => ctrl.wr_data,
+        --
+        i_freeze      => i_freeze,
         --
         o_addr        => apb_addr_b,  
         o_din         => apb_din_b,   

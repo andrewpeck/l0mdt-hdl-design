@@ -1,10 +1,12 @@
 #---------------------------------
 # MAIN VHDL AMC FILES
 #---------------------------------
-shared/vhdl_amc/src/vamc_controller.vhd
 shared/vhdl_amc/src/vamc_pl.vhd
 shared/vhdl_amc/src/vamc_rb.vhd
 shared/vhdl_amc/src/vamc_sr.vhd
+shared/vhdl_amc/src/vamc_csw_in.vhd
+shared/vhdl_amc/src/vamc_csw_out.vhd
+shared/vhdl_amc/src/vamc_controller.vhd
 #---------------------------------
 #  MPCVMEM
 #---------------------------------
