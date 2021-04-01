@@ -11,7 +11,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package MPL_PKG is
+package MPL_CTRL is
 
   type MPL_ACTIONS_CTRL_t is record
     RESET : std_logic;
@@ -78,7 +78,7 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
 
-  type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(4-1 downto 0) of MPL_PL_MEM_PL_MEM_MON_t;
+  type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
@@ -96,7 +96,7 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
 
-  type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(4-1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
+  type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
@@ -137,11 +137,11 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t;
 
-end package MPL_PKG;
+end package MPL_CTRL;
 
 ------------------------------------------------------------
 
-package body MPL_PKG is
+package body MPL_CTRL is
 
   function len(x: MPL_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -882,4 +882,4 @@ package body MPL_PKG is
     return y;
   end function nullify;
 
-end package body MPL_PKG;
+end package body MPL_CTRL;

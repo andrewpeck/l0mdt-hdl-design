@@ -50,7 +50,7 @@ hdl:
   - rd_rdy : [ type: logic ]
   - rd_data : [ type: MPL_PL_MEM_PL_MEM_rd_data_MON_t ]
 
-- MPL_PL_MEM_PL_MEM_MON_t_ARRAY: [array: 4, type: MPL_PL_MEM_PL_MEM_MON_t]
+- MPL_PL_MEM_PL_MEM_MON_t_ARRAY: [array: 5, type: MPL_PL_MEM_PL_MEM_MON_t]
 
 - MPL_PL_MEM_PL_MEM_CTRL_t:
   - wr_req : [ type: logic ]
@@ -59,7 +59,7 @@ hdl:
   - rd_addr : [ type: logic, length: 10 ]
   - wr_data : [ type: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t ]
 
-- MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: [array: 4, type: MPL_PL_MEM_PL_MEM_CTRL_t]
+- MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: [array: 5, type: MPL_PL_MEM_PL_MEM_CTRL_t]
 
 - MPL_PL_MEM_MON_t:
   - PL_MEM : [ type: MPL_PL_MEM_PL_MEM_MON_t_ARRAY ]
