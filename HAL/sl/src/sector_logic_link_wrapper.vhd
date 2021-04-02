@@ -206,7 +206,7 @@ begin
     slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
     slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
     slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
-    slc_barrel_specific.b_reserved <= data(127 downto 91);
+    -- slc_barrel_specific.b_reserved <= data(127 downto 91);
 
     slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
     slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
