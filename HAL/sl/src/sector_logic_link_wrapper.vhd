@@ -214,7 +214,7 @@ begin
     slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
     slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
     slc_endcap_specific.nswseg_mon       <= data(81);
-    slc_endcap_specific.e_reserved       <= data(127 downto 82);
+    slc_endcap_specific.e_reserved       <= data(90 downto 82);
 
     barrel_spec_gen : if (station = BARREL) generate
       sl_data.specific <= vectorify(slc_barrel_specific);
