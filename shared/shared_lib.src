@@ -8,7 +8,7 @@ shared/shared_lib_basic.src
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
 shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
-shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
+# shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
 #---------------------------------
 # Detector shared RAMs
 #---------------------------------
