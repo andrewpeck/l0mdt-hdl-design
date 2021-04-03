@@ -1,0 +1,74 @@
+
+__config__:
+  basic_convert_functions: off
+  packages:
+    shared_lib:
+      - common_ieee_pkg
+      - l0mdt_constants_pkg
+
+HDL_Types:
+
+# SL_HEADER
+- sl_header:
+  - h_reserved:  [type : logic , length : SL_HEADER_H_RESERVED_LEN]
+  - tcoverflow:  [type : logic]
+  - nmtc_sl:  [type : unsigned , length : SL_HEADER_NMTC_SL_LEN]
+  - nmtc_mdt:  [type : unsigned , length : SL_HEADER_NMTC_MDT_LEN]
+  - nslc:  [type : unsigned , length : SL_HEADER_NSLC_LEN]
+  - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
+
+# SL_TRAILER
+- sl_trailer:
+  - t_reserved:  [type : logic , length : SL_TRAILER_T_RESERVED_LEN]
+  - crc:  [type : logic , length : SL_TRAILER_CRC_LEN]
+  - fiberid:  [type : unsigned , length : SL_TRAILER_FIBERID_LEN]
+  - slid:  [type : unsigned , length : SL_TRAILER_SLID_LEN]
+  - comma:  [type : logic , length : SL_TRAILER_COMMA_LEN]
+
+# SLC_COMMON
+- slc_common:
+  - header:  [type : sl_header]
+  - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
+  - tcsent:  [type : logic]
+  - poseta:  [type : signed , length : SLC_COMMON_POSETA_LEN]
+  - posphi:  [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
+  - sl_pt:  [type : unsigned , length : SLC_COMMON_SL_PT_LEN]
+  - sl_ptthresh:  [type : unsigned , length : SLC_COMMON_SL_PTTHRESH_LEN]
+  - sl_charge:  [type : logic]
+  - cointype:  [type : logic , length : SLC_COMMON_COINTYPE_LEN]
+  - trailer:  [type : sl_trailer]
+
+# SLC_ENDCAP
+- slc_endcap:
+  - e_reserved:  [type : logic , length : SLC_ENDCAP_E_RESERVED_LEN]
+  - nswseg_mon:  [type : logic]
+  - nswseg_angdtheta:  [type : signed , length : SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN]
+  - nswseg_posphi:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSPHI_LEN]
+  - nswseg_poseta:  [type : unsigned , length : SLC_ENDCAP_NSWSEG_POSETA_LEN]
+  - seg_angdphi:  [type : signed , length : SLC_ENDCAP_SEG_ANGDPHI_LEN]
+  - seg_angdtheta:  [type : signed , length : SLC_ENDCAP_SEG_ANGDTHETA_LEN]
+
+# SLC_BARREL
+- slc_barrel:
+  - b_reserved:  [type : logic , length : SLC_BARREL_B_RESERVED_LEN]
+  - rpc3_posz:  [type : signed , length : SLC_BARREL_RPC3_POSZ_LEN]
+  - rpc2_posz:  [type : signed , length : SLC_BARREL_RPC2_POSZ_LEN]
+  - rpc1_posz:  [type : signed , length : SLC_BARREL_RPC1_POSZ_LEN]
+  - rpc0_posz:  [type : signed , length : SLC_BARREL_RPC0_POSZ_LEN]
+
+# SLC_RX
+- slc_rx:
+  - data_valid:  [type : logic]
+  - common:  [type : slc_common]
+  - specific:  [type : logic , length : SLC_RX_SPECIFIC_LEN]
+
+# SLC_MUID
+- slc_muid:
+  - slcid:  [type : unsigned , length : SLC_COMMON_SLCID_LEN]
+  - slid:  [type : unsigned , length : SL_TRAILER_SLID_LEN]
+  - bcid:  [type : unsigned , length : SL_HEADER_BCID_LEN]
+
+# VEC_MDTID
+- vec_mdtid:
+  - chamber_id:  [type : unsigned , length : VEC_MDTID_CHAMBER_ID_LEN]
+  - chamber_ieta:  [type : unsigned , length : VEC_MDTID_CHAMBER_IETA_LEN]
