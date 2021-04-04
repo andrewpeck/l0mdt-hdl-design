@@ -6,6 +6,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
+-- use shared_lib.sl2mdt_constants_pkg.all;
+-- use shared_lib.sl2mdt_dataformats_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
@@ -185,8 +187,8 @@ begin
   begin
 
     header  <= sl_rx_data(I).data(31 downto 0);
-    data    <= sl_rx_data(I).data(121 downto 32);
-    trailer <= sl_rx_data(I).data(153 downto 122);
+    data    <= sl_rx_data(I).data(159 downto 32);
+    trailer <= sl_rx_data(I).data(191 downto 160);
 
     sl_data_o(I) <= vectorify(sl_data);
 
