@@ -17,57 +17,53 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
 
-
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
-use shared_lib.config_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
+USE shared_lib.config_pkg.ALL;
 -- use shared_lib.vhdl2008_functions_pkg.all;
-use shared_lib.detector_param_pkg.all;
+USE shared_lib.detector_param_pkg.ALL;
 
-library csf_lib;
-use csf_lib.csf_pkg.all;
-use csf_lib.csf_custom_pkg.all;
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
+USE csf_lib.csf_custom_pkg.ALL;
 
-entity top_csf is
-  generic(
+ENTITY top_csf IS
+  GENERIC (
     -- Project flavour (0: Barrel, 1: Endcap)
-    FLAVOUR  : integer := 0
+    FLAVOUR : INTEGER := 0
   );
-  Port (
-    clk       : in std_logic;
-    i_seed    : in heg2sfslc_rvt;
-    i_mdt_hit : in heg2sfhit_rvt;
-    i_eof     : in std_logic;
-    i_rst     : in std_logic;
-    o_seg     : out sf2ptcalc_rvt
+  PORT (
+    clk : IN STD_LOGIC;
+    i_seed : IN heg2sfslc_rvt;
+    i_mdt_hit : IN heg2sfhit_rvt;
+    i_eof : IN STD_LOGIC;
+    i_rst : IN STD_LOGIC;
+    o_seg : OUT sf2ptcalc_rvt
   );
-end top_csf;
+END top_csf;
 
-architecture Behavioral of top_csf is
-   
+ARCHITECTURE Behavioral OF top_csf IS
+BEGIN
 
-begin
+  CSF : ENTITY csf_lib.csf
+    GENERIC MAP(
+      IS_ENDCAP => FLAVOUR
+    )
+    PORT MAP(
+      clk => clk,
+      i_seed => i_seed,
+      i_mdt_hit => i_mdt_hit,
+      i_eof => i_eof,
+      i_rst => i_rst,
+      o_seg => o_seg
+    );
 
-  CSF : entity csf_lib.csf
-  generic map(
-    IS_ENDCAP => FLAVOUR
-  )
-  port map(
-    clk        => clk,
-    i_seed     => i_seed,
-    i_mdt_hit  => i_mdt_hit,
-    i_eof      => i_eof,
-    i_rst      => i_rst,
-    o_seg      => o_seg
-  );
-
-end Behavioral;
+END Behavioral;
