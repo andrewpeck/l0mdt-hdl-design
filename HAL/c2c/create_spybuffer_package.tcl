@@ -83,7 +83,8 @@ proc create_package {spies fname} {
         puts $fp ""
         puts $fp "  -- spybuffer + bram control"
         puts $fp "  type ${name}_ctrl_t is record"
-        puts $fp "    bram     : ${name}_bram_ctrl_t;"
+        puts $fp "    bram_a   : ${name}_bram_ctrl_t;"
+        puts $fp "    bram_b   : ${name}_bram_ctrl_t;"
         puts $fp "    freeze   : std_logic;"
         puts $fp "    playback : std_logic_vector (1 downto 0);"
         puts $fp "  end record;"
@@ -91,7 +92,8 @@ proc create_package {spies fname} {
         puts $fp ""
         puts $fp "  -- spybuffer readout"
         puts $fp "  type ${name}_mon_t is record"
-        puts $fp "    dout : std_logic_vector ([expr $width-1] downto 0);"
+        puts $fp "    dout_a : std_logic_vector ([expr $width-1] downto 0);"
+        puts $fp "    dout_b : std_logic_vector ([expr $width-1] downto 0);"
         puts $fp "  end record;"
 
     }
@@ -127,4 +129,6 @@ proc create_package {spies fname} {
 
 set script_path "[file normalize [file dirname [info script]]]"
 find_slaves [yaml::yaml2huddle -file ${script_path}/slaves.yaml]
-create_package $spies "${script_path}/../../../ctrl/src/spies_pkg.vhd"
+set outfile [file normalize "${script_path}/../ctrl/src/spies_pkg.vhd"]
+puts $outfile
+create_package $spies $outfile

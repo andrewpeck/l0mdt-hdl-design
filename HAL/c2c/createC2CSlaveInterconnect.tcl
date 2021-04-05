@@ -1,12 +1,12 @@
 source -quiet "$BD_PATH/axi_helpers.tcl"
 source -quiet "$BD_PATH/Xilinx_AXI_slaves.tcl"
 
-remove_files -quiet "${BD_OUTPUT_PATH}/c2cSlave${BD_SUFFIX}/c2cSlave.bd"
 
 #create a block design called "c2cSlave"
 #directory and name must be the same
 set bd_design_name "c2cSlave"
-create_bd_design -dir ${BD_OUTPUT_PATH}/${BD_SUFFIX} ${bd_design_name}
+remove_files -quiet [file normalize "${BD_OUTPUT_PATH}/${BD_SUFFIX}/${bd_design_name}/${bd_design_name}.bd"]
+create_bd_design -dir [file normalize ${BD_OUTPUT_PATH}/${BD_SUFFIX}] ${bd_design_name}
 
 set EXT_CLK clk50Mhz
 set EXT_RESET reset_n

@@ -463,22 +463,37 @@ begin
       kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm,
 
       -- spy buffers
-      tar_spy_port_we   => axi_spy_ctrl.tar_spy.bram.we,    -- out
-      tar_spy_port_din  => axi_spy_ctrl.tar_spy.bram.din,   -- out
-      tar_spy_port_en   => axi_spy_ctrl.tar_spy.bram.en,    -- out
-      tar_spy_port_rst  => axi_spy_ctrl.tar_spy.bram.rst,   -- out
-      tar_spy_port_clk  => axi_spy_ctrl.tar_spy.bram.clk,   -- out
-      tar_spy_port_addr => axi_spy_ctrl.tar_spy.bram.addr,  -- out
-      tar_spy_port_dout => axi_spy_mon.tar_spy.dout,        -- in
+      tar_spy_port_a_we   => axi_spy_ctrl.tar_spy.bram.we,    -- out
+      tar_spy_port_a_din  => axi_spy_ctrl.tar_spy.bram.din,   -- out
+      tar_spy_port_a_en   => axi_spy_ctrl.tar_spy.bram.en,    -- out
+      tar_spy_port_a_rst  => axi_spy_ctrl.tar_spy.bram.rst,   -- out
+      tar_spy_port_a_clk  => axi_spy_ctrl.tar_spy.bram.clk,   -- out
+      tar_spy_port_a_addr => axi_spy_ctrl.tar_spy.bram.addr,  -- out
+      tar_spy_port_a_dout => axi_spy_mon.tar_spy.dout,        -- in
 
-      -- spy buffers
-      mpl_spy_port_we   => axi_spy_ctrl.mpl_spy.bram.we,    -- out
-      mpl_spy_port_din  => axi_spy_ctrl.mpl_spy.bram.din,   -- out
-      mpl_spy_port_en   => axi_spy_ctrl.mpl_spy.bram.en,    -- out
-      mpl_spy_port_rst  => axi_spy_ctrl.mpl_spy.bram.rst,   -- out
-      mpl_spy_port_clk  => axi_spy_ctrl.mpl_spy.bram.clk,   -- out
-      mpl_spy_port_addr => axi_spy_ctrl.mpl_spy.bram.addr,  -- out
-      mpl_spy_port_dout => axi_spy_mon.mpl_spy.dout         -- in
+      tar_spy_port_b_we   => axi_spy_ctrl.tar_spy.bram_b.we,    -- out
+      tar_spy_port_b_din  => axi_spy_ctrl.tar_spy.bram_b.din,   -- out
+      tar_spy_port_b_en   => axi_spy_ctrl.tar_spy.bram_b.en,    -- out
+      tar_spy_port_b_rst  => axi_spy_ctrl.tar_spy.bram_b.rst,   -- out
+      tar_spy_port_b_clk  => axi_spy_ctrl.tar_spy.bram_b.clk,   -- out
+      tar_spy_port_b_bddr => axi_spy_ctrl.tar_spy.bram_b.addr,  -- out
+      tar_spy_port_b_dout => axi_spy_mon.tar_spy.dout_b,        -- in
+
+      mpl_spy_port_a_we   => axi_spy_ctrl.mpl_spy.bram.we,    -- out
+      mpl_spy_port_a_din  => axi_spy_ctrl.mpl_spy.bram.din,   -- out
+      mpl_spy_port_a_en   => axi_spy_ctrl.mpl_spy.bram.en,    -- out
+      mpl_spy_port_a_rst  => axi_spy_ctrl.mpl_spy.bram.rst,   -- out
+      mpl_spy_port_a_clk  => axi_spy_ctrl.mpl_spy.bram.clk,   -- out
+      mpl_spy_port_a_addr => axi_spy_ctrl.mpl_spy.bram.addr,  -- out
+      mpl_spy_port_a_dout => axi_spy_mon.mpl_spy.dout,        -- in
+
+      mpl_spy_port_b_we   => axi_spy_ctrl.mpl_spy.bram_b.we,    -- out
+      mpl_spy_port_b_din  => axi_spy_ctrl.mpl_spy.bram_b.din,   -- out
+      mpl_spy_port_b_en   => axi_spy_ctrl.mpl_spy.bram_b.en,    -- out
+      mpl_spy_port_b_rst  => axi_spy_ctrl.mpl_spy.bram_b.rst,   -- out
+      mpl_spy_port_b_clk  => axi_spy_ctrl.mpl_spy.bram_b.clk,   -- out
+      mpl_spy_port_b_bddr => axi_spy_ctrl.mpl_spy.bram_b.addr,  -- out
+      mpl_spy_port_b_dout => axi_spy_mon.mpl_spy.dout_b         -- in
 
       );
 

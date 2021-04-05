@@ -39,8 +39,6 @@ set PROPERTIES [dict create \
 
 
 ############################################################
-set SYNTH_TOP_MODULE  top_l0mdt
-set SIMULATOR  xsim
 set DESIGN    "[file rootname [file tail [info script]]]"
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 

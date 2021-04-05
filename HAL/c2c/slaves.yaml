@@ -123,8 +123,10 @@ AXI_SLAVES:
         TCL_CALL:
           command: "AXI_IP_BRAM_CONTROL"
           axi_control: "${::AXI_SPYBUFFER_CTRL}"
+          port_b: "READ_ONLY"
           width: 32
           latency: 2
+          single_port: true
           addr:
             offset: "0x83c50000"
             range: "64K"
@@ -134,8 +136,10 @@ AXI_SLAVES:
         TCL_CALL:
           command: "AXI_IP_BRAM_CONTROL"
           axi_control: "${::AXI_SPYBUFFER_CTRL}"
+          port_b: "READ_ONLY"
           width: 32
           latency: 2
+          single_port: true
           addr:
             offset: "0x83c60000"
             range: "32K"

@@ -27,12 +27,12 @@ begin
 
   user_spy_ctrl.tar_spy.freeze   <= freeze;                     --ctrl
   user_spy_ctrl.tar_spy.playback <= playback_mode;              --ctrl
-  user_spy_ctrl.tar_spy.bram     <= axi_spy_ctrl.tar_spy.bram;  --ctrl
-  axi_spy_mon.tar_spy.dout       <= user_spy_mon.tar_spy.dout;  --mon
+  user_spy_ctrl.tar_spy.bram_a   <= axi_spy_ctrl.tar_spy.bram;  --ctrl
+  axi_spy_mon.tar_spy.dout_a     <= user_spy_mon.tar_spy.dout;  --mon
 
   user_spy_ctrl.mpl_spy.freeze   <= freeze;                     --ctrl
   user_spy_ctrl.mpl_spy.playback <= playback_mode;              --ctrl
-  user_spy_ctrl.mpl_spy.bram     <= axi_spy_ctrl.mpl_spy.bram;  --ctrl
-  axi_spy_mon.mpl_spy.dout       <= user_spy_mon.mpl_spy.dout;  --mon
+  user_spy_ctrl.mpl_spy.bram_a   <= axi_spy_ctrl.mpl_spy.bram;  --ctrl
+  axi_spy_mon.mpl_spy.dout_a     <= user_spy_mon.mpl_spy.dout;  --mon
 
 end behavioral;

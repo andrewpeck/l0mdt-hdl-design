@@ -19,14 +19,16 @@ package spies_pkg is
 
   -- spybuffer + bram control
   type tar_spy_ctrl_t is record
-    bram     : tar_spy_bram_ctrl_t;
+    bram_a   : tar_spy_bram_ctrl_t;
+    bram_b   : tar_spy_bram_ctrl_t;
     freeze   : std_logic;
     playback : std_logic_vector (1 downto 0);
   end record;
 
   -- spybuffer readout
   type tar_spy_mon_t is record
-    dout : std_logic_vector (31 downto 0);
+    dout_a : std_logic_vector (31 downto 0);
+    dout_b : std_logic_vector (31 downto 0);
   end record;
 
   -------------------------
@@ -45,14 +47,16 @@ package spies_pkg is
 
   -- spybuffer + bram control
   type mpl_spy_ctrl_t is record
-    bram     : mpl_spy_bram_ctrl_t;
+    bram_a   : mpl_spy_bram_ctrl_t;
+    bram_b   : mpl_spy_bram_ctrl_t;
     freeze   : std_logic;
     playback : std_logic_vector (1 downto 0);
   end record;
 
   -- spybuffer readout
   type mpl_spy_mon_t is record
-    dout : std_logic_vector (31 downto 0);
+    dout_a : std_logic_vector (31 downto 0);
+    dout_b : std_logic_vector (31 downto 0);
   end record;
 
   -------------------------
