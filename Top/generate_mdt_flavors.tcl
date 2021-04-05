@@ -4,7 +4,9 @@ package require yaml
 
 set script_path "[file normalize [file dirname [info script]]]"
 
-proc update_trigger_libs {lib pt_calc segment_finder} {
+proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
+
+    exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
@@ -70,7 +72,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "prj_cfg_default.vhd gitlab-ci.yml base_l0mdt.tcl list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
+    set files_to_copy "post-creation.tcl prj_cfg_default.vhd gitlab-ci.yml hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
@@ -78,8 +80,15 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # update the link mapping
 
     # update the fpga
-    file rename -force "$dest_path/base_l0mdt.tcl" "$dest_path/$name.tcl"
-    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/$name.tcl"
+    file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
+    exec sed -i "s|PART = .*$|PART = $fpga|g" "$dest_path/hog.conf"
+
+    # update the fpga
+    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/post-creation.tcl"
+
+    # update the ip repo path
+    regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
+    exec sed -i "s|ip_repo_paths .*$|ip_repo_paths = \"IP_repository/${fpga_shortname}\"|g" "$dest_path/hog.conf"
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]
@@ -89,7 +98,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     close $brd_con
 
     # update the libraries
-    update_trigger_libs "$dest_path/list/l0mdt.src" $pt_calc $segment_finder
+    update_trigger_libs "$dest_path/list/l0mdt.src" $pt_calc $segment_finder $fpga_shortname
 
     # update the board package
     set board_pkg_dir {HAL/boards/}
@@ -99,11 +108,12 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     exec sed -i $re "$dest_path/list/hal.src"
 
     # update the project config
-    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_${name}.vhd"
-    update_prj_config "$dest_path/prj_cfg_${name}.vhd" $segment_finder $pt_calc
+    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
+    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc
 
     # update the project_lib.src file
-    exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
+    #exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
 
     # update the gitlab ci file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"

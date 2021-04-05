@@ -7,7 +7,7 @@ HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 HAL/ctrl/src/spybuffer_controller.vhd
 HAL/ctrl/src/top_control.vhd
 
-HAL/c2c/bd/xcku15p/c2cSlave/c2cSlave.bd lib=ctrl_lib
+HAL/c2c/bd/ku15p/c2cSlave/c2cSlave.bd lib=ctrl_lib
 
 # HAL
 HAL/hal/list/hal.src lib=hal
