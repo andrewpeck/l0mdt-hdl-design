@@ -287,8 +287,8 @@ begin
       sump => user_sump
       );
 
-  user_spy_mon.mpl_spy.dout <= (others => '0');
-  user_spy_mon.tar_spy.dout <= (others => '0');
+  user_spy_mon.mpl_spy.dout_a <= (others => '0');
+  user_spy_mon.tar_spy.dout_a <= (others => '0');
 
   top_control_inst : entity work.top_control
     port map (
