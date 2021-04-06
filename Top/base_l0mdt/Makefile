@@ -17,6 +17,17 @@ SHARED_LIB_FILES = ../../shared/types/common_ieee_pkg.vhd \
 
 PROJECT_LIB = prj_cfg.vhd
 
+all: bd address_table spybuffers
+
+bd:
+	vivado -mode batch -notrace -source create_c2c.tcl ../../Projects/base_l0mdt/base_l0mdt.xpr
+
+address_table:
+	cd "../../regmap" && make xml_regmap
+
+spybuffers:
+	tclsh "../../HAL/c2c/create_spybuffer_package.tcl"
+
 board_pkg: common_ghdl
 	ghdl -a --std=08 --ieee=synopsys display_board_cfg.vhd
 	ghdl -r --std=08 --ieee=synopsys display_board_cfg
