@@ -63,7 +63,7 @@ proc update_prj_config {dest_file segment_finder pt_calc} {
     exec sed -i s|\\(proj_cfg.PT_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${pt_type}|g $dest_file
 }
 
-proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints} {
+proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map} {
 
     set source_path ${top_path}/base_l0mdt
     set dest_path ${top_path}/$name
@@ -78,6 +78,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     }
 
     # update the link mapping
+    exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
     # update hog.conf
     file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
@@ -151,7 +152,7 @@ proc clone_projects {huddle} {
             puts "        pt       : $pt"
 
             global script_path
-            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" $fpga $board_pkg $pt $sf $constraints
+            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" $fpga $board_pkg $pt $sf $constraints $link_map
         }}}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

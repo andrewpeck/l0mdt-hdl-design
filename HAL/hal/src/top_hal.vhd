@@ -18,6 +18,7 @@ use hal.constants_pkg.all;
 use hal.mgt_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
+use hal.link_map.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;

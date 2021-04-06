@@ -23,7 +23,7 @@ ku15p_csf_mpt:
     - "pinouts_mpi_ku15p.xdc"
   variants:
     test:
-      link_map: "ku15p_test"
+      link_map: "link_map_default"
 
 vu13p_lsf_mpt:
   fpga: xcvu13p-flga2577-1-e
@@ -34,4 +34,4 @@ vu13p_lsf_mpt:
     - "pinouts_mpi_vu13p.xdc"
   variants:
     test:
-      link_map: "vu13p_test"
+      link_map: "link_map_default"

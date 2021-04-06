@@ -17,6 +17,7 @@ use hal.system_types_pkg.all;
 use hal.lpgbt_pkg.all;
 use hal.constants_pkg.all;
 use hal.board_pkg.all;
+use hal.link_map.all;
 
 library tdc;
 use tdc.csm_pkg.all;
