@@ -22,7 +22,7 @@ ku15p_csf_mpt:
   constraints:
     - "pinouts_mpi_ku15p.xdc"
   variants:
-    test:
+    xyz:
       link_map: "link_map_default"
 
 vu13p_lsf_mpt:
@@ -33,5 +33,5 @@ vu13p_lsf_mpt:
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
-    test:
+    xyz:
       link_map: "link_map_default"
