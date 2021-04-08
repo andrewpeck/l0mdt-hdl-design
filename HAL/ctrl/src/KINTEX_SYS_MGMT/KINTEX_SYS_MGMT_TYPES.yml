@@ -1,0 +1,25 @@
+# This file was auto-generated.
+# Modifications might be lost.
+__config__:
+    basic_convert_functions : off
+    packages:
+    shared_lib:
+        - common_ieee_pkg
+
+HDL_Types:
+
+- KINTEX_SYS_MGMT_MON_t:
+  - TEMP : [ type: logic, length: 10 ]
+  - VCCINT : [ type: logic, length: 10 ]
+  - VCCAUX : [ type: logic, length: 10 ]
+  - VCCBRAM : [ type: logic, length: 10 ]
+  - TEMP_MAX : [ type: logic, length: 10 ]
+  - VCCINT_MAX : [ type: logic, length: 10 ]
+  - VCCAUX_MAX : [ type: logic, length: 10 ]
+  - VCCBRAM_MAX : [ type: logic, length: 10 ]
+  - TEMP_MIN : [ type: logic, length: 10 ]
+  - VCCINT_MIN : [ type: logic, length: 10 ]
+  - VCCAUX_MIN : [ type: logic, length: 10 ]
+  - VCCBRAM_MIN : [ type: logic, length: 10 ]
+
+

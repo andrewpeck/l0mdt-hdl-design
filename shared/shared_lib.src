@@ -2,16 +2,13 @@
 # Basic Configuration
 #---------------------------------
 shared/shared_lib_basic.src
-
 #---------------------------------
 # Detector shared RAMs ( Under dev)
 #---------------------------------
-
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber_pkg.vhd
 # shared/detector_parameters/l0mdt_RAMs/mem_phi_center_chamber.vhd
 shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
-shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
-
+# shared/detector_parameters/l0mdt_RAMs/src/chamber_z_org.vhd
 #---------------------------------
 # Detector shared RAMs
 #---------------------------------
@@ -20,35 +17,34 @@ shared/detector_parameters/gtube2chamber_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
-
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
 #---------------------------------
-
 shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
-
 #---------------------------------
-# shared source code for multiple blocks
+# Boston University axi Bus Blocks
 #---------------------------------
-
+shared/APBus/apbus_lib.src lib=apbus_lib
+#---------------------------------
+# Advanced Memory Controller
+#---------------------------------
+shared/vhdl_amc/vamc_lib.src lib=vamc_lib
+#---------------------------------
+# shared memory files
+#---------------------------------
 shared/src/pipeline.vhd
-# shared/src/ring_buffer.vhd #Deprectated, need to clean
 shared/src/ring_buffer_v2.vhd
 shared/src/vhdl_ram_memory.vhd
-
-#CSF/PT memories
+#-----CSF/PT memories-----
 shared/src/bram.vhd
 shared/src/rom.v
 shared/src/rom_dp.v
-
 #---------------------------------
 # trigonometrics
 #---------------------------------
-
 shared/functions/trigonometrics/roi_atan_pkg.vhd
 shared/functions/trigonometrics/roi_atan.vhd
 shared/functions/trigonometrics/roi_tan_pkg.vhd
 shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
-shared/mpcvmem/src/mpcvmem.vhd
-shared/mpcvmem/src/DualPortMem.vhd
+

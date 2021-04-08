@@ -6,6 +6,8 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
+-- use shared_lib.sl2mdt_constants_pkg.all;
+-- use shared_lib.sl2mdt_dataformats_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
@@ -206,7 +208,7 @@ begin
     slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
     slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
     slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
-    slc_barrel_specific.b_reserved <= data(127 downto 91);
+    -- slc_barrel_specific.b_reserved <= data(127 downto 91);
 
     slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
     slc_endcap_specific.seg_angdphi      <= signed_mag_to_signed(data(53 downto 50));
@@ -214,7 +216,7 @@ begin
     slc_endcap_specific.nswseg_posphi    <= unsigned(data(75 downto 68));
     slc_endcap_specific.nswseg_angdtheta <= signed(data(80 downto 76));
     slc_endcap_specific.nswseg_mon       <= data(81);
-    slc_endcap_specific.e_reserved       <= data(127 downto 82);
+    slc_endcap_specific.e_reserved       <= data(90 downto 82);
 
     barrel_spec_gen : if (station = BARREL) generate
       sl_data.specific <= vectorify(slc_barrel_specific);

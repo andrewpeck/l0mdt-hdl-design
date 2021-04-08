@@ -1,7 +1,11 @@
 --This file was auto-generated.
 --Modifications might be lost.
+-- Created : 2021-04-01 21:31:43.308621.
 library IEEE;
 use IEEE.std_logic_1164.all;
+
+library shared_lib;
+use shared_lib.common_ieee.all;
 
 
 package MTC_CTRL is

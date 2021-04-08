@@ -181,23 +181,34 @@ begin
     begin  -- process tdc_hit_sump_proc
       if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
+        if c_EN_MDT_HITS > 0 then
+
         inn_tdc_loop : for I in 0 to c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 loop inn_tdc_hits_sump(I) <= xor_reduce(i_inn_tdc_hits(I)); end loop;
         mid_tdc_loop : for I in 0 to c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 loop mid_tdc_hits_sump(I) <= xor_reduce(i_mid_tdc_hits(I)); end loop;
         out_tdc_loop : for I in 0 to c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 loop out_tdc_hits_sump(I) <= xor_reduce(i_out_tdc_hits(I)); end loop;
         ext_tdc_loop : for I in 0 to c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 loop ext_tdc_hits_sump(I) <= xor_reduce(i_ext_tdc_hits(I)); end loop;
-        inn_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 loop inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I)); end loop;
-        mid_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 loop mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I)); end loop;
-        out_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 loop out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I)); end loop;
-        ext_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 loop ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I)); end loop;
-
         o_sump <=   xor_reduce(inn_tdc_hits_sump)
                 xor xor_reduce(mid_tdc_hits_sump)
                 xor xor_reduce(out_tdc_hits_sump)
-                xor xor_reduce(ext_tdc_hits_sump)
-                xor xor_reduce(inn_tar_hits_sump)
-                xor xor_reduce(mid_tar_hits_sump)
-                xor xor_reduce(out_tar_hits_sump)
-                xor xor_reduce(ext_tar_hits_sump);
+                xor xor_reduce(ext_tdc_hits_sump);
+
+        elsif c_EN_TAR_HITS > 0 then
+          inn_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 loop inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I)); end loop;
+          mid_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 loop mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I)); end loop;
+          out_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 loop out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I)); end loop;
+          ext_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 loop ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I)); end loop;
+
+          o_sump <= xor_reduce(inn_tar_hits_sump)
+          xor xor_reduce(mid_tar_hits_sump)
+          xor xor_reduce(out_tar_hits_sump)
+          xor xor_reduce(ext_tar_hits_sump);
+          
+        else
+          o_sump <= '0';
+        end if;
+
+
+
       end if;
     end process;
   end generate;

@@ -23,7 +23,7 @@ url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
 path = tools/yml2hdl
 url = https://gitlab.com/tcpaiva/yml2hdl.git
-[submodule "HAL/c2c/src/bd"]
+[submodule "HAL/c2c/bd_helper"]
 path = HAL/c2c/bd_helper
 url = https://github.com/dgastler/BU_BUILD.git
 [submodule "tools/gldl-scripts"]
@@ -38,12 +38,12 @@ url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
 [submodule "l0mdt-hls"]
 path = l0mdt-hls
 url = ../l0mdt-hls.git
-[submodule "shared/mpcvmem"]
-path = shared/mpcvmem
-url = https://github.com/taquionbcn/mpcvmem.git
+[submodule "shared/vhdl_amc/mpcvmem"]
+	path = shared/vhdl_amc/mpcvmem
+	url = https://github.com/taquionbcn/mpcvmem.git
 [submodule "HAL/lpgbt/src/lpgbt-emul"]
 path = HAL/lpgbt/src/lpgbt-emul
 url = ../lpgbt-emul.git
-[submodule "tools/SpyBuffer"]
-path = tools/SpyBuffer
+[submodule "shared/SpyBuffer"]
+path = shared/SpyBuffer
 url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git

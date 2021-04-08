@@ -85,13 +85,25 @@ begin
     i_barrel <= structify(i_slc_data_r.specific);
     o_prepro_data_r.specific <= vectorify(o_barrel);
 
-    o_barrel.b_reserved <= (others => '0');
+    -- o_barrel.b_reserved <= (others => '0');
     o_barrel.rpc3_posz  <= i_barrel.rpc3_posz;
     o_barrel.rpc2_posz  <= i_barrel.rpc2_posz;
     o_barrel.rpc1_posz  <= i_barrel.rpc1_posz;
     o_barrel.rpc0_posz  <= i_barrel.rpc0_posz;
 
     o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
+
+  end generate;
+
+  E_GEN : if c_ST_nBARREL_ENDCAP = '1' generate
+
+    -- i_barrel <= structify(i_slc_data_r.specific);
+    -- o_prepro_data_r.specific <= vectorify(o_barrel);
+
+    -- o_barrel.b_reserved <= (others => '0');
+
+
+    -- o_prepro2ctrl_r.data_valid <= i_slc_data_r.data_valid;
 
   end generate;
 

@@ -1,7 +1,11 @@
 --This file was auto-generated.
 --Modifications might be lost.
+-- Created : 2021-04-01 21:30:45.355162.
 library IEEE;
 use IEEE.std_logic_1164.all;
+
+library shared_lib;
+use shared_lib.common_ieee.all;
 
 
 package H2S_CTRL is

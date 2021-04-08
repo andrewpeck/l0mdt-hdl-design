@@ -8,4 +8,5 @@ HAL/ctrl/src/axi/axiRegPkg.vhd
 HAL/ctrl/src/spies_pkg.vhd
 
 HAL/ctrl/src/*/*_PKG.vhd
+HAL/ctrl/src/*/*_PKG_DEF.vhd
 HAL/ctrl/src/*/*_map.vhd

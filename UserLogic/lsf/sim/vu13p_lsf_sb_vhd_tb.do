@@ -61,7 +61,7 @@ set CALC_LE_R_OFFSET_BARREL_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/vu13p/hl
 #set CALC_LE_R_OFFSET_BARREL_HLS_IP "$CWD/src/hls_ip/hls_calc_LE_r_offset_barrel/hdl/verilog"
 
 
-set SPYBUFFER_SRC "$CWD/../../tools/SpyBuffer/src"
+set SPYBUFFER_SRC "$CWD/../../shared/SpyBuffer/src"
 set PLL_IP "$CWD/xilinx_ip/v2019.1/pll_inst"
 
 set HISTMEM_128x4 "$CWD/sim"

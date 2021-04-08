@@ -47,6 +47,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.MPL_CTRL_DEF.all;
 
 library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;
@@ -79,19 +80,19 @@ architecture beh of ult_tp is
   signal ttc_commands      : l0mdt_ttc_rt;
   -- axi control
 
-  signal h2s_ctrl :  H2S_CTRL_t;
+  signal h2s_ctrl :  H2S_CTRL_t := DEFAULT_H2S_CTRL_t;
   signal h2s_mon  :  H2S_MON_t;
-  signal tar_ctrl :  TAR_CTRL_t;
-  signal tar_mon  :  TAR_MON_t;
-  signal mtc_ctrl :  MTC_CTRL_t;
+  signal tar_ctrl :  TAR_CTRL_t := DEFAULT_TAR_CTRL_t;
+  signal tar_mon  :  TAR_MON_t ;
+  signal mtc_ctrl :  MTC_CTRL_t := DEFAULT_MTC_CTRL_t;
   signal mtc_mon  :  MTC_MON_t;
   signal ucm_ctrl :  UCM_CTRL_t := DEFAULT_UCM_CTRL_t;
   signal ucm_mon  :  UCM_MON_t;
-  signal daq_ctrl :  DAQ_CTRL_t;
+  signal daq_ctrl :  DAQ_CTRL_t := DEFAULT_DAQ_CTRL_t;
   signal daq_mon  :  DAQ_MON_t;
-  signal tf_ctrl  :  TF_CTRL_t;
+  signal tf_ctrl  :  TF_CTRL_t := DEFAULT_TF_CTRL_t;
   signal tf_mon   :  TF_MON_t;
-  signal mpl_ctrl :  MPL_CTRL_t;
+  signal mpl_ctrl :  MPL_CTRL_t := DEFAULT_MPL_CTRL_t;
   signal mpl_mon  :  MPL_MON_t;
 
   -- TDC Hits from Polmux
@@ -131,6 +132,11 @@ architecture beh of ult_tp is
   ---------------------------------------------------------------------------
   -- simulation signals
   ---------------------------------------------------------------------------
+  -- AXI clk & rst
+  signal axi_rst      : std_logic;
+  signal clk_axi      : std_logic;
+  signal clk_axi_cnt  : integer;
+  constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';
@@ -156,6 +162,7 @@ begin
     DUMMY       => false
     )
   port map(
+
     -- pipeline clock
     clock_and_control => clock_and_control,
     ttc_commands      => ttc_commands,
@@ -241,6 +248,25 @@ begin
     wait for CLK_period/2;
   end process;
   clock_and_control.clk <= clk;
+  -------------------------------------------------------------------------------------
+  --    AXI CLK
+  -------------------------------------------------------------------------------------
+  axi_clk_proc : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        clk_axi <= '0';
+        clk_axi_cnt <= 0;
+      else
+        if clk_axi_cnt < c_CLK_AXI_MULT then
+          clk_axi_cnt <= clk_axi_cnt + 1;
+        else
+          clk_axi_cnt <= 0;
+          clk_axi <= not clk_axi;
+        end if;
+      end if;
+    end if;
+  end process axi_clk_proc;
  	-------------------------------------------------------------------------------------
 	-- Reset Generator
 	-------------------------------------------------------------------------------------

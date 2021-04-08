@@ -1,21 +1,23 @@
+# yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-__config__:
-    basic_convert_functions : off
-    packages:
-    shared_lib:
-        - common_ieee_pkg
+# Created : 2021-04-01 21:31:43.132001.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
 
-HDL_Types:
+hdl:
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t:
-  - READY : [ type: logic, description:LPGBT Uplink Ready ]
-  - FEC_ERR_CNT : [ type: logic, length: 16, description:Data Corrected Count ]
+  - READY : [ type: logic ]
+  - FEC_ERR_CNT : [ type: logic, length: 16 ]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t:
-  - RESET : [ type: logic, description:Reset this Uplink ]
+  - RESET : [ type: logic ]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t]
 
@@ -28,11 +30,11 @@ HDL_Types:
 
 
 - HAL_CSM_CSM_LPGBT_DOWNLINK_MON_t:
-  - READY : [ type: logic, description:LPGBT Downlink Ready ]
+  - READY : [ type: logic ]
 
 
 - HAL_CSM_CSM_LPGBT_DOWNLINK_CTRL_t:
-  - RESET : [ type: logic, description:Reset this Downlink ]
+  - RESET : [ type: logic ]
 
 
 - HAL_CSM_CSM_LPGBT_MON_t:
@@ -46,14 +48,14 @@ HDL_Types:
 
 
 - HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t:
-  - RX_LEN : [ type: logic, length: 8, description:Reply: The length qualifier field specifies the number of bytes contained in the DATA field. ]
-  - RX_ADDRESS : [ type: logic, length: 8, description:Reply: It represents the packet destination address. The address is one-bytelong. By default, the GBT-SCA use address 0x00. ]
-  - RX_CONTROL : [ type: logic, length: 8, description:Reply: The control field is 1 byte in length and contains frame sequence numbers of the currently transmitted frame and the last correctly received frame. The control field is also used to convey three supervisory level commands: Connect, Reset, and Test. ]
-  - RX_TRANSID : [ type: logic, length: 8, description:Reply: transaction ID field (According to the SCA manual) ]
-  - RX_ERR : [ type: logic, length: 8, description:Reply: The Error Flag field is present in the channel reply frames to indicate error conditions encountered in the execution of a command. If no errors are found, its value is 0x00. ]
-  - RX_RECEIVED : [ type: logic, description:Reply received flag (pulse) ]
-  - RX_CHANNEL : [ type: logic, length: 8, description:Reply: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
-  - RX_DATA : [ type: logic, length: 32, description:Reply: The Data field is command dependent field whose length is defined by the length qualifier field. For example, in the case of a read/write operation on a GBT-SCA internal register, it contains the value written/read from the register. ]
+  - RX_LEN : [ type: logic, length: 8 ]
+  - RX_ADDRESS : [ type: logic, length: 8 ]
+  - RX_CONTROL : [ type: logic, length: 8 ]
+  - RX_TRANSID : [ type: logic, length: 8 ]
+  - RX_ERR : [ type: logic, length: 8 ]
+  - RX_RECEIVED : [ type: logic ]
+  - RX_CHANNEL : [ type: logic, length: 8 ]
+  - RX_DATA : [ type: logic, length: 32 ]
 
 - HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY: [array: 2, type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t]
 
@@ -62,52 +64,52 @@ HDL_Types:
 
 
 - HAL_CSM_CSM_SC_MASTER_MON_t:
-  - RX_DATA_FROM_GBTX : [ type: logic, length: 8, description:Data from the FIFO ]
-  - TX_READY : [ type: logic, description:IC core ready for a transaction ]
-  - RX_EMPTY : [ type: logic, description:Rx FIFO is empty (no reply from GBTx) ]
+  - RX_DATA_FROM_GBTX : [ type: logic, length: 8 ]
+  - TX_READY : [ type: logic ]
+  - RX_EMPTY : [ type: logic ]
   - RX : [ type: HAL_CSM_CSM_SC_MASTER_RX_MON_t ]
 
 
 - HAL_CSM_CSM_SC_MASTER_CTRL_t:
-  - TX_RESET : [ type: logic, description:Reset TX datapath ]
-  - RX_RESET : [ type: logic, description:Reset RX datapath ]
-  - TX_START_WRITE : [ type: logic, description:Request a write config to the GBTx (IC) ]
-  - TX_START_READ : [ type: logic, description:Request a read config to the GBTx (IC) ]
-  - TX_GBTX_ADDR : [ type: logic, length: 8, description:I2C address of the GBTx ]
-  - TX_REGISTER_ADDR : [ type: logic, length: 16, description:Address of the first register to be accessed ]
-  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16, description:Number of words/bytes to be read (only for read transactions) ]
-  - TX_DATA_TO_GBTX : [ type: logic, length: 8, description:Data to be written into the internal FIFO ]
-  - TX_WR : [ type: logic, description:Request a write operation into the internal FIFO (Data to GBTx) ]
-  - RX_RD : [ type: logic, description:Request a read operation of the internal FIFO (GBTx reply) ]
-  - TX_CMD : [ type: logic, length: 8, description:Command: The Command field is present in the frames received by the SCA and indicates the operation to be performed. Meaning is specific to the channel. ]
-  - TX_ADDRESS : [ type: logic, length: 8, description:Command: It represents the packet destination address. The address is one-byte long. By default, the GBT-SCA use address 0x00. ]
-  - TX_TRANSID : [ type: logic, length: 8, description:Command: Specifies the message identification number. The reply messages generated by the SCA have the same transaction identifier of the request message allowing to associate the transmitted commands with the corresponding replies, permitting the concurrent use of all the SCA channels.  It is not required that ID values are ordered. ID values 0x00 and 0xff are reserved for interrupt packets generated spontaneously by the SCA and should not be used in requests. ]
-  - TX_CHANNEL : [ type: logic, length: 8, description:Command: The channel field specifies the destination interface of the request message (ctrl/spi/gpio/i2c/jtag/adc/dac). ]
-  - TX_DATA : [ type: logic, length: 32, description:Command: data field (According to the SCA manual) ]
-  - SCA_ENABLE : [ type: logic, length: 3, description:Enable flag to select SCAs ]
-  - START_RESET : [ type: logic, description:Send a reset command to the enabled SCAs ]
-  - START_CONNECT : [ type: logic, description:Send a connect command to the enabled SCAs ]
-  - START_COMMAND : [ type: logic, description:Send the command set in input to the enabled SCAs ]
-  - INJ_CRC_ERR : [ type: logic, description:Emulate a CRC error ]
+  - TX_RESET : [ type: logic ]
+  - RX_RESET : [ type: logic ]
+  - TX_START_WRITE : [ type: logic ]
+  - TX_START_READ : [ type: logic ]
+  - TX_GBTX_ADDR : [ type: logic, length: 8 ]
+  - TX_REGISTER_ADDR : [ type: logic, length: 16 ]
+  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16 ]
+  - TX_DATA_TO_GBTX : [ type: logic, length: 8 ]
+  - TX_WR : [ type: logic ]
+  - RX_RD : [ type: logic ]
+  - TX_CMD : [ type: logic, length: 8 ]
+  - TX_ADDRESS : [ type: logic, length: 8 ]
+  - TX_TRANSID : [ type: logic, length: 8 ]
+  - TX_CHANNEL : [ type: logic, length: 8 ]
+  - TX_DATA : [ type: logic, length: 32 ]
+  - SCA_ENABLE : [ type: logic, length: 3 ]
+  - START_RESET : [ type: logic ]
+  - START_CONNECT : [ type: logic ]
+  - START_COMMAND : [ type: logic ]
+  - INJ_CRC_ERR : [ type: logic ]
 
 
 - HAL_CSM_CSM_SC_SLAVE_MON_t:
-  - RX_DATA_FROM_GBTX : [ type: logic, length: 8, description:Data from the FIFO ]
-  - TX_READY : [ type: logic, description:IC core ready for a transaction ]
-  - RX_EMPTY : [ type: logic, description:Rx FIFO is empty (no reply from GBTx) ]
+  - RX_DATA_FROM_GBTX : [ type: logic, length: 8 ]
+  - TX_READY : [ type: logic ]
+  - RX_EMPTY : [ type: logic ]
 
 
 - HAL_CSM_CSM_SC_SLAVE_CTRL_t:
-  - TX_RESET : [ type: logic, description:Reset TX datapath ]
-  - RX_RESET : [ type: logic, description:Reset RX datapath ]
-  - TX_START_WRITE : [ type: logic, description:Request a write config to the GBTx (IC) ]
-  - TX_START_READ : [ type: logic, description:Request a read config to the GBTx (IC) ]
-  - TX_GBTX_ADDR : [ type: logic, length: 8, description:I2C address of the GBTx ]
-  - TX_REGISTER_ADDR : [ type: logic, length: 16, description:Address of the first register to be accessed ]
-  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16, description:Number of words/bytes to be read (only for read transactions) ]
-  - TX_DATA_TO_GBTX : [ type: logic, length: 8, description:Data to be written into the internal FIFO ]
-  - TX_WR : [ type: logic, description:Request a write operation into the internal FIFO (Data to GBTx) ]
-  - RX_RD : [ type: logic, description:Request a read operation of the internal FIFO (GBTx reply) ]
+  - TX_RESET : [ type: logic ]
+  - RX_RESET : [ type: logic ]
+  - TX_START_WRITE : [ type: logic ]
+  - TX_START_READ : [ type: logic ]
+  - TX_GBTX_ADDR : [ type: logic, length: 8 ]
+  - TX_REGISTER_ADDR : [ type: logic, length: 16 ]
+  - TX_NUM_BYTES_TO_READ : [ type: logic, length: 16 ]
+  - TX_DATA_TO_GBTX : [ type: logic, length: 8 ]
+  - TX_WR : [ type: logic ]
+  - RX_RD : [ type: logic ]
 
 
 - HAL_CSM_CSM_SC_MON_t:
@@ -145,9 +147,9 @@ HDL_Types:
 
 
 - HAL_CTRL_t:
-  - RESET_DOWNLINKS : [ type: logic, description:Resets all LPGBT Downlinks ]
-  - RESET_UPLINKS : [ type: logic, description:Resets all LPGBT Uplinks ]
-  - RESET_COUNTERS : [ type: logic, description:Resets counters ]
+  - RESET_DOWNLINKS : [ type: logic ]
+  - RESET_UPLINKS : [ type: logic ]
+  - RESET_COUNTERS : [ type: logic ]
   - CSM : [ type: HAL_CSM_CTRL_t ]
 
 
