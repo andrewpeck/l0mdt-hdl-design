@@ -104,7 +104,7 @@ begin
     attribute NUM_MGTS of MGT_GEN : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
     component mgt_10g24_gth
       port (
-        gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
+        --gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
         gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
         gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
         gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
@@ -129,7 +129,9 @@ begin
         drpwe_in                           : in  std_logic_vector(0 downto 0);
         gthrxn_in                          : in  std_logic_vector(0 downto 0);
         gthrxp_in                          : in  std_logic_vector(0 downto 0);
-        gtrefclk0_in                       : in  std_logic_vector(0 downto 0);
+        gtrefclk00_in                      : in  std_logic_vector(0 downto 0);
+        qpll0outclk_out                    : out std_logic_vector(0 downto 0);
+        qpll0outrefclk_out                 : out std_logic_vector(0 downto 0);
         rxcommadeten_in                    : in  std_logic_vector(0 downto 0);
         rxmcommaalignen_in                 : in  std_logic_vector(0 downto 0);
         rxpcommaalignen_in                 : in  std_logic_vector(0 downto 0);
@@ -174,7 +176,7 @@ begin
         gthtxn_out(0) => txn_o,
         gthtxp_out(0) => txp_o,
 
-        gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
+        --gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
 
         gtwiz_userdata_tx_in  => mgt_word_i,
         gtwiz_userdata_rx_out => mgt_word_o,
@@ -205,10 +207,12 @@ begin
 
         -- refclk
 
+        qpll0outclk_out    => open,
+        qpll0outrefclk_out => open,
 
         --cpll-----------------------------------------------------------------
 
-        gtrefclk0_in(0) => mgt_refclk_i,
+        gtrefclk00_in(0) => mgt_refclk_i,
 
         --qpll-----------------------------------------------------------------
 
@@ -260,7 +264,7 @@ begin
 
     component mgt_10g24_gty
       port (
-        gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
+        --gtwiz_userclk_tx_reset_in          : in  std_logic_vector(0 downto 0);
         gtwiz_userclk_tx_active_in         : in  std_logic_vector(0 downto 0);
         gtwiz_userclk_rx_active_in         : in  std_logic_vector(0 downto 0);
         gtwiz_buffbypass_tx_reset_in       : in  std_logic_vector(0 downto 0);
@@ -283,7 +287,9 @@ begin
         drpdi_in                           : in  std_logic_vector(15 downto 0);
         drpen_in                           : in  std_logic_vector(0 downto 0);
         drpwe_in                           : in  std_logic_vector(0 downto 0);
-        gtrefclk0_in                       : in  std_logic_vector(0 downto 0);
+        gtrefclk00_in                      : in  std_logic_vector(0 downto 0);
+        qpll0outclk_out                    : out std_logic_vector(0 downto 0);
+        qpll0outrefclk_out                 : out std_logic_vector(0 downto 0);
         gtyrxn_in                          : in  std_logic_vector(0 downto 0);
         gtyrxp_in                          : in  std_logic_vector(0 downto 0);
         rxcommadeten_in                    : in  std_logic_vector(0 downto 0);
@@ -330,7 +336,7 @@ begin
         gtytxn_out(0) => txn_o,
         gtytxp_out(0) => txp_o,
 
-        gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
+        --gtwiz_userclk_tx_reset_in(0) => tx_resets_i.reset,
 
         gtwiz_userdata_tx_in  => mgt_word_i,
         gtwiz_userdata_rx_out => mgt_word_o,
@@ -361,10 +367,12 @@ begin
 
         -- refclk
 
+        qpll0outclk_out    => open,
+        qpll0outrefclk_out => open,
 
         --cpll-----------------------------------------------------------------
 
-        gtrefclk0_in(0) => mgt_refclk_i,
+        gtrefclk00_in(0) => mgt_refclk_i,
 
         --qpll-----------------------------------------------------------------
 
