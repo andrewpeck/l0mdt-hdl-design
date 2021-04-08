@@ -125,7 +125,7 @@ begin
 
   begin
 
-    apb_interface : entity apbus_lib.apb_mem_int
+    apb_mem_interface : entity apbus_lib.apb_mem_int
       generic map(
         g_XML_NODE_NAME         => "MEM_INT_10A148D",
         g_INTERNAL_CLK          => '1',

@@ -21,7 +21,7 @@ use apbus_lib.apb_pkg.all;
 
 entity apb_mem_int is
   generic(
-    g_XML_NODE_NAME     : string := "MEM_INT_10A148D";
+    g_XML_NODE_NAME     : string; -- := "MEM_INT_10A148D";
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
@@ -86,6 +86,9 @@ begin
     signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
     signal mon_r    : MEM_INT_10A148D_MON_t;
   begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
 
     APD_CTRL_INT: process(clk_axi)
     begin
