@@ -2,10 +2,13 @@
 <!-- memory interface 10 bits addres & 148 bit data -->
 <node id="MEM_INT_10A148D">
   <node id="wr_req"     address="0x00" mask="0x00000001" permission="w"   description="Write Enable"/>
-  <node id="rd_ack"     address="0x01" mask="0x00000001" permission="w"   description="Read Ack"/>
+  <node id="rd_ack"     address="0x00" mask="0x00000002" permission="w"   description="Read Ack"/>
+  <node id="flush_req"  address="0x00" mask="0x00000004" permission="w"   description="Read Ack"/>
+
   <node id="wr_addr"    address="0x02" mask="0x000003FF" permission="rw"  description="wr_Address"/>
   <node id="rd_addr"    address="0x02" mask="0x03FF0000" permission="rw"  description="rd_Address"/>
   <node id="rd_rdy"     address="0x02" mask="0x00002000" permission="r"   description="Read ready"/>
+  
   <node id="wr_data"  address="0x10" description="Write Data">
     <node id="wr_data_0"  address="0x00" mask="0xFFFFFFFF" permission="rw"  description="Write Data 0"/>
     <node id="wr_data_1"  address="0x01" mask="0xFFFFFFFF" permission="rw"  description="Write Data 1"/>

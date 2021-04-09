@@ -107,7 +107,8 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        
+        o_freeze <= (others => '0');
+        o_out_sel <= b"01";
       else
         
       end if;

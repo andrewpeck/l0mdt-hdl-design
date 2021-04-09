@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="MPL">
+
   <node id="ACTIONS" address="0x00000000">
     <node id="RESET"          mask="1" permission="w"/>
     <node id="ENABLE"         mask="2" permission="w"/>
     <node id="DISABLE"        mask="4" permission="w"/>
     <node id="FREEZE"         mask="8" permission="w"/>
   </node>
+
   <node id="CONFIGS" address="0x00000001">
     <node id="THREADS"          mask="0x00000000F" parameters="default=3" permission="rw"/>
     <node id="INPUT_EN"         mask="0x000000010" parameters="default=1" permission="rw"/>
     <node id="OUTPUT_EN"        mask="0x000000020" parameters="default=1" permission="rw"/>
     <node id="FLUSH_MEM_RESET"  mask="0x000000040" parameters="default=1" permission="rw"/>
   </node>
+
   <node id="STATUS" address="0x00000010">
     <node id="ENABLED" mask="0x00000001" permission="r"/>
     <node id="READY"   mask="0x00000002" permission="r"/>

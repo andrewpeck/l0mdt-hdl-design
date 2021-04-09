@@ -87,6 +87,7 @@ package MPL_CTRL is
   type MPL_PL_MEM_PL_MEM_CTRL_t is record
     wr_req : std_logic;
     rd_ack : std_logic;
+    flush_req : std_logic;
     wr_addr : std_logic_vector(10-1 downto 0);
     rd_addr : std_logic_vector(10-1 downto 0);
     wr_data : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
@@ -585,6 +586,7 @@ package body MPL_CTRL is
   begin
     l := l + len(x.wr_req);
     l := l + len(x.rd_ack);
+    l := l + len(x.flush_req);
     l := l + len(x.wr_addr);
     l := l + len(x.rd_addr);
     l := l + len(x.wr_data);
@@ -599,6 +601,8 @@ package body MPL_CTRL is
       left := left + len(x.wr_req);
       y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
       left := left + len(x.rd_ack);
+      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      left := left + len(x.flush_req);
       y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
       left := left + len(x.wr_addr);
       y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
@@ -609,6 +613,8 @@ package body MPL_CTRL is
       left := left - len(x.wr_req);
       y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
       left := left - len(x.rd_ack);
+      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      left := left - len(x.flush_req);
       y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
       left := left - len(x.wr_addr);
       y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
@@ -626,6 +632,8 @@ package body MPL_CTRL is
       left := left + len(y.wr_req);
       y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
       left := left + len(y.rd_ack);
+      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
       y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
       left := left + len(y.wr_addr);
       y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
@@ -636,6 +644,8 @@ package body MPL_CTRL is
       left := left - len(y.wr_req);
       y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
       left := left - len(y.rd_ack);
+      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
       y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
       left := left - len(y.wr_addr);
       y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
@@ -649,6 +659,7 @@ package body MPL_CTRL is
   begin
     y.wr_req := nullify(t.wr_req);
     y.rd_ack := nullify(t.rd_ack);
+    y.flush_req := nullify(t.flush_req);
     y.wr_addr := nullify(t.wr_addr);
     y.rd_addr := nullify(t.rd_addr);
     y.wr_data := nullify(t.wr_data);
