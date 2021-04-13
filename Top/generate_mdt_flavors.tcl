@@ -72,7 +72,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "post-creation.tcl create_c2c.tcl prj_cfg_default.vhd gitlab-ci.yml hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
+    set files_to_copy "post-creation.tcl create_c2c.tcl prj_cfg_default.vhd gitlab-ci.yml hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/ctrl_lib.src list/xdc.con"
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
@@ -119,6 +119,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the gitlab ci file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
+
+    # update the ctrl_lib
+    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
 
 proc clone_projects {huddle} {

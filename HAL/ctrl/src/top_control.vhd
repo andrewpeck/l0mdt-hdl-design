@@ -20,6 +20,7 @@ use ctrl_lib.MPL_CTRL.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.spies_pkg.all;
+use ctrl_lib.c2cslave_pkg.all;
 
 entity top_control is
   port (
@@ -206,14 +207,14 @@ begin
     end if;
   end process;
 
-  c2cslave_wrapper_inst : entity xil_defaultlib.c2cslave_wrapper
+  c2cslave_wrapper_inst : c2cslave
     port map (
 
       -- axi clock and reset
-      axi_clk      => axi_clk,
-      clk40        => clk40,
+      axi_clk   => axi_clk,
+      clk40     => clk40,
       --clkpipe      => clkpipe,
-      axi_rst_n(0) => axi_reset_n,
+      axi_rst_n => axi_reset_n,
 
       -- system clock and reset
       clk50mhz => clk50mhz,
@@ -224,10 +225,10 @@ begin
       --------------------------------------------------------------------------------
 
       -- physical link
-      k_c2clink_phy_rx_rxn(0)    => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
-      k_c2clink_phy_rx_rxp(0)    => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
-      k_c2clink_phy_tx_txn(0)    => c2c_txn,      -- k_c2clink_phy_tx_txn,
-      k_c2clink_phy_tx_txp(0)    => c2c_txp,      -- k_c2clink_phy_tx_txp,
+      k_c2clink_phy_rx_rxn       => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
+      k_c2clink_phy_rx_rxp       => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
+      k_c2clink_phy_tx_txn       => c2c_txn,      -- k_c2clink_phy_tx_txn,
+      k_c2clink_phy_tx_txp       => c2c_txp,      -- k_c2clink_phy_tx_txp,
       k_c2clink_phy_refclk_clk_n => c2c_refclkn,  -- k_c2clink_phy_refclk_clk_n,
       k_c2clink_phy_refclk_clk_p => c2c_refclkp,  -- k_c2clink_phy_refclk_clk_p,
 
@@ -471,29 +472,13 @@ begin
       tar_spy_port_a_addr => axi_spy_ctrl.tar_spy.bram_a.addr,  -- out
       tar_spy_port_a_dout => axi_spy_mon.tar_spy.dout_a,        -- in
 
-      tar_spy_port_b_we   => axi_spy_ctrl.tar_spy.bram_b.we,    -- out
-      tar_spy_port_b_din  => axi_spy_ctrl.tar_spy.bram_b.din,   -- out
-      tar_spy_port_b_en   => axi_spy_ctrl.tar_spy.bram_b.en,    -- out
-      tar_spy_port_b_rst  => axi_spy_ctrl.tar_spy.bram_b.rst,   -- out
-      tar_spy_port_b_clk  => axi_spy_ctrl.tar_spy.bram_b.clk,   -- out
-      tar_spy_port_b_addr => axi_spy_ctrl.tar_spy.bram_b.addr,  -- out
-      tar_spy_port_b_dout => axi_spy_mon.tar_spy.dout_b,        -- in
-
       mpl_spy_port_a_we   => axi_spy_ctrl.mpl_spy.bram_a.we,    -- out
       mpl_spy_port_a_din  => axi_spy_ctrl.mpl_spy.bram_a.din,   -- out
       mpl_spy_port_a_en   => axi_spy_ctrl.mpl_spy.bram_a.en,    -- out
       mpl_spy_port_a_rst  => axi_spy_ctrl.mpl_spy.bram_a.rst,   -- out
       mpl_spy_port_a_clk  => axi_spy_ctrl.mpl_spy.bram_a.clk,   -- out
       mpl_spy_port_a_addr => axi_spy_ctrl.mpl_spy.bram_a.addr,  -- out
-      mpl_spy_port_a_dout => axi_spy_mon.mpl_spy.dout_a,        -- in
-
-      mpl_spy_port_b_we   => axi_spy_ctrl.mpl_spy.bram_b.we,    -- out
-      mpl_spy_port_b_din  => axi_spy_ctrl.mpl_spy.bram_b.din,   -- out
-      mpl_spy_port_b_en   => axi_spy_ctrl.mpl_spy.bram_b.en,    -- out
-      mpl_spy_port_b_rst  => axi_spy_ctrl.mpl_spy.bram_b.rst,   -- out
-      mpl_spy_port_b_clk  => axi_spy_ctrl.mpl_spy.bram_b.clk,   -- out
-      mpl_spy_port_b_addr => axi_spy_ctrl.mpl_spy.bram_b.addr,  -- out
-      mpl_spy_port_b_dout => axi_spy_mon.mpl_spy.dout_b         -- in
+      mpl_spy_port_a_dout => axi_spy_mon.mpl_spy.dout_a         -- in
 
       );
 
