@@ -96,7 +96,11 @@ begin
         if axi_rst = '1' then
 
         else
-          
+          if ctrl.wr_req or ctrl.flush_req then
+
+          else
+
+          end if;
         end if;
       end if;
     end process APD_CTRL_INT;

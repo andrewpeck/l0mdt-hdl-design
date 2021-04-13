@@ -53,8 +53,10 @@ package apb_pkg is
   function nullify(x: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY;
 
   type MEM_INT_10A148D_CTRL_t is record
-    wr_req : std_logic;
+    wr_ack : std_logic;
+    rd_req : std_logic;
     rd_ack : std_logic;
+    flush_req : std_logic;
     wr_addr : std_logic_vector(10-1 downto 0);
     rd_addr : std_logic_vector(10-1 downto 0);
     wr_data : MEM_INT_10A148D_wr_data_CTRL_t;
