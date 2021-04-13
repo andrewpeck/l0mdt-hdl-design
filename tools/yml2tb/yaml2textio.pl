@@ -1,8 +1,10 @@
 #!/usr/bin/perl
 #
-# Read YAML type specs from a list of YML files, and a VHDL entity declaration
-# Generate textio function overrides
-#
+# Database created by yamldump and create overloaded
+# textio functions to read/write all custom types
+# 
+# reviving this project 4/21 after fixing yamldump.pl so it works
+# With Thiago's https://gitlab.com/tcpaiva/yml2hdl v0.2.1
 #
 use strict;
 use lib '.';
@@ -27,7 +29,20 @@ print "For now, writing output to $output\n";
 my $yes = 1;			# silently overwrite output
 my $debug = 2;
 
-print FP $TextIo::Header;
+my ($basename) = $dbfile =~ /^(.*)\.db$/;
+my $pkg_name = $basename . "_textio";
+
+print "Using package name $pkg_name\n";
+
+print FP qq{
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_textio.all;
+use std.textio.all;
+
+package $pkg_name is
+};
 
 # pass 1, loop over types
 # emit function declarations
@@ -38,7 +53,8 @@ foreach my $top ( keys %{$types}) {
     my $ptr = $types->{$top};
     my $class = $ptr->{'class'};
     print "\nDUMP:", Dumper($ptr) if($debug);
-    #--- array, which means an _avt type
+
+    # array class
     if( $class eq 'array') {
 	my $size = $ptr->{'size'};
 	my $range = "(integer range <>)";
@@ -49,6 +65,8 @@ foreach my $top ( keys %{$types}) {
 	print FP "-- ARRAY type $top\n";
 	print FP "  procedure READ( L:inout LINE; VALUE: out $vtype);\n";
 	print FP "  procedure WRITE( L:inout LINE; VALUE: in $vtype);\n";
+
+    # record class
     } elsif( $class eq 'record') {
 	print "RECORD (prototypes)\n" if($debug);
 	my $hdl_type = $top . "_rt";
@@ -56,13 +74,19 @@ foreach my $top ( keys %{$types}) {
 	print FP "-- RECORD type $top\n";
 	print FP "  procedure READ( L:inout LINE; VALUE: out $top);\n";
 	print FP "  procedure WRITE( L:inout LINE; VALUE: in $top);\n";
+
+    # ignore constants or other things
     } else {
 	$ptr->{'skip'} = "yes";
 	print "(skipped)\n" if($debug);
     }
 }
 
-print FP $TextIo::Inter;
+print FP qq{
+end $pkg_name;
+
+package body $pkg_name is
+};
 
 # pass 2 -- emit function definitions
 print "-------------------- Pass 2:\n" if( $debug);
@@ -70,32 +94,81 @@ foreach my $top ( keys %{$types}) {
     print "Processing $top...\n" if($debug);
     next if( $top eq "__config__");
     my $ptr = $types->{$top};
+    print "DUMPING:\n", Dumper($ptr), "/DUMPING\n";
+    
     my $class = $ptr->{'class'};
+    my $type = $ptr->{'type'};
+    my $size = $ptr->{'length'};
+    my $name = $top;
+    print "name: $top  class: $class  type: $type  size: $size\n";
+
     next if( exists $ptr->{'skip'});
 
     print FP "\n";
     print FP "  procedure READ( L:inout LINE; VALUE: out $top) is\n";
     print FP "    variable v_data : $top;\n";
-    print FP "    variable v_index : integer;\n" if( $class eq 'array');
+    print FP "    variable i : integer;\n" if( $class eq 'array');
     print FP "  begin\n";
 
     if( $class eq 'record') {	# handle record elements
-	print "Processing RECORD $top\n" if($debug);
-	print Dumper($ptr);
 	foreach my $memb ( @{$ptr->{'members'}}) {
 	    my $name = $memb->{'name'};
 	    my $type = $memb->{'type'};
-	    my $size = $memb->{'size'};
+	    my $size = $memb->{'length'};
 	    print "  >>> $name $type($size)\n" if($debug);
-	    print FP "    READ(L, v_data.$name);\n";
+	    if( $type eq "std_logic_vector") {
+		print FP "    DREAD(L, v_data.$name);\n";
+	    } else {
+		print FP "    READ(L, v_data.$name);\n";
+	    }
 	}
-    } else {			# just read a scalar
-	print "Processing $class\n";
-	print FP "    READ(L, v_data);\n";
+    } elsif( $class eq 'array') { # handle an array
+	print FP "    for i in 0 to $size" . "-1 loop\n";
+	if( $type eq "std_logic_vector") {
+	    print FP "      DREAD( v_LINE, $name" . "(i);\n";
+	} else {
+	    print FP "      READ( v_LINE, $name" . "(i);\n";
+	}
+	print FP "    end loop;\n";
     }
 
     print FP "  end READ;\n";
+
+    print FP "\n";
+    print FP "  procedure WRITE( L:inout LINE; VALUE: out $top) is\n";
+    print FP "    variable v_data : $top;\n";
+    print FP "    variable i : integer;\n" if( $class eq 'array');
+    print FP "  begin\n";
+
+    if( $class eq 'record') {
+	foreach my $memb ( @{$ptr->{'members'}}) {
+	    my $name = $memb->{'name'};
+	    my $type = $memb->{'type'};
+	    my $size = $memb->{'length'};
+	    if( $type eq "std_logic_vector") {
+		print FP "    DWRITE(L, v_data.$name);\n";
+	    } else {
+		print FP "    WRITE(L, v_data.$name);\n";
+	    }
+	    print FP "    WRITE(L,' ');\n";
+	}
+    } elsif( $class eq 'array') {
+	print FP "    for i in 0 to $size" . "-1 loop\n";
+	if( $type eq "std_logic_vector") {
+	    print FP "      DWRITE( v_LINE, $name" . "(i);\n";
+	} else {
+	    print FP "      WRITE( v_LINE, $name" . "(i);\n";
+	}
+	print FP "      WRITE(L,' ');\n";
+	print FP "    end loop;\n";
+    }
+    print FP "  end WRITE;\n";
+
 }
 
+
 print "-- done --\n";
-print FP $TextIo::Last;
+print FP qq{
+end $pkg_name;
+};
+

@@ -45,6 +45,10 @@
 #              'type' => synthesizable type, either
 #                        built-in:  logic, unsigned, signed -or-
 #                        custom:  defined elsewhere in db
+#
+# Mods:
+# hazen, 2021-04-13:
+#   Updated so it works with Thiago's https://gitlab.com/tcpaiva/yml2hdl v0.2.1
 #------------------------------------------------------------------------
 
 use strict;
@@ -204,7 +208,8 @@ foreach my $th ( @{$types}) {
 	    die "In type $item, member $mkey doesn't have a \"type\""
 		if( !$newhash->{"type"});
 	    if( $newhash->{"length"}) {
-		$memb{"type"} = $newhash->{"type"} . "[" . $newhash->{"length"} . "-1 downto 0]";
+		$memb{"type"} = $newhash->{"type"};
+		$memb{"length"} = $newhash->{"length"};
 	    } else {
 		$memb{"type"} = $newhash->{"type"};
 	    }
