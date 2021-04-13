@@ -52,6 +52,8 @@
 
   typedef struct packed {
     logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
     logic [10-1:0] wr_addr;

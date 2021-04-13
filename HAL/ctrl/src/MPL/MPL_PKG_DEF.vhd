@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-04-09 19:51:03.568266.
+-- Created : 2021-04-12 19:13:47.939840.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -31,8 +31,10 @@ package MPL_CTRL_DEF is
   constant DEFAULT_MPL_PL_MEM_PL_MEM_CTRL_t : MPL_PL_MEM_PL_MEM_CTRL_t := (
                                                                            flush_req => '0',
                                                                            wr_req => '0',
+                                                                           wr_ack => '0',
                                                                            wr_addr => (others => '0'),
                                                                            rd_ack => '0',
+                                                                           rd_req => '0',
                                                                            rd_addr => (others => '0'),
                                                                            wr_data => DEFAULT_MPL_PL_MEM_PL_MEM_wr_data_CTRL_t
                                                                           );

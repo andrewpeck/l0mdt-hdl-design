@@ -11,7 +11,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package MPL_CTRL is
+package MPL_PKG is
 
   type MPL_ACTIONS_CTRL_t is record
     RESET : std_logic;
@@ -86,6 +86,8 @@ package MPL_CTRL is
 
   type MPL_PL_MEM_PL_MEM_CTRL_t is record
     wr_req : std_logic;
+    wr_ack : std_logic;
+    rd_req : std_logic;
     rd_ack : std_logic;
     flush_req : std_logic;
     wr_addr : std_logic_vector(10-1 downto 0);
@@ -138,11 +140,11 @@ package MPL_CTRL is
   function structify(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t;
 
-end package MPL_CTRL;
+end package MPL_PKG;
 
 ------------------------------------------------------------
 
-package body MPL_CTRL is
+package body MPL_PKG is
 
   function len(x: MPL_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -585,6 +587,8 @@ package body MPL_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_req);
+    l := l + len(x.wr_ack);
+    l := l + len(x.rd_req);
     l := l + len(x.rd_ack);
     l := l + len(x.flush_req);
     l := l + len(x.wr_addr);
@@ -599,6 +603,10 @@ package body MPL_CTRL is
     if t'ascending then
       y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
       left := left + len(x.wr_req);
+      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      left := left + len(x.wr_ack);
+      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      left := left + len(x.rd_req);
       y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
       left := left + len(x.rd_ack);
       y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
@@ -611,6 +619,10 @@ package body MPL_CTRL is
     else
       y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
       left := left - len(x.wr_req);
+      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      left := left - len(x.wr_ack);
+      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      left := left - len(x.rd_req);
       y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
       left := left - len(x.rd_ack);
       y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
@@ -630,6 +642,10 @@ package body MPL_CTRL is
     if x'ascending then
       y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
       left := left + len(y.wr_req);
+      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
       y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
       left := left + len(y.rd_ack);
       y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
@@ -642,6 +658,10 @@ package body MPL_CTRL is
     else
       y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
       left := left - len(y.wr_req);
+      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
       y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
       left := left - len(y.rd_ack);
       y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
@@ -658,6 +678,8 @@ package body MPL_CTRL is
   variable y: MPL_PL_MEM_PL_MEM_CTRL_t;
   begin
     y.wr_req := nullify(t.wr_req);
+    y.wr_ack := nullify(t.wr_ack);
+    y.rd_req := nullify(t.rd_req);
     y.rd_ack := nullify(t.rd_ack);
     y.flush_req := nullify(t.flush_req);
     y.wr_addr := nullify(t.wr_addr);
@@ -893,4 +915,4 @@ package body MPL_CTRL is
     return y;
   end function nullify;
 
-end package body MPL_CTRL;
+end package body MPL_PKG;
