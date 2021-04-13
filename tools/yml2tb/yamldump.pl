@@ -83,20 +83,29 @@ for( my $i=0; $i<$na; $i++) {
     my $arg = $ARGV[$i];
     if( $arg =~ m{\.yml}) {
 	print "Loading YAML from $ARGV[$i]\n";
-	my $type = ReadYaml( $ARGV[$i]);
-	# quick sanity check
-	if( scalar( keys %{$type}) != 2 or
-	    !exists $type->{'__config__'} or
-	    !exists $type->{'HDL_Types'}) {
-	    print "WARNING: $ARGV[$i], missing __config__ or HDL_Types (skipped)\n";
-	} else {
-	    my $tlist = $type->{'HDL_Types'};
-	    foreach my $ftyp ( @{$tlist}) {
-		push @{$types}, $ftyp;
+	my $itype = ReadYaml( $ARGV[$i]);
+	my $type = Restructure( $itype); # collapse lists of hashes
+
+	# we are expecting two top-level entries, one containing 'config'
+	# and the other containing 'type'
+	my $nkeys = scalar( keys %{$type});
+	die "Expecting 1 or 2 top-level entries in YAMl, saw $nkeys\n"
+	    if( $nkeys < 1 || $nkeys > 2);
+	foreach my $key ( keys %{$type}) {
+	    if( $key =~ /config/) {
+		print "Found config\n";
+	    } elsif( $key =~ /type/) {
+		print "Found type\n";
+		my $tlist = $type->{$key};
+		foreach my $ftyp ( @{$tlist}) {
+		    push @{$types}, $ftyp;
+		}
+	    } else {
+		die "Unknown top-level item: $key\n";
 	    }
-	    #	my %comb = ( %{$types}, %{$type});
-	    #	$types = \%comb;
+
 	}
+
     } elsif( $arg =~ m{\.db}) {
 	$dbfile = $arg;
     } elsif( $arg =~ m{-d}) {
@@ -124,28 +133,19 @@ print "---- parsing the structure\n" if($debug);
 # iterate over top-level hash
 foreach my $th ( @{$types}) {
     my $item = (keys %{$th})[0];
-
-    my $hdl_type = $item;
-    if( $item =~ /_$/) {
-	die "NO trailing underscore allowed in $item";
-	print "<> Trailing underscore changed to 's' in $item\n" if($debug);
-	chop $hdl_type;
-	$hdl_type .= "s";
-	print "   type now $hdl_type\n" if($debug);
-    }
-
     my $thing = $th->{$item};
     my $reft = ref $thing;              # reference to either a hash (scalar) or array (record)
-    print "$item: " if($debug>1);
+    print "Item: $item: " if($debug>1);
 
-    if( $reft eq "ARRAY") {	        # it's an array, must be a VHDL record
-	print "Array\n" if($debug>1);
-	$hdl_type .= "_rt";
-	print "<> Type $item -> $hdl_type\n" if($debug);
+    if( $reft eq "ARRAY") {	        # it's an array, so it is not a record type
+	print "ARRAY\n" if($debug>1);
+
 	# start to build the DB entry
-	$db->{$hdl_type}->{"class"} = "record";    # set the class to 'record'
-	$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
-	$db->{$hdl_type}->{"members"} = ( );       # create an empty list for members
+	$db->{$item}->{"class"} = "constant";    # set the class to 'constant'
+	print "---DUMP (thing)---\n";
+	print Dumper( $thing);
+	print "---/DUMP---\n";
+
 	foreach my $member ( @{$thing}) {      # loop over members
 	    # better be a hash reference with a single key
 	    if( ref($member) ne "HASH") {
@@ -165,10 +165,10 @@ foreach my $th ( @{$types}) {
 	    # convert it to a single hash so we don't go crazy
 	    my $mref = { };
 	    foreach my $ae ( @{$mary}) {
-#		print "--- ref: " . ref($ae) . "\n" if($debug);
+		print "--- ref: " . ref($ae) . "\n" if($debug);
 		my $key = (keys %{$ae})[0];
 		my $val = $ae->{$key};
-#		print "--- key: $key val: $val\n" if($debug);;
+		print "--- key: $key val: $val\n" if($debug);;
 		$mref->{$key} = $val;
 	    }
 
@@ -192,8 +192,8 @@ foreach my $th ( @{$types}) {
 		    print "Storing info for $mname...\n";
 		    print Dumper( \%minfo);
 		}
-		push @{$db->{$hdl_type}->{"members"}}, \%minfo;
-		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
+		push @{$db->{$item}->{"members"}}, \%minfo;
+		$db->{$item}->{"original_type"} = $item;  # remember type from YAML
 	    } else {
 		print "ERROR: no type for member $mname of item $item\n";
 		exit;
@@ -212,12 +212,11 @@ foreach my $th ( @{$types}) {
 		    exit;
 		}
 		my $value = $thing->{"value"};
-		my $hdl_type = $item . "_constant";
-		$db->{$hdl_type}->{"class"} = "constant";
-		$db->{$hdl_type}->{"value"} = $value;
-		$db->{$hdl_type}->{"type"} = $type;
-		print "% $hdl_type is $type (constant, value=$value)\n" if($debug);
-		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
+#		my $item = $item . "_constant";
+		$db->{$item}->{"class"} = "constant";
+		$db->{$item}->{"value"} = $value;
+		$db->{$item}->{"type"} = $type;
+		print "% $item is $type (constant, value=$value)\n" if($debug);
 		
 	    } elsif( exists $thing->{"array"} or exists $thing->{"length"}) {
 		my $size;
@@ -226,19 +225,17 @@ foreach my $th ( @{$types}) {
 		} else {
 		    $size = $thing->{"length"};
 		}
-		print "% $hdl_type is array of $type size $size\n" if($debug);
-		$db->{$hdl_type}->{"class"} = "array";
-		$db->{$hdl_type}->{"type"} = $type;
-		$db->{$hdl_type}->{"size"} = $size;
-		$db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
+		print "% $item is array of $type size $size\n" if($debug);
+		$db->{$item}->{"class"} = "array";
+		$db->{$item}->{"type"} = $type;
+		$db->{$item}->{"size"} = $size;
 	    } else {
-		print "ERROR: $hdl_type is $type but not array or constant\n";
+		print "ERROR: $item is $type but not array or constant\n";
 		exit;
 	    }
 	} else {
-	    $db->{$hdl_type}->{"class"} = "other";
-	    $db->{$hdl_type}->{"original_type"} = $item;  # remember type from YAML
-	    print "% $hdl_type is -no type-\n" if($debug);
+	    $db->{$item}->{"class"} = "other";
+	    print "% $item is -no type-\n" if($debug);
 	}
 
     } else {

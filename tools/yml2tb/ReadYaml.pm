@@ -61,8 +61,8 @@ sub TypeSplit {
 
 #
 # process passed reference
-# Expect top-level hash with two keys, "__config__" and "HDL_Types"
-#   'HDL_Types' => [ { 'name' => sth } , { 'name => sth } ];
+# Expect top-level hash with two keys, "__config__" and "types"
+#   'types' => [ { 'name' => sth } , { 'name => sth } ];
 # Process each "sth" and replace lists of single-key hashes with one multi-key hash
 #
 sub Restructure {
@@ -73,13 +73,13 @@ sub Restructure {
     
     # -- check for big problems
     die "Not a hash reference in ReadYaml:Restructure()" if( ref($r) ne "HASH");
-    if( not $r->{"HDL_Types"}) {
-	print "No HDL_Types found in ReadYaml:Restructure()";
+    if( not $r->{"types"}) {
+	print "No types found in ReadYaml:Restructure()";
 	return $r;
     }
 
-    #-- better be HDL_Types at the top, with a list of single-key hashes
-    my $d = $r->{"HDL_Types"};
+    #-- better be types at the top, with a list of single-key hashes
+    my $d = $r->{"types"};
     my @fixed;
     
    if( ref($d) ne "ARRAY") {
@@ -104,11 +104,11 @@ sub Restructure {
     }
 
     # now we have the list @fixed which should be put back
-    my $new_hash = { 'HDL_Types' => \@fixed };
+    my $new_hash = { 'types' => \@fixed };
 
     # copy everything else without changes
     foreach my $k ( keys %{$r}) {
-	if( $k ne 'HDL_Types') {
+	if( $k ne 'types') {
 	    $new_hash->{$k} = $r->{$k};
 	}
     }
