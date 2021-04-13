@@ -10,10 +10,8 @@
 #
 #   Within item 2, expect to find only the following types:
 #  
-#   top-level item (type 1)
+#   simple type (1)
 #      integer/real constant with "type", "qualifier", "value"
-#      array of custom type
-#        either "array : open" or length : <something>"
 #      (array of hashes with one scalar item each)
 #
 #   record with elements (type 2)
@@ -22,7 +20,10 @@
 #      a custom type
 #      (array of hashes with one arrayref item each)
 #
-#   other (special, no type, ignored)
+#   array (type 3)
+#      array of custom type
+#        either "array : open" or length : <something>"
+#      any previously defined type with "array" defining the size or "open"
 #
 # Output: single hash reference stored in "storable" db file
 #
@@ -66,6 +67,14 @@ my $db = { };		       # database of types
 my $dbfile = 0;		       # database file name if specified
 
 
+use constant {
+    T_OTHER => "other/unknown",
+    T_CONSTANT => "constant",
+    T_RECORD => "record",
+    T_ARRAY => "array",
+};
+
+
 #
 # check for synthesizable type
 #
@@ -80,7 +89,8 @@ sub syntype {
 #   name.yml is a YAML (input) file
 #   name.db  is a database (output) file
 #   -d      increase debug level
-#
+# merge types from multiple YAM files into a single list
+
 for( my $i=0; $i<$na; $i++) {
     my $arg = $ARGV[$i];
     if( $arg =~ m{\.yml}) {
@@ -114,6 +124,9 @@ for( my $i=0; $i<$na; $i++) {
     }
 }
 
+#
+# dump the merged list of types
+#
 if( $debug>1 ) {
     print "---- YAML Merged:\n";
     foreach my $th ( @{$types}) {
@@ -124,48 +137,90 @@ if( $debug>1 ) {
 	    exit;
 	}
 	my $typnam = (keys %{$th})[0];
-	print "--- $typnam ---\n" if($debug>1);
-	print Dumper( $th->{$typnam}) if($debug>1);
+	print "--- $typnam ---\n";
+	print Dumper( $th->{$typnam});
     }
 }
 
 print "---- parsing the structure\n" if($debug);
 
 # iterate over top-level hash
+# determine the class of each (constant, array, record)
+# each item is a reference to an array of hashes
 foreach my $th ( @{$types}) {
     my $item = (keys %{$th})[0];
     my $thing = $th->{$item};
     my $reft = ref $thing;
     print "Item: $item\n" if($debug);
-    die "$item is not an array" if( $reft ne "ARRAY");
-
+    die "$item is not an array reference" if( $reft ne "ARRAY");
     # figure out if this is a top-level item or a record type
-    # each hash item is a scalar for simple types or array for record
+    # each hash item is a scalar for constants or arrays,
+    # or array for record type
     # (they should all be the same)
-    my %htypes;
+    my %htypes;			# "histogram" of types
+    my %hash;			# simple (flattened) has for array of hashes
+    my @hkeys;			# list of hash keys in order
     foreach my $element ( @{$thing}) {
 	die "Element of $item is not a hash" if( (ref $element) ne "HASH");
-	my @keys = ( keys %{$element});
+	my @keys = ( keys %{$element}); # should only be one element in hash
 	die "Element of $item is a multi-element hash" if( $#keys);
-	my $key = (%{$element})[0];
-	my $val = $element->{$key};
+	my $key = (%{$element})[0]; # get the (singular) key
+	my $val = $element->{$key}; # get the value
+	$hash{$key} = $val;	# store in regular hash for convenience
+	push @hkeys, $key;	# save key in list in order
 	my $vref = ref $val;
-	$vref = "SCALAR" if( $vref eq "");
+	$vref = "SCALAR" if( $vref eq ""); # blank ref means scalar
 	$htypes{$vref}++;	# histogram the types
 	print " '$key' -> $vref\n" if($debug);
+	print "--> DUMP: {$key}\n", Dumper( $val) if( $debug > 1);
     }
+    # fail if the hash items don't all have the same type
     die "Mixed types as hash values in $item (badly-structured YAML)" if(scalar( keys %htypes) != 1);
-    my $is_record = (keys %htypes)[0] eq "ARRAY";
 
-    print "$item is ", $is_record ? "(record)\n" : "(simple type)\n";
+    $db->{$item}->{"class"} = T_OTHER;
 
-#	$db->{$item}->{"class"} = "constant";    # set the class to 'constant'
-    
-    if( $debug>1) {
-    print "---DUMP ($item)---\n";
-    print Dumper( $thing);
-    print "---/DUMP---\n";
+    # fill the database for each type
+    if( $hash{"array"}) {	# if there is an "array" key, it's an array, duh
+	print "Adding $item to db as \"array\"\n" if( $debug);
+	$db->{$item}->{"class"} = T_ARRAY;
+	die "Array type missing type" if( !$hash{"type"});
+	$db->{$item}->{"type"} = $hash{"type"};
+	if( $hash{"length"}) {
+	    $db->{$item}->{"length"} = $hash{"length"};
+	} else {
+	    $db->{$item}->{"length"} = $hash{"array"};
+	}
+	
+    # it's a record
+    } elsif( (keys %htypes)[0] eq "ARRAY") {
+	print "Adding $item to db as \"record\"\n" if( $debug);
+	$db->{$item}->{"class"} = T_RECORD;
+	$db->{$item}->{"members"} = [ ];
+	foreach my $mkey ( @hkeys ) {
+	    my %memb;
+	    $memb{"name"} = $mkey;
+	    # combine the list of single-key hashes for convenience
+	    my $newhash = CombineHashes( $hash{$mkey});
+	    die "In type $item, member $mkey doesn't have a \"type\""
+		if( !$newhash->{"type"});
+	    if( $newhash->{"length"}) {
+		$memb{"type"} = $newhash->{"type"} . "[" . $newhash->{"length"} . "-1 downto 0]";
+	    } else {
+		$memb{"type"} = $newhash->{"type"};
+	    }
+	    push @{$db->{$item}->{"members"}}, \%memb;
+	}
+	
+    # it's a constant
+    } else {	
+	print "Adding $item to db as \"constant\"\n" if( $debug);
+	$db->{$item}->{"class"} = T_CONSTANT;
+	die "Constant $item missing type or value" if( !$hash{"type"} || !$hash{"value"});
+	$db->{$item}->{"type"} = $hash{"type"};
+	$db->{$item}->{"value"} = $hash{"value"}
     }
+
+
 }
 
 if( $debug) {

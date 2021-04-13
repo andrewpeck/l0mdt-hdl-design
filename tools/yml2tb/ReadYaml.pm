@@ -22,7 +22,7 @@ use YAML::XS 'LoadFile';
 
 require Exporter;
 @ISA = qw(Exporter);
-@EXPORT = qw(ReadYaml TypeSplit IsMdtType Restructure);
+@EXPORT = qw(ReadYaml TypeSplit IsMdtType Restructure CombineHashes);
 
 # variable to hold possible errors
 $errors = '';
