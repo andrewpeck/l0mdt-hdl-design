@@ -1,3 +1,10 @@
+--------------------------------------------------------------------------------
+-- Component declaration and copy of constants accessible from VHDL
+--------------------------------------------------------------------------------
+
+library ieee;
+use ieee.std_logic_1164.all;
+
 package spybuffer_pkg is
 
   -- valid metadata words.

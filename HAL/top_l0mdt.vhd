@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
+use ieee.math_real.all;
 
 library work;
 use work.all;
@@ -25,7 +26,9 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 
+
 library shared_lib;
+use shared_lib.spybuffer_pkg.all;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
@@ -160,7 +163,7 @@ architecture structural of top_l0mdt is
   signal hal_core_mon  : HAL_CORE_MON_t;
   signal hal_core_ctrl : HAL_CORE_CTRL_t;
 
-  signal fw_info_mon  : FW_INFO_MON_t;
+  signal fw_info_mon : FW_INFO_MON_t;
 
   -- sumps
 

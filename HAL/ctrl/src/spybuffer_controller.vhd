@@ -23,14 +23,17 @@ entity spybuffer_controller is
 end spybuffer_controller;
 
 architecture behavioral of spybuffer_controller is
+  signal playback_we : std_logic := '0';
 begin
 
-  user_spy_ctrl.tar_spy.freeze   <= freeze;                       --ctrl
-  user_spy_ctrl.tar_spy.playback <= playback_mode;                --ctrl
-  user_spy_ctrl.tar_spy.bram_a   <= axi_spy_ctrl.tar_spy.bram_a;  --ctrl
-  axi_spy_mon.tar_spy.dout_a     <= user_spy_mon.tar_spy.dout_a;  --mon
+  user_spy_ctrl.tar_spy.freeze      <= freeze;                       --ctrl
+  user_spy_ctrl.tar_spy.playback    <= playback_mode;                --ctrl
+  user_spy_ctrl.tar_spy.playback_we <= playback_we;                  --ctrl
+  user_spy_ctrl.tar_spy.bram_a      <= axi_spy_ctrl.tar_spy.bram_a;  --ctrl
+  axi_spy_mon.tar_spy.dout_a        <= user_spy_mon.tar_spy.dout_a;  --mon
 
   user_spy_ctrl.mpl_spy.freeze   <= freeze;                       --ctrl
+  user_spy_ctrl.mpl_spy.playback_we <= playback_we;                  --ctrl
   user_spy_ctrl.mpl_spy.playback <= playback_mode;                --ctrl
   user_spy_ctrl.mpl_spy.bram_a   <= axi_spy_ctrl.mpl_spy.bram_a;  --ctrl
   axi_spy_mon.mpl_spy.dout_a     <= user_spy_mon.mpl_spy.dout_a;  --mon

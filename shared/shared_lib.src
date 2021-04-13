@@ -48,3 +48,19 @@ shared/functions/trigonometrics/roi_tan_pkg.vhd
 shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
 
+#---------------------------------
+# spybuffer
+#---------------------------------
+tools/SpyBuffer/src/aFifo/aFifo.v
+tools/SpyBuffer/src/aFifo/fifomem.v
+tools/SpyBuffer/src/aFifo/rptr_empty.v
+tools/SpyBuffer/src/aFifo/sync_r2w.v
+tools/SpyBuffer/src/aFifo/sync_w2r.v
+tools/SpyBuffer/src/aFifo/wptr_full.v
+tools/SpyBuffer/src/SpyProtocol.vh
+tools/SpyBuffer/src/SpyController.v
+tools/SpyBuffer/src/SpyMemory.v
+tools/SpyBuffer/src/SpyPlayback.v
+tools/SpyBuffer/src/SpyBuffer.v
+
+HAL/ctrl/src/spybuffer_vhdl.vhd

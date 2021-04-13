@@ -4,7 +4,7 @@ package require yaml
 # due to its use of 'huddle exists', which does NOT exist in Vivado's
 # ancient version of the tcl libraries
 #
-# It should be executed from tclsh
+# It should be executed from the system tclsh
 
 set spies ""
 
@@ -19,8 +19,24 @@ proc find_slaves  {huddle} {
 
                 set TCL_CALL [huddle get $entry "TCL_CALL"]
 
+                set meta_width 0
+                set meta_depth 0
+
+                if {[huddle exists $entry "META_DATA"]} {
+                    set META_DATA [huddle get $entry "META_DATA"]
+
+                    set meta_width [huddle get_stripped $META_DATA width]
+                    set meta_depth [huddle get_stripped $META_DATA depth]
+
+                }
+
                 set width [huddle get_stripped $TCL_CALL "width"]
                 set range [huddle get_stripped [huddle get $TCL_CALL addr] range]
+
+                set port_b "NIL"
+                if {[huddle exists $TCL_CALL $port_b]} {
+                    set port_b [huddle get_stripped $TCL_CALL $port_b]
+                }
 
                 set depths [dict create 1k 1024 2k 2048 4k 4096 8k 8192 16k 16384 32k 32768 64k 65536 128k 131072 256k 262144]
                 set depth [dict get $depths [string tolower $range]]
@@ -35,7 +51,7 @@ proc find_slaves  {huddle} {
 
                 #puts $spies
                 global spies
-                dict append spies $key "name [string tolower $key] width $width depth $depth adrb $adrb wenb $wenb"
+                dict append spies $key "name [string tolower $key] width $width depth $depth adrb $adrb wenb $wenb meta_width ${meta_width} meta_depth ${meta_depth} port_b ${port_b}"
             }}
 
         if { 0 == [string compare "mapping" [huddle type [huddle get $huddle $key]]]} {
@@ -62,6 +78,17 @@ proc create_package {spies fname} {
         set depth [dict get $spy depth]
         set adrb  [dict get $spy adrb]
         set wenb  [dict get $spy wenb]
+        set meta_width  [dict get $spy meta_width]
+        set meta_depth  [dict get $spy meta_depth]
+        set port_b  [dict get $spy port_b]
+
+        if {${meta_depth} > 0} {
+            set meta_adrb [expr int(ceil(log(${meta_depth})/log(2)))]
+        } else {
+            set meta_adrb 0
+        }
+
+        set en_port_b [expr [string compare ${port_b} "NIL"]]
 
         set name [string tolower $name]
 
@@ -69,6 +96,13 @@ proc create_package {spies fname} {
         puts $fp "  -------------------------"
         puts $fp "  -- [string toupper $name]"
         puts $fp "  -------------------------"
+        puts $fp ""
+        puts $fp "  constant [string toupper ${name}]_WIDTH : natural := $width;"
+        puts $fp "  constant [string toupper ${name}]_DEPTH : natural := $depth;"
+        puts $fp "  constant [string toupper ${name}]_ADDRB : natural := $adrb;"
+        puts $fp "  constant [string toupper ${name}]_META_DEPTH : natural := ${meta_depth};"
+        puts $fp "  constant [string toupper ${name}]_META_WIDTH : natural := ${meta_width};"
+        puts $fp "  constant [string toupper ${name}]_META_ADDRB : natural := ${meta_adrb};"
         puts $fp ""
         puts $fp "  -- bram control"
         puts $fp "  type ${name}_bram_ctrl_t is record"
@@ -84,16 +118,39 @@ proc create_package {spies fname} {
         puts $fp "  -- spybuffer + bram control"
         puts $fp "  type ${name}_ctrl_t is record"
         puts $fp "    bram_a   : ${name}_bram_ctrl_t;"
-        puts $fp "    bram_b   : ${name}_bram_ctrl_t;"
-        puts $fp "    freeze   : std_logic;"
-        puts $fp "    playback : std_logic_vector (1 downto 0);"
+
+        if {$en_port_b} {
+            puts $fp "    bram_b   : ${name}_bram_ctrl_t;"
+        }
+
+        puts $fp "    freeze      : std_logic;"
+        puts $fp "    playback    : std_logic_vector (1 downto 0);"
+        puts $fp "    playback_we : std_logic;"
+
+        if {${meta_width} > 0 && ${meta_depth} > 0} {
+
+            puts $fp "    -- metadata"
+           #puts $fp "    meta_read_enable : std_logic;"
+            puts $fp "    meta_read_addr : std_logic_vector ([expr ${meta_adrb}-1] downto 0);"
+        }
+
         puts $fp "  end record;"
 
         puts $fp ""
         puts $fp "  -- spybuffer readout"
         puts $fp "  type ${name}_mon_t is record"
         puts $fp "    dout_a : std_logic_vector ([expr $width-1] downto 0);"
-        puts $fp "    dout_b : std_logic_vector ([expr $width-1] downto 0);"
+        puts $fp "    almost_full    : std_logic;"
+        puts $fp "    empty          : std_logic;"
+        if {$en_port_b} {
+            puts $fp "    dout_b : std_logic_vector ([expr $width-1] downto 0);"
+        }
+        if {${meta_width} > 0 && ${meta_depth} > 0} {
+            puts $fp "    -- metadata"
+            puts $fp "    meta_read_data          : std_logic_vector ([expr ${meta_width}-1] downto 0);"
+            puts $fp "    dbg_spy_write_addr      : std_logic_vector ([expr ${width}-1] downto 0);"
+            puts $fp "    dbg_spy_meta_write_addr : std_logic_vector ([expr ${meta_adrb}-1] downto 0);"
+        }
         puts $fp "  end record;"
 
     }
