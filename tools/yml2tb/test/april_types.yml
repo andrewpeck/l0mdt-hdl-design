@@ -1,0 +1,38 @@
+# april_types.yml
+# custom types for testing the yml2tb tools
+# these are converted to VHDL with supporting functions by Thiago's yml2hdl.py
+# (https://gitlab.com/tcpaiva/yml2hdl.git v0.2.1)
+
+# enable automatic generation of convert functions for basic types,
+# and include some standard IEEE libraries
+config:
+    basic_convert_functions : on
+    packages:
+      - IEEE:
+        - std_logic_1164
+        - numeric_std
+
+types:
+
+  - ADDR_BITS: [qualifier: constant, type: integer, value: 3]
+  - DATA_BITS: [qualifier: constant, type: integer, value: 4]
+
+  # currently this must be set by hand to 2^ADDR_BITS
+  - MEM_WORDS: [qualifier: constant, type: integer, value: 8]
+
+# input bus type
+
+  - bus_in:
+    - addr: [type: unsigned, length: ADDR_BITS]
+    - data: [type: unsigned, length: DATA_BITS]
+    - rd: [type: logic]
+    - wr: [type: logic]
+
+  - bus_out:
+    - data: [type: logic, length: DATA_BITS]
+    - valid: [type: logic]
+
+  - mem_word:
+    - data: [type: logic, length: DATA_BITS]
+
+  - mem_array: [type: mem_word, array: MEM_WORDS]

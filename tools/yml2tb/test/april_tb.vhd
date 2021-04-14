@@ -8,17 +8,17 @@ use ieee.numeric_std.all;
 use ieee.std_logic_textio.all;
 use std.textio.all;
 use work.my_textio.all;
+use work.april_types.all;
+use work.april_types_textio.all;
 
 entity april_tb is
 end entity april_tb;
 
 architecture sim of april_tb is
 
-  signal u_in      : unsigned(5 downto 0);
-  signal u_out     : unsigned(5 downto 0);
-  signal u_in_dav  : std_logic;
-  signal u_out_dav : std_logic;
-  signal u_mask    : std_logic_vector(5 downto 0);
+  signal s_in  : bus_in;
+  signal s_out : bus_out;
+  signal s_mem : mem_array;
 
   signal clk : std_logic;
   signal rst : std_logic;
@@ -30,27 +30,22 @@ architecture sim of april_tb is
 
   component april is
     port (
-      clk           : in  std_logic;
-      rst           : in  std_logic;
-      mask_in       : in  std_logic_vector(5 downto 0);
-      april_in      : in  unsigned(5 downto 0);
-      april_in_dav  : in  std_logic;
-      april_out     : out unsigned(5 downto 0);
-      april_out_dav : out std_logic);
+      clk        : in  std_logic;
+      rst        : in  std_logic;
+      my_bus_in  : in  bus_in;
+      my_bus_out : out bus_out;
+      my_mem_out : out mem_array);
   end component april;
 
 begin
 
-  april_1 : entity work.april
+  april_2 : entity work.april
     port map (
-      clk           => clk,
-      rst           => rst,
-      mask_in       => u_mask,
-      april_in      => u_in,
-      april_in_dav  => u_in_dav,
-      april_out     => u_out,
-      april_out_dav => u_out_dav);
-
+      clk        => clk,
+      rst        => rst,
+      my_bus_in  => s_in,
+      my_bus_out => s_out,
+      my_mem_out => s_mem);
 
   -- begin READER
   vec_reader : process is
@@ -62,50 +57,119 @@ begin
     variable temp     : integer;
     file file_VECTORS : text;           -- file handle
     variable v_tyme   : integer;
-    variable v_in     : unsigned(5 downto 0);
-    variable v_mask   : std_logic_vector(5 downto 0);
+    variable v_in     : bus_in;
+
+    variable v_mem : mem_array;
 
   begin
 
     file_open(file_VECTORS, "april_vectors.txt", read_mode);
+
     -- read vector file until a vector with times in the future is seen
+    -- input data format is:  <time> <addr> <data> <rd> <wr>
+
     while not endfile(file_VECTORS) loop
       readline(file_VECTORS, v_LINE);
 
       if(v_LINE'right >= 1 and v_LINE(1) = '#') then
         writeline(output, v_LINE);      -- echo comment
       else
-        -- parse a line as OrN, BcN, MDT
+
         read(v_LINE, v_tyme);
-        read(v_LINE, v_in);
-        dread(v_LINE, v_mask);
-
         -- wait until correct time before triggering write to UUT
+
+        if tyme = 0 then
+          read(v_LINE, v_mem);
+          v_SPC := 'M';
+          write( buff, v_SPC);
+          write( buff, v_mem);
+          writeline( output, buff);
+        else
+          read(v_LINE, v_in);
+        end if;
+
+
         wait until tyme >= v_tyme;
+        s_in <= v_in;
 
-        write(buff, 'T');
-        write(buff, v_tyme);
-        write(buff, 'V');
-        write(buff, v_in);
-        write(buff, 'M');
-        dwrite(buff, v_mask);
-        writeline(output, buff);
-
-        u_mask   <= v_mask;
-        u_in     <= v_in;
-        u_in_dav <= '1';
         wait for clock_period;
-        u_in_dav <= '0';
-
-        for i in 0 to 5 loop
-          
-        end loop;  -- i
+        s_in.rd <= '0';
+        s_in.wr <= '0';
 
       end if;
     end loop;
+
     wait;
 
   end process vec_reader;
+
+
+  vec_writer : process is
+
+    variable v_LINE : line;              -- line buffer
+    variable v_SPC  : character := ' ';  -- for space parsing
+    variable buff   : line;              -- for debug output
+    variable temp   : integer;
+    file file_bus   : text;              -- file handle
+    variable v_tyme : integer;
+    variable v_out  : bus_out;
+
+  begin
+
+    file_open(file_bus, "april_output.txt", write_mode);
+
+    while true loop
+
+      wait until s_out.valid = '1';
+
+      write(v_LINE, now / 1 ns);
+      write(v_LINE, v_SPC);
+      write(v_LINE, s_out);
+      writeline(file_bus, v_LINE);
+      wait for clock_period;
+
+    end loop;
+
+    wait;
+
+  end process vec_writer;
+
+
+
+
+  mem_writer : process is
+
+    variable v_LINE : line;              -- line buffer
+    variable v_SPC  : character := ' ';  -- for space parsing
+    file file_mem   : text;              -- file handle
+    variable v_mem  : mem_array;
+
+  begin
+
+    file_open(file_mem, "april_mem.txt", write_mode);
+    v_mem := s_mem;
+
+    while true loop
+
+      wait for clock_period * 4;
+
+      write(v_LINE, now / 1 ns);
+      write(v_LINE, v_SPC);
+      write(v_LINE, s_mem);
+      writeline(file_mem, v_LINE);
+
+      v_mem := s_mem;
+
+      wait for clock_period;
+
+    end loop;
+
+    wait;
+
+  end process mem_writer;
+
+
+
 
   reset : process is
   begin  -- process stim

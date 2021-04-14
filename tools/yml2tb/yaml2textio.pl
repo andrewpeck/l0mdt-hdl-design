@@ -13,13 +13,15 @@ use TextIo;
 use Data::Dumper;
 
 my $na = $#ARGV+1;
-if( $na < 2) {
-    print "usage: $0 types.db output.vhd\n";
+if( $na < 3) {
+    print "usage: $0 types.db output.vhd library_name\n";
     exit;
 }
 
 my $dbfile = $ARGV[0];
 my $output = $ARGV[1];
+my $lib_name = $ARGV[2];
+my $pkg_name = $lib_name . "_textio";
 
 my $types = retrieve( $dbfile) or die "Reading database from $dbfile: $!";
 
@@ -29,17 +31,14 @@ print "For now, writing output to $output\n";
 my $yes = 1;			# silently overwrite output
 my $debug = 2;
 
-my ($basename) = $dbfile =~ /^(.*)\.db$/;
-my $pkg_name = $basename . "_textio";
-
-print "Using package name $pkg_name\n";
-
 print FP qq{
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_textio.all;
 use std.textio.all;
+use work.my_textio.all;
+use work.$lib_name.all;
 
 package $pkg_name is
 };
@@ -107,7 +106,6 @@ foreach my $top ( keys %{$types}) {
     print FP "\n";
     print FP "  procedure READ( L:inout LINE; VALUE: out $top) is\n";
     print FP "    variable v_data : $top;\n";
-    print FP "    variable i : integer;\n" if( $class eq 'array');
     print FP "  begin\n";
 
     if( $class eq 'record') {	# handle record elements
@@ -116,7 +114,7 @@ foreach my $top ( keys %{$types}) {
 	    my $type = $memb->{'type'};
 	    my $size = $memb->{'length'};
 	    print "  >>> $name $type($size)\n" if($debug);
-	    if( $type eq "std_logic_vector") {
+	    if( $type eq "logic" && $size) {
 		print FP "    DREAD(L, v_data.$name);\n";
 	    } else {
 		print FP "    READ(L, v_data.$name);\n";
@@ -124,20 +122,20 @@ foreach my $top ( keys %{$types}) {
 	}
     } elsif( $class eq 'array') { # handle an array
 	print FP "    for i in 0 to $size" . "-1 loop\n";
-	if( $type eq "std_logic_vector") {
-	    print FP "      DREAD( v_LINE, $name" . "(i);\n";
+	if( $type eq "logic") {
+	    print FP "      DREAD( L, VALUE(i));\n";
 	} else {
-	    print FP "      READ( v_LINE, $name" . "(i);\n";
+	    print FP "      READ( L, VALUE(i));\n";
 	}
 	print FP "    end loop;\n";
     }
 
+    print FP "  VALUE := v_data;\n";
     print FP "  end READ;\n";
 
     print FP "\n";
-    print FP "  procedure WRITE( L:inout LINE; VALUE: out $top) is\n";
-    print FP "    variable v_data : $top;\n";
-    print FP "    variable i : integer;\n" if( $class eq 'array');
+    print FP "  procedure WRITE( L:inout LINE; VALUE: in $top) is\n";
+    print FP "    variable v_SPC : character := ' ';\n";
     print FP "  begin\n";
 
     if( $class eq 'record') {
@@ -145,19 +143,19 @@ foreach my $top ( keys %{$types}) {
 	    my $name = $memb->{'name'};
 	    my $type = $memb->{'type'};
 	    my $size = $memb->{'length'};
-	    if( $type eq "std_logic_vector") {
-		print FP "    DWRITE(L, v_data.$name);\n";
+	    if( $type eq "logic" && $size) {
+		print FP "    DWRITE(L, VALUE.$name);\n";
 	    } else {
-		print FP "    WRITE(L, v_data.$name);\n";
+		print FP "    WRITE(L, VALUE.$name);\n";
 	    }
-	    print FP "    WRITE(L,' ');\n";
+	    print FP "    WRITE(L, v_SPC);\n";
 	}
     } elsif( $class eq 'array') {
 	print FP "    for i in 0 to $size" . "-1 loop\n";
 	if( $type eq "std_logic_vector") {
-	    print FP "      DWRITE( v_LINE, $name" . "(i);\n";
+	    print FP "      DWRITE( L, VALUE(i));\n";
 	} else {
-	    print FP "      WRITE( v_LINE, $name" . "(i);\n";
+	    print FP "      WRITE( L, VALUE(i));\n";
 	}
 	print FP "      WRITE(L,' ');\n";
 	print FP "    end loop;\n";
