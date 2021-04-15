@@ -29,7 +29,7 @@ use ctrl_lib.MPL_CTRL.all;
 entity vamc_controller is
   generic(
     g_FREEZE_ENABLED    : std_logic := '0';
-    g_PARALLEL_MEM      : std_logic := 1;
+    g_PARALLEL_MEM      : integer := 0;
     g_CONTROLLER_MODE   : string := "simple"; -- interleaved
 
     -- memory config
