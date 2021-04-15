@@ -6,6 +6,7 @@ use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.MPL_Ctrl.all;
+use work.MPL_CTRL_DEF.all;
 entity MPL_interface is
   port (
     clk_axi          : in  std_logic;
