@@ -112,20 +112,46 @@ begin
     signal sel_out_mem      : std_logic_vector(1 downto 0);
     signal sel_apb_mem      : std_logic_vector(1 downto 0);
 
-    signal mem0_i_din_a    , mem1_i_din_a    : std_logic_vector(DATA_WIDTH -1 downto 0); 
-    signal mem0_i_dv_in_a  , mem1_i_dv_in_a  : std_logic;
-    signal mem0_o_dout_a   , mem1_o_dout_a   : std_logic_vector(DATA_WIDTH -1 downto 0);
-    signal mem0_o_dv_out_a , mem1_o_dv_out_a : std_logic;
-    signal mem0_i_addr_b   , mem1_i_addr_b   : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-    signal mem0_i_din_b    , mem1_i_din_b    : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal mem0_i_dv_in_b  , mem1_i_dv_in_b  : std_logic;
-    signal mem0_o_dout_b   , mem1_o_dout_b   : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal mem0_o_dv_out_b , mem1_o_dv_out_b : std_logic;
-    signal mem0_empty      , mem1_empty      : std_logic;
-    signal mem0_empty_next , mem1_empty_next : std_logic;
-    signal mem0_full       , mem1_full       : std_logic;
-    signal mem0_full_next  , mem1_full_next  : std_logic;
-    signal mem0_used       , mem1_used       : integer;
+    -- arrays
+
+    type data_array is array (g_PARALLEL_MEM downto 0) of std_logic_vector(DATA_WIDTH -1 downto 0);
+    type addr_array is array (g_PARALLEL_MEM downto 0) of std_logic_vector(ADDR_WIDTH -1 downto 0);
+    type used_array is array (g_PARALLEL_MEM downto 0) of integer; -- add the range
+
+    -- a
+    signal mem_addr_i_a   : addr_array;
+    signal mem_data_i_a   : data_array; 
+    signal mem_data_o_a   : data_array;
+    -- b
+    signal mem_addr_i_b   : addr_array;
+    signal mem_data_i_b   : data_array; 
+    signal mem_data_o_b   : data_array;
+
+    signal mem_dv_i_a     : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_dv_o_a     : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_dv_i_b     : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_dv_o_b     : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_empty      : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_empty_next : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_full       : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal mem_full_next  : std_logic_vector(g_PARALLEL_MEM downto 0);
+
+    signal mem_used       : used_array;
+
+    -- signal mem_i_din_a    , mem1_i_din_a    : std_logic_vector(DATA_WIDTH -1 downto 0); 
+    -- signal mem_i_dv_in_a  , mem1_i_dv_in_a  : std_logic;
+    -- signal mem_o_dout_a   , mem1_o_dout_a   : std_logic_vector(DATA_WIDTH -1 downto 0);
+    -- signal mem_o_dv_out_a , mem1_o_dv_out_a : std_logic;
+    -- signal mem_i_addr_b   , mem1_i_addr_b   : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+    -- signal mem_i_din_b    , mem1_i_din_b    : std_logic_vector(DATA_WIDTH - 1 downto 0);
+    -- signal mem_i_dv_in_b  , mem1_i_dv_in_b  : std_logic;
+    -- signal mem_o_dout_b   , mem1_o_dout_b   : std_logic_vector(DATA_WIDTH - 1 downto 0);
+    -- signal mem_o_dv_out_b , mem1_o_dv_out_b : std_logic;
+    -- signal mem_empty      , mem1_empty      : std_logic;
+    -- signal mem_empty_next , mem1_empty_next : std_logic;
+    -- signal mem_full       , mem1_full       : std_logic;
+    -- signal mem_full_next  , mem1_full_next  : std_logic;
+    -- signal mem_used       , mem1_used       : integer;
 
   begin
 
@@ -215,76 +241,113 @@ begin
               end if;
             end if;
           end process signal_ctrl;
-          
-          mpcvmem_0 : entity vamc_lib.mpcvmem
-          generic map(
-            g_LOGIC_TYPE    => "pipeline",
-            g_MEMORY_TYPE   => g_MEMORY_TYPE,
-  
-            g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-            g_MEM_WIDTH     => DATA_WIDTH,
-            g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
-          )
-          port map(
-            clk           => clk,
-            rst           => rst,
-            ena           => ena,
-            --
-            i_freeze      => int_freeze(0),
-            -- Port A
-            i_din_a       => mem0_i_din_a   , -- i_data,
-            i_dv_in_a     => mem0_i_dv_in_a , -- i_dv,
-            o_dout_a      => mem0_o_dout_a  , -- o_data,
-            o_dv_out_a    => mem0_o_dv_out_a, -- o_dv,
-            -- Port B
-            i_addr_b      => mem0_i_addr_b  , -- apb_addr,  
-            i_din_b       => mem0_i_din_b   , -- apb_din,   
-            i_dv_in_b     => mem0_i_dv_in_b , -- apb_dv_in, 
-            o_dout_b      => mem0_o_dout_b  , -- apb_dout,  
-            o_dv_out_b    => mem0_o_dv_out_b, -- apb_dv_out,
-            -- Flags
-            o_empty       => mem0_empty,
-            o_empty_next  => mem0_empty_next,
-            o_full        => mem0_full,
-            o_full_next   => mem0_full_next ,
-            -- used counter
-            o_used        => mem0_used
-          );
 
-          mpcvmem_1 : entity vamc_lib.mpcvmem
-          generic map(
-            g_LOGIC_TYPE    => "pipeline",
-            g_MEMORY_TYPE   => g_MEMORY_TYPE,
+          MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
+            mpcvmem_0 : entity vamc_lib.mpcvmem
+            generic map(
+              g_LOGIC_TYPE    => "pipeline",
+              g_MEMORY_TYPE   => g_MEMORY_TYPE,
+    
+              g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+              g_MEM_WIDTH     => DATA_WIDTH,
+              g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+            )
+            port map(
+              clk           => clk,
+              rst           => rst,
+              ena           => ena,
+              --
+              i_freeze      => int_freeze(mem_i),
+              -- Port A
+              i_din_a       => mem_data_i_a(mem_i), -- i_data,
+              i_dv_in_a     => mem_dv_i_a(mem_i),   -- i_dv,
+              o_dout_a      => mem_data_o_a(mem_i), -- o_data,
+              o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
+              -- Port B
+              i_addr_b      => mem_addr_i_b(mem_i), -- apb_addr,  
+              i_din_b       => mem_data_i_b(mem_i), -- apb_din,   
+              i_dv_in_b     => mem_dv_i_b(mem_i),   -- apb_dv_in, 
+              o_dout_b      => mem_data_o_b(mem_i), -- apb_dout,  
+              o_dv_out_b    => mem_dv_o_b(mem_i),   -- apb_dv_out,
+              -- Flags
+              o_empty       => mem_empty(mem_i),
+              o_empty_next  => mem_empty_next(mem_i),
+              o_full        => mem_full(mem_i),
+              o_full_next   => mem_full_next(mem_i),
+              -- used counter
+              o_used        => mem_used(mem_i)
+            );
+          end generate MEMS_GEN;
+          
+          -- mpcvmem_0 : entity vamc_lib.mpcvmem
+          -- generic map(
+          --   g_LOGIC_TYPE    => "pipeline",
+          --   g_MEMORY_TYPE   => g_MEMORY_TYPE,
   
-            g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-            g_MEM_WIDTH     => DATA_WIDTH,
-            g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
-          )
-          port map(
-            clk           => clk,
-            rst           => rst,
-            ena           => ena,
-            --
-            i_freeze      => int_freeze(1),
-            -- Port A
-            i_din_a       => mem1_i_din_a   , -- i_data,
-            i_dv_in_a     => mem1_i_dv_in_a , -- i_dv,
-            o_dout_a      => mem1_o_dout_a  , -- o_data,
-            o_dv_out_a    => mem1_o_dv_out_a, -- o_dv,
-            -- Port B
-            i_addr_b      => mem1_i_addr_b  , -- apb_addr,  
-            i_din_b       => mem1_i_din_b   , -- apb_din,   
-            i_dv_in_b     => mem1_i_dv_in_b , -- apb_dv_in, 
-            o_dout_b      => mem1_o_dout_b  , -- apb_dout,  
-            o_dv_out_b    => mem1_o_dv_out_b, -- apb_dv_out,
-            -- Flags
-            o_empty       => mem1_empty,
-            o_empty_next  => mem1_empty_next,
-            o_full        => mem1_full,
-            o_full_next   => mem1_full_next ,
-            -- used counter
-            o_used        => mem1_used
-          );
+          --   g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          --   g_MEM_WIDTH     => DATA_WIDTH,
+          --   g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+          -- )
+          -- port map(
+          --   clk           => clk,
+          --   rst           => rst,
+          --   ena           => ena,
+          --   --
+          --   i_freeze      => int_freeze(0),
+          --   -- Port A
+          --   i_din_a       => mem0_i_din_a   , -- i_data,
+          --   i_dv_in_a     => mem0_i_dv_in_a , -- i_dv,
+          --   o_dout_a      => mem0_o_dout_a  , -- o_data,
+          --   o_dv_out_a    => mem0_o_dv_out_a, -- o_dv,
+          --   -- Port B
+          --   i_addr_b      => mem0_i_addr_b  , -- apb_addr,  
+          --   i_din_b       => mem0_i_din_b   , -- apb_din,   
+          --   i_dv_in_b     => mem0_i_dv_in_b , -- apb_dv_in, 
+          --   o_dout_b      => mem0_o_dout_b  , -- apb_dout,  
+          --   o_dv_out_b    => mem0_o_dv_out_b, -- apb_dv_out,
+          --   -- Flags
+          --   o_empty       => mem0_empty,
+          --   o_empty_next  => mem0_empty_next,
+          --   o_full        => mem0_full,
+          --   o_full_next   => mem0_full_next ,
+          --   -- used counter
+          --   o_used        => mem0_used
+          -- );
+
+          -- mpcvmem_1 : entity vamc_lib.mpcvmem
+          -- generic map(
+          --   g_LOGIC_TYPE    => "pipeline",
+          --   g_MEMORY_TYPE   => g_MEMORY_TYPE,
+  
+          --   g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          --   g_MEM_WIDTH     => DATA_WIDTH,
+          --   g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+          -- )
+          -- port map(
+          --   clk           => clk,
+          --   rst           => rst,
+          --   ena           => ena,
+          --   --
+          --   i_freeze      => int_freeze(1),
+          --   -- Port A
+          --   i_din_a       => mem1_i_din_a   , -- i_data,
+          --   i_dv_in_a     => mem1_i_dv_in_a , -- i_dv,
+          --   o_dout_a      => mem1_o_dout_a  , -- o_data,
+          --   o_dv_out_a    => mem1_o_dv_out_a, -- o_dv,
+          --   -- Port B
+          --   i_addr_b      => mem1_i_addr_b  , -- apb_addr,  
+          --   i_din_b       => mem1_i_din_b   , -- apb_din,   
+          --   i_dv_in_b     => mem1_i_dv_in_b , -- apb_dv_in, 
+          --   o_dout_b      => mem1_o_dout_b  , -- apb_dout,  
+          --   o_dv_out_b    => mem1_o_dv_out_b, -- apb_dv_out,
+          --   -- Flags
+          --   o_empty       => mem1_empty,
+          --   o_empty_next  => mem1_empty_next,
+          --   o_full        => mem1_full,
+          --   o_full_next   => mem1_full_next ,
+          --   -- used counter
+          --   o_used        => mem1_used
+          -- );
         end generate MPCVMEM_GEN;
 
       end generate MODE_MEM;
