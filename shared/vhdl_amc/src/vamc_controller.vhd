@@ -28,6 +28,10 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity vamc_controller is
   generic(
+    -- g_CONTROLLER_MODE   : string := "simple"; -- interleaved
+    g_FREEZE_ENABLED    : std_logic := '0';
+    g_PARALLEL_MEM      : std_logic := 1;
+    -- memory config
     g_MEMORY_MODE       : string := "pipeline";
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
     g_ADDR_WIDTH        : integer := 0;
@@ -38,8 +42,7 @@ entity vamc_controller is
     g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer;
     -- INT CTRL
-    g_FREEZE_ENABLED    : std_logic := '0';
-    g_DUAL_MEM          : std_logic := '0';
+
     -- BU bus
     g_APBUS_ENABLED     : std_logic := '0';
     g_APBUS_CTRL_WIDTH  : integer := 8;
@@ -192,7 +195,6 @@ begin
         -- mem1_i_din_b    <= apb_din   when sel_apb_mem = b"10" else (others => '0') ;
         -- mem1_i_dv_in_b  <= apb_dv_in when sel_apb_mem = b"10" else '0';
 
-
         MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
           -- DC4_GEN: if condition generate
             
@@ -212,7 +214,6 @@ begin
               end if;
             end if;
           end process signal_ctrl;
-          
           
           mpcvmem_0 : entity vamc_lib.mpcvmem
           generic map(
@@ -285,34 +286,21 @@ begin
           );
         end generate MPCVMEM_GEN;
 
-
-  
       end generate MODE_MEM;
-   
   end generate APB_INT_EN;
 
 
   -----------------------------------------------
   -- SINGLE MEMORY NO MONITORING
   -----------------------------------------------
-
-
-
-
   APB_INT_DIS: if not g_APBUS_ENABLED generate
-
     MODE_MEM: if g_MEMORY_MODE = "pipeline" generate
-
       MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
-        -- DC4_GEN: if condition generate
-          
+        -- DC4_GEN: if condition generate   
         -- end generate DC4_GEN;
         -- constant OUT_PIPELINE
         constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
-
-      begin
-        
-        
+      begin        
         mpcvmem : entity vamc_lib.mpcvmem
         generic map(
           g_LOGIC_TYPE    => "pipeline",
@@ -333,10 +321,7 @@ begin
           o_dv_out_b    => o_dv    
         );
       end generate MPCVMEM_GEN;
-
     end generate MODE_MEM;
-    
-   
   end generate APB_INT_DIS;
   
 

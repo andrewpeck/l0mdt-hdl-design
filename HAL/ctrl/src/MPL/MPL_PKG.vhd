@@ -11,7 +11,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package MPL_PKG is
+package MPL_CTRL is
 
   type MPL_ACTIONS_CTRL_t is record
     RESET : std_logic;
@@ -140,11 +140,11 @@ package MPL_PKG is
   function structify(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t;
 
-end package MPL_PKG;
+end package MPL_CTRL;
 
 ------------------------------------------------------------
 
-package body MPL_PKG is
+package body MPL_CTRL is
 
   function len(x: MPL_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -915,4 +915,4 @@ package body MPL_PKG is
     return y;
   end function nullify;
 
-end package body MPL_PKG;
+end package body MPL_CTRL;

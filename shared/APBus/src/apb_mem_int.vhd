@@ -16,7 +16,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library apbus_lib;
-use apbus_lib.apb_pkg.all;
+-- use apbus_lib.apb_pkg.all;
+
+library ctrl_lib;
+use ctrl_lib.MEM_INT_10A148D_PKG.all;
 
 
 entity apb_mem_int is
@@ -96,8 +99,8 @@ begin
         if axi_rst = '1' then
 
         else
-          if ctrl.wr_req or ctrl.flush_req then
-
+          if ctrl_r.rd_req then
+            o_addr <= ctrl_r.rd_addr;
           else
 
           end if;
