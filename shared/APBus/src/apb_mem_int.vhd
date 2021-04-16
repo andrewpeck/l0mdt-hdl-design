@@ -48,10 +48,10 @@ entity apb_mem_int is
     -- o_freeze_1    : in std_logic := '0';
     --
     o_addr        : out std_logic_vector(g_ADDR_WIDTH-1 downto 0):= (others => '0');
-    o_din         : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
-    o_dv_in       : out std_logic;
-    i_dout        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    i_dv_out      : in  std_logic
+    o_data        : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
+    o_dv          : out std_logic;
+    i_data        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    i_dv          : in  std_logic
 
   );
 end entity apb_mem_int;
