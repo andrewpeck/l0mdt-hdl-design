@@ -95,8 +95,11 @@ begin
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal pl2pt_sump                     : std_logic_vector (c_NUM_THREADS-1 downto 0);
+    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
+    signal l0mdt_control_v  : l0mdt_control_rvt;
   begin
-
+    l0mdt_ttc_v <= vectorify(ttc_commands);
+    l0mdt_control_v <= vectorify(clock_and_control);
     o_pt2mtc <= ( others => (others => '0'));
 
     sump_proc : process (clock_and_control.clk) is
@@ -131,7 +134,8 @@ begin
                 xor xor_reduce(ext_segments_sump)
                 xor xor_reduce(minus_neighbor_segments_sump)
                 xor xor_reduce(plus_neighbor_segments_sump )
-                xor xor_reduce(pl2pt_sump);
+                xor xor_reduce(pl2pt_sump)
+                xor xor_reduce(l0mdt_ttc_v) xor xor_reduce(l0mdt_control_v);
       end if;
     end process;
 

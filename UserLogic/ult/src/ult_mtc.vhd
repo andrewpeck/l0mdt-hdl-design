@@ -67,11 +67,15 @@ begin
   MTC_NO_GEN : if c_MTC_ENABLED = '0' generate
     signal ptcalc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal pl2mtc_sump            : std_logic_vector (c_MAX_NUM_SL-1 downto 0);
+    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
+    signal l0mdt_control_v  : l0mdt_control_rvt;
   begin
 
-    
-    -- o_mtc <= (others => (others => '0'));
-    -- o_nsp <= (others => (others => '0'));
+    l0mdt_ttc_v <= vectorify(ttc_commands);
+    l0mdt_control_v <= vectorify(clock_and_control);
+    o_mtc <= (others => (others => '0'));
+    o_nsp <= (others => (others => '0'));
+
 
     sump_proc : process (clock_and_control.clk) is
     begin  -- process tdc_hit_sump_proc
@@ -83,7 +87,7 @@ begin
         mid_loop : for I in 0 to c_MAX_NUM_SL-1 loop
           pl2mtc_sump(I) <= xor_reduce(i_pl2mtc(I));
         end loop;
-        o_sump <= xor_reduce(ptcalc_sump) xor xor_reduce(pl2mtc_sump);
+        o_sump <= xor_reduce(ptcalc_sump) xor xor_reduce(pl2mtc_sump) xor xor_reduce(l0mdt_ttc_v) xor xor_reduce(l0mdt_control_v) ;
       end if;
     end process;
   end generate;
