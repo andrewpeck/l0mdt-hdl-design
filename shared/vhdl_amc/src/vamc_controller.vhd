@@ -9,7 +9,9 @@
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--      simple with no apb controller : done , seems to work ok
+--      simple with apb controller : not done
+--      parallel mems with apb controller : doing
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -30,7 +32,7 @@ entity vamc_controller is
   generic(
     g_FREEZE_ENABLED    : std_logic := '0';
     g_PARALLEL_MEM      : integer := 0;
-    g_CONTROLLER_MODE   : string := "simple"; -- interleaved
+    g_CONTROLLER_MODE   : string := "interleaved"; -- simple, interleaved
     -- memory config
     g_MEMORY_MODE       : string := "pipeline";
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
@@ -93,18 +95,18 @@ begin
 
   APB_INT_EN: if g_APBUS_ENABLED generate
 
-    signal mem_run_sel  : integer := 0;
-    signal mem_apb_sel  : integer := 0;
+    signal mem_run_sel  : integer range 0 to g_PARALLEL_MEM;
+    signal mem_apb_sel  : integer range 0 to g_PARALLEL_MEM;
 
-    signal apb_addr_o              : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-    signal apb_data_o               : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal apb_dv_o             : std_logic;
-    signal apb_data_i              : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    signal apb_dv_i            : std_logic;
+    signal apb_addr_o       : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+    signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+    signal apb_dv_o         : std_logic;
+    signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+    signal apb_dv_i         : std_logic;
   
-    signal int_freeze       : std_logic_vector(1 downto 0);
-    signal sel_out_mem      : std_logic_vector(1 downto 0);
-    signal sel_apb_mem      : std_logic_vector(1 downto 0);
+    signal int_freeze       : std_logic_vector(g_PARALLEL_MEM downto 0);
+    -- signal sel_out_mem      : std_logic_vector(1 downto 0);
+    -- signal sel_apb_mem      : std_logic_vector(1 downto 0);
 
     -- arrays
 
@@ -132,22 +134,22 @@ begin
 
     signal mem_used       : used_array;
 
-    -- signal mem_i_din_a    , mem1_i_din_a    : std_logic_vector(DATA_WIDTH -1 downto 0); 
-    -- signal mem_i_dv_in_a  , mem1_i_dv_in_a  : std_logic;
-    -- signal mem_o_dout_a   , mem1_o_dout_a   : std_logic_vector(DATA_WIDTH -1 downto 0);
-    -- signal mem_o_dv_out_a , mem1_o_dv_out_a : std_logic;
-    -- signal mem_i_addr_b   , mem1_i_addr_b   : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-    -- signal mem_i_din_b    , mem1_i_din_b    : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    -- signal mem_i_dv_in_b  , mem1_i_dv_in_b  : std_logic;
-    -- signal mem_o_dout_b   , mem1_o_dout_b   : std_logic_vector(DATA_WIDTH - 1 downto 0);
-    -- signal mem_o_dv_out_b , mem1_o_dv_out_b : std_logic;
-    -- signal mem_empty      , mem1_empty      : std_logic;
-    -- signal mem_empty_next , mem1_empty_next : std_logic;
-    -- signal mem_full       , mem1_full       : std_logic;
-    -- signal mem_full_next  , mem1_full_next  : std_logic;
-    -- signal mem_used       , mem1_used       : integer;
-
   begin
+
+    vam_kernel : entity vamc_lib.vamc_kernel
+    generic map(
+      g_PARALLEL_MEM => g_PARALLEL_MEM
+    )
+    port map(
+      clk           => clk,
+      rst           => rst,
+      ena           => ena,
+      --
+      i_freeze      => i_freeze,
+      o_freeze      => int_freeze,
+      o_sel_run     => mem_run_sel,
+      o_sel_apb     => mem_apb_sel
+    );
 
     apb_mem_interface : entity apbus_lib.apb_mem_int
       generic map(
@@ -169,9 +171,9 @@ begin
         -- i_axi_clk     => ,
         -- i_axi_rst     => ,
         --
-        i_freeze      => i_freeze,
-        o_freeze      => int_freeze,
-        o_out_sel     => sel_out_mem,
+        -- i_freeze      => i_freeze,
+        -- o_freeze      => int_freeze,
+        -- o_out_sel     => sel_out_mem,
         -- o_freeze_1    => int_freeze(1),
         --
         o_addr        => apb_addr_o,  
@@ -194,44 +196,23 @@ begin
           o_data <= mem_data_o_a(mem_run_sel);
           o_dv <= mem_dv_o_a(mem_run_sel);
           -- apb
-          -- mem_addr_i_b(mem_apb_sel) <= apb_addr_o;
-          -- mem_data_i_b(mem_apb_sel) <= apb_data_o;
-          -- mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
-          -- apb_data_i <= mem_data_o_b(mem_apb_sel);
-          -- apb_dv_i <= mem_dv_o_b(mem_apb_sel);
+          for sel_i in g_PARALLEL_MEM downto 0 loop
+            if sel_i = mem_apb_sel then
+              mem_addr_i_b(mem_apb_sel) <= apb_addr_o;
+              mem_data_i_b(mem_apb_sel) <= apb_data_o;
+              mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
+              apb_data_i <= mem_data_o_b(mem_apb_sel);
+              apb_dv_i <= mem_dv_o_b(mem_apb_sel);
+            else
+              mem_addr_i_b(mem_apb_sel) <= (others => '0');
+              mem_data_i_b(mem_apb_sel) <= (others => '0');
+              mem_dv_i_b(mem_apb_sel) <= '0';
+              apb_data_i <= (others => '0');
+              apb_dv_i <= '0';
+            end if;
+          end loop;
         end process sig_assig;
 
-        -- mem0_i_din_a   <= i_data;
-        -- mem0_i_dv_in_a <= i_dv;
-        -- mem1_i_din_a   <= i_data;
-        -- mem1_i_dv_in_a <= i_dv;
-
-        -- mem0_i_addr_b   <= apb_addr_o  when sel_apb_mem(0) = '1' else (others => '0') ;
-        -- mem0_i_din_b    <= apb_data_o   when sel_apb_mem(0) = '1' else (others => '0') ;
-        -- mem0_i_dv_in_b  <= apb_dv_o when sel_apb_mem(0) = '1' else '0' ;
-        -- mem1_i_addr_b   <= apb_addr_o  when sel_apb_mem(1) = '1' else (others => '0') ;
-        -- mem1_i_din_b    <= apb_data_o   when sel_apb_mem(1) = '1' else (others => '0') ;
-        -- mem1_i_dv_in_b  <= apb_dv_o when sel_apb_mem(1) = '1' else '0';
-
-        -- apb_data_i <=   mem0_o_dout_b when sel_apb_mem = b"01" else
-        --               mem1_o_dout_b when sel_apb_mem = b"10" else (others => '0') ;
-        -- apb_dv_i <= mem0_o_dv_out_a when sel_apb_mem = b"01" else
-        --               mem1_o_dv_out_a when sel_apb_mem = b"10" else '0' ;  
-
-        -- o_data <= mem0_o_dout_a when sel_out_mem = b"01" else
-        --           mem1_o_dout_a when sel_out_mem = b"10" else (others => '0') ;
-        -- o_dv  <=  mem0_o_dv_out_a when sel_out_mem = b"01" else
-        --           mem1_o_dv_out_a when sel_out_mem = b"10" else '0' ;  
-
-        -----------------------------------------------------------------------------------------
-        -- apb_data_i   <= mem0_o_dout_b  when sel_apb_mem(0) = '0' else 
-        --               mem1_o_dout_b when sel_apb_mem(0) = '0' else (others => '0');
-        -- apb_dv_i <= mem0_o_dv_out_b when sel_apb_mem(0) = '0' else mem1_o_dv_out_b;
-        -- mem0_i_din_b    <= apb_data_o   when sel_apb_mem = b"01" else (others => '0') ;
-        -- mem0_i_dv_in_b  <= apb_dv_o when sel_apb_mem = b"01" else '0' ;
-        -- mem1_i_addr_b   <= apb_addr_o  when sel_apb_mem = b"10" else (others => '0') ;
-        -- mem1_i_din_b    <= apb_data_o   when sel_apb_mem = b"10" else (others => '0') ;
-        -- mem1_i_dv_in_b  <= apb_dv_o when sel_apb_mem = b"10" else '0';
 
         MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
           -- DC4_GEN: if condition generate
@@ -241,22 +222,24 @@ begin
   
         begin
 
-          -- signal_ctrl: process(clk)
-          -- begin
-          --   if rising_edge(clk) then
-          --     if rst = '1' then
+          signal_ctrl: process(clk)
+          begin
+            if rising_edge(clk) then
+              if rst = '1' then
 
-          --     else
+              else
 
-          --     end if;
-          --   end if;
-          -- end process signal_ctrl;
+              end if;
+            end if;
+          end process signal_ctrl;
 
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
             mpcv_mem : entity vamc_lib.mpcvmem
             generic map(
               g_LOGIC_TYPE    => "pipeline",
               g_MEMORY_TYPE   => g_MEMORY_TYPE,
+
+              g_SECOND_PORT => "monitor",
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
               g_MEM_WIDTH     => DATA_WIDTH,

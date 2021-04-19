@@ -7,6 +7,7 @@ shared/vhdl_amc/src/vamc_sr.vhd
 shared/vhdl_amc/src/vamc_csw_in.vhd
 shared/vhdl_amc/src/vamc_csw_out.vhd
 shared/vhdl_amc/src/vamc_controller.vhd
+shared/vhdl_amc/src/vamc_kernel.vhd
 #---------------------------------
 #  MPCVMEM
 #---------------------------------
