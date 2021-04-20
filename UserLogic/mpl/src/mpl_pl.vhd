@@ -78,6 +78,7 @@ begin
       g_MEMORY_MODE       => "pipeline",
       g_MEMORY_TYPE       => "ultra",
       g_DATA_WIDTH        => i_uCM2pl_v'length,
+      g_DATA_DEPTH        => 4000,
       g_PIPELINE_TYPE     => "mpcvmem",
       g_DELAY_CYCLES      => UCM_LATENCY_HPS_CH,
       g_PIPELINE_WIDTH    => i_uCM2pl_v'length, -- necesario?

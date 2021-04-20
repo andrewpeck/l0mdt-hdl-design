@@ -38,6 +38,7 @@ entity vamc_controller is
     g_MEMORY_TYPE       : string := "distributed" ;-- auto, ultra, block, distributed
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
+    g_DATA_DEPTH        : integer := 0;
     -- pipeline
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
     g_DELAY_CYCLES      : integer; 
@@ -68,11 +69,13 @@ end entity vamc_controller;
 
 architecture beh of vamc_controller is
 
-  function init_ADDR_WIDTH(m : integer; x : integer) return integer is
+  function init_ADDR_WIDTH(m : integer; d:integer; x : integer) return integer is
     variable y : integer;
    begin
     if m /= 0 then
       y := m;
+    elsif d/= 0 then
+      y := integer(ceil(log2(real(d))));
     else
       y := integer(ceil(log2(real(x))));
     end if;
@@ -80,7 +83,7 @@ architecture beh of vamc_controller is
   end function;
 
   constant FREEZE_EN : std_logic := g_FREEZE_ENABLED OR g_APBUS_ENABLED;
-  constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
+  constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DATA_DEPTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
   constant DATA_WIDTH : integer := g_DATA_WIDTH;
   -- signal mem_empty               : std_logic;
   -- signal mem_empty_next          : std_logic;

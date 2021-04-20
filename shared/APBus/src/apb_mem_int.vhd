@@ -19,7 +19,7 @@ library apbus_lib;
 -- use apbus_lib.apb_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.MEM_INT_10A148D_PKG.all;
+use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
 
 entity apb_mem_int is
