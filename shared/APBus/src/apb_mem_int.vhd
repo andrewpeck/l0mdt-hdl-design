@@ -19,6 +19,7 @@ library apbus_lib;
 -- use apbus_lib.apb_pkg.all;
 
 library ctrl_lib;
+use ctrl_lib.MEM_INT_10A148D_PKG.all;
 use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
 
@@ -111,8 +112,8 @@ begin
   end generate MEM_INT_10A148D;
 
   MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
-    signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
-    signal mon_r    : MEM_INT_10A148D_MON_t;
+    signal ctrl_r   : MEM_INT_12A148D_CTRL_t;
+    signal mon_r    : MEM_INT_12A148D_MON_t;
   begin
 
     ctrl_r <= structify(ctrl,ctrl_r);

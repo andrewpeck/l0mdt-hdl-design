@@ -82,9 +82,23 @@ architecture beh of vamc_controller is
     end if;
     return y;
   end function;
+  
+  function init_DATA_DEPTH(m : integer; d:integer; x : integer) return integer is
+    variable y : integer;
+   begin
+    if m /= 0 then
+      y := 2**m;
+    elsif d/= 0 then
+      y := d;
+    else
+      y := x;
+    end if;
+    return y;
+  end function;
 
   constant FREEZE_EN : std_logic := g_FREEZE_ENABLED OR g_APBUS_ENABLED;
   constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DATA_DEPTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
+  constant DATA_DEPTH : integer := init_DATA_DEPTH(g_ADDR_WIDTH,g_DATA_DEPTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
   constant DATA_WIDTH : integer := g_DATA_WIDTH;
   -- signal mem_empty               : std_logic;
   -- signal mem_empty_next          : std_logic;
@@ -247,7 +261,7 @@ begin
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
               g_MEM_WIDTH     => DATA_WIDTH,
-              g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+              g_MEM_DEPTH     => DATA_DEPTH
             )
             port map(
               clk           => clk,
