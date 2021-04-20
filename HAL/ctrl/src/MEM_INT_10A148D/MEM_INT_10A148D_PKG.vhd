@@ -11,7 +11,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package apb_pkg is
+package MEM_INT_10A148D_PKG is
 
   type MEM_INT_10A148D_wr_data_CTRL_t is record
     wr_data_0 : std_logic_vector(32-1 downto 0);
@@ -46,13 +46,8 @@ package apb_pkg is
   function structify(x: in std_logic_vector; t: MEM_INT_10A148D_MON_t) return MEM_INT_10A148D_MON_t;
   function nullify(t: MEM_INT_10A148D_MON_t) return MEM_INT_10A148D_MON_t;
 
-  type MEM_INT_10A148D_MON_t_ARRAY is array(5-1 downto 0) of MEM_INT_10A148D_MON_t;
-  function len(x: MEM_INT_10A148D_MON_t_ARRAY) return natural;
-  function vectorify(x: MEM_INT_10A148D_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY;
-  function nullify(x: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY;
-
   type MEM_INT_10A148D_CTRL_t is record
+    wr_req : std_logic;
     wr_ack : std_logic;
     rd_req : std_logic;
     rd_ack : std_logic;
@@ -66,17 +61,11 @@ package apb_pkg is
   function structify(x: in std_logic_vector; t: MEM_INT_10A148D_CTRL_t) return MEM_INT_10A148D_CTRL_t;
   function nullify(t: MEM_INT_10A148D_CTRL_t) return MEM_INT_10A148D_CTRL_t;
 
-  type MEM_INT_10A148D_CTRL_t_ARRAY is array(5-1 downto 0) of MEM_INT_10A148D_CTRL_t;
-  function len(x: MEM_INT_10A148D_CTRL_t_ARRAY) return natural;
-  function vectorify(x: MEM_INT_10A148D_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: MEM_INT_10A148D_CTRL_t_ARRAY) return MEM_INT_10A148D_CTRL_t_ARRAY;
-  function nullify(x: MEM_INT_10A148D_CTRL_t_ARRAY) return MEM_INT_10A148D_CTRL_t_ARRAY;
-
-end package apb_pkg;
+end package MEM_INT_10A148D_PKG;
 
 ------------------------------------------------------------
 
-package body apb_pkg is
+package body MEM_INT_10A148D_PKG is
 
   function len(x: MEM_INT_10A148D_wr_data_CTRL_t) return natural is
     variable l : natural := 0;
@@ -273,68 +262,14 @@ package body apb_pkg is
     return y;
   end function nullify;
 
-  function len(x: MEM_INT_10A148D_MON_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function vectorify(x: MEM_INT_10A148D_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(b to a) := vectorify(x(i), y(b to a));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(a downto b) := vectorify(x(i), y(a downto b));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: std_logic_vector; t: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY is
-    variable y : MEM_INT_10A148D_MON_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function nullify(x: MEM_INT_10A148D_MON_t_ARRAY) return MEM_INT_10A148D_MON_t_ARRAY is
-    variable y : MEM_INT_10A148D_MON_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-
   function len(x: MEM_INT_10A148D_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_req);
+    l := l + len(x.wr_ack);
+    l := l + len(x.rd_req);
     l := l + len(x.rd_ack);
+    l := l + len(x.flush_req);
     l := l + len(x.wr_addr);
     l := l + len(x.rd_addr);
     l := l + len(x.wr_data);
@@ -347,8 +282,14 @@ package body apb_pkg is
     if t'ascending then
       y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
       left := left + len(x.wr_req);
+      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      left := left + len(x.wr_ack);
+      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      left := left + len(x.rd_req);
       y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
       left := left + len(x.rd_ack);
+      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      left := left + len(x.flush_req);
       y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
       left := left + len(x.wr_addr);
       y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
@@ -357,8 +298,14 @@ package body apb_pkg is
     else
       y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
       left := left - len(x.wr_req);
+      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      left := left - len(x.wr_ack);
+      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      left := left - len(x.rd_req);
       y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
       left := left - len(x.rd_ack);
+      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      left := left - len(x.flush_req);
       y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
       left := left - len(x.wr_addr);
       y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
@@ -374,8 +321,14 @@ package body apb_pkg is
     if x'ascending then
       y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
       left := left + len(y.wr_req);
+      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
       y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
       left := left + len(y.rd_ack);
+      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
       y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
       left := left + len(y.wr_addr);
       y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
@@ -384,8 +337,14 @@ package body apb_pkg is
     else
       y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
       left := left - len(y.wr_req);
+      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
       y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
       left := left - len(y.rd_ack);
+      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
       y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
       left := left - len(y.wr_addr);
       y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
@@ -398,68 +357,14 @@ package body apb_pkg is
   variable y: MEM_INT_10A148D_CTRL_t;
   begin
     y.wr_req := nullify(t.wr_req);
+    y.wr_ack := nullify(t.wr_ack);
+    y.rd_req := nullify(t.rd_req);
     y.rd_ack := nullify(t.rd_ack);
+    y.flush_req := nullify(t.flush_req);
     y.wr_addr := nullify(t.wr_addr);
     y.rd_addr := nullify(t.rd_addr);
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
 
-  function len(x: MEM_INT_10A148D_CTRL_t_ARRAY) return natural is
-    variable l : natural := 0;
-  begin
-    l := x'length * len(x(x'left));
-    return l;
-  end function len;
-  function vectorify(x: MEM_INT_10A148D_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
-    variable y : std_logic_vector(t'range);
-    constant l :  integer := len(x(x'right));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if t'ascending then
-      for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(b to a) := vectorify(x(i), y(b to a));
-      end loop;
-    else
-      for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(a downto b) := vectorify(x(i), y(a downto b));
-      end loop;
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: std_logic_vector; t: MEM_INT_10A148D_CTRL_t_ARRAY) return MEM_INT_10A148D_CTRL_t_ARRAY is
-    variable y : MEM_INT_10A148D_CTRL_t_ARRAY;
-    constant l :  integer := len(y(y'left));
-    variable a :  integer;
-    variable b :  integer;
-  begin
-    if x'ascending then
-      for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(i) := structify(x(b to a), y(i));
-      end loop;
-    else
-      for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(i) := structify(x(a downto b), y(i));
-      end loop;
-    end if;
-    return y;
-  end function structify;
-  function nullify(x: MEM_INT_10A148D_CTRL_t_ARRAY) return MEM_INT_10A148D_CTRL_t_ARRAY is
-    variable y : MEM_INT_10A148D_CTRL_t_ARRAY;
-  begin
-    l: for i in y'range loop
-      y(i) := nullify(y(i));
-    end loop l;
-    return y;
-  end function nullify;
-
-end package body apb_pkg;
+end package body MEM_INT_10A148D_PKG;
