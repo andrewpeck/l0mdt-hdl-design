@@ -48,6 +48,7 @@ entity vamc_controller is
 
     -- BU bus
     g_APBUS_ENABLED     : std_logic := '0';
+    g_XML_NODE_NAME     : string := "none";
     g_APBUS_CTRL_WIDTH  : integer := 8;
     g_APBUS_MON_WIDTH   : integer := 4
   );
@@ -156,7 +157,7 @@ begin
 
     apb_mem_interface : entity apbus_lib.apb_mem_int
       generic map(
-        g_XML_NODE_NAME         => "MEM_INT_10A148D",
+        g_XML_NODE_NAME         => g_XML_NODE_NAME,
         g_INTERNAL_CLK          => '1',
         g_ADDR_WIDTH            => ADDR_WIDTH,
         g_DATA_WIDTH            => DATA_WIDTH,

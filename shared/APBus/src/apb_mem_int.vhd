@@ -110,6 +110,31 @@ begin
    
   end generate MEM_INT_10A148D;
 
+  MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
+    signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
+    signal mon_r    : MEM_INT_10A148D_MON_t;
+  begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
+
+    APD_CTRL_INT: process(clk_axi)
+    begin
+      if rising_edge(clk_axi) then
+        if axi_rst = '1' then
+
+        else
+          if ctrl_r.rd_req then
+            o_addr <= ctrl_r.rd_addr;
+          else
+
+          end if;
+        end if;
+      end if;
+    end process APD_CTRL_INT;
+   
+  end generate MEM_INT_12A148D;
+
   MEM_CTRL_INT: process(clk)
   begin
     if rising_edge(clk) then
