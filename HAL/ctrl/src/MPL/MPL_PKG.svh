@@ -56,8 +56,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
-    logic [10-1:0] wr_addr;
-    logic [10-1:0] rd_addr;
+    logic [12-1:0] wr_addr;
+    logic [12-1:0] rd_addr;
     MPL_PL_MEM_PL_MEM_wr_data_CTRL_t   wr_data;
   } MPL_PL_MEM_PL_MEM_CTRL_t;
 
