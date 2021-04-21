@@ -5,6 +5,9 @@ GEN:ull_ku15_b3a_ucm_mpl_hps:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+    tags:
+      - normal-ops
+      - hog
 
 SIM:ull_ku15_b3a_ucm_mpl_hps:
     extends: .SIM
@@ -12,7 +15,10 @@ SIM:ull_ku15_b3a_ucm_mpl_hps:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
     allow_failure: false
-
+    tags:
+      - normal-ops
+      - hog
+      
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps:
 #     extends: .sim_comp
 #     variables:

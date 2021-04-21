@@ -5,7 +5,9 @@ GEN:lsf:
       extends: .vars
       PROJECT_NAME: lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-
+    tags:
+      - normal-ops
+      - hog
 # SIM:example:
 #     extends: .SIM
 #     variables:
