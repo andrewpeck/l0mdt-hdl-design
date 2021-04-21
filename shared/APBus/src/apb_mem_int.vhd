@@ -20,6 +20,7 @@ library apbus_lib;
 
 library ctrl_lib;
 use ctrl_lib.MEM_INT_10A148D_PKG.all;
+use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
 
 entity apb_mem_int is
@@ -48,10 +49,10 @@ entity apb_mem_int is
     -- o_freeze_1    : in std_logic := '0';
     --
     o_addr        : out std_logic_vector(g_ADDR_WIDTH-1 downto 0):= (others => '0');
-    o_din         : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
-    o_dv_in       : out std_logic;
-    i_dout        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    i_dv_out      : in  std_logic
+    o_data        : out std_logic_vector(g_DATA_WIDTH - 1 downto 0) := (others => '0');
+    o_dv          : out std_logic;
+    i_data        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    i_dv          : in  std_logic
 
   );
 end entity apb_mem_int;
@@ -109,6 +110,31 @@ begin
     end process APD_CTRL_INT;
    
   end generate MEM_INT_10A148D;
+
+  MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
+    signal ctrl_r   : MEM_INT_12A148D_CTRL_t;
+    signal mon_r    : MEM_INT_12A148D_MON_t;
+  begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
+
+    APD_CTRL_INT: process(clk_axi)
+    begin
+      if rising_edge(clk_axi) then
+        if axi_rst = '1' then
+
+        else
+          if ctrl_r.rd_req then
+            o_addr <= ctrl_r.rd_addr;
+          else
+
+          end if;
+        end if;
+      end if;
+    end process APD_CTRL_INT;
+   
+  end generate MEM_INT_12A148D;
 
   MEM_CTRL_INT: process(clk)
   begin

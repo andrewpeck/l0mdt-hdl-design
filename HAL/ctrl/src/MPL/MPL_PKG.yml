@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-04-12 19:13:47.941419.
+# Created : 2021-04-20 18:07:23.134464.
 config:
   basic_convert_functions : off
   packages:
@@ -58,8 +58,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
-  - wr_addr : [ type: logic, length: 10 ]
-  - rd_addr : [ type: logic, length: 10 ]
+  - wr_addr : [ type: logic, length: 12 ]
+  - rd_addr : [ type: logic, length: 12 ]
   - wr_data : [ type: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t ]
 
 - MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY: [array: 5, type: MPL_PL_MEM_PL_MEM_CTRL_t]

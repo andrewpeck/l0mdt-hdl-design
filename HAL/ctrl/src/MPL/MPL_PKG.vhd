@@ -90,8 +90,8 @@ package MPL_CTRL is
     rd_req : std_logic;
     rd_ack : std_logic;
     flush_req : std_logic;
-    wr_addr : std_logic_vector(10-1 downto 0);
-    rd_addr : std_logic_vector(10-1 downto 0);
+    wr_addr : std_logic_vector(12-1 downto 0);
+    rd_addr : std_logic_vector(12-1 downto 0);
     wr_data : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   end record MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural;
