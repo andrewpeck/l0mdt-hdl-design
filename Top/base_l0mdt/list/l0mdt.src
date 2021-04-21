@@ -27,5 +27,5 @@ UserLogic/csf/csf_lib.src lib=csf_lib
 #UserLogic/lsf/lsf_lib.src lib=lsf_lib
 
 # pt assignment
-#UserLogic/upt/upt_lib.src lib=upt_lib
+#UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
 UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
