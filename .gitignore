@@ -38,4 +38,4 @@ _hdl_checker/
 env/
 .cxl.questasim.*
 Projects/
-UserLogic/**/IP/**/*.xci
+UserLogic/**/IP/**/**/*.xci
