@@ -8,6 +8,8 @@ GEN:csf.0:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # SIM:csf.0:
 #     extends: .SIM
 #     variables:

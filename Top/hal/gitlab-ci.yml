@@ -8,6 +8,8 @@ GEN:hal:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # SIM:hal:
 #     extends: .SIM
 #     variables:

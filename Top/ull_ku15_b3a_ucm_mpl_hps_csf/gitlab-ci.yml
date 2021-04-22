@@ -8,6 +8,7 @@ GEN:ull_ku15_b3a_ucm_mpl_hps_csf:
     tags:
       - heavy-duty
       - hog
+    interruptible: true
 
 SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
     extends: .SIM
@@ -18,6 +19,7 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
     tags:
       - heavy-duty
       - hog
+    interruptible: true
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .sim_comp
@@ -30,3 +32,4 @@ sim_check:ull_ku15_b3a_ucm_mpl_hps_csf:
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
+    interruptible: true

@@ -8,6 +8,8 @@ GEN:ucm:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # SIM:ucm:
 #     extends: .SIM
 #     variables:

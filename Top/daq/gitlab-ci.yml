@@ -7,6 +7,8 @@ GEN:daq:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # SIM:daq:
 #     extends: .SIM
 #     variables:

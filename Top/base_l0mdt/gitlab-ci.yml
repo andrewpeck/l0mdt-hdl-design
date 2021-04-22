@@ -7,3 +7,5 @@ GEN:base_l0mdt:
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
     tags:
       - heavy-duty
+      - hog
+    interruptible: true

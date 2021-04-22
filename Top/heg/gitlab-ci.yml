@@ -5,6 +5,7 @@ GEN:heg:
       extends: .vars
       PROJECT_NAME: heg
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+    interruptible: true
 
 # SIM:heg:
 #     extends: .SIM

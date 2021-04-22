@@ -8,6 +8,8 @@ GEN:mpl:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # SIM:mpl:
 #     extends: .SIM
 #     variables:

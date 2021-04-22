@@ -8,6 +8,7 @@ GEN:mtc:
     tags:
       - normal-ops
       - hog
+    interruptible: true
       
 # SIM:example:
 #     extends: .SIM

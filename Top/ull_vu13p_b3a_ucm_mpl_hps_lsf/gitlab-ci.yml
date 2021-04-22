@@ -8,6 +8,7 @@ GEN:ull_vu13p_b3a_ucm_mpl_hps_lsf:
     tags:
       - heavy-duty
       - hog
+    interruptible: true
       
 #SIM:ull_vu13p_b3a_ucm_mpl_hps_lsf:
 #   extends: .SIM

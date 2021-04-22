@@ -8,6 +8,7 @@ GEN:ull_ku15_b3a_ucm_mpl:
     tags:
       - normal-ops
       - hog
+    interruptible: true
 
 SIM:ull_ku15_b3a_ucm_mpl:
     extends: .SIM
@@ -19,6 +20,8 @@ SIM:ull_ku15_b3a_ucm_mpl:
     tags:
       - normal-ops
       - hog
+    interruptible: true
+
 # user_sim:ull_ku15_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:

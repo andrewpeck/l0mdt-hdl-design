@@ -8,6 +8,7 @@ GEN:ptc_mpi:
     tags:
       - normal-ops
       - hog
+    interruptible: true
 
 # SIM:ptc_mpi:
 #     extends: .SIM
