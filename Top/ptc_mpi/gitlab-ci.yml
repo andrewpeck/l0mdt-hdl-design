@@ -1,6 +1,6 @@
 #################### ptc_mpi Project ###########################
 GEN:ptc_mpi:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ptc_mpi
@@ -10,7 +10,7 @@ GEN:ptc_mpi:
       - hog
 
 # SIM:ptc_mpi:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ptc_mpi

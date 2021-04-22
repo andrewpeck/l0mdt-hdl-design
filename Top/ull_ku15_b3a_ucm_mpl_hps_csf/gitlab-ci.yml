@@ -1,6 +1,6 @@
 #################### ull_ku15_b3a_ucm_mpl_hps_csf Project ###########################
 GEN:ull_ku15_b3a_ucm_mpl_hps_csf:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
@@ -10,7 +10,7 @@ GEN:ull_ku15_b3a_ucm_mpl_hps_csf:
       - hog
 
 SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
-    extends: .SIM
+    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
@@ -20,13 +20,13 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
       - hog
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
-#     extends: .sim_comp
+#     extends: .simulate_project_comp
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_questa
 
 sim_check:ull_ku15_b3a_ucm_mpl_hps_csf:
-    extends: .sim_check
+    extends: .simulate_project_check
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf

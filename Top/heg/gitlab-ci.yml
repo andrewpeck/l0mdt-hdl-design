@@ -1,13 +1,13 @@
 #################### heg Project ###########################
 GEN:heg:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: heg
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # SIM:heg:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: heg

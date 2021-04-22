@@ -1,6 +1,6 @@
 #################### ull_vu13_b3a_ucm_mpl Project ###########################
 GEN:ull_vu13_b3a_ucm_mpl:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
@@ -10,7 +10,7 @@ GEN:ull_vu13_b3a_ucm_mpl:
       - hog
 
 SIM:ull_vu13_b3a_ucm_mpl:
-    extends: .SIM
+    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl

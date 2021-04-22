@@ -1,6 +1,6 @@
 #################### LSF Project ###########################
 GEN:lsf:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: lsf
@@ -9,7 +9,7 @@ GEN:lsf:
       - normal-ops
       - hog
 # SIM:example:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: example

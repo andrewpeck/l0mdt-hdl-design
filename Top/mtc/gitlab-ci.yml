@@ -1,6 +1,6 @@
 #################### MTC Project ###########################
 GEN:mtc:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: mtc
@@ -10,7 +10,7 @@ GEN:mtc:
       - hog
       
 # SIM:example:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: example

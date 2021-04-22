@@ -1,13 +1,13 @@
 #################### ptc_mpi Project ###########################
 GEN:tdc:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: tdc
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # SIM:tdc:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: tdc

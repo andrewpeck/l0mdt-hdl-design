@@ -1,6 +1,6 @@
 #################### l0mdt Project ###########################
 GEN:base_l0mdt:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: base_l0mdt

@@ -1,5 +1,5 @@
 GEN:daq:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: daq
@@ -8,7 +8,7 @@ GEN:daq:
       - normal-ops
       - hog
 # SIM:daq:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: daq
