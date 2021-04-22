@@ -86,30 +86,30 @@ begin
 
   end generate INT_CLK_DIS;
 
-  MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
-    signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
-    signal mon_r    : MEM_INT_10A148D_MON_t;
-  begin
+  -- MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
+  --   signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
+  --   signal mon_r    : MEM_INT_10A148D_MON_t;
+  -- begin
 
-    ctrl_r <= structify(ctrl,ctrl_r);
-    mon <= vectorify(mon_r,mon);
+  --   ctrl_r <= structify(ctrl,ctrl_r);
+  --   mon <= vectorify(mon_r,mon);
 
-    APD_CTRL_INT: process(clk_axi)
-    begin
-      if rising_edge(clk_axi) then
-        if axi_rst = '1' then
+  --   APD_CTRL_INT: process(clk_axi)
+  --   begin
+  --     if rising_edge(clk_axi) then
+  --       if axi_rst = '1' then
+          
+  --       else
+  --         if ctrl_r.rd_req then
+  --           o_addr <= ctrl_r.rd_addr;
+  --         else
 
-        else
-          if ctrl_r.rd_req then
-            o_addr <= ctrl_r.rd_addr;
-          else
-
-          end if;
-        end if;
-      end if;
-    end process APD_CTRL_INT;
+  --         end if;
+  --       end if;
+  --     end if;
+  --   end process APD_CTRL_INT;
    
-  end generate MEM_INT_10A148D;
+  -- end generate MEM_INT_10A148D;
 
   MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
     signal ctrl_r   : MEM_INT_12A148D_CTRL_t;
@@ -123,13 +123,19 @@ begin
     begin
       if rising_edge(clk_axi) then
         if axi_rst = '1' then
-
+          mon_r <= nullify(mon_r);
         else
           if ctrl_r.rd_req then
             o_addr <= ctrl_r.rd_addr;
           else
-
+            if ctrl_r.wr_req then
+              o_addr <= ctrl_r.wr_addr;
+              o_data <= vectorify(ctrl_r.wr_data,o_data);
+            else
+  
+            end if;
           end if;
+
         end if;
       end if;
     end process APD_CTRL_INT;
@@ -142,6 +148,8 @@ begin
       if rst = '1' then
         o_freeze <= (others => '0');
         o_out_sel <= b"01";
+        o_dv <= '0';
+        o_data <= (others => '0');
       else
         
       end if;
