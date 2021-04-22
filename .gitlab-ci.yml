@@ -1,7 +1,7 @@
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v4.3.0'
+      ref: 'v4.4.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -24,8 +24,8 @@ include:
     # - local: '/Top/ucm/gitlab-ci.yml'
     # - local: '/Top/hp/gitlab-ci.yml'
     # - local: '/Top/heg/gitlab-ci.yml'
-    - local: '/Top/hps_csf/gitlab-ci.yml'
-    - local: '/Top/hps_lsf/gitlab-ci.yml'
+    # - local: '/Top/hps_csf/gitlab-ci.yml'
+    # - local: '/Top/hps_lsf/gitlab-ci.yml'
     # - local: '/Top/daq/gitlab-ci.yml'
     # - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'

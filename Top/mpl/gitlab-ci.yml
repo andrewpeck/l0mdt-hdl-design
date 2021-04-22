@@ -5,7 +5,9 @@ GEN:mpl:
       extends: .vars
       PROJECT_NAME: mpl
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-
+    tags:
+      - normal-ops
+      - hog
 # SIM:mpl:
 #     extends: .SIM
 #     variables:

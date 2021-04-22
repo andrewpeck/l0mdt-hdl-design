@@ -5,9 +5,12 @@ GEN:ptc_mpi:
       extends: .vars
       PROJECT_NAME: ptc_mpi
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+    tags:
+      - normal-ops
+      - hog
 
-SIM:ptc_mpi:
-    extends: .SIM
-    variables:
-      extends: .vars
-      PROJECT_NAME: ptc_mpi
+# SIM:ptc_mpi:
+#     extends: .SIM
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ptc_mpi
