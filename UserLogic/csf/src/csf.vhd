@@ -69,7 +69,7 @@ architecture behavioral of csf is
   type t_bfit is ARRAY (NATURAL RANGE <>) OF signed(CSF_SEG_B_LEN - 1 downto 0);
 
   type t_nhit is ARRAY (NATURAL RANGE <>)
-    OF unsigned(CSF_MAXHITS_SEG_LEN - 1 downto 0);
+  OF unsigned(CSF_MAXHITS_SEG_LEN - 1 downto 0);
 
   signal fit_hit_histo0, fit_hit_histo1 : csf_hit_a_avt(NUM_FITTERS - 1 downto 0);
 
@@ -86,6 +86,22 @@ architecture behavioral of csf is
   signal output_segment : csf_locseg_rvt;
   signal out_seg        : csf_locseg_rt;
 
+  ---COMPONENTS --------
+
+  component csf_histogram is
+    generic (
+      max_hits_per_bin : real
+    );
+    port (
+      clk          : in    std_logic;
+      i_mdthit     : in    heg2sfhit_rvt;
+      i_seed       : in    heg2sfslc_rvt;
+      i_eof        : in    std_logic;
+      o_histo_hit0 : out   csf_hit_rvt;
+      o_histo_hit1 : out   csf_hit_rvt
+    );
+  end component;
+
 begin
 
   -- Barrel Case
@@ -96,7 +112,7 @@ begin
     histograms : FOR k IN 1 downto 0 GENERATE
     BEGIN
 
-      histogram : entity csf_lib.csf_histogram
+      histogram : entity csf_histogram
         port map (
           clk          => clk,
           i_mdthit     => mdt_hits(k),
@@ -149,8 +165,8 @@ begin
 
     end generate fitters;
 
-    ELSE
-        GENERATE
+  ELSE
+    GENERATE
     -- Endcap
     histogram : entity csf_lib.csf_histogram
       generic map (
@@ -223,7 +239,7 @@ begin
     mdt_hit <= structify(i_mdt_hit);
     seed_i  <= structify(i_seed);
 
-    if (clk'event and clk = '1') then
+    if (clk'event AND clk = '1') then
       mdt_hits                                   <= (OTHERS => (OTHERS => '0'));
       mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
       rst_chi2                                   <= '0';
