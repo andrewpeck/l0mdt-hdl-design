@@ -165,11 +165,13 @@ begin
       clk           => clk,
       rst           => rst,
       ena           => ena,
-      --
+      -- std_l
       i_freeze      => i_freeze,
       i_apb_freeze  => int_apb_freeze,
+      -- vectors
       o_freeze      => int_ker_freeze,
       o_apb_sel_v   => int_apb_sel,
+      -- integers
       o_sel_run     => mem_run_sel,
       o_sel_apb     => mem_apb_sel
     );
@@ -213,12 +215,12 @@ begin
         o_dv <= mem_dv_o_b(mem_run_sel);
 
         SIG_SEL : for sel_i in g_PARALLEL_MEM downto 0 generate
-          mem_data_i_a(sel_i) <= apb_data_o           when int_apb_sel(sel_i) = '1' else (others => '0');
-          mem_dv_i_a(sel_i)   <= apb_dv_o             when int_apb_sel(sel_i) = '1' else '0';
+          mem_data_i_a(sel_i) <= apb_data_o           when int_apb_sel(sel_i) = '1' else i_data;
+          mem_dv_i_a(sel_i)   <= apb_dv_o             when int_apb_sel(sel_i) = '1' else i_dv;
           mem_addr_i_a(sel_i) <= apb_wr_addr_o        when int_apb_sel(sel_i) = '1' else (others => '0');
           mem_addr_i_b(sel_i) <= apb_rd_addr_o        when int_apb_sel(sel_i) = '1' else (others => '0');
-          apb_data_i          <= mem_data_o_b(sel_i)  when int_apb_sel(sel_i) = '1' else i_data;
-          apb_dv_i            <= mem_dv_o_b(sel_i)    when int_apb_sel(sel_i) = '1' else i_dv;
+          apb_data_i          <= mem_data_o_b(sel_i)  when int_apb_sel(sel_i) = '1' else (others => '0');
+          apb_dv_i            <= mem_dv_o_b(sel_i)    when int_apb_sel(sel_i) = '1' else '0';
         end generate SIG_SEL;
 
         -- sig_assig: process(all)
