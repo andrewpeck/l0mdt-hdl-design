@@ -37,27 +37,39 @@ entity vamc_kernel is
     i_freeze            : in std_logic;
     i_apb_freeze        : in std_logic; --_vector(g_PARALLEL_MEM downto 0);
     o_freeze            : out std_logic_vector(g_PARALLEL_MEM downto 0);
+    o_apb_sel_v         : out std_logic_vector(g_PARALLEL_MEM downto 0);
     o_sel_run           : out integer range 0 to g_PARALLEL_MEM;
     o_sel_apb           : out integer range 0 to g_PARALLEL_MEM
   );
 end entity vamc_kernel;
 
 architecture beh of vamc_kernel is
+
+  signal sel_run           : integer range 0 to g_PARALLEL_MEM;
+  signal sel_apb           : integer range 0 to g_PARALLEL_MEM;
   
 begin
-  
+  o_sel_run <= sel_run;
+  o_sel_apb <= sel_apb;
   sel_ctrl: process(clk)
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        o_sel_run <= 0;
-        o_sel_apb <= 0;
+        sel_run <= 0;
+        sel_apb <= 0;
+        o_apb_sel_v <= (others => '0');
         o_freeze <= (others => '0');
       else
         if i_freeze then
-          o_freeze(o_sel_apb) <= '1';
+          o_freeze <= (others => '1');
         else
-          o_freeze(o_sel_apb) <= '0';
+          if i_apb_freeze then
+            o_freeze(sel_apb) <= '1';
+            o_apb_sel_v(sel_apb) <= '1';
+          else
+            o_apb_sel_v <= (others => '0');
+            o_freeze <= (others => '0');
+          end if;
         end if;
       end if;
     end if;
