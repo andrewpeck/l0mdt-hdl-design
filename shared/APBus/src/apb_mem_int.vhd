@@ -87,34 +87,20 @@ begin
 
   end generate INT_CLK_DIS;
 
-  -- MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
-  --   signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
-  --   signal mon_r    : MEM_INT_10A148D_MON_t;
-  -- begin
-
-  --   ctrl_r <= structify(ctrl,ctrl_r);
-  --   mon <= vectorify(mon_r,mon);
-
-  --   APD_CTRL_INT: process(clk_axi)
-  --   begin
-  --     if rising_edge(clk_axi) then
-  --       if axi_rst = '1' then
-          
-  --       else
-  --         if ctrl_r.rd_req then
-  --           o_addr <= ctrl_r.rd_addr;
-  --         else
-
-  --         end if;
-  --       end if;
-  --     end if;
-  --   end process APD_CTRL_INT;
-   
-  -- end generate MEM_INT_10A148D;
-
   MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
     signal ctrl_r   : MEM_INT_12A148D_CTRL_t;
     signal mon_r    : MEM_INT_12A148D_MON_t;
+
+    type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
+    signal mem_int_status : mem_int_status_type;
+
+    signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+    signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+    signal int_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal int_wr_dv       : std_logic;
+    signal int_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal int_rd_dv       : std_logic;
+
   begin
 
     ctrl_r <= structify(ctrl,ctrl_r);
@@ -125,17 +111,31 @@ begin
       if rising_edge(clk_axi) then
         if axi_rst = '1' then
           mon_r <= nullify(mon_r);
+          mem_int_status <= SYNC;
         else
-          if ctrl_r.rd_req then
-            o_rd_addr <= ctrl_r.rd_addr;
-          else
-            if ctrl_r.wr_req then
-              o_wr_addr <= ctrl_r.wr_addr;
-              o_data <= vectorify(ctrl_r.wr_data,o_data);
-            else
-  
-            end if;
-          end if;
+
+          case mem_int_status is
+            when SYNC =>
+              mem_int_status <= IDLE;
+
+            when IDLE =>
+              if ctrl_r.rd_req = '1' and ctrl_r.wr_req = '1' then
+                mem_int_status <= RD_WR_REQ;
+                int_wr_addr <= ctrl_r.wr_addr;
+                int_wr_data <= vectorify(ctrl_r.wr_data,o_data);
+              elsif ctrl_r.wr_req = '1' then --apb wr 2 mem
+                mem_int_status <= WR_REQ;
+                int_wr_addr <= ctrl_r.wr_addr;
+                int_wr_data <= vectorify(ctrl_r.wr_data,o_data);
+              elsif ctrl_r.wr_req = '1' then -- apb rd from mem
+                mem_int_status <= WR_REQ;
+              else
+                -- nothing
+              end if;
+            when others =>
+            -- error
+            mem_int_status <= SYNC;
+          end case;
 
         end if;
       end if;
@@ -157,6 +157,31 @@ begin
     end if;
   end process MEM_CTRL_INT;
 
-
-  
 end architecture beh;
+
+
+
+-- MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
+--   signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
+--   signal mon_r    : MEM_INT_10A148D_MON_t;
+-- begin
+
+--   ctrl_r <= structify(ctrl,ctrl_r);
+--   mon <= vectorify(mon_r,mon);
+
+--   APD_CTRL_INT: process(clk_axi)
+--   begin
+--     if rising_edge(clk_axi) then
+--       if axi_rst = '1' then
+        
+--       else
+--         if ctrl_r.rd_req then
+--           o_addr <= ctrl_r.rd_addr;
+--         else
+
+--         end if;
+--       end if;
+--     end if;
+--   end process APD_CTRL_INT;
+ 
+-- end generate MEM_INT_10A148D;
