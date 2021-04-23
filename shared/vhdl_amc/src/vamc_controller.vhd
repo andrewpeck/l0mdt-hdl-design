@@ -31,7 +31,7 @@ use ctrl_lib.MPL_CTRL.all;
 entity vamc_controller is
   generic(
     g_FREEZE_ENABLED    : std_logic := '0';
-    g_PARALLEL_MEM      : integer := 0;
+    g_PARALLEL_MEM      : integer := 1;
     g_CONTROLLER_MODE   : string := "interleaved"; -- simple, interleaved
     -- memory config
     g_MEMORY_MODE       : string := "pipeline";
@@ -116,13 +116,16 @@ begin
     signal mem_run_sel  : integer range 0 to g_PARALLEL_MEM;
     signal mem_apb_sel  : integer range 0 to g_PARALLEL_MEM;
 
-    signal apb_addr_o       : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+    signal apb_rd_addr_o       : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+    signal apb_wr_addr_o       : std_logic_vector(ADDR_WIDTH - 1 downto 0);
     signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
     signal apb_dv_o         : std_logic;
     signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
     signal apb_dv_i         : std_logic;
   
-    signal int_freeze       : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal int_apb_freeze       : std_logic; --_vector(g_PARALLEL_MEM downto 0);
+    signal int_ker_freeze       : std_logic_vector(g_PARALLEL_MEM downto 0);
+    signal int_apb_sel          : std_logic_vector(g_PARALLEL_MEM downto 0);
     -- signal sel_out_mem      : std_logic_vector(1 downto 0);
     -- signal sel_apb_mem      : std_logic_vector(1 downto 0);
 
@@ -164,7 +167,8 @@ begin
       ena           => ena,
       --
       i_freeze      => i_freeze,
-      o_freeze      => int_freeze,
+      i_apb_freeze  => int_apb_freeze,
+      o_freeze      => int_ker_freeze,
       o_sel_run     => mem_run_sel,
       o_sel_apb     => mem_apb_sel
     );
@@ -190,11 +194,12 @@ begin
         -- i_axi_rst     => ,
         --
         -- i_freeze      => i_freeze,
-        -- o_freeze      => int_freeze,
+        o_freeze      => int_apb_freeze,
         -- o_out_sel     => sel_out_mem,
         -- o_freeze_1    => int_freeze(1),
         --
-        o_addr        => apb_addr_o,  
+        o_rd_addr     => apb_rd_addr_o,  
+        o_wr_addr     => apb_wr_addr_o,  
         o_data        => apb_data_o,   
         o_dv          => apb_dv_o, 
         i_data        => apb_data_i,  
@@ -202,32 +207,51 @@ begin
       );  
     
       MODE_PL: if g_MEMORY_MODE = "pipeline" generate
+        -- general output
+        o_data <= mem_data_o_b(mem_run_sel);
+        o_dv <= mem_dv_o_b(mem_run_sel);
 
         sig_assig: process(all)
         begin
           -- general input
           for sig_i in g_PARALLEL_MEM downto 0 loop
-            mem_data_i_a(sig_i) <= i_data;
-            mem_dv_i_a(sig_i) <= i_dv;
+            -- mem_data_i_a(sig_i) <= i_data;
+            -- mem_dv_i_a(sig_i) <= i_dv;
           end loop;
-          -- general output
-          o_data <= mem_data_o_a(mem_run_sel);
-          o_dv <= mem_dv_o_a(mem_run_sel);
+          
+
+
+
           -- apb
           for sel_i in g_PARALLEL_MEM downto 0 loop
-            if sel_i = mem_apb_sel then
-              mem_addr_i_b(mem_apb_sel) <= apb_addr_o;
-              mem_data_i_b(mem_apb_sel) <= apb_data_o;
-              mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
-              apb_data_i <= mem_data_o_b(mem_apb_sel);
-              apb_dv_i <= mem_dv_o_b(mem_apb_sel);
+            
+            if int_apb_sel(sel_i) = '1' then
+              mem_data_i_a(sel_i) <= apb_data_o;
+              mem_dv_i_a(sel_i) <= apb_dv_o;
+              mem_addr_i_a(sel_i) <= apb_wr_addr_o;
+              mem_addr_i_b(sel_i) <= apb_rd_addr_o;
+              apb_data_i <= mem_data_o_b(sel_i);
+              apb_dv_i <= mem_dv_o_b(sel_i);
             else
-              mem_addr_i_b(mem_apb_sel) <= (others => '0');
-              mem_data_i_b(mem_apb_sel) <= (others => '0');
-              mem_dv_i_b(mem_apb_sel) <= '0';
-              apb_data_i <= (others => '0');
-              apb_dv_i <= '0';
+              mem_addr_i_a(sel_i) <= (others => '0');
+              mem_addr_i_b(sel_i) <= (others => '0');
+              mem_data_i_a(sel_i) <= i_data;
+              mem_dv_i_a(sel_i) <= i_dv;
             end if;
+
+            -- if sel_i = mem_apb_sel then
+            --   mem_addr_i_b(mem_apb_sel) <= apb_rd_addr_o;
+            --   mem_data_i_b(mem_apb_sel) <= apb_data_o;
+            --   mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
+            --   apb_data_i <= mem_data_o_b(mem_apb_sel);
+            --   apb_dv_i <= mem_dv_o_b(mem_apb_sel);
+            -- else
+            --   mem_addr_i_b(mem_apb_sel) <= (others => '0');
+            --   mem_data_i_b(mem_apb_sel) <= (others => '0');
+            --   mem_dv_i_b(mem_apb_sel) <= '0';
+            --   apb_data_i <= (others => '0');
+            --   apb_dv_i <= '0';
+            -- end if;
           end loop;
         end process sig_assig;
 
@@ -269,16 +293,18 @@ begin
               rst           => rst,
               ena           => ena,
               --
-              i_freeze      => int_freeze(mem_i),
+              i_freeze      => int_ker_freeze(mem_i),
+              i_ext_ctrl    => int_apb_sel(mem_i),
               -- Port A
+              i_addr_a      => mem_addr_i_a(mem_i),
               i_din_a       => mem_data_i_a(mem_i), -- i_data,
               i_dv_in_a     => mem_dv_i_a(mem_i),   -- i_dv,
-              o_dout_a      => mem_data_o_a(mem_i), -- o_data,
-              o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
+              -- o_dout_a      => mem_data_o_a(mem_i), -- o_data,
+              -- o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
               -- Port B
-              i_addr_b      => mem_addr_i_b(mem_i), -- apb_addr_o,  
-              i_din_b       => mem_data_i_b(mem_i), -- apb_data_o,   
-              i_dv_in_b     => mem_dv_i_b(mem_i),   -- apb_dv_o, 
+              i_addr_b      => mem_addr_i_b(mem_i), -- apb_rd_addr_o,  
+              -- i_din_b       => mem_data_i_b(mem_i), -- apb_data_o,   
+              -- i_dv_in_b     => mem_dv_i_b(mem_i),   -- apb_dv_o, 
               o_dout_b      => mem_data_o_b(mem_i), -- apb_data_i,  
               o_dv_out_b    => mem_dv_o_b(mem_i),   -- apb_dv_i,
               -- Flags

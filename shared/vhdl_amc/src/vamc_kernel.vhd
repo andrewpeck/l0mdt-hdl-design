@@ -35,6 +35,7 @@ entity vamc_kernel is
     ena                 : in std_logic;
     --
     i_freeze            : in std_logic;
+    i_apb_freeze        : in std_logic; --_vector(g_PARALLEL_MEM downto 0);
     o_freeze            : out std_logic_vector(g_PARALLEL_MEM downto 0);
     o_sel_run           : out integer range 0 to g_PARALLEL_MEM;
     o_sel_apb           : out integer range 0 to g_PARALLEL_MEM
