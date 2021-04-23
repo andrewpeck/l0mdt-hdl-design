@@ -201,7 +201,7 @@ begin
         i_dv          => apb_dv_i
       );  
     
-      MODE_MEM: if g_MEMORY_MODE = "pipeline" generate
+      MODE_PL: if g_MEMORY_MODE = "pipeline" generate
 
         sig_assig: process(all)
         begin
@@ -238,7 +238,7 @@ begin
           -- constant OUT_PIPELINE
           constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES - 2;
   
-        begin
+          begin
 
           signal_ctrl: process(clk)
           begin
@@ -260,7 +260,7 @@ begin
               g_SECOND_PORT => "monitor",
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-              g_OUT_PIPELINE => 1,
+              g_OUT_PIPELINE => 2,
               g_MEM_WIDTH     => DATA_WIDTH,
               g_MEM_DEPTH     => DATA_DEPTH
             )
@@ -293,7 +293,7 @@ begin
           
         end generate MPCVMEM_GEN;
 
-      end generate MODE_MEM;
+      end generate MODE_PL;
   end generate APB_INT_EN;
 
 
@@ -314,8 +314,8 @@ begin
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-          g_MEM_WIDTH     => DATA_WIDTH,
-          g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+          g_MEM_WIDTH       => DATA_WIDTH,
+          g_MEM_DEPTH       => TOTAL_DELAY_CYCLES
         )
         port map(
           clk           => clk,
