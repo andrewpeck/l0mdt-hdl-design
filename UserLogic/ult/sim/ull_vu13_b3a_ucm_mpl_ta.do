@@ -255,7 +255,7 @@ add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MP
 add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_b
 add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/used_data
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {47133780150 fs} 0} {{Cursor 2} {13005027422 fs} 0}
+WaveRestoreCursors {{Cursor 1} {47133780150 fs} 0} {{Cursor 2} {983775137 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 209
 configure wave -valuecolwidth 279
@@ -271,4 +271,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {52500 ns}
+WaveRestoreZoom {0 fs} {5250 ns}

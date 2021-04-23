@@ -62,6 +62,12 @@ architecture beh of apb_mem_int is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
 
+  signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal int_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  signal int_wr_dv       : std_logic;
+  signal int_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  signal int_rd_dv       : std_logic;
        
 
 begin
@@ -94,12 +100,7 @@ begin
     type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
     signal mem_int_status : mem_int_status_type;
 
-    signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-    signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-    signal int_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    signal int_wr_dv       : std_logic;
-    signal int_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    signal int_rd_dv       : std_logic;
+
 
   begin
 
@@ -120,18 +121,23 @@ begin
 
             when IDLE =>
               if ctrl_r.rd_req = '1' and ctrl_r.wr_req = '1' then
-                mem_int_status <= RD_WR_REQ;
+                -- mem_int_status <= RD_WR_REQ;
                 int_wr_addr <= ctrl_r.wr_addr;
                 int_wr_data <= vectorify(ctrl_r.wr_data,o_data);
+                
               elsif ctrl_r.wr_req = '1' then --apb wr 2 mem
-                mem_int_status <= WR_REQ;
+                -- mem_int_status <= WR_REQ;
                 int_wr_addr <= ctrl_r.wr_addr;
                 int_wr_data <= vectorify(ctrl_r.wr_data,o_data);
-              elsif ctrl_r.wr_req = '1' then -- apb rd from mem
-                mem_int_status <= WR_REQ;
+              elsif ctrl_r.rd_req = '1' then -- apb rd from mem
+                mem_int_status <= RD_REQ;
+                int_rd_addr <= ctrl_r.rd_addr;
               else
                 -- nothing
               end if;
+            when RD_REQ =>
+              mon_r.rd_data <= structify(int_rd_data,mon_r.rd_data);
+              mon_r.rd_rdy <= '1';
             when others =>
             -- error
             mem_int_status <= SYNC;
@@ -152,7 +158,9 @@ begin
         o_dv <= '0';
         o_data <= (others => '0');
       else
-        
+        if i_dv = '1' then
+          int_rd_data <= i_data;
+        end if;
       end if;
     end if;
   end process MEM_CTRL_INT;
