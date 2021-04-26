@@ -114,13 +114,13 @@ begin
 
   PL_CSW : entity mpl_lib.mpl_csw
   port map(
-    clk                 => clk,
+    clk         => clk,
     rst         => local_rst,
-    glob_en     => local_en,
+    ena         => local_en,
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_ucm_av       => pl2ptcalc_av,
-    o_tf_av       => o_pl2ptcalc_av
+    i_ucm_av    => pl2ptcalc_av,
+    o_tf_av     => o_pl2ptcalc_av
     -- o_mtc_av      => pl2mtc_av
   );
 
