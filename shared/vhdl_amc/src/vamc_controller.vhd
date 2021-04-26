@@ -308,7 +308,7 @@ begin
               i_addr_a      => mem_addr_i_a(mem_i),
               i_din_a       => mem_data_i_a(mem_i), -- i_data,
               i_dv_in_a     => mem_dv_i_a(mem_i),   -- i_dv,
-              -- o_dout_a      => mem_data_o_a(mem_i), -- o_data,
+              o_dout_a      => open,--mem_data_o_a(mem_i), -- o_data,
               -- o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
               -- Port B
               i_addr_b      => mem_addr_i_b(mem_i), -- apb_rd_addr_o,  
