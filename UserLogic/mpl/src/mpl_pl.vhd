@@ -55,6 +55,10 @@ entity mpl_pl is
 end entity mpl_pl;
 
 architecture beh of mpl_pl is
+  
+
+  signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
+  signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
 
   signal i_uCM2pl_r : ucm2pl_rt;
   signal pl2pl_v    : ucm2pl_rvt;
@@ -65,6 +69,7 @@ architecture beh of mpl_pl is
 
   signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
   signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
+
   
 begin
 
@@ -85,8 +90,8 @@ begin
       -- BU bus
       g_APBUS_ENABLED    => '1',
       g_XML_NODE_NAME    => "MEM_INT_12A148D",
-      g_APBUS_CTRL_WIDTH => integer(len(ctrl)),
-      g_APBUS_MON_WIDTH  => integer(len(mon))
+      g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
+      g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
     ) 
     port map(
       clk         => clk,
