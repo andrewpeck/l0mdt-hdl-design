@@ -47,6 +47,7 @@ include:
     #         VU13 Projects
     #---------------------------------------------
     - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
     # writer
     
 
