@@ -45,4 +45,6 @@ entity top_lsf IS
 
 architecture top_lsf_arch of top_lsf IS
 
+begin 
+
 end architecture top_lsf_arch;
