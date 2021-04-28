@@ -24,6 +24,7 @@ use shared_lib.common_ieee.all;
 
 library vamc_lib;
 library apbus_lib;
+library mpcvmem_lib;
 
 library ctrl_lib;
 use ctrl_lib.MPL_CTRL.all;
@@ -284,7 +285,7 @@ begin
           end process signal_ctrl;
 
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
-            mpcv_mem : entity vamc_lib.mpcvmem
+            mpcv_mem : entity mpcvmem_lib.mpcvmem
             generic map(
               g_LOGIC_TYPE    => "pipeline",
               g_MEMORY_TYPE   => g_MEMORY_TYPE,
@@ -307,7 +308,7 @@ begin
               i_addr_a      => mem_addr_i_a(mem_i),
               i_din_a       => mem_data_i_a(mem_i), -- i_data,
               i_dv_in_a     => mem_dv_i_a(mem_i),   -- i_dv,
-              -- o_dout_a      => mem_data_o_a(mem_i), -- o_data,
+              o_dout_a      => open,--mem_data_o_a(mem_i), -- o_data,
               -- o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
               -- Port B
               i_addr_b      => mem_addr_i_b(mem_i), -- apb_rd_addr_o,  
@@ -342,7 +343,7 @@ begin
         -- constant OUT_PIPELINE
         constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
       begin        
-        mpcvmem : entity vamc_lib.mpcvmem
+        mpcvmem : entity mpcvmem_lib.mpcvmem
         generic map(
           g_LOGIC_TYPE    => "pipeline",
           g_MEMORY_TYPE   => g_MEMORY_TYPE,

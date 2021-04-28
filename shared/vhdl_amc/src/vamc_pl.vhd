@@ -18,8 +18,8 @@ use ieee.numeric_std.all;
 -- use ieee.math_real.all;
 
 library shared_lib;
-
 library vamc_lib;
+library mpcvmem_lib;
 
 entity vamc_pl is
   generic(
@@ -141,7 +141,7 @@ begin
   begin
     
     
-    mpcvmem : entity vamc_lib.mpcvmem
+    mmem : entity mpcvmem_lib.mpcvmem
     generic map(
       g_LOGIC_TYPE    => "pipeline",
       g_MEMORY_TYPE   => g_MEMORY_TYPE,

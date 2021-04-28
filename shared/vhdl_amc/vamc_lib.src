@@ -11,6 +11,7 @@ shared/vhdl_amc/src/vamc_kernel.vhd
 #---------------------------------
 #  MPCVMEM
 #---------------------------------
-shared/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd
-shared/vhdl_amc/mpcvmem/src/mpcvmem.vhd
-shared/vhdl_amc/mpcvmem/src/DualPortMem.vhd
+shared/vhdl_amc/mpcvmem/mpcvmem_lib.src lib=mpcvmem_lib
+# shared/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd
+# shared/vhdl_amc/mpcvmem/src/mpcvmem.vhd
+# shared/vhdl_amc/mpcvmem/src/DualPortMem.vhd
