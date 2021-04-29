@@ -216,13 +216,13 @@ begin
           -- CVP_Z0_MON(st_i).RD.RST_REQ <= '0';
         else
           if CVP_Z0_CTRL(st_i).rd_req then
-            CVP_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).rd_addr))),integer(CVP_Z0_MON(st_i).rd_data'length)));
+            CVP_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cvp_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).rd_addr))),integer(CVP_Z0_MON(st_i).rd_data'length)));
             CVP_Z0_MON(st_i).rd_rdy <= '1';
           else
             CVP_Z0_MON(st_i).rd_rdy <= '0';
           end if;
           if CVP_Z0_CTRL(st_i).wr_req then
-            cde_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CVP_Z0_CTRL(st_i).wr_data),cde_ch_z0_org(st_i)(0)'length);
+            cvp_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).wr_addr))) <=resize(unsigned(CVP_Z0_CTRL(st_i).wr_data),cvp_ch_z0_org(st_i)(0)'length);
           end if;
         end if;
         o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
