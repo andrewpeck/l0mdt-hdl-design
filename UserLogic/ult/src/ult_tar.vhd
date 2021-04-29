@@ -129,25 +129,25 @@ begin
         rst             => clock_and_control.rst,
         glob_en         => glob_en,
         -- TDC Hits from Polmux
-        i_inn_tdc_hits  => i_inn_tdc_hits,
-        i_mid_tdc_hits  => i_mid_tdc_hits,
-        i_out_tdc_hits  => i_out_tdc_hits,
-        i_ext_tdc_hits  => i_ext_tdc_hits,
+        i_inn_tdc_hits_av  => i_inn_tdc_hits,
+        i_mid_tdc_hits_av  => i_mid_tdc_hits,
+        i_out_tdc_hits_av  => i_out_tdc_hits,
+        i_ext_tdc_hits_av  => i_ext_tdc_hits,
         -- candidates in from hal
-        i_inn_tar_hits  => i_inn_tar_hits,
-        i_mid_tar_hits  => i_mid_tar_hits,
-        i_out_tar_hits  => i_out_tar_hits,
-        i_ext_tar_hits  => i_ext_tar_hits,
+        i_inn_tar_hits_av  => i_inn_tar_hits,
+        i_mid_tar_hits_av  => i_mid_tar_hits,
+        i_out_tar_hits_av  => i_out_tar_hits,
+        i_ext_tar_hits_av  => i_ext_tar_hits,
         -- 
-        o_inn_tdc_hits  => o_inn_tdc_hits,
-        o_mid_tdc_hits  => o_mid_tdc_hits,
-        o_out_tdc_hits  => o_out_tdc_hits,
-        o_ext_tdc_hits  => o_ext_tdc_hits,
+        o_inn_tdc_hits_av  => o_inn_tdc_hits,
+        o_mid_tdc_hits_av  => o_mid_tdc_hits,
+        o_out_tdc_hits_av  => o_out_tdc_hits,
+        o_ext_tdc_hits_av  => o_ext_tdc_hits,
         -- outputs to ucm
-        o_inn_tar_hits  => o_inn_tar_hits,
-        o_mid_tar_hits  => o_mid_tar_hits,
-        o_out_tar_hits  => o_out_tar_hits,
-        o_ext_tar_hits  => o_ext_tar_hits
+        o_inn_tar_hits_av  => o_inn_tar_hits,
+        o_mid_tar_hits_av  => o_mid_tar_hits,
+        o_out_tar_hits_av  => o_out_tar_hits,
+        o_ext_tar_hits_av  => o_ext_tar_hits
   
       );
 

@@ -58,7 +58,7 @@ entity vamc_controller is
     rst                 : in std_logic;
     ena                 : in std_logic;
     -- Ctrl/Mon
-    ctrl                : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    ctrl                : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0) := (others => '0');
     mon                 : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
     i_freeze            : in std_logic := '0';
     --
@@ -331,7 +331,6 @@ begin
       end generate MODE_PL;
   end generate APB_INT_EN;
 
-
   -----------------------------------------------
   -- SINGLE MEMORY NO MONITORING
   -----------------------------------------------
@@ -350,7 +349,7 @@ begin
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
           g_MEM_WIDTH       => DATA_WIDTH,
-          g_MEM_DEPTH       => TOTAL_DELAY_CYCLES
+          g_MEM_DEPTH       => DATA_DEPTH
         )
         port map(
           clk           => clk,
