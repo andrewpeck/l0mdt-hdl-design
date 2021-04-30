@@ -18,6 +18,12 @@ SIM:ull_vu13_b3a_ucm_mpl_hps_csf:
     tags:
       - heavy-duty
       - hog
+    artifacts:
+      name: user_sim
+      paths:
+        - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+        - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+      expire_in: 30 day
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .simulate_project_comp
