@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.MEM_INT_12A148D_Ctrl.all;
-use work.MEM_INT_12A148D_CTRL_DEF.all;
+use work.MEM_INT_12A148D_Ctrl_DEF.all;
 entity MEM_INT_12A148D_interface is
   port (
     clk_axi          : in  std_logic;

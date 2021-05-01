@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-04-01 21:30:45.355384.
+# Created : 2021-05-01 13:47:44.913528.
 config:
   basic_convert_functions : off
   packages:
@@ -10,12 +10,117 @@ config:
 
 hdl:
 
+- H2S_HPS_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- H2S_HPS_CONFIGS_CTRL_t:
+  - THREADS : [ type: logic, length: 4 ]
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- H2S_HPS_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_CONFIGS_CTRL_t:
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_COUNTERS_CTRL_t:
+  - ENABLED : [ type: logic, length: 32 ]
+  - READY : [ type: logic, length: 32 ]
+  - ERROR : [ type: logic, length: 32 ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t:
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_MON_t:
+  - STATUS : [ type: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t ]
+
+- H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY: [array: 6, type: H2S_HPS_HEG_HEG_HP_HP_MON_t]
+
+- H2S_HPS_HEG_HEG_HP_HP_CTRL_t:
+  - ACTIONS : [ type: H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t ]
+
+- H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY: [array: 6, type: H2S_HPS_HEG_HEG_HP_HP_CTRL_t]
+
+- H2S_HPS_HEG_HEG_HP_MON_t:
+  - HP : [ type: H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY ]
+
+
+- H2S_HPS_HEG_HEG_HP_CTRL_t:
+  - HP : [ type: H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ]
+
+
+- H2S_HPS_HEG_HEG_MON_t:
+  - STATUS : [ type: H2S_HPS_HEG_HEG_STATUS_MON_t ]
+  - HP : [ type: H2S_HPS_HEG_HEG_HP_MON_t ]
+
+- H2S_HPS_HEG_HEG_MON_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_MON_t]
+
+- H2S_HPS_HEG_HEG_CTRL_t:
+  - ACTIONS : [ type: H2S_HPS_HEG_HEG_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: H2S_HPS_HEG_HEG_CONFIGS_CTRL_t ]
+  - COUNTERS : [ type: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t ]
+  - HP : [ type: H2S_HPS_HEG_HEG_HP_CTRL_t ]
+
+- H2S_HPS_HEG_HEG_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_CTRL_t]
+
+- H2S_HPS_HEG_MON_t:
+  - HEG : [ type: H2S_HPS_HEG_HEG_MON_t_ARRAY ]
+
+
+- H2S_HPS_HEG_CTRL_t:
+  - HEG : [ type: H2S_HPS_HEG_HEG_CTRL_t_ARRAY ]
+
+
 - H2S_HPS_LSF_LSF_MON_t:
   - STATUS : [ type: logic ]
   - sb_lsf_mdt_hits_rdata_31_0 : [ type: logic, length: 32 ]
   - sb_lsf_mdt_hits_rdata_40_32 : [ type: logic, length: 9 ]
 
-- H2S_HPS_LSF_LSF_MON_t_ARRAY: [array: 2, type: H2S_HPS_LSF_LSF_MON_t]
+- H2S_HPS_LSF_LSF_MON_t_ARRAY: [array: 3, type: H2S_HPS_LSF_LSF_MON_t]
 
 - H2S_HPS_LSF_LSF_CTRL_t:
   - RESET : [ type: logic ]
@@ -24,7 +129,7 @@ hdl:
   - sb_lsf_mdt_hits_raddr : [ type: logic, length: 8 ]
   - sb_lsf_mdt_hits_re : [ type: logic ]
 
-- H2S_HPS_LSF_LSF_CTRL_t_ARRAY: [array: 2, type: H2S_HPS_LSF_LSF_CTRL_t]
+- H2S_HPS_LSF_LSF_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_LSF_LSF_CTRL_t]
 
 - H2S_HPS_LSF_MON_t:
   - LSF : [ type: H2S_HPS_LSF_LSF_MON_t_ARRAY ]
@@ -38,12 +143,12 @@ hdl:
   - STATUS : [ type: logic ]
   - READY : [ type: logic ]
 
-- H2S_HPS_CSF_CSF_MON_t_ARRAY: [array: 2, type: H2S_HPS_CSF_CSF_MON_t]
+- H2S_HPS_CSF_CSF_MON_t_ARRAY: [array: 3, type: H2S_HPS_CSF_CSF_MON_t]
 
 - H2S_HPS_CSF_CSF_CTRL_t:
   - RESET : [ type: logic ]
 
-- H2S_HPS_CSF_CSF_CTRL_t_ARRAY: [array: 2, type: H2S_HPS_CSF_CSF_CTRL_t]
+- H2S_HPS_CSF_CSF_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_CSF_CSF_CTRL_t]
 
 - H2S_HPS_CSF_MON_t:
   - CSF : [ type: H2S_HPS_CSF_CSF_MON_t_ARRAY ]
@@ -54,19 +159,21 @@ hdl:
 
 
 - H2S_HPS_MON_t:
+  - STATUS : [ type: H2S_HPS_STATUS_MON_t ]
+  - HEG : [ type: H2S_HPS_HEG_MON_t ]
   - LSF : [ type: H2S_HPS_LSF_MON_t ]
   - CSF : [ type: H2S_HPS_CSF_MON_t ]
-  - STATUS : [ type: logic ]
-  - READY : [ type: logic ]
 
-- H2S_HPS_MON_t_ARRAY: [array: 3, type: H2S_HPS_MON_t]
+- H2S_HPS_MON_t_ARRAY: [array: 4, type: H2S_HPS_MON_t]
 
 - H2S_HPS_CTRL_t:
-  - RESET : [ type: logic ]
+  - ACTIONS : [ type: H2S_HPS_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: H2S_HPS_CONFIGS_CTRL_t ]
+  - HEG : [ type: H2S_HPS_HEG_CTRL_t ]
   - LSF : [ type: H2S_HPS_LSF_CTRL_t ]
   - CSF : [ type: H2S_HPS_CSF_CTRL_t ]
 
-- H2S_HPS_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_CTRL_t]
+- H2S_HPS_CTRL_t_ARRAY: [array: 4, type: H2S_HPS_CTRL_t]
 
 - H2S_MON_t:
   - HPS : [ type: H2S_HPS_MON_t_ARRAY ]
