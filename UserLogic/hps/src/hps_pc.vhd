@@ -97,35 +97,35 @@ begin
       o_dv                => t0_dv
     );
 
-  ZH : entity hps_lib.hps_pc_b_zholes
-    generic map(
-      g_STATION_RADIUS    => g_STATION_RADIUS
-    )
-    port map(
-      clk                 => clk,
-      rst                 => rst,
-      glob_en             => glob_en,
-      --
-      i_chamber           => mdt_tar_data(0).chamber_ieta,
-      i_dv                => mdt_tar_data(0).data_valid,
-      o_spaces            => holesize,
-      o_dv                => zh_dv
-    );
+  -- ZH : entity hps_lib.hps_pc_b_zholes
+  --   generic map(
+  --     g_STATION_RADIUS    => g_STATION_RADIUS
+  --   )
+  --   port map(
+  --     clk                 => clk,
+  --     rst                 => rst,
+  --     glob_en             => glob_en,
+  --     --
+  --     i_chamber           => mdt_tar_data(0).chamber_ieta,
+  --     i_dv                => mdt_tar_data(0).data_valid,
+  --     o_spaces            => holesize,
+  --     o_dv                => zh_dv
+  --   );
 
-  TR : entity hps_lib.hps_pc_b_r
-    generic map(
-      g_STATION_RADIUS    => g_STATION_RADIUS
-    )
-    port map(
-      clk                 => clk,
-      rst                 => rst,
-      glob_en             => glob_en,
-      --
-      i_layer             => mdt_tar_data(0).layer,
-      i_dv                => mdt_tar_data(0).data_valid,
-      o_r_pos             => r_pos,
-      o_dv                => r_dv
-    );
+  -- TR : entity hps_lib.hps_pc_b_r
+  --   generic map(
+  --     g_STATION_RADIUS    => g_STATION_RADIUS
+  --   )
+  --   port map(
+  --     clk                 => clk,
+  --     rst                 => rst,
+  --     glob_en             => glob_en,
+  --     --
+  --     i_layer             => mdt_tar_data(0).layer,
+  --     i_dv                => mdt_tar_data(0).data_valid,
+  --     o_r_pos             => r_pos,
+  --     o_dv                => r_dv
+  --   );
 
   dv_pl(0) <= mdt_tar_data(0).data_valid;
 
