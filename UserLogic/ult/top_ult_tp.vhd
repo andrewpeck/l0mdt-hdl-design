@@ -30,6 +30,7 @@ use shared_lib.detector_param_pkg.all;
 library ult_lib;
 
 library ctrl_lib;
+use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
@@ -54,7 +55,7 @@ entity top_ult_tp is
 
     -- axi control
 
-    h2s_ctrl : in  H2S_CTRL_t;
+    h2s_ctrl_v : in  std_logic_vector(c_H2S_CTRL_LEN -1 downto 0);--H2S_CTRL_t;
     h2s_mon  : out H2S_MON_t;
 
     tar_ctrl : in  TAR_CTRL_t;
@@ -155,7 +156,7 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl => h2s_ctrl,
+      h2s_ctrl_v => h2s_ctrl_v,
       h2s_mon  => h2s_mon,
       tar_ctrl => tar_ctrl,
       tar_mon  => tar_mon,

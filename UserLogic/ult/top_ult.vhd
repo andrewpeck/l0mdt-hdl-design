@@ -51,7 +51,7 @@ entity top_ult is
 
     -- axi control
 
-    h2s_ctrl : in  H2S_CTRL_t;
+    h2s_ctrl_v : in  std_logic_vector;--H2S_CTRL_t;
     h2s_mon  : out H2S_MON_t;
 
     tar_ctrl : in  TAR_CTRL_t;
@@ -147,7 +147,7 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl => h2s_ctrl,
+      h2s_ctrl_v => h2s_ctrl_v,
       h2s_mon  => h2s_mon,
       tar_ctrl => tar_ctrl,
       tar_mon  => tar_mon,

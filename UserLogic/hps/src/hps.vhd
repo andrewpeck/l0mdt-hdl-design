@@ -34,6 +34,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
+use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 
 entity hps is
@@ -47,7 +48,7 @@ entity hps is
     glob_en : in std_logic;
 
     -- control
-    ctrl : in  H2S_HPS_CTRL_t;
+    ctrl_v  : in std_logic_vector;-- H2S_HPS_CTRL_t;
     mon  : out H2S_HPS_MON_t;
 
     -- SLc
@@ -61,6 +62,8 @@ end entity hps;
 
 architecture beh of hps is
 
+  signal ctrl_r : H2S_HPS_CTRL_t;
+
   signal mdt_full_data_av : heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   -- signal int_uCM_data : ucm2heg_slc_avt(c_NUM_THREADS -1 downto 0);
@@ -71,6 +74,8 @@ architecture beh of hps is
   signal heg2sfhit_av   : heg2sfhit_bus_avt(c_NUM_THREADS -1 downto 0);
 
 begin
+
+  ctrl_r <= structify(ctrl_v,ctrl_r);
 
   pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     pc_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(hp_i) = '1' generate
@@ -122,10 +127,10 @@ begin
       port map(
         clk => clk,
 
-        lsf_ctrl => ctrl.lsf.lsf(heg_i),
+        lsf_ctrl => ctrl_r.lsf.lsf(heg_i),
         lsf_mon  => mon.lsf.lsf(heg_i),
 
-        csf_ctrl => ctrl.csf.csf(heg_i),
+        csf_ctrl => ctrl_r.csf.csf(heg_i),
         csf_mon  => mon.csf.csf(heg_i),
 
         rst          => rst,

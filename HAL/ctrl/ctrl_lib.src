@@ -13,3 +13,5 @@ HAL/ctrl/src/*/*_map.vhd
 HAL/ctrl/src/UCM/UCM_PKG_DEF.vhd
 HAL/ctrl/src/MPL/MPL_PKG_DEF.vhd
 HAL/ctrl/src/H2S/H2S_PKG_DEF.vhd
+
+HAL/ctrl/pkg/ctrl_constants_pkg.vhd

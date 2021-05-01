@@ -27,6 +27,7 @@ use shared_lib.config_pkg.all;
 library ult_lib;
 
 library ctrl_lib;
+use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
@@ -46,7 +47,7 @@ entity ult is
 
     -- control and monitoring
 
-    h2s_ctrl : in  H2S_CTRL_t;
+    h2s_ctrl_v : in  std_logic_vector;--H2S_CTRL_t;
     h2s_mon  : out H2S_MON_t;
 
     tar_ctrl : in  TAR_CTRL_t;
@@ -217,7 +218,7 @@ begin
       -- clock, control, and monitoring
       clock_and_control         => clock_and_control,
       ttc_commands              => ttc_commands,
-      ctrl                      => h2s_ctrl,
+      ctrl_v                    => h2s_ctrl_v,
       mon                       => h2s_mon,
       -- inputs from hal
       i_inn_tar_hits            => inn_tar_hits,
