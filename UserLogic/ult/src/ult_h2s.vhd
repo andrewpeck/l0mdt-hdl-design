@@ -85,9 +85,13 @@ begin
     o_sump <= '0';
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+      signal ctrl_hps_r : H2S_HPS_CTRL_t;
       signal ctrl_hps_v : std_logic_vector(c_H2S_HPS_CTRL_LEN -1 downto 0);
     begin
-      ctrl_hps_v <= vectorify(ctrl_r.hps(0),ctrl_hps_v);
+      
+      ctrl_hps_r <=  ctrl_r.hps(0);
+      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+
       HPS : entity hps_lib.hps
       generic map(
         g_STATION_RADIUS    => 0,
