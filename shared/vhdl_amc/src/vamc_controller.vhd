@@ -27,7 +27,9 @@ library apbus_lib;
 library mpcvmem_lib;
 
 library ctrl_lib;
-use ctrl_lib.MPL_CTRL.all;
+  use ctrl_lib.MPL_CTRL.all;
+  -- use ctrl_lib.MEM_INT_10A148D_PKG.all;
+  -- use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
 entity vamc_controller is
   generic(
@@ -183,6 +185,8 @@ begin
         g_INTERNAL_CLK          => '1',
         g_ADDR_WIDTH            => ADDR_WIDTH,
         g_DATA_WIDTH            => DATA_WIDTH,
+        -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
+        -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
         g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
         g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
       )
