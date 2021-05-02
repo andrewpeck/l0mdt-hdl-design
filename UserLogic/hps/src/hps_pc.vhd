@@ -43,6 +43,8 @@ entity hps_pc is
     rst                   : in std_logic;
     glob_en               : in std_logic;
     -- configuration & control
+    ctrl                  : in std_logic;  
+    mon                   : out std_logic;  
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_rvt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
@@ -54,6 +56,7 @@ architecture beh of hps_pc is
   constant c_HPS_PC_PL_LEN : integer := 4;
   signal dv_pl : std_logic_vector(c_HPS_PC_PL_LEN -1 downto 0);
 
+  signal i_mdt_tar_r : tar2hps_rt;
   type mdt_tar_data_pl is array (c_HPS_PC_PL_LEN -1 downto 0) of tar2hps_rt;
   signal mdt_tar_data   : mdt_tar_data_pl;
   --t0
@@ -79,6 +82,8 @@ architecture beh of hps_pc is
   
 begin
 
+  i_mdt_tar_r  <= structify(i_mdt_tar_v);
+
   mdt_tar_data(0) <= structify(i_mdt_tar_v);
   o_mdt_full_data_v <= vectorify(mdt_full_data_r);
 
@@ -95,6 +100,26 @@ begin
       i_dv                => mdt_tar_data(0).data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
+    );
+
+  TC : entity hps_lib.hps_pc_mdt_tc
+    generic map(
+      g_STATION_RADIUS    => g_STATION_RADIUS
+    )
+    port map(
+      clk                 => clk,
+      rst                 => rst,
+      glob_en             => glob_en,
+      --
+      ctrl                => '1',
+      mon                 => '1',
+      --
+      i_layer             => i_mdt_tar_r.layer,
+      i_tube              => i_mdt_tar_r.tube,
+      --
+      o_global_x          => mdt_tar_data(0).data_valid,
+      o_global_z          => r_pos,
+      o_dv                => r_dv
     );
 
   -- ZH : entity hps_lib.hps_pc_b_zholes
@@ -126,6 +151,8 @@ begin
   --     o_r_pos             => r_pos,
   --     o_dv                => r_dv
   --   );
+
+
 
   dv_pl(0) <= mdt_tar_data(0).data_valid;
 

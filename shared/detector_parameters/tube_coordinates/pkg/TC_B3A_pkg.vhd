@@ -22,9 +22,9 @@ package TC_B3A_pkg.vhd is
   constant MAX_TUBES_MID : 296;
   constant MAX_TUBES_OUT : 400;
   -- constant MAX_TUBES_EXT : 5;
-type tube_coordinates_at is array (0 to 1) of real;
-type tube_coord_colum_aat is array (integer range <>) of tube_coordinates_at;
-type tube_coord_side_aat is array ( integer range <>) of tube_coord_colum_aat;    
+  type tube_coordinates_at is array (0 to 1) of real;
+  type tube_coord_colum_aat is array (integer range <>) of tube_coordinates_at;
+  type tube_coord_side_aat is array ( integer range <>) of tube_coord_colum_aat;    
 
   constant tube_coordinates_inn :  tube_coord_side_aat (0 to MAX_TUBES_INN - 1)(0 to 7):= (
     --     layer 0       , layer 1       , layer 2       , layer 3       , layer 4       , layer 5       , layer 6       , layer 7       ,
