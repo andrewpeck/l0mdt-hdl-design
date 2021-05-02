@@ -45,6 +45,142 @@ package H2S_CTRL is
   function structify(x: in std_logic_vector; t: H2S_HPS_STATUS_MON_t) return H2S_HPS_STATUS_MON_t;
   function nullify(t: H2S_HPS_STATUS_MON_t) return H2S_HPS_STATUS_MON_t;
 
+  type H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t is record
+    wr_data_0 : std_logic_vector(19-1 downto 0);
+  end record H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+
+  type H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t is record
+    rd_data_0 : std_logic_vector(19-1 downto 0);
+  end record H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+
+  type H2S_HPS_MDT_TC_MDT_TC_MON_t is record
+    rd_rdy : std_logic;
+    rd_data : H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+  end record H2S_HPS_MDT_TC_MDT_TC_MON_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MDT_TC_MON_t;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MDT_TC_MON_t;
+
+  type H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY is array(6-1 downto 0) of H2S_HPS_MDT_TC_MDT_TC_MON_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+  function nullify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+
+  type H2S_HPS_MDT_TC_MDT_TC_CTRL_t is record
+    wr_req : std_logic;
+    wr_ack : std_logic;
+    rd_req : std_logic;
+    rd_ack : std_logic;
+    flush_req : std_logic;
+    wr_addr : std_logic_vector(9-1 downto 0);
+    rd_addr : std_logic_vector(9-1 downto 0);
+    wr_data : H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+  end record H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+
+  type H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is array(6-1 downto 0) of H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+  function nullify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+
+  type H2S_HPS_MDT_TC_MON_t is record
+    MDT_TC : H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+  end record H2S_HPS_MDT_TC_MON_t;
+  function len(x: H2S_HPS_MDT_TC_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MON_t;
+  function nullify(t: H2S_HPS_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MON_t;
+
+  type H2S_HPS_MDT_TC_CTRL_t is record
+    MDT_TC : H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+  end record H2S_HPS_MDT_TC_CTRL_t;
+  function len(x: H2S_HPS_MDT_TC_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_TC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_CTRL_t;
+
+  type H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t is record
+    wr_data_0 : std_logic_vector(17-1 downto 0);
+  end record H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+
+  type H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t is record
+    rd_data_0 : std_logic_vector(17-1 downto 0);
+  end record H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+
+  type H2S_HPS_MDT_T0_MDT_T0_MON_t is record
+    rd_rdy : std_logic;
+    rd_data : H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+  end record H2S_HPS_MDT_T0_MDT_T0_MON_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MDT_T0_MON_t;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MDT_T0_MON_t;
+
+  type H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY is array(6-1 downto 0) of H2S_HPS_MDT_T0_MDT_T0_MON_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+  function nullify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+
+  type H2S_HPS_MDT_T0_MDT_T0_CTRL_t is record
+    wr_req : std_logic;
+    wr_ack : std_logic;
+    rd_req : std_logic;
+    rd_ack : std_logic;
+    flush_req : std_logic;
+    wr_addr : std_logic_vector(4-1 downto 0);
+    rd_addr : std_logic_vector(4-1 downto 0);
+    wr_data : H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+  end record H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+
+  type H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is array(6-1 downto 0) of H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+  function nullify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+
+  type H2S_HPS_MDT_T0_MON_t is record
+    MDT_T0 : H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+  end record H2S_HPS_MDT_T0_MON_t;
+  function len(x: H2S_HPS_MDT_T0_MON_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MON_t;
+  function nullify(t: H2S_HPS_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MON_t;
+
+  type H2S_HPS_MDT_T0_CTRL_t is record
+    MDT_T0 : H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+  end record H2S_HPS_MDT_T0_CTRL_t;
+  function len(x: H2S_HPS_MDT_T0_CTRL_t) return natural;
+  function vectorify(x: H2S_HPS_MDT_T0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_CTRL_t;
+  function nullify(t: H2S_HPS_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_CTRL_t;
+
   type H2S_HPS_HEG_HEG_ACTIONS_CTRL_t is record
     RESET : std_logic;
     ENABLE : std_logic;
@@ -307,6 +443,8 @@ package H2S_CTRL is
 
   type H2S_HPS_MON_t is record
     STATUS : H2S_HPS_STATUS_MON_t;
+    MDT_TC : H2S_HPS_MDT_TC_MON_t;
+    MDT_T0 : H2S_HPS_MDT_T0_MON_t;
     HEG : H2S_HPS_HEG_MON_t;
     LSF : H2S_HPS_LSF_MON_t;
     CSF : H2S_HPS_CSF_MON_t;
@@ -325,6 +463,8 @@ package H2S_CTRL is
   type H2S_HPS_CTRL_t is record
     ACTIONS : H2S_HPS_ACTIONS_CTRL_t;
     CONFIGS : H2S_HPS_CONFIGS_CTRL_t;
+    MDT_TC : H2S_HPS_MDT_TC_CTRL_t;
+    MDT_T0 : H2S_HPS_MDT_T0_CTRL_t;
     HEG : H2S_HPS_HEG_CTRL_t;
     LSF : H2S_HPS_LSF_CTRL_t;
     CSF : H2S_HPS_CSF_CTRL_t;
@@ -544,6 +684,814 @@ package body H2S_CTRL is
     y.ENABLED := nullify(t.ENABLED);
     y.READY := nullify(t.READY);
     y.ERROR := nullify(t.ERROR);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_data_0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+    else
+      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t is
+    variable y: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
+    else
+      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t is
+  variable y: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+  begin
+    y.wr_data_0 := nullify(t.wr_data_0);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data_0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
+    else
+      y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t is
+    variable y: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
+    else
+      y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t is
+  variable y: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+  begin
+    y.rd_data_0 := nullify(t.rd_data_0);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    l := l + len(x.rd_data);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
+      left := left + len(x.rd_rdy);
+      y(left to left+len(x.rd_data)-1) := vectorify(x.rd_data, y(left to left+len(x.rd_data)-1));
+    else
+      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
+      left := left - len(x.rd_rdy);
+      y(left downto left-len(x.rd_data)+1) := vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MDT_TC_MON_t is
+    variable y: H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MDT_TC_MON_t is
+  variable y: H2S_HPS_MDT_TC_MDT_TC_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    y.rd_data := nullify(t.rd_data);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(b to a) := vectorify(x(i), y(b to a));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(a downto b) := vectorify(x(i), y(a downto b));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY is
+    variable y : H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function nullify(x: H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY is
+    variable y : H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_req);
+    l := l + len(x.wr_ack);
+    l := l + len(x.rd_req);
+    l := l + len(x.rd_ack);
+    l := l + len(x.flush_req);
+    l := l + len(x.wr_addr);
+    l := l + len(x.rd_addr);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
+      left := left + len(x.wr_req);
+      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      left := left + len(x.wr_ack);
+      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      left := left + len(x.rd_req);
+      y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
+      left := left + len(x.rd_ack);
+      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      left := left + len(x.flush_req);
+      y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
+      left := left + len(x.wr_addr);
+      y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
+      left := left + len(x.rd_addr);
+      y(left to left+len(x.wr_data)-1) := vectorify(x.wr_data, y(left to left+len(x.wr_data)-1));
+    else
+      y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
+      left := left - len(x.wr_req);
+      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      left := left - len(x.wr_ack);
+      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      left := left - len(x.rd_req);
+      y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
+      left := left - len(x.rd_ack);
+      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      left := left - len(x.flush_req);
+      y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
+      left := left - len(x.wr_addr);
+      y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
+      left := left - len(x.rd_addr);
+      y(left downto left-len(x.wr_data)+1) := vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t is
+    variable y: H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
+      left := left + len(y.rd_ack);
+      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
+      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
+      left := left + len(y.wr_addr);
+      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
+      left := left + len(y.rd_addr);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
+      left := left - len(y.rd_ack);
+      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
+      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
+      left := left - len(y.wr_addr);
+      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
+      left := left - len(y.rd_addr);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t is
+  variable y: H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+  begin
+    y.wr_req := nullify(t.wr_req);
+    y.wr_ack := nullify(t.wr_ack);
+    y.rd_req := nullify(t.rd_req);
+    y.rd_ack := nullify(t.rd_ack);
+    y.flush_req := nullify(t.flush_req);
+    y.wr_addr := nullify(t.wr_addr);
+    y.rd_addr := nullify(t.rd_addr);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(b to a) := vectorify(x(i), y(b to a));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(a downto b) := vectorify(x(i), y(a downto b));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is
+    variable y : H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function nullify(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY) return H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY is
+    variable y : H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MDT_TC);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.MDT_TC)-1) := vectorify(x.MDT_TC, y(left to left+len(x.MDT_TC)-1));
+    else
+      y(left downto left-len(x.MDT_TC)+1) := vectorify(x.MDT_TC, y(left downto left-len(x.MDT_TC)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MON_t is
+    variable y: H2S_HPS_MDT_TC_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MDT_TC := structify(x(left to left+len(y.MDT_TC)-1), y.MDT_TC);
+    else
+      y.MDT_TC := structify(x(left downto left-len(y.MDT_TC)+1), y.MDT_TC);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_MON_t) return H2S_HPS_MDT_TC_MON_t is
+  variable y: H2S_HPS_MDT_TC_MON_t;
+  begin
+    y.MDT_TC := nullify(t.MDT_TC);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_TC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MDT_TC);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_TC_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.MDT_TC)-1) := vectorify(x.MDT_TC, y(left to left+len(x.MDT_TC)-1));
+    else
+      y(left downto left-len(x.MDT_TC)+1) := vectorify(x.MDT_TC, y(left downto left-len(x.MDT_TC)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_CTRL_t is
+    variable y: H2S_HPS_MDT_TC_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MDT_TC := structify(x(left to left+len(y.MDT_TC)-1), y.MDT_TC);
+    else
+      y.MDT_TC := structify(x(left downto left-len(y.MDT_TC)+1), y.MDT_TC);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_TC_CTRL_t) return H2S_HPS_MDT_TC_CTRL_t is
+  variable y: H2S_HPS_MDT_TC_CTRL_t;
+  begin
+    y.MDT_TC := nullify(t.MDT_TC);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_data_0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+    else
+      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t is
+    variable y: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
+    else
+      y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t is
+  variable y: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+  begin
+    y.wr_data_0 := nullify(t.wr_data_0);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_data_0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
+    else
+      y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t is
+    variable y: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
+    else
+      y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t) return H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t is
+  variable y: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+  begin
+    y.rd_data_0 := nullify(t.rd_data_0);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    l := l + len(x.rd_data);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
+      left := left + len(x.rd_rdy);
+      y(left to left+len(x.rd_data)-1) := vectorify(x.rd_data, y(left to left+len(x.rd_data)-1));
+    else
+      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
+      left := left - len(x.rd_rdy);
+      y(left downto left-len(x.rd_data)+1) := vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MDT_T0_MON_t is
+    variable y: H2S_HPS_MDT_T0_MDT_T0_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MDT_T0_MON_t is
+  variable y: H2S_HPS_MDT_T0_MDT_T0_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    y.rd_data := nullify(t.rd_data);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(b to a) := vectorify(x(i), y(b to a));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(a downto b) := vectorify(x(i), y(a downto b));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY is
+    variable y : H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function nullify(x: H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY is
+    variable y : H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_req);
+    l := l + len(x.wr_ack);
+    l := l + len(x.rd_req);
+    l := l + len(x.rd_ack);
+    l := l + len(x.flush_req);
+    l := l + len(x.wr_addr);
+    l := l + len(x.rd_addr);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
+      left := left + len(x.wr_req);
+      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      left := left + len(x.wr_ack);
+      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      left := left + len(x.rd_req);
+      y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
+      left := left + len(x.rd_ack);
+      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      left := left + len(x.flush_req);
+      y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
+      left := left + len(x.wr_addr);
+      y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
+      left := left + len(x.rd_addr);
+      y(left to left+len(x.wr_data)-1) := vectorify(x.wr_data, y(left to left+len(x.wr_data)-1));
+    else
+      y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
+      left := left - len(x.wr_req);
+      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      left := left - len(x.wr_ack);
+      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      left := left - len(x.rd_req);
+      y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
+      left := left - len(x.rd_ack);
+      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      left := left - len(x.flush_req);
+      y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
+      left := left - len(x.wr_addr);
+      y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
+      left := left - len(x.rd_addr);
+      y(left downto left-len(x.wr_data)+1) := vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t is
+    variable y: H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
+      left := left + len(y.rd_ack);
+      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
+      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
+      left := left + len(y.wr_addr);
+      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
+      left := left + len(y.rd_addr);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
+      left := left - len(y.rd_ack);
+      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
+      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
+      left := left - len(y.wr_addr);
+      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
+      left := left - len(y.rd_addr);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t is
+  variable y: H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+  begin
+    y.wr_req := nullify(t.wr_req);
+    y.wr_ack := nullify(t.wr_ack);
+    y.rd_req := nullify(t.rd_req);
+    y.rd_ack := nullify(t.rd_ack);
+    y.flush_req := nullify(t.flush_req);
+    y.wr_addr := nullify(t.wr_addr);
+    y.rd_addr := nullify(t.rd_addr);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * len(x(x'left));
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
+    constant l :  integer := len(x(x'right));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if t'ascending then
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(b to a) := vectorify(x(i), y(b to a));
+      end loop;
+    else
+      for i in x'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(a downto b) := vectorify(x(i), y(a downto b));
+      end loop;
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: std_logic_vector; t: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is
+    variable y : H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+    constant l :  integer := len(y(y'left));
+    variable a :  integer;
+    variable b :  integer;
+  begin
+    if x'ascending then
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(b to a), y(i));
+      end loop;
+    else
+      for i in y'range loop
+        a := l*i+l-1+x'low;
+        b := l*i+x'low;
+        y(i) := structify(x(a downto b), y(i));
+      end loop;
+    end if;
+    return y;
+  end function structify;
+  function nullify(x: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY) return H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY is
+    variable y : H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(y(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MDT_T0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.MDT_T0)-1) := vectorify(x.MDT_T0, y(left to left+len(x.MDT_T0)-1));
+    else
+      y(left downto left-len(x.MDT_T0)+1) := vectorify(x.MDT_T0, y(left downto left-len(x.MDT_T0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MON_t is
+    variable y: H2S_HPS_MDT_T0_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MDT_T0 := structify(x(left to left+len(y.MDT_T0)-1), y.MDT_T0);
+    else
+      y.MDT_T0 := structify(x(left downto left-len(y.MDT_T0)+1), y.MDT_T0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_MON_t) return H2S_HPS_MDT_T0_MON_t is
+  variable y: H2S_HPS_MDT_T0_MON_t;
+  begin
+    y.MDT_T0 := nullify(t.MDT_T0);
+    return y;
+  end function nullify;
+
+  function len(x: H2S_HPS_MDT_T0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MDT_T0);
+    return l;
+  end function len;
+  function vectorify(x: H2S_HPS_MDT_T0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      y(left to left+len(x.MDT_T0)-1) := vectorify(x.MDT_T0, y(left to left+len(x.MDT_T0)-1));
+    else
+      y(left downto left-len(x.MDT_T0)+1) := vectorify(x.MDT_T0, y(left downto left-len(x.MDT_T0)+1));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: H2S_HPS_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_CTRL_t is
+    variable y: H2S_HPS_MDT_T0_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MDT_T0 := structify(x(left to left+len(y.MDT_T0)-1), y.MDT_T0);
+    else
+      y.MDT_T0 := structify(x(left downto left-len(y.MDT_T0)+1), y.MDT_T0);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: H2S_HPS_MDT_T0_CTRL_t) return H2S_HPS_MDT_T0_CTRL_t is
+  variable y: H2S_HPS_MDT_T0_CTRL_t;
+  begin
+    y.MDT_T0 := nullify(t.MDT_T0);
     return y;
   end function nullify;
 
@@ -2092,6 +3040,8 @@ package body H2S_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.STATUS);
+    l := l + len(x.MDT_TC);
+    l := l + len(x.MDT_T0);
     l := l + len(x.HEG);
     l := l + len(x.LSF);
     l := l + len(x.CSF);
@@ -2104,6 +3054,10 @@ package body H2S_CTRL is
     if t'ascending then
       y(left to left+len(x.STATUS)-1) := vectorify(x.STATUS, y(left to left+len(x.STATUS)-1));
       left := left + len(x.STATUS);
+      y(left to left+len(x.MDT_TC)-1) := vectorify(x.MDT_TC, y(left to left+len(x.MDT_TC)-1));
+      left := left + len(x.MDT_TC);
+      y(left to left+len(x.MDT_T0)-1) := vectorify(x.MDT_T0, y(left to left+len(x.MDT_T0)-1));
+      left := left + len(x.MDT_T0);
       y(left to left+len(x.HEG)-1) := vectorify(x.HEG, y(left to left+len(x.HEG)-1));
       left := left + len(x.HEG);
       y(left to left+len(x.LSF)-1) := vectorify(x.LSF, y(left to left+len(x.LSF)-1));
@@ -2112,6 +3066,10 @@ package body H2S_CTRL is
     else
       y(left downto left-len(x.STATUS)+1) := vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1));
       left := left - len(x.STATUS);
+      y(left downto left-len(x.MDT_TC)+1) := vectorify(x.MDT_TC, y(left downto left-len(x.MDT_TC)+1));
+      left := left - len(x.MDT_TC);
+      y(left downto left-len(x.MDT_T0)+1) := vectorify(x.MDT_T0, y(left downto left-len(x.MDT_T0)+1));
+      left := left - len(x.MDT_T0);
       y(left downto left-len(x.HEG)+1) := vectorify(x.HEG, y(left downto left-len(x.HEG)+1));
       left := left - len(x.HEG);
       y(left downto left-len(x.LSF)+1) := vectorify(x.LSF, y(left downto left-len(x.LSF)+1));
@@ -2127,6 +3085,10 @@ package body H2S_CTRL is
     if x'ascending then
       y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
       left := left + len(y.STATUS);
+      y.MDT_TC := structify(x(left to left+len(y.MDT_TC)-1), y.MDT_TC);
+      left := left + len(y.MDT_TC);
+      y.MDT_T0 := structify(x(left to left+len(y.MDT_T0)-1), y.MDT_T0);
+      left := left + len(y.MDT_T0);
       y.HEG := structify(x(left to left+len(y.HEG)-1), y.HEG);
       left := left + len(y.HEG);
       y.LSF := structify(x(left to left+len(y.LSF)-1), y.LSF);
@@ -2135,6 +3097,10 @@ package body H2S_CTRL is
     else
       y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
       left := left - len(y.STATUS);
+      y.MDT_TC := structify(x(left downto left-len(y.MDT_TC)+1), y.MDT_TC);
+      left := left - len(y.MDT_TC);
+      y.MDT_T0 := structify(x(left downto left-len(y.MDT_T0)+1), y.MDT_T0);
+      left := left - len(y.MDT_T0);
       y.HEG := structify(x(left downto left-len(y.HEG)+1), y.HEG);
       left := left - len(y.HEG);
       y.LSF := structify(x(left downto left-len(y.LSF)+1), y.LSF);
@@ -2147,6 +3113,8 @@ package body H2S_CTRL is
   variable y: H2S_HPS_MON_t;
   begin
     y.STATUS := nullify(t.STATUS);
+    y.MDT_TC := nullify(t.MDT_TC);
+    y.MDT_T0 := nullify(t.MDT_T0);
     y.HEG := nullify(t.HEG);
     y.LSF := nullify(t.LSF);
     y.CSF := nullify(t.CSF);
@@ -2215,6 +3183,8 @@ package body H2S_CTRL is
   begin
     l := l + len(x.ACTIONS);
     l := l + len(x.CONFIGS);
+    l := l + len(x.MDT_TC);
+    l := l + len(x.MDT_T0);
     l := l + len(x.HEG);
     l := l + len(x.LSF);
     l := l + len(x.CSF);
@@ -2229,6 +3199,10 @@ package body H2S_CTRL is
       left := left + len(x.ACTIONS);
       y(left to left+len(x.CONFIGS)-1) := vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1));
       left := left + len(x.CONFIGS);
+      y(left to left+len(x.MDT_TC)-1) := vectorify(x.MDT_TC, y(left to left+len(x.MDT_TC)-1));
+      left := left + len(x.MDT_TC);
+      y(left to left+len(x.MDT_T0)-1) := vectorify(x.MDT_T0, y(left to left+len(x.MDT_T0)-1));
+      left := left + len(x.MDT_T0);
       y(left to left+len(x.HEG)-1) := vectorify(x.HEG, y(left to left+len(x.HEG)-1));
       left := left + len(x.HEG);
       y(left to left+len(x.LSF)-1) := vectorify(x.LSF, y(left to left+len(x.LSF)-1));
@@ -2239,6 +3213,10 @@ package body H2S_CTRL is
       left := left - len(x.ACTIONS);
       y(left downto left-len(x.CONFIGS)+1) := vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1));
       left := left - len(x.CONFIGS);
+      y(left downto left-len(x.MDT_TC)+1) := vectorify(x.MDT_TC, y(left downto left-len(x.MDT_TC)+1));
+      left := left - len(x.MDT_TC);
+      y(left downto left-len(x.MDT_T0)+1) := vectorify(x.MDT_T0, y(left downto left-len(x.MDT_T0)+1));
+      left := left - len(x.MDT_T0);
       y(left downto left-len(x.HEG)+1) := vectorify(x.HEG, y(left downto left-len(x.HEG)+1));
       left := left - len(x.HEG);
       y(left downto left-len(x.LSF)+1) := vectorify(x.LSF, y(left downto left-len(x.LSF)+1));
@@ -2256,6 +3234,10 @@ package body H2S_CTRL is
       left := left + len(y.ACTIONS);
       y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
       left := left + len(y.CONFIGS);
+      y.MDT_TC := structify(x(left to left+len(y.MDT_TC)-1), y.MDT_TC);
+      left := left + len(y.MDT_TC);
+      y.MDT_T0 := structify(x(left to left+len(y.MDT_T0)-1), y.MDT_T0);
+      left := left + len(y.MDT_T0);
       y.HEG := structify(x(left to left+len(y.HEG)-1), y.HEG);
       left := left + len(y.HEG);
       y.LSF := structify(x(left to left+len(y.LSF)-1), y.LSF);
@@ -2266,6 +3248,10 @@ package body H2S_CTRL is
       left := left - len(y.ACTIONS);
       y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
       left := left - len(y.CONFIGS);
+      y.MDT_TC := structify(x(left downto left-len(y.MDT_TC)+1), y.MDT_TC);
+      left := left - len(y.MDT_TC);
+      y.MDT_T0 := structify(x(left downto left-len(y.MDT_T0)+1), y.MDT_T0);
+      left := left - len(y.MDT_T0);
       y.HEG := structify(x(left downto left-len(y.HEG)+1), y.HEG);
       left := left - len(y.HEG);
       y.LSF := structify(x(left downto left-len(y.LSF)+1), y.LSF);
@@ -2279,6 +3265,8 @@ package body H2S_CTRL is
   begin
     y.ACTIONS := nullify(t.ACTIONS);
     y.CONFIGS := nullify(t.CONFIGS);
+    y.MDT_TC := nullify(t.MDT_TC);
+    y.MDT_T0 := nullify(t.MDT_T0);
     y.HEG := nullify(t.HEG);
     y.LSF := nullify(t.LSF);
     y.CSF := nullify(t.CSF);

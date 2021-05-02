@@ -28,6 +28,78 @@
   } H2S_HPS_STATUS_MON_t;
 
   typedef struct packed {
+    logic [19-1:0] wr_data_0;
+  } H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
+
+  typedef struct packed {
+    logic [19-1:0] rd_data_0;
+  } H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
+
+  typedef struct packed {
+    logic  rd_rdy;
+    H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t   rd_data;
+  } H2S_HPS_MDT_TC_MDT_TC_MON_t;
+
+  typedef H2S_HPS_MDT_TC_MDT_TC_MON_t  [6-1:0] H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic [9-1:0] wr_addr;
+    logic [9-1:0] rd_addr;
+    H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t   wr_data;
+  } H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
+
+  typedef H2S_HPS_MDT_TC_MDT_TC_CTRL_t  [6-1:0] H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;
+
+  typedef struct packed {
+    H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY   MDT_TC;
+  } H2S_HPS_MDT_TC_MON_t;
+
+  typedef struct packed {
+    H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY   MDT_TC;
+  } H2S_HPS_MDT_TC_CTRL_t;
+
+  typedef struct packed {
+    logic [17-1:0] wr_data_0;
+  } H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t;
+
+  typedef struct packed {
+    logic [17-1:0] rd_data_0;
+  } H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t;
+
+  typedef struct packed {
+    logic  rd_rdy;
+    H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t   rd_data;
+  } H2S_HPS_MDT_T0_MDT_T0_MON_t;
+
+  typedef H2S_HPS_MDT_T0_MDT_T0_MON_t  [6-1:0] H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic [4-1:0] wr_addr;
+    logic [4-1:0] rd_addr;
+    H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t   wr_data;
+  } H2S_HPS_MDT_T0_MDT_T0_CTRL_t;
+
+  typedef H2S_HPS_MDT_T0_MDT_T0_CTRL_t  [6-1:0] H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;
+
+  typedef struct packed {
+    H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY   MDT_T0;
+  } H2S_HPS_MDT_T0_MON_t;
+
+  typedef struct packed {
+    H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY   MDT_T0;
+  } H2S_HPS_MDT_T0_CTRL_t;
+
+  typedef struct packed {
     logic  RESET;
     logic  ENABLE;
     logic  DISABLE;
@@ -165,6 +237,8 @@
 
   typedef struct packed {
     H2S_HPS_STATUS_MON_t   STATUS;
+    H2S_HPS_MDT_TC_MON_t   MDT_TC;
+    H2S_HPS_MDT_T0_MON_t   MDT_T0;
     H2S_HPS_HEG_MON_t   HEG;
     H2S_HPS_LSF_MON_t   LSF;
     H2S_HPS_CSF_MON_t   CSF;
@@ -175,6 +249,8 @@
   typedef struct packed {
     H2S_HPS_ACTIONS_CTRL_t   ACTIONS;
     H2S_HPS_CONFIGS_CTRL_t   CONFIGS;
+    H2S_HPS_MDT_TC_CTRL_t   MDT_TC;
+    H2S_HPS_MDT_T0_CTRL_t   MDT_T0;
     H2S_HPS_HEG_CTRL_t   HEG;
     H2S_HPS_LSF_CTRL_t   LSF;
     H2S_HPS_CSF_CTRL_t   CSF;

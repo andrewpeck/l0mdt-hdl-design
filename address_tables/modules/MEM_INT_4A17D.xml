@@ -12,10 +12,10 @@
   <node id="wr_addr"    address="0x02" mask="0x0000000F" permission="rw"  description="wr_Address"/>
   <node id="rd_addr"    address="0x02" mask="0x000F0000" permission="rw"  description="rd_Address"/>
   
-  <node id="wr_data"  address="0x10" description="Write Data">
+  <node id="wr_data"  address="0x03" description="Write Data">
     <node id="wr_data_0"  address="0x00" mask="0x0001FFFF" permission="rw"  description="Write Data 0"/>
   </node>
-  <node id="rd_data"  address="0x20" description="Read Data">
+  <node id="rd_data"  address="0x04" description="Read Data">
     <node id="rd_data_0"  address="0x00" mask="0x0001FFFF" permission="r"   description="Read Data 0"/>
   </node>
 </node>
