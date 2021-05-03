@@ -31,6 +31,10 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 use hps_lib.hps_rom_b_t0_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+library apbus_lib;
+
 entity hps_pc_b_t0 is
   generic(
     -- parameters
@@ -39,7 +43,10 @@ entity hps_pc_b_t0 is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena                 : in std_logic;
+    --
+    ctrl                : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
+    mon                 : out H2S_HPS_MDT_T0_MDT_T0_MON_t;  
     --
     i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
     i_dv                : in std_logic;

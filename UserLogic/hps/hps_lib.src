@@ -8,4 +8,5 @@ UserLogic/hps/src/hps_pc.vhd
 UserLogic/hps/src/ROMs/hps_rom_b_t0_pkg.vhd
 UserLogic/hps/src/hps_pc_b_t0.vhd
 UserLogic/hps/src/hps_pc_mdt_tc.vhd
+UserLogic/hps/src/hps_supervisor.vhd
 UserLogic/hps/src/hps.vhd

@@ -30,6 +30,9 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity hps_pc is
   generic(
     -- mdt type
@@ -41,10 +44,12 @@ entity hps_pc is
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    glob_en               : in std_logic;
+    ena                   : in std_logic;
     -- configuration & control
-    ctrl                  : in std_logic;  
-    mon                   : out std_logic;  
+    i_ctrl_tc             : in H2S_HPS_MDT_TC_MDT_TC_CTRL_t;  
+    o_mon_tc              : out H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    i_ctrl_t0             : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
+    o_mon_t0              : out H2S_HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_rvt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
@@ -94,7 +99,10 @@ begin
     port map(
       clk                 => clk,
       rst                 => rst,
-      glob_en             => glob_en,
+      ena                 => ena,
+      --
+      ctrl                => i_ctrl_t0,
+      mon                 => o_mon_t0,
       --
       i_chamber           => mdt_tar_data(0).chamber_ieta,
       i_dv                => mdt_tar_data(0).data_valid,
@@ -109,16 +117,16 @@ begin
     port map(
       clk                 => clk,
       rst                 => rst,
-      glob_en             => glob_en,
+      ena                 => ena,
       --
-      ctrl                => '1',
-      mon                 => '1',
+      ctrl                => i_ctrl_tc,
+      mon                 => o_mon_tc,
       --
       i_layer             => i_mdt_tar_r.layer,
       i_tube              => i_mdt_tar_r.tube,
       --
-      o_global_x          => mdt_tar_data(0).data_valid,
-      o_global_z          => r_pos,
+      o_global_x          => global_x,
+      o_global_z          => global_z,
       o_dv                => r_dv
     );
 
@@ -129,7 +137,7 @@ begin
   --   port map(
   --     clk                 => clk,
   --     rst                 => rst,
-  --     glob_en             => glob_en,
+  --     ena             => ena,
   --     --
   --     i_chamber           => mdt_tar_data(0).chamber_ieta,
   --     i_dv                => mdt_tar_data(0).data_valid,
@@ -144,7 +152,7 @@ begin
   --   port map(
   --     clk                 => clk,
   --     rst                 => rst,
-  --     glob_en             => glob_en,
+  --     ena             => ena,
   --     --
   --     i_layer             => mdt_tar_data(0).layer,
   --     i_dv                => mdt_tar_data(0).data_valid,
@@ -162,8 +170,8 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         -- reset
-        global_z                    <= (others => '0');
-        global_x                    <= (others => '0');
+        -- global_z                    <= (others => '0');
+        -- global_x                    <= (others => '0');
         time_t0_pl                  <= (others => '0');
         mdt_full_data_r.layer       <= (others => '0');
         mdt_full_data_r.tube        <= (others => '0');
@@ -178,15 +186,15 @@ begin
         mdt_tar_data(c_HPS_PC_PL_LEN -1 downto 1) <= mdt_tar_data(c_HPS_PC_PL_LEN - 2 downto 0);
 
         if dv_pl(1) = '1' then
-          global_z <= mdt_tar_data(1).tube * tubesize; 
-          global_x <= r_pos;
+          -- global_z <= mdt_tar_data(1).tube * tubesize; 
+          -- global_x <= r_pos;
 
           time_t0_pl <= time_t0;
           
         else
           time_t0_pl <= (others => '0');
-          global_z <= (others => '0');
-          global_x <= (others => '0');
+          -- global_z <= (others => '0');
+          -- global_x <= (others => '0');
         end if;
 
         if dv_pl(2) = '1' then
