@@ -126,10 +126,12 @@ begin
         g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH
         )
       port map(
-        clk     => clk,
-        rst     => int_rst,
-        glob_en     => int_ena,
-
+        clk                => clk,
+        rst                => int_rst, 
+        glob_en            => int_ena,
+        --        
+        ctrl               => ctrl.heg.heg(heg_i),
+        mon                => mon.heg.heg(heg_i),
         --
         i_uCM_data_v       => i_uCM2hps_av(heg_i),
         -- MDT hit
