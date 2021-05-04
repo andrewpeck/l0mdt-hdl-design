@@ -34,8 +34,8 @@ entity apb_mem_int is
     g_MEM_LATENCY       : integer := 0;
     -- type g_CTRL_TYPE ;--=> MEM_INT_12A148D_CTRL_t;     
     -- type g_MON_TYPE ;--=> MEM_INT_12A148D_MON_t;     
-    g_APBUS_CTRL_WIDTH  : integer := 8;
-    g_APBUS_MON_WIDTH   : integer := 4
+    g_APBUS_CTRL_WIDTH  : integer := 0;
+    g_APBUS_MON_WIDTH   : integer := 0
   );
   port (
     clk           : in std_logic;

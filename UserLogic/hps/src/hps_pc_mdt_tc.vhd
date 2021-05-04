@@ -46,8 +46,8 @@ entity hps_pc_mdt_tc is
     ctrl        : in H2S_HPS_MDT_TC_MDT_TC_CTRL_t; 
     mon         : out H2S_HPS_MDT_TC_MDT_TC_MON_t;
     --
-    i_layer     : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);
-    i_tube      : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0);
+    i_layer     : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0); -- 5
+    i_tube      : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0); -- 9
     --
     o_global_x  : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     o_global_z  : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -57,26 +57,62 @@ end entity hps_pc_mdt_tc;
 
 architecture beh of hps_pc_mdt_tc is
   
+  -- signal ctrl_v : std_logic_vector(len(ctrl) - 1  downto 0);
+  -- signal mon_v : std_logic_vector(len(mon) - 1  downto 0);
+
+  -- constant ADDR_WIDTH : integer := 9;
+  -- constant DATA_WIDTH : integer := 19;
+
+  -- type tcLUT_chamber_avt is array (0 to 300) of unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+
+  -- -- function init_TC_MEM(r , s : integer)return tcLUT_chamber_avt is
+  -- --   variable y : tcLUT_chamber_avt;
+  -- -- begin
+  -- --   for i in 0 to 7 loop
+  -- --     if r = 0 then
+  -- --       y(i) := to_unsigned(c_BI_tc(s)(i),MDT_TIME_LEN);
+  -- --     elsif r = 1 then
+  -- --       y(i) := to_unsigned(c_BM_tc(s)(i),MDT_TIME_LEN);
+  -- --     elsif r = 2 then
+  -- --       y(i) := to_unsigned(c_BO_tc(s)(i),MDT_TIME_LEN);
+  -- --     -- else
+  
+  -- --     end if;
+  -- --   end loop;
+  -- --   return y;
+  -- -- end function;
+
+  -- signal mem_x : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID);
+  -- signal mem_z : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID);
+
+  -- signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+  -- signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+  -- signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  -- signal apb_dv_o         : std_logic;
+  -- signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  -- signal apb_dv_i         : std_logic;
+
 begin
+
+  -- ctrl_v <= vectorify(ctrl,ctrl_v);
+  -- mon <= structify(mon_v,mon);
 
   -- apb_mem_interface : entity apbus_lib.apb_mem_int
   -- generic map(
   --   g_XML_NODE_NAME         => "MEM_INT_9A19D",
-  --   g_INTERNAL_CLK          => '1'
-  --   -- g_ADDR_WIDTH            => ADDR_WIDTH,
-  --   -- g_DATA_WIDTH            => DATA_WIDTH,
-  --   -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
-  --   -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
-  --   -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
-  --   -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
+  --   g_INTERNAL_CLK          => '1',
+  --   g_ADDR_WIDTH            => ADDR_WIDTH,
+  --   g_DATA_WIDTH            => DATA_WIDTH,
+  --   g_APBUS_CTRL_WIDTH      => ctrl_v'length,
+  --   g_APBUS_MON_WIDTH       => mon_v'length
   -- )
   -- port map (
   --   clk           => clk,
   --   rst           => rst,
   --   ena           => ena,
   --   --
-  --   ctrl          => ctrl,
-  --   mon           => mon,
+  --   ctrl          => ctrl_v,
+  --   mon           => mon_v,
   --   --
   --   -- i_axi_clk     => ,
   --   -- i_axi_rst     => ,
@@ -93,7 +129,33 @@ begin
   --   i_data        => apb_data_i,  
   --   i_dv          => apb_dv_i
   -- );  
-  
-  
+
+  -- DT2R : process(clk)
+
+  -- begin
+  --   if rising_edge(clk) then
+  --     if rst= '1' then
+  --       o_time_tc <= (others => '0');
+  --       o_dv <= '0';
+  --     else
+  --       if(i_dv = '1') then
+  --         o_global_x <= mem_x(to_integer(i_chamber));
+  --         o_global_z <= mem_z(to_integer(i_chamber));
+  --         o_dv <= '1';
+  --       else
+  --         o_time_tc <= (others => '0');
+  --         o_dv <= '0';
+  --       end if;
+  --       if apb_dv_o = '1' then
+  --         apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+  --         mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
+  --         apb_dv_i <= '1';
+  --       else
+  --         apb_dv_i <= '0';
+  --       end if;
+  --     end if;
+  --   end if ;
+  -- end process;
+
   
 end architecture beh;

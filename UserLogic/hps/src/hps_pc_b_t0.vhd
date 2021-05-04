@@ -22,6 +22,7 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
+use shared_lib.hps_rom_b_t0_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -29,7 +30,7 @@ library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
-use hps_lib.hps_rom_b_t0_pkg.all;
+
 
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
@@ -146,8 +147,8 @@ begin
           o_dv <= '0';
         end if;
         if apb_dv_o = '1' then
-          apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
+          apb_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
+          mem(to_integer(unsigned(apb_rd_addr_o))) <= unsigned(apb_data_o);
           apb_dv_i <= '1';
         else
           apb_dv_i <= '0';
