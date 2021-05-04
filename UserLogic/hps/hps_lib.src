@@ -5,7 +5,7 @@ UserLogic/hps/src/hps_pc.vhd
 # UserLogic/hps/src/hps_pc_b_zholes.vhd
 # UserLogic/hps/src/ROMs/hps_rom_b_r_pkg.vhd
 # UserLogic/hps/src/hps_pc_b_r.vhd
-UserLogic/hps/src/ROMs/hps_rom_b_t0_pkg.vhd
+# UserLogic/hps/src/ROMs/hps_rom_b_t0_pkg.vhd
 UserLogic/hps/src/hps_pc_b_t0.vhd
 UserLogic/hps/src/hps_pc_mdt_tc.vhd
 UserLogic/hps/src/hps_supervisor.vhd
