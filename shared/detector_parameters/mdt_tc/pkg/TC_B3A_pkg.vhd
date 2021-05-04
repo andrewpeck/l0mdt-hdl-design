@@ -17,10 +17,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package TC_B3A_pkg.vhd is
-  constant MAX_TUBES_INN : 198;
-  constant MAX_TUBES_MID : 296;
-  constant MAX_TUBES_OUT : 400;
+package TC_B3A_pkg is
+  constant MAX_TUBES_INN : integer := 198;
+  constant MAX_TUBES_MID : integer := 296;
+  constant MAX_TUBES_OUT : integer := 400;
   -- constant MAX_TUBES_EXT : 5;
   type tube_coordinates_at is array (0 to 1) of real;
   type tube_coord_colum_aat is array (integer range <>) of tube_coordinates_at;
@@ -931,4 +931,4 @@ package TC_B3A_pkg.vhd is
   );
 
 
- end package TC_B3A_pkg.vhd;
+ end package TC_B3A_pkg;
