@@ -46,8 +46,8 @@ entity hps_pc_b_t0 is
     rst                 : in std_logic;
     ena                 : in std_logic;
     --
-    ctrl                : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
-    mon                 : out H2S_HPS_MDT_T0_MDT_T0_MON_t;  
+    ctrl_v              : in std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
+    mon_v               : out std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_MON_t;  
     --
     i_chamber           : in unsigned(SLC_CHAMBER_LEN-1 downto 0);
     i_dv                : in std_logic;
@@ -59,8 +59,8 @@ end entity hps_pc_b_t0;
 
 architecture beh of hps_pc_b_t0 is
 
-  signal ctrl_v : std_logic_vector(len(ctrl) - 1  downto 0);
-  signal mon_v : std_logic_vector(len(mon) - 1  downto 0);
+  -- signal ctrl_v : std_logic_vector(len(ctrl) - 1  downto 0);
+  -- signal mon_v : std_logic_vector(len(mon) - 1  downto 0);
 
   constant ADDR_WIDTH : integer := 4;
   constant DATA_WIDTH : integer := 17;
@@ -95,8 +95,8 @@ architecture beh of hps_pc_b_t0 is
 
 begin
 
-  ctrl_v <= vectorify(ctrl,ctrl_v);
-  mon <= structify(mon_v,mon);
+  -- ctrl_v <= vectorify(ctrl,ctrl_v);
+  -- mon <= structify(mon_v,mon);
 
   apb_mem_interface : entity apbus_lib.apb_mem_int
   generic map(

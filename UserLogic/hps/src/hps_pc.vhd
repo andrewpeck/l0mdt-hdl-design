@@ -58,6 +58,11 @@ end entity hps_pc;
 
 architecture beh of hps_pc is
 
+  signal t0_ctrl_v : std_logic_vector(len(i_ctrl_t0) - 1  downto 0);
+  signal t0_mon_v : std_logic_vector(len(o_mon_t0) - 1  downto 0);
+  signal tc_ctrl_v : std_logic_vector(len(i_ctrl_tc) - 1  downto 0);
+  signal tc_mon_v : std_logic_vector(len(o_mon_tc) - 1  downto 0);
+
   constant c_HPS_PC_PL_LEN : integer := 4;
   signal dv_pl : std_logic_vector(c_HPS_PC_PL_LEN -1 downto 0);
 
@@ -87,6 +92,12 @@ architecture beh of hps_pc is
   
 begin
 
+  t0_ctrl_v <= vectorify(i_ctrl_t0,t0_ctrl_v);
+  o_mon_t0 <= structify(t0_mon_v,o_mon_t0);
+
+  tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
+  o_mon_tc <= structify(tc_mon_v,o_mon_tc);
+
   i_mdt_tar_r  <= structify(i_mdt_tar_v);
 
   mdt_tar_data(0) <= structify(i_mdt_tar_v);
@@ -101,8 +112,8 @@ begin
       rst                 => rst,
       ena                 => ena,
       --
-      ctrl                => i_ctrl_t0,
-      mon                 => o_mon_t0,
+      ctrl_v                => t0_ctrl_v,
+      mon_v                 => t0_mon_v,
       --
       i_chamber           => mdt_tar_data(0).chamber_ieta,
       i_dv                => mdt_tar_data(0).data_valid,
@@ -119,8 +130,8 @@ begin
       rst                 => rst,
       ena                 => ena,
       --
-      ctrl                => i_ctrl_tc,
-      mon                 => o_mon_tc,
+      ctrl_v                => tc_ctrl_v,
+      mon_v                 => tc_mon_v,
       --
       i_layer             => i_mdt_tar_r.layer,
       i_tube              => i_mdt_tar_r.tube,

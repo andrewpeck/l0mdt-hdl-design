@@ -31,9 +31,7 @@ entity apb_mem_int is
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
-    g_MEM_LATENCY       : integer := 0;
-    -- type g_CTRL_TYPE ;--=> MEM_INT_12A148D_CTRL_t;     
-    -- type g_MON_TYPE ;--=> MEM_INT_12A148D_MON_t;     
+    g_MEM_LATENCY       : integer := 0;    
     g_APBUS_CTRL_WIDTH  : integer := 0;
     g_APBUS_MON_WIDTH   : integer := 0
   );
@@ -207,6 +205,303 @@ begin
    
   end generate MEM_INT_12A148D;
 
+  MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
+    signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
+    signal mon_r    : MEM_INT_10A148D_MON_t;
+
+    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
+    -- signal mem_int_status : mem_int_status_type;
+  begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
+
+    MEM_CTRL_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          o_freeze <= '0'; --(others => '0');
+          -- o_out_sel <= b"01";
+          o_dv <= '0';
+          o_data <= (others => '0');
+          int_wr_status <= x"0";
+          int_rd_status <= x"0";
+        else
+
+          case int_wr_status is
+            when x"0" => -- INIT
+              int_wr_status <= x"0";
+            when x"1" =>
+              if ctrl_r.wr_req = '1' then --apb wr 2 mem
+                o_wr_addr <= ctrl_r.wr_addr;
+                o_data <= vectorify(ctrl_r.wr_data,o_data);
+                o_dv <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_data <= (others => '0');
+                o_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+            -- when x"2" =>
+            --   o_wr_addr <= (others => '0');
+            --   o_data <= (others => '0');
+            --   o_dv <= '0';
+              -- if new_apb_wr_req = '0' then
+              --   int_wr_status <= x"1";
+              -- end if;
+            when others =>
+              o_wr_addr <= (others => '0');
+              o_data <= (others => '0');
+              o_dv <= '0';
+              if int_wr_status = unsigned(apb_clk_limit) then
+                int_wr_status <= x"1";
+              else
+                int_wr_status <= int_wr_status + 1;
+              end if;
+
+          end case;
+
+          case int_rd_status is
+            when x"0" =>
+            int_rd_status <= x"1";
+            when x"1" =>
+              if ctrl_r.rd_req = '1' then --apb wr 2 mem
+                o_rd_addr <= ctrl_r.wr_addr;
+                int_rd_status <= x"2";
+              else
+                o_rd_addr <= (others => '0');
+              end if;
+              if int_rd_dv = '1' then
+                mon_r.rd_data <= structify(int_rd_data,mon_r.rd_data);
+                mon_r.rd_rdy <= '1';
+                int_rd_status <= x"2";
+              else
+                -- mon_r.rd_data <= structify((others => '0'),mon_r.rd_data);
+                mon_r.rd_rdy <= '0';
+              end if;
+            -- when x"2" =>
+            when others =>
+              if int_rd_status = unsigned(apb_clk_limit) then
+                int_rd_status <= x"1";
+
+              else
+                int_rd_status <= int_rd_status + 1;
+              end if;
+          end case;
+
+          if i_dv = '1' then
+            int_rd_data <= i_data;
+            int_rd_dv <= '1';
+          else
+            -- int_rd_data <= (others =>);
+            -- int_rd_dv <= '0';
+          end if;
+
+        end if;
+      end if;
+    end process MEM_CTRL_INT;
+   
+  end generate MEM_INT_10A148D;
+
+  MEM_INT_9A19D: if g_XML_NODE_NAME = "MEM_INT_9A19D" generate
+    signal ctrl_r   : MEM_INT_9A19D_CTRL_t;
+    signal mon_r    : MEM_INT_9A19D_MON_t;
+
+    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
+    -- signal mem_int_status : mem_int_status_type;
+  begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
+
+    MEM_CTRL_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          o_freeze <= '0'; --(others => '0');
+          -- o_out_sel <= b"01";
+          o_dv <= '0';
+          o_data <= (others => '0');
+          int_wr_status <= x"0";
+          int_rd_status <= x"0";
+        else
+
+          case int_wr_status is
+            when x"0" => -- INIT
+              int_wr_status <= x"0";
+            when x"1" =>
+              if ctrl_r.wr_req = '1' then --apb wr 2 mem
+                o_wr_addr <= ctrl_r.wr_addr;
+                o_data <= vectorify(ctrl_r.wr_data,o_data);
+                o_dv <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_data <= (others => '0');
+                o_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+            -- when x"2" =>
+            --   o_wr_addr <= (others => '0');
+            --   o_data <= (others => '0');
+            --   o_dv <= '0';
+              -- if new_apb_wr_req = '0' then
+              --   int_wr_status <= x"1";
+              -- end if;
+            when others =>
+              o_wr_addr <= (others => '0');
+              o_data <= (others => '0');
+              o_dv <= '0';
+              if int_wr_status = unsigned(apb_clk_limit) then
+                int_wr_status <= x"1";
+              else
+                int_wr_status <= int_wr_status + 1;
+              end if;
+
+          end case;
+
+          case int_rd_status is
+            when x"0" =>
+            int_rd_status <= x"1";
+            when x"1" =>
+              if ctrl_r.rd_req = '1' then --apb wr 2 mem
+                o_rd_addr <= ctrl_r.wr_addr;
+                int_rd_status <= x"2";
+              else
+                o_rd_addr <= (others => '0');
+              end if;
+              if int_rd_dv = '1' then
+                mon_r.rd_data <= structify(int_rd_data,mon_r.rd_data);
+                mon_r.rd_rdy <= '1';
+                int_rd_status <= x"2";
+              else
+                -- mon_r.rd_data <= structify((others => '0'),mon_r.rd_data);
+                mon_r.rd_rdy <= '0';
+              end if;
+            -- when x"2" =>
+            when others =>
+              if int_rd_status = unsigned(apb_clk_limit) then
+                int_rd_status <= x"1";
+
+              else
+                int_rd_status <= int_rd_status + 1;
+              end if;
+          end case;
+
+          if i_dv = '1' then
+            int_rd_data <= i_data;
+            int_rd_dv <= '1';
+          else
+            -- int_rd_data <= (others =>);
+            -- int_rd_dv <= '0';
+          end if;
+
+        end if;
+      end if;
+    end process MEM_CTRL_INT;
+   
+  end generate MEM_INT_9A19D;
+
+  MEM_INT_4A17D: if g_XML_NODE_NAME = "MEM_INT_4A17D" generate
+    signal ctrl_r   : MEM_INT_4A17D_CTRL_t;
+    signal mon_r    : MEM_INT_4A17D_MON_t;
+
+    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
+    -- signal mem_int_status : mem_int_status_type;
+  begin
+
+    ctrl_r <= structify(ctrl,ctrl_r);
+    mon <= vectorify(mon_r,mon);
+
+    MEM_CTRL_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          o_freeze <= '0'; --(others => '0');
+          -- o_out_sel <= b"01";
+          o_dv <= '0';
+          o_data <= (others => '0');
+          int_wr_status <= x"0";
+          int_rd_status <= x"0";
+        else
+
+          case int_wr_status is
+            when x"0" => -- INIT
+              int_wr_status <= x"0";
+            when x"1" =>
+              if ctrl_r.wr_req = '1' then --apb wr 2 mem
+                o_wr_addr <= ctrl_r.wr_addr;
+                o_data <= vectorify(ctrl_r.wr_data,o_data);
+                o_dv <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_data <= (others => '0');
+                o_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+            -- when x"2" =>
+            --   o_wr_addr <= (others => '0');
+            --   o_data <= (others => '0');
+            --   o_dv <= '0';
+              -- if new_apb_wr_req = '0' then
+              --   int_wr_status <= x"1";
+              -- end if;
+            when others =>
+              o_wr_addr <= (others => '0');
+              o_data <= (others => '0');
+              o_dv <= '0';
+              if int_wr_status = unsigned(apb_clk_limit) then
+                int_wr_status <= x"1";
+              else
+                int_wr_status <= int_wr_status + 1;
+              end if;
+
+          end case;
+
+          case int_rd_status is
+            when x"0" =>
+            int_rd_status <= x"1";
+            when x"1" =>
+              if ctrl_r.rd_req = '1' then --apb wr 2 mem
+                o_rd_addr <= ctrl_r.wr_addr;
+                int_rd_status <= x"2";
+              else
+                o_rd_addr <= (others => '0');
+              end if;
+              if int_rd_dv = '1' then
+                mon_r.rd_data <= structify(int_rd_data,mon_r.rd_data);
+                mon_r.rd_rdy <= '1';
+                int_rd_status <= x"2";
+              else
+                -- mon_r.rd_data <= structify((others => '0'),mon_r.rd_data);
+                mon_r.rd_rdy <= '0';
+              end if;
+            -- when x"2" =>
+            when others =>
+              if int_rd_status = unsigned(apb_clk_limit) then
+                int_rd_status <= x"1";
+
+              else
+                int_rd_status <= int_rd_status + 1;
+              end if;
+          end case;
+
+          if i_dv = '1' then
+            int_rd_data <= i_data;
+            int_rd_dv <= '1';
+          else
+            -- int_rd_data <= (others =>);
+            -- int_rd_dv <= '0';
+          end if;
+
+        end if;
+      end if;
+    end process MEM_CTRL_INT;
+   
+  end generate MEM_INT_4A17D;
+  
 
 end architecture beh;
 
