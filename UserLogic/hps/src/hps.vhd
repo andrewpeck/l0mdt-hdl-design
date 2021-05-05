@@ -147,22 +147,22 @@ begin
         g_STATION_RADIUS => g_STATION_RADIUS
         )
       port map(
-        clk       => clk,
-        rst       => int_rst,
+        clk           => clk,
+        rst           => int_rst,
         glob_en       => int_ena,
 
-        lsf_ctrl  => ctrl.lsf.lsf(heg_i),
-        lsf_mon   => mon.lsf.lsf(heg_i),
+        lsf_ctrl      => ctrl.lsf.lsf(heg_i),
+        lsf_mon       => mon.lsf.lsf(heg_i),
 
-        csf_ctrl  => ctrl.csf.csf(heg_i),
-        csf_mon   => mon.csf.csf(heg_i),
+        csf_ctrl      => ctrl.csf.csf(heg_i),
+        csf_mon       => mon.csf.csf(heg_i),
 
         -- to Segment finder
-        i_control_v  => heg2sf_ctrl_av(heg_i),
-        i_slc_data_v => heg2sfslc_av(heg_i),
-        i_mdt_data_v => heg2sfhit_av(heg_i),
+        i_control_v   => heg2sf_ctrl_av(heg_i),
+        i_slc_data_v  => heg2sfslc_av(heg_i),
+        i_mdt_data_v  => heg2sfhit_av(heg_i),
         --
-        o_sf_data_v  => o_sf2pt_av(heg_i)
+        o_sf_data_v   => o_sf2pt_av(heg_i)
         );
 
   end generate;
