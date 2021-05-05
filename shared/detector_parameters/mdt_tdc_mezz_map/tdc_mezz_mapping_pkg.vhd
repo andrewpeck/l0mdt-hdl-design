@@ -282,6 +282,7 @@ package tdc_mezz_mapping_pkg is
     23 => (0,4)
   );
 
+
   type hh_mdt_mezz_map_t is array (0 to 23) of integer;
   function get_tdc_tube_map(station : integer; multilayer : integer; t_nl : integer) return hh_mdt_mezz_map_t;
 
@@ -523,11 +524,11 @@ package body tdc_mezz_mapping_pkg is
       end loop;
     elsif station = 1 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 2 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 4 then
 
