@@ -46,7 +46,8 @@ package H2S_CTRL is
   function nullify(t: H2S_HPS_STATUS_MON_t) return H2S_HPS_STATUS_MON_t;
 
   type H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t is record
-    wr_data_0 : std_logic_vector(19-1 downto 0);
+    wr_data_0 : std_logic_vector(6-1 downto 0);
+    wr_data_1 : std_logic_vector(32-1 downto 0);
   end record H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
   function len(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return natural;
   function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
@@ -54,7 +55,8 @@ package H2S_CTRL is
   function nullify(t: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t) return H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
 
   type H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t is record
-    rd_data_0 : std_logic_vector(19-1 downto 0);
+    rd_data_0 : std_logic_vector(6-1 downto 0);
+    rd_data_1 : std_logic_vector(32-1 downto 0);
   end record H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
   function len(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t) return natural;
   function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
@@ -82,8 +84,8 @@ package H2S_CTRL is
     rd_req : std_logic;
     rd_ack : std_logic;
     flush_req : std_logic;
-    wr_addr : std_logic_vector(9-1 downto 0);
-    rd_addr : std_logic_vector(9-1 downto 0);
+    wr_addr : std_logic_vector(10-1 downto 0);
+    rd_addr : std_logic_vector(10-1 downto 0);
     wr_data : H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
   end record H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
   function len(x: H2S_HPS_MDT_TC_MDT_TC_CTRL_t) return natural;
@@ -691,6 +693,7 @@ package body H2S_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_data_0);
+    l := l + len(x.wr_data_1);
     return l;
   end function len;
   function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
@@ -699,8 +702,12 @@ package body H2S_CTRL is
   begin
     if t'ascending then
       y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+      left := left + len(x.wr_data_0);
+      y(left to left+len(x.wr_data_1)-1) := vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1));
     else
       y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+      left := left - len(x.wr_data_0);
+      y(left downto left-len(x.wr_data_1)+1) := vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1));
     end if;
     return y;
   end function vectorify;
@@ -710,8 +717,12 @@ package body H2S_CTRL is
   begin
     if x'ascending then
       y.wr_data_0 := structify(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
+      left := left + len(y.wr_data_0);
+      y.wr_data_1 := structify(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
     else
       y.wr_data_0 := structify(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
+      left := left - len(y.wr_data_0);
+      y.wr_data_1 := structify(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
     end if;
     return y;
   end function structify;
@@ -719,6 +730,7 @@ package body H2S_CTRL is
   variable y: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
   begin
     y.wr_data_0 := nullify(t.wr_data_0);
+    y.wr_data_1 := nullify(t.wr_data_1);
     return y;
   end function nullify;
 
@@ -726,6 +738,7 @@ package body H2S_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.rd_data_0);
+    l := l + len(x.rd_data_1);
     return l;
   end function len;
   function vectorify(x: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
@@ -734,8 +747,12 @@ package body H2S_CTRL is
   begin
     if t'ascending then
       y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
+      left := left + len(x.rd_data_0);
+      y(left to left+len(x.rd_data_1)-1) := vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1));
     else
       y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
+      left := left - len(x.rd_data_0);
+      y(left downto left-len(x.rd_data_1)+1) := vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1));
     end if;
     return y;
   end function vectorify;
@@ -745,8 +762,12 @@ package body H2S_CTRL is
   begin
     if x'ascending then
       y.rd_data_0 := structify(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
+      left := left + len(y.rd_data_0);
+      y.rd_data_1 := structify(x(left to left+len(y.rd_data_1)-1), y.rd_data_1);
     else
       y.rd_data_0 := structify(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
+      left := left - len(y.rd_data_0);
+      y.rd_data_1 := structify(x(left downto left-len(y.rd_data_1)+1), y.rd_data_1);
     end if;
     return y;
   end function structify;
@@ -754,6 +775,7 @@ package body H2S_CTRL is
   variable y: H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
   begin
     y.rd_data_0 := nullify(t.rd_data_0);
+    y.rd_data_1 := nullify(t.rd_data_1);
     return y;
   end function nullify;
 

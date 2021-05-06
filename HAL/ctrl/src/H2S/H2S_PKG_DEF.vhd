@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-05-02 23:06:55.013260.
+-- Created : 2021-05-05 15:35:40.918557.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -22,7 +22,8 @@ package H2S_CTRL_DEF is
                                                                        FLUSH_MEM_RESET => '1'
                                                                       );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t := (
-                                                                                                   wr_data_0 => (others => '0')
+                                                                                                   wr_data_0 => (others => '0'),
+                                                                                                   wr_data_1 => (others => '0')
                                                                                                   );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_CTRL_t := (
                                                                                    flush_req => '0',

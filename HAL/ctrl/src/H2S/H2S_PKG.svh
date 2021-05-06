@@ -28,11 +28,13 @@
   } H2S_HPS_STATUS_MON_t;
 
   typedef struct packed {
-    logic [19-1:0] wr_data_0;
+    logic [6-1:0] wr_data_0;
+    logic [32-1:0] wr_data_1;
   } H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t;
 
   typedef struct packed {
-    logic [19-1:0] rd_data_0;
+    logic [6-1:0] rd_data_0;
+    logic [32-1:0] rd_data_1;
   } H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t;
 
   typedef struct packed {
@@ -48,8 +50,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
-    logic [9-1:0] wr_addr;
-    logic [9-1:0] rd_addr;
+    logic [10-1:0] wr_addr;
+    logic [10-1:0] rd_addr;
     H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t   wr_data;
   } H2S_HPS_MDT_TC_MDT_TC_CTRL_t;
 

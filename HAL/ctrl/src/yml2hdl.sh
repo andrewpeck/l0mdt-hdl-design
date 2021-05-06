@@ -26,6 +26,7 @@ declare -a arr=(
   "MEM_INT_12A148D"
   "MEM_INT_4A17D"
   "MEM_INT_9A19D"
+  "MEM_INT_10A38D"
 )
 
 for ifile in "${arr[@]}"
@@ -55,6 +56,7 @@ do
       fi
     done < ${ifile}/${ifile}_map.vhd > ${ifile}/${ifile}_map_tmp.vhd
     mv ${ifile}/${ifile}_map_tmp.vhd ${ifile}/${ifile}_map.vhd
+    echo "INFO    : default lib added to map"
   fi
 done
 

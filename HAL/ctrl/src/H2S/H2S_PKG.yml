@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-05-02 23:06:55.013303.
+# Created : 2021-05-05 15:35:40.918726.
 config:
   basic_convert_functions : off
   packages:
@@ -31,11 +31,13 @@ hdl:
 
 
 - H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t:
-  - wr_data_0 : [ type: logic, length: 19 ]
+  - wr_data_0 : [ type: logic, length: 6 ]
+  - wr_data_1 : [ type: logic, length: 32 ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_rd_data_MON_t:
-  - rd_data_0 : [ type: logic, length: 19 ]
+  - rd_data_0 : [ type: logic, length: 6 ]
+  - rd_data_1 : [ type: logic, length: 32 ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_MON_t:
@@ -50,8 +52,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
-  - wr_addr : [ type: logic, length: 9 ]
-  - rd_addr : [ type: logic, length: 9 ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
   - wr_data : [ type: H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t ]
 
 - H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY: [array: 6, type: H2S_HPS_MDT_TC_MDT_TC_CTRL_t]
