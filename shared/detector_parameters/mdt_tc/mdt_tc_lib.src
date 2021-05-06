@@ -1,2 +1,2 @@
 shared/detector_parameters/mdt_tc/pkg/*.vhd
-shared/detector_parameters/mdt_tc/src/*.vhd
+# shared/detector_parameters/mdt_tc/src/*.vhd

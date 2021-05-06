@@ -450,7 +450,7 @@ package tdc_mezz_mapping_pkg is
   constant tdc_mid_out_accumulated : tdc_accumulated_tubes_t := (0,0,8,8,16,16,24,24,32,32,40,40,48,48,56,56,64,64);
   function get_tdc_accumulated_tubes(station : integer) return tdc_accumulated_tubes_t;
 
-
+  function get_num_tubes_layer_chamber(s , c : integer) return integer ;
   
 end package tdc_mezz_mapping_pkg;
 
@@ -555,6 +555,24 @@ package body tdc_mezz_mapping_pkg is
 
     end if;
     return out_mem;
+  end function;
+
+  function get_num_tubes_layer_chamber(s , c : integer) return integer is
+    variable y : integer;
+  begin
+    
+    if c = 0 then
+      y := ceil((num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c)/2.0)*6.0);
+    elsif c = 1 then
+      y := ceil((num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c)/2.0)*8.0);
+    elsif c = 2 then
+      y := ceil((num_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c)/2.0)*8.0);
+    elsif c = 4 then
+
+    else
+
+    end if;
+    return y;
   end function;
   
   
