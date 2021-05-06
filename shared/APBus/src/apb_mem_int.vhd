@@ -404,9 +404,9 @@ begin
    
   end generate MEM_INT_9A19D;
 
-  MEM_INT_9A19D: if g_XML_NODE_NAME = "MEM_INT_9A19D" generate
-    signal ctrl_r   : MEM_INT_9A19D_CTRL_t;
-    signal mon_r    : MEM_INT_9A19D_MON_t;
+  MEM_INT_10A38D: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
+    signal ctrl_r   : MEM_INT_10A38D_CTRL_t;
+    signal mon_r    : MEM_INT_10A38D_MON_t;
 
     -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
     -- signal mem_int_status : mem_int_status_type;
@@ -501,7 +501,7 @@ begin
       end if;
     end process MEM_CTRL_INT;
    
-  end generate MEM_INT_9A19D;
+  end generate MEM_INT_10A38D;
 
   MEM_INT_4A17D: if g_XML_NODE_NAME = "MEM_INT_4A17D" generate
     signal ctrl_r   : MEM_INT_4A17D_CTRL_t;

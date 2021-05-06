@@ -15,6 +15,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
@@ -562,11 +563,11 @@ package body tdc_mezz_mapping_pkg is
   begin
     
     if c = 0 then
-      y := ceil((num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c)/2.0)*6.0);
+      y := integer(ceil((real(num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
     elsif c = 1 then
-      y := ceil((num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c)/2.0)*8.0);
+      y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
     elsif c = 2 then
-      y := ceil((num_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c)/2.0)*8.0);
+      y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
     elsif c = 4 then
 
     else
