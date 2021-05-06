@@ -14,6 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -24,16 +25,18 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.tdc_mezz_mapping_pkg.all;
+use shared_lib.TC_B3A_pkg.all;
 
-library hp_lib;
-use hp_lib.hp_pkg.all;
-library heg_lib;
-use heg_lib.heg_pkg.all;
+-- library hp_lib;
+-- use hp_lib.hp_pkg.all;
+-- library heg_lib;
+-- use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
+
 library apbus_lib;
 
 entity hps_pc_mdt_tc is
@@ -51,6 +54,7 @@ entity hps_pc_mdt_tc is
     --
     i_layer           : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);  -- 5
     i_tube            : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0);   -- 9
+    i_dv              : in std_logic;
     --
     o_global_x        : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     o_global_z        : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
@@ -62,36 +66,60 @@ architecture beh of hps_pc_mdt_tc is
   
   -- signal ctrl_v : std_logic_vector(len(ctrl) - 1  downto 0);
   -- signal mon_v : std_logic_vector(len(mon) - 1  downto 0);
+  constant ADDR_WIDTH : integer := 10;
+  constant DATA_WIDTH : integer := 38;
+
   constant num_tubes_layer_chamber : integer := get_num_tubes_layer_chamber(g_STATION_RADIUS,g_CHAMBER);
-  -- function get_tc_mem_size(r,txl) return integer is
-  --   variable y  : integer;
-  -- begin
-    
-  -- end function;
+  constant csm_offset_mem : integer := get_csm_accumulated_tubes(g_STATION_RADIUS)(g_CHAMBER);
 
-  constant ADDR_WIDTH : integer := 9;
-  constant DATA_WIDTH : integer := 19;
+  type tcLUT_chamber_avt is array (0 to 1023) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  
-
-  type tcLUT_chamber_avt is array (0 to 1023) of unsigned((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
-
-  function init_TC_MEM(r , s : integer)return tcLUT_chamber_avt is
+  function init_TC_MEM(r , s , tube_o , tube_n: integer)return tcLUT_chamber_avt is
     variable y : tcLUT_chamber_avt;
+    variable index : unsigned(9 downto 0);
+    variable value : std_logic_vector(37 downto 0);
   begin
-    for i in 0 to 7 loop
+    for it in 0 to tube_n loop
       if r = 0 then
-        
-      elsif r = 1 or r = 2 then
-        
+        for il in 0 to 7 loop
+          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
+
+          value := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
+
+          y(to_integer(index)) := value;
+        end loop;
+      elsif r = 1 then
+        -- for il in 0 to 5 loop
+        --   y(to_integer(std_logic_vector(to_unsigned(il,3))&std_logic_vector(to_unsigned(it,7)))) <= 
+        --   (
+        --     std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        --     std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19))
+        --   );
+        -- end loop;
+      elsif r = 2 then
+        -- for il in 0 to 5 loop
+        --   y(to_integer(std_logic_vector(to_unsigned(il,3))&std_logic_vector(to_unsigned(it,7)))) <= 
+        --   (
+        --     std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        --     std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19))
+        --   );
+        -- end loop;
       end if;
     end loop;
     return y;
   end function;
 
-  signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID);
-  -- signal mem_z : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID);
+  signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,csm_offset_mem,num_tubes_layer_chamber);
 
+  signal local_tube : std_logic_vector(6 downto 0);
+  signal mem_index_std : std_logic_vector(9 downto 0);
+  signal mem_index_int : integer;
+
+  signal mem_out : unsigned((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
+
+  
+  -- APB signals
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
@@ -106,7 +134,7 @@ begin
 
   apb_mem_interface : entity apbus_lib.apb_mem_int
   generic map(
-    g_XML_NODE_NAME         => "MEM_INT_4A19D",
+    g_XML_NODE_NAME         => "MEM_INT_10A38D",
     g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH,
@@ -137,20 +165,24 @@ begin
     i_dv          => apb_dv_i
   );  
 
+  local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
+  mem_index_std <= std_logic_vector(i_layer(2 downto 0)) & local_tube(6 downto 0);
+  mem_index_int <= to_integer(unsigned(mem_index_std));
+
+
   DT2R : process(clk)
 
   begin
     if rising_edge(clk) then
       if rst= '1' then
-        o_time_tc <= (others => '0');
+        -- o_time_tc <= (others => '0');
         o_dv <= '0';
       else
         if(i_dv = '1') then
-          o_global_x <= mem_x(to_integer(i_chamber))((MDT_GLOBAL_AXI_LEN*2)-1 downto MDT_GLOBAL_AXI_LEN);
-          o_global_z <= mem_z(to_integer(i_chamber))(MDT_GLOBAL_AXI_LEN - 1 downto 0);
+          mem_out <= mem(mem_index_int);--to_integer(unsigned(mem_index)));
           o_dv <= '1';
         else
-          o_time_tc <= (others => '0');
+          -- o_time_tc <= (others => '0');
           o_dv <= '0';
         end if;
         if apb_dv_o = '1' then
@@ -164,5 +196,7 @@ begin
     end if ;
   end process;
 
+  o_global_x <= unsigned(mem_out((MDT_GLOBAL_AXI_LEN*2)-1 downto MDT_GLOBAL_AXI_LEN));
+  o_global_z <= unsigned(mem_out(MDT_GLOBAL_AXI_LEN - 1 downto 0));
   
 end architecture beh;

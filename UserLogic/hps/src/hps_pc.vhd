@@ -35,6 +35,7 @@ use ctrl_lib.H2S_CTRL.all;
 
 entity hps_pc is
   generic(
+    g_CHAMBER             : integer := 0;
     -- mdt type
     -- type mdt_type;
     g_SIM_nBUILD          : std_logic := '0';
@@ -105,6 +106,7 @@ begin
 
   T0 : entity hps_lib.hps_pc_b_t0
     generic map(
+      g_CHAMBER           => g_CHAMBER,
       g_STATION_RADIUS    => g_STATION_RADIUS
     )
     port map(
@@ -123,6 +125,7 @@ begin
 
   TC : entity hps_lib.hps_pc_mdt_tc
     generic map(
+      g_CHAMBER           => g_CHAMBER,
       g_STATION_RADIUS    => g_STATION_RADIUS
     )
     port map(
