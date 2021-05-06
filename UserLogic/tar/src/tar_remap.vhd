@@ -143,9 +143,9 @@ begin
               o_tar_hits_r.chamber_ieta <= csm_pl;
               o_tar_hits_r.layer        <= tdc_layer;
               -- chamber tube  position
-              o_tar_hits_r.tube         <= tdc_offset + tdc_tube;
+              -- o_tar_hits_r.tube         <= tdc_offset + tdc_tube;
               -- global tube position
-              -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+              o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
               o_tar_hits_r.time         <= full_time;
             else
               o_tar_hits_r.data_valid   <= '0';
