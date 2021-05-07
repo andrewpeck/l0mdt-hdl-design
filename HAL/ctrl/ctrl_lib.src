@@ -13,3 +13,9 @@ HAL/ctrl/src/*/*_map.vhd
 HAL/ctrl/src/UCM/UCM_PKG_DEF.vhd
 HAL/ctrl/src/MPL/MPL_PKG_DEF.vhd
 HAL/ctrl/src/H2S/H2S_PKG_DEF.vhd
+
+HAL/ctrl/src/H2S/MEM_INT_10A148D_PKG_DEF.vhd
+HAL/ctrl/src/H2S/MEM_INT_12A148D_PKG_DEF.vhd
+HAL/ctrl/src/H2S/MEM_INT_4A17D_PKG_DEF.vhd
+HAL/ctrl/src/H2S/MEM_INT_9A19D_PKG_DEF.vhd
+HAL/ctrl/src/H2S/MEM_INT_10A38D_PKG_DEF.vhd
