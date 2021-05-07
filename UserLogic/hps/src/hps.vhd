@@ -102,6 +102,7 @@ begin
           -- g_SIM_nBUILD        => g_SIM_nBUILD,
           -- parameters
           -- g_CHAMBER         => hp_i,
+          g_HPS_NUM_MDT_CH => g_HPS_NUM_MDT_CH,
           g_STATION_RADIUS  => g_STATION_RADIUS
         )
         port map(

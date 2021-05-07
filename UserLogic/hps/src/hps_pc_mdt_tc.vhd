@@ -88,14 +88,14 @@ architecture beh of hps_pc_mdt_tc is
           y(to_integer(index)) := value;
         end loop;
       elsif r = 1 then
-        for il in 0 to 7 loop
+        for il in 0 to 5 loop
           index := to_unsigned(il,3)  & to_unsigned(it,7) ;
           value := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
           y(to_integer(index)) := value;
         end loop;
       elsif r = 2 then
-        for il in 0 to 7 loop
+        for il in 0 to 5 loop
           index := to_unsigned(il,3)  & to_unsigned(it,7) ;
           value := std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
