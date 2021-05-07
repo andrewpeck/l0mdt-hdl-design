@@ -93,31 +93,32 @@ begin
 
   );
 
-  pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
-    pc_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(hp_i) = '1' generate
-      PC : entity hps_lib.hps_pc
+  -- pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
+  --   pc_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(hp_i) = '1' generate
+      PC : entity hps_lib.hps_pc_top
         generic map(
           -- mdt type
           -- mdt_type            => mdt_polmux_data_rvt,
           -- g_SIM_nBUILD        => g_SIM_nBUILD,
           -- parameters
-          g_STATION_RADIUS => g_STATION_RADIUS
+          -- g_CHAMBER         => hp_i,
+          g_STATION_RADIUS  => g_STATION_RADIUS
         )
         port map(
           clk         => clk,
           rst         => int_rst,
           ena         => int_ena,
           --
-          i_ctrl_tc   => ctrl.MDT_TC.MDT_TC(hp_i),
-          o_mon_tc    => mon.MDT_TC.MDT_TC(hp_i),
-          i_ctrl_t0   => ctrl.MDT_T0.MDT_T0(hp_i),
-          o_mon_t0    => mon.MDT_T0.MDT_T0(hp_i),
+          i_ctrl_tc   => ctrl.MDT_TC.MDT_TC,--(hp_i),
+          o_mon_tc    => mon.MDT_TC.MDT_TC,--(hp_i),
+          i_ctrl_t0   => ctrl.MDT_T0.MDT_T0,--(hp_i),
+          o_mon_t0    => mon.MDT_T0.MDT_T0,--(hp_i),
           --
-          i_mdt_tar_v       => i_mdt_tar_av(hp_i),
-          o_mdt_full_data_v => mdt_full_data_av(hp_i)
+          i_mdt_tar_v       => i_mdt_tar_av,--(hp_i),
+          o_mdt_full_data_v => mdt_full_data_av--(hp_i)
         );
-    end generate;
-  end generate;
+  --   end generate;
+  -- end generate;
 
   heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
     HEG : entity heg_lib.heg

@@ -39,6 +39,7 @@ library apbus_lib;
 entity hps_pc_b_t0 is
   generic(
     -- parameters
+    g_CHAMBER           : integer := 0;
     g_STATION_RADIUS    : integer := 0  --station
   );
   port (

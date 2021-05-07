@@ -101,7 +101,7 @@ begin
 
   i_mdt_tar_r  <= structify(i_mdt_tar_v);
 
-  mdt_tar_data(0) <= structify(i_mdt_tar_v);
+  -- mdt_tar_data(0) <= structify(i_mdt_tar_v);
   o_mdt_full_data_v <= vectorify(mdt_full_data_r);
 
   T0 : entity hps_lib.hps_pc_b_t0
@@ -117,8 +117,8 @@ begin
       ctrl_v                => t0_ctrl_v,
       mon_v                 => t0_mon_v,
       --
-      i_chamber           => mdt_tar_data(0).chamber_ieta,
-      i_dv                => mdt_tar_data(0).data_valid,
+      i_chamber           => i_mdt_tar_r.chamber_ieta,
+      i_dv                => i_mdt_tar_r.data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
     );
@@ -138,6 +138,7 @@ begin
       --
       i_layer             => i_mdt_tar_r.layer,
       i_tube              => i_mdt_tar_r.tube,
+      i_dv                => i_mdt_tar_r.data_valid,
       --
       o_global_x          => global_x,
       o_global_z          => global_z,
@@ -176,7 +177,7 @@ begin
 
 
 
-  dv_pl(0) <= mdt_tar_data(0).data_valid;
+  dv_pl(0) <= i_mdt_tar_r.data_valid;
 
 
   COORD : process(clk)

@@ -83,28 +83,24 @@ architecture beh of hps_pc_mdt_tc is
       if r = 0 then
         for il in 0 to 7 loop
           index := to_unsigned(il,3)  & to_unsigned(it,7) ;
-
           value := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
-
           y(to_integer(index)) := value;
         end loop;
       elsif r = 1 then
-        -- for il in 0 to 5 loop
-        --   y(to_integer(std_logic_vector(to_unsigned(il,3))&std_logic_vector(to_unsigned(it,7)))) <= 
-        --   (
-        --     std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
-        --     std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19))
-        --   );
-        -- end loop;
+        for il in 0 to 7 loop
+          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
+          value := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
+          y(to_integer(index)) := value;
+        end loop;
       elsif r = 2 then
-        -- for il in 0 to 5 loop
-        --   y(to_integer(std_logic_vector(to_unsigned(il,3))&std_logic_vector(to_unsigned(it,7)))) <= 
-        --   (
-        --     std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
-        --     std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19))
-        --   );
-        -- end loop;
+        for il in 0 to 7 loop
+          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
+          value := std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
+          y(to_integer(index)) := value;
+        end loop;
       end if;
     end loop;
     return y;
@@ -114,9 +110,9 @@ architecture beh of hps_pc_mdt_tc is
 
   signal local_tube : std_logic_vector(6 downto 0);
   signal mem_index_std : std_logic_vector(9 downto 0);
-  signal mem_index_int : integer;
+  signal mem_index_int : integer range 0 to 1023;
 
-  signal mem_out : unsigned((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
+  signal mem_out : std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
   
   -- APB signals
@@ -167,6 +163,8 @@ begin
 
   local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
   mem_index_std <= std_logic_vector(i_layer(2 downto 0)) & local_tube(6 downto 0);
+  -- mem_index_std(9 downto 7) <= std_logic_vector(i_layer(2 downto 0));
+  -- mem_index_std(6 downto 0) <= local_tube(6 downto 0);
   mem_index_int <= to_integer(unsigned(mem_index_std));
 
 
