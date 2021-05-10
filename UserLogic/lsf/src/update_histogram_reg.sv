@@ -12,34 +12,35 @@
 //--------------------------------------------------------------------------------
 `timescale 1ns/1ps
 module update_histogram_reg #(
-			      RBINS=128
+			      parameter RBINS=128,
+			      parameter RBIN_WIDTH = 8 //(including sign)
 			      )
   (
-        input 		   clk,
-        input 		   rst_n,
-      	input logic [7:0]  r_bin_V_TDATA,
-	input logic 	   r_bin_V_TVALID,
-	output logic 	   r_bin_V_TREADY,
-	input logic 	   enable_V,
-	output logic [6:0] local_max_rbin,
-	output logic [3:0] local_max_count,
-	output logic 	   local_max_vld,
-	input logic 	   reset_rbins
+        input 			      clk,
+        input 			      rst_n,
+	input logic [RBIN_WIDTH-1:0]  r_bin_V_TDATA,
+	input logic 		      r_bin_V_TVALID,
+	output logic 		      r_bin_V_TREADY,
+	input logic 		      enable_V,
+	output logic [RBIN_WIDTH-2:0] local_max_rbin,
+	output logic [3:0] 	      local_max_count,
+	output logic 		      local_max_vld,
+	input logic 		      reset_rbins
 );
 
 
 
    logic [3:0] 		   r_val_V_TDATA;
    logic 		   r_val_V_TVALID;
-   logic [7:0] 		   r_bin_out_TDATA;
+   logic [RBIN_WIDTH-1:0]  r_bin_out_TDATA;
    logic 		   r_bin_out_TVALID;
-   logic [7:0] 		   r_bin_V_TDATA_d;
+   logic [RBIN_WIDTH-1:0]  r_bin_V_TDATA_d;
 
 
    logic [3:0] 		   rbin[RBINS];
    logic [3:0] 		   bin_val;
 
-   logic [$clog2(RBINS)-1:0] rbin_idx;
+   logic [RBIN_WIDTH-1:0]  rbin_idx;
    logic 		   vld_bin;
 
 
@@ -48,7 +49,7 @@ module update_histogram_reg #(
    assign r_bin_V_TREADY  = 1;
    assign bin_val         = rbin[rbin_idx] + 1;
 
-`define RBIN_128
+//`define RBIN_128
 
 
    always @ (posedge clk)
@@ -74,6 +75,9 @@ module update_histogram_reg #(
 
 	     if(r_bin_V_TVALID)
 	       begin
+		  rbin_idx <= r_bin_V_TDATA[RBIN_WIDTH-2:0];
+		  vld_bin  <= ~r_bin_V_TDATA[RBIN_WIDTH-1];
+		  /*
 `ifdef RBIN_128
 		  rbin_idx <= r_bin_V_TDATA[6:0];
 		  vld_bin  <= ~r_bin_V_TDATA[7];
@@ -84,8 +88,14 @@ module update_histogram_reg #(
 `endif
 	       end else begin// if (r_bin_V_TVALID)
 		  vld_bin <= 0;
-
+		   */
 	       end
+
+	     else
+	       begin
+		  vld_bin             <= 0;
+	       end
+
 	     if(vld_bin)
 	       begin
 		  rbin[rbin_idx]      <= bin_val; //rbin[rbin_idx] + 1;
@@ -97,7 +107,6 @@ module update_histogram_reg #(
 	       begin
 		  r_bin_out_TVALID    <= 1'b0;
 	       end
-
 	  end // if (enable_V)
 
 

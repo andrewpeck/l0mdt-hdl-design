@@ -20,17 +20,22 @@
 `define AESL_DEPTH_hit_extraction_roi_V 1
 
 `define AESL_DEPTH_histogram_bins_reset_V 1
-//`define THETA_BIN_128
-`define THETA_BIN_64
+//`define THETA_RBIN_128
+//`define THETA_BIN_64_RBIN_128
+`define THETA_RBIN_64
 
-`ifdef THETA_BIN_128
+`ifdef THETA_RBIN_128
  `define AUTOTB_TVOUT_le_output_V  "./tv_theta_bin_128/barrel/cdatafile/c.generate_input_testvectors.autotvin_LE_output_V.dat"
  `define AUTOTB_TVIN_mdt_hit_V  "./tv_theta_bin_128/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_hps_sf_V.dat"
  `define AUTOTB_TVIN_hit_extraction_roi_V  "./tv_theta_bin_128/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_slcproc_sf_V.dat"
-`else
+`elsif THETA_BIN_64_RBIN_128
  `define AUTOTB_TVOUT_le_output_V  "./tv_theta_bin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_LE_output_V.dat"
  `define AUTOTB_TVIN_mdt_hit_V  "./tv_theta_bin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_hps_sf_V.dat"
  `define AUTOTB_TVIN_hit_extraction_roi_V  "./tv_theta_bin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_slcproc_sf_V.dat"
+`elsif THETA_RBIN_64
+ `define AUTOTB_TVOUT_le_output_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_output_testvectors.autotvin_LE_output_V.dat"
+ `define AUTOTB_TVIN_mdt_hit_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_hps_sf_V.dat"
+ `define AUTOTB_TVIN_hit_extraction_roi_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_slcproc_sf_V.dat"
 `endif
 
 //`define AUTOTB_TVOUT_le_tb_output_V  "./tv/barrel/rtldatafile/rtl.get_legendre_segment_barrel.autotvout_LE_tb_output_V.dat"
@@ -80,10 +85,12 @@ endtask
 
    initial
      begin
-`ifdef THETA_BIN_128
+`ifdef THETA_RBIN_128
 	$readmemh("tv_theta_bin_128/HitsPerRoi.txt",total_hits_in_Roi);
-`else
+`elsif THETA_BIN_64_RBIN_128
 	$readmemh("tv_theta_bin_64/HitsPerRoi.txt",total_hits_in_Roi);
+`else
+	$readmemh("tv_theta_rbin_64/HitsPerRoi.txt",total_hits_in_Roi);
 `endif
 //	$display("H0 = 0x%x\n",total_hits_in_Roi[0]);
      end

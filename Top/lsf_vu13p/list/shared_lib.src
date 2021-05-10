@@ -1,0 +1,9 @@
+shared/config/config_pkg.vhd
+shared/types/common_ieee_pkg.vhd
+dataformats/l0mdt_constants_pkg.vhd
+dataformats/l0mdt_dataformats_pkg.vhd
+shared/types/common_constants_pkg.vhd
+shared/types/common_types_pkg.vhd
+dataformats/l0mdt_buses_constants.svh
+shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
+shared/detector_parameters/detector_param_pkg.vhd
