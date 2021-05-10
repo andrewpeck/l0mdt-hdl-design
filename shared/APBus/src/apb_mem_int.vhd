@@ -110,9 +110,6 @@ begin
   MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A148D" generate
     signal ctrl_r   : MEM_INT_12A148D_CTRL_t;
     signal mon_r    : MEM_INT_12A148D_MON_t;
-
-    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
-    -- signal mem_int_status : mem_int_status_type;
   begin
 
     ctrl_r <= structify(ctrl,ctrl_r);
@@ -128,6 +125,9 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
+
+          mon_r <= nullify(mon_r);
+
         else
 
           case int_wr_status is
@@ -209,9 +209,6 @@ begin
   MEM_INT_10A148D: if g_XML_NODE_NAME = "MEM_INT_10A148D" generate
     signal ctrl_r   : MEM_INT_10A148D_CTRL_t;
     signal mon_r    : MEM_INT_10A148D_MON_t;
-
-    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
-    -- signal mem_int_status : mem_int_status_type;
   begin
 
     ctrl_r <= structify(ctrl,ctrl_r);
@@ -227,6 +224,9 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
+
+          mon_r <= nullify(mon_r);
+
         else
 
           case int_wr_status is
@@ -308,9 +308,6 @@ begin
   MEM_INT_9A19D: if g_XML_NODE_NAME = "MEM_INT_9A19D" generate
     signal ctrl_r   : MEM_INT_9A19D_CTRL_t;
     signal mon_r    : MEM_INT_9A19D_MON_t;
-
-    -- type mem_int_status_type is (SYNC,IDLE,WR_REQ,RD_REQ,RD_WR_REQ);
-    -- signal mem_int_status : mem_int_status_type;
   begin
 
     ctrl_r <= structify(ctrl,ctrl_r);
@@ -326,6 +323,8 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
+
+          mon_r <= nullify(mon_r);
         else
 
           case int_wr_status is
@@ -425,6 +424,9 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
+
+          mon_r <= nullify(mon_r);
+
         else
 
           case int_wr_status is
@@ -524,6 +526,9 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
+
+          mon_r <= nullify(mon_r);
+
         else
 
           case int_wr_status is

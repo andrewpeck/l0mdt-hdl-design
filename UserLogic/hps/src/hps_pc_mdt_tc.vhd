@@ -79,13 +79,14 @@ architecture beh of hps_pc_mdt_tc is
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
   begin
-    for it in 0 to tube_n loop
+    for it in 0 to tube_n - 1 loop
       if r = 0 then
         for il in 0 to 7 loop
           index := to_unsigned(il,3)  & to_unsigned(it,7) ;
           value := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
           y(to_integer(index)) := value;
+          -- y(to_integer(index)) := std_logic_vector(to_unsigned(to_integer(index),38));
         end loop;
       elsif r = 1 then
         for il in 0 to 5 loop
@@ -175,6 +176,7 @@ begin
       if rst= '1' then
         -- o_time_tc <= (others => '0');
         o_dv <= '0';
+        mem_out <= (others => '0');
       else
         if(i_dv = '1') then
           mem_out <= mem(mem_index_int);--to_integer(unsigned(mem_index)));
