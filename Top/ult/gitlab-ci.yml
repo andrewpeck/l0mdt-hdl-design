@@ -5,6 +5,7 @@ GEN:ult:
       extends: .vars
       PROJECT_NAME: ult
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      HOG_CHECK_SYNTAX : 1
 
 # SIM:ult:
 #     extends: .simulate_project
