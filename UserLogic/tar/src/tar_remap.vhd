@@ -138,7 +138,7 @@ begin
 
 
 
-            if dv_pl(0) = '1' then
+            if dv_pl(1) = '1' then
               o_tar_hits_r.data_valid   <= '1';
               o_tar_hits_r.chamber_ieta <= csm_pl;
               o_tar_hits_r.layer        <= tdc_layer;
