@@ -5,7 +5,7 @@ GEN:csf.1:
       extends: .vars
       PROJECT_NAME: csf.1
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      HOG_CHECK_SYNTAX : 1
+      
     tags:
       - normal-ops
       - hog

@@ -1,3 +1,5 @@
+variables:
+  HOG_CHECK_SYNTAX : 1
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'

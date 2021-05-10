@@ -4,7 +4,7 @@ GEN:daq:
       extends: .vars
       PROJECT_NAME: daq
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      HOG_CHECK_SYNTAX : 1
+      
     tags:
       - normal-ops
       - hog
