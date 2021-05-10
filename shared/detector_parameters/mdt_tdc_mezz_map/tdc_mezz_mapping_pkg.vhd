@@ -451,7 +451,7 @@ package tdc_mezz_mapping_pkg is
   constant tdc_mid_out_accumulated : tdc_accumulated_tubes_t := (0,0,8,8,16,16,24,24,32,32,40,40,48,48,56,56,64,64);
   function get_tdc_accumulated_tubes(station : integer) return tdc_accumulated_tubes_t;
 
-  function get_num_tubes_layer_chamber(s , c : integer) return integer ;
+  function get_num_tubes_layer_chamber(sr , c : integer) return integer ;
   
 end package tdc_mezz_mapping_pkg;
 
@@ -521,15 +521,15 @@ package body tdc_mezz_mapping_pkg is
   begin
     if station = 0 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 3;
+        out_mem(ch_i) := accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 3;
       end loop;
     elsif station = 1 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 2 then
       for ch_i in 0 to MAX_NUM_CHAMBER_POS -1 loop
-        out_mem(ch_i) := accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(ch_i) * 4;
+        out_mem(ch_i) := accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(ch_i) * 4;
         end loop;
     elsif station = 4 then
 
@@ -558,17 +558,17 @@ package body tdc_mezz_mapping_pkg is
     return out_mem;
   end function;
 
-  function get_num_tubes_layer_chamber(s , c : integer) return integer is
+  function get_num_tubes_layer_chamber(sr , c : integer) return integer is
     variable y : integer;
   begin
     
-    if c = 0 then
-      y := integer(ceil((real(num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
-    elsif c = 1 then
-      y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
-    elsif c = 2 then
-      y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID)(c_SECTOR_SIDE)(c))/2.0)*6.0));
-    elsif c = 4 then
+    if sr = 0 then
+      y := integer(ceil((real(num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
+    elsif sr = 1 then
+      y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
+    elsif sr = 2 then
+      y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
+    elsif sr = 4 then
 
     else
 
