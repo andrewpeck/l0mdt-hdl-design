@@ -10,6 +10,7 @@ entity clock_strobe is
 end clock_strobe;
 
 architecture behavioral of clock_strobe is
+
   signal reg     : std_logic_vector (2 downto 0) := "000";
   signal reg_dly : std_logic_vector (2 downto 0) := "000";
 
@@ -31,19 +32,22 @@ begin
   --------------------------------------------------------------------------------
 
   -- Create a 1 of n high signal synced to the slow clock, e.g.
-  --            ________________              _____________
-  -- clk40    __|              |______________|
-  --            _______________________________
-  -- r        __|                             |_____________
-  --                     _______________________________
-  -- r_dly    ___________|                             |_____________
-  --            __________                    __________
-  -- valid    __|        |____________________|        |______
+  --
+  --            ┌───────┐       ┌───────┐       ┌───────┐       ┌───
+  -- clk40     ─┘       └───────┘       └───────┘       └───────┘
+  --            ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐ ┌─┐
+  -- clk200    ─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─┘ └─
+  --            ┌───────────────┐               ┌───────────────┐
+  -- reg       ─┘               └───────────────┘               └───
+  --                ┌───────────────┐               ┌───────────────┐
+  -- reg_dly   ─────┘               └───────────────┘               └───
+  --            ┌───┐           ┌───┐           ┌───┐           ┌───┐
+  -- valid     ─┘   └───────────┘   └───────────┘   └───────────┘   └──
 
   process (slow_clk_i)
   begin
     if (rising_edge(slow_clk_i)) then
-      reg <= not reg after 0.1 ns; -- need delay in simulation to prevent race condition
+      reg <= not reg after 0.1 ns;      -- need delay in simulation to prevent race condition
     end if;
   end process;
 

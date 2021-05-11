@@ -56,6 +56,7 @@ entity top_l0mdt is
     );
   port (
 
+    -- 40MHz clock
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
 

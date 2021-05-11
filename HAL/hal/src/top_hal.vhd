@@ -249,34 +249,35 @@ begin  -- architecture behavioral
     port map (
       --
       reset_i          => core_ctrl.clocking.reset_mmcm,
-      select_felix_clk => core_ctrl.clocking.select_felix_clk,
-
-      -- synchronization
-      felix_valid_i  => felix_valid,
-      felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      sync_i         => '0',
-      out_of_sync_o  => open,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
       clock_100m_i_p => clock_100m_i_p,
       clock_100m_i_n => clock_100m_i_n,
+
+      -- 40MHz clock from Si synth
       clock_i_p      => clock_i_p,
       clock_i_n      => clock_i_n,
-
-      -- clock output to pins
-      lhc_refclk_o_p => lhc_refclk_o_p,
-      lhc_refclk_o_n => lhc_refclk_o_n,
 
       -- system clocks
       clocks_o => clocks,
 
-      -- bx strobes
-      strobe_320_o      => strobe_320,
-      strobe_pipeline_o => strobe_pipeline,
-
       -- mmcm status
       locked_o => clocks.locked
+      );
+
+  clock_strobe_1: entity work.clock_strobe
+    port map (
+      fast_clk_i => clocks.clock320,
+      slow_clk_i => clocks.clock40,
+      strobe_o   => strobe_320
+      );
+
+  clock_strobe_2: entity work.clock_strobe
+    port map (
+      fast_clk_i => clocks.clock_pipeline,
+      slow_clk_i => clocks.clock40,
+      strobe_o   => strobe_pipeline
       );
 
   rst_bit_synchronizer : xpm_cdc_sync_rst
