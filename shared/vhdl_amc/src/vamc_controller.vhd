@@ -352,6 +352,7 @@ begin
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 1,
           g_MEM_WIDTH       => DATA_WIDTH,
           g_MEM_DEPTH       => DATA_DEPTH
         )
