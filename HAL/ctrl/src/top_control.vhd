@@ -211,10 +211,9 @@ begin
     port map (
 
       -- axi clock and reset
-      axi_clk   => axi_clk,
-      clk40     => clk40,
-      --clkpipe      => clkpipe,
-      axi_rst_n => axi_reset_n,
+      axi_clk      => axi_clk,
+      clk40        => clk40,
+      axi_rst_n(0) => axi_reset_n,
 
       -- system clock and reset
       clk50mhz => clk50mhz,
@@ -225,10 +224,10 @@ begin
       --------------------------------------------------------------------------------
 
       -- physical link
-      k_c2clink_phy_rx_rxn       => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
-      k_c2clink_phy_rx_rxp       => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
-      k_c2clink_phy_tx_txn       => c2c_txn,      -- k_c2clink_phy_tx_txn,
-      k_c2clink_phy_tx_txp       => c2c_txp,      -- k_c2clink_phy_tx_txp,
+      k_c2clink_phy_rx_rxn(0)    => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
+      k_c2clink_phy_rx_rxp(0)    => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
+      k_c2clink_phy_tx_txn(0)    => c2c_txn,      -- k_c2clink_phy_tx_txn,
+      k_c2clink_phy_tx_txp(0)    => c2c_txp,      -- k_c2clink_phy_tx_txp,
       k_c2clink_phy_refclk_clk_n => c2c_refclkn,  -- k_c2clink_phy_refclk_clk_n,
       k_c2clink_phy_refclk_clk_p => c2c_refclkp,  -- k_c2clink_phy_refclk_clk_p,
 

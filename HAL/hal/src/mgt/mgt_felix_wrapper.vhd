@@ -5,7 +5,6 @@ use ieee.numeric_std.all;
 
 library xil_defaultlib;
 
-library work;
 use work.mgt_pkg.all;
 use work.board_pkg.all;
 use work.board_pkg_common.all;

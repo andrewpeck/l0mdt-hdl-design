@@ -14,15 +14,13 @@ set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
 set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
 set BD_SUFFIX $fpga_shortname
 
-#source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
-
-#file copy ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cSlave/hdl/c2cSlave_wrapper.vhd ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cslave_pkg_tmp.vhd
+source -notrace ${C2C_PATH}/createC2CSlaveInterconnect.tcl
 
 set bd_design_name "c2cSlave"
 make_wrapper -files [get_files ${bd_design_name}.bd] -top -force
 
-# https://askubuntu.com/questions/962551/extract-the-content-from-a-file-between-two-match-patterns-extract-only-html-fr
 set wrapper_file [file normalize ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/hdl/c2cSlave_wrapper.vhd]
+
 set re "/^\\s*component c2cSlave/,/end component/p"
 set slave_component [exec sed -ne $re  ${wrapper_file}]
 

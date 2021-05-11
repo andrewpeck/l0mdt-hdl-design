@@ -1,5 +1,4 @@
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
@@ -10,7 +9,6 @@ use unisim.vcomponents.all;
 library xpm;
 use xpm.vcomponents.all;
 
-library work;
 use work.system_types_pkg.all;
 use work.constants_pkg.all;
 use work.lpgbt_pkg.all;

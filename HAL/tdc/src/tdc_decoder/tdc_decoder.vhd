@@ -1,9 +1,3 @@
---TODO: need to simulate this
---
---library hal;
-library work;
-use work.all;
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;

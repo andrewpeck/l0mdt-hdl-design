@@ -102,6 +102,11 @@ architecture behavioral of csm is
 
   signal enc_o : std_logic := '0';
 
+  signal sca0_up_aux, sca1_up_aux, sca2_up_aux : std_logic_vector (7 downto 0);
+
+  signal sca0_down_aux, sca1_down_aux, sca2_down_aux : std_logic_vector (7 downto 0);
+
+
 begin
 
   dl_valid : for I in 0 to g_NUM_DOWNLINKS-1 generate
@@ -113,6 +118,14 @@ begin
   -- the HDLC data streams idle to 11111
   -- if we AND the individual ic/ec data with a broadcast IC/ec data then the output
   -- datastream will correctly mux between the local and broadcast datastreams
+
+  sca0_up_aux <= uplink_data(0).data(8*(CSM_SCA0_UP_AUX+1)-1 downto 8*(CSM_SCA0_UP_AUX));
+  sca1_up_aux <= uplink_data(0).data(8*(CSM_SCA1_UP_AUX+1)-1 downto 8*(CSM_SCA1_UP_AUX));
+  sca2_up_aux <= uplink_data(0).data(8*(CSM_SCA2_UP_AUX+1)-1 downto 8*(CSM_SCA2_UP_AUX));
+
+  sca0_down_aux <= downlink_data(0).data(2*(CSM_SCA0_DOWN_AUX+1)-1 downto 2*(CSM_SCA0_DOWN_AUX));
+  sca1_down_aux <= downlink_data(0).data(2*(CSM_SCA1_DOWN_AUX+1)-1 downto 2*(CSM_SCA1_DOWN_AUX));
+  sca2_down_aux <= downlink_data(0).data(2*(CSM_SCA2_DOWN_AUX+1)-1 downto 2*(CSM_SCA2_DOWN_AUX));
 
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
     generic map (g_SCAS_PER_LPGBT => 3)
@@ -130,16 +143,16 @@ begin
       ec_data_i => uplink_data(0).ec,
 
       -- pick out 2 bits (dumb 320 to 80 conversion)... TODO: can take the majority vote?
-      sca0_data_i => uplink_data(0).data(CSM_SCA0_UP_AUX_RANGE)(6) & uplink_data(0).data(CSM_SCA0_UP_AUX_RANGE)(2),
-      sca1_data_i => uplink_data(0).data(CSM_SCA1_UP_AUX_RANGE)(6) & uplink_data(0).data(CSM_SCA1_UP_AUX_RANGE)(2),
-      sca2_data_i => uplink_data(0).data(CSM_SCA2_UP_AUX_RANGE)(6) & uplink_data(0).data(CSM_SCA2_UP_AUX_RANGE)(2),
+      sca0_data_i => sca0_up_aux(6) & sca0_up_aux(2),
+      sca1_data_i => sca0_up_aux(6) & sca0_up_aux(2),
+      sca2_data_i => sca0_up_aux(6) & sca0_up_aux(2),
 
       -- to lpgbt downlink
       ic_data_o   => downlink_data(0).ic,
       ec_data_o   => downlink_data(0).ec,
-      sca0_data_o => downlink_data(0).data(CSM_SCA0_DOWN_AUX_RANGE),
-      sca1_data_o => downlink_data(0).data(CSM_SCA1_DOWN_AUX_RANGE),
-      sca2_data_o => downlink_data(0).data(CSM_SCA2_DOWN_AUX_RANGE)
+      sca0_data_o => sca0_down_aux,
+      sca1_data_o => sca1_down_aux,
+      sca2_data_o => sca2_down_aux
       );
 
   --------------------------------------------------------------------------------
