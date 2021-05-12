@@ -118,7 +118,7 @@ begin
             g_MEMORY_TYPE       => "ultra",
             g_DATA_WIDTH        => i_inn_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
-            g_PIPELINE_TYPE     => "mpcvmem",
+            g_PIPELINE_TYPE     => "SDPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_inn_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -189,7 +189,7 @@ begin
             g_MEMORY_TYPE       => "ultra",
             g_DATA_WIDTH        => i_mid_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
-            g_PIPELINE_TYPE     => "mpcvmem",
+            g_PIPELINE_TYPE     => "SDPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_mid_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -258,7 +258,7 @@ begin
             g_MEMORY_TYPE       => "ultra",
             g_DATA_WIDTH        => i_out_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
-            g_PIPELINE_TYPE     => "mpcvmem",
+            g_PIPELINE_TYPE     => "SDPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_out_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -327,7 +327,7 @@ begin
             g_MEMORY_TYPE       => "ultra",
             g_DATA_WIDTH        => i_ext_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
-            g_PIPELINE_TYPE     => "mpcvmem",
+            g_PIPELINE_TYPE     => "SDPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_ext_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus

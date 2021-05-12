@@ -228,47 +228,6 @@ begin
           apb_dv_i            <= mem_dv_o_b(sel_i)    when int_apb_sel(sel_i) = '1' else '0';
         end generate SIG_SEL;
 
-        -- sig_assig: process(all)
-        -- begin
-        --   -- general input
-        --   for sig_i in g_PARALLEL_MEM downto 0 loop
-        --     -- mem_data_i_a(sig_i) <= i_data;
-        --     -- mem_dv_i_a(sig_i) <= i_dv;
-        --   end loop;
-        --   -- apb
-        --   for sel_i in g_PARALLEL_MEM downto 0 loop
-            
-        --     if int_apb_sel(sel_i) = '1' then
-        --       mem_data_i_a(sel_i) <= apb_data_o;
-        --       mem_dv_i_a(sel_i) <= apb_dv_o;
-        --       mem_addr_i_a(sel_i) <= apb_wr_addr_o;
-        --       mem_addr_i_b(sel_i) <= apb_rd_addr_o;
-        --       apb_data_i <= mem_data_o_b(sel_i);
-        --       apb_dv_i <= mem_dv_o_b(sel_i);
-        --     else
-        --       mem_addr_i_a(sel_i) <= (others => '0');
-        --       mem_addr_i_b(sel_i) <= (others => '0');
-        --       mem_data_i_a(sel_i) <= i_data;
-        --       mem_dv_i_a(sel_i) <= i_dv;
-        --     end if;
-
-        --     -- if sel_i = mem_apb_sel then
-        --     --   mem_addr_i_b(mem_apb_sel) <= apb_rd_addr_o;
-        --     --   mem_data_i_b(mem_apb_sel) <= apb_data_o;
-        --     --   mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
-        --     --   apb_data_i <= mem_data_o_b(mem_apb_sel);
-        --     --   apb_dv_i <= mem_dv_o_b(mem_apb_sel);
-        --     -- else
-        --     --   mem_addr_i_b(mem_apb_sel) <= (others => '0');
-        --     --   mem_data_i_b(mem_apb_sel) <= (others => '0');
-        --     --   mem_dv_i_b(mem_apb_sel) <= '0';
-        --     --   apb_data_i <= (others => '0');
-        --     --   apb_dv_i <= '0';
-        --     -- end if;
-        --   end loop;
-        -- end process sig_assig;
-
-
         MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
           -- DC4_GEN: if condition generate
           -- end generate DC4_GEN;
@@ -276,17 +235,6 @@ begin
           constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES - 2;
   
           begin
-
-          signal_ctrl: process(clk)
-          begin
-            if rising_edge(clk) then
-              if rst = '1' then
-
-              else
-
-              end if;
-            end if;
-          end process signal_ctrl;
 
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
             mpcv_mem : entity mpcvmem_lib.mpcvmem
@@ -297,7 +245,7 @@ begin
               g_SECOND_PORT => "monitor",
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-              g_OUT_PIPELINE => 2,
+              g_OUT_PIPELINE    => 2,
               g_MEM_WIDTH     => DATA_WIDTH,
               g_MEM_DEPTH     => DATA_DEPTH
             )
@@ -339,6 +287,7 @@ begin
   -- SINGLE MEMORY NO MONITORING
   -----------------------------------------------
   APB_INT_DIS: if not g_APBUS_ENABLED generate
+
     MODE_MEM: if g_MEMORY_MODE = "pipeline" generate
       MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
         -- DC4_GEN: if condition generate   
@@ -352,7 +301,7 @@ begin
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-          g_OUT_PIPELINE    => 1,
+          g_OUT_PIPELINE    => 5,
           g_MEM_WIDTH       => DATA_WIDTH,
           g_MEM_DEPTH       => DATA_DEPTH
         )
@@ -367,7 +316,35 @@ begin
           o_dv_out_b    => o_dv    
         );
       end generate MPCVMEM_GEN;
+      SDPM_GEN: if g_PIPELINE_TYPE = "SDPM" generate
+          constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+        begin  
+        mpcvmem : entity mpcvmem_lib.mpcvmem
+        generic map(
+          g_LOGIC_TYPE    => "pipeline",
+          g_MEMORY_TYPE   => g_MEMORY_TYPE,
+          g_MEMORY_STRUCTURE => "SDP_2",
+          g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 5,
+          g_MEM_WIDTH       => DATA_WIDTH,
+          g_MEM_DEPTH       => DATA_DEPTH
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          ena           => ena,
+          --
+          i_din_a       => i_data,
+          i_dv_in_a     => i_dv,
+          o_dout_b      => o_data,
+          o_dv_out_b    => o_dv    
+        );
+      end generate SDPM_GEN;
     end generate MODE_MEM;
+
+
+
+
   end generate APB_INT_DIS;
   
 
