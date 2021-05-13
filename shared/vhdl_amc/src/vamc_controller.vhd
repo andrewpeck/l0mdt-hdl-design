@@ -26,8 +26,8 @@ library vamc_lib;
 library apbus_lib;
 library mpcvmem_lib;
 
-library ctrl_lib;
-  use ctrl_lib.MPL_CTRL.all;
+-- library ctrl_lib;
+--   use ctrl_lib.MPL_CTRL.all;
   -- use ctrl_lib.MEM_INT_10A148D_PKG.all;
   -- use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
