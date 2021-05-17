@@ -44,6 +44,7 @@ entity vamc_controller is
     g_DATA_DEPTH        : integer := 0;
     -- pipeline
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
+    g_MEMORY_STRUCTURE  : string := "SDP";
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer;
@@ -237,11 +238,11 @@ begin
           begin
 
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
-            mpcv_mem : entity mpcvmem_lib.mpcvmem
+            mpcv_mem : entity mpcvmem_lib.mpcvm_top
             generic map(
               g_LOGIC_TYPE    => "pipeline",
               g_MEMORY_TYPE   => g_MEMORY_TYPE,
-
+              g_MEMORY_STRUCTURE => g_MEMORY_STRUCTURE,
               g_SECOND_PORT => "monitor",
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
@@ -295,13 +296,13 @@ begin
         -- constant OUT_PIPELINE
         constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
       begin        
-        mpcvmem : entity mpcvmem_lib.mpcvmem
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
         generic map(
           g_LOGIC_TYPE    => "pipeline",
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-          g_OUT_PIPELINE    => 5,
+          g_OUT_PIPELINE    => 2,
           g_MEM_WIDTH       => DATA_WIDTH,
           g_MEM_DEPTH       => DATA_DEPTH
         )
@@ -319,13 +320,13 @@ begin
       SDPM_GEN: if g_PIPELINE_TYPE = "SDPM" generate
           constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
         begin  
-        mpcvmem : entity mpcvmem_lib.mpcvmem
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
         generic map(
           g_LOGIC_TYPE    => "pipeline",
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
           g_MEMORY_STRUCTURE => "SDP_2",
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-          g_OUT_PIPELINE    => 5,
+          g_OUT_PIPELINE    => 2,
           g_MEM_WIDTH       => DATA_WIDTH,
           g_MEM_DEPTH       => DATA_DEPTH
         )
@@ -340,6 +341,30 @@ begin
           o_dv_out_b    => o_dv    
         );
       end generate SDPM_GEN;
+      XPM_GEN: if g_PIPELINE_TYPE = "XPM" generate
+          constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+        begin  
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
+        generic map(
+          g_LOGIC_TYPE    => "pipeline",
+          g_MEMORY_TYPE   => g_MEMORY_TYPE,
+          g_MEMORY_STRUCTURE => "XPM",
+          g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 2,
+          g_MEM_WIDTH       => DATA_WIDTH,
+          g_MEM_DEPTH       => DATA_DEPTH
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          ena           => ena,
+          --
+          i_din_a       => i_data,
+          i_dv_in_a     => i_dv,
+          o_dout_b      => o_data,
+          o_dv_out_b    => o_dv    
+        );
+      end generate XPM_GEN;
     end generate MODE_MEM;
 
 

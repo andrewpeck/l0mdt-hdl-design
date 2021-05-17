@@ -84,11 +84,12 @@ begin
       g_MEMORY_TYPE       => "ultra",
       g_DATA_WIDTH        => i_uCM2pl_v'length,
       g_DATA_DEPTH        => 4000,
-      g_PIPELINE_TYPE     => "mpcvmem",
+      g_PIPELINE_TYPE     => "mpcvmem",--SDPM",--"mpcvmem",
+      g_MEMORY_STRUCTURE  => "SDP_2",
       g_DELAY_CYCLES      => UCM_LATENCY_HPS_CH,
       g_PIPELINE_WIDTH    => i_uCM2pl_v'length, -- necesario?
       -- BU bus
-      g_APBUS_ENABLED    => '1',
+      g_APBUS_ENABLED    => '1',--'1',
       g_XML_NODE_NAME    => "MEM_INT_12A148D",
       g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
       g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
