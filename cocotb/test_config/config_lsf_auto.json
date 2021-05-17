@@ -17,7 +17,7 @@
         },
         "testvectors": {
             "testvector_dir": "/home/ntekas/Work/tv",
-            "testvector_file": "B.pkl",
+            "testvector_file": "B_C_13.xz",
             "inputs": [
                 {
                     "tv_format": "HEG2SFSLC",

@@ -4,7 +4,8 @@ from pathlib import Path
 
 from l0mdt_tb.utils import utils
 import cocotb
-from TVReader import tv_reader_pkl
+# from TVReader import tv_reader_pkl
+import TVReader.tv_reader_tools as tvtools
 from DataFormats.data_format import DataFormat
 from TVDataFormat.bit_stream import BitFieldWord
 from TVDataFormat.BX_data import BXData
@@ -363,8 +364,8 @@ def read_tv(
     ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
-
-    events_list   = tv_reader_pkl.read_TV(path, region, side, sector)
+    events_list   = tvtools.read_TV(path)
+    # events_list   = tv_reader_pkl.read_TV(path, region, side, sector)
     return events_list
 
 
@@ -453,7 +454,8 @@ def parse_file_for_testvectors(
     #l0ids_loaded = set()
     #    print("PARSING FOR TVFORMAT = ",tvformat)
     # tv_reader_pkl.setup_debug_devel(10)
-    events_list = tv_reader_pkl.read_TV(path,2,3,3)
+    # events_list = tv_reader_pkl.read_TV(path,2,3,3)
+    events_list   = tvtools.read_TV(path)
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
@@ -508,7 +510,8 @@ def parse_file_for_testvectors_list(
     #l0ids_loaded = set()
     #    print("PARSING FOR TVFORMAT = ",tvformat)
     # tv_reader_pkl.setup_debug_devel(10)
-    events_list = tv_reader_pkl.read_TV(path,2,3,3)
+    # events_list = tv_reader_pkl.read_TV(path,2,3,3)
+    events_list   = tvtools.read_TV(path)
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
