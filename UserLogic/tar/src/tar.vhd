@@ -95,22 +95,6 @@ begin
     INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
       INN_DELAY : for b_i in c_HPS_MAX_HP_INN -1 downto 0 generate
         INN_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
-          
-          -- PL : entity shared_lib.std_pipeline
-          -- generic map(
-          --   g_MEMORY_TYPE     => "ultra",
-          --   g_PIPELINE_TYPE   => "ring_buffer",
-          --   g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
-          --   g_PIPELINE_WIDTH  =>  i_inn_tdc_hits_av(b_i)'length
-          -- )
-          -- port map(
-          --   clk         => clk,
-          --   rst         => rst,
-          --   glob_en     => glob_en,
-          --   --
-          --   i_data      => i_inn_tdc_hits_av(b_i),
-          --   o_data      => int_inn_tdc_hits(b_i)
-          -- );
 
           PL : entity vamc_lib.vamc_controller
           generic map(
@@ -155,7 +139,7 @@ begin
             glob_en         => glob_en,
             -- TDC Hits from Polmux
             i_tdc_hits  => int_inn_tdc_hits(b_i),
-            -- outputs to ucm
+            -- outputs to h2s
             o_tar_hits  => o_inn_tar_hits_av(b_i)
           );
 
@@ -168,21 +152,6 @@ begin
     MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
       MID_DELAY : for b_i in c_HPS_MAX_HP_MID -1 downto 0 generate
         MID_EN : if c_HP_SECTOR_STATION(1)(b_i) = '1' generate
-          -- PL : entity shared_lib.std_pipeline
-          -- generic map(
-          --   g_MEMORY_TYPE     => "ultra",
-          --   g_PIPELINE_TYPE   => "ring_buffer",
-          --   g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
-          --   g_PIPELINE_WIDTH  => i_mid_tdc_hits_av(b_i)'length
-          -- )
-          -- port map(
-          --   clk         => clk,
-          --   rst         => rst,
-          --   glob_en     => glob_en,
-          --   --
-          --   i_data      => i_mid_tdc_hits_av(b_i),
-          --   o_data      => int_mid_tdc_hits(b_i)
-          -- );
 
           PL : entity vamc_lib.vamc_controller
           generic map(
@@ -227,7 +196,7 @@ begin
             glob_en         => glob_en,
             -- TDC Hits from Polmux
             i_tdc_hits  => int_mid_tdc_hits(b_i),
-            -- outputs to ucm
+            -- outputs to h2s
             o_tar_hits  => o_mid_tar_hits_av(b_i)
           );
 
@@ -239,21 +208,7 @@ begin
     OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
       OUT_DELAY : for b_i in c_HPS_MAX_HP_OUT -1 downto 0 generate
         OUT_EN : if c_HP_SECTOR_STATION(2)(b_i) = '1' generate
-          -- PL : entity shared_lib.std_pipeline
-          -- generic map(
-          --   g_MEMORY_TYPE     => "ultra",
-          --   g_PIPELINE_TYPE   => "ring_buffer",
-          --   g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
-          --   g_PIPELINE_WIDTH  => i_out_tdc_hits_av(b_i)'length
-          -- )
-          -- port map(
-          --   clk         => clk,
-          --   rst         => rst,
-          --   glob_en     => glob_en,
-          --   --
-          --   i_data      => i_out_tdc_hits_av(b_i),
-          --   o_data      => int_out_tdc_hits(b_i)
-          -- );
+
           PL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
@@ -297,7 +252,7 @@ begin
             glob_en         => glob_en,
             -- TDC Hits from Polmux
             i_tdc_hits  => int_out_tdc_hits(b_i),
-            -- outputs to ucm
+            -- outputs to h2s
             o_tar_hits  => o_out_tar_hits_av(b_i)
           );
 
@@ -309,21 +264,7 @@ begin
     EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
       EXT_DELAY : for b_i in c_HPS_MAX_HP_EXT -1 downto 0 generate
         EXT_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
-          -- PL : entity shared_lib.std_pipeline
-          -- generic map(
-          --   g_MEMORY_TYPE     => "ultra",
-          --   g_PIPELINE_TYPE   => "ring_buffer",
-          --   g_DELAY_CYCLES    => TDC_PL_A_LATENCY,
-          --   g_PIPELINE_WIDTH  => i_ext_tdc_hits_av(b_i)'length
-          -- )
-          -- port map(
-          --   clk         => clk,
-          --   rst         => rst,
-          --   glob_en     => glob_en,
-          --   --
-          --   i_data      => i_ext_tdc_hits_av(b_i),
-          --   o_data      => int_ext_tdc_hits(b_i)
-          -- );
+
           PL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
@@ -366,7 +307,7 @@ begin
             glob_en         => glob_en,
             -- TDC Hits from Polmux
             i_tdc_hits  => int_ext_tdc_hits(b_i),
-            -- outputs to ucm
+            -- outputs to h2s
             o_tar_hits  => o_ext_tar_hits_av(b_i)
           );
 

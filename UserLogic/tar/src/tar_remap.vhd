@@ -43,25 +43,10 @@ entity tar_remap is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_tdc_hits    : in  tdcpolmux2tar_rvt := (others => '0');
-    -- i_mid_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
-    -- TDC Hits from Tar
-    i_tar_hits    : in  tar2hps_rvt := (others => '0');
-    -- i_mid_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    -- i_out_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    -- i_ext_tar_hits    : in  tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
-    -- TDC polmux from Tar
-    o_tdc_hits    : out tdcpolmux2tar_rvt;
-    -- o_mid_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    -- o_out_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    -- o_ext_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    -- TDC Hits from Tar
+    i_tdc_hits    : in  tdcpolmux2tar_rvt;
+
     o_tar_hits    : out tar2hps_rvt
-    -- o_mid_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-    -- o_out_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-    -- o_ext_tar_hits    : out tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0)
+
   );
 end entity tar_remap;
 
@@ -132,8 +117,12 @@ begin
               full_time <= i_tdc_hits_r.tdc.coarsetime & i_tdc_hits_r.tdc.finetime;
 
             else
+              csm_pl <= (others => '0');
+              tdc_tube <= (others => '0');
+              tdc_layer <= (others => '0');
               csm_offset <= 0;
               tdc_offset <= 0;
+              full_time <= (others => '0');
             end if;
 
 
@@ -148,7 +137,8 @@ begin
               o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
               o_tar_hits_r.time         <= full_time;
             else
-              o_tar_hits_r.data_valid   <= '0';
+              o_tar_hits_r <= nullify(o_tar_hits_r);
+              -- o_tar_hits_r.data_valid   <= '0';
               -- o_tar_hits_r.chamber_ieta <= 
               -- o_tar_hits_r.layer        <= 
               -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
@@ -169,12 +159,12 @@ begin
 
   end generate;
 
-  TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
-    o_tar_hits <= i_tar_hits;
-    -- o_mid_tar_hits <= i_mid_tar_hits;
-    -- o_out_tar_hits <= i_out_tar_hits;
-    -- o_ext_tar_hits <= i_ext_tar_hits;
-  end generate;
+  -- TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
+  --   o_tar_hits <= i_tar_hits;
+  --   -- o_mid_tar_hits <= i_mid_tar_hits;
+  --   -- o_out_tar_hits <= i_out_tar_hits;
+  --   -- o_ext_tar_hits <= i_ext_tar_hits;
+  -- end generate;
 
   
 end architecture beh;
