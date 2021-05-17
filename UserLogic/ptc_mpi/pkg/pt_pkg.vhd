@@ -54,6 +54,7 @@ package pt_pkg is
     constant DIVIDER_LEN         : integer := 21;
     constant SHIFT_NUM_SAGITTA   : integer := 13;
     constant INV_S_MULT          : integer := (2**SHIFT_NUM_SAGITTA)/integer(SF2PTCALC_SEGPOS_MULT);
+    constant SF2PTCALC_SEGPOS_MULT_LEN : integer := integer(log2(SF2PTCALC_SEGPOS_MULT));
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant INV_SQRT_LEN : integer := 22;
