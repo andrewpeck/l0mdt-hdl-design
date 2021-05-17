@@ -74,10 +74,10 @@ entity ult is
     i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc        : in  slc_rx_bus_avt(2 downto 0);  -- is the main SL used
@@ -171,10 +171,10 @@ begin
         i_ext_tdc_hits  => i_extra_tdc_hits,
 
         -- candidates in from hal
-        i_inn_tar_hits  => i_inner_tar_hits,
-        i_mid_tar_hits  => i_middle_tar_hits,
-        i_out_tar_hits  => i_outer_tar_hits,
-        i_ext_tar_hits  => i_extra_tar_hits,
+        -- i_inn_tar_hits  => i_inner_tar_hits,
+        -- i_mid_tar_hits  => i_middle_tar_hits,
+        -- i_out_tar_hits  => i_outer_tar_hits,
+        -- i_ext_tar_hits  => i_extra_tar_hits,
         --
         o_inn_tdc_hits  => inn_tdc_hits,
         o_mid_tdc_hits  => mid_tdc_hits,

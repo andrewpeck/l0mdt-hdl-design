@@ -44,10 +44,10 @@ entity mdt_tar is
     i_out_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
     i_ext_tdc_hits    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
-    i_inn_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inn_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_mid_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_out_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_ext_tar_hits    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC polmux from Tar
     o_inn_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
     o_mid_tdc_hits    : out mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
@@ -134,10 +134,10 @@ begin
         i_out_tdc_hits_av  => i_out_tdc_hits,
         i_ext_tdc_hits_av  => i_ext_tdc_hits,
         -- candidates in from hal
-        i_inn_tar_hits_av  => i_inn_tar_hits,
-        i_mid_tar_hits_av  => i_mid_tar_hits,
-        i_out_tar_hits_av  => i_out_tar_hits,
-        i_ext_tar_hits_av  => i_ext_tar_hits,
+        -- i_inn_tar_hits_av  => i_inn_tar_hits,
+        -- i_mid_tar_hits_av  => i_mid_tar_hits,
+        -- i_out_tar_hits_av  => i_out_tar_hits,
+        -- i_ext_tar_hits_av  => i_ext_tar_hits,
         -- 
         o_inn_tdc_hits_av  => o_inn_tdc_hits,
         o_mid_tdc_hits_av  => o_mid_tdc_hits,
@@ -193,10 +193,10 @@ begin
                 xor xor_reduce(ext_tdc_hits_sump);
 
         elsif c_EN_TAR_HITS > 0 then
-          inn_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 loop inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I)); end loop;
-          mid_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 loop mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I)); end loop;
-          out_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 loop out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I)); end loop;
-          ext_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 loop ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I)); end loop;
+          -- inn_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 loop inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I)); end loop;
+          -- mid_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 loop mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I)); end loop;
+          -- out_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 loop out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I)); end loop;
+          -- ext_tar_loop : for I in 0 to c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 loop ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I)); end loop;
 
           o_sump <= xor_reduce(inn_tar_hits_sump)
           xor xor_reduce(mid_tar_hits_sump)
