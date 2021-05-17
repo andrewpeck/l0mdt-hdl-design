@@ -68,8 +68,8 @@ architecture beh of hps_pc is
   signal dv_pl : std_logic_vector(c_HPS_PC_PL_LEN -1 downto 0);
 
   signal i_mdt_tar_r : tar2hps_rt;
-  type mdt_tar_data_pl is array (c_HPS_PC_PL_LEN -1 downto 0) of tar2hps_rt;
-  signal mdt_tar_data   : mdt_tar_data_pl;
+  type mdt_tar_data_pl_t is array (c_HPS_PC_PL_LEN -1 downto 0) of tar2hps_rt;
+  signal mdt_tar_data_pl   : mdt_tar_data_pl_t;
   --t0
   signal t0_dv : std_logic;
   signal time_t0 : unsigned(MDT_TIME_LEN-1 downto 0);
@@ -77,15 +77,15 @@ architecture beh of hps_pc is
   -- global position
   constant tubesize : unsigned(9 downto 0) := to_unsigned(integer(30.0 * MDT_GLOBAL_AXI_MULT),10); -- constant in 0.03125 mm resolution
 
-  signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
+  -- signal holesize : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
   -- signal holesize_pl : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
-  signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  -- signal r_pos : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   -- signal r_pos_pl : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   signal global_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   -- signal global_y_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
   -- signal global_z_ph : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-  signal zh_dv : std_logic;
+  -- signal zh_dv : std_logic;
   signal r_dv : std_logic;
   -- to hp
   signal mdt_full_data_r  : hp_hpsPc2hp_rt;
@@ -101,7 +101,7 @@ begin
 
   i_mdt_tar_r  <= structify(i_mdt_tar_v);
 
-  -- mdt_tar_data(0) <= structify(i_mdt_tar_v);
+  -- mdt_tar_data_pl(0) <= structify(i_mdt_tar_v);
   o_mdt_full_data_v <= vectorify(mdt_full_data_r);
 
   T0 : entity hps_lib.hps_pc_b_t0
@@ -145,40 +145,28 @@ begin
       o_dv                => r_dv
     );
 
-  -- ZH : entity hps_lib.hps_pc_b_zholes
-  --   generic map(
-  --     g_STATION_RADIUS    => g_STATION_RADIUS
-  --   )
-  --   port map(
-  --     clk                 => clk,
-  --     rst                 => rst,
-  --     ena             => ena,
-  --     --
-  --     i_chamber           => mdt_tar_data(0).chamber_ieta,
-  --     i_dv                => mdt_tar_data(0).data_valid,
-  --     o_spaces            => holesize,
-  --     o_dv                => zh_dv
-  --   );
+    data_pl: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          for i in 0 to c_HPS_PC_PL_LEN - 2 loop
+            dv_pl(i) <= '0';
+            mdt_tar_data_pl(i) <= nullify(mdt_tar_data_pl(i));
+          end loop;
+        else
+          dv_pl(0) <= i_mdt_tar_r.data_valid;
+          mdt_tar_data_pl(0) <= i_mdt_tar_r;
+          for i in 0 to c_HPS_PC_PL_LEN - 2 loop
+            dv_pl(i + 1) <= dv_pl(i) ;
+            mdt_tar_data_pl(i + 1) <= mdt_tar_data_pl(i);
+          end loop;
+          
+        end if;
+      end if;
+    end process data_pl;
 
-  -- TR : entity hps_lib.hps_pc_b_r
-  --   generic map(
-  --     g_STATION_RADIUS    => g_STATION_RADIUS
-  --   )
-  --   port map(
-  --     clk                 => clk,
-  --     rst                 => rst,
-  --     ena             => ena,
-  --     --
-  --     i_layer             => mdt_tar_data(0).layer,
-  --     i_dv                => mdt_tar_data(0).data_valid,
-  --     o_r_pos             => r_pos,
-  --     o_dv                => r_dv
-  --   );
-
-
-
-  dv_pl(0) <= i_mdt_tar_r.data_valid;
-
+  
+  
 
   COORD : process(clk)
   begin
@@ -196,12 +184,12 @@ begin
         mdt_full_data_r.data_valid  <= '0';
       else
 
-        dv_pl(c_HPS_PC_PL_LEN -1 downto 1) <= dv_pl(c_HPS_PC_PL_LEN - 2 downto 0);
+        -- dv_pl(c_HPS_PC_PL_LEN -1 downto 1) <= dv_pl(c_HPS_PC_PL_LEN - 2 downto 0);
 
-        mdt_tar_data(c_HPS_PC_PL_LEN -1 downto 1) <= mdt_tar_data(c_HPS_PC_PL_LEN - 2 downto 0);
+        -- mdt_tar_data_pl(c_HPS_PC_PL_LEN -1 downto 1) <= mdt_tar_data_pl(c_HPS_PC_PL_LEN - 2 downto 0);
 
         if dv_pl(1) = '1' then
-          -- global_z <= mdt_tar_data(1).tube * tubesize; 
+          -- global_z <= mdt_tar_data_pl(1).tube * tubesize; 
           -- global_x <= r_pos;
 
           time_t0_pl <= time_t0;
@@ -213,13 +201,13 @@ begin
         end if;
 
         if dv_pl(2) = '1' then
-          mdt_full_data_r.global_z <= global_z + holesize;
+          mdt_full_data_r.global_z <= global_z;-- + holesize;
           mdt_full_data_r.global_x <= global_x;
           --
-          mdt_full_data_r.time_t0 <= mdt_tar_data(2).time - time_t0_pl;
+          mdt_full_data_r.time_t0 <= mdt_tar_data_pl(2).time - time_t0_pl;
           --
-          mdt_full_data_r.layer   <= mdt_tar_data(2).layer;
-          mdt_full_data_r.tube    <= mdt_tar_data(2).tube;
+          mdt_full_data_r.layer   <= mdt_tar_data_pl(2).layer;
+          mdt_full_data_r.tube    <= mdt_tar_data_pl(2).tube;
           --
           mdt_full_data_r.data_valid <= '1';
         else
@@ -235,9 +223,9 @@ begin
 
 
   -- o_mdt_full_data <= hp_hit_data_f_r2std(mdt_full_data_r);
-  -- mdt_tar_data(0) <= tar2heg_mdt_f_std2rt(i_mdt_tar_data);
+  -- mdt_tar_data_pl(0) <= tar2heg_mdt_f_std2rt(i_mdt_tar_data);
 
-  -- mdt_full_data_r.layer   <= mdt_tar_data(0).layer;
-  -- mdt_full_data_r.tube    <= mdt_tar_data(0).tube;
+  -- mdt_full_data_r.layer   <= mdt_tar_data_pl(0).layer;
+  -- mdt_full_data_r.tube    <= mdt_tar_data_pl(0).tube;
 
 end beh;

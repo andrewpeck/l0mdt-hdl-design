@@ -177,14 +177,18 @@ begin
         -- o_time_tc <= (others => '0');
         o_dv <= '0';
         mem_out <= (others => '0');
+        apb_dv_i <= '0';
+        apb_data_i <= (others => '0');
       else
         if(i_dv = '1') then
-          mem_out <= mem(mem_index_int);--to_integer(unsigned(mem_index)));
+          mem_out <= mem(to_integer(unsigned(mem_index_std)));
+          --mem(mem_index_int);--to_integer(unsigned(mem_index)));
           o_dv <= '1';
         else
           -- o_time_tc <= (others => '0');
           o_dv <= '0';
         end if;
+        
         if apb_dv_o = '1' then
           apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
           mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
@@ -196,7 +200,7 @@ begin
     end if ;
   end process;
 
-  o_global_x <= unsigned(mem_out((MDT_GLOBAL_AXI_LEN*2)-1 downto MDT_GLOBAL_AXI_LEN));
-  o_global_z <= unsigned(mem_out(MDT_GLOBAL_AXI_LEN - 1 downto 0));
+  o_global_z <= unsigned(mem_out((MDT_GLOBAL_AXI_LEN*2)-1 downto MDT_GLOBAL_AXI_LEN));
+  o_global_x <= unsigned(mem_out(MDT_GLOBAL_AXI_LEN - 1 downto 0));
   
 end architecture beh;

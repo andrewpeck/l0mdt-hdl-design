@@ -20,10 +20,6 @@ add wave -noupdate -group DUT /ult_tp/ULT/i_inner_tdc_hits
 add wave -noupdate -group DUT /ult_tp/ULT/i_middle_tdc_hits
 add wave -noupdate -group DUT /ult_tp/ULT/i_outer_tdc_hits
 add wave -noupdate -group DUT /ult_tp/ULT/i_extra_tdc_hits
-add wave -noupdate -group DUT /ult_tp/ULT/i_inner_tar_hits
-add wave -noupdate -group DUT /ult_tp/ULT/i_middle_tar_hits
-add wave -noupdate -group DUT /ult_tp/ULT/i_outer_tar_hits
-add wave -noupdate -group DUT /ult_tp/ULT/i_extra_tar_hits
 add wave -noupdate -group DUT /ult_tp/ULT/i_main_primary_slc
 add wave -noupdate -group DUT /ult_tp/ULT/i_main_secondary_slc
 add wave -noupdate -group DUT /ult_tp/ULT/i_plus_neighbor_slc
