@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Mon May 17 16:36:00 2021
+-- Last update : Tue May 18 11:44:56 2021
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -104,9 +104,9 @@ architecture Behavioral of pt is
     signal pt_s0 : signed(PT_S_LEN+1-1 downto 0);
 
     -- Phi-dependent part
-    constant P0_LEN : integer := PT_S_LEN + 1 + P0_1_LEN - TF_PX_1_MULTI; -- 12
-    constant P1_LEN : integer := PT_S_LEN + 1 + P1_1_LEN - TF_PX_1_MULTI; -- 13
-    constant P2_LEN : integer := PT_S_LEN + 1 + P2_1_LEN - TF_PX_1_MULTI; -- 17
+    constant P0_LEN : integer := PT_S_LEN + 1 + P0_1_LEN - TF_PX_1_MULTI_LEN; -- 12
+    constant P1_LEN : integer := PT_S_LEN + 1 + P1_1_LEN - TF_PX_1_MULTI_LEN; -- 13
+    constant P2_LEN : integer := PT_S_LEN + 1 + P2_1_LEN - TF_PX_1_MULTI_LEN; -- 17
 
     constant P1_PHI_LEN : integer := P1_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN; -- 12 
     constant P2_PHI_LEN : integer := P2_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN; -- 13
@@ -134,12 +134,12 @@ architecture Behavioral of pt is
     signal pt_s1 : signed(PT_S_LEN+1-1 downto 0);
     signal pt_s2 : signed(P2_PHI2_LEN-1 downto 0);
     signal pt_sp : signed(PT_SP_LEN-1 downto 0);
-    signal pt_sp0 : signed(PT_SP_LEN-1 downto 0);
 
     -- Eta dependent part
-    constant E0_LEN : integer := PT_SP_LEN + E0_1_LEN - TF_EX_1_MULTI; -- 21
-    constant E1_LEN : integer := PT_SP_LEN + E1_1_LEN - TF_EX_1_MULTI; -- 21
-    
+    constant E0_LEN : integer := PT_SP_LEN + E0_1_LEN - TF_EX_1_MULTI_LEN; -- 21
+    constant E1_LEN : integer := PT_SP_LEN + E1_1_LEN - TF_EX_1_MULTI_LEN; -- 21
+    constant E1_ETA_LEN : integer := E1_LEN + PTCALC2MTC_MDT_ETA_LEN + 1 - ETA_MULTI_LEN; -- 25
+
     signal e0_0 : std_logic_vector(E0_0_LEN-1 downto 0);    
     signal e1_0 : std_logic_vector(E1_0_LEN-1 downto 0);
     signal e0_1 : std_logic_vector(E0_1_LEN-1 downto 0);    
@@ -148,18 +148,19 @@ architecture Behavioral of pt is
     signal e0 : signed(E0_LEN-1 downto 0);
     signal e1 : signed(E1_LEN-1 downto 0);
 
+    signal e1_eta : signed(E1_ETA_LEN-1 downto 0);
+    signal pt_sp0 : signed(E0_LEN-1 downto 0);
+    signal pt_sp1 : signed(E1_ETA_LEN-1 downto 0);
     -- Final pt signals
-    signal pt_online  :  signed(C1_ETA_LEN-1 downto 0) := (others => '0');
+    signal pt_spe : signed(E1_ETA_LEN-1 downto 0);
     signal pt_valid   :  std_logic := '0';
     -- Mtc output parameters
-    signal pt : unsigned(PTCALC2MTC_MDT_PT_LEN-1 downto 0) := (others => '0');
-    signal mtc_valid : std_logic := '0';
+    signal pt : unsigned(PTCALC2MTC_MDT_PT_LEN-1 downto 0);
+    signal dv_pt : std_logic;
     signal mtc : ptcalc2mtc_rt;
-    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
+    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
 
-    signal index_a : std_logic_vector(A_PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
-    signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
-    signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal combo_index : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);
 
 
     ----------------------------------------------------------------------------
@@ -208,7 +209,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => A0_LEN,
         ROM_FILE => "a0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -222,7 +223,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => A1_LEN,
         ROM_FILE => "a1.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -236,7 +237,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P0_0_LEN,
         ROM_FILE => "p0_0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -250,7 +251,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P1_0_LEN,
         ROM_FILE => "p1_0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -264,7 +265,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P2_0_LEN,
         ROM_FILE => "p2_0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -279,7 +280,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P0_1_LEN,
         ROM_FILE => "p0_1.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -293,7 +294,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P1_1_LEN,
         ROM_FILE => "p1_1.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -307,7 +308,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => P2_1_LEN,
         ROM_FILE => "p2_1.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -321,7 +322,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => E0_0_LEN,
         ROM_FILE => "e0_0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -335,7 +336,7 @@ begin
         MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => E1_0_LEN,
         ROM_FILE => "e1_0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
@@ -396,7 +397,7 @@ begin
             -- <a> parameters are now valid
             dv_a <= dv_combo_s;
             dv0 <= dv_s and dv_a;
-            a1_invs <= resize(shift_right( unsigned(a1)*inv_s*integer(SF2PTCALC_SEGPOS_MULT), (TF_AX_1_MULTI + SHIFT_NUM_SAGITTA)), PT_S_LEN);
+            a1_invs <= resize(shift_right( unsigned(a1)*inv_s*integer(SF2PTCALC_SEGPOS_MULT), (TF_AX_1_MULTI_LEN + SHIFT_NUM_SAGITTA)), PT_S_LEN);
             a0_s <= a0;
 
             dv1  <= dv0;
@@ -427,37 +428,17 @@ begin
             e1 <= resize(signed(e1_0) + shift_right(signed(e1_1)*pt_sp,TF_EX_1_MULTI_LEN), E1_LEN);
 
             dv7 <= dv6;
-            pt_sp1 <= pt_sp0 - e0;
-
-            pt_sp <= pt_s4 - shift_right((b0_b1_phi + b2_phi2), B_MULT_LEN);
-
+            pt_sp1 <= resize(pt_sp0 - e0, E1_ETA_LEN);
+            e1_eta <= resize(shift_right(e1*signed('0' &eta), ETA_MULTI_LEN), E1_ETA_LEN);
+            
             dv8 <= dv7;
-            comboid_eta <= pt_bin(unsigned(pt_sp)) &
-                           unsigned(segment_O_s.mdtid.chamber_ieta) &
-                           unsigned(segment_M_s.mdtid.chamber_ieta) &
-                           unsigned(segment_I_s.mdtid.chamber_ieta);
-            pt_sp_s <= pt_sp;
+            pt_spe <= pt_sp1 - e1_eta;
 
-            dv9 <= dv8;
-            pt_sp_ss <= pt_sp_s;
-
-            ---- <c> parameters now valid
-            dv10 <= dv9;
-            pt_sp_sss <= pt_sp_ss;
-
-            dv11 <= dv10;
-            pt_sp_ssss <= pt_sp_sss;
-            c1_eta <= resize(shift_right(signed(c1)*signed(eta), ETA_MULTI_LEN), C1_ETA_LEN);
-            c0_s <= c0;
-
-            pt_valid <= dv11;
-            pt_online <= pt_sp_ssss - shift_right(signed(c0_s) + c1_eta, C_MULT_LEN);
+            dv_pt <= dv8;
+            pt <= resize(unsigned(pt_spe), PTCALC2MTC_MDT_PT_LEN);
 
             -- Assembling the MTC candidate
-            mtc_valid <= pt_valid;
-            pt <= resize(unsigned(pt_online), PTCALC2MTC_MDT_PT_LEN);
-
-            mtc.data_valid <= mtc_valid;
+            mtc.data_valid <= dv_pt;
             mtc.muid <= slc_s.muid;
             if SIDE = 0 then
                 mtc.mdt_eta <= signed(eta);
@@ -471,7 +452,7 @@ begin
             mtc.mdt_nsegments <= nsegments;
             mtc.mdt_quality <= quality;
             --reset
-            if mtc_valid = '1' or i_rst = '1' then
+            if dv_pt = '1' or i_rst = '1' then
                 comboid <= (others => '0');
                 dv_combo <= '0';
                 slc_s <= nullify(slc_s);
@@ -483,6 +464,7 @@ begin
                 quality   <= (others => '0');
             end if;
 
+        
         end if ;
     end process ; -- identifier
 

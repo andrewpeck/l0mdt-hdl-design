@@ -31,7 +31,7 @@ constant E0_1_LEN     : natural := 7;
 constant E1_1_LEN     : natural := 7;
 
 constant PARAMS_DEPTH_LEN : natural := 7;
-constant PHIMOD_MULTI_LEN   : integer := integer(log2(1.0/UCM2PL_PHIMOD_MULT));
+constant PHIMOD_MULTI_LEN   : integer := integer(log2(UCM2PL_PHIMOD_MULT));
 constant ETA_MULTI_LEN : integer := integer(log2(PTCALC2MTC_MDT_ETA_MULT));
 constant TF_AX_1_MULTI : real := 8.0;
 constant TF_AX_1_MULTI_LEN : integer := integer(log2(TF_AX_1_MULTI));
