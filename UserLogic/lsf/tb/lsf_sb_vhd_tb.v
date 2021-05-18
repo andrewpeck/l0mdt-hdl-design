@@ -21,8 +21,8 @@
 
 `define AESL_DEPTH_histogram_bins_reset_V 1
 //`define THETA_RBIN_128
-//`define THETA_BIN_64_RBIN_128
-`define THETA_RBIN_64
+`define THETA_BIN_64_RBIN_128
+//`define THETA_RBIN_64
 
 `ifdef THETA_RBIN_128
  `define AUTOTB_TVOUT_le_output_V  "./tv_theta_bin_128/barrel/cdatafile/c.generate_input_testvectors.autotvin_LE_output_V.dat"
@@ -33,7 +33,7 @@
  `define AUTOTB_TVIN_mdt_hit_V  "./tv_theta_bin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_hps_sf_V.dat"
  `define AUTOTB_TVIN_hit_extraction_roi_V  "./tv_theta_bin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_slcproc_sf_V.dat"
 `elsif THETA_RBIN_64
- `define AUTOTB_TVOUT_le_output_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_output_testvectors.autotvin_LE_output_V.dat"
+ `define AUTOTB_TVOUT_le_output_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_LE_output_V.dat"
  `define AUTOTB_TVIN_mdt_hit_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_hps_sf_V.dat"
  `define AUTOTB_TVIN_hit_extraction_roi_V  "./tv_theta_rbin_64/barrel/cdatafile/c.generate_input_testvectors.autotvin_input_slcproc_sf_V.dat"
 `endif
@@ -55,9 +55,17 @@ parameter PROGRESS_TIMEOUT = 10000000;
 parameter LATENCY_ESTIMATION = 13;
 parameter LENGTH_mdt_hit_V = 1;
 parameter LENGTH_hit_extraction_roi_V = 1;
-
-
 parameter LENGTH_histogram_bins_reset_V = 1;
+
+`ifdef THETA_BIN_64_RBIN_128
+   parameter EOF_CLOCKS = 80;
+   parameter EOF_RST_CLOCKS = 1100;
+
+`else
+   parameter EOF_CLOCKS = 80;
+   parameter EOF_RST_CLOCKS = 1;
+`endif
+
 
 task read_token;
     input integer fp;
@@ -70,7 +78,7 @@ task read_token;
     end
 endtask
 
-   parameter TOTAL_SLC = 150; //500;
+   parameter TOTAL_SLC = 500;
    integer total_passed = 0;
    integer total_failed = 0;
    integer total_skipped = 0;
@@ -166,6 +174,8 @@ wire ap_rst_n;
    parameter char_width = 8;
    logic [SLC_MUID_LEN-1:0] slc_muid;
    logic [VEC_MDTID_LEN-1:0] slc_mdtid;
+   logic 		     i_eof;
+   integer 		     i_eof_count;
 
    parameter gtheta = SF2PTCALC_SEGANGLE_LEN; //15;
 
@@ -197,6 +207,7 @@ wire ap_rst_n;
 				.mdt_hit(mdt_hit),
 
 //				.hit_extraction_roi_vld(hit_extraction_roi_V_vld),
+				.i_eof(i_eof),
 				.hba_max_clocks(10'd50), //27),
 
 				.slc_roi_af(roi_af),
@@ -257,6 +268,8 @@ initial begin : read_file_process_mdt_hit_V
     transaction_idx = 0;
     AESL_REG_mdt_hit_V_ap_vld <= 0;
     hit_counter         <= 0;
+   i_eof <= 0;
+   i_eof_count <= 0;
 
    i <= 0;
 
@@ -291,6 +304,16 @@ initial begin : read_file_process_mdt_hit_V
        while(hit_counter >= total_hits_in_Roi[roi_count])
 	 begin
 	  AESL_REG_mdt_hit_V_ap_vld <= 0;
+	   while (i_eof_count < EOF_CLOCKS)
+	     begin
+		@(posedge AESL_clock);
+		i_eof_count <= i_eof_count + 1;
+	     end
+	    i_eof <= 1;
+	    @(posedge AESL_clock);
+	    i_eof <= 0;
+
+
 /* -----\/----- EXCLUDED -----\/-----
 	  if(hit_counter == total_hits_in_Roi[roi_count])begin  //Reading trailing mdt_hit transaction for ROI -> not to be used
 	     // $display("Skipping this token %s! hit_counter=%d",token,hit_counter);
@@ -302,10 +325,17 @@ initial begin : read_file_process_mdt_hit_V
 	  end else begin
  -----/\----- EXCLUDED -----/\----- */
 	     hit_counter <= 0;
-	     while(roi_ap_ready == 0)begin
+	     while(roi_ap_ready == 0  )begin
 		//$display("Stuck in loop hit_counter=%d, total_hits_in_Roi[%d]=%d",hit_counter, roi_count, total_hits_in_Roi[roi_count]);
 		@(posedge AESL_clock);
+
 	     end
+	    while(i_eof_count < EOF_RST_CLOCKS) begin
+	       	i_eof_count <= i_eof_count + 1;
+		@(posedge AESL_clock);
+	    end
+	    i_eof_count <= 0;
+
 	  //end
 	  //$display("Out of loop");
        end
@@ -741,7 +771,7 @@ initial begin : simulation_progress
         if (intra_progress > 500000) begin
             $display("// RTL Simulation : transaction %0d run-time latency is greater than %0f time(s) of the prediction @ \"%0t\"", start_cnt, intra_progress, $time);
             $display("////////////////////////////////////////////////////////////////////////////////////");
-          //  $finish;
+           $finish;
         end
     end
     print_progress();

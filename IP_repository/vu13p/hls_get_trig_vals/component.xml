@@ -1201,8 +1201,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>Get_trig_vals</xilinx:displayName>
       <xilinx:definitionSource>HLS</xilinx:definitionSource>
-      <xilinx:coreRevision>2103201305</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2021-03-20T20:05:59Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>2105041440</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2021-05-04T21:41:04Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2019.2.1</xilinx:xilinxVersion>

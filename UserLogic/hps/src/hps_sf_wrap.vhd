@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: HPS candidate distributor
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -158,7 +158,7 @@ begin
     ------------------------------------------------------------------
     -- LSF
     ------------------------------------------------------------------
-   
+
     EN_LSF : if c_SF_TYPE = '1' generate
       LSF : entity lsf_lib.top_lsf
         -- generic map(
@@ -170,8 +170,9 @@ begin
           slc_roi                             => i_slc_data_v,
           mdt_hit                             => i_mdt_data_v,
           lsf                                 => o_sf_data_v,
+          i_eof                               => i_control_r.eof,
           hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
-          --SpyBuffer 
+          --SpyBuffer
           sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
           sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
           sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,

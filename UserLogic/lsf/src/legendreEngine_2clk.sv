@@ -6,7 +6,9 @@
 
 
 
-module legendreEngine(
+module legendreEngine_2clk #(
+			     parameter RBINS = 128
+			     )(
 		      input 			       clk,
 		      input 			       rst,
 		      input 			       srst,
@@ -16,8 +18,8 @@ module legendreEngine(
 		      input logic [HEG2SFSLC_LEN-1:0]  hit_extraction_roi,
 		      input 			       hit_extraction_roi_empty,
 		      output logic 		       hit_extraction_roi_re,
-		      input 			       i_eof,
 		      input logic [9:0] 	       histogram_accumulation_count,
+		      input logic 		       i_eof,
 		      output logic [SF2PTCALC_LEN-1:0] le_output,
 		      output logic 		       le_output_vld,
 		      output logic [1023:0] 	       le_tb_output,
@@ -25,12 +27,10 @@ module legendreEngine(
 		      );
 //Settings for THETA_BINS = 64, RBINS = 64
    localparam THETA_BINS= 64; //128;
-   localparam RBINS      = 64; //128;
-   localparam RBIN_128_WIDTH = 8; //including sign
-   localparam RBIN_64_WIDTH  = 7; //8; //including sign
-   localparam THETA_64_WIDTH  = 6; //8;
-   localparam HBA_MEM_LATENCY = 3;//DMEM-4, REG-3; //4;
-   localparam DLY_HITS_PER_CLK = 1; //DMEM-2, REG-1
+  // localparam RBINS      = 128; //128;
+   localparam RBIN_WIDTH = 8; //RBIN=128 : 8; RBIN=64 : 7 //including sign
+   localparam HBA_MEM_LATENCY = 4;//DMEM-4, REG-3; //4; //3;
+
 
 //Settings for THETA_BINS = 64, RBINS = 64
    /*
@@ -89,8 +89,6 @@ module legendreEngine(
    logic [W_r-1:0] 				 roi_seed_r_fo[9];
    logic 					 roi_seed_r_vld;
    logic [W_r+1:0] 				 mdt_r_offset[8];
-   logic [W_r+1:0] 				 mdt_r_offset_0[8];
-   logic [W_r+1:0] 				 mdt_r_offset_1[8];
    logic [HEG2SFHIT_LOCALX_LEN-1:0] 		 mdt_local_x[8];
    logic [HEG2SFHIT_LOCALY_LEN-1:0] 		 mdt_local_y[8];
    logic [W_r+1:0] 				 mdt_radius[2]; //HLS adding extra bits in lsb
@@ -162,7 +160,8 @@ module legendreEngine(
 
 
    logic [9:0] 									    counter;
-   const logic [3:0] 								    hba_latency             = 2; //5; RBINS=128 5
+   const logic [3:0] 								    hba_latency             = 5; //8;//7; //12;
+
  //  const logic [3:0] 								    hba_mem_latency         = HBA_MEM_LATENCY; //DMEM-4, REG-3; //4; //3;
    const logic [3:0] 								    find_max_bin_latency    = 3; //2; //4;
    const logic [3:0] 								    reset_cycles = 10;
@@ -198,8 +197,6 @@ module legendreEngine(
 
 
    logic [7:0] 									    r_bin[THETA_BINS];
-   logic [RBIN_64_WIDTH-1:0] 							    r_bin_0[THETA_BINS];
-   logic [RBIN_64_WIDTH-1:0] 							    r_bin_1[THETA_BINS];
    logic 									    r_bin_vld[THETA_BINS];
    logic 									    r_bin_rdy[THETA_BINS];
 
@@ -278,7 +275,7 @@ module legendreEngine(
    logic 			   trig_vals_loaded;
    logic [15:0] 		   hba_reset_fo;
 
-
+   logic 			   toggle_fp;
 
 
    logic [11:0] 		   triglut_start_addr;
@@ -310,7 +307,6 @@ module legendreEngine(
    logic [6:0] 	 res_max_bin_r;
    logic 	 res_max_bin_r_vld;
 
-
    logic [17:0]  gls_sin_val_V;
    logic [17:0]  gls_cos_val_V;
 
@@ -333,8 +329,7 @@ module legendreEngine(
 
    assign theta_offset_factor_sn_vld_128 = theta_offset_factor_sn_vld | theta_offset_factor_sn_vld_127;
    assign get_first_hit               = get_first_hit_r;
-//   assign mdt_hit_re                  = (le_state == HISTOGRAM_BIN_ACCUMULATION)? (~mdt_hit_empty & (get_next_hit | get_first_hit)) : 1'b0;
-   assign mdt_hit_re                  = (le_state == HISTOGRAM_BIN_ACCUMULATION)? (~mdt_hit_empty) : 1'b0;
+   assign mdt_hit_re                  = (le_state == HISTOGRAM_BIN_ACCUMULATION)? (~mdt_hit_empty & (get_next_hit | get_first_hit)) : 1'b0;
    assign theta_global_gra            = (theta_global[13]== 0)? -theta_global  : theta_global;
    assign hw_sin_val_gls              = (theta_global[13]== 0)? -hw_sin_val[0] : hw_sin_val[0];
    assign gra_theta                   = theta_global_gra;
@@ -363,8 +358,7 @@ module legendreEngine(
 				      .hewindow_pos_ref_V(hewindow_pos_ref)
 				      );
 
-
-assign hewindow_pos_Z = {hewindow_pos,3'b0};
+				      assign hewindow_pos_Z = {hewindow_pos,3'b0};
 `ifdef RUN_SIM
      get_legendre_segment_barrel get_legendre_segment_barrel_inst(
 `else
@@ -461,10 +455,8 @@ begin
 end
 
    assign latency_count_vld    = (latency_count != 4'hf);
-   if(RBINS == 128)
-     assign flush_pipeline       = (mdt_hit_re == 0) && latency_count_vld && (latency_count > 0) && (latency_count < hba_latency);
-   else
-     assign flush_pipeline       = (mdt_hit_re == 0) && latency_count_vld && (latency_count < hba_latency-1);
+   assign flush_pipeline       = (mdt_hit_re == 0) && latency_count_vld && (latency_count > 0) && (latency_count < hba_latency);
+
 
 //   assign mdt_hit_internal      = ( mdt_hit_re)? mdt_hit : 0;
 //   assign hba_ap_idle           = (compute_rbin_ap_idle[0] == 1 )? 1 : 0; //All bins have same latency, so look at only one
@@ -481,8 +473,8 @@ end
 	begin:theta_bins
 	   int k = z/16; // to reduce fanout of input signals
 	   int j = z/4; // increase fanout for hba_ap_start
-if(RBINS == 128)
-begin:compute_rbin_update_histogram
+//if(RBINS == 128)
+//begin:compute_rbin_update_histogram
 `ifdef RUN_SIM
 	   compute_r_bins compute_r_bins_inst(
 `else
@@ -525,7 +517,7 @@ begin:compute_rbin_update_histogram
 						  );
 
 
-end
+/*end
 else
 begin : compute_rbin_update_histogram_64
 `ifdef RUN_SIM
@@ -534,55 +526,47 @@ begin : compute_rbin_update_histogram_64
 	   hls_compute_r_bins_64 compute_r_bins_inst(
 `endif
 					      .ap_clk(clk),
-					      .ap_rst(~ap_rst_n),
+					      .ap_rst_n(ap_rst_n),
 					      .ap_start(hba_ap_start[j]),
 					      .ap_done(compute_rbin_ap_done[z]),
 					      .ap_idle(compute_rbin_ap_idle[z]),
 					      .ap_ready(compute_rbin_ap_ready[z]),
 
-					      .mdt_localy_V_ap_vld(mdt_hit_vld_internal_fo[k]),
 					      .mdt_localx_V(mdt_local_x[k]),
 					      .mdt_localy_V(mdt_local_y[k]),
-    					      .mdt_r_offset_0_V(mdt_r_offset_0[k]),
-					      .mdt_r_offset_1_V(mdt_r_offset_1[k]),
-					      .hw_sin_val_V(hw_sin_val[z]),
-					      .hw_cos_val_V(hw_cos_val[z]),
-						     /*
 					      .mdt_r_offset_V_TDATA(mdt_r_offset[k]),
 					      .mdt_r_offset_V_TVALID(mdt_hit_vld_internal_fo[k]),
 					      .mdt_r_offset_V_TREADY(),
+					      //.mdt_r_offset_1_V(mdt_r_offset[0][1]), //[k][1]),
+					      .hw_sin_val_V(hw_sin_val[z]),
+					      .hw_cos_val_V(hw_cos_val[z]),
 					      .r_bin_V_TDATA(r_bin[z]),
 					      .r_bin_V_TVALID(r_bin_vld[z]),
 					      .r_bin_V_TREADY(r_bin_rdy[z])
-						      */
-					      //.mdt_r_offset_1_V(mdt_r_offset[0][1]), //[k][1]),
-					      .r_bin_0_V(r_bin_0[z]),
-					      .r_bin_1_V(r_bin_1[z]),
-					      .r_bin_0_V_ap_vld(r_bin_vld[z]),
-     					      .r_bin_1_V_ap_vld()
 					      );
 
 
 
-
-        update_histogram_reg  #(
-				.RBINS(RBINS),
-				.RBIN_WIDTH(RBIN_64_WIDTH)
-				)
-						 update_histogram_inst (
-									.clk(clk),
-									.rst_n(ap_rst_n),
-									.r_bin_0(r_bin_0[z]),
-									.r_bin_1(r_bin_1[z]),
-									.r_bin_vld(r_bin_vld[z]),
-									.enable_V(hba_mem_enable[j]), //1'b1),
-									.local_max_count(max_bin_count_V[z]),
-									.local_max_vld(max_bin_count_V_vld[z]),
-									.local_max_rbin(max_bin_r_V[z]),
-									.reset_rbins(hba_reset_fo[j])
-									);
+					      //update_histogram_reg  #(
+					      update_histogram_reg_2clk  #(
+								      .RBINS(RBINS),
+								      .RBIN_WIDTH(RBIN_WIDTH)
+								  )
+					      update_histogram_inst (
+						  .clk(clk),
+						  .rst_n(ap_rst_n),
+						  .r_bin_V_TVALID(r_bin_vld[z]),
+						  .r_bin_V_TDATA(r_bin[z]),
+						  .r_bin_V_TREADY(r_bin_rdy[z]),
+						  .enable_V(hba_mem_enable[j]), //1'b1),
+						  .local_max_count(max_bin_count_V[z]),
+						  .local_max_vld(max_bin_count_V_vld[z]),
+						  .local_max_rbin(max_bin_r_V[z]),
+						  .reset_rbins(hba_reset_fo[j])
+						  );
 
 end
+ */
       end // block: theta_bins
 
    endgenerate
@@ -625,8 +609,6 @@ end
 		  mdt_local_x[i]                 <= 0;
 		  mdt_local_y[i]                 <= 0;
 		  mdt_r_offset[i]                <= 0;
-	          mdt_r_offset_0[i]              <= 0;
-		  mdt_r_offset_1[i]              <= 0;
 	       end
 	  end
 	else
@@ -650,10 +632,7 @@ end
 
 
 //	     mdt_hit_vld_internal               <= ( mdt_hit_re) | hba_reset | ( ~mdt_hit_vld_internal & flush_pipeline );
-	     if(RBINS == 128)
-  	       mdt_hit_vld_internal               <= ( mdt_hit_re) | ( ~mdt_hit_vld_internal & flush_pipeline );
-	     else
-	       mdt_hit_vld_internal               <= ( mdt_hit_re) | (flush_pipeline );
+  	     mdt_hit_vld_internal               <= ( mdt_hit_re) | ( ~mdt_hit_vld_internal & flush_pipeline );
 	     mdt_hit_internal                   <=(flush_pipeline)? 0 : mdt_hit;
 
 
@@ -670,15 +649,12 @@ end
 		       mdt_local_x[i]                 <= mdt_hit_internal[HEG2SFHIT_LOCALX_MSB:HEG2SFHIT_LOCALX_LSB];
 		       mdt_local_y[i]                 <= mdt_hit_internal[HEG2SFHIT_LOCALY_MSB:HEG2SFHIT_LOCALY_LSB];
 		       mdt_r_offset[i]  	      <= mdt_radius[0] - roi_seed_r;
-		       mdt_r_offset_0[i]  	      <= mdt_radius[0] - roi_seed_r;
-		       mdt_r_offset_1[i]  	      <= mdt_radius[1] - roi_seed_r;
 		    end
 	       end
 	     else begin
-	 	if(RBINS == 64)
-		   mdt_hit_vld_internal_fo     <= 9'h0;
 
    	        stream_input                <= 0;
+
 		if(stream_input == 0)
 		  begin
 		     mdt_hit_vld_internal_fo     <= 9'b0;
@@ -724,7 +700,7 @@ end
 
 	     for(integer z=0;z<THETA_BINS;z++)
 	       begin
-		  if(max_bin_count_V_vld[z] | hba_reset_fo[0])
+		  if(max_bin_count_V_vld[z])
 		    begin
 		       max_bin_count[z] <= max_bin_count_V[z];
 		       max_bin_r[z]     <= max_bin_r_V[z];
@@ -767,7 +743,7 @@ end
 	     rom_offset                     <= 0;
 	     triglut_addr                   <= 0;
 	     triglut_first_bank_d           <= 0;
-
+	     toggle_fp                      <= 1;
 
 	  end
 	else
@@ -777,7 +753,12 @@ end
 	     hw_sin_val_vld_sreg[15:1]<= hw_sin_val_vld_sreg[14:0];
 
 
-
+	     if(flush_pipeline)
+	       begin
+		  toggle_fp = ~toggle_fp;
+	       end
+	     else
+	       toggle_fp <= 1'b1;
 
 
 
@@ -853,7 +834,7 @@ end
 	     le_output_vld       <= 0;
 	     le_tb_output        <= 0;
 	     le_tb_output_vld    <= 0;
-	     sf_segquality       <= 0;
+	     sf_segquality       <= 1;
   	     histogram_reset_n   <= 1'h0;
 	  end
 	else
@@ -1024,30 +1005,25 @@ end
 			 latency_count   <= 0;
 			 get_first_hit_r <= 1'b0;
 			 hba_ap_start    <= 16'hffff;
-                         if(RBINS == 128)
-			    hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
-			 else
-			    hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
+		         hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
 		      end
 		    else
  		      begin
-			 if(latency_count == hba_latency + HBA_MEM_LATENCY + DLY_HITS_PER_CLK)
+			 if(latency_count == hba_latency + HBA_MEM_LATENCY + 1)
 			   begin
-			     hba_mem_enable  <= 16'h1;
+					      hba_mem_enable  <= 0; //16'hffff;
+
 			   end
 			  else
 			   begin
-			     latency_count   <= latency_count + 1;
+			     latency_count   <= latency_count + 1 ;
 			     hba_ap_start    <= 16'hffff;
-  			     if(RBINS == 128)
-				   hba_mem_enable  <= (counter == hba_latency + 2)? 16'hffff : hba_mem_enable;
-			     else
-				   hba_mem_enable  <= (counter == hba_latency + 1)? 16'hffff : hba_mem_enable;
+			     hba_mem_enable  <= (counter == hba_latency + 2)? 16'hffff : hba_mem_enable;
 			  end
 		      end // else: !if(mdt_hit_vld)
 
 		   // if(counter == histogram_accumulation_count-1)begin
-		  if(i_eof == 1)begin
+		      if(i_eof) begin
 		       le_state       <= HISTOGRAM_BIN_FLUSH_PIPELINE;
 		       counter        <= 0;
 		    end
@@ -1062,7 +1038,7 @@ end
 		    gra_total_bins <= 0;
  	            histogram_reset_n  <= 1'h1;
 
-		    if(latency_count == hba_latency + HBA_MEM_LATENCY + DLY_HITS_PER_CLK)
+		    if(latency_count == hba_latency + HBA_MEM_LATENCY)
 		      begin
 			 hba_results_rdy      <= 1'b1;
 			 gra_resource_sharing <= 1'b1;
@@ -1104,28 +1080,19 @@ end
 
 		    if(gls_ap_done)
 		      begin
-       		        le_state         <= IDLE;//HBA_MEMORY_RESET;
+			 le_state         <= HBA_MEMORY_RESET;
 		      end
 		  end // case: COMPUTE_RESULTS
 	        HBA_MEMORY_RESET:
 		  begin
  		    counter <= counter + 32'b1;
-		    if(RBINS == 128)
-		     begin
-			if(counter == hba_reset_clocks)
-			   begin
-		             hba_reset_fo     <= 16'hffff;
-		             le_state         <= IDLE;
-              	             histogram_reset_n <= 1'h0;
-		           end
-		     end
-		     else
-		       begin
-			     hba_reset_fo     <= 0;
-		             le_state         <= IDLE;
-              	             histogram_reset_n <= 1'h0;
-		       end // else: !if(RBINS == 128)
-		 end
+		    if(counter == hba_reset_clocks)
+		    begin
+		      hba_reset_fo     <= 16'hffff;
+		      le_state         <= IDLE;
+              	      histogram_reset_n <= 1'h0;
+		    end
+		  end
 	     endcase
 	  end
      end
@@ -1341,7 +1308,7 @@ hls_find_max_bin find_max_bin_inst(
 				  .res_max_bin_count_V(res_max_bin_count),
 				  .res_max_bin_count_V_ap_vld(res_max_bin_count_vld),
 				  .res_max_bin_theta_V(res_max_bin_theta),
-				  .res_max_bin_theta_V_ap_vld(res_max_bin_theta_vld),
+				  .res_max_bin_theta_V_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
 				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
 				  );
@@ -1501,7 +1468,7 @@ hls_find_max_bin_64 find_max_bin_64_inst(
 				  .res_max_bin_count_V(res_max_bin_count),
 				  .res_max_bin_count_V_ap_vld(res_max_bin_count_vld),
 				  .res_max_bin_theta_V(res_max_bin_theta),
-				  .res_max_bin_theta_V_ap_vld(res_max_bin_theta_vld),
+				  .res_max_bin_theta_V_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r_V(res_max_bin_r),
 				  .res_max_bin_r_V_ap_vld(res_max_bin_r_vld)
 				  );

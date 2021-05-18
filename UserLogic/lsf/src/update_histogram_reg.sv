@@ -11,6 +11,74 @@
 //--
 //--------------------------------------------------------------------------------
 `timescale 1ns/1ps
+module rbins #(
+			      parameter RBINS=64,
+			      parameter RBIN_WIDTH = 6 //(no sign)
+			      )
+   (
+    input logic 		 rst,
+    input logic 		 clk,
+    input logic 		 en,
+    input logic 		 wen_0,
+    input logic 		 wen_1,
+    input logic 		 ren,
+    input logic [RBIN_WIDTH-1:0] wr_index_0,
+    input logic [RBIN_WIDTH-1:0] wr_index_1,
+    input logic [RBIN_WIDTH-1:0] rd_index_0,
+    input logic [RBIN_WIDTH-1:0] rd_index_1,
+    input logic [1:0] 		 incr_val_0,
+    input logic [1:0] 		 incr_val_1,
+    output logic [3:0] 		 rbin_val_0,
+    output logic [3:0] 		 rbin_val_1
+
+    );
+    logic [3:0] rbin_array[RBINS];
+
+   always_comb
+     begin
+	if(ren)
+	  begin
+	     rbin_val_0             = rbin_array[rd_index_0];
+	     rbin_val_1             = rbin_array[rd_index_1];
+	  end
+	else
+	  begin
+	     rbin_val_0             = 0;
+	     rbin_val_1             = 0;
+	  end
+     end
+
+   always @ (posedge clk)
+     begin
+	if(rst)
+	  begin
+	     for(integer i=0; i< RBINS; i=i+1)
+	       begin
+		  rbin_array[i] <= 0;
+	       end
+	  end
+	else
+	  begin
+
+	     if(en)
+	       begin
+		  if(wen_0)
+		    begin
+		       rbin_array[wr_index_0] <= rbin_array[wr_index_0] + incr_val_0;
+		    end
+
+		  if(wen_1)
+		    begin
+		       rbin_array[wr_index_1] <= rbin_array[wr_index_1] + incr_val_1;
+		    end
+
+	       end // if (en)
+	  end // else: !if(rst)
+     end // always @ (posedge clk)
+
+endmodule // reg_map
+
+
 module update_histogram_reg #(
 			      parameter RBINS=128,
 			      parameter RBIN_WIDTH = 8 //(including sign)
@@ -18,9 +86,9 @@ module update_histogram_reg #(
   (
         input 			      clk,
         input 			      rst_n,
-	input logic [RBIN_WIDTH-1:0]  r_bin_V_TDATA,
-	input logic 		      r_bin_V_TVALID,
-	output logic 		      r_bin_V_TREADY,
+	input logic [RBIN_WIDTH-1:0]  r_bin_0,
+	input logic [RBIN_WIDTH-1:0]  r_bin_1,
+	input logic 		      r_bin_vld,
 	input logic 		      enable_V,
 	output logic [RBIN_WIDTH-2:0] local_max_rbin,
 	output logic [3:0] 	      local_max_count,
@@ -30,86 +98,178 @@ module update_histogram_reg #(
 
 
 
-   logic [3:0] 		   r_val_V_TDATA;
-   logic 		   r_val_V_TVALID;
-   logic [RBIN_WIDTH-1:0]  r_bin_out_TDATA;
-   logic 		   r_bin_out_TVALID;
-   logic [RBIN_WIDTH-1:0]  r_bin_V_TDATA_d;
-
-
-   logic [3:0] 		   rbin[RBINS];
-   logic [3:0] 		   bin_val;
-
-   logic [RBIN_WIDTH-1:0]  rbin_idx;
-   logic 		   vld_bin;
 
 
 
 
-   assign r_bin_V_TREADY  = 1;
-   assign bin_val         = rbin[rbin_idx] + 1;
+
+
+
+
+   logic [3:0] 		   bin_val_max;
+   logic [RBIN_WIDTH-2:0]  bin_max;
+
+   logic [RBIN_WIDTH-2:0]  rbin_idx_0;
+   logic [RBIN_WIDTH-2:0]  rbin_idx_1;
+   logic 		   vld_bin_0;
+   logic 		   vld_bin_1;
+
+   logic 		   vld_bin_d;
+   logic 		   r_bin_vld_d;
+   logic [1:0] 		   incr_val_0;
+   logic [1:0] 		   incr_val_1;
+   logic 		   wen_0;
+   logic 		   wen_1;
+   logic [3:0] 		   bin_val_0;
+   logic [3:0] 		   bin_val_1;
+   logic [1:0] 		   bin_status;
+   logic 		   ren;
+
+   logic [RBIN_WIDTH-1:0]  rd_index_0;
+   logic [RBIN_WIDTH-1:0]  rd_index_1;
+
+
+
+   assign   wen_0       = ~r_bin_0[RBIN_WIDTH-1]; // & r_bin_vld & enable_V;
+   assign   wen_1       = ~r_bin_1[RBIN_WIDTH-1]; // & r_bin_vld & enable_V;
+   assign   incr_val_0  = {1'b0,~r_bin_0[RBIN_WIDTH-1]};
+   assign   incr_val_1  = {1'b0,~r_bin_1[RBIN_WIDTH-1]};
+   assign   rbin_idx_0  = (r_bin_vld & enable_V)? r_bin_0[RBIN_WIDTH-2:0] : rbin_idx_0;
+   assign   rbin_idx_1  = (r_bin_vld & enable_V)? r_bin_1[RBIN_WIDTH-2:0] : rbin_idx_1;
+
+   rbins #(
+	.RBINS(RBINS),
+	.RBIN_WIDTH(RBIN_WIDTH-1)
+	)
+   rbins_inst
+     (
+      .rst(~rst_n | reset_rbins),
+      .clk(clk),
+      .wen_0(wen_0),
+      .wen_1(wen_1),
+      .en(r_bin_vld & enable_V),
+      .ren(ren),
+      .wr_index_0(rbin_idx_0),
+      .wr_index_1(rbin_idx_1),
+      .incr_val_0(incr_val_0),
+      .incr_val_1(incr_val_1),
+      .rd_index_0(rd_index_0),
+      .rd_index_1(rd_index_1),
+      .rbin_val_0(bin_val_0),
+      .rbin_val_1(bin_val_1)
+      );
+
 
 //`define RBIN_128
 
+ always @ (posedge clk)
+     begin
+	if (~rst_n | reset_rbins )
+	  begin
+	     vld_bin_0             <= 0;
+	     vld_bin_1             <= 0;
+	     vld_bin_d             <= 0;
+
+
+	     rd_index_0            <= 0;
+	     rd_index_1            <= 0;
+
+	  end
+	else if (enable_V)
+	  begin
+	     vld_bin_d             <=  (vld_bin_0 | vld_bin_1)? 1 : 0;
+
+	     if(r_bin_vld)
+	       begin
+		  rd_index_0 <= r_bin_0[RBIN_WIDTH-2:0];
+		  vld_bin_0  <= ~r_bin_0[RBIN_WIDTH-1];
+
+		  rd_index_1 <= r_bin_1[RBIN_WIDTH-2:0];
+		  vld_bin_1  <= ~r_bin_1[RBIN_WIDTH-1];
+	       end
+	     else
+	       begin
+		  vld_bin_1  <= 0;
+		  vld_bin_0  <= 0;
+	       end // else: !if(r_bin_vld)
+	  end
+	else
+	  begin
+	     vld_bin_1  <= 0;
+	     vld_bin_0  <= 0;
+	     vld_bin_d  <= 0;
+	  end
+     end
+
+
+     always @ (posedge clk)
+     begin
+	if (~rst_n | reset_rbins )
+	  begin
+	     ren                   <= 0;
+	  end
+	else
+	  begin
+	     if(r_bin_vld)
+	       begin
+		  ren         <= 1'b1;
+	       end // if (r_bin_vld)
+	     else
+	       begin
+		  ren        <= 1'b0;
+	       end
+
+	  end // else: !if(~rst_n | reset_rbins )
+
+     end // always @ (posedge clk)
+
+   assign bin_status[0] = vld_bin_0;
+   assign bin_status[1] = vld_bin_1;
 
    always @ (posedge clk)
      begin
 	if (~rst_n | reset_rbins )
 	  begin
-	     for(int i=0; i<RBINS; i++)
-	       begin
-		  rbin[i] = 0;
-	       end
-
-	     r_bin_out_TDATA       <= 0;
-	     r_bin_out_TVALID      <= 0;
-	     r_val_V_TDATA         <= 0;
-	     rbin_idx              <= 0;
-	     vld_bin               <= 0;
-	     r_bin_V_TDATA_d       <= 0;
-
-	  end
+	     bin_val_max <= 0;
+	     bin_max     <= 0;
+	  end // if (~rst_n | reset_rbins )
 	else if (enable_V)
 	  begin
-	     r_bin_V_TDATA_d <= r_bin_V_TDATA;
-
-	     if(r_bin_V_TVALID)
+	     if(bin_status == 3)
 	       begin
-		  rbin_idx <= r_bin_V_TDATA[RBIN_WIDTH-2:0];
-		  vld_bin  <= ~r_bin_V_TDATA[RBIN_WIDTH-1];
-		  /*
-`ifdef RBIN_128
-		  rbin_idx <= r_bin_V_TDATA[6:0];
-		  vld_bin  <= ~r_bin_V_TDATA[7];
-`else
-		  rbin_idx  <= (r_bin_V_TDATA - 32);
-		  //vld_bin   <= (r_bin_V_TDATA >= 32 && r_bin_V_TDATA <= 95);
-		  vld_bin   <= (r_bin_V_TDATA[7:4] >= 2 && r_bin_V_TDATA[7:4] <= 5);
-`endif
-	       end else begin// if (r_bin_V_TVALID)
-		  vld_bin <= 0;
-		   */
+		  if(bin_val_0  >= bin_val_1)
+		    begin
+		       bin_val_max           <= bin_val_0;
+		       bin_max               <= rd_index_0; //  rbin_idx_0;
+		    end
+		  else
+		    begin
+		       bin_val_max           <= bin_val_1;
+		       bin_max               <= rd_index_1 ; // rbin_idx_1;
+		    end // else: !if(bin_val_0  > bin_val_1)
+	       end // if (bin_status == 3)
+	     else if(bin_status == 2)
+	       begin
+		  bin_val_max           <= bin_val_1;
+		  bin_max               <= rd_index_1 ; //rbin_idx_1;
 	       end
-
-	     else
+	     else if (bin_status == 1)
 	       begin
-		  vld_bin             <= 0;
-	       end
-
-	     if(vld_bin)
-	       begin
-		  rbin[rbin_idx]      <= bin_val; //rbin[rbin_idx] + 1;
-		  r_bin_out_TVALID    <= 1'b1;
-		  r_val_V_TDATA       <= bin_val; //rbin[rbin_idx] + 1;
-		  r_bin_out_TDATA     <= r_bin_V_TDATA_d;
+		  bin_val_max           <= bin_val_0;
+		  bin_max               <= rd_index_0; // rbin_idx_0;
 	       end
 	     else
 	       begin
-		  r_bin_out_TVALID    <= 1'b0;
+//		  $display ("DO NOTHING");
 	       end
+
+
 	  end // if (enable_V)
-
-
+	else
+	  begin
+	     bin_val_max    <= 0;
+	     bin_max        <= 0;
+	  end
      end
 
 
@@ -124,12 +284,12 @@ module update_histogram_reg #(
 	  end
 	else
 	  begin
-	     if(r_bin_out_TVALID)
+	     if(vld_bin_d)
 	       begin
-		  if(r_val_V_TDATA > local_max_count)
+		  if(bin_val_max > local_max_count)
 		    begin
-		       local_max_count <= r_val_V_TDATA;
-		       local_max_rbin  <= r_bin_out_TDATA;
+		       local_max_count <= bin_val_max;
+		       local_max_rbin  <= bin_max;
 		       local_max_vld   <= 1'b1;
 		    end
 		  else

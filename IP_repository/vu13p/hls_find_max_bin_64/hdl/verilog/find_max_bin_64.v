@@ -7,7 +7,7 @@
 
 `timescale 1 ns / 1 ps
 
-(* CORE_GENERATION_INFO="find_max_bin_64,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcvu13p-flga2577-1-e,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.733000,HLS_SYN_LAT=3,HLS_SYN_TPT=1,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=408,HLS_SYN_LUT=2631,HLS_VERSION=2019_2_1}" *)
+(* CORE_GENERATION_INFO="find_max_bin_64,hls_ip_2019_2_1,{HLS_INPUT_TYPE=cxx,HLS_INPUT_FLOAT=0,HLS_INPUT_FIXED=1,HLS_INPUT_PART=xcvu13p-flga2577-1-e,HLS_INPUT_CLOCK=3.125000,HLS_INPUT_ARCH=pipeline,HLS_SYN_CLOCK=2.733000,HLS_SYN_LAT=3,HLS_SYN_TPT=1,HLS_SYN_MEM=0,HLS_SYN_DSP=0,HLS_SYN_FF=509,HLS_SYN_LUT=3255,HLS_VERSION=2019_2_1}" *)
 
 module find_max_bin_64 (
         ap_clk,
@@ -236,70 +236,70 @@ input  [3:0] max_bin_count_60_V;
 input  [3:0] max_bin_count_61_V;
 input  [3:0] max_bin_count_62_V;
 input  [3:0] max_bin_count_63_V;
-input  [5:0] max_bin_r_0_V;
-input  [5:0] max_bin_r_1_V;
-input  [5:0] max_bin_r_2_V;
-input  [5:0] max_bin_r_3_V;
-input  [5:0] max_bin_r_4_V;
-input  [5:0] max_bin_r_5_V;
-input  [5:0] max_bin_r_6_V;
-input  [5:0] max_bin_r_7_V;
-input  [5:0] max_bin_r_8_V;
-input  [5:0] max_bin_r_9_V;
-input  [5:0] max_bin_r_10_V;
-input  [5:0] max_bin_r_11_V;
-input  [5:0] max_bin_r_12_V;
-input  [5:0] max_bin_r_13_V;
-input  [5:0] max_bin_r_14_V;
-input  [5:0] max_bin_r_15_V;
-input  [5:0] max_bin_r_16_V;
-input  [5:0] max_bin_r_17_V;
-input  [5:0] max_bin_r_18_V;
-input  [5:0] max_bin_r_19_V;
-input  [5:0] max_bin_r_20_V;
-input  [5:0] max_bin_r_21_V;
-input  [5:0] max_bin_r_22_V;
-input  [5:0] max_bin_r_23_V;
-input  [5:0] max_bin_r_24_V;
-input  [5:0] max_bin_r_25_V;
-input  [5:0] max_bin_r_26_V;
-input  [5:0] max_bin_r_27_V;
-input  [5:0] max_bin_r_28_V;
-input  [5:0] max_bin_r_29_V;
-input  [5:0] max_bin_r_30_V;
-input  [5:0] max_bin_r_31_V;
-input  [5:0] max_bin_r_32_V;
-input  [5:0] max_bin_r_33_V;
-input  [5:0] max_bin_r_34_V;
-input  [5:0] max_bin_r_35_V;
-input  [5:0] max_bin_r_36_V;
-input  [5:0] max_bin_r_37_V;
-input  [5:0] max_bin_r_38_V;
-input  [5:0] max_bin_r_39_V;
-input  [5:0] max_bin_r_40_V;
-input  [5:0] max_bin_r_41_V;
-input  [5:0] max_bin_r_42_V;
-input  [5:0] max_bin_r_43_V;
-input  [5:0] max_bin_r_44_V;
-input  [5:0] max_bin_r_45_V;
-input  [5:0] max_bin_r_46_V;
-input  [5:0] max_bin_r_47_V;
-input  [5:0] max_bin_r_48_V;
-input  [5:0] max_bin_r_49_V;
-input  [5:0] max_bin_r_50_V;
-input  [5:0] max_bin_r_51_V;
-input  [5:0] max_bin_r_52_V;
-input  [5:0] max_bin_r_53_V;
-input  [5:0] max_bin_r_54_V;
-input  [5:0] max_bin_r_55_V;
-input  [5:0] max_bin_r_56_V;
-input  [5:0] max_bin_r_57_V;
-input  [5:0] max_bin_r_58_V;
-input  [5:0] max_bin_r_59_V;
-input  [5:0] max_bin_r_60_V;
-input  [5:0] max_bin_r_61_V;
-input  [5:0] max_bin_r_62_V;
-input  [5:0] max_bin_r_63_V;
+input  [6:0] max_bin_r_0_V;
+input  [6:0] max_bin_r_1_V;
+input  [6:0] max_bin_r_2_V;
+input  [6:0] max_bin_r_3_V;
+input  [6:0] max_bin_r_4_V;
+input  [6:0] max_bin_r_5_V;
+input  [6:0] max_bin_r_6_V;
+input  [6:0] max_bin_r_7_V;
+input  [6:0] max_bin_r_8_V;
+input  [6:0] max_bin_r_9_V;
+input  [6:0] max_bin_r_10_V;
+input  [6:0] max_bin_r_11_V;
+input  [6:0] max_bin_r_12_V;
+input  [6:0] max_bin_r_13_V;
+input  [6:0] max_bin_r_14_V;
+input  [6:0] max_bin_r_15_V;
+input  [6:0] max_bin_r_16_V;
+input  [6:0] max_bin_r_17_V;
+input  [6:0] max_bin_r_18_V;
+input  [6:0] max_bin_r_19_V;
+input  [6:0] max_bin_r_20_V;
+input  [6:0] max_bin_r_21_V;
+input  [6:0] max_bin_r_22_V;
+input  [6:0] max_bin_r_23_V;
+input  [6:0] max_bin_r_24_V;
+input  [6:0] max_bin_r_25_V;
+input  [6:0] max_bin_r_26_V;
+input  [6:0] max_bin_r_27_V;
+input  [6:0] max_bin_r_28_V;
+input  [6:0] max_bin_r_29_V;
+input  [6:0] max_bin_r_30_V;
+input  [6:0] max_bin_r_31_V;
+input  [6:0] max_bin_r_32_V;
+input  [6:0] max_bin_r_33_V;
+input  [6:0] max_bin_r_34_V;
+input  [6:0] max_bin_r_35_V;
+input  [6:0] max_bin_r_36_V;
+input  [6:0] max_bin_r_37_V;
+input  [6:0] max_bin_r_38_V;
+input  [6:0] max_bin_r_39_V;
+input  [6:0] max_bin_r_40_V;
+input  [6:0] max_bin_r_41_V;
+input  [6:0] max_bin_r_42_V;
+input  [6:0] max_bin_r_43_V;
+input  [6:0] max_bin_r_44_V;
+input  [6:0] max_bin_r_45_V;
+input  [6:0] max_bin_r_46_V;
+input  [6:0] max_bin_r_47_V;
+input  [6:0] max_bin_r_48_V;
+input  [6:0] max_bin_r_49_V;
+input  [6:0] max_bin_r_50_V;
+input  [6:0] max_bin_r_51_V;
+input  [6:0] max_bin_r_52_V;
+input  [6:0] max_bin_r_53_V;
+input  [6:0] max_bin_r_54_V;
+input  [6:0] max_bin_r_55_V;
+input  [6:0] max_bin_r_56_V;
+input  [6:0] max_bin_r_57_V;
+input  [6:0] max_bin_r_58_V;
+input  [6:0] max_bin_r_59_V;
+input  [6:0] max_bin_r_60_V;
+input  [6:0] max_bin_r_61_V;
+input  [6:0] max_bin_r_62_V;
+input  [6:0] max_bin_r_63_V;
 output  [13:0] hls_LT_theta_global_V;
 output   hls_LT_theta_global_V_ap_vld;
 output  [21:0] hls_LT_r_global_V;
@@ -310,9 +310,9 @@ output  [21:0] hls_LT_r_V;
 output   hls_LT_r_V_ap_vld;
 output  [3:0] res_max_bin_count_V;
 output   res_max_bin_count_V_ap_vld;
-output  [5:0] res_max_bin_theta_V;
+output  [6:0] res_max_bin_theta_V;
 output   res_max_bin_theta_V_ap_vld;
-output  [5:0] res_max_bin_r_V;
+output  [6:0] res_max_bin_r_V;
 output   res_max_bin_r_V_ap_vld;
 
 reg ap_done;
@@ -353,506 +353,636 @@ reg    hls_LT_r_V_1_vld_in;
 reg   [3:0] res_max_bin_count_V_1_data_reg;
 reg    res_max_bin_count_V_1_vld_reg;
 reg    res_max_bin_count_V_1_vld_in;
-reg   [5:0] res_max_bin_theta_V_1_data_reg;
+reg   [6:0] res_max_bin_theta_V_1_data_reg;
 reg    res_max_bin_theta_V_1_vld_reg;
 reg    res_max_bin_theta_V_1_vld_in;
-reg   [5:0] res_max_bin_r_V_1_data_reg;
+reg   [6:0] res_max_bin_r_V_1_data_reg;
 reg    res_max_bin_r_V_1_vld_reg;
 reg    res_max_bin_r_V_1_vld_in;
-reg   [21:0] roi_seed_r_V_read_reg_4166;
-reg   [21:0] roi_seed_r_V_read_reg_4166_pp0_iter1_reg;
-reg   [13:0] slcvec_angle_polar_o_reg_4171;
-reg   [13:0] slcvec_angle_polar_o_reg_4171_pp0_iter1_reg;
-wire   [0:0] icmp_ln895_65_fu_1806_p2;
-reg   [0:0] icmp_ln895_65_reg_4176;
-wire   [5:0] select_ln425_1_fu_2634_p3;
-reg   [5:0] select_ln425_1_reg_4181;
-wire   [0:0] icmp_ln895_66_fu_1812_p2;
-reg   [0:0] icmp_ln895_66_reg_4186;
-wire   [5:0] select_ln425_4_fu_2651_p3;
-reg   [5:0] select_ln425_4_reg_4191;
-wire   [0:0] icmp_ln895_67_fu_1818_p2;
-reg   [0:0] icmp_ln895_67_reg_4196;
-wire   [5:0] select_ln425_7_fu_2668_p3;
-reg   [5:0] select_ln425_7_reg_4201;
-wire   [0:0] icmp_ln895_68_fu_1824_p2;
-reg   [0:0] icmp_ln895_68_reg_4206;
-wire   [5:0] select_ln425_10_fu_2685_p3;
-reg   [5:0] select_ln425_10_reg_4211;
-wire   [0:0] icmp_ln895_69_fu_1830_p2;
-reg   [0:0] icmp_ln895_69_reg_4216;
-wire   [5:0] select_ln425_13_fu_2702_p3;
-reg   [5:0] select_ln425_13_reg_4221;
-wire   [0:0] icmp_ln895_70_fu_1836_p2;
-reg   [0:0] icmp_ln895_70_reg_4226;
-wire   [5:0] select_ln425_16_fu_2719_p3;
-reg   [5:0] select_ln425_16_reg_4231;
-wire   [0:0] icmp_ln895_71_fu_1842_p2;
-reg   [0:0] icmp_ln895_71_reg_4236;
-wire   [5:0] select_ln425_19_fu_2736_p3;
-reg   [5:0] select_ln425_19_reg_4241;
-wire   [0:0] icmp_ln895_72_fu_1848_p2;
-reg   [0:0] icmp_ln895_72_reg_4246;
-wire   [5:0] select_ln425_22_fu_2753_p3;
-reg   [5:0] select_ln425_22_reg_4251;
-wire   [0:0] icmp_ln895_73_fu_1854_p2;
-reg   [0:0] icmp_ln895_73_reg_4256;
-wire   [0:0] icmp_ln895_74_fu_1860_p2;
-reg   [0:0] icmp_ln895_74_reg_4261;
-wire   [0:0] icmp_ln895_75_fu_1866_p2;
-reg   [0:0] icmp_ln895_75_reg_4266;
-wire   [0:0] icmp_ln895_76_fu_1872_p2;
-reg   [0:0] icmp_ln895_76_reg_4271;
-wire   [0:0] icmp_ln895_77_fu_1878_p2;
-reg   [0:0] icmp_ln895_77_reg_4276;
-wire   [0:0] icmp_ln895_78_fu_1884_p2;
-reg   [0:0] icmp_ln895_78_reg_4281;
-wire   [0:0] icmp_ln895_79_fu_1890_p2;
-reg   [0:0] icmp_ln895_79_reg_4286;
-wire   [0:0] icmp_ln895_80_fu_1896_p2;
-reg   [0:0] icmp_ln895_80_reg_4291;
-wire   [0:0] icmp_ln895_81_fu_1902_p2;
-reg   [0:0] icmp_ln895_81_reg_4296;
-wire   [5:0] select_ln425_49_fu_2906_p3;
-reg   [5:0] select_ln425_49_reg_4301;
-wire   [0:0] icmp_ln895_82_fu_1908_p2;
-reg   [0:0] icmp_ln895_82_reg_4306;
-wire   [5:0] select_ln425_52_fu_2923_p3;
-reg   [5:0] select_ln425_52_reg_4311;
-wire   [0:0] icmp_ln895_83_fu_1914_p2;
-reg   [0:0] icmp_ln895_83_reg_4316;
-wire   [5:0] select_ln425_55_fu_2940_p3;
-reg   [5:0] select_ln425_55_reg_4321;
-wire   [0:0] icmp_ln895_84_fu_1920_p2;
-reg   [0:0] icmp_ln895_84_reg_4326;
-wire   [5:0] select_ln425_58_fu_2957_p3;
-reg   [5:0] select_ln425_58_reg_4331;
-wire   [0:0] icmp_ln895_85_fu_1926_p2;
-reg   [0:0] icmp_ln895_85_reg_4336;
-wire   [5:0] select_ln425_61_fu_2974_p3;
-reg   [5:0] select_ln425_61_reg_4341;
-wire   [0:0] icmp_ln895_86_fu_1932_p2;
-reg   [0:0] icmp_ln895_86_reg_4346;
-wire   [5:0] select_ln425_64_fu_2991_p3;
-reg   [5:0] select_ln425_64_reg_4351;
-wire   [0:0] icmp_ln895_87_fu_1938_p2;
-reg   [0:0] icmp_ln895_87_reg_4356;
-wire   [5:0] select_ln425_67_fu_3008_p3;
-reg   [5:0] select_ln425_67_reg_4361;
-wire   [0:0] icmp_ln895_88_fu_1944_p2;
-reg   [0:0] icmp_ln895_88_reg_4366;
-wire   [5:0] select_ln425_70_fu_3025_p3;
-reg   [5:0] select_ln425_70_reg_4371;
-wire   [0:0] icmp_ln895_89_fu_1950_p2;
-reg   [0:0] icmp_ln895_89_reg_4376;
-wire   [0:0] icmp_ln895_90_fu_1956_p2;
-reg   [0:0] icmp_ln895_90_reg_4381;
-wire   [0:0] icmp_ln895_91_fu_1962_p2;
-reg   [0:0] icmp_ln895_91_reg_4386;
-wire   [0:0] icmp_ln895_92_fu_1968_p2;
-reg   [0:0] icmp_ln895_92_reg_4391;
-wire   [0:0] icmp_ln895_93_fu_1974_p2;
-reg   [0:0] icmp_ln895_93_reg_4396;
-wire   [0:0] icmp_ln895_94_fu_1980_p2;
-reg   [0:0] icmp_ln895_94_reg_4401;
-wire   [0:0] icmp_ln895_95_fu_1986_p2;
-reg   [0:0] icmp_ln895_95_reg_4406;
-wire   [0:0] icmp_ln895_96_fu_1992_p2;
-reg   [0:0] icmp_ln895_96_reg_4411;
-wire   [0:0] icmp_ln895_97_fu_1998_p2;
-reg   [0:0] icmp_ln895_97_reg_4416;
-wire   [0:0] icmp_ln895_98_fu_2002_p2;
-reg   [0:0] icmp_ln895_98_reg_4422;
-wire   [0:0] icmp_ln895_99_fu_2006_p2;
-reg   [0:0] icmp_ln895_99_reg_4428;
-wire   [0:0] icmp_ln895_100_fu_2010_p2;
-reg   [0:0] icmp_ln895_100_reg_4434;
-wire   [0:0] icmp_ln895_101_fu_2014_p2;
-reg   [0:0] icmp_ln895_101_reg_4440;
-wire   [0:0] icmp_ln895_102_fu_2018_p2;
-reg   [0:0] icmp_ln895_102_reg_4446;
-wire   [0:0] icmp_ln895_103_fu_2022_p2;
-reg   [0:0] icmp_ln895_103_reg_4452;
-wire   [0:0] icmp_ln895_104_fu_2026_p2;
-reg   [0:0] icmp_ln895_104_reg_4458;
-wire   [0:0] icmp_ln895_105_fu_2030_p2;
-reg   [0:0] icmp_ln895_105_reg_4464;
-wire   [5:0] select_ln443_25_fu_3250_p3;
-reg   [5:0] select_ln443_25_reg_4469;
-wire   [0:0] icmp_ln895_106_fu_2034_p2;
-reg   [0:0] icmp_ln895_106_reg_4474;
-wire   [5:0] select_ln443_28_fu_3267_p3;
-reg   [5:0] select_ln443_28_reg_4479;
-wire   [0:0] icmp_ln895_107_fu_2038_p2;
-reg   [0:0] icmp_ln895_107_reg_4484;
-wire   [5:0] select_ln443_31_fu_3284_p3;
-reg   [5:0] select_ln443_31_reg_4489;
-wire   [0:0] icmp_ln895_108_fu_2042_p2;
-reg   [0:0] icmp_ln895_108_reg_4494;
-wire   [5:0] select_ln443_34_fu_3301_p3;
-reg   [5:0] select_ln443_34_reg_4499;
-wire   [0:0] icmp_ln895_109_fu_2046_p2;
-reg   [0:0] icmp_ln895_109_reg_4504;
-wire   [5:0] select_ln443_37_fu_3318_p3;
-reg   [5:0] select_ln443_37_reg_4509;
-wire   [0:0] icmp_ln895_110_fu_2050_p2;
-reg   [0:0] icmp_ln895_110_reg_4514;
-wire   [5:0] select_ln443_40_fu_3335_p3;
-reg   [5:0] select_ln443_40_reg_4519;
-wire   [0:0] icmp_ln895_111_fu_2054_p2;
-reg   [0:0] icmp_ln895_111_reg_4524;
-wire   [5:0] select_ln443_43_fu_3352_p3;
-reg   [5:0] select_ln443_43_reg_4529;
-wire   [0:0] icmp_ln895_112_fu_2058_p2;
-reg   [0:0] icmp_ln895_112_reg_4534;
-wire   [5:0] select_ln443_46_fu_3369_p3;
-reg   [5:0] select_ln443_46_reg_4539;
-wire   [0:0] icmp_ln895_113_fu_2062_p2;
-reg   [0:0] icmp_ln895_113_reg_4544;
-wire   [3:0] select_ln461_2_fu_3386_p3;
-reg   [3:0] select_ln461_2_reg_4550;
-wire   [0:0] icmp_ln895_114_fu_2066_p2;
-reg   [0:0] icmp_ln895_114_reg_4556;
-wire   [3:0] select_ln461_5_fu_3394_p3;
-reg   [3:0] select_ln461_5_reg_4562;
-wire   [0:0] icmp_ln895_115_fu_2070_p2;
-reg   [0:0] icmp_ln895_115_reg_4568;
-wire   [3:0] select_ln461_8_fu_3402_p3;
-reg   [3:0] select_ln461_8_reg_4574;
-wire   [0:0] icmp_ln895_116_fu_2074_p2;
-reg   [0:0] icmp_ln895_116_reg_4580;
-wire   [3:0] select_ln461_11_fu_3410_p3;
-reg   [3:0] select_ln461_11_reg_4586;
-wire   [0:0] icmp_ln895_117_fu_2078_p2;
-reg   [0:0] icmp_ln895_117_reg_4592;
-wire   [3:0] select_ln461_14_fu_3418_p3;
-reg   [3:0] select_ln461_14_reg_4598;
-wire   [0:0] icmp_ln895_118_fu_2082_p2;
-reg   [0:0] icmp_ln895_118_reg_4604;
-wire   [3:0] select_ln461_17_fu_3426_p3;
-reg   [3:0] select_ln461_17_reg_4610;
-wire   [0:0] icmp_ln895_119_fu_2086_p2;
-reg   [0:0] icmp_ln895_119_reg_4616;
-wire   [3:0] select_ln461_20_fu_3434_p3;
-reg   [3:0] select_ln461_20_reg_4622;
-wire   [0:0] icmp_ln895_120_fu_2090_p2;
-reg   [0:0] icmp_ln895_120_reg_4628;
-wire   [3:0] select_ln461_23_fu_3442_p3;
-reg   [3:0] select_ln461_23_reg_4634;
-wire   [5:0] res_max_bin_theta_t_s_fu_4022_p3;
-reg   [5:0] res_max_bin_theta_t_s_reg_4640;
-wire   [5:0] res_max_bin_r_t_V_fu_4030_p3;
-reg   [5:0] res_max_bin_r_t_V_reg_4645;
-wire   [5:0] res_max_bin_theta_t_1_fu_4047_p3;
-reg   [5:0] res_max_bin_theta_t_1_reg_4650;
-wire   [5:0] res_max_bin_r_t_V_1_fu_4055_p3;
-reg   [5:0] res_max_bin_r_t_V_1_reg_4655;
-wire   [0:0] icmp_ln895_5_fu_2118_p2;
-reg   [0:0] icmp_ln895_5_reg_4660;
-wire   [3:0] res_max_bin_count_t_2_fu_4072_p3;
-reg   [3:0] res_max_bin_count_t_2_reg_4666;
-wire   [5:0] res_max_bin_theta_t_2_fu_4080_p3;
-wire   [5:0] tmp_V_fu_4091_p2;
-wire   [13:0] zext_ln703_1_fu_4116_p1;
-wire   [13:0] add_ln703_1_fu_4135_p2;
-wire   [21:0] zext_ln708_fu_4155_p1;
-wire   [21:0] add_ln703_2_fu_4160_p2;
+reg   [21:0] roi_seed_r_V_read_reg_4742;
+reg   [21:0] roi_seed_r_V_read_reg_4742_pp0_iter1_reg;
+reg   [13:0] slcvec_angle_polar_o_reg_4747;
+reg   [13:0] slcvec_angle_polar_o_reg_4747_pp0_iter1_reg;
+wire   [0:0] icmp_ln895_fu_1552_p2;
+reg   [0:0] icmp_ln895_reg_4752;
+wire   [0:0] icmp_ln895_1_fu_1558_p2;
+reg   [0:0] icmp_ln895_1_reg_4757;
+wire   [0:0] icmp_ln895_2_fu_1564_p2;
+reg   [0:0] icmp_ln895_2_reg_4762;
+wire   [0:0] icmp_ln895_3_fu_1570_p2;
+reg   [0:0] icmp_ln895_3_reg_4767;
+wire   [0:0] icmp_ln895_4_fu_1576_p2;
+reg   [0:0] icmp_ln895_4_reg_4772;
+wire   [0:0] icmp_ln895_6_fu_1582_p2;
+reg   [0:0] icmp_ln895_6_reg_4777;
+wire   [0:0] icmp_ln895_64_fu_1588_p2;
+reg   [0:0] icmp_ln895_64_reg_4782;
+wire   [0:0] icmp_ln895_7_fu_1594_p2;
+reg   [0:0] icmp_ln895_7_reg_4787;
+wire   [0:0] icmp_ln895_8_fu_1600_p2;
+reg   [0:0] icmp_ln895_8_reg_4792;
+wire   [0:0] icmp_ln895_9_fu_1606_p2;
+reg   [0:0] icmp_ln895_9_reg_4797;
+wire   [0:0] icmp_ln895_10_fu_1612_p2;
+reg   [0:0] icmp_ln895_10_reg_4802;
+wire   [0:0] icmp_ln895_11_fu_1618_p2;
+reg   [0:0] icmp_ln895_11_reg_4807;
+wire   [0:0] icmp_ln895_12_fu_1624_p2;
+reg   [0:0] icmp_ln895_12_reg_4812;
+wire   [0:0] icmp_ln895_13_fu_1630_p2;
+reg   [0:0] icmp_ln895_13_reg_4817;
+wire   [0:0] icmp_ln895_14_fu_1636_p2;
+reg   [0:0] icmp_ln895_14_reg_4822;
+wire   [0:0] icmp_ln895_15_fu_1642_p2;
+reg   [0:0] icmp_ln895_15_reg_4827;
+wire   [0:0] icmp_ln895_16_fu_1648_p2;
+reg   [0:0] icmp_ln895_16_reg_4832;
+wire   [0:0] icmp_ln895_17_fu_1654_p2;
+reg   [0:0] icmp_ln895_17_reg_4837;
+wire   [0:0] icmp_ln895_18_fu_1660_p2;
+reg   [0:0] icmp_ln895_18_reg_4842;
+wire   [0:0] icmp_ln895_19_fu_1666_p2;
+reg   [0:0] icmp_ln895_19_reg_4847;
+wire   [0:0] icmp_ln895_20_fu_1672_p2;
+reg   [0:0] icmp_ln895_20_reg_4852;
+wire   [0:0] icmp_ln895_21_fu_1678_p2;
+reg   [0:0] icmp_ln895_21_reg_4857;
+wire   [0:0] icmp_ln895_22_fu_1684_p2;
+reg   [0:0] icmp_ln895_22_reg_4862;
+wire   [0:0] icmp_ln895_23_fu_1690_p2;
+reg   [0:0] icmp_ln895_23_reg_4867;
+wire   [0:0] icmp_ln895_24_fu_1696_p2;
+reg   [0:0] icmp_ln895_24_reg_4872;
+wire   [0:0] icmp_ln895_25_fu_1702_p2;
+reg   [0:0] icmp_ln895_25_reg_4877;
+wire   [0:0] icmp_ln895_26_fu_1708_p2;
+reg   [0:0] icmp_ln895_26_reg_4882;
+wire   [0:0] icmp_ln895_27_fu_1714_p2;
+reg   [0:0] icmp_ln895_27_reg_4887;
+wire   [0:0] icmp_ln895_28_fu_1720_p2;
+reg   [0:0] icmp_ln895_28_reg_4892;
+wire   [0:0] icmp_ln895_29_fu_1726_p2;
+reg   [0:0] icmp_ln895_29_reg_4897;
+wire   [0:0] icmp_ln895_30_fu_1732_p2;
+reg   [0:0] icmp_ln895_30_reg_4902;
+wire   [0:0] icmp_ln895_31_fu_1738_p2;
+reg   [0:0] icmp_ln895_31_reg_4907;
+wire   [0:0] icmp_ln895_32_fu_1744_p2;
+reg   [0:0] icmp_ln895_32_reg_4912;
+wire   [0:0] icmp_ln895_33_fu_1750_p2;
+reg   [0:0] icmp_ln895_33_reg_4917;
+wire   [0:0] icmp_ln895_34_fu_1756_p2;
+reg   [0:0] icmp_ln895_34_reg_4922;
+wire   [0:0] icmp_ln895_35_fu_1762_p2;
+reg   [0:0] icmp_ln895_35_reg_4927;
+wire   [0:0] icmp_ln895_36_fu_1768_p2;
+reg   [0:0] icmp_ln895_36_reg_4932;
+wire   [0:0] icmp_ln895_37_fu_1774_p2;
+reg   [0:0] icmp_ln895_37_reg_4937;
+wire   [0:0] icmp_ln895_38_fu_1780_p2;
+reg   [0:0] icmp_ln895_38_reg_4942;
+wire   [0:0] icmp_ln895_39_fu_1786_p2;
+reg   [0:0] icmp_ln895_39_reg_4947;
+wire   [0:0] icmp_ln895_40_fu_1792_p2;
+reg   [0:0] icmp_ln895_40_reg_4952;
+wire   [0:0] icmp_ln895_41_fu_1798_p2;
+reg   [0:0] icmp_ln895_41_reg_4957;
+wire   [0:0] icmp_ln895_42_fu_1804_p2;
+reg   [0:0] icmp_ln895_42_reg_4962;
+wire   [0:0] icmp_ln895_43_fu_1810_p2;
+reg   [0:0] icmp_ln895_43_reg_4967;
+wire   [0:0] icmp_ln895_44_fu_1816_p2;
+reg   [0:0] icmp_ln895_44_reg_4972;
+wire   [0:0] icmp_ln895_45_fu_1822_p2;
+reg   [0:0] icmp_ln895_45_reg_4977;
+wire   [0:0] icmp_ln895_46_fu_1828_p2;
+reg   [0:0] icmp_ln895_46_reg_4982;
+wire   [0:0] icmp_ln895_47_fu_1834_p2;
+reg   [0:0] icmp_ln895_47_reg_4987;
+wire   [0:0] icmp_ln895_48_fu_1840_p2;
+reg   [0:0] icmp_ln895_48_reg_4992;
+wire   [0:0] icmp_ln895_49_fu_1846_p2;
+reg   [0:0] icmp_ln895_49_reg_4997;
+wire   [0:0] icmp_ln895_50_fu_1852_p2;
+reg   [0:0] icmp_ln895_50_reg_5002;
+wire   [0:0] icmp_ln895_51_fu_1858_p2;
+reg   [0:0] icmp_ln895_51_reg_5007;
+wire   [0:0] icmp_ln895_52_fu_1864_p2;
+reg   [0:0] icmp_ln895_52_reg_5012;
+wire   [0:0] icmp_ln895_53_fu_1870_p2;
+reg   [0:0] icmp_ln895_53_reg_5017;
+wire   [0:0] icmp_ln895_54_fu_1876_p2;
+reg   [0:0] icmp_ln895_54_reg_5022;
+wire   [0:0] icmp_ln895_55_fu_1882_p2;
+reg   [0:0] icmp_ln895_55_reg_5027;
+wire   [0:0] icmp_ln895_56_fu_1888_p2;
+reg   [0:0] icmp_ln895_56_reg_5032;
+wire   [0:0] icmp_ln895_57_fu_1894_p2;
+reg   [0:0] icmp_ln895_57_reg_5037;
+wire   [0:0] icmp_ln895_58_fu_1900_p2;
+reg   [0:0] icmp_ln895_58_reg_5042;
+wire   [0:0] icmp_ln895_59_fu_1906_p2;
+reg   [0:0] icmp_ln895_59_reg_5047;
+wire   [0:0] icmp_ln895_60_fu_1912_p2;
+reg   [0:0] icmp_ln895_60_reg_5052;
+wire   [0:0] icmp_ln895_61_fu_1918_p2;
+reg   [0:0] icmp_ln895_61_reg_5057;
+wire   [0:0] icmp_ln895_62_fu_1924_p2;
+reg   [0:0] icmp_ln895_62_reg_5062;
+wire   [0:0] icmp_ln895_63_fu_1930_p2;
+reg   [0:0] icmp_ln895_63_reg_5067;
+wire   [0:0] icmp_ln895_65_fu_1936_p2;
+reg   [0:0] icmp_ln895_65_reg_5072;
+wire   [6:0] select_ln430_1_fu_2764_p3;
+reg   [6:0] select_ln430_1_reg_5077;
+wire   [0:0] icmp_ln895_66_fu_1942_p2;
+reg   [0:0] icmp_ln895_66_reg_5082;
+wire   [6:0] select_ln430_4_fu_2781_p3;
+reg   [6:0] select_ln430_4_reg_5087;
+wire   [0:0] icmp_ln895_67_fu_1948_p2;
+reg   [0:0] icmp_ln895_67_reg_5092;
+wire   [6:0] select_ln430_7_fu_2798_p3;
+reg   [6:0] select_ln430_7_reg_5097;
+wire   [0:0] icmp_ln895_68_fu_1954_p2;
+reg   [0:0] icmp_ln895_68_reg_5102;
+wire   [6:0] select_ln430_10_fu_2815_p3;
+reg   [6:0] select_ln430_10_reg_5107;
+wire   [0:0] icmp_ln895_69_fu_1960_p2;
+reg   [0:0] icmp_ln895_69_reg_5112;
+wire   [6:0] select_ln430_13_fu_2832_p3;
+reg   [6:0] select_ln430_13_reg_5117;
+wire   [0:0] icmp_ln895_70_fu_1966_p2;
+reg   [0:0] icmp_ln895_70_reg_5122;
+wire   [6:0] select_ln430_16_fu_2849_p3;
+reg   [6:0] select_ln430_16_reg_5127;
+wire   [0:0] icmp_ln895_71_fu_1972_p2;
+reg   [0:0] icmp_ln895_71_reg_5132;
+wire   [6:0] select_ln430_19_fu_2866_p3;
+reg   [6:0] select_ln430_19_reg_5137;
+wire   [0:0] icmp_ln895_72_fu_1978_p2;
+reg   [0:0] icmp_ln895_72_reg_5142;
+wire   [6:0] select_ln430_22_fu_2883_p3;
+reg   [6:0] select_ln430_22_reg_5147;
+wire   [0:0] icmp_ln895_73_fu_1984_p2;
+reg   [0:0] icmp_ln895_73_reg_5152;
+wire   [0:0] icmp_ln895_74_fu_1990_p2;
+reg   [0:0] icmp_ln895_74_reg_5157;
+wire   [0:0] icmp_ln895_75_fu_1996_p2;
+reg   [0:0] icmp_ln895_75_reg_5162;
+wire   [0:0] icmp_ln895_76_fu_2002_p2;
+reg   [0:0] icmp_ln895_76_reg_5167;
+wire   [0:0] icmp_ln895_77_fu_2008_p2;
+reg   [0:0] icmp_ln895_77_reg_5172;
+wire   [0:0] icmp_ln895_78_fu_2014_p2;
+reg   [0:0] icmp_ln895_78_reg_5177;
+wire   [0:0] icmp_ln895_79_fu_2020_p2;
+reg   [0:0] icmp_ln895_79_reg_5182;
+wire   [0:0] icmp_ln895_80_fu_2026_p2;
+reg   [0:0] icmp_ln895_80_reg_5187;
+wire   [0:0] icmp_ln895_81_fu_2032_p2;
+reg   [0:0] icmp_ln895_81_reg_5192;
+wire   [6:0] select_ln430_49_fu_3036_p3;
+reg   [6:0] select_ln430_49_reg_5197;
+wire   [0:0] icmp_ln895_82_fu_2038_p2;
+reg   [0:0] icmp_ln895_82_reg_5202;
+wire   [6:0] select_ln430_52_fu_3053_p3;
+reg   [6:0] select_ln430_52_reg_5207;
+wire   [0:0] icmp_ln895_83_fu_2044_p2;
+reg   [0:0] icmp_ln895_83_reg_5212;
+wire   [6:0] select_ln430_55_fu_3070_p3;
+reg   [6:0] select_ln430_55_reg_5217;
+wire   [0:0] icmp_ln895_84_fu_2050_p2;
+reg   [0:0] icmp_ln895_84_reg_5222;
+wire   [6:0] select_ln430_58_fu_3087_p3;
+reg   [6:0] select_ln430_58_reg_5227;
+wire   [0:0] icmp_ln895_85_fu_2056_p2;
+reg   [0:0] icmp_ln895_85_reg_5232;
+wire   [6:0] select_ln430_61_fu_3104_p3;
+reg   [6:0] select_ln430_61_reg_5237;
+wire   [0:0] icmp_ln895_86_fu_2062_p2;
+reg   [0:0] icmp_ln895_86_reg_5242;
+wire   [6:0] select_ln430_64_fu_3121_p3;
+reg   [6:0] select_ln430_64_reg_5247;
+wire   [0:0] icmp_ln895_87_fu_2068_p2;
+reg   [0:0] icmp_ln895_87_reg_5252;
+wire   [6:0] select_ln430_67_fu_3138_p3;
+reg   [6:0] select_ln430_67_reg_5257;
+wire   [0:0] icmp_ln895_88_fu_2074_p2;
+reg   [0:0] icmp_ln895_88_reg_5262;
+wire   [6:0] select_ln430_70_fu_3155_p3;
+reg   [6:0] select_ln430_70_reg_5267;
+wire   [0:0] icmp_ln895_89_fu_2080_p2;
+reg   [0:0] icmp_ln895_89_reg_5272;
+wire   [0:0] icmp_ln895_90_fu_2086_p2;
+reg   [0:0] icmp_ln895_90_reg_5277;
+wire   [0:0] icmp_ln895_91_fu_2092_p2;
+reg   [0:0] icmp_ln895_91_reg_5282;
+wire   [0:0] icmp_ln895_92_fu_2098_p2;
+reg   [0:0] icmp_ln895_92_reg_5287;
+wire   [0:0] icmp_ln895_93_fu_2104_p2;
+reg   [0:0] icmp_ln895_93_reg_5292;
+wire   [0:0] icmp_ln895_94_fu_2110_p2;
+reg   [0:0] icmp_ln895_94_reg_5297;
+wire   [0:0] icmp_ln895_95_fu_2116_p2;
+reg   [0:0] icmp_ln895_95_reg_5302;
+wire   [0:0] icmp_ln895_96_fu_2122_p2;
+reg   [0:0] icmp_ln895_96_reg_5307;
+wire   [0:0] icmp_ln895_97_fu_2128_p2;
+reg   [0:0] icmp_ln895_97_reg_5312;
+wire   [0:0] icmp_ln895_98_fu_2132_p2;
+reg   [0:0] icmp_ln895_98_reg_5318;
+wire   [0:0] icmp_ln895_99_fu_2136_p2;
+reg   [0:0] icmp_ln895_99_reg_5324;
+wire   [0:0] icmp_ln895_100_fu_2140_p2;
+reg   [0:0] icmp_ln895_100_reg_5330;
+wire   [0:0] icmp_ln895_101_fu_2144_p2;
+reg   [0:0] icmp_ln895_101_reg_5336;
+wire   [0:0] icmp_ln895_102_fu_2148_p2;
+reg   [0:0] icmp_ln895_102_reg_5342;
+wire   [0:0] icmp_ln895_103_fu_2152_p2;
+reg   [0:0] icmp_ln895_103_reg_5348;
+wire   [0:0] icmp_ln895_104_fu_2156_p2;
+reg   [0:0] icmp_ln895_104_reg_5354;
+wire   [0:0] icmp_ln895_105_fu_2160_p2;
+reg   [0:0] icmp_ln895_105_reg_5360;
+wire   [6:0] select_ln448_25_fu_3380_p3;
+reg   [6:0] select_ln448_25_reg_5365;
+wire   [0:0] icmp_ln895_106_fu_2164_p2;
+reg   [0:0] icmp_ln895_106_reg_5370;
+wire   [6:0] select_ln448_28_fu_3397_p3;
+reg   [6:0] select_ln448_28_reg_5375;
+wire   [0:0] icmp_ln895_107_fu_2168_p2;
+reg   [0:0] icmp_ln895_107_reg_5380;
+wire   [6:0] select_ln448_31_fu_3414_p3;
+reg   [6:0] select_ln448_31_reg_5385;
+wire   [0:0] icmp_ln895_108_fu_2172_p2;
+reg   [0:0] icmp_ln895_108_reg_5390;
+wire   [6:0] select_ln448_34_fu_3431_p3;
+reg   [6:0] select_ln448_34_reg_5395;
+wire   [0:0] icmp_ln895_109_fu_2176_p2;
+reg   [0:0] icmp_ln895_109_reg_5400;
+wire   [6:0] select_ln448_37_fu_3448_p3;
+reg   [6:0] select_ln448_37_reg_5405;
+wire   [0:0] icmp_ln895_110_fu_2180_p2;
+reg   [0:0] icmp_ln895_110_reg_5410;
+wire   [6:0] select_ln448_40_fu_3465_p3;
+reg   [6:0] select_ln448_40_reg_5415;
+wire   [0:0] icmp_ln895_111_fu_2184_p2;
+reg   [0:0] icmp_ln895_111_reg_5420;
+wire   [6:0] select_ln448_43_fu_3482_p3;
+reg   [6:0] select_ln448_43_reg_5425;
+wire   [0:0] icmp_ln895_112_fu_2188_p2;
+reg   [0:0] icmp_ln895_112_reg_5430;
+wire   [6:0] select_ln448_46_fu_3499_p3;
+reg   [6:0] select_ln448_46_reg_5435;
+wire   [0:0] icmp_ln895_113_fu_2192_p2;
+reg   [0:0] icmp_ln895_113_reg_5440;
+wire   [3:0] select_ln466_2_fu_3516_p3;
+reg   [3:0] select_ln466_2_reg_5446;
+wire   [0:0] icmp_ln895_114_fu_2196_p2;
+reg   [0:0] icmp_ln895_114_reg_5452;
+wire   [3:0] select_ln466_5_fu_3524_p3;
+reg   [3:0] select_ln466_5_reg_5458;
+wire   [0:0] icmp_ln895_115_fu_2200_p2;
+reg   [0:0] icmp_ln895_115_reg_5464;
+wire   [3:0] select_ln466_8_fu_3532_p3;
+reg   [3:0] select_ln466_8_reg_5470;
+wire   [0:0] icmp_ln895_116_fu_2204_p2;
+reg   [0:0] icmp_ln895_116_reg_5476;
+wire   [3:0] select_ln466_11_fu_3540_p3;
+reg   [3:0] select_ln466_11_reg_5482;
+wire   [0:0] icmp_ln895_117_fu_2208_p2;
+reg   [0:0] icmp_ln895_117_reg_5488;
+wire   [3:0] select_ln466_14_fu_3548_p3;
+reg   [3:0] select_ln466_14_reg_5494;
+wire   [0:0] icmp_ln895_118_fu_2212_p2;
+reg   [0:0] icmp_ln895_118_reg_5500;
+wire   [3:0] select_ln466_17_fu_3556_p3;
+reg   [3:0] select_ln466_17_reg_5506;
+wire   [0:0] icmp_ln895_119_fu_2216_p2;
+reg   [0:0] icmp_ln895_119_reg_5512;
+wire   [3:0] select_ln466_20_fu_3564_p3;
+reg   [3:0] select_ln466_20_reg_5518;
+wire   [0:0] icmp_ln895_120_fu_2220_p2;
+reg   [0:0] icmp_ln895_120_reg_5524;
+wire   [3:0] select_ln466_23_fu_3572_p3;
+reg   [3:0] select_ln466_23_reg_5530;
+wire   [6:0] select_ln484_fu_4508_p3;
+reg   [6:0] select_ln484_reg_5536;
+wire   [6:0] select_ln484_6_fu_4554_p3;
+reg   [6:0] select_ln484_6_reg_5541;
+wire   [0:0] icmp_ln895_125_fu_2240_p2;
+reg   [0:0] icmp_ln895_125_reg_5546;
+wire   [6:0] res_max_bin_r_t_V_fu_4600_p3;
+reg   [6:0] res_max_bin_r_t_V_reg_5551;
+wire   [6:0] res_max_bin_theta_t_1_fu_4617_p3;
+reg   [6:0] res_max_bin_theta_t_1_reg_5556;
+wire   [6:0] res_max_bin_r_t_V_1_fu_4625_p3;
+reg   [6:0] res_max_bin_r_t_V_1_reg_5561;
+wire   [0:0] icmp_ln895_5_fu_2248_p2;
+reg   [0:0] icmp_ln895_5_reg_5566;
+wire   [3:0] res_max_bin_count_t_2_fu_4642_p3;
+reg   [3:0] res_max_bin_count_t_2_reg_5572;
+wire   [6:0] res_max_bin_theta_t_2_fu_4655_p3;
+wire   [6:0] tmp_V_fu_4667_p2;
+wire   [13:0] zext_ln703_1_fu_4692_p1;
+wire   [13:0] add_ln703_1_fu_4711_p2;
+wire   [21:0] zext_ln708_fu_4731_p1;
+wire   [21:0] add_ln703_2_fu_4736_p2;
 reg    ap_block_pp0_stage0_subdone;
 reg    ap_block_pp0_stage0_01001;
 wire    ap_block_pp0_stage0;
-wire   [3:0] select_ln425_2_fu_2642_p3;
-wire   [3:0] select_ln425_50_fu_2914_p3;
-wire   [3:0] select_ln425_5_fu_2659_p3;
-wire   [3:0] select_ln425_53_fu_2931_p3;
-wire   [3:0] select_ln425_8_fu_2676_p3;
-wire   [3:0] select_ln425_56_fu_2948_p3;
-wire   [3:0] select_ln425_11_fu_2693_p3;
-wire   [3:0] select_ln425_59_fu_2965_p3;
-wire   [3:0] select_ln425_14_fu_2710_p3;
-wire   [3:0] select_ln425_62_fu_2982_p3;
-wire   [3:0] select_ln425_17_fu_2727_p3;
-wire   [3:0] select_ln425_65_fu_2999_p3;
-wire   [3:0] select_ln425_20_fu_2744_p3;
-wire   [3:0] select_ln425_68_fu_3016_p3;
-wire   [3:0] select_ln425_23_fu_2761_p3;
-wire   [3:0] select_ln425_71_fu_3033_p3;
-wire   [3:0] select_ln425_26_fu_2778_p3;
-wire   [3:0] select_ln425_74_fu_3050_p3;
-wire   [3:0] select_ln425_29_fu_2795_p3;
-wire   [3:0] select_ln425_77_fu_3067_p3;
-wire   [3:0] select_ln425_32_fu_2812_p3;
-wire   [3:0] select_ln425_80_fu_3084_p3;
-wire   [3:0] select_ln425_35_fu_2829_p3;
-wire   [3:0] select_ln425_83_fu_3101_p3;
-wire   [3:0] select_ln425_38_fu_2846_p3;
-wire   [3:0] select_ln425_86_fu_3118_p3;
-wire   [3:0] select_ln425_41_fu_2863_p3;
-wire   [3:0] select_ln425_89_fu_3135_p3;
-wire   [3:0] select_ln425_44_fu_2880_p3;
-wire   [3:0] select_ln425_92_fu_3152_p3;
-wire   [3:0] select_ln425_47_fu_2897_p3;
-wire   [3:0] select_ln425_95_fu_3169_p3;
-wire   [3:0] select_ln443_2_fu_3178_p3;
-wire   [3:0] select_ln443_26_fu_3258_p3;
-wire   [3:0] select_ln443_5_fu_3187_p3;
-wire   [3:0] select_ln443_29_fu_3275_p3;
-wire   [3:0] select_ln443_8_fu_3196_p3;
-wire   [3:0] select_ln443_32_fu_3292_p3;
-wire   [3:0] select_ln443_11_fu_3205_p3;
-wire   [3:0] select_ln443_35_fu_3309_p3;
-wire   [3:0] select_ln443_14_fu_3214_p3;
-wire   [3:0] select_ln443_38_fu_3326_p3;
-wire   [3:0] select_ln443_17_fu_3223_p3;
-wire   [3:0] select_ln443_41_fu_3343_p3;
-wire   [3:0] select_ln443_20_fu_3232_p3;
-wire   [3:0] select_ln443_44_fu_3360_p3;
-wire   [3:0] select_ln443_23_fu_3241_p3;
-wire   [3:0] select_ln443_47_fu_3377_p3;
-wire   [3:0] select_ln479_2_fu_3946_p3;
-wire   [3:0] select_ln479_8_fu_3992_p3;
-wire   [3:0] select_ln479_5_fu_3969_p3;
-wire   [3:0] select_ln479_11_fu_4015_p3;
-wire   [3:0] res_max_bin_count_t_s_fu_4038_p3;
-wire   [3:0] res_max_bin_count_t_1_fu_4063_p3;
-wire   [0:0] icmp_ln895_fu_1422_p2;
-wire   [0:0] icmp_ln895_1_fu_1428_p2;
-wire   [0:0] icmp_ln895_2_fu_1434_p2;
-wire   [0:0] icmp_ln895_3_fu_1440_p2;
-wire   [0:0] icmp_ln895_4_fu_1446_p2;
-wire   [0:0] icmp_ln895_6_fu_1452_p2;
-wire   [0:0] icmp_ln895_64_fu_1458_p2;
-wire   [0:0] icmp_ln895_7_fu_1464_p2;
-wire   [0:0] icmp_ln895_8_fu_1470_p2;
-wire   [0:0] icmp_ln895_9_fu_1476_p2;
-wire   [0:0] icmp_ln895_10_fu_1482_p2;
-wire   [0:0] icmp_ln895_11_fu_1488_p2;
-wire   [0:0] icmp_ln895_12_fu_1494_p2;
-wire   [0:0] icmp_ln895_13_fu_1500_p2;
-wire   [0:0] icmp_ln895_14_fu_1506_p2;
-wire   [0:0] icmp_ln895_15_fu_1512_p2;
-wire   [0:0] icmp_ln895_16_fu_1518_p2;
-wire   [0:0] icmp_ln895_17_fu_1524_p2;
-wire   [0:0] icmp_ln895_18_fu_1530_p2;
-wire   [0:0] icmp_ln895_19_fu_1536_p2;
-wire   [0:0] icmp_ln895_20_fu_1542_p2;
-wire   [0:0] icmp_ln895_21_fu_1548_p2;
-wire   [0:0] icmp_ln895_22_fu_1554_p2;
-wire   [0:0] icmp_ln895_23_fu_1560_p2;
-wire   [0:0] icmp_ln895_24_fu_1566_p2;
-wire   [0:0] icmp_ln895_25_fu_1572_p2;
-wire   [0:0] icmp_ln895_26_fu_1578_p2;
-wire   [0:0] icmp_ln895_27_fu_1584_p2;
-wire   [0:0] icmp_ln895_28_fu_1590_p2;
-wire   [0:0] icmp_ln895_29_fu_1596_p2;
-wire   [0:0] icmp_ln895_30_fu_1602_p2;
-wire   [0:0] icmp_ln895_31_fu_1608_p2;
-wire   [0:0] icmp_ln895_32_fu_1614_p2;
-wire   [0:0] icmp_ln895_33_fu_1620_p2;
-wire   [0:0] icmp_ln895_34_fu_1626_p2;
-wire   [0:0] icmp_ln895_35_fu_1632_p2;
-wire   [0:0] icmp_ln895_36_fu_1638_p2;
-wire   [0:0] icmp_ln895_37_fu_1644_p2;
-wire   [0:0] icmp_ln895_38_fu_1650_p2;
-wire   [0:0] icmp_ln895_39_fu_1656_p2;
-wire   [0:0] icmp_ln895_40_fu_1662_p2;
-wire   [0:0] icmp_ln895_41_fu_1668_p2;
-wire   [0:0] icmp_ln895_42_fu_1674_p2;
-wire   [0:0] icmp_ln895_43_fu_1680_p2;
-wire   [0:0] icmp_ln895_44_fu_1686_p2;
-wire   [0:0] icmp_ln895_45_fu_1692_p2;
-wire   [0:0] icmp_ln895_46_fu_1698_p2;
-wire   [0:0] icmp_ln895_47_fu_1704_p2;
-wire   [0:0] icmp_ln895_48_fu_1710_p2;
-wire   [0:0] icmp_ln895_49_fu_1716_p2;
-wire   [0:0] icmp_ln895_50_fu_1722_p2;
-wire   [0:0] icmp_ln895_51_fu_1728_p2;
-wire   [0:0] icmp_ln895_52_fu_1734_p2;
-wire   [0:0] icmp_ln895_53_fu_1740_p2;
-wire   [0:0] icmp_ln895_54_fu_1746_p2;
-wire   [0:0] icmp_ln895_55_fu_1752_p2;
-wire   [0:0] icmp_ln895_56_fu_1758_p2;
-wire   [0:0] icmp_ln895_57_fu_1764_p2;
-wire   [0:0] icmp_ln895_58_fu_1770_p2;
-wire   [0:0] icmp_ln895_59_fu_1776_p2;
-wire   [0:0] icmp_ln895_60_fu_1782_p2;
-wire   [0:0] icmp_ln895_61_fu_1788_p2;
-wire   [0:0] icmp_ln895_62_fu_1794_p2;
-wire   [0:0] icmp_ln895_63_fu_1800_p2;
-wire   [5:0] select_ln407_fu_2122_p3;
-wire   [5:0] select_ln407_32_fu_2378_p3;
-wire   [5:0] select_ln407_1_fu_2130_p3;
-wire   [5:0] select_ln407_33_fu_2386_p3;
-wire   [5:0] select_ln407_2_fu_2138_p3;
-wire   [5:0] select_ln407_34_fu_2394_p3;
-wire   [5:0] select_ln407_3_fu_2146_p3;
-wire   [5:0] select_ln407_35_fu_2402_p3;
-wire   [5:0] select_ln407_4_fu_2154_p3;
-wire   [5:0] select_ln407_36_fu_2410_p3;
-wire   [5:0] select_ln407_5_fu_2162_p3;
-wire   [5:0] select_ln407_37_fu_2418_p3;
-wire   [5:0] select_ln407_6_fu_2170_p3;
-wire   [5:0] select_ln407_38_fu_2426_p3;
-wire   [5:0] select_ln407_7_fu_2178_p3;
-wire   [5:0] select_ln407_39_fu_2434_p3;
-wire   [5:0] select_ln407_8_fu_2186_p3;
-wire   [5:0] select_ln407_40_fu_2442_p3;
-wire   [5:0] select_ln407_9_fu_2194_p3;
-wire   [5:0] select_ln407_41_fu_2450_p3;
-wire   [5:0] select_ln407_10_fu_2202_p3;
-wire   [5:0] select_ln407_42_fu_2458_p3;
-wire   [5:0] select_ln407_11_fu_2210_p3;
-wire   [5:0] select_ln407_43_fu_2466_p3;
-wire   [5:0] select_ln407_12_fu_2218_p3;
-wire   [5:0] select_ln407_44_fu_2474_p3;
-wire   [5:0] select_ln407_13_fu_2226_p3;
-wire   [5:0] select_ln407_45_fu_2482_p3;
-wire   [5:0] select_ln407_14_fu_2234_p3;
-wire   [5:0] select_ln407_46_fu_2490_p3;
-wire   [5:0] select_ln407_15_fu_2242_p3;
-wire   [5:0] select_ln407_47_fu_2498_p3;
-wire   [5:0] select_ln407_16_fu_2250_p3;
-wire   [5:0] select_ln407_48_fu_2506_p3;
-wire   [5:0] select_ln407_17_fu_2258_p3;
-wire   [5:0] select_ln407_49_fu_2514_p3;
-wire   [5:0] select_ln407_18_fu_2266_p3;
-wire   [5:0] select_ln407_50_fu_2522_p3;
-wire   [5:0] select_ln407_19_fu_2274_p3;
-wire   [5:0] select_ln407_51_fu_2530_p3;
-wire   [5:0] select_ln407_20_fu_2282_p3;
-wire   [5:0] select_ln407_52_fu_2538_p3;
-wire   [5:0] select_ln407_21_fu_2290_p3;
-wire   [5:0] select_ln407_53_fu_2546_p3;
-wire   [5:0] select_ln407_22_fu_2298_p3;
-wire   [5:0] select_ln407_54_fu_2554_p3;
-wire   [5:0] select_ln407_23_fu_2306_p3;
-wire   [5:0] select_ln407_55_fu_2562_p3;
-wire   [5:0] select_ln407_24_fu_2314_p3;
-wire   [5:0] select_ln407_56_fu_2570_p3;
-wire   [5:0] select_ln407_25_fu_2322_p3;
-wire   [5:0] select_ln407_57_fu_2578_p3;
-wire   [5:0] select_ln407_26_fu_2330_p3;
-wire   [5:0] select_ln407_58_fu_2586_p3;
-wire   [5:0] select_ln407_27_fu_2338_p3;
-wire   [5:0] select_ln407_59_fu_2594_p3;
-wire   [5:0] select_ln407_28_fu_2346_p3;
-wire   [5:0] select_ln407_60_fu_2602_p3;
-wire   [5:0] select_ln407_29_fu_2354_p3;
-wire   [5:0] select_ln407_61_fu_2610_p3;
-wire   [5:0] select_ln407_30_fu_2362_p3;
-wire   [5:0] select_ln407_62_fu_2618_p3;
-wire   [5:0] select_ln407_31_fu_2370_p3;
-wire   [5:0] select_ln407_63_fu_2626_p3;
-wire   [5:0] select_ln425_25_fu_2770_p3;
-wire   [5:0] select_ln425_73_fu_3042_p3;
-wire   [5:0] select_ln425_28_fu_2787_p3;
-wire   [5:0] select_ln425_76_fu_3059_p3;
-wire   [5:0] select_ln425_31_fu_2804_p3;
-wire   [5:0] select_ln425_79_fu_3076_p3;
-wire   [5:0] select_ln425_34_fu_2821_p3;
-wire   [5:0] select_ln425_82_fu_3093_p3;
-wire   [5:0] select_ln425_37_fu_2838_p3;
-wire   [5:0] select_ln425_85_fu_3110_p3;
-wire   [5:0] select_ln425_40_fu_2855_p3;
-wire   [5:0] select_ln425_88_fu_3127_p3;
-wire   [5:0] select_ln425_43_fu_2872_p3;
-wire   [5:0] select_ln425_91_fu_3144_p3;
-wire   [5:0] select_ln425_46_fu_2889_p3;
-wire   [5:0] select_ln425_94_fu_3161_p3;
-wire   [5:0] select_ln425_fu_3450_p3;
-wire   [5:0] select_ln425_48_fu_3562_p3;
-wire   [5:0] select_ln425_3_fu_3457_p3;
-wire   [5:0] select_ln425_51_fu_3569_p3;
-wire   [5:0] select_ln425_6_fu_3464_p3;
-wire   [5:0] select_ln425_54_fu_3576_p3;
-wire   [5:0] select_ln425_9_fu_3471_p3;
-wire   [5:0] select_ln425_57_fu_3583_p3;
-wire   [5:0] select_ln425_12_fu_3478_p3;
-wire   [5:0] select_ln425_60_fu_3590_p3;
-wire   [5:0] select_ln425_15_fu_3485_p3;
-wire   [5:0] select_ln425_63_fu_3597_p3;
-wire   [5:0] select_ln425_18_fu_3492_p3;
-wire   [5:0] select_ln425_66_fu_3604_p3;
-wire   [5:0] select_ln425_21_fu_3499_p3;
-wire   [5:0] select_ln425_69_fu_3611_p3;
-wire   [5:0] select_ln425_24_fu_3506_p3;
-wire   [5:0] select_ln425_72_fu_3618_p3;
-wire   [5:0] select_ln425_27_fu_3513_p3;
-wire   [5:0] select_ln425_75_fu_3625_p3;
-wire   [5:0] select_ln425_30_fu_3520_p3;
-wire   [5:0] select_ln425_78_fu_3632_p3;
-wire   [5:0] select_ln425_33_fu_3527_p3;
-wire   [5:0] select_ln425_81_fu_3639_p3;
-wire   [5:0] select_ln425_36_fu_3534_p3;
-wire   [5:0] select_ln425_84_fu_3646_p3;
-wire   [5:0] select_ln425_39_fu_3541_p3;
-wire   [5:0] select_ln425_87_fu_3653_p3;
-wire   [5:0] select_ln425_42_fu_3548_p3;
-wire   [5:0] select_ln425_90_fu_3660_p3;
-wire   [5:0] select_ln425_45_fu_3555_p3;
-wire   [5:0] select_ln425_93_fu_3667_p3;
-wire   [5:0] select_ln443_fu_3674_p3;
-wire   [5:0] select_ln443_24_fu_3770_p3;
-wire   [5:0] select_ln443_1_fu_3681_p3;
-wire   [5:0] select_ln443_3_fu_3686_p3;
-wire   [5:0] select_ln443_27_fu_3777_p3;
-wire   [5:0] select_ln443_4_fu_3693_p3;
-wire   [5:0] select_ln443_6_fu_3698_p3;
-wire   [5:0] select_ln443_30_fu_3784_p3;
-wire   [5:0] select_ln443_7_fu_3705_p3;
-wire   [5:0] select_ln443_9_fu_3710_p3;
-wire   [5:0] select_ln443_33_fu_3791_p3;
-wire   [5:0] select_ln443_10_fu_3717_p3;
-wire   [5:0] select_ln443_12_fu_3722_p3;
-wire   [5:0] select_ln443_36_fu_3798_p3;
-wire   [5:0] select_ln443_13_fu_3729_p3;
-wire   [5:0] select_ln443_15_fu_3734_p3;
-wire   [5:0] select_ln443_39_fu_3805_p3;
-wire   [5:0] select_ln443_16_fu_3741_p3;
-wire   [5:0] select_ln443_18_fu_3746_p3;
-wire   [5:0] select_ln443_42_fu_3812_p3;
-wire   [5:0] select_ln443_19_fu_3753_p3;
-wire   [5:0] select_ln443_21_fu_3758_p3;
-wire   [5:0] select_ln443_45_fu_3819_p3;
-wire   [5:0] select_ln443_22_fu_3765_p3;
-wire   [0:0] icmp_ln895_121_fu_2094_p2;
-wire   [5:0] select_ln461_fu_3826_p3;
-wire   [5:0] select_ln461_12_fu_3878_p3;
-wire   [5:0] select_ln461_1_fu_3833_p3;
-wire   [5:0] select_ln461_13_fu_3885_p3;
-wire   [0:0] icmp_ln895_122_fu_2098_p2;
-wire   [5:0] select_ln461_3_fu_3839_p3;
-wire   [5:0] select_ln461_15_fu_3891_p3;
-wire   [5:0] select_ln461_4_fu_3846_p3;
-wire   [5:0] select_ln461_16_fu_3898_p3;
-wire   [0:0] icmp_ln895_123_fu_2102_p2;
-wire   [5:0] select_ln461_6_fu_3852_p3;
-wire   [5:0] select_ln461_18_fu_3904_p3;
-wire   [5:0] select_ln461_7_fu_3859_p3;
-wire   [5:0] select_ln461_19_fu_3911_p3;
-wire   [0:0] icmp_ln895_124_fu_2106_p2;
-wire   [5:0] select_ln461_9_fu_3865_p3;
-wire   [5:0] select_ln461_21_fu_3917_p3;
-wire   [5:0] select_ln461_10_fu_3872_p3;
-wire   [5:0] select_ln461_22_fu_3924_p3;
-wire   [0:0] icmp_ln895_125_fu_2110_p2;
-wire   [5:0] select_ln479_fu_3930_p3;
-wire   [5:0] select_ln479_6_fu_3976_p3;
-wire   [5:0] select_ln479_1_fu_3938_p3;
-wire   [5:0] select_ln479_7_fu_3984_p3;
-wire   [0:0] icmp_ln895_126_fu_2114_p2;
-wire   [5:0] select_ln479_3_fu_3953_p3;
-wire   [5:0] select_ln479_9_fu_3999_p3;
-wire   [5:0] select_ln479_4_fu_3961_p3;
-wire   [5:0] select_ln479_10_fu_4007_p3;
-wire   [5:0] res_max_bin_r_t_V_2_fu_4086_p3;
-wire   [7:0] t0_V_fu_4098_p3;
-wire   [7:0] p_Val2_2_fu_4106_p2;
-wire   [11:0] zext_ln703_fu_4112_p1;
-wire   [11:0] add_ln703_fu_4121_p2;
-wire  signed [12:0] sext_ln703_fu_4127_p1;
-wire   [13:0] zext_ln703_2_fu_4131_p1;
-wire   [11:0] shl_ln_fu_4141_p3;
-wire   [11:0] p_Val2_4_fu_4149_p2;
+wire   [3:0] select_ln430_2_fu_2772_p3;
+wire   [3:0] select_ln430_50_fu_3044_p3;
+wire   [3:0] select_ln430_5_fu_2789_p3;
+wire   [3:0] select_ln430_53_fu_3061_p3;
+wire   [3:0] select_ln430_8_fu_2806_p3;
+wire   [3:0] select_ln430_56_fu_3078_p3;
+wire   [3:0] select_ln430_11_fu_2823_p3;
+wire   [3:0] select_ln430_59_fu_3095_p3;
+wire   [3:0] select_ln430_14_fu_2840_p3;
+wire   [3:0] select_ln430_62_fu_3112_p3;
+wire   [3:0] select_ln430_17_fu_2857_p3;
+wire   [3:0] select_ln430_65_fu_3129_p3;
+wire   [3:0] select_ln430_20_fu_2874_p3;
+wire   [3:0] select_ln430_68_fu_3146_p3;
+wire   [3:0] select_ln430_23_fu_2891_p3;
+wire   [3:0] select_ln430_71_fu_3163_p3;
+wire   [3:0] select_ln430_26_fu_2908_p3;
+wire   [3:0] select_ln430_74_fu_3180_p3;
+wire   [3:0] select_ln430_29_fu_2925_p3;
+wire   [3:0] select_ln430_77_fu_3197_p3;
+wire   [3:0] select_ln430_32_fu_2942_p3;
+wire   [3:0] select_ln430_80_fu_3214_p3;
+wire   [3:0] select_ln430_35_fu_2959_p3;
+wire   [3:0] select_ln430_83_fu_3231_p3;
+wire   [3:0] select_ln430_38_fu_2976_p3;
+wire   [3:0] select_ln430_86_fu_3248_p3;
+wire   [3:0] select_ln430_41_fu_2993_p3;
+wire   [3:0] select_ln430_89_fu_3265_p3;
+wire   [3:0] select_ln430_44_fu_3010_p3;
+wire   [3:0] select_ln430_92_fu_3282_p3;
+wire   [3:0] select_ln430_47_fu_3027_p3;
+wire   [3:0] select_ln430_95_fu_3299_p3;
+wire   [3:0] select_ln448_2_fu_3308_p3;
+wire   [3:0] select_ln448_26_fu_3388_p3;
+wire   [3:0] select_ln448_5_fu_3317_p3;
+wire   [3:0] select_ln448_29_fu_3405_p3;
+wire   [3:0] select_ln448_8_fu_3326_p3;
+wire   [3:0] select_ln448_32_fu_3422_p3;
+wire   [3:0] select_ln448_11_fu_3335_p3;
+wire   [3:0] select_ln448_35_fu_3439_p3;
+wire   [3:0] select_ln448_14_fu_3344_p3;
+wire   [3:0] select_ln448_38_fu_3456_p3;
+wire   [3:0] select_ln448_17_fu_3353_p3;
+wire   [3:0] select_ln448_41_fu_3473_p3;
+wire   [3:0] select_ln448_20_fu_3362_p3;
+wire   [3:0] select_ln448_44_fu_3490_p3;
+wire   [3:0] select_ln448_23_fu_3371_p3;
+wire   [3:0] select_ln448_47_fu_3507_p3;
+wire   [3:0] select_ln484_2_fu_4524_p3;
+wire   [3:0] select_ln484_8_fu_4570_p3;
+wire   [3:0] select_ln484_5_fu_4547_p3;
+wire   [3:0] select_ln484_11_fu_4593_p3;
+wire   [3:0] res_max_bin_count_t_s_fu_4608_p3;
+wire   [3:0] res_max_bin_count_t_1_fu_4633_p3;
+wire   [6:0] select_ln412_1_fu_2252_p3;
+wire   [6:0] select_ln412_65_fu_2508_p3;
+wire   [6:0] select_ln412_3_fu_2260_p3;
+wire   [6:0] select_ln412_67_fu_2516_p3;
+wire   [6:0] select_ln412_5_fu_2268_p3;
+wire   [6:0] select_ln412_69_fu_2524_p3;
+wire   [6:0] select_ln412_7_fu_2276_p3;
+wire   [6:0] select_ln412_71_fu_2532_p3;
+wire   [6:0] select_ln412_9_fu_2284_p3;
+wire   [6:0] select_ln412_73_fu_2540_p3;
+wire   [6:0] select_ln412_11_fu_2292_p3;
+wire   [6:0] select_ln412_75_fu_2548_p3;
+wire   [6:0] select_ln412_13_fu_2300_p3;
+wire   [6:0] select_ln412_77_fu_2556_p3;
+wire   [6:0] select_ln412_15_fu_2308_p3;
+wire   [6:0] select_ln412_79_fu_2564_p3;
+wire   [6:0] select_ln412_17_fu_2316_p3;
+wire   [6:0] select_ln412_81_fu_2572_p3;
+wire   [6:0] select_ln412_19_fu_2324_p3;
+wire   [6:0] select_ln412_83_fu_2580_p3;
+wire   [6:0] select_ln412_21_fu_2332_p3;
+wire   [6:0] select_ln412_85_fu_2588_p3;
+wire   [6:0] select_ln412_23_fu_2340_p3;
+wire   [6:0] select_ln412_87_fu_2596_p3;
+wire   [6:0] select_ln412_25_fu_2348_p3;
+wire   [6:0] select_ln412_89_fu_2604_p3;
+wire   [6:0] select_ln412_27_fu_2356_p3;
+wire   [6:0] select_ln412_91_fu_2612_p3;
+wire   [6:0] select_ln412_29_fu_2364_p3;
+wire   [6:0] select_ln412_93_fu_2620_p3;
+wire   [6:0] select_ln412_31_fu_2372_p3;
+wire   [6:0] select_ln412_95_fu_2628_p3;
+wire   [6:0] select_ln412_33_fu_2380_p3;
+wire   [6:0] select_ln412_97_fu_2636_p3;
+wire   [6:0] select_ln412_35_fu_2388_p3;
+wire   [6:0] select_ln412_99_fu_2644_p3;
+wire   [6:0] select_ln412_37_fu_2396_p3;
+wire   [6:0] select_ln412_101_fu_2652_p3;
+wire   [6:0] select_ln412_39_fu_2404_p3;
+wire   [6:0] select_ln412_103_fu_2660_p3;
+wire   [6:0] select_ln412_41_fu_2412_p3;
+wire   [6:0] select_ln412_105_fu_2668_p3;
+wire   [6:0] select_ln412_43_fu_2420_p3;
+wire   [6:0] select_ln412_107_fu_2676_p3;
+wire   [6:0] select_ln412_45_fu_2428_p3;
+wire   [6:0] select_ln412_109_fu_2684_p3;
+wire   [6:0] select_ln412_47_fu_2436_p3;
+wire   [6:0] select_ln412_111_fu_2692_p3;
+wire   [6:0] select_ln412_49_fu_2444_p3;
+wire   [6:0] select_ln412_113_fu_2700_p3;
+wire   [6:0] select_ln412_51_fu_2452_p3;
+wire   [6:0] select_ln412_115_fu_2708_p3;
+wire   [6:0] select_ln412_53_fu_2460_p3;
+wire   [6:0] select_ln412_117_fu_2716_p3;
+wire   [6:0] select_ln412_55_fu_2468_p3;
+wire   [6:0] select_ln412_119_fu_2724_p3;
+wire   [6:0] select_ln412_57_fu_2476_p3;
+wire   [6:0] select_ln412_121_fu_2732_p3;
+wire   [6:0] select_ln412_59_fu_2484_p3;
+wire   [6:0] select_ln412_123_fu_2740_p3;
+wire   [6:0] select_ln412_61_fu_2492_p3;
+wire   [6:0] select_ln412_125_fu_2748_p3;
+wire   [6:0] select_ln412_63_fu_2500_p3;
+wire   [6:0] select_ln412_127_fu_2756_p3;
+wire   [6:0] select_ln430_25_fu_2900_p3;
+wire   [6:0] select_ln430_73_fu_3172_p3;
+wire   [6:0] select_ln430_28_fu_2917_p3;
+wire   [6:0] select_ln430_76_fu_3189_p3;
+wire   [6:0] select_ln430_31_fu_2934_p3;
+wire   [6:0] select_ln430_79_fu_3206_p3;
+wire   [6:0] select_ln430_34_fu_2951_p3;
+wire   [6:0] select_ln430_82_fu_3223_p3;
+wire   [6:0] select_ln430_37_fu_2968_p3;
+wire   [6:0] select_ln430_85_fu_3240_p3;
+wire   [6:0] select_ln430_40_fu_2985_p3;
+wire   [6:0] select_ln430_88_fu_3257_p3;
+wire   [6:0] select_ln430_43_fu_3002_p3;
+wire   [6:0] select_ln430_91_fu_3274_p3;
+wire   [6:0] select_ln430_46_fu_3019_p3;
+wire   [6:0] select_ln430_94_fu_3291_p3;
+wire   [6:0] select_ln412_fu_3580_p3;
+wire   [6:0] select_ln412_64_fu_3804_p3;
+wire   [6:0] select_ln412_2_fu_3587_p3;
+wire   [6:0] select_ln412_66_fu_3811_p3;
+wire   [6:0] select_ln412_4_fu_3594_p3;
+wire   [6:0] select_ln412_68_fu_3818_p3;
+wire   [6:0] select_ln412_6_fu_3601_p3;
+wire   [6:0] select_ln412_70_fu_3825_p3;
+wire   [6:0] select_ln412_8_fu_3608_p3;
+wire   [6:0] select_ln412_72_fu_3832_p3;
+wire   [6:0] select_ln412_10_fu_3615_p3;
+wire   [6:0] select_ln412_74_fu_3839_p3;
+wire   [6:0] select_ln412_12_fu_3622_p3;
+wire   [6:0] select_ln412_76_fu_3846_p3;
+wire   [6:0] select_ln412_14_fu_3629_p3;
+wire   [6:0] select_ln412_78_fu_3853_p3;
+wire   [6:0] select_ln412_16_fu_3636_p3;
+wire   [6:0] select_ln412_80_fu_3860_p3;
+wire   [6:0] select_ln412_18_fu_3643_p3;
+wire   [6:0] select_ln412_82_fu_3867_p3;
+wire   [6:0] select_ln412_20_fu_3650_p3;
+wire   [6:0] select_ln412_84_fu_3874_p3;
+wire   [6:0] select_ln412_22_fu_3657_p3;
+wire   [6:0] select_ln412_86_fu_3881_p3;
+wire   [6:0] select_ln412_24_fu_3664_p3;
+wire   [6:0] select_ln412_88_fu_3888_p3;
+wire   [6:0] select_ln412_26_fu_3671_p3;
+wire   [6:0] select_ln412_90_fu_3895_p3;
+wire   [6:0] select_ln412_28_fu_3678_p3;
+wire   [6:0] select_ln412_92_fu_3902_p3;
+wire   [6:0] select_ln412_30_fu_3685_p3;
+wire   [6:0] select_ln412_94_fu_3909_p3;
+wire   [6:0] select_ln412_32_fu_3692_p3;
+wire   [6:0] select_ln412_96_fu_3916_p3;
+wire   [6:0] select_ln412_34_fu_3699_p3;
+wire   [6:0] select_ln412_98_fu_3923_p3;
+wire   [6:0] select_ln412_36_fu_3706_p3;
+wire   [6:0] select_ln412_100_fu_3930_p3;
+wire   [6:0] select_ln412_38_fu_3713_p3;
+wire   [6:0] select_ln412_102_fu_3937_p3;
+wire   [6:0] select_ln412_40_fu_3720_p3;
+wire   [6:0] select_ln412_104_fu_3944_p3;
+wire   [6:0] select_ln412_42_fu_3727_p3;
+wire   [6:0] select_ln412_106_fu_3951_p3;
+wire   [6:0] select_ln412_44_fu_3734_p3;
+wire   [6:0] select_ln412_108_fu_3958_p3;
+wire   [6:0] select_ln412_46_fu_3741_p3;
+wire   [6:0] select_ln412_110_fu_3965_p3;
+wire   [6:0] select_ln412_48_fu_3748_p3;
+wire   [6:0] select_ln412_112_fu_3972_p3;
+wire   [6:0] select_ln412_50_fu_3755_p3;
+wire   [6:0] select_ln412_114_fu_3979_p3;
+wire   [6:0] select_ln412_52_fu_3762_p3;
+wire   [6:0] select_ln412_116_fu_3986_p3;
+wire   [6:0] select_ln412_54_fu_3769_p3;
+wire   [6:0] select_ln412_118_fu_3993_p3;
+wire   [6:0] select_ln412_56_fu_3776_p3;
+wire   [6:0] select_ln412_120_fu_4000_p3;
+wire   [6:0] select_ln412_58_fu_3783_p3;
+wire   [6:0] select_ln412_122_fu_4007_p3;
+wire   [6:0] select_ln412_60_fu_3790_p3;
+wire   [6:0] select_ln412_124_fu_4014_p3;
+wire   [6:0] select_ln412_62_fu_3797_p3;
+wire   [6:0] select_ln412_126_fu_4021_p3;
+wire   [6:0] select_ln430_fu_4028_p3;
+wire   [6:0] select_ln430_48_fu_4140_p3;
+wire   [6:0] select_ln430_3_fu_4035_p3;
+wire   [6:0] select_ln430_51_fu_4147_p3;
+wire   [6:0] select_ln430_6_fu_4042_p3;
+wire   [6:0] select_ln430_54_fu_4154_p3;
+wire   [6:0] select_ln430_9_fu_4049_p3;
+wire   [6:0] select_ln430_57_fu_4161_p3;
+wire   [6:0] select_ln430_12_fu_4056_p3;
+wire   [6:0] select_ln430_60_fu_4168_p3;
+wire   [6:0] select_ln430_15_fu_4063_p3;
+wire   [6:0] select_ln430_63_fu_4175_p3;
+wire   [6:0] select_ln430_18_fu_4070_p3;
+wire   [6:0] select_ln430_66_fu_4182_p3;
+wire   [6:0] select_ln430_21_fu_4077_p3;
+wire   [6:0] select_ln430_69_fu_4189_p3;
+wire   [6:0] select_ln430_24_fu_4084_p3;
+wire   [6:0] select_ln430_72_fu_4196_p3;
+wire   [6:0] select_ln430_27_fu_4091_p3;
+wire   [6:0] select_ln430_75_fu_4203_p3;
+wire   [6:0] select_ln430_30_fu_4098_p3;
+wire   [6:0] select_ln430_78_fu_4210_p3;
+wire   [6:0] select_ln430_33_fu_4105_p3;
+wire   [6:0] select_ln430_81_fu_4217_p3;
+wire   [6:0] select_ln430_36_fu_4112_p3;
+wire   [6:0] select_ln430_84_fu_4224_p3;
+wire   [6:0] select_ln430_39_fu_4119_p3;
+wire   [6:0] select_ln430_87_fu_4231_p3;
+wire   [6:0] select_ln430_42_fu_4126_p3;
+wire   [6:0] select_ln430_90_fu_4238_p3;
+wire   [6:0] select_ln430_45_fu_4133_p3;
+wire   [6:0] select_ln430_93_fu_4245_p3;
+wire   [6:0] select_ln448_fu_4252_p3;
+wire   [6:0] select_ln448_24_fu_4348_p3;
+wire   [6:0] select_ln448_1_fu_4259_p3;
+wire   [6:0] select_ln448_3_fu_4264_p3;
+wire   [6:0] select_ln448_27_fu_4355_p3;
+wire   [6:0] select_ln448_4_fu_4271_p3;
+wire   [6:0] select_ln448_6_fu_4276_p3;
+wire   [6:0] select_ln448_30_fu_4362_p3;
+wire   [6:0] select_ln448_7_fu_4283_p3;
+wire   [6:0] select_ln448_9_fu_4288_p3;
+wire   [6:0] select_ln448_33_fu_4369_p3;
+wire   [6:0] select_ln448_10_fu_4295_p3;
+wire   [6:0] select_ln448_12_fu_4300_p3;
+wire   [6:0] select_ln448_36_fu_4376_p3;
+wire   [6:0] select_ln448_13_fu_4307_p3;
+wire   [6:0] select_ln448_15_fu_4312_p3;
+wire   [6:0] select_ln448_39_fu_4383_p3;
+wire   [6:0] select_ln448_16_fu_4319_p3;
+wire   [6:0] select_ln448_18_fu_4324_p3;
+wire   [6:0] select_ln448_42_fu_4390_p3;
+wire   [6:0] select_ln448_19_fu_4331_p3;
+wire   [6:0] select_ln448_21_fu_4336_p3;
+wire   [6:0] select_ln448_45_fu_4397_p3;
+wire   [6:0] select_ln448_22_fu_4343_p3;
+wire   [0:0] icmp_ln895_121_fu_2224_p2;
+wire   [6:0] select_ln466_fu_4404_p3;
+wire   [6:0] select_ln466_12_fu_4456_p3;
+wire   [6:0] select_ln466_1_fu_4411_p3;
+wire   [6:0] select_ln466_13_fu_4463_p3;
+wire   [0:0] icmp_ln895_122_fu_2228_p2;
+wire   [6:0] select_ln466_3_fu_4417_p3;
+wire   [6:0] select_ln466_15_fu_4469_p3;
+wire   [6:0] select_ln466_4_fu_4424_p3;
+wire   [6:0] select_ln466_16_fu_4476_p3;
+wire   [0:0] icmp_ln895_123_fu_2232_p2;
+wire   [6:0] select_ln466_6_fu_4430_p3;
+wire   [6:0] select_ln466_18_fu_4482_p3;
+wire   [6:0] select_ln466_7_fu_4437_p3;
+wire   [6:0] select_ln466_19_fu_4489_p3;
+wire   [0:0] icmp_ln895_124_fu_2236_p2;
+wire   [6:0] select_ln466_9_fu_4443_p3;
+wire   [6:0] select_ln466_21_fu_4495_p3;
+wire   [6:0] select_ln466_10_fu_4450_p3;
+wire   [6:0] select_ln466_22_fu_4502_p3;
+wire   [6:0] select_ln484_1_fu_4516_p3;
+wire   [6:0] select_ln484_7_fu_4562_p3;
+wire   [0:0] icmp_ln895_126_fu_2244_p2;
+wire   [6:0] select_ln484_3_fu_4531_p3;
+wire   [6:0] select_ln484_9_fu_4577_p3;
+wire   [6:0] select_ln484_4_fu_4539_p3;
+wire   [6:0] select_ln484_10_fu_4585_p3;
+wire   [6:0] res_max_bin_theta_t_s_fu_4650_p3;
+wire   [6:0] res_max_bin_r_t_V_2_fu_4662_p3;
+wire   [8:0] t0_V_fu_4674_p3;
+wire   [8:0] p_Val2_2_fu_4682_p2;
+wire   [11:0] zext_ln703_fu_4688_p1;
+wire   [11:0] add_ln703_fu_4697_p2;
+wire  signed [12:0] sext_ln703_fu_4703_p1;
+wire   [13:0] zext_ln703_2_fu_4707_p1;
+wire   [12:0] shl_ln_fu_4717_p3;
+wire   [12:0] p_Val2_4_fu_4725_p2;
 reg   [0:0] ap_NS_fsm;
 reg    ap_idle_pp0_0to2;
 reg    ap_reset_idle_pp0;
@@ -874,9 +1004,9 @@ initial begin
 #0 hls_LT_r_V_1_vld_reg = 1'b0;
 #0 res_max_bin_count_V_1_data_reg = 4'd0;
 #0 res_max_bin_count_V_1_vld_reg = 1'b0;
-#0 res_max_bin_theta_V_1_data_reg = 6'd0;
+#0 res_max_bin_theta_V_1_data_reg = 7'd0;
 #0 res_max_bin_theta_V_1_vld_reg = 1'b0;
-#0 res_max_bin_r_V_1_data_reg = 6'd0;
+#0 res_max_bin_r_V_1_data_reg = 7'd0;
 #0 res_max_bin_r_V_1_vld_reg = 1'b0;
 end
 
@@ -976,146 +1106,212 @@ end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (hls_LT_r_V_1_vld_reg == 1'b0) & (hls_LT_r_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (hls_LT_r_V_1_vld_in == 1'b1) & (hls_LT_r_V_1_vld_reg == 1'b1)))) begin
-        hls_LT_r_V_1_data_reg[11 : 5] <= zext_ln708_fu_4155_p1[11 : 5];
+        hls_LT_r_V_1_data_reg[12 : 5] <= zext_ln708_fu_4731_p1[12 : 5];
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (hls_LT_r_global_V_1_vld_reg == 1'b0) & (hls_LT_r_global_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (hls_LT_r_global_V_1_vld_in == 1'b1) & (hls_LT_r_global_V_1_vld_reg == 1'b1)))) begin
-        hls_LT_r_global_V_1_data_reg <= add_ln703_2_fu_4160_p2;
+        hls_LT_r_global_V_1_data_reg <= add_ln703_2_fu_4736_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (hls_LT_theta_V_1_vld_reg == 1'b0) & (hls_LT_theta_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (hls_LT_theta_V_1_vld_in == 1'b1) & (hls_LT_theta_V_1_vld_reg == 1'b1)))) begin
-        hls_LT_theta_V_1_data_reg[7 : 1] <= zext_ln703_1_fu_4116_p1[7 : 1];
+        hls_LT_theta_V_1_data_reg[8 : 1] <= zext_ln703_1_fu_4692_p1[8 : 1];
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (hls_LT_theta_global_V_1_vld_reg == 1'b0) & (hls_LT_theta_global_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (hls_LT_theta_global_V_1_vld_in == 1'b1) & (hls_LT_theta_global_V_1_vld_reg == 1'b1)))) begin
-        hls_LT_theta_global_V_1_data_reg <= add_ln703_1_fu_4135_p2;
+        hls_LT_theta_global_V_1_data_reg <= add_ln703_1_fu_4711_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((1'b0 == ap_block_pp0_stage0_11001) & (1'b1 == ap_CS_fsm_pp0_stage0))) begin
-        icmp_ln895_100_reg_4434 <= icmp_ln895_100_fu_2010_p2;
-        icmp_ln895_101_reg_4440 <= icmp_ln895_101_fu_2014_p2;
-        icmp_ln895_102_reg_4446 <= icmp_ln895_102_fu_2018_p2;
-        icmp_ln895_103_reg_4452 <= icmp_ln895_103_fu_2022_p2;
-        icmp_ln895_104_reg_4458 <= icmp_ln895_104_fu_2026_p2;
-        icmp_ln895_105_reg_4464 <= icmp_ln895_105_fu_2030_p2;
-        icmp_ln895_106_reg_4474 <= icmp_ln895_106_fu_2034_p2;
-        icmp_ln895_107_reg_4484 <= icmp_ln895_107_fu_2038_p2;
-        icmp_ln895_108_reg_4494 <= icmp_ln895_108_fu_2042_p2;
-        icmp_ln895_109_reg_4504 <= icmp_ln895_109_fu_2046_p2;
-        icmp_ln895_110_reg_4514 <= icmp_ln895_110_fu_2050_p2;
-        icmp_ln895_111_reg_4524 <= icmp_ln895_111_fu_2054_p2;
-        icmp_ln895_112_reg_4534 <= icmp_ln895_112_fu_2058_p2;
-        icmp_ln895_113_reg_4544 <= icmp_ln895_113_fu_2062_p2;
-        icmp_ln895_114_reg_4556 <= icmp_ln895_114_fu_2066_p2;
-        icmp_ln895_115_reg_4568 <= icmp_ln895_115_fu_2070_p2;
-        icmp_ln895_116_reg_4580 <= icmp_ln895_116_fu_2074_p2;
-        icmp_ln895_117_reg_4592 <= icmp_ln895_117_fu_2078_p2;
-        icmp_ln895_118_reg_4604 <= icmp_ln895_118_fu_2082_p2;
-        icmp_ln895_119_reg_4616 <= icmp_ln895_119_fu_2086_p2;
-        icmp_ln895_120_reg_4628 <= icmp_ln895_120_fu_2090_p2;
-        icmp_ln895_5_reg_4660 <= icmp_ln895_5_fu_2118_p2;
-        icmp_ln895_65_reg_4176 <= icmp_ln895_65_fu_1806_p2;
-        icmp_ln895_66_reg_4186 <= icmp_ln895_66_fu_1812_p2;
-        icmp_ln895_67_reg_4196 <= icmp_ln895_67_fu_1818_p2;
-        icmp_ln895_68_reg_4206 <= icmp_ln895_68_fu_1824_p2;
-        icmp_ln895_69_reg_4216 <= icmp_ln895_69_fu_1830_p2;
-        icmp_ln895_70_reg_4226 <= icmp_ln895_70_fu_1836_p2;
-        icmp_ln895_71_reg_4236 <= icmp_ln895_71_fu_1842_p2;
-        icmp_ln895_72_reg_4246 <= icmp_ln895_72_fu_1848_p2;
-        icmp_ln895_73_reg_4256 <= icmp_ln895_73_fu_1854_p2;
-        icmp_ln895_74_reg_4261 <= icmp_ln895_74_fu_1860_p2;
-        icmp_ln895_75_reg_4266 <= icmp_ln895_75_fu_1866_p2;
-        icmp_ln895_76_reg_4271 <= icmp_ln895_76_fu_1872_p2;
-        icmp_ln895_77_reg_4276 <= icmp_ln895_77_fu_1878_p2;
-        icmp_ln895_78_reg_4281 <= icmp_ln895_78_fu_1884_p2;
-        icmp_ln895_79_reg_4286 <= icmp_ln895_79_fu_1890_p2;
-        icmp_ln895_80_reg_4291 <= icmp_ln895_80_fu_1896_p2;
-        icmp_ln895_81_reg_4296 <= icmp_ln895_81_fu_1902_p2;
-        icmp_ln895_82_reg_4306 <= icmp_ln895_82_fu_1908_p2;
-        icmp_ln895_83_reg_4316 <= icmp_ln895_83_fu_1914_p2;
-        icmp_ln895_84_reg_4326 <= icmp_ln895_84_fu_1920_p2;
-        icmp_ln895_85_reg_4336 <= icmp_ln895_85_fu_1926_p2;
-        icmp_ln895_86_reg_4346 <= icmp_ln895_86_fu_1932_p2;
-        icmp_ln895_87_reg_4356 <= icmp_ln895_87_fu_1938_p2;
-        icmp_ln895_88_reg_4366 <= icmp_ln895_88_fu_1944_p2;
-        icmp_ln895_89_reg_4376 <= icmp_ln895_89_fu_1950_p2;
-        icmp_ln895_90_reg_4381 <= icmp_ln895_90_fu_1956_p2;
-        icmp_ln895_91_reg_4386 <= icmp_ln895_91_fu_1962_p2;
-        icmp_ln895_92_reg_4391 <= icmp_ln895_92_fu_1968_p2;
-        icmp_ln895_93_reg_4396 <= icmp_ln895_93_fu_1974_p2;
-        icmp_ln895_94_reg_4401 <= icmp_ln895_94_fu_1980_p2;
-        icmp_ln895_95_reg_4406 <= icmp_ln895_95_fu_1986_p2;
-        icmp_ln895_96_reg_4411 <= icmp_ln895_96_fu_1992_p2;
-        icmp_ln895_97_reg_4416 <= icmp_ln895_97_fu_1998_p2;
-        icmp_ln895_98_reg_4422 <= icmp_ln895_98_fu_2002_p2;
-        icmp_ln895_99_reg_4428 <= icmp_ln895_99_fu_2006_p2;
-        res_max_bin_count_t_2_reg_4666 <= res_max_bin_count_t_2_fu_4072_p3;
-        res_max_bin_r_t_V_1_reg_4655 <= res_max_bin_r_t_V_1_fu_4055_p3;
-        res_max_bin_r_t_V_reg_4645 <= res_max_bin_r_t_V_fu_4030_p3;
-        res_max_bin_theta_t_1_reg_4650[5 : 1] <= res_max_bin_theta_t_1_fu_4047_p3[5 : 1];
-        res_max_bin_theta_t_s_reg_4640[5 : 1] <= res_max_bin_theta_t_s_fu_4022_p3[5 : 1];
-        roi_seed_r_V_read_reg_4166 <= roi_seed_r_V;
-        roi_seed_r_V_read_reg_4166_pp0_iter1_reg <= roi_seed_r_V_read_reg_4166;
-        select_ln425_10_reg_4211 <= select_ln425_10_fu_2685_p3;
-        select_ln425_13_reg_4221 <= select_ln425_13_fu_2702_p3;
-        select_ln425_16_reg_4231 <= select_ln425_16_fu_2719_p3;
-        select_ln425_19_reg_4241 <= select_ln425_19_fu_2736_p3;
-        select_ln425_1_reg_4181 <= select_ln425_1_fu_2634_p3;
-        select_ln425_22_reg_4251 <= select_ln425_22_fu_2753_p3;
-        select_ln425_49_reg_4301 <= select_ln425_49_fu_2906_p3;
-        select_ln425_4_reg_4191 <= select_ln425_4_fu_2651_p3;
-        select_ln425_52_reg_4311 <= select_ln425_52_fu_2923_p3;
-        select_ln425_55_reg_4321 <= select_ln425_55_fu_2940_p3;
-        select_ln425_58_reg_4331 <= select_ln425_58_fu_2957_p3;
-        select_ln425_61_reg_4341 <= select_ln425_61_fu_2974_p3;
-        select_ln425_64_reg_4351 <= select_ln425_64_fu_2991_p3;
-        select_ln425_67_reg_4361 <= select_ln425_67_fu_3008_p3;
-        select_ln425_70_reg_4371 <= select_ln425_70_fu_3025_p3;
-        select_ln425_7_reg_4201 <= select_ln425_7_fu_2668_p3;
-        select_ln443_25_reg_4469 <= select_ln443_25_fu_3250_p3;
-        select_ln443_28_reg_4479 <= select_ln443_28_fu_3267_p3;
-        select_ln443_31_reg_4489 <= select_ln443_31_fu_3284_p3;
-        select_ln443_34_reg_4499 <= select_ln443_34_fu_3301_p3;
-        select_ln443_37_reg_4509 <= select_ln443_37_fu_3318_p3;
-        select_ln443_40_reg_4519 <= select_ln443_40_fu_3335_p3;
-        select_ln443_43_reg_4529 <= select_ln443_43_fu_3352_p3;
-        select_ln443_46_reg_4539 <= select_ln443_46_fu_3369_p3;
-        select_ln461_11_reg_4586 <= select_ln461_11_fu_3410_p3;
-        select_ln461_14_reg_4598 <= select_ln461_14_fu_3418_p3;
-        select_ln461_17_reg_4610 <= select_ln461_17_fu_3426_p3;
-        select_ln461_20_reg_4622 <= select_ln461_20_fu_3434_p3;
-        select_ln461_23_reg_4634 <= select_ln461_23_fu_3442_p3;
-        select_ln461_2_reg_4550 <= select_ln461_2_fu_3386_p3;
-        select_ln461_5_reg_4562 <= select_ln461_5_fu_3394_p3;
-        select_ln461_8_reg_4574 <= select_ln461_8_fu_3402_p3;
-        slcvec_angle_polar_o_reg_4171 <= slcvec_angle_polar_offset_mrad_V;
-        slcvec_angle_polar_o_reg_4171_pp0_iter1_reg <= slcvec_angle_polar_o_reg_4171;
+        icmp_ln895_100_reg_5330 <= icmp_ln895_100_fu_2140_p2;
+        icmp_ln895_101_reg_5336 <= icmp_ln895_101_fu_2144_p2;
+        icmp_ln895_102_reg_5342 <= icmp_ln895_102_fu_2148_p2;
+        icmp_ln895_103_reg_5348 <= icmp_ln895_103_fu_2152_p2;
+        icmp_ln895_104_reg_5354 <= icmp_ln895_104_fu_2156_p2;
+        icmp_ln895_105_reg_5360 <= icmp_ln895_105_fu_2160_p2;
+        icmp_ln895_106_reg_5370 <= icmp_ln895_106_fu_2164_p2;
+        icmp_ln895_107_reg_5380 <= icmp_ln895_107_fu_2168_p2;
+        icmp_ln895_108_reg_5390 <= icmp_ln895_108_fu_2172_p2;
+        icmp_ln895_109_reg_5400 <= icmp_ln895_109_fu_2176_p2;
+        icmp_ln895_10_reg_4802 <= icmp_ln895_10_fu_1612_p2;
+        icmp_ln895_110_reg_5410 <= icmp_ln895_110_fu_2180_p2;
+        icmp_ln895_111_reg_5420 <= icmp_ln895_111_fu_2184_p2;
+        icmp_ln895_112_reg_5430 <= icmp_ln895_112_fu_2188_p2;
+        icmp_ln895_113_reg_5440 <= icmp_ln895_113_fu_2192_p2;
+        icmp_ln895_114_reg_5452 <= icmp_ln895_114_fu_2196_p2;
+        icmp_ln895_115_reg_5464 <= icmp_ln895_115_fu_2200_p2;
+        icmp_ln895_116_reg_5476 <= icmp_ln895_116_fu_2204_p2;
+        icmp_ln895_117_reg_5488 <= icmp_ln895_117_fu_2208_p2;
+        icmp_ln895_118_reg_5500 <= icmp_ln895_118_fu_2212_p2;
+        icmp_ln895_119_reg_5512 <= icmp_ln895_119_fu_2216_p2;
+        icmp_ln895_11_reg_4807 <= icmp_ln895_11_fu_1618_p2;
+        icmp_ln895_120_reg_5524 <= icmp_ln895_120_fu_2220_p2;
+        icmp_ln895_125_reg_5546 <= icmp_ln895_125_fu_2240_p2;
+        icmp_ln895_12_reg_4812 <= icmp_ln895_12_fu_1624_p2;
+        icmp_ln895_13_reg_4817 <= icmp_ln895_13_fu_1630_p2;
+        icmp_ln895_14_reg_4822 <= icmp_ln895_14_fu_1636_p2;
+        icmp_ln895_15_reg_4827 <= icmp_ln895_15_fu_1642_p2;
+        icmp_ln895_16_reg_4832 <= icmp_ln895_16_fu_1648_p2;
+        icmp_ln895_17_reg_4837 <= icmp_ln895_17_fu_1654_p2;
+        icmp_ln895_18_reg_4842 <= icmp_ln895_18_fu_1660_p2;
+        icmp_ln895_19_reg_4847 <= icmp_ln895_19_fu_1666_p2;
+        icmp_ln895_1_reg_4757 <= icmp_ln895_1_fu_1558_p2;
+        icmp_ln895_20_reg_4852 <= icmp_ln895_20_fu_1672_p2;
+        icmp_ln895_21_reg_4857 <= icmp_ln895_21_fu_1678_p2;
+        icmp_ln895_22_reg_4862 <= icmp_ln895_22_fu_1684_p2;
+        icmp_ln895_23_reg_4867 <= icmp_ln895_23_fu_1690_p2;
+        icmp_ln895_24_reg_4872 <= icmp_ln895_24_fu_1696_p2;
+        icmp_ln895_25_reg_4877 <= icmp_ln895_25_fu_1702_p2;
+        icmp_ln895_26_reg_4882 <= icmp_ln895_26_fu_1708_p2;
+        icmp_ln895_27_reg_4887 <= icmp_ln895_27_fu_1714_p2;
+        icmp_ln895_28_reg_4892 <= icmp_ln895_28_fu_1720_p2;
+        icmp_ln895_29_reg_4897 <= icmp_ln895_29_fu_1726_p2;
+        icmp_ln895_2_reg_4762 <= icmp_ln895_2_fu_1564_p2;
+        icmp_ln895_30_reg_4902 <= icmp_ln895_30_fu_1732_p2;
+        icmp_ln895_31_reg_4907 <= icmp_ln895_31_fu_1738_p2;
+        icmp_ln895_32_reg_4912 <= icmp_ln895_32_fu_1744_p2;
+        icmp_ln895_33_reg_4917 <= icmp_ln895_33_fu_1750_p2;
+        icmp_ln895_34_reg_4922 <= icmp_ln895_34_fu_1756_p2;
+        icmp_ln895_35_reg_4927 <= icmp_ln895_35_fu_1762_p2;
+        icmp_ln895_36_reg_4932 <= icmp_ln895_36_fu_1768_p2;
+        icmp_ln895_37_reg_4937 <= icmp_ln895_37_fu_1774_p2;
+        icmp_ln895_38_reg_4942 <= icmp_ln895_38_fu_1780_p2;
+        icmp_ln895_39_reg_4947 <= icmp_ln895_39_fu_1786_p2;
+        icmp_ln895_3_reg_4767 <= icmp_ln895_3_fu_1570_p2;
+        icmp_ln895_40_reg_4952 <= icmp_ln895_40_fu_1792_p2;
+        icmp_ln895_41_reg_4957 <= icmp_ln895_41_fu_1798_p2;
+        icmp_ln895_42_reg_4962 <= icmp_ln895_42_fu_1804_p2;
+        icmp_ln895_43_reg_4967 <= icmp_ln895_43_fu_1810_p2;
+        icmp_ln895_44_reg_4972 <= icmp_ln895_44_fu_1816_p2;
+        icmp_ln895_45_reg_4977 <= icmp_ln895_45_fu_1822_p2;
+        icmp_ln895_46_reg_4982 <= icmp_ln895_46_fu_1828_p2;
+        icmp_ln895_47_reg_4987 <= icmp_ln895_47_fu_1834_p2;
+        icmp_ln895_48_reg_4992 <= icmp_ln895_48_fu_1840_p2;
+        icmp_ln895_49_reg_4997 <= icmp_ln895_49_fu_1846_p2;
+        icmp_ln895_4_reg_4772 <= icmp_ln895_4_fu_1576_p2;
+        icmp_ln895_50_reg_5002 <= icmp_ln895_50_fu_1852_p2;
+        icmp_ln895_51_reg_5007 <= icmp_ln895_51_fu_1858_p2;
+        icmp_ln895_52_reg_5012 <= icmp_ln895_52_fu_1864_p2;
+        icmp_ln895_53_reg_5017 <= icmp_ln895_53_fu_1870_p2;
+        icmp_ln895_54_reg_5022 <= icmp_ln895_54_fu_1876_p2;
+        icmp_ln895_55_reg_5027 <= icmp_ln895_55_fu_1882_p2;
+        icmp_ln895_56_reg_5032 <= icmp_ln895_56_fu_1888_p2;
+        icmp_ln895_57_reg_5037 <= icmp_ln895_57_fu_1894_p2;
+        icmp_ln895_58_reg_5042 <= icmp_ln895_58_fu_1900_p2;
+        icmp_ln895_59_reg_5047 <= icmp_ln895_59_fu_1906_p2;
+        icmp_ln895_5_reg_5566 <= icmp_ln895_5_fu_2248_p2;
+        icmp_ln895_60_reg_5052 <= icmp_ln895_60_fu_1912_p2;
+        icmp_ln895_61_reg_5057 <= icmp_ln895_61_fu_1918_p2;
+        icmp_ln895_62_reg_5062 <= icmp_ln895_62_fu_1924_p2;
+        icmp_ln895_63_reg_5067 <= icmp_ln895_63_fu_1930_p2;
+        icmp_ln895_64_reg_4782 <= icmp_ln895_64_fu_1588_p2;
+        icmp_ln895_65_reg_5072 <= icmp_ln895_65_fu_1936_p2;
+        icmp_ln895_66_reg_5082 <= icmp_ln895_66_fu_1942_p2;
+        icmp_ln895_67_reg_5092 <= icmp_ln895_67_fu_1948_p2;
+        icmp_ln895_68_reg_5102 <= icmp_ln895_68_fu_1954_p2;
+        icmp_ln895_69_reg_5112 <= icmp_ln895_69_fu_1960_p2;
+        icmp_ln895_6_reg_4777 <= icmp_ln895_6_fu_1582_p2;
+        icmp_ln895_70_reg_5122 <= icmp_ln895_70_fu_1966_p2;
+        icmp_ln895_71_reg_5132 <= icmp_ln895_71_fu_1972_p2;
+        icmp_ln895_72_reg_5142 <= icmp_ln895_72_fu_1978_p2;
+        icmp_ln895_73_reg_5152 <= icmp_ln895_73_fu_1984_p2;
+        icmp_ln895_74_reg_5157 <= icmp_ln895_74_fu_1990_p2;
+        icmp_ln895_75_reg_5162 <= icmp_ln895_75_fu_1996_p2;
+        icmp_ln895_76_reg_5167 <= icmp_ln895_76_fu_2002_p2;
+        icmp_ln895_77_reg_5172 <= icmp_ln895_77_fu_2008_p2;
+        icmp_ln895_78_reg_5177 <= icmp_ln895_78_fu_2014_p2;
+        icmp_ln895_79_reg_5182 <= icmp_ln895_79_fu_2020_p2;
+        icmp_ln895_7_reg_4787 <= icmp_ln895_7_fu_1594_p2;
+        icmp_ln895_80_reg_5187 <= icmp_ln895_80_fu_2026_p2;
+        icmp_ln895_81_reg_5192 <= icmp_ln895_81_fu_2032_p2;
+        icmp_ln895_82_reg_5202 <= icmp_ln895_82_fu_2038_p2;
+        icmp_ln895_83_reg_5212 <= icmp_ln895_83_fu_2044_p2;
+        icmp_ln895_84_reg_5222 <= icmp_ln895_84_fu_2050_p2;
+        icmp_ln895_85_reg_5232 <= icmp_ln895_85_fu_2056_p2;
+        icmp_ln895_86_reg_5242 <= icmp_ln895_86_fu_2062_p2;
+        icmp_ln895_87_reg_5252 <= icmp_ln895_87_fu_2068_p2;
+        icmp_ln895_88_reg_5262 <= icmp_ln895_88_fu_2074_p2;
+        icmp_ln895_89_reg_5272 <= icmp_ln895_89_fu_2080_p2;
+        icmp_ln895_8_reg_4792 <= icmp_ln895_8_fu_1600_p2;
+        icmp_ln895_90_reg_5277 <= icmp_ln895_90_fu_2086_p2;
+        icmp_ln895_91_reg_5282 <= icmp_ln895_91_fu_2092_p2;
+        icmp_ln895_92_reg_5287 <= icmp_ln895_92_fu_2098_p2;
+        icmp_ln895_93_reg_5292 <= icmp_ln895_93_fu_2104_p2;
+        icmp_ln895_94_reg_5297 <= icmp_ln895_94_fu_2110_p2;
+        icmp_ln895_95_reg_5302 <= icmp_ln895_95_fu_2116_p2;
+        icmp_ln895_96_reg_5307 <= icmp_ln895_96_fu_2122_p2;
+        icmp_ln895_97_reg_5312 <= icmp_ln895_97_fu_2128_p2;
+        icmp_ln895_98_reg_5318 <= icmp_ln895_98_fu_2132_p2;
+        icmp_ln895_99_reg_5324 <= icmp_ln895_99_fu_2136_p2;
+        icmp_ln895_9_reg_4797 <= icmp_ln895_9_fu_1606_p2;
+        icmp_ln895_reg_4752 <= icmp_ln895_fu_1552_p2;
+        res_max_bin_count_t_2_reg_5572 <= res_max_bin_count_t_2_fu_4642_p3;
+        res_max_bin_r_t_V_1_reg_5561 <= res_max_bin_r_t_V_1_fu_4625_p3;
+        res_max_bin_r_t_V_reg_5551 <= res_max_bin_r_t_V_fu_4600_p3;
+        res_max_bin_theta_t_1_reg_5556[6 : 1] <= res_max_bin_theta_t_1_fu_4617_p3[6 : 1];
+        roi_seed_r_V_read_reg_4742 <= roi_seed_r_V;
+        roi_seed_r_V_read_reg_4742_pp0_iter1_reg <= roi_seed_r_V_read_reg_4742;
+        select_ln430_10_reg_5107 <= select_ln430_10_fu_2815_p3;
+        select_ln430_13_reg_5117 <= select_ln430_13_fu_2832_p3;
+        select_ln430_16_reg_5127 <= select_ln430_16_fu_2849_p3;
+        select_ln430_19_reg_5137 <= select_ln430_19_fu_2866_p3;
+        select_ln430_1_reg_5077 <= select_ln430_1_fu_2764_p3;
+        select_ln430_22_reg_5147 <= select_ln430_22_fu_2883_p3;
+        select_ln430_49_reg_5197 <= select_ln430_49_fu_3036_p3;
+        select_ln430_4_reg_5087 <= select_ln430_4_fu_2781_p3;
+        select_ln430_52_reg_5207 <= select_ln430_52_fu_3053_p3;
+        select_ln430_55_reg_5217 <= select_ln430_55_fu_3070_p3;
+        select_ln430_58_reg_5227 <= select_ln430_58_fu_3087_p3;
+        select_ln430_61_reg_5237 <= select_ln430_61_fu_3104_p3;
+        select_ln430_64_reg_5247 <= select_ln430_64_fu_3121_p3;
+        select_ln430_67_reg_5257 <= select_ln430_67_fu_3138_p3;
+        select_ln430_70_reg_5267 <= select_ln430_70_fu_3155_p3;
+        select_ln430_7_reg_5097 <= select_ln430_7_fu_2798_p3;
+        select_ln448_25_reg_5365 <= select_ln448_25_fu_3380_p3;
+        select_ln448_28_reg_5375 <= select_ln448_28_fu_3397_p3;
+        select_ln448_31_reg_5385 <= select_ln448_31_fu_3414_p3;
+        select_ln448_34_reg_5395 <= select_ln448_34_fu_3431_p3;
+        select_ln448_37_reg_5405 <= select_ln448_37_fu_3448_p3;
+        select_ln448_40_reg_5415 <= select_ln448_40_fu_3465_p3;
+        select_ln448_43_reg_5425 <= select_ln448_43_fu_3482_p3;
+        select_ln448_46_reg_5435 <= select_ln448_46_fu_3499_p3;
+        select_ln466_11_reg_5482 <= select_ln466_11_fu_3540_p3;
+        select_ln466_14_reg_5494 <= select_ln466_14_fu_3548_p3;
+        select_ln466_17_reg_5506 <= select_ln466_17_fu_3556_p3;
+        select_ln466_20_reg_5518 <= select_ln466_20_fu_3564_p3;
+        select_ln466_23_reg_5530 <= select_ln466_23_fu_3572_p3;
+        select_ln466_2_reg_5446 <= select_ln466_2_fu_3516_p3;
+        select_ln466_5_reg_5458 <= select_ln466_5_fu_3524_p3;
+        select_ln466_8_reg_5470 <= select_ln466_8_fu_3532_p3;
+        select_ln484_6_reg_5541[6 : 2] <= select_ln484_6_fu_4554_p3[6 : 2];
+        select_ln484_reg_5536[6 : 2] <= select_ln484_fu_4508_p3[6 : 2];
+        slcvec_angle_polar_o_reg_4747 <= slcvec_angle_polar_offset_mrad_V;
+        slcvec_angle_polar_o_reg_4747_pp0_iter1_reg <= slcvec_angle_polar_o_reg_4747;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (res_max_bin_count_V_1_vld_reg == 1'b0) & (res_max_bin_count_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (res_max_bin_count_V_1_vld_in == 1'b1) & (res_max_bin_count_V_1_vld_reg == 1'b1)))) begin
-        res_max_bin_count_V_1_data_reg <= res_max_bin_count_t_2_reg_4666;
+        res_max_bin_count_V_1_data_reg <= res_max_bin_count_t_2_reg_5572;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (res_max_bin_r_V_1_vld_reg == 1'b0) & (res_max_bin_r_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (res_max_bin_r_V_1_vld_in == 1'b1) & (res_max_bin_r_V_1_vld_reg == 1'b1)))) begin
-        res_max_bin_r_V_1_data_reg <= tmp_V_fu_4091_p2;
+        res_max_bin_r_V_1_data_reg <= tmp_V_fu_4667_p2;
     end
 end
 
 always @ (posedge ap_clk) begin
     if (((~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (res_max_bin_theta_V_1_vld_reg == 1'b0) & (res_max_bin_theta_V_1_vld_in == 1'b1)) | (~((ap_start == 1'b0) & (ap_idle_pp0 == 1'b1) & (1'b1 == ap_CS_fsm_pp0_stage0)) & (1'b1 == 1'b1) & (res_max_bin_theta_V_1_vld_in == 1'b1) & (res_max_bin_theta_V_1_vld_reg == 1'b1)))) begin
-        res_max_bin_theta_V_1_data_reg <= res_max_bin_theta_t_2_fu_4080_p3;
+        res_max_bin_theta_V_1_data_reg <= res_max_bin_theta_t_2_fu_4655_p3;
     end
 end
 
@@ -1290,11 +1486,11 @@ always @ (*) begin
     endcase
 end
 
-assign add_ln703_1_fu_4135_p2 = (zext_ln703_2_fu_4131_p1 + slcvec_angle_polar_o_reg_4171_pp0_iter1_reg);
+assign add_ln703_1_fu_4711_p2 = (zext_ln703_2_fu_4707_p1 + slcvec_angle_polar_o_reg_4747_pp0_iter1_reg);
 
-assign add_ln703_2_fu_4160_p2 = (zext_ln708_fu_4155_p1 + roi_seed_r_V_read_reg_4166_pp0_iter1_reg);
+assign add_ln703_2_fu_4736_p2 = (zext_ln708_fu_4731_p1 + roi_seed_r_V_read_reg_4742_pp0_iter1_reg);
 
-assign add_ln703_fu_4121_p2 = ($signed(zext_ln703_fu_4112_p1) + $signed(12'd2189));
+assign add_ln703_fu_4697_p2 = ($signed(zext_ln703_fu_4688_p1) + $signed(12'd2189));
 
 assign ap_CS_fsm_pp0_stage0 = ap_CS_fsm[32'd0];
 
@@ -1344,805 +1540,934 @@ assign hls_LT_theta_global_V = hls_LT_theta_global_V_1_data_reg;
 
 assign hls_LT_theta_global_V_ap_vld = hls_LT_theta_global_V_1_vld_reg;
 
-assign icmp_ln895_100_fu_2010_p2 = ((select_ln425_11_fu_2693_p3 > select_ln425_59_fu_2965_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_100_fu_2140_p2 = ((select_ln430_11_fu_2823_p3 > select_ln430_59_fu_3095_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_101_fu_2014_p2 = ((select_ln425_14_fu_2710_p3 > select_ln425_62_fu_2982_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_101_fu_2144_p2 = ((select_ln430_14_fu_2840_p3 > select_ln430_62_fu_3112_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_102_fu_2018_p2 = ((select_ln425_17_fu_2727_p3 > select_ln425_65_fu_2999_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_102_fu_2148_p2 = ((select_ln430_17_fu_2857_p3 > select_ln430_65_fu_3129_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_103_fu_2022_p2 = ((select_ln425_20_fu_2744_p3 > select_ln425_68_fu_3016_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_103_fu_2152_p2 = ((select_ln430_20_fu_2874_p3 > select_ln430_68_fu_3146_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_104_fu_2026_p2 = ((select_ln425_23_fu_2761_p3 > select_ln425_71_fu_3033_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_104_fu_2156_p2 = ((select_ln430_23_fu_2891_p3 > select_ln430_71_fu_3163_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_105_fu_2030_p2 = ((select_ln425_26_fu_2778_p3 > select_ln425_74_fu_3050_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_105_fu_2160_p2 = ((select_ln430_26_fu_2908_p3 > select_ln430_74_fu_3180_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_106_fu_2034_p2 = ((select_ln425_29_fu_2795_p3 > select_ln425_77_fu_3067_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_106_fu_2164_p2 = ((select_ln430_29_fu_2925_p3 > select_ln430_77_fu_3197_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_107_fu_2038_p2 = ((select_ln425_32_fu_2812_p3 > select_ln425_80_fu_3084_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_107_fu_2168_p2 = ((select_ln430_32_fu_2942_p3 > select_ln430_80_fu_3214_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_108_fu_2042_p2 = ((select_ln425_35_fu_2829_p3 > select_ln425_83_fu_3101_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_108_fu_2172_p2 = ((select_ln430_35_fu_2959_p3 > select_ln430_83_fu_3231_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_109_fu_2046_p2 = ((select_ln425_38_fu_2846_p3 > select_ln425_86_fu_3118_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_109_fu_2176_p2 = ((select_ln430_38_fu_2976_p3 > select_ln430_86_fu_3248_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_10_fu_1482_p2 = ((max_bin_count_10_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_10_fu_1612_p2 = ((max_bin_count_10_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_110_fu_2050_p2 = ((select_ln425_41_fu_2863_p3 > select_ln425_89_fu_3135_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_110_fu_2180_p2 = ((select_ln430_41_fu_2993_p3 > select_ln430_89_fu_3265_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_111_fu_2054_p2 = ((select_ln425_44_fu_2880_p3 > select_ln425_92_fu_3152_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_111_fu_2184_p2 = ((select_ln430_44_fu_3010_p3 > select_ln430_92_fu_3282_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_112_fu_2058_p2 = ((select_ln425_47_fu_2897_p3 > select_ln425_95_fu_3169_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_112_fu_2188_p2 = ((select_ln430_47_fu_3027_p3 > select_ln430_95_fu_3299_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_113_fu_2062_p2 = ((select_ln443_2_fu_3178_p3 > select_ln443_26_fu_3258_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_113_fu_2192_p2 = ((select_ln448_2_fu_3308_p3 > select_ln448_26_fu_3388_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_114_fu_2066_p2 = ((select_ln443_5_fu_3187_p3 > select_ln443_29_fu_3275_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_114_fu_2196_p2 = ((select_ln448_5_fu_3317_p3 > select_ln448_29_fu_3405_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_115_fu_2070_p2 = ((select_ln443_8_fu_3196_p3 > select_ln443_32_fu_3292_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_115_fu_2200_p2 = ((select_ln448_8_fu_3326_p3 > select_ln448_32_fu_3422_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_116_fu_2074_p2 = ((select_ln443_11_fu_3205_p3 > select_ln443_35_fu_3309_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_116_fu_2204_p2 = ((select_ln448_11_fu_3335_p3 > select_ln448_35_fu_3439_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_117_fu_2078_p2 = ((select_ln443_14_fu_3214_p3 > select_ln443_38_fu_3326_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_117_fu_2208_p2 = ((select_ln448_14_fu_3344_p3 > select_ln448_38_fu_3456_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_118_fu_2082_p2 = ((select_ln443_17_fu_3223_p3 > select_ln443_41_fu_3343_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_118_fu_2212_p2 = ((select_ln448_17_fu_3353_p3 > select_ln448_41_fu_3473_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_119_fu_2086_p2 = ((select_ln443_20_fu_3232_p3 > select_ln443_44_fu_3360_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_119_fu_2216_p2 = ((select_ln448_20_fu_3362_p3 > select_ln448_44_fu_3490_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_11_fu_1488_p2 = ((max_bin_count_11_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_11_fu_1618_p2 = ((max_bin_count_11_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_120_fu_2090_p2 = ((select_ln443_23_fu_3241_p3 > select_ln443_47_fu_3377_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_120_fu_2220_p2 = ((select_ln448_23_fu_3371_p3 > select_ln448_47_fu_3507_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_121_fu_2094_p2 = ((select_ln461_2_reg_4550 > select_ln461_14_reg_4598) ? 1'b1 : 1'b0);
+assign icmp_ln895_121_fu_2224_p2 = ((select_ln466_2_reg_5446 > select_ln466_14_reg_5494) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_122_fu_2098_p2 = ((select_ln461_5_reg_4562 > select_ln461_17_reg_4610) ? 1'b1 : 1'b0);
+assign icmp_ln895_122_fu_2228_p2 = ((select_ln466_5_reg_5458 > select_ln466_17_reg_5506) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_123_fu_2102_p2 = ((select_ln461_8_reg_4574 > select_ln461_20_reg_4622) ? 1'b1 : 1'b0);
+assign icmp_ln895_123_fu_2232_p2 = ((select_ln466_8_reg_5470 > select_ln466_20_reg_5518) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_124_fu_2106_p2 = ((select_ln461_11_reg_4586 > select_ln461_23_reg_4634) ? 1'b1 : 1'b0);
+assign icmp_ln895_124_fu_2236_p2 = ((select_ln466_11_reg_5482 > select_ln466_23_reg_5530) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_125_fu_2110_p2 = ((select_ln479_2_fu_3946_p3 > select_ln479_8_fu_3992_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_125_fu_2240_p2 = ((select_ln484_2_fu_4524_p3 > select_ln484_8_fu_4570_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_126_fu_2114_p2 = ((select_ln479_5_fu_3969_p3 > select_ln479_11_fu_4015_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_126_fu_2244_p2 = ((select_ln484_5_fu_4547_p3 > select_ln484_11_fu_4593_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_12_fu_1494_p2 = ((max_bin_count_12_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_12_fu_1624_p2 = ((max_bin_count_12_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_13_fu_1500_p2 = ((max_bin_count_13_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_13_fu_1630_p2 = ((max_bin_count_13_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_14_fu_1506_p2 = ((max_bin_count_14_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_14_fu_1636_p2 = ((max_bin_count_14_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_15_fu_1512_p2 = ((max_bin_count_15_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_15_fu_1642_p2 = ((max_bin_count_15_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_16_fu_1518_p2 = ((max_bin_count_16_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_16_fu_1648_p2 = ((max_bin_count_16_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_17_fu_1524_p2 = ((max_bin_count_17_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_17_fu_1654_p2 = ((max_bin_count_17_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_18_fu_1530_p2 = ((max_bin_count_18_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_18_fu_1660_p2 = ((max_bin_count_18_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_19_fu_1536_p2 = ((max_bin_count_19_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_19_fu_1666_p2 = ((max_bin_count_19_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_1_fu_1428_p2 = ((max_bin_count_1_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_1_fu_1558_p2 = ((max_bin_count_1_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_20_fu_1542_p2 = ((max_bin_count_20_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_20_fu_1672_p2 = ((max_bin_count_20_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_21_fu_1548_p2 = ((max_bin_count_21_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_21_fu_1678_p2 = ((max_bin_count_21_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_22_fu_1554_p2 = ((max_bin_count_22_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_22_fu_1684_p2 = ((max_bin_count_22_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_23_fu_1560_p2 = ((max_bin_count_23_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_23_fu_1690_p2 = ((max_bin_count_23_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_24_fu_1566_p2 = ((max_bin_count_24_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_24_fu_1696_p2 = ((max_bin_count_24_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_25_fu_1572_p2 = ((max_bin_count_25_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_25_fu_1702_p2 = ((max_bin_count_25_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_26_fu_1578_p2 = ((max_bin_count_26_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_26_fu_1708_p2 = ((max_bin_count_26_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_27_fu_1584_p2 = ((max_bin_count_27_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_27_fu_1714_p2 = ((max_bin_count_27_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_28_fu_1590_p2 = ((max_bin_count_28_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_28_fu_1720_p2 = ((max_bin_count_28_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_29_fu_1596_p2 = ((max_bin_count_29_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_29_fu_1726_p2 = ((max_bin_count_29_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_2_fu_1434_p2 = ((max_bin_count_2_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_2_fu_1564_p2 = ((max_bin_count_2_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_30_fu_1602_p2 = ((max_bin_count_30_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_30_fu_1732_p2 = ((max_bin_count_30_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_31_fu_1608_p2 = ((max_bin_count_31_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_31_fu_1738_p2 = ((max_bin_count_31_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_32_fu_1614_p2 = ((max_bin_count_32_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_32_fu_1744_p2 = ((max_bin_count_32_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_33_fu_1620_p2 = ((max_bin_count_33_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_33_fu_1750_p2 = ((max_bin_count_33_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_34_fu_1626_p2 = ((max_bin_count_34_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_34_fu_1756_p2 = ((max_bin_count_34_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_35_fu_1632_p2 = ((max_bin_count_35_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_35_fu_1762_p2 = ((max_bin_count_35_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_36_fu_1638_p2 = ((max_bin_count_36_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_36_fu_1768_p2 = ((max_bin_count_36_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_37_fu_1644_p2 = ((max_bin_count_37_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_37_fu_1774_p2 = ((max_bin_count_37_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_38_fu_1650_p2 = ((max_bin_count_38_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_38_fu_1780_p2 = ((max_bin_count_38_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_39_fu_1656_p2 = ((max_bin_count_39_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_39_fu_1786_p2 = ((max_bin_count_39_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_3_fu_1440_p2 = ((max_bin_count_3_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_3_fu_1570_p2 = ((max_bin_count_3_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_40_fu_1662_p2 = ((max_bin_count_40_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_40_fu_1792_p2 = ((max_bin_count_40_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_41_fu_1668_p2 = ((max_bin_count_41_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_41_fu_1798_p2 = ((max_bin_count_41_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_42_fu_1674_p2 = ((max_bin_count_42_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_42_fu_1804_p2 = ((max_bin_count_42_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_43_fu_1680_p2 = ((max_bin_count_43_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_43_fu_1810_p2 = ((max_bin_count_43_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_44_fu_1686_p2 = ((max_bin_count_44_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_44_fu_1816_p2 = ((max_bin_count_44_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_45_fu_1692_p2 = ((max_bin_count_45_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_45_fu_1822_p2 = ((max_bin_count_45_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_46_fu_1698_p2 = ((max_bin_count_46_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_46_fu_1828_p2 = ((max_bin_count_46_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_47_fu_1704_p2 = ((max_bin_count_47_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_47_fu_1834_p2 = ((max_bin_count_47_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_48_fu_1710_p2 = ((max_bin_count_48_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_48_fu_1840_p2 = ((max_bin_count_48_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_49_fu_1716_p2 = ((max_bin_count_49_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_49_fu_1846_p2 = ((max_bin_count_49_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_4_fu_1446_p2 = ((max_bin_count_4_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_4_fu_1576_p2 = ((max_bin_count_4_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_50_fu_1722_p2 = ((max_bin_count_50_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_50_fu_1852_p2 = ((max_bin_count_50_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_51_fu_1728_p2 = ((max_bin_count_51_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_51_fu_1858_p2 = ((max_bin_count_51_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_52_fu_1734_p2 = ((max_bin_count_52_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_52_fu_1864_p2 = ((max_bin_count_52_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_53_fu_1740_p2 = ((max_bin_count_53_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_53_fu_1870_p2 = ((max_bin_count_53_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_54_fu_1746_p2 = ((max_bin_count_54_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_54_fu_1876_p2 = ((max_bin_count_54_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_55_fu_1752_p2 = ((max_bin_count_55_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_55_fu_1882_p2 = ((max_bin_count_55_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_56_fu_1758_p2 = ((max_bin_count_56_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_56_fu_1888_p2 = ((max_bin_count_56_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_57_fu_1764_p2 = ((max_bin_count_57_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_57_fu_1894_p2 = ((max_bin_count_57_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_58_fu_1770_p2 = ((max_bin_count_58_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_58_fu_1900_p2 = ((max_bin_count_58_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_59_fu_1776_p2 = ((max_bin_count_59_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_59_fu_1906_p2 = ((max_bin_count_59_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_5_fu_2118_p2 = ((res_max_bin_count_t_s_fu_4038_p3 > res_max_bin_count_t_1_fu_4063_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_5_fu_2248_p2 = ((res_max_bin_count_t_s_fu_4608_p3 > res_max_bin_count_t_1_fu_4633_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_60_fu_1782_p2 = ((max_bin_count_60_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_60_fu_1912_p2 = ((max_bin_count_60_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_61_fu_1788_p2 = ((max_bin_count_61_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_61_fu_1918_p2 = ((max_bin_count_61_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_62_fu_1794_p2 = ((max_bin_count_62_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_62_fu_1924_p2 = ((max_bin_count_62_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_63_fu_1800_p2 = ((max_bin_count_63_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_63_fu_1930_p2 = ((max_bin_count_63_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_64_fu_1458_p2 = ((max_bin_count_6_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_64_fu_1588_p2 = ((max_bin_count_6_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_65_fu_1806_p2 = ((max_bin_count_0_V > max_bin_count_32_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_65_fu_1936_p2 = ((max_bin_count_0_V > max_bin_count_32_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_66_fu_1812_p2 = ((max_bin_count_1_V > max_bin_count_33_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_66_fu_1942_p2 = ((max_bin_count_1_V > max_bin_count_33_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_67_fu_1818_p2 = ((max_bin_count_2_V > max_bin_count_34_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_67_fu_1948_p2 = ((max_bin_count_2_V > max_bin_count_34_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_68_fu_1824_p2 = ((max_bin_count_3_V > max_bin_count_35_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_68_fu_1954_p2 = ((max_bin_count_3_V > max_bin_count_35_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_69_fu_1830_p2 = ((max_bin_count_4_V > max_bin_count_36_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_69_fu_1960_p2 = ((max_bin_count_4_V > max_bin_count_36_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_6_fu_1452_p2 = ((max_bin_count_5_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_6_fu_1582_p2 = ((max_bin_count_5_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_70_fu_1836_p2 = ((max_bin_count_5_V > max_bin_count_37_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_70_fu_1966_p2 = ((max_bin_count_5_V > max_bin_count_37_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_71_fu_1842_p2 = ((max_bin_count_6_V > max_bin_count_38_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_71_fu_1972_p2 = ((max_bin_count_6_V > max_bin_count_38_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_72_fu_1848_p2 = ((max_bin_count_7_V > max_bin_count_39_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_72_fu_1978_p2 = ((max_bin_count_7_V > max_bin_count_39_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_73_fu_1854_p2 = ((max_bin_count_8_V > max_bin_count_40_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_73_fu_1984_p2 = ((max_bin_count_8_V > max_bin_count_40_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_74_fu_1860_p2 = ((max_bin_count_9_V > max_bin_count_41_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_74_fu_1990_p2 = ((max_bin_count_9_V > max_bin_count_41_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_75_fu_1866_p2 = ((max_bin_count_10_V > max_bin_count_42_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_75_fu_1996_p2 = ((max_bin_count_10_V > max_bin_count_42_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_76_fu_1872_p2 = ((max_bin_count_11_V > max_bin_count_43_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_76_fu_2002_p2 = ((max_bin_count_11_V > max_bin_count_43_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_77_fu_1878_p2 = ((max_bin_count_12_V > max_bin_count_44_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_77_fu_2008_p2 = ((max_bin_count_12_V > max_bin_count_44_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_78_fu_1884_p2 = ((max_bin_count_13_V > max_bin_count_45_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_78_fu_2014_p2 = ((max_bin_count_13_V > max_bin_count_45_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_79_fu_1890_p2 = ((max_bin_count_14_V > max_bin_count_46_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_79_fu_2020_p2 = ((max_bin_count_14_V > max_bin_count_46_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_7_fu_1464_p2 = ((max_bin_count_7_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_7_fu_1594_p2 = ((max_bin_count_7_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_80_fu_1896_p2 = ((max_bin_count_15_V > max_bin_count_47_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_80_fu_2026_p2 = ((max_bin_count_15_V > max_bin_count_47_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_81_fu_1902_p2 = ((max_bin_count_16_V > max_bin_count_48_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_81_fu_2032_p2 = ((max_bin_count_16_V > max_bin_count_48_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_82_fu_1908_p2 = ((max_bin_count_17_V > max_bin_count_49_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_82_fu_2038_p2 = ((max_bin_count_17_V > max_bin_count_49_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_83_fu_1914_p2 = ((max_bin_count_18_V > max_bin_count_50_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_83_fu_2044_p2 = ((max_bin_count_18_V > max_bin_count_50_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_84_fu_1920_p2 = ((max_bin_count_19_V > max_bin_count_51_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_84_fu_2050_p2 = ((max_bin_count_19_V > max_bin_count_51_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_85_fu_1926_p2 = ((max_bin_count_20_V > max_bin_count_52_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_85_fu_2056_p2 = ((max_bin_count_20_V > max_bin_count_52_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_86_fu_1932_p2 = ((max_bin_count_21_V > max_bin_count_53_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_86_fu_2062_p2 = ((max_bin_count_21_V > max_bin_count_53_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_87_fu_1938_p2 = ((max_bin_count_22_V > max_bin_count_54_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_87_fu_2068_p2 = ((max_bin_count_22_V > max_bin_count_54_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_88_fu_1944_p2 = ((max_bin_count_23_V > max_bin_count_55_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_88_fu_2074_p2 = ((max_bin_count_23_V > max_bin_count_55_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_89_fu_1950_p2 = ((max_bin_count_24_V > max_bin_count_56_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_89_fu_2080_p2 = ((max_bin_count_24_V > max_bin_count_56_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_8_fu_1470_p2 = ((max_bin_count_8_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_8_fu_1600_p2 = ((max_bin_count_8_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_90_fu_1956_p2 = ((max_bin_count_25_V > max_bin_count_57_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_90_fu_2086_p2 = ((max_bin_count_25_V > max_bin_count_57_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_91_fu_1962_p2 = ((max_bin_count_26_V > max_bin_count_58_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_91_fu_2092_p2 = ((max_bin_count_26_V > max_bin_count_58_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_92_fu_1968_p2 = ((max_bin_count_27_V > max_bin_count_59_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_92_fu_2098_p2 = ((max_bin_count_27_V > max_bin_count_59_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_93_fu_1974_p2 = ((max_bin_count_28_V > max_bin_count_60_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_93_fu_2104_p2 = ((max_bin_count_28_V > max_bin_count_60_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_94_fu_1980_p2 = ((max_bin_count_29_V > max_bin_count_61_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_94_fu_2110_p2 = ((max_bin_count_29_V > max_bin_count_61_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_95_fu_1986_p2 = ((max_bin_count_30_V > max_bin_count_62_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_95_fu_2116_p2 = ((max_bin_count_30_V > max_bin_count_62_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_96_fu_1992_p2 = ((max_bin_count_31_V > max_bin_count_63_V) ? 1'b1 : 1'b0);
+assign icmp_ln895_96_fu_2122_p2 = ((max_bin_count_31_V > max_bin_count_63_V) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_97_fu_1998_p2 = ((select_ln425_2_fu_2642_p3 > select_ln425_50_fu_2914_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_97_fu_2128_p2 = ((select_ln430_2_fu_2772_p3 > select_ln430_50_fu_3044_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_98_fu_2002_p2 = ((select_ln425_5_fu_2659_p3 > select_ln425_53_fu_2931_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_98_fu_2132_p2 = ((select_ln430_5_fu_2789_p3 > select_ln430_53_fu_3061_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_99_fu_2006_p2 = ((select_ln425_8_fu_2676_p3 > select_ln425_56_fu_2948_p3) ? 1'b1 : 1'b0);
+assign icmp_ln895_99_fu_2136_p2 = ((select_ln430_8_fu_2806_p3 > select_ln430_56_fu_3078_p3) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_9_fu_1476_p2 = ((max_bin_count_9_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_9_fu_1606_p2 = ((max_bin_count_9_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign icmp_ln895_fu_1422_p2 = ((max_bin_count_0_V == 4'd0) ? 1'b1 : 1'b0);
+assign icmp_ln895_fu_1552_p2 = ((max_bin_count_0_V == 4'd0) ? 1'b1 : 1'b0);
 
-assign p_Val2_2_fu_4106_p2 = (t0_V_fu_4098_p3 | 8'd2);
+assign p_Val2_2_fu_4682_p2 = (t0_V_fu_4674_p3 | 9'd2);
 
-assign p_Val2_4_fu_4149_p2 = (shl_ln_fu_4141_p3 | 12'd32);
+assign p_Val2_4_fu_4725_p2 = (shl_ln_fu_4717_p3 | 13'd32);
 
 assign res_max_bin_count_V = res_max_bin_count_V_1_data_reg;
 
 assign res_max_bin_count_V_ap_vld = res_max_bin_count_V_1_vld_reg;
 
-assign res_max_bin_count_t_1_fu_4063_p3 = ((icmp_ln895_126_fu_2114_p2[0:0] === 1'b1) ? select_ln479_5_fu_3969_p3 : select_ln479_11_fu_4015_p3);
+assign res_max_bin_count_t_1_fu_4633_p3 = ((icmp_ln895_126_fu_2244_p2[0:0] === 1'b1) ? select_ln484_5_fu_4547_p3 : select_ln484_11_fu_4593_p3);
 
-assign res_max_bin_count_t_2_fu_4072_p3 = ((icmp_ln895_5_fu_2118_p2[0:0] === 1'b1) ? res_max_bin_count_t_s_fu_4038_p3 : res_max_bin_count_t_1_fu_4063_p3);
+assign res_max_bin_count_t_2_fu_4642_p3 = ((icmp_ln895_5_fu_2248_p2[0:0] === 1'b1) ? res_max_bin_count_t_s_fu_4608_p3 : res_max_bin_count_t_1_fu_4633_p3);
 
-assign res_max_bin_count_t_s_fu_4038_p3 = ((icmp_ln895_125_fu_2110_p2[0:0] === 1'b1) ? select_ln479_2_fu_3946_p3 : select_ln479_8_fu_3992_p3);
+assign res_max_bin_count_t_s_fu_4608_p3 = ((icmp_ln895_125_fu_2240_p2[0:0] === 1'b1) ? select_ln484_2_fu_4524_p3 : select_ln484_8_fu_4570_p3);
 
 assign res_max_bin_r_V = res_max_bin_r_V_1_data_reg;
 
 assign res_max_bin_r_V_ap_vld = res_max_bin_r_V_1_vld_reg;
 
-assign res_max_bin_r_t_V_1_fu_4055_p3 = ((icmp_ln895_126_fu_2114_p2[0:0] === 1'b1) ? select_ln479_4_fu_3961_p3 : select_ln479_10_fu_4007_p3);
+assign res_max_bin_r_t_V_1_fu_4625_p3 = ((icmp_ln895_126_fu_2244_p2[0:0] === 1'b1) ? select_ln484_4_fu_4539_p3 : select_ln484_10_fu_4585_p3);
 
-assign res_max_bin_r_t_V_2_fu_4086_p3 = ((icmp_ln895_5_reg_4660[0:0] === 1'b1) ? res_max_bin_r_t_V_reg_4645 : res_max_bin_r_t_V_1_reg_4655);
+assign res_max_bin_r_t_V_2_fu_4662_p3 = ((icmp_ln895_5_reg_5566[0:0] === 1'b1) ? res_max_bin_r_t_V_reg_5551 : res_max_bin_r_t_V_1_reg_5561);
 
-assign res_max_bin_r_t_V_fu_4030_p3 = ((icmp_ln895_125_fu_2110_p2[0:0] === 1'b1) ? select_ln479_1_fu_3938_p3 : select_ln479_7_fu_3984_p3);
+assign res_max_bin_r_t_V_fu_4600_p3 = ((icmp_ln895_125_fu_2240_p2[0:0] === 1'b1) ? select_ln484_1_fu_4516_p3 : select_ln484_7_fu_4562_p3);
 
 assign res_max_bin_theta_V = res_max_bin_theta_V_1_data_reg;
 
 assign res_max_bin_theta_V_ap_vld = res_max_bin_theta_V_1_vld_reg;
 
-assign res_max_bin_theta_t_1_fu_4047_p3 = ((icmp_ln895_126_fu_2114_p2[0:0] === 1'b1) ? select_ln479_3_fu_3953_p3 : select_ln479_9_fu_3999_p3);
+assign res_max_bin_theta_t_1_fu_4617_p3 = ((icmp_ln895_126_fu_2244_p2[0:0] === 1'b1) ? select_ln484_3_fu_4531_p3 : select_ln484_9_fu_4577_p3);
 
-assign res_max_bin_theta_t_2_fu_4080_p3 = ((icmp_ln895_5_reg_4660[0:0] === 1'b1) ? res_max_bin_theta_t_s_reg_4640 : res_max_bin_theta_t_1_reg_4650);
+assign res_max_bin_theta_t_2_fu_4655_p3 = ((icmp_ln895_5_reg_5566[0:0] === 1'b1) ? res_max_bin_theta_t_s_fu_4650_p3 : res_max_bin_theta_t_1_reg_5556);
 
-assign res_max_bin_theta_t_s_fu_4022_p3 = ((icmp_ln895_125_fu_2110_p2[0:0] === 1'b1) ? select_ln479_fu_3930_p3 : select_ln479_6_fu_3976_p3);
+assign res_max_bin_theta_t_s_fu_4650_p3 = ((icmp_ln895_125_reg_5546[0:0] === 1'b1) ? select_ln484_reg_5536 : select_ln484_6_reg_5541);
 
-assign select_ln407_10_fu_2202_p3 = ((icmp_ln895_10_fu_1482_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_10_V);
+assign select_ln412_100_fu_3930_p3 = ((icmp_ln895_50_reg_5002[0:0] === 1'b1) ? 7'd114 : 7'd50);
 
-assign select_ln407_11_fu_2210_p3 = ((icmp_ln895_11_fu_1488_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_11_V);
+assign select_ln412_101_fu_2652_p3 = ((icmp_ln895_50_fu_1852_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_50_V);
 
-assign select_ln407_12_fu_2218_p3 = ((icmp_ln895_12_fu_1494_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_12_V);
+assign select_ln412_102_fu_3937_p3 = ((icmp_ln895_51_reg_5007[0:0] === 1'b1) ? 7'd115 : 7'd51);
 
-assign select_ln407_13_fu_2226_p3 = ((icmp_ln895_13_fu_1500_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_13_V);
+assign select_ln412_103_fu_2660_p3 = ((icmp_ln895_51_fu_1858_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_51_V);
 
-assign select_ln407_14_fu_2234_p3 = ((icmp_ln895_14_fu_1506_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_14_V);
+assign select_ln412_104_fu_3944_p3 = ((icmp_ln895_52_reg_5012[0:0] === 1'b1) ? 7'd116 : 7'd52);
 
-assign select_ln407_15_fu_2242_p3 = ((icmp_ln895_15_fu_1512_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_15_V);
+assign select_ln412_105_fu_2668_p3 = ((icmp_ln895_52_fu_1864_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_52_V);
 
-assign select_ln407_16_fu_2250_p3 = ((icmp_ln895_16_fu_1518_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_16_V);
+assign select_ln412_106_fu_3951_p3 = ((icmp_ln895_53_reg_5017[0:0] === 1'b1) ? 7'd117 : 7'd53);
 
-assign select_ln407_17_fu_2258_p3 = ((icmp_ln895_17_fu_1524_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_17_V);
+assign select_ln412_107_fu_2676_p3 = ((icmp_ln895_53_fu_1870_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_53_V);
 
-assign select_ln407_18_fu_2266_p3 = ((icmp_ln895_18_fu_1530_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_18_V);
+assign select_ln412_108_fu_3958_p3 = ((icmp_ln895_54_reg_5022[0:0] === 1'b1) ? 7'd118 : 7'd54);
 
-assign select_ln407_19_fu_2274_p3 = ((icmp_ln895_19_fu_1536_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_19_V);
+assign select_ln412_109_fu_2684_p3 = ((icmp_ln895_54_fu_1876_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_54_V);
 
-assign select_ln407_1_fu_2130_p3 = ((icmp_ln895_1_fu_1428_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_1_V);
+assign select_ln412_10_fu_3615_p3 = ((icmp_ln895_6_reg_4777[0:0] === 1'b1) ? 7'd69 : 7'd5);
 
-assign select_ln407_20_fu_2282_p3 = ((icmp_ln895_20_fu_1542_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_20_V);
+assign select_ln412_110_fu_3965_p3 = ((icmp_ln895_55_reg_5027[0:0] === 1'b1) ? 7'd119 : 7'd55);
 
-assign select_ln407_21_fu_2290_p3 = ((icmp_ln895_21_fu_1548_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_21_V);
+assign select_ln412_111_fu_2692_p3 = ((icmp_ln895_55_fu_1882_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_55_V);
 
-assign select_ln407_22_fu_2298_p3 = ((icmp_ln895_22_fu_1554_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_22_V);
+assign select_ln412_112_fu_3972_p3 = ((icmp_ln895_56_reg_5032[0:0] === 1'b1) ? 7'd120 : 7'd56);
 
-assign select_ln407_23_fu_2306_p3 = ((icmp_ln895_23_fu_1560_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_23_V);
+assign select_ln412_113_fu_2700_p3 = ((icmp_ln895_56_fu_1888_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_56_V);
 
-assign select_ln407_24_fu_2314_p3 = ((icmp_ln895_24_fu_1566_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_24_V);
+assign select_ln412_114_fu_3979_p3 = ((icmp_ln895_57_reg_5037[0:0] === 1'b1) ? 7'd121 : 7'd57);
 
-assign select_ln407_25_fu_2322_p3 = ((icmp_ln895_25_fu_1572_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_25_V);
+assign select_ln412_115_fu_2708_p3 = ((icmp_ln895_57_fu_1894_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_57_V);
 
-assign select_ln407_26_fu_2330_p3 = ((icmp_ln895_26_fu_1578_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_26_V);
+assign select_ln412_116_fu_3986_p3 = ((icmp_ln895_58_reg_5042[0:0] === 1'b1) ? 7'd122 : 7'd58);
 
-assign select_ln407_27_fu_2338_p3 = ((icmp_ln895_27_fu_1584_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_27_V);
+assign select_ln412_117_fu_2716_p3 = ((icmp_ln895_58_fu_1900_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_58_V);
 
-assign select_ln407_28_fu_2346_p3 = ((icmp_ln895_28_fu_1590_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_28_V);
+assign select_ln412_118_fu_3993_p3 = ((icmp_ln895_59_reg_5047[0:0] === 1'b1) ? 7'd123 : 7'd59);
 
-assign select_ln407_29_fu_2354_p3 = ((icmp_ln895_29_fu_1596_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_29_V);
+assign select_ln412_119_fu_2724_p3 = ((icmp_ln895_59_fu_1906_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_59_V);
 
-assign select_ln407_2_fu_2138_p3 = ((icmp_ln895_2_fu_1434_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_2_V);
+assign select_ln412_11_fu_2292_p3 = ((icmp_ln895_6_fu_1582_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_5_V);
 
-assign select_ln407_30_fu_2362_p3 = ((icmp_ln895_30_fu_1602_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_30_V);
+assign select_ln412_120_fu_4000_p3 = ((icmp_ln895_60_reg_5052[0:0] === 1'b1) ? 7'd124 : 7'd60);
 
-assign select_ln407_31_fu_2370_p3 = ((icmp_ln895_31_fu_1608_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_31_V);
+assign select_ln412_121_fu_2732_p3 = ((icmp_ln895_60_fu_1912_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_60_V);
 
-assign select_ln407_32_fu_2378_p3 = ((icmp_ln895_32_fu_1614_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_32_V);
+assign select_ln412_122_fu_4007_p3 = ((icmp_ln895_61_reg_5057[0:0] === 1'b1) ? 7'd125 : 7'd61);
 
-assign select_ln407_33_fu_2386_p3 = ((icmp_ln895_33_fu_1620_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_33_V);
+assign select_ln412_123_fu_2740_p3 = ((icmp_ln895_61_fu_1918_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_61_V);
 
-assign select_ln407_34_fu_2394_p3 = ((icmp_ln895_34_fu_1626_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_34_V);
+assign select_ln412_124_fu_4014_p3 = ((icmp_ln895_62_reg_5062[0:0] === 1'b1) ? 7'd126 : 7'd62);
 
-assign select_ln407_35_fu_2402_p3 = ((icmp_ln895_35_fu_1632_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_35_V);
+assign select_ln412_125_fu_2748_p3 = ((icmp_ln895_62_fu_1924_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_62_V);
 
-assign select_ln407_36_fu_2410_p3 = ((icmp_ln895_36_fu_1638_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_36_V);
+assign select_ln412_126_fu_4021_p3 = ((icmp_ln895_63_reg_5067[0:0] === 1'b1) ? 7'd127 : 7'd63);
 
-assign select_ln407_37_fu_2418_p3 = ((icmp_ln895_37_fu_1644_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_37_V);
+assign select_ln412_127_fu_2756_p3 = ((icmp_ln895_63_fu_1930_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_63_V);
 
-assign select_ln407_38_fu_2426_p3 = ((icmp_ln895_38_fu_1650_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_38_V);
+assign select_ln412_12_fu_3622_p3 = ((icmp_ln895_64_reg_4782[0:0] === 1'b1) ? 7'd70 : 7'd6);
 
-assign select_ln407_39_fu_2434_p3 = ((icmp_ln895_39_fu_1656_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_39_V);
+assign select_ln412_13_fu_2300_p3 = ((icmp_ln895_64_fu_1588_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_6_V);
 
-assign select_ln407_3_fu_2146_p3 = ((icmp_ln895_3_fu_1440_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_3_V);
+assign select_ln412_14_fu_3629_p3 = ((icmp_ln895_7_reg_4787[0:0] === 1'b1) ? 7'd71 : 7'd7);
 
-assign select_ln407_40_fu_2442_p3 = ((icmp_ln895_40_fu_1662_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_40_V);
+assign select_ln412_15_fu_2308_p3 = ((icmp_ln895_7_fu_1594_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_7_V);
 
-assign select_ln407_41_fu_2450_p3 = ((icmp_ln895_41_fu_1668_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_41_V);
+assign select_ln412_16_fu_3636_p3 = ((icmp_ln895_8_reg_4792[0:0] === 1'b1) ? 7'd72 : 7'd8);
 
-assign select_ln407_42_fu_2458_p3 = ((icmp_ln895_42_fu_1674_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_42_V);
+assign select_ln412_17_fu_2316_p3 = ((icmp_ln895_8_fu_1600_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_8_V);
 
-assign select_ln407_43_fu_2466_p3 = ((icmp_ln895_43_fu_1680_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_43_V);
+assign select_ln412_18_fu_3643_p3 = ((icmp_ln895_9_reg_4797[0:0] === 1'b1) ? 7'd73 : 7'd9);
 
-assign select_ln407_44_fu_2474_p3 = ((icmp_ln895_44_fu_1686_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_44_V);
+assign select_ln412_19_fu_2324_p3 = ((icmp_ln895_9_fu_1606_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_9_V);
 
-assign select_ln407_45_fu_2482_p3 = ((icmp_ln895_45_fu_1692_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_45_V);
+assign select_ln412_1_fu_2252_p3 = ((icmp_ln895_fu_1552_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_0_V);
 
-assign select_ln407_46_fu_2490_p3 = ((icmp_ln895_46_fu_1698_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_46_V);
+assign select_ln412_20_fu_3650_p3 = ((icmp_ln895_10_reg_4802[0:0] === 1'b1) ? 7'd74 : 7'd10);
 
-assign select_ln407_47_fu_2498_p3 = ((icmp_ln895_47_fu_1704_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_47_V);
+assign select_ln412_21_fu_2332_p3 = ((icmp_ln895_10_fu_1612_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_10_V);
 
-assign select_ln407_48_fu_2506_p3 = ((icmp_ln895_48_fu_1710_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_48_V);
+assign select_ln412_22_fu_3657_p3 = ((icmp_ln895_11_reg_4807[0:0] === 1'b1) ? 7'd75 : 7'd11);
 
-assign select_ln407_49_fu_2514_p3 = ((icmp_ln895_49_fu_1716_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_49_V);
+assign select_ln412_23_fu_2340_p3 = ((icmp_ln895_11_fu_1618_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_11_V);
 
-assign select_ln407_4_fu_2154_p3 = ((icmp_ln895_4_fu_1446_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_4_V);
+assign select_ln412_24_fu_3664_p3 = ((icmp_ln895_12_reg_4812[0:0] === 1'b1) ? 7'd76 : 7'd12);
 
-assign select_ln407_50_fu_2522_p3 = ((icmp_ln895_50_fu_1722_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_50_V);
+assign select_ln412_25_fu_2348_p3 = ((icmp_ln895_12_fu_1624_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_12_V);
 
-assign select_ln407_51_fu_2530_p3 = ((icmp_ln895_51_fu_1728_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_51_V);
+assign select_ln412_26_fu_3671_p3 = ((icmp_ln895_13_reg_4817[0:0] === 1'b1) ? 7'd77 : 7'd13);
 
-assign select_ln407_52_fu_2538_p3 = ((icmp_ln895_52_fu_1734_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_52_V);
+assign select_ln412_27_fu_2356_p3 = ((icmp_ln895_13_fu_1630_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_13_V);
 
-assign select_ln407_53_fu_2546_p3 = ((icmp_ln895_53_fu_1740_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_53_V);
+assign select_ln412_28_fu_3678_p3 = ((icmp_ln895_14_reg_4822[0:0] === 1'b1) ? 7'd78 : 7'd14);
 
-assign select_ln407_54_fu_2554_p3 = ((icmp_ln895_54_fu_1746_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_54_V);
+assign select_ln412_29_fu_2364_p3 = ((icmp_ln895_14_fu_1636_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_14_V);
 
-assign select_ln407_55_fu_2562_p3 = ((icmp_ln895_55_fu_1752_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_55_V);
+assign select_ln412_2_fu_3587_p3 = ((icmp_ln895_1_reg_4757[0:0] === 1'b1) ? 7'd65 : 7'd1);
 
-assign select_ln407_56_fu_2570_p3 = ((icmp_ln895_56_fu_1758_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_56_V);
+assign select_ln412_30_fu_3685_p3 = ((icmp_ln895_15_reg_4827[0:0] === 1'b1) ? 7'd79 : 7'd15);
 
-assign select_ln407_57_fu_2578_p3 = ((icmp_ln895_57_fu_1764_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_57_V);
+assign select_ln412_31_fu_2372_p3 = ((icmp_ln895_15_fu_1642_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_15_V);
 
-assign select_ln407_58_fu_2586_p3 = ((icmp_ln895_58_fu_1770_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_58_V);
+assign select_ln412_32_fu_3692_p3 = ((icmp_ln895_16_reg_4832[0:0] === 1'b1) ? 7'd80 : 7'd16);
 
-assign select_ln407_59_fu_2594_p3 = ((icmp_ln895_59_fu_1776_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_59_V);
+assign select_ln412_33_fu_2380_p3 = ((icmp_ln895_16_fu_1648_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_16_V);
 
-assign select_ln407_5_fu_2162_p3 = ((icmp_ln895_6_fu_1452_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_5_V);
+assign select_ln412_34_fu_3699_p3 = ((icmp_ln895_17_reg_4837[0:0] === 1'b1) ? 7'd81 : 7'd17);
 
-assign select_ln407_60_fu_2602_p3 = ((icmp_ln895_60_fu_1782_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_60_V);
+assign select_ln412_35_fu_2388_p3 = ((icmp_ln895_17_fu_1654_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_17_V);
 
-assign select_ln407_61_fu_2610_p3 = ((icmp_ln895_61_fu_1788_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_61_V);
+assign select_ln412_36_fu_3706_p3 = ((icmp_ln895_18_reg_4842[0:0] === 1'b1) ? 7'd82 : 7'd18);
 
-assign select_ln407_62_fu_2618_p3 = ((icmp_ln895_62_fu_1794_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_62_V);
+assign select_ln412_37_fu_2396_p3 = ((icmp_ln895_18_fu_1660_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_18_V);
 
-assign select_ln407_63_fu_2626_p3 = ((icmp_ln895_63_fu_1800_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_63_V);
+assign select_ln412_38_fu_3713_p3 = ((icmp_ln895_19_reg_4847[0:0] === 1'b1) ? 7'd83 : 7'd19);
 
-assign select_ln407_6_fu_2170_p3 = ((icmp_ln895_64_fu_1458_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_6_V);
+assign select_ln412_39_fu_2404_p3 = ((icmp_ln895_19_fu_1666_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_19_V);
 
-assign select_ln407_7_fu_2178_p3 = ((icmp_ln895_7_fu_1464_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_7_V);
+assign select_ln412_3_fu_2260_p3 = ((icmp_ln895_1_fu_1558_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_1_V);
 
-assign select_ln407_8_fu_2186_p3 = ((icmp_ln895_8_fu_1470_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_8_V);
+assign select_ln412_40_fu_3720_p3 = ((icmp_ln895_20_reg_4852[0:0] === 1'b1) ? 7'd84 : 7'd20);
 
-assign select_ln407_9_fu_2194_p3 = ((icmp_ln895_9_fu_1476_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_9_V);
+assign select_ln412_41_fu_2412_p3 = ((icmp_ln895_20_fu_1672_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_20_V);
 
-assign select_ln407_fu_2122_p3 = ((icmp_ln895_fu_1422_p2[0:0] === 1'b1) ? 6'd0 : max_bin_r_0_V);
+assign select_ln412_42_fu_3727_p3 = ((icmp_ln895_21_reg_4857[0:0] === 1'b1) ? 7'd85 : 7'd21);
 
-assign select_ln425_10_fu_2685_p3 = ((icmp_ln895_68_fu_1824_p2[0:0] === 1'b1) ? select_ln407_3_fu_2146_p3 : select_ln407_35_fu_2402_p3);
+assign select_ln412_43_fu_2420_p3 = ((icmp_ln895_21_fu_1678_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_21_V);
 
-assign select_ln425_11_fu_2693_p3 = ((icmp_ln895_68_fu_1824_p2[0:0] === 1'b1) ? max_bin_count_3_V : max_bin_count_35_V);
+assign select_ln412_44_fu_3734_p3 = ((icmp_ln895_22_reg_4862[0:0] === 1'b1) ? 7'd86 : 7'd22);
 
-assign select_ln425_12_fu_3478_p3 = ((icmp_ln895_69_reg_4216[0:0] === 1'b1) ? 6'd4 : 6'd36);
+assign select_ln412_45_fu_2428_p3 = ((icmp_ln895_22_fu_1684_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_22_V);
 
-assign select_ln425_13_fu_2702_p3 = ((icmp_ln895_69_fu_1830_p2[0:0] === 1'b1) ? select_ln407_4_fu_2154_p3 : select_ln407_36_fu_2410_p3);
+assign select_ln412_46_fu_3741_p3 = ((icmp_ln895_23_reg_4867[0:0] === 1'b1) ? 7'd87 : 7'd23);
 
-assign select_ln425_14_fu_2710_p3 = ((icmp_ln895_69_fu_1830_p2[0:0] === 1'b1) ? max_bin_count_4_V : max_bin_count_36_V);
+assign select_ln412_47_fu_2436_p3 = ((icmp_ln895_23_fu_1690_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_23_V);
 
-assign select_ln425_15_fu_3485_p3 = ((icmp_ln895_70_reg_4226[0:0] === 1'b1) ? 6'd5 : 6'd37);
+assign select_ln412_48_fu_3748_p3 = ((icmp_ln895_24_reg_4872[0:0] === 1'b1) ? 7'd88 : 7'd24);
 
-assign select_ln425_16_fu_2719_p3 = ((icmp_ln895_70_fu_1836_p2[0:0] === 1'b1) ? select_ln407_5_fu_2162_p3 : select_ln407_37_fu_2418_p3);
+assign select_ln412_49_fu_2444_p3 = ((icmp_ln895_24_fu_1696_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_24_V);
 
-assign select_ln425_17_fu_2727_p3 = ((icmp_ln895_70_fu_1836_p2[0:0] === 1'b1) ? max_bin_count_5_V : max_bin_count_37_V);
+assign select_ln412_4_fu_3594_p3 = ((icmp_ln895_2_reg_4762[0:0] === 1'b1) ? 7'd66 : 7'd2);
 
-assign select_ln425_18_fu_3492_p3 = ((icmp_ln895_71_reg_4236[0:0] === 1'b1) ? 6'd6 : 6'd38);
+assign select_ln412_50_fu_3755_p3 = ((icmp_ln895_25_reg_4877[0:0] === 1'b1) ? 7'd89 : 7'd25);
 
-assign select_ln425_19_fu_2736_p3 = ((icmp_ln895_71_fu_1842_p2[0:0] === 1'b1) ? select_ln407_6_fu_2170_p3 : select_ln407_38_fu_2426_p3);
+assign select_ln412_51_fu_2452_p3 = ((icmp_ln895_25_fu_1702_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_25_V);
 
-assign select_ln425_1_fu_2634_p3 = ((icmp_ln895_65_fu_1806_p2[0:0] === 1'b1) ? select_ln407_fu_2122_p3 : select_ln407_32_fu_2378_p3);
+assign select_ln412_52_fu_3762_p3 = ((icmp_ln895_26_reg_4882[0:0] === 1'b1) ? 7'd90 : 7'd26);
 
-assign select_ln425_20_fu_2744_p3 = ((icmp_ln895_71_fu_1842_p2[0:0] === 1'b1) ? max_bin_count_6_V : max_bin_count_38_V);
+assign select_ln412_53_fu_2460_p3 = ((icmp_ln895_26_fu_1708_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_26_V);
 
-assign select_ln425_21_fu_3499_p3 = ((icmp_ln895_72_reg_4246[0:0] === 1'b1) ? 6'd7 : 6'd39);
+assign select_ln412_54_fu_3769_p3 = ((icmp_ln895_27_reg_4887[0:0] === 1'b1) ? 7'd91 : 7'd27);
 
-assign select_ln425_22_fu_2753_p3 = ((icmp_ln895_72_fu_1848_p2[0:0] === 1'b1) ? select_ln407_7_fu_2178_p3 : select_ln407_39_fu_2434_p3);
+assign select_ln412_55_fu_2468_p3 = ((icmp_ln895_27_fu_1714_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_27_V);
 
-assign select_ln425_23_fu_2761_p3 = ((icmp_ln895_72_fu_1848_p2[0:0] === 1'b1) ? max_bin_count_7_V : max_bin_count_39_V);
+assign select_ln412_56_fu_3776_p3 = ((icmp_ln895_28_reg_4892[0:0] === 1'b1) ? 7'd92 : 7'd28);
 
-assign select_ln425_24_fu_3506_p3 = ((icmp_ln895_73_reg_4256[0:0] === 1'b1) ? 6'd8 : 6'd40);
+assign select_ln412_57_fu_2476_p3 = ((icmp_ln895_28_fu_1720_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_28_V);
 
-assign select_ln425_25_fu_2770_p3 = ((icmp_ln895_73_fu_1854_p2[0:0] === 1'b1) ? select_ln407_8_fu_2186_p3 : select_ln407_40_fu_2442_p3);
+assign select_ln412_58_fu_3783_p3 = ((icmp_ln895_29_reg_4897[0:0] === 1'b1) ? 7'd93 : 7'd29);
 
-assign select_ln425_26_fu_2778_p3 = ((icmp_ln895_73_fu_1854_p2[0:0] === 1'b1) ? max_bin_count_8_V : max_bin_count_40_V);
+assign select_ln412_59_fu_2484_p3 = ((icmp_ln895_29_fu_1726_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_29_V);
 
-assign select_ln425_27_fu_3513_p3 = ((icmp_ln895_74_reg_4261[0:0] === 1'b1) ? 6'd9 : 6'd41);
+assign select_ln412_5_fu_2268_p3 = ((icmp_ln895_2_fu_1564_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_2_V);
 
-assign select_ln425_28_fu_2787_p3 = ((icmp_ln895_74_fu_1860_p2[0:0] === 1'b1) ? select_ln407_9_fu_2194_p3 : select_ln407_41_fu_2450_p3);
+assign select_ln412_60_fu_3790_p3 = ((icmp_ln895_30_reg_4902[0:0] === 1'b1) ? 7'd94 : 7'd30);
 
-assign select_ln425_29_fu_2795_p3 = ((icmp_ln895_74_fu_1860_p2[0:0] === 1'b1) ? max_bin_count_9_V : max_bin_count_41_V);
+assign select_ln412_61_fu_2492_p3 = ((icmp_ln895_30_fu_1732_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_30_V);
 
-assign select_ln425_2_fu_2642_p3 = ((icmp_ln895_65_fu_1806_p2[0:0] === 1'b1) ? max_bin_count_0_V : max_bin_count_32_V);
+assign select_ln412_62_fu_3797_p3 = ((icmp_ln895_31_reg_4907[0:0] === 1'b1) ? 7'd95 : 7'd31);
 
-assign select_ln425_30_fu_3520_p3 = ((icmp_ln895_75_reg_4266[0:0] === 1'b1) ? 6'd10 : 6'd42);
+assign select_ln412_63_fu_2500_p3 = ((icmp_ln895_31_fu_1738_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_31_V);
 
-assign select_ln425_31_fu_2804_p3 = ((icmp_ln895_75_fu_1866_p2[0:0] === 1'b1) ? select_ln407_10_fu_2202_p3 : select_ln407_42_fu_2458_p3);
+assign select_ln412_64_fu_3804_p3 = ((icmp_ln895_32_reg_4912[0:0] === 1'b1) ? 7'd96 : 7'd32);
 
-assign select_ln425_32_fu_2812_p3 = ((icmp_ln895_75_fu_1866_p2[0:0] === 1'b1) ? max_bin_count_10_V : max_bin_count_42_V);
+assign select_ln412_65_fu_2508_p3 = ((icmp_ln895_32_fu_1744_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_32_V);
 
-assign select_ln425_33_fu_3527_p3 = ((icmp_ln895_76_reg_4271[0:0] === 1'b1) ? 6'd11 : 6'd43);
+assign select_ln412_66_fu_3811_p3 = ((icmp_ln895_33_reg_4917[0:0] === 1'b1) ? 7'd97 : 7'd33);
 
-assign select_ln425_34_fu_2821_p3 = ((icmp_ln895_76_fu_1872_p2[0:0] === 1'b1) ? select_ln407_11_fu_2210_p3 : select_ln407_43_fu_2466_p3);
+assign select_ln412_67_fu_2516_p3 = ((icmp_ln895_33_fu_1750_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_33_V);
 
-assign select_ln425_35_fu_2829_p3 = ((icmp_ln895_76_fu_1872_p2[0:0] === 1'b1) ? max_bin_count_11_V : max_bin_count_43_V);
+assign select_ln412_68_fu_3818_p3 = ((icmp_ln895_34_reg_4922[0:0] === 1'b1) ? 7'd98 : 7'd34);
 
-assign select_ln425_36_fu_3534_p3 = ((icmp_ln895_77_reg_4276[0:0] === 1'b1) ? 6'd12 : 6'd44);
+assign select_ln412_69_fu_2524_p3 = ((icmp_ln895_34_fu_1756_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_34_V);
 
-assign select_ln425_37_fu_2838_p3 = ((icmp_ln895_77_fu_1878_p2[0:0] === 1'b1) ? select_ln407_12_fu_2218_p3 : select_ln407_44_fu_2474_p3);
+assign select_ln412_6_fu_3601_p3 = ((icmp_ln895_3_reg_4767[0:0] === 1'b1) ? 7'd67 : 7'd3);
 
-assign select_ln425_38_fu_2846_p3 = ((icmp_ln895_77_fu_1878_p2[0:0] === 1'b1) ? max_bin_count_12_V : max_bin_count_44_V);
+assign select_ln412_70_fu_3825_p3 = ((icmp_ln895_35_reg_4927[0:0] === 1'b1) ? 7'd99 : 7'd35);
 
-assign select_ln425_39_fu_3541_p3 = ((icmp_ln895_78_reg_4281[0:0] === 1'b1) ? 6'd13 : 6'd45);
+assign select_ln412_71_fu_2532_p3 = ((icmp_ln895_35_fu_1762_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_35_V);
 
-assign select_ln425_3_fu_3457_p3 = ((icmp_ln895_66_reg_4186[0:0] === 1'b1) ? 6'd1 : 6'd33);
+assign select_ln412_72_fu_3832_p3 = ((icmp_ln895_36_reg_4932[0:0] === 1'b1) ? 7'd100 : 7'd36);
 
-assign select_ln425_40_fu_2855_p3 = ((icmp_ln895_78_fu_1884_p2[0:0] === 1'b1) ? select_ln407_13_fu_2226_p3 : select_ln407_45_fu_2482_p3);
+assign select_ln412_73_fu_2540_p3 = ((icmp_ln895_36_fu_1768_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_36_V);
 
-assign select_ln425_41_fu_2863_p3 = ((icmp_ln895_78_fu_1884_p2[0:0] === 1'b1) ? max_bin_count_13_V : max_bin_count_45_V);
+assign select_ln412_74_fu_3839_p3 = ((icmp_ln895_37_reg_4937[0:0] === 1'b1) ? 7'd101 : 7'd37);
 
-assign select_ln425_42_fu_3548_p3 = ((icmp_ln895_79_reg_4286[0:0] === 1'b1) ? 6'd14 : 6'd46);
+assign select_ln412_75_fu_2548_p3 = ((icmp_ln895_37_fu_1774_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_37_V);
 
-assign select_ln425_43_fu_2872_p3 = ((icmp_ln895_79_fu_1890_p2[0:0] === 1'b1) ? select_ln407_14_fu_2234_p3 : select_ln407_46_fu_2490_p3);
+assign select_ln412_76_fu_3846_p3 = ((icmp_ln895_38_reg_4942[0:0] === 1'b1) ? 7'd102 : 7'd38);
 
-assign select_ln425_44_fu_2880_p3 = ((icmp_ln895_79_fu_1890_p2[0:0] === 1'b1) ? max_bin_count_14_V : max_bin_count_46_V);
+assign select_ln412_77_fu_2556_p3 = ((icmp_ln895_38_fu_1780_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_38_V);
 
-assign select_ln425_45_fu_3555_p3 = ((icmp_ln895_80_reg_4291[0:0] === 1'b1) ? 6'd15 : 6'd47);
+assign select_ln412_78_fu_3853_p3 = ((icmp_ln895_39_reg_4947[0:0] === 1'b1) ? 7'd103 : 7'd39);
 
-assign select_ln425_46_fu_2889_p3 = ((icmp_ln895_80_fu_1896_p2[0:0] === 1'b1) ? select_ln407_15_fu_2242_p3 : select_ln407_47_fu_2498_p3);
+assign select_ln412_79_fu_2564_p3 = ((icmp_ln895_39_fu_1786_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_39_V);
 
-assign select_ln425_47_fu_2897_p3 = ((icmp_ln895_80_fu_1896_p2[0:0] === 1'b1) ? max_bin_count_15_V : max_bin_count_47_V);
+assign select_ln412_7_fu_2276_p3 = ((icmp_ln895_3_fu_1570_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_3_V);
 
-assign select_ln425_48_fu_3562_p3 = ((icmp_ln895_81_reg_4296[0:0] === 1'b1) ? 6'd16 : 6'd48);
+assign select_ln412_80_fu_3860_p3 = ((icmp_ln895_40_reg_4952[0:0] === 1'b1) ? 7'd104 : 7'd40);
 
-assign select_ln425_49_fu_2906_p3 = ((icmp_ln895_81_fu_1902_p2[0:0] === 1'b1) ? select_ln407_16_fu_2250_p3 : select_ln407_48_fu_2506_p3);
+assign select_ln412_81_fu_2572_p3 = ((icmp_ln895_40_fu_1792_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_40_V);
 
-assign select_ln425_4_fu_2651_p3 = ((icmp_ln895_66_fu_1812_p2[0:0] === 1'b1) ? select_ln407_1_fu_2130_p3 : select_ln407_33_fu_2386_p3);
+assign select_ln412_82_fu_3867_p3 = ((icmp_ln895_41_reg_4957[0:0] === 1'b1) ? 7'd105 : 7'd41);
 
-assign select_ln425_50_fu_2914_p3 = ((icmp_ln895_81_fu_1902_p2[0:0] === 1'b1) ? max_bin_count_16_V : max_bin_count_48_V);
+assign select_ln412_83_fu_2580_p3 = ((icmp_ln895_41_fu_1798_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_41_V);
 
-assign select_ln425_51_fu_3569_p3 = ((icmp_ln895_82_reg_4306[0:0] === 1'b1) ? 6'd17 : 6'd49);
+assign select_ln412_84_fu_3874_p3 = ((icmp_ln895_42_reg_4962[0:0] === 1'b1) ? 7'd106 : 7'd42);
 
-assign select_ln425_52_fu_2923_p3 = ((icmp_ln895_82_fu_1908_p2[0:0] === 1'b1) ? select_ln407_17_fu_2258_p3 : select_ln407_49_fu_2514_p3);
+assign select_ln412_85_fu_2588_p3 = ((icmp_ln895_42_fu_1804_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_42_V);
 
-assign select_ln425_53_fu_2931_p3 = ((icmp_ln895_82_fu_1908_p2[0:0] === 1'b1) ? max_bin_count_17_V : max_bin_count_49_V);
+assign select_ln412_86_fu_3881_p3 = ((icmp_ln895_43_reg_4967[0:0] === 1'b1) ? 7'd107 : 7'd43);
 
-assign select_ln425_54_fu_3576_p3 = ((icmp_ln895_83_reg_4316[0:0] === 1'b1) ? 6'd18 : 6'd50);
+assign select_ln412_87_fu_2596_p3 = ((icmp_ln895_43_fu_1810_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_43_V);
 
-assign select_ln425_55_fu_2940_p3 = ((icmp_ln895_83_fu_1914_p2[0:0] === 1'b1) ? select_ln407_18_fu_2266_p3 : select_ln407_50_fu_2522_p3);
+assign select_ln412_88_fu_3888_p3 = ((icmp_ln895_44_reg_4972[0:0] === 1'b1) ? 7'd108 : 7'd44);
 
-assign select_ln425_56_fu_2948_p3 = ((icmp_ln895_83_fu_1914_p2[0:0] === 1'b1) ? max_bin_count_18_V : max_bin_count_50_V);
+assign select_ln412_89_fu_2604_p3 = ((icmp_ln895_44_fu_1816_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_44_V);
 
-assign select_ln425_57_fu_3583_p3 = ((icmp_ln895_84_reg_4326[0:0] === 1'b1) ? 6'd19 : 6'd51);
+assign select_ln412_8_fu_3608_p3 = ((icmp_ln895_4_reg_4772[0:0] === 1'b1) ? 7'd68 : 7'd4);
 
-assign select_ln425_58_fu_2957_p3 = ((icmp_ln895_84_fu_1920_p2[0:0] === 1'b1) ? select_ln407_19_fu_2274_p3 : select_ln407_51_fu_2530_p3);
+assign select_ln412_90_fu_3895_p3 = ((icmp_ln895_45_reg_4977[0:0] === 1'b1) ? 7'd109 : 7'd45);
 
-assign select_ln425_59_fu_2965_p3 = ((icmp_ln895_84_fu_1920_p2[0:0] === 1'b1) ? max_bin_count_19_V : max_bin_count_51_V);
+assign select_ln412_91_fu_2612_p3 = ((icmp_ln895_45_fu_1822_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_45_V);
 
-assign select_ln425_5_fu_2659_p3 = ((icmp_ln895_66_fu_1812_p2[0:0] === 1'b1) ? max_bin_count_1_V : max_bin_count_33_V);
+assign select_ln412_92_fu_3902_p3 = ((icmp_ln895_46_reg_4982[0:0] === 1'b1) ? 7'd110 : 7'd46);
 
-assign select_ln425_60_fu_3590_p3 = ((icmp_ln895_85_reg_4336[0:0] === 1'b1) ? 6'd20 : 6'd52);
+assign select_ln412_93_fu_2620_p3 = ((icmp_ln895_46_fu_1828_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_46_V);
 
-assign select_ln425_61_fu_2974_p3 = ((icmp_ln895_85_fu_1926_p2[0:0] === 1'b1) ? select_ln407_20_fu_2282_p3 : select_ln407_52_fu_2538_p3);
+assign select_ln412_94_fu_3909_p3 = ((icmp_ln895_47_reg_4987[0:0] === 1'b1) ? 7'd111 : 7'd47);
 
-assign select_ln425_62_fu_2982_p3 = ((icmp_ln895_85_fu_1926_p2[0:0] === 1'b1) ? max_bin_count_20_V : max_bin_count_52_V);
+assign select_ln412_95_fu_2628_p3 = ((icmp_ln895_47_fu_1834_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_47_V);
 
-assign select_ln425_63_fu_3597_p3 = ((icmp_ln895_86_reg_4346[0:0] === 1'b1) ? 6'd21 : 6'd53);
+assign select_ln412_96_fu_3916_p3 = ((icmp_ln895_48_reg_4992[0:0] === 1'b1) ? 7'd112 : 7'd48);
 
-assign select_ln425_64_fu_2991_p3 = ((icmp_ln895_86_fu_1932_p2[0:0] === 1'b1) ? select_ln407_21_fu_2290_p3 : select_ln407_53_fu_2546_p3);
+assign select_ln412_97_fu_2636_p3 = ((icmp_ln895_48_fu_1840_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_48_V);
 
-assign select_ln425_65_fu_2999_p3 = ((icmp_ln895_86_fu_1932_p2[0:0] === 1'b1) ? max_bin_count_21_V : max_bin_count_53_V);
+assign select_ln412_98_fu_3923_p3 = ((icmp_ln895_49_reg_4997[0:0] === 1'b1) ? 7'd113 : 7'd49);
 
-assign select_ln425_66_fu_3604_p3 = ((icmp_ln895_87_reg_4356[0:0] === 1'b1) ? 6'd22 : 6'd54);
+assign select_ln412_99_fu_2644_p3 = ((icmp_ln895_49_fu_1846_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_49_V);
 
-assign select_ln425_67_fu_3008_p3 = ((icmp_ln895_87_fu_1938_p2[0:0] === 1'b1) ? select_ln407_22_fu_2298_p3 : select_ln407_54_fu_2554_p3);
+assign select_ln412_9_fu_2284_p3 = ((icmp_ln895_4_fu_1576_p2[0:0] === 1'b1) ? 7'd0 : max_bin_r_4_V);
 
-assign select_ln425_68_fu_3016_p3 = ((icmp_ln895_87_fu_1938_p2[0:0] === 1'b1) ? max_bin_count_22_V : max_bin_count_54_V);
+assign select_ln412_fu_3580_p3 = ((icmp_ln895_reg_4752[0:0] === 1'b1) ? 7'd64 : 7'd0);
 
-assign select_ln425_69_fu_3611_p3 = ((icmp_ln895_88_reg_4366[0:0] === 1'b1) ? 6'd23 : 6'd55);
+assign select_ln430_10_fu_2815_p3 = ((icmp_ln895_68_fu_1954_p2[0:0] === 1'b1) ? select_ln412_7_fu_2276_p3 : select_ln412_71_fu_2532_p3);
 
-assign select_ln425_6_fu_3464_p3 = ((icmp_ln895_67_reg_4196[0:0] === 1'b1) ? 6'd2 : 6'd34);
+assign select_ln430_11_fu_2823_p3 = ((icmp_ln895_68_fu_1954_p2[0:0] === 1'b1) ? max_bin_count_3_V : max_bin_count_35_V);
 
-assign select_ln425_70_fu_3025_p3 = ((icmp_ln895_88_fu_1944_p2[0:0] === 1'b1) ? select_ln407_23_fu_2306_p3 : select_ln407_55_fu_2562_p3);
+assign select_ln430_12_fu_4056_p3 = ((icmp_ln895_69_reg_5112[0:0] === 1'b1) ? select_ln412_8_fu_3608_p3 : select_ln412_72_fu_3832_p3);
 
-assign select_ln425_71_fu_3033_p3 = ((icmp_ln895_88_fu_1944_p2[0:0] === 1'b1) ? max_bin_count_23_V : max_bin_count_55_V);
+assign select_ln430_13_fu_2832_p3 = ((icmp_ln895_69_fu_1960_p2[0:0] === 1'b1) ? select_ln412_9_fu_2284_p3 : select_ln412_73_fu_2540_p3);
 
-assign select_ln425_72_fu_3618_p3 = ((icmp_ln895_89_reg_4376[0:0] === 1'b1) ? 6'd24 : 6'd56);
+assign select_ln430_14_fu_2840_p3 = ((icmp_ln895_69_fu_1960_p2[0:0] === 1'b1) ? max_bin_count_4_V : max_bin_count_36_V);
 
-assign select_ln425_73_fu_3042_p3 = ((icmp_ln895_89_fu_1950_p2[0:0] === 1'b1) ? select_ln407_24_fu_2314_p3 : select_ln407_56_fu_2570_p3);
+assign select_ln430_15_fu_4063_p3 = ((icmp_ln895_70_reg_5122[0:0] === 1'b1) ? select_ln412_10_fu_3615_p3 : select_ln412_74_fu_3839_p3);
 
-assign select_ln425_74_fu_3050_p3 = ((icmp_ln895_89_fu_1950_p2[0:0] === 1'b1) ? max_bin_count_24_V : max_bin_count_56_V);
+assign select_ln430_16_fu_2849_p3 = ((icmp_ln895_70_fu_1966_p2[0:0] === 1'b1) ? select_ln412_11_fu_2292_p3 : select_ln412_75_fu_2548_p3);
 
-assign select_ln425_75_fu_3625_p3 = ((icmp_ln895_90_reg_4381[0:0] === 1'b1) ? 6'd25 : 6'd57);
+assign select_ln430_17_fu_2857_p3 = ((icmp_ln895_70_fu_1966_p2[0:0] === 1'b1) ? max_bin_count_5_V : max_bin_count_37_V);
 
-assign select_ln425_76_fu_3059_p3 = ((icmp_ln895_90_fu_1956_p2[0:0] === 1'b1) ? select_ln407_25_fu_2322_p3 : select_ln407_57_fu_2578_p3);
+assign select_ln430_18_fu_4070_p3 = ((icmp_ln895_71_reg_5132[0:0] === 1'b1) ? select_ln412_12_fu_3622_p3 : select_ln412_76_fu_3846_p3);
 
-assign select_ln425_77_fu_3067_p3 = ((icmp_ln895_90_fu_1956_p2[0:0] === 1'b1) ? max_bin_count_25_V : max_bin_count_57_V);
+assign select_ln430_19_fu_2866_p3 = ((icmp_ln895_71_fu_1972_p2[0:0] === 1'b1) ? select_ln412_13_fu_2300_p3 : select_ln412_77_fu_2556_p3);
 
-assign select_ln425_78_fu_3632_p3 = ((icmp_ln895_91_reg_4386[0:0] === 1'b1) ? 6'd26 : 6'd58);
+assign select_ln430_1_fu_2764_p3 = ((icmp_ln895_65_fu_1936_p2[0:0] === 1'b1) ? select_ln412_1_fu_2252_p3 : select_ln412_65_fu_2508_p3);
 
-assign select_ln425_79_fu_3076_p3 = ((icmp_ln895_91_fu_1962_p2[0:0] === 1'b1) ? select_ln407_26_fu_2330_p3 : select_ln407_58_fu_2586_p3);
+assign select_ln430_20_fu_2874_p3 = ((icmp_ln895_71_fu_1972_p2[0:0] === 1'b1) ? max_bin_count_6_V : max_bin_count_38_V);
 
-assign select_ln425_7_fu_2668_p3 = ((icmp_ln895_67_fu_1818_p2[0:0] === 1'b1) ? select_ln407_2_fu_2138_p3 : select_ln407_34_fu_2394_p3);
+assign select_ln430_21_fu_4077_p3 = ((icmp_ln895_72_reg_5142[0:0] === 1'b1) ? select_ln412_14_fu_3629_p3 : select_ln412_78_fu_3853_p3);
 
-assign select_ln425_80_fu_3084_p3 = ((icmp_ln895_91_fu_1962_p2[0:0] === 1'b1) ? max_bin_count_26_V : max_bin_count_58_V);
+assign select_ln430_22_fu_2883_p3 = ((icmp_ln895_72_fu_1978_p2[0:0] === 1'b1) ? select_ln412_15_fu_2308_p3 : select_ln412_79_fu_2564_p3);
 
-assign select_ln425_81_fu_3639_p3 = ((icmp_ln895_92_reg_4391[0:0] === 1'b1) ? 6'd27 : 6'd59);
+assign select_ln430_23_fu_2891_p3 = ((icmp_ln895_72_fu_1978_p2[0:0] === 1'b1) ? max_bin_count_7_V : max_bin_count_39_V);
 
-assign select_ln425_82_fu_3093_p3 = ((icmp_ln895_92_fu_1968_p2[0:0] === 1'b1) ? select_ln407_27_fu_2338_p3 : select_ln407_59_fu_2594_p3);
+assign select_ln430_24_fu_4084_p3 = ((icmp_ln895_73_reg_5152[0:0] === 1'b1) ? select_ln412_16_fu_3636_p3 : select_ln412_80_fu_3860_p3);
 
-assign select_ln425_83_fu_3101_p3 = ((icmp_ln895_92_fu_1968_p2[0:0] === 1'b1) ? max_bin_count_27_V : max_bin_count_59_V);
+assign select_ln430_25_fu_2900_p3 = ((icmp_ln895_73_fu_1984_p2[0:0] === 1'b1) ? select_ln412_17_fu_2316_p3 : select_ln412_81_fu_2572_p3);
 
-assign select_ln425_84_fu_3646_p3 = ((icmp_ln895_93_reg_4396[0:0] === 1'b1) ? 6'd28 : 6'd60);
+assign select_ln430_26_fu_2908_p3 = ((icmp_ln895_73_fu_1984_p2[0:0] === 1'b1) ? max_bin_count_8_V : max_bin_count_40_V);
 
-assign select_ln425_85_fu_3110_p3 = ((icmp_ln895_93_fu_1974_p2[0:0] === 1'b1) ? select_ln407_28_fu_2346_p3 : select_ln407_60_fu_2602_p3);
+assign select_ln430_27_fu_4091_p3 = ((icmp_ln895_74_reg_5157[0:0] === 1'b1) ? select_ln412_18_fu_3643_p3 : select_ln412_82_fu_3867_p3);
 
-assign select_ln425_86_fu_3118_p3 = ((icmp_ln895_93_fu_1974_p2[0:0] === 1'b1) ? max_bin_count_28_V : max_bin_count_60_V);
+assign select_ln430_28_fu_2917_p3 = ((icmp_ln895_74_fu_1990_p2[0:0] === 1'b1) ? select_ln412_19_fu_2324_p3 : select_ln412_83_fu_2580_p3);
 
-assign select_ln425_87_fu_3653_p3 = ((icmp_ln895_94_reg_4401[0:0] === 1'b1) ? 6'd29 : 6'd61);
+assign select_ln430_29_fu_2925_p3 = ((icmp_ln895_74_fu_1990_p2[0:0] === 1'b1) ? max_bin_count_9_V : max_bin_count_41_V);
 
-assign select_ln425_88_fu_3127_p3 = ((icmp_ln895_94_fu_1980_p2[0:0] === 1'b1) ? select_ln407_29_fu_2354_p3 : select_ln407_61_fu_2610_p3);
+assign select_ln430_2_fu_2772_p3 = ((icmp_ln895_65_fu_1936_p2[0:0] === 1'b1) ? max_bin_count_0_V : max_bin_count_32_V);
 
-assign select_ln425_89_fu_3135_p3 = ((icmp_ln895_94_fu_1980_p2[0:0] === 1'b1) ? max_bin_count_29_V : max_bin_count_61_V);
+assign select_ln430_30_fu_4098_p3 = ((icmp_ln895_75_reg_5162[0:0] === 1'b1) ? select_ln412_20_fu_3650_p3 : select_ln412_84_fu_3874_p3);
 
-assign select_ln425_8_fu_2676_p3 = ((icmp_ln895_67_fu_1818_p2[0:0] === 1'b1) ? max_bin_count_2_V : max_bin_count_34_V);
+assign select_ln430_31_fu_2934_p3 = ((icmp_ln895_75_fu_1996_p2[0:0] === 1'b1) ? select_ln412_21_fu_2332_p3 : select_ln412_85_fu_2588_p3);
 
-assign select_ln425_90_fu_3660_p3 = ((icmp_ln895_95_reg_4406[0:0] === 1'b1) ? 6'd30 : 6'd62);
+assign select_ln430_32_fu_2942_p3 = ((icmp_ln895_75_fu_1996_p2[0:0] === 1'b1) ? max_bin_count_10_V : max_bin_count_42_V);
 
-assign select_ln425_91_fu_3144_p3 = ((icmp_ln895_95_fu_1986_p2[0:0] === 1'b1) ? select_ln407_30_fu_2362_p3 : select_ln407_62_fu_2618_p3);
+assign select_ln430_33_fu_4105_p3 = ((icmp_ln895_76_reg_5167[0:0] === 1'b1) ? select_ln412_22_fu_3657_p3 : select_ln412_86_fu_3881_p3);
 
-assign select_ln425_92_fu_3152_p3 = ((icmp_ln895_95_fu_1986_p2[0:0] === 1'b1) ? max_bin_count_30_V : max_bin_count_62_V);
+assign select_ln430_34_fu_2951_p3 = ((icmp_ln895_76_fu_2002_p2[0:0] === 1'b1) ? select_ln412_23_fu_2340_p3 : select_ln412_87_fu_2596_p3);
 
-assign select_ln425_93_fu_3667_p3 = ((icmp_ln895_96_reg_4411[0:0] === 1'b1) ? 6'd31 : 6'd63);
+assign select_ln430_35_fu_2959_p3 = ((icmp_ln895_76_fu_2002_p2[0:0] === 1'b1) ? max_bin_count_11_V : max_bin_count_43_V);
 
-assign select_ln425_94_fu_3161_p3 = ((icmp_ln895_96_fu_1992_p2[0:0] === 1'b1) ? select_ln407_31_fu_2370_p3 : select_ln407_63_fu_2626_p3);
+assign select_ln430_36_fu_4112_p3 = ((icmp_ln895_77_reg_5172[0:0] === 1'b1) ? select_ln412_24_fu_3664_p3 : select_ln412_88_fu_3888_p3);
 
-assign select_ln425_95_fu_3169_p3 = ((icmp_ln895_96_fu_1992_p2[0:0] === 1'b1) ? max_bin_count_31_V : max_bin_count_63_V);
+assign select_ln430_37_fu_2968_p3 = ((icmp_ln895_77_fu_2008_p2[0:0] === 1'b1) ? select_ln412_25_fu_2348_p3 : select_ln412_89_fu_2604_p3);
 
-assign select_ln425_9_fu_3471_p3 = ((icmp_ln895_68_reg_4206[0:0] === 1'b1) ? 6'd3 : 6'd35);
+assign select_ln430_38_fu_2976_p3 = ((icmp_ln895_77_fu_2008_p2[0:0] === 1'b1) ? max_bin_count_12_V : max_bin_count_44_V);
 
-assign select_ln425_fu_3450_p3 = ((icmp_ln895_65_reg_4176[0:0] === 1'b1) ? 6'd0 : 6'd32);
+assign select_ln430_39_fu_4119_p3 = ((icmp_ln895_78_reg_5177[0:0] === 1'b1) ? select_ln412_26_fu_3671_p3 : select_ln412_90_fu_3895_p3);
 
-assign select_ln443_10_fu_3717_p3 = ((icmp_ln895_100_reg_4434[0:0] === 1'b1) ? select_ln425_10_reg_4211 : select_ln425_58_reg_4331);
+assign select_ln430_3_fu_4035_p3 = ((icmp_ln895_66_reg_5082[0:0] === 1'b1) ? select_ln412_2_fu_3587_p3 : select_ln412_66_fu_3811_p3);
 
-assign select_ln443_11_fu_3205_p3 = ((icmp_ln895_100_fu_2010_p2[0:0] === 1'b1) ? select_ln425_11_fu_2693_p3 : select_ln425_59_fu_2965_p3);
+assign select_ln430_40_fu_2985_p3 = ((icmp_ln895_78_fu_2014_p2[0:0] === 1'b1) ? select_ln412_27_fu_2356_p3 : select_ln412_91_fu_2612_p3);
 
-assign select_ln443_12_fu_3722_p3 = ((icmp_ln895_101_reg_4440[0:0] === 1'b1) ? select_ln425_12_fu_3478_p3 : select_ln425_60_fu_3590_p3);
+assign select_ln430_41_fu_2993_p3 = ((icmp_ln895_78_fu_2014_p2[0:0] === 1'b1) ? max_bin_count_13_V : max_bin_count_45_V);
 
-assign select_ln443_13_fu_3729_p3 = ((icmp_ln895_101_reg_4440[0:0] === 1'b1) ? select_ln425_13_reg_4221 : select_ln425_61_reg_4341);
+assign select_ln430_42_fu_4126_p3 = ((icmp_ln895_79_reg_5182[0:0] === 1'b1) ? select_ln412_28_fu_3678_p3 : select_ln412_92_fu_3902_p3);
 
-assign select_ln443_14_fu_3214_p3 = ((icmp_ln895_101_fu_2014_p2[0:0] === 1'b1) ? select_ln425_14_fu_2710_p3 : select_ln425_62_fu_2982_p3);
+assign select_ln430_43_fu_3002_p3 = ((icmp_ln895_79_fu_2020_p2[0:0] === 1'b1) ? select_ln412_29_fu_2364_p3 : select_ln412_93_fu_2620_p3);
 
-assign select_ln443_15_fu_3734_p3 = ((icmp_ln895_102_reg_4446[0:0] === 1'b1) ? select_ln425_15_fu_3485_p3 : select_ln425_63_fu_3597_p3);
+assign select_ln430_44_fu_3010_p3 = ((icmp_ln895_79_fu_2020_p2[0:0] === 1'b1) ? max_bin_count_14_V : max_bin_count_46_V);
 
-assign select_ln443_16_fu_3741_p3 = ((icmp_ln895_102_reg_4446[0:0] === 1'b1) ? select_ln425_16_reg_4231 : select_ln425_64_reg_4351);
+assign select_ln430_45_fu_4133_p3 = ((icmp_ln895_80_reg_5187[0:0] === 1'b1) ? select_ln412_30_fu_3685_p3 : select_ln412_94_fu_3909_p3);
 
-assign select_ln443_17_fu_3223_p3 = ((icmp_ln895_102_fu_2018_p2[0:0] === 1'b1) ? select_ln425_17_fu_2727_p3 : select_ln425_65_fu_2999_p3);
+assign select_ln430_46_fu_3019_p3 = ((icmp_ln895_80_fu_2026_p2[0:0] === 1'b1) ? select_ln412_31_fu_2372_p3 : select_ln412_95_fu_2628_p3);
 
-assign select_ln443_18_fu_3746_p3 = ((icmp_ln895_103_reg_4452[0:0] === 1'b1) ? select_ln425_18_fu_3492_p3 : select_ln425_66_fu_3604_p3);
+assign select_ln430_47_fu_3027_p3 = ((icmp_ln895_80_fu_2026_p2[0:0] === 1'b1) ? max_bin_count_15_V : max_bin_count_47_V);
 
-assign select_ln443_19_fu_3753_p3 = ((icmp_ln895_103_reg_4452[0:0] === 1'b1) ? select_ln425_19_reg_4241 : select_ln425_67_reg_4361);
+assign select_ln430_48_fu_4140_p3 = ((icmp_ln895_81_reg_5192[0:0] === 1'b1) ? select_ln412_32_fu_3692_p3 : select_ln412_96_fu_3916_p3);
 
-assign select_ln443_1_fu_3681_p3 = ((icmp_ln895_97_reg_4416[0:0] === 1'b1) ? select_ln425_1_reg_4181 : select_ln425_49_reg_4301);
+assign select_ln430_49_fu_3036_p3 = ((icmp_ln895_81_fu_2032_p2[0:0] === 1'b1) ? select_ln412_33_fu_2380_p3 : select_ln412_97_fu_2636_p3);
 
-assign select_ln443_20_fu_3232_p3 = ((icmp_ln895_103_fu_2022_p2[0:0] === 1'b1) ? select_ln425_20_fu_2744_p3 : select_ln425_68_fu_3016_p3);
+assign select_ln430_4_fu_2781_p3 = ((icmp_ln895_66_fu_1942_p2[0:0] === 1'b1) ? select_ln412_3_fu_2260_p3 : select_ln412_67_fu_2516_p3);
 
-assign select_ln443_21_fu_3758_p3 = ((icmp_ln895_104_reg_4458[0:0] === 1'b1) ? select_ln425_21_fu_3499_p3 : select_ln425_69_fu_3611_p3);
+assign select_ln430_50_fu_3044_p3 = ((icmp_ln895_81_fu_2032_p2[0:0] === 1'b1) ? max_bin_count_16_V : max_bin_count_48_V);
 
-assign select_ln443_22_fu_3765_p3 = ((icmp_ln895_104_reg_4458[0:0] === 1'b1) ? select_ln425_22_reg_4251 : select_ln425_70_reg_4371);
+assign select_ln430_51_fu_4147_p3 = ((icmp_ln895_82_reg_5202[0:0] === 1'b1) ? select_ln412_34_fu_3699_p3 : select_ln412_98_fu_3923_p3);
 
-assign select_ln443_23_fu_3241_p3 = ((icmp_ln895_104_fu_2026_p2[0:0] === 1'b1) ? select_ln425_23_fu_2761_p3 : select_ln425_71_fu_3033_p3);
+assign select_ln430_52_fu_3053_p3 = ((icmp_ln895_82_fu_2038_p2[0:0] === 1'b1) ? select_ln412_35_fu_2388_p3 : select_ln412_99_fu_2644_p3);
 
-assign select_ln443_24_fu_3770_p3 = ((icmp_ln895_105_reg_4464[0:0] === 1'b1) ? select_ln425_24_fu_3506_p3 : select_ln425_72_fu_3618_p3);
+assign select_ln430_53_fu_3061_p3 = ((icmp_ln895_82_fu_2038_p2[0:0] === 1'b1) ? max_bin_count_17_V : max_bin_count_49_V);
 
-assign select_ln443_25_fu_3250_p3 = ((icmp_ln895_105_fu_2030_p2[0:0] === 1'b1) ? select_ln425_25_fu_2770_p3 : select_ln425_73_fu_3042_p3);
+assign select_ln430_54_fu_4154_p3 = ((icmp_ln895_83_reg_5212[0:0] === 1'b1) ? select_ln412_36_fu_3706_p3 : select_ln412_100_fu_3930_p3);
 
-assign select_ln443_26_fu_3258_p3 = ((icmp_ln895_105_fu_2030_p2[0:0] === 1'b1) ? select_ln425_26_fu_2778_p3 : select_ln425_74_fu_3050_p3);
+assign select_ln430_55_fu_3070_p3 = ((icmp_ln895_83_fu_2044_p2[0:0] === 1'b1) ? select_ln412_37_fu_2396_p3 : select_ln412_101_fu_2652_p3);
 
-assign select_ln443_27_fu_3777_p3 = ((icmp_ln895_106_reg_4474[0:0] === 1'b1) ? select_ln425_27_fu_3513_p3 : select_ln425_75_fu_3625_p3);
+assign select_ln430_56_fu_3078_p3 = ((icmp_ln895_83_fu_2044_p2[0:0] === 1'b1) ? max_bin_count_18_V : max_bin_count_50_V);
 
-assign select_ln443_28_fu_3267_p3 = ((icmp_ln895_106_fu_2034_p2[0:0] === 1'b1) ? select_ln425_28_fu_2787_p3 : select_ln425_76_fu_3059_p3);
+assign select_ln430_57_fu_4161_p3 = ((icmp_ln895_84_reg_5222[0:0] === 1'b1) ? select_ln412_38_fu_3713_p3 : select_ln412_102_fu_3937_p3);
 
-assign select_ln443_29_fu_3275_p3 = ((icmp_ln895_106_fu_2034_p2[0:0] === 1'b1) ? select_ln425_29_fu_2795_p3 : select_ln425_77_fu_3067_p3);
+assign select_ln430_58_fu_3087_p3 = ((icmp_ln895_84_fu_2050_p2[0:0] === 1'b1) ? select_ln412_39_fu_2404_p3 : select_ln412_103_fu_2660_p3);
 
-assign select_ln443_2_fu_3178_p3 = ((icmp_ln895_97_fu_1998_p2[0:0] === 1'b1) ? select_ln425_2_fu_2642_p3 : select_ln425_50_fu_2914_p3);
+assign select_ln430_59_fu_3095_p3 = ((icmp_ln895_84_fu_2050_p2[0:0] === 1'b1) ? max_bin_count_19_V : max_bin_count_51_V);
 
-assign select_ln443_30_fu_3784_p3 = ((icmp_ln895_107_reg_4484[0:0] === 1'b1) ? select_ln425_30_fu_3520_p3 : select_ln425_78_fu_3632_p3);
+assign select_ln430_5_fu_2789_p3 = ((icmp_ln895_66_fu_1942_p2[0:0] === 1'b1) ? max_bin_count_1_V : max_bin_count_33_V);
 
-assign select_ln443_31_fu_3284_p3 = ((icmp_ln895_107_fu_2038_p2[0:0] === 1'b1) ? select_ln425_31_fu_2804_p3 : select_ln425_79_fu_3076_p3);
+assign select_ln430_60_fu_4168_p3 = ((icmp_ln895_85_reg_5232[0:0] === 1'b1) ? select_ln412_40_fu_3720_p3 : select_ln412_104_fu_3944_p3);
 
-assign select_ln443_32_fu_3292_p3 = ((icmp_ln895_107_fu_2038_p2[0:0] === 1'b1) ? select_ln425_32_fu_2812_p3 : select_ln425_80_fu_3084_p3);
+assign select_ln430_61_fu_3104_p3 = ((icmp_ln895_85_fu_2056_p2[0:0] === 1'b1) ? select_ln412_41_fu_2412_p3 : select_ln412_105_fu_2668_p3);
 
-assign select_ln443_33_fu_3791_p3 = ((icmp_ln895_108_reg_4494[0:0] === 1'b1) ? select_ln425_33_fu_3527_p3 : select_ln425_81_fu_3639_p3);
+assign select_ln430_62_fu_3112_p3 = ((icmp_ln895_85_fu_2056_p2[0:0] === 1'b1) ? max_bin_count_20_V : max_bin_count_52_V);
 
-assign select_ln443_34_fu_3301_p3 = ((icmp_ln895_108_fu_2042_p2[0:0] === 1'b1) ? select_ln425_34_fu_2821_p3 : select_ln425_82_fu_3093_p3);
+assign select_ln430_63_fu_4175_p3 = ((icmp_ln895_86_reg_5242[0:0] === 1'b1) ? select_ln412_42_fu_3727_p3 : select_ln412_106_fu_3951_p3);
 
-assign select_ln443_35_fu_3309_p3 = ((icmp_ln895_108_fu_2042_p2[0:0] === 1'b1) ? select_ln425_35_fu_2829_p3 : select_ln425_83_fu_3101_p3);
+assign select_ln430_64_fu_3121_p3 = ((icmp_ln895_86_fu_2062_p2[0:0] === 1'b1) ? select_ln412_43_fu_2420_p3 : select_ln412_107_fu_2676_p3);
 
-assign select_ln443_36_fu_3798_p3 = ((icmp_ln895_109_reg_4504[0:0] === 1'b1) ? select_ln425_36_fu_3534_p3 : select_ln425_84_fu_3646_p3);
+assign select_ln430_65_fu_3129_p3 = ((icmp_ln895_86_fu_2062_p2[0:0] === 1'b1) ? max_bin_count_21_V : max_bin_count_53_V);
 
-assign select_ln443_37_fu_3318_p3 = ((icmp_ln895_109_fu_2046_p2[0:0] === 1'b1) ? select_ln425_37_fu_2838_p3 : select_ln425_85_fu_3110_p3);
+assign select_ln430_66_fu_4182_p3 = ((icmp_ln895_87_reg_5252[0:0] === 1'b1) ? select_ln412_44_fu_3734_p3 : select_ln412_108_fu_3958_p3);
 
-assign select_ln443_38_fu_3326_p3 = ((icmp_ln895_109_fu_2046_p2[0:0] === 1'b1) ? select_ln425_38_fu_2846_p3 : select_ln425_86_fu_3118_p3);
+assign select_ln430_67_fu_3138_p3 = ((icmp_ln895_87_fu_2068_p2[0:0] === 1'b1) ? select_ln412_45_fu_2428_p3 : select_ln412_109_fu_2684_p3);
 
-assign select_ln443_39_fu_3805_p3 = ((icmp_ln895_110_reg_4514[0:0] === 1'b1) ? select_ln425_39_fu_3541_p3 : select_ln425_87_fu_3653_p3);
+assign select_ln430_68_fu_3146_p3 = ((icmp_ln895_87_fu_2068_p2[0:0] === 1'b1) ? max_bin_count_22_V : max_bin_count_54_V);
 
-assign select_ln443_3_fu_3686_p3 = ((icmp_ln895_98_reg_4422[0:0] === 1'b1) ? select_ln425_3_fu_3457_p3 : select_ln425_51_fu_3569_p3);
+assign select_ln430_69_fu_4189_p3 = ((icmp_ln895_88_reg_5262[0:0] === 1'b1) ? select_ln412_46_fu_3741_p3 : select_ln412_110_fu_3965_p3);
 
-assign select_ln443_40_fu_3335_p3 = ((icmp_ln895_110_fu_2050_p2[0:0] === 1'b1) ? select_ln425_40_fu_2855_p3 : select_ln425_88_fu_3127_p3);
+assign select_ln430_6_fu_4042_p3 = ((icmp_ln895_67_reg_5092[0:0] === 1'b1) ? select_ln412_4_fu_3594_p3 : select_ln412_68_fu_3818_p3);
 
-assign select_ln443_41_fu_3343_p3 = ((icmp_ln895_110_fu_2050_p2[0:0] === 1'b1) ? select_ln425_41_fu_2863_p3 : select_ln425_89_fu_3135_p3);
+assign select_ln430_70_fu_3155_p3 = ((icmp_ln895_88_fu_2074_p2[0:0] === 1'b1) ? select_ln412_47_fu_2436_p3 : select_ln412_111_fu_2692_p3);
 
-assign select_ln443_42_fu_3812_p3 = ((icmp_ln895_111_reg_4524[0:0] === 1'b1) ? select_ln425_42_fu_3548_p3 : select_ln425_90_fu_3660_p3);
+assign select_ln430_71_fu_3163_p3 = ((icmp_ln895_88_fu_2074_p2[0:0] === 1'b1) ? max_bin_count_23_V : max_bin_count_55_V);
 
-assign select_ln443_43_fu_3352_p3 = ((icmp_ln895_111_fu_2054_p2[0:0] === 1'b1) ? select_ln425_43_fu_2872_p3 : select_ln425_91_fu_3144_p3);
+assign select_ln430_72_fu_4196_p3 = ((icmp_ln895_89_reg_5272[0:0] === 1'b1) ? select_ln412_48_fu_3748_p3 : select_ln412_112_fu_3972_p3);
 
-assign select_ln443_44_fu_3360_p3 = ((icmp_ln895_111_fu_2054_p2[0:0] === 1'b1) ? select_ln425_44_fu_2880_p3 : select_ln425_92_fu_3152_p3);
+assign select_ln430_73_fu_3172_p3 = ((icmp_ln895_89_fu_2080_p2[0:0] === 1'b1) ? select_ln412_49_fu_2444_p3 : select_ln412_113_fu_2700_p3);
 
-assign select_ln443_45_fu_3819_p3 = ((icmp_ln895_112_reg_4534[0:0] === 1'b1) ? select_ln425_45_fu_3555_p3 : select_ln425_93_fu_3667_p3);
+assign select_ln430_74_fu_3180_p3 = ((icmp_ln895_89_fu_2080_p2[0:0] === 1'b1) ? max_bin_count_24_V : max_bin_count_56_V);
 
-assign select_ln443_46_fu_3369_p3 = ((icmp_ln895_112_fu_2058_p2[0:0] === 1'b1) ? select_ln425_46_fu_2889_p3 : select_ln425_94_fu_3161_p3);
+assign select_ln430_75_fu_4203_p3 = ((icmp_ln895_90_reg_5277[0:0] === 1'b1) ? select_ln412_50_fu_3755_p3 : select_ln412_114_fu_3979_p3);
 
-assign select_ln443_47_fu_3377_p3 = ((icmp_ln895_112_fu_2058_p2[0:0] === 1'b1) ? select_ln425_47_fu_2897_p3 : select_ln425_95_fu_3169_p3);
+assign select_ln430_76_fu_3189_p3 = ((icmp_ln895_90_fu_2086_p2[0:0] === 1'b1) ? select_ln412_51_fu_2452_p3 : select_ln412_115_fu_2708_p3);
 
-assign select_ln443_4_fu_3693_p3 = ((icmp_ln895_98_reg_4422[0:0] === 1'b1) ? select_ln425_4_reg_4191 : select_ln425_52_reg_4311);
+assign select_ln430_77_fu_3197_p3 = ((icmp_ln895_90_fu_2086_p2[0:0] === 1'b1) ? max_bin_count_25_V : max_bin_count_57_V);
 
-assign select_ln443_5_fu_3187_p3 = ((icmp_ln895_98_fu_2002_p2[0:0] === 1'b1) ? select_ln425_5_fu_2659_p3 : select_ln425_53_fu_2931_p3);
+assign select_ln430_78_fu_4210_p3 = ((icmp_ln895_91_reg_5282[0:0] === 1'b1) ? select_ln412_52_fu_3762_p3 : select_ln412_116_fu_3986_p3);
 
-assign select_ln443_6_fu_3698_p3 = ((icmp_ln895_99_reg_4428[0:0] === 1'b1) ? select_ln425_6_fu_3464_p3 : select_ln425_54_fu_3576_p3);
+assign select_ln430_79_fu_3206_p3 = ((icmp_ln895_91_fu_2092_p2[0:0] === 1'b1) ? select_ln412_53_fu_2460_p3 : select_ln412_117_fu_2716_p3);
 
-assign select_ln443_7_fu_3705_p3 = ((icmp_ln895_99_reg_4428[0:0] === 1'b1) ? select_ln425_7_reg_4201 : select_ln425_55_reg_4321);
+assign select_ln430_7_fu_2798_p3 = ((icmp_ln895_67_fu_1948_p2[0:0] === 1'b1) ? select_ln412_5_fu_2268_p3 : select_ln412_69_fu_2524_p3);
 
-assign select_ln443_8_fu_3196_p3 = ((icmp_ln895_99_fu_2006_p2[0:0] === 1'b1) ? select_ln425_8_fu_2676_p3 : select_ln425_56_fu_2948_p3);
+assign select_ln430_80_fu_3214_p3 = ((icmp_ln895_91_fu_2092_p2[0:0] === 1'b1) ? max_bin_count_26_V : max_bin_count_58_V);
 
-assign select_ln443_9_fu_3710_p3 = ((icmp_ln895_100_reg_4434[0:0] === 1'b1) ? select_ln425_9_fu_3471_p3 : select_ln425_57_fu_3583_p3);
+assign select_ln430_81_fu_4217_p3 = ((icmp_ln895_92_reg_5287[0:0] === 1'b1) ? select_ln412_54_fu_3769_p3 : select_ln412_118_fu_3993_p3);
 
-assign select_ln443_fu_3674_p3 = ((icmp_ln895_97_reg_4416[0:0] === 1'b1) ? select_ln425_fu_3450_p3 : select_ln425_48_fu_3562_p3);
+assign select_ln430_82_fu_3223_p3 = ((icmp_ln895_92_fu_2098_p2[0:0] === 1'b1) ? select_ln412_55_fu_2468_p3 : select_ln412_119_fu_2724_p3);
 
-assign select_ln461_10_fu_3872_p3 = ((icmp_ln895_116_reg_4580[0:0] === 1'b1) ? select_ln443_10_fu_3717_p3 : select_ln443_34_reg_4499);
+assign select_ln430_83_fu_3231_p3 = ((icmp_ln895_92_fu_2098_p2[0:0] === 1'b1) ? max_bin_count_27_V : max_bin_count_59_V);
 
-assign select_ln461_11_fu_3410_p3 = ((icmp_ln895_116_fu_2074_p2[0:0] === 1'b1) ? select_ln443_11_fu_3205_p3 : select_ln443_35_fu_3309_p3);
+assign select_ln430_84_fu_4224_p3 = ((icmp_ln895_93_reg_5292[0:0] === 1'b1) ? select_ln412_56_fu_3776_p3 : select_ln412_120_fu_4000_p3);
 
-assign select_ln461_12_fu_3878_p3 = ((icmp_ln895_117_reg_4592[0:0] === 1'b1) ? select_ln443_12_fu_3722_p3 : select_ln443_36_fu_3798_p3);
+assign select_ln430_85_fu_3240_p3 = ((icmp_ln895_93_fu_2104_p2[0:0] === 1'b1) ? select_ln412_57_fu_2476_p3 : select_ln412_121_fu_2732_p3);
 
-assign select_ln461_13_fu_3885_p3 = ((icmp_ln895_117_reg_4592[0:0] === 1'b1) ? select_ln443_13_fu_3729_p3 : select_ln443_37_reg_4509);
+assign select_ln430_86_fu_3248_p3 = ((icmp_ln895_93_fu_2104_p2[0:0] === 1'b1) ? max_bin_count_28_V : max_bin_count_60_V);
 
-assign select_ln461_14_fu_3418_p3 = ((icmp_ln895_117_fu_2078_p2[0:0] === 1'b1) ? select_ln443_14_fu_3214_p3 : select_ln443_38_fu_3326_p3);
+assign select_ln430_87_fu_4231_p3 = ((icmp_ln895_94_reg_5297[0:0] === 1'b1) ? select_ln412_58_fu_3783_p3 : select_ln412_122_fu_4007_p3);
 
-assign select_ln461_15_fu_3891_p3 = ((icmp_ln895_118_reg_4604[0:0] === 1'b1) ? select_ln443_15_fu_3734_p3 : select_ln443_39_fu_3805_p3);
+assign select_ln430_88_fu_3257_p3 = ((icmp_ln895_94_fu_2110_p2[0:0] === 1'b1) ? select_ln412_59_fu_2484_p3 : select_ln412_123_fu_2740_p3);
 
-assign select_ln461_16_fu_3898_p3 = ((icmp_ln895_118_reg_4604[0:0] === 1'b1) ? select_ln443_16_fu_3741_p3 : select_ln443_40_reg_4519);
+assign select_ln430_89_fu_3265_p3 = ((icmp_ln895_94_fu_2110_p2[0:0] === 1'b1) ? max_bin_count_29_V : max_bin_count_61_V);
 
-assign select_ln461_17_fu_3426_p3 = ((icmp_ln895_118_fu_2082_p2[0:0] === 1'b1) ? select_ln443_17_fu_3223_p3 : select_ln443_41_fu_3343_p3);
+assign select_ln430_8_fu_2806_p3 = ((icmp_ln895_67_fu_1948_p2[0:0] === 1'b1) ? max_bin_count_2_V : max_bin_count_34_V);
 
-assign select_ln461_18_fu_3904_p3 = ((icmp_ln895_119_reg_4616[0:0] === 1'b1) ? select_ln443_18_fu_3746_p3 : select_ln443_42_fu_3812_p3);
+assign select_ln430_90_fu_4238_p3 = ((icmp_ln895_95_reg_5302[0:0] === 1'b1) ? select_ln412_60_fu_3790_p3 : select_ln412_124_fu_4014_p3);
 
-assign select_ln461_19_fu_3911_p3 = ((icmp_ln895_119_reg_4616[0:0] === 1'b1) ? select_ln443_19_fu_3753_p3 : select_ln443_43_reg_4529);
+assign select_ln430_91_fu_3274_p3 = ((icmp_ln895_95_fu_2116_p2[0:0] === 1'b1) ? select_ln412_61_fu_2492_p3 : select_ln412_125_fu_2748_p3);
 
-assign select_ln461_1_fu_3833_p3 = ((icmp_ln895_113_reg_4544[0:0] === 1'b1) ? select_ln443_1_fu_3681_p3 : select_ln443_25_reg_4469);
+assign select_ln430_92_fu_3282_p3 = ((icmp_ln895_95_fu_2116_p2[0:0] === 1'b1) ? max_bin_count_30_V : max_bin_count_62_V);
 
-assign select_ln461_20_fu_3434_p3 = ((icmp_ln895_119_fu_2086_p2[0:0] === 1'b1) ? select_ln443_20_fu_3232_p3 : select_ln443_44_fu_3360_p3);
+assign select_ln430_93_fu_4245_p3 = ((icmp_ln895_96_reg_5307[0:0] === 1'b1) ? select_ln412_62_fu_3797_p3 : select_ln412_126_fu_4021_p3);
 
-assign select_ln461_21_fu_3917_p3 = ((icmp_ln895_120_reg_4628[0:0] === 1'b1) ? select_ln443_21_fu_3758_p3 : select_ln443_45_fu_3819_p3);
+assign select_ln430_94_fu_3291_p3 = ((icmp_ln895_96_fu_2122_p2[0:0] === 1'b1) ? select_ln412_63_fu_2500_p3 : select_ln412_127_fu_2756_p3);
 
-assign select_ln461_22_fu_3924_p3 = ((icmp_ln895_120_reg_4628[0:0] === 1'b1) ? select_ln443_22_fu_3765_p3 : select_ln443_46_reg_4539);
+assign select_ln430_95_fu_3299_p3 = ((icmp_ln895_96_fu_2122_p2[0:0] === 1'b1) ? max_bin_count_31_V : max_bin_count_63_V);
 
-assign select_ln461_23_fu_3442_p3 = ((icmp_ln895_120_fu_2090_p2[0:0] === 1'b1) ? select_ln443_23_fu_3241_p3 : select_ln443_47_fu_3377_p3);
+assign select_ln430_9_fu_4049_p3 = ((icmp_ln895_68_reg_5102[0:0] === 1'b1) ? select_ln412_6_fu_3601_p3 : select_ln412_70_fu_3825_p3);
 
-assign select_ln461_2_fu_3386_p3 = ((icmp_ln895_113_fu_2062_p2[0:0] === 1'b1) ? select_ln443_2_fu_3178_p3 : select_ln443_26_fu_3258_p3);
+assign select_ln430_fu_4028_p3 = ((icmp_ln895_65_reg_5072[0:0] === 1'b1) ? select_ln412_fu_3580_p3 : select_ln412_64_fu_3804_p3);
 
-assign select_ln461_3_fu_3839_p3 = ((icmp_ln895_114_reg_4556[0:0] === 1'b1) ? select_ln443_3_fu_3686_p3 : select_ln443_27_fu_3777_p3);
+assign select_ln448_10_fu_4295_p3 = ((icmp_ln895_100_reg_5330[0:0] === 1'b1) ? select_ln430_10_reg_5107 : select_ln430_58_reg_5227);
 
-assign select_ln461_4_fu_3846_p3 = ((icmp_ln895_114_reg_4556[0:0] === 1'b1) ? select_ln443_4_fu_3693_p3 : select_ln443_28_reg_4479);
+assign select_ln448_11_fu_3335_p3 = ((icmp_ln895_100_fu_2140_p2[0:0] === 1'b1) ? select_ln430_11_fu_2823_p3 : select_ln430_59_fu_3095_p3);
 
-assign select_ln461_5_fu_3394_p3 = ((icmp_ln895_114_fu_2066_p2[0:0] === 1'b1) ? select_ln443_5_fu_3187_p3 : select_ln443_29_fu_3275_p3);
+assign select_ln448_12_fu_4300_p3 = ((icmp_ln895_101_reg_5336[0:0] === 1'b1) ? select_ln430_12_fu_4056_p3 : select_ln430_60_fu_4168_p3);
 
-assign select_ln461_6_fu_3852_p3 = ((icmp_ln895_115_reg_4568[0:0] === 1'b1) ? select_ln443_6_fu_3698_p3 : select_ln443_30_fu_3784_p3);
+assign select_ln448_13_fu_4307_p3 = ((icmp_ln895_101_reg_5336[0:0] === 1'b1) ? select_ln430_13_reg_5117 : select_ln430_61_reg_5237);
 
-assign select_ln461_7_fu_3859_p3 = ((icmp_ln895_115_reg_4568[0:0] === 1'b1) ? select_ln443_7_fu_3705_p3 : select_ln443_31_reg_4489);
+assign select_ln448_14_fu_3344_p3 = ((icmp_ln895_101_fu_2144_p2[0:0] === 1'b1) ? select_ln430_14_fu_2840_p3 : select_ln430_62_fu_3112_p3);
 
-assign select_ln461_8_fu_3402_p3 = ((icmp_ln895_115_fu_2070_p2[0:0] === 1'b1) ? select_ln443_8_fu_3196_p3 : select_ln443_32_fu_3292_p3);
+assign select_ln448_15_fu_4312_p3 = ((icmp_ln895_102_reg_5342[0:0] === 1'b1) ? select_ln430_15_fu_4063_p3 : select_ln430_63_fu_4175_p3);
 
-assign select_ln461_9_fu_3865_p3 = ((icmp_ln895_116_reg_4580[0:0] === 1'b1) ? select_ln443_9_fu_3710_p3 : select_ln443_33_fu_3791_p3);
+assign select_ln448_16_fu_4319_p3 = ((icmp_ln895_102_reg_5342[0:0] === 1'b1) ? select_ln430_16_reg_5127 : select_ln430_64_reg_5247);
 
-assign select_ln461_fu_3826_p3 = ((icmp_ln895_113_reg_4544[0:0] === 1'b1) ? select_ln443_fu_3674_p3 : select_ln443_24_fu_3770_p3);
+assign select_ln448_17_fu_3353_p3 = ((icmp_ln895_102_fu_2148_p2[0:0] === 1'b1) ? select_ln430_17_fu_2857_p3 : select_ln430_65_fu_3129_p3);
 
-assign select_ln479_10_fu_4007_p3 = ((icmp_ln895_124_fu_2106_p2[0:0] === 1'b1) ? select_ln461_10_fu_3872_p3 : select_ln461_22_fu_3924_p3);
+assign select_ln448_18_fu_4324_p3 = ((icmp_ln895_103_reg_5348[0:0] === 1'b1) ? select_ln430_18_fu_4070_p3 : select_ln430_66_fu_4182_p3);
 
-assign select_ln479_11_fu_4015_p3 = ((icmp_ln895_124_fu_2106_p2[0:0] === 1'b1) ? select_ln461_11_reg_4586 : select_ln461_23_reg_4634);
+assign select_ln448_19_fu_4331_p3 = ((icmp_ln895_103_reg_5348[0:0] === 1'b1) ? select_ln430_19_reg_5137 : select_ln430_67_reg_5257);
 
-assign select_ln479_1_fu_3938_p3 = ((icmp_ln895_121_fu_2094_p2[0:0] === 1'b1) ? select_ln461_1_fu_3833_p3 : select_ln461_13_fu_3885_p3);
+assign select_ln448_1_fu_4259_p3 = ((icmp_ln895_97_reg_5312[0:0] === 1'b1) ? select_ln430_1_reg_5077 : select_ln430_49_reg_5197);
 
-assign select_ln479_2_fu_3946_p3 = ((icmp_ln895_121_fu_2094_p2[0:0] === 1'b1) ? select_ln461_2_reg_4550 : select_ln461_14_reg_4598);
+assign select_ln448_20_fu_3362_p3 = ((icmp_ln895_103_fu_2152_p2[0:0] === 1'b1) ? select_ln430_20_fu_2874_p3 : select_ln430_68_fu_3146_p3);
 
-assign select_ln479_3_fu_3953_p3 = ((icmp_ln895_122_fu_2098_p2[0:0] === 1'b1) ? select_ln461_3_fu_3839_p3 : select_ln461_15_fu_3891_p3);
+assign select_ln448_21_fu_4336_p3 = ((icmp_ln895_104_reg_5354[0:0] === 1'b1) ? select_ln430_21_fu_4077_p3 : select_ln430_69_fu_4189_p3);
 
-assign select_ln479_4_fu_3961_p3 = ((icmp_ln895_122_fu_2098_p2[0:0] === 1'b1) ? select_ln461_4_fu_3846_p3 : select_ln461_16_fu_3898_p3);
+assign select_ln448_22_fu_4343_p3 = ((icmp_ln895_104_reg_5354[0:0] === 1'b1) ? select_ln430_22_reg_5147 : select_ln430_70_reg_5267);
 
-assign select_ln479_5_fu_3969_p3 = ((icmp_ln895_122_fu_2098_p2[0:0] === 1'b1) ? select_ln461_5_reg_4562 : select_ln461_17_reg_4610);
+assign select_ln448_23_fu_3371_p3 = ((icmp_ln895_104_fu_2156_p2[0:0] === 1'b1) ? select_ln430_23_fu_2891_p3 : select_ln430_71_fu_3163_p3);
 
-assign select_ln479_6_fu_3976_p3 = ((icmp_ln895_123_fu_2102_p2[0:0] === 1'b1) ? select_ln461_6_fu_3852_p3 : select_ln461_18_fu_3904_p3);
+assign select_ln448_24_fu_4348_p3 = ((icmp_ln895_105_reg_5360[0:0] === 1'b1) ? select_ln430_24_fu_4084_p3 : select_ln430_72_fu_4196_p3);
 
-assign select_ln479_7_fu_3984_p3 = ((icmp_ln895_123_fu_2102_p2[0:0] === 1'b1) ? select_ln461_7_fu_3859_p3 : select_ln461_19_fu_3911_p3);
+assign select_ln448_25_fu_3380_p3 = ((icmp_ln895_105_fu_2160_p2[0:0] === 1'b1) ? select_ln430_25_fu_2900_p3 : select_ln430_73_fu_3172_p3);
 
-assign select_ln479_8_fu_3992_p3 = ((icmp_ln895_123_fu_2102_p2[0:0] === 1'b1) ? select_ln461_8_reg_4574 : select_ln461_20_reg_4622);
+assign select_ln448_26_fu_3388_p3 = ((icmp_ln895_105_fu_2160_p2[0:0] === 1'b1) ? select_ln430_26_fu_2908_p3 : select_ln430_74_fu_3180_p3);
 
-assign select_ln479_9_fu_3999_p3 = ((icmp_ln895_124_fu_2106_p2[0:0] === 1'b1) ? select_ln461_9_fu_3865_p3 : select_ln461_21_fu_3917_p3);
+assign select_ln448_27_fu_4355_p3 = ((icmp_ln895_106_reg_5370[0:0] === 1'b1) ? select_ln430_27_fu_4091_p3 : select_ln430_75_fu_4203_p3);
 
-assign select_ln479_fu_3930_p3 = ((icmp_ln895_121_fu_2094_p2[0:0] === 1'b1) ? select_ln461_fu_3826_p3 : select_ln461_12_fu_3878_p3);
+assign select_ln448_28_fu_3397_p3 = ((icmp_ln895_106_fu_2164_p2[0:0] === 1'b1) ? select_ln430_28_fu_2917_p3 : select_ln430_76_fu_3189_p3);
 
-assign sext_ln703_fu_4127_p1 = $signed(add_ln703_fu_4121_p2);
+assign select_ln448_29_fu_3405_p3 = ((icmp_ln895_106_fu_2164_p2[0:0] === 1'b1) ? select_ln430_29_fu_2925_p3 : select_ln430_77_fu_3197_p3);
 
-assign shl_ln_fu_4141_p3 = {{tmp_V_fu_4091_p2}, {6'd0}};
+assign select_ln448_2_fu_3308_p3 = ((icmp_ln895_97_fu_2128_p2[0:0] === 1'b1) ? select_ln430_2_fu_2772_p3 : select_ln430_50_fu_3044_p3);
 
-assign t0_V_fu_4098_p3 = {{res_max_bin_theta_t_2_fu_4080_p3}, {2'd0}};
+assign select_ln448_30_fu_4362_p3 = ((icmp_ln895_107_reg_5380[0:0] === 1'b1) ? select_ln430_30_fu_4098_p3 : select_ln430_78_fu_4210_p3);
 
-assign tmp_V_fu_4091_p2 = (res_max_bin_r_t_V_2_fu_4086_p3 + 6'd1);
+assign select_ln448_31_fu_3414_p3 = ((icmp_ln895_107_fu_2168_p2[0:0] === 1'b1) ? select_ln430_31_fu_2934_p3 : select_ln430_79_fu_3206_p3);
 
-assign zext_ln703_1_fu_4116_p1 = p_Val2_2_fu_4106_p2;
+assign select_ln448_32_fu_3422_p3 = ((icmp_ln895_107_fu_2168_p2[0:0] === 1'b1) ? select_ln430_32_fu_2942_p3 : select_ln430_80_fu_3214_p3);
 
-assign zext_ln703_2_fu_4131_p1 = $unsigned(sext_ln703_fu_4127_p1);
+assign select_ln448_33_fu_4369_p3 = ((icmp_ln895_108_reg_5390[0:0] === 1'b1) ? select_ln430_33_fu_4105_p3 : select_ln430_81_fu_4217_p3);
 
-assign zext_ln703_fu_4112_p1 = p_Val2_2_fu_4106_p2;
+assign select_ln448_34_fu_3431_p3 = ((icmp_ln895_108_fu_2172_p2[0:0] === 1'b1) ? select_ln430_34_fu_2951_p3 : select_ln430_82_fu_3223_p3);
 
-assign zext_ln708_fu_4155_p1 = p_Val2_4_fu_4149_p2;
+assign select_ln448_35_fu_3439_p3 = ((icmp_ln895_108_fu_2172_p2[0:0] === 1'b1) ? select_ln430_35_fu_2959_p3 : select_ln430_83_fu_3231_p3);
+
+assign select_ln448_36_fu_4376_p3 = ((icmp_ln895_109_reg_5400[0:0] === 1'b1) ? select_ln430_36_fu_4112_p3 : select_ln430_84_fu_4224_p3);
+
+assign select_ln448_37_fu_3448_p3 = ((icmp_ln895_109_fu_2176_p2[0:0] === 1'b1) ? select_ln430_37_fu_2968_p3 : select_ln430_85_fu_3240_p3);
+
+assign select_ln448_38_fu_3456_p3 = ((icmp_ln895_109_fu_2176_p2[0:0] === 1'b1) ? select_ln430_38_fu_2976_p3 : select_ln430_86_fu_3248_p3);
+
+assign select_ln448_39_fu_4383_p3 = ((icmp_ln895_110_reg_5410[0:0] === 1'b1) ? select_ln430_39_fu_4119_p3 : select_ln430_87_fu_4231_p3);
+
+assign select_ln448_3_fu_4264_p3 = ((icmp_ln895_98_reg_5318[0:0] === 1'b1) ? select_ln430_3_fu_4035_p3 : select_ln430_51_fu_4147_p3);
+
+assign select_ln448_40_fu_3465_p3 = ((icmp_ln895_110_fu_2180_p2[0:0] === 1'b1) ? select_ln430_40_fu_2985_p3 : select_ln430_88_fu_3257_p3);
+
+assign select_ln448_41_fu_3473_p3 = ((icmp_ln895_110_fu_2180_p2[0:0] === 1'b1) ? select_ln430_41_fu_2993_p3 : select_ln430_89_fu_3265_p3);
+
+assign select_ln448_42_fu_4390_p3 = ((icmp_ln895_111_reg_5420[0:0] === 1'b1) ? select_ln430_42_fu_4126_p3 : select_ln430_90_fu_4238_p3);
+
+assign select_ln448_43_fu_3482_p3 = ((icmp_ln895_111_fu_2184_p2[0:0] === 1'b1) ? select_ln430_43_fu_3002_p3 : select_ln430_91_fu_3274_p3);
+
+assign select_ln448_44_fu_3490_p3 = ((icmp_ln895_111_fu_2184_p2[0:0] === 1'b1) ? select_ln430_44_fu_3010_p3 : select_ln430_92_fu_3282_p3);
+
+assign select_ln448_45_fu_4397_p3 = ((icmp_ln895_112_reg_5430[0:0] === 1'b1) ? select_ln430_45_fu_4133_p3 : select_ln430_93_fu_4245_p3);
+
+assign select_ln448_46_fu_3499_p3 = ((icmp_ln895_112_fu_2188_p2[0:0] === 1'b1) ? select_ln430_46_fu_3019_p3 : select_ln430_94_fu_3291_p3);
+
+assign select_ln448_47_fu_3507_p3 = ((icmp_ln895_112_fu_2188_p2[0:0] === 1'b1) ? select_ln430_47_fu_3027_p3 : select_ln430_95_fu_3299_p3);
+
+assign select_ln448_4_fu_4271_p3 = ((icmp_ln895_98_reg_5318[0:0] === 1'b1) ? select_ln430_4_reg_5087 : select_ln430_52_reg_5207);
+
+assign select_ln448_5_fu_3317_p3 = ((icmp_ln895_98_fu_2132_p2[0:0] === 1'b1) ? select_ln430_5_fu_2789_p3 : select_ln430_53_fu_3061_p3);
+
+assign select_ln448_6_fu_4276_p3 = ((icmp_ln895_99_reg_5324[0:0] === 1'b1) ? select_ln430_6_fu_4042_p3 : select_ln430_54_fu_4154_p3);
+
+assign select_ln448_7_fu_4283_p3 = ((icmp_ln895_99_reg_5324[0:0] === 1'b1) ? select_ln430_7_reg_5097 : select_ln430_55_reg_5217);
+
+assign select_ln448_8_fu_3326_p3 = ((icmp_ln895_99_fu_2136_p2[0:0] === 1'b1) ? select_ln430_8_fu_2806_p3 : select_ln430_56_fu_3078_p3);
+
+assign select_ln448_9_fu_4288_p3 = ((icmp_ln895_100_reg_5330[0:0] === 1'b1) ? select_ln430_9_fu_4049_p3 : select_ln430_57_fu_4161_p3);
+
+assign select_ln448_fu_4252_p3 = ((icmp_ln895_97_reg_5312[0:0] === 1'b1) ? select_ln430_fu_4028_p3 : select_ln430_48_fu_4140_p3);
+
+assign select_ln466_10_fu_4450_p3 = ((icmp_ln895_116_reg_5476[0:0] === 1'b1) ? select_ln448_10_fu_4295_p3 : select_ln448_34_reg_5395);
+
+assign select_ln466_11_fu_3540_p3 = ((icmp_ln895_116_fu_2204_p2[0:0] === 1'b1) ? select_ln448_11_fu_3335_p3 : select_ln448_35_fu_3439_p3);
+
+assign select_ln466_12_fu_4456_p3 = ((icmp_ln895_117_reg_5488[0:0] === 1'b1) ? select_ln448_12_fu_4300_p3 : select_ln448_36_fu_4376_p3);
+
+assign select_ln466_13_fu_4463_p3 = ((icmp_ln895_117_reg_5488[0:0] === 1'b1) ? select_ln448_13_fu_4307_p3 : select_ln448_37_reg_5405);
+
+assign select_ln466_14_fu_3548_p3 = ((icmp_ln895_117_fu_2208_p2[0:0] === 1'b1) ? select_ln448_14_fu_3344_p3 : select_ln448_38_fu_3456_p3);
+
+assign select_ln466_15_fu_4469_p3 = ((icmp_ln895_118_reg_5500[0:0] === 1'b1) ? select_ln448_15_fu_4312_p3 : select_ln448_39_fu_4383_p3);
+
+assign select_ln466_16_fu_4476_p3 = ((icmp_ln895_118_reg_5500[0:0] === 1'b1) ? select_ln448_16_fu_4319_p3 : select_ln448_40_reg_5415);
+
+assign select_ln466_17_fu_3556_p3 = ((icmp_ln895_118_fu_2212_p2[0:0] === 1'b1) ? select_ln448_17_fu_3353_p3 : select_ln448_41_fu_3473_p3);
+
+assign select_ln466_18_fu_4482_p3 = ((icmp_ln895_119_reg_5512[0:0] === 1'b1) ? select_ln448_18_fu_4324_p3 : select_ln448_42_fu_4390_p3);
+
+assign select_ln466_19_fu_4489_p3 = ((icmp_ln895_119_reg_5512[0:0] === 1'b1) ? select_ln448_19_fu_4331_p3 : select_ln448_43_reg_5425);
+
+assign select_ln466_1_fu_4411_p3 = ((icmp_ln895_113_reg_5440[0:0] === 1'b1) ? select_ln448_1_fu_4259_p3 : select_ln448_25_reg_5365);
+
+assign select_ln466_20_fu_3564_p3 = ((icmp_ln895_119_fu_2216_p2[0:0] === 1'b1) ? select_ln448_20_fu_3362_p3 : select_ln448_44_fu_3490_p3);
+
+assign select_ln466_21_fu_4495_p3 = ((icmp_ln895_120_reg_5524[0:0] === 1'b1) ? select_ln448_21_fu_4336_p3 : select_ln448_45_fu_4397_p3);
+
+assign select_ln466_22_fu_4502_p3 = ((icmp_ln895_120_reg_5524[0:0] === 1'b1) ? select_ln448_22_fu_4343_p3 : select_ln448_46_reg_5435);
+
+assign select_ln466_23_fu_3572_p3 = ((icmp_ln895_120_fu_2220_p2[0:0] === 1'b1) ? select_ln448_23_fu_3371_p3 : select_ln448_47_fu_3507_p3);
+
+assign select_ln466_2_fu_3516_p3 = ((icmp_ln895_113_fu_2192_p2[0:0] === 1'b1) ? select_ln448_2_fu_3308_p3 : select_ln448_26_fu_3388_p3);
+
+assign select_ln466_3_fu_4417_p3 = ((icmp_ln895_114_reg_5452[0:0] === 1'b1) ? select_ln448_3_fu_4264_p3 : select_ln448_27_fu_4355_p3);
+
+assign select_ln466_4_fu_4424_p3 = ((icmp_ln895_114_reg_5452[0:0] === 1'b1) ? select_ln448_4_fu_4271_p3 : select_ln448_28_reg_5375);
+
+assign select_ln466_5_fu_3524_p3 = ((icmp_ln895_114_fu_2196_p2[0:0] === 1'b1) ? select_ln448_5_fu_3317_p3 : select_ln448_29_fu_3405_p3);
+
+assign select_ln466_6_fu_4430_p3 = ((icmp_ln895_115_reg_5464[0:0] === 1'b1) ? select_ln448_6_fu_4276_p3 : select_ln448_30_fu_4362_p3);
+
+assign select_ln466_7_fu_4437_p3 = ((icmp_ln895_115_reg_5464[0:0] === 1'b1) ? select_ln448_7_fu_4283_p3 : select_ln448_31_reg_5385);
+
+assign select_ln466_8_fu_3532_p3 = ((icmp_ln895_115_fu_2200_p2[0:0] === 1'b1) ? select_ln448_8_fu_3326_p3 : select_ln448_32_fu_3422_p3);
+
+assign select_ln466_9_fu_4443_p3 = ((icmp_ln895_116_reg_5476[0:0] === 1'b1) ? select_ln448_9_fu_4288_p3 : select_ln448_33_fu_4369_p3);
+
+assign select_ln466_fu_4404_p3 = ((icmp_ln895_113_reg_5440[0:0] === 1'b1) ? select_ln448_fu_4252_p3 : select_ln448_24_fu_4348_p3);
+
+assign select_ln484_10_fu_4585_p3 = ((icmp_ln895_124_fu_2236_p2[0:0] === 1'b1) ? select_ln466_10_fu_4450_p3 : select_ln466_22_fu_4502_p3);
+
+assign select_ln484_11_fu_4593_p3 = ((icmp_ln895_124_fu_2236_p2[0:0] === 1'b1) ? select_ln466_11_reg_5482 : select_ln466_23_reg_5530);
+
+assign select_ln484_1_fu_4516_p3 = ((icmp_ln895_121_fu_2224_p2[0:0] === 1'b1) ? select_ln466_1_fu_4411_p3 : select_ln466_13_fu_4463_p3);
+
+assign select_ln484_2_fu_4524_p3 = ((icmp_ln895_121_fu_2224_p2[0:0] === 1'b1) ? select_ln466_2_reg_5446 : select_ln466_14_reg_5494);
+
+assign select_ln484_3_fu_4531_p3 = ((icmp_ln895_122_fu_2228_p2[0:0] === 1'b1) ? select_ln466_3_fu_4417_p3 : select_ln466_15_fu_4469_p3);
+
+assign select_ln484_4_fu_4539_p3 = ((icmp_ln895_122_fu_2228_p2[0:0] === 1'b1) ? select_ln466_4_fu_4424_p3 : select_ln466_16_fu_4476_p3);
+
+assign select_ln484_5_fu_4547_p3 = ((icmp_ln895_122_fu_2228_p2[0:0] === 1'b1) ? select_ln466_5_reg_5458 : select_ln466_17_reg_5506);
+
+assign select_ln484_6_fu_4554_p3 = ((icmp_ln895_123_fu_2232_p2[0:0] === 1'b1) ? select_ln466_6_fu_4430_p3 : select_ln466_18_fu_4482_p3);
+
+assign select_ln484_7_fu_4562_p3 = ((icmp_ln895_123_fu_2232_p2[0:0] === 1'b1) ? select_ln466_7_fu_4437_p3 : select_ln466_19_fu_4489_p3);
+
+assign select_ln484_8_fu_4570_p3 = ((icmp_ln895_123_fu_2232_p2[0:0] === 1'b1) ? select_ln466_8_reg_5470 : select_ln466_20_reg_5518);
+
+assign select_ln484_9_fu_4577_p3 = ((icmp_ln895_124_fu_2236_p2[0:0] === 1'b1) ? select_ln466_9_fu_4443_p3 : select_ln466_21_fu_4495_p3);
+
+assign select_ln484_fu_4508_p3 = ((icmp_ln895_121_fu_2224_p2[0:0] === 1'b1) ? select_ln466_fu_4404_p3 : select_ln466_12_fu_4456_p3);
+
+assign sext_ln703_fu_4703_p1 = $signed(add_ln703_fu_4697_p2);
+
+assign shl_ln_fu_4717_p3 = {{tmp_V_fu_4667_p2}, {6'd0}};
+
+assign t0_V_fu_4674_p3 = {{res_max_bin_theta_t_2_fu_4655_p3}, {2'd0}};
+
+assign tmp_V_fu_4667_p2 = (res_max_bin_r_t_V_2_fu_4662_p3 + 7'd1);
+
+assign zext_ln703_1_fu_4692_p1 = p_Val2_2_fu_4682_p2;
+
+assign zext_ln703_2_fu_4707_p1 = $unsigned(sext_ln703_fu_4703_p1);
+
+assign zext_ln703_fu_4688_p1 = p_Val2_2_fu_4682_p2;
+
+assign zext_ln708_fu_4731_p1 = p_Val2_4_fu_4725_p2;
 
 always @ (posedge ap_clk) begin
     hls_LT_theta_V_1_data_reg[0] <= 1'b0;
-    hls_LT_theta_V_1_data_reg[13:8] <= 6'b000000;
+    hls_LT_theta_V_1_data_reg[13:9] <= 5'b00000;
     hls_LT_r_V_1_data_reg[4:0] <= 5'b00000;
-    hls_LT_r_V_1_data_reg[21:12] <= 10'b0000000000;
-    res_max_bin_theta_t_s_reg_4640[0] <= 1'b0;
-    res_max_bin_theta_t_1_reg_4650[0] <= 1'b1;
+    hls_LT_r_V_1_data_reg[21:13] <= 9'b000000000;
+    select_ln484_reg_5536[1:0] <= 2'b00;
+    select_ln484_6_reg_5541[1:0] <= 2'b10;
+    res_max_bin_theta_t_1_reg_5556[0] <= 1'b1;
 end
 
 endmodule //find_max_bin_64
