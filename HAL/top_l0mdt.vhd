@@ -18,7 +18,7 @@ use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.H2S_CTRL.all;
-use ctrl_lib.H2S_CTRL_.all;
+use ctrl_lib.H2S_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
