@@ -18,6 +18,7 @@ use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.H2S_CTRL_.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -245,10 +246,10 @@ begin
       i_outer_tdc_hits  => outer_tdc_hits,
       i_extra_tdc_hits  => extra_tdc_hits,
 
-      i_inner_tar_hits  => i_inner_tar_hits,
-      i_middle_tar_hits => i_middle_tar_hits,
-      i_outer_tar_hits  => i_outer_tar_hits,
-      i_extra_tar_hits  => i_extra_tar_hits,
+      -- i_inner_tar_hits  => i_inner_tar_hits,
+      -- i_middle_tar_hits => i_middle_tar_hits,
+      -- i_outer_tar_hits  => i_outer_tar_hits,
+      -- i_extra_tar_hits  => i_extra_tar_hits,
 
       i_plus_neighbor_segments  => plus_neighbor_segments_i,
       i_minus_neighbor_segments => minus_neighbor_segments_i,
