@@ -52,6 +52,40 @@ module TopLevel_pl_mtc_ps #(
    wire [PTCALC2MTC_LEN-1:0] ptcalc2mtc[TB_c_NUM_THREADS];
    wire [PL2PTCALC_LEN-1:0]  pl2ptcalc[TB_c_NUM_THREADS-1:0];
 
+   typedef struct 	     {
+      logic 		     RESET;
+      logic 		     ENABLE;
+      logic 		     DISABLE;
+      logic 		     FREEZE;
+   } MPL_ACTIONS_CTRL_t ;
+
+   typedef struct 	     {
+      logic [3:0] 	     THREADS;
+      logic 		     INPUT_EN;
+      logic 		     OUTPUT_EN;
+      logic 		     FLUSH_MEM_RESET;
+   } MPL_CONFIGS_CTRL_t;
+
+   typedef logic [4:0] 	     MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY ;
+   typedef struct 	     {
+      MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY PL_MEM;
+   } MPL_PL_MEM_CTRL_t;
+
+
+
+
+typedef struct {
+   MPL_ACTIONS_CTRL_t actions;
+   MPL_CONFIGS_CTRL_t configs;
+   MPL_PL_MEM_CTRL_t pl_mem;
+} MPL_CTRL_t;
+
+
+   MPL_CTRL_t mpl_ctrl;
+   assign   mpl_ctrl.actions.RESET   = 0;
+   assign   mpl_ctrl.actions.ENABLE  = 0;
+   assign   mpl_ctrl.actions.DISABLE = 0;
+   assign   mpl_ctrl.actions.FREEZE = 0;
 
     //
     // Input buffers
@@ -93,13 +127,13 @@ module TopLevel_pl_mtc_ps #(
     // Here place the DUT block(s)
     //
 
-   mpl mpl_inst
+   mpl_top_tb mpl_top_tb_inst
      (
       .clk(clock),
       .rst(~reset_n),
       .glob_en(1'b1),
       .i_uCM2pl_av(ucm2pl),
-      .o_pl2tf_av(pl2ptcalc),
+      .o_pl2ptcalc_av(pl2ptcalc),
       .o_pl2mtc_av(pl2mtc)
       );
 

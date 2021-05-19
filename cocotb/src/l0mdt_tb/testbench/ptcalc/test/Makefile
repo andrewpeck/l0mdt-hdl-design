@@ -92,7 +92,6 @@ VERILOG_SOURCES = \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_takbM.v \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_tajbC.v \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top.v \
-    $(UPTDIR)/../IP/hls_upt.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v
 
 

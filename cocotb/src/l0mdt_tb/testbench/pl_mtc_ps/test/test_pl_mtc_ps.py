@@ -86,7 +86,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
-
+    yield ClockCycles(dut.clock, 100) #Wait for system to finish reset
 
 ##
 ## TEST

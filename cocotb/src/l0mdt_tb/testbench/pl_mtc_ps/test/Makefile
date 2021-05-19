@@ -82,6 +82,7 @@ VHDL_SOURCES = \
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
+	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(DFDIR)/l0mdt_constants_pkg.vhd \
 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
@@ -105,10 +106,13 @@ VHDL_SOURCES_shared_cfg_def_lib = \
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_12A148D/MEM_INT_12A148D_PKG.vhd \
 	$(HAL)/ctrl/src/axi/axiRegPkg.vhd \
 	$(HAL)/ctrl/src/axi/axiReg.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
-	$(HAL)/ctrl/src/MPL/MPL_map.vhd 
+	$(HAL)/ctrl/src/MPL/MPL_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_map.vhd
 
 VHDL_SOURCES_mpl_lib = \
     $(PWD)/prj_cfg.vhd \
@@ -116,9 +120,26 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/../pkg/mpl_pkg.vhd \
     $(MPLDIR)/mpl_csw.vhd \
     $(MPLDIR)/mpl_supervisor.vhd \
-    $(MPLDIR)/mpl.vhd
+    $(MPLDIR)/mpl_pl.vhd \
+    $(MPLDIR)/mpl.vhd \
+    $(PWD)/mpl_top_tb.vhd
 
+VHDL_SOURCES_vamc_lib = \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_rb.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_sr.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_kernel.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_controller.vhd
 
+VHDL_SOURCES_apbus_lib = \
+    $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
+    $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
+    $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/work -L $(SIM_BUILD)/mpl_lib
