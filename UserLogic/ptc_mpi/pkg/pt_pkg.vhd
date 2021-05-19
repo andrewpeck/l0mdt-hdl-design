@@ -58,7 +58,7 @@ package pt_pkg is
 
     --constant halfpi : integer := integer(floor(MATH_PI*theta_glob_mult));
     constant INV_SQRT_LEN : integer := 22;
-    constant DBETA_LEN : integer := SF2PTCALC_SEGANGLE_LEN+1;
+    constant DBETA_LEN : integer := SF2PTCALC_SEGANGLE_LEN;
 
     -- Functions
     type t_reciprocalROM is array ( natural range <> )

@@ -345,6 +345,34 @@ begin
         douta => e1_0
     );
 
+    getE0_1 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E0_1_LEN,
+        ROM_FILE => "e0_1.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e0_1
+    );
+
+    getE1_1 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E1_1_LEN,
+        ROM_FILE => "e1_1.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e1_1
+    );
+
     segment_I <= structify(i_segment_I);
     segment_M <= structify(i_segment_M);
     segment_O <= structify(i_segment_O);
