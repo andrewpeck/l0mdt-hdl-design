@@ -221,8 +221,8 @@ def ptcalc_test(dut):
     tv_bcid_list = events.read_tv(
         filename=master_tv_file,
         n_to_load=num_events_to_process,
-        region=0,
-        side=3,
+        region=0,#Barrel=0, Endcap=1, Any=2
+        side=1, # A=0, C=1, B=2, Any=3,
         sector=3
         )
 

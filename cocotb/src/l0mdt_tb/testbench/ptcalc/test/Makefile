@@ -54,7 +54,8 @@ UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
 ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
-
+HAL       = $(SRCDIR)/HAL
+IP_REPO   = $(SRCDIR)/IP_repository/vu13p
 
 # Verilog source files
 VERILOG_SOURCES = \
@@ -69,29 +70,30 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_musc4.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_murcU.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muqcK.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mupcA.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muocq.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muncg.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_35mb6.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_30lbW.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_rsp_tabkb.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muwdI.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muvdy.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_muudo.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_mul_mutde.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_eta_tacud.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramshbi.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsg8j.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsfYi.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramseOg.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsdEe.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_paramsibs.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_takbM.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_tajbC.v \
-    $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_musc4.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_murcU.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muqcK.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mupcA.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muocq.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muncg.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_35mb6.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30lbW.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_tabkb.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muwdI.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muvdy.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muudo.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mutde.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_eta_tacud.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramshbi.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsg8j.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsfYi.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramseOg.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsdEe.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsibs.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_takbM.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_tajbC.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
+    $(PWD)/ptcalc_top_tb.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v
 
 
@@ -99,9 +101,13 @@ VERILOG_SOURCES = \
 VHDL_SOURCES = \
 	$(USERLOGIC)/upt/top_upt.vhd
 
+VHDL_SOURCES_upt_lib = \
+	$(USERLOGIC)/upt/top_upt.vhd
+
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
+	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(DFDIR)/l0mdt_constants_pkg.vhd \
 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
@@ -119,18 +125,41 @@ VHDL_SOURCES_shared_lib = \
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
+VHDL_SOURCES_apbus_lib = \
+    $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
+    $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
+    $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
+
+VHDL_SOURCES_vamc_lib = \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_rb.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_sr.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_kernel.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_controller.vhd
 
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd \
 
-
 VHDL_SOURCES_ctrl_lib = \
-	$(SHAREDDIR)/config/config_defaults_pkg.vhd
+	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_12A148D/MEM_INT_12A148D_PKG.vhd \
+	$(HAL)/ctrl/src/axi/axiRegPkg.vhd \
+	$(HAL)/ctrl/src/axi/axiReg.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/MPL/MPL_map.vhd
+
 
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))
 
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib +incdir+$(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog -L $(SIM_BUILD)/work
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/upt_lib +incdir+$(IP_REPO)/hls_upt/hdl/verilog -L $(SIM_BUILD)/work
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 ##############################################################################
