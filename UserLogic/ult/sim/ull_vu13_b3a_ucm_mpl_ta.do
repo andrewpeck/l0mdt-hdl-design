@@ -153,11 +153,11 @@ add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/int_ker_freeze
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/int_apb_sel
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_addr_i_a
-add wave -noupdate -group PL_A -expand /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_i_a
+add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_i_a
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_o_a
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_addr_i_b
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_i_b
-add wave -noupdate -group PL_A -expand /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_o_b
+add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_o_b
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_i_a
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_o_a
 add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_i_b
@@ -203,59 +203,87 @@ add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)
 add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/clk_axi
 add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/MEM_INT_12A148D/ctrl_r
 add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/MEM_INT_12A148D/mon_r
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SIMULATION
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_LOGIC_TYPE
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_READ_MODE
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEMORY_TYPE
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_DV_TYPE
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SECOND_PORT
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_PL_DELAY_CYCLES
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_IN_PIPELINE
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_OUT_PIPELINE
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_WIDTH
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_DEPTH
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ADD_WIDTH
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_DEPTH
-add wave -noupdate -expand -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_WIDTH
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/clk
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rst
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_freeze
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_ext_ctrl
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty_next
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full_next
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_used
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_A
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_B
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index_aux
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index_aux
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_a
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_b
-add wave -noupdate -expand -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/used_data
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SIMULATION
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_LOGIC_TYPE
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_READ_MODE
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEMORY_TYPE
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_DV_TYPE
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SECOND_PORT
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_PL_DELAY_CYCLES
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_IN_PIPELINE
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_OUT_PIPELINE
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_WIDTH
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_DEPTH
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ADD_WIDTH
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_DEPTH
+add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_WIDTH
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/clk
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rst
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_freeze
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_ext_ctrl
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty_next
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full_next
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_used
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_A
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_B
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index_aux
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index_aux
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_a
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_b
+add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/used_data
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_MEMORY_TYPE
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_MEMORY_STRUCTURE
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ENABLE_SECOND_PORT
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_RAM_WIDTH
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ADD_WIDTH
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_RAM_DEPTH
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/clk
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/rst
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/ena_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/ena_b
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_b
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_b
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_b
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_b
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/mem
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_a
+add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_b
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/clk
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/rst
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/glob_en
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/i_ucm_av
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/o_tf_av
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/slc_pl
+add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/csw2tf_ar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {47133780150 fs} 0} {{Cursor 2} {983775137 fs} 0}
+WaveRestoreCursors {{Cursor 1} {46228904078 fs} 0} {{Cursor 2} {19511121409 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 209
 configure wave -valuecolwidth 279
@@ -271,4 +299,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {0 fs} {10500 ns}

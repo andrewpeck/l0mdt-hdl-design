@@ -24,9 +24,12 @@ use shared_lib.common_ieee.all;
 
 library vamc_lib;
 library apbus_lib;
+library mpcvmem_lib;
 
 library ctrl_lib;
-use ctrl_lib.MPL_CTRL.all;
+  use ctrl_lib.MPL_CTRL.all;
+  -- use ctrl_lib.MEM_INT_10A148D_PKG.all;
+  -- use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
 entity vamc_controller is
   generic(
@@ -57,7 +60,7 @@ entity vamc_controller is
     rst                 : in std_logic;
     ena                 : in std_logic;
     -- Ctrl/Mon
-    ctrl                : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    ctrl                : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0) := (others => '0');
     mon                 : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
     i_freeze            : in std_logic := '0';
     --
@@ -182,6 +185,8 @@ begin
         g_INTERNAL_CLK          => '1',
         g_ADDR_WIDTH            => ADDR_WIDTH,
         g_DATA_WIDTH            => DATA_WIDTH,
+        -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
+        -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
         g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
         g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
       )
@@ -284,7 +289,7 @@ begin
           end process signal_ctrl;
 
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
-            mpcv_mem : entity vamc_lib.mpcvmem
+            mpcv_mem : entity mpcvmem_lib.mpcvmem
             generic map(
               g_LOGIC_TYPE    => "pipeline",
               g_MEMORY_TYPE   => g_MEMORY_TYPE,
@@ -307,7 +312,7 @@ begin
               i_addr_a      => mem_addr_i_a(mem_i),
               i_din_a       => mem_data_i_a(mem_i), -- i_data,
               i_dv_in_a     => mem_dv_i_a(mem_i),   -- i_dv,
-              -- o_dout_a      => mem_data_o_a(mem_i), -- o_data,
+              o_dout_a      => open,--mem_data_o_a(mem_i), -- o_data,
               -- o_dv_out_a    => mem_dv_o_a(mem_i),   -- o_dv,
               -- Port B
               i_addr_b      => mem_addr_i_b(mem_i), -- apb_rd_addr_o,  
@@ -330,7 +335,6 @@ begin
       end generate MODE_PL;
   end generate APB_INT_EN;
 
-
   -----------------------------------------------
   -- SINGLE MEMORY NO MONITORING
   -----------------------------------------------
@@ -342,14 +346,14 @@ begin
         -- constant OUT_PIPELINE
         constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
       begin        
-        mpcvmem : entity vamc_lib.mpcvmem
+        mpcvmem : entity mpcvmem_lib.mpcvmem
         generic map(
           g_LOGIC_TYPE    => "pipeline",
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
           g_MEM_WIDTH       => DATA_WIDTH,
-          g_MEM_DEPTH       => TOTAL_DELAY_CYCLES
+          g_MEM_DEPTH       => DATA_DEPTH
         )
         port map(
           clk           => clk,

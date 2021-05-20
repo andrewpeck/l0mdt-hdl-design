@@ -228,13 +228,13 @@ begin
 
             -- Delta Beta calculations
             dvb_01 <= ( (seg0.data_valid and
-                       seg1.data_valid) nand
+                       seg1.data_valid) xor
                        seg2.data_valid);
-            dvb_02 <= ( (seg0.data_valid nand
-                        seg1.data_valid) and
-                       seg2.data_valid);
+            dvb_02 <= ( seg0.data_valid xor (
+                        seg1.data_valid and
+                       seg2.data_valid));
             dvb_12 <= ((seg1.data_valid and
-                       seg2.data_valid) nand seg0.data_valid);
+                       seg2.data_valid) xor seg0.data_valid);
 
             if seg0.data_valid = '1' and
                 seg1.data_valid = '1' and

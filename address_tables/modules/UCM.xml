@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="UCM" >
   <node id="ACTIONS" address="0x00000000">
-    <node id="RESET"          mask="1" permission="w"/>
-    <node id="ENABLE"         mask="2" permission="w"/>
-    <node id="DISABLE"        mask="4" permission="w"/>
-    <node id="FREEZE"         mask="8" permission="w"/>
+    <node id="RESET"          mask="0x000000001" permission="w"/>
+    <node id="ENABLE"         mask="0x000000002" permission="w"/>
+    <node id="DISABLE"        mask="0x000000004" permission="w"/>
+    <node id="FREEZE"         mask="0x000000008" permission="w"/>
   </node>
   <node id="CONFIGS" address="0x00000001">
     <node id="THREADS"        mask="0x00000000F" parameters="default=3" permission="rw"/>

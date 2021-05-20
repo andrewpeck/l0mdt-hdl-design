@@ -5,6 +5,7 @@ GEN:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
     tags:
       - heavy-duty
       - hog

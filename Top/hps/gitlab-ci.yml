@@ -5,6 +5,7 @@ GEN:hps:
       extends: .vars
       PROJECT_NAME: hps
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
 
 # SIM:hps:
 #     extends: .simulate_project

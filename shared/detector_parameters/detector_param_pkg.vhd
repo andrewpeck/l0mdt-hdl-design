@@ -279,7 +279,7 @@ package body detector_param_pkg is
     variable mem_out : sector_phi_center_t;
     variable a , b : real;
   begin
-    a := sector_phi_center_default(sector);
+    a := sector_phi_center_default(sector  - 1);
     b := SLC_COMMON_POSPHI_MULT;
     mem_out := to_unsigned( integer((1000.0 * a) * b),SLC_COMMON_POSPHI_LEN);
     return mem_out;
