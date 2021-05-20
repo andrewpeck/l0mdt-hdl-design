@@ -107,7 +107,10 @@ VHDL_SOURCES_shared_cfg_def_lib = \
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_9A19D/MEM_INT_9A19D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_12A148D/MEM_INT_12A148D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_10A38D/MEM_INT_10A38D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_4A17D/MEM_INT_4A17D_PKG.vhd \
 	$(HAL)/ctrl/src/axi/axiRegPkg.vhd \
 	$(HAL)/ctrl/src/axi/axiReg.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
@@ -123,6 +126,12 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl_pl.vhd \
     $(MPLDIR)/mpl.vhd \
     $(PWD)/mpl_top_tb.vhd
+
+VHDL_SOURCES_mpcvmem_lib = \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
+    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd
+
 
 VHDL_SOURCES_vamc_lib = \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \

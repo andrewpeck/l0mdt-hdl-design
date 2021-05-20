@@ -116,6 +116,7 @@ function update_makefile_questa() {
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += shared_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += ctrl_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += apbus_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += mpcvmem_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += vamc_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
