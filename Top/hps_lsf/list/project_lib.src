@@ -10,4 +10,4 @@ UserLogic/heg/heg_lib.src lib=heg_lib
 UserLogic/hps/hps_lib.src lib=hps_lib
 UserLogic/csf/csf_lib.src lib=csf_lib
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
-UserLogic/lsf/lsf_lib.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib

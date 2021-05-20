@@ -50,7 +50,6 @@ package FW_INFO_CTRL is
   type FW_INFO_CONFIG_MON_t is record
     MAIN_CFG_COMPILE_HW        :std_logic;   
     MAIN_CFG_COMPILE_UL        :std_logic;   
-    SECTOR_SIDE                :std_logic;   
     ST_nBARREL_ENDCAP          :std_logic;   
     ENDCAP_nSMALL_LARGE        :std_logic;   
     ENABLE_NEIGHBORS           :std_logic;   
@@ -74,8 +73,6 @@ package FW_INFO_CTRL is
     SF_ENABLED                 :std_logic;                    
     SF_TYPE                    :std_logic;                    
     NUM_DAQ_STREAMS            :std_logic_vector( 7 downto 0);
-    MAX_NUM_HP                 :std_logic_vector( 7 downto 0);
-    MAX_NUM_HPS                :std_logic_vector( 7 downto 0);
     NUM_SF_INPUTS              :std_logic_vector( 7 downto 0);
     NUM_SF_OUTPUTS             :std_logic_vector( 7 downto 0);
     MAX_NUM_SL                 :std_logic_vector( 7 downto 0);

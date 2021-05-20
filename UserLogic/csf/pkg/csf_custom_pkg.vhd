@@ -17,47 +17,47 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-use shared_lib.config_pkg.all;
-use shared_lib.common_types_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.config_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
 
-library csf_lib;
-use csf_lib.csf_pkg.all;
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
 
-package csf_custom_pkg is
+PACKAGE csf_custom_pkg IS
     ----------------------------------------------------------------------------
     -- MDT hit coordinates constants
-    constant R_OVER_Z_MULTI_LEN : integer :=
-        integer(log2(HEG2SFHIT_RADIUS_MULT/HEG2SFHIT_LOCALX_MULT));
+    CONSTANT R_OVER_Z_MULTI_LEN : INTEGER :=
+    INTEGER(log2(HEG2SFHIT_RADIUS_MULT/HEG2SFHIT_LOCALX_MULT));
 
     -- Number of fitter module to instantiate
-    constant NUM_FITTERS : integer := 4;
+    CONSTANT NUM_FITTERS : INTEGER := 4;
     --  Output Local Segment constants
-    constant MFIT_MULTI_LEN : integer := integer(log2(CSF_SEG_M_MULT));
-    constant CHI2_MULT_LEN  : integer := integer(log2(CSF_SEG_CHI2_MULT));
+    CONSTANT MFIT_MULTI_LEN : INTEGER := INTEGER(log2(CSF_SEG_M_MULT));
+    CONSTANT CHI2_MULT_LEN : INTEGER := INTEGER(log2(CSF_SEG_CHI2_MULT));
 
     ------------------------------------------------------------------------------------
     -- Functions
-    function stdlogic_integer( s : std_logic ) return integer ;
+    FUNCTION stdlogic_integer(s : STD_LOGIC) RETURN INTEGER;
 
-end;
+END;
 
-package body csf_custom_pkg is
+PACKAGE BODY csf_custom_pkg IS
 
-    function stdlogic_integer( s : std_logic ) return integer is
-    begin
-        if s = '1' then
-            return 1;
-        else
-            return 0;
-        end if;
-    end function;
+    FUNCTION stdlogic_integer(s : STD_LOGIC) RETURN INTEGER IS
+    BEGIN
+        IF s = '1' THEN
+            RETURN 1;
+        ELSE
+            RETURN 0;
+        END IF;
+    END FUNCTION;
 
-end package body;
+END PACKAGE BODY;

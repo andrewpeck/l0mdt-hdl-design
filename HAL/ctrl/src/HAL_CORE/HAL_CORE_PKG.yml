@@ -1,12 +1,14 @@
+# yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-__config__:
-    basic_convert_functions : off
-    packages:
-    shared_lib:
-        - common_ieee_pkg
+# Created : 2021-04-01 21:30:31.529845.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
 
-HDL_Types:
+hdl:
 
 - HAL_CORE_CLOCKING_MON_t:
   - MMCM_LOCKED : [ type: logic ]
@@ -33,15 +35,15 @@ HDL_Types:
 
 
 - HAL_CORE_MGT_MGT_DRP_MON_t:
-  - rd_rdy : [ type: logic, description:DRP Enable ]
-  - rd_data : [ type: logic, length: 16, description:DRP Read Data ]
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: logic, length: 16 ]
 
 
 - HAL_CORE_MGT_MGT_DRP_CTRL_t:
-  - wr_en : [ type: logic, description:DRP Write Enable ]
-  - wr_addr : [ type: logic, length: 10, description:DRP Address ]
-  - en : [ type: logic, description:DRP Enable ]
-  - wr_data : [ type: logic, length: 16, description:DRP Write Data ]
+  - wr_en : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - en : [ type: logic ]
+  - wr_data : [ type: logic, length: 16 ]
 
 
 - HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t:

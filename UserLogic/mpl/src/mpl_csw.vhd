@@ -35,7 +35,7 @@ entity mpl_csw is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena                 : in std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_ucm_av            : in mpl2csw_ptcalc_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -67,28 +67,30 @@ begin
           -- csw2tf_ar(slo_i).data_valid <= '0';
         end loop;
       else
-        for slo_i in c_NUM_THREADS -1 downto 0 loop
-          slo_found := '0';
-          for sli_i in c_NUM_THREADS -1 downto 0 loop
-            if ((slc_pl(sli_i).busy = '1') and (to_integer(unsigned(slc_pl(sli_i).process_ch)) = slo_i)) then
-              csw2tf_ar(slo_i).muid <= slc_pl(sli_i).muid;
-              csw2tf_ar(slo_i).phimod <= slc_pl(sli_i).phimod;
-              csw2tf_ar(slo_i).sl_charge <= slc_pl(sli_i).sl_charge;
-              csw2tf_ar(slo_i).data_valid <= slc_pl(sli_i).data_valid;
-              csw2tf_ar(slo_i).nswseg_poseta <= slc_pl(sli_i).nswseg_poseta;
-              csw2tf_ar(slo_i).nswseg_posphi <= slc_pl(sli_i).nswseg_posphi;
-              csw2tf_ar(slo_i).nswseg_angdtheta <= slc_pl(sli_i).nswseg_angdtheta;
-              -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
-              -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
+        if ena = '1' then
+          for slo_i in c_NUM_THREADS -1 downto 0 loop
+            slo_found := '0';
+            for sli_i in c_NUM_THREADS -1 downto 0 loop
+              if ((slc_pl(sli_i).busy = '1') and (to_integer(unsigned(slc_pl(sli_i).process_ch)) = slo_i)) then
+                csw2tf_ar(slo_i).muid <= slc_pl(sli_i).muid;
+                csw2tf_ar(slo_i).phimod <= slc_pl(sli_i).phimod;
+                csw2tf_ar(slo_i).sl_charge <= slc_pl(sli_i).sl_charge;
+                csw2tf_ar(slo_i).data_valid <= slc_pl(sli_i).data_valid;
+                csw2tf_ar(slo_i).nswseg_poseta <= slc_pl(sli_i).nswseg_poseta;
+                csw2tf_ar(slo_i).nswseg_posphi <= slc_pl(sli_i).nswseg_posphi;
+                csw2tf_ar(slo_i).nswseg_angdtheta <= slc_pl(sli_i).nswseg_angdtheta;
+                -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
+                -- o_tf_av(slo_i) <= i_ucm_av(sli_i);
 
-              slo_found := '1';
+                slo_found := '1';
+              end if;
+            end loop;
+            if slo_found = '0' then
+              -- csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
+              csw2tf_ar(slo_i).data_valid <= '0';
             end if;
           end loop;
-          if slo_found = '0' then
-            -- csw2tf_ar(slo_i) <= nullify(csw2tf_ar(slo_i));
-            csw2tf_ar(slo_i).data_valid <= '0';
-          end if;
-        end loop;
+        end if;
 
       end if;
     end if;

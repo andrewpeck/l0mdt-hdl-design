@@ -28,7 +28,7 @@ module legendreEngine(
 
    //   const int TRIG_BITS= 24;
    //  parameter HEG2SFSLC_VEC_ANG_LEN = 10; //TODO: FIX IN HEADER FILE:TALK TO KOSTAS
-   parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 7 ;
+   parameter HEG2SFSLC_VEC_ANG_PREC_LEN = HEG2SFSLC_VEC_ANG_LEN + 3; //7 ;
 
    //CONSTANT FROM HLS(ANGLE_MAX_HALF_MRAD + HALF_PI_MRAD)
 //   parameter VEC_ANG_OFFSET = 1023+50265;  //typedef ap_fixed<W_slcproc_vec_ang+7, IW_slcproc_vec_ang+2> angle_t_mrad;
@@ -77,7 +77,7 @@ module legendreEngine(
    logic 					 roi_seed_r_vld;
    logic [W_r+1:0] 				 mdt_r_offset[8];
    logic [HEG2SFHIT_LOCALX_LEN-1:0] 		 mdt_local_x[8];
-   logic [HEG2SFHIT_LOCALY_LEN:0] 		 mdt_local_y[8];
+   logic [HEG2SFHIT_LOCALY_LEN-1:0] 		 mdt_local_y[8];
    logic [W_r+1:0] 				 mdt_radius[2]; //HLS adding extra bits in lsb
    logic [W_r+1:0] 				 mdt_radius_stream;
    logic 					 stream_input;
@@ -207,9 +207,14 @@ module legendreEngine(
 
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos ;
+   //logic [HEG2SFSLC_VEC_ANG_LEN-1:0] 						    slcvec_pos;
+   logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_Z ;
 
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    slcvec_pos_ref;
    logic [SF2PTCALC_SEGPOS_LEN-1:0] 						    hewindow_pos_ref;
+
+   logic [HEG2SFSLC_HEWINDOW_POS_LEN-1:0] 					    hewindow_pos_V_barrel;
+   logic [HEG2SFSLC_HEWINDOW_POS_LEN-1:0] 					    slcvec_pos_V_barrel;
 
 
    enum 									    {IDLE, LOAD_LUTS_GRA, LOAD_LUTS, HISTOGRAM_BIN_ACCUMULATION, HISTOGRAM_BIN_FLUSH_PIPELINE, RESET_HISTOGRAM_BINS, COMPUTE_RESULTS, HBA_MEMORY_RESET} le_state;
@@ -276,9 +281,9 @@ module legendreEngine(
    logic 	 theta_global_vld;
    logic [13:0]  theta_global_gra;
 
-   logic [W_r:0]  r_global;
+   logic [W_r-1:0]  r_global;
    logic 	 r_global_vld;
-   logic [17:0]  theta;
+   logic [13:0]  theta;
    logic 	 theta_vld;
    logic [21:0]  r;
    logic 	 r_vld;
@@ -340,7 +345,7 @@ module legendreEngine(
 				      .hewindow_pos_ref_V(hewindow_pos_ref)
 				      );
 
-
+				      assign hewindow_pos_Z = {hewindow_pos,3'b0};
 `ifdef RUN_SIM
      get_legendre_segment_barrel get_legendre_segment_barrel_inst(
 `else
@@ -358,7 +363,7 @@ module legendreEngine(
 
 								  .slcvec_pos_R_V(slcvec_pos_ref),
 								  .hewindow_pos_R_V(hewindow_pos_ref),
-								  .hewindow_pos_Z_V({hewindow_pos,3'b0}),
+								  .hewindow_pos_Z_V( hewindow_pos_Z),
 								  .hls_LT_theta_global_V(theta_global),
 								  .segpos_V(sf_segpos),
 								  .segpos_V_ap_vld(sf_segpos_vld)
@@ -374,7 +379,8 @@ module legendreEngine(
   // assign slcvec_pos_ref   = 18'h8d50; //18'he1a3;
  //  assign hewindow_pos_ref = 18'h8ab5; //18'hdda3;
    assign cro_ap_start     = (trig_val_counter_2 == 2);//3); //4);
-
+   assign hewindow_pos_V_barrel = hewindow_pos;
+   assign slcvec_pos_V_barrel = slcvec_pos;
 `ifdef RUN_SIM
    calc_LE_r_offset_barrel calc_LE_r_offset_barrel (
 `else
@@ -390,9 +396,9 @@ module legendreEngine(
 					     .hw_cos_val_V(hw_cos_val[31]),
 					     .roi_seed_r_V(roi_seed_r),
 					     //.roi_seed_r_V_ap_vld(roi_seed_r_vld),
-					     .slcvec_pos_V(slcvec_pos),
+					     .slcvec_pos_V(slcvec_pos_V_barrel),
 					     .slcvec_pos_ref_V(slcvec_pos_ref), //Rho for barrel
-					     .hewindow_pos_V(hewindow_pos),
+					     .hewindow_pos_V(hewindow_pos_V_barrel),
 					     .hewindow_pos_ref_V(hewindow_pos_ref) //Rho for barrel
 					    /*endcap connection
 					     .slcvec_pos_Z_V(slcvec_pos_ref),

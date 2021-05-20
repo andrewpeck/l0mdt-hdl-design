@@ -32,6 +32,8 @@ use ucm_lib.ucm_pkg.all;
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
+library vamc_lib;
+
 entity ucm is
   port (
     clk                     : in std_logic;
@@ -179,7 +181,7 @@ begin
 
   -- input pipelines
   SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_IN_PL : entity shared_lib.std_pipeline
+    SLC_IN_PL : entity vamc_lib.vamc_pl
     generic map(
       g_DELAY_CYCLES  => 2,
       g_PIPELINE_WIDTH    => SLC_RX_LEN
@@ -187,7 +189,7 @@ begin
     port map(
       clk         => clk,
       rst         => local_rst,
-      glob_en     => local_en,
+      ena         => local_en,
       --
       i_data      => ucm_prepro_av(sl_i),
       o_data      => csw_main_in_av(sl_i)
@@ -314,7 +316,6 @@ begin
     -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
     -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
   end generate;
-
 
 
   PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate

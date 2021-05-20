@@ -1,2 +1,2 @@
 Top/upt/prj_cfg.vhd
-UserLogic/upt/upt_lib.src lib=upt_lib
+UserLogic/upt/upt_lib_ku15p.src lib=upt_lib

@@ -33,25 +33,26 @@ SIM ?= questa
 SRCDIR = $(PWD)/../../../../../../
 SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
+USERLOGIC = $(SRCDIR)/UserLogic
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
 DFDIR     = $(SRCDIR)/dataformats
-MTCDIR    = $(SRCDIR)/mtc/src
-LSFDIR    = $(SRCDIR)/lsf/src
-CSFDIR    = $(SRCDIR)/csf/src
-MPTDIR    = $(SRCDIR)/ptc_mpi/src
-HPSDIR    = $(SRCDIR)/hps/src
-HPDIR     = $(SRCDIR)/hp/src
-HEGDIR    = $(SRCDIR)/heg/src
-MPLDIR    = $(SRCDIR)/mpl/src
-SLDIR     = $(SRCDIR)/sl/src
-TARDIR    = $(SRCDIR)/tar/src
-TDCDIR    = $(SRCDIR)/tdc/src
-UCMDIR    = $(SRCDIR)/ucm/src
-UCMHPSDIR = $(SRCDIR)/ucm_hps/src
-ULTDIR    = $(SRCDIR)/ult/src
-UPTDIR    = $(SRCDIR)/upt/src
+MTCDIR    = $(USERLOGIC)/mtc/src
+LSFDIR    = $(USERLOGIC)/lsf/src
+CSFDIR    = $(USERLOGIC)/csf/src
+MPTDIR    = $(USERLOGIC)/ptc_mpi/src
+HPSDIR    = $(USERLOGIC)/hps/src
+HPDIR     = $(USERLOGIC)/hp/src
+HEGDIR    = $(USERLOGIC)/heg/src
+MPLDIR    = $(USERLOGIC)/mpl/src
+SLDIR     = $(USERLOGIC)/sl/src
+TARDIR    = $(USERLOGIC)/tar/src
+TDCDIR    = $(USERLOGIC)/tdc/src
+UCMDIR    = $(USERLOGIC)/ucm/src
+UCMHPSDIR = $(USERLOGIC)/ucm_hps/src
+ULTDIR    = $(USERLOGIC)/ult/src
+UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
 
 
@@ -91,13 +92,13 @@ VERILOG_SOURCES = \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_takbM.v \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top_inv_tajbC.v \
     $(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog/ptcalc_top.v \
-    $(IPDIR)/upt/hls_upt.v \
+    $(UPTDIR)/../IP/hls_upt.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v
 
 
 # VHDL source files
 VHDL_SOURCES = \
-	$(SRCDIR)//upt/top_upt.vhd
+	$(USERLOGIC)/upt/top_upt.vhd
 
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
@@ -108,19 +109,31 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
+	$(SHAREDDIR)/src/ring_buffer_v2.vhd \
+	$(SHAREDDIR)/src/vhdl_ram_memory.vhd \
+	$(SHAREDDIR)/src/bram.vhd \
+	$(SHAREDDIR)/mpcvmem/src/mpcvmem.vhd \
+	$(SHAREDDIR)/mpcvmem/src/DualPortMem.vhd \
+	$(SHAREDDIR)/src/pipeline.vhd \
+	$(SHAREDDIR)/config/config_pkg.vhd
 
 VHDL_SOURCES_shared_cfg_def_lib = \
-	$(SHAREDDIR)/config/config_pkg.vhd \
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd
+
 
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd \
+
+
+VHDL_SOURCES_ctrl_lib = \
+	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))
 
 # Set the include path and compilation flags for CocoTB
 EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib +incdir+$(UPTDIR)/hls_ip/hls_ptcalc/hdl/verilog -L $(SIM_BUILD)/work
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
-
+VCOM_ARGS  += -2008
 ##############################################################################
 #
 # THE USER MUST NOT EDIT THESE LINES

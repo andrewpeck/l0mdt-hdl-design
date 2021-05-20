@@ -1,12 +1,14 @@
+# yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-__config__:
-    basic_convert_functions : off
-    packages:
-    shared_lib:
-        - common_ieee_pkg
+# Created : 2021-04-01 21:30:45.456850.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
 
-HDL_Types:
+hdl:
 
 - TF_MON_t:
   - STATUS : [ type: logic ]

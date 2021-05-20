@@ -1,0 +1,48 @@
+__config__:
+    basic_convert_functions : on
+    # packages:
+    #   my_lib_1:
+    #     - package_1
+    #     - package_2
+    #   my_lib_2: the_other_package
+
+types:
+
+- LEN0: [qualifier: constant , type: integer , value: 2 , comment: a comment]
+ 
+- LEN1: [type: integer , value: 6]
+ 
+- integer_bus: [type: integer, array: open]
+ 
+- bit0: [type: logic, _: on]
+  
+- vector0: [type: logic, length: open]
+
+- vector1: [type: logic, length: LEN1]
+   
+- record0:
+  - r0_var0: [type: logic, comment: another comment]
+  - r0_var1: [type: logic, length: LEN0]
+  - r0_var2: [type: logic, length: 5]
+  - r0_var3: [type: vector0, length: LEN1]
+  - r0_var4: [type: vector1]
+    
+- array0: [array: open , type: vector0, length: 13, _: on]
+
+- array1: [array: 3, type: vector1]
+
+- array2: [array: LEN0, type: record0]
+
+- array3: [array: LEN0, type: logic, length: LEN1]
+
+- array4: [array: LEN0, type: array0, length: LEN1]
+
+# - array5: [array: LEN0, type: array2]
+ 
+- record1:
+  - r1_var0: [type: array0, length: 3]
+  - r1_var1: [type: array1]
+  - r1_var2: [type: array2]
+  - r1_var3: [type: array0, length: LEN0]
+  # r1_var4: [type: array0, length: open]
+

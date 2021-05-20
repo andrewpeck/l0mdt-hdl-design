@@ -3,4 +3,4 @@ HAL/hal/list/hal.src lib=hal
 Top/l0mdt/hal_user_pkg.vhd
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 shared/shared_lib.src lib=shared_lib
-HAL/hal/src/boards/board_pkg_mpi_ku15p.vhd
+HAL/boards/board_pkg_mpi_ku15p.vhd

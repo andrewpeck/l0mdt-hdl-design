@@ -1,3 +1,4 @@
+# yml2hdl v2
 config:
   basic_convert_functions: off
   packages:

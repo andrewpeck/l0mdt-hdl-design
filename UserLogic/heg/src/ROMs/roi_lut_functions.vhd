@@ -49,96 +49,96 @@ package roi_func_pkg is
   function get_roi_mbar_max(station : integer) return integer;
 
 
-  function get_win_slope_8l(slope : integer) return roi_mbar_layer_large_t;
-  function get_win_slope_6l(station_index, slope : integer) return roi_mbar_layer_small_t;
+  -- function get_win_slope_8l(slope : integer) return roi_mbar_layer_large_t;
+  -- function get_win_slope_6l(station_index, slope : integer) return roi_mbar_layer_small_t;
 
   
 end package roi_func_pkg;
 
 package body roi_func_pkg is
 
-  function get_win_slope_8l(slope : integer) return roi_mbar_layer_large_t is
-    variable y : roi_mbar_layer_large_t;
-    variable station : roi_mbar_lut_large_t(14 - 1 downto 0);
-  begin
+  -- function get_win_slope_8l(slope : integer) return roi_mbar_layer_large_t is
+  --   variable y : roi_mbar_layer_large_t;
+  --   variable station : roi_mbar_lut_large_t(14 - 1 downto 0);
+  -- begin
 
-    station := ROI_BILA3_ANGLE_MEM;
+  --   station := ROI_BILA3_ANGLE_MEM;
 
-    if slope > 11704 then
-      y := station(13);
-    elsif slope >   3822 then
-      y := station(12);
-    elsif slope >   2196 then
-      y := station(11);
-    elsif slope >   1462 then
-      y := station(10);
-    elsif slope >   1220 then
-      y := station(9);
-    elsif slope >   1024 then
-      y := station(8);
-    elsif slope >    859 then
-      y := station(7);
-    elsif slope >    717 then
-      y := station(6);
-    elsif slope >    591 then
-      y := station(5);
-    elsif slope >    477 then
-      y := station(4);
-    elsif slope >    373 then
-      y := station(3);
-    elsif slope >    274 then
-      y := station(2);
-    elsif slope >    181 then  
-      y := station(1);
-    else 
-      y := station(0);
-    end if;
-    return y;
-  end function;
+  --   if slope > 11704 then
+  --     y := station(13);
+  --   elsif slope >   3822 then
+  --     y := station(12);
+  --   elsif slope >   2196 then
+  --     y := station(11);
+  --   elsif slope >   1462 then
+  --     y := station(10);
+  --   elsif slope >   1220 then
+  --     y := station(9);
+  --   elsif slope >   1024 then
+  --     y := station(8);
+  --   elsif slope >    859 then
+  --     y := station(7);
+  --   elsif slope >    717 then
+  --     y := station(6);
+  --   elsif slope >    591 then
+  --     y := station(5);
+  --   elsif slope >    477 then
+  --     y := station(4);
+  --   elsif slope >    373 then
+  --     y := station(3);
+  --   elsif slope >    274 then
+  --     y := station(2);
+  --   elsif slope >    181 then  
+  --     y := station(1);
+  --   else 
+  --     y := station(0);
+  --   end if;
+  --   return y;
+  -- end function;
 
-  function get_win_slope_6l( station_index , slope : integer) return roi_mbar_layer_small_t is
-    variable y : roi_mbar_layer_small_t;
-    variable station : roi_mbar_lut_small_t(14 - 1 downto 0);
-  begin
+  -- function get_win_slope_6l( station_index , slope : integer) return roi_mbar_layer_small_t is
+  --   variable y : roi_mbar_layer_small_t;
+  --   variable station : roi_mbar_lut_small_t(14 - 1 downto 0);
+  -- begin
 
-    if station_index = 1 then
-      station := ROI_BMLA3_ANGLE_MEM;
-    elsif station_index = 2 then
-      station := ROI_BOLA3_ANGLE_MEM;
-    else
-      -- ERROR
-    end if;
-    if slope > 11704 then
-      y := station(13);
-    elsif slope >   3822 then
-      y := station(12);
-    elsif slope >   2196 then
-      y := station(11);
-    elsif slope >   1462 then
-      y := station(10);
-    elsif slope >   1220 then
-      y := station(9);
-    elsif slope >   1024 then
-      y := station(8);
-    elsif slope >    859 then
-      y := station(7);
-    elsif slope >    717 then
-      y := station(6);
-    elsif slope >    591 then
-      y := station(5);
-    elsif slope >    477 then
-      y := station(4);
-    elsif slope >    373 then
-      y := station(3);
-    elsif slope >    274 then
-      y := station(2);
-    elsif slope >    181 then  
-      y := station(1);
-    else 
-      y := station(0);
-    end if;
-    return y;
-  end function;
+  --   if station_index = 1 then
+  --     station := ROI_BMLA3_ANGLE_MEM;
+  --   elsif station_index = 2 then
+  --     station := ROI_BOLA3_ANGLE_MEM;
+  --   else
+  --     -- ERROR
+  --   end if;
+  --   if slope > 11704 then
+  --     y := station(13);
+  --   elsif slope >   3822 then
+  --     y := station(12);
+  --   elsif slope >   2196 then
+  --     y := station(11);
+  --   elsif slope >   1462 then
+  --     y := station(10);
+  --   elsif slope >   1220 then
+  --     y := station(9);
+  --   elsif slope >   1024 then
+  --     y := station(8);
+  --   elsif slope >    859 then
+  --     y := station(7);
+  --   elsif slope >    717 then
+  --     y := station(6);
+  --   elsif slope >    591 then
+  --     y := station(5);
+  --   elsif slope >    477 then
+  --     y := station(4);
+  --   elsif slope >    373 then
+  --     y := station(3);
+  --   elsif slope >    274 then
+  --     y := station(2);
+  --   elsif slope >    181 then  
+  --     y := station(1);
+  --   else 
+  --     y := station(0);
+  --   end if;
+  --   return y;
+  -- end function;
 
   function get_roi_z_tubes(station : integer) return roi_z_lut_t is
     -- variable out_mem : roi_mbar_lut_std(0 to get_roi_mbar_max(station) - 1) := (others => (others => '0')) ;

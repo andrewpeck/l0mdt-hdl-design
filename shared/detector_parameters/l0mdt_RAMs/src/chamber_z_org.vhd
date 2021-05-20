@@ -43,8 +43,8 @@ entity chamber_z_org is
     clk                 : in std_logic;
     rst                 : in std_logic;
     --
-    CHAMBER_Z0_CALC_WR  : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
-    CHAMBER_Z0_CALC_RD  : in UCM_CHAMBER_Z0_CALC_RD_MON_t;
+    -- CHAMBER_Z0_CALC_WR  : in UCM_CHAMBER_Z0_CALC_WR_CTRL_t;
+    -- CHAMBER_Z0_CALC_RD  : out UCM_CHAMBER_Z0_CALC_RD_MON_t;
     --
     i_z                 : in unsigned (g_INPUTWIDTH -1 downto 0);
     i_z_dv              : in std_logic;

@@ -36,35 +36,10 @@ def initialize_spybuffers(fifos=[]):
 
 
 def initialize_dut(dut):
-    input_slcpipeline = dut.MAX_MTC_PER_BCID.value.integer
-    if(input_slcpipeline != MtcPorts.get_input_interface_ports(0)): #len(MtcPorts.SlcPipeline_Inputs)):
-       n_slcpipeline_inputs_ok = 0
-    else:
-        n_slcpipeline_inputs_ok = 1
-
-
-    input_ptcalc = dut.TOTAL_PTCALC_BLKS.value.integer
-    if(input_ptcalc != MtcPorts.get_input_interface_ports(1)): #len(MtcPorts.Ptcalc_Inputs)):
-        n_ptcalc_inputs_ok = 0
-    else:
-        n_ptcalc_inputs_ok = 1
-
-    output_mtc = dut.MAX_MTC_PER_BCID.value.integer
-    if(output_mtc != MtcPorts.get_output_interface_ports(0)): #len(MtcPorts.Mtc_Outputs)):
-        n_mtc_outputs_ok = 0
-    else:
-        n_mtc_outputs_ok = 1
-
-    n_io_ports_ok = n_slcpipeline_inputs_ok and n_ptcalc_inputs_ok and n_mtc_outputs_ok
-    if not n_io_ports_ok:
-        raise Exception(
-            f"ERROR # of Mtc io ports differ between CocoTB and RTL simulation:\n -> CocoTB expects (slcpipeline,ptcalc,mtc)=({len(MtcPorts.SlcPipeline_Inputs)},{len(MtcPorts.Ptcalc_Inputs)},{len(MtcPorts.Mtc_Outputs)})\n -> RTL expects (IN,OUT)=({input_slcpipeline},{input_ptcalc},{output_mtc})"
-        )
-
-
-    for x in range (0, dut.MAX_MTC_PER_BCID.value.integer):
+   
+    for x in range (0, MtcPorts.get_input_interface_ports(0)):
         dut.slcpipeline[x] <= 0
-    for x in range (0, dut.TOTAL_PTCALC_BLKS.value.integer):
+    for x in range (0, MtcPorts.get_input_interface_ports(1)):
         dut.ptcalc[x] <= 0
 
 

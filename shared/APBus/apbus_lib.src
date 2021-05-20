@@ -1,0 +1,3 @@
+shared/APBus/pkg/apb_pkg.vhd
+shared/APBus/src/apb_main_sig.vhd
+shared/APBus/src/apb_mem_int.vhd

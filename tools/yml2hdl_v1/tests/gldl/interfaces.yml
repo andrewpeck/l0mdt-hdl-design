@@ -1,0 +1,32 @@
+#
+# This file is for the interfaces signals between blocks
+#             +-------+
+#      in_a - |       | - out_a 
+#             |       | 
+#      in_b - |       | - out_b     
+#             +-------+
+#
+
+
+id_record:
+  id:          {type: logic , length: 8}
+  val_a:       {type: logic , length: 8}
+  val_b:       {type: logic , length: 8}
+
+input_a_record:
+  id:          {type: id_record}
+  val_c:       {type: logic , length: 8}
+
+input_b_record:
+  id:          {type: id_record}
+  val_c:       {type: logic , length: 8}
+
+output_a_record:
+  id:          {type: id_record}
+  val_a:       {type: logic , length: 8}
+  val_d:       {type: logic , length: 8}
+
+output_b_record:
+  id:          {type: id_record}
+  val_b:       {type: logic , length: 8}
+  val_d:       {type: logic , length: 8}

@@ -123,7 +123,7 @@ package board_pkg_common is
   function func_polmux_maxid (tdc_cnt_max: integer; mdt_config : mdt_config_t)
     return integer;
 
-  function func_count_lpgbt_link_mapped_to_csm (mdt_config : mdt_config_t; num_tdcs : integer)
+  function func_count_csms_active (mdt_config : mdt_config_t; num_tdcs : integer)
     return integer;
 
 end package board_pkg_common;
@@ -258,27 +258,23 @@ package body board_pkg_common is
     return -1;
   end func_count_polmux;
 
-  -- function to count number of lpgbts
-  -- loop over the tdc link mapping and find how many lpgbts are needed for the
+  -- function to count number of csms
+  -- loop over the tdc link mapping and find how many csms are needed for the
   -- number of tdcs requested in the user logic pkg
-  function func_count_lpgbt_link_mapped_to_csm (mdt_config : mdt_config_t; num_tdcs : integer)
+  function func_count_csms_active (mdt_config : mdt_config_t; num_tdcs : integer)
     return integer is
     variable max : integer := -1;
     variable tdc_count : integer := 0;
-    variable link_count : integer := 0;
+    variable csm_count : integer := 0;
   begin
     for I in mdt_config'range loop
-      tdc_count := count_ones(mdt_config(I).en);
-      link_count := link_count + 1;
+      tdc_count := tdc_count + count_ones(mdt_config(I).en);
+      csm_count := csm_count + 1;
       if (tdc_count >= num_tdcs) then
-        -- in the case odd number uplink requested, force it to next multiple of 2 (CSM is always 2tx+1rx)
-        if (link_count > 0 and (link_count mod 2 /= 0)) then
-          return link_count;
-        end if;
+        return csm_count;
       end if;
     end loop;
-    return link_count;
-
-  end func_count_lpgbt_link_mapped_to_csm;
+    return -1;
+  end func_count_csms_active;
 
 end package body;

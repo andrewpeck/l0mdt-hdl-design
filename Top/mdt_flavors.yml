@@ -1,0 +1,37 @@
+# project will be named as l0mdt_X_Y
+#
+#X:
+#  fpga: {exact fpga model number}
+#  board_pkg: {board configuration package}
+#  sf: {csf/lsf}
+#  pt: {mpt/upt}
+#  constraints:
+#    - "HAL/constraints/pinouts_mpi_ku15p.xdc"
+#    - {any other board specific constraints files}
+#  variants:
+#    Y:
+#      prj_cfg: "prj_cfg"
+#      link_map: "ku15p_test"
+#    Z:
+
+ku15p_csf_mpt:
+  fpga: xcku15p-ffva1760-2-e
+  board_pkg: board_pkg_mpi_ku15p
+  sf: csf
+  pt: mpt
+  constraints:
+    - "pinouts_mpi_ku15p.xdc"
+  variants:
+    test:
+      link_map: "ku15p_test"
+
+vu13p_csf_mpt:
+  fpga: xcvu13p-flga2577-1-e
+  board_pkg: board_pkg_mpi_vu13p
+  sf: csf
+  pt: mpt
+  constraints:
+    - "pinouts_mpi_vu13p.xdc"
+  variants:
+    test:
+      link_map: "vu13p_test"

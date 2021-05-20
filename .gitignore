@@ -1,9 +1,9 @@
 vivado*
 *.jou
 *.o
-*~ 
-*.pyc 
-.cxl.ip/ 
+*~
+*.pyc
+.cxl.ip/
 cxl_error.log
 *.log
 Vivado*
@@ -20,9 +20,10 @@ xvlog*
 .vscode/
 BD/*
 !BD/*.bd
-IP/*/*/*
-!IP/*/*/*.xci
-!IP/*/*.xci
+**/IP/**/*
+!IP/**/*.xci
+!IP/**.xci
+!HAL/IP/*/*.xci
 *.dbg
 *.zip
 work/
@@ -37,3 +38,4 @@ _hdl_checker/
 env/
 .cxl.questasim.*
 Projects/
+#UserLogic/*/IP/**/*.xci

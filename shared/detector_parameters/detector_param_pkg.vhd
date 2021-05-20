@@ -29,6 +29,9 @@ package detector_param_pkg is
   -------------------------------------------------------------------------
   -- Time & cycles constants
   -------------------------------------------------------------------------
+  constant c_CLK_AXI_MULT       : integer := 5; 
+
+  --
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
 
   -- TAR PIPELINE
@@ -276,7 +279,7 @@ package body detector_param_pkg is
     variable mem_out : sector_phi_center_t;
     variable a , b : real;
   begin
-    a := sector_phi_center_default(sector);
+    a := sector_phi_center_default(sector  - 1);
     b := SLC_COMMON_POSPHI_MULT;
     mem_out := to_unsigned( integer((1000.0 * a) * b),SLC_COMMON_POSPHI_LEN);
     return mem_out;

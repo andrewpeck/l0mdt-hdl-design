@@ -31,6 +31,8 @@ use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
 
 entity heg is
   generic(
@@ -41,6 +43,9 @@ entity heg is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
+    -- control
+    ctrl                : in  H2S_HPS_HEG_HEG_CTRL_t;
+    mon                 : out H2S_HPS_HEG_HEG_MON_t;
     -- configuration
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;

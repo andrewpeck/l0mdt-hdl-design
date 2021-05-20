@@ -17,6 +17,10 @@
   tags:
     - hog
 
+.tag-sr: &tag-sr
+  tags:
+     - docker
+
 .user_sim: &user_sim
   <<: *only-default
   <<: *tag-hog
@@ -61,6 +65,7 @@
 
 .sim_comp: &sim_comp
   <<: *only-default
+  <<: *tag-sr
   image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
   stage: user_proj
   script:
@@ -70,6 +75,7 @@
 
 .sim_check: &sim_check
   <<: *only-default
+  <<: *tag-sr
   image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
   stage: user_post
   script:

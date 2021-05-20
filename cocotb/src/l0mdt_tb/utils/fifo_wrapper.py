@@ -2,8 +2,8 @@ from pathlib import Path
 import struct
 
 import cocotb
-from cocotb.drivers import Driver
-from cocotb.monitors import Monitor
+from cocotb_bus.drivers import Driver
+from cocotb_bus.monitors import Monitor
 from cocotb.triggers import RisingEdge, Event, ReadOnly, NextTimeStep, Timer
 
 from l0mdt_tb.utils import utils

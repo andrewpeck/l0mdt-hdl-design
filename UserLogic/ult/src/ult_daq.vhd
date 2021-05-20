@@ -265,8 +265,11 @@ begin
     signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
     signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
     signal sump_v : std_logic_vector(c_NUM_DAQ_STREAMS - 1 downto 0);
+    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
+    signal l0mdt_control_v  : l0mdt_control_rvt;
   begin
-
+    l0mdt_ttc_v <= vectorify(ttc_commands);
+    l0mdt_control_v <= vectorify(clock_and_control);
     sump_proc : process (clock_and_control.clk) is
 
     begin  -- process tdc_hit_sump_proc
@@ -298,7 +301,7 @@ begin
 
         end loop;
 
-        o_sump <= xor_reduce(sump_v);
+        o_sump <= xor_reduce(sump_v) xor xor_reduce(l0mdt_ttc_v) xor xor_reduce(l0mdt_control_v);
         
 
       end if;

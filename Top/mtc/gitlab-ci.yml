@@ -1,13 +1,17 @@
 #################### MTC Project ###########################
 GEN:mtc:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: mtc
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-
+      
+    tags:
+      - normal-ops
+      - hog
+      
 # SIM:example:
-#     extends: .SIM
+#     extends: .simulate_project
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: example

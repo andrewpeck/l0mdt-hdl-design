@@ -1,0 +1,19 @@
+# This file was auto-generated.
+# Modifications might be lost.
+__config__:
+    basic_convert_functions : off
+    packages:
+    shared_lib:
+        - common_ieee_pkg
+
+HDL_Types:
+
+- TAR_MON_t:
+  - STATUS : [ type: logic ]
+  - READY : [ type: logic ]
+
+
+- TAR_CTRL_t:
+  - RESET : [ type: logic ]
+
+

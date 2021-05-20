@@ -1,21 +1,27 @@
 #################### ull_ku15_b3a_ucm_mpl_hps_csf Project ###########################
 GEN:ull_ku15_b3a_ucm_mpl_hps_csf:
-    extends: .GEN
+    extends: .generate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - heavy-duty
+      - hog
 
 SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
-    extends: .SIM
+    extends: .simulate_project
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
     allow_failure: false
-
+    tags:
+      - heavy-duty
+      - hog
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
-#     extends: .sim_comp
+#     extends: .simulate_project_comp
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_questa

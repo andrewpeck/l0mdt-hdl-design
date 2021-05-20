@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <node id="H2S" address="0x0">
   <node id="HPS_0" fwinfo="type=array" address="0x00000000" module="file://HPS.xml"/>
-  <node id="HPS_1" fwinfo="type=array" address="0x00001000" module="file://HPS.xml"/>
-  <node id="HPS_2" fwinfo="type=array" address="0x00002000" module="file://HPS.xml"/>
-  <node id="HPS_3" fwinfo="type=array" address="0x00004000" module="file://HPS.xml"/>
+  <node id="HPS_1" fwinfo="type=array" address="0x00010000" module="file://HPS.xml"/>
+  <node id="HPS_2" fwinfo="type=array" address="0x00020000" module="file://HPS.xml"/>
+  <node id="HPS_3" fwinfo="type=array" address="0x00040000" module="file://HPS.xml"/>
 </node>
+
+
+

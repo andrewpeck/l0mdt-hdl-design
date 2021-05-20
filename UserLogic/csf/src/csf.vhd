@@ -17,97 +17,95 @@
 -- Additional Comments:
 --
 ----------------------------------------------------------------------------------
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-use ieee.math_real.all;
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+USE ieee.math_real.ALL;
 
-library shared_lib;
-use shared_lib.common_ieee_pkg.all;
-use shared_lib.l0mdt_constants_pkg.all;
-use shared_lib.l0mdt_dataformats_pkg.all;
-use shared_lib.common_constants_pkg.all;
-use shared_lib.common_types_pkg.all;
+LIBRARY shared_lib;
+USE shared_lib.common_ieee_pkg.ALL;
+USE shared_lib.l0mdt_constants_pkg.ALL;
+USE shared_lib.l0mdt_dataformats_pkg.ALL;
+USE shared_lib.common_constants_pkg.ALL;
+USE shared_lib.common_types_pkg.ALL;
 
-library csf_lib;
-use csf_lib.csf_pkg.all;
-use csf_lib.csf_custom_pkg.all;
+LIBRARY csf_lib;
+USE csf_lib.csf_pkg.ALL;
+USE csf_lib.csf_custom_pkg.ALL;
 
-entity csf is
-    generic(
-        IS_ENDCAP  : integer := 0
+ENTITY csf IS
+    GENERIC (
+        IS_ENDCAP : INTEGER := 0
     );
-    Port (
-        clk       : in std_logic;
-        i_seed    : in heg2sfslc_rvt;
-        i_mdt_hit : in heg2sfhit_rvt;
-        i_eof     : in std_logic;
-        i_rst     : in std_logic;
-        o_seg     : out sf2ptcalc_rvt
+    PORT (
+        clk : IN STD_LOGIC;
+        i_seed : IN heg2sfslc_rvt;
+        i_mdt_hit : IN heg2sfhit_rvt;
+        i_eof : IN STD_LOGIC;
+        i_rst : IN STD_LOGIC;
+        o_seg : OUT sf2ptcalc_rvt
     );
-end csf;
+END csf;
 
-architecture Behavioral of csf is
+ARCHITECTURE Behavioral OF csf IS
     -- Input RoI
-    signal seed_i : heg2sfslc_rt;
-    signal seed : heg2sfslc_rvt;
+    SIGNAL seed_i : heg2sfslc_rt;
+    SIGNAL seed : heg2sfslc_rvt;
 
     -- Input signals
-    signal mdt_hit  : heg2sfhit_rt;
-    signal mdt_hits : heg2sfhit_bus_avt (1 downto 0) := (others => (others => '0'));
-    signal eof      : std_logic := '0';
+    SIGNAL mdt_hit : heg2sfhit_rt;
+    SIGNAL mdt_hits : heg2sfhit_bus_avt (1 DOWNTO 0) := (OTHERS => (OTHERS => '0'));
+    SIGNAL eof : STD_LOGIC := '0';
 
     -- Histogram signals
-    signal histo_hit_max0, histo_hit_max1   : csf_hit_a_avt(1 downto 0)
-        := (others => (others => '0'));
+    SIGNAL histo_hit_max0, histo_hit_max1 : csf_hit_a_avt(1 DOWNTO 0)
+    := (OTHERS => (OTHERS => '0'));
 
     -- Fitters Signals
-    type t_mfit is array (natural range <> ) of signed(CSF_SEG_M_LEN-1 downto 0);
-    type t_bfit is array (natural range <> ) of signed(CSF_SEG_B_LEN-1 downto 0);
-    type t_nhit is array (natural range <> )
-        of unsigned(CSF_MAXHITS_SEG_LEN-1 downto 0);
+    TYPE t_mfit IS ARRAY (NATURAL RANGE <>) OF signed(CSF_SEG_M_LEN - 1 DOWNTO 0);
+    TYPE t_bfit IS ARRAY (NATURAL RANGE <>) OF signed(CSF_SEG_B_LEN - 1 DOWNTO 0);
+    TYPE t_nhit IS ARRAY (NATURAL RANGE <>)
+    OF unsigned(CSF_MAXHITS_SEG_LEN - 1 DOWNTO 0);
 
-    signal fit_hit_histo0, fit_hit_histo1 :
-        csf_hit_a_avt(NUM_FITTERS-1 downto 0)
-        := (others => (others => '0'));
+    SIGNAL fit_hit_histo0, fit_hit_histo1 :
+    csf_hit_a_avt(NUM_FITTERS - 1 DOWNTO 0)
+    := (OTHERS => (OTHERS => '0'));
 
-    signal mfits   : t_mfit(NUM_FITTERS-1 downto 0)
-        := (others => (others => '0'));
-    signal bfits   : t_bfit(NUM_FITTERS-1 downto 0)
-        := (others => (others => '0'));
-    signal fit_valids : std_logic_vector(NUM_FITTERS-1 downto 0)
-        := (others => '0');
-    signal nhits : t_nhit(NUM_FITTERS-1 downto 0);
+    SIGNAL mfits : t_mfit(NUM_FITTERS - 1 DOWNTO 0)
+    := (OTHERS => (OTHERS => '0'));
+    SIGNAL bfits : t_bfit(NUM_FITTERS - 1 DOWNTO 0)
+    := (OTHERS => (OTHERS => '0'));
+    SIGNAL fit_valids : STD_LOGIC_VECTOR(NUM_FITTERS - 1 DOWNTO 0)
+    := (OTHERS => '0');
+    SIGNAL nhits : t_nhit(NUM_FITTERS - 1 DOWNTO 0);
 
     -- Chi2 Signals
-    signal chi2_segs : csf_locseg_a_avt(NUM_FITTERS-1 downto 0)
-        := (others => (others => '0'));
-    signal rst_chi2 : std_logic := '0';
+    SIGNAL chi2_segs : csf_locseg_a_avt(NUM_FITTERS - 1 DOWNTO 0)
+    := (OTHERS => (OTHERS => '0'));
+    SIGNAL rst_chi2 : STD_LOGIC := '0';
 
     -- Output signal
-    signal output_segment : csf_locseg_rvt
-        := (others => '0');
-    signal out_seg : csf_locseg_rt;
+    SIGNAL output_segment : csf_locseg_rvt
+    := (OTHERS => '0');
+    SIGNAL out_seg : csf_locseg_rt;
 
-begin
-
-    
+BEGIN
     -- Barrel Case
-    B_E_generate: if IS_ENDCAP = 0 generate
+    B_E_generate : IF IS_ENDCAP = 0 GENERATE
         -- Histograms (1 per multilayer)
-        Histograms: for k in 1 downto 0 generate
-        begin
-            Histogram : entity csf_lib.csf_histogram
-            port map(
-            clk           => clk,
-            i_mdthit      => mdt_hits(k),
-            i_seed        => i_seed,
-            i_eof         => i_eof,
-            o_histo_hit0  => histo_hit_max0(k),
-            o_histo_hit1  => histo_hit_max1(k)
-            );
-        end generate;
-    
+        Histograms : FOR k IN 1 DOWNTO 0 GENERATE
+        BEGIN
+            Histogram : ENTITY csf_lib.csf_histogram
+                PORT MAP(
+                    clk => clk,
+                    i_mdthit => mdt_hits(k),
+                    i_seed => i_seed,
+                    i_eof => i_eof,
+                    o_histo_hit0 => histo_hit_max0(k),
+                    o_histo_hit1 => histo_hit_max1(k)
+                );
+        END GENERATE;
+
         -- Route hits from Histogram to Fitters
         fit_hit_histo0(0) <= histo_hit_max0(0);
         fit_hit_histo0(1) <= histo_hit_max1(0);
@@ -120,115 +118,116 @@ begin
         fit_hit_histo1(3) <= histo_hit_max1(1);
 
         -- Fitters + Chi2
-        Fitters : for i in 0 to NUM_FITTERS-1 generate
-        begin
-            Fitter0 : entity csf_lib.csf_fitter
-            port map(
-                clk            => clk,
-                i_hit1         => fit_hit_histo0(i),
-                i_hit2         => fit_hit_histo1(i),
-                o_mfit         => mfits(i),
-                o_bfit         => bfits(i),
-                o_fit_valid    => fit_valids(i),
-                o_nhits        => nhits(i)
+        Fitters : FOR i IN 0 TO NUM_FITTERS - 1 GENERATE
+        BEGIN
+            Fitter0 : ENTITY csf_lib.csf_fitter
+                PORT MAP(
+                    clk => clk,
+                    i_hit1 => fit_hit_histo0(i),
+                    i_hit2 => fit_hit_histo1(i),
+                    o_mfit => mfits(i),
+                    o_bfit => bfits(i),
+                    o_fit_valid => fit_valids(i),
+                    o_nhits => nhits(i)
+                );
+
+            chi2 : ENTITY csf_lib.csf_chi2
+                PORT MAP(
+                    clk => clk,
+                    i_hit1 => fit_hit_histo0(i),
+                    i_hit2 => fit_hit_histo1(i),
+                    i_mfit => mfits(i),
+                    i_bfit => bfits(i),
+                    i_nhits => nhits(i),
+                    i_fit_valid => fit_valids(i),
+                    o_seg => chi2_segs(i)
+                );
+        END GENERATE;
+    ELSE
+        GENERATE
+            -- Endcap
+            Histogram : ENTITY csf_lib.csf_histogram
+                GENERIC MAP(
+                    MAX_HITS_PER_BIN => 16.0
+                )
+                PORT MAP(
+                    clk => clk,
+                    i_mdthit => i_mdt_hit,
+                    i_seed => i_seed,
+                    i_eof => i_eof,
+                    o_histo_hit0 => fit_hit_histo0(0),
+                    o_histo_hit1 => fit_hit_histo0(1)
+                );
+
+            Fitters : FOR i IN 0 TO NUM_FITTERS/2 - 1 GENERATE
+            BEGIN
+                Fitter0 : ENTITY csf_lib.csf_fitter
+                    PORT MAP(
+                        clk => clk,
+                        i_hit1 => fit_hit_histo0(i),
+                        i_hit2 => fit_hit_histo1(i),
+                        o_mfit => mfits(i),
+                        o_bfit => bfits(i),
+                        o_fit_valid => fit_valids(i),
+                        o_nhits => nhits(i)
+                    );
+
+                chi2 : ENTITY csf_lib.csf_chi2
+                    PORT MAP(
+                        clk => clk,
+                        i_hit1 => fit_hit_histo0(i),
+                        i_hit2 => fit_hit_histo1(i),
+                        i_mfit => mfits(i),
+                        i_bfit => bfits(i),
+                        i_nhits => nhits(i),
+                        i_fit_valid => fit_valids(i),
+                        o_seg => chi2_segs(i)
+                    );
+            END GENERATE;
+        END GENERATE B_E_generate;
+
+        -- Chi2 comparator
+        Chi2Compare : ENTITY csf_lib.csf_chi2_comparison
+            PORT MAP(
+                clk => clk,
+                i_segments => chi2_segs,
+                o_segment => output_segment
             );
 
-            chi2 : entity csf_lib.csf_chi2
-            Port map(
-                clk            => clk,
-                i_hit1         => fit_hit_histo0(i),
-                i_hit2         => fit_hit_histo1(i),
-                i_mfit         => mfits(i),
-                i_bfit         => bfits(i),
-                i_nhits        => nhits(i),
-                i_fit_valid    => fit_valids(i),
-                o_seg          => chi2_segs(i)
-            );
-        end generate ;
-    else generate
-        -- Endcap
-        Histogram : entity csf_lib.csf_histogram
-            generic map(
-                MAX_HITS_PER_BIN => 16.0
+        -- Coordinate tranformation
+        CoordTransform : ENTITY csf_lib.seg_coord_transform
+            GENERIC MAP(
+                IS_ENDCAP => IS_ENDCAP
             )
-            port map(
-            clk           => clk,
-            i_mdthit      => i_mdt_hit,
-            i_seed        => i_seed,
-            i_eof         => i_eof,
-            o_histo_hit0  => fit_hit_histo0(0),
-            o_histo_hit1  => fit_hit_histo0(1)
-            );
-        
-        Fitters : for i in 0 to NUM_FITTERS/2-1 generate
-        begin
-            Fitter0 : entity csf_lib.csf_fitter
-            port map(
-                clk            => clk,
-                i_hit1         => fit_hit_histo0(i),
-                i_hit2         => fit_hit_histo1(i),
-                o_mfit         => mfits(i),
-                o_bfit         => bfits(i),
-                o_fit_valid    => fit_valids(i),
-                o_nhits        => nhits(i)
+            PORT MAP(
+                clk => clk,
+                i_locseg => output_segment,
+                i_seed => seed,
+                o_globseg => o_seg
             );
 
-            chi2 : entity csf_lib.csf_chi2
-            Port map(
-                clk            => clk,
-                i_hit1         => fit_hit_histo0(i),
-                i_hit2         => fit_hit_histo1(i),
-                i_mfit         => mfits(i),
-                i_bfit         => bfits(i),
-                i_nhits        => nhits(i),
-                i_fit_valid    => fit_valids(i),
-                o_seg          => chi2_segs(i)
-            );
-        end generate ;
-    end generate B_E_generate;
-    
-    -- Chi2 comparator
-    Chi2Compare : entity csf_lib.csf_chi2_comparison
-    Port map(
-        clk                => clk,
-        i_segments         => chi2_segs,
-        o_segment          => output_segment
-    );
+        out_seg <= structify(output_segment);
 
-    -- Coordinate tranformation
-    CoordTransform: entity csf_lib.seg_coord_transform
-    generic map(
-        IS_ENDCAP => IS_ENDCAP
-    )
-    port map (
-        clk                => clk,
-        i_locseg           => output_segment,
-        i_seed             => seed,
-        o_globseg          => o_seg
-    );
-    
-    out_seg <= structify(output_segment);
+        CSF_proc : PROCESS (clk)
+        BEGIN
+            mdt_hit <= structify(i_mdt_hit);
+            seed_i <= structify(i_seed);
 
-    CSF_proc : process(clk)
-begin
-    mdt_hit <= structify(i_mdt_hit);
-    seed_i <= structify(i_seed);
+            IF rising_edge(clk) THEN
 
-    if rising_edge(clk) then
+                mdt_hits <= (OTHERS => (OTHERS => '0'));
+                mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
+                rst_chi2 <= '0';
 
-        mdt_hits <= (others => (others => '0'));
-        mdt_hits(stdlogic_integer(mdt_hit.mlayer)) <= i_mdt_hit;
-        rst_chi2 <= '0';
+                IF seed_i.data_valid = '1' THEN
+                    seed <= i_seed;
+                END IF;
 
-        if seed_i.data_valid = '1' then
-            seed <= i_seed;
-        end if;
+                -- Reset the Chi2 and Output
+                IF i_rst = '1' THEN
+                    seed <= (OTHERS => '0');
+                END IF;
+            END IF;
+        END PROCESS;
 
-        -- Reset the Chi2 and Output
-        if i_rst = '1' then
-            seed <= (others => '0');
-        end if;
-    end if;
-end process;
-
-end Behavioral;
+    END Behavioral;

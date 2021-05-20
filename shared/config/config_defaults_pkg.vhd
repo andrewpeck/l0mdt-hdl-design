@@ -120,7 +120,7 @@ package cfg_global_default_pkg is
     FPGA_EN_ST_OUT                => '1',
     -- tube address remap
     ENABLE_TAR                    => '1',
-    INSEL_MDT_nTAR                => '1',
+    INSEL_MDT_nTAR                => '0',
     -- muon control manager
     ENABLE_UCM                    => '1', -- 0: disabled  1: enabled -- default enabled
     ENABLE_MPL                    => '1',

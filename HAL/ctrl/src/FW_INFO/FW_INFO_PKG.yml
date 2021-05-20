@@ -1,12 +1,14 @@
+# yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-__config__:
-    basic_convert_functions : off
-    packages:
-    shared_lib:
-        - common_ieee_pkg
+# Created : 2021-04-01 18:20:06.605441.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
 
-HDL_Types:
+hdl:
 
 - FW_INFO_FW_INFO_BUILD_DATE_MON_t:
   - DAY : [ type: logic, length: 8 ]
@@ -49,7 +51,6 @@ HDL_Types:
 - FW_INFO_CONFIG_MON_t:
   - MAIN_CFG_COMPILE_HW : [ type: logic ]
   - MAIN_CFG_COMPILE_UL : [ type: logic ]
-  - SECTOR_SIDE : [ type: logic ]
   - ST_nBARREL_ENDCAP : [ type: logic ]
   - ENDCAP_nSMALL_LARGE : [ type: logic ]
   - ENABLE_NEIGHBORS : [ type: logic ]
@@ -73,8 +74,6 @@ HDL_Types:
   - SF_ENABLED : [ type: logic ]
   - SF_TYPE : [ type: logic ]
   - NUM_DAQ_STREAMS : [ type: logic, length: 8 ]
-  - MAX_NUM_HP : [ type: logic, length: 8 ]
-  - MAX_NUM_HPS : [ type: logic, length: 8 ]
   - NUM_SF_INPUTS : [ type: logic, length: 8 ]
   - NUM_SF_OUTPUTS : [ type: logic, length: 8 ]
   - MAX_NUM_SL : [ type: logic, length: 8 ]

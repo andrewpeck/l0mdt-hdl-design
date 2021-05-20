@@ -37,6 +37,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "cocotb",
+        "cocotb_bus",
         "flake8",
         "black",
         "colorama",

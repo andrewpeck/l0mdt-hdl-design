@@ -113,7 +113,6 @@ begin  -- architecture behavioral
         when 64 => --0x40
           localRdData( 0)            <=  Mon.CONFIG.MAIN_CFG_COMPILE_HW;        --
           localRdData( 1)            <=  Mon.CONFIG.MAIN_CFG_COMPILE_UL;        --
-          localRdData( 2)            <=  Mon.CONFIG.SECTOR_SIDE;                --
           localRdData( 3)            <=  Mon.CONFIG.ST_nBARREL_ENDCAP;          --
           localRdData( 4)            <=  Mon.CONFIG.ENDCAP_nSMALL_LARGE;        --
           localRdData( 5)            <=  Mon.CONFIG.ENABLE_NEIGHBORS;           --
@@ -147,8 +146,6 @@ begin  -- architecture behavioral
           localRdData( 3)            <=  Mon.CONFIG.SF_TYPE;                    --
         when 74 => --0x4a
           localRdData( 7 downto  0)  <=  Mon.CONFIG.NUM_DAQ_STREAMS;            --
-          localRdData(15 downto  8)  <=  Mon.CONFIG.MAX_NUM_HP;                 --
-          localRdData(23 downto 16)  <=  Mon.CONFIG.MAX_NUM_HPS;                --
         when 75 => --0x4b
           localRdData( 7 downto  0)  <=  Mon.CONFIG.NUM_SF_INPUTS;              --
           localRdData(15 downto  8)  <=  Mon.CONFIG.NUM_SF_OUTPUTS;             --

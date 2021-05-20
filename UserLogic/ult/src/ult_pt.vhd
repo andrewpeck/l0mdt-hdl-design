@@ -15,7 +15,7 @@ library ctrl_lib;
 use ctrl_lib.TF_CTRL.all;
 
 library ptc_lib;
--- library upt_lib;
+library upt_lib;
 
 entity ptcalc is
 
@@ -69,19 +69,19 @@ begin
       end generate;
 
       upt : if (c_PT_TYPE = '1') generate
-        -- pt_1 : entity upt_lib.top_upt
-        --   generic map (
-        --     FLAVOUR => 0,
-        --     SECTOR  => I)
-        --   port map (
-        --     clk         => clock_and_control.clk,
-        --     i_rst       => clock_and_control.rst,
-        --     i_segment_i => i_inn_segments(i),
-        --     i_segment_m => i_mid_segments(i),
-        --     i_segment_o => i_out_segments(i),
-        --     i_slc       => i_pl2pt_av(i),
-        --     o_mtc       => o_pt2mtc(i)
-        --     );
+         pt_1 : entity upt_lib.top_upt
+           generic map (
+             FLAVOUR => 0,
+             SECTOR  => I)
+           port map (
+             clk         => clock_and_control.clk,
+             i_rst       => clock_and_control.rst,
+             i_segment_i => i_inn_segments(I),
+             i_segment_m => i_mid_segments(I),
+             i_segment_o => i_out_segments(I),
+             i_slc       => i_pl2pt_av(I),
+             o_mtc       => o_pt2mtc(I)
+            );
       end generate;
 
     end generate;
@@ -95,8 +95,11 @@ begin
     signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS-1 downto 0);
     signal pl2pt_sump                     : std_logic_vector (c_NUM_THREADS-1 downto 0);
+    signal l0mdt_ttc_v  : l0mdt_ttc_rvt;
+    signal l0mdt_control_v  : l0mdt_control_rvt;
   begin
-
+    l0mdt_ttc_v <= vectorify(ttc_commands);
+    l0mdt_control_v <= vectorify(clock_and_control);
     o_pt2mtc <= ( others => (others => '0'));
 
     sump_proc : process (clock_and_control.clk) is
@@ -131,7 +134,8 @@ begin
                 xor xor_reduce(ext_segments_sump)
                 xor xor_reduce(minus_neighbor_segments_sump)
                 xor xor_reduce(plus_neighbor_segments_sump )
-                xor xor_reduce(pl2pt_sump);
+                xor xor_reduce(pl2pt_sump)
+                xor xor_reduce(l0mdt_ttc_v) xor xor_reduce(l0mdt_control_v);
       end if;
     end process;
 
