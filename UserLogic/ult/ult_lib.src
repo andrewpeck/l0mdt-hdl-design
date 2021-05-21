@@ -1,6 +1,7 @@
 # -*- mode: TCL;-*-
 UserLogic/ult/src/ult.vhd
 UserLogic/ult/src/ult_h2s.vhd
+UserLogic/ult/src/sumps/h2s_sump.vhd
 UserLogic/ult/src/ult_tar.vhd
 UserLogic/ult/src/ult_mpl.vhd
 UserLogic/ult/src/ult_ucm.vhd

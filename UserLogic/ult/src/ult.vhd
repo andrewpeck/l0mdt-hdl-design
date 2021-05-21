@@ -211,35 +211,66 @@ begin
       o_uCM2pl_av             => ucm2pl_av
     );
 
+    H2S_GEN : if c_H2S_ENABLED = '1' generate
 
-    ULT_H2S : entity work.hits_to_segments
-    port map (
-      -- clock, control, and monitoring
-      clock_and_control         => clock_and_control,
-      ttc_commands              => ttc_commands,
-      ctrl                      => h2s_ctrl,
-      mon                       => h2s_mon,
-      -- inputs from hal
-      i_inn_tar_hits            => inn_tar_hits,
-      i_mid_tar_hits            => mid_tar_hits,
-      i_out_tar_hits            => out_tar_hits,
-      i_ext_tar_hits            => ext_tar_hits,
-      -- Sector Logic Candidates from uCM
-      i_inn_slc                 => inn_slc_to_h2s,
-      i_mid_slc                 => mid_slc_to_h2s,
-      i_out_slc                 => out_slc_to_h2s,
-      i_ext_slc                 => ext_slc_to_h2s,
-      -- Segments Out to pt calculation
-      o_inn_segments            => inn_segments_to_pt,
-      o_mid_segments            => mid_segments_to_pt,
-      o_out_segments            => out_segments_to_pt,
-      o_ext_segments            => ext_segments_to_pt,
-      -- Segment outputs to HAL
-      o_plus_neighbor_segments  => o_plus_neighbor_segments,
-      o_minus_neighbor_segments => o_minus_neighbor_segments,
+      ULT_H2S : entity work.hits_to_segments
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control         => clock_and_control,
+        ttc_commands              => ttc_commands,
+        ctrl                      => h2s_ctrl,
+        mon                       => h2s_mon,
+        -- inputs from hal
+        i_inn_tar_hits            => inn_tar_hits,
+        i_mid_tar_hits            => mid_tar_hits,
+        i_out_tar_hits            => out_tar_hits,
+        i_ext_tar_hits            => ext_tar_hits,
+        -- Sector Logic Candidates from uCM
+        i_inn_slc                 => inn_slc_to_h2s,
+        i_mid_slc                 => mid_slc_to_h2s,
+        i_out_slc                 => out_slc_to_h2s,
+        i_ext_slc                 => ext_slc_to_h2s,
+        -- Segments Out to pt calculation
+        o_inn_segments            => inn_segments_to_pt,
+        o_mid_segments            => mid_segments_to_pt,
+        o_out_segments            => out_segments_to_pt,
+        o_ext_segments            => ext_segments_to_pt,
+        -- Segment outputs to HAL
+        o_plus_neighbor_segments  => o_plus_neighbor_segments,
+        o_minus_neighbor_segments => o_minus_neighbor_segments,
 
-      o_sump                    => h2s_sump
-    );
+        o_sump                    => h2s_sump
+      );
+    else generate
+      ULT_H2S : entity work.h2s_sump
+      port map (
+        -- clock, control, and monitoring
+        -- clock_and_control         => clock_and_control,
+        -- ttc_commands              => ttc_commands,
+        -- ctrl                      => h2s_ctrl,
+        -- mon                       => h2s_mon,
+        -- inputs from hal
+        i_inn_tar_hits            => inn_tar_hits,
+        i_mid_tar_hits            => mid_tar_hits,
+        i_out_tar_hits            => out_tar_hits,
+        i_ext_tar_hits            => ext_tar_hits,
+        -- Sector Logic Candidates from uCM
+        i_inn_slc                 => inn_slc_to_h2s,
+        i_mid_slc                 => mid_slc_to_h2s,
+        i_out_slc                 => out_slc_to_h2s,
+        i_ext_slc                 => ext_slc_to_h2s,
+        -- Segments Out to pt calculation
+        o_inn_segments            => inn_segments_to_pt,
+        o_mid_segments            => mid_segments_to_pt,
+        o_out_segments            => out_segments_to_pt,
+        o_ext_segments            => ext_segments_to_pt,
+        -- Segment outputs to HAL
+        o_plus_neighbor_segments  => o_plus_neighbor_segments,
+        o_minus_neighbor_segments => o_minus_neighbor_segments,
+
+        o_sump                    => h2s_sump
+      );
+    end generate;
 
     ULT_MPL : entity ult_lib.pipeline
     port map (
