@@ -192,10 +192,10 @@ begin
     mpl_mon  => mpl_mon,
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  => i_mdt_tdc_inn_av,
-    i_middle_tdc_hits => i_mdt_tdc_mid_av,
-    i_outer_tdc_hits  => i_mdt_tdc_out_av,
-    i_extra_tdc_hits  => i_mdt_tdc_ext_av,
+    i_inn_tdc_hits => i_mdt_tdc_inn_av,
+    i_mid_tdc_hits => i_mdt_tdc_mid_av,
+    i_out_tdc_hits => i_mdt_tdc_out_av,
+    i_ext_tdc_hits => i_mdt_tdc_ext_av,
 
     -- TAR Hits for simulation
     -- i_inner_tar_hits  => i_mdt_tar_inn_av,

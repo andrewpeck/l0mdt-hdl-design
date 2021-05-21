@@ -241,10 +241,10 @@ begin
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      i_inner_tdc_hits  => inner_tdc_hits,
-      i_middle_tdc_hits => middle_tdc_hits,
-      i_outer_tdc_hits  => outer_tdc_hits,
-      i_extra_tdc_hits  => extra_tdc_hits,
+      i_inn_tdc_hits => inner_tdc_hits,
+      i_mid_tdc_hits => middle_tdc_hits,
+      i_out_tdc_hits => outer_tdc_hits,
+      i_ext_tdc_hits => extra_tdc_hits,
 
       -- i_inner_tar_hits  => i_inner_tar_hits,
       -- i_middle_tar_hits => i_middle_tar_hits,

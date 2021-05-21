@@ -134,10 +134,10 @@ begin
       ttc_commands      => ttc_commands,
 
       -- TDC Hits from Polmux
-      i_inner_tdc_hits  => i_inner_tdc_hits,
-      i_middle_tdc_hits => i_middle_tdc_hits,
-      i_outer_tdc_hits  => i_outer_tdc_hits,
-      i_extra_tdc_hits  => i_extra_tdc_hits,
+      i_inn_tdc_hits_av => i_inner_tdc_hits,
+      i_mid_tdc_hits_av => i_middle_tdc_hits,
+      i_out_tdc_hits_av => i_outer_tdc_hits,
+      i_ext_tdc_hits_av => i_extra_tdc_hits,
 
       -- TAR Hits for simulation
       -- i_inner_tar_hits  => i_inner_tar_hits,
@@ -176,8 +176,8 @@ begin
       o_daq_streams => o_daq_streams,
 
       -- Segments Out to Neighbor
-      o_plus_neighbor_segments  => o_plus_neighbor_segments,
-      o_minus_neighbor_segments => o_minus_neighbor_segments,
+      o_plus_neighbor_segments_av  => o_plus_neighbor_segments,
+      o_minus_neighbor_segments_av => o_minus_neighbor_segments,
 
       -- MUCTPI
       o_MTC => o_MTC,

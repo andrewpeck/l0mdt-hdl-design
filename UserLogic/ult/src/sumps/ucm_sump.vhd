@@ -12,6 +12,7 @@
 --      
 --------------------------------------------------------------------------------
 library ieee;
+use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
@@ -42,7 +43,7 @@ entity ucm_sump is
     i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_neighborA_v : in slc_rx_rvt;
     i_slc_data_neighborB_v : in slc_rx_rvt;
-    
+
     -- Sector Logic Candidates Out of X-point Switch
     o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
     o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -76,8 +77,8 @@ begin
       slc_data_mainA_av(I) <= xor_reduce(i_slc_data_mainA_av(I));
       slc_data_mainB_av(I) <= xor_reduce(i_slc_data_mainB_av(I));
     end generate;
-      slc_data_neighborA_v <= xor_reduce(i_slc_data_neighborA_v(I));
-      slc_data_neighborB_v <= xor_reduce(i_slc_data_neighborB_v(I));
+      slc_data_neighborA_v <= xor_reduce(i_slc_data_neighborA_v);
+      slc_data_neighborB_v <= xor_reduce(i_slc_data_neighborB_v);
 
    
     o_sump <=   xor_reduce(slc_data_mainA_av)

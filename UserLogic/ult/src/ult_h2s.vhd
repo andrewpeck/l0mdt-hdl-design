@@ -43,25 +43,25 @@ entity hits_to_segments is
     mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
-    i_inn_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_out_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
     -- Segments Out
-    o_inn_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_inn_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_mid_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_out_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_ext_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
     
-    o_sump : out std_logic
+    -- o_sump : out std_logic
   );
   
 
@@ -76,7 +76,7 @@ begin
 
   -- H2S_GEN : if c_H2S_ENABLED = '1' generate
 
-    o_sump <= '0';
+    -- o_sump <= '0';
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
       HPS : entity hps_lib.hps
@@ -95,11 +95,11 @@ begin
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
-        i_uCM2hps_av        => i_inn_slc,
+        i_uCM2hps_av        => i_inn_slc_av,
         -- MDT hit
-        i_mdt_tar_av        => i_inn_tar_hits,
+        i_mdt_tar_av        => i_inn_tar_hits_av,
         -- to pt calc
-        o_sf2pt_av          => o_inn_segments
+        o_sf2pt_av          => o_inn_segments_av
       );
     end generate;
 
@@ -120,11 +120,11 @@ begin
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
-        i_uCM2hps_av        => i_mid_slc,
+        i_uCM2hps_av        => i_mid_slc_av,
         -- MDT hit
-        i_mdt_tar_av        => i_mid_tar_hits,
+        i_mdt_tar_av        => i_mid_tar_hits_av,
         -- to pt calc
-        o_sf2pt_av          => o_mid_segments
+        o_sf2pt_av          => o_mid_segments_av
       );
     end generate;
 
@@ -145,11 +145,11 @@ begin
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
-        i_uCM2hps_av        => i_out_slc,
+        i_uCM2hps_av        => i_out_slc_av,
         -- MDT hit
-        i_mdt_tar_av        => i_out_tar_hits,
+        i_mdt_tar_av        => i_out_tar_hits_av,
         -- to pt calc
-        o_sf2pt_av          => o_out_segments
+        o_sf2pt_av          => o_out_segments_av
       );
     end generate;
 
@@ -170,16 +170,16 @@ begin
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
-        i_uCM2hps_av        => i_ext_slc,
+        i_uCM2hps_av        => i_ext_slc_av,
         -- MDT hit
-        i_mdt_tar_av        => i_ext_tar_hits,
+        i_mdt_tar_av        => i_ext_tar_hits_av,
         -- to pt calc
-        o_sf2pt_av          => o_ext_segments
+        o_sf2pt_av          => o_ext_segments_av
       );
     end generate;
 
     DIS_HPS_EXT : if c_HPS_ENABLE_ST_EXT = '0' generate
-      o_ext_segments <= (others => ( others => '0'));
+      o_ext_segments_av <= (others => ( others => '0'));
     end generate;
 
   -- end generate;

@@ -29,7 +29,7 @@ use ucm_lib.ucm_pkg.all;
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
-entity ucm_sump is
+entity mtc_sump is
   port (
     -- clock and control
     -- clock_and_control : in  l0mdt_control_rt;
@@ -54,9 +54,9 @@ entity ucm_sump is
     o_sump : out std_logic
   );
   
-end entity ucm_sump;
+end entity mtc_sump;
 
-architecture beh of ucm_sump is
+architecture beh of mtc_sump is
 
   signal slc_data_mainA_av     : std_logic_vector(2 downto 0);
   signal slc_data_mainB_av     : std_logic_vector(2 downto 0);
