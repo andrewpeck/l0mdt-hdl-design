@@ -17,7 +17,7 @@
         },
         "testvectors": {
             "testvector_dir": "/home/ntekas/Work/tv",
-            "testvector_file": "B_C_13.xz",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "HEG2SFSLC",
@@ -45,14 +45,11 @@
                     "station_ID": [
                         "INN"
                     ],
-                    "tol_abs": {
-                        "segpos": 0,
-                        "segangle": 5
-                    },
-                    "tol_per": {
-                        "segpos": 0.01,
-                        "segangle": 0.01
-                    }
+                    "tolerance" : 
+                        {   
+                            "segpos": ["abs",1000000.0],
+                            "segangle": ["perc",50]
+                        }
                 }
             ]
         }

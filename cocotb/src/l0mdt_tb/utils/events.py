@@ -127,7 +127,7 @@ def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
 #For Example for ptcalc it would be expected_tv[1][events_run],as output event has only one port
 
 #**************/
-def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
+def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv, tolerances):
     """
     path = Path(filename)
     ok = path.exists() and path.is_file()
@@ -186,13 +186,8 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
                     # hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bitwordvalue())
                     # print("\nEvents.py: %s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
-                    print("***************************\nSector 3 Event:",evt," Candidate=",this_candidate, "TVFORMAT=",tvformat)
-                    tolerance = {   "segpos": ["abs",0.05],
-                        "segangle": ["perc",0.0001] #0.0000243 to fail
-                    }
-
                     # currently crashes
-                    results = local_sl1[0].compare_bitwordvalue(local_sl2[0],tol={})  #compare_bitfieldwordvalue returns list
+                    results = local_sl1[0].compare_bitwordvalue(local_sl2[0],tolerances)  #compare_bitfieldwordvalue returns list
                     if results[0]:
                         cprint("The 2 BitFieldWords are identical ", "green")
                     else:
@@ -388,7 +383,7 @@ def parse_tvlist(
     #B3_event_list = [107, 153, 10, 3] #220, 189
 
     #l0ids_loaded = set()
-    #    print("PARSING FOR TVFORMAT = ",tvformat)
+    print("PARSING FOR TVFORMAT = ",tvformat)
     # tv_reader_pkl.setup_debug_devel(10)
     region = 0 #Barrel
     side   = 0 #Select candidate from any side A
@@ -413,7 +408,7 @@ def parse_tvlist(
                     else:
                         this_station_ID = station_ID[my_port]
 
-                        #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
                     if(this_station_ID == ""):
                         if (tv_type=="list"):
                             tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
@@ -424,7 +419,7 @@ def parse_tvlist(
                             tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
                         else:
                             tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
-                    #print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+                    print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
             if event_found_for_port_interface :
                 b3_events_i = b3_events_i + 1
         else:

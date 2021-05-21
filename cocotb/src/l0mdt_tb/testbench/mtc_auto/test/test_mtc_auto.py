@@ -106,7 +106,7 @@ def mtc_auto_test(dut):
     num_events_to_process            = int(input_args["n_events"])
     event_level_detail_in_sumary     = bool(input_args["event_detail"])
     run_config                       = config["run_config"]
-    output_dir_name                  = run_config["output_directory_name"]
+    output_dir_name                  = run_config["output_directory_name"]    
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     # CREATORSOFTWAREBLOCK##
