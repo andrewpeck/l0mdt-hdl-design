@@ -7,6 +7,9 @@ UserLogic/lsf/IP/ku15p/hls_get_trig_vals/hls_get_trig_vals.xci
 UserLogic/lsf/IP/ku15p/hls_find_max_bin/hls_find_max_bin.xci
 UserLogic/lsf/IP/ku15p/hls_calc_LE_r_offset_barrel/hls_calc_LE_r_offset_barrel.xci
 UserLogic/lsf/IP/ku15p/hls_load_LE_refPos/hls_load_LE_refPos.xci
+UserLogic/lsf/IP/ku15p/hls_find_max_bin_64/hls_find_max_bin_64.xci
+UserLogic/lsf/IP/ku15p/hls_calc_LE_r_offset_barrel_64/hls_calc_LE_r_offset_barrel_64.xci
+UserLogic/lsf/IP/ku15p/hls_compute_r_bins_64/hls_compute_r_bins_64.xci
 UserLogic/lsf/src/update_histogram_dmem.sv
 UserLogic/lsf/src/update_histogram_reg.sv
 UserLogic/lsf/src/legendreEngine.sv
