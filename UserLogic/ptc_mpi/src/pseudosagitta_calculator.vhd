@@ -38,7 +38,7 @@ library ptc_lib;
 use ptc_lib.pt_pkg.all;
 use ptc_lib.pt_params_pkg.all;
 
-entity sagitta_calculator is
+entity pseudosagitta_calculator is
   port (
     clk               : in std_logic;
     i_seg0            : in sf2ptcalc_rvt;
@@ -48,9 +48,9 @@ entity sagitta_calculator is
     o_inv_s           : out unsigned(INV_S_LEN-1 downto 0);
     o_dv_s            : out std_logic
   );
-end sagitta_calculator; -- sagitta_calculator
+end pseudosagitta_calculator; -- pseudosagitta_calculator
 
-architecture Behavioral of sagitta_calculator is
+architecture Behavioral of pseudosagitta_calculator is
     attribute keep_hierarchy : string;
     attribute keep_hierarchy of Behavioral : architecture is "yes";
 
@@ -228,13 +228,13 @@ begin
 
             -- Delta Beta calculations
             dvb_01 <= ( (seg0.data_valid and
-                       seg1.data_valid) xor
+                       seg1.data_valid) nand
                        seg2.data_valid);
-            dvb_02 <= ( seg0.data_valid xor (
-                        seg1.data_valid and
-                       seg2.data_valid));
+            dvb_02 <= ( (seg0.data_valid nand
+                        seg1.data_valid) and
+                       seg2.data_valid);
             dvb_12 <= ((seg1.data_valid and
-                       seg2.data_valid) xor seg0.data_valid);
+                       seg2.data_valid) nand seg0.data_valid);
 
             if seg0.data_valid = '1' and
                 seg1.data_valid = '1' and

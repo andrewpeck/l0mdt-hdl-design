@@ -6,7 +6,7 @@
 -- Author      : Davide Cieri davide.cieri@cern.ch
 -- Company     : Max-Planck-Institute For Physics, Munich
 -- Created     : Tue Feb 11 13:50:27 2020
--- Last update : Fri May 29 15:12:46 2020
+-- Last update : Tue May 18 11:44:56 2021
 -- Standard    : <VHDL-2008 | VHDL-2002 | VHDL-1993 | VHDL-1987>
 --------------------------------------------------------------------------------
 -- Copyright (c) 2020 Max-Planck-Institute For Physics, Munich
@@ -70,12 +70,11 @@ architecture Behavioral of pt is
     -- SLC candidate
     signal slc, slc_s : pl2ptcalc_rt;
     -- Chamber combo id
-    signal comboid_s : unsigned(VEC_MDTID_CHAMBER_IETA_LEN*3 -1 downto 0) := (others => '0');
-    signal comboid_phi, comboid_phi_s, comboid_eta :
-           unsigned(VEC_MDTID_CHAMBER_IETA_LEN*3 + 4 -1 downto 0) := (others => '0');
+    signal comboid : unsigned(VEC_MDTID_CHAMBER_IETA_LEN*3 -1 downto 0) := (others => '0');
+
     --signal ram_index : integer := 0;
     -- Sagitta/Dbeta calculator signals
-    signal dv_s, dv_combo_s, dv_combo_s_s : std_logic := '0';
+    signal dv_s, dv_combo, dv_combo_s : std_logic := '0';
     signal inv_s, inv_s_s : unsigned(INV_S_LEN-1 downto 0)
            := (others => '0');
 
@@ -95,51 +94,73 @@ architecture Behavioral of pt is
 
     -- Signal for pT calculation
     -- Sagitta/Dbeta-dependent part
+    constant PT_S_LEN : integer := INV_S_LEN+A1_LEN+SF2PTCALC_SEGPOS_MULT_LEN-SHIFT_NUM_SAGITTA-TF_AX_1_MULTI_LEN; -- 12
+
     signal a0, a0_s : std_logic_vector(A0_LEN-1 downto 0) := (others =>'0');
     signal a1 : std_logic_vector(A1_LEN-1 downto 0) := (others =>'0');
-    signal a1_invs : unsigned(A0_LEN-1 downto 0)
+    signal a1_invs : unsigned(PT_S_LEN-1 downto 0)
            := (others => '0');
-    signal pt_s, pt_s0, pt_s1 : unsigned(A0_LEN-1 downto 0) := (others => '0');
-    signal bin_s : unsigned(3 downto 0) := (others => '0');
+    signal pt_s : unsigned(PT_S_LEN-1 downto 0) := (others => '0');
+    signal pt_s0 : signed(PT_S_LEN+1-1 downto 0);
 
     -- Phi-dependent part
-    constant B1_PHI_LEN : integer := B1_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN;
-    constant B2_PHI_LEN : integer := B2_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN;
-    constant B2_PHI2_LEN : integer := B2_PHI_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN;
-    
+    constant P0_LEN : integer := PT_S_LEN + 1 + P0_1_LEN - TF_PX_1_MULTI_LEN; -- 12
+    constant P1_LEN : integer := PT_S_LEN + 1 + P1_1_LEN - TF_PX_1_MULTI_LEN; -- 13
+    constant P2_LEN : integer := PT_S_LEN + 1 + P2_1_LEN - TF_PX_1_MULTI_LEN; -- 17
 
-    signal b0,b0_s : std_logic_vector(B0_LEN-1 downto 0) := (others => '0');
-    signal b1 : std_logic_vector(B1_LEN-1 downto 0) := (others => '0');
-    signal b1_phi, pt_phi_01, b0_b1_phi : signed(B1_PHI_LEN-1 downto 0)
-           := (others => '0');
-    signal b2 : std_logic_vector(B2_LEN-1 downto 0) := (others => '0');
-    signal b2_phi : signed(B2_PHI_LEN-1 downto 0) := (others => '0');
-    signal b2_phi2 : signed(B2_PHI2_LEN-1  downto 0)
-           := (others => '0');
-    signal pt_s2, pt_s3, pt_s4 : signed(A0_LEN downto 0) := (others => '0');
-    signal pt_sp, pt_sp_s, pt_sp_ss, pt_sp_sss, pt_sp_ssss
-           : signed(B2_PHI_LEN -1  downto 0) := (others => '0');
-    signal bin_sp : unsigned(3 downto 0) := (others => '0');
+    constant P1_PHI_LEN : integer := P1_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN; -- 12 
+    constant P2_PHI_LEN : integer := P2_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN; -- 13
+    constant P2_PHI2_LEN : integer := P2_PHI_LEN+UCM2PL_PHIMOD_LEN - PHIMOD_MULTI_LEN; -- 17
+    constant PT_SP_LEN : integer := P2_PHI2_LEN;
 
+    signal p0_0 : std_logic_vector(P0_0_LEN-1 downto 0);    
+    signal p1_0 : std_logic_vector(P1_0_LEN-1 downto 0);
+    signal p2_0 : std_logic_vector(P2_0_LEN-1 downto 0);
+    signal p0_1 : std_logic_vector(P0_1_LEN-1 downto 0);    
+    signal p1_1 : std_logic_vector(P1_1_LEN-1 downto 0);
+    signal p2_1 : std_logic_vector(P2_1_LEN-1 downto 0);
+
+    signal p0 : signed(P0_LEN-1 downto 0);
+    signal p0_s : signed(P0_LEN-1 downto 0);
+    signal p0_s2 : signed(P0_LEN-1 downto 0);
+
+    signal p1 : signed(P1_LEN-1 downto 0);
+    signal p2 : signed(P2_LEN-1 downto 0);
+
+    signal p1_phi : signed(P1_PHI_LEN-1 downto 0);
+    signal p2_phi : signed(P2_PHI_LEN-1 downto 0);
+    signal p2_phi2 : signed(P2_PHI2_LEN-1 downto 0);
+
+    signal pt_s1 : signed(PT_S_LEN+1-1 downto 0);
+    signal pt_s2 : signed(P2_PHI2_LEN-1 downto 0);
+    signal pt_sp : signed(PT_SP_LEN-1 downto 0);
 
     -- Eta dependent part
-    constant C1_ETA_LEN : integer := C1_LEN + PTCALC2MTC_MDT_ETA_LEN - ETA_MULTI_LEN;
-    signal c0, c0_s : std_logic_vector(C0_LEN-1 downto 0) := (others => '0');
-    signal c1 : std_logic_vector(C1_LEN-1 downto 0) := (others =>'0');
-    signal c1_eta : signed(C1_ETA_LEN-1 downto 0) := (others => '0');
+    constant E0_LEN : integer := PT_SP_LEN + E0_1_LEN - TF_EX_1_MULTI_LEN; -- 21
+    constant E1_LEN : integer := PT_SP_LEN + E1_1_LEN - TF_EX_1_MULTI_LEN; -- 21
+    constant E1_ETA_LEN : integer := E1_LEN + PTCALC2MTC_MDT_ETA_LEN + 1 - ETA_MULTI_LEN; -- 25
 
+    signal e0_0 : std_logic_vector(E0_0_LEN-1 downto 0);    
+    signal e1_0 : std_logic_vector(E1_0_LEN-1 downto 0);
+    signal e0_1 : std_logic_vector(E0_1_LEN-1 downto 0);    
+    signal e1_1 : std_logic_vector(E1_1_LEN-1 downto 0);
+
+    signal e0 : signed(E0_LEN-1 downto 0);
+    signal e1 : signed(E1_LEN-1 downto 0);
+
+    signal e1_eta : signed(E1_ETA_LEN-1 downto 0);
+    signal pt_sp0 : signed(E0_LEN-1 downto 0);
+    signal pt_sp1 : signed(E1_ETA_LEN-1 downto 0);
     -- Final pt signals
-    signal pt_online  :  signed(C1_ETA_LEN-1 downto 0) := (others => '0');
+    signal pt_spe : signed(E1_ETA_LEN-1 downto 0);
     signal pt_valid   :  std_logic := '0';
     -- Mtc output parameters
-    signal pt : unsigned(PTCALC2MTC_MDT_PT_LEN-1 downto 0) := (others => '0');
-    signal mtc_valid : std_logic := '0';
+    signal pt : unsigned(PTCALC2MTC_MDT_PT_LEN-1 downto 0);
+    signal dv_pt : std_logic;
     signal mtc : ptcalc2mtc_rt;
-    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0) := (others => '0');
+    signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
 
-    signal index_a : std_logic_vector(A_PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
-    signal index_b : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
-    signal index_c : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0) := (others => '0');
+    signal combo_index : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);
 
 
     ----------------------------------------------------------------------------
@@ -185,111 +206,179 @@ begin
 
     getA0 : rom
     GENERIC MAP(
-        MXADRB => A_PARAMS_DEPTH_LEN,
+        MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => A0_LEN,
         ROM_FILE => "a0.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv_combo_s,
-        addra => index_a,
+        ena => dv_combo,
+        addra => combo_index,
         douta => a0
     );
 
     getA1 : rom
     GENERIC MAP(
-        MXADRB => A_PARAMS_DEPTH_LEN,
+        MXADRB => PARAMS_DEPTH_LEN,
         MXDATB => A1_LEN,
         ROM_FILE => "a1.mem",
-        ROM_STYLE => "block"
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv_combo_s,
-        addra => index_a,
+        ena => dv_combo,
+        addra => combo_index,
         douta => a1
     );
 
-    getB0 : rom
+    getP0_0 : rom
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
-        MXDATB => B0_LEN,
-        ROM_FILE => "b0.mem",
-        ROM_STYLE => "block"
+        MXDATB => P0_0_LEN,
+        ROM_FILE => "p0_0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv2,
-        addra => index_b,
-        douta => b0
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p0_0
     );
 
-    getB1 : rom
+    getP1_0 : rom
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
-        MXDATB => B1_LEN,
-        ROM_FILE => "b1.mem",
-        ROM_STYLE => "block"
+        MXDATB => P1_0_LEN,
+        ROM_FILE => "p1_0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv2,
-        addra => index_b,
-        douta => b1
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p1_0
     );
 
-    getB2 : rom
+    getP2_0 : rom
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
-        MXDATB => B2_LEN,
-        ROM_FILE => "b2.mem",
-        ROM_STYLE => "block"
+        MXDATB => P2_0_LEN,
+        ROM_FILE => "p2_0.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv2,
-        addra => index_b,
-        douta => b2
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p2_0
     );
 
-    getC0 : rom
+
+    getP0_1 : rom
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
-        MXDATB => C0_LEN,
-        ROM_FILE => "c0.mem",
-        ROM_STYLE => "block"
+        MXDATB => P0_1_LEN,
+        ROM_FILE => "p0_1.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv8,
-        addra => index_c,
-        douta => c0
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p0_1
     );
 
-    getC1 : rom
+    getP1_1 : rom
     GENERIC MAP(
         MXADRB => PARAMS_DEPTH_LEN,
-        MXDATB => C1_LEN,
-        ROM_FILE => "c1.mem",
-        ROM_STYLE => "block"
+        MXDATB => P1_1_LEN,
+        ROM_FILE => "p1_1.mem",
+        ROM_STYLE => "distributed"
     )
     PORT MAP (
         clka => clk,
-        ena => dv8,
-        addra => index_c,
-        douta => c1
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p1_1
+    );
+
+    getP2_1 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => P2_1_LEN,
+        ROM_FILE => "p2_1.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => p2_1
+    );
+    
+    getE0_0 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E0_0_LEN,
+        ROM_FILE => "e0_0.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e0_0
+    );
+
+    getE1_0 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E1_0_LEN,
+        ROM_FILE => "e1_0.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e1_0
+    );
+
+    getE0_1 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E0_1_LEN,
+        ROM_FILE => "e0_1.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e0_1
+    );
+
+    getE1_1 : rom
+    GENERIC MAP(
+        MXADRB => PARAMS_DEPTH_LEN,
+        MXDATB => E1_1_LEN,
+        ROM_FILE => "e1_1.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP (
+        clka => clk,
+        ena => dv_combo,
+        addra => combo_index,
+        douta => e1_1
     );
 
     segment_I <= structify(i_segment_I);
     segment_M <= structify(i_segment_M);
     segment_O <= structify(i_segment_O);
+  
+    combo_index <= comboid_to_index_ram(comboid);
     
-
-    index_a <= acomboid_to_index_ram(comboid_s);
-    index_b <= comboid_to_index_ram(comboid_phi);
-    index_c <= comboid_to_index_ram(comboid_eta);
-
     slc <= structify(i_SLC);
     o_mtc <= vectorify(mtc);
 
@@ -304,7 +393,7 @@ begin
             segment_O_v <= i_segment_O;
 
             if segment_I.data_valid = '1' or segment_M.data_valid = '1' or segment_O.data_valid = '1' then
-                dv_combo_s     <= '1';
+                dv_combo     <= '1';
                 if segment_I.data_valid = '1' then
                     segment_eta <= i_segment_I;
                     im <= '0';
@@ -313,7 +402,7 @@ begin
                     im <= '1';
                 end if;
 
-                comboid_s  <= unsigned(segment_O.mdtid.chamber_ieta) &
+                comboid  <= unsigned(segment_O.mdtid.chamber_ieta) &
                               unsigned(segment_M.mdtid.chamber_ieta) &
                               unsigned(segment_I.mdtid.chamber_ieta);
                 nsegments <= to_unsigned(stdlogic_integer(segment_I.data_valid)
@@ -332,72 +421,52 @@ begin
                 slc_s  <= SLC;
             end if;
 
-            dv_combo_s_s <= dv_combo_s;
+            dv_combo_s <= dv_combo;
             -- <a> parameters are now valid
-            dv_a <= dv_combo_s_s;
+            dv_a <= dv_combo_s;
             dv0 <= dv_s and dv_a;
-            a1_invs <= resize(shift_right( unsigned(a1)*inv_s*integer(SF2PTCALC_SEGPOS_MULT), SHIFT_NUM_SAGITTA), A0_LEN);
-
+            a1_invs <= resize(shift_right( unsigned(a1)*inv_s*integer(SF2PTCALC_SEGPOS_MULT), (TF_AX_1_MULTI_LEN + SHIFT_NUM_SAGITTA)), PT_S_LEN);
             a0_s <= a0;
 
             dv1  <= dv0;
             pt_s <= unsigned(a0_s) + a1_invs;
 
             dv2 <= dv1;
-            comboid_phi <= pt_bin(pt_s) &
-                           unsigned(segment_O_s.mdtid.chamber_ieta) &
-                           unsigned(segment_M_s.mdtid.chamber_ieta) &
-                           unsigned(segment_I_s.mdtid.chamber_ieta);
-            pt_s0 <= pt_s;
+            p0 <= resize(signed(p0_0) + shift_right(signed(p0_1)*signed('0' & pt_s), TF_PX_1_MULTI_LEN), P0_LEN);
+            p1 <= resize(signed(p1_0) + shift_right(signed(p1_1)*signed('0' & pt_s), TF_PX_1_MULTI_LEN), P1_LEN);
+            p2 <= resize(signed(p2_0) + shift_right(signed(p2_1)*signed('0' & pt_s), TF_PX_1_MULTI_LEN), P2_LEN);
+            pt_s0 <= signed('0' & pt_s);
 
             dv3 <= dv2;
-            pt_s1 <= pt_s0;
+            p1_phi <= resize(shift_right(p1*slc_s.phimod,PHIMOD_MULTI_LEN), P1_PHI_LEN);
+            p2_phi <= resize(shift_right(p2*slc_s.phimod,PHIMOD_MULTI_LEN), P2_PHI_LEN);
+            pt_s1 <= pt_s0 - p0;
 
             dv4 <= dv3;
-            pt_s2  <= signed('0' & pt_s1);
+            pt_s2  <= resize(pt_s1 - p1_phi, P2_PHI2_LEN);
+            p2_phi2 <= resize(shift_right(p2_phi*slc_s.phimod, PHIMOD_MULTI_LEN), P2_PHI2_LEN);
 
             -- <b> parameters now valid
             dv5 <= dv4;
-            b0_s <= b0;
-            b1_phi <= resize(shift_right(signed(b1)*slc_s.phimod, PHIMOD_MULTI_LEN), B1_PHI_LEN);
-            b2_phi <= resize(shift_right(signed(b2)*slc_s.phimod, PHIMOD_MULTI_LEN), B2_PHI_LEN);
-            pt_s3  <= pt_s2;
+            pt_sp  <= pt_s2 - p2_phi2;
 
             dv6 <= dv5;
-            b0_b1_phi <= signed(b0_s) + b1_phi;
-            b2_phi2 <= resize(shift_right(b2_phi*slc_s.phimod, PHIMOD_MULTI_LEN), B2_PHI2_LEN);
-            pt_s4 <= pt_s3;
+            pt_sp0 <= resize(pt_sp, E0_LEN);
+            e0 <= resize(signed(e0_0) + shift_right(signed(e0_1)*pt_sp,TF_EX_1_MULTI_LEN), E0_LEN);
+            e1 <= resize(signed(e1_0) + shift_right(signed(e1_1)*pt_sp,TF_EX_1_MULTI_LEN), E1_LEN);
 
             dv7 <= dv6;
-            pt_sp <= pt_s4 - shift_right((b0_b1_phi + b2_phi2), B_MULT_LEN);
-
+            pt_sp1 <= resize(pt_sp0 - e0, E1_ETA_LEN);
+            e1_eta <= resize(shift_right(e1*signed('0' &eta), ETA_MULTI_LEN), E1_ETA_LEN);
+            
             dv8 <= dv7;
-            comboid_eta <= pt_bin(unsigned(pt_sp)) &
-                           unsigned(segment_O_s.mdtid.chamber_ieta) &
-                           unsigned(segment_M_s.mdtid.chamber_ieta) &
-                           unsigned(segment_I_s.mdtid.chamber_ieta);
-            pt_sp_s <= pt_sp;
+            pt_spe <= pt_sp1 - e1_eta;
 
-            dv9 <= dv8;
-            pt_sp_ss <= pt_sp_s;
-
-            ---- <c> parameters now valid
-            dv10 <= dv9;
-            pt_sp_sss <= pt_sp_ss;
-
-            dv11 <= dv10;
-            pt_sp_ssss <= pt_sp_sss;
-            c1_eta <= resize(shift_right(signed(c1)*signed(eta), ETA_MULTI_LEN), C1_ETA_LEN);
-            c0_s <= c0;
-
-            pt_valid <= dv11;
-            pt_online <= pt_sp_ssss - shift_right(signed(c0_s) + c1_eta, C_MULT_LEN);
+            dv_pt <= dv8;
+            pt <= resize(unsigned(pt_spe), PTCALC2MTC_MDT_PT_LEN);
 
             -- Assembling the MTC candidate
-            mtc_valid <= pt_valid;
-            pt <= resize(unsigned(pt_online), PTCALC2MTC_MDT_PT_LEN);
-
-            mtc.data_valid <= mtc_valid;
+            mtc.data_valid <= dv_pt;
             mtc.muid <= slc_s.muid;
             if SIDE = 0 then
                 mtc.mdt_eta <= signed(eta);
@@ -411,9 +480,9 @@ begin
             mtc.mdt_nsegments <= nsegments;
             mtc.mdt_quality <= quality;
             --reset
-            if mtc_valid = '1' or i_rst = '1' then
-                comboid_s <= (others => '0');
-                dv_combo_s <= '0';
+            if dv_pt = '1' or i_rst = '1' then
+                comboid <= (others => '0');
+                dv_combo <= '0';
                 slc_s <= nullify(slc_s);
                 segment_I_s <= nullify(segment_I_s);
                 segment_M_s <= nullify(segment_M_s);
@@ -423,6 +492,7 @@ begin
                 quality   <= (others => '0');
             end if;
 
+        
         end if ;
     end process ; -- identifier
 
