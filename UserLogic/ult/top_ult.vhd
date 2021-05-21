@@ -46,7 +46,11 @@ entity top_ult is
 
   port (
     -- pipeline clock
-    clock_and_control : in l0mdt_control_rt;
+    -- clock_and_control : in l0mdt_control_rt;
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    bx                  : in std_logic;
+
     ttc_commands      : in l0mdt_ttc_rt;
 
     -- axi control
@@ -111,8 +115,14 @@ entity top_ult is
 end entity top_ult;
 
 architecture behavioral of top_ult is
+  signal clock_and_control : l0mdt_control_rt;
 
 begin
+
+  clock_and_control.clk <= clk;
+  clock_and_control.rst <= rst;
+  clock_and_control.bx  <= bx;
+
 
   ULT : entity ult_lib.ult
     generic map(

@@ -156,6 +156,8 @@ architecture beh of ult_tp is
 
   signal glob_en : std_logic := '1';
 
+  signal bx : std_logic := 0;
+
 
 begin
 
@@ -166,7 +168,11 @@ begin
   port map(
 
     -- pipeline clock
-    clock_and_control => clock_and_control,
+    -- clock_and_control => clock_and_control,
+    clk => clk,
+    rst => rst,
+    bx  => bx ,
+
     ttc_commands      => ttc_commands,
 
     -- ULT Control

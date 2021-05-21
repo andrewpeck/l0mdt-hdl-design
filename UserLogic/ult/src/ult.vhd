@@ -147,6 +147,7 @@ architecture behavioral of ult is
   signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
+  signal ucm_sump : std_logic;
   signal pt_sump : std_logic;
   signal h2s_sump : std_logic;
   signal tar_sump : std_logic;
@@ -190,26 +191,51 @@ begin
 
     );
 
-    ULT_UCM : entity work.candidate_manager
-    port map (
-      -- clock, control, and monitoring
-      clock_and_control       => clock_and_control,  --
-      ttc_commands            => ttc_commands,       --
-      ctrl                    => ucm_ctrl,
-      mon                     => ucm_mon,
-      -- candidates in from hal
-      i_slc_data_mainA_av     => i_main_primary_slc,
-      i_slc_data_mainB_av     => i_main_secondary_slc,
-      i_slc_data_neighborA_v => i_plus_neighbor_slc,
-      i_slc_data_neighborB_v => i_minus_neighbor_slc,
-      -- outputs to ucm
-      o_uCM2hps_inn_av        => inn_slc_to_h2s,
-      o_uCM2hps_mid_av        => mid_slc_to_h2s,
-      o_uCM2hps_out_av        => out_slc_to_h2s,
-      o_uCM2hps_ext_av        => ext_slc_to_h2s,
-      -- pipeline
-      o_uCM2pl_av             => ucm2pl_av
-    );
+    UCM_GEN : if c_UCM_ENABLED = '1' generate
+      ULT_UCM : entity work.candidate_manager
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control       => clock_and_control,  --
+        ttc_commands            => ttc_commands,       --
+        ctrl                    => ucm_ctrl,
+        mon                     => ucm_mon,
+        -- candidates in from hal
+        i_slc_data_mainA_av     => i_main_primary_slc,
+        i_slc_data_mainB_av     => i_main_secondary_slc,
+        i_slc_data_neighborA_v => i_plus_neighbor_slc,
+        i_slc_data_neighborB_v => i_minus_neighbor_slc,
+        -- outputs to ucm
+        o_uCM2hps_inn_av        => inn_slc_to_h2s,
+        o_uCM2hps_mid_av        => mid_slc_to_h2s,
+        o_uCM2hps_out_av        => out_slc_to_h2s,
+        o_uCM2hps_ext_av        => ext_slc_to_h2s,
+        -- pipeline
+        o_uCM2pl_av             => ucm2pl_av
+      );
+    else generate
+      SUMP_UCM : entity work.ucm_sump
+      port map (
+        -- clock, control, and monitoring
+        -- clock_and_control       => clock_and_control,  --
+        -- ttc_commands            => ttc_commands,       --
+        -- ctrl                    => ucm_ctrl,
+        -- mon                     => ucm_mon,
+        -- candidates in from hal
+        i_slc_data_mainA_av     => i_main_primary_slc,
+        i_slc_data_mainB_av     => i_main_secondary_slc,
+        i_slc_data_neighborA_v => i_plus_neighbor_slc,
+        i_slc_data_neighborB_v => i_minus_neighbor_slc,
+        -- outputs to ucm
+        o_uCM2hps_inn_av        => inn_slc_to_h2s,
+        o_uCM2hps_mid_av        => mid_slc_to_h2s,
+        o_uCM2hps_out_av        => out_slc_to_h2s,
+        o_uCM2hps_ext_av        => ext_slc_to_h2s,
+        -- pipeline
+        o_uCM2pl_av             => ucm2pl_av,
+        o_sump                  => ucm_sump
+
+      );
+    end generate;
 
     H2S_GEN : if c_H2S_ENABLED = '1' generate
 
@@ -242,7 +268,7 @@ begin
         o_sump                    => h2s_sump
       );
     else generate
-      ULT_H2S : entity work.h2s_sump
+      SUMP_H2S : entity work.h2s_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control         => clock_and_control,
@@ -353,7 +379,7 @@ begin
         o_sump => daq_sump
       );
 
-    sump <= tar_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump;
+    sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump;
 
   end generate;
 

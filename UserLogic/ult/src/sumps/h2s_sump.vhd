@@ -4,7 +4,7 @@
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: Muon Candidate Manager
+--  Module: Hit 2 segment
 --  Description:
 --
 --------------------------------------------------------------------------------
@@ -69,7 +69,6 @@ entity h2s_sump is
 end entity h2s_sump;
 
 architecture beh of h2s_sump is
-  -- signal glob_en : std_logic;
 
   signal inn_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
   signal mid_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
@@ -116,37 +115,6 @@ begin
               xor xor_reduce(mid_slc_sump     )
               xor xor_reduce(out_slc_sump     )
               xor xor_reduce(ext_slc_sump     );
-
-    -- sump_proc : process (clock_and_control.clk) is
-    -- begin  -- process tdc_hit_sump_proc
-    --   if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
-
-
-    --     slc_inn_loop : for I in 0 to c_NUM_THREADS-1 loop
-    --       inn_slc_sump(I) <= xor_reduce(i_inn_slc(I));
-    --     end loop;
-    --     slc_mid_loop : for I in 0 to c_NUM_THREADS-1 loop
-    --       mid_slc_sump(I) <= xor_reduce(i_mid_slc(I));
-    --     end loop;
-    --     slc_out_loop : for I in 0 to c_NUM_THREADS-1 loop
-    --       out_slc_sump(I) <= xor_reduce(i_out_slc(I));
-    --     end loop;
-    --     slc_ext_loop : for I in 0 to c_NUM_THREADS-1 loop
-    --       ext_slc_sump(I) <= xor_reduce(i_ext_slc(I));
-    --     end loop;
-        
-
-    --     o_sump <=   xor_reduce(inn_tar_hits_sump)
-    --             xor xor_reduce(mid_tar_hits_sump)
-    --             xor xor_reduce(out_tar_hits_sump)
-    --             xor xor_reduce(ext_tar_hits_sump)
-    --             xor xor_reduce(inn_slc_sump     )
-    --             xor xor_reduce(mid_slc_sump     )
-    --             xor xor_reduce(out_slc_sump     )
-    --             xor xor_reduce(ext_slc_sump     );
-    --   end if;
-    -- end process;
-
   
 end architecture beh;
 

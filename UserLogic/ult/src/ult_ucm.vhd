@@ -11,7 +11,6 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -58,7 +57,7 @@ begin
 
   glob_en <= '1';
 
-  UCM : if c_UCM_ENABLED = '1' generate
+  -- UCM : if c_UCM_ENABLED = '1' generate
   
     UCM : entity ucm_lib.ucm
     port map(
@@ -83,7 +82,7 @@ begin
       -- MDT hit
       o_uCM2pl_av             => o_uCM2pl_av
     );
-  end generate;
+  -- end generate;
   
   
 end architecture beh;
