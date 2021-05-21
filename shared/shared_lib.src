@@ -36,10 +36,8 @@ shared/vhdl_amc/vamc_lib.src lib=vamc_lib
 shared/src/pipeline.vhd
 shared/src/ring_buffer_v2.vhd
 shared/src/vhdl_ram_memory.vhd
-#-----CSF/PT memories-----
-shared/src/bram.vhd
-shared/src/rom.v
-shared/src/rom_dp.v
+## CSF/PT
+shared/shared_mpi.src
 #---------------------------------
 # trigonometrics
 #---------------------------------

@@ -13,11 +13,13 @@ all:
 ##### l0mdt constants dataformat folder
 	python3 $(yml2hdl_v1)  \
 	-e yml2hdl_v1/common_ieee.yml  \
+	-o ../../shared/types \
 	../../dataformats/l0mdt_constants.yml
 ##### l0mdt dataformats dataformat folder
 	python3 $(yml2hdl_v1)     \
 	-e yml2hdl_v1/common_ieee.yml     \
 	-e ../../dataformats/l0mdt_constants.yml \
+	-o ../../shared/types \
 	../../dataformats/l0mdt_dataformats.yml
 ##### common constants
 	python3 $(yml2hdl_v1)     \
