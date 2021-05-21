@@ -96,7 +96,7 @@ begin
       INN_DELAY : for b_i in c_HPS_MAX_HP_INN -1 downto 0 generate
         INN_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 
-          PL : entity vamc_lib.vamc_controller
+          VAMC_CTRL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
             g_MEMORY_TYPE       => "ultra",
@@ -153,7 +153,7 @@ begin
       MID_DELAY : for b_i in c_HPS_MAX_HP_MID -1 downto 0 generate
         MID_EN : if c_HP_SECTOR_STATION(1)(b_i) = '1' generate
 
-          PL : entity vamc_lib.vamc_controller
+          VAMC_CTRL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
             g_MEMORY_TYPE       => "ultra",
@@ -209,7 +209,7 @@ begin
       OUT_DELAY : for b_i in c_HPS_MAX_HP_OUT -1 downto 0 generate
         OUT_EN : if c_HP_SECTOR_STATION(2)(b_i) = '1' generate
 
-          PL : entity vamc_lib.vamc_controller
+          VAMC_CTRL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
             g_MEMORY_TYPE       => "ultra",
@@ -265,7 +265,7 @@ begin
       EXT_DELAY : for b_i in c_HPS_MAX_HP_EXT -1 downto 0 generate
         EXT_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 
-          PL : entity vamc_lib.vamc_controller
+          VAMC_CTRL : entity vamc_lib.vamc_controller
           generic map(
             g_MEMORY_MODE       => "pipeline",
             g_MEMORY_TYPE       => "ultra",

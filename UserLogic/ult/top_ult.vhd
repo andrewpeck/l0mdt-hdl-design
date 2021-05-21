@@ -94,7 +94,7 @@ entity top_ult is
     i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
     o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -163,7 +163,7 @@ begin
       mpl_mon  => mpl_mon,
 
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-      daq_streams_o => daq_streams_o,
+      o_daq_streams => o_daq_streams,
 
       -- Segments Out to Neighbor
       o_plus_neighbor_segments  => o_plus_neighbor_segments,
