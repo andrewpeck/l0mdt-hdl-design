@@ -1,2 +1,0 @@
-vhdl_lib_run_cmd
-vhdl.do

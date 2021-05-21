@@ -10,6 +10,8 @@ set SYNTH_FLOW "Vivado Synthesis 2019"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
 set IMPL_FLOW "Vivado Implementation 2019"
 set SIMULATOR "modelsim"
+set DESIGN    "top_lsf"
+
 ### Set Vivado Runs Properties ###
 #
 # ATTENTION: The \ character must be the last one of each line
@@ -25,19 +27,14 @@ set SIMULATOR "modelsim"
 
 
 
-set DESIGN "[file rootname [file tail [info script]]]"
+#set DESIGN "[file rootname [file tail [info script]]]"
 
 set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
 
 set obj [get_filesets sources_1]
-set_property "ip_repo_paths" "[file normalize "$PATH_REPO/lsf/src/hls_ip"]" $obj
+set_property "ip_repo_paths" "[file normalize "$PATH_REPO/IP_repository/vu13p"]" $obj
 update_ip_catalog
-
-set DESIGN    "[file rootname [file tail [info script]]]"
-set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
-source $PATH_REPO/Hog/Tcl/create_project.tcl
-set_property  ip_repo_paths  {../../UserLogic/lsf/IP ../../IP_repository} [current_project]
-update_ip_catalog
-
-set_property target_language VHDL [current_project]
 set_property top top_lsf [current_fileset]
+
+set PATH_REPO "[file normalize [file dirname [info script]]]/../../"
+source $PATH_REPO/Hog/Tcl/create_project.tcl $DESIGN
