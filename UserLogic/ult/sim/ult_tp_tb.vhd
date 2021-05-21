@@ -98,16 +98,16 @@ architecture beh of ult_tp is
   signal mpl_mon  :  MPL_MON_t;
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
@@ -321,8 +321,8 @@ begin
   --   );
   -- end generate;
 
-  TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
-    HIT : entity project_lib.ult_tb_reader_tdc 
+  -- TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
+    MDT : entity project_lib.ult_tb_reader_tdc 
     generic map (
       IN_HIT_FILE => IN_HIT_FILE
     )
@@ -338,7 +338,7 @@ begin
       i_mdt_tdc_out_av => i_mdt_tdc_out_av,
       i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
     );
-  end generate;
+  -- end generate;
 
  	-------------------------------------------------------------------------------------
 	-- candidates

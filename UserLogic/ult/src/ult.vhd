@@ -68,10 +68,10 @@ entity ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -157,40 +157,40 @@ begin
 
   logic_gen : if (not DUMMY) generate
 
-    TAR : entity work.mdt_tar
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control => clock_and_control,  --
-        ttc_commands      => ttc_commands,       --
-        ctrl              => tar_ctrl,
-        mon               => tar_mon,
-        -- TDC Hits from Polmux
-        i_inn_tdc_hits  => i_inner_tdc_hits,
-        i_mid_tdc_hits  => i_middle_tdc_hits,
-        i_out_tdc_hits  => i_outer_tdc_hits,
-        i_ext_tdc_hits  => i_extra_tdc_hits,
+    ULT_TAR : entity work.mdt_tar
+    port map (
+      -- clock, control, and monitoring
+      clock_and_control => clock_and_control,  --
+      ttc_commands      => ttc_commands,       --
+      ctrl              => tar_ctrl,
+      mon               => tar_mon,
+      -- TDC Hits from Polmux
+      i_inn_tdc_hits  => i_inner_tdc_hits,
+      i_mid_tdc_hits  => i_middle_tdc_hits,
+      i_out_tdc_hits  => i_outer_tdc_hits,
+      i_ext_tdc_hits  => i_extra_tdc_hits,
 
-        -- candidates in from hal
-        -- i_inn_tar_hits  => i_inner_tar_hits,
-        -- i_mid_tar_hits  => i_middle_tar_hits,
-        -- i_out_tar_hits  => i_outer_tar_hits,
-        -- i_ext_tar_hits  => i_extra_tar_hits,
-        --
-        o_inn_tdc_hits  => inn_tdc_hits,
-        o_mid_tdc_hits  => mid_tdc_hits,
-        o_out_tdc_hits  => out_tdc_hits,
-        o_ext_tdc_hits  => ext_tdc_hits,
-        -- outputs to ucm
-        o_inn_tar_hits  => inn_tar_hits,
-        o_mid_tar_hits  => mid_tar_hits,
-        o_out_tar_hits  => out_tar_hits,
-        o_ext_tar_hits  => ext_tar_hits,
+      -- candidates in from hal
+      -- i_inn_tar_hits  => i_inner_tar_hits,
+      -- i_mid_tar_hits  => i_middle_tar_hits,
+      -- i_out_tar_hits  => i_outer_tar_hits,
+      -- i_ext_tar_hits  => i_extra_tar_hits,
+      --
+      o_inn_tdc_hits  => inn_tdc_hits,
+      o_mid_tdc_hits  => mid_tdc_hits,
+      o_out_tdc_hits  => out_tdc_hits,
+      o_ext_tdc_hits  => ext_tdc_hits,
+      -- outputs to ucm
+      o_inn_tar_hits  => inn_tar_hits,
+      o_mid_tar_hits  => mid_tar_hits,
+      o_out_tar_hits  => out_tar_hits,
+      o_ext_tar_hits  => ext_tar_hits,
 
-        o_sump          => tar_sump
+      o_sump          => tar_sump
 
-      );
+    );
 
-    UCM : entity work.candidate_manager
+    ULT_UCM : entity work.candidate_manager
     port map (
       -- clock, control, and monitoring
       clock_and_control       => clock_and_control,  --
@@ -212,7 +212,7 @@ begin
     );
 
 
-    H2S : entity work.hits_to_segments
+    ULT_H2S : entity work.hits_to_segments
     port map (
       -- clock, control, and monitoring
       clock_and_control         => clock_and_control,
@@ -241,7 +241,7 @@ begin
       o_sump                    => h2s_sump
     );
 
-    MPL : entity ult_lib.pipeline
+    ULT_MPL : entity ult_lib.pipeline
     port map (
       -- clock, control, and monitoring
       clock_and_control => clock_and_control,
@@ -258,7 +258,7 @@ begin
       o_pl2mtc_av => pl2mtc_av
     );
 
-    ptcalc_inst : entity work.ptcalc
+    ULT_PTCALC : entity work.ptcalc
     port map (
       -- clock, control, and monitoring
       clock_and_control         => clock_and_control,
@@ -281,7 +281,7 @@ begin
       o_sump                    => pt_sump
     );
 
-    mtc_builder_inst : entity work.mtc_builder
+    ULT_MTCB : entity work.mtc_builder
     port map (
       -- clock, control, and monitoring
       clock_and_control => clock_and_control,
@@ -298,7 +298,7 @@ begin
       o_sump            => mtc_sump
     );
 
-    daq_inst : entity work.daq
+    ULT_DAQ : entity work.daq
       generic map(DELAY => 9600, memory_type => "ultra")
       port map (
         -- clock, control, and monitoring

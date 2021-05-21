@@ -98,10 +98,10 @@ architecture structural of top_l0mdt is
   -- hal <--> ult
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
   signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));

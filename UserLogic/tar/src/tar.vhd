@@ -43,10 +43,10 @@ entity tar is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- TDC Hits from Polmux
-    i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tdc_hits_av    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tdc_hits_av    : in  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- TDC Hits from Tar
     -- i_inn_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
     -- i_mid_tar_hits_av    : in  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
@@ -84,7 +84,7 @@ architecture beh of tar is
 
 begin
   
-  TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
+  -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
     i_inn_tdc_hits_ar <= structify(i_inn_tdc_hits_av);
     i_mid_tdc_hits_ar <= structify(i_mid_tdc_hits_av);
@@ -317,7 +317,7 @@ begin
     end generate;
     -- remapping 
 
-  end generate;
+  -- end generate;
 
 
 

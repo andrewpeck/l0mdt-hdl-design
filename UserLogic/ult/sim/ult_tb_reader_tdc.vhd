@@ -47,10 +47,10 @@ entity ult_tb_reader_tdc is
     --
     tb_curr_tdc_time  : in unsigned(63 downto 0) := (others => '0');
     -- Hits from Tar
-    i_mdt_tdc_inn_av  : out mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_mid_av  : out mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_out_av  : out mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-    i_mdt_tdc_ext_av  : out mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
+    i_mdt_tdc_inn_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+    i_mdt_tdc_mid_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+    i_mdt_tdc_out_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+    i_mdt_tdc_ext_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
 
   );
 end entity ult_tb_reader_tdc;
@@ -67,10 +67,10 @@ architecture sim of ult_tb_reader_tdc is
   signal mdt_new_event    : input_mdt_rt;
 
   -- TDC Hits from Tar
-  signal i_mdt_tdc_inn_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal i_mdt_tdc_mid_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal i_mdt_tdc_out_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal i_mdt_tdc_ext_ar :  mdt_polmux_bus_at (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  signal i_mdt_tdc_inn_ar :  mdt_polmux_bus_at (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mdt_tdc_mid_ar :  mdt_polmux_bus_at (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_mdt_tdc_out_ar :  mdt_polmux_bus_at (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_mdt_tdc_ext_ar :  mdt_polmux_bus_at (c_HPS_MAX_HP_EXT -1 downto 0);
 
   signal mdt_inn_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_INN -1 downto 0) := (others => nullify(mdt_tdc_station));
   signal mdt_mid_fifo     : infifo_hit_mem_at(c_HPS_MAX_HP_MID -1 downto 0) := (others => nullify(mdt_tdc_station));
