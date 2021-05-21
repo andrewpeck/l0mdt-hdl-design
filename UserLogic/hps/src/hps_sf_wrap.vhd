@@ -96,7 +96,57 @@ begin
           i_mdt_hit => i_mdt_data_v,
           i_eof     => i_control_r.eof,
           i_rst     => rst,
-          o_seg     => o_sf_data_v
+          o_seg     => o_sf_data_v,
+          i_spyhit_fc_we      => '0',
+          i_spyhit_fc_re      => '0',
+          i_spyhit_freeze     => '0',
+          i_spyhit_playback   => (others => '0'),
+          i_spyhit_pb_we      => '0',
+          i_spyhit_pb_wdata   => (others => '0'),
+          i_spyhit_re         => '0',
+          i_spyhit_raddr      => (others => '0'),
+          i_spyhit_meta_raddr => (others => '0'),
+          i_spyhit_meta_re    => '0',
+          --o_spyhit_waddr      => '0',
+          --o_spyhit_meta_waddr => '0',
+          --o_spyhit_data       => '0',
+          --o_spyhit_meta_rdata => '0',
+          --o_spyhit_af         => '0',
+          --o_spyhit_empty      => '0',
+          -- SLC Spybuffer
+          i_spyslc_fc_we      => '0',
+          i_spyslc_fc_re      => '0',
+          i_spyslc_freeze     => '0',
+          i_spyslc_playback   => (others => '0'),
+          i_spyslc_pb_we      => '0',
+          i_spyslc_pb_wdata   => (others => '0'),
+          i_spyslc_re         => '0',
+          i_spyslc_raddr      => (others => '0'),
+          i_spyslc_meta_raddr => (others => '0'),
+          i_spyslc_meta_re    => '0',
+          --o_spyslc_waddr      => '0',
+          --o_spyslc_meta_waddr => '0',
+          --o_spyslc_data       => '0',
+          --o_spyslc_meta_rdata => '0',
+          --o_spyslc_af         => '0',
+          --o_spyslc_empty      => '0',
+          -- Segment Spybuffer
+          i_spyseg_fc_we      => '0',
+          i_spyseg_fc_re      => '0',
+          i_spyseg_freeze     => '0',
+          i_spyseg_playback   => (others => '0'),
+          i_spyseg_pb_we      => '0',
+          i_spyseg_pb_wdata   => (others => '0'),
+          i_spyseg_re         => '0',
+          i_spyseg_raddr      => (others => '0'),
+          i_spyseg_meta_raddr => (others => '0'),
+          i_spyseg_meta_re    => '0'
+          --o_spyseg_waddr      => '0';
+          --o_spyseg_meta_waddr => '0';
+          --o_spyseg_data       => '0';
+          --o_spyseg_meta_rdata => '0';
+          --o_spyseg_af         => '0';
+          --o_spyseg_empty      => '0';
         );
 
       lsf_mon.STATUS <= '0';
