@@ -64,15 +64,22 @@ architecture beh of ucm_cvp_b_slope is
   signal sum_zy               : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
   signal sum_zz               : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
   signal sqr_sum_z            : signed(SLC_Z_RPC_LEN*2 + 4 -1 downto 0);
-  signal b_nom                : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
-  signal b_den                : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  -- signal b_nom                : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+
+  constant c_B_DEN_NOM : integer := 5;
+  type b_nom_t is array  (0 to c_B_DEN_NOM - 1) of signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  signal b_nom : b_nom_t; -- : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+
+  type b_den_t is array  (0 to c_B_DEN_NOM - 1) of signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+  signal b_den : b_den_t; -- : signed(SLC_Z_RPC_LEN*4 + 8 -1 downto 0);
+
   signal int_slope, int_slope_2 : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
 
   signal s_e_z : signed(126 -1 downto 0);
 
-  signal dv_chain   : std_logic_vector(7 downto 0);
+  signal dv_chain   : std_logic_vector(16 downto 0);
 
-  type num_at is array ( 0 to 2) of integer;
+  type num_at is array ( 0 to 16) of integer;
   signal num_h : num_at;
 
 
@@ -102,14 +109,18 @@ begin
           sum_z <= (others => (others => '0'));
           sum_zz <= (others => '0');
           sqr_sum_z <= (others => '0');
-          b_nom <= (others => '0');
-          b_den <= (others => '0');
+          b_nom <= (others => (others => '0'));
+          b_den <= (others => (others => '0'));
           num_h <= (others => 1);
         else
 
-          dv_chain(7 downto 0) <= dv_chain(6 downto 0) & i_data_valid;
+          -- dv_chain(7 downto 0) <= dv_chain(6 downto 0) & i_data_valid;
 
-          num_h(1 to 2) <= num_h(0 to 1);
+          -- dv_chain(0)  <= i_data_valid;
+          for i in 0 to 15 loop
+            num_h(i+1) <= num_h(i);
+          end loop;
+          
           sum_y(1) <= sum_y(0);
           sum_z(1) <= sum_z(0);
 
@@ -194,14 +205,15 @@ begin
             
               when others => 
             end case;
-
+            dv_chain(0)  <= '1';
           else
             rad_a <= (others => (others => '0'));
             rpc_a <= (others => (others => '0'));
             num_h(0) <= 0;
+            dv_chain(0)  <= '0';
           end if;
 
-          -- if dv_chain(0) = '1' then
+          if dv_chain(0) = '1' then
             if num_h(0) = 2 then
               sum_zy <=     (resize(rpc_a(0),SLC_Z_RPC_LEN +2) * resize(rad_a(0),SLC_Z_RPC_LEN +2)) + 
                             (resize(rpc_a(1),SLC_Z_RPC_LEN +2) * resize(rad_a(1),SLC_Z_RPC_LEN +2));
@@ -246,44 +258,63 @@ begin
               sum_zz <= (others => '0');
               sqr_sum_z <= (others => '0');
             end if;
-          -- else
-          -- end if;
+            dv_chain(1)  <= '1';
+          else
+            dv_chain(1)  <= '0';
+          end if;
 
-          -- if dv_chain(1) = '1' then
-          b_nom <= (num_h(1) * sum_zy) - (sum_y(0) * sum_Z(0));
-          b_den <= (num_h(1) * sum_zz) - sqr_sum_z;
-          -- else
-          -- end if;
+          if dv_chain(1) = '1' then
+            b_nom(0) <= (num_h(1) * sum_zy) - (sum_y(0) * sum_Z(0));
+            b_den(0) <= (num_h(1) * sum_zz) - sqr_sum_z;
+            dv_chain(2)  <= '1';
+          else
+            dv_chain(2)  <= '0';
+          end if;
 
-          if dv_chain(2) = '1' then
-            int_slope <= (b_nom * 2048)/b_den;
+          for i in 0 to c_B_DEN_NOM - 2 loop
+            b_nom(i + 1) <= b_nom(i);
+            b_den(i + 1) <= b_den(i);
+          end loop;
+
+          for i in 2 to c_B_DEN_NOM loop
+            dv_chain(i + 1) <= dv_chain(i);
+          end loop;
+
+          if dv_chain(6) = '1' then
+            int_slope <= (b_nom(c_B_DEN_NOM - 1) * 2048)/b_den(c_B_DEN_NOM -1);
             --
-            e_y <= (sum_y(1) * 2048) / num_h(2);
-            e_z <= sum_Z(1) / num_h(2);
+            e_y <= (sum_y(1) * 2048) / num_h(6);
+            e_z <= sum_Z(1) / num_h(6);
+            dv_chain(7)  <= '1';
           else
             int_slope <= (others => '0');
             e_y <= (others => '0');
             e_z <= (others => '0');
+            dv_chain(7)  <= '0';
           end if;
           
-          -- if dv_chain(3) = '1' then
-          int_slope_2 <= int_slope;
-          s_e_z <= (int_slope * e_z);
-          e_y_2 <= e_y;
-          -- else
-          -- end if;
-          
-          if dv_chain(4) = '1' then
-            o_slope <= int_slope_2;
-            o_offset <= (e_y_2) - s_e_z;
-            -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
-            --
-            -- dv_chain(4) <= '1';
+          if dv_chain(7) = '1' then
+            int_slope_2 <= int_slope;
+            s_e_z <= (int_slope * e_z);
+            e_y_2 <= e_y;
+            dv_chain(8)  <= '1';
           else
-            o_slope <= (others => '0');
-            o_offset <= (others => '0');
-            -- dv_chain(4) <= '0';
+            dv_chain(8)  <= '0';
+            int_slope_2 <= (others => '0');
+            s_e_z <= (others => '0');
+            e_y_2 <=  (others => '0');
           end if;
+          
+          -- if dv_chain(8) = '1' then
+          --   o_slope <= int_slope_2;
+          --   o_offset <= (e_y_2) - s_e_z;
+          --   -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
+          --   dv_chain(9)  <= '1';
+          -- else
+            -- o_slope <= (others => '0');
+            -- o_offset <= (others => '0');
+            -- dv_chain(9) <= '0';
+          -- end if;
 
 
           
@@ -291,7 +322,7 @@ begin
       end if;
     end process slope;
 
-    o_data_valid <= dv_chain(5);
+    -- o_data_valid <= dv_chain(9);
     -- o_slope <= resize(int_slope,UCM_MBAR_LEN);
     
   end generate BARREL;
