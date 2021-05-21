@@ -26,3 +26,4 @@ shared/SpyBuffer/src/SpyMemory.v
 shared/SpyBuffer/src/SpyPlayback.v
 shared/SpyBuffer/src/SpyBuffer.v
 UserLogic/lsf/src/lsf_spybuffer_wrapper.sv
+UserLogic/lsf/top_lsf.vhd
