@@ -1,1 +1,3 @@
 Top/lsf/prj_cfg.vhd
+UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
+UserLogic/lsf/top_lsf_vu13p.vhd
