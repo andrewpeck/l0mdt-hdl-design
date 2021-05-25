@@ -122,8 +122,8 @@ architecture beh of ult_tp is
   signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal o_plus_neighbor_segments  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
-  signal o_minus_neighbor_segments :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_plus_neighbor_segments_av  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_minus_neighbor_segments_av :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
   signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
@@ -156,7 +156,7 @@ architecture beh of ult_tp is
 
   signal glob_en : std_logic := '1';
 
-  signal bx : std_logic := 0;
+  signal bx : std_logic := '0';
 
 
 begin
@@ -168,10 +168,10 @@ begin
   port map(
 
     -- pipeline clock
-    -- clock_and_control => clock_and_control,
-    clk => clk,
-    rst => rst,
-    bx  => bx ,
+    clock_and_control => clock_and_control,
+    -- clk => clk,
+    -- rst => rst,
+    -- bx  => bx ,
 
     ttc_commands      => ttc_commands,
 
@@ -192,10 +192,10 @@ begin
     mpl_mon  => mpl_mon,
 
     -- TDC Hits from Polmux
-    i_inn_tdc_hits => i_mdt_tdc_inn_av,
-    i_mid_tdc_hits => i_mdt_tdc_mid_av,
-    i_out_tdc_hits => i_mdt_tdc_out_av,
-    i_ext_tdc_hits => i_mdt_tdc_ext_av,
+    i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
+    i_mid_tdc_hits_av => i_mdt_tdc_mid_av,
+    i_out_tdc_hits_av => i_mdt_tdc_out_av,
+    i_ext_tdc_hits_av => i_mdt_tdc_ext_av,
 
     -- TAR Hits for simulation
     -- i_inner_tar_hits  => i_mdt_tar_inn_av,
@@ -217,8 +217,8 @@ begin
     o_daq_streams => o_daq_streams,
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  => o_plus_neighbor_segments,
-    o_minus_neighbor_segments => o_minus_neighbor_segments,
+    o_plus_neighbor_segments_av  => o_plus_neighbor_segments_av,
+    o_minus_neighbor_segments_av => o_minus_neighbor_segments_av,
 
     -- MUCTPI
     o_MTC => o_MTC,
