@@ -159,7 +159,7 @@ begin
   o_used <= used_data;
 
 
-  FIFO_GEN : if g_LOGIC_TYPE = "fifo" generate
+  TOPOLOGY : if g_LOGIC_TYPE = "fifo" generate
     case_options <= i_wr & i_rd;
 
     MEM_PROC: process(clk)
@@ -278,9 +278,10 @@ begin
         end if;
       end if;
     end process MEM_PROC;
-  end generate;
+  -- end generate;
 
-  PIPE_GEN : if g_LOGIC_TYPE = "pipeline" generate
+  -- PIPE_GEN : 
+  elsif g_LOGIC_TYPE = "pipeline" generate
 
     case_options <= i_wr & mem_dv(rd_index);
 
