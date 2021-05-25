@@ -25,7 +25,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
  
 library mtc_lib;
-use mtc_lib.all;
+-- use mtc_lib.all;
 
 entity mtc_sump is
   port (

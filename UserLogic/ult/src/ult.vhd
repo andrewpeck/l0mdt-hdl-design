@@ -159,7 +159,7 @@ begin
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate
-      ULT_TAR : entity work.mdt_tar
+      ULT_TAR : entity ult_lib.mdt_tar
       port map (
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,  --
@@ -192,7 +192,7 @@ begin
 
       );
     else generate
-      SUMP_TAR : entity work.tar_sump
+      SUMP_TAR : entity ult_lib.tar_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control => clock_and_control,  --
@@ -227,7 +227,7 @@ begin
     end generate;
 
     UCM_GEN : if c_UCM_ENABLED = '1' generate
-      ULT_UCM : entity work.candidate_manager
+      ULT_UCM : entity ult_lib.candidate_manager
       port map (
         -- clock, control, and monitoring
         clock_and_control       => clock_and_control,  --
@@ -248,7 +248,7 @@ begin
         o_uCM2pl_av             => ucm2pl_av
       );
     else generate
-      SUMP_UCM : entity work.ucm_sump
+      SUMP_UCM : entity ult_lib.ucm_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control       => clock_and_control,  --
@@ -274,7 +274,7 @@ begin
 
     H2S_GEN : if c_H2S_ENABLED = '1' generate
 
-      ULT_H2S : entity work.hits_to_segments
+      ULT_H2S : entity ult_lib.hits_to_segments
       port map (
         -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
@@ -303,7 +303,7 @@ begin
         -- o_sump                    => h2s_sump
       );
     else generate
-      SUMP_H2S : entity work.h2s_sump
+      SUMP_H2S : entity ult_lib.h2s_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control         => clock_and_control,
@@ -372,7 +372,7 @@ begin
     end generate;
 
     PT_GEN : if c_PT_ENABLED = '1' generate
-      ULT_PTCALC : entity work.ptcalc
+      ULT_PTCALC : entity ult_lib.ptcalc
       port map (
         -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
@@ -395,7 +395,7 @@ begin
         o_sump                    => pt_sump
       );
     else generate
-      SUMP_PT : entity work.ptc_sump
+      SUMP_PT : entity ult_lib.ptc_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control         => clock_and_control,
@@ -420,7 +420,7 @@ begin
     end generate;
 
     MTC_GEN : if c_MTC_ENABLED = '1' generate  
-      ULT_MTCB : entity work.mtc_builder
+      ULT_MTCB : entity ult_lib.mtc_builder
       port map (
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
@@ -437,7 +437,7 @@ begin
         o_sump            => mtc_sump
       );
     else generate
-      ULT_MTCB : entity work.mtc_sump
+      ULT_MTCB : entity ult_lib.mtc_sump
       port map (
         -- clock, control, and monitoring
         -- clock_and_control => clock_and_control,
@@ -456,7 +456,7 @@ begin
     end generate;
 
     DAQ_GEN : if c_DAQ_ENABLED = '1' generate
-      ULT_DAQ : entity work.daq
+      ULT_DAQ : entity ult_lib.daq
         generic map(DELAY => 9600, memory_type => "ultra")
         port map (
           -- clock, control, and monitoring
@@ -480,7 +480,7 @@ begin
           -- o_sump => daq_sump
         );
       else generate
-        SUMP_DAQ : entity work.daq_sump
+        SUMP_DAQ : entity ult_lib.daq_sump
         -- generic map(DELAY => 9600, memory_type => "ultra")
         port map (
           -- clock, control, and monitoring
