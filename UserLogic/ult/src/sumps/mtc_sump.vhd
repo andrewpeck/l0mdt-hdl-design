@@ -57,8 +57,10 @@ begin
   o_mtc <= (others => (others => '0'));
   o_nsp <= (others => (others => '0'));
 
-    MDT_INN_SUMP: for I in 0 to 2 generate
+    TH_LOOP: for I in 0 to c_NUM_THREADS -1 generate
       ptcalc(I) <= xor_reduce(i_ptcalc(I));
+    end generate;
+    SL_LOOP: for I in 0 to c_MAX_NUM_SL -1 generate
       pl2mtc(I) <= xor_reduce(i_pl2mtc(I));
     end generate;
    

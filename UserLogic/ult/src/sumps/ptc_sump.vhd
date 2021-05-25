@@ -64,15 +64,20 @@ begin
 
   o_pt2mtc <= (others => (others => '0'));
 
-    MDT_INN_SUMP: for I in 0 to 2 generate
+    THREAD_LOOP: for I in 0 to c_NUM_THREADS -1 generate
       inn_segments(I) <= xor_reduce(i_inn_segments(I));
       mid_segments(I) <= xor_reduce(i_mid_segments(I));
       out_segments(I) <= xor_reduce(i_out_segments(I));
       ext_segments(I) <= xor_reduce(i_ext_segments(I));
-      minus_neighbor_segments(I) <= xor_reduce(i_minus_neighbor_segments(I));
-      plus_neighbor_segments(I) <= xor_reduce(i_plus_neighbor_segments(I));
       pl2pt_av(I) <= xor_reduce(i_pl2pt_av(I));
     end generate;
+    SF_LOOP: for I in 0 to c_NUM_SF_INPUTS -1 generate
+      minus_neighbor_segments(I) <= xor_reduce(i_minus_neighbor_segments(I));
+      plus_neighbor_segments(I) <= xor_reduce(i_plus_neighbor_segments(I));
+    end generate;
+    -- MDT_INN_SUMP: for I in 0 to 2 generate
+    --   pl2pt_av(I) <= xor_reduce(i_pl2pt_av(I));
+    -- end generate;
    
     o_sump <=   xor_reduce(inn_segments           )
             xor xor_reduce(mid_segments           )
