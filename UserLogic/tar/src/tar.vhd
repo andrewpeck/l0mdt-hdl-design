@@ -77,10 +77,10 @@ architecture beh of tar is
   signal int_out_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
   signal int_ext_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   -- TDC Hits from Tar
-  signal int_inn_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  signal int_mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  signal int_out_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal int_ext_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- signal int_inn_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  -- signal int_mid_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal int_out_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal int_ext_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
 begin
   
@@ -103,7 +103,7 @@ begin
             g_DATA_WIDTH        => i_inn_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
             g_PIPELINE_TYPE     => "mpcvmem",
-            g_MEMORY_STRUCTURE  => "SDP_2",
+            g_MEMORY_STRUCTURE  => "XPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_inn_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -160,7 +160,7 @@ begin
             g_DATA_WIDTH        => i_mid_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
             g_PIPELINE_TYPE     => "mpcvmem",
-            g_MEMORY_STRUCTURE  => "SDP_2",
+            g_MEMORY_STRUCTURE  => "XPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_mid_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -216,7 +216,7 @@ begin
             g_DATA_WIDTH        => i_out_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
             g_PIPELINE_TYPE     => "mpcvmem",
-            g_MEMORY_STRUCTURE  => "SDP_2",
+            g_MEMORY_STRUCTURE  => "XPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_out_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus
@@ -272,7 +272,7 @@ begin
             g_DATA_WIDTH        => i_ext_tdc_hits_av(b_i)'length,
             g_DATA_DEPTH        => 4000,
             g_PIPELINE_TYPE     => "mpcvmem",
-            g_MEMORY_STRUCTURE  => "SDP_2",
+            g_MEMORY_STRUCTURE  => "XPM",
             g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
             g_PIPELINE_WIDTH    => i_ext_tdc_hits_av(b_i)'length, -- necesario?
             -- BU bus

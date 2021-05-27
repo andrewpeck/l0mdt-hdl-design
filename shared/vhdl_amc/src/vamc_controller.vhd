@@ -268,14 +268,14 @@ begin
               -- i_din_b       => mem_data_i_b(mem_i), -- apb_data_o,   
               -- i_dv_in_b     => mem_dv_i_b(mem_i),   -- apb_dv_o, 
               o_dout_b      => mem_data_o_b(mem_i), -- apb_data_i,  
-              o_dv_out_b    => mem_dv_o_b(mem_i),   -- apb_dv_i,
+              o_dv_out_b    => mem_dv_o_b(mem_i)   -- apb_dv_i,
               -- Flags
-              o_empty       => mem_empty(mem_i),
-              o_empty_next  => mem_empty_next(mem_i),
-              o_full        => mem_full(mem_i),
-              o_full_next   => mem_full_next(mem_i),
-              -- used counter
-              o_used        => mem_used(mem_i)
+              -- o_empty       => mem_empty(mem_i),
+              -- o_empty_next  => mem_empty_next(mem_i),
+              -- o_full        => mem_full(mem_i),
+              -- o_full_next   => mem_full_next(mem_i),
+              -- -- used counter
+              -- o_used        => mem_used(mem_i)
             );
           end generate MEMS_GEN;
           
