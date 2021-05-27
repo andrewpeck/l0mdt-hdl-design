@@ -243,10 +243,10 @@ begin
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      i_inn_tdc_hits => inner_tdc_hits,
-      i_mid_tdc_hits => middle_tdc_hits,
-      i_out_tdc_hits => outer_tdc_hits,
-      i_ext_tdc_hits => extra_tdc_hits,
+      i_inn_tdc_hits_av => inner_tdc_hits,
+      i_mid_tdc_hits_av => middle_tdc_hits,
+      i_out_tdc_hits_av => outer_tdc_hits,
+      i_ext_tdc_hits_av => extra_tdc_hits,
 
       -- i_inner_tar_hits  => i_inner_tar_hits,
       -- i_middle_tar_hits => i_middle_tar_hits,
@@ -255,8 +255,8 @@ begin
 
       i_plus_neighbor_segments  => plus_neighbor_segments_i,
       i_minus_neighbor_segments => minus_neighbor_segments_i,
-      o_plus_neighbor_segments  => plus_neighbor_segments_o,
-      o_minus_neighbor_segments => minus_neighbor_segments_o,
+      o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
+      o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
       -- SLC
       i_main_primary_slc   => main_primary_slc,
