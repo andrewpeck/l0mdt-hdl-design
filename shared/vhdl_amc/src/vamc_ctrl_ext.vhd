@@ -24,7 +24,7 @@ use shared_lib.common_ieee.all;
 
 library vamc_lib;
 
-entity vamc_kernel is
+entity vamc_ctrl_ext is
   generic(
     g_PARALLEL_MEM      : integer := 1
   );
@@ -41,9 +41,9 @@ entity vamc_kernel is
     o_sel_run           : out integer range 0 to g_PARALLEL_MEM;
     o_sel_apb           : out integer range 0 to g_PARALLEL_MEM
   );
-end entity vamc_kernel;
+end entity vamc_ctrl_ext;
 
-architecture beh of vamc_kernel is
+architecture beh of vamc_ctrl_ext is
 
   signal sel_run           : integer range 0 to g_PARALLEL_MEM;
   signal sel_apb           : integer range 0 to g_PARALLEL_MEM;
