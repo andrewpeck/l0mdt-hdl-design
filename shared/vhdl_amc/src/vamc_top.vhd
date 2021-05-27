@@ -31,7 +31,7 @@ library mpcvmem_lib;
   -- use ctrl_lib.MEM_INT_10A148D_PKG.all;
   -- use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
-entity vamc_controller is
+entity vamc_top is
   generic(
     g_FREEZE_ENABLED    : std_logic := '0';
     g_PARALLEL_MEM      : integer := 1;
@@ -70,9 +70,9 @@ entity vamc_controller is
     o_data              : out std_logic_vector(g_PIPELINE_WIDTH -1 downto 0);
     o_dv                : out std_logic
   );
-end entity vamc_controller;
+end entity vamc_top;
 
-architecture beh of vamc_controller is
+architecture beh of vamc_top is
 
   function init_ADDR_WIDTH(m : integer; d:integer; x : integer) return integer is
     variable y : integer;
