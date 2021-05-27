@@ -31,6 +31,7 @@ entity top_lsf IS
     slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
     mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
     lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
+    i_eof         : in std_logic;
     hba_max_clocks: in std_logic_vector(9 downto 0);
   --SpyBuffer Interface
     sb_lsf_mdt_hits_freeze : in std_logic;
@@ -45,6 +46,6 @@ entity top_lsf IS
 
 architecture top_lsf_arch of top_lsf IS
 
-begin 
+begin
 
 end architecture top_lsf_arch;

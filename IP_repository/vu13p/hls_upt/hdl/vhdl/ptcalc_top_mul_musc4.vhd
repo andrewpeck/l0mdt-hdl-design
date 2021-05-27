@@ -5,23 +5,23 @@ use IEEE.numeric_std.all;
 
 entity ptcalc_top_mul_musc4_DSP48_5 is
 port (
-    a: in std_logic_vector(15 - 1 downto 0);
-    b: in std_logic_vector(15 - 1 downto 0);
-    p: out std_logic_vector(30 - 1 downto 0));
+    a: in std_logic_vector(13 - 1 downto 0);
+    b: in std_logic_vector(13 - 1 downto 0);
+    p: out std_logic_vector(26 - 1 downto 0));
 
 end entity;
 
 architecture behav of ptcalc_top_mul_musc4_DSP48_5 is
-    signal a_cvt: signed(15 - 1 downto 0);
-    signal b_cvt: signed(15 - 1 downto 0);
-    signal p_cvt: signed(30 - 1 downto 0);
+    signal a_cvt: signed(13 - 1 downto 0);
+    signal b_cvt: signed(13 - 1 downto 0);
+    signal p_cvt: signed(26 - 1 downto 0);
 
 
 begin
 
     a_cvt <= signed(a);
     b_cvt <= signed(b);
-    p_cvt <= signed (resize(unsigned (signed (a_cvt) * signed (b_cvt)), 30));
+    p_cvt <= signed (resize(unsigned (signed (a_cvt) * signed (b_cvt)), 26));
     p <= std_logic_vector(p_cvt);
 
 end architecture;
