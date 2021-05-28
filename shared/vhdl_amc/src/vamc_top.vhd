@@ -23,6 +23,8 @@ library shared_lib;
 use shared_lib.common_ieee.all;
 
 library vamc_lib;
+use vamc_lib.vamc_pkg.all;
+
 library apbus_lib;
 library mpcvmem_lib;
 
@@ -72,31 +74,34 @@ end entity vamc_top;
 
 architecture beh of vamc_top is
 
-  function init_ADDR_WIDTH(m : integer; d:integer; x : integer) return integer is
-    variable y : integer;
-   begin
-    if m /= 0 then
-      y := m;
-    elsif d/= 0 then
-      y := integer(ceil(log2(real(d))));
-    else
-      y := integer(ceil(log2(real(x))));
-    end if;
-    return y;
-  end function;
+  -- function init_ADDR_WIDTH(m : integer; d:integer; x : integer) return integer is
+  --   variable y : integer;
+  --  begin
+  --   if m /= 0 then
+  --     y := m;
+  --   elsif d/= 0 then
+  --     y := integer(ceil(log2(real(d))));
+  --   else
+  --     y := integer(ceil(log2(real(x))));
+  --   end if;
+  --   return y;
+  -- end function;
   
-  function init_DATA_DEPTH(m : integer; d:integer; x : integer) return integer is
-    variable y : integer;
-   begin
-    if m /= 0 then
-      y := 2**m;
-    elsif d/= 0 then
-      y := d;
-    else
-      y := x;
-    end if;
-    return y;
-  end function;
+  -- function init_DATA_DEPTH(m : integer; d:integer; x : integer) return integer is
+  --   variable y : integer;
+  --  begin
+  --   if m /= 0 then
+  --     y := 2**m;
+  --   elsif d/= 0 then
+  --     y := d;
+  --   else
+  --     y := x;
+  --   end if;
+  --   return y;
+  -- end function;
+
+  constant MEMORY_READ_LATENCY : integer := 2;
+  constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES - MEMORY_READ_LATENCY;
 
   constant FREEZE_EN : std_logic := g_FREEZE_ENABLED OR g_APBUS_ENABLED;
   constant ADDR_WIDTH : integer := init_ADDR_WIDTH(g_ADDR_WIDTH,g_DATA_DEPTH,g_DELAY_CYCLES);--integer(ceil(log2(real(g_MEM_DEPTH))));
@@ -134,6 +139,9 @@ architecture beh of vamc_top is
   signal mem_addr_i_b   : addr_array;
   signal mem_data_i_b   : data_array; 
   signal mem_data_o_b   : data_array;
+
+  signal mem_addr_a : addr_array;
+  signal mem_addr_b : addr_array;
 
   signal mem_dv_i_a     : std_logic_vector(g_PARALLEL_MEM downto 0);
   signal mem_dv_o_a     : std_logic_vector(g_PARALLEL_MEM downto 0);
@@ -220,21 +228,27 @@ begin
     -- mem controller
     VAMC_CTRL_PL : entity vamc_lib.vamc_ctrl_pl
       generic map(
-        g_PARALLEL_MEM => g_PARALLEL_MEM
+        -- g_PARALLEL_MEM => g_PARALLEL_MEM
+        g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,--TOTAL_DELAY_CYCLES,
+        -- g_PL_LATENCY    => 2,
+        g_ADD_WIDTH     => ADDR_WIDTH,
+        g_MEM_WIDTH     => DATA_WIDTH,
+        g_MEM_DEPTH     => DATA_DEPTH
       )
       port map(
         clk           => clk,
         rst           => rst,
         ena           => ena,
-        -- std_l
-        i_freeze      => i_freeze,
-        i_apb_freeze  => int_apb_freeze,
-        -- vectors
-        o_freeze      => int_ker_freeze,
-        o_apb_sel_v   => int_apb_sel,
-        -- integers
-        o_sel_run     => mem_run_sel,
-        o_sel_apb     => mem_apb_sel
+        --
+        i_freeze      => int_ker_freeze(sel_i),
+        i_ext_ctrl    => int_apb_sel(sel_i),
+        -- Port A
+        i_addr_a      => mem_addr_i_a(sel_i),
+        o_addr_a      => mem_addr_a(sel_i), 
+        -- Port B
+        i_addr_b      => mem_addr_i_b(sel_i),
+        o_addr_b      => mem_addr_b(sel_i)  -- apb_rd_addr_o,  
+
     );
     -- mem
     xpm_memory_sdpram_inst : xpm_memory_sdpram
@@ -253,7 +267,7 @@ begin
        MEMORY_SIZE => DATA_WIDTH * DATA_DEPTH,             -- DECIMAL
        MESSAGE_CONTROL => 0,            -- DECIMAL
        READ_DATA_WIDTH_B => DATA_WIDTH,--32,         -- DECIMAL
-       READ_LATENCY_B => 2,             -- DECIMAL
+       READ_LATENCY_B => MEMORY_READ_LATENCY,             -- DECIMAL
        READ_RESET_VALUE_B => "0",       -- String
        RST_MODE_A => "SYNC",            -- String
        RST_MODE_B => "SYNC",            -- String
@@ -268,12 +282,12 @@ begin
       --  dbiterrb => dbiterrb,             -- 1-bit output: Status signal to indicate double bit error occurrence
                                          -- on the data output of port B.
  
-       doutb => mem_out_b,--doutb,                   -- READ_DATA_WIDTH_B-bit output: Data output for port B read operations.
+       doutb => mem_data_o_b(sel_i),--doutb,                   -- READ_DATA_WIDTH_B-bit output: Data output for port B read operations.
       --  sbiterrb => sbiterrb,             -- 1-bit output: Status signal to indicate single bit error occurrence
                                          -- on the data output of port B.
  
-       addra => mem_addr_a,                   -- ADDR_WIDTH_A-bit input: Address for port A write operations.
-       addrb => mem_addr_b,                   -- ADDR_WIDTH_B-bit input: Address for port B read operations.
+       addra => mem_addr_a(sel_i),                   -- ADDR_WIDTH_A-bit input: Address for port A write operations.
+       addrb => mem_addr_b(sel_i),                   -- ADDR_WIDTH_B-bit input: Address for port B read operations.
        clka => clk,                     -- 1-bit input: Clock signal for port A. Also clocks port B when
                                          -- parameter CLOCKING_MODE is "common_clock".
  
@@ -281,7 +295,7 @@ begin
                                          -- "independent_clock". Unused when parameter CLOCKING_MODE is
                                          -- "common_clock".
  
-       dina => mem_in_a,--dina,                     -- WRITE_DATA_WIDTH_A-bit input: Data input for port A write operations.
+       dina => mem_data_i_a(sel_i),--dina,                     -- WRITE_DATA_WIDTH_A-bit input: Data input for port A write operations.
        ena => ena,                       -- 1-bit input: Memory enable signal for port A. Must be high on clock
                                          -- cycles when write operations are initiated. Pipelined internally.
  

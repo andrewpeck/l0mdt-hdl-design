@@ -23,6 +23,8 @@ library shared_lib;
 use shared_lib.common_ieee.all;
 
 library vamc_lib;
+use vamc_lib.vamc_pkg.all;
+
 
 entity vamc_ctrl_pl is
   generic(
