@@ -9,7 +9,7 @@ shared/vhdl_amc/src/modules/vamc_sr.vhd
 shared/vhdl_amc/src/vamc_csw_in.vhd
 shared/vhdl_amc/src/vamc_csw_out.vhd
 shared/vhdl_amc/src/vamc_top.vhd
-shared/vhdl_amc/src/vamc_controller.vhd
+# shared/vhdl_amc/src/vamc_controller.vhd
 shared/vhdl_amc/src/vamc_ctrl_pl.vhd
 shared/vhdl_amc/src/vamc_ctrl_ext.vhd
 #---------------------------------

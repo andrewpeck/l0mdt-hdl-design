@@ -371,7 +371,7 @@ begin
 
 
 
-  end generate APB_INT_DIS;
+  end generate;
   
 
 
