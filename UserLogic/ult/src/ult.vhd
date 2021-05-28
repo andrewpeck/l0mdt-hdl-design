@@ -147,13 +147,13 @@ architecture behavioral of ult is
   signal pt2mtc_av : tf2mtc_bus_avt(c_NUM_THREADS-1 downto 0);
   -- signal pt2mtc : pt2mtc_avt (c_NUM_THREADS-1 downto 0);
 
-  signal ucm_sump : std_logic;
-  signal pt_sump : std_logic;
-  signal h2s_sump : std_logic;
-  signal tar_sump : std_logic;
-  signal mtc_sump : std_logic;
-  signal daq_sump : std_logic;
-  signal mpl_sump : std_logic;
+  signal ucm_sump : std_logic := '1';
+  signal pt_sump  : std_logic := '1';
+  signal h2s_sump : std_logic := '1';
+  signal tar_sump : std_logic := '1';
+  signal mtc_sump : std_logic := '1';
+  signal daq_sump : std_logic := '1';
+  signal mpl_sump : std_logic := '1';
 
 begin
 

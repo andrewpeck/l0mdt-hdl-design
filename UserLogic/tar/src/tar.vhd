@@ -33,6 +33,9 @@ library vamc_lib;
 library tar_lib;
 use tar_lib.tar_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.TAR_CTRL.all;
+
 entity tar is
   -- generic (
   --   EN_TAR_HITS : integer := 0;
@@ -42,6 +45,9 @@ entity tar is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    ctrl              : in  TAR_CTRL_t;
+    mon               : out TAR_MON_t;
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -84,6 +90,7 @@ architecture beh of tar is
 
   signal local_en : std_logic;
   signal local_rst : std_logic;
+  signal int_freeze : std_logic;
 
 begin
 

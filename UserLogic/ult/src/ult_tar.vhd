@@ -71,6 +71,8 @@ architecture beh of mdt_tar is
   -- signal tdc_hit_extra_sump  : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
   signal glob_en : std_logic := '1';
 begin
+
+  o_sump <= glob_en;
   
       TAR : entity tar_lib.tar
       port map (
@@ -78,6 +80,9 @@ begin
         clk             => clock_and_control.clk,
         rst             => clock_and_control.rst,
         glob_en         => glob_en,
+        --
+        ctrl            => ctrl,
+        mon             => mon,
         -- TDC Hits from Polmux
         i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
         i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
