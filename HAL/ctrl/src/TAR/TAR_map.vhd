@@ -6,6 +6,7 @@ use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.TAR_Ctrl.all;
+use work.TAR_Ctrl_DEF.all;
 entity TAR_interface is
   port (
     clk_axi          : in  std_logic;
@@ -28,8 +29,8 @@ architecture behavioral of TAR_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 1);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 16);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 16) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -65,11 +66,17 @@ begin  -- architecture behavioral
     localRdData <= x"00000000";
     if localRdReq = '1' then
       localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(0 downto 0))) is
+      case to_integer(unsigned(localAddress(4 downto 0))) is
 
+        when 16 => --0x10
+          localRdData( 0)            <=  Mon.STATUS.ENABLED;             -- 
+          localRdData( 1)            <=  Mon.STATUS.READY;               -- 
+          localRdData( 2)            <=  Mon.STATUS.ERROR;               -- 
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.STATUS;      --
-          localRdData( 1)  <=  Mon.READY;       --
+          localRdData( 3 downto  0)  <=  reg_data(1)( 3 downto  0);      -- 
+          localRdData( 4)            <=  reg_data(1)( 4);                -- 
+          localRdData( 5)            <=  reg_data(1)( 5);                -- 
+          localRdData( 6)            <=  reg_data(1)( 6);                -- 
 
 
         when others =>
@@ -82,21 +89,40 @@ begin  -- architecture behavioral
 
 
   -- Register mapping to ctrl structures
+  Ctrl.CONFIGS.THREADS          <=  reg_data(1)( 3 downto  0);     
+  Ctrl.CONFIGS.INPUT_EN         <=  reg_data(1)( 4);               
+  Ctrl.CONFIGS.OUTPUT_EN        <=  reg_data(1)( 5);               
+  Ctrl.CONFIGS.FLUSH_MEM_RESET  <=  reg_data(1)( 6);               
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data(1)( 3 downto  0)  <= DEFAULT_TAR_CTRL_t.CONFIGS.THREADS;
+      reg_data(1)( 4)  <= DEFAULT_TAR_CTRL_t.CONFIGS.INPUT_EN;
+      reg_data(1)( 5)  <= DEFAULT_TAR_CTRL_t.CONFIGS.OUTPUT_EN;
+      reg_data(1)( 6)  <= DEFAULT_TAR_CTRL_t.CONFIGS.FLUSH_MEM_RESET;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.RESET <= '0';
+      Ctrl.ACTIONS.RESET <= '0';
+      Ctrl.ACTIONS.ENABLE <= '0';
+      Ctrl.ACTIONS.DISABLE <= '0';
+      Ctrl.ACTIONS.FREEZE <= '0';
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(0 downto 0))) is
+        case to_integer(unsigned(localAddress(4 downto 0))) is
         when 0 => --0x0
-          Ctrl.RESET  <=  localWrData( 0);     
+          Ctrl.ACTIONS.RESET         <=  localWrData( 0);               
+          Ctrl.ACTIONS.ENABLE        <=  localWrData( 1);               
+          Ctrl.ACTIONS.DISABLE       <=  localWrData( 2);               
+          Ctrl.ACTIONS.FREEZE        <=  localWrData( 3);               
+        when 1 => --0x1
+          reg_data(1)( 3 downto  0)  <=  localWrData( 3 downto  0);      -- 
+          reg_data(1)( 4)            <=  localWrData( 4);                -- 
+          reg_data(1)( 5)            <=  localWrData( 5);                -- 
+          reg_data(1)( 6)            <=  localWrData( 6);                -- 
 
           when others => null;
         end case;

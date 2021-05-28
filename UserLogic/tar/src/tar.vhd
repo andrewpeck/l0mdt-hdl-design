@@ -82,7 +82,26 @@ architecture beh of tar is
   -- signal int_out_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
   -- signal int_ext_tar_hits : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
+  signal local_en : std_logic;
+  signal local_rst : std_logic;
+
 begin
+
+  SUPERVISOR : entity tar_lib.tar_supervisor
+  port map(
+    clk               => clk,
+    rst               => rst,
+    glob_en           => glob_en,      
+    -- AXI to SoC
+    actions           => ctrl.actions,
+    configs           => ctrl.configs,
+    status            => mon.status ,
+    --
+    o_freeze          => int_freeze,
+    -- 
+    local_en          => local_en,
+    local_rst         => local_rst
+  );
   
   -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
 
@@ -101,8 +120,8 @@ begin
         port map (
           -- clock, control, and monitoring
           clk             => clk,
-          rst             => rst,
-          glob_en         => glob_en,
+          rst             => local_rst,
+          glob_en         => local_en,
           -- ctrl/mon
           -- data
           i_tdc_hits_av   => i_inn_tdc_hits_av,
@@ -120,8 +139,8 @@ begin
           port map (
             -- clock, control, and monitoring
             clk             => clk,
-            rst             => rst,
-            glob_en         => glob_en,
+            rst             => local_rst,
+            glob_en         => local_en,
             -- ctrl/mon
             -- data
             i_tdc_hits_av   => i_mid_tdc_hits_av,
@@ -138,8 +157,8 @@ begin
             port map (
               -- clock, control, and monitoring
               clk             => clk,
-              rst             => rst,
-              glob_en         => glob_en,
+              rst             => local_rst,
+              glob_en         => local_en,
               -- ctrl/mon
               -- data
               i_tdc_hits_av   => i_out_tdc_hits_av,
@@ -156,8 +175,8 @@ begin
               port map (
                 -- clock, control, and monitoring
                 clk             => clk,
-                rst             => rst,
-                glob_en         => glob_en,
+                rst             => local_rst,
+                glob_en         => local_en,
                 -- ctrl/mon
                 -- data
                 i_tdc_hits_av   => i_ext_tdc_hits_av,
