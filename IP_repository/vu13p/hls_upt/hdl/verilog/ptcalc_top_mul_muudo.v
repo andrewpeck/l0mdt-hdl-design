@@ -3,8 +3,8 @@
 
   module ptcalc_top_mul_muudo_DSP48_7(a, b, p);
 input signed [24 - 1 : 0] a;
-input signed [16 - 1 : 0] b;
-output signed [42 - 1 : 0] p;
+input signed [12 - 1 : 0] b;
+output signed [38 - 1 : 0] p;
 
 assign p = $signed (a) * $signed (b);
 

@@ -6,7 +6,8 @@
   <xd:arg xd:name="sf2ptcalc_mid" xd:originalName="sf2ptcalc_mid" xd:direction="in" xd:interfaceRef="sf2ptcalc_mid_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="64"/>
   <xd:arg xd:name="sf2ptcalc_out" xd:originalName="sf2ptcalc_out" xd:direction="in" xd:interfaceRef="sf2ptcalc_out_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="64"/>
   <xd:arg xd:name="*(ptcalc2mtc)" xd:originalName="ptcalc2mtc" xd:direction="out" xd:interfaceRef="ptcalc2mtc_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="54" xd:firstOut="22"/>
-  <xd:arg xd:name="is_C_side" xd:originalName="is_C_side" xd:direction="in" xd:interfaceRef="is_C_side" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1" xd:firstOut="22"/>
+  <xd:arg xd:name="*(ptcalc_debug)" xd:originalName="ptcalc_debug" xd:direction="out" xd:interfaceRef="ptcalc_debug_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="58" xd:firstOut="25"/>
+  <xd:arg xd:name="is_C_side" xd:originalName="is_C_side" xd:direction="in" xd:interfaceRef="is_C_side" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="1" xd:firstOut="25"/>
   <xd:latencyEstimates xd:best-case="26" xd:worst-case="26" xd:average-case="26"/>
-  <xd:resourceEstimates xd:LUT="3249" xd:FF="3337" xd:BRAM="26" xd:DSP="22"/>
+  <xd:resourceEstimates xd:LUT="3313" xd:FF="3543" xd:BRAM="26" xd:DSP="22"/>
 </xd:acceleratorMap>
