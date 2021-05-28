@@ -100,7 +100,7 @@ architecture beh of vamc_top is
   --   return y;
   -- end function;
 
-  constant MEMORY_READ_LATENCY : integer := 2;
+  constant MEMORY_READ_LATENCY : integer := 4;
   constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES - MEMORY_READ_LATENCY;
 
   constant FREEZE_EN : std_logic := g_FREEZE_ENABLED OR g_APBUS_ENABLED;
@@ -268,6 +268,7 @@ begin
        MESSAGE_CONTROL => 0,            -- DECIMAL
        READ_DATA_WIDTH_B => DATA_WIDTH,--32,         -- DECIMAL
        READ_LATENCY_B => MEMORY_READ_LATENCY,             -- DECIMAL
+      --  READ_LATENCY_A => MEMORY_READ_LATENCY,             -- DECIMAL
        READ_RESET_VALUE_B => "0",       -- String
        RST_MODE_A => "SYNC",            -- String
        RST_MODE_B => "SYNC",            -- String

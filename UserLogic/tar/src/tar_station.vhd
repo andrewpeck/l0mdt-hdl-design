@@ -62,10 +62,10 @@ begin
 
   i_tdc_hits_ar <= structify(i_tdc_hits_av);
   
-  INN_DELAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
-    INN_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
+  PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
+    POLMUX_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 
-      VAMC_CTRL : entity vamc_lib.vamc_top
+      VAMC_PL : entity vamc_lib.vamc_top
       generic map(
         g_MEMORY_MODE       => "pipeline",
         g_MEMORY_TYPE       => "ultra",
@@ -97,7 +97,7 @@ begin
         -- o_dv        => pl2pl_dv
       );
 
-      REMAP_INN : entity tar_lib.tar_remap
+      REMAP: entity tar_lib.tar_remap
       generic map(
         g_STATION => 0
       )
