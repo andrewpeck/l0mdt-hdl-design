@@ -43,7 +43,7 @@ entity vamc_top is
     g_DATA_WIDTH        : integer := 0;
     g_DATA_DEPTH        : integer := 0;
     -- pipeline
-    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
+    g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem , XPM
     g_MEMORY_STRUCTURE  : string := "SDP";
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;

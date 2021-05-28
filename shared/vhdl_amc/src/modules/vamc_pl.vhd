@@ -19,7 +19,7 @@ use ieee.numeric_std.all;
 
 library shared_lib;
 library vamc_lib;
-library mpcvmem_lib;
+-- library mpcvmem_lib;
 
 entity vamc_pl is
   generic(
@@ -131,35 +131,35 @@ begin
       );
   end generate;
 
-  MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
-    -- DC4_GEN: if condition generate
+  -- MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
+  --   -- DC4_GEN: if condition generate
       
-    -- end generate DC4_GEN;
-    -- constant OUT_PIPELINE
-    constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+  --   -- end generate DC4_GEN;
+  --   -- constant OUT_PIPELINE
+  --   constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
 
-  begin
+  -- begin
     
     
-    mmem : entity mpcvmem_lib.mpcvm_top
-    generic map(
-      g_LOGIC_TYPE        => "pipeline",
-      g_MEMORY_TYPE       => g_MEMORY_TYPE,
-      g_DV_TYPE           => "ext",
-      g_PL_DELAY_CYCLES   => TOTAL_DELAY_CYCLES,
-      g_MEM_WIDTH         => g_PIPELINE_WIDTH,
-      g_MEM_DEPTH         => TOTAL_DELAY_CYCLES
-    )
-    port map(
-      clk           => clk,
-      rst           => rst,
-      ena           => ena,
-      --
-      i_din_a       => i_data,
-      i_dv_in_a     => i_dv,
-      o_dout_a      => o_data,
-      o_dv_out_a    => o_dv    
-    );
-  end generate MPCVMEM_GEN;
+  --   mmem : entity mpcvmem_lib.mpcvm_top
+  --   generic map(
+  --     g_LOGIC_TYPE        => "pipeline",
+  --     g_MEMORY_TYPE       => g_MEMORY_TYPE,
+  --     g_DV_TYPE           => "ext",
+  --     g_PL_DELAY_CYCLES   => TOTAL_DELAY_CYCLES,
+  --     g_MEM_WIDTH         => g_PIPELINE_WIDTH,
+  --     g_MEM_DEPTH         => TOTAL_DELAY_CYCLES
+  --   )
+  --   port map(
+  --     clk           => clk,
+  --     rst           => rst,
+  --     ena           => ena,
+  --     --
+  --     i_din_a       => i_data,
+  --     i_dv_in_a     => i_dv,
+  --     o_dout_a      => o_data,
+  --     o_dv_out_a    => o_dv    
+  --   );
+  -- end generate MPCVMEM_GEN;
 
 end beh;

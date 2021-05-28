@@ -71,8 +71,8 @@ begin
         g_MEMORY_TYPE       => "ultra",
         g_DATA_WIDTH        => i_tdc_hits_av(b_i)'length,
         g_DATA_DEPTH        => 4000,
-        g_PIPELINE_TYPE     => "mpcvmem",
-        g_MEMORY_STRUCTURE  => "XPM",
+        g_PIPELINE_TYPE     => "XPM",
+        g_MEMORY_STRUCTURE  => "SDP",
         g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
         g_PIPELINE_WIDTH    => i_tdc_hits_av(b_i)'length, -- necesario?
         -- BU bus
