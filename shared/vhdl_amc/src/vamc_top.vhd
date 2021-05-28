@@ -26,7 +26,7 @@ library vamc_lib;
 use vamc_lib.vamc_pkg.all;
 
 library apbus_lib;
-library mpcvmem_lib;
+-- library mpcvmem_lib;
 
 Library xpm;
 use xpm.vcomponents.all;
