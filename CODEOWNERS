@@ -1,0 +1,44 @@
+#
+# List of owners of the different blocks
+#
+#
+# directory/file @user
+#
+
+[Root Folders]
+
+/HAL/ @apeck
+/regmap/ @apeck
+/address_tables/modules/ @apeck
+
+/HLS/ @psundra @ntekas
+/dataformats/@ntekas
+/l0mdt-hls/@ntekas
+
+[User Logic]
+/UserLogic/ult/ @apeck @gloustau
+
+/UserLogic/tar/ @gloustau
+/UserLogic/hps/ @gloustau
+/UserLogic/heg/ @gloustau
+/UserLogic/hp/  @gloustau
+/UserLogic/ucm/ @gloustau
+/UserLogic/mpl/ @gloustau
+
+/UserLogic/daq/ @tcpaiva
+
+/UserLogic/lsf/ @psundra
+/UserLogic/upt/ @psundra
+/UserLogic/mtc/ @psundra
+
+/UserLogic/csf/ @dcieri
+/UserLogic/csf/ @ptc_mpi
+
+[Shared Folders]
+
+/shared/APBus/ @gloustau
+/shared/vhdl_amc/ @gloustau
+/shared/sim/ @gloustau
+/shared/detector_parameters/ @gloustau
+/shared/config/ @gloustau
+
