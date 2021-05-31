@@ -4,10 +4,9 @@ GEN:ull_vu13p_b3a_ucm_mpl_hps_lsf:
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13p_b3a_ucm_mpl_hps_lsf
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis      
     tags:
-      - normal-ops
+      - heavy-duty
       - hog
       
 #SIM:ull_vu13p_b3a_ucm_mpl_hps_lsf:

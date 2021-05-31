@@ -16,9 +16,6 @@ SIM:ull_vu13_b3a_ucm_mpl_hps_csf:
       extends: .vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps_csf
     allow_failure: false
-    tags:
-      - normal-ops
-      - hog
     artifacts:
       name: user_sim
       paths:

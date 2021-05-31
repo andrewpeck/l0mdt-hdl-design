@@ -9,11 +9,8 @@ GEN:ptc_mpi:
       - normal-ops
       - hog
 
-SIM:ptc_mpi:
-    extends: .simulate_project
-    variables:
-      extends: .vars
-      PROJECT_NAME: ptc_mpi
-    tags:
-      - normal-ops
-      - hog
+# SIM:ptc_mpi:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ptc_mpi
