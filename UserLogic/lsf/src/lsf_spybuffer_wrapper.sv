@@ -18,6 +18,7 @@
 `include "l0mdt_buses_constants.svh"
 `endif
 
+//`define RBINS_64
 module lsf_spybuffer_wrapper #(
 			       parameter LSF_SB_MEM_WIDTH    = 10,
 			       parameter LSF_SB_EL_MEM_WIDTH = 10
@@ -37,6 +38,7 @@ module lsf_spybuffer_wrapper #(
   // output 			   lsf_output_empty,
 
    //CTRL/Spy Interface
+   input logic 			   i_eof,
    input logic [9:0] 		   histogram_accumulation_count,
    input 			   sb_lsf_mdt_hits_freeze,
   // input 			   sb_lsf_mdt_hits_playback,
@@ -131,7 +133,7 @@ module lsf_spybuffer_wrapper #(
 				 .spy_meta_read_data(sb_lsf_mdt_hits_meta_rdata)
 				 );
 
-
+`ifdef RBINS_64
    legendreEngine  legendreEngine_inst(
 					      .clk(clock),
 					      .rst(reset),
@@ -143,6 +145,30 @@ module lsf_spybuffer_wrapper #(
 					      .hit_extraction_roi_re(lsf_roi_re),
 					      .hit_extraction_roi_empty(lsf_roi_empty),
 					      .histogram_accumulation_count(histogram_accumulation_count),
+				       .i_eof(i_eof),
+					      .le_output(lsf),
+					      .le_output_vld(lsf_we)
+					      /*
+					       .le_tb_output(),
+					       .le_tb_output_vld()
+					       */
+			  );
+
+`else // !`ifdef RBINS_64
+   legendreEngine_2clk #(
+			 .RBINS(128)
+			 )legendreEngine_inst(
+					      .clk(clock),
+					      .rst(reset),
+					      .srst(reset),
+					      .mdt_hit(lsf_mdt_hit),
+					      .mdt_hit_re(lsf_mdt_hit_re),
+					      .mdt_hit_empty(lsf_mdt_hit_empty),
+					      .hit_extraction_roi(lsf_roi),
+					      .hit_extraction_roi_re(lsf_roi_re),
+					      .hit_extraction_roi_empty(lsf_roi_empty),
+					      .histogram_accumulation_count(histogram_accumulation_count),
+					      .i_eof(i_eof),
 					      .le_output(lsf),
 					      .le_output_vld(lsf_we)
 					      /*
@@ -152,6 +178,7 @@ module lsf_spybuffer_wrapper #(
 			  );
 
 
+`endif
 
    SpyBuffer #(
 	       .DATA_WIDTH(SF2PTCALC_LEN-1),

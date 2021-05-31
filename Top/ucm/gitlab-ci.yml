@@ -5,6 +5,7 @@ GEN:ucm:
       extends: .vars
       PROJECT_NAME: ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
     tags:
       - normal-ops
       - hog

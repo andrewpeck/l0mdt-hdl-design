@@ -30,8 +30,12 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity hps_pc is
   generic(
+    g_CHAMBER             : integer := 0;
     -- mdt type
     -- type mdt_type;
     g_SIM_nBUILD          : std_logic := '0';
@@ -41,8 +45,12 @@ entity hps_pc is
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    glob_en               : in std_logic;
+    ena                   : in std_logic;
     -- configuration & control
+    i_ctrl_tc             : in H2S_HPS_MDT_TC_MDT_TC_CTRL_t;  
+    o_mon_tc              : out H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    i_ctrl_t0             : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
+    o_mon_t0              : out H2S_HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_rvt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
@@ -51,9 +59,15 @@ end entity hps_pc;
 
 architecture beh of hps_pc is
 
+  signal t0_ctrl_v : std_logic_vector(len(i_ctrl_t0) - 1  downto 0);
+  signal t0_mon_v : std_logic_vector(len(o_mon_t0) - 1  downto 0);
+  signal tc_ctrl_v : std_logic_vector(len(i_ctrl_tc) - 1  downto 0);
+  signal tc_mon_v : std_logic_vector(len(o_mon_tc) - 1  downto 0);
+
   constant c_HPS_PC_PL_LEN : integer := 4;
   signal dv_pl : std_logic_vector(c_HPS_PC_PL_LEN -1 downto 0);
 
+  signal i_mdt_tar_r : tar2hps_rt;
   type mdt_tar_data_pl is array (c_HPS_PC_PL_LEN -1 downto 0) of tar2hps_rt;
   signal mdt_tar_data   : mdt_tar_data_pl;
   --t0
@@ -79,22 +93,56 @@ architecture beh of hps_pc is
   
 begin
 
-  mdt_tar_data(0) <= structify(i_mdt_tar_v);
+  t0_ctrl_v <= vectorify(i_ctrl_t0,t0_ctrl_v);
+  o_mon_t0 <= structify(t0_mon_v,o_mon_t0);
+
+  tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
+  o_mon_tc <= structify(tc_mon_v,o_mon_tc);
+
+  i_mdt_tar_r  <= structify(i_mdt_tar_v);
+
+  -- mdt_tar_data(0) <= structify(i_mdt_tar_v);
   o_mdt_full_data_v <= vectorify(mdt_full_data_r);
 
   T0 : entity hps_lib.hps_pc_b_t0
     generic map(
+      g_CHAMBER           => g_CHAMBER,
       g_STATION_RADIUS    => g_STATION_RADIUS
     )
     port map(
       clk                 => clk,
       rst                 => rst,
-      glob_en             => glob_en,
+      ena                 => ena,
       --
-      i_chamber           => mdt_tar_data(0).chamber_ieta,
-      i_dv                => mdt_tar_data(0).data_valid,
+      ctrl_v                => t0_ctrl_v,
+      mon_v                 => t0_mon_v,
+      --
+      i_chamber           => i_mdt_tar_r.chamber_ieta,
+      i_dv                => i_mdt_tar_r.data_valid,
       o_time_t0           => time_t0,
       o_dv                => t0_dv
+    );
+
+  TC : entity hps_lib.hps_pc_mdt_tc
+    generic map(
+      g_CHAMBER           => g_CHAMBER,
+      g_STATION_RADIUS    => g_STATION_RADIUS
+    )
+    port map(
+      clk                 => clk,
+      rst                 => rst,
+      ena                 => ena,
+      --
+      ctrl_v                => tc_ctrl_v,
+      mon_v                 => tc_mon_v,
+      --
+      i_layer             => i_mdt_tar_r.layer,
+      i_tube              => i_mdt_tar_r.tube,
+      i_dv                => i_mdt_tar_r.data_valid,
+      --
+      o_global_x          => global_x,
+      o_global_z          => global_z,
+      o_dv                => r_dv
     );
 
   -- ZH : entity hps_lib.hps_pc_b_zholes
@@ -104,7 +152,7 @@ begin
   --   port map(
   --     clk                 => clk,
   --     rst                 => rst,
-  --     glob_en             => glob_en,
+  --     ena             => ena,
   --     --
   --     i_chamber           => mdt_tar_data(0).chamber_ieta,
   --     i_dv                => mdt_tar_data(0).data_valid,
@@ -119,7 +167,7 @@ begin
   --   port map(
   --     clk                 => clk,
   --     rst                 => rst,
-  --     glob_en             => glob_en,
+  --     ena             => ena,
   --     --
   --     i_layer             => mdt_tar_data(0).layer,
   --     i_dv                => mdt_tar_data(0).data_valid,
@@ -127,7 +175,9 @@ begin
   --     o_dv                => r_dv
   --   );
 
-  dv_pl(0) <= mdt_tar_data(0).data_valid;
+
+
+  dv_pl(0) <= i_mdt_tar_r.data_valid;
 
 
   COORD : process(clk)
@@ -135,8 +185,8 @@ begin
     if rising_edge(clk) then
       if rst = '1' then
         -- reset
-        global_z                    <= (others => '0');
-        global_x                    <= (others => '0');
+        -- global_z                    <= (others => '0');
+        -- global_x                    <= (others => '0');
         time_t0_pl                  <= (others => '0');
         mdt_full_data_r.layer       <= (others => '0');
         mdt_full_data_r.tube        <= (others => '0');
@@ -151,15 +201,15 @@ begin
         mdt_tar_data(c_HPS_PC_PL_LEN -1 downto 1) <= mdt_tar_data(c_HPS_PC_PL_LEN - 2 downto 0);
 
         if dv_pl(1) = '1' then
-          global_z <= mdt_tar_data(1).tube * tubesize; 
-          global_x <= r_pos;
+          -- global_z <= mdt_tar_data(1).tube * tubesize; 
+          -- global_x <= r_pos;
 
           time_t0_pl <= time_t0;
           
         else
           time_t0_pl <= (others => '0');
-          global_z <= (others => '0');
-          global_x <= (others => '0');
+          -- global_z <= (others => '0');
+          -- global_x <= (others => '0');
         end if;
 
         if dv_pl(2) = '1' then

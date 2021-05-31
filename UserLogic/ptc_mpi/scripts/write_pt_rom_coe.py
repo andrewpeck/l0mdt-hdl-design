@@ -61,26 +61,26 @@ def main():
     BIL_SEC3_RHO = 4755.8234
     BML_SEC3_RHO = 6898.3570
 
-    for beta in xrange(0, 2**dbeta_len - 1):
+    for beta in range(0, 2**dbeta_len - 1):
         reciprocal = int(floor(2**divider_dbeta / (beta + 0.5)))
         if beta == 0:
             reciprocal = int(floor((2**divider_dbeta - 1) / (beta + 1.)))
         rec_dbeta_rom_mem.write("%04x\n" % reciprocal)
 
-    for den_sagitta in xrange(0, 2**rec_sagitta_len - 1):
+    for den_sagitta in range(0, 2**rec_sagitta_len - 1):
         if den_sagitta == 0:
             reciprocal = int(
                 floor((2**divider_sagitta - 1) / (den_sagitta + 1.)))
         else:
-            reciprocal = int(floor(2**divider_sagitta / (den_sagitta)))
+            reciprocal = int(floor((2**divider_sagitta - 1) / (den_sagitta)))
 
-        rec_sagitta_rom_mem.write("%04x\n" % reciprocal)
+        rec_sagitta_rom_mem.write("%03x\n" % reciprocal)
 
-    for m in xrange(0, 2**m_sagitta_len - 1):
+    for m in range(0, 2**m_sagitta_len - 1):
         sqrt_m_io = int(floor(sqrt(m_sagitta_multi**2 + m**2)))
         sqrt_m_io_rom_mem.write("%04x\n" % sqrt_m_io)
 
-    for z_digi in xrange(0, 2**(z_red_width) - 1):
+    for z_digi in range(0, 2**(z_red_width) - 1):
         z = z_digi * 2**(args.eta_shift) / args.z_mult
         mag_BI = sqrt(z * z + BIL_SEC3_RHO * BIL_SEC3_RHO)
         eta_BI = 0.5 * log((mag_BI + z) / (mag_BI - z))
@@ -92,7 +92,7 @@ def main():
         eta_BM_digi = int(floor(eta_BM * args.eta_mult))
         eta_BM_rom_mem.write("%04x\n" % eta_BM_digi)
 
-    rec_sagitta_rom_mem.write("0000")
+    rec_sagitta_rom_mem.write("000")
     rec_dbeta_rom_mem.write("0000")
     sqrt_m_io_rom_mem.write("0000")
     eta_BI_rom_mem.write("0000")

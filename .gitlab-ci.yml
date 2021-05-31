@@ -1,7 +1,9 @@
+variables:
+  HOG_CHECK_SYNTAX : 1
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v4.5.0'
+      ref: 'v4.7.0'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -47,7 +49,8 @@ include:
     #         VU13 Projects
     #---------------------------------------------
     - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
+    - local: 'Top/ull_vu13p_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+   # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     # writer
-    
-

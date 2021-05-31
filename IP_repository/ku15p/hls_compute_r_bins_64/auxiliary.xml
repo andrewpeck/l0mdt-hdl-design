@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xd:acceleratorMap xmlns:xd="http://www.xilinx.com/xidane" xd:functionName="compute_r_bins_64" xd:componentRef="compute_r_bins_64" xd:initiationInterval="1" xd:clockPeriod="3.125" xd:sequential="true" xd:hostMachine="64" xd:reset="control">
+  <xd:controlReg xd:name="control" xd:interfaceRef="ap_ctrl" xd:busTypeRef="acc_handshake" xd:type="acc_handshake"/>
+  <xd:arg xd:name="mdt_localx" xd:originalName="mdt_localx" xd:direction="in" xd:interfaceRef="mdt_localx_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="15"/>
+  <xd:arg xd:name="mdt_localy" xd:originalName="mdt_localy" xd:direction="in" xd:interfaceRef="mdt_localy_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="15"/>
+  <xd:arg xd:name="mdt_r_offset[0]" xd:originalName="mdt_r_offset0" xd:direction="in" xd:interfaceRef="mdt_r_offset_0_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="22" xd:arraySize="1"/>
+  <xd:arg xd:name="mdt_r_offset[1]" xd:originalName="mdt_r_offset1" xd:direction="in" xd:interfaceRef="mdt_r_offset_1_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="22" xd:arraySize="1"/>
+  <xd:arg xd:name="hw_sin_val" xd:originalName="hw_sin_val" xd:direction="in" xd:interfaceRef="hw_sin_val_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
+  <xd:arg xd:name="hw_cos_val" xd:originalName="hw_cos_val" xd:direction="in" xd:interfaceRef="hw_cos_val_V" xd:busTypeRef="register" xd:handshakeRef="ap_none" xd:dataWidth="18"/>
+  <xd:arg xd:name="r_bin[0]" xd:originalName="r_bin0" xd:direction="out" xd:interfaceRef="r_bin_0_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="2" xd:arraySize="1"/>
+  <xd:arg xd:name="r_bin[1]" xd:originalName="r_bin1" xd:direction="out" xd:interfaceRef="r_bin_1_V" xd:busTypeRef="register" xd:handshakeRef="ap_vld" xd:dataWidth="7" xd:firstOut="2" xd:arraySize="1"/>
+  <xd:latencyEstimates xd:best-case="2" xd:worst-case="2" xd:average-case="2"/>
+  <xd:resourceEstimates xd:LUT="89" xd:FF="206" xd:BRAM="0" xd:DSP="2"/>
+</xd:acceleratorMap>

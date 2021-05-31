@@ -11,7 +11,7 @@ library shared_lib;
 
 use shared_lib.common_ieee.all;
 
-package MEM_INT_9A19D_PKG is
+package MEM_INT_9A19D_CTRL is
 
   type MEM_INT_9A19D_wr_data_CTRL_t is record
     wr_data_0 : std_logic_vector(19-1 downto 0);
@@ -53,11 +53,11 @@ package MEM_INT_9A19D_PKG is
   function structify(x: in std_logic_vector; t: MEM_INT_9A19D_CTRL_t) return MEM_INT_9A19D_CTRL_t;
   function nullify(t: MEM_INT_9A19D_CTRL_t) return MEM_INT_9A19D_CTRL_t;
 
-end package MEM_INT_9A19D_PKG;
+end package MEM_INT_9A19D_CTRL;
 
 ------------------------------------------------------------
 
-package body MEM_INT_9A19D_PKG is
+package body MEM_INT_9A19D_CTRL is
 
   function len(x: MEM_INT_9A19D_wr_data_CTRL_t) return natural is
     variable l : natural := 0;
@@ -279,4 +279,4 @@ package body MEM_INT_9A19D_PKG is
     return y;
   end function nullify;
 
-end package body MEM_INT_9A19D_PKG;
+end package body MEM_INT_9A19D_CTRL;

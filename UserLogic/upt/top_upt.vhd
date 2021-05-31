@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-03-24
+-- last update: 2021-05-21
 -- ===========================================================
 
 library ieee;
@@ -36,7 +36,7 @@ architecture behav of top_upt is
 
     constant const_ap_start : std_logic := '1';
     constant const_ap_idle  : std_logic := '0';
-    constant ptcalc_hls_ii  : unsigned := X"4";
+    constant ptcalc_hls_ii  : unsigned := X"3"; --X"4";
     signal ptcalc2mtc_data  : std_logic_vector(PTCALC2MTC_LEN-1 downto 0) := (others => '0');
     signal ptcalc2mtc_valid : std_logic;
     signal ptcalc2mtc_done  : std_logic;
@@ -104,22 +104,24 @@ begin
           ptcalc_segment_i  <= i_segment_i;
           ptcalc_segment_m  <= i_segment_m;
           ptcalc_segment_o  <= i_segment_o;
-        elsif unsigned(ptcalc_cnt) = unsigned(ptcalc_hls_ii) or ptcalc_ap_ready = '1' then
+        elsif unsigned(ptcalc_cnt) = unsigned(ptcalc_hls_ii-1) then --or ptcalc_ap_ready = '1' then
           ptcalc_ap_start <= '0';
         end if;
       end if;
 
     end process;
 
-    ptcalc_cnt_process: process(clk,i_rst)
+    ptcalc_cnt_process: process(clk)
       begin
+       if rising_edge (clk) then
         if i_slc(PL2PTCALC_LEN-1) = '1' or i_rst = '1' or ptcalc_ap_start = '0' then
           ptcalc_cnt <= (others => '0');
-        elsif unsigned(ptcalc_cnt) < unsigned(ptcalc_hls_ii) then
+        elsif unsigned(ptcalc_cnt) < unsigned(ptcalc_hls_ii-1) then
           ptcalc_cnt <= std_logic_vector(unsigned (ptcalc_cnt) + 1);
         else
           ptcalc_cnt <= (others => '0');
         end if;
+       end if;
     end process;
 
 end behav;

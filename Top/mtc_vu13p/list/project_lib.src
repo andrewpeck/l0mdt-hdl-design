@@ -1,0 +1,6 @@
+#dataformats/l0mdt_buses_constants.svh
+Top/mtc/prj_cfg.vhd
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+Top/mtc/prj_cfg.vhd
+UserLogic/mtc/src/mtc_builder_verilog.sv
+UserLogic/mtc/top_mtc.vhd

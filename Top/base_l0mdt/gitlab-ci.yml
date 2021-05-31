@@ -5,5 +5,6 @@ GEN:base_l0mdt:
       extends: .vars
       PROJECT_NAME: base_l0mdt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      HOG_CHECK_SYNTAX : 0
     tags:
       - heavy-duty

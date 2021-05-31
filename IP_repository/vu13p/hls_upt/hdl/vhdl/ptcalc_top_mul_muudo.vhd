@@ -6,22 +6,22 @@ use IEEE.numeric_std.all;
 entity ptcalc_top_mul_muudo_DSP48_7 is
 port (
     a: in std_logic_vector(24 - 1 downto 0);
-    b: in std_logic_vector(16 - 1 downto 0);
-    p: out std_logic_vector(42 - 1 downto 0));
+    b: in std_logic_vector(12 - 1 downto 0);
+    p: out std_logic_vector(38 - 1 downto 0));
 
 end entity;
 
 architecture behav of ptcalc_top_mul_muudo_DSP48_7 is
     signal a_cvt: signed(24 - 1 downto 0);
-    signal b_cvt: signed(16 - 1 downto 0);
-    signal p_cvt: signed(42 - 1 downto 0);
+    signal b_cvt: signed(12 - 1 downto 0);
+    signal p_cvt: signed(38 - 1 downto 0);
 
 
 begin
 
     a_cvt <= signed(a);
     b_cvt <= signed(b);
-    p_cvt <= resize((signed (a_cvt) * signed (b_cvt)), 42);
+    p_cvt <= resize((signed (a_cvt) * signed (b_cvt)), 38);
     p <= std_logic_vector(p_cvt);
 
 end architecture;
