@@ -110,16 +110,16 @@ end entity ult;
 architecture behavioral of ult is
 
   -- ctrl/mon vectors
-  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) downto 0); 
-  signal h2s_mon_v  : std_logic_vector(len(h2s_mon) downto 0);
+  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0); 
+  signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
   -- tar_ctrl : 
   -- tar_mon  : 
 
   -- mtc_ctrl : 
   -- mtc_mon  : 
 
-  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) downto 0); 
-  signal ucm_mon_v  : std_logic_vector(len(ucm_mon) downto 0); 
+  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0); 
+  signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0); 
 
   -- daq_ctrl : 
   -- daq_mon  : 
