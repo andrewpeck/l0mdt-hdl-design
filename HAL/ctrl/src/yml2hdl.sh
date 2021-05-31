@@ -44,7 +44,7 @@ do
   echo "-----------------------------------------------"
 
   echo "INFO    : Running YML2HDL"
-  python3 $yml2hdl -n ${ifile}_CTRL ${ifile}/${ifile}_PKG.yml
+  python3 $yml2hdl -p ${ifile}_CTRL ${ifile}/${ifile}_PKG.yml
   echo "INFO    : Done YML2HDL"
 
   if grep -Fxq "use work.${ifile}_Ctrl_DEF.all;" ${ifile}/${ifile}_map.vhd
