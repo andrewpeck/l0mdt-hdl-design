@@ -48,6 +48,7 @@ add wave -noupdate -group DUT /ult_tp/ULT/extra_slc_to_pt
 add wave -noupdate -group DUT /ult_tp/ULT/pl2pt_av
 add wave -noupdate -group DUT /ult_tp/ULT/pl2mtc_av
 add wave -noupdate -group DUT /ult_tp/ULT/pt2mtc_av
+add wave -noupdate -divider UCM
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/clk
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/rst
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/glob_en
@@ -91,199 +92,66 @@ add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/uCM2hps_data
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cde_chamber_z_org_bus
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/cvp_chamber_z_org_bus
 add wave -noupdate -group UCM_top /ult_tp/ULT/logic_gen/UCM/UCM/UCM/phicenter
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/clk
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/rst
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/glob_en
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/ctrl
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/mon
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/i_uCM2pl_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/o_pl2ptcalc_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/o_pl2mtc_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/local_en
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/local_rst
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/int_freeze
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/i_uCM2pl_ar
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/main_pl_out_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/pl2csw_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/pl2ptcalc_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/pl2mtc_av
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/main_pl_out_ar
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/pl2ptcalc_ar
-add wave -noupdate -group MPL_top /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/pl2mtc_ar
-add wave -noupdate -divider PL_4
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_FREEZE_ENABLED
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_PARALLEL_MEM
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_CONTROLLER_MODE
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_MEMORY_MODE
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_MEMORY_TYPE
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_ADDR_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_DATA_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_DATA_DEPTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_PIPELINE_TYPE
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_DELAY_CYCLES
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_DELAY_EQUAL_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_PIPELINE_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_APBUS_ENABLED
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_XML_NODE_NAME
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_APBUS_CTRL_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/g_APBUS_MON_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/clk
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/rst
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/ena
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/ctrl
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/mon
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/i_freeze
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/i_data
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/i_dv
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/o_data
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/o_dv
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/FREEZE_EN
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/ADDR_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/DATA_DEPTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/DATA_WIDTH
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_run_sel
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_apb_sel
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_rd_addr_o
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_wr_addr_o
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_data_o
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_dv_o
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_data_i
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_dv_i
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/int_apb_freeze
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/int_ker_freeze
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/int_apb_sel
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_addr_i_a
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_i_a
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_o_a
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_addr_i_b
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_i_b
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_data_o_b
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_i_a
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_o_a
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_i_b
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_dv_o_b
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_empty
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_empty_next
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_full
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_full_next
-add wave -noupdate -group PL_A /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/mem_used
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/g_PARALLEL_MEM
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/clk
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/rst
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/ena
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/i_freeze
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/i_apb_freeze
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/o_freeze
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/o_apb_sel_v
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/o_sel_run
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/o_sel_apb
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/sel_run
-add wave -noupdate -group vamc_kernel /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/vam_kernel/sel_apb
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_XML_NODE_NAME
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_INTERNAL_CLK
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_ADDR_WIDTH
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_DATA_WIDTH
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_APBUS_CTRL_WIDTH
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/g_APBUS_MON_WIDTH
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/clk
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/rst
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/ena
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/ctrl
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/mon
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/i_axi_clk
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/i_axi_rst
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/o_freeze
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/o_rd_addr
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/o_wr_addr
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/o_data
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/o_dv
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/i_data
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/i_dv
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/axi_rst
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/clk_axi
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/MEM_INT_12A148D/ctrl_r
-add wave -noupdate -group apb_int /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/apb_mem_interface/MEM_INT_12A148D/mon_r
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SIMULATION
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_LOGIC_TYPE
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_READ_MODE
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEMORY_TYPE
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_DV_TYPE
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_SECOND_PORT
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_PL_DELAY_CYCLES
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_IN_PIPELINE
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_OUT_PIPELINE
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_WIDTH
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/g_MEM_DEPTH
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ADD_WIDTH
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_DEPTH
-add wave -noupdate -group mpcv_mem_0 -radix unsigned /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/MEM_WIDTH
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/clk
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rst
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_freeze
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_ext_ctrl
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_addr_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_din_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/i_dv_in_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dout_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_dv_out_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_empty_next
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_full_next
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/o_used
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/ena_pipes_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_A
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/data_pipes_B
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index_aux
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index_aux
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/wr_index
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/rd_index
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_addr_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_in_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_a
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/mem_out_b
-add wave -noupdate -group mpcv_mem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/used_data
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_MEMORY_TYPE
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_MEMORY_STRUCTURE
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ENABLE_SECOND_PORT
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_RAM_WIDTH
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_ADD_WIDTH
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/g_RAM_DEPTH
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/clk
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/rst
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/ena_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/ena_b
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_addr_b
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_din_b
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/i_wr_nrd_b
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/o_dout_b
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/mem
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_a
-add wave -noupdate -group DualPortMem_0 /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/MPL_PL(4)/PL/PL_A/APB_INT_EN/MODE_PL/MPCVMEM_GEN/MEMS_GEN(0)/mpcv_mem/PIPE_GEN/PL_ULTRA/RAM_MEM/addr_b
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/clk
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/rst
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/glob_en
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/i_ucm_av
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/o_tf_av
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/slc_pl
-add wave -noupdate -expand -group mpl_csw /ult_tp/ULT/logic_gen/MPL/MPL_EN/MPL/PL_CSW/csw2tf_ar
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/clk
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/rst
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/glob_en
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/i_chamber_z_org_bus
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/i_local_rst
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/i_in_en
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/i_data_v
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/o_phimod
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/o_ucm2hps_av
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/local_rst
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/int_data_r
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/int_data_v
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/barrel_r
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/data_v
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/data_r
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/data_v_2
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/data_r_2
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/ucm2hps_ar
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/chamber_ieta_r
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_a
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/new_chamb_ieta_dv
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/offset
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/slope
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/slope_dv
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/atan_slope
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/atan_dv
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/vec_pos_array
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/vec_z_pos_dv
+add wave -noupdate -expand -group SLC_VP_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/vec_ang_pl
+add wave -noupdate -expand -group SLOPE_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/clk
+add wave -noupdate -expand -group SLOPE_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/rst
+add wave -noupdate -expand -group SLOPE_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/glob_en
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/i_cointype
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/i_data_v
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/i_data_valid
+add wave -noupdate -expand -group SLOPE_2 -color Orange -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_offset
+add wave -noupdate -expand -group SLOPE_2 -color Orange -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_slope
+add wave -noupdate -expand -group SLOPE_2 -color Orange -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/o_data_valid
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/barrel_r
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/coin
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/rpc_a
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/rad_a
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_z
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/e_y_2
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/int_offset
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_y
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_z
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_zy
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sum_zz
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/sqr_sum_z
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_nom
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(0) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(1) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(2) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(3) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(4) -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(0) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(1) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(2) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(3) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den(4) {-radix unsigned}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/b_den
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/int_slope
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/int_slope_2
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/s_e_z
+add wave -noupdate -expand -group SLOPE_2 -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(16) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(15) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(14) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(13) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(12) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(11) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(10) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(9) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(8) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(7) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(6) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(5) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(4) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(3) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(2) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(1) -radix unsigned} {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(16) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(15) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(14) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(13) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(12) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(11) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(10) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(9) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(8) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(7) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(6) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(5) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(4) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(3) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(2) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(1) {-radix unsigned} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain(0) {-radix unsigned}} /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/dv_chain
+add wave -noupdate -expand -group SLOPE_2 /ult_tp/ULT/logic_gen/UCM/UCM/UCM/SLC_VP_A(2)/SLC_VP/BARREL/SLOPE_CALC/num_h
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {46228904078 fs} 0} {{Cursor 2} {19511121409 fs} 0}
+WaveRestoreCursors {{Cursor 1} {46228904078 fs} 0} {{Cursor 2} {1898437500 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 209
 configure wave -valuecolwidth 279
@@ -299,4 +167,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {10500 ns}
+WaveRestoreZoom {1870661967 fs} {1970461881 fs}
