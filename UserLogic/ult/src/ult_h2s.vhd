@@ -32,7 +32,6 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 
 entity hits_to_segments is
@@ -41,7 +40,7 @@ entity hits_to_segments is
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl_v            : in  std_logic_vector;--H2S_CTRL_t;
-    mon               : out H2S_MON_t;
+    mon_v             : out std_logic; --H2S_MON_t;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -86,7 +85,7 @@ begin
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
       signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(c_H2S_HPS_CTRL_LEN -1 downto 0);
+      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
     begin
       
       ctrl_hps_r <=  ctrl_r.hps(0);
@@ -103,7 +102,7 @@ begin
         glob_en             => glob_en,
 
         ctrl_v => ctrl_hps_v,
-        mon => mon.hps(0),
+        mon_v => mon.hps(0),
 
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
