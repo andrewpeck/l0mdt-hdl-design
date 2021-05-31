@@ -42,8 +42,8 @@ entity ucm_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- AXI to SoC
-    ctrl                : in  UCM_CTRL_t;
-    mon                 : out UCM_MON_t;
+    ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
+    mon_v               : out std_logic_vector;--UCM_MON_t;
     --
     o_phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     o_cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
@@ -57,6 +57,10 @@ entity ucm_supervisor is
 end entity ucm_supervisor;
 
 architecture beh of ucm_supervisor is
+
+  signal ctrl        : UCM_CTRL_t;
+  signal mon         : UCM_MON_t;
+
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   -- signal clk_axi_cnt  : integer;
@@ -90,6 +94,10 @@ architecture beh of ucm_supervisor is
   signal CVP_Z0_CTRL : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   signal CVP_Z0_MON : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 begin
+
+  ctrl <= structify(ctrl_v,ctrl);
+  mon_v <= vectorify(mon,mon_v);
+
   --------------------------------------------
   --    AXI CLK
   --------------------------------------------

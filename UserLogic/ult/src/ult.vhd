@@ -108,6 +108,28 @@ entity ult is
 end entity ult;
 architecture behavioral of ult is
 
+  -- ctrl/mon vectors
+  -- h2s_ctrl : 
+  -- h2s_mon  : 
+
+  -- tar_ctrl : 
+  -- tar_mon  : 
+
+  -- mtc_ctrl : 
+  -- mtc_mon  : 
+
+  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) downto 0); 
+  signal ucm_mon_v  : std_logic_vector(len(ucm_mon) downto 0); 
+
+  -- daq_ctrl : 
+  -- daq_mon  : 
+
+  -- tf_ctrl : i
+  -- tf_mon  : o
+
+  -- mpl_ctrl : 
+  -- mpl_mon  : 
+
   -- outputs from candidate manager
   signal inn_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
   signal mid_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -156,6 +178,7 @@ architecture behavioral of ult is
   signal mpl_sump : std_logic := '1';
 
 begin
+
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate
@@ -227,13 +250,17 @@ begin
     end generate;
 
     UCM_GEN : if c_UCM_ENABLED = '1' generate
+      -- ctrl/mon
+      ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
+      ucm_mon <= structify(ucm_mon_v,ucm_mon);
+      -- block
       ULT_UCM : entity ult_lib.candidate_manager
       port map (
         -- clock, control, and monitoring
         clock_and_control       => clock_and_control,  --
         ttc_commands            => ttc_commands,       --
-        ctrl                    => ucm_ctrl,
-        mon                     => ucm_mon,
+        ctrl_v                    => ucm_ctrl_v,
+        mon_v                     => ucm_mon_v,
         -- candidates in from hal
         i_slc_data_mainA_av     => i_main_primary_slc,
         i_slc_data_mainB_av     => i_main_secondary_slc,

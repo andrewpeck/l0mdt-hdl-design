@@ -34,8 +34,8 @@ entity candidate_manager is
       -- pipeline clock and control
       clock_and_control : in l0mdt_control_rt;
       ttc_commands      : in l0mdt_ttc_rt;
-      ctrl              : in  UCM_CTRL_t;
-      mon               : out UCM_MON_t;
+      ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
+      mon_v               : out std_logic_vector;--UCM_MON_t;
       -- Sector Logic Candidates
       i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
       i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
@@ -66,8 +66,8 @@ begin
       glob_en                 => glob_en,
       ttc_commands            => ttc_commands, 
       -- configuration, control & Monitoring
-      ctrl                    => ctrl,
-      mon                     => mon,
+      ctrl_v                    => ctrl_v,
+      mon_v                     => mon_v,
       -- SLc in
       i_slc_data_mainA_av     => i_slc_data_mainA_av,
       i_slc_data_mainB_av     => i_slc_data_mainB_av,
