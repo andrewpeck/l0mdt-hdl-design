@@ -260,7 +260,7 @@ begin
 
   PL : entity shared_lib.std_pipeline
   generic map(
-    g_DELAY_CYCLES  => 2,
+    g_DELAY_CYCLES  => 10,
     g_PIPELINE_WIDTH    => data_v'length
   )
   port map(
