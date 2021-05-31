@@ -25,7 +25,6 @@ package TAR_CTRL is
   function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
 
   type TAR_CONFIGS_CTRL_t is record
-    THREADS : std_logic_vector(4-1 downto 0);
     INPUT_EN : std_logic;
     OUTPUT_EN : std_logic;
     FLUSH_MEM_RESET : std_logic;
@@ -136,7 +135,6 @@ package body TAR_CTRL is
   function len(x: TAR_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.THREADS);
     l := l + len(x.INPUT_EN);
     l := l + len(x.OUTPUT_EN);
     l := l + len(x.FLUSH_MEM_RESET);
@@ -147,16 +145,12 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.THREADS)-1), vectorify(x.THREADS, y(left to left+len(x.THREADS)-1)));
-      left := left + len(x.THREADS);
       assign(y(left to left+len(x.INPUT_EN)-1), vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
       left := left + len(x.INPUT_EN);
       assign(y(left to left+len(x.OUTPUT_EN)-1), vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
       left := left + len(x.OUTPUT_EN);
       assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
     else
-      assign(y(left downto left-len(x.THREADS)+1), vectorify(x.THREADS, y(left downto left-len(x.THREADS)+1)));
-      left := left - len(x.THREADS);
       assign(y(left downto left-len(x.INPUT_EN)+1), vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
       left := left - len(x.INPUT_EN);
       assign(y(left downto left-len(x.OUTPUT_EN)+1), vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
@@ -170,16 +164,12 @@ package body TAR_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.THREADS := structify(x(left to left+len(y.THREADS)-1), y.THREADS);
-      left := left + len(y.THREADS);
       y.INPUT_EN := structify(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
       left := left + len(y.INPUT_EN);
       y.OUTPUT_EN := structify(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
       left := left + len(y.OUTPUT_EN);
       y.FLUSH_MEM_RESET := structify(x(left to left+len(y.FLUSH_MEM_RESET)-1), y.FLUSH_MEM_RESET);
     else
-      y.THREADS := structify(x(left downto left-len(y.THREADS)+1), y.THREADS);
-      left := left - len(y.THREADS);
       y.INPUT_EN := structify(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
       left := left - len(y.INPUT_EN);
       y.OUTPUT_EN := structify(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
@@ -191,7 +181,6 @@ package body TAR_CTRL is
   function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
   variable y: TAR_CONFIGS_CTRL_t;
   begin
-    y.THREADS := nullify(t.THREADS);
     y.INPUT_EN := nullify(t.INPUT_EN);
     y.OUTPUT_EN := nullify(t.OUTPUT_EN);
     y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);

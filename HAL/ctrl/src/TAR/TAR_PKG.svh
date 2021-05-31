@@ -15,7 +15,6 @@
   } TAR_ACTIONS_CTRL_t;
 
   typedef struct packed {
-    logic [4-1:0] THREADS;
     logic  INPUT_EN;
     logic  OUTPUT_EN;
     logic  FLUSH_MEM_RESET;

@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-05-28 15:39:36.655982.
+-- Created : 2021-05-31 14:42:19.906103.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -17,7 +17,6 @@ package TAR_CTRL_DEF is
                                                               );
   constant DEFAULT_TAR_CONFIGS_CTRL_t : TAR_CONFIGS_CTRL_t := (
                                                                INPUT_EN => '1',
-                                                               THREADS => x"3",
                                                                OUTPUT_EN => '1',
                                                                FLUSH_MEM_RESET => '1'
                                                               );

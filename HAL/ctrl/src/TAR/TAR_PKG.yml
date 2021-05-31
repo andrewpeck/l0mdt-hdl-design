@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-05-28 15:39:36.656060.
+# Created : 2021-05-31 14:42:19.906180.
 config:
   basic_convert_functions : off
   packages:
@@ -18,7 +18,6 @@ hdl:
 
 
 - TAR_CONFIGS_CTRL_t:
-  - THREADS : [ type: logic, length: 4 ]
   - INPUT_EN : [ type: logic ]
   - OUTPUT_EN : [ type: logic ]
   - FLUSH_MEM_RESET : [ type: logic ]
