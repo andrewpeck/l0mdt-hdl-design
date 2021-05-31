@@ -40,7 +40,7 @@ entity hits_to_segments is
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl_v            : in  std_logic_vector;--H2S_CTRL_t;
-    mon_v             : out std_logic; --H2S_MON_t;
+    mon_v             : out std_logic_vector; --H2S_MON_t;
 
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -83,37 +83,37 @@ begin
 
     -- o_sump <= '0';
 
-    HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
-      signal ctrl_hps_r : H2S_HPS_CTRL_t;
-      signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
-    begin
+    -- HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
+    --   signal ctrl_hps_r : H2S_HPS_CTRL_t;
+    --   signal ctrl_hps_v : std_logic_vector(len(ctrl_hps_r) -1 downto 0);
+    -- begin
       
-      ctrl_hps_r <=  ctrl_r.hps(0);
-      ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
+    --   ctrl_hps_r <=  ctrl_r.hps(0);
+    --   ctrl_hps_v <= vectorify(ctrl_hps_r,ctrl_hps_v);
 
-      HPS : entity hps_lib.hps
-      generic map(
-        g_STATION_RADIUS    => 0,
-        g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
-      )
-      port map(
-        clk                 => clock_and_control.clk,
-        rst                 => clock_and_control.rst,
-        glob_en             => glob_en,
+    --   HPS : entity hps_lib.hps
+    --   generic map(
+    --     g_STATION_RADIUS    => 0,
+    --     g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
+    --   )
+    --   port map(
+    --     clk                 => clock_and_control.clk,
+    --     rst                 => clock_and_control.rst,
+    --     glob_en             => glob_en,
 
-        ctrl_v => ctrl_hps_v,
-        mon_v => mon.hps(0),
+    --     ctrl_v => ctrl_hps_v,
+    --     mon_v => mon.hps(0),
 
-        -- configuration & control
-        -- i_uCM_pam           => i_uCM_pam,
-        -- SLc
-        i_uCM2hps_av        => i_inn_slc_av,
-        -- MDT hit
-        i_mdt_tar_av        => i_inn_tar_hits_av,
-        -- to pt calc
-        o_sf2pt_av          => o_inn_segments_av
-      );
-    end generate;
+    --     -- configuration & control
+    --     -- i_uCM_pam           => i_uCM_pam,
+    --     -- SLc
+    --     i_uCM2hps_av        => i_inn_slc_av,
+    --     -- MDT hit
+    --     i_mdt_tar_av        => i_inn_tar_hits_av,
+    --     -- to pt calc
+    --     o_sf2pt_av          => o_inn_segments_av
+    --   );
+    -- end generate;
 
     -- HPS_MID : if c_HPS_ENABLE_ST_MID = '1' generate
     --   HPS : entity hps_lib.hps

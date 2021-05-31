@@ -194,7 +194,7 @@ begin
     ttc_commands      => ttc_commands,
 
     -- ULT Control
-    h2s_ctrl_v => h2s_ctrl_v,
+    h2s_ctrl => h2s_ctrl,
     h2s_mon  => h2s_mon,
     tar_ctrl => tar_ctrl,
     tar_mon  => tar_mon,
