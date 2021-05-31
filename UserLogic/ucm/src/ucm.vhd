@@ -41,8 +41,8 @@ entity ucm is
     glob_en                 : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
     -- configuration, control & Monitoring
-    ctrl                    : in  UCM_CTRL_t;
-    mon                     : out UCM_MON_t;
+    ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
+    mon_v               : out std_logic_vector;--UCM_MON_t;
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
@@ -136,8 +136,8 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    ctrl              => ctrl,
-    mon               => mon,
+    ctrl_v              => ctrl_v,
+    mon_v               => mon_v,
     --
     o_phicenter => phicenter,
     o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,

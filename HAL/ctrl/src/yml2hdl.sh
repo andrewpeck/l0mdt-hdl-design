@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
-# -------------------------------
-# 
-# -------------------------------
+# --------------------------------------------------------------------------------
+# --  UMass , Physics Department
+# --  Guillermo Loustau de Linares
+# --  gloustau@cern.ch
+# --------------------------------------------------------------------------------
+# --  Project: ATLAS L0MDT Trigger 
+# --  Module: REGMAP to yml2hdl v2 
+# --  Description:
+# --
+# --------------------------------------------------------------------------------
 
 yml2hdl="../../../tools/yml2hdl/yml2hdl.py"
 # # common_ieee="../../../shared/types/common_ieee.yml"
@@ -19,6 +26,7 @@ yml2hdl="../../../tools/yml2hdl/yml2hdl.py"
 # python3 $yml2hdl -v MEM_INT_9A19D/MEM_INT_9A19D_PKG.yml
 
 declare -a arr=(
+  "TAR"
   "MPL" 
   "UCM" 
   "H2S"
@@ -36,7 +44,7 @@ do
   echo "-----------------------------------------------"
 
   echo "INFO    : Running YML2HDL"
-  python3 $yml2hdl -n ${ifile}_CTRL ${ifile}/${ifile}_PKG.yml
+  python3 $yml2hdl -p ${ifile}_CTRL ${ifile}/${ifile}_PKG.yml
   echo "INFO    : Done YML2HDL"
 
   if grep -Fxq "use work.${ifile}_Ctrl_DEF.all;" ${ifile}/${ifile}_map.vhd

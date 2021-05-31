@@ -141,14 +141,14 @@ begin
   begin
     
     
-    mmem : entity mpcvmem_lib.mpcvmem
+    mmem : entity mpcvmem_lib.mpcvm_top
     generic map(
-      g_LOGIC_TYPE    => "pipeline",
-      g_MEMORY_TYPE   => g_MEMORY_TYPE,
-
-      g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-      g_MEM_WIDTH     => g_PIPELINE_WIDTH,
-      g_MEM_DEPTH     => TOTAL_DELAY_CYCLES
+      g_LOGIC_TYPE        => "pipeline",
+      g_MEMORY_TYPE       => g_MEMORY_TYPE,
+      g_DV_TYPE           => "ext",
+      g_PL_DELAY_CYCLES   => TOTAL_DELAY_CYCLES,
+      g_MEM_WIDTH         => g_PIPELINE_WIDTH,
+      g_MEM_DEPTH         => TOTAL_DELAY_CYCLES
     )
     port map(
       clk           => clk,

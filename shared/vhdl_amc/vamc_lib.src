@@ -1,17 +1,21 @@
 #---------------------------------
 # MAIN VHDL AMC FILES
 #---------------------------------
-shared/vhdl_amc/src/vamc_pl.vhd
-shared/vhdl_amc/src/vamc_rb.vhd
-shared/vhdl_amc/src/vamc_sr.vhd
+shared/vhdl_amc/pkg/vamc_pkg.vhd
+
+shared/vhdl_amc/src/modules/vamc_pl.vhd
+shared/vhdl_amc/src/modules/vamc_rb.vhd
+shared/vhdl_amc/src/modules/vamc_sr.vhd
 shared/vhdl_amc/src/vamc_csw_in.vhd
 shared/vhdl_amc/src/vamc_csw_out.vhd
-shared/vhdl_amc/src/vamc_controller.vhd
-shared/vhdl_amc/src/vamc_kernel.vhd
+shared/vhdl_amc/src/vamc_top.vhd
+# shared/vhdl_amc/src/vamc_controller.vhd
+shared/vhdl_amc/src/vamc_ctrl_pl.vhd
+shared/vhdl_amc/src/vamc_ctrl_ext.vhd
 #---------------------------------
 #  MPCVMEM
 #---------------------------------
-shared/vhdl_amc/mpcvmem/mpcvmem_lib.src lib=mpcvmem_lib
+# shared/vhdl_amc/mpcvmem/mpcvmem_lib.src lib=mpcvmem_lib
 # shared/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd
 # shared/vhdl_amc/mpcvmem/src/mpcvmem.vhd
 # shared/vhdl_amc/mpcvmem/src/DualPortMem.vhd

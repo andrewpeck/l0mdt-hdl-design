@@ -26,8 +26,8 @@ library vamc_lib;
 library apbus_lib;
 library mpcvmem_lib;
 
-library ctrl_lib;
-  use ctrl_lib.MPL_CTRL.all;
+-- library ctrl_lib;
+--   use ctrl_lib.MPL_CTRL.all;
   -- use ctrl_lib.MEM_INT_10A148D_PKG.all;
   -- use ctrl_lib.MEM_INT_12A148D_PKG.all;
 
@@ -44,6 +44,7 @@ entity vamc_controller is
     g_DATA_DEPTH        : integer := 0;
     -- pipeline
     g_PIPELINE_TYPE     : string := "shift_reg";-- shift_reg , ring_buffer , mpcvmem 
+    g_MEMORY_STRUCTURE  : string := "SDP";
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer;
@@ -114,7 +115,7 @@ begin
   -- MEMORY WITH MONITORING
   -----------------------------------------------
 
-  APB_INT_EN: if g_APBUS_ENABLED generate
+  APB_EN: if g_APBUS_ENABLED generate
 
     signal mem_run_sel  : integer range 0 to g_PARALLEL_MEM;
     signal mem_apb_sel  : integer range 0 to g_PARALLEL_MEM;
@@ -212,7 +213,7 @@ begin
         o_dv          => apb_dv_o, 
         i_data        => apb_data_i,  
         i_dv          => apb_dv_i
-      );  
+    );  
     
       MODE_PL: if g_MEMORY_MODE = "pipeline" generate
         -- general output
@@ -228,47 +229,6 @@ begin
           apb_dv_i            <= mem_dv_o_b(sel_i)    when int_apb_sel(sel_i) = '1' else '0';
         end generate SIG_SEL;
 
-        -- sig_assig: process(all)
-        -- begin
-        --   -- general input
-        --   for sig_i in g_PARALLEL_MEM downto 0 loop
-        --     -- mem_data_i_a(sig_i) <= i_data;
-        --     -- mem_dv_i_a(sig_i) <= i_dv;
-        --   end loop;
-        --   -- apb
-        --   for sel_i in g_PARALLEL_MEM downto 0 loop
-            
-        --     if int_apb_sel(sel_i) = '1' then
-        --       mem_data_i_a(sel_i) <= apb_data_o;
-        --       mem_dv_i_a(sel_i) <= apb_dv_o;
-        --       mem_addr_i_a(sel_i) <= apb_wr_addr_o;
-        --       mem_addr_i_b(sel_i) <= apb_rd_addr_o;
-        --       apb_data_i <= mem_data_o_b(sel_i);
-        --       apb_dv_i <= mem_dv_o_b(sel_i);
-        --     else
-        --       mem_addr_i_a(sel_i) <= (others => '0');
-        --       mem_addr_i_b(sel_i) <= (others => '0');
-        --       mem_data_i_a(sel_i) <= i_data;
-        --       mem_dv_i_a(sel_i) <= i_dv;
-        --     end if;
-
-        --     -- if sel_i = mem_apb_sel then
-        --     --   mem_addr_i_b(mem_apb_sel) <= apb_rd_addr_o;
-        --     --   mem_data_i_b(mem_apb_sel) <= apb_data_o;
-        --     --   mem_dv_i_b(mem_apb_sel) <= apb_dv_o;
-        --     --   apb_data_i <= mem_data_o_b(mem_apb_sel);
-        --     --   apb_dv_i <= mem_dv_o_b(mem_apb_sel);
-        --     -- else
-        --     --   mem_addr_i_b(mem_apb_sel) <= (others => '0');
-        --     --   mem_data_i_b(mem_apb_sel) <= (others => '0');
-        --     --   mem_dv_i_b(mem_apb_sel) <= '0';
-        --     --   apb_data_i <= (others => '0');
-        --     --   apb_dv_i <= '0';
-        --     -- end if;
-        --   end loop;
-        -- end process sig_assig;
-
-
         MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
           -- DC4_GEN: if condition generate
           -- end generate DC4_GEN;
@@ -277,27 +237,16 @@ begin
   
           begin
 
-          signal_ctrl: process(clk)
-          begin
-            if rising_edge(clk) then
-              if rst = '1' then
-
-              else
-
-              end if;
-            end if;
-          end process signal_ctrl;
-
           MEMS_GEN: for mem_i in g_PARALLEL_MEM downto 0 generate
-            mpcv_mem : entity mpcvmem_lib.mpcvmem
+            mpcv_mem : entity mpcvmem_lib.mpcvm_top
             generic map(
               g_LOGIC_TYPE    => "pipeline",
               g_MEMORY_TYPE   => g_MEMORY_TYPE,
-
+              g_MEMORY_STRUCTURE => g_MEMORY_STRUCTURE,
               g_SECOND_PORT => "monitor",
     
               g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
-              g_OUT_PIPELINE => 2,
+              g_OUT_PIPELINE    => 2,
               g_MEM_WIDTH     => DATA_WIDTH,
               g_MEM_DEPTH     => DATA_DEPTH
             )
@@ -319,26 +268,28 @@ begin
               -- i_din_b       => mem_data_i_b(mem_i), -- apb_data_o,   
               -- i_dv_in_b     => mem_dv_i_b(mem_i),   -- apb_dv_o, 
               o_dout_b      => mem_data_o_b(mem_i), -- apb_data_i,  
-              o_dv_out_b    => mem_dv_o_b(mem_i),   -- apb_dv_i,
+              o_dv_out_b    => mem_dv_o_b(mem_i)   -- apb_dv_i,
               -- Flags
-              o_empty       => mem_empty(mem_i),
-              o_empty_next  => mem_empty_next(mem_i),
-              o_full        => mem_full(mem_i),
-              o_full_next   => mem_full_next(mem_i),
-              -- used counter
-              o_used        => mem_used(mem_i)
+              -- o_empty       => mem_empty(mem_i),
+              -- o_empty_next  => mem_empty_next(mem_i),
+              -- o_full        => mem_full(mem_i),
+              -- o_full_next   => mem_full_next(mem_i),
+              -- -- used counter
+              -- o_used        => mem_used(mem_i)
             );
           end generate MEMS_GEN;
           
         end generate MPCVMEM_GEN;
 
       end generate MODE_PL;
-  end generate APB_INT_EN;
+  -- end generate APB_INT_EN;
 
+  else generate
   -----------------------------------------------
   -- SINGLE MEMORY NO MONITORING
   -----------------------------------------------
-  APB_INT_DIS: if not g_APBUS_ENABLED generate
+  -- APB_INT_DIS: if not g_APBUS_ENABLED generate
+
     MODE_MEM: if g_MEMORY_MODE = "pipeline" generate
       MPCVMEM_GEN: if g_PIPELINE_TYPE = "mpcvmem" generate
         -- DC4_GEN: if condition generate   
@@ -346,12 +297,13 @@ begin
         -- constant OUT_PIPELINE
         constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
       begin        
-        mpcvmem : entity mpcvmem_lib.mpcvmem
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
         generic map(
           g_LOGIC_TYPE    => "pipeline",
           g_MEMORY_TYPE   => g_MEMORY_TYPE,
 
           g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 2,
           g_MEM_WIDTH       => DATA_WIDTH,
           g_MEM_DEPTH       => DATA_DEPTH
         )
@@ -366,8 +318,60 @@ begin
           o_dv_out_b    => o_dv    
         );
       end generate MPCVMEM_GEN;
+      SDPM_GEN: if g_PIPELINE_TYPE = "SDPM" generate
+          constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+        begin  
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
+        generic map(
+          g_LOGIC_TYPE    => "pipeline",
+          g_MEMORY_TYPE   => g_MEMORY_TYPE,
+          g_MEMORY_STRUCTURE => "SDP_2",
+          g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 2,
+          g_MEM_WIDTH       => DATA_WIDTH,
+          g_MEM_DEPTH       => DATA_DEPTH
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          ena           => ena,
+          --
+          i_din_a       => i_data,
+          i_dv_in_a     => i_dv,
+          o_dout_b      => o_data,
+          o_dv_out_b    => o_dv    
+        );
+      end generate SDPM_GEN;
+      XPM_GEN: if g_PIPELINE_TYPE = "XPM" generate
+          constant TOTAL_DELAY_CYCLES : integer := g_DELAY_CYCLES;
+        begin  
+        mpcvmem : entity mpcvmem_lib.mpcvm_top
+        generic map(
+          g_LOGIC_TYPE    => "pipeline",
+          g_MEMORY_TYPE   => g_MEMORY_TYPE,
+          g_MEMORY_STRUCTURE => "XPM",
+          g_PL_DELAY_CYCLES => TOTAL_DELAY_CYCLES,
+          g_OUT_PIPELINE    => 2,
+          g_MEM_WIDTH       => DATA_WIDTH,
+          g_MEM_DEPTH       => DATA_DEPTH
+        )
+        port map(
+          clk           => clk,
+          rst           => rst,
+          ena           => ena,
+          --
+          i_din_a       => i_data,
+          i_dv_in_a     => i_dv,
+          o_dout_b      => o_data,
+          o_dv_out_b    => o_dv    
+        );
+      end generate XPM_GEN;
     end generate MODE_MEM;
-  end generate APB_INT_DIS;
+
+
+
+
+  end generate;
   
 
 

@@ -50,6 +50,7 @@ use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.MPL_CTRL_DEF.all;
 use ctrl_lib.UCM_CTRL_DEF.all;
 use ctrl_lib.H2S_CTRL_DEF.all;
+use ctrl_lib.TAR_CTRL_DEF.all;
 
 library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;
@@ -113,16 +114,16 @@ architecture beh of ult_tp is
   -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
 
   -- TDC Hits from Polmux
-  signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_out_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tdc_ext_av :  mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_out_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  signal i_mdt_tdc_ext_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- TDC Hits from Tar
-  signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_inn_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_mid_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_out_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
   signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
@@ -137,8 +138,8 @@ architecture beh of ult_tp is
   signal o_daq_streams :  felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0) := (others => (others => '0'));
 
   -- Segments Out to Neighbor
-  signal o_plus_neighbor_segments  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
-  signal o_minus_neighbor_segments :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_plus_neighbor_segments_av  :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
+  signal o_minus_neighbor_segments_av :  sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0) := (others => (others => '0'));
 
   -- MUCTPI
   signal o_MTC :  mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
@@ -171,6 +172,8 @@ architecture beh of ult_tp is
 
   signal glob_en : std_logic := '1';
 
+  signal bx : std_logic := '0';
+
 
 begin
 
@@ -184,6 +187,10 @@ begin
 
     -- pipeline clock
     clock_and_control => clock_and_control,
+    -- clk => clk,
+    -- rst => rst,
+    -- bx  => bx ,
+
     ttc_commands      => ttc_commands,
 
     -- ULT Control
@@ -203,16 +210,16 @@ begin
     mpl_mon  => mpl_mon,
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  => i_mdt_tdc_inn_av,
-    i_middle_tdc_hits => i_mdt_tdc_mid_av,
-    i_outer_tdc_hits  => i_mdt_tdc_out_av,
-    i_extra_tdc_hits  => i_mdt_tdc_ext_av,
+    i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
+    i_mid_tdc_hits_av => i_mdt_tdc_mid_av,
+    i_out_tdc_hits_av => i_mdt_tdc_out_av,
+    i_ext_tdc_hits_av => i_mdt_tdc_ext_av,
 
     -- TAR Hits for simulation
-    i_inner_tar_hits  => i_mdt_tar_inn_av,
-    i_middle_tar_hits => i_mdt_tar_mid_av,
-    i_outer_tar_hits  => i_mdt_tar_out_av,
-    i_extra_tar_hits  => i_mdt_tar_ext_av,
+    -- i_inner_tar_hits  => i_mdt_tar_inn_av,
+    -- i_middle_tar_hits => i_mdt_tar_mid_av,
+    -- i_outer_tar_hits  => i_mdt_tar_out_av,
+    -- i_extra_tar_hits  => i_mdt_tar_ext_av,
 
     -- Sector Logic Candidates
     i_main_primary_slc   => i_main_primary_slc,
@@ -228,8 +235,8 @@ begin
     o_daq_streams => o_daq_streams,
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  => o_plus_neighbor_segments,
-    o_minus_neighbor_segments => o_minus_neighbor_segments,
+    o_plus_neighbor_segments_av  => o_plus_neighbor_segments_av,
+    o_minus_neighbor_segments_av => o_minus_neighbor_segments_av,
 
     -- MUCTPI
     o_MTC => o_MTC,
@@ -319,27 +326,27 @@ begin
   -------------------------------------------------------------------------------------
 	-- hits
   -------------------------------------------------------------------------------------
-  TAR_HIT : if c_EN_TAR_HITS = 1 generate -- TAR data injection
-    HIT : entity project_lib.ult_tb_reader_tar 
-    generic map (
-      IN_HIT_FILE => IN_HIT_FILE
-    )
-    port map(
-      clk => clk,
-      rst => rst,
-      enable => enable_mdt,
-      --
-      tb_curr_tdc_time => tb_curr_tdc_time,
-      -- TAR Hits for simulation
-      i_mdt_tar_inn_av => i_mdt_tar_inn_av,
-      i_mdt_tar_mid_av => i_mdt_tar_mid_av,
-      i_mdt_tar_out_av => i_mdt_tar_out_av,
-      i_mdt_tar_ext_av => i_mdt_tar_ext_av
-    );
-  end generate;
+  -- TAR_HIT : if c_EN_TAR_HITS = 1 generate -- TAR data injection
+  --   HIT : entity project_lib.ult_tb_reader_tar 
+  --   generic map (
+  --     IN_HIT_FILE => IN_HIT_FILE
+  --   )
+  --   port map(
+  --     clk => clk,
+  --     rst => rst,
+  --     enable => enable_mdt,
+  --     --
+  --     tb_curr_tdc_time => tb_curr_tdc_time,
+  --     -- TAR Hits for simulation
+  --     i_mdt_tar_inn_av => i_mdt_tar_inn_av,
+  --     i_mdt_tar_mid_av => i_mdt_tar_mid_av,
+  --     i_mdt_tar_out_av => i_mdt_tar_out_av,
+  --     i_mdt_tar_ext_av => i_mdt_tar_ext_av
+  --   );
+  -- end generate;
 
-  TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
-    HIT : entity project_lib.ult_tb_reader_tdc 
+  -- TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
+    MDT : entity project_lib.ult_tb_reader_tdc 
     generic map (
       IN_HIT_FILE => IN_HIT_FILE
     )
@@ -355,7 +362,7 @@ begin
       i_mdt_tdc_out_av => i_mdt_tdc_out_av,
       i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
     );
-  end generate;
+  -- end generate;
 
  	-------------------------------------------------------------------------------------
 	-- candidates

@@ -46,7 +46,11 @@ entity top_ult is
 
   port (
     -- pipeline clock
-    clock_and_control : in l0mdt_control_rt;
+    -- clock_and_control : in l0mdt_control_rt;
+    clk                 : in std_logic;
+    rst                 : in std_logic;
+    bx                  : in std_logic;
+
     ttc_commands      : in l0mdt_ttc_rt;
 
     -- axi control
@@ -73,16 +77,16 @@ entity top_ult is
     mpl_mon  : out MPL_MON_t;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
-    i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+    -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
+    -- i_middle_tar_hits : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0);
+    -- i_outer_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
+    -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
     i_main_primary_slc        : in slc_rx_bus_avt(2 downto 0);  -- is the main SL used
@@ -94,7 +98,7 @@ entity top_ult is
     i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    daq_streams_o : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
     o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
@@ -111,8 +115,14 @@ entity top_ult is
 end entity top_ult;
 
 architecture behavioral of top_ult is
+  signal clock_and_control : l0mdt_control_rt;
 
 begin
+
+  clock_and_control.clk <= clk;
+  clock_and_control.rst <= rst;
+  clock_and_control.bx  <= bx;
+
 
   ULT : entity ult_lib.ult
     generic map(
@@ -124,16 +134,16 @@ begin
       ttc_commands      => ttc_commands,
 
       -- TDC Hits from Polmux
-      i_inner_tdc_hits  => i_inner_tdc_hits,
-      i_middle_tdc_hits => i_middle_tdc_hits,
-      i_outer_tdc_hits  => i_outer_tdc_hits,
-      i_extra_tdc_hits  => i_extra_tdc_hits,
+      i_inn_tdc_hits_av => i_inner_tdc_hits,
+      i_mid_tdc_hits_av => i_middle_tdc_hits,
+      i_out_tdc_hits_av => i_outer_tdc_hits,
+      i_ext_tdc_hits_av => i_extra_tdc_hits,
 
       -- TAR Hits for simulation
-      i_inner_tar_hits  => i_inner_tar_hits,
-      i_middle_tar_hits => i_middle_tar_hits,
-      i_outer_tar_hits  => i_outer_tar_hits,
-      i_extra_tar_hits  => i_extra_tar_hits,
+      -- i_inner_tar_hits  => i_inner_tar_hits,
+      -- i_middle_tar_hits => i_middle_tar_hits,
+      -- i_outer_tar_hits  => i_outer_tar_hits,
+      -- i_extra_tar_hits  => i_extra_tar_hits,
 
       -- Sector Logic Candidates
       i_main_primary_slc   => i_main_primary_slc,
@@ -163,11 +173,11 @@ begin
       mpl_mon  => mpl_mon,
 
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-      daq_streams_o => daq_streams_o,
+      o_daq_streams => o_daq_streams,
 
       -- Segments Out to Neighbor
-      o_plus_neighbor_segments  => o_plus_neighbor_segments,
-      o_minus_neighbor_segments => o_minus_neighbor_segments,
+      o_plus_neighbor_segments_av  => o_plus_neighbor_segments,
+      o_minus_neighbor_segments_av => o_minus_neighbor_segments,
 
       -- MUCTPI
       o_MTC => o_MTC,

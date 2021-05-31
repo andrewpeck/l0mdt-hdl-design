@@ -7,7 +7,7 @@ parameter n_PRIMARY_CANDIDATES=3;
 `include "l0mdt_buses_constants.svh"
 
   
-module top_ult_tp_verilog(
+module top_ult_verilog(
 			  input logic 						clk,
 			  input logic 						rst,
 			  input logic 						bx,
@@ -46,7 +46,7 @@ module top_ult_tp_verilog(
    assign {>>{mtc_o}}                         = mtc_o_unpacked;
 
    
-   top_ult_tp top_ult_tp_inst
+   top_ult top_ult_inst
      (
       .clk(clk),
       .rst(rst),

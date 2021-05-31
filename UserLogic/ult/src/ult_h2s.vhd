@@ -44,25 +44,25 @@ entity hits_to_segments is
     mon               : out H2S_MON_t;
 
     -- TDC Hits from Polmux
-    i_inn_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_mid_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_out_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_ext_tar_hits  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
     -- Sector Logic Candidates from uCM
-    i_inn_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_mid_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_out_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
-    i_ext_slc       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_inn_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_mid_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_out_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
+    i_ext_slc_av       : in ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
     -- Segments Out
-    o_inn_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_mid_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_out_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-    o_ext_segments  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_inn_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_mid_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_out_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+    o_ext_segments_av  : out sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_av  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_av : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0)
     
-    o_sump : out std_logic
+    -- o_sump : out std_logic
   );
   
 
@@ -80,9 +80,9 @@ begin
 
   glob_en <= '1';
 
-  H2S_GEN : if c_H2S_ENABLED = '1' generate
+  -- H2S_GEN : if c_H2S_ENABLED = '1' generate
 
-    o_sump <= '0';
+    -- o_sump <= '0';
 
     HPS_INN : if c_HPS_ENABLE_ST_INN = '1' generate
       signal ctrl_hps_r : H2S_HPS_CTRL_t;
@@ -108,11 +108,11 @@ begin
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
-        i_uCM2hps_av        => i_inn_slc,
+        i_uCM2hps_av        => i_inn_slc_av,
         -- MDT hit
-        i_mdt_tar_av        => i_inn_tar_hits,
+        i_mdt_tar_av        => i_inn_tar_hits_av,
         -- to pt calc
-        o_sf2pt_av          => o_inn_segments
+        o_sf2pt_av          => o_inn_segments_av
       );
     end generate;
 
@@ -192,70 +192,70 @@ begin
     -- end generate;
 
     DIS_HPS_EXT : if c_HPS_ENABLE_ST_EXT = '0' generate
-      o_ext_segments <= (others => ( others => '0'));
+      o_ext_segments_av <= (others => ( others => '0'));
     end generate;
 
-  end generate;
+  -- end generate;
 
-  H2S_NO_GEN : if c_H2S_ENABLED = '0' generate
-    signal inn_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
-    signal mid_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
-    signal out_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
-    signal ext_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
-    signal inn_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-    signal mid_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-    signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-    signal ext_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
-  begin
-    o_inn_segments <= (others => (others => '0'));
-    o_mid_segments <= (others => (others => '0'));
-    o_out_segments <= (others => (others => '0'));
-    o_ext_segments <= (others => (others => '0'));
-    o_plus_neighbor_segments <= (others => (others => '0'));
-    o_minus_neighbor_segments <= (others => (others => '0'));
+  -- H2S_NO_GEN : if c_H2S_ENABLED = '0' generate
+  --   signal inn_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
+  --   signal mid_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
+  --   signal out_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
+  --   signal ext_tar_hits_sump            : std_logic_vector (c_HPS_MAX_HP_EXT-1 downto 0);
+  --   signal inn_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  --   signal mid_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  --   signal out_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  --   signal ext_slc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
+  -- begin
+  --   o_inn_segments <= (others => (others => '0'));
+  --   o_mid_segments <= (others => (others => '0'));
+  --   o_out_segments <= (others => (others => '0'));
+  --   o_ext_segments <= (others => (others => '0'));
+  --   o_plus_neighbor_segments <= (others => (others => '0'));
+  --   o_minus_neighbor_segments <= (others => (others => '0'));
 
-    sump_proc : process (clock_and_control.clk) is
-    begin  -- process tdc_hit_sump_proc
-      if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+  --   sump_proc : process (clock_and_control.clk) is
+  --   begin  -- process tdc_hit_sump_proc
+  --     if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
 
-        inn_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
-          inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I));
-        end loop;
-        mid_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
-          mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I));
-        end loop;
-        out_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
-          out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I));
-        end loop;
-        ext_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
-          ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I));
-        end loop;
+  --       inn_loop : for I in 0 to c_HPS_MAX_HP_INN-1 loop
+  --         inn_tar_hits_sump(I) <= xor_reduce(i_inn_tar_hits(I));
+  --       end loop;
+  --       mid_loop : for I in 0 to c_HPS_MAX_HP_MID-1 loop
+  --         mid_tar_hits_sump(I) <= xor_reduce(i_mid_tar_hits(I));
+  --       end loop;
+  --       out_loop : for I in 0 to c_HPS_MAX_HP_OUT-1 loop
+  --         out_tar_hits_sump(I) <= xor_reduce(i_out_tar_hits(I));
+  --       end loop;
+  --       ext_loop : for I in 0 to c_HPS_MAX_HP_EXT-1 loop
+  --         ext_tar_hits_sump(I) <= xor_reduce(i_ext_tar_hits(I));
+  --       end loop;
 
-        slc_inn_loop : for I in 0 to c_NUM_THREADS-1 loop
-          inn_slc_sump(I) <= xor_reduce(i_inn_slc(I));
-        end loop;
-        slc_mid_loop : for I in 0 to c_NUM_THREADS-1 loop
-          mid_slc_sump(I) <= xor_reduce(i_mid_slc(I));
-        end loop;
-        slc_out_loop : for I in 0 to c_NUM_THREADS-1 loop
-          out_slc_sump(I) <= xor_reduce(i_out_slc(I));
-        end loop;
-        slc_ext_loop : for I in 0 to c_NUM_THREADS-1 loop
-          ext_slc_sump(I) <= xor_reduce(i_ext_slc(I));
-        end loop;
+  --       slc_inn_loop : for I in 0 to c_NUM_THREADS-1 loop
+  --         inn_slc_sump(I) <= xor_reduce(i_inn_slc(I));
+  --       end loop;
+  --       slc_mid_loop : for I in 0 to c_NUM_THREADS-1 loop
+  --         mid_slc_sump(I) <= xor_reduce(i_mid_slc(I));
+  --       end loop;
+  --       slc_out_loop : for I in 0 to c_NUM_THREADS-1 loop
+  --         out_slc_sump(I) <= xor_reduce(i_out_slc(I));
+  --       end loop;
+  --       slc_ext_loop : for I in 0 to c_NUM_THREADS-1 loop
+  --         ext_slc_sump(I) <= xor_reduce(i_ext_slc(I));
+  --       end loop;
         
 
-        o_sump <=   xor_reduce(inn_tar_hits_sump)
-                xor xor_reduce(mid_tar_hits_sump)
-                xor xor_reduce(out_tar_hits_sump)
-                xor xor_reduce(ext_tar_hits_sump)
-                xor xor_reduce(inn_slc_sump     )
-                xor xor_reduce(mid_slc_sump     )
-                xor xor_reduce(out_slc_sump     )
-                xor xor_reduce(ext_slc_sump     );
-      end if;
-    end process;
-  end generate;
+  --       o_sump <=   xor_reduce(inn_tar_hits_sump)
+  --               xor xor_reduce(mid_tar_hits_sump)
+  --               xor xor_reduce(out_tar_hits_sump)
+  --               xor xor_reduce(ext_tar_hits_sump)
+  --               xor xor_reduce(inn_slc_sump     )
+  --               xor xor_reduce(mid_slc_sump     )
+  --               xor xor_reduce(out_slc_sump     )
+  --               xor xor_reduce(ext_slc_sump     );
+  --     end if;
+  --   end process;
+  -- end generate;
   
 end architecture beh;
 

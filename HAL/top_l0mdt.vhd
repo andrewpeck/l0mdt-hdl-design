@@ -18,6 +18,7 @@ use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.H2S_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -97,16 +98,18 @@ architecture structural of top_l0mdt is
   -- hal <--> ult
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  -- ANSWER: because in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
+  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
   signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
@@ -240,20 +243,20 @@ begin
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      i_inner_tdc_hits  => inner_tdc_hits,
-      i_middle_tdc_hits => middle_tdc_hits,
-      i_outer_tdc_hits  => outer_tdc_hits,
-      i_extra_tdc_hits  => extra_tdc_hits,
+      i_inn_tdc_hits_av => inner_tdc_hits,
+      i_mid_tdc_hits_av => middle_tdc_hits,
+      i_out_tdc_hits_av => outer_tdc_hits,
+      i_ext_tdc_hits_av => extra_tdc_hits,
 
-      i_inner_tar_hits  => i_inner_tar_hits,
-      i_middle_tar_hits => i_middle_tar_hits,
-      i_outer_tar_hits  => i_outer_tar_hits,
-      i_extra_tar_hits  => i_extra_tar_hits,
+      -- i_inner_tar_hits  => i_inner_tar_hits,
+      -- i_middle_tar_hits => i_middle_tar_hits,
+      -- i_outer_tar_hits  => i_outer_tar_hits,
+      -- i_extra_tar_hits  => i_extra_tar_hits,
 
       i_plus_neighbor_segments  => plus_neighbor_segments_i,
       i_minus_neighbor_segments => minus_neighbor_segments_i,
-      o_plus_neighbor_segments  => plus_neighbor_segments_o,
-      o_minus_neighbor_segments => minus_neighbor_segments_o,
+      o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
+      o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
       -- SLC
       i_main_primary_slc   => main_primary_slc,
