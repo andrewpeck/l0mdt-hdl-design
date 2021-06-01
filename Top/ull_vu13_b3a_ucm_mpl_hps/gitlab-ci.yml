@@ -17,7 +17,7 @@ SIM:ull_vu13_b3a_ucm_mpl_hps:
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
     allow_failure: false
     tags:
-      - normal-ops
+      - questa
       - hog
     artifacts:
       name: user_sim

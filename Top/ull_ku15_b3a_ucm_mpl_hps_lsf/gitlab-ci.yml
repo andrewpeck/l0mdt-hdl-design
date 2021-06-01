@@ -16,7 +16,10 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_lsf:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_lsf
     allow_failure: false
-
+    tags:
+      - questa
+      - hog
+      
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_lsf:
 #     extends: .simulate_project_comp
 #     variables:
