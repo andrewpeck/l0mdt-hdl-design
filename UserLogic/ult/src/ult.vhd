@@ -112,23 +112,18 @@ architecture behavioral of ult is
   -- ctrl/mon vectors
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0); 
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
-  -- tar_ctrl : 
-  -- tar_mon  : 
-
-  -- mtc_ctrl : 
-  -- mtc_mon  : 
-
+  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0); 
+  signal tar_mon_v  : std_logic_vector(len(tar_mon) - 1 downto 0);
+  -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0); 
+  -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon) - 1 downto 0);
   signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0); 
   signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0); 
-
-  -- daq_ctrl : 
-  -- daq_mon  : 
-
-  -- tf_ctrl : i
-  -- tf_mon  : o
-
-  -- mpl_ctrl : 
-  -- mpl_mon  : 
+  -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0); 
+  -- signal daq_mon_v  : std_logic_vector(len(daq_mon) - 1 downto 0);
+  -- signal pte_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0); 
+  -- signal pte_mon_v   : std_logic_vector(len(tf_mon) - 1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0); 
+  signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
   -- outputs from candidate manager
   signal inn_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -179,6 +174,21 @@ architecture behavioral of ult is
 
 begin
 
+  -- ctrl/mon
+  ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
+  ucm_mon <= structify(ucm_mon_v,ucm_mon);
+  tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
+  tar_mon <= structify(tar_mon_v,tar_mon);
+  h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
+  h2s_mon <= structify(h2s_mon_v,h2s_mon);
+  mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
+  mpl_mon <= structify(mpl_mon_v,mpl_mon);
+  -- pte_ctrl_v <= vectorify(tf_ctrl,pte_ctrl_v);
+  -- tf_mon <= structify(pte_mon_v,tf_mon);
+  -- mtc_ctrl_v <= vectorify(mtc_ctrl,mtc_ctrl_v);
+  -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
+  -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
+  -- daq_mon <= structify(daq_mon_v,daq_mon);
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate
@@ -215,6 +225,7 @@ begin
 
       );
     else generate
+      tar_mon_v <= (others => '0');
       SUMP_TAR : entity ult_lib.tar_sump
       port map (
         -- clock, control, and monitoring
@@ -250,9 +261,7 @@ begin
     end generate;
 
     UCM_GEN : if c_UCM_ENABLED = '1' generate
-      -- ctrl/mon
-      ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
-      ucm_mon <= structify(ucm_mon_v,ucm_mon);
+
       -- block
       ULT_UCM : entity ult_lib.candidate_manager
       port map (
@@ -275,6 +284,7 @@ begin
         o_uCM2pl_av             => ucm2pl_av
       );
     else generate
+      ucm_mon_v <= (others => '0');
       SUMP_UCM : entity ult_lib.ucm_sump
       port map (
         -- clock, control, and monitoring
@@ -300,6 +310,8 @@ begin
     end generate;
 
     H2S_GEN : if c_H2S_ENABLED = '1' generate
+
+
 
       ULT_H2S : entity ult_lib.hits_to_segments
       port map (
@@ -330,6 +342,9 @@ begin
         -- o_sump                    => h2s_sump
       );
     else generate
+
+      h2s_mon_v <= (others => '0');
+
       SUMP_H2S : entity ult_lib.h2s_sump
       port map (
         -- clock, control, and monitoring
@@ -378,6 +393,8 @@ begin
         o_pl2mtc_av => pl2mtc_av
       );
     else generate
+      mpl_mon_v <= (others => '0');
+
       SUMP_MPL : entity ult_lib.mpl_sump
       port map (
         -- clock, control, and monitoring
@@ -422,6 +439,8 @@ begin
         o_sump                    => pt_sump
       );
     else generate
+      -- pte_mon_v <= (others => '0');
+
       SUMP_PT : entity ult_lib.ptc_sump
       port map (
         -- clock, control, and monitoring
@@ -464,6 +483,8 @@ begin
         o_sump            => mtc_sump
       );
     else generate
+      -- mtc_mon_v <= (others => '0');
+
       ULT_MTCB : entity ult_lib.mtc_sump
       port map (
         -- clock, control, and monitoring
@@ -507,6 +528,9 @@ begin
           -- o_sump => daq_sump
         );
       else generate
+
+      -- daq_mon_v <= (others => '0');
+
         SUMP_DAQ : entity ult_lib.daq_sump
         -- generic map(DELAY => 9600, memory_type => "ultra")
         port map (

@@ -148,7 +148,7 @@ begin
   );
 
   --control
-  SLC_CTRL : entity ucm_lib.ucm_data_ctrl
+  SLC_CTRL : entity ucm_lib.ucm_ctrl_top
   port map(
     clk               => clk,
     rst               => local_rst,

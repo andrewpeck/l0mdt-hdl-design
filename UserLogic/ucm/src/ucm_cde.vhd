@@ -98,7 +98,7 @@ begin
       o_phimod    => int_phimod
     );
 
-    IETA_00 : entity ucm_lib.ucm_ieta_calc
+    IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
       g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
@@ -118,11 +118,11 @@ begin
       o_ieta_dv     => dv_bus(0)
     );
 
-    IETA_10 : entity ucm_lib.ucm_ieta_calc
+    IETA_MID0 : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 1,
       g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-      g_INPUT_WIDTH => rpc_z_a(0)'length
+      g_INPUT_WIDTH => rpc_z_a(1)'length
     )
     port map(
       clk           => clk,
@@ -137,11 +137,11 @@ begin
       o_ieta_dv     => dv_bus(1)
     );
 
-    IETA_11 : entity ucm_lib.ucm_ieta_calc
+    IETA_MID1 : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 1,
       g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-      g_INPUT_WIDTH => rpc_z_a(0)'length
+      g_INPUT_WIDTH => rpc_z_a(2)'length
     )
     port map(
       clk           => clk,
@@ -156,11 +156,11 @@ begin
       o_ieta_dv     => dv_bus(2)
     );
 
-    IETA_20 : entity ucm_lib.ucm_ieta_calc
+    IETA_OUT : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 2,
       g_RESOLUTION_SCALE => SLC_Z_RPC_MULT,
-      g_INPUT_WIDTH => rpc_z_a(0)'length
+      g_INPUT_WIDTH => rpc_z_a(3)'length
     )
     port map(
       clk           => clk,
