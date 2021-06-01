@@ -81,7 +81,8 @@ architecture beh of ucm_cvp is
   signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
 
   signal offset       : signed(126 -1 downto 0);
-  signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+  signal slope        : signed(31 downto 0);-- 
+  signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
   signal slope_dv     : std_logic;
 
   constant ATAN_SLOPE_LEN : integer := 20;
@@ -103,7 +104,7 @@ begin
 
   PL_in : entity shared_lib.std_pipeline
   generic map(
-    g_DELAY_CYCLES  => 6,
+    g_DELAY_CYCLES  => 10,
     g_PIPELINE_WIDTH    => int_data_v'length
   )
   port map(
@@ -114,6 +115,8 @@ begin
     i_data      => int_data_v,
     o_data      => data_v
   );
+
+  chamber_ieta_r <= structify(data_v).chamb_ieta;
 
   -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
   -- generic map(
@@ -137,7 +140,7 @@ begin
     port map(
       clk           => clk,
       rst           => local_rst,
-      glob_en       => glob_en,
+      ena           => glob_en,
       --
       i_cointype    => int_data_r.cointype,
       i_data_v      => int_data_r.specific,
@@ -165,7 +168,7 @@ begin
           --
           i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
-          i_slope       => slope,
+          i_slope       => slope_org,
           i_data_valid  => slope_dv,
           --
           o_vec_z_pos     => vec_pos_array(st_i),
@@ -256,11 +259,11 @@ begin
 
 
 
-  chamber_ieta_r <= structify(data_v).chamb_ieta;
+  
 
   PL : entity shared_lib.std_pipeline
   generic map(
-    g_DELAY_CYCLES  => 10,
+    g_DELAY_CYCLES  => 2,
     g_PIPELINE_WIDTH    => data_v'length
   )
   port map(
