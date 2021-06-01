@@ -73,13 +73,13 @@ package body MEM_INT_10A38D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+      assign(y(left to left+len(x.wr_data_0)-1), vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
       left := left + len(x.wr_data_0);
-      y(left to left+len(x.wr_data_1)-1) := vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1));
+      assign(y(left to left+len(x.wr_data_1)-1), vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1)));
     else
-      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+      assign(y(left downto left-len(x.wr_data_0)+1), vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
       left := left - len(x.wr_data_0);
-      y(left downto left-len(x.wr_data_1)+1) := vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1));
+      assign(y(left downto left-len(x.wr_data_1)+1), vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1)));
     end if;
     return y;
   end function vectorify;
@@ -118,13 +118,13 @@ package body MEM_INT_10A38D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
+      assign(y(left to left+len(x.rd_data_0)-1), vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
       left := left + len(x.rd_data_0);
-      y(left to left+len(x.rd_data_1)-1) := vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1));
+      assign(y(left to left+len(x.rd_data_1)-1), vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1)));
     else
-      y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
+      assign(y(left downto left-len(x.rd_data_0)+1), vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
       left := left - len(x.rd_data_0);
-      y(left downto left-len(x.rd_data_1)+1) := vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1));
+      assign(y(left downto left-len(x.rd_data_1)+1), vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1)));
     end if;
     return y;
   end function vectorify;
@@ -163,13 +163,13 @@ package body MEM_INT_10A38D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
+      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
       left := left + len(x.rd_rdy);
-      y(left to left+len(x.rd_data)-1) := vectorify(x.rd_data, y(left to left+len(x.rd_data)-1));
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
     else
-      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
+      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
       left := left - len(x.rd_rdy);
-      y(left downto left-len(x.rd_data)+1) := vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1));
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
     end if;
     return y;
   end function vectorify;
@@ -214,37 +214,37 @@ package body MEM_INT_10A38D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
+      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
       left := left + len(x.wr_req);
-      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
       left := left + len(x.wr_ack);
-      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
       left := left + len(x.rd_req);
-      y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
+      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
       left := left + len(x.rd_ack);
-      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
       left := left + len(x.flush_req);
-      y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
+      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
       left := left + len(x.wr_addr);
-      y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
+      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
       left := left + len(x.rd_addr);
-      y(left to left+len(x.wr_data)-1) := vectorify(x.wr_data, y(left to left+len(x.wr_data)-1));
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
     else
-      y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
+      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
       left := left - len(x.wr_req);
-      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
       left := left - len(x.wr_ack);
-      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
       left := left - len(x.rd_req);
-      y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
+      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
       left := left - len(x.rd_ack);
-      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
       left := left - len(x.flush_req);
-      y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
+      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
       left := left - len(x.wr_addr);
-      y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
+      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
       left := left - len(x.rd_addr);
-      y(left downto left-len(x.wr_data)+1) := vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1));
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
     end if;
     return y;
   end function vectorify;

@@ -11,10 +11,7 @@ package common_ieee is
 
   procedure assign(
     variable y : out std_logic_vector;
-    constant y0 : in integer;
-    constant x : in std_logic_vector;
-    constant x0 : in integer;
-    constant l : in integer);
+    constant x : in std_logic_vector);
 
   function len(x: std_logic) return natural;
   function len(x: std_logic_vector) return natural;
@@ -48,16 +45,12 @@ package body common_ieee is
 
   procedure assign(
     variable y : out std_logic_vector;
-    constant y0 : in integer;
-    constant x : in std_logic_vector;
-    constant x0 : in integer;
-    constant l : in integer) is
+    constant x : in std_logic_vector) is
     variable tmp : std_logic_vector(y'range);
   begin
-    for j in 0 to l-1 loop
-      tmp(j+y0) := x(j+x0);
+    for j in 0 to y'length-1 loop
+      y(y'low + j) := x(x'low + j);
     end loop;
-    y := tmp;
   end procedure assign;
   function len(x: std_logic) return natural is
   begin
@@ -95,7 +88,7 @@ package body common_ieee is
   function structify(x: std_logic_vector; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
   begin
-    assign(y, t'low, x, x'low, x'length);
+    assign(y, x);
     return y;
   end function structify;
   function structify(x: std_logic_vector; t: integer) return integer is
@@ -120,12 +113,16 @@ package body common_ieee is
     return std_logic_vector(x);
   end function vectorify;
   function vectorify(x: std_logic_vector; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
   begin
-    return x;
+    assign(y, x);
+    return y;
   end function vectorify;
   function vectorify(x: integer; t: std_logic_vector) return std_logic_vector is
+    variable y : std_logic_vector(t'range);
   begin
-    return std_logic_vector(to_unsigned(x, 32));
+    assign(y, std_logic_vector(to_unsigned(x, 32)));
+    return y;
   end function vectorify;
   function vectorify(x: std_logic; t: std_logic_vector) return std_logic_vector is
     variable y: std_logic_vector(t'range);

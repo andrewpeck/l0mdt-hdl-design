@@ -25,7 +25,6 @@ package TAR_CTRL is
   function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
 
   type TAR_CONFIGS_CTRL_t is record
-    THREADS : std_logic_vector(4-1 downto 0);
     INPUT_EN : std_logic;
     OUTPUT_EN : std_logic;
     FLUSH_MEM_RESET : std_logic;
@@ -82,21 +81,21 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.RESET)-1) := vectorify(x.RESET, y(left to left+len(x.RESET)-1));
+      assign(y(left to left+len(x.RESET)-1), vectorify(x.RESET, y(left to left+len(x.RESET)-1)));
       left := left + len(x.RESET);
-      y(left to left+len(x.ENABLE)-1) := vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1));
+      assign(y(left to left+len(x.ENABLE)-1), vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
       left := left + len(x.ENABLE);
-      y(left to left+len(x.DISABLE)-1) := vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1));
+      assign(y(left to left+len(x.DISABLE)-1), vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
       left := left + len(x.DISABLE);
-      y(left to left+len(x.FREEZE)-1) := vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1));
+      assign(y(left to left+len(x.FREEZE)-1), vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
     else
-      y(left downto left-len(x.RESET)+1) := vectorify(x.RESET, y(left downto left-len(x.RESET)+1));
+      assign(y(left downto left-len(x.RESET)+1), vectorify(x.RESET, y(left downto left-len(x.RESET)+1)));
       left := left - len(x.RESET);
-      y(left downto left-len(x.ENABLE)+1) := vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1));
+      assign(y(left downto left-len(x.ENABLE)+1), vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
       left := left - len(x.ENABLE);
-      y(left downto left-len(x.DISABLE)+1) := vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1));
+      assign(y(left downto left-len(x.DISABLE)+1), vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
       left := left - len(x.DISABLE);
-      y(left downto left-len(x.FREEZE)+1) := vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1));
+      assign(y(left downto left-len(x.FREEZE)+1), vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
     end if;
     return y;
   end function vectorify;
@@ -136,7 +135,6 @@ package body TAR_CTRL is
   function len(x: TAR_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.THREADS);
     l := l + len(x.INPUT_EN);
     l := l + len(x.OUTPUT_EN);
     l := l + len(x.FLUSH_MEM_RESET);
@@ -147,21 +145,17 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.THREADS)-1) := vectorify(x.THREADS, y(left to left+len(x.THREADS)-1));
-      left := left + len(x.THREADS);
-      y(left to left+len(x.INPUT_EN)-1) := vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1));
+      assign(y(left to left+len(x.INPUT_EN)-1), vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
       left := left + len(x.INPUT_EN);
-      y(left to left+len(x.OUTPUT_EN)-1) := vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1));
+      assign(y(left to left+len(x.OUTPUT_EN)-1), vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
       left := left + len(x.OUTPUT_EN);
-      y(left to left+len(x.FLUSH_MEM_RESET)-1) := vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1));
+      assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
     else
-      y(left downto left-len(x.THREADS)+1) := vectorify(x.THREADS, y(left downto left-len(x.THREADS)+1));
-      left := left - len(x.THREADS);
-      y(left downto left-len(x.INPUT_EN)+1) := vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1));
+      assign(y(left downto left-len(x.INPUT_EN)+1), vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
       left := left - len(x.INPUT_EN);
-      y(left downto left-len(x.OUTPUT_EN)+1) := vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1));
+      assign(y(left downto left-len(x.OUTPUT_EN)+1), vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
       left := left - len(x.OUTPUT_EN);
-      y(left downto left-len(x.FLUSH_MEM_RESET)+1) := vectorify(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1));
+      assign(y(left downto left-len(x.FLUSH_MEM_RESET)+1), vectorify(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1)));
     end if;
     return y;
   end function vectorify;
@@ -170,16 +164,12 @@ package body TAR_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.THREADS := structify(x(left to left+len(y.THREADS)-1), y.THREADS);
-      left := left + len(y.THREADS);
       y.INPUT_EN := structify(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
       left := left + len(y.INPUT_EN);
       y.OUTPUT_EN := structify(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
       left := left + len(y.OUTPUT_EN);
       y.FLUSH_MEM_RESET := structify(x(left to left+len(y.FLUSH_MEM_RESET)-1), y.FLUSH_MEM_RESET);
     else
-      y.THREADS := structify(x(left downto left-len(y.THREADS)+1), y.THREADS);
-      left := left - len(y.THREADS);
       y.INPUT_EN := structify(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
       left := left - len(y.INPUT_EN);
       y.OUTPUT_EN := structify(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
@@ -191,7 +181,6 @@ package body TAR_CTRL is
   function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
   variable y: TAR_CONFIGS_CTRL_t;
   begin
-    y.THREADS := nullify(t.THREADS);
     y.INPUT_EN := nullify(t.INPUT_EN);
     y.OUTPUT_EN := nullify(t.OUTPUT_EN);
     y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);
@@ -211,17 +200,17 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.ENABLED)-1) := vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1));
+      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
       left := left + len(x.ENABLED);
-      y(left to left+len(x.READY)-1) := vectorify(x.READY, y(left to left+len(x.READY)-1));
+      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
-      y(left to left+len(x.ERROR)-1) := vectorify(x.ERROR, y(left to left+len(x.ERROR)-1));
+      assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
-      y(left downto left-len(x.ENABLED)+1) := vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1));
+      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
-      y(left downto left-len(x.READY)+1) := vectorify(x.READY, y(left downto left-len(x.READY)+1));
+      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
-      y(left downto left-len(x.ERROR)+1) := vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1));
+      assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
   end function vectorify;
@@ -264,9 +253,9 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.STATUS)-1) := vectorify(x.STATUS, y(left to left+len(x.STATUS)-1));
+      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
     else
-      y(left downto left-len(x.STATUS)+1) := vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1));
+      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
     end if;
     return y;
   end function vectorify;
@@ -300,13 +289,13 @@ package body TAR_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.ACTIONS)-1) := vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1));
+      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
       left := left + len(x.ACTIONS);
-      y(left to left+len(x.CONFIGS)-1) := vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1));
+      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
     else
-      y(left downto left-len(x.ACTIONS)+1) := vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1));
+      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
       left := left - len(x.ACTIONS);
-      y(left downto left-len(x.CONFIGS)+1) := vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1));
+      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
     end if;
     return y;
   end function vectorify;

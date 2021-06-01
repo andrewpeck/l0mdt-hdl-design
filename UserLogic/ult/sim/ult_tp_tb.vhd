@@ -98,6 +98,21 @@ architecture beh of ult_tp is
   signal mpl_ctrl :  MPL_CTRL_t := DEFAULT_MPL_CTRL_t;
   signal mpl_mon  :  MPL_MON_t;
 
+  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl)-1 downto 0);
+  -- signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
+  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl)-1 downto 0);
+  -- signal tar_mon_v  : std_logic_vector(len(tar_mon )-1 downto 0);
+  -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl)-1 downto 0);
+  -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon )-1 downto 0);
+  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl)-1 downto 0);
+  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon )-1 downto 0);
+  -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl)-1 downto 0);
+  -- signal daq_mon_v  : std_logic_vector(len(daq_mon )-1 downto 0);
+  -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl )-1 downto 0);
+  -- signal tf_mon_v   : std_logic_vector(len(tf_mon  )-1 downto 0);
+  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl)-1 downto 0);
+  -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
+
   -- TDC Hits from Polmux
   signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
   signal i_mdt_tdc_mid_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
@@ -161,6 +176,8 @@ architecture beh of ult_tp is
 
 
 begin
+
+  h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
 
   ULT : entity ult_lib.ult
   generic map(

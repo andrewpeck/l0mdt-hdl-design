@@ -15,5 +15,6 @@ SIM:ptc_mpi:
       extends: .vars
       PROJECT_NAME: ptc_mpi
     tags:
-      - normal-ops
+      - questa
       - hog
+      
