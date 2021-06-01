@@ -17,7 +17,7 @@ SIM:ull_vu13_b3a_ucm_mpl:
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
       HOG_CHECK_PROJVER: 0
     tags:
-      - heavy-duty
+      - questa
       - hog
       
 # user_sim:ull_vu13_b3a_ucm_mpl:

@@ -18,7 +18,7 @@ SIM:ull_ku15_b3a_ucm_mpl:
       HOG_CHECK_PROJVER: 0
     allow_failure: false
     tags:
-      - normal-ops
+      - questa
       - hog
 # user_sim:ull_ku15_b3a_ucm_mpl:
 #     extends: .user_sim

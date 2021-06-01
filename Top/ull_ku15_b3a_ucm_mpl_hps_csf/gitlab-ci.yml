@@ -17,8 +17,9 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf
     allow_failure: false
     tags:
-      - heavy-duty
+      - questa
       - hog
+      
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .simulate_project_comp
