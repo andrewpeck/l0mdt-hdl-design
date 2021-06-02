@@ -38,7 +38,7 @@ entity ucm_cvp_b_slope is
     i_data_v      : in std_logic_vector(SLC_SPECIFIC_LEN-1 downto 0);
     i_data_valid  : in std_logic;
     --
-    o_offset      : out signed(126 -1 downto 0);
+    o_offset      : out signed(31 downto 0);--signed(126 -1 downto 0);
     o_slope       : out signed(31 downto 0);--signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     o_data_valid  : out std_logic
     
@@ -308,7 +308,7 @@ begin
             
             if dv_chain(8) = '1' then
               o_slope <= resize(int_slope_2,32);
-              o_offset <= (e_y_2) - s_e_z;
+              o_offset <= resize((e_y_2) - s_e_z,32);
               -- o_offset <= (e_y * 1000) - resize((int_slope * e_z * 1000),126);
               dv_chain(9)  <= '1';
             else

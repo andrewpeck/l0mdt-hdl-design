@@ -59,6 +59,8 @@ end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
 
+  -- constant slope_bits
+
   signal local_rst : std_logic;
 
   signal int_data_r     : ucm_cde_rt;
@@ -80,9 +82,9 @@ architecture beh of ucm_cvp is
   signal new_chamb_ieta_a : new_chamb_ieta_at;
   signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
 
-  signal offset       : signed(126 -1 downto 0);
+  signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
   signal slope        : signed(31 downto 0);-- 
-  signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+  -- signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
   signal slope_dv     : std_logic;
 
   constant ATAN_SLOPE_LEN : integer := 20;
@@ -168,7 +170,7 @@ begin
           --
           i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
-          i_slope       => slope_org,
+          i_slope       => slope,
           i_data_valid  => slope_dv,
           --
           o_vec_z_pos     => vec_pos_array(st_i),
