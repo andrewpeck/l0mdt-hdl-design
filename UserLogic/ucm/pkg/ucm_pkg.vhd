@@ -37,6 +37,17 @@ package ucm_pkg is
   function nullify(x: ucm_prepro2ctrl_bus_at) return ucm_prepro2ctrl_bus_at;
   function nullify(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt;
 
+  subtype ucm_rpc_r_t is unsigned(SLC_Z_RPC_LEN-1 downto 0);
+
+  type ucm_rpc_r_bus_at is array(integer range <>) of ucm_rpc_r_t;
+  type ucm_rpc_r_bus_avt is array(integer range <>) of std_logic_vector(SLC_Z_RPC_LEN-1 downto 0);
+  function vectorify(x: ucm_rpc_r_bus_at) return ucm_rpc_r_bus_avt;
+  function vectorify(x: ucm_rpc_r_bus_at) return std_logic_vector;
+  function structify(x: ucm_rpc_r_bus_avt) return ucm_rpc_r_bus_at;
+  function structify(x: std_logic_vector) return ucm_rpc_r_bus_at;
+  function nullify(x: ucm_rpc_r_bus_at) return ucm_rpc_r_bus_at;
+  function nullify(x: ucm_rpc_r_bus_avt) return ucm_rpc_r_bus_avt;
+
   subtype chamb_ieta_rpc_t is unsigned(4-1 downto 0);
 
   type chamb_ieta_rpc_bus_at is array(4-1 downto 0) of chamb_ieta_rpc_t;
@@ -211,6 +222,59 @@ package body ucm_pkg is
   end function nullify;
   function nullify(x: ucm_prepro2ctrl_bus_avt) return ucm_prepro2ctrl_bus_avt is
     variable y :  ucm_prepro2ctrl_bus_avt(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+
+  function vectorify(x: ucm_rpc_r_bus_at) return ucm_rpc_r_bus_avt is
+    variable y :  ucm_rpc_r_bus_avt(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: ucm_rpc_r_bus_at) return std_logic_vector is
+    variable msb : integer := x'length*SLC_Z_RPC_LEN-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-SLC_Z_RPC_LEN+1) := vectorify(x(i));
+      msb := msb - SLC_Z_RPC_LEN;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: ucm_rpc_r_bus_avt) return ucm_rpc_r_bus_at is
+    variable y :  ucm_rpc_r_bus_at(x'range);
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return ucm_rpc_r_bus_at is
+    variable y :  ucm_rpc_r_bus_at(x'range);
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-SLC_Z_RPC_LEN+1));
+      msb := msb - SLC_Z_RPC_LEN;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: ucm_rpc_r_bus_at) return ucm_rpc_r_bus_at is
+    variable y :  ucm_rpc_r_bus_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: ucm_rpc_r_bus_avt) return ucm_rpc_r_bus_avt is
+    variable y :  ucm_rpc_r_bus_avt(x'range);
   begin
     l: for i in y'range loop
       y(i) := nullify(x(i));

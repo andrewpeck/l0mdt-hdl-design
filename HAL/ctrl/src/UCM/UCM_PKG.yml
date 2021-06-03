@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-06-03 18:24:08.297784.
+# Created : 2021-06-03 19:03:09.149137.
 config:
   basic_convert_functions : off
   packages:
@@ -104,7 +104,7 @@ hdl:
 
 - UCM_R_COMP_CTRL_t:
   - sel_station : [ type: logic, length: 4 ]
-  - sel_position : [ type: logic, length: 4 ]
+  - sel_layer : [ type: logic, length: 4 ]
   - ext_ctrl : [ type: logic ]
   - MEM_INTERFACE : [ type: UCM_R_COMP_MEM_INTERFACE_CTRL_t ]
 

@@ -41,7 +41,7 @@ entity ucm_cvp is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena             : in std_logic;
     --
     -- i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
@@ -112,7 +112,7 @@ begin
   port map(
     clk         => clk,
     rst         => local_rst,
-    glob_en     => glob_en,
+    ena     => ena,
     --
     i_data      => int_data_v,
     o_data      => data_v
@@ -138,11 +138,31 @@ begin
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
+  RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
+    generic map(
+      g_MODE =>  "RPC",
+      g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
+    )
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      ena         => ena,
+      --
+      ctrl_v      =>
+      mon_v       =>
+      --
+      i_phimod    =>
+      i_dv        =>
+      --
+      o_radius    =>
+      o_dv        =>
+  );
+
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
       clk           => clk,
       rst           => local_rst,
-      ena           => glob_en,
+      ena           => ena,
       --
       i_cointype    => int_data_r.cointype,
       i_data_v      => int_data_r.specific,
@@ -166,7 +186,7 @@ begin
         port map(
           clk           => clk,
           rst           => local_rst,
-          glob_en       => glob_en,
+          ena       => ena,
           --
           i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
@@ -251,7 +271,7 @@ begin
   port map(
     clk           => clk,
     rst           => local_rst,
-    glob_en       => glob_en,
+    ena       => ena,
     --
     i_slope       => atan_slope,
     i_dv          => slope_dv,
@@ -271,7 +291,7 @@ begin
   port map(
     clk         => clk,
     rst         => local_rst,
-    glob_en     => glob_en,
+    ena     => ena,
     --
     i_data      => data_v,
     o_data      => data_v_2
@@ -289,7 +309,7 @@ begin
   --     port map(
   --       clk           => clk,
   --       rst           => local_rst,
-  --       glob_en       => glob_en,
+  --       ena       => ena,
   --       --
   --       i_chamb_ieta  => chamber_ieta_r(st_i),
   --       i_offset      => offset,

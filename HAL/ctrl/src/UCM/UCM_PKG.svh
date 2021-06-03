@@ -105,7 +105,7 @@
 
   typedef struct packed {
     logic [4-1:0] sel_station;
-    logic [4-1:0] sel_position;
+    logic [4-1:0] sel_layer;
     logic  ext_ctrl;
     UCM_R_COMP_MEM_INTERFACE_CTRL_t   MEM_INTERFACE;
   } UCM_R_COMP_CTRL_t;

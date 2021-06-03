@@ -188,7 +188,7 @@ begin  -- architecture behavioral
   Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_data  <=  reg_data(59)(31 downto 16);     
   Ctrl.R_COMP.ext_ctrl                       <=  reg_data(64)( 8);               
   Ctrl.R_COMP.sel_station                    <=  reg_data(64)( 3 downto  0);     
-  Ctrl.R_COMP.sel_position                   <=  reg_data(64)( 7 downto  4);     
+  Ctrl.R_COMP.sel_layer                      <=  reg_data(64)( 7 downto  4);     
   Ctrl.R_COMP.MEM_INTERFACE.wr_addr          <=  reg_data(66)( 4 downto  0);     
   Ctrl.R_COMP.MEM_INTERFACE.rd_addr          <=  reg_data(66)(20 downto 16);     
   Ctrl.R_COMP.MEM_INTERFACE.wr_data          <=  reg_data(67)(27 downto 16);     
@@ -227,7 +227,7 @@ begin  -- architecture behavioral
       reg_data(59)(31 downto 16)  <= DEFAULT_UCM_CTRL_t.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_data;
       reg_data(64)( 8)  <= DEFAULT_UCM_CTRL_t.R_COMP.ext_ctrl;
       reg_data(64)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.R_COMP.sel_station;
-      reg_data(64)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.R_COMP.sel_position;
+      reg_data(64)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.R_COMP.sel_layer;
       reg_data(66)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.wr_addr;
       reg_data(66)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.rd_addr;
       reg_data(67)(27 downto 16)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.wr_data;

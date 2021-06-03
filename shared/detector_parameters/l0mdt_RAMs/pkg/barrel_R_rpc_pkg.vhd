@@ -29,8 +29,8 @@ package barrel_R_rpc_pkg is
   -- type barrel_R_rpc_station_aft is array (0 to 2) of barrel_R_rpc_layer_aft;
   -- type barrel_R_rpc_side_aft is array ( 0 to 15) of barrel_R_rpc_station_aft;
   -- type barrel_R_rpc_detector_aft is array ( 0 to 1) of barrel_R_rpc_side_aft;
-
-  type barrel_R_rpc_avt is array (range integer <>) of std_logic_vector(SLC_Z_RPC_LEN - 1 downto 0);
+(range integer <>)
+  type barrel_R_rpc_avt is array  of std_logic_vector(SLC_Z_RPC_LEN - 1 downto 0);
 
 
   type barrel_R_rpc_aft is array (0 to 31 ) of real;
@@ -265,7 +265,7 @@ end package barrel_R_rpc_pkg;
 
 package body barrel_R_rpc_pkg is
   
-  function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; num : integer) return barrel_R_rpc_aft is
+  function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_aft is
     variable y : barrel_R_rpc_aut;
   begin
     for ch_i in  0 to num -1 loop
