@@ -363,7 +363,7 @@ begin
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
       g_DELAY_CYCLES  => 3,
-      g_PIPELINE_WIDTH    => UCM2PL_LEN
+      g_PIPELINE_WIDTH    => int_uCM2pl_av(sl_i)'length
     )
     port map(
       clk         => clk,
