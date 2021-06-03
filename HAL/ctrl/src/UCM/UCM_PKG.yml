@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-05-31 14:42:09.093885.
+# Created : 2021-06-03 10:54:33.102060.
 config:
   basic_convert_functions : off
   packages:
@@ -85,11 +85,35 @@ hdl:
   - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY ]
 
 
+- UCM_R_COMP_MEM_INTERFACE_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: logic, length: 12 ]
+
+
+- UCM_R_COMP_MEM_INTERFACE_CTRL_t:
+  - wr_req : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - wr_addr : [ type: logic, length: 5 ]
+  - rd_addr : [ type: logic, length: 5 ]
+  - wr_data : [ type: logic, length: 12 ]
+
+
+- UCM_R_COMP_MON_t:
+  - MEM_INTERFACE : [ type: UCM_R_COMP_MEM_INTERFACE_MON_t ]
+
+
+- UCM_R_COMP_CTRL_t:
+  - sel_station : [ type: logic, length: 4 ]
+  - sel_position : [ type: logic ]
+  - MEM_INTERFACE : [ type: UCM_R_COMP_MEM_INTERFACE_CTRL_t ]
+
+
 - UCM_MON_t:
   - STATUS : [ type: UCM_STATUS_MON_t ]
   - SECTOR_PHI : [ type: UCM_SECTOR_PHI_MON_t ]
   - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_MON_t ]
   - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_MON_t ]
+  - R_COMP : [ type: UCM_R_COMP_MON_t ]
 
 
 - UCM_CTRL_t:
@@ -98,5 +122,6 @@ hdl:
   - SECTOR_PHI : [ type: UCM_SECTOR_PHI_CTRL_t ]
   - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_CTRL_t ]
   - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_CTRL_t ]
+  - R_COMP : [ type: UCM_R_COMP_CTRL_t ]
 
 

@@ -31,7 +31,7 @@ use ucm_lib.ucm_pkg.all;
 
 entity ucm_cvp_z_calc is
   generic(
-    g_STATION_RADIUS      : integer := 0;  --station
+    g_STATION_RADIUS      : integer := 0;  --station 
     g_INPUT_RESOLUTION    : real := 1.0;
     g_OUTPUT_RESOLUTION   : real := 1.0;
     g_OUTPUT_WIDTH        : integer := 10

@@ -17,6 +17,8 @@ package ucm_pkg is
 
   constant SLC_SPECIFIC_LEN : integer := 48;
 
+  constant UCM_PHIMOD_LEN : integer := 5;
+
   type ucm_prepro2ctrl_rt is record
     data_valid : std_logic;
   end record ucm_prepro2ctrl_rt;

@@ -17,6 +17,9 @@ HDL_Types:
 
 - SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 48 ]
 
+- UCM_PHIMOD_LEN : [ qualifier: constant , type: integer , value: 5 ]
+# - UCM_PHIMOD_MULT : [ qualifier: constant , type: integer , value: 48 ]
+
 # - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
 
 # # ucm preprocesor output
