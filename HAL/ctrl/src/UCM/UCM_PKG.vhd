@@ -191,7 +191,8 @@ package UCM_CTRL is
 
   type UCM_R_COMP_CTRL_t is record
     sel_station : std_logic_vector(4-1 downto 0);
-    sel_position : std_logic;
+    sel_position : std_logic_vector(4-1 downto 0);
+    ext_ctrl : std_logic;
     MEM_INTERFACE : UCM_R_COMP_MEM_INTERFACE_CTRL_t;
   end record UCM_R_COMP_CTRL_t;
   function len(x: UCM_R_COMP_CTRL_t) return natural;
@@ -1263,6 +1264,7 @@ package body UCM_CTRL is
   begin
     l := l + len(x.sel_station);
     l := l + len(x.sel_position);
+    l := l + len(x.ext_ctrl);
     l := l + len(x.MEM_INTERFACE);
     return l;
   end function len;
@@ -1275,12 +1277,16 @@ package body UCM_CTRL is
       left := left + len(x.sel_station);
       assign(y(left to left+len(x.sel_position)-1), vectorify(x.sel_position, y(left to left+len(x.sel_position)-1)));
       left := left + len(x.sel_position);
+      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
+      left := left + len(x.ext_ctrl);
       assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
     else
       assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
       left := left - len(x.sel_station);
       assign(y(left downto left-len(x.sel_position)+1), vectorify(x.sel_position, y(left downto left-len(x.sel_position)+1)));
       left := left - len(x.sel_position);
+      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
+      left := left - len(x.ext_ctrl);
       assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
     end if;
     return y;
@@ -1294,12 +1300,16 @@ package body UCM_CTRL is
       left := left + len(y.sel_station);
       y.sel_position := structify(x(left to left+len(y.sel_position)-1), y.sel_position);
       left := left + len(y.sel_position);
+      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
+      left := left + len(y.ext_ctrl);
       y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
     else
       y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
       left := left - len(y.sel_station);
       y.sel_position := structify(x(left downto left-len(y.sel_position)+1), y.sel_position);
       left := left - len(y.sel_position);
+      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
+      left := left - len(y.ext_ctrl);
       y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
     end if;
     return y;
@@ -1309,6 +1319,7 @@ package body UCM_CTRL is
   begin
     y.sel_station := nullify(t.sel_station);
     y.sel_position := nullify(t.sel_position);
+    y.ext_ctrl := nullify(t.ext_ctrl);
     y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
     return y;
   end function nullify;

@@ -2,6 +2,8 @@
 # Detector shared RAMs
 #---------------------------------
 shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
+shared/detector_parameters/l0mdt_RAMs/pkg/barrel_R_chamb_pkg.vhd
+shared/detector_parameters/l0mdt_RAMs/pkg/barrel_R_rpc_pkg.vhd
 
 # shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd

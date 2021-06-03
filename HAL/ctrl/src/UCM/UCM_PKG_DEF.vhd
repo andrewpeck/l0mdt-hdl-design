@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-06-03 10:54:33.101984.
+-- Created : 2021-06-03 18:24:08.297720.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -53,9 +53,10 @@ package UCM_CTRL_DEF is
                                                                                          wr_data => (others => '0')
                                                                                         );
   constant DEFAULT_UCM_R_COMP_CTRL_t : UCM_R_COMP_CTRL_t := (
-                                                             sel_station => (others => '0'),
-                                                             sel_position => '0',
-                                                             MEM_INTERFACE => DEFAULT_UCM_R_COMP_MEM_INTERFACE_CTRL_t
+                                                             sel_station => x"0",
+                                                             sel_position => x"0",
+                                                             MEM_INTERFACE => DEFAULT_UCM_R_COMP_MEM_INTERFACE_CTRL_t,
+                                                             ext_ctrl => '0'
                                                             );
   constant DEFAULT_UCM_CTRL_t : UCM_CTRL_t := (
                                                CDE_CHAMB_Z0 => DEFAULT_UCM_CDE_CHAMB_Z0_CTRL_t,

@@ -22,7 +22,7 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-package barrel_chamb_R_comp_pkg is
+package barrel_R_chamb_pkg is
 
   -- subtype b_chamber_z_origin_ut is unsigned( 16 -1 downto 0); --old length : SLC_Z_RPC_LEN
   type b_chamber_z_origin_aut is array (0 to MAX_NUM_CHAMBER_POS -1 ) of unsigned(16 - 1 downto 0);
@@ -87,9 +87,9 @@ package barrel_chamb_R_comp_pkg is
   function structify(x: b_chamber_z_origin_avt) return b_chamber_z_origin_aut;
   
   
-end package barrel_chamb_R_comp_pkg;
+end package barrel_R_chamb_pkg;
 
-package body barrel_chamb_R_comp_pkg is
+package body barrel_R_chamb_pkg is
   
   function get_b_chamber_origin_z_u(sector_id, side_id , station: integer; mult : real; out_width : integer := 16) return b_chamber_z_origin_aut is
     variable y : b_chamber_z_origin_aut;
@@ -128,4 +128,4 @@ package body barrel_chamb_R_comp_pkg is
     return y;
   end function;  
   
-end package body barrel_chamb_R_comp_pkg;
+end package body barrel_R_chamb_pkg;
