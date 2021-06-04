@@ -46,9 +46,11 @@ architecture beh of generic_pipelined_MUL is
 
   type data_pl_A_t is array (integer range <>) of std_logic_vector(OPERAND_A_WIDTH-1 downto 0);
   type data_pl_B_t is array (integer range <>) of std_logic_vector(OPERAND_B_WIDTH-1 downto 0);
+  type data_pl_O_t is array (integer range <>) of std_logic_vector((OPERAND_A_WIDTH+OPERAND_B_WIDTH-1) downto 0);
 
   signal mul_in_pipe_A : data_pl_A_t(IN_PIPE_STAGES -1 downto 0);
   signal mul_in_pipe_B : data_pl_B_t(IN_PIPE_STAGES -1 downto 0);
+  signal mul_output_pipe : data_pl_O_t(OUT_PIPE_STAGES -1 downto 0);
 
   signal valid_signal_pipe : std_logic_vector(TOTAL_MUL_LATENCY - 1 downto 0);
   
@@ -65,7 +67,7 @@ begin
         o_result <= (others => '0');
         o_dv <= '0';
       else
-        valid_signal_pipe(0) <= i_dv      ;
+        valid_signal_pipe(0) <= i_dv;
         mul_in_pipe_A(0) <= i_in_A;
         mul_in_pipe_B(0) <= i_in_B;
 

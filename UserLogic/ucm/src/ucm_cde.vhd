@@ -47,7 +47,8 @@ entity ucm_cde is
     -- pam out
     o_cde_data_v          : out ucm_cde_rvt;
     -- to pipeline
-    o_pl_phimod           : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
+    o_pl_phimod           : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+    o_pl_phimod_dv        : out std_logic
   );
 end entity ucm_cde;
 
@@ -64,12 +65,13 @@ architecture beh of ucm_cde is
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
 
-  signal int_phimod   : signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  signal int_phimod   : signed(UCM_CDE2CVP_PHIMOD_LEN -1 downto 0);
+  signal int_phimod_dv : std_logic;
 begin
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_cde_data_v <= vectorify(o_cde_data_r);
-  o_phimod <= int_phimod;
+  -- o_phimod <= int_phimod;
 
   B_GEN : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -83,20 +85,49 @@ begin
     );
 
     PHIMOD : entity ucm_lib.ucm_cvp_phimod
-    generic map(
-      g_PIPELINE => 2
-    )
-    port map(
-      clk         =>clk,
-      rst         =>rst,
-      --
-      i_phicenter   => i_phicenter,
-      --
-      i_posphi    => i_slc_data_r.common.posphi,
-      i_dv        => i_slc_data_r.data_valid,
-      --
-      o_phimod    => int_phimod
+      generic map(
+        g_PIPELINE => 2
+      )
+      port map(
+        clk         =>clk,
+        rst         =>rst,
+        --
+        i_phicenter   => i_phicenter,
+        --
+        i_posphi    => i_slc_data_r.common.posphi,
+        i_dv        => i_slc_data_r.data_valid,
+        --
+        o_phimod    => int_phimod,
+        o_dv        => int_phimod_dv
     );
+
+    PHIMOD_SCALE : entity shared_lib.generic_pipelined_MUL
+      generic map(
+        IN_PIPE_STAGES  => 0,
+        OPERAND_A_WIDTH => UCM_CDE2CVP_PHIMOD_LEN,
+        OPERAND_B_WIDTH => 5,
+        OUT_PIPE_STAGES => 0
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        --
+        i_in_A      => int_phimod,
+        i_in_B      => std_logic_vector(to_unsigned(integer(3))),
+        i_dv        => int_phimod_dv,
+        --
+        o_result    => o_pl_phimod,
+        o_dv        => o_pl_phimod_dv
+    );
+
+
+
+
+
+
+
+
+
 
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(

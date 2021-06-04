@@ -44,8 +44,8 @@ entity ucm_cvp_phimod is
     i_posphi            : in unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
     i_dv                : in std_logic;
     --
-    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
-    -- o_dv                : out std_logic;
+    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+    o_dv                : out std_logic
   );
 end entity ucm_cvp_phimod;
 

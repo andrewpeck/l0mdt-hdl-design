@@ -36,11 +36,12 @@ shared/memories/memories_lib.src
 ## CSF/PT
 # shared/shared_mpi.src
 #---------------------------------
-# trigonometrics
+# arithmetics
 #---------------------------------
-shared/functions/trigonometrics/roi_atan_pkg.vhd
-shared/functions/trigonometrics/roi_atan.vhd
-shared/functions/trigonometrics/roi_tan_pkg.vhd
-shared/functions/trigonometrics/roi_tan.vhd
+shared/arithmetics/arithmetics_lib.src
+# shared/functions/trigonometrics/roi_atan_pkg.vhd
+# shared/functions/trigonometrics/roi_atan.vhd
+# shared/functions/trigonometrics/roi_tan_pkg.vhd
+# shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
 

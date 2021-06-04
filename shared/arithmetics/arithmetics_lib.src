@@ -1,0 +1,8 @@
+
+
+shared/arithmetics/pkg/roi_atan_pkg.vhd
+shared/arithmetics/src/roi_atan.vhd
+shared/arithmetics/pkg/roi_tan_pkg.vhd
+shared/arithmetics/src/roi_tan.vhd
+
+shared/arithmetics/src/generic_pipelined_MUL.vhd

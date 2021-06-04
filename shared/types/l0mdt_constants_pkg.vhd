@@ -69,7 +69,7 @@ package l0mdt_constants_pkg is
 
   constant SLC_COMMON_POSPHI_LEN : integer := 9;
 
-  constant SLC_COMMON_POSPHI_MULT : real := 0.0625;
+  constant SLC_COMMON_POSPHI_MULT : real := 83.333;
 
   constant SLC_COMMON_SL_PT_LEN : integer := 8;
 
