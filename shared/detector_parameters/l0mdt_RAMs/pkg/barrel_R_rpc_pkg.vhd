@@ -29,14 +29,14 @@ package barrel_R_rpc_pkg is
   -- type barrel_R_rpc_station_aft is array (0 to 2) of barrel_R_rpc_layer_aft;
   -- type barrel_R_rpc_side_aft is array ( 0 to 15) of barrel_R_rpc_station_aft;
   -- type barrel_R_rpc_detector_aft is array ( 0 to 1) of barrel_R_rpc_side_aft;
-(range integer <>)
-  type barrel_R_rpc_avt is array  of std_logic_vector(SLC_Z_RPC_LEN - 1 downto 0);
+-- (range integer <>)
+  type barrel_R_rpc_avt is array (0 to 31) of std_logic_vector(SLC_Z_RPC_LEN - 1 downto 0);
 
 
   type barrel_R_rpc_aft is array (0 to 31 ) of real;
   type barrel_R_rpc_layer_aft is array (0 to 2) of barrel_R_rpc_aft;
-  type barrel_R_rpc_station_aft is array (0 to 2) of barrel_R_rpc_layer_aft;
-  type barrel_R_rpc_side_aft is array ( 0 to 15) of barrel_R_rpc_station_aft;
+  -- type barrel_R_rpc_station_aft is array (0 to 2) of barrel_R_rpc_layer_aft;
+  type barrel_R_rpc_side_aft is array ( 0 to 15) of barrel_R_rpc_layer_aft;
   type barrel_R_rpc_detector_aft is array ( 0 to 1) of barrel_R_rpc_side_aft;
 
   constant barrel_INN_R_rpc_detector : barrel_R_rpc_detector_aft :=(
@@ -46,9 +46,9 @@ package barrel_R_rpc_pkg is
             (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S1
     1   => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
             (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S2
-    2   => ((5157.0,5157.371326,5158.485573,5160.343541,5162.946573,5166.296544,5170.395878,5175.24754,5180.855051,5187.222488,5194.354495,
-              5202.256287,5210.933666,5220.393025,5230.641362,5241.686294,5253.536071,5266.199588,5279.686405,5294.006765,5309.17161,5325.192607,
-              5342.082166,5359.853465,5378.520481,5398.098009,5418.6017,5440.048088,5462.454627,5485.839724,5510.222783,5535.62424),
+    2   => (( 5157.0,     5157.371326,5158.485573,5160.343541,5162.946573,5166.296544,5170.395878,5175.24754, 5180.855051,5187.222488,5194.354495,
+              5202.256287,5210.933666,5220.393025,5230.641362,5241.686294,5253.536071,5266.199588,5279.686405,5294.006765,5309.17161, 5325.192607,
+              5342.082166,5359.853465,5378.520481,5398.098009,5418.6017,  5440.048088,5462.454627,5485.839724,5510.222783,5535.62424),
             (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S3
     3   => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
             (0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0)), -- S4
@@ -112,7 +112,7 @@ package barrel_R_rpc_pkg is
      )
   );
 
-  constant barrel_MID_R_rpc_detector : barrel_R_rpc_detector_at :=(
+  constant barrel_MID_R_rpc_detector : barrel_R_rpc_detector_aft :=(
     --     INN MID OUT EXT
     ( -- SIDE A
     0   => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
@@ -183,7 +183,7 @@ package barrel_R_rpc_pkg is
      )
   );
 
-  constant barrel_OUT_R_rpc_detector : barrel_R_rpc_detector_at :=(
+  constant barrel_OUT_R_rpc_detector : barrel_R_rpc_detector_aft :=(
     --     INN MID OUT EXT
     ( -- SIDE A
     0   => ((0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0),
@@ -254,7 +254,7 @@ package barrel_R_rpc_pkg is
      )
   );
 
-  function get_barrel_R_rpc( sector_id, side_id , station , layer: integer; mult : real; num : integer) return barrel_R_rpc_aft;
+  function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_avt ;
   -- function get_barrel_R_rpc_z_i( sector_id, side_id , station : integer; mult : real) return barrel_R_rpc_ait;
 
   -- function vectorify(x: barrel_R_rpc_aut) return barrel_R_rpc_avt;
@@ -265,12 +265,33 @@ end package barrel_R_rpc_pkg;
 
 package body barrel_R_rpc_pkg is
   
-  function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_aft is
-    variable y : barrel_R_rpc_aut;
+  function get_barrel_R_rpc( sector_id, side_id , station , layer : integer; mult : real; out_width , num : integer) return barrel_R_rpc_avt is
+    variable y : barrel_R_rpc_avt;
   begin
-    for ch_i in  0 to num -1 loop
-      y(ch_i) := to_unsigned(integer(barrel_R_rpc_detector(side_id)(sector_id - 1)(station)(ch_i) * mult) , out_width);
-    end loop;
+    case station is
+      when 0 =>
+        for phi_i in  0 to num -1 loop
+          y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_rpc_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+        end loop;
+      when 1 =>
+          for phi_i in  0 to num -1 loop
+            y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_rpc_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+          end loop;
+      when 2 =>
+        for phi_i in  0 to num -1 loop
+          y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_rpc_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+        end loop;
+      -- when 3 =>
+      --     for phi_i in  0 to num -1 loop
+      --       -- y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_rpc_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+      --     end loop;
+    
+      when others =>
+          y := (others => (others => '1'));
+        
+    
+    end case;
+
     return y;
   end function;
 

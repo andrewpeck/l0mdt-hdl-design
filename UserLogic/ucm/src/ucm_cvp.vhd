@@ -29,6 +29,7 @@ library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_function_pkg.all;
 
+library  vamc_lib;
 
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
@@ -41,8 +42,10 @@ entity ucm_cvp is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    ena             : in std_logic;
-    --
+    ena                 : in std_logic;
+    --  
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
     -- i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
@@ -60,6 +63,13 @@ end entity ucm_cvp;
 architecture beh of ucm_cvp is
 
   -- constant slope_bits
+  signal ctrl_r : UCM_CTRL_t;
+  signal mon_r  : UCM_MON_t;
+
+  signal rpc_R_ctrl_r : UCM_R_COMP_CTRL_t;
+  signal rpc_R_mon_r  : UCM_R_COMP_MON_t;
+  signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
 
   signal local_rst : std_logic;
 
@@ -75,6 +85,8 @@ architecture beh of ucm_cvp is
   
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
+  signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
+  signal rpc_radius_dv  : std_logic;
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
   signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
 
@@ -100,11 +112,19 @@ architecture beh of ucm_cvp is
   
 begin
 
+  ctrl_r  <= structify(ctrl_v,ctrl_r);
+  mon_v   <= vectorify(mon_r,mon_v);
+
+  rpc_R_ctrl_v <= vectorify(ctrl_r.R_COMP,rpc_R_ctrl_v);
+  
+  rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
+  mon_r.R_COMP <= rpc_R_mon_r;
+
   local_rst <= rst or i_local_rst;
   data_r <= structify(i_data_v);
   barrel_r <= structify(int_data_r.specific);
 
-  PL_in : entity shared_lib.std_pipeline
+  PL_in : entity vamc_lib.vamc_sr
   generic map(
     g_DELAY_CYCLES  => 10,
     g_PIPELINE_WIDTH    => int_data_v'length
@@ -112,7 +132,7 @@ begin
   port map(
     clk         => clk,
     rst         => local_rst,
-    ena     => ena,
+    ena         => ena,
     --
     i_data      => int_data_v,
     o_data      => data_v
@@ -120,43 +140,27 @@ begin
 
   chamber_ieta_r <= structify(data_v).chamb_ieta;
 
-  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
-  -- generic map(
-  --   g_PIPELINE => 2
-  -- )
-  -- port map(
-  --   clk         =>clk,
-  --   rst         =>local_rst,
-  --   --
-  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
-  --   --
-  --   i_posphi    => data_r.posphi,
-  --   i_dv        => data_r.data_valid,
-  --   --
-  --   o_phimod    => o_phimod
-  -- );
-
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
-  RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
-    generic map(
-      g_MODE =>  "RPC",
-      g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      ena         => ena,
-      --
-      ctrl_v      =>
-      mon_v       =>
-      --
-      i_phimod    =>
-      i_dv        =>
-      --
-      o_radius    =>
-      o_dv        =>
-  );
+    RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
+      generic map(
+        g_MODE =>  "RPC",
+        g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
+      )
+      port map(
+        clk         => clk,
+        rst         => local_rst,
+        ena         => ena,
+        --
+        ctrl_v      => rpc_R_ctrl_v,
+        mon_v       => rpc_R_mon_v,
+        --
+        i_phimod    => data_r.phimod,
+        i_dv        => data_r.data_valid,
+        --
+        o_radius    => rpc_radius_av,
+        o_dv        => rpc_radius_dv
+    );
 
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
@@ -423,3 +427,19 @@ begin
 
 
 end beh;
+
+  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- generic map(
+  --   g_PIPELINE => 2
+  -- )
+  -- port map(
+  --   clk         =>clk,
+  --   rst         =>local_rst,
+  --   --
+  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
+  --   --
+  --   i_posphi    => data_r.posphi,
+  --   i_dv        => data_r.data_valid,
+  --   --
+  --   o_phimod    => o_phimod
+  -- );

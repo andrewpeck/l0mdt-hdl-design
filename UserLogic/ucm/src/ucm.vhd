@@ -217,13 +217,13 @@ begin
       rst                   => local_rst,
       glob_en               => local_en,
       --
-      i_phicenter            => phicenter,
-      i_chamber_z_org_bus => cde_chamber_z_org_bus,
+      i_phicenter           => phicenter,
+      i_chamber_z_org_bus   => cde_chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
       o_cde_data_v          => cpam_in_av(th_i),
       --
-      o_phimod      => cde_phimod(th_i)
+      o_pl_phimod           => cde_phimod(th_i)
     );
   end generate;
 

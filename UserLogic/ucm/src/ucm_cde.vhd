@@ -40,14 +40,14 @@ entity ucm_cde is
     rst                   : in std_logic;
     glob_en               : in std_logic;
     -- configuration, control & Monitoring
-    i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
-    i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
+    i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
+    i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
     -- pam out
     o_cde_data_v          : out ucm_cde_rvt;
     -- to pipeline
-    o_phimod              : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
+    o_pl_phimod           : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
   );
 end entity ucm_cde;
 

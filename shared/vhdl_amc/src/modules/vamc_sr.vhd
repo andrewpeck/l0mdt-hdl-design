@@ -28,7 +28,7 @@ entity vamc_sr is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena             : in std_logic;
     --
     i_freeze            : in std_logic := '0';
     --
@@ -56,7 +56,7 @@ begin
         -- data_pl <= (others => (others => '0'));
         dv_pl <= (others => '0');
       else
-        if glob_en = '1' then
+        if ena = '1' then
           for delay_i in g_DELAY_CYCLES - 1 downto 1 loop
             data_pl(delay_i - 1) <= data_pl(delay_i);
             dv_pl(delay_i - 1) <= dv_pl(delay_i);

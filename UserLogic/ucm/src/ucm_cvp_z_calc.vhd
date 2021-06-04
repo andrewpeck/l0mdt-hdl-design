@@ -39,7 +39,7 @@ entity ucm_cvp_z_calc is
   port (
     clk           : in std_logic;
     rst           : in std_logic;
-    glob_en       : in std_logic;
+    ena           : in std_logic;
     --
     i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     i_offset      : in signed(31 downto 0);--signed(126 -1 downto 0);
