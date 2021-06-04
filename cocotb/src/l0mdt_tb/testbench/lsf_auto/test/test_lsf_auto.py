@@ -226,28 +226,21 @@ def lsf_auto_test(dut):
             station_ID=inputs_station_id[n_ip_intf],
             tv_type=input_tvtype[n_ip_intf]
         ))
-        # print("port type = ",input_tvtype[n_ip_intf],"single_interface_list",single_interface_list)
         if(n_ip_intf == 0):
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, heg2sfslc_ii)
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay[io])
-            # print(n_ip_intf,"single_interface_list_ii_delay",single_interface_list_ii_delay)    
         elif(n_ip_intf == 1):
             for io in range (len(single_interface_list)):
                 single_interface_list_ii_delay = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
             single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)        
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay_flat[io])
-            # print(n_ip_intf,"single_interface_list_ii_delay_flat",single_interface_list_ii_delay_flat)    
-    # print("input_tv_list",input_tv_list)   
-
 
 
 ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list = []
     single_interface_list = []
-    # for n_op_intf in range(LsfAutoPorts.n_output_interfaces(
-    #         LsfAutoPorts)):  # Add concept of interface
     for n_op_intf in range(LsfAutoPorts.n_output_interfaces):  # Add concept of interface
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
