@@ -33,7 +33,7 @@ entity roi_atan is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena             : in std_logic;
     --
     i_slope             : in unsigned(g_INPUT_LEN-1 downto 0);
     i_dv                : in std_logic;
