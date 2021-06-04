@@ -58,7 +58,7 @@ architecture beh of ucm_rpc_R_comp is
   signal ctrl_r : UCM_R_COMP_CTRL_t;
   signal mon_r  : UCM_R_COMP_MON_t;
  
-  signal rad_mem : barrel_R_rpc_avt := get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,32);
+  signal rad_mem : barrel_R_rpc_avt := get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32);
 
 begin
 
@@ -74,7 +74,7 @@ begin
       else
         if ctrl_r.ext_ctrl = '0' then
           if i_dv  = '1' then
-            o_radius <= rad_mem(to_integer(i_phimod));
+            o_radius <= rad_mem(to_integer(unsigned(i_phimod)));
             o_dv <= '1';
           else
             o_radius <= (others => '0');

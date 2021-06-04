@@ -100,7 +100,7 @@ architecture beh of ucm is
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal cde_phimod           : cde_phimod_at;
 
   -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
@@ -249,8 +249,10 @@ begin
     port map(
       clk           => clk,
       rst           => local_rst,
-      glob_en       => local_en,
+      ena       => local_en,
       --
+      ctrl_v              => ctrl_v,
+      mon_v               => mon_v,
       -- i_phicenter            => phicenter,
       i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --
@@ -386,7 +388,7 @@ begin
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
     -- o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
     PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      o_uCM2pl_ar(sl_i).phimod    <= signed(cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)));
     end generate;
     PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       o_uCM2pl_ar(sl_i).phimod    <=(others => '0');

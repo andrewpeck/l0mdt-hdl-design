@@ -47,7 +47,7 @@ entity ucm_cde is
     -- pam out
     o_cde_data_v          : out ucm_cde_rvt;
     -- to pipeline
-    o_pl_phimod           : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+    o_pl_phimod           : out std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_pl_phimod_dv        : out std_logic
   );
 end entity ucm_cde;
@@ -65,7 +65,9 @@ architecture beh of ucm_cde is
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
 
-  signal int_phimod   : signed(UCM_CDE2CVP_PHIMOD_LEN -1 downto 0);
+  -- constant phicenter : std_logic_vector
+
+  signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_dv : std_logic;
 begin
   
@@ -84,36 +86,57 @@ begin
       unsigned(barrel_r.rpc0_posz)
     );
 
-    PHIMOD : entity ucm_lib.ucm_cvp_phimod
-      generic map(
-        g_PIPELINE => 2
-      )
-      port map(
-        clk         =>clk,
-        rst         =>rst,
-        --
-        i_phicenter   => i_phicenter,
-        --
-        i_posphi    => i_slc_data_r.common.posphi,
-        i_dv        => i_slc_data_r.data_valid,
-        --
-        o_phimod    => int_phimod,
-        o_dv        => int_phimod_dv
-    );
+    -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+    --   generic map(
+    --     g_PIPELINE => 2
+    --   )
+    --   port map(
+    --     clk         =>clk,
+    --     rst         =>rst,
+    --     --
+    --     i_phicenter   => i_phicenter,
+    --     --
+    --     i_posphi    => i_slc_data_r.common.posphi,
+    --     i_dv        => i_slc_data_r.data_valid,
+    --     --
+    --     o_phimod    => int_phimod,
+    --     o_dv        => int_phimod_dv
+    -- );
 
-    PHIMOD_SCALE : entity shared_lib.generic_pipelined_MUL
+    PHIMOD : entity shared_lib.generic_pipelined_MATH
+    generic map(
+      g_OPERATION => "-",
+      g_IN_PIPE_STAGES  => 1,
+      g_OPERAND_A_WIDTH => SLC_COMMON_POSPHI_LEN,
+      g_OPERAND_B_WIDTH => SLC_COMMON_POSPHI_LEN,
+      g_OUT_PIPE_STAGES => 1
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      --
+      i_in_A      => std_logic_vector(i_slc_data_r.common.posphi),
+      i_in_B      => std_logic_vector(get_sector_phi_center(c_SECTOR_ID)),
+      i_dv        => int_phimod_dv,
+      --
+      o_result    => int_phimod,
+      o_dv        => int_phimod_dv
+  );
+
+    PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH
       generic map(
-        IN_PIPE_STAGES  => 0,
-        OPERAND_A_WIDTH => UCM_CDE2CVP_PHIMOD_LEN,
-        OPERAND_B_WIDTH => 5,
-        OUT_PIPE_STAGES => 0
+        g_OPERATION => "*",
+        g_IN_PIPE_STAGES  => 1,
+        g_OPERAND_A_WIDTH => SLC_COMMON_POSPHI_LEN,
+        g_OPERAND_B_WIDTH => 3,
+        g_OUT_PIPE_STAGES => 1
       )
       port map(
         clk         => clk,
         rst         => rst,
         --
         i_in_A      => int_phimod,
-        i_in_B      => std_logic_vector(to_unsigned(integer(3))),
+        i_in_B      => std_logic_vector(to_unsigned(integer(3),3)),
         i_dv        => int_phimod_dv,
         --
         o_result    => o_pl_phimod,

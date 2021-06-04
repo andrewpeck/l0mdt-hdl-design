@@ -164,7 +164,7 @@ begin
     port map(
       clk         => clk,
       rst         => rst,
-      glob_en     => enable,
+      ena     => enable,
       --
       i_data      => pl2mtc_v,
       i_dv        => pl2pl_dv,

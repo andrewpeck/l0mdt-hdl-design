@@ -284,13 +284,25 @@ begin
   );
 
 
-
+  -- PL_in : entity vamc_lib.vamc_sr
+  -- generic map(
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena         => ena,
+  --   --
+  --   i_data      => int_data_v,
+  --   o_data      => data_v
+  -- );
   
 
-  PL : entity shared_lib.std_pipeline
+  PL_2 : entity vamc_lib.vamc_sr
   generic map(
-    g_DELAY_CYCLES  => 2,
-    g_PIPELINE_WIDTH    => data_v'length
+    g_DELAY_CYCLES  => 10,
+    g_PIPELINE_WIDTH    => int_data_v'length
   )
   port map(
     clk         => clk,

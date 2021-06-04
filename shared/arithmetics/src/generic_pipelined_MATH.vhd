@@ -40,7 +40,7 @@ entity generic_pipelined_MATH is
     i_in_B        : in std_logic_vector(g_OPERAND_B_WIDTH-1 downto 0);
     i_dv          : in std_logic; -- specifies that A and B inputs are valid, so their values can be propagated through the pipeline
     -- output product
-    o_result      : out std_logic_vector((g_OPERAND_A_WIDTH+g_OPERAND_B_WIDTH-1) downto 0);
+    o_result      : out std_logic_vector((g_RESULT_WIDTH-1) downto 0);
     o_dv          : out std_logic -- valid signal for an output product
   );
 end generic_pipelined_MATH;
@@ -51,7 +51,7 @@ architecture beh of generic_pipelined_MATH is
 
   type data_pl_A_t is array (integer range <>) of std_logic_vector(g_OPERAND_A_WIDTH-1 downto 0);
   type data_pl_B_t is array (integer range <>) of std_logic_vector(g_OPERAND_B_WIDTH-1 downto 0);
-  type data_pl_O_t is array (integer range <>) of std_logic_vector((g_OPERAND_A_WIDTH+g_OPERAND_B_WIDTH-1) downto 0);
+  type data_pl_O_t is array (integer range <>) of std_logic_vector((g_RESULT_WIDTH-1) downto 0);
 
   signal mul_in_pipe_A : data_pl_A_t(g_IN_PIPE_STAGES -1 downto 0);
   signal mul_in_pipe_B : data_pl_B_t(g_IN_PIPE_STAGES -1 downto 0);
