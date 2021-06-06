@@ -156,7 +156,7 @@ begin
 
     PL_in : entity vamc_lib.vamc_sr
       generic map(
-        g_DELAY_CYCLES  => 10,
+        g_DELAY_CYCLES  => 3,
         g_PIPELINE_WIDTH    => i_slc_data_v'length
       )
       port map(

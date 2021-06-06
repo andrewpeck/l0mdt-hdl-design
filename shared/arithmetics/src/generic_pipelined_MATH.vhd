@@ -100,6 +100,10 @@ begin
             mul_output_pipe(0) <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
+          when "/" =>
+            mul_output_pipe(0) <=std_logic_vector(
+              signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) / signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
+            );
           when others =>
         end case;
 
