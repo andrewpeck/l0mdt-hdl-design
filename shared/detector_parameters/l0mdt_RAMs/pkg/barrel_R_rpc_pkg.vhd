@@ -34,7 +34,7 @@ package barrel_R_rpc_pkg is
 
 
   type barrel_R_rpc_aft is array (0 to 31 ) of real;
-  type barrel_R_rpc_layer_aft is array (0 to 2) of barrel_R_rpc_aft;
+  type barrel_R_rpc_layer_aft is array (0 to 1) of barrel_R_rpc_aft;
   -- type barrel_R_rpc_station_aft is array (0 to 2) of barrel_R_rpc_layer_aft;
   type barrel_R_rpc_side_aft is array ( 0 to 15) of barrel_R_rpc_layer_aft;
   type barrel_R_rpc_detector_aft is array ( 0 to 1) of barrel_R_rpc_side_aft;

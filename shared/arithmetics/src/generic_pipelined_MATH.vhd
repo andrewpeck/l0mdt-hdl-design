@@ -60,11 +60,15 @@ architecture beh of generic_pipelined_MATH is
   signal valid_signal_pipe : std_logic_vector(TOTAL_MUL_LATENCY - 1 downto 0);
   
 begin
+
+  -- IN_PL: if g_IN_PIPE_STAGES = 0 generate
+  -- else generate
+  -- end generate IN_PL;
   
-  process(clk, rst)
+  process(clk)
   begin
     if rising_edge(clk) then
-      if rst = '0' then
+      if rst = '1' then
         mul_in_pipe_A <= (others => (others => '0'));
         mul_in_pipe_B <= (others => (others => '0'));
         valid_signal_pipe <= (others => '0');
@@ -72,9 +76,15 @@ begin
         o_result <= (others => '0');
         o_dv <= '0';
       else
-        valid_signal_pipe(0) <= i_dv;
-        mul_in_pipe_A(0) <= i_in_A;
-        mul_in_pipe_B(0) <= i_in_B;
+        if i_dv then
+          valid_signal_pipe(0) <= i_dv;
+          mul_in_pipe_A(0) <= i_in_A;
+          mul_in_pipe_B(0) <= i_in_B;
+        else
+          valid_signal_pipe(0) <= '0';
+          mul_in_pipe_A(0) <= (others => '0');
+          mul_in_pipe_B(0) <= (others => '0');
+        end if;
 
         for i in 1 to (g_IN_PIPE_STAGES-1) loop
           mul_in_pipe_A(i) <=  mul_in_pipe_A(i-1);

@@ -215,7 +215,7 @@ begin
     port map(
       clk                   => clk,
       rst                   => local_rst,
-      glob_en               => local_en,
+      ena               => local_en,
       --
       i_phicenter           => phicenter,
       i_chamber_z_org_bus   => cde_chamber_z_org_bus,
