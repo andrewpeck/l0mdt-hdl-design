@@ -24,6 +24,7 @@ use shared_lib.generic_pipelined_MATH_pkg.all;
 
 entity generic_pipelined_MATH is
   generic (
+    g_INFER_DSP       : std_logic := '0';
     g_OPERATION       : string;--:= "*";
     g_IN_PIPE_STAGES  : integer := 2;      -- specifies how many pipeline registers to instantiate at the input of multiplier
     g_OPERAND_A_WIDTH : integer := 16;     -- width of the first multiplier operand
@@ -57,70 +58,114 @@ architecture beh of generic_pipelined_MATH is
   signal mul_in_pipe_B : data_pl_B_t(g_IN_PIPE_STAGES -1 downto 0);
   signal mul_output_pipe : data_pl_O_t(g_OUT_PIPE_STAGES -1 downto 0);
 
-  signal valid_signal_pipe : std_logic_vector(TOTAL_MUL_LATENCY - 1 downto 0);
+  signal valid_signal_pipe : std_logic_vector(TOTAL_MUL_LATENCY downto 0);
+
+  signal int_Result : std_logic_vector((g_RESULT_WIDTH-1) downto 0);
+  attribute use_dsp             : string;
+  attribute use_dsp of int_Result : signal is "yes";
   
 begin
 
   -- IN_PL: if g_IN_PIPE_STAGES = 0 generate
   -- else generate
   -- end generate IN_PL;
+  IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
+    mul_in_pipe_A(0) <= i_in_A;
+    mul_in_pipe_B(0) <= i_in_B;
+  else generate
+    IN_PL : process(clk) begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          mul_in_pipe_A <= (others => (others => '0'));
+          mul_in_pipe_B <= (others => (others => '0'));
+
+        else
+          if i_dv then
+            mul_in_pipe_A(0) <= i_in_A;
+            mul_in_pipe_B(0) <= i_in_B;
+          else
+            mul_in_pipe_A(0) <= (others => '0');
+            mul_in_pipe_B(0) <= (others => '0');
+          end if;
   
-  process(clk)
-  begin
+          for i in 1 to (g_IN_PIPE_STAGES-1) loop
+            mul_in_pipe_A(i) <=  mul_in_pipe_A(i-1);
+            mul_in_pipe_B(i) <=  mul_in_pipe_B(i-1);
+          end loop;
+        end if;
+      end if;
+    end process;
+  end generate IN_PL_GEN;
+
+ 
+
+  MATH : process(clk) begin
     if rising_edge(clk) then
       if rst = '1' then
-        mul_in_pipe_A <= (others => (others => '0'));
-        mul_in_pipe_B <= (others => (others => '0'));
-        valid_signal_pipe <= (others => '0');
-        mul_output_pipe <= (others => (others => '0'));
-        o_result <= (others => '0');
-        o_dv <= '0';
+        int_Result <= (others => '0');
       else
-        if i_dv then
-          valid_signal_pipe(0) <= i_dv;
-          mul_in_pipe_A(0) <= i_in_A;
-          mul_in_pipe_B(0) <= i_in_B;
-        else
-          valid_signal_pipe(0) <= '0';
-          mul_in_pipe_A(0) <= (others => '0');
-          mul_in_pipe_B(0) <= (others => '0');
-        end if;
-
-        for i in 1 to (g_IN_PIPE_STAGES-1) loop
-          mul_in_pipe_A(i) <=  mul_in_pipe_A(i-1);
-          mul_in_pipe_B(i) <=  mul_in_pipe_B(i-1);
-        end loop;
-
         case g_OPERATION is
           when "*" =>
-            mul_output_pipe(0) <=std_logic_vector(
+            int_Result <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) * signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
           when "-" =>
-            mul_output_pipe(0) <=std_logic_vector(
+            int_Result <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
           when "/" =>
-            mul_output_pipe(0) <=std_logic_vector(
+            int_Result <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) / signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
           when others =>
         end case;
-
-        
-
-        for j in 1 to (g_OUT_PIPE_STAGES-1) loop
-          mul_output_pipe(j) <=  mul_output_pipe(j-1);
-        end loop;
-
-        o_result <= mul_output_pipe(g_OUT_PIPE_STAGES-1);
-
-        for n in 1 to (TOTAL_MUL_LATENCY-1) loop
-          valid_signal_pipe(n) <=  valid_signal_pipe(n-1);
-        end loop;
-        o_dv <= valid_signal_pipe(TOTAL_MUL_LATENCY-1);
       end if;
     end if;
   end process;
+        
+  -- mul_output_pipe(0) <= int_Result;
+  OUT_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
+    o_result <= int_Result;
+  else  generate
+    OUT_PL : process(clk) begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          mul_output_pipe <= (others => (others => '0'));
+          -- o_result <= (others => '0');
+        else
+          mul_output_pipe(0) <= int_Result;
+          for j in 1 to (g_OUT_PIPE_STAGES-1) loop
+            mul_output_pipe(j) <=  mul_output_pipe(j-1);
+          end loop;
+          -- o_result <= mul_output_pipe(g_OUT_PIPE_STAGES-1);
+        end if;
+      end if;
+    end process;
+    o_result <= mul_output_pipe(g_OUT_PIPE_STAGES-1);
+  end generate OUT_PL_GEN;
+
+
+  DV_PL : process(clk) begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        valid_signal_pipe <= (others => '0');
+        -- o_dv <= '0';
+      else
+
+        if i_dv then
+          valid_signal_pipe(0) <= i_dv;
+        else
+          valid_signal_pipe(0) <= '0';
+        end if;
+
+        for n in 1 to (TOTAL_MUL_LATENCY) loop
+          valid_signal_pipe(n) <=  valid_signal_pipe(n-1);
+        end loop;
+        
+      end if;
+    end if;
+  end process;
+  
+  o_dv <= valid_signal_pipe(TOTAL_MUL_LATENCY);
   
 end architecture beh;

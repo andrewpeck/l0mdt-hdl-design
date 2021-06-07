@@ -133,10 +133,10 @@ begin
     PHIMOD_SCALE : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
-        g_IN_PIPE_STAGES  => 1,
+        g_IN_PIPE_STAGES  => 2,
         g_OPERAND_A_WIDTH => SLC_COMMON_POSPHI_LEN,
         g_OPERAND_B_WIDTH => 3,
-        g_OUT_PIPE_STAGES => 1
+        g_OUT_PIPE_STAGES => 2
       )
       port map(
         clk         => clk,
