@@ -13,8 +13,11 @@ UserLogic/ucm/src/ucm_ctrl_pam.vhd
 UserLogic/ucm/src/ucm_csw.vhd
 UserLogic/ucm/src/ucm_pam_csw.vhd
 UserLogic/ucm/src/ucm_ieta_calc.vhd
+
 UserLogic/ucm/src/ucm_rpc_R_comp.vhd
 UserLogic/ucm/src/ucm_rpc_R_comp_top.vhd
+UserLogic/ucm/src/ucm_mdt_R_comp.vhd
+UserLogic/ucm/src/ucm_mdt_R_comp_top.vhd
 
 UserLogic/ucm/src/ucm_cde.vhd
 

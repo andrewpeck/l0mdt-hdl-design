@@ -152,7 +152,7 @@ begin
   port map(
     clk               => clk,
     rst               => local_rst,
-    glob_en           => local_en,
+    ena               => local_en,
     --
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --

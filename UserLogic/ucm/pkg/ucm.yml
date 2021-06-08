@@ -60,8 +60,8 @@ HDL_Types:
 
 - ucm_cde_bus : [array: open , type: ucm_cde]
 
-- ucm_cvp_rad : [type : logic , length : SLC_Z_RPC_LEN]
-- ucm_cvp_rads : [array: open , type : ucm_cvp_rad]
+# - ucm_cvp_rad : [type : logic , length : SLC_Z_RPC_LEN]
+# - ucm_cvp_rads : [array: open , type : ucm_cvp_rad]
 # ucm_prepro_avt: [array: open , type: ucm_prepro_vt ]
 
 # main cross switch control

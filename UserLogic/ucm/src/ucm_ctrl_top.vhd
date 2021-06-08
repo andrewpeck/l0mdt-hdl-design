@@ -32,7 +32,7 @@ entity ucm_ctrl_top is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
+    ena             : in std_logic;
     --
     i_prepro2ctrl_av    : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     --
@@ -52,7 +52,7 @@ architecture beh of ucm_ctrl_top is
   --   port (
   --     clk                 : in std_logic;
   --     rst                 : in std_logic;
-  --     glob_en             : in std_logic;
+  --     ena             : in std_logic;
   --     -- extrnals
   --     i_data              : in ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --     o_csw_ctrl          : out ucm_csw_control_at;
@@ -67,7 +67,7 @@ architecture beh of ucm_ctrl_top is
   --   port (
   --     clk                 : in std_logic;
   --     rst                 : in std_logic;
-  --     glob_en             : in std_logic;
+  --     ena             : in std_logic;
   --     --
   --     i_num_cand          : in unsigned(3 downto 0);
   --     i_pam_update        : in std_logic;
@@ -92,7 +92,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    ena             => ena,
     -- extrnals
     i_data              => i_prepro2ctrl_av,
     o_csw_ctrl          => o_csw_ctrl,
@@ -105,7 +105,7 @@ begin
   port map(
     clk                 => clk,
     rst                 => rst,
-    glob_en             => glob_en,
+    ena             => ena,
     --
     i_num_cand          => num_cand,
     i_pam_update        => pam_update,

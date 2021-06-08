@@ -27,35 +27,48 @@ entity generic_pipelined_MATH is
     g_INFER_DSP       : std_logic := '0';
     g_OPERATION       : string;--:= "*";
     g_IN_PIPE_STAGES  : integer := 2;      -- specifies how many pipeline registers to instantiate at the input of multiplier
-    g_OPERAND_A_WIDTH : integer := 16;     -- width of the first multiplier operand
-    g_OPERAND_B_WIDTH : integer := 16;     -- width of the second multiplier operand
-    g_OUT_PIPE_STAGES : integer := 2;       -- number of the pipeline registers to instantiate at the output of multiplier
-    g_RESULT_WIDTH    : integer := arith_get_out_width(g_OPERATION,g_OPERAND_A_WIDTH,g_OPERAND_B_WIDTH)
+    -- g_OPERAND_A_WIDTH : integer := 16;     -- width of the first multiplier operand
+    -- g_OPERAND_B_WIDTH : integer := 16;     -- width of the second multiplier operand
+    g_OUT_PIPE_STAGES : integer := 2       -- number of the pipeline registers to instantiate at the output of multiplier
+    -- g_RESULT_WIDTH    : integer := arith_get_out_width(g_OPERATION,g_OPERAND_A_WIDTH,g_OPERAND_B_WIDTH)
   );
   port (
     -- clock and reset signals
     clk           : in std_logic;
     rst           : in std_logic;
     -- input operands
-    i_in_A        : in std_logic_vector(g_OPERAND_A_WIDTH-1 downto 0);
-    i_in_B        : in std_logic_vector(g_OPERAND_B_WIDTH-1 downto 0);
+    i_in_A        : in std_logic_vector := "";--(g_OPERAND_A_WIDTH-1 downto 0);
+    i_in_B        : in std_logic_vector := "";--(g_OPERAND_B_WIDTH-1 downto 0);
+    i_in_C        : in std_logic_vector := "";--(g_OPERAND_C_WIDTH-1 downto 0);
+    i_in_D        : in std_logic_vector := "";--(g_OPERAND_C_WIDTH-1 downto 0);
     i_dv          : in std_logic; -- specifies that A and B inputs are valid, so their values can be propagated through the pipeline
     -- output product
-    o_result      : out std_logic_vector((g_RESULT_WIDTH-1) downto 0);
+    o_result      : out std_logic_vector;--((g_RESULT_WIDTH-1) downto 0);
     o_dv          : out std_logic -- valid signal for an output product
   );
 end generic_pipelined_MATH;
 
 architecture beh of generic_pipelined_MATH is
 
+  constant g_OPERAND_A_WIDTH : integer := i_in_A'length;
+  constant g_OPERAND_B_WIDTH : integer := i_in_B'length;
+  constant g_OPERAND_C_WIDTH : integer := i_in_C'length;
+  constant g_OPERAND_D_WIDTH : integer := i_in_D'length;
+  constant g_RESULT_WIDTH    : integer := arith_get_out_width(g_OPERATION,g_OPERAND_A_WIDTH,g_OPERAND_B_WIDTH,g_OPERAND_C_WIDTH,g_OPERAND_D_WIDTH);
+
   constant TOTAL_MUL_LATENCY : integer := g_IN_PIPE_STAGES + g_OUT_PIPE_STAGES;
 
   type data_pl_A_t is array (integer range <>) of std_logic_vector(g_OPERAND_A_WIDTH-1 downto 0);
   type data_pl_B_t is array (integer range <>) of std_logic_vector(g_OPERAND_B_WIDTH-1 downto 0);
+  type data_pl_C_t is array (integer range <>) of std_logic_vector(g_OPERAND_C_WIDTH-1 downto 0);
+  type data_pl_D_t is array (integer range <>) of std_logic_vector(g_OPERAND_D_WIDTH-1 downto 0);
   type data_pl_O_t is array (integer range <>) of std_logic_vector((g_RESULT_WIDTH-1) downto 0);
 
   signal mul_in_pipe_A : data_pl_A_t(g_IN_PIPE_STAGES -1 downto 0);
   signal mul_in_pipe_B : data_pl_B_t(g_IN_PIPE_STAGES -1 downto 0);
+  signal mul_in_pipe_C : data_pl_B_t(g_IN_PIPE_STAGES -1 downto 0);
+  signal mul_in_pipe_D : data_pl_B_t(g_IN_PIPE_STAGES -1 downto 0);
+
   signal mul_output_pipe : data_pl_O_t(g_OUT_PIPE_STAGES -1 downto 0);
 
   signal valid_signal_pipe : std_logic_vector(TOTAL_MUL_LATENCY downto 0);
@@ -66,9 +79,6 @@ architecture beh of generic_pipelined_MATH is
   
 begin
 
-  -- IN_PL: if g_IN_PIPE_STAGES = 0 generate
-  -- else generate
-  -- end generate IN_PL;
   IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
     mul_in_pipe_A(0) <= i_in_A;
     mul_in_pipe_B(0) <= i_in_B;
@@ -96,6 +106,50 @@ begin
       end if;
     end process;
   end generate IN_PL_GEN;
+  C_PL: if g_OPERAND_C_WIDTH > 0 generate
+    IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
+      mul_in_pipe_C(0) <= i_in_C;
+    else generate
+      IN_PL : process(clk) begin
+        if rising_edge(clk) then
+          if rst = '1' then
+            mul_in_pipe_C <= (others => (others => '0'));
+          else
+            if i_dv then
+              mul_in_pipe_C(0) <= i_in_C;
+            else
+              mul_in_pipe_C(0) <= (others => '0');
+            end if;
+            for i in 1 to (g_IN_PIPE_STAGES-1) loop
+              mul_in_pipe_C(i) <=  mul_in_pipe_C(i-1);
+            end loop;
+          end if;
+        end if;
+      end process;
+    end generate IN_PL_GEN;
+  end generate C_PL;
+  D_PL: if g_OPERAND_D_WIDTH > 0 generate
+    IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
+      mul_in_pipe_D(0) <= i_in_D;
+    else generate
+      IN_PL : process(clk) begin
+        if rising_edge(clk) then
+          if rst = '1' then
+            mul_in_pipe_D <= (others => (others => '0'));
+          else
+            if i_dv then
+              mul_in_pipe_D(0) <= i_in_D;
+            else
+              mul_in_pipe_D(0) <= (others => '0');
+            end if;
+            for i in 1 to (g_IN_PIPE_STAGES-1) loop
+              mul_in_pipe_D(i) <=  mul_in_pipe_D(i-1);
+            end loop;
+          end if;
+        end if;
+      end process;
+    end generate IN_PL_GEN;
+  end generate D_PL;
 
  
 
@@ -104,21 +158,22 @@ begin
       if rst = '1' then
         int_Result <= (others => '0');
       else
-        case g_OPERATION is
-          when "*" =>
+        if g_OPERATION = "*" then
             int_Result <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) * signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
-          when "-" =>
+        elsif g_OPERATION = "-" then
             int_Result <=std_logic_vector(
               signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
             );
-          when "/" =>
+        elsif g_OPERATION = "+++" then
             int_Result <=std_logic_vector(
-              signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) / signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
+              resize(signed( mul_in_pipe_A(g_IN_PIPE_STAGES-1)),g_RESULT_WIDTH) + 
+              resize(signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1)),g_RESULT_WIDTH) +
+              resize(signed( mul_in_pipe_C(g_IN_PIPE_STAGES-1)),g_RESULT_WIDTH) +
+              resize(signed( mul_in_pipe_D(g_IN_PIPE_STAGES-1)),g_RESULT_WIDTH)
             );
-          when others =>
-        end case;
+        end if;
       end if;
     end if;
   end process;

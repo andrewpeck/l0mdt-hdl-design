@@ -62,7 +62,9 @@ end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
 
-  -- constant slope_bits
+  signal i_data_r            : ucm_cde_rt;
+
+  -- rpc R
   signal ctrl_r : UCM_CTRL_t;
   signal mon_r  : UCM_MON_t;
 
@@ -70,6 +72,11 @@ architecture beh of ucm_cvp is
   signal rpc_R_mon_r  : UCM_R_COMP_MON_t;
   signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
   signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+
+  signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
+  signal rpc_radius_dv  : std_logic;
+
+  -- 
 
   signal local_rst : std_logic;
 
@@ -85,8 +92,7 @@ architecture beh of ucm_cvp is
   
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
-  signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
-  signal rpc_radius_dv  : std_logic;
+
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
   signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
 
@@ -112,6 +118,9 @@ architecture beh of ucm_cvp is
   
 begin
 
+  i_data_r <= structify(i_data_v);
+  
+
   ctrl_r  <= structify(ctrl_v,ctrl_r);
   mon_v   <= vectorify(mon_r,mon_v);
 
@@ -121,22 +130,38 @@ begin
   mon_r.R_COMP <= rpc_R_mon_r;
 
   local_rst <= rst or i_local_rst;
-  data_r <= structify(i_data_v);
+  -- data_r <= structify(i_data_v);
   barrel_r <= structify(int_data_r.specific);
 
-  PL_in : entity vamc_lib.vamc_sr
-  generic map(
-    g_DELAY_CYCLES  => 10,
-    g_PIPELINE_WIDTH    => int_data_v'length
-  )
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    ena         => ena,
-    --
-    i_data      => int_data_v,
-    o_data      => data_v
-  );
+  IN_REG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if local_rst = '1' then
+        int_data_v <= (others => '0');
+      else
+        if i_in_en = '1' then
+          if i_data_r.data_valid = '1' then
+            int_data_v <= i_data_v;
+          end if;
+        end if;
+      end if;
+    end if;
+  end process IN_REG;
+  int_data_r <= structify(int_data_v);
+
+  -- PL_in : entity vamc_lib.vamc_sr
+  -- generic map(
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena         => ena,
+  --   --
+  --   i_data      => int_data_v,
+  --   o_data      => data_v
+  -- );
 
   chamber_ieta_r <= structify(data_v).chamb_ieta;
 
@@ -155,8 +180,8 @@ begin
         ctrl_v      => rpc_R_ctrl_v,
         mon_v       => rpc_R_mon_v,
         --
-        i_phimod    => data_r.phimod,
-        i_dv        => data_r.data_valid,
+        i_phimod    => i_data_r.phimod,
+        i_dv        => i_data_r.data_valid,
         --
         o_radius    => rpc_radius_av,
         o_dv        => rpc_radius_dv
@@ -168,9 +193,10 @@ begin
       rst           => local_rst,
       ena           => ena,
       --
+      i_rpc_rad_a   => rpc_radius_av,
       i_cointype    => int_data_r.cointype,
       i_data_v      => int_data_r.specific,
-      i_data_Valid  => int_data_r.data_valid,
+      i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
       o_offset      => offset,
       o_slope       => slope,
       o_data_valid  => slope_dv
@@ -204,7 +230,7 @@ begin
     end generate;
 
     ----------------------------------------------------------
-
+/**
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
@@ -262,9 +288,9 @@ begin
       o_ieta        => new_chamb_ieta_a(2),
       o_ieta_dv     => new_chamb_ieta_dv(2)
     );
-
+*/
   end generate;
-
+/*
   atan_slope <= resize(unsigned(slope),ATAN_SLOPE_LEN) when to_integer(unsigned(slope)) < 732387 else to_unsigned(732387,ATAN_SLOPE_LEN);
 
   ATAN : entity shared_lib.roi_atan
@@ -345,9 +371,9 @@ begin
   --   end generate;
   -- end generate;
   
-  int_data_v <= i_data_v;
+ 
 
-  int_data_r <= structify(int_data_v);
+  
 
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
@@ -436,7 +462,7 @@ begin
     end if;
   end process;
 
-
+*/
 
 end beh;
 
