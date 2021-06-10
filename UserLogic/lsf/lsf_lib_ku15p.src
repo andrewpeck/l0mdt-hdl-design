@@ -21,8 +21,9 @@ shared/SpyBuffer/src/aFifo/sync_r2w.v
 shared/SpyBuffer/src/aFifo/sync_w2r.v
 shared/SpyBuffer/src/aFifo/wptr_full.v
 shared/SpyBuffer/src/SpyProtocol.vh
-shared/SpyBuffer/src/SpyController.v
-shared/SpyBuffer/src/SpyMemory.v
+shared/SpyBuffer/src/SpyController_tdpMem.v
+shared/SpyBuffer/src/asym_ram_tdp_read_first.v
+shared/SpyBuffer/src/SpyMemory_tdp.v
 shared/SpyBuffer/src/SpyPlayback.v
 shared/SpyBuffer/src/SpyBuffer.v
 UserLogic/lsf/src/lsf_spybuffer_wrapper.sv
