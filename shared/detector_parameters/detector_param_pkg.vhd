@@ -94,7 +94,7 @@ package detector_param_pkg is
     3.141592654,3.534291735,3.926990817,4.319689899,4.71238898,5.105088062,5.497787144,5.890486225
 
   );
-  function get_sector_phi_center( sector : integer) return sector_phi_center_t;
+  function get_sector_phi_center( sector : integer; len : integer) return sector_phi_center_t;
 
   -------------------------------------------------------------------------
   -- Radius to the center of the chamber
@@ -275,13 +275,13 @@ package body detector_param_pkg is
   -------------------------------------------------------------------------
   -- Phi center of sector
   -------------------------------------------------------------------------
-  function get_sector_phi_center( sector : integer) return sector_phi_center_t is
+  function get_sector_phi_center( sector : integer; len : integer) return sector_phi_center_t is
     variable mem_out : sector_phi_center_t;
     variable a , b : real;
   begin
     a := sector_phi_center_default(sector  - 1);
     b := SLC_COMMON_POSPHI_MULT;
-    mem_out := to_unsigned( integer(a * b),SLC_COMMON_POSPHI_LEN);
+    mem_out := to_unsigned( integer(a * b),len);
     return mem_out;
   end function;
 

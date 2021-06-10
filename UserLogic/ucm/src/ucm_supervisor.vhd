@@ -69,7 +69,7 @@ architecture beh of ucm_supervisor is
   signal int_en   : std_logic;
   signal int_rst  : std_logic := '1';
   --
-  signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
+  signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID,SLC_COMMON_POSPHI_LEN);
   signal PHI_CTRL     : UCM_SECTOR_PHI_CTRL_t;
   signal PHI_MON     : UCM_SECTOR_PHI_MON_t;
   --

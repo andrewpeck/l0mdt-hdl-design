@@ -73,6 +73,7 @@ architecture beh of ucm_cde is
 
   -- constant phicenter : std_logic_vector
 
+  signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_pl: std_logic_vector(12 -1 downto 0);
   signal int_phimod_dv : std_logic;
@@ -109,7 +110,7 @@ begin
     --     o_phimod    => int_phimod,
     --     o_dv        => int_phimod_dv
     -- );
-
+    slc_posphi <= std_logic_vector(i_slc_data_r.common.posphi);
     PHIMOD : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "-",
@@ -122,8 +123,10 @@ begin
         clk         => clk,
         rst         => rst,
         --
-        i_in_A      => std_logic_vector(i_slc_data_r.common.posphi),
-        i_in_B      => std_logic_vector(get_sector_phi_center(c_SECTOR_ID)),
+        i_in_A      => slc_posphi,
+        i_in_B      => std_logic_vector(i_phicenter),
+        i_in_C      => "0",
+        i_in_D      => "0",
         i_dv        => i_slc_data_r.data_valid,
         --
         o_result    => int_phimod,
@@ -144,6 +147,8 @@ begin
         --
         i_in_A      => int_phimod,
         i_in_B      => std_logic_vector(to_unsigned(integer(3),3)),
+        i_in_C      => "0",
+        i_in_D      => "0",
         i_dv        => int_phimod_dv,
         --
         o_result    => int_phimod_pl,
