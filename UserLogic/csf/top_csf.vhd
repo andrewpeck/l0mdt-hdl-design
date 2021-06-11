@@ -55,6 +55,8 @@ entity top_csf is
     i_rst     : in    std_logic;
     o_seg     : out   sf2ptcalc_rvt;
 
+    --SpyBuffer
+  --  spy_clock           : in    std_logic;
     -- Hit Spybuffer
     i_spyhit_fc_we      : in    std_logic;
     i_spyhit_fc_re      : in    std_logic;
@@ -122,6 +124,7 @@ architecture behavioral of top_csf is
       i_eof     : in    std_logic;
       i_rst     : in    std_logic;
       o_seg     : out   sf2ptcalc_rvt;
+      spy_clock : in    std_logic;
       -- Hit Spybuffer
       i_spyhit_fc_we      : in    std_logic;
       i_spyhit_fc_re      : in    std_logic;
@@ -189,6 +192,7 @@ begin
       i_eof     => i_eof,
       i_rst     => i_rst,
       o_seg     => o_seg,
+      spy_clock => clk, --Need to change to AXI interface clock
       -- Hit SpyBuffer
       i_spyhit_fc_we      => i_spyhit_fc_we,
       i_spyhit_fc_re      => i_spyhit_fc_re,

@@ -96,6 +96,7 @@ begin
           i_mdt_hit => i_mdt_data_v,
           i_eof     => i_control_r.eof,
           i_rst     => rst,
+          spy_clock => clk,
           o_seg     => o_sf_data_v,
           i_spyhit_fc_we      => '0',
           i_spyhit_fc_re      => '0',
