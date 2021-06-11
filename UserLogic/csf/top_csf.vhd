@@ -85,7 +85,7 @@ entity top_csf is
     i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
     o_spyslc_data       : out   heg2sfslc_rvt;
     o_spyslc_meta_rdata : out   std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
-    i_spyslc_meta_wdata : out   std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
+    i_spyslc_meta_wdata : in    std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
     o_spyslc_af         : out   std_logic;
     o_spyslc_empty      : out   std_logic;
 
@@ -152,7 +152,7 @@ architecture behavioral of top_csf is
       i_spyslc_meta_we    : in    std_logic;
       o_spyslc_data       : out   heg2sfslc_rvt;
       o_spyslc_meta_rdata : out   std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
-      i_spyslc_meta_wdata : out   std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
+      i_spyslc_meta_wdata : in    std_logic_vector(SPYSLC_MEM_WIDTH downto 0);
       o_spyslc_af         : out   std_logic;
       o_spyslc_empty      : out   std_logic;
 
