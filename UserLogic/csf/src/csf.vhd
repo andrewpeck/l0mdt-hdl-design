@@ -164,22 +164,22 @@ architecture behavioral of csf is
       wclock                : in    std_logic;
       rresetbar             : in    std_logic;
       wresetbar             : in    std_logic;
-      write_data            : in    std_logic_vector(DATA_WIDTH_A downto 0);
+      write_data            : in    std_logic_vector(DATA_WIDTH_A - 1 downto 0);
       write_enable          : in    std_logic;
       read_enable           : in    std_logic;
-      read_data             : out   std_logic_vector(DATA_WIDTH_A downto 0);
+      read_data             : out   std_logic_vector(DATA_WIDTH_A - 1 downto 0);
       freeze                : in    std_logic;
       playback              : in    std_logic_vector(1 downto 0);
 
       spy_addr              : in    std_logic_vector(SPY_MEM_WIDTH_B - 1 downto 0);
       spy_write_enable      : in    std_logic;
-      spy_write_data        : in    std_logic_vector(DATA_WIDTH_B downto 0);
+      spy_write_data        : in    std_logic_vector(DATA_WIDTH_B - 1 downto 0);
       spy_read_enable       : in    std_logic;
-      spy_data              : out   std_logic_vector(DATA_WIDTH_B downto 0);
+      spy_data              : out   std_logic_vector(DATA_WIDTH_B - 1 downto 0);
 
-      spy_meta_addr         : in    std_logic_vector(EL_MEM_WIDTH_B - 1 downto 0);
-      spy_meta_read_data    : out   std_logic_vector(SPY_MEM_WIDTH_B downto 0);
-      spy_meta_write_data   : in    std_logic_vector(SPY_MEM_WIDTH_B downto 0);
+      spy_meta_addr         : in    std_logic_vector(EL_MEM_WIDTH_B  - 1 downto 0);
+      spy_meta_read_data    : out   std_logic_vector(SPY_MEM_WIDTH_B     downto 0);
+      spy_meta_write_data   : in    std_logic_vector(SPY_MEM_WIDTH_B     downto 0);
       spy_meta_wen          : in    std_logic;
 
       almost_full           : out   std_logic;
@@ -255,8 +255,8 @@ begin
 
     hit_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => HEG2SFHIT_LEN - 1,
-        DATA_WIDTH_B    => HEG2SFHIT_LEN - 1,
+        DATA_WIDTH_A    => HEG2SFHIT_LEN,
+        DATA_WIDTH_B    => HEG2SFHIT_LEN,
         SPY_MEM_WIDTH_A => SPYHIT_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYHIT_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
@@ -294,8 +294,8 @@ begin
 
     slc_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => HEG2SFSLC_LEN - 1,
-        DATA_WIDTH_B    => HEG2SFSLC_LEN - 1,
+        DATA_WIDTH_A    => HEG2SFSLC_LEN,
+        DATA_WIDTH_B    => HEG2SFSLC_LEN,
         SPY_MEM_WIDTH_A => SPYSLC_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYSLC_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
@@ -334,8 +334,8 @@ begin
 
     seg_spybuffer : component spybuffer
       generic map (
-        DATA_WIDTH_A    => SF2PTCALC_LEN - 1,
-        DATA_WIDTH_B    => SF2PTCALC_LEN - 1,
+        DATA_WIDTH_A    => SF2PTCALC_LEN,
+        DATA_WIDTH_B    => SF2PTCALC_LEN,
         SPY_MEM_WIDTH_A => SPYSEG_MEM_WIDTH,
         SPY_MEM_WIDTH_B => SPYSEG_MEM_WIDTH,
         FC_FIFO_WIDTH   => 4,
