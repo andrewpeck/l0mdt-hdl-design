@@ -62,13 +62,19 @@ architecture beh of ucm_mdt_R_comp_top is
 
   type mon_avt is array (0 to g_STATION_LAYERS -1)of std_logic_vector(len(mon_r) -1 downto 0);
   signal mon_av  : mon_avt;
+  signal mon_null : std_logic_vector(len(mon_r) -1 downto 0)  := (others => '0');
+
  
 begin
 
   mon_v <= vectorify(mon_r,mon_v);
   ctrl_r <= structify(ctrl_v,ctrl_r);
 
-  -- mon_v <= mon_av(0) when ctrl_r.ext_ctrl =  '1' and ctrl
+  mon_v <=  mon_av(0) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 0 else
+            mon_av(1) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 1 else
+            mon_av(2) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 2 else
+            -- mon_av(3) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 3 else 
+            mon_null;
 
   INN0 : entity ucm_lib.ucm_mdt_R_comp
     generic map(
