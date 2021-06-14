@@ -29,8 +29,8 @@ architecture behavioral of UCM_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 67);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 67) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 71);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 71) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -141,11 +141,22 @@ begin  -- architecture behavioral
           localRdData( 8)            <=  reg_data(64)( 8);                              -- external access to mem
         when 66 => --0x42
           localRdData( 4 downto  0)  <=  reg_data(66)( 4 downto  0);                    -- Write Address
-          localRdData(13)            <=  Mon.R_COMP.MEM_INTERFACE.rd_rdy;               -- Read ready
+          localRdData(13)            <=  Mon.RPC_R_COMP.MEM_INTERFACE.rd_rdy;           -- Read ready
           localRdData(20 downto 16)  <=  reg_data(66)(20 downto 16);                    -- Read Address
         when 67 => --0x43
-          localRdData(11 downto  0)  <=  Mon.R_COMP.MEM_INTERFACE.rd_data;              -- Read Data
+          localRdData(11 downto  0)  <=  Mon.RPC_R_COMP.MEM_INTERFACE.rd_data;          -- Read Data
           localRdData(27 downto 16)  <=  reg_data(67)(27 downto 16);                    -- Write Data
+        when 68 => --0x44
+          localRdData( 3 downto  0)  <=  reg_data(68)( 3 downto  0);                    -- selected station
+          localRdData( 7 downto  4)  <=  reg_data(68)( 7 downto  4);                    -- selected position 0x:rpc_layer 1x:center chamber
+          localRdData( 8)            <=  reg_data(68)( 8);                              -- external access to mem
+        when 70 => --0x46
+          localRdData( 4 downto  0)  <=  reg_data(70)( 4 downto  0);                    -- Write Address
+          localRdData(13)            <=  Mon.MDT_R_COMP.MEM_INTERFACE.rd_rdy;           -- Read ready
+          localRdData(20 downto 16)  <=  reg_data(70)(20 downto 16);                    -- Read Address
+        when 71 => --0x47
+          localRdData(13 downto  0)  <=  Mon.MDT_R_COMP.MEM_INTERFACE.rd_data;          -- Read Data
+          localRdData(29 downto 16)  <=  reg_data(71)(29 downto 16);                    -- Write Data
 
 
         when others =>
@@ -186,12 +197,18 @@ begin  -- architecture behavioral
   Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_addr  <=  reg_data(58)( 7 downto  0);     
   Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).rd_addr  <=  reg_data(58)(23 downto 16);     
   Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_data  <=  reg_data(59)(31 downto 16);     
-  Ctrl.R_COMP.ext_ctrl                       <=  reg_data(64)( 8);               
-  Ctrl.R_COMP.sel_station                    <=  reg_data(64)( 3 downto  0);     
-  Ctrl.R_COMP.sel_layer                      <=  reg_data(64)( 7 downto  4);     
-  Ctrl.R_COMP.MEM_INTERFACE.wr_addr          <=  reg_data(66)( 4 downto  0);     
-  Ctrl.R_COMP.MEM_INTERFACE.rd_addr          <=  reg_data(66)(20 downto 16);     
-  Ctrl.R_COMP.MEM_INTERFACE.wr_data          <=  reg_data(67)(27 downto 16);     
+  Ctrl.RPC_R_COMP.ext_ctrl                   <=  reg_data(64)( 8);               
+  Ctrl.RPC_R_COMP.sel_station                <=  reg_data(64)( 3 downto  0);     
+  Ctrl.RPC_R_COMP.sel_layer                  <=  reg_data(64)( 7 downto  4);     
+  Ctrl.RPC_R_COMP.MEM_INTERFACE.wr_addr      <=  reg_data(66)( 4 downto  0);     
+  Ctrl.RPC_R_COMP.MEM_INTERFACE.rd_addr      <=  reg_data(66)(20 downto 16);     
+  Ctrl.RPC_R_COMP.MEM_INTERFACE.wr_data      <=  reg_data(67)(27 downto 16);     
+  Ctrl.MDT_R_COMP.ext_ctrl                   <=  reg_data(68)( 8);               
+  Ctrl.MDT_R_COMP.sel_station                <=  reg_data(68)( 3 downto  0);     
+  Ctrl.MDT_R_COMP.sel_layer                  <=  reg_data(68)( 7 downto  4);     
+  Ctrl.MDT_R_COMP.MEM_INTERFACE.wr_addr      <=  reg_data(70)( 4 downto  0);     
+  Ctrl.MDT_R_COMP.MEM_INTERFACE.rd_addr      <=  reg_data(70)(20 downto 16);     
+  Ctrl.MDT_R_COMP.MEM_INTERFACE.wr_data      <=  reg_data(71)(29 downto 16);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
@@ -225,12 +242,18 @@ begin  -- architecture behavioral
       reg_data(58)( 7 downto  0)  <= DEFAULT_UCM_CTRL_t.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_addr;
       reg_data(58)(23 downto 16)  <= DEFAULT_UCM_CTRL_t.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).rd_addr;
       reg_data(59)(31 downto 16)  <= DEFAULT_UCM_CTRL_t.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_data;
-      reg_data(64)( 8)  <= DEFAULT_UCM_CTRL_t.R_COMP.ext_ctrl;
-      reg_data(64)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.R_COMP.sel_station;
-      reg_data(64)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.R_COMP.sel_layer;
-      reg_data(66)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.wr_addr;
-      reg_data(66)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.rd_addr;
-      reg_data(67)(27 downto 16)  <= DEFAULT_UCM_CTRL_t.R_COMP.MEM_INTERFACE.wr_data;
+      reg_data(64)( 8)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.ext_ctrl;
+      reg_data(64)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.sel_station;
+      reg_data(64)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.sel_layer;
+      reg_data(66)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.MEM_INTERFACE.wr_addr;
+      reg_data(66)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.MEM_INTERFACE.rd_addr;
+      reg_data(67)(27 downto 16)  <= DEFAULT_UCM_CTRL_t.RPC_R_COMP.MEM_INTERFACE.wr_data;
+      reg_data(68)( 8)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.ext_ctrl;
+      reg_data(68)( 3 downto  0)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.sel_station;
+      reg_data(68)( 7 downto  4)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.sel_layer;
+      reg_data(70)( 4 downto  0)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.MEM_INTERFACE.wr_addr;
+      reg_data(70)(20 downto 16)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.MEM_INTERFACE.rd_addr;
+      reg_data(71)(29 downto 16)  <= DEFAULT_UCM_CTRL_t.MDT_R_COMP.MEM_INTERFACE.wr_data;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.ACTIONS.RESET <= '0';
@@ -255,8 +278,10 @@ begin  -- architecture behavioral
       Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(2).rd_req <= '0';
       Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).wr_req <= '0';
       Ctrl.CVP_CHAMB_Z0.CVP_CHAMB_Z0(3).rd_req <= '0';
-      Ctrl.R_COMP.MEM_INTERFACE.wr_req <= '0';
-      Ctrl.R_COMP.MEM_INTERFACE.rd_req <= '0';
+      Ctrl.RPC_R_COMP.MEM_INTERFACE.wr_req <= '0';
+      Ctrl.RPC_R_COMP.MEM_INTERFACE.rd_req <= '0';
+      Ctrl.MDT_R_COMP.MEM_INTERFACE.wr_req <= '0';
+      Ctrl.MDT_R_COMP.MEM_INTERFACE.rd_req <= '0';
       
 
       
@@ -345,13 +370,25 @@ begin  -- architecture behavioral
           reg_data(64)( 7 downto  4)                <=  localWrData( 7 downto  4);      -- selected position 0x:rpc_layer 1x:center chamber
           reg_data(64)( 8)                          <=  localWrData( 8);                -- external access to mem
         when 65 => --0x41
-          Ctrl.R_COMP.MEM_INTERFACE.wr_req          <=  localWrData( 0);               
-          Ctrl.R_COMP.MEM_INTERFACE.rd_req          <=  localWrData( 1);               
+          Ctrl.RPC_R_COMP.MEM_INTERFACE.wr_req      <=  localWrData( 0);               
+          Ctrl.RPC_R_COMP.MEM_INTERFACE.rd_req      <=  localWrData( 1);               
         when 66 => --0x42
           reg_data(66)( 4 downto  0)                <=  localWrData( 4 downto  0);      -- Write Address
           reg_data(66)(20 downto 16)                <=  localWrData(20 downto 16);      -- Read Address
         when 67 => --0x43
           reg_data(67)(27 downto 16)                <=  localWrData(27 downto 16);      -- Write Data
+        when 68 => --0x44
+          reg_data(68)( 3 downto  0)                <=  localWrData( 3 downto  0);      -- selected station
+          reg_data(68)( 7 downto  4)                <=  localWrData( 7 downto  4);      -- selected position 0x:rpc_layer 1x:center chamber
+          reg_data(68)( 8)                          <=  localWrData( 8);                -- external access to mem
+        when 69 => --0x45
+          Ctrl.MDT_R_COMP.MEM_INTERFACE.wr_req      <=  localWrData( 0);               
+          Ctrl.MDT_R_COMP.MEM_INTERFACE.rd_req      <=  localWrData( 1);               
+        when 70 => --0x46
+          reg_data(70)( 4 downto  0)                <=  localWrData( 4 downto  0);      -- Write Address
+          reg_data(70)(20 downto 16)                <=  localWrData(20 downto 16);      -- Read Address
+        when 71 => --0x47
+          reg_data(71)(29 downto 16)                <=  localWrData(29 downto 16);      -- Write Data
 
           when others => null;
         end case;

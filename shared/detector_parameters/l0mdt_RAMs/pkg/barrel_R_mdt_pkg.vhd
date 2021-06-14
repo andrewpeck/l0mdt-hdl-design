@@ -24,7 +24,7 @@ use shared_lib.detector_param_pkg.all;
 
 package barrel_R_mdt_pkg is
 
-  type barrel_R_mdt_avt is array (0 to 31) of std_logic_vector(SLC_Z_RPC_LEN - 1 downto 0);
+  type barrel_R_mdt_avt is array (0 to 31) of std_logic_vector(UCM_Z_ROI_LEN - 1 downto 0);
 
 
   type barrel_R_mdt_aft is array (0 to 31 ) of real;
@@ -261,11 +261,11 @@ package body barrel_R_mdt_pkg is
         end loop;
       when 1 =>
           for phi_i in  0 to num -1 loop
-            y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_mdt_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+            y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_MID_R_mdt_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
           end loop;
       when 2 =>
         for phi_i in  0 to num -1 loop
-          y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_INN_R_mdt_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
+          y(phi_i) := std_logic_vector(to_unsigned(integer(barrel_OUT_R_mdt_detector(side_id)(sector_id - 1)(layer)(phi_i) * mult) , out_width));
         end loop;
       -- when 3 =>
       --     for phi_i in  0 to num -1 loop

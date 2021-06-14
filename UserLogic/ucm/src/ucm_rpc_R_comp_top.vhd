@@ -55,8 +55,8 @@ end entity ucm_rpc_R_comp_top;
 
 architecture beh of ucm_rpc_R_comp_top is
 
-  signal ctrl_r : UCM_R_COMP_CTRL_t;
-  signal mon_r  : UCM_R_COMP_MON_t;
+  signal ctrl_r : UCM_RPC_R_COMP_CTRL_t;
+  signal mon_r  : UCM_RPC_R_COMP_MON_t;
 
   signal dv : std_logic_vector(3 downto 0) := (others => '0');
 

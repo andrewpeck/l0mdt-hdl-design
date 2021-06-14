@@ -45,6 +45,9 @@ HDL_Types:
 - ucm_rpc_r : [type : logic , length : SLC_Z_RPC_LEN]
 - ucm_rpc_r_bus : [array : open , type : ucm_rpc_r]
 
+- ucm_mdt_r : [type : logic , length : UCM_Z_ROI_LEN]
+- ucm_mdt_r_bus : [array : open , type : ucm_mdt_r]
+
 - chamb_ieta_rpc : [type : unsigned , length : 4]
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
 

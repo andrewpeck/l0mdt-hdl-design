@@ -11,7 +11,7 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-library ieee, shared_lib;
+library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
@@ -96,7 +96,7 @@ architecture beh of ucm_cvp_b_slope is
   signal bnom_1_dv  : std_logic;
   signal bnom_2     : std_logic_vector(sum_z'length + sum_y'length -1 downto 0);
   signal bnom_2_dv  : std_logic;
-  signal bnom       : std_logic_vector(bnom_2'length -1 downto 0);
+  signal bnom       : std_logic_vector(1 + bnom_2'length -1 downto 0);
   signal bnom_sc    : std_logic_vector(11 + bnom'length -1 downto 0);
   signal bnom_dv    : std_logic;
   signal bden       : std_logic_vector(4 + sum_zz'length-1 downto 0);
@@ -163,10 +163,29 @@ begin
         if ena =  '1' then
 
           if i_data_valid = '1' then
-            rad_a(0) <= signed(i_rpc_rad_a(0));
-            rad_a(1) <= signed(i_rpc_rad_a(1));
-            rad_a(2) <= signed(i_rpc_rad_a(2));
-            rad_a(3) <= signed(i_rpc_rad_a(3));
+            if or_reduce(std_logic_vector(barrel_r.rpc0_posz)) = '0' then
+              rad_a(0) <= (others => '0');
+            else
+              rad_a(0) <= signed(i_rpc_rad_a(0));
+            end if;
+            if or_reduce(std_logic_vector(barrel_r.rpc1_posz)) = '0' then
+              rad_a(1) <= (others => '0');
+            else
+              rad_a(1) <= signed(i_rpc_rad_a(1));
+            end if;
+            if or_reduce(std_logic_vector(barrel_r.rpc2_posz)) = '0' then
+              rad_a(2) <= (others => '0');
+            else
+              rad_a(2) <= signed(i_rpc_rad_a(2));
+            end if;
+            if or_reduce(std_logic_vector(barrel_r.rpc3_posz)) = '0' then
+              rad_a(3) <= (others => '0');
+            else
+              rad_a(3) <= signed(i_rpc_rad_a(3));
+            end if;
+            -- rad_a(1) <= signed(i_rpc_rad_a(1));
+            -- rad_a(2) <= signed(i_rpc_rad_a(2));
+            -- rad_a(3) <= signed(i_rpc_rad_a(3));
 
             rpc_a(0) <= barrel_r.rpc0_posz;
             rpc_a(1) <= barrel_r.rpc1_posz;
@@ -396,8 +415,8 @@ begin
       clk         => clk,
       rst         => rst,
       --
-      i_in_A      => bnom_1,
-      i_in_B      => bnom_2,
+      i_in_A      => '0' & bnom_1,
+      i_in_B      => '0' & bnom_2,
       i_in_C      => "0",
       i_in_D      => "0",
       i_dv        => bnom_2_dv,
@@ -451,8 +470,8 @@ begin
   e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 5,
-      g_OUT_PIPE_STAGES => 5
+      g_IN_PIPE_STAGES  => 9,
+      g_OUT_PIPE_STAGES => 10
     )
     port map(
       clk         => clk,

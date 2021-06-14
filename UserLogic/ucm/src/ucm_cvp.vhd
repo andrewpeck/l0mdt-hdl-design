@@ -68,13 +68,23 @@ architecture beh of ucm_cvp is
   signal ctrl_r : UCM_CTRL_t;
   signal mon_r  : UCM_MON_t;
 
-  signal rpc_R_ctrl_r : UCM_R_COMP_CTRL_t;
-  signal rpc_R_mon_r  : UCM_R_COMP_MON_t;
+  signal rpc_R_ctrl_r : UCM_RPC_R_COMP_CTRL_t;
+  signal rpc_R_mon_r  : UCM_RPC_R_COMP_MON_t;
   signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
   signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
 
+  signal mdt_R_ctrl_r : UCM_MDT_R_COMP_CTRL_t;
+  signal mdt_R_mon_r  : UCM_MDT_R_COMP_MON_t;
+  signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+
+  --
+
   signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
   signal rpc_radius_dv  : std_logic;
+
+  signal mdt_radius_av  : ucm_mdt_r_bus_at(3 - 1 downto 0);
+  signal mdt_radius_dv  : std_logic;
 
   -- 
 
@@ -124,10 +134,13 @@ begin
   ctrl_r  <= structify(ctrl_v,ctrl_r);
   mon_v   <= vectorify(mon_r,mon_v);
 
-  rpc_R_ctrl_v <= vectorify(ctrl_r.R_COMP,rpc_R_ctrl_v);
-  
+  rpc_R_ctrl_v <= vectorify(ctrl_r.RPC_R_COMP,rpc_R_ctrl_v);
   rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
-  mon_r.R_COMP <= rpc_R_mon_r;
+  mon_r.RPC_R_COMP <= rpc_R_mon_r;
+
+  mdt_R_ctrl_v <= vectorify(ctrl_r.MDT_R_COMP,mdt_R_ctrl_v);
+  mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
+  mon_r.MDT_R_COMP <= mdt_R_mon_r;
 
   local_rst <= rst or i_local_rst;
   -- data_r <= structify(i_data_v);
@@ -187,6 +200,27 @@ begin
         o_dv        => rpc_radius_dv
     );
 
+    MDT_R : entity ucm_lib.ucm_mdt_R_comp_top
+    generic map(
+      g_MODE =>  "MDT",
+      g_STATION_LAYERS => 3,
+      g_OUTPUT_WIDTH => UCM_Z_ROI_LEN
+    )
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      ena         => ena,
+      --
+      ctrl_v      => mdt_R_ctrl_v,
+      mon_v       => mdt_R_mon_v,
+      --
+      i_phimod    => i_data_r.phimod,
+      i_dv        => i_data_r.data_valid,
+      --
+      o_radius    => mdt_radius_av,
+      o_dv        => mdt_radius_dv
+  );
+
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
       clk           => clk,
@@ -216,8 +250,10 @@ begin
         port map(
           clk           => clk,
           rst           => local_rst,
-          ena       => ena,
+          ena           => ena,
           --
+          i_mdt_R       => mdt_radius_av(st_i),
+          i_mdt_R_dv    => mdt_radius_dv,
           i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
           i_slope       => slope,
@@ -230,7 +266,7 @@ begin
     end generate;
 
     ----------------------------------------------------------
-/**
+-- /**
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
@@ -288,9 +324,9 @@ begin
       o_ieta        => new_chamb_ieta_a(2),
       o_ieta_dv     => new_chamb_ieta_dv(2)
     );
-*/
+-- */
   end generate;
-/*
+-- /*
   atan_slope <= resize(unsigned(slope),ATAN_SLOPE_LEN) when to_integer(unsigned(slope)) < 732387 else to_unsigned(732387,ATAN_SLOPE_LEN);
 
   ATAN : entity shared_lib.roi_atan
@@ -462,7 +498,7 @@ begin
     end if;
   end process;
 
-*/
+-- */
 
 end beh;
 

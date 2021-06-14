@@ -35,7 +35,7 @@ entity ucm_mdt_R_comp is
   generic(
     g_STATION_RADIUS      : integer := 0; 
     g_STATION_LAYER       : integer := 0; -- only for RPC
-    g_OUTPUT_WIDTH        : integer := SLC_Z_RPC_LEN
+    g_OUTPUT_WIDTH        : integer := UCM_Z_ROI_LEN
   );
   port (
     clk           : in std_logic;
@@ -55,10 +55,10 @@ end entity ucm_mdt_R_comp;
 
 architecture beh of ucm_mdt_R_comp is
 
-  signal ctrl_r : UCM_R_COMP_CTRL_t;
-  signal mon_r  : UCM_R_COMP_MON_t;
+  signal ctrl_r : UCM_MDT_R_COMP_CTRL_t;
+  signal mon_r  : UCM_MDT_R_COMP_MON_t;
  
-  signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32);
+  signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,UCM_Z_ROI_LEN,32);
 
 begin
 

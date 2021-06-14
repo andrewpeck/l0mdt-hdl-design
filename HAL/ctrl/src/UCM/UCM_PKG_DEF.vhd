@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-06-03 19:03:09.148977.
+-- Created : 2021-06-11 14:40:14.386583.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -45,26 +45,40 @@ package UCM_CTRL_DEF is
   constant DEFAULT_UCM_CVP_CHAMB_Z0_CTRL_t : UCM_CVP_CHAMB_Z0_CTRL_t := (
                                                                          CVP_CHAMB_Z0 => (others => DEFAULT_UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t )
                                                                         );
-  constant DEFAULT_UCM_R_COMP_MEM_INTERFACE_CTRL_t : UCM_R_COMP_MEM_INTERFACE_CTRL_t := (
-                                                                                         wr_addr => (others => '0'),
-                                                                                         rd_addr => (others => '0'),
-                                                                                         wr_req => '0',
-                                                                                         rd_req => '0',
-                                                                                         wr_data => (others => '0')
-                                                                                        );
-  constant DEFAULT_UCM_R_COMP_CTRL_t : UCM_R_COMP_CTRL_t := (
-                                                             sel_station => x"0",
-                                                             sel_layer => x"0",
-                                                             MEM_INTERFACE => DEFAULT_UCM_R_COMP_MEM_INTERFACE_CTRL_t,
-                                                             ext_ctrl => '0'
-                                                            );
+  constant DEFAULT_UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t : UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t := (
+                                                                                                 wr_addr => (others => '0'),
+                                                                                                 rd_addr => (others => '0'),
+                                                                                                 wr_req => '0',
+                                                                                                 rd_req => '0',
+                                                                                                 wr_data => (others => '0')
+                                                                                                );
+  constant DEFAULT_UCM_RPC_R_COMP_CTRL_t : UCM_RPC_R_COMP_CTRL_t := (
+                                                                     sel_station => x"0",
+                                                                     sel_layer => x"0",
+                                                                     MEM_INTERFACE => DEFAULT_UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t,
+                                                                     ext_ctrl => '0'
+                                                                    );
+  constant DEFAULT_UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t : UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t := (
+                                                                                                 wr_addr => (others => '0'),
+                                                                                                 rd_addr => (others => '0'),
+                                                                                                 wr_req => '0',
+                                                                                                 rd_req => '0',
+                                                                                                 wr_data => (others => '0')
+                                                                                                );
+  constant DEFAULT_UCM_MDT_R_COMP_CTRL_t : UCM_MDT_R_COMP_CTRL_t := (
+                                                                     sel_station => x"0",
+                                                                     sel_layer => x"0",
+                                                                     MEM_INTERFACE => DEFAULT_UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t,
+                                                                     ext_ctrl => '0'
+                                                                    );
   constant DEFAULT_UCM_CTRL_t : UCM_CTRL_t := (
                                                CDE_CHAMB_Z0 => DEFAULT_UCM_CDE_CHAMB_Z0_CTRL_t,
                                                SECTOR_PHI => DEFAULT_UCM_SECTOR_PHI_CTRL_t,
+                                               RPC_R_COMP => DEFAULT_UCM_RPC_R_COMP_CTRL_t,
                                                ACTIONS => DEFAULT_UCM_ACTIONS_CTRL_t,
                                                CONFIGS => DEFAULT_UCM_CONFIGS_CTRL_t,
                                                CVP_CHAMB_Z0 => DEFAULT_UCM_CVP_CHAMB_Z0_CTRL_t,
-                                               R_COMP => DEFAULT_UCM_R_COMP_CTRL_t
+                                               MDT_R_COMP => DEFAULT_UCM_MDT_R_COMP_CTRL_t
                                               );
 
 
