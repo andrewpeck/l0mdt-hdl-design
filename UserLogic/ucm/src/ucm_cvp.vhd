@@ -14,6 +14,8 @@
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
+
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -361,21 +363,21 @@ begin
   -- );
   
 
-  PL_2 : entity vamc_lib.vamc_sr
-  generic map(
-    g_DELAY_CYCLES  => 10,
-    g_PIPELINE_WIDTH    => int_data_v'length
-  )
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    ena     => ena,
-    --
-    i_data      => data_v,
-    o_data      => data_v_2
-  );
+  -- PL_2 : entity vamc_lib.vamc_sr
+  -- generic map(
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena     => ena,
+  --   --
+  --   i_data      => data_v,
+  --   o_data      => data_v_2
+  -- );
 
-  data_r_2 <= structify(data_v_2);
+  -- data_r_2 <= structify(data_v_2);
   -- 
 
   -- Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
@@ -420,7 +422,96 @@ begin
     end generate;
   end generate;
 
-  UCM_CVP : process(local_rst,clk) begin
+  UCM_CVP_OUT : process(local_rst,clk) begin
+    if rising_edge(clk) then
+
+      if local_rst= '1' then
+        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          ucm2hps_ar(hps_i).data_valid    <= '0';
+        end loop;
+      else 
+
+        if i_data_r.data_valid = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_ar(hps_i).muid <= i_data_r.muid;
+            end if;
+          end loop;
+        end if;
+
+        if or_reduce(vec_z_pos_dv) = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+            end if;
+          end loop;
+        end if;
+
+        if atan_dv = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+            end if;
+          end loop;
+        end if;
+
+        if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
+          -- if c_SF_TYPE = '0' then --CSF
+            -- if int_data_r.data_valid = '1' then
+              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+
+                  if or_reduce(new_chamb_ieta_dv) = '1' then
+
+                    -- ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
+                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); 
+                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
+                    -- ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+                    -- ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+                    ucm2hps_ar(hps_i).data_valid          <= '1';
+                  
+                  else
+                    ucm2hps_ar(hps_i).data_valid    <= '0';
+                    -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    -- end loop;
+
+                  end if;
+
+                end if;
+              end loop;
+
+        else -- Endcap
+        end if;
+
+      end if;
+    end if;
+  end process;
+
+-- */
+
+end beh;
+
+  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- generic map(
+  --   g_PIPELINE => 2
+  -- )
+  -- port map(
+  --   clk         =>clk,
+  --   rst         =>local_rst,
+  --   --
+  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
+  --   --
+  --   i_posphi    => data_r.posphi,
+  --   i_dv        => data_r.data_valid,
+  --   --
+  --   o_phimod    => o_phimod
+  -- );
+
+  /*
+  UCM_CVP_OUT : process(local_rst,clk) begin
     if rising_edge(clk) then
 
       -- if slope < 2047 then
@@ -497,23 +588,4 @@ begin
       end if;
     end if;
   end process;
-
--- */
-
-end beh;
-
-  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
-  -- generic map(
-  --   g_PIPELINE => 2
-  -- )
-  -- port map(
-  --   clk         =>clk,
-  --   rst         =>local_rst,
-  --   --
-  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
-  --   --
-  --   i_posphi    => data_r.posphi,
-  --   i_dv        => data_r.data_valid,
-  --   --
-  --   o_phimod    => o_phimod
-  -- );
+  */
