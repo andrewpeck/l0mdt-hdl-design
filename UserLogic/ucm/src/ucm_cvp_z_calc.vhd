@@ -45,7 +45,7 @@ entity ucm_cvp_z_calc is
     --
     i_mdt_R       : in std_logic_vector(UCM_Z_ROI_LEN-1 downto 0);
     i_mdt_R_dv    : in std_logic;
-    i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
+    -- i_chamb_ieta  : in unsigned(VEC_MDTID_CHAMBER_IETA_LEN-1 downto 0);
     i_offset      : in signed(31 downto 0);--signed(126 -1 downto 0);
     i_slope       : in signed(31 downto 0);--signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
     i_data_valid  : in std_logic;

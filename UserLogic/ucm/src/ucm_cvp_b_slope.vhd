@@ -216,8 +216,8 @@ begin
     MULT_ZY_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
-        g_IN_PIPE_STAGES  => 1,
-        g_OUT_PIPE_STAGES => 1
+        g_IN_PIPE_STAGES  => 2,
+        g_OUT_PIPE_STAGES => 2
       )
       port map(
         clk         => clk,
@@ -235,8 +235,8 @@ begin
     MULT_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
       generic map(
         g_OPERATION => "*",
-        g_IN_PIPE_STAGES  => 1,
-        g_OUT_PIPE_STAGES => 1
+        g_IN_PIPE_STAGES  => 2,
+        g_OUT_PIPE_STAGES => 2
       )
       port map(
         clk         => clk,
@@ -334,8 +334,8 @@ begin
   SQR_ZZ_ENT : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_IN_PIPE_STAGES  => 2,
+      g_OUT_PIPE_STAGES => 2
     )
     port map(
       clk         => clk,
@@ -356,7 +356,7 @@ begin
     generic map(
       g_OPERATION => "*",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 2
     )
     port map(
       clk         => clk,
@@ -389,8 +389,8 @@ begin
   b_nom2_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_IN_PIPE_STAGES  => 2,
+      g_OUT_PIPE_STAGES => 3
     )
     port map(
       clk         => clk,
@@ -428,7 +428,7 @@ begin
   b_den_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "*-",
-      g_IN_PIPE_STAGES  => 2,
+      g_IN_PIPE_STAGES  => 3,
       g_OUT_PIPE_STAGES => 3
     )
     port map(
@@ -470,8 +470,8 @@ begin
   e_y_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 9,
-      g_OUT_PIPE_STAGES => 10
+      g_IN_PIPE_STAGES  => 11,
+      g_OUT_PIPE_STAGES => 11
     )
     port map(
       clk         => clk,
@@ -490,8 +490,8 @@ begin
   e_z_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "/",
-      g_IN_PIPE_STAGES  => 9,
-      g_OUT_PIPE_STAGES => 10
+      g_IN_PIPE_STAGES  => 11,
+      g_OUT_PIPE_STAGES => 11
     )
     port map(
       clk         => clk,

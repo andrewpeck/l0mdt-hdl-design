@@ -72,30 +72,30 @@ begin
         o_dv <= '0';
         o_radius <= (others => '0');
       else
-        if ctrl_r.ext_ctrl = '0' then
-          if i_dv  = '1' then
-            o_radius <= rad_mem(to_integer(unsigned(i_phimod)));
-            o_dv <= '1';
+        if ena = '1' then
+          if ctrl_r.ext_ctrl = '0' then
+            if i_dv  = '1' then
+              o_radius <= rad_mem(to_integer(unsigned(i_phimod)));
+              o_dv <= '1';
+            else
+              o_radius <= (others => '0');
+              o_dv <= '0';
+            end if;
           else
-            o_radius <= (others => '0');
-            o_dv <= '0';
-          end if;
-        else
-          if to_integer(unsigned(ctrl_r.sel_station)) = g_STATION_RADIUS then
-            if to_integer(unsigned(ctrl_r.sel_layer)) = g_STATION_LAYER then
-              if ctrl_r.MEM_INTERFACE.rd_req = '1' then
-                mon_r.MEM_INTERFACE.rd_data <= rad_mem(to_integer(unsigned(ctrl_r.MEM_INTERFACE.rd_addr)));
-              else
-                mon_r.MEM_INTERFACE.rd_data <= (others => '0');
-              end if;
-              if ctrl_r.MEM_INTERFACE.wr_req = '1' then
-                rad_mem(to_integer(unsigned(ctrl_r.MEM_INTERFACE.wr_addr))) <= ctrl_r.MEM_INTERFACE.wr_data;
+            if to_integer(unsigned(ctrl_r.sel_station)) = g_STATION_RADIUS then
+              if to_integer(unsigned(ctrl_r.sel_layer)) = g_STATION_LAYER then
+                if ctrl_r.MEM_INTERFACE.rd_req = '1' then
+                  mon_r.MEM_INTERFACE.rd_data <= rad_mem(to_integer(unsigned(ctrl_r.MEM_INTERFACE.rd_addr)));
+                else
+                  mon_r.MEM_INTERFACE.rd_data <= (others => '0');
+                end if;
+                if ctrl_r.MEM_INTERFACE.wr_req = '1' then
+                  rad_mem(to_integer(unsigned(ctrl_r.MEM_INTERFACE.wr_addr))) <= ctrl_r.MEM_INTERFACE.wr_data;
+                end if;
               end if;
             end if;
           end if;
-
         end if;
-        
       end if;
     end if;
   end process;

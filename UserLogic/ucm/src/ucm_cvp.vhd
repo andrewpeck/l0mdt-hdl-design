@@ -178,7 +178,7 @@ begin
   --   o_data      => data_v
   -- );
 
-  chamber_ieta_r <= structify(data_v).chamb_ieta;
+  -- chamber_ieta_r <= structify(data_v).chamb_ieta;
 
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
 
@@ -256,7 +256,7 @@ begin
           --
           i_mdt_R       => mdt_radius_av(st_i),
           i_mdt_R_dv    => mdt_radius_dv,
-          i_chamb_ieta  => chamber_ieta_r(st_i),
+          -- i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
           i_slope       => slope,
           i_data_valid  => slope_dv,
