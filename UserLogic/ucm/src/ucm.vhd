@@ -60,12 +60,53 @@ end entity ucm;
 
 architecture beh of ucm is
 
-  -- constant UCM_INPUT_PL_LATENCY : integer := 2;
+  --  SC
+  signal ctrl_r : UCM_CTRL_t;
+  signal mon_r  : UCM_MON_t;
 
-  -- constant UCM_OUTPUT_PL_LATENCY : integer := 6;
+  signal super_ctrl_r : UCM_SUPER_CTRL_t;
+  signal super_mon_r : UCM_SUPER_MON_t;
+  signal super_ctrl_v : std_logic_vector(len(super_ctrl_r) - 1 downto 0);
+  signal super_mon_v : std_logic_vector(len(super_mon_r) - 1 downto 0);
+
+  signal r_phi_comp_ctrl_r : UCM_R_PHI_COMP_CTRL_t;
+  signal r_phi_comp_ctrl_v : std_logic_vector(len(r_phi_comp_ctrl_r) - 1 downto 0);
+  signal r_phi_comp_mon_r  : UCM_R_PHI_COMP_MON_t;
+  type   r_phi_comp_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0);
+  signal r_phi_comp_mon_av  : r_phi_comp_mon_avt;
+  signal r_phi_comp_mon_null : std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0)  := (others => '0');
+  -- type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  -- signal mdt_mon_av  : mdt_mon_avt;
+  -- signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+
+  -- signal rpc_R_ctrl_r : UCM_RPC_R_COMP_CTRL_t;
+  signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t;
+  -- signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+
+  -- signal mdt_R_ctrl_r : UCM_MDT_R_COMP_CTRL_t;
+  signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t;
+  -- signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+
+  type   rpc_mon_at is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_RPC_MON_t;
+  signal rpc_mon_a  : rpc_mon_at;
+  type   rpc_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(rpc_R_mon_r) -1 downto 0);
+  signal rpc_mon_av  : rpc_mon_avt;
+  signal rpc_mon_null : std_logic_vector(len(rpc_R_mon_r) -1 downto 0)  := (others => '0');
+  
+  type   mdt_mon_at is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_MDT_MON_t;
+  signal mdt_mon_a  : mdt_mon_at;
+  type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  signal mdt_mon_av  : mdt_mon_avt;
+  signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+
+  --  FC
 
   signal local_en   : std_logic;
   signal local_rst  : std_logic;
+
+  -- signals
 
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
@@ -119,6 +160,44 @@ architecture beh of ucm is
 
 begin
 
+  -- SC
+  ctrl_r  <= structify(ctrl_v,ctrl_r);
+  super_ctrl_r <= ctrl_r.super;
+
+  mon_r.super <= super_mon_r;
+  mon_r.R_PHI_COMP.rpc <= rpc_R_mon_r;
+  mon_r.R_PHI_COMP.mdt <= mdt_R_mon_r;
+  mon_v   <= vectorify(mon_r,mon_v);
+
+  super_ctrl_v <= vectorify(super_ctrl_r,super_ctrl_v);
+  super_mon_r <= structify(super_mon_v,super_mon_r);
+
+
+  r_phi_comp_ctrl_r <= ctrl_r.R_PHI_COMP;
+  r_phi_comp_ctrl_v <= vectorify(r_phi_comp_ctrl_r,r_phi_comp_ctrl_v);
+  
+
+
+
+  mon_arrays: for th_i in 0 to c_NUM_THREADS - 1 generate
+    mdt_mon_av(th_i) <= vectorify(structify(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).mdt,mdt_mon_av(th_i));
+    rpc_mon_av(th_i) <= vectorify(structify(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).rpc,rpc_mon_av(th_i));
+
+  end generate mon_arrays;
+
+    mdt_R_mon_v <=  mdt_mon_av(0) when r_phi_comp_ctrl_r.mdt.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.mdt.sel_thread)) = 0 else
+                    mdt_mon_av(1) when r_phi_comp_ctrl_r.mdt.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.mdt.sel_thread)) = 1 else
+                    mdt_mon_av(2);
+    mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
+
+    rpc_R_mon_v <=  rpc_mon_av(0) when r_phi_comp_ctrl_r.rpc.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.rpc.sel_thread)) = 0 else
+                    rpc_mon_av(1) when r_phi_comp_ctrl_r.rpc.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.rpc.sel_thread)) = 1 else
+                    rpc_mon_av(2);
+    rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
+
+
+  --------------------------------
+
 
   SLC_BoEs : if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' generate
     i_slc_data_av(c_MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
@@ -136,8 +215,8 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    ctrl_v              => ctrl_v,
-    mon_v               => mon_v,
+    ctrl_v              => super_ctrl_v,
+    mon_v               => super_mon_v,
     --
     o_phicenter => phicenter,
     o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
@@ -251,8 +330,8 @@ begin
       rst           => local_rst,
       ena       => local_en,
       --
-      ctrl_v              => ctrl_v,
-      mon_v               => mon_v,
+      ctrl_v              => r_phi_comp_ctrl_v,
+      mon_v               => r_phi_comp_mon_av(vp_i),
       -- i_phicenter            => phicenter,
       i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --

@@ -55,9 +55,9 @@ end entity ucm_mdt_R_comp;
 
 architecture beh of ucm_mdt_R_comp is
 
-  signal ctrl_r : UCM_MDT_R_COMP_CTRL_t;
-  signal mon_r  : UCM_MDT_R_COMP_MON_t;
- 
+  signal ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
+  signal mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
+
   signal rad_mem : barrel_R_mdt_avt := get_barrel_R_mdt(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,UCM_Z_ROI_LEN,32);
 
 begin

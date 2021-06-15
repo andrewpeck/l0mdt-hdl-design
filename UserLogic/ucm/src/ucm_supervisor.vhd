@@ -42,8 +42,8 @@ entity ucm_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- AXI to SoC
-    ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
-    mon_v               : out std_logic_vector;--UCM_MON_t;
+    ctrl_v              : in  std_logic_vector;--UCM_SUPER_CTRL_t;
+    mon_v               : out std_logic_vector;--UCM_SUPER_MON_t;
     --
     o_phicenter             : out unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     o_cde_chamber_z_org_bus : out b_chamber_z_origin_station_avt;
@@ -58,8 +58,8 @@ end entity ucm_supervisor;
 
 architecture beh of ucm_supervisor is
 
-  signal ctrl        : UCM_CTRL_t;
-  signal mon         : UCM_MON_t;
+  signal ctrl        : UCM_SUPER_CTRL_t;
+  signal mon         : UCM_SUPER_MON_t;
 
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
@@ -70,8 +70,8 @@ architecture beh of ucm_supervisor is
   signal int_rst  : std_logic := '1';
   --
   signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID,SLC_COMMON_POSPHI_LEN);
-  signal PHI_CTRL     : UCM_SECTOR_PHI_CTRL_t;
-  signal PHI_MON     : UCM_SECTOR_PHI_MON_t;
+  signal PHI_CTRL     : UCM_SUPER_SECTOR_PHI_CTRL_t;
+  signal PHI_MON     : UCM_SUPER_SECTOR_PHI_MON_t;
   --
   
   --
@@ -81,8 +81,8 @@ architecture beh of ucm_supervisor is
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,SLC_Z_RPC_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,SLC_Z_RPC_MULT)
     );
-  signal CDE_Z0_CTRL : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  signal CDE_Z0_MON : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  signal CDE_Z0_CTRL : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  signal CDE_Z0_MON : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   signal CDE_states : std_logic_vector(1 downto 0);
   --
   signal cvp_ch_z0_org : b_chamber_z_origin_station_aut :=  (
@@ -91,8 +91,8 @@ architecture beh of ucm_supervisor is
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,UCM2HPS_VEC_POS_MULT)
     );
-  signal CVP_Z0_CTRL : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  signal CVP_Z0_MON : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  signal CVP_Z0_CTRL : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  signal CVP_Z0_MON : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 begin
 
   ctrl <= structify(ctrl_v,ctrl);

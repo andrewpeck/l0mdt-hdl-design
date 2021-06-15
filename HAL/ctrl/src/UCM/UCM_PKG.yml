@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-06-11 14:40:14.388549.
+# Created : 2021-06-15 16:29:41.126876.
 config:
   basic_convert_functions : off
   packages:
@@ -10,87 +10,102 @@ config:
 
 hdl:
 
-- UCM_ACTIONS_CTRL_t:
+- UCM_SUPER_ACTIONS_CTRL_t:
   - RESET : [ type: logic ]
   - ENABLE : [ type: logic ]
   - DISABLE : [ type: logic ]
   - FREEZE : [ type: logic ]
 
 
-- UCM_CONFIGS_CTRL_t:
+- UCM_SUPER_CONFIGS_CTRL_t:
   - THREADS : [ type: logic, length: 4 ]
   - INPUT_EN : [ type: logic ]
   - OUTPUT_EN : [ type: logic ]
 
 
-- UCM_STATUS_MON_t:
+- UCM_SUPER_STATUS_MON_t:
   - ENABLED : [ type: logic, length: 8 ]
   - READY : [ type: logic, length: 8 ]
   - ERROR : [ type: logic, length: 8 ]
 
 
-- UCM_SECTOR_PHI_MON_t:
+- UCM_SUPER_SECTOR_PHI_MON_t:
   - rd_data : [ type: logic, length: 10 ]
 
 
-- UCM_SECTOR_PHI_CTRL_t:
+- UCM_SUPER_SECTOR_PHI_CTRL_t:
   - wr_req : [ type: logic ]
   - rd_req : [ type: logic ]
   - wr_data : [ type: logic, length: 10 ]
 
 
-- UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t:
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t:
   - rd_rdy : [ type: logic ]
   - rd_data : [ type: logic, length: 16 ]
 
-- UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY: [array: 4, type: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t]
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY: [array: 4, type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t]
 
-- UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t:
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t:
   - wr_req : [ type: logic ]
   - rd_req : [ type: logic ]
   - wr_addr : [ type: logic, length: 8 ]
   - rd_addr : [ type: logic, length: 8 ]
   - wr_data : [ type: logic, length: 16 ]
 
-- UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY: [array: 4, type: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t]
+- UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY: [array: 4, type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t]
 
-- UCM_CDE_CHAMB_Z0_MON_t:
-  - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY ]
-
-
-- UCM_CDE_CHAMB_Z0_CTRL_t:
-  - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY ]
+- UCM_SUPER_CDE_CHAMB_Z0_MON_t:
+  - CDE_CHAMB_Z0 : [ type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY ]
 
 
-- UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t:
+- UCM_SUPER_CDE_CHAMB_Z0_CTRL_t:
+  - CDE_CHAMB_Z0 : [ type: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY ]
+
+
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t:
   - rd_rdy : [ type: logic ]
   - rd_data : [ type: logic, length: 16 ]
 
-- UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY: [array: 4, type: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t]
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY: [array: 4, type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t]
 
-- UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t:
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t:
   - wr_req : [ type: logic ]
   - rd_req : [ type: logic ]
   - wr_addr : [ type: logic, length: 8 ]
   - rd_addr : [ type: logic, length: 8 ]
   - wr_data : [ type: logic, length: 16 ]
 
-- UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY: [array: 4, type: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t]
+- UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY: [array: 4, type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t]
 
-- UCM_CVP_CHAMB_Z0_MON_t:
-  - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY ]
-
-
-- UCM_CVP_CHAMB_Z0_CTRL_t:
-  - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY ]
+- UCM_SUPER_CVP_CHAMB_Z0_MON_t:
+  - CVP_CHAMB_Z0 : [ type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY ]
 
 
-- UCM_RPC_R_COMP_MEM_INTERFACE_MON_t:
+- UCM_SUPER_CVP_CHAMB_Z0_CTRL_t:
+  - CVP_CHAMB_Z0 : [ type: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY ]
+
+
+- UCM_SUPER_MON_t:
+  - STATUS : [ type: UCM_SUPER_STATUS_MON_t ]
+  - SECTOR_PHI : [ type: UCM_SUPER_SECTOR_PHI_MON_t ]
+  - CDE_CHAMB_Z0 : [ type: UCM_SUPER_CDE_CHAMB_Z0_MON_t ]
+  - CVP_CHAMB_Z0 : [ type: UCM_SUPER_CVP_CHAMB_Z0_MON_t ]
+
+
+- UCM_SUPER_CTRL_t:
+  - ACTIONS : [ type: UCM_SUPER_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: UCM_SUPER_CONFIGS_CTRL_t ]
+  - SECTOR_PHI : [ type: UCM_SUPER_SECTOR_PHI_CTRL_t ]
+  - CDE_CHAMB_Z0 : [ type: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t ]
+  - CVP_CHAMB_Z0 : [ type: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t ]
+
+
+- UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t:
   - rd_rdy : [ type: logic ]
   - rd_data : [ type: logic, length: 12 ]
 
 
-- UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t:
+- UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t:
   - wr_req : [ type: logic ]
   - rd_req : [ type: logic ]
   - wr_addr : [ type: logic, length: 5 ]
@@ -98,23 +113,24 @@ hdl:
   - wr_data : [ type: logic, length: 12 ]
 
 
-- UCM_RPC_R_COMP_MON_t:
-  - MEM_INTERFACE : [ type: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t ]
+- UCM_R_PHI_COMP_RPC_MON_t:
+  - MEM_INTERFACE : [ type: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t ]
 
 
-- UCM_RPC_R_COMP_CTRL_t:
+- UCM_R_PHI_COMP_RPC_CTRL_t:
+  - sel_thread : [ type: logic, length: 4 ]
   - sel_station : [ type: logic, length: 4 ]
   - sel_layer : [ type: logic, length: 4 ]
   - ext_ctrl : [ type: logic ]
-  - MEM_INTERFACE : [ type: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t ]
+  - MEM_INTERFACE : [ type: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t ]
 
 
-- UCM_MDT_R_COMP_MEM_INTERFACE_MON_t:
+- UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t:
   - rd_rdy : [ type: logic ]
   - rd_data : [ type: logic, length: 14 ]
 
 
-- UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t:
+- UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t:
   - wr_req : [ type: logic ]
   - rd_req : [ type: logic ]
   - wr_addr : [ type: logic, length: 5 ]
@@ -122,33 +138,35 @@ hdl:
   - wr_data : [ type: logic, length: 14 ]
 
 
-- UCM_MDT_R_COMP_MON_t:
-  - MEM_INTERFACE : [ type: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t ]
+- UCM_R_PHI_COMP_MDT_MON_t:
+  - MEM_INTERFACE : [ type: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t ]
 
 
-- UCM_MDT_R_COMP_CTRL_t:
+- UCM_R_PHI_COMP_MDT_CTRL_t:
+  - sel_thread : [ type: logic, length: 4 ]
   - sel_station : [ type: logic, length: 4 ]
   - sel_layer : [ type: logic, length: 4 ]
   - ext_ctrl : [ type: logic ]
-  - MEM_INTERFACE : [ type: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t ]
+  - MEM_INTERFACE : [ type: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t ]
+
+
+- UCM_R_PHI_COMP_MON_t:
+  - RPC : [ type: UCM_R_PHI_COMP_RPC_MON_t ]
+  - MDT : [ type: UCM_R_PHI_COMP_MDT_MON_t ]
+
+
+- UCM_R_PHI_COMP_CTRL_t:
+  - RPC : [ type: UCM_R_PHI_COMP_RPC_CTRL_t ]
+  - MDT : [ type: UCM_R_PHI_COMP_MDT_CTRL_t ]
 
 
 - UCM_MON_t:
-  - STATUS : [ type: UCM_STATUS_MON_t ]
-  - SECTOR_PHI : [ type: UCM_SECTOR_PHI_MON_t ]
-  - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_MON_t ]
-  - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_MON_t ]
-  - RPC_R_COMP : [ type: UCM_RPC_R_COMP_MON_t ]
-  - MDT_R_COMP : [ type: UCM_MDT_R_COMP_MON_t ]
+  - SUPER : [ type: UCM_SUPER_MON_t ]
+  - R_PHI_COMP : [ type: UCM_R_PHI_COMP_MON_t ]
 
 
 - UCM_CTRL_t:
-  - ACTIONS : [ type: UCM_ACTIONS_CTRL_t ]
-  - CONFIGS : [ type: UCM_CONFIGS_CTRL_t ]
-  - SECTOR_PHI : [ type: UCM_SECTOR_PHI_CTRL_t ]
-  - CDE_CHAMB_Z0 : [ type: UCM_CDE_CHAMB_Z0_CTRL_t ]
-  - CVP_CHAMB_Z0 : [ type: UCM_CVP_CHAMB_Z0_CTRL_t ]
-  - RPC_R_COMP : [ type: UCM_RPC_R_COMP_CTRL_t ]
-  - MDT_R_COMP : [ type: UCM_MDT_R_COMP_CTRL_t ]
+  - SUPER : [ type: UCM_SUPER_CTRL_t ]
+  - R_PHI_COMP : [ type: UCM_R_PHI_COMP_CTRL_t ]
 
 

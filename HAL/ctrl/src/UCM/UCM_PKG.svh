@@ -12,36 +12,36 @@
     logic  ENABLE;
     logic  DISABLE;
     logic  FREEZE;
-  } UCM_ACTIONS_CTRL_t;
+  } UCM_SUPER_ACTIONS_CTRL_t;
 
   typedef struct packed {
     logic [4-1:0] THREADS;
     logic  INPUT_EN;
     logic  OUTPUT_EN;
-  } UCM_CONFIGS_CTRL_t;
+  } UCM_SUPER_CONFIGS_CTRL_t;
 
   typedef struct packed {
     logic [8-1:0] ENABLED;
     logic [8-1:0] READY;
     logic [8-1:0] ERROR;
-  } UCM_STATUS_MON_t;
+  } UCM_SUPER_STATUS_MON_t;
 
   typedef struct packed {
     logic [10-1:0] rd_data;
-  } UCM_SECTOR_PHI_MON_t;
+  } UCM_SUPER_SECTOR_PHI_MON_t;
 
   typedef struct packed {
     logic  wr_req;
     logic  rd_req;
     logic [10-1:0] wr_data;
-  } UCM_SECTOR_PHI_CTRL_t;
+  } UCM_SUPER_SECTOR_PHI_CTRL_t;
 
   typedef struct packed {
     logic  rd_rdy;
     logic [16-1:0] rd_data;
-  } UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
-  typedef UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t  [4-1:0] UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  typedef UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t  [4-1:0] UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
 
   typedef struct packed {
     logic  wr_req;
@@ -49,24 +49,24 @@
     logic [8-1:0] wr_addr;
     logic [8-1:0] rd_addr;
     logic [16-1:0] wr_data;
-  } UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
-  typedef UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t  [4-1:0] UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-
-  typedef struct packed {
-    UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY   CDE_CHAMB_Z0;
-  } UCM_CDE_CHAMB_Z0_MON_t;
+  typedef UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t  [4-1:0] UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
 
   typedef struct packed {
-    UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY   CDE_CHAMB_Z0;
-  } UCM_CDE_CHAMB_Z0_CTRL_t;
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY   CDE_CHAMB_Z0;
+  } UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+
+  typedef struct packed {
+    UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY   CDE_CHAMB_Z0;
+  } UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
 
   typedef struct packed {
     logic  rd_rdy;
     logic [16-1:0] rd_data;
-  } UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
-  typedef UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t  [4-1:0] UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  typedef UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t  [4-1:0] UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 
   typedef struct packed {
     logic  wr_req;
@@ -74,22 +74,37 @@
     logic [8-1:0] wr_addr;
     logic [8-1:0] rd_addr;
     logic [16-1:0] wr_data;
-  } UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
-  typedef UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t  [4-1:0] UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-
-  typedef struct packed {
-    UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY   CVP_CHAMB_Z0;
-  } UCM_CVP_CHAMB_Z0_MON_t;
+  typedef UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t  [4-1:0] UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
 
   typedef struct packed {
-    UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY   CVP_CHAMB_Z0;
-  } UCM_CVP_CHAMB_Z0_CTRL_t;
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY   CVP_CHAMB_Z0;
+  } UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+
+  typedef struct packed {
+    UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY   CVP_CHAMB_Z0;
+  } UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+
+  typedef struct packed {
+    UCM_SUPER_STATUS_MON_t   STATUS;
+    UCM_SUPER_SECTOR_PHI_MON_t   SECTOR_PHI;
+    UCM_SUPER_CDE_CHAMB_Z0_MON_t   CDE_CHAMB_Z0;
+    UCM_SUPER_CVP_CHAMB_Z0_MON_t   CVP_CHAMB_Z0;
+  } UCM_SUPER_MON_t;
+
+  typedef struct packed {
+    UCM_SUPER_ACTIONS_CTRL_t   ACTIONS;
+    UCM_SUPER_CONFIGS_CTRL_t   CONFIGS;
+    UCM_SUPER_SECTOR_PHI_CTRL_t   SECTOR_PHI;
+    UCM_SUPER_CDE_CHAMB_Z0_CTRL_t   CDE_CHAMB_Z0;
+    UCM_SUPER_CVP_CHAMB_Z0_CTRL_t   CVP_CHAMB_Z0;
+  } UCM_SUPER_CTRL_t;
 
   typedef struct packed {
     logic  rd_rdy;
     logic [12-1:0] rd_data;
-  } UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
+  } UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
 
   typedef struct packed {
     logic  wr_req;
@@ -97,23 +112,24 @@
     logic [5-1:0] wr_addr;
     logic [5-1:0] rd_addr;
     logic [12-1:0] wr_data;
-  } UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
+  } UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
 
   typedef struct packed {
-    UCM_RPC_R_COMP_MEM_INTERFACE_MON_t   MEM_INTERFACE;
-  } UCM_RPC_R_COMP_MON_t;
+    UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t   MEM_INTERFACE;
+  } UCM_R_PHI_COMP_RPC_MON_t;
 
   typedef struct packed {
+    logic [4-1:0] sel_thread;
     logic [4-1:0] sel_station;
     logic [4-1:0] sel_layer;
     logic  ext_ctrl;
-    UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t   MEM_INTERFACE;
-  } UCM_RPC_R_COMP_CTRL_t;
+    UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t   MEM_INTERFACE;
+  } UCM_R_PHI_COMP_RPC_CTRL_t;
 
   typedef struct packed {
     logic  rd_rdy;
     logic [14-1:0] rd_data;
-  } UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
+  } UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
 
   typedef struct packed {
     logic  wr_req;
@@ -121,36 +137,38 @@
     logic [5-1:0] wr_addr;
     logic [5-1:0] rd_addr;
     logic [14-1:0] wr_data;
-  } UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
+  } UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
 
   typedef struct packed {
-    UCM_MDT_R_COMP_MEM_INTERFACE_MON_t   MEM_INTERFACE;
-  } UCM_MDT_R_COMP_MON_t;
+    UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t   MEM_INTERFACE;
+  } UCM_R_PHI_COMP_MDT_MON_t;
 
   typedef struct packed {
+    logic [4-1:0] sel_thread;
     logic [4-1:0] sel_station;
     logic [4-1:0] sel_layer;
     logic  ext_ctrl;
-    UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t   MEM_INTERFACE;
-  } UCM_MDT_R_COMP_CTRL_t;
+    UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t   MEM_INTERFACE;
+  } UCM_R_PHI_COMP_MDT_CTRL_t;
 
   typedef struct packed {
-    UCM_STATUS_MON_t   STATUS;
-    UCM_SECTOR_PHI_MON_t   SECTOR_PHI;
-    UCM_CDE_CHAMB_Z0_MON_t   CDE_CHAMB_Z0;
-    UCM_CVP_CHAMB_Z0_MON_t   CVP_CHAMB_Z0;
-    UCM_RPC_R_COMP_MON_t   RPC_R_COMP;
-    UCM_MDT_R_COMP_MON_t   MDT_R_COMP;
+    UCM_R_PHI_COMP_RPC_MON_t   RPC;
+    UCM_R_PHI_COMP_MDT_MON_t   MDT;
+  } UCM_R_PHI_COMP_MON_t;
+
+  typedef struct packed {
+    UCM_R_PHI_COMP_RPC_CTRL_t   RPC;
+    UCM_R_PHI_COMP_MDT_CTRL_t   MDT;
+  } UCM_R_PHI_COMP_CTRL_t;
+
+  typedef struct packed {
+    UCM_SUPER_MON_t   SUPER;
+    UCM_R_PHI_COMP_MON_t   R_PHI_COMP;
   } UCM_MON_t;
 
   typedef struct packed {
-    UCM_ACTIONS_CTRL_t   ACTIONS;
-    UCM_CONFIGS_CTRL_t   CONFIGS;
-    UCM_SECTOR_PHI_CTRL_t   SECTOR_PHI;
-    UCM_CDE_CHAMB_Z0_CTRL_t   CDE_CHAMB_Z0;
-    UCM_CVP_CHAMB_Z0_CTRL_t   CVP_CHAMB_Z0;
-    UCM_RPC_R_COMP_CTRL_t   RPC_R_COMP;
-    UCM_MDT_R_COMP_CTRL_t   MDT_R_COMP;
+    UCM_SUPER_CTRL_t   SUPER;
+    UCM_R_PHI_COMP_CTRL_t   R_PHI_COMP;
   } UCM_CTRL_t;
 
 

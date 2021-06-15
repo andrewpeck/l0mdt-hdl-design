@@ -67,16 +67,16 @@ architecture beh of ucm_cvp is
   signal i_data_r            : ucm_cde_rt;
 
   -- rpc R
-  signal ctrl_r : UCM_CTRL_t;
-  signal mon_r  : UCM_MON_t;
+  signal ctrl_r : UCM_R_PHI_COMP_CTRL_t;
+  signal mon_r  : UCM_R_PHI_COMP_MON_t;
 
-  signal rpc_R_ctrl_r : UCM_RPC_R_COMP_CTRL_t;
-  signal rpc_R_mon_r  : UCM_RPC_R_COMP_MON_t;
+  signal rpc_R_ctrl_r : UCM_R_PHI_COMP_RPC_CTRL_t;
+  signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t; 
   signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
   signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
 
-  signal mdt_R_ctrl_r : UCM_MDT_R_COMP_CTRL_t;
-  signal mdt_R_mon_r  : UCM_MDT_R_COMP_MON_t;
+  signal mdt_R_ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
+  signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
   signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
   signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
 
@@ -136,13 +136,13 @@ begin
   ctrl_r  <= structify(ctrl_v,ctrl_r);
   mon_v   <= vectorify(mon_r,mon_v);
 
-  rpc_R_ctrl_v <= vectorify(ctrl_r.RPC_R_COMP,rpc_R_ctrl_v);
+  rpc_R_ctrl_v <= vectorify(ctrl_r.RPC,rpc_R_ctrl_v);
   rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
-  mon_r.RPC_R_COMP <= rpc_R_mon_r;
+  mon_r.RPC <= rpc_R_mon_r;
 
-  mdt_R_ctrl_v <= vectorify(ctrl_r.MDT_R_COMP,mdt_R_ctrl_v);
+  mdt_R_ctrl_v <= vectorify(ctrl_r.MDT,mdt_R_ctrl_v);
   mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
-  mon_r.MDT_R_COMP <= mdt_R_mon_r;
+  mon_r.MDT <= mdt_R_mon_r;
 
   local_rst <= rst or i_local_rst;
   -- data_r <= structify(i_data_v);

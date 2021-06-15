@@ -13,240 +13,279 @@ use shared_lib.common_ieee.all;
 
 package UCM_CTRL is
 
-  type UCM_ACTIONS_CTRL_t is record
+  type UCM_SUPER_ACTIONS_CTRL_t is record
     RESET : std_logic;
     ENABLE : std_logic;
     DISABLE : std_logic;
     FREEZE : std_logic;
-  end record UCM_ACTIONS_CTRL_t;
-  function len(x: UCM_ACTIONS_CTRL_t) return natural;
-  function vectorify(x: UCM_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_ACTIONS_CTRL_t) return UCM_ACTIONS_CTRL_t;
-  function nullify(t: UCM_ACTIONS_CTRL_t) return UCM_ACTIONS_CTRL_t;
+  end record UCM_SUPER_ACTIONS_CTRL_t;
+  function len(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
+  function nullify(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
 
-  type UCM_CONFIGS_CTRL_t is record
+  type UCM_SUPER_CONFIGS_CTRL_t is record
     THREADS : std_logic_vector(4-1 downto 0);
     INPUT_EN : std_logic;
     OUTPUT_EN : std_logic;
-  end record UCM_CONFIGS_CTRL_t;
-  function len(x: UCM_CONFIGS_CTRL_t) return natural;
-  function vectorify(x: UCM_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CONFIGS_CTRL_t) return UCM_CONFIGS_CTRL_t;
-  function nullify(t: UCM_CONFIGS_CTRL_t) return UCM_CONFIGS_CTRL_t;
+  end record UCM_SUPER_CONFIGS_CTRL_t;
+  function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
+  function nullify(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
 
-  type UCM_STATUS_MON_t is record
+  type UCM_SUPER_STATUS_MON_t is record
     ENABLED : std_logic_vector(8-1 downto 0);
     READY : std_logic_vector(8-1 downto 0);
     ERROR : std_logic_vector(8-1 downto 0);
-  end record UCM_STATUS_MON_t;
-  function len(x: UCM_STATUS_MON_t) return natural;
-  function vectorify(x: UCM_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_STATUS_MON_t) return UCM_STATUS_MON_t;
-  function nullify(t: UCM_STATUS_MON_t) return UCM_STATUS_MON_t;
+  end record UCM_SUPER_STATUS_MON_t;
+  function len(x: UCM_SUPER_STATUS_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
+  function nullify(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
 
-  type UCM_SECTOR_PHI_MON_t is record
+  type UCM_SUPER_SECTOR_PHI_MON_t is record
     rd_data : std_logic_vector(10-1 downto 0);
-  end record UCM_SECTOR_PHI_MON_t;
-  function len(x: UCM_SECTOR_PHI_MON_t) return natural;
-  function vectorify(x: UCM_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SECTOR_PHI_MON_t) return UCM_SECTOR_PHI_MON_t;
-  function nullify(t: UCM_SECTOR_PHI_MON_t) return UCM_SECTOR_PHI_MON_t;
+  end record UCM_SUPER_SECTOR_PHI_MON_t;
+  function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
+  function nullify(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
 
-  type UCM_SECTOR_PHI_CTRL_t is record
+  type UCM_SUPER_SECTOR_PHI_CTRL_t is record
     wr_req : std_logic;
     rd_req : std_logic;
     wr_data : std_logic_vector(10-1 downto 0);
-  end record UCM_SECTOR_PHI_CTRL_t;
-  function len(x: UCM_SECTOR_PHI_CTRL_t) return natural;
-  function vectorify(x: UCM_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_SECTOR_PHI_CTRL_t) return UCM_SECTOR_PHI_CTRL_t;
-  function nullify(t: UCM_SECTOR_PHI_CTRL_t) return UCM_SECTOR_PHI_CTRL_t;
+  end record UCM_SUPER_SECTOR_PHI_CTRL_t;
+  function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
+  function nullify(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
 
-  type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
+  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(16-1 downto 0);
-  end record UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
-  type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  function nullify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
 
-  type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
+  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
     wr_req : std_logic;
     rd_req : std_logic;
     wr_addr : std_logic_vector(8-1 downto 0);
     rd_addr : std_logic_vector(8-1 downto 0);
     wr_data : std_logic_vector(16-1 downto 0);
-  end record UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
-  type UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  function nullify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
 
-  type UCM_CDE_CHAMB_Z0_MON_t is record
-    CDE_CHAMB_Z0 : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  end record UCM_CDE_CHAMB_Z0_MON_t;
-  function len(x: UCM_CDE_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_MON_t;
+  type UCM_SUPER_CDE_CHAMB_Z0_MON_t is record
+    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  end record UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
 
-  type UCM_CDE_CHAMB_Z0_CTRL_t is record
-    CDE_CHAMB_Z0 : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  end record UCM_CDE_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CDE_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CTRL_t;
+  type UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is record
+    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  end record UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
 
-  type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
+  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(16-1 downto 0);
-  end record UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
-  type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  function nullify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 
-  type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
+  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
     wr_req : std_logic;
     rd_req : std_logic;
     wr_addr : std_logic_vector(8-1 downto 0);
     rd_addr : std_logic_vector(8-1 downto 0);
     wr_data : std_logic_vector(16-1 downto 0);
-  end record UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
-  type UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  function nullify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
 
-  type UCM_CVP_CHAMB_Z0_MON_t is record
-    CVP_CHAMB_Z0 : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
-  end record UCM_CVP_CHAMB_Z0_MON_t;
-  function len(x: UCM_CVP_CHAMB_Z0_MON_t) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_MON_t;
-  function nullify(t: UCM_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_MON_t;
+  type UCM_SUPER_CVP_CHAMB_Z0_MON_t is record
+    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  end record UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
 
-  type UCM_CVP_CHAMB_Z0_CTRL_t is record
-    CVP_CHAMB_Z0 : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  end record UCM_CVP_CHAMB_Z0_CTRL_t;
-  function len(x: UCM_CVP_CHAMB_Z0_CTRL_t) return natural;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CTRL_t;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CTRL_t;
+  type UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is record
+    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  end record UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
 
-  type UCM_RPC_R_COMP_MEM_INTERFACE_MON_t is record
+  type UCM_SUPER_MON_t is record
+    STATUS : UCM_SUPER_STATUS_MON_t;
+    SECTOR_PHI : UCM_SUPER_SECTOR_PHI_MON_t;
+    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+  end record UCM_SUPER_MON_t;
+  function len(x: UCM_SUPER_MON_t) return natural;
+  function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
+  function nullify(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
+
+  type UCM_SUPER_CTRL_t is record
+    ACTIONS : UCM_SUPER_ACTIONS_CTRL_t;
+    CONFIGS : UCM_SUPER_CONFIGS_CTRL_t;
+    SECTOR_PHI : UCM_SUPER_SECTOR_PHI_CTRL_t;
+    CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+    CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+  end record UCM_SUPER_CTRL_t;
+  function len(x: UCM_SUPER_CTRL_t) return natural;
+  function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
+  function nullify(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
+
+  type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(12-1 downto 0);
-  end record UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
-  function len(x: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return natural;
-  function vectorify(x: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
-  function nullify(t: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
+  end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
 
-  type UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t is record
+  type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is record
     wr_req : std_logic;
     rd_req : std_logic;
     wr_addr : std_logic_vector(5-1 downto 0);
     rd_addr : std_logic_vector(5-1 downto 0);
     wr_data : std_logic_vector(12-1 downto 0);
-  end record UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
-  function len(x: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return natural;
-  function vectorify(x: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
-  function nullify(t: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
+  end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
 
-  type UCM_RPC_R_COMP_MON_t is record
-    MEM_INTERFACE : UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
-  end record UCM_RPC_R_COMP_MON_t;
-  function len(x: UCM_RPC_R_COMP_MON_t) return natural;
-  function vectorify(x: UCM_RPC_R_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MON_t) return UCM_RPC_R_COMP_MON_t;
-  function nullify(t: UCM_RPC_R_COMP_MON_t) return UCM_RPC_R_COMP_MON_t;
+  type UCM_R_PHI_COMP_RPC_MON_t is record
+    MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  end record UCM_R_PHI_COMP_RPC_MON_t;
+  function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
 
-  type UCM_RPC_R_COMP_CTRL_t is record
+  type UCM_R_PHI_COMP_RPC_CTRL_t is record
+    sel_thread : std_logic_vector(4-1 downto 0);
     sel_station : std_logic_vector(4-1 downto 0);
     sel_layer : std_logic_vector(4-1 downto 0);
     ext_ctrl : std_logic;
-    MEM_INTERFACE : UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
-  end record UCM_RPC_R_COMP_CTRL_t;
-  function len(x: UCM_RPC_R_COMP_CTRL_t) return natural;
-  function vectorify(x: UCM_RPC_R_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_CTRL_t) return UCM_RPC_R_COMP_CTRL_t;
-  function nullify(t: UCM_RPC_R_COMP_CTRL_t) return UCM_RPC_R_COMP_CTRL_t;
+    MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  end record UCM_R_PHI_COMP_RPC_CTRL_t;
+  function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
+  function nullify(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
 
-  type UCM_MDT_R_COMP_MEM_INTERFACE_MON_t is record
+  type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(14-1 downto 0);
-  end record UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
-  function len(x: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return natural;
-  function vectorify(x: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
-  function nullify(t: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
+  end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
 
-  type UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t is record
+  type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is record
     wr_req : std_logic;
     rd_req : std_logic;
     wr_addr : std_logic_vector(5-1 downto 0);
     rd_addr : std_logic_vector(5-1 downto 0);
     wr_data : std_logic_vector(14-1 downto 0);
-  end record UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
-  function len(x: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return natural;
-  function vectorify(x: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
-  function nullify(t: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
+  end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
 
-  type UCM_MDT_R_COMP_MON_t is record
-    MEM_INTERFACE : UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
-  end record UCM_MDT_R_COMP_MON_t;
-  function len(x: UCM_MDT_R_COMP_MON_t) return natural;
-  function vectorify(x: UCM_MDT_R_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MON_t) return UCM_MDT_R_COMP_MON_t;
-  function nullify(t: UCM_MDT_R_COMP_MON_t) return UCM_MDT_R_COMP_MON_t;
+  type UCM_R_PHI_COMP_MDT_MON_t is record
+    MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  end record UCM_R_PHI_COMP_MDT_MON_t;
+  function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
 
-  type UCM_MDT_R_COMP_CTRL_t is record
+  type UCM_R_PHI_COMP_MDT_CTRL_t is record
+    sel_thread : std_logic_vector(4-1 downto 0);
     sel_station : std_logic_vector(4-1 downto 0);
     sel_layer : std_logic_vector(4-1 downto 0);
     ext_ctrl : std_logic;
-    MEM_INTERFACE : UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
-  end record UCM_MDT_R_COMP_CTRL_t;
-  function len(x: UCM_MDT_R_COMP_CTRL_t) return natural;
-  function vectorify(x: UCM_MDT_R_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_CTRL_t) return UCM_MDT_R_COMP_CTRL_t;
-  function nullify(t: UCM_MDT_R_COMP_CTRL_t) return UCM_MDT_R_COMP_CTRL_t;
+    MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  end record UCM_R_PHI_COMP_MDT_CTRL_t;
+  function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
+  function nullify(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
+
+  type UCM_R_PHI_COMP_MON_t is record
+    RPC : UCM_R_PHI_COMP_RPC_MON_t;
+    MDT : UCM_R_PHI_COMP_MDT_MON_t;
+  end record UCM_R_PHI_COMP_MON_t;
+  function len(x: UCM_R_PHI_COMP_MON_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
+  function nullify(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
+
+  type UCM_R_PHI_COMP_CTRL_t is record
+    RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
+    MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
+  end record UCM_R_PHI_COMP_CTRL_t;
+  function len(x: UCM_R_PHI_COMP_CTRL_t) return natural;
+  function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
+  function nullify(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
 
   type UCM_MON_t is record
-    STATUS : UCM_STATUS_MON_t;
-    SECTOR_PHI : UCM_SECTOR_PHI_MON_t;
-    CDE_CHAMB_Z0 : UCM_CDE_CHAMB_Z0_MON_t;
-    CVP_CHAMB_Z0 : UCM_CVP_CHAMB_Z0_MON_t;
-    RPC_R_COMP : UCM_RPC_R_COMP_MON_t;
-    MDT_R_COMP : UCM_MDT_R_COMP_MON_t;
+    SUPER : UCM_SUPER_MON_t;
+    R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
   end record UCM_MON_t;
   function len(x: UCM_MON_t) return natural;
   function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector;
@@ -254,13 +293,8 @@ package UCM_CTRL is
   function nullify(t: UCM_MON_t) return UCM_MON_t;
 
   type UCM_CTRL_t is record
-    ACTIONS : UCM_ACTIONS_CTRL_t;
-    CONFIGS : UCM_CONFIGS_CTRL_t;
-    SECTOR_PHI : UCM_SECTOR_PHI_CTRL_t;
-    CDE_CHAMB_Z0 : UCM_CDE_CHAMB_Z0_CTRL_t;
-    CVP_CHAMB_Z0 : UCM_CVP_CHAMB_Z0_CTRL_t;
-    RPC_R_COMP : UCM_RPC_R_COMP_CTRL_t;
-    MDT_R_COMP : UCM_MDT_R_COMP_CTRL_t;
+    SUPER : UCM_SUPER_CTRL_t;
+    R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
   end record UCM_CTRL_t;
   function len(x: UCM_CTRL_t) return natural;
   function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector;
@@ -273,7 +307,7 @@ end package UCM_CTRL;
 
 package body UCM_CTRL is
 
-  function len(x: UCM_ACTIONS_CTRL_t) return natural is
+  function len(x: UCM_SUPER_ACTIONS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.RESET);
@@ -282,7 +316,7 @@ package body UCM_CTRL is
     l := l + len(x.FREEZE);
     return l;
   end function len;
-  function vectorify(x: UCM_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -305,8 +339,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_ACTIONS_CTRL_t) return UCM_ACTIONS_CTRL_t is
-    variable y: UCM_ACTIONS_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
+    variable y: UCM_SUPER_ACTIONS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -328,8 +362,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_ACTIONS_CTRL_t) return UCM_ACTIONS_CTRL_t is
-  variable y: UCM_ACTIONS_CTRL_t;
+  function nullify(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
+  variable y: UCM_SUPER_ACTIONS_CTRL_t;
   begin
     y.RESET := nullify(t.RESET);
     y.ENABLE := nullify(t.ENABLE);
@@ -338,7 +372,7 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CONFIGS_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.THREADS);
@@ -346,7 +380,7 @@ package body UCM_CTRL is
     l := l + len(x.OUTPUT_EN);
     return l;
   end function len;
-  function vectorify(x: UCM_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -365,8 +399,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CONFIGS_CTRL_t) return UCM_CONFIGS_CTRL_t is
-    variable y: UCM_CONFIGS_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
+    variable y: UCM_SUPER_CONFIGS_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -384,8 +418,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CONFIGS_CTRL_t) return UCM_CONFIGS_CTRL_t is
-  variable y: UCM_CONFIGS_CTRL_t;
+  function nullify(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
+  variable y: UCM_SUPER_CONFIGS_CTRL_t;
   begin
     y.THREADS := nullify(t.THREADS);
     y.INPUT_EN := nullify(t.INPUT_EN);
@@ -393,7 +427,7 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_STATUS_MON_t) return natural is
+  function len(x: UCM_SUPER_STATUS_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.ENABLED);
@@ -401,7 +435,7 @@ package body UCM_CTRL is
     l := l + len(x.ERROR);
     return l;
   end function len;
-  function vectorify(x: UCM_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -420,8 +454,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_STATUS_MON_t) return UCM_STATUS_MON_t is
-    variable y: UCM_STATUS_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
+    variable y: UCM_SUPER_STATUS_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -439,8 +473,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_STATUS_MON_t) return UCM_STATUS_MON_t is
-  variable y: UCM_STATUS_MON_t;
+  function nullify(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
+  variable y: UCM_SUPER_STATUS_MON_t;
   begin
     y.ENABLED := nullify(t.ENABLED);
     y.READY := nullify(t.READY);
@@ -448,13 +482,13 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_SECTOR_PHI_MON_t) return natural is
+  function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.rd_data);
     return l;
   end function len;
-  function vectorify(x: UCM_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -465,8 +499,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_SECTOR_PHI_MON_t) return UCM_SECTOR_PHI_MON_t is
-    variable y: UCM_SECTOR_PHI_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
+    variable y: UCM_SUPER_SECTOR_PHI_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -476,14 +510,14 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_SECTOR_PHI_MON_t) return UCM_SECTOR_PHI_MON_t is
-  variable y: UCM_SECTOR_PHI_MON_t;
+  function nullify(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
+  variable y: UCM_SUPER_SECTOR_PHI_MON_t;
   begin
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
 
-  function len(x: UCM_SECTOR_PHI_CTRL_t) return natural is
+  function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_req);
@@ -491,7 +525,7 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
-  function vectorify(x: UCM_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -510,8 +544,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_SECTOR_PHI_CTRL_t) return UCM_SECTOR_PHI_CTRL_t is
-    variable y: UCM_SECTOR_PHI_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
+    variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -529,8 +563,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_SECTOR_PHI_CTRL_t) return UCM_SECTOR_PHI_CTRL_t is
-  variable y: UCM_SECTOR_PHI_CTRL_t;
+  function nullify(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
+  variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
   begin
     y.wr_req := nullify(t.wr_req);
     y.rd_req := nullify(t.rd_req);
@@ -538,14 +572,14 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.rd_rdy);
     l := l + len(x.rd_data);
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -560,8 +594,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
+    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -575,21 +609,21 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   begin
     y.rd_rdy := nullify(t.rd_rdy);
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -610,8 +644,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -631,8 +665,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
@@ -640,7 +674,7 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_req);
@@ -650,7 +684,7 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -677,8 +711,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
+    variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -704,8 +738,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   begin
     y.wr_req := nullify(t.wr_req);
     y.rd_req := nullify(t.rd_req);
@@ -715,13 +749,13 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -742,8 +776,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: std_logic_vector; t: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -763,8 +797,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(x: UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
@@ -772,13 +806,13 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_MON_t) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.CDE_CHAMB_Z0);
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -789,8 +823,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_MON_t is
-    variable y: UCM_CDE_CHAMB_Z0_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
+    variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -800,20 +834,20 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CDE_CHAMB_Z0_MON_t) return UCM_CDE_CHAMB_Z0_MON_t is
-  variable y: UCM_CDE_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
   begin
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     return y;
   end function nullify;
 
-  function len(x: UCM_CDE_CHAMB_Z0_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.CDE_CHAMB_Z0);
     return l;
   end function len;
-  function vectorify(x: UCM_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -824,8 +858,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CTRL_t is
-    variable y: UCM_CDE_CHAMB_Z0_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
+    variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -835,21 +869,21 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CDE_CHAMB_Z0_CTRL_t) return UCM_CDE_CHAMB_Z0_CTRL_t is
-  variable y: UCM_CDE_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
   begin
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.rd_rdy);
     l := l + len(x.rd_data);
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -864,8 +898,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
+    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -879,21 +913,21 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   begin
     y.rd_rdy := nullify(t.rd_rdy);
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -914,8 +948,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -935,8 +969,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
-    variable y : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
@@ -944,7 +978,7 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.wr_req);
@@ -954,7 +988,7 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -981,8 +1015,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
+    variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1008,8 +1042,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   begin
     y.wr_req := nullify(t.wr_req);
     y.rd_req := nullify(t.rd_req);
@@ -1019,13 +1053,13 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1046,8 +1080,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: std_logic_vector; t: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1067,8 +1101,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(x: UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
-    variable y : UCM_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
@@ -1076,13 +1110,13 @@ package body UCM_CTRL is
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_MON_t) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1093,8 +1127,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_MON_t is
-    variable y: UCM_CVP_CHAMB_Z0_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
+    variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1104,20 +1138,20 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CVP_CHAMB_Z0_MON_t) return UCM_CVP_CHAMB_Z0_MON_t is
-  variable y: UCM_CVP_CHAMB_Z0_MON_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
   begin
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
 
-  function len(x: UCM_CVP_CHAMB_Z0_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
-  function vectorify(x: UCM_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1128,8 +1162,8 @@ package body UCM_CTRL is
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CTRL_t is
-    variable y: UCM_CVP_CHAMB_Z0_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
+    variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1139,465 +1173,23 @@ package body UCM_CTRL is
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CVP_CHAMB_Z0_CTRL_t) return UCM_CVP_CHAMB_Z0_CTRL_t is
-  variable y: UCM_CVP_CHAMB_Z0_CTRL_t;
+  function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
   begin
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
 
-  function len(x: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function vectorify(x: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return UCM_RPC_R_COMP_MEM_INTERFACE_MON_t is
-    variable y: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t) return UCM_RPC_R_COMP_MEM_INTERFACE_MON_t is
-  variable y: UCM_RPC_R_COMP_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.rd_req);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function vectorify(x: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_RPC_R_COMP_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.rd_req := nullify(t.rd_req);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_RPC_R_COMP_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function vectorify(x: UCM_RPC_R_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_MON_t) return UCM_RPC_R_COMP_MON_t is
-    variable y: UCM_RPC_R_COMP_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_RPC_R_COMP_MON_t) return UCM_RPC_R_COMP_MON_t is
-  variable y: UCM_RPC_R_COMP_MON_t;
-  begin
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_RPC_R_COMP_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.sel_station);
-    l := l + len(x.sel_layer);
-    l := l + len(x.ext_ctrl);
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function vectorify(x: UCM_RPC_R_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_RPC_R_COMP_CTRL_t) return UCM_RPC_R_COMP_CTRL_t is
-    variable y: UCM_RPC_R_COMP_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_RPC_R_COMP_CTRL_t) return UCM_RPC_R_COMP_CTRL_t is
-  variable y: UCM_RPC_R_COMP_CTRL_t;
-  begin
-    y.sel_station := nullify(t.sel_station);
-    y.sel_layer := nullify(t.sel_layer);
-    y.ext_ctrl := nullify(t.ext_ctrl);
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.rd_rdy);
-    l := l + len(x.rd_data);
-    return l;
-  end function len;
-  function vectorify(x: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
-      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
-    else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
-      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return UCM_MDT_R_COMP_MEM_INTERFACE_MON_t is
-    variable y: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
-      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
-    else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
-      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t) return UCM_MDT_R_COMP_MEM_INTERFACE_MON_t is
-  variable y: UCM_MDT_R_COMP_MEM_INTERFACE_MON_t;
-  begin
-    y.rd_rdy := nullify(t.rd_rdy);
-    y.rd_data := nullify(t.rd_data);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.wr_req);
-    l := l + len(x.rd_req);
-    l := l + len(x.wr_addr);
-    l := l + len(x.rd_addr);
-    l := l + len(x.wr_data);
-    return l;
-  end function len;
-  function vectorify(x: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
-      left := left + len(x.wr_addr);
-      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
-      left := left + len(x.rd_addr);
-      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
-    else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
-      left := left - len(x.wr_addr);
-      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
-      left := left - len(x.rd_addr);
-      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t is
-    variable y: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
-      left := left + len(y.wr_addr);
-      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
-      left := left + len(y.rd_addr);
-      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
-    else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
-      left := left - len(y.wr_addr);
-      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
-      left := left - len(y.rd_addr);
-      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t) return UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t is
-  variable y: UCM_MDT_R_COMP_MEM_INTERFACE_CTRL_t;
-  begin
-    y.wr_req := nullify(t.wr_req);
-    y.rd_req := nullify(t.rd_req);
-    y.wr_addr := nullify(t.wr_addr);
-    y.rd_addr := nullify(t.rd_addr);
-    y.wr_data := nullify(t.wr_data);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_MDT_R_COMP_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function vectorify(x: UCM_MDT_R_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_MON_t) return UCM_MDT_R_COMP_MON_t is
-    variable y: UCM_MDT_R_COMP_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_MDT_R_COMP_MON_t) return UCM_MDT_R_COMP_MON_t is
-  variable y: UCM_MDT_R_COMP_MON_t;
-  begin
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_MDT_R_COMP_CTRL_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.sel_station);
-    l := l + len(x.sel_layer);
-    l := l + len(x.ext_ctrl);
-    l := l + len(x.MEM_INTERFACE);
-    return l;
-  end function len;
-  function vectorify(x: UCM_MDT_R_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
-      left := left + len(x.sel_station);
-      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
-      left := left + len(x.sel_layer);
-      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
-      left := left + len(x.ext_ctrl);
-      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
-    else
-      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
-      left := left - len(x.sel_station);
-      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
-      left := left - len(x.sel_layer);
-      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
-      left := left - len(x.ext_ctrl);
-      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_MDT_R_COMP_CTRL_t) return UCM_MDT_R_COMP_CTRL_t is
-    variable y: UCM_MDT_R_COMP_CTRL_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
-      left := left + len(y.sel_station);
-      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
-      left := left + len(y.sel_layer);
-      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
-      left := left + len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
-    else
-      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
-      left := left - len(y.sel_station);
-      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
-      left := left - len(y.sel_layer);
-      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
-      left := left - len(y.ext_ctrl);
-      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
-    end if;
-    return y;
-  end function structify;
-  function nullify(t: UCM_MDT_R_COMP_CTRL_t) return UCM_MDT_R_COMP_CTRL_t is
-  variable y: UCM_MDT_R_COMP_CTRL_t;
-  begin
-    y.sel_station := nullify(t.sel_station);
-    y.sel_layer := nullify(t.sel_layer);
-    y.ext_ctrl := nullify(t.ext_ctrl);
-    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
-    return y;
-  end function nullify;
-
-  function len(x: UCM_MON_t) return natural is
+  function len(x: UCM_SUPER_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.STATUS);
     l := l + len(x.SECTOR_PHI);
     l := l + len(x.CDE_CHAMB_Z0);
     l := l + len(x.CVP_CHAMB_Z0);
-    l := l + len(x.RPC_R_COMP);
-    l := l + len(x.MDT_R_COMP);
     return l;
   end function len;
-  function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1609,10 +1201,6 @@ package body UCM_CTRL is
       assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
       left := left + len(x.CDE_CHAMB_Z0);
       assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-      left := left + len(x.CVP_CHAMB_Z0);
-      assign(y(left to left+len(x.RPC_R_COMP)-1), vectorify(x.RPC_R_COMP, y(left to left+len(x.RPC_R_COMP)-1)));
-      left := left + len(x.RPC_R_COMP);
-      assign(y(left to left+len(x.MDT_R_COMP)-1), vectorify(x.MDT_R_COMP, y(left to left+len(x.MDT_R_COMP)-1)));
     else
       assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
       left := left - len(x.STATUS);
@@ -1621,15 +1209,11 @@ package body UCM_CTRL is
       assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
       left := left - len(x.CDE_CHAMB_Z0);
       assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-      left := left - len(x.CVP_CHAMB_Z0);
-      assign(y(left downto left-len(x.RPC_R_COMP)+1), vectorify(x.RPC_R_COMP, y(left downto left-len(x.RPC_R_COMP)+1)));
-      left := left - len(x.RPC_R_COMP);
-      assign(y(left downto left-len(x.MDT_R_COMP)+1), vectorify(x.MDT_R_COMP, y(left downto left-len(x.MDT_R_COMP)+1)));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t is
-    variable y: UCM_MON_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
+    variable y: UCM_SUPER_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1640,10 +1224,6 @@ package body UCM_CTRL is
       y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
       left := left + len(y.CDE_CHAMB_Z0);
       y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-      left := left + len(y.CVP_CHAMB_Z0);
-      y.RPC_R_COMP := structify(x(left to left+len(y.RPC_R_COMP)-1), y.RPC_R_COMP);
-      left := left + len(y.RPC_R_COMP);
-      y.MDT_R_COMP := structify(x(left to left+len(y.MDT_R_COMP)-1), y.MDT_R_COMP);
     else
       y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
       left := left - len(y.STATUS);
@@ -1652,26 +1232,20 @@ package body UCM_CTRL is
       y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
       left := left - len(y.CDE_CHAMB_Z0);
       y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-      left := left - len(y.CVP_CHAMB_Z0);
-      y.RPC_R_COMP := structify(x(left downto left-len(y.RPC_R_COMP)+1), y.RPC_R_COMP);
-      left := left - len(y.RPC_R_COMP);
-      y.MDT_R_COMP := structify(x(left downto left-len(y.MDT_R_COMP)+1), y.MDT_R_COMP);
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_MON_t) return UCM_MON_t is
-  variable y: UCM_MON_t;
+  function nullify(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
+  variable y: UCM_SUPER_MON_t;
   begin
     y.STATUS := nullify(t.STATUS);
     y.SECTOR_PHI := nullify(t.SECTOR_PHI);
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    y.RPC_R_COMP := nullify(t.RPC_R_COMP);
-    y.MDT_R_COMP := nullify(t.MDT_R_COMP);
     return y;
   end function nullify;
 
-  function len(x: UCM_CTRL_t) return natural is
+  function len(x: UCM_SUPER_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.ACTIONS);
@@ -1679,11 +1253,9 @@ package body UCM_CTRL is
     l := l + len(x.SECTOR_PHI);
     l := l + len(x.CDE_CHAMB_Z0);
     l := l + len(x.CVP_CHAMB_Z0);
-    l := l + len(x.RPC_R_COMP);
-    l := l + len(x.MDT_R_COMP);
     return l;
   end function len;
-  function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1697,10 +1269,6 @@ package body UCM_CTRL is
       assign(y(left to left+len(x.CDE_CHAMB_Z0)-1), vectorify(x.CDE_CHAMB_Z0, y(left to left+len(x.CDE_CHAMB_Z0)-1)));
       left := left + len(x.CDE_CHAMB_Z0);
       assign(y(left to left+len(x.CVP_CHAMB_Z0)-1), vectorify(x.CVP_CHAMB_Z0, y(left to left+len(x.CVP_CHAMB_Z0)-1)));
-      left := left + len(x.CVP_CHAMB_Z0);
-      assign(y(left to left+len(x.RPC_R_COMP)-1), vectorify(x.RPC_R_COMP, y(left to left+len(x.RPC_R_COMP)-1)));
-      left := left + len(x.RPC_R_COMP);
-      assign(y(left to left+len(x.MDT_R_COMP)-1), vectorify(x.MDT_R_COMP, y(left to left+len(x.MDT_R_COMP)-1)));
     else
       assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
       left := left - len(x.ACTIONS);
@@ -1711,15 +1279,11 @@ package body UCM_CTRL is
       assign(y(left downto left-len(x.CDE_CHAMB_Z0)+1), vectorify(x.CDE_CHAMB_Z0, y(left downto left-len(x.CDE_CHAMB_Z0)+1)));
       left := left - len(x.CDE_CHAMB_Z0);
       assign(y(left downto left-len(x.CVP_CHAMB_Z0)+1), vectorify(x.CVP_CHAMB_Z0, y(left downto left-len(x.CVP_CHAMB_Z0)+1)));
-      left := left - len(x.CVP_CHAMB_Z0);
-      assign(y(left downto left-len(x.RPC_R_COMP)+1), vectorify(x.RPC_R_COMP, y(left downto left-len(x.RPC_R_COMP)+1)));
-      left := left - len(x.RPC_R_COMP);
-      assign(y(left downto left-len(x.MDT_R_COMP)+1), vectorify(x.MDT_R_COMP, y(left downto left-len(x.MDT_R_COMP)+1)));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t is
-    variable y: UCM_CTRL_t;
+  function structify(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
+    variable y: UCM_SUPER_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1732,10 +1296,6 @@ package body UCM_CTRL is
       y.CDE_CHAMB_Z0 := structify(x(left to left+len(y.CDE_CHAMB_Z0)-1), y.CDE_CHAMB_Z0);
       left := left + len(y.CDE_CHAMB_Z0);
       y.CVP_CHAMB_Z0 := structify(x(left to left+len(y.CVP_CHAMB_Z0)-1), y.CVP_CHAMB_Z0);
-      left := left + len(y.CVP_CHAMB_Z0);
-      y.RPC_R_COMP := structify(x(left to left+len(y.RPC_R_COMP)-1), y.RPC_R_COMP);
-      left := left + len(y.RPC_R_COMP);
-      y.MDT_R_COMP := structify(x(left to left+len(y.MDT_R_COMP)-1), y.MDT_R_COMP);
     else
       y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
       left := left - len(y.ACTIONS);
@@ -1746,23 +1306,657 @@ package body UCM_CTRL is
       y.CDE_CHAMB_Z0 := structify(x(left downto left-len(y.CDE_CHAMB_Z0)+1), y.CDE_CHAMB_Z0);
       left := left - len(y.CDE_CHAMB_Z0);
       y.CVP_CHAMB_Z0 := structify(x(left downto left-len(y.CVP_CHAMB_Z0)+1), y.CVP_CHAMB_Z0);
-      left := left - len(y.CVP_CHAMB_Z0);
-      y.RPC_R_COMP := structify(x(left downto left-len(y.RPC_R_COMP)+1), y.RPC_R_COMP);
-      left := left - len(y.RPC_R_COMP);
-      y.MDT_R_COMP := structify(x(left downto left-len(y.MDT_R_COMP)+1), y.MDT_R_COMP);
     end if;
     return y;
   end function structify;
-  function nullify(t: UCM_CTRL_t) return UCM_CTRL_t is
-  variable y: UCM_CTRL_t;
+  function nullify(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
+  variable y: UCM_SUPER_CTRL_t;
   begin
     y.ACTIONS := nullify(t.ACTIONS);
     y.CONFIGS := nullify(t.CONFIGS);
     y.SECTOR_PHI := nullify(t.SECTOR_PHI);
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
-    y.RPC_R_COMP := nullify(t.RPC_R_COMP);
-    y.MDT_R_COMP := nullify(t.MDT_R_COMP);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    l := l + len(x.rd_data);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+    else
+      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
+    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
+  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    y.rd_data := nullify(t.rd_data);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_req);
+    l := l + len(x.rd_req);
+    l := l + len(x.wr_addr);
+    l := l + len(x.rd_addr);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
+      left := left + len(x.wr_req);
+      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
+      left := left + len(x.rd_req);
+      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
+      left := left + len(x.wr_addr);
+      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
+      left := left + len(x.rd_addr);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
+      left := left - len(x.wr_req);
+      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
+      left := left - len(x.rd_req);
+      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
+      left := left - len(x.wr_addr);
+      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
+      left := left - len(x.rd_addr);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
+    variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
+      left := left + len(y.wr_addr);
+      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
+      left := left + len(y.rd_addr);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
+      left := left - len(y.wr_addr);
+      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
+      left := left - len(y.rd_addr);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
+  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  begin
+    y.wr_req := nullify(t.wr_req);
+    y.rd_req := nullify(t.rd_req);
+    y.wr_addr := nullify(t.wr_addr);
+    y.rd_addr := nullify(t.rd_addr);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MEM_INTERFACE);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
+    else
+      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
+    variable y: UCM_R_PHI_COMP_RPC_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
+    else
+      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
+  variable y: UCM_R_PHI_COMP_RPC_MON_t;
+  begin
+    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.sel_thread);
+    l := l + len(x.sel_station);
+    l := l + len(x.sel_layer);
+    l := l + len(x.ext_ctrl);
+    l := l + len(x.MEM_INTERFACE);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.sel_thread)-1), vectorify(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
+      left := left + len(x.sel_thread);
+      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
+      left := left + len(x.sel_station);
+      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
+      left := left + len(x.sel_layer);
+      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
+      left := left + len(x.ext_ctrl);
+      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
+    else
+      assign(y(left downto left-len(x.sel_thread)+1), vectorify(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
+      left := left - len(x.sel_thread);
+      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
+      left := left - len(x.sel_station);
+      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
+      left := left - len(x.sel_layer);
+      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
+      left := left - len(x.ext_ctrl);
+      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
+    variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.sel_thread := structify(x(left to left+len(y.sel_thread)-1), y.sel_thread);
+      left := left + len(y.sel_thread);
+      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
+      left := left + len(y.sel_station);
+      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
+      left := left + len(y.sel_layer);
+      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
+      left := left + len(y.ext_ctrl);
+      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
+    else
+      y.sel_thread := structify(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
+      left := left - len(y.sel_thread);
+      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
+      left := left - len(y.sel_station);
+      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
+      left := left - len(y.sel_layer);
+      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
+      left := left - len(y.ext_ctrl);
+      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
+  variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
+  begin
+    y.sel_thread := nullify(t.sel_thread);
+    y.sel_station := nullify(t.sel_station);
+    y.sel_layer := nullify(t.sel_layer);
+    y.ext_ctrl := nullify(t.ext_ctrl);
+    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    l := l + len(x.rd_data);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
+    else
+      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
+    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
+  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    y.rd_data := nullify(t.rd_data);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_req);
+    l := l + len(x.rd_req);
+    l := l + len(x.wr_addr);
+    l := l + len(x.rd_addr);
+    l := l + len(x.wr_data);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
+      left := left + len(x.wr_req);
+      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
+      left := left + len(x.rd_req);
+      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
+      left := left + len(x.wr_addr);
+      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
+      left := left + len(x.rd_addr);
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
+      left := left - len(x.wr_req);
+      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
+      left := left - len(x.rd_req);
+      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
+      left := left - len(x.wr_addr);
+      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
+      left := left - len(x.rd_addr);
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
+    variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
+      left := left + len(y.wr_addr);
+      y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
+      left := left + len(y.rd_addr);
+      y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
+      left := left - len(y.wr_addr);
+      y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
+      left := left - len(y.rd_addr);
+      y.wr_data := structify(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
+  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  begin
+    y.wr_req := nullify(t.wr_req);
+    y.rd_req := nullify(t.rd_req);
+    y.wr_addr := nullify(t.wr_addr);
+    y.rd_addr := nullify(t.rd_addr);
+    y.wr_data := nullify(t.wr_data);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.MEM_INTERFACE);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
+    else
+      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
+    variable y: UCM_R_PHI_COMP_MDT_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
+    else
+      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
+  variable y: UCM_R_PHI_COMP_MDT_MON_t;
+  begin
+    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.sel_thread);
+    l := l + len(x.sel_station);
+    l := l + len(x.sel_layer);
+    l := l + len(x.ext_ctrl);
+    l := l + len(x.MEM_INTERFACE);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.sel_thread)-1), vectorify(x.sel_thread, y(left to left+len(x.sel_thread)-1)));
+      left := left + len(x.sel_thread);
+      assign(y(left to left+len(x.sel_station)-1), vectorify(x.sel_station, y(left to left+len(x.sel_station)-1)));
+      left := left + len(x.sel_station);
+      assign(y(left to left+len(x.sel_layer)-1), vectorify(x.sel_layer, y(left to left+len(x.sel_layer)-1)));
+      left := left + len(x.sel_layer);
+      assign(y(left to left+len(x.ext_ctrl)-1), vectorify(x.ext_ctrl, y(left to left+len(x.ext_ctrl)-1)));
+      left := left + len(x.ext_ctrl);
+      assign(y(left to left+len(x.MEM_INTERFACE)-1), vectorify(x.MEM_INTERFACE, y(left to left+len(x.MEM_INTERFACE)-1)));
+    else
+      assign(y(left downto left-len(x.sel_thread)+1), vectorify(x.sel_thread, y(left downto left-len(x.sel_thread)+1)));
+      left := left - len(x.sel_thread);
+      assign(y(left downto left-len(x.sel_station)+1), vectorify(x.sel_station, y(left downto left-len(x.sel_station)+1)));
+      left := left - len(x.sel_station);
+      assign(y(left downto left-len(x.sel_layer)+1), vectorify(x.sel_layer, y(left downto left-len(x.sel_layer)+1)));
+      left := left - len(x.sel_layer);
+      assign(y(left downto left-len(x.ext_ctrl)+1), vectorify(x.ext_ctrl, y(left downto left-len(x.ext_ctrl)+1)));
+      left := left - len(x.ext_ctrl);
+      assign(y(left downto left-len(x.MEM_INTERFACE)+1), vectorify(x.MEM_INTERFACE, y(left downto left-len(x.MEM_INTERFACE)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
+    variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.sel_thread := structify(x(left to left+len(y.sel_thread)-1), y.sel_thread);
+      left := left + len(y.sel_thread);
+      y.sel_station := structify(x(left to left+len(y.sel_station)-1), y.sel_station);
+      left := left + len(y.sel_station);
+      y.sel_layer := structify(x(left to left+len(y.sel_layer)-1), y.sel_layer);
+      left := left + len(y.sel_layer);
+      y.ext_ctrl := structify(x(left to left+len(y.ext_ctrl)-1), y.ext_ctrl);
+      left := left + len(y.ext_ctrl);
+      y.MEM_INTERFACE := structify(x(left to left+len(y.MEM_INTERFACE)-1), y.MEM_INTERFACE);
+    else
+      y.sel_thread := structify(x(left downto left-len(y.sel_thread)+1), y.sel_thread);
+      left := left - len(y.sel_thread);
+      y.sel_station := structify(x(left downto left-len(y.sel_station)+1), y.sel_station);
+      left := left - len(y.sel_station);
+      y.sel_layer := structify(x(left downto left-len(y.sel_layer)+1), y.sel_layer);
+      left := left - len(y.sel_layer);
+      y.ext_ctrl := structify(x(left downto left-len(y.ext_ctrl)+1), y.ext_ctrl);
+      left := left - len(y.ext_ctrl);
+      y.MEM_INTERFACE := structify(x(left downto left-len(y.MEM_INTERFACE)+1), y.MEM_INTERFACE);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
+  variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
+  begin
+    y.sel_thread := nullify(t.sel_thread);
+    y.sel_station := nullify(t.sel_station);
+    y.sel_layer := nullify(t.sel_layer);
+    y.ext_ctrl := nullify(t.ext_ctrl);
+    y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.RPC);
+    l := l + len(x.MDT);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.RPC)-1), vectorify(x.RPC, y(left to left+len(x.RPC)-1)));
+      left := left + len(x.RPC);
+      assign(y(left to left+len(x.MDT)-1), vectorify(x.MDT, y(left to left+len(x.MDT)-1)));
+    else
+      assign(y(left downto left-len(x.RPC)+1), vectorify(x.RPC, y(left downto left-len(x.RPC)+1)));
+      left := left - len(x.RPC);
+      assign(y(left downto left-len(x.MDT)+1), vectorify(x.MDT, y(left downto left-len(x.MDT)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
+    variable y: UCM_R_PHI_COMP_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.RPC := structify(x(left to left+len(y.RPC)-1), y.RPC);
+      left := left + len(y.RPC);
+      y.MDT := structify(x(left to left+len(y.MDT)-1), y.MDT);
+    else
+      y.RPC := structify(x(left downto left-len(y.RPC)+1), y.RPC);
+      left := left - len(y.RPC);
+      y.MDT := structify(x(left downto left-len(y.MDT)+1), y.MDT);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
+  variable y: UCM_R_PHI_COMP_MON_t;
+  begin
+    y.RPC := nullify(t.RPC);
+    y.MDT := nullify(t.MDT);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_R_PHI_COMP_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.RPC);
+    l := l + len(x.MDT);
+    return l;
+  end function len;
+  function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.RPC)-1), vectorify(x.RPC, y(left to left+len(x.RPC)-1)));
+      left := left + len(x.RPC);
+      assign(y(left to left+len(x.MDT)-1), vectorify(x.MDT, y(left to left+len(x.MDT)-1)));
+    else
+      assign(y(left downto left-len(x.RPC)+1), vectorify(x.RPC, y(left downto left-len(x.RPC)+1)));
+      left := left - len(x.RPC);
+      assign(y(left downto left-len(x.MDT)+1), vectorify(x.MDT, y(left downto left-len(x.MDT)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
+    variable y: UCM_R_PHI_COMP_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.RPC := structify(x(left to left+len(y.RPC)-1), y.RPC);
+      left := left + len(y.RPC);
+      y.MDT := structify(x(left to left+len(y.MDT)-1), y.MDT);
+    else
+      y.RPC := structify(x(left downto left-len(y.RPC)+1), y.RPC);
+      left := left - len(y.RPC);
+      y.MDT := structify(x(left downto left-len(y.MDT)+1), y.MDT);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
+  variable y: UCM_R_PHI_COMP_CTRL_t;
+  begin
+    y.RPC := nullify(t.RPC);
+    y.MDT := nullify(t.MDT);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.SUPER);
+    l := l + len(x.R_PHI_COMP);
+    return l;
+  end function len;
+  function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
+      assign(y(left to left+len(x.R_PHI_COMP)-1), vectorify(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
+    else
+      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
+      assign(y(left downto left-len(x.R_PHI_COMP)+1), vectorify(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t is
+    variable y: UCM_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
+      y.R_PHI_COMP := structify(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
+    else
+      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
+      y.R_PHI_COMP := structify(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_MON_t) return UCM_MON_t is
+  variable y: UCM_MON_t;
+  begin
+    y.SUPER := nullify(t.SUPER);
+    y.R_PHI_COMP := nullify(t.R_PHI_COMP);
+    return y;
+  end function nullify;
+
+  function len(x: UCM_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.SUPER);
+    l := l + len(x.R_PHI_COMP);
+    return l;
+  end function len;
+  function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.SUPER)-1), vectorify(x.SUPER, y(left to left+len(x.SUPER)-1)));
+      left := left + len(x.SUPER);
+      assign(y(left to left+len(x.R_PHI_COMP)-1), vectorify(x.R_PHI_COMP, y(left to left+len(x.R_PHI_COMP)-1)));
+    else
+      assign(y(left downto left-len(x.SUPER)+1), vectorify(x.SUPER, y(left downto left-len(x.SUPER)+1)));
+      left := left - len(x.SUPER);
+      assign(y(left downto left-len(x.R_PHI_COMP)+1), vectorify(x.R_PHI_COMP, y(left downto left-len(x.R_PHI_COMP)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function structify(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t is
+    variable y: UCM_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.SUPER := structify(x(left to left+len(y.SUPER)-1), y.SUPER);
+      left := left + len(y.SUPER);
+      y.R_PHI_COMP := structify(x(left to left+len(y.R_PHI_COMP)-1), y.R_PHI_COMP);
+    else
+      y.SUPER := structify(x(left downto left-len(y.SUPER)+1), y.SUPER);
+      left := left - len(y.SUPER);
+      y.R_PHI_COMP := structify(x(left downto left-len(y.R_PHI_COMP)+1), y.R_PHI_COMP);
+    end if;
+    return y;
+  end function structify;
+  function nullify(t: UCM_CTRL_t) return UCM_CTRL_t is
+  variable y: UCM_CTRL_t;
+  begin
+    y.SUPER := nullify(t.SUPER);
+    y.R_PHI_COMP := nullify(t.R_PHI_COMP);
     return y;
   end function nullify;
 

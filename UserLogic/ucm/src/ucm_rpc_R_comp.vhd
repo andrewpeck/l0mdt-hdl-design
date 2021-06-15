@@ -55,8 +55,8 @@ end entity ucm_rpc_R_comp;
 
 architecture beh of ucm_rpc_R_comp is
 
-  signal ctrl_r : UCM_RPC_R_COMP_CTRL_t;
-  signal mon_r  : UCM_RPC_R_COMP_MON_t;
+  signal ctrl_r : UCM_R_PHI_COMP_RPC_CTRL_t;
+  signal mon_r  : UCM_R_PHI_COMP_RPC_MON_t;
  
   signal rad_mem : barrel_R_rpc_avt := get_barrel_R_rpc(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,g_STATION_LAYER,SLC_Z_RPC_MULT,SLC_Z_RPC_LEN,32);
 
