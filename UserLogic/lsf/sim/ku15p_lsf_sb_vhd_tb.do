@@ -107,13 +107,14 @@ vlog -sv -work work "$SPYBUFFER_SRC/aFifo/wptr_full.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyPlayback.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyController.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyMemory.v"
+vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/asym_ram_tdp_read_first.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyBuffer.v"
 vlog -sv -work work +incdir+$CWD/../../dataformats/ "$SRC/lsf_spybuffer_wrapper.sv"
 
 vlib shared_lib
 vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
-vcom -work shared_lib $CWD/../../dataformats/l0mdt_constants_pkg.vhd
-vcom -work shared_lib $CWD/../../dataformats/l0mdt_dataformats_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/l0mdt_constants_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/l0mdt_dataformats_pkg.vhd
 vcom -work lsf_lib "$SRC/lsf_wrapper.vhd"
 vlog -sv -work lsf_lib +incdir+$CWD/../../dataformats/ "$TB/lsf_sb_vhd_tb.v"
 

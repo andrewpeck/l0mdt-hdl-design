@@ -1,9 +1,9 @@
 #################### upt Project ###########################
-GEN:upt:
-    extends: .GEN
+GEN:upt_vu13p:
+    extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: upt
+      PROJECT_NAME: upt_vu13p
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
 # SIM:upt:
