@@ -66,7 +66,7 @@ architecture beh of ucm_rpc_R_comp_top is
  
 begin
 
-  mon_v <= vectorify(mon_r,mon_v);
+  -- mon_v <= vectorify(mon_r,mon_v);
   ctrl_r <= structify(ctrl_v,ctrl_r);
 
   mon_v <=  mon_av(0) when ctrl_r.ext_ctrl =  '1' and to_integer(unsigned(ctrl_r.sel_station)) = 0 and to_integer(unsigned(ctrl_r.sel_layer)) = 0 else
