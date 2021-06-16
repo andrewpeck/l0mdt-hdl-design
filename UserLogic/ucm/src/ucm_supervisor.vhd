@@ -66,7 +66,7 @@ architecture beh of ucm_supervisor is
   -- signal clk_axi_cnt  : integer;
   
   --
-  signal int_en   : std_logic;
+  signal int_en   : std_logic := '0';
   signal int_rst  : std_logic := '1';
   --
   signal phicenter  : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID,SLC_COMMON_POSPHI_LEN);
@@ -144,7 +144,9 @@ begin
   begin
     if rising_edge(clk_axi) then
       if axi_rst = '1' then
-
+        mon.STATUS.ENABLED  <= (others => '0');
+        mon.STATUS.READY    <= (others => '0');
+        mon.STATUS.ERROR    <= (others => '0');
       else
         mon.STATUS.ENABLED  <= b"0000000" & local_en;
         mon.STATUS.READY    <= b"0000000" & local_rst;
@@ -165,7 +167,7 @@ begin
       o_phicenter <= phicenter;
 
       if axi_rst = '1' then
-
+        PHI_MON.rd_data <= (others => '0');
       else
         if PHI_CTRL.rd_req = '1' then
           PHI_MON.rd_data <= resize(std_logic_vector(phicenter),integer(PHI_MON.rd_data'length));
@@ -189,7 +191,8 @@ begin
     begin
       if rising_edge(clk_axi) then
         if axi_rst = '1' then
-          -- CDE_Z0_MON(st_i).RD.RST_REQ <= '0';
+          CDE_Z0_MON(st_i).rd_data  <= (others => '0');
+          CDE_Z0_MON(st_i).rd_rdy <= '0';
         else
           if CDE_Z0_CTRL(st_i).rd_req then
             CDE_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).rd_addr))),integer(CDE_Z0_MON(st_i).rd_data'length)));
@@ -221,7 +224,8 @@ begin
     begin
       if rising_edge(clk_axi) then
         if axi_rst = '1' then
-          -- CVP_Z0_MON(st_i).RD.RST_REQ <= '0';
+          CVP_Z0_MON(st_i).rd_data  <= (others => '0');
+          CVP_Z0_MON(st_i).rd_rdy   <= '1';
         else
           if CVP_Z0_CTRL(st_i).rd_req then
             CVP_Z0_MON(st_i).rd_data <=std_logic_vector(resize(cvp_ch_z0_org(st_i)(to_integer(unsigned(CVP_Z0_CTRL(st_i).rd_addr))),integer(CVP_Z0_MON(st_i).rd_data'length)));

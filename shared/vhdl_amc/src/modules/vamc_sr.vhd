@@ -21,6 +21,7 @@ library shared_lib;
 
 entity vamc_sr is
   generic(
+    g_RESET_to_0S       : std_logic := '1';
     g_DELAY_CYCLES      : integer; 
     g_DELAY_EQUAL_WIDTH : integer := 0;
     g_PIPELINE_WIDTH    : integer
@@ -53,7 +54,9 @@ begin
   valid_pipe : process(rst,clk) begin
     if rising_edge(clk)then
       if rst= '1' then
-        -- data_pl <= (others => (others => '0'));
+        if g_RESET_to_0S = '1' then
+          data_pl <= (others => (others => '0'));
+        end if;
         dv_pl <= (others => '0');
       else
         if ena = '1' then

@@ -31,9 +31,9 @@ library  vamc_lib;
 
 entity ucm_ctrl_pam is
   generic(
-    g_PAM_CTRL_PL : integer := 1;
-    g_PAM_INFO_PL : integer := 1;
-    g_CVP_PL      : integer := 1
+    g_PAM_CTRL_PL : integer := 2;
+    g_PAM_INFO_PL : integer := 2;
+    g_CVP_PL      : integer := 2
   );
   port (
     clk                 : in std_logic;

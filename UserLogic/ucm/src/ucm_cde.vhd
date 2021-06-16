@@ -71,11 +71,14 @@ architecture beh of ucm_cde is
   type rpc_z_at is array (3 downto 0) of unsigned (SLC_Z_RPC_LEN -1 downto 0);
   signal rpc_z_a : rpc_z_at;
 
+  signal  int_chamb_ieta : chamb_ieta_rpc_bus_at;
+
   -- constant phicenter : std_logic_vector
 
   signal slc_posphi   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod   : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_abs : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
+  signal int_phimod_abs_pl : std_logic_vector(SLC_COMMON_POSPHI_LEN -1 downto 0);
   signal int_phimod_pl: std_logic_vector(12 -1 downto 0);
   signal int_phimod_dv : std_logic;
 begin
@@ -142,7 +145,7 @@ begin
           int_phimod_dv <= '0';
         else
           int_phimod_dv <= i_slc_data_r.data_valid ;
-
+          int_phimod_abs_pl <= int_phimod_abs;
           if i_slc_data_r.data_valid = '1' then
             int_phimod      <= std_logic_vector(resize(signed('0'&slc_posphi) - signed('0'&i_phicenter),SLC_COMMON_POSPHI_LEN));
             int_phimod_abs  <= std_logic_vector(resize(abs(signed('0'&slc_posphi) - signed('0'&i_phicenter)),SLC_COMMON_POSPHI_LEN));
@@ -183,7 +186,7 @@ begin
 
     PL_in : entity vamc_lib.vamc_sr
       generic map(
-        g_DELAY_CYCLES  => 1,
+        g_DELAY_CYCLES  => 2,
         g_PIPELINE_WIDTH    => i_slc_data_v'length
       )
       port map(
@@ -212,7 +215,7 @@ begin
         i_z           => rpc_z_a(0),
         i_z_dv        => int_slc_data_r.data_valid,
         --
-        o_ieta        => o_cde_data_r.chamb_ieta(0),
+        o_ieta        => int_chamb_ieta(0),
         o_ieta_dv     => dv_bus(0)
     );
 
@@ -231,7 +234,7 @@ begin
         i_z           => rpc_z_a(1),
         i_z_dv        => int_slc_data_r.data_valid,
         --
-        o_ieta        => o_cde_data_r.chamb_ieta(1),
+        o_ieta        => int_chamb_ieta(1),
         o_ieta_dv     => dv_bus(1)
     );
 
@@ -250,7 +253,7 @@ begin
         i_z           => rpc_z_a(2),
         i_z_dv        => int_slc_data_r.data_valid,
         --
-        o_ieta        => o_cde_data_r.chamb_ieta(2),
+        o_ieta        => int_chamb_ieta(2),
         o_ieta_dv     => dv_bus(2)
     );
 
@@ -269,7 +272,7 @@ begin
         i_z           => rpc_z_a(3),
         i_z_dv        => int_slc_data_r.data_valid,
         --
-        o_ieta        => o_cde_data_r.chamb_ieta(3),
+        o_ieta        => int_chamb_ieta(3),
         o_ieta_dv     => dv_bus(3)
     );
 
@@ -297,7 +300,8 @@ begin
             o_cde_data_r.specific     <= int_slc_data_r.specific;
             o_cde_data_r.data_valid   <= int_slc_data_r.data_valid;
             o_cde_data_r.posphi       <= int_slc_data_r.common.posphi;
-            o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs),5));
+            o_cde_data_r.chamb_ieta   <= int_chamb_ieta;
+            o_cde_data_r.phimod       <= std_logic_vector(resize(signed(int_phimod_abs_pl),5));
 
 
             -- -- INN
