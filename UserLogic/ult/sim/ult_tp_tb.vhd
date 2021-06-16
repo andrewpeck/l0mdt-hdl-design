@@ -51,6 +51,9 @@ use ctrl_lib.MPL_CTRL_DEF.all;
 use ctrl_lib.UCM_CTRL_DEF.all;
 use ctrl_lib.H2S_CTRL_DEF.all;
 use ctrl_lib.TAR_CTRL_DEF.all;
+use ctrl_lib.MTC_CTRL_DEF.all;
+use ctrl_lib.DAQ_CTRL_DEF.all;
+use ctrl_lib.TF_CTRL_DEF.all;
 
 library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;

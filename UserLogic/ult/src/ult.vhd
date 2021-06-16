@@ -225,7 +225,8 @@ begin
 
       );
     else generate
-      tar_mon_v <= (others => '0');
+      
+      tar_mon_v <= (tar_mon_v'length downto 0 => '0');
       SUMP_TAR : entity ult_lib.tar_sump
       port map (
         -- clock, control, and monitoring
@@ -284,7 +285,7 @@ begin
         o_uCM2pl_av             => ucm2pl_av
       );
     else generate
-      ucm_mon_v <= (others => '0');
+      ucm_mon_v <= (ucm_mon_v'length downto 0 => '0');
       SUMP_UCM : entity ult_lib.ucm_sump
       port map (
         -- clock, control, and monitoring
@@ -343,7 +344,7 @@ begin
       );
     else generate
 
-      h2s_mon_v <= (others => '0');
+      h2s_mon_v <= (h2s_mon_v'length downto 0 => '0');
 
       SUMP_H2S : entity ult_lib.h2s_sump
       port map (
@@ -393,7 +394,7 @@ begin
         o_pl2mtc_av => pl2mtc_av
       );
     else generate
-      mpl_mon_v <= (others => '0');
+      mpl_mon_v <= (mpl_mon_v'length downto 0 => '0');
 
       SUMP_MPL : entity ult_lib.mpl_sump
       port map (
@@ -439,7 +440,7 @@ begin
         o_sump                    => pt_sump
       );
     else generate
-      -- pte_mon_v <= (others => '0');
+      tf_mon_v <= (tf_mon_v'length downto 0 => '0');
 
       SUMP_PT : entity ult_lib.ptc_sump
       port map (
@@ -483,7 +484,7 @@ begin
         o_sump            => mtc_sump
       );
     else generate
-      -- mtc_mon_v <= (others => '0');
+      mtc_mon_v <= (mtc_mon_v'length downto 0 => '0');
 
       ULT_MTCB : entity ult_lib.mtc_sump
       port map (
@@ -529,7 +530,7 @@ begin
         );
       else generate
 
-      -- daq_mon_v <= (others => '0');
+      daq_mon_v <= (daq_mon_v'length downto 0 => '0');
 
         SUMP_DAQ : entity ult_lib.daq_sump
         -- generic map(DELAY => 9600, memory_type => "ultra")
