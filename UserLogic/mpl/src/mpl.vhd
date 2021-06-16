@@ -39,8 +39,8 @@ entity mpl is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- AXI to SoC
-    ctrl                : in  MPL_CTRL_t;
-    mon                 : out MPL_MON_t;
+    ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
+    mon_v             : out std_logic_vector;-- : out MPL_MON_t;
     -- configuration, control & Monitoring
     -- SLc pipeline
     i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -50,6 +50,9 @@ entity mpl is
 end entity mpl;
 
 architecture beh of mpl is
+
+  signal ctrl_r           : MPL_CTRL_t;
+  signal mon_r            : MPL_MON_t;
 
   signal local_en         :  std_logic;
   signal local_rst        :  std_logic;
@@ -70,15 +73,18 @@ architecture beh of mpl is
 
 begin
 
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
+
   MPL_SUPERVISOR : entity mpl_lib.mpl_supervisor
   port map(
     clk               => clk,
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    actions           => ctrl.actions,
-    configs           => ctrl.configs,
-    status            => mon.status ,
+    actions           => ctrl_r.actions,
+    configs           => ctrl_r.configs,
+    status            => mon_r.status ,
     --
     o_freeze          => int_freeze,
     -- 
@@ -94,8 +100,8 @@ begin
       rst           => local_rst,
       enable        => local_en,
       --
-      ctrl          => ctrl.PL_MEM.PL_MEM(sl_i),
-      mon           => mon.PL_MEM.PL_MEM(sl_i),
+      ctrl          => ctrl_r.PL_MEM.PL_MEM(sl_i),
+      mon           => mon_r.PL_MEM.PL_MEM(sl_i),
       --
       i_freeze      => int_freeze,
       --

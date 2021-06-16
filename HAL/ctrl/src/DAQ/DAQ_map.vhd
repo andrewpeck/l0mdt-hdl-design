@@ -6,6 +6,7 @@ use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.DAQ_Ctrl.all;
+use work.DAQ_Ctrl_DEF.all;
 entity DAQ_interface is
   port (
     clk_axi          : in  std_logic;

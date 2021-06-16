@@ -99,19 +99,19 @@ architecture beh of ult_tp is
   signal mpl_mon  :  MPL_MON_t;
 
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl)-1 downto 0);
-  -- signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
-  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl)-1 downto 0);
-  -- signal tar_mon_v  : std_logic_vector(len(tar_mon )-1 downto 0);
-  -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl)-1 downto 0);
-  -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon )-1 downto 0);
-  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl)-1 downto 0);
-  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon )-1 downto 0);
-  -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl)-1 downto 0);
-  -- signal daq_mon_v  : std_logic_vector(len(daq_mon )-1 downto 0);
-  -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl )-1 downto 0);
-  -- signal tf_mon_v   : std_logic_vector(len(tf_mon  )-1 downto 0);
-  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl)-1 downto 0);
-  -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
+  signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
+  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl)-1 downto 0);
+  signal tar_mon_v  : std_logic_vector(len(tar_mon )-1 downto 0);
+  signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl)-1 downto 0);
+  signal mtc_mon_v  : std_logic_vector(len(mtc_mon )-1 downto 0);
+  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl)-1 downto 0);
+  signal ucm_mon_v  : std_logic_vector(len(ucm_mon )-1 downto 0);
+  signal daq_ctrl_v : std_logic_vector(len(daq_ctrl)-1 downto 0);
+  signal daq_mon_v  : std_logic_vector(len(daq_mon )-1 downto 0);
+  signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl )-1 downto 0);
+  signal tf_mon_v   : std_logic_vector(len(tf_mon  )-1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl)-1 downto 0);
+  signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
 
   -- TDC Hits from Polmux
   signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
@@ -194,20 +194,20 @@ begin
     ttc_commands      => ttc_commands,
 
     -- ULT Control
-    h2s_ctrl => h2s_ctrl,
-    h2s_mon  => h2s_mon,
-    tar_ctrl => tar_ctrl,
-    tar_mon  => tar_mon,
-    mtc_ctrl => mtc_ctrl,
-    mtc_mon  => mtc_mon,
-    ucm_ctrl => ucm_ctrl,
-    ucm_mon  => ucm_mon,
-    daq_ctrl => daq_ctrl,
-    daq_mon  => daq_mon,
-    tf_ctrl  => tf_ctrl,
-    tf_mon   => tf_mon,
-    mpl_ctrl => mpl_ctrl,
-    mpl_mon  => mpl_mon,
+    h2s_ctrl_v => h2s_ctrl_v,
+    h2s_mon_v  => h2s_mon_v,
+    tar_ctrl_v => tar_ctrl_v,
+    tar_mon_v  => tar_mon_v,
+    mtc_ctrl_v => mtc_ctrl_v,
+    mtc_mon_v  => mtc_mon_v,
+    ucm_ctrl_v => ucm_ctrl_v,
+    ucm_mon_v  => ucm_mon_v,
+    daq_ctrl_v => daq_ctrl_v,
+    daq_mon_v  => daq_mon_v,
+    tf_ctrl_v  => tf_ctrl_v,
+    tf_mon_v   => tf_mon_v,
+    mpl_ctrl_v => mpl_ctrl_v,
+    mpl_mon_v  => mpl_mon_v,
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
@@ -244,6 +244,22 @@ begin
 
     sump => sump
   );
+
+    -- ctrl/mon
+    ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
+    ucm_mon <= structify(ucm_mon_v,ucm_mon);
+    tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
+    tar_mon <= structify(tar_mon_v,tar_mon);
+    h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
+    h2s_mon <= structify(h2s_mon_v,h2s_mon);
+    mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
+    mpl_mon <= structify(mpl_mon_v,mpl_mon);
+    tf_ctrl_v <= vectorify(tf_ctrl,tf_ctrl_v);
+    tf_mon <= structify(tf_mon_v,tf_mon);
+    mtc_ctrl_v <= vectorify(mtc_ctrl,mtc_ctrl_v);
+    mtc_mon <= structify(mtc_mon_v,mtc_mon);
+    daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
+    daq_mon <= structify(daq_mon_v,daq_mon);
 
   -------------------------------------------------------------------------------------
 	-- clock Generator

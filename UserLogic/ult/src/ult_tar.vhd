@@ -34,8 +34,9 @@ entity mdt_tar is
   port (
     -- pipeline clock
     clock_and_control : in  l0mdt_control_rt;
-    ctrl              : in  TAR_CTRL_t;
-    mon               : out TAR_MON_t;
+    --
+    ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
+    mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- ttc
     ttc_commands      : in  l0mdt_ttc_rt;
     -- TDC Hits from Polmux
@@ -81,8 +82,8 @@ begin
         rst             => clock_and_control.rst,
         glob_en         => glob_en,
         --
-        ctrl            => ctrl,
-        mon             => mon,
+        ctrl_v            => ctrl_v,
+        mon_v             => mon_v,
         -- TDC Hits from Polmux
         i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
         i_mid_tdc_hits_av  => i_mid_tdc_hits_av,

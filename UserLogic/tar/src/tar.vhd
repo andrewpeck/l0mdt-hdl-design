@@ -46,8 +46,8 @@ entity tar is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     --
-    ctrl              : in  TAR_CTRL_t;
-    mon               : out TAR_MON_t;
+    ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
+    mon_v             : out std_logic_vector;--  : out TAR_MON_t;
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av    : in  mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -72,6 +72,9 @@ entity tar is
 end entity tar;
 
 architecture beh of tar is
+  --
+  signal ctrl_r            : TAR_CTRL_t;
+  signal mon_r             : TAR_MON_t;
   -- TDC polmux from Tar
   signal i_inn_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
   signal i_mid_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
@@ -94,15 +97,18 @@ architecture beh of tar is
 
 begin
 
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
+
   SUPERVISOR : entity tar_lib.tar_supervisor
   port map(
     clk               => clk,
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    actions           => ctrl.actions,
-    configs           => ctrl.configs,
-    status            => mon.status ,
+    actions           => ctrl_r.actions,
+    configs           => ctrl_r.configs,
+    status            => mon_r.status ,
     --
     o_freeze          => int_freeze,
     -- 

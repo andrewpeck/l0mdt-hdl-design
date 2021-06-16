@@ -14,6 +14,10 @@ HAL/ctrl/src/UCM/UCM_PKG_DEF.vhd
 HAL/ctrl/src/TAR/TAR_PKG_DEF.vhd
 HAL/ctrl/src/MPL/MPL_PKG_DEF.vhd
 HAL/ctrl/src/H2S/H2S_PKG_DEF.vhd
+HAL/ctrl/src/TF/TF_PKG_DEF.vhd
+HAL/ctrl/src/DAQ/DAQ_PKG_DEF.vhd
+HAL/ctrl/src/MTC/MTC_PKG_DEF.vhd
+
 
 HAL/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG_DEF.vhd
 HAL/ctrl/src/MEM_INT_12A148D/MEM_INT_12A148D_PKG_DEF.vhd

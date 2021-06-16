@@ -6,6 +6,7 @@ use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
 use work.MTC_Ctrl.all;
+use work.MTC_Ctrl_DEF.all;
 entity MTC_interface is
   port (
     clk_axi          : in  std_logic;

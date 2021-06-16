@@ -34,8 +34,9 @@ entity pipeline is
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    ctrl              : in  MPL_CTRL_t;
-    mon               : out MPL_MON_t;
+    --
+    ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
+    mon_v             : out std_logic_vector;-- : out MPL_MON_t;
     -- Sector Logic Candidates from uCM
     i_ucm2pl_av       : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
     -- Sector Logic Candidates to Track fitting
@@ -58,8 +59,8 @@ begin
       rst             => clock_and_control.rst,
       glob_en         => glob_en,
       --
-      ctrl              => ctrl,
-      mon               => mon,
+      ctrl_v          => ctrl_v,
+      mon_v           => mon_v,
       --
       i_uCM2pl_av     => i_uCM2pl_av,
       o_pl2ptcalc_av  => o_pl2pt_av,

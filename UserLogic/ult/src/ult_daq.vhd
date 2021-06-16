@@ -33,8 +33,8 @@ entity daq is
     -- clock and control
     clock_and_control : in  l0mdt_control_rt;
     ttc_commands      : in  l0mdt_ttc_rt;
-    ctrl              : in  DAQ_CTRL_t;
-    mon               : out DAQ_MON_t;
+    ctrl_v            : in std_logic_vector; -- : in  DAQ_CTRL_t;
+    mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
 
     i_inn_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);

@@ -47,26 +47,26 @@ entity ult is
 
     -- control and monitoring
 
-    h2s_ctrl : in  H2S_CTRL_t;
-    h2s_mon  : out H2S_MON_t;
+    h2s_ctrl_v            : in std_logic_vector; -- : in  H2S_CTRL_t;
+    h2s_mon_v             : out std_logic_vector;--  : out H2S_MON_t;
 
-    tar_ctrl : in  TAR_CTRL_t;
-    tar_mon  : out TAR_MON_t;
+    tar_ctrl_v            : in std_logic_vector; --  : in  TAR_CTRL_t;
+    tar_mon_v             : out std_logic_vector;--  : out TAR_MON_t;
 
-    mtc_ctrl : in  MTC_CTRL_t;
-    mtc_mon  : out MTC_MON_t;
+    mtc_ctrl_v            : in std_logic_vector; --  : in  MTC_CTRL_t;
+    mtc_mon_v             : out std_logic_vector;--  : out MTC_MON_t;
 
-    ucm_ctrl : in  UCM_CTRL_t;
-    ucm_mon  : out UCM_MON_t;
+    ucm_ctrl_v            : in std_logic_vector; -- : in  UCM_CTRL_t;
+    ucm_mon_v             : out std_logic_vector;-- : out UCM_MON_t;
 
-    daq_ctrl : in  DAQ_CTRL_t;
-    daq_mon  : out DAQ_MON_t;
+    daq_ctrl_v            : in std_logic_vector; -- : in  DAQ_CTRL_t;
+    daq_mon_v             : out std_logic_vector;-- : out DAQ_MON_t;
 
-    tf_ctrl : in  TF_CTRL_t;
-    tf_mon  : out TF_MON_t;
+    tf_ctrl_v             : in std_logic_vector; --  : in  TF_CTRL_t;
+    tf_mon_v              : out std_logic_vector;-- : out TF_MON_t;
 
-    mpl_ctrl : in  MPL_CTRL_t;
-    mpl_mon  : out MPL_MON_t;
+    mpl_ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
+    mpl_mon_v             : out std_logic_vector;-- : out MPL_MON_t;
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -110,20 +110,20 @@ end entity ult;
 architecture behavioral of ult is
 
   -- ctrl/mon vectors
-  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0); 
-  signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
-  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0); 
-  signal tar_mon_v  : std_logic_vector(len(tar_mon) - 1 downto 0);
-  -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0); 
-  -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon) - 1 downto 0);
-  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0); 
-  signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0); 
-  -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0); 
-  -- signal daq_mon_v  : std_logic_vector(len(daq_mon) - 1 downto 0);
-  -- signal pte_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0); 
-  -- signal pte_mon_v   : std_logic_vector(len(tf_mon) - 1 downto 0);
-  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0); 
-  signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
+  -- signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0); 
+  -- signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
+  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0); 
+  -- signal tar_mon_v  : std_logic_vector(len(tar_mon) - 1 downto 0);
+  -- -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0); 
+  -- -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon) - 1 downto 0);
+  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0); 
+  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0); 
+  -- -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0); 
+  -- -- signal daq_mon_v  : std_logic_vector(len(daq_mon) - 1 downto 0);
+  -- -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0); 
+  -- -- signal tf_mon_v   : std_logic_vector(len(tf_mon) - 1 downto 0);
+  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0); 
+  -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
   -- outputs from candidate manager
   signal inn_slc_to_h2s_av  : ucm2hps_bus_avt(c_NUM_THREADS-1 downto 0);
@@ -174,17 +174,17 @@ architecture behavioral of ult is
 
 begin
 
-  -- ctrl/mon
-  ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
-  ucm_mon <= structify(ucm_mon_v,ucm_mon);
-  tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
-  tar_mon <= structify(tar_mon_v,tar_mon);
-  h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
-  h2s_mon <= structify(h2s_mon_v,h2s_mon);
-  mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
-  mpl_mon <= structify(mpl_mon_v,mpl_mon);
-  -- pte_ctrl_v <= vectorify(tf_ctrl,pte_ctrl_v);
-  -- tf_mon <= structify(pte_mon_v,tf_mon);
+  -- -- ctrl/mon
+  -- ucm_ctrl_v <= vectorify(ucm_ctrl,ucm_ctrl_v);
+  -- ucm_mon <= structify(ucm_mon_v,ucm_mon);
+  -- tar_ctrl_v <= vectorify(tar_ctrl,tar_ctrl_v);
+  -- tar_mon <= structify(tar_mon_v,tar_mon);
+  -- h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);
+  -- h2s_mon <= structify(h2s_mon_v,h2s_mon);
+  -- mpl_ctrl_v <= vectorify(mpl_ctrl,mpl_ctrl_v);
+  -- mpl_mon <= structify(mpl_mon_v,mpl_mon);
+  -- tf_ctrl_v <= vectorify(tf_ctrl,tf_ctrl_v);
+  -- tf_mon <= structify(tf_mon_v,tf_mon);
   -- mtc_ctrl_v <= vectorify(mtc_ctrl,mtc_ctrl_v);
   -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
   -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
@@ -197,8 +197,8 @@ begin
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,  --
         ttc_commands      => ttc_commands,       --
-        ctrl              => tar_ctrl,
-        mon               => tar_mon,
+        ctrl_v              => tar_ctrl_v,
+        mon_v               => tar_mon_v,
         -- TDC Hits from Polmux
         i_inn_tdc_hits_av  => i_inn_tdc_hits_av,
         i_mid_tdc_hits_av  => i_mid_tdc_hits_av,
@@ -381,8 +381,8 @@ begin
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-        ctrl              => mpl_ctrl,
-        mon               => mpl_mon,
+        ctrl_v              => mpl_ctrl_v,
+        mon_v               => mpl_mon_v,
 
         -- Sector Logic Candidates from uCM
         i_ucm2pl_av => ucm2pl_av,
@@ -421,8 +421,8 @@ begin
         -- clock, control, and monitoring
         clock_and_control         => clock_and_control,
         ttc_commands              => ttc_commands,
-        ctrl                      => tf_ctrl,
-        mon                       => tf_mon,
+        ctrl_v                    => tf_ctrl_v,
+        mon_v                     => tf_mon_v,
         --  segments from neighbors
         i_plus_neighbor_segments  => i_plus_neighbor_segments,
         i_minus_neighbor_segments => i_minus_neighbor_segments,
@@ -471,8 +471,8 @@ begin
         -- clock, control, and monitoring
         clock_and_control => clock_and_control,
         ttc_commands      => ttc_commands,
-        ctrl              => mtc_ctrl,
-        mon               => mtc_mon,
+        ctrl_v            => mtc_ctrl_v,
+        mon_v             => mtc_mon_v,
         --  inputs
         i_ptcalc          => pt2mtc_av,
         i_pl2mtc          => pl2mtc_av,
@@ -510,8 +510,8 @@ begin
           -- clock, control, and monitoring
           clock_and_control => clock_and_control,
           ttc_commands      => ttc_commands,
-          ctrl              => daq_ctrl,
-          mon               => daq_mon,
+          ctrl_v              => daq_ctrl_v,
+          mon_v               => daq_mon_v,
           
           -- TDC Hits from Polmux
           i_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
