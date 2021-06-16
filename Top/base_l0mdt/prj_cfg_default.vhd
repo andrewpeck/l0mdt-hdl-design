@@ -21,7 +21,7 @@ package body prj_cfg is
     variable proj_cfg : cfg_rt := CFG_DEFAULTS;
   begin
 
-    proj_cfg.INSEL_MDT_nTAR := '1';
+    --proj_cfg.INSEL_MDT_nTAR := '1';
 
     proj_cfg.ENABLE_SF := '1';
     proj_cfg.ENABLE_PT := '1';

@@ -70,16 +70,19 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "prj_cfg_default.vhd gitlab-ci.yml base_l0mdt.tcl list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
+    set files_to_copy "prj_cfg_default.vhd gitlab-ci.yml post-creation.tcl hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
 
     # update the link mapping
 
+    # update the post-creation script
+    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/post-creation.tcl"
+
     # update the fpga
-    file rename -force "$dest_path/base_l0mdt.tcl" "$dest_path/$name.tcl"
-    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/$name.tcl"
+    file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
+    exec sed -i "s|PART.*$|PART = $fpga|g" "$dest_path/hog.conf"
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]

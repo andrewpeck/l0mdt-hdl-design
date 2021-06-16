@@ -33,13 +33,13 @@ if {[file exist [file join $MSIM_INI]]} {
 vlib lsf_lib
 vmap work lsf_lib
 set CWD ./..
-set LOAD_LE_REFPOS "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_load_LE_refPos/hdl/verilog/"
-set FIND_MAX_BIN_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_find_max_bin/hdl/verilog/"
-set GET_ROM_ADDR_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_get_rom_addr/hdl/verilog/"
-set GET_TRIG_VALS_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_get_trig_vals/hdl/verilog/"
-set COMPUTE_RBINS_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_compute_r_bins/hdl/verilog/"
-set GET_LEGENDRE_SEGMENT_BARREL_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_get_legendre_segment_barrel/hdl/verilog/"
-set CALC_LE_R_OFFSET_BARREL_HLS_IP "$CWD/../../IP_repository/lsf/hls_ip/ku15p/hls_calc_LE_r_offset_barrel/hdl/verilog/"
+set LOAD_LE_REFPOS "$CWD/../../IP_repository/ku15p/hls_load_LE_refPos/hdl/verilog/"
+set FIND_MAX_BIN_HLS_IP "$CWD/../../IP_repository/ku15p/hls_find_max_bin/hdl/verilog/"
+set GET_ROM_ADDR_HLS_IP "$CWD/../../IP_repository/ku15p/hls_get_rom_addr/hdl/verilog/"
+set GET_TRIG_VALS_HLS_IP "$CWD/../../IP_repository/ku15p/hls_get_trig_vals/hdl/verilog/"
+set COMPUTE_RBINS_HLS_IP "$CWD/../../IP_repository/ku15p/hls_compute_r_bins/hdl/verilog/"
+set GET_LEGENDRE_SEGMENT_BARREL_HLS_IP "$CWD/../../IP_repository/ku15p/hls_get_legendre_segment_barrel/hdl/verilog/"
+set CALC_LE_R_OFFSET_BARREL_HLS_IP "$CWD/../../IP_repository/ku15p/hls_calc_LE_r_offset_barrel/hdl/verilog/"
 
 #set LOAD_LE_REFPOS "$CWD/../l0mdt-hls/LSF/Proj/proj_load_LE_refPos/solution_load_LE_refPos/impl/ip/hdl/verilog/"
 
@@ -107,13 +107,14 @@ vlog -sv -work work "$SPYBUFFER_SRC/aFifo/wptr_full.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyPlayback.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyController.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyMemory.v"
+vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/asym_ram_tdp_read_first.v"
 vlog -sv -work work +incdir+$SPYBUFFER_SRC/ "$SPYBUFFER_SRC/SpyBuffer.v"
 vlog -sv -work work +incdir+$CWD/../../dataformats/ "$SRC/lsf_spybuffer_wrapper.sv"
 
 vlib shared_lib
 vcom -work shared_lib $CWD/../../shared/types/common_ieee_pkg.vhd
-vcom -work shared_lib $CWD/../../dataformats/l0mdt_constants_pkg.vhd
-vcom -work shared_lib $CWD/../../dataformats/l0mdt_dataformats_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/l0mdt_constants_pkg.vhd
+vcom -work shared_lib $CWD/../../shared/types/l0mdt_dataformats_pkg.vhd
 vcom -work lsf_lib "$SRC/lsf_wrapper.vhd"
 vlog -sv -work lsf_lib +incdir+$CWD/../../dataformats/ "$TB/lsf_sb_vhd_tb.v"
 

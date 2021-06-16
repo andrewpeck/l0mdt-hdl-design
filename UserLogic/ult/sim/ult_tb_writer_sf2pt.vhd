@@ -60,10 +60,10 @@ begin
 
   variable row 		: line;
 
-  alias inn_segments_to_pt_av is << signal.ult_tp.ULT.inn_segments_to_pt : sf2pt_bus_avt >>;
-  alias mid_segments_to_pt_av is << signal.ult_tp.ULT.mid_segments_to_pt : sf2pt_bus_avt >>;
-  alias out_segments_to_pt_av is << signal.ult_tp.ULT.out_segments_to_pt : sf2pt_bus_avt >>;
-  alias ext_segments_to_pt_av is << signal.ult_tp.ULT.ext_segments_to_pt : sf2pt_bus_avt >>;
+  alias inn_segments_to_pt_av is << signal.ult_tp.ULT.inn_segments_to_pt_av : sf2pt_bus_avt >>;
+  alias mid_segments_to_pt_av is << signal.ult_tp.ULT.mid_segments_to_pt_av : sf2pt_bus_avt >>;
+  alias out_segments_to_pt_av is << signal.ult_tp.ULT.out_segments_to_pt_av : sf2pt_bus_avt >>;
+  alias ext_segments_to_pt_av is << signal.ult_tp.ULT.ext_segments_to_pt_av : sf2pt_bus_avt >>;
 
   alias pl2pt_av is << signal.ult_tp.ULT.pl2pt_av : pl2pt_bus_avt >>;
 

@@ -2,9 +2,9 @@
 `timescale 1 ns / 1 ps
 
   module ptcalc_top_mul_musc4_DSP48_5(a, b, p);
-input signed [15 - 1 : 0] a;
-input signed [15 - 1 : 0] b;
-output signed [30 - 1 : 0] p;
+input signed [13 - 1 : 0] a;
+input signed [13 - 1 : 0] b;
+output signed [26 - 1 : 0] p;
 
 assign p = $signed (a) * $signed (b);
 

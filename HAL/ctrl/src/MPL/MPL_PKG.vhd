@@ -160,21 +160,21 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.RESET)-1) := vectorify(x.RESET, y(left to left+len(x.RESET)-1));
+      assign(y(left to left+len(x.RESET)-1), vectorify(x.RESET, y(left to left+len(x.RESET)-1)));
       left := left + len(x.RESET);
-      y(left to left+len(x.ENABLE)-1) := vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1));
+      assign(y(left to left+len(x.ENABLE)-1), vectorify(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
       left := left + len(x.ENABLE);
-      y(left to left+len(x.DISABLE)-1) := vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1));
+      assign(y(left to left+len(x.DISABLE)-1), vectorify(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
       left := left + len(x.DISABLE);
-      y(left to left+len(x.FREEZE)-1) := vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1));
+      assign(y(left to left+len(x.FREEZE)-1), vectorify(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
     else
-      y(left downto left-len(x.RESET)+1) := vectorify(x.RESET, y(left downto left-len(x.RESET)+1));
+      assign(y(left downto left-len(x.RESET)+1), vectorify(x.RESET, y(left downto left-len(x.RESET)+1)));
       left := left - len(x.RESET);
-      y(left downto left-len(x.ENABLE)+1) := vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1));
+      assign(y(left downto left-len(x.ENABLE)+1), vectorify(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
       left := left - len(x.ENABLE);
-      y(left downto left-len(x.DISABLE)+1) := vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1));
+      assign(y(left downto left-len(x.DISABLE)+1), vectorify(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
       left := left - len(x.DISABLE);
-      y(left downto left-len(x.FREEZE)+1) := vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1));
+      assign(y(left downto left-len(x.FREEZE)+1), vectorify(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
     end if;
     return y;
   end function vectorify;
@@ -225,21 +225,21 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.THREADS)-1) := vectorify(x.THREADS, y(left to left+len(x.THREADS)-1));
+      assign(y(left to left+len(x.THREADS)-1), vectorify(x.THREADS, y(left to left+len(x.THREADS)-1)));
       left := left + len(x.THREADS);
-      y(left to left+len(x.INPUT_EN)-1) := vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1));
+      assign(y(left to left+len(x.INPUT_EN)-1), vectorify(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
       left := left + len(x.INPUT_EN);
-      y(left to left+len(x.OUTPUT_EN)-1) := vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1));
+      assign(y(left to left+len(x.OUTPUT_EN)-1), vectorify(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
       left := left + len(x.OUTPUT_EN);
-      y(left to left+len(x.FLUSH_MEM_RESET)-1) := vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1));
+      assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), vectorify(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
     else
-      y(left downto left-len(x.THREADS)+1) := vectorify(x.THREADS, y(left downto left-len(x.THREADS)+1));
+      assign(y(left downto left-len(x.THREADS)+1), vectorify(x.THREADS, y(left downto left-len(x.THREADS)+1)));
       left := left - len(x.THREADS);
-      y(left downto left-len(x.INPUT_EN)+1) := vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1));
+      assign(y(left downto left-len(x.INPUT_EN)+1), vectorify(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
       left := left - len(x.INPUT_EN);
-      y(left downto left-len(x.OUTPUT_EN)+1) := vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1));
+      assign(y(left downto left-len(x.OUTPUT_EN)+1), vectorify(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
       left := left - len(x.OUTPUT_EN);
-      y(left downto left-len(x.FLUSH_MEM_RESET)+1) := vectorify(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1));
+      assign(y(left downto left-len(x.FLUSH_MEM_RESET)+1), vectorify(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1)));
     end if;
     return y;
   end function vectorify;
@@ -289,17 +289,17 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.ENABLED)-1) := vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1));
+      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
       left := left + len(x.ENABLED);
-      y(left to left+len(x.READY)-1) := vectorify(x.READY, y(left to left+len(x.READY)-1));
+      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
-      y(left to left+len(x.ERROR)-1) := vectorify(x.ERROR, y(left to left+len(x.ERROR)-1));
+      assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
-      y(left downto left-len(x.ENABLED)+1) := vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1));
+      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
-      y(left downto left-len(x.READY)+1) := vectorify(x.READY, y(left downto left-len(x.READY)+1));
+      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
-      y(left downto left-len(x.ERROR)+1) := vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1));
+      assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
   end function vectorify;
@@ -346,25 +346,25 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr_data_0)-1) := vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1));
+      assign(y(left to left+len(x.wr_data_0)-1), vectorify(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
       left := left + len(x.wr_data_0);
-      y(left to left+len(x.wr_data_1)-1) := vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1));
+      assign(y(left to left+len(x.wr_data_1)-1), vectorify(x.wr_data_1, y(left to left+len(x.wr_data_1)-1)));
       left := left + len(x.wr_data_1);
-      y(left to left+len(x.wr_data_2)-1) := vectorify(x.wr_data_2, y(left to left+len(x.wr_data_2)-1));
+      assign(y(left to left+len(x.wr_data_2)-1), vectorify(x.wr_data_2, y(left to left+len(x.wr_data_2)-1)));
       left := left + len(x.wr_data_2);
-      y(left to left+len(x.wr_data_3)-1) := vectorify(x.wr_data_3, y(left to left+len(x.wr_data_3)-1));
+      assign(y(left to left+len(x.wr_data_3)-1), vectorify(x.wr_data_3, y(left to left+len(x.wr_data_3)-1)));
       left := left + len(x.wr_data_3);
-      y(left to left+len(x.wr_data_4)-1) := vectorify(x.wr_data_4, y(left to left+len(x.wr_data_4)-1));
+      assign(y(left to left+len(x.wr_data_4)-1), vectorify(x.wr_data_4, y(left to left+len(x.wr_data_4)-1)));
     else
-      y(left downto left-len(x.wr_data_0)+1) := vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1));
+      assign(y(left downto left-len(x.wr_data_0)+1), vectorify(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
       left := left - len(x.wr_data_0);
-      y(left downto left-len(x.wr_data_1)+1) := vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1));
+      assign(y(left downto left-len(x.wr_data_1)+1), vectorify(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1)));
       left := left - len(x.wr_data_1);
-      y(left downto left-len(x.wr_data_2)+1) := vectorify(x.wr_data_2, y(left downto left-len(x.wr_data_2)+1));
+      assign(y(left downto left-len(x.wr_data_2)+1), vectorify(x.wr_data_2, y(left downto left-len(x.wr_data_2)+1)));
       left := left - len(x.wr_data_2);
-      y(left downto left-len(x.wr_data_3)+1) := vectorify(x.wr_data_3, y(left downto left-len(x.wr_data_3)+1));
+      assign(y(left downto left-len(x.wr_data_3)+1), vectorify(x.wr_data_3, y(left downto left-len(x.wr_data_3)+1)));
       left := left - len(x.wr_data_3);
-      y(left downto left-len(x.wr_data_4)+1) := vectorify(x.wr_data_4, y(left downto left-len(x.wr_data_4)+1));
+      assign(y(left downto left-len(x.wr_data_4)+1), vectorify(x.wr_data_4, y(left downto left-len(x.wr_data_4)+1)));
     end if;
     return y;
   end function vectorify;
@@ -421,25 +421,25 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.rd_data_0)-1) := vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1));
+      assign(y(left to left+len(x.rd_data_0)-1), vectorify(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
       left := left + len(x.rd_data_0);
-      y(left to left+len(x.rd_data_1)-1) := vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1));
+      assign(y(left to left+len(x.rd_data_1)-1), vectorify(x.rd_data_1, y(left to left+len(x.rd_data_1)-1)));
       left := left + len(x.rd_data_1);
-      y(left to left+len(x.rd_data_2)-1) := vectorify(x.rd_data_2, y(left to left+len(x.rd_data_2)-1));
+      assign(y(left to left+len(x.rd_data_2)-1), vectorify(x.rd_data_2, y(left to left+len(x.rd_data_2)-1)));
       left := left + len(x.rd_data_2);
-      y(left to left+len(x.rd_data_3)-1) := vectorify(x.rd_data_3, y(left to left+len(x.rd_data_3)-1));
+      assign(y(left to left+len(x.rd_data_3)-1), vectorify(x.rd_data_3, y(left to left+len(x.rd_data_3)-1)));
       left := left + len(x.rd_data_3);
-      y(left to left+len(x.rd_data_4)-1) := vectorify(x.rd_data_4, y(left to left+len(x.rd_data_4)-1));
+      assign(y(left to left+len(x.rd_data_4)-1), vectorify(x.rd_data_4, y(left to left+len(x.rd_data_4)-1)));
     else
-      y(left downto left-len(x.rd_data_0)+1) := vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1));
+      assign(y(left downto left-len(x.rd_data_0)+1), vectorify(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
       left := left - len(x.rd_data_0);
-      y(left downto left-len(x.rd_data_1)+1) := vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1));
+      assign(y(left downto left-len(x.rd_data_1)+1), vectorify(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1)));
       left := left - len(x.rd_data_1);
-      y(left downto left-len(x.rd_data_2)+1) := vectorify(x.rd_data_2, y(left downto left-len(x.rd_data_2)+1));
+      assign(y(left downto left-len(x.rd_data_2)+1), vectorify(x.rd_data_2, y(left downto left-len(x.rd_data_2)+1)));
       left := left - len(x.rd_data_2);
-      y(left downto left-len(x.rd_data_3)+1) := vectorify(x.rd_data_3, y(left downto left-len(x.rd_data_3)+1));
+      assign(y(left downto left-len(x.rd_data_3)+1), vectorify(x.rd_data_3, y(left downto left-len(x.rd_data_3)+1)));
       left := left - len(x.rd_data_3);
-      y(left downto left-len(x.rd_data_4)+1) := vectorify(x.rd_data_4, y(left downto left-len(x.rd_data_4)+1));
+      assign(y(left downto left-len(x.rd_data_4)+1), vectorify(x.rd_data_4, y(left downto left-len(x.rd_data_4)+1)));
     end if;
     return y;
   end function vectorify;
@@ -493,13 +493,13 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.rd_rdy)-1) := vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1));
+      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
       left := left + len(x.rd_rdy);
-      y(left to left+len(x.rd_data)-1) := vectorify(x.rd_data, y(left to left+len(x.rd_data)-1));
+      assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
     else
-      y(left downto left-len(x.rd_rdy)+1) := vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1));
+      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
       left := left - len(x.rd_rdy);
-      y(left downto left-len(x.rd_data)+1) := vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1));
+      assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
     end if;
     return y;
   end function vectorify;
@@ -540,15 +540,15 @@ package body MPL_CTRL is
   begin
     if t'ascending then
       for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(b to a) := vectorify(x(i), y(b to a));
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
       end loop;
     else
       for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(a downto b) := vectorify(x(i), y(a downto b));
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
       end loop;
     end if;
     return y;
@@ -561,14 +561,14 @@ package body MPL_CTRL is
   begin
     if x'ascending then
       for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
         y(i) := structify(x(b to a), y(i));
       end loop;
     else
       for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
         y(i) := structify(x(a downto b), y(i));
       end loop;
     end if;
@@ -601,37 +601,37 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.wr_req)-1) := vectorify(x.wr_req, y(left to left+len(x.wr_req)-1));
+      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
       left := left + len(x.wr_req);
-      y(left to left+len(x.wr_ack)-1) := vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1));
+      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
       left := left + len(x.wr_ack);
-      y(left to left+len(x.rd_req)-1) := vectorify(x.rd_req, y(left to left+len(x.rd_req)-1));
+      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
       left := left + len(x.rd_req);
-      y(left to left+len(x.rd_ack)-1) := vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1));
+      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
       left := left + len(x.rd_ack);
-      y(left to left+len(x.flush_req)-1) := vectorify(x.flush_req, y(left to left+len(x.flush_req)-1));
+      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
       left := left + len(x.flush_req);
-      y(left to left+len(x.wr_addr)-1) := vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1));
+      assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
       left := left + len(x.wr_addr);
-      y(left to left+len(x.rd_addr)-1) := vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1));
+      assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
       left := left + len(x.rd_addr);
-      y(left to left+len(x.wr_data)-1) := vectorify(x.wr_data, y(left to left+len(x.wr_data)-1));
+      assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
     else
-      y(left downto left-len(x.wr_req)+1) := vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1));
+      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
       left := left - len(x.wr_req);
-      y(left downto left-len(x.wr_ack)+1) := vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1));
+      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
       left := left - len(x.wr_ack);
-      y(left downto left-len(x.rd_req)+1) := vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1));
+      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
       left := left - len(x.rd_req);
-      y(left downto left-len(x.rd_ack)+1) := vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1));
+      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
       left := left - len(x.rd_ack);
-      y(left downto left-len(x.flush_req)+1) := vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1));
+      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
       left := left - len(x.flush_req);
-      y(left downto left-len(x.wr_addr)+1) := vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1));
+      assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
       left := left - len(x.wr_addr);
-      y(left downto left-len(x.rd_addr)+1) := vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1));
+      assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
       left := left - len(x.rd_addr);
-      y(left downto left-len(x.wr_data)+1) := vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1));
+      assign(y(left downto left-len(x.wr_data)+1), vectorify(x.wr_data, y(left downto left-len(x.wr_data)+1)));
     end if;
     return y;
   end function vectorify;
@@ -702,15 +702,15 @@ package body MPL_CTRL is
   begin
     if t'ascending then
       for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(b to a) := vectorify(x(i), y(b to a));
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(b to a), vectorify(x(i), y(b to a)));
       end loop;
     else
       for i in x'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
-        y(a downto b) := vectorify(x(i), y(a downto b));
+        a := l*i + y'low + l - 1;
+        b := l*i + y'low;
+        assign(y(a downto b), vectorify(x(i), y(a downto b)));
       end loop;
     end if;
     return y;
@@ -723,14 +723,14 @@ package body MPL_CTRL is
   begin
     if x'ascending then
       for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
+        a := l*i + x'low + l - 1;
+        b := l*i + x'low;
         y(i) := structify(x(b to a), y(i));
       end loop;
     else
       for i in y'range loop
-        a := l*i+l-1+x'low;
-        b := l*i+x'low;
+        a := l*i + x'low + l-1;
+        b := l*i + x'low;
         y(i) := structify(x(a downto b), y(i));
       end loop;
     end if;
@@ -756,9 +756,9 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.PL_MEM)-1) := vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1));
+      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      y(left downto left-len(x.PL_MEM)+1) := vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1));
+      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
   end function vectorify;
@@ -791,9 +791,9 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.PL_MEM)-1) := vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1));
+      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      y(left downto left-len(x.PL_MEM)+1) := vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1));
+      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
   end function vectorify;
@@ -827,13 +827,13 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.STATUS)-1) := vectorify(x.STATUS, y(left to left+len(x.STATUS)-1));
+      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
       left := left + len(x.STATUS);
-      y(left to left+len(x.PL_MEM)-1) := vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1));
+      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      y(left downto left-len(x.STATUS)+1) := vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1));
+      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
       left := left - len(x.STATUS);
-      y(left downto left-len(x.PL_MEM)+1) := vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1));
+      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
   end function vectorify;
@@ -873,17 +873,17 @@ package body MPL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      y(left to left+len(x.ACTIONS)-1) := vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1));
+      assign(y(left to left+len(x.ACTIONS)-1), vectorify(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
       left := left + len(x.ACTIONS);
-      y(left to left+len(x.CONFIGS)-1) := vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1));
+      assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
       left := left + len(x.CONFIGS);
-      y(left to left+len(x.PL_MEM)-1) := vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1));
+      assign(y(left to left+len(x.PL_MEM)-1), vectorify(x.PL_MEM, y(left to left+len(x.PL_MEM)-1)));
     else
-      y(left downto left-len(x.ACTIONS)+1) := vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1));
+      assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
       left := left - len(x.ACTIONS);
-      y(left downto left-len(x.CONFIGS)+1) := vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1));
+      assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
       left := left - len(x.CONFIGS);
-      y(left downto left-len(x.PL_MEM)+1) := vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1));
+      assign(y(left downto left-len(x.PL_MEM)+1), vectorify(x.PL_MEM, y(left downto left-len(x.PL_MEM)+1)));
     end if;
     return y;
   end function vectorify;

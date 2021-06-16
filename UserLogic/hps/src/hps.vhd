@@ -34,6 +34,7 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
+-- use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 
 entity hps is
@@ -47,8 +48,8 @@ entity hps is
     glob_en : in std_logic;
 
     -- control
-    ctrl : in  H2S_HPS_CTRL_t;
-    mon  : out H2S_HPS_MON_t;
+    ctrl_v  : in std_logic_vector;-- H2S_HPS_CTRL_t;
+    mon_v   : out std_logic_vector;--H2S_HPS_MON_t;
 
     -- SLc
     i_uCM2hps_av : in  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -60,6 +61,9 @@ entity hps is
 end entity hps;
 
 architecture beh of hps is
+
+  signal ctrl_r : H2S_HPS_CTRL_t;
+  signal mon_r : H2S_HPS_MON_t;
 
   signal int_rst : std_logic;
   signal int_ena : std_logic;
@@ -75,6 +79,9 @@ architecture beh of hps is
 
 begin
 
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
+
   SUPER : entity hps_lib.hps_supervisor
   generic map(
     g_STATION_RADIUS => g_STATION_RADIUS
@@ -84,9 +91,9 @@ begin
     rst         => rst,
     glob_en     => glob_en,
     --
-    i_actions   => ctrl.actions,
-    i_configs   => ctrl.configs,
-    o_status    => mon.status,
+    i_actions   => ctrl_r.actions,
+    i_configs   => ctrl_r.configs,
+    o_status    => mon_r.status,
     --
     o_local_rst => int_rst,
     o_local_en  => int_ena
@@ -110,10 +117,10 @@ begin
           rst         => int_rst,
           ena         => int_ena,
           --
-          i_ctrl_tc   => ctrl.MDT_TC.MDT_TC,--(hp_i),
-          o_mon_tc    => mon.MDT_TC.MDT_TC,--(hp_i),
-          i_ctrl_t0   => ctrl.MDT_T0.MDT_T0,--(hp_i),
-          o_mon_t0    => mon.MDT_T0.MDT_T0,--(hp_i),
+          i_ctrl_tc   => ctrl_r.MDT_TC.MDT_TC,--(hp_i),
+          o_mon_tc    => mon_r.MDT_TC.MDT_TC,--(hp_i),
+          i_ctrl_t0   => ctrl_r.MDT_T0.MDT_T0,--(hp_i),
+          o_mon_t0    => mon_r.MDT_T0.MDT_T0,--(hp_i),
           --
           i_mdt_tar_v       => i_mdt_tar_av,--(hp_i),
           o_mdt_full_data_v => mdt_full_data_av--(hp_i)
@@ -132,8 +139,8 @@ begin
         rst                => int_rst, 
         glob_en            => int_ena,
         --        
-        ctrl               => ctrl.heg.heg(heg_i),
-        mon                => mon.heg.heg(heg_i),
+        ctrl               => ctrl_r.heg.heg(heg_i),
+        mon                => mon_r.heg.heg(heg_i),
         --
         i_uCM_data_v       => i_uCM2hps_av(heg_i),
         -- MDT hit
@@ -153,11 +160,11 @@ begin
         rst           => int_rst,
         glob_en       => int_ena,
 
-        lsf_ctrl      => ctrl.lsf.lsf(heg_i),
-        lsf_mon       => mon.lsf.lsf(heg_i),
+        lsf_ctrl => ctrl_r.lsf.lsf(heg_i),
+        lsf_mon  => mon_r.lsf.lsf(heg_i),
 
-        csf_ctrl      => ctrl.csf.csf(heg_i),
-        csf_mon       => mon.csf.csf(heg_i),
+        csf_ctrl => ctrl_r.csf.csf(heg_i),
+        csf_mon  => mon_r.csf.csf(heg_i),
 
         -- to Segment finder
         i_control_v   => heg2sf_ctrl_av(heg_i),

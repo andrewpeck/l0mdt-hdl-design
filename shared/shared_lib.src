@@ -12,11 +12,6 @@ shared/shared_lib_basic.src
 # #---------------------------------
 # # Detector shared RAMs
 # #---------------------------------
-# shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
-# shared/detector_parameters/gtube2chamber_pkg.vhd
-# shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd
-# shared/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd
-# shared/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd
 shared/detector_parameters/detector_parameters_lib.src
 #---------------------------------
 # VHDL2008 functions not implemented in Vivado
@@ -33,19 +28,20 @@ shared/vhdl_amc/vamc_lib.src lib=vamc_lib
 #---------------------------------
 # shared memory files
 #---------------------------------
-shared/src/pipeline.vhd
-shared/src/ring_buffer_v2.vhd
-shared/src/vhdl_ram_memory.vhd
-#-----CSF/PT memories-----
-shared/src/bram.vhd
-shared/src/rom.v
-shared/src/rom_dp.v
+shared/memories/memories_lib.src
+
+# shared/src/pipeline.vhd
+# shared/src/ring_buffer_v2.vhd
+# shared/src/vhdl_ram_memory.vhd
+## CSF/PT
+# shared/shared_mpi.src
 #---------------------------------
-# trigonometrics
+# arithmetics
 #---------------------------------
-shared/functions/trigonometrics/roi_atan_pkg.vhd
-shared/functions/trigonometrics/roi_atan.vhd
-shared/functions/trigonometrics/roi_tan_pkg.vhd
-shared/functions/trigonometrics/roi_tan.vhd
+shared/arithmetics/arithmetics_lib.src
+# shared/functions/trigonometrics/roi_atan_pkg.vhd
+# shared/functions/trigonometrics/roi_atan.vhd
+# shared/functions/trigonometrics/roi_tan_pkg.vhd
+# shared/functions/trigonometrics/roi_tan.vhd
 # shared/functions/trigonometrics/roi_trig_functions.vhd
 

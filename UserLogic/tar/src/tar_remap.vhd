@@ -79,85 +79,85 @@ begin
   i_tdc_hits_r <= structify(i_tdc_hits);
   o_tar_hits <= vectorify(o_tar_hits_r);
   
-  TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
+  -- TDC_INPUTS_GEN : if c_TAR_INSEL = '1' generate
     -- o_tdc_hits <= i_tdc_hits;
     -- o_mid_tdc_hits <= i_mid_tdc_hits;
     -- o_out_tdc_hits <= i_out_tdc_hits;
     -- o_ext_tdc_hits <= i_ext_tdc_hits;
 
 
-    GET : process(clk)
-    begin
-      if rising_edge(clk) then
-        if rst = '1' then
-          o_tar_hits_r <= nullify(o_tar_hits_r);
-          
-        else
-          if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
-            dv_pl(0) <= dv_pl(1);
-            dv_pl(1) <=  i_tdc_hits_r.data_valid;
+  GET : process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        o_tar_hits_r <= nullify(o_tar_hits_r);
+        
+      else
+        if c_ST_nBARREL_ENDCAP = '0' then -- BARREL
+          dv_pl(0) <= dv_pl(1);
+          dv_pl(1) <=  i_tdc_hits_r.data_valid;
 
-            if i_tdc_hits_r.data_valid = '1' then
-              csm_pl <= i_tdc_hits_r.csmid;
-              csm_offset <= csm_offset_mem(to_integer(unsigned(i_tdc_hits_r.csmid)));
-              tdc_offset <= tdc_offset_mem(to_integer(unsigned(i_tdc_hits_r.tdcid)));
-              -- tdc_offset <= tdc_offset_mem(to_integer(shift_right(to_unsigned(i_tdc_hits_r.tdc_id),1)));
-              if c_SECTOR_SIDE = 0 then -- SIDE A
-                if i_tdc_hits_r.tdcid(0) = '0' then -- even
-                  tdc_tube <= to_unsigned(ml1_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
-                  tdc_layer <= to_unsigned(ml1_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
-                else -- odd
-                  tdc_tube <= to_unsigned(ml2_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
-                  tdc_layer <= to_unsigned(ml2_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
-                end if;
-              else -- SIDE C
-
+          if i_tdc_hits_r.data_valid = '1' then
+            csm_pl <= i_tdc_hits_r.csmid;
+            csm_offset <= csm_offset_mem(to_integer(unsigned(i_tdc_hits_r.csmid)));
+            tdc_offset <= tdc_offset_mem(to_integer(unsigned(i_tdc_hits_r.tdcid)));
+            -- tdc_offset <= tdc_offset_mem(to_integer(shift_right(to_unsigned(i_tdc_hits_r.tdc_id),1)));
+            if c_SECTOR_SIDE = 0 then -- SIDE A
+              if i_tdc_hits_r.tdcid(0) = '0' then -- even
+                tdc_tube <= to_unsigned(ml1_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
+                tdc_layer <= to_unsigned(ml1_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
+              else -- odd
+                tdc_tube <= to_unsigned(ml2_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
+                tdc_layer <= to_unsigned(ml2_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
               end if;
+            else -- SIDE C
 
-              full_time <= i_tdc_hits_r.tdc.coarsetime & i_tdc_hits_r.tdc.finetime;
-
-            else
-              csm_pl <= (others => '0');
-              tdc_tube <= (others => '0');
-              tdc_layer <= (others => '0');
-              csm_offset <= 0;
-              tdc_offset <= 0;
-              full_time <= (others => '0');
             end if;
 
+            full_time <= i_tdc_hits_r.tdc.coarsetime & i_tdc_hits_r.tdc.finetime;
 
-
-            if dv_pl(1) = '1' then
-              o_tar_hits_r.data_valid   <= '1';
-              o_tar_hits_r.chamber_ieta <= csm_pl;
-              o_tar_hits_r.layer        <= tdc_layer;
-              -- chamber tube  position
-              -- o_tar_hits_r.tube         <= tdc_offset + tdc_tube;
-              -- global tube position
-              o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
-              o_tar_hits_r.time         <= full_time;
-            else
-              o_tar_hits_r <= nullify(o_tar_hits_r);
-              -- o_tar_hits_r.data_valid   <= '0';
-              -- o_tar_hits_r.chamber_ieta <= 
-              -- o_tar_hits_r.layer        <= 
-              -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
-              -- o_tar_hits_r.time         <= full_time;
-            end if;
-
-          else-- ENDCAP
-
+          else
+            csm_pl <= (others => '0');
+            tdc_tube <= (others => '0');
+            tdc_layer <= (others => '0');
+            csm_offset <= 0;
+            tdc_offset <= 0;
+            full_time <= (others => '0');
           end if;
 
+
+
+          if dv_pl(1) = '1' then
+            o_tar_hits_r.data_valid   <= '1';
+            o_tar_hits_r.chamber_ieta <= csm_pl;
+            o_tar_hits_r.layer        <= tdc_layer;
+            -- chamber tube  position
+            -- o_tar_hits_r.tube         <= tdc_offset + tdc_tube;
+            -- global tube position
+            o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+            o_tar_hits_r.time         <= full_time;
+          else
+            o_tar_hits_r <= nullify(o_tar_hits_r);
+            -- o_tar_hits_r.data_valid   <= '0';
+            -- o_tar_hits_r.chamber_ieta <= 
+            -- o_tar_hits_r.layer        <= 
+            -- o_tar_hits_r.tube         <= csm_offset + tdc_offset + tdc_tube;
+            -- o_tar_hits_r.time         <= full_time;
+          end if;
+
+        else-- ENDCAP
+
         end if;
+
       end if;
-    end process GET;
+    end if;
+  end process GET;
 
 
 
 
 
-  end generate;
+  -- end generate;
 
   -- TAR_INPUTS_GEN : if c_TAR_INSEL = '0' generate
   --   o_tar_hits <= i_tar_hits;

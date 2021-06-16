@@ -41,8 +41,8 @@ entity ucm is
     glob_en                 : in std_logic;
     ttc_commands            : in l0mdt_ttc_rt;
     -- configuration, control & Monitoring
-    ctrl                    : in  UCM_CTRL_t;
-    mon                     : out UCM_MON_t;
+    ctrl_v              : in  std_logic_vector;--UCM_CTRL_t;
+    mon_v               : out std_logic_vector;--UCM_MON_t;
     -- SLc in
     i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
     i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
@@ -60,12 +60,53 @@ end entity ucm;
 
 architecture beh of ucm is
 
-  -- constant UCM_INPUT_PL_LATENCY : integer := 2;
+  --  SC
+  signal ctrl_r : UCM_CTRL_t;
+  signal mon_r  : UCM_MON_t;
 
-  -- constant UCM_OUTPUT_PL_LATENCY : integer := 6;
+  signal super_ctrl_r : UCM_SUPER_CTRL_t;
+  signal super_mon_r : UCM_SUPER_MON_t;
+  signal super_ctrl_v : std_logic_vector(len(super_ctrl_r) - 1 downto 0);
+  signal super_mon_v : std_logic_vector(len(super_mon_r) - 1 downto 0);
+
+  signal r_phi_comp_ctrl_r : UCM_R_PHI_COMP_CTRL_t;
+  signal r_phi_comp_ctrl_v : std_logic_vector(len(r_phi_comp_ctrl_r) - 1 downto 0);
+  signal r_phi_comp_mon_r  : UCM_R_PHI_COMP_MON_t;
+  type   r_phi_comp_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0);
+  signal r_phi_comp_mon_av  : r_phi_comp_mon_avt;
+  signal r_phi_comp_mon_null : std_logic_vector(len(r_phi_comp_mon_r) -1 downto 0)  := (others => '0');
+  -- type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  -- signal mdt_mon_av  : mdt_mon_avt;
+  -- signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+
+  -- signal rpc_R_ctrl_r : UCM_RPC_R_COMP_CTRL_t;
+  signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t;
+  -- signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+
+  -- signal mdt_R_ctrl_r : UCM_MDT_R_COMP_CTRL_t;
+  signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t;
+  -- signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+
+  type   rpc_mon_at is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_RPC_MON_t;
+  signal rpc_mon_a  : rpc_mon_at;
+  type   rpc_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(rpc_R_mon_r) -1 downto 0);
+  signal rpc_mon_av  : rpc_mon_avt;
+  signal rpc_mon_null : std_logic_vector(len(rpc_R_mon_r) -1 downto 0)  := (others => '0');
+  
+  type   mdt_mon_at is array (0 to c_NUM_THREADS - 1) of UCM_R_PHI_COMP_MDT_MON_t;
+  signal mdt_mon_a  : mdt_mon_at;
+  type   mdt_mon_avt is array (0 to c_NUM_THREADS - 1)of std_logic_vector(len(mdt_R_mon_r) -1 downto 0);
+  signal mdt_mon_av  : mdt_mon_avt;
+  signal mdt_mon_null : std_logic_vector(len(mdt_R_mon_r) -1 downto 0)  := (others => '0');
+
+  --  FC
 
   signal local_en   : std_logic;
   signal local_rst  : std_logic;
+
+  -- signals
 
   signal i_slc_data_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
@@ -100,7 +141,7 @@ architecture beh of ucm is
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal cde_phimod           : cde_phimod_at;
 
   -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
@@ -119,6 +160,44 @@ architecture beh of ucm is
 
 begin
 
+  -- SC
+  ctrl_r  <= structify(ctrl_v,ctrl_r);
+  super_ctrl_r <= ctrl_r.super;
+
+  mon_r.super <= super_mon_r;
+  mon_r.R_PHI_COMP.rpc <= rpc_R_mon_r;
+  mon_r.R_PHI_COMP.mdt <= mdt_R_mon_r;
+  mon_v   <= vectorify(mon_r,mon_v);
+
+  super_ctrl_v <= vectorify(super_ctrl_r,super_ctrl_v);
+  super_mon_r <= structify(super_mon_v,super_mon_r);
+
+
+  r_phi_comp_ctrl_r <= ctrl_r.R_PHI_COMP;
+  r_phi_comp_ctrl_v <= vectorify(r_phi_comp_ctrl_r,r_phi_comp_ctrl_v);
+  
+
+
+
+  mon_arrays: for th_i in 0 to c_NUM_THREADS - 1 generate
+    mdt_mon_av(th_i) <= vectorify(structify(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).mdt,mdt_mon_av(th_i));
+    rpc_mon_av(th_i) <= vectorify(structify(r_phi_comp_mon_av(th_i),r_phi_comp_mon_r).rpc,rpc_mon_av(th_i));
+
+  end generate mon_arrays;
+
+    mdt_R_mon_v <=  mdt_mon_av(0) when r_phi_comp_ctrl_r.mdt.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.mdt.sel_thread)) = 0 else
+                    mdt_mon_av(1) when r_phi_comp_ctrl_r.mdt.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.mdt.sel_thread)) = 1 else
+                    mdt_mon_av(2);
+    mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
+
+    rpc_R_mon_v <=  rpc_mon_av(0) when r_phi_comp_ctrl_r.rpc.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.rpc.sel_thread)) = 0 else
+                    rpc_mon_av(1) when r_phi_comp_ctrl_r.rpc.ext_ctrl =  '1' and to_integer(unsigned(r_phi_comp_ctrl_r.rpc.sel_thread)) = 1 else
+                    rpc_mon_av(2);
+    rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
+
+
+  --------------------------------
+
 
   SLC_BoEs : if c_ST_nBARREL_ENDCAP = '0' or c_ENDCAP_nSMALL_LARGE = '0' generate
     i_slc_data_av(c_MAX_NUM_SL -1) <= i_slc_data_mainA_av(2);
@@ -136,8 +215,8 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    ctrl              => ctrl,
-    mon               => mon,
+    ctrl_v              => super_ctrl_v,
+    mon_v               => super_mon_v,
     --
     o_phicenter => phicenter,
     o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
@@ -148,11 +227,11 @@ begin
   );
 
   --control
-  SLC_CTRL : entity ucm_lib.ucm_data_ctrl
+  SLC_CTRL : entity ucm_lib.ucm_ctrl_top
   port map(
     clk               => clk,
     rst               => local_rst,
-    glob_en           => local_en,
+    ena               => local_en,
     --
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --
@@ -215,15 +294,15 @@ begin
     port map(
       clk                   => clk,
       rst                   => local_rst,
-      glob_en               => local_en,
+      ena               => local_en,
       --
-      i_phicenter            => phicenter,
-      i_chamber_z_org_bus => cde_chamber_z_org_bus,
+      i_phicenter           => phicenter,
+      i_chamber_z_org_bus   => cde_chamber_z_org_bus,
       --
       i_slc_data_v          => cde_in_av(th_i),
       o_cde_data_v          => cpam_in_av(th_i),
       --
-      o_phimod      => cde_phimod(th_i)
+      o_pl_phimod           => cde_phimod(th_i)
     );
   end generate;
 
@@ -249,8 +328,10 @@ begin
     port map(
       clk           => clk,
       rst           => local_rst,
-      glob_en       => local_en,
+      ena       => local_en,
       --
+      ctrl_v              => r_phi_comp_ctrl_v,
+      mon_v               => r_phi_comp_mon_av(vp_i),
       -- i_phicenter            => phicenter,
       i_chamber_z_org_bus => cvp_chamber_z_org_bus,
       --
@@ -363,7 +444,7 @@ begin
     SLC_OUT_PL : entity shared_lib.std_pipeline
     generic map(
       g_DELAY_CYCLES  => 3,
-      g_PIPELINE_WIDTH    => UCM2PL_LEN
+      g_PIPELINE_WIDTH    => int_uCM2pl_av(sl_i)'length
     )
     port map(
       clk         => clk,
@@ -386,7 +467,7 @@ begin
     o_uCM2pl_ar(sl_i).common      <= pl_o_uCM2pl_ar(sl_i).common;
     -- o_uCM2pl_ar(sl_i).phimod      <= pl_o_uCM2pl_ar(sl_i).phimod;
     PHIMOD_PROC_IF: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-      o_uCM2pl_ar(sl_i).phimod    <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
+      o_uCM2pl_ar(sl_i).phimod    <= signed(cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)));
     end generate;
     PHIMOD_NOPROC_IF: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate
       o_uCM2pl_ar(sl_i).phimod    <=(others => '0');

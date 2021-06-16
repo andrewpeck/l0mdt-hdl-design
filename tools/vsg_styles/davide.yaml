@@ -1,0 +1,5 @@
+rule :
+  generic_007 :
+    case : 'upper'
+  generic_map_002:
+    case : 'upper'
