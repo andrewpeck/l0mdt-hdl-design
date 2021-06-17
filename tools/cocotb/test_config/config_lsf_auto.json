@@ -1,0 +1,57 @@
+{
+    "testbench_config": {
+        "test_name": "lsf_auto",
+        "input_args": {
+            "n_events": 1,
+            "n_hits": 100,
+            "n_rois": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns"
+        },
+        "run_config": {
+            "output_directory_name": "lsf_auto",
+            "test_location": "src/l0mdt_tb/testbench/lsf_auto/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "/opt/tools/Xilinx/compiled_libraries/v2019.2.1"
+        },
+        "testvectors": {
+            "testvector_dir": "/home/ntekas/Work/tv",
+            "testvector_file": "B_C_3_singleevt.xz",
+            "inputs": [
+                {
+                    "tv_format": "HEG2SFSLC",
+                    "ports": 1,
+                    "heg2sfslc_ii": 100,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tv_type": "value"
+                },
+                {
+                    "tv_format": "HEG2SFHIT",
+                    "ports": 1,
+                    "heg2sfhit_ii": 2,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tv_type": "list"
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 1,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tolerance" : 
+                        {   
+                            "segpos": ["abs",1000000.0],
+                            "segangle": ["perc",50]
+                        }
+                }
+            ]
+        }
+    }
+}
