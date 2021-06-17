@@ -126,6 +126,8 @@ begin
           int_wr_status <= x"0";
           int_rd_status <= x"0";
 
+          o_wr_addr <= (others => '0');
+
           mon_r <= nullify(mon_r);
 
         else
@@ -224,7 +226,7 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
-
+          o_wr_addr <= (others => '0');
           mon_r <= nullify(mon_r);
 
         else
@@ -323,7 +325,7 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
-
+          o_wr_addr <= (others => '0');
           mon_r <= nullify(mon_r);
         else
 
@@ -424,7 +426,7 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
-
+          o_wr_addr <= (others => '0');
           mon_r <= nullify(mon_r);
 
         else
@@ -526,7 +528,7 @@ begin
           o_data <= (others => '0');
           int_wr_status <= x"0";
           int_rd_status <= x"0";
-
+          o_wr_addr <= (others => '0');
           mon_r <= nullify(mon_r);
 
         else

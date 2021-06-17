@@ -147,7 +147,7 @@ begin
         TAR_MID : entity tar_lib.tar_station
           generic map(
             g_ARRAY_LEN => c_HPS_MAX_HP_MID,
-            g_STATION => 0
+            g_STATION => 1
           )
           port map (
             -- clock, control, and monitoring
@@ -165,7 +165,7 @@ begin
           TAR_OUT : entity tar_lib.tar_station
             generic map(
               g_ARRAY_LEN => c_HPS_MAX_HP_OUT,
-              g_STATION => 0
+              g_STATION => 2
             )
             port map (
               -- clock, control, and monitoring
@@ -183,7 +183,7 @@ begin
             TAR_EXT : entity tar_lib.tar_station
               generic map(
                 g_ARRAY_LEN => c_HPS_MAX_HP_EXT,
-                g_STATION => 0
+                g_STATION => 3
               )
               port map (
                 -- clock, control, and monitoring

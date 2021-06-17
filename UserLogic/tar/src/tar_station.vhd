@@ -99,7 +99,7 @@ begin
 
       REMAP: entity tar_lib.tar_remap
       generic map(
-        g_STATION => 0
+        g_STATION => g_STATION
       )
       port map (
         -- clock, control, and monitoring

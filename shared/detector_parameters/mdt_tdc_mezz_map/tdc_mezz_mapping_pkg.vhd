@@ -351,7 +351,7 @@ package tdc_mezz_mapping_pkg is
   constant num_mezz_barrel_mid_chamber_dist : mezz_b_chamber_dist_t := (
     0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
-    2 => ((10,12,10,12,10,12,0,0),(0,0,0,0,0,0,0,0)),
+    2 => ((14,14,14,10,10,12,0,0),(0,0,0,0,0,0,0,0)),
     3 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     4 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     5 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
@@ -389,7 +389,7 @@ package tdc_mezz_mapping_pkg is
   constant num_mezz_barrel_out_chamber_dist : mezz_b_chamber_dist_t := (
     0 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     1 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
-    2 => ((10,12,10,12,10,12,0,0),(0,0,0,0,0,0,0,0)),
+    2 => ((18,18,14,18,18,14,0,0),(0,0,0,0,0,0,0,0)),
     3 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     4 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
     5 => ((0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0)),
@@ -565,9 +565,9 @@ package body tdc_mezz_mapping_pkg is
     if sr = 0 then
       y := integer(ceil((real(num_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
     elsif sr = 1 then
-      y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
+      y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*8.0));
     elsif sr = 2 then
-      y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*6.0));
+      y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*8.0));
     elsif sr = 4 then
 
     else

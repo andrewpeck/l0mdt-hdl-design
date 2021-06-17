@@ -109,7 +109,9 @@ architecture beh of hps_pc_mdt_tc is
 
   signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,csm_offset_mem,num_tubes_layer_chamber);
 
-  signal local_tube : std_logic_vector(6 downto 0);
+  signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
+  signal local_tube : std_logic_vector(9 downto 0);
+  signal local_tube_dv :std_logic;
   signal mem_index_std : std_logic_vector(9 downto 0);
   signal mem_index_int : integer range 0 to 1023;
 
@@ -162,8 +164,8 @@ begin
     i_dv          => apb_dv_i
   );  
 
-  local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
-  mem_index_std <= std_logic_vector(i_layer(2 downto 0)) & local_tube(6 downto 0);
+  -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
+  mem_index_std <= std_logic_vector(local_layer(2 downto 0)) & local_tube(6 downto 0);
   -- mem_index_std(9 downto 7) <= std_logic_vector(i_layer(2 downto 0));
   -- mem_index_std(6 downto 0) <= local_tube(6 downto 0);
   mem_index_int <= to_integer(unsigned(mem_index_std));
@@ -180,12 +182,21 @@ begin
         apb_dv_i <= '0';
         apb_data_i <= (others => '0');
       else
-        if(i_dv = '1') then
-          mem_out <= mem(to_integer(unsigned(mem_index_std)));
-          --mem(mem_index_int);--to_integer(unsigned(mem_index)));
+        local_tube_dv <= i_dv;
+        if i_dv = '1' then
+          -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
+          local_tube <= std_logic_vector(resize(i_tube,10) - to_unsigned(csm_offset_mem,10));
+          local_layer <= i_layer;
+        else
+          local_tube <= (others => '0');
+          local_layer <= (others => '0');
+        end if;
+
+        if(local_tube_dv = '1') then
+          mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
           o_dv <= '1';
         else
-          -- o_time_tc <= (others => '0');
+          mem_out <= (others => '0');
           o_dv <= '0';
         end if;
         
