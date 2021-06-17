@@ -196,6 +196,9 @@ begin
                 o_tdc_hits_av   => o_ext_tdc_hits_av,
                 o_tar_hits_av   =>  o_ext_tar_hits_av
               );
+          else generate
+            o_ext_tdc_hits_av <= (others => (others => '0'));
+            o_ext_tar_hits_av <= (others => (others => '0'));
           end generate;
 
 --     INN_EN : if c_HPS_ENABLE_ST_INN = '1' generate
