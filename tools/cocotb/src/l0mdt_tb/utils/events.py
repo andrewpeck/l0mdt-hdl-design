@@ -163,10 +163,6 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
                     stationID = RTL_DFSL.suffix[this_candidate]
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, data)
 
-
-
-                    #RTL_DFSL.fillBitFieldWord(tvformat, data=rtl_tv[this_candidate][evt])
-
                     local_sl2 = RTL_DFSL.getBitFieldWord(tvformat)
                     #print ("events.py: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent," rtl_tv=0x%x"%(rtl_tv_i), "} local_sl1 = ",local_sl1, "Length = ",len(local_sl1))
                     #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bitwordvalue())
