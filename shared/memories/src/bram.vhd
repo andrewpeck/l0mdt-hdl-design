@@ -17,9 +17,7 @@ port (
     a_addr  : in  std_logic_vector(ADDR-1 downto 0);
     a_din   : in  std_logic_vector(DATA-1 downto 0);
 --    a_dout  : out std_logic_vector(StubWidth-1 downto 0);
-     
     -- Port B
-    b_clk   : in  std_logic;
 --    b_wr    : in  std_logic;
     b_addr  : in  std_logic_vector(ADDR-1 downto 0);
 --    b_din   : in  std_logic_vector(StubWidth-1 downto 0);
@@ -43,27 +41,10 @@ process(a_clk)
     variable last_addr : std_logic_vector(ADDR-1 downto 0) := (others => '1');
 
 begin
-    if(a_clk'event and a_clk='1') then
+    if rising_edge(clk) then
         if(a_wr='1' and last_addr /= conv_integer(a_addr)) then
             mem(conv_integer(a_addr)) := a_din;
-          end if;
---        a_dout <= mem(conv_integer(a_addr));
-    end if;
-end process;
- 
--- Port B
-process(b_clk)
-
-    variable mem : mem_type := (others => (others => '0'));
-    attribute ram_style: string;
-    attribute ram_style of mem : variable is ram_type;
-    variable last_addr : std_logic_vector(ADDR-1 downto 0) := (others => '1');
-
-begin
-    if(b_clk'event and b_clk='1') then
---        if(b_wr='1') then
---            mem(conv_integer(b_addr)) := b_din;
---        end if;
+        end if;
         b_dout <= mem(conv_integer(b_addr));
     end if;
 end process;
