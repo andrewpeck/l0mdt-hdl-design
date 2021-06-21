@@ -33,7 +33,7 @@ architecture rtl of bram_tdp is
 begin
  
 -- Port A
-process(a_clk)
+process(clk)
 
     variable mem : mem_type := (others => (others => '0'));
     attribute ram_style: string;
