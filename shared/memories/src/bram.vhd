@@ -31,14 +31,17 @@ end bram_tdp;
 architecture rtl of bram_tdp is
     -- Shared memory
     type mem_type is array ( (2**ADDR)-1 downto 0 ) of std_logic_vector(DATA-1 downto 0);
-    shared variable mem : mem_type := (others => (others => '0'));
-    attribute ram_style: string;
-    attribute ram_style of mem : variable is ram_type;
-    shared variable last_addr : std_logic_vector(ADDR-1 downto 0) := (others => '1');
+    
 begin
  
 -- Port A
 process(a_clk)
+
+    variable mem : mem_type := (others => (others => '0'));
+    attribute ram_style: string;
+    attribute ram_style of mem : variable is ram_type;
+    variable last_addr : std_logic_vector(ADDR-1 downto 0) := (others => '1');
+
 begin
     if(a_clk'event and a_clk='1') then
         if(a_wr='1' and last_addr /= conv_integer(a_addr)) then
@@ -50,6 +53,12 @@ end process;
  
 -- Port B
 process(b_clk)
+
+    variable mem : mem_type := (others => (others => '0'));
+    attribute ram_style: string;
+    attribute ram_style of mem : variable is ram_type;
+    variable last_addr : std_logic_vector(ADDR-1 downto 0) := (others => '1');
+
 begin
     if(b_clk'event and b_clk='1') then
 --        if(b_wr='1') then
