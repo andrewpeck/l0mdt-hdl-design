@@ -12,7 +12,7 @@ generic (
 );
 port (
     -- Port A
-    a_clk   : in  std_logic;
+    clk   : in  std_logic;
     a_wr    : in  std_logic;
     a_addr  : in  std_logic_vector(ADDR-1 downto 0);
     a_din   : in  std_logic_vector(DATA-1 downto 0);
