@@ -1,0 +1,17 @@
+[User Logic Blocks]
+UserLogic/csf @dcieri
+UserLogic/daq @tcpaiva
+UserLogic/heg @gloustau
+UserLogic/hp @gloustau
+UserLogic/hps @gloustau
+UserLogic/lsf @psundara @ntekas
+UserLogic/mpl @gloustau
+UserLogic/mtc @psundara @ntekas
+UserLogc/ptc_mpi @dcieri
+UserLogic/tar @gloustau
+UserLogic/ucm @gloustau
+UserLogic/ult @gloustau
+UserLogic/upt @psundara @ntekas
+
+[HAL]
+HAL @apeck
