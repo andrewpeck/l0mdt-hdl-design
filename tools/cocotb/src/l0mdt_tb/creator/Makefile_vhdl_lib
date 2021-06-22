@@ -33,11 +33,16 @@ VHDL_SOURCES_vamc_lib = \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd \
+    $(SHAREDDIR)/vhdl_amc/pkg/vamc_pkg.vhd \
     $(SHAREDDIR)/vhdl_amc/src/modules/vamc_pl.vhd \
     $(SHAREDDIR)/vhdl_amc/src/modules/vamc_rb.vhd \
     $(SHAREDDIR)/vhdl_amc/src/modules/vamc_sr.vhd \
     $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_ext.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_top.vhd
+
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
@@ -51,3 +56,6 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_map.vhd
+
+VHDL_SOURCES_xpm = \
+	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
