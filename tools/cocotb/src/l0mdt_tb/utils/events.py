@@ -4,7 +4,7 @@ from pathlib import Path
 
 from l0mdt_tb.utils import utils
 import cocotb
-from TVReader import tv_reader_pkl
+# from TVReader import tv_reader_pkl
 from DataFormats.data_format import DataFormat
 from TVDataFormat.bit_stream import BitFieldWord
 from TVDataFormat.BX_data import BXData
