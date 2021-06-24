@@ -46,7 +46,7 @@ module TopLevel_lsf_auto #(
     wire [9:0] N_CLOCKS;
     assign N_CLOCKS = 2*MAX_HITS_PER_BCID;
     // parameter TOTAL_PTCALC_BLKS = 3;
-    
+
     wire [HEG2SFHIT_LEN-1:0]  mdt_hit;
     wire  mdt_hit_we;
     wire [HEG2SFSLC_LEN-1:0]  roi;
@@ -61,7 +61,11 @@ module TopLevel_lsf_auto #(
        for(genvar i = 0; i < 2; i++)
          begin:input_spybuffers
             SpyBuffer #(
-			.DATA_WIDTH(DATA_WIDTH-1),
+			.DATA_WIDTH_A(DATA_WIDTH-1),
+			.DATA_WIDTH_B(DATA_WIDTH-1),
+            .SPY_MEM_WIDTH_A(7),
+            .SPY_MEM_WIDTH_B(7),
+            .EL_MEM_WIDTH_A(7),
 			.FC_FIFO_WIDTH(FIFO_DEPTH),
 			.PASSTHROUGH(1)
 			) spybuffer (
@@ -88,7 +92,7 @@ module TopLevel_lsf_auto #(
     assign roi = BLOCK_input_data[0];
     //check if empty
     assign roi_we = ~BLOCK_input_empty[0] & BLOCK_input_data[0][HEG2SFSLC_DATA_VALID_MSB];
-    
+
     //Second comes the hit (as defined in json config)
     assign mdt_hit = BLOCK_input_data[1];
     assign mdt_hit_we = ~BLOCK_input_empty[1] & BLOCK_input_data[1][HEG2SFHIT_DATA_VALID_MSB];
@@ -115,7 +119,11 @@ module TopLevel_lsf_auto #(
       for(genvar i = 0; i < 1; i++)
         begin:output_spybuffers
            SpyBuffer #(
-		       .DATA_WIDTH(DATA_WIDTH-1),
+		       .DATA_WIDTH_A(DATA_WIDTH-1),
+			   .DATA_WIDTH_B(DATA_WIDTH-1),
+               .SPY_MEM_WIDTH_A(7),
+               .SPY_MEM_WIDTH_B(7),
+               .EL_MEM_WIDTH_A(7),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(1)
                        ) spybuffer (

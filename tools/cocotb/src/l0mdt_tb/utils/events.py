@@ -4,7 +4,7 @@ from pathlib import Path
 
 from l0mdt_tb.utils import utils
 import cocotb
-from TVReader import tv_reader_pkl
+import TVReader.tv_reader_tools as tvtools
 from DataFormats.data_format import DataFormat
 from TVDataFormat.bit_stream import BitFieldWord
 from TVDataFormat.BX_data import BXData
@@ -12,13 +12,8 @@ import pandas as pd
 from tabulate import tabulate
 from termcolor import colored, cprint
 
-
-
-
-
-
-
-
+import logging
+import logging.config
 
 def timing_file_from_data_filename(data_file):
 
@@ -76,15 +71,55 @@ def _event_belongs_to_sectorID(DF, sectorID=3, icand=0):
 
 
 
+# OLD implementation from DEVEL, TODO: Need to port to the working version for the LSF
+# def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
+#     bf_list    = []
+#     sl_trailer = []
+#     for DF in DF_list:
+#         bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
+#         #bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
+#         #    print("KEY=",bitfieldname)
+
+#     if candidate < len(bf_list):
+#         for bf in bf_list[candidate]:
+#             return bf.get_bitwordvalue();
+#     else:
+#         #print("ERROR.. candidate not present in RAW TV file")
+#         return -1
+
+
+#     #    for i in range(len(bf_list)):
+#     #    for bf in bf_list[i]:
+#     #        #hex_wordvalue = "{:#40X}".format(bf.get_bitwordvalue())
+#     #        #hex_wordvalue = bf.get_bitwordvalue()
+#     #        #print("%s: %s" %(bf.wordname, hex_wordvalue))
+#     #        if i == candidate:
+#     #            return bf.get_bitwordvalue() #hex_wordvalue
+#     #print("ERROR.. candidate not present in RAW TV file")
+#     #return -1
+
+# #/*************
+# #rtl_tv is two dimensional array for each interface. It it data received from Monitors for all ports across single output interface
+# #Array size is defined by -> rtl_tv[number of ports in interfaces][number_of_events]
+# #For Example for ptcalc it would be expected_tv[1][events_run],as output event has only one port
+
+#**************/
+
 
 def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
     bf_list    = []
     sl_trailer = []
+    bf_hit_list = []
+    hit_list = []
     for DF in DF_list:
         bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
+        hit_list.clear()
+        for DF_hit in DF.av_HEG2SFHIT[0]:
+            hit_list.append(DF_hit)
+
+        bf_hit_list.append(hit_list)
         #bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
         #    print("KEY=",bitfieldname)
-
     if candidate < len(bf_list):
         for bf in bf_list[candidate]:
             return bf.get_bitwordvalue();
@@ -93,42 +128,37 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
         return -1
 
 
-    #    for i in range(len(bf_list)):
-    #    for bf in bf_list[i]:
-    #        #hex_wordvalue = "{:#40X}".format(bf.get_bitwordvalue())
-    #        #hex_wordvalue = bf.get_bitwordvalue()
-    #        #print("%s: %s" %(bf.wordname, hex_wordvalue))
-    #        if i == candidate:
-    #            return bf.get_bitwordvalue() #hex_wordvalue
-    #print("ERROR.. candidate not present in RAW TV file")
-    #return -1
+def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
+    bf_list    = []
+    sl_trailer = []
+    bf_hit_list = []
+    candidate_id=0
+    for DF in DF_list:
+        candidate_id += 1
+        bf_list.append(DF.getBitFieldWord(bitfieldname,station_id))
+        hit_list = []
+        for DF_hit in DF.av_HEG2SFHIT[station_name_to_id(station_id)]:
+            hit_list.append(DF_hit.bitwordvalue)
 
-#/*************
-#rtl_tv is two dimensional array for each interface. It it data received from Monitors for all ports across single output interface
-#Array size is defined by -> rtl_tv[number of ports in interfaces][number_of_events]
-#For Example for ptcalc it would be expected_tv[1][events_run],as output event has only one port
+        bf_hit_list.append(hit_list)
+        # print("PRINT LIST OF HITS FOR CANDIDATE",candidate_id,"station_id",station_id)
+        # print(hit_list)
 
-#**************/
-def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
+    if candidate < len(bf_list):
+        return bf_hit_list[candidate]
+    else:
+        #print("ERROR.. candidate not present in RAW TV file")
+        return -1
+
+
+def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv, tolerances):
     """
     path = Path(filename)
     ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
     """
-    #print("compare_BitFields: PARSING FOR TVFORMAT  = ",tvformat, " ", path)
-    #tv_reader_pkl.setup_debug_devel(10)
-    region = 0 #Barrel
-    side   = 0 #Select candidate from any side A
-    sector = 3 #Select candidate from sector 3
-    events_list = tv_bcid_list #tv_reader_pkl.read_TV(path, region, side, sector)
-
-
-
-    #print("Comparing %s LENGTH of SL1 = %d RTL_DF_LIST len = %d" % (tvformat, len(SL1), len(RTL_DF_list)))
-    #    print(SL1[0])
-
-
+    events_list = tv_bcid_list
 
     evt     = 0
     ret_val = 1
@@ -148,7 +178,7 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
                 #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=this_candidate):
                     SL1   = events_list[ievent].DF_SL[this_candidate]
-                    local_sl1 = SL1.getBitFieldWord(tvformat)
+                    local_sl1 = SL1.getBitFieldWord(tvformat,RTL_DFSL.suffix[this_candidate])
 
                     tv_format_val.clear()
                     tv_format_val = RTL_DFSL.getBitFieldWord(tvformat,RTL_DFSL.suffix[this_candidate])
@@ -163,6 +193,7 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
                     stationID = RTL_DFSL.suffix[this_candidate]
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, data)
 
+<<<<<<< HEAD
                     local_sl2 = RTL_DFSL.getBitFieldWord(tvformat)
                     #print ("events.py: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent," rtl_tv=0x%x"%(rtl_tv_i), "} local_sl1 = ",local_sl1, "Length = ",len(local_sl1))
                     #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bitwordvalue())
@@ -170,6 +201,20 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
 
                     print("***************************\nSector 3 Event:",evt," Candidate=",this_candidate, "TVFORMAT=",tvformat)
                     results = local_sl1[0].compare_bitwordvalue(local_sl2[0])  #compare_bitfieldwordvalue returns list
+=======
+                    local_sl2 = RTL_DFSL.getBitFieldWord(tvformat, stationID)
+                    bf_list = []
+                    bitfieldname = "SF2PTCALC_LSF"
+                    stationID = "INN"
+                    for iDF, DF in enumerate(events_list[ievent].DF_SL):
+                        logging.getLogger(__name__).info("SF2PTCALC %d" % (iDF))
+                        bf_list.clear()
+                        bf_list.append(DF.getBitFieldWord(bitfieldname, stationID))
+
+                    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+                    results = local_sl1[0].compare_bitwordvalue(local_sl2[0],tolerances)  #compare_bitfieldwordvalue returns list
+>>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
                     if results[0]:
                         cprint("The 2 BitFieldWords are identical ", "green")
                     else:
@@ -182,6 +227,7 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv):
                         evt = evt + 1
 
     return ret_val
+
 """
 def compare_BitFields(filename,tvformat,n_candidates, e_idx, rtl_tv):
     path = Path(filename)
@@ -266,13 +312,12 @@ def read_tv(
     ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
-
-    events_list   = tv_reader_pkl.read_TV(path, region, side, sector)
+    events_list   = tvtools.read_TV(path)
     return events_list
 
 
 def parse_tvlist(
-        tv_bcid_list, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
+        tv_bcid_list, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""], tv_type=""
 ):
     """
     path = Path(filename)
@@ -286,16 +331,7 @@ def parse_tvlist(
         timing_gen = timing_info_gen(filename)
         time_units = next(timing_gen)  # first one returned is the time unit (str)
 
-    # AT temp to select the relevant event from Barrel Sector 3
-    #B3_event_list = [107, 153, 10, 3] #220, 189
-
-    #l0ids_loaded = set()
-    #    print("PARSING FOR TVFORMAT = ",tvformat)
-    # tv_reader_pkl.setup_debug_devel(10)
-    region = 0 #Barrel
-    side   = 0 #Select candidate from any side A
-    sector = 3 #Select candidate from sector 3
-    events_list = tv_bcid_list #tv_reader_pkl.read_TV(path, region, side, sector)
+    events_list = tv_bcid_list
 
     # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
     total_transactions =  n_to_load #len(events_list)
@@ -308,19 +344,122 @@ def parse_tvlist(
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
-                    print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    print ("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     event_found_for_port_interface = 1
                     if(station_ID == [""]):
                         this_station_ID = ""
                     else:
                         this_station_ID = station_ID[my_port]
 
-                        #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    if(this_station_ID == ""):
+                        if (tv_type=="list"):
+                            tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                        else:
+                            tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                    else:
+                        if (tv_type=="list"):
+                            tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
+                        else:
+                            tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
+                    # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+            if event_found_for_port_interface :
+                b3_events_i = b3_events_i + 1
+        else:
+            break
+
+    return tv
+
+def parse_file_for_testvectors(
+        filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
+):
+
+    path = Path(filename)
+    ok = path.exists() and path.is_file()
+    if not ok:
+        raise Exception(f"Cannot find provided file {filename}")
+
+    timing_gen = None
+    time_units = None
+    if load_timing_info:
+        timing_gen = timing_info_gen(filename)
+        time_units = next(timing_gen)  # first one returned is the time unit (str)
+
+    events_list   = tvtools.read_TV(path)
+
+    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+    total_transactions =  n_to_load #len(events_list)
+    tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
+    b3_events_i = 0;
+
+    #    tv_reader_pkl.dump_event(events_list[0])
+    for ievent in range(len(events_list)): #range(total_transactions):
+        if b3_events_i < total_transactions:
+            event_found_for_port_interface = 0
+            for my_port in range(n_ports):
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
+                    # print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    event_found_for_port_interface = 1
+                    if(station_ID == [""]):
+                        this_station_ID = ""
+                    else:
+                        this_station_ID = station_ID[my_port]
+
+                        # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
                     if(this_station_ID == ""):
                         tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
                     else:
                         tv[my_port][b3_events_i] = get_bitfield_element(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
-                    #print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+                    # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
+            if event_found_for_port_interface :
+                b3_events_i = b3_events_i + 1
+        else:
+            break
+
+    return tv
+
+# needed for intefaces with lists of objects (i.e. hits)
+def parse_file_for_testvectors_list(
+        filename, tvformat, n_ports, n_to_load, endian="little", load_timing_info=False, station_ID=[""]
+):
+
+    path = Path(filename)
+    ok = path.exists() and path.is_file()
+    if not ok:
+        raise Exception(f"Cannot find provided file {filename}")
+
+    timing_gen = None
+    time_units = None
+    if load_timing_info:
+        timing_gen = timing_info_gen(filename)
+        time_units = next(timing_gen)  # first one returned is the time unit (str)
+
+    events_list   = tvtools.read_TV(path)
+
+    # print("VALUE for dataformat ", tvformat, " = ", getattr(events_list[0][0],"HPS_LSF_INN"))
+    total_transactions =  n_to_load #len(events_list)
+    tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
+    b3_events_i = 0;
+
+    #    tv_reader_pkl.dump_event(events_list[0])
+    for ievent in range(len(events_list)): #range(total_transactions):
+        if b3_events_i < total_transactions:
+            event_found_for_port_interface = 0
+            for my_port in range(n_ports):
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL,icand=my_port):
+                    # print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    event_found_for_port_interface = 1
+                    if(station_ID == [""]):
+                        this_station_ID = ""
+                    else:
+                        this_station_ID = station_ID[my_port]
+
+                        # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
+                    if(this_station_ID == ""):
+                        tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,my_port,this_station_ID)
+                    else:
+                        tv[my_port][b3_events_i] = get_bitfield_list(events_list[ievent].DF_SL,tvformat,0,this_station_ID)
+                    # print("PARSING parse_file_for_testvectors_list"," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
             if event_found_for_port_interface :
                 b3_events_i = b3_events_i + 1
         else:
@@ -344,6 +483,14 @@ def modify_tv (tv, ii):
                 tv_port.append(0)
         tv_out.append(tv_port)
     return tv_out
+
+def flatten_list (tv):
+    # tv_out = []
+    tv_flat = [y for x in tv for y in x]
+    tv_out = []
+    tv_out.append(tv_flat)
+    return tv_out
+
 
 def prepend_zeroes(tv,num=1):
     tv_out   = []
@@ -404,3 +551,21 @@ def timebased_lineup (observed_events, observed_time, num_events_to_process, n_p
                     observed_events_o[port_o][evt] = 0
 
     return observed_events_o
+
+def station_name_to_id(station_id=""):
+    switcher = {
+        "INN" : 0,
+        "MID" : 1,
+        "OUT" : 2,
+        "EXT" : 3
+    }
+    return switcher.get(station_id, "Invalid station")
+
+def station_id_to_name(station_id=0):
+    switcher = {
+        0 : "INN",
+        1 : "MID",
+        2 : "OUT",
+        3 : "EXT"
+    }
+    return switcher.get(station_id, -99)
