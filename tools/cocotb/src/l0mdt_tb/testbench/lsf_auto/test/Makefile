@@ -100,6 +100,7 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
     $(GET_ROM_ADDR_HLS_IP)/get_rom_addr.v \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutcud.v \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutfYi.v \
@@ -112,9 +113,11 @@ VERILOG_SOURCES = \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutg8j.v \
     $(COMPUTE_RBINS_HLS_IP)/regslice_core.v \
     $(COMPUTE_RBINS_HLS_IP)/compute_r_bins.v \
+    $(COMPUTE_RBINS_HLS_IP)/compute_r_bins_mubkb.v \
     $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
     $(LSFSIMDIR)/histogram_memory_128x4.v \
     $(SRC)/update_histogram_dmem.sv \
+    $(SRC)/update_histogram_reg_2clk.sv \
     $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segmbkb.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segmcud.v \
@@ -127,6 +130,7 @@ VERILOG_SOURCES = \
     $(LOAD_LE_REFPOS)/load_LE_refPos_lubkb.v \
     $(LOAD_LE_REFPOS)/load_LE_refPos.v \
     $(LSFDIR)/legendreEngine.sv \
+    $(LSFDIR)/legendreEngine_2clk.sv \
     $(LSFDIR)/lsf_spybuffer_wrapper.sv
 
 
@@ -155,7 +159,7 @@ include ../../../creator/Makefile_vhdl_lib
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))
 
 # # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/upt_lib +incdir+$(IP_REPO)/hls_upt/hdl/verilog -L $(SIM_BUILD)/work
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/lsf_lib -L $(SIM_BUILD)/project_lib -L $(SIM_BUILD)/work +define+RUN_SIM
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 

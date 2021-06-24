@@ -11,8 +11,6 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/memories/src/ring_buffer_v2.vhd \
 	$(SHAREDDIR)/memories/src/vhdl_ram_memory.vhd \
 	$(SHAREDDIR)/memories/src/bram.vhd \
-	$(SHAREDDIR)/mpcvmem/src/mpcvmem.vhd \
-	$(SHAREDDIR)/mpcvmem/src/DualPortMem.vhd \
 	$(SHAREDDIR)/memories/src/pipeline.vhd \
 	$(SHAREDDIR)/config/config_pkg.vhd
 
@@ -25,9 +23,20 @@ VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
 
 VHDL_SOURCES_mpcvmem_lib = \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd
+    $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
+    $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
+    $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
+	
+VHDL_SOURCES_vamc_lib = \
+    $(SHAREDDIR)/vhdl_amc/pkg/vamc_pkg.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_rb.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_sr.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_ext.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_top.vhd
 
 
 VHDL_SOURCES_ctrl_lib = \
