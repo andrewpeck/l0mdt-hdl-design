@@ -22,7 +22,7 @@
                 {
                     "tv_format": "HEG2SFSLC",
                     "ports": 1,
-                    "heg2sfslc_ii": 100,
+                    "heg2sfslc_ii": 200,
                     "station_ID": [
                         "INN"
                     ],
@@ -32,6 +32,8 @@
                     "tv_format": "HEG2SFHIT",
                     "ports": 1,
                     "heg2sfhit_ii": 2,
+                    "loadlut_setup": 40,
+                    "hb_acc": 100,
                     "station_ID": [
                         "INN"
                     ],

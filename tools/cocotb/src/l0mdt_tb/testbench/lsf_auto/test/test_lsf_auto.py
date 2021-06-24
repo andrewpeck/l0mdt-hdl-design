@@ -85,6 +85,15 @@ def reset(dut):
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
 
+# @cocotb.coroutine
+def set_i_eof(dut, i_eof):
+    """
+    Resets the testbench, having reset active LOW.
+    """
+
+    dut.tb_i_eof <= i_eof
+    # yield ClockCycles(dut.clock, 10)
+
 
 ##
 ## TEST
@@ -108,6 +117,8 @@ def lsf_auto_test(dut):
     heg2sfhit_ii_tmp = test_vectors["inputs"][1]
     heg2sfslc_ii = heg2sfslc_ii_tmp["heg2sfslc_ii"]
     heg2sfhit_ii = heg2sfhit_ii_tmp["heg2sfhit_ii"]
+    loadlut_setup = heg2sfhit_ii_tmp["loadlut_setup"]
+    hb_acc = heg2sfhit_ii_tmp["hb_acc"]
     num_hits_to_process = int(input_args["n_events"])
     num_rois_to_process = int(input_args["n_events"])
     event_level_detail_in_sumary = bool(input_args["event_detail"])
@@ -138,7 +149,7 @@ def lsf_auto_test(dut):
     ## initialize the DUT to known state
     ##
     initialize_dut(dut, config)
-
+    set_i_eof(dut, 0)
     ##
     ## reset
     ##
@@ -215,6 +226,7 @@ def lsf_auto_test(dut):
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list = []
     single_interface_list = []
+    single_interface_list_ii_delay_tmp =  []
     single_interface_list_ii_delay =  []
 
     for n_ip_intf in range(LsfAutoPorts.n_input_interfaces):  # Add concept of interface
@@ -232,7 +244,10 @@ def lsf_auto_test(dut):
                 input_tv_list.append(single_interface_list_ii_delay[io])
         elif(n_ip_intf == 1):
             for io in range (len(single_interface_list)):
-                single_interface_list_ii_delay = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
+                single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
+                #add zeros
+                single_interface_list_ii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',loadlut_setup)
+                print("Hits",single_interface_list_ii_delay)
             single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)        
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay_flat[io])
@@ -273,6 +288,8 @@ def lsf_auto_test(dut):
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}")
     dut._log.info("Sending finished!")
+
+    set_i_eof(dut,1)
 
     print("lsf_auto_test, Perform test vectors comparison 2",send_finished_signal)
 
