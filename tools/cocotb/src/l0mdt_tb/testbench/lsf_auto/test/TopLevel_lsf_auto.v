@@ -119,11 +119,15 @@ module TopLevel_lsf_auto #(
       for(genvar i = 0; i < 1; i++)
         begin:output_spybuffers
            SpyBuffer #(
+<<<<<<< HEAD
 		       .DATA_WIDTH_A(DATA_WIDTH-1),
 			   .DATA_WIDTH_B(DATA_WIDTH-1),
                .SPY_MEM_WIDTH_A(7),
                .SPY_MEM_WIDTH_B(7),
                .EL_MEM_WIDTH_A(7),
+=======
+		       .DATA_WIDTH(DATA_WIDTH-1),
+>>>>>>> 7e3d3135105aef0945b1831460e330f3e2a3a54d
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(1)
                        ) spybuffer (
