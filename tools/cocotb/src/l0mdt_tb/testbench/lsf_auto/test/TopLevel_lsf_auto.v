@@ -17,6 +17,7 @@ module TopLevel_lsf_auto #(
 ) (
     input wire clock,
     input wire reset_n,
+    input wire tb_i_eof,
     input wire [DATA_WIDTH-1:0] input_data [2],
     output wire [DATA_WIDTH-1:0] output_data [1]
 );
@@ -106,7 +107,8 @@ module TopLevel_lsf_auto #(
                      .mdt_hit(mdt_hit),
                      .slc_roi(roi),
                      .lsf(lsf_output),
-                     .hba_max_clocks(N_CLOCKS),
+                    //  .hba_max_clocks(N_CLOCKS),
+                     .i_eof(tb_i_eof),
                      .sb_lsf_mdt_hits_freeze(1'b0),
                      .sb_lsf_mdt_hits_re(1'b0),
                      .sb_lsf_mdt_hits_raddr(8'b0),

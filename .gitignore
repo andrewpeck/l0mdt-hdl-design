@@ -39,3 +39,4 @@ env/
 .cxl.questasim.*
 Projects/
 #UserLogic/*/IP/**/*.xci
+*.vstf
