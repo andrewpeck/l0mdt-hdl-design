@@ -193,15 +193,7 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv, toleran
                     stationID = RTL_DFSL.suffix[this_candidate]
                     RTL_DFSL.fillBitFieldWord(tvformat, stationID, data)
 
-<<<<<<< HEAD
-                    local_sl2 = RTL_DFSL.getBitFieldWord(tvformat)
-                    #print ("events.py: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent," rtl_tv=0x%x"%(rtl_tv_i), "} local_sl1 = ",local_sl1, "Length = ",len(local_sl1))
-                    #hex_wordvalue = "{:#40X}".format(local_sl1[i].get_bitwordvalue())
-                    #print("\nEvents.py: %s: %s" % (local_sl2[i].wordname, hex_wordvalue))
 
-                    print("***************************\nSector 3 Event:",evt," Candidate=",this_candidate, "TVFORMAT=",tvformat)
-                    results = local_sl1[0].compare_bitwordvalue(local_sl2[0])  #compare_bitfieldwordvalue returns list
-=======
                     local_sl2 = RTL_DFSL.getBitFieldWord(tvformat, stationID)
                     bf_list = []
                     bitfieldname = "SF2PTCALC_LSF"
@@ -214,9 +206,10 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv, toleran
                     print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
                     results = local_sl1[0].compare_bitwordvalue(local_sl2[0],tolerances)  #compare_bitfieldwordvalue returns list
->>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
+
                     if results[0]:
                         cprint("The 2 BitFieldWords are identical ", "green")
+                        print(tabulate(results[1], results[2], tablefmt="psql"))
                     else:
                         cprint("The 2 BitFieldWords differ", "red")
                         #print(results[1])
