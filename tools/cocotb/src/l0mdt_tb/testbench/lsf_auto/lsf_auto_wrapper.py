@@ -73,9 +73,8 @@ class LsfAutoWrapper(block_wrapper.BlockWrapper):
                         Event()
                     )  # used to tell outside world that all events have been queued to be sent into the fifos
                     driver.append(word, event=hook, **flow_kwargs)
-                    print(driver)
             if hook:
                 hooks.append(hook.wait())
-            print(hooks)    
+            print(hooks)
 
         return hooks

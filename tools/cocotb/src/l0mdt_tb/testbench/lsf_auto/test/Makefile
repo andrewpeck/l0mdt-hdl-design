@@ -100,10 +100,7 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
-<<<<<<< HEAD
-=======
     $(SBDIR)/asym_ram_tdp_read_first.v \
->>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
     $(GET_ROM_ADDR_HLS_IP)/get_rom_addr.v \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutcud.v \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutfYi.v \
@@ -116,17 +113,11 @@ VERILOG_SOURCES = \
     $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lutg8j.v \
     $(COMPUTE_RBINS_HLS_IP)/regslice_core.v \
     $(COMPUTE_RBINS_HLS_IP)/compute_r_bins.v \
-<<<<<<< HEAD
-    $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
-    $(LSFSIMDIR)/histogram_memory_128x4.v \
-    $(SRC)/update_histogram.sv \
-=======
     $(COMPUTE_RBINS_HLS_IP)/compute_r_bins_mubkb.v \
     $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
     $(LSFSIMDIR)/histogram_memory_128x4.v \
     $(SRC)/update_histogram_dmem.sv \
     $(SRC)/update_histogram_reg_2clk.sv \
->>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
     $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segmbkb.v \
     $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segmcud.v \
@@ -138,37 +129,14 @@ VERILOG_SOURCES = \
     $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel.v \
     $(LOAD_LE_REFPOS)/load_LE_refPos_lubkb.v \
     $(LOAD_LE_REFPOS)/load_LE_refPos.v \
-<<<<<<< HEAD
-    $(LSFDIR)/src/legendreEngine.sv \
-    $(LSFDIR)/src/lsf_spybuffer_wrapper.sv
-=======
     $(LSFDIR)/legendreEngine.sv \
     $(LSFDIR)/legendreEngine_2clk.sv \
     $(LSFDIR)/lsf_spybuffer_wrapper.sv
->>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
+
 
 
 # VHDL source files
 VHDL_SOURCES = \
-<<<<<<< HEAD
-	$(SRCDIR)//lsf/top_lsf.vhd
-
-VHDL_SOURCES_lsf_lib = \
-	$(SRCDIR)//lsf/top_lsf.vhd
-
-VHDL_SOURCES_shared_lib = \
-	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
-	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
-	$(DFDIR)/l0mdt_constants_pkg.vhd \
-	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
-	$(SHAREDDIR)/types/common_constants_pkg.vhd \
-	$(SHAREDDIR)/types/common_types_pkg.vhd \
-	$(SHAREDDIR)/config/config_defaults_pkg.vhd
-
-# Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/lsf_lib -L $(SIM_BUILD)/work +define+RUN_SIM
-VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
-=======
 	$(USERLOGIC)/lsf/top_lsf.vhd
 
 VHDL_SOURCES_lsf_lib = \
@@ -196,7 +164,7 @@ EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_L
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 
->>>>>>> 6816b74e69a56c00592e1d965e11a72c32ab8ee7
+
 
 ##############################################################################
 #
