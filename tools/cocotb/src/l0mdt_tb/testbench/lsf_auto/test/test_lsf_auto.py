@@ -47,6 +47,7 @@ def initialize_dut(dut, config):
     ##
     cocotb_inputs = 0
     cocotb_outputs = 0
+    dut.tb_i_eof   = 0
     for i in range(LsfAutoPorts.n_input_interfaces):
         cocotb_inputs = LsfAutoPorts.get_input_interface_ports(
             i) + cocotb_inputs
@@ -85,14 +86,7 @@ def reset(dut):
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
 
-# @cocotb.coroutine
-def set_i_eof(dut, i_eof):
-    """
-    Resets the testbench, having reset active LOW.
-    """
 
-    dut.tb_i_eof <= i_eof
-    # yield ClockCycles(dut.clock, 10)
 
 
 ##
@@ -112,13 +106,17 @@ def lsf_auto_test(dut):
     input_args = config["input_args"]
     test_vectors = config["testvectors"]
     num_events_to_process = int(input_args["n_events"])
+    lsf_histogram_reset   = int(input_args["lsf_histogram_rst"])
+    lsf_compute_results   = int(input_args["lsf_compute_results"])
     # TODO : FIll this correctly
     heg2sfslc_ii_tmp = test_vectors["inputs"][0]
     heg2sfhit_ii_tmp = test_vectors["inputs"][1]
+    lsf_ctrl         = test_vectors["inputs"][2]
     heg2sfslc_ii = heg2sfslc_ii_tmp["heg2sfslc_ii"]
     heg2sfhit_ii = heg2sfhit_ii_tmp["heg2sfhit_ii"]
     loadlut_setup = heg2sfhit_ii_tmp["loadlut_setup"]
     hb_acc = heg2sfhit_ii_tmp["hb_acc"]
+    max_hits = lsf_ctrl["max_hits"]
     num_hits_to_process = int(input_args["n_events"])
     num_rois_to_process = int(input_args["n_events"])
     event_level_detail_in_sumary = bool(input_args["event_detail"])
@@ -133,7 +131,8 @@ def lsf_auto_test(dut):
     outputs_station_id= [["" for x in range(LsfAutoPorts.get_output_interface_ports(y))]for y in range(LsfAutoPorts.n_output_interfaces)]
     sf2ptcalc_tol= [["" for x in range(LsfAutoPorts.get_output_interface_ports(y))]for y in range(LsfAutoPorts.n_output_interfaces)]
     for i in range(LsfAutoPorts.n_input_interfaces):
-        inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        if "station_ID" in testvector_config_inputs[i] :
+            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
     for i in range(LsfAutoPorts.n_output_interfaces):
         outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
         sf2ptcalc_tol[i] = testvector_config_outputs[i]["tolerance"]
@@ -149,7 +148,7 @@ def lsf_auto_test(dut):
     ## initialize the DUT to known state
     ##
     initialize_dut(dut, config)
-    set_i_eof(dut, 0)
+
     ##
     ## reset
     ##
@@ -206,7 +205,7 @@ def lsf_auto_test(dut):
                                   callbacks=[],
                                   write_out=True,
                                   out_dir=output_dir)
-            sb_oport_index = sb_oport_index + 1                      
+            sb_oport_index = sb_oport_index + 1
             lsf_auto_wrapper.add_output_monitor(monitor,
                                                 n_op_intf,
                                                 io,
@@ -228,29 +227,51 @@ def lsf_auto_test(dut):
     single_interface_list = []
     single_interface_list_ii_delay_tmp =  []
     single_interface_list_ii_delay =  []
+    i_eof = []
 
     for n_ip_intf in range(LsfAutoPorts.n_input_interfaces):  # Add concept of interface
-        single_interface_list = (events.parse_tvlist(
-            tv_bcid_list,
-            tvformat=input_tvformats[n_ip_intf],
-            n_ports=LsfAutoPorts.get_input_interface_ports(n_ip_intf),
-            n_to_load=num_events_to_process,
-            station_ID=inputs_station_id[n_ip_intf],
-            tv_type=input_tvtype[n_ip_intf]
-        ))
+        if input_tvtype[n_ip_intf] != "control" :
+            single_interface_list = (events.parse_tvlist(
+                tv_bcid_list,
+                tvformat=input_tvformats[n_ip_intf],
+                n_ports=LsfAutoPorts.get_input_interface_ports(n_ip_intf),
+                n_to_load=num_events_to_process,
+                station_ID=inputs_station_id[n_ip_intf],
+                tv_type=input_tvtype[n_ip_intf]
+            ))
+        else:
+            single_interface_list = []
+            #i_eof.append(0)
+            for i in range (num_events_to_process):
+                i_eof.append(1)
+                print("i_eof=",i_eof)
+            single_interface_list.append(i_eof)
+
         if(n_ip_intf == 0):
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, heg2sfslc_ii)
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay[io])
         elif(n_ip_intf == 1):
             for io in range (len(single_interface_list)):
+                hits_in_event      = len(single_interface_list[io])
+                hits_zero_padding  = heg2sfslc_ii - heg2sfhit_ii*hits_in_event - loadlut_setup;
                 single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list[io], heg2sfhit_ii)
                 #add zeros
-                single_interface_list_ii_delay = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',loadlut_setup)
+                single_interface_list_ii_delay_tmp2 = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',loadlut_setup)
+                single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
                 print("Hits",single_interface_list_ii_delay)
-            single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)        
+            single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
             for io in range(LsfAutoPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay_flat[io])
+        elif(n_ip_intf == 2) : #Control signals, i_eof
+            i_eof_zero_padding = loadlut_setup + max_hits * 2
+            i_eof_ii           = heg2sfslc_ii
+            print("Control single_interface_list ",single_interface_list)
+            #single_interface_list_ii_delay = events.modify_tv_padzeroes(single_interface_list,'begin',hb_acc_stop)
+            single_interface_list_ii_delay_tmp = events.modify_tv(single_interface_list, i_eof_ii) # heg2sfslc_ii)# + lsf_histogram_reset) #hb_acc_stop + lsf_histogram_reset)
+            single_interface_list_ii_delay     = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',i_eof_zero_padding) #hb_acc_stop)
+            input_tv_list.append(single_interface_list_ii_delay[0])
+            print("Control",single_interface_list_ii_delay[0])
 
 
 ###Get Output Test Vector List for Ports across all output interfaces##
@@ -267,7 +288,7 @@ def lsf_auto_test(dut):
         ))
         print("single_interface_list",single_interface_list)
         output_tv_list.append(single_interface_list)
-    print("output_tv_list",output_tv_list)
+    print("output_tv_list",output_tv_list[0])
 
     ##
     ## send input events
@@ -283,13 +304,13 @@ def lsf_auto_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal), 20, "us")
+        yield with_timeout(Combine(*send_finished_signal), 50, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}")
     dut._log.info("Sending finished!")
 
-    set_i_eof(dut,1)
+
 
     print("lsf_auto_test, Perform test vectors comparison 2",send_finished_signal)
 
@@ -298,7 +319,7 @@ def lsf_auto_test(dut):
     dut._log.info("Going to wait 20 microseconds")
     yield timer
 
-    print("lsf_auto_test, Perform test vectors comparison 3")    
+    print("lsf_auto_test, Perform test vectors comparison 3")
 
     all_tests_passed = True
     recvd_events_intf = []
@@ -363,13 +384,13 @@ def lsf_auto_test(dut):
 #                 event_ordering[e_idx],
 #                 outputs_station_id[n_op_intf][0]
 #                 )
-                
+
 #             all_tests_passed = (all_tests_passed and events_are_equal)
 #             # define requirements for the bitfield package for comparisons
 #             # use sf2ptcalc_tolerances to find falures
 #             # bitfield function (SF2PTCALC_LSF) that compares all the fields and returns percentage of disagreement for each field
 #             #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
-    
+
     for n_op_intf in range (LsfAutoPorts.n_output_interfaces):
         events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf]);
         all_tests_passed = (all_tests_passed and events_are_equal)

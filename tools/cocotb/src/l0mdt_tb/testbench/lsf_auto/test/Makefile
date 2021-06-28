@@ -134,6 +134,7 @@ VERILOG_SOURCES = \
     $(LSFDIR)/lsf_spybuffer_wrapper.sv
 
 
+
 # VHDL source files
 VHDL_SOURCES = \
 	$(USERLOGIC)/lsf/top_lsf.vhd
@@ -162,6 +163,7 @@ $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))
 EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/lsf_lib -L $(SIM_BUILD)/project_lib -L $(SIM_BUILD)/work +define+RUN_SIM
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
+
 
 
 ##############################################################################
