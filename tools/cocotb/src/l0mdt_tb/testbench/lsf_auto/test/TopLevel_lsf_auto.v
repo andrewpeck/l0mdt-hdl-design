@@ -62,8 +62,8 @@ module TopLevel_lsf_auto #(
        for(genvar i = 0; i < 2; i++)
          begin:input_spybuffers
             SpyBuffer #(
-			.DATA_WIDTH_A(DATA_WIDTH-1),
-			.DATA_WIDTH_B(DATA_WIDTH-1),
+			.DATA_WIDTH_A(DATA_WIDTH),
+			.DATA_WIDTH_B(DATA_WIDTH),
             .SPY_MEM_WIDTH_A(7),
             .SPY_MEM_WIDTH_B(7),
             .EL_MEM_WIDTH_A(7),
@@ -121,8 +121,8 @@ module TopLevel_lsf_auto #(
       for(genvar i = 0; i < 1; i++)
         begin:output_spybuffers
            SpyBuffer #(
-		       .DATA_WIDTH_A(DATA_WIDTH-1),
-			   .DATA_WIDTH_B(DATA_WIDTH-1),
+		       .DATA_WIDTH_A(DATA_WIDTH),
+			   .DATA_WIDTH_B(DATA_WIDTH),
                .SPY_MEM_WIDTH_A(7),
                .SPY_MEM_WIDTH_B(7),
                .EL_MEM_WIDTH_A(7),

@@ -218,8 +218,8 @@ def lsf_auto_test(dut):
         filename=master_tv_file,
         n_to_load=num_events_to_process,
         region=0,
-        side=3,
-        sector=3
+        side=3,#barrel
+        sector=3#sector 3
         )
 
 

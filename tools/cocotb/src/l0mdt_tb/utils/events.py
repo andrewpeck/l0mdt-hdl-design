@@ -202,7 +202,7 @@ def compare_BitFields(tv_bcid_list,tvformat,n_candidates, e_idx, rtl_tv, toleran
                         bf_list.clear()
                         bf_list.append(DF.getBitFieldWord(bitfieldname, stationID))
                     
-                    print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+                    print("++++++",local_sl1[0]," vs ",local_sl2[0])
 
                     results = local_sl1[0].compare_bitwordvalue(local_sl2[0],tolerances)  #compare_bitfieldwordvalue returns list
                     if results[0]:
