@@ -59,7 +59,7 @@ architecture beh of ucm_cvp_b_slope is
   signal coin : integer;
 
   -- type num_at is array ( 0 to 16) of integer;
-  signal num_h_i : integer;--num_at;
+  signal num_h_i : integer := 0;--num_at;
   -- signal num_h_std : std_logic_vector(2 downto 0);
 
   type rpc_at is array ( 0 to 3) of signed(SLC_Z_RPC_LEN - 1 downto 0);
