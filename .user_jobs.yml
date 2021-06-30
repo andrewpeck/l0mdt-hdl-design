@@ -53,13 +53,15 @@
       - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
     expire_in: 30 day
   allow_failure: false
+  interruptible: true
 
 .riviera_sim: &riviera_sim
   <<: *only-default
   <<: *tag-hog
   stage: generation_and_simulation
   script:
-    - echo $PATH
+    - export PATH=${HOG_PATH}:$PATH
+    - which vsim
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
       vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
       else
@@ -84,6 +86,7 @@
   allow_failure: false
   tags:
     - riviera
+   interruptible: true
 
 
 .user_hls: &user_hls
