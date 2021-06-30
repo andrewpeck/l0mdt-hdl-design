@@ -86,7 +86,7 @@
   allow_failure: false
   tags:
     - riviera
-   interruptible: true
+  interruptible: true
 
 
 .user_hls: &user_hls
