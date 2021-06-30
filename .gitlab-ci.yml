@@ -1,5 +1,8 @@
 variables:
   HOG_CHECK_SYNTAX : 1
+  HOG_SIMULATION_LIB_PATH : "/afs/cern.ch/work/l/l0mdtel/QuestaLib/"
+  HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2019.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/"
+
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
