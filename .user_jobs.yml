@@ -57,7 +57,7 @@
 .riviera_sim: &riviera_sim
   <<: *only-default
   <<: *tag-hog
-  stage: generate_project
+  stage: generation_and_simulation
   script:
     - if [[ -v HOG_CHECK_PROJVER ]] && [[ $HOG_CHECK_PROJVER == '1' ]]; then
       vivado -mode batch -notrace -source ./Hog/Tcl/CI/check_proj_ver.tcl -tclargs -ext_path "$HOG_EXTERNAL_PATH" -sim $PROJECT_NAME ;
