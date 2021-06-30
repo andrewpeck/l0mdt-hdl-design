@@ -27,3 +27,22 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
 #       extends: .vars
 #       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
 
+
+RIV:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
+      HOG_CHECK_PROJVER: 0
+      HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+      HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib/"
+    allow_failure: false
+    tags:
+      - riviera
+      
+CHK:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
+  extends: .sim_check
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
+  needs: ["SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi","RIV:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi"]
