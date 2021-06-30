@@ -46,7 +46,7 @@ RIV:ull_vu13_b3a_ucm_mpl_hps:
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
       HOG_CHECK_PROJVER: 0
       HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
-      HOG_SIMULATION_LIB_PATH: "/afs/cern.ch/user/l/l0mdtel/public/RivieraLibs/riviera"
+      HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
       
 CHK:ull_vu13_b3a_ucm_mpl_hps:
   extends: .sim_check
