@@ -2,18 +2,18 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee.vhd \
-	$(DFDIR)/l0mdt_constants_pkg.vhd \
-	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
+	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
+	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
-	$(SHAREDDIR)/src/ring_buffer_v2.vhd \
-	$(SHAREDDIR)/src/vhdl_ram_memory.vhd \
-	$(SHAREDDIR)/src/bram.vhd \
+	$(SHAREDDIR)/memories/src/ring_buffer_v2.vhd \
+	$(SHAREDDIR)/memories/src/vhdl_ram_memory.vhd \
+	$(SHAREDDIR)/memories/src/bram.vhd \
 	$(SHAREDDIR)/mpcvmem/src/mpcvmem.vhd \
 	$(SHAREDDIR)/mpcvmem/src/DualPortMem.vhd \
-	$(SHAREDDIR)/src/pipeline.vhd \
+	$(SHAREDDIR)/memories/src/pipeline.vhd \
 	$(SHAREDDIR)/config/config_pkg.vhd
 
 VHDL_SOURCES_shared_cfg_def_lib = \
@@ -33,13 +33,16 @@ VHDL_SOURCES_vamc_lib = \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
     $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_pl.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_rb.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_sr.vhd \
+    $(SHAREDDIR)/vhdl_amc/pkg/vamc_pkg.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_rb.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_sr.vhd \
     $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
     $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_kernel.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_controller.vhd
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_pl.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_ext.vhd \
+    $(SHAREDDIR)/vhdl_amc/src/vamc_top.vhd
+
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
@@ -53,3 +56,6 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG_DEF.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_map.vhd
+
+VHDL_SOURCES_xpm = \
+	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd

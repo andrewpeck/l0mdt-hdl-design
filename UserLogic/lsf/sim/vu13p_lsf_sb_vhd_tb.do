@@ -33,18 +33,19 @@ if {[file exist [file join $MSIM_INI]]} {
 vlib lsf_lib
 vmap work lsf_lib
 set CWD ./..
-set LOAD_LE_REFPOS "$CWD/../../IP_repository/vu13p/hls_load_LE_refPos/hdl/verilog/"
-set FIND_MAX_BIN_HLS_IP "$CWD/../../IP_repository/vu13p/hls_find_max_bin/hdl/verilog/"
-set FIND_MAX_BIN_64_HLS_IP "$CWD/../../IP_repository/vu13p/hls_find_max_bin_64/hdl/verilog/"
-set GET_ROM_ADDR_HLS_IP "$CWD/../../IP_repository/vu13p/hls_get_rom_addr/hdl/verilog/"
-set GET_TRIG_VALS_HLS_IP "$CWD/../../IP_repository/vu13p/hls_get_trig_vals/hdl/verilog/"
-set COMPUTE_RBINS_HLS_IP "$CWD/../../IP_repository/vu13p/hls_compute_r_bins/hdl/verilog/"
-set COMPUTE_RBINS_64_HLS_IP "$CWD/../../IP_repository/vu13p/hls_compute_r_bins_64/hdl/verilog/"
-set GET_LEGENDRE_SEGMENT_BARREL_HLS_IP "$CWD/../../IP_repository/vu13p/hls_get_legendre_segment_barrel/hdl/verilog/"
-set CALC_LE_R_OFFSET_BARREL_HLS_IP "$CWD/../../IP_repository/vu13p/hls_calc_LE_r_offset_barrel/hdl/verilog/"
-set CALC_LE_R_OFFSET_BARREL_64_HLS_IP "$CWD/../../IP_repository/vu13p/hls_calc_LE_r_offset_barrel_64/hdl/verilog/"
+set IP_REPO ../../../l0mdt-hls/IPs/vu13p
+set LOAD_LE_REFPOS "$IP_REPO/hls_load_LE_refPos/hdl/verilog/"
+set FIND_MAX_BIN_HLS_IP "$IP_REPO/hls_find_max_bin/hdl/verilog/"
+set FIND_MAX_BIN_64_HLS_IP "$IP_REPO/hls_find_max_bin_64/hdl/verilog/"
+set GET_ROM_ADDR_HLS_IP "$IP_REPO/hls_get_rom_addr/hdl/verilog/"
+set GET_TRIG_VALS_HLS_IP "$IP_REPO/hls_get_trig_vals/hdl/verilog/"
+set COMPUTE_RBINS_HLS_IP "$IP_REPO/hls_compute_r_bins/hdl/verilog/"
+set COMPUTE_RBINS_64_HLS_IP "$IP_REPO/hls_compute_r_bins_64/hdl/verilog/"
+set GET_LEGENDRE_SEGMENT_BARREL_HLS_IP "$IP_REPO/hls_get_legendre_segment_barrel/hdl/verilog/"
+set CALC_LE_R_OFFSET_BARREL_HLS_IP "$IP_REPO/hls_calc_LE_r_offset_barrel/hdl/verilog/"
+set CALC_LE_R_OFFSET_BARREL_64_HLS_IP "$IP_REPO/hls_calc_LE_r_offset_barrel_64/hdl/verilog/"
 
-#set LOAD_LE_REFPOS "$CWD/../l0mdt-hls/LSF/Proj/proj_load_LE_refPos/solution_load_LE_refPos/impl/ip/hdl/verilog/"
+
 
 #THETA_BINS=64
 #set FIND_MAX_BIN_HLS_IP "$CWD/../l0mdt-hls/LSF/Proj/proj_find_max_bin/solution_find_max_bin/impl/ip/hdl/verilog/"

@@ -31,7 +31,7 @@ SIM ?= questa
 
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../../
-SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
+SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 USERLOGIC = $(SRCDIR)/UserLogic
 
 # Specify TopLevel language for cocotb
@@ -61,6 +61,7 @@ VERILOG_SOURCES = \
     $(DFDIR)/l0mdt_buses_constants.svh \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v \
     $(SBDIR)/SpyBuffer.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
     $(SBDIR)/SpyController.v \
     $(SBDIR)/SpyMemory.v \
     $(SBDIR)/SpyPlayback.v \

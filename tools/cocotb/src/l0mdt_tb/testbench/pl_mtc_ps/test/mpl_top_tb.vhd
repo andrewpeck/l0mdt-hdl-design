@@ -46,8 +46,8 @@ architecture beh of mpl_top_tb is
     clk      =>clk,
     rst      => rst,
     glob_en  => glob_en,
-    ctrl     => ctrl,
-    mon      => mon,
+    ctrl_v   => ctrl,
+    mon_v    => mon,
 
     i_uCM2pl_av      => i_uCM2pl_av,
     o_pl2ptcalc_av   => o_pl2ptcalc_av,
