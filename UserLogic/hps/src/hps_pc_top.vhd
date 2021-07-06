@@ -103,10 +103,10 @@ begin
         rst         => rst,
         ena         => ena,
         --
-        i_ctrl_tc   => ctrl_tc(hp_i),
-        o_mon_tc    => mon_tc(hp_i),
-        i_ctrl_t0   => ctrl_t0(hp_i),
-        o_mon_t0    => mon_t0(hp_i),
+        i_ctrl_tc_v   => ctrl_tc_av(hp_i),
+        o_mon_tc_v    => mon_tc_av(hp_i),
+        i_ctrl_t0_v   => ctrl_t0_av(hp_i),
+        o_mon_t0_v    => mon_t0_av(hp_i),
         --
         i_mdt_tar_v       => i_mdt_tar_v(hp_i),
         o_mdt_full_data_v => o_mdt_full_data_v(hp_i)

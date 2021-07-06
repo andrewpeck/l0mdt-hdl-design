@@ -47,10 +47,10 @@ entity hps_pc is
     rst                   : in std_logic;
     ena                   : in std_logic;
     -- configuration & control
-    i_ctrl_tc             : in H2S_HPS_MDT_TC_MDT_TC_CTRL_t;  
-    o_mon_tc              : out H2S_HPS_MDT_TC_MDT_TC_MON_t;
-    i_ctrl_t0             : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
-    o_mon_t0              : out H2S_HPS_MDT_T0_MDT_T0_MON_t;   
+    i_ctrl_tc_v             : in  std_logic_vector;--H2S_HPS_MDT_TC_MDT_TC_CTRL_t;  
+    o_mon_tc_v              : out std_logic_vector;-- H2S_HPS_MDT_TC_MDT_TC_MON_t;
+    i_ctrl_t0_v             : in  std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t;  
+    o_mon_t0_v              : out std_logic_vector;-- H2S_HPS_MDT_T0_MDT_T0_MON_t;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_rvt;
     o_mdt_full_data_v     : out hp_hpsPc2hp_rvt
@@ -59,10 +59,10 @@ end entity hps_pc;
 
 architecture beh of hps_pc is
 
-  signal t0_ctrl_v : std_logic_vector(len(i_ctrl_t0) - 1  downto 0);
-  signal t0_mon_v : std_logic_vector(len(o_mon_t0) - 1  downto 0);
-  signal tc_ctrl_v : std_logic_vector(len(i_ctrl_tc) - 1  downto 0);
-  signal tc_mon_v : std_logic_vector(len(o_mon_tc) - 1  downto 0);
+  signal t0_ctrl_v : std_logic_vector(i_ctrl_t0_v'length - 1  downto 0);
+  signal t0_mon_v : std_logic_vector(o_mon_t0_v'length - 1  downto 0);
+  signal tc_ctrl_v : std_logic_vector(i_ctrl_tc_v'length - 1  downto 0);
+  signal tc_mon_v : std_logic_vector(o_mon_tc_v'length - 1  downto 0);
 
   constant c_HPS_PC_PL_LEN : integer := 4;
   signal dv_pl : std_logic_vector(c_HPS_PC_PL_LEN -1 downto 0);
@@ -93,11 +93,16 @@ architecture beh of hps_pc is
   
 begin
 
-  t0_ctrl_v <= vectorify(i_ctrl_t0,t0_ctrl_v);
-  o_mon_t0 <= structify(t0_mon_v,o_mon_t0);
+  tc_ctrl_v <= i_ctrl_tc_v ;
+  o_mon_tc_v <= tc_mon_v; 
+  t0_ctrl_v <= i_ctrl_t0_v;
+  o_mon_t0_v  <= t0_mon_v;
 
-  tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
-  o_mon_tc <= structify(tc_mon_v,o_mon_tc);
+  -- t0_ctrl_v <= vectorify(i_ctrl_t0,t0_ctrl_v);
+  -- o_mon_t0 <= structify(t0_mon_v,o_mon_t0);
+
+  -- tc_ctrl_v <= vectorify(i_ctrl_tc,tc_ctrl_v);
+  -- o_mon_tc <= structify(tc_mon_v,o_mon_tc);
 
   i_mdt_tar_r  <= structify(i_mdt_tar_v);
 
