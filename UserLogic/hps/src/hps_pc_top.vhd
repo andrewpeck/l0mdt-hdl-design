@@ -48,10 +48,10 @@ entity hps_pc_top is
     rst                   : in std_logic;
     ena                   : in std_logic;
     -- configuration & control
-    i_ctrl_tc             : in H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;  
-    o_mon_tc              : out H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
-    i_ctrl_t0             : in H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
-    o_mon_t0              : out H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;   
+    i_ctrl_tc_v           : in  std_logic_vector;--H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;  
+    o_mon_tc_v            : out std_logic_vector;-- H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+    i_ctrl_t0_v           : in  std_logic_vector;--H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
+    o_mon_t0_v            : out std_logic_vector;-- H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY;   
     -- MDT hit
     i_mdt_tar_v           : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH - 1 downto 0);
     o_mdt_full_data_v     : out heg_pc2heg_avt(g_HPS_NUM_MDT_CH - 1 downto 0)
@@ -60,19 +60,41 @@ end entity hps_pc_top;
 
 architecture beh of hps_pc_top is
 
-  
+  signal i_ctrl_tc_r   : H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY;  
+  signal o_mon_tc_r    : H2S_HPS_MDT_TC_MDT_TC_MON_t_ARRAY;
+  signal i_ctrl_t0_r   : H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY;  
+  signal o_mon_t0_r    : H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY; 
+
+  type ctrl_tc_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(i_ctrl_tc_r(0))-1 downto 0);
+  type mon_tc_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(o_mon_tc_r(0))-1 downto 0);
+  type ctrl_t0_avt is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(i_ctrl_t0_r(0))-1 downto 0);
+  type mon_t0_avt  is array (g_HPS_NUM_MDT_CH -1 downto 0 ) of std_logic_vector(len(o_mon_t0_r(0))-1 downto 0);
+
+  signal ctrl_tc_av : ctrl_tc_avt;
+  signal mon_tc_av  : mon_tc_avt ;
+  signal ctrl_t0_av : ctrl_t0_avt;
+  signal mon_t0_av  : mon_t0_avt ;
   
   
 begin
+
+  o_mon_tc_v <= vectorify(o_mon_tc_r,o_mon_tc_v);
+  o_mon_t0_v <= vectorify(o_mon_t0_r,o_mon_t0_v);
+  i_ctrl_tc_r <= structify(i_ctrl_tc_v,i_ctrl_tc_r);
+  i_ctrl_t0_r <= structify(i_ctrl_t0_v,i_ctrl_t0_r);
+
+  ctrl_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
+    ctrl_tc_av(hp_i)  <= vectorify(i_ctrl_tc_r(hp_i),ctrl_tc_av(hp_i));
+    ctrl_t0_av(hp_i)  <= vectorify(i_ctrl_t0_r(hp_i),ctrl_t0_av(hp_i));
+    o_mon_tc_r(hp_i)  <= structify(mon_tc_av(hp_i),o_mon_tc_r(hp_i));
+    o_mon_t0_r(hp_i)  <= structify(mon_t0_av(hp_i),o_mon_t0_r(hp_i));
+  end generate;
+
 
    pc_gen : for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 generate
     pc_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(hp_i) = '1' generate
       PC : entity hps_lib.hps_pc
       generic map(
-        -- mdt type
-        -- mdt_type            => mdt_polmux_data_rvt,
-        -- g_SIM_nBUILD        => g_SIM_nBUILD,
-        -- parameters
         g_CHAMBER         => hp_i,
         g_STATION_RADIUS  => g_STATION_RADIUS
       )
@@ -81,10 +103,10 @@ begin
         rst         => rst,
         ena         => ena,
         --
-        i_ctrl_tc   => i_ctrl_tc(hp_i),
-        o_mon_tc    => o_mon_tc(hp_i),
-        i_ctrl_t0   => i_ctrl_t0(hp_i),
-        o_mon_t0    => o_mon_t0(hp_i),
+        i_ctrl_tc   => ctrl_tc(hp_i),
+        o_mon_tc    => mon_tc(hp_i),
+        i_ctrl_t0   => ctrl_t0(hp_i),
+        o_mon_t0    => mon_t0(hp_i),
         --
         i_mdt_tar_v       => i_mdt_tar_v(hp_i),
         o_mdt_full_data_v => o_mdt_full_data_v(hp_i)
