@@ -44,8 +44,8 @@ entity heg is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- control
-    ctrl                : in  H2S_HPS_HEG_HEG_CTRL_t;
-    mon                 : out H2S_HPS_HEG_HEG_MON_t;
+    ctrl                : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
+    mon                 : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
     -- configuration
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;

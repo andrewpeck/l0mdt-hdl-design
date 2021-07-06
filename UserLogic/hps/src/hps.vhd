@@ -70,8 +70,13 @@ architecture beh of hps is
   signal pc_t0_mon_v  : std_logic_vector(len(mon_r.MDT_T0.MDT_T0)-1 downto 0);
   signal pc_tc_mon_v  : std_logic_vector(len(mon_r.MDT_TC.MDT_TC)-1 downto 0);
 
-  type heg_ctrl_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_CTRL_t;
-  type heg_mon_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_MON_t;
+  -- type heg_ctrl_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_CTRL_t;
+  -- type heg_mon_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_MON_t;
+  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
+  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
+
+  signal heg_ctrl_av : heg_ctrl_avt;
+  signal heg_mon_av : heg_mon_avt;
 
   signal int_rst : std_logic;
   signal int_ena : std_logic;
@@ -92,8 +97,8 @@ begin
 
   pc_t0_ctrl_v <= vectorify(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
   pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
-  mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_ctrl_v,mon_r.MDT_T0.MDT_T0);
-  mon_r.MDT_TC.MDT_TC <= structify(pc_tc_ctrl_v,mon_r.MDT_TC.MDT_TC);
+  mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
+  mon_r.MDT_TC.MDT_TC <= structify(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
 
   SUPER : entity hps_lib.hps_supervisor
   generic map(
@@ -125,15 +130,19 @@ begin
       ena         => int_ena,
       --
       i_ctrl_tc_v   => pc_tc_ctrl_v,--ctrl_r.MDT_TC.MDT_TC,--(hp_i),
-      o_mon_tc_v    => pc_tc_ctrl_v,--mon_r.MDT_TC.MDT_TC,--(hp_i),
+      o_mon_tc_v    => pc_tc_mon_v,--mon_r.MDT_TC.MDT_TC,--(hp_i),
       i_ctrl_t0_v   => pc_t0_ctrl_v,--ctrl_r.MDT_T0.MDT_T0,--(hp_i),
-      o_mon_t0_v    => pc_t0_ctrl_v,--mon_r.MDT_T0.MDT_T0,--(hp_i),
+      o_mon_t0_v    => pc_t0_mon_v,--mon_r.MDT_T0.MDT_T0,--(hp_i),
       --
       i_mdt_tar_v       => i_mdt_tar_av,--(hp_i),
       o_mdt_full_data_v => mdt_full_data_av--(hp_i)
   );
 
   heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
+
+    heg_ctrl_av(heg_i) <= vectorify(ctrl_r.heg.heg(heg_i),heg_ctrl_av(heg_i));
+    mon_r.heg.heg(heg_i) <= structify(heg_mon_av(heg_i),mon_r.heg.heg(heg_i));
+    
     HEG : entity heg_lib.heg
       generic map(
         g_STATION_RADIUS => g_STATION_RADIUS,
@@ -144,8 +153,8 @@ begin
         rst                => int_rst, 
         glob_en            => int_ena,
         --        
-        ctrl               => ctrl_r.heg.heg(heg_i),
-        mon                => mon_r.heg.heg(heg_i),
+        ctrl               => heg_ctrl_av(heg_i),
+        mon                => heg_mon_av(heg_i),
         --
         i_uCM_data_v       => i_uCM2hps_av(heg_i),
         -- MDT hit
