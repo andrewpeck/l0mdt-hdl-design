@@ -20,6 +20,23 @@ SIM:ull_ku15_b3a_ucm_mpl:
     tags:
       - questa
       - hog
+
+RIV:ull_ku15_b3a_ucm_mpl:
+    extends: .riviera_sim
+    variables:
+      extends: .riviera_vars
+      PROJECT_NAME: ull_ku15_b3a_ucm_mpl
+      HOG_CHECK_PROJVER: 0
+      HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+      HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
+      
+CHK:ull_ku15_b3a_ucm_mpl:
+  extends: .sim_check
+  variables:
+    extends: .vars
+    PROJECT_NAME: ull_ku15_b3a_ucm_mpl
+  needs: ["SIM:ull_ku15_b3a_ucm_mpl","RIV:ull_ku15_b3a_ucm_mpl"]
+  
 # user_sim:ull_ku15_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:
