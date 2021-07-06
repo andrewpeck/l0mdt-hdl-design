@@ -121,11 +121,10 @@ BEGIN
             ram_type => "distributed"
         )
         PORT MAP(
-            a_clk => clk,
+            clk => clk,
             a_wr => hit1.valid,
             a_addr => w_addr1,
             a_din => i_hit1,
-            b_clk => clk,
             b_addr => r_addr1,
             b_dout => hit_vec1
         );
@@ -137,11 +136,10 @@ BEGIN
             ram_type => "distributed"
         )
         PORT MAP(
-            a_clk => clk,
+            clk => clk,
             a_wr => hit2.valid,
             a_addr => w_addr2,
             a_din => i_hit2,
-            b_clk => clk,
             b_addr => r_addr2,
             b_dout => hit_vec2
         );

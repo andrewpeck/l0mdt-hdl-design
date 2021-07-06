@@ -111,6 +111,7 @@ function install_tv {
 
 function update_makefile_questa() {
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VHDL_SOURCES),) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += xpm '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += shared_cfg_def_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += project_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += shared_lib '  $(find ./env -name Makefile.questa)
@@ -189,6 +190,10 @@ function main {
                 ;;
             -t)
                 export L0MDT_TESTVECTOR_DIR=$2
+                shift
+                ;;
+            -x)
+                export XILINX_HOME=$2
                 shift
                 ;;
             --testvectors)

@@ -31,7 +31,7 @@ SIM ?= questa
 
 # Location of HDL source files
 SRCDIR = $(PWD)/../../../../../../../
-SBDIR = $(SRCDIR)/IP_repository/SpyBuffer/src
+SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 USERLOGIC = $(SRCDIR)/UserLogic
 
@@ -55,12 +55,13 @@ ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
-IP_REPO   = $(SRCDIR)/IP_repository/vu13p
+IP_REPO   = $(SRCDIR)/l0mdt-hls/IPs/vu13p
 
 # Verilog source files
 VERILOG_SOURCES = \
     $(DFDIR)/l0mdt_buses_constants.svh \
     $(SBDIR)/SpyBuffer.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
     $(SBDIR)/SpyController.v \
     $(SBDIR)/SpyMemory.v \
     $(SBDIR)/SpyPlayback.v \
