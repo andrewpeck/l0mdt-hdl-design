@@ -214,15 +214,15 @@ package H2S_CTRL is
   function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_STATUS_MON_t) return H2S_HPS_HEG_HEG_STATUS_MON_t;
   function nullify(t: H2S_HPS_HEG_HEG_STATUS_MON_t) return H2S_HPS_HEG_HEG_STATUS_MON_t;
 
-  type H2S_HPS_HEG_HEG_COUNTERS_CTRL_t is record
-    ENABLED : std_logic_vector(32-1 downto 0);
-    READY : std_logic_vector(32-1 downto 0);
+  type H2S_HPS_HEG_HEG_COUNTERS_MON_t is record
+    HIT_PROC : std_logic_vector(32-1 downto 0);
+    HIT_OK : std_logic_vector(32-1 downto 0);
     ERROR : std_logic_vector(32-1 downto 0);
-  end record H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
-  function len(x: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return natural;
-  function vectorify(x: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
-  function nullify(t: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
+  end record H2S_HPS_HEG_HEG_COUNTERS_MON_t;
+  function len(x: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return natural;
+  function vectorify(x: H2S_HPS_HEG_HEG_COUNTERS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return H2S_HPS_HEG_HEG_COUNTERS_MON_t;
+  function nullify(t: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return H2S_HPS_HEG_HEG_COUNTERS_MON_t;
 
   type H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t is record
     RESET : std_logic;
@@ -302,6 +302,7 @@ package H2S_CTRL is
 
   type H2S_HPS_HEG_HEG_MON_t is record
     STATUS : H2S_HPS_HEG_HEG_STATUS_MON_t;
+    COUNTERS : H2S_HPS_HEG_HEG_COUNTERS_MON_t;
     HP : H2S_HPS_HEG_HEG_HP_MON_t;
   end record H2S_HPS_HEG_HEG_MON_t;
   function len(x: H2S_HPS_HEG_HEG_MON_t) return natural;
@@ -318,7 +319,6 @@ package H2S_CTRL is
   type H2S_HPS_HEG_HEG_CTRL_t is record
     ACTIONS : H2S_HPS_HEG_HEG_ACTIONS_CTRL_t;
     CONFIGS : H2S_HPS_HEG_HEG_CONFIGS_CTRL_t;
-    COUNTERS : H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
     HP : H2S_HPS_HEG_HEG_HP_CTRL_t;
   end record H2S_HPS_HEG_HEG_CTRL_t;
   function len(x: H2S_HPS_HEG_HEG_CTRL_t) return natural;
@@ -1692,57 +1692,57 @@ package body H2S_CTRL is
     return y;
   end function nullify;
 
-  function len(x: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return natural is
+  function len(x: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.ENABLED);
-    l := l + len(x.READY);
+    l := l + len(x.HIT_PROC);
+    l := l + len(x.HIT_OK);
     l := l + len(x.ERROR);
     return l;
   end function len;
-  function vectorify(x: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: H2S_HPS_HEG_HEG_COUNTERS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
+      assign(y(left to left+len(x.HIT_PROC)-1), vectorify(x.HIT_PROC, y(left to left+len(x.HIT_PROC)-1)));
+      left := left + len(x.HIT_PROC);
+      assign(y(left to left+len(x.HIT_OK)-1), vectorify(x.HIT_OK, y(left to left+len(x.HIT_OK)-1)));
+      left := left + len(x.HIT_OK);
       assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
-      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
+      assign(y(left downto left-len(x.HIT_PROC)+1), vectorify(x.HIT_PROC, y(left downto left-len(x.HIT_PROC)+1)));
+      left := left - len(x.HIT_PROC);
+      assign(y(left downto left-len(x.HIT_OK)+1), vectorify(x.HIT_OK, y(left downto left-len(x.HIT_OK)+1)));
+      left := left - len(x.HIT_OK);
       assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
   end function vectorify;
-  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return H2S_HPS_HEG_HEG_COUNTERS_CTRL_t is
-    variable y: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
+  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return H2S_HPS_HEG_HEG_COUNTERS_MON_t is
+    variable y: H2S_HPS_HEG_HEG_COUNTERS_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.ENABLED := structify(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
+      y.HIT_PROC := structify(x(left to left+len(y.HIT_PROC)-1), y.HIT_PROC);
+      left := left + len(y.HIT_PROC);
+      y.HIT_OK := structify(x(left to left+len(y.HIT_OK)-1), y.HIT_OK);
+      left := left + len(y.HIT_OK);
       y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
-      y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
+      y.HIT_PROC := structify(x(left downto left-len(y.HIT_PROC)+1), y.HIT_PROC);
+      left := left - len(y.HIT_PROC);
+      y.HIT_OK := structify(x(left downto left-len(y.HIT_OK)+1), y.HIT_OK);
+      left := left - len(y.HIT_OK);
       y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
     end if;
     return y;
   end function structify;
-  function nullify(t: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t) return H2S_HPS_HEG_HEG_COUNTERS_CTRL_t is
-  variable y: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
+  function nullify(t: H2S_HPS_HEG_HEG_COUNTERS_MON_t) return H2S_HPS_HEG_HEG_COUNTERS_MON_t is
+  variable y: H2S_HPS_HEG_HEG_COUNTERS_MON_t;
   begin
-    y.ENABLED := nullify(t.ENABLED);
-    y.READY := nullify(t.READY);
+    y.HIT_PROC := nullify(t.HIT_PROC);
+    y.HIT_OK := nullify(t.HIT_OK);
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
@@ -2190,6 +2190,7 @@ package body H2S_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.STATUS);
+    l := l + len(x.COUNTERS);
     l := l + len(x.HP);
     return l;
   end function len;
@@ -2200,10 +2201,14 @@ package body H2S_CTRL is
     if t'ascending then
       assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
       left := left + len(x.STATUS);
+      assign(y(left to left+len(x.COUNTERS)-1), vectorify(x.COUNTERS, y(left to left+len(x.COUNTERS)-1)));
+      left := left + len(x.COUNTERS);
       assign(y(left to left+len(x.HP)-1), vectorify(x.HP, y(left to left+len(x.HP)-1)));
     else
       assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
       left := left - len(x.STATUS);
+      assign(y(left downto left-len(x.COUNTERS)+1), vectorify(x.COUNTERS, y(left downto left-len(x.COUNTERS)+1)));
+      left := left - len(x.COUNTERS);
       assign(y(left downto left-len(x.HP)+1), vectorify(x.HP, y(left downto left-len(x.HP)+1)));
     end if;
     return y;
@@ -2215,10 +2220,14 @@ package body H2S_CTRL is
     if x'ascending then
       y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
       left := left + len(y.STATUS);
+      y.COUNTERS := structify(x(left to left+len(y.COUNTERS)-1), y.COUNTERS);
+      left := left + len(y.COUNTERS);
       y.HP := structify(x(left to left+len(y.HP)-1), y.HP);
     else
       y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
       left := left - len(y.STATUS);
+      y.COUNTERS := structify(x(left downto left-len(y.COUNTERS)+1), y.COUNTERS);
+      left := left - len(y.COUNTERS);
       y.HP := structify(x(left downto left-len(y.HP)+1), y.HP);
     end if;
     return y;
@@ -2227,6 +2236,7 @@ package body H2S_CTRL is
   variable y: H2S_HPS_HEG_HEG_MON_t;
   begin
     y.STATUS := nullify(t.STATUS);
+    y.COUNTERS := nullify(t.COUNTERS);
     y.HP := nullify(t.HP);
     return y;
   end function nullify;
@@ -2293,7 +2303,6 @@ package body H2S_CTRL is
   begin
     l := l + len(x.ACTIONS);
     l := l + len(x.CONFIGS);
-    l := l + len(x.COUNTERS);
     l := l + len(x.HP);
     return l;
   end function len;
@@ -2306,16 +2315,12 @@ package body H2S_CTRL is
       left := left + len(x.ACTIONS);
       assign(y(left to left+len(x.CONFIGS)-1), vectorify(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
       left := left + len(x.CONFIGS);
-      assign(y(left to left+len(x.COUNTERS)-1), vectorify(x.COUNTERS, y(left to left+len(x.COUNTERS)-1)));
-      left := left + len(x.COUNTERS);
       assign(y(left to left+len(x.HP)-1), vectorify(x.HP, y(left to left+len(x.HP)-1)));
     else
       assign(y(left downto left-len(x.ACTIONS)+1), vectorify(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
       left := left - len(x.ACTIONS);
       assign(y(left downto left-len(x.CONFIGS)+1), vectorify(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
       left := left - len(x.CONFIGS);
-      assign(y(left downto left-len(x.COUNTERS)+1), vectorify(x.COUNTERS, y(left downto left-len(x.COUNTERS)+1)));
-      left := left - len(x.COUNTERS);
       assign(y(left downto left-len(x.HP)+1), vectorify(x.HP, y(left downto left-len(x.HP)+1)));
     end if;
     return y;
@@ -2329,16 +2334,12 @@ package body H2S_CTRL is
       left := left + len(y.ACTIONS);
       y.CONFIGS := structify(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
       left := left + len(y.CONFIGS);
-      y.COUNTERS := structify(x(left to left+len(y.COUNTERS)-1), y.COUNTERS);
-      left := left + len(y.COUNTERS);
       y.HP := structify(x(left to left+len(y.HP)-1), y.HP);
     else
       y.ACTIONS := structify(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
       left := left - len(y.ACTIONS);
       y.CONFIGS := structify(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
       left := left - len(y.CONFIGS);
-      y.COUNTERS := structify(x(left downto left-len(y.COUNTERS)+1), y.COUNTERS);
-      left := left - len(y.COUNTERS);
       y.HP := structify(x(left downto left-len(y.HP)+1), y.HP);
     end if;
     return y;
@@ -2348,7 +2349,6 @@ package body H2S_CTRL is
   begin
     y.ACTIONS := nullify(t.ACTIONS);
     y.CONFIGS := nullify(t.CONFIGS);
-    y.COUNTERS := nullify(t.COUNTERS);
     y.HP := nullify(t.HP);
     return y;
   end function nullify;

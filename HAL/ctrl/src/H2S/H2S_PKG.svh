@@ -121,10 +121,10 @@
   } H2S_HPS_HEG_HEG_STATUS_MON_t;
 
   typedef struct packed {
-    logic [32-1:0] ENABLED;
-    logic [32-1:0] READY;
+    logic [32-1:0] HIT_PROC;
+    logic [32-1:0] HIT_OK;
     logic [32-1:0] ERROR;
-  } H2S_HPS_HEG_HEG_COUNTERS_CTRL_t;
+  } H2S_HPS_HEG_HEG_COUNTERS_MON_t;
 
   typedef struct packed {
     logic  RESET;
@@ -168,6 +168,7 @@
 
   typedef struct packed {
     H2S_HPS_HEG_HEG_STATUS_MON_t   STATUS;
+    H2S_HPS_HEG_HEG_COUNTERS_MON_t   COUNTERS;
     H2S_HPS_HEG_HEG_HP_MON_t   HP;
   } H2S_HPS_HEG_HEG_MON_t;
 
@@ -176,7 +177,6 @@
   typedef struct packed {
     H2S_HPS_HEG_HEG_ACTIONS_CTRL_t   ACTIONS;
     H2S_HPS_HEG_HEG_CONFIGS_CTRL_t   CONFIGS;
-    H2S_HPS_HEG_HEG_COUNTERS_CTRL_t   COUNTERS;
     H2S_HPS_HEG_HEG_HP_CTRL_t   HP;
   } H2S_HPS_HEG_HEG_CTRL_t;
 

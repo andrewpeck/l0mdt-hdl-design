@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-05-05 15:35:40.918726.
+# Created : 2021-07-06 16:28:22.601316.
 config:
   basic_convert_functions : off
   packages:
@@ -119,9 +119,9 @@ hdl:
   - ERROR : [ type: logic ]
 
 
-- H2S_HPS_HEG_HEG_COUNTERS_CTRL_t:
-  - ENABLED : [ type: logic, length: 32 ]
-  - READY : [ type: logic, length: 32 ]
+- H2S_HPS_HEG_HEG_COUNTERS_MON_t:
+  - HIT_PROC : [ type: logic, length: 32 ]
+  - HIT_OK : [ type: logic, length: 32 ]
   - ERROR : [ type: logic, length: 32 ]
 
 
@@ -165,6 +165,7 @@ hdl:
 
 - H2S_HPS_HEG_HEG_MON_t:
   - STATUS : [ type: H2S_HPS_HEG_HEG_STATUS_MON_t ]
+  - COUNTERS : [ type: H2S_HPS_HEG_HEG_COUNTERS_MON_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_MON_t ]
 
 - H2S_HPS_HEG_HEG_MON_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_MON_t]
@@ -172,7 +173,6 @@ hdl:
 - H2S_HPS_HEG_HEG_CTRL_t:
   - ACTIONS : [ type: H2S_HPS_HEG_HEG_ACTIONS_CTRL_t ]
   - CONFIGS : [ type: H2S_HPS_HEG_HEG_CONFIGS_CTRL_t ]
-  - COUNTERS : [ type: H2S_HPS_HEG_HEG_COUNTERS_CTRL_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_CTRL_t ]
 
 - H2S_HPS_HEG_HEG_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_CTRL_t]

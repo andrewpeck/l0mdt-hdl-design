@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-05-05 15:35:40.918557.
+-- Created : 2021-07-06 16:28:22.601153.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -65,11 +65,6 @@ package H2S_CTRL_DEF is
                                                                                        OUTPUT_EN => '1',
                                                                                        FLUSH_MEM_RESET => '1'
                                                                                       );
-  constant DEFAULT_H2S_HPS_HEG_HEG_COUNTERS_CTRL_t : H2S_HPS_HEG_HEG_COUNTERS_CTRL_t := (
-                                                                                         READY => (others => '0'),
-                                                                                         ENABLED => (others => '0'),
-                                                                                         ERROR => (others => '0')
-                                                                                        );
   constant DEFAULT_H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t : H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t := (
                                                                                                    RESET => '0',
                                                                                                    DISABLE => '0',
@@ -91,8 +86,7 @@ package H2S_CTRL_DEF is
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_t : H2S_HPS_HEG_HEG_CTRL_t := (
                                                                        CONFIGS => DEFAULT_H2S_HPS_HEG_HEG_CONFIGS_CTRL_t,
                                                                        HP => DEFAULT_H2S_HPS_HEG_HEG_HP_CTRL_t,
-                                                                       ACTIONS => DEFAULT_H2S_HPS_HEG_HEG_ACTIONS_CTRL_t,
-                                                                       COUNTERS => DEFAULT_H2S_HPS_HEG_HEG_COUNTERS_CTRL_t
+                                                                       ACTIONS => DEFAULT_H2S_HPS_HEG_HEG_ACTIONS_CTRL_t
                                                                       );
   constant DEFAULT_H2S_HPS_HEG_CTRL_t : H2S_HPS_HEG_CTRL_t := (
                                                                HEG => (others => DEFAULT_H2S_HPS_HEG_HEG_CTRL_t )

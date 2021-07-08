@@ -72,8 +72,8 @@ architecture beh of hps is
 
   -- type heg_ctrl_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_CTRL_t;
   -- type heg_mon_at is array (0 to 3 ) of  H2S_HPS_HEG_HEG_MON_t;
-  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
-  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
+  type heg_ctrl_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(ctrl_r.heg.heg(0))-1 downto 0);
+  type heg_mon_avt is array (0 to c_NUM_THREADS -1 ) of  std_logic_vector(len(mon_r.heg.heg(0))-1 downto 0);
 
   signal heg_ctrl_av : heg_ctrl_avt;
   signal heg_mon_av : heg_mon_avt;
