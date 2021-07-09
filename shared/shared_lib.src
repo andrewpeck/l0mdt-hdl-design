@@ -24,7 +24,7 @@ shared/APBus/apbus_lib.src lib=apbus_lib
 #---------------------------------
 # Advanced Memory Controller
 #---------------------------------
-shared/vhdl_amc/vamc_lib.src lib=vamc_lib
+shared/vamc/vamc_lib.src lib=vamc_lib
 #---------------------------------
 # shared memory files
 #---------------------------------
