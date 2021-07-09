@@ -40,7 +40,7 @@ package detector_param_pkg is
   constant TAR_PL_A_LATENCY     : integer := 397 + UCM_2HPS_LATENCY;  --310; -- cycles => 968.75 ns
   constant TDC_PL_A_LATENCY     : integer := 395;  --310; -- cycles => 968.75 ns
   --
-  constant UCM_LATENCY_HPS_CH   : integer := 575; -- cycles => 1.796 us
+  constant UCM_LATENCY_HPS_CH   : integer := 575 + UCM_2HPS_LATENCY; -- cycles => 1.796 us
   --
   constant HEG_CSF_START_DELAY  : integer := 5;
   constant HEG_CSF_END_DELAY    : integer := 57;

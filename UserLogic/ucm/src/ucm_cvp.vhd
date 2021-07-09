@@ -102,6 +102,7 @@ architecture beh of ucm_cvp is
   signal data_v_2     : ucm_cde_rvt;
   signal data_r_2       : ucm_cde_rt;
   
+  signal ucm2hps_buff_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
 
 
@@ -427,15 +428,20 @@ begin
 
       if local_rst= '1' then
         for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_buff_ar(hps_i) <= nullify(ucm2hps_buff_ar(hps_i));
           ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
-          ucm2hps_ar(hps_i).data_valid    <= '0';
+          -- ucm2hps_ar(hps_i).data_valid    <= '0';
         end loop;
       else 
 
         if i_data_r.data_valid = '1' then
-          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+          for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 loop
             if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-              ucm2hps_ar(hps_i).muid <= i_data_r.muid;
+              ucm2hps_buff_ar(hps_i).muid <= i_data_r.muid;
+              ucm2hps_buff_ar(hps_i).data_valid <= i_data_r.data_valid;
+            -- else
+            --   ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
+
             end if;
           end loop;
         end if;
@@ -443,7 +449,10 @@ begin
         if or_reduce(vec_z_pos_dv) = '1' then
           for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
             if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-              ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+              ucm2hps_buff_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+            -- else
+            --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+
             end if;
           end loop;
         end if;
@@ -451,10 +460,34 @@ begin
         if atan_dv = '1' then
           for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
             if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
-              ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+              ucm2hps_buff_ar(hps_i).vec_ang <= vec_ang_pl;
+            -- else
+            --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+
             end if;
           end loop;
         end if;
+
+        
+        -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+        --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+        --     if i_data_r.data_valid = '1' then
+        --       ucm2hps_ar(hps_i).muid <= i_data_r.muid;
+        --     else
+        --       ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
+        --     end if;
+        --     if atan_dv = '1' then
+        --       ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+        --     else
+        --       ucm2hps_ar(hps_i).vec_ang             <= (others => '0');
+        --     end if;
+        --     if or_reduce(vec_z_pos_dv) = '1' then
+        --       ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+        --     else
+        --       ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+        --     end if;
+        --   end if;
+        -- end loop;
 
         if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
           -- if c_SF_TYPE = '0' then --CSF
@@ -463,6 +496,10 @@ begin
                 if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
 
                   if or_reduce(new_chamb_ieta_dv) = '1' then
+
+                    ucm2hps_ar(hps_i).muid    <= ucm2hps_buff_ar(hps_i).muid;
+                    ucm2hps_ar(hps_i).vec_pos <= ucm2hps_buff_ar(hps_i).vec_pos ;
+                    ucm2hps_ar(hps_i).vec_ang <= ucm2hps_buff_ar(hps_i).vec_ang;
 
                     -- ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
                     ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
@@ -473,7 +510,13 @@ begin
                     ucm2hps_ar(hps_i).data_valid          <= '1';
                   
                   else
-                    ucm2hps_ar(hps_i).data_valid    <= '0';
+                    -- ucm2hps_ar(hps_i).data_valid    <= '0';
+                    -- ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '0'); -- COMO SE CALCULA ESTO?
+                    -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
+                    -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
+
+                    ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+
                     -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
                     --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
                     -- end loop;
