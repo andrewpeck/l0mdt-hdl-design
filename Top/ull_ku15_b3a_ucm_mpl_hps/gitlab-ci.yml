@@ -7,7 +7,7 @@ GEN:ull_ku15_b3a_ucm_mpl_hps:
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
-      - normal-ops
+      - heavy-duty
       - hog
 
 SIM:ull_ku15_b3a_ucm_mpl_hps:
