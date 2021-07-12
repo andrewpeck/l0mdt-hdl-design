@@ -1,0 +1,5 @@
+UserLogic/daq/daq_lib.src               lib=daq_lib
+UserLogic/daq/daq_def.src               lib=daq_def
+UserLogic/daq/ttc_def.src               lib=ttc_def
+
+

@@ -1,0 +1,15 @@
+hdl:
+
+- DAQ_MAX_STREAMS: [qualifier: constant, type: integer, value: 6]
+
+- DAQ_MAX_BRANCHES: [qualifier: constant, type: integer, value: 6]
+
+- DAQ_MAX_DATA_WIDTH: [qualifier: constant, type: integer, value: 256]
+
+- DAQ_FELIX_STREAM_WIDTH: [qualifier: constant, type: integer, value: 64]
+
+- DAQ_PIPELINES: [qualifier: constant, type: integer, value: 40]
+
+
+
+

@@ -1,24 +1,21 @@
-mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
-mkfile_dir := $(dir $(mkfile_path))
-proj := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
+# VIVADO_PATH should point to the Vivado install folder
+SHELL := /bin/bash
+proj := $(shell scripts/path.sh $$(pwd))
+curr := $(shell basename $$(pwd))
 
-proj:
-	cd "$(mkfile_dir)" && "../../Hog/CreateProject.sh" "$(proj)"
-	cd "$(mkfile_dir)" && make clean
+create:
+	"../../Hog/CreateProject.sh" $(proj)
+
+proj: create
+
+synth:
+	"../../Hog/LaunchWorkflow.sh" "-synth_only" $(proj)
+
+impl:
+	"../../Hog/LaunchWorkflow.sh" "-impl_only" $(proj)
 
 gui:
-	cd "$(mkfile_dir)" && vivado "../../VivadoProject/$(proj)/$(proj).xpr"
-	cd "$(mkfile_dir)" && make clean
+	vivado "../../Projects/$(proj)/$(curr).xpr"
 
-clean:
-	cd "$(mkfile_dir)" && $(RM) *.jou *.log *.str *.tmp vivado*
+all: create synth impl
 
-clean_proj:
-	cd "$(mkfile_dir)" && $(RM) -r "../../VivadoProject/$(proj)"
-
-clean_pkgs:
-	cd "$(mkfile_dir)" && make -C "../../types" clean
-	cd "$(mkfile_dir)" && make -C "../../ttc/pkg" clean 
-	cd "$(mkfile_dir)" && make -C "../../daq/pkg" clean
-
-clean_all: clean_pkgs clean_proj clean

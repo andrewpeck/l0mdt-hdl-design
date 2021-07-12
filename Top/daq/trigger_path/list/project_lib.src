@@ -1,0 +1,4 @@
+HAL/ttc/ttc_lib.src                     lib=ttc_lib
+UserLogic/daq/daq.src
+UserLogic/daq/basic_lib.src                  lib=basic_lib
+

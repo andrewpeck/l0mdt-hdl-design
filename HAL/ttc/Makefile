@@ -1,0 +1,3 @@
+types:
+	bash types.sh
+

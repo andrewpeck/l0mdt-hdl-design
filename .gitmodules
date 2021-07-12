@@ -44,3 +44,9 @@ url = ../lpgbt-emul.git
 [submodule "shared/SpyBuffer"]
 path = shared/SpyBuffer
 url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
+[submodule "UserLogic/daq/daq-core"]
+	path = UserLogic/daq/daq-core
+	url = ssh://git@gitlab.cern.ch:7999/tcpaiva/atlas-daq-core.git
+[submodule "HAL/ttc/ttc-core"]
+	path = HAL/ttc/ttc-core
+	url = ssh://git@gitlab.cern.ch:7999/tcpaiva/atlas-ttc-core.git

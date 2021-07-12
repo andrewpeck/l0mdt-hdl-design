@@ -1,0 +1,3 @@
+UserLogic/daq/data_path/daq_config_defs.vhd
+UserLogic/daq/data_path/daq_defs.vhd
+UserLogic/daq/data_path/daq_row_defs.vhd
