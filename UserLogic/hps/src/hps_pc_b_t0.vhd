@@ -39,6 +39,7 @@ library apbus_lib;
 entity hps_pc_b_t0 is
   generic(
     -- parameters
+    g_DELAY_CYCLES      : integer := 0;
     g_CHAMBER           : integer := 0;
     g_STATION_RADIUS    : integer := 0  --station
   );
@@ -84,6 +85,13 @@ architecture beh of hps_pc_b_t0 is
     end loop;
     return y;
   end function;
+
+  signal time_t0           : unsigned(MDT_TIME_LEN-1 downto 0);
+  signal time_t0_dv        : std_logic;
+
+  type time_t0_pl_at is array (g_DELAY_CYCLES -1 downto 0) of unsigned(MDT_TIME_LEN-1 downto 0);
+  signal time_t0_pl_a : time_t0_pl_at;
+  signal time_t0_dv_pl : std_logic_vector(g_DELAY_CYCLES -1 downto 0);
 
   signal mem : t0LUT_chamber_avt := init_T0_MEM(g_STATION_RADIUS,c_SECTOR_ID);
 
@@ -137,15 +145,15 @@ begin
   begin
     if rising_edge(clk) then
       if rst= '1' then
-        o_time_t0 <= (others => '0');
-        o_dv <= '0';
+        time_t0 <= (others => '0');
+        time_t0_dv <= '0';
       else
         if(i_dv = '1') then
-          o_time_t0 <= mem(to_integer(i_chamber));
-          o_dv <= '1';
+          time_t0 <= mem(to_integer(i_chamber));
+          time_t0_dv <= '1';
         else
-          o_time_t0 <= (others => '0');
-          o_dv <= '0';
+          time_t0 <= (others => '0');
+          time_t0_dv <= '0';
         end if;
         if apb_dv_o = '1' then
           apb_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
@@ -158,6 +166,37 @@ begin
     end if ;
   end process;
 
+  OUT_PL_GEN: if g_DELAY_CYCLES = 0 generate
+    o_time_t0 <= time_t0;
+    o_dv <= time_t0_dv;
+  else generate
+
+
+    out_pl: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          time_t0_pl_a <= (others => (others => '0'));
+          time_t0_dv_pl <= (others => '0');
+        else
+          if g_DELAY_CYCLES = 1 then
+            time_t0_pl_a(0)  <= time_t0;
+            time_t0_dv_pl(0) <= time_t0_dv;
+          else
+            time_t0_pl_a(g_DELAY_CYCLES - 1)  <= time_t0;
+            time_t0_dv_pl(g_DELAY_CYCLES - 1) <= time_t0_dv;
+            for pl_i in g_DELAY_CYCLES - 1 downto 1 loop
+              time_t0_pl_a(pl_i - 1)  <= time_t0_pl_a(pl_i );
+              time_t0_dv_pl(pl_i - 1) <= time_t0_dv_pl(pl_i);
+            end loop;
+          end if;
+          
+        end if;
+      end if;
+    end process out_pl;
+    o_time_t0 <= time_t0_pl_a(0);
+    o_dv <= time_t0_dv_pl(0);
+  end generate OUT_PL_GEN;
   
 end architecture beh;
 

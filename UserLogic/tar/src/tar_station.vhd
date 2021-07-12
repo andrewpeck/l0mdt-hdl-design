@@ -85,11 +85,11 @@ begin
         clk         => clk,
         rst         => rst,
         ena         => glob_en,
+        --
         -- Ctrl/Mon 
         -- ctrl  => apb_ctrl_mem_v,
         -- mon   => apb_mon_mem_v,
         -- i_freeze    => i_freeze,
-  
         --
         i_data      => i_tdc_hits_av(b_i),
         i_dv        => i_tdc_hits_ar(b_i).data_valid,
