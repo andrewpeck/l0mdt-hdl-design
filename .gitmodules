@@ -46,4 +46,4 @@ path = shared/SpyBuffer
 url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
 [submodule "shared/vamc"]
 	path = shared/vamc
-	url = https://gitlab.com/taquionbcn/vhdl-advanced-memory-controller.git
+	url = https://gitlab.com/taquionbcn/vamc.git
