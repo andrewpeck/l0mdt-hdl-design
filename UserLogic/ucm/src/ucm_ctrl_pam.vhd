@@ -171,7 +171,7 @@ begin
 
   -- out pl
 
-  PL_CVP_RST : entity vamc_lib.vamc_sr
+  PL_CVP_RST : entity vamc_lib.vamc_spl
       generic map(
         g_DELAY_CYCLES  => g_CVP_PL,
         g_PIPELINE_WIDTH    => int_cvp_rst'length
@@ -185,7 +185,7 @@ begin
         o_data      => o_cvp_rst
     );
 
-    PL_CVP_CTRL : entity vamc_lib.vamc_sr
+    PL_CVP_CTRL : entity vamc_lib.vamc_spl
       generic map(
         g_DELAY_CYCLES  => g_CVP_PL,
         g_PIPELINE_WIDTH    => int_cvp_ctrl'length
@@ -202,7 +202,7 @@ begin
   TH_GEN: for th_i in c_NUM_THREADS -1 downto 0 generate
 
     int_proc_info_v(th_i) <= vectorify(int_proc_info_r(th_i));
-    PL_PROC_INFO : entity vamc_lib.vamc_sr
+    PL_PROC_INFO : entity vamc_lib.vamc_spl
       generic map(
         g_DELAY_CYCLES  => g_PAM_INFO_PL,
         g_PIPELINE_WIDTH    => int_proc_info_v(th_i)'length
@@ -218,7 +218,7 @@ begin
     o_proc_info(th_i) <= structify(o_proc_info_v(th_i));
   
     int_pam_ctrl_v(th_i) <= vectorify(int_pam_ctrl_r)(th_i);
-    PL_PAM_CTRL : entity vamc_lib.vamc_sr
+    PL_PAM_CTRL : entity vamc_lib.vamc_spl
       generic map(
         g_DELAY_CYCLES  => g_PAM_CTRL_PL,
         g_PIPELINE_WIDTH    => int_pam_ctrl_v(th_i)'length

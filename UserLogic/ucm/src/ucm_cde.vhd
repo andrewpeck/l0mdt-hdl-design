@@ -184,7 +184,7 @@ begin
 
 
 
-    PL_in : entity vamc_lib.vamc_sr
+    PL_in : entity vamc_lib.vamc_spl
       generic map(
         g_DELAY_CYCLES  => 2,
         g_PIPELINE_WIDTH    => i_slc_data_v'length

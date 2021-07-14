@@ -130,7 +130,7 @@ begin
 
   );
 
-  dv_delay : entity vamc_lib.vamc_sr
+  dv_delay : entity vamc_lib.vamc_spl
   generic map(
     g_DELAY_CYCLES        => 1,
     g_PIPELINE_WIDTH      => 2

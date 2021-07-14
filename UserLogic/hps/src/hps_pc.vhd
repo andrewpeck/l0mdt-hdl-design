@@ -177,7 +177,7 @@ begin
     --   end if;
     -- end process data_pl;
 
-    PL_B : entity vamc_lib.vamc_sr
+    PL_B : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES      => 2,
       g_PIPELINE_WIDTH    => i_mdt_tar_v'length

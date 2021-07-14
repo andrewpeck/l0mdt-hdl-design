@@ -156,7 +156,7 @@ begin
 
   pl2mtc_v <= vectorify(pl2mtc_r);
 
-  PL_B : entity vamc_lib.vamc_sr
+  PL_B : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
       g_PIPELINE_WIDTH    => pl2mtc_v'length

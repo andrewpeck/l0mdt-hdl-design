@@ -371,7 +371,7 @@ begin
       o_result    => bnom_1,
       o_dv        => bnom_1_dv
   );
-  PL_sum_z : entity vamc_lib.vamc_sr
+  PL_sum_z : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES  => 3,
       g_PIPELINE_WIDTH    => sum_Z'length
@@ -549,7 +549,7 @@ begin
       o_dv        => int_off_dv
   );
 
-  PL_slope : entity vamc_lib.vamc_sr
+  PL_slope : entity vamc_lib.vamc_spl
     generic map(
       g_DELAY_CYCLES  => 6,
       g_PIPELINE_WIDTH    => 32
