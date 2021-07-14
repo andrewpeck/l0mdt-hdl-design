@@ -130,22 +130,6 @@ begin
     -- o_mtc_av      => pl2mtc_av
   );
 
-  -- MPL_B : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-  --   -- PL : entity shared_lib.std_pipeline
-  --   -- generic map(
-  --   --   g_DELAY_CYCLES      => MPL_PL_B_LATENCY,
-  --   --   g_PIPELINE_WIDTH    => pl2mtc_av(sl_i)'length
-  --   -- )
-  --   -- port map(
-  --   --   clk         => clk,
-  --   --   rst         => local_rst,
-  --   --   glob_en     => local_en,
-  --   --   --
-  --   --   i_data      => pl2mtc_av(sl_i),
-  --   --   o_data      => o_pl2mtc_av(sl_i)
-  --   -- );
-  -- end generate;
-
   PL_2_TF : for c_i in c_NUM_THREADS -1 downto 0 generate
     -- muid
     pl2ptcalc_ar(c_i).muid.slcid        <= main_pl_out_ar(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - c_i) - 1).common.slcid;

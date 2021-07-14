@@ -27,6 +27,8 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+library vamc_lib;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 library heg_lib;
@@ -104,7 +106,7 @@ begin
 
     fifo_wr(hp_i) <= i_mdt_hits_ar(hp_i).mdt_valid and i_mdt_hits_ar(hp_i).data_valid;
 
-    rb : entity shared_lib.ring_buffer_v2
+    rb : entity vamc_lib.vamc_rb
     generic map (
       g_SIMULATION => '1',
       g_LOGIC_TYPE    => "fifo",

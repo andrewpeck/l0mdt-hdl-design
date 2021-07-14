@@ -25,6 +25,8 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+library vamc_lib;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
@@ -128,33 +130,21 @@ begin
 
   );
 
-  dv_delay : entity shared_lib.std_pipeline
+  dv_delay : entity vamc_lib.vamc_sr
   generic map(
-    g_DELAY_CYCLES    => 1,
+    g_DELAY_CYCLES        => 1,
     g_PIPELINE_WIDTH      => 2
   )
   port map(
-    clk               => clk,
-    rst               => rst,
-    glob_en           => glob_en,
+    clk         => clk,
+    rst         => rst,
+    ena         => glob_en,
     --
-    i_data            => hm2pl,
-    o_data            => plout_hm
+    i_data      => hm2pl,
+    -- i_dv        => i_mdt_tar_r.data_valid,
+    o_data      => plout_hm
+    -- o_dv        => pl_mdt_tar_dv
   );
-
-  -- hv_delay : entity shared_lib.std_pipeline
-  -- generic map(
-  --   g_DELAY_CYCLES    => 2,
-  --   g_PIPELINE_WIDTH      => 1
-  -- )
-  -- port map(
-  --   clk               => clk,
-  --   rst               => rst,
-  --   glob_en           => glob_en,
-  --   --
-  --   i_data(0)         => int_hit_valid,
-  --   o_data(0)         => mdt_valid_pl
-  -- );
 
   data_2_sf_r.mdt_valid <= plout_hm(0);
   data_2_sf_r.data_valid <= plout_hm(1) and tdc_paramcalc_valid;
