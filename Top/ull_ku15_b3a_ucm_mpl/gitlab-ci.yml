@@ -22,7 +22,8 @@ SIM:ull_ku15_b3a_ucm_mpl:
       - questa
       - hog
     script:
-      - ls /opt
+      - echo $PATH
+      - ls -R /opt
 # user_sim:ull_ku15_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:
