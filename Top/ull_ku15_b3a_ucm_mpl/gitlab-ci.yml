@@ -16,7 +16,7 @@ SIM:ull_ku15_b3a_ucm_mpl:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl
       HOG_CHECK_PROJVER: 0
-      HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64"
+      #HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64"
     allow_failure: false
     tags:
       - questa
