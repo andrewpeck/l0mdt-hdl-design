@@ -20,8 +20,11 @@ SIM:ull_ku15_b3a_ucm_mpl:
     allow_failure: false
     before_script:
       - export PATH=$HOG_PATH:$PATH
+      - echo $PATH
+      - id
     after_script:
       - echo $PATH
+      - id
       - ls -l /opt
     tags:
       - questa
