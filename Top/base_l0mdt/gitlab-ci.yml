@@ -6,6 +6,5 @@ GEN:base_l0mdt:
       PROJECT_NAME: base_l0mdt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       HOG_CHECK_SYNTAX : 0
-      HOG_RESET_FILES: 1 # try to fix the "XML parser problem"
     tags:
       - heavy-duty
