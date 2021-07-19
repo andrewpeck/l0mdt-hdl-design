@@ -16,6 +16,8 @@ SIM:ull_ku15_b3a_ucm_mpl_hps:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps
     allow_failure: false
+    before_script:
+      - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64:$PATH"
     tags:
       - questa
       - hog
