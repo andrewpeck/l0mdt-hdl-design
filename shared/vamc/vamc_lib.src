@@ -1,0 +1,24 @@
+#---------------------------------
+# MAIN VHDL AMC FILES
+#---------------------------------
+shared/vamc/vamc-core/pkg/vamc_pkg.vhd
+
+# shared/vamc/vamc-core/src/modules/vamc_pl.vhd
+shared/vamc/vamc-core/src/modules/vamc_rb.vhd
+shared/vamc/vamc-core/src/modules/vamc_sr.vhd
+shared/vamc/vamc-core/src/modules/vamc_csw_in.vhd
+shared/vamc/vamc-core/src/modules/vamc_csw_out.vhd
+shared/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd
+shared/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd
+
+shared/vamc/vamc-core/src/vamc_top.vhd
+shared/vamc/vamc-core/src/vamc_spl.vhd
+# shared/vamc/vamc-core/src/vamc_controller.vhd
+
+#---------------------------------
+#  MPCVMEM
+#---------------------------------
+# shared/vamc/vamc-core/mpcvmem/mpcvmem_lib.src lib=mpcvmem_lib
+# shared/vamc/mpcvmem/pkg/mpcvmem_pkg.vhd
+# shared/vamc/vamc-core/mpcvmem/src/mpcvmem.vhd
+# shared/vamcy/mpcvmem/src/DualPortMem.vhd

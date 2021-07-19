@@ -41,10 +41,10 @@ RIV:ull_vu13_b3a_ucm_mpl_hps_csf:
       extends: .riviera_vars
       PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps_csf
       HOG_CHECK_PROJVER: 0
-      HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+      # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
       HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
-
-
+    before_script:
+      - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
       
 CHK:ull_vu13_b3a_ucm_mpl_hps_csf:
   extends: .sim_check
