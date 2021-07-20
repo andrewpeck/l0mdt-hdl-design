@@ -45,5 +45,5 @@ url = ../lpgbt-emul.git
 path = shared/SpyBuffer
 url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
 [submodule "shared/vamc/vamc-core"]
-path = shared/vamc/vamc-core
-url = https://gitlab.com/taquionbcn/vamc.git
+	path = shared/vamc/vamc-core
+	url = https://gitlab.com/taquionbcn/vamc.git
