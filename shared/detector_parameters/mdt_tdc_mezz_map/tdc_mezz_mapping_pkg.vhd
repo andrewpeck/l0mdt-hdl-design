@@ -287,6 +287,33 @@ package tdc_mezz_mapping_pkg is
   type hh_mdt_mezz_map_t is array (0 to 23) of integer;
   function get_tdc_tube_map(station : integer; multilayer : integer; t_nl : integer) return hh_mdt_mezz_map_t;
 
+  type chamb_b_station_numch_t is array(0 to 15) of integer;
+  type chamb_b_station_side_t is array(0 to 1) of chamb_b_station_numch_t;
+
+  constant num_chamb_b_inn_station : chamb_b_station_t :(
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+  );
+
+  constant num_chamb_b_mid_station : chamb_b_station_t :(
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+  );
+
+  constant num_chamb_b_out_station : chamb_b_station_t :(
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+  );
+
+  constant num_chamb_b_ext_station : chamb_b_station_t :(
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
+    (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
+  );
+
+  function get_num_tubes_layer_station(sr: integer) return integer;
+
+  -- function get_num_chamb( ) return integer;
+
   type mezz_b_chamber_dist_chamber_t is array (0 to MAX_NUM_CHAMBER_POS - 1) of integer;
   type mezz_b_chamber_dist_side_t is array ( 0 to 1) of mezz_b_chamber_dist_chamber_t;
   type mezz_b_chamber_dist_t is array (0 to 15) of mezz_b_chamber_dist_side_t;
@@ -568,6 +595,24 @@ package body tdc_mezz_mapping_pkg is
       y := integer(ceil((real(num_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*8.0));
     elsif sr = 2 then
       y := integer(ceil((real(num_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c))/2.0)*8.0));
+    elsif sr = 4 then
+
+    else
+
+    end if;
+    return y;
+  end function;
+
+  function get_num_tubes_layer_station(sr: integer) return integer is
+    variable y : integer;
+  begin
+    
+    if sr = 0 then
+      y := integer(ceil((real(accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_inn_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*6.0));
+    elsif sr = 1 then
+      y := integer(ceil((real(accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_mid_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*8.0));
+    elsif sr = 2 then
+      y := integer(ceil((real(accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_out_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*8.0));
     elsif sr = 4 then
 
     else
