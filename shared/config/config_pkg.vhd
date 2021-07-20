@@ -30,6 +30,7 @@ use shared_lib.common_types_pkg.all;
 --use shared_lib.cfg_global_default_pkg.all;
 use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
 
 
 library shared_cfg_def_lib;

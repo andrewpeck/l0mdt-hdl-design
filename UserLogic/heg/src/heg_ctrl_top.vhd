@@ -88,6 +88,10 @@ architecture beh of heg_ctrl_top is
   signal o_sf_control_r     : heg_ctrl2sf_rt;
   -- signal o_hp_control_r     : heg_ctrl2sf_rt;
 
+  signal roi_global_x        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal roi_global_z        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal roi_dv              : std_logic;
+
 begin
 
   o_SLC_Window_v <= SLC_Window_v;
@@ -111,6 +115,27 @@ begin
     -- SLc out
     o_SLC_Window_v        => SLC_Window_v,
     o_Roi_win_valid       => Roi_win_valid
+  );
+
+  HEG_CTRL_ROI_ORG : entity heg_lib.heg_ctrl_roi_tc
+  generic map(
+    g_STATION_RADIUS => g_STATION_RADIUS
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    ena                 => glob_en,
+    --
+    -- ctrl_v              => ,
+    -- mon_v               => ,
+    --
+    -- i_layer             => ,
+    i_tube              => SLC_Window_v(0).lo,
+    i_dv                => Roi_win_valid,
+    --
+    o_global_x          => roi_global_x,
+    o_global_z          => roi_global_z,
+    o_dv                => roi_dv
   );
 
   HEG_SIGNALS : entity heg_lib.heg_ctrl_sig

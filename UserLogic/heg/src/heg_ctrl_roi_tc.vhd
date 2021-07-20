@@ -39,9 +39,9 @@ use ctrl_lib.H2S_CTRL.all;
 
 library apbus_lib;
 
-entity hps_pc_mdt_tc is
+entity heg_ctrl_roi_tc is
   generic(
-    g_CHAMBER         : integer := 0;
+    -- g_CHAMBER         : integer := 0;
     g_STATION_RADIUS  : integer := 0
   );
   port (
@@ -52,7 +52,7 @@ entity hps_pc_mdt_tc is
     ctrl_v            : in std_logic_vector;  -- H2S_HPS_MDT_TC_MDT_TC_CTRL_t; 
     mon_v             : out std_logic_vector; -- H2S_HPS_MDT_TC_MDT_TC_MON_t;
     --
-    i_layer           : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);  -- 5
+    -- i_layer           : in unsigned(TAR2HPS_LAYER_LEN-1 downto 0);  -- 5
     i_tube            : in unsigned(TAR2HPS_TUBE_LEN-1 downto 0);   -- 9
     i_dv              : in std_logic;
     --
@@ -60,54 +60,49 @@ entity hps_pc_mdt_tc is
     o_global_z        : out unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     o_dv              : out std_logic
   );
-end entity hps_pc_mdt_tc;
+end entity heg_ctrl_roi_tc;
 
-architecture beh of hps_pc_mdt_tc is
+architecture beh of heg_ctrl_roi_tc is
   
   -- signal ctrl_v : std_logic_vector(len(ctrl) - 1  downto 0);
   -- signal mon_v : std_logic_vector(len(mon) - 1  downto 0);
   constant ADDR_WIDTH : integer := 10;
   constant DATA_WIDTH : integer := 38;
 
-  constant num_tubes_layer_chamber : integer := get_num_tubes_layer_chamber(g_STATION_RADIUS,g_CHAMBER);
-  constant csm_offset_mem : integer := get_csm_accumulated_tubes(g_STATION_RADIUS)(g_CHAMBER);
+  constant num_tubes_layer_station : integer := get_num_tubes_layer_station(g_STATION_RADIUS);
+  -- constant csm_offset_mem : integer := get_csm_accumulated_tubes(g_STATION_RADIUS)(g_CHAMBER);
 
-  type tcLUT_chamber_avt is array (0 to 1023) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
+  type tcLUT_station_avt is array (0 to 511) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  function init_TC_MEM(r , s , tube_o , tube_n: integer)return tcLUT_chamber_avt is
-    variable y : tcLUT_chamber_avt;
+  function init_ROI_TC_MEM(r , s , tube_n: integer)return tcLUT_station_avt is
+    variable y : tcLUT_station_avt;
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
   begin
     for it in 0 to tube_n - 1 loop
       if r = 0 then
-        for il in 0 to 7 loop
-          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
-          value := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
-          std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
-          y(to_integer(index)) := value;
-          -- y(to_integer(index)) := std_logic_vector(to_unsigned(to_integer(index),38));
-        end loop;
+        y := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_inn(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
+
+        -- for il in 0 to 7 loop
+        --   index := to_unsigned(il,3)  & to_unsigned(it,7) ;
+        --   value := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        --   std_logic_vector(to_unsigned(integer(tube_coordinates_inn(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
+        --   y(to_integer(index)) := value;
+        --   -- y(to_integer(index)) := std_logic_vector(to_unsigned(to_integer(index),38));
+        -- end loop;
       elsif r = 1 then
-        for il in 0 to 5 loop
-          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
-          value := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
-          std_logic_vector(to_unsigned(integer(tube_coordinates_mid(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
-          y(to_integer(index)) := value;
-        end loop;
+        y := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_mid(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
       elsif r = 2 then
-        for il in 0 to 5 loop
-          index := to_unsigned(il,3)  & to_unsigned(it,7) ;
-          value := std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(0)*MDT_GLOBAL_AXI_MULT),19)) &
-          std_logic_vector(to_unsigned(integer(tube_coordinates_out(tube_o + it)(il)(1)*MDT_GLOBAL_AXI_MULT),19));
-          y(to_integer(index)) := value;
-        end loop;
+        y := std_logic_vector(to_unsigned(integer(tube_coordinates_out(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+          std_logic_vector(to_unsigned(integer(tube_coordinates_out(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
       end if;
     end loop;
     return y;
   end function;
 
-  signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,csm_offset_mem,num_tubes_layer_chamber);
+  signal mem : tcLUT_station_avt := init_ROI_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,num_tubes_layer_station);
 
   signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
   signal local_tube : std_logic_vector(9 downto 0);

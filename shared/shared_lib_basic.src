@@ -33,7 +33,7 @@ dataformats/l0mdt_buses_constants.svh
 shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 
 #-------------------
-# Detector shared RAMs
+# Detector parameters
 #-------------------
 shared/detector_parameters/detector_param_pkg.vhd
 shared/detector_parameters/detector_time_param_pkg.vhd

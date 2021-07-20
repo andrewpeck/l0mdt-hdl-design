@@ -290,22 +290,22 @@ package tdc_mezz_mapping_pkg is
   type chamb_b_station_numch_t is array(0 to 15) of integer;
   type chamb_b_station_side_t is array(0 to 1) of chamb_b_station_numch_t;
 
-  constant num_chamb_b_inn_station : chamb_b_station_t :(
+  constant num_chamb_b_inn_station : chamb_b_station_side_t :=(
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
   );
 
-  constant num_chamb_b_mid_station : chamb_b_station_t :(
+  constant num_chamb_b_mid_station : chamb_b_station_side_t :=(
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
   );
 
-  constant num_chamb_b_out_station : chamb_b_station_t :(
+  constant num_chamb_b_out_station : chamb_b_station_side_t :=(
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
   );
 
-  constant num_chamb_b_ext_station : chamb_b_station_t :(
+  constant num_chamb_b_ext_station : chamb_b_station_side_t :=(
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6),
     (6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6)
   );
@@ -608,11 +608,11 @@ package body tdc_mezz_mapping_pkg is
   begin
     
     if sr = 0 then
-      y := integer(ceil((real(accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_inn_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*6.0));
+      y := integer(ceil((real(accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_inn_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*6.0));
     elsif sr = 1 then
-      y := integer(ceil((real(accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_mid_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*8.0));
+      y := integer(ceil((real(accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_mid_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*8.0));
     elsif sr = 2 then
-      y := integer(ceil((real(accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_out_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)(c)))/2.0)*8.0));
+      y := integer(ceil((real(accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_out_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*8.0));
     elsif sr = 4 then
 
     else
