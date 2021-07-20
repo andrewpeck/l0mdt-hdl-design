@@ -47,15 +47,15 @@ entity hit_processor is
     i_SLC_Window        : in hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
     i_slc_data_v        : in hp_heg2hp_slc_rvt;
     -- MDT hit
-    i_mdt_data          : in hp_hpsPc2hp_rvt;
+    i_mdt_data_v          : in hp_hpsPc2hp_rvt;
     -- to Segment finder
-    o_hit_data          : out hp_hp2bm_rvt
+    o_hit_data_v          : out hp_hp2bm_rvt
   );
 end entity hit_processor;
 
 architecture beh of hit_processor is
-  signal slc_data             : hp_heg2hp_slc_rt;
-  signal mdt_data             : hp_hpsPc2hp_rt;
+  signal slc_data_r             : hp_heg2hp_slc_rt;
+  signal mdt_data_r             : hp_hpsPc2hp_rt;
   -- signal tdc_time_t0          : mdt_time_le_st;
   -- signal tdc_time_comp_valid  : std_logic;
   -- signal tdc_hitmatch_valid   : std_logic;
@@ -71,10 +71,10 @@ architecture beh of hit_processor is
 
 begin
 
-  mdt_data <= structify(i_mdt_data);
-  slc_data <= structify(i_slc_data_v);
+  mdt_data_r <= structify(i_mdt_data_v);
+  slc_data_r <= structify(i_slc_data_v);
 
-  o_hit_data <= vectorify(data_2_sf_r);
+  o_hit_data_v <= vectorify(data_2_sf_r);
 
 
   HP_HM : entity hp_lib.hp_matching
@@ -91,12 +91,12 @@ begin
     -- SLc
     i_SLC_Window        => i_SLC_Window,
     -- i_SLc_rpc_z         => i_slc_data_av.barrel.z,
-    i_SLc_BCID          => slc_data.BCID,
+    i_SLc_BCID          => slc_data_r.BCID,
     -- MDT hit
-    i_mdt_layer         => mdt_data.layer,
-    i_mdt_tube          => mdt_data.tube,
-    i_mdt_time_real     => mdt_data.time_t0,
-    i_data_valid        => mdt_data.data_valid,
+    i_mdt_layer         => mdt_data_r.layer,
+    i_mdt_tube          => mdt_data_r.tube,
+    i_mdt_time_real     => mdt_data_r.time_t0,
+    i_data_valid        => mdt_data_r.data_valid,
     -- to Segment finder
     o_hit_valid         => hm2pl(0),
     o_data_valid        => hm2pl(1)
@@ -113,14 +113,14 @@ begin
     glob_en             => glob_en and local_en,
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
-    i_SLc_specific      => slc_data.specific,
-    i_SLc_BCID          => slc_data.BCID,
+    i_SLc_specific      => slc_data_r.specific,
+    i_SLc_BCID          => slc_data_r.BCID,
     -- MDT hit
-    i_mdt_time_real     => mdt_data.time_t0,
-    i_mdt_z             => mdt_data.global_z,
-    -- i_mdt_x             => mdt_data.global_x,
-    i_mdt_layer         => mdt_data.layer,
-    i_data_valid        => mdt_data.data_valid,
+    i_mdt_time_real     => mdt_data_r.time_t0,
+    i_global_z          => mdt_data_r.global_z,
+    i_global_x          => mdt_data_r.global_x,
+    i_mdt_layer         => mdt_data_r.layer,
+    i_data_valid        => mdt_data_r.data_valid,
     -- to Segment finder
     o_tube_radius       => data_2_sf_r.data.radius,
     o_local_x           => data_2_sf_r.data.local_x,

@@ -113,12 +113,12 @@ begin
         i_SLC_Window        => roi_b_Window,
         i_slc_data_v        => hegC2hp_uCM_data,
         -- MDT hit
-        i_mdt_data          => i_mdt_full_data_av(i_hp),
+        i_mdt_data_v          => i_mdt_full_data_av(i_hp),
         -- i_mdt_valid         => i_mdt_valid,
         -- i_mdt_time_real     => i_mdt_time_real,
         -- to Segment finder
         -- o_sf_slc_data_v       => o_sf_slc_data_v,
-        o_hit_data       => hp2bm_av(i_hp)
+        o_hit_data_v       => hp2bm_av(i_hp)
       );
     end generate;
   end generate;

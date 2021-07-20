@@ -40,7 +40,8 @@ entity hp_paramCalc is
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- MDT hit
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
-    i_mdt_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+    i_global_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+    i_global_x             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
     -- i_mdt_x             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
     i_mdt_layer         : in unsigned(MDT_LAYER_LEN -1 downto 0);
     i_data_valid        : in std_logic;
@@ -103,7 +104,10 @@ begin
     -- mdt
     -- i_mdt_x          => i_mdt_x,  
     i_mdt_layer     => i_mdt_layer,
-    i_mdt_z         => i_mdt_z,
+    i_cw_org_x      => i_cw_org_x,
+    i_cw_org_z      => i_cw_org_z,
+    i_global_z      => i_global_z,
+    i_global_x      => i_global_x,
     i_data_valid    => i_data_valid,
     -- to Segment finder
     o_local_y       => pl_local_y,  
