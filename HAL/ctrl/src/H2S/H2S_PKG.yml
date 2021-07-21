@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-07-06 16:28:22.601316.
+# Created : 2021-07-21 16:56:15.524269.
 config:
   basic_convert_functions : off
   packages:
@@ -125,6 +125,40 @@ hdl:
   - ERROR : [ type: logic, length: 32 ]
 
 
+- H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 6 ]
+  - wr_data_1 : [ type: logic, length: 32 ]
+
+
+- H2S_HPS_HEG_HEG_CTRL_ROI_TC_rd_data_MON_t:
+  - rd_data_0 : [ type: logic, length: 6 ]
+  - rd_data_1 : [ type: logic, length: 32 ]
+
+
+- H2S_HPS_HEG_HEG_CTRL_ROI_TC_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: H2S_HPS_HEG_HEG_CTRL_ROI_TC_rd_data_MON_t ]
+
+
+- H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data : [ type: H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t ]
+
+
+- H2S_HPS_HEG_HEG_CTRL_MON_t:
+  - ROI_TC : [ type: H2S_HPS_HEG_HEG_CTRL_ROI_TC_MON_t ]
+
+
+- H2S_HPS_HEG_HEG_CTRL_CTRL_t:
+  - ROI_TC : [ type: H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t ]
+
+
 - H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t:
   - RESET : [ type: logic ]
   - ENABLE : [ type: logic ]
@@ -166,6 +200,7 @@ hdl:
 - H2S_HPS_HEG_HEG_MON_t:
   - STATUS : [ type: H2S_HPS_HEG_HEG_STATUS_MON_t ]
   - COUNTERS : [ type: H2S_HPS_HEG_HEG_COUNTERS_MON_t ]
+  - CTRL : [ type: H2S_HPS_HEG_HEG_CTRL_MON_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_MON_t ]
 
 - H2S_HPS_HEG_HEG_MON_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_MON_t]
@@ -173,6 +208,7 @@ hdl:
 - H2S_HPS_HEG_HEG_CTRL_t:
   - ACTIONS : [ type: H2S_HPS_HEG_HEG_ACTIONS_CTRL_t ]
   - CONFIGS : [ type: H2S_HPS_HEG_HEG_CONFIGS_CTRL_t ]
+  - CTRL : [ type: H2S_HPS_HEG_HEG_CTRL_CTRL_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_CTRL_t ]
 
 - H2S_HPS_HEG_HEG_CTRL_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_CTRL_t]

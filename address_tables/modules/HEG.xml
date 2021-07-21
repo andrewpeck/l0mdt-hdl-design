@@ -27,8 +27,18 @@
     <node id="ERROR"   address="0x00000004" mask="0xFFFFFFFF" permission="r"/>
   </node>
 
+  <node id="CTRL" address="0x00000030">
+    <!-- <node id="ROI_TC" address="0x00000000"> -->
+      <!-- <node id="ext_ctrl"      address="0x0" mask="0x00001000" parameters="default=0" permission="rw"   description="external access to mem"/>
+      <node id="sel_thread"    address="0x0" mask="0x0000000f" parameters="default=0" permission="rw"   description="selected thread"/>
+      <node id="sel_station"   address="0x0" mask="0x000000f0" parameters="default=0" permission="rw"   description="selected station"/>
+      <node id="sel_layer"     address="0x0" mask="0x00000f00" parameters="default=0" permission="rw"   description="selected position 0x:rpc_layer 1x:center chamber"/> -->
+      <node id="ROI_TC" address="0x00000000" module="file://MEM_INT_10A38D.xml"/>
+    <!-- </node> -->
+  </node>
+
   <!-- Hit Processors -->
-  <node id="HP" address="0x00000030">
+  <node id="HP" address="0x00000040">
     <node id="HP_0" fwinfo="type=array" address="0x00000000" module="file://HP.xml"/>
     <node id="HP_1" fwinfo="type=array" address="0x00000010" module="file://HP.xml"/>
     <node id="HP_2" fwinfo="type=array" address="0x00000020" module="file://HP.xml"/>

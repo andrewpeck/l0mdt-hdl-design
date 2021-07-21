@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-04-01 21:31:43.132001.
+# Created : 2021-07-21 11:45:20.255890.
 config:
   basic_convert_functions : off
   packages:
@@ -14,12 +14,12 @@ hdl:
   - READY : [ type: logic ]
   - FEC_ERR_CNT : [ type: logic, length: 16 ]
 
-- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t]
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY: [array: 2, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t:
   - RESET : [ type: logic ]
 
-- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: [array: 1, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t]
+- HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t_ARRAY: [array: 2, type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_CTRL_t]
 
 - HAL_CSM_CSM_LPGBT_UPLINK_MON_t:
   - UPLINK : [ type: HAL_CSM_CSM_LPGBT_UPLINK_UPLINK_MON_t_ARRAY ]
@@ -57,7 +57,7 @@ hdl:
   - RX_CHANNEL : [ type: logic, length: 8 ]
   - RX_DATA : [ type: logic, length: 32 ]
 
-- HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY: [array: 2, type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t]
+- HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY: [array: 3, type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t]
 
 - HAL_CSM_CSM_SC_MASTER_RX_MON_t:
   - RX : [ type: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY ]
@@ -126,13 +126,13 @@ hdl:
   - LPGBT : [ type: HAL_CSM_CSM_LPGBT_MON_t ]
   - SC : [ type: HAL_CSM_CSM_SC_MON_t ]
 
-- HAL_CSM_CSM_MON_t_ARRAY: [array: 17, type: HAL_CSM_CSM_MON_t]
+- HAL_CSM_CSM_MON_t_ARRAY: [array: 18, type: HAL_CSM_CSM_MON_t]
 
 - HAL_CSM_CSM_CTRL_t:
   - LPGBT : [ type: HAL_CSM_CSM_LPGBT_CTRL_t ]
   - SC : [ type: HAL_CSM_CSM_SC_CTRL_t ]
 
-- HAL_CSM_CSM_CTRL_t_ARRAY: [array: 17, type: HAL_CSM_CSM_CTRL_t]
+- HAL_CSM_CSM_CTRL_t_ARRAY: [array: 18, type: HAL_CSM_CSM_CTRL_t]
 
 - HAL_CSM_MON_t:
   - CSM : [ type: HAL_CSM_CSM_MON_t_ARRAY ]

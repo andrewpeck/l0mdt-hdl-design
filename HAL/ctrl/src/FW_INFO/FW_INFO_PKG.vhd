@@ -1,7 +1,11 @@
 --This file was auto-generated.
 --Modifications might be lost.
+-- Created : 2021-07-21 11:45:59.019967.
 library IEEE;
 use IEEE.std_logic_1164.all;
+
+library shared_lib;
+use shared_lib.common_ieee.all;
 
 
 package FW_INFO_CTRL is

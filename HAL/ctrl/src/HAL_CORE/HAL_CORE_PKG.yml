@@ -1,7 +1,7 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-04-01 21:30:31.529845.
+# Created : 2021-07-21 11:42:07.308983.
 config:
   basic_convert_functions : off
   packages:
@@ -64,14 +64,14 @@ hdl:
   - STATUS : [ type: HAL_CORE_MGT_MGT_STATUS_MON_t ]
   - DRP : [ type: HAL_CORE_MGT_MGT_DRP_MON_t ]
 
-- HAL_CORE_MGT_MGT_MON_t_ARRAY: [array: 75, type: HAL_CORE_MGT_MGT_MON_t]
+- HAL_CORE_MGT_MGT_MON_t_ARRAY: [array: 76, type: HAL_CORE_MGT_MGT_MON_t]
 
 - HAL_CORE_MGT_MGT_CTRL_t:
   - DRP : [ type: HAL_CORE_MGT_MGT_DRP_CTRL_t ]
   - TX_RESETS : [ type: HAL_CORE_MGT_MGT_TX_RESETS_CTRL_t ]
   - RX_RESETS : [ type: HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t ]
 
-- HAL_CORE_MGT_MGT_CTRL_t_ARRAY: [array: 75, type: HAL_CORE_MGT_MGT_CTRL_t]
+- HAL_CORE_MGT_MGT_CTRL_t_ARRAY: [array: 76, type: HAL_CORE_MGT_MGT_CTRL_t]
 
 - HAL_CORE_MGT_MON_t:
   - MGT : [ type: HAL_CORE_MGT_MGT_MON_t_ARRAY ]

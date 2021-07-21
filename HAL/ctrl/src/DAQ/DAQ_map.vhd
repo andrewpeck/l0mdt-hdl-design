@@ -69,8 +69,8 @@ begin  -- architecture behavioral
       case to_integer(unsigned(localAddress(0 downto 0))) is
 
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.STATUS;      --
-          localRdData( 1)  <=  Mon.READY;       --
+          localRdData( 0)  <=  Mon.STATUS;      -- 
+          localRdData( 1)  <=  Mon.READY;       -- 
 
 
         when others =>
