@@ -108,14 +108,14 @@ architecture beh of heg_ctrl_top is
 
 begin
 
-  -- ctrl_r <= structify(ctrl_v,ctrl_r);
-  -- mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
   
-  -- ctrl_roi_tc_r <= ctrl_r.ROI_TC;
-  -- mon_r.ROI_TC <= mon_roi_tc_r;
+  ctrl_roi_tc_r <= ctrl_r.ROI_TC;
+  mon_r.ROI_TC <= mon_roi_tc_r;
   
-  -- mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
-  -- ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
+  mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
+  ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
 
 
 

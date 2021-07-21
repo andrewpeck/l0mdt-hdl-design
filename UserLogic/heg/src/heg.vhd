@@ -79,14 +79,14 @@ architecture beh of heg is
 
 begin
 
-  -- ctrl_r <= structify(ctrl_v,ctrl_r);
-  -- mon_v <= vectorify(mon_r,mon_v);
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
 
-  -- heg_ctrl_ctrl_r <= ctrl_r.ctrl;
-  -- mon_r.ctrl <= heg_ctrl_mon_r;
+  heg_ctrl_ctrl_r <= ctrl_r.ctrl;
+  mon_r.ctrl <= heg_ctrl_mon_r;
   
-  -- heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
-  -- heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
+  heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
+  heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
 
 
 
