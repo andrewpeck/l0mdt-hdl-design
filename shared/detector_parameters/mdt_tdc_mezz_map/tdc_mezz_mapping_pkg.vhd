@@ -608,11 +608,11 @@ package body tdc_mezz_mapping_pkg is
   begin
     
     if sr = 0 then
-      y := integer(ceil((real(accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_inn_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*6.0));
+      y := integer(ceil((real(accum_mezz_barrel_inn_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_inn_station(c_SECTOR_SIDE)(c_SECTOR_ID-1)))/2.0)*6.0));
     elsif sr = 1 then
-      y := integer(ceil((real(accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_mid_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*8.0));
+      y := integer(ceil((real(accum_mezz_barrel_mid_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_mid_station(c_SECTOR_SIDE)(c_SECTOR_ID-1)))/2.0)*8.0));
     elsif sr = 2 then
-      y := integer(ceil((real(accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_out_station(c_SECTOR_ID-1)(c_SECTOR_SIDE)))/2.0)*8.0));
+      y := integer(ceil((real(accum_mezz_barrel_out_chamber_dist(c_SECTOR_ID-1)(c_SECTOR_SIDE)(num_chamb_b_out_station(c_SECTOR_SIDE)(c_SECTOR_ID-1)))/2.0)*8.0));
     elsif sr = 4 then
 
     else
