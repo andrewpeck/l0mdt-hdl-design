@@ -36,8 +36,8 @@ entity hp_paramCalc is
     glob_en             : in std_logic;
     -- SLc
     -- i_SLC_RoI_org       : in unsigned(MDT_TUBE_LEN-1 downto 0);
-    i_SLc_specific      : in std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
-    i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
+    i_SLc_data_v        : in std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
+    -- i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     -- MDT hit
     i_mdt_time_real     : in unsigned(MDT_TIME_LEN-1 downto 0);
     i_global_z             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
@@ -59,6 +59,8 @@ architecture beh of hp_paramCalc is
 
   signal barrel_data_r : hp_heg2hp_slc_b_rt;
 
+  signal SLc_data_r : hp_heg2hp_slc_rt;
+
   signal pl_local_y : unsigned(MDT_LOCAL_Y_LEN-1 downto 0);
   signal pl_local_x : unsigned(MDT_LOCAL_X_LEN-1 downto 0);
   signal pl_ml : std_logic;
@@ -68,8 +70,11 @@ architecture beh of hp_paramCalc is
   signal local_dv   : std_logic;
 
 begin
+
+  SLc_data_r <= structify(i_SLc_data_v);
+
   SLC_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
-    barrel_data_r <= structify(i_SLc_specific);
+    barrel_data_r <= structify(SLc_data_r.specific);
   end generate;
 
   HP_CALC_R : entity hp_lib.hp_calc_radius
@@ -81,7 +86,7 @@ begin
     rst             => rst,
     glob_en         => glob_en,
 
-    i_SLc_BCID      => i_SLc_BCID,
+    i_SLc_BCID      => SLc_data_r.bcid,
     i_mdt_time_t0   => i_mdt_time_real,
     i_data_valid    => i_data_valid,
 
@@ -103,9 +108,10 @@ begin
     -- i_SLc_y_0       =>
     -- mdt
     -- i_mdt_x          => i_mdt_x,  
-    i_mdt_layer     => i_mdt_layer,
-    i_cw_org_x      => i_cw_org_x,
-    i_cw_org_z      => i_cw_org_z,
+    -- i_mdt_layer     => i_mdt_layer,
+    i_cw_org_x      => SLc_data_r.roi_x,
+    i_cw_org_z      => SLc_data_r.roi_z,
+    i_cw_dv         => SLc_data_r.data_valid,
     i_global_z      => i_global_z,
     i_global_x      => i_global_x,
     i_data_valid    => i_data_valid,

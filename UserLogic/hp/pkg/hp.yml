@@ -40,6 +40,8 @@ HDL_Types:
 - hp_heg2hp_slc:
   - bcid        : [ type: unsigned , length: BCID_LEN]
   - specific    : [type: logic , length: HP_HEG2HP_SPECIFIC_LEN ]
+  - roi_z    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - roi_x    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
   - data_valid  : [ type: logic]
 
 # -----------------------------------------------------------

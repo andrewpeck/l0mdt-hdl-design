@@ -67,9 +67,11 @@ package hp_pkg is
   type hp_heg2hp_slc_rt is record
     bcid : unsigned(BCID_LEN-1 downto 0);
     specific : std_logic_vector(HP_HEG2HP_SPECIFIC_LEN-1 downto 0);
+    roi_z : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+    roi_x : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     data_valid : std_logic;
   end record hp_heg2hp_slc_rt;
-  constant HP_HEG2HP_SLC_LEN : integer := 32;
+  constant HP_HEG2HP_SLC_LEN : integer := 70;
   subtype hp_heg2hp_slc_rvt is std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
   function vectorify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rvt;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt;
@@ -290,16 +292,20 @@ package body hp_pkg is
   function vectorify(x: hp_heg2hp_slc_rt) return hp_heg2hp_slc_rvt is
     variable y : hp_heg2hp_slc_rvt;
   begin
-    y(31 downto 20)            := vectorify(x.bcid);
-    y(19 downto 1)             := vectorify(x.specific);
+    y(69 downto 58)            := vectorify(x.bcid);
+    y(57 downto 39)            := vectorify(x.specific);
+    y(38 downto 20)            := vectorify(x.roi_z);
+    y(19 downto 1)             := vectorify(x.roi_x);
     y(0 downto 0)              := vectorify(x.data_valid);
     return y;
   end function vectorify;
   function structify(x: hp_heg2hp_slc_rvt) return hp_heg2hp_slc_rt is
     variable y : hp_heg2hp_slc_rt;
   begin
-    y.bcid                     := structify(x(31 downto 20));
-    y.specific                 := structify(x(19 downto 1));
+    y.bcid                     := structify(x(69 downto 58));
+    y.specific                 := structify(x(57 downto 39));
+    y.roi_z                    := structify(x(38 downto 20));
+    y.roi_x                    := structify(x(19 downto 1));
     y.data_valid               := structify(x(0 downto 0));
     return y;
   end function structify;
@@ -308,6 +314,8 @@ package body hp_pkg is
   begin
     y.bcid                     := nullify(x.bcid);
     y.specific                 := nullify(x.specific);
+    y.roi_z                    := nullify(x.roi_z);
+    y.roi_x                    := nullify(x.roi_x);
     y.data_valid               := nullify(x.data_valid);
     return y;
   end function nullify;

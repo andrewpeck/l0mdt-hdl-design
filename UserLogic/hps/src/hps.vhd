@@ -153,8 +153,8 @@ begin
         rst                => int_rst, 
         glob_en            => int_ena,
         --        
-        ctrl               => heg_ctrl_av(heg_i),
-        mon                => heg_mon_av(heg_i),
+        ctrl_v             => heg_ctrl_av(heg_i),
+        mon_v              => heg_mon_av(heg_i),
         --
         i_uCM_data_v       => i_uCM2hps_av(heg_i),
         -- MDT hit

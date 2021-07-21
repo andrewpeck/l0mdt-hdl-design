@@ -113,8 +113,8 @@ begin
     glob_en             => glob_en and local_en,
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
-    i_SLc_specific      => slc_data_r.specific,
-    i_SLc_BCID          => slc_data_r.BCID,
+    i_SLc_data_v        => i_slc_data_v,--.specific,
+    -- i_SLc_BCID          => slc_data_r.BCID,
     -- MDT hit
     i_mdt_time_real     => mdt_data_r.time_t0,
     i_global_z          => mdt_data_r.global_z,

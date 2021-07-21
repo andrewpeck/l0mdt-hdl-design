@@ -81,7 +81,7 @@ architecture beh of heg_ctrl_roi_tc is
   begin
     for it in 0 to tube_n - 1 loop
       if r = 0 then
-        y := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        y(it) := std_logic_vector(to_unsigned(integer(tube_coordinates_inn(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_inn(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
 
         -- for il in 0 to 7 loop
@@ -92,10 +92,10 @@ architecture beh of heg_ctrl_roi_tc is
         --   -- y(to_integer(index)) := std_logic_vector(to_unsigned(to_integer(index),38));
         -- end loop;
       elsif r = 1 then
-        y := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        y(it) := std_logic_vector(to_unsigned(integer(tube_coordinates_mid(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_mid(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
       elsif r = 2 then
-        y := std_logic_vector(to_unsigned(integer(tube_coordinates_out(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
+        y(it) := std_logic_vector(to_unsigned(integer(tube_coordinates_out(it)(0)(0)*MDT_GLOBAL_AXI_MULT),19)) &
           std_logic_vector(to_unsigned(integer(tube_coordinates_out(it)(0)(1)*MDT_GLOBAL_AXI_MULT),19));
       end if;
     end loop;
@@ -112,7 +112,6 @@ architecture beh of heg_ctrl_roi_tc is
 
   signal mem_out : std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  
   -- APB signals
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
@@ -160,10 +159,10 @@ begin
   );  
 
   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
-  mem_index_std <= std_logic_vector(local_layer(2 downto 0)) & local_tube(6 downto 0);
+  -- mem_index_std <= std_logic_vector(local_layer(2 downto 0)) & local_tube(6 downto 0);
   -- mem_index_std(9 downto 7) <= std_logic_vector(i_layer(2 downto 0));
   -- mem_index_std(6 downto 0) <= local_tube(6 downto 0);
-  mem_index_int <= to_integer(unsigned(mem_index_std));
+  mem_index_int <= to_integer(unsigned(i_tube));
 
 
   DT2R : process(clk)
@@ -178,16 +177,16 @@ begin
         apb_data_i <= (others => '0');
       else
         local_tube_dv <= i_dv;
-        if i_dv = '1' then
-          -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
-          local_tube <= std_logic_vector(resize(i_tube,10) - to_unsigned(csm_offset_mem,10));
-          local_layer <= i_layer;
-        else
-          local_tube <= (others => '0');
-          local_layer <= (others => '0');
-        end if;
+        -- if i_dv = '1' then
+        --   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
+        --   local_tube <= std_logic_vector(resize(i_tube,10);-- - to_unsigned(csm_offset_mem,10));
+        --   local_layer <= i_layer;
+        -- else
+        --   local_tube <= (others => '0');
+        --   local_layer <= (others => '0');
+        -- end if;
 
-        if(local_tube_dv = '1') then
+        if(i_dv = '1') then
           mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
           o_dv <= '1';
         else
