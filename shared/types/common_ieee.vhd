@@ -19,6 +19,11 @@ package common_ieee is
   function len(x: unsigned) return natural;
   function len(x: signed) return natural;
   function len(x: natural) return natural;
+  function width(x: std_logic) return natural;
+  function width(x: std_logic_vector) return natural;
+  function width(x: unsigned) return natural;
+  function width(x: signed) return natural;
+  function width(x: natural) return natural;
 
   function structify(x: std_logic_vector; t: signed) return signed;
   function structify(x: std_logic_vector; t: unsigned) return unsigned;
@@ -45,6 +50,11 @@ package common_ieee is
   function nullify(y: unsigned) return unsigned;
   function nullify(y: signed) return signed;
   function nullify(y: integer) return integer;
+  function zeroed(y: std_logic) return std_logic;
+  function zeroed(y: std_logic_vector) return std_logic_vector;
+  function zeroed(y: unsigned) return unsigned;
+  function zeroed(y: signed) return signed;
+  function zeroed(y: integer) return integer;
 
 end package common_ieee;
 
@@ -87,6 +97,26 @@ package body common_ieee is
   begin
     return 32;
   end function len;
+  function width(x: std_logic) return natural is
+  begin
+    return 1;
+  end function width;
+  function width(x: std_logic_vector) return natural is
+  begin
+    return x'length;
+  end function width;
+  function width(x: unsigned) return natural is
+  begin
+    return x'length;
+  end function width;
+  function width(x: signed) return natural is
+  begin
+    return x'length;
+  end function width;
+  function width(x: natural) return natural is
+  begin
+    return 32;
+  end function width;
 
   function structify(x: std_logic_vector; t: signed) return signed is
     variable y: signed(t'range);
@@ -210,5 +240,25 @@ package body common_ieee is
   begin
     return 0;
   end function nullify;
+  function zeroed(y: std_logic) return std_logic is
+  begin
+      return '0';
+  end function zeroed;
+  function zeroed(y: std_logic_vector) return std_logic_vector is
+  begin
+      return (y'range => '0');
+  end function zeroed;
+  function zeroed(y: unsigned) return unsigned is
+  begin
+    return to_unsigned(0, y'length);
+  end function zeroed;
+  function zeroed(y: signed) return signed is
+  begin
+    return to_signed(0, y'length);
+  end function zeroed;
+  function zeroed(y: integer) return integer is
+  begin
+    return 0;
+  end function zeroed;
 
 end package body common_ieee;

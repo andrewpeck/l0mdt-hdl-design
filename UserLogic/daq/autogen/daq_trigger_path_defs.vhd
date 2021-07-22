@@ -2,21 +2,17 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 use ieee.math_real.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_1164.all;
 
-library basic_lib;
-
-use basic_lib.basic_defs.all;
+library shared_lib;
+use shared_lib.common_ieee.all;
 
 library ttc_def;
-
 use ttc_def.ttc_defs.all;
 
 library daq_def;
-
 use daq_def.daq_config_defs.all;
 use daq_def.daq_defs.all;
 
@@ -39,11 +35,13 @@ package daq_trigger_path_defs is
     f2e1 : felix_to_daq_rt;
   end record daq_trigger_irt;
   function len(x: daq_trigger_irt) return natural;
+  function width(x: daq_trigger_irt) return natural;
   function vectorify(x: daq_trigger_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_trigger_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_trigger_irt) return daq_trigger_irt;
   function convert(x: in std_logic_vector; t: daq_trigger_irt) return daq_trigger_irt;
   function nullify(t: daq_trigger_irt) return daq_trigger_irt;
+  function zeroed(t: daq_trigger_irt) return daq_trigger_irt;
 
   type daq_trigger_ort is record
     status0 : daq_to_status_rt;
@@ -52,22 +50,26 @@ package daq_trigger_path_defs is
     f2e1 : daq_to_felix_rt;
   end record daq_trigger_ort;
   function len(x: daq_trigger_ort) return natural;
+  function width(x: daq_trigger_ort) return natural;
   function vectorify(x: daq_trigger_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_trigger_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_trigger_ort) return daq_trigger_ort;
   function convert(x: in std_logic_vector; t: daq_trigger_ort) return daq_trigger_ort;
   function nullify(t: daq_trigger_ort) return daq_trigger_ort;
+  function zeroed(t: daq_trigger_ort) return daq_trigger_ort;
 
   type daq_trigger_ert is record
     i : daq_trigger_irt;
     o : daq_trigger_ort;
   end record daq_trigger_ert;
   function len(x: daq_trigger_ert) return natural;
+  function width(x: daq_trigger_ert) return natural;
   function vectorify(x: daq_trigger_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_trigger_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_trigger_ert) return daq_trigger_ert;
   function convert(x: in std_logic_vector; t: daq_trigger_ert) return daq_trigger_ert;
   function nullify(t: daq_trigger_ert) return daq_trigger_ert;
+  function zeroed(t: daq_trigger_ert) return daq_trigger_ert;
 
 end package daq_trigger_path_defs;
 
@@ -94,6 +96,25 @@ package body daq_trigger_path_defs is
     l := l + len(x.f2e1);
     return l;
   end function len;
+  function width(x: daq_trigger_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.ctrl);
+    l := l + width(x.stream_0);
+    l := l + width(x.stream_1);
+    l := l + width(x.stream_2);
+    l := l + width(x.stream_3);
+    l := l + width(x.stream_4);
+    l := l + width(x.stream_5);
+    l := l + width(x.stream_6);
+    l := l + width(x.stream_7);
+    l := l + width(x.stream_8);
+    l := l + width(x.f2e0);
+    l := l + width(x.f2e1);
+    return l;
+  end function width;
   function vectorify(x: daq_trigger_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -365,6 +386,25 @@ package body daq_trigger_path_defs is
     y.f2e1 := nullify(t.f2e1);
     return y;
   end function nullify;
+  function zeroed(t: daq_trigger_irt) return daq_trigger_irt is
+  variable y: daq_trigger_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.ctrl := zeroed(t.ctrl);
+    y.stream_0 := zeroed(t.stream_0);
+    y.stream_1 := zeroed(t.stream_1);
+    y.stream_2 := zeroed(t.stream_2);
+    y.stream_3 := zeroed(t.stream_3);
+    y.stream_4 := zeroed(t.stream_4);
+    y.stream_5 := zeroed(t.stream_5);
+    y.stream_6 := zeroed(t.stream_6);
+    y.stream_7 := zeroed(t.stream_7);
+    y.stream_8 := zeroed(t.stream_8);
+    y.f2e0 := zeroed(t.f2e0);
+    y.f2e1 := zeroed(t.f2e1);
+    return y;
+  end function zeroed;
 
   function len(x: daq_trigger_ort) return natural is
     variable l : natural := 0;
@@ -375,6 +415,15 @@ package body daq_trigger_path_defs is
     l := l + len(x.f2e1);
     return l;
   end function len;
+  function width(x: daq_trigger_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.status0);
+    l := l + width(x.status1);
+    l := l + width(x.f2e0);
+    l := l + width(x.f2e1);
+    return l;
+  end function width;
   function vectorify(x: daq_trigger_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -476,6 +525,15 @@ package body daq_trigger_path_defs is
     y.f2e1 := nullify(t.f2e1);
     return y;
   end function nullify;
+  function zeroed(t: daq_trigger_ort) return daq_trigger_ort is
+  variable y: daq_trigger_ort;
+  begin
+    y.status0 := zeroed(t.status0);
+    y.status1 := zeroed(t.status1);
+    y.f2e0 := zeroed(t.f2e0);
+    y.f2e1 := zeroed(t.f2e1);
+    return y;
+  end function zeroed;
 
   function len(x: daq_trigger_ert) return natural is
     variable l : natural := 0;
@@ -484,6 +542,13 @@ package body daq_trigger_path_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_trigger_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_trigger_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -551,5 +616,12 @@ package body daq_trigger_path_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_trigger_ert) return daq_trigger_ert is
+  variable y: daq_trigger_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
 end package body daq_trigger_path_defs;

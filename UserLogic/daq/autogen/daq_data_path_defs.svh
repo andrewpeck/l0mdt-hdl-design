@@ -4,12 +4,11 @@
 `ifndef DAQ_DATA_PATH_DEFS_SVH
 `define DAQ_DATA_PATH_DEFS_SVH
 
-`include <basic_defs.svh>
+`include <common_ieee.svh>
 
 `include <ttc_defs.svh>
 
 `include <daq_config_defs.svh>
-`include <daq_defs.svh>
 
 
   typedef struct packed {

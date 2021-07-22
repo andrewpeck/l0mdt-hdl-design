@@ -4,7 +4,7 @@
 `ifndef DAQ_TRIGGER_PATH_DEFS_SVH
 `define DAQ_TRIGGER_PATH_DEFS_SVH
 
-`include <basic_defs.svh>
+`include <common_ieee.svh>
 
 `include <ttc_defs.svh>
 
