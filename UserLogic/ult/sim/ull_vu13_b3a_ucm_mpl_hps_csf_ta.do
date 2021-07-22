@@ -391,23 +391,35 @@ add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_IN
 add wave -noupdate -group INN_HEG_2 -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_control_v
 add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_slc_data_v
 add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_mdt_data_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_STATION_RADIUS
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_HPS_NUM_MDT_CH
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/clk
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/rst
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/glob_en
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/i_uCM_data_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/win_row_0
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/uCM_data_r
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/Roi_win_valid
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_r
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2sf_data_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2hp_data_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Window_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Win_dv
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_v
-add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_hp_control_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_STATION_RADIUS
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_HPS_NUM_MDT_CH
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/clk
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/rst
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/glob_en
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/i_uCM_data_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/win_row_0
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/uCM_data_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/Roi_win_valid
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_r
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_x
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_z
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_dv
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2sf_data_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2hp_data_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Window_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Win_dv
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_v
+add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_hp_control_r
 add wave -noupdate -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_STATION_RADIUS
 add wave -noupdate -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_HPS_NUM_MDT_CH
 add wave -noupdate -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/clk
@@ -553,7 +565,7 @@ add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/
 add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/EN_CSF/CSF/globseg
 add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/EN_CSF/CSF/o_seg
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {14953939311 fs} 0 Red default} {{Cursor 2} {1901562500 fs} 1} {{Cursor 3} {2173088864 fs} 0}
+WaveRestoreCursors {{Cursor 1} {14953939311 fs} 0 Red default} {{Cursor 2} {1901562500 fs} 1} {{Cursor 3} {2057812500 fs} 0}
 quietly wave cursor active 3
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -569,4 +581,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2170882833 fs} {2188635154 fs}
+WaveRestoreZoom {2030016363 fs} {2072169266 fs}

@@ -22,7 +22,9 @@ package MEM_INT_12A148D_CTRL is
   end record MEM_INT_12A148D_wr_data_CTRL_t;
   function len(x: MEM_INT_12A148D_wr_data_CTRL_t) return natural;
   function vectorify(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
   function nullify(t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
 
   type MEM_INT_12A148D_rd_data_MON_t is record
@@ -34,7 +36,9 @@ package MEM_INT_12A148D_CTRL is
   end record MEM_INT_12A148D_rd_data_MON_t;
   function len(x: MEM_INT_12A148D_rd_data_MON_t) return natural;
   function vectorify(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
   function nullify(t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
 
   type MEM_INT_12A148D_MON_t is record
@@ -43,7 +47,9 @@ package MEM_INT_12A148D_CTRL is
   end record MEM_INT_12A148D_MON_t;
   function len(x: MEM_INT_12A148D_MON_t) return natural;
   function vectorify(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
   function nullify(t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
 
   type MEM_INT_12A148D_CTRL_t is record
@@ -58,7 +64,9 @@ package MEM_INT_12A148D_CTRL is
   end record MEM_INT_12A148D_CTRL_t;
   function len(x: MEM_INT_12A148D_CTRL_t) return natural;
   function vectorify(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
   function nullify(t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
 
 end package MEM_INT_12A148D_CTRL;
@@ -104,6 +112,33 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_data_0)-1), convert(x.wr_data_0, y(left to left+len(x.wr_data_0)-1)));
+      left := left + len(x.wr_data_0);
+      assign(y(left to left+len(x.wr_data_1)-1), convert(x.wr_data_1, y(left to left+len(x.wr_data_1)-1)));
+      left := left + len(x.wr_data_1);
+      assign(y(left to left+len(x.wr_data_2)-1), convert(x.wr_data_2, y(left to left+len(x.wr_data_2)-1)));
+      left := left + len(x.wr_data_2);
+      assign(y(left to left+len(x.wr_data_3)-1), convert(x.wr_data_3, y(left to left+len(x.wr_data_3)-1)));
+      left := left + len(x.wr_data_3);
+      assign(y(left to left+len(x.wr_data_4)-1), convert(x.wr_data_4, y(left to left+len(x.wr_data_4)-1)));
+    else
+      assign(y(left downto left-len(x.wr_data_0)+1), convert(x.wr_data_0, y(left downto left-len(x.wr_data_0)+1)));
+      left := left - len(x.wr_data_0);
+      assign(y(left downto left-len(x.wr_data_1)+1), convert(x.wr_data_1, y(left downto left-len(x.wr_data_1)+1)));
+      left := left - len(x.wr_data_1);
+      assign(y(left downto left-len(x.wr_data_2)+1), convert(x.wr_data_2, y(left downto left-len(x.wr_data_2)+1)));
+      left := left - len(x.wr_data_2);
+      assign(y(left downto left-len(x.wr_data_3)+1), convert(x.wr_data_3, y(left downto left-len(x.wr_data_3)+1)));
+      left := left - len(x.wr_data_3);
+      assign(y(left downto left-len(x.wr_data_4)+1), convert(x.wr_data_4, y(left downto left-len(x.wr_data_4)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t is
     variable y: MEM_INT_12A148D_wr_data_CTRL_t;
     variable left : natural := x'left;
@@ -131,6 +166,33 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t is
+    variable y: MEM_INT_12A148D_wr_data_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_data_0 := convert(x(left to left+len(y.wr_data_0)-1), y.wr_data_0);
+      left := left + len(y.wr_data_0);
+      y.wr_data_1 := convert(x(left to left+len(y.wr_data_1)-1), y.wr_data_1);
+      left := left + len(y.wr_data_1);
+      y.wr_data_2 := convert(x(left to left+len(y.wr_data_2)-1), y.wr_data_2);
+      left := left + len(y.wr_data_2);
+      y.wr_data_3 := convert(x(left to left+len(y.wr_data_3)-1), y.wr_data_3);
+      left := left + len(y.wr_data_3);
+      y.wr_data_4 := convert(x(left to left+len(y.wr_data_4)-1), y.wr_data_4);
+    else
+      y.wr_data_0 := convert(x(left downto left-len(y.wr_data_0)+1), y.wr_data_0);
+      left := left - len(y.wr_data_0);
+      y.wr_data_1 := convert(x(left downto left-len(y.wr_data_1)+1), y.wr_data_1);
+      left := left - len(y.wr_data_1);
+      y.wr_data_2 := convert(x(left downto left-len(y.wr_data_2)+1), y.wr_data_2);
+      left := left - len(y.wr_data_2);
+      y.wr_data_3 := convert(x(left downto left-len(y.wr_data_3)+1), y.wr_data_3);
+      left := left - len(y.wr_data_3);
+      y.wr_data_4 := convert(x(left downto left-len(y.wr_data_4)+1), y.wr_data_4);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t is
   variable y: MEM_INT_12A148D_wr_data_CTRL_t;
   begin
@@ -179,6 +241,33 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_data_0)-1), convert(x.rd_data_0, y(left to left+len(x.rd_data_0)-1)));
+      left := left + len(x.rd_data_0);
+      assign(y(left to left+len(x.rd_data_1)-1), convert(x.rd_data_1, y(left to left+len(x.rd_data_1)-1)));
+      left := left + len(x.rd_data_1);
+      assign(y(left to left+len(x.rd_data_2)-1), convert(x.rd_data_2, y(left to left+len(x.rd_data_2)-1)));
+      left := left + len(x.rd_data_2);
+      assign(y(left to left+len(x.rd_data_3)-1), convert(x.rd_data_3, y(left to left+len(x.rd_data_3)-1)));
+      left := left + len(x.rd_data_3);
+      assign(y(left to left+len(x.rd_data_4)-1), convert(x.rd_data_4, y(left to left+len(x.rd_data_4)-1)));
+    else
+      assign(y(left downto left-len(x.rd_data_0)+1), convert(x.rd_data_0, y(left downto left-len(x.rd_data_0)+1)));
+      left := left - len(x.rd_data_0);
+      assign(y(left downto left-len(x.rd_data_1)+1), convert(x.rd_data_1, y(left downto left-len(x.rd_data_1)+1)));
+      left := left - len(x.rd_data_1);
+      assign(y(left downto left-len(x.rd_data_2)+1), convert(x.rd_data_2, y(left downto left-len(x.rd_data_2)+1)));
+      left := left - len(x.rd_data_2);
+      assign(y(left downto left-len(x.rd_data_3)+1), convert(x.rd_data_3, y(left downto left-len(x.rd_data_3)+1)));
+      left := left - len(x.rd_data_3);
+      assign(y(left downto left-len(x.rd_data_4)+1), convert(x.rd_data_4, y(left downto left-len(x.rd_data_4)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t is
     variable y: MEM_INT_12A148D_rd_data_MON_t;
     variable left : natural := x'left;
@@ -206,6 +295,33 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t is
+    variable y: MEM_INT_12A148D_rd_data_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_data_0 := convert(x(left to left+len(y.rd_data_0)-1), y.rd_data_0);
+      left := left + len(y.rd_data_0);
+      y.rd_data_1 := convert(x(left to left+len(y.rd_data_1)-1), y.rd_data_1);
+      left := left + len(y.rd_data_1);
+      y.rd_data_2 := convert(x(left to left+len(y.rd_data_2)-1), y.rd_data_2);
+      left := left + len(y.rd_data_2);
+      y.rd_data_3 := convert(x(left to left+len(y.rd_data_3)-1), y.rd_data_3);
+      left := left + len(y.rd_data_3);
+      y.rd_data_4 := convert(x(left to left+len(y.rd_data_4)-1), y.rd_data_4);
+    else
+      y.rd_data_0 := convert(x(left downto left-len(y.rd_data_0)+1), y.rd_data_0);
+      left := left - len(y.rd_data_0);
+      y.rd_data_1 := convert(x(left downto left-len(y.rd_data_1)+1), y.rd_data_1);
+      left := left - len(y.rd_data_1);
+      y.rd_data_2 := convert(x(left downto left-len(y.rd_data_2)+1), y.rd_data_2);
+      left := left - len(y.rd_data_2);
+      y.rd_data_3 := convert(x(left downto left-len(y.rd_data_3)+1), y.rd_data_3);
+      left := left - len(y.rd_data_3);
+      y.rd_data_4 := convert(x(left downto left-len(y.rd_data_4)+1), y.rd_data_4);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t is
   variable y: MEM_INT_12A148D_rd_data_MON_t;
   begin
@@ -239,6 +355,21 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
+    else
+      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t is
     variable y: MEM_INT_12A148D_MON_t;
     variable left : natural := x'left;
@@ -254,6 +385,21 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t is
+    variable y: MEM_INT_12A148D_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
+    else
+      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t is
   variable y: MEM_INT_12A148D_MON_t;
   begin
@@ -314,6 +460,45 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
+      left := left + len(x.wr_req);
+      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
+      left := left + len(x.wr_ack);
+      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
+      left := left + len(x.rd_req);
+      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
+      left := left + len(x.rd_ack);
+      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
+      left := left + len(x.flush_req);
+      assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
+      left := left + len(x.wr_addr);
+      assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
+      left := left + len(x.rd_addr);
+      assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
+    else
+      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
+      left := left - len(x.wr_req);
+      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
+      left := left - len(x.wr_ack);
+      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
+      left := left - len(x.rd_req);
+      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
+      left := left - len(x.rd_ack);
+      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
+      left := left - len(x.flush_req);
+      assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
+      left := left - len(x.wr_addr);
+      assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
+      left := left - len(x.rd_addr);
+      assign(y(left downto left-len(x.wr_data)+1), convert(x.wr_data, y(left downto left-len(x.wr_data)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t is
     variable y: MEM_INT_12A148D_CTRL_t;
     variable left : natural := x'left;
@@ -353,6 +538,45 @@ package body MEM_INT_12A148D_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t is
+    variable y: MEM_INT_12A148D_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
+      left := left + len(y.rd_ack);
+      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
+      y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
+      left := left + len(y.wr_addr);
+      y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
+      left := left + len(y.rd_addr);
+      y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
+    else
+      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
+      left := left - len(y.rd_ack);
+      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
+      y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
+      left := left - len(y.wr_addr);
+      y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
+      left := left - len(y.rd_addr);
+      y.wr_data := convert(x(left downto left-len(y.wr_data)+1), y.wr_data);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t is
   variable y: MEM_INT_12A148D_CTRL_t;
   begin

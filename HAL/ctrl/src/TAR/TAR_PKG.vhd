@@ -21,7 +21,9 @@ package TAR_CTRL is
   end record TAR_ACTIONS_CTRL_t;
   function len(x: TAR_ACTIONS_CTRL_t) return natural;
   function vectorify(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
+  function convert(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
   function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
 
   type TAR_CONFIGS_CTRL_t is record
@@ -31,7 +33,9 @@ package TAR_CTRL is
   end record TAR_CONFIGS_CTRL_t;
   function len(x: TAR_CONFIGS_CTRL_t) return natural;
   function vectorify(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
+  function convert(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
   function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
 
   type TAR_STATUS_MON_t is record
@@ -41,7 +45,9 @@ package TAR_CTRL is
   end record TAR_STATUS_MON_t;
   function len(x: TAR_STATUS_MON_t) return natural;
   function vectorify(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
+  function convert(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
   function nullify(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
 
   type TAR_MON_t is record
@@ -49,7 +55,9 @@ package TAR_CTRL is
   end record TAR_MON_t;
   function len(x: TAR_MON_t) return natural;
   function vectorify(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
+  function convert(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
   function nullify(t: TAR_MON_t) return TAR_MON_t;
 
   type TAR_CTRL_t is record
@@ -58,7 +66,9 @@ package TAR_CTRL is
   end record TAR_CTRL_t;
   function len(x: TAR_CTRL_t) return natural;
   function vectorify(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
+  function convert(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
   function nullify(t: TAR_CTRL_t) return TAR_CTRL_t;
 
 end package TAR_CTRL;
@@ -99,6 +109,29 @@ package body TAR_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.RESET)-1), convert(x.RESET, y(left to left+len(x.RESET)-1)));
+      left := left + len(x.RESET);
+      assign(y(left to left+len(x.ENABLE)-1), convert(x.ENABLE, y(left to left+len(x.ENABLE)-1)));
+      left := left + len(x.ENABLE);
+      assign(y(left to left+len(x.DISABLE)-1), convert(x.DISABLE, y(left to left+len(x.DISABLE)-1)));
+      left := left + len(x.DISABLE);
+      assign(y(left to left+len(x.FREEZE)-1), convert(x.FREEZE, y(left to left+len(x.FREEZE)-1)));
+    else
+      assign(y(left downto left-len(x.RESET)+1), convert(x.RESET, y(left downto left-len(x.RESET)+1)));
+      left := left - len(x.RESET);
+      assign(y(left downto left-len(x.ENABLE)+1), convert(x.ENABLE, y(left downto left-len(x.ENABLE)+1)));
+      left := left - len(x.ENABLE);
+      assign(y(left downto left-len(x.DISABLE)+1), convert(x.DISABLE, y(left downto left-len(x.DISABLE)+1)));
+      left := left - len(x.DISABLE);
+      assign(y(left downto left-len(x.FREEZE)+1), convert(x.FREEZE, y(left downto left-len(x.FREEZE)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
     variable y: TAR_ACTIONS_CTRL_t;
     variable left : natural := x'left;
@@ -122,6 +155,29 @@ package body TAR_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
+    variable y: TAR_ACTIONS_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.RESET := convert(x(left to left+len(y.RESET)-1), y.RESET);
+      left := left + len(y.RESET);
+      y.ENABLE := convert(x(left to left+len(y.ENABLE)-1), y.ENABLE);
+      left := left + len(y.ENABLE);
+      y.DISABLE := convert(x(left to left+len(y.DISABLE)-1), y.DISABLE);
+      left := left + len(y.DISABLE);
+      y.FREEZE := convert(x(left to left+len(y.FREEZE)-1), y.FREEZE);
+    else
+      y.RESET := convert(x(left downto left-len(y.RESET)+1), y.RESET);
+      left := left - len(y.RESET);
+      y.ENABLE := convert(x(left downto left-len(y.ENABLE)+1), y.ENABLE);
+      left := left - len(y.ENABLE);
+      y.DISABLE := convert(x(left downto left-len(y.DISABLE)+1), y.DISABLE);
+      left := left - len(y.DISABLE);
+      y.FREEZE := convert(x(left downto left-len(y.FREEZE)+1), y.FREEZE);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
   variable y: TAR_ACTIONS_CTRL_t;
   begin
@@ -159,6 +215,25 @@ package body TAR_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.INPUT_EN)-1), convert(x.INPUT_EN, y(left to left+len(x.INPUT_EN)-1)));
+      left := left + len(x.INPUT_EN);
+      assign(y(left to left+len(x.OUTPUT_EN)-1), convert(x.OUTPUT_EN, y(left to left+len(x.OUTPUT_EN)-1)));
+      left := left + len(x.OUTPUT_EN);
+      assign(y(left to left+len(x.FLUSH_MEM_RESET)-1), convert(x.FLUSH_MEM_RESET, y(left to left+len(x.FLUSH_MEM_RESET)-1)));
+    else
+      assign(y(left downto left-len(x.INPUT_EN)+1), convert(x.INPUT_EN, y(left downto left-len(x.INPUT_EN)+1)));
+      left := left - len(x.INPUT_EN);
+      assign(y(left downto left-len(x.OUTPUT_EN)+1), convert(x.OUTPUT_EN, y(left downto left-len(x.OUTPUT_EN)+1)));
+      left := left - len(x.OUTPUT_EN);
+      assign(y(left downto left-len(x.FLUSH_MEM_RESET)+1), convert(x.FLUSH_MEM_RESET, y(left downto left-len(x.FLUSH_MEM_RESET)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
     variable y: TAR_CONFIGS_CTRL_t;
     variable left : natural := x'left;
@@ -178,6 +253,25 @@ package body TAR_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
+    variable y: TAR_CONFIGS_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.INPUT_EN := convert(x(left to left+len(y.INPUT_EN)-1), y.INPUT_EN);
+      left := left + len(y.INPUT_EN);
+      y.OUTPUT_EN := convert(x(left to left+len(y.OUTPUT_EN)-1), y.OUTPUT_EN);
+      left := left + len(y.OUTPUT_EN);
+      y.FLUSH_MEM_RESET := convert(x(left to left+len(y.FLUSH_MEM_RESET)-1), y.FLUSH_MEM_RESET);
+    else
+      y.INPUT_EN := convert(x(left downto left-len(y.INPUT_EN)+1), y.INPUT_EN);
+      left := left - len(y.INPUT_EN);
+      y.OUTPUT_EN := convert(x(left downto left-len(y.OUTPUT_EN)+1), y.OUTPUT_EN);
+      left := left - len(y.OUTPUT_EN);
+      y.FLUSH_MEM_RESET := convert(x(left downto left-len(y.FLUSH_MEM_RESET)+1), y.FLUSH_MEM_RESET);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
   variable y: TAR_CONFIGS_CTRL_t;
   begin
@@ -214,6 +308,25 @@ package body TAR_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.ENABLED)-1), convert(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
+      left := left + len(x.ENABLED);
+      assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
+      left := left + len(x.READY);
+      assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
+    else
+      assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
+      left := left - len(x.ENABLED);
+      assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
+      left := left - len(x.READY);
+      assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
     variable y: TAR_STATUS_MON_t;
     variable left : natural := x'left;
@@ -233,6 +346,25 @@ package body TAR_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
+    variable y: TAR_STATUS_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.ENABLED := convert(x(left to left+len(y.ENABLED)-1), y.ENABLED);
+      left := left + len(y.ENABLED);
+      y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
+      left := left + len(y.READY);
+      y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
+    else
+      y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
+      left := left - len(y.ENABLED);
+      y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
+      left := left - len(y.READY);
+      y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
   variable y: TAR_STATUS_MON_t;
   begin
@@ -259,6 +391,17 @@ package body TAR_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
+    else
+      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t is
     variable y: TAR_MON_t;
     variable left : natural := x'left;
@@ -270,6 +413,17 @@ package body TAR_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t is
+    variable y: TAR_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
+    else
+      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: TAR_MON_t) return TAR_MON_t is
   variable y: TAR_MON_t;
   begin
@@ -299,6 +453,21 @@ package body TAR_CTRL is
     end if;
     return y;
   end function vectorify;
+  function convert(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.ACTIONS)-1), convert(x.ACTIONS, y(left to left+len(x.ACTIONS)-1)));
+      left := left + len(x.ACTIONS);
+      assign(y(left to left+len(x.CONFIGS)-1), convert(x.CONFIGS, y(left to left+len(x.CONFIGS)-1)));
+    else
+      assign(y(left downto left-len(x.ACTIONS)+1), convert(x.ACTIONS, y(left downto left-len(x.ACTIONS)+1)));
+      left := left - len(x.ACTIONS);
+      assign(y(left downto left-len(x.CONFIGS)+1), convert(x.CONFIGS, y(left downto left-len(x.CONFIGS)+1)));
+    end if;
+    return y;
+  end function convert;
   function structify(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t is
     variable y: TAR_CTRL_t;
     variable left : natural := x'left;
@@ -314,6 +483,21 @@ package body TAR_CTRL is
     end if;
     return y;
   end function structify;
+  function convert(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t is
+    variable y: TAR_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.ACTIONS := convert(x(left to left+len(y.ACTIONS)-1), y.ACTIONS);
+      left := left + len(y.ACTIONS);
+      y.CONFIGS := convert(x(left to left+len(y.CONFIGS)-1), y.CONFIGS);
+    else
+      y.ACTIONS := convert(x(left downto left-len(y.ACTIONS)+1), y.ACTIONS);
+      left := left - len(y.ACTIONS);
+      y.CONFIGS := convert(x(left downto left-len(y.CONFIGS)+1), y.CONFIGS);
+    end if;
+    return y;
+  end function convert;
   function nullify(t: TAR_CTRL_t) return TAR_CTRL_t is
   variable y: TAR_CTRL_t;
   begin
