@@ -1,5 +1,3 @@
-hdl:
-
 - DAQ_MAX_STREAMS: [qualifier: constant, type: integer, value: 6]
 
 - DAQ_MAX_BRANCHES: [qualifier: constant, type: integer, value: 6]

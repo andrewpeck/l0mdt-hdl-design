@@ -10,7 +10,6 @@ TTC_PKG="$SCRIPT_DIR/../../HAL/ttc/ttc-core/pkg"
 DEST="autogen"
 
 mkdir -p "$DEST"
-
 rm -f "$DEST"/*
 
 echo "daq_config_defs.yml ---------------------------------"

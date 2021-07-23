@@ -1,21 +1,26 @@
 # VIVADO_PATH should point to the Vivado install folder
 SHELL := /bin/bash
+base := $(shell scripts/base.sh $$(pwd))
 proj := $(shell scripts/path.sh $$(pwd))
 curr := $(shell basename $$(pwd))
 
 create:
-	"../../../Hog/CreateProject.sh" $(proj)
+	"$(base)/Hog/CreateProject.sh" $(proj)
 
 proj: create
 
 synth:
-	"../../../Hog/LaunchWorkflow.sh" "-synth_only" $(proj)
+	"$(base)/Hog/LaunchWorkflow.sh" "-synth_only" $(proj)
 
 impl:
-	"../../../Hog/LaunchWorkflow.sh" "-impl_only" $(proj)
+	"$(base)/Hog/LaunchWorkflow.sh" "-impl_only" $(proj)
 
 gui:
-	vivado "../../../Projects/$(proj)/$(curr).xpr"
+	vivado "$(base)/Projects/$(proj)/$(curr).xpr"
 
 all: create synth impl
 
+types:
+	make -C "$(base)/shared/types" all2
+	make -C "$(base)/HAL/ttc" types
+	make -C "$(base)/UserLogic/daq/" types

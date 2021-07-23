@@ -40,7 +40,7 @@ architecture V2 of daq_trigger is
                         ((34, 512), (120, 512), (45, 512), (80, 512), others => (0, 0)),
                         others => (others => (0, 0))),
     COUNTER_WIDTH     => 32,
-    OUTPUT_DATA_WIDTH => 16);
+    OUTPUT_DATA_WIDTH => 64);
 
   signal branches : daq_branches_t;
   

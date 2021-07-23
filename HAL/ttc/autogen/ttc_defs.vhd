@@ -2,13 +2,11 @@
 -- https://gitlab.com/tcpaiva/yml2hdl
 
 library ieee;
-
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
 use ieee.math_real.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_1164.all;
 
 library shared_lib;
-
 use shared_lib.common_ieee.all;
 
 package ttc_defs is
@@ -19,11 +17,13 @@ package ttc_defs is
 
   type ttc_bcid_at is array(integer range <>) of ttc_bcid_t;
   function len(x: ttc_bcid_at) return natural;
+  function width(x: ttc_bcid_at) return natural;
   function vectorify(x: ttc_bcid_at; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_bcid_at; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: ttc_bcid_at) return ttc_bcid_at;
   function convert(x: std_logic_vector; t: ttc_bcid_at) return ttc_bcid_at;
   function nullify(x: ttc_bcid_at) return ttc_bcid_at;
+  function zeroed(x: ttc_bcid_at) return ttc_bcid_at;
 
   subtype ttc_evid_t is unsigned(32-1 downto 0);
 
@@ -35,11 +35,13 @@ package ttc_defs is
     rst : std_logic;
   end record ttc_sys_rt;
   function len(x: ttc_sys_rt) return natural;
+  function width(x: ttc_sys_rt) return natural;
   function vectorify(x: ttc_sys_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_sys_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_sys_rt) return ttc_sys_rt;
   function convert(x: in std_logic_vector; t: ttc_sys_rt) return ttc_sys_rt;
   function nullify(t: ttc_sys_rt) return ttc_sys_rt;
+  function zeroed(t: ttc_sys_rt) return ttc_sys_rt;
 
   type ttc_fmt_rt is record
     bcr : std_logic;
@@ -52,11 +54,13 @@ package ttc_defs is
     reserved4 : std_logic;
   end record ttc_fmt_rt;
   function len(x: ttc_fmt_rt) return natural;
+  function width(x: ttc_fmt_rt) return natural;
   function vectorify(x: ttc_fmt_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_fmt_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_fmt_rt) return ttc_fmt_rt;
   function convert(x: in std_logic_vector; t: ttc_fmt_rt) return ttc_fmt_rt;
   function nullify(t: ttc_fmt_rt) return ttc_fmt_rt;
+  function zeroed(t: ttc_fmt_rt) return ttc_fmt_rt;
 
   -- ttc_fmt_vt: 40MHz domain
   subtype ttc_fmt_vt is std_logic_vector(8-1 downto 0);
@@ -71,11 +75,13 @@ package ttc_defs is
     bx : std_logic;
   end record ttc_cmds_rt;
   function len(x: ttc_cmds_rt) return natural;
+  function width(x: ttc_cmds_rt) return natural;
   function vectorify(x: ttc_cmds_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_cmds_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_cmds_rt) return ttc_cmds_rt;
   function convert(x: in std_logic_vector; t: ttc_cmds_rt) return ttc_cmds_rt;
   function nullify(t: ttc_cmds_rt) return ttc_cmds_rt;
+  function zeroed(t: ttc_cmds_rt) return ttc_cmds_rt;
 
   type ttc_counters_rt is record
     bcid : ttc_bcid_t;
@@ -83,22 +89,26 @@ package ttc_defs is
     orid : ttc_orid_t;
   end record ttc_counters_rt;
   function len(x: ttc_counters_rt) return natural;
+  function width(x: ttc_counters_rt) return natural;
   function vectorify(x: ttc_counters_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_counters_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_counters_rt) return ttc_counters_rt;
   function convert(x: in std_logic_vector; t: ttc_counters_rt) return ttc_counters_rt;
   function nullify(t: ttc_counters_rt) return ttc_counters_rt;
+  function zeroed(t: ttc_counters_rt) return ttc_counters_rt;
 
   type ttc_irt is record
     sys : ttc_sys_rt;
     data : ttc_fmt_vt;
   end record ttc_irt;
   function len(x: ttc_irt) return natural;
+  function width(x: ttc_irt) return natural;
   function vectorify(x: ttc_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_irt) return ttc_irt;
   function convert(x: in std_logic_vector; t: ttc_irt) return ttc_irt;
   function nullify(t: ttc_irt) return ttc_irt;
+  function zeroed(t: ttc_irt) return ttc_irt;
 
   subtype ttc_ivt is std_logic_vector(11-1 downto 0);
 
@@ -107,11 +117,13 @@ package ttc_defs is
     cnt : ttc_counters_rt;
   end record ttc_ort;
   function len(x: ttc_ort) return natural;
+  function width(x: ttc_ort) return natural;
   function vectorify(x: ttc_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_ort) return ttc_ort;
   function convert(x: in std_logic_vector; t: ttc_ort) return ttc_ort;
   function nullify(t: ttc_ort) return ttc_ort;
+  function zeroed(t: ttc_ort) return ttc_ort;
 
   subtype ttc_ovt is std_logic_vector(81-1 downto 0);
 
@@ -120,11 +132,13 @@ package ttc_defs is
     o : ttc_ort;
   end record ttc_ert;
   function len(x: ttc_ert) return natural;
+  function width(x: ttc_ert) return natural;
   function vectorify(x: ttc_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: ttc_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ttc_ert) return ttc_ert;
   function convert(x: in std_logic_vector; t: ttc_ert) return ttc_ert;
   function nullify(t: ttc_ert) return ttc_ert;
+  function zeroed(t: ttc_ert) return ttc_ert;
 
 end package ttc_defs;
 
@@ -138,6 +152,12 @@ package body ttc_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: ttc_bcid_at) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: ttc_bcid_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -230,6 +250,14 @@ package body ttc_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: ttc_bcid_at) return ttc_bcid_at is
+    variable y : ttc_bcid_at(x'range);
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: ttc_sys_rt) return natural is
     variable l : natural := 0;
@@ -239,6 +267,14 @@ package body ttc_defs is
     l := l + len(x.rst);
     return l;
   end function len;
+  function width(x: ttc_sys_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk40);
+    l := l + width(x.clk320);
+    l := l + width(x.rst);
+    return l;
+  end function width;
   function vectorify(x: ttc_sys_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -323,6 +359,14 @@ package body ttc_defs is
     y.rst := nullify(t.rst);
     return y;
   end function nullify;
+  function zeroed(t: ttc_sys_rt) return ttc_sys_rt is
+  variable y: ttc_sys_rt;
+  begin
+    y.clk40 := zeroed(t.clk40);
+    y.clk320 := zeroed(t.clk320);
+    y.rst := zeroed(t.rst);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_fmt_rt) return natural is
     variable l : natural := 0;
@@ -337,6 +381,19 @@ package body ttc_defs is
     l := l + len(x.reserved4);
     return l;
   end function len;
+  function width(x: ttc_fmt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.bcr);
+    l := l + width(x.ecr);
+    l := l + width(x.lxa);
+    l := l + width(x.reserved0);
+    l := l + width(x.reserved1);
+    l := l + width(x.reserved2);
+    l := l + width(x.reserved3);
+    l := l + width(x.reserved4);
+    return l;
+  end function width;
   function vectorify(x: ttc_fmt_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -506,6 +563,19 @@ package body ttc_defs is
     y.reserved4 := nullify(t.reserved4);
     return y;
   end function nullify;
+  function zeroed(t: ttc_fmt_rt) return ttc_fmt_rt is
+  variable y: ttc_fmt_rt;
+  begin
+    y.bcr := zeroed(t.bcr);
+    y.ecr := zeroed(t.ecr);
+    y.lxa := zeroed(t.lxa);
+    y.reserved0 := zeroed(t.reserved0);
+    y.reserved1 := zeroed(t.reserved1);
+    y.reserved2 := zeroed(t.reserved2);
+    y.reserved3 := zeroed(t.reserved3);
+    y.reserved4 := zeroed(t.reserved4);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_cmds_rt) return natural is
     variable l : natural := 0;
@@ -517,6 +587,16 @@ package body ttc_defs is
     l := l + len(x.bx);
     return l;
   end function len;
+  function width(x: ttc_cmds_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.bcr);
+    l := l + width(x.ocr);
+    l := l + width(x.ecr);
+    l := l + width(x.lxa);
+    l := l + width(x.bx);
+    return l;
+  end function width;
   function vectorify(x: ttc_cmds_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -635,6 +715,16 @@ package body ttc_defs is
     y.bx := nullify(t.bx);
     return y;
   end function nullify;
+  function zeroed(t: ttc_cmds_rt) return ttc_cmds_rt is
+  variable y: ttc_cmds_rt;
+  begin
+    y.bcr := zeroed(t.bcr);
+    y.ocr := zeroed(t.ocr);
+    y.ecr := zeroed(t.ecr);
+    y.lxa := zeroed(t.lxa);
+    y.bx := zeroed(t.bx);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_counters_rt) return natural is
     variable l : natural := 0;
@@ -644,6 +734,14 @@ package body ttc_defs is
     l := l + len(x.orid);
     return l;
   end function len;
+  function width(x: ttc_counters_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.bcid);
+    l := l + width(x.evid);
+    l := l + width(x.orid);
+    return l;
+  end function width;
   function vectorify(x: ttc_counters_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -728,6 +826,14 @@ package body ttc_defs is
     y.orid := nullify(t.orid);
     return y;
   end function nullify;
+  function zeroed(t: ttc_counters_rt) return ttc_counters_rt is
+  variable y: ttc_counters_rt;
+  begin
+    y.bcid := zeroed(t.bcid);
+    y.evid := zeroed(t.evid);
+    y.orid := zeroed(t.orid);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_irt) return natural is
     variable l : natural := 0;
@@ -736,6 +842,13 @@ package body ttc_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: ttc_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: ttc_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -803,6 +916,13 @@ package body ttc_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: ttc_irt) return ttc_irt is
+  variable y: ttc_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_ort) return natural is
     variable l : natural := 0;
@@ -811,6 +931,13 @@ package body ttc_defs is
     l := l + len(x.cnt);
     return l;
   end function len;
+  function width(x: ttc_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.cmds);
+    l := l + width(x.cnt);
+    return l;
+  end function width;
   function vectorify(x: ttc_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -878,6 +1005,13 @@ package body ttc_defs is
     y.cnt := nullify(t.cnt);
     return y;
   end function nullify;
+  function zeroed(t: ttc_ort) return ttc_ort is
+  variable y: ttc_ort;
+  begin
+    y.cmds := zeroed(t.cmds);
+    y.cnt := zeroed(t.cnt);
+    return y;
+  end function zeroed;
 
   function len(x: ttc_ert) return natural is
     variable l : natural := 0;
@@ -886,6 +1020,13 @@ package body ttc_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: ttc_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: ttc_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -953,5 +1094,12 @@ package body ttc_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: ttc_ert) return ttc_ert is
+  variable y: ttc_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
 end package body ttc_defs;
