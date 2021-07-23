@@ -1,15 +1,17 @@
-#################### ult_tp Project ###########################
-GEN:ult_tp:
+#################### ult_lsf_upt Project ###########################
+GEN:ult_lsf_upt:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp
+      PROJECT_NAME: ult_lsf_upt
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
 
-SIM:ult_tp:
+SIM:ult_lsf_upt:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ult_tp
+      PROJECT_NAME: ult_lsf_upt
     allow_failure: false
+    before_script:
+      - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64:$PATH"
