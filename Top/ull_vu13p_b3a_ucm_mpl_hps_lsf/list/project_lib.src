@@ -29,4 +29,4 @@ UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
 UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
-UserLogic/daq/daq_lib.src lib=daq_lib
+UserLogic/daq/daq.src
