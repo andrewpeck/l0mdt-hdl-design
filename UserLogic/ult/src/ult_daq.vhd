@@ -16,7 +16,6 @@ use ctrl_lib.DAQ_CTRL.all;
 
 library ttc_def;
 library daq_def;
-library ttc_lib;
 library daq_lib;
 
 use ttc_def.ttc_defs.all;
