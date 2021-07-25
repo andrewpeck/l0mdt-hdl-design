@@ -531,10 +531,11 @@ begin
           o_daq_streams => o_daq_streams
           
           -- o_sump => daq_sump
-        );
+          );
+      
       else generate
 
-      daq_mon_v <= (daq_mon_v'length - 1 downto 0 => '0');
+        daq_mon_v <= (daq_mon_v'length - 1 downto 0 => '0');
 
         SUMP_DAQ : entity ult_lib.daq_sump
         -- generic map(DELAY => 9600, memory_type => "ultra")
