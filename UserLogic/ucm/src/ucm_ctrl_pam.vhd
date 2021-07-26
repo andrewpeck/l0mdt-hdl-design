@@ -115,13 +115,14 @@ begin
             -- processed := processed + 1;
             busy := busy + 1;
           
-            if ch_count(ch_i) < UCM_LATENCY_HPS_CH then
+            if ch_count(ch_i) < c_HEG_PROC_TIME then -- c_MPL_PL_A_LATENCY
               ch_count(ch_i) <= ch_count(ch_i) + '1';
               buff_pam_ctrl(ch_i).data_present <= '0';
               buff_pam_ctrl(ch_i).addr_orig <= (others => '0');
               -- busy := busy + 1;
 
-              if ch_count(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
+              -- if ch_count(ch_i) < (UCM_LATENCY_HPS_CH - 12)then
+              if ch_count(ch_i) < (c_HEG_PROC_TIME - c_UCM_2HPS_LATENCY)then
                 int_cvp_rst(ch_i) <= '0';
               else
                 int_cvp_rst(ch_i) <= '1';

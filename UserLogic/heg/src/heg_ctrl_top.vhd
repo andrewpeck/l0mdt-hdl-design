@@ -117,11 +117,6 @@ begin
   mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
   ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
 
-
-
-
-
-
   o_SLC_Window_v <= SLC_Window_v;
   win_row_0 <= structify(SLC_Window_v(0));
 
@@ -182,6 +177,10 @@ begin
     --
     i_Roi_win_origin    => win_row_0.lo,
     i_Roi_win_valid     => Roi_win_valid,
+    --
+    i_roi_global_x      => roi_global_x,
+    i_roi_global_z      => roi_global_z,
+    i_roi_global_dv     => roi_dv,
     -- SLc out
     o_hp_control_r      => o_hp_control_r,
     o_sf_control_r      => o_sf_control_r,

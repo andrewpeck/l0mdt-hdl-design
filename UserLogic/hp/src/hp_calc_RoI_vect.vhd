@@ -34,7 +34,7 @@ entity hp_calc_RoI_vect is
     glob_en             : in std_logic;
     -- SLc
     -- i_SLC_RoI_org       : in unsigned(MDT_TUBE_LEN-1 downto 0);
-    i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+    -- i_SLc_z_0           : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
     -- i_SLc_y_0           : in signed();
     -- mdt
     -- i_mdt_x             : in unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
@@ -53,7 +53,7 @@ entity hp_calc_RoI_vect is
 end entity hp_calc_RoI_vect;
 
 architecture beh of hp_calc_RoI_vect is
-  signal orig_x : unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
+  -- signal orig_x : unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
   signal cw_org_x : unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
   signal cw_org_z : unsigned(MDT_GLOBAL_AXI_LEN -1 downto 0);
 begin
@@ -65,6 +65,8 @@ begin
       if rst= '1' then
         o_local_x <= (others => '0');
         o_local_y <= (others => '0');
+        cw_org_x <= (others => '0');
+        cw_org_z <= (others => '0');
         o_data_valid <= '0';
       else
 

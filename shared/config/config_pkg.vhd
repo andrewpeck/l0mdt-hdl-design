@@ -185,6 +185,7 @@ package config_pkg is
   ---------------------------------------------------------
   -- DELAYS & TIME CONSTANTS
   ---------------------------------------------------------
+  constant c_UCM_2HPS_LATENCY   : integer := UCM_2HPS_LATENCY;
   constant c_HEG_SF_START_DELAY : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_START_DELAY,HEG_LSF_START_DELAY);
   constant c_HEG_SF_END_DELAY   : integer := get_sf_time(CFG.SF_TYPE,HEG_CSF_END_DELAY,HEG_LSF_END_DELAY);
 
@@ -192,7 +193,9 @@ package config_pkg is
   constant c_HEG_TIME_BUSY      : integer := get_heg_busy_time(c_HEG_SF_START_DELAY);
   constant c_HEG_TIME_UNLOAD    : integer := get_heg_unload_time(c_HEG_SF_START_DELAY,c_HEG_SF_END_DELAY);
 
-  constant c_MPL_PL_A_LATENCY   : integer := c_HEG_TIME_UNLOAD + get_sf_time(CFG.SF_TYPE,CSF_POST_PROCESSING,LSF_POST_PROCESSING);
+  constant c_HEG_PROC_TIME : integer := c_HEG_TIME_UNLOAD + get_sf_time(CFG.SF_TYPE,CSF_POST_PROCESSING,LSF_POST_PROCESSING);
+
+  constant c_MPL_PL_A_LATENCY   : integer := c_HEG_PROC_TIME;
   constant c_MPL_PL_B_LATENCY     : integer := 5;
 
   ---------------------------------------------------------

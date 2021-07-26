@@ -104,10 +104,10 @@ architecture beh of heg_ctrl_roi_tc is
 
   signal mem : tcLUT_station_avt := init_ROI_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,num_tubes_layer_station);
 
-  signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
-  signal local_tube : std_logic_vector(9 downto 0);
-  signal local_tube_dv :std_logic;
-  signal mem_index_std : std_logic_vector(9 downto 0);
+  -- signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
+  -- signal local_tube : std_logic_vector(9 downto 0);
+  -- signal local_tube_dv :std_logic;
+  -- signal mem_index_std : std_logic_vector(9 downto 0);
   signal mem_index_int : integer range 0 to 1023;
 
   signal mem_out : std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
@@ -176,7 +176,7 @@ begin
         apb_dv_i <= '0';
         apb_data_i <= (others => '0');
       else
-        local_tube_dv <= i_dv;
+        -- local_tube_dv <= i_dv;
         -- if i_dv = '1' then
         --   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
         --   local_tube <= std_logic_vector(resize(i_tube,10);-- - to_unsigned(csm_offset_mem,10));

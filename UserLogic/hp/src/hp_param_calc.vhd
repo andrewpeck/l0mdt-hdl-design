@@ -104,13 +104,13 @@ begin
     glob_en         => glob_en,
     -- SLc
     -- i_SLC_RoI_org   => i_SLC_RoI_org,
-    i_SLc_z_0       => barrel_data_r.z_0,
+    -- i_SLc_z_0       => barrel_data_r.z_0,
     -- i_SLc_y_0       =>
     -- mdt
     -- i_mdt_x          => i_mdt_x,  
     -- i_mdt_layer     => i_mdt_layer,
-    i_cw_org_x      => SLc_data_r.roi_x,
-    i_cw_org_z      => SLc_data_r.roi_z,
+    i_cw_org_x      => barrel_data_r.roi_x,
+    i_cw_org_z      => barrel_data_r.roi_z,
     i_cw_dv         => SLc_data_r.data_valid,
     i_global_z      => i_global_z,
     i_global_x      => i_global_x,

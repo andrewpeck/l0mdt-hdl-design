@@ -49,6 +49,10 @@ entity heg_ctrl_sig is
     i_Roi_win_origin    : in unsigned(MDT_TUBE_LEN-1 downto 0);
     i_Roi_win_valid     : in std_logic;
     --
+    i_roi_global_x      : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+    i_roi_global_z      : in unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+    i_roi_global_dv   : in std_logic;
+    --
     o_hp_control_r      : out heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
     o_sf_control_r      : out heg_ctrl2sf_rt;
     --
@@ -72,31 +76,31 @@ architecture beh of heg_ctrl_sig is
   signal o_uCM2hp_data_r  : hp_heg2hp_slc_rt;
   signal b_data           : hp_heg2hp_slc_b_rt;
 
-  signal holesize         : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
-  signal holesize_dv      : std_logic;
+  -- signal holesize         : unsigned(MDT_GLOBAL_AXI_LEN - 1 downto 0);
+  -- signal holesize_dv      : std_logic;
   -- signal z_win_org        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
-  signal z_win_org_dv     : std_logic;
+  -- signal z_win_org_dv     : std_logic;
 
   signal csf_slope        : unsigned(CSF_SLOPE_LEN-1 downto 0);
   signal csf_slope_dv     : std_logic;
 
 begin
 
-  ZH : entity shared_lib.barrel_zholes
-  generic map(
-    g_STATION_RADIUS    => g_STATION_RADIUS
-  )
-  port map(
-    clk                 => clk,
-    rst                 => rst,
-    glob_en             => glob_en,
-    --
-    i_chamber           => to_unsigned(get_b_chamber_from_tubes(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,to_integer(i_Roi_win_origin)),SLC_CHAMBER_LEN), 
-    -- ojo no es corecto, ha de depender del tubo
-    i_dv                => i_Roi_win_valid,
-    o_spaces            => holesize,
-    o_dv                => holesize_dv
-  );
+  -- ZH : entity shared_lib.barrel_zholes
+  -- generic map(
+  --   g_STATION_RADIUS    => g_STATION_RADIUS
+  -- )
+  -- port map(
+  --   clk                 => clk,
+  --   rst                 => rst,
+  --   glob_en             => glob_en,
+  --   --
+  --   i_chamber           => to_unsigned(get_b_chamber_from_tubes(c_SECTOR_ID,c_SECTOR_SIDE,g_STATION_RADIUS,to_integer(i_Roi_win_origin)),SLC_CHAMBER_LEN), 
+  --   -- ojo no es corecto, ha de depender del tubo
+  --   i_dv                => i_Roi_win_valid,
+  --   o_spaces            => holesize,
+  --   o_dv                => holesize_dv
+  -- );
 
   TAN : entity shared_lib.roi_tan
   generic map(
@@ -121,6 +125,11 @@ begin
     enables_a(hp_i) <= o_hp_control_r(hp_i).enable;
     -- o_hp_control_r(hp_i).rst <= '1';
   end generate;
+
+  BARREL_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
+    b_data.roi_x <= i_roi_global_x;--resize(i_roi_global_x,b_data.roi_x'length);
+    b_data.roi_z <= i_roi_global_z;--resize(i_roi_global_z,b_data.roi_z'length);
+  end generate BARREL_GEN;
   
   SLc_reg : process(rst,clk) begin
     if rising_edge(clk) then
@@ -137,7 +146,7 @@ begin
         -- o_sf_control_r.slope <= (others => '0');
         -- o_sf_control_r.window_valid <= '0';
         -- hp control reset
-        b_data <= nullify(b_data);
+        -- b_data <= nullify(b_data);
 
         for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
           o_hp_control_r(hp_i).enable <= '0';
@@ -149,16 +158,21 @@ begin
       else
         -- windows origin calculator
         if c_ST_nBARREL_ENDCAP = '0' then -- barrel
-          if holesize_dv = '1' then
+          if i_roi_global_dv = '1' then
             -- if (i_uCM_data_r.mdtid.chamber_id = 2) 
             -- or (i_uCM_data_r.mdtid.chamber_id = 3) 
             -- or (i_uCM_data_r.mdtid.chamber_id = 5) then
-              b_data.z_0 <= resize(holesize + i_Roi_win_origin * to_unsigned(960,10),b_data.z_0'length);
+              -- b_data.z_0 <= resize(holesize + i_Roi_win_origin * to_unsigned(960,10),b_data.z_0'length);
+              -- b_data.roi_x <= i_roi_global_x;--resize(i_roi_global_x,b_data.roi_x'length);
+              -- b_data.roi_z <= i_roi_global_z;--resize(i_roi_global_z,b_data.roi_z'length);
+              -- o_uCM2hp_data_r.roi_x <= i_roi_global_x;
+              -- o_uCM2hp_data_r.roi_z <= i_roi_global_z;
+              o_uCM2sf_data_r.hewindow_pos  <= resize(i_roi_global_z,HEG2SFSLC_HEWINDOW_POS_LEN);
             
           else
 
           end if;
-          z_win_org_dv <= holesize_dv;
+          -- z_win_org_dv <= holesize_dv;
         else
         -- endcap
         end if;
@@ -200,9 +214,10 @@ begin
             end if;
 
           when SET_WINDOW =>
-            if holesize_dv = '1' then
-              o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
-            end if;
+            -- if i_roi_global_dv = '1' then
+            --   -- o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
+            --   o_uCM2sf_data_r.hewindow_pos  <= resize(i_roi_global_z,HEG2SFSLC_HEWINDOW_POS_LEN);
+            -- end if;
 
             if csf_slope_dv = '1' then
               -- o_sf_control_r.slope <= csf_slope;
@@ -211,7 +226,9 @@ begin
               end if;
             end if;
 
-            if z_win_org_dv = '1' then
+            if i_roi_global_dv = '1' then
+
+              -- o_uCM2sf_data_r.hewindow_pos  <= resize(i_roi_global_z,HEG2SFSLC_HEWINDOW_POS_LEN);
 
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';
@@ -228,6 +245,7 @@ begin
 
               end if;
               o_uCM2sf_data_r.data_valid <= '1';
+              o_uCM2hp_data_r.data_valid <= '1';
               heg_count_en <= '1';
               heg_ctrl_motor <= HEG_BUSY;
             end if;
@@ -240,6 +258,7 @@ begin
 
           when HEG_BUSY =>
           o_uCM2sf_data_r.data_valid <= '0';
+          o_uCM2hp_data_r.data_valid <= '0';
 
             if to_integer(unsigned(busy_count)) < c_HEG_TIME_LOAD then
               -- WAITING SF TO LOAD
