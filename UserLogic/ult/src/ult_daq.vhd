@@ -36,10 +36,9 @@ entity daq is
     i_mid_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
     i_out_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
     i_ext_tdc_hits_av : in  mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
-    o_daq_streams     : out felix_stream_bus_avt (  (c_HPS_MAX_HP_INN * c_HPS_ENABLE_ST_INN)     
-                                                    + (c_HPS_MAX_HP_MID * c_HPS_ENABLE_ST_MID)   
-                                                    + (c_HPS_MAX_HP_OUT * c_HPS_ENABLE_ST_OUT)   
-                                                    + (c_HPS_MAX_HP_EXT * c_HPS_ENABLE_ST_EXT) - 1 downto 0);
+    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
+                                                  + c_HPS_MAX_HP_MID   
+                                                  + c_HPS_MAX_HP_OUT - 1 downto 0)
     -- o_sump            : out std_logic
   );
 end entity daq;
