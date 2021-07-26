@@ -20,11 +20,13 @@ package UCM_CTRL is
     FREEZE : std_logic;
   end record UCM_SUPER_ACTIONS_CTRL_t;
   function len(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
+  function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
   function nullify(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
+  function zeroed(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t;
 
   type UCM_SUPER_CONFIGS_CTRL_t is record
     THREADS : std_logic_vector(4-1 downto 0);
@@ -32,11 +34,13 @@ package UCM_CTRL is
     OUTPUT_EN : std_logic;
   end record UCM_SUPER_CONFIGS_CTRL_t;
   function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
   function nullify(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
+  function zeroed(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
 
   type UCM_SUPER_STATUS_MON_t is record
     ENABLED : std_logic_vector(8-1 downto 0);
@@ -44,21 +48,25 @@ package UCM_CTRL is
     ERROR : std_logic_vector(8-1 downto 0);
   end record UCM_SUPER_STATUS_MON_t;
   function len(x: UCM_SUPER_STATUS_MON_t) return natural;
+  function width(x: UCM_SUPER_STATUS_MON_t) return natural;
   function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
   function nullify(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
+  function zeroed(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t;
 
   type UCM_SUPER_SECTOR_PHI_MON_t is record
     rd_data : std_logic_vector(10-1 downto 0);
   end record UCM_SUPER_SECTOR_PHI_MON_t;
   function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
+  function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural;
   function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
   function nullify(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
+  function zeroed(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t;
 
   type UCM_SUPER_SECTOR_PHI_CTRL_t is record
     wr_req : std_logic;
@@ -66,30 +74,36 @@ package UCM_CTRL is
     wr_data : std_logic_vector(10-1 downto 0);
   end record UCM_SUPER_SECTOR_PHI_CTRL_t;
   function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
+  function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
   function nullify(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
+  function zeroed(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t;
 
   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(16-1 downto 0);
   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
 
   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
 
   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is record
     wr_req : std_logic;
@@ -99,58 +113,70 @@ package UCM_CTRL is
     wr_data : std_logic_vector(16-1 downto 0);
   end record UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
 
   type UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
   function convert(x: std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
   function nullify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
 
   type UCM_SUPER_CDE_CHAMB_Z0_MON_t is record
     CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
   end record UCM_SUPER_CDE_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
   function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t;
 
   type UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is record
     CDE_CHAMB_Z0 : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
   end record UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
   function nullify(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
 
   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(16-1 downto 0);
   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
 
   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
   function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
   function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 
   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is record
     wr_req : std_logic;
@@ -160,39 +186,47 @@ package UCM_CTRL is
     wr_data : std_logic_vector(16-1 downto 0);
   end record UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
 
   type UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is array(4-1 downto 0) of UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   function convert(x: std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   function nullify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
 
   type UCM_SUPER_CVP_CHAMB_Z0_MON_t is record
     CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
   end record UCM_SUPER_CVP_CHAMB_Z0_MON_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
   function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t;
 
   type UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is record
     CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
   end record UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
   function nullify(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
 
   type UCM_SUPER_MON_t is record
     STATUS : UCM_SUPER_STATUS_MON_t;
@@ -201,11 +235,13 @@ package UCM_CTRL is
     CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_MON_t;
   end record UCM_SUPER_MON_t;
   function len(x: UCM_SUPER_MON_t) return natural;
+  function width(x: UCM_SUPER_MON_t) return natural;
   function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
   function nullify(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
+  function zeroed(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t;
 
   type UCM_SUPER_CTRL_t is record
     ACTIONS : UCM_SUPER_ACTIONS_CTRL_t;
@@ -215,22 +251,26 @@ package UCM_CTRL is
     CVP_CHAMB_Z0 : UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
   end record UCM_SUPER_CTRL_t;
   function len(x: UCM_SUPER_CTRL_t) return natural;
+  function width(x: UCM_SUPER_CTRL_t) return natural;
   function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
   function nullify(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
+  function zeroed(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t;
 
   type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(12-1 downto 0);
   end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
   function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
+  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
   function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
 
   type UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is record
     wr_req : std_logic;
@@ -240,21 +280,25 @@ package UCM_CTRL is
     wr_data : std_logic_vector(12-1 downto 0);
   end record UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
   function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
+  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
   function nullify(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
 
   type UCM_R_PHI_COMP_RPC_MON_t is record
     MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
   end record UCM_R_PHI_COMP_RPC_MON_t;
   function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
+  function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
   function nullify(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t;
 
   type UCM_R_PHI_COMP_RPC_CTRL_t is record
     sel_thread : std_logic_vector(4-1 downto 0);
@@ -264,22 +308,26 @@ package UCM_CTRL is
     MEM_INTERFACE : UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
   end record UCM_R_PHI_COMP_RPC_CTRL_t;
   function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
+  function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
   function nullify(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t;
 
   type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is record
     rd_rdy : std_logic;
     rd_data : std_logic_vector(14-1 downto 0);
   end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
   function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
+  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
   function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
 
   type UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is record
     wr_req : std_logic;
@@ -289,21 +337,25 @@ package UCM_CTRL is
     wr_data : std_logic_vector(14-1 downto 0);
   end record UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
   function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
+  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
   function nullify(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
 
   type UCM_R_PHI_COMP_MDT_MON_t is record
     MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
   end record UCM_R_PHI_COMP_MDT_MON_t;
   function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
+  function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
   function nullify(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t;
 
   type UCM_R_PHI_COMP_MDT_CTRL_t is record
     sel_thread : std_logic_vector(4-1 downto 0);
@@ -313,55 +365,65 @@ package UCM_CTRL is
     MEM_INTERFACE : UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
   end record UCM_R_PHI_COMP_MDT_CTRL_t;
   function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
+  function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
   function nullify(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t;
 
   type UCM_R_PHI_COMP_MON_t is record
     RPC : UCM_R_PHI_COMP_RPC_MON_t;
     MDT : UCM_R_PHI_COMP_MDT_MON_t;
   end record UCM_R_PHI_COMP_MON_t;
   function len(x: UCM_R_PHI_COMP_MON_t) return natural;
+  function width(x: UCM_R_PHI_COMP_MON_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
   function nullify(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
+  function zeroed(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t;
 
   type UCM_R_PHI_COMP_CTRL_t is record
     RPC : UCM_R_PHI_COMP_RPC_CTRL_t;
     MDT : UCM_R_PHI_COMP_MDT_CTRL_t;
   end record UCM_R_PHI_COMP_CTRL_t;
   function len(x: UCM_R_PHI_COMP_CTRL_t) return natural;
+  function width(x: UCM_R_PHI_COMP_CTRL_t) return natural;
   function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
   function nullify(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
+  function zeroed(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t;
 
   type UCM_MON_t is record
     SUPER : UCM_SUPER_MON_t;
     R_PHI_COMP : UCM_R_PHI_COMP_MON_t;
   end record UCM_MON_t;
   function len(x: UCM_MON_t) return natural;
+  function width(x: UCM_MON_t) return natural;
   function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t;
   function convert(x: in std_logic_vector; t: UCM_MON_t) return UCM_MON_t;
   function nullify(t: UCM_MON_t) return UCM_MON_t;
+  function zeroed(t: UCM_MON_t) return UCM_MON_t;
 
   type UCM_CTRL_t is record
     SUPER : UCM_SUPER_CTRL_t;
     R_PHI_COMP : UCM_R_PHI_COMP_CTRL_t;
   end record UCM_CTRL_t;
   function len(x: UCM_CTRL_t) return natural;
+  function width(x: UCM_CTRL_t) return natural;
   function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t;
   function convert(x: in std_logic_vector; t: UCM_CTRL_t) return UCM_CTRL_t;
   function nullify(t: UCM_CTRL_t) return UCM_CTRL_t;
+  function zeroed(t: UCM_CTRL_t) return UCM_CTRL_t;
 
 end package UCM_CTRL;
 
@@ -378,6 +440,15 @@ package body UCM_CTRL is
     l := l + len(x.FREEZE);
     return l;
   end function len;
+  function width(x: UCM_SUPER_ACTIONS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RESET);
+    l := l + width(x.ENABLE);
+    l := l + width(x.DISABLE);
+    l := l + width(x.FREEZE);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -479,6 +550,15 @@ package body UCM_CTRL is
     y.FREEZE := nullify(t.FREEZE);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_ACTIONS_CTRL_t) return UCM_SUPER_ACTIONS_CTRL_t is
+  variable y: UCM_SUPER_ACTIONS_CTRL_t;
+  begin
+    y.RESET := zeroed(t.RESET);
+    y.ENABLE := zeroed(t.ENABLE);
+    y.DISABLE := zeroed(t.DISABLE);
+    y.FREEZE := zeroed(t.FREEZE);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -488,6 +568,14 @@ package body UCM_CTRL is
     l := l + len(x.OUTPUT_EN);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CONFIGS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.THREADS);
+    l := l + width(x.INPUT_EN);
+    l := l + width(x.OUTPUT_EN);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -572,6 +660,14 @@ package body UCM_CTRL is
     y.OUTPUT_EN := nullify(t.OUTPUT_EN);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t is
+  variable y: UCM_SUPER_CONFIGS_CTRL_t;
+  begin
+    y.THREADS := zeroed(t.THREADS);
+    y.INPUT_EN := zeroed(t.INPUT_EN);
+    y.OUTPUT_EN := zeroed(t.OUTPUT_EN);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_STATUS_MON_t) return natural is
     variable l : natural := 0;
@@ -581,6 +677,14 @@ package body UCM_CTRL is
     l := l + len(x.ERROR);
     return l;
   end function len;
+  function width(x: UCM_SUPER_STATUS_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ENABLED);
+    l := l + width(x.READY);
+    l := l + width(x.ERROR);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -665,6 +769,14 @@ package body UCM_CTRL is
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_STATUS_MON_t) return UCM_SUPER_STATUS_MON_t is
+  variable y: UCM_SUPER_STATUS_MON_t;
+  begin
+    y.ENABLED := zeroed(t.ENABLED);
+    y.READY := zeroed(t.READY);
+    y.ERROR := zeroed(t.ERROR);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
     variable l : natural := 0;
@@ -672,6 +784,12 @@ package body UCM_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_SECTOR_PHI_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_SECTOR_PHI_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -722,6 +840,12 @@ package body UCM_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_SECTOR_PHI_MON_t) return UCM_SUPER_SECTOR_PHI_MON_t is
+  variable y: UCM_SUPER_SECTOR_PHI_MON_t;
+  begin
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
     variable l : natural := 0;
@@ -731,6 +855,14 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_SECTOR_PHI_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.rd_req);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_SECTOR_PHI_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -815,6 +947,14 @@ package body UCM_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_SECTOR_PHI_CTRL_t) return UCM_SUPER_SECTOR_PHI_CTRL_t is
+  variable y: UCM_SUPER_SECTOR_PHI_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.rd_req := zeroed(t.rd_req);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
@@ -823,6 +963,13 @@ package body UCM_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -890,6 +1037,13 @@ package body UCM_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -897,6 +1051,12 @@ package body UCM_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -989,6 +1149,14 @@ package body UCM_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1000,6 +1168,16 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.rd_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1118,6 +1296,16 @@ package body UCM_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.rd_req := zeroed(t.rd_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -1125,6 +1313,12 @@ package body UCM_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1217,6 +1411,14 @@ package body UCM_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
@@ -1224,6 +1426,12 @@ package body UCM_CTRL is
     l := l + len(x.CDE_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.CDE_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1274,6 +1482,12 @@ package body UCM_CTRL is
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_MON_t) return UCM_SUPER_CDE_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_MON_t;
+  begin
+    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1281,6 +1495,12 @@ package body UCM_CTRL is
     l := l + len(x.CDE_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.CDE_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1331,6 +1551,12 @@ package body UCM_CTRL is
     y.CDE_CHAMB_Z0 := nullify(t.CDE_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t) return UCM_SUPER_CDE_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CDE_CHAMB_Z0_CTRL_t;
+  begin
+    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
@@ -1339,6 +1565,13 @@ package body UCM_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1406,6 +1639,13 @@ package body UCM_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -1413,6 +1653,12 @@ package body UCM_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1505,6 +1751,14 @@ package body UCM_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1516,6 +1770,16 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.rd_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1634,6 +1898,16 @@ package body UCM_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.rd_req := zeroed(t.rd_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -1641,6 +1915,12 @@ package body UCM_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1733,6 +2013,14 @@ package body UCM_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY) return UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY is
+    variable y : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
     variable l : natural := 0;
@@ -1740,6 +2028,12 @@ package body UCM_CTRL is
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.CVP_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1790,6 +2084,12 @@ package body UCM_CTRL is
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_MON_t) return UCM_SUPER_CVP_CHAMB_Z0_MON_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_MON_t;
+  begin
+    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1797,6 +2097,12 @@ package body UCM_CTRL is
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.CVP_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1847,6 +2153,12 @@ package body UCM_CTRL is
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t) return UCM_SUPER_CVP_CHAMB_Z0_CTRL_t is
+  variable y: UCM_SUPER_CVP_CHAMB_Z0_CTRL_t;
+  begin
+    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_MON_t) return natural is
     variable l : natural := 0;
@@ -1857,6 +2169,15 @@ package body UCM_CTRL is
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STATUS);
+    l := l + width(x.SECTOR_PHI);
+    l := l + width(x.CDE_CHAMB_Z0);
+    l := l + width(x.CVP_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1958,6 +2279,15 @@ package body UCM_CTRL is
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_MON_t) return UCM_SUPER_MON_t is
+  variable y: UCM_SUPER_MON_t;
+  begin
+    y.STATUS := zeroed(t.STATUS);
+    y.SECTOR_PHI := zeroed(t.SECTOR_PHI);
+    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
+    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_SUPER_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1969,6 +2299,16 @@ package body UCM_CTRL is
     l := l + len(x.CVP_CHAMB_Z0);
     return l;
   end function len;
+  function width(x: UCM_SUPER_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ACTIONS);
+    l := l + width(x.CONFIGS);
+    l := l + width(x.SECTOR_PHI);
+    l := l + width(x.CDE_CHAMB_Z0);
+    l := l + width(x.CVP_CHAMB_Z0);
+    return l;
+  end function width;
   function vectorify(x: UCM_SUPER_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2087,6 +2427,16 @@ package body UCM_CTRL is
     y.CVP_CHAMB_Z0 := nullify(t.CVP_CHAMB_Z0);
     return y;
   end function nullify;
+  function zeroed(t: UCM_SUPER_CTRL_t) return UCM_SUPER_CTRL_t is
+  variable y: UCM_SUPER_CTRL_t;
+  begin
+    y.ACTIONS := zeroed(t.ACTIONS);
+    y.CONFIGS := zeroed(t.CONFIGS);
+    y.SECTOR_PHI := zeroed(t.SECTOR_PHI);
+    y.CDE_CHAMB_Z0 := zeroed(t.CDE_CHAMB_Z0);
+    y.CVP_CHAMB_Z0 := zeroed(t.CVP_CHAMB_Z0);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
     variable l : natural := 0;
@@ -2095,6 +2445,13 @@ package body UCM_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2162,6 +2519,13 @@ package body UCM_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t is
+  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
     variable l : natural := 0;
@@ -2173,6 +2537,16 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.rd_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2291,6 +2665,16 @@ package body UCM_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t is
+  variable y: UCM_R_PHI_COMP_RPC_MEM_INTERFACE_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.rd_req := zeroed(t.rd_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
     variable l : natural := 0;
@@ -2298,6 +2682,12 @@ package body UCM_CTRL is
     l := l + len(x.MEM_INTERFACE);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_RPC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.MEM_INTERFACE);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_RPC_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2348,6 +2738,12 @@ package body UCM_CTRL is
     y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_MON_t) return UCM_R_PHI_COMP_RPC_MON_t is
+  variable y: UCM_R_PHI_COMP_RPC_MON_t;
+  begin
+    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
     variable l : natural := 0;
@@ -2359,6 +2755,16 @@ package body UCM_CTRL is
     l := l + len(x.MEM_INTERFACE);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_RPC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sel_thread);
+    l := l + width(x.sel_station);
+    l := l + width(x.sel_layer);
+    l := l + width(x.ext_ctrl);
+    l := l + width(x.MEM_INTERFACE);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_RPC_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2477,6 +2883,16 @@ package body UCM_CTRL is
     y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_RPC_CTRL_t) return UCM_R_PHI_COMP_RPC_CTRL_t is
+  variable y: UCM_R_PHI_COMP_RPC_CTRL_t;
+  begin
+    y.sel_thread := zeroed(t.sel_thread);
+    y.sel_station := zeroed(t.sel_station);
+    y.sel_layer := zeroed(t.sel_layer);
+    y.ext_ctrl := zeroed(t.ext_ctrl);
+    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
     variable l : natural := 0;
@@ -2485,6 +2901,13 @@ package body UCM_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2552,6 +2975,13 @@ package body UCM_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t is
+  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
     variable l : natural := 0;
@@ -2563,6 +2993,16 @@ package body UCM_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.rd_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2681,6 +3121,16 @@ package body UCM_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t) return UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t is
+  variable y: UCM_R_PHI_COMP_MDT_MEM_INTERFACE_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.rd_req := zeroed(t.rd_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
     variable l : natural := 0;
@@ -2688,6 +3138,12 @@ package body UCM_CTRL is
     l := l + len(x.MEM_INTERFACE);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_MDT_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.MEM_INTERFACE);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_MDT_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2738,6 +3194,12 @@ package body UCM_CTRL is
     y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_MON_t) return UCM_R_PHI_COMP_MDT_MON_t is
+  variable y: UCM_R_PHI_COMP_MDT_MON_t;
+  begin
+    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
     variable l : natural := 0;
@@ -2749,6 +3211,16 @@ package body UCM_CTRL is
     l := l + len(x.MEM_INTERFACE);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_MDT_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sel_thread);
+    l := l + width(x.sel_station);
+    l := l + width(x.sel_layer);
+    l := l + width(x.ext_ctrl);
+    l := l + width(x.MEM_INTERFACE);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_MDT_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2867,6 +3339,16 @@ package body UCM_CTRL is
     y.MEM_INTERFACE := nullify(t.MEM_INTERFACE);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_MDT_CTRL_t) return UCM_R_PHI_COMP_MDT_CTRL_t is
+  variable y: UCM_R_PHI_COMP_MDT_CTRL_t;
+  begin
+    y.sel_thread := zeroed(t.sel_thread);
+    y.sel_station := zeroed(t.sel_station);
+    y.sel_layer := zeroed(t.sel_layer);
+    y.ext_ctrl := zeroed(t.ext_ctrl);
+    y.MEM_INTERFACE := zeroed(t.MEM_INTERFACE);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_MON_t) return natural is
     variable l : natural := 0;
@@ -2875,6 +3357,13 @@ package body UCM_CTRL is
     l := l + len(x.MDT);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RPC);
+    l := l + width(x.MDT);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2942,6 +3431,13 @@ package body UCM_CTRL is
     y.MDT := nullify(t.MDT);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_MON_t) return UCM_R_PHI_COMP_MON_t is
+  variable y: UCM_R_PHI_COMP_MON_t;
+  begin
+    y.RPC := zeroed(t.RPC);
+    y.MDT := zeroed(t.MDT);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_R_PHI_COMP_CTRL_t) return natural is
     variable l : natural := 0;
@@ -2950,6 +3446,13 @@ package body UCM_CTRL is
     l := l + len(x.MDT);
     return l;
   end function len;
+  function width(x: UCM_R_PHI_COMP_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RPC);
+    l := l + width(x.MDT);
+    return l;
+  end function width;
   function vectorify(x: UCM_R_PHI_COMP_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3017,6 +3520,13 @@ package body UCM_CTRL is
     y.MDT := nullify(t.MDT);
     return y;
   end function nullify;
+  function zeroed(t: UCM_R_PHI_COMP_CTRL_t) return UCM_R_PHI_COMP_CTRL_t is
+  variable y: UCM_R_PHI_COMP_CTRL_t;
+  begin
+    y.RPC := zeroed(t.RPC);
+    y.MDT := zeroed(t.MDT);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_MON_t) return natural is
     variable l : natural := 0;
@@ -3025,6 +3535,13 @@ package body UCM_CTRL is
     l := l + len(x.R_PHI_COMP);
     return l;
   end function len;
+  function width(x: UCM_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.SUPER);
+    l := l + width(x.R_PHI_COMP);
+    return l;
+  end function width;
   function vectorify(x: UCM_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3092,6 +3609,13 @@ package body UCM_CTRL is
     y.R_PHI_COMP := nullify(t.R_PHI_COMP);
     return y;
   end function nullify;
+  function zeroed(t: UCM_MON_t) return UCM_MON_t is
+  variable y: UCM_MON_t;
+  begin
+    y.SUPER := zeroed(t.SUPER);
+    y.R_PHI_COMP := zeroed(t.R_PHI_COMP);
+    return y;
+  end function zeroed;
 
   function len(x: UCM_CTRL_t) return natural is
     variable l : natural := 0;
@@ -3100,6 +3624,13 @@ package body UCM_CTRL is
     l := l + len(x.R_PHI_COMP);
     return l;
   end function len;
+  function width(x: UCM_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.SUPER);
+    l := l + width(x.R_PHI_COMP);
+    return l;
+  end function width;
   function vectorify(x: UCM_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3167,5 +3698,12 @@ package body UCM_CTRL is
     y.R_PHI_COMP := nullify(t.R_PHI_COMP);
     return y;
   end function nullify;
+  function zeroed(t: UCM_CTRL_t) return UCM_CTRL_t is
+  variable y: UCM_CTRL_t;
+  begin
+    y.SUPER := zeroed(t.SUPER);
+    y.R_PHI_COMP := zeroed(t.R_PHI_COMP);
+    return y;
+  end function zeroed;
 
 end package body UCM_CTRL;

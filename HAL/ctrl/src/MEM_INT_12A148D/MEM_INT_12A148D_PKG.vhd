@@ -21,11 +21,13 @@ package MEM_INT_12A148D_CTRL is
     wr_data_4 : std_logic_vector(20-1 downto 0);
   end record MEM_INT_12A148D_wr_data_CTRL_t;
   function len(x: MEM_INT_12A148D_wr_data_CTRL_t) return natural;
+  function width(x: MEM_INT_12A148D_wr_data_CTRL_t) return natural;
   function vectorify(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
   function convert(x: in std_logic_vector; t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
   function nullify(t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
+  function zeroed(t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t;
 
   type MEM_INT_12A148D_rd_data_MON_t is record
     rd_data_0 : std_logic_vector(32-1 downto 0);
@@ -35,22 +37,26 @@ package MEM_INT_12A148D_CTRL is
     rd_data_4 : std_logic_vector(20-1 downto 0);
   end record MEM_INT_12A148D_rd_data_MON_t;
   function len(x: MEM_INT_12A148D_rd_data_MON_t) return natural;
+  function width(x: MEM_INT_12A148D_rd_data_MON_t) return natural;
   function vectorify(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
   function convert(x: in std_logic_vector; t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
   function nullify(t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
+  function zeroed(t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t;
 
   type MEM_INT_12A148D_MON_t is record
     rd_rdy : std_logic;
     rd_data : MEM_INT_12A148D_rd_data_MON_t;
   end record MEM_INT_12A148D_MON_t;
   function len(x: MEM_INT_12A148D_MON_t) return natural;
+  function width(x: MEM_INT_12A148D_MON_t) return natural;
   function vectorify(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
   function convert(x: in std_logic_vector; t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
   function nullify(t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
+  function zeroed(t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t;
 
   type MEM_INT_12A148D_CTRL_t is record
     wr_req : std_logic;
@@ -63,11 +69,13 @@ package MEM_INT_12A148D_CTRL is
     wr_data : MEM_INT_12A148D_wr_data_CTRL_t;
   end record MEM_INT_12A148D_CTRL_t;
   function len(x: MEM_INT_12A148D_CTRL_t) return natural;
+  function width(x: MEM_INT_12A148D_CTRL_t) return natural;
   function vectorify(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
   function convert(x: in std_logic_vector; t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
   function nullify(t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
+  function zeroed(t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t;
 
 end package MEM_INT_12A148D_CTRL;
 
@@ -85,6 +93,16 @@ package body MEM_INT_12A148D_CTRL is
     l := l + len(x.wr_data_4);
     return l;
   end function len;
+  function width(x: MEM_INT_12A148D_wr_data_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_data_0);
+    l := l + width(x.wr_data_1);
+    l := l + width(x.wr_data_2);
+    l := l + width(x.wr_data_3);
+    l := l + width(x.wr_data_4);
+    return l;
+  end function width;
   function vectorify(x: MEM_INT_12A148D_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -203,6 +221,16 @@ package body MEM_INT_12A148D_CTRL is
     y.wr_data_4 := nullify(t.wr_data_4);
     return y;
   end function nullify;
+  function zeroed(t: MEM_INT_12A148D_wr_data_CTRL_t) return MEM_INT_12A148D_wr_data_CTRL_t is
+  variable y: MEM_INT_12A148D_wr_data_CTRL_t;
+  begin
+    y.wr_data_0 := zeroed(t.wr_data_0);
+    y.wr_data_1 := zeroed(t.wr_data_1);
+    y.wr_data_2 := zeroed(t.wr_data_2);
+    y.wr_data_3 := zeroed(t.wr_data_3);
+    y.wr_data_4 := zeroed(t.wr_data_4);
+    return y;
+  end function zeroed;
 
   function len(x: MEM_INT_12A148D_rd_data_MON_t) return natural is
     variable l : natural := 0;
@@ -214,6 +242,16 @@ package body MEM_INT_12A148D_CTRL is
     l := l + len(x.rd_data_4);
     return l;
   end function len;
+  function width(x: MEM_INT_12A148D_rd_data_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data_0);
+    l := l + width(x.rd_data_1);
+    l := l + width(x.rd_data_2);
+    l := l + width(x.rd_data_3);
+    l := l + width(x.rd_data_4);
+    return l;
+  end function width;
   function vectorify(x: MEM_INT_12A148D_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -332,6 +370,16 @@ package body MEM_INT_12A148D_CTRL is
     y.rd_data_4 := nullify(t.rd_data_4);
     return y;
   end function nullify;
+  function zeroed(t: MEM_INT_12A148D_rd_data_MON_t) return MEM_INT_12A148D_rd_data_MON_t is
+  variable y: MEM_INT_12A148D_rd_data_MON_t;
+  begin
+    y.rd_data_0 := zeroed(t.rd_data_0);
+    y.rd_data_1 := zeroed(t.rd_data_1);
+    y.rd_data_2 := zeroed(t.rd_data_2);
+    y.rd_data_3 := zeroed(t.rd_data_3);
+    y.rd_data_4 := zeroed(t.rd_data_4);
+    return y;
+  end function zeroed;
 
   function len(x: MEM_INT_12A148D_MON_t) return natural is
     variable l : natural := 0;
@@ -340,6 +388,13 @@ package body MEM_INT_12A148D_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: MEM_INT_12A148D_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: MEM_INT_12A148D_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -407,6 +462,13 @@ package body MEM_INT_12A148D_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: MEM_INT_12A148D_MON_t) return MEM_INT_12A148D_MON_t is
+  variable y: MEM_INT_12A148D_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: MEM_INT_12A148D_CTRL_t) return natural is
     variable l : natural := 0;
@@ -421,6 +483,19 @@ package body MEM_INT_12A148D_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: MEM_INT_12A148D_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.wr_ack);
+    l := l + width(x.rd_req);
+    l := l + width(x.rd_ack);
+    l := l + width(x.flush_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: MEM_INT_12A148D_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -590,5 +665,18 @@ package body MEM_INT_12A148D_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: MEM_INT_12A148D_CTRL_t) return MEM_INT_12A148D_CTRL_t is
+  variable y: MEM_INT_12A148D_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.wr_ack := zeroed(t.wr_ack);
+    y.rd_req := zeroed(t.rd_req);
+    y.rd_ack := zeroed(t.rd_ack);
+    y.flush_req := zeroed(t.flush_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
 end package body MEM_INT_12A148D_CTRL;

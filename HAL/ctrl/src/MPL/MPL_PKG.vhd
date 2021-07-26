@@ -20,11 +20,13 @@ package MPL_CTRL is
     FREEZE : std_logic;
   end record MPL_ACTIONS_CTRL_t;
   function len(x: MPL_ACTIONS_CTRL_t) return natural;
+  function width(x: MPL_ACTIONS_CTRL_t) return natural;
   function vectorify(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
   function nullify(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
+  function zeroed(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t;
 
   type MPL_CONFIGS_CTRL_t is record
     THREADS : std_logic_vector(4-1 downto 0);
@@ -33,11 +35,13 @@ package MPL_CTRL is
     FLUSH_MEM_RESET : std_logic;
   end record MPL_CONFIGS_CTRL_t;
   function len(x: MPL_CONFIGS_CTRL_t) return natural;
+  function width(x: MPL_CONFIGS_CTRL_t) return natural;
   function vectorify(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
   function nullify(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
+  function zeroed(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t;
 
   type MPL_STATUS_MON_t is record
     ENABLED : std_logic;
@@ -45,11 +49,13 @@ package MPL_CTRL is
     ERROR : std_logic;
   end record MPL_STATUS_MON_t;
   function len(x: MPL_STATUS_MON_t) return natural;
+  function width(x: MPL_STATUS_MON_t) return natural;
   function vectorify(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
   function convert(x: in std_logic_vector; t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
   function nullify(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
+  function zeroed(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t;
 
   type MPL_PL_MEM_PL_MEM_wr_data_CTRL_t is record
     wr_data_0 : std_logic_vector(32-1 downto 0);
@@ -59,11 +65,13 @@ package MPL_CTRL is
     wr_data_4 : std_logic_vector(20-1 downto 0);
   end record MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
 
   type MPL_PL_MEM_PL_MEM_rd_data_MON_t is record
     rd_data_0 : std_logic_vector(32-1 downto 0);
@@ -73,30 +81,36 @@ package MPL_CTRL is
     rd_data_4 : std_logic_vector(20-1 downto 0);
   end record MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t;
 
   type MPL_PL_MEM_PL_MEM_MON_t is record
     rd_rdy : std_logic;
     rd_data : MPL_PL_MEM_PL_MEM_rd_data_MON_t;
   end record MPL_PL_MEM_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_MON_t) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_MON_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t;
 
   type MPL_PL_MEM_PL_MEM_MON_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
   function convert(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
   function nullify(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
+  function zeroed(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
 
   type MPL_PL_MEM_PL_MEM_CTRL_t is record
     wr_req : std_logic;
@@ -109,50 +123,60 @@ package MPL_CTRL is
     wr_data : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
   end record MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
   function nullify(t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t;
 
   type MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is array(5-1 downto 0) of MPL_PL_MEM_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural;
+  function width(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
   function convert(x: std_logic_vector; t: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
   function nullify(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
+  function zeroed(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
 
   type MPL_PL_MEM_MON_t is record
     PL_MEM : MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
   end record MPL_PL_MEM_MON_t;
   function len(x: MPL_PL_MEM_MON_t) return natural;
+  function width(x: MPL_PL_MEM_MON_t) return natural;
   function vectorify(x: MPL_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_MON_t) return MPL_PL_MEM_MON_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_MON_t) return MPL_PL_MEM_MON_t;
   function nullify(t: MPL_PL_MEM_MON_t) return MPL_PL_MEM_MON_t;
+  function zeroed(t: MPL_PL_MEM_MON_t) return MPL_PL_MEM_MON_t;
 
   type MPL_PL_MEM_CTRL_t is record
     PL_MEM : MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
   end record MPL_PL_MEM_CTRL_t;
   function len(x: MPL_PL_MEM_CTRL_t) return natural;
+  function width(x: MPL_PL_MEM_CTRL_t) return natural;
   function vectorify(x: MPL_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
   function nullify(t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
+  function zeroed(t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t;
 
   type MPL_MON_t is record
     STATUS : MPL_STATUS_MON_t;
     PL_MEM : MPL_PL_MEM_MON_t;
   end record MPL_MON_t;
   function len(x: MPL_MON_t) return natural;
+  function width(x: MPL_MON_t) return natural;
   function vectorify(x: MPL_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_MON_t) return MPL_MON_t;
   function convert(x: in std_logic_vector; t: MPL_MON_t) return MPL_MON_t;
   function nullify(t: MPL_MON_t) return MPL_MON_t;
+  function zeroed(t: MPL_MON_t) return MPL_MON_t;
 
   type MPL_CTRL_t is record
     ACTIONS : MPL_ACTIONS_CTRL_t;
@@ -160,11 +184,13 @@ package MPL_CTRL is
     PL_MEM : MPL_PL_MEM_CTRL_t;
   end record MPL_CTRL_t;
   function len(x: MPL_CTRL_t) return natural;
+  function width(x: MPL_CTRL_t) return natural;
   function vectorify(x: MPL_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: MPL_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function convert(x: in std_logic_vector; t: MPL_CTRL_t) return MPL_CTRL_t;
   function nullify(t: MPL_CTRL_t) return MPL_CTRL_t;
+  function zeroed(t: MPL_CTRL_t) return MPL_CTRL_t;
 
 end package MPL_CTRL;
 
@@ -181,6 +207,15 @@ package body MPL_CTRL is
     l := l + len(x.FREEZE);
     return l;
   end function len;
+  function width(x: MPL_ACTIONS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RESET);
+    l := l + width(x.ENABLE);
+    l := l + width(x.DISABLE);
+    l := l + width(x.FREEZE);
+    return l;
+  end function width;
   function vectorify(x: MPL_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -282,6 +317,15 @@ package body MPL_CTRL is
     y.FREEZE := nullify(t.FREEZE);
     return y;
   end function nullify;
+  function zeroed(t: MPL_ACTIONS_CTRL_t) return MPL_ACTIONS_CTRL_t is
+  variable y: MPL_ACTIONS_CTRL_t;
+  begin
+    y.RESET := zeroed(t.RESET);
+    y.ENABLE := zeroed(t.ENABLE);
+    y.DISABLE := zeroed(t.DISABLE);
+    y.FREEZE := zeroed(t.FREEZE);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -292,6 +336,15 @@ package body MPL_CTRL is
     l := l + len(x.FLUSH_MEM_RESET);
     return l;
   end function len;
+  function width(x: MPL_CONFIGS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.THREADS);
+    l := l + width(x.INPUT_EN);
+    l := l + width(x.OUTPUT_EN);
+    l := l + width(x.FLUSH_MEM_RESET);
+    return l;
+  end function width;
   function vectorify(x: MPL_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -393,6 +446,15 @@ package body MPL_CTRL is
     y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);
     return y;
   end function nullify;
+  function zeroed(t: MPL_CONFIGS_CTRL_t) return MPL_CONFIGS_CTRL_t is
+  variable y: MPL_CONFIGS_CTRL_t;
+  begin
+    y.THREADS := zeroed(t.THREADS);
+    y.INPUT_EN := zeroed(t.INPUT_EN);
+    y.OUTPUT_EN := zeroed(t.OUTPUT_EN);
+    y.FLUSH_MEM_RESET := zeroed(t.FLUSH_MEM_RESET);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_STATUS_MON_t) return natural is
     variable l : natural := 0;
@@ -402,6 +464,14 @@ package body MPL_CTRL is
     l := l + len(x.ERROR);
     return l;
   end function len;
+  function width(x: MPL_STATUS_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ENABLED);
+    l := l + width(x.READY);
+    l := l + width(x.ERROR);
+    return l;
+  end function width;
   function vectorify(x: MPL_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -486,6 +556,14 @@ package body MPL_CTRL is
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
+  function zeroed(t: MPL_STATUS_MON_t) return MPL_STATUS_MON_t is
+  variable y: MPL_STATUS_MON_t;
+  begin
+    y.ENABLED := zeroed(t.ENABLED);
+    y.READY := zeroed(t.READY);
+    y.ERROR := zeroed(t.ERROR);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural is
     variable l : natural := 0;
@@ -497,6 +575,16 @@ package body MPL_CTRL is
     l := l + len(x.wr_data_4);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_data_0);
+    l := l + width(x.wr_data_1);
+    l := l + width(x.wr_data_2);
+    l := l + width(x.wr_data_3);
+    l := l + width(x.wr_data_4);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -615,6 +703,16 @@ package body MPL_CTRL is
     y.wr_data_4 := nullify(t.wr_data_4);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t) return MPL_PL_MEM_PL_MEM_wr_data_CTRL_t is
+  variable y: MPL_PL_MEM_PL_MEM_wr_data_CTRL_t;
+  begin
+    y.wr_data_0 := zeroed(t.wr_data_0);
+    y.wr_data_1 := zeroed(t.wr_data_1);
+    y.wr_data_2 := zeroed(t.wr_data_2);
+    y.wr_data_3 := zeroed(t.wr_data_3);
+    y.wr_data_4 := zeroed(t.wr_data_4);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural is
     variable l : natural := 0;
@@ -626,6 +724,16 @@ package body MPL_CTRL is
     l := l + len(x.rd_data_4);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_data_0);
+    l := l + width(x.rd_data_1);
+    l := l + width(x.rd_data_2);
+    l := l + width(x.rd_data_3);
+    l := l + width(x.rd_data_4);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_rd_data_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -744,6 +852,16 @@ package body MPL_CTRL is
     y.rd_data_4 := nullify(t.rd_data_4);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_rd_data_MON_t) return MPL_PL_MEM_PL_MEM_rd_data_MON_t is
+  variable y: MPL_PL_MEM_PL_MEM_rd_data_MON_t;
+  begin
+    y.rd_data_0 := zeroed(t.rd_data_0);
+    y.rd_data_1 := zeroed(t.rd_data_1);
+    y.rd_data_2 := zeroed(t.rd_data_2);
+    y.rd_data_3 := zeroed(t.rd_data_3);
+    y.rd_data_4 := zeroed(t.rd_data_4);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_MON_t) return natural is
     variable l : natural := 0;
@@ -752,6 +870,13 @@ package body MPL_CTRL is
     l := l + len(x.rd_data);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    l := l + width(x.rd_data);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -819,6 +944,13 @@ package body MPL_CTRL is
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_MON_t) return MPL_PL_MEM_PL_MEM_MON_t is
+  variable y: MPL_PL_MEM_PL_MEM_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    y.rd_data := zeroed(t.rd_data);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -826,6 +958,12 @@ package body MPL_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -918,6 +1056,14 @@ package body MPL_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: MPL_PL_MEM_PL_MEM_MON_t_ARRAY) return MPL_PL_MEM_PL_MEM_MON_t_ARRAY is
+    variable y : MPL_PL_MEM_PL_MEM_MON_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural is
     variable l : natural := 0;
@@ -932,6 +1078,19 @@ package body MPL_CTRL is
     l := l + len(x.wr_data);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.wr_ack);
+    l := l + width(x.rd_req);
+    l := l + width(x.rd_ack);
+    l := l + width(x.flush_req);
+    l := l + width(x.wr_addr);
+    l := l + width(x.rd_addr);
+    l := l + width(x.wr_data);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1101,6 +1260,19 @@ package body MPL_CTRL is
     y.wr_data := nullify(t.wr_data);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_PL_MEM_CTRL_t) return MPL_PL_MEM_PL_MEM_CTRL_t is
+  variable y: MPL_PL_MEM_PL_MEM_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.wr_ack := zeroed(t.wr_ack);
+    y.rd_req := zeroed(t.rd_req);
+    y.rd_ack := zeroed(t.rd_ack);
+    y.flush_req := zeroed(t.flush_req);
+    y.wr_addr := zeroed(t.wr_addr);
+    y.rd_addr := zeroed(t.rd_addr);
+    y.wr_data := zeroed(t.wr_data);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural is
     variable l : natural := 0;
@@ -1108,6 +1280,12 @@ package body MPL_CTRL is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1200,6 +1378,14 @@ package body MPL_CTRL is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY) return MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY is
+    variable y : MPL_PL_MEM_PL_MEM_CTRL_t_ARRAY;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_MON_t) return natural is
     variable l : natural := 0;
@@ -1207,6 +1393,12 @@ package body MPL_CTRL is
     l := l + len(x.PL_MEM);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.PL_MEM);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1257,6 +1449,12 @@ package body MPL_CTRL is
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_MON_t) return MPL_PL_MEM_MON_t is
+  variable y: MPL_PL_MEM_MON_t;
+  begin
+    y.PL_MEM := zeroed(t.PL_MEM);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_PL_MEM_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1264,6 +1462,12 @@ package body MPL_CTRL is
     l := l + len(x.PL_MEM);
     return l;
   end function len;
+  function width(x: MPL_PL_MEM_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.PL_MEM);
+    return l;
+  end function width;
   function vectorify(x: MPL_PL_MEM_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1314,6 +1518,12 @@ package body MPL_CTRL is
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
+  function zeroed(t: MPL_PL_MEM_CTRL_t) return MPL_PL_MEM_CTRL_t is
+  variable y: MPL_PL_MEM_CTRL_t;
+  begin
+    y.PL_MEM := zeroed(t.PL_MEM);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_MON_t) return natural is
     variable l : natural := 0;
@@ -1322,6 +1532,13 @@ package body MPL_CTRL is
     l := l + len(x.PL_MEM);
     return l;
   end function len;
+  function width(x: MPL_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STATUS);
+    l := l + width(x.PL_MEM);
+    return l;
+  end function width;
   function vectorify(x: MPL_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1389,6 +1606,13 @@ package body MPL_CTRL is
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
+  function zeroed(t: MPL_MON_t) return MPL_MON_t is
+  variable y: MPL_MON_t;
+  begin
+    y.STATUS := zeroed(t.STATUS);
+    y.PL_MEM := zeroed(t.PL_MEM);
+    return y;
+  end function zeroed;
 
   function len(x: MPL_CTRL_t) return natural is
     variable l : natural := 0;
@@ -1398,6 +1622,14 @@ package body MPL_CTRL is
     l := l + len(x.PL_MEM);
     return l;
   end function len;
+  function width(x: MPL_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ACTIONS);
+    l := l + width(x.CONFIGS);
+    l := l + width(x.PL_MEM);
+    return l;
+  end function width;
   function vectorify(x: MPL_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1482,5 +1714,13 @@ package body MPL_CTRL is
     y.PL_MEM := nullify(t.PL_MEM);
     return y;
   end function nullify;
+  function zeroed(t: MPL_CTRL_t) return MPL_CTRL_t is
+  variable y: MPL_CTRL_t;
+  begin
+    y.ACTIONS := zeroed(t.ACTIONS);
+    y.CONFIGS := zeroed(t.CONFIGS);
+    y.PL_MEM := zeroed(t.PL_MEM);
+    return y;
+  end function zeroed;
 
 end package body MPL_CTRL;

@@ -29,54 +29,66 @@ package daq_defs is
     data : daq_stream_data_t;
   end record daq_stream_rt;
   function len(x: daq_stream_rt) return natural;
+  function width(x: daq_stream_rt) return natural;
   function vectorify(x: daq_stream_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_stream_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_stream_rt) return daq_stream_rt;
   function convert(x: in std_logic_vector; t: daq_stream_rt) return daq_stream_rt;
   function nullify(t: daq_stream_rt) return daq_stream_rt;
+  function zeroed(t: daq_stream_rt) return daq_stream_rt;
 
   type daq_branch_t is array(DAQ_MAX_STREAMS-1 downto 0) of daq_stream_rt;
   function len(x: daq_branch_t) return natural;
+  function width(x: daq_branch_t) return natural;
   function vectorify(x: daq_branch_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_branch_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: daq_branch_t) return daq_branch_t;
   function convert(x: std_logic_vector; t: daq_branch_t) return daq_branch_t;
   function nullify(x: daq_branch_t) return daq_branch_t;
+  function zeroed(x: daq_branch_t) return daq_branch_t;
 
   type daq_branch_struct_t is array(0 to DAQ_MAX_STREAMS-1) of integer;
   function len(x: daq_branch_struct_t) return natural;
+  function width(x: daq_branch_struct_t) return natural;
   function vectorify(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t;
   function convert(x: std_logic_vector; t: daq_branch_struct_t) return daq_branch_struct_t;
   function nullify(x: daq_branch_struct_t) return daq_branch_struct_t;
+  function zeroed(x: daq_branch_struct_t) return daq_branch_struct_t;
 
   type daq_branches_t is array(DAQ_MAX_BRANCHES-1 downto 0) of daq_branch_t;
   function len(x: daq_branches_t) return natural;
+  function width(x: daq_branches_t) return natural;
   function vectorify(x: daq_branches_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_branches_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: daq_branches_t) return daq_branches_t;
   function convert(x: std_logic_vector; t: daq_branches_t) return daq_branches_t;
   function nullify(x: daq_branches_t) return daq_branches_t;
+  function zeroed(x: daq_branches_t) return daq_branches_t;
 
   type daq_branches_map_at is array(0 to DAQ_MAX_BRANCHES-1) of daq_branch_struct_t;
   function len(x: daq_branches_map_at) return natural;
+  function width(x: daq_branches_map_at) return natural;
   function vectorify(x: daq_branches_map_at; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_branches_map_at; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: daq_branches_map_at) return daq_branches_map_at;
   function convert(x: std_logic_vector; t: daq_branches_map_at) return daq_branches_map_at;
   function nullify(x: daq_branches_map_at) return daq_branches_map_at;
+  function zeroed(x: daq_branches_map_at) return daq_branches_map_at;
 
   type daq_sys_rt is record
     clk320 : std_logic;
     rst : std_logic;
   end record daq_sys_rt;
   function len(x: daq_sys_rt) return natural;
+  function width(x: daq_sys_rt) return natural;
   function vectorify(x: daq_sys_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_sys_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_sys_rt) return daq_sys_rt;
   function convert(x: in std_logic_vector; t: daq_sys_rt) return daq_sys_rt;
   function nullify(t: daq_sys_rt) return daq_sys_rt;
+  function zeroed(t: daq_sys_rt) return daq_sys_rt;
 
   -- daq_hdr_swrod_rt:
   -- Fields required by swROD
@@ -88,11 +100,13 @@ package daq_defs is
     evid : evid_t;
   end record daq_hdr_swrod_rt;
   function len(x: daq_hdr_swrod_rt) return natural;
+  function width(x: daq_hdr_swrod_rt) return natural;
   function vectorify(x: daq_hdr_swrod_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_hdr_swrod_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_hdr_swrod_rt) return daq_hdr_swrod_rt;
   function convert(x: in std_logic_vector; t: daq_hdr_swrod_rt) return daq_hdr_swrod_rt;
   function nullify(t: daq_hdr_swrod_rt) return daq_hdr_swrod_rt;
+  function zeroed(t: daq_hdr_swrod_rt) return daq_hdr_swrod_rt;
 
   type daq_hdr_extra_rt is record
     daq_bcid : bcid_t;
@@ -104,22 +118,26 @@ package daq_defs is
     bcid : bcid_t;
   end record daq_hdr_extra_rt;
   function len(x: daq_hdr_extra_rt) return natural;
+  function width(x: daq_hdr_extra_rt) return natural;
   function vectorify(x: daq_hdr_extra_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_hdr_extra_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_hdr_extra_rt) return daq_hdr_extra_rt;
   function convert(x: in std_logic_vector; t: daq_hdr_extra_rt) return daq_hdr_extra_rt;
   function nullify(t: daq_hdr_extra_rt) return daq_hdr_extra_rt;
+  function zeroed(t: daq_hdr_extra_rt) return daq_hdr_extra_rt;
 
   type daq_hdr_rt is record
     swrod : daq_hdr_swrod_rt;
     extra : daq_hdr_extra_rt;
   end record daq_hdr_rt;
   function len(x: daq_hdr_rt) return natural;
+  function width(x: daq_hdr_rt) return natural;
   function vectorify(x: daq_hdr_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_hdr_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_hdr_rt) return daq_hdr_rt;
   function convert(x: in std_logic_vector; t: daq_hdr_rt) return daq_hdr_rt;
   function nullify(t: daq_hdr_rt) return daq_hdr_rt;
+  function zeroed(t: daq_hdr_rt) return daq_hdr_rt;
 
   subtype daq_hdr_vt is std_logic_vector(148-1 downto 0);
 
@@ -128,11 +146,13 @@ package daq_defs is
     win_start : bcid_t;
   end record daq_cnt_rt;
   function len(x: daq_cnt_rt) return natural;
+  function width(x: daq_cnt_rt) return natural;
   function vectorify(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt;
   function convert(x: in std_logic_vector; t: daq_cnt_rt) return daq_cnt_rt;
   function nullify(t: daq_cnt_rt) return daq_cnt_rt;
+  function zeroed(t: daq_cnt_rt) return daq_cnt_rt;
 
   type stability_rt is record
     win_upper : std_logic;
@@ -140,11 +160,13 @@ package daq_defs is
     latency : std_logic;
   end record stability_rt;
   function len(x: stability_rt) return natural;
+  function width(x: stability_rt) return natural;
   function vectorify(x: stability_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: stability_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: stability_rt) return stability_rt;
   function convert(x: in std_logic_vector; t: stability_rt) return stability_rt;
   function nullify(t: stability_rt) return stability_rt;
+  function zeroed(t: stability_rt) return stability_rt;
 
   subtype stability_vt is std_logic_vector(3-1 downto 0);
 
@@ -155,11 +177,13 @@ package daq_defs is
     width : bcid_t;
   end record daq_win_rt;
   function len(x: daq_win_rt) return natural;
+  function width(x: daq_win_rt) return natural;
   function vectorify(x: daq_win_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_win_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
   function convert(x: in std_logic_vector; t: daq_win_rt) return daq_win_rt;
   function nullify(t: daq_win_rt) return daq_win_rt;
+  function zeroed(t: daq_win_rt) return daq_win_rt;
 
   subtype pbldr_payload_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
 
@@ -168,42 +192,50 @@ package daq_defs is
     data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
   end record forward_rt;
   function len(x: forward_rt) return natural;
+  function width(x: forward_rt) return natural;
   function vectorify(x: forward_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: forward_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: forward_rt) return forward_rt;
   function convert(x: in std_logic_vector; t: forward_rt) return forward_rt;
   function nullify(t: forward_rt) return forward_rt;
+  function zeroed(t: forward_rt) return forward_rt;
 
   type backward_rt is record
     rd_strb : std_logic;
   end record backward_rt;
   function len(x: backward_rt) return natural;
+  function width(x: backward_rt) return natural;
   function vectorify(x: backward_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: backward_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: backward_rt) return backward_rt;
   function convert(x: in std_logic_vector; t: backward_rt) return backward_rt;
   function nullify(t: backward_rt) return backward_rt;
+  function zeroed(t: backward_rt) return backward_rt;
 
   type src_to_node_fifo_rt is record
     wr_en : std_logic;
     data : std_logic_vector(DAQ_MAX_DATA_WIDTH-1 downto 0);
   end record src_to_node_fifo_rt;
   function len(x: src_to_node_fifo_rt) return natural;
+  function width(x: src_to_node_fifo_rt) return natural;
   function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
   function convert(x: in std_logic_vector; t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
   function nullify(t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
+  function zeroed(t: src_to_node_fifo_rt) return src_to_node_fifo_rt;
 
   type node_fifo_to_src_rt is record
     full : std_logic;
   end record node_fifo_to_src_rt;
   function len(x: node_fifo_to_src_rt) return natural;
+  function width(x: node_fifo_to_src_rt) return natural;
   function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
   function convert(x: in std_logic_vector; t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
   function nullify(t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
+  function zeroed(t: node_fifo_to_src_rt) return node_fifo_to_src_rt;
 
   subtype node_fifo_cnt_t is std_logic_vector(DAQ_MAX_COUNTER_WIDTH-1 downto 0);
 
@@ -213,21 +245,25 @@ package daq_defs is
     nempty : std_logic;
   end record node_fifo_to_dst_rt;
   function len(x: node_fifo_to_dst_rt) return natural;
+  function width(x: node_fifo_to_dst_rt) return natural;
   function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
   function convert(x: in std_logic_vector; t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
   function nullify(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
+  function zeroed(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt;
 
   type dst_to_node_fifo_rt is record
     rd_en : std_logic;
   end record dst_to_node_fifo_rt;
   function len(x: dst_to_node_fifo_rt) return natural;
+  function width(x: dst_to_node_fifo_rt) return natural;
   function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
   function convert(x: in std_logic_vector; t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
   function nullify(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
+  function zeroed(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt;
 
   type daq_node_fifo_irt is record
     sys : daq_sys_rt;
@@ -235,33 +271,39 @@ package daq_defs is
     dst : dst_to_node_fifo_rt;
   end record daq_node_fifo_irt;
   function len(x: daq_node_fifo_irt) return natural;
+  function width(x: daq_node_fifo_irt) return natural;
   function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt;
   function convert(x: in std_logic_vector; t: daq_node_fifo_irt) return daq_node_fifo_irt;
   function nullify(t: daq_node_fifo_irt) return daq_node_fifo_irt;
+  function zeroed(t: daq_node_fifo_irt) return daq_node_fifo_irt;
 
   type daq_node_fifo_ort is record
     src : node_fifo_to_src_rt;
     dst : node_fifo_to_dst_rt;
   end record daq_node_fifo_ort;
   function len(x: daq_node_fifo_ort) return natural;
+  function width(x: daq_node_fifo_ort) return natural;
   function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort;
   function convert(x: in std_logic_vector; t: daq_node_fifo_ort) return daq_node_fifo_ort;
   function nullify(t: daq_node_fifo_ort) return daq_node_fifo_ort;
+  function zeroed(t: daq_node_fifo_ort) return daq_node_fifo_ort;
 
   type daq_node_fifo_ert is record
     i : daq_node_fifo_irt;
     o : daq_node_fifo_ort;
   end record daq_node_fifo_ert;
   function len(x: daq_node_fifo_ert) return natural;
+  function width(x: daq_node_fifo_ert) return natural;
   function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert;
   function convert(x: in std_logic_vector; t: daq_node_fifo_ert) return daq_node_fifo_ert;
   function nullify(t: daq_node_fifo_ert) return daq_node_fifo_ert;
+  function zeroed(t: daq_node_fifo_ert) return daq_node_fifo_ert;
 
   type daq_node_fifo_grt is record
     WRITE_DATA_WIDTH : integer;
@@ -269,11 +311,13 @@ package daq_defs is
     READ_COUNT_WIDTH : integer;
   end record daq_node_fifo_grt;
   function len(x: daq_node_fifo_grt) return natural;
+  function width(x: daq_node_fifo_grt) return natural;
   function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt;
   function convert(x: in std_logic_vector; t: daq_node_fifo_grt) return daq_node_fifo_grt;
   function nullify(t: daq_node_fifo_grt) return daq_node_fifo_grt;
+  function zeroed(t: daq_node_fifo_grt) return daq_node_fifo_grt;
 
   type row_to_mngt_rt is record
     done : std_logic_vector(DAQ_PIPELINES-1 downto 0);
@@ -281,95 +325,113 @@ package daq_defs is
     err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
   end record row_to_mngt_rt;
   function len(x: row_to_mngt_rt) return natural;
+  function width(x: row_to_mngt_rt) return natural;
   function vectorify(x: row_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: row_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: row_to_mngt_rt) return row_to_mngt_rt;
   function convert(x: in std_logic_vector; t: row_to_mngt_rt) return row_to_mngt_rt;
   function nullify(t: row_to_mngt_rt) return row_to_mngt_rt;
+  function zeroed(t: row_to_mngt_rt) return row_to_mngt_rt;
 
   type mngt_to_row_rt is record
     en : std_logic_vector(0 to DAQ_PIPELINES-1);
     rd_en : std_logic_vector(0 to DAQ_PIPELINES-1);
   end record mngt_to_row_rt;
   function len(x: mngt_to_row_rt) return natural;
+  function width(x: mngt_to_row_rt) return natural;
   function vectorify(x: mngt_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: mngt_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: mngt_to_row_rt) return mngt_to_row_rt;
   function convert(x: in std_logic_vector; t: mngt_to_row_rt) return mngt_to_row_rt;
   function nullify(t: mngt_to_row_rt) return mngt_to_row_rt;
+  function zeroed(t: mngt_to_row_rt) return mngt_to_row_rt;
 
   type mngt_to_pbldr_rt is record
     en : std_logic;
   end record mngt_to_pbldr_rt;
   function len(x: mngt_to_pbldr_rt) return natural;
+  function width(x: mngt_to_pbldr_rt) return natural;
   function vectorify(x: mngt_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: mngt_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: mngt_to_pbldr_rt) return mngt_to_pbldr_rt;
   function convert(x: in std_logic_vector; t: mngt_to_pbldr_rt) return mngt_to_pbldr_rt;
   function nullify(t: mngt_to_pbldr_rt) return mngt_to_pbldr_rt;
+  function zeroed(t: mngt_to_pbldr_rt) return mngt_to_pbldr_rt;
 
   type pbldr_to_mngt_rt is record
     done : std_logic;
   end record pbldr_to_mngt_rt;
   function len(x: pbldr_to_mngt_rt) return natural;
+  function width(x: pbldr_to_mngt_rt) return natural;
   function vectorify(x: pbldr_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_to_mngt_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
   function convert(x: in std_logic_vector; t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
   function nullify(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
+  function zeroed(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt;
 
   type pbldr_forward_rt is record
     nempty : std_logic;
     data : std_logic_vector(DAQ_FELIX_STREAM_WIDTH-1 downto 0);
   end record pbldr_forward_rt;
   function len(x: pbldr_forward_rt) return natural;
+  function width(x: pbldr_forward_rt) return natural;
   function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt;
   function convert(x: in std_logic_vector; t: pbldr_forward_rt) return pbldr_forward_rt;
   function nullify(t: pbldr_forward_rt) return pbldr_forward_rt;
+  function zeroed(t: pbldr_forward_rt) return pbldr_forward_rt;
 
   type pbldr_backward_rt is record
     rd_strb : std_logic;
   end record pbldr_backward_rt;
   function len(x: pbldr_backward_rt) return natural;
+  function width(x: pbldr_backward_rt) return natural;
   function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt;
   function convert(x: in std_logic_vector; t: pbldr_backward_rt) return pbldr_backward_rt;
   function nullify(t: pbldr_backward_rt) return pbldr_backward_rt;
+  function zeroed(t: pbldr_backward_rt) return pbldr_backward_rt;
 
   type row_to_pbldr_rt is record
     payload : pbldr_forward_rt;
   end record row_to_pbldr_rt;
   function len(x: row_to_pbldr_rt) return natural;
+  function width(x: row_to_pbldr_rt) return natural;
   function vectorify(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt;
   function convert(x: in std_logic_vector; t: row_to_pbldr_rt) return row_to_pbldr_rt;
   function nullify(t: row_to_pbldr_rt) return row_to_pbldr_rt;
+  function zeroed(t: row_to_pbldr_rt) return row_to_pbldr_rt;
 
   type pbldr_to_row_rt is record
     payload : pbldr_backward_rt;
     sel : std_logic;
   end record pbldr_to_row_rt;
   function len(x: pbldr_to_row_rt) return natural;
+  function width(x: pbldr_to_row_rt) return natural;
   function vectorify(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt;
   function convert(x: in std_logic_vector; t: pbldr_to_row_rt) return pbldr_to_row_rt;
   function nullify(t: pbldr_to_row_rt) return pbldr_to_row_rt;
+  function zeroed(t: pbldr_to_row_rt) return pbldr_to_row_rt;
 
   type pbldr_to_rows_rt is record
     payload : pbldr_backward_rt;
     sel : std_logic_vector(0 to DAQ_MAX_ROWS-1);
   end record pbldr_to_rows_rt;
   function len(x: pbldr_to_rows_rt) return natural;
+  function width(x: pbldr_to_rows_rt) return natural;
   function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
   function convert(x: in std_logic_vector; t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
   function nullify(t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
+  function zeroed(t: pbldr_to_rows_rt) return pbldr_to_rows_rt;
 
   type req_to_row_common_rt is record
     strb : std_logic;
@@ -377,11 +439,13 @@ package daq_defs is
     win_width : bcid_t;
   end record req_to_row_common_rt;
   function len(x: req_to_row_common_rt) return natural;
+  function width(x: req_to_row_common_rt) return natural;
   function vectorify(x: req_to_row_common_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: req_to_row_common_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: req_to_row_common_rt) return req_to_row_common_rt;
   function convert(x: in std_logic_vector; t: req_to_row_common_rt) return req_to_row_common_rt;
   function nullify(t: req_to_row_common_rt) return req_to_row_common_rt;
+  function zeroed(t: req_to_row_common_rt) return req_to_row_common_rt;
 
   type req_to_row_extra_rt is record
     latency : bcid_t;
@@ -392,32 +456,38 @@ package daq_defs is
     evid : evid_t;
   end record req_to_row_extra_rt;
   function len(x: req_to_row_extra_rt) return natural;
+  function width(x: req_to_row_extra_rt) return natural;
   function vectorify(x: req_to_row_extra_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: req_to_row_extra_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: req_to_row_extra_rt) return req_to_row_extra_rt;
   function convert(x: in std_logic_vector; t: req_to_row_extra_rt) return req_to_row_extra_rt;
   function nullify(t: req_to_row_extra_rt) return req_to_row_extra_rt;
+  function zeroed(t: req_to_row_extra_rt) return req_to_row_extra_rt;
 
   type req_to_row_rt is record
     common : req_to_row_common_rt;
     extra : req_to_row_extra_rt;
   end record req_to_row_rt;
   function len(x: req_to_row_rt) return natural;
+  function width(x: req_to_row_rt) return natural;
   function vectorify(x: req_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: req_to_row_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: req_to_row_rt) return req_to_row_rt;
   function convert(x: in std_logic_vector; t: req_to_row_rt) return req_to_row_rt;
   function nullify(t: req_to_row_rt) return req_to_row_rt;
+  function zeroed(t: req_to_row_rt) return req_to_row_rt;
 
   type felix_to_daq_rt is record
     hfull : std_logic;
   end record felix_to_daq_rt;
   function len(x: felix_to_daq_rt) return natural;
+  function width(x: felix_to_daq_rt) return natural;
   function vectorify(x: felix_to_daq_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: felix_to_daq_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: felix_to_daq_rt) return felix_to_daq_rt;
   function convert(x: in std_logic_vector; t: felix_to_daq_rt) return felix_to_daq_rt;
   function nullify(t: felix_to_daq_rt) return felix_to_daq_rt;
+  function zeroed(t: felix_to_daq_rt) return felix_to_daq_rt;
 
   subtype felix_data_t is std_logic_vector(DAQ_FELIX_STREAM_WIDTH+2-1 downto 0);
 
@@ -426,11 +496,13 @@ package daq_defs is
     data : felix_data_t;
   end record daq_to_felix_rt;
   function len(x: daq_to_felix_rt) return natural;
+  function width(x: daq_to_felix_rt) return natural;
   function vectorify(x: daq_to_felix_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_to_felix_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_to_felix_rt) return daq_to_felix_rt;
   function convert(x: in std_logic_vector; t: daq_to_felix_rt) return daq_to_felix_rt;
   function nullify(t: daq_to_felix_rt) return daq_to_felix_rt;
+  function zeroed(t: daq_to_felix_rt) return daq_to_felix_rt;
 
   type ctrl_to_daq_rt is record
     wr_en : std_logic;
@@ -439,31 +511,37 @@ package daq_defs is
     win_upper : bcid_t;
   end record ctrl_to_daq_rt;
   function len(x: ctrl_to_daq_rt) return natural;
+  function width(x: ctrl_to_daq_rt) return natural;
   function vectorify(x: ctrl_to_daq_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: ctrl_to_daq_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: ctrl_to_daq_rt) return ctrl_to_daq_rt;
   function convert(x: in std_logic_vector; t: ctrl_to_daq_rt) return ctrl_to_daq_rt;
   function nullify(t: ctrl_to_daq_rt) return ctrl_to_daq_rt;
+  function zeroed(t: ctrl_to_daq_rt) return ctrl_to_daq_rt;
 
   type daq_to_status_rt is record
     stability : stability_rt;
   end record daq_to_status_rt;
   function len(x: daq_to_status_rt) return natural;
+  function width(x: daq_to_status_rt) return natural;
   function vectorify(x: daq_to_status_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_to_status_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_to_status_rt) return daq_to_status_rt;
   function convert(x: in std_logic_vector; t: daq_to_status_rt) return daq_to_status_rt;
   function nullify(t: daq_to_status_rt) return daq_to_status_rt;
+  function zeroed(t: daq_to_status_rt) return daq_to_status_rt;
 
   type daq_req_status_rt is record
     stability : stability_rt;
   end record daq_req_status_rt;
   function len(x: daq_req_status_rt) return natural;
+  function width(x: daq_req_status_rt) return natural;
   function vectorify(x: daq_req_status_rt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_req_status_rt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_req_status_rt) return daq_req_status_rt;
   function convert(x: in std_logic_vector; t: daq_req_status_rt) return daq_req_status_rt;
   function nullify(t: daq_req_status_rt) return daq_req_status_rt;
+  function zeroed(t: daq_req_status_rt) return daq_req_status_rt;
 
   type daq_req_irt is record
     sys : daq_sys_rt;
@@ -471,33 +549,39 @@ package daq_defs is
     ctrl : ctrl_to_daq_rt;
   end record daq_req_irt;
   function len(x: daq_req_irt) return natural;
+  function width(x: daq_req_irt) return natural;
   function vectorify(x: daq_req_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_req_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_req_irt) return daq_req_irt;
   function convert(x: in std_logic_vector; t: daq_req_irt) return daq_req_irt;
   function nullify(t: daq_req_irt) return daq_req_irt;
+  function zeroed(t: daq_req_irt) return daq_req_irt;
 
   type daq_req_ort is record
     status : daq_req_status_rt;
     row : req_to_row_rt;
   end record daq_req_ort;
   function len(x: daq_req_ort) return natural;
+  function width(x: daq_req_ort) return natural;
   function vectorify(x: daq_req_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_req_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_req_ort) return daq_req_ort;
   function convert(x: in std_logic_vector; t: daq_req_ort) return daq_req_ort;
   function nullify(t: daq_req_ort) return daq_req_ort;
+  function zeroed(t: daq_req_ort) return daq_req_ort;
 
   type daq_req_ert is record
     i : daq_req_irt;
     o : daq_req_ort;
   end record daq_req_ert;
   function len(x: daq_req_ert) return natural;
+  function width(x: daq_req_ert) return natural;
   function vectorify(x: daq_req_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_req_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_req_ert) return daq_req_ert;
   function convert(x: in std_logic_vector; t: daq_req_ert) return daq_req_ert;
   function nullify(t: daq_req_ert) return daq_req_ert;
+  function zeroed(t: daq_req_ert) return daq_req_ert;
 
   subtype daq_req_ivt is std_logic_vector(120-1 downto 0);
 
@@ -508,11 +592,13 @@ package daq_defs is
     COUNTER_WIDTH : natural;
   end record daq_row_grt;
   function len(x: daq_row_grt) return natural;
+  function width(x: daq_row_grt) return natural;
   function vectorify(x: daq_row_grt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_row_grt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_row_grt) return daq_row_grt;
   function convert(x: in std_logic_vector; t: daq_row_grt) return daq_row_grt;
   function nullify(t: daq_row_grt) return daq_row_grt;
+  function zeroed(t: daq_row_grt) return daq_row_grt;
 
   type daq_hrow_irt is record
     sys : daq_sys_rt;
@@ -521,11 +607,13 @@ package daq_defs is
     pbldr : pbldr_to_row_rt;
   end record daq_hrow_irt;
   function len(x: daq_hrow_irt) return natural;
+  function width(x: daq_hrow_irt) return natural;
   function vectorify(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt;
   function convert(x: in std_logic_vector; t: daq_hrow_irt) return daq_hrow_irt;
   function nullify(t: daq_hrow_irt) return daq_hrow_irt;
+  function zeroed(t: daq_hrow_irt) return daq_hrow_irt;
 
   type daq_drow_irt is record
     sys : daq_sys_rt;
@@ -535,44 +623,52 @@ package daq_defs is
     pbldr : pbldr_to_row_rt;
   end record daq_drow_irt;
   function len(x: daq_drow_irt) return natural;
+  function width(x: daq_drow_irt) return natural;
   function vectorify(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt;
   function convert(x: in std_logic_vector; t: daq_drow_irt) return daq_drow_irt;
   function nullify(t: daq_drow_irt) return daq_drow_irt;
+  function zeroed(t: daq_drow_irt) return daq_drow_irt;
 
   type daq_row_ort is record
     mngt : row_to_mngt_rt;
     pbldr : row_to_pbldr_rt;
   end record daq_row_ort;
   function len(x: daq_row_ort) return natural;
+  function width(x: daq_row_ort) return natural;
   function vectorify(x: daq_row_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_row_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort;
   function convert(x: in std_logic_vector; t: daq_row_ort) return daq_row_ort;
   function nullify(t: daq_row_ort) return daq_row_ort;
+  function zeroed(t: daq_row_ort) return daq_row_ort;
 
   type daq_hrow_ert is record
     i : daq_hrow_irt;
     o : daq_row_ort;
   end record daq_hrow_ert;
   function len(x: daq_hrow_ert) return natural;
+  function width(x: daq_hrow_ert) return natural;
   function vectorify(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert;
   function convert(x: in std_logic_vector; t: daq_hrow_ert) return daq_hrow_ert;
   function nullify(t: daq_hrow_ert) return daq_hrow_ert;
+  function zeroed(t: daq_hrow_ert) return daq_hrow_ert;
 
   type daq_drow_ert is record
     i : daq_drow_irt;
     o : daq_row_ort;
   end record daq_drow_ert;
   function len(x: daq_drow_ert) return natural;
+  function width(x: daq_drow_ert) return natural;
   function vectorify(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert;
   function convert(x: in std_logic_vector; t: daq_drow_ert) return daq_drow_ert;
   function nullify(t: daq_drow_ert) return daq_drow_ert;
+  function zeroed(t: daq_drow_ert) return daq_drow_ert;
 
   subtype daq_hrow_ivt is std_logic_vector(185-1 downto 0);
 
@@ -587,33 +683,39 @@ package daq_defs is
     f2e : felix_to_daq_rt;
   end record daq_pbldr_irt;
   function len(x: daq_pbldr_irt) return natural;
+  function width(x: daq_pbldr_irt) return natural;
   function vectorify(x: daq_pbldr_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_pbldr_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_pbldr_irt) return daq_pbldr_irt;
   function convert(x: in std_logic_vector; t: daq_pbldr_irt) return daq_pbldr_irt;
   function nullify(t: daq_pbldr_irt) return daq_pbldr_irt;
+  function zeroed(t: daq_pbldr_irt) return daq_pbldr_irt;
 
   type daq_pbldr_ort is record
     row : pbldr_to_rows_rt;
     f2e : daq_to_felix_rt;
   end record daq_pbldr_ort;
   function len(x: daq_pbldr_ort) return natural;
+  function width(x: daq_pbldr_ort) return natural;
   function vectorify(x: daq_pbldr_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_pbldr_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_pbldr_ort) return daq_pbldr_ort;
   function convert(x: in std_logic_vector; t: daq_pbldr_ort) return daq_pbldr_ort;
   function nullify(t: daq_pbldr_ort) return daq_pbldr_ort;
+  function zeroed(t: daq_pbldr_ort) return daq_pbldr_ort;
 
   type daq_pbldr_ert is record
     i : daq_pbldr_irt;
     o : daq_pbldr_ort;
   end record daq_pbldr_ert;
   function len(x: daq_pbldr_ert) return natural;
+  function width(x: daq_pbldr_ert) return natural;
   function vectorify(x: daq_pbldr_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_pbldr_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_pbldr_ert) return daq_pbldr_ert;
   function convert(x: in std_logic_vector; t: daq_pbldr_ert) return daq_pbldr_ert;
   function nullify(t: daq_pbldr_ert) return daq_pbldr_ert;
+  function zeroed(t: daq_pbldr_ert) return daq_pbldr_ert;
 
   subtype daq_pbldr_ivt is std_logic_vector(69-1 downto 0);
 
@@ -623,11 +725,13 @@ package daq_defs is
     STREAMS : natural;
   end record daq_mngt_grt;
   function len(x: daq_mngt_grt) return natural;
+  function width(x: daq_mngt_grt) return natural;
   function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt;
   function convert(x: in std_logic_vector; t: daq_mngt_grt) return daq_mngt_grt;
   function nullify(t: daq_mngt_grt) return daq_mngt_grt;
+  function zeroed(t: daq_mngt_grt) return daq_mngt_grt;
 
   type daq_mngt_irt is record
     sys : daq_sys_rt;
@@ -635,11 +739,13 @@ package daq_defs is
     row : row_to_mngt_rt;
   end record daq_mngt_irt;
   function len(x: daq_mngt_irt) return natural;
+  function width(x: daq_mngt_irt) return natural;
   function vectorify(x: daq_mngt_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_mngt_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_mngt_irt) return daq_mngt_irt;
   function convert(x: in std_logic_vector; t: daq_mngt_irt) return daq_mngt_irt;
   function nullify(t: daq_mngt_irt) return daq_mngt_irt;
+  function zeroed(t: daq_mngt_irt) return daq_mngt_irt;
 
   type daq_mngt_ort is record
     row : mngt_to_row_rt;
@@ -647,22 +753,26 @@ package daq_defs is
     err : std_logic_vector(DAQ_PIPELINES-1 downto 0);
   end record daq_mngt_ort;
   function len(x: daq_mngt_ort) return natural;
+  function width(x: daq_mngt_ort) return natural;
   function vectorify(x: daq_mngt_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_mngt_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_mngt_ort) return daq_mngt_ort;
   function convert(x: in std_logic_vector; t: daq_mngt_ort) return daq_mngt_ort;
   function nullify(t: daq_mngt_ort) return daq_mngt_ort;
+  function zeroed(t: daq_mngt_ort) return daq_mngt_ort;
 
   type daq_mngt_ert is record
     i : daq_mngt_irt;
     o : daq_mngt_ort;
   end record daq_mngt_ert;
   function len(x: daq_mngt_ert) return natural;
+  function width(x: daq_mngt_ert) return natural;
   function vectorify(x: daq_mngt_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_mngt_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_mngt_ert) return daq_mngt_ert;
   function convert(x: in std_logic_vector; t: daq_mngt_ert) return daq_mngt_ert;
   function nullify(t: daq_mngt_ert) return daq_mngt_ert;
+  function zeroed(t: daq_mngt_ert) return daq_mngt_ert;
 
   subtype daq_mngt_ivt is std_logic_vector(179-1 downto 0);
 
@@ -673,11 +783,13 @@ package daq_defs is
     COUNTER_WIDTH : natural;
   end record daq_algo_grt;
   function len(x: daq_algo_grt) return natural;
+  function width(x: daq_algo_grt) return natural;
   function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt;
   function convert(x: in std_logic_vector; t: daq_algo_grt) return daq_algo_grt;
   function nullify(t: daq_algo_grt) return daq_algo_grt;
+  function zeroed(t: daq_algo_grt) return daq_algo_grt;
 
   type daq_algo_irt is record
     sys : daq_sys_rt;
@@ -687,33 +799,39 @@ package daq_defs is
     f2e : felix_to_daq_rt;
   end record daq_algo_irt;
   function len(x: daq_algo_irt) return natural;
+  function width(x: daq_algo_irt) return natural;
   function vectorify(x: daq_algo_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_algo_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_algo_irt) return daq_algo_irt;
   function convert(x: in std_logic_vector; t: daq_algo_irt) return daq_algo_irt;
   function nullify(t: daq_algo_irt) return daq_algo_irt;
+  function zeroed(t: daq_algo_irt) return daq_algo_irt;
 
   type daq_algo_ort is record
     status : daq_to_status_rt;
     f2e : daq_to_felix_rt;
   end record daq_algo_ort;
   function len(x: daq_algo_ort) return natural;
+  function width(x: daq_algo_ort) return natural;
   function vectorify(x: daq_algo_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_algo_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_algo_ort) return daq_algo_ort;
   function convert(x: in std_logic_vector; t: daq_algo_ort) return daq_algo_ort;
   function nullify(t: daq_algo_ort) return daq_algo_ort;
+  function zeroed(t: daq_algo_ort) return daq_algo_ort;
 
   type daq_algo_ert is record
     i : daq_algo_irt;
     o : daq_algo_ort;
   end record daq_algo_ert;
   function len(x: daq_algo_ert) return natural;
+  function width(x: daq_algo_ert) return natural;
   function vectorify(x: daq_algo_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_algo_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_algo_ert) return daq_algo_ert;
   function convert(x: in std_logic_vector; t: daq_algo_ert) return daq_algo_ert;
   function nullify(t: daq_algo_ert) return daq_algo_ert;
+  function zeroed(t: daq_algo_ert) return daq_algo_ert;
 
   subtype daq_algo_gvt is std_logic_vector(64-1 downto 0);
 
@@ -723,38 +841,46 @@ package daq_defs is
 
   type mfelix_to_top_at is array(0 to DAQ_MAX_BRANCHES-1) of felix_to_daq_rt;
   function len(x: mfelix_to_top_at) return natural;
+  function width(x: mfelix_to_top_at) return natural;
   function vectorify(x: mfelix_to_top_at; t: std_logic_vector) return std_logic_vector;
   function convert(x: mfelix_to_top_at; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: mfelix_to_top_at) return mfelix_to_top_at;
   function convert(x: std_logic_vector; t: mfelix_to_top_at) return mfelix_to_top_at;
   function nullify(x: mfelix_to_top_at) return mfelix_to_top_at;
+  function zeroed(x: mfelix_to_top_at) return mfelix_to_top_at;
 
   type top_to_mfelix_at is array(0 to DAQ_MAX_BRANCHES-1) of daq_to_felix_rt;
   function len(x: top_to_mfelix_at) return natural;
+  function width(x: top_to_mfelix_at) return natural;
   function vectorify(x: top_to_mfelix_at; t: std_logic_vector) return std_logic_vector;
   function convert(x: top_to_mfelix_at; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: top_to_mfelix_at) return top_to_mfelix_at;
   function convert(x: std_logic_vector; t: top_to_mfelix_at) return top_to_mfelix_at;
   function nullify(x: top_to_mfelix_at) return top_to_mfelix_at;
+  function zeroed(x: top_to_mfelix_at) return top_to_mfelix_at;
 
   type top_to_status_at is array(DAQ_MAX_BRANCHES-1 downto 0) of daq_to_status_rt;
   function len(x: top_to_status_at) return natural;
+  function width(x: top_to_status_at) return natural;
   function vectorify(x: top_to_status_at; t: std_logic_vector) return std_logic_vector;
   function convert(x: top_to_status_at; t: std_logic_vector) return std_logic_vector;
   function structify(x: std_logic_vector; t: top_to_status_at) return top_to_status_at;
   function convert(x: std_logic_vector; t: top_to_status_at) return top_to_status_at;
   function nullify(x: top_to_status_at) return top_to_status_at;
+  function zeroed(x: top_to_status_at) return top_to_status_at;
 
   type daq_top_grt is record
     BRANCHES_STRUCT : daq_branches_map_at;
     COUNTER_WIDTH : natural;
   end record daq_top_grt;
   function len(x: daq_top_grt) return natural;
+  function width(x: daq_top_grt) return natural;
   function vectorify(x: daq_top_grt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_top_grt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_top_grt) return daq_top_grt;
   function convert(x: in std_logic_vector; t: daq_top_grt) return daq_top_grt;
   function nullify(t: daq_top_grt) return daq_top_grt;
+  function zeroed(t: daq_top_grt) return daq_top_grt;
 
   type daq_top_irt is record
     sys : daq_sys_rt;
@@ -764,33 +890,39 @@ package daq_defs is
     f2e_bus : mfelix_to_top_at;
   end record daq_top_irt;
   function len(x: daq_top_irt) return natural;
+  function width(x: daq_top_irt) return natural;
   function vectorify(x: daq_top_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_top_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_top_irt) return daq_top_irt;
   function convert(x: in std_logic_vector; t: daq_top_irt) return daq_top_irt;
   function nullify(t: daq_top_irt) return daq_top_irt;
+  function zeroed(t: daq_top_irt) return daq_top_irt;
 
   type daq_top_ort is record
     status_bus : top_to_status_at;
     f2e_bus : top_to_mfelix_at;
   end record daq_top_ort;
   function len(x: daq_top_ort) return natural;
+  function width(x: daq_top_ort) return natural;
   function vectorify(x: daq_top_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_top_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_top_ort) return daq_top_ort;
   function convert(x: in std_logic_vector; t: daq_top_ort) return daq_top_ort;
   function nullify(t: daq_top_ort) return daq_top_ort;
+  function zeroed(t: daq_top_ort) return daq_top_ort;
 
   type daq_top_ert is record
     i : daq_top_irt;
     o : daq_top_ort;
   end record daq_top_ert;
   function len(x: daq_top_ert) return natural;
+  function width(x: daq_top_ert) return natural;
   function vectorify(x: daq_top_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_top_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_top_ert) return daq_top_ert;
   function convert(x: in std_logic_vector; t: daq_top_ert) return daq_top_ert;
   function nullify(t: daq_top_ert) return daq_top_ert;
+  function zeroed(t: daq_top_ert) return daq_top_ert;
 
   subtype daq_top_gvt is std_logic_vector(224-1 downto 0);
 
@@ -815,11 +947,13 @@ package daq_defs is
     f2e1 : felix_to_daq_rt;
   end record daq_usr_irt;
   function len(x: daq_usr_irt) return natural;
+  function width(x: daq_usr_irt) return natural;
   function vectorify(x: daq_usr_irt; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_usr_irt; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_usr_irt) return daq_usr_irt;
   function convert(x: in std_logic_vector; t: daq_usr_irt) return daq_usr_irt;
   function nullify(t: daq_usr_irt) return daq_usr_irt;
+  function zeroed(t: daq_usr_irt) return daq_usr_irt;
 
   type daq_usr_ort is record
     status0 : daq_to_status_rt;
@@ -828,22 +962,26 @@ package daq_defs is
     f2e1 : daq_to_felix_rt;
   end record daq_usr_ort;
   function len(x: daq_usr_ort) return natural;
+  function width(x: daq_usr_ort) return natural;
   function vectorify(x: daq_usr_ort; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_usr_ort; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_usr_ort) return daq_usr_ort;
   function convert(x: in std_logic_vector; t: daq_usr_ort) return daq_usr_ort;
   function nullify(t: daq_usr_ort) return daq_usr_ort;
+  function zeroed(t: daq_usr_ort) return daq_usr_ort;
 
   type daq_usr_ert is record
     i : daq_usr_irt;
     o : daq_usr_ort;
   end record daq_usr_ert;
   function len(x: daq_usr_ert) return natural;
+  function width(x: daq_usr_ert) return natural;
   function vectorify(x: daq_usr_ert; t: std_logic_vector) return std_logic_vector;
   function convert(x: daq_usr_ert; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: daq_usr_ert) return daq_usr_ert;
   function convert(x: in std_logic_vector; t: daq_usr_ert) return daq_usr_ert;
   function nullify(t: daq_usr_ert) return daq_usr_ert;
+  function zeroed(t: daq_usr_ert) return daq_usr_ert;
 
 end package daq_defs;
 
@@ -859,6 +997,14 @@ package body daq_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: daq_stream_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.bcid);
+    l := l + width(x.valid);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: daq_stream_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -943,6 +1089,14 @@ package body daq_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: daq_stream_rt) return daq_stream_rt is
+  variable y: daq_stream_rt;
+  begin
+    y.bcid := zeroed(t.bcid);
+    y.valid := zeroed(t.valid);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: daq_branch_t) return natural is
     variable l : natural := 0;
@@ -950,6 +1104,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: daq_branch_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: daq_branch_t; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1042,6 +1202,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: daq_branch_t) return daq_branch_t is
+    variable y : daq_branch_t;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: daq_branch_struct_t) return natural is
     variable l : natural := 0;
@@ -1049,6 +1217,12 @@ package body daq_defs is
     l := x'length * 32;
     return l;
   end function len;
+  function width(x: daq_branch_struct_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * 32;
+    return l;
+  end function width;
   function vectorify(x: daq_branch_struct_t; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l : integer := 32;
@@ -1141,6 +1315,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: daq_branch_struct_t) return daq_branch_struct_t is
+    variable y : daq_branch_struct_t;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: daq_branches_t) return natural is
     variable l : natural := 0;
@@ -1148,6 +1330,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: daq_branches_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: daq_branches_t; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1240,6 +1428,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: daq_branches_t) return daq_branches_t is
+    variable y : daq_branches_t;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: daq_branches_map_at) return natural is
     variable l : natural := 0;
@@ -1247,6 +1443,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: daq_branches_map_at) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: daq_branches_map_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -1339,6 +1541,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: daq_branches_map_at) return daq_branches_map_at is
+    variable y : daq_branches_map_at;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: daq_sys_rt) return natural is
     variable l : natural := 0;
@@ -1347,6 +1557,13 @@ package body daq_defs is
     l := l + len(x.rst);
     return l;
   end function len;
+  function width(x: daq_sys_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.clk320);
+    l := l + width(x.rst);
+    return l;
+  end function width;
   function vectorify(x: daq_sys_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1414,6 +1631,13 @@ package body daq_defs is
     y.rst := nullify(t.rst);
     return y;
   end function nullify;
+  function zeroed(t: daq_sys_rt) return daq_sys_rt is
+  variable y: daq_sys_rt;
+  begin
+    y.clk320 := zeroed(t.clk320);
+    y.rst := zeroed(t.rst);
+    return y;
+  end function zeroed;
 
   function len(x: daq_hdr_swrod_rt) return natural is
     variable l : natural := 0;
@@ -1424,6 +1648,15 @@ package body daq_defs is
     l := l + len(x.evid);
     return l;
   end function len;
+  function width(x: daq_hdr_swrod_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.flag_0);
+    l := l + width(x.flag_1);
+    l := l + width(x.flag_2);
+    l := l + width(x.evid);
+    return l;
+  end function width;
   function vectorify(x: daq_hdr_swrod_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1525,6 +1758,15 @@ package body daq_defs is
     y.evid := nullify(t.evid);
     return y;
   end function nullify;
+  function zeroed(t: daq_hdr_swrod_rt) return daq_hdr_swrod_rt is
+  variable y: daq_hdr_swrod_rt;
+  begin
+    y.flag_0 := zeroed(t.flag_0);
+    y.flag_1 := zeroed(t.flag_1);
+    y.flag_2 := zeroed(t.flag_2);
+    y.evid := zeroed(t.evid);
+    return y;
+  end function zeroed;
 
   function len(x: daq_hdr_extra_rt) return natural is
     variable l : natural := 0;
@@ -1538,6 +1780,18 @@ package body daq_defs is
     l := l + len(x.bcid);
     return l;
   end function len;
+  function width(x: daq_hdr_extra_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.daq_bcid);
+    l := l + width(x.win_start);
+    l := l + width(x.win_width);
+    l := l + width(x.latency_ref);
+    l := l + width(x.win_lower_ref);
+    l := l + width(x.win_upper_ref);
+    l := l + width(x.bcid);
+    return l;
+  end function width;
   function vectorify(x: daq_hdr_extra_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1690,6 +1944,18 @@ package body daq_defs is
     y.bcid := nullify(t.bcid);
     return y;
   end function nullify;
+  function zeroed(t: daq_hdr_extra_rt) return daq_hdr_extra_rt is
+  variable y: daq_hdr_extra_rt;
+  begin
+    y.daq_bcid := zeroed(t.daq_bcid);
+    y.win_start := zeroed(t.win_start);
+    y.win_width := zeroed(t.win_width);
+    y.latency_ref := zeroed(t.latency_ref);
+    y.win_lower_ref := zeroed(t.win_lower_ref);
+    y.win_upper_ref := zeroed(t.win_upper_ref);
+    y.bcid := zeroed(t.bcid);
+    return y;
+  end function zeroed;
 
   function len(x: daq_hdr_rt) return natural is
     variable l : natural := 0;
@@ -1698,6 +1964,13 @@ package body daq_defs is
     l := l + len(x.extra);
     return l;
   end function len;
+  function width(x: daq_hdr_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.swrod);
+    l := l + width(x.extra);
+    return l;
+  end function width;
   function vectorify(x: daq_hdr_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1765,6 +2038,13 @@ package body daq_defs is
     y.extra := nullify(t.extra);
     return y;
   end function nullify;
+  function zeroed(t: daq_hdr_rt) return daq_hdr_rt is
+  variable y: daq_hdr_rt;
+  begin
+    y.swrod := zeroed(t.swrod);
+    y.extra := zeroed(t.extra);
+    return y;
+  end function zeroed;
 
   function len(x: daq_cnt_rt) return natural is
     variable l : natural := 0;
@@ -1773,6 +2053,13 @@ package body daq_defs is
     l := l + len(x.win_start);
     return l;
   end function len;
+  function width(x: daq_cnt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.daq_bcid);
+    l := l + width(x.win_start);
+    return l;
+  end function width;
   function vectorify(x: daq_cnt_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1840,6 +2127,13 @@ package body daq_defs is
     y.win_start := nullify(t.win_start);
     return y;
   end function nullify;
+  function zeroed(t: daq_cnt_rt) return daq_cnt_rt is
+  variable y: daq_cnt_rt;
+  begin
+    y.daq_bcid := zeroed(t.daq_bcid);
+    y.win_start := zeroed(t.win_start);
+    return y;
+  end function zeroed;
 
   function len(x: stability_rt) return natural is
     variable l : natural := 0;
@@ -1849,6 +2143,14 @@ package body daq_defs is
     l := l + len(x.latency);
     return l;
   end function len;
+  function width(x: stability_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.win_upper);
+    l := l + width(x.win_lower);
+    l := l + width(x.latency);
+    return l;
+  end function width;
   function vectorify(x: stability_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -1933,6 +2235,14 @@ package body daq_defs is
     y.latency := nullify(t.latency);
     return y;
   end function nullify;
+  function zeroed(t: stability_rt) return stability_rt is
+  variable y: stability_rt;
+  begin
+    y.win_upper := zeroed(t.win_upper);
+    y.win_lower := zeroed(t.win_lower);
+    y.latency := zeroed(t.latency);
+    return y;
+  end function zeroed;
 
   function len(x: daq_win_rt) return natural is
     variable l : natural := 0;
@@ -1943,6 +2253,15 @@ package body daq_defs is
     l := l + len(x.width);
     return l;
   end function len;
+  function width(x: daq_win_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.upper);
+    l := l + width(x.lower);
+    l := l + width(x.latency);
+    l := l + width(x.width);
+    return l;
+  end function width;
   function vectorify(x: daq_win_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2044,6 +2363,15 @@ package body daq_defs is
     y.width := nullify(t.width);
     return y;
   end function nullify;
+  function zeroed(t: daq_win_rt) return daq_win_rt is
+  variable y: daq_win_rt;
+  begin
+    y.upper := zeroed(t.upper);
+    y.lower := zeroed(t.lower);
+    y.latency := zeroed(t.latency);
+    y.width := zeroed(t.width);
+    return y;
+  end function zeroed;
 
   function len(x: forward_rt) return natural is
     variable l : natural := 0;
@@ -2052,6 +2380,13 @@ package body daq_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: forward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.nempty);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: forward_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2119,6 +2454,13 @@ package body daq_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: forward_rt) return forward_rt is
+  variable y: forward_rt;
+  begin
+    y.nempty := zeroed(t.nempty);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: backward_rt) return natural is
     variable l : natural := 0;
@@ -2126,6 +2468,12 @@ package body daq_defs is
     l := l + len(x.rd_strb);
     return l;
   end function len;
+  function width(x: backward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_strb);
+    return l;
+  end function width;
   function vectorify(x: backward_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2176,6 +2524,12 @@ package body daq_defs is
     y.rd_strb := nullify(t.rd_strb);
     return y;
   end function nullify;
+  function zeroed(t: backward_rt) return backward_rt is
+  variable y: backward_rt;
+  begin
+    y.rd_strb := zeroed(t.rd_strb);
+    return y;
+  end function zeroed;
 
   function len(x: src_to_node_fifo_rt) return natural is
     variable l : natural := 0;
@@ -2184,6 +2538,13 @@ package body daq_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: src_to_node_fifo_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_en);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: src_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2251,6 +2612,13 @@ package body daq_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: src_to_node_fifo_rt) return src_to_node_fifo_rt is
+  variable y: src_to_node_fifo_rt;
+  begin
+    y.wr_en := zeroed(t.wr_en);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: node_fifo_to_src_rt) return natural is
     variable l : natural := 0;
@@ -2258,6 +2626,12 @@ package body daq_defs is
     l := l + len(x.full);
     return l;
   end function len;
+  function width(x: node_fifo_to_src_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.full);
+    return l;
+  end function width;
   function vectorify(x: node_fifo_to_src_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2308,6 +2682,12 @@ package body daq_defs is
     y.full := nullify(t.full);
     return y;
   end function nullify;
+  function zeroed(t: node_fifo_to_src_rt) return node_fifo_to_src_rt is
+  variable y: node_fifo_to_src_rt;
+  begin
+    y.full := zeroed(t.full);
+    return y;
+  end function zeroed;
 
   function len(x: node_fifo_to_dst_rt) return natural is
     variable l : natural := 0;
@@ -2317,6 +2697,14 @@ package body daq_defs is
     l := l + len(x.nempty);
     return l;
   end function len;
+  function width(x: node_fifo_to_dst_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.data);
+    l := l + width(x.count);
+    l := l + width(x.nempty);
+    return l;
+  end function width;
   function vectorify(x: node_fifo_to_dst_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2401,6 +2789,14 @@ package body daq_defs is
     y.nempty := nullify(t.nempty);
     return y;
   end function nullify;
+  function zeroed(t: node_fifo_to_dst_rt) return node_fifo_to_dst_rt is
+  variable y: node_fifo_to_dst_rt;
+  begin
+    y.data := zeroed(t.data);
+    y.count := zeroed(t.count);
+    y.nempty := zeroed(t.nempty);
+    return y;
+  end function zeroed;
 
   function len(x: dst_to_node_fifo_rt) return natural is
     variable l : natural := 0;
@@ -2408,6 +2804,12 @@ package body daq_defs is
     l := l + len(x.rd_en);
     return l;
   end function len;
+  function width(x: dst_to_node_fifo_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_en);
+    return l;
+  end function width;
   function vectorify(x: dst_to_node_fifo_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2458,6 +2860,12 @@ package body daq_defs is
     y.rd_en := nullify(t.rd_en);
     return y;
   end function nullify;
+  function zeroed(t: dst_to_node_fifo_rt) return dst_to_node_fifo_rt is
+  variable y: dst_to_node_fifo_rt;
+  begin
+    y.rd_en := zeroed(t.rd_en);
+    return y;
+  end function zeroed;
 
   function len(x: daq_node_fifo_irt) return natural is
     variable l : natural := 0;
@@ -2467,6 +2875,14 @@ package body daq_defs is
     l := l + len(x.dst);
     return l;
   end function len;
+  function width(x: daq_node_fifo_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.src);
+    l := l + width(x.dst);
+    return l;
+  end function width;
   function vectorify(x: daq_node_fifo_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2551,6 +2967,14 @@ package body daq_defs is
     y.dst := nullify(t.dst);
     return y;
   end function nullify;
+  function zeroed(t: daq_node_fifo_irt) return daq_node_fifo_irt is
+  variable y: daq_node_fifo_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.src := zeroed(t.src);
+    y.dst := zeroed(t.dst);
+    return y;
+  end function zeroed;
 
   function len(x: daq_node_fifo_ort) return natural is
     variable l : natural := 0;
@@ -2559,6 +2983,13 @@ package body daq_defs is
     l := l + len(x.dst);
     return l;
   end function len;
+  function width(x: daq_node_fifo_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.src);
+    l := l + width(x.dst);
+    return l;
+  end function width;
   function vectorify(x: daq_node_fifo_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2626,6 +3057,13 @@ package body daq_defs is
     y.dst := nullify(t.dst);
     return y;
   end function nullify;
+  function zeroed(t: daq_node_fifo_ort) return daq_node_fifo_ort is
+  variable y: daq_node_fifo_ort;
+  begin
+    y.src := zeroed(t.src);
+    y.dst := zeroed(t.dst);
+    return y;
+  end function zeroed;
 
   function len(x: daq_node_fifo_ert) return natural is
     variable l : natural := 0;
@@ -2634,6 +3072,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_node_fifo_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_node_fifo_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2701,6 +3146,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_node_fifo_ert) return daq_node_fifo_ert is
+  variable y: daq_node_fifo_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_node_fifo_grt) return natural is
     variable l : natural := 0;
@@ -2710,6 +3162,14 @@ package body daq_defs is
     l := l + len(x.READ_COUNT_WIDTH);
     return l;
   end function len;
+  function width(x: daq_node_fifo_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.WRITE_DATA_WIDTH);
+    l := l + width(x.READ_DATA_WIDTH);
+    l := l + width(x.READ_COUNT_WIDTH);
+    return l;
+  end function width;
   function vectorify(x: daq_node_fifo_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2794,6 +3254,14 @@ package body daq_defs is
     y.READ_COUNT_WIDTH := nullify(t.READ_COUNT_WIDTH);
     return y;
   end function nullify;
+  function zeroed(t: daq_node_fifo_grt) return daq_node_fifo_grt is
+  variable y: daq_node_fifo_grt;
+  begin
+    y.WRITE_DATA_WIDTH := zeroed(t.WRITE_DATA_WIDTH);
+    y.READ_DATA_WIDTH := zeroed(t.READ_DATA_WIDTH);
+    y.READ_COUNT_WIDTH := zeroed(t.READ_COUNT_WIDTH);
+    return y;
+  end function zeroed;
 
   function len(x: row_to_mngt_rt) return natural is
     variable l : natural := 0;
@@ -2803,6 +3271,14 @@ package body daq_defs is
     l := l + len(x.err);
     return l;
   end function len;
+  function width(x: row_to_mngt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.done);
+    l := l + width(x.nempty);
+    l := l + width(x.err);
+    return l;
+  end function width;
   function vectorify(x: row_to_mngt_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2887,6 +3363,14 @@ package body daq_defs is
     y.err := nullify(t.err);
     return y;
   end function nullify;
+  function zeroed(t: row_to_mngt_rt) return row_to_mngt_rt is
+  variable y: row_to_mngt_rt;
+  begin
+    y.done := zeroed(t.done);
+    y.nempty := zeroed(t.nempty);
+    y.err := zeroed(t.err);
+    return y;
+  end function zeroed;
 
   function len(x: mngt_to_row_rt) return natural is
     variable l : natural := 0;
@@ -2895,6 +3379,13 @@ package body daq_defs is
     l := l + len(x.rd_en);
     return l;
   end function len;
+  function width(x: mngt_to_row_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.en);
+    l := l + width(x.rd_en);
+    return l;
+  end function width;
   function vectorify(x: mngt_to_row_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -2962,6 +3453,13 @@ package body daq_defs is
     y.rd_en := nullify(t.rd_en);
     return y;
   end function nullify;
+  function zeroed(t: mngt_to_row_rt) return mngt_to_row_rt is
+  variable y: mngt_to_row_rt;
+  begin
+    y.en := zeroed(t.en);
+    y.rd_en := zeroed(t.rd_en);
+    return y;
+  end function zeroed;
 
   function len(x: mngt_to_pbldr_rt) return natural is
     variable l : natural := 0;
@@ -2969,6 +3467,12 @@ package body daq_defs is
     l := l + len(x.en);
     return l;
   end function len;
+  function width(x: mngt_to_pbldr_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.en);
+    return l;
+  end function width;
   function vectorify(x: mngt_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3019,6 +3523,12 @@ package body daq_defs is
     y.en := nullify(t.en);
     return y;
   end function nullify;
+  function zeroed(t: mngt_to_pbldr_rt) return mngt_to_pbldr_rt is
+  variable y: mngt_to_pbldr_rt;
+  begin
+    y.en := zeroed(t.en);
+    return y;
+  end function zeroed;
 
   function len(x: pbldr_to_mngt_rt) return natural is
     variable l : natural := 0;
@@ -3026,6 +3536,12 @@ package body daq_defs is
     l := l + len(x.done);
     return l;
   end function len;
+  function width(x: pbldr_to_mngt_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.done);
+    return l;
+  end function width;
   function vectorify(x: pbldr_to_mngt_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3076,6 +3592,12 @@ package body daq_defs is
     y.done := nullify(t.done);
     return y;
   end function nullify;
+  function zeroed(t: pbldr_to_mngt_rt) return pbldr_to_mngt_rt is
+  variable y: pbldr_to_mngt_rt;
+  begin
+    y.done := zeroed(t.done);
+    return y;
+  end function zeroed;
 
   function len(x: pbldr_forward_rt) return natural is
     variable l : natural := 0;
@@ -3084,6 +3606,13 @@ package body daq_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: pbldr_forward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.nempty);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: pbldr_forward_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3151,6 +3680,13 @@ package body daq_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: pbldr_forward_rt) return pbldr_forward_rt is
+  variable y: pbldr_forward_rt;
+  begin
+    y.nempty := zeroed(t.nempty);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: pbldr_backward_rt) return natural is
     variable l : natural := 0;
@@ -3158,6 +3694,12 @@ package body daq_defs is
     l := l + len(x.rd_strb);
     return l;
   end function len;
+  function width(x: pbldr_backward_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_strb);
+    return l;
+  end function width;
   function vectorify(x: pbldr_backward_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3208,6 +3750,12 @@ package body daq_defs is
     y.rd_strb := nullify(t.rd_strb);
     return y;
   end function nullify;
+  function zeroed(t: pbldr_backward_rt) return pbldr_backward_rt is
+  variable y: pbldr_backward_rt;
+  begin
+    y.rd_strb := zeroed(t.rd_strb);
+    return y;
+  end function zeroed;
 
   function len(x: row_to_pbldr_rt) return natural is
     variable l : natural := 0;
@@ -3215,6 +3763,12 @@ package body daq_defs is
     l := l + len(x.payload);
     return l;
   end function len;
+  function width(x: row_to_pbldr_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.payload);
+    return l;
+  end function width;
   function vectorify(x: row_to_pbldr_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3265,6 +3819,12 @@ package body daq_defs is
     y.payload := nullify(t.payload);
     return y;
   end function nullify;
+  function zeroed(t: row_to_pbldr_rt) return row_to_pbldr_rt is
+  variable y: row_to_pbldr_rt;
+  begin
+    y.payload := zeroed(t.payload);
+    return y;
+  end function zeroed;
 
   function len(x: pbldr_to_row_rt) return natural is
     variable l : natural := 0;
@@ -3273,6 +3833,13 @@ package body daq_defs is
     l := l + len(x.sel);
     return l;
   end function len;
+  function width(x: pbldr_to_row_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.payload);
+    l := l + width(x.sel);
+    return l;
+  end function width;
   function vectorify(x: pbldr_to_row_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3340,6 +3907,13 @@ package body daq_defs is
     y.sel := nullify(t.sel);
     return y;
   end function nullify;
+  function zeroed(t: pbldr_to_row_rt) return pbldr_to_row_rt is
+  variable y: pbldr_to_row_rt;
+  begin
+    y.payload := zeroed(t.payload);
+    y.sel := zeroed(t.sel);
+    return y;
+  end function zeroed;
 
   function len(x: pbldr_to_rows_rt) return natural is
     variable l : natural := 0;
@@ -3348,6 +3922,13 @@ package body daq_defs is
     l := l + len(x.sel);
     return l;
   end function len;
+  function width(x: pbldr_to_rows_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.payload);
+    l := l + width(x.sel);
+    return l;
+  end function width;
   function vectorify(x: pbldr_to_rows_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3415,6 +3996,13 @@ package body daq_defs is
     y.sel := nullify(t.sel);
     return y;
   end function nullify;
+  function zeroed(t: pbldr_to_rows_rt) return pbldr_to_rows_rt is
+  variable y: pbldr_to_rows_rt;
+  begin
+    y.payload := zeroed(t.payload);
+    y.sel := zeroed(t.sel);
+    return y;
+  end function zeroed;
 
   function len(x: req_to_row_common_rt) return natural is
     variable l : natural := 0;
@@ -3424,6 +4012,14 @@ package body daq_defs is
     l := l + len(x.win_width);
     return l;
   end function len;
+  function width(x: req_to_row_common_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.strb);
+    l := l + width(x.win_start);
+    l := l + width(x.win_width);
+    return l;
+  end function width;
   function vectorify(x: req_to_row_common_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3508,6 +4104,14 @@ package body daq_defs is
     y.win_width := nullify(t.win_width);
     return y;
   end function nullify;
+  function zeroed(t: req_to_row_common_rt) return req_to_row_common_rt is
+  variable y: req_to_row_common_rt;
+  begin
+    y.strb := zeroed(t.strb);
+    y.win_start := zeroed(t.win_start);
+    y.win_width := zeroed(t.win_width);
+    return y;
+  end function zeroed;
 
   function len(x: req_to_row_extra_rt) return natural is
     variable l : natural := 0;
@@ -3520,6 +4124,17 @@ package body daq_defs is
     l := l + len(x.evid);
     return l;
   end function len;
+  function width(x: req_to_row_extra_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.latency);
+    l := l + width(x.win_lower);
+    l := l + width(x.win_upper);
+    l := l + width(x.daq_bcid);
+    l := l + width(x.bcid);
+    l := l + width(x.evid);
+    return l;
+  end function width;
   function vectorify(x: req_to_row_extra_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3655,6 +4270,17 @@ package body daq_defs is
     y.evid := nullify(t.evid);
     return y;
   end function nullify;
+  function zeroed(t: req_to_row_extra_rt) return req_to_row_extra_rt is
+  variable y: req_to_row_extra_rt;
+  begin
+    y.latency := zeroed(t.latency);
+    y.win_lower := zeroed(t.win_lower);
+    y.win_upper := zeroed(t.win_upper);
+    y.daq_bcid := zeroed(t.daq_bcid);
+    y.bcid := zeroed(t.bcid);
+    y.evid := zeroed(t.evid);
+    return y;
+  end function zeroed;
 
   function len(x: req_to_row_rt) return natural is
     variable l : natural := 0;
@@ -3663,6 +4289,13 @@ package body daq_defs is
     l := l + len(x.extra);
     return l;
   end function len;
+  function width(x: req_to_row_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.common);
+    l := l + width(x.extra);
+    return l;
+  end function width;
   function vectorify(x: req_to_row_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3730,6 +4363,13 @@ package body daq_defs is
     y.extra := nullify(t.extra);
     return y;
   end function nullify;
+  function zeroed(t: req_to_row_rt) return req_to_row_rt is
+  variable y: req_to_row_rt;
+  begin
+    y.common := zeroed(t.common);
+    y.extra := zeroed(t.extra);
+    return y;
+  end function zeroed;
 
   function len(x: felix_to_daq_rt) return natural is
     variable l : natural := 0;
@@ -3737,6 +4377,12 @@ package body daq_defs is
     l := l + len(x.hfull);
     return l;
   end function len;
+  function width(x: felix_to_daq_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.hfull);
+    return l;
+  end function width;
   function vectorify(x: felix_to_daq_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3787,6 +4433,12 @@ package body daq_defs is
     y.hfull := nullify(t.hfull);
     return y;
   end function nullify;
+  function zeroed(t: felix_to_daq_rt) return felix_to_daq_rt is
+  variable y: felix_to_daq_rt;
+  begin
+    y.hfull := zeroed(t.hfull);
+    return y;
+  end function zeroed;
 
   function len(x: daq_to_felix_rt) return natural is
     variable l : natural := 0;
@@ -3795,6 +4447,13 @@ package body daq_defs is
     l := l + len(x.data);
     return l;
   end function len;
+  function width(x: daq_to_felix_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_en);
+    l := l + width(x.data);
+    return l;
+  end function width;
   function vectorify(x: daq_to_felix_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3862,6 +4521,13 @@ package body daq_defs is
     y.data := nullify(t.data);
     return y;
   end function nullify;
+  function zeroed(t: daq_to_felix_rt) return daq_to_felix_rt is
+  variable y: daq_to_felix_rt;
+  begin
+    y.wr_en := zeroed(t.wr_en);
+    y.data := zeroed(t.data);
+    return y;
+  end function zeroed;
 
   function len(x: ctrl_to_daq_rt) return natural is
     variable l : natural := 0;
@@ -3872,6 +4538,15 @@ package body daq_defs is
     l := l + len(x.win_upper);
     return l;
   end function len;
+  function width(x: ctrl_to_daq_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_en);
+    l := l + width(x.latency);
+    l := l + width(x.win_lower);
+    l := l + width(x.win_upper);
+    return l;
+  end function width;
   function vectorify(x: ctrl_to_daq_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -3973,6 +4648,15 @@ package body daq_defs is
     y.win_upper := nullify(t.win_upper);
     return y;
   end function nullify;
+  function zeroed(t: ctrl_to_daq_rt) return ctrl_to_daq_rt is
+  variable y: ctrl_to_daq_rt;
+  begin
+    y.wr_en := zeroed(t.wr_en);
+    y.latency := zeroed(t.latency);
+    y.win_lower := zeroed(t.win_lower);
+    y.win_upper := zeroed(t.win_upper);
+    return y;
+  end function zeroed;
 
   function len(x: daq_to_status_rt) return natural is
     variable l : natural := 0;
@@ -3980,6 +4664,12 @@ package body daq_defs is
     l := l + len(x.stability);
     return l;
   end function len;
+  function width(x: daq_to_status_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.stability);
+    return l;
+  end function width;
   function vectorify(x: daq_to_status_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4030,6 +4720,12 @@ package body daq_defs is
     y.stability := nullify(t.stability);
     return y;
   end function nullify;
+  function zeroed(t: daq_to_status_rt) return daq_to_status_rt is
+  variable y: daq_to_status_rt;
+  begin
+    y.stability := zeroed(t.stability);
+    return y;
+  end function zeroed;
 
   function len(x: daq_req_status_rt) return natural is
     variable l : natural := 0;
@@ -4037,6 +4733,12 @@ package body daq_defs is
     l := l + len(x.stability);
     return l;
   end function len;
+  function width(x: daq_req_status_rt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.stability);
+    return l;
+  end function width;
   function vectorify(x: daq_req_status_rt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4087,6 +4789,12 @@ package body daq_defs is
     y.stability := nullify(t.stability);
     return y;
   end function nullify;
+  function zeroed(t: daq_req_status_rt) return daq_req_status_rt is
+  variable y: daq_req_status_rt;
+  begin
+    y.stability := zeroed(t.stability);
+    return y;
+  end function zeroed;
 
   function len(x: daq_req_irt) return natural is
     variable l : natural := 0;
@@ -4096,6 +4804,14 @@ package body daq_defs is
     l := l + len(x.ctrl);
     return l;
   end function len;
+  function width(x: daq_req_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.ctrl);
+    return l;
+  end function width;
   function vectorify(x: daq_req_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4180,6 +4896,14 @@ package body daq_defs is
     y.ctrl := nullify(t.ctrl);
     return y;
   end function nullify;
+  function zeroed(t: daq_req_irt) return daq_req_irt is
+  variable y: daq_req_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.ctrl := zeroed(t.ctrl);
+    return y;
+  end function zeroed;
 
   function len(x: daq_req_ort) return natural is
     variable l : natural := 0;
@@ -4188,6 +4912,13 @@ package body daq_defs is
     l := l + len(x.row);
     return l;
   end function len;
+  function width(x: daq_req_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.status);
+    l := l + width(x.row);
+    return l;
+  end function width;
   function vectorify(x: daq_req_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4255,6 +4986,13 @@ package body daq_defs is
     y.row := nullify(t.row);
     return y;
   end function nullify;
+  function zeroed(t: daq_req_ort) return daq_req_ort is
+  variable y: daq_req_ort;
+  begin
+    y.status := zeroed(t.status);
+    y.row := zeroed(t.row);
+    return y;
+  end function zeroed;
 
   function len(x: daq_req_ert) return natural is
     variable l : natural := 0;
@@ -4263,6 +5001,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_req_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_req_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4330,6 +5075,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_req_ert) return daq_req_ert is
+  variable y: daq_req_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_row_grt) return natural is
     variable l : natural := 0;
@@ -4338,6 +5090,13 @@ package body daq_defs is
     l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
+  function width(x: daq_row_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.INPUT_DATA_WIDTH);
+    l := l + width(x.COUNTER_WIDTH);
+    return l;
+  end function width;
   function vectorify(x: daq_row_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4405,6 +5164,13 @@ package body daq_defs is
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
+  function zeroed(t: daq_row_grt) return daq_row_grt is
+  variable y: daq_row_grt;
+  begin
+    y.INPUT_DATA_WIDTH := zeroed(t.INPUT_DATA_WIDTH);
+    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
+    return y;
+  end function zeroed;
 
   function len(x: daq_hrow_irt) return natural is
     variable l : natural := 0;
@@ -4415,6 +5181,15 @@ package body daq_defs is
     l := l + len(x.pbldr);
     return l;
   end function len;
+  function width(x: daq_hrow_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.mngt);
+    l := l + width(x.req);
+    l := l + width(x.pbldr);
+    return l;
+  end function width;
   function vectorify(x: daq_hrow_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4516,6 +5291,15 @@ package body daq_defs is
     y.pbldr := nullify(t.pbldr);
     return y;
   end function nullify;
+  function zeroed(t: daq_hrow_irt) return daq_hrow_irt is
+  variable y: daq_hrow_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.mngt := zeroed(t.mngt);
+    y.req := zeroed(t.req);
+    y.pbldr := zeroed(t.pbldr);
+    return y;
+  end function zeroed;
 
   function len(x: daq_drow_irt) return natural is
     variable l : natural := 0;
@@ -4527,6 +5311,16 @@ package body daq_defs is
     l := l + len(x.pbldr);
     return l;
   end function len;
+  function width(x: daq_drow_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.mngt);
+    l := l + width(x.req);
+    l := l + width(x.stream);
+    l := l + width(x.pbldr);
+    return l;
+  end function width;
   function vectorify(x: daq_drow_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4645,6 +5439,16 @@ package body daq_defs is
     y.pbldr := nullify(t.pbldr);
     return y;
   end function nullify;
+  function zeroed(t: daq_drow_irt) return daq_drow_irt is
+  variable y: daq_drow_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.mngt := zeroed(t.mngt);
+    y.req := zeroed(t.req);
+    y.stream := zeroed(t.stream);
+    y.pbldr := zeroed(t.pbldr);
+    return y;
+  end function zeroed;
 
   function len(x: daq_row_ort) return natural is
     variable l : natural := 0;
@@ -4653,6 +5457,13 @@ package body daq_defs is
     l := l + len(x.pbldr);
     return l;
   end function len;
+  function width(x: daq_row_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.mngt);
+    l := l + width(x.pbldr);
+    return l;
+  end function width;
   function vectorify(x: daq_row_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4720,6 +5531,13 @@ package body daq_defs is
     y.pbldr := nullify(t.pbldr);
     return y;
   end function nullify;
+  function zeroed(t: daq_row_ort) return daq_row_ort is
+  variable y: daq_row_ort;
+  begin
+    y.mngt := zeroed(t.mngt);
+    y.pbldr := zeroed(t.pbldr);
+    return y;
+  end function zeroed;
 
   function len(x: daq_hrow_ert) return natural is
     variable l : natural := 0;
@@ -4728,6 +5546,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_hrow_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_hrow_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4795,6 +5620,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_hrow_ert) return daq_hrow_ert is
+  variable y: daq_hrow_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_drow_ert) return natural is
     variable l : natural := 0;
@@ -4803,6 +5635,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_drow_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_drow_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4870,6 +5709,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_drow_ert) return daq_drow_ert is
+  variable y: daq_drow_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_pbldr_irt) return natural is
     variable l : natural := 0;
@@ -4880,6 +5726,15 @@ package body daq_defs is
     l := l + len(x.f2e);
     return l;
   end function len;
+  function width(x: daq_pbldr_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.mngt);
+    l := l + width(x.row);
+    l := l + width(x.f2e);
+    return l;
+  end function width;
   function vectorify(x: daq_pbldr_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -4981,6 +5836,15 @@ package body daq_defs is
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
+  function zeroed(t: daq_pbldr_irt) return daq_pbldr_irt is
+  variable y: daq_pbldr_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.mngt := zeroed(t.mngt);
+    y.row := zeroed(t.row);
+    y.f2e := zeroed(t.f2e);
+    return y;
+  end function zeroed;
 
   function len(x: daq_pbldr_ort) return natural is
     variable l : natural := 0;
@@ -4989,6 +5853,13 @@ package body daq_defs is
     l := l + len(x.f2e);
     return l;
   end function len;
+  function width(x: daq_pbldr_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.row);
+    l := l + width(x.f2e);
+    return l;
+  end function width;
   function vectorify(x: daq_pbldr_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5056,6 +5927,13 @@ package body daq_defs is
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
+  function zeroed(t: daq_pbldr_ort) return daq_pbldr_ort is
+  variable y: daq_pbldr_ort;
+  begin
+    y.row := zeroed(t.row);
+    y.f2e := zeroed(t.f2e);
+    return y;
+  end function zeroed;
 
   function len(x: daq_pbldr_ert) return natural is
     variable l : natural := 0;
@@ -5064,6 +5942,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_pbldr_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_pbldr_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5131,6 +6016,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_pbldr_ert) return daq_pbldr_ert is
+  variable y: daq_pbldr_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_mngt_grt) return natural is
     variable l : natural := 0;
@@ -5138,6 +6030,12 @@ package body daq_defs is
     l := l + len(x.STREAMS);
     return l;
   end function len;
+  function width(x: daq_mngt_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STREAMS);
+    return l;
+  end function width;
   function vectorify(x: daq_mngt_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5188,6 +6086,12 @@ package body daq_defs is
     y.STREAMS := nullify(t.STREAMS);
     return y;
   end function nullify;
+  function zeroed(t: daq_mngt_grt) return daq_mngt_grt is
+  variable y: daq_mngt_grt;
+  begin
+    y.STREAMS := zeroed(t.STREAMS);
+    return y;
+  end function zeroed;
 
   function len(x: daq_mngt_irt) return natural is
     variable l : natural := 0;
@@ -5197,6 +6101,14 @@ package body daq_defs is
     l := l + len(x.row);
     return l;
   end function len;
+  function width(x: daq_mngt_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.row);
+    return l;
+  end function width;
   function vectorify(x: daq_mngt_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5281,6 +6193,14 @@ package body daq_defs is
     y.row := nullify(t.row);
     return y;
   end function nullify;
+  function zeroed(t: daq_mngt_irt) return daq_mngt_irt is
+  variable y: daq_mngt_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.row := zeroed(t.row);
+    return y;
+  end function zeroed;
 
   function len(x: daq_mngt_ort) return natural is
     variable l : natural := 0;
@@ -5290,6 +6210,14 @@ package body daq_defs is
     l := l + len(x.err);
     return l;
   end function len;
+  function width(x: daq_mngt_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.row);
+    l := l + width(x.pbldr);
+    l := l + width(x.err);
+    return l;
+  end function width;
   function vectorify(x: daq_mngt_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5374,6 +6302,14 @@ package body daq_defs is
     y.err := nullify(t.err);
     return y;
   end function nullify;
+  function zeroed(t: daq_mngt_ort) return daq_mngt_ort is
+  variable y: daq_mngt_ort;
+  begin
+    y.row := zeroed(t.row);
+    y.pbldr := zeroed(t.pbldr);
+    y.err := zeroed(t.err);
+    return y;
+  end function zeroed;
 
   function len(x: daq_mngt_ert) return natural is
     variable l : natural := 0;
@@ -5382,6 +6318,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_mngt_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_mngt_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5449,6 +6392,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_mngt_ert) return daq_mngt_ert is
+  variable y: daq_mngt_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_algo_grt) return natural is
     variable l : natural := 0;
@@ -5457,6 +6407,13 @@ package body daq_defs is
     l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
+  function width(x: daq_algo_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.BRANCH_STRUCT);
+    l := l + width(x.COUNTER_WIDTH);
+    return l;
+  end function width;
   function vectorify(x: daq_algo_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5524,6 +6481,13 @@ package body daq_defs is
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
+  function zeroed(t: daq_algo_grt) return daq_algo_grt is
+  variable y: daq_algo_grt;
+  begin
+    y.BRANCH_STRUCT := zeroed(t.BRANCH_STRUCT);
+    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
+    return y;
+  end function zeroed;
 
   function len(x: daq_algo_irt) return natural is
     variable l : natural := 0;
@@ -5535,6 +6499,16 @@ package body daq_defs is
     l := l + len(x.f2e);
     return l;
   end function len;
+  function width(x: daq_algo_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.ctrl);
+    l := l + width(x.branch);
+    l := l + width(x.f2e);
+    return l;
+  end function width;
   function vectorify(x: daq_algo_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5653,6 +6627,16 @@ package body daq_defs is
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
+  function zeroed(t: daq_algo_irt) return daq_algo_irt is
+  variable y: daq_algo_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.ctrl := zeroed(t.ctrl);
+    y.branch := zeroed(t.branch);
+    y.f2e := zeroed(t.f2e);
+    return y;
+  end function zeroed;
 
   function len(x: daq_algo_ort) return natural is
     variable l : natural := 0;
@@ -5661,6 +6645,13 @@ package body daq_defs is
     l := l + len(x.f2e);
     return l;
   end function len;
+  function width(x: daq_algo_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.status);
+    l := l + width(x.f2e);
+    return l;
+  end function width;
   function vectorify(x: daq_algo_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5728,6 +6719,13 @@ package body daq_defs is
     y.f2e := nullify(t.f2e);
     return y;
   end function nullify;
+  function zeroed(t: daq_algo_ort) return daq_algo_ort is
+  variable y: daq_algo_ort;
+  begin
+    y.status := zeroed(t.status);
+    y.f2e := zeroed(t.f2e);
+    return y;
+  end function zeroed;
 
   function len(x: daq_algo_ert) return natural is
     variable l : natural := 0;
@@ -5736,6 +6734,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_algo_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_algo_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -5803,6 +6808,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_algo_ert) return daq_algo_ert is
+  variable y: daq_algo_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: mfelix_to_top_at) return natural is
     variable l : natural := 0;
@@ -5810,6 +6822,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: mfelix_to_top_at) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: mfelix_to_top_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -5902,6 +6920,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: mfelix_to_top_at) return mfelix_to_top_at is
+    variable y : mfelix_to_top_at;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: top_to_mfelix_at) return natural is
     variable l : natural := 0;
@@ -5909,6 +6935,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: top_to_mfelix_at) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: top_to_mfelix_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -6001,6 +7033,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: top_to_mfelix_at) return top_to_mfelix_at is
+    variable y : top_to_mfelix_at;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: top_to_status_at) return natural is
     variable l : natural := 0;
@@ -6008,6 +7048,12 @@ package body daq_defs is
     l := x'length * len(x(x'left));
     return l;
   end function len;
+  function width(x: top_to_status_at) return natural is
+    variable l : natural := 0;
+  begin
+    l := x'length * width(x(x'left));
+    return l;
+  end function width;
   function vectorify(x: top_to_status_at; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
@@ -6100,6 +7146,14 @@ package body daq_defs is
     end loop l;
     return y;
   end function nullify;
+  function zeroed(x: top_to_status_at) return top_to_status_at is
+    variable y : top_to_status_at;
+  begin
+    l: for i in y'range loop
+      y(i) := zeroed(y(i));
+    end loop l;
+    return y;
+  end function zeroed;
 
   function len(x: daq_top_grt) return natural is
     variable l : natural := 0;
@@ -6108,6 +7162,13 @@ package body daq_defs is
     l := l + len(x.COUNTER_WIDTH);
     return l;
   end function len;
+  function width(x: daq_top_grt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.BRANCHES_STRUCT);
+    l := l + width(x.COUNTER_WIDTH);
+    return l;
+  end function width;
   function vectorify(x: daq_top_grt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6175,6 +7236,13 @@ package body daq_defs is
     y.COUNTER_WIDTH := nullify(t.COUNTER_WIDTH);
     return y;
   end function nullify;
+  function zeroed(t: daq_top_grt) return daq_top_grt is
+  variable y: daq_top_grt;
+  begin
+    y.BRANCHES_STRUCT := zeroed(t.BRANCHES_STRUCT);
+    y.COUNTER_WIDTH := zeroed(t.COUNTER_WIDTH);
+    return y;
+  end function zeroed;
 
   function len(x: daq_top_irt) return natural is
     variable l : natural := 0;
@@ -6186,6 +7254,16 @@ package body daq_defs is
     l := l + len(x.f2e_bus);
     return l;
   end function len;
+  function width(x: daq_top_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.ctrl);
+    l := l + width(x.branches);
+    l := l + width(x.f2e_bus);
+    return l;
+  end function width;
   function vectorify(x: daq_top_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6304,6 +7382,16 @@ package body daq_defs is
     y.f2e_bus := nullify(t.f2e_bus);
     return y;
   end function nullify;
+  function zeroed(t: daq_top_irt) return daq_top_irt is
+  variable y: daq_top_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.ctrl := zeroed(t.ctrl);
+    y.branches := zeroed(t.branches);
+    y.f2e_bus := zeroed(t.f2e_bus);
+    return y;
+  end function zeroed;
 
   function len(x: daq_top_ort) return natural is
     variable l : natural := 0;
@@ -6312,6 +7400,13 @@ package body daq_defs is
     l := l + len(x.f2e_bus);
     return l;
   end function len;
+  function width(x: daq_top_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.status_bus);
+    l := l + width(x.f2e_bus);
+    return l;
+  end function width;
   function vectorify(x: daq_top_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6379,6 +7474,13 @@ package body daq_defs is
     y.f2e_bus := nullify(t.f2e_bus);
     return y;
   end function nullify;
+  function zeroed(t: daq_top_ort) return daq_top_ort is
+  variable y: daq_top_ort;
+  begin
+    y.status_bus := zeroed(t.status_bus);
+    y.f2e_bus := zeroed(t.f2e_bus);
+    return y;
+  end function zeroed;
 
   function len(x: daq_top_ert) return natural is
     variable l : natural := 0;
@@ -6387,6 +7489,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_top_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_top_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6454,6 +7563,13 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_top_ert) return daq_top_ert is
+  variable y: daq_top_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
   function len(x: daq_usr_irt) return natural is
     variable l : natural := 0;
@@ -6474,6 +7590,25 @@ package body daq_defs is
     l := l + len(x.f2e1);
     return l;
   end function len;
+  function width(x: daq_usr_irt) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.sys);
+    l := l + width(x.ttc);
+    l := l + width(x.ctrl);
+    l := l + width(x.stream_0);
+    l := l + width(x.stream_1);
+    l := l + width(x.stream_2);
+    l := l + width(x.stream_3);
+    l := l + width(x.stream_4);
+    l := l + width(x.stream_5);
+    l := l + width(x.stream_6);
+    l := l + width(x.stream_7);
+    l := l + width(x.stream_8);
+    l := l + width(x.f2e0);
+    l := l + width(x.f2e1);
+    return l;
+  end function width;
   function vectorify(x: daq_usr_irt; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6745,6 +7880,25 @@ package body daq_defs is
     y.f2e1 := nullify(t.f2e1);
     return y;
   end function nullify;
+  function zeroed(t: daq_usr_irt) return daq_usr_irt is
+  variable y: daq_usr_irt;
+  begin
+    y.sys := zeroed(t.sys);
+    y.ttc := zeroed(t.ttc);
+    y.ctrl := zeroed(t.ctrl);
+    y.stream_0 := zeroed(t.stream_0);
+    y.stream_1 := zeroed(t.stream_1);
+    y.stream_2 := zeroed(t.stream_2);
+    y.stream_3 := zeroed(t.stream_3);
+    y.stream_4 := zeroed(t.stream_4);
+    y.stream_5 := zeroed(t.stream_5);
+    y.stream_6 := zeroed(t.stream_6);
+    y.stream_7 := zeroed(t.stream_7);
+    y.stream_8 := zeroed(t.stream_8);
+    y.f2e0 := zeroed(t.f2e0);
+    y.f2e1 := zeroed(t.f2e1);
+    return y;
+  end function zeroed;
 
   function len(x: daq_usr_ort) return natural is
     variable l : natural := 0;
@@ -6755,6 +7909,15 @@ package body daq_defs is
     l := l + len(x.f2e1);
     return l;
   end function len;
+  function width(x: daq_usr_ort) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.status0);
+    l := l + width(x.status1);
+    l := l + width(x.f2e0);
+    l := l + width(x.f2e1);
+    return l;
+  end function width;
   function vectorify(x: daq_usr_ort; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6856,6 +8019,15 @@ package body daq_defs is
     y.f2e1 := nullify(t.f2e1);
     return y;
   end function nullify;
+  function zeroed(t: daq_usr_ort) return daq_usr_ort is
+  variable y: daq_usr_ort;
+  begin
+    y.status0 := zeroed(t.status0);
+    y.status1 := zeroed(t.status1);
+    y.f2e0 := zeroed(t.f2e0);
+    y.f2e1 := zeroed(t.f2e1);
+    return y;
+  end function zeroed;
 
   function len(x: daq_usr_ert) return natural is
     variable l : natural := 0;
@@ -6864,6 +8036,13 @@ package body daq_defs is
     l := l + len(x.o);
     return l;
   end function len;
+  function width(x: daq_usr_ert) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.i);
+    l := l + width(x.o);
+    return l;
+  end function width;
   function vectorify(x: daq_usr_ert; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -6931,5 +8110,12 @@ package body daq_defs is
     y.o := nullify(t.o);
     return y;
   end function nullify;
+  function zeroed(t: daq_usr_ert) return daq_usr_ert is
+  variable y: daq_usr_ert;
+  begin
+    y.i := zeroed(t.i);
+    y.o := zeroed(t.o);
+    return y;
+  end function zeroed;
 
 end package body daq_defs;

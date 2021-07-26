@@ -18,21 +18,25 @@ package TF_CTRL is
     READY : std_logic;
   end record TF_MON_t;
   function len(x: TF_MON_t) return natural;
+  function width(x: TF_MON_t) return natural;
   function vectorify(x: TF_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TF_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TF_MON_t) return TF_MON_t;
   function convert(x: in std_logic_vector; t: TF_MON_t) return TF_MON_t;
   function nullify(t: TF_MON_t) return TF_MON_t;
+  function zeroed(t: TF_MON_t) return TF_MON_t;
 
   type TF_CTRL_t is record
     RESET : std_logic;
   end record TF_CTRL_t;
   function len(x: TF_CTRL_t) return natural;
+  function width(x: TF_CTRL_t) return natural;
   function vectorify(x: TF_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TF_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TF_CTRL_t) return TF_CTRL_t;
   function convert(x: in std_logic_vector; t: TF_CTRL_t) return TF_CTRL_t;
   function nullify(t: TF_CTRL_t) return TF_CTRL_t;
+  function zeroed(t: TF_CTRL_t) return TF_CTRL_t;
 
 end package TF_CTRL;
 
@@ -47,6 +51,13 @@ package body TF_CTRL is
     l := l + len(x.READY);
     return l;
   end function len;
+  function width(x: TF_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STATUS);
+    l := l + width(x.READY);
+    return l;
+  end function width;
   function vectorify(x: TF_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -114,6 +125,13 @@ package body TF_CTRL is
     y.READY := nullify(t.READY);
     return y;
   end function nullify;
+  function zeroed(t: TF_MON_t) return TF_MON_t is
+  variable y: TF_MON_t;
+  begin
+    y.STATUS := zeroed(t.STATUS);
+    y.READY := zeroed(t.READY);
+    return y;
+  end function zeroed;
 
   function len(x: TF_CTRL_t) return natural is
     variable l : natural := 0;
@@ -121,6 +139,12 @@ package body TF_CTRL is
     l := l + len(x.RESET);
     return l;
   end function len;
+  function width(x: TF_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RESET);
+    return l;
+  end function width;
   function vectorify(x: TF_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -171,5 +195,11 @@ package body TF_CTRL is
     y.RESET := nullify(t.RESET);
     return y;
   end function nullify;
+  function zeroed(t: TF_CTRL_t) return TF_CTRL_t is
+  variable y: TF_CTRL_t;
+  begin
+    y.RESET := zeroed(t.RESET);
+    return y;
+  end function zeroed;
 
 end package body TF_CTRL;

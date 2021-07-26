@@ -20,11 +20,13 @@ package TAR_CTRL is
     FREEZE : std_logic;
   end record TAR_ACTIONS_CTRL_t;
   function len(x: TAR_ACTIONS_CTRL_t) return natural;
+  function width(x: TAR_ACTIONS_CTRL_t) return natural;
   function vectorify(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
   function convert(x: in std_logic_vector; t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
   function nullify(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
+  function zeroed(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t;
 
   type TAR_CONFIGS_CTRL_t is record
     INPUT_EN : std_logic;
@@ -32,11 +34,13 @@ package TAR_CTRL is
     FLUSH_MEM_RESET : std_logic;
   end record TAR_CONFIGS_CTRL_t;
   function len(x: TAR_CONFIGS_CTRL_t) return natural;
+  function width(x: TAR_CONFIGS_CTRL_t) return natural;
   function vectorify(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
   function convert(x: in std_logic_vector; t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
   function nullify(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
+  function zeroed(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t;
 
   type TAR_STATUS_MON_t is record
     ENABLED : std_logic;
@@ -44,32 +48,38 @@ package TAR_CTRL is
     ERROR : std_logic;
   end record TAR_STATUS_MON_t;
   function len(x: TAR_STATUS_MON_t) return natural;
+  function width(x: TAR_STATUS_MON_t) return natural;
   function vectorify(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
   function convert(x: in std_logic_vector; t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
   function nullify(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
+  function zeroed(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t;
 
   type TAR_MON_t is record
     STATUS : TAR_STATUS_MON_t;
   end record TAR_MON_t;
   function len(x: TAR_MON_t) return natural;
+  function width(x: TAR_MON_t) return natural;
   function vectorify(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
   function convert(x: in std_logic_vector; t: TAR_MON_t) return TAR_MON_t;
   function nullify(t: TAR_MON_t) return TAR_MON_t;
+  function zeroed(t: TAR_MON_t) return TAR_MON_t;
 
   type TAR_CTRL_t is record
     ACTIONS : TAR_ACTIONS_CTRL_t;
     CONFIGS : TAR_CONFIGS_CTRL_t;
   end record TAR_CTRL_t;
   function len(x: TAR_CTRL_t) return natural;
+  function width(x: TAR_CTRL_t) return natural;
   function vectorify(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function convert(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector;
   function structify(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
   function convert(x: in std_logic_vector; t: TAR_CTRL_t) return TAR_CTRL_t;
   function nullify(t: TAR_CTRL_t) return TAR_CTRL_t;
+  function zeroed(t: TAR_CTRL_t) return TAR_CTRL_t;
 
 end package TAR_CTRL;
 
@@ -86,6 +96,15 @@ package body TAR_CTRL is
     l := l + len(x.FREEZE);
     return l;
   end function len;
+  function width(x: TAR_ACTIONS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RESET);
+    l := l + width(x.ENABLE);
+    l := l + width(x.DISABLE);
+    l := l + width(x.FREEZE);
+    return l;
+  end function width;
   function vectorify(x: TAR_ACTIONS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -187,6 +206,15 @@ package body TAR_CTRL is
     y.FREEZE := nullify(t.FREEZE);
     return y;
   end function nullify;
+  function zeroed(t: TAR_ACTIONS_CTRL_t) return TAR_ACTIONS_CTRL_t is
+  variable y: TAR_ACTIONS_CTRL_t;
+  begin
+    y.RESET := zeroed(t.RESET);
+    y.ENABLE := zeroed(t.ENABLE);
+    y.DISABLE := zeroed(t.DISABLE);
+    y.FREEZE := zeroed(t.FREEZE);
+    return y;
+  end function zeroed;
 
   function len(x: TAR_CONFIGS_CTRL_t) return natural is
     variable l : natural := 0;
@@ -196,6 +224,14 @@ package body TAR_CTRL is
     l := l + len(x.FLUSH_MEM_RESET);
     return l;
   end function len;
+  function width(x: TAR_CONFIGS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.INPUT_EN);
+    l := l + width(x.OUTPUT_EN);
+    l := l + width(x.FLUSH_MEM_RESET);
+    return l;
+  end function width;
   function vectorify(x: TAR_CONFIGS_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -280,6 +316,14 @@ package body TAR_CTRL is
     y.FLUSH_MEM_RESET := nullify(t.FLUSH_MEM_RESET);
     return y;
   end function nullify;
+  function zeroed(t: TAR_CONFIGS_CTRL_t) return TAR_CONFIGS_CTRL_t is
+  variable y: TAR_CONFIGS_CTRL_t;
+  begin
+    y.INPUT_EN := zeroed(t.INPUT_EN);
+    y.OUTPUT_EN := zeroed(t.OUTPUT_EN);
+    y.FLUSH_MEM_RESET := zeroed(t.FLUSH_MEM_RESET);
+    return y;
+  end function zeroed;
 
   function len(x: TAR_STATUS_MON_t) return natural is
     variable l : natural := 0;
@@ -289,6 +333,14 @@ package body TAR_CTRL is
     l := l + len(x.ERROR);
     return l;
   end function len;
+  function width(x: TAR_STATUS_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ENABLED);
+    l := l + width(x.READY);
+    l := l + width(x.ERROR);
+    return l;
+  end function width;
   function vectorify(x: TAR_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -373,6 +425,14 @@ package body TAR_CTRL is
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
+  function zeroed(t: TAR_STATUS_MON_t) return TAR_STATUS_MON_t is
+  variable y: TAR_STATUS_MON_t;
+  begin
+    y.ENABLED := zeroed(t.ENABLED);
+    y.READY := zeroed(t.READY);
+    y.ERROR := zeroed(t.ERROR);
+    return y;
+  end function zeroed;
 
   function len(x: TAR_MON_t) return natural is
     variable l : natural := 0;
@@ -380,6 +440,12 @@ package body TAR_CTRL is
     l := l + len(x.STATUS);
     return l;
   end function len;
+  function width(x: TAR_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.STATUS);
+    return l;
+  end function width;
   function vectorify(x: TAR_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -430,6 +496,12 @@ package body TAR_CTRL is
     y.STATUS := nullify(t.STATUS);
     return y;
   end function nullify;
+  function zeroed(t: TAR_MON_t) return TAR_MON_t is
+  variable y: TAR_MON_t;
+  begin
+    y.STATUS := zeroed(t.STATUS);
+    return y;
+  end function zeroed;
 
   function len(x: TAR_CTRL_t) return natural is
     variable l : natural := 0;
@@ -438,6 +510,13 @@ package body TAR_CTRL is
     l := l + len(x.CONFIGS);
     return l;
   end function len;
+  function width(x: TAR_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.ACTIONS);
+    l := l + width(x.CONFIGS);
+    return l;
+  end function width;
   function vectorify(x: TAR_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
@@ -505,5 +584,12 @@ package body TAR_CTRL is
     y.CONFIGS := nullify(t.CONFIGS);
     return y;
   end function nullify;
+  function zeroed(t: TAR_CTRL_t) return TAR_CTRL_t is
+  variable y: TAR_CTRL_t;
+  begin
+    y.ACTIONS := zeroed(t.ACTIONS);
+    y.CONFIGS := zeroed(t.CONFIGS);
+    return y;
+  end function zeroed;
 
 end package body TAR_CTRL;

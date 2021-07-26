@@ -113,8 +113,18 @@ if [[ $yml_ver == 1 ]]; then
     echo "compiling commons"
     python3 $yml2hdl_v1 yml2hdl_v1/common_ieee.yml
   fi
+  # if [[ $dataformats == 1 ]]; then
+  #   echo "compiling commons"
+  #   python3 $yml2hdl_v1 yml2hdl_v1/common_ieee.yml
+  # fi
+fi
+if [[ $yml_ver == 2 ]]; then
   if [[ $dataformats == 1 ]]; then
     echo "compiling commons"
-    python3 $yml2hdl_v1 yml2hdl_v1/common_ieee.yml
+    python3 $yml2hdl_v2 common_ieee.yml
   fi
+  # if [[ $dataformats == 1 ]]; then
+  #   echo "compiling commons"
+  #   python3 $yml2hdl_v2 common_ieee.yml
+  # fi
 fi
