@@ -91,8 +91,7 @@ architecture behavioral of daq is
   signal extra_tdc_hits  : mdt_polmux_bus_at(c_HPS_MAX_HP_EXT-1 downto 0);
   signal daq_streams     : felix_stream_bus_at (c_HPS_MAX_HP_INN
                                                 + c_HPS_MAX_HP_MID
-                                                + c_HPS_MAX_HP_OUT
-                                                + c_HPS_MAX_HP_EXT - 1 downto 0);
+                                                + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   function streamify (x: tdcpolmux2tar_rt;
                       v: tdcpolmux2tar_rvt) return daq_stream_rt is
@@ -230,42 +229,42 @@ begin
       end generate gen_daq_conn_outer;
     end generate gen_daq_outer;
       
-    gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
-      u_daq_extra: entity daq_lib.daq_branch
-        generic map (G => (PIPELINES       => 40,
-                           BRANCHES_MASK   => (others => 1),
-                           BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_EXT),
-                           COUNTER_WIDTH     => 32,
-                           OUTPUT_DATA_WIDTH => 64))
-        port map (port_ir => extra_er.i, port_or =>  extra_er.o);
-   
-      extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
-      extra_er.i.ttc.cmds.bx <= clock_and_control.bx;
-      extra_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
-      extra_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
-      extra_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
-      extra_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
-   
-      extra_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
-      extra_er.i.ttc.cnt.evid <= ttc_commands.evid;
-      extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
-   
-      gen_daq_conn_extra: for j in extra_tdc_hits'range generate
-        u_daq_extra_delay: entity shared_lib.std_pipeline
-          generic map (g_MEMORY_TYPE => memory_type,
-                       g_DELAY_CYCLES => DELAY,
-                       g_PIPELINE_WIDTH => i_ext_tdc_hits_av(j)'length)
-          port map (clk => clock_and_control.clk,
-                    rst => clock_and_control.rst,
-                    glob_en => '1',
-                    i_data => i_ext_tdc_hits_av(j),
-                    o_data => extra_tdc_hits_v(j));
-        extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
-        daq_streams(c_HPS_MAX_HP_INN
-                    + c_HPS_MAX_HP_MID
-                    + c_HPS_MAX_HP_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
-      end generate gen_daq_conn_extra;
-    end generate gen_daq_extra;
+    -- gen_daq_extra : if   c_HPS_ENABLE_ST_EXT = '1' generate
+    --   u_daq_extra: entity daq_lib.daq_branch
+    --     generic map (G => (PIPELINES       => 40,
+    --                        BRANCHES_MASK   => (others => 1),
+    --                        BRANCHES_STRUCT => get_branches_struct(c_HPS_MAX_HP_EXT),
+    --                        COUNTER_WIDTH     => 32,
+    --                        OUTPUT_DATA_WIDTH => 64))
+    --     port map (port_ir => extra_er.i, port_or =>  extra_er.o);
+    -- 
+    --   extra_er.i.sys <= (clock_and_control.clk, clock_and_control.rst);
+    --   extra_er.i.ttc.cmds.bx <= clock_and_control.bx;
+    --   extra_er.i.ttc.cmds.bcr <= ttc_commands.bcr;
+    --   extra_er.i.ttc.cmds.ecr <= ttc_commands.ecr;
+    --   extra_er.i.ttc.cmds.lxa <= ttc_commands.l0a;
+    --   extra_er.i.ttc.cmds.ocr <= ttc_commands.ocr;
+    -- 
+    --   extra_er.i.ttc.cnt.bcid <= ttc_commands.bcid;
+    --   extra_er.i.ttc.cnt.evid <= ttc_commands.evid;
+    --   extra_er.i.ttc.cnt.orid <= ttc_commands.orid;
+    -- 
+    --   gen_daq_conn_extra: for j in extra_tdc_hits'range generate
+    --     u_daq_extra_delay: entity shared_lib.std_pipeline
+    --       generic map (g_MEMORY_TYPE => memory_type,
+    --                    g_DELAY_CYCLES => DELAY,
+    --                    g_PIPELINE_WIDTH => i_ext_tdc_hits_av(j)'length)
+    --       port map (clk => clock_and_control.clk,
+    --                 rst => clock_and_control.rst,
+    --                 glob_en => '1',
+    --                 i_data => i_ext_tdc_hits_av(j),
+    --                 o_data => extra_tdc_hits_v(j));
+    --     extra_er.i.branches(j)(0) <= streamify(extra_tdc_hits(j), extra_tdc_hits_v(j));
+    --     daq_streams(c_HPS_MAX_HP_INN
+    --                 + c_HPS_MAX_HP_MID
+    --                 + c_HPS_MAX_HP_OUT + j) <= outputify(extra_er.o.f2e_bus(j));
+    --   end generate gen_daq_conn_extra;
+    -- end generate gen_daq_extra;
       
   end generate DAQ_GEN;
 
