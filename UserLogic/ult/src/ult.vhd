@@ -94,7 +94,7 @@ entity ult is
                                               + (c_HPS_MAX_HP_EXT * c_HPS_ENABLE_ST_EXT) - 1 downto 0);
     o_daq_streams : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
                                               + c_HPS_MAX_HP_MID   
-                                              + c_HPS_MAX_HP_OUT - 1 downto 0)
+                                              + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
