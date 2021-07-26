@@ -67,9 +67,15 @@ architecture beh of hit_processor is
   
   signal data_2_sf_r          : hp_hp2bm_rt;
 
+  signal hp_rst  : std_logic;
+  signal hp_ena  : std_logic;
+
   
 
 begin
+
+  hp_rst  <= rst OR local_rst;
+  hp_ena  <= glob_en AND local_en;
 
   mdt_data_r <= structify(i_mdt_data_v);
   slc_data_r <= structify(i_slc_data_v);
@@ -83,8 +89,8 @@ begin
   )
   port map(
     clk                 => clk,
-    rst                 => rst,
-    glob_en             => glob_en and local_en,
+    rst                 => hp_rst,
+    glob_en             => hp_ena,
     -- configuration
     -- time_offset         => time_offset,
     -- RoI_size            => RoI_size,
@@ -109,8 +115,8 @@ begin
   )
   port map(
     clk                 => clk,
-    rst                 => rst,
-    glob_en             => glob_en and local_en,
+    rst                 => hp_rst,
+    glob_en             => hp_ena,
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_data_v        => i_slc_data_v,--.specific,
@@ -137,8 +143,8 @@ begin
   )
   port map(
     clk         => clk,
-    rst         => rst,
-    ena         => glob_en,
+    rst         => hp_rst,
+    ena         => hp_ena,
     --
     i_data      => hm2pl,
     -- i_dv        => i_mdt_tar_r.data_valid,

@@ -214,6 +214,9 @@ begin
             end if;
 
           when SET_WINDOW =>
+            for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+              o_hp_control_r(hp_i).rst <= '0';
+            end loop;
             -- if i_roi_global_dv = '1' then
             --   -- o_uCM2sf_data_r.hewindow_pos  <= resize(holesize + i_Roi_win_origin * to_unsigned(30,10),HEG2SFSLC_HEWINDOW_POS_LEN);
             --   o_uCM2sf_data_r.hewindow_pos  <= resize(i_roi_global_z,HEG2SFSLC_HEWINDOW_POS_LEN);
@@ -259,13 +262,16 @@ begin
           when HEG_BUSY =>
           o_uCM2sf_data_r.data_valid <= '0';
           o_uCM2hp_data_r.data_valid <= '0';
+          -- for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
+          --   o_hp_control_r(hp_i).rst <= '0';
+          -- end loop;
 
             if to_integer(unsigned(busy_count)) < c_HEG_TIME_LOAD then
               -- WAITING SF TO LOAD
             elsif to_integer(unsigned(busy_count)) < c_HEG_TIME_BUSY then
               for hp_i in g_HPS_NUM_MDT_CH -1 downto 0 loop
                 o_hp_control_r(hp_i).enable <= '1';
-                o_hp_control_r(hp_i).rst <= '0';
+                -- o_hp_control_r(hp_i).rst <= '0';
               end loop;
               o_sf_control_r.enable <= '1';
               o_sf_control_r.rst    <= '0';

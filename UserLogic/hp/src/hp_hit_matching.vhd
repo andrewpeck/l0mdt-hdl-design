@@ -97,6 +97,7 @@ begin
         space_valid <= '0';
         -- time
         time_valid <= '0';
+        o_data_valid <= '0';
       else
 
         if glob_en = '1' then
