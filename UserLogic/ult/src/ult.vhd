@@ -91,7 +91,6 @@ entity ult is
     i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-                                              + (c_HPS_MAX_HP_EXT * c_HPS_ENABLE_ST_EXT) - 1 downto 0);
     o_daq_streams : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
                                               + c_HPS_MAX_HP_MID   
                                               + c_HPS_MAX_HP_OUT - 1 downto 0);
