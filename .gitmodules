@@ -1,49 +1,55 @@
 [submodule "Hog"]
-path = Hog
-url = ../../hog/Hog.git
+	path = Hog
+	url = ../../hog/Hog.git
 [submodule "dataformats"]
-path = dataformats
-url = ../dataformats.git
-branch = master
+	path = dataformats
+	url = ../dataformats.git
+	branch = master
 [submodule "HAL/sl/src/my-sl-gty-interface"]
-path = HAL/sl/src/my-sl-gty-interface
-url = ../../okumura/my-sl-gty-interface.git
+	path = HAL/sl/src/my-sl-gty-interface
+	url = ../../okumura/my-sl-gty-interface.git
 [submodule "HAL/lpgbt/src/lpgbt-fpga"]
-path = HAL/lpgbt/src/lpgbt-fpga
-url = ../../gbt-fpga/lpgbt-fpga.git
+	path = HAL/lpgbt/src/lpgbt-fpga
+	url = ../../gbt-fpga/lpgbt-fpga.git
 [submodule "HAL/hal/src/mgt/tx_phase_aligner"]
-path = HAL/hal/src/mgt/tx_phase_aligner
-url = ../../HPTD/tx_phase_aligner.git
+	path = HAL/hal/src/mgt/tx_phase_aligner
+	url = ../../HPTD/tx_phase_aligner.git
 [submodule "HAL/lpgbt/src/gbt-sc"]
-path = HAL/lpgbt/src/gbt-sc
-url = ../gbt-sc.git
+	path = HAL/lpgbt/src/gbt-sc
+	url = ../gbt-sc.git
 [submodule "regmap"]
-path = regmap
-url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
+	path = regmap
+	url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
-path = tools/yml2hdl
-url = https://gitlab.com/tcpaiva/yml2hdl.git
+	path = tools/yml2hdl
+	url = https://gitlab.com/tcpaiva/yml2hdl.git
 [submodule "HAL/c2c/bd_helper"]
-path = HAL/c2c/bd_helper
-url = https://github.com/dgastler/BU_BUILD.git
+	path = HAL/c2c/bd_helper
+	url = https://github.com/dgastler/BU_BUILD.git
 [submodule "tools/gldl-scripts"]
-path = tools/gldl-scripts
-url = ../../gloustau/l0mdt-scripts.git
+	path = tools/gldl-scripts
+	url = ../../gloustau/l0mdt-scripts.git
 [submodule "tools/simComp"]
-path = tools/simComp
-url = ../../gloustau/l0mdt-sim-comp.git
+	path = tools/simComp
+	url = ../../gloustau/l0mdt-sim-comp.git
 [submodule "tools/simCheck"]
-path = tools/simCheck
-url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
+	path = tools/simCheck
+	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
 [submodule "l0mdt-hls"]
-path = l0mdt-hls
-url = ../l0mdt-hls.git
+	path = l0mdt-hls
+	url = ../l0mdt-hls.git
 [submodule "HAL/lpgbt/src/lpgbt-emul"]
-path = HAL/lpgbt/src/lpgbt-emul
-url = ../lpgbt-emul.git
+	path = HAL/lpgbt/src/lpgbt-emul
+	url = ../lpgbt-emul.git
 [submodule "shared/SpyBuffer"]
-path = shared/SpyBuffer
-url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
+  path = shared/SpyBuffer
+  url = ../../atlas-tdaq-p2-firmware/tdaq_shared_firmware/spybuffer.git
 [submodule "shared/vamc/vamc-core"]
 	path = shared/vamc/vamc-core
 	url = https://gitlab.com/taquionbcn/vamc.git
+[submodule "UserLogic/daq/daq-core"]
+	path = UserLogic/daq/daq-core
+	url = ../../tcpaiva/atlas-daq-core.git
+[submodule "HAL/ttc/ttc-core"]
+	path = HAL/ttc/ttc-core
+	url = ../../tcpaiva/atlas-ttc-core.git

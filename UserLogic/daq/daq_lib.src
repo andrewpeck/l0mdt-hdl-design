@@ -1,16 +1,13 @@
-UserLogic/daq/types_def.src lib=types_def
-UserLogic/daq/daq_def.src lib=daq_def
-UserLogic/daq/ttc_def.src lib=ttc_def
+UserLogic/daq/daq-core/src/daq_hub.vhd
+UserLogic/daq/daq-core/src/daq_bus_conv.vhd
+UserLogic/daq/daq-core/src/daq_node_fifo.vhd
+UserLogic/daq/daq-core/src/daq_data_node.vhd
+UserLogic/daq/daq-core/src/daq_header_node.vhd
+UserLogic/daq/daq-core/src/daq_drow.vhd
+UserLogic/daq/daq-core/src/daq_hrow.vhd
+UserLogic/daq/daq-core/src/daq_mngt.vhd
+UserLogic/daq/daq-core/src/daq_req.vhd
+UserLogic/daq/daq-core/src/daq_packet_builder.vhd
+UserLogic/daq/daq-core/src/daq_algo.vhd
+UserLogic/daq/daq-core/src/daq_branch.vhd
 
-UserLogic/daq/src/daq_req.vhd
-UserLogic/daq/src/daq_mngt.vhd
-UserLogic/daq/src/daq_header_node.vhd
-UserLogic/daq/src/daq_node_fifo.vhd
-UserLogic/daq/src/daq_data_node.vhd
-UserLogic/daq/src/daq_bus_conv.vhd
-UserLogic/daq/src/daq_hub.vhd
-UserLogic/daq/src/daq_hrow.vhd
-UserLogic/daq/src/daq_drow.vhd
-UserLogic/daq/src/daq_packet_builder.vhd
-UserLogic/daq/src/daq_algo.vhd
-UserLogic/daq/src/daq_top.vhd

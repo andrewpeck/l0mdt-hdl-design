@@ -1,6 +1,4 @@
-UserLogic/daq/types_def.src             lib=types_def
-UserLogic/daq/ttc_def.src                 lib=ttc_def
+UserLogic/daq/autogen/daq_config_defs.vhd
+UserLogic/daq/autogen/daq_defs.vhd
+UserLogic/daq/autogen/daq_row_defs.vhd
 
-UserLogic/daq/pkg/daq_devel_defs.vhd
-UserLogic/daq/pkg/daq_defs.vhd
-UserLogic/daq/pkg/daq_row_defs.vhd
