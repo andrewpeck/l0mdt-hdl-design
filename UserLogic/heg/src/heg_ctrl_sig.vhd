@@ -167,7 +167,9 @@ begin
               -- b_data.roi_z <= i_roi_global_z;--resize(i_roi_global_z,b_data.roi_z'length);
               -- o_uCM2hp_data_r.roi_x <= i_roi_global_x;
               -- o_uCM2hp_data_r.roi_z <= i_roi_global_z;
-              o_uCM2sf_data_r.hewindow_pos  <= resize(i_roi_global_z,HEG2SFSLC_HEWINDOW_POS_LEN);
+              o_uCM2sf_data_r.hewindow_pos  <= resize(
+                unsigned(i_roi_global_z(i_roi_global_z'length -1 downto 5))
+                ,HEG2SFSLC_HEWINDOW_POS_LEN);
             
           else
 

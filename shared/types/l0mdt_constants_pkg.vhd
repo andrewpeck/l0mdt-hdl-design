@@ -69,7 +69,7 @@ package l0mdt_constants_pkg is
 
   constant SLC_COMMON_POSPHI_LEN : integer := 9;
 
-  constant SLC_COMMON_POSPHI_MULT : real := 0.0625;
+  constant SLC_COMMON_POSPHI_MULT : real := 64.0;
 
   constant SLC_COMMON_SL_PT_LEN : integer := 8;
 
@@ -181,7 +181,7 @@ package l0mdt_constants_pkg is
 
   constant UCM2PL_PHIMOD_LEN : integer := 8;
 
-  constant UCM2PL_PHIMOD_MULT : real := 0.25;
+  constant UCM2PL_PHIMOD_MULT : real := 256.0;
 
   constant TDCPOLMUX2TAR_DATA_VALID_LEN : integer := 1;
 
