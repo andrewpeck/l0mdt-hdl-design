@@ -346,7 +346,7 @@ add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN
 add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/t0_mon_v
 add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/tc_ctrl_v
 add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/tc_mon_v
-add wave -noupdate -group INN_PC_2 -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.chamber_ieta -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.layer -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.tube -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.time -radix decimal}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.chamber_ieta {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.layer {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.tube {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.time {-height 17 -radix decimal}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r
+add wave -noupdate -group INN_PC_2 -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.chamber_ieta -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.layer -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.tube -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.time -radix decimal}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.chamber_ieta {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.layer {-height 17 -max 7.0 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.tube {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r.time {-height 17 -radix decimal}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r
 add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/t0_dv
 add wave -noupdate -group INN_PC_2 -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/time_t0
 add wave -noupdate -group INN_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/PC/pc_gen(2)/pc_en/PC/global_x
@@ -393,165 +393,165 @@ add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_IN
 add wave -noupdate -group INN_HEG_2 -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_control_v
 add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_slc_data_v
 add wave -noupdate -group INN_HEG_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/o_sf_mdt_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_HPS_NUM_MDT_CH
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/clk
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/rst
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/glob_en
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/i_uCM_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/win_row_0
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/uCM_data_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/Roi_win_valid
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_x
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_z
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_dv
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_HPS_NUM_MDT_CH
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/clk
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/rst
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/glob_en
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_uCM_data_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_Roi_win_origin
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_Roi_win_valid
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_roi_global_z
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/heg_ctrl_motor
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/heg_count_en
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/busy_count
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/enables_a
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_pos -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_ang -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.hewindow_pos -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_pos {-radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_ang {-radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.hewindow_pos {-radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/b_data
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/csf_slope
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/csf_slope_dv
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_hp_control_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_sf_control_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/g_HPS_NUM_MDT_CH
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/clk
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/rst
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/glob_en
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/i_uCM_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/uCM_data_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/roi_center
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/roi_edges
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/dv_z
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/dv_mbar
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(7) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(6) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(5) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(4) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(3) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(2) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(1) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0) -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo -radix unsigned}}}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(7) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(6) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(5) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(4) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(3) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(2) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(1) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0) {-height 17 -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo -radix unsigned}}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/o_SLC_Window_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/o_Roi_win_valid
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ADDR_WIDTH
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/DATA_WIDTH
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/clk
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/rst
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ena
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ctrl_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/i_tube
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/i_dv
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem_index_int
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem_out
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_rd_addr_o
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_wr_addr_o
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_data_o
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_dv_o
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_data_i
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_dv_i
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/num_tubes_layer_station
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mon_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_global_x
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_global_z
-add wave -noupdate -expand -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_dv
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2sf_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2hp_data_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Window_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Win_dv
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_v
-add wave -noupdate -expand -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_hp_control_r
-add wave -noupdate /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/o_hit_data_v
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/clk
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/rst
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/glob_en
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/local_rst
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/local_en
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_SLC_Window
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_slc_data_v
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_mdt_data_v
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/slc_data_r
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/mdt_data_r
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/tdc_paramcalc_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/hm2pl
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/clk
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/rst
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/glob_en
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_SLC_Window
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_SLc_BCID
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_layer
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_tube
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_time_real
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_high_limit
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_low_limit
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/space_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/o_hit_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/o_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/clk
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/rst
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/glob_en
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_SLc_data_v
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_mdt_time_real
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_global_z
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_global_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_mdt_layer
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_z -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_x -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_z {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_x {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/SLc_data_r
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_y
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_ml
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_dv
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/radius_dv
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/local_dv
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/g_STATION_RADIUS
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/clk
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/rst
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/glob_en
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_org_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_org_z
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_dv
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_global_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_global_z
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/cw_org_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/cw_org_z
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_local_y
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_local_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_tube_radius
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_local_y
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_local_x
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_ml
-add wave -noupdate -expand -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_data_valid
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/plout_hm
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/data_2_sf_r
-add wave -noupdate -expand -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/o_hit_data_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/g_HPS_NUM_MDT_CH
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/clk
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/rst
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/glob_en
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/i_uCM_data_v
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_v
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_r
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_r
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_r
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_r
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/ctrl_roi_tc_v
+add wave -noupdate -group INN_HEG_2_CTRL -group ctrl_mon /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_roi_tc_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/SLC_Window_r
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/win_row_0
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/uCM_data_r
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/Roi_win_valid
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_r
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_x
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_global_z
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/roi_dv
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/g_HPS_NUM_MDT_CH
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/clk
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/rst
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/glob_en
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_uCM_data_r
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_Roi_win_origin
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_Roi_win_valid
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/i_roi_global_z
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/heg_ctrl_motor
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/heg_count_en
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/busy_count
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/enables_a
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_pos -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_ang -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.hewindow_pos -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_pos {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.vec_ang {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r.hewindow_pos {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_r
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_r
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/b_data
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/csf_slope
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/csf_slope_dv
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_hp_control_r
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_sf_control_r
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2hp_data_v
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_SIG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_SIGNALS/o_uCM2sf_data_v
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/g_HPS_NUM_MDT_CH
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/clk
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/rst
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/glob_en
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/i_uCM_data_v
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/uCM_data_r
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/roi_center
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/roi_edges
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/dv_z
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/dv_mbar
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(7) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(6) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(5) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(4) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(3) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(2) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(1) -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0) -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo -radix unsigned}}}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(7) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(6) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(5) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(4) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(3) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(2) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(1) {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0) {-height 17 -radix unsigned -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo -radix unsigned}}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).hi {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r(0).lo {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/SLC_Window_r
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/o_SLC_Window_v
+add wave -noupdate -group INN_HEG_2_CTRL -group INN_HEG_2_CTRL_ROI /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI/o_Roi_win_valid
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ADDR_WIDTH
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/DATA_WIDTH
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/clk
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/rst
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ena
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/ctrl_v
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/i_tube
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/i_dv
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem_index_int
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mem_out
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_rd_addr_o
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_wr_addr_o
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_data_o
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_dv_o
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_data_i
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -group apb /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/apb_dv_i
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/num_tubes_layer_station
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/mon_v
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_global_x
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_global_z
+add wave -noupdate -group INN_HEG_2_CTRL -expand -group INN_HEG_2_CTRL_ROI_ORG /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/HEG_CTRL_ROI_ORG/o_dv
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/mon_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2sf_data_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_uCM2hp_data_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Window_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_SLC_Win_dv
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_sf_control_v
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_Control/o_hp_control_r
+add wave -noupdate -group INN_HEG_2_CTRL /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/o_hit_data_v
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/clk
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/rst
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/glob_en
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/local_rst
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/local_en
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_SLC_Window
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_slc_data_v
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/i_mdt_data_v
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/slc_data_r
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/mdt_data_r
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/tdc_paramcalc_valid
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/hm2pl
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/clk
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/rst
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/glob_en
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_SLC_Window
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_SLc_BCID
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -format Analog-Step -height 84 -max 3.0 -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_layer
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_tube
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_mdt_time_real
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/i_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_high_limit
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -radix decimal /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_low_limit
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/space_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/time_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM -radix decimal -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(7) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(6) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(5) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(4) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(3) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(2) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(1) -radix decimal} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(0) -radix decimal}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(7) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(6) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(5) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(4) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(3) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(2) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(1) {-height 17 -radix decimal} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window(0) {-height 17 -radix decimal}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/Roi_window
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/o_hit_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -expand -group HM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_HM/o_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/clk
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/rst
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/glob_en
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_SLc_data_v
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_mdt_time_real
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_global_z
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_global_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_mdt_layer
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/i_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -childformat {{/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_z -radix unsigned} {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_x -radix unsigned}} -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_z {-height 17 -radix unsigned} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r.roi_x {-height 17 -radix unsigned}} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/barrel_data_r
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/SLc_data_r
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_y
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_ml
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/pl_local_dv
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/radius_dv
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/local_dv
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/g_STATION_RADIUS
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/clk
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/rst
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/glob_en
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_org_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_org_z
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_cw_dv
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_global_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_global_z
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/i_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/cw_org_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/cw_org_z
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_local_y
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_local_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -expand -group INN_HEG_2_HP_2_PC_VC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/HP_CALC_V/o_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_tube_radius
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_local_y
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC -radix unsigned /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_local_x
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_ml
+add wave -noupdate -group INN_HEG_2_HP_2 -group PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/HP_PC/o_data_valid
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/plout_hm
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/data_2_sf_r
+add wave -noupdate -group INN_HEG_2_HP_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/hp_gen(2)/hp_en/Hit_Processor/o_hit_data_v
 add wave -noupdate -group INN_HEG_2_BM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_buffer_mux/g_HPS_NUM_MDT_CH
 add wave -noupdate -group INN_HEG_2_BM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_buffer_mux/clk
 add wave -noupdate -group INN_HEG_2_BM /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/HEG/Heg_buffer_mux/rst
@@ -621,8 +621,30 @@ add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/
 add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/EN_CSF/CSF/out_seg
 add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/EN_CSF/CSF/globseg
 add wave -noupdate -group CSF /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/heg_gen(2)/SF/EN_SF/EN_CSF/CSF/o_seg
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/g_STATION
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/clk
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/rst
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/glob_en
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/i_tdc_hits
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/i_tdc_hits_r
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/o_tar_hits_r
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/layer_offset
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/ml1_tubes
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/ml1_layer
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/ml2_tubes
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/ml2_layer
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/csm_offset_mem
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/tdc_offset_mem
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/csm_offset
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/tdc_offset
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/tdc_layer
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/tdc_tube
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/full_time
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/dv_pl
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/csm_pl
+add wave -noupdate -expand -group TAR_INN_2 /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/INN_EN/TAR_INN/PL_ARRAY(2)/POLMUX_EN/REMAP/o_tar_hits
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {14953939311 fs} 0 Red default} {{Cursor 2} {1901562500 fs} 1} {{Cursor 3} {2045213465 fs} 0}
+WaveRestoreCursors {{Cursor 1} {14953939311 fs} 0 Red default} {{Cursor 2} {1901562500 fs} 1} {{Cursor 3} {4179687500 fs} 0}
 quietly wave cursor active 3
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 230
@@ -638,4 +660,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2031732083 fs} {2068847763 fs}
+WaveRestoreZoom {4130276370 fs} {4251539491 fs}

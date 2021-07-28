@@ -52,10 +52,23 @@ end entity tar_remap;
 
 architecture beh of tar_remap is
 
+  function get_layer_offset( station : integer) return integer is
+    variable y : integer;
+  begin
+    if station = 0 then
+      y := 4;
+    else
+      y := 3;
+    end if;
+    return y;
+  end function;
+
   signal i_tdc_hits_r : tdcpolmux2tar_rt;
   -- signal i_tar_hits_r : tar2hps_rt;
   -- signal o_tdc_hits_r : tdcpolmux2tar_rt;
   signal o_tar_hits_r : tar2hps_rt;
+
+  signal layer_offset : integer := get_layer_offset(g_STATION);
 
   signal ml1_tubes : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,0,1); -- station , ml, t_nl
   signal ml1_layer : hh_mdt_mezz_map_t := get_tdc_tube_map(g_STATION,0,0);
@@ -108,7 +121,7 @@ begin
                 tdc_layer <= to_unsigned(ml1_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
               else -- odd
                 tdc_tube <= to_unsigned(ml2_tubes(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_TUBE_LEN);
-                tdc_layer <= to_unsigned(ml2_layer(to_integer(i_tdc_hits_r.tdc.chanid)),TAR2HPS_LAYER_LEN);
+                tdc_layer <= to_unsigned(ml2_layer(to_integer(i_tdc_hits_r.tdc.chanid)) + layer_offset,TAR2HPS_LAYER_LEN);
               end if;
             else -- SIDE C
 
