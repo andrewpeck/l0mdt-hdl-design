@@ -13,5 +13,4 @@ SIM:ult_lsf_upt:
       extends: .vars
       PROJECT_NAME: ult_lsf_upt
     allow_failure: false
-    before_script:
-      - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64:$PATH"
+
