@@ -5,9 +5,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.AXIRegPkg.all;
 use work.types.all;
-use work.MEM_INT_12A148D_Ctrl.all;
-use work.MEM_INT_12A148D_Ctrl_DEF.all;
-entity MEM_INT_12A148D_interface is
+use work.MEM_INT_12A42D_Ctrl.all;
+use work.MEM_INT_12A42D_Ctrl_DEF.all;
+entity MEM_INT_12A42D_interface is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -15,11 +15,11 @@ entity MEM_INT_12A148D_interface is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
-    Mon              : in  MEM_INT_12A148D_Mon_t;
-    Ctrl             : out MEM_INT_12A148D_Ctrl_t
+    Mon              : in  MEM_INT_12A42D_Mon_t;
+    Ctrl             : out MEM_INT_12A42D_Ctrl_t
     );
-end entity MEM_INT_12A148D_interface;
-architecture behavioral of MEM_INT_12A148D_interface is
+end entity MEM_INT_12A42D_interface;
+architecture behavioral of MEM_INT_12A42D_interface is
   signal localAddress       : slv_32_t;
   signal localRdData        : slv_32_t;
   signal localRdData_latch  : slv_32_t;
@@ -29,8 +29,8 @@ architecture behavioral of MEM_INT_12A148D_interface is
   signal localRdAck         : std_logic;
 
 
-  signal reg_data :  slv32_array_t(integer range 0 to 12);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 12) := (others => x"00000000");
+  signal reg_data :  slv32_array_t(integer range 0 to 9);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 9) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
@@ -73,26 +73,14 @@ begin  -- architecture behavioral
         when 2 => --0x2
           localRdData(11 downto  0)  <=  reg_data(2)(11 downto  0);      -- wr_Address
           localRdData(27 downto 16)  <=  reg_data(2)(27 downto 16);      -- rd_Address
-        when 3 => --0x3
-          localRdData(31 downto  0)  <=  reg_data(3)(31 downto  0);      -- Write Data 0
         when 4 => --0x4
-          localRdData(31 downto  0)  <=  reg_data(4)(31 downto  0);      -- Write Data 1
+          localRdData(31 downto  0)  <=  reg_data(4)(31 downto  0);      -- Write Data 0
         when 5 => --0x5
-          localRdData(31 downto  0)  <=  reg_data(5)(31 downto  0);      -- Write Data 2
-        when 6 => --0x6
-          localRdData(31 downto  0)  <=  reg_data(6)(31 downto  0);      -- Write Data 3
-        when 7 => --0x7
-          localRdData(19 downto  0)  <=  reg_data(7)(19 downto  0);      -- Write Data 4
+          localRdData( 9 downto  0)  <=  reg_data(5)( 9 downto  0);      -- Write Data 1
         when 8 => --0x8
           localRdData(31 downto  0)  <=  Mon.rd_data.rd_data_0;          -- Read Data 0
         when 9 => --0x9
-          localRdData(31 downto  0)  <=  Mon.rd_data.rd_data_1;          -- Read Data 1
-        when 10 => --0xa
-          localRdData(31 downto  0)  <=  Mon.rd_data.rd_data_2;          -- Read Data 2
-        when 11 => --0xb
-          localRdData(31 downto  0)  <=  Mon.rd_data.rd_data_3;          -- Read Data 3
-        when 12 => --0xc
-          localRdData(19 downto  0)  <=  Mon.rd_data.rd_data_4;          -- Read Data 4
+          localRdData( 9 downto  0)  <=  Mon.rd_data.rd_data_1;          -- Read Data 1
 
 
         when others =>
@@ -107,23 +95,17 @@ begin  -- architecture behavioral
   -- Register mapping to ctrl structures
   Ctrl.wr_addr            <=  reg_data(2)(11 downto  0);     
   Ctrl.rd_addr            <=  reg_data(2)(27 downto 16);     
-  Ctrl.wr_data.wr_data_0  <=  reg_data(3)(31 downto  0);     
-  Ctrl.wr_data.wr_data_4  <=  reg_data(7)(19 downto  0);     
-  Ctrl.wr_data.wr_data_1  <=  reg_data(4)(31 downto  0);     
-  Ctrl.wr_data.wr_data_2  <=  reg_data(5)(31 downto  0);     
-  Ctrl.wr_data.wr_data_3  <=  reg_data(6)(31 downto  0);     
+  Ctrl.wr_data.wr_data_0  <=  reg_data(4)(31 downto  0);     
+  Ctrl.wr_data.wr_data_1  <=  reg_data(5)( 9 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
-      reg_data(2)(11 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_addr;
-      reg_data(2)(27 downto 16)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.rd_addr;
-      reg_data(3)(31 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_data.wr_data_0;
-      reg_data(7)(19 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_data.wr_data_4;
-      reg_data(4)(31 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_data.wr_data_1;
-      reg_data(5)(31 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_data.wr_data_2;
-      reg_data(6)(31 downto  0)  <= DEFAULT_MEM_INT_12A148D_CTRL_t.wr_data.wr_data_3;
+      reg_data(2)(11 downto  0)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.wr_addr;
+      reg_data(2)(27 downto 16)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.rd_addr;
+      reg_data(4)(31 downto  0)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.wr_data.wr_data_0;
+      reg_data(5)( 9 downto  0)  <= DEFAULT_MEM_INT_12A42D_CTRL_t.wr_data.wr_data_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
       Ctrl.wr_req <= '0';
@@ -145,16 +127,10 @@ begin  -- architecture behavioral
         when 2 => --0x2
           reg_data(2)(11 downto  0)  <=  localWrData(11 downto  0);      -- wr_Address
           reg_data(2)(27 downto 16)  <=  localWrData(27 downto 16);      -- rd_Address
-        when 3 => --0x3
-          reg_data(3)(31 downto  0)  <=  localWrData(31 downto  0);      -- Write Data 0
         when 4 => --0x4
-          reg_data(4)(31 downto  0)  <=  localWrData(31 downto  0);      -- Write Data 1
+          reg_data(4)(31 downto  0)  <=  localWrData(31 downto  0);      -- Write Data 0
         when 5 => --0x5
-          reg_data(5)(31 downto  0)  <=  localWrData(31 downto  0);      -- Write Data 2
-        when 6 => --0x6
-          reg_data(6)(31 downto  0)  <=  localWrData(31 downto  0);      -- Write Data 3
-        when 7 => --0x7
-          reg_data(7)(19 downto  0)  <=  localWrData(19 downto  0);      -- Write Data 4
+          reg_data(5)( 9 downto  0)  <=  localWrData( 9 downto  0);      -- Write Data 1
 
           when others => null;
         end case;

@@ -1,6 +1,6 @@
 --This file was auto-generated.
 --Modifications might be lost.
--- Created : 2021-07-21 11:42:18.920211.
+-- Created : 2021-07-29 15:36:13.724415.
 library IEEE;
 use IEEE.std_logic_1164.all;
 
@@ -20,9 +20,66 @@ package TAR_CTRL_DEF is
                                                                OUTPUT_EN => '1',
                                                                FLUSH_MEM_RESET => '1'
                                                               );
+  constant DEFAULT_TAR_PL_STATION_PL_INN_PL_MEM_wr_data_CTRL_t : TAR_PL_STATION_PL_INN_PL_MEM_wr_data_CTRL_t := (
+                                                                                                                 wr_data_0 => (others => '0'),
+                                                                                                                 wr_data_1 => (others => '0')
+                                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t : TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t := (
+                                                                                                 flush_req => '0',
+                                                                                                 wr_req => '0',
+                                                                                                 wr_ack => '0',
+                                                                                                 wr_addr => (others => '0'),
+                                                                                                 rd_ack => '0',
+                                                                                                 rd_req => '0',
+                                                                                                 rd_addr => (others => '0'),
+                                                                                                 wr_data => DEFAULT_TAR_PL_STATION_PL_INN_PL_MEM_wr_data_CTRL_t
+                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_INN_CTRL_t : TAR_PL_STATION_PL_INN_CTRL_t := (
+                                                                                   PL_MEM => (others => DEFAULT_TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t )
+                                                                                  );
+  constant DEFAULT_TAR_PL_STATION_PL_MID_PL_MEM_wr_data_CTRL_t : TAR_PL_STATION_PL_MID_PL_MEM_wr_data_CTRL_t := (
+                                                                                                                 wr_data_0 => (others => '0'),
+                                                                                                                 wr_data_1 => (others => '0')
+                                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t : TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t := (
+                                                                                                 flush_req => '0',
+                                                                                                 wr_req => '0',
+                                                                                                 wr_ack => '0',
+                                                                                                 wr_addr => (others => '0'),
+                                                                                                 rd_ack => '0',
+                                                                                                 rd_req => '0',
+                                                                                                 rd_addr => (others => '0'),
+                                                                                                 wr_data => DEFAULT_TAR_PL_STATION_PL_MID_PL_MEM_wr_data_CTRL_t
+                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_MID_CTRL_t : TAR_PL_STATION_PL_MID_CTRL_t := (
+                                                                                   PL_MEM => (others => DEFAULT_TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t )
+                                                                                  );
+  constant DEFAULT_TAR_PL_STATION_PL_OUT_PL_MEM_wr_data_CTRL_t : TAR_PL_STATION_PL_OUT_PL_MEM_wr_data_CTRL_t := (
+                                                                                                                 wr_data_0 => (others => '0'),
+                                                                                                                 wr_data_1 => (others => '0')
+                                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t : TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t := (
+                                                                                                 flush_req => '0',
+                                                                                                 wr_req => '0',
+                                                                                                 wr_ack => '0',
+                                                                                                 wr_addr => (others => '0'),
+                                                                                                 rd_ack => '0',
+                                                                                                 rd_req => '0',
+                                                                                                 rd_addr => (others => '0'),
+                                                                                                 wr_data => DEFAULT_TAR_PL_STATION_PL_OUT_PL_MEM_wr_data_CTRL_t
+                                                                                                );
+  constant DEFAULT_TAR_PL_STATION_PL_OUT_CTRL_t : TAR_PL_STATION_PL_OUT_CTRL_t := (
+                                                                                   PL_MEM => (others => DEFAULT_TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t )
+                                                                                  );
+  constant DEFAULT_TAR_PL_STATION_CTRL_t : TAR_PL_STATION_CTRL_t := (
+                                                                     PL_INN => DEFAULT_TAR_PL_STATION_PL_INN_CTRL_t,
+                                                                     PL_MID => DEFAULT_TAR_PL_STATION_PL_MID_CTRL_t,
+                                                                     PL_OUT => DEFAULT_TAR_PL_STATION_PL_OUT_CTRL_t
+                                                                    );
   constant DEFAULT_TAR_CTRL_t : TAR_CTRL_t := (
                                                CONFIGS => DEFAULT_TAR_CONFIGS_CTRL_t,
-                                               ACTIONS => DEFAULT_TAR_ACTIONS_CTRL_t
+                                               ACTIONS => DEFAULT_TAR_ACTIONS_CTRL_t,
+                                               PL_STATION => DEFAULT_TAR_PL_STATION_CTRL_t
                                               );
 
 
