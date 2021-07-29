@@ -34,6 +34,9 @@ library vamc_lib;
 library tar_lib;
 use tar_lib.tar_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.TAR_CTRL.all;
+
 entity tar_station is
   generic(
     g_ARRAY_LEN : integer := 0;
@@ -44,6 +47,8 @@ entity tar_station is
     rst              : in std_logic;
     glob_en          : in std_logic;
     -- ctrl/mon
+    ctrl                : in  TAR_PL_MEM_PL_MEM_CTRL_t;
+    mon                 : out TAR_PL_MEM_PL_MEM_MON_t;
 
     -- data
     i_tdc_hits_av    : in  mdt_polmux_bus_avt (g_ARRAY_LEN -1 downto 0);
@@ -58,8 +63,17 @@ architecture beh of tar_station is
   signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
   signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
 
+  signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
+  signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
+
+  signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
+  signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
+
   
 begin
+
+  apb_ctrl_mem_v <= vectorify(ctrl,apb_ctrl_mem_v);
+  mon <= structify(apb_mon_mem_v,mon);
 
   i_tdc_hits_ar <= structify(i_tdc_hits_av);
   
@@ -77,10 +91,10 @@ begin
         g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
         g_PIPELINE_WIDTH    => i_tdc_hits_av(b_i)'length, -- necesario?
         -- BU bus
-        g_APBUS_ENABLED    => '0'
-        -- g_XML_NODE_NAME    => "MEM_INT_12A148D",
-        -- g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
-        -- g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
+        g_APBUS_ENABLED    => '1'
+        g_XML_NODE_NAME    => "MEM_INT_12A42D",
+        g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
+        g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
       ) 
       port map(
         clk         => clk,
@@ -88,9 +102,9 @@ begin
         ena         => glob_en,
         --
         -- Ctrl/Mon 
-        -- ctrl  => apb_ctrl_mem_v,
-        -- mon   => apb_mon_mem_v,
-        -- i_freeze    => i_freeze,
+        ctrl  => apb_ctrl_mem_v,
+        mon   => apb_mon_mem_v,
+        i_freeze    => i_freeze,
         --
         i_data      => i_tdc_hits_av(b_i),
         i_dv        => i_tdc_hits_ar(b_i).data_valid,

@@ -75,6 +75,23 @@ architecture beh of tar is
   --
   signal ctrl_r            : TAR_CTRL_t;
   signal mon_r             : TAR_MON_t;
+
+  -- type ctrl_st_apb_mem_vt is array (5 downto 0) of std_logic_vector(len(ctrl_r.PL_STATION)-1  downto 0);
+  -- type mon_st_apb_mem_vt  is array (5 downto 0) of std_logic_vector(len(mon_r.PL_STATION)-1  downto 0);
+
+  -- signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
+  -- signal mon_apb_mem_av  : mon_apb_mem_avt; 
+
+  signal ctrl_pl_inn_v : std_logic_vector(len(ctrl_r.PL_STATION.PL_INN)-1  downto 0);
+  signal ctrl_pl_mid_v : std_logic_vector(len(ctrl_r.PL_STATION.PL_MID)-1  downto 0);
+  signal ctrl_pl_out_v : std_logic_vector(len(ctrl_r.PL_STATION.PL_OUT)-1  downto 0);
+  -- signal ctrl_pl_ext_v : std_logic_vector(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
+  signal mon_pl_inn_v : std_logic_vector(len(mon_r.PL_STATION.PL_INN)-1  downto 0);
+  signal mon_pl_mid_v : std_logic_vector(len(mon_r.PL_STATION.PL_MID)-1  downto 0);
+  signal mon_pl_out_v : std_logic_vector(len(mon_r.PL_STATION.PL_OUT)-1  downto 0);
+  -- signal mon_pl_ext_v : std_logic_vector(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
+
+
   -- TDC polmux from Tar
   signal i_inn_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
   signal i_mid_tdc_hits_ar : mdt_polmux_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
@@ -99,6 +116,14 @@ begin
 
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
+
+  ctrl_pl_inn_v <= convert(ctrl_r.PL_STATION.PL_INN,ctrl_pl_inn_v);
+  ctrl_pl_mid_v <= convert(ctrl_r.PL_STATION.PL_MID,ctrl_pl_mid_v);
+  ctrl_pl_out_v <= convert(ctrl_r.PL_STATION.PL_OUT,ctrl_pl_out_v);
+
+  mon_r.PL_STATION.PL_INN <= convert(mon_pl_inn_v,mon_r.PL_STATION.PL_INN);
+  mon_r.PL_STATION.PL_MID <= convert(mon_pl_mid_v,mon_r.PL_STATION.PL_MID);
+  mon_r.PL_STATION.PL_OUT <= convert(mon_pl_out_v,mon_r.PL_STATION.PL_OUT);
 
   SUPERVISOR : entity tar_lib.tar_supervisor
   port map(
@@ -136,6 +161,8 @@ begin
           rst             => local_rst,
           glob_en         => local_en,
           -- ctrl/mon
+          ctrl            => ctrl_pl_inn_v,
+          mon             => mon_pl_inn_v,
           -- data
           i_tdc_hits_av   => i_inn_tdc_hits_av,
           o_tdc_hits_av   => o_inn_tdc_hits_av,
@@ -155,6 +182,8 @@ begin
             rst             => local_rst,
             glob_en         => local_en,
             -- ctrl/mon
+            ctrl            => ctrl_pl_mid_v,
+            mon             => mon_pl_mid_v,
             -- data
             i_tdc_hits_av   => i_mid_tdc_hits_av,
             o_tdc_hits_av   => o_mid_tdc_hits_av,
@@ -173,6 +202,8 @@ begin
               rst             => local_rst,
               glob_en         => local_en,
               -- ctrl/mon
+              ctrl            => ctrl_pl_out_v,
+              mon             => mon_pl_out_v,
               -- data
               i_tdc_hits_av   => i_out_tdc_hits_av,
               o_tdc_hits_av   => o_out_tdc_hits_av,
@@ -191,6 +222,8 @@ begin
                 rst             => local_rst,
                 glob_en         => local_en,
                 -- ctrl/mon
+                ctrl            => ctrl_pl_ext_v,
+                mon             => mon_pl_ext_v,
                 -- data
                 i_tdc_hits_av   => i_ext_tdc_hits_av,
                 o_tdc_hits_av   => o_ext_tdc_hits_av,
