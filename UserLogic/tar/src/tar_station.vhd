@@ -43,13 +43,14 @@ entity tar_station is
     g_STATION :   integer := 0
   );
   port (
-    clk              : in std_logic;
-    rst              : in std_logic;
-    glob_en          : in std_logic;
+    clk               : in std_logic;
+    rst               : in std_logic;
+    glob_en           : in std_logic;
     -- ctrl/mon
-    ctrl_v              : in  std_logic_vector;--TAR_PL_MEM_PL_MEM_CTRL_t;
-    mon_v               : out std_logic_vector;--TAR_PL_MEM_PL_MEM_MON_t;
-
+    ctrl_v            : in  std_logic_vector;--TAR_PL_MEM_PL_MEM_CTRL_t;
+    mon_v             : out std_logic_vector;--TAR_PL_MEM_PL_MEM_MON_t;
+    -- supervisor
+    i_freeze          : in std_logic :=  '0';
     -- data
     i_tdc_hits_av    : in  mdt_polmux_bus_avt (g_ARRAY_LEN -1 downto 0);
     o_tdc_hits_av    : out mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
@@ -75,7 +76,7 @@ architecture beh of tar_station is
   signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
   signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
 
-  signal i_freeze : std_logic :=  '0';
+  -- signal i_freeze : std_logic :=  '0';
 
   -- signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
   -- signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
@@ -107,6 +108,7 @@ begin
         g_MEMORY_STRUCTURE  => "SDP",
         g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
         g_PIPELINE_WIDTH    => i_tdc_hits_av(b_i)'length, -- necesario?
+        g_PARALLEL_MEM      => 1,
         -- BU bus
         g_APBUS_ENABLED    => '1',
         g_XML_NODE_NAME    => "MEM_INT_12A42D",

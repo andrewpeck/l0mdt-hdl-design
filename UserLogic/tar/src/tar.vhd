@@ -163,6 +163,8 @@ begin
           -- ctrl/mon
           ctrl_v          => ctrl_pl_inn_v,
           mon_v           => mon_pl_inn_v,
+          -- supervisor
+          i_freeze        => int_freeze,
           -- data
           i_tdc_hits_av   => i_inn_tdc_hits_av,
           o_tdc_hits_av   => o_inn_tdc_hits_av,
@@ -184,6 +186,8 @@ begin
             -- ctrl/mon
             ctrl_v            => ctrl_pl_mid_v,
             mon_v             => mon_pl_mid_v,
+            -- supervisor
+            i_freeze        => int_freeze,
             -- data
             i_tdc_hits_av   => i_mid_tdc_hits_av,
             o_tdc_hits_av   => o_mid_tdc_hits_av,
@@ -204,6 +208,8 @@ begin
               -- ctrl/mon
               ctrl_v            => ctrl_pl_out_v,
               mon_v             => mon_pl_out_v,
+              -- supervisor
+              i_freeze        => int_freeze,
               -- data
               i_tdc_hits_av   => i_out_tdc_hits_av,
               o_tdc_hits_av   => o_out_tdc_hits_av,
