@@ -27,21 +27,27 @@
   } TAR_STATUS_MON_t;
 
   typedef struct packed {
+    logic  ENABLED;
+    logic  READY;
+    logic  ERROR;
+  } TAR_PL_ST_PL_ST_STATUS_MON_t;
+
+  typedef struct packed {
     logic [32-1:0] wr_data_0;
     logic [10-1:0] wr_data_1;
-  } TAR_PL_STATION_PL_INN_PL_MEM_wr_data_CTRL_t;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t;
 
   typedef struct packed {
     logic [32-1:0] rd_data_0;
     logic [10-1:0] rd_data_1;
-  } TAR_PL_STATION_PL_INN_PL_MEM_rd_data_MON_t;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t;
 
   typedef struct packed {
     logic  rd_rdy;
-    TAR_PL_STATION_PL_INN_PL_MEM_rd_data_MON_t   rd_data;
-  } TAR_PL_STATION_PL_INN_PL_MEM_MON_t;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t   rd_data;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t;
 
-  typedef TAR_PL_STATION_PL_INN_PL_MEM_MON_t  [6-1:0] TAR_PL_STATION_PL_INN_PL_MEM_MON_t_ARRAY;
+  typedef TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t  [6-1:0] TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY;
 
   typedef struct packed {
     logic  wr_req;
@@ -51,116 +57,49 @@
     logic  flush_req;
     logic [12-1:0] wr_addr;
     logic [12-1:0] rd_addr;
-    TAR_PL_STATION_PL_INN_PL_MEM_wr_data_CTRL_t   wr_data;
-  } TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t   wr_data;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
 
-  typedef TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t  [6-1:0] TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t_ARRAY;
-
-  typedef struct packed {
-    TAR_PL_STATION_PL_INN_PL_MEM_MON_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_INN_MON_t;
+  typedef TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t  [6-1:0] TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY;
 
   typedef struct packed {
-    TAR_PL_STATION_PL_INN_PL_MEM_CTRL_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_INN_CTRL_t;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY   PL_MEM;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t;
 
   typedef struct packed {
-    logic [32-1:0] wr_data_0;
-    logic [10-1:0] wr_data_1;
-  } TAR_PL_STATION_PL_MID_PL_MEM_wr_data_CTRL_t;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY   PL_MEM;
+  } TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t;
 
   typedef struct packed {
-    logic [32-1:0] rd_data_0;
-    logic [10-1:0] rd_data_1;
-  } TAR_PL_STATION_PL_MID_PL_MEM_rd_data_MON_t;
+    TAR_PL_ST_PL_ST_STATUS_MON_t   STATUS;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t   PL_CHAMBER;
+  } TAR_PL_ST_PL_ST_MON_t;
+
+  typedef TAR_PL_ST_PL_ST_MON_t  [4-1:0] TAR_PL_ST_PL_ST_MON_t_ARRAY;
 
   typedef struct packed {
-    logic  rd_rdy;
-    TAR_PL_STATION_PL_MID_PL_MEM_rd_data_MON_t   rd_data;
-  } TAR_PL_STATION_PL_MID_PL_MEM_MON_t;
+    TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t   PL_CHAMBER;
+  } TAR_PL_ST_PL_ST_CTRL_t;
 
-  typedef TAR_PL_STATION_PL_MID_PL_MEM_MON_t  [6-1:0] TAR_PL_STATION_PL_MID_PL_MEM_MON_t_ARRAY;
-
-  typedef struct packed {
-    logic  wr_req;
-    logic  wr_ack;
-    logic  rd_req;
-    logic  rd_ack;
-    logic  flush_req;
-    logic [12-1:0] wr_addr;
-    logic [12-1:0] rd_addr;
-    TAR_PL_STATION_PL_MID_PL_MEM_wr_data_CTRL_t   wr_data;
-  } TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t;
-
-  typedef TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t  [6-1:0] TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t_ARRAY;
+  typedef TAR_PL_ST_PL_ST_CTRL_t  [4-1:0] TAR_PL_ST_PL_ST_CTRL_t_ARRAY;
 
   typedef struct packed {
-    TAR_PL_STATION_PL_MID_PL_MEM_MON_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_MID_MON_t;
+    TAR_PL_ST_PL_ST_MON_t_ARRAY   PL_ST;
+  } TAR_PL_ST_MON_t;
 
   typedef struct packed {
-    TAR_PL_STATION_PL_MID_PL_MEM_CTRL_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_MID_CTRL_t;
-
-  typedef struct packed {
-    logic [32-1:0] wr_data_0;
-    logic [10-1:0] wr_data_1;
-  } TAR_PL_STATION_PL_OUT_PL_MEM_wr_data_CTRL_t;
-
-  typedef struct packed {
-    logic [32-1:0] rd_data_0;
-    logic [10-1:0] rd_data_1;
-  } TAR_PL_STATION_PL_OUT_PL_MEM_rd_data_MON_t;
-
-  typedef struct packed {
-    logic  rd_rdy;
-    TAR_PL_STATION_PL_OUT_PL_MEM_rd_data_MON_t   rd_data;
-  } TAR_PL_STATION_PL_OUT_PL_MEM_MON_t;
-
-  typedef TAR_PL_STATION_PL_OUT_PL_MEM_MON_t  [6-1:0] TAR_PL_STATION_PL_OUT_PL_MEM_MON_t_ARRAY;
-
-  typedef struct packed {
-    logic  wr_req;
-    logic  wr_ack;
-    logic  rd_req;
-    logic  rd_ack;
-    logic  flush_req;
-    logic [12-1:0] wr_addr;
-    logic [12-1:0] rd_addr;
-    TAR_PL_STATION_PL_OUT_PL_MEM_wr_data_CTRL_t   wr_data;
-  } TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t;
-
-  typedef TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t  [6-1:0] TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t_ARRAY;
-
-  typedef struct packed {
-    TAR_PL_STATION_PL_OUT_PL_MEM_MON_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_OUT_MON_t;
-
-  typedef struct packed {
-    TAR_PL_STATION_PL_OUT_PL_MEM_CTRL_t_ARRAY   PL_MEM;
-  } TAR_PL_STATION_PL_OUT_CTRL_t;
-
-  typedef struct packed {
-    TAR_PL_STATION_PL_INN_MON_t   PL_INN;
-    TAR_PL_STATION_PL_MID_MON_t   PL_MID;
-    TAR_PL_STATION_PL_OUT_MON_t   PL_OUT;
-  } TAR_PL_STATION_MON_t;
-
-  typedef struct packed {
-    TAR_PL_STATION_PL_INN_CTRL_t   PL_INN;
-    TAR_PL_STATION_PL_MID_CTRL_t   PL_MID;
-    TAR_PL_STATION_PL_OUT_CTRL_t   PL_OUT;
-  } TAR_PL_STATION_CTRL_t;
+    TAR_PL_ST_PL_ST_CTRL_t_ARRAY   PL_ST;
+  } TAR_PL_ST_CTRL_t;
 
   typedef struct packed {
     TAR_STATUS_MON_t   STATUS;
-    TAR_PL_STATION_MON_t   PL_STATION;
+    TAR_PL_ST_MON_t   PL_ST;
   } TAR_MON_t;
 
   typedef struct packed {
     TAR_ACTIONS_CTRL_t   ACTIONS;
     TAR_CONFIGS_CTRL_t   CONFIGS;
-    TAR_PL_STATION_CTRL_t   PL_STATION;
+    TAR_PL_ST_CTRL_t   PL_ST;
   } TAR_CTRL_t;
 
 

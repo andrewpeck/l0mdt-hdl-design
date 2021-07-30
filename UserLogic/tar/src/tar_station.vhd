@@ -47,8 +47,8 @@ entity tar_station is
     rst              : in std_logic;
     glob_en          : in std_logic;
     -- ctrl/mon
-    ctrl                : in  TAR_PL_MEM_PL_MEM_CTRL_t;
-    mon                 : out TAR_PL_MEM_PL_MEM_MON_t;
+    ctrl_v              : in  std_logic_vector;--TAR_PL_MEM_PL_MEM_CTRL_t;
+    mon_v               : out std_logic_vector;--TAR_PL_MEM_PL_MEM_MON_t;
 
     -- data
     i_tdc_hits_av    : in  mdt_polmux_bus_avt (g_ARRAY_LEN -1 downto 0);
@@ -60,24 +60,41 @@ end entity tar_station;
 
 architecture beh of tar_station is
 
+  signal ctrl_r : TAR_PL_ST_PL_ST_CTRL_t;
+  signal mon_r  : TAR_PL_ST_PL_ST_MON_t;
+
+  signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
+  signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
+
+  type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(len(ctrl_apb_mem_r)-1  downto 0);
+  type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(len(mon_apb_mem_r)-1  downto 0);
+
+  signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
+  signal mon_apb_mem_av  : mon_apb_mem_avt; 
+
   signal i_tdc_hits_ar : mdt_polmux_bus_at(g_ARRAY_LEN -1 downto 0);
   signal int_tdc_hits_av : mdt_polmux_bus_avt(g_ARRAY_LEN -1 downto 0);
 
-  signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
-  signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
+  signal i_freeze : std_logic :=  '0';
 
-  signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
-  signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
+  -- signal apb_ctr_v : std_logic_vector(len(ctrl) - 1 downto 0);
+  -- signal apb_mon_v : std_logic_vector(len(mon) - 1 downto 0);
 
+  -- signal apb_ctrl_mem_v : std_logic_vector(len(ctrl) - 1 downto 0); 
+  -- signal apb_mon_mem_v  : std_logic_vector(len(mon) - 1 downto 0);
   
 begin
 
-  apb_ctrl_mem_v <= vectorify(ctrl,apb_ctrl_mem_v);
-  mon <= structify(apb_mon_mem_v,mon);
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
 
   i_tdc_hits_ar <= structify(i_tdc_hits_av);
   
   PL_ARRAY : for b_i in g_ARRAY_LEN -1 downto 0 generate
+
+    ctrl_apb_mem_av(b_i) <= convert(ctrl_r.PL_CHAMBER.PL_MEM(b_i),ctrl_apb_mem_av(b_i));
+    mon_r.PL_CHAMBER.PL_MEM(b_i) <= convert(mon_apb_mem_av(b_i),mon_r.PL_CHAMBER.PL_MEM(b_i));
+
     POLMUX_EN : if c_HP_SECTOR_STATION(0)(b_i) = '1' generate
 
       VAMC_PL : entity vamc_lib.vamc_top
@@ -91,10 +108,10 @@ begin
         g_DELAY_CYCLES      => TDC_PL_A_LATENCY,
         g_PIPELINE_WIDTH    => i_tdc_hits_av(b_i)'length, -- necesario?
         -- BU bus
-        g_APBUS_ENABLED    => '1'
+        g_APBUS_ENABLED    => '1',
         g_XML_NODE_NAME    => "MEM_INT_12A42D",
-        g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
-        g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
+        g_APBUS_CTRL_WIDTH => ctrl_apb_mem_av(b_i)'length,--integer(len(ctrl)),
+        g_APBUS_MON_WIDTH  => mon_apb_mem_av(b_i)'length --integer(len(mon))
       ) 
       port map(
         clk         => clk,
@@ -102,8 +119,8 @@ begin
         ena         => glob_en,
         --
         -- Ctrl/Mon 
-        ctrl  => apb_ctrl_mem_v,
-        mon   => apb_mon_mem_v,
+        ctrl        => ctrl_apb_mem_av(b_i),
+        mon         => mon_apb_mem_av(b_i),
         i_freeze    => i_freeze,
         --
         i_data      => i_tdc_hits_av(b_i),
