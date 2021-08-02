@@ -501,7 +501,7 @@ begin
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_interface_inst : entity ctrl_lib.HAL_CORE_interface
+  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => std_logic1,
@@ -516,7 +516,7 @@ begin
       ctrl => hal_core_ctrl_reg
       );
 
-  hal_interface_inst : entity ctrl_lib.HAL_interface
+  hal_map_inst : entity ctrl_lib.HAL_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -531,7 +531,7 @@ begin
       ctrl => hal_ctrl_reg
       );
 
-  h2s_interface_inst : entity ctrl_lib.H2S_interface
+  h2s_map_inst : entity ctrl_lib.H2S_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -546,7 +546,7 @@ begin
       ctrl => h2s_ctrl_reg
       );
 
-  tar_interface_inst : entity ctrl_lib.TAR_interface
+  tar_map_inst : entity ctrl_lib.TAR_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -561,7 +561,7 @@ begin
       ctrl => tar_ctrl_reg
       );
 
-  mtc_interface_inst : entity ctrl_lib.MTC_interface
+  mtc_map_inst : entity ctrl_lib.MTC_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -576,7 +576,7 @@ begin
       ctrl => mtc_ctrl_reg
       );
 
-  ucm_interface_inst : entity ctrl_lib.UCM_interface
+  ucm_map_inst : entity ctrl_lib.UCM_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -591,7 +591,7 @@ begin
       ctrl => ucm_ctrl_reg
       );
 
-  daq_interface_inst : entity ctrl_lib.DAQ_interface
+  daq_map_inst : entity ctrl_lib.DAQ_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -606,7 +606,7 @@ begin
       ctrl => daq_ctrl_reg
       );
 
-  tf_interface_inst : entity ctrl_lib.TF_interface
+  tf_map_inst : entity ctrl_lib.TF_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -621,7 +621,7 @@ begin
       ctrl => tf_ctrl_reg
       );
 
-  mpl_interface_inst : entity ctrl_lib.MPL_interface
+  mpl_map_inst : entity ctrl_lib.MPL_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -636,7 +636,7 @@ begin
       ctrl => mpl_ctrl_reg
       );
 
-  fw_info_interface_inst : entity ctrl_lib.fw_info_interface
+  fw_info_map_inst : entity ctrl_lib.fw_info_map
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => '1',
