@@ -19,7 +19,6 @@ use ctrl_lib.MPL_CTRL.all;
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
-use ctrl_lib.spies_pkg.all;
 
 entity top_control is
   port (
@@ -70,10 +69,6 @@ entity top_control is
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
     fw_info_mon : in FW_INFO_MON_t;
-
-    -- spybuffers
-    user_spy_mon  : in  spy_mon_t;
-    user_spy_ctrl : out spy_ctrl_t;
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -480,21 +475,6 @@ begin
       mpl_spy_port_addr => axi_spy_ctrl.mpl_spy.bram.addr,  -- out
       mpl_spy_port_dout => axi_spy_mon.mpl_spy.dout         -- in
 
-      );
-
-  --------------------------------------------------------------------------------
-  -- Spybuffer Controller
-  --------------------------------------------------------------------------------
-
-  spybuffer_controller : entity work.spybuffer_controller
-    port map (
-      clock         => clk40,
-      freeze        => '0',
-      playback_mode => "00",
-      axi_spy_ctrl  => axi_spy_ctrl,
-      axi_spy_mon   => axi_spy_mon,
-      user_spy_ctrl => user_spy_ctrl,
-      user_spy_mon  => user_spy_mon
       );
 
   --------------------------------------------------------------------------------

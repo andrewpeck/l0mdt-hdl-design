@@ -4,8 +4,6 @@ HAL/ctrl/src/axi-vhdl-package/*.vhd
 #HAL/ctrl/src/axi/axi_bram_controller.vhd
 #HAL/ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
 
-HAL/ctrl/src/spies_pkg.vhd
-
 HAL/ctrl/src/*/*_PKG.vhd
 HAL/ctrl/src/*/*_map.vhd
 

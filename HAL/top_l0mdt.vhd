@@ -12,7 +12,6 @@ use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.spies_pkg.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
@@ -181,11 +180,6 @@ architecture structural of top_l0mdt is
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
-
-  -- spybuffers
-
-  signal user_spy_mon  : spy_mon_t;
-  signal user_spy_ctrl : spy_ctrl_t;
 
 begin
 
@@ -357,11 +351,6 @@ begin
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
       fw_info_mon => fw_info_mon,
-
-      -- spybuffers
-
-      user_spy_ctrl => user_spy_ctrl,
-      user_spy_mon  => user_spy_mon,
 
       -- axi common
       clk320                  => clk320,
