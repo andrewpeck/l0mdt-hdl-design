@@ -39,9 +39,9 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
 #     before_script:
 #       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
 
-CHK:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
-  extends: .sim_check
-  variables:
-    extends: .vars
-    PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
-  needs: ["SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi","RIV:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi"]
+# CHK:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
+#   extends: .sim_check
+#   variables:
+#     extends: .vars
+#     PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
+#   needs: ["SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi","RIV:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi"]

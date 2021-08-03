@@ -51,9 +51,9 @@ SIM:ull_vu13_b3a_ucm_mpl_hps:
 #     before_script:
 #       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
       
-CHK:ull_vu13_b3a_ucm_mpl_hps:
-  extends: .sim_check
-  variables:
-    extends: .vars
-    PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
-  needs: ["SIM:ull_vu13_b3a_ucm_mpl_hps","RIV:ull_vu13_b3a_ucm_mpl_hps"]
+# CHK:ull_vu13_b3a_ucm_mpl_hps:
+#   extends: .sim_check
+#   variables:
+#     extends: .vars
+#     PROJECT_NAME: ull_vu13_b3a_ucm_mpl_hps
+#   needs: ["SIM:ull_vu13_b3a_ucm_mpl_hps","RIV:ull_vu13_b3a_ucm_mpl_hps"]
