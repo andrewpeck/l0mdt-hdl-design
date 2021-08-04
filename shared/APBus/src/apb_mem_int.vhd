@@ -209,7 +209,7 @@ begin
    
   end generate MEM_INT_12A148D;
 
-  MEM_INT_12A148D: if g_XML_NODE_NAME = "MEM_INT_12A42D" generate
+  MEM_INT_12A42D: if g_XML_NODE_NAME = "MEM_INT_12A42D" generate
     signal ctrl_r   : MEM_INT_12A42D_CTRL_t;
     signal mon_r    : MEM_INT_12A42D_MON_t;
   begin
