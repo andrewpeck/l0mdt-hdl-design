@@ -1,6 +1,12 @@
 # -*- mode: TCL;-*-
 HAL/ctrl/src/axi/types.vhd
-HAL/ctrl/src/axi-vhdl-package/*.vhd
+
+HAL/ctrl/src/axi-vhdl-package/axiRegBlocking.vhd
+HAL/ctrl/src/axi-vhdl-package/axiRegMaster.vhd
+HAL/ctrl/src/axi-vhdl-package/axiRegPkg.vhd
+HAL/ctrl/src/axi-vhdl-package/axiReg.vhd
+HAL/ctrl/src/axi-vhdl-package/axiRegWidthPkg_32.vhd
+
 #HAL/ctrl/src/axi/axi_bram_controller.vhd
 #HAL/ctrl/src/axi/axi_bram_ctrl_v4_1_rfs.vhd
 

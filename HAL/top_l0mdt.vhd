@@ -312,9 +312,6 @@ begin
   daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
   daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
 
-  user_spy_mon.mpl_spy.dout <= (others => '0');
-  user_spy_mon.tar_spy.dout <= (others => '0');
-
   top_control_inst : entity work.top_control
     port map (
 
