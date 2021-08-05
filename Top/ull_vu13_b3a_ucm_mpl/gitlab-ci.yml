@@ -28,21 +28,21 @@ SIM:ull_vu13_b3a_ucm_mpl:
 #       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
 
 
-RIV:ull_vu13_b3a_ucm_mpl:
-    extends: .riviera_sim
-    variables:
-      extends: .riviera_vars
-      PROJECT_NAME: ull_vu13_b3a_ucm_mpl
-      HOG_CHECK_PROJVER: 0
-      # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
-      HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
-    before_script:
-      - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
+# RIV:ull_vu13_b3a_ucm_mpl:
+#     extends: .riviera_sim
+#     variables:
+#       extends: .riviera_vars
+#       PROJECT_NAME: ull_vu13_b3a_ucm_mpl
+#       HOG_CHECK_PROJVER: 0
+#       # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
+#       HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
+#     before_script:
+#       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
 
 
-CHK:ull_vu13_b3a_ucm_mpl:
-  extends: .sim_check
-  variables:
-    extends: .vars
-    PROJECT_NAME: ull_vu13_b3a_ucm_mpl
-  needs: ["SIM:ull_vu13_b3a_ucm_mpl","RIV:ull_vu13_b3a_ucm_mpl"]
+# CHK:ull_vu13_b3a_ucm_mpl:
+#   extends: .sim_check
+#   variables:
+#     extends: .vars
+#     PROJECT_NAME: ull_vu13_b3a_ucm_mpl
+#   needs: ["SIM:ull_vu13_b3a_ucm_mpl","RIV:ull_vu13_b3a_ucm_mpl"]
