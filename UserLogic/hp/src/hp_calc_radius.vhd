@@ -37,6 +37,9 @@ entity hp_calc_radius is
     rst            : in std_logic;
     glob_en             : in std_logic;
 
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
+
     i_SLc_BCID          : in unsigned(BCID_LEN-1 downto 0);
     i_mdt_time_t0       : in unsigned(MDT_TIME_LEN -1 downto 0);
     i_data_valid         : in std_logic;

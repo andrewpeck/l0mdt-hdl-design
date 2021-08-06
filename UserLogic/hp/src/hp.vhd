@@ -38,6 +38,9 @@ entity hit_processor is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
+    --
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
     -- configuration
     local_rst           : in std_logic;
     local_en            : in std_logic;

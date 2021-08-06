@@ -34,6 +34,9 @@ entity hp_paramCalc is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
     -- SLc
     -- i_SLC_RoI_org       : in unsigned(MDT_TUBE_LEN-1 downto 0);
     i_SLc_data_v        : in std_logic_vector(HP_HEG2HP_SLC_LEN-1 downto 0);
