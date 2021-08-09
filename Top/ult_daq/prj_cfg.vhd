@@ -57,11 +57,11 @@ package body prj_cfg is
     proj_cfg.ENABLE_TAR := '1';
     proj_cfg.ENABLE_DAQ := '1';
     proj_cfg.ENABLE_ST_INN := '1';
-    proj_cfg.NUM_MDT_CH_INN := 6;
+    -- proj_cfg.NUM_MDT_CH_INN := 6;
     proj_cfg.ENABLE_ST_MID := '0';    
     proj_cfg.ENABLE_ST_OUT := '0';    
     proj_cfg.ENABLE_ST_EXT := '1';    
-    proj_cfg.NUM_MDT_CH_EXT := 4;
+    -- proj_cfg.NUM_MDT_CH_EXT := 4;
  
     return proj_cfg;
   end function set_project_cfg;

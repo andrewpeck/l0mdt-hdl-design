@@ -19,8 +19,6 @@ use ctrl_lib.MPL_CTRL.all;
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
-use ctrl_lib.spies_pkg.all;
-use ctrl_lib.c2cslave_pkg.all;
 
 entity top_control is
   port (
@@ -71,10 +69,6 @@ entity top_control is
     hal_core_ctrl : out HAL_CORE_CTRL_t;
 
     fw_info_mon : in FW_INFO_MON_t;
-
-    -- spybuffers
-    user_spy_mon  : in  spy_mon_t;
-    user_spy_ctrl : out spy_ctrl_t;
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -144,9 +138,6 @@ architecture control_arch of top_control is
   signal mpl_writemosi : axiwritemosi;
   signal mpl_writemiso : axiwritemiso;
 
-  signal axi_spy_ctrl : spy_ctrl_t;
-  signal axi_spy_mon  : spy_mon_t;
-
   signal h2s_ctrl_reg      : H2S_CTRL_t;
   signal tar_ctrl_reg      : TAR_CTRL_t;
   signal mtc_ctrl_reg      : MTC_CTRL_t;
@@ -166,6 +157,227 @@ architecture control_arch of top_control is
   signal mpl_mon_reg      : MPL_MON_t;
   signal hal_mon_reg      : HAL_MON_t;
   signal hal_core_mon_reg : HAL_CORE_MON_t;
+
+  component c2cSlave is
+    port (
+      clk50mhz                              : in  std_logic;
+      reset_n                               : in  std_logic;
+      axi_clk                               : in  std_logic;
+      axi_rst_n                             : out std_logic;
+      k_c2clink_aurora_do_cc                : out std_logic;
+      k_c2clink_axi_c2c_config_error_out    : out std_logic;
+      k_c2clink_axi_c2c_link_status_out     : out std_logic;
+      k_c2clink_axi_c2c_multi_bit_error_out : out std_logic;
+      k_c2clink_phy_power_down              : in  std_logic;
+      k_c2clink_phy_gt_pll_lock             : out std_logic;
+      k_c2clink_phy_hard_err                : out std_logic;
+      k_c2clink_phy_soft_err                : out std_logic;
+      k_c2clink_phy_lane_up                 : out std_logic;
+      k_c2clink_phy_mmcm_not_locked_out     : out std_logic;
+      k_c2clink_phy_link_reset_out          : out std_logic;
+      kintex_sys_mgmt_alarm                 : out std_logic;
+      kintex_sys_mgmt_vccint_alarm          : out std_logic;
+      kintex_sys_mgmt_vccaux_alarm          : out std_logic;
+      kintex_sys_mgmt_overtemp_alarm        : out std_logic;
+      clk40                                 : in  std_logic;
+      tf_awaddr                             : out std_logic_vector (31 downto 0);
+      tf_awprot                             : out std_logic_vector (2 downto 0);
+      tf_awvalid                            : out std_logic;
+      tf_awready                            : in  std_logic;
+      tf_wdata                              : out std_logic_vector (31 downto 0);
+      tf_wstrb                              : out std_logic_vector (3 downto 0);
+      tf_wvalid                             : out std_logic;
+      tf_wready                             : in  std_logic;
+      tf_bresp                              : in  std_logic_vector (1 downto 0);
+      tf_bvalid                             : in  std_logic;
+      tf_bready                             : out std_logic;
+      tf_araddr                             : out std_logic_vector (31 downto 0);
+      tf_arprot                             : out std_logic_vector (2 downto 0);
+      tf_arvalid                            : out std_logic;
+      tf_arready                            : in  std_logic;
+      tf_rdata                              : in  std_logic_vector (31 downto 0);
+      tf_rresp                              : in  std_logic_vector (1 downto 0);
+      tf_rvalid                             : in  std_logic;
+      tf_rready                             : out std_logic;
+      fw_info_awaddr                        : out std_logic_vector (31 downto 0);
+      fw_info_awprot                        : out std_logic_vector (2 downto 0);
+      fw_info_awvalid                       : out std_logic;
+      fw_info_awready                       : in  std_logic;
+      fw_info_wdata                         : out std_logic_vector (31 downto 0);
+      fw_info_wstrb                         : out std_logic_vector (3 downto 0);
+      fw_info_wvalid                        : out std_logic;
+      fw_info_wready                        : in  std_logic;
+      fw_info_bresp                         : in  std_logic_vector (1 downto 0);
+      fw_info_bvalid                        : in  std_logic;
+      fw_info_bready                        : out std_logic;
+      fw_info_araddr                        : out std_logic_vector (31 downto 0);
+      fw_info_arprot                        : out std_logic_vector (2 downto 0);
+      fw_info_arvalid                       : out std_logic;
+      fw_info_arready                       : in  std_logic;
+      fw_info_rdata                         : in  std_logic_vector (31 downto 0);
+      fw_info_rresp                         : in  std_logic_vector (1 downto 0);
+      fw_info_rvalid                        : in  std_logic;
+      fw_info_rready                        : out std_logic;
+      hal_awaddr                            : out std_logic_vector (31 downto 0);
+      hal_awprot                            : out std_logic_vector (2 downto 0);
+      hal_awvalid                           : out std_logic;
+      hal_awready                           : in  std_logic;
+      hal_wdata                             : out std_logic_vector (31 downto 0);
+      hal_wstrb                             : out std_logic_vector (3 downto 0);
+      hal_wvalid                            : out std_logic;
+      hal_wready                            : in  std_logic;
+      hal_bresp                             : in  std_logic_vector (1 downto 0);
+      hal_bvalid                            : in  std_logic;
+      hal_bready                            : out std_logic;
+      hal_araddr                            : out std_logic_vector (31 downto 0);
+      hal_arprot                            : out std_logic_vector (2 downto 0);
+      hal_arvalid                           : out std_logic;
+      hal_arready                           : in  std_logic;
+      hal_rdata                             : in  std_logic_vector (31 downto 0);
+      hal_rresp                             : in  std_logic_vector (1 downto 0);
+      hal_rvalid                            : in  std_logic;
+      hal_rready                            : out std_logic;
+      h2s_awaddr                            : out std_logic_vector (31 downto 0);
+      h2s_awprot                            : out std_logic_vector (2 downto 0);
+      h2s_awvalid                           : out std_logic;
+      h2s_awready                           : in  std_logic;
+      h2s_wdata                             : out std_logic_vector (31 downto 0);
+      h2s_wstrb                             : out std_logic_vector (3 downto 0);
+      h2s_wvalid                            : out std_logic;
+      h2s_wready                            : in  std_logic;
+      h2s_bresp                             : in  std_logic_vector (1 downto 0);
+      h2s_bvalid                            : in  std_logic;
+      h2s_bready                            : out std_logic;
+      h2s_araddr                            : out std_logic_vector (31 downto 0);
+      h2s_arprot                            : out std_logic_vector (2 downto 0);
+      h2s_arvalid                           : out std_logic;
+      h2s_arready                           : in  std_logic;
+      h2s_rdata                             : in  std_logic_vector (31 downto 0);
+      h2s_rresp                             : in  std_logic_vector (1 downto 0);
+      h2s_rvalid                            : in  std_logic;
+      h2s_rready                            : out std_logic;
+      k_c2clink_phy_rx_rxn                  : in  std_logic;
+      k_c2clink_phy_rx_rxp                  : in  std_logic;
+      k_c2clink_phy_tx_txn                  : out std_logic;
+      k_c2clink_phy_tx_txp                  : out std_logic;
+      k_c2clink_phy_refclk_clk_n            : in  std_logic;
+      k_c2clink_phy_refclk_clk_p            : in  std_logic;
+      hal_core_awaddr                       : out std_logic_vector (31 downto 0);
+      hal_core_awprot                       : out std_logic_vector (2 downto 0);
+      hal_core_awvalid                      : out std_logic;
+      hal_core_awready                      : in  std_logic;
+      hal_core_wdata                        : out std_logic_vector (31 downto 0);
+      hal_core_wstrb                        : out std_logic_vector (3 downto 0);
+      hal_core_wvalid                       : out std_logic;
+      hal_core_wready                       : in  std_logic;
+      hal_core_bresp                        : in  std_logic_vector (1 downto 0);
+      hal_core_bvalid                       : in  std_logic;
+      hal_core_bready                       : out std_logic;
+      hal_core_araddr                       : out std_logic_vector (31 downto 0);
+      hal_core_arprot                       : out std_logic_vector (2 downto 0);
+      hal_core_arvalid                      : out std_logic;
+      hal_core_arready                      : in  std_logic;
+      hal_core_rdata                        : in  std_logic_vector (31 downto 0);
+      hal_core_rresp                        : in  std_logic_vector (1 downto 0);
+      hal_core_rvalid                       : in  std_logic;
+      hal_core_rready                       : out std_logic;
+      ucm_awaddr                            : out std_logic_vector (31 downto 0);
+      ucm_awprot                            : out std_logic_vector (2 downto 0);
+      ucm_awvalid                           : out std_logic;
+      ucm_awready                           : in  std_logic;
+      ucm_wdata                             : out std_logic_vector (31 downto 0);
+      ucm_wstrb                             : out std_logic_vector (3 downto 0);
+      ucm_wvalid                            : out std_logic;
+      ucm_wready                            : in  std_logic;
+      ucm_bresp                             : in  std_logic_vector (1 downto 0);
+      ucm_bvalid                            : in  std_logic;
+      ucm_bready                            : out std_logic;
+      ucm_araddr                            : out std_logic_vector (31 downto 0);
+      ucm_arprot                            : out std_logic_vector (2 downto 0);
+      ucm_arvalid                           : out std_logic;
+      ucm_arready                           : in  std_logic;
+      ucm_rdata                             : in  std_logic_vector (31 downto 0);
+      ucm_rresp                             : in  std_logic_vector (1 downto 0);
+      ucm_rvalid                            : in  std_logic;
+      ucm_rready                            : out std_logic;
+      mtc_awaddr                            : out std_logic_vector (31 downto 0);
+      mtc_awprot                            : out std_logic_vector (2 downto 0);
+      mtc_awvalid                           : out std_logic;
+      mtc_awready                           : in  std_logic;
+      mtc_wdata                             : out std_logic_vector (31 downto 0);
+      mtc_wstrb                             : out std_logic_vector (3 downto 0);
+      mtc_wvalid                            : out std_logic;
+      mtc_wready                            : in  std_logic;
+      mtc_bresp                             : in  std_logic_vector (1 downto 0);
+      mtc_bvalid                            : in  std_logic;
+      mtc_bready                            : out std_logic;
+      mtc_araddr                            : out std_logic_vector (31 downto 0);
+      mtc_arprot                            : out std_logic_vector (2 downto 0);
+      mtc_arvalid                           : out std_logic;
+      mtc_arready                           : in  std_logic;
+      mtc_rdata                             : in  std_logic_vector (31 downto 0);
+      mtc_rresp                             : in  std_logic_vector (1 downto 0);
+      mtc_rvalid                            : in  std_logic;
+      mtc_rready                            : out std_logic;
+      tar_awaddr                            : out std_logic_vector (31 downto 0);
+      tar_awprot                            : out std_logic_vector (2 downto 0);
+      tar_awvalid                           : out std_logic;
+      tar_awready                           : in  std_logic;
+      tar_wdata                             : out std_logic_vector (31 downto 0);
+      tar_wstrb                             : out std_logic_vector (3 downto 0);
+      tar_wvalid                            : out std_logic;
+      tar_wready                            : in  std_logic;
+      tar_bresp                             : in  std_logic_vector (1 downto 0);
+      tar_bvalid                            : in  std_logic;
+      tar_bready                            : out std_logic;
+      tar_araddr                            : out std_logic_vector (31 downto 0);
+      tar_arprot                            : out std_logic_vector (2 downto 0);
+      tar_arvalid                           : out std_logic;
+      tar_arready                           : in  std_logic;
+      tar_rdata                             : in  std_logic_vector (31 downto 0);
+      tar_rresp                             : in  std_logic_vector (1 downto 0);
+      tar_rvalid                            : in  std_logic;
+      tar_rready                            : out std_logic;
+      mpl_awaddr                            : out std_logic_vector (31 downto 0);
+      mpl_awprot                            : out std_logic_vector (2 downto 0);
+      mpl_awvalid                           : out std_logic;
+      mpl_awready                           : in  std_logic;
+      mpl_wdata                             : out std_logic_vector (31 downto 0);
+      mpl_wstrb                             : out std_logic_vector (3 downto 0);
+      mpl_wvalid                            : out std_logic;
+      mpl_wready                            : in  std_logic;
+      mpl_bresp                             : in  std_logic_vector (1 downto 0);
+      mpl_bvalid                            : in  std_logic;
+      mpl_bready                            : out std_logic;
+      mpl_araddr                            : out std_logic_vector (31 downto 0);
+      mpl_arprot                            : out std_logic_vector (2 downto 0);
+      mpl_arvalid                           : out std_logic;
+      mpl_arready                           : in  std_logic;
+      mpl_rdata                             : in  std_logic_vector (31 downto 0);
+      mpl_rresp                             : in  std_logic_vector (1 downto 0);
+      mpl_rvalid                            : in  std_logic;
+      mpl_rready                            : out std_logic;
+      daq_awaddr                            : out std_logic_vector (31 downto 0);
+      daq_awprot                            : out std_logic_vector (2 downto 0);
+      daq_awvalid                           : out std_logic;
+      daq_awready                           : in  std_logic;
+      daq_wdata                             : out std_logic_vector (31 downto 0);
+      daq_wstrb                             : out std_logic_vector (3 downto 0);
+      daq_wvalid                            : out std_logic;
+      daq_wready                            : in  std_logic;
+      daq_bresp                             : in  std_logic_vector (1 downto 0);
+      daq_bvalid                            : in  std_logic;
+      daq_bready                            : out std_logic;
+      daq_araddr                            : out std_logic_vector (31 downto 0);
+      daq_arprot                            : out std_logic_vector (2 downto 0);
+      daq_arvalid                           : out std_logic;
+      daq_arready                           : in  std_logic;
+      daq_rdata                             : in  std_logic_vector (31 downto 0);
+      daq_rresp                             : in  std_logic_vector (1 downto 0);
+      daq_rvalid                            : in  std_logic;
+      daq_rready                            : out std_logic
+      );
+  end component c2cSlave;
 
 begin
 
@@ -207,13 +419,14 @@ begin
     end if;
   end process;
 
-  c2cslave_wrapper_inst : c2cslave
+  c2cslave_wrapper_inst : c2cSlave
     port map (
 
       -- axi clock and reset
-      axi_clk      => axi_clk,
-      clk40        => clk40,
-      axi_rst_n(0) => axi_reset_n,
+      axi_clk   => axi_clk,
+      clk40     => clk40,
+      --clkpipe      => clkpipe,
+      axi_rst_n => axi_reset_n,
 
       -- system clock and reset
       clk50mhz => clk50mhz,
@@ -224,10 +437,10 @@ begin
       --------------------------------------------------------------------------------
 
       -- physical link
-      k_c2clink_phy_rx_rxn(0)    => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
-      k_c2clink_phy_rx_rxp(0)    => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
-      k_c2clink_phy_tx_txn(0)    => c2c_txn,      -- k_c2clink_phy_tx_txn,
-      k_c2clink_phy_tx_txp(0)    => c2c_txp,      -- k_c2clink_phy_tx_txp,
+      k_c2clink_phy_rx_rxn       => c2c_rxn,      -- k_c2clink_phy_rx_rxn,
+      k_c2clink_phy_rx_rxp       => c2c_rxp,      -- k_c2clink_phy_rx_rxp,
+      k_c2clink_phy_tx_txn       => c2c_txn,      -- k_c2clink_phy_tx_txn,
+      k_c2clink_phy_tx_txp       => c2c_txp,      -- k_c2clink_phy_tx_txp,
       k_c2clink_phy_refclk_clk_n => c2c_refclkn,  -- k_c2clink_phy_refclk_clk_n,
       k_c2clink_phy_refclk_clk_p => c2c_refclkp,  -- k_c2clink_phy_refclk_clk_p,
 
@@ -460,47 +673,15 @@ begin
       --kintex_sys_mgmt_scl            => sys_mgmt_scl,
       --kintex_sys_mgmt_sda            => sys_mgmt_sda,
       kintex_sys_mgmt_vccaux_alarm   => sys_mgmt_vccaux_alarm,
-      kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm,
+      kintex_sys_mgmt_vccint_alarm   => sys_mgmt_vccint_alarm
 
-      -- spy buffers
-      tar_spy_port_a_we   => axi_spy_ctrl.tar_spy.bram_a.we,    -- out
-      tar_spy_port_a_din  => axi_spy_ctrl.tar_spy.bram_a.din,   -- out
-      tar_spy_port_a_en   => axi_spy_ctrl.tar_spy.bram_a.en,    -- out
-      tar_spy_port_a_rst  => axi_spy_ctrl.tar_spy.bram_a.rst,   -- out
-      tar_spy_port_a_clk  => axi_spy_ctrl.tar_spy.bram_a.clk,   -- out
-      tar_spy_port_a_addr => axi_spy_ctrl.tar_spy.bram_a.addr,  -- out
-      tar_spy_port_a_dout => axi_spy_mon.tar_spy.dout_a,        -- in
-
-      mpl_spy_port_a_we   => axi_spy_ctrl.mpl_spy.bram_a.we,    -- out
-      mpl_spy_port_a_din  => axi_spy_ctrl.mpl_spy.bram_a.din,   -- out
-      mpl_spy_port_a_en   => axi_spy_ctrl.mpl_spy.bram_a.en,    -- out
-      mpl_spy_port_a_rst  => axi_spy_ctrl.mpl_spy.bram_a.rst,   -- out
-      mpl_spy_port_a_clk  => axi_spy_ctrl.mpl_spy.bram_a.clk,   -- out
-      mpl_spy_port_a_addr => axi_spy_ctrl.mpl_spy.bram_a.addr,  -- out
-      mpl_spy_port_a_dout => axi_spy_mon.mpl_spy.dout_a         -- in
-
-      );
-
-  --------------------------------------------------------------------------------
-  -- Spybuffer Controller
-  --------------------------------------------------------------------------------
-
-  spybuffer_controller : entity work.spybuffer_controller
-    port map (
-      clock         => clk40,
-      freeze        => '0',
-      playback_mode => "00",
-      axi_spy_ctrl  => axi_spy_ctrl,
-      axi_spy_mon   => axi_spy_mon,
-      user_spy_ctrl => user_spy_ctrl,
-      user_spy_mon  => user_spy_mon
       );
 
   --------------------------------------------------------------------------------
   -- AXI Interfaces
   --------------------------------------------------------------------------------
 
-  hal_core_interface_inst : entity ctrl_lib.HAL_CORE_interface
+  hal_core_map_inst : entity ctrl_lib.HAL_CORE_map
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => std_logic1,
@@ -515,7 +696,7 @@ begin
       ctrl => hal_core_ctrl_reg
       );
 
-  hal_interface_inst : entity ctrl_lib.HAL_interface
+  hal_map_inst : entity ctrl_lib.HAL_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -530,7 +711,7 @@ begin
       ctrl => hal_ctrl_reg
       );
 
-  h2s_interface_inst : entity ctrl_lib.H2S_interface
+  h2s_map_inst : entity ctrl_lib.H2S_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -545,7 +726,7 @@ begin
       ctrl => h2s_ctrl_reg
       );
 
-  tar_interface_inst : entity ctrl_lib.TAR_interface
+  tar_map_inst : entity ctrl_lib.TAR_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -560,7 +741,7 @@ begin
       ctrl => tar_ctrl_reg
       );
 
-  mtc_interface_inst : entity ctrl_lib.MTC_interface
+  mtc_map_inst : entity ctrl_lib.MTC_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -575,7 +756,7 @@ begin
       ctrl => mtc_ctrl_reg
       );
 
-  ucm_interface_inst : entity ctrl_lib.UCM_interface
+  ucm_map_inst : entity ctrl_lib.UCM_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -590,7 +771,7 @@ begin
       ctrl => ucm_ctrl_reg
       );
 
-  daq_interface_inst : entity ctrl_lib.DAQ_interface
+  daq_map_inst : entity ctrl_lib.DAQ_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -605,7 +786,7 @@ begin
       ctrl => daq_ctrl_reg
       );
 
-  tf_interface_inst : entity ctrl_lib.TF_interface
+  tf_map_inst : entity ctrl_lib.TF_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -620,7 +801,7 @@ begin
       ctrl => tf_ctrl_reg
       );
 
-  mpl_interface_inst : entity ctrl_lib.MPL_interface
+  mpl_map_inst : entity ctrl_lib.MPL_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -635,7 +816,7 @@ begin
       ctrl => mpl_ctrl_reg
       );
 
-  fw_info_interface_inst : entity ctrl_lib.fw_info_interface
+  fw_info_map_inst : entity ctrl_lib.fw_info_map
     port map (
       clk_axi         => axi_clk,
       reset_axi_n     => '1',

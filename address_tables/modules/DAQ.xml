@@ -4,3 +4,4 @@
   <node id="STATUS"         address="0x1" mask="0x1" permission="r"/>
   <node id="READY"          address="0x1" mask="0x2" permission="r"/>
 </node>
+

@@ -32,14 +32,16 @@ HDL_Types:
 #  SLC
 # -----------------------------------------------------------
 - hp_heg2hp_slc_b:
-  - z_0         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
-  # - y_0         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - roi_z         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  - roi_x         : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
 
-- HP_HEG2HP_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 19 ]
+- HP_HEG2HP_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 38 ]
 
 - hp_heg2hp_slc:
   - bcid        : [ type: unsigned , length: BCID_LEN]
   - specific    : [type: logic , length: HP_HEG2HP_SPECIFIC_LEN ]
+  # - roi_z    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
+  # - roi_x    : [ type: unsigned , length: MDT_GLOBAL_AXI_LEN ]
   - data_valid  : [ type: logic]
 
 # -----------------------------------------------------------

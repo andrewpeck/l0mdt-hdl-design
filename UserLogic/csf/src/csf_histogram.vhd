@@ -244,11 +244,10 @@ BEGIN
                 ram_type => "distributed"
             )
             PORT MAP(
-                a_clk => clk,
+                clk => clk,
                 a_wr => w_en(k),
                 a_addr => w_addr(k),
                 a_din => w_hit_vec(k),
-                b_clk => clk,
                 b_addr => r_addr(k),
                 b_dout => r_hit_vec(k)
             );

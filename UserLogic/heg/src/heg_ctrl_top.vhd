@@ -31,6 +31,9 @@ use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity heg_ctrl_top is
   generic(
     g_STATION_RADIUS    : integer := 0;  --station
@@ -40,6 +43,9 @@ entity heg_ctrl_top is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic;
+    --
+    ctrl_v            : in std_logic_vector;  
+    mon_v             : out std_logic_vector; 
     -- configuration
     -- SLc in
     i_uCM_data_v        : in ucm2hps_rvt;
@@ -55,6 +61,13 @@ entity heg_ctrl_top is
 end entity heg_ctrl_top;
 
 architecture beh of heg_ctrl_top is
+
+  signal ctrl_r           : H2S_HPS_HEG_HEG_CTRL_CTRL_t;
+  signal mon_r            : H2S_HPS_HEG_HEG_CTRL_MON_t;
+  signal ctrl_roi_tc_r    : H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t;
+  signal  mon_roi_tc_r    : H2S_HPS_HEG_HEG_CTRL_ROI_TC_MON_t;
+  signal ctrl_roi_tc_v    : std_logic_vector(len(ctrl_roi_tc_r)-1 downto 0);
+  signal  mon_roi_tc_v    : std_logic_vector(len(mon_roi_tc_r)-1 downto 0);
 
   -- component ctrl_signals is
   --   generic(
@@ -80,6 +93,7 @@ architecture beh of heg_ctrl_top is
   -- end component ctrl_signals;
 
   signal SLC_Window_v       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal SLC_Window_r       : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal win_row_0          : hp_win_tubes_rt; 
 
   signal uCM_data_r         : ucm2hps_rt;
@@ -88,7 +102,20 @@ architecture beh of heg_ctrl_top is
   signal o_sf_control_r     : heg_ctrl2sf_rt;
   -- signal o_hp_control_r     : heg_ctrl2sf_rt;
 
+  signal roi_global_x        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal roi_global_z        : unsigned(MDT_GLOBAL_AXI_LEN-1 downto 0);
+  signal roi_dv              : std_logic;
+
 begin
+
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
+  
+  ctrl_roi_tc_r <= ctrl_r.ROI_TC;
+  mon_r.ROI_TC <= mon_roi_tc_r;
+  
+  mon_roi_tc_r <= structify(mon_roi_tc_v,mon_roi_tc_r);
+  ctrl_roi_tc_v <= vectorify(ctrl_roi_tc_r,ctrl_roi_tc_v);
 
   o_SLC_Window_v <= SLC_Window_v;
   win_row_0 <= structify(SLC_Window_v(0));
@@ -113,6 +140,29 @@ begin
     o_Roi_win_valid       => Roi_win_valid
   );
 
+  SLC_Window_r <= structify(SLC_Window_v);
+
+  HEG_CTRL_ROI_ORG : entity heg_lib.heg_ctrl_roi_tc
+  generic map(
+    g_STATION_RADIUS => g_STATION_RADIUS
+  )
+  port map(
+    clk                 => clk,
+    rst                 => rst,
+    ena                 => glob_en,
+    --
+    ctrl_v              => ctrl_roi_tc_v,
+    mon_v               =>  mon_roi_tc_v,
+    --
+    -- i_layer             => ,
+    i_tube              => SLC_Window_r(0).lo,
+    i_dv                => Roi_win_valid,
+    --
+    o_global_x          => roi_global_x,
+    o_global_z          => roi_global_z,
+    o_dv                => roi_dv
+  );
+
   HEG_SIGNALS : entity heg_lib.heg_ctrl_sig
   generic map(
     g_STATION_RADIUS => g_STATION_RADIUS,
@@ -127,6 +177,10 @@ begin
     --
     i_Roi_win_origin    => win_row_0.lo,
     i_Roi_win_valid     => Roi_win_valid,
+    --
+    i_roi_global_x      => roi_global_x,
+    i_roi_global_z      => roi_global_z,
+    i_roi_global_dv     => roi_dv,
     -- SLc out
     o_hp_control_r      => o_hp_control_r,
     o_sf_control_r      => o_sf_control_r,

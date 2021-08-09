@@ -25,6 +25,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -63,8 +64,12 @@ end entity hp_matching;
 
 architecture beh of hp_matching is
 
+  constant TIME_LOW_ADJUST : integer := 10;--unsigned(MDT_TIME_LEN-1 downto 0) := to_unsigned(10,MDT_TIME_LEN);
+
   -- signal tube_high_limit, tube_low_limit : unsigned(MDT_TUBE_LEN - 1 downto 0);
   -- signal trLUT_valid : std_logic;
+
+  signal time_lo_aux : integer;
 
   signal time_high_limit, time_low_limit : unsigned(MDT_TIME_LEN-1 downto 0);
 
@@ -80,6 +85,12 @@ begin
       (i_SLc_BCID & "00000") + to_unsigned(HP_BCID_OFFSET_TIME_078res,i_SLc_BCID'length + 5)
     ,time_high_limit'length);
 
+  time_lo_aux <= to_integer(i_SLc_BCID & "00000");
+  -- t_lo: if 0 < time_lo_aux - TIME_LOW_ADJUST generate
+  --   time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
+  -- else generate
+  --   time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
+  -- end generate;
   time_low_limit <= resize(i_SLc_BCID & "00000" ,time_low_limit'length); -- BCID 25ns res to 0.78 ns res
 
   o_hit_valid <= space_valid and time_valid;
@@ -96,6 +107,7 @@ begin
         space_valid <= '0';
         -- time
         time_valid <= '0';
+        o_data_valid <= '0';
       else
 
         if glob_en = '1' then
@@ -110,10 +122,18 @@ begin
               space_valid <= '0';
             end if;
             -- time
-            if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= time_low_limit then
-              time_valid <= '1';
+            if time_lo_aux > TIME_LOW_ADJUST then
+              if i_mdt_time_real <= time_high_limit and to_integer(i_mdt_time_real) >= (time_lo_aux - TIME_LOW_ADJUST) then
+                time_valid <= '1';
+              else
+                time_valid <= '0';
+              end if;
             else
-              time_valid <= '0';
+              if i_mdt_time_real <= time_high_limit and i_mdt_time_real >= 0 then
+                time_valid <= '1';
+              else
+                time_valid <= '0';
+              end if;
             end if;
             --valid
             -- o_data_valid <= trLUT_valid;

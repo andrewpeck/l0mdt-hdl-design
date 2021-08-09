@@ -1,7 +1,6 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-04-01 21:30:40.773734.
 config:
   basic_convert_functions : off
   packages:
@@ -10,12 +9,94 @@ config:
 
 hdl:
 
-- TAR_MON_t:
-  - STATUS : [ type: logic ]
+- TAR_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- TAR_CONFIGS_CTRL_t:
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- TAR_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- TAR_PL_ST_PL_ST_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 32 ]
+  - wr_data_1 : [ type: logic, length: 10 ]
+
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t:
+  - rd_data_0 : [ type: logic, length: 32 ]
+  - rd_data_1 : [ type: logic, length: 10 ]
+
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_rd_data_MON_t ]
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t]
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - wr_addr : [ type: logic, length: 12 ]
+  - rd_addr : [ type: logic, length: 12 ]
+  - wr_data : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t ]
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY: [array: 6, type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t]
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t:
+  - PL_MEM : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t_ARRAY ]
+
+
+- TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t:
+  - PL_MEM : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t_ARRAY ]
+
+
+- TAR_PL_ST_PL_ST_MON_t:
+  - STATUS : [ type: TAR_PL_ST_PL_ST_STATUS_MON_t ]
+  - PL_CHAMBER : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_MON_t ]
+
+- TAR_PL_ST_PL_ST_MON_t_ARRAY: [array: 4, type: TAR_PL_ST_PL_ST_MON_t]
+
+- TAR_PL_ST_PL_ST_CTRL_t:
+  - PL_CHAMBER : [ type: TAR_PL_ST_PL_ST_PL_CHAMBER_CTRL_t ]
+
+- TAR_PL_ST_PL_ST_CTRL_t_ARRAY: [array: 4, type: TAR_PL_ST_PL_ST_CTRL_t]
+
+- TAR_PL_ST_MON_t:
+  - PL_ST : [ type: TAR_PL_ST_PL_ST_MON_t_ARRAY ]
+
+
+- TAR_PL_ST_CTRL_t:
+  - PL_ST : [ type: TAR_PL_ST_PL_ST_CTRL_t_ARRAY ]
+
+
+- TAR_MON_t:
+  - STATUS : [ type: TAR_STATUS_MON_t ]
+  - PL_ST : [ type: TAR_PL_ST_MON_t ]
 
 
 - TAR_CTRL_t:
-  - RESET : [ type: logic ]
+  - ACTIONS : [ type: TAR_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: TAR_CONFIGS_CTRL_t ]
+  - PL_ST : [ type: TAR_PL_ST_CTRL_t ]
 
 

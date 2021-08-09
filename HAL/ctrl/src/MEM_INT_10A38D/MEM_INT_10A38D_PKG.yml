@@ -1,0 +1,37 @@
+# yml2hdl v2
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
+
+hdl:
+
+- MEM_INT_10A38D_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 6 ]
+  - wr_data_1 : [ type: logic, length: 32 ]
+
+
+- MEM_INT_10A38D_rd_data_MON_t:
+  - rd_data_0 : [ type: logic, length: 6 ]
+  - rd_data_1 : [ type: logic, length: 32 ]
+
+
+- MEM_INT_10A38D_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: MEM_INT_10A38D_rd_data_MON_t ]
+
+
+- MEM_INT_10A38D_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data : [ type: MEM_INT_10A38D_wr_data_CTRL_t ]
+
+

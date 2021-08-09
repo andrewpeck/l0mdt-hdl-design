@@ -1,6 +1,9 @@
+source -quiet "$BD_PATH/dtsi_helpers.tcl"
 source -quiet "$BD_PATH/axi_helpers.tcl"
 source -quiet "$BD_PATH/Xilinx_AXI_slaves.tcl"
 
+remove_files -quiet [get_files "c2cSlave.bd"]
+remove_files -quiet [get_files "c2cSlave_wrapper.vhd"]
 
 #create a block design called "c2cSlave"
 #directory and name must be the same

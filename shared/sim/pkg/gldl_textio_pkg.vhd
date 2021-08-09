@@ -249,7 +249,7 @@ package body gldl_l0mdt_textio_pkg is
       slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
       tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
       poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
-      posphi      => to_unsigned(integer(Phi * SLC_COMMON_POSPHI_MULT), SLC_COMMON_POSPHI_LEN) , 
+      posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
       sl_pt       => ( others => '0'),
       sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
       sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 

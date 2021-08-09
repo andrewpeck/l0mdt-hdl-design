@@ -27,6 +27,8 @@ library shared_lib;
 -- use shared_lib.config_pkg.all;
 
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
 
 entity apbus_main_sig is
   port (

@@ -37,4 +37,7 @@ _hdl_checker/
 *.cf
 env/
 .cxl.questasim.*
+.cxl.riviera.*
+library.cfg
 Projects/
+#UserLogic/*/IP/**/*.xci

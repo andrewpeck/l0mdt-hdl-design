@@ -13,12 +13,12 @@ use hal.constants_pkg.all;
 use hal.system_types_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.spies_pkg.all;
 use ctrl_lib.HAL_CORE_CTRL.all;
 use ctrl_lib.HAL_CTRL.all;
 use ctrl_lib.FW_INFO_CTRL.all;
 use ctrl_lib.axiRegPkg.all;
 use ctrl_lib.H2S_CTRL.all;
+use ctrl_lib.H2S_Ctrl_DEF.all;
 use ctrl_lib.TAR_CTRL.all;
 use ctrl_lib.MTC_CTRL.all;
 use ctrl_lib.UCM_CTRL.all;
@@ -101,16 +101,18 @@ architecture structural of top_l0mdt is
   -- hal <--> ult
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_INN -1 downto 0);
-  signal middle_tdc_hits : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_MID -1 downto 0);
-  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_OUT -1 downto 0);
-  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_EN_MDT_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
+  -- ANSWER: because in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
+  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
+  signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
   -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
-  signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
-  signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
-  signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
+  -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
+  -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
+  -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
+  -- signal i_extra_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   signal main_primary_slc   : slc_rx_bus_avt(2 downto 0);  -- is the main SL used
   signal main_secondary_slc : slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
@@ -137,26 +139,38 @@ architecture structural of top_l0mdt is
 
   -- Control and Monitoring Records
 
-  signal h2s_mon  : H2S_MON_t;
-  signal h2s_ctrl : H2S_CTRL_t;
+  signal h2s_mon_r    : H2S_MON_t;
+  signal h2s_ctrl_r   : H2S_CTRL_t;
+  signal tar_ctrl_r   : TAR_CTRL_t;
+  signal tar_mon_r    : TAR_MON_t;
+  signal mtc_ctrl_r   : MTC_CTRL_t;
+  signal mtc_mon_r    : MTC_MON_t;
+  signal ucm_ctrl_r   : UCM_CTRL_t;
+  signal ucm_mon_r    : UCM_MON_t;
+  signal daq_ctrl_r   : DAQ_CTRL_t;
+  signal daq_mon_r    : DAQ_MON_t;
+  signal tf_ctrl_r    : TF_CTRL_t;
+  signal tf_mon_r     : TF_MON_t;
+  signal mpl_mon_r    : MPL_MON_t;
+  signal mpl_ctrl_r   : MPL_CTRL_t;
 
-  signal tar_ctrl : TAR_CTRL_t;
-  signal tar_mon  : TAR_MON_t;
+  signal h2s_ctrl_v   : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
+  signal h2s_mon_v    : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
+  signal tar_ctrl_v   : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
+  signal tar_mon_v    : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
+  signal mtc_ctrl_v   : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
+  signal mtc_mon_v    : std_logic_vector(len(mtc_mon_r  ) -1 downto 0);
+  signal ucm_ctrl_v   : std_logic_vector(len(ucm_ctrl_r ) -1 downto 0);
+  signal ucm_mon_v    : std_logic_vector(len(ucm_mon_r  ) -1 downto 0);
+  signal daq_ctrl_v   : std_logic_vector(len(daq_ctrl_r ) -1 downto 0);
+  signal daq_mon_v    : std_logic_vector(len(daq_mon_r  ) -1 downto 0);
+  signal tf_ctrl_v    : std_logic_vector(len(tf_ctrl_r  ) -1 downto 0);
+  signal tf_mon_v     : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
+  signal mpl_ctrl_v   : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
+  signal mpl_mon_v    : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
 
-  signal mtc_ctrl : MTC_CTRL_t;
-  signal mtc_mon  : MTC_MON_t;
 
-  signal ucm_ctrl : UCM_CTRL_t;
-  signal ucm_mon  : UCM_MON_t;
-
-  signal daq_ctrl : DAQ_CTRL_t;
-  signal daq_mon  : DAQ_MON_t;
-
-  signal tf_ctrl : TF_CTRL_t;
-  signal tf_mon  : TF_MON_t;
-
-  signal mpl_mon  : MPL_MON_t;
-  signal mpl_ctrl : MPL_CTRL_t;
+  --
 
   signal hal_mon  : HAL_MON_t;
   signal hal_ctrl : HAL_CTRL_t;
@@ -170,11 +184,6 @@ architecture structural of top_l0mdt is
 
   signal hal_sump  : std_logic;
   signal user_sump : std_logic;
-
-  -- spybuffers
-
-  signal user_spy_mon  : spy_mon_t;
-  signal user_spy_ctrl : spy_ctrl_t;
 
 begin
 
@@ -244,20 +253,20 @@ begin
       clock_and_control => clock_and_control,
       ttc_commands      => ttc_commands,
 
-      i_inner_tdc_hits  => inner_tdc_hits,
-      i_middle_tdc_hits => middle_tdc_hits,
-      i_outer_tdc_hits  => outer_tdc_hits,
-      i_extra_tdc_hits  => extra_tdc_hits,
+      i_inn_tdc_hits_av => inner_tdc_hits,
+      i_mid_tdc_hits_av => middle_tdc_hits,
+      i_out_tdc_hits_av => outer_tdc_hits,
+      i_ext_tdc_hits_av => extra_tdc_hits,
 
-      i_inner_tar_hits  => i_inner_tar_hits,
-      i_middle_tar_hits => i_middle_tar_hits,
-      i_outer_tar_hits  => i_outer_tar_hits,
-      i_extra_tar_hits  => i_extra_tar_hits,
+      -- i_inner_tar_hits  => i_inner_tar_hits,
+      -- i_middle_tar_hits => i_middle_tar_hits,
+      -- i_outer_tar_hits  => i_outer_tar_hits,
+      -- i_extra_tar_hits  => i_extra_tar_hits,
 
       i_plus_neighbor_segments  => plus_neighbor_segments_i,
       i_minus_neighbor_segments => minus_neighbor_segments_i,
-      o_plus_neighbor_segments  => plus_neighbor_segments_o,
-      o_minus_neighbor_segments => minus_neighbor_segments_o,
+      o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
+      o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
       -- SLC
       i_main_primary_slc   => main_primary_slc,
@@ -272,27 +281,40 @@ begin
 
       -- Control and Monitoring
 
-      h2s_ctrl => h2s_ctrl,
-      h2s_mon  => h2s_mon,
-      tar_ctrl => tar_ctrl,
-      tar_mon  => tar_mon,
-      mtc_ctrl => mtc_ctrl,
-      mtc_mon  => mtc_mon,
-      ucm_ctrl => ucm_ctrl,
-      ucm_mon  => ucm_mon,
-      daq_ctrl => daq_ctrl,
-      daq_mon  => daq_mon,
-      tf_ctrl  => tf_ctrl,
-      tf_mon   => tf_mon,
-      mpl_ctrl => mpl_ctrl,
-      mpl_mon  => mpl_mon,
+      h2s_ctrl_v => h2s_ctrl_v,
+      h2s_mon_v  => h2s_mon_v,
+      tar_ctrl_v => tar_ctrl_v,
+      tar_mon_v  => tar_mon_v,
+      mtc_ctrl_v => mtc_ctrl_v,
+      mtc_mon_v  => mtc_mon_v,
+      ucm_ctrl_v => ucm_ctrl_v,
+      ucm_mon_v  => ucm_mon_v,
+      daq_ctrl_v => daq_ctrl_v,
+      daq_mon_v  => daq_mon_v,
+      tf_ctrl_v  => tf_ctrl_v,
+      tf_mon_v   => tf_mon_v,
+      mpl_ctrl_v => mpl_ctrl_v,
+      mpl_mon_v  => mpl_mon_v,
       --
 
       sump => user_sump
       );
 
-  user_spy_mon.mpl_spy.dout_a <= (others => '0');
-  user_spy_mon.tar_spy.dout_a <= (others => '0');
+  -- ctrl/mon
+  ucm_ctrl_v  <= vectorify(ucm_ctrl_r,ucm_ctrl_v);
+  ucm_mon_r   <= structify(ucm_mon_v,ucm_mon_r);
+  tar_ctrl_v  <= vectorify(tar_ctrl_r,tar_ctrl_v);
+  tar_mon_r   <= structify(tar_mon_v,tar_mon_r);
+  h2s_ctrl_v  <= vectorify(h2s_ctrl_r,h2s_ctrl_v);
+  h2s_mon_r   <= structify(h2s_mon_v,h2s_mon_r);
+  mpl_ctrl_v  <= vectorify(mpl_ctrl_r,mpl_ctrl_v);
+  mpl_mon_r   <= structify(mpl_mon_v,mpl_mon_r);
+  tf_ctrl_v   <= vectorify(tf_ctrl_r,tf_ctrl_v);
+  tf_mon_r    <= structify(tf_mon_v,tf_mon_r);
+  mtc_ctrl_v  <= vectorify(mtc_ctrl_r,mtc_ctrl_v);
+  mtc_mon_r   <= structify(mtc_mon_v,mtc_mon_r);
+  daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
+  daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -315,26 +337,21 @@ begin
 
       -- ULT Control
 
-      h2s_ctrl    => h2s_ctrl,
-      h2s_mon     => h2s_mon,
-      tar_ctrl    => tar_ctrl,
-      tar_mon     => tar_mon,
-      mtc_ctrl    => mtc_ctrl,
-      mtc_mon     => mtc_mon,
-      ucm_ctrl    => ucm_ctrl,
-      ucm_mon     => ucm_mon,
-      daq_ctrl    => daq_ctrl,
-      daq_mon     => daq_mon,
-      tf_ctrl     => tf_ctrl,
-      tf_mon      => tf_mon,
-      mpl_ctrl    => mpl_ctrl,
-      mpl_mon     => mpl_mon,
+      h2s_ctrl    => h2s_ctrl_r,
+      h2s_mon     => h2s_mon_r,
+      tar_ctrl    => tar_ctrl_r,
+      tar_mon     => tar_mon_r,
+      mtc_ctrl    => mtc_ctrl_r,
+      mtc_mon     => mtc_mon_r,
+      ucm_ctrl    => ucm_ctrl_r,
+      ucm_mon     => ucm_mon_r,
+      daq_ctrl    => daq_ctrl_r,
+      daq_mon     => daq_mon_r,
+      tf_ctrl     => tf_ctrl_r,
+      tf_mon      => tf_mon_r,
+      mpl_ctrl    => mpl_ctrl_r,
+      mpl_mon     => mpl_mon_r,
       fw_info_mon => fw_info_mon,
-
-      -- spybuffers
-
-      user_spy_ctrl => user_spy_ctrl,
-      user_spy_mon  => user_spy_mon,
 
       -- axi common
       clk320                  => clk320,

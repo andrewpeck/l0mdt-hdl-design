@@ -14,6 +14,8 @@
 library ieee, shared_lib;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
+
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -29,6 +31,7 @@ library ucm_lib;
 use ucm_lib.ucm_pkg.all;
 use ucm_lib.ucm_function_pkg.all;
 
+library  vamc_lib;
 
 library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
@@ -41,8 +44,10 @@ entity ucm_cvp is
   port (
     clk                 : in std_logic;
     rst                 : in std_logic;
-    glob_en             : in std_logic;
-    --
+    ena                 : in std_logic;
+    --  
+    ctrl_v              : in std_logic_vector;
+    mon_v               : out std_logic_vector;
     -- i_phicenter             : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus     : in b_chamber_z_origin_station_avt;
     --
@@ -51,13 +56,39 @@ entity ucm_cvp is
     --
     i_data_v            : in ucm_cde_rvt;
     --
-    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+    -- o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
     o_ucm2hps_av        : out ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0)
       
   );
 end entity ucm_cvp;
 
 architecture beh of ucm_cvp is
+
+  signal i_data_r            : ucm_cde_rt;
+
+  -- rpc R
+  signal ctrl_r : UCM_R_PHI_COMP_CTRL_t;
+  signal mon_r  : UCM_R_PHI_COMP_MON_t;
+
+  signal rpc_R_ctrl_r : UCM_R_PHI_COMP_RPC_CTRL_t;
+  signal rpc_R_mon_r  : UCM_R_PHI_COMP_RPC_MON_t; 
+  signal rpc_R_ctrl_v : std_logic_vector(len(rpc_R_ctrl_r) - 1 downto 0);
+  signal rpc_R_mon_v  : std_logic_vector(len(rpc_R_mon_r) - 1 downto 0);
+
+  signal mdt_R_ctrl_r : UCM_R_PHI_COMP_MDT_CTRL_t;
+  signal mdt_R_mon_r  : UCM_R_PHI_COMP_MDT_MON_t; 
+  signal mdt_R_ctrl_v : std_logic_vector(len(mdt_R_ctrl_r) - 1 downto 0);
+  signal mdt_R_mon_v  : std_logic_vector(len(mdt_R_mon_r) - 1 downto 0);
+
+  --
+
+  signal rpc_radius_av  : ucm_rpc_r_bus_at(4 - 1 downto 0);
+  signal rpc_radius_dv  : std_logic;
+
+  signal mdt_radius_av  : ucm_mdt_r_bus_at(3 - 1 downto 0);
+  signal mdt_radius_dv  : std_logic;
+
+  -- 
 
   signal local_rst : std_logic;
 
@@ -71,7 +102,9 @@ architecture beh of ucm_cvp is
   signal data_v_2     : ucm_cde_rvt;
   signal data_r_2       : ucm_cde_rt;
   
+  signal ucm2hps_buff_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
   signal ucm2hps_ar   : ucm2hps_bus_at(c_MAX_NUM_HPS -1 downto 0);
+
 
   -- signal chamber_ieta_v : std_logic_vector(15 downto 0);
   signal chamber_ieta_r : chamb_ieta_rpc_bus_at;
@@ -80,8 +113,9 @@ architecture beh of ucm_cvp is
   signal new_chamb_ieta_a : new_chamb_ieta_at;
   signal new_chamb_ieta_dv : std_logic_vector(c_MAX_NUM_HPS -1 downto 0);
 
-  signal offset       : signed(126 -1 downto 0);
-  signal slope        : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
+  signal offset       : signed(31 downto 0);--signed(126 -1 downto 0);
+  signal slope        : signed(31 downto 0);-- 
+  -- signal slope_org : signed((SLC_Z_RPC_LEN*4 + 8)*2 -1 downto 0);
   signal slope_dv     : std_logic;
 
   constant ATAN_SLOPE_LEN : integer := 20;
@@ -97,51 +131,109 @@ architecture beh of ucm_cvp is
   
 begin
 
+  i_data_r <= structify(i_data_v);
+  
+
+  ctrl_r  <= structify(ctrl_v,ctrl_r);
+  mon_v   <= vectorify(mon_r,mon_v);
+
+  rpc_R_ctrl_v <= vectorify(ctrl_r.RPC,rpc_R_ctrl_v);
+  rpc_R_mon_r <= structify(rpc_R_mon_v,rpc_R_mon_r);
+  mon_r.RPC <= rpc_R_mon_r;
+
+  mdt_R_ctrl_v <= vectorify(ctrl_r.MDT,mdt_R_ctrl_v);
+  mdt_R_mon_r <= structify(mdt_R_mon_v,mdt_R_mon_r);
+  mon_r.MDT <= mdt_R_mon_r;
+
   local_rst <= rst or i_local_rst;
-  data_r <= structify(i_data_v);
+  -- data_r <= structify(i_data_v);
   barrel_r <= structify(int_data_r.specific);
 
-  PL_in : entity shared_lib.std_pipeline
-  generic map(
-    g_DELAY_CYCLES  => 6,
-    g_PIPELINE_WIDTH    => int_data_v'length
-  )
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    glob_en     => glob_en,
-    --
-    i_data      => int_data_v,
-    o_data      => data_v
-  );
+  IN_REG: process(clk)
+  begin
+    if rising_edge(clk) then
+      if local_rst = '1' then
+        int_data_v <= (others => '0');
+      else
+        if i_in_en = '1' then
+          if i_data_r.data_valid = '1' then
+            int_data_v <= i_data_v;
+          end if;
+        end if;
+      end if;
+    end if;
+  end process IN_REG;
+  int_data_r <= structify(int_data_v);
 
-  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- PL_in : entity vamc_lib.vamc_sr
   -- generic map(
-  --   g_PIPELINE => 2
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
   -- )
   -- port map(
-  --   clk         =>clk,
-  --   rst         =>local_rst,
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena         => ena,
   --   --
-  --   i_phicenter   => i_phicenter,
-  --   --
-  --   i_posphi    => data_r.posphi,
-  --   i_dv        => data_r.data_valid,
-  --   --
-  --   o_phimod    => o_phimod
+  --   i_data      => int_data_v,
+  --   o_data      => data_v
   -- );
 
+  -- chamber_ieta_r <= structify(data_v).chamb_ieta;
+
   BARREL : if c_ST_nBARREL_ENDCAP = '0' generate
+
+    RPC_R : entity ucm_lib.ucm_rpc_R_comp_top
+      generic map(
+        g_MODE =>  "RPC",
+        g_OUTPUT_WIDTH => SLC_Z_RPC_LEN
+      )
+      port map(
+        clk         => clk,
+        rst         => local_rst,
+        ena         => ena,
+        --
+        ctrl_v      => rpc_R_ctrl_v,
+        mon_v       => rpc_R_mon_v,
+        --
+        i_phimod    => i_data_r.phimod,
+        i_dv        => i_data_r.data_valid,
+        --
+        o_radius    => rpc_radius_av,
+        o_dv        => rpc_radius_dv
+    );
+
+    MDT_R : entity ucm_lib.ucm_mdt_R_comp_top
+    generic map(
+      g_MODE =>  "MDT",
+      g_STATION_LAYERS => 3,
+      g_OUTPUT_WIDTH => UCM_Z_ROI_LEN
+    )
+    port map(
+      clk         => clk,
+      rst         => local_rst,
+      ena         => ena,
+      --
+      ctrl_v      => mdt_R_ctrl_v,
+      mon_v       => mdt_R_mon_v,
+      --
+      i_phimod    => i_data_r.phimod,
+      i_dv        => i_data_r.data_valid,
+      --
+      o_radius    => mdt_radius_av,
+      o_dv        => mdt_radius_dv
+  );
 
     SLOPE_CALC : entity ucm_lib.ucm_cvp_b_slope
     port map(
       clk           => clk,
       rst           => local_rst,
-      glob_en       => glob_en,
+      ena           => ena,
       --
+      i_rpc_rad_a   => rpc_radius_av,
       i_cointype    => int_data_r.cointype,
       i_data_v      => int_data_r.specific,
-      i_data_Valid  => int_data_r.data_valid,
+      i_data_Valid  => rpc_radius_dv,--int_data_r.data_valid,
       o_offset      => offset,
       o_slope       => slope,
       o_data_valid  => slope_dv
@@ -161,9 +253,11 @@ begin
         port map(
           clk           => clk,
           rst           => local_rst,
-          glob_en       => glob_en,
+          ena           => ena,
           --
-          i_chamb_ieta  => chamber_ieta_r(st_i),
+          i_mdt_R       => mdt_radius_av(st_i),
+          i_mdt_R_dv    => mdt_radius_dv,
+          -- i_chamb_ieta  => chamber_ieta_r(st_i),
           i_offset      => offset,
           i_slope       => slope,
           i_data_valid  => slope_dv,
@@ -175,7 +269,7 @@ begin
     end generate;
 
     ----------------------------------------------------------
-
+-- /**
     IETA_INN : entity ucm_lib.ucm_ieta_calc
     generic map(
       g_STATION => 0,
@@ -233,9 +327,9 @@ begin
       o_ieta        => new_chamb_ieta_a(2),
       o_ieta_dv     => new_chamb_ieta_dv(2)
     );
-
+-- */
   end generate;
-
+-- /*
   atan_slope <= resize(unsigned(slope),ATAN_SLOPE_LEN) when to_integer(unsigned(slope)) < 732387 else to_unsigned(732387,ATAN_SLOPE_LEN);
 
   ATAN : entity shared_lib.roi_atan
@@ -246,7 +340,7 @@ begin
   port map(
     clk           => clk,
     rst           => local_rst,
-    glob_en       => glob_en,
+    ena       => ena,
     --
     i_slope       => atan_slope,
     i_dv          => slope_dv,
@@ -255,24 +349,36 @@ begin
   );
 
 
+  -- PL_in : entity vamc_lib.vamc_sr
+  -- generic map(
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena         => ena,
+  --   --
+  --   i_data      => int_data_v,
+  --   o_data      => data_v
+  -- );
+  
 
-  chamber_ieta_r <= structify(data_v).chamb_ieta;
+  -- PL_2 : entity vamc_lib.vamc_sr
+  -- generic map(
+  --   g_DELAY_CYCLES  => 10,
+  --   g_PIPELINE_WIDTH    => int_data_v'length
+  -- )
+  -- port map(
+  --   clk         => clk,
+  --   rst         => local_rst,
+  --   ena     => ena,
+  --   --
+  --   i_data      => data_v,
+  --   o_data      => data_v_2
+  -- );
 
-  PL : entity shared_lib.std_pipeline
-  generic map(
-    g_DELAY_CYCLES  => 2,
-    g_PIPELINE_WIDTH    => data_v'length
-  )
-  port map(
-    clk         => clk,
-    rst         => local_rst,
-    glob_en     => glob_en,
-    --
-    i_data      => data_v,
-    o_data      => data_v_2
-  );
-
-  data_r_2 <= structify(data_v_2);
+  -- data_r_2 <= structify(data_v_2);
   -- 
 
   -- Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
@@ -284,7 +390,7 @@ begin
   --     port map(
   --       clk           => clk,
   --       rst           => local_rst,
-  --       glob_en       => glob_en,
+  --       ena       => ena,
   --       --
   --       i_chamb_ieta  => chamber_ieta_r(st_i),
   --       i_offset      => offset,
@@ -304,9 +410,9 @@ begin
   --   end generate;
   -- end generate;
   
-  int_data_v <= i_data_v;
+ 
 
-  int_data_r <= structify(int_data_v);
+  
 
   UCM_HPS_GEN: for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 generate
     GEN : if c_STATIONS_IN_SECTOR(hps_i) = '1' generate
@@ -317,7 +423,138 @@ begin
     end generate;
   end generate;
 
-  UCM_CVP : process(local_rst,clk) begin
+  UCM_CVP_OUT : process(local_rst,clk) begin
+    if rising_edge(clk) then
+
+      if local_rst= '1' then
+        for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+          ucm2hps_buff_ar(hps_i) <= nullify(ucm2hps_buff_ar(hps_i));
+          ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+          -- ucm2hps_ar(hps_i).data_valid    <= '0';
+        end loop;
+      else 
+
+        if i_data_r.data_valid = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS - 1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_buff_ar(hps_i).muid <= i_data_r.muid;
+              ucm2hps_buff_ar(hps_i).data_valid <= i_data_r.data_valid;
+            -- else
+            --   ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
+
+            end if;
+          end loop;
+        end if;
+
+        if or_reduce(vec_z_pos_dv) = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_buff_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+            -- else
+            --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+
+            end if;
+          end loop;
+        end if;
+
+        if atan_dv = '1' then
+          for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+            if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+              ucm2hps_buff_ar(hps_i).vec_ang <= vec_ang_pl;
+            -- else
+            --   ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+
+            end if;
+          end loop;
+        end if;
+
+        
+        -- for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+        --   if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+        --     if i_data_r.data_valid = '1' then
+        --       ucm2hps_ar(hps_i).muid <= i_data_r.muid;
+        --     else
+        --       ucm2hps_ar(hps_i).muid <= (others => (others => '0'));
+        --     end if;
+        --     if atan_dv = '1' then
+        --       ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+        --     else
+        --       ucm2hps_ar(hps_i).vec_ang             <= (others => '0');
+        --     end if;
+        --     if or_reduce(vec_z_pos_dv) = '1' then
+        --       ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+        --     else
+        --       ucm2hps_ar(hps_i).vec_pos             <=(others => '0');
+        --     end if;
+        --   end if;
+        -- end loop;
+
+        if c_ST_nBARREL_ENDCAP = '0' then  -- Barrel
+          -- if c_SF_TYPE = '0' then --CSF
+            -- if int_data_r.data_valid = '1' then
+              for hps_i in c_MAX_POSSIBLE_HPS -1 downto 0 loop
+                if c_STATIONS_IN_SECTOR(hps_i) = '1'  then
+
+                  if or_reduce(new_chamb_ieta_dv) = '1' then
+
+                    ucm2hps_ar(hps_i).muid    <= ucm2hps_buff_ar(hps_i).muid;
+                    ucm2hps_ar(hps_i).vec_pos <= ucm2hps_buff_ar(hps_i).vec_pos ;
+                    ucm2hps_ar(hps_i).vec_ang <= ucm2hps_buff_ar(hps_i).vec_ang;
+
+                    -- ucm2hps_ar(hps_i).muid                <= data_r_2.muid;
+                    ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '1'); -- COMO SE CALCULA ESTO?
+                    ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= new_chamb_ieta_a(hps_i); 
+                    ucm2hps_ar(hps_i).mdtid.chamber_id    <=  to_unsigned(get_b_chamber_type(c_SECTOR_ID,hps_i,to_integer(new_chamb_ieta_a(hps_i))),VEC_MDTID_CHAMBER_ID_LEN);
+                    -- ucm2hps_ar(hps_i).vec_pos             <= vec_pos_array(hps_i);
+                    -- ucm2hps_ar(hps_i).vec_ang             <= vec_ang_pl;
+                    ucm2hps_ar(hps_i).data_valid          <= '1';
+                  
+                  else
+                    -- ucm2hps_ar(hps_i).data_valid    <= '0';
+                    -- ucm2hps_ar(hps_i).mdtseg_dest         <= (others => '0'); -- COMO SE CALCULA ESTO?
+                    -- ucm2hps_ar(hps_i).mdtid.chamber_ieta  <= (others => '0'); 
+                    -- ucm2hps_ar(hps_i).mdtid.chamber_id    <= (others => '0'); 
+
+                    ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+
+                    -- for hps_i in c_MAX_NUM_HPS -1 downto 0 loop
+                    --   ucm2hps_ar(hps_i) <= nullify(ucm2hps_ar(hps_i));
+                    -- end loop;
+
+                  end if;
+
+                end if;
+              end loop;
+
+        else -- Endcap
+        end if;
+
+      end if;
+    end if;
+  end process;
+
+-- */
+
+end beh;
+
+  -- PHIMOD : entity ucm_lib.ucm_cvp_phimod
+  -- generic map(
+  --   g_PIPELINE => 2
+  -- )
+  -- port map(
+  --   clk         =>clk,
+  --   rst         =>local_rst,
+  --   --
+  --   i_phicenter   => get_sector_phi_center(c_SECTOR_ID),
+  --   --
+  --   i_posphi    => data_r.posphi,
+  --   i_dv        => data_r.data_valid,
+  --   --
+  --   o_phimod    => o_phimod
+  -- );
+
+  /*
+  UCM_CVP_OUT : process(local_rst,clk) begin
     if rising_edge(clk) then
 
       -- if slope < 2047 then
@@ -394,7 +631,4 @@ begin
       end if;
     end if;
   end process;
-
-
-
-end beh;
+  */

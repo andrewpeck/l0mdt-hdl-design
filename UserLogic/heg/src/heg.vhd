@@ -31,6 +31,8 @@ use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
 
 entity heg is
   generic(
@@ -41,6 +43,9 @@ entity heg is
     clk                 : in std_logic;
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
+    -- control
+    ctrl_v                : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
+    mon_v                 : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
     -- configuration
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
@@ -54,6 +59,12 @@ entity heg is
 end entity heg;
 
 architecture beh of heg is
+  signal ctrl_r           : H2S_HPS_HEG_HEG_CTRL_t;
+  signal mon_r            : H2S_HPS_HEG_HEG_MON_t;
+  signal heg_ctrl_ctrl_r  : H2S_HPS_HEG_HEG_CTRL_CTRL_t;
+  signal heg_ctrl_mon_r   : H2S_HPS_HEG_HEG_CTRL_MON_t;
+  signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
+  signal heg_ctrl_mon_v   : std_logic_vector(len(heg_ctrl_mon_r)-1 downto 0);
 
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
   signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -68,6 +79,17 @@ architecture beh of heg is
 
 begin
 
+  ctrl_r <= structify(ctrl_v,ctrl_r);
+  mon_v <= vectorify(mon_r,mon_v);
+
+  heg_ctrl_ctrl_r <= ctrl_r.ctrl;
+  mon_r.ctrl <= heg_ctrl_mon_r;
+  
+  heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
+  heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
+
+
+
   -- o_sf_control_v <= vectorify(heg_Sf_control);
 
   Heg_Control : entity heg_lib.heg_ctrl_top
@@ -79,6 +101,9 @@ begin
     clk                 => clk,
     rst                 => rst,
     glob_en             => glob_en,
+    --
+    ctrl_v              => heg_ctrl_ctrl_v,
+    mon_v               => heg_ctrl_mon_v,
     --
     i_uCM_data_v        => i_uCM_data_v,
     --
@@ -108,12 +133,12 @@ begin
         i_SLC_Window        => roi_b_Window,
         i_slc_data_v        => hegC2hp_uCM_data,
         -- MDT hit
-        i_mdt_data          => i_mdt_full_data_av(i_hp),
+        i_mdt_data_v          => i_mdt_full_data_av(i_hp),
         -- i_mdt_valid         => i_mdt_valid,
         -- i_mdt_time_real     => i_mdt_time_real,
         -- to Segment finder
         -- o_sf_slc_data_v       => o_sf_slc_data_v,
-        o_hit_data       => hp2bm_av(i_hp)
+        o_hit_data_v       => hp2bm_av(i_hp)
       );
     end generate;
   end generate;

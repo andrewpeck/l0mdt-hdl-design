@@ -2,11 +2,15 @@
 --Modifications might be lost.
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
+use work.AXIRegWidthPkg.all;
 use work.AXIRegPkg.all;
 use work.types.all;
+
 use work.TAR_Ctrl.all;
-entity TAR_interface is
+use work.TAR_Ctrl_DEF.all;
+entity TAR_map is
   port (
     clk_axi          : in  std_logic;
     reset_axi_n      : in  std_logic;
@@ -14,29 +18,33 @@ entity TAR_interface is
     slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
     slave_writeMOSI  : in  AXIWriteMOSI;
     slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
+    
     Mon              : in  TAR_Mon_t;
     Ctrl             : out TAR_Ctrl_t
+        
     );
-end entity TAR_interface;
-architecture behavioral of TAR_interface is
-  signal localAddress       : slv_32_t;
+end entity TAR_map;
+architecture behavioral of TAR_map is
+  signal localAddress       : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
   signal localRdData        : slv_32_t;
   signal localRdData_latch  : slv_32_t;
   signal localWrData        : slv_32_t;
   signal localWrEn          : std_logic;
   signal localRdReq         : std_logic;
   signal localRdAck         : std_logic;
+  signal regRdAck           : std_logic;
 
-
-  signal reg_data :  slv32_array_t(integer range 0 to 1);
-  constant Default_reg_data : slv32_array_t(integer range 0 to 1) := (others => x"00000000");
+  
+  
+  signal reg_data :  slv32_array_t(integer range 0 to 3177);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 3177) := (others => x"00000000");
 begin  -- architecture behavioral
 
   -------------------------------------------------------------------------------
   -- AXI 
   -------------------------------------------------------------------------------
   -------------------------------------------------------------------------------
-  AXIRegBridge : entity work.axiLiteReg
+  AXIRegBridge : entity work.axiLiteRegBlocking
     port map (
       clk_axi     => clk_axi,
       reset_axi_n => reset_axi_n,
@@ -51,52 +59,1046 @@ begin  -- architecture behavioral
       read_req    => localRdReq,
       read_ack    => localRdAck);
 
-  latch_reads: process (clk_axi) is
+  -------------------------------------------------------------------------------
+  -- Record read decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+
+  latch_reads: process (clk_axi,reset_axi_n) is
   begin  -- process latch_reads
-    if clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      if localRdReq = '1' then
-        localRdData_latch <= localRdData;        
+    if reset_axi_n = '0' then
+      localRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      localRdAck <= '0';
+      
+      if regRdAck = '1' then
+        localRdData_latch <= localRdData;
+        localRdAck <= '1';
+      
       end if;
     end if;
   end process latch_reads;
-  reads: process (localRdReq,localAddress,reg_data) is
-  begin  -- process reads
-    localRdAck  <= '0';
-    localRdData <= x"00000000";
-    if localRdReq = '1' then
-      localRdAck  <= '1';
-      case to_integer(unsigned(localAddress(0 downto 0))) is
 
+  
+  reads: process (clk_axi,reset_axi_n) is
+  begin  -- process latch_reads
+    if reset_axi_n = '0' then
+      regRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      regRdAck  <= '0';
+      localRdData <= x"00000000";
+      if localRdReq = '1' then
+        regRdAck  <= '1';
+        case to_integer(unsigned(localAddress(11 downto 0))) is
+          
         when 1 => --0x1
-          localRdData( 0)  <=  Mon.STATUS;      --
-          localRdData( 1)  <=  Mon.READY;       --
+          localRdData( 4)            <=  reg_data( 1)( 4);                                               --
+          localRdData( 5)            <=  reg_data( 1)( 5);                                               --
+          localRdData( 6)            <=  reg_data( 1)( 6);                                               --
+        when 2 => --0x2
+          localRdData( 0)            <=  Mon.STATUS.ENABLED;                                             --
+          localRdData( 1)            <=  Mon.STATUS.READY;                                               --
+          localRdData( 2)            <=  Mon.STATUS.ERROR;                                               --
+        when 2304 => --0x900
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).STATUS.ENABLED;                              --
+          localRdData( 1)            <=  Mon.PL_ST.PL_ST(0).STATUS.READY;                                --
+          localRdData( 2)            <=  Mon.PL_ST.PL_ST(0).STATUS.ERROR;                                --
+        when 2321 => --0x911
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_rdy;                 --Read ready
+        when 2322 => --0x912
+          localRdData(11 downto  0)  <=  reg_data(2322)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2322)(27 downto 16);                                   --rd_Address
+        when 2324 => --0x914
+          localRdData(31 downto  0)  <=  reg_data(2324)(31 downto  0);                                   --Write Data 0
+        when 2325 => --0x915
+          localRdData( 9 downto  0)  <=  reg_data(2325)( 9 downto  0);                                   --Write Data 1
+        when 2328 => --0x918
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_0;      --Read Data 0
+        when 2329 => --0x919
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_1;      --Read Data 1
+        when 2337 => --0x921
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_rdy;                 --Read ready
+        when 2338 => --0x922
+          localRdData(11 downto  0)  <=  reg_data(2338)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2338)(27 downto 16);                                   --rd_Address
+        when 2340 => --0x924
+          localRdData(31 downto  0)  <=  reg_data(2340)(31 downto  0);                                   --Write Data 0
+        when 2341 => --0x925
+          localRdData( 9 downto  0)  <=  reg_data(2341)( 9 downto  0);                                   --Write Data 1
+        when 2344 => --0x928
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_0;      --Read Data 0
+        when 2345 => --0x929
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_1;      --Read Data 1
+        when 2353 => --0x931
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_rdy;                 --Read ready
+        when 2354 => --0x932
+          localRdData(11 downto  0)  <=  reg_data(2354)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2354)(27 downto 16);                                   --rd_Address
+        when 2356 => --0x934
+          localRdData(31 downto  0)  <=  reg_data(2356)(31 downto  0);                                   --Write Data 0
+        when 2357 => --0x935
+          localRdData( 9 downto  0)  <=  reg_data(2357)( 9 downto  0);                                   --Write Data 1
+        when 2360 => --0x938
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_0;      --Read Data 0
+        when 2361 => --0x939
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_1;      --Read Data 1
+        when 2369 => --0x941
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_rdy;                 --Read ready
+        when 2370 => --0x942
+          localRdData(11 downto  0)  <=  reg_data(2370)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2370)(27 downto 16);                                   --rd_Address
+        when 2372 => --0x944
+          localRdData(31 downto  0)  <=  reg_data(2372)(31 downto  0);                                   --Write Data 0
+        when 2373 => --0x945
+          localRdData( 9 downto  0)  <=  reg_data(2373)( 9 downto  0);                                   --Write Data 1
+        when 2376 => --0x948
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_0;      --Read Data 0
+        when 2377 => --0x949
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_1;      --Read Data 1
+        when 2385 => --0x951
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_rdy;                 --Read ready
+        when 2386 => --0x952
+          localRdData(11 downto  0)  <=  reg_data(2386)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2386)(27 downto 16);                                   --rd_Address
+        when 2388 => --0x954
+          localRdData(31 downto  0)  <=  reg_data(2388)(31 downto  0);                                   --Write Data 0
+        when 2389 => --0x955
+          localRdData( 9 downto  0)  <=  reg_data(2389)( 9 downto  0);                                   --Write Data 1
+        when 2392 => --0x958
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_0;      --Read Data 0
+        when 2393 => --0x959
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_1;      --Read Data 1
+        when 2401 => --0x961
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_rdy;                 --Read ready
+        when 2402 => --0x962
+          localRdData(11 downto  0)  <=  reg_data(2402)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2402)(27 downto 16);                                   --rd_Address
+        when 2404 => --0x964
+          localRdData(31 downto  0)  <=  reg_data(2404)(31 downto  0);                                   --Write Data 0
+        when 2405 => --0x965
+          localRdData( 9 downto  0)  <=  reg_data(2405)( 9 downto  0);                                   --Write Data 1
+        when 2408 => --0x968
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_0;      --Read Data 0
+        when 2409 => --0x969
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_1;      --Read Data 1
+        when 2560 => --0xa00
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).STATUS.ENABLED;                              --
+          localRdData( 1)            <=  Mon.PL_ST.PL_ST(1).STATUS.READY;                                --
+          localRdData( 2)            <=  Mon.PL_ST.PL_ST(1).STATUS.ERROR;                                --
+        when 2577 => --0xa11
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_rdy;                 --Read ready
+        when 2578 => --0xa12
+          localRdData(11 downto  0)  <=  reg_data(2578)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2578)(27 downto 16);                                   --rd_Address
+        when 2580 => --0xa14
+          localRdData(31 downto  0)  <=  reg_data(2580)(31 downto  0);                                   --Write Data 0
+        when 2581 => --0xa15
+          localRdData( 9 downto  0)  <=  reg_data(2581)( 9 downto  0);                                   --Write Data 1
+        when 2584 => --0xa18
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_0;      --Read Data 0
+        when 2585 => --0xa19
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_1;      --Read Data 1
+        when 2593 => --0xa21
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_rdy;                 --Read ready
+        when 2594 => --0xa22
+          localRdData(11 downto  0)  <=  reg_data(2594)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2594)(27 downto 16);                                   --rd_Address
+        when 2596 => --0xa24
+          localRdData(31 downto  0)  <=  reg_data(2596)(31 downto  0);                                   --Write Data 0
+        when 2597 => --0xa25
+          localRdData( 9 downto  0)  <=  reg_data(2597)( 9 downto  0);                                   --Write Data 1
+        when 2600 => --0xa28
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_0;      --Read Data 0
+        when 2601 => --0xa29
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_1;      --Read Data 1
+        when 2609 => --0xa31
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_rdy;                 --Read ready
+        when 2610 => --0xa32
+          localRdData(11 downto  0)  <=  reg_data(2610)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2610)(27 downto 16);                                   --rd_Address
+        when 2612 => --0xa34
+          localRdData(31 downto  0)  <=  reg_data(2612)(31 downto  0);                                   --Write Data 0
+        when 2613 => --0xa35
+          localRdData( 9 downto  0)  <=  reg_data(2613)( 9 downto  0);                                   --Write Data 1
+        when 2616 => --0xa38
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_0;      --Read Data 0
+        when 2617 => --0xa39
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_1;      --Read Data 1
+        when 2625 => --0xa41
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_rdy;                 --Read ready
+        when 2626 => --0xa42
+          localRdData(11 downto  0)  <=  reg_data(2626)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2626)(27 downto 16);                                   --rd_Address
+        when 2628 => --0xa44
+          localRdData(31 downto  0)  <=  reg_data(2628)(31 downto  0);                                   --Write Data 0
+        when 2629 => --0xa45
+          localRdData( 9 downto  0)  <=  reg_data(2629)( 9 downto  0);                                   --Write Data 1
+        when 2632 => --0xa48
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_0;      --Read Data 0
+        when 2633 => --0xa49
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_1;      --Read Data 1
+        when 2641 => --0xa51
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_rdy;                 --Read ready
+        when 2642 => --0xa52
+          localRdData(11 downto  0)  <=  reg_data(2642)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2642)(27 downto 16);                                   --rd_Address
+        when 2644 => --0xa54
+          localRdData(31 downto  0)  <=  reg_data(2644)(31 downto  0);                                   --Write Data 0
+        when 2645 => --0xa55
+          localRdData( 9 downto  0)  <=  reg_data(2645)( 9 downto  0);                                   --Write Data 1
+        when 2648 => --0xa58
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_0;      --Read Data 0
+        when 2649 => --0xa59
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_1;      --Read Data 1
+        when 2657 => --0xa61
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_rdy;                 --Read ready
+        when 2658 => --0xa62
+          localRdData(11 downto  0)  <=  reg_data(2658)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2658)(27 downto 16);                                   --rd_Address
+        when 2660 => --0xa64
+          localRdData(31 downto  0)  <=  reg_data(2660)(31 downto  0);                                   --Write Data 0
+        when 2661 => --0xa65
+          localRdData( 9 downto  0)  <=  reg_data(2661)( 9 downto  0);                                   --Write Data 1
+        when 2664 => --0xa68
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_0;      --Read Data 0
+        when 2665 => --0xa69
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_1;      --Read Data 1
+        when 2816 => --0xb00
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).STATUS.ENABLED;                              --
+          localRdData( 1)            <=  Mon.PL_ST.PL_ST(2).STATUS.READY;                                --
+          localRdData( 2)            <=  Mon.PL_ST.PL_ST(2).STATUS.ERROR;                                --
+        when 2833 => --0xb11
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_rdy;                 --Read ready
+        when 2834 => --0xb12
+          localRdData(11 downto  0)  <=  reg_data(2834)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2834)(27 downto 16);                                   --rd_Address
+        when 2836 => --0xb14
+          localRdData(31 downto  0)  <=  reg_data(2836)(31 downto  0);                                   --Write Data 0
+        when 2837 => --0xb15
+          localRdData( 9 downto  0)  <=  reg_data(2837)( 9 downto  0);                                   --Write Data 1
+        when 2840 => --0xb18
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_0;      --Read Data 0
+        when 2841 => --0xb19
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_1;      --Read Data 1
+        when 2849 => --0xb21
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_rdy;                 --Read ready
+        when 2850 => --0xb22
+          localRdData(11 downto  0)  <=  reg_data(2850)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2850)(27 downto 16);                                   --rd_Address
+        when 2852 => --0xb24
+          localRdData(31 downto  0)  <=  reg_data(2852)(31 downto  0);                                   --Write Data 0
+        when 2853 => --0xb25
+          localRdData( 9 downto  0)  <=  reg_data(2853)( 9 downto  0);                                   --Write Data 1
+        when 2856 => --0xb28
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_0;      --Read Data 0
+        when 2857 => --0xb29
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_1;      --Read Data 1
+        when 2865 => --0xb31
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_rdy;                 --Read ready
+        when 2866 => --0xb32
+          localRdData(11 downto  0)  <=  reg_data(2866)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2866)(27 downto 16);                                   --rd_Address
+        when 2868 => --0xb34
+          localRdData(31 downto  0)  <=  reg_data(2868)(31 downto  0);                                   --Write Data 0
+        when 2869 => --0xb35
+          localRdData( 9 downto  0)  <=  reg_data(2869)( 9 downto  0);                                   --Write Data 1
+        when 2872 => --0xb38
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_0;      --Read Data 0
+        when 2873 => --0xb39
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_1;      --Read Data 1
+        when 2881 => --0xb41
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_rdy;                 --Read ready
+        when 2882 => --0xb42
+          localRdData(11 downto  0)  <=  reg_data(2882)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2882)(27 downto 16);                                   --rd_Address
+        when 2884 => --0xb44
+          localRdData(31 downto  0)  <=  reg_data(2884)(31 downto  0);                                   --Write Data 0
+        when 2885 => --0xb45
+          localRdData( 9 downto  0)  <=  reg_data(2885)( 9 downto  0);                                   --Write Data 1
+        when 2888 => --0xb48
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_0;      --Read Data 0
+        when 2889 => --0xb49
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_1;      --Read Data 1
+        when 2897 => --0xb51
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_rdy;                 --Read ready
+        when 2898 => --0xb52
+          localRdData(11 downto  0)  <=  reg_data(2898)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2898)(27 downto 16);                                   --rd_Address
+        when 2900 => --0xb54
+          localRdData(31 downto  0)  <=  reg_data(2900)(31 downto  0);                                   --Write Data 0
+        when 2901 => --0xb55
+          localRdData( 9 downto  0)  <=  reg_data(2901)( 9 downto  0);                                   --Write Data 1
+        when 2904 => --0xb58
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_0;      --Read Data 0
+        when 2905 => --0xb59
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_1;      --Read Data 1
+        when 2913 => --0xb61
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_rdy;                 --Read ready
+        when 2914 => --0xb62
+          localRdData(11 downto  0)  <=  reg_data(2914)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(2914)(27 downto 16);                                   --rd_Address
+        when 2916 => --0xb64
+          localRdData(31 downto  0)  <=  reg_data(2916)(31 downto  0);                                   --Write Data 0
+        when 2917 => --0xb65
+          localRdData( 9 downto  0)  <=  reg_data(2917)( 9 downto  0);                                   --Write Data 1
+        when 2920 => --0xb68
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_0;      --Read Data 0
+        when 2921 => --0xb69
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_1;      --Read Data 1
+        when 3072 => --0xc00
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).STATUS.ENABLED;                              --
+          localRdData( 1)            <=  Mon.PL_ST.PL_ST(3).STATUS.READY;                                --
+          localRdData( 2)            <=  Mon.PL_ST.PL_ST(3).STATUS.ERROR;                                --
+        when 3089 => --0xc11
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_rdy;                 --Read ready
+        when 3090 => --0xc12
+          localRdData(11 downto  0)  <=  reg_data(3090)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3090)(27 downto 16);                                   --rd_Address
+        when 3092 => --0xc14
+          localRdData(31 downto  0)  <=  reg_data(3092)(31 downto  0);                                   --Write Data 0
+        when 3093 => --0xc15
+          localRdData( 9 downto  0)  <=  reg_data(3093)( 9 downto  0);                                   --Write Data 1
+        when 3096 => --0xc18
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_0;      --Read Data 0
+        when 3097 => --0xc19
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_data.rd_data_1;      --Read Data 1
+        when 3105 => --0xc21
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_rdy;                 --Read ready
+        when 3106 => --0xc22
+          localRdData(11 downto  0)  <=  reg_data(3106)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3106)(27 downto 16);                                   --rd_Address
+        when 3108 => --0xc24
+          localRdData(31 downto  0)  <=  reg_data(3108)(31 downto  0);                                   --Write Data 0
+        when 3109 => --0xc25
+          localRdData( 9 downto  0)  <=  reg_data(3109)( 9 downto  0);                                   --Write Data 1
+        when 3112 => --0xc28
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_0;      --Read Data 0
+        when 3113 => --0xc29
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_data.rd_data_1;      --Read Data 1
+        when 3121 => --0xc31
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_rdy;                 --Read ready
+        when 3122 => --0xc32
+          localRdData(11 downto  0)  <=  reg_data(3122)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3122)(27 downto 16);                                   --rd_Address
+        when 3124 => --0xc34
+          localRdData(31 downto  0)  <=  reg_data(3124)(31 downto  0);                                   --Write Data 0
+        when 3125 => --0xc35
+          localRdData( 9 downto  0)  <=  reg_data(3125)( 9 downto  0);                                   --Write Data 1
+        when 3128 => --0xc38
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_0;      --Read Data 0
+        when 3129 => --0xc39
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_data.rd_data_1;      --Read Data 1
+        when 3137 => --0xc41
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_rdy;                 --Read ready
+        when 3138 => --0xc42
+          localRdData(11 downto  0)  <=  reg_data(3138)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3138)(27 downto 16);                                   --rd_Address
+        when 3140 => --0xc44
+          localRdData(31 downto  0)  <=  reg_data(3140)(31 downto  0);                                   --Write Data 0
+        when 3141 => --0xc45
+          localRdData( 9 downto  0)  <=  reg_data(3141)( 9 downto  0);                                   --Write Data 1
+        when 3144 => --0xc48
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_0;      --Read Data 0
+        when 3145 => --0xc49
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_data.rd_data_1;      --Read Data 1
+        when 3153 => --0xc51
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_rdy;                 --Read ready
+        when 3154 => --0xc52
+          localRdData(11 downto  0)  <=  reg_data(3154)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3154)(27 downto 16);                                   --rd_Address
+        when 3156 => --0xc54
+          localRdData(31 downto  0)  <=  reg_data(3156)(31 downto  0);                                   --Write Data 0
+        when 3157 => --0xc55
+          localRdData( 9 downto  0)  <=  reg_data(3157)( 9 downto  0);                                   --Write Data 1
+        when 3160 => --0xc58
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_0;      --Read Data 0
+        when 3161 => --0xc59
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_data.rd_data_1;      --Read Data 1
+        when 3169 => --0xc61
+          localRdData( 0)            <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_rdy;                 --Read ready
+        when 3170 => --0xc62
+          localRdData(11 downto  0)  <=  reg_data(3170)(11 downto  0);                                   --wr_Address
+          localRdData(27 downto 16)  <=  reg_data(3170)(27 downto 16);                                   --rd_Address
+        when 3172 => --0xc64
+          localRdData(31 downto  0)  <=  reg_data(3172)(31 downto  0);                                   --Write Data 0
+        when 3173 => --0xc65
+          localRdData( 9 downto  0)  <=  reg_data(3173)( 9 downto  0);                                   --Write Data 1
+        when 3176 => --0xc68
+          localRdData(31 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_0;      --Read Data 0
+        when 3177 => --0xc69
+          localRdData( 9 downto  0)  <=  Mon.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_data.rd_data_1;      --Read Data 1
 
 
-        when others =>
-          localRdData <= x"00000000";
-      end case;
+          when others =>
+            regRdAck <= '0';
+            localRdData <= x"00000000";
+        end case;
+      end if;
     end if;
   end process reads;
 
 
-
+  -------------------------------------------------------------------------------
+  -- Record write decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
+  Ctrl.CONFIGS.INPUT_EN                                       <=  reg_data( 1)( 4);                 
+  Ctrl.CONFIGS.OUTPUT_EN                                      <=  reg_data( 1)( 5);                 
+  Ctrl.CONFIGS.FLUSH_MEM_RESET                                <=  reg_data( 1)( 6);                 
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_addr            <=  reg_data(2322)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_addr            <=  reg_data(2322)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0  <=  reg_data(2324)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1  <=  reg_data(2325)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_addr            <=  reg_data(2338)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_addr            <=  reg_data(2338)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0  <=  reg_data(2340)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1  <=  reg_data(2341)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_addr            <=  reg_data(2354)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_addr            <=  reg_data(2354)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0  <=  reg_data(2356)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1  <=  reg_data(2357)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_addr            <=  reg_data(2370)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_addr            <=  reg_data(2370)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0  <=  reg_data(2372)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1  <=  reg_data(2373)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_addr            <=  reg_data(2386)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_addr            <=  reg_data(2386)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0  <=  reg_data(2388)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1  <=  reg_data(2389)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_addr            <=  reg_data(2402)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_addr            <=  reg_data(2402)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0  <=  reg_data(2404)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1  <=  reg_data(2405)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_addr            <=  reg_data(2578)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_addr            <=  reg_data(2578)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0  <=  reg_data(2580)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1  <=  reg_data(2581)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_addr            <=  reg_data(2594)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_addr            <=  reg_data(2594)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0  <=  reg_data(2596)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1  <=  reg_data(2597)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_addr            <=  reg_data(2610)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_addr            <=  reg_data(2610)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0  <=  reg_data(2612)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1  <=  reg_data(2613)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_addr            <=  reg_data(2626)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_addr            <=  reg_data(2626)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0  <=  reg_data(2628)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1  <=  reg_data(2629)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_addr            <=  reg_data(2642)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_addr            <=  reg_data(2642)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0  <=  reg_data(2644)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1  <=  reg_data(2645)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_addr            <=  reg_data(2658)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_addr            <=  reg_data(2658)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0  <=  reg_data(2660)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1  <=  reg_data(2661)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_addr            <=  reg_data(2834)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_addr            <=  reg_data(2834)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0  <=  reg_data(2836)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1  <=  reg_data(2837)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_addr            <=  reg_data(2850)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_addr            <=  reg_data(2850)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0  <=  reg_data(2852)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1  <=  reg_data(2853)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_addr            <=  reg_data(2866)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_addr            <=  reg_data(2866)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0  <=  reg_data(2868)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1  <=  reg_data(2869)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_addr            <=  reg_data(2882)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_addr            <=  reg_data(2882)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0  <=  reg_data(2884)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1  <=  reg_data(2885)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_addr            <=  reg_data(2898)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_addr            <=  reg_data(2898)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0  <=  reg_data(2900)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1  <=  reg_data(2901)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_addr            <=  reg_data(2914)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_addr            <=  reg_data(2914)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0  <=  reg_data(2916)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1  <=  reg_data(2917)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_addr            <=  reg_data(3090)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_addr            <=  reg_data(3090)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0  <=  reg_data(3092)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1  <=  reg_data(3093)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_addr            <=  reg_data(3106)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_addr            <=  reg_data(3106)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0  <=  reg_data(3108)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1  <=  reg_data(3109)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_addr            <=  reg_data(3122)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_addr            <=  reg_data(3122)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0  <=  reg_data(3124)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1  <=  reg_data(3125)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_addr            <=  reg_data(3138)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_addr            <=  reg_data(3138)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0  <=  reg_data(3140)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1  <=  reg_data(3141)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_addr            <=  reg_data(3154)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_addr            <=  reg_data(3154)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0  <=  reg_data(3156)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1  <=  reg_data(3157)( 9 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_addr            <=  reg_data(3170)(11 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_addr            <=  reg_data(3170)(27 downto 16);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0  <=  reg_data(3172)(31 downto  0);     
+  Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1  <=  reg_data(3173)( 9 downto  0);     
 
 
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 1)( 4)  <= DEFAULT_TAR_CTRL_t.CONFIGS.INPUT_EN;
+      reg_data( 1)( 5)  <= DEFAULT_TAR_CTRL_t.CONFIGS.OUTPUT_EN;
+      reg_data( 1)( 6)  <= DEFAULT_TAR_CTRL_t.CONFIGS.FLUSH_MEM_RESET;
+      reg_data(2322)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_addr;
+      reg_data(2322)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_addr;
+      reg_data(2324)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0;
+      reg_data(2325)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1;
+      reg_data(2338)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_addr;
+      reg_data(2338)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_addr;
+      reg_data(2340)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0;
+      reg_data(2341)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1;
+      reg_data(2354)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_addr;
+      reg_data(2354)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_addr;
+      reg_data(2356)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0;
+      reg_data(2357)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1;
+      reg_data(2370)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_addr;
+      reg_data(2370)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_addr;
+      reg_data(2372)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0;
+      reg_data(2373)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1;
+      reg_data(2386)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_addr;
+      reg_data(2386)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_addr;
+      reg_data(2388)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0;
+      reg_data(2389)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1;
+      reg_data(2402)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_addr;
+      reg_data(2402)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_addr;
+      reg_data(2404)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0;
+      reg_data(2405)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1;
+      reg_data(2578)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_addr;
+      reg_data(2578)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_addr;
+      reg_data(2580)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0;
+      reg_data(2581)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1;
+      reg_data(2594)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_addr;
+      reg_data(2594)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_addr;
+      reg_data(2596)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0;
+      reg_data(2597)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1;
+      reg_data(2610)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_addr;
+      reg_data(2610)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_addr;
+      reg_data(2612)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0;
+      reg_data(2613)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1;
+      reg_data(2626)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_addr;
+      reg_data(2626)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_addr;
+      reg_data(2628)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0;
+      reg_data(2629)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1;
+      reg_data(2642)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_addr;
+      reg_data(2642)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_addr;
+      reg_data(2644)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0;
+      reg_data(2645)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1;
+      reg_data(2658)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_addr;
+      reg_data(2658)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_addr;
+      reg_data(2660)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0;
+      reg_data(2661)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1;
+      reg_data(2834)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_addr;
+      reg_data(2834)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_addr;
+      reg_data(2836)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0;
+      reg_data(2837)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1;
+      reg_data(2850)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_addr;
+      reg_data(2850)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_addr;
+      reg_data(2852)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0;
+      reg_data(2853)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1;
+      reg_data(2866)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_addr;
+      reg_data(2866)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_addr;
+      reg_data(2868)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0;
+      reg_data(2869)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1;
+      reg_data(2882)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_addr;
+      reg_data(2882)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_addr;
+      reg_data(2884)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0;
+      reg_data(2885)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1;
+      reg_data(2898)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_addr;
+      reg_data(2898)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_addr;
+      reg_data(2900)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0;
+      reg_data(2901)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1;
+      reg_data(2914)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_addr;
+      reg_data(2914)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_addr;
+      reg_data(2916)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0;
+      reg_data(2917)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1;
+      reg_data(3090)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_addr;
+      reg_data(3090)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_addr;
+      reg_data(3092)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_0;
+      reg_data(3093)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_data.wr_data_1;
+      reg_data(3106)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_addr;
+      reg_data(3106)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_addr;
+      reg_data(3108)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_0;
+      reg_data(3109)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_data.wr_data_1;
+      reg_data(3122)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_addr;
+      reg_data(3122)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_addr;
+      reg_data(3124)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_0;
+      reg_data(3125)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_data.wr_data_1;
+      reg_data(3138)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_addr;
+      reg_data(3138)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_addr;
+      reg_data(3140)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_0;
+      reg_data(3141)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_data.wr_data_1;
+      reg_data(3154)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_addr;
+      reg_data(3154)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_addr;
+      reg_data(3156)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_0;
+      reg_data(3157)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_data.wr_data_1;
+      reg_data(3170)(11 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_addr;
+      reg_data(3170)(27 downto 16)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_addr;
+      reg_data(3172)(31 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_0;
+      reg_data(3173)( 9 downto  0)  <= DEFAULT_TAR_CTRL_t.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_data.wr_data_1;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.RESET <= '0';
+      Ctrl.ACTIONS.RESET <= '0';
+      Ctrl.ACTIONS.ENABLE <= '0';
+      Ctrl.ACTIONS.DISABLE <= '0';
+      Ctrl.ACTIONS.FREEZE <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).flush_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_req <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_ack <= '0';
+      Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).flush_req <= '0';
       
 
       
       if localWrEn = '1' then
-        case to_integer(unsigned(localAddress(0 downto 0))) is
+        case to_integer(unsigned(localAddress(11 downto 0))) is
         when 0 => --0x0
-          Ctrl.RESET  <=  localWrData( 0);     
+          Ctrl.ACTIONS.RESET                                  <=  localWrData( 0);               
+          Ctrl.ACTIONS.ENABLE                                 <=  localWrData( 1);               
+          Ctrl.ACTIONS.DISABLE                                <=  localWrData( 2);               
+          Ctrl.ACTIONS.FREEZE                                 <=  localWrData( 3);               
+        when 1 => --0x1
+          reg_data( 1)( 4)                                    <=  localWrData( 4);                --
+          reg_data( 1)( 5)                                    <=  localWrData( 5);                --
+          reg_data( 1)( 6)                                    <=  localWrData( 6);                --
+        when 2320 => --0x910
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).flush_req  <=  localWrData( 4);               
+        when 2322 => --0x912
+          reg_data(2322)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2322)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2324 => --0x914
+          reg_data(2324)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2325 => --0x915
+          reg_data(2325)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2336 => --0x920
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(1).flush_req  <=  localWrData( 4);               
+        when 2338 => --0x922
+          reg_data(2338)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2338)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2340 => --0x924
+          reg_data(2340)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2341 => --0x925
+          reg_data(2341)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2352 => --0x930
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(2).flush_req  <=  localWrData( 4);               
+        when 2354 => --0x932
+          reg_data(2354)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2354)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2356 => --0x934
+          reg_data(2356)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2357 => --0x935
+          reg_data(2357)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2368 => --0x940
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(3).flush_req  <=  localWrData( 4);               
+        when 2370 => --0x942
+          reg_data(2370)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2370)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2372 => --0x944
+          reg_data(2372)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2373 => --0x945
+          reg_data(2373)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2384 => --0x950
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(4).flush_req  <=  localWrData( 4);               
+        when 2386 => --0x952
+          reg_data(2386)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2386)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2388 => --0x954
+          reg_data(2388)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2389 => --0x955
+          reg_data(2389)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2400 => --0x960
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(5).flush_req  <=  localWrData( 4);               
+        when 2402 => --0x962
+          reg_data(2402)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2402)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2404 => --0x964
+          reg_data(2404)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2405 => --0x965
+          reg_data(2405)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2576 => --0xa10
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(0).flush_req  <=  localWrData( 4);               
+        when 2578 => --0xa12
+          reg_data(2578)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2578)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2580 => --0xa14
+          reg_data(2580)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2581 => --0xa15
+          reg_data(2581)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2592 => --0xa20
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(1).flush_req  <=  localWrData( 4);               
+        when 2594 => --0xa22
+          reg_data(2594)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2594)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2596 => --0xa24
+          reg_data(2596)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2597 => --0xa25
+          reg_data(2597)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2608 => --0xa30
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(2).flush_req  <=  localWrData( 4);               
+        when 2610 => --0xa32
+          reg_data(2610)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2610)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2612 => --0xa34
+          reg_data(2612)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2613 => --0xa35
+          reg_data(2613)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2624 => --0xa40
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(3).flush_req  <=  localWrData( 4);               
+        when 2626 => --0xa42
+          reg_data(2626)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2626)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2628 => --0xa44
+          reg_data(2628)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2629 => --0xa45
+          reg_data(2629)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2640 => --0xa50
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(4).flush_req  <=  localWrData( 4);               
+        when 2642 => --0xa52
+          reg_data(2642)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2642)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2644 => --0xa54
+          reg_data(2644)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2645 => --0xa55
+          reg_data(2645)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2656 => --0xa60
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(1).PL_CHAMBER.PL_MEM(5).flush_req  <=  localWrData( 4);               
+        when 2658 => --0xa62
+          reg_data(2658)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2658)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2660 => --0xa64
+          reg_data(2660)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2661 => --0xa65
+          reg_data(2661)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2832 => --0xb10
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(0).flush_req  <=  localWrData( 4);               
+        when 2834 => --0xb12
+          reg_data(2834)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2834)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2836 => --0xb14
+          reg_data(2836)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2837 => --0xb15
+          reg_data(2837)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2848 => --0xb20
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(1).flush_req  <=  localWrData( 4);               
+        when 2850 => --0xb22
+          reg_data(2850)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2850)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2852 => --0xb24
+          reg_data(2852)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2853 => --0xb25
+          reg_data(2853)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2864 => --0xb30
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(2).flush_req  <=  localWrData( 4);               
+        when 2866 => --0xb32
+          reg_data(2866)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2866)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2868 => --0xb34
+          reg_data(2868)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2869 => --0xb35
+          reg_data(2869)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2880 => --0xb40
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(3).flush_req  <=  localWrData( 4);               
+        when 2882 => --0xb42
+          reg_data(2882)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2882)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2884 => --0xb44
+          reg_data(2884)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2885 => --0xb45
+          reg_data(2885)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2896 => --0xb50
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(4).flush_req  <=  localWrData( 4);               
+        when 2898 => --0xb52
+          reg_data(2898)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2898)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2900 => --0xb54
+          reg_data(2900)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2901 => --0xb55
+          reg_data(2901)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 2912 => --0xb60
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(2).PL_CHAMBER.PL_MEM(5).flush_req  <=  localWrData( 4);               
+        when 2914 => --0xb62
+          reg_data(2914)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(2914)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 2916 => --0xb64
+          reg_data(2916)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 2917 => --0xb65
+          reg_data(2917)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3088 => --0xc10
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(0).flush_req  <=  localWrData( 4);               
+        when 3090 => --0xc12
+          reg_data(3090)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3090)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3092 => --0xc14
+          reg_data(3092)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3093 => --0xc15
+          reg_data(3093)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3104 => --0xc20
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(1).flush_req  <=  localWrData( 4);               
+        when 3106 => --0xc22
+          reg_data(3106)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3106)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3108 => --0xc24
+          reg_data(3108)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3109 => --0xc25
+          reg_data(3109)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3120 => --0xc30
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(2).flush_req  <=  localWrData( 4);               
+        when 3122 => --0xc32
+          reg_data(3122)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3122)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3124 => --0xc34
+          reg_data(3124)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3125 => --0xc35
+          reg_data(3125)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3136 => --0xc40
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(3).flush_req  <=  localWrData( 4);               
+        when 3138 => --0xc42
+          reg_data(3138)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3138)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3140 => --0xc44
+          reg_data(3140)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3141 => --0xc45
+          reg_data(3141)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3152 => --0xc50
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(4).flush_req  <=  localWrData( 4);               
+        when 3154 => --0xc52
+          reg_data(3154)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3154)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3156 => --0xc54
+          reg_data(3156)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3157 => --0xc55
+          reg_data(3157)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
+        when 3168 => --0xc60
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_req     <=  localWrData( 0);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).wr_ack     <=  localWrData( 1);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_req     <=  localWrData( 2);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).rd_ack     <=  localWrData( 3);               
+          Ctrl.PL_ST.PL_ST(3).PL_CHAMBER.PL_MEM(5).flush_req  <=  localWrData( 4);               
+        when 3170 => --0xc62
+          reg_data(3170)(11 downto  0)                        <=  localWrData(11 downto  0);      --wr_Address
+          reg_data(3170)(27 downto 16)                        <=  localWrData(27 downto 16);      --rd_Address
+        when 3172 => --0xc64
+          reg_data(3172)(31 downto  0)                        <=  localWrData(31 downto  0);      --Write Data 0
+        when 3173 => --0xc65
+          reg_data(3173)( 9 downto  0)                        <=  localWrData( 9 downto  0);      --Write Data 1
 
           when others => null;
         end case;
@@ -105,4 +1107,10 @@ begin  -- architecture behavioral
   end process reg_writes;
 
 
+
+
+
+
+
+  
 end architecture behavioral;

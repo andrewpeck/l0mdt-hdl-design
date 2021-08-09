@@ -3,13 +3,13 @@
 --  Guillermo Loustau de Linares
 --  gloustau@cern.ch
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
+--  Project: ATLAS L0MDT Trigger
 --  Module: HPS candidate distributor
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -95,43 +95,105 @@ begin
           i_mdt_hit => i_mdt_data_v,
           i_eof     => i_control_r.eof,
           i_rst     => rst,
-          o_seg     => o_sf_data_v
-        );
+          spy_clock => clk,
+          o_seg     => o_sf_data_v,
+          i_spyhit_fc_we      => '0',
+          i_spyhit_fc_re      => '0',
+          i_spyhit_freeze     => '0',
+          i_spyhit_playback   => (others => '0'),
+          i_spyhit_pb_we      => '0',
+          i_spyhit_pb_wdata   => (others => '0'),
+          i_spyhit_re         => '0',
+          i_spyhit_addr       => (others => '0'),
+          i_spyhit_meta_addr  => (others => '0'),
+          i_spyhit_meta_we    => '0',
+          --o_spyhit_data       => '0',
+          --o_spyhit_meta_rdata => '0',
+          i_spyhit_meta_wdata => (others => '0'),
+          --o_spyhit_af         => '0',
+          --o_spyhit_empty      => '0',
+          -- SLC Spybuffer
+          i_spyslc_fc_we      => '0',
+          i_spyslc_fc_re      => '0',
+          i_spyslc_freeze     => '0',
+          i_spyslc_playback   => (others => '0'),
+          i_spyslc_pb_we      => '0',
+          i_spyslc_pb_wdata   => (others => '0'),
+          i_spyslc_re         => '0',
+          i_spyslc_addr       => (others => '0'),
+          i_spyslc_meta_addr  => (others => '0'),
+          i_spyslc_meta_we    => '0',
+          --o_spyslc_data       => '0',
+          --o_spyslc_meta_rdata => '0',
+          i_spyslc_meta_wdata => (others => '0'),
+          --o_spyslc_af         => '0',
+          --o_spyslc_empty      => '0',
+          -- Segment Spybuffer
+          i_spyseg_fc_we      => '0',
+          i_spyseg_fc_re      => '0',
+          i_spyseg_freeze     => '0',
+          i_spyseg_playback   => (others => '0'),
+          i_spyseg_pb_we      => '0',
+          i_spyseg_pb_wdata   => (others => '0'),
+          i_spyseg_re         => '0',
+          i_spyseg_addr       => (others => '0'),
+          i_spyseg_meta_addr  => (others => '0'),
+          i_spyseg_meta_we    => '0',
+          --o_spyseg_data       => '0';
+          --o_spyseg_meta_rdata => '0';
+          i_spyseg_meta_wdata => (others => '0')
+          --o_spyseg_af         => '0';
+          --o_spyseg_empty      => '0';
+      );
 
-      lsf_mon.STATUS <= '0';
-      lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
-      lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+    else generate
+
+      csf_mon.STATUS <= '0';
+      csf_mon.READY <= '0';
 
     end generate;
 
-    ------------------------------------------------------------------
-    -- LSF
-    ------------------------------------------------------------------
-   
-    EN_LSF : if c_SF_TYPE = '1' generate
-      LSF : entity lsf_lib.top_lsf
-        -- generic map(
-        --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
-        --   )
-        port map(
-          clock                               => clk,
-          reset                               => rst,
-          slc_roi                             => i_slc_data_v,
-          mdt_hit                             => i_mdt_data_v,
-          lsf                                 => o_sf_data_v,
-          hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
-          --SpyBuffer 
-          sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
-          sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
-          sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
-          sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
-          sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
+      ------------------------------------------------------------------
+      -- LSF
+      ------------------------------------------------------------------
+
+      EN_LSF : if c_SF_TYPE = '1' generate
+        LSF : entity lsf_lib.top_lsf
+          -- generic map(
+          --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+          --   )
+          port map(
+            clock                               => clk,
+            reset                               => rst,
+            slc_roi                             => i_slc_data_v,
+            mdt_hit                             => i_mdt_data_v,
+            lsf                                 => o_sf_data_v,
+            i_eof                               => i_control_r.eof,
+            hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
+            --SpyBuffer
+            sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
+            sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
+            sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
+            sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
+            sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
         );
 
-        csf_mon.STATUS <= '0';
-        csf_mon.READY <= '0';
+
+      else generate
+
+
+        lsf_mon.STATUS <= '0';
+        lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+        lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+
+
+      end generate;
+
+
+    else generate
+      
+
     end generate;
-  end generate;
 
   -- DIS_SF : if c_SF_ENABLED = '0' generate
 

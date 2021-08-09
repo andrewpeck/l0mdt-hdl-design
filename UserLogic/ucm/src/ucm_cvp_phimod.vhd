@@ -44,8 +44,8 @@ entity ucm_cvp_phimod is
     i_posphi            : in unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
     i_dv                : in std_logic;
     --
-    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0)
-    -- o_dv                : out std_logic;
+    o_phimod            : out signed(UCM2PL_PHIMOD_LEN -1 downto 0);
+    o_dv                : out std_logic
   );
 end entity ucm_cvp_phimod;
 
@@ -62,7 +62,7 @@ architecture beh of ucm_cvp_phimod is
 
   signal sphi_buff : integer;-- := 0;--unsigned(18 -1 downto 0);
   -- signal sphi : unsigned(SLC_COMMON_POSPHI_LEN -1 downto 0);
-  signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
+  signal phicenter : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID,SLC_COMMON_POSPHI_LEN);
   -- signal phicenter_Default : unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0) := get_sector_phi_center(c_SECTOR_ID);
 
   constant reschanger : integer := integer((1024.0 * SLC_COMMON_POSPHI_MULT)/UCM2PL_PHIMOD_MULT);

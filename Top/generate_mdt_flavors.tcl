@@ -72,7 +72,8 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "post-creation.tcl create_c2c.tcl prj_cfg_default.vhd gitlab-ci.yml hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/ctrl_lib.src list/xdc.con get_fpga_name.tcl"
+    set files_to_copy "create_c2c.tcl get_fpga_name.tcl gitlab-ci.yml hog.conf list/ctrl_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/shared_lib.src list/xdc.con post-creation.tcl prj_cfg_default.vhd"
+
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
@@ -84,6 +85,9 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
     exec sed -i "s|PART = .*$|PART = $fpga|g" "$dest_path/hog.conf"
 
+    # update the post-creation script
+    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/post-creation.tcl"
+
     # update the fpga
     exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/create_c2c.tcl"
     exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/create_c2c.tcl"
@@ -91,6 +95,8 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     # update the ip repo path
     regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
     exec sed -i "s|ip_repo_paths .*$|ip_repo_paths = \"IP_repository/${fpga_shortname}\"|g" "$dest_path/hog.conf"
+    file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
+    exec sed -i "s|PART.*$|PART = $fpga|g" "$dest_path/hog.conf"
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]

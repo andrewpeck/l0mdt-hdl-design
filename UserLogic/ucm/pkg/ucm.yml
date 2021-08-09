@@ -17,6 +17,12 @@ HDL_Types:
 
 - SLC_SPECIFIC_LEN : [ qualifier: constant , type: integer , value: 48 ]
 
+- UCM_CDE2CVP_PHIMOD_LEN : [ qualifier: constant , type: integer , value: 5 ]
+- UCM_CDE2CVP_PHIMOD_MULT : [ qualifier: constant , type: real , value: 12.0 ]
+
+- UCM_PHIMOD_LEN : [ qualifier: constant , type: integer , value: 5 ]
+# - UCM_PHIMOD_MULT : [ qualifier: constant , type: integer , value: 48 ]
+
 # - UCM_MBAR_LEN    : [ qualifier: constant , type: integer , value: 11 ]
 
 # # ucm preprocesor output
@@ -36,9 +42,13 @@ HDL_Types:
 
 # - b_chamber_z_origin : [array: MAX_NUM_CHAMBER_POS, type: unsigned, length: 16]
 # - b_chamber_z_origin_bus : [type: unsigned, length: 16 * MAX_NUM_CHAMBER_POS]
+- ucm_rpc_r : [type : logic , length : SLC_Z_RPC_LEN]
+- ucm_rpc_r_bus : [array : open , type : ucm_rpc_r]
+
+- ucm_mdt_r : [type : logic , length : UCM_Z_ROI_LEN]
+- ucm_mdt_r_bus : [array : open , type : ucm_mdt_r]
 
 - chamb_ieta_rpc : [type : unsigned , length : 4]
-
 - chamb_ieta_rpc_bus : [array : 4 , type : chamb_ieta_rpc]
 
 - ucm_cde:
@@ -47,11 +57,14 @@ HDL_Types:
   - chamb_ieta  : [type : chamb_ieta_rpc_bus]
   - cointype    : [type : logic , length : SLC_COMMON_COINTYPE_LEN]
   - posphi      : [type : unsigned , length : SLC_COMMON_POSPHI_LEN]
-  - phimod      : [type : signed , length : UCM2PL_PHIMOD_LEN]
+  - phimod      : [type : logic , length : UCM_CDE2CVP_PHIMOD_LEN]
   - specific    : [type : logic , length: SLC_SPECIFIC_LEN]
   - data_valid  : [type : logic]
 
 - ucm_cde_bus : [array: open , type: ucm_cde]
+
+# - ucm_cvp_rad : [type : logic , length : SLC_Z_RPC_LEN]
+# - ucm_cvp_rads : [array: open , type : ucm_cvp_rad]
 # ucm_prepro_avt: [array: open , type: ucm_prepro_vt ]
 
 # main cross switch control

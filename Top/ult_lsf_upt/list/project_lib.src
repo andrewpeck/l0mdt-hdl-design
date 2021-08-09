@@ -1,7 +1,7 @@
 # project files
 Top/ult_lsf_upt/top_ult_verilog.sv
 Top/ult_lsf_upt/prj_cfg.vhd
-ult/top_ult_tp.vhd
+ult/top_ult.vhd
 # modules included
 shared/shared_lib.src lib=shared_lib
 UserLogic/mpl/mpl_lib.src lib=mpl_lib
@@ -14,6 +14,6 @@ UserLogic/csf/csf_lib.src lib=csf_lib
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 UserLogic/tar/tar_lib.src lib=tar_lib
 UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
-UserLogic/upt/upt_lib.src lib=upt_lib
+UserLogic/upt/upt_lib_ku15p.src lib=upt_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
-UserLogic/lsf/lsf_lib.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib

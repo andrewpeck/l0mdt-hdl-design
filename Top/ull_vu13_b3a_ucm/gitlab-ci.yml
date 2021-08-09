@@ -1,0 +1,29 @@
+#################### ull_vu13_b3a_ucm Project ###########################
+GEN:ull_vu13_b3a_ucm:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_ucm
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - heavy-duty
+      - hog
+
+SIM:ull_vu13_b3a_ucm:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: ull_vu13_b3a_ucm
+      HOG_CHECK_PROJVER: 0
+
+    tags:
+      - questa
+      - hog
+      
+      
+# user_sim:ull_vu13_b3a_ucm:
+#     extends: .user_sim
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: ull_vu13_b3a_ucm

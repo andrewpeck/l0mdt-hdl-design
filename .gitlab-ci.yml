@@ -1,7 +1,13 @@
+variables:
+  HOG_CHECK_PROJVER : 1
+  HOG_CHECK_SYNTAX : 1
+  HOG_SIMULATION_LIB_PATH : "/afs/cern.ch/work/l/l0mdtel/QuestaLib/"
+  HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2019.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/"
+
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'v4.3.0'
+      ref: 'Hog2021.2-3'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -24,8 +30,8 @@ include:
     # - local: '/Top/ucm/gitlab-ci.yml'
     # - local: '/Top/hp/gitlab-ci.yml'
     # - local: '/Top/heg/gitlab-ci.yml'
-    - local: '/Top/hps_csf/gitlab-ci.yml'
-    - local: '/Top/hps_lsf/gitlab-ci.yml'
+    # - local: '/Top/hps_csf/gitlab-ci.yml'
+    # - local: '/Top/hps_lsf/gitlab-ci.yml'
     # - local: '/Top/daq/gitlab-ci.yml'
     # - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
@@ -46,7 +52,9 @@ include:
     #---------------------------------------------
     #         VU13 Projects
     #---------------------------------------------
-    # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+   # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     # writer
-    
-

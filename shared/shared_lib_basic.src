@@ -18,8 +18,8 @@ shared/types/yml2hdl_v1/common_ieee_pkg.vhd
 # shared/types/yml2hdl_v1/sl2mdt_constants_pkg.vhd
 # shared/types/yml2hdl_v1/sl2mdt_dataformats_pkg.vhd
 ####### constant and types from dataformat folder ######
-dataformats/l0mdt_constants_pkg.vhd
-dataformats/l0mdt_dataformats_pkg.vhd
+shared/types/l0mdt_constants_pkg.vhd
+shared/types/l0mdt_dataformats_pkg.vhd
 ####### constant and types from shared folder ######
 #shared/types/l0mdt_constants_pkg.vhd
 #shared/types/l0mdt_dataformats_pkg.vhd
@@ -33,6 +33,7 @@ dataformats/l0mdt_buses_constants.svh
 shared/functions/vhdl2008/vhdl2008_functions_pkg.vhd
 
 #-------------------
-# Detector shared RAMs
+# Detector parameters
 #-------------------
 shared/detector_parameters/detector_param_pkg.vhd
+shared/detector_parameters/detector_time_param_pkg.vhd

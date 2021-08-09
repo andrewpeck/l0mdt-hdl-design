@@ -56,14 +56,16 @@ begin
       if rising_edge(clk) then
         if(rst= '1') then
           -- o_data <= (others => (others => '0'));
-          o_data_ar(sli).data_valid <= '0';-- (others => '0');
-          
+          -- o_data_ar(sli).data_valid <= '0';-- (others => '0');
+          o_data_ar(sli)  <= nullify(o_data_ar(sli));
         else
           -- for csw_i in c_MAX_NUM_SL -1 downto 0 loop
             if i_control(sli).data_present = '1' then
               o_data_ar(sli) <= i_data_ar(to_integer(unsigned(i_control(sli).addr_orig)));
             else
               o_data_ar(sli).data_valid <= '0';-- (others => '0');
+              -- o_data_ar(sli) <= nullify(o_data_ar(sli));
+              -- o_data <= (others => (others => '0'));
             end if;
           -- end loop;
         end if;

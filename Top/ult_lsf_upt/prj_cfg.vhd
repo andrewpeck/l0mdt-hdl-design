@@ -16,8 +16,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-library shared_lib;
-use shared_lib.cfg_global_pkg.all;
+-- library shared_lib;
+-- use shared_lib.cfg_global_pkg.all;
+library shared_cfg_def_lib;
+use shared_cfg_def_lib.cfg_global_default_pkg.all;
 
 package prj_cfg is
 
@@ -41,7 +43,7 @@ package body prj_cfg is
     proj_cfg.ENABLE_NEIGHBORS         := '1'; -- 0: disabled  1: enabled
 
     -- Blocks
-    proj_cfg.INSEL_MDT_nTAR           := '0';
+    --proj_cfg.INSEL_MDT_nTAR           := '0';
     proj_cfg.ENABLE_UCM               := '1';
     proj_cfg.ENABLE_SF                := '1';
     proj_cfg.SF_TYPE                  := '1';  -- 0: CSF 1:LSF

@@ -1,9 +1,9 @@
 yml2hdl_v1 := ../../tools/yml2hdl_v1/yml2hdl.py
 yml2hdl_v2 := ../../tools/yml2hdl/yml2hdl.py
 
-common := -e yml2hdl_v1/common_ieee.yml       \
-	-e ../../dataformats/l0mdt_constants.yml \
-	-e yml2hdl_v1/common_constants.yml  \
+common := -e yml2hdl_v1/common_ieee.yml            \
+	-e ../../dataformats/l0mdt_constants.yml   \
+	-e yml2hdl_v1/common_constants.yml         \
 	-e ../../dataformats/l0mdt_dataformats.yml \
 	-e yml2hdl_v1/common_types.yml
 # new version l0mdt files in dataformat folder
@@ -13,11 +13,13 @@ all:
 ##### l0mdt constants dataformat folder
 	python3 $(yml2hdl_v1)  \
 	-e yml2hdl_v1/common_ieee.yml  \
+	-o ../../shared/types \
 	../../dataformats/l0mdt_constants.yml
 ##### l0mdt dataformats dataformat folder
 	python3 $(yml2hdl_v1)     \
 	-e yml2hdl_v1/common_ieee.yml     \
 	-e ../../dataformats/l0mdt_constants.yml \
+	-o ../../shared/types \
 	../../dataformats/l0mdt_dataformats.yml
 ##### common constants
 	python3 $(yml2hdl_v1)     \
@@ -78,6 +80,35 @@ all:
 	-e ../../UserLogic/hp/pkg/hp.yml   \
 	-e ../../UserLogic/heg/pkg/heg.yml \
 	../../shared/sim/pkg/gldl_ult_tp_sim.yml
+
+
+
+# new version l0mdt files in dataformat folder
+all2:
+##### common ieee
+	python3 $(yml2hdl_v2)  common_ieee.yml
+#a ##### l0mdt constants dataformat folder
+#a 	python3 $(yml2hdl_v2) -d "./"            \
+#a 	-e common_ieee.yml            \
+#a 	../../dataformats/l0mdt_constants.yml
+#a ##### l0mdt dataformats dataformat folder
+#a 	python3 $(yml2hdl_v2) -d "./"            \
+#a 	-e common_ieee.yml            \
+#a 	-e ../../dataformats/l0mdt_constants.yml \
+#a 	../../dataformats/l0mdt_dataformats.yml
+#a ##### common constants
+#a 	python3 $(yml2hdl_v2) -d "./"            \
+#a 	-e common_ieee.yml            \
+#a 	-e ../../dataformats/l0mdt_constants.yml \
+#a 	common_constants.yml
+#a ##### common types
+#a 	python3 $(yml2hdl_v2)       \
+#a 	-e common_ieee.yml       \
+#a 	-e ../../dataformats/l0mdt_constants.yml \
+#a 	-e common_constants.yml  \
+#a 	-e ../../dataformats/l0mdt_dataformats.yml \
+#a 	common_types.yml
+
 
 # old version all main files in shared folder
 # all:

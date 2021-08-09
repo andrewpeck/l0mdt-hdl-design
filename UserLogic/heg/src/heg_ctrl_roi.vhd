@@ -107,7 +107,7 @@ begin
     
     LARGE_GEN: if g_STATION_RADIUS = 0 generate
 
-      ROI_MBAR_6L : entity heg_lib.b_slope2roi_8l
+      ROI_MBAR_8L : entity heg_lib.b_slope2roi_8l
       generic map(
         g_STATION_RADIUS => g_STATION_RADIUS
       )

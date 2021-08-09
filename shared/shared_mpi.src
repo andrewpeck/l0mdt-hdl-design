@@ -1,0 +1,4 @@
+#-----CSF/PT memories-----
+shared/memories/src/bram.vhd
+shared/memories/src/rom.v
+shared/memories/src/rom_dp.v
