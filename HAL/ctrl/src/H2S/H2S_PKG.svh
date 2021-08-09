@@ -180,7 +180,32 @@
   } H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
 
   typedef struct packed {
+    logic [9-1:0] wr_data_0;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t;
+
+  typedef struct packed {
+    logic [9-1:0] rd_data_0;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t;
+
+  typedef struct packed {
+    logic  rd_rdy;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t   rd_data;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+    logic [10-1:0] wr_addr;
+    logic [10-1:0] rd_addr;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t   wr_data;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
+
+  typedef struct packed {
     H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t   STATUS;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t   MDT_DT2R;
   } H2S_HPS_HEG_HEG_HP_HP_MON_t;
 
   typedef H2S_HPS_HEG_HEG_HP_HP_MON_t  [6-1:0] H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY;
@@ -188,6 +213,7 @@
   typedef struct packed {
     H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t   ACTIONS;
     H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t   CONFIGS;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t   MDT_DT2R;
   } H2S_HPS_HEG_HEG_HP_HP_CTRL_t;
 
   typedef H2S_HPS_HEG_HEG_HP_HP_CTRL_t  [6-1:0] H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY;

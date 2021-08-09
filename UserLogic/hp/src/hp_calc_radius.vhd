@@ -52,6 +52,9 @@ end entity hp_calc_radius;
 
 architecture beh of hp_calc_radius is
 
+  signal ctrl_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
+  signal mon_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
+
   signal drift_time : unsigned(MDT_TIME_LEN -1 downto 0);
   signal BCID_exp : unsigned(MDT_TIME_LEN -1 downto 0);
   signal int_dv : std_logic;
@@ -66,6 +69,9 @@ architecture beh of hp_calc_radius is
     
 begin
 
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
+
   -- DT2R_B_GEN: if c_ST_nBARREL_ENDCAP = '0' generate
 
   -- else generate
@@ -77,7 +83,7 @@ begin
   -- BCID_exp <= to_unsigned(0,1) & i_SLc_BCID & to_unsigned(0,5);
   BCID_exp <= i_SLc_BCID & to_unsigned(0,5);
 
-  t0_proc: process(rst,clk)
+  bcid_rm_proc: process(rst,clk)
   begin
     if rising_edge(clk) then
       if rst= '1' then
