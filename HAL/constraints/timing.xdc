@@ -78,7 +78,7 @@ set_false_path \
     -from [get_cells top_control_inst/c2cslave_wrapper*/*/sys_reseter/U0/ACTIVE_LOW_BSR_OUT_DFF*]
 
 set_false_path \
-    -from [get_pins top_hal/mgt_wrapper_inst/axi_map_gen[*].tx_resets_reg[*][reset_bufbypass]/C]
+    -from [get_pins {top_hal/mgt_wrapper_inst/axi_map_gen[*].tx_resets_reg[*][reset_bufbypass]}/C]
 
 set_false_path \
     -from [get_pins top_control_inst/hal_core_interface_inst/reg_data*/C] \
