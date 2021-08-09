@@ -184,7 +184,7 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
-  signal felix_uplink_mgt_word_array : std64_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -436,10 +436,11 @@ begin  -- architecture behavioral
 
   -- 0 to 3, inner middle outer extra
   station_gen : for I in 0 to 3 generate
-    constant num_polmuxes : int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
-                                                     c_NUM_POLMUX_MIDDLE,
-                                                     c_NUM_POLMUX_OUTER,
-                                                     c_NUM_POLMUX_EXTRA);
+    constant num_polmuxes :
+      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
+                               c_NUM_POLMUX_MIDDLE,
+                               c_NUM_POLMUX_OUTER,
+                               c_NUM_POLMUX_EXTRA);
   begin
 
     polmux_gen : for J in 0 to num_polmuxes(I)-1 generate

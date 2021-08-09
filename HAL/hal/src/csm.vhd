@@ -33,7 +33,7 @@ entity csm is
 
     reset_i    : in std_logic;
     strobe_320 : in std_logic;
-    clk40 : in std_logic;
+    clk40      : in std_logic;
 
     -- TTC
     trg_i : in std_logic;
@@ -102,10 +102,9 @@ architecture behavioral of csm is
 
   signal enc_o : std_logic := '0';
 
-  signal sca0_up_aux, sca1_up_aux, sca2_up_aux : std_logic_vector (7 downto 0);
-
-  signal sca0_down_aux, sca1_down_aux, sca2_down_aux : std_logic_vector (7 downto 0);
-
+  signal sca0_up_8bit, sca1_up_8bit, sca2_up_8bit : std_logic_vector (7 downto 0);
+  signal sca0_up, sca1_up, sca2_up                : std_logic_vector (1 downto 0);
+  signal sca0_down, sca1_down, sca2_down          : std_logic_vector (1 downto 0);
 
 begin
 

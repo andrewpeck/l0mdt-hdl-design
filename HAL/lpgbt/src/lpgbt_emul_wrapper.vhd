@@ -78,7 +78,7 @@ begin
       lpgbtemul_top_inst : entity lpgbt_emul.lpgbtemul_top
         generic map (
           rxslide_pulse_duration => 2,
-          FEC_MODE                => std_logic0,  -- 0 = fec5, 1 = fec12
+          FEC_MODE               => std_logic0,  -- 0 = fec5, 1 = fec12
           rxslide_pulse_delay    => 128
           )
         port map (
@@ -121,7 +121,7 @@ begin
           uplinkinterleaverbypass => c_BYPASS_INTERLEAVER,
           uplinkfecbypass         => c_BYPASS_FEC,
           uplinkscramblerbypass   => c_BYPASS_SCRAMBLER,
-          txdatarate              => std_logic1   -- 0 = 5.24 gbps, 1 = 10.24
+          txdatarate              => std_logic1  -- 0 = 5.24 gbps, 1 = 10.24
           );
     end generate;
   end generate;

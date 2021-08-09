@@ -7,21 +7,41 @@ set_case_analysis 0  [get_pins top_hal/top_clocking_inst/*/*/CLKINSEL ]
 # GT to AXI Clock Exceptions
 #################################################################################
 
+# from mgt to clock_100
 set_max_delay -datapath_only \
-    -from [get_clocks GTYE4_CHANNEL_TXOUTCLKPCS*] \
-    -to [get_clocks clock_100] 2.5
-
-set_max_delay -datapath_only \
-    -from [get_clocks GTYE4_CHANNEL_TXOUTCLKPCS*] \
-    -to [get_clocks axi_clk] 2.5
+    -from [get_clocks GTYE4_CHANNEL_TXOUTCLK*] \
+    -to [get_clocks clock_100] 3.0
 
 set_max_delay -datapath_only \
     -from [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
-    -to [get_clocks clock_100] 2.5
+    -to [get_clocks clock_100] 3.0
+
+# from clock_100 mgt
+set_max_delay -datapath_only \
+    -to [get_clocks GTYE4_CHANNEL_TXOUTCLK*] \
+    -from [get_clocks clock_100] 3.0
+
+set_max_delay -datapath_only \
+    -to [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
+    -from [get_clocks clock_100] 3.0
+
+# from mgt to axi_clk
+set_max_delay -datapath_only \
+    -from [get_clocks GTYE4_CHANNEL_TXOUTCLK*] \
+    -to [get_clocks axi_clk] 3.0
 
 set_max_delay -datapath_only \
     -from [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
-    -to [get_clocks axi_clk] 2.5
+    -to [get_clocks axi_clk] 3.0
+
+# from axi_clk to mgt
+set_max_delay -datapath_only \
+    -to [get_clocks GTYE4_CHANNEL_TXOUTCLK*] \
+    -from [get_clocks clock_axi] 3.0
+
+set_max_delay -datapath_only \
+    -to [get_clocks GTYE4_CHANNEL_RXOUTCLK*] \
+    -from [get_clocks clock_axi] 3.0
 
 #################################################################################
 #
@@ -29,7 +49,7 @@ set_max_delay -datapath_only \
 
 set_max_delay -datapath_only \
     -from [get_clocks *] \
-    -to [get_pins -hierarchical -filter {NAME =~ *s_resync_reg*/D}] 2.5
+    -to [get_pins -hierarchical -filter {NAME =~ *s_resync_reg*/D}] 3.0
 
 set_max_delay -datapath_only \
     -from [get_clocks *] \
@@ -73,3 +93,5 @@ set_false_path \
 
 set_false_path \
     -from [get_pins {top_control_inst/hal_core_ctrl_reg[CLOCKING][SELECT_FELIX_CLK]*/C}]
+ 
+#set_property DONT_TOUCH true [get_cells -hierarchical *]

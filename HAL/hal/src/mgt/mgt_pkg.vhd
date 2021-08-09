@@ -14,7 +14,7 @@ package mgt_pkg is
 
   type mgt_drp_out_rt is record
     drpdo_out  : std_logic_vector(15 downto 0);
-    drprdy_out : std_logic_vector(0 downto 0);
+    drprdy_out : std_logic;
   end record;
   type mgt_drp_out_rt_array is array (integer range <>) of mgt_drp_out_rt;
 
