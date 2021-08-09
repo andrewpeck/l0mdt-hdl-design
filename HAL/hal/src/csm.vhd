@@ -118,40 +118,50 @@ begin
   -- if we AND the individual ic/ec data with a broadcast IC/ec data then the output
   -- datastream will correctly mux between the local and broadcast datastreams
 
-  sca0_up_aux <= uplink_data(0).data(8*(CSM_SCA0_UP_AUX+1)-1 downto 8*(CSM_SCA0_UP_AUX));
-  sca1_up_aux <= uplink_data(0).data(8*(CSM_SCA1_UP_AUX+1)-1 downto 8*(CSM_SCA1_UP_AUX));
-  sca2_up_aux <= uplink_data(0).data(8*(CSM_SCA2_UP_AUX+1)-1 downto 8*(CSM_SCA2_UP_AUX));
+  -- uplinks are mixed with other links, run at 320 Mbps
+  -- sca0_up_8bit <= uplink_data(0).data(8*(CSM_SCA0_UP+1)-1 downto 8*(CSM_SCA0_UP));
+  -- sca1_up_8bit <= uplink_data(0).data(8*(CSM_SCA1_UP+1)-1 downto 8*(CSM_SCA1_UP));
+  -- sca2_up_8bit <= uplink_data(0).data(8*(CSM_SCA2_UP+1)-1 downto 8*(CSM_SCA2_UP));
+  sca0_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
+  sca1_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
+  sca2_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
 
-  sca0_down_aux <= downlink_data(0).data(2*(CSM_SCA0_DOWN_AUX+1)-1 downto 2*(CSM_SCA0_DOWN_AUX));
-  sca1_down_aux <= downlink_data(0).data(2*(CSM_SCA1_DOWN_AUX+1)-1 downto 2*(CSM_SCA1_DOWN_AUX));
-  sca2_down_aux <= downlink_data(0).data(2*(CSM_SCA2_DOWN_AUX+1)-1 downto 2*(CSM_SCA2_DOWN_AUX));
+  sca0_up <= sca0_up_8bit(6) & sca0_up_8bit(2);
+  sca1_up <= sca1_up_8bit(6) & sca1_up_8bit(2);
+  sca2_up <= sca2_up_8bit(6) & sca2_up_8bit(2);
+
+  -- downlinks are configured for 80 Mbps
+  downlink_data(0).data(2*(CSM_SCA0_DOWN+1)-1 downto 2*(CSM_SCA0_DOWN)) <= sca0_down;
+  downlink_data(0).data(2*(CSM_SCA1_DOWN+1)-1 downto 2*(CSM_SCA1_DOWN)) <= sca1_down;
+  downlink_data(0).data(2*(CSM_SCA2_DOWN+1)-1 downto 2*(CSM_SCA2_DOWN)) <= sca2_down;
 
   gbt_controller_wrapper_inst : entity work.gbt_controller_wrapper
     generic map (g_SCAS_PER_LPGBT => 3)
     port map (
 
-      reset_i   => reset_i,
-      clk40     => clk40,
-      clk320    => downlink_clk,
-      valid_i   => downlink_data(0).valid,
-      ctrl      => ctrl.sc,
-      mon       => mon.sc,
+      reset_i => reset_i,
+      clk40   => clk40,
+      clk320  => downlink_clk,
+      valid_i => downlink_data(0).valid,
+      ctrl    => ctrl.sc,
+      mon     => mon.sc,
 
       -- to lpgbt uplink
       ic_data_i => uplink_data(0).ic,
       ec_data_i => uplink_data(0).ec,
 
-      -- pick out 2 bits (dumb 320 to 80 conversion)... TODO: can take the majority vote?
-      sca0_data_i => sca0_up_aux(6) & sca0_up_aux(2),
-      sca1_data_i => sca0_up_aux(6) & sca0_up_aux(2),
-      sca2_data_i => sca0_up_aux(6) & sca0_up_aux(2),
-
       -- to lpgbt downlink
-      ic_data_o   => downlink_data(0).ic,
-      ec_data_o   => downlink_data(0).ec,
-      sca0_data_o => sca0_down_aux,
-      sca1_data_o => sca1_down_aux,
-      sca2_data_o => sca2_down_aux
+      ic_data_o => downlink_data(0).ic,
+      ec_data_o => downlink_data(0).ec,
+
+      -- SCA Links
+      sca0_data_i => sca0_up,
+      sca1_data_i => sca1_up,
+      sca2_data_i => sca2_up,
+
+      sca0_data_o => sca0_down,
+      sca1_data_o => sca1_down,
+      sca2_data_o => sca2_down
       );
 
   --------------------------------------------------------------------------------
@@ -166,7 +176,7 @@ begin
       bcr_i => bcr_i,
       ecr_i => ecr_i,
       gsr_i => gsr_i,
-      enc_o => enc_o                  -- puts out 1 bit every 25ns, needs 3 bx for a command
+      enc_o => enc_o                    -- puts out 1 bit every 25ns, needs 3 bx for a command
       );
 
   downlink_data(0).data((enc_elink+1)*2-1 downto 2*enc_elink) <= enc_o & enc_o;  -- 40 mb to 80 mb replication
