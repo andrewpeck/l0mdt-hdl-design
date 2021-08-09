@@ -122,9 +122,9 @@ begin
   -- sca0_up_8bit <= uplink_data(0).data(8*(CSM_SCA0_UP+1)-1 downto 8*(CSM_SCA0_UP));
   -- sca1_up_8bit <= uplink_data(0).data(8*(CSM_SCA1_UP+1)-1 downto 8*(CSM_SCA1_UP));
   -- sca2_up_8bit <= uplink_data(0).data(8*(CSM_SCA2_UP+1)-1 downto 8*(CSM_SCA2_UP));
-  sca0_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
-  sca1_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
-  sca2_up_8bit <= uplink_data(0).bitsel(data,8,CSM_SCA0_UP);
+  sca0_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA0_UP);
+  sca1_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA1_UP);
+  sca2_up_8bit <= bitsel(uplink_data(0).data, 8, CSM_SCA2_UP);
 
   sca0_up <= sca0_up_8bit(6) & sca0_up_8bit(2);
   sca1_up <= sca1_up_8bit(6) & sca1_up_8bit(2);

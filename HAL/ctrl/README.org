@@ -1,0 +1,2 @@
+This directory contains mostly the auto-generated XML --> VHDL outputs of the
+control library.
