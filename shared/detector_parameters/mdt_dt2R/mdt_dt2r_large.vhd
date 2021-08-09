@@ -16,10 +16,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package hp_dt2r_large_mem is
+package mdt_dt2r_large is
 
   constant DT2R_LARGE_ADDR_LEN : integer := 10;
-  constant DT2R_LARGE_DATA_LEN : integer := 9;
+  -- constant DT2R_LARGE_DATA_LEN : integer := 9;
   constant DT2R_LARGE_MEM_SIZE : integer := 1024;
 
   type mem_array is array (0 to DT2R_LARGE_MEM_SIZE-1) of integer;
@@ -126,4 +126,4 @@ package hp_dt2r_large_mem is
                       -- I saturate 987 to 1023 until we do more precioson calculations
   );
 
- end package hp_dt2r_large_mem;
+ end package mdt_dt2r_large;
