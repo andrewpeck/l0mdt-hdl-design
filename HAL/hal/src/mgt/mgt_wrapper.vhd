@@ -16,6 +16,7 @@ use work.mgt_pkg.all;
 use work.board_pkg.all;
 use work.board_pkg_common.all;
 use work.sector_logic_pkg.all;
+use work.display_board_cfg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HAL_CORE_CTRL.all;
@@ -242,12 +243,16 @@ begin
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
+    cfggen : if (I=0) generate
+      display_board_cfg(true);
+    end generate;
+
     assert false report
       "GENERATING MGT=" & integer'image(I) &
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
 
     --------------------------------------------------------------------------------
-    -- LPGBT+Emulator+Felix Type
+    -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
     lpgbt_gen : if ((I mod 4 = 0) and
@@ -280,62 +285,100 @@ begin
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
 
-          -- qpll0clk_in                => '0',
-          -- qpll0refclk_in             => '0',
-          -- qpll1clk_in                => '0',
-          -- qpll1refclk_in             => '0',
-          -- gtwiz_reset_qpll0lock_in   => '0',
-          -- gtwiz_reset_qpll0reset_out => '0',
-          qpll0outclk_out            => open,
-          qpll0outrefclk_out         => open,
-          qpll1outclk_out            => open,
-          qpll1outrefclk_out         => open,
+          --------------------------------------------------------------------------------
+          -- MGT data
+          --------------------------------------------------------------------------------
 
+          -- parallel data
+          mgt_word_i => tx_data (3 downto 0),
+          mgt_word_o => rx_data (3 downto 0),
 
+          -- dummy signals for mgts
+          rxp_i => rx_p (3 downto 0),
+          rxn_i => rx_n (3 downto 0),
+          txp_o => tx_p (3 downto 0),
+          txn_o => tx_n (3 downto 0),
 
-          free_clock            => clocks.freeclock,
-          reset                 => reset_tree(I),
-          refclk0_i             => refclk(c_MGT_MAP(I).refclk),
-          refclk1_i             => refclk(c_MGT_MAP(I).refclk),
+          rx_slide_i => rxslide,
+
+          --------------------------------------------------------------------------------
+          -- resets
+          --------------------------------------------------------------------------------
+
+          -- global reset
+          reset => reset_tree(I),
+
+          -- tx/rx resets
+          tx_resets_i => tx_resets(I+3 downto I),
+          rx_resets_i => rx_resets(I+3 downto I),
+
+          --------------------------------------------------------------------------------
+          -- clocks
+          --------------------------------------------------------------------------------
+
+          -- drp clock
+          free_clock => clocks.freeclock,
+
+          -- refclks
+          refclk0_i => refclk(c_MGT_MAP(I).refclk),
+          refclk1_i => refclk(c_MGT_MAP(I).refclk),
+
+          -- user clocks
           mgt_rxusrclk_i        => clocks.clock320,
           mgt_rxusrclk_active_i => clocks.locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_i        => clocks.clock320,
           mgt_txusrclk_active_i => clocks.locked,
-          tx_resets_i           => tx_resets(I+3 downto I),
-          rx_resets_i           => rx_resets(I+3 downto I),
-          rx_slide_i            => rxslide,
-          status_o              => status(I+3 downto I),
-          mgt_word_i            => tx_data (3 downto 0),
-          mgt_word_o            => rx_data (3 downto 0),
-          rxp_i                 => rx_p (3 downto 0),
-          rxn_i                 => rx_n (3 downto 0),
-          txp_o                 => tx_p (3 downto 0),
-          txn_o                 => tx_n (3 downto 0),
-          mgt_drp_i             => drp_i(I+3 downto I),
-          mgt_drp_o             => drp_o(I+3 downto I),
-          rxoutclk              => rxoutclk(3 downto 0)
+
+          -- outputs
+          qpll0outclk_out    => open,
+          qpll0outrefclk_out => open,
+          qpll1outclk_out    => open,
+          qpll1outrefclk_out => open,
+
+
+          rxoutclk => rxoutclk(3 downto 0),
+
+
+          --------------------------------------------------------------------------------
+          -- DRP & Status
+          --------------------------------------------------------------------------------
+
+          mgt_drp_i => drp_i(I+3 downto I),
+          mgt_drp_o => drp_o(I+3 downto I),
+          status_o  => status(I+3 downto I)
           );
 
-      channel_loop : for J in 0 to 3 generate
+      --------------------------------------------------------------------------------
+      -- with transceivers generated... loop over the 4 individual channels in a
+      -- quad and assign them to the relevant types
+      --------------------------------------------------------------------------------
+
+      channel_loop : for LINK_0_TO_3 in 0 to 3 generate
       begin
 
         --------------------------------------------------------------------------------
         -- LPGBT CSM
         --------------------------------------------------------------------------------
 
-        csm_gen : if (lpgbt_idx_array(I) /= -1) generate
-          constant downlink_idx : integer := lpgbt_downlink_idx_array(I);
-          constant uplink_idx   : integer := lpgbt_uplink_idx_array(I);
+        csm_gen : if (lpgbt_idx_array(I+LINK_0_TO_3) /= -1) generate
+          constant downlink_idx : integer := lpgbt_downlink_idx_array(I+LINK_0_TO_3);
+          constant uplink_idx   : integer := lpgbt_uplink_idx_array(I+LINK_0_TO_3);
         begin
 
-          tx_data(J) <= lpgbt_downlink_mgt_word_array_i(downlink_idx+J)
-                        when (downlink_idx + J /= -1) else x"00000000";
+          -- only have downlinks on every other TX channel
+          -- TODO: mirror them for symmetry??
+          dlgen : if (downlink_idx /= -1) generate
+            tx_data(LINK_0_TO_3) <= lpgbt_downlink_mgt_word_array_i(downlink_idx);
+          end generate;
+          nodlgen : if (downlink_idx = -1) generate
+            tx_data(LINK_0_TO_3) <= (others => '0');
+          end generate;
 
-          lpgbt_uplink_mgt_word_array_o(uplink_idx+J) <= rx_data(J);
+          -- assign uplinks data and rxslide
+          lpgbt_uplink_mgt_word_array_o(uplink_idx) <= rx_data(LINK_0_TO_3);
+          rxslide(LINK_0_TO_3) <= lpgbt_rxslide_i(uplink_idx);
 
-          rxslide(J) <= lpgbt_rxslide_i(uplink_idx+J);
-
-          assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I)
+          assert false report "Assigning LPGBT type link on MGT=" & integer'image(I)
             & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
             & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
           assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
@@ -350,15 +393,15 @@ begin
         -- Emulator LPGBT
         --------------------------------------------------------------------------------
 
-        emul_gen : if (emul_idx_array(I+J) /= -1) generate
-          constant downlink_idx : integer := emul_idx_array(I+J);
-          constant uplink_idx   : integer := emul_idx_array(I+J);
+        emul_gen : if (emul_idx_array(I+LINK_0_TO_3) /= -1) generate
+          constant downlink_idx : integer := emul_idx_array(I+LINK_0_TO_3);
+          constant uplink_idx   : integer := emul_idx_array(I+LINK_0_TO_3);
         begin
 
-          tx_data(J) <= lpgbt_emul_uplink_mgt_word_array_i(downlink_idx+J);
-          rxslide(J) <= lpgbt_emul_rxslide_i(uplink_idx+J);
+          tx_data(LINK_0_TO_3) <= lpgbt_emul_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
+          rxslide(LINK_0_TO_3) <= lpgbt_emul_rxslide_i(uplink_idx+LINK_0_TO_3);
 
-          lpgbt_emul_downlink_mgt_word_array_o(uplink_idx+J) <= rx_data(J);
+          lpgbt_emul_downlink_mgt_word_array_o(uplink_idx+LINK_0_TO_3) <= rx_data(LINK_0_TO_3);
 
         end generate;
 
@@ -372,12 +415,12 @@ begin
 
           -- FELIX Recovered Clock
           --
-          tx_data(J)  <= felix_uplink_mgt_word_array_i(downlink_idx+J);
-          rxslide (J) <= felix_ttc_bitslip_i;
+          tx_data(LINK_0_TO_3)  <= felix_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
+          rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
 
-          recclk_out_gen : if (downlink_idx + J = c_FELIX_RECCLK_SRC) generate
-            recclk_o             <= rxoutclk(J);
-            felix_ttc_mgt_word_o <= rx_data(J);
+          recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
+            recclk_o             <= rxoutclk(LINK_0_TO_3);
+            felix_ttc_mgt_word_o <= rx_data(LINK_0_TO_3);
           end generate;
 
         end generate;

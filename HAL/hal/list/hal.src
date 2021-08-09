@@ -15,6 +15,7 @@ HAL/hal/src/felix_decoder.vhd
 HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
+HAL/hal/src/display_board_cfg.vhd
 
 # IP
 HAL/IP/framework_mmcm/framework_mmcm.xci
