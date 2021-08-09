@@ -135,35 +135,35 @@ architecture structural of top_l0mdt is
 
   -- Control and Monitoring Records
 
-  signal h2s_mon_r    : H2S_MON_t;
-  signal h2s_ctrl_r   : H2S_CTRL_t;
-  signal tar_ctrl_r   : TAR_CTRL_t;
-  signal tar_mon_r    : TAR_MON_t;
-  signal mtc_ctrl_r   : MTC_CTRL_t;
-  signal mtc_mon_r    : MTC_MON_t;
-  signal ucm_ctrl_r   : UCM_CTRL_t;
-  signal ucm_mon_r    : UCM_MON_t;
-  signal daq_ctrl_r   : DAQ_CTRL_t;
-  signal daq_mon_r    : DAQ_MON_t;
-  signal tf_ctrl_r    : TF_CTRL_t;
-  signal tf_mon_r     : TF_MON_t;
-  signal mpl_mon_r    : MPL_MON_t;
-  signal mpl_ctrl_r   : MPL_CTRL_t;
+  signal h2s_mon_r  : H2S_MON_t;
+  signal h2s_ctrl_r : H2S_CTRL_t;
+  signal tar_ctrl_r : TAR_CTRL_t;
+  signal tar_mon_r  : TAR_MON_t;
+  signal mtc_ctrl_r : MTC_CTRL_t;
+  signal mtc_mon_r  : MTC_MON_t;
+  signal ucm_ctrl_r : UCM_CTRL_t;
+  signal ucm_mon_r  : UCM_MON_t;
+  signal daq_ctrl_r : DAQ_CTRL_t;
+  signal daq_mon_r  : DAQ_MON_t;
+  signal tf_ctrl_r  : TF_CTRL_t;
+  signal tf_mon_r   : TF_MON_t;
+  signal mpl_mon_r  : MPL_MON_t;
+  signal mpl_ctrl_r : MPL_CTRL_t;
 
-  signal h2s_ctrl_v   : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
-  signal h2s_mon_v    : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
-  signal tar_ctrl_v   : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
-  signal tar_mon_v    : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
-  signal mtc_ctrl_v   : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
-  signal mtc_mon_v    : std_logic_vector(len(mtc_mon_r  ) -1 downto 0);
-  signal ucm_ctrl_v   : std_logic_vector(len(ucm_ctrl_r ) -1 downto 0);
-  signal ucm_mon_v    : std_logic_vector(len(ucm_mon_r  ) -1 downto 0);
-  signal daq_ctrl_v   : std_logic_vector(len(daq_ctrl_r ) -1 downto 0);
-  signal daq_mon_v    : std_logic_vector(len(daq_mon_r  ) -1 downto 0);
-  signal tf_ctrl_v    : std_logic_vector(len(tf_ctrl_r  ) -1 downto 0);
-  signal tf_mon_v     : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
-  signal mpl_ctrl_v   : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
-  signal mpl_mon_v    : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
+  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
+  signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
+  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
+  signal tar_mon_v  : std_logic_vector(len(tar_mon_r) -1 downto 0);
+  signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
+  signal mtc_mon_v  : std_logic_vector(len(mtc_mon_r) -1 downto 0);
+  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl_r) -1 downto 0);
+  signal ucm_mon_v  : std_logic_vector(len(ucm_mon_r) -1 downto 0);
+  signal daq_ctrl_v : std_logic_vector(len(daq_ctrl_r) -1 downto 0);
+  signal daq_mon_v  : std_logic_vector(len(daq_mon_r) -1 downto 0);
+  signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl_r) -1 downto 0);
+  signal tf_mon_v   : std_logic_vector(len(tf_mon_r) -1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
+  signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
 
 
   --
@@ -265,8 +265,8 @@ begin
       -- i_outer_tar_hits  => i_outer_tar_hits,
       -- i_extra_tar_hits  => i_extra_tar_hits,
 
-      i_plus_neighbor_segments  => plus_neighbor_segments_i,
-      i_minus_neighbor_segments => minus_neighbor_segments_i,
+      i_plus_neighbor_segments     => plus_neighbor_segments_i,
+      i_minus_neighbor_segments    => minus_neighbor_segments_i,
       o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
       o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
@@ -303,20 +303,20 @@ begin
       );
 
   -- ctrl/mon
-  ucm_ctrl_v  <= vectorify(ucm_ctrl_r,ucm_ctrl_v);
-  ucm_mon_r   <= structify(ucm_mon_v,ucm_mon_r);
-  tar_ctrl_v  <= vectorify(tar_ctrl_r,tar_ctrl_v);
-  tar_mon_r   <= structify(tar_mon_v,tar_mon_r);
-  h2s_ctrl_v  <= vectorify(h2s_ctrl_r,h2s_ctrl_v);
-  h2s_mon_r   <= structify(h2s_mon_v,h2s_mon_r);
-  mpl_ctrl_v  <= vectorify(mpl_ctrl_r,mpl_ctrl_v);
-  mpl_mon_r   <= structify(mpl_mon_v,mpl_mon_r);
-  tf_ctrl_v   <= vectorify(tf_ctrl_r,tf_ctrl_v);
-  tf_mon_r    <= structify(tf_mon_v,tf_mon_r);
-  mtc_ctrl_v  <= vectorify(mtc_ctrl_r,mtc_ctrl_v);
-  mtc_mon_r   <= structify(mtc_mon_v,mtc_mon_r);
-  daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
-  daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
+  ucm_ctrl_v <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
+  ucm_mon_r  <= structify(ucm_mon_v, ucm_mon_r);
+  tar_ctrl_v <= vectorify(tar_ctrl_r, tar_ctrl_v);
+  tar_mon_r  <= structify(tar_mon_v, tar_mon_r);
+  h2s_ctrl_v <= vectorify(h2s_ctrl_r, h2s_ctrl_v);
+  h2s_mon_r  <= structify(h2s_mon_v, h2s_mon_r);
+  mpl_ctrl_v <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
+  mpl_mon_r  <= structify(mpl_mon_v, mpl_mon_r);
+  tf_ctrl_v  <= vectorify(tf_ctrl_r, tf_ctrl_v);
+  tf_mon_r   <= structify(tf_mon_v, tf_mon_r);
+  mtc_ctrl_v <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
+  mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
+  daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
+  daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
