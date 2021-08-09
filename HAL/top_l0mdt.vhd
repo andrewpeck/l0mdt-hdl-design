@@ -100,15 +100,11 @@ architecture structural of top_l0mdt is
 
   -- hal <--> ult
 
-  -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  -- ANSWER: because in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
-  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
   signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
   signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
   signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
   signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
-  -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
   -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
   -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
   -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
@@ -186,6 +182,12 @@ architecture structural of top_l0mdt is
   signal user_sump : std_logic;
 
 begin
+
+  assert (c_HPS_MAX_HP_INN = 0 and c_HPS_MAX_HP_MID = 0 and c_HPS_MAX_HP_OUT = 0 and c_HPS_MAX_HP_EXT = 0) or
+    (c_HPS_MAX_HP_INN = 6 and c_HPS_MAX_HP_MID = 6 and c_HPS_MAX_HP_OUT = 6 and c_HPS_MAX_HP_EXT = 6)
+    report "The ULT only accepts values of 0 or 6 for c_HPS_MAX_HP_{INN,MID,OUT,EXT}. Please correct your constants." severity error;
+  -- in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
+  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
 
   top_hal : entity hal.top_hal
     port map (
