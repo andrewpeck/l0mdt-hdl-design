@@ -87,7 +87,7 @@ begin
   port map(
     clk             => clk,
     rst             => rst,
-    glob_en         => glob_en,
+    ena             => glob_en,
 
     ctrl_v          => ctrl_v,
     mon_v           => mon_v , 
