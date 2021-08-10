@@ -25,6 +25,11 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 
+use shared_lib.mdt_dt2r_pkg.all;
+
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 library hp_lib;
 use hp_lib.hp_pkg.all;
 
@@ -61,7 +66,8 @@ architecture beh of hp_calc_radius is
 
   signal mem_addr : unsigned(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0); 
 
-  type dt2r_mem_t is array(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0) of unsigned(8 downto 0);
+  -- type dt2r_mem_t is array(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0) of unsigned(8 downto 0);
+  -- type dt2r_mem_t is array(1024 - 1 downto 0) of unsigned(8 downto 0);
   signal mem : dt2r_mem_t := mdt_dt2r_get_init_data(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA);
   attribute RAM_STYLE : string;
   attribute RAM_STYLE of mem : signal is "distributed";

@@ -89,6 +89,9 @@ begin
     rst             => rst,
     glob_en         => glob_en,
 
+    ctrl_v          => ctrl_v,
+    mon_v           => mon_v , 
+
     i_SLc_BCID      => SLc_data_r.bcid,
     i_mdt_time_t0   => i_mdt_time_real,
     i_data_valid    => i_data_valid,

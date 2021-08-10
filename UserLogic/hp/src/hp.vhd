@@ -120,6 +120,9 @@ begin
     clk                 => clk,
     rst                 => hp_rst,
     glob_en             => hp_ena,
+    --
+    ctrl_v          => ctrl_v,
+    mon_v           => mon_v , 
     -- SLc-
     -- i_SLC_RoI_org       => structify(i_SLC_Window(0)).lo,
     i_SLc_data_v        => i_slc_data_v,--.specific,
