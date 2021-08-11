@@ -7,7 +7,6 @@ set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
 set BD_SUFFIX [lindex [split $FPGA "-"] 0]
 
 set bd_design_name "c2cSlave"
-make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 
 # Regenerate the BD if needed
 
@@ -32,8 +31,7 @@ if {$needs_update == 1} {
     puts "Block design up to date from TCL sources. Skipping build."
 }
 
-# Enable this when the runner has ipbus
-# eval exec bash -c {cd "${PATH_REPO}/regmap" && make xml_regmap}
+make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 
-# this fails when executed from vivado tcl... add it to a makefile and run manually
-# exec tclsh "[file normalize ${C2C_PATH}/create_spybuffer_package.tcl]"
+# Enable this when the runner has ipbus
+# eval exec bash -c {make -C "${PATH_REPO}}
