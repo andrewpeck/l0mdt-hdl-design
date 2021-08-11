@@ -20,7 +20,7 @@ SIM:ull_ku15_b3a_ucm_mpl:
     tags:
       - questa
       - hog
-      - 2020.2
+      - "2020.2"
 
 # RIV:ull_ku15_b3a_ucm_mpl:
 #     extends: .riviera_sim

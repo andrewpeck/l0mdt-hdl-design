@@ -19,7 +19,7 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
     tags:
       - questa
       - hog
-      - 2020.2
+      - "2020.2"
       
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
 #     extends: .simulate_project_comp
