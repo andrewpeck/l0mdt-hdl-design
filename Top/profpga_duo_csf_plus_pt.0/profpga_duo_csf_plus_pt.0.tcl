@@ -22,8 +22,7 @@ set DEVICE XVUP
 
 set PROPERTIES [dict create \
 	synth_1 [dict create \
-	STEPS.SYNTH_DESIGN.ARGS.FANOUT_LIMIT 600 \
-	STEPS.SYNTH_DESIGN.ARGS.RETIMING true \
+	STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
 ] \
 impl_1 [dict create \
 STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
