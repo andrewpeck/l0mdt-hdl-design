@@ -20,7 +20,7 @@ SIM:ull_vu13_b3a_ucm_mpl:
     tags:
       - questa
       - hog
-      
+      - 2020.2
 # user_sim:ull_vu13_b3a_ucm_mpl:
 #     extends: .user_sim
 #     variables:

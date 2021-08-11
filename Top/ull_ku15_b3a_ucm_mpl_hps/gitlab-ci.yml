@@ -19,6 +19,7 @@ SIM:ull_ku15_b3a_ucm_mpl_hps:
     tags:
       - questa
       - hog
+      - 2020.2
 
 # RIV:ull_ku15_b3a_ucm_mpl_hps:
 #     extends: .riviera_sim

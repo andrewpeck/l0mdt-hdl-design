@@ -20,6 +20,7 @@ SIM:ull_vu13_b3a_ucm_mpl_hps:
     tags:
       - questa
       - hog
+      - 2020.2
     artifacts:
       name: user_sim
       paths:
