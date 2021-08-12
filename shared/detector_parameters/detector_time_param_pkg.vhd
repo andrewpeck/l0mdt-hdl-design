@@ -35,13 +35,21 @@ package detector_time_param_pkg is
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles
 
   -- UCM 2 HPS LATENCY
-  constant UCM_2HPS_LATENCY     : integer := 50; -- cycles
+  constant UCM_2HPS_LATENCY     : integer := 52; -- cycles
+
+  -- HPS 
+  constant HPS_PC_LATENCY       : integer := 3;
+  constant HEG_CTRL2HP_LATENCY  : integer := 4;
+  constant HEG_CTRL2SF_LATENCY  : integer := 4;
+  --
+
   -- TAR PIPELINE
-  constant TAR_PL_A_LATENCY     : integer := 397 + UCM_2HPS_LATENCY;  --397 --310; -- cycles => 968.75 ns
-  constant TDC_PL_A_LATENCY     : integer := 395 + UCM_2HPS_LATENCY;  --310; -- cycles => 968.75 ns
+  -- constant TAR_PL_A_LATENCY     : integer := 397 + UCM_2HPS_LATENCY;  --397 --310; -- cycles => 968.75 ns
+  constant TDC_PL_A_LATENCY     : integer := 395 - 30 + UCM_2HPS_LATENCY - HPS_PC_LATENCY + HEG_CTRL2HP_LATENCY;  --310; -- cycles => 968.75 ns
   --
-  constant UCM_LATENCY_HPS_CH   : integer := 575 + UCM_2HPS_LATENCY; -- cycles => 1.796 us
+  constant UCM_LATENCY_HPS_CH   : integer := 575;--- 38 + UCM_2HPS_LATENCY - HPS_PC_LATENCY + HEG_CTRL2HP_LATENCY;--+ UCM_2HPS_LATENCY; -- cycles => 1.796 us
   --
+ 
   constant HEG_CSF_START_DELAY  : integer := 5;
   constant HEG_CSF_END_DELAY    : integer := 57;
 

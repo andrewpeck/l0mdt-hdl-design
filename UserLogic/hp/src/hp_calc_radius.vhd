@@ -59,20 +59,23 @@ end entity hp_calc_radius;
 
 architecture beh of hp_calc_radius is
   -- APB
-  constant  ack_needed  : std_logic :=  '0';
-  signal axi_rst      : std_logic;
-  signal axi_clk      : std_logic;
+  -- constant  ack_needed  : std_logic :=  '0';
+  -- signal axi_rst      : std_logic;
+  -- signal axi_clk      : std_logic;
 
-  signal ctrl_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
-  signal mon_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
+  -- signal ctrl_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
+  -- signal mon_r : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
 
-  signal  wr_data_v : std_logic_vector(len(ctrl_r.wr_data) -1 downto 0);
+  constant ADDR_WIDTH : integer := 10;
+  constant DATA_WIDTH : integer := 9;
+
+  -- signal  wr_data_v : std_logic_vector(len(ctrl_r.wr_data) -1 downto 0);
 
   signal drift_time : unsigned(MDT_TIME_LEN -1 downto 0);
   signal BCID_exp : unsigned(MDT_TIME_LEN -1 downto 0);
   signal int_dv : std_logic;
 
-  signal mem_addr : unsigned(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0); 
+  -- signal mem_addr : unsigned(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0); 
 
   -- type dt2r_mem_t is array(mdt_dt2r_get_addr_len(c_SECTOR_SIDE,g_STATION_RADIUS,g_CHAMBER_IETA) -1 downto 0) of unsigned(8 downto 0);
   -- type dt2r_mem_t is array(1024 - 1 downto 0) of unsigned(8 downto 0);
@@ -80,86 +83,82 @@ architecture beh of hp_calc_radius is
   attribute RAM_STYLE : string;
   attribute RAM_STYLE of mem : signal is "distributed";
 
+  signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+  signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
+  signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_dv_o         : std_logic;
+  signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_dv_i         : std_logic;
+
+  signal addr_error  : std_logic;
     
 begin
 
-  ctrl_r <= convert(ctrl_v,ctrl_r);
-  mon_v <= convert(mon_r,mon_v);
+  -- ctrl_r <= convert(ctrl_v,ctrl_r);
+  -- mon_v <= convert(mon_r,mon_v);
 
-
-  -- apb_mem_interface : entity apbus_lib.apb_mem_int
-  -- generic map(
-  --   g_XML_NODE_NAME         => "g_XML_NODE_NAME",
-  --   g_MEMORY_TYPE           => "distributed",
-  --   g_INTERNAL_CLK          => '1',
-  --   g_ADDR_WIDTH            => ADDR_WIDTH,
-  --   g_DATA_WIDTH            => DATA_WIDTH, 
-  --   g_APBUS_CTRL_WIDTH      => ctrl_v'length,
-  --   g_APBUS_MON_WIDTH       => mon_v'length
-  -- )
-  -- port map (
-  --   clk           => clk,
-  --   rst           => rst,
-  --   ena           => ena,
-  --   --
-  --   ctrl          => ctrl,
-  --   mon           => mon,
-  --   --
-  --   -- i_axi_clk     => ,
-  --   -- i_axi_rst     => ,
-  --   --
-  --   -- i_freeze      => i_freeze,
-  --   -- o_freeze      => int_apb_freeze,
-  --   -- o_out_sel     => sel_out_mem,
-  --   -- o_freeze_1    => int_freeze(1),
-  --   --
-  --   o_rd_addr     => apb_rd_addr_o,  
-  --   o_wr_addr     => apb_wr_addr_o,  
-  --   o_data        => apb_data_o,   
-  --   o_dv          => apb_dv_o, 
-  --   i_data        => apb_data_i,  
-  --   i_dv          => apb_dv_i
-  -- );  
-
-  PL : entity apbus_lib.apbus_main_sig
-  port map(
+  apb_mem_interface : entity apbus_lib.apb_mem_int
+  generic map(
+    g_XML_NODE_NAME         => "MEM_INT_10A9D",
+    g_INTERNAL_CLK          => '1',
+    g_ADDR_WIDTH            => ADDR_WIDTH,
+    g_DATA_WIDTH            => DATA_WIDTH,
+    g_APBUS_CTRL_WIDTH      => ctrl_v'length,
+    g_APBUS_MON_WIDTH       => mon_v'length
+  )
+  port map (
     clk           => clk,
     rst           => rst,
     ena           => ena,
     --
-    o_axi_clk     => axi_clk,
-    o_axi_rst     => axi_rst
-  );
+    ctrl          => ctrl_v,
+    mon           => mon_v,
+    --
+    -- i_axi_clk     => ,
+    -- i_axi_rst     => ,
+    --
+    -- i_freeze      => i_freeze,
+    -- o_freeze      => int_apb_freeze,
+    -- o_out_sel     => sel_out_mem,
+    -- o_freeze_1    => int_freeze(1),
+    --
+    o_rd_addr     => apb_rd_addr_o,  
+    o_wr_addr     => apb_wr_addr_o,  
+    o_data        => apb_data_o,   
+    o_dv          => apb_dv_o, 
+    i_data        => apb_data_i,  
+    i_dv          => apb_dv_i
+  );  
 
-  wr_data_v  <= convert(ctrl_r.wr_data,wr_data_v);
+  -- wr_data_v  <= convert(ctrl_r.wr_data,wr_data_v);
 
-  apb_proc: process(axi_clk)
-  begin
-    if rising_edge(axi_clk) then
-      if axi_rst = '1' then
+  -- apb_proc: process(axi_clk)
+  -- begin
+  --   if rising_edge(axi_clk) then
+  --     -- if axi_rst = '1' then
         
-      else
-        --rd
-        if ack_needed = '0' then
-          mon_r.rd_rdy <= '0';
-        else
-          if ctrl_r.rd_ack = '1' then
-            mon_r.rd_rdy <= '0';
-          end if;
-        end if;
-        if ctrl_r.rd_req = '1'  then
-          mon_r.rd_data  <= convert(std_logic_vector(mem(to_integer(unsigned(ctrl_r.rd_addr)))),mon_r.rd_data);
-          mon_r.rd_rdy <= '1';
-        end if;
-        --wr
-        if ctrl_r.wr_req = '1'  then
-          mem(to_integer(unsigned(ctrl_r.wr_addr))) <= unsigned(wr_data_v);
-        end if;
+  --     -- else
+  --     --   --rd
+  --     --   if ack_needed = '0' then
+  --     --     mon_r.rd_rdy <= '0';
+  --     --   else
+  --     --     if ctrl_r.rd_ack = '1' then
+  --     --       mon_r.rd_rdy <= '0';
+  --     --     end if;
+  --     --   end if;
+  --     --   if ctrl_r.rd_req = '1'  then
+  --     --     mon_r.rd_data  <= convert(std_logic_vector(mem(to_integer(unsigned(ctrl_r.rd_addr)))),mon_r.rd_data);
+  --     --     mon_r.rd_rdy <= '1';
+  --     --   end if;
+  --     --   --wr
+  --     --   if ctrl_r.wr_req = '1'  then
+  --     --     mem(to_integer(unsigned(ctrl_r.wr_addr))) <= unsigned(wr_data_v);
+  --     --   end if;
 
         
-      end if;
-    end if;
-  end process apb_proc;
+  --     end if;
+  --   end if;
+  -- end process apb_proc;
 
 
   BCID_exp <= i_SLc_BCID & to_unsigned(0,5);
@@ -170,7 +169,25 @@ begin
       if rst= '1' then
         drift_time <= (others => '0');
         int_dv <= '0';
+
+        o_tube_radius <= (others => '0');
+        o_data_valid <=  '0';
+
+        addr_error <= '0';
+
       else
+
+        addr_error <= '0';
+
+
+        -- if apb_dv_o = '1' then
+        --   apb_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
+        --   mem(to_integer(unsigned(apb_rd_addr_o))) <= unsigned(apb_data_o);
+        --   apb_dv_i <= '1';
+        -- else
+        --   apb_dv_i <= '0';
+        -- end if;
+
         if ena  = '1' then
           int_dv <= i_data_valid;
 
@@ -180,8 +197,14 @@ begin
             drift_time <= (others => '0');
           end if;
           if int_dv = '1' then
-            o_tube_radius <= mem(to_integer(drift_time));
-            o_data_valid   <= '1';
+            if  to_integer(drift_time) < 1023 then
+              o_tube_radius <= mem(to_integer(drift_time));
+              o_data_valid   <= '1';
+            else
+              o_tube_radius <= (others => '0');
+              o_data_valid <=  '0';
+              addr_error <= '1';
+            end if;
           else
             o_tube_radius <= (others => '0');
             o_data_valid <=  '0';
