@@ -89,7 +89,7 @@ package gldl_ult_tp_sim_pkg is
     thread : unsigned(4-1 downto 0);
     data : heg2sfslc_rt;
   end record out_heg_bm_slc_sim_rt;
-  constant OUT_HEG_BM_SLC_SIM_LEN : integer := 144;
+  constant OUT_HEG_BM_SLC_SIM_LEN : integer := 149;
   subtype out_heg_bm_slc_sim_rvt is std_logic_vector(OUT_HEG_BM_SLC_SIM_LEN-1 downto 0);
   function vectorify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rvt;
   function structify(x: out_heg_bm_slc_sim_rvt) return out_heg_bm_slc_sim_rt;
@@ -102,7 +102,7 @@ package gldl_ult_tp_sim_pkg is
     heg_ctrl : heg_ctrl2sf_rt;
     data : heg2sfslc_rt;
   end record out_heg_bm_ctrl_sim_rt;
-  constant OUT_HEG_BM_CTRL_SIM_LEN : integer := 147;
+  constant OUT_HEG_BM_CTRL_SIM_LEN : integer := 152;
   subtype out_heg_bm_ctrl_sim_rvt is std_logic_vector(OUT_HEG_BM_CTRL_SIM_LEN-1 downto 0);
   function vectorify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rvt;
   function structify(x: out_heg_bm_ctrl_sim_rvt) return out_heg_bm_ctrl_sim_rt;
@@ -402,19 +402,19 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rvt is
     variable y : out_heg_bm_slc_sim_rvt;
   begin
-    y(143 downto 80)           := vectorify(x.ToA);
-    y(79 downto 76)            := vectorify(x.station);
-    y(75 downto 72)            := vectorify(x.thread);
-    y(71 downto 0)             := vectorify(x.data);
+    y(148 downto 85)           := vectorify(x.ToA);
+    y(84 downto 81)            := vectorify(x.station);
+    y(80 downto 77)            := vectorify(x.thread);
+    y(76 downto 0)             := vectorify(x.data);
     return y;
   end function vectorify;
   function structify(x: out_heg_bm_slc_sim_rvt) return out_heg_bm_slc_sim_rt is
     variable y : out_heg_bm_slc_sim_rt;
   begin
-    y.ToA                      := structify(x(143 downto 80));
-    y.station                  := structify(x(79 downto 76));
-    y.thread                   := structify(x(75 downto 72));
-    y.data                     := structify(x(71 downto 0));
+    y.ToA                      := structify(x(148 downto 85));
+    y.station                  := structify(x(84 downto 81));
+    y.thread                   := structify(x(80 downto 77));
+    y.data                     := structify(x(76 downto 0));
     return y;
   end function structify;
   function nullify(x: out_heg_bm_slc_sim_rt) return out_heg_bm_slc_sim_rt is
@@ -430,21 +430,21 @@ package body gldl_ult_tp_sim_pkg is
   function vectorify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rvt is
     variable y : out_heg_bm_ctrl_sim_rvt;
   begin
-    y(146 downto 83)           := vectorify(x.ToA);
-    y(82 downto 79)            := vectorify(x.station);
-    y(78 downto 75)            := vectorify(x.thread);
-    y(74 downto 72)            := vectorify(x.heg_ctrl);
-    y(71 downto 0)             := vectorify(x.data);
+    y(151 downto 88)           := vectorify(x.ToA);
+    y(87 downto 84)            := vectorify(x.station);
+    y(83 downto 80)            := vectorify(x.thread);
+    y(79 downto 77)            := vectorify(x.heg_ctrl);
+    y(76 downto 0)             := vectorify(x.data);
     return y;
   end function vectorify;
   function structify(x: out_heg_bm_ctrl_sim_rvt) return out_heg_bm_ctrl_sim_rt is
     variable y : out_heg_bm_ctrl_sim_rt;
   begin
-    y.ToA                      := structify(x(146 downto 83));
-    y.station                  := structify(x(82 downto 79));
-    y.thread                   := structify(x(78 downto 75));
-    y.heg_ctrl                 := structify(x(74 downto 72));
-    y.data                     := structify(x(71 downto 0));
+    y.ToA                      := structify(x(151 downto 88));
+    y.station                  := structify(x(87 downto 84));
+    y.thread                   := structify(x(83 downto 80));
+    y.heg_ctrl                 := structify(x(79 downto 77));
+    y.data                     := structify(x(76 downto 0));
     return y;
   end function structify;
   function nullify(x: out_heg_bm_ctrl_sim_rt) return out_heg_bm_ctrl_sim_rt is
