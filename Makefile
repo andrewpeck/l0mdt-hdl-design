@@ -29,6 +29,7 @@ list:
 
 PROJECT_LIST = $(patsubst %/,%,$(patsubst Top/%,%,$(dir $(dir $(shell find Top/ -name hog.conf)))))
 CREATE_LIST = $(addprefix create_,$(PROJECT_LIST))
+OPEN_LIST = $(addprefix open_,$(PROJECT_LIST))
 
 projects:
 	@echo $(PROJECT_LIST)
@@ -45,6 +46,9 @@ $(PROJECT_LIST):
 	@echo Launching Hog Workflow $@ with njobs = $(NJOBS)                                  $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
 	@time Hog/LaunchWorkflow.sh $@ -njobs $(NJOBS)                                         $(COLORIZE)
+
+$(OPEN_LIST):
+	vivado Projects/$(patsubst open_%,%,$@)/$(patsubst open_%,%,$@).xpr &
 
 ################################################################################
 # Regmap + types
