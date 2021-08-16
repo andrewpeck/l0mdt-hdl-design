@@ -219,9 +219,9 @@ package l0mdt_constants_pkg is
 
   constant HEG2SFSLC_MDTSEG_DEST_MULT : real := 1.0;
 
-  constant HEG2SFSLC_HEWINDOW_POS_LEN : integer := 14;
+  constant HEG2SFSLC_HEWINDOW_POS_LEN : integer := 19;
 
-  constant HEG2SFSLC_HEWINDOW_POS_MULT : real := 1.0;
+  constant HEG2SFSLC_HEWINDOW_POS_MULT : real := 32.0;
 
   constant TAR2HPS_DATA_VALID_LEN : integer := 1;
 

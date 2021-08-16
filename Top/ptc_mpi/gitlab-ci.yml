@@ -17,4 +17,5 @@ SIM:ptc_mpi:
     tags:
       - questa
       - hog
+      - "2020.2"
       

@@ -9,7 +9,6 @@ set BD_PATH $PATH_REPO/HAL/c2c/bd_helper
 set BD_OUTPUT_PATH $PATH_REPO/HAL/c2c/bd
 
 set bd_design_name "c2cSlave"
-make_wrapper -files [get_files ${bd_design_name}.bd] -top -import -force
 
 # Regenerate the BD if needed
 

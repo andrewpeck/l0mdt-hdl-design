@@ -7,9 +7,9 @@ GEN:mtc:
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
-      - normal-ops
+      - small
       - hog
-      
+      - "2020.2"      
 # SIM:example:
 #     extends: .simulate_project
 #     variables:

@@ -5,9 +5,9 @@ set USE_QUESTA_SIMULATOR 0
 ## FPGA and Vivado strategies and flows
 set FPGA xcku15p-ffva1760-2-e
 set SYNTH_STRATEGY "Flow_AreaOptimized_High"
-set SYNTH_FLOW "Vivado Synthesis 2019"
+set SYNTH_FLOW "Vivado Synthesis 2020"
 set IMPL_STRATEGY "Performance_ExplorePostRoutePhysOpt"
-set IMPL_FLOW "Vivado Implementation 2019"
+set IMPL_FLOW "Vivado Implementation 2020"
 set SIMULATOR "Xsim"
 
 ### Set Vivado Runs Properties ###
@@ -21,18 +21,18 @@ set SIMULATOR "Xsim"
 # Then copy and paste the name and the values from the Vivado Tcl console into the lines below.
 
 set PROPERTIES [dict create \
-		    synth_1 [dict create \
-                STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
-				STEPS.SYNTH_DESIGN.ARGS.KEEP_EQUIVALENT_REGISTERS true \
-				STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
-				] \
-		    impl_1 [dict create \
-				STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
-				STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
-			       ]\
-		   ]
+	synth_1 [dict create \
+	STEPS.SYNTH_DESIGN.ARGS.ASSERT true \
+	STEPS.SYNTH_DESIGN.ARGS.KEEP_EQUIVALENT_REGISTERS true \
+	STEPS.SYNTH_DESIGN.ARGS.RETIMING false \
+] \
+impl_1 [dict create \
+STEPS.OPT_DESIGN.ARGS.DIRECTIVE Default \
+STEPS.POST_ROUTE_PHYS_OPT_DESIGN.ARGS.DIRECTIVE AggressiveExplore \
+]\
+]
 ############################################################
-				#AUTO_INCREMENTAL_CHECKPOINT 1 \[get_runs impl_1\] \
+#AUTO_INCREMENTAL_CHECKPOINT 1 \[get_runs impl_1\] \
 
 
 ############################################################

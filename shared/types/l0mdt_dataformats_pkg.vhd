@@ -180,7 +180,7 @@ package l0mdt_dataformats_pkg is
     vec_ang : unsigned(UCM2HPS_VEC_ANG_LEN-1 downto 0);
     hewindow_pos : unsigned(HEG2SFSLC_HEWINDOW_POS_LEN-1 downto 0);
   end record heg2sfslc_rt;
-  constant HEG2SFSLC_LEN : integer := 72;
+  constant HEG2SFSLC_LEN : integer := 77;
   subtype heg2sfslc_rvt is std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
   function vectorify(x: heg2sfslc_rt) return heg2sfslc_rvt;
   function structify(x: heg2sfslc_rvt) return heg2sfslc_rt;
@@ -677,25 +677,25 @@ package body l0mdt_dataformats_pkg is
   function vectorify(x: heg2sfslc_rt) return heg2sfslc_rvt is
     variable y : heg2sfslc_rvt;
   begin
-    y(71 downto 71)            := vectorify(x.data_valid);
-    y(70 downto 50)            := vectorify(x.muid);
-    y(49 downto 48)            := vectorify(x.mdtseg_dest);
-    y(47 downto 39)            := vectorify(x.mdtid);
-    y(38 downto 25)            := vectorify(x.vec_pos);
-    y(24 downto 14)            := vectorify(x.vec_ang);
-    y(13 downto 0)             := vectorify(x.hewindow_pos);
+    y(76 downto 76)            := vectorify(x.data_valid);
+    y(75 downto 55)            := vectorify(x.muid);
+    y(54 downto 53)            := vectorify(x.mdtseg_dest);
+    y(52 downto 44)            := vectorify(x.mdtid);
+    y(43 downto 30)            := vectorify(x.vec_pos);
+    y(29 downto 19)            := vectorify(x.vec_ang);
+    y(18 downto 0)             := vectorify(x.hewindow_pos);
     return y;
   end function vectorify;
   function structify(x: heg2sfslc_rvt) return heg2sfslc_rt is
     variable y : heg2sfslc_rt;
   begin
-    y.data_valid               := structify(x(71 downto 71));
-    y.muid                     := structify(x(70 downto 50));
-    y.mdtseg_dest              := structify(x(49 downto 48));
-    y.mdtid                    := structify(x(47 downto 39));
-    y.vec_pos                  := structify(x(38 downto 25));
-    y.vec_ang                  := structify(x(24 downto 14));
-    y.hewindow_pos             := structify(x(13 downto 0));
+    y.data_valid               := structify(x(76 downto 76));
+    y.muid                     := structify(x(75 downto 55));
+    y.mdtseg_dest              := structify(x(54 downto 53));
+    y.mdtid                    := structify(x(52 downto 44));
+    y.vec_pos                  := structify(x(43 downto 30));
+    y.vec_ang                  := structify(x(29 downto 19));
+    y.hewindow_pos             := structify(x(18 downto 0));
     return y;
   end function structify;
   function nullify(x: heg2sfslc_rt) return heg2sfslc_rt is
