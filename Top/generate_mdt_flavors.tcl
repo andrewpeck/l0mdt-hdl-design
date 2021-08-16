@@ -72,7 +72,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "create_c2c.tcl get_fpga_name.tcl gitlab-ci.yml hog.conf list/ctrl_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/shared_lib.src list/xdc.con post-creation.tcl prj_cfg_default.vhd"
+    set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf list/ctrl_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/shared_lib.src list/xdc.con post-creation.tcl prj_cfg_default.vhd"
 
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
