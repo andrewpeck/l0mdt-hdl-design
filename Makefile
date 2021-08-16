@@ -43,9 +43,9 @@ $(CREATE_LIST):
 
 $(PROJECT_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@echo Launching Hog Workflow $@ with njobs = $(NJOBS)                                  $(COLORIZE)
+	@echo Launching Hog Workflow $@                                                        $(COLORIZE)
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
-	@time Hog/LaunchWorkflow.sh $@ -njobs $(NJOBS)                                         $(COLORIZE)
+	@time Hog/LaunchWorkflow.sh $@                                                         $(COLORIZE)
 
 $(OPEN_LIST):
 	vivado Projects/$(patsubst open_%,%,$@)/$(patsubst open_%,%,$@).xpr &
