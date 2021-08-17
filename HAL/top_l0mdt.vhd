@@ -56,23 +56,40 @@ entity top_l0mdt is
     );
   port (
 
-    -- 40MHz clock
+    --------------------------------------------------------------------------------
+    -- MGT
+    -- MGT links are set through LOC constraints and not routed to the top level
+    --------------------------------------------------------------------------------
+    -- ref clocks
+    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+
+    --------------------------------------------------------------------------------
+    -- LHC clock
+    --------------------------------------------------------------------------------
+
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
-
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
 
     lhc_refclk_o_p : out std_logic;
     lhc_refclk_o_n : out std_logic;
 
-    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    --------------------------------------------------------------------------------
+    -- AXI C2C
+    --------------------------------------------------------------------------------
+
+    clock_100m_i_p : in std_logic;
+    clock_100m_i_n : in std_logic;
+
 
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
+
+    --------------------------------------------------------------------------------
+    -- Other IO
+    --------------------------------------------------------------------------------
 
     --sys_mgmt_scl : inout std_logic;
     --sys_mgmt_sda : inout std_logic;
@@ -185,11 +202,16 @@ architecture structural of top_l0mdt is
 
 begin
 
-  assert (c_HPS_MAX_HP_INN = 0 and c_HPS_MAX_HP_MID = 0 and c_HPS_MAX_HP_OUT = 0 and c_HPS_MAX_HP_EXT = 0) or
-    (c_HPS_MAX_HP_INN = 6 and c_HPS_MAX_HP_MID = 6 and c_HPS_MAX_HP_OUT = 6 and c_HPS_MAX_HP_EXT = 6)
+  -- in sector 3 we only have 0 chambers in the EXTRA station and 6
+  -- chambers(polmux) in the rest of stations when we optimize the polmux this
+  -- numbers will change and I can bet that they will represent the number of
+  -- polmux ( not 100% sure)
+
+  assert (c_HPS_MAX_HP_INN = 0 or c_HPS_MAX_HP_INN = 6) and
+    (c_HPS_MAX_HP_MID = 0 or c_HPS_MAX_HP_MID = 6) and
+    (c_HPS_MAX_HP_OUT = 0 or c_HPS_MAX_HP_OUT = 6) and
+    (c_HPS_MAX_HP_EXT = 0 or c_HPS_MAX_HP_EXT = 6)
     report "The ULT only accepts values of 0 or 6 for c_HPS_MAX_HP_{INN,MID,OUT,EXT}. Please correct your constants." severity error;
-  -- in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
-  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
 
   top_hal : entity hal.top_hal
     port map (
@@ -251,7 +273,7 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY => false
+      DUMMY => true
       )
     port map (
       clock_and_control => clock_and_control,
@@ -261,11 +283,6 @@ begin
       i_mid_tdc_hits_av => middle_tdc_hits,
       i_out_tdc_hits_av => outer_tdc_hits,
       i_ext_tdc_hits_av => extra_tdc_hits,
-
-      -- i_inner_tar_hits  => i_inner_tar_hits,
-      -- i_middle_tar_hits => i_middle_tar_hits,
-      -- i_outer_tar_hits  => i_outer_tar_hits,
-      -- i_extra_tar_hits  => i_extra_tar_hits,
 
       i_plus_neighbor_segments     => plus_neighbor_segments_i,
       i_minus_neighbor_segments    => minus_neighbor_segments_i,
@@ -366,8 +383,8 @@ begin
       reset_n                 => '1',
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
-      --sys_mgmt_scl            => sys_mgmt_scl,
-      --sys_mgmt_sda            => sys_mgmt_sda,
+    --sys_mgmt_scl            => sys_mgmt_scl,
+    --sys_mgmt_sda            => sys_mgmt_sda,
       sys_mgmt_vccaux_alarm   => open,
       sys_mgmt_vccint_alarm   => open
       );
@@ -399,7 +416,6 @@ begin
   fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH            <= FRAMEWORK_FWHASH;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW           <= MAIN_CFG_COMPILE_HW;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL           <= MAIN_CFG_COMPILE_UL;
-  --fw_info_mon.CONFIG.SECTOR_SIDE         <= c_SECTOR_SIDE;
   fw_info_mon.CONFIG.ST_nBARREL_ENDCAP             <= c_ST_nBARREL_ENDCAP;
   fw_info_mon.CONFIG.ENABLE_NEIGHBORS              <= c_ENABLE_NEIGHBORS;
   fw_info_mon.CONFIG.SECTOR_ID                     <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
@@ -423,8 +439,6 @@ begin
   fw_info_mon.CONFIG.SF_ENABLED                    <= c_SF_ENABLED;
   fw_info_mon.CONFIG.SF_TYPE                       <= c_SF_TYPE;
   fw_info_mon.CONFIG.NUM_DAQ_STREAMS               <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
-  --fw_info_mon.CONFIG.MAX_NUM_HP          <= std_logic_vector(to_unsigned(MAX_NUM_HP, 8));
-  --fw_info_mon.CONFIG.MAX_NUM_HPS         <= std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8));
   fw_info_mon.CONFIG.NUM_SF_INPUTS                 <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
   fw_info_mon.CONFIG.NUM_SF_OUTPUTS                <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
   fw_info_mon.CONFIG.MAX_NUM_SL                    <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
