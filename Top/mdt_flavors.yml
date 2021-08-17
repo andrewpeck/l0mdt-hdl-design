@@ -25,11 +25,11 @@ ku15p_csf_mpt:
     xyz:
       link_map: "link_map_default"
 
-vu13p_lsf_mpt:
+vu13p_lsf_upt:
   fpga: xcvu13p-flga2577-1-e
   board_pkg: board_pkg_mpi_vu13p
   sf: lsf
-  pt: mpt
+  pt: upt
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
