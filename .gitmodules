@@ -19,7 +19,7 @@
 	url = ../gbt-sc.git
 [submodule "regmap"]
 	path = regmap
-	url = https://github.com/andrewpeck/uHAL_AXI_regmap.git
+	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git
 [submodule "tools/yml2hdl"]
 	path = tools/yml2hdl
 	url = https://gitlab.com/tcpaiva/yml2hdl.git
@@ -53,3 +53,6 @@
 [submodule "HAL/ttc/ttc-core"]
 	path = HAL/ttc/ttc-core
 	url = ../../tcpaiva/atlas-ttc-core.git
+[submodule "HAL/ctrl/src/axi-vhdl-package"]
+	path = HAL/ctrl/src/axi-vhdl-package
+	url = https://gitlab.com/BU-EDF/axi-vhdl-package

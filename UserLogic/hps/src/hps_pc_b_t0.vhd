@@ -74,11 +74,11 @@ architecture beh of hps_pc_b_t0 is
   begin
     for i in 0 to 7 loop
       if r = 0 then
-        y(i) := to_unsigned(c_BI_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BI_T0(s)(i),MDT_TIME_LEN) - 6;
       elsif r = 1 then
-        y(i) := to_unsigned(c_BM_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BM_T0(s)(i),MDT_TIME_LEN)  - 6;
       elsif r = 2 then
-        y(i) := to_unsigned(c_BO_T0(s)(i),MDT_TIME_LEN);
+        y(i) := to_unsigned(c_BO_T0(s)(i),MDT_TIME_LEN) - 6;
       -- else
   
       end if;
@@ -140,7 +140,7 @@ begin
     i_dv          => apb_dv_i
   );  
 
-  DT2R : process(clk)
+  T0_proc : process(clk)
 
   begin
     if rising_edge(clk) then

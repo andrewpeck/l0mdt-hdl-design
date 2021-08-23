@@ -5,6 +5,11 @@ shared/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd
 shared/detector_parameters/l0mdt_RAMs/pkg/barrel_R_mdt_pkg.vhd
 shared/detector_parameters/l0mdt_RAMs/pkg/barrel_R_rpc_pkg.vhd
 
+shared/detector_parameters/mdt_dt2R/mdt_dt2r_large.vhd
+shared/detector_parameters/mdt_dt2R/mdt_dt2r_small.vhd
+shared/detector_parameters/mdt_dt2R/mdt_dt2r_pkg.vhd
+
+
 # shared/detector_parameters/tdc_mezz_mapping_pkg.vhd
 shared/detector_parameters/gtube2chamber_pkg.vhd
 shared/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd

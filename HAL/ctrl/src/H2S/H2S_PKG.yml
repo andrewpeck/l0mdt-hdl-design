@@ -1,7 +1,6 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-07-29 12:28:39.278899.
 config:
   basic_convert_functions : off
   packages:
@@ -178,14 +177,40 @@ hdl:
   - ERROR : [ type: logic ]
 
 
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 9 ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t:
+  - rd_data_0 : [ type: logic, length: 9 ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t:
+  - rd_rdy : [ type: logic ]
+  - rd_data : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t ]
+
+
 - H2S_HPS_HEG_HEG_HP_HP_MON_t:
   - STATUS : [ type: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t ]
+  - MDT_DT2R : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t ]
 
 - H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY: [array: 6, type: H2S_HPS_HEG_HEG_HP_HP_MON_t]
 
 - H2S_HPS_HEG_HEG_HP_HP_CTRL_t:
   - ACTIONS : [ type: H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t ]
   - CONFIGS : [ type: H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t ]
+  - MDT_DT2R : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t ]
 
 - H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY: [array: 6, type: H2S_HPS_HEG_HEG_HP_HP_CTRL_t]
 

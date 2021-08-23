@@ -35,6 +35,7 @@
       <node id="CDE_CHAMB_Z0_3" fwinfo="type=array" address="0x00000009" module="file://MEM_RAM_8A16D.xml"/>
     </node>
 
+
     <!-- CHAMBER IETA MEMORY CONTROLS -->
     <node id="CVP_CHAMB_Z0" address="0x00000030">
       <node id="CVP_CHAMB_Z0_0" fwinfo="type=array" address="0x00000000" module="file://MEM_RAM_8A16D.xml"/>

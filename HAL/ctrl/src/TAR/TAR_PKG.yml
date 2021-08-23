@@ -1,7 +1,6 @@
 # yml2hdl v2
 # This file was auto-generated.
 # Modifications might be lost.
-# Created : 2021-07-30 11:08:21.217996.
 config:
   basic_convert_functions : off
   packages:

@@ -30,6 +30,7 @@ use ctrl_lib.MEM_INT_4A17D_CTRL.all;
 entity apb_mem_int is
   generic(
     g_XML_NODE_NAME     : string; -- := "MEM_INT_10A148D";
+    g_MEMORY_TYPE       : string := "ultra" ;
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
@@ -65,7 +66,7 @@ end entity apb_mem_int;
 
 architecture beh of apb_mem_int is
   signal axi_rst      : std_logic;
-  signal clk_axi      : std_logic;
+  signal axi_clk      : std_logic;
 
   signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
   signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -95,7 +96,7 @@ begin
       rst           => rst,
       ena           => ena,
       --
-      o_axi_clk     => clk_axi,
+      o_axi_clk     => axi_clk,
       o_axi_rst     => axi_rst
     );
     
@@ -104,7 +105,7 @@ begin
   -- INT_CLK_DIS: if not g_INTERNAL_CLK generate
 
   --   -- axi_rst <= i_axi_rst;
-  --   -- clk_axi <= i_axi_clk;
+  --   -- axi_clk <= i_axi_clk;
 
   -- end generate INT_CLK_DIS;
 

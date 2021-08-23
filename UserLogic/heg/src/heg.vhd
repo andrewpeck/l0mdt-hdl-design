@@ -66,6 +66,15 @@ architecture beh of heg is
   signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
   signal heg_ctrl_mon_v   : std_logic_vector(len(heg_ctrl_mon_r)-1 downto 0);
 
+  signal ctrl_hp_ar : H2S_HPS_HEG_HEG_HP_HP_CTRL_t_ARRAY ;
+  signal mon_hp_ar  : H2S_HPS_HEG_HEG_HP_HP_MON_t_ARRAY ;
+
+  type ctrl_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(ctrl_hp_ar(0))-1 downto 0);
+  type mon_hp_avt is array (g_HPS_NUM_MDT_CH -1 downto 0) of std_logic_vector(len(mon_hp_ar(0))-1 downto 0);
+
+  signal ctrl_hp_av : ctrl_hp_avt;
+  signal mon_hp_av  : mon_hp_avt;
+
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
   signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
@@ -87,6 +96,13 @@ begin
   
   heg_ctrl_mon_r <= structify(heg_ctrl_mon_v,heg_ctrl_mon_r);
   heg_ctrl_ctrl_v <= vectorify(heg_ctrl_ctrl_r,heg_ctrl_ctrl_v);
+
+  ctrl_hp_ar <= ctrl_r.HP.HP;
+  mon_r.HP.HP <= mon_hp_ar;
+
+  -- CTRL_HP_GEN: for i_hp  in  generate
+    
+  -- end generate CTRL_HP_GEN;
 
 
 
@@ -115,6 +131,10 @@ begin
   );
 
   hp_gen: for i_hp in g_HPS_NUM_MDT_CH-1 downto 0 generate
+
+    ctrl_hp_av(i_hp) <= convert(ctrl_hp_ar(i_hp),ctrl_hp_av(i_hp));
+    mon_hp_ar(i_hp) <= convert(mon_hp_av(i_hp),mon_hp_ar(i_hp));
+
     hp_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(i_hp) = '1' generate
       Hit_Processor : entity hp_lib.hit_processor
       generic map(
@@ -124,6 +144,9 @@ begin
         clk                 => clk,
         rst                 => rst,
         glob_en             => glob_en,
+        --
+        ctrl_v              => ctrl_hp_av(i_hp),
+        mon_v               => mon_hp_av(i_hp) , 
         -- configuration
         local_rst           => hegC_control(i_hp).rst,
         local_en            => hegC_control(i_hp).enable,

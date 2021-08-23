@@ -9,11 +9,6 @@ AXI_CONTROL_SETS:
       axi_clk: clk40
       axi_rstn: "${::AXI_MASTER_RSTN}"
       axi_freq: 40000000
-  AXI_SPYBUFFER_CTRL:
-      axi_interconnect: "SPYBUFFER_INTERCONNECT_0"
-      axi_clk: "${::AXI_MASTER_CLK}"
-      axi_rstn: "${::AXI_MASTER_RSTN}"
-      axi_freq: "${::AXI_MASTER_CLK_FREQ}"
 
 AXI_SLAVES:
   KINTEX_SYS_MGMT:
@@ -103,39 +98,3 @@ AXI_SLAVES:
       addr:
         offset: "0x83c4f000"
         range: "4K"
-
-  INTERCONNECT_1:
-
-    TCL_CALL:
-      command: "BUILD_CHILD_AXI_INTERCONNECT"
-      name: "SPYBUFFER_INTERCONNECT_0"
-      axi_clk: "${::AXI_MASTER_CLK}"
-      axi_rstn: "${::AXI_MASTER_RSTN}"
-      parent: "${::AXI_INTERCONNECT_NAME}"
-      master_clk: "${::AXI_MASTER_CLK}"
-      master_rstn: "${::AXI_MASTER_RSTN}"
-      firewall: "0"
-
-    SUB_SLAVES:
-
-      TAR_SPY:
-        SPYBUFFER: true
-        TCL_CALL:
-          command: "AXI_IP_BRAM_CONTROL"
-          axi_control: "${::AXI_SPYBUFFER_CTRL}"
-          width: 32
-          latency: 2
-          addr:
-            offset: "0x83c50000"
-            range: "64K"
-
-      MPL_SPY:
-        SPYBUFFER: true
-        TCL_CALL:
-          command: "AXI_IP_BRAM_CONTROL"
-          axi_control: "${::AXI_SPYBUFFER_CTRL}"
-          width: 32
-          latency: 2
-          addr:
-            offset: "0x83c60000"
-            range: "32K"

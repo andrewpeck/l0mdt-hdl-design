@@ -16,11 +16,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-package hp_dt2r_small_mem is
+package mdt_dt2r_small is
 
   constant DT2R_SMALL_ADDR_LEN : integer := 9;
-  constant DT2R_SMALL_DATA_LEN : integer := 8;
-  constant DT2R_SMALL_MEM_SIZE : integer := 494;
+  -- constant DT2R_SMALL_DATA_LEN : integer := 8;
+  constant DT2R_SMALL_MEM_SIZE : integer := 512;
 
   type mem_array is array (0 to DT2R_SMALL_MEM_SIZE-1) of integer;
   constant mem_data : mem_array := (
@@ -122,7 +122,9 @@ package hp_dt2r_small_mem is
     473 to 477 =>228,
     478 to 482 =>229,
     483 to 487 =>231,
-    488 to 493 =>232
+    488 to 493 =>232,
+    494 to 511 =>232
+    -- I saturate 493 to 512 until we do more calculations
   );
 
- end package hp_dt2r_small_mem;
+ end package mdt_dt2r_small;
