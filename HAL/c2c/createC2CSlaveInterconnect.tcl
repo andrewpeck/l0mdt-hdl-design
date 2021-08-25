@@ -62,9 +62,13 @@ source -quiet ${C2C_PATH}/create_kintex_c2c.tcl
 set mAXI [list ${C2C}/m_axi      ${C2C}/m_axi_lite]
 set mCLK [list ${AXI_MASTER_CLK} ${AXI_MASTER_CLK}]
 set mRST [list $AXI_MASTER_RSTN  $AXI_MASTER_RSTN]
+# set mAXI [list ${C2C}/m_axi ${C2C}/m_axi_lite ${JTAG_AXI_MASTER}/M_AXI]
+# set mCLK [list ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK}  ${AXI_MASTER_CLK} ]
+# set mRST [list ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN} ${AXI_MASTER_RSTN}]
 
-BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST
-AXI_DEV_CONNECT ${C2C_PHY} ${AXI_INTERCONNECT_NAME} ${EXT_CLK} ${EXT_RESET} AXI_MASTER_CLK_FREQ 0x83c44000 4K 0
+[BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST]
+# BUILD_AXI_INTERCONNECT $AXI_INTERCONNECT_NAME ${AXI_MASTER_CLK} $AXI_MASTER_RSTN $mAXI $mCLK $mRST
+# AXI_DEV_CONNECT ${C2C_PHY} ${AXI_INTERCONNECT_NAME} ${EXT_CLK} ${EXT_RESET} AXI_MASTER_CLK_FREQ 0x83c44000 4K 0
 
 #================================================================================
 #  Configure and add AXI slaves
@@ -76,6 +80,13 @@ yaml_to_bd "$C2C_PATH/slaves.yaml"
 #========================================
 #  Finish up
 #========================================
+
+# why start_gui / stop_gui?
+# see: https://forums.xilinx.com/t5/Vivado-TCL-Community/running-write-bd-layout-in-batch-mode/td-p/948476
+# the gui will open and close for a second to generate the svg outputs
+start_gui
+write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
+stop_gui
 
 validate_bd_design
 
