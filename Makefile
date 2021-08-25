@@ -31,9 +31,8 @@ PROJECT_LIST = $(patsubst %/,%,$(patsubst Top/%,%,$(dir $(dir $(shell find Top/ 
 CREATE_LIST = $(addprefix create_,$(PROJECT_LIST))
 OPEN_LIST = $(addprefix open_,$(PROJECT_LIST))
 
-projects:
+list_hog_projects:
 	@echo $(PROJECT_LIST)
-	@echo $(CREATE_LIST)
 
 $(CREATE_LIST):
 	@echo -------------------------------------------------------------------------------- $(COLORIZE)
@@ -109,4 +108,17 @@ all:
 	make types
 	make flavors
 
-clean: clean_regmap
+clean: clean_ip clean_projects
+
+# target to clean out generated IP cruft
+clean_ip:
+	git clean -dfX HAL/IP
+	git clean -dfX HAL/c2c
+	git clean -dfX IP
+
+clean_bin:
+	rm -rf bin
+
+# target to remove generated Hog projects
+clean_projects:
+	rm -rf Projects
