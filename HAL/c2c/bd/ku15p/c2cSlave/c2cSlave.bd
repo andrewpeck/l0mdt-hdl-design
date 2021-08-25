@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x59CB7EC91347D32B",
+      "boundary_crc": "0x59CB7EC970510747",
       "device": "xcku15p-ffva1760-2-e",
       "name": "c2cSlave",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -137,7 +137,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -148,16 +148,16 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
-            "value_src": "default"
+            "value": "2",
+            "value_src": "default_prop"
           },
           "NUM_READ_THREADS": {
             "value": "1",
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
-            "value_src": "default"
+            "value": "2",
+            "value_src": "default_prop"
           },
           "NUM_WRITE_THREADS": {
             "value": "1",
@@ -259,7 +259,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -270,16 +270,16 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
-            "value_src": "default"
+            "value": "2",
+            "value_src": "default_prop"
           },
           "NUM_READ_THREADS": {
             "value": "1",
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
-            "value_src": "default"
+            "value": "2",
+            "value_src": "default_prop"
           },
           "NUM_WRITE_THREADS": {
             "value": "1",
@@ -382,7 +382,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -393,7 +393,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -401,7 +401,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -505,7 +505,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -516,7 +516,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -524,7 +524,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -628,7 +628,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -639,7 +639,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -647,7 +647,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -751,7 +751,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -762,7 +762,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -770,7 +770,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -874,7 +874,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -885,7 +885,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -893,7 +893,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -997,7 +997,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -1008,7 +1008,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -1016,7 +1016,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -1120,7 +1120,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -1131,7 +1131,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -1139,7 +1139,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -1243,7 +1243,7 @@
           },
           "ID_WIDTH": {
             "value": "0",
-            "value_src": "default"
+            "value_src": "ip_prop"
           },
           "INSERT_VIP": {
             "value": "0",
@@ -1254,7 +1254,7 @@
             "value_src": "ip_prop"
           },
           "NUM_READ_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_READ_THREADS": {
@@ -1262,7 +1262,7 @@
             "value_src": "default"
           },
           "NUM_WRITE_OUTSTANDING": {
-            "value": "1",
+            "value": "2",
             "value_src": "ip_prop"
           },
           "NUM_WRITE_THREADS": {
@@ -1308,6 +1308,10 @@
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "reset_n",
+            "value_src": "default"
+          },
           "CLK_DOMAIN": {
             "value": "c2cSlave_clk50Mhz",
             "value_src": "default"
@@ -1490,13 +1494,13 @@
       "sys_reseter": {
         "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
         "xci_name": "c2cSlave_sys_reseter_0",
-        "xci_path": "ip/c2cSlave_sys_reseter_0_10/c2cSlave_sys_reseter_0.xci",
+        "xci_path": "ip/c2cSlave_sys_reseter_0/c2cSlave_sys_reseter_0.xci",
         "inst_hier_path": "sys_reseter"
       },
       "K_C2CLINK": {
         "vlnv": "xilinx.com:ip:axi_chip2chip:5.0",
         "xci_name": "c2cSlave_K_C2CLINK_0",
-        "xci_path": "ip/c2cSlave_K_C2CLINK_0_10/c2cSlave_K_C2CLINK_0.xci",
+        "xci_path": "ip/c2cSlave_K_C2CLINK_0/c2cSlave_K_C2CLINK_0.xci",
         "inst_hier_path": "K_C2CLINK",
         "parameters": {
           "C_AXI_DATA_WIDTH": {
@@ -1563,7 +1567,7 @@
       "K_C2CLINK_PHY": {
         "vlnv": "xilinx.com:ip:aurora_64b66b:12.0",
         "xci_name": "c2cSlave_K_C2CLINK_PHY_0",
-        "xci_path": "ip/c2cSlave_K_C2CLINK_PHY_0_10/c2cSlave_K_C2CLINK_PHY_0.xci",
+        "xci_path": "ip/c2cSlave_K_C2CLINK_PHY_0/c2cSlave_K_C2CLINK_PHY_0.xci",
         "inst_hier_path": "K_C2CLINK_PHY",
         "parameters": {
           "CHANNEL_ENABLE": {
@@ -1614,7 +1618,7 @@
       },
       "slave_interconnect": {
         "vlnv": "xilinx.com:ip:axi_interconnect:2.1",
-        "xci_path": "ip/c2cSlave_slave_interconnect_0_10/c2cSlave_slave_interconnect_0.xci",
+        "xci_path": "ip/c2cSlave_slave_interconnect_0/c2cSlave_slave_interconnect_0.xci",
         "inst_hier_path": "slave_interconnect",
         "xci_name": "c2cSlave_slave_interconnect_0",
         "parameters": {
@@ -1926,7 +1930,7 @@
           "xbar": {
             "vlnv": "xilinx.com:ip:axi_crossbar:2.1",
             "xci_name": "c2cSlave_xbar_0",
-            "xci_path": "ip/c2cSlave_xbar_0_9/c2cSlave_xbar_0.xci",
+            "xci_path": "ip/c2cSlave_xbar_0/c2cSlave_xbar_0.xci",
             "inst_hier_path": "slave_interconnect/xbar",
             "parameters": {
               "NUM_MI": {
@@ -2025,7 +2029,7 @@
               "auto_pc": {
                 "vlnv": "xilinx.com:ip:axi_protocol_converter:2.1",
                 "xci_name": "c2cSlave_auto_pc_0",
-                "xci_path": "ip/c2cSlave_auto_pc_0_9/c2cSlave_auto_pc_0.xci",
+                "xci_path": "ip/c2cSlave_auto_pc_0/c2cSlave_auto_pc_0.xci",
                 "inst_hier_path": "slave_interconnect/s00_couplers/auto_pc",
                 "parameters": {
                   "MI_PROTOCOL": {
@@ -2177,7 +2181,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_0",
-                "xci_path": "ip/c2cSlave_auto_cc_0_9/c2cSlave_auto_cc_0.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_0/c2cSlave_auto_cc_0.xci",
                 "inst_hier_path": "slave_interconnect/m00_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2190,16 +2194,16 @@
               }
             },
             "interface_nets": {
-              "auto_cc_to_m00_couplers": {
-                "interface_ports": [
-                  "M_AXI",
-                  "auto_cc/M_AXI"
-                ]
-              },
               "m00_couplers_to_auto_cc": {
                 "interface_ports": [
                   "S_AXI",
                   "auto_cc/S_AXI"
+                ]
+              },
+              "auto_cc_to_m00_couplers": {
+                "interface_ports": [
+                  "M_AXI",
+                  "auto_cc/M_AXI"
                 ]
               }
             },
@@ -2441,7 +2445,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_1",
-                "xci_path": "ip/c2cSlave_auto_cc_1_9/c2cSlave_auto_cc_1.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_1/c2cSlave_auto_cc_1.xci",
                 "inst_hier_path": "slave_interconnect/m04_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2543,7 +2547,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_2",
-                "xci_path": "ip/c2cSlave_auto_cc_2_9/c2cSlave_auto_cc_2.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_2/c2cSlave_auto_cc_2.xci",
                 "inst_hier_path": "slave_interconnect/m05_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2556,16 +2560,16 @@
               }
             },
             "interface_nets": {
-              "m05_couplers_to_auto_cc": {
-                "interface_ports": [
-                  "S_AXI",
-                  "auto_cc/S_AXI"
-                ]
-              },
               "auto_cc_to_m05_couplers": {
                 "interface_ports": [
                   "M_AXI",
                   "auto_cc/M_AXI"
+                ]
+              },
+              "m05_couplers_to_auto_cc": {
+                "interface_ports": [
+                  "S_AXI",
+                  "auto_cc/S_AXI"
                 ]
               }
             },
@@ -2645,7 +2649,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_3",
-                "xci_path": "ip/c2cSlave_auto_cc_3_9/c2cSlave_auto_cc_3.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_3/c2cSlave_auto_cc_3.xci",
                 "inst_hier_path": "slave_interconnect/m06_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2658,16 +2662,16 @@
               }
             },
             "interface_nets": {
-              "m06_couplers_to_auto_cc": {
-                "interface_ports": [
-                  "S_AXI",
-                  "auto_cc/S_AXI"
-                ]
-              },
               "auto_cc_to_m06_couplers": {
                 "interface_ports": [
                   "M_AXI",
                   "auto_cc/M_AXI"
+                ]
+              },
+              "m06_couplers_to_auto_cc": {
+                "interface_ports": [
+                  "S_AXI",
+                  "auto_cc/S_AXI"
                 ]
               }
             },
@@ -2747,7 +2751,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_4",
-                "xci_path": "ip/c2cSlave_auto_cc_4_9/c2cSlave_auto_cc_4.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_4/c2cSlave_auto_cc_4.xci",
                 "inst_hier_path": "slave_interconnect/m07_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2849,7 +2853,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_5",
-                "xci_path": "ip/c2cSlave_auto_cc_5_9/c2cSlave_auto_cc_5.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_5/c2cSlave_auto_cc_5.xci",
                 "inst_hier_path": "slave_interconnect/m08_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2862,16 +2866,16 @@
               }
             },
             "interface_nets": {
-              "m08_couplers_to_auto_cc": {
-                "interface_ports": [
-                  "S_AXI",
-                  "auto_cc/S_AXI"
-                ]
-              },
               "auto_cc_to_m08_couplers": {
                 "interface_ports": [
                   "M_AXI",
                   "auto_cc/M_AXI"
+                ]
+              },
+              "m08_couplers_to_auto_cc": {
+                "interface_ports": [
+                  "S_AXI",
+                  "auto_cc/S_AXI"
                 ]
               }
             },
@@ -2951,7 +2955,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_6",
-                "xci_path": "ip/c2cSlave_auto_cc_6_9/c2cSlave_auto_cc_6.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_6/c2cSlave_auto_cc_6.xci",
                 "inst_hier_path": "slave_interconnect/m09_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -3053,7 +3057,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_7",
-                "xci_path": "ip/c2cSlave_auto_cc_7_9/c2cSlave_auto_cc_7.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_7/c2cSlave_auto_cc_7.xci",
                 "inst_hier_path": "slave_interconnect/m10_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -3066,16 +3070,16 @@
               }
             },
             "interface_nets": {
-              "auto_cc_to_m10_couplers": {
-                "interface_ports": [
-                  "M_AXI",
-                  "auto_cc/M_AXI"
-                ]
-              },
               "m10_couplers_to_auto_cc": {
                 "interface_ports": [
                   "S_AXI",
                   "auto_cc/S_AXI"
+                ]
+              },
+              "auto_cc_to_m10_couplers": {
+                "interface_ports": [
+                  "M_AXI",
+                  "auto_cc/M_AXI"
                 ]
               }
             },
@@ -3155,7 +3159,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_8",
-                "xci_path": "ip/c2cSlave_auto_cc_8_9/c2cSlave_auto_cc_8.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_8/c2cSlave_auto_cc_8.xci",
                 "inst_hier_path": "slave_interconnect/m11_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -3168,16 +3172,16 @@
               }
             },
             "interface_nets": {
-              "m11_couplers_to_auto_cc": {
-                "interface_ports": [
-                  "S_AXI",
-                  "auto_cc/S_AXI"
-                ]
-              },
               "auto_cc_to_m11_couplers": {
                 "interface_ports": [
                   "M_AXI",
                   "auto_cc/M_AXI"
+                ]
+              },
+              "m11_couplers_to_auto_cc": {
+                "interface_ports": [
+                  "S_AXI",
+                  "auto_cc/S_AXI"
                 ]
               }
             },
@@ -3210,28 +3214,70 @@
           }
         },
         "interface_nets": {
+          "xbar_to_m11_couplers": {
+            "interface_ports": [
+              "xbar/M11_AXI",
+              "m11_couplers/S_AXI"
+            ]
+          },
+          "xbar_to_m10_couplers": {
+            "interface_ports": [
+              "xbar/M10_AXI",
+              "m10_couplers/S_AXI"
+            ]
+          },
+          "s01_couplers_to_xbar": {
+            "interface_ports": [
+              "s01_couplers/M_AXI",
+              "xbar/S01_AXI"
+            ]
+          },
           "slave_interconnect_to_s01_couplers": {
             "interface_ports": [
               "S01_AXI",
               "s01_couplers/S_AXI"
             ]
           },
-          "xbar_to_m09_couplers": {
+          "s00_couplers_to_xbar": {
             "interface_ports": [
-              "xbar/M09_AXI",
-              "m09_couplers/S_AXI"
+              "s00_couplers/M_AXI",
+              "xbar/S00_AXI"
             ]
           },
-          "m10_couplers_to_slave_interconnect": {
+          "xbar_to_m08_couplers": {
             "interface_ports": [
-              "M10_AXI",
-              "m10_couplers/M_AXI"
+              "xbar/M08_AXI",
+              "m08_couplers/S_AXI"
             ]
           },
-          "slave_interconnect_to_s00_couplers": {
+          "m09_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "S00_AXI",
-              "s00_couplers/S_AXI"
+              "M09_AXI",
+              "m09_couplers/M_AXI"
+            ]
+          },
+          "m08_couplers_to_slave_interconnect": {
+            "interface_ports": [
+              "M08_AXI",
+              "m08_couplers/M_AXI"
+            ]
+          },
+          "xbar_to_m07_couplers": {
+            "interface_ports": [
+              "xbar/M07_AXI",
+              "m07_couplers/S_AXI"
+            ]
+          },
+          "m07_couplers_to_slave_interconnect": {
+            "interface_ports": [
+              "M07_AXI",
+              "m07_couplers/M_AXI"
+            ]
+          },
+          "xbar_to_m06_couplers": {
+            "interface_ports": [
+              "xbar/M06_AXI",
+              "m06_couplers/S_AXI"
             ]
           },
           "m06_couplers_to_slave_interconnect": {
@@ -3252,40 +3298,10 @@
               "m04_couplers/S_AXI"
             ]
           },
-          "xbar_to_m03_couplers": {
+          "m05_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "xbar/M03_AXI",
-              "m03_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m01_couplers": {
-            "interface_ports": [
-              "xbar/M01_AXI",
-              "m01_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m10_couplers": {
-            "interface_ports": [
-              "xbar/M10_AXI",
-              "m10_couplers/S_AXI"
-            ]
-          },
-          "s01_couplers_to_xbar": {
-            "interface_ports": [
-              "s01_couplers/M_AXI",
-              "xbar/S01_AXI"
-            ]
-          },
-          "m00_couplers_to_slave_interconnect": {
-            "interface_ports": [
-              "M00_AXI",
-              "m00_couplers/M_AXI"
-            ]
-          },
-          "xbar_to_m06_couplers": {
-            "interface_ports": [
-              "xbar/M06_AXI",
-              "m06_couplers/S_AXI"
+              "M05_AXI",
+              "m05_couplers/M_AXI"
             ]
           },
           "m11_couplers_to_slave_interconnect": {
@@ -3294,46 +3310,28 @@
               "m11_couplers/M_AXI"
             ]
           },
-          "m03_couplers_to_slave_interconnect": {
+          "m10_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "M03_AXI",
-              "m03_couplers/M_AXI"
+              "M10_AXI",
+              "m10_couplers/M_AXI"
             ]
           },
-          "m01_couplers_to_slave_interconnect": {
+          "xbar_to_m09_couplers": {
             "interface_ports": [
-              "M01_AXI",
-              "m01_couplers/M_AXI"
+              "xbar/M09_AXI",
+              "m09_couplers/S_AXI"
             ]
           },
-          "m09_couplers_to_slave_interconnect": {
+          "m00_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "M09_AXI",
-              "m09_couplers/M_AXI"
+              "M00_AXI",
+              "m00_couplers/M_AXI"
             ]
           },
-          "xbar_to_m00_couplers": {
+          "slave_interconnect_to_s00_couplers": {
             "interface_ports": [
-              "xbar/M00_AXI",
-              "m00_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m11_couplers": {
-            "interface_ports": [
-              "xbar/M11_AXI",
-              "m11_couplers/S_AXI"
-            ]
-          },
-          "m07_couplers_to_slave_interconnect": {
-            "interface_ports": [
-              "M07_AXI",
-              "m07_couplers/M_AXI"
-            ]
-          },
-          "s00_couplers_to_xbar": {
-            "interface_ports": [
-              "s00_couplers/M_AXI",
-              "xbar/S00_AXI"
+              "S00_AXI",
+              "s00_couplers/S_AXI"
             ]
           },
           "m04_couplers_to_slave_interconnect": {
@@ -3342,22 +3340,22 @@
               "m04_couplers/M_AXI"
             ]
           },
-          "m08_couplers_to_slave_interconnect": {
+          "xbar_to_m03_couplers": {
             "interface_ports": [
-              "M08_AXI",
-              "m08_couplers/M_AXI"
+              "xbar/M03_AXI",
+              "m03_couplers/S_AXI"
             ]
           },
-          "xbar_to_m07_couplers": {
+          "xbar_to_m02_couplers": {
             "interface_ports": [
-              "xbar/M07_AXI",
-              "m07_couplers/S_AXI"
+              "xbar/M02_AXI",
+              "m02_couplers/S_AXI"
             ]
           },
-          "m05_couplers_to_slave_interconnect": {
+          "m03_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "M05_AXI",
-              "m05_couplers/M_AXI"
+              "M03_AXI",
+              "m03_couplers/M_AXI"
             ]
           },
           "m02_couplers_to_slave_interconnect": {
@@ -3366,16 +3364,22 @@
               "m02_couplers/M_AXI"
             ]
           },
-          "xbar_to_m08_couplers": {
+          "xbar_to_m01_couplers": {
             "interface_ports": [
-              "xbar/M08_AXI",
-              "m08_couplers/S_AXI"
+              "xbar/M01_AXI",
+              "m01_couplers/S_AXI"
             ]
           },
-          "xbar_to_m02_couplers": {
+          "m01_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "xbar/M02_AXI",
-              "m02_couplers/S_AXI"
+              "M01_AXI",
+              "m01_couplers/M_AXI"
+            ]
+          },
+          "xbar_to_m00_couplers": {
+            "interface_ports": [
+              "xbar/M00_AXI",
+              "m00_couplers/S_AXI"
             ]
           }
         },
@@ -3593,7 +3597,7 @@
       "KINTEX_SYS_MGMT": {
         "vlnv": "xilinx.com:ip:system_management_wiz:1.3",
         "xci_name": "c2cSlave_KINTEX_SYS_MGMT_0",
-        "xci_path": "ip/c2cSlave_KINTEX_SYS_MGMT_0_10/c2cSlave_KINTEX_SYS_MGMT_0.xci",
+        "xci_path": "ip/c2cSlave_KINTEX_SYS_MGMT_0/c2cSlave_KINTEX_SYS_MGMT_0.xci",
         "inst_hier_path": "KINTEX_SYS_MGMT",
         "parameters": {
           "USER_TEMP_ALARM": {
@@ -3603,22 +3607,10 @@
       }
     },
     "interface_nets": {
-      "slave_interconnect_M05_AXI": {
+      "slave_interconnect_M07_AXI": {
         "interface_ports": [
-          "H2S",
-          "slave_interconnect/M05_AXI"
-        ]
-      },
-      "slave_interconnect_M04_AXI": {
-        "interface_ports": [
-          "HAL",
-          "slave_interconnect/M04_AXI"
-        ]
-      },
-      "slave_interconnect_M06_AXI": {
-        "interface_ports": [
-          "MTC",
-          "slave_interconnect/M06_AXI"
+          "TF",
+          "slave_interconnect/M07_AXI"
         ]
       },
       "slave_interconnect_M08_AXI": {
@@ -3627,46 +3619,28 @@
           "slave_interconnect/M08_AXI"
         ]
       },
-      "slave_interconnect_M07_AXI": {
+      "slave_interconnect_M06_AXI": {
         "interface_ports": [
-          "TF",
-          "slave_interconnect/M07_AXI"
+          "MTC",
+          "slave_interconnect/M06_AXI"
         ]
       },
-      "slave_interconnect_M10_AXI": {
+      "slave_interconnect_M04_AXI": {
         "interface_ports": [
-          "TAR",
-          "slave_interconnect/M10_AXI"
+          "HAL",
+          "slave_interconnect/M04_AXI"
         ]
       },
-      "slave_interconnect_M11_AXI": {
+      "slave_interconnect_M05_AXI": {
         "interface_ports": [
-          "MPL",
-          "slave_interconnect/M11_AXI"
+          "H2S",
+          "slave_interconnect/M05_AXI"
         ]
       },
-      "slave_interconnect_M03_AXI": {
+      "K_C2CLINK_PHY_refclk_1": {
         "interface_ports": [
-          "HAL_CORE",
-          "slave_interconnect/M03_AXI"
-        ]
-      },
-      "slave_interconnect_M00_AXI": {
-        "interface_ports": [
-          "K_C2CLINK_PHY/AXILITE_DRP_IF_0",
-          "slave_interconnect/M00_AXI"
-        ]
-      },
-      "slave_interconnect_M01_AXI": {
-        "interface_ports": [
-          "KINTEX_SYS_MGMT/S_AXI_LITE",
-          "slave_interconnect/M01_AXI"
-        ]
-      },
-      "slave_interconnect_M02_AXI": {
-        "interface_ports": [
-          "FW_INFO",
-          "slave_interconnect/M02_AXI"
+          "K_C2CLINK_PHY_refclk",
+          "K_C2CLINK_PHY/GT_DIFF_REFCLK1"
         ]
       },
       "K_C2CLINK_m_axi": {
@@ -3699,12 +3673,6 @@
           "K_C2CLINK/AXIS_RX"
         ]
       },
-      "K_C2CLINK_PHY_refclk_1": {
-        "interface_ports": [
-          "K_C2CLINK_PHY_refclk",
-          "K_C2CLINK_PHY/GT_DIFF_REFCLK1"
-        ]
-      },
       "K_C2CLINK_PHY_Rx_1": {
         "interface_ports": [
           "K_C2CLINK_PHY_Rx",
@@ -3715,6 +3683,42 @@
         "interface_ports": [
           "K_C2CLINK_PHY_Tx",
           "K_C2CLINK_PHY/GT_SERIAL_TX"
+        ]
+      },
+      "slave_interconnect_M00_AXI": {
+        "interface_ports": [
+          "K_C2CLINK_PHY/AXILITE_DRP_IF_0",
+          "slave_interconnect/M00_AXI"
+        ]
+      },
+      "slave_interconnect_M02_AXI": {
+        "interface_ports": [
+          "FW_INFO",
+          "slave_interconnect/M02_AXI"
+        ]
+      },
+      "slave_interconnect_M01_AXI": {
+        "interface_ports": [
+          "KINTEX_SYS_MGMT/S_AXI_LITE",
+          "slave_interconnect/M01_AXI"
+        ]
+      },
+      "slave_interconnect_M11_AXI": {
+        "interface_ports": [
+          "MPL",
+          "slave_interconnect/M11_AXI"
+        ]
+      },
+      "slave_interconnect_M10_AXI": {
+        "interface_ports": [
+          "TAR",
+          "slave_interconnect/M10_AXI"
+        ]
+      },
+      "slave_interconnect_M03_AXI": {
+        "interface_ports": [
+          "HAL_CORE",
+          "slave_interconnect/M03_AXI"
         ]
       }
     },
