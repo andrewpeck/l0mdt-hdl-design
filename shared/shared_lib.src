@@ -60,4 +60,4 @@ shared/arithmetics/arithmetics_lib.src
 # shared/SpyBuffer/src/SpyPlayback.v
 # shared/SpyBuffer/src/SpyBuffer.v
 
-HAL/ctrl/src/spybuffer_vhdl.vhd
+shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
