@@ -27,8 +27,23 @@ foreach source_file $sources {
     }
 }
 
-# TODO: should also check if the vivado version in the bd is different from the
+# also check if the vivado version in the bd is different from the
 # version being used and make sure to update the bd if necessary
+# I do this with jq, so it only works if you have jq installed,
+# (you should have it installed anyway because its great,
+# but if you don't have it installed that's ok.
+# Vivado will check if it exists and only try to run
+# it if it is in your path)
+
+set have_jq [expr ! [catch {exec which jqq}]]
+if {$have_jq} {
+    set bd_vivado_version [exec jq .design.design_info.tool_version $product]
+    regexp -- {Vivado v([0-9]{4})\.([0-9])*(\.[0-9])*} [version] -> \
+        VIVADO_YEAR VIVADO_MINOR VIVADO_PATCH
+    if {0 != [string compare "{$VIVADO_YEAR}.{VIVADO_MINOR}${VIVADO_PATCH}" "$bd_vivado_version"]} {
+        set needs_update 1
+    }
+}
 
 if {$needs_update == 1} {
 
