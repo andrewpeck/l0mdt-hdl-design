@@ -107,7 +107,7 @@ module lsf_spybuffer_wrapper #(
     SpyBuffer #(
 		.DATA_WIDTH_A(HEG2SFHIT_LEN),
 		.DATA_WIDTH_B(HEG2SFHIT_LEN),
-		.FC_FIFO_WIDTH(4),
+		.FC_FIFO_WIDTH(5),
 		.SPY_MEM_WIDTH_A(LSF_SB_MEM_WIDTH),
 		.SPY_MEM_WIDTH_B(LSF_SB_MEM_WIDTH)
 	       ) mdt_hit_buffer (

@@ -51,15 +51,15 @@
 module `AUTOTB_TOP;
 
    parameter AUTOTB_TRANSACTION_NUM = 500000; //86;
-parameter PROGRESS_TIMEOUT = 10000000;
-parameter LATENCY_ESTIMATION = 13;
-parameter LENGTH_mdt_hit_V = 1;
-parameter LENGTH_hit_extraction_roi_V = 1;
-parameter LENGTH_histogram_bins_reset_V = 1;
+   parameter PROGRESS_TIMEOUT = 10000000;
+   parameter LATENCY_ESTIMATION = 13;
+   parameter LENGTH_mdt_hit_V = 1;
+   parameter LENGTH_hit_extraction_roi_V = 1;
+   parameter LENGTH_histogram_bins_reset_V = 1;
 
 `ifdef THETA_BIN_64_RBIN_128
    parameter EOF_CLOCKS = 80;
-   parameter EOF_RST_CLOCKS = 1100;
+   parameter EOF_RST_CLOCKS = 208; //1100;
 
 `else
    parameter EOF_CLOCKS = 80;
@@ -67,18 +67,18 @@ parameter LENGTH_histogram_bins_reset_V = 1;
 `endif
 
 
-task read_token;
-    input integer fp;
-    output reg [887 : 0] token;
-    integer ret;
-    begin
-        token = "";
-        ret = 0;
-        ret = $fscanf(fp,"%s",token);
-    end
-endtask
+   task read_token;
+      input integer fp;
+      output reg [887 : 0] token;
+      integer 		   ret;
+      begin
+         token = "";
+         ret = 0;
+         ret = $fscanf(fp,"%s",token);
+      end
+   endtask
 
-   parameter TOTAL_SLC = 500;
+   parameter TOTAL_SLC = 499;
    integer total_passed = 0;
    integer total_failed = 0;
    integer total_skipped = 0;
@@ -100,69 +100,71 @@ endtask
 `else
 	$readmemh("tv_theta_rbin_64/HitsPerRoi.txt",total_hits_in_Roi);
 `endif
-//	$display("H0 = 0x%x\n",total_hits_in_Roi[0]);
+	$display("Total Hits in ROI 0 = 0x%x\n",total_hits_in_Roi[0]);
+	$display("Total Hits in ROI 100 = 0x%x\n",total_hits_in_Roi[100]);
      end
    //END PRIYA
 
-reg AESL_clock;
-reg rst;
-reg start;
-reg ce;
-reg tb_continue;
-wire AESL_start;
-reg AESL_reset;
-wire AESL_ce;
-wire AESL_ready;
-wire AESL_idle;
-wire AESL_continue;
-wire AESL_done;
-reg AESL_done_delay = 0;
-reg AESL_done_delay2 = 0;
-reg AESL_ready_delay = 0;
-wire ready;
-wire ready_wire;
-wire ap_start;
-wire ap_done;
-wire ap_idle;
-wire ap_ready;
-wire  mdt_hit_V_ap_vld;
+   reg AESL_clock;
+   reg rst;
+   reg start;
+   reg ce;
+   reg tb_continue;
+   wire AESL_start;
+   reg 	AESL_reset;
+   wire AESL_ce;
+   wire AESL_ready;
+   wire AESL_idle;
+   wire AESL_continue;
+   wire AESL_done;
+   reg 	AESL_done_delay = 0;
+   reg 	AESL_done_delay2 = 0;
+   reg 	AESL_ready_delay = 0;
+   wire ready;
+   wire ready_wire;
+   wire ap_start;
+   wire ap_done;
+   wire ap_idle;
+   wire ap_ready;
+   wire mdt_hit_V_ap_vld;
    wire [HEG2SFHIT_LEN-1 : 0] mdt_hit;
-wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi;
-wire [HEG2SFHIT_LEN-1 : 0] mdt_hit_V;
-wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi_V;
+   wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi;
+   wire [HEG2SFHIT_LEN-1 : 0] mdt_hit_V;
+   wire [HEG2SFSLC_LEN-1 : 0] hit_extraction_roi_V;
 
-wire [0 : 0] histogram_bins_reset_V;
-integer done_cnt = 0;
-integer AESL_ready_cnt = 0;
-integer ready_cnt = 0;
-reg ready_initial;
-reg ready_initial_n;
-reg ready_last_n;
-reg ready_delay_last_n;
-reg done_delay_last_n;
-reg interface_done = 0;
+   wire [0 : 0] 	      histogram_bins_reset_V;
+   integer 		      done_cnt = 0;
+   integer 		      AESL_ready_cnt = 0;
+   integer 		      ready_cnt = 0;
+   reg 			      ready_initial;
+   reg 			      ready_initial_n;
+   reg 			      ready_last_n;
+   reg 			      ready_delay_last_n;
+   reg 			      done_delay_last_n;
+   reg 			      interface_done = 0;
 
 
-wire ap_clk;
-wire ap_rst;
-wire ap_rst_n;
 
-   wire [SF2PTCALC_LEN-1:0] le_output;
-   wire [SF2PTCALC_LEN-1:0] le_output_rtl;
+   wire 		      ap_clk;
+   wire 		      ap_rst;
+   wire 		      ap_rst_n;
 
-   wire 	le_output_vld;
-   wire 	le_output_empty;
-   reg 		le_output_re;
+   wire [SF2PTCALC_LEN-1:0]   le_output;
+   wire [SF2PTCALC_LEN-1:0]   le_output_rtl;
 
-   wire 	roi_ap_ready;
-   wire 	roi_af;
-   wire 	roi_re;
-   reg 		hit_extraction_roi_V_vld;
-   wire [511:0] le_tb_output;
-   wire [511:0] le_tb_output_i;
-   wire 	le_tb_output_vld;
-   wire 	mdt_hit_af;
-   wire 	mdt_hit_ap_ready;
+   wire 		      le_output_vld;
+   wire 		      le_output_empty;
+   reg 			      le_output_re;
+
+   wire 		      roi_ap_ready;
+   wire 		      roi_af;
+   wire 		      roi_re;
+   reg 			      hit_extraction_roi_V_vld;
+   wire [511:0] 	      le_tb_output;
+   wire [511:0] 	      le_tb_output_i;
+   wire 		      le_tb_output_vld;
+   wire 		      mdt_hit_af;
+   wire 		      mdt_hit_ap_ready;
 
    parameter W_zd = HEG2SFSLC_VEC_POS_LEN; //HPS_LSF_MDT_LOCALX_LEN; //19;
    parameter W_Rd = HEG2SFSLC_VEC_POS_LEN; //HPS_LSF_MDT_LOCALY_LEN; //18; //19;
@@ -172,10 +174,11 @@ wire ap_rst_n;
    parameter W_IN = 22;
    parameter W_r  = 13;
    parameter char_width = 8;
-   logic [SLC_MUID_LEN-1:0] slc_muid;
-   logic [VEC_MDTID_LEN-1:0] slc_mdtid;
-   logic 		     i_eof;
-   integer 		     i_eof_count;
+   logic [SLC_MUID_LEN-1:0]   slc_muid;
+   logic [VEC_MDTID_LEN-1:0]  slc_mdtid;
+   logic 		      i_eof;
+   integer 		      i_eof_count;
+   integer 		      hba_mem_reset;
 
    parameter gtheta = SF2PTCALC_SEGANGLE_LEN; //15;
 
@@ -192,7 +195,10 @@ wire ap_rst_n;
 
    assign le_tb_output_i = (`AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_tb_output_vld)? `AUTOTB_DUT_INST.lsf_spybuffer_wrapper_inst.legendreEngine_inst.le_tb_output : le_tb_output_i;
    assign mdt_hit_ap_ready = ~ap_rst; //~mdt_hit_af;
-   assign roi_ap_ready     = (roi_count_we == -1) || (le_output_re) ; //~roi_af;
+   //assign roi_ap_ready     = (roi_count_we == -1) || (le_output_re) ; //~roi_af;
+   assign roi_ap_ready     = (roi_count_we == -1) ||  ((roi_count_we != -1) & (i_eof_count == 0) ); //~roi_af;
+
+
 
    `AUTOTB_DUT `AUTOTB_DUT_INST(
 				.clock(ap_clk),
@@ -269,7 +275,7 @@ initial begin : read_file_process_mdt_hit_V
     AESL_REG_mdt_hit_V_ap_vld <= 0;
     hit_counter         <= 0;
    i_eof <= 0;
-   i_eof_count <= 0;
+   i_eof_count <= 1;
 
    i <= 0;
 
@@ -313,35 +319,26 @@ initial begin : read_file_process_mdt_hit_V
 	    @(posedge AESL_clock);
 	    i_eof <= 0;
 
+	    while(i_eof_count < EOF_RST_CLOCKS) begin
+	       i_eof_count <= i_eof_count + 1;
+	       @(posedge AESL_clock);
+	    end
 
-/* -----\/----- EXCLUDED -----\/-----
-	  if(hit_counter == total_hits_in_Roi[roi_count])begin  //Reading trailing mdt_hit transaction for ROI -> not to be used
-	     // $display("Skipping this token %s! hit_counter=%d",token,hit_counter);
-	     read_token(fp, token);
-	     read_token(fp, token);
-	     read_token(fp, token);
-	     read_token(fp, token);
-	     hit_counter++;
-	  end else begin
- -----/\----- EXCLUDED -----/\----- */
+	    i_eof_count <= 0;
+
 	     hit_counter <= 0;
 	     while(roi_ap_ready == 0  )begin
 		//$display("Stuck in loop hit_counter=%d, total_hits_in_Roi[%d]=%d",hit_counter, roi_count, total_hits_in_Roi[roi_count]);
 		@(posedge AESL_clock);
 
 	     end
-	    while(i_eof_count < EOF_RST_CLOCKS) begin
-	       	i_eof_count <= i_eof_count + 1;
-		@(posedge AESL_clock);
-	    end
-	    i_eof_count <= 0;
 
 	  //end
-	  //$display("Out of loop");
+	  //$display($time, ":NEXT ROI READY ...Out of loop");
        end
-
+       i_eof_count <= 1;
        hit_counter++;
-
+       //$display($time, ":THIS HIT: MDT HIT TOKEN=%s hit_counter=%d, roi_count = %d", token, hit_counter, roi_count);
 
        while(mdt_hit_ap_ready !== 1) begin
 	  AESL_REG_mdt_hit_V_ap_vld <= 0;
@@ -359,7 +356,7 @@ initial begin : read_file_process_mdt_hit_V
 		 $display("ERROR: Simulation using HLS TB failed while reading MDT Hits roi_count=%d, hit_counter=%d.",roi_count, hit_counter);
                  $finish;
               end
-//	   $display("MDT HIT TOKEN=%s hit_counter=%d, roi_count = %d", token, hit_counter, roi_count);
+	   //$display($time, ": MDT HIT TOKEN=%s hit_counter=%d, roi_count = %d", token, hit_counter, roi_count);
             @(posedge AESL_clock);
 	   AESL_REG_mdt_hit_V_ap_vld <= 0; //fails of i make it zero
 
@@ -768,7 +765,7 @@ initial begin : simulation_progress
         end
         // non-dataflow design && latency is predictable && no AXI master/slave interface
         get_intra_progress(intra_progress);
-        if (intra_progress > 500000) begin
+        if (intra_progress > 5000000) begin
             $display("// RTL Simulation : transaction %0d run-time latency is greater than %0f time(s) of the prediction @ \"%0t\"", start_cnt, intra_progress, $time);
             $display("////////////////////////////////////////////////////////////////////////////////////");
            $finish;
@@ -967,7 +964,7 @@ initial begin : read_file_process_le_output_V
 		    $display("roi_count:%d, slc_muid:%d: LE output mismatch expected 0x%x,0x%x actual=0x%x",roi_count,slc_muid,le_output_TB, AESL_REG_le_output_V, le_output);
 		    total_failed++;
 		    //  $display("LE output mismatch actual 0x%x%x%x%x",le_output[191:128],le_output[127:64],le_output[63:0]);
-		    #3000
+		    #100
 		      $finish;
 		 end
 	       else
@@ -985,7 +982,7 @@ initial begin : read_file_process_le_output_V
 	  @(posedge AESL_clock);
 	  le_output_re = 0;
 	  read_token(fp, token);
-	  if(roi_count == TOTAL_SLC)
+	  if(roi_count == TOTAL_SLC-1)
 	    begin
 	       $display("Test Completed total_roi = %d, total_passed = %d, total_failed = %d, total_skipped = %d\n",TOTAL_SLC, total_passed, total_failed, total_skipped);
 	       $finish();

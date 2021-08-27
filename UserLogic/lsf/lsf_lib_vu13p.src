@@ -1,8 +1,6 @@
 # dataformats/l0mdt_buses_constants.svh
 UserLogic/lsf/IP/vu13p/histogram_memory_128x4/histogram_memory_128x4.xci
-UserLogic/lsf/IP/vu13p/hls_compute_r_bins/hls_compute_r_bins.xci
 UserLogic/lsf/IP/vu13p/hls_get_legendre_segment_barrel/hls_get_legendre_segment_barrel.xci
-UserLogic/lsf/IP/vu13p/hls_get_rom_addr/hls_get_rom_addr.xci
 UserLogic/lsf/IP/vu13p/hls_get_trig_vals/hls_get_trig_vals.xci
 UserLogic/lsf/IP/vu13p/hls_find_max_bin/hls_find_max_bin.xci
 UserLogic/lsf/IP/vu13p/hls_calc_LE_r_offset_barrel/hls_calc_LE_r_offset_barrel.xci
@@ -12,6 +10,8 @@ UserLogic/lsf/IP/vu13p/hls_calc_LE_r_offset_barrel_64/hls_calc_LE_r_offset_barre
 UserLogic/lsf/IP/vu13p/hls_find_max_bin_64/hls_find_max_bin_64.xci
 UserLogic/lsf/src/update_histogram_dmem.sv
 UserLogic/lsf/src/update_histogram_reg.sv
+UserLogic/lsf/src/compute_r_bins.sv
+UserLogic/lsf/src/get_rom_addr.sv
 UserLogic/lsf/src/legendreEngine.sv
 UserLogic/lsf/src/legendreEngine_2clk.sv
 shared/SpyBuffer/src/aFifo/aFifo.v
@@ -24,7 +24,7 @@ shared/SpyBuffer/src/SpyProtocol.vh
 shared/SpyBuffer/src/SpyController.v
 shared/SpyBuffer/src/asym_ram_tdp_read_first.v
 shared/SpyBuffer/src/SpyMemory.v
-shared/SpyBuffer/src/SpyPlayback.v
+shared/SpyBuffer/src/SpyPlayback.v SystemVerilog
 shared/SpyBuffer/src/SpyBuffer.v
 UserLogic/lsf/src/lsf_spybuffer_wrapper.sv
 UserLogic/lsf/top_lsf.vhd
