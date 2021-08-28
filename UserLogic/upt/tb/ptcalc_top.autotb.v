@@ -19,15 +19,20 @@
 `define AESL_DEPTH_sf2ptcalc_mid_V 1
 `define AESL_DEPTH_sf2ptcalc_out_V 1
 `define AESL_DEPTH_ptcalc2mtc_V 1
-`define AUTOTB_TVIN_pl2ptcalc_V  "../tv/cdatafile/c.ptcalc_top.autotvin_pl2ptcalc_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_inn_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_inn_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_mid_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_mid_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_out_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_out_V.dat"
-`define AUTOTB_TVIN_pl2ptcalc_V_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_pl2ptcalc_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_inn_V_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_inn_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_mid_V_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_mid_V.dat"
-`define AUTOTB_TVIN_sf2ptcalc_out_V_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_out_V.dat"
-`define AUTOTB_TVOUT_ptcalc2mtc_V  "../tv/cdatafile/c.ptcalc_top.autotvout_ptcalc2mtc_V.dat"
+`define AUTOTB_TVIN_pl2ptcalc_V  "../tv/cdatafile/c.ptcalc_top.autotvin_pl2ptcalc.dat"
+`define AUTOTB_TVIN_sf2ptcalc_inn_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_inn.dat"
+`define AUTOTB_TVIN_sf2ptcalc_mid_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_mid.dat"
+`define AUTOTB_TVIN_sf2ptcalc_out_V  "../tv/cdatafile/c.ptcalc_top.autotvin_sf2ptcalc_out.dat"
+`define AUTOTB_TVIN_is_C_side  "../tv/cdatafile/c.ptcalc_top.autotvin_is_C_side.dat"
+`define AUTOTB_TVIN_pl2ptcalc_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_pl2ptcalc.dat"
+`define AUTOTB_TVIN_sf2ptcalc_inn_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_inn.dat"
+`define AUTOTB_TVIN_sf2ptcalc_mid_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_mid.dat"
+`define AUTOTB_TVIN_sf2ptcalc_out_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_sf2ptcalc_out.dat"
+`define AUTOTB_TVIN_is_C_side_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvin_is_C_side.dat"
+`define AUTOTB_TVOUT_ptcalc2mtc_V  "../tv/cdatafile/c.ptcalc_top.autotvout_ptcalc2mtc.dat"
+`define AUTOTB_TVOUT_ptcalc_debug  "../tv/cdatafile/c.ptcalc_top.autotvout_ptcalc_debug.dat"
+`define AUTOTB_TVOUT_ptcalc2mtc_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvout_ptcalc2mtc.dat"
+`define AUTOTB_TVOUT_ptcalc_debug_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvout_ptcalc_debug.dat"
 //`define AUTOTB_TVOUT_ptcalc2mtc_V_out_wrapc  "../tv/rtldatafile/rtl.ptcalc_top.autotvout_ptcalc2mtc_V.dat"
 module `AUTOTB_TOP;
 
@@ -72,12 +77,14 @@ wire ap_start;
 wire ap_done;
 wire ap_idle;
 wire ap_ready;
-wire [62 : 0] pl2ptcalc_V;
-wire [59 : 0] sf2ptcalc_inn_V;
-wire [59 : 0] sf2ptcalc_mid_V;
-wire [59 : 0] sf2ptcalc_out_V;
+wire [57 : 0] pl2ptcalc_V;
+wire [63 : 0] sf2ptcalc_inn_V;
+wire [63 : 0] sf2ptcalc_mid_V;
+wire [63 : 0] sf2ptcalc_out_V;
 wire [53 : 0] ptcalc2mtc_V;
 wire  ptcalc2mtc_V_ap_vld;
+wire [57 : 0] ptcalc_debug;
+wire  is_C_side;
 integer done_cnt = 0;
 integer AESL_ready_cnt = 0;
 integer ready_cnt = 0;
@@ -99,12 +106,15 @@ wire ap_rst_n;
     .ap_done(ap_done),
     .ap_idle(ap_idle),
     .ap_ready(ap_ready),
-    .pl2ptcalc_V(pl2ptcalc_V),
-    .sf2ptcalc_inn_V(sf2ptcalc_inn_V),
-    .sf2ptcalc_mid_V(sf2ptcalc_mid_V),
-    .sf2ptcalc_out_V(sf2ptcalc_out_V),
-    .ptcalc2mtc_V(ptcalc2mtc_V),
-    .ptcalc2mtc_V_ap_vld(ptcalc2mtc_V_ap_vld));
+    .pl2ptcalc(pl2ptcalc_V),
+    .sf2ptcalc_inn(sf2ptcalc_inn_V),
+    .sf2ptcalc_mid(sf2ptcalc_mid_V),
+    .sf2ptcalc_out(sf2ptcalc_out_V),
+    .ptcalc2mtc(ptcalc2mtc_V),
+    .ptcalc2mtc_ap_vld(ptcalc2mtc_V_ap_vld),
+    .ptcalc_debug(ptcalc_debug),
+    .is_C_side(is_C_side));
+
 
 // Assignment for control signal
 assign ap_clk = AESL_clock;
@@ -137,14 +147,14 @@ assign AESL_continue = tb_continue;
         end
     end
 // The signal of port pl2ptcalc_V
-reg [62: 0] AESL_REG_pl2ptcalc_V = 0;
+reg [57: 0] AESL_REG_pl2ptcalc_V = 0;
 assign pl2ptcalc_V = AESL_REG_pl2ptcalc_V;
 initial begin : read_file_process_pl2ptcalc_V
     integer fp;
     integer err;
     integer ret;
     integer proc_rand;
-    reg [175  : 0] token;
+    reg [159  : 0] token;
     integer i;
     reg transaction_finish;
     integer transaction_idx;
@@ -191,14 +201,14 @@ end
 
 
 // The signal of port sf2ptcalc_inn_V
-reg [59: 0] AESL_REG_sf2ptcalc_inn_V = 0;
+reg [63: 0] AESL_REG_sf2ptcalc_inn_V = 0;
 assign sf2ptcalc_inn_V = AESL_REG_sf2ptcalc_inn_V;
 initial begin : read_file_process_sf2ptcalc_inn_V
     integer fp;
     integer err;
     integer ret;
     integer proc_rand;
-    reg [175  : 0] token;
+    reg [159  : 0] token;
     integer i;
     reg transaction_finish;
     integer transaction_idx;
@@ -245,14 +255,14 @@ end
 
 
 // The signal of port sf2ptcalc_mid_V
-reg [59: 0] AESL_REG_sf2ptcalc_mid_V = 0;
+reg [63: 0] AESL_REG_sf2ptcalc_mid_V = 0;
 assign sf2ptcalc_mid_V = AESL_REG_sf2ptcalc_mid_V;
 initial begin : read_file_process_sf2ptcalc_mid_V
     integer fp;
     integer err;
     integer ret;
     integer proc_rand;
-    reg [175  : 0] token;
+    reg [159  : 0] token;
     integer i;
     reg transaction_finish;
     integer transaction_idx;
@@ -299,14 +309,14 @@ end
 
 
 // The signal of port sf2ptcalc_out_V
-reg [59: 0] AESL_REG_sf2ptcalc_out_V = 0;
+reg [63: 0] AESL_REG_sf2ptcalc_out_V = 0;
 assign sf2ptcalc_out_V = AESL_REG_sf2ptcalc_out_V;
 initial begin : read_file_process_sf2ptcalc_out_V
     integer fp;
     integer err;
     integer ret;
     integer proc_rand;
-    reg [175  : 0] token;
+    reg [159  : 0] token;
     integer i;
     reg transaction_finish;
     integer transaction_idx;
@@ -358,13 +368,115 @@ reg [53: 0] AESL_REG_ptcalc2mtc_V = 0;
 always @(posedge AESL_clock)
 begin
     if(AESL_reset)
-        AESL_REG_ptcalc2mtc_V = 0; 
+        AESL_REG_ptcalc2mtc_V = 0;
    // else if(ptcalc2mtc_V_ap_vld) begin
     else if(ap_done) begin
         AESL_REG_ptcalc2mtc_V <= ptcalc2mtc_V;
         AESL_REG_ptcalc2mtc_V_ap_vld <= 1;
     end
-end 
+end
+
+
+// The signal of port ptcalc_debug
+reg [57: 0] AESL_REG_ptcalc_debug = 0;
+always @(posedge AESL_clock)
+begin
+    if(AESL_reset)
+        AESL_REG_ptcalc_debug = 0;
+    else
+        AESL_REG_ptcalc_debug <= ptcalc_debug;
+end
+
+initial begin : write_file_process_ptcalc_debug
+    integer fp;
+    integer fp_size;
+    integer err;
+    integer ret;
+    integer i;
+    integer hls_stream_size;
+    integer proc_rand;
+    integer ptcalc_debug_count;
+    reg [159:0] token;
+    integer transaction_idx;
+    reg [8 * 5:1] str;
+    wait(AESL_reset === 0);
+    fp = $fopen(`AUTOTB_TVOUT_ptcalc_debug_out_wrapc,"w");
+    if(fp == 0) begin       // Failed to open file
+        $display("Failed to open file \"%s\"!", `AUTOTB_TVOUT_ptcalc_debug_out_wrapc);
+        $display("ERROR: Simulation using HLS TB failed.");
+        $finish;
+    end
+    $fdisplay(fp,"[[[runtime]]]");
+    transaction_idx = 0;
+    while (transaction_idx != AUTOTB_TRANSACTION_NUM) begin
+        @(posedge AESL_clock);
+          while(AESL_done !== 1) begin
+              @(posedge AESL_clock);
+          end
+        # 0.4;
+        $fdisplay(fp,"[[transaction]] %d", transaction_idx);
+          $fdisplay(fp,"0x%x", AESL_REG_ptcalc_debug);
+    transaction_idx = transaction_idx + 1;
+      $fdisplay(fp,"[[/transaction]]");
+    end
+    $fdisplay(fp,"[[[/runtime]]]");
+    $fclose(fp);
+end
+
+
+   // The signal of port is_C_side
+reg [0: 0] AESL_REG_is_C_side = 0;
+assign is_C_side = AESL_REG_is_C_side;
+initial begin : read_file_process_is_C_side
+    integer fp;
+    integer err;
+    integer ret;
+    integer proc_rand;
+    reg [159  : 0] token;
+    integer i;
+    reg transaction_finish;
+    integer transaction_idx;
+    transaction_idx = 0;
+    wait(AESL_reset === 0);
+    fp = $fopen(`AUTOTB_TVIN_is_C_side,"r");
+    if(fp == 0) begin       // Failed to open file
+        $display("Failed to open file \"%s\"!", `AUTOTB_TVIN_is_C_side);
+        $display("ERROR: Simulation using HLS TB failed.");
+        $finish;
+    end
+    read_token(fp, token);
+    if (token != "[[[runtime]]]") begin
+        $display("ERROR: Simulation using HLS TB failed.");
+        $finish;
+    end
+    read_token(fp, token);
+    while (token != "[[[/runtime]]]") begin
+        if (token != "[[transaction]]") begin
+            $display("ERROR: Simulation using HLS TB failed.");
+              $finish;
+        end
+        read_token(fp, token);  // skip transaction number
+          read_token(fp, token);
+            # 0.2;
+            while(ready_wire !== 1) begin
+                @(posedge AESL_clock);
+                # 0.2;
+            end
+        if(token != "[[/transaction]]") begin
+            ret = $sscanf(token, "0x%x", AESL_REG_is_C_side);
+              if (ret != 1) begin
+                  $display("Failed to parse token!");
+                $display("ERROR: Simulation using HLS TB failed.");
+                  $finish;
+              end
+            @(posedge AESL_clock);
+              read_token(fp, token);
+        end
+          read_token(fp, token);
+    end
+    $fclose(fp);
+end
+
 
 /* -----\/----- EXCLUDED -----\/-----
 initial begin : write_file_process_ptcalc2mtc_V
@@ -424,7 +536,7 @@ initial begin : generate_AESL_ready_cnt_proc
 end
 
     event next_trigger_ready_cnt;
-    
+
     initial begin : gen_ready_cnt
         ready_cnt = 0;
         wait (AESL_reset === 0);
@@ -438,9 +550,9 @@ end
             -> next_trigger_ready_cnt;
         end
     end
-    
+
     wire all_finish = (done_cnt == AUTOTB_TRANSACTION_NUM);
-    
+
     // done_cnt
     always @ (posedge AESL_clock) begin
         if (AESL_reset) begin
@@ -453,7 +565,7 @@ end
             end
         end
     end
-    
+
     initial begin : finish_simulation
         wait (all_finish == 1);
         // last transaction is saved at negedge right after last done
@@ -463,7 +575,7 @@ end
         @ (posedge AESL_clock);
         $finish;
     end
-    
+
 initial begin
     AESL_clock = 0;
     forever #`AUTOTB_CLOCK_PERIOD_DIV2 AESL_clock = ~AESL_clock;
@@ -798,7 +910,7 @@ endtask
 
    reg [23:0] total_passed;
    reg [23:0] total_failed;
-   
+
 reg [53: 0] AESL_REG_ptcalc2mtc_exp = 0;
 initial begin : read_file_process_ptcalc2mtc_V
     integer fp;
@@ -810,17 +922,17 @@ initial begin : read_file_process_ptcalc2mtc_V
     integer i;
     reg transaction_finish;
     integer transaction_idx;
-   
- 
+
+
    transaction_idx          = 0;
    total_passed             = 0;
    total_failed             = 0;
    AESL_REG_ptcalc2mtc_exp  = 0;
-   
+
 
 
    wait(AESL_reset === 0);
-   
+
     fp = $fopen(`AUTOTB_TVOUT_ptcalc2mtc_V,"r");
     if(fp == 0) begin       // Failed to open file
         $display("Failed to open file \"%s\"!", `AUTOTB_TVOUT_ptcalc2mtc_V);
@@ -845,26 +957,26 @@ initial begin : read_file_process_ptcalc2mtc_V
           read_token(fp, token); //New LE Result
             # 0.2;
 
-       
-       if(token != "[[/transaction]]") begin       
-	  ret = $sscanf(token, "%x", AESL_REG_ptcalc2mtc_exp);	  
+
+       if(token != "[[/transaction]]") begin
+	  ret = $sscanf(token, "%x", AESL_REG_ptcalc2mtc_exp);
           if (ret != 1) begin
              $display("Failed to parse token when reading AUTOTB_TVIN_ptcalc2mtc_V! ret = %d val=0x%x ",ret, AESL_REG_ptcalc2mtc_V);
 	     $display("TOKEN=%s", token);
-	     
+
              $display("ERROR: Simulation using HLS TB failed.");
              $finish;
-          end	 
+          end
 
 	  while(ap_done == 0)
 	    begin
-	       @ (posedge AESL_clock);	      
+	       @ (posedge AESL_clock);
 	    end
-	  @ (posedge AESL_clock);	 
+	  @ (posedge AESL_clock);
 	    if (AESL_REG_ptcalc2mtc_exp!== AESL_REG_ptcalc2mtc_V)
 	      begin
-		 $display("%d:TEST FAILED: expected:0x%x Actual:0x%x",transaction_idx,AESL_REG_ptcalc2mtc_exp,  AESL_REG_ptcalc2mtc_V );
-		 total_failed++;		 
+		 $display("%d:PTCALC2MTC TEST FAILED: expected:0x%x Actual:0x%x",transaction_idx,AESL_REG_ptcalc2mtc_exp,  AESL_REG_ptcalc2mtc_V );
+		 total_failed++;
 		 #1000
 		   $finish;
 	      end
@@ -873,25 +985,25 @@ initial begin : read_file_process_ptcalc2mtc_V
 		// $display("%d: ptcalc matched ",transaction_idx);
 		 total_passed++;
 	      end
-	 
+
 
 	  read_token(fp, token);
-	 
-	  
+
+
 
        end // if (token != "[[/transaction]]")
-       
-       
+
+
        read_token(fp, token);
        transaction_idx++;
-       
+
     end // while (token != "[[[/runtime]]]")
    $display("Total transactions = %d, Total_passed = %d, Total_failed = %d", transaction_idx, total_passed, total_failed);
-   
+
     $fclose(fp);
 end
 
-   
+
 ////////////////////////////////////////////
 // Dependence Check
 ////////////////////////////////////////////
