@@ -1,0 +1,10 @@
+#################### l0mdt Project ###########################
+GEN:base_l0mdt:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: base_l0mdt_lsf_upt
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      HOG_CHECK_SYNTAX : 0
+    tags:
+      - heavy-duty
