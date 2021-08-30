@@ -61,6 +61,7 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
+    prj_name            : string  := "BA3_yt_v04";
     IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
     IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
     OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";

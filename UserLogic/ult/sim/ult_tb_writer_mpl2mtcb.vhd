@@ -33,7 +33,7 @@ library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;
 use project_lib.gldl_l0mdt_textio_pkg.all;
 
-entity ult_tb_writer_pt2mtcb is
+entity ult_tb_writer_mpl2mtcb is
   generic(
     IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
     IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
@@ -47,9 +47,9 @@ entity ult_tb_writer_pt2mtcb is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_pt2mtcb;
+end entity ult_tb_writer_mpl2mtcb;
 
-architecture sim of ult_tb_writer_pt2mtcb is
+architecture sim of ult_tb_writer_mpl2mtcb is
   
 begin
   
