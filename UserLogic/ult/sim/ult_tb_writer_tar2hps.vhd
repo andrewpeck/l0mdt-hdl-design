@@ -40,10 +40,10 @@ use hps_lib.hps_pkg.all;
 
 entity ult_tb_writer_tar2hps is
   generic(
-    prj_info            : string  := "not_defined";
-    IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_HIT_FILE         : string  := "not_defined.csv";
-    IN_L0_FILE          : string  := "not_defined.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_SLC_FILE         : string  := "not_defined.csv";
+    g_IN_HIT_FILE         : string  := "not_defined.csv";
+    g_IN_L0_FILE          : string  := "not_defined.csv"
     -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
     -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
   );
@@ -57,6 +57,11 @@ entity ult_tb_writer_tar2hps is
 end entity ult_tb_writer_tar2hps;
 
 architecture sim of ult_tb_writer_tar2hps is
+
+  -- signal ult_inn_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  -- signal ult_mid_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  -- signal ult_out_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  -- signal ult_ext_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
   
 begin
   
@@ -68,19 +73,11 @@ begin
 
     variable row 		: line;
 
-    -- o_sf_control_v
+    alias ult_inn_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_inn_tar_hits_av :  tar2hps_bus_avt >>;
+    alias ult_mid_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_mid_tar_hits_av :  tar2hps_bus_avt >>;
+    alias ult_out_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_out_tar_hits_av :  tar2hps_bus_avt >>;
+    alias ult_ext_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_ext_tar_hits_av :  tar2hps_bus_avt >>;
 
-    alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-    alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
-    alias heg2sf_inn_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
-
-    alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-    alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
-    alias heg2sf_mid_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
-
-    alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
-    alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
-    alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
     -- heg2sf_ctrl_av : hps_ctrl2sf_avt
 
     -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
@@ -105,9 +102,9 @@ begin
         if header2write = '0' then
           SWRITE(row, "#----------------------------------------");
           writeline(file_slc_handler,row);
-          SWRITE(row, "# Output : HEG buffer mux");
+          SWRITE(row, "# TAR 2 HPS");
           writeline(file_slc_handler,row);
-          SWRITE(row, "# BUS : heg2sfslc_rt ");
+          SWRITE(row, "# BUS : tar2hps_rt ");
           writeline(file_slc_handler,row);
           SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
           writeline(file_slc_handler,row);
@@ -117,21 +114,6 @@ begin
           writeline(file_slc_handler,row);
           WRITEHEADER(row,slc2write);
           writeline(file_slc_handler,row);
-          ----------------------------------------
-          SWRITE(row, "#----------------------------------------");
-          writeline(file_hit_handler,row);
-          SWRITE(row, "# Output : HEG buffer mux");
-          writeline(file_hit_handler,row);
-          SWRITE(row, "# BUS : heg2sfhit_rt ");
-          writeline(file_hit_handler,row);
-          SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
-          writeline(file_hit_handler,row);
-          SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
-          writeline(file_hit_handler,row);
-          SWRITE(row, "#----------------------------------------");
-          writeline(file_hit_handler,row);
-          WRITEHEADER(row,hit2write);
-          writeline(file_hit_handler,row);
           header2write := '1';
         end if;
 

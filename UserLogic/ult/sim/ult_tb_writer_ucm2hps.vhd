@@ -40,10 +40,10 @@ use hps_lib.hps_pkg.all;
 
 entity ult_tb_writer_ucm2hps is
   generic(
-    prj_info            : string  := "not_defined";
-    IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_HIT_FILE         : string  := "not_defined.csv";
-    IN_L0_FILE          : string  := "not_defined.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_SLC_FILE         : string  := "not_defined.csv";
+    g_IN_HIT_FILE         : string  := "not_defined.csv";
+    g_IN_L0_FILE          : string  := "not_defined.csv"
     -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
     -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
   );

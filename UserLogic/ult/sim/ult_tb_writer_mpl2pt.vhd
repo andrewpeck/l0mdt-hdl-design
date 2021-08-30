@@ -35,10 +35,10 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tb_writer_mpl2pt is
   generic(
-    prj_info            : string  := "not_defined";
-    IN_SLC_FILE         : string  := "not_defined.csv";
-    IN_HIT_FILE         : string  := "not_defined.csv";
-    IN_L0_FILE          : string  := "not_defined.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_SLC_FILE         : string  := "not_defined.csv";
+    g_IN_HIT_FILE         : string  := "not_defined.csv";
+    g_IN_L0_FILE          : string  := "not_defined.csv"
     -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
     -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv"
   );

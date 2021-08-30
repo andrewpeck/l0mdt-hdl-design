@@ -35,11 +35,12 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tb_writer_sf2out is
   generic(
-    prj_info            : string  := "not_defined";
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_SLC_FILE         : string  := "not_defined.csv";
+    g_IN_HIT_FILE         : string  := "not_defined.csv";
+    g_IN_L0_FILE          : string  := "not_defined.csv"
+    -- OUT_PTIN_SF_FILE    : string  := "sf2out.csv";
+    -- OUT_PTIN_MPL_FILE   : string  := "not_defined.csv"
   );
   port (
     clk                   : in std_logic;
