@@ -2,12 +2,12 @@ variables:
   HOG_CHECK_PROJVER : 1
   HOG_CHECK_SYNTAX : 1
   HOG_SIMULATION_LIB_PATH : "/afs/cern.ch/work/l/l0mdtel/QuestaLib/"
-  HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2019.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/"
+  HOG_PATH: "/opt/Xilinx/Vivado/2020.2/bin:/opt/questa/2019.4_4/questasim/linux_x86_64/:/mnt/vd/Xilinx/Vivado/2020.2/bin:/mnt/vd/questa/2019.4_4/questasim/linux_x86_64/"
 
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'Hog2021.2-3'
+      ref: 'Hog2021.2-5'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -25,7 +25,7 @@ include:
     - local: '/Top/csf.0/gitlab-ci.yml'
     - local: '/Top/csf.1/gitlab-ci.yml'
     - local: '/Top/ptc_mpi/gitlab-ci.yml'
-    - local: '/Top/lsf/gitlab-ci.yml'
+    # - local: '/Top/lsf/gitlab-ci.yml'
     # - local: '/Top/upt/gitlab-ci.yml'
     # - local: '/Top/ucm/gitlab-ci.yml'
     # - local: '/Top/hp/gitlab-ci.yml'
@@ -35,7 +35,7 @@ include:
     # - local: '/Top/daq/gitlab-ci.yml'
     # - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
-    - local: '/Top/mtc/gitlab-ci.yml'
+    # - local: '/Top/mtc/gitlab-ci.yml'
     #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
@@ -44,7 +44,7 @@ include:
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
-    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_xsim/gitlab-ci.yml'
     # - local: '/Top/ult_daq/gitlab-ci.yml'
@@ -55,6 +55,6 @@ include:
     - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
-   # - local: 'Top/upt_vu13p/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     # writer

@@ -7,7 +7,7 @@ GEN:ull_ku15_b3a_ucm_mpl_hps_csf:
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
-      - heavy-duty
+      - normal-ops
       - hog
 
 SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
@@ -19,7 +19,7 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf:
     tags:
       - questa
       - hog
-      
+      - "2020.2"
 
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .simulate_project_comp

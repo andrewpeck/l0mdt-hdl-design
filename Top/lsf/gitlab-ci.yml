@@ -9,6 +9,7 @@ GEN:lsf:
     tags:
       - normal-ops
       - hog
+      - "2020.2"
 # SIM:example:
 #     extends: .simulate_project
 #     variables:

@@ -48,7 +48,7 @@ END seg_coord_transform; -- seg_coord_transform
 ARCHITECTURE Behavioral OF seg_coord_transform IS
 
     -- Pos HE Window shift
-    CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(SF2PTCALC_SEGPOS_MULT/HEG2SFSLC_HEWINDOW_POS_MULT));
+    CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(HEG2SFSLC_HEWINDOW_POS_MULT/SF2PTCALC_SEGPOS_MULT));
     -- Local Pos shift
     CONSTANT LOC_POS_SHIFT : INTEGER := INTEGER(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
     -- HE window pos in global segment format
@@ -126,7 +126,7 @@ BEGIN
                 seed <= seed_i;
                 locseg <= locseg_i;
                 chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
-                he_window_pos <= shift_left(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
+                he_window_pos <= shift_right(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
             END IF;
 
             -- Clock 1
