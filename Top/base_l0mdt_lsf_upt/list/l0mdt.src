@@ -24,7 +24,7 @@ UserLogic/daq/daq.src
 
 # segment finder
 #MPI
-#UserLogic/csf/csf_lib.src lib=csf_lib
+UserLogic/csf/csf_lib.src lib=csf_lib
 #UCI
 UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib
 #UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
