@@ -33,12 +33,14 @@ library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;
 use project_lib.gldl_l0mdt_textio_pkg.all;
 
-entity ult_tb_writer_sf2pt is
+entity ult_tb_writer_mpl2pt is
   generic(
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv"
+    prj_info            : string  := "not_defined";
+    IN_SLC_FILE         : string  := "not_defined.csv";
+    IN_HIT_FILE         : string  := "not_defined.csv";
+    IN_L0_FILE          : string  := "not_defined.csv"
+    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv"
   );
   port (
     clk                   : in std_logic;
@@ -47,9 +49,9 @@ entity ult_tb_writer_sf2pt is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_sf2pt;
+end entity ult_tb_writer_mpl2pt;
 
-architecture sim of ult_tb_writer_sf2pt is
+architecture sim of ult_tb_writer_mpl2pt is
   
 begin
   

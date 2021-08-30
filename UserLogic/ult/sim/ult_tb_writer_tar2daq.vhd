@@ -38,7 +38,7 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
-entity ult_tb_writer_heg2sf is
+entity ult_tb_writer_tar2daq is
   generic(
     prj_info            : string  := "not_defined";
     IN_SLC_FILE         : string  := "not_defined.csv";
@@ -54,9 +54,9 @@ entity ult_tb_writer_heg2sf is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_heg2sf;
+end entity ult_tb_writer_tar2daq;
 
-architecture sim of ult_tb_writer_heg2sf is
+architecture sim of ult_tb_writer_tar2daq is
   
 begin
   
