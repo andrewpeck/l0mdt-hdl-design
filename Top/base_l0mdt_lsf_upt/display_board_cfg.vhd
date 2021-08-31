@@ -16,6 +16,7 @@ use hal.system_types_pkg.all;
 use hal.constants_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
+use hal.link_map.all;
 
 entity display_board_cfg is
 end display_board_cfg;
