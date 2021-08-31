@@ -467,7 +467,7 @@ begin
   PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
   generic map (
     g_IN_HIT_FILE => IN_HIT_FILE,
-    g_IN_SLC_FILE => IN_SLC_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
     -- OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
     -- OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
   )
