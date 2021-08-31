@@ -1,4 +1,20 @@
 #
+# textio pkgs
+#
+UserLogic/ult/pkg/ult_textio_rd_slc_pkg.vhd
+UserLogic/ult/pkg/ult_textio_rd_tdc_pkg.vhd
+UserLogic/ult/pkg/ult_textio_wr_heg2sf.vhd
+UserLogic/ult/pkg/ult_textio_wr_mpl2mtcb.vhd
+UserLogic/ult/pkg/ult_textio_wr_mpl2pt.vhd
+UserLogic/ult/pkg/ult_textio_wr_pt2mtcb.vhd
+UserLogic/ult/pkg/ult_textio_wr_sf2out.vhd
+UserLogic/ult/pkg/ult_textio_wr_sf2pt.vhd
+UserLogic/ult/pkg/ult_textio_wr_tar2hps.vhd
+UserLogic/ult/pkg/ult_textio_wr_ucm2hps.vhd
+UserLogic/ult/pkg/ult_textio_wr_ucm2mpl.vhd
+
+
+#
 # Input Vectors Readers
 #
 #UserLogic/ult/sim/ult_tb_reader_tar.vhd
