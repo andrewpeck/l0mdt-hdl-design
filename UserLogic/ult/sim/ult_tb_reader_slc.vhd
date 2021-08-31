@@ -30,8 +30,8 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_textio_rd_slc_pkg.all;
 
 entity ult_tb_reader_slc is
   generic (
