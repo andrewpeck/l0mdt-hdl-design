@@ -32,7 +32,8 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library ult_lib;
--- library ult_lib_sim;
+use ult_lib.ult_tb_sim_pkg.all;
+
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -55,9 +56,9 @@ use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
 
-library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+-- library project_lib;
+-- use project_lib.gldl_ult_tp_sim_pkg.all;
+-- use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
@@ -346,7 +347,7 @@ begin
 	-- readers
   -------------------------------------------------------------------------------------
 
-    MDT : entity project_lib.ult_tb_reader_tdc 
+    MDT : entity ult_sim_lib.ult_tb_reader_tdc 
     generic map (
       IN_HIT_FILE => IN_HIT_FILE
     )
@@ -364,7 +365,7 @@ begin
     );
   -- end generate;
 
-  SLC : entity project_lib.ult_tb_reader_slc 
+  SLC : entity ult_sim_lib.ult_tb_reader_slc 
   generic map (
     IN_SLC_FILE => IN_SLC_FILE
   )
@@ -390,7 +391,7 @@ begin
   -------------------------------------------------------------------------------------
 	-- TAR2HPS
   -------------------------------------------------------------------------------------
-  TAR2HPS : entity project_lib.ult_tb_writer_sf2pt 
+  TAR2HPS : entity ult_sim_lib.ult_tb_writer_sf2pt 
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_HIT_FILE => IN_HIT_FILE,
@@ -418,7 +419,7 @@ begin
 	-- HEG2SF
   -------------------------------------------------------------------------------------
   HEG_2_SF_EN : if c_H2S_ENABLED = '1' generate
-    HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
+    HEG_2_SF : entity ult_sim_lib.ult_tb_writer_heg2sf 
     generic map (
       g_IN_HIT_FILE => IN_HIT_FILE,
       g_IN_SLC_FILE => IN_SLC_FILE,
@@ -443,7 +444,7 @@ begin
 	-- SF2PT
   -------------------------------------------------------------------------------------
 
-  SF_2_PT : entity project_lib.ult_tb_writer_sf2pt 
+  SF_2_PT : entity ult_sim_lib.ult_tb_writer_sf2pt 
   generic map (
     g_IN_HIT_FILE => IN_HIT_FILE,
     g_IN_SLC_FILE => IN_SLC_FILE
@@ -464,7 +465,7 @@ begin
   -- PT2MTCB
   -------------------------------------------------------------------------------------
 
-  PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
+  PT_2_MTC : entity ult_sim_lib.ult_tb_writer_pt2mtcb
   generic map (
     g_IN_HIT_FILE => IN_HIT_FILE,
     g_IN_SLC_FILE => IN_SLC_FILE
