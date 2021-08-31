@@ -6,8 +6,6 @@ HAL/top_l0mdt.vhd top=top_l0mdt
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
 HAL/ctrl/src/top_control.vhd
 
-HAL/c2c/bd/xcku15p/c2cSlave/c2cSlave.bd lib=ctrl_lib
-
 # HAL
 HAL/hal/list/hal.src lib=hal
 
@@ -23,15 +21,9 @@ UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/daq/daq.src
 
 # segment finder
-#MPI
 UserLogic/csf/csf_lib.src lib=csf_lib
-#UCI
 #UserLogic/lsf/lsf_lib.src lib=lsf_lib
-UserLogic/lsf/lsf_lib_empty.src lib=lsf_lib
 
 # pt assignment
-#UCI
-#UserLogic/upt/upt_lib_vu13p.src lib=upt_lib
-UserLogic/upt/upt_lib_empty.src lib=upt_lib
-#MPI
+#UserLogic/upt/upt_lib_ku15p.src lib=upt_lib
 UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib

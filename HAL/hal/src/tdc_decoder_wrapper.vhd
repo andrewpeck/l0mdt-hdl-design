@@ -11,6 +11,7 @@ use hal.lpgbt_pkg.all;
 use hal.system_types_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
+use hal.link_map.all;
 
 library shared_lib;
 use shared_lib.l0mdt_dataformats_pkg.all;

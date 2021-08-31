@@ -15,6 +15,7 @@ SIM:ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi:
     variables:
       extends: .vars
       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi
+      HOG_CHECK_PROJVER: 0
     allow_failure: false
     tags:
       - questa

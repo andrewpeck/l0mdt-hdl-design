@@ -18,6 +18,7 @@ use hal.constants_pkg.all;
 use hal.mgt_pkg.all;
 use hal.board_pkg.all;
 use hal.board_pkg_common.all;
+use hal.link_map.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -107,7 +108,9 @@ entity top_hal is
     -- felix
     --------------------------------------------------------------------------------
 
-    daq_streams : in FELIX_STREAM_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+    daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+                                           + c_HPS_MAX_HP_MID
+                                           + c_HPS_MAX_HP_OUT - 1 downto 0);
 
     --------------------------------------------------------------------------------
     -- AXI
@@ -183,7 +186,7 @@ architecture behavioral of top_hal is
   --------------------------------------------------------------------------------
 
   signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
-  signal felix_uplink_mgt_word_array : std64_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -248,34 +251,35 @@ begin  -- architecture behavioral
     port map (
       --
       reset_i          => core_ctrl.clocking.reset_mmcm,
-      select_felix_clk => core_ctrl.clocking.select_felix_clk,
-
-      -- synchronization
-      felix_valid_i  => felix_valid,
-      felix_recclk_i => felix_mgt_rxusrclk(c_FELIX_RECCLK_SRC),
-      sync_i         => '0',
-      out_of_sync_o  => open,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
       clock_100m_i_p => clock_100m_i_p,
       clock_100m_i_n => clock_100m_i_n,
+
+      -- 40MHz clock from Si synth
       clock_i_p      => clock_i_p,
       clock_i_n      => clock_i_n,
-
-      -- clock output to pins
-      lhc_refclk_o_p => lhc_refclk_o_p,
-      lhc_refclk_o_n => lhc_refclk_o_n,
 
       -- system clocks
       clocks_o => clocks,
 
-      -- bx strobes
-      strobe_320_o      => strobe_320,
-      strobe_pipeline_o => strobe_pipeline,
-
       -- mmcm status
       locked_o => clocks.locked
+      );
+
+  clock_strobe_1: entity work.clock_strobe
+    port map (
+      fast_clk_i => clocks.clock320,
+      slow_clk_i => clocks.clock40,
+      strobe_o   => strobe_320
+      );
+
+  clock_strobe_2: entity work.clock_strobe
+    port map (
+      fast_clk_i => clocks.clock_pipeline,
+      slow_clk_i => clocks.clock40,
+      strobe_o   => strobe_pipeline
       );
 
   rst_bit_synchronizer : xpm_cdc_sync_rst
@@ -434,10 +438,11 @@ begin  -- architecture behavioral
 
   -- 0 to 3, inner middle outer extra
   station_gen : for I in 0 to 3 generate
-    constant num_polmuxes : int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
-                                                     c_NUM_POLMUX_MIDDLE,
-                                                     c_NUM_POLMUX_OUTER,
-                                                     c_NUM_POLMUX_EXTRA);
+    constant num_polmuxes :
+      int_array_t (0 to 3) := (c_NUM_POLMUX_INNER,
+                               c_NUM_POLMUX_MIDDLE,
+                               c_NUM_POLMUX_OUTER,
+                               c_NUM_POLMUX_EXTRA);
   begin
 
     polmux_gen : for J in 0 to num_polmuxes(I)-1 generate

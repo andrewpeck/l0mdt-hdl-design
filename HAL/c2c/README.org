@@ -1,0 +1,9 @@
+This directory contains the files responsible for the generation of the C2C link.
+
+It consists of the ~createC2CSlaveInterconnect.tcl~ file which is run during
+project creation and produces a block design output in the ~bd~ folder.
+
+~slaves.yaml~ is used to specify all of the AXI slaves needed in the design.
+
+- The ~os/hw~ directory contains dtsi_chunk files needed for the Zynq system.
+- The ~bd_helper~ directory has some helper functions needed for the createC2CSlaveInterconnect.tcl script

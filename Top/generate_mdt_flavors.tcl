@@ -4,14 +4,16 @@ package require yaml
 
 set script_path "[file normalize [file dirname [info script]]]"
 
-proc update_trigger_libs {lib pt_calc segment_finder} {
+proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
+
+    exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
-        exec sed -i  "s/^#\\(UserLogic.*upt_lib.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*upt_lib.*.src\\)/\\1/g" $lib
     } else {
         # disable upt
-        exec sed -i  "s/^UserLogic.*upt_lib.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*upt_lib.*.src/#&/g" $lib
     }
 
     if {[string compare "mpt" $pt_calc]==0} {
@@ -57,11 +59,14 @@ proc update_prj_config {dest_file segment_finder pt_calc} {
         set pt_type 0
     }
 
+    # update the SF_TYPE and PT_TYPE
     exec sed -i s|\\(proj_cfg.SF_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${sf_type}|g $dest_file
     exec sed -i s|\\(proj_cfg.PT_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${pt_type}|g $dest_file
 }
 
-proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints} {
+proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map} {
+
+    regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
 
     set source_path ${top_path}/base_l0mdt
     set dest_path ${top_path}/$name
@@ -70,19 +75,27 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     file mkdir $dest_path/list
 
     # copy the base files
-    set files_to_copy "prj_cfg_default.vhd gitlab-ci.yml post-creation.tcl hog.conf list/shared_lib.src list/hal.src list/l0mdt.src list/project_lib.src list/xdc.con"
+    set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
+                       list/ctrl_lib.src list/hal.src list/l0mdt.src
+                       list/project_lib.src list/shared_lib.src list/xdc.con
+                       post-creation.tcl prj_cfg_default.vhd"
+
     foreach file $files_to_copy {
         file copy -force ${source_path}/$file ${dest_path}/$file
     }
 
     # update the link mapping
+    exec sed -i "s|HAL/link_maps/.*$|HAL/link_maps/${link_map}.vhd|g" "$dest_path/list/hal.src"
 
-    # update the post-creation script
-    exec sed -i "s|set FPGA .*$|set FPGA $fpga|g" "$dest_path/post-creation.tcl"
-
-    # update the fpga
+    # update hog.conf
     file rename -force "$dest_path/hog.conf" "$dest_path/hog.conf"
-    exec sed -i "s|PART.*$|PART = $fpga|g" "$dest_path/hog.conf"
+
+    # replace fpga shortname
+    exec sed -i  "s/ku15p/${fpga_shortname}/g" "$dest_path/hog.conf"
+    exec sed -i  "s/vu13p/${fpga_shortname}/g" "$dest_path/hog.conf"
+
+    # update fpga part number
+    exec sed -i "s|PART = .*$|PART = $fpga|g" "$dest_path/hog.conf"
 
     # create the board specific constraints
     set brd_con [open "$dest_path/list/board.con" w+]
@@ -92,7 +105,8 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     close $brd_con
 
     # update the libraries
-    update_trigger_libs "$dest_path/list/l0mdt.src" $pt_calc $segment_finder
+    update_trigger_libs "$dest_path/list/l0mdt.src" \
+        $pt_calc $segment_finder $fpga_shortname
 
     # update the board package
     set board_pkg_dir {HAL/boards/}
@@ -102,14 +116,18 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     exec sed -i $re "$dest_path/list/hal.src"
 
     # update the project config
-    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_${name}.vhd"
-    update_prj_config "$dest_path/prj_cfg_${name}.vhd" $segment_finder $pt_calc
+    file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
+    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc
 
     # update the project_lib.src file
-    exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
+    exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
+    #exec sed -i "s|prj_cfg_default|prj_cfg_${name}|g" "$dest_path/list/project_lib.src"
 
     # update the gitlab ci file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/gitlab-ci.yml"
+
+    # update the ctrl_lib
+    exec sed -i "s|ku15p|${fpga_shortname}|g" "$dest_path/list/ctrl_lib.src"
 }
 
 proc clone_projects {huddle} {
@@ -143,7 +161,8 @@ proc clone_projects {huddle} {
             puts "        pt       : $pt"
 
             global script_path
-            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" $fpga $board_pkg $pt $sf $constraints
+            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" \
+                $fpga $board_pkg $pt $sf $constraints $link_map
         }}}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

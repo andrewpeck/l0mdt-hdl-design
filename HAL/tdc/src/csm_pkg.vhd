@@ -16,28 +16,20 @@ package csm_pkg is
   constant CSM_SCA1_UP_AUX : integer := 4*2+3;  -- specify which 80 Mbps elink (0 to 15) is the SCA
   constant CSM_SCA2_UP_AUX : integer := 4*3+1;  -- specify which 80 Mbps elink (0 to 15) is the SCA
 
-  constant CSM_SCA0_DOWN_PRI : integer := -1;     -- specify which 80 Mbps elink (0 to 15) is the SCA
-  constant CSM_SCA1_DOWN_PRI : integer := 5;  -- specify which 80 Mbps elink (0 to 15) is the SCA
-  constant CSM_SCA2_DOWN_PRI : integer := 8;  -- specify which 80 Mbps elink (0 to 15) is the SCA
-  constant CSM_SCA0_DOWN_AUX : integer := 11;  -- specify which 80 Mbps elink (0 to 15) is the SCA
-  constant CSM_SCA1_DOWN_AUX : integer := 6;  -- specify which 80 Mbps elink (0 to 15) is the SCA
-  constant CSM_SCA2_DOWN_AUX : integer := 7;  -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA0_DOWN_PRI : integer := -1;       -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA1_DOWN_PRI : integer := (4*1)+1;  -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA2_DOWN_PRI : integer := (4*2)+0;  -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA0_DOWN_AUX : integer := (4*2)+3;  -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA1_DOWN_AUX : integer := (4*1)+2;  -- specify which 80 Mbps elink (0 to 15) is the SCA
+  constant CSM_SCA2_DOWN_AUX : integer := (4*1)+3;  -- specify which 80 Mbps elink (0 to 15) is the SCA
 
-  type CSM_SCA0_UP_AUX_RANGE is range 8*(CSM_SCA0_UP_AUX+1)-1 downto 8*(CSM_SCA0_UP_AUX);
-  type CSM_SCA1_UP_AUX_RANGE is range 8*(CSM_SCA1_UP_AUX+1)-1 downto 8*(CSM_SCA1_UP_AUX);
-  type CSM_SCA2_UP_AUX_RANGE is range 8*(CSM_SCA2_UP_AUX+1)-1 downto 8*(CSM_SCA2_UP_AUX);
+  constant CSM_SCA0_UP : integer := CSM_SCA0_UP_AUX;
+  constant CSM_SCA1_UP : integer := CSM_SCA1_UP_PRI;
+  constant CSM_SCA2_UP : integer := CSM_SCA2_UP_PRI;
 
-  type CSM_SCA0_UP_PRI_RANGE is range 8*(CSM_SCA0_UP_PRI+1)-1 downto 8*(CSM_SCA0_UP_PRI);
-  type CSM_SCA1_UP_PRI_RANGE is range 8*(CSM_SCA1_UP_PRI+1)-1 downto 8*(CSM_SCA1_UP_PRI);
-  type CSM_SCA2_UP_PRI_RANGE is range 8*(CSM_SCA2_UP_PRI+1)-1 downto 8*(CSM_SCA2_UP_PRI);
-
-  type CSM_SCA0_DOWN_AUX_RANGE is range 2*(CSM_SCA0_DOWN_AUX+1)-1 downto 2*(CSM_SCA0_DOWN_AUX);
-  type CSM_SCA1_DOWN_AUX_RANGE is range 2*(CSM_SCA1_DOWN_AUX+1)-1 downto 2*(CSM_SCA1_DOWN_AUX);
-  type CSM_SCA2_DOWN_AUX_RANGE is range 2*(CSM_SCA2_DOWN_AUX+1)-1 downto 2*(CSM_SCA2_DOWN_AUX);
-
-  type CSM_SCA0_DOWN_PRI_RANGE is range 2*(CSM_SCA0_DOWN_PRI+1)-1 downto 2*(CSM_SCA0_DOWN_PRI);
-  type CSM_SCA1_DOWN_PRI_RANGE is range 2*(CSM_SCA1_DOWN_PRI+1)-1 downto 2*(CSM_SCA1_DOWN_PRI);
-  type CSM_SCA2_DOWN_PRI_RANGE is range 2*(CSM_SCA2_DOWN_PRI+1)-1 downto 2*(CSM_SCA2_DOWN_PRI);
+  constant CSM_SCA0_DOWN : integer := CSM_SCA0_DOWN_AUX;
+  constant CSM_SCA1_DOWN : integer := CSM_SCA1_DOWN_PRI;
+  constant CSM_SCA2_DOWN : integer := CSM_SCA2_DOWN_PRI;
 
   type int_array_t is array (integer range <>) of integer;
 
@@ -48,8 +40,8 @@ package csm_pkg is
 
   type tdc_elink_pair is record
     lpgbt : integer;
-    ch1 : integer;
-    ch2 : integer;
+    ch1   : integer;
+    ch2   : integer;
   end record;
 
   type elink_pair_map_t is array (integer range 0 to 17) of tdc_elink_pair;

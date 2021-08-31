@@ -47,25 +47,15 @@ entity top_clocking is
   generic (SYNC_40M : boolean := true);
   port (
 
-    reset_i : in std_logic;             --
-
-    -- set high to initiate sync to 40MHz recovered clock
-    sync_i : in std_logic;
-
-    -- 1 of 8 valid signal from LPGBT for 40MHz syncrhonization
-    felix_valid_i : in std_logic;
+    reset_i : in std_logic;
 
     -- 100MHz ASYNC clock to BUFG
     clock_100m_i_p : in std_logic;
     clock_100m_i_n : in std_logic;
 
-    -- 320MHz programmable ASYNC clock
+    -- 40MHz programmable ASYNC clock
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
-
-    -- Recovered clock from felix
-    felix_recclk_i   : in std_logic;    -- already on BUFG
-    select_felix_clk : in std_logic;    -- '1' to select felix clock; make sure to reset
 
     -- 320MHz clock out to output pins
     lhc_refclk_o_p : out std_logic;
@@ -85,34 +75,23 @@ entity top_clocking is
 end entity top_clocking;
 architecture behavioral of top_clocking is
 
-  signal clkfb_nobuf, clk320_nobuf, clkpipe_nobuf              : std_logic;
-  signal clkfb, clk50, clk100, clk40, clk320, clkoddr, clkpipe : std_logic;
-  signal clkpipe_en, clk320_en                                 : std_logic;
-  signal mmcm_locked                                           : std_logic;
+  signal clk50, clk100, clk40, clk320, clkpipe : std_logic;
+  signal mmcm_locked                           : std_logic;
 
-  signal clock_ibufds      : std_logic;
   signal clock_100m_ibufds : std_logic;
 
-  signal strobe_320_dly        : std_logic := '0';
-  signal strobe_320_local      : std_logic;
-  signal strobe_320            : std_logic;
-  signal select_felix_clk_sync : std_logic;
-
-  component framework_mmcm_clk_wiz
-    port
-      (                                 -- Clock in ports
-        clk320_async_i : in  std_logic;
-        clk_sel_i      : in  std_logic;
-        clkfb_i        : in  std_logic;
-        -- Clock out ports
-        clk320_o       : out std_logic;
-        clkpipe_o      : out std_logic;
-        clkfb_o        : out std_logic;
-        -- Status and control signals
-        reset          : in  std_logic;
-        locked_o       : out std_logic;
-        clk320_sync_i  : in  std_logic
-        );
+  component framework_mmcm
+    port (
+      -- Clock out ports
+      clk320_o  : out std_logic;
+      clk40_o   : out std_logic;
+      -- Status and control signals
+      reset     : in  std_logic;
+      locked_o  : out std_logic;
+      -- Clock in ports
+      clk_in1_p : in  std_logic;
+      clk_in1_n : in  std_logic
+      );
   end component;
 
 begin  -- architecture behavioral
@@ -127,50 +106,7 @@ begin  -- architecture behavioral
   clocks_o.freeclock      <= clk100;
   clocks_o.clock_pipeline <= clkpipe;
   clocks_o.locked         <= mmcm_locked;
-  strobe_320_o            <= strobe_320;
   locked_o                <= mmcm_locked;
-
-  --------------------------------------------------------------------------------
-  -- 1 of n bx strobe
-  --------------------------------------------------------------------------------
-
-  process (clk320)
-    variable cnt : integer range 0 to 7 := 0;
-  begin
-    if (rising_edge(clk320)) then
-      if (cnt = 7) then
-        cnt              := 0;
-        strobe_320_local <= '1';
-      else
-        cnt              := cnt + 1;
-        strobe_320_local <= '0';
-      end if;
-    end if;
-  end process;
-
-  xpm_cdc_sync : xpm_cdc_single
-    generic map (
-      DEST_SYNC_FF   => 4,                -- DECIMAL; range: 2-10
-      INIT_SYNC_FF   => 0,                -- DECIMAL; integer; 0=disable simulation init values, 1=enable simulation init values
-      SIM_ASSERT_CHK => 0,                -- DECIMAL; integer; 0=disable simulation messages, 1=enable simulation messages
-      SRC_INPUT_REG  => 0                 -- DECIMAL; integer; 0=do not register input, 1=register input
-      )
-    port map (
-      dest_out => select_felix_clk_sync,  -- 1-bit output: src_in synchronized to the destination clock domain. This output is registered.
-      dest_clk => clk320,                 -- 1-bit input: Clock signal for the destination clock domain.
-      src_clk  => std_logic1,             -- 1-bit input: optional; required when SRC_INPUT_REG = 1
-      src_in   => select_felix_clk        -- 1-bit input: Input signal to be synchronized to dest_clk domain.
-      );
-
-  strobe_320 <= felix_valid_i when select_felix_clk_sync = '1' else strobe_320_local;
-
-  process (clkpipe)
-  begin
-    if (rising_edge(clkpipe)) then
-      strobe_320_dly <= strobe_320;
-    end if;
-  end process;
-  strobe_pipeline_o <= strobe_320 xor strobe_320_dly;
 
   --------------------------------------------------------------------------------
   -- 100MHz + 50MHz free-running clocks
@@ -214,264 +150,16 @@ begin  -- architecture behavioral
   -- MMCM
   --------------------------------------------------------------------------------
 
-  clock_in_ibufds : IBUFDS
-    generic map(
-      DIFF_TERM    => true,             --DifferentialTermination
-      IBUF_LOW_PWR => false,            --Lowpower(TRUE)vs.performance(FALSE)
-      IOSTANDARD   => "LVDS")
-    port map(
-      O  => clock_ibufds,
-      I  => clock_i_p,
-      IB => clock_i_n
-      );
-
-  -- The MMCM and PLL reference clock can be dynamically switched by using the CLKINSEL pin.
-  -- The switching is done asynchronously. Once the clock switches, the MMCM/PLL is likely to
-  -- lose LOCKED and automatically lock onto the new clock. Therefore, once the clock switches,
-  -- the MMCM/PLL must be reset. The MMCM/PLL clock MUX switching is shown in Figure 3-10.
-  -- The CLKINSEL signal directly controls the MUX. No synchronization logic is present
-
-  framework_mmcm_inst : framework_mmcm_clk_wiz
+  framework_mmcm_inst : framework_mmcm
     port map (
-      clk320_async_i => clock_ibufds,
-      clk320_sync_i  => felix_recclk_i,
-      clk_sel_i      => select_felix_clk,
-      reset          => reset_i,
-
-      clkfb_o   => clkfb_nobuf,
-      clk320_o  => clk320_nobuf,
-      clkpipe_o => clkpipe_nobuf,
-
-      clkfb_i => clkfb,
-
-      locked_o => mmcm_locked
+      clk_in1_p => clock_i_p,
+      clk_in1_n => clock_i_n,
+      reset     => reset_i,
+      clk320_o  => clk320,
+      clk40_o   => clk40,
+      locked_o  => mmcm_locked
       );
 
-  -- Feedback clock through bufgce
-  bufgce_clkfb_inst : bufgce_div
-    generic map (
-      BUFGCE_DIVIDE => 1
-      )
-    port map (
-      I   => clkfb_nobuf,
-      CLR => '0',
-      CE  => '1',
-      O   => clkfb
-      );
-
-  -- lpgbt clock
-  bufgce_clk320_inst : bufgce_div
-    generic map (BUFGCE_DIVIDE => 1)
-    port map (
-      I   => clk320_nobuf,
-      CLR => '0',
-      CE  => '1',
-      O   => clk320
-      );
-
-  -- pipeline clock
-  bufgce_clkpipe_inst : bufgce_div
-    generic map (BUFGCE_DIVIDE => 1)
-    port map (
-      I   => clkpipe_nobuf,
-      CLR => '0',
-      CE  => '1',
-      O   => clkpipe
-      );
-
-  --------------------------------------------------------------------------------
-  -- 40MHz clock
-  --------------------------------------------------------------------------------
-
-  noclk40_gen : if (not SYNC_40M) generate
-
-    out_of_sync_o <= '0';
-
-    bufgce_clk40_inst : bufgce_div
-      generic map (
-        BUFGCE_DIVIDE => 8
-        )
-      port map (
-        I   => clk320_nobuf,
-        CLR => '0',
-        CE  => '1',
-        O   => clk40
-        );
-
-  end generate;
-
-  clk40_gen : if (SYNC_40M) generate
-
-    -- clk40 synchronizer
-    signal clear          : std_logic                     := '0';
-    signal valid_sr       : std_logic_vector (5 downto 0) := (others => '0');
-    signal synced         : std_logic                     := '0';
-    signal mmcm_locking   : std_logic;
-    signal mmcm_locked_sr : std_logic_vector (7 downto 0);
-    signal out_of_sync    : std_logic                     := '0';
-
-    signal oos_r, oos_rr : std_logic;
-    constant oos_cnt_max : integer                        := 10;
-    signal oos_cnt       : integer range 0 to oos_cnt_max := 10;
-
-  begin
-    --------------------------------------------------------------------------------
-    -- CLK40 divider sync logic
-    --------------------------------------------------------------------------------
-
-    -- https://forums.xilinx.com/t5/Other-FPGA-Architecture/How-to-divide-a-clock-by-2-with-a-simple-primitive-without-Clock/m-p/784079
-    -- https://www.xilinx.com/support/answers/67885.html
-    -- https://forums.xilinx.com/t5/Design-Methodologies-and/Best-way-to-divide-a-clock-by-two/td-p/728222
-    -- https://forums.xilinx.com/t5/Other-FPGA-Architecture/Multiple-region-BUFR-alignment/m-p/1062626#M37596
-
-    -- When two synchronous clocks from the same MMCM/PLL have a simple period ratio (/2 /4 /8), you can prevent the phase
-    -- error between the two clock domains using a single MMCM/PLL output connected to two BUFGCE_DIV buffers. The
-    -- BUFGCE_DIV buffer performs the clock division (/1 /2 /4 /8).
-    --
-    -- *Note*: Because the BUFGCE and BUFGCE_DIV do not have the same cell delays, Xilinx recommends using the same clock
-    -- buffer for both synchronous clocks (two BUFGCE or two BUFGCE_DIV buffers).
-    --
-    -- Create a 40MHz divided clock and a global buffered 320MHz clock from a 320MHz
-    -- (non-buffered, straight from MMCM ) input clock with a valid flag
-    --
-    -- The non-buffered clock will NOT have a deterministic phase relationship to the buffered clock
-    -- due to the BUFG insertion delay, but the 320 and 40MHz clocks will be precisely phase aligned
-    -- with low skew
-    --
-    -- The CLEAR input of the BUFGCE gives us a way to dial-in the phase alignment of the 40MHz
-    -- clock that we generate from the 320MHz recovered clock
-    --
-    -- When CE is deasserted, the output stops at its current state, High or Low.
-    -- When CE is reasserted, the internal counter restarts from where it stopped.
-    -- For example, if the divide value is 8 and CE is deasserted two input clock cycles after
-    -- the last output High transition, the output stays High. Then when CE is reasserted,
-    -- the output transitions Low after two input clock cycles. If the reset input is used,
-    -- upon assertion the output transitions Low immediately if the current output is High,
-    -- otherwise it stays Low.
-    --
-    --
-    --            ___ ___ ___ ___ ___ ___ ___ ___ ___
-    -- clk320   __|0|_|1|_|2|_|3|_|4|_|5|_|6|_|7|_|8|_
-    --            _____                           _____
-    -- valid    __|   |___________________________|
-    --              _____
-    -- sync_i   ____|   |_________________________________
-    --                                _____
-    -- val_dly  ______________________|   |______________
-    --                                    _____
-    -- clear    __________________________|   |__________
-    --          _________                         ________
-    -- synced           |_________________________|
-    --                                            ________
-    -- clk40    __________________________________|
-
-    -- 40Mhz clock
-    -- CLR the output is 0 when CLR is High (active).
-    -- When CLR (reset) is deasserted, the output clock transitions from Low to High on the first
-    -- edge after the CLR is deasserted, regardless of the divide value.
-    bufgce_clk40_inst : bufgce_div
-      generic map (
-        BUFGCE_DIVIDE => 8
-        )
-      port map (
-        I   => clk320_nobuf,
-        CLR => (not mmcm_locked) or clear or (not synced),
-        CE  => '1',
-        O   => clk40
-        );
-
-    process (clk320, mmcm_locked)
-      variable sync_r, sync_rr : std_logic;
-    begin
-      -- need ASYNC check if mmcm is locked
-      if (mmcm_locked = '0') then
-        clear    <= '0';
-        synced   <= '0';
-        sync_r   := '0';
-        sync_rr  := '0';
-        valid_sr <= (others => '0');
-      elsif (rising_edge(clk320)) then
-
-        -- let the mmcm locking initiate a sync process
-        sync_r  := sync_i or mmcm_locking or (not mmcm_locked);
-        sync_rr := sync_r;
-
-        valid_sr <= felix_valid_i & valid_sr(valid_sr'length-1 downto 1);
-
-        if (select_felix_clk = '0') then
-          clear  <= '0';
-          synced <= '1';
-        else
-          if (sync_rr = '1') then
-            clear  <= '1';
-            synced <= '0';
-          elsif (clear = '1' and synced = '0' and valid_sr(0) = '1') then
-            clear  <= '0';
-            synced <= '1';
-          end if;
-        end if;
-
-      end if;
-    end process;
-
-    process (clk100)
-    begin
-      if (rising_edge(clk100)) then
-        mmcm_locked_sr <= mmcm_locked_sr(mmcm_locked_sr'length-2 downto 0) & mmcm_locked;
-      end if;
-    end process;
-
-    mmcm_locking <= '1' when mmcm_locked_sr = "01111111" else '0';
-
-    process (clk100)
-    begin
-      if (rising_edge(clk100)) then
-        oos_r  <= not synced or out_of_sync;
-        oos_rr <= oos_r;
-        if (oos_rr = '1') then
-          oos_cnt       <= oos_cnt_max;
-          out_of_sync_o <= '1';
-        elsif (oos_cnt > 0) then
-          oos_cnt       <= oos_cnt - 1;
-          out_of_sync_o <= '1';
-        else
-          out_of_sync_o <= '0';
-        end if;
-      end if;
-    end process;
-
-    process (clk320)
-    begin
-      if (rising_edge(clk320)) then
-        out_of_sync <= (strobe_320 xor felix_valid_i) and (select_felix_clk);
-      end if;
-    end process;
-
-  end generate;
-
-  --------------------------------------------------------------------------------
-  -- Output Clock to Pins
-  --------------------------------------------------------------------------------
-
-  lhc_refclk_oddr : ODDRE1
-    generic map (                       --
-      IS_C_INVERTED => '0',             -- Optional inversion for C
-      SIM_DEVICE    => "ULTRASCALE",    -- Set the device version (ULTRASCALE)
-      SRVAL         => '0'              -- Initializes the ODDRE1 Flip-Flops to the specified value ('0', '1')
-      )
-    port map (
-      Q  => clkoddr,                    -- 1-bit DDR output
-      C  => clk320,                     -- 1-bit clock input
-      D1 => '1',                        -- 1-bit data input (positive edge)
-      D2 => '0',                        -- 1-bit data input (negative edge)
-      SR => not mmcm_locked             -- 1-bit active high async reset
-      );
-
-  lhc_refclk_obufds : OBUFDS
-    port map(
-      I  => clkoddr,
-      O  => lhc_refclk_o_p,
-      OB => lhc_refclk_o_n
-      );
+  clkpipe <= clk320;
 
 end architecture behavioral;

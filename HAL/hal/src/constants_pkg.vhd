@@ -7,6 +7,7 @@ use work.system_types_pkg.all;
 use work.board_pkg_common.all;
 use work.board_pkg.all;
 use work.user_pkg.all;
+use work.link_map.all;
 
 package constants_pkg is
 

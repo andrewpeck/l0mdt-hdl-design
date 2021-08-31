@@ -34,6 +34,9 @@ package system_types_pkg is
 
   function log2ceil(arg : positive) return natural;
 
+  function bitsel(data : std_logic_vector; width : integer; index : integer)
+    return std_logic_vector;
+
 end system_types_pkg;
 
 package body system_types_pkg is
@@ -49,6 +52,12 @@ package body system_types_pkg is
       log := log + 1;
     end loop;
     return log;
+  end function;
+
+  function bitsel(data : std_logic_vector; width : integer; index : integer)
+    return std_logic_vector is
+  begin
+    return data(width*(index+1)-1 downto width*(index));
   end function;
 
 end package body;

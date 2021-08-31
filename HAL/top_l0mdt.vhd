@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.std_logic_misc.all;
+use ieee.math_real.all;
 
 library work;
 use work.all;
@@ -25,7 +26,9 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 
+
 library shared_lib;
+use shared_lib.spybuffer_pkg.all;
 use shared_lib.common_ieee_pkg.all;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
@@ -53,22 +56,40 @@ entity top_l0mdt is
     );
   port (
 
+    --------------------------------------------------------------------------------
+    -- MGT
+    -- MGT links are set through LOC constraints and not routed to the top level
+    --------------------------------------------------------------------------------
+    -- ref clocks
+    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+
+    --------------------------------------------------------------------------------
+    -- LHC clock
+    --------------------------------------------------------------------------------
+
     clock_i_p : in std_logic;
     clock_i_n : in std_logic;
-
-    clock_100m_i_p : in std_logic;
-    clock_100m_i_n : in std_logic;
 
     lhc_refclk_o_p : out std_logic;
     lhc_refclk_o_n : out std_logic;
 
-    refclk_i_p : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-    refclk_i_n : in std_logic_vector (c_NUM_REFCLKS-1 downto 0);
+    --------------------------------------------------------------------------------
+    -- AXI C2C
+    --------------------------------------------------------------------------------
+
+    clock_100m_i_p : in std_logic;
+    clock_100m_i_n : in std_logic;
+
 
     c2c_rxn : in  std_logic;
     c2c_rxp : in  std_logic;
     c2c_txn : out std_logic;
     c2c_txp : out std_logic;
+
+    --------------------------------------------------------------------------------
+    -- Other IO
+    --------------------------------------------------------------------------------
 
     --sys_mgmt_scl : inout std_logic;
     --sys_mgmt_sda : inout std_logic;
@@ -96,15 +117,11 @@ architecture structural of top_l0mdt is
 
   -- hal <--> ult
 
-  -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
-  -- ANSWER: because in sector 3 we only have 0 chambers in the EXTRA station and 6 chambers(polmux) in the rest of stations
-  -- when we optimize the polmux this numbers will change and I can bet that they  will represent the number of polmux ( not 100% sure)
   signal inner_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
   signal middle_tdc_hits : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
   signal outer_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
   signal extra_tdc_hits  : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 
-  -- FIXME: WHY ARE THESE PORTS ALWAYS size=0 or size=6 ??? this is so stupid
   -- signal i_inner_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
   -- signal i_middle_tar_hits : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_MID -1 downto 0) := (others => (others => '0'));
   -- signal i_outer_tar_hits  : tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
@@ -120,7 +137,9 @@ architecture structural of top_l0mdt is
   signal plus_neighbor_segments_o  : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
   signal minus_neighbor_segments_o : sf2pt_bus_avt (c_NUM_SF_OUTPUTS - 1 downto 0);
 
-  signal daq_streams : FELIX_STREAM_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
+  signal daq_streams : FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
+                                             + c_HPS_MAX_HP_MID
+                                             + c_HPS_MAX_HP_OUT - 1 downto 0);
 
   -- NSP + MUCTPI
 
@@ -135,35 +154,35 @@ architecture structural of top_l0mdt is
 
   -- Control and Monitoring Records
 
-  signal h2s_mon_r    : H2S_MON_t;
-  signal h2s_ctrl_r   : H2S_CTRL_t;
-  signal tar_ctrl_r   : TAR_CTRL_t;
-  signal tar_mon_r    : TAR_MON_t;
-  signal mtc_ctrl_r   : MTC_CTRL_t;
-  signal mtc_mon_r    : MTC_MON_t;
-  signal ucm_ctrl_r   : UCM_CTRL_t;
-  signal ucm_mon_r    : UCM_MON_t;
-  signal daq_ctrl_r   : DAQ_CTRL_t;
-  signal daq_mon_r    : DAQ_MON_t;
-  signal tf_ctrl_r    : TF_CTRL_t;
-  signal tf_mon_r     : TF_MON_t;
-  signal mpl_mon_r    : MPL_MON_t;
-  signal mpl_ctrl_r   : MPL_CTRL_t;
+  signal h2s_mon_r  : H2S_MON_t;
+  signal h2s_ctrl_r : H2S_CTRL_t;
+  signal tar_ctrl_r : TAR_CTRL_t;
+  signal tar_mon_r  : TAR_MON_t;
+  signal mtc_ctrl_r : MTC_CTRL_t;
+  signal mtc_mon_r  : MTC_MON_t;
+  signal ucm_ctrl_r : UCM_CTRL_t;
+  signal ucm_mon_r  : UCM_MON_t;
+  signal daq_ctrl_r : DAQ_CTRL_t;
+  signal daq_mon_r  : DAQ_MON_t;
+  signal tf_ctrl_r  : TF_CTRL_t;
+  signal tf_mon_r   : TF_MON_t;
+  signal mpl_mon_r  : MPL_MON_t;
+  signal mpl_ctrl_r : MPL_CTRL_t;
 
-  signal h2s_ctrl_v   : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
-  signal h2s_mon_v    : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
-  signal tar_ctrl_v   : std_logic_vector(len(tar_ctrl_r ) -1 downto 0);
-  signal tar_mon_v    : std_logic_vector(len(tar_mon_r  ) -1 downto 0);
-  signal mtc_ctrl_v   : std_logic_vector(len(mtc_ctrl_r ) -1 downto 0);
-  signal mtc_mon_v    : std_logic_vector(len(mtc_mon_r  ) -1 downto 0);
-  signal ucm_ctrl_v   : std_logic_vector(len(ucm_ctrl_r ) -1 downto 0);
-  signal ucm_mon_v    : std_logic_vector(len(ucm_mon_r  ) -1 downto 0);
-  signal daq_ctrl_v   : std_logic_vector(len(daq_ctrl_r ) -1 downto 0);
-  signal daq_mon_v    : std_logic_vector(len(daq_mon_r  ) -1 downto 0);
-  signal tf_ctrl_v    : std_logic_vector(len(tf_ctrl_r  ) -1 downto 0);
-  signal tf_mon_v     : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
-  signal mpl_ctrl_v   : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
-  signal mpl_mon_v    : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
+  signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
+  signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
+  signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
+  signal tar_mon_v  : std_logic_vector(len(tar_mon_r) -1 downto 0);
+  signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl_r) -1 downto 0);
+  signal mtc_mon_v  : std_logic_vector(len(mtc_mon_r) -1 downto 0);
+  signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl_r) -1 downto 0);
+  signal ucm_mon_v  : std_logic_vector(len(ucm_mon_r) -1 downto 0);
+  signal daq_ctrl_v : std_logic_vector(len(daq_ctrl_r) -1 downto 0);
+  signal daq_mon_v  : std_logic_vector(len(daq_mon_r) -1 downto 0);
+  signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl_r) -1 downto 0);
+  signal tf_mon_v   : std_logic_vector(len(tf_mon_r) -1 downto 0);
+  signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
+  signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
 
 
   --
@@ -174,7 +193,7 @@ architecture structural of top_l0mdt is
   signal hal_core_mon  : HAL_CORE_MON_t;
   signal hal_core_ctrl : HAL_CORE_CTRL_t;
 
-  signal fw_info_mon  : FW_INFO_MON_t;
+  signal fw_info_mon : FW_INFO_MON_t;
 
   -- sumps
 
@@ -182,6 +201,17 @@ architecture structural of top_l0mdt is
   signal user_sump : std_logic;
 
 begin
+
+  -- in sector 3 we only have 0 chambers in the EXTRA station and 6
+  -- chambers(polmux) in the rest of stations when we optimize the polmux this
+  -- numbers will change and I can bet that they will represent the number of
+  -- polmux ( not 100% sure)
+
+  assert (c_HPS_MAX_HP_INN = 0 or c_HPS_MAX_HP_INN = 6) and
+    (c_HPS_MAX_HP_MID = 0 or c_HPS_MAX_HP_MID = 6) and
+    (c_HPS_MAX_HP_OUT = 0 or c_HPS_MAX_HP_OUT = 6) and
+    (c_HPS_MAX_HP_EXT = 0 or c_HPS_MAX_HP_EXT = 6)
+    report "The ULT only accepts values of 0 or 6 for c_HPS_MAX_HP_{INN,MID,OUT,EXT}. Please correct your constants." severity error;
 
   top_hal : entity hal.top_hal
     port map (
@@ -243,7 +273,7 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY => false
+      DUMMY => true
       )
     port map (
       clock_and_control => clock_and_control,
@@ -254,13 +284,8 @@ begin
       i_out_tdc_hits_av => outer_tdc_hits,
       i_ext_tdc_hits_av => extra_tdc_hits,
 
-      -- i_inner_tar_hits  => i_inner_tar_hits,
-      -- i_middle_tar_hits => i_middle_tar_hits,
-      -- i_outer_tar_hits  => i_outer_tar_hits,
-      -- i_extra_tar_hits  => i_extra_tar_hits,
-
-      i_plus_neighbor_segments  => plus_neighbor_segments_i,
-      i_minus_neighbor_segments => minus_neighbor_segments_i,
+      i_plus_neighbor_segments     => plus_neighbor_segments_i,
+      i_minus_neighbor_segments    => minus_neighbor_segments_i,
       o_plus_neighbor_segments_av  => plus_neighbor_segments_o,
       o_minus_neighbor_segments_av => minus_neighbor_segments_o,
 
@@ -297,20 +322,20 @@ begin
       );
 
   -- ctrl/mon
-  ucm_ctrl_v  <= vectorify(ucm_ctrl_r,ucm_ctrl_v);
-  ucm_mon_r   <= structify(ucm_mon_v,ucm_mon_r);
-  tar_ctrl_v  <= vectorify(tar_ctrl_r,tar_ctrl_v);
-  tar_mon_r   <= structify(tar_mon_v,tar_mon_r);
-  h2s_ctrl_v  <= vectorify(h2s_ctrl_r,h2s_ctrl_v);
-  h2s_mon_r   <= structify(h2s_mon_v,h2s_mon_r);
-  mpl_ctrl_v  <= vectorify(mpl_ctrl_r,mpl_ctrl_v);
-  mpl_mon_r   <= structify(mpl_mon_v,mpl_mon_r);
-  tf_ctrl_v   <= vectorify(tf_ctrl_r,tf_ctrl_v);
-  tf_mon_r    <= structify(tf_mon_v,tf_mon_r);
-  mtc_ctrl_v  <= vectorify(mtc_ctrl_r,mtc_ctrl_v);
-  mtc_mon_r   <= structify(mtc_mon_v,mtc_mon_r);
-  daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
-  daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
+  ucm_ctrl_v <= vectorify(ucm_ctrl_r, ucm_ctrl_v);
+  ucm_mon_r  <= structify(ucm_mon_v, ucm_mon_r);
+  tar_ctrl_v <= vectorify(tar_ctrl_r, tar_ctrl_v);
+  tar_mon_r  <= structify(tar_mon_v, tar_mon_r);
+  h2s_ctrl_v <= vectorify(h2s_ctrl_r, h2s_ctrl_v);
+  h2s_mon_r  <= structify(h2s_mon_v, h2s_mon_r);
+  mpl_ctrl_v <= vectorify(mpl_ctrl_r, mpl_ctrl_v);
+  mpl_mon_r  <= structify(mpl_mon_v, mpl_mon_r);
+  tf_ctrl_v  <= vectorify(tf_ctrl_r, tf_ctrl_v);
+  tf_mon_r   <= structify(tf_mon_v, tf_mon_r);
+  mtc_ctrl_v <= vectorify(mtc_ctrl_r, mtc_ctrl_v);
+  mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
+  daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
+  daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -358,8 +383,8 @@ begin
       reset_n                 => '1',
       sys_mgmt_alarm          => open,
       sys_mgmt_overtemp_alarm => open,
-      --sys_mgmt_scl            => sys_mgmt_scl,
-      --sys_mgmt_sda            => sys_mgmt_sda,
+    --sys_mgmt_scl            => sys_mgmt_scl,
+    --sys_mgmt_sda            => sys_mgmt_sda,
       sys_mgmt_vccaux_alarm   => open,
       sys_mgmt_vccint_alarm   => open
       );
@@ -391,7 +416,6 @@ begin
   fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH            <= FRAMEWORK_FWHASH;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW           <= MAIN_CFG_COMPILE_HW;
   fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL           <= MAIN_CFG_COMPILE_UL;
-  --fw_info_mon.CONFIG.SECTOR_SIDE         <= c_SECTOR_SIDE;
   fw_info_mon.CONFIG.ST_nBARREL_ENDCAP             <= c_ST_nBARREL_ENDCAP;
   fw_info_mon.CONFIG.ENABLE_NEIGHBORS              <= c_ENABLE_NEIGHBORS;
   fw_info_mon.CONFIG.SECTOR_ID                     <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
@@ -415,8 +439,6 @@ begin
   fw_info_mon.CONFIG.SF_ENABLED                    <= c_SF_ENABLED;
   fw_info_mon.CONFIG.SF_TYPE                       <= c_SF_TYPE;
   fw_info_mon.CONFIG.NUM_DAQ_STREAMS               <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
-  --fw_info_mon.CONFIG.MAX_NUM_HP          <= std_logic_vector(to_unsigned(MAX_NUM_HP, 8));
-  --fw_info_mon.CONFIG.MAX_NUM_HPS         <= std_logic_vector(to_unsigned(c_MAX_NUM_HPS, 8));
   fw_info_mon.CONFIG.NUM_SF_INPUTS                 <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
   fw_info_mon.CONFIG.NUM_SF_OUTPUTS                <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
   fw_info_mon.CONFIG.MAX_NUM_SL                    <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));

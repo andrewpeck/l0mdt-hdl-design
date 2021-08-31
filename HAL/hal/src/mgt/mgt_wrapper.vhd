@@ -1,5 +1,4 @@
 library ieee;
-
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
 use ieee.numeric_std.all;
@@ -10,7 +9,6 @@ use unisim.vcomponents.all;
 library xpm;
 use xpm.vcomponents.all;
 
-library work;
 use work.system_types_pkg.all;
 use work.constants_pkg.all;
 use work.lpgbt_pkg.all;
@@ -18,6 +16,7 @@ use work.mgt_pkg.all;
 use work.board_pkg.all;
 use work.board_pkg_common.all;
 use work.sector_logic_pkg.all;
+use work.display_board_cfg_pkg.all;
 
 library ctrl_lib;
 use ctrl_lib.HAL_CORE_CTRL.all;
@@ -30,6 +29,8 @@ entity mgt_wrapper is
 
     -- Reset
     reset : in std_logic;
+
+    recclk_o : out std_logic;
 
     -- AXI Control
     ctrl : in  HAL_CORE_MGT_CTRL_t;
@@ -76,35 +77,30 @@ entity mgt_wrapper is
     felix_ttc_mgt_word_o : out std_logic_vector (31 downto 0);
     felix_mgt_rxusrclk_o : out std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
 
-    -- 64 bits / clock to mgt
-    felix_uplink_mgt_word_array_i : in  std64_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
+    -- 32 bits / clock to mgt
+    felix_uplink_mgt_word_array_i : in  std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
     felix_mgt_txusrclk_o          : out std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
 
     --------------------------------------------------------------------------------
     -- Sector Logic
     --------------------------------------------------------------------------------
 
-    -- 32 bits / bx to mgt
-    sl_tx_mgt_word_array_i : in std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+    -- 32 bits / bx
+    sl_tx_mgt_word_array_i : in  std32_array_t (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);  -- TO mgt
+    sl_rx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);   -- FROM mgt
 
-    -- 32 bits / bx from mgt
-    sl_rx_mgt_word_array_o : out std32_array_t (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
+    -- clocks
     sl_tx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_clk : out std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+    -- control
     sl_tx_ctrl_i  : in  sl_tx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_ctrl_o  : out sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     sl_rx_slide_i : in  std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0)
-
     );
 end mgt_wrapper;
 
 architecture Behavioral of mgt_wrapper is
-
-  -- n.b. these are just dummy signals.. the actual connections are inferred by Xilinx based on LOC
-  -- constraints placed on the GTH/Y primitives. They don't actually connect to anything and can be
-  -- removed
 
   signal reset_tree : std_logic_vector (c_NUM_MGTS-1 downto 0) := (others => '1');
 
@@ -113,7 +109,7 @@ architecture Behavioral of mgt_wrapper is
 
   signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
 
-  -- FIXME: initialize these so that uninstantiated MGTs will show DEADBEEF or something
+  -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
   signal tx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
   signal rx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
   signal drp_i     : mgt_drp_in_rt_array (c_NUM_MGTS-1 downto 0);
@@ -124,6 +120,18 @@ begin
 
   assert false report
     "GENERATING " & integer'image(c_NUM_MGTS) & "MGT LINKS:" severity note;
+
+  assert (c_NUM_CSM_UPLINKS mod 2 = 0)
+    report "# of CSM uplinks must be even, because a CSM is always 2+1" &
+    "(c_NUM_CSM_UPLINKS=" & integer'image(c_NUM_CSM_UPLINKS) &
+    " c_NUM_CSM_DOWNLINKS=)" & integer'image(c_NUM_CSM_DOWNLINKS)
+    severity error;
+
+  assert (c_NUM_CSM_UPLINKS/2 = c_NUM_CSM_DOWNLINKS)
+    report "# of CSM Uplinks must be 2x the # of downlinks"
+    & "\n  c_NUM_CSM_UPLINKS=" & integer'image(c_NUM_CSM_UPLINKS)
+    & "\n  c_NUM_CSM_DOWNLINKS=" & integer'image(c_NUM_CSM_DOWNLINKS)
+    severity error;
 
   --------------------------------------------------------------------------------
   -- Reset Tree
@@ -142,8 +150,8 @@ begin
 
   refclk_gen : for I in 0 to c_NUM_REFCLKS-1 generate
 
-    nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL
-                   and c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
+    nil_mask : if (c_REFCLK_MAP(I).FREQ /= REF_NIL and
+                   c_REFCLK_MAP(I).FREQ /= REF_SYNC240  -- SL has its own buffer
                    ) generate
 
       assert false
@@ -153,6 +161,7 @@ begin
       -- 2'b01: ODIV2 = Divide-by-2 version of O
       -- 2'b10: ODIV2 = 1'b0
       -- 2'b11: Reserved
+
       refclk_ibufds : ibufds_gte4
         generic map(
           REFCLK_EN_TX_PATH  => '0',
@@ -171,7 +180,7 @@ begin
   end generate;
 
   --------------------------------------------------------------------------------
-  -- AXI
+  -- AXI Register Decoding
   --------------------------------------------------------------------------------
 
   axi_map_gen : for I in 0 to c_NUM_MGTS-1 generate
@@ -197,7 +206,7 @@ begin
         mon.mgt(I).status.buffbypass_rx_error_out <= status(I).buffbypass_rx_error_out;
 
         mon.mgt(I).drp.rd_data <= drp_o(I).drpdo_out;
-        mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out(0);
+        mon.mgt(I).drp.rd_rdy  <= drp_o(I).drprdy_out;
 
         drp_i(I).drpaddr_in  <= ctrl.mgt(I).drp.wr_addr;
         drp_i(I).drpdi_in    <= ctrl.mgt(I).drp.wr_data;
@@ -234,17 +243,21 @@ begin
   mgt_gen : for I in 0 to c_NUM_MGTS-1 generate
   begin
 
+    cfggen : if (I=0) generate
+      display_board_cfg(true);
+    end generate;
+
     assert false report
       "GENERATING MGT=" & integer'image(I) &
       " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) severity note;
-    -- assert (c_MGT_MAP(I).refclk /= -1) and (c_MGT_MAP(I).refclk < c_NUM_REFCLKS)
-    -- report "invalid refclk selected" severity error;
 
     --------------------------------------------------------------------------------
-    -- LPGBT Type
+    -- LPGBT+Emulator+Felix Type Transceiver Generation
     --------------------------------------------------------------------------------
 
-    lpgbt_gen : if (lpgbt_idx_array(I) /= -1) generate
+    lpgbt_gen : if ((I mod 4 = 0) and
+                    (lpgbt_idx_array(I) /= -1 or emul_idx_array(I) /= -1 or felix_idx_array(I) /= -1))
+    generate
 
       attribute X_LOC             : integer;
       attribute Y_LOC             : integer;
@@ -253,125 +266,168 @@ begin
 
       attribute DONT_TOUCH of MGT_INST : label is "true";
 
-      constant downlink_idx : integer := lpgbt_downlink_idx_array(I);
-      constant uplink_idx   : integer := lpgbt_uplink_idx_array(I);
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
 
-      signal downlink_data : std_logic_vector (31 downto 0);
+      signal rxslide  : std_logic_vector (3 downto 0);
+      signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic;
+      -- data
+      signal tx_data : std32_array_t (3 downto 0);
+      signal rx_data : std32_array_t (3 downto 0);
 
     begin
 
-      downlink_data <= lpgbt_downlink_mgt_word_array_i(downlink_idx)
-                       when (downlink_idx /= -1) else x"00000000";
-
       --------------------------------------------------------------------------------
-      --
+      -- MGT
       --------------------------------------------------------------------------------
-
-      assert (c_NUM_CSM_UPLINKS mod 2 = 0)
-        report "# of CSM uplinks must be even, because a CSM is always 2+1" &
-        "(c_NUM_CSM_UPLINKS=" & integer'image(c_NUM_CSM_UPLINKS) &
-        " c_NUM_CSM_DOWNLINKS=)" & integer'image(c_NUM_CSM_DOWNLINKS)
-        severity error;
-
-      assert (c_NUM_CSM_UPLINKS/2 = c_NUM_CSM_DOWNLINKS)
-        report "# of CSM Uplinks must be 2x the # of downlinks" & integer'image(c_NUM_CSM_UPLINKS) &
-        "\nc_NUM_CSM_DOWNLINKS=" & integer'image(c_NUM_CSM_DOWNLINKS)
-        severity error;
-
-      assert false report "GENERATING LPGBT TYPE LINK ON MGT=" & integer'image(I)
-        & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
-        & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
-
-      assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
-
-      assert false report "uplink_idx=" & integer'image(uplink_idx) severity note;
-
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC320)
-        report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
 
       MGT_INST : entity work.mgt_10g24_wrapper
         generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
         port map (
-          free_clock            => clocks.freeclock,
-          reset                 => reset_tree(I),
-          mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
+
+          --------------------------------------------------------------------------------
+          -- MGT data
+          --------------------------------------------------------------------------------
+
+          -- parallel data
+          mgt_word_i => tx_data (3 downto 0),
+          mgt_word_o => rx_data (3 downto 0),
+
+          -- dummy signals for mgts
+          rxp_i => rx_p (3 downto 0),
+          rxn_i => rx_n (3 downto 0),
+          txp_o => tx_p (3 downto 0),
+          txn_o => tx_n (3 downto 0),
+
+          rx_slide_i => rxslide,
+
+          --------------------------------------------------------------------------------
+          -- resets
+          --------------------------------------------------------------------------------
+
+          -- global reset
+          reset => reset_tree(I),
+
+          -- tx/rx resets
+          tx_resets_i => tx_resets(I+3 downto I),
+          rx_resets_i => rx_resets(I+3 downto I),
+
+          --------------------------------------------------------------------------------
+          -- clocks
+          --------------------------------------------------------------------------------
+
+          -- drp clock
+          free_clock => clocks.freeclock,
+
+          -- refclks
+          refclk0_i => refclk(c_MGT_MAP(I).refclk),
+          refclk1_i => refclk(c_MGT_MAP(I).refclk),
+
+          -- user clocks
           mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => not reset_tree(I),
+          mgt_rxusrclk_active_i => clocks.locked,  -- FIXME: this should come from something else for the felix link
           mgt_txusrclk_i        => clocks.clock320,
-          mgt_txusrclk_active_i => not reset_tree(I),
-          tx_resets_i           => tx_resets(I),
-          rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => lpgbt_rxslide_i(uplink_idx),
-          status_o              => status(I),
-          mgt_word_i            => downlink_data,
-          mgt_word_o            => lpgbt_uplink_mgt_word_array_o(uplink_idx),
-          rxp_i                 => rx_p,
-          rxn_i                 => rx_n,
-          txp_o                 => tx_p,
-          txn_o                 => tx_n,
-          mgt_drp_i             => drp_i(I),
-          mgt_drp_o             => drp_o(I)
+          mgt_txusrclk_active_i => clocks.locked,
+
+          -- outputs
+          qpll0outclk_out    => open,
+          qpll0outrefclk_out => open,
+          qpll1outclk_out    => open,
+          qpll1outrefclk_out => open,
+
+
+          rxoutclk => rxoutclk(3 downto 0),
+
+
+          --------------------------------------------------------------------------------
+          -- DRP & Status
+          --------------------------------------------------------------------------------
+
+          mgt_drp_i => drp_i(I+3 downto I),
+          mgt_drp_o => drp_o(I+3 downto I),
+          status_o  => status(I+3 downto I)
           );
 
-    end generate lpgbt_gen;
+      --------------------------------------------------------------------------------
+      -- with transceivers generated... loop over the 4 individual channels in a
+      -- quad and assign them to the relevant types
+      --------------------------------------------------------------------------------
 
-    --------------------------------------------------------------------------------
-    -- LPGBT Emulator Type
-    --------------------------------------------------------------------------------
+      channel_loop : for LINK_0_TO_3 in 0 to 3 generate
+      begin
 
-    emul_gen : if (emul_idx_array(I) /= -1) generate
+        --------------------------------------------------------------------------------
+        -- LPGBT CSM
+        --------------------------------------------------------------------------------
 
-      attribute X_LOC             : integer;
-      attribute Y_LOC             : integer;
-      attribute X_LOC of MGT_INST : label is c_MGT_MAP(I).x_loc;
-      attribute Y_LOC of MGT_INST : label is c_MGT_MAP(I).y_loc;
+        csm_gen : if (lpgbt_idx_array(I+LINK_0_TO_3) /= -1) generate
+          constant downlink_idx : integer := lpgbt_downlink_idx_array(I+LINK_0_TO_3);
+          constant uplink_idx   : integer := lpgbt_uplink_idx_array(I+LINK_0_TO_3);
+        begin
 
-      attribute DONT_TOUCH of MGT_INST : label is "true";
+          -- only have downlinks on every other TX channel
+          -- TODO: mirror them for symmetry??
+          dlgen : if (downlink_idx /= -1) generate
+            tx_data(LINK_0_TO_3) <= lpgbt_downlink_mgt_word_array_i(downlink_idx);
+          end generate;
+          nodlgen : if (downlink_idx = -1) generate
+            tx_data(LINK_0_TO_3) <= (others => '0');
+          end generate;
 
-      constant idx : integer := emul_idx_array(I);
+          -- assign uplinks data and rxslide
+          lpgbt_uplink_mgt_word_array_o(uplink_idx) <= rx_data(LINK_0_TO_3);
+          rxslide(LINK_0_TO_3) <= lpgbt_rxslide_i(uplink_idx);
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic;
+          assert false report "Assigning LPGBT type link on MGT=" & integer'image(I)
+            & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
+            & " LPGBT_LINK_CNT=" & integer'image(lpgbt_idx_array(I)) severity note;
+          assert false report "downlink_idx=" & integer'image(downlink_idx) severity note;
+          assert false report "uplink_idx=" & integer'image(uplink_idx) severity note;
 
-    begin
+          assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC320)
+            report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
 
-      assert false report
-        "GENERATING LPGBT EMULATOR LINK ON MGT=" & integer'image(I)
-        & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk)
-        & " LPGBT_LINK_CNT=" & integer'image(idx) severity note;
+        end generate;
 
-      assert false report "link_idx=" & integer'image(idx) severity note;
+        --------------------------------------------------------------------------------
+        -- Emulator LPGBT
+        --------------------------------------------------------------------------------
 
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_SYNC320)
-        report "Incompatible REFCLK selected on MGT#"
-        & integer'image(I) severity error;
+        emul_gen : if (emul_idx_array(I+LINK_0_TO_3) /= -1) generate
+          constant downlink_idx : integer := emul_idx_array(I+LINK_0_TO_3);
+          constant uplink_idx   : integer := emul_idx_array(I+LINK_0_TO_3);
+        begin
 
-      MGT_INST : entity work.mgt_10g24_wrapper
-        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
-        port map (
-          free_clock            => clocks.freeclock,
-          reset                 => reset_tree(I),
-          mgt_refclk_i          => refclk(c_MGT_MAP(I).refclk),
-          mgt_rxusrclk_i        => clocks.clock320,
-          mgt_rxusrclk_active_i => not reset_tree(I),
-          mgt_txusrclk_i        => clocks.clock320,
-          mgt_txusrclk_active_i => not reset_tree(I),
-          tx_resets_i           => tx_resets(I),
-          rx_resets_i           => rx_resets(I),
-          mgt_rxslide_i         => lpgbt_emul_rxslide_i(idx),
-          status_o              => status(I),
-          mgt_word_i            => lpgbt_emul_uplink_mgt_word_array_i(idx),
-          mgt_word_o            => lpgbt_emul_downlink_mgt_word_array_o(idx),
-          rxp_i                 => rx_p,
-          rxn_i                 => rx_n,
-          txp_o                 => tx_p,
-          txn_o                 => tx_n,
-          mgt_drp_i             => drp_i(I),
-          mgt_drp_o             => drp_o(I)
-          );
+          tx_data(LINK_0_TO_3) <= lpgbt_emul_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
+          rxslide(LINK_0_TO_3) <= lpgbt_emul_rxslide_i(uplink_idx+LINK_0_TO_3);
 
-    end generate emul_gen;
+          lpgbt_emul_downlink_mgt_word_array_o(uplink_idx+LINK_0_TO_3) <= rx_data(LINK_0_TO_3);
+
+        end generate;
+
+        --------------------------------------------------------------------------------
+        -- FELIX LPGBT
+        --------------------------------------------------------------------------------
+
+        felix_gen : if (felix_idx_array(I) /= -1) generate
+          constant downlink_idx : integer := felix_idx_array(I);
+        begin
+
+          -- FELIX Recovered Clock
+          --
+          tx_data(LINK_0_TO_3)  <= felix_uplink_mgt_word_array_i(downlink_idx+LINK_0_TO_3);
+          rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
+
+          recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
+            recclk_o             <= rxoutclk(LINK_0_TO_3);
+            felix_ttc_mgt_word_o <= rx_data(LINK_0_TO_3);
+          end generate;
+
+        end generate;
+
+
+      end generate;
+    end generate;
 
     --------------------------------------------------------------------------------
     -- Sector Logic Type
@@ -428,216 +484,6 @@ begin
           );
 
     end generate sl_gen;
-
-    --------------------------------------------------------------------------------
-    -- Felix Link Type
-    --------------------------------------------------------------------------------
-
-    -- only generate per-QUAD for these
-    felix_gen : if (felix_idx_array(I) /= -1 and (I mod 4 = 0)) generate
-
-      attribute X_LOC             : integer;
-      attribute Y_LOC             : integer;
-      attribute X_LOC of MGT_INST : label is c_MGT_MAP(I).x_loc;
-      attribute Y_LOC of MGT_INST : label is c_MGT_MAP(I).y_loc;
-
-      attribute DONT_TOUCH of MGT_INST : label is "true";
-
-      constant idx : integer := felix_idx_array(I);
-
-      signal rxoutclk                     : std_logic_vector (3 downto 0);
-      signal txoutclk                     : std_logic_vector (3 downto 0);
-      signal rxusrclk                     : std_logic_vector (3 downto 0);
-      signal txusrclk                     : std_logic_vector (3 downto 0);
-      signal txoutclk_bufg, rxoutclk_bufg : std_logic;
-      signal rx_cesync, rx_clrsync        : std_logic;
-      signal tx_cesync, tx_clrsync        : std_logic;
-      signal tx_usrclk_active             : std_logic;
-      signal rx_usrclk_active             : std_logic;
-      signal felix_rx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI?
-      signal felix_tx_usrclk_reset        : std_logic := '0';  -- FIXME connect to AXI?
-
-      signal rxslide : std_logic_vector (3 downto 0);
-      signal words_o : std32_array_t (3 downto 0);
-
-      signal rx_p, rx_n : std_logic_vector (3 downto 0);
-      signal tx_p, tx_n : std_logic_vector (3 downto 0);
-
-    begin
-
-      assert false report
-        "GENERATING FELIX LINK ON MGT=" & integer'image(I) &
-        " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) &
-        " FELIX_LINK_CNT=" & integer'image(idx) severity note;
-
-      assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_FELIX)
-        report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
-
-      MGT_INST : entity work.mgt_felix_wrapper
-        generic map (index => I, gt_type => c_MGT_MAP(I).gt_type)
-        port map (
-          free_clock    => clocks.freeclock,
-          reset         => '0',                              -- FIXME: how to reset? due to recovered clock...
-          mgt_refclk_i  => refclk(c_MGT_MAP(I).refclk),
-          tx_resets_i   => tx_resets(I),
-          rx_resets_i   => rx_resets(I),
-          mgt_rxslide_i => (others => felix_ttc_bitslip_i),  -- FIXME: should zero the others that aren't used
-          status_o      => status(I+3 downto I),
-          mgt_words_i   => felix_uplink_mgt_word_array_i(idx+3 downto idx),
-          mgt_words_o   => words_o,
-
-
-
-          -- TXHEADER[5:0]
-          -- Input port to provide header.
-          -- In normal mode for 2-byte, 4-byte, and 8-byte interfaces, TXHEADER[1:0] is used for the
-          -- 64B/66B gearbox and TXHEADER[2:0] is used for the 64B/67B gearbox.
-          --
-          -- TX Aynchronous Gearbox:
-          --
-          -- When using an 8-byte TXDATA interface (TX_DATA_WIDTH = 64), 2 bits of header and 64 bits
-          -- of payload are placed onto TXHEADER[1:0] and TXDATA[63:0] every TXUSRCLK2 cycle.
-          -- TXSEQUENCE[0] is tied Low when using a 64-bit (8-byte) TXDATA interface because a 2-bit
-          -- header is provided every TXUSRCLK2 cycle
-
-          tx_header_i => (others => '0'),  -- something to do with 64/67
-
-          -- TXSEQUENCE[6:0]
-          -- This input port is used for the interconnect logic sequence counter when the TX gearbox
-          -- is used. Bits [5:0] are used for the 64B/66B gearbox, and bits [6:0] are used for the
-          -- 64B/67B gearbox.
-
-          tx_sequence_i => (others => '0'),  -- ditto
-
-
-
-          mgt_txoutclk_o        => txoutclk (3 downto 0),
-          mgt_rxoutclk_o        => rxoutclk (3 downto 0),
-          mgt_txusrclk_i        => txusrclk (3 downto 0),
-          mgt_rxusrclk_i        => rxusrclk (3 downto 0),
-          mgt_rxusrclk_active_i => rx_usrclk_active,
-          mgt_txusrclk_active_i => tx_usrclk_active,
-          rxp_i                 => rx_p,
-          rxn_i                 => rx_n,
-          txp_o                 => tx_p,
-          txn_o                 => tx_n,
-          mgt_drp_i             => drp_i(I+3 downto I),
-          mgt_drp_o             => drp_o(I+3 downto I)
-          );
-
-      -- for the felix link selected as the RECCLK_SRC, connect its output to a bufg_gt
-      -- and connect it to the lpgbt decoder
-
-      mgtout_assign_loop : for J in 0 to 3 generate
-        matchgen : if (idx+J = c_FELIX_RECCLK_SRC) generate
-
-          felix_ttc_mgt_word_o <= words_o (J);
-
-          BUFG_GT_SYNC_rx_inst : BUFG_GT_SYNC
-            port map (
-              CESYNC  => rx_cesync,     -- 1-bit output: Synchronized CE
-              CLRSYNC => rx_clrsync,    -- 1-bit output: Synchronized CLR
-              CE      => '1',           -- 1-bit input: Asynchronous enable
-              CLK     => rxoutclk(J),   -- 1-bit input: Clock
-              CLR     => reset_tree(I)  -- tie to gtwiz_usrclk_rx_reset_in
-              );
-
-          RXBUFG_inst : BUFG_GT
-            port map (
-              CLR     => rx_clrsync,
-              CE      => rx_cesync,
-              CEMASK  => '0',
-              CLRMASK => '0',
-              DIV     => "000",
-              I       => rxoutclk(J),
-              O       => rxoutclk_bufg
-              );
-
-          felix_mgt_rxusrclk_o(0) <= rxoutclk_bufg;
-
-        end generate;
-      end generate;
-
-      -- Assign RX userclocks
-      rxusrclk <= (others => rxoutclk_bufg);
-
-      -- rx active process
-      p_userclk_rx_active : process (rxoutclk_bufg, felix_rx_usrclk_reset) is
-        variable r, rr : std_logic := '0';
-      begin
-        if (felix_rx_usrclk_reset = '1') then
-          r  := '0';
-          rr := '0';
-        elsif rising_edge(rxoutclk_bufg) then
-          r  := '1';
-          rr := r;
-        end if;
-        rx_usrclk_active <= not rr;
-      end process p_userclk_rx_active;
-
-      -- The RX buffer bypass controller helper block should be held in reset until the RX user
-      -- clocking network helper block which drives it is active
-      bufbypass_rst_bit_synchronizer : xpm_cdc_sync_rst
-        generic map (DEST_SYNC_FF => 2, INIT => 1, INIT_SYNC_FF => 1)
-        port map (
-          dest_clk => rxoutclk_bufg,
-          dest_rst => rx_resets(I).reset_bufbypass,
-          src_rst  => not rx_usrclk_active);
-
-      -- UltraScale+ devices also have 24 BUFG_GTs but they have 14 BUFG_GT_SYNCs per GT Quad
-      --
-      -- The output clocks of the BUFG_GTs connected to the same input clock are synchronized (phase
-      -- aligned) to each other when coming out of reset (CLR) or on CE assertion.
-      --
-      -- If the USRCLK/2 are both at the same frequency you can drive an MMCM with the ODIV2 output
-      -- of the IBUFDS_GTE to create the USRCLKS as long as the link is synchronous.
-      --
-      -- Some applications still require the use of an MMCM to generate complex non-integer clock
-      -- division of the GT output clocks or the IBUFDS_GTE3/ODIV2 reference clock. In these cases,
-      -- a BUFG_GT must directly drive the MMCM.
-      --
-      -- GTs have no other direct, dedicated connections to other clock resources. However, they can
-      -- connect to the CMT via the BUFG_GT and the clock routing resources.
-
-      txusrclk(3 downto 0)                    <= (others => txoutclk_bufg);
-      felix_mgt_txusrclk_o (idx+3 downto idx) <= txusrclk;
-
-      BUFG_GT_SYNC_tx_inst : BUFG_GT_SYNC
-        port map (
-          CESYNC  => tx_cesync,         -- 1-bit output: Synchronized CE
-          CLRSYNC => tx_clrsync,        -- 1-bit output: Synchronized CLR
-          CE      => '1',               -- 1-bit input: Asynchronous enable
-          CLK     => txoutclk(0),       -- 1-bit input: Clock
-          CLR     => reset_tree(I)      -- tie to gtwiz_usrclk_tx_reset_in
-          );
-
-      TXBUFG_inst : BUFG_GT
-        port map (
-          CLR     => tx_clrsync,
-          CE      => tx_cesync,
-          CEMASK  => '0',
-          CLRMASK => '0',
-          DIV     => "000",
-          I       => txoutclk(0),
-          O       => txoutclk_bufg
-          );
-
-      -- TODO: move into wrappers
-      -- tx active process
-      p_userclk_tx_active : process (txoutclk_bufg, felix_tx_usrclk_reset) is
-        variable r, rr : std_logic := '0';
-      begin
-        if (felix_tx_usrclk_reset = '1') then
-          r  := '0';
-          rr := '0';
-        elsif rising_edge(txoutclk_bufg) then
-          r  := '1';
-          rr := r;
-        end if;
-        tx_usrclk_active <= not rr;
-      end process p_userclk_tx_active;
-
-    end generate felix_gen;
 
   end generate mgt_gen;
 

@@ -5,7 +5,7 @@ HAL/tdc/list/tdc.src lib=tdc
 # Hal
 HAL/hal/src/counter.vhd
 HAL/hal/src/top_hal.vhd
-#HAL/hal/src/clock_strobe.vhd
+HAL/hal/src/clock_strobe.vhd
 HAL/hal/src/top_clocking.vhd
 HAL/hal/src/board_pkg_common.vhd
 HAL/hal/src/constants_pkg.vhd
@@ -15,21 +15,18 @@ HAL/hal/src/felix_decoder.vhd
 HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
-
-#
-HAL/hal/src/mmcm_wiz.v
+HAL/hal/src/display_board_cfg.vhd
 
 # IP
+HAL/IP/framework_mmcm/framework_mmcm.xci
 HAL/IP/mgt_10g24_gth/mgt_10g24_gth.xci
 HAL/IP/mgt_10g24_gty/mgt_10g24_gty.xci
-HAL/IP/mgt_felix/mgt_felix.xci
 
 # MGT
 HAL/hal/src/mgt/mgt_pkg.vhd
 HAL/hal/src/mgt/mgt_10g24_wrapper.vhd
 HAL/hal/src/mgt/mgt_wrapper.vhd
 HAL/hal/src/mgt/mgt_sl_wrapper.vhd
-HAL/hal/src/mgt/mgt_felix_wrapper.vhd
 
 # LPGBT
 HAL/lpgbt/src/gbt_controller_wrapper.vhd
@@ -39,7 +36,7 @@ HAL/lpgbt/src/lpgbt_pkg.vhd
 
 # LPGBT
 HAL/lpgbt/list/gbt_sc.src lib=gbt_sc
-HAL/lpgbt/list/lpgbt_emul.src lib=lpgbt_emul
+#HAL/lpgbt/list/lpgbt_emul.src lib=lpgbt_emul
 HAL/lpgbt/list/lpgbt_fpga.src lib=lpgbt_fpga
 
 # Sector Logic
