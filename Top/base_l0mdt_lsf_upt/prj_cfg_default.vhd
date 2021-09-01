@@ -30,7 +30,6 @@ package body prj_cfg is
     proj_cfg.ENABLE_NEIGHBORS         := '1'; -- 0: disabled  1: enabled
 
     -- Blocks
-    --proj_cfg.INSEL_MDT_nTAR           := '0';
     proj_cfg.ENABLE_UCM               := '1';
     proj_cfg.ENABLE_SF                := '1';
     proj_cfg.ENABLE_PT                := '1';
@@ -44,11 +43,7 @@ package body prj_cfg is
     proj_cfg.PT_TYPE   := '1'; -- AUTO: 0: MPT 1:UPT
 
 
-    -- take these values from HAL, derived from the link mapping
-    -- proj_cfg.NUM_MDT_CH_INN  := c_NUM_POLMUX_INNER;
-    -- proj_cfg.NUM_MDT_CH_MID  := c_NUM_POLMUX_MIDDLE;
-    -- proj_cfg.NUM_MDT_CH_OUT  := c_NUM_POLMUX_OUTER;
-    -- proj_cfg.NUM_MDT_CH_EXT  := c_NUM_POLMUX_EXTRA;
+
 
     if (c_NUM_POLMUX_INNER > 0) then
       proj_cfg.ENABLE_ST_INN := '1';
