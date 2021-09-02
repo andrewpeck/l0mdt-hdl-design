@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'Hog2021.2-5'
+      ref: 'Hog2021.2-6'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -44,8 +44,8 @@ include:
     # - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
     # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
     # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    #- local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
-    #- local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_xsim/gitlab-ci.yml'
     # - local: '/Top/ult_daq/gitlab-ci.yml'
