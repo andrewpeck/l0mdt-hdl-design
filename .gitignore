@@ -41,3 +41,4 @@ env/
 library.cfg
 Projects/
 #UserLogic/*/IP/**/*.xci
+__init__.py
