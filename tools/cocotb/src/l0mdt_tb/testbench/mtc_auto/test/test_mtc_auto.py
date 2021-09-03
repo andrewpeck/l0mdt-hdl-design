@@ -313,11 +313,13 @@ def mtc_auto_test(dut):
 
     #print("RECVD_LINEUP :",recvd_lineup)
     for n_op_intf in range (MtcAutoPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol);
+        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol,output_path=output_dir);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
     print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * MtcAutoPorts.get_output_interface_ports(0)," Pass=",pass_count, "Fail=",fail_count,"\n")
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
     ]
+
+
     raise cocotb_result
