@@ -387,7 +387,7 @@ def lsf_auto_test(dut):
 #             #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
 
     for n_op_intf in range (LsfAutoPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf]);
+        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf],output_path=output_dir);
         all_tests_passed = (all_tests_passed and events_are_equal)
 
     print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process," Pass=",pass_count, "Fail=",fail_count,"\n")

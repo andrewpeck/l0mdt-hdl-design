@@ -120,23 +120,24 @@ def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
         return -1
 
 
-def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances):
+def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./"):
     """
     path = Path(filename)
     ok = path.exists() and path.is_file()
     if not ok:
         raise Exception(f"Cannot find provided file {filename}")
     """
-    events_list = tv_bcid_list
-
-    evt = 0
-    ret_val = 1
-    pass_count = 0
-    fail_count = 0
-    RTL_DFSL = DataFormat()
-    SL1      = DataFormat()
-    data = []
-    tv_format_val = []
+    events_list        = tv_bcid_list
+    evt                = 0
+    ret_val            = 1
+    pass_count         = 0
+    fail_count         = 0
+    RTL_DFSL           = DataFormat()
+    SL1                = DataFormat()
+    data               = []
+    tv_format_val      = []
+    comparison_data    = []
+    pp_comparison_list = []
 
     RTL_DFSL.build_data_format()
     SL1.build_data_format()
@@ -153,10 +154,9 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     tv_format_val.clear()
                     data.clear()
                     RTL_DFSL.clear()
+                    comparison_data.clear()
 
                     SL1 = events_list[ievent].DF_SL[this_candidate].copy()
-
-
                     local_sl1 = SL1.getBitFieldWord(tvformat, RTL_DFSL.suffix[this_candidate])
 
 
@@ -167,8 +167,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         rtl_tv_i = 0
 
                     tv_format_val[0].set_bitwordvalue(rtl_tv_i)
-
-
                     data.append(tv_format_val[0].get_bitwordvalue())  # need to give station
 
                     stationID = RTL_DFSL.suffix[this_candidate]
@@ -183,16 +181,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     #print("events.py ==== Calling DF Print:")
                     #RTL_DFSL.print_summary()
 
-                    # bf_list = []
-                    # bitfieldname = "SF2PTCALC_LSF"
-                    # stationID = "INN"
-                    # for iDF, DF in enumerate(events_list[ievent].DF_SL):
-                    #    logging.getLogger(__name__).info("SF2PTCALC %d" % (iDF))
-                    #    bf_list.clear()
-                    #    bf_list.append(DF.getBitFieldWord(bitfieldname, stationID))
 
-
-                    # print("events.py, ++++++",local_sl1[0]," vs ",local_sl2[0])
 
                     results = local_sl1[0].compare_bitwordvalue(
                         local_sl2[0], tolerances
@@ -212,12 +201,30 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         fail_count = fail_count + 1
                         ret_val = 0
 
+
+                    istation = RTL_DFSL.suffix.index(stationID)
+                    tmp_DF    = events_list[ievent].DF_SL[0].getBitFieldWord(tvformat, stationID)
+                    pd_columns_header = tvtools.get_pd_headers(tmp_DF[0], True)
+                    this_data = tvtools.make_list(results[1], results[2], events_list[ievent].header.get_header(), local_sl1[0].fields, this_candidate, True)
+                    comparison_data.append(this_data)
+
+                    for i in range(0, len(comparison_data)):
+                        pp_comparison_list.append(comparison_data[i])
+
                     if this_candidate == n_candidates - 1:
                         evt = evt + 1
                     local_sl1.clear()
                     local_sl2.clear()
 
+
+        df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
+        Path(output_path).mkdir(parents=True, exist_ok=True)
+        df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
+        print("Saving Comparison data to %s " % df_file_name)
+        df_data.to_csv(df_file_name)
+
     return ret_val, pass_count, fail_count
+
 
 
 

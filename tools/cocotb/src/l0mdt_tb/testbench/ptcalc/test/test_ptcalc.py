@@ -342,7 +342,7 @@ def ptcalc_test(dut):
 
 
     for n_op_intf in range (PtcalcPorts.n_output_interfaces):
-        events_are_equal,pass_count, fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], ptcalc2mtc_lsf_tol[n_op_intf]);
+        events_are_equal,pass_count, fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], ptcalc2mtc_lsf_tol[n_op_intf],output_path=output_dir);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
     print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process," Pass=",pass_count, "Fail=",fail_count,"\n")
