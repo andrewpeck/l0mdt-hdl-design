@@ -33,21 +33,23 @@ architecture beh of mpl_top_tb is
    signal ctrl : MPL_CTRL_t;
    signal mon  : MPL_MON_t;
    signal ctrl_len : natural;
+   signal ctrl_v : std_logic_vector(len(ctrl)-1 downto 0) := (others => '0');
+   signal mon_v  : std_logic_vector(len(mon)-1 downto 0);
   begin
-    ctrl.ACTIONS.RESET   <= '0';
-    ctrl.ACTIONS.ENABLE  <= '1';
-    ctrl.ACTIONS.DISABLE <= '0';
-    ctrl.ACTIONS.FREEZE  <= '0';
+    --ctrl.ACTIONS.RESET   <= '0';
+    --ctrl.ACTIONS.ENABLE  <= '1';
+    --ctrl.ACTIONS.DISABLE <= '0';
+    --ctrl.ACTIONS.FREEZE  <= '0';
     ctrl_len <= len(ctrl);
-
+    ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e";
 
     mpl:entity mpl_lib.mpl
   port map(
-    clk      =>clk,
+    clk      => clk,
     rst      => rst,
     glob_en  => glob_en,
-    ctrl_v   => ctrl,
-    mon_v    => mon,
+    ctrl_v   => ctrl_v,
+    mon_v    => mon_v,
 
     i_uCM2pl_av      => i_uCM2pl_av,
     o_pl2ptcalc_av   => o_pl2ptcalc_av,

@@ -4,6 +4,7 @@
 # created by tb create on: 24-Nov-2020 (20:45:39)
 # created by tb create for test: ptcalc
 ##################################################
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -96,12 +97,32 @@ def CREATORTESTNAME_test(dut):
     ## process input arguments for this test
     ##
     input_args                       = config["input_args"]
+    test_vectors                     = config["testvectors"]
     num_events_to_process            = int(input_args["n_events"])
     event_level_detail_in_sumary     = bool(input_args["event_detail"])
+    tv_sector                        = int(input_args["tv_sector"])
+    tv_side                          = int(input_args["tv_side"])
     run_config                       = config["run_config"]
     output_dir_name                  = run_config["output_directory_name"]
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
+    testvector_config                = config["testvectors"]
+    testvector_config_inputs         = testvector_config["inputs"]
+    testvector_config_outputs        = testvector_config["outputs"]
+    inputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_input_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_input_interfaces)]
+    outputs_station_id= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
+    tolerance= [["" for x in range(CREATORCLASSNAMEPorts.get_output_interface_ports(y))]for y in range(CREATORCLASSNAMEPorts.n_output_interfaces)]
+    for i in range(CREATORCLASSNAMEPorts.n_input_interfaces):
+        if "station_ID" in testvector_config_inputs[i] :
+            inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+    for i in range(CREATORCLASSNAMEPorts.n_output_interfaces):
+        if "station_ID" in testvector_config_outputs[i] :
+            outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        if "tolerance" in testvector_config_outputs[i] :
+            tolerance[i] = testvector_config_outputs[i]["tolerance"]
+        else:
+            tolerance[i] = {"": ["",""]}
+
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -164,6 +185,11 @@ def CREATORTESTNAME_test(dut):
         output_tvformats,
     ) = test_config.get_tvformats_from_config(config)
 
+
+    (
+        input_tvtype
+    ) = test_config.get_tvtype_from_config(config)
+
     sb_iport_index = 0
     for n_ip_intf in range(CREATORCLASSNAMEPorts.n_input_interfaces): # Add concept of interface
         for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)):
@@ -197,6 +223,14 @@ def CREATORTESTNAME_test(dut):
             CREATORTESTNAME_wrapper.add_output_monitor(monitor, n_op_intf, io, active=active)
     CREATORTESTNAME_wrapper.sort_ports()
 
+    #Read TV file
+    tv_bcid_list = events.read_tv(
+        filename=master_tv_file,
+        n_to_load=num_events_to_process,
+        region=0,
+        side=tv_side ,#barrel
+        sector=tv_sector #sector 3
+        )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
     input_tv_list         =  []
@@ -239,7 +273,7 @@ def CREATORTESTNAME_test(dut):
             f"ERROR Event sending timed out! Number of expected inputs with events = {len(send_finished_signal)}"
         )
     try:
-        yield with_timeout(Combine(*send_finished_signal), 20, "us")
+        yield with_timeout(Combine(*send_finished_signal), 500, "us")
     except Exception as ex:
         raise cocotb.result.TestFailure(
             f"ERROR Timed out waiting for events to send: {ex}"
@@ -290,9 +324,10 @@ def CREATORTESTNAME_test(dut):
 
 
     for n_op_intf in range (CREATORCLASSNAMEPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(master_tv_file, output_tvformats[n_op_intf],CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        events_are_equal, pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf]);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
+    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process," Pass=",pass_count, "Fail=",fail_count,"\n")
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed

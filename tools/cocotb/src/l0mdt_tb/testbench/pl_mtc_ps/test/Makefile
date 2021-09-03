@@ -58,6 +58,7 @@ HAL       = $(SRCDIR)/HAL
 
 # Verilog source files
 VERILOG_SOURCES = \
+    $(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl/xpm_memory.sv \
     $(DFDIR)/l0mdt_buses_constants.svh \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v \
     $(SBDIR)/SpyBuffer.v \
@@ -71,6 +72,7 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
     $(MTCDIR)/mtc_builder_verilog.sv
 
 # VHDL source files
@@ -103,7 +105,7 @@ VHDL_SOURCES_mpl_lib = \
 include ../../../creator/Makefile_vhdl_lib
 
 # Set the include path and compilation flags for CocoTB
-EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/work -L $(SIM_BUILD)/mpl_lib
+EXTRA_ARGS += +incdir+$(SRCDIR)/IP_repository +incdir+$(DFDIR) +incdir+$($(XILINX_HOME)/data/ip/xpm/xpm_memory/hdl) -L $(COMPONENTS_LIB_DIR)/unisims_ver  -L $(SIM_BUILD)/shared_lib -L $(SIM_BUILD)/work -L $(SIM_BUILD)/mpl_lib
 VSIM_ARGS  += -debugDB -voptargs=+acc -wlf $(SIM_BUILD)/$(TESTBENCH_TEST_MODULE).wlf
 VCOM_ARGS  += -2008
 ##############################################################################

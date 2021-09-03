@@ -11,7 +11,7 @@
 # created by tb create on: 24-Nov-2020 (20:45:39)
 # created by tb create for test: ptcalc
 ##################################################
-
+#!/usr/bin/env python3
 import sys
 import os
 import json
@@ -110,9 +110,13 @@ def mtc_auto_test(dut):
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
 
+    testvector_config                = config["testvectors"]
 
 
-    ##
+    mtc2sl_lsf_tol = {
+        "mdt_pt": ["abs", 100],
+    }
+
     ## setup the clock and start it
     ##
     sim_clock = Clock(
@@ -309,10 +313,10 @@ def mtc_auto_test(dut):
 
     #print("RECVD_LINEUP :",recvd_lineup)
     for n_op_intf in range (MtcAutoPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],MtcAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], tolerances=mtc2sl_lsf_tol);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
-
+    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * MtcAutoPorts.get_output_interface_ports(0)," Pass=",pass_count, "Fail=",fail_count,"\n")
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
     ]

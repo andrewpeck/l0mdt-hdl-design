@@ -11,27 +11,27 @@
             "output_directory_name": "mtc",
             "test_location": "src/l0mdt_tb/testbench/mtc/test",
             "expected_is_observed": false,
-            "components_lib_dir": "/home/psundara/xilinx/compiled_libraries/v2019.1/"
+            "components_lib_dir": "${XILINX_LIB_DIR}"
         },
         "testvectors": {
-            "testvector_dir": "/home/psundara/L0MDT/psundara/l0mdt-hdl-design/tv/TVOutputs/TV_RAND_1624ce56_2020-09-17_v01",
-	    "testvector_file": "B.pkl",
-	    "inputs": [
-		{
-		    "tv_format": "PL2MTC",
-		    "ports": 3
-		},
-		{
-		    "tv_format": "PTCALC2MTC_LSF",
-		    "ports": 3
-		}
-	    ],
-	    "outputs": [
-		{
-		    "tv_format": "MTC2SL_LSF",
-		    "ports": 3
-		}
-	    ]
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "PL2MTC",
+                    "ports": 3
+                },
+                {
+                    "tv_format": "PTCALC2MTC_LSF",
+                    "ports": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "MTC2SL_LSF",
+                    "ports": 3
+                }
+            ]
         }
     }
 }

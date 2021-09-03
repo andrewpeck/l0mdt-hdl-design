@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "pl_mtc_ps",
         "input_args": {
-            "n_events": 3,
+            "n_events": 1,
             "event_detail": false,
             "clock_period": 5,
             "clock_time_unit": "ns",
@@ -12,11 +12,11 @@
             "output_directory_name": "pl_mtc_ps",
             "test_location": "src/l0mdt_tb/testbench/pl_mtc_ps/test",
             "expected_is_observed": false,
-            "components_lib_dir": "set_COMPONENTS_LIB_DIR_or_update_location_of_xilinx_compiled_library"
+            "components_lib_dir": "${XILINX_LIB_DIR}"
         },
         "testvectors": {
-            "testvector_dir": "set_L0MDT_TESTVECTOR_DIR_or_update_json_file_with_testvector_directory",
-            "testvector_file": "B.pkl",
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
             "inputs": [
                 {
                     "tv_format": "UCM2PL",
@@ -25,7 +25,7 @@
                 {
                     "tv_format": "PTCALC2MTC_LSF",
                     "ports"    : 3,
-		    "pl_latency"  : 581
+		    "pl_latency"  : 580
                 }
             ],
             "outputs": [

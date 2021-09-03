@@ -71,35 +71,36 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_musc4.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_murcU.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muqcK.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mupcA.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muocq.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muncg.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_35mb6.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30lbW.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_tabkb.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muwdI.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muvdy.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_muudo.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mutde.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_eta_tacud.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramshbi.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsg8j.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsfYi.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramseOg.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsdEe.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_paramsibs.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_takbM.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_tajbC.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_eta_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_2_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30ns_24s_45_5_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_33ns_35ns_65_6_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_13s_13s_26_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16s_26ns_42_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_12s_36_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_13s_37_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_28s_16ns_44_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_table_V.v \
     $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
     $(PWD)/ptcalc_top_tb.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v
 
 
 # VHDL source files
-VHDL_SOURCES = \
+VHDL_SOURCES += \
 	$(USERLOGIC)/upt/top_upt.vhd
 
 VHDL_SOURCES_upt_lib = \
