@@ -42,8 +42,8 @@ include:
     #---------------------------------------------
     # - local: '/Top/ult/gitlab-ci.yml'
     # - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_questa/gitlab-ci.yml'
