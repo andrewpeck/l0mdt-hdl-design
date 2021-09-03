@@ -11,6 +11,7 @@
 # created by tb create on: 24-Nov-2020 (20:45:39)
 # created by tb create for test: ptcalc
 ##################################################
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -112,8 +113,15 @@ def pl_mtc_ps_test(dut):
     testvectors                      = config["testvectors"]
     inputs                           = testvectors["inputs"]
     pl_latency                       = inputs[1]["pl_latency"]
+    cocotb_outputs                   = 0
+    for i in range(PlMtcPsPorts.n_output_interfaces):
+        cocotb_outputs = PlMtcPsPorts.get_output_interface_ports(i) + cocotb_outputs
 
 
+    pl_mtc_tol = {
+        "phimod": ["abs", 100],
+        "mdt_pt": ["abs", 100],
+    }
 
     ##
     ## setup the clock and start it
@@ -300,10 +308,15 @@ def pl_mtc_ps_test(dut):
     ## perform testvector comparison test
     ##
     #print("RECVD_EVTS = ",recvd_events_intf)
+    pass_count = 0
+    fail_count = 0
     for n_op_intf in range (PlMtcPsPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        events_are_equal,pass_count_i , fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerances=pl_mtc_tol);
         all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
 
+    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * cocotb_outputs," Pass=",pass_count, "Fail=",fail_count,"\n")
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed

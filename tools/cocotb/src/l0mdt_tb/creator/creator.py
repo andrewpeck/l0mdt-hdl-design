@@ -24,7 +24,7 @@ def autogen_string(test_name, comment_string="#"):
 def creator_dir():
     p_tp_fw = utils.tp_fw_path()
 #    p_creator = p_tp_fw / "tb" / "src" / "l0mdt_tb" / "creator"
-    p_creator = p_tp_fw / "cocotb" / "src" / "l0mdt_tb" / "creator"
+    p_creator = p_tp_fw / "tools" / "cocotb" / "src" / "l0mdt_tb" / "creator"
     return p_creator
 
 
@@ -32,7 +32,7 @@ def test_dir_from_test_name(test_name):
 
     p_tp_fw = utils.tp_fw_path()
 #    p_testbench = p_tp_fw / "tb" / "src" / "l0mdt_tb" / "testbench"
-    p_testbench = p_tp_fw / "cocotb" / "src" / "l0mdt_tb" / "testbench"
+    p_testbench = p_tp_fw / "tools" / "cocotb" / "src" / "l0mdt_tb" / "testbench"
     p_test_dir = p_testbench / test_name
     return p_test_dir
 
@@ -378,7 +378,7 @@ def create_test_module(test_name, do_software_block=False):
 def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, output_ports):
 
     p_tp_fw   = utils.tp_fw_path()
-    p_config  = p_tp_fw / "cocotb" / "test_config"
+    p_config  = p_tp_fw / "tools" / "cocotb" / "test_config"
 
     p_test_dir  = f"src/l0mdt_tb/testbench/{str(test_name)}"
 
@@ -390,6 +390,8 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",
+        "tv_sector"      : 3,
+        "tv_side"        : 3,
         "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
     }
 
@@ -400,7 +402,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         "output_directory_name": test_name,
         "test_location": f"{str(p_test_dir)}/test",
         "expected_is_observed": False,
-        "components_lib_dir": "set_COMPONENTS_LIB_DIR_or_update_location_of_xilinx_compiled_library",
+        "components_lib_dir": "${XILINX_LIB_DIR}",
     }
 
     ##
@@ -416,8 +418,8 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
         output_list.append({f"tv_format": f"INTERFACE_FORMAT_{i}", f"ports":output_ports[i]})
 
     config_testvectors = {
-        "testvector_dir": "set_L0MDT_TESTVECTOR_DIR_or_update_json_file_with_testvector_directory",
-        "testvector_file": "TV.pkl",
+        "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+        "testvector_file": "B_C_3.xz",
         "inputs": input_list,
         "outputs": output_list,
     }

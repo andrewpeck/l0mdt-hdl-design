@@ -48,8 +48,8 @@ module TopLevel_ptcalc #(
        for(genvar i = 0; i < 4; i++)
          begin:input_spybuffers
             SpyBuffer #(
-			.DATA_WIDTH_A(DATA_WIDTH-1),
-			.DATA_WIDTH_B(DATA_WIDTH-1),
+			.DATA_WIDTH_A(DATA_WIDTH),
+			.DATA_WIDTH_B(DATA_WIDTH),
 			.FC_FIFO_WIDTH(FIFO_DEPTH),
 			.PASSTHROUGH(1)
 			) spybuffer (
@@ -107,8 +107,8 @@ module TopLevel_ptcalc #(
       for(genvar i = 0; i < 1; i++)
         begin:output_spybuffers
            SpyBuffer #(
-		       .DATA_WIDTH_A(DATA_WIDTH-1),
-		       .DATA_WIDTH_B(DATA_WIDTH-1),
+		       .DATA_WIDTH_A(DATA_WIDTH),
+		       .DATA_WIDTH_B(DATA_WIDTH),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(1)
                        ) spybuffer (

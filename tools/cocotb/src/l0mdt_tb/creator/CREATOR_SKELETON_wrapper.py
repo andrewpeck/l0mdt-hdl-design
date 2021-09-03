@@ -27,12 +27,7 @@ class CREATORCLASSNAMEWrapper(block_wrapper.BlockWrapper):
         self, input_testvectors,n_to_send=-1, l0id_request=-1, event_delays=False
     ):
 
-#Moving to dataformat, so don't do file comparison
-#        n_input_files = len(input_testvectors)
-#        if n_input_files != self.n_input_ports:
-#            raise ValueError(
-#                f"Number of input event tables (={n_input_files}) is not equal to number of CREATORCLASSNAME input ports (={self.n_input_ports})"
-#            )
+
 
         hooks           = []
         input_interface = 0

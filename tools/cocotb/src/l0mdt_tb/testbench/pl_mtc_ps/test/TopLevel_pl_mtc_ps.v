@@ -94,8 +94,8 @@ typedef struct {
        for(genvar i = 0; i < 6; i++)
          begin:input_spybuffers
             SpyBuffer #(
-			.DATA_WIDTH_A(DATA_WIDTH-1),
-			.DATA_WIDTH_B(DATA_WIDTH-1),
+			.DATA_WIDTH_A(DATA_WIDTH),
+			.DATA_WIDTH_B(DATA_WIDTH),
 			.FC_FIFO_WIDTH(FIFO_DEPTH),
 			.PASSTHROUGH(1)
 			) spybuffer (
@@ -174,8 +174,8 @@ typedef struct {
 
 	     end
            SpyBuffer #(
-		       .DATA_WIDTH_A(DATA_WIDTH-1),
-		       .DATA_WIDTH_B(DATA_WIDTH-1),
+		       .DATA_WIDTH_A(DATA_WIDTH),
+		       .DATA_WIDTH_B(DATA_WIDTH),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(0)
                        ) spybuffer (

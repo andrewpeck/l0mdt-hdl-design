@@ -1,13 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
 venv_dir_name="env"
 required_python_version_major=3
-required_python_version_minor=6
-TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
-TV_tag="master"
+required_python_version_minor=8
 
-dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
-dataformats_tag= "v4.0.1"
+#
+# If we need to pick specific submodule tags for a given branch of l0mdt-hdl-design, use
+# git config -f .gitmodules submodule.SpyBuffer.branch 33707b3
+#
+# This updates the .gitmodules with the correct tags and get committed to the l0mdt-hdl-design branch
+
+
+#TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
+TV_repo="ssh://git@gitlab.cern.ch:7999/atlas_hllhc_uci_mdtTrigger/tv.git"
+#TV_tag="v006"
+TV_tag="17-add-features"
+
+#dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
+#dataformats_repo="ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
+#dataformats_tag="v4.1.2"  c30926e4
+
+#spybuffer_path="../../shared/SpyBuffer"
+#spybuffer_tag="33707b39"
+
+#Path to dataformat and TV. Needed for the pip install
+dataformat_path="../../dataformats"
+tv_path="../tv"
 
 function print_usage {
     echo "---------------------------------------------------------"
@@ -26,11 +44,11 @@ function print_usage {
     echo " installed in the virtual environment"
     echo ""
     echo " Options:"
-    echo "  -c|--componentslibs   path to directory containing the compiled libaries"
+    echo "  -l|--xilinxlibs      path to directory containing the compiled libaries"
     echo "  -t|--testvectors      path to directory containing the testvectors"
+    echo "  -x|--Xilinx Path      path to directory containing the Vivado toolset (required for compiling XPM macros"
     echo "  -h|--help             print this help message"
-    echo "  --skip-deps     do not install any of the external (to TVMaker) packages"
-    echo "  -h|--help       print this help message"
+    echo "  --skip-deps           do not install any of the external (to TVMaker) packages"
     echo ""
     echo " Example usage:"
     echo "  $ source setup_env.sh [OPTIONS]"
@@ -84,28 +102,30 @@ function activate_venv {
 
 function pre_commit_setup {
     if ! command -v pre-commit -V >/dev/null 2>&1; then
-        echo "ERROR pre-commit not installed"
-        return 1
+        echo "Pre-commit not installed. Installing"
+        python3 -m pip install pre-commit
+        return 0
     fi
 
-    ##
-    ## put pre-commit hooks in .git
-    ##
-    pre-commit install 2>&1 >/dev/null
+    echo "Pre-commit already installed"
+    return 0
+}
+
+function find_libpython {
+    if ! command -v find_libpython >/dev/null 2>&1; then
+        echo "find_libpython not installed. Installing"
+        python3 -m pip install find_libpython
+        return 0
+    fi
+    echo "find_libpython already installed"
+
+
     return 0
 }
 
 function install_tv {
-    echo "Installing TV environment"
-    python3 -m pip install pandas
-    python3 -m pip install tabulate
-    python3 -m pip install termcolor
-    python3 -m pip install -e ./../../dataformats
-    python3 -m pip install -e ../tv/TVReader
-    python3 -m pip install -e ../tv/TVMaker
-    python3 -m pip install -e ../tv/TVDataFormat
-    python3 -m pip install -e ../tv
-    return 0
+    echo "Installing TV dependencies using ${dataformat_path} and ${tv_path}"
+    source ${tv_path}/install_tv_env.sh --light --path_dataformats ${dataformat_path} --path_tv ${tv_path}
 }
 
 
@@ -117,7 +137,6 @@ function update_makefile_questa() {
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += shared_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += ctrl_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += apbus_lib '  $(find ./env -name Makefile.questa)
-    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += mpcvmem_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += vamc_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
@@ -136,34 +155,69 @@ function update_makefile_questa() {
 }
 
 function checkout_deps {
-    ## dataformats package
-    if [ ! -d "../dataformats" ]; then
-        echo "Checking out dependency: dataformats"
-        git clone -b ${dataformats_tag} ${dataformats_repo} ../dataformats
-        if [ ! -d "../dataformats" ]; then
-            echo "ERROR Failed to clone dataformats repo from ${dataformats_repo}"
-            return 1
-        fi
-    fi
     start_dir=${PWD}
-    cd "../dataformats"
-    echo "Checking out dataformats branch ${dataformats_tag}"
+
+    #Update the submodules in l0mdt-hdl-design
+    cd "../../"
+    echo "Updating all submodules"
+    #git submodule init
+    #Update submodule to their version in .gitmodules or master if no version specified
+    #git submodule update --remote --merge
+    cd ${start_dir}
+
+    # dataformats package. Should have already been checkout as submodule with l0mdt-hdl-design
+
+    #echo "Checking out dataformats tag ${dataformats_tag}"
+    #if [ ! -d ${dataformat_path} ]; then
+    #    echo "ERROR dataformats submodule does not exist."
+    #    return 1
+    #fi
+    #cd ${dataformat_path}
+    #git checkout ${dataformats_tag}
+    #cd ${start_dir}
+
+    ## SpyBuffer
+    #echo "Checking out SpyBuffer tag ${spybuffer_tag}"
+    #if [ ! -d ${spybuffer_path} ]; then
+    #    echo "ERROR SpyBuffer submodule does not exist."
+    #    return 1
+    #fi
+    #cd ${spybuffer_path}
+    #git checkout ${spybuffer_tag}
+    #cd ${start_dir}
+
+
+
+    echo "Checking out dataformats tag ${dataformats_tag}"
+    if [ ! -d ${dataformat_path} ]; then
+        echo "ERROR dataformats submodule does not exist."
+        return 1
+    fi
+    cd ${dataformat_path}
     git checkout ${dataformats_tag}
     cd ${start_dir}
 
     ## TV package
-    if [ ! -d "../tv" ]; then
+    #To be remove once that's a submodule.
+    if [ ! -d ${tv_path} ]; then
         echo "Checking out dependency: TV"
-        git clone -b ${TV_tag} ${TV_repo} ../tv
-        if [ ! -d "../tv" ]; then
+        git clone -b ${TV_tag} ${TV_repo} ${tv_path}
+        cd ${tv_path}
+        git submodule init
+        git submodule update --remote --merge
+
+        if [ ! -d ${tv_path} ]; then
             echo "ERROR Failed to clone tv repo from ${TV_repo}"
             return 1
         fi
+        cd ${start_dir}
     fi
 
     return 0
 }
 
+#------------------------------------------------------------------------
+#------------------------------------------------------------------------
 function main {
     skip_deps=0
     while test $# -gt 0
@@ -172,38 +226,38 @@ function main {
             -h)
                 print_usage
                 return 0
-                ;;
+            ;;
             --help)
                 print_usage
                 return 0
-                ;;
-	    --skip-deps)
+            ;;
+            --skip-deps)
                 skip_deps=1
-                ;;
-           -c)
-                export COMPONENTS_LIB_DIR=$2
+            ;;
+            -l)
+                export XILINX_LIB_DIR=$2
                 shift
-                ;;
-            --componentslibs)
-                export COMPONENTS_LIB_DIR=$2
+            ;;
+            --xilinxlibs)
+                export XILINX_LIB_DIR=$2
                 shift
-                ;;
-            -t)
-                export L0MDT_TESTVECTOR_DIR=$2
-                shift
-                ;;
+            ;;
             -x)
                 export XILINX_HOME=$2
                 shift
-                ;;
+            ;;
+            -t)
+                export L0MDT_TESTVECTOR_DIR=$2
+                shift
+            ;;
             --testvectors)
                 export L0MDT_TESTVECTOR_DIR=$2
                 shift
-                ;;
+            ;;
             *)
                 echo "ERROR Invalid argument: $1"
                 return 1
-                ;;
+            ;;
         esac
         shift
     done
@@ -215,18 +269,18 @@ function main {
         return 1
     fi
 
-
-#    if [ ! ${skip_deps} -eq 1 ]; then
-#        if ! checkout_deps; then
-#            return 1
-#        fi
-#    fi
+    if [ ! ${skip_deps} -eq 1 ]; then
+        if ! checkout_deps; then
+            return 1
+        fi
+    fi
 
     ##
     ## setup
     ##
+    python3 --version
     if [ -d ${venv_dir_name} ]; then
-         if ! activate_venv ; then
+        if ! activate_venv ; then
             return 1
         fi
 
@@ -235,43 +289,52 @@ function main {
         fi
 
     else
-	echo "Setting up Python environment"
+        echo "Setting up Python environment"
+        start_dir=${PWD}
 
         python3 -m venv ${venv_dir_name}
         if [ ! -d ${venv_dir_name} ]; then
-            echo "ERROR Problem setting up virtual environment \"${venv_dir_name}\""
+            echo "ERROR Problem setting up python3 virtual environment \"${venv_dir_name}\""
             return 1
         else
             if ! activate_venv ; then
                 return 1
             fi
 
-
-	   # if ! python -m pip install --quiet -e . ; then
-	    if ! python3 -m pip install  -e . ; then
-                echo "ERROR There was a problem in installing the packages"
+            # if ! python -m pip install --quiet -e . ; then
+            if ! python3 -m pip install  -e . ; then
+                echo "ERROR There was a problem in installing python3 packages"
                 deactivate >/dev/null 2>&1
                 return 1
             fi
 
-	    echo "Installing required package for the TV environment"
+            echo "Installing required package for the TV environment"
             if ! install_tv; then
                 return 1
             fi
+            cd ${start_dir}
 
-	    echo "Updating cocotb Makefile.questa to support mixed language compilation"
-	    if ! update_makefile_questa; then
-		return 1
-	    fi
+            echo "Updating cocotb Makefile.questa to support mixed language compilation"
+            if ! update_makefile_questa; then
+                return 1
+            fi
             echo "Installation successful"
 
 
             ##
             ## setup pre-commit
             ##
+
+            if ! pre_commit_setup; then
+                return 1
+            fi
+
+
+
             #if ! pre_commit_setup; then
             #   return 1
             #fi
+
 
 
 

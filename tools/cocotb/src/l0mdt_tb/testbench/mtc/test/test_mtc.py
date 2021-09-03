@@ -3,6 +3,7 @@
 # created by tb create on: 03-Jun-2020 (10:30:39)
 # created by tb create for test: mtc
 ##################################################
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -75,12 +76,13 @@ def mtc_test(dut):
     num_events_to_process = int(input_args["n_events"])
     event_level_detail_in_sumary = bool(input_args["event_detail"])
 
-    testvectors = config["testvectors"]
-    outputs     = testvectors["outputs"]
+    testvectors     = config["testvectors"]
+    outputs         = testvectors["outputs"]
     output_tvformat = outputs[0]["tv_format"]
 
-
-
+    mtc2sl_lsf_tol = {
+        "mdt_pt": ["abs", 100],
+    }
 
     ##
     ## setup the clock and start it
@@ -303,11 +305,11 @@ def mtc_test(dut):
     ##
     ## perform test by comparison with expected testvectors
     ##
-    events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup);
+    events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup, tolerances = mtc2sl_lsf_tol);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
 
-
+    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * MtcPorts.get_output_interface_ports(0)," Pass=",pass_count, "Fail=",fail_count,"\n")
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
     ]
