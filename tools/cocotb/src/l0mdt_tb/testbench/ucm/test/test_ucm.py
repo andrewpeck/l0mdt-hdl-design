@@ -243,11 +243,12 @@ def ucm_test(dut):
     input_tv_list         =  []
     single_interface_list = []
     for n_ip_intf in range(UcmPorts.n_input_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=input_tvformats[n_ip_intf],
             n_ports = UcmPorts.get_input_interface_ports(n_ip_intf),
-            n_to_load=num_events_to_process
+            n_to_load=num_events_to_process,
+            tv_type="value"
             ))
         for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])
@@ -256,11 +257,12 @@ def ucm_test(dut):
     output_tv_list        =  []
     single_interface_list = []
     for n_op_intf in range(UcmPorts.n_output_interfaces): # Add concept of interface
-        single_interface_list = (events.parse_file_for_testvectors(
-            filename=master_tv_file,
+        single_interface_list = (events.parse_tvlist(
+            tv_bcid_list,
             tvformat=output_tvformats[n_op_intf],
             n_ports = UcmPorts.get_output_interface_ports(n_op_intf),
-            n_to_load=num_events_to_process
+            n_to_load=num_events_to_process,
+            tv_type="value"
             ))
         output_tv_list.append(single_interface_list)
 
