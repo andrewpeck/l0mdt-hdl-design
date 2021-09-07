@@ -11,10 +11,10 @@ required_python_version_minor=8
 # This updates the .gitmodules with the correct tags and get committed to the l0mdt-hdl-design branch
 
 
-#TV_repo="https://gitlab.cern.ch/atlas_hllhc_muon_trigger/tv.git"
+#TV_repo="https://gitlab.cern.ch/atlas_hllhc_uci_mdtTrigger/tv.git"
 TV_repo="ssh://git@gitlab.cern.ch:7999/atlas_hllhc_uci_mdtTrigger/tv.git"
-#TV_tag="v006"
-TV_tag="17-add-features"
+TV_tag="v007"
+
 
 #dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
 #dataformats_repo="ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
