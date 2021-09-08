@@ -385,13 +385,30 @@ def lsf_auto_test(dut):
 #             # use sf2ptcalc_tolerances to find falures
 #             # bitfield function (SF2PTCALC_LSF) that compares all the fields and returns percentage of disagreement for each field
 #             #need to be able to pass rtl_tv to the bitfieldword class and make the comparison there
-
+    pass_count = 0
+    fail_count = 0
+    field_fail_cnt_header = []
+    field_fail_cnt        = []
+    field_fail_cnt_header.clear()
+    field_fail_cnt.clear()
     for n_op_intf in range (LsfAutoPorts.n_output_interfaces):
-        events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf],output_path=output_dir);
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],LsfAutoPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf], sf2ptcalc_tol[n_op_intf],output_path=output_dir);
         all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
+        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
     print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process," Pass=",pass_count, "Fail=",fail_count,"\n")
 
+    events.results_summary(
+        num_events_to_process,
+        pass_count,
+        fail_count,
+        LsfAutoPorts.n_output_interfaces,
+        field_fail_cnt_header,
+        field_fail_cnt
+    )
 
     cocotb_result = {
         True: cocotb.result.TestSuccess,
