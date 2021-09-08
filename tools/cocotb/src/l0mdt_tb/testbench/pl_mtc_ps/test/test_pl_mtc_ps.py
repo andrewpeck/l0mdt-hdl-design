@@ -22,6 +22,7 @@ from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeout
 from cocotb.result import TestFailure, TestSuccess
 
+from tabulate import tabulate
 import l0mdt_tb.testbench.pl_mtc_ps.pl_mtc_ps_wrapper as wrapper
 from l0mdt_tb.testbench.pl_mtc_ps.pl_mtc_ps_ports import PlMtcPsPorts
 
@@ -310,13 +311,28 @@ def pl_mtc_ps_test(dut):
     #print("RECVD_EVTS = ",recvd_events_intf)
     pass_count = 0
     fail_count = 0
+    field_fail_cnt_header = []
+    field_fail_cnt        = []
+    field_fail_cnt_header.clear()
+    field_fail_cnt.clear()
     for n_op_intf in range (PlMtcPsPorts.n_output_interfaces):
-        events_are_equal,pass_count_i , fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerances=pl_mtc_tol);
+        events_are_equal,pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PlMtcPsPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerances=pl_mtc_tol);
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
+        field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
-    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * cocotb_outputs," Pass=",pass_count, "Fail=",fail_count,"\n")
+
+    events.results_summary(
+        num_events_to_process,
+        pass_count,
+        fail_count,
+        PlMtcPsPorts.n_output_interfaces,
+        field_fail_cnt_header,
+        field_fail_cnt
+    )
+
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed

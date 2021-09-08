@@ -138,9 +138,16 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     tv_format_val      = []
     comparison_data    = []
     pp_comparison_list = []
+    df_fields          = []
+    tv_format_failure_cnt = {}
 
     RTL_DFSL.build_data_format()
     SL1.build_data_format()
+    tv_format_df = SL1.getBitFieldWord(tvformat, RTL_DFSL.suffix[0])
+    for object in tv_format_df:
+        for field in object.fields:
+            tv_format_failure_cnt[field.name] = 0
+            #print("tv_format_failures = ", field.name)
 
     # for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
     for ievent in range(len(events_list)):  # range(total_transactions):
@@ -202,6 +209,10 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         ret_val = 0
 
 
+                    fail_index = results[2].index("FAIL")
+                    for row in results[1]:
+                        tv_format_failure_cnt[row[0]] += row[fail_index]
+
                     istation = RTL_DFSL.suffix.index(stationID)
                     tmp_DF    = events_list[ievent].DF_SL[0].getBitFieldWord(tvformat, stationID)
                     pd_columns_header = tvtools.get_pd_headers(tmp_DF[0], True)
@@ -223,7 +234,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         print("Saving Comparison data to %s " % df_file_name)
         df_data.to_csv(df_file_name)
 
-    return ret_val, pass_count, fail_count
+
+
+
+
+    return ret_val, pass_count, fail_count, tv_format_failure_cnt
 
 
 
@@ -502,3 +517,12 @@ def station_name_to_id(station_id=""):
 def station_id_to_name(station_id=0):
     switcher = {0: "INN", 1: "MID", 2: "OUT", 3: "EXT"}
     return switcher.get(station_id, -99)
+
+
+def results_summary( total_events, total_pass, total_fail, total_dataformats, field_fail_header, field_fail_cnt):
+    print ("\n=========================================================\n")
+    print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, " Pass=",total_pass, "Fail=",total_fail,"\n")
+    print("Total Pass/Fail of Fields in DataFormats being tested -")
+    for df_i in range (total_dataformats):
+        print(tabulate(field_fail_cnt[df_i].items(), field_fail_header[df_i], tablefmt="psql"))
+    print ("\n=========================================================\n")
