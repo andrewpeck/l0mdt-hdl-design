@@ -190,13 +190,13 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     if results[0]:
                         cprint("The 2 BitFieldWords are identical ", "green")
                         print(events_list[ievent].header.dump())
-                        print("\t SL candidate %d" % this_candidate)
+                        print("\t SL candidate ", this_candidate, ":\t",tvformat)
                         print(tabulate(results[1], results[2], tablefmt="psql"))
                         pass_count = pass_count + 1
                     else:
                         cprint("The 2 BitFieldWords differ", "red")
                         print(events_list[ievent].header.dump())
-                        print("\t SL candidate %d" % this_candidate)
+                        print("\t SL candidate ", this_candidate, ":\t",tvformat)
                         print(tabulate(results[1], results[2], tablefmt="psql"))
                         fail_count = fail_count + 1
                         ret_val = 0
@@ -265,7 +265,9 @@ def parse_tvlist(
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port):
-                    # print ("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
+                    #print ("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
+                    #tvtools.dump_event(events_list,ievent)
+                    #print(events_list[ievent].DF_SL[my_port].print_blocks())
                     event_found_for_port_interface = 1
                     if station_ID == [""]:
                         this_station_ID = ""
@@ -376,13 +378,13 @@ def parse_file_for_testvectors_list(
     tv = [["" for x in range(total_transactions)] for y in range(n_ports)]
     b3_events_i = 0
 
-    #    tv_reader_pkl.dump_event(events_list[0])
+
     for ievent in range(len(events_list)):  # range(total_transactions):
         if b3_events_i < total_transactions:
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port):
-                    # print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
+                    #print ("parse_file_for_testvectors: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event )
                     event_found_for_port_interface = 1
                     if station_ID == [""]:
                         this_station_ID = ""
