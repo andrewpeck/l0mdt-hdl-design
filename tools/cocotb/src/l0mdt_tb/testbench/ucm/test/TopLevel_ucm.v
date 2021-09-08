@@ -89,6 +89,8 @@ module TopLevel_ucm #(
     //
     // Here place the DUT block(s)
     //
+   assign slc_neighbor_null = slc_null[0];
+
    ucm_top_tb ucm_top_tb_inst(
 			      .clk(clock),
 			      .rst(~reset_n),

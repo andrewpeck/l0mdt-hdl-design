@@ -87,6 +87,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
+    yield ClockCycles(dut.clock, 10) #UCM block needs few clocks extra clock to reset
 
 
 ##
@@ -114,6 +115,7 @@ def ucm_test(dut):
     output_dir                       = f"{os.getcwd()}/../../../../../test_output/{output_dir_name}"
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     testvector_config                = config["testvectors"]
+    slc_rx_ii                        = testvector_config["slc_rx_ii"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
     inputs_station_id= [["" for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
@@ -240,8 +242,9 @@ def ucm_test(dut):
         )
 
     ###Get Input Test Vector List for Ports across all input interfaces##
-    input_tv_list         =  []
-    single_interface_list = []
+    input_tv_list                  =  []
+    single_interface_list          = []
+    single_interface_list_ii_delay =  []
     for n_ip_intf in range(UcmPorts.n_input_interfaces): # Add concept of interface
         single_interface_list = (events.parse_tvlist(
             tv_bcid_list,
@@ -250,8 +253,13 @@ def ucm_test(dut):
             n_to_load=num_events_to_process,
             tv_type="value"
             ))
-        for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
-            input_tv_list.append(single_interface_list[io])
+        for i in range(len(single_interface_list)):
+            for j in range(len(single_interface_list[i])):
+                print("\nUCM input tv list[",n_ip_intf,"[",i,"][",j,"] = ", hex(single_interface_list[i][j]));
+
+        for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)):
+            single_interface_list_ii_delay = events.modify_tv(single_interface_list, slc_rx_ii)
+            input_tv_list.append(single_interface_list_ii_delay[io])
 
    ###Get Output Test Vector List for Ports across all output interfaces##
     output_tv_list        =  []
@@ -274,7 +282,7 @@ def ucm_test(dut):
     dut._log.info("Sending input events")
     send_finished_signal = ucm_wrapper.send_input_events(
         input_tv_list,
-        n_to_send=num_events_to_process
+        n_to_send=num_events_to_process * slc_rx_ii
     )
 
     if not send_finished_signal:
@@ -288,10 +296,7 @@ def ucm_test(dut):
             f"ERROR Timed out waiting for events to send: {ex}"
         )
     dut._log.info("Sending finished!")
-
-    timer = Timer(20, "us")
-    dut._log.info("Going to wait 20 microseconds")
-    yield timer
+    yield ClockCycles(dut.clock, 200) #PRIYA CHKING BLOCK LATENCY
 
     ##
     ## perform testvector comparison test
