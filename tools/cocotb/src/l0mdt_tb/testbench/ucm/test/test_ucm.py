@@ -335,13 +335,27 @@ def ucm_test(dut):
         expected_output_events = output_tv_list
 
 
-
+    field_fail_cnt_header = []
+    field_fail_cnt        = []
+    field_fail_cnt_header.clear()
+    field_fail_cnt.clear()
 
     for n_op_intf in range (UcmPorts.n_output_interfaces):
-        events_are_equal, pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf]);
+        events_are_equal, pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir);
     all_tests_passed = (all_tests_passed and events_are_equal)
+    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+    field_fail_cnt.append(field_fail_count_i)
 
-    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process," Pass=",pass_count, "Fail=",fail_count,"\n")
+    events.results_summary(
+        num_events_to_process,
+        pass_count,
+        fail_count,
+        UcmPorts.n_output_interfaces,
+        field_fail_cnt_header,
+        field_fail_cnt,
+        total_ports=UcmPorts.n_output_ports(UcmPorts)
+    )
+
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
