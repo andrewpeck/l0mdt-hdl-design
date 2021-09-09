@@ -14,8 +14,8 @@ from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge, Combine, Timer, with_timeout
 from cocotb.result import TestFailure, TestSuccess
 
-import l0mdt_tb.testbench.mtc.mtc_wrapper as wrapper
-from l0mdt_tb.testbench.mtc.mtc_ports import MtcPorts
+import l0mdt_tb.testbench.mtc_no_sb.mtc_wrapper as wrapper
+from l0mdt_tb.testbench.mtc_no_sb.mtc_ports import MtcPorts
 
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mtc.mtc_block as mtc_block
 
@@ -305,11 +305,27 @@ def mtc_test(dut):
     ##
     ## perform test by comparison with expected testvectors
     ##
-    events_are_equal,pass_count , fail_count = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup, tolerances = mtc2sl_lsf_tol);
+    field_fail_count_header = []
+    field_fail_count          = []
+    field_fail_count_header.clear()
+    field_fail_count.clear()
+    events_are_equal,pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformat ,MtcPorts.get_output_interface_ports(0) , num_events_to_process , recvd_lineup, tolerances = mtc2sl_lsf_tol,output_path=output_dir);
     all_tests_passed = (all_tests_passed and events_are_equal)
 
+    field_fail_count_header.append([output_tvformat +" "+ "FIELDS", "FAIL COUNT"])
+    field_fail_count.append(field_fail_count_i)
 
-    print ("\n\t\t\t TEST RESULTS: Total Tests=", num_events_to_process * MtcPorts.get_output_interface_ports(0)," Pass=",pass_count, "Fail=",fail_count,"\n")
+    events.results_summary(
+        num_events_to_process,
+        pass_count,
+        fail_count,
+        MtcPorts.n_output_interfaces,
+        field_fail_count_header,
+        field_fail_count,
+        total_ports = MtcPorts.total_output_ports()
+    )
+
+
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
         all_tests_passed
     ]
