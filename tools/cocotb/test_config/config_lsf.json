@@ -1,6 +1,6 @@
 {
     "testbench_config": {
-        "test_name": "lsf_auto",
+        "test_name": "lsf",
         "input_args": {
             "n_events": 100,
             "n_hits": 100,
@@ -12,8 +12,8 @@
             "lsf_compute_results": 21
         },
         "run_config": {
-            "output_directory_name": "lsf_auto",
-            "test_location": "src/l0mdt_tb/testbench/lsf_auto/test",
+            "output_directory_name": "lsf",
+            "test_location": "src/l0mdt_tb/testbench/lsf/test",
             "expected_is_observed": false,
             "components_lib_dir": "${XILINX_LIB_DIR}"
         },
