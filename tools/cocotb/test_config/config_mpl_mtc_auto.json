@@ -1,6 +1,6 @@
 {
     "testbench_config": {
-        "test_name": "pl_mtc_ps",
+        "test_name": "mpl_mtc_auto",
         "input_args": {
             "n_events": 1,
             "event_detail": false,
@@ -9,8 +9,8 @@
             "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
         "run_config": {
-            "output_directory_name": "pl_mtc_ps",
-            "test_location": "src/l0mdt_tb/testbench/pl_mtc_ps/test",
+            "output_directory_name": "mpl_mtc_auto",
+            "test_location": "src/l0mdt_tb/testbench/mpl_mtc_auto/test",
             "expected_is_observed": false,
             "components_lib_dir": "${XILINX_LIB_DIR}"
         },

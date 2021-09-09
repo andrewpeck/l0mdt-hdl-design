@@ -8,7 +8,7 @@
 `timescale 1ns / 1ps
 `default_nettype wire
 
-module TopLevel_pl_mtc_ps #(
+module TopLevel_mpl_mtc_auto #(
     parameter DATA_WIDTH = 256, //65,
     parameter FIFO_DEPTH = 6,
     parameter N_OUTPUTS = 6,
