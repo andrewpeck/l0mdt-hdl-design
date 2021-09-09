@@ -52,7 +52,7 @@ class LsfWrapper(block_wrapper.BlockWrapper):
                 port_index      = (port_index + LsfPorts.get_input_interface_ports(input_interface))
 
             if port_num >= port_index:
-                interface_port = port_num - port_index
+                interface_port  = port_num - port_index
             else:
                 interface_port = interface_port + 1
 
@@ -61,7 +61,7 @@ class LsfWrapper(block_wrapper.BlockWrapper):
 
 
             cocotb.log.info(
-                f"Sending {len(input_events)} events to input (port_num) = ({io})"
+                f"Sending {len(input_events)} events to input: input interface = {input_interface}, port_num = ({io})"
             )
 
             hook = None
@@ -75,6 +75,6 @@ class LsfWrapper(block_wrapper.BlockWrapper):
                     driver.append(word, event=hook, **flow_kwargs)
             if hook:
                 hooks.append(hook.wait())
-            print(hooks)
+            #print(hooks)
 
         return hooks
