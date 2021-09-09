@@ -519,10 +519,12 @@ def station_id_to_name(station_id=0):
     return switcher.get(station_id, -99)
 
 
-def results_summary( total_events, total_pass, total_fail, total_dataformats, field_fail_header, field_fail_cnt):
+def results_summary( total_events, total_pass, total_fail, total_dataformats, field_fail_header, field_fail_cnt, total_ports=1):
     print ("\n=========================================================\n")
-    print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, " Pass=",total_pass, "Fail=",total_fail,"\n")
+    print ("\t\t\t TEST RESULTS SUMMARY\n")
     print("Total Pass/Fail of Fields in DataFormats being tested -")
     for df_i in range (total_dataformats):
         print(tabulate(field_fail_cnt[df_i].items(), field_fail_header[df_i], tablefmt="psql"))
+
+    print ("\t\t\t TEST RESULTS SUMMARY: Total Events=", total_events, "Total Ports = ",total_ports," Pass=",total_pass, "Fail=",total_fail,"\n")
     print ("\n=========================================================\n")
