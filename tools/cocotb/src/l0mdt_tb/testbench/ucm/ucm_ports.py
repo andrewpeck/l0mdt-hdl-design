@@ -43,5 +43,5 @@ class UcmPorts(port_descriptor.PortDescriptor):
 	def n_output_ports(self):
 		output_ports = 0
 		for i in range(self.n_output_interfaces):
-			output_ports = output_ports + self.n_output_interfaces
+			output_ports = output_ports + self.get_output_interface_ports(i)
 		return output_ports

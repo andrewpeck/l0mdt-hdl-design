@@ -119,28 +119,18 @@ module TopLevel_ucm #(
       for(genvar i = 0; i < 15; i++)
         begin:output_spybuffers
 	   if(i < 12)
-	     assign BLOCK_output_data[i][DATA_WIDTH-1:UCM2HPS_LEN] = 0;
+	     begin
+		assign BLOCK_output_data[i][DATA_WIDTH-1:UCM2HPS_LEN] = 0;
+	     end
 	   else
-	     assign BLOCK_output_data[i][DATA_WIDTH-1:UCM2PL_LEN] = 0;
+	     begin
+		assign BLOCK_output_data[i][DATA_WIDTH-1:UCM2PL_LEN] = 0;
+	     end
+
 	   if(i < 3)
 	     begin:ucm2hps
 		assign BLOCK_output_data[i][UCM2HPS_LEN-1:0]          = ucm2hps_inn[i];
 	     end
-	   assign BLOCK_output_data[3][UCM2HPS_LEN-1:0]          = ucm2hps_mid[0];
-	   assign BLOCK_output_data[4][UCM2HPS_LEN-1:0]          = ucm2hps_mid[1];
-	   assign BLOCK_output_data[5][UCM2HPS_LEN-1:0]          = ucm2hps_mid[2];
-
-	   assign BLOCK_output_data[6][UCM2HPS_LEN-1:0]          = ucm2hps_out[0];
-	   assign BLOCK_output_data[7][UCM2HPS_LEN-1:0]          = ucm2hps_out[1];
-	   assign BLOCK_output_data[8][UCM2HPS_LEN-1:0]          = ucm2hps_out[2];
-
-	   assign BLOCK_output_data[9][UCM2HPS_LEN-1:0]          = ucm2hps_ext[0];
-	   assign BLOCK_output_data[10][UCM2HPS_LEN-1:0]         = ucm2hps_ext[1];
-	   assign BLOCK_output_data[11][UCM2HPS_LEN-1:0]         = ucm2hps_ext[2];
-
-	   assign BLOCK_output_data[12][UCM2PL_LEN-1:0]          = ucm2pl[0];
-	   assign BLOCK_output_data[13][UCM2PL_LEN-1:0]          = ucm2pl[1];
-	   assign BLOCK_output_data[14][UCM2PL_LEN-1:0]          = ucm2pl[2];
 
 
            SpyBuffer #(
@@ -164,5 +154,46 @@ module TopLevel_ucm #(
 				    );
         end
    endgenerate // end output_spybuffers generate
+
+   assign BLOCK_output_data[3][UCM2HPS_LEN-1:0]          = ucm2hps_mid[0];
+   assign BLOCK_output_data[4][UCM2HPS_LEN-1:0]          = ucm2hps_mid[1];
+   assign BLOCK_output_data[5][UCM2HPS_LEN-1:0]          = ucm2hps_mid[2];
+
+   assign BLOCK_output_data[6][UCM2HPS_LEN-1:0]          = ucm2hps_out[0];
+   assign BLOCK_output_data[7][UCM2HPS_LEN-1:0]          = ucm2hps_out[1];
+   assign BLOCK_output_data[8][UCM2HPS_LEN-1:0]          = ucm2hps_out[2];
+
+   assign BLOCK_output_data[9][UCM2HPS_LEN-1:0]          = ucm2hps_ext[0];
+   assign BLOCK_output_data[10][UCM2HPS_LEN-1:0]         = ucm2hps_ext[1];
+   assign BLOCK_output_data[11][UCM2HPS_LEN-1:0]         = ucm2hps_ext[2];
+
+   assign BLOCK_output_data[12][UCM2PL_LEN-1:0]          = ucm2pl[0];
+   assign BLOCK_output_data[13][UCM2PL_LEN-1:0]          = ucm2pl[1];
+   assign BLOCK_output_data[14][UCM2PL_LEN-1:0]          = ucm2pl[2];
+
+
+
+   assign BLOCK_output_write_enable[0]                   = ucm2hps_inn[0][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[1]                   = ucm2hps_inn[1][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[2]                   = ucm2hps_inn[2][UCM2HPS_DATA_VALID_MSB];
+
+   assign BLOCK_output_write_enable[3]                  = ucm2hps_mid[0][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[4]                  = ucm2hps_mid[1][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[5]                  = ucm2hps_mid[2][UCM2HPS_DATA_VALID_MSB];
+
+
+   assign BLOCK_output_write_enable[6]                  = ucm2hps_out[0][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[7]                  = ucm2hps_out[1][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[8]                  = ucm2hps_out[2][UCM2HPS_DATA_VALID_MSB];
+
+
+   assign BLOCK_output_write_enable[9]                  = ucm2hps_ext[0][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[10]                 = ucm2hps_ext[1][UCM2HPS_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[11]                 = ucm2hps_ext[2][UCM2HPS_DATA_VALID_MSB];
+
+
+   assign BLOCK_output_write_enable[12]                  = ucm2pl[0][UCM2PL_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[13]                  = ucm2pl[1][UCM2PL_DATA_VALID_MSB];
+   assign BLOCK_output_write_enable[14]                  = ucm2pl[2][UCM2PL_DATA_VALID_MSB];
 
 endmodule // end TopLevel module definition

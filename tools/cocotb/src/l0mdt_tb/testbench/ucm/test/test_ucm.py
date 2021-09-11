@@ -334,17 +334,24 @@ def ucm_test(dut):
         output_testvector_file = master_tv_file
         expected_output_events = output_tv_list
 
-
+    pass_count = 0
+    fail_count = 0
     field_fail_cnt_header = []
     field_fail_cnt        = []
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
+    stationNum = [0,1,2,3,99]
     for n_op_intf in range (UcmPorts.n_output_interfaces):
-        events_are_equal, pass_count , fail_count, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir);
-    all_tests_passed = (all_tests_passed and events_are_equal)
-    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
-    field_fail_cnt.append(field_fail_count_i)
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir,stationNum=stationNum[n_op_intf]);
+        all_tests_passed = (all_tests_passed and events_are_equal)
+        pass_count       = pass_count + pass_count_i
+        fail_count       = fail_count + fail_count_i
+        if outputs_station_id[n_op_intf] != '':
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
+        else:
+            field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
+        field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,

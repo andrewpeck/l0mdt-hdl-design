@@ -71,6 +71,15 @@ architecture beh of ucm_top_tb is
 begin
    ctrl_len <= len(ctrl);
    ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e";
+   --ttc_commands.bcr <= '0'
+    --ocr : std_logic;
+    --ecr : std_logic;
+    --l0a : std_logic;
+    --l1a : std_logic;
+    --bcid : bcid_t;
+    --evid : evid_t;
+    --orid : orid_t;
+
 
   UCM : entity ucm_lib.ucm
   port map(
