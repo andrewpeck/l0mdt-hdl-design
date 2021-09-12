@@ -2,7 +2,7 @@
     "testbench_config": {
         "test_name": "lsf",
         "input_args": {
-            "n_events": 100,
+            "n_events": 5,
             "n_hits": 100,
             "n_rois": 1,
             "event_detail": false,
@@ -26,7 +26,7 @@
                     "ports": 1,
                     "heg2sfslc_ii": 400,
                     "station_ID": [
-                        "INN"
+                        "MID"
                     ],
                     "tv_type": "value"
                 },
@@ -37,7 +37,7 @@
                     "loadlut_setup": 25,
                     "hb_acc": 100,
                     "station_ID": [
-                        "INN"
+                        "MID"
                     ],
                     "tv_type": "list"
                 },
@@ -53,7 +53,7 @@
                     "tv_format": "SF2PTCALC_LSF",
                     "ports": 1,
                     "station_ID": [
-                        "INN"
+                        "MID"
                     ],
                     "tolerance": {
                         "segpos": [
