@@ -127,6 +127,9 @@ def ucm_test(dut):
     for i in range(UcmPorts.n_output_interfaces):
         if "station_ID" in testvector_config_outputs[i] :
             outputs_station_id[i] = testvector_config_outputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
+        else :
+            outputs_station_id[i] = ['NONE']
+
         if "tolerance" in testvector_config_outputs[i] :
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
         else:
@@ -341,9 +344,9 @@ def ucm_test(dut):
     field_fail_cnt_header.clear()
     field_fail_cnt.clear()
 
-    stationNum = [0,1,2,3,99]
+
     for n_op_intf in range (UcmPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir,stationNum=stationNum[n_op_intf]);
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i

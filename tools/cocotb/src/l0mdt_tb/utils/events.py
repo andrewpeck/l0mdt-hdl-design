@@ -145,10 +145,12 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
     RTL_DFSL.build_data_format()
     SL1.build_data_format()
-    if stationNum == 99:    #Dataformats that are common for all stations (E.g. UCM2PL)
+    if stationNum == -99:    #Dataformats that are common for all stations (E.g. UCM2PL)
         stationNum_internal = 0
     else:
         stationNum_internal = stationNum
+
+    print("stationNum_internal = ",stationNum_internal)
 
     tv_format_df = SL1.getBitFieldWord(tvformat, station_id_to_name(stationNum_internal))
     for object in tv_format_df:
@@ -201,7 +203,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                     results = local_sl1[0].compare_bitwordvalue(
                         local_sl2[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
-                    if stationNum != 99:
+                    if stationNum != -99:
                         print("\nSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID)
                     else:
                         print("\nSL candidate ", this_candidate, ":\t",tvformat)
@@ -518,7 +520,7 @@ def timebased_lineup(observed_events, observed_time, num_events_to_process, n_po
 
 
 def station_name_to_id(station_id=""):
-    switcher = {"INN": 0, "MID": 1, "OUT": 2, "EXT": 3}
+    switcher = {"INN": 0, "MID": 1, "OUT": 2, "EXT": 3, "NONE" : -99}
     return switcher.get(station_id, "Invalid station")
 
 
