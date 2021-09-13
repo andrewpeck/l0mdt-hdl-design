@@ -3,6 +3,7 @@
 --------------------------------------------------------------------------------
 -- original   : Eric Hazen
 --      v0.1  : Guillermo   :   added support for TAR
+--      v0.2  : Davide      :   CSF version
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -23,9 +24,9 @@ use shared_lib.detector_param_pkg.all;
 library project_lib;
 use project_lib.gldl_ult_tp_sim_pkg.all;
 
-package gldl_l0mdt_textio_pkg is
+package csf_textio_pkg is
 
-  procedure READ(L:inout LINE; VALUE : out input_mdt_rt);
+  procedure READ(L:inout LINE; HIT : out heg2sfhit_rt, SEED : out heg2sfslc_rt, EOF : out std_logic);
 
   procedure READ(L:inout LINE; VALUE : out input_slc_b_rt);
 
@@ -53,15 +54,29 @@ package gldl_l0mdt_textio_pkg is
 
 
 
-end gldl_l0mdt_textio_pkg;
+end csf_textio_pkg;
 
 
-package body gldl_l0mdt_textio_pkg is
+package body csf_textio_pkg is
 
   -----------------------------------------------
-  -- read TAR 
+  -- read CSF 
   -----------------------------------------------  
-  procedure READ(L:inout LINE; VALUE : out input_mdt_rt) is
+  procedure READ(L:inout LINE; HIT : out heg2sfhit_rt, SEED : out heg2sfslc_rt, EOF : out std_logic) is
+
+    variable hit_dv : integer;
+    variable hit_ml : integer;
+    variable hit_x  : integer;
+    variable hit_y  : integer;
+    variable hit_r  : integer;
+    variable slc_dv : integer;
+    variable slc_chamber_id : integer;
+    variable slc_chamber_ieta : integer;
+    variable slc_vec_pos : integer;
+    variable slc_vec_ang : integer;
+    variable slc_hewindow_pos : integer;
+    variable eof : integer;
+
     variable mdt_ToA  : integer;
     -- variable tdc_time     : integer;
     -- variable space        : string(8 downto 1);
@@ -92,89 +107,51 @@ package body gldl_l0mdt_textio_pkg is
   begin
     -- Event
     -- READ(L, event);
-    -- ToA
-    READ(L, mdt_ToA);
-    -- coarse_time
-    READ(L, mdt_time_coarse);
-    -- fine_time
-    READ(L, mdt_time_fine);
-    -- Local_Tube_Number
-    READ(L, tube_local);
-    -- Tube_Number 
-    READ(L, tube_global);
-    -- Tube_Layer < layer [0,7]
-    READ(L, tube_layer);
+    -- Hit Data Valid
+    READ(L, hit_dv);
+    -- Hit Multilayer
+    READ(L, hit_ml);
+    -- Hit Local X
+    READ(L, hit_x);
+    -- Hit Local Y
+    READ(L, hit_y);
+    -- Hit Radius
+    READ(L, hit_r);
+    -- SLC dv
+    READ(L, slc_dv);
     -- ChamberId < Chamber ID using L0MDT numbering scheme
-    READ(L, Chamber_id);
+    READ(L, slc_chamber_id);
     -- Chamber_iEta < iEta index of the chamber [0,7]. Based on 1st layer of tube.
-    READ(L, Chamber_ieta);
-    -- Station_Type < station ID Inner=0, middle, outer, extra
-    READ(L, i_station);
-    -- tube_z
-    READ(L, tube_z);
-    -- tube_rho
-    READ(L, tube_rho);
-    -- drift_time
-    READ(L, drift_time);
-    -- event
-    READ(L, event);
-    -- muonFixedId
-    READ(L, muonFixedId);
-    -- csm  
-    READ(L, csm);
-    -- mezz  
-    READ(L, mezz);
-    -- channel  
-    READ(L, channel);
-    -- t0     
-    READ(L, t0);
-    -- TOF   
-    READ(L, TOF);
+    READ(L, slc_chamber_ieta);
+    -- SLC vec_pos
+    READ(L, slc_vec_pos);
+    -- SLC vec_ang (mbar for csf)
+    READ(L, slc_vec_ang);
+    -- SLC HE window pos
+    READ(L, slc_hewindow_pos);
+    -- EOF
+    READ(L, file_eof);
     
-    READ(L, dummy_text,ok);
-    -- 
-    -- 
-    -- READ(L, tube_radius);
-    -- 
+    HIT := (
+      data_valid => std_logic(to_unsigned(hit_dv,1)),
+      mlayer => std_logic(to_unsigned(hit_ml,1)),
+      localx => to_unsigned(hit_x, HEG2SFHIT_LOCALX_LEN),
+      localy => to_unsigned(hit_y, HEG2SFHIT_LOCALY_LEN),
+      radius => to_unsigned(hit_r, HEG2SFHIT_RADIUS_LEN)
+    )
 
-    VALUE := (
-      ToA => to_unsigned(mdt_ToA,64),
-      Station => to_unsigned(i_Station,8),
-      Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-      tar => (  
-        tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-        layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-        chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-        time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
-        data_valid => '1'
-      ),
-      tdc => (
-        data_valid => '1',
-        tdc => (
-          chanid => to_unsigned(channel,TDC_CHANID_LEN),
-          edgemode => (others => '0'),
-          coarsetime => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN),
-          finetime => to_unsigned(mdt_time_fine,TDC_FINETIME_LEN),
-          pulsewidth => ( others => '0')
+    SEED := (
+      data_valid => std_logic(to_unsigned(slc_dv,1)),
+      mdtid => (
+        chamber_id => to_unsigned(slc_chamber_id, VEC_MDTID_CHAMBER_ID_LEN),
+        chamber_ieta => to_unsigned(slc_chamber_ieta, VEC_MDTID_CHAMBER_IETA_LEN)
         ),
-        csmid => to_unsigned( chamber_ieta, TDCPOLMUX2TAR_CSMID_LEN),
-        tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
-      )
-    );
+      vec_pos => to_unsigned(slc_vec_pos, UCM2HPS_VEC_POS_LEN),
+      vec_ang => to_unsigned(slc_vec_ang, UCM2HPS_VEC_ANG_LEN),
+      hewindow_pos => to_unsigned(slc_hewindow_pos, HEG2SFSLC_HEWINDOW_POS_LEN)
+    )
 
-    report "##### HIT : " & integer'image(mdt_ToA) &
-    " - " & integer'image(mdt_time_coarse) &
-    " - " & integer'image(mdt_time_fine) &
-    " - " & integer'image(tube_global) &
-    " - " & integer'image(tube_local) &
-    " - " & integer'image(tube_layer) &
-    " - " & integer'image(Chamber_id) &
-    " - " & integer'image(Chamber_ieta) &
-    " - " & integer'image(i_station);
-    -- " - " & c_station &
-    -- " - " & integer'image(tube_z) &
-    -- " - " & integer'image(tube_rho) &
-    -- " - " & integer'image(tube_radius);
+    EOF := std_logic(to_unsigned(file_eof, 1));
 
   end procedure;
 
