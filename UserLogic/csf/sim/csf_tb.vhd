@@ -17,12 +17,22 @@
 -- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
-LIBRARY IEEE, csf_lib, pt_lib;
-USE IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.STD_LOGIC_1164.ALL;
-USE IEEE.NUMERIC_STD.ALL;
-USE csf_lib.csf_pkg.ALL;
-USE pt_lib.pt_pkg.ALL;
+library ieee;
+  use ieee.std_logic_1164.ALL;
+  use ieee.numeric_std.ALL;
+
+library shared_lib;
+  use shared_lib.common_ieee_pkg.ALL;
+  use shared_lib.l0mdt_constants_pkg.ALL;
+  use shared_lib.l0mdt_dataformats_pkg.ALL;
+  use shared_lib.common_constants_pkg.ALL;
+  use shared_lib.common_types_pkg.ALL;
+  use shared_lib.config_pkg.ALL;
+  use shared_lib.detector_param_pkg.ALL;
+
+library csf_lib;
+  use csf_lib.csf_pkg.ALL;
+  use csf_lib.csf_custom_pkg.ALL;
 
 ENTITY csf_tb IS
     --  Port ( );
