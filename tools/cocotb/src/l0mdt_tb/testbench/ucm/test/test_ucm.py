@@ -108,6 +108,7 @@ def ucm_test(dut):
     master_tv_file                   = test_config.get_testvector_file_from_config(config)
     testvector_config                = config["testvectors"]
     slc_rx_ii                        = testvector_config["slc_rx_ii"]
+    ucm_latency                      = testvector_config["ucm_latency"]
     testvector_config_inputs         = testvector_config["inputs"]
     testvector_config_outputs        = testvector_config["outputs"]
     inputs_station_id= [["" for x in range(UcmPorts.get_input_interface_ports(y))]for y in range(UcmPorts.n_input_interfaces)]
@@ -288,7 +289,7 @@ def ucm_test(dut):
             f"ERROR Timed out waiting for events to send: {ex}"
         )
     dut._log.info("Sending finished!")
-
+    yield ClockCycles(dut.clock, ucm_latency) #UCM latency
 
     ##
     ## perform testvector comparison test
