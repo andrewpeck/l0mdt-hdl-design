@@ -120,7 +120,7 @@ def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
         return -1
 
 
-def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=0):
+def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
     """
     path = Path(filename)
     ok = path.exists() and path.is_file()
@@ -150,7 +150,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     else:
         stationNum_internal = stationNum
 
-    print("stationNum_internal = ",stationNum_internal)
 
     tv_format_df = SL1.getBitFieldWord(tvformat, station_id_to_name(stationNum_internal))
     for object in tv_format_df:
@@ -164,6 +163,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         if evt == e_idx:
             break
         else:
+            print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
                 #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=this_candidate):
@@ -204,17 +204,17 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
                         local_sl2[0], tolerances
                     )  # compare_bitfieldwordvalue returns list
                     if stationNum != -99:
-                        print("\nSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID)
+                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat,", Station:",stationID)
                     else:
-                        print("\nSL candidate ", this_candidate, ":\t",tvformat)
+                        print("\n\tSL candidate ", this_candidate, ":\t",tvformat)
 
                     if results[0]:
-                        cprint("The 2 BitFieldWords are identical ", "green")
-                        print(events_list[ievent].header.dump())
-                        print(tabulate(results[1], results[2], tablefmt="psql"))
+                        cprint("\tThe 2 BitFieldWords are identical ", "green")
+                        #print(events_list[ievent].header.dump())
+                        #print(tabulate(results[1], results[2], tablefmt="psql"))
                         pass_count = pass_count + 1
                     else:
-                        cprint("The 2 BitFieldWords differ", "red")
+                        cprint("\tThe 2 BitFieldWords differ", "red")
                         print(events_list[ievent].header.dump())
                         print(tabulate(results[1], results[2], tablefmt="psql"))
                         fail_count = fail_count + 1
@@ -242,7 +242,10 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
     df_data = pd.DataFrame(pp_comparison_list, columns = pd_columns_header)
     Path(output_path).mkdir(parents=True, exist_ok=True)
-    df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
+    if stationNum != -99:
+        df_file_name = output_path + "/DF_"+tvformat+"_"+stationID+".csv"
+    else:
+        df_file_name = output_path + "/DF_"+tvformat+".csv"
     df_data.to_csv(df_file_name)
     print("Saving Comparison data to %s " % df_file_name)
 
