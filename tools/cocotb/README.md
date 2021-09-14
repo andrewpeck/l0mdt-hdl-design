@@ -116,18 +116,27 @@ atexit.register(readline.write_history_file, f)
 # Installation and Setup
 <!-- <details> <summary> Expand </summary> -->
 
-If you have confirmed that you have `python3` on your machine, then the only
+If you have confirmed that you have `python3`, `Xilinx and Questa` tools on your machine, then following environment variables would need to be setup
+```bash
+#!/bin/bash
+export L0MDT_TESTVECTOR_DIR=<Test Vector Directory>
+export COCOTB_WORKAREA=${PWD}/l0mdt-hdl-design/tools/cocotb
+export XILINX_SIM_LIB=<Xilinx Vivado Compiled Libraries (Unisim)>
+```
+
+the only
 thing that you need to do to install all requirements for running the cocotb-based
 testbenches is to run,
 ```bash
-$ source setup_env.sh -c <XILINX SIMULATION LIBRARIES> -t <TEST VECTOR DIRECTORY>
+$ source setup_env.sh -l $XILINX_SIM_LIB -t $L0MDT_TESTVECTOR_DIR -x $XILINX_VIVADO
 (env) $
 ```
 The -c and -t options are optional and help set environment variables COMPONENTS_LIB_DIR and L0MDT_TESTVECTOR_DIR which point to Xilinx compiled libraries for Questa and directory location of testvectors. The environment variables `COMPONENTS_LIB_DIR` and `L0MDT_TESTVECTOR_DIR` can also be setup manually. Simulation library locations in UCI machines
 uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2019.2.1
 uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/
 
-If these environment variables are not defined then they should be manually defined in test JSON configuration file.
+You should make sure that you are using compatible branches for cocotb and TV, IPs etc, ie that the test vector tag uses the same DataFormat version that was used to generate and now read the test vectors, and the IPs also use the same DataFormat.
+
 
 `source.sh` will install all dependencies (cocotb, third-party packages, etc...).
 The installation
@@ -168,6 +177,17 @@ Commands:
 If you see the above help message after running the top-level "`tb`" command then
 you should be on your way to running the testbench infrastructure.
 
+## Run a test bench
+
+Run one of these commands from tools/cocotb:
+```bash
+tb run test_config/config_mtc.json
+tb run test_config/config_lsf.json
+tb run test_config/config_ptcalc.json
+tb run test_config/config_pl_mtc.json
+```
+
+
 ## The virtual environment is necessary for running the testbench
 In order to return back to the virtual environment for the cocotb testbenches,
 simply run,
@@ -185,7 +205,7 @@ If you wish to make a clean installation, simply delete the `env/` directory cre
 ran `setup_env.sh` and re-run the installation procedure,
 ```bash
 $ rm -rf env/
-$ source setup_env.sh  -c <XILINX SIMULATION LIBRARIES> -t <TEST VECTOR DIRECTORY>
+$ source setup_env.sh -l <XILINX_SIM_LIB> -t <L0MDT_TESTVECTOR_DIR> -x $XILINX_VIVADO
 (env) $ # everything is all fresh now
 ```
 <!-- </details> -->
