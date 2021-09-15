@@ -234,6 +234,7 @@ def CREATORTESTNAME_test(dut):
             tvformat=input_tvformats[n_ip_intf],
             n_ports = CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
+            station_ID=inputs_station_id[n_ip_intf],
             tv_type="value"
             ))
         for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
@@ -248,6 +249,7 @@ def CREATORTESTNAME_test(dut):
             tvformat=output_tvformats[n_op_intf],
             n_ports = CREATORCLASSNAMEPorts.get_output_interface_ports(n_op_intf),
             n_to_load=num_events_to_process,
+            station_ID=outputs_station_id[n_op_intf],
             tv_type="value"
             ))
         output_tv_list.append(single_interface_list)
@@ -275,6 +277,10 @@ def CREATORTESTNAME_test(dut):
         )
     dut._log.info("Sending finished!")
 
+
+    #Block Latency
+    yield ClockCycles(dut.clock, 100)
+    ##
 
     ##
     ## perform testvector comparison test
@@ -330,15 +336,16 @@ def CREATORTESTNAME_test(dut):
         field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS: "+ outputs_station_id[n_op_intf][0], "FAIL COUNT"])
     else:
         field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS ", "FAIL COUNT"])
+    field_fail_cnt.append(field_fail_count_i)
 
     events.results_summary(
         num_events_to_process,
         pass_count,
         fail_count,
-        UcmPorts.n_output_interfaces,
+        CREATORCLASSNAMEPorts.n_output_interfaces,
         field_fail_cnt_header,
         field_fail_cnt,
-        total_ports=UcmPorts.n_output_ports(UcmPorts)
+        total_ports=CREATORCLASSNAMEPorts.n_output_ports(CREATORCLASSNAMEPorts)
     )
 
     cocotb_result = {True: cocotb.result.TestSuccess, False: cocotb.result.TestFailure}[
