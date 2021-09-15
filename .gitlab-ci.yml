@@ -7,7 +7,7 @@ variables:
 include:
     - project: 'hog/Hog'
       file: '/hog.yml'
-      ref: 'Hog2021.2-5'
+      ref: 'Hog2021.2-7'
     # - local: '/.before_script.yml'
     - local: "/.user_jobs.yml"
     - local: '/.devel_to_master.yml'
@@ -19,6 +19,7 @@ include:
     # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
     # - local: '/Top/hal/gitlab-ci.yml'
     - local: '/Top/base_l0mdt/gitlab-ci.yml'
+    - local: '/Top/base_l0mdt_lsf_upt/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
@@ -40,11 +41,11 @@ include:
     #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ult/gitlab-ci.yml'
-    - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
+    # - local: '/Top/ull_ku15_b3a_ucm_mpl/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
     - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_csf_ptmpi/gitlab-ci.yml'
-    # - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_ku15_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_questa/gitlab-ci.yml'
     # - local: '/Top/ult_tp_lsf_xsim/gitlab-ci.yml'
     # - local: '/Top/ult_daq/gitlab-ci.yml'
@@ -52,9 +53,9 @@ include:
     #---------------------------------------------
     #         VU13 Projects
     #---------------------------------------------
-    - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
-    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
+    #- local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    # - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     # writer

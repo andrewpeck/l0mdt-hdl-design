@@ -2,7 +2,7 @@
 -- Joakim Olsson, UC Irvine
 -- joakim.olsson@cern.ch
 -- created: 2020-04-12
--- last update: 2021-05-21
+-- last update: 2021-08-27
 -- ===========================================================
 
 library ieee;
@@ -43,10 +43,11 @@ architecture behav of top_upt is
     signal ptcalc_ap_start  : std_logic;
     signal ptcalc_ap_ready  : std_logic;
     signal ptcalc_cnt       : std_logic_vector(2 downto 0):= (others => '0');
-    signal ptcalc_slc     : pl2ptcalc_rvt;
+    signal ptcalc_slc       : pl2ptcalc_rvt;
     signal ptcalc_segment_i : sf2ptcalc_rvt;
     signal ptcalc_segment_m : sf2ptcalc_rvt;
     signal ptcalc_segment_o : sf2ptcalc_rvt;
+    signal ptcalc_debug     : std_logic_vector(57 downto 0);
 
     constant ap_const_logic_1 : STD_LOGIC := '1';
     constant ap_const_logic_0 : STD_LOGIC := '0';
@@ -55,17 +56,18 @@ architecture behav of top_upt is
         port (
             ap_clk : in std_logic;
             ap_rst : in std_logic;
-            ap_start : in std_logic;
-            ap_done : out std_logic;
-            ap_idle : out std_logic;
-            ap_ready : out std_logic;
-            pl2ptcalc_v : in pl2ptcalc_rvt;
-            sf2ptcalc_inn_v : in sf2ptcalc_rvt;
-            sf2ptcalc_mid_v : in sf2ptcalc_rvt;
-            sf2ptcalc_out_v : in sf2ptcalc_rvt;
-            ptcalc2mtc_v : out ptcalc2mtc_rvt;
-            ptcalc2mtc_v_ap_vld : out std_logic;
-            is_C_side           : in std_logic
+            ap_start      : in std_logic;
+            ap_done       : out std_logic;
+            ap_idle       : out std_logic;
+            ap_ready      : out std_logic;
+            pl2ptcalc     : in pl2ptcalc_rvt;
+            sf2ptcalc_inn : in sf2ptcalc_rvt;
+            sf2ptcalc_mid : in sf2ptcalc_rvt;
+            sf2ptcalc_out : in sf2ptcalc_rvt;
+            ptcalc2mtc : out ptcalc2mtc_rvt;
+            ptcalc2mtc_ap_vld : out std_logic;
+            is_C_side           : in std_logic;
+            ptcalc_debug        : out std_logic_vector(57 downto 0)
             );
     end component;
 
@@ -80,13 +82,14 @@ begin
         ap_done         => ptcalc2mtc_done, -- hls control signal: probably not needed?
         --ap_idle => const_ap_idle, -- hls control signal: inverted ap_start
         ap_ready        => ptcalc_ap_ready, -- hls control signal: probably not needed?
-        pl2ptcalc_v     => ptcalc_slc,
-        sf2ptcalc_inn_v => ptcalc_segment_i,
-        sf2ptcalc_mid_v => ptcalc_segment_m,
-        sf2ptcalc_out_v => ptcalc_segment_o,
-        ptcalc2mtc_v    => ptcalc2mtc_data,
-        ptcalc2mtc_v_ap_vld => ptcalc2mtc_valid, -- hls control signal: probably not needed?
-        is_C_side           => ap_const_logic_1
+        pl2ptcalc       => ptcalc_slc,
+        sf2ptcalc_inn   => ptcalc_segment_i,
+        sf2ptcalc_mid   => ptcalc_segment_m,
+        sf2ptcalc_out   => ptcalc_segment_o,
+        ptcalc2mtc      => ptcalc2mtc_data,
+        ptcalc2mtc_ap_vld   => ptcalc2mtc_valid, -- hls control signal: probably not needed?
+        is_C_side           => ap_const_logic_1,
+        ptcalc_debug        => ptcalc_debug
         );
 
     hls_ap_ready: process(clk)

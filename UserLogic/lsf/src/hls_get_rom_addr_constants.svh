@@ -1,0 +1,9 @@
+localparam HALF_PI_MRAD='h188b;
+localparam ANGLE_MAX_HALF_MRAD='h7f;
+localparam ANGLE_BIN_CENTER_OFFSET_MRAD='h2;
+localparam ANGLE_RES_INV='h1;
+localparam LUT_ADDRESS_OFFSET='h643;
+localparam SF2PTCALC_HEG2SF_ANG_SHIFT='h2;
+localparam ROM_INDEX_WIDTH=3;
+localparam LUT_ADDR_WIDTH=12;
+localparam SF2PTCALC_LUTBIN_SHIFT='h2;

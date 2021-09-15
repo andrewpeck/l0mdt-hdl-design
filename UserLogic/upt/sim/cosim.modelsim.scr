@@ -23,45 +23,59 @@ if 0 {
     vdel -all
 }
 
-if {[file exist [file join /home/psundara/xilinx/compiled_libraries/v2019.1 modelsim.ini]]} {
-    vmap -c -modelsimini [file join /home/psundara/xilinx/compiled_libraries/v2019.1 modelsim.ini]
+if {[file exist [file join /home/psundara/xilinx/compiled_libraries/v2020.2 modelsim.ini]]} {
+    vmap -c -modelsimini [file join /home/psundara/xilinx/compiled_libraries/v2020.2 modelsim.ini]
 } else {
-    puts "ERROR: Please make sure the modelsim.ini is in the path /home/psundara/xilinx/compiled_libraries/v2019.1."
+    puts "ERROR: Please make sure the modelsim.ini is in the path /home/psundara/xilinx/compiled_libraries/v2020.2."
     exit -force
 }
 
 set TB ../tb
 set SRC ../src
-set PTCALC_HLS_IP ../src/hls_ip/hls_ptcalc_ap_ctrl/hdl/verilog/
+set PTCALC_HLS_IP ../../../l0mdt-hls/IPs/vu13p/hls_upt/hdl/verilog
 
 vlib work
 vmap work work
 
 vlog -sv -work work "glbl.v"
+vlog -sv -work work +incdir+../tb "$TB/dataflow_monitor.sv"
+vlog -sv -work work +incdir+$TB "$TB/df_process_interface.sv"
+vlog -sv -work work +incdir+$TB "$TB/nodf_module_interface.sv"
+vlog -sv -work work +incdir+$TB "$TB/dump_file_agent.sv"
+vlog -sv -work work +incdir+$TB "$TB/csv_file_dump.sv"
+vlog -sv -work work +incdir+$TB "$TB/sample_agent.sv"
+vlog -sv -work work +incdir+$TB "$TB/df_process_monitor.sv"
+vlog -sv -work work +incdir+$TB "$TB/nodf_module_monitor.sv"
+vlog -sv -work work +incdir+$TB "$TB/sample_manager.sv"
+vlog -sv -work work +incdir+$TB "$TB/df_fifo_interface.sv"
+vlog -sv -work work +incdir+$TB "$TB/df_fifo_monitor.sv"
+vlog -sv -work work +incdir+$TB "$TB/dataflow_monitor.sv"
 vlog -sv -work work "$TB/ptcalc_top.autotb.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_21ns_28s_49_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_26ns_31s_56_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_26s_30ns_55_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_72ns_53ns_141_5_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_22s_22s_44_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_28s_22s_49_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_28s_23s_57_2_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_16ns_26s_41_1_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_8s_15ns_22_1_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_17ns_28s_45_1_1.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_rsp_table_V.v"
 vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_eta_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_a_2s_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_p_2s_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_e_2s_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_a_3s_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_p_3s_table_V.v"
-vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_e_3s_table_V.v"
 vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_inv_table_2_V.v"
 vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_inv_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_30ns_24s_45_5_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_33ns_35ns_65_6_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_13s_13s_26_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_16ns_16ns_31_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_16s_26ns_42_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_19s_12s_31_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_21s_12s_33_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_22s_7ns_29_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_24s_12s_36_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_24s_13s_37_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_24s_15ns_39_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_mul_mul_28s_16ns_44_4_1.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_a_2s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_a_3s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_e_2s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_e_3s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_p_2s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_params_p_3s_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top_rsp_table_V.v"
+vlog -sv -work work "$PTCALC_HLS_IP/ptcalc_top.v"
 
-vsim -debugDB -t 10ps -voptargs="+acc"  -L work -L unisims_ver -L xpm apatb_ptcalc_top_top glbl -suppress 6630 -wlf ptcalc_top.wlf 
+vsim -debugDB -t 10ps -voptargs="+acc" +incdir+$TB  -L work -L unisims_ver -L xpm apatb_ptcalc_top_top -suppress 6630 -wlf ptcalc_top.wlf
 set WildcardFilter [lsearch -not -all -inline $WildcardFilter Parameter]
 add wave -r /*
 set StdArithNoWarnings 1

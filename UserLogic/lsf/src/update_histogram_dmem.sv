@@ -12,19 +12,20 @@
 //--------------------------------------------------------------------------------
 `timescale 1ns/1ps
 module update_histogram_dmem #(
-			 parameter RBINS=128
+			       parameter RBINS=128,
+			       parameter W_bin_number_a = 8
 			 )
   (
-        input 		   clk,
-        input 		   rst_n,
-      	input logic [7:0]  r_bin_V_TDATA,
-	input logic 	   r_bin_V_TVALID,
-	output logic 	   r_bin_V_TREADY,
-	input logic 	   enable_V,
-	output logic [6:0] local_max_rbin,
-	output logic [3:0] local_max_count,
-	output logic 	   local_max_vld,
-	input logic 	   reset_rbins
+        input 				  clk,
+        input 				  rst_n,
+	input logic [W_bin_number_a-1:0]  r_bin_V_TDATA,
+	input logic 			  r_bin_V_TVALID,
+	output logic 			  r_bin_V_TREADY,
+	input logic 			  enable_V,
+	output logic [W_bin_number_a-2:0] local_max_rbin,
+	output logic [3:0] 		  local_max_count,
+	output logic 			  local_max_vld,
+	input logic 			  reset_rbins
 );
 
    logic [6:0] 		   hist_acc_wraddr;
@@ -37,7 +38,6 @@ module update_histogram_dmem #(
    logic [3:0] 		   hist_acc_wrdata_d0;
    logic [3:0] 		   hist_acc_rd;
    logic [3:0] 		   hist_acc_rddata;
-   logic [3:0] 		   war_next_write;
 
    logic [7:0] 		   counter;
 
@@ -148,8 +148,8 @@ module update_histogram_dmem #(
 	     else
 	       begin
 
-		  hist_acc_wrdata       <=  1;
-		  r_val_V_TDATA         <=  1;
+		  hist_acc_wrdata       <=  0;
+		  r_val_V_TDATA         <=  0;
 	       end
 	     r_val_V_TVALID        <= r_bin_V_TVALID_d0;
 

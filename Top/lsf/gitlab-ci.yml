@@ -5,13 +5,18 @@ GEN:lsf:
       extends: .vars
       PROJECT_NAME: lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
-      
+
     tags:
       - normal-ops
       - hog
       - "2020.2"
-# SIM:example:
+# SIM:lsf
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: example
+#       PROJECT_NAME: lsf
+#    allow_failure: false
+#    tags:
+#      - questa
+#      - hog
+#      - "2020.2"
