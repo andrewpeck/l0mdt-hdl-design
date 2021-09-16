@@ -4,6 +4,7 @@ from pathlib import Path
 
 from l0mdt_tb.utils import utils
 import cocotb
+import cocotb.binary as Binary
 import TVReader.tv_reader_tools as tvtools
 from DataFormats.data_format import DataFormat
 from TVDataFormat.bit_stream import BitFieldWord
@@ -14,6 +15,7 @@ from termcolor import colored, cprint
 
 import logging
 import logging.config
+
 
 
 def timing_file_from_data_filename(data_file):
@@ -157,7 +159,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
             tv_format_failure_cnt[field.name] = 0
 
 
-
     # for SL1, RTL1 in zip(events_list[e_idx].DF_SL,RTL_DF_list[e_idx].DF_SL) :
     for ievent in range(len(events_list)):  # range(total_transactions):
         if evt == e_idx:
@@ -179,7 +180,11 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     tv_format_val = RTL_DFSL.getBitFieldWord(tvformat, RTL_DFSL.suffix[stationNum_internal])
                     if evt + 1 <= len(rtl_tv[this_candidate]):
-                        rtl_tv_i = rtl_tv[this_candidate][evt]
+                        if('x' in str(rtl_tv[this_candidate][evt])):
+                            print("Certain or all Bitfields in dataformat ",tvformat," are unknown: ", rtl_tv[this_candidate][evt])
+                            rtl_tv_i =  0
+                        else:
+                            rtl_tv_i = rtl_tv[this_candidate][evt]
                     else:
                         rtl_tv_i = 0
 
