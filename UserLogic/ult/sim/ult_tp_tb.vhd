@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Test Bench Module for Logic Trigger Path
@@ -350,7 +350,7 @@ begin
 
     MDT : entity project_lib.ult_tb_reader_tdc 
     generic map (
-      IN_HIT_FILE => IN_HIT_FILE
+      IN_HIT_FILE => "csm_A3_Barrel.csv"--IN_HIT_FILE
     )
     port map(
       clk => clk,
@@ -368,7 +368,7 @@ begin
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
-    IN_SLC_FILE => IN_SLC_FILE
+    IN_SLC_FILE => "slc_A3_Barrel.csv"--IN_SLC_FILE
   )
   port map(
     clk => clk,

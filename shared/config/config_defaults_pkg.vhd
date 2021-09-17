@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --
 --  Project: ATLAS L0MDT Trigger
 --  Module: configuration file
@@ -177,7 +177,7 @@ end package body cfg_global_default_pkg;
 -- --------------------------------------------------------------------------------
 -- --  UMass , Physics Department
 -- --  Guillermo Loustau de Linares
--- --  gloustau@cern.ch
+-- --  guillermo.ldl@cern.ch
 -- --
 -- --  Project: ATLAS L0MDT Trigger
 -- --  Module: project configurations customization

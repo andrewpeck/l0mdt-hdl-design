@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --  
 --  Project: ATLAS L0MDT Trigger 
 --  Module: Detector function to get the chamber depending on the global tube number
