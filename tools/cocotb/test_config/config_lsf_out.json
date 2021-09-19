@@ -12,7 +12,7 @@
             "lsf_compute_results": 21
         },
         "run_config": {
-            "output_directory_name": "lsf",
+            "output_directory_name": "lsf_out",
             "test_location": "src/l0mdt_tb/testbench/lsf/test",
             "expected_is_observed": false,
             "components_lib_dir": "${XILINX_LIB_DIR}"

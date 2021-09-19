@@ -311,6 +311,7 @@ def ucm_test(dut):
             cocotb.log.info(
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
+
         recvd_events_intf.append(recvd_events)
 
     ##

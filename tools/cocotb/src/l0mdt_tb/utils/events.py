@@ -55,9 +55,14 @@ def timing_info_gen(filename):
             yield line
 
 
-def _event_belongs_to_sectorID(DF, sectorID=3, icand=0):
+def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 
-    sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
+    station_num = station_name_to_id(station_ID)
+    print(" Station_ID =", station_ID," station_num = ",station_num)
+    if(station_num == -99):
+        sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
+    else:
+        sl_trailer = DF[station_num].getBitFieldWord("SL_TRAILER", "")
     fiber_id = sl_trailer[0].get_field_bits("fiberid")
     evt_sector_id = fiber_id + 1
 
@@ -82,44 +87,80 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
     sl_trailer = []
     bf_hit_list = []
     hit_list = []
+
     for DF in DF_list:
         bf_list.append(DF.getBitFieldWord(bitfieldname, station_id))
-        hit_list.clear()
-        for DF_hit in DF.av_HEG2SFHIT[0]:
-            hit_list.append(DF_hit)
 
-        bf_hit_list.append(hit_list)
+
         # bf_list.append(tv_reader_pkl.getBitFieldWord(DF, bitfieldname))
         #    print("KEY=",bitfieldname)
+    print("BIT FIELDWORD LIST LEN = ",len(bf_list)," candidate =",candidate, "bitfieldname=",bitfieldname)
     if candidate < len(bf_list):
         for bf in bf_list[candidate]:
+            print(" bW val =", bf.get_bitwordvalue())
             return bf.get_bitwordvalue()
     else:
         # print("ERROR.. candidate not present in RAW TV file")
         return -1
 
 
-def get_bitfield_list(DF_list, bitfieldname, candidate=0, station_id=""):
-    bf_list = []
-    sl_trailer = []
-    bf_hit_list = []
-    candidate_id = 0
-    for DF in DF_list:
-        candidate_id += 1
-        bf_list.append(DF.getBitFieldWord(bitfieldname, station_id))
-        hit_list = []
-        for DF_hit in DF.av_HEG2SFHIT[station_name_to_id(station_id)]:
+def get_bitfield_list(event, bitfieldname, candidate=0, station_id=""):
+    bf_list        = []
+    sl_trailer     = []
+    bf_hit_list    = []
+    candidate_id   = 0
+    station_num    = station_name_to_id(station_id)
+    if bitfieldname == 'HEG2SFHIT':
+        DF_list = event.DF_SL
+    elif bitfieldname == 'TAR2HPS': #In this case candidate is actually chamber number
+        DF_list = event.DF_MDT
+
+    hit_list = []
+    print("Candidate=",candidate," station_num=",station_num," DF Length = ",len(DF_list), "Total Chambers = ", DF_list[0].get_nMDT(station_num), " LENGTH = ", len(DF_list[station_num].av_TAR2HPS))
+
+    if bitfieldname == 'HEG2SFHIT': #In this case candidate is thread
+        for DF_hit in DF_list[candidate].av_HEG2SFHIT[station_num]:
             hit_list.append(DF_hit.bitwordvalue)
 
-        bf_hit_list.append(hit_list)
-        # print("PRINT LIST OF HITS FOR CANDIDATE",candidate_id,"station_id",station_id)
-        # print(hit_list)
+    elif bitfieldname == 'TAR2HPS': #In this case candidate is actually chamber number
+        if candidate < len(DF_list[station_num].av_TAR2HPS):  #Check with Anyes, how to determine number of chambers????
+            for DF_hit in DF_list[station_num].av_TAR2HPS[candidate]:
+                hit_list.append(DF_hit.bitwordvalue)
+        if len(hit_list) == 0:
+            hit_list = [0]
 
-    if candidate < len(bf_list):
-        return bf_hit_list[candidate]
-    else:
-        # print("ERROR.. candidate not present in RAW TV file")
-        return -1
+    print("Candidate=",candidate," HIT LIST = ",hit_list)
+    #bf_hit_list.append(hit_list)
+    return hit_list
+
+
+    #elif bitfieldname == 'TAR2HPS': #In this case candidate is actually chamber number
+    #    for DF_hit in DF.av_TAR2HPS[station_name_to_id(station_id)]:
+    #        print ("AV_TAR2HPS = ", DF_hit)
+    #        hit_list.append(DF_hit.bitwordvalue)
+
+ #   for DF in DF_list:
+ #       candidate_id += 1
+ #       bf_list.append(DF.getBitFieldWord(bitfieldname, station_id))
+ #       hit_list = []
+ #       if bitfieldname == 'HEG2SFHIT':
+ #           for DF_hit in DF.av_HEG2SFHIT[station_name_to_id(station_id)]:
+ #               hit_list.append(DF_hit.bitwordvalue)
+ #       elif bitfieldname == 'TAR2HPS': #In this case candidate is actually chamber number
+ #           for DF_hit in DF.av_TAR2HPS[station_name_to_id(station_id)]:
+ #               print ("AV_TAR2HPS = ", DF_hit)
+ #               hit_list.append(DF_hit.bitwordvalue)
+
+
+
+        # print("PRINT LIST OF HITS FOR CANDIDATE",candidate_id,"station_id",station_id)
+
+
+   # if candidate < len(bf_list):
+   #     return bf_hit_list[candidate]
+   # else:
+   #     # print("ERROR.. candidate not present in RAW TV file")
+   #     return -1
 
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
@@ -215,8 +256,8 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     if results[0]:
                         cprint("\tThe 2 BitFieldWords are identical ", "green")
-                        #print(events_list[ievent].header.dump())
-                        #print(tabulate(results[1], results[2], tablefmt="psql"))
+                        print(events_list[ievent].header.dump())
+                        print(tabulate(results[1], results[2], tablefmt="psql"))
                         pass_count = pass_count + 1
                     else:
                         cprint("\tThe 2 BitFieldWords differ", "red")
@@ -297,35 +338,28 @@ def parse_tvlist(
         if b3_events_i < total_transactions:
             event_found_for_port_interface = 0
             for my_port in range(n_ports):
-                if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port):
+                print("tvformat = ",tvformat, " my_port = ", my_port)
+                if station_ID == [""]:
+                        this_station_ID = ""
+                else:
+                    this_station_ID = station_ID[my_port]
+
+                if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port, station_ID=this_station_ID):
                     #print ("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
                     #tvtools.dump_event(events_list,ievent)
                     #print(events_list[ievent].DF_SL[my_port].print_blocks())
                     event_found_for_port_interface = 1
-                    if station_ID == [""]:
-                        this_station_ID = ""
-                    else:
-                        this_station_ID = station_ID[my_port]
 
-                    # print("Transaction %d, Candidate %d total_transactions %d tvformat=%s" %(ievent,my_port,total_transactions,tvformat))
-                    if this_station_ID == "":
-                        if tv_type == "list":
-                            tv[my_port][b3_events_i] = get_bitfield_list(
-                                events_list[ievent].DF_SL, tvformat, my_port, this_station_ID
-                            )
-                        else:
-                            tv[my_port][b3_events_i] = get_bitfield_element(
-                                events_list[ievent].DF_SL, tvformat, my_port, this_station_ID
-                            )
+                    print("Transaction %d, Candidate %d total_transactions %d tvformat=%s tv_type=%s" %(ievent,my_port,total_transactions,tvformat,tv_type))
+
+                    if tv_type == "list":
+                        tv[my_port][b3_events_i] = get_bitfield_list(
+                            events_list[ievent], tvformat, my_port, this_station_ID
+                        )
                     else:
-                        if tv_type == "list":
-                            tv[my_port][b3_events_i] = get_bitfield_list(
-                                events_list[ievent].DF_SL, tvformat, 0, this_station_ID
-                            )
-                        else:
-                            tv[my_port][b3_events_i] = get_bitfield_element(
-                                events_list[ievent].DF_SL, tvformat, 0, this_station_ID
-                            )
+                        tv[my_port][b3_events_i] = get_bitfield_element(
+                        events_list[ievent].DF_SL, tvformat, my_port, this_station_ID
+                        )
                     # print("PARSING FOR TVFORMAT = ",tvformat," tv[",my_port,"][",b3_events_i,"]=",tv[my_port][b3_events_i])
             if event_found_for_port_interface:
                 b3_events_i = b3_events_i + 1
@@ -444,7 +478,7 @@ def parse_file_for_testvectors_list(
 
 def modify_tv(tv, ii):
     tv_out = []
-
+    print ("modify_tv: ",tv)
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
@@ -461,8 +495,10 @@ def modify_tv(tv, ii):
 
 def flatten_list(tv):
     # tv_out = []
+    print ("flatten_list tv =" , tv)
     tv_flat = [y for x in tv for y in x]
     tv_out = []
+    print ("flatten_list tv_FLAT =" , tv_flat)
     tv_out.append(tv_flat)
     return tv_out
 
@@ -528,7 +564,7 @@ def timebased_lineup(observed_events, observed_time, num_events_to_process, n_po
 
 
 def station_name_to_id(station_id=""):
-    switcher = {"INN": 0, "MID": 1, "OUT": 2, "EXT": 3, "NONE" : -99}
+    switcher = {"INN": 0, "MID": 1, "OUT": 2, "EXT": 3, "NONE" : -99, "":-99}
     return switcher.get(station_id, "Invalid station")
 
 
