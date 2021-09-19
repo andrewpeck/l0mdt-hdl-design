@@ -34,6 +34,7 @@ SRCDIR = $(PWD)/../../../../../../../
 SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 USERLOGIC = $(SRCDIR)/UserLogic
+HLS       = $(SRCDIR)/l0mdt-hls
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
@@ -55,7 +56,28 @@ ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
-IP_REPO   = $(SRCDIR)/l0mdt-hls/IPs/vu13p
+IP_REPO   = $(HLS)/IPs/vu13p
+LSFSIMDIR = $(USERLOGIC)/lsf/sim
+
+LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
+GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
+GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
+GET_THETA_OFFSET_HLS_IP = $(IP_REPO)/hls_get_theta_offset/hdl/verilog
+GET_TRIG_ADDR_OFFSET_HLS_IP = $(IP_REPO)/hls_get_trig_addr_offsets/hdl/verilog
+COMPUTE_LE_RESULTS_HLS_IP = $(IP_REPO)/hls_ComputeLegendreResults/hdl/verilog
+HISTOGRAM_BIN_ACCUMULATION_HLS_IP = $(IP_REPO)/hls_histogram_bin_accumulation/hdl/verilog
+UPDATE_MAX_RBIN_HLS_IP = $(IP_REPO)/hls_update_max_rbin/hdl/verilog
+UPDATE_HISTOGRAM_HLS_IP = $(IP_REPO)/hls_update_histogram/hdl/verilog
+COMPUTE_RBINS_HLS_IP = $(IP_REPO)/hls_compute_r_bins/hdl/verilog
+SPYBUFFER_SRC = $(SHAREDDIR)/SpyBuffer
+# PLL_IP = $(LSFDIR)/xilinx_ip/v2019.1/pll_inst
+FIND_MAX_BIN_HLS_IP = $(IP_REPO)/hls_find_max_bin/hdl/verilog
+GET_LEGENDRE_SEGMENT_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_endcap/hdl/verilog
+GET_LEGENDRE_SEGMENT_BARREL_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_barrel/hdl/verilog
+CALC_LE_R_OFFSET_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset/hdl/verilog
+CALC_LE_R_OFFSET_BARREL_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset_barrel/hdl/verilog
+LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
+HISTMEM_128x4 = $(LSFDIR)/../sim
 
 # Verilog source files
 VERILOG_SOURCES = \
@@ -72,29 +94,6 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
     $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_eta_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_2_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30ns_24s_45_5_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_33ns_35ns_65_6_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_13s_13s_26_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16s_26ns_42_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_12s_36_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_13s_37_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_28s_16ns_44_4_1.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_2s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_3s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_2s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_3s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_2s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_3s_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_table_V.v \
-    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
     $(PWD)/ptcalc_top_tb.v \
     $(PWD)/$(TESTBENCH_TOPLEVEL).v
 
@@ -103,8 +102,7 @@ VERILOG_SOURCES = \
 VHDL_SOURCES += \
 	$(USERLOGIC)/upt/top_upt.vhd
 
-VHDL_SOURCES_upt_lib = \
-	$(USERLOGIC)/upt/top_upt.vhd
+
 
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd \

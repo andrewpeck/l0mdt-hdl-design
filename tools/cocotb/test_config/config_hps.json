@@ -1,0 +1,44 @@
+{
+    "testbench_config": {
+        "test_name": "hps",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 3.125,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "hps",
+            "test_location": "src/l0mdt_tb/testbench/hps/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+                    "ucm2hps_ii"   : 250,
+		    "ucm2hps_setup": 10,
+		    "station_ID": ["INN","INN","INN"]
+                },
+                {
+                    "tv_format": "TAR2HPS",
+                    "ports": 6,
+		    "station_ID": ["INN","INN","INN","INN","INN","INN"],
+                    "tv_type": "list"
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 3,
+		    "station_ID": ["INN","INN","INN"]
+                }
+            ]
+        }
+    }
+}

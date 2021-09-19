@@ -34,6 +34,8 @@ SRCDIR = $(PWD)/../../../../../../../
 SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 USERLOGIC = $(SRCDIR)/UserLogic
+HLS       = $(SRCDIR)/l0mdt-hls
+
 
 
 # Specify TopLevel language for cocotb
@@ -57,6 +59,10 @@ UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
 IP_REPO   = $(SRCDIR)/IP_repository/vu13p
+IP_REPO   = $(HLS)/IPs/vu13p
+LSFSIMDIR = $(USERLOGIC)/lsf/sim
+
+
 
 LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
 GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
@@ -96,37 +102,12 @@ VERILOG_SOURCES = \
 
 # VHDL source files
 VHDL_SOURCES = \
-    $(UCMDIR)/ucm_prepro.vhd \
-    $(UCMDIR)/ucm_cvp_b_slope.vhd \
-    $(UCMDIR)/ucm_cvp_z_calc.vhd \
     $(PWD)/ucm_top_tb.vhd
 
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
 
-VHDL_SOURCES_ucm_lib = \
-    $(PWD)/prj_cfg.vhd \
-    $(SHAREDDIR)/config/config_pkg.vhd 	\
-    $(UCMDIR)/../pkg/ucm_pkg.vhd \
-    $(UCMDIR)/../pkg/ucm_function_pkg.vhd \
-    $(UCMDIR)/ucm_supervisor.vhd \
-    $(UCMDIR)/ucm_ctrl_main.vhd \
-    $(UCMDIR)/ucm_ctrl_pam.vhd \
-    $(UCMDIR)/ucm_ctrl_top.vhd \
-    $(UCMDIR)/ucm_csw.vhd \
-    $(UCMDIR)/ucm_pam_csw.vhd \
-    $(UCMDIR)/ucm_ieta_calc.vhd \
-    $(UCMDIR)/ucm_rpc_R_comp.vhd \
-    $(UCMDIR)/ucm_rpc_R_comp_top.vhd \
-    $(UCMDIR)/ucm_mdt_R_comp.vhd \
-    $(UCMDIR)/ucm_mdt_R_comp_top.vhd \
-    $(UCMDIR)/ucm_cde.vhd \
-    $(UCMDIR)/ucm_cvp_b_slope.vhd \
-    $(UCMDIR)/ucm_cvp_z_calc.vhd \
-    $(UCMDIR)/ucm_cvp_phimod.vhd \
-    $(UCMDIR)/ucm_cvp.vhd \
-    $(UCMDIR)/ucm_prepro.vhd \
-    $(UCMDIR)/ucm.vhd
+
 
 
 

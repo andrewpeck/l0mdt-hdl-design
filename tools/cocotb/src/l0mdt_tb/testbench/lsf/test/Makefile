@@ -99,36 +99,7 @@ VERILOG_SOURCES = \
     $(SBDIR)/aFifo/sync_r2w.v \
     $(SBDIR)/aFifo/sync_w2r.v \
     $(SBDIR)/aFifo/wptr_full.v \
-    $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_0.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_1.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_2.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_3.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_4.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_5.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_6.v \
-    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_7.v \
-    $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
-    $(LSFSIMDIR)/histogram_memory_128x4.v \
-    $(SRC)/compute_r_bins.sv \
-    $(SRC)/get_rom_addr.sv \
-    $(SRC)/update_histogram_dmem.sv \
-    $(SRC)/update_histogram_reg_2clk.sv \
-    $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_15ns_33_4_1.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_26ns_18ns_32_4_1.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_lut_divider_barrel_V.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_18s_35_4_1.v \
-    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel.v \
-    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mac_muladd_18s_15s_33s_34_4_1.v \
-    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mul_mul_18s_15s_33_4_1.v \
-    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel.v \
-    $(LOAD_LE_REFPOS)/load_LE_refPos_lut_mdt_ref_pos_V.v \
-    $(LOAD_LE_REFPOS)/load_LE_refPos.v \
-    $(LSFDIR)/legendreEngine.sv \
-    $(LSFDIR)/legendreEngine_2clk.sv \
-    $(LSFDIR)/lsf_spybuffer_wrapper.sv
+    $(SBDIR)/asym_ram_tdp_read_first.v
 
 
 # VHDL source files
@@ -143,14 +114,6 @@ VHDL_SOURCES_project_lib = \
 
 include ../../../creator/Makefile_vhdl_lib
 
-# VHDL_SOURCES_shared_lib = \
-# 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
-# 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
-# 	$(DFDIR)/l0mdt_constants_pkg.vhd \
-# 	$(DFDIR)/l0mdt_dataformats_pkg.vhd \
-# 	$(SHAREDDIR)/types/common_constants_pkg.vhd \
-# 	$(SHAREDDIR)/types/common_types_pkg.vhd \
-# 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
 
 $(info *** VHDL_SOURCES=$(VHDL_SOURCES)###  $(VHDL_SOURCES))

@@ -138,17 +138,50 @@ function update_makefile_questa() {
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += ctrl_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += apbus_lib '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += vamc_lib '  $(find ./env -name Makefile.questa)
-    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
+
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += csf_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += ptc_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += lsf_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += upt_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += hp_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += heg_roi_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += heg_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += hps_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += ucm_lib '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += mpl_lib '  $(find ./env -name Makefile.questa)
+    #sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += $(foreach SOURCES_VAR, $(filter VHDL_SOURCES_%, $(.VARIABLES)), $(subst VHDL_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
 
 
-    sed -i '/\\t\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" >> $@/ a endif'  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VERILOG_SOURCES),) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVERILOG_LIB            += $(foreach SOURCES_VAR, $(filter VERILOG_SOURCES_%, $(.VARIABLES)), $(subst VERILOG_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
 
 
-    sed -i '/vcom -work / i \\tfor SOURCES_VAR in $(VHDL_LIB); do \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work / i \\t\techo \"vlib $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work / i \\t\techo \"vmap $$SOURCES_VAR $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
-    sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
+
+
+
+    #Appending  SO COMMANDS ARE REVERSED IN SED
+    #COMPILATION COMMANDS FOR VLIB, VMAP OF LIBRARIES and COMPILING VERILOG LIBRARRIES,
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a endif' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vlog -work $(SOURCES_VAR) $(VLOG_ARGS) $(EXTRA_ARGS) $(call to_tcl_path,$(VERILOG_SOURCES_$(SOURCES_VAR)))" >> $@ ;)' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t$(foreach SOURCES_VAR, $(VERILOG_LIB), \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a ifneq ($(VERILOG_SOURCES),)' $(find ./env -name Makefile.questa)
+
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\tdone' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vmap $$SOURCES_VAR $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vlib $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\tfor SOURCES_VAR in $(VHDL_LIB); do \\' $(find ./env -name Makefile.questa)  #Create all libraries in project, VHDL_LIB has all of them
+
+    ###################
+
+
+    ###VHDL_LIB
+
+#    sed -i '/vcom -work / i \\tfor SOURCES_VAR in $(VHDL_LIB); do \\'  $(find ./env -name Makefile.questa)
+#    sed -i '/vcom -work / i \\t\techo \"vlib $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+#    sed -i '/vcom -work / i \\t\techo \"vmap $$SOURCES_VAR $(SIM_BUILD)\/$$SOURCES_VAR " >> $@ ; \\'  $(find ./env -name Makefile.questa)
+#    sed -i '/vcom -work / i \\t\tdone'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work / i \\t$(foreach SOURCES_VAR, $(VHDL_LIB), \\'  $(find ./env -name Makefile.questa)
     sed -i '/vcom -work $(RTL_LIBRARY)/ i \\t\techo "vcom -work $(SOURCES_VAR) $(VCOM_ARGS) $(call to_tcl_path,$(VHDL_SOURCES_$(SOURCES_VAR)))" >> $@ ;)'  $(find ./env -name Makefile.questa)
     return 0

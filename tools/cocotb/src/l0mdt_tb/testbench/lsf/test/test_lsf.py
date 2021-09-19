@@ -249,6 +249,7 @@ def lsf_test(dut):
             for io in range(LsfPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay[io])
         elif(n_ip_intf == 1):
+            print("Hits",single_interface_list)
             for io in range (len(single_interface_list)):
                 hits_in_event      = len(single_interface_list[io])
                 hits_zero_padding  = heg2sfslc_ii - heg2sfhit_ii*hits_in_event - loadlut_setup;
@@ -256,8 +257,7 @@ def lsf_test(dut):
                 #add zeros
                 single_interface_list_ii_delay_tmp2 = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp,'begin',loadlut_setup)
                 single_interface_list_ii_delay      = events.modify_tv_padzeroes(single_interface_list_ii_delay_tmp2,'end',hits_zero_padding)
-                #print("Hits",single_interface_list_ii_delay)
-            single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
+                single_interface_list_ii_delay_flat = events.flatten_list(single_interface_list_ii_delay)
             for io in range(LsfPorts.get_input_interface_ports(n_ip_intf)):  #Outputs):
                 input_tv_list.append(single_interface_list_ii_delay_flat[io])
         elif(n_ip_intf == 2) : #Control signals, i_eof

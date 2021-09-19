@@ -36,7 +36,7 @@ SRCDIR = $(PWD)/../../../../../../../
 SBDIR = $(SRCDIR)/shared/SpyBuffer/src
 IPDIR = $(SRCDIR)/IP
 USERLOGIC = $(SRCDIR)/UserLogic
-
+HLS       = $(SRCDIR)/l0mdt-hls
 
 # Specify TopLevel language for cocotb
 TOPLEVEL_LANG=verilog
@@ -58,7 +58,9 @@ ULTDIR    = $(USERLOGIC)/ult/src
 UPTDIR    = $(USERLOGIC)/upt/src
 SHAREDDIR = $(SRCDIR)/shared
 HAL       = $(SRCDIR)/HAL
-IP_REPO   = $(SRCDIR)/IP_repository/vu13p
+IP_REPO   = $(HLS)/IPs/vu13p
+LSFSIMDIR = $(USERLOGIC)/lsf/sim
+
 
 LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
 GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
@@ -105,13 +107,6 @@ VHDL_SOURCES = \
 VHDL_SOURCES_project_lib = \
     $(PWD)/prj_cfg.vhd
 
-VHDL_SOURCES_ptc_lib = \
-    $(MPTDIR)/../pkg/pt_pkg.vhd \
-    $(MPTDIR)/../pkg/pt_params_pkg.vhd \
-    $(MPTDIR)/sagitta_calculator.vhd \
-    $(MPTDIR)/eta_calculator.vhd \
-    $(MPTDIR)/pt.vhd \
-    $(MPTDIR)/segment_selector.vhd
 
 include ../../../creator/Makefile_vhdl_lib
 
