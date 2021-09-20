@@ -58,7 +58,6 @@ def timing_info_gen(filename):
 def _event_belongs_to_sectorID(DF, sectorID=3, icand=0, station_ID=""):
 
     station_num = station_name_to_id(station_ID)
-    print(" Station_ID =", station_ID," station_num = ",station_num)
     if(station_num == -99):
         sl_trailer = DF[icand].getBitFieldWord("SL_TRAILER", "")
     else:
@@ -97,7 +96,6 @@ def get_bitfield_element(DF_list, bitfieldname, candidate=0, station_id=""):
     print("BIT FIELDWORD LIST LEN = ",len(bf_list)," candidate =",candidate, "bitfieldname=",bitfieldname)
     if candidate < len(bf_list):
         for bf in bf_list[candidate]:
-            print(" bW val =", bf.get_bitwordvalue())
             return bf.get_bitwordvalue()
     else:
         # print("ERROR.. candidate not present in RAW TV file")
@@ -350,7 +348,7 @@ def parse_tvlist(
                     #print(events_list[ievent].DF_SL[my_port].print_blocks())
                     event_found_for_port_interface = 1
 
-                    print("Transaction %d, Candidate %d total_transactions %d tvformat=%s tv_type=%s" %(ievent,my_port,total_transactions,tvformat,tv_type))
+                    #print("Transaction %d, Candidate %d total_transactions %d tvformat=%s tv_type=%s" %(ievent,my_port,total_transactions,tvformat,tv_type))
 
                     if tv_type == "list":
                         tv[my_port][b3_events_i] = get_bitfield_list(
@@ -478,7 +476,6 @@ def parse_file_for_testvectors_list(
 
 def modify_tv(tv, ii):
     tv_out = []
-    print ("modify_tv: ",tv)
     for io in range(len(tv)):
         tv_port = []
         tv_index = 0
