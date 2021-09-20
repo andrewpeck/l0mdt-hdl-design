@@ -5,8 +5,10 @@
 # shared/sim/pkg/gldl_textio_pkg.vhd
 
 #---------------------------------
-# Simulation files
+# Simulation functions
 #---------------------------------
+shared/functions/sim/vhdl_tb_utils_pkg.vhd
+shared/functions/sim/vhdl_textio_csv_pkg.vhd
 
 #---------------------------------
 # Simulation input vectors
