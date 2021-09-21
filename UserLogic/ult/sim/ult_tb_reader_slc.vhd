@@ -177,30 +177,30 @@ begin
             pT_thr      := csv_file.read_integer;
             Charge      := csv_file.read_integer;
             Coincidence := csv_file.read_integer;
-            z_RPC0      := abs(csv_file.read_integer);
-            z_RPC1      := abs(csv_file.read_integer);
-            z_RPC2      := abs(csv_file.read_integer);
-            z_RPC3      := abs(csv_file.read_integer);
+            z_RPC0      := csv_file.read_integer;
+            z_RPC1      := csv_file.read_integer;
+            z_RPC2      := csv_file.read_integer;
+            z_RPC3      := csv_file.read_integer;
             event       := csv_file.read_integer;
 
             -- puts("BCID = ", BCID);
             -- puts("ToA = ", ToA);
             puts("##### SLC( " & integer'image(row_counter) &
             " ): " & integer'image(BCID) &
-            " - " & integer'image(ToA) &
-            " - " & integer'image(nTC) &
-            " - " & integer'image(TC_sent) &
-            " - " & integer'image(TC_id) &
-            " - " & real'image(Eta) &
-            " - " & real'image(Phi) &
-            " - " & integer'image(pT_thr) &
-            " - " & integer'image(Charge) &
-            " - " & integer'image(Coincidence) &
-            " - " & integer'image(z_RPC0) &
-            " - " & integer'image(z_RPC1) &
-            " - " & integer'image(z_RPC2) &
-            " - " & integer'image(z_RPC3) &
-            " - " & integer'image(event));
+            " : " & integer'image(ToA) &
+            " : " & integer'image(nTC) &
+            " : " & integer'image(TC_sent) &
+            " : " & integer'image(TC_id) &
+            " : " & real'image(Eta) &
+            " : " & real'image(Phi) &
+            " : " & integer'image(pT_thr) &
+            " : " & integer'image(Charge) &
+            " : " & integer'image(Coincidence) &
+            " : " & integer'image(z_RPC0) &
+            " : " & integer'image(z_RPC1) &
+            " : " & integer'image(z_RPC2) &
+            " : " & integer'image(z_RPC3) &
+            " : " & integer'image(event));
 
             if nTC > 3 then 
               tcoverflow := '1';
@@ -313,20 +313,20 @@ begin
                 -- puts("ToA = ", ToA);
                 puts("##### SLC( " & integer'image(row_counter) &
                 " ): " & integer'image(BCID) &
-                " - " & integer'image(ToA) &
-                " - " & integer'image(nTC) &
-                " - " & integer'image(TC_sent) &
-                " - " & integer'image(TC_id) &
-                " - " & real'image(Eta) &
-                " - " & real'image(Phi) &
-                " - " & integer'image(pT_thr) &
-                " - " & integer'image(Charge) &
-                " - " & integer'image(Coincidence) &
-                " - " & integer'image(z_RPC0) &
-                " - " & integer'image(z_RPC1) &
-                " - " & integer'image(z_RPC2) &
-                " - " & integer'image(z_RPC3) &
-                " - " & integer'image(event));
+                " : " & integer'image(ToA) &
+                " : " & integer'image(nTC) &
+                " : " & integer'image(TC_sent) &
+                " : " & integer'image(TC_id) &
+                " : " & real'image(Eta) &
+                " : " & real'image(Phi) &
+                " : " & integer'image(pT_thr) &
+                " : " & integer'image(Charge) &
+                " : " & integer'image(Coincidence) &
+                " : " & integer'image(z_RPC0) &
+                " : " & integer'image(z_RPC1) &
+                " : " & integer'image(z_RPC2) &
+                " : " & integer'image(z_RPC3) &
+                " : " & integer'image(event));
 
                 if nTC > 3 then 
                   tcoverflow := '1';
