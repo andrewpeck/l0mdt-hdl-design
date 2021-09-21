@@ -92,8 +92,8 @@ ARCHITECTURE Behavioral OF csf_fitter IS
 
     -- Numerator/Denominator constants
     CONSTANT SHIFT_NUM_M : INTEGER := 15;
-    CONSTANT SHIFT_NUM_B : INTEGER := 28;
-    CONSTANT SHIFT_DEN : INTEGER := 21;
+    CONSTANT SHIFT_NUM_B : INTEGER := 25;
+    CONSTANT SHIFT_DEN : INTEGER := 18;
     CONSTANT RECIPROCAL_LEN : INTEGER := 22;
     CONSTANT B_OVER_Z_MULTI_LEN : INTEGER
     := INTEGER(log2(CSF_SEG_B_MULT/HEG2SFHIT_LOCALX_MULT));
@@ -129,8 +129,9 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     := (OTHERS => '0');
     TYPE t_reciprocalROM IS ARRAY (NATURAL RANGE <>) OF
     STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
+    
     FUNCTION reciprocalROM RETURN t_reciprocalROM IS
-        VARIABLE temp : t_reciprocalROM(2 ** 16 - 1 DOWNTO 0)
+        VARIABLE temp : t_reciprocalROM(2 ** (DEN_LEN - SHIFT_DEN) - 1 DOWNTO 0)
         := (OTHERS => (OTHERS => '0'));
     BEGIN
         FOR k IN 2 ** 16 - 1 DOWNTO 0 LOOP
