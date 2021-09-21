@@ -24,6 +24,9 @@ use ieee.numeric_std.all;
 -- use ieee.std_logic_textio.all;
 use std.textio.all;
 
+library project_lib;
+use project_lib.vhdl_tb_utils_pkg.all;
+
 package vhdl_textio_csv_pkg is
   
   type csv_file_reader_type is protected
@@ -126,15 +129,21 @@ package body vhdl_textio_csv_pkg is
         variable index: integer := 1;
     begin
         read(current_line, read_char, read_ok);
-        while read_ok loop
-            if read_char = ',' then
-                return return_string;
-            else
-                return_string(index) := read_char;
-                index := index + 1;
-            end if;
-            read(current_line, read_char, read_ok);
-        end loop;
+        -- puts("read_ok :  ",read_ok);
+        -- puts("read_char :  " & read_char);
+        if  read_ok = True then
+          while read_ok loop
+              if read_char = ',' then
+                  return return_string;
+              else
+                  return_string(index) := read_char;
+                  index := index + 1;
+              end if;
+              read(current_line, read_char, read_ok);
+          end loop;
+        else
+          return return_string;
+        end  if;
     end;
 end protected body;
   

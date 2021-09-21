@@ -28,6 +28,7 @@ HDL_Types:
 - input_slc_b:
   # - BCID        : [ type : unsigned , length : SL_HEADER_BCID_LEN]
   - ToA         : [ type : unsigned , length : 64]
+  - event       : [ type : unsigned , length : 32]
   # - nTC         : [ type : unsigned , length : SL_HEADER_NSLC_LEN]
   # - TC_sent     : [ type : unsigned , length : SL_HEADER_NMTC_SL_LEN]
   # - TC_id       : [ type : unsigned , length : SL_HEADER_NSLC_LEN]

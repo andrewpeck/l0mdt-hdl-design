@@ -12,7 +12,6 @@ use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
-
 library heg_lib;
 use heg_lib.heg_pkg.all;
 
@@ -53,9 +52,10 @@ package ult_tb_sim_pkg is
 
   type input_slc_b_rt is record
     ToA : unsigned(64-1 downto 0);
+    event : unsigned(32-1 downto 0);
     slc : slc_rx_rt;
   end record input_slc_b_rt;
-  constant INPUT_SLC_B_LEN : integer := 220;
+  constant INPUT_SLC_B_LEN : integer := 252;
   subtype input_slc_b_rvt is std_logic_vector(INPUT_SLC_B_LEN-1 downto 0);
   function vectorify(x: input_slc_b_rt) return input_slc_b_rvt;
   function structify(x: input_slc_b_rvt) return input_slc_b_rt;
@@ -300,14 +300,16 @@ package body ult_tb_sim_pkg is
   function vectorify(x: input_slc_b_rt) return input_slc_b_rvt is
     variable y : input_slc_b_rvt;
   begin
-    y(219 downto 156)          := vectorify(x.ToA);
+    y(251 downto 188)          := vectorify(x.ToA);
+    y(187 downto 156)          := vectorify(x.event);
     y(155 downto 0)            := vectorify(x.slc);
     return y;
   end function vectorify;
   function structify(x: input_slc_b_rvt) return input_slc_b_rt is
     variable y : input_slc_b_rt;
   begin
-    y.ToA                      := structify(x(219 downto 156));
+    y.ToA                      := structify(x(251 downto 188));
+    y.event                    := structify(x(187 downto 156));
     y.slc                      := structify(x(155 downto 0));
     return y;
   end function structify;
@@ -315,6 +317,7 @@ package body ult_tb_sim_pkg is
     variable y : input_slc_b_rt;
   begin
     y.ToA                      := nullify(x.ToA);
+    y.event                    := nullify(x.event);
     y.slc                      := nullify(x.slc);
     return y;
   end function nullify;

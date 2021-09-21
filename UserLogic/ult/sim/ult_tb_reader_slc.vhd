@@ -103,11 +103,16 @@ begin
     variable z_RPC1       : integer; 
     variable z_RPC2       : integer; 
     variable z_RPC3       : integer; 
+    variable event        : integer;
 
     variable header       : sl_header_rt;
     variable trailer      : sl_trailer_rt;
     variable common       : slc_common_rt;
     variable specific     : slc_barrel_rt;
+
+    variable tcoverflow : std_logic;
+
+    variable ol : line;
 
     -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
     -- file input_slc_file         : text open read_mode is IN_SLC_FILE;
@@ -172,14 +177,16 @@ begin
             pT_thr      := csv_file.read_integer;
             Charge      := csv_file.read_integer;
             Coincidence := csv_file.read_integer;
-            z_RPC0      := csv_file.read_integer;
-            z_RPC1      := csv_file.read_integer;
-            z_RPC2      := csv_file.read_integer;
-            z_RPC3      := csv_file.read_integer;
+            z_RPC0      := abs(csv_file.read_integer);
+            z_RPC1      := abs(csv_file.read_integer);
+            z_RPC2      := abs(csv_file.read_integer);
+            z_RPC3      := abs(csv_file.read_integer);
+            event       := csv_file.read_integer;
 
             -- puts("BCID = ", BCID);
             -- puts("ToA = ", ToA);
-            puts("##### SLC : " & integer'image(BCID) &
+            puts("##### SLC( " & integer'image(row_counter) &
+            " ): " & integer'image(BCID) &
             " - " & integer'image(ToA) &
             " - " & integer'image(nTC) &
             " - " & integer'image(TC_sent) &
@@ -192,58 +199,208 @@ begin
             " - " & integer'image(z_RPC0) &
             " - " & integer'image(z_RPC1) &
             " - " & integer'image(z_RPC2) &
-            " - " & integer'image(z_RPC3));
-            -- puts("---------");
-            -- puts(slc_event_r.ToA)
-            -- slc_event_r.
-            -- row_counter := row_counter +1;
+            " - " & integer'image(z_RPC3) &
+            " - " & integer'image(event));
+
+            if nTC > 3 then 
+              tcoverflow := '1';
+            else
+              tcoverflow := '0';
+            end if;
+
+            header := (
+              h_reserved => (others => '1'),
+              tcoverflow => tcoverflow,
+              nmtc_sl    => to_unsigned(nTC, SL_HEADER_NSLC_LEN),
+              nmtc_mdt   => (others => '1'),
+              nslc       => (others => '1'),
+              bcid       => to_unsigned(BCID, SL_HEADER_BCID_LEN)
+            );
+
+            trailer :=(
+              t_reserved => (others => '1'),
+              crc        => (others => '1'),
+              fiberid    => (others => '1'),
+              slid       => (others => '1'),
+              comma      => (others => '1')
+            );
+
+            common := (
+              header      => header,
+              slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
+              tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
+              poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+              posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+              sl_pt       => ( others => '0'),
+              sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
+              sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
+              cointype    => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)), 
+              trailer     => trailer
+            );
+
+            specific :=(
+              -- b_reserved  => (others => '0'),
+              rpc0_posz   => to_signed(integer(real(z_RPC0) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC0_POSZ_LEN) ,
+              rpc1_posz   => to_signed(integer(real(z_RPC1) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC1_POSZ_LEN) ,
+              rpc2_posz   => to_signed(integer(real(z_RPC2) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC2_POSZ_LEN) ,
+              rpc3_posz   => to_signed(integer(real(z_RPC3) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC3_POSZ_LEN)
+            );
+
+            v_slc_event := (
+              ToA => to_unsigned(ToA , 64) ,
+              event => to_unsigned(event , 32) ,
+              slc => (
+                data_Valid  => '1',
+                common      => common,
+                specific    => std_logic_vector(vectorify(specific))
+              )
+            );
+            row_counter := row_counter + 1;
             -- readline(input_slc_file,row); -- reads header and ignores
             -- readline(input_slc_file,row);
             -- read(row, v_slc_event);
-            -- slc_event_r <= v_slc_event;
+            slc_event_r <= v_slc_event;
             -- report "Read line : " & integer'image(row_counter);
             first_read := '0';
           end if;
 
-          /*
-            -- read from file
-            -- first read from input vector file
-            if (not endfile(input_slc_file)) and first_read = '1' then
-              row_counter := row_counter +1;
-              readline(input_slc_file,row); -- reads header and ignores
-              readline(input_slc_file,row);
-              read(row, v_slc_event);
-              slc_event_r <= v_slc_event;
-              report "Read line : " & integer'image(row_counter);
-              first_read := '0';
-            end if;
-            
+          
+          -- -- read from file
+          -- -- first read from input vector file
+          -- if (not endfile(input_slc_file)) and first_read = '1' then
+          --   row_counter := row_counter +1;
+          --   readline(input_slc_file,row); -- reads header and ignores
+          --   readline(input_slc_file,row);
+          --   read(row, v_slc_event);
+          --   slc_event_r <= v_slc_event;
+          --   report "Read line : " & integer'image(row_counter);
+          --   first_read := '0';
+          -- end if;
+          
 
-            -- read from input vector file
-            RL : while true loop
-              if (v_slc_event.ToA < tb_curr_tdc_time) then
-                -- i_mdt_tar_av <= mdt_tar_event_r.tar;
-                if (endfile(input_slc_file) = false) then
+          -- read from input vector file
+          -- puts("loop  :  ",to_integer(v_slc_event.ToA)," - ",to_integer(tb_curr_tdc_time));
+          RL : while true loop
 
-                  if v_slc_event.slc.common.slcid < 3 then
-                    slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
-                    v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
-                  end if;
+            if (v_slc_event.ToA < tb_curr_tdc_time) then
+              -- i_mdt_tar_av <= mdt_tar_event_r.tar;
+              if (csv_file.end_of_file = false) then
 
-                  row_counter := row_counter +1;
-                  readline(input_slc_file,row);
-                  read(row, v_slc_event);
-                  slc_event_r <= v_slc_event;
-                  report "Read line : " & integer'image(row_counter);
-                else
-                  exit;
+                if v_slc_event.slc.common.slcid < 3 then
+                  slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+                  v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
                 end if;
+
+                csv_file.readline;
+                -- extract(csv_file,v_slc_event);
+                BCID        := csv_file.read_integer;
+                ToA         := csv_file.read_integer;
+                nTC         := csv_file.read_integer;
+                TC_sent     := csv_file.read_integer;
+                TC_id       := csv_file.read_integer;
+                Eta         := csv_file.read_real;
+                Phi         := csv_file.read_real;
+                pT_thr      := csv_file.read_integer;
+                Charge      := csv_file.read_integer;
+                Coincidence := csv_file.read_integer;
+                z_RPC0      := csv_file.read_integer;
+                z_RPC1      := csv_file.read_integer;
+                z_RPC2      := csv_file.read_integer;
+                z_RPC3      := csv_file.read_integer;
+                event       := csv_file.read_integer;
+
+                -- puts("BCID = ", BCID);
+                -- puts("ToA = ", ToA);
+                puts("##### SLC( " & integer'image(row_counter) &
+                " ): " & integer'image(BCID) &
+                " - " & integer'image(ToA) &
+                " - " & integer'image(nTC) &
+                " - " & integer'image(TC_sent) &
+                " - " & integer'image(TC_id) &
+                " - " & real'image(Eta) &
+                " - " & real'image(Phi) &
+                " - " & integer'image(pT_thr) &
+                " - " & integer'image(Charge) &
+                " - " & integer'image(Coincidence) &
+                " - " & integer'image(z_RPC0) &
+                " - " & integer'image(z_RPC1) &
+                " - " & integer'image(z_RPC2) &
+                " - " & integer'image(z_RPC3) &
+                " - " & integer'image(event));
+
+                if nTC > 3 then 
+                  tcoverflow := '1';
+                else
+                  tcoverflow := '0';
+                end if;
+
+                header := (
+                  h_reserved => (others => '1'),
+                  tcoverflow => tcoverflow,
+                  nmtc_sl    => to_unsigned(nTC, SL_HEADER_NSLC_LEN),
+                  nmtc_mdt   => (others => '1'),
+                  nslc       => (others => '1'),
+                  bcid       => to_unsigned(BCID, SL_HEADER_BCID_LEN)
+                );
+
+                trailer :=(
+                  t_reserved => (others => '1'),
+                  crc        => (others => '1'),
+                  fiberid    => (others => '1'),
+                  slid       => (others => '1'),
+                  comma      => (others => '1')
+                );
+
+                common := (
+                  header      => header,
+                  slcid       => to_unsigned(TC_id, SL_HEADER_NSLC_LEN),
+                  tcsent      => std_logic(to_unsigned(TC_sent,1)(0)),
+                  poseta      => to_signed(integer(Eta * SLC_COMMON_POSETA_MULT), SLC_COMMON_POSETA_LEN) ,
+                  posphi      => to_unsigned(integer((Phi * SLC_COMMON_POSPHI_MULT/1000.0)), SLC_COMMON_POSPHI_LEN) , 
+                  sl_pt       => ( others => '0'),
+                  sl_ptthresh => to_unsigned(pT_thr, SLC_COMMON_SL_PTTHRESH_LEN) , 
+                  sl_charge   => std_logic(to_unsigned(Charge,1)(0)), 
+                  cointype    => std_logic_vector(to_unsigned(Coincidence,SLC_COMMON_COINTYPE_LEN)), 
+                  trailer     => trailer
+                );
+
+                specific :=(
+                  -- b_reserved  => (others => '0'),
+                  rpc0_posz   => to_signed(integer(real(z_RPC0) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC0_POSZ_LEN) ,
+                  rpc1_posz   => to_signed(integer(real(z_RPC1) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC1_POSZ_LEN) ,
+                  rpc2_posz   => to_signed(integer(real(z_RPC2) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC2_POSZ_LEN) ,
+                  rpc3_posz   => to_signed(integer(real(z_RPC3) * SLC_Z_RPC_MULT) ,SLC_BARREL_RPC3_POSZ_LEN)
+                );
+
+                v_slc_event := (
+                  ToA => to_unsigned(ToA , 64) ,
+                  event => to_unsigned(event , 32) ,
+                  slc => (
+                    data_Valid  => '1',
+                    common      => common,
+                    specific    => std_logic_vector(vectorify(specific))
+                  )
+                );
+                row_counter := row_counter + 1;
+                -- readline(input_slc_file,row); -- reads header and ignores
+                -- readline(input_slc_file,row);
+                -- read(row, v_slc_event);
+                slc_event_r <= v_slc_event;
+                -- row_counter := row_counter +1;
+                -- readline(input_slc_file,row);
+                -- read(row, v_slc_event);
+                -- slc_event_r <= v_slc_event;
+                -- report "Read line : " & integer'image(row_counter);
               else
-                -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+                -- csv_file.dispose;
                 exit;
               end if;
-            end loop;
-          */
+            else
+              -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+              exit;
+            end if;
+          end loop;
+          
 
         end if;
         
@@ -251,7 +408,7 @@ begin
       end if;
     end if;
 
-    csv_file.dispose;
+    
   end process;
   
 end architecture sim;
