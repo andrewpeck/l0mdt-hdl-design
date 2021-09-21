@@ -75,7 +75,7 @@ def main():
     reciprocal_mem = open(args.output + '/fitter_reciprocal.mem', "w")
     m_to_theta_mem = open(args.output + '/m_to_theta.mem', "w")
 
-    for x in xrange(0, 2**args.mbar_width - 1):
+    for x in range(0, 2**args.mbar_width - 1):
         invsqrt = int(
             floor(2**args.inv_sqrt_m_width / sqrt(args.mbar_multi**2 + x**2)))
         # invsqrt_mbar_rom.write("%d,\n" % invsqrt)
@@ -84,7 +84,7 @@ def main():
         # sqrt_mbar_rom.write("%d,\n" % sqrt_mbar)
         sqrt_mbar_mem.write("%04X\n" % sqrt_mbar)
 
-    for x in xrange(0, 2**16 - 1):
+    for x in range(0, 2**20 - 1):
         reciprocal = int(floor(2**args.divider_width / (x + 0.5)))
         if x == 0:
             reciprocal = int(floor(2**args.divider_width / (x + 1.)))

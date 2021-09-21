@@ -125,24 +125,10 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     := (OTHERS => '0');
     SIGNAL reciprocal_addr : STD_LOGIC_VECTOR(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
-    SIGNAL reciprocal_den, reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
+    SIGNAL reciprocal_den : STD_LOGIC_VECTOR(RECIPROCAL_LEN-1 downto 0);
+    SIGNAL reciprocal_den_s : signed(RECIPROCAL_LEN DOWNTO 0)
     := (OTHERS => '0');
-    TYPE t_reciprocalROM IS ARRAY (NATURAL RANGE <>) OF
-    STD_LOGIC_VECTOR(RECIPROCAL_LEN - 1 DOWNTO 0);
     
-    FUNCTION reciprocalROM RETURN t_reciprocalROM IS
-        VARIABLE temp : t_reciprocalROM(2 ** (DEN_LEN - SHIFT_DEN) - 1 DOWNTO 0)
-        := (OTHERS => (OTHERS => '0'));
-    BEGIN
-        FOR k IN 2 ** 16 - 1 DOWNTO 0 LOOP
-            temp(k) := STD_LOGIC_VECTOR(to_unsigned(
-            INTEGER(floor(
-            ((2.0 ** RECIPROCAL_LEN)) / (real(k) + 0.5)
-            )), RECIPROCAL_LEN));
-        END LOOP;
-        RETURN temp;
-    END FUNCTION;
-
     -- Fit result widths
     CONSTANT MFIT_FULL_LEN : INTEGER := NUM_M_LEN - SHIFT_NUM_M + RECIPROCAL_LEN + 1;
     CONSTANT BFIT_FULL_LEN : INTEGER := NUM_B_LEN - SHIFT_NUM_B + RECIPROCAL_LEN + 1;
@@ -160,10 +146,40 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : STD_LOGIC := '0';
     SIGNAL event_valid : STD_LOGIC := '0';
 
+    ---COMPONENTS --------
+    COMPONENT rom
+        GENERIC (
+            MXADRB : INTEGER;
+            MXDATB : INTEGER;
+            ROM_FILE : STRING;
+            ROM_STYLE : STRING
+        );
+        PORT (
+            clka : IN STD_LOGIC;
+            ena : IN STD_LOGIC;
+            addra : IN STD_LOGIC_VECTOR;
+            douta : OUT STD_LOGIC_VECTOR
+        );
+    END COMPONENT;
+
 BEGIN
 
     hit1 <= structify(i_hit1);
     hit2 <= structify(i_hit2);
+
+    reciprocal_rom : rom
+    GENERIC MAP(
+        MXADRB => DEN_LEN - SHIFT_DEN,
+        MXDATB => RECIPROCAL_LEN,
+        ROM_FILE => "fitter_reciprocal.mem",
+        ROM_STYLE => "distributed"
+    )
+    PORT MAP(
+        ena => '1',
+        clka => clk,
+        addra => reciprocal_addr,
+        douta => reciprocal_den
+    );
 
     Fitter : PROCESS (clk)
     BEGIN
@@ -248,8 +264,6 @@ BEGIN
 
             -- Clock 6
             dv6 <= dv5;
-            reciprocal_den <= signed('0' &
-                reciprocalROM(to_integer(unsigned(reciprocal_addr))));
             numerator_b_red_ss <= numerator_b_red_s;
             numerator_m_red_ss <= numerator_m_red_s;
 
@@ -257,12 +271,12 @@ BEGIN
             dv7 <= dv6;
             numerator_b_red_sss <= numerator_b_red_ss;
             numerator_m_red_sss <= numerator_m_red_ss;
-            reciprocal_den_s <= reciprocal_den;
+            reciprocal_den_s <= signed('0' & reciprocal_den);
 
             --Clock 8
             dv8 <= dv7;
-            mfit_full <= numerator_m_red_sss * signed(reciprocal_den_s);
-            bfit_full <= numerator_b_red_sss * signed(reciprocal_den_s);
+            mfit_full <= numerator_m_red_sss * reciprocal_den_s;
+            bfit_full <= numerator_b_red_sss * reciprocal_den_s;
 
             --Clock 9
             dv9 <= dv8;
