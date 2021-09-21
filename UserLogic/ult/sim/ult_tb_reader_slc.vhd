@@ -162,11 +162,38 @@ begin
             csv_file.readline;
             csv_file.readline;
             -- extract(csv_file,v_slc_event);
-            BCID := csv_file.read_integer;
-            ToA := csv_file.read_integer;
-            puts("BCID = ", BCID);
-            puts("ToA = ", ToA);
-            puts("---------");
+            BCID        := csv_file.read_integer;
+            ToA         := csv_file.read_integer;
+            nTC         := csv_file.read_integer;
+            TC_sent     := csv_file.read_integer;
+            TC_id       := csv_file.read_integer;
+            Eta         := csv_file.read_real;
+            Phi         := csv_file.read_real;
+            pT_thr      := csv_file.read_integer;
+            Charge      := csv_file.read_integer;
+            Coincidence := csv_file.read_integer;
+            z_RPC0      := csv_file.read_integer;
+            z_RPC1      := csv_file.read_integer;
+            z_RPC2      := csv_file.read_integer;
+            z_RPC3      := csv_file.read_integer;
+
+            -- puts("BCID = ", BCID);
+            -- puts("ToA = ", ToA);
+            puts("##### SLC : " & integer'image(BCID) &
+            " - " & integer'image(ToA) &
+            " - " & integer'image(nTC) &
+            " - " & integer'image(TC_sent) &
+            " - " & integer'image(TC_id) &
+            " - " & real'image(Eta) &
+            " - " & real'image(Phi) &
+            " - " & integer'image(pT_thr) &
+            " - " & integer'image(Charge) &
+            " - " & integer'image(Coincidence) &
+            " - " & integer'image(z_RPC0) &
+            " - " & integer'image(z_RPC1) &
+            " - " & integer'image(z_RPC2) &
+            " - " & integer'image(z_RPC3));
+            -- puts("---------");
             -- puts(slc_event_r.ToA)
             -- slc_event_r.
             -- row_counter := row_counter +1;
