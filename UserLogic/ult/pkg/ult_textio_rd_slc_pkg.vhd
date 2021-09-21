@@ -21,15 +21,21 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 
+-- library project_lib;
+-- use project_lib.ult_tb_sim_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
+-- use project_lib.ult_textio_rd_slc_pkg.all;
 use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
 
 package ult_textio_rd_slc_pkg is
 
   -- procedure READ(L:inout LINE; VALUE : out input_mdt_rt);
 
-  procedure READ(L:inout LINE; VALUE : out input_slc_b_rt);
+  procedure EXTRACT(VALUE : out input_slc_b_rt);
+  -- procedure EXTRACT(csv_file: csv_file_reader_type; VALUE : out input_slc_b_rt);
 
 end ult_textio_rd_slc_pkg;
 
@@ -38,8 +44,11 @@ package body ult_textio_rd_slc_pkg is
   -----------------------------------------------
   -- read SLC 
   -----------------------------------------------  
-  procedure READ(L:inout LINE; VALUE : out input_slc_b_rt) is
-    variable line_str     : string(100 - 1 downto 0);
+  -- procedure READ(L:inout LINE; VALUE : out input_slc_b_rt) is
+  procedure EXTRACT(VALUE : out input_slc_b_rt) is
+    -- variable line_str     : string(100 - 1 downto 0);
+    -- variable csv_file: csv_file_reader_type;
+
     variable BCID         : integer; 
     variable ToA          : integer; 
     variable nTC          : integer; 

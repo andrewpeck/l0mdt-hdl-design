@@ -31,7 +31,10 @@ use shared_lib.detector_param_pkg.all;
 
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
-use project_lib.ult_textio_rd_slc_pkg.all;
+use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
+-- use project_lib.ult_textio_rd_slc_pkg.all;
+
 
 entity ult_tb_reader_slc is
   generic (
@@ -83,90 +86,145 @@ begin
   
   SLC_READ: process ( rst, clk)
 
-  -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
-  file input_slc_file         : text open read_mode is IN_SLC_FILE;
-  variable row                : line;
-  variable row_counter        : integer := 0;
-  -- variable tdc_time           : UNSIG_64;
-  variable v_slc_event        : input_slc_b_rt;
-  -- variable next_event_time    : integer := 0;
-  -- variable tb_time            : integer := 0;
-  variable first_read         : std_logic := '1';
 
-  variable v_slc_main_prim_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
-  variable v_slc_main_seco_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
-  variable v_slc_neig_plus_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
-  variable v_slc_neig_minu_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
+    variable csv_file: csv_file_reader_type;
 
-begin
+    variable BCID         : integer; 
+    variable ToA          : integer; 
+    variable nTC          : integer; 
+    variable TC_sent      : integer; 
+    variable TC_id        : integer; 
+    variable Eta          : real; 
+    variable Phi          : real; 
+    variable pT_thr       : integer; 
+    variable Charge       : integer; 
+    variable Coincidence  : integer; 
+    variable z_RPC0       : integer; 
+    variable z_RPC1       : integer; 
+    variable z_RPC2       : integer; 
+    variable z_RPC3       : integer; 
 
-  if rising_edge(clk) then
-    if rst = '1' then
+    variable header       : sl_header_rt;
+    variable trailer      : sl_trailer_rt;
+    variable common       : slc_common_rt;
+    variable specific     : slc_barrel_rt;
 
-    else
+    -- file input_slc_file         : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/slc_TB_A3_Barrel.txt";
+    -- file input_slc_file         : text open read_mode is IN_SLC_FILE;
+    variable row                : line;
+    variable row_counter        : integer := 0;
+    -- variable tdc_time           : UNSIG_64;
+    variable v_slc_event        : input_slc_b_rt;
+    -- variable next_event_time    : integer := 0;
+    -- variable tb_time            : integer := 0;
+    variable first_read         : std_logic := '1';
 
-      if enable = 1 then
+    variable v_slc_main_prim_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
+    variable v_slc_main_seco_counts : infifo_slc_counts(3 -1 downto 0) := (others => 0);
+    variable v_slc_neig_plus_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
+    variable v_slc_neig_minu_counts : infifo_slc_counts(1 -1 downto 0) := (others => 0);
 
-        -- write to DUT
+  begin
 
-        for wr_i in 2 downto 0 loop
-          if(v_slc_main_prim_counts(wr_i) > 0) then
-            i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
-            -- for test input read
-            i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
-            --
-            for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
-              slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
-            end loop;
-            v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
-          else
-            i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
-            i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+    -- puts("opening CSV files : " & IN_SLC_FILE);
+    -- csv_file.initialize(IN_SLC_FILE);
+
+    if rising_edge(clk) then
+      if rst = '1' then
+
+      else
+
+        if enable = 1 then
+
+          -- write to DUT
+
+          for wr_i in 2 downto 0 loop
+            if(v_slc_main_prim_counts(wr_i) > 0) then
+              i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              -- for test input read
+              i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
+              --
+              for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
+                slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
+              end loop;
+              v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
+            else
+              i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
+              i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+            end if;
+          end loop;
+
+          -- read from file
+          -- first read from input vector file
+          if first_read = '1' then
+            puts("opening CSV files : " & IN_SLC_FILE);
+            csv_file.initialize(IN_SLC_FILE);
+            csv_file.readline;
+            csv_file.readline;
+            -- extract(csv_file,v_slc_event);
+            BCID := csv_file.read_integer;
+            ToA := csv_file.read_integer;
+            puts("BCID = ", BCID);
+            puts("ToA = ", ToA);
+            puts("---------");
+            -- puts(slc_event_r.ToA)
+            -- slc_event_r.
+            -- row_counter := row_counter +1;
+            -- readline(input_slc_file,row); -- reads header and ignores
+            -- readline(input_slc_file,row);
+            -- read(row, v_slc_event);
+            -- slc_event_r <= v_slc_event;
+            -- report "Read line : " & integer'image(row_counter);
+            first_read := '0';
           end if;
-        end loop;
 
-        -- read from file
-        -- first read from input vector file
-        if (not endfile(input_slc_file)) and first_read = '1' then
-          row_counter := row_counter +1;
-          readline(input_slc_file,row); -- reads header and ignores
-          readline(input_slc_file,row);
-          read(row, v_slc_event);
-          slc_event_r <= v_slc_event;
-          report "Read line : " & integer'image(row_counter);
-          first_read := '0';
-        end if;
-
-        -- read from input vector file
-        RL : while true loop
-          if (v_slc_event.ToA < tb_curr_tdc_time) then
-            -- i_mdt_tar_av <= mdt_tar_event_r.tar;
-            if (endfile(input_slc_file) = false) then
-
-              if v_slc_event.slc.common.slcid < 3 then
-                slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
-                v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
-              end if;
-
+          /*
+            -- read from file
+            -- first read from input vector file
+            if (not endfile(input_slc_file)) and first_read = '1' then
               row_counter := row_counter +1;
+              readline(input_slc_file,row); -- reads header and ignores
               readline(input_slc_file,row);
               read(row, v_slc_event);
               slc_event_r <= v_slc_event;
               report "Read line : " & integer'image(row_counter);
-            else
-              exit;
+              first_read := '0';
             end if;
-          else
-            -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
-            exit;
-          end if;
-        end loop;
+            
+
+            -- read from input vector file
+            RL : while true loop
+              if (v_slc_event.ToA < tb_curr_tdc_time) then
+                -- i_mdt_tar_av <= mdt_tar_event_r.tar;
+                if (endfile(input_slc_file) = false) then
+
+                  if v_slc_event.slc.common.slcid < 3 then
+                    slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+                    v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
+                  end if;
+
+                  row_counter := row_counter +1;
+                  readline(input_slc_file,row);
+                  read(row, v_slc_event);
+                  slc_event_r <= v_slc_event;
+                  report "Read line : " & integer'image(row_counter);
+                else
+                  exit;
+                end if;
+              else
+                -- i_mdt_tar_av <= nullify(i_mdt_tar_av);
+                exit;
+              end if;
+            end loop;
+          */
+
+        end if;
+        
 
       end if;
-
     end if;
-  end if;
 
-end process;
+    csv_file.dispose;
+  end process;
   
 end architecture sim;
