@@ -23,13 +23,15 @@
                     "ports": 3,
                     "ucm2hps_ii"   : 250,
 		    "ucm2hps_setup": 10,
-		    "station_ID": ["INN","INN","INN"]
+		    "station_ID": ["INN","INN","INN"],
+		    "tv_df_type":"SL"
                 },
                 {
                     "tv_format": "TAR2HPS",
                     "ports": 6,
 		    "station_ID": ["INN","INN","INN","INN","INN","INN"],
-                    "tv_type": "list"
+                    "tv_type": "list",
+		    "tv_df_type":"MDT"
                 }
             ],
             "outputs": [

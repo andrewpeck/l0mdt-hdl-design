@@ -114,10 +114,15 @@ def hps_test(dut):
 
     ucm2hps_ii                       = test_vectors["inputs"][0]["ucm2hps_ii"]
     ucm2hps_setup                    = test_vectors["inputs"][0]["ucm2hps_setup"]
+    inputs_tv_df_type= [["" for x in range(HpsPorts.get_input_interface_ports(y))]for y in range(HpsPorts.n_input_interfaces)]
     inputs_station_id= [["" for x in range(HpsPorts.get_input_interface_ports(y))]for y in range(HpsPorts.n_input_interfaces)]
     outputs_station_id= [["" for x in range(HpsPorts.get_output_interface_ports(y))]for y in range(HpsPorts.n_output_interfaces)]
     tolerance= [["" for x in range(HpsPorts.get_output_interface_ports(y))]for y in range(HpsPorts.n_output_interfaces)]
     for i in range(HpsPorts.n_input_interfaces):
+        if "tv_df_type" in testvector_config_inputs[i]:
+            inputs_tv_df_type[i] = testvector_config_inputs[i]["tv_df_type"]
+        else:
+            inputs_tv_df_type[i] = "SL"
         if "station_ID" in testvector_config_inputs[i] :
             inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]    # CREATORSOFTWAREBLOCK##
     for i in range(HpsPorts.n_output_interfaces):
@@ -130,7 +135,7 @@ def hps_test(dut):
             tolerance[i] = testvector_config_outputs[i]["tolerance"]
         else:
             tolerance[i] = {"": ["",""]}
-
+    print ("TV_DF_TYPE = ", inputs_tv_df_type)
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
     # CREATORSOFTWAREBLOCK##
@@ -250,7 +255,8 @@ def hps_test(dut):
             n_ports = HpsPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
-            tv_type=input_tvtype[n_ip_intf]
+            tv_type=input_tvtype[n_ip_intf],
+            tv_df_type = inputs_tv_df_type[n_ip_intf]
             ))
         if(n_ip_intf == 0):
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, ucm2hps_ii)
