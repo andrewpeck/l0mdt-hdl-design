@@ -220,7 +220,7 @@ begin
             tube_global      := csv_file.read_integer;
             tube_layer       := csv_file.read_integer;
             Chamber_id       := csv_file.read_integer;
-            Chamber_ieta     := csv_file.read_integer;
+            Chamber_ieta     := csv_file.read_integer - 1;
             i_station        := csv_file.read_integer;
             tube_z           := csv_file.read_integer;
             tube_rho         := csv_file.read_integer;
@@ -294,8 +294,8 @@ begin
           -- read from input vector file
           RL : while true loop
             if (v_mdt_event.ToA < tb_curr_tdc_time) then
-              puts("toa - ",to_integer(v_mdt_event.ToA)," ::: tdc - ",to_integer(tb_curr_tdc_time));
-              puts("v_mdt_event.station - ",to_integer(v_mdt_event.station)," ::: tdc - ",to_integer(v_mdt_event.chamber));
+              -- puts("toa - ",to_integer(v_mdt_event.ToA)," ::: tdc - ",to_integer(tb_curr_tdc_time));
+              -- puts("v_mdt_event.station - ",to_integer(v_mdt_event.station)," ::: tdc - ",to_integer(v_mdt_event.chamber));
               -- i_mdt_tar_av <= mdt_tdc_event_r.tar;
               if (csv_file.end_of_file = false) then
 
@@ -331,7 +331,7 @@ begin
                 tube_global      := csv_file.read_integer;
                 tube_layer       := csv_file.read_integer;
                 Chamber_id       := csv_file.read_integer;
-                Chamber_ieta     := csv_file.read_integer;
+                Chamber_ieta     := csv_file.read_integer - 1;
                 i_station        := csv_file.read_integer;
                 tube_z           := csv_file.read_integer;
                 tube_rho         := csv_file.read_integer;
