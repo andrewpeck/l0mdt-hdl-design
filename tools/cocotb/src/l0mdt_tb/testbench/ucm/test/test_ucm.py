@@ -246,9 +246,7 @@ def ucm_test(dut):
             n_to_load=num_events_to_process,
             tv_type="value"
             ))
-        for i in range(len(single_interface_list)):
-            for j in range(len(single_interface_list[i])):
-                print("\nUCM input tv list[",n_ip_intf,"[",i,"][",j,"] = ", hex(single_interface_list[i][j]));
+
 
         for io in range(UcmPorts.get_input_interface_ports(n_ip_intf)):
             single_interface_list_ii_delay = events.modify_tv(single_interface_list, slc_rx_ii)
