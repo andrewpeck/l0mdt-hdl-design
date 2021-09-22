@@ -1,6 +1,6 @@
 #Simulator questa
 shared/shared_lib.sim
-UserLogic/ult/ult_lib.sim
+UserLogic/ult/ult_lib.sim lib=ult_lib
 UserLogic/ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=150us
 
 # Waveform 

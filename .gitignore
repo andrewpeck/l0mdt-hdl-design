@@ -37,7 +37,9 @@ _hdl_checker/
 *.cf
 env/
 .cxl.questasim.*
+.cxl.questa.*
 .cxl.riviera.*
+compile_simlib.log.bak
 library.cfg
 Projects/
 #UserLogic/*/IP/**/*.xci

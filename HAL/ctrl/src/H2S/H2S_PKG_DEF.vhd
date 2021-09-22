@@ -91,9 +91,23 @@ package H2S_CTRL_DEF is
                                                                                                    OUTPUT_EN => '1',
                                                                                                    FLUSH_MEM_RESET => '1'
                                                                                                   );
+  constant DEFAULT_H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t := (
+                                                                                                                     wr_data_0 => (others => '0')
+                                                                                                                    );
+  constant DEFAULT_H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t := (
+                                                                                                     wr_req => '0',
+                                                                                                     wr_ack => '0',
+                                                                                                     rd_req => '0',
+                                                                                                     rd_ack => '0',
+                                                                                                     flush_req => '0',
+                                                                                                     wr_addr => (others => '0'),
+                                                                                                     rd_addr => (others => '0'),
+                                                                                                     wr_data => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t
+                                                                                                    );
   constant DEFAULT_H2S_HPS_HEG_HEG_HP_HP_CTRL_t : H2S_HPS_HEG_HEG_HP_HP_CTRL_t := (
                                                                                    ACTIONS => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_ACTIONS_CTRL_t,
-                                                                                   CONFIGS => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t
+                                                                                   CONFIGS => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t,
+                                                                                   MDT_DT2R => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t
                                                                                   );
   constant DEFAULT_H2S_HPS_HEG_HEG_HP_CTRL_t : H2S_HPS_HEG_HEG_HP_CTRL_t := (
                                                                              HP => (others => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_CTRL_t )

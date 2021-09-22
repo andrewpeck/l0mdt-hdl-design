@@ -32,7 +32,8 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library ult_lib;
--- library ult_lib_sim;
+use ult_lib.ult_tb_sim_pkg.all;
+
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -55,12 +56,13 @@ use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
 
-library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+-- library project_lib;
+-- use project_lib.gldl_ult_tp_sim_pkg.all;
+-- use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tp is
   generic (
+    PRJ_INFO            : string  := "BA3_yt_v04";
     IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
     IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
     OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
@@ -341,31 +343,11 @@ begin
     end if;
   end process;
 
-
   -------------------------------------------------------------------------------------
-	-- hits
+	-- readers
   -------------------------------------------------------------------------------------
-  -- TAR_HIT : if c_EN_TAR_HITS = 1 generate -- TAR data injection
-  --   HIT : entity project_lib.ult_tb_reader_tar 
-  --   generic map (
-  --     IN_HIT_FILE => IN_HIT_FILE
-  --   )
-  --   port map(
-  --     clk => clk,
-  --     rst => rst,
-  --     enable => enable_mdt,
-  --     --
-  --     tb_curr_tdc_time => tb_curr_tdc_time,
-  --     -- TAR Hits for simulation
-  --     i_mdt_tar_inn_av => i_mdt_tar_inn_av,
-  --     i_mdt_tar_mid_av => i_mdt_tar_mid_av,
-  --     i_mdt_tar_out_av => i_mdt_tar_out_av,
-  --     i_mdt_tar_ext_av => i_mdt_tar_ext_av
-  --   );
-  -- end generate;
 
-  -- TDC_HIT : if c_EN_MDT_HITS = 1 generate -- TAR data injection
-    MDT : entity project_lib.ult_tb_reader_tdc 
+    MDT : entity ult_sim_lib.ult_tb_reader_tdc 
     generic map (
       IN_HIT_FILE => IN_HIT_FILE
     )
@@ -383,10 +365,7 @@ begin
     );
   -- end generate;
 
- 	-------------------------------------------------------------------------------------
-	-- candidates
-  -------------------------------------------------------------------------------------
-  SLC : entity project_lib.ult_tb_reader_slc 
+  SLC : entity ult_sim_lib.ult_tb_reader_slc 
   generic map (
     IN_SLC_FILE => IN_SLC_FILE
   )
@@ -403,16 +382,49 @@ begin
     i_minus_neighbor_slc  => i_minus_neighbor_slc
   );
 
+ 	-------------------------------------------------------------------------------------
   -------------------------------------------------------------------------------------
-	-- HEG_BM 2 SF
+	-- writers
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+
+  -------------------------------------------------------------------------------------
+	-- TAR2HPS
+  -------------------------------------------------------------------------------------
+  TAR2HPS : entity ult_sim_lib.ult_tb_writer_sf2pt 
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_slc,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time
+  );
+  -------------------------------------------------------------------------------------
+	-- TAR2DAQ
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- UCM2HPS
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- UCM2MPL
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- HEG2SF
   -------------------------------------------------------------------------------------
   HEG_2_SF_EN : if c_H2S_ENABLED = '1' generate
-    HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
+    HEG_2_SF : entity ult_sim_lib.ult_tb_writer_heg2sf 
     generic map (
-      IN_HIT_FILE => IN_HIT_FILE,
-      IN_SLC_FILE => IN_SLC_FILE,
-      OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
-      OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
+      g_IN_HIT_FILE => IN_HIT_FILE,
+      g_IN_SLC_FILE => IN_SLC_FILE,
+      g_OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
+      g_OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
     )
     port map(
       clk => clk,
@@ -422,17 +434,22 @@ begin
       tb_curr_tdc_time => tb_curr_tdc_time
     );
   end generate;
-  
   -------------------------------------------------------------------------------------
-	-- Input of PT CALC
+	-- SF2OUT
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- MPL2PT
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+	-- SF2PT
   -------------------------------------------------------------------------------------
 
-  SF_2_PT : entity project_lib.ult_tb_writer_sf2pt 
+  SF_2_PT : entity ult_sim_lib.ult_tb_writer_sf2pt 
   generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    IN_SLC_FILE => IN_SLC_FILE,
-    OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-    OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
   )
   port map(
     clk => clk,
@@ -441,17 +458,19 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time
   );
+  -------------------------------------------------------------------------------------
+	-- MPL2MTCB
+  -------------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------------
+  -- PT2MTCB
+  -------------------------------------------------------------------------------------
 
-    -------------------------------------------------------------------------------------
-    -- Input of MTC Builder
-    -------------------------------------------------------------------------------------
-
-  PT_2_MTC : entity project_lib.ult_tb_writer_pt2mtcb
+  PT_2_MTC : entity ult_sim_lib.ult_tb_writer_pt2mtcb
   generic map (
-    IN_HIT_FILE => IN_HIT_FILE,
-    IN_SLC_FILE => IN_SLC_FILE,
-    OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
-    OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_MTCIN_PT_FILE  => OUT_MTCIN_PT_FILE,
+    -- OUT_MTCIN_MPL_FILE => OUT_MTCIN_MPL_FILE
   )
   port map(
     clk => clk,

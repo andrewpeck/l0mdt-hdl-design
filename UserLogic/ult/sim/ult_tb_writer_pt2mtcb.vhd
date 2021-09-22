@@ -35,10 +35,12 @@ use project_lib.gldl_l0mdt_textio_pkg.all;
 
 entity ult_tb_writer_pt2mtcb is
   generic(
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv"
+    g_PRJ_INFO            : string  := "not_defined";
+    g_IN_SLC_FILE         : string  := "not_defined.csv";
+    g_IN_HIT_FILE         : string  := "not_defined.csv";
+    g_IN_L0_FILE          : string  := "not_defined.csv"
+    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv"
   );
   port (
     clk                   : in std_logic;
