@@ -5,19 +5,6 @@
 # UserLogic/ult/pkg/ult_func_pkg.vhd
 UserLogic/ult/pkg/ult_tb_sim_pkg.vhd
 
-# UserLogic/ult/pkg/ult_textio_rd_slc_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_rd_tdc_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_heg2sf_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_mpl2mtcb_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_mpl2pt_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_pt2mtcb_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_sf2out_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_sf2pt_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_tar2hps_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_ucm2hps_pkg.vhd
-# UserLogic/ult/pkg/ult_textio_wr_ucm2mpl_pkg.vhd
-
-
 # -------------------------------------------
 # Input Vectors Readers
 # -------------------------------------------
