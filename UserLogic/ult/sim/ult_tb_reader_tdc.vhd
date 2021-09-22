@@ -13,8 +13,6 @@
 --
 --------------------------------------------------------------------------------
 
-
-
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -34,7 +32,8 @@ use shared_lib.detector_param_pkg.all;
 
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
-use project_lib.ult_textio_rd_tdc_pkg.all;
+use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
 
 entity ult_tb_reader_tdc is
   generic (
@@ -87,8 +86,34 @@ begin
   
   HIT_READ: process ( rst, clk)
 
+    variable csv_file: csv_file_reader_type;
+
+
+    variable ToA  : integer;
+    variable i_station        : integer;
+    variable Chamber_id       : integer;
+    variable Chamber_ieta     : integer;
+    variable mdt_time_coarse  : integer;
+    variable mdt_time_fine    : integer;
+    variable tube_global      : integer;
+    variable tube_local       : integer;
+    variable tube_layer       : integer;
+    variable tube_z           : integer;
+    variable tube_rho         : integer;
+    variable drift_time       : real;
+    variable event            : integer;
+    variable muonFixedId      : integer;
+    variable csm              : integer;
+    variable mezz             : integer;
+    variable channel          : integer;
+    variable t0               : real;
+    variable TOF              : real;
+
+    variable dummy_text  : string(1 to 100);
+    variable ok : boolean;
+
     -- file input_mdt_tar_file       : text open read_mode is "/mnt/d/L0MDT/dev/hdl/l0mdt-fpga-design/shared/sim/vhdl_input_vect/csm_TB_A3_Barrel.txt";
-    file input_mdt_tar_file       : text open read_mode is IN_HIT_FILE;
+    -- file input_mdt_tar_file       : text open read_mode is IN_HIT_FILE;
     variable row                  : line;
     variable row_counter          : integer := 0;
 
@@ -182,13 +207,85 @@ begin
           end loop;
 
           -- first read from input vector file
-          if (not endfile(input_mdt_tar_file)) and first_read = '1' then
+          if first_read = '1' then
             row_counter := row_counter +1;
-            readline(input_mdt_tar_file,row); -- reads header and ignores
-            readline(input_mdt_tar_file,row);
-            read(row, v_mdt_event);
+            puts("opening MDT CSV files : " & IN_HIT_FILE);
+            csv_file.initialize(IN_HIT_FILE);
+            csv_file.readline;
+            csv_file.readline;
+
+            ToA              := csv_file.read_integer;
+            i_station        := csv_file.read_integer;
+            Chamber_id       := csv_file.read_integer;
+            Chamber_ieta     := csv_file.read_integer;
+            mdt_time_coarse  := csv_file.read_integer;
+            mdt_time_fine    := csv_file.read_integer;
+            tube_global      := csv_file.read_integer;
+            tube_local       := csv_file.read_integer;
+            tube_layer       := csv_file.read_integer;
+            tube_z           := csv_file.read_integer;
+            tube_rho         := csv_file.read_integer;
+            drift_time       := csv_file.read_real;
+            event            := csv_file.read_integer;
+            muonFixedId      := csv_file.read_integer;
+            csm              := csv_file.read_integer;
+            mezz             := csv_file.read_integer;
+            channel          := csv_file.read_integer;
+            t0               := csv_file.read_real;
+            TOF              := csv_file.read_real;
+
+            puts("##### MDT( " & integer'image(row_counter) &
+            " ): "& integer'image(ToA             ) &
+            " : " & integer'image(i_station       ) &
+            " : " & integer'image(Chamber_id      ) &
+            " : " & integer'image(Chamber_ieta    ) &
+            " : " & integer'image(mdt_time_coarse ) &
+            " : " & integer'image(mdt_time_fine   ) &
+            " : " & integer'image(tube_global     ) &
+            " : " & integer'image(tube_local      ) &
+            " : " & integer'image(tube_layer      ) &
+            " : " & integer'image(tube_z          ) &
+            " : " & integer'image(tube_rho        ) &
+            " : " & real'image(drift_time      ) &
+            " : " & integer'image(event           ) &
+            " : " & integer'image(muonFixedId     ) &
+            " : " & integer'image(csm             ) &
+            " : " & integer'image(mezz            ) &
+            " : " & integer'image(channel         ) &
+            " : " & real'image(t0              ) &
+            " : " & real'image(TOF             )
+            );
+
+            v_mdt_event := (
+              ToA => to_unsigned(ToA,64),
+              Station => to_unsigned(i_Station,8),
+              Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+              tar => (  
+                tube => to_unsigned(tube_global,MDT_TUBE_LEN),
+                layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+                chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+                time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+                data_valid => '1'
+              ),
+              tdc => (
+                data_valid => '1',
+                tdc => (
+                  chanid => to_unsigned(channel,TDC_CHANID_LEN),
+                  edgemode => (others => '0'),
+                  coarsetime => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN),
+                  finetime => to_unsigned(mdt_time_fine,TDC_FINETIME_LEN),
+                  pulsewidth => ( others => '0')
+                ),
+                csmid => to_unsigned( chamber_ieta, TDCPOLMUX2TAR_CSMID_LEN),
+                tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
+              )
+            );
+
+            -- readline(input_mdt_tar_file,row); -- reads header and ignores
+            -- readline(input_mdt_tar_file,row);
+            -- read(row, v_mdt_event);
             mdt_tdc_event_r <= v_mdt_event;
-            report "Read line : " & integer'image(row_counter);
+            -- report "Read line : " & integer'image(row_counter);
             first_read := '0';
           end if;
 
@@ -197,7 +294,7 @@ begin
           RL : while true loop
             if (v_mdt_event.ToA < tb_curr_tdc_time) then
               -- i_mdt_tar_av <= mdt_tdc_event_r.tar;
-              if (endfile(input_mdt_tar_file) = false) then
+              if (csv_file.end_of_file = false) then
 
                 if to_integer(v_mdt_event.station) = 0 then
                   if c_HPS_ENABLED_HP_INN(to_integer(v_mdt_event.chamber)) = '1' then
@@ -223,10 +320,83 @@ begin
                   -- ERROR
                 end if;
                 row_counter := row_counter +1;
-                readline(input_mdt_tar_file,row);
-                read(row, v_mdt_event);
+                csv_file.readline;
+
+                ToA              := csv_file.read_integer;
+                i_station        := csv_file.read_integer;
+                Chamber_id       := csv_file.read_integer;
+                Chamber_ieta     := csv_file.read_integer;
+                mdt_time_coarse  := csv_file.read_integer;
+                mdt_time_fine    := csv_file.read_integer;
+                tube_global      := csv_file.read_integer;
+                tube_local       := csv_file.read_integer;
+                tube_layer       := csv_file.read_integer;
+                tube_z           := csv_file.read_integer;
+                tube_rho         := csv_file.read_integer;
+                drift_time       := csv_file.read_real;
+                event            := csv_file.read_integer;
+                muonFixedId      := csv_file.read_integer;
+                csm              := csv_file.read_integer;
+                mezz             := csv_file.read_integer;
+                channel          := csv_file.read_integer;
+                t0               := csv_file.read_real;
+                TOF              := csv_file.read_real;
+    
+                puts("##### MDT( " & integer'image(row_counter) &
+                " ): "& integer'image(ToA             ) &
+                " : " & integer'image(i_station       ) &
+                " : " & integer'image(Chamber_id      ) &
+                " : " & integer'image(Chamber_ieta    ) &
+                " : " & integer'image(mdt_time_coarse ) &
+                " : " & integer'image(mdt_time_fine   ) &
+                " : " & integer'image(tube_global     ) &
+                " : " & integer'image(tube_local      ) &
+                " : " & integer'image(tube_layer      ) &
+                " : " & integer'image(tube_z          ) &
+                " : " & integer'image(tube_rho        ) &
+                " : " & real'image(drift_time      ) &
+                " : " & integer'image(event           ) &
+                " : " & integer'image(muonFixedId     ) &
+                " : " & integer'image(csm             ) &
+                " : " & integer'image(mezz            ) &
+                " : " & integer'image(channel         ) &
+                " : " & real'image(t0              ) &
+                " : " & real'image(TOF             )
+                );
+    
+                v_mdt_event := (
+                  ToA => to_unsigned(ToA,64),
+                  Station => to_unsigned(i_Station,8),
+                  Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+                  tar => (  
+                    tube => to_unsigned(tube_global,MDT_TUBE_LEN),
+                    layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+                    chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+                    time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+                    data_valid => '1'
+                  ),
+                  tdc => (
+                    data_valid => '1',
+                    tdc => (
+                      chanid => to_unsigned(channel,TDC_CHANID_LEN),
+                      edgemode => (others => '0'),
+                      coarsetime => to_unsigned(mdt_time_coarse,TDC_COARSETIME_LEN),
+                      finetime => to_unsigned(mdt_time_fine,TDC_FINETIME_LEN),
+                      pulsewidth => ( others => '0')
+                    ),
+                    csmid => to_unsigned( chamber_ieta, TDCPOLMUX2TAR_CSMID_LEN),
+                    tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
+                  )
+                );
+    
+                -- readline(input_mdt_tar_file,row); -- reads header and ignores
+                -- readline(input_mdt_tar_file,row);
+                -- read(row, v_mdt_event);
                 mdt_tdc_event_r <= v_mdt_event;
-                report "Read line : " & integer'image(row_counter);
+                -- readline(input_mdt_tar_file,row);
+                -- read(row, v_mdt_event);
+                -- mdt_tdc_event_r <= v_mdt_event;
+                -- report "Read line : " & integer'image(row_counter);
               else
                 exit;
               end if;

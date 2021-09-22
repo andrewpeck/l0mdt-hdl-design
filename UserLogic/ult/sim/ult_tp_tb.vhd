@@ -348,22 +348,22 @@ begin
 	-- readers
   -------------------------------------------------------------------------------------
 
-    -- MDT : entity project_lib.ult_tb_reader_tdc 
-    -- generic map (
-    --   IN_HIT_FILE => "csm_A3_Barrel.csv"--IN_HIT_FILE
-    -- )
-    -- port map(
-    --   clk => clk,
-    --   rst => rst,
-    --   enable => enable_mdt,
-    --   --
-    --   tb_curr_tdc_time => tb_curr_tdc_time,
-    --   -- TAR Hits for simulation
-    --   i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
-    --   i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
-    --   i_mdt_tdc_out_av => i_mdt_tdc_out_av,
-    --   i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
-    -- );
+  MDT : entity project_lib.ult_tb_reader_tdc 
+  generic map (
+    IN_HIT_FILE => "csm_A3_Barrel.csv"--IN_HIT_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_mdt,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time,
+    -- TAR Hits for simulation
+    i_mdt_tdc_inn_av => i_mdt_tdc_inn_av,
+    i_mdt_tdc_mid_av => i_mdt_tdc_mid_av,
+    i_mdt_tdc_out_av => i_mdt_tdc_out_av,
+    i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
+  );
   -- end generate;
 
   SLC : entity project_lib.ult_tb_reader_slc 

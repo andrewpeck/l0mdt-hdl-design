@@ -162,7 +162,7 @@ begin
           -- read from file
           -- first read from input vector file
           if first_read = '1' then
-            puts("opening CSV files : " & IN_SLC_FILE);
+            puts("opening SLC CSV files : " & IN_SLC_FILE);
             csv_file.initialize(IN_SLC_FILE);
             csv_file.readline;
             csv_file.readline;
