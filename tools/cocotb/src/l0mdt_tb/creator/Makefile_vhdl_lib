@@ -82,57 +82,57 @@ VHDL_SOURCES_xpm = \
 	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
 
 
-VHDL_SOURCES_heg_roi_lib = \
-   $(HEGDIR)/../pkg/heg_pkg.vhd \
-   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
-   $(HEGDIR)/ROMs/roi_lut_functions.vhd
+#VHDL_SOURCES_heg_roi_lib = \
+#   $(HEGDIR)/../pkg/heg_pkg.vhd \
+#   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_functions.vhd
 
 
-VHDL_SOURCES_heg_lib = \
-   $(HPDIR)/../pkg/hp_pkg.vhd \
-   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
-   $(HEGDIR)/../pkg/heg_pkg.vhd \
-   $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
-   $(HEGDIR)/heg_bm.vhd \
-   $(HEGDIR)/heg_ctrl_sig.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
-   $(HEGDIR)/heg_ctrl_roi_tc.vhd \
-   $(HEGDIR)/heg_ctrl_roi.vhd \
-   $(HEGDIR)/heg_ctrl_top.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
-   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
-   $(HEGDIR)/heg.vhd
+#VHDL_SOURCES_heg_lib = \
+#   $(HPDIR)/../pkg/hp_pkg.vhd \
+#   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
+#   $(HEGDIR)/../pkg/heg_pkg.vhd \
+#   $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
+#   $(HEGDIR)/heg_bm.vhd \
+#   $(HEGDIR)/heg_ctrl_sig.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_tc.vhd \
+#   $(HEGDIR)/heg_ctrl_roi.vhd \
+#   $(HEGDIR)/heg_ctrl_top.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
+#   $(HEGDIR)/heg.vhd
 
-VHDL_SOURCES_hp_lib = \
-    $(HPDIR)/../pkg/hp_pkg.vhd \
-    $(HPDIR)/ROMs/hp_dt2r_large_mem.vhd \
-    $(HPDIR)/ROMs/hp_dt2r_small_mem.vhd \
-    $(HPDIR)/hp_calc_dt2r_large.vhd \
-    $(HPDIR)/hp_calc_dt2r_small.vhd \
-    $(HPDIR)/hp_calc_radius.vhd \
-    $(HPDIR)/hp_calc_RoI_vect.vhd \
-    $(HPDIR)/hp_hit_matching.vhd \
-    $(HPDIR)/hp_param_calc.vhd \
-    $(HPDIR)/hp.vhd
+#VHDL_SOURCES_hp_lib = \
+#    $(HPDIR)/../pkg/hp_pkg.vhd \
+#    $(HPDIR)/ROMs/hp_dt2r_large_mem.vhd \
+#    $(HPDIR)/ROMs/hp_dt2r_small_mem.vhd \
+#    $(HPDIR)/hp_calc_dt2r_large.vhd \
+#    $(HPDIR)/hp_calc_dt2r_small.vhd \
+#    $(HPDIR)/hp_calc_radius.vhd \
+#    $(HPDIR)/hp_calc_RoI_vect.vhd \
+#    $(HPDIR)/hp_hit_matching.vhd \
+#    $(HPDIR)/hp_param_calc.vhd \
+#    $(HPDIR)/hp.vhd
 
-VHDL_SOURCES_hps_lib = \
-    $(HPSDIR)/../pkg/hps_pkg.vhd \
-    $(HPSDIR)/hps_sf_wrap.vhd \
-    $(HPSDIR)/hps_pc_b_t0.vhd \
-    $(HPSDIR)/hps_pc_mdt_tc.vhd \
-    $(HPSDIR)/hps_supervisor.vhd \
-    $(HPSDIR)/hps_pc.vhd \
-    $(HPSDIR)/hps_pc_top.vhd \
-    $(HPSDIR)/hps.vhd
+#VHDL_SOURCES_hps_lib = \
+#    $(HPSDIR)/../pkg/hps_pkg.vhd \
+#    $(HPSDIR)/hps_sf_wrap.vhd \
+#    $(HPSDIR)/hps_pc_b_t0.vhd \
+#    $(HPSDIR)/hps_pc_mdt_tc.vhd \
+#    $(HPSDIR)/hps_supervisor.vhd \
+#    $(HPSDIR)/hps_pc.vhd \
+#    $(HPSDIR)/hps_pc_top.vhd \
+#    $(HPSDIR)/hps.vhd
 
 
 
