@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 --  UMass , Physics Department
 --  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
 --  Module: angle (mrad) to slope 

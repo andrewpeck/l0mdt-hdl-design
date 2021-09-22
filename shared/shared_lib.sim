@@ -5,8 +5,10 @@
 # shared/sim/pkg/gldl_textio_pkg.vhd
 
 #---------------------------------
-# Simulation files
+# Simulation functions
 #---------------------------------
+shared/functions/sim/vhdl_tb_utils_pkg.vhd
+shared/functions/sim/vhdl_textio_csv_pkg.vhd
 
 #---------------------------------
 # Simulation input vectors
@@ -21,5 +23,9 @@
 # shared/sim/vhdl_input_vect/csm_TB_A3_Barrel_d_new.txt
 # shared/sim/vhdl_input_vect/slc_TB_A3_Barrel_d_new.txt
 
-shared/sim/vhdl_input_vect/csm_TB_A3_Barrel_yt_v04.txt
-shared/sim/vhdl_input_vect/slc_TB_A3_Barrel_yt_v04.txt
+# shared/sim/vhdl_input_vect/csm_TB_A3_Barrel_yt_v04.txt
+# shared/sim/vhdl_input_vect/slc_TB_A3_Barrel_yt_v04.txt
+
+shared/sim/vhdl_input_vect/csm_A3_Barrel.csv
+shared/sim/vhdl_input_vect/slc_A3_Barrel.csv
+
