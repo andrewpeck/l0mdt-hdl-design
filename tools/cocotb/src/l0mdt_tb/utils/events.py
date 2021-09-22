@@ -91,35 +91,29 @@ def get_bitfield(
         tv_type="value",
         df_type="SL"
 ):
-    bf_list        = []
-    sl_trailer     = []
-    bf_hit_list    = []
-    candidate_id   = 0
-    station_num    = station_name_to_id(station_id)
+    BF_list  = []
+    val_list = []
+
     if tv_type == "value":
         DF_list = event.DF_SL
     else:
         DF_list = event.DF_MDT
 
-    hit_list_BF = []
-    hit_list = []
-    #print("Candidate=",candidate," station_num=",station_num," DF Length = ",len(DF_list))
-
     if df_type == "SL":
-        hit_list_BF = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
+        BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
     elif df_type == "MDT":
-        hit_list_BF = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
+        BF_list = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
 
-    for BF in hit_list_BF:
-        hit_list.append(BF.get_bitwordvalue())
+    for BF in BF_list:
+        val_list.append(BF.get_bitwordvalue())
 
-    if len(hit_list) == 0:
-        hit_list = [0]
+    if len(val_list) == 0:
+        val_list = [0]
 
     if tv_type == "list":
-        return hit_list
+        return val_list
     else:
-        return hit_list[0]
+        return val_list[0]
 
 
 
