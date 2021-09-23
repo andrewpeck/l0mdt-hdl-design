@@ -65,7 +65,7 @@ def run(config):
     print(f"Test: {test_name}")
     print(f"Test run directory: {cwd}")
     print(f"Test output directory: {cwd}/{sim_build_out}")
-    print(f"Running command: {cmd}")
+    print(f"Run command: {cmd}")
     import subprocess
 
     subprocess.call(cmd, shell=True)
