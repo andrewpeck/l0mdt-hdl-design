@@ -46,7 +46,8 @@ entity ult_tb_writer_ucm2hps is
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
     g_IN_HIT_FILE         : string  := "not_defined.csv";
-    g_IN_L0_FILE          : string  := "not_defined.csv"
+    g_IN_L0_FILE          : string  := "not_defined.csv";
+    g_OUT_FILE            : string  := "not_defined.csv"
     -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
     -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
   );
@@ -65,6 +66,7 @@ begin
 
   
   UCM2HPS_OUT: process(clk, rst)
+    variable first_read           : std_logic := '1';
 
     variable csv_file: csv_file_reader_type;
 
@@ -76,10 +78,16 @@ begin
 
 
   begin
-    if rst = '1' then
-      
-    elsif rising_edge(clk) then
-      
+    if rising_edge(clk) then
+      if rst = '1' then
+      else
+        
+        if first_read = '1' then
+          puts("opening UCM2HPS CSV file : " & g_OUT_FILE);
+          csv_file.initialize(g_OUT_FILE,"wr");
+          first_read := '0';
+        end if;
+      end if;
     end if;
   end process UCM2HPS_OUT;
   

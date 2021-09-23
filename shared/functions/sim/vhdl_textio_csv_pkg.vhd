@@ -31,9 +31,12 @@ package vhdl_textio_csv_pkg is
   
   type csv_file_reader_type is protected
     -- Open the CSV text file to be used for subsequent read operations
-    procedure initialize(file_pathname: string);
+    procedure initialize(file_pathname: string ; mode : string);
     -- Release (close) the associated CSV file
     procedure dispose;
+    -- True when the end of the CSV file was reached
+    impure function end_of_file return boolean;
+    -------------------- READ ------------------
     -- Read one line from the csv file, and keep it in the cache
     procedure readline;
     -- Read a string from the csv file and convert it to an integer
@@ -46,8 +49,8 @@ package vhdl_textio_csv_pkg is
     impure function read_integer_as_boolean return boolean;
     -- Read a string from the csv file, until a separator character ',' is found
     impure function read_string return string;
-    -- True when the end of the CSV file was reached
-    impure function end_of_file return boolean;
+    -------------------- WRITE ------------------
+    procedure writeline;
 end protected;
   
 end package vhdl_textio_csv_pkg;
@@ -70,9 +73,20 @@ package body vhdl_textio_csv_pkg is
     end;
     
     -- Open the CSV text file to be used for subsequent read operations
-    procedure initialize(file_pathname: string) is begin
+    procedure initialize(file_pathname: string ; mode : string) is begin
+      if mode = "rd" then
         file_open(my_csv_file, file_pathname, READ_MODE);
+      elsif mode = "wr" then
+        file_open(my_csv_file, file_pathname, WRITE_MODE);
+      else
+        -- error
+      end if;
         end_of_file_reached := false;
+    end;
+
+    procedure wr_init(file_pathname: string) is begin
+      file_open(my_csv_file, file_pathname, READ_MODE);
+      end_of_file_reached := false;
     end;
     
     -- Release (close) the associated CSV file
@@ -80,6 +94,7 @@ package body vhdl_textio_csv_pkg is
         file_close(my_csv_file);
     end;
     
+    -------------------- READ ------------------
     -- Read one line from the csv file, and keep it in the cache
     procedure readline is begin
         readline(my_csv_file, current_line);
@@ -145,6 +160,16 @@ package body vhdl_textio_csv_pkg is
           return return_string;
         end  if;
     end;
-end protected body;
+    
+    -------------------- WRITE ------------------
+    procedure writeline is begin
+      writeline(my_csv_file, current_line);
+      -- end_of_file_reached := endfile(my_csv_file);
+    end;
+
+
+
+
+  end protected body;
   
 end package body vhdl_textio_csv_pkg;
