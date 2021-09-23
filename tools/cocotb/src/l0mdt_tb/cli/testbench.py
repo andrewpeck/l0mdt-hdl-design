@@ -3,7 +3,7 @@ import os
 import click
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import simulator_support
+
 
 # from l0mdt_tb.testbench import defined_testbenches
 
@@ -62,8 +62,9 @@ def run(config):
     cmd = f"{cmd} WAVES=1 make -f {makefile}"
     cwd = os.getcwd()
     print(80 * "*")
-    print(f"Beginning test: {test_name}")
-    print(f"Current working directory: {cwd}")
+    print(f"Test: {test_name}")
+    print(f"Test run directory: {cwd}")
+    print(f"Test output directory: {cwd}/{sim_build_out}")
     print(f"Running command: {cmd}")
     import subprocess
 

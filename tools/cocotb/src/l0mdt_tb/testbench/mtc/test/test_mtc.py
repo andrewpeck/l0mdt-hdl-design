@@ -20,7 +20,7 @@ from l0mdt_tb.testbench.mtc.mtc_ports import MtcPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.mtc.mtc_block as mtc_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 

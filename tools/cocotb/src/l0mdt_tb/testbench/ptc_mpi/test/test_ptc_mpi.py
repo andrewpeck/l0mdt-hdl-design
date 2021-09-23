@@ -25,7 +25,7 @@ from l0mdt_tb.testbench.ptc_mpi.ptc_mpi_ports import PtcMpiPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptc_mpi.ptc_mpi_block as ptc_mpi_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 

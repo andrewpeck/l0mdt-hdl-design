@@ -125,7 +125,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     pass_count         = 0
     fail_count         = 0
     RTL_DFSL           = DataFormat()
-    EXP_DF             = DataFormat()
+    EXP_DF             = []
     tv_format_val      = []
     tv_format_bf       = []
     comparison_data    = []
@@ -133,10 +133,6 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
     tv_format_failure_cnt = {}
 
     RTL_DFSL.build_data_format()
-    EXP_DF.build_data_format()
-
-
-
 
     if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
         stationNum_internal = 0
@@ -157,14 +153,14 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         else:
             print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                #print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
+                print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
                     tv_format_val.clear()
                     comparison_data.clear()
 
-                    EXP_DF = tv_bcid_list[ievent].DF_SL               #For comparing hits, will have to look at DF_MDT
+                    EXP_DF = tv_bcid_list[ievent].DF_SL.copy()               #For comparing hits, will have to look at DF_MDT
                     EXP_BF = EXP_DF[this_candidate].getBitFieldWord(tvformat, stationID)
 
 

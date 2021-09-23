@@ -22,7 +22,7 @@ from l0mdt_tb.testbench.lsf.lsf_ports import LsfPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.lsf.lsf_block as lsf_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 

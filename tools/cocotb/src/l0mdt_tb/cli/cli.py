@@ -2,7 +2,7 @@
 
 import click
 
-from . import utils
+#from . import utils
 from . import testbench
 from . import creator
 
@@ -13,9 +13,6 @@ def tb():
 
 
 tb.add_command(testbench.run)
-#tb.add_command(utils.diff)
-#tb.add_command(utils.test_summary)
-#tb.add_command(utils.dump)
 tb.add_command(testbench.list)
 tb.add_command(testbench.check_config)
 tb.add_command(creator.create)
