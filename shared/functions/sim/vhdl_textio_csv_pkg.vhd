@@ -51,6 +51,7 @@ package vhdl_textio_csv_pkg is
     impure function read_string return string;
     -------------------- WRITE ------------------
     procedure writeline;
+    procedure write_string(text : string);
 end protected;
   
 end package vhdl_textio_csv_pkg;
@@ -82,11 +83,6 @@ package body vhdl_textio_csv_pkg is
         -- error
       end if;
         end_of_file_reached := false;
-    end;
-
-    procedure wr_init(file_pathname: string) is begin
-      file_open(my_csv_file, file_pathname, READ_MODE);
-      end_of_file_reached := false;
     end;
     
     -- Release (close) the associated CSV file
@@ -167,7 +163,9 @@ package body vhdl_textio_csv_pkg is
       -- end_of_file_reached := endfile(my_csv_file);
     end;
 
-
+    procedure write_string(text : string) is begin
+      write(current_line,text);
+    end;
 
 
   end protected body;

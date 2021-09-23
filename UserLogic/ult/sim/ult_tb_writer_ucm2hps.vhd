@@ -61,20 +61,28 @@ entity ult_tb_writer_ucm2hps is
 end entity ult_tb_writer_ucm2hps;
 
 architecture sim of ult_tb_writer_ucm2hps is
+
+  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_av : ucm2hps_bus_avt >>;
+
+  signal inn_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
+  signal mid_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
+  signal out_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
+  signal ext_ucm2hps_bus_ar : ucm2hps_bus_at(c_NUM_THREADS-1 downto 0);
   
 begin
 
+  inn_ucm2hps_bus_ar <= structify(inn_slc_to_h2s_av);
+  mid_ucm2hps_bus_ar <= structify(mid_slc_to_h2s_av);
+  out_ucm2hps_bus_ar <= structify(out_slc_to_h2s_av);
+  ext_ucm2hps_bus_ar <= structify(ext_slc_to_h2s_av);
   
   UCM2HPS_OUT: process(clk, rst)
     variable first_read           : std_logic := '1';
 
     variable csv_file: csv_file_reader_type;
-
-    alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
-    alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
-    alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_av : ucm2hps_bus_avt >>;
-    alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_av : ucm2hps_bus_avt >>;
-
 
 
   begin
@@ -85,6 +93,8 @@ begin
         if first_read = '1' then
           puts("opening UCM2HPS CSV file : " & g_OUT_FILE);
           csv_file.initialize(g_OUT_FILE,"wr");
+          csv_file.write_string("kkkkkkk");
+          csv_file.writeline;
           first_read := '0';
         end if;
       end if;
