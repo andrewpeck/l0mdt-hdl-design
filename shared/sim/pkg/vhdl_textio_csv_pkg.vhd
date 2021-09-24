@@ -52,6 +52,7 @@ package vhdl_textio_csv_pkg is
     -------------------- WRITE ------------------
     procedure writeline;
     procedure write_string(text : string);
+    procedure write_word(text : string);
 end protected;
   
 end package vhdl_textio_csv_pkg;
@@ -64,10 +65,10 @@ package body vhdl_textio_csv_pkg is
     variable current_line: line;
     -- true when end of file was reached and there are no more lines to read
     variable end_of_file_reached: boolean;
-    
     -- Maximum string length for read operations
     constant LINE_LENGTH_MAX: integer := 256;
-
+    --
+    variable column_count : integer := 0;
     -- True when the end of the CSV file was reached
     impure function end_of_file return boolean is begin
         return end_of_file_reached;
@@ -161,10 +162,19 @@ package body vhdl_textio_csv_pkg is
     procedure writeline is begin
       writeline(my_csv_file, current_line);
       -- end_of_file_reached := endfile(my_csv_file);
+      column_count := 0;
     end;
 
     procedure write_string(text : string) is begin
       write(current_line,text);
+      column_count := 0;
+    end;
+    procedure write_word(text : string) is begin
+      if (column_count > 0) then
+        write(current_line,',');
+      end if;
+      write(current_line,text);
+      column_count := column_count +1;
     end;
 
 

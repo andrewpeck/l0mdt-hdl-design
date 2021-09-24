@@ -93,6 +93,9 @@ begin
         if first_read = '1' then
           puts("opening UCM2HPS CSV file : " & g_OUT_FILE);
           csv_file.initialize(g_OUT_FILE,"wr");
+          csv_file.write_word("ToA");
+          csv_file.writeline;
+
           -- muid
           csv_file.write_word("ToA");
           csv_file.write_word("event");          
