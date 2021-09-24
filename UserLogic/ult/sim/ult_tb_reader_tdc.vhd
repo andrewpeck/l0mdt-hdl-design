@@ -208,21 +208,20 @@ begin
 
           -- first read from input vector file
           if first_read = '1' then
-            row_counter := row_counter +1;
             puts("opening MDT CSV files : " & IN_HIT_FILE);
             csv_file.initialize(IN_HIT_FILE);
             csv_file.readline;
             csv_file.readline;
 
             ToA              := csv_file.read_integer;
-            i_station        := csv_file.read_integer;
-            Chamber_id       := csv_file.read_integer;
-            Chamber_ieta     := csv_file.read_integer;
             mdt_time_coarse  := csv_file.read_integer;
             mdt_time_fine    := csv_file.read_integer;
-            tube_global      := csv_file.read_integer;
             tube_local       := csv_file.read_integer;
+            tube_global      := csv_file.read_integer;
             tube_layer       := csv_file.read_integer;
+            Chamber_id       := csv_file.read_integer;
+            Chamber_ieta     := csv_file.read_integer - 1;
+            i_station        := csv_file.read_integer;
             tube_z           := csv_file.read_integer;
             tube_rho         := csv_file.read_integer;
             drift_time       := csv_file.read_real;
@@ -285,6 +284,8 @@ begin
             -- readline(input_mdt_tar_file,row);
             -- read(row, v_mdt_event);
             mdt_tdc_event_r <= v_mdt_event;
+            row_counter := row_counter +1;
+
             -- report "Read line : " & integer'image(row_counter);
             first_read := '0';
           end if;
@@ -293,6 +294,8 @@ begin
           -- read from input vector file
           RL : while true loop
             if (v_mdt_event.ToA < tb_curr_tdc_time) then
+              -- puts("toa - ",to_integer(v_mdt_event.ToA)," ::: tdc - ",to_integer(tb_curr_tdc_time));
+              -- puts("v_mdt_event.station - ",to_integer(v_mdt_event.station)," ::: tdc - ",to_integer(v_mdt_event.chamber));
               -- i_mdt_tar_av <= mdt_tdc_event_r.tar;
               if (csv_file.end_of_file = false) then
 
@@ -319,18 +322,17 @@ begin
                 else
                   -- ERROR
                 end if;
-                row_counter := row_counter +1;
                 csv_file.readline;
 
                 ToA              := csv_file.read_integer;
-                i_station        := csv_file.read_integer;
-                Chamber_id       := csv_file.read_integer;
-                Chamber_ieta     := csv_file.read_integer;
                 mdt_time_coarse  := csv_file.read_integer;
                 mdt_time_fine    := csv_file.read_integer;
-                tube_global      := csv_file.read_integer;
                 tube_local       := csv_file.read_integer;
+                tube_global      := csv_file.read_integer;
                 tube_layer       := csv_file.read_integer;
+                Chamber_id       := csv_file.read_integer;
+                Chamber_ieta     := csv_file.read_integer - 1;
+                i_station        := csv_file.read_integer;
                 tube_z           := csv_file.read_integer;
                 tube_rho         := csv_file.read_integer;
                 drift_time       := csv_file.read_real;
@@ -341,6 +343,7 @@ begin
                 channel          := csv_file.read_integer;
                 t0               := csv_file.read_real;
                 TOF              := csv_file.read_real;
+    
     
                 puts("##### MDT( " & integer'image(row_counter) &
                 " ): "& integer'image(ToA             ) &
@@ -388,11 +391,13 @@ begin
                     tdcid => to_unsigned( mezz, TDCPOLMUX2TAR_TDCID_LEN)
                   )
                 );
+                row_counter := row_counter +1;
     
                 -- readline(input_mdt_tar_file,row); -- reads header and ignores
                 -- readline(input_mdt_tar_file,row);
                 -- read(row, v_mdt_event);
                 mdt_tdc_event_r <= v_mdt_event;
+
                 -- readline(input_mdt_tar_file,row);
                 -- read(row, v_mdt_event);
                 -- mdt_tdc_event_r <= v_mdt_event;
