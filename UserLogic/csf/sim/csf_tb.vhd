@@ -74,6 +74,17 @@ BEGIN
     --        i_rst => rst
     --    );
 
+    writer : ENTITY project_lib.csf_tb_writer
+    generic map (
+        OUT_FILE => "out_csf.csv"
+    )
+    port map(
+        clk => clk,
+        rst => rst,
+        enable => 1,
+        segment => seg
+    );
+
 
     CLK_process : PROCESS
     BEGIN
