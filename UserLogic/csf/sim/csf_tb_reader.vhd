@@ -96,7 +96,7 @@ begin
         -- write to DUT
           if first_read = '1' then
             first_read := '0';
-            csv.initialize(IN_HIT_FILE);
+            csv.initialize(IN_HIT_FILE, "rd");
             csv.readline; -- First line is the header
           elsif csv.end_of_file = false then
             csv.readline;
