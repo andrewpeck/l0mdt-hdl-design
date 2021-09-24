@@ -93,7 +93,22 @@ begin
         if first_read = '1' then
           puts("opening UCM2HPS CSV file : " & g_OUT_FILE);
           csv_file.initialize(g_OUT_FILE,"wr");
-          csv_file.write_string("kkkkkkk");
+          -- muid
+          csv_file.write_word("ToA");
+          csv_file.write_word("event");          
+          -- muid
+          csv_file.write_word("slc_id");
+          csv_file.write_word("slid");
+          csv_file.write_word("bcid");
+          -- mdtseg_Dest
+          csv_file.write_word("mdtseg_Dest");
+          -- mdtid
+          csv_file.write_word("chamber_id");
+          csv_file.write_word("chamber_ieta");
+          -- vec_pos
+          csv_file.write_word("vec_pos");
+          -- vec_ang
+          csv_file.write_word("vec_ang");
           csv_file.writeline;
           first_read := '0';
         end if;
