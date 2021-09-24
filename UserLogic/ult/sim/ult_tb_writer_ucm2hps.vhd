@@ -291,7 +291,7 @@ begin
         csv_file.write_word("sl_charge"); 
         csv_file.write_word("cointype"); 
         -- -- trailer
-        csv_file.write_word("t_reserved"); 
+        -- csv_file.write_word("t_reserved"); 
         csv_file.write_word("crc"); 
         csv_file.write_word("fiberid"); 
         csv_file.write_word("slid"); 
@@ -335,19 +335,19 @@ begin
             csv_file.write_integer(ucm2pl_ar(sl_i).common.sl_pt); 
             csv_file.write_integer(ucm2pl_ar(sl_i).common.sl_ptthresh); 
             csv_file.write_bool(ucm2pl_ar(sl_i).common.sl_charge); 
-            csv_file.write_integer(ucm2pl_ar(sl_i).common.cointype); 
+            csv_file.write_integer(unsigned(ucm2pl_ar(sl_i).common.cointype)); 
             -- -- -- trailer
-            csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.t_reserved); 
-            csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.crc); 
+            -- csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.t_reserved); 
+            csv_file.write_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.crc)); 
             csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.fiberid); 
             csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.slid); 
-            csv_file.write_integer(ucm2pl_ar(sl_i).common.trailer.comma); 
+            csv_file.write_integer(unsigned(ucm2pl_ar(sl_i).common.trailer.comma)); 
             -- --
-            -- csv_file.write_integer(to_integer(ucm2pl_ar(sl_i).phimod));
+            csv_file.write_integer(ucm2pl_ar(sl_i).phimod);
             -- --nsw
-            -- csv_file.write_integer(to_integer(ucm2pl_ar(sl_i).nswseg_angdtheta));
-            -- csv_file.write_integer(to_integer(ucm2pl_ar(sl_i).nswseg_posphi));
-            -- csv_file.write_integer(to_integer(ucm2pl_ar(sl_i).nswseg_poseta));
+            csv_file.write_integer(ucm2pl_ar(sl_i).nswseg_angdtheta);
+            csv_file.write_integer(ucm2pl_ar(sl_i).nswseg_posphi);
+            csv_file.write_integer(ucm2pl_ar(sl_i).nswseg_poseta);
 
 
 
