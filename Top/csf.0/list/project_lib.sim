@@ -1,4 +1,4 @@
 #Simulator xsim
-shared/sim/src/read_file.vhd
 UserLogic/csf/sim/csf_tb.vhd topsim=csf_tb runtime=10us
 UserLogic/csf/sim/*
+shared/shared_lib.sim

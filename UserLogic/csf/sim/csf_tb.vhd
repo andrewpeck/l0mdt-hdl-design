@@ -33,9 +33,9 @@ library shared_lib;
 library csf_lib;
   use csf_lib.csf_pkg.ALL;
   use csf_lib.csf_custom_pkg.ALL;
-  
-use csf_lib.csf_textio_pkg.all;
 
+library project_lib;
+  
 ENTITY csf_tb IS
     --  Port ( );
 END csf_tb;
@@ -47,9 +47,11 @@ ARCHITECTURE Behavioral OF csf_tb IS
     CONSTANT clk_period : TIME := 4.0 ns;
     SIGNAL eof : STD_LOGIC := '0';
     SIGNAL rst : STD_LOGIC := '0';
+    signal v_seg : sf2ptcalc_rvt;
+    signal seg : sf2ptcalc_rt;
 BEGIN
 
-    reader : ENTITY csf_lib.csf_tb_reader
+    reader : ENTITY project_lib.csf_tb_reader
     generic map (
         IN_HIT_FILE => "csf_Barrel.csv"
     )
@@ -81,7 +83,58 @@ BEGIN
         WAIT FOR CLK_period/2;
     END PROCESS;
 
+    CSF : ENTITY csf_lib.csf
+        port map (
+            clk => clk,
+            i_seed => vectorify(seed),
+            i_mdt_hit => vectorify(mdt_hit),
+            i_eof => eof,
+            i_rst => rst,
+            o_seg => v_seg,
 
+            --SpuBuffer
+            spy_clock           => clk,
+            -- Hit Spybuffer
+            i_spyhit_fc_we      => '0',
+            i_spyhit_fc_re      => '0',
+            i_spyhit_freeze     => '0',
+            i_spyhit_playback   => (others => '0'),
+            i_spyhit_pb_we      => '0',
+            i_spyhit_pb_wdata   => (others => '0'),
+            i_spyhit_re         => '0',
+            i_spyhit_meta_we    => '0',
+            i_spyhit_addr       => (others => '0'),
+            i_spyhit_meta_addr  => (others => '0'),
+            i_spyhit_meta_wdata => (others => '0'),
+
+            -- SLC Spybuffer
+            i_spyslc_fc_we      => '0',
+            i_spyslc_fc_re      => '0',
+            i_spyslc_freeze     => '0',
+            i_spyslc_playback   => (others => '0'),
+            i_spyslc_pb_we      => '0',
+            i_spyslc_pb_wdata   => (others => '0'),
+            i_spyslc_re         => '0',
+            i_spyslc_addr       => (others => '0'),
+            i_spyslc_meta_we    => '0',
+            i_spyslc_meta_addr  => (others => '0'),
+            i_spyslc_meta_wdata => (others => '0'),
+
+            -- Segment Spybuffer
+            i_spyseg_fc_we      => '0',
+            i_spyseg_fc_re      => '0',
+            i_spyseg_freeze     => '0',
+            i_spyseg_playback   => (others => '0'),
+            i_spyseg_pb_we      => '0',
+            i_spyseg_pb_wdata   => (others => '0'),
+            i_spyseg_re         => '0',
+            i_spyseg_addr       => (others => '0'),
+            i_spyseg_meta_addr  => (others => '0'),
+            i_spyseg_meta_we    => '0',
+            i_spyseg_meta_wdata => (others => '0')
+    );
+
+    seg <= structify(v_seg);
 
     --layerId 3 driftRadius 372 bplus 29 bminus 12 x 2128 z 934 isOnSegment 1
     --layerId 3 driftRadius 280 bplus 42 bminus 29 x 2128 z 1415 isOnSegment 1

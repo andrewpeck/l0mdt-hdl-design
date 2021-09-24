@@ -82,7 +82,7 @@ def main():
         invsqrt_mbar_mem.write("%04X\n" % invsqrt)
         sqrt_mbar = int(floor(sqrt(args.mbar_multi**2 + x**2)))
         # sqrt_mbar_rom.write("%d,\n" % sqrt_mbar)
-        sqrt_mbar_mem.write("%04X\n" % sqrt_mbar)
+        sqrt_mbar_mem.write("%03X\n" % sqrt_mbar)
 
     for x in range(0, 2**20 - 1):
         reciprocal = int(floor(2**args.divider_width / (x + 0.5)))
@@ -108,7 +108,7 @@ def main():
 
     reciprocal_mem.write("0000\n")
     invsqrt_mbar_mem.write("0000 \n")
-    sqrt_mbar_mem.write("0000 \n")
+    sqrt_mbar_mem.write("000 \n")
     m_to_theta_mem.write("0000 \n")
 
 
