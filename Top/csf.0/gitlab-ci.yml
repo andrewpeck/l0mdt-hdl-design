@@ -10,8 +10,8 @@ GEN:csf.0:
       - small
       - hog
       - "2020.2"
-# SIM:csf.0:
-#     extends: .simulate_project
-#     variables:
-#       extends: .vars
-#       PROJECT_NAME: csf.0
+SIM:csf.0:
+    extends: .simulate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: csf.0
