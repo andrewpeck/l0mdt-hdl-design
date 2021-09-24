@@ -24,12 +24,12 @@ add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ucm2pl_av
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/clk
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/enable
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_OUT_FILE
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/rst
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
@@ -41,6 +41,7 @@ add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
 add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ucm2pl_ar
 add wave -noupdate -group ULT /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT /ult_tp/ULT/ttc_commands
@@ -637,7 +638,7 @@ add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_t0_v
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mdt_full_data_v
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {1148671600 fs} 0} {{Cursor 3} {4179687500 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {528741093 fs} 0} {{Cursor 3} {4179687500 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -653,4 +654,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2973453655 fs} {3001397177 fs}
+WaveRestoreZoom {0 fs} {3150 ns}

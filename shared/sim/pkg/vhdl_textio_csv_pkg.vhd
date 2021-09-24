@@ -54,6 +54,9 @@ package vhdl_textio_csv_pkg is
     procedure write_string(text : string);
     procedure write_word(text : string);
     procedure write_integer(number : integer);
+    procedure write_integer(number : unsigned);
+    procedure write_integer(number : signed);
+    procedure write_bool(number : std_logic);
 end protected;
   
 end package vhdl_textio_csv_pkg;
@@ -183,6 +186,32 @@ package body vhdl_textio_csv_pkg is
       end if;
       write(current_line,number);
       column_count := column_count +1;
+    end;
+
+    procedure write_integer(number : unsigned)is begin
+      write_integer(to_integer(number));
+      -- if (column_count > 0) then
+      --   write(current_line,',');
+      -- end if;
+      -- write(current_line,number);
+      -- column_count := column_count +1;
+    end;
+
+    procedure write_integer(number : signed)is begin
+      write_integer(to_integer(number));
+      -- if (column_count > 0) then
+      --   write(current_line,',');
+      -- end if;
+      -- write(current_line,number);
+      -- column_count := column_count +1;
+    end;
+
+    procedure write_bool(number : std_logic)is begin
+      if number = '0' then
+        write_integer(0);
+      else
+        write_integer(1);
+      end if;
     end;
 
   end protected body;
