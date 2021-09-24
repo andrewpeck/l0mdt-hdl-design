@@ -47,11 +47,7 @@ begin
 
   MTC_GEN : if c_MTC_ENABLED = '1' generate
     MTC: entity mtc_lib.top_mtc
-    generic map(
-      TOTAL_PTCALC_BLKS => c_NUM_THREADS,
-      MTC_PER_BCID      => c_MAX_NUM_SL,
-      n_PRIMARY_MTC     => c_NUM_MTC
-    )
+
     port map (
       clock               => clock_and_control.clk,
       rst                 => clock_and_control.rst,
@@ -63,7 +59,7 @@ begin
     o_sump <= '0';
 
   end generate;
-  
+
   MTC_NO_GEN : if c_MTC_ENABLED = '0' generate
     signal ptcalc_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal pl2mtc_sump            : std_logic_vector (c_MAX_NUM_SL-1 downto 0);
@@ -92,5 +88,5 @@ begin
     end process;
   end generate;
 
- 
+
 end behavioral;
