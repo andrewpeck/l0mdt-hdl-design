@@ -53,6 +53,7 @@ package vhdl_textio_csv_pkg is
     procedure writeline;
     procedure write_string(text : string);
     procedure write_word(text : string);
+    procedure write_integer(number : integer);
 end protected;
   
 end package vhdl_textio_csv_pkg;
@@ -167,7 +168,7 @@ package body vhdl_textio_csv_pkg is
 
     procedure write_string(text : string) is begin
       write(current_line,text);
-      column_count := 0;
+      writeline;
     end;
     procedure write_word(text : string) is begin
       if (column_count > 0) then
@@ -176,7 +177,13 @@ package body vhdl_textio_csv_pkg is
       write(current_line,text);
       column_count := column_count +1;
     end;
-
+    procedure write_integer(number : integer) is begin
+      if (column_count > 0) then
+        write(current_line,',');
+      end if;
+      write(current_line,number);
+      column_count := column_count +1;
+    end;
 
   end protected body;
   

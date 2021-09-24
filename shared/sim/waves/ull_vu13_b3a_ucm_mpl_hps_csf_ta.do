@@ -1,29 +1,46 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/IN_HIT_FILE
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/clk
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/rst
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/enable
-add wave -noupdate -expand -group tb_mdt -radix unsigned /ult_tp/MDT/tb_curr_tdc_time
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_tdc_station
-add wave -noupdate -expand -group tb_mdt -childformat {{/ult_tp/MDT/mdt_tdc_event_r.ToA -radix unsigned}} -expand -subitemconfig {/ult_tp/MDT/mdt_tdc_event_r.ToA {-radix unsigned}} /ult_tp/MDT/mdt_tdc_event_r
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_new_event
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_ar
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_ar
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_ar
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_ar
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_inn_fifo
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_mid_fifo
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_out_fifo
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_ext_fifo
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_inn_counts
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_mid_counts
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_out_counts
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/mdt_ext_counts
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_av
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_av
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_av
-add wave -noupdate -expand -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_av
+add wave -noupdate -group tb_mdt /ult_tp/MDT/IN_HIT_FILE
+add wave -noupdate -group tb_mdt /ult_tp/MDT/clk
+add wave -noupdate -group tb_mdt /ult_tp/MDT/rst
+add wave -noupdate -group tb_mdt /ult_tp/MDT/enable
+add wave -noupdate -group tb_mdt -radix unsigned /ult_tp/MDT/tb_curr_tdc_time
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_tdc_station
+add wave -noupdate -group tb_mdt -childformat {{/ult_tp/MDT/mdt_tdc_event_r.ToA -radix unsigned}} -expand -subitemconfig {/ult_tp/MDT/mdt_tdc_event_r.ToA {-height 17 -radix unsigned}} /ult_tp/MDT/mdt_tdc_event_r
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_new_event
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_ar
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_ar
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_ar
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_ar
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_inn_fifo
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_mid_fifo
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_out_fifo
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_ext_fifo
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_inn_counts
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_mid_counts
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_out_counts
+add wave -noupdate -group tb_mdt /ult_tp/MDT/mdt_ext_counts
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_av
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_av
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_av
+add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/clk
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/enable
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_OUT_FILE
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/rst
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_slc_to_h2s_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_ucm2hps_bus_ar
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_slc_to_h2s_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_ucm2hps_bus_ar
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
+add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
 add wave -noupdate -group ULT /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT /ult_tp/ULT/ttc_commands
@@ -636,4 +653,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1137160989 fs} {1165104511 fs}
+WaveRestoreZoom {2973453655 fs} {3001397177 fs}

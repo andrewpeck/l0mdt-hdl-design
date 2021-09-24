@@ -47,7 +47,7 @@ entity ult_tb_writer_ucm2hps is
     g_IN_SLC_FILE         : string  := "not_defined.csv";
     g_IN_HIT_FILE         : string  := "not_defined.csv";
     g_IN_L0_FILE          : string  := "not_defined.csv";
-    g_OUT_FILE            : string  := "not_defined.csv"
+    g_OUT_FILE            : string  := "ov_ucm2hps_A3B.csv"
     -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
     -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv"
   );
@@ -93,12 +93,15 @@ begin
         if first_read = '1' then
           puts("opening UCM2HPS CSV file : " & g_OUT_FILE);
           csv_file.initialize(g_OUT_FILE,"wr");
-          csv_file.write_word("ToA");
-          csv_file.writeline;
-
+          csv_file.write_string("# --------------------------");
+          csv_file.write_string("#");
+          csv_file.write_string("#");
+          csv_file.write_string("# --------------------------");         
           -- muid
           csv_file.write_word("ToA");
           csv_file.write_word("event");          
+          csv_file.write_word("thread");          
+          csv_file.write_word("station");          
           -- muid
           csv_file.write_word("slc_id");
           csv_file.write_word("slid");
@@ -114,7 +117,47 @@ begin
           csv_file.write_word("vec_ang");
           csv_file.writeline;
           first_read := '0';
+        else
+
+
+
+          if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+            for th_i in c_NUM_THREADS -1 downto 0 loop
+              -- read_slc := structify(heg2sf_inn_slc_av(heg_i));
+              if inn_ucm2hps_bus_ar(th_i).data_valid = '1' then
+                puts(" hello ",th_i);
+  
+              -- muid
+              csv_file.write_integer(to_integer(tb_curr_tdc_time));
+              csv_file.write_word("event");          
+              csv_file.write_integer(th_i);          
+              csv_file.write_word("0");          
+              -- muid
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slcid));
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).muid.slid));
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).muid.bcid));
+              -- mdtseg_Dest
+              csv_file.write_integer(to_integer(unsigned(inn_ucm2hps_bus_ar(th_i).mdtseg_dest)));
+              -- mdtid
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_id));
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).mdtid.chamber_ieta));
+              -- vec_pos
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_pos));
+              -- vec_ang
+              csv_file.write_integer(to_integer(inn_ucm2hps_bus_ar(th_i).vec_ang));
+              csv_file.writeline;
+  
+              end if;
+            end loop;
+          end if;
+
+
+
+
+
         end if;
+
+
       end if;
     end if;
   end process UCM2HPS_OUT;
