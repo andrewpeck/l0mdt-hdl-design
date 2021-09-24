@@ -63,15 +63,15 @@ use project_lib.vhdl_tb_utils_pkg.all;
 
 entity ult_tp is
   generic (
-    PRJ_INFO            : string  := "BA3_yt_v04";
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    IN_HIT_FILE         : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
-    OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
-    OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
-    OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
+    PRJ_INFO            : string  := "BA3";
+    IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
+    IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
+    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
+    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
     DUMMY               : boolean := false
     );
 end entity ult_tp;
@@ -350,7 +350,7 @@ begin
 
   MDT : entity project_lib.ult_tb_reader_tdc 
   generic map (
-    IN_HIT_FILE => "csm_A3_Barrel.csv"--IN_HIT_FILE
+    IN_HIT_FILE => IN_HIT_FILE
   )
   port map(
     clk => clk,
@@ -368,7 +368,7 @@ begin
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
-    IN_SLC_FILE => "slc_A3_Barrel.csv"--IN_SLC_FILE
+    IN_SLC_FILE => IN_SLC_FILE
   )
   port map(
     clk => clk,
@@ -411,11 +411,27 @@ begin
 	-- TAR2DAQ
   -------------------------------------------------------------------------------------
   -------------------------------------------------------------------------------------
-	-- UCM2HPS
+	-- UCM2HPS & UCM2MPL
   -------------------------------------------------------------------------------------
-  -------------------------------------------------------------------------------------
-	-- UCM2MPL
-  -------------------------------------------------------------------------------------
+  -- TB_UCM_GEN: if condition generate
+    
+  -- end generate TB_UCM_GEN;
+  UCM : entity project_lib.ult_tb_writer_ucm2hps 
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk => clk,
+    rst => rst,
+    enable => enable_slc,
+    --
+    tb_curr_tdc_time => tb_curr_tdc_time
+  );
+
   -------------------------------------------------------------------------------------
 	-- HEG2SF
   -------------------------------------------------------------------------------------

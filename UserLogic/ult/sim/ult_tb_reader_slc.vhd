@@ -163,7 +163,7 @@ begin
           -- first read from input vector file
           if first_read = '1' then
             puts("opening SLC CSV files : " & IN_SLC_FILE);
-            csv_file.initialize(IN_SLC_FILE);
+            csv_file.initialize(IN_SLC_FILE,"rd");
             csv_file.readline;
             csv_file.readline;
             -- extract(csv_file,v_slc_event);

@@ -208,8 +208,8 @@ begin
 
           -- first read from input vector file
           if first_read = '1' then
-            puts("opening MDT CSV files : " & IN_HIT_FILE);
-            csv_file.initialize(IN_HIT_FILE);
+            puts("opening MDT CSV file : " & IN_HIT_FILE);
+            csv_file.initialize(IN_HIT_FILE,"rd");
             csv_file.readline;
             csv_file.readline;
 
