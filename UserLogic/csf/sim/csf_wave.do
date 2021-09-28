@@ -6,7 +6,7 @@ add wave -noupdate /csf_tb/mdt_hit
 add wave -noupdate /csf_tb/eof
 add wave -noupdate /csf_tb/rst
 add wave -noupdate /csf_tb/v_seg
-add wave -noupdate /csf_tb/seg
+add wave -noupdate -childformat {{/csf_tb/seg.segpos -radix unsigned} {/csf_tb/seg.segangle -radix unsigned}} -expand -subitemconfig {/csf_tb/seg.segpos {-radix unsigned} /csf_tb/seg.segangle {-height 21 -radix unsigned}} /csf_tb/seg
 add wave -noupdate -divider CSF_Histo_0
 add wave -noupdate -format Literal /csf_tb/CSF/b_e_generate/histograms(0)/histogram/i_eof
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(0)/histogram/i_mdthit
@@ -44,8 +44,50 @@ add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(0)/histogram/w_addr(45)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(0)/histogram/w_en(45)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(0)/histogram/o_histo_hit0
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(0)/histogram/o_histo_hit1
+add wave -noupdate -divider {CSF Histo 1}
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/mdt_hit
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/mbar
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/i_eof
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/o_histo_hit0
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/o_histo_hit1
+add wave -noupdate -divider {Fitter 0}
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_start
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_NSumX2
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_NSumXY
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_SumXYSumX
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_SumYSumX
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_SumYSumX2
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dv3
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/numerator_b
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/numerator_m
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/denominator
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dv4
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/numerator_b_red
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/numerator_m_red
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/reciprocal_addr
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dv7
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/reciprocal_den
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dv9
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/mfit_full
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/bfit_full
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_fit_valid
+add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_bfit
+add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_mfit
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_nhits
+add wave -noupdate -divider {Coordinate Transf}
+add wave -noupdate /csf_tb/CSF/coordtransform/locseg_i
+add wave -noupdate /csf_tb/CSF/coordtransform/seed_i
+add wave -noupdate /csf_tb/CSF/coordtransform/vec_pos
+add wave -noupdate /csf_tb/CSF/coordtransform/delta_r_mbar
+add wave -noupdate /csf_tb/CSF/coordtransform/abs_loc_pos
+add wave -noupdate /csf_tb/CSF/coordtransform/globseg
+add wave -noupdate /csf_tb/CSF/coordtransform/DeltaR_BIL
+add wave -noupdate /csf_tb/CSF/coordtransform/DeltaR_BML
+add wave -noupdate /csf_tb/CSF/coordtransform/DeltaR_BOL
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {201872417 fs} 0}
+WaveRestoreCursors {{Cursor 1} {980088359 fs} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 105
@@ -61,4 +103,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {190327996 fs} {255952996 fs}
+WaveRestoreZoom {0 fs} {446288210 fs}

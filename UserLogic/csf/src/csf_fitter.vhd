@@ -116,10 +116,10 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     SIGNAL numerator_b : signed(NUM_B_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL denominator : unsigned(DEN_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL numerator_m_red, numerator_m_red_s,
-    numerator_m_red_ss, numerator_m_red_sss :
+    numerator_m_red_ss, numerator_m_red_sss, numerator_m_red_ssss :
     signed(NUM_M_LEN - SHIFT_NUM_M - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL numerator_b_red, numerator_b_red_s,
-    numerator_b_red_ss, numerator_b_red_sss :
+    numerator_b_red_ss, numerator_b_red_sss, numerator_b_red_ssss :
     signed(NUM_B_LEN - SHIFT_NUM_B - 1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL denominator_red : unsigned(DEN_LEN - SHIFT_DEN - 1 DOWNTO 0)
     := (OTHERS => '0');
@@ -143,7 +143,7 @@ ARCHITECTURE Behavioral OF csf_fitter IS
     SIGNAL dsp_start, dsp_start_s : STD_LOGIC := '0';
     SIGNAL counter : INTEGER := 0;
     SIGNAL startCounter : STD_LOGIC := '0';
-    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9 : STD_LOGIC := '0';
+    SIGNAL dv0, dv1, dv2, dv3, dv4, dv5, dv6, dv7, dv8, dv9, dv10 : STD_LOGIC := '0';
     SIGNAL event_valid : STD_LOGIC := '0';
 
     ---COMPONENTS --------
@@ -271,19 +271,25 @@ BEGIN
             dv7 <= dv6;
             numerator_b_red_sss <= numerator_b_red_ss;
             numerator_m_red_sss <= numerator_m_red_ss;
+
+
+            -- Clock 8
+            dv8 <= dv7;
+            numerator_b_red_ssss <= numerator_b_red_sss;
+            numerator_m_red_ssss <= numerator_m_red_sss;
             reciprocal_den_s <= signed('0' & reciprocal_den);
 
-            --Clock 8
-            dv8 <= dv7;
+            -- Clock 9
+            dv9 <= dv8;
             mfit_full <= numerator_m_red_sss * reciprocal_den_s;
             bfit_full <= numerator_b_red_sss * reciprocal_den_s;
 
-            --Clock 9
-            dv9 <= dv8;
+            -- Clock 10
+            dv10 <= dv9;
             mfit_full_s <= mfit_full;
             bfit_full_s <= bfit_full;
 
-            o_fit_valid <= dv9;
+            o_fit_valid <= dv10;
             o_mfit <=
                 resize(
                 shift_right(

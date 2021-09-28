@@ -34,16 +34,16 @@ def main():
                         default=15)
     parser.add_argument("--mfit_mult",
                         type=float,
-                        help="global theta multiplier",
+                        help="global mfit multiplier",
                         default=4096.0)
     parser.add_argument("--theta_glob_mult",
                         type=float,
                         help="global theta multiplier",
-                        default=200.0)
+                        default=4096.0)
     parser.add_argument("--theta_width",
                         type=float,
                         help="global theta multiplier",
-                        default=13.0)
+                        default=14.0)
 
     args = parser.parse_args()
 
