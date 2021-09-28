@@ -164,8 +164,8 @@ begin
               else
               end if;
             else
-              proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
-              proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
+              -- proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
+              -- proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
             end if;
           end if;
         end loop;

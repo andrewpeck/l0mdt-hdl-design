@@ -40,7 +40,8 @@ entity ucm_cde is
   port (
     clk                   : in std_logic;
     rst                   : in std_logic;
-    ena               : in std_logic;
+    ena                   : in std_logic;
+    bypass                : in std_logic  := '1'
     -- configuration, control & Monitoring
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;

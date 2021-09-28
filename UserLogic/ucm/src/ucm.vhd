@@ -289,24 +289,54 @@ begin
     o_data      => csw_main_out_av
   );
 
-  -- Candidate Data Extractor
-  SLC_CDE_A : for th_i in c_NUM_THREADS -1 downto 0 generate
-    SLC_CDE : entity ucm_lib.ucm_cde
-    port map(
-      clk                   => clk,
-      rst                   => local_rst,
-      ena               => local_en,
-      --
-      i_phicenter           => phicenter,
-      i_chamber_z_org_bus   => cde_chamber_z_org_bus,
-      --
-      i_slc_data_v          => cde_in_av(th_i),
-      o_cde_data_v          => cpam_in_av(th_i),
-      --
-      o_pl_phimod           => cde_phimod(th_i)
-      -- o_pl_phimod_dv        => 
-    );
+
+  SLC_CDE_LOOP : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    SLC_CDE_TH: if sl_i > (c_MAX_NUM_SL - (c_NUM_THREADS - 1)) generate
+      SLC_CDE : entity ucm_lib.ucm_cde
+      port map(
+        clk                   => clk,
+        rst                   => local_rst,
+        ena               => local_en,
+        --
+        i_phicenter           => phicenter,
+        i_chamber_z_org_bus   => cde_chamber_z_org_bus,
+        --
+        i_slc_data_v          => cde_in_av(th_i),
+        o_cde_data_v          => cpam_in_av(th_i),
+        --
+        o_pl_phimod           => cde_phimod(th_i)
+        -- o_pl_phimod_dv        => 
+      );
+    else generate
+
+    end generate SLC_CDE_TH;
   end generate;
+
+  PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
+    cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
+    -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
+    -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
+    -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
+  end generate;
+
+  -- Candidate Data Extractor
+  -- SLC_CDE_A : for th_i in c_NUM_THREADS -1 downto 0 generate
+  --   SLC_CDE : entity ucm_lib.ucm_cde
+  --   port map(
+  --     clk                   => clk,
+  --     rst                   => local_rst,
+  --     ena               => local_en,
+  --     --
+  --     i_phicenter           => phicenter,
+  --     i_chamber_z_org_bus   => cde_chamber_z_org_bus,
+  --     --
+  --     i_slc_data_v          => cde_in_av(th_i),
+  --     o_cde_data_v          => cpam_in_av(th_i),
+  --     --
+  --     o_pl_phimod           => cde_phimod(th_i)
+  --     -- o_pl_phimod_dv        => 
+  --   );
+  -- end generate;
 
   -- mon.DP_CHAMB_Z0.DP_CHAMB_Z0 <= cde_cz0_a(0);
 
@@ -374,13 +404,12 @@ begin
   -- end generate;
 
 
-  PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
-    cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
-    -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
-
-    -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
-    -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
-  end generate;
+  -- PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
+  --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
+  --   -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).processed;
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info(heg_i).ch;
+  -- end generate;
 
 
   PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
