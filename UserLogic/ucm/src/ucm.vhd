@@ -115,15 +115,15 @@ architecture beh of ucm is
   signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
+  -- signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_out_av      : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
   signal slc_endcap_ar        : slc_endcap_bus_at(c_MAX_NUM_SL -1 downto 0);
 
   -- signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
 
-  signal int_uCM2pl_av        : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-  signal int_uCM2pl_ar        : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_uCM2pl_av        : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal int_uCM2pl_ar        : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal pl_o_uCM2pl_ar       : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
   -- signal pl_o_uCM2pl_av       : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
@@ -136,14 +136,14 @@ architecture beh of ucm is
 
   signal csw_control          : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-  signal proc_info_v          : ucm_proc_info_avt(c_MAX_NUM_SL -1 downto 0);
+  signal proc_info_av          : ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
 
   signal cvp_in_en            : std_logic_vector(c_NUM_THREADS -1 downto 0);
   signal cvp_loc_rst          : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
-  signal cde_phimod           : cde_phimod_at;
-  signal cde_phimod_dv        : std_logic_vector(c_NUM_THREADS -1 downto 0);
+  -- type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
+  -- signal cde_phimod           : cde_phimod_at;
+  -- signal cde_phimod_dv        : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
@@ -238,7 +238,8 @@ begin
     --
     o_csw_ctrl        => csw_control,
     o_pam_ctrl        => pam_CSW_control,
-    -- o_proc_info       => proc_info_v,
+    -- o_proc_info       => proc_info_av,
+    o_proc_info_av    => proc_info_av,
     --
     o_cvp_rst         => cvp_loc_rst,
     o_cvp_ctrl        => cvp_in_en
@@ -301,7 +302,8 @@ begin
         i_phicenter           => phicenter,
         i_chamber_z_org_bus   => cde_chamber_z_org_bus,
         --
-        i_proc_info_v           => proc_info_v(sl_i),
+        i_proc_info_v         => proc_info_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
+        -- i_proc_info_v         => proc_info_av(sl_i),
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
@@ -325,7 +327,7 @@ begin
         i_phicenter           => phicenter,
         i_chamber_z_org_bus   => cde_chamber_z_org_bus,
         --
-        i_proc_info_v           => proc_info_v(sl_i),
+        -- i_proc_info_v         => proc_info_av(sl_i),
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
@@ -343,8 +345,8 @@ begin
   -- PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
   --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
   --   -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_v(heg_i).processed;
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_v(heg_i).ch;
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_av(heg_i).processed;
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_av(heg_i).ch;
   -- end generate;
 
   -- Candidate Data Extractor
@@ -435,8 +437,8 @@ begin
   -- PAM_CSW: for heg_i in c_NUM_THREADS -1 downto 0 generate
   --   cde_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - ((c_NUM_THREADS - 1) - heg_i) - 1);
   --   -- cpam_in_av(heg_i) <= csw_main_out_av(c_MAX_NUM_SL - c_NUM_THREADS + heg_i);
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_v(heg_i).processed;
-  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_v(heg_i).ch;
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_av(heg_i).processed;
+  --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_av(heg_i).ch;
   -- end generate;
 
 /*
@@ -459,14 +461,14 @@ begin
 
     -- int_uCM2pl_ar(sl_i).muid        <= csw_main_out_ar(sl_i).muid;
     int_uCM2pl_ar(sl_i).common      <= csw_main_out_ar(sl_i).common;
-    -- if proc_info_v(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed = '1' then
+    -- if proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed = '1' then
     int_uCM2pl_ar(sl_i).phimod <= (others => '0');
     -- int_uCM2pl_ar(sl_i).specific    <= csw_main_out_ar(sl_i).specific;
     int_uCM2pl_ar(sl_i).data_valid  <= csw_main_out_ar(sl_i).data_valid;
 
     -- PRE_PL_IF_0: if sl_i >= c_MAX_NUM_SL - c_NUM_THREADS generate
-    --   int_uCM2pl_ar(sl_i).busy        <= proc_info_v(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
-    --   int_uCM2pl_ar(sl_i).process_ch  <= proc_info_v(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
+    --   int_uCM2pl_ar(sl_i).busy        <= proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).processed;
+    --   int_uCM2pl_ar(sl_i).process_ch  <= proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS)).ch;
     --   -- int_uCM2pl_ar(sl_i).phimod      <= cde_phimod(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS));
     -- end generate;
     -- PRE_PL_IF_1: if sl_i < c_MAX_NUM_SL - c_NUM_THREADS generate

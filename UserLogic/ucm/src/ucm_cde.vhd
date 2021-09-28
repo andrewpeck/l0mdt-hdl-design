@@ -49,7 +49,7 @@ entity ucm_cde is
     i_phicenter           : in unsigned(SLC_COMMON_POSPHI_LEN - 1 downto 0);
     i_chamber_z_org_bus   : in b_chamber_z_origin_station_avt;
     -- PAM
-    i_proc_info_v           : in ucm_proc_info_ch_rvt;
+    i_proc_info_v         : in ucm_proc_info_ch_rvt := (others => '0');
     -- SLc in
     i_slc_data_v          : in slc_rx_rvt;
     -- pam out

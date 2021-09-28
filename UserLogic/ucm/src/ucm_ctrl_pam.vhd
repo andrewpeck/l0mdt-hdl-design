@@ -45,7 +45,9 @@ entity ucm_ctrl_pam is
     i_pam_update        : in std_logic;
     --
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
+    
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -68,7 +70,8 @@ architecture beh of ucm_ctrl_pam is
   constant proc_info_init  : ucm_proc_info_ch_rt := ( ch => (others => '0') ,
                                                       processed => '0',
                                                       dv => '0');
-  signal proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>proc_info_init  );
+  signal proc_info    : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>proc_info_init  );
+  signal o_proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
   signal ch_count     : ch_count_avt(c_NUM_THREADS -1 downto 0);
@@ -219,7 +222,7 @@ begin
         ena         => ena,
         --
         i_data      => int_proc_info_v(th_i),
-        o_data      => o_proc_info_v(th_i)
+        o_data      => o_proc_info_av(th_i)
     );
     o_proc_info(th_i) <= structify(o_proc_info_v(th_i));
   
@@ -240,5 +243,7 @@ begin
     o_pam_ctrl(th_i) <= structify(o_pam_ctrl_v(th_i));
 
   end generate TH_GEN;
+
+    -- o_proc_info_av <= vectorify(o_proc_info)
   
 end architecture beh;
