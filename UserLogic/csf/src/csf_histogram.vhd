@@ -315,11 +315,12 @@ BEGIN
             -- Clock 4
             dv4 <= dv3;
             fill_plus <= '0';
-            IF bplus >- 1 AND bplus < HISTO_LEN THEN
+            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 THEN
                 fill_plus <= '1';
             END IF;
 
-            IF bminus >- 1 AND bminus < HISTO_LEN THEN
+            fill_minus <= '0';
+            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 THEN
                 fill_minus <= '1';
             END IF;
 
@@ -418,7 +419,7 @@ BEGIN
                     r_addr(to_integer(max_bin1_s)) <= (OTHERS => '0');
                     has_max <= '1';
                 END IF;
-                IF unsigned(max_counter_2) > 0 THEN
+                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 0 THEN
                     r_addr(to_integer(max_bin2_s)) <= (OTHERS => '0');
                 END IF;
                 mbar <= (OTHERS => '0');
