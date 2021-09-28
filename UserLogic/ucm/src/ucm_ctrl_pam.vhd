@@ -65,7 +65,10 @@ architecture beh of ucm_ctrl_pam is
   
   signal ch_busy  : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
-  signal proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>( (others => '0') , '0') );
+  constant proc_info_init  : ucm_proc_info_ch_rt := ( ch => (others => '0') ,
+                                                      processed => '0',
+                                                      dv => '0');
+  signal proc_info  : ucm_proc_info_at(c_NUM_THREADS -1 downto 0) := (others =>proc_info_init  );
   
   type ch_count_avt is array(integer range <>) of std_logic_vector(11 downto 0);
   signal ch_count     : ch_count_avt(c_NUM_THREADS -1 downto 0);
@@ -155,13 +158,14 @@ begin
                 buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 proc_info(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 proc_info(c_NUM_THREADS -1 - processed).processed <= '1';
+                -- proc_info(c_NUM_THREADS -1 - processed).dv <= '1';
                 ch_busy(ch_i) <= '1';
                 processed := processed + 1;
               else
               end if;
             else
-              -- proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
-              -- proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
+              proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
+              proc_info(c_NUM_THREADS -1 - processed).processed <= '0';
             end if;
           end if;
         end loop;

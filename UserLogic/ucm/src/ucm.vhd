@@ -143,6 +143,7 @@ architecture beh of ucm is
 
   type cde_phimod_at is array (c_NUM_THREADS - 1 downto 0) of std_logic_vector(UCM2PL_PHIMOD_LEN -1 downto 0);
   signal cde_phimod           : cde_phimod_at;
+  signal cde_phimod_dv        : std_logic_vector(c_NUM_THREADS -1 downto 0);
 
   -- signal int_slc_data        : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   type ucm2hps_aavt is array (c_NUM_THREADS -1 downto 0) of ucm2hps_bus_avt(c_MAX_POSSIBLE_HPS -1 downto 0);
@@ -303,6 +304,7 @@ begin
       o_cde_data_v          => cpam_in_av(th_i),
       --
       o_pl_phimod           => cde_phimod(th_i)
+      -- o_pl_phimod_dv        => 
     );
   end generate;
 
