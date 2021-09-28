@@ -120,13 +120,13 @@ architecture beh of ucm is
 
   signal slc_endcap_ar        : slc_endcap_bus_at(c_MAX_NUM_SL -1 downto 0);
 
-  signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
+  -- signal cde_in_av            : slc_rx_bus_avt(c_NUM_THREADS -1 downto 0);
 
   signal int_uCM2pl_av        : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal int_uCM2pl_ar        : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal pl_o_uCM2pl_ar       : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
-  signal pl_o_uCM2pl_av       : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal o_uCM2pl_ar          : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  -- signal pl_o_uCM2pl_ar       : ucm2pl_bus_at(c_MAX_NUM_SL -1 downto 0);
+  -- signal pl_o_uCM2pl_av       : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal o_uCM2pl_av          : pipeline_avt;
 
   signal cpam_in_av           : ucm_cde_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -291,7 +291,7 @@ begin
 
 
   SLC_CDE_LOOP : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_CDE_TH: if sl_i > (c_MAX_NUM_SL - c_NUM_THREADS) generate
+    SLC_CDE_TH: if sl_i >= (c_MAX_NUM_SL - c_NUM_THREADS) generate
       SLC_CDE : entity ucm_lib.ucm_cde
       port map(
         clk                   => clk,
@@ -305,7 +305,7 @@ begin
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
-        o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 1),
+        o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
         --
         -- o_pl_phimod           => cde_phimod(sl_i),
         -- o_pl_phimod_dv        => 
@@ -439,7 +439,7 @@ begin
   --   -- o_uCM2pl_ar(c_MAX_NUM_SL - c_NUM_THREADS + heg_i).processed <= proc_info_v(heg_i).ch;
   -- end generate;
 
-
+/*
   PRE_OUTPL_GEN: for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     csw_main_out_ar(sl_i)         <= structify(csw_main_out_av(sl_i));
     
@@ -479,7 +479,7 @@ begin
     int_uCM2pl_av(sl_i) <= vectorify(int_uCM2pl_ar(sl_i));
 
   end generate;
-
+*/
   -- output pipelines
   /*
   SLC_OUT_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate

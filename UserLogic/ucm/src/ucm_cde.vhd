@@ -63,6 +63,9 @@ entity ucm_cde is
 end entity ucm_cde;
 
 architecture beh of ucm_cde is
+
+    
+  signal i_proc_info_r           : ucm_proc_info_ch_rt;
   
   signal i_slc_data_r     : slc_rx_rt;
 
@@ -96,6 +99,8 @@ architecture beh of ucm_cde is
   signal o_uCM2pl_r : ucm2pl_rt;
 
 begin
+
+  i_proc_info_r <= structify(i_proc_info_v);
   
   i_slc_data_r <= structify(i_slc_data_v);
   o_cde_data_v <= vectorify(o_cde_data_r);
@@ -353,7 +358,7 @@ begin
   BYPASS_GEN: if bypass = '1' generate
     SLC_OUT_PL : entity vamc_lib.vamc_spl
     generic map(
-      g_DELAY_CYCLES  => 3,
+      g_DELAY_CYCLES  => 4,
       g_PIPELINE_WIDTH    => int_slc_data_v'length
     )
     port map(
@@ -379,6 +384,9 @@ begin
           o_uCM2pl_r <= nullify(o_uCM2pl_r);
         else
           if int2_slc_data_r.data_valid = '1' then
+            o_uCM2pl_r.busy        <= i_proc_info_r.processed;
+            o_uCM2pl_r.process_ch   <= i_proc_info_r.ch;
+
             o_uCM2pl_r.common   <= int2_slc_data_r.common;
 
             -- o_uCM2pl_r.specific     <= int2_slc_data_r.specific;
