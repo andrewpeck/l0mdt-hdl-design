@@ -310,7 +310,8 @@ begin
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
         --
-        o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
+        o_cde_data_v          => cpam_in_av(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS) ),
+        -- o_cde_data_v          => cpam_in_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
         --
         -- o_pl_phimod           => cde_phimod(sl_i),
         -- o_pl_phimod_dv        => 
