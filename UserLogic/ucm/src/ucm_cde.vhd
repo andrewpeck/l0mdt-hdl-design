@@ -390,7 +390,7 @@ begin
             o_uCM2pl_r.common   <= int2_slc_data_r.common;
 
             -- o_uCM2pl_r.specific     <= int2_slc_data_r.specific;
-            -- o_uCM2pl_r.data_valid   <= int2_slc_data_r.data_valid;
+            o_uCM2pl_r.data_valid   <= int2_slc_data_r.data_valid;
             -- o_uCM2pl_r.posphi       <= int2_slc_data_r.common.posphi;
             -- o_uCM2pl_r.chamb_ieta   <= int2_chamb_ieta;
             if ena = '1' then
