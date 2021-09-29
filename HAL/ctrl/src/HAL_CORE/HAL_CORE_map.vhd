@@ -94,7 +94,6 @@ begin  -- architecture behavioral
         when 1 => --0x1
           localRdData( 0)            <=  Mon.CLOCKING.MMCM_LOCKED;                            --
           localRdData( 1)            <=  reg_data( 1)( 1);                                    --
-          localRdData( 2)            <=  reg_data( 1)( 2);                                    --
         when 16 => --0x10
           localRdData( 0)            <=  Mon.MGT.MGT(0).STATUS.rxcdr_stable;                  --
           localRdData( 1)            <=  Mon.MGT.MGT(0).STATUS.powergood;                     --
@@ -2393,7 +2392,6 @@ begin  -- architecture behavioral
 
   -- Register mapping to ctrl structures
   Ctrl.CLOCKING.RESET_MMCM                           <=  reg_data( 1)( 1);                
-  Ctrl.CLOCKING.SELECT_FELIX_CLK                     <=  reg_data( 1)( 2);                
   Ctrl.MGT.MGT(0).DRP.wr_addr                        <=  reg_data(18)( 9 downto  0);      
   Ctrl.MGT.MGT(0).DRP.en                             <=  reg_data(18)(12);                
   Ctrl.MGT.MGT(0).DRP.wr_data                        <=  reg_data(19)(31 downto 16);      
@@ -3236,7 +3234,6 @@ begin  -- architecture behavioral
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
       reg_data( 1)( 1)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.RESET_MMCM;
-      reg_data( 1)( 2)  <= DEFAULT_HAL_CORE_CTRL_t.CLOCKING.SELECT_FELIX_CLK;
       reg_data(18)( 9 downto  0)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.wr_addr;
       reg_data(18)(12)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.en;
       reg_data(19)(31 downto 16)  <= DEFAULT_HAL_CORE_CTRL_t.MGT.MGT(0).DRP.wr_data;
@@ -4158,7 +4155,6 @@ begin  -- architecture behavioral
         case to_integer(unsigned(localAddress(8 downto 0))) is
         when 1 => --0x1
           reg_data( 1)( 1)             <=  localWrData( 1);                --
-          reg_data( 1)( 2)             <=  localWrData( 2);                --
         when 17 => --0x11
           Ctrl.MGT.MGT(0).DRP.wr_en    <=  localWrData( 0);               
         when 18 => --0x12

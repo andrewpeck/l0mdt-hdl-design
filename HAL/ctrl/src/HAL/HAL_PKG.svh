@@ -47,6 +47,29 @@
   } HAL_CSM_CSM_LPGBT_CTRL_t;
 
   typedef struct packed {
+    logic [8-1:0] RX_DATA_FROM_GBTX;
+    logic  TX_READY;
+    logic [32-1:0] RX_DATA;
+    logic [7-1:0] RX_CHIP_ADR;
+    logic  RX_UP_PARITY_OK;
+    logic  RX_DOWN_PARITY_OK;
+    logic  RX_ERR;
+    logic  RX_VALID;
+    logic [16-1:0] RX_REG_ADR;
+    logic [16-1:0] RX_LENGTH;
+  } HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+
+  typedef struct packed {
+    logic  TX_START_WRITE;
+    logic  TX_START_READ;
+    logic [8-1:0] TX_GBTX_ADDR;
+    logic [16-1:0] TX_REGISTER_ADDR;
+    logic [16-1:0] TX_NUM_BYTES_TO_READ;
+    logic [8-1:0] TX_DATA_TO_GBTX;
+    logic  TX_WR;
+  } HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+
+  typedef struct packed {
     logic [8-1:0] RX_LEN;
     logic [8-1:0] RX_ADDRESS;
     logic [8-1:0] RX_CONTROL;
@@ -55,32 +78,23 @@
     logic  RX_RECEIVED;
     logic [8-1:0] RX_CHANNEL;
     logic [32-1:0] RX_DATA;
-  } HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  } HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
 
-  typedef HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t  [3-1:0] HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
-
-  typedef struct packed {
-    HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY   RX;
-  } HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  typedef HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t  [3-1:0] HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
 
   typedef struct packed {
-    logic [8-1:0] RX_DATA_FROM_GBTX;
-    logic  TX_READY;
-    logic  RX_EMPTY;
-    HAL_CSM_CSM_SC_MASTER_RX_MON_t   RX;
+    HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY   RX;
+  } HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
+
+  typedef struct packed {
+    HAL_CSM_CSM_SC_MASTER_IC_MON_t   IC;
+    HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t   SCA_RX;
   } HAL_CSM_CSM_SC_MASTER_MON_t;
 
   typedef struct packed {
     logic  TX_RESET;
     logic  RX_RESET;
-    logic  TX_START_WRITE;
-    logic  TX_START_READ;
-    logic [8-1:0] TX_GBTX_ADDR;
-    logic [16-1:0] TX_REGISTER_ADDR;
-    logic [16-1:0] TX_NUM_BYTES_TO_READ;
-    logic [8-1:0] TX_DATA_TO_GBTX;
-    logic  TX_WR;
-    logic  RX_RD;
+    HAL_CSM_CSM_SC_MASTER_IC_CTRL_t   IC;
     logic [8-1:0] TX_CMD;
     logic [8-1:0] TX_ADDRESS;
     logic [8-1:0] TX_TRANSID;
@@ -96,12 +110,17 @@
   typedef struct packed {
     logic [8-1:0] RX_DATA_FROM_GBTX;
     logic  TX_READY;
-    logic  RX_EMPTY;
-  } HAL_CSM_CSM_SC_SLAVE_MON_t;
+    logic [32-1:0] RX_DATA;
+    logic [7-1:0] RX_CHIP_ADR;
+    logic  RX_UP_PARITY_OK;
+    logic  RX_DOWN_PARITY_OK;
+    logic  RX_ERR;
+    logic  RX_VALID;
+    logic [16-1:0] RX_REG_ADR;
+    logic [16-1:0] RX_LENGTH;
+  } HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
 
   typedef struct packed {
-    logic  TX_RESET;
-    logic  RX_RESET;
     logic  TX_START_WRITE;
     logic  TX_START_READ;
     logic [8-1:0] TX_GBTX_ADDR;
@@ -109,7 +128,16 @@
     logic [16-1:0] TX_NUM_BYTES_TO_READ;
     logic [8-1:0] TX_DATA_TO_GBTX;
     logic  TX_WR;
-    logic  RX_RD;
+  } HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+
+  typedef struct packed {
+    HAL_CSM_CSM_SC_SLAVE_IC_MON_t   IC;
+  } HAL_CSM_CSM_SC_SLAVE_MON_t;
+
+  typedef struct packed {
+    logic  TX_RESET;
+    logic  RX_RESET;
+    HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t   IC;
   } HAL_CSM_CSM_SC_SLAVE_CTRL_t;
 
   typedef struct packed {
