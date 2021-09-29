@@ -249,33 +249,36 @@ begin
   --input pre processor
   SLC_PP_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     SLC_PP : entity ucm_lib.ucm_prepro
+    generic map(
+      g_DELAY_CYCLES  => 2
+    )
     port map(
       clk               => clk,
       rst               => local_rst,
-      glob_en           => local_en,
+      ena               => local_en,
       --                =>
       i_slc_data_v      => i_slc_data_av(sl_i),
       o_prepro2ctrl_v   => prepro2ctrl_av(sl_i),
-      o_prepro_data_v   => ucm_prepro_av(sl_i)
+      o_prepro_data_v   => csw_main_in_av(sl_i)
     );
   end generate;
 
   -- input pipelines
-  SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    SLC_IN_PL : entity vamc_lib.vamc_spl
-    generic map(
-      g_DELAY_CYCLES  => 2,
-      g_PIPELINE_WIDTH    => SLC_RX_LEN
-    )
-    port map(
-      clk         => clk,
-      rst         => local_rst,
-      ena         => local_en,
-      --
-      i_data      => ucm_prepro_av(sl_i),
-      o_data      => csw_main_in_av(sl_i)
-    );
-  end generate;
+  -- SLC_IN_PL_A : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   SLC_IN_PL : entity vamc_lib.vamc_spl
+  --   generic map(
+  --     g_DELAY_CYCLES  => 2,
+  --     g_PIPELINE_WIDTH    => SLC_RX_LEN
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => local_rst,
+  --     ena         => local_en,
+  --     --
+  --     i_data      => ucm_prepro_av(sl_i),
+  --     o_data      => csw_main_in_av(sl_i)
+  --   );
+  -- end generate;
 
   -- main cross switch
   SLC_CSW : entity ucm_lib.ucm_csw
