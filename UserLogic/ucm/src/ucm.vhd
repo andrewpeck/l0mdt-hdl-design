@@ -305,7 +305,8 @@ begin
         i_phicenter           => phicenter,
         i_chamber_z_org_bus   => cde_chamber_z_org_bus,
         --
-        i_proc_info_v         => proc_info_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
+        i_proc_info_v         => proc_info_av(sl_i - (c_MAX_NUM_SL - c_NUM_THREADS) ),
+        -- i_proc_info_v         => proc_info_av((c_MAX_NUM_SL - 1) - sl_i + (c_NUM_THREADS - 1) - 2),
         -- i_proc_info_v         => proc_info_av(sl_i),
         --
         i_slc_data_v          => csw_main_out_av(sl_i),
