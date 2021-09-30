@@ -166,6 +166,6 @@ HDL_Types:
 - BML_SEC3_RHO_CORNER : [ qualifier: constant, type: real, value: 6898.440 ]
 - BOL_SEC3_RHO_CORNER : [ qualifier: constant, type: real, value: 9259.440 ]
 
-- BIL_SEC3_RHO : [ qualifier: constant, type: real, value: 4948.979004]
-- BML_SEC3_RHO : [ qualifier: constant, type: real, value: 7138.998535]
-- BOL_SEC3_RHO : [ qualifier: constant, type: real, value: 9499.998047]
+- BIL_SEC3_RHO : [ qualifier: constant, type: real, value: 4948.979]
+- BML_SEC3_RHO : [ qualifier: constant, type: real, value: 7138.999]
+- BOL_SEC3_RHO : [ qualifier: constant, type: real, value: 9499.998]

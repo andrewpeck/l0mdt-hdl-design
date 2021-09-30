@@ -1,5 +1,6 @@
 #Simulator questa
 UserLogic/csf/sim/csf_tb.vhd topsim=csf_tb runtime=10us
 UserLogic/csf/sim/*
+UserLogic/csf/sim/csf_short_in.csv
 UserLogic/csf/sim/csf_wave.do wavefile
 shared/shared_lib.sim

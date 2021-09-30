@@ -92,11 +92,11 @@ package common_constants_pkg is
 
   constant BOL_SEC3_RHO_CORNER : real := 9259.44;
 
-  constant BIL_SEC3_RHO : real := 4948.979004;
+  constant BIL_SEC3_RHO : real := 4948.979;
 
-  constant BML_SEC3_RHO : real := 7138.998535;
+  constant BML_SEC3_RHO : real := 7138.999;
 
-  constant BOL_SEC3_RHO : real := 9499.998047;
+  constant BOL_SEC3_RHO : real := 9499.998;
 
 end package common_constants_pkg;
 

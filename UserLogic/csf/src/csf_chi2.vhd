@@ -168,13 +168,9 @@ BEGIN
                 bfit_s <= i_bfit;
                 nhits_s <= i_nhits;
                 IF B_OVER_Z_MULTI_LEN < 0 THEN
-                    b_red <= resize(
-                        shift_left(i_bfit, ABS(B_OVER_Z_MULTI_LEN)),
-                        B_RED_LEN);
+                    b_red <= shift_left(resize(i_bfit, B_RED_LEN), ABS(B_OVER_Z_MULTI_LEN));
                 ELSE
-                    b_red <= resize(
-                        shift_right(i_bfit, B_OVER_Z_MULTI_LEN),
-                        B_RED_LEN);
+                    b_red <= shift_right(resize(i_bfit, B_RED_LEN), B_OVER_Z_MULTI_LEN);
                 END IF;
                 r_addr1 <= (OTHERS => '0');
                 r_addr2 <= (OTHERS => '0');

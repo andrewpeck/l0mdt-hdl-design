@@ -53,7 +53,7 @@ BEGIN
 
     reader : ENTITY project_lib.csf_tb_reader
     generic map (
-        IN_HIT_FILE => "csf_Barrel.csv"
+        IN_HIT_FILE => "csf_short_in.csv"
     )
     port map(
         clk => clk,
@@ -76,7 +76,7 @@ BEGIN
 
     writer : ENTITY project_lib.csf_tb_writer
     generic map (
-        OUT_FILE => "out_csf.csv"
+        OUT_FILE => "out_csf_fw.csv"
     )
     port map(
         clk => clk,
