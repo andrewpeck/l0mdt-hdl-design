@@ -5,10 +5,6 @@ add wave -noupdate -expand -group tb_slc /ult_tp/SLC/enable
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/IN_SLC_FILE
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/rst
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/tb_curr_tdc_time
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_main_primary_slc_ar
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_main_secondary_slc_ar
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_minus_neighbor_slc_ar
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_plus_neighbor_slc_ar
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_element
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_event_r
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_main_prim_counts
@@ -20,11 +16,11 @@ add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_neig_minu_fifo
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_neig_plus_counts
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_neig_plus_fifo
 add wave -noupdate -expand -group tb_slc /ult_tp/SLC/slc_new_event
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_main_primary_slc
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_main_secondary_slc
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_minus_neighbor_slc
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/i_plus_neighbor_slc
-add wave -noupdate -expand -group tb_slc /ult_tp/SLC/o_slc_event_ai
+add wave -noupdate -expand -group tb_slc /ult_tp/SLC/o_main_primary_slc
+add wave -noupdate -expand -group tb_slc /ult_tp/SLC/o_main_secondary_slc
+add wave -noupdate -expand -group tb_slc /ult_tp/SLC/o_minus_neighbor_slc
+add wave -noupdate -expand -group tb_slc /ult_tp/SLC/o_plus_neighbor_slc
+add wave -noupdate -expand -group tb_slc -radix unsigned -childformat {{/ult_tp/SLC/o_slc_event_ai(4) -radix unsigned} {/ult_tp/SLC/o_slc_event_ai(3) -radix unsigned} {/ult_tp/SLC/o_slc_event_ai(2) -radix unsigned} {/ult_tp/SLC/o_slc_event_ai(1) -radix unsigned} {/ult_tp/SLC/o_slc_event_ai(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/SLC/o_slc_event_ai(4) {-radix unsigned} /ult_tp/SLC/o_slc_event_ai(3) {-radix unsigned} /ult_tp/SLC/o_slc_event_ai(2) {-radix unsigned} /ult_tp/SLC/o_slc_event_ai(1) {-radix unsigned} /ult_tp/SLC/o_slc_event_ai(0) {-radix unsigned}} /ult_tp/SLC/o_slc_event_ai
 add wave -noupdate -group tb_mdt /ult_tp/MDT/IN_HIT_FILE
 add wave -noupdate -group tb_mdt /ult_tp/MDT/clk
 add wave -noupdate -group tb_mdt /ult_tp/MDT/rst
@@ -675,7 +671,7 @@ add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_t0_v
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mdt_full_data_v
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {694180523 fs} 0} {{Cursor 3} {141773417786 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2252558834 fs} 0} {{Cursor 3} {141773417786 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -691,4 +687,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {5250 ns}
+WaveRestoreZoom {2241873750 fs} {2275277863 fs}
