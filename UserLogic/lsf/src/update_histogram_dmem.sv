@@ -13,7 +13,7 @@
 `timescale 1ns/1ps
 module update_histogram_dmem #(
 			       parameter RBINS=128,
-			       parameter W_bin_number_a = 8
+			       parameter W_bin_number_a = 7
 			 )
   (
         input 				  clk,
@@ -22,16 +22,16 @@ module update_histogram_dmem #(
 	input logic 			  r_bin_V_TVALID,
 	output logic 			  r_bin_V_TREADY,
 	input logic 			  enable_V,
-	output logic [W_bin_number_a-2:0] local_max_rbin,
+	output logic [W_bin_number_a-1:0] local_max_rbin,
 	output logic [3:0] 		  local_max_count,
 	output logic 			  local_max_vld,
 	input logic 			  reset_rbins
 );
 
-   logic [6:0] 		   hist_acc_wraddr;
-   logic [6:0] 		   hist_acc_rdaddr;
-   logic [6:0] 		   hist_acc_rdaddr_d0;
-   logic [6:0] 		   hist_acc_rdaddr_d1;
+   logic [W_bin_number_a-1:0] 		   hist_acc_wraddr;
+   logic [W_bin_number_a-1:0] 		   hist_acc_rdaddr;
+   logic [W_bin_number_a-1:0] 		   hist_acc_rdaddr_d0;
+   logic [W_bin_number_a-1:0] 		   hist_acc_rdaddr_d1;
 
 
    logic [3:0] 		   hist_acc_wrdata;
@@ -48,7 +48,7 @@ module update_histogram_dmem #(
    logic [1:0] 		   war_d;
    logic 		   war_2;
 
-      logic 		   hist_acc_wren;
+   logic 		   hist_acc_wren;
 
    logic [3:0] 		   r_val_V_TDATA;
    logic 		   r_val_V_TVALID;
@@ -68,7 +68,8 @@ module update_histogram_dmem #(
 
    assign r_bin_V_TREADY  = 1;
 
-   assign hist_acc_rdaddr = (r_bin_V_TVALID == 1 && r_bin_V_TDATA[7]==0)? r_bin_V_TDATA[6:0] : 0;
+  // assign hist_acc_rdaddr = (r_bin_V_TVALID == 1 && r_bin_V_TDATA[7]==0)? r_bin_V_TDATA[W_bin_number_a-1:0] : 0;
+    assign hist_acc_rdaddr = (r_bin_V_TVALID == 1 )? r_bin_V_TDATA[W_bin_number_a-1:0] : 0;
 
 
 
@@ -116,9 +117,10 @@ module update_histogram_dmem #(
 	else if (~reset_rbins & enable_V)
 	  begin
 	     reset_seq             <= 0;
-	     hist_acc_wren         <= (r_bin_V_TDATA_d1[7] == 0)? r_bin_V_TVALID_d1 : 1'b0;
-	     hist_acc_wraddr       <= (r_bin_V_TVALID_d1  == 1)?r_bin_V_TDATA_d1[6:0] : hist_acc_wraddr;
-	     r_bin_out_TDATA       <= {1'b0,r_bin_V_TDATA_d1[6:0]};
+//	     hist_acc_wren         <= (r_bin_V_TDATA_d1[7] == 0)? r_bin_V_TVALID_d1 : 1'b0;
+	     hist_acc_wren         <= r_bin_V_TVALID_d1;
+	     hist_acc_wraddr       <= (r_bin_V_TVALID_d1  == 1)?r_bin_V_TDATA_d1 : hist_acc_wraddr;
+	     r_bin_out_TDATA       <= {1'b0,r_bin_V_TDATA_d1};
 	     r_bin_out_TVALID      <= (r_bin_V_TDATA_d1[7] == 0) && r_bin_V_TVALID_d1;
 
 	     r_bin_V_TDATA_d0      <= r_bin_V_TDATA;
@@ -129,7 +131,7 @@ module update_histogram_dmem #(
 
 	     war_d                 <={war_d[0], war};
 	     hist_acc_wrdata_d0    <= hist_acc_wrdata;
-//	     bin_reset_state       <= (histogram_reset_state >> r_bin_V_TDATA_d0[6:0]) & 1'b1;
+//	     bin_reset_state       <= (histogram_reset_state >> r_bin_V_TDATA_d0[W_bin_number_a-1:0]) & 1'b1;
 	     war                   <= (r_bin_V_TVALID_d0 == 1)&(hist_acc_wraddr == hist_acc_rdaddr_d0);
 	     war_2                 <= (r_bin_V_TVALID_d0 == 1)&( r_bin_V_TVALID_d1) & (hist_acc_rdaddr_d1 == hist_acc_rdaddr_d0);
 

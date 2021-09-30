@@ -36,7 +36,7 @@ module mtc_builder_verilog#(
    localparam MTC_PKT_WIDTH = MTC2SL_LEN-1;
    logic [PL2MTC_PROCESS_CH_LEN-1:0]   ptcalc_sel[c_MAX_NUM_SL];
    logic [MTC_PKT_WIDTH-1:0] 	       mtc_inter[c_MAX_NUM_SL];//c_NUM_THREADS];
-   logic [MTC2SL_LEN-2:0] 	       mtc_pkt[n_PRIMARY_MTC];
+
 
    logic 			       mtc_valid[n_PRIMARY_MTC];
    logic 			       slcpipeline_vld[c_MAX_NUM_SL];
@@ -60,8 +60,7 @@ module mtc_builder_verilog#(
 				.mtc(mtc_inter[p])
 			  );
 
-	   //For COCOTB TB
-	   assign mtc_pkt[p]         = mtc[p][MTC2SL_LEN-2:0];
+
 	   assign slcpipeline_vld[p] = slcpipeline[p][PL2MTC_DATA_VALID_MSB];
 	   assign ptcalc_sel[p]      = slcpipeline[p][PL2MTC_PROCESS_CH_MSB:PL2MTC_PROCESS_CH_LSB];
 
