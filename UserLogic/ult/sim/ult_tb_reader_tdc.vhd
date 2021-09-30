@@ -37,7 +37,8 @@ use project_lib.vhdl_textio_csv_pkg.all;
 
 entity ult_tb_reader_tdc is
   generic (
-    IN_HIT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt"
+    IN_HIT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
+    g_verbose         : integer := 1
   );
   port (
     clk               : in std_logic;
@@ -208,7 +209,9 @@ begin
 
           -- first read from input vector file
           if first_read = '1' then
-            puts("opening MDT CSV file : " & IN_HIT_FILE);
+            if g_verbose > 0 then
+              puts("opening MDT CSV file : " & IN_HIT_FILE);
+            end if;
             csv_file.initialize(IN_HIT_FILE,"rd");
             csv_file.readline;
             csv_file.readline;
@@ -232,28 +235,30 @@ begin
             channel          := csv_file.read_integer;
             t0               := csv_file.read_real;
             TOF              := csv_file.read_real;
-
-            puts("##### MDT( " & integer'image(row_counter) &
-            " ): "& integer'image(ToA             ) &
-            " : " & integer'image(i_station       ) &
-            " : " & integer'image(Chamber_id      ) &
-            " : " & integer'image(Chamber_ieta    ) &
-            " : " & integer'image(mdt_time_coarse ) &
-            " : " & integer'image(mdt_time_fine   ) &
-            " : " & integer'image(tube_global     ) &
-            " : " & integer'image(tube_local      ) &
-            " : " & integer'image(tube_layer      ) &
-            " : " & integer'image(tube_z          ) &
-            " : " & integer'image(tube_rho        ) &
-            " : " & real'image(drift_time      ) &
-            " : " & integer'image(event           ) &
-            " : " & integer'image(muonFixedId     ) &
-            " : " & integer'image(csm             ) &
-            " : " & integer'image(mezz            ) &
-            " : " & integer'image(channel         ) &
-            " : " & real'image(t0              ) &
-            " : " & real'image(TOF             )
-            );
+            
+            if g_verbose > 1 then
+              puts("##### MDT( " & integer'image(row_counter) &
+              " ): "& integer'image(ToA             ) &
+              " : " & integer'image(i_station       ) &
+              " : " & integer'image(Chamber_id      ) &
+              " : " & integer'image(Chamber_ieta    ) &
+              " : " & integer'image(mdt_time_coarse ) &
+              " : " & integer'image(mdt_time_fine   ) &
+              " : " & integer'image(tube_global     ) &
+              " : " & integer'image(tube_local      ) &
+              " : " & integer'image(tube_layer      ) &
+              " : " & integer'image(tube_z          ) &
+              " : " & integer'image(tube_rho        ) &
+              " : " & real'image(drift_time      ) &
+              " : " & integer'image(event           ) &
+              " : " & integer'image(muonFixedId     ) &
+              " : " & integer'image(csm             ) &
+              " : " & integer'image(mezz            ) &
+              " : " & integer'image(channel         ) &
+              " : " & real'image(t0              ) &
+              " : " & real'image(TOF             )
+              );
+            end if;
 
             v_mdt_event := (
               ToA => to_unsigned(ToA,64),
@@ -344,28 +349,31 @@ begin
                 t0               := csv_file.read_real;
                 TOF              := csv_file.read_real;
     
+                if g_verbose > 1 then
     
-                puts("##### MDT( " & integer'image(row_counter) &
-                " ): "& integer'image(ToA             ) &
-                " : " & integer'image(i_station       ) &
-                " : " & integer'image(Chamber_id      ) &
-                " : " & integer'image(Chamber_ieta    ) &
-                " : " & integer'image(mdt_time_coarse ) &
-                " : " & integer'image(mdt_time_fine   ) &
-                " : " & integer'image(tube_global     ) &
-                " : " & integer'image(tube_local      ) &
-                " : " & integer'image(tube_layer      ) &
-                " : " & integer'image(tube_z          ) &
-                " : " & integer'image(tube_rho        ) &
-                " : " & real'image(drift_time      ) &
-                " : " & integer'image(event           ) &
-                " : " & integer'image(muonFixedId     ) &
-                " : " & integer'image(csm             ) &
-                " : " & integer'image(mezz            ) &
-                " : " & integer'image(channel         ) &
-                " : " & real'image(t0              ) &
-                " : " & real'image(TOF             )
-                );
+                  puts("##### MDT( " & integer'image(row_counter) &
+                  " ): "& integer'image(ToA             ) &
+                  " : " & integer'image(i_station       ) &
+                  " : " & integer'image(Chamber_id      ) &
+                  " : " & integer'image(Chamber_ieta    ) &
+                  " : " & integer'image(mdt_time_coarse ) &
+                  " : " & integer'image(mdt_time_fine   ) &
+                  " : " & integer'image(tube_global     ) &
+                  " : " & integer'image(tube_local      ) &
+                  " : " & integer'image(tube_layer      ) &
+                  " : " & integer'image(tube_z          ) &
+                  " : " & integer'image(tube_rho        ) &
+                  " : " & real'image(drift_time      ) &
+                  " : " & integer'image(event           ) &
+                  " : " & integer'image(muonFixedId     ) &
+                  " : " & integer'image(csm             ) &
+                  " : " & integer'image(mezz            ) &
+                  " : " & integer'image(channel         ) &
+                  " : " & real'image(t0              ) &
+                  " : " & real'image(TOF             )
+                  );
+
+                end if;
     
                 v_mdt_event := (
                   ToA => to_unsigned(ToA,64),
