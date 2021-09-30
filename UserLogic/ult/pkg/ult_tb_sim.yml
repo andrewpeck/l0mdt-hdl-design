@@ -25,7 +25,7 @@ HDL_Types:
 - pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar]
 
 
-- input_slc_b:
+- input_slc:
   # - BCID        : [ type : unsigned , length : SL_HEADER_BCID_LEN]
   - ToA         : [ type : unsigned , length : 64]
   - event       : [ type : unsigned , length : 32]
@@ -45,6 +45,8 @@ HDL_Types:
   # - dv          : [ type : logic]
 
 - TB_SLC_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
+
+- input_slc_bus    : [ array: TB_SLC_FIFO_WIDTH , type: input_slc]
 
 - slc_tb    : [ array: TB_SLC_FIFO_WIDTH , type: slc_rx]
 

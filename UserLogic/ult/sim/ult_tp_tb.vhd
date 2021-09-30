@@ -58,6 +58,7 @@ use ctrl_lib.TF_CTRL_DEF.all;
 
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
 use project_lib.vhdl_tb_utils_pkg.all;
 
 
@@ -132,10 +133,12 @@ architecture beh of ult_tp is
   -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc       : slc_rx_rvt := (others => '0');
-  signal i_minus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_main_primary_slc       : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+  signal i_main_secondary_slc     : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+  signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
+  signal slc_event_ai             : event_ait(c_MAX_NUM_SL -1 downto 0);
+
   -- Segments in from neighbor
   signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
   signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
@@ -377,10 +380,12 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
     -- TAR Hits for simulation
-    i_main_primary_slc    => i_main_primary_slc  ,
-    i_main_secondary_slc  => i_main_secondary_slc,
-    i_plus_neighbor_slc   => i_plus_neighbor_slc ,
-    i_minus_neighbor_slc  => i_minus_neighbor_slc
+    o_main_primary_slc    => i_main_primary_slc  ,
+    o_main_secondary_slc  => i_main_secondary_slc,
+    o_plus_neighbor_slc   => i_plus_neighbor_slc ,
+    o_minus_neighbor_slc  => i_minus_neighbor_slc,
+    --
+    o_slc_event_ai            => slc_event_ai
   );
 
  	-------------------------------------------------------------------------------------

@@ -31,6 +31,7 @@ use shared_lib.detector_param_pkg.all;
 
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
 use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
 -- use project_lib.ult_textio_rd_slc_pkg.all;
@@ -47,29 +48,32 @@ entity ult_tb_reader_slc is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
-    i_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-    i_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-    i_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
-    i_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
+    o_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+    o_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+    o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
+    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0');
+
+    o_slc_event_ai : out event_ait(c_MAX_NUM_SL -1 downto 0)
   );
 end entity ult_tb_reader_slc;
 
 architecture sim of ult_tb_reader_slc is
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc_ar     : slc_rx_rt;
-  signal i_minus_neighbor_slc_ar    : slc_rx_rt;
+  signal o_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
+  signal o_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
+  signal o_plus_neighbor_slc_ar     : slc_rx_rt;
+  signal o_minus_neighbor_slc_ar    : slc_rx_rt;
 
   type infifo_slc_counts is array (integer range <>) of integer;
 
   type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
+  -- type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
 
   signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
 
-  signal slc_event_r          : input_slc_b_rt;
-  signal slc_new_event        : input_slc_b_rt;
+  signal slc_event_r          : input_slc_rt;
+  signal slc_new_event        : input_slc_rt;
 
   signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
   signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
@@ -119,7 +123,7 @@ begin
     variable row                : line;
     variable row_counter        : integer := 0;
     -- variable tdc_time           : UNSIG_64;
-    variable v_slc_event        : input_slc_b_rt;
+    variable v_slc_event        : input_slc_rt;
     -- variable next_event_time    : integer := 0;
     -- variable tb_time            : integer := 0;
     variable first_read         : std_logic := '1';
@@ -145,17 +149,17 @@ begin
 
           for wr_i in 2 downto 0 loop
             if(v_slc_main_prim_counts(wr_i) > 0) then
-              i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
               -- for test input read
-              i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
+              o_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
               --
               for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
                 slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
               end loop;
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
-              i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
-              i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+              o_main_primary_slc(wr_i) <= nullify(o_main_primary_slc(wr_i));
+              o_main_primary_slc_ar(wr_i) <= nullify(o_main_primary_slc_ar(wr_i));
             end if;
           end loop;
 
