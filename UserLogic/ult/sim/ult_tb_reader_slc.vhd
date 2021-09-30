@@ -54,7 +54,7 @@ entity ult_tb_reader_slc is
     o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
     o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0');
 
-    o_slc_event_ai : out event_ait(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
+    o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
 end entity ult_tb_reader_slc;
 

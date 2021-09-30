@@ -29,7 +29,8 @@ use heg_lib.heg_pkg.all;
 
 package ult_tb_sim_cstm_pkg is
   
-  type event_ait is array (integer range <>) of unsigned(31 downto 0);
+  type event_aut is array (integer range <>) of unsigned(31 downto 0);
+  type event_at is array (integer range <>) of std_logic_vector(31 downto 0);
   
 end package ult_tb_sim_cstm_pkg;
 
