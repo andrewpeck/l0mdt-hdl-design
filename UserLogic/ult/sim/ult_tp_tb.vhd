@@ -138,7 +138,7 @@ architecture beh of ult_tp is
   signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
   signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
   signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
-  
+
   signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   -- Segments in from neighbor
@@ -369,7 +369,6 @@ begin
     i_mdt_tdc_out_av => i_mdt_tdc_out_av,
     i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
   );
-  -- end generate;
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (

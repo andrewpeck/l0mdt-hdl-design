@@ -39,6 +39,7 @@ package vhdl_textio_csv_pkg is
     -------------------- READ ------------------
     -- Read one line from the csv file, and keep it in the cache
     procedure readline;
+    impure function read_isheader return boolean;
     -- Read a string from the csv file and convert it to an integer
     impure function read_integer return integer;
     -- Read a string from the csv file and convert it to real
@@ -48,7 +49,7 @@ package vhdl_textio_csv_pkg is
     -- Read a string with a numeric value from the csv file and convert it to a boolean
     impure function read_integer_as_boolean return boolean;
     -- Read a string from the csv file, until a separator character ',' is found
-    impure function read_string return string;
+    impure function read_string(sep : character := '|') return string;
     -------------------- WRITE ------------------
     procedure writeline;
     procedure write_string(text : string);
@@ -67,6 +68,7 @@ package body vhdl_textio_csv_pkg is
     file my_csv_file: text;
     -- cache one line at a time for read operations
     variable current_line: line;
+    variable header_line: line;
     -- true when end of file was reached and there are no more lines to read
     variable end_of_file_reached: boolean;
     -- Maximum string length for read operations
@@ -101,12 +103,26 @@ package body vhdl_textio_csv_pkg is
         readline(my_csv_file, current_line);
         end_of_file_reached := endfile(my_csv_file);
     end;
-
+    --
+    impure function read_isheader return boolean is
+      variable char: character;
+      variable sol :  boolean;
+    begin
+      header_line := current_line;
+      read(header_line,char);
+      -- puts("isheader", char);
+      if char = '#' then
+        sol := True;
+      else
+        sol := false;
+      end if;
+      return sol;
+    end;
     -- Skip a separator (comma character) in the current line
     procedure skip_separator is
         variable dummy_string: string(1 to LINE_LENGTH_MAX);
     begin
-        dummy_string := read_string;
+        dummy_string := read_string(',');
     end;
             
     -- Read a string from the csv file and convert it to integer
@@ -129,7 +145,7 @@ package body vhdl_textio_csv_pkg is
     
     -- Read a string from the csv file and convert it to boolean
     impure function read_boolean return boolean is begin
-        return boolean'value(read_string);
+        return boolean'value(read_string(','));
     end;
     
     impure function read_integer_as_boolean return boolean is
@@ -138,7 +154,7 @@ package body vhdl_textio_csv_pkg is
     end;
     
     -- Read a string from the csv file, until a separator character ',' is found
-    impure function read_string return string is
+    impure function read_string(sep : character := '|') return string is
         variable return_string: string(1 to LINE_LENGTH_MAX);
         variable read_char: character;
         variable read_ok: boolean := true;
@@ -149,7 +165,7 @@ package body vhdl_textio_csv_pkg is
         -- puts("read_char :  " & read_char);
         if  read_ok = True then
           while read_ok loop
-              if read_char = ',' then
+              if read_char = sep then
                   return return_string;
               else
                   return_string(index) := read_char;
@@ -160,6 +176,8 @@ package body vhdl_textio_csv_pkg is
         else
           return return_string;
         end  if;
+        return return_string;
+
     end;
     
     -------------------- WRITE ------------------

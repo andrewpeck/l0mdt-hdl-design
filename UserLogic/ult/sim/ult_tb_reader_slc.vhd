@@ -89,13 +89,34 @@ architecture sim of ult_tb_reader_slc is
   signal slc_neig_plus_counts : infifo_slc_counts(0 downto 0) := (others => 0);
   signal slc_neig_minu_counts : infifo_slc_counts(0 downto 0) := (others => 0);
   
+  shared variable csv_file: csv_file_reader_type;
+  signal  file_open         : std_logic := '0';
+    
   
 begin
+
+  open_csv: process
+  begin
+    -- if first_read = '1' then
+      if g_verbose > 0 then
+        puts("opening SLC CSV files : " & IN_SLC_FILE);
+      end  if;
+      csv_file.initialize(IN_SLC_FILE,"rd");
+      csv_file.readline;
+      while csv_file.read_isheader loop 
+        puts("H : ",csv_file.read_string);
+        csv_file.readline;
+      end loop;
+      -- csv_file.readline;
+      file_open <= '1';
+    -- end if;
+    wait;
+  end process open_csv;
   
   SLC_READ: process ( rst, clk)
 
 
-    variable csv_file: csv_file_reader_type;
+    -- variable csv_file: csv_file_reader_type;
 
     variable BCID         : integer; 
     variable ToA          : integer; 
@@ -170,15 +191,19 @@ begin
               -- o_main_primary_slc_ar(wr_i) <= nullify(o_main_primary_slc_ar(wr_i));
             end if;
           end loop;
-
+-- /*
           -- read from file
           -- first read from input vector file
           if first_read = '1' then
-            if g_verbose > 0 then
-              puts("opening SLC CSV files : " & IN_SLC_FILE);
-            end  if;
-            csv_file.initialize(IN_SLC_FILE,"rd");
-            csv_file.readline;
+            -- if g_verbose > 0 then
+            --   puts("opening SLC CSV files : " & IN_SLC_FILE);
+            -- end  if;
+            -- csv_file.initialize(IN_SLC_FILE,"rd");
+            -- csv_file.readline;
+            -- while csv_file.read_isheader loop 
+            --   puts("H : ",csv_file.read_string);
+            --   csv_file.readline;
+            -- end loop;
             csv_file.readline;
             -- extract(csv_file,v_slc_event);
             BCID        := csv_file.read_integer;
@@ -278,6 +303,7 @@ begin
             -- report "Read line : " & integer'image(row_counter);
             first_read := '0';
           end if;
+          -- */
 
           
           -- -- read from file

@@ -214,6 +214,10 @@ begin
             end if;
             csv_file.initialize(IN_HIT_FILE,"rd");
             csv_file.readline;
+            while csv_file.read_isheader loop 
+              puts("H : ",csv_file.read_string);
+              csv_file.readline;
+            end loop;
             csv_file.readline;
 
             ToA              := csv_file.read_integer;
