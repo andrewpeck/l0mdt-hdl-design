@@ -91,29 +91,47 @@ architecture sim of ult_tb_reader_slc is
   
   shared variable csv_file: csv_file_reader_type;
   signal  file_open         : std_logic := '0';
+  signal file_ts : string(1 to LINE_LENGTH_MAX);
     
   
 begin
 
   open_csv: process
+    variable timestamp : string(1 to LINE_LENGTH_MAX);
+
+    variable aux : string(1 to LINE_LENGTH_MAX);
   begin
     -- if first_read = '1' then
-      if g_verbose > 0 then
-        puts("opening SLC CSV files : " & IN_SLC_FILE);
-      end  if;
+      -- if g_verbose > 0 then
+      puts("--------------------------------");
+      puts("opening SLC CSV");
+      puts("     file = " , IN_SLC_FILE);
       csv_file.initialize(IN_SLC_FILE,"rd");
       csv_file.readline;
       while csv_file.read_isheader loop 
-        -- puts("H : ",csv_file.read_string_nd);
-        -- if csv_file.read_string(':') = "TS" then
-        --   puts("TimeStamp : ",csv_file.read_string);
-        -- end if;
-        puts("H_TS : ",csv_file.read_string(':'));
-        -- puts("H : ",csv_file.read_string);
+        aux := csv_file.read_string(' ');
+        while not csv_file.end_of_line loop
+          aux := csv_file.read_string(':');
+          if aux(1 to 2) = "TS" then
+            timestamp := csv_file.read_string;
+            file_ts <= timestamp;
+            puts("TimeStamp = ",timestamp);
+          end if;
+          if aux(1 to 4) = "Side" then
+            puts("     Side = ",csv_file.read_string(' '));
+          end if;
+          if aux(1 to 6) = "Sector" then
+            puts("   Sector = ",csv_file.read_string(' '));
+          end if;
+          if aux(1 to 4) = "Area" then
+            puts("     Area = ",csv_file.read_string(' '));
+          end if;
+        end loop;
         csv_file.readline;
       end loop;
       -- csv_file.readline;
       file_open <= '1';
+      puts("--------------------------------");
     -- end if;
     wait;
   end process open_csv;

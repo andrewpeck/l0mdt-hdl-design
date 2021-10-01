@@ -28,6 +28,8 @@ library project_lib;
 use project_lib.vhdl_tb_utils_pkg.all;
 
 package vhdl_textio_csv_pkg is
+
+  constant LINE_LENGTH_MAX: integer := 256;
   
   type csv_file_reader_type is protected
     -- Open the CSV text file to be used for subsequent read operations
@@ -36,6 +38,9 @@ package vhdl_textio_csv_pkg is
     procedure dispose;
     -- True when the end of the CSV file was reached
     impure function end_of_file return boolean;
+
+    impure function endline(ll : integer) return boolean;
+    impure function end_of_line return boolean;
     -------------------- READ ------------------
     -- Read one line from the csv file, and keep it in the cache
     procedure readline;
@@ -72,14 +77,32 @@ package body vhdl_textio_csv_pkg is
     variable header_line: line;
     -- true when end of file was reached and there are no more lines to read
     variable end_of_file_reached: boolean;
+    variable end_of_line_reached: boolean;
     -- Maximum string length for read operations
-    constant LINE_LENGTH_MAX: integer := 256;
+    -- constant LINE_LENGTH_MAX: integer := 256;
     --
     variable column_count : integer := 0;
     -- True when the end of the CSV file was reached
     impure function end_of_file return boolean is begin
         return end_of_file_reached;
     end;
+
+    impure function endline(ll : integer) return boolean is 
+      variable bol : boolean;
+    begin
+      -- puts("length",ll);
+      if ll= 0 then 
+        bol := true;
+      else
+        bol := false;
+      end if;
+      return bol;
+    end;
+
+    impure function end_of_line return boolean is begin
+      return end_of_line_reached;
+    end;
+  
     
     -- Open the CSV text file to be used for subsequent read operations
     procedure initialize(file_pathname: string ; mode : string) is begin
@@ -103,6 +126,7 @@ package body vhdl_textio_csv_pkg is
     procedure readline is begin
         readline(my_csv_file, current_line);
         end_of_file_reached := endfile(my_csv_file);
+        end_of_line_reached  := false;
     end;
     --
     impure function read_isheader return boolean is
@@ -132,6 +156,7 @@ package body vhdl_textio_csv_pkg is
     begin
         read(current_line, read_value);
         skip_separator;
+        end_of_line_reached := endline(current_line'length);
         return read_value;
     end;
 
@@ -141,17 +166,25 @@ package body vhdl_textio_csv_pkg is
     begin
         read(current_line, read_value);
         skip_separator;
+        end_of_line_reached := endline(current_line'length);
         return read_value;
     end;
     
     -- Read a string from the csv file and convert it to boolean
-    impure function read_boolean return boolean is begin
-        return boolean'value(read_string(','));
+    impure function read_boolean return boolean is 
+      variable bol : boolean;
+    begin
+      bol := boolean'value(read_string(','));
+      end_of_line_reached := endline(current_line'length);
+      return bol;
     end;
     
     impure function read_integer_as_boolean return boolean is
+      variable bol : boolean;
     begin
-        return (read_integer /= 0);
+      bol := (read_integer /= 0);
+      end_of_line_reached := endline(current_line'length);
+      return bol;
     end;
     
     -- Read a string from the csv file, until a separator character ',' is found
@@ -167,16 +200,19 @@ package body vhdl_textio_csv_pkg is
       if  read_ok = True then
         while read_ok loop
             if read_char = sep then
-                return return_string;
+              end_of_line_reached := endline(current_line'length);
+              return return_string;
             else
-                return_string(index) := read_char;
-                index := index + 1;
+              return_string(index) := read_char;
+              index := index + 1;
             end if;
             read(current_line, read_char, read_ok);
         end loop;
       else
+        end_of_line_reached := endline(current_line'length);
         return return_string;
       end  if;
+      end_of_line_reached := endline(current_line'length);
       return return_string;
 
     end;
@@ -209,8 +245,7 @@ package body vhdl_textio_csv_pkg is
     --     return return_string;
     --   end  if;
     --   return return_string;
-
-    end;
+    -- end;
     
     -------------------- WRITE ------------------
     procedure writeline is begin

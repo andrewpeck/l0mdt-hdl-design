@@ -67,6 +67,7 @@ end entity ult_tb_writer_ucm;
 architecture sim of ult_tb_writer_ucm is
 
   alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
   alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
 
   alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
@@ -100,7 +101,7 @@ begin
     puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
-    csv_file_1.write_word("#");
+    csv_file_1.write_string("# SLC_ts : "  & slc_file_ts);
     csv_file_1.write_string("#");
     csv_file_1.write_string("# --------------------------");   
     puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
