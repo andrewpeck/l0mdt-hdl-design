@@ -81,13 +81,31 @@ architecture sim of ult_tb_reader_tdc is
   signal mdt_mid_counts   : infifo_hit_counts(c_HPS_MAX_HP_MID -1 downto 0) := (others => 0);
   signal mdt_out_counts   : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
   signal mdt_ext_counts   : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
+
+  shared variable csv_file: csv_file_reader_type;
+  signal  file_open         : std_logic := '0';   
   
 begin
-  
-  
+
+  open_csv: process
+  begin
+    -- if first_read = '1' then
+    if g_verbose > 0 then
+      puts("opening MDT CSV file : " & IN_HIT_FILE);
+    end if;
+    csv_file.initialize(IN_HIT_FILE,"rd");
+    csv_file.readline;
+    while csv_file.read_isheader loop 
+      puts("H : ",csv_file.read_string);
+      csv_file.readline;
+    end loop;
+      file_open <= '1';
+    -- end if;
+    wait;
+  end process open_csv;
   HIT_READ: process ( rst, clk)
 
-    variable csv_file: csv_file_reader_type;
+    -- variable csv_file: csv_file_reader_type;
 
 
     variable ToA  : integer;
@@ -209,15 +227,15 @@ begin
 
           -- first read from input vector file
           if first_read = '1' then
-            if g_verbose > 0 then
-              puts("opening MDT CSV file : " & IN_HIT_FILE);
-            end if;
-            csv_file.initialize(IN_HIT_FILE,"rd");
-            csv_file.readline;
-            while csv_file.read_isheader loop 
-              puts("H : ",csv_file.read_string);
-              csv_file.readline;
-            end loop;
+            -- if g_verbose > 0 then
+            --   puts("opening MDT CSV file : " & IN_HIT_FILE);
+            -- end if;
+            -- csv_file.initialize(IN_HIT_FILE,"rd");
+            -- csv_file.readline;
+            -- while csv_file.read_isheader loop 
+            --   puts("H : ",csv_file.read_string);
+            --   csv_file.readline;
+            -- end loop;
             csv_file.readline;
 
             ToA              := csv_file.read_integer;
