@@ -30,8 +30,13 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
+use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
+
+library ult_lib;
+library vamc_lib;
 
 entity ult_tb_writer_mpl2pt is
   generic(
