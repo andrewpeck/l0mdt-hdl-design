@@ -50,6 +50,7 @@ package vhdl_textio_csv_pkg is
     impure function read_integer_as_boolean return boolean;
     -- Read a string from the csv file, until a separator character ',' is found
     impure function read_string(sep : character := '|') return string;
+    -- impure function read_string_nd(sep : character := '|') return string;
     -------------------- WRITE ------------------
     procedure writeline;
     procedure write_string(text : string);
@@ -155,28 +156,59 @@ package body vhdl_textio_csv_pkg is
     
     -- Read a string from the csv file, until a separator character ',' is found
     impure function read_string(sep : character := '|') return string is
-        variable return_string: string(1 to LINE_LENGTH_MAX);
-        variable read_char: character;
-        variable read_ok: boolean := true;
-        variable index: integer := 1;
+      variable return_string: string(1 to LINE_LENGTH_MAX);
+      variable read_char: character;
+      variable read_ok: boolean := true;
+      variable index: integer := 1;
     begin
-        read(current_line, read_char, read_ok);
-        -- puts("read_ok :  ",read_ok);
-        -- puts("read_char :  " & read_char);
-        if  read_ok = True then
-          while read_ok loop
-              if read_char = sep then
-                  return return_string;
-              else
-                  return_string(index) := read_char;
-                  index := index + 1;
-              end if;
-              read(current_line, read_char, read_ok);
-          end loop;
-        else
-          return return_string;
-        end  if;
+      read(current_line, read_char, read_ok);
+      -- puts("read_ok :  ",read_ok);
+      -- puts("read_char :  " & read_char);
+      if  read_ok = True then
+        while read_ok loop
+            if read_char = sep then
+                return return_string;
+            else
+                return_string(index) := read_char;
+                index := index + 1;
+            end if;
+            read(current_line, read_char, read_ok);
+        end loop;
+      else
         return return_string;
+      end  if;
+      return return_string;
+
+    end;
+
+    ------------------------------
+    -- OJO!!!! this function kills questa
+    ------------------------------
+    -- impure function read_string_nd(sep : character := '|') return string is
+    --   variable aux_line : line;
+    --   variable return_string: string(1 to LINE_LENGTH_MAX);
+    --   variable read_char: character;
+    --   variable read_ok: boolean := true;
+    --   variable index: integer := 1;
+    -- begin
+    --   aux_line := current_line;
+    --   read(aux_line, read_char, read_ok);
+    --   -- puts("read_ok :  ",read_ok);
+    --   -- puts("read_char :  " & read_char);
+    --   if  read_ok = True then
+    --     while read_ok loop
+    --         if read_char = sep then
+    --             return return_string;
+    --         else
+    --             return_string(index) := read_char;
+    --             index := index + 1;
+    --         end if;
+    --         read(aux_line, read_char, read_ok);
+    --     end loop;
+    --   else
+    --     return return_string;
+    --   end  if;
+    --   return return_string;
 
     end;
     

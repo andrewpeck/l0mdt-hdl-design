@@ -104,7 +104,12 @@ begin
       csv_file.initialize(IN_SLC_FILE,"rd");
       csv_file.readline;
       while csv_file.read_isheader loop 
-        puts("H : ",csv_file.read_string);
+        -- puts("H : ",csv_file.read_string_nd);
+        -- if csv_file.read_string(':') = "TS" then
+        --   puts("TimeStamp : ",csv_file.read_string);
+        -- end if;
+        puts("H_TS : ",csv_file.read_string(':'));
+        -- puts("H : ",csv_file.read_string);
         csv_file.readline;
       end loop;
       -- csv_file.readline;

@@ -67,7 +67,7 @@ end entity ult_tb_writer_ucm;
 architecture sim of ult_tb_writer_ucm is
 
   alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
-  -- alias hit_file_ok is  << signal.ult_tp.MDT.first_read : std_logic >>;
+  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
 
   alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
   alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
@@ -96,13 +96,19 @@ begin
 
   open_csv: process
   begin
-    wait until slc_file_ok ;--and not hit_file_ok;
+    wait until slc_file_ok and hit_file_ok;
     puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
     csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
     csv_file_1.write_word("#");
     csv_file_1.write_string("#");
-    csv_file_1.write_string("# --------------------------");    
+    csv_file_1.write_string("# --------------------------");   
+    puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
+    csv_file_2.initialize(g_OUT_FILE_2,"wr");
+    csv_file_2.write_string("# --------------------------");
+    csv_file_2.write_string("#");
+    csv_file_2.write_string("#");
+    csv_file_2.write_string("# --------------------------");   
     wait;
   end process open_csv;
 
@@ -129,7 +135,7 @@ begin
   ext_ucm2hps_bus_ar <= structify(ext_slc_to_h2s_av);
 
   UCM2HPS_OUT: process(clk, rst)
-    variable first_read           : std_logic := '1';
+    variable first_write           : std_logic := '1';
 
     -- variable csv_file_1: csv_file_reader_type;
 
@@ -137,7 +143,7 @@ begin
 
   begin
     if rising_edge(clk) then
-      if first_read = '1' then
+      if first_write = '1' then
         -- wait until not slc_file_ok and not hit_file_ok;
         -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
         -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
@@ -164,7 +170,7 @@ begin
         -- vec_ang
         csv_file_1.write_word("vec_ang");
         csv_file_1.writeline;
-        first_read := '0';
+        first_write := '0';
       end if;
       if rst = '1' then
       else     
@@ -328,7 +334,7 @@ begin
 
   UCM2MPL_OUT: process(clk, rst)
 
-    variable first_read           : std_logic := '1';
+    variable first_write           : std_logic := '1';
 
     -- variable csv_file_2: csv_file_reader_type;
 
@@ -336,13 +342,13 @@ begin
 
   begin
     if rising_edge(clk) then
-      if first_read = '1' then
-        puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
-        csv_file_2.initialize(g_OUT_FILE_2,"wr");
-        csv_file_2.write_string("# --------------------------");
-        csv_file_2.write_string("#");
-        csv_file_2.write_string("#");
-        csv_file_2.write_string("# --------------------------");         
+      if first_write = '1' then
+        -- puts("opening UCM2PL CSV file : " & g_OUT_FILE_2);
+        -- csv_file_2.initialize(g_OUT_FILE_2,"wr");
+        -- csv_file_2.write_string("# --------------------------");
+        -- csv_file_2.write_string("#");
+        -- csv_file_2.write_string("#");
+        -- csv_file_2.write_string("# --------------------------");         
         -- event
         csv_file_2.write_word("ToA");
         csv_file_2.write_word("event");          
@@ -380,7 +386,7 @@ begin
         csv_file_2.write_word("nswseg_posphi");
         csv_file_2.write_word("nswseg_poseta");
         csv_file_2.writeline;
-        first_read := '0';
+        first_write := '0';
       end if;
       if rst = '1' then
       else
