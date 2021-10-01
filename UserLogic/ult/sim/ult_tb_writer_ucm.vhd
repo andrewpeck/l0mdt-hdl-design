@@ -43,7 +43,7 @@ library vamc_lib;
 -- library hps_lib;
 -- use hps_lib.hps_pkg.all;
 
-entity ult_tb_writer_ucm2hps is
+entity ult_tb_writer_ucm is
   generic(
     g_PRJ_INFO            : string  := "A3B";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
@@ -62,9 +62,9 @@ entity ult_tb_writer_ucm2hps is
     i_slc_event_ai        : in event_aut(c_MAX_NUM_SL -1 downto 0) 
 
   );
-end entity ult_tb_writer_ucm2hps;
+end entity ult_tb_writer_ucm;
 
-architecture sim of ult_tb_writer_ucm2hps is
+architecture sim of ult_tb_writer_ucm is
 
   alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
   alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
@@ -123,7 +123,7 @@ begin
         puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
         csv_file.initialize(g_OUT_FILE_1,"wr");
         csv_file.write_string("# --------------------------");
-        csv_file.write_string("#");
+        csv_file.write_word("#");
         csv_file.write_string("#");
         csv_file.write_string("# --------------------------");         
         -- muid

@@ -138,6 +138,8 @@ architecture beh of ult_tp is
   signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
   signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
   signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+  
+  signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
 
   -- Segments in from neighbor
   signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
@@ -397,21 +399,23 @@ begin
   -------------------------------------------------------------------------------------
 	-- TAR2HPS
   -------------------------------------------------------------------------------------
-  -- TAR2HPS : entity project_lib.ult_tb_writer_sf2pt 
-  -- generic map (
-  --   g_PRJ_INFO    => PRJ_INFO,
-  --   g_IN_HIT_FILE => IN_HIT_FILE,
-  --   g_IN_SLC_FILE => IN_SLC_FILE
-  --   -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-  --   -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
-  -- )
-  -- port map(
-  --   clk => clk,
-  --   rst => rst,
-  --   enable => enable_slc,
-  --   --
-  --   tb_curr_tdc_time => tb_curr_tdc_time
-  -- );
+  TAR : entity project_lib.ult_tb_writer_tar
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time,
+    i_hit_event_ai            => hit_event_ai
+
+  );
   -------------------------------------------------------------------------------------
 	-- TAR2DAQ
   -------------------------------------------------------------------------------------
@@ -421,7 +425,7 @@ begin
   -- TB_UCM_GEN: if condition generate
     
   -- end generate TB_UCM_GEN;
-  UCM : entity project_lib.ult_tb_writer_ucm2hps 
+  UCM : entity project_lib.ult_tb_writer_ucm
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_HIT_FILE => IN_HIT_FILE,

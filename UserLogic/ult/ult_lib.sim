@@ -16,12 +16,15 @@ UserLogic/ult/sim/ult_tb_reader_slc.vhd
 # -------------------------------------------
 # OV writers
 # -------------------------------------------
-UserLogic/ult/sim/ult_tb_writer_heg2sf.vhd
-UserLogic/ult/sim/ult_tb_writer_mpl2mtcb.vhd
-UserLogic/ult/sim/ult_tb_writer_mpl2pt.vhd
+UserLogic/ult/sim/ult_tb_writer_ucm.vhd
+
+UserLogic/ult/sim/ult_tb_writer_tar.vhd
+UserLogic/ult/sim/ult_tb_writer_heg.vhd
+UserLogic/ult/sim/ult_tb_writer_mpl.vhd
+UserLogic/ult/sim/ult_tb_writer_sf.vhd
+
 UserLogic/ult/sim/ult_tb_writer_pt2mtcb.vhd
-UserLogic/ult/sim/ult_tb_writer_sf2out.vhd
-UserLogic/ult/sim/ult_tb_writer_sf2pt.vhd
-UserLogic/ult/sim/ult_tb_writer_tar2hps.vhd
-UserLogic/ult/sim/ult_tb_writer_ucm2hps.vhd
-UserLogic/ult/sim/ult_tb_writer_ucm2mpl.vhd
+# UserLogic/ult/sim/ult_tb_writer_sf2pt.vhd
+
+
+
