@@ -254,8 +254,19 @@ package body vhdl_textio_csv_pkg is
       column_count := 0;
     end;
 
-    procedure write_string(text : string) is begin
-      write(current_line,text);
+    procedure write_string(text : string) is 
+      variable char : character;
+      variable index : integer;
+    begin
+      index := 1;
+      char := text(index);
+      while (index <= text'length) and not (char = NUL) loop
+        write(current_line,char);
+        index := index + 1;
+        if (index <= text'length) and not (char = NUL) then
+          char := text(index);
+        end if;
+      end loop;
       writeline;
     end;
     procedure write_word(text : string) is begin
