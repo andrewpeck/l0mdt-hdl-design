@@ -94,9 +94,8 @@ begin
     variable aux : string(1 to LINE_LENGTH_MAX);
   begin
     -- if first_read = '1' then
-    if g_verbose > 0 then
-      puts("opening MDT CSV file : " & IN_HIT_FILE);
-    end if;
+    puts("--------------------------------");
+    puts("opening MDT CSV file : " & IN_HIT_FILE);
     csv_file.initialize(IN_HIT_FILE,"rd");
     csv_file.readline;
     while csv_file.read_isheader loop 
@@ -121,6 +120,8 @@ begin
       csv_file.readline;
     end loop;
       file_open <= '1';
+      puts("--------------------------------");
+
     -- end if;
     wait;
   end process open_csv;
