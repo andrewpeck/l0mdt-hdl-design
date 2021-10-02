@@ -113,7 +113,7 @@ begin
         while not csv_file.end_of_line loop
           aux := csv_file.read_string(':');
           if aux(1 to 2) = "TS" then
-            timestamp := csv_file.read_string;
+            timestamp := csv_file.read_string(NUL);
             file_ts <= timestamp;
             puts("TimeStamp = ",timestamp);
           end if;
