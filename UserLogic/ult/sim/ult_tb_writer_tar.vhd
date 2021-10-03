@@ -100,7 +100,7 @@ begin
       E_PL : entity vamc_lib.vamc_spl
       generic map(
         g_PIPELINE_TYPE => "shift_reg",
-        g_DELAY_CYCLES  => 152,
+        g_DELAY_CYCLES  => 420,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -159,7 +159,11 @@ begin
             if ult_inn_tar_hits_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(0)(ch_i)));          
-
+              csv_file_1.write_integer(0);
+              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).chamber_ieta);
+              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).layer);
+              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).tube);
+              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).time);
               csv_file_1.writeline;
             end if;
           end loop;
@@ -169,7 +173,11 @@ begin
             if ult_mid_tar_hits_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(1)(ch_i)));          
-
+              csv_file_1.write_integer(1);
+              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).chamber_ieta);
+              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).layer);
+              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).tube);
+              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).time);
               csv_file_1.writeline;
             end if;
           end loop;
@@ -178,7 +186,12 @@ begin
           for ch_i in c_HPS_MAX_ARRAY(2) -1 downto 0 loop
             if ult_out_tar_hits_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(2)(ch_i)));          
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(2)(ch_i)));   
+              csv_file_1.write_integer(2);
+              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).chamber_ieta);
+              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).layer);
+              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).tube);
+              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).time);       
               csv_file_1.writeline;
             end if;
           end loop;
@@ -187,7 +200,12 @@ begin
           for ch_i in c_HPS_MAX_ARRAY(3) -1 downto 0 loop
             if ult_ext_tar_hits_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));          
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));   
+              csv_file_1.write_integer(3);
+              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).chamber_ieta);
+              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).layer);
+              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).tube);
+              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).time);       
               csv_file_1.writeline;
             end if;
           end loop;
