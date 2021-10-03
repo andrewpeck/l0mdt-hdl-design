@@ -16,11 +16,12 @@ HDL_Types:
   - ToA         : [ type : unsigned , length : 64]
   - station     : [ type : unsigned , length : 8]
   - chamber     : [ type : unsigned , length : SLC_CHAMBER_LEN]
-  - tar         : [ type : tar2hps ]
+  - event       : [ type : unsigned , length : 32]
   - tdc         : [ type : tdcpolmux2tar ]
 
 - TB_TAR_FIFO_WIDTH:     [ qualifier: constant , type: integer , value: 32 ]
 
+- input_mdt_bus : [ array: TB_TAR_FIFO_WIDTH , type: input_mdt]
 - tar2hps_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tar2hps]
 - pol2tar_tb    : [ array: TB_TAR_FIFO_WIDTH , type: tdcpolmux2tar]
 

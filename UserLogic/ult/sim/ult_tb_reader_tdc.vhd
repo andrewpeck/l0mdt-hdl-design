@@ -32,13 +32,14 @@ use shared_lib.detector_param_pkg.all;
 
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
 use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
 
 entity ult_tb_reader_tdc is
   generic (
     IN_HIT_FILE       : string  := "csm_TB_A3_Barrel_yt_v04.txt";
-    g_verbose         : integer := 1
+    g_verbose         : integer := 2
   );
   port (
     clk               : in std_logic;
@@ -52,16 +53,19 @@ entity ult_tb_reader_tdc is
     i_mdt_tdc_out_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0) := (others => (others => '0'));
     i_mdt_tdc_ext_av  : out mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'))
 
+
   );
 end entity ult_tb_reader_tdc;
 
 architecture sim of ult_tb_reader_tdc is
 
-  signal mdt_tdc_station  : pol2tar_tb_at;
+  -- signal mdt_tdc_station  : pol2tar_tb_at;
+  signal mdt_tdc_station  : input_mdt_bus_at;
 
   type infifo_hit_counts is array (integer range <>) of integer;
 
-  type infifo_hit_mem_at is array (integer range <>) of pol2tar_tb_at;
+  -- type infifo_hit_mem_at is array (integer range <>) of pol2tar_tb_at;
+  type infifo_hit_mem_at is array (integer range <>) of input_mdt_bus_at;
 
   signal mdt_tdc_event_r  : input_mdt_rt;
   signal mdt_new_event    : input_mdt_rt;
@@ -82,9 +86,12 @@ architecture sim of ult_tb_reader_tdc is
   signal mdt_out_counts   : infifo_hit_counts(c_HPS_MAX_HP_OUT -1 downto 0) := (others => 0);
   signal mdt_ext_counts   : infifo_hit_counts(c_HPS_MAX_HP_EXT -1 downto 0) := (others => 0);
 
-  shared variable csv_file: csv_file_reader_type;
+  signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
+
+
+  shared variable csv_file  : csv_file_reader_type;
   signal  file_open         : std_logic := '0';   
-  signal file_ts : string(1 to LINE_LENGTH_MAX);
+  signal file_ts            : string(1 to LINE_LENGTH_MAX);
   
 begin
 
@@ -159,7 +166,7 @@ begin
     variable row_counter          : integer := 0;
 
     -- variable tdc_time             : UNSIG_64;
-    variable v_mdt_event            : input_mdt_rt;
+    variable v_mdt_event          : input_mdt_rt;
 
     variable next_event_time      : integer := 0;
     variable tb_time              : integer := 0;
@@ -185,9 +192,10 @@ begin
 
           for wr_i in c_HPS_MAX_HP_INN -1 downto 0 loop
             if(v_mdt_inn_counts(wr_i) > 0) then
-              i_mdt_tdc_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0));
+              i_mdt_tdc_inn_av(wr_i) <= vectorify(mdt_inn_fifo(wr_i)(0).tdc);
+              mdt_event_ai(0)(wr_i) <= mdt_inn_fifo(wr_i)(0).event;
               -- for test input read
-              i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0);
+              i_mdt_tdc_inn_ar(wr_i) <= mdt_inn_fifo(wr_i)(0).tdc;
               --
               for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
                 mdt_inn_fifo(wr_i)(mv_i - 1) <= mdt_inn_fifo(wr_i)(mv_i);
@@ -201,9 +209,11 @@ begin
 
           for wr_i in c_HPS_MAX_HP_MID -1 downto 0 loop
             if(v_mdt_mid_counts(wr_i) > 0) then
-              i_mdt_tdc_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0));
+              i_mdt_tdc_mid_av(wr_i) <= vectorify(mdt_mid_fifo(wr_i)(0).tdc);
+              mdt_event_ai(1)(wr_i) <= mdt_mid_fifo(wr_i)(0).event;
+
               -- for test input read
-              i_mdt_tdc_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0);
+              i_mdt_tdc_mid_ar(wr_i) <= mdt_mid_fifo(wr_i)(0).tdc;
               --
               for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
                 mdt_mid_fifo(wr_i)(mv_i - 1) <= mdt_mid_fifo(wr_i)(mv_i);
@@ -217,9 +227,11 @@ begin
 
           for wr_i in c_HPS_MAX_HP_OUT -1 downto 0 loop
             if(v_mdt_out_counts(wr_i) > 0) then
-              i_mdt_tdc_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0));
+              i_mdt_tdc_out_av(wr_i) <= vectorify(mdt_out_fifo(wr_i)(0).tdc);
+              mdt_event_ai(2)(wr_i) <= mdt_out_fifo(wr_i)(0).event;
+
               -- for test input read
-              i_mdt_tdc_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0);
+              i_mdt_tdc_out_ar(wr_i) <= mdt_out_fifo(wr_i)(0).tdc;
               --
               for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
                 mdt_out_fifo(wr_i)(mv_i - 1) <= mdt_out_fifo(wr_i)(mv_i);
@@ -233,9 +245,11 @@ begin
 
           for wr_i in c_HPS_MAX_HP_EXT -1 downto 0 loop
             if(v_mdt_ext_counts(wr_i) > 0) then
-              i_mdt_tdc_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0));
+              i_mdt_tdc_ext_av(wr_i) <= vectorify(mdt_ext_fifo(wr_i)(0).tdc);
+              mdt_event_ai(3)(wr_i) <= mdt_ext_fifo(wr_i)(0).event;
+
               -- for test input read
-              i_mdt_tdc_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0);
+              i_mdt_tdc_ext_ar(wr_i) <= mdt_ext_fifo(wr_i)(0).tdc;
               --
               for mv_i in TB_TAR_FIFO_WIDTH -1 downto 1 loop
                 mdt_ext_fifo(wr_i)(mv_i - 1) <= mdt_ext_fifo(wr_i)(mv_i);
@@ -308,13 +322,14 @@ begin
               ToA => to_unsigned(ToA,64),
               Station => to_unsigned(i_Station,8),
               Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-              tar => (  
-                tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-                layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-                chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-                time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
-                data_valid => '1'
-              ),
+              event => to_unsigned(event , 32),
+              -- tar => (  
+              --   tube => to_unsigned(tube_global,MDT_TUBE_LEN),
+              --   layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+              --   chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+              --   time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+              --   data_valid => '1'
+              -- ),
               tdc => (
                 data_valid => '1',
                 tdc => (
@@ -350,22 +365,22 @@ begin
 
                 if to_integer(v_mdt_event.station) = 0 then
                   if c_HPS_ENABLED_HP_INN(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
+                    mdt_inn_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_inn_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
                     v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_inn_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 1 then
                   if c_HPS_ENABLED_HP_MID(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
+                    mdt_mid_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_mid_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
                     v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_mid_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 2 then
                   if c_HPS_ENABLED_HP_OUT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
+                    mdt_out_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_out_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
                     v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_out_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 elsif to_integer(v_mdt_event.station) = 3 then
                   if c_HPS_ENABLED_HP_EXT(to_integer(v_mdt_event.chamber)) = '1' then
-                    mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event.tdc;
+                    mdt_ext_fifo(to_integer(v_mdt_event.chamber) )(v_mdt_ext_counts(to_integer(v_mdt_event.chamber) )) <= v_mdt_event;
                     v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) := v_mdt_ext_counts(to_integer(v_mdt_event.chamber) ) + 1;
                   end if;
                 else
@@ -423,13 +438,15 @@ begin
                   ToA => to_unsigned(ToA,64),
                   Station => to_unsigned(i_Station,8),
                   Chamber => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-                  tar => (  
-                    tube => to_unsigned(tube_global,MDT_TUBE_LEN),
-                    layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
-                    chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
-                    time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
-                    data_valid => '1'
-                  ),
+              event => to_unsigned(event , 32),
+
+                  -- tar => (  
+                  --   tube => to_unsigned(tube_global,MDT_TUBE_LEN),
+                  --   layer => to_unsigned(tube_layer,MDT_LAYER_LEN),
+                  --   chamber_ieta => to_unsigned(chamber_ieta,SLC_CHAMBER_LEN),
+                  --   time => to_unsigned((mdt_time_coarse * 32) + mdt_time_fine ,TDC_COARSETIME_LEN + 5), -- & to_unsigned(mdt_time_fine,TDC_COARSETIME_LEN),
+                  --   data_valid => '1'
+                  -- ),
                   tdc => (
                     data_valid => '1',
                     tdc => (

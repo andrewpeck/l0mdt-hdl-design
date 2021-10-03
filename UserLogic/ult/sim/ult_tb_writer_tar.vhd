@@ -59,13 +59,56 @@ end entity ult_tb_writer_tar;
 
 architecture sim of ult_tb_writer_tar is
 
-  -- signal ult_inn_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
-  -- signal ult_mid_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
-  -- signal ult_out_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
-  -- signal ult_ext_tar_hits_av  : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+  shared variable csv_file_1: csv_file_reader_type;
+  constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
+
+  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_av : ucm2hps_bus_avt >>;
+
+  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+
+  signal tdc_event_u2h_au : event_tdc_at;
   
 begin
   
+  open_csv: process
+  begin
+    wait until slc_file_ok and hit_file_ok;
+    puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
+    csv_file_1.initialize(g_OUT_FILE_1,"wr");
+    csv_file_1.write_string("# --------------------------");
+    csv_file_1.write_string("# SLC_ts : "  & slc_file_ts);
+    csv_file_1.write_string("# HIT_ts : "  & hit_file_ts);
+    csv_file_1.write_string("#");
+    csv_file_1.write_string("# --------------------------");     
+    wait;
+  end process open_csv;
+
+  event_st_pl : for st_i in 0 to 3 generate
+    event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        g_PIPELINE_TYPE => "shift_reg",
+        g_DELAY_CYCLES  => 52,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(mdt_event_ai(st_i)(ch_i)),
+        o_data      => tdc_event_u2h_au(st_i)(ch_i)
+      );
+    end generate;
+  end generate;
+
   
   -- HEG_BM: process(clk)
 

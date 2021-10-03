@@ -45,27 +45,48 @@ add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ucm2pl_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/clk
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/rst
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/enable
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/i_slc_event_ai
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/slc_event_u2m_au
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/slc_event_u2h_au
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ucm2pl_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ucm2pl_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/clk
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/rst
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/enable
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/i_slc_event_ai
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/slc_event_u2m_au
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/inn_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/inn_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ext_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ext_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/slc_event_u2h_au
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ucm2pl_ar
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/clk
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/enable
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_IN_HIT_FILE
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_IN_L0_FILE
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_IN_SLC_FILE
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_PRJ_INFO
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/i_hit_event_ai
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/rst
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/tb_curr_tdc_time
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/csv_file_1
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ext_slc_to_h2s_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_OUT_FILE_1
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/hit_file_ok
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/hit_file_ts
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/inn_slc_to_h2s_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/mdt_event_ai
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/mid_slc_to_h2s_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/out_slc_to_h2s_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/slc_file_ok
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/slc_file_ts
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/tdc_event_u2h_au
 add wave -noupdate -group ULT /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT /ult_tp/ULT/ttc_commands

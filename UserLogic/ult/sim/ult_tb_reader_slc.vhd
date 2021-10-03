@@ -197,7 +197,7 @@ begin
 
           for wr_i in 2 downto 0 loop
             if(v_slc_main_prim_counts(wr_i) > 0) then
-              o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              -- o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
               o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc);
               --
               o_slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
