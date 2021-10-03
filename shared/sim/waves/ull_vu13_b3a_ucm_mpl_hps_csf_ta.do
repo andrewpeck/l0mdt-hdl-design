@@ -76,14 +76,18 @@ add wave -noupdate -expand -group tb_tar /ult_tp/TAR/i_hit_event_ai
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/rst
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/tb_curr_tdc_time
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/csv_file_1
-add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ext_slc_to_h2s_av
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/g_OUT_FILE_1
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/hit_file_ok
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/hit_file_ts
-add wave -noupdate -expand -group tb_tar /ult_tp/TAR/inn_slc_to_h2s_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_inn_tar_hits_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_mid_tar_hits_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_out_tar_hits_av
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_ext_tar_hits_av
+add wave -noupdate -expand -group tb_tar -expand /ult_tp/TAR/ult_inn_tar_hits_ar
+add wave -noupdate -expand -group tb_tar -expand /ult_tp/TAR/ult_mid_tar_hits_ar
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_out_tar_hits_ar
+add wave -noupdate -expand -group tb_tar /ult_tp/TAR/ult_ext_tar_hits_ar
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/mdt_event_ai
-add wave -noupdate -expand -group tb_tar /ult_tp/TAR/mid_slc_to_h2s_av
-add wave -noupdate -expand -group tb_tar /ult_tp/TAR/out_slc_to_h2s_av
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/slc_file_ok
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/slc_file_ts
 add wave -noupdate -expand -group tb_tar /ult_tp/TAR/tdc_event_u2h_au
@@ -695,7 +699,7 @@ add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_t0_v
 add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mdt_full_data_v
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2103325416 fs} 0} {{Cursor 3} {141773417786 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {1487034574 fs} 0} {{Cursor 3} {141773417786 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261

@@ -202,6 +202,7 @@ begin
               end loop;
               v_mdt_inn_counts(wr_i) := v_mdt_inn_counts(wr_i) - 1;
             else
+              mdt_event_ai(0)(wr_i) <= (others => '0');
               i_mdt_tdc_inn_av(wr_i) <= nullify(i_mdt_tdc_inn_av(wr_i));
               i_mdt_tdc_inn_ar(wr_i) <= nullify(i_mdt_tdc_inn_ar(wr_i));
             end if;
@@ -220,6 +221,7 @@ begin
               end loop;
               v_mdt_mid_counts(wr_i) := v_mdt_mid_counts(wr_i) - 1;
             else
+              mdt_event_ai(1)(wr_i) <= (others => '0');
               i_mdt_tdc_mid_av(wr_i) <= nullify(i_mdt_tdc_mid_av(wr_i));
               i_mdt_tdc_mid_ar(wr_i) <= nullify(i_mdt_tdc_mid_ar(wr_i));
             end if;
@@ -238,6 +240,7 @@ begin
               end loop;
               v_mdt_out_counts(wr_i) := v_mdt_out_counts(wr_i) - 1;
             else
+              mdt_event_ai(2)(wr_i) <= (others => '0');
               i_mdt_tdc_out_av(wr_i) <= nullify(i_mdt_tdc_out_av(wr_i));
               i_mdt_tdc_out_ar(wr_i) <= nullify(i_mdt_tdc_out_ar(wr_i));
             end if;
@@ -256,6 +259,7 @@ begin
               end loop;
               v_mdt_ext_counts(wr_i) := v_mdt_ext_counts(wr_i) - 1;
             else
+              mdt_event_ai(3)(wr_i) <= (others => '0');
               i_mdt_tdc_ext_av(wr_i) <= nullify(i_mdt_tdc_ext_av(wr_i));
               i_mdt_tdc_ext_ar(wr_i) <= nullify(i_mdt_tdc_ext_ar(wr_i));
             end if;

@@ -66,14 +66,19 @@ architecture sim of ult_tb_writer_tar is
   shared variable csv_file_1: csv_file_reader_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
-  alias inn_slc_to_h2s_av is  << signal.ult_tp.ULT.inn_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias mid_slc_to_h2s_av is  << signal.ult_tp.ULT.mid_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias out_slc_to_h2s_av is  << signal.ult_tp.ULT.out_slc_to_h2s_av : ucm2hps_bus_avt >>;
-  alias ext_slc_to_h2s_av is  << signal.ult_tp.ULT.ext_slc_to_h2s_av : ucm2hps_bus_avt >>;
+  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_av : tar2hps_bus_avt >>;
+  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_av : tar2hps_bus_avt >>;
+  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_av : tar2hps_bus_avt >>;
+  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_av : tar2hps_bus_avt >>;
 
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
+
+  signal ult_inn_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
+  signal ult_mid_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
+  signal ult_out_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ult_ext_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
   
 begin
   
@@ -95,7 +100,7 @@ begin
       E_PL : entity vamc_lib.vamc_spl
       generic map(
         g_PIPELINE_TYPE => "shift_reg",
-        g_DELAY_CYCLES  => 52,
+        g_DELAY_CYCLES  => 152,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -109,216 +114,86 @@ begin
     end generate;
   end generate;
 
+  ult_inn_tar_hits_ar <= structify(ult_inn_tar_hits_av);
+  ult_mid_tar_hits_ar <= structify(ult_mid_tar_hits_av);
+  ult_out_tar_hits_ar <= structify(ult_out_tar_hits_av);
+  ult_ext_tar_hits_ar <= structify(ult_ext_tar_hits_av);
   
-  -- HEG_BM: process(clk)
+  TAR2HPS: process(clk)
+    variable first_write           : std_logic := '1';
 
-  --   file file_slc_handler : text open write_mode is OUT_HEG_BM_SLC_FILE;
-  --   file file_hit_handler : text open write_mode is OUT_HEG_BM_HIT_FILE;
+  begin
+    if rising_edge(clk) then
+      if first_write = '1' then
+        -- wait until not slc_file_ok and not hit_file_ok;
+        -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
+        -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
+        -- csv_file_1.write_string("# --------------------------");
+        -- csv_file_1.write_word("#");
+        -- csv_file_1.write_string("#");
+        -- csv_file_1.write_string("# --------------------------");         
+        -- muid
+        csv_file_1.write_word("ToA");
+        csv_file_1.write_word("event");          
+        -- csv_file_1.write_word("thread");          
+        csv_file_1.write_word("station");          
+        -- muid
+        csv_file_1.write_word("chamber_ieta");
+        csv_file_1.write_word("layer");
+        csv_file_1.write_word("tube");
+        csv_file_1.write_word("time");
+        -- -- mdtid
+        -- csv_file_1.write_word("chamber_id");
+        -- csv_file_1.write_word("chamber_ieta");
+        -- -- vec_pos
+        -- csv_file_1.write_word("vec_pos");
+        -- -- vec_ang
+        -- csv_file_1.write_word("vec_ang");
+        csv_file_1.writeline;
+        first_write := '0';
+      end if;
+      if rst = '1' then
+      else
+        if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
+          for ch_i in c_HPS_MAX_ARRAY(0) -1 downto 0 loop
+            if ult_inn_tar_hits_ar(ch_i).data_valid = '1' then
+              csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(0)(ch_i)));          
 
-  --   variable row 		: line;
+              csv_file_1.writeline;
+            end if;
+          end loop;
+        end if;
+        if c_STATIONS_IN_SECTOR(1) = '1' then -- INN
+          for ch_i in c_HPS_MAX_ARRAY(1) -1 downto 0 loop
+            if ult_mid_tar_hits_ar(ch_i).data_valid = '1' then
+              csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(1)(ch_i)));          
 
-  --   alias ult_inn_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_inn_tar_hits_av :  tar2hps_bus_avt >>;
-  --   alias ult_mid_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_mid_tar_hits_av :  tar2hps_bus_avt >>;
-  --   alias ult_out_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_out_tar_hits_av :  tar2hps_bus_avt >>;
-  --   alias ult_ext_tar_hits_av is << signal.ult_tp.ULT.logic_gen.ult_ext_tar_hits_av :  tar2hps_bus_avt >>;
-
-  --   -- heg2sf_ctrl_av : hps_ctrl2sf_avt
-
-  --   -- variable fifo_mem_v : heg2sf_hits_fifo_at(OUTPUT_FIFO_LEN -1 downto 0);
-  --   variable fifo_count : integer := 0;
-
-  --   variable hit2write : out_heg_bm_hit_sim_rt;
-  --   variable slc2write : out_heg_bm_slc_sim_rt;
-  --   variable ctrl2write : out_heg_bm_ctrl_sim_rt;
-
-  --   variable read_ctrl  : heg_ctrl2sf_rt;
-  --   variable read_slc   : heg2sfslc_rt;
-  --   variable read_hit   : heg2sfhit_rt;
-
-  --   variable header2write : std_logic := '0';
-
-  -- begin
-  --   if rising_edge(clk) then
-  --     if rst = '1' then
-            
-  --     else
-
-  --       if header2write = '0' then
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# TAR 2 HPS");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# BUS : tar2hps_rt ");
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# IN_SLC_FILE : " & IN_SLC_FILE);
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "# IN_HIT_FILE : " & IN_HIT_FILE);
-  --         writeline(file_slc_handler,row);
-  --         SWRITE(row, "#----------------------------------------");
-  --         writeline(file_slc_handler,row);
-  --         WRITEHEADER(row,slc2write);
-  --         writeline(file_slc_handler,row);
-  --         header2write := '1';
-  --       end if;
-
-  --       fifo_count := 0;
-
-  --       -------------------------------------------------------------------
-  --       -- new SLC
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_inn_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(0,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_mid_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(1,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_slc := structify(heg2sf_out_slc_av(heg_i));
-  --           if read_slc.data_valid = '1' then
-
-  --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(2,4);
-  --             slc2write.thread   := to_unsigned(heg_i,4);
-  --             slc2write.data   := read_slc;
-  --             write(row,slc2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       -------------------------------------------------------------------
-  --       -- end SLC
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_inn_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_inn_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_inn_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_mid_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_mid_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_mid_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_ctrl := structify(heg2sf_out_ctrl_av(heg_i));
-  --           -- read_slc := structify(heg2sf_out_slc_av(heg_i));
-  --           if read_ctrl.eof = '1' then
-  --             read_slc := structify(heg2sf_out_slc_av(heg_i));
-  --             ctrl2write.ToA      := tb_curr_tdc_time;
-  --             ctrl2write.station  := to_unsigned(0,4);
-  --             ctrl2write.thread   := to_unsigned(heg_i,4);
-  --             ctrl2write.HEG_ctrl := read_ctrl;
-  --             ctrl2write.data    := read_slc;
-  --             write(row,ctrl2write);
-  --             writeline(file_slc_handler,row);
-
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --       -------------------------------------------------------------------
-  --       -- new HIT
-  --       -------------------------------------------------------------------
-
-  --       if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_inn_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(0,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(1) = '1' then -- MID
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_mid_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(1,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-  --       if c_STATIONS_IN_SECTOR(2) = '1' then -- OUT
-  --         for heg_i in c_NUM_THREADS -1 downto 0 loop
-  --           read_hit := structify(heg2sf_out_hit_av(heg_i));
-  --           if read_hit.data_valid = '1' then
-  --             hit2write.ToA      := tb_curr_tdc_time;
-  --             hit2write.station  := to_unsigned(2,4);
-  --             hit2write.thread   := to_unsigned(heg_i,4);
-  --             hit2write.data   := read_hit;
-  --             write(row,hit2write);
-  --             writeline(file_hit_handler,row);
-  --           end if;
-  --         end loop;
-  --       end if;
-
-  --     end if;
-  --   end if;
-  -- end process HEG_BM;
-
-
-
-  
+              csv_file_1.writeline;
+            end if;
+          end loop;
+        end if;
+        if c_STATIONS_IN_SECTOR(2) = '1' then -- INN
+          for ch_i in c_HPS_MAX_ARRAY(2) -1 downto 0 loop
+            if ult_out_tar_hits_ar(ch_i).data_valid = '1' then
+              csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(2)(ch_i)));          
+              csv_file_1.writeline;
+            end if;
+          end loop;
+        end if;
+        if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
+          for ch_i in c_HPS_MAX_ARRAY(3) -1 downto 0 loop
+            if ult_ext_tar_hits_ar(ch_i).data_valid = '1' then
+              csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));          
+              csv_file_1.writeline;
+            end if;
+          end loop;
+        end if;
+      end if;
+    end if;
+  end process TAR2HPS;
   
 end architecture sim;
