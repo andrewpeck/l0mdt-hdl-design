@@ -34,16 +34,16 @@ def main():
                         default=15)
     parser.add_argument("--mfit_mult",
                         type=float,
-                        help="global theta multiplier",
+                        help="global mfit multiplier",
                         default=4096.0)
     parser.add_argument("--theta_glob_mult",
                         type=float,
                         help="global theta multiplier",
-                        default=200.0)
+                        default=4096.0)
     parser.add_argument("--theta_width",
                         type=float,
                         help="global theta multiplier",
-                        default=13.0)
+                        default=14.0)
 
     args = parser.parse_args()
 
@@ -75,16 +75,16 @@ def main():
     reciprocal_mem = open(args.output + '/fitter_reciprocal.mem', "w")
     m_to_theta_mem = open(args.output + '/m_to_theta.mem', "w")
 
-    for x in xrange(0, 2**args.mbar_width - 1):
+    for x in range(0, 2**args.mbar_width - 1):
         invsqrt = int(
             floor(2**args.inv_sqrt_m_width / sqrt(args.mbar_multi**2 + x**2)))
         # invsqrt_mbar_rom.write("%d,\n" % invsqrt)
         invsqrt_mbar_mem.write("%04X\n" % invsqrt)
         sqrt_mbar = int(floor(sqrt(args.mbar_multi**2 + x**2)))
         # sqrt_mbar_rom.write("%d,\n" % sqrt_mbar)
-        sqrt_mbar_mem.write("%04X\n" % sqrt_mbar)
+        sqrt_mbar_mem.write("%03X\n" % sqrt_mbar)
 
-    for x in xrange(0, 2**16 - 1):
+    for x in range(0, 2**20 - 1):
         reciprocal = int(floor(2**args.divider_width / (x + 0.5)))
         if x == 0:
             reciprocal = int(floor(2**args.divider_width / (x + 1.)))
@@ -108,7 +108,7 @@ def main():
 
     reciprocal_mem.write("0000\n")
     invsqrt_mbar_mem.write("0000 \n")
-    sqrt_mbar_mem.write("0000 \n")
+    sqrt_mbar_mem.write("000 \n")
     m_to_theta_mem.write("0000 \n")
 
 

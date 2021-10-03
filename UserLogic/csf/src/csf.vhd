@@ -143,6 +143,11 @@ architecture behavioral of csf is
   signal chi2_segs : csf_locseg_a_avt(NUM_FITTERS - 1 downto 0);
   signal rst_chi2  : std_logic;
 
+  -- Coordinate transformation
+  signal coord_seed     : heg2sfslc_rvt;
+  
+
+
   -- Output signal
   signal output_segment : csf_locseg_rvt;
   signal out_seg        : csf_locseg_rt;
@@ -502,7 +507,7 @@ begin
       o_segment  => output_segment
     );
 
-  -- Coordinate tranformation
+  -- Coordinate transformation
   coordtransform : component seg_coord_transform
     generic map (
       IS_ENDCAP => IS_ENDCAP
@@ -510,7 +515,7 @@ begin
     port map (
       clk       => clk,
       i_locseg  => output_segment,
-      i_seed    => seed,
+      i_seed    => coord_seed,
       o_globseg => globseg
     );
 
@@ -526,6 +531,10 @@ begin
 
       if (seed_i.data_valid = '1') then
         seed <= i_seed;
+      end if;
+
+      if i_eof = '1' then
+        coord_seed <= seed;
       end if;
 
       -- Reset the Chi2 and Output

@@ -48,15 +48,27 @@ END seg_coord_transform; -- seg_coord_transform
 ARCHITECTURE Behavioral OF seg_coord_transform IS
 
     -- Pos HE Window shift
-    CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(HEG2SFSLC_HEWINDOW_POS_MULT/SF2PTCALC_SEGPOS_MULT));
+    CONSTANT HE_POS_SHIFT : INTEGER := INTEGER(log2(SF2PTCALC_SEGPOS_MULT));
     -- Local Pos shift
     CONSTANT LOC_POS_SHIFT : INTEGER := INTEGER(log2(CSF_SEG_B_MULT/SF2PTCALC_SEGPOS_MULT));
-    -- HE window pos in global segment format
-    SIGNAL he_window_pos : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
+    -- Reference position - Corner Position
+    CONSTANT DeltaR_BIL : INTEGER := INTEGER((BIL_SEC3_RHO-BIL_SEC3_RHO_CORNER)*SF2PTCALC_SEGPOS_MULT); 
+    -- Reference position - Corner Position
+    CONSTANT DeltaR_BML : INTEGER := INTEGER((BML_SEC3_RHO-BML_SEC3_RHO_CORNER)*SF2PTCALC_SEGPOS_MULT); 
+    -- Reference position - Corner Position
+    CONSTANT DeltaR_BOL : INTEGER := INTEGER((BOL_SEC3_RHO-BOL_SEC3_RHO_CORNER)*SF2PTCALC_SEGPOS_MULT); 
+
+    -- SLC vector position in global segment format
+    SIGNAL vec_pos : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- Absolute local segment pos in global segment format
     SIGNAL abs_loc_pos : unsigned(SF2PTCALC_SEGPOS_LEN - 1 DOWNTO 0) := (OTHERS => '0');
     -- local segment position sign 
     SIGNAL loc_pos_sign : STD_LOGIC := '0';
+
+    CONSTANT CSF_SEG_M_MULT_LEN : INTEGER := INTEGER(log2(CSF_SEG_M_MULT));
+    CONSTANT DELTA_R_LEN : INTEGER := 12;
+
+    SIGNAL delta_r_mbar : unsigned(SF2PTCALC_SEGPOS_LEN-1 DOWNTO 0);
 
     -- Store roi information
     SIGNAL seed, seed_i : heg2sfslc_rt;
@@ -126,7 +138,16 @@ BEGIN
                 seed <= seed_i;
                 locseg <= locseg_i;
                 chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
-                he_window_pos <= shift_right(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
+                vec_pos <= resize(shift_left(seed_i.vec_pos, HE_POS_SHIFT),SF2PTCALC_SEGPOS_LEN) ;
+                if seed_i.mdtid.chamber_id = 0 then
+                    delta_r_mbar <= resize(shift_right(to_unsigned(DeltaR_BIL,DELTA_R_LEN)*unsigned(abs(locseg_i.m)),CSF_SEG_M_MULT_LEN),SF2PTCALC_SEGPOS_LEN);
+                elsif seed_i.mdtid.chamber_id = 1 then
+                    delta_r_mbar <= resize(shift_right(to_unsigned(DeltaR_BML,DELTA_R_LEN)*unsigned(abs(locseg_i.m)),CSF_SEG_M_MULT_LEN),SF2PTCALC_SEGPOS_LEN);
+                elsif seed_i.mdtid.chamber_id = 2 then
+                    delta_r_mbar <= resize(shift_right(to_unsigned(DeltaR_BOL,DELTA_R_LEN)*unsigned(abs(locseg_i.m)),CSF_SEG_M_MULT_LEN),SF2PTCALC_SEGPOS_LEN);
+                end if;
+
+                --he_window_pos <= shift_right(resize(seed_i.hewindow_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT);
             END IF;
 
             -- Clock 1
@@ -137,9 +158,9 @@ BEGIN
             -- Clock 2
             globseg.data_valid <= dv1;
             IF loc_pos_sign = '1' THEN
-                globseg.segpos <= he_window_pos - abs_loc_pos;
+                globseg.segpos <= vec_pos + abs_loc_pos - delta_r_mbar;
             ELSE
-                globseg.segpos <= he_window_pos + abs_loc_pos;
+                globseg.segpos <= vec_pos + abs_loc_pos + delta_r_mbar;
             END IF;
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
