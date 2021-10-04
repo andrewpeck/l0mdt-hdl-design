@@ -7,7 +7,7 @@
 #---------------------------------
 # Simulation functions
 #---------------------------------
-shared/sim/pkg/vhdl_tb_utils_pkg.vhd
+# shared/sim/pkg/vhdl_tb_utils_pkg.vhd
 shared/sim/pkg/vhdl_textio_csv_pkg.vhd
 
 #---------------------------------
