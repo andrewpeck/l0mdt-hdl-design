@@ -137,7 +137,7 @@ begin
 
       HPS : entity hps_lib.hps
       generic map(
-        g_STATION_RADIUS    => 0,
+        g_STATION_RADIUS    => 1,
         g_HPS_NUM_MDT_CH     => c_HPS_MAX_HP_INN
       )
       port map(
