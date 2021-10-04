@@ -29,10 +29,11 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+use shared_lib.vhdl_tb_utils_pkg.all;
+
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
 use project_lib.ult_tb_sim_cstm_pkg.all;
-use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
 
 library ult_lib;
@@ -43,7 +44,7 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
-entity ult_tb_writer_heg2sf is
+entity ult_tb_writer_heg is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
@@ -59,11 +60,26 @@ entity ult_tb_writer_heg2sf is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_heg2sf;
+end entity ult_tb_writer_heg;
 
-architecture sim of ult_tb_writer_heg2sf is
+architecture sim of ult_tb_writer_heg is
+
+  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+
+  constant g_OUT_FILE_1     : string  := "ov_heg_hp2bm_" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_2     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
+     
+  shared variable csv_file_1: csv_file_reader_type;
+  shared variable csv_file_2: csv_file_reader_type;
+
+  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+
   
 begin
+
   
   
   -- HEG_BM: process(clk)
