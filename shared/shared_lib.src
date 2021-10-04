@@ -61,3 +61,8 @@ shared/arithmetics/arithmetics_lib.src
 # shared/SpyBuffer/src/SpyBuffer.v
 
 shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
+
+#---------------------------------
+# Simulation functions
+#---------------------------------
+shared/sim/pkg/vhdl_tb_utils_pkg.vhd
