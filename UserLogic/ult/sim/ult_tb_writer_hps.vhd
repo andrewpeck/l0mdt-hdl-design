@@ -107,7 +107,7 @@ begin
       E_PL : entity vamc_lib.vamc_spl
       generic map(
         g_PIPELINE_TYPE => "shift_reg",
-        g_DELAY_CYCLES  => 420,
+        g_DELAY_CYCLES  => 423,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -143,7 +143,9 @@ begin
         csv_file_1.write_word("ToA");
         csv_file_1.write_word("event");          
         -- csv_file_1.write_word("thread");          
-        csv_file_1.write_word("station");          
+        csv_file_1.write_word("station");   
+        csv_file_1.write_word("chamber_id");
+
         -- muid
         csv_file_1.write_word("tube");
         csv_file_1.write_word("layer");
@@ -168,6 +170,7 @@ begin
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(0)(ch_i)));          
               csv_file_1.write_integer(0);
+              csv_file_1.write_integer(ch_i);
               csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).tube);
               csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).layer);
               csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).time_t0);
@@ -183,6 +186,8 @@ begin
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(1)(ch_i)));          
               csv_file_1.write_integer(1);
+              csv_file_1.write_integer(ch_i);
+
               csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).tube);
               csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).layer);
               csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).time_t0);
@@ -198,6 +203,8 @@ begin
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(2)(ch_i)));   
               csv_file_1.write_integer(2);
+              csv_file_1.write_integer(ch_i);
+
               csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).tube);
               csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).layer);
               csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).time_t0);
@@ -213,6 +220,8 @@ begin
         --       csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
         --       csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));   
         --       csv_file_1.write_integer(3);
+        -- csv_file_1.write_integer(ch_i);
+
               -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).tube);
               -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).layer);
               -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).time_t0);

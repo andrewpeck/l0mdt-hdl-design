@@ -40,7 +40,7 @@ use project_lib.vhdl_textio_csv_pkg.all;
 entity ult_tb_reader_slc is
   generic (
     IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
-    g_verbose         : integer := 2
+    g_verbose         : integer := 1
   );
   port (
     clk                   : in std_logic;
