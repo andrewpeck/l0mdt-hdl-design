@@ -9,7 +9,7 @@
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      2021.09.24 Creation 
+--      2020.11.24 Creation 
 --
 --------------------------------------------------------------------------------
 library ieee;
@@ -38,7 +38,14 @@ use project_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 library vamc_lib;
 
-entity ult_tb_writer_tar is
+library hps_lib;
+use hps_lib.hps_pkg.all;
+library heg_lib;
+use heg_lib.heg_pkg.all;
+library hp_lib;
+use hp_lib.hp_pkg.all;
+
+entity ult_tb_writer_hps is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
@@ -53,18 +60,17 @@ entity ult_tb_writer_tar is
     enable                : in integer;
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
-    -- i_hit_event_ai        : in event_aut(c_MAX_NUM_SL -1 downto 0) 
   );
-end entity ult_tb_writer_tar;
+end entity ult_tb_writer_hps;
 
-architecture sim of ult_tb_writer_tar is
-
+architecture sim of ult_tb_writer_hps is
+  
   alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
   alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
   alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
   shared variable csv_file_1: csv_file_reader_type;
-  constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_1     : string  := "ov_hpsPc2Heg_" & g_PRJ_INFO & ".csv";
 
   alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_av : tar2hps_bus_avt >>;
   alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_av : tar2hps_bus_avt >>;
@@ -92,7 +98,7 @@ begin
     csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
     csv_file_1.write_string("# SIM TS  : " & time'image(now));
-    csv_file_1.write_string("# --------------------------");       
+    csv_file_1.write_string("# --------------------------");     
     wait;
   end process open_csv;
 

@@ -52,9 +52,9 @@ entity ult_tb_reader_slc is
     o_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
     o_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
     o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
-    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0');
+    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
 
-    o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
+    -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
 end entity ult_tb_reader_slc;
 
@@ -77,7 +77,8 @@ architecture sim of ult_tb_reader_slc is
   signal slc_event_r          : input_slc_rt;
   signal slc_new_event        : input_slc_rt;
 
-  signal event_main_prim_fifo   : infifo_event_mem_at(2 downto 0) := (others => nullify(event_element));
+  signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => nullify(event_element));
+  signal slc_event_ai         : event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
 
   signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
   signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
@@ -200,7 +201,7 @@ begin
               -- o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
               o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc);
               --
-              o_slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
+              slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
               -- o_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
               --
@@ -209,7 +210,7 @@ begin
               end loop;
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
-              o_slc_event_ai(wr_i + 2) <= (others => '0');
+              slc_event_ai(wr_i + 2) <= (others => '0');
               o_main_primary_slc(wr_i) <= nullify(o_main_primary_slc(wr_i));
               -- o_main_primary_slc_ar(wr_i) <= nullify(o_main_primary_slc_ar(wr_i));
             end if;

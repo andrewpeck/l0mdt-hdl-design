@@ -17,8 +17,8 @@ UserLogic/ult/sim/ult_tb_reader_slc.vhd
 # OV writers
 # -------------------------------------------
 UserLogic/ult/sim/ult_tb_writer_ucm.vhd
-
 UserLogic/ult/sim/ult_tb_writer_tar.vhd
+UserLogic/ult/sim/ult_tb_writer_hps.vhd
 UserLogic/ult/sim/ult_tb_writer_heg.vhd
 UserLogic/ult/sim/ult_tb_writer_mpl.vhd
 UserLogic/ult/sim/ult_tb_writer_sf.vhd

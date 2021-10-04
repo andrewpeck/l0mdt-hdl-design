@@ -384,9 +384,9 @@ begin
     o_main_primary_slc    => i_main_primary_slc  ,
     o_main_secondary_slc  => i_main_secondary_slc,
     o_plus_neighbor_slc   => i_plus_neighbor_slc ,
-    o_minus_neighbor_slc  => i_minus_neighbor_slc,
+    o_minus_neighbor_slc  => i_minus_neighbor_slc
     --
-    o_slc_event_ai            => slc_event_ai
+    -- o_slc_event_ai            => slc_event_ai
   );
 
  	-------------------------------------------------------------------------------------
@@ -411,8 +411,8 @@ begin
     rst                       => rst,
     enable                    => enable_slc,
     --
-    tb_curr_tdc_time          => tb_curr_tdc_time,
-    i_hit_event_ai            => hit_event_ai
+    tb_curr_tdc_time          => tb_curr_tdc_time
+    -- i_hit_event_ai            => hit_event_ai
 
   );
   -------------------------------------------------------------------------------------
@@ -437,8 +437,8 @@ begin
     rst                       => rst,
     enable                    => enable_slc,
     --
-    tb_curr_tdc_time          => tb_curr_tdc_time,
-    i_slc_event_ai            => slc_event_ai
+    tb_curr_tdc_time          => tb_curr_tdc_time
+    -- i_slc_event_ai            => slc_event_ai
 
   );
 
