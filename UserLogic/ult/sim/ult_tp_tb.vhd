@@ -429,8 +429,6 @@ begin
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_HIT_FILE => IN_HIT_FILE,
     g_IN_SLC_FILE => IN_SLC_FILE
-    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
   )
   port map(
     clk                       => clk,
@@ -438,10 +436,24 @@ begin
     enable                    => enable_slc,
     --
     tb_curr_tdc_time          => tb_curr_tdc_time
-    -- i_slc_event_ai            => slc_event_ai
-
   );
 
+  -------------------------------------------------------------------------------------
+	-- HPS : PC OUT
+  -------------------------------------------------------------------------------------
+  HPS : entity project_lib.ult_tb_writer_hps
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
   -------------------------------------------------------------------------------------
 	-- HEG2SF
   -------------------------------------------------------------------------------------

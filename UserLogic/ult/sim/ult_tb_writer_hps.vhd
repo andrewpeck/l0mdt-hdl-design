@@ -72,19 +72,19 @@ architecture sim of ult_tb_writer_hps is
   shared variable csv_file_1: csv_file_reader_type;
   constant g_OUT_FILE_1     : string  := "ov_hpsPc2Heg_" & g_PRJ_INFO & ".csv";
 
-  alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_mid_tar_hits_av is  << signal.ult_tp.ULT.ult_mid_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_out_tar_hits_av is  << signal.ult_tp.ULT.ult_out_tar_hits_av : tar2hps_bus_avt >>;
-  alias ult_ext_tar_hits_av is  << signal.ult_tp.ULT.ult_ext_tar_hits_av : tar2hps_bus_avt >>;
+  alias inn_mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+  alias mid_mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_MID.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+  alias out_mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_OUT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
+  -- alias ext_mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_EXT.HPS.mdt_full_data_av : heg_pc2heg_avt >>;
 
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
 
-  signal ult_inn_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_INN -1 downto 0);
-  signal ult_mid_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_MID -1 downto 0);
-  signal ult_out_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_OUT -1 downto 0);
-  signal ult_ext_tar_hits_ar  : tar2hps_bus_at(c_HPS_MAX_HP_EXT -1 downto 0);
+  signal inn_mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_HP_INN -1 downto 0);
+  signal mid_mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_HP_MID -1 downto 0);
+  signal out_mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal ext_mdt_full_data_ar  : heg_pc2heg_at(c_HPS_MAX_HP_EXT -1 downto 0);
   
 begin
   
@@ -121,10 +121,10 @@ begin
     end generate;
   end generate;
 
-  ult_inn_tar_hits_ar <= structify(ult_inn_tar_hits_av);
-  ult_mid_tar_hits_ar <= structify(ult_mid_tar_hits_av);
-  ult_out_tar_hits_ar <= structify(ult_out_tar_hits_av);
-  ult_ext_tar_hits_ar <= structify(ult_ext_tar_hits_av);
+  inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
+  mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
+  out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
+  -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
   
   TAR2HPS: process(clk)
     variable first_write           : std_logic := '1';
@@ -145,10 +145,11 @@ begin
         -- csv_file_1.write_word("thread");          
         csv_file_1.write_word("station");          
         -- muid
-        csv_file_1.write_word("chamber_ieta");
-        csv_file_1.write_word("layer");
         csv_file_1.write_word("tube");
-        csv_file_1.write_word("time");
+        csv_file_1.write_word("layer");
+        csv_file_1.write_word("time_t0");
+        csv_file_1.write_word("global_z");
+        csv_file_1.write_word("global_x");
         -- -- mdtid
         -- csv_file_1.write_word("chamber_id");
         -- csv_file_1.write_word("chamber_ieta");
@@ -163,60 +164,64 @@ begin
       else
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN
           for ch_i in c_HPS_MAX_ARRAY(0) -1 downto 0 loop
-            if ult_inn_tar_hits_ar(ch_i).data_valid = '1' then
+            if inn_mdt_full_data_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(0)(ch_i)));          
               csv_file_1.write_integer(0);
-              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).chamber_ieta);
-              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).layer);
-              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).tube);
-              csv_file_1.write_integer(ult_inn_tar_hits_ar(ch_i).time);
+              csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).tube);
+              csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).layer);
+              csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).time_t0);
+              csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).global_z);
+              csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).global_x);
               csv_file_1.writeline;
             end if;
           end loop;
         end if;
         if c_STATIONS_IN_SECTOR(1) = '1' then -- INN
           for ch_i in c_HPS_MAX_ARRAY(1) -1 downto 0 loop
-            if ult_mid_tar_hits_ar(ch_i).data_valid = '1' then
+            if mid_mdt_full_data_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(1)(ch_i)));          
               csv_file_1.write_integer(1);
-              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).chamber_ieta);
-              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).layer);
-              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).tube);
-              csv_file_1.write_integer(ult_mid_tar_hits_ar(ch_i).time);
+              csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).tube);
+              csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).layer);
+              csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).time_t0);
+              csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).global_z);
+              csv_file_1.write_integer(mid_mdt_full_data_ar(ch_i).global_x);
               csv_file_1.writeline;
             end if;
           end loop;
         end if;
         if c_STATIONS_IN_SECTOR(2) = '1' then -- INN
           for ch_i in c_HPS_MAX_ARRAY(2) -1 downto 0 loop
-            if ult_out_tar_hits_ar(ch_i).data_valid = '1' then
+            if out_mdt_full_data_ar(ch_i).data_valid = '1' then
               csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
               csv_file_1.write_integer(unsigned(tdc_event_u2h_au(2)(ch_i)));   
               csv_file_1.write_integer(2);
-              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).chamber_ieta);
-              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).layer);
-              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).tube);
-              csv_file_1.write_integer(ult_out_tar_hits_ar(ch_i).time);       
+              csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).tube);
+              csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).layer);
+              csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).time_t0);
+              csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).global_z);
+              csv_file_1.write_integer(out_mdt_full_data_ar(ch_i).global_x);      
               csv_file_1.writeline;
             end if;
           end loop;
         end if;
-        if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
-          for ch_i in c_HPS_MAX_ARRAY(3) -1 downto 0 loop
-            if ult_ext_tar_hits_ar(ch_i).data_valid = '1' then
-              csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-              csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));   
-              csv_file_1.write_integer(3);
-              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).chamber_ieta);
-              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).layer);
-              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).tube);
-              csv_file_1.write_integer(ult_ext_tar_hits_ar(ch_i).time);       
-              csv_file_1.writeline;
-            end if;
-          end loop;
-        end if;
+        -- if c_STATIONS_IN_SECTOR(3) = '1' then -- INN
+        --   for ch_i in c_HPS_MAX_ARRAY(3) -1 downto 0 loop
+        --     if ult_ext_tar_hits_ar(ch_i).data_valid = '1' then
+        --       csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+        --       csv_file_1.write_integer(unsigned(tdc_event_u2h_au(3)(ch_i)));   
+        --       csv_file_1.write_integer(3);
+              -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).tube);
+              -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).layer);
+              -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).time_t0);
+              -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).global_z);
+              -- csv_file_1.write_integer(inn_mdt_full_data_ar(ch_i).global_x);     
+        --       csv_file_1.writeline;
+        --     end if;
+        --   end loop;
+        -- end if;
       end if;
     end if;
   end process TAR2HPS;
