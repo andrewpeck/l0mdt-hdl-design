@@ -23,9 +23,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 -- use ieee.std_logic_textio.all;
 use std.textio.all;
-
-library project_lib;
-use project_lib.vhdl_tb_utils_pkg.all;
+  
+library shared_lib;
+use shared_lib.vhdl_tb_utils_pkg.all;
 
 package vhdl_textio_csv_pkg is
 

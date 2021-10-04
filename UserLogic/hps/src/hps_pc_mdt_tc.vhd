@@ -27,8 +27,10 @@ use shared_lib.config_pkg.all;
 use shared_lib.tdc_mezz_mapping_pkg.all;
 use shared_lib.TC_B3A_pkg.all;
 
-library project_lib;
-use project_lib.vhdl_tb_utils_pkg.all;
+use shared_lib.vhdl_tb_utils_pkg.all;
+
+-- library project_lib;
+-- use project_lib.vhdl_tb_utils_pkg.all;
 -- library hp_lib;
 -- use hp_lib.hp_pkg.all;
 -- library heg_lib;
@@ -76,7 +78,7 @@ architecture beh of hps_pc_mdt_tc is
 
   type tcLUT_chamber_avt is array (0 to 1023) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  function init_TC_MEM(s , r , c , tube_o , tube_n: integer)return tcLUT_chamber_avt is
+  impure function init_TC_MEM(s , r , c , tube_o , tube_n: integer)return tcLUT_chamber_avt is
     variable y : tcLUT_chamber_avt;
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
