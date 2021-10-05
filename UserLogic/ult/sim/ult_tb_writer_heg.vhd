@@ -76,7 +76,9 @@ architecture sim of ult_tb_writer_heg is
   shared variable csv_file_2: csv_file_reader_type;
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
+  signal tdc_event_u2h_au : event_tdc_at;
   
 begin
 
@@ -101,6 +103,48 @@ begin
     csv_file_2.write_string("# --------------------------");    
     wait;
   end process open_csv;
+
+  e_slc_pl : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    E_U2M_PL : entity vamc_lib.vamc_spl
+    generic map(
+      -- pragma translate_off
+      g_SIMULATION => '1',
+      -- pragma translate_on
+      g_PIPELINE_TYPE => "ring_buffer",
+      g_DELAY_CYCLES  => 450,
+      g_PIPELINE_WIDTH    => 32
+    )
+    port map(
+      clk         => clk,
+      rst         => rst,
+      ena         => '1',
+      --
+      i_data      => std_logic_vector(slc_event_ai(sl_i)),
+      o_data      => slc_event_u2m_au(sl_i)
+    );
+  end generate;
+
+  e_mdt_pl : for st_i in 0 to 3 generate
+    event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 450,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(mdt_event_ai(st_i)(ch_i)),
+        o_data      => tdc_event_u2h_au(st_i)(ch_i)
+      );
+    end generate;
+  end generate;
   
   -- HEG_BM: process(clk)
 
