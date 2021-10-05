@@ -80,7 +80,27 @@ architecture sim of ult_tb_writer_heg is
   
 begin
 
-  
+  open_csv: process
+  begin
+    wait until slc_file_ok and hit_file_ok;
+    puts("opening HEG HP2BM CSV file : " & g_OUT_FILE_1);
+    csv_file_1.initialize(g_OUT_FILE_1,"wr");
+    csv_file_1.write_string("# --------------------------");
+    csv_file_1.write_string("# SLC TS  : " & slc_file_ts);
+    csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
+    csv_file_1.write_string("# SIM TS  : " & time'image(now));
+    csv_file_1.write_string("# --------------------------");   
+    puts("opening HEG CTRL&ROI CSV file : " & g_OUT_FILE_2);
+    csv_file_2.initialize(g_OUT_FILE_2,"wr");
+    csv_file_2.write_string("# --------------------------");
+    csv_file_2.write_string("# SLC TS  : " & slc_file_ts);
+    csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
+    csv_file_2.write_string("# SIM TS  : " & time'image(now));
+    csv_file_2.write_string("# --------------------------");    
+    wait;
+  end process open_csv;
   
   -- HEG_BM: process(clk)
 

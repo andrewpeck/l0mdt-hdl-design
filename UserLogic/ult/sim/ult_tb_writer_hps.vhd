@@ -109,7 +109,10 @@ begin
     event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
       E_PL : entity vamc_lib.vamc_spl
       generic map(
-        g_PIPELINE_TYPE => "shift_reg",
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
         g_DELAY_CYCLES  => 423,
         g_PIPELINE_WIDTH    => 32
       )
