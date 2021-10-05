@@ -138,7 +138,7 @@ BEGIN
                 seed <= seed_i;
                 locseg <= locseg_i;
                 chamber_ieta <= STD_LOGIC_VECTOR(seed_i.mdtid.chamber_ieta);
-                vec_pos <= resize(shift_left(seed_i.vec_pos, HE_POS_SHIFT),SF2PTCALC_SEGPOS_LEN) ;
+                vec_pos <= shift_left(resize(seed_i.vec_pos, SF2PTCALC_SEGPOS_LEN), HE_POS_SHIFT) ;
                 if seed_i.mdtid.chamber_id = 0 then
                     delta_r_mbar <= resize(shift_right(to_unsigned(DeltaR_BIL,DELTA_R_LEN)*unsigned(abs(locseg_i.m)),CSF_SEG_M_MULT_LEN),SF2PTCALC_SEGPOS_LEN);
                 elsif seed_i.mdtid.chamber_id = 1 then
@@ -165,7 +165,11 @@ BEGIN
 
             globseg.segangle <= resize(unsigned(theta), SF_SEG_ANG_LEN);-- + to_signed(halfpi,SF_SEG_ANG_LEN);
             globseg.muid <= seed.muid;
-            globseg.segquality <= '1';
+            if locseg.nhits > 1 then
+                globseg.segquality <= '1';
+            else
+                globseg.segquality <= '0';
+            end if;
             globseg.mdtid <= seed.mdtid;
 
         END IF;

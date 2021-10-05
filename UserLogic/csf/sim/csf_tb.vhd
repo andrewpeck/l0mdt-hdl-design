@@ -53,7 +53,7 @@ BEGIN
 
     reader : ENTITY project_lib.csf_tb_reader
     generic map (
-        IN_HIT_FILE => "csf_short_in.csv"
+        IN_HIT_FILE => "csf_in.csv"
     )
     port map(
         clk => clk,

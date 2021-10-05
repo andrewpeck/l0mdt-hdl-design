@@ -424,11 +424,11 @@ BEGIN
                 start_read <= '1';
                 has_max <= '0';
 
-                IF unsigned(max_counter_1) > 0 THEN
+                IF unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1_s)) <= (OTHERS => '0');
                     has_max <= '1';
                 END IF;
-                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 0 THEN
+                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2_s)) <= (OTHERS => '0');
                 END IF;
             END IF;
@@ -438,7 +438,7 @@ BEGIN
 
             IF start_read0 = '1' AND has_max = '1' THEN
                 IF unsigned(r_addr(to_integer(max_bin1))) < unsigned(max_counter_1) - 1
-                    AND unsigned(max_counter_1) > 0 THEN
+                    AND unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin1))) + 1);
                 ELSE
@@ -451,7 +451,7 @@ BEGIN
                 END IF;
 
                 IF unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                    AND unsigned(max_counter_2) > 0 THEN
+                    AND unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin2))) + 1);
                 ELSE

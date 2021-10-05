@@ -252,7 +252,7 @@ BEGIN
                 IF dsp_chi > 2 ** CSF_SEG_CHI2_LEN - 1 THEN
                     output_seg.chi2 <= (OTHERS => '1');
                 END IF;
-                output_seg.ndof <= nhits_s - 2;
+                output_seg.nhits <= nhits_s;
                 output_seg.m <= mfit_s;
                 output_seg.b <= bfit_s;
 
