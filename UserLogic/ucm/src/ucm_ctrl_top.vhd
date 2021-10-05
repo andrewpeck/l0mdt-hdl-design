@@ -38,7 +38,8 @@ entity ucm_ctrl_top is
     --
     o_csw_ctrl          : out ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
     o_pam_ctrl          : out ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
-    o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    -- o_proc_info         : out ucm_proc_info_at(c_NUM_THREADS -1 downto 0);
+    o_proc_info_av      : out ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
     --
     o_cvp_rst           : out std_logic_vector(c_NUM_THREADS -1 downto 0);
     o_cvp_ctrl          : out std_logic_vector(c_NUM_THREADS -1 downto 0)
@@ -111,7 +112,7 @@ begin
     i_pam_update        => pam_update,
     --
     o_pam_ctrl          => o_pam_ctrl,
-    o_proc_info         => o_proc_info,
+    o_proc_info_av      => o_proc_info_av,
     --
     o_cvp_rst           => o_cvp_rst,
     o_cvp_ctrl          => o_cvp_ctrl
@@ -119,5 +120,7 @@ begin
     -- internals
 
   );
+
+  
 
 end beh;

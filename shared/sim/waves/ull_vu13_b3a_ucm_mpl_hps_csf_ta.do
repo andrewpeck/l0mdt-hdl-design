@@ -1,5 +1,25 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
+add wave -noupdate -group tb_slc /ult_tp/SLC/clk
+add wave -noupdate -group tb_slc /ult_tp/SLC/enable
+add wave -noupdate -group tb_slc /ult_tp/SLC/IN_SLC_FILE
+add wave -noupdate -group tb_slc /ult_tp/SLC/rst
+add wave -noupdate -group tb_slc /ult_tp/SLC/tb_curr_tdc_time
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_element
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_event_r
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_main_prim_counts
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_main_prim_fifo
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_main_seco_counts
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_main_seco_fifo
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_neig_minu_counts
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_neig_minu_fifo
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_neig_plus_counts
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_neig_plus_fifo
+add wave -noupdate -group tb_slc /ult_tp/SLC/slc_new_event
+add wave -noupdate -group tb_slc /ult_tp/SLC/o_main_primary_slc
+add wave -noupdate -group tb_slc /ult_tp/SLC/o_main_secondary_slc
+add wave -noupdate -group tb_slc /ult_tp/SLC/o_minus_neighbor_slc
+add wave -noupdate -group tb_slc /ult_tp/SLC/o_plus_neighbor_slc
 add wave -noupdate -group tb_mdt /ult_tp/MDT/IN_HIT_FILE
 add wave -noupdate -group tb_mdt /ult_tp/MDT/clk
 add wave -noupdate -group tb_mdt /ult_tp/MDT/rst
@@ -24,23 +44,73 @@ add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_inn_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_mid_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_out_av
 add wave -noupdate -group tb_mdt /ult_tp/MDT/i_mdt_tdc_ext_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/clk
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/enable
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_OUT_FILE
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/rst
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/ext_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/inn_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
-add wave -noupdate -expand -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ucm2pl_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/clk
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/rst
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/enable
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_HIT_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_L0_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_IN_SLC_FILE
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/g_PRJ_INFO
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/tb_curr_tdc_time
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/slc_event_u2m_au
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/inn_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/inn_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/mid_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/mid_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/out_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/out_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ext_slc_to_h2s_av
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ext_ucm2hps_bus_ar
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/slc_event_u2h_au
+add wave -noupdate -group tb_ucm2hps /ult_tp/UCM/ucm2pl_ar
+add wave -noupdate -group tb_tar /ult_tp/TAR/clk
+add wave -noupdate -group tb_tar /ult_tp/TAR/enable
+add wave -noupdate -group tb_tar /ult_tp/TAR/g_IN_HIT_FILE
+add wave -noupdate -group tb_tar /ult_tp/TAR/g_IN_L0_FILE
+add wave -noupdate -group tb_tar /ult_tp/TAR/g_IN_SLC_FILE
+add wave -noupdate -group tb_tar /ult_tp/TAR/g_PRJ_INFO
+add wave -noupdate -group tb_tar /ult_tp/TAR/rst
+add wave -noupdate -group tb_tar /ult_tp/TAR/tb_curr_tdc_time
+add wave -noupdate -group tb_tar /ult_tp/TAR/csv_file_1
+add wave -noupdate -group tb_tar /ult_tp/TAR/g_OUT_FILE_1
+add wave -noupdate -group tb_tar /ult_tp/TAR/hit_file_ok
+add wave -noupdate -group tb_tar /ult_tp/TAR/hit_file_ts
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_inn_tar_hits_av
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_mid_tar_hits_av
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_out_tar_hits_av
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_ext_tar_hits_av
+add wave -noupdate -group tb_tar -expand /ult_tp/TAR/ult_inn_tar_hits_ar
+add wave -noupdate -group tb_tar -expand /ult_tp/TAR/ult_mid_tar_hits_ar
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_out_tar_hits_ar
+add wave -noupdate -group tb_tar /ult_tp/TAR/ult_ext_tar_hits_ar
+add wave -noupdate -group tb_tar /ult_tp/TAR/mdt_event_ai
+add wave -noupdate -group tb_tar /ult_tp/TAR/slc_file_ok
+add wave -noupdate -group tb_tar /ult_tp/TAR/slc_file_ts
+add wave -noupdate -group tb_tar /ult_tp/TAR/tdc_event_u2h_au
+add wave -noupdate -group tb_hps /ult_tp/HPS/clk
+add wave -noupdate -group tb_hps /ult_tp/HPS/enable
+add wave -noupdate -group tb_hps /ult_tp/HPS/g_IN_HIT_FILE
+add wave -noupdate -group tb_hps /ult_tp/HPS/g_IN_L0_FILE
+add wave -noupdate -group tb_hps /ult_tp/HPS/g_IN_SLC_FILE
+add wave -noupdate -group tb_hps /ult_tp/HPS/g_PRJ_INFO
+add wave -noupdate -group tb_hps /ult_tp/HPS/rst
+add wave -noupdate -group tb_hps /ult_tp/HPS/tb_curr_tdc_time
+add wave -noupdate -group tb_hps /ult_tp/HPS/csv_file_1
+add wave -noupdate -group tb_hps /ult_tp/HPS/ext_mdt_full_data_ar
+add wave -noupdate -group tb_hps /ult_tp/HPS/g_OUT_FILE_1
+add wave -noupdate -group tb_hps /ult_tp/HPS/hit_file_ok
+add wave -noupdate -group tb_hps /ult_tp/HPS/hit_file_ts
+add wave -noupdate -group tb_hps /ult_tp/HPS/inn_mdt_full_data_ar
+add wave -noupdate -group tb_hps /ult_tp/HPS/inn_mdt_full_data_av
+add wave -noupdate -group tb_hps /ult_tp/HPS/mdt_event_ai
+add wave -noupdate -group tb_hps /ult_tp/HPS/mid_mdt_full_data_ar
+add wave -noupdate -group tb_hps /ult_tp/HPS/mid_mdt_full_data_av
+add wave -noupdate -group tb_hps /ult_tp/HPS/out_mdt_full_data_ar
+add wave -noupdate -group tb_hps /ult_tp/HPS/out_mdt_full_data_av
+add wave -noupdate -group tb_hps /ult_tp/HPS/slc_file_ok
+add wave -noupdate -group tb_hps /ult_tp/HPS/slc_file_ts
+add wave -noupdate -group tb_hps /ult_tp/HPS/tdc_event_u2h_au
 add wave -noupdate -group ULT /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT /ult_tp/ULT/ttc_commands
@@ -141,49 +211,49 @@ add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/i_slc_da
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/prepro2ctrl_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/ucm_prepro_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_main_in_av
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_main_out_ar
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_main_out_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/slc_endcap_ar
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cde_in_av
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/int_uCM2pl_av
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/int_uCM2pl_ar
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2pl_ar
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/pl_o_uCM2pl_ar
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/pl_o_uCM2pl_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/pam_CSW_control
+add wave -noupdate -group UCM -expand /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/proc_info_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cpam_in_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cpam_out_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/uCM2pl_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_control
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/proc_info
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cvp_in_en
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cvp_loc_rst
-add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cde_phimod
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/uCM2hps_data
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cde_chamber_z_org_bus
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cvp_chamber_z_org_bus
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/phicenter
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/clk
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rst
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/ena
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_phicenter
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_chamber_z_org_bus
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_v
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/i_slc_data_r
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_slc_data_v
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_slc_data_r
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_r
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/barrel_r
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/dv_bus
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/rpc_z_a
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/slc_posphi
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_phimod
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_phimod_abs
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_phimod_pl
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/int_phimod_dv
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_cde_data_v
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_pl_phimod
-add wave -noupdate -group UCM -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_A(2)/SLC_CDE/o_pl_phimod_dv
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/bypass
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/phimod_ena
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/clk
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/rst
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/ena
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_phicenter
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_chamber_z_org_bus
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_proc_info_v
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_slc_data_v
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/i_slc_data_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_v
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_v
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_slc_data_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int2_slc_data_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/barrel_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/dv_bus
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/rpc_z_a
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_chamb_ieta
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/slc_posphi
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_abs
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_abs_pl
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_pl
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/int_phimod_dv
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_uCM2pl_r
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_cde_data_v
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_pl_phimod
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_pl_phimod_dv
+add wave -noupdate -group UCM -expand -group CDE2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CDE_LOOP(4)/SLC_CDE_TH/SLC_CDE/o_ucm2pl_v
 add wave -noupdate -group UCM -group CVP2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_VP_A(2)/SLC_VP/rst
 add wave -noupdate -group UCM -group CVP2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_VP_A(2)/SLC_VP/ena
 add wave -noupdate -group UCM -group CVP2 /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_VP_A(2)/SLC_VP/ctrl_v
@@ -288,48 +358,60 @@ add wave -noupdate -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM
 add wave -noupdate -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/o_cvp_chamber_z_org_bus
 add wave -noupdate -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/local_en
 add wave -noupdate -group UCM -group SUPER /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/UCM_SUPERVISOR/local_rst
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/clk
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/rst
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/ena
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/i_data
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/alg_status
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/i_data_ar
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/data_ar
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/input_valids
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_csw_ctrl
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_num_cand
-add wave -noupdate -group UCM -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_pam_update
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_PAM_CTRL_PL
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_PAM_INFO_PL
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_CVP_PL
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/clk
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/rst
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ena
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/i_num_cand
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/i_pam_update
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_pam_ctrl_r
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_proc_info_r
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_pam_ctrl_v
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl_v
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_proc_info_v
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_proc_info_v
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_cvp_rst
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_cvp_ctrl
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ch_busy
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/proc_info
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ch_count
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/processing
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/processed_s
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/buff_pam_ctrl
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_proc_info
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_cvp_rst
-add wave -noupdate -group UCM -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_cvp_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/clk
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/ena
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/i_prepro2ctrl_av
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/clk
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/ena
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/i_data
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/alg_status
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/i_data_ar
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/data_ar
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/input_valids
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_csw_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_num_cand
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_MAIN /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/MAIN_CTRL/o_pam_update
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/num_cand
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/pam_update
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_PAM_CTRL_PL
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_PAM_INFO_PL
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/g_CVP_PL
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/clk
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ena
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/i_num_cand
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/i_pam_update
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_pam_ctrl_r
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_proc_info_r
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_pam_ctrl_v
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl_v
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_proc_info_v
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_proc_info_v
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_cvp_rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/int_cvp_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM -expand /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ch_busy
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/proc_info
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM -expand /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/ch_count
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/processing
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/processed_s
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/buff_pam_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_pam_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM -expand -subitemconfig {/ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_proc_info(2) -expand} /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_proc_info
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_cvp_rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL -group CTRL_PAM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/PAM_CTRL/o_cvp_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/o_csw_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/o_pam_ctrl
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/o_proc_info_av
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/o_cvp_rst
+add wave -noupdate -group UCM -expand -group SLC_CTRL /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/SLC_CTRL/o_cvp_ctrl
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/mon_v
-add wave -noupdate -group UCM -expand /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2hps_inn_av
+add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2hps_inn_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2hps_mid_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2hps_out_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2hps_ext_av
+add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_main_out_av
 add wave -noupdate -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/o_uCM2pl_av
 add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/MPL_GEN/ULT_MPL/MPL_EN/MPL/clk
 add wave -noupdate -group MPL /ult_tp/ULT/logic_gen/MPL_GEN/ULT_MPL/MPL_EN/MPL/ctrl_v
@@ -609,35 +691,85 @@ add wave -noupdate -group MID_HEG_2_HP_1_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_
 add wave -noupdate -group MID_HEG_2_HP_1_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/heg_gen(2)/HEG/hp_gen(1)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/mon_v
 add wave -noupdate -group MID_HEG_2_HP_1_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/heg_gen(2)/HEG/hp_gen(1)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/o_tube_radius
 add wave -noupdate -group MID_HEG_2_HP_1_PC_R /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/heg_gen(2)/HEG/hp_gen(1)/hp_en/Hit_Processor/HP_PC/HP_CALC_R/o_data_valid
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_CHAMBER
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_SIM_nBUILD
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_STATION_RADIUS
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/clk
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/rst
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/ena
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_ctrl_tc_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_ctrl_t0_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_r
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_dv
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_ctrl_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_mon_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tc_ctrl_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tc_mon_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_dv
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/time_t0
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/global_x
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/global_z
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/r_dv
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/mdt_full_data_r
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tubesize
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_tc_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_t0_v
-add wave -noupdate -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mdt_full_data_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/clk
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/ena
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/g_HPS_NUM_MDT_CH
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/g_SIM_nBUILD
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/g_STATION_RADIUS
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/i_ctrl_t0_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/i_ctrl_tc_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/i_mdt_tar_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/rst
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/clk
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/ena
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_SIM_nBUILD
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_STATION_RADIUS
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_ctrl_t0_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_ctrl_tc_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/rst
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mdt_full_data_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_t0_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/o_mon_tc_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/g_CHAMBER
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/g_STATION_RADIUS
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/clk
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/rst
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/ena
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/ctrl_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/i_layer
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/i_tube
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/i_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/mem
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/local_layer
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/local_tube
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/local_tube_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/mem_index_std
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/mem_index_int
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/mem_out
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_rd_addr_o
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_wr_addr_o
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_data_o
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_dv_o
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_data_i
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/apb_dv_i
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/ADDR_WIDTH
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/DATA_WIDTH
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/num_tubes_layer_chamber
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/csm_offset_mem
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/mon_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/o_global_x
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/o_global_z
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 -expand -group vc /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/VC/o_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/global_x
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/global_z
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/i_mdt_tar_r
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/mdt_full_data_r
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_r
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/pl_mdt_tar_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/r_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_ctrl_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_dv
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/t0_mon_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tc_ctrl_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tc_mon_v
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/time_t0
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/tubesize
+add wave -noupdate -expand -group MID_PC -expand -group MID_PC_2 /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/pc_gen(2)/pc_en/PC/g_CHAMBER
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mdt_full_data_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_t0_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_tc_v
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/ctrl_t0_av
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/ctrl_tc_av
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/i_ctrl_t0_r
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/i_ctrl_tc_r
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/mon_t0_av
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/mon_tc_av
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_t0_r
+add wave -noupdate -expand -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_tc_r
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {1148671600 fs} 0} {{Cursor 3} {4179687500 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2945312500 fs} 0} {{Cursor 3} {141773417786 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -653,4 +785,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2973453655 fs} {3001397177 fs}
+WaveRestoreZoom {2927676388 fs} {2961080501 fs}

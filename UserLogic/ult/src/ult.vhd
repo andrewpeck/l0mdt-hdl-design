@@ -314,9 +314,6 @@ begin
     end generate;
 
     H2S_GEN : if c_H2S_ENABLED = '1' generate
-
-
-
       ULT_H2S : entity ult_lib.hits_to_segments
       port map (
         -- clock, control, and monitoring

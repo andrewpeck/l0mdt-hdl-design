@@ -86,6 +86,9 @@ package config_pkg is
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
   constant c_HPS_MAX_HP_OUT             : integer := 6;
 
+  type integer_array_t is array (integer range <>) of integer; 
+  constant c_HPS_MAX_ARRAY : integer_array_t(0 to 3) := (c_HPS_MAX_HP_INN,c_HPS_MAX_HP_MID,c_HPS_MAX_HP_OUT,c_HPS_MAX_HP_EXT);
+
   constant c_TOTAL_MAX_NUM_HP   : integer :=
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_INN))*c_HPS_NUM_MDT_CH_INN,
       max(to_integer(unsigned'('0' & c_HPS_ENABLE_ST_EXT))*c_HPS_NUM_MDT_CH_EXT,

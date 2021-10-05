@@ -29,16 +29,19 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+use shared_lib.vhdl_tb_utils_pkg.all;
+
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
-use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
--- use project_lib.ult_textio_rd_slc_pkg.all;
 
 
 entity ult_tb_reader_slc is
   generic (
-    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt"
+    IN_SLC_FILE         : string  := "slc_TB_A3_Barrel_yt_v04.txt";
+    g_verbose         : integer := 1
   );
   port (
     clk                   : in std_logic;
@@ -47,29 +50,36 @@ entity ult_tb_reader_slc is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0');
     -- Sector Logic Candidates
-    i_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-    i_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-    i_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
-    i_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
+    o_main_primary_slc    : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+    o_main_secondary_slc  : out slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+    o_plus_neighbor_slc   : out slc_rx_rvt := (others => '0');
+    o_minus_neighbor_slc  : out slc_rx_rvt := (others => '0')
+
+    -- o_slc_event_ai : out event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'))
   );
 end entity ult_tb_reader_slc;
 
 architecture sim of ult_tb_reader_slc is
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
-  signal i_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
-  signal i_plus_neighbor_slc_ar     : slc_rx_rt;
-  signal i_minus_neighbor_slc_ar    : slc_rx_rt;
+  -- signal o_main_primary_slc_ar      : slc_rx_bus_at(2 downto 0);  -- is the main SL used
+  -- signal o_main_secondary_slc_ar    : slc_rx_bus_at(2 downto 0);  -- only used in the big endcap
+  -- signal o_plus_neighbor_slc_ar     : slc_rx_rt;
+  -- signal o_minus_neighbor_slc_ar    : slc_rx_rt;
 
   type infifo_slc_counts is array (integer range <>) of integer;
 
   type infifo_slc_mem_at is array (integer range <>) of slc_tb_at;
+  type infifo_event_mem_at is array (integer range <>) of input_slc_bus_at;
 
   signal slc_element          : slc_tb_at := structify(std_logic_vector(to_unsigned(0,SLC_RX_LEN * TB_SLC_FIFO_WIDTH)));
+  signal event_element        : input_slc_bus_at := structify(std_logic_vector(to_unsigned(0,INPUT_SLC_LEN * TB_SLC_FIFO_WIDTH)));
 
-  signal slc_event_r          : input_slc_b_rt;
-  signal slc_new_event        : input_slc_b_rt;
+  signal slc_event_r          : input_slc_rt;
+  signal slc_new_event        : input_slc_rt;
+
+  signal event_main_prim_fifo : infifo_event_mem_at(2 downto 0) := (others => nullify(event_element));
+  signal slc_event_ai         : event_aut(c_MAX_NUM_SL -1 downto 0) := (others => (others => '0'));
 
   signal slc_main_prim_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
   signal slc_main_seco_fifo   : infifo_slc_mem_at(2 downto 0) := (others => nullify(slc_element));
@@ -81,13 +91,57 @@ architecture sim of ult_tb_reader_slc is
   signal slc_neig_plus_counts : infifo_slc_counts(0 downto 0) := (others => 0);
   signal slc_neig_minu_counts : infifo_slc_counts(0 downto 0) := (others => 0);
   
+  shared variable csv_file: csv_file_reader_type;
+  signal  file_open         : std_logic := '0';
+  signal file_ts : string(1 to LINE_LENGTH_MAX);
+    
   
 begin
+
+  open_csv: process
+    variable timestamp : string(1 to LINE_LENGTH_MAX);
+
+    variable aux : string(1 to LINE_LENGTH_MAX);
+  begin
+    -- if first_read = '1' then
+      -- if g_verbose > 0 then
+      puts("--------------------------------");
+      puts("opening SLC CSV");
+      puts("     file = " , IN_SLC_FILE);
+      csv_file.initialize(IN_SLC_FILE,"rd");
+      csv_file.readline;
+      while csv_file.read_isheader loop 
+        aux := csv_file.read_string(' ');
+        while not csv_file.end_of_line loop
+          aux := csv_file.read_string(':');
+          if aux(1 to 2) = "TS" then
+            timestamp := csv_file.read_string(NUL);
+            file_ts <= timestamp;
+            puts("TimeStamp = ",timestamp);
+          end if;
+          if aux(1 to 4) = "Side" then
+            puts("     Side = ",csv_file.read_string(' '));
+          end if;
+          if aux(1 to 6) = "Sector" then
+            puts("   Sector = ",csv_file.read_string(' '));
+          end if;
+          if aux(1 to 4) = "Area" then
+            puts("     Area = ",csv_file.read_string(' '));
+          end if;
+        end loop;
+        csv_file.readline;
+      end loop;
+      -- csv_file.readline;
+      file_open <= '1';
+      puts("--------------------------------");
+    -- end if;
+    wait;
+  end process open_csv;
   
   SLC_READ: process ( rst, clk)
 
 
-    variable csv_file: csv_file_reader_type;
+    -- variable csv_file: csv_file_reader_type;
 
     variable BCID         : integer; 
     variable ToA          : integer; 
@@ -119,7 +173,7 @@ begin
     variable row                : line;
     variable row_counter        : integer := 0;
     -- variable tdc_time           : UNSIG_64;
-    variable v_slc_event        : input_slc_b_rt;
+    variable v_slc_event        : input_slc_rt;
     -- variable next_event_time    : integer := 0;
     -- variable tb_time            : integer := 0;
     variable first_read         : std_logic := '1';
@@ -145,26 +199,36 @@ begin
 
           for wr_i in 2 downto 0 loop
             if(v_slc_main_prim_counts(wr_i) > 0) then
-              i_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              -- o_main_primary_slc(wr_i) <= vectorify(slc_main_prim_fifo(wr_i)(0));
+              o_main_primary_slc(wr_i) <= vectorify(event_main_prim_fifo(wr_i)(0).slc);
+              --
+              slc_event_ai(wr_i + 2) <= event_main_prim_fifo(wr_i)(0).event;
               -- for test input read
-              i_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
+              -- o_main_primary_slc_ar(wr_i) <= slc_main_prim_fifo(wr_i)(0);
               --
               for mv_i in TB_SLC_FIFO_WIDTH -1 downto 1 loop
                 slc_main_prim_fifo(wr_i)(mv_i - 1) <= slc_main_prim_fifo(wr_i)(mv_i);
               end loop;
               v_slc_main_prim_counts(wr_i) := v_slc_main_prim_counts(wr_i) - 1;
             else
-              i_main_primary_slc(wr_i) <= nullify(i_main_primary_slc(wr_i));
-              i_main_primary_slc_ar(wr_i) <= nullify(i_main_primary_slc_ar(wr_i));
+              slc_event_ai(wr_i + 2) <= (others => '0');
+              o_main_primary_slc(wr_i) <= nullify(o_main_primary_slc(wr_i));
+              -- o_main_primary_slc_ar(wr_i) <= nullify(o_main_primary_slc_ar(wr_i));
             end if;
           end loop;
-
+-- /*
           -- read from file
           -- first read from input vector file
           if first_read = '1' then
-            puts("opening SLC CSV files : " & IN_SLC_FILE);
-            csv_file.initialize(IN_SLC_FILE,"rd");
-            csv_file.readline;
+            -- if g_verbose > 0 then
+            --   puts("opening SLC CSV files : " & IN_SLC_FILE);
+            -- end  if;
+            -- csv_file.initialize(IN_SLC_FILE,"rd");
+            -- csv_file.readline;
+            -- while csv_file.read_isheader loop 
+            --   puts("H : ",csv_file.read_string);
+            --   csv_file.readline;
+            -- end loop;
             csv_file.readline;
             -- extract(csv_file,v_slc_event);
             BCID        := csv_file.read_integer;
@@ -185,23 +249,24 @@ begin
 
             -- puts("BCID = ", BCID);
             -- puts("ToA = ", ToA);
-            puts("##### SLC( " & integer'image(row_counter) &
-            " ): " & integer'image(BCID) &
-            " : " & integer'image(ToA) &
-            " : " & integer'image(nTC) &
-            " : " & integer'image(TC_sent) &
-            " : " & integer'image(TC_id) &
-            " : " & real'image(Eta) &
-            " : " & real'image(Phi) &
-            " : " & integer'image(pT_thr) &
-            " : " & integer'image(Charge) &
-            " : " & integer'image(Coincidence) &
-            " : " & integer'image(z_RPC0) &
-            " : " & integer'image(z_RPC1) &
-            " : " & integer'image(z_RPC2) &
-            " : " & integer'image(z_RPC3) &
-            " : " & integer'image(event));
-
+            if g_verbose > 1 then
+              puts("##### SLC( " & integer'image(row_counter) &
+              " ): " & integer'image(BCID) &
+              " : " & integer'image(ToA) &
+              " : " & integer'image(nTC) &
+              " : " & integer'image(TC_sent) &
+              " : " & integer'image(TC_id) &
+              " : " & real'image(Eta) &
+              " : " & real'image(Phi) &
+              " : " & integer'image(pT_thr) &
+              " : " & integer'image(Charge) &
+              " : " & integer'image(Coincidence) &
+              " : " & integer'image(z_RPC0) &
+              " : " & integer'image(z_RPC1) &
+              " : " & integer'image(z_RPC2) &
+              " : " & integer'image(z_RPC3) &
+              " : " & integer'image(event));
+            end if;
             if nTC > 3 then 
               tcoverflow := '1';
             else
@@ -263,6 +328,7 @@ begin
             -- report "Read line : " & integer'image(row_counter);
             first_read := '0';
           end if;
+          -- */
 
           
           -- -- read from file
@@ -286,8 +352,9 @@ begin
               -- i_mdt_tar_av <= mdt_tar_event_r.tar;
               if (csv_file.end_of_file = false) then
 
-                if v_slc_event.slc.common.slcid < 3 then
+                if v_slc_event.slc.common.slcid < 4 then
                   slc_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event.slc;
+                  event_main_prim_fifo(2 - to_integer(v_slc_event.slc.common.slcid))(v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid))) <= v_slc_event;
                   v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) := v_slc_main_prim_counts(2 - to_integer(v_slc_event.slc.common.slcid)) + 1;
                 end if;
 
@@ -311,23 +378,24 @@ begin
 
                 -- puts("BCID = ", BCID);
                 -- puts("ToA = ", ToA);
-                puts("##### SLC( " & integer'image(row_counter) &
-                " ): " & integer'image(BCID) &
-                " : " & integer'image(ToA) &
-                " : " & integer'image(nTC) &
-                " : " & integer'image(TC_sent) &
-                " : " & integer'image(TC_id) &
-                " : " & real'image(Eta) &
-                " : " & real'image(Phi) &
-                " : " & integer'image(pT_thr) &
-                " : " & integer'image(Charge) &
-                " : " & integer'image(Coincidence) &
-                " : " & integer'image(z_RPC0) &
-                " : " & integer'image(z_RPC1) &
-                " : " & integer'image(z_RPC2) &
-                " : " & integer'image(z_RPC3) &
-                " : " & integer'image(event));
-
+                if g_verbose > 1 then
+                  puts("##### SLC( " & integer'image(row_counter) &
+                  " ): " & integer'image(BCID) &
+                  " : " & integer'image(ToA) &
+                  " : " & integer'image(nTC) &
+                  " : " & integer'image(TC_sent) &
+                  " : " & integer'image(TC_id) &
+                  " : " & real'image(Eta) &
+                  " : " & real'image(Phi) &
+                  " : " & integer'image(pT_thr) &
+                  " : " & integer'image(Charge) &
+                  " : " & integer'image(Coincidence) &
+                  " : " & integer'image(z_RPC0) &
+                  " : " & integer'image(z_RPC1) &
+                  " : " & integer'image(z_RPC2) &
+                  " : " & integer'image(z_RPC3) &
+                  " : " & integer'image(event));
+                end if;
                 if nTC > 3 then 
                   tcoverflow := '1';
                 else

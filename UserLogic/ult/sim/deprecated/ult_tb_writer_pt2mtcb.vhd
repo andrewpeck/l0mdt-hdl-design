@@ -30,10 +30,15 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
 library project_lib;
-use project_lib.gldl_ult_tp_sim_pkg.all;
-use project_lib.gldl_l0mdt_textio_pkg.all;
+use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
+use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
 
-entity ult_tb_writer_mpl2mtcb is
+library ult_lib;
+library vamc_lib;
+
+entity ult_tb_writer_pt2mtcb is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
@@ -49,9 +54,9 @@ entity ult_tb_writer_mpl2mtcb is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_mpl2mtcb;
+end entity ult_tb_writer_pt2mtcb;
 
-architecture sim of ult_tb_writer_mpl2mtcb is
+architecture sim of ult_tb_writer_pt2mtcb is
   
 begin
   

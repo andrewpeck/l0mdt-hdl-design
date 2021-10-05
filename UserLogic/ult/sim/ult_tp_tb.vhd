@@ -30,10 +30,16 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.vhdl_tb_utils_pkg.all;
+
+library project_lib;
+use project_lib.ult_tb_sim_pkg.all;
+use project_lib.ult_tb_sim_cstm_pkg.all;
+-- use project_lib.vhdl_tb_utils_pkg.all;
+use project_lib.vhdl_textio_csv_pkg.all;
 
 library ult_lib;
 -- use ult_lib.ult_tb_sim_pkg.all;
-
 
 library heg_lib;
 use heg_lib.heg_pkg.all;
@@ -56,9 +62,7 @@ use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
 
-library project_lib;
-use project_lib.ult_tb_sim_pkg.all;
-use project_lib.vhdl_tb_utils_pkg.all;
+
 
 
 entity ult_tp is
@@ -132,10 +136,14 @@ architecture beh of ult_tp is
   -- signal i_mdt_tar_ext_av :  tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0) := (others => (others => '0'));
 
   -- Sector Logic Candidates
-  signal i_main_primary_slc        : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
-  signal i_main_secondary_slc      : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
-  signal i_plus_neighbor_slc       : slc_rx_rvt := (others => '0');
-  signal i_minus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_main_primary_slc       : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- is the main SL used
+  signal i_main_secondary_slc     : slc_rx_bus_avt(2 downto 0) := (others => (others => '0'));  -- only used in the big endcap
+  signal i_plus_neighbor_slc      : slc_rx_rvt := (others => '0');
+  signal i_minus_neighbor_slc     : slc_rx_rvt := (others => '0');
+  signal slc_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+
+  signal hit_event_ai             : event_aut(c_MAX_NUM_SL -1 downto 0);
+
   -- Segments in from neighbor
   signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
   signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0) := (others => (others => '0'));
@@ -364,7 +372,6 @@ begin
     i_mdt_tdc_out_av => i_mdt_tdc_out_av,
     i_mdt_tdc_ext_av => i_mdt_tdc_ext_av
   );
-  -- end generate;
 
   SLC : entity project_lib.ult_tb_reader_slc 
   generic map (
@@ -377,10 +384,12 @@ begin
     --
     tb_curr_tdc_time => tb_curr_tdc_time,
     -- TAR Hits for simulation
-    i_main_primary_slc    => i_main_primary_slc  ,
-    i_main_secondary_slc  => i_main_secondary_slc,
-    i_plus_neighbor_slc   => i_plus_neighbor_slc ,
-    i_minus_neighbor_slc  => i_minus_neighbor_slc
+    o_main_primary_slc    => i_main_primary_slc  ,
+    o_main_secondary_slc  => i_main_secondary_slc,
+    o_plus_neighbor_slc   => i_plus_neighbor_slc ,
+    o_minus_neighbor_slc  => i_minus_neighbor_slc
+    --
+    -- o_slc_event_ai            => slc_event_ai
   );
 
  	-------------------------------------------------------------------------------------
@@ -392,21 +401,23 @@ begin
   -------------------------------------------------------------------------------------
 	-- TAR2HPS
   -------------------------------------------------------------------------------------
-  -- TAR2HPS : entity project_lib.ult_tb_writer_sf2pt 
-  -- generic map (
-  --   g_PRJ_INFO    => PRJ_INFO,
-  --   g_IN_HIT_FILE => IN_HIT_FILE,
-  --   g_IN_SLC_FILE => IN_SLC_FILE
-  --   -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-  --   -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
-  -- )
-  -- port map(
-  --   clk => clk,
-  --   rst => rst,
-  --   enable => enable_slc,
-  --   --
-  --   tb_curr_tdc_time => tb_curr_tdc_time
-  -- );
+  TAR : entity project_lib.ult_tb_writer_tar
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
+    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+    -- i_hit_event_ai            => hit_event_ai
+
+  );
   -------------------------------------------------------------------------------------
 	-- TAR2DAQ
   -------------------------------------------------------------------------------------
@@ -416,22 +427,36 @@ begin
   -- TB_UCM_GEN: if condition generate
     
   -- end generate TB_UCM_GEN;
-  UCM : entity project_lib.ult_tb_writer_ucm2hps 
+  UCM : entity project_lib.ult_tb_writer_ucm
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_HIT_FILE => IN_HIT_FILE,
     g_IN_SLC_FILE => IN_SLC_FILE
-    -- OUT_PTIN_SF_FILE => OUT_PTIN_SF_FILE,
-    -- OUT_PTIN_MPL_FILE => OUT_PTIN_MPL_FILE
   )
   port map(
-    clk => clk,
-    rst => rst,
-    enable => enable_slc,
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
     --
-    tb_curr_tdc_time => tb_curr_tdc_time
+    tb_curr_tdc_time          => tb_curr_tdc_time
   );
 
+  -------------------------------------------------------------------------------------
+	-- HPS : PC OUT
+  -------------------------------------------------------------------------------------
+  HPS : entity project_lib.ult_tb_writer_hps
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
   -------------------------------------------------------------------------------------
 	-- HEG2SF
   -------------------------------------------------------------------------------------

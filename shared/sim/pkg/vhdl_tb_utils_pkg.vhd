@@ -18,6 +18,8 @@ package vhdl_tb_utils_pkg is
   procedure puts(str: string; val: bit);
   procedure puts(str: string; val: boolean);
   procedure puts(str: string; val: string);
+  procedure puts(str: string; val: string; val2: string);
+  procedure puts(str: string; val: character);
   procedure print_unsigned(value: unsigned; tag: string := "");
   procedure print_std_logic_vector(vector: std_logic_vector; tag: string := "");
   procedure print_bit_vector(vector: bit_vector; tag: string := "");
@@ -99,6 +101,21 @@ package body vhdl_tb_utils_pkg is
   end procedure;
 
   procedure puts(str: string; val: string) is
+    variable l: line;
+  begin
+    write(l, str);
+    write(l, val);
+    writeline(output, l);
+  end procedure;
+  procedure puts(str: string; val: string; val2: string) is
+    variable l: line;
+  begin
+    write(l, str);
+    write(l, val);
+    write(l, val2);
+    writeline(output, l);
+  end procedure;
+  procedure puts(str: string; val: character) is
     variable l: line;
   begin
     write(l, str);

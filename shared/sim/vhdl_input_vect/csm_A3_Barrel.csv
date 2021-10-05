@@ -1,3 +1,7 @@
+# --------------------------
+# TS:0123456789
+# Side:A Sector:3 Area:Barrel
+# --------------------------
 ToA,coarse_time,fine_time,Local_Tube_Number,Tube_Number,Tube_Layer,ChamberId,Chamber_iEta,Station_Type,tube_z,tube_rho,drift_time,event,muonFixedId,csm,mezz,channel,t0,TOF
 1500,46,28,36,132,3,1,4,0,4516,4848,32.7718505859375,116,6307235,1,10,19,542.5,22.103174209594727
 1525,47,21,12,220,5,3,5,1,6815,7364,40.9356689453125,116,40386315,2,3,7,542.5,33.470611572265625

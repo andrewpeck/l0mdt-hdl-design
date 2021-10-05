@@ -27,6 +27,10 @@ use shared_lib.config_pkg.all;
 use shared_lib.tdc_mezz_mapping_pkg.all;
 use shared_lib.TC_B3A_pkg.all;
 
+use shared_lib.vhdl_tb_utils_pkg.all;
+
+-- library project_lib;
+-- use project_lib.vhdl_tb_utils_pkg.all;
 -- library hp_lib;
 -- use hp_lib.hp_pkg.all;
 -- library heg_lib;
@@ -74,11 +78,17 @@ architecture beh of hps_pc_mdt_tc is
 
   type tcLUT_chamber_avt is array (0 to 1023) of std_logic_vector((MDT_GLOBAL_AXI_LEN*2)-1 downto 0);
 
-  function init_TC_MEM(r , s , tube_o , tube_n: integer)return tcLUT_chamber_avt is
+  impure function init_TC_MEM(s , r , c , tube_o , tube_n: integer)return tcLUT_chamber_avt is
     variable y : tcLUT_chamber_avt;
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
   begin
+    puts("s : ",s);
+    puts("r : ",r);
+    puts("c : ",c);
+    puts("to : " ,tube_o);
+    puts("tn : " , tube_n);
+
     for it in 0 to tube_n - 1 loop
       if r = 0 then
         for il in 0 to 7 loop
@@ -107,7 +117,7 @@ architecture beh of hps_pc_mdt_tc is
     return y;
   end function;
 
-  signal mem : tcLUT_chamber_avt := init_TC_MEM(g_STATION_RADIUS,c_SECTOR_ID,csm_offset_mem,num_tubes_layer_chamber);
+  signal mem : tcLUT_chamber_avt := init_TC_MEM(c_SECTOR_ID,g_STATION_RADIUS,g_CHAMBER,csm_offset_mem,num_tubes_layer_chamber);
 
   signal local_layer : unsigned(TAR2HPS_LAYER_LEN-1 downto 0); 
   signal local_tube : std_logic_vector(9 downto 0);

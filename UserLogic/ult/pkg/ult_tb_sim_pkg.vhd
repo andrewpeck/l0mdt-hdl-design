@@ -21,16 +21,25 @@ package ult_tb_sim_pkg is
     ToA : unsigned(64-1 downto 0);
     station : unsigned(8-1 downto 0);
     chamber : unsigned(SLC_CHAMBER_LEN-1 downto 0);
-    tar : tar2hps_rt;
+    event : unsigned(32-1 downto 0);
     tdc : tdcpolmux2tar_rt;
   end record input_mdt_rt;
-  constant INPUT_MDT_LEN : integer := 154;
+  constant INPUT_MDT_LEN : integer := 150;
   subtype input_mdt_rvt is std_logic_vector(INPUT_MDT_LEN-1 downto 0);
   function vectorify(x: input_mdt_rt) return input_mdt_rvt;
   function structify(x: input_mdt_rvt) return input_mdt_rt;
   function nullify(x: input_mdt_rt) return input_mdt_rt;
 
   constant TB_TAR_FIFO_WIDTH : integer := 32;
+
+  type input_mdt_bus_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of input_mdt_rt;
+  type input_mdt_bus_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of input_mdt_rvt;
+  function vectorify(x: input_mdt_bus_at) return input_mdt_bus_avt;
+  function vectorify(x: input_mdt_bus_at) return std_logic_vector;
+  function structify(x: input_mdt_bus_avt) return input_mdt_bus_at;
+  function structify(x: std_logic_vector) return input_mdt_bus_at;
+  function nullify(x: input_mdt_bus_at) return input_mdt_bus_at;
+  function nullify(x: input_mdt_bus_avt) return input_mdt_bus_avt;
 
   type tar2hps_tb_at is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rt;
   type tar2hps_tb_avt is array(TB_TAR_FIFO_WIDTH-1 downto 0) of tar2hps_rvt;
@@ -50,18 +59,27 @@ package ult_tb_sim_pkg is
   function nullify(x: pol2tar_tb_at) return pol2tar_tb_at;
   function nullify(x: pol2tar_tb_avt) return pol2tar_tb_avt;
 
-  type input_slc_b_rt is record
+  type input_slc_rt is record
     ToA : unsigned(64-1 downto 0);
     event : unsigned(32-1 downto 0);
     slc : slc_rx_rt;
-  end record input_slc_b_rt;
-  constant INPUT_SLC_B_LEN : integer := 252;
-  subtype input_slc_b_rvt is std_logic_vector(INPUT_SLC_B_LEN-1 downto 0);
-  function vectorify(x: input_slc_b_rt) return input_slc_b_rvt;
-  function structify(x: input_slc_b_rvt) return input_slc_b_rt;
-  function nullify(x: input_slc_b_rt) return input_slc_b_rt;
+  end record input_slc_rt;
+  constant INPUT_SLC_LEN : integer := 252;
+  subtype input_slc_rvt is std_logic_vector(INPUT_SLC_LEN-1 downto 0);
+  function vectorify(x: input_slc_rt) return input_slc_rvt;
+  function structify(x: input_slc_rvt) return input_slc_rt;
+  function nullify(x: input_slc_rt) return input_slc_rt;
 
   constant TB_SLC_FIFO_WIDTH : integer := 32;
+
+  type input_slc_bus_at is array(TB_SLC_FIFO_WIDTH-1 downto 0) of input_slc_rt;
+  type input_slc_bus_avt is array(TB_SLC_FIFO_WIDTH-1 downto 0) of input_slc_rvt;
+  function vectorify(x: input_slc_bus_at) return input_slc_bus_avt;
+  function vectorify(x: input_slc_bus_at) return std_logic_vector;
+  function structify(x: input_slc_bus_avt) return input_slc_bus_at;
+  function structify(x: std_logic_vector) return input_slc_bus_at;
+  function nullify(x: input_slc_bus_at) return input_slc_bus_at;
+  function nullify(x: input_slc_bus_avt) return input_slc_bus_avt;
 
   type slc_tb_at is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rt;
   type slc_tb_avt is array(TB_SLC_FIFO_WIDTH-1 downto 0) of slc_rx_rvt;
@@ -163,20 +181,20 @@ package body ult_tb_sim_pkg is
   function vectorify(x: input_mdt_rt) return input_mdt_rvt is
     variable y : input_mdt_rvt;
   begin
-    y(153 downto 90)           := vectorify(x.ToA);
-    y(89 downto 82)            := vectorify(x.station);
-    y(81 downto 78)            := vectorify(x.chamber);
-    y(77 downto 42)            := vectorify(x.tar);
+    y(149 downto 86)           := vectorify(x.ToA);
+    y(85 downto 78)            := vectorify(x.station);
+    y(77 downto 74)            := vectorify(x.chamber);
+    y(73 downto 42)            := vectorify(x.event);
     y(41 downto 0)             := vectorify(x.tdc);
     return y;
   end function vectorify;
   function structify(x: input_mdt_rvt) return input_mdt_rt is
     variable y : input_mdt_rt;
   begin
-    y.ToA                      := structify(x(153 downto 90));
-    y.station                  := structify(x(89 downto 82));
-    y.chamber                  := structify(x(81 downto 78));
-    y.tar                      := structify(x(77 downto 42));
+    y.ToA                      := structify(x(149 downto 86));
+    y.station                  := structify(x(85 downto 78));
+    y.chamber                  := structify(x(77 downto 74));
+    y.event                    := structify(x(73 downto 42));
     y.tdc                      := structify(x(41 downto 0));
     return y;
   end function structify;
@@ -186,8 +204,61 @@ package body ult_tb_sim_pkg is
     y.ToA                      := nullify(x.ToA);
     y.station                  := nullify(x.station);
     y.chamber                  := nullify(x.chamber);
-    y.tar                      := nullify(x.tar);
+    y.event                    := nullify(x.event);
     y.tdc                      := nullify(x.tdc);
+    return y;
+  end function nullify;
+
+  function vectorify(x: input_mdt_bus_at) return input_mdt_bus_avt is
+    variable y :  input_mdt_bus_avt;
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: input_mdt_bus_at) return std_logic_vector is
+    variable msb : integer := x'length*150-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-150+1) := vectorify(x(i));
+      msb := msb - 150;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: input_mdt_bus_avt) return input_mdt_bus_at is
+    variable y :  input_mdt_bus_at;
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return input_mdt_bus_at is
+    variable y :  input_mdt_bus_at;
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-150+1));
+      msb := msb - 150;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: input_mdt_bus_at) return input_mdt_bus_at is
+    variable y :  input_mdt_bus_at;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: input_mdt_bus_avt) return input_mdt_bus_avt is
+    variable y :  input_mdt_bus_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 
@@ -297,28 +368,81 @@ package body ult_tb_sim_pkg is
     return y;
   end function nullify;
 
-  function vectorify(x: input_slc_b_rt) return input_slc_b_rvt is
-    variable y : input_slc_b_rvt;
+  function vectorify(x: input_slc_rt) return input_slc_rvt is
+    variable y : input_slc_rvt;
   begin
     y(251 downto 188)          := vectorify(x.ToA);
     y(187 downto 156)          := vectorify(x.event);
     y(155 downto 0)            := vectorify(x.slc);
     return y;
   end function vectorify;
-  function structify(x: input_slc_b_rvt) return input_slc_b_rt is
-    variable y : input_slc_b_rt;
+  function structify(x: input_slc_rvt) return input_slc_rt is
+    variable y : input_slc_rt;
   begin
     y.ToA                      := structify(x(251 downto 188));
     y.event                    := structify(x(187 downto 156));
     y.slc                      := structify(x(155 downto 0));
     return y;
   end function structify;
-  function nullify(x: input_slc_b_rt) return input_slc_b_rt is
-    variable y : input_slc_b_rt;
+  function nullify(x: input_slc_rt) return input_slc_rt is
+    variable y : input_slc_rt;
   begin
     y.ToA                      := nullify(x.ToA);
     y.event                    := nullify(x.event);
     y.slc                      := nullify(x.slc);
+    return y;
+  end function nullify;
+
+  function vectorify(x: input_slc_bus_at) return input_slc_bus_avt is
+    variable y :  input_slc_bus_avt;
+  begin
+    l: for i in x'range loop
+      y(i) := vectorify(x(i));
+    end loop l;
+    return y;
+  end function vectorify;
+  function vectorify(x: input_slc_bus_at) return std_logic_vector is
+    variable msb : integer := x'length*252-1;
+    variable y : std_logic_vector(msb downto 0);
+  begin
+    l: for i in x'range loop
+      y(msb downto msb-252+1) := vectorify(x(i));
+      msb := msb - 252;
+    end loop l;
+    return y;
+  end function vectorify;
+  function structify(x: input_slc_bus_avt) return input_slc_bus_at is
+    variable y :  input_slc_bus_at;
+  begin
+    l: for i in x'range loop
+      y(i) := structify(x(i));
+    end loop l;
+    return y;
+  end function structify;
+  function structify(x: std_logic_vector) return input_slc_bus_at is
+    variable y :  input_slc_bus_at;
+    variable msb : integer := x'left;
+  begin
+    l: for i in y'range loop
+      y(i) := structify(x(msb downto msb-252+1));
+      msb := msb - 252;
+    end loop l;
+    return y;
+  end function structify;
+  function nullify(x: input_slc_bus_at) return input_slc_bus_at is
+    variable y :  input_slc_bus_at;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
+    return y;
+  end function nullify;
+  function nullify(x: input_slc_bus_avt) return input_slc_bus_avt is
+    variable y :  input_slc_bus_avt;
+  begin
+    l: for i in y'range loop
+      y(i) := nullify(x(i));
+    end loop l;
     return y;
   end function nullify;
 
