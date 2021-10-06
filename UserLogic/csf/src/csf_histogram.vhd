@@ -352,16 +352,15 @@ BEGIN
 
             -- Clock 6
             IF dv5 = '1' THEN
-                w_addr(to_integer(bplus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                w_addr(to_integer(bminus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bminus_ss))) + 1);
-                counter_plus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                counter_minus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                if w_en(to_integer(bplus_ss)) = '1' then
+                    w_addr(to_integer(bplus_ss)) <=  STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_ss))) + 1);
+                    counter_plus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_ss))) + 1);
+                end if;
+
+                if w_en(to_integer(bminus_ss)) = '1' then
+                    w_addr(to_integer(bminus_ss)) <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                    counter_minus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                end if;
             END IF;
             dv6 <= dv5;
             eof6 <= eof5;
