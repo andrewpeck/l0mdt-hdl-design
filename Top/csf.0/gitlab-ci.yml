@@ -24,7 +24,7 @@ CHK:csf.0:
     extends: .vars
     PROJECT_NAME: csf.0
     BLOCK: CSF
-  needs: "SIM:csf.0"
+  needs: ["SIM:csf.0"]
   artifacts:
     name: CHK_csf
     paths:
