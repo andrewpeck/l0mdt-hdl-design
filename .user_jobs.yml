@@ -116,9 +116,10 @@
   <<: *only-default
   <<: *tag-sr
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
-  stage: user_post
+  stage: user_proj
   script:
     - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PROJECT_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - mv Plots bin/$PROJECT_NAME/SimPlots
   allow_failure: true
+  interruptible: true
