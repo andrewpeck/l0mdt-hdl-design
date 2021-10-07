@@ -79,7 +79,37 @@ architecture sim of ult_tb_writer_heg is
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
   signal tdc_event_u2h_au : event_tdc_at;
+
+  alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
+  alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
+  alias heg2sf_inn_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+
+  alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  alias heg2sf_mid_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
+
+  alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
   
+  signal heg2sf_inn_slc_ar  : heg2sfslc_bus_at;
+  signal heg2sf_inn_hit_ar  : heg2sfhit_bus_at;
+  signal heg2sf_inn_ctrl_ar : hps_ctrl2sf_at  ;
+  signal heg2sf_mid_slc_ar  : heg2sfslc_bus_at;
+  signal heg2sf_mid_hit_ar  : heg2sfhit_bus_at;
+  signal heg2sf_mid_ctrl_ar : hps_ctrl2sf_at  ;
+  signal heg2sf_out_slc_ar  : heg2sfslc_bus_at;
+  signal heg2sf_out_hit_ar  : heg2sfhit_bus_at;
+  signal heg2sf_out_ctrl_ar : hps_ctrl2sf_at  ;
+  
+  type heg2sfslc_megabus_at   is array (0 to 4) of heg2sfslc_bus_at;
+  type heg2sfhit_megabus_at   is array (0 to 4) of heg2sfhit_bus_at;
+  type hps_ctrl2sf_megabus_at is array (0 to 4) of hps_ctrl2sf_at  ;
+
+  signal heg2sf_slc_ar  : heg2sfslc_megabus_at;
+  signal heg2sf_hit_ar  : heg2sfhit_megabus_at;
+  signal heg2sf_ctrl_ar : hps_ctrl2sf_megabus_at;
+
 begin
 
   open_csv: process
