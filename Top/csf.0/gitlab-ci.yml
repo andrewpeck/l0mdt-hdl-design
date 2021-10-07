@@ -20,7 +20,8 @@ SIM:csf.0:
 
 CHK:csf.0:
   extends: .sim_check
-  variables: .vars
+  variables: 
+    extends: .vars
     PROJECT_NAME: csf.0
     BLOCK: CSF
   needs: SIM:csf.0
