@@ -105,7 +105,7 @@
 .sim_comp: &sim_comp
   <<: *only-default
   <<: *tag-sr
-  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
     - cd tools/simComp
@@ -115,9 +115,10 @@
 .sim_check: &sim_check
   <<: *only-default
   <<: *tag-sr
-  image: gitlab-registry.cern.ch/hog/hog-docker:ubuntu
+  image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_post
   script:
-    - cd tools/simCheck
-    - python3 checker.py $PROJECT_NAME -v 1
+    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PROJECT_NAME.sim/project_lib_sim/behav/questa
+    - mkdir -p bin/$PROJECT_NAME
+    - mv Plots bin/$PROJECT_NAME/SimPlots
   allow_failure: true

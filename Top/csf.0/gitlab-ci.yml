@@ -17,3 +17,11 @@ SIM:csf.0:
       extends: .vars
       PROJECT_NAME: csf.0
     allow_failure: false
+
+CHK:csf.0:
+  extends: .sim_check
+  variables: .vars
+    PROJECT_NAME: csf.0
+    BLOCK: CSF
+  needs: SIM:csf.0
+
