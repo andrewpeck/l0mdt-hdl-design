@@ -9,7 +9,7 @@
             "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
         },
         "run_config": {
-            "output_directory_name": "hps",
+            "output_directory_name": "hps_inn",
             "test_location": "src/l0mdt_tb/testbench/hps/test",
             "expected_is_observed": false,
             "components_lib_dir": "${XILINX_LIB_DIR}"

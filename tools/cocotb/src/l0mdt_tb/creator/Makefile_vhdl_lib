@@ -24,6 +24,9 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/detector_parameters/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/mdt_tc/pkg/TC_B3A_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/mdt_t0/pkg/T0_B_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_large.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_small.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd \
 	$(SHAREDDIR)/arithmetics/src/generic_pipelined_MATH.vhd \
 	$(SHAREDDIR)/arithmetics/pkg/roi_atan_pkg.vhd \
@@ -114,10 +117,6 @@ VHDL_SOURCES_xpm = \
 
 #VHDL_SOURCES_hp_lib = \
 #    $(HPDIR)/../pkg/hp_pkg.vhd \
-#    $(HPDIR)/ROMs/hp_dt2r_large_mem.vhd \
-#    $(HPDIR)/ROMs/hp_dt2r_small_mem.vhd \
-#    $(HPDIR)/hp_calc_dt2r_large.vhd \
-#    $(HPDIR)/hp_calc_dt2r_small.vhd \
 #    $(HPDIR)/hp_calc_radius.vhd \
 #    $(HPDIR)/hp_calc_RoI_vect.vhd \
 #    $(HPDIR)/hp_hit_matching.vhd \

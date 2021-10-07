@@ -84,6 +84,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
+    yield ClockCycles(dut.clock, 50) #Wait for DUT to come out of reset
 
 
 ##

@@ -71,7 +71,8 @@ architecture beh of hps_top_tb is
 
 begin
    ctrl_len <= len(ctrl);
-   ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e";
+   --ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"03e"; NUM_THREADS=3
+   ctrl_v(len(ctrl)-1 downto len(ctrl)-12 ) <= x"01e"; --NUM_THREADS=3
 
   -- IN_GEN : for hp_i in g_HPS_NUM_MDT_CH downto 0 generate
   --   mdt_polmux_data_av(hp_i).polmux <= i_mdt_polmux_av(hp_i);

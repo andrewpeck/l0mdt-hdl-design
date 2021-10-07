@@ -102,6 +102,7 @@ def get_bitfield(
     if df_type == "SL":
         BF_list = (event.DF_SL[candidate].getBitFieldWord(bitfieldname, station_id))
     elif df_type == "MDT":
+        station_num = station_name_to_id(station_id)
         BF_list = event.DF_MDT[station_num].getBitFieldWord(bitfieldname, station_id)
 
     for BF in BF_list:
