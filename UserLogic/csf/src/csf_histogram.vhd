@@ -318,12 +318,12 @@ BEGIN
             -- Clock 4
             dv4 <= dv3;
             fill_plus <= '0';
-            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 THEN
+            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_plus <= '1';
             END IF;
 
             fill_minus <= '0';
-            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 THEN
+            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_minus <= '1';
             END IF;
 
@@ -409,6 +409,8 @@ BEGIN
 
             if eof6 = '1' then
                 w_addr <= (OTHERS => (OTHERS => '0'));
+                counter_minus <= (others => '0');
+                counter_plus <= (others => '0');
             end if;
 
             eof7 <= eof6;

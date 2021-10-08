@@ -68,34 +68,41 @@ add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/dv3
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/bplus
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/bminus
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/eof8
-add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_counter_2
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/counter_plus
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/counter_minus
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_counter_1
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_counter_2
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/dv4
 add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_plus.x -radix unsigned} {/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_plus.y -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_plus.x {-height 21 -radix unsigned} /csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_plus.y {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_plus
 add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_minus.x -radix unsigned} {/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_minus.y -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_minus.x {-height 21 -radix unsigned} /csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_minus.y {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/histograms(1)/histogram/hit_minus
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_en(0)
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_hit_vec(0)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/fill_minus
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/fill_plus
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/dv5
-add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_bin1
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_bin1_s
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_bin2_s
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/bminus_s
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/bplus_s
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/dv6
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_hit_vec(45)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_addr(45)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_en(45)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_en(26)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/w_addr(26)
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/r_addr(0)
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/r_addr(26)
+add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_bin1
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_bin2
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/has_max
+add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/max_counter_1
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/start_read1
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/eof8
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/o_histo_hit0
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/o_histo_hit1
 add wave -noupdate -divider {Fitter 0}
-add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.x -radix unsigned} {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.y -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.x {-height 21 -radix unsigned} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.y {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1
-add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.x -radix decimal} {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.y -radix decimal}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.x {-height 21 -radix decimal} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.y {-height 21 -radix decimal}} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2
+add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.x -radix unsigned} {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.y -radix unsigned}} -subitemconfig {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.x {-height 21 -radix unsigned} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1.y {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit1
+add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.x -radix decimal} {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.y -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.x {-height 21 -radix decimal} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2.y {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/hit2
 add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_start
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_NSumX2
 add wave -noupdate -radix unsigned /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/dsp_NSumXY
@@ -119,6 +126,13 @@ add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_fit_valid
 add wave -noupdate -radix symbolic /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_bfit
 add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_mfit
 add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/fitter0/o_nhits
+add wave -noupdate -divider {Fitter 1}
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/hit1
+add wave -noupdate -expand /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/hit2
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/dsp_start
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/o_fit_valid
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/o_mfit
+add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(1)/fitter0/o_bfit
 add wave -noupdate -divider Chi2
 add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/chi2/B_OVER_Z_MULTI_LEN
 add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/chi2/B_RED_LEN
@@ -142,7 +156,16 @@ add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/chi2/dsp_res2_2
 add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/chi2/dv3_1
 add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/chi2/dv3_2
 add wave -noupdate -radix decimal /csf_tb/CSF/b_e_generate/fitters(0)/chi2/dsp_chi
-add wave -noupdate /csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg
+add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg.b -radix unsigned} {/csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg.m -radix unsigned}} -expand -subitemconfig {/csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg.b {-height 21 -radix unsigned} /csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg.m {-height 21 -radix unsigned}} /csf_tb/CSF/b_e_generate/fitters(0)/chi2/output_seg
+add wave -noupdate -divider Chi2Compare
+add wave -noupdate -expand /csf_tb/CSF/chi2compare/i_segments
+add wave -noupdate /csf_tb/CSF/chi2compare/o_segment
+add wave -noupdate /csf_tb/CSF/chi2compare/segments
+add wave -noupdate /csf_tb/CSF/chi2compare/segment_0
+add wave -noupdate /csf_tb/CSF/chi2compare/segment_1
+add wave -noupdate /csf_tb/CSF/chi2compare/output_segment
+add wave -noupdate /csf_tb/CSF/chi2compare/dv0
+add wave -noupdate /csf_tb/CSF/chi2compare/dv1
 add wave -noupdate -divider {Coordinate Transf}
 add wave -noupdate -childformat {{/csf_tb/CSF/coordtransform/locseg_i.b -radix decimal} {/csf_tb/CSF/coordtransform/locseg_i.m -radix decimal} {/csf_tb/CSF/coordtransform/locseg_i.chi2 -radix decimal}} -expand -subitemconfig {/csf_tb/CSF/coordtransform/locseg_i.b {-height 21 -radix decimal} /csf_tb/CSF/coordtransform/locseg_i.m {-height 21 -radix decimal} /csf_tb/CSF/coordtransform/locseg_i.chi2 {-height 21 -radix decimal}} /csf_tb/CSF/coordtransform/locseg_i
 add wave -noupdate /csf_tb/CSF/coordtransform/seed_i
@@ -158,7 +181,7 @@ add wave -noupdate -childformat {{/csf_tb/CSF/b_e_generate/histograms(1)/histogr
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/i_seed
 add wave -noupdate /csf_tb/CSF/b_e_generate/histograms(1)/histogram/mbar
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {499729272335 fs} 0} {{Cursor 2} {203052588931 fs} 0}
+WaveRestoreCursors {{Cursor 2} {577913158000 fs} 0} {{Cursor 3} {587181857414 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 367
 configure wave -valuecolwidth 105
@@ -174,4 +197,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {203009905801 fs} {203121529029 fs}
+WaveRestoreZoom {584391935207 fs} {600821477095 fs}
