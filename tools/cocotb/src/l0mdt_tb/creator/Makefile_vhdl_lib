@@ -4,7 +4,7 @@ VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
 	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
-	$(SHAREDDIR)/types/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/yml2hdl_v1/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_time_param_pkg.vhd \

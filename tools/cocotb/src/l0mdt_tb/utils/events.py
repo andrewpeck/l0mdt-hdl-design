@@ -152,9 +152,7 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
         if evt == e_idx:
             break
         else:
-            print("\nEvent: ", ievent)
             for this_candidate in range(n_candidates):
-                print ("events.py A: {evt,this_candidate,e_idx,ievent} = {", evt,this_candidate, e_idx, ievent,"}")
                 if _event_belongs_to_sectorID(tv_bcid_list[ievent].DF_SL, icand=this_candidate):
                     EXP_DF.clear()
                     RTL_DFSL.clear()
