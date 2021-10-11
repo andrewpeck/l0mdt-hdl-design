@@ -101,7 +101,20 @@ begin
     csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
     csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
     csv_file_1.write_string("# SIM TS  : " & time'image(now));
-    csv_file_1.write_string("# --------------------------");     
+    csv_file_1.write_string("# --------------------------");   
+    --
+    csv_file_1.write_word("ToA");
+    csv_file_1.write_word("event");                  
+    csv_file_1.write_word("station");   
+    csv_file_1.write_word("chamber_id");
+    --
+    csv_file_1.write_word("tube");
+    csv_file_1.write_word("layer");
+    csv_file_1.write_word("time_t0");
+    csv_file_1.write_word("global_z");
+    csv_file_1.write_word("global_x");
+
+    csv_file_1.writeline;  
     wait;
   end process open_csv;
 
@@ -137,37 +150,37 @@ begin
 
   begin
     if rising_edge(clk) then
-      if first_write = '1' then
-        -- wait until not slc_file_ok and not hit_file_ok;
-        -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
-        -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
-        -- csv_file_1.write_string("# --------------------------");
-        -- csv_file_1.write_word("#");
-        -- csv_file_1.write_string("#");
-        -- csv_file_1.write_string("# --------------------------");         
-        -- muid
-        csv_file_1.write_word("ToA");
-        csv_file_1.write_word("event");          
-        -- csv_file_1.write_word("thread");          
-        csv_file_1.write_word("station");   
-        csv_file_1.write_word("chamber_id");
+      -- if first_write = '1' then
+      --   -- wait until not slc_file_ok and not hit_file_ok;
+      --   -- puts("opening UCM2HPS CSV file : " & g_OUT_FILE_1);
+      --   -- csv_file_1.initialize(g_OUT_FILE_1,"wr");
+      --   -- csv_file_1.write_string("# --------------------------");
+      --   -- csv_file_1.write_word("#");
+      --   -- csv_file_1.write_string("#");
+      --   -- csv_file_1.write_string("# --------------------------");         
+      --   -- muid
+      --   csv_file_1.write_word("ToA");
+      --   csv_file_1.write_word("event");          
+      --   -- csv_file_1.write_word("thread");          
+      --   csv_file_1.write_word("station");   
+      --   csv_file_1.write_word("chamber_id");
 
-        -- muid
-        csv_file_1.write_word("tube");
-        csv_file_1.write_word("layer");
-        csv_file_1.write_word("time_t0");
-        csv_file_1.write_word("global_z");
-        csv_file_1.write_word("global_x");
-        -- -- mdtid
-        -- csv_file_1.write_word("chamber_id");
-        -- csv_file_1.write_word("chamber_ieta");
-        -- -- vec_pos
-        -- csv_file_1.write_word("vec_pos");
-        -- -- vec_ang
-        -- csv_file_1.write_word("vec_ang");
-        csv_file_1.writeline;
-        first_write := '0';
-      end if;
+      --   -- muid
+      --   csv_file_1.write_word("tube");
+      --   csv_file_1.write_word("layer");
+      --   csv_file_1.write_word("time_t0");
+      --   csv_file_1.write_word("global_z");
+      --   csv_file_1.write_word("global_x");
+      --   -- -- mdtid
+      --   -- csv_file_1.write_word("chamber_id");
+      --   -- csv_file_1.write_word("chamber_ieta");
+      --   -- -- vec_pos
+      --   -- csv_file_1.write_word("vec_pos");
+      --   -- -- vec_ang
+      --   -- csv_file_1.write_word("vec_ang");
+      --   csv_file_1.writeline;
+      --   first_write := '0';
+      -- end if;
       if rst = '1' then
       else
         if c_STATIONS_IN_SECTOR(0) = '1' then -- INN

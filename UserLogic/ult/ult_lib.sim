@@ -23,7 +23,7 @@ UserLogic/ult/sim/ult_tb_writer_heg.vhd
 UserLogic/ult/sim/ult_tb_writer_mpl.vhd
 UserLogic/ult/sim/ult_tb_writer_sf.vhd
 
-UserLogic/ult/sim/ult_tb_writer_pt2mtcb.vhd
+#UserLogic/ult/sim/ult_tb_writer_pt2mtcb.vhd
 # UserLogic/ult/sim/ult_tb_writer_sf2pt.vhd
 
 
