@@ -56,3 +56,6 @@
 [submodule "HAL/ctrl/src/axi-vhdl-package"]
 	path = HAL/ctrl/src/axi-vhdl-package
 	url = https://gitlab.com/BU-EDF/axi-vhdl-package
+[submodule "shared/vhdl_utilities"]
+	path = shared/vhdl_utilities
+	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git
