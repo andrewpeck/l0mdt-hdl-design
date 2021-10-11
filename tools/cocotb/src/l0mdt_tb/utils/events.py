@@ -196,8 +196,8 @@ def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, toler
 
                     if results[0]:
                         cprint("\tThe 2 BitFieldWords are identical ", "green")
-                        print(tv_bcid_list[ievent].header.dump())
-                        print(tabulate(results[1], results[2], tablefmt="psql"))
+                        #print(tv_bcid_list[ievent].header.dump())
+                        #print(tabulate(results[1], results[2], tablefmt="psql"))
                         pass_count = pass_count + 1
                     else:
                         cprint("\tThe 2 BitFieldWords differ", "red")
