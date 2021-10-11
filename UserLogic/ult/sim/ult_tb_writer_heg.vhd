@@ -205,7 +205,7 @@ begin
         g_SIMULATION => '1',
         -- pragma translate_on
         g_PIPELINE_TYPE => "ring_buffer",
-        g_DELAY_CYCLES  => 450,
+        g_DELAY_CYCLES  => 425,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -260,6 +260,43 @@ begin
           -- end generate TH_loop;
         end if;
       end process INN_proc;
+    end generate;
+    HPS_MID: if c_HPS_ENABLE_ST_MID = '1' generate
+
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+
+      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_MID-1 downto 0);
+
+    begin
+
+      hp2bm_ar <= structify(hp2bm_av);
+
+      MID_proc: process(clk, rst)
+      begin
+        if rst = '1' then
+
+        elsif rising_edge(clk) then
+          -- TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+            HP_loop: for hp_i in c_HPS_MAX_HP_MID - 1 downto 0 loop
+              if hp2bm_ar(hp_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+                csv_file_1.write_integer(unsigned(tdc_event_h2b_au(1)(hp_i)));   
+                csv_file_1.write_integer(th_i);  
+                csv_file_1.write_integer(1);  
+                csv_file_1.write_integer(hp_i);
+                --
+                csv_file_1.write_bool(hp2bm_ar(hp_i).mdt_valid);  
+                csv_file_1.write_bool(hp2bm_ar(hp_i).data.mlayer);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
+
+                csv_file_1.writeline;
+              end if;
+            end loop;
+          -- end generate TH_loop;
+        end if;
+      end process MID_proc;
     end generate;
   end generate;
   
