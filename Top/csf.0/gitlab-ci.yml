@@ -17,3 +17,17 @@ SIM:csf.0:
       extends: .vars
       PROJECT_NAME: csf.0
     allow_failure: false
+
+CHK:csf.0:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: csf.0
+    BLOCK: CSF
+  needs: ["SIM:csf.0"]
+  artifacts:
+    name: CHK_csf
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
+

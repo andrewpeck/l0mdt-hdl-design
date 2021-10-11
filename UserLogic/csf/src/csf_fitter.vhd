@@ -33,14 +33,6 @@ LIBRARY csf_lib;
 USE csf_lib.csf_pkg.ALL;
 USE csf_lib.csf_custom_pkg.ALL;
 
--- library ieee, csf_lib, shared_lib;
--- use ieee.std_logic_1164.all;
--- use ieee.numeric_std.all;
--- use ieee.math_real.all;
--- use csf_lib.csf_pkg.all;
--- use csf_lib.custom_types_csf_pkg.all;
--- use shared_lib.custom_types_davide_pkg.all;
-
 ENTITY csf_fitter IS
     PORT (
         clk : IN STD_LOGIC;
@@ -308,7 +300,7 @@ BEGIN
             o_nhits <= dsp_nhits;
 
             -- Reset
-            IF dv9 = '1' THEN
+            IF dv10 = '1' THEN
                 dsp_SumXY <= (OTHERS => '0');
                 dsp_SumY <= (OTHERS => '0');
                 dsp_SumX <= (OTHERS => '0');

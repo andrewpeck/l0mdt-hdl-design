@@ -191,7 +191,7 @@ ARCHITECTURE Behavioral OF csf_histogram IS
 
 BEGIN
 
-    mdt_hit <= structify(i_mdthit);
+
     seed <= structify(i_seed);
     --invsqrt_mbar : invsqrt_mbar_rom
     --PORT MAP (
@@ -263,6 +263,9 @@ BEGIN
                 mbar <= seed.vec_ang;
             END IF;
 
+            -- Delay the hits of two clocks for 
+            mdt_hit <= structify(i_mdthit);
+
             -- Clock 0
             dv0 <= mdt_hit.data_valid;
             dsp_squ_m_r <= shift_right(
@@ -315,12 +318,12 @@ BEGIN
             -- Clock 4
             dv4 <= dv3;
             fill_plus <= '0';
-            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 THEN
+            IF bplus > -1 AND bplus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_plus <= '1';
             END IF;
 
             fill_minus <= '0';
-            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 THEN
+            IF bminus > -1 AND bminus < 2**HISTO_LEN -1 and dv3 = '1' THEN
                 fill_minus <= '1';
             END IF;
 
@@ -349,16 +352,15 @@ BEGIN
 
             -- Clock 6
             IF dv5 = '1' THEN
-                w_addr(to_integer(bplus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                w_addr(to_integer(bminus_ss)) <=
-                STD_LOGIC_VECTOR(
-                unsigned(w_addr(to_integer(bminus_ss))) + 1);
-                counter_plus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bplus_ss))) + 1);
-                counter_minus <= STD_LOGIC_VECTOR(
-                    unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                if w_en(to_integer(bplus_ss)) = '1' then
+                    w_addr(to_integer(bplus_ss)) <=  STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_ss))) + 1);
+                    counter_plus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bplus_ss))) + 1);
+                end if;
+
+                if w_en(to_integer(bminus_ss)) = '1' then
+                    w_addr(to_integer(bminus_ss)) <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                    counter_minus <= STD_LOGIC_VECTOR(unsigned(w_addr(to_integer(bminus_ss))) + 1);
+                end if;
             END IF;
             dv6 <= dv5;
             eof6 <= eof5;
@@ -404,6 +406,13 @@ BEGIN
                     END IF;
                 END IF;
             END IF;
+
+            if eof6 = '1' then
+                w_addr <= (OTHERS => (OTHERS => '0'));
+                counter_minus <= (others => '0');
+                counter_plus <= (others => '0');
+            end if;
+
             eof7 <= eof6;
 
             -- Clock 8
@@ -415,14 +424,14 @@ BEGIN
             IF eof8 = '1' THEN
                 start_read <= '1';
                 has_max <= '0';
-                IF unsigned(max_counter_1) > 0 THEN
+
+                IF unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1_s)) <= (OTHERS => '0');
                     has_max <= '1';
                 END IF;
-                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 0 THEN
+                IF max_counter_2 = max_counter_1 and unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2_s)) <= (OTHERS => '0');
                 END IF;
-                mbar <= (OTHERS => '0');
             END IF;
 
             start_read0 <= start_read;
@@ -430,21 +439,20 @@ BEGIN
 
             IF start_read0 = '1' AND has_max = '1' THEN
                 IF unsigned(r_addr(to_integer(max_bin1))) < unsigned(max_counter_1) - 1
-                    AND unsigned(max_counter_1) > 0 THEN
+                    AND unsigned(max_counter_1) > 1 THEN
                     r_addr(to_integer(max_bin1)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin1))) + 1);
                 ELSE
                     r_addr(to_integer(max_bin2)) <= (OTHERS => '1');
                     start_read <= '0';
                     r_addr(to_integer(max_bin1)) <= (OTHERS => '1');
-                    w_addr <= (OTHERS => (OTHERS => '0'));
 
                     max_counter_1 <= (OTHERS => '0');
                     max_counter_2 <= (OTHERS => '0');
                 END IF;
 
                 IF unsigned(r_addr(to_integer(max_bin2))) < unsigned(max_counter_2) - 1
-                    AND unsigned(max_counter_2) > 0 THEN
+                    AND unsigned(max_counter_2) > 1 THEN
                     r_addr(to_integer(max_bin2)) <=
                     STD_LOGIC_VECTOR(unsigned(r_addr(to_integer(max_bin2))) + 1);
                 ELSE
@@ -452,7 +460,6 @@ BEGIN
                 END IF;
             ELSIF start_read0 = '1' THEN
                 start_read <= '0';
-                w_addr <= (OTHERS => (OTHERS => '0'));
                 max_counter_1 <= (OTHERS => '0');
                 max_counter_2 <= (OTHERS => '0');
             END IF;

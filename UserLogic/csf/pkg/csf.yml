@@ -45,7 +45,7 @@ HDL_Types:
   - b     : [type : signed, length: CSF_SEG_B_LEN]
   - m     : [type : signed, length: CSF_SEG_M_LEN]
   - chi2  : [type : unsigned, length: CSF_SEG_CHI2_LEN]
-  - ndof  : [type : unsigned, length: CSF_MAXHITS_SEG_LEN]
+  - nhits  : [type : unsigned, length: CSF_MAXHITS_SEG_LEN]
 
 - csf_locseg_a: [array: open , type: csf_locseg]
 

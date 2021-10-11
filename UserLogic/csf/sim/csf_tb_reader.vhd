@@ -36,7 +36,7 @@ use project_lib.vhdl_textio_csv_pkg.ALL;
 
 entity csf_tb_reader is
   generic (
-    IN_HIT_FILE       : string  := "csf_Barrel.csv"
+    IN_HIT_FILE       : string  := "csf_short_in.csv"
   );
   port (
     clk               : in std_logic;
