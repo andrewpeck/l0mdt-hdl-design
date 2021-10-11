@@ -91,7 +91,7 @@ architecture sim of ult_tb_reader_tdc is
   signal mdt_event_ai     : event_tdc_aut := (others => (others => (others => '0')));
 
 
-  shared variable csv_file  : csv_file_reader_type;
+  shared variable csv_file  : csv_file_type;
   signal  file_open         : std_logic := '0';   
   signal file_ts            : string(1 to LINE_LENGTH_MAX);
   
@@ -136,7 +136,7 @@ begin
   end process open_csv;
   HIT_READ: process ( rst, clk)
 
-    -- variable csv_file: csv_file_reader_type;
+    -- variable csv_file: csv_file_type;
 
 
     variable ToA  : integer;

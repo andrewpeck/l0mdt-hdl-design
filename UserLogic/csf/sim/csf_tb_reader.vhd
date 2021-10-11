@@ -57,7 +57,7 @@ begin
   CSF_READ: process ( rst, clk)
 
     file input_csf_file       : text open read_mode is IN_HIT_FILE;
-    variable csv: csv_file_reader_type;
+    variable csv: csv_file_type;
     variable row                  : line;
     variable row_counter          : integer := 0;
     variable hit : heg2sfhit_rt;

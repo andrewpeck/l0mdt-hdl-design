@@ -72,7 +72,7 @@ architecture sim of ult_tb_writer_hps is
   alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
   alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
-  shared variable csv_file_1: csv_file_reader_type;
+  shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_hpsPc2Heg_" & g_PRJ_INFO & ".csv";
 
   alias inn_mdt_full_data_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.HPS_INN.HPS.mdt_full_data_av : heg_pc2heg_avt >>;

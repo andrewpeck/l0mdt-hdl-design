@@ -76,8 +76,8 @@ architecture sim of ult_tb_writer_ucm is
   constant g_OUT_FILE_1     : string  := "ov_ucm2hps_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_ucm2mpl_" & g_PRJ_INFO & ".csv";
      
-  shared variable csv_file_1: csv_file_reader_type;
-  shared variable csv_file_2: csv_file_reader_type;
+  shared variable csv_file_1: csv_file_type;
+  shared variable csv_file_2: csv_file_type;
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
 
@@ -152,7 +152,7 @@ begin
   UCM2HPS_OUT: process(clk, rst)
     variable first_write           : std_logic := '1';
 
-    -- variable csv_file_1: csv_file_reader_type;
+    -- variable csv_file_1: csv_file_type;
 
     variable thread_counter : integer := 0;
 
@@ -354,7 +354,7 @@ begin
 
     variable first_write           : std_logic := '1';
 
-    -- variable csv_file_2: csv_file_reader_type;
+    -- variable csv_file_2: csv_file_type;
 
     variable common : slc_common_rt;
 

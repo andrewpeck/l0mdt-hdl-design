@@ -52,7 +52,7 @@ begin
   
   CSF_READ: process ( rst, clk)
 
-    variable csv: csv_file_reader_type;
+    variable csv: csv_file_type;
     variable row                  : line;
     variable row_counter          : integer := 0;
     variable hit : heg2sfhit_rt;

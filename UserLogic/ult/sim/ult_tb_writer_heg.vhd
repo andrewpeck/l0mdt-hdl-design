@@ -73,9 +73,9 @@ architecture sim of ult_tb_writer_heg is
   constant g_OUT_FILE_2     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_3     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
      
-  shared variable csv_file_1: csv_file_reader_type;
-  shared variable csv_file_2: csv_file_reader_type;
-  shared variable csv_file_3: csv_file_reader_type;
+  shared variable csv_file_1: csv_file_type;
+  shared variable csv_file_2: csv_file_type;
+  shared variable csv_file_3: csv_file_type;
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
