@@ -8,6 +8,6 @@ shared/memories/src/rom.v
 shared/memories/src/rom_dp.v
 
 #---------------------------------
-# Simulation functions
+# vhdl utilities
 #---------------------------------
-shared/sim/pkg/vhdl_tb_utils_pkg.vhd
+shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
