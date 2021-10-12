@@ -12,8 +12,9 @@ required_python_version_minor=8
 
 
 #TV_repo="https://gitlab.cern.ch/atlas_hllhc_uci_mdtTrigger/tv.git"
-TV_repo="ssh://git@gitlab.cern.ch:7999/atlas_hllhc_uci_mdtTrigger/tv.git"
-TV_tag="v007"
+#TV_repo="ssh://git@gitlab.cern.ch:7999/atlas_hllhc_uci_mdtTrigger/tv.git"
+TV_repo="ssh://git@gitlab.cern.ch:7999/atlas-tdaq-phase2-l0mdt-electronics/tv.git"
+TV_tag="v008"
 
 
 #dataformats_repo="https://gitlab.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/dataformats.git"
