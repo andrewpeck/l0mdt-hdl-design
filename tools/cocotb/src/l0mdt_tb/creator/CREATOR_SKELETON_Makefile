@@ -53,10 +53,9 @@ IP_REPO   = $(HLS)/IPs/vu13p
 LSFSIMDIR = $(USERLOGIC)/lsf/sim
 
 
-# VHDL source files
-VHDL_SOURCES =
+# VHDL source files, required by CocoTB
+VHDL_SOURCES = $(CSFDIR)/csf.vhd
 
-VHDL_SOURCES_project_lib =
 
 include ../../../creator/Makefile_vhdl_lib
 

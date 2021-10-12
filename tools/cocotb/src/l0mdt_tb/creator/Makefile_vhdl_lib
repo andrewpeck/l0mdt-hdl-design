@@ -36,6 +36,10 @@ VERILOG_SOURCES += \
     $(SBDIR)/asym_ram_tdp_read_first.v \
     $(SHAREDDIR)/memories/src/rom.v
 
+VHDL_SOURCES_project_lib = \
+    $(PWD)/prj_cfg.vhd
+
+
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
