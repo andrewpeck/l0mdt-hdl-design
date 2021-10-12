@@ -75,7 +75,7 @@ def reset(dut):
     dut.reset_n <= 0
     yield ClockCycles(dut.clock, 10)
     dut.reset_n <= 1
-
+    yield ClockCycles(dut.clock, 20)
 
 ##
 ## TEST
@@ -235,7 +235,7 @@ def CREATORTESTNAME_test(dut):
             n_ports = CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf),
             n_to_load=num_events_to_process,
             station_ID=inputs_station_id[n_ip_intf],
-            tv_type="value"
+            tv_type=input_tvtype[n_ip_intf]
             ))
         for io in range(CREATORCLASSNAMEPorts.get_input_interface_ports(n_ip_intf)): #Outputs):
             input_tv_list.append(single_interface_list[io])

@@ -399,7 +399,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
     ## input_args
     ##
     config_input_args = {
-        "n_events": 2,
+        "n_events": 1,
         "event_detail": False,
         "clock_period": 5,
         "clock_time_unit": "ns",
@@ -430,7 +430,7 @@ def create_test_configuration(test_name, n_inputs, n_outputs, input_ports, outpu
 
     config_testvectors = {
         "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
-        "testvector_file": "B_C_3.xz",
+        "testvector_file": "B_A_3.xz",
         "inputs": input_list,
         "outputs": output_list,
     }

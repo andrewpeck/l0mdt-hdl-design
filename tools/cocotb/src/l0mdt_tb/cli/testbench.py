@@ -1,6 +1,7 @@
 import sys
 import os
 import click
+import shutil
 
 from l0mdt_tb.utils import test_config
 
@@ -54,6 +55,11 @@ def run(config):
     sim_build_out = f"{relative_output_path}/test_output/{output_dir_name}"
     cocotb_results_file =f"{relative_output_path}/test_output/{output_dir_name}/{test_name}_results.xml"
     cmd = f"SIM_BUILD={sim_build_out} TESTBENCH_TOPLEVEL=TopLevel_{test_name} TESTBENCH_TEST_MODULE=test_{test_name} COCOTB_RESULTS_FILE={cocotb_results_file}"  # WAVES=1 make -f {makefile}"
+
+
+    #Remove output directory if it exists
+    if os.path.exists(sim_build_out) and os.path.isdir(sim_build_out):
+        shutil.rmtree(sim_build_out)
 
     for rc, rc_val in run_config.items():
         if rc in ["output_directory", "test_location"]:
