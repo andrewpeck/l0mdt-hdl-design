@@ -221,19 +221,10 @@ begin
 
   TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
     HPS_INN: if c_HPS_ENABLE_ST_INN = '1' generate
-      -- alias heg2sf_inn_slc_av   is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
-
       alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
-      -- alias heg2sf_inn_hit_av   is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
-
-      -- alias heg2sf_inn_ctrl_av  is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av  : hps_ctrl2sf_avt >>;
-
       signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_INN-1 downto 0);
-
     begin
-
       hp2bm_ar <= structify(hp2bm_av);
-
       INN_proc: process(clk, rst)
       begin
         if rst = '1' then
@@ -253,7 +244,7 @@ begin
                 csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
                 csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
                 csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
-
+                --
                 csv_file_1.writeline;
               end if;
             end loop;
