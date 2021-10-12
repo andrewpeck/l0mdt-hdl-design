@@ -474,7 +474,7 @@ begin
     tb_curr_tdc_time          => tb_curr_tdc_time
   );
 	-- SF IN
-  HEG : entity project_lib.ult_tb_writer_sf_in
+  SF_IN : entity project_lib.ult_tb_writer_sf_in
   generic map (
     g_PRJ_INFO    => PRJ_INFO,
     g_IN_HIT_FILE => IN_HIT_FILE,

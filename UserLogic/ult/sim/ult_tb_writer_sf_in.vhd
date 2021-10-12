@@ -29,14 +29,20 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+use shared_lib.vhdl_tb_utils_pkg.all;
+
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
 use project_lib.ult_tb_sim_cstm_pkg.all;
-use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
 
 library ult_lib;
 library vamc_lib;
+
+library heg_lib;
+use heg_lib.heg_pkg.all;
+library hps_lib;
+use hps_lib.hps_pkg.all;
 
 entity ult_tb_writer_sf_in is
   generic(
@@ -81,8 +87,8 @@ begin
   begin
     wait until slc_file_ok and hit_file_ok;
     ------------------------------------------------
-    puts("opening HEG BM2SF CSV file : " & g_OUT_FILE_2);
-    csv_file_1.initialize(g_OUT_FILE_2,"wr");
+    puts("opening HEG BM2SF CSV file : " & g_OUT_FILE_1);
+    csv_file_1.initialize(g_OUT_FILE_1,"wr");
     csv_file_1.write_string("# --------------------------");
     csv_file_1.write_string("# SLC TS  : " & slc_file_ts);
     csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
@@ -94,9 +100,7 @@ begin
     csv_file_1.write_word("event");                  
     csv_file_1.write_word("thread");                  
     csv_file_1.write_word("station");   
-    csv_file_1.write_word("hp_i");
     --
-    csv_file_1.write_word("valid");
     csv_file_1.write_word("mlayer");
     csv_file_1.write_word("radius");
     csv_file_1.write_word("local_x");
@@ -104,8 +108,8 @@ begin
     --
     csv_file_1.writeline;
     ------------------------------------------------
-    puts("opening HEG CTRL&ROI CSV file : " & g_OUT_FILE_3);
-    csv_file_2.initialize(g_OUT_FILE_3,"wr");
+    puts("opening HEG CTRL&ROI CSV file : " & g_OUT_FILE_2);
+    csv_file_2.initialize(g_OUT_FILE_2,"wr");
     csv_file_2.write_string("# --------------------------");
     csv_file_2.write_string("# SLC TS  : " & slc_file_ts);
     csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
@@ -147,8 +151,8 @@ begin
   end generate;
 
   -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
-  mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
-  out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
+  -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
+  -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
   -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
@@ -157,26 +161,26 @@ begin
     alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
     alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
     alias heg2sf_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
-    signal heg2sf_slc_ar  : heg2sfslc_at;
-    signal heg2sf_hit_ar  : heg2sfhit_at;
-    signal heg2sf_ctrl_ar : hps_ctrl2sf_at;
+    signal heg2sf_slc_ar  : heg2sfslc_bus_at(c_NUM_THREADS -1 downto 0);
+    signal heg2sf_hit_ar  : heg2sfhit_bus_at(c_NUM_THREADS -1 downto 0);
+    signal heg2sf_ctrl_ar : hps_ctrl2sf_at(c_NUM_THREADS -1 downto 0);
 
   begin
     heg2sf_hit_ar  <= structify(heg2sf_hit_av );
     HIT_HEG2SF: process(clk, rst) begin
       if rst = '1' then
       elsif rising_edge(clk) then
-        for ch_i in c_HPS_MAX_ARRAY(lc_ST_ID) -1 downto 0 loop
-          if heg2sf_hit_ar(ch_i).data_valid = '1' then
-            csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_2.write_integer(unsigned(tdc_event_u2h_au(lc_ST_ID)(ch_i)));          
-            csv_file_2.write_integer(lc_ST_ID);
-            csv_file_2.write_integer(ch_i);
-            csv_file_2.write_bool(heg2sf_hit_ar(ch_i).mlayer);
-            csv_file_2.write_integer(heg2sf_hit_ar(ch_i).localx);
-            csv_file_2.write_integer(heg2sf_hit_ar(ch_i).localy);
-            csv_file_2.write_integer(heg2sf_hit_ar(ch_i).radius);
-            csv_file_2.writeline;
+        for th_i in c_NUM_THREADS -1 downto 0 loop
+          if heg2sf_hit_ar(th_i).data_valid = '1' then
+            csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+            csv_file_1.write_integer(0);--unsigned(tdc_event_u2h_au(lc_ST_ID)(th_i)));          
+            csv_file_1.write_integer(lc_ST_ID);
+            csv_file_1.write_integer(th_i);
+            csv_file_1.write_bool(heg2sf_hit_ar(th_i).mlayer);
+            csv_file_1.write_integer(heg2sf_hit_ar(th_i).localx);
+            csv_file_1.write_integer(heg2sf_hit_ar(th_i).localy);
+            csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
+            csv_file_1.writeline;
           end if;
         end loop;
       end if;
