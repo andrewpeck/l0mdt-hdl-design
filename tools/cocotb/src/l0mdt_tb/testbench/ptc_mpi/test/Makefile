@@ -62,43 +62,6 @@ IP_REPO   = $(HLS)/IPs/vu13p
 LSFSIMDIR = $(USERLOGIC)/lsf/sim
 
 
-LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
-GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
-GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
-GET_THETA_OFFSET_HLS_IP = $(IP_REPO)/hls_get_theta_offset/hdl/verilog
-GET_TRIG_ADDR_OFFSET_HLS_IP = $(IP_REPO)/hls_get_trig_addr_offsets/hdl/verilog
-COMPUTE_LE_RESULTS_HLS_IP = $(IP_REPO)/hls_ComputeLegendreResults/hdl/verilog
-HISTOGRAM_BIN_ACCUMULATION_HLS_IP = $(IP_REPO)/hls_histogram_bin_accumulation/hdl/verilog
-UPDATE_MAX_RBIN_HLS_IP = $(IP_REPO)/hls_update_max_rbin/hdl/verilog
-UPDATE_HISTOGRAM_HLS_IP = $(IP_REPO)/hls_update_histogram/hdl/verilog
-COMPUTE_RBINS_HLS_IP = $(IP_REPO)/hls_compute_r_bins/hdl/verilog
-SPYBUFFER_SRC = $(SHAREDDIR)/SpyBuffer
-# PLL_IP = $(LSFDIR)/xilinx_ip/v2019.1/pll_inst
-FIND_MAX_BIN_HLS_IP = $(IP_REPO)/hls_find_max_bin/hdl/verilog
-GET_LEGENDRE_SEGMENT_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_endcap/hdl/verilog
-GET_LEGENDRE_SEGMENT_BARREL_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_barrel/hdl/verilog
-CALC_LE_R_OFFSET_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset/hdl/verilog
-CALC_LE_R_OFFSET_BARREL_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset_barrel/hdl/verilog
-LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
-HISTMEM_128x4 = $(LSFDIR)/../sim
-
-# Verilog source files
-VERILOG_SOURCES = \
-    $(DFDIR)/l0mdt_buses_constants.svh \
-    $(PWD)/$(TESTBENCH_TOPLEVEL).v \
-    $(SBDIR)/SpyBuffer.v \
-    $(SBDIR)/SpyController.v \
-    $(SBDIR)/SpyMemory.v \
-    $(SBDIR)/SpyPlayback.v \
-    $(SBDIR)/aFifo/aFifo.v \
-    $(SBDIR)/aFifo/fifomem.v \
-    $(SBDIR)/aFifo/rptr_empty.v \
-    $(SBDIR)/aFifo/sync_r2w.v \
-    $(SBDIR)/aFifo/sync_w2r.v \
-    $(SBDIR)/aFifo/wptr_full.v \
-    $(SBDIR)/asym_ram_tdp_read_first.v \
-    $(SHAREDDIR)/memories/src/rom.v
-
 # VHDL source files
 VHDL_SOURCES = \
     $(MPTDIR)/pt.vhd
