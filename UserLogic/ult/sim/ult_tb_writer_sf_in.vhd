@@ -98,8 +98,8 @@ begin
     --
     csv_file_1.write_word("ToA");
     csv_file_1.write_word("event");                  
-    csv_file_1.write_word("thread");                  
     csv_file_1.write_word("station");   
+    csv_file_1.write_word("thread");                  
     --
     csv_file_1.write_word("mlayer");
     csv_file_1.write_word("radius");
@@ -120,9 +120,22 @@ begin
     csv_file_2.write_word("ToA");
     csv_file_2.write_word("event");                  
     csv_file_2.write_word("station");   
+    csv_file_2.write_word("thread");  
+    csv_file_2.write_word("EOF");  
+    -- muid
+    csv_file_2.write_word("slc_id");
+    csv_file_2.write_word("slid");
+    csv_file_2.write_word("bcid");
+    -- mdtseg Dest
+    csv_file_2.write_word("mdtseg_Dest");
+    -- mdtid
     csv_file_2.write_word("chamber_id");
-    --
-
+    csv_file_2.write_word("chamber_ieta");
+    -- vec
+    csv_file_2.write_word("vec_pos");
+    csv_file_2.write_word("vec_ang");
+    -- vec
+    csv_file_2.write_word("hewindow_pos");
     --
     csv_file_2.writeline;
     wait;
@@ -188,6 +201,37 @@ begin
     --
     heg2sf_slc_ar  <= structify(heg2sf_slc_av );
     heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+    SLC_HEG2SF: process(clk, rst) begin
+      if rst = '1' then
+      elsif rising_edge(clk) then
+        for th_i in c_NUM_THREADS -1 downto 0 loop
+          if heg2sf_slc_ar(th_i).data_valid = '1' or heg2sf_ctrl_ar(th_i).eof = '1' then
+            csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
+            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_au(lc_ST_ID)(th_i)));          
+            csv_file_2.write_integer(lc_ST_ID);
+            csv_file_2.write_integer(th_i);
+
+            csv_file_2.write_bool(heg2sf_ctrl_ar(th_i).eof);
+            -- muid
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).muid.slcid));
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).muid.slid));
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).muid.bcid));
+            -- mdtseg2Dest
+            csv_file_2.write_integer(to_integer(unsigned(heg2sf_slc_ar(th_i).mdtseg_dest)));
+            -- mdtid
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).mdtid.chamber_id));
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).mdtid.chamber_ieta));
+            -- vec_po2
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).vec_pos));
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).vec_ang));
+
+            csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).hewindow_pos));
+
+            csv_file_2.writeline;
+          end if;
+        end loop;
+      end if;
+    end process;
   end generate;
 
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
