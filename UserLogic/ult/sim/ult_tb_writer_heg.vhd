@@ -70,12 +70,9 @@ architecture sim of ult_tb_writer_heg is
   alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
 
   constant g_OUT_FILE_1     : string  := "ov_heg_hp2bm_" & g_PRJ_INFO & ".csv";
-  constant g_OUT_FILE_2     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
-  constant g_OUT_FILE_3     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
-     
+
   shared variable csv_file_1: csv_file_type;
-  shared variable csv_file_2: csv_file_type;
-  shared variable csv_file_3: csv_file_type;
+
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
@@ -138,42 +135,7 @@ begin
     csv_file_1.write_word("local_x");
     csv_file_1.write_word("local_y");
     csv_file_1.writeline;
-    --
-    puts("opening HEG BM2SF CSV file : " & g_OUT_FILE_2);
-    csv_file_2.initialize(g_OUT_FILE_2,"wr");
-    csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_string("# SLC TS  : " & slc_file_ts);
-    csv_file_2.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_2.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_2.write_string("# SIM TS  : " & time'image(now));
-    csv_file_2.write_string("# --------------------------");
-    csv_file_2.write_word("ToA");
-    csv_file_2.write_word("event");                  
-    csv_file_2.write_word("thread");                  
-    csv_file_2.write_word("station");   
-    csv_file_2.write_word("hp_i");
-    --
-    csv_file_2.write_word("valid");
-    csv_file_2.write_word("mlayer");
-    csv_file_2.write_word("radius");
-    csv_file_2.write_word("local_x");
-    csv_file_2.write_word("local_y");
-
-    csv_file_2.writeline;
-    --
-    puts("opening HEG CTRL&ROI CSV file : " & g_OUT_FILE_3);
-    csv_file_3.initialize(g_OUT_FILE_3,"wr");
-    csv_file_3.write_string("# --------------------------");
-    csv_file_3.write_string("# SLC TS  : " & slc_file_ts);
-    csv_file_3.write_string("# HIT TS  : " & hit_file_ts);
-    csv_file_3.write_string("# PRJ CFG : " & g_PRJ_INFO);
-    csv_file_3.write_string("# SIM TS  : " & time'image(now));
-    csv_file_3.write_string("# --------------------------");
-    csv_file_3.write_word("ToA");
-    csv_file_3.write_word("event");                  
-    csv_file_3.write_word("station");   
-    csv_file_3.write_word("chamber_id");
-    csv_file_3.writeline;
+  
     wait;
   end process open_csv;
 
