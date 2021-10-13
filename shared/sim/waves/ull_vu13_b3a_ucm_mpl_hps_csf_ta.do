@@ -175,12 +175,15 @@ add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/csv_fi
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/tdc_event_u2h_au
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/mdt_event_ai
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/slc_event_ai
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_av
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_hit_av
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_av
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_hit_ar
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_ar
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_rd
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_av
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_hit_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_hit_av
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_av
 add wave -noupdate -group ULT /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT /ult_tp/ULT/ttc_commands
