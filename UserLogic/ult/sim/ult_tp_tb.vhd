@@ -458,27 +458,38 @@ begin
     tb_curr_tdc_time          => tb_curr_tdc_time
   );
   -------------------------------------------------------------------------------------
-	-- HEG2SF
+	-- HEG
   -------------------------------------------------------------------------------------
-  -- HEG_2_SF_EN : if c_H2S_ENABLED = '1' generate
-  --   HEG_2_SF : entity project_lib.ult_tb_writer_heg2sf 
-  --   generic map (
-  --     g_IN_HIT_FILE => IN_HIT_FILE,
-  --     g_IN_SLC_FILE => IN_SLC_FILE,
-  --     g_OUT_HEG_BM_SLC_FILE => OUT_HEG_BM_SLC_FILE,
-  --     g_OUT_HEG_BM_HIT_FILE => OUT_HEG_BM_HIT_FILE
-  --   )
-  --   port map(
-  --     clk => clk,
-  --     rst => rst,
-  --     enable => enable_slc,
-  --     --
-  --     tb_curr_tdc_time => tb_curr_tdc_time
-  --   );
-  -- end generate;
-  -------------------------------------------------------------------------------------
-	-- SF2OUT
-  -------------------------------------------------------------------------------------
+  HEG : entity project_lib.ult_tb_writer_heg
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
+	-- SF IN
+  SF_IN : entity project_lib.ult_tb_writer_sf_in
+  generic map (
+    g_PRJ_INFO    => PRJ_INFO,
+    g_IN_HIT_FILE => IN_HIT_FILE,
+    g_IN_SLC_FILE => IN_SLC_FILE
+  )
+  port map(
+    clk                       => clk,
+    rst                       => rst,
+    enable                    => enable_slc,
+    --
+    tb_curr_tdc_time          => tb_curr_tdc_time
+  );
+  
+	-- SF OUT
+  
   -------------------------------------------------------------------------------------
 	-- MPL2PT
   -------------------------------------------------------------------------------------

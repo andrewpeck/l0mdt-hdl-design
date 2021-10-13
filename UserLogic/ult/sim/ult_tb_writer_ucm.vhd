@@ -76,8 +76,8 @@ architecture sim of ult_tb_writer_ucm is
   constant g_OUT_FILE_1     : string  := "ov_ucm2hps_" & g_PRJ_INFO & ".csv";
   constant g_OUT_FILE_2     : string  := "ov_ucm2mpl_" & g_PRJ_INFO & ".csv";
      
-  shared variable csv_file_1: csv_file_reader_type;
-  shared variable csv_file_2: csv_file_reader_type;
+  shared variable csv_file_1: csv_file_type;
+  shared variable csv_file_2: csv_file_type;
 
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
 
@@ -127,7 +127,10 @@ begin
   event_ucm2hps_pl : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     E_U2H_PL : entity vamc_lib.vamc_spl
     generic map(
-      g_PIPELINE_TYPE => "shift_reg",
+      -- pragma translate_off
+      g_SIMULATION => '1',
+      -- pragma translate_on
+      g_PIPELINE_TYPE => "ring_buffer",
       g_DELAY_CYCLES  => 52,
       g_PIPELINE_WIDTH    => 32
     )
@@ -149,7 +152,7 @@ begin
   UCM2HPS_OUT: process(clk, rst)
     variable first_write           : std_logic := '1';
 
-    -- variable csv_file_1: csv_file_reader_type;
+    -- variable csv_file_1: csv_file_type;
 
     variable thread_counter : integer := 0;
 
@@ -328,7 +331,10 @@ begin
   event_ucm2mpl_pl : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
     E_U2M_PL : entity vamc_lib.vamc_spl
     generic map(
-      g_PIPELINE_TYPE => "shift_reg",
+      -- pragma translate_off
+      g_SIMULATION => '1',
+      -- pragma translate_on
+      g_PIPELINE_TYPE => "ring_buffer",
       g_DELAY_CYCLES  => 10,
       g_PIPELINE_WIDTH    => 32
     )
@@ -348,7 +354,7 @@ begin
 
     variable first_write           : std_logic := '1';
 
-    -- variable csv_file_2: csv_file_reader_type;
+    -- variable csv_file_2: csv_file_type;
 
     variable common : slc_common_rt;
 

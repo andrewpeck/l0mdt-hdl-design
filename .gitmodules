@@ -34,7 +34,7 @@
 	url = ../../gloustau/l0mdt-sim-comp.git
 [submodule "tools/simCheck"]
 	path = tools/simCheck
-	url = ../../umass-l0mdt/software/l0mdt-ov-analysis.git
+	url = ../l0mdt-ov-analysis.git
 [submodule "l0mdt-hls"]
 	path = l0mdt-hls
 	url = ../l0mdt-hls.git
@@ -56,3 +56,6 @@
 [submodule "HAL/ctrl/src/axi-vhdl-package"]
 	path = HAL/ctrl/src/axi-vhdl-package
 	url = https://gitlab.com/BU-EDF/axi-vhdl-package
+[submodule "shared/vhdl_utilities"]
+	path = shared/vhdl_utilities
+	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git

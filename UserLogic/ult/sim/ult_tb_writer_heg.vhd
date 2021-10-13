@@ -29,10 +29,11 @@ use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
+use shared_lib.vhdl_tb_utils_pkg.all;
+
 library project_lib;
 use project_lib.ult_tb_sim_pkg.all;
 use project_lib.ult_tb_sim_cstm_pkg.all;
-use project_lib.vhdl_tb_utils_pkg.all;
 use project_lib.vhdl_textio_csv_pkg.all;
 
 library ult_lib;
@@ -43,7 +44,7 @@ use heg_lib.heg_pkg.all;
 library hps_lib;
 use hps_lib.hps_pkg.all;
 
-entity ult_tb_writer_heg2sf is
+entity ult_tb_writer_heg is
   generic(
     g_PRJ_INFO            : string  := "not_defined";
     g_IN_SLC_FILE         : string  := "not_defined.csv";
@@ -59,12 +60,254 @@ entity ult_tb_writer_heg2sf is
     --
     tb_curr_tdc_time      : in unsigned(63 downto 0) := (others => '0')
   );
-end entity ult_tb_writer_heg2sf;
+end entity ult_tb_writer_heg;
 
-architecture sim of ult_tb_writer_heg2sf is
+architecture sim of ult_tb_writer_heg is
+
+  alias slc_file_ok is  << signal.ult_tp.SLC.file_open : std_logic >>;
+  alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
+  alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
+  alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
+
+  constant g_OUT_FILE_1     : string  := "ov_heg_hp2bm_" & g_PRJ_INFO & ".csv";
+
+  shared variable csv_file_1: csv_file_type;
+
+
+  alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
+  alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
+
+  signal tdc_event_h2b_au : event_tdc_at;
+  signal slc_event_au : event_at(0 to c_NUM_THREADS -1);
+
+  -- alias heg2sf_inn_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_inn_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_inn_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt   >>;
+
+  -- alias heg2sf_mid_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_mid_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_mid_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
+
+  -- alias heg2sf_out_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfslc_av : heg2sfslc_bus_avt >>;
+  -- alias heg2sf_out_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sfhit_av : heg2sfhit_bus_avt >>;
+  -- alias heg2sf_out_ctrl_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg2sf_ctrl_av : hps_ctrl2sf_avt >>;
   
+  -- signal heg2sf_inn_slc_ar  : heg2sfslc_bus_at;
+  -- signal heg2sf_inn_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_inn_ctrl_ar : hps_ctrl2sf_at  ;
+  -- signal heg2sf_mid_slc_ar  : heg2sfslc_bus_at;
+  -- signal heg2sf_mid_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_mid_ctrl_ar : hps_ctrl2sf_at  ;
+  -- signal heg2sf_out_slc_ar  : heg2sfslc_bus_at;
+  -- signal heg2sf_out_hit_ar  : heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- signal heg2sf_out_ctrl_ar : hps_ctrl2sf_at  ;
+  
+  -- type heg2sfslc_megabus_at   is array (0 to 4) of heg2sfslc_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- type heg2sfhit_megabus_at   is array (0 to 4) of heg2sfhit_bus_at(c_TOTAL_MAX_NUM_HP - 1 downto 0);
+  -- type hps_ctrl2sf_megabus_at is array (0 to 4) of hps_ctrl2sf_at(c_TOTAL_MAX_NUM_HP - 1 downto 0)  ;
+
+  -- signal heg2sf_slc_ar  : heg2sfslc_megabus_at;
+  -- signal heg2sf_hit_ar  : heg2sfhit_megabus_at;
+  -- signal heg2sf_ctrl_ar : hps_ctrl2sf_megabus_at;
+
 begin
+
+  open_csv: process
+  begin
+    wait until slc_file_ok and hit_file_ok;
+    puts("opening HEG HP2BM CSV file : " & g_OUT_FILE_1);
+    csv_file_1.initialize(g_OUT_FILE_1,"wr");
+    csv_file_1.write_string("# --------------------------");
+    csv_file_1.write_string("# SLC TS  : " & slc_file_ts);
+    csv_file_1.write_string("# HIT TS  : " & hit_file_ts);
+    csv_file_1.write_string("# PRJ CFG : " & g_PRJ_INFO);
+    csv_file_1.write_string("# SIM TS  : " & time'image(now));
+    csv_file_1.write_string("# --------------------------");   
+    csv_file_1.write_word("ToA");
+    csv_file_1.write_word("event");                  
+    csv_file_1.write_word("thread");                  
+    csv_file_1.write_word("station");   
+    csv_file_1.write_word("hp_i");
+    --
+    csv_file_1.write_word("valid");
+    csv_file_1.write_word("mlayer");
+    csv_file_1.write_word("radius");
+    csv_file_1.write_word("local_x");
+    csv_file_1.write_word("local_y");
+    csv_file_1.writeline;
   
+    wait;
+  end process open_csv;
+
+  -- e_slc_pl : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   E_U2M_PL : entity vamc_lib.vamc_spl
+  --   generic map(
+  --     -- pragma translate_off
+  --     g_SIMULATION => '1',
+  --     -- pragma translate_on
+  --     g_PIPELINE_TYPE => "ring_buffer",
+  --     g_DELAY_CYCLES  => 450,
+  --     g_PIPELINE_WIDTH    => 32
+  --   )
+  --   port map(
+  --     clk         => clk,
+  --     rst         => rst,
+  --     ena         => '1',
+  --     --
+  --     i_data      => std_logic_vector(slc_event_ai(sl_i)),
+  --     o_data      => slc_event_au(sl_i)
+  --   );
+  -- end generate;
+
+  e_mdt_pl : for st_i in 0 to 3 generate
+    event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 425,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(mdt_event_ai(st_i)(ch_i)),
+        o_data      => tdc_event_h2b_au(st_i)(ch_i)
+      );
+    end generate;
+  end generate;
+
+  TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+    HPS_INN: if c_HPS_ENABLE_ST_INN = '1' generate
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_INN-1 downto 0);
+    begin
+      hp2bm_ar <= structify(hp2bm_av);
+      INN_proc: process(clk, rst)
+      begin
+        if rst = '1' then
+
+        elsif rising_edge(clk) then
+          -- TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+            HP_loop: for hp_i in c_HPS_MAX_HP_INN - 1 downto 0 loop
+              if hp2bm_ar(hp_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+                csv_file_1.write_integer(unsigned(tdc_event_h2b_au(0)(hp_i)));   
+                csv_file_1.write_integer(th_i);  
+                csv_file_1.write_integer(0);  
+                csv_file_1.write_integer(hp_i);
+                --
+                csv_file_1.write_bool(hp2bm_ar(hp_i).mdt_valid);  
+                csv_file_1.write_bool(hp2bm_ar(hp_i).data.mlayer);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
+                --
+                csv_file_1.writeline;
+              end if;
+            end loop;
+          -- end generate TH_loop;
+        end if;
+      end process INN_proc;
+    end generate;
+    HPS_MID: if c_HPS_ENABLE_ST_MID = '1' generate
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_mid.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_MID-1 downto 0);
+    begin
+      hp2bm_ar <= structify(hp2bm_av);
+      MID_proc: process(clk, rst)
+      begin
+        if rst = '1' then
+        elsif rising_edge(clk) then
+          -- TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+            HP_loop: for hp_i in c_HPS_MAX_HP_MID - 1 downto 0 loop
+              if hp2bm_ar(hp_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+                csv_file_1.write_integer(unsigned(tdc_event_h2b_au(1)(hp_i)));   
+                csv_file_1.write_integer(th_i);  
+                csv_file_1.write_integer(1);  
+                csv_file_1.write_integer(hp_i);
+                --
+                csv_file_1.write_bool(hp2bm_ar(hp_i).mdt_valid);  
+                csv_file_1.write_bool(hp2bm_ar(hp_i).data.mlayer);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
+
+                csv_file_1.writeline;
+              end if;
+            end loop;
+          -- end generate TH_loop;
+        end if;
+      end process;
+    end generate;
+    HPS_OUT: if c_HPS_ENABLE_ST_OUT = '1' generate
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_out.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_OUT-1 downto 0);
+    begin
+      hp2bm_ar <= structify(hp2bm_av);
+      OUT_proc: process(clk, rst)
+      begin
+        if rst = '1' then
+        elsif rising_edge(clk) then
+          -- TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+            HP_loop: for hp_i in c_HPS_MAX_HP_OUT - 1 downto 0 loop
+              if hp2bm_ar(hp_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+                csv_file_1.write_integer(unsigned(tdc_event_h2b_au(2)(hp_i)));   
+                csv_file_1.write_integer(th_i);  
+                csv_file_1.write_integer(2);  
+                csv_file_1.write_integer(hp_i);
+                --
+                csv_file_1.write_bool(hp2bm_ar(hp_i).mdt_valid);  
+                csv_file_1.write_bool(hp2bm_ar(hp_i).data.mlayer);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
+
+                csv_file_1.writeline;
+              end if;
+            end loop;
+          -- end generate TH_loop;
+        end if;
+      end process;
+    end generate;
+    HPS_EXT: if c_HPS_ENABLE_ST_EXT = '1' generate
+      alias hp2bm_av is << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_ext.HPS.heg_gen(th_i).HEG.hp2bm_av : heg_hp2bm_bus_avt >>;
+      signal hp2bm_ar : heg_hp2bm_bus_at(c_HPS_MAX_HP_EXT-1 downto 0);
+    begin
+      hp2bm_ar <= structify(hp2bm_av);
+      EXT_proc: process(clk, rst)
+      begin
+        if rst = '1' then
+        elsif rising_edge(clk) then
+          -- TH_loop: for th_i in c_NUM_THREADS - 1 downto 0 generate
+            HP_loop: for hp_i in c_HPS_MAX_HP_EXT - 1 downto 0 loop
+              if hp2bm_ar(hp_i).data_valid = '1' then
+                csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
+                csv_file_1.write_integer(unsigned(tdc_event_h2b_au(3)(hp_i)));   
+                csv_file_1.write_integer(th_i);  
+                csv_file_1.write_integer(3);  
+                csv_file_1.write_integer(hp_i);
+                --
+                csv_file_1.write_bool(hp2bm_ar(hp_i).mdt_valid);  
+                csv_file_1.write_bool(hp2bm_ar(hp_i).data.mlayer);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.radius);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_x);  
+                csv_file_1.write_integer(hp2bm_ar(hp_i).data.local_y);  
+
+                csv_file_1.writeline;
+              end if;
+            end loop;
+          -- end generate TH_loop;
+        end if;
+      end process;
+    end generate;
+  end generate;
   
   -- HEG_BM: process(clk)
 
@@ -182,7 +425,7 @@ begin
   --           if read_slc.data_valid = '1' then
 
   --             slc2write.ToA      := tb_curr_tdc_time;
-  --             slc2write.station  := to_unsigned(2,4);
+  --             slc2write.station  := to_unsigned(2,4);f
   --             slc2write.thread   := to_unsigned(heg_i,4);
   --             slc2write.data   := read_slc;
   --             write(row,slc2write);

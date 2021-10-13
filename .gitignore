@@ -26,6 +26,7 @@ BD/*
 !HAL/IP/*/*.xci
 *.dbg
 *.zip
+*.tar
 work/
 transcript
 *.wlf

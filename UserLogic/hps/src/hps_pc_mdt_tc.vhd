@@ -83,11 +83,11 @@ architecture beh of hps_pc_mdt_tc is
     variable index : unsigned(9 downto 0);
     variable value : std_logic_vector(37 downto 0);
   begin
-    puts("s : ",s);
-    puts("r : ",r);
-    puts("c : ",c);
-    puts("to : " ,tube_o);
-    puts("tn : " , tube_n);
+    -- puts("s : ",s);
+    -- puts("r : ",r);
+    -- puts("c : ",c);
+    -- puts("to : " ,tube_o);
+    -- puts("tn : " , tube_n);
 
     for it in 0 to tube_n - 1 loop
       if r = 0 then

@@ -65,7 +65,7 @@ architecture sim of ult_tb_writer_tar is
   alias slc_file_ts is  << signal.ult_tp.SLC.file_ts : string >>;
   alias hit_file_ok is  << signal.ult_tp.MDT.file_open : std_logic >>;
   alias hit_file_ts is  << signal.ult_tp.MDT.file_ts : string >>;
-  shared variable csv_file_1: csv_file_reader_type;
+  shared variable csv_file_1: csv_file_type;
   constant g_OUT_FILE_1     : string  := "ov_tar2hps_" & g_PRJ_INFO & ".csv";
 
   alias ult_inn_tar_hits_av is  << signal.ult_tp.ULT.ult_inn_tar_hits_av : tar2hps_bus_avt >>;
@@ -102,7 +102,10 @@ begin
     event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
       E_PL : entity vamc_lib.vamc_spl
       generic map(
-        g_PIPELINE_TYPE => "shift_reg",
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
         g_DELAY_CYCLES  => 420,
         g_PIPELINE_WIDTH    => 32
       )
