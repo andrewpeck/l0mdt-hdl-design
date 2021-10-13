@@ -5,11 +5,11 @@
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
 --  Module: Test Bench Module for Logic Trigger Path
---  Description: SLC input vector reader and injector
+--  Description: HPS SF input busses
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      2020.11.24 Creation 
+--      2021.10.06 Creation 
 --
 --------------------------------------------------------------------------------
 library ieee;
@@ -149,7 +149,7 @@ begin
         g_SIMULATION => '1',
         -- pragma translate_on
         g_PIPELINE_TYPE => "ring_buffer",
-        g_DELAY_CYCLES  => 423,
+        g_DELAY_CYCLES  => 425,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -169,7 +169,7 @@ begin
   -- ext_mdt_full_data_ar <= structify(ext_mdt_full_data_av);
   
   HPS_INN: if c_STATIONS_IN_SECTOR(0) = '1' generate
-    constant lc_ST_ID : integer := 0;
+    constant st_i : integer := 0;
     --
     alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
     alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
@@ -179,15 +179,62 @@ begin
     signal heg2sf_ctrl_ar : hps_ctrl2sf_at(c_NUM_THREADS -1 downto 0);
 
   begin
+
     heg2sf_hit_ar  <= structify(heg2sf_hit_av );
-    HIT_HEG2SF: process(clk, rst) begin
-      if rst = '1' then
-      elsif rising_edge(clk) then
-        for th_i in c_NUM_THREADS -1 downto 0 loop
+    heg2sf_slc_ar  <= structify(heg2sf_slc_av );
+    heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
+
+    TH_LOOP: for th_i in c_NUM_THREADS -1 downto 0 generate
+      alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
+      alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
+      
+      signal event_pf_tdc : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+    begin
+      
+      event_ch_pl : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+        rb : entity vamc_lib.vamc_rb
+        generic map (
+          g_SIMULATION => '1',
+          g_LOGIC_TYPE    => "fifo",
+          g_FIFO_TYPE     => "read_ahead",
+          g_MEMORY_TYPE   => "distributed",
+          -- g_PIPELINE_IN_REGS => 1,
+          g_PIPELINE_OUT_REGS => 2,
+          g_RAM_WIDTH     => 32,
+          g_RAM_DEPTH     => 8
+        )
+        port map (
+          clk           => clk,
+          rst           => rst,
+          -- delay         => num_delays - 2,
+          i_wr          => fifo_wr(hp_i),
+          i_wr_data     => tdc_event_u2h_au(st_i)(hp_i),
+          i_rd          => fifo_rd(hp_i),
+          o_rd_dv       => open,
+          o_rd_data     => event_pf_tdc(hp_i),
+          o_empty       => open,
+          o_empty_next  => open,
+          o_full        => open,
+          o_full_next   => open,
+          o_used        => open
+        );
+      end generate;
+
+
+
+
+
+
+
+
+      HIT_HEG2SF: process(clk, rst) begin
+        if rst = '1' then
+        elsif rising_edge(clk) then
+          -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_hit_ar(th_i).data_valid = '1' then
             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_1.write_integer(0);--unsigned(tdc_event_u2h_au(lc_ST_ID)(th_i)));          
-            csv_file_1.write_integer(lc_ST_ID);
+            csv_file_1.write_integer(0);--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_1.write_integer(st_i);
             csv_file_1.write_integer(th_i);
             csv_file_1.write_bool(heg2sf_hit_ar(th_i).mlayer);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).localx);
@@ -195,20 +242,17 @@ begin
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
             csv_file_1.writeline;
           end if;
-        end loop;
-      end if;
-    end process;
-    --
-    heg2sf_slc_ar  <= structify(heg2sf_slc_av );
-    heg2sf_ctrl_ar <= structify(heg2sf_ctrl_av);
-    SLC_HEG2SF: process(clk, rst) begin
-      if rst = '1' then
-      elsif rising_edge(clk) then
-        for th_i in c_NUM_THREADS -1 downto 0 loop
+          -- end loop;
+        end if;
+      end process;
+      SLC_HEG2SF: process(clk, rst) begin
+        if rst = '1' then
+        elsif rising_edge(clk) then
+          -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_slc_ar(th_i).data_valid = '1' or heg2sf_ctrl_ar(th_i).eof = '1' then
             csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_au(lc_ST_ID)(th_i)));          
-            csv_file_2.write_integer(lc_ST_ID);
+            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_2.write_integer(st_i);
             csv_file_2.write_integer(th_i);
 
             csv_file_2.write_bool(heg2sf_ctrl_ar(th_i).eof);
@@ -224,18 +268,22 @@ begin
             -- vec_po2
             csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).vec_pos));
             csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).vec_ang));
-
+            --
             csv_file_2.write_integer(to_integer(heg2sf_slc_ar(th_i).hewindow_pos));
-
             csv_file_2.writeline;
           end if;
-        end loop;
-      end if;
-    end process;
+          -- end loop;
+        end if;
+      end process;
+    end generate TH_LOOP;
+    
+    --
+
+   
   end generate;
 
   HPS_MID: if c_STATIONS_IN_SECTOR(1) = '1' generate
-    constant lc_ST_ID : integer := 1;
+    constant st_i : integer := 1;
     --
     alias heg2sf_slc_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfslc_av   : heg2sfslc_bus_avt >>;
     alias heg2sf_hit_av is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg2sfhit_av   : heg2sfhit_bus_avt >>;
@@ -246,14 +294,14 @@ begin
   end generate;
 
   HPS_OUT: if c_STATIONS_IN_SECTOR(2) = '1' generate
-    constant lc_ST_ID : integer := 2;
+    constant st_i : integer := 2;
 
   begin
 
   end generate;
 
   EXT_MID: if c_STATIONS_IN_SECTOR(3) = '1' generate
-    constant lc_ST_ID : integer := 3;
+    constant st_i : integer := 3;
 
   begin
 
