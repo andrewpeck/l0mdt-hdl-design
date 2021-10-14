@@ -73,8 +73,8 @@ architecture sim of ult_tb_writer_sf_in is
   shared variable csv_file_1: csv_file_type;
   shared variable csv_file_2: csv_file_type;
 
-  constant g_OUT_FILE_1     : string  := "ov_heg_heg2sf_" & g_PRJ_INFO & ".csv";
-  constant g_OUT_FILE_2     : string  := "ov_heg_ctrlRoi_" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_1     : string  := "ov_heg2sf_hits" & g_PRJ_INFO & ".csv";
+  constant g_OUT_FILE_2     : string  := "ov_heg2sf_seed" & g_PRJ_INFO & ".csv";
      
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
@@ -163,6 +163,7 @@ begin
     end generate;
   end generate;
 
+
   -- inn_mdt_full_data_ar <= structify(inn_mdt_full_data_av);
   -- mid_mdt_full_data_ar <= structify(mid_mdt_full_data_av);
   -- out_mdt_full_data_ar <= structify(out_mdt_full_data_av);
@@ -233,13 +234,13 @@ begin
           -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_hit_ar(th_i).data_valid = '1' then
             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_1.write_integer(0);--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_1.write_integer(event_pf_tdc());--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
             csv_file_1.write_integer(st_i);
             csv_file_1.write_integer(th_i);
             csv_file_1.write_bool(heg2sf_hit_ar(th_i).mlayer);
+            csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).localx);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).localy);
-            csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
             csv_file_1.writeline;
           end if;
           -- end loop;
