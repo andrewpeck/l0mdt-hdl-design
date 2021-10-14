@@ -175,6 +175,39 @@ add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/csv_fi
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/tdc_event_u2h_au
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/mdt_event_ai
 add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/slc_event_ai
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/clk
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/ena
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_FIFO_TYPE
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_LOGIC_TYPE
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_MEMORY_TYPE
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_PIPELINE_IN_REGS
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_PIPELINE_OUT_REGS
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_RAM_DEPTH
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_RAM_WIDTH
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/g_SIMULATION
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/i_delay
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/i_rd
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/i_wr
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/i_wr_data
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/rst
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_empty
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_empty_next
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_full
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_full_next
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_rd_data
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_rd_dv
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/o_used
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/case_options
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/en_pipeline
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/int_delay
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/int_wr_data
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/mem
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/mem_dv
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/output_dv_pipeline
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/output_pipeline
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/rd_index
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/used_data
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(5)/rb/wr_index
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_rd
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr
