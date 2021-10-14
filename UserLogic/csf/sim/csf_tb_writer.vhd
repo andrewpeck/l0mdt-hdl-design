@@ -50,7 +50,7 @@ architecture sim of csf_tb_writer is
 begin
   
   
-  CSF_READ: process ( rst, clk)
+  CSF_WRITE: process ( rst, clk)
 
     variable csv: csv_file_type;
     variable row                  : line;
