@@ -18,10 +18,10 @@
 --   what we see from the lpgbt is:
 --
 --   i=0, data=0xX0 or X1    -- chip adr + rw
---   i=1, data=0x00          -- rsvrd
+--   i=1, data=0x00          -- rsvrd (RSVRD state only in v0)
 --   i=2, data=0x01          -- cmd
 --   i=3, data=0x01          -- nwords [7:0]
---   i=4, data=0x00          -- nwords [15:8]
+--   i=4, data=0x00          -- nwords [15:8] (8:8 in lPGBT v1)
 --   i=5, data=0xc5          -- reg adr[7:0]
 --   i=6, data=0x01          -- reg adr[15:8]
 --   i=7, data=0xa5          -- data
@@ -53,6 +53,8 @@ entity gbt_ic_rx is
 
     frame_i : in std_logic_vector (7 downto 0);  -- 8 bit frame from gbt-sc
     valid_i : in std_logic;                      -- set high for valid data frames
+
+    lpgbt_version : in std_logic := '0';
 
     -- Control
     chip_adr_o           : out std_logic_vector (6 downto 0) := (others => '0');  -- lpgbt chip address
@@ -128,7 +130,11 @@ begin
         when IDLE =>
 
           if (valid_i = '1') then
-            rx_state     <= RSVRD;
+            if (lpgbt_version = '0') then
+              rx_state <= RSVRD;
+            elsif (lpgbt_version = '1') then
+              rx_state <= CMD;
+            end if;
             chip_adr_int <= frame_i(7 downto 1);
             rw_bit_int   <= frame_i(0);
           end if;
