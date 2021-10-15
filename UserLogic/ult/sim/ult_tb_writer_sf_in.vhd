@@ -191,10 +191,13 @@ begin
       alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
       
       signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
+      signal fifo_wr_pl2 : std_logic_vector(fifo_wr'length -1 downto 0);
       signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
       signal event_pff_tdc : std_logic_vector(31 downto 0);
       signal event_ppl_tdc : std_logic_vector(31 downto 0);
+
+      signal hp_c : integer;
     begin
       
       event_ch_pl : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
@@ -228,44 +231,51 @@ begin
 
       eve_bm: process(clk)
         variable done : std_logic;
+        variable hp_c_v : integer;
       begin
         if rising_edge(clk) then
           if rst = '1' then
             event_pff_tdc <= (others => '0');
             fifo_wr_pl <= (others => '0');
           else
-            fifo_wr_pl <= fifo_wr;
+            fifo_wr_pl2 <= fifo_wr;
+            fifo_wr_pl <= fifo_wr_pl2;
             done := '0';
+            event_pff_tdc <= (others => '0');
+
             for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 loop
               if done = '0' then
                 if fifo_wr_pl(hp_i) = '1' then
                   event_pff_tdc <= event_pf_tdc_a(hp_i);
                   done := '1';
+                  hp_c <= hp_i;
                 end if;
               end if;
             end loop;
+
+              event_ppl_tdc <= event_pff_tdc;
           end if;
         end if;
       end process eve_bm;
 
 
-      E_PL_F_PL : entity vamc_lib.vamc_spl
-      generic map(
-        -- pragma translate_off
-        g_SIMULATION => '1',
-        -- pragma translate_on
-        g_PIPELINE_TYPE => "auto",
-        g_DELAY_CYCLES  => 2,
-        g_PIPELINE_WIDTH    => 32
-      )
-      port map(
-        clk         => clk,
-        rst         => rst,
-        ena         => '1',
-        --
-        i_data      => event_pff_tdc,
-        o_data      => event_ppl_tdc
-      );
+      -- E_PL_F_PL : entity vamc_lib.vamc_spl
+      -- generic map(
+      --   -- pragma translate_off
+      --   g_SIMULATION => '1',
+      --   -- pragma translate_on
+      --   g_PIPELINE_TYPE => "auto",
+      --   g_DELAY_CYCLES  => 2,
+      --   g_PIPELINE_WIDTH    => 32
+      -- )
+      -- port map(
+      --   clk         => clk,
+      --   rst         => rst,
+      --   ena         => '1',
+      --   --
+      --   i_data      => event_pff_tdc,
+      --   o_data      => event_ppl_tdc
+      -- );
 
 
 
@@ -280,7 +290,7 @@ begin
             csv_file_1.write_integer(unsigned(event_ppl_tdc));--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
             csv_file_1.write_integer(st_i);
             csv_file_1.write_integer(th_i);
-            csv_file_1.write_integer(th_i);
+            csv_file_1.write_integer(hp_c);
             csv_file_1.write_bool(heg2sf_hit_ar(th_i).mlayer);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).localx);
