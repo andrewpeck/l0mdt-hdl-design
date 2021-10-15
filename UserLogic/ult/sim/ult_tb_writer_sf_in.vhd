@@ -100,6 +100,7 @@ begin
     csv_file_1.write_word("event");                  
     csv_file_1.write_word("station");   
     csv_file_1.write_word("thread");                  
+    csv_file_1.write_word("hp");                  
     --
     csv_file_1.write_word("mlayer");
     csv_file_1.write_word("radius");
@@ -189,7 +190,11 @@ begin
       alias fifo_rd is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_rd : std_logic_vector >>;
       alias fifo_wr is  << signal.ult_tp.ULT.logic_gen.H2S_GEN.ULT_H2S.hps_inn.HPS.heg_gen(th_i).HEG.Heg_buffer_mux.fifo_wr : std_logic_vector >>;
       
-      signal event_pf_tdc : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal fifo_wr_pl : std_logic_vector(fifo_wr'length -1 downto 0);
+      signal event_pf_tdc_a : event_at(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal event_pf_tdc_dv_a : std_logic_vector(c_HPS_MAX_ARRAY(st_i) -1 downto 0);
+      signal event_pff_tdc : std_logic_vector(31 downto 0);
+      signal event_ppl_tdc : std_logic_vector(31 downto 0);
     begin
       
       event_ch_pl : for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
@@ -200,7 +205,7 @@ begin
           g_FIFO_TYPE     => "read_ahead",
           g_MEMORY_TYPE   => "distributed",
           -- g_PIPELINE_IN_REGS => 1,
-          g_PIPELINE_OUT_REGS => 2,
+          g_PIPELINE_OUT_REGS => 0,
           g_RAM_WIDTH     => 32,
           g_RAM_DEPTH     => 8
         )
@@ -211,8 +216,8 @@ begin
           i_wr          => fifo_wr(hp_i),
           i_wr_data     => tdc_event_u2h_au(st_i)(hp_i),
           i_rd          => fifo_rd(hp_i),
-          o_rd_dv       => open,
-          o_rd_data     => event_pf_tdc(hp_i),
+          o_rd_dv       => event_pf_tdc_dv_a(hp_i),
+          o_rd_data     => event_pf_tdc_a(hp_i),
           o_empty       => open,
           o_empty_next  => open,
           o_full        => open,
@@ -221,8 +226,46 @@ begin
         );
       end generate;
 
+      eve_bm: process(clk)
+        variable done : std_logic;
+      begin
+        if rising_edge(clk) then
+          if rst = '1' then
+            event_pff_tdc <= (others => '0');
+            fifo_wr_pl <= (others => '0');
+          else
+            fifo_wr_pl <= fifo_wr;
+            done := '0';
+            for hp_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 loop
+              if done = '0' then
+                if fifo_wr_pl(hp_i) = '1' then
+                  event_pff_tdc <= event_pf_tdc_a(hp_i);
+                  done := '1';
+                end if;
+              end if;
+            end loop;
+          end if;
+        end if;
+      end process eve_bm;
 
 
+      E_PL_F_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "auto",
+        g_DELAY_CYCLES  => 2,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => event_pff_tdc,
+        o_data      => event_ppl_tdc
+      );
 
 
 
@@ -234,8 +277,9 @@ begin
           -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_hit_ar(th_i).data_valid = '1' then
             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_1.write_integer(event_pf_tdc());--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_1.write_integer(unsigned(event_ppl_tdc));--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
             csv_file_1.write_integer(st_i);
+            csv_file_1.write_integer(th_i);
             csv_file_1.write_integer(th_i);
             csv_file_1.write_bool(heg2sf_hit_ar(th_i).mlayer);
             csv_file_1.write_integer(heg2sf_hit_ar(th_i).radius);
