@@ -29,6 +29,7 @@ ku15p_lsf_upt:
       endcap: 1
       large: 0
       en_neighbors: 0
+      en_daq: 0
 
 ku15p_csf_mpt:
   fpga: xcku15p-ffva1760-2-e
@@ -40,6 +41,7 @@ ku15p_csf_mpt:
   variants:
     default:
       link_map: "link_map_default"
+      en_daq: 0
 
 vu13p_lsf_upt:
   fpga: xcvu13p-flga2577-1-e
@@ -51,3 +53,4 @@ vu13p_lsf_upt:
   variants:
     default:
       link_map: "link_map_default"
+      en_daq: 0

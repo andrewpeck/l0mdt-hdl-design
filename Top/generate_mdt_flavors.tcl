@@ -73,6 +73,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     set endcap 1
     set large 0
     set en_neighbors 0
+    set en_daq 1
 
     # destructure the input properties into variables
     foreach prop [huddle keys $props] {
@@ -85,8 +86,8 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     replace_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
     replace_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
     replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
+    replace_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
     replace_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
-    replace_cfg_int SECTOR_ID ${sector_id} ${dest_file}
 }
 
 proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {

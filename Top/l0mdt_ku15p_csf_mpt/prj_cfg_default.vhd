@@ -29,6 +29,7 @@ package body prj_cfg is
     proj_cfg.ENDCAP_nSMALL_LARGE      := '0'; -- 0: small     1: large
     proj_cfg.SF_TYPE   := '0'; -- AUTO: 0: CSF 1:LSF
     proj_cfg.PT_TYPE   := '0'; -- AUTO: 0: MPT 1:UPT
+    proj_cfg.ENABLE_DAQ               := '1';
     -- END of auto-set variables
 
     proj_cfg.ENABLE_SF := '1';
