@@ -26,10 +26,10 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
     if {[string compare "lsf" $segment_finder]==0} {
         # enable lsf
-        exec sed -i  "s/^#\\(UserLogic.*lsf_lib.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
     } else {
         # disable lsf
-        exec sed -i  "s/^UserLogic.*lsf_lib.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
     }
 
     if {[string compare "csf" $segment_finder]==0} {
