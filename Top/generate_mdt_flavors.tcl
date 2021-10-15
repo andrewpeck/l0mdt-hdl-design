@@ -43,7 +43,15 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
     exec sed -i  "s/^#\(UserLogic.*csf_lib.src\)/\1/g" $lib
 }
 
-proc update_prj_config {dest_file segment_finder pt_calc} {
+proc replace_cfg_std_logic {entry new_value dest_file} {
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
+}
+
+proc replace_cfg_int {entry new_value dest_file} {
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
+}
+
+proc update_prj_config {dest_file segment_finder pt_calc props} {
 
     # find + replace the csf vs. lsf, mpt vs. upt choices
     if {0 == [string compare ${segment_finder} "lsf"]} {
@@ -59,12 +67,29 @@ proc update_prj_config {dest_file segment_finder pt_calc} {
         set pt_type 0
     }
 
+    # default values
+    set sector_id 3
+    set sector_side 0
+    set endcap 1
+    set large 0
+    set en_neighbors 0
+
+    # destructure the input properties into variables
+    foreach prop [huddle keys $props] {
+        set $prop [huddle get_stripped $props $prop]
+    }
+
     # update the SF_TYPE and PT_TYPE
-    exec sed -i s|\\(proj_cfg.SF_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${sf_type}|g $dest_file
-    exec sed -i s|\\(proj_cfg.PT_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${pt_type}|g $dest_file
+    replace_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
+    replace_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
+    replace_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
+    replace_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
+    replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
+    replace_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
+    replace_cfg_int SECTOR_ID ${sector_id} ${dest_file}
 }
 
-proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map} {
+proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {
 
     regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
 
@@ -117,7 +142,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the project config
     file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
-    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc
+    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc $props
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
@@ -161,8 +186,15 @@ proc clone_projects {huddle} {
             puts "        pt       : $pt"
 
             global script_path
-            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" \
-                $fpga $board_pkg $pt $sf $constraints $link_map
+
+            # if the variant is "default" don't add a suffix,
+            # otherwise add the variant name
+            set suffix "_${variant}"
+            if { [string compare ${variant} "default"] == 0} {
+                set suffix ""
+            }
+            clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
+                $fpga $board_pkg $pt $sf $constraints $link_map $props
         }}}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]
