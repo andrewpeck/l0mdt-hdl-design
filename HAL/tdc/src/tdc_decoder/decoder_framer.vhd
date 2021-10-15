@@ -105,9 +105,9 @@ begin
       end if;
 
       if ((timeout) or (not synced and wait_for_slip = 0 and valid)) then
-        err_o    <= '1';
+        err_o <= '1';
       else
-        err_o    <= '0';
+        err_o <= '0';
       end if;
 
     end if;
@@ -247,24 +247,25 @@ begin
           end if;
 
       end case;
-    end if;
 
-    -- Reset Logic
-    if (resync_i = '1' or err_o = '1') then
-      frame_state <= FRAME0;
-    end if;
+      -- Reset Logic
+      if (resync_i = '1' or err_o = '1') then
+        frame_state <= FRAME0;
+      end if;
 
-    -- Output buffers
-    if (synced) then
-      data_o       <= data_o_int;
-      if (valid) then
-        data_o_valid <= '1';
+      -- Output buffers
+      if (synced) then
+        data_o <= data_o_int;
+        if (valid) then
+          data_o_valid <= '1';
+        else
+          data_o_valid <= '0';
+        end if;
       else
+        data_o       <= (others => '0');
         data_o_valid <= '0';
       end if;
-    else
-      data_o       <= (others => '0');
-      data_o_valid <= '0';
+
     end if;
 
   end process;
