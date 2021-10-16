@@ -57,7 +57,7 @@ package body prj_cfg is
      proj_cfg.ENABLE_ST_EXT := '0';
 
 
-    proj_cfg.NUM_THREADS   := 1;
+    proj_cfg.NUM_THREADS   := 3;
 
     if (c_NUM_POLMUX_INNER > 0) then
      proj_cfg.ENABLE_ST_INN := '1';
