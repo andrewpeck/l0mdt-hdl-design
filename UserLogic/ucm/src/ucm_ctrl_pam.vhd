@@ -112,7 +112,9 @@ begin
 
         processed := 0;
         busy := 0;
-
+        for ch_i in c_NUM_THREADS -1 downto 0 loop
+          proc_info(ch_i).dv <= '0';
+        end loop;
         for ch_i in c_NUM_THREADS -1 downto 0 loop
           if ch_busy(ch_i) = '1' then
             -- proc_info(c_NUM_THREADS -1 - busy).ch <= (others => '0');
@@ -149,6 +151,9 @@ begin
             
           else
 
+            proc_info(ch_i).processed <= '0';
+
+
             -- for uc_i in c_NUM_THREADS loop
               
             -- end loop;
@@ -161,10 +166,11 @@ begin
                 buff_pam_ctrl(ch_i).addr_orig <= std_logic_vector(to_unsigned(c_NUM_THREADS -1 - processed,4));
                 proc_info(c_NUM_THREADS -1 - processed).ch <= std_logic_vector(to_unsigned(ch_i,4));
                 proc_info(c_NUM_THREADS -1 - processed).processed <= '1';
-                -- proc_info(c_NUM_THREADS -1 - processed).dv <= '1';
+                proc_info(c_NUM_THREADS -1 - processed).dv <= '1';
                 ch_busy(ch_i) <= '1';
                 processed := processed + 1;
               else
+                -- proc_info(c_NUM_THREADS -1 - processed).dv <= '0';
               end if;
             else
               -- proc_info(c_NUM_THREADS -1 - processed).ch <= (others => '0');
