@@ -222,12 +222,15 @@ begin
   evt_slc_pam: process(clk)
   begin
     if rising_edge(clk) then
-      -- slc_event_in_ar <= (others => (others => '0'));
+      if rst = '1' then
+      slc_event_in_ar <= (others => (others => '0'));
+      else
       event_slc_pam : for th_i in c_NUM_THREADS -1 downto 0 loop
-        if proc_info_ar(th_i).processed = '1' then
+        if proc_info_ar(th_i).dv = '1' then
           slc_event_in_ar( to_integer(unsigned(proc_info_ar(th_i).ch))) <= slc_event_u2h_a((c_MAX_NUM_SL - c_NUM_THREADS) + th_i);
         end if;
       end loop;
+      end if;
     end if;
   end process evt_slc_pam;
 
@@ -241,7 +244,7 @@ begin
         g_SIMULATION => '1',
         -- pragma translate_on
         g_PIPELINE_TYPE => "ring_buffer",
-        g_DELAY_CYCLES  => 5,
+        g_DELAY_CYCLES  => 50,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -400,7 +403,7 @@ begin
           -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_slc_ar(th_i).data_valid = '1' or heg2sf_ctrl_ar(th_i).eof = '1' then
             csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_a(st_i)(th_i)));          
+            csv_file_2.write_integer(unsigned(slc_event_ar(th_i)));--unsigned(tdc_event_u2h_a(st_i)(th_i)));          
             csv_file_2.write_integer(st_i);
             csv_file_2.write_integer(th_i);
 
