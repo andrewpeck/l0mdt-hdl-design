@@ -258,29 +258,6 @@ begin
         end if;
       end process eve_bm;
 
-
-      -- E_PL_F_PL : entity vamc_lib.vamc_spl
-      -- generic map(
-      --   -- pragma translate_off
-      --   g_SIMULATION => '1',
-      --   -- pragma translate_on
-      --   g_PIPELINE_TYPE => "auto",
-      --   g_DELAY_CYCLES  => 2,
-      --   g_PIPELINE_WIDTH    => 32
-      -- )
-      -- port map(
-      --   clk         => clk,
-      --   rst         => rst,
-      --   ena         => '1',
-      --   --
-      --   i_data      => event_pff_tdc,
-      --   o_data      => event_ppl_tdc
-      -- );
-
-
-
-
-
       HIT_HEG2SF: process(clk, rst) begin
         if rst = '1' then
         elsif rising_edge(clk) then
@@ -300,6 +277,12 @@ begin
           -- end loop;
         end if;
       end process;
+
+
+
+
+
+      
       SLC_HEG2SF: process(clk, rst) begin
         if rst = '1' then
         elsif rising_edge(clk) then
