@@ -177,20 +177,19 @@ begin
     -- end generate;
   end generate;
 
-  event_slc_csw : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
-    slc_event_ucm_csw2pl_a(sl_i) <= slc_event_ucm_pp2csw_a(to_integer(unsigned(csw_control_ar(sl_i).addr_orig)));
-  end generate;
+  -- event_slc_csw : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+  --   slc_event_ucm_csw2pl_a(sl_i) <= slc_event_ucm_pp2csw_a(to_integer(unsigned(csw_control_ar(sl_i).addr_orig)));
+  -- end generate;
 
     evt_slc_csw: process(clk)
     begin
       if rising_edge(clk) then
-        if rst = '1' then
-          
-        else
+        -- if rst = '1' then
+        -- else
           event_slc_csw : for sl_i in c_MAX_NUM_SL -1 downto 0 loop
             slc_event_ucm_csw2pl_a(sl_i) <= slc_event_ucm_pp2csw_a(to_integer(unsigned(csw_control_ar(sl_i).addr_orig)));
           end loop;
-        end if;
+        -- end if;
       end if;
     end process evt_slc_csw;
 
@@ -204,7 +203,7 @@ begin
         g_SIMULATION => '1',
         -- pragma translate_on
         g_PIPELINE_TYPE => "ring_buffer",
-        g_DELAY_CYCLES  => 3,
+        g_DELAY_CYCLES  => 2,
         g_PIPELINE_WIDTH    => 32
       )
       port map(
@@ -220,9 +219,19 @@ begin
 
   proc_info_ar <= structify(proc_info_av);
 
-  event_slc_pam : for th_i in c_MAX_NUM_SL -1 downto 0 generate
-    -- slc_event_in_ar(to_integer(unsigned(proc_info_ar(th_i).ch))) <= slc_event_u2h_a(th_i);
-  end generate;
+  evt_slc_pam: process(clk)
+  begin
+    if rising_edge(clk) then
+      -- slc_event_in_ar <= (others => (others => '0'));
+      event_slc_pam : for th_i in c_NUM_THREADS -1 downto 0 loop
+        if proc_info_ar(th_i).processed = '1' then
+          slc_event_in_ar( to_integer(unsigned(proc_info_ar(th_i).ch))) <= slc_event_u2h_a((c_MAX_NUM_SL - c_NUM_THREADS) + th_i);
+        end if;
+      end loop;
+    end if;
+  end process evt_slc_pam;
+
+
 
   event_slc_ppl : for th_i in c_NUM_THREADS -1 downto 0 generate
     -- event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
