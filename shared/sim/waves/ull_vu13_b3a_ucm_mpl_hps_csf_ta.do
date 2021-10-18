@@ -169,9 +169,18 @@ add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/g_OUT_
 add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/g_OUT_FILE_2
 add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/csv_file_1
 add wave -noupdate -expand -group tb_SF_IN -group csv_times /ult_tp/SF_IN/csv_file_2
-add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/slc_event_ai
-add wave -noupdate -expand -group tb_SF_IN -subitemconfig {/ult_tp/SF_IN/mdt_event_ai(0) -expand} /ult_tp/SF_IN/mdt_event_ai
-add wave -noupdate -expand -group tb_SF_IN -radix unsigned -childformat {{/ult_tp/SF_IN/tdc_event_u2h_au(0) -radix unsigned -childformat {{/ult_tp/SF_IN/tdc_event_u2h_au(0)(0) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(1) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(2) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(3) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(4) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(5) -radix unsigned}}} {/ult_tp/SF_IN/tdc_event_u2h_au(1) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(2) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(3) -radix unsigned}} -expand -subitemconfig {/ult_tp/SF_IN/tdc_event_u2h_au(0) {-radix unsigned -childformat {{/ult_tp/SF_IN/tdc_event_u2h_au(0)(0) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(1) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(2) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(3) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(4) -radix unsigned} {/ult_tp/SF_IN/tdc_event_u2h_au(0)(5) -radix unsigned}} -expand} /ult_tp/SF_IN/tdc_event_u2h_au(0)(0) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(0)(1) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(0)(2) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(0)(3) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(0)(4) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(0)(5) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(1) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(2) {-radix unsigned} /ult_tp/SF_IN/tdc_event_u2h_au(3) {-radix unsigned}} /ult_tp/SF_IN/tdc_event_u2h_au
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/slc_event_ai
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/slc_event_ucm_pp2csw_a
+add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/csw_control_ar
+add wave -noupdate -expand -group tb_SF_IN /ult_tp/SF_IN/csw_control_av
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/slc_event_ucm_csw2pl_a
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/proc_info_av
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/proc_info_ar
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned -childformat {{/ult_tp/SF_IN/slc_event_u2h_a(4) -radix unsigned} {/ult_tp/SF_IN/slc_event_u2h_a(3) -radix unsigned} {/ult_tp/SF_IN/slc_event_u2h_a(2) -radix unsigned} {/ult_tp/SF_IN/slc_event_u2h_a(1) -radix unsigned} {/ult_tp/SF_IN/slc_event_u2h_a(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/SF_IN/slc_event_u2h_a(4) {-height 17 -radix unsigned} /ult_tp/SF_IN/slc_event_u2h_a(3) {-height 17 -radix unsigned} /ult_tp/SF_IN/slc_event_u2h_a(2) {-height 17 -radix unsigned} /ult_tp/SF_IN/slc_event_u2h_a(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/slc_event_u2h_a(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/slc_event_u2h_a
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/slc_event_in_ar
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/slc_event_ar
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/mdt_event_ai
+add wave -noupdate -expand -group tb_SF_IN -radix unsigned /ult_tp/SF_IN/tdc_event_u2h_a
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(4)/rb/g_SIMULATION
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -group rb /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(4)/rb/g_LOGIC_TYPE
@@ -206,17 +215,17 @@ add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -group rb -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(4)/rb/o_full_next
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -group rb -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ch_pl(4)/rb/o_used
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_rd
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -expand /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_dv_a
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(5) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(4) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(3) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(2) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(1) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(5) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(4) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(3) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(2) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(5) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(4) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(3) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(2) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(1) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(5) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(4) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(3) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(2) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_dv_a
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(5) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(4) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(3) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(2) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(1) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(0) -radix unsigned}} -subitemconfig {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(5) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(4) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(3) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(2) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pf_tdc_a
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(5) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(4) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(3) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(2) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(1) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(0) -radix unsigned}} -subitemconfig {/ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(5) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(4) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(3) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(2) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/fifo_wr_pl
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_pff_tdc
 add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand -group TH2 -radix unsigned /ult_tp/SF_IN/HPS_INN/TH_LOOP(2)/event_ppl_tdc
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_ar
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_av
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand /ult_tp/SF_IN/HPS_INN/heg2sf_hit_ar
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -expand /ult_tp/SF_IN/HPS_INN/heg2sf_hit_av
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar
-add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN /ult_tp/SF_IN/HPS_INN/heg2sf_slc_av
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_ctrl_av
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_hit_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_hit_av
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar
+add wave -noupdate -expand -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_slc_av
 add wave -noupdate -group ULT -group ult_signals /ult_tp/ULT/DUMMY
 add wave -noupdate -group ULT -group ult_signals /ult_tp/ULT/clock_and_control
 add wave -noupdate -group ULT -group ult_signals /ult_tp/ULT/ttc_commands
@@ -310,7 +319,6 @@ add wave -noupdate -group ULT -group UCM -expand /ult_tp/ULT/logic_gen/UCM_GEN/U
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cpam_in_av
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cpam_out_av
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/uCM2pl_av
-add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/csw_control
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cvp_in_en
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/cvp_loc_rst
 add wave -noupdate -group ULT -group UCM /ult_tp/ULT/logic_gen/UCM_GEN/ULT_UCM/UCM/uCM2hps_data
@@ -907,7 +915,7 @@ add wave -noupdate -group ULT /ult_tp/ULT/o_MTC
 add wave -noupdate -group ULT /ult_tp/ULT/o_NSP
 add wave -noupdate -group ULT /ult_tp/ULT/sump
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2542187500 fs} 0} {{Cursor 3} {141773417786 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2264062500 fs} 0} {{Cursor 3} {141773417786 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -923,4 +931,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2489743115 fs} {2704691554 fs}
+WaveRestoreZoom {2253690631 fs} {2287094744 fs}

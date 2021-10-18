@@ -39,6 +39,9 @@ use project_lib.vhdl_textio_csv_pkg.all;
 library ult_lib;
 library vamc_lib;
 
+library ucm_lib;
+use ucm_lib.ucm_pkg.all;
+
 library heg_lib;
 use heg_lib.heg_pkg.all;
 library hps_lib;
@@ -79,8 +82,18 @@ architecture sim of ult_tb_writer_sf_in is
   alias slc_event_ai is  << signal.ult_tp.SLC.slc_event_ai : event_aut >>;
   alias mdt_event_ai is  << signal.ult_tp.MDT.mdt_event_ai : event_tdc_aut >>;
 
-  signal tdc_event_u2h_au : event_tdc_at;
+  signal tdc_event_u2h_a : event_tdc_at;
+  signal slc_event_ucm_pp2csw_a : event_at(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_ucm_csw2pl_a : event_at(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_u2h_a : event_at(c_MAX_NUM_SL - 1  downto 0);
+  signal slc_event_in_ar : event_at(c_NUM_THREADS - 1  downto 0);
+  signal slc_event_ar : event_at(c_NUM_THREADS - 1  downto 0);
 
+  alias csw_control_av is << signal.ult_tp.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.csw_control_av : ucm_csw_control_avt >>;
+  signal csw_control_ar : ucm_csw_control_at(c_MAX_NUM_SL - 1 downto 0);
+
+  alias proc_info_av is << signal.ult_tp.ULT.logic_gen.UCM_GEN.ULT_UCM.UCM.proc_info_av : ucm_proc_info_avt >>;
+  signal proc_info_ar : ucm_proc_info_at(c_NUM_THREADS - 1 downto 0);
 begin
   
   open_csv: process
@@ -142,7 +155,100 @@ begin
     wait;
   end process open_csv;
 
-  event_st_pl : for st_i in 0 to 3 generate
+  event_slc_pp : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    -- event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 2,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => std_logic_vector(slc_event_ai(sl_i)),
+        o_data      => slc_event_ucm_pp2csw_a(sl_i)
+      );
+    -- end generate;
+  end generate;
+
+  event_slc_csw : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    slc_event_ucm_csw2pl_a(sl_i) <= slc_event_ucm_pp2csw_a(to_integer(unsigned(csw_control_ar(sl_i).addr_orig)));
+  end generate;
+
+    evt_slc_csw: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          
+        else
+          event_slc_csw : for sl_i in c_MAX_NUM_SL -1 downto 0 loop
+            slc_event_ucm_csw2pl_a(sl_i) <= slc_event_ucm_pp2csw_a(to_integer(unsigned(csw_control_ar(sl_i).addr_orig)));
+          end loop;
+        end if;
+      end if;
+    end process evt_slc_csw;
+
+  csw_control_ar <= structify(csw_control_av);
+
+  event_slc_pl : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
+    -- event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 3,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => slc_event_ucm_csw2pl_a(sl_i),
+        o_data      => slc_event_u2h_a(sl_i)
+      );
+    -- end generate;
+  end generate;
+
+  proc_info_ar <= structify(proc_info_av);
+
+  event_slc_pam : for th_i in c_MAX_NUM_SL -1 downto 0 generate
+    -- slc_event_in_ar(to_integer(unsigned(proc_info_ar(th_i).ch))) <= slc_event_u2h_a(th_i);
+  end generate;
+
+  event_slc_ppl : for th_i in c_NUM_THREADS -1 downto 0 generate
+    -- event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
+      E_PL : entity vamc_lib.vamc_spl
+      generic map(
+        -- pragma translate_off
+        g_SIMULATION => '1',
+        -- pragma translate_on
+        g_PIPELINE_TYPE => "ring_buffer",
+        g_DELAY_CYCLES  => 5,
+        g_PIPELINE_WIDTH    => 32
+      )
+      port map(
+        clk         => clk,
+        rst         => rst,
+        ena         => '1',
+        --
+        i_data      => slc_event_in_ar(th_i),
+        o_data      => slc_event_ar(th_i)
+      );
+    -- end generate;
+  end generate;
+
+
+
+  event_mdt_pl : for st_i in 0 to 3 generate
     event_ch_pl : for ch_i in c_HPS_MAX_ARRAY(st_i) -1 downto 0 generate
       E_PL : entity vamc_lib.vamc_spl
       generic map(
@@ -159,7 +265,7 @@ begin
         ena         => '1',
         --
         i_data      => std_logic_vector(mdt_event_ai(st_i)(ch_i)),
-        o_data      => tdc_event_u2h_au(st_i)(ch_i)
+        o_data      => tdc_event_u2h_a(st_i)(ch_i)
       );
     end generate;
   end generate;
@@ -217,7 +323,7 @@ begin
           rst           => rst,
           -- delay         => num_delays - 2,
           i_wr          => fifo_wr(hp_i),
-          i_wr_data     => tdc_event_u2h_au(st_i)(hp_i),
+          i_wr_data     => tdc_event_u2h_a(st_i)(hp_i),
           i_rd          => fifo_rd(hp_i),
           o_rd_dv       => event_pf_tdc_dv_a(hp_i),
           o_rd_data     => event_pf_tdc_a(hp_i),
@@ -264,7 +370,7 @@ begin
           -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_hit_ar(th_i).data_valid = '1' then
             csv_file_1.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_1.write_integer(unsigned(event_ppl_tdc));--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_1.write_integer(unsigned(event_ppl_tdc));--unsigned(tdc_event_u2h_a(st_i)(th_i)));          
             csv_file_1.write_integer(st_i);
             csv_file_1.write_integer(th_i);
             csv_file_1.write_integer(hp_c);
@@ -278,10 +384,6 @@ begin
         end if;
       end process;
 
-
-
-
-
       
       SLC_HEG2SF: process(clk, rst) begin
         if rst = '1' then
@@ -289,7 +391,7 @@ begin
           -- for th_i in c_NUM_THREADS -1 downto 0 loop
           if heg2sf_slc_ar(th_i).data_valid = '1' or heg2sf_ctrl_ar(th_i).eof = '1' then
             csv_file_2.write_integer(to_integer(tb_curr_tdc_time));
-            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_au(st_i)(th_i)));          
+            csv_file_2.write_integer(0);--unsigned(tdc_event_u2h_a(st_i)(th_i)));          
             csv_file_2.write_integer(st_i);
             csv_file_2.write_integer(th_i);
 
