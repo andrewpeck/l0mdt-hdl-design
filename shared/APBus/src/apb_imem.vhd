@@ -84,7 +84,8 @@ architecture beh of apb_imem is
   signal new_apb_wr_req : std_logic;
   signal new_apb_rd_req : std_logic;
 
-  constant apb_clk_latency : integer := 5;
+  constant apb_clk_lat : integer := 5;
+  constant apb_clk_cnt : integer;
 
   ----------------------------
   signal mem_ctrl       : APB_MEM_SIG_CTRL_t;
@@ -116,7 +117,22 @@ begin
         o_rd_addr <= (others =>'0');
         o_dv <= '0';
         o_freeze <= '0';
+        --
+        apb_clk_cnt <= 0;
       else
+        -----------------------------------------------
+        if apb_clk_cnt < apb_clk_lat then
+          apb_clk_cnt <= apb_clk_cnt + 1;
+        else
+          apb_clk_cnt <= 0;
+        end if;
+        -----------------------------------------------
+        if apb_clk_cnt = 0 then
+
+        else
+          
+        end if;
+
         
       end if;
     end if;
