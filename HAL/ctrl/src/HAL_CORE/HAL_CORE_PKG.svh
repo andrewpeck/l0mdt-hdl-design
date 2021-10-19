@@ -13,7 +13,6 @@
 
   typedef struct packed {
     logic  RESET_MMCM;
-    logic  SELECT_FELIX_CLK;
   } HAL_CORE_CLOCKING_CTRL_t;
 
   typedef struct packed {

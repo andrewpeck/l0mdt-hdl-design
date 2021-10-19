@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Apollo Platform Bus Memory ctrl signals -->
-<node id="APB_MEM_CTRL">
+<node id="APB_MEM_SIG">
   <node id="wr_req"     address="0x00" mask="0x00000001" permission="w"   description="Write request"/>
   <node id="wr_ack"     address="0x00" mask="0x00000002" permission="w"   description="Write acknowledge"/>
   <node id="rd_req"     address="0x00" mask="0x00000004" permission="w"   description="Read request"/>

@@ -27,7 +27,6 @@ package HAL_CORE_CTRL is
 
   type HAL_CORE_CLOCKING_CTRL_t is record
     RESET_MMCM : std_logic;
-    SELECT_FELIX_CLK : std_logic;
   end record HAL_CORE_CLOCKING_CTRL_t;
   function len(x: HAL_CORE_CLOCKING_CTRL_t) return natural;
   function width(x: HAL_CORE_CLOCKING_CTRL_t) return natural;
@@ -295,14 +294,12 @@ package body HAL_CORE_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.RESET_MMCM);
-    l := l + len(x.SELECT_FELIX_CLK);
     return l;
   end function len;
   function width(x: HAL_CORE_CLOCKING_CTRL_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.RESET_MMCM);
-    l := l + width(x.SELECT_FELIX_CLK);
     return l;
   end function width;
   function vectorify(x: HAL_CORE_CLOCKING_CTRL_t; t: std_logic_vector) return std_logic_vector is
@@ -311,12 +308,8 @@ package body HAL_CORE_CTRL is
   begin
     if t'ascending then
       assign(y(left to left+len(x.RESET_MMCM)-1), vectorify(x.RESET_MMCM, y(left to left+len(x.RESET_MMCM)-1)));
-      left := left + len(x.RESET_MMCM);
-      assign(y(left to left+len(x.SELECT_FELIX_CLK)-1), vectorify(x.SELECT_FELIX_CLK, y(left to left+len(x.SELECT_FELIX_CLK)-1)));
     else
       assign(y(left downto left-len(x.RESET_MMCM)+1), vectorify(x.RESET_MMCM, y(left downto left-len(x.RESET_MMCM)+1)));
-      left := left - len(x.RESET_MMCM);
-      assign(y(left downto left-len(x.SELECT_FELIX_CLK)+1), vectorify(x.SELECT_FELIX_CLK, y(left downto left-len(x.SELECT_FELIX_CLK)+1)));
     end if;
     return y;
   end function vectorify;
@@ -326,12 +319,8 @@ package body HAL_CORE_CTRL is
   begin
     if t'ascending then
       assign(y(left to left+len(x.RESET_MMCM)-1), convert(x.RESET_MMCM, y(left to left+len(x.RESET_MMCM)-1)));
-      left := left + len(x.RESET_MMCM);
-      assign(y(left to left+len(x.SELECT_FELIX_CLK)-1), convert(x.SELECT_FELIX_CLK, y(left to left+len(x.SELECT_FELIX_CLK)-1)));
     else
       assign(y(left downto left-len(x.RESET_MMCM)+1), convert(x.RESET_MMCM, y(left downto left-len(x.RESET_MMCM)+1)));
-      left := left - len(x.RESET_MMCM);
-      assign(y(left downto left-len(x.SELECT_FELIX_CLK)+1), convert(x.SELECT_FELIX_CLK, y(left downto left-len(x.SELECT_FELIX_CLK)+1)));
     end if;
     return y;
   end function convert;
@@ -341,12 +330,8 @@ package body HAL_CORE_CTRL is
   begin
     if x'ascending then
       y.RESET_MMCM := structify(x(left to left+len(y.RESET_MMCM)-1), y.RESET_MMCM);
-      left := left + len(y.RESET_MMCM);
-      y.SELECT_FELIX_CLK := structify(x(left to left+len(y.SELECT_FELIX_CLK)-1), y.SELECT_FELIX_CLK);
     else
       y.RESET_MMCM := structify(x(left downto left-len(y.RESET_MMCM)+1), y.RESET_MMCM);
-      left := left - len(y.RESET_MMCM);
-      y.SELECT_FELIX_CLK := structify(x(left downto left-len(y.SELECT_FELIX_CLK)+1), y.SELECT_FELIX_CLK);
     end if;
     return y;
   end function structify;
@@ -356,12 +341,8 @@ package body HAL_CORE_CTRL is
   begin
     if x'ascending then
       y.RESET_MMCM := convert(x(left to left+len(y.RESET_MMCM)-1), y.RESET_MMCM);
-      left := left + len(y.RESET_MMCM);
-      y.SELECT_FELIX_CLK := convert(x(left to left+len(y.SELECT_FELIX_CLK)-1), y.SELECT_FELIX_CLK);
     else
       y.RESET_MMCM := convert(x(left downto left-len(y.RESET_MMCM)+1), y.RESET_MMCM);
-      left := left - len(y.RESET_MMCM);
-      y.SELECT_FELIX_CLK := convert(x(left downto left-len(y.SELECT_FELIX_CLK)+1), y.SELECT_FELIX_CLK);
     end if;
     return y;
   end function convert;
@@ -369,14 +350,12 @@ package body HAL_CORE_CTRL is
   variable y: HAL_CORE_CLOCKING_CTRL_t;
   begin
     y.RESET_MMCM := nullify(t.RESET_MMCM);
-    y.SELECT_FELIX_CLK := nullify(t.SELECT_FELIX_CLK);
     return y;
   end function nullify;
   function zeroed(t: HAL_CORE_CLOCKING_CTRL_t) return HAL_CORE_CLOCKING_CTRL_t is
   variable y: HAL_CORE_CLOCKING_CTRL_t;
   begin
     y.RESET_MMCM := zeroed(t.RESET_MMCM);
-    y.SELECT_FELIX_CLK := zeroed(t.SELECT_FELIX_CLK);
     return y;
   end function zeroed;
 
