@@ -17,11 +17,6 @@ HAL/hal/src/tdc_decoder_wrapper.vhd
 HAL/hal/src/csm.vhd
 HAL/hal/src/display_board_cfg.vhd
 
-# IP
-HAL/IP/framework_mmcm/framework_mmcm.xci
-HAL/IP/mgt_10g24_gth/mgt_10g24_gth.xci
-HAL/IP/mgt_10g24_gty/mgt_10g24_gty.xci
-
 # MGT
 HAL/hal/src/mgt/mgt_pkg.vhd
 HAL/hal/src/mgt/mgt_10g24_wrapper.vhd

@@ -8,6 +8,8 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
+    exec sed -i  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
+
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
         exec sed -i  "s/^#\\(UserLogic.*upt_lib.*.src\\)/\\1/g" $lib

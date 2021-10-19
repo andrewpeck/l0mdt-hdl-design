@@ -8,6 +8,7 @@ HAL/ctrl/src/top_control.vhd
 
 # HAL
 HAL/hal/list/hal.src lib=hal
+HAL/hal/list/hal_ku.src lib=hal
 
 # User Logic Libraries
 UserLogic/hp/hp_lib.src   lib=hp_lib
