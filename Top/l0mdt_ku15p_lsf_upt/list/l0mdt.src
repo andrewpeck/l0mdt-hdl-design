@@ -21,7 +21,7 @@ UserLogic/mtc/mtc_lib.src lib=mtc_lib
 UserLogic/daq/daq.src
 
 # segment finder
-#UserLogic/csf/csf_lib.src lib=csf_lib
+UserLogic/csf/csf_lib.src lib=csf_lib
 UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib
 
 # pt assignment

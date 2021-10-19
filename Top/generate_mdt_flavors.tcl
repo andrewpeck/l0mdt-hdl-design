@@ -32,15 +32,21 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
         exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
     }
 
-    if {[string compare "csf" $segment_finder]==0} {
-        # enable csf
-        exec sed -i  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
-    } else {
-        # disable csf
-        exec sed -i  "s/^UserLogic.*csf_lib.src/#&/g" $lib
-    }
-
-    exec sed -i  "s/^#\(UserLogic.*csf_lib.src\)/\1/g" $lib
+    # need to keep csf lib in the sources for now, since
+    # hps_sf_wrap.vhd has many '0' and others => '0' in the instantiation
+    # of the csf, so xilinx fails with
+    # errors e.g. ERROR near character '0' ; 3 visible types match here
+    #
+    # if the hps_sf_wrap module gets updated to actually connect all of the
+    # input ports then this can be uncommented
+    #
+    # if {[string compare "csf" $segment_finder]==0} {
+    #     # enable csf
+    #     exec sed -i  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
+    # } else {
+    #     # disable csf
+    #     exec sed -i  "s/^UserLogic.*csf_lib.src/#&/g" $lib
+    # }
 }
 
 proc replace_cfg_std_logic {entry new_value dest_file} {
