@@ -188,7 +188,7 @@ architecture behavioral of top_hal is
   signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
   signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
-  signal lhc_recclk : std_logic;
+  signal lhc_recclk                  : std_logic;
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
@@ -250,15 +250,15 @@ begin  -- architecture behavioral
 
   lhc_refclk_OBUFDS_inst : OBUFDS
     port map (
-      O => lhc_refclk_o_p,   -- 1-bit output: Diff_p output (connect directly to top-level port)
-      OB => lhc_refclk_o_n, -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I => lhc_recclk    -- 1-bit input: Buffer input
+      O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
+      OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
+      I  => lhc_recclk                  -- 1-bit input: Buffer input
       );
 
   top_clocking_inst : entity hal.top_clocking
     port map (
       --
-      reset_i          => core_ctrl.clocking.reset_mmcm,
+      reset_i => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
@@ -266,8 +266,8 @@ begin  -- architecture behavioral
       clock_100m_i_n => clock_100m_i_n,
 
       -- 40MHz clock from Si synth
-      clock_i_p      => clock_i_p,
-      clock_i_n      => clock_i_n,
+      clock_i_p => clock_i_p,
+      clock_i_n => clock_i_n,
 
       -- system clocks
       clocks_o => clocks,
@@ -276,14 +276,14 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
-  clock_strobe_1: entity work.clock_strobe
+  clock_strobe_1 : entity work.clock_strobe
     port map (
       fast_clk_i => clocks.clock320,
       slow_clk_i => clocks.clock40,
       strobe_o   => strobe_320
       );
 
-  clock_strobe_2: entity work.clock_strobe
+  clock_strobe_2 : entity work.clock_strobe
     port map (
       fast_clk_i => clocks.clock_pipeline,
       slow_clk_i => clocks.clock40,
