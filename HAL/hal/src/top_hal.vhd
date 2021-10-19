@@ -108,6 +108,9 @@ entity top_hal is
     -- felix
     --------------------------------------------------------------------------------
 
+    -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
+    -- which needs to change somehow to pack into the 32 bit / bx that we can
+    -- send to FELIX
     daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
