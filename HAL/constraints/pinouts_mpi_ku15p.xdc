@@ -1,3 +1,6 @@
+# Schematic:
+# https://mdttp-files.web.cern.ch/mdttp-files/L0MDT/Demonstrator/CM/Version_1/doc/Board/Schematic/mpip001_apollo_command_module_s1v00_b1v01.pdf
+#
 create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ;  # C2C_REF0
 create_clock -period 3.125 -name refclk1  [get_ports refclk_i_p[1]]  ;  # CM2CM_REF0
 create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ;  # SL_REF0
