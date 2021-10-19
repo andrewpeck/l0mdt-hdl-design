@@ -1,20 +1,83 @@
+LOAD_LUTS_HLS_IP  = $(IP_REPO)/hls_load_luts/hdl/verilog
+GET_ROM_ADDR_HLS_IP = $(IP_REPO)/hls_get_rom_addr/hdl/verilog
+GET_TRIG_VALS_HLS_IP = $(IP_REPO)/hls_get_trig_vals/hdl/verilog
+GET_THETA_OFFSET_HLS_IP = $(IP_REPO)/hls_get_theta_offset/hdl/verilog
+GET_TRIG_ADDR_OFFSET_HLS_IP = $(IP_REPO)/hls_get_trig_addr_offsets/hdl/verilog
+COMPUTE_LE_RESULTS_HLS_IP = $(IP_REPO)/hls_ComputeLegendreResults/hdl/verilog
+HISTOGRAM_BIN_ACCUMULATION_HLS_IP = $(IP_REPO)/hls_histogram_bin_accumulation/hdl/verilog
+UPDATE_MAX_RBIN_HLS_IP = $(IP_REPO)/hls_update_max_rbin/hdl/verilog
+UPDATE_HISTOGRAM_HLS_IP = $(IP_REPO)/hls_update_histogram/hdl/verilog
+COMPUTE_RBINS_HLS_IP = $(IP_REPO)/hls_compute_r_bins/hdl/verilog
+SPYBUFFER_SRC = $(SHAREDDIR)/SpyBuffer
+# PLL_IP = $(LSFDIR)/xilinx_ip/v2019.1/pll_inst
+FIND_MAX_BIN_HLS_IP = $(IP_REPO)/hls_find_max_bin/hdl/verilog
+GET_LEGENDRE_SEGMENT_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_endcap/hdl/verilog
+GET_LEGENDRE_SEGMENT_BARREL_HLS_IP = $(IP_REPO)/hls_get_legendre_segment_barrel/hdl/verilog
+CALC_LE_R_OFFSET_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset/hdl/verilog
+CALC_LE_R_OFFSET_BARREL_HLS_IP = $(IP_REPO)/hls_calc_LE_r_offset_barrel/hdl/verilog
+LOAD_LE_REFPOS = $(IP_REPO)/hls_load_LE_refPos/hdl/verilog
+HISTMEM_128x4 = $(LSFDIR)/../sim
+
+
+# Verilog source files
+VERILOG_SOURCES += \
+    $(DFDIR)/l0mdt_buses_constants.svh \
+    $(PWD)/$(TESTBENCH_TOPLEVEL).v \
+    $(SBDIR)/SpyBuffer.v \
+    $(SBDIR)/SpyController.v \
+    $(SBDIR)/SpyMemory.v \
+    $(SBDIR)/SpyPlayback.v \
+    $(SBDIR)/aFifo/aFifo.v \
+    $(SBDIR)/aFifo/fifomem.v \
+    $(SBDIR)/aFifo/rptr_empty.v \
+    $(SBDIR)/aFifo/sync_r2w.v \
+    $(SBDIR)/aFifo/sync_w2r.v \
+    $(SBDIR)/aFifo/wptr_full.v \
+    $(SBDIR)/asym_ram_tdp_read_first.v \
+    $(SHAREDDIR)/memories/src/rom.v
+
+VHDL_SOURCES_project_lib = \
+    $(PWD)/prj_cfg.vhd
+
+
 VHDL_SOURCES_shared_lib = \
 	$(SHAREDDIR)/functions/vhdl2008/vhdl2008_functions_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee_pkg.vhd \
 	$(SHAREDDIR)/types/common_ieee.vhd \
 	$(SHAREDDIR)/types/l0mdt_constants_pkg.vhd \
 	$(SHAREDDIR)/types/l0mdt_dataformats_pkg.vhd \
-	$(SHAREDDIR)/types/common_constants_pkg.vhd \
+	$(SHAREDDIR)/types/yml2hdl_v1/common_constants_pkg.vhd \
 	$(SHAREDDIR)/types/common_types_pkg.vhd \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/detector_time_param_pkg.vhd \
 	$(SHAREDDIR)/detector_parameters/detector_param_pkg.vhd \
 	$(SHAREDDIR)/memories/src/ring_buffer_v2.vhd \
 	$(SHAREDDIR)/memories/src/vhdl_ram_memory.vhd \
 	$(SHAREDDIR)/memories/src/bram.vhd \
-	$(SHAREDDIR)/mpcvmem/src/mpcvmem.vhd \
-	$(SHAREDDIR)/mpcvmem/src/DualPortMem.vhd \
 	$(SHAREDDIR)/memories/src/pipeline.vhd \
-	$(SHAREDDIR)/config/config_pkg.vhd
+	$(SHAREDDIR)/config/config_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_chamb_z2origin_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_R_rpc_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/l0mdt_RAMs/pkg/barrel_R_mdt_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/gtube2chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes_chamber_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes_tube_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/L0MDT_ROMs/barrel_zholes.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_tdc_mezz_map/tdc_mezz_mapping_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_tc/pkg/TC_B3A_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_t0/pkg/T0_B_pkg.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_large.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_small.vhd \
+	$(SHAREDDIR)/detector_parameters/mdt_dt2R/mdt_dt2r_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/pkg/generic_pipelined_MATH_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/src/generic_pipelined_MATH.vhd \
+	$(SHAREDDIR)/arithmetics/pkg/roi_atan_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/src/roi_atan.vhd \
+	$(SHAREDDIR)/arithmetics/pkg/roi_tan_pkg.vhd \
+	$(SHAREDDIR)/arithmetics/src/roi_tan.vhd \
+
+
+
 
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
@@ -24,38 +87,206 @@ VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
     $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
 
-VHDL_SOURCES_mpcvmem_lib = \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd
 
 VHDL_SOURCES_vamc_lib = \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/pkg/mpcvmem_pkg.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/mpcvmem.vhd \
-    $(SHAREDDIR)/vhdl_amc/mpcvmem/src/DualPortMem.vhd \
-    $(SHAREDDIR)/vhdl_amc/pkg/vamc_pkg.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_pl.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_rb.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/modules/vamc_sr.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_in.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_csw_out.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_pl.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_ctrl_ext.vhd \
-    $(SHAREDDIR)/vhdl_amc/src/vamc_top.vhd
+	$(SHAREDDIR)/vamc/vamc-core/pkg/vamc_pkg.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_rb.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_sr.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_csw_in.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_csw_out.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd
+
 
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/MEM_INT_12A42D/MEM_INT_12A42D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_9A19D/MEM_INT_9A19D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_12A148D/MEM_INT_12A148D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A38D/MEM_INT_10A38D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_4A17D/MEM_INT_4A17D_PKG.vhd \
-	$(HAL)/ctrl/src/axi/axiRegPkg.vhd \
-	$(HAL)/ctrl/src/axi/axiReg.vhd \
+	$(HAL)/ctrl/src/axi-vhdl-package/axiRegWidthPkg_32.vhd \
+	$(HAL)/ctrl/src/axi-vhdl-package/axiRegPkg.vhd \
+	$(HAL)/ctrl/src/axi-vhdl-package/axiRegBlocking.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG.vhd \
 	$(HAL)/ctrl/src/MPL/MPL_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/MPL/MPL_map.vhd
+	$(HAL)/ctrl/src/MPL/MPL_map.vhd \
+	$(HAL)/ctrl/src/UCM/UCM_PKG.vhd \
+	$(HAL)/ctrl/src/UCM/UCM_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
+	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
+	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/H2S/H2S_map.vhd
+
 
 VHDL_SOURCES_xpm = \
 	$(XILINX_HOME)/data/ip/xpm/xpm_VCOMP.vhd
+
+
+#VHDL_SOURCES_heg_roi_lib = \
+#   $(HEGDIR)/../pkg/heg_pkg.vhd \
+#   $(HEGDIR)/ROMs/roi_types_pkg.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BILA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BMLA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BOLA3.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BILA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BMLA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_BOLA3_angle.vhd \
+#   $(HEGDIR)/ROMs/roi_lut_functions.vhd
+
+
+#VHDL_SOURCES_heg_lib = \
+#   $(HPDIR)/../pkg/hp_pkg.vhd \
+#   $(HEGDIR)/ROMs/heg_rom_b_zholes_pkg.vhd \
+#   $(HEGDIR)/../pkg/heg_pkg.vhd \
+#   $(HEGDIR)/../pkg/heg_custom_pkg.vhd \
+#   $(HEGDIR)/heg_bm.vhd \
+#   $(HEGDIR)/heg_ctrl_sig.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_tc.vhd \
+#   $(HEGDIR)/heg_ctrl_roi.vhd \
+#   $(HEGDIR)/heg_ctrl_top.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_z.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_6l.vhd \
+#   $(HEGDIR)/heg_ctrl_roi_b_slope_8l.vhd \
+#   $(HEGDIR)/heg.vhd
+
+#VHDL_SOURCES_hp_lib = \
+#    $(HPDIR)/../pkg/hp_pkg.vhd \
+#    $(HPDIR)/hp_calc_radius.vhd \
+#    $(HPDIR)/hp_calc_RoI_vect.vhd \
+#    $(HPDIR)/hp_hit_matching.vhd \
+#    $(HPDIR)/hp_param_calc.vhd \
+#    $(HPDIR)/hp.vhd
+
+#VHDL_SOURCES_hps_lib = \
+#    $(HPSDIR)/../pkg/hps_pkg.vhd \
+#    $(HPSDIR)/hps_sf_wrap.vhd \
+#    $(HPSDIR)/hps_pc_b_t0.vhd \
+#    $(HPSDIR)/hps_pc_mdt_tc.vhd \
+#    $(HPSDIR)/hps_supervisor.vhd \
+#    $(HPSDIR)/hps_pc.vhd \
+#    $(HPSDIR)/hps_pc_top.vhd \
+#    $(HPSDIR)/hps.vhd
+
+
+
+VHDL_SOURCES_csf_lib = \
+    $(CSFDIR)/../pkg/csf_pkg.vhd \
+    $(CSFDIR)/../pkg/csf_custom_pkg.vhd \
+    $(CSFDIR)/csf.vhd \
+    $(CSFDIR)/csf_chi2.vhd \
+    $(CSFDIR)/csf_chi2_comparison.vhd \
+    $(CSFDIR)/csf_fitter.vhd \
+    $(CSFDIR)/csf_histogram.vhd \
+    $(CSFDIR)/seg_coord_transform.vhd \
+
+VHDL_SOURCES_lsf_lib = \
+    $(LSFDIR)/../top_lsf.vhd
+
+VHDL_SOURCES_upt_lib = \
+	$(USERLOGIC)/upt/top_upt.vhd
+
+VERILOG_SOURCES_lsf_lib = \
+    $(DFDIR)/l0mdt_buses_constants.svh \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_0.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_1.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_2.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_3.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_4.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_5.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_6.v \
+    $(GET_TRIG_VALS_HLS_IP)/get_trig_vals_lut_tables_7.v \
+    $(LSFSIMDIR)/dist_mem_gen_v8_0.v \
+    $(LSFSIMDIR)/histogram_memory_128x4.v \
+    $(LSFDIR)/compute_r_bins.sv \
+    $(LSFDIR)/get_rom_addr.sv \
+    $(LSFDIR)/update_histogram_dmem.sv \
+    $(LSFDIR)/update_histogram_reg_2clk.sv \
+    $(FIND_MAX_BIN_HLS_IP)/find_max_bin.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_15ns_33_4_1.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_26ns_18ns_32_4_1.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_lut_divider_barrel_V.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel_mul_mul_18s_18s_35_4_1.v \
+    $(GET_LEGENDRE_SEGMENT_BARREL_HLS_IP)/get_legendre_segment_barrel.v \
+    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mac_muladd_18s_15s_33s_34_4_1.v \
+    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel_mul_mul_18s_15s_33_4_1.v \
+    $(CALC_LE_R_OFFSET_BARREL_HLS_IP)/calc_LE_r_offset_barrel.v \
+    $(LOAD_LE_REFPOS)/load_LE_refPos_lut_mdt_ref_pos_V.v \
+    $(LOAD_LE_REFPOS)/load_LE_refPos.v \
+    $(LSFDIR)/legendreEngine.sv \
+    $(LSFDIR)/legendreEngine_2clk.sv \
+    $(LSFDIR)/lsf_spybuffer_wrapper.sv
+
+VHDL_SOURCES_ucm_lib = \
+    $(PWD)/prj_cfg.vhd \
+    $(SHAREDDIR)/config/config_pkg.vhd 	\
+    $(UCMDIR)/../pkg/ucm_pkg.vhd \
+    $(UCMDIR)/../pkg/ucm_function_pkg.vhd \
+    $(UCMDIR)/ucm_supervisor.vhd \
+    $(UCMDIR)/ucm_ctrl_main.vhd \
+    $(UCMDIR)/ucm_ctrl_pam.vhd \
+    $(UCMDIR)/ucm_ctrl_top.vhd \
+    $(UCMDIR)/ucm_csw.vhd \
+    $(UCMDIR)/ucm_pam_csw.vhd \
+    $(UCMDIR)/ucm_ieta_calc.vhd \
+    $(UCMDIR)/ucm_rpc_R_comp.vhd \
+    $(UCMDIR)/ucm_rpc_R_comp_top.vhd \
+    $(UCMDIR)/ucm_mdt_R_comp.vhd \
+    $(UCMDIR)/ucm_mdt_R_comp_top.vhd \
+    $(UCMDIR)/ucm_cde.vhd \
+    $(UCMDIR)/ucm_cvp_b_slope.vhd \
+    $(UCMDIR)/ucm_cvp_z_calc.vhd \
+    $(UCMDIR)/ucm_cvp_phimod.vhd \
+    $(UCMDIR)/ucm_cvp.vhd \
+    $(UCMDIR)/ucm_prepro.vhd \
+    $(UCMDIR)/ucm.vhd
+
+VERILOG_SOURCES_upt_lib = \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_eta_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_2_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_inv_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_30ns_24s_45_5_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_33ns_35ns_65_6_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_13s_13s_26_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16ns_16ns_31_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_16s_26ns_42_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_19s_12s_31_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_21s_12s_33_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_22s_7ns_29_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_12s_36_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_13s_37_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_24s_15ns_39_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_mul_mul_28s_16ns_44_4_1.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_a_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_e_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_2s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_params_p_3s_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top_rsp_table_V.v \
+    $(IP_REPO)/hls_upt/hdl/verilog/ptcalc_top.v \
+
+VHDL_SOURCES_ptc_lib = \
+    $(MPTDIR)/../pkg/pt_pkg.vhd \
+    $(MPTDIR)/../pkg/pt_params_pkg.vhd \
+    $(MPTDIR)/sagitta_calculator.vhd \
+    $(MPTDIR)/eta_calculator.vhd \
+    $(MPTDIR)/pt.vhd \
+    $(MPTDIR)/segment_selector.vhd
+
+VHDL_SOURCES_mpl_lib = \
+    $(PWD)/prj_cfg.vhd \
+    $(SHAREDDIR)/config/config_pkg.vhd 	\
+    $(MPLDIR)/../pkg/mpl_pkg.vhd \
+    $(MPLDIR)/mpl_csw.vhd \
+    $(MPLDIR)/mpl_supervisor.vhd \
+    $(MPLDIR)/mpl_pl.vhd \
+    $(MPLDIR)/mpl.vhd

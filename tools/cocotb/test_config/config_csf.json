@@ -1,0 +1,57 @@
+{
+    "testbench_config": {
+        "test_name": "csf",
+        "input_args": {
+            "n_events": 2,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+	    "csf_init_cycles": 100,
+	    "max_hits_in_evt": 20,
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "csf",
+            "test_location": "src/l0mdt_tb/testbench/csf/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_A_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "HEG2SFSLC",
+                    "ports": 1,
+		    "heg2sfslc_ii":300,
+		    "station_ID": [
+			"INN"
+			],
+		    "tv_type": "value"
+                },
+                {
+                    "tv_format": "HEG2SFHIT",
+                    "ports": 1,
+		    "station_ID": [
+			"INN"
+			],
+		    "tv_type": "list"
+                },
+                {
+                    "tv_format": "CSF_CTRL",
+                    "ports": 1,
+		    "tv_type": "control"
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "SF2PTCALC_CSF",
+                    "ports": 1,
+		    "station_ID": [
+			"INN"
+			]
+                }
+            ]
+        }
+    }
+}

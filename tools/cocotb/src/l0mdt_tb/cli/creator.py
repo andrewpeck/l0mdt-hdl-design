@@ -122,6 +122,15 @@ def create(ports_in_input_interface, ports_in_output_interface, test_name, n_inp
         print(err)
         sys.exit(1)
 
+    ##
+    ## copy prj_cfg_default.vhd
+    ##
+    ok, err = creator.copy_prj_cfg_default(test_name)
+    if not ok:
+        print(err)
+        sys.exit(1)
+
+
     if software_block:
         ok, err = creator.create_software_block(test_name)
         if not ok:

@@ -11,6 +11,7 @@
 # created by tb create on: 24-Nov-2020 (20:45:39)
 # created by tb create for test: ptcalc
 ##################################################
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -28,7 +29,7 @@ from l0mdt_tb.testbench.ptcalc.ptcalc_ports import PtcalcPorts
 # CREATORSOFTWAREBLOCKimport l0mdt_tb.testbench.ptcalc.ptcalc_block as ptcalc_block
 
 from l0mdt_tb.utils import test_config
-from l0mdt_tb.utils import events, tb_diff, result_handler
+from l0mdt_tb.utils import events
 from l0mdt_tb.utils.fifo_wrapper import FifoDriver, FifoMonitor
 
 
@@ -95,9 +96,6 @@ def reset(dut):
 ##
 @cocotb.test()
 def ptcalc_test(dut):
-
-
-    cprint('**************Test START************ ', 'green')
     ##
     ## first grab the testbench configuration
     ##
@@ -117,8 +115,13 @@ def ptcalc_test(dut):
     testvector_config                = config["testvectors"]
     testvector_config_inputs         = testvector_config["inputs"]
     inputs_station_id= [["" for x in range(PtcalcPorts.get_input_interface_ports(y))]for y in range(PtcalcPorts.n_input_interfaces)]
+    ptcalc2mtc_lsf_tol = [["" for x in range(PtcalcPorts.get_output_interface_ports(y))]for y in range(PtcalcPorts.n_output_interfaces)]
     for i in range(PtcalcPorts.n_input_interfaces):
         inputs_station_id[i] = testvector_config_inputs[i]["station_ID"]
+
+    testvector_config_outputs         = testvector_config["outputs"]
+    for i in range(PtcalcPorts.n_output_interfaces):
+        ptcalc2mtc_lsf_tol[i]         =  testvector_config_outputs[i]["tolerance"]
 
     # CREATORSOFTWAREBLOCK##
     # CREATORSOFTWAREBLOCK## start the software block instance
@@ -333,12 +336,34 @@ def ptcalc_test(dut):
 
 
     #Ordering based on events (Required by TV package)
-
+    field_fail_cnt_header = []
+    field_fail_cnt        = []
+    field_fail_cnt_header.clear()
+    field_fail_cnt.clear()
 
     for n_op_intf in range (PtcalcPorts.n_output_interfaces):
-        events_are_equal = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],PtcalcPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf]);
+        events_are_equal,pass_count, fail_count, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list,
+            output_tvformats[n_op_intf],
+            PtcalcPorts.get_output_interface_ports(n_op_intf) ,
+            num_events_to_process ,
+            recvd_events_intf[n_op_intf],
+            ptcalc2mtc_lsf_tol[n_op_intf],
+            output_path=output_dir
+        );
     all_tests_passed = (all_tests_passed and events_are_equal)
+    field_fail_cnt_header.append([output_tvformats[n_op_intf] +" "+ "FIELDS", "FAIL COUNT"])
+    field_fail_cnt.append(field_fail_count_i)
 
+    events.results_summary(
+        num_events_to_process,
+        pass_count,
+        fail_count,
+        PtcalcPorts.n_output_interfaces,
+        field_fail_cnt_header,
+        field_fail_cnt,
+        total_ports=PtcalcPorts.n_output_ports(PtcalcPorts)
+    )
 
 
 

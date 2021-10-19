@@ -1,0 +1,56 @@
+{
+    "testbench_config": {
+        "test_name": "ucm",
+        "input_args": {
+            "n_events": 1,
+            "event_detail": false,
+            "clock_period": 5,
+            "clock_time_unit": "ns",
+            "_COMMENT": "Environment variables COMPONENTS_LIB_DIR, L0MDT_TESTVECTOR_DIR overrides components_lib_dir, testvector_dir definition"
+        },
+        "run_config": {
+            "output_directory_name": "ucm",
+            "test_location": "src/l0mdt_tb/testbench/ucm/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_A_3.xz",
+	    "slc_rx_ii"      : 0,
+	    "ucm_latency"    : 100,
+            "inputs": [
+                {
+                    "tv_format": "SLC_RX",
+                    "ports": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+		    "station_ID": ["INN","INN","INN"]
+                },
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+		    "station_ID": ["MID","MID","MID"]
+                },
+                {
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+		    "station_ID": ["OUT","OUT","OUT"]
+                },
+		{
+                    "tv_format": "UCM2HPS",
+                    "ports": 3,
+		    "station_ID": ["EXT","EXT","EXT"]
+                },
+                {
+                    "tv_format": "UCM2PL",
+                    "ports": 3
+                }
+            ]
+        }
+    }
+}

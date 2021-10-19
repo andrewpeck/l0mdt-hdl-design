@@ -191,7 +191,7 @@ class FifoDriver(FifoWrapper, Driver):
 
         self.fifo.write_enable <= 1  # strobe the FIFO write enable signal
         self.fifo.write_data   <= transaction  # write data to FIFO write_data register
-
+        # print("_driver_send", transaction)
         # keep track of the simulation time (this time coincides with what appears in the waveforms)
         time = cocotb.utils.get_sim_time(units="ns")
 
