@@ -188,6 +188,7 @@ architecture behavioral of top_hal is
   signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
   signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
+  signal lhc_recclk : std_logic;
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
@@ -246,6 +247,13 @@ begin  -- architecture behavioral
   --------------------------------------------------------------------------------
   -- Common Clocking
   --------------------------------------------------------------------------------
+
+  lhc_refclk_OBUFDS_inst : OBUFDS
+    port map (
+      O => lhc_refclk_o_p,   -- 1-bit output: Diff_p output (connect directly to top-level port)
+      OB => lhc_refclk_o_n, -- 1-bit output: Diff_n output (connect directly to top-level port)
+      I => lhc_recclk    -- 1-bit input: Buffer input
+      );
 
   top_clocking_inst : entity hal.top_clocking
     port map (
@@ -311,6 +319,8 @@ begin  -- architecture behavioral
 
       -- reset
       reset => '0',                     -- need a separate reset from the mmcm due to recovered links
+
+      recclk_o => lhc_recclk,
 
       ctrl => core_ctrl.mgt,
       mon  => core_mon.mgt,
