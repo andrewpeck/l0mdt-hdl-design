@@ -208,7 +208,7 @@ begin
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
 
-      -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
+      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
       o_daq_streams => o_daq_streams,
 
       -- Segments Out to Neighbor
