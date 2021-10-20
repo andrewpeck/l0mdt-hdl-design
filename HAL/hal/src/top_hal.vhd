@@ -516,6 +516,7 @@ begin  -- architecture behavioral
       tx_clk         => sl_tx_clk,
       rx_clk         => sl_rx_clk,
       pipeline_clock => clocks.clock_pipeline,
+      clk40          => clocks.clock40,
       reset          => global_reset,
 
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
