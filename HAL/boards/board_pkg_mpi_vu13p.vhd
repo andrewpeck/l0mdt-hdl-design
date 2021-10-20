@@ -146,7 +146,7 @@ package board_pkg is
     );
 
   constant c_NUM_REFCLKS : integer := 32;
-  constant C2C_REFCLK_SRC : integer := 5;
+  constant C2C_REFCLK_SRC : integer := 3;
 
   constant c_REFCLK_MAP : refclk_types_array_t (c_NUM_REFCLKS-1 downto 0) := (
 
