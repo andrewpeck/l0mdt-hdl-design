@@ -10,7 +10,6 @@ HAL/hal/src/top_clocking.vhd
 HAL/hal/src/board_pkg_common.vhd
 HAL/hal/src/constants_pkg.vhd
 HAL/hal/src/system_types_pkg.vhd
-HAL/hal/src/sync_cdc.vhd
 HAL/hal/src/felix_decoder.vhd
 HAL/hal/src/polmux_wrapper.vhd
 HAL/hal/src/tdc_decoder_wrapper.vhd

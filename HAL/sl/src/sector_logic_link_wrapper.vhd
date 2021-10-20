@@ -1,4 +1,18 @@
--- https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
+-- Sector Logic Link Wrapper
+--
+-- This module is a wrapper around the sector logic tx/rx ips
+-- (provided by Yasu, and included as a submodule)
+--
+-- It is responsible for
+--
+--  1. instantiating the tx/rx blocks
+--  2. doing type conversion between logic vectors and mdt records
+--  3. clock domain crossing from 240 --> 320 MHz
+--
+-- The SL data format is documented in:
+--
+--    https://cds.cern.ch/record/2703707/files/ATL-COM-DAQ-2019-207.pdf?
+--
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
@@ -33,6 +47,7 @@ entity sector_logic_link_wrapper is
     tx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
     rx_clk : in std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
+    clk40          : in std_logic;
     pipeline_clock : in std_logic;
     reset          : in std_logic;
 
@@ -65,10 +80,17 @@ architecture Behavioral of sector_logic_link_wrapper is
   signal sl_tx_data : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_data_clk40    : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-  signal rx_reset_tree                  : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0) := (others => '1');
-  --signal tx_reset_tree : std_logic_vector (c_NUM_LPGBT_DOWNLINKS-1 downto 0) := (others => '1');
+  signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_tx_data_clk40    : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+
+  -- some values in the sector logic data format are represented as
+  -- "signed magnitude" numbers, in which the most significant bit is a sign bit and the remaining bits
+  -- are the magnitude
+  -- c.f. https://en.wikipedia.org/wiki/Signed_number_representations#Signed_magnitude_representation
+  -- the l0mdt firmware uses two's complement internally, so this function was written to
+  -- convert between the two representations
 
   function signed_mag_to_signed (data : std_logic_vector) return signed is
     alias sv                 : std_logic_vector (data'length-1 downto 0) is data;
@@ -91,41 +113,9 @@ architecture Behavioral of sector_logic_link_wrapper is
   end;
 begin
 
-  rxrstgen : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
-  begin
-    process (rx_clk(I))
-    begin
-      if rising_edge(rx_clk(I)) then    -- rising clock edge
-        rx_reset_tree(I) <= reset;      -- TODO: connect to AXI
-      end if;
-    end process;
-  end generate;
-
-  -- unit test on this conversion function...
-  assert -3 = to_integer(signed_mag_to_signed("011"))
-    report "failure in signed magnutude conversion of -3 get="
-    & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
-  assert -2 = to_integer(signed_mag_to_signed("010"))
-    report "failure in signed magnutude conversion of -2 get="
-    & integer'image (to_integer(signed_mag_to_signed("010"))) severity error;
-  assert -1 = to_integer(signed_mag_to_signed("001"))
-    report "failure in signed magnutude conversion of -1 get="
-    & integer'image (to_integer(signed_mag_to_signed("001"))) severity error;
-  assert 0 = to_integer(signed_mag_to_signed("000"))
-    report "failure in signed magnutude conversion of  0 get="
-    & integer'image (to_integer(signed_mag_to_signed("000"))) severity error;
-  assert 0 = to_integer(signed_mag_to_signed("100"))
-    report "failure in signed magnutude conversion of  0 get="
-    & integer'image (to_integer(signed_mag_to_signed("100"))) severity error;
-  assert 1 = to_integer(signed_mag_to_signed("101"))
-    report "failure in signed magnutude conversion of  1 get="
-    & integer'image (to_integer(signed_mag_to_signed("101"))) severity error;
-  assert 2 = to_integer(signed_mag_to_signed("110"))
-    report "failure in signed magnutude conversion of  2 get="
-    & integer'image (to_integer(signed_mag_to_signed("110"))) severity error;
-  assert 3 = to_integer(signed_mag_to_signed("111"))
-    report "failure in signed magnutude conversion of  3 get="
-    & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
+  --------------------------------------------------------------------------------
+  -- TX Dataformat Mapping
+  --------------------------------------------------------------------------------
 
   tx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_OUTPUTS-1 generate
     signal header  : std_logic_vector (31 downto 0);
@@ -172,6 +162,10 @@ begin
     end generate;
 
   end generate;
+
+  --------------------------------------------------------------------------------
+  -- RX Dataformat Mapping
+  --------------------------------------------------------------------------------
 
   rx_assignment : for I in 0 to c_NUM_SECTOR_LOGIC_INPUTS-1 generate
 
@@ -233,7 +227,7 @@ begin
   sl_gen : for I in 0 to c_NUM_MGTS-1 generate
 
     --------------------------------------------------------------------------------
-    -- Downlink
+    -- TX Encoder Instantiation
     --------------------------------------------------------------------------------
 
     tx_gen : if (sl_idx_array(I) /= -1) generate
@@ -243,7 +237,8 @@ begin
       signal txctrl2 : std_logic_vector (3 downto 0);
     begin
 
-      assert false report "generating SL TX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
+      assert false report "generating SL TX #" & integer'image(idx) & " on MGT#"
+        & integer'image(I) severity note;
 
       sector_logic_tx_packet_former_inst : entity sl.sector_logic_tx_packet_former
         generic map (
@@ -266,23 +261,24 @@ begin
       sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
       sl_tx_ctrl_o(idx).ctrl2 <= x"0"   & txctrl2;
 
-      -- sync from pipeline clock-----------------------------------------------------
-      sync_sl_tx : entity work.sync_cdc
-        generic map (
-          WIDTH    => sl_tx_data_post_cdc(idx).data'length,
-          N_STAGES => 2)
-        port map (
-          clk_i   => tx_clk(idx),
-          valid_i => sl_tx_data(idx).valid,
-          data_i  => sl_tx_data(idx).data,
-          valid_o => sl_tx_data_post_cdc(idx).valid,
-          data_o  => sl_tx_data_post_cdc(idx).data
-          );
+      process (clk40) is
+      begin
+        if (rising_edge(clk40)) then
+          sl_tx_data_clk40(idx) <= sl_tx_data(idx);
+        end if;
+      end process;
+
+      process (pipeline_clock) is
+      begin
+        if (rising_edge(pipeline_clock)) then
+          sl_tx_data_post_cdc(idx) <= sl_tx_data(idx);
+        end if;
+      end process;
 
     end generate;
 
     --------------------------------------------------------------------------------
-    -- Uplink
+    -- RX Decoder Instantiation
     --------------------------------------------------------------------------------
 
     rx_gen : if (sl_idx_array(I) /= -1) generate
@@ -290,14 +286,12 @@ begin
       signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
       signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
       signal dec_userdata    : std_logic_vector (31 downto 0);
-      signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
-      signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
-
       signal rxctrl0 : std_logic_vector (3 downto 0);
       signal rxctrl1 : std_logic_vector (3 downto 0);
     begin
 
-      assert false report "generating SL RX #" & integer'image(idx) & " on MGT#" & integer'image(I) severity note;
+      assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
+        & integer'image(I) severity note;
 
       rxctrl0 <= sl_rx_ctrl_i(idx).ctrl0(3 downto 0);
       rxctrl1 <= sl_rx_ctrl_i(idx).ctrl1(3 downto 0);
@@ -308,7 +302,7 @@ begin
           NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
           NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
         port map (
-          reset               => rx_reset_tree(idx),
+          reset               => reset,
           clk_in              => rx_clk(idx),
           rx_data_in          => sl_rx_mgt_word_array_i(idx),  -- 32 bit from mgt
           rx_ctrl0_in         => rxctrl0,                      -- 4 bit from mgt
@@ -328,7 +322,7 @@ begin
           NUMBER_OF_WORDS_IN_A_PACKET => NUMBER_OF_WORDS_IN_A_PACKET,
           NUMBER_OF_BYTES_IN_A_WORD   => NUMBER_OF_BYTES_IN_A_WORD)
         port map (
-          reset => rx_reset_tree (idx),
+          reset => reset,
 
           rx_usrclk2 => rx_clk(idx),
 
@@ -353,30 +347,61 @@ begin
 
           );
 
-      --sync to pipeline clock-------------------------------------------------
+      --------------------------------------------------------------------------------
+      -- RX Clock Domain Crossing
+      --------------------------------------------------------------------------------
 
-      -- convert to a std_logic_vector
-      sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data & sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
+      -- the SL data comes out of the packet former on the rxclk, a 240MHz
+      -- LHC-synchronous clock, but we don't necessarily know which edge...
+      -- since some of the edges of 240 vs. 320 have very little setup/hold we
+      -- do a very simple clock domain crossing by just copying to the 40MHz LHC
+      -- clock and then copying to the 320 MHz pipeline clock
 
-      -- FIXME: need to make this a smarter cdc.. can't tolerate variable latency due to
-      -- metastability... transition only on known good clock edges.. uhgg...
-      sync_sl_tx_data : entity work.sync_cdc
-        generic map (
-          WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
-          N_STAGES => 4)
-        port map (
-          clk_i   => pipeline_clock,
-          valid_i => sl_rx_data_pre_cdc(idx).valid,
-          data_i  => sl_pre_cdc_vec,
-          valid_o => sl_rx_data(idx).valid,
-          data_o  => sl_post_cdc_vec
-          );
+      process (clk40) is
+      begin
+        if (rising_edge(clk40)) then
+          sl_rx_data_clk40(idx) <= sl_rx_data_pre_cdc(idx);
+        end if;
+      end process;
 
-      sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
-      sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
-      sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
+      process (pipeline_clock) is
+      begin
+        if (rising_edge(pipeline_clock)) then
+          sl_rx_data(idx) <= sl_rx_data_clk40(idx);
+        end if;
+      end process;
 
     end generate;
   end generate;
+
+  --------------------------------------------------------------------------------
+  -- Asserts
+  --------------------------------------------------------------------------------
+
+  -- unit test on the signed magnitude conversion function
+  assert -3 = to_integer(signed_mag_to_signed("011"))
+    report "failure in signed magnutude conversion of -3 get="
+    & integer'image (to_integer(signed_mag_to_signed("011"))) severity error;
+  assert -2 = to_integer(signed_mag_to_signed("010"))
+    report "failure in signed magnutude conversion of -2 get="
+    & integer'image (to_integer(signed_mag_to_signed("010"))) severity error;
+  assert -1 = to_integer(signed_mag_to_signed("001"))
+    report "failure in signed magnutude conversion of -1 get="
+    & integer'image (to_integer(signed_mag_to_signed("001"))) severity error;
+  assert 0 = to_integer(signed_mag_to_signed("000"))
+    report "failure in signed magnutude conversion of  0 get="
+    & integer'image (to_integer(signed_mag_to_signed("000"))) severity error;
+  assert 0 = to_integer(signed_mag_to_signed("100"))
+    report "failure in signed magnutude conversion of  0 get="
+    & integer'image (to_integer(signed_mag_to_signed("100"))) severity error;
+  assert 1 = to_integer(signed_mag_to_signed("101"))
+    report "failure in signed magnutude conversion of  1 get="
+    & integer'image (to_integer(signed_mag_to_signed("101"))) severity error;
+  assert 2 = to_integer(signed_mag_to_signed("110"))
+    report "failure in signed magnutude conversion of  2 get="
+    & integer'image (to_integer(signed_mag_to_signed("110"))) severity error;
+  assert 3 = to_integer(signed_mag_to_signed("111"))
+    report "failure in signed magnutude conversion of  3 get="
+    & integer'image (to_integer(signed_mag_to_signed("111"))) severity error;
 
 end Behavioral;
