@@ -102,3 +102,8 @@ set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
 set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]
 set_property -quiet PACKAGE_PIN AL24     [get_ports sys_mgmt_scl] ;
 set_property -quiet PACKAGE_PIN AL25     [get_ports sys_mgmt_sda];
+
+set_property PACKAGE_PIN AW8 [get_ports c2c_rxp]
+set_property PACKAGE_PIN AW7 [get_ports c2c_rxn]
+set_property PACKAGE_PIN BB6 [get_ports c2c_txp]
+set_property PACKAGE_PIN BB5 [get_ports c2c_txn]
