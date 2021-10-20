@@ -125,7 +125,7 @@ begin
   -- ctrl_v <= vectorify(ctrl,ctrl_v);
   -- mon <= structify(mon_v,mon);
 
-  apb_mem_interface : entity apbus_lib.apb_mem_int
+  apb_mem_interface : entity apbus_lib.apb_imem
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_10A38D",
     g_INTERNAL_CLK          => '1',

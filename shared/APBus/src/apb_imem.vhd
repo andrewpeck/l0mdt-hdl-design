@@ -47,9 +47,6 @@ entity apb_imem is
     ctrl          : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
     mon           : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
     --
-    -- i_axi_clk     : in std_logic := '0';
-    -- i_axi_rst     : in std_logic := '0';
-    --
     -- i_freeze      : in std_logic_vector(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
     -- o_out_sel     : out std_logic_vector(1 downto 0);
@@ -100,7 +97,13 @@ begin
 
   model_mem: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
     ctrl_10A38D_r <= structify(ctrl,ctrl_10A38D_r);
-    mem_ctrl <= ctrl_10A38D_r.
+    mem_ctrl <= ctrl_10A38D_r.SIGNALS;
+    rd_addr  <= vectorify(ctrl_10A38D_r.rd_addr,rd_addr);
+    wr_addr  <= vectorify(ctrl_10A38D_r.wr_addr,wr_addr);
+    wr_data  <= vectorify(ctrl_10A38D_r.wr_data,wr_data);
+    --
+    mon_10A38D_r.rd_data <= structify(rd_data,mon_10A38D_r.rd_data);
+    
     mon <= vectorify(mon_10A38D_r,mon);
   elsif g_XML_NODE_NAME = "MEM_INT_9A19D" generate
     -- ctrl_9A19D_r <= structify(ctrl,ctrl_9A19D_r);
