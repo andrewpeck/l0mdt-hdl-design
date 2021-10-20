@@ -35,35 +35,35 @@ package body display_board_cfg_pkg is
     -- MGTS
     --------------------------------------------------------------------------------
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(lpgbt_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(lpgbt_idx_array(I)) severity note;
+    --end loop;
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "FELIX_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(felix_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "FELIX_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(felix_idx_array(I)) severity note;
+    --end loop;
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "FELIX_TXRX_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(felix_txrx_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "FELIX_TXRX_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(felix_txrx_idx_array(I)) severity note;
+    --end loop;
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "LPGBT_UPLINK_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(lpgbt_uplink_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "LPGBT_UPLINK_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(lpgbt_uplink_idx_array(I)) severity note;
+    --end loop;
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "LPGBT_DOWNLINK_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(lpgbt_downlink_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "LPGBT_DOWNLINK_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(lpgbt_downlink_idx_array(I)) severity note;
+    --end loop;
 
-    for I in 0 to c_NUM_MGTS-1 loop
-      assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = "
-        & integer'image(sl_idx_array(I)) severity note;
-    end loop;
+    --for I in 0 to c_NUM_MGTS-1 loop
+    --  assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = "
+    --    & integer'image(sl_idx_array(I)) severity note;
+    --end loop;
 
 
 

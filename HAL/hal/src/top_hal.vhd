@@ -226,8 +226,9 @@ architecture behavioral of top_hal is
   attribute DONT_TOUCH of strobe_pipeline : signal is "true";
 
   -- Save this here so we can extract it from the hierarchy later
+  -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
-  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
+  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
@@ -268,7 +269,8 @@ begin  -- architecture behavioral
       clock_100m_i_p => clock_100m_i_p,
       clock_100m_i_n => clock_100m_i_n,
 
-      -- 40MHz clock from Si synth
+      -- 40MHz clock from Si synth, this is either free-running or locked onto
+      -- the 40MHz clock that comes from FELIX (recovered through this FPGA)
       clock_i_p => clock_i_p,
       clock_i_n => clock_i_n,
 
@@ -365,6 +367,8 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
+  -- FIXME: just use 1 instance of the emulator and mux the downlink data to each
+  -- 
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
@@ -557,6 +561,10 @@ begin  -- architecture behavioral
       l0mdt_ttc_pipeline => ttc_commands_o,  -- copies of outputs stable for 1 pipeline clock
       valid_o            => felix_valid
       );
+
+  --------------------------------------------------------------------------------
+  -- Felix Transmitter
+  --------------------------------------------------------------------------------
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming... TODO remove later once actual logic is connected
