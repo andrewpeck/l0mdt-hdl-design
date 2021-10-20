@@ -1,4 +1,4 @@
-HAL/constraints/timing.xdc
+HAL/constraints/timing.tcl
 HAL/constraints/loc_mgts.tcl nosynth
 HAL/constraints/region_constraints_toolbox.tcl nosynth
 HAL/constraints/area_constraints.tcl nosynth
