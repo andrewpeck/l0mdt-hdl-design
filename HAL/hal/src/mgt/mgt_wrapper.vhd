@@ -277,7 +277,7 @@ begin
 
       attribute DONT_TOUCH of MGT_INST : label is "true";
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
 
       signal rxslide  : std_logic_vector (3 downto 0);
       signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
@@ -455,7 +455,7 @@ begin
 
       constant idx : integer := sl_idx_array(I);
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
 
     begin
 

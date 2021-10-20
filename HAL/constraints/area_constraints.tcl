@@ -36,9 +36,7 @@ proc assign_pblocks {min  max  side} {
                        [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"] \
                        [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_INST"] \
                        [get_cells -quiet "top_hal/*csm*/*mgt_tag\[$lRegId]*decoder*_inst"] \
-                       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]
-                  ]
-
+                       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]]
 
         if {[string is space $cells] == 0} {
             puts "Adding cells to pblock $lQuadBlock with mgt #$lRegId"
@@ -48,8 +46,17 @@ proc assign_pblocks {min  max  side} {
     puts " > No cells in other pblocks"
 }
 
-assign_pblocks 0  32  L
-assign_pblocks 33 76  R
+set fpga [get_property part [current_project]]
+
+if {[string compare [string range $fpga 0 6] "xcvu13p"] == 0} {
+    assign_pblocks 0  64  L
+    assign_pblocks 63 128 R
+}
+elseif {[string compare [string range $fpga 0 6] "xcvu15p"] == 0} {
+    assign_pblocks 0  32  L
+    assign_pblocks 33 76  R
+}
+
 
 # Payload Area assignment
 #set lPayload [create_pblock payload]

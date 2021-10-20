@@ -13,7 +13,6 @@
 
   typedef struct packed {
     logic  RESET_MMCM;
-    logic  SELECT_FELIX_CLK;
   } HAL_CORE_CLOCKING_CTRL_t;
 
   typedef struct packed {
@@ -62,7 +61,7 @@
     HAL_CORE_MGT_MGT_DRP_MON_t   DRP;
   } HAL_CORE_MGT_MGT_MON_t;
 
-  typedef HAL_CORE_MGT_MGT_MON_t  [76-1:0] HAL_CORE_MGT_MGT_MON_t_ARRAY;
+  typedef HAL_CORE_MGT_MGT_MON_t  [128-1:0] HAL_CORE_MGT_MGT_MON_t_ARRAY;
 
   typedef struct packed {
     HAL_CORE_MGT_MGT_DRP_CTRL_t   DRP;
@@ -70,7 +69,7 @@
     HAL_CORE_MGT_MGT_RX_RESETS_CTRL_t   RX_RESETS;
   } HAL_CORE_MGT_MGT_CTRL_t;
 
-  typedef HAL_CORE_MGT_MGT_CTRL_t  [76-1:0] HAL_CORE_MGT_MGT_CTRL_t_ARRAY;
+  typedef HAL_CORE_MGT_MGT_CTRL_t  [128-1:0] HAL_CORE_MGT_MGT_CTRL_t_ARRAY;
 
   typedef struct packed {
     HAL_CORE_MGT_MGT_MON_t_ARRAY   MGT;
