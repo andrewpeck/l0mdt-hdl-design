@@ -132,7 +132,46 @@ package HAL_CTRL is
   function nullify(t: HAL_CSM_CSM_LPGBT_CTRL_t) return HAL_CSM_CSM_LPGBT_CTRL_t;
   function zeroed(t: HAL_CSM_CSM_LPGBT_CTRL_t) return HAL_CSM_CSM_LPGBT_CTRL_t;
 
-  type HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t is record
+  type HAL_CSM_CSM_SC_MASTER_IC_MON_t is record
+    RX_DATA_FROM_GBTX : std_logic_vector(8-1 downto 0);
+    TX_READY : std_logic;
+    RX_DATA : std_logic_vector(32-1 downto 0);
+    RX_CHIP_ADR : std_logic_vector(7-1 downto 0);
+    RX_UP_PARITY_OK : std_logic;
+    RX_DOWN_PARITY_OK : std_logic;
+    RX_ERR : std_logic;
+    RX_VALID : std_logic;
+    RX_REG_ADR : std_logic_vector(16-1 downto 0);
+    RX_LENGTH : std_logic_vector(16-1 downto 0);
+  end record HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  function len(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+
+  type HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is record
+    TX_START_WRITE : std_logic;
+    TX_START_READ : std_logic;
+    TX_GBTX_ADDR : std_logic_vector(8-1 downto 0);
+    TX_REGISTER_ADDR : std_logic_vector(16-1 downto 0);
+    TX_NUM_BYTES_TO_READ : std_logic_vector(16-1 downto 0);
+    TX_DATA_TO_GBTX : std_logic_vector(8-1 downto 0);
+    TX_WR : std_logic;
+  end record HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  function len(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+
+  type HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t is record
     RX_LEN : std_logic_vector(8-1 downto 0);
     RX_ADDRESS : std_logic_vector(8-1 downto 0);
     RX_CONTROL : std_logic_vector(8-1 downto 0);
@@ -141,43 +180,41 @@ package HAL_CTRL is
     RX_RECEIVED : std_logic;
     RX_CHANNEL : std_logic_vector(8-1 downto 0);
     RX_DATA : std_logic_vector(32-1 downto 0);
-  end record HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return natural;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return natural;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
-  function nullify(t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
-  function zeroed(t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  end record HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
 
-  type HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is array(3-1 downto 0) of HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return natural;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return natural;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
-  function structify(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
-  function convert(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
-  function nullify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
-  function zeroed(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
+  type HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY is array(3-1 downto 0) of HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return natural;
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
+  function structify(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
+  function convert(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
+  function nullify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
+  function zeroed(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
 
-  type HAL_CSM_CSM_SC_MASTER_RX_MON_t is record
-    RX : HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
-  end record HAL_CSM_CSM_SC_MASTER_RX_MON_t;
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return natural;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return natural;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t;
-  function nullify(t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t;
-  function zeroed(t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  type HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t is record
+    RX : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
+  end record HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
 
   type HAL_CSM_CSM_SC_MASTER_MON_t is record
-    RX_DATA_FROM_GBTX : std_logic_vector(8-1 downto 0);
-    TX_READY : std_logic;
-    RX_EMPTY : std_logic;
-    RX : HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+    IC : HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+    SCA_RX : HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
   end record HAL_CSM_CSM_SC_MASTER_MON_t;
   function len(x: HAL_CSM_CSM_SC_MASTER_MON_t) return natural;
   function width(x: HAL_CSM_CSM_SC_MASTER_MON_t) return natural;
@@ -191,14 +228,7 @@ package HAL_CTRL is
   type HAL_CSM_CSM_SC_MASTER_CTRL_t is record
     TX_RESET : std_logic;
     RX_RESET : std_logic;
-    TX_START_WRITE : std_logic;
-    TX_START_READ : std_logic;
-    TX_GBTX_ADDR : std_logic_vector(8-1 downto 0);
-    TX_REGISTER_ADDR : std_logic_vector(16-1 downto 0);
-    TX_NUM_BYTES_TO_READ : std_logic_vector(16-1 downto 0);
-    TX_DATA_TO_GBTX : std_logic_vector(8-1 downto 0);
-    TX_WR : std_logic;
-    RX_RD : std_logic;
+    IC : HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
     TX_CMD : std_logic_vector(8-1 downto 0);
     TX_ADDRESS : std_logic_vector(8-1 downto 0);
     TX_TRANSID : std_logic_vector(8-1 downto 0);
@@ -219,10 +249,47 @@ package HAL_CTRL is
   function nullify(t: HAL_CSM_CSM_SC_MASTER_CTRL_t) return HAL_CSM_CSM_SC_MASTER_CTRL_t;
   function zeroed(t: HAL_CSM_CSM_SC_MASTER_CTRL_t) return HAL_CSM_CSM_SC_MASTER_CTRL_t;
 
-  type HAL_CSM_CSM_SC_SLAVE_MON_t is record
+  type HAL_CSM_CSM_SC_SLAVE_IC_MON_t is record
     RX_DATA_FROM_GBTX : std_logic_vector(8-1 downto 0);
     TX_READY : std_logic;
-    RX_EMPTY : std_logic;
+    RX_DATA : std_logic_vector(32-1 downto 0);
+    RX_CHIP_ADR : std_logic_vector(7-1 downto 0);
+    RX_UP_PARITY_OK : std_logic;
+    RX_DOWN_PARITY_OK : std_logic;
+    RX_ERR : std_logic;
+    RX_VALID : std_logic;
+    RX_REG_ADR : std_logic_vector(16-1 downto 0);
+    RX_LENGTH : std_logic_vector(16-1 downto 0);
+  end record HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
+  function len(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
+
+  type HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is record
+    TX_START_WRITE : std_logic;
+    TX_START_READ : std_logic;
+    TX_GBTX_ADDR : std_logic_vector(8-1 downto 0);
+    TX_REGISTER_ADDR : std_logic_vector(16-1 downto 0);
+    TX_NUM_BYTES_TO_READ : std_logic_vector(16-1 downto 0);
+    TX_DATA_TO_GBTX : std_logic_vector(8-1 downto 0);
+    TX_WR : std_logic;
+  end record HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  function len(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return natural;
+  function width(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return natural;
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  function nullify(t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+
+  type HAL_CSM_CSM_SC_SLAVE_MON_t is record
+    IC : HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
   end record HAL_CSM_CSM_SC_SLAVE_MON_t;
   function len(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural;
   function width(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural;
@@ -236,14 +303,7 @@ package HAL_CTRL is
   type HAL_CSM_CSM_SC_SLAVE_CTRL_t is record
     TX_RESET : std_logic;
     RX_RESET : std_logic;
-    TX_START_WRITE : std_logic;
-    TX_START_READ : std_logic;
-    TX_GBTX_ADDR : std_logic_vector(8-1 downto 0);
-    TX_REGISTER_ADDR : std_logic_vector(16-1 downto 0);
-    TX_NUM_BYTES_TO_READ : std_logic_vector(16-1 downto 0);
-    TX_DATA_TO_GBTX : std_logic_vector(8-1 downto 0);
-    TX_WR : std_logic;
-    RX_RD : std_logic;
+    IC : HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
   end record HAL_CSM_CSM_SC_SLAVE_CTRL_t;
   function len(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural;
   function width(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural;
@@ -1221,7 +1281,445 @@ package body HAL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return natural is
+  function len(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.RX_DATA_FROM_GBTX);
+    l := l + len(x.TX_READY);
+    l := l + len(x.RX_DATA);
+    l := l + len(x.RX_CHIP_ADR);
+    l := l + len(x.RX_UP_PARITY_OK);
+    l := l + len(x.RX_DOWN_PARITY_OK);
+    l := l + len(x.RX_ERR);
+    l := l + len(x.RX_VALID);
+    l := l + len(x.RX_REG_ADR);
+    l := l + len(x.RX_LENGTH);
+    return l;
+  end function len;
+  function width(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.RX_DATA_FROM_GBTX);
+    l := l + width(x.TX_READY);
+    l := l + width(x.RX_DATA);
+    l := l + width(x.RX_CHIP_ADR);
+    l := l + width(x.RX_UP_PARITY_OK);
+    l := l + width(x.RX_DOWN_PARITY_OK);
+    l := l + width(x.RX_ERR);
+    l := l + width(x.RX_VALID);
+    l := l + width(x.RX_REG_ADR);
+    l := l + width(x.RX_LENGTH);
+    return l;
+  end function width;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.RX_DATA_FROM_GBTX)-1), vectorify(x.RX_DATA_FROM_GBTX, y(left to left+len(x.RX_DATA_FROM_GBTX)-1)));
+      left := left + len(x.RX_DATA_FROM_GBTX);
+      assign(y(left to left+len(x.TX_READY)-1), vectorify(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
+      left := left + len(x.TX_READY);
+      assign(y(left to left+len(x.RX_DATA)-1), vectorify(x.RX_DATA, y(left to left+len(x.RX_DATA)-1)));
+      left := left + len(x.RX_DATA);
+      assign(y(left to left+len(x.RX_CHIP_ADR)-1), vectorify(x.RX_CHIP_ADR, y(left to left+len(x.RX_CHIP_ADR)-1)));
+      left := left + len(x.RX_CHIP_ADR);
+      assign(y(left to left+len(x.RX_UP_PARITY_OK)-1), vectorify(x.RX_UP_PARITY_OK, y(left to left+len(x.RX_UP_PARITY_OK)-1)));
+      left := left + len(x.RX_UP_PARITY_OK);
+      assign(y(left to left+len(x.RX_DOWN_PARITY_OK)-1), vectorify(x.RX_DOWN_PARITY_OK, y(left to left+len(x.RX_DOWN_PARITY_OK)-1)));
+      left := left + len(x.RX_DOWN_PARITY_OK);
+      assign(y(left to left+len(x.RX_ERR)-1), vectorify(x.RX_ERR, y(left to left+len(x.RX_ERR)-1)));
+      left := left + len(x.RX_ERR);
+      assign(y(left to left+len(x.RX_VALID)-1), vectorify(x.RX_VALID, y(left to left+len(x.RX_VALID)-1)));
+      left := left + len(x.RX_VALID);
+      assign(y(left to left+len(x.RX_REG_ADR)-1), vectorify(x.RX_REG_ADR, y(left to left+len(x.RX_REG_ADR)-1)));
+      left := left + len(x.RX_REG_ADR);
+      assign(y(left to left+len(x.RX_LENGTH)-1), vectorify(x.RX_LENGTH, y(left to left+len(x.RX_LENGTH)-1)));
+    else
+      assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), vectorify(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
+      left := left - len(x.RX_DATA_FROM_GBTX);
+      assign(y(left downto left-len(x.TX_READY)+1), vectorify(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
+      left := left - len(x.TX_READY);
+      assign(y(left downto left-len(x.RX_DATA)+1), vectorify(x.RX_DATA, y(left downto left-len(x.RX_DATA)+1)));
+      left := left - len(x.RX_DATA);
+      assign(y(left downto left-len(x.RX_CHIP_ADR)+1), vectorify(x.RX_CHIP_ADR, y(left downto left-len(x.RX_CHIP_ADR)+1)));
+      left := left - len(x.RX_CHIP_ADR);
+      assign(y(left downto left-len(x.RX_UP_PARITY_OK)+1), vectorify(x.RX_UP_PARITY_OK, y(left downto left-len(x.RX_UP_PARITY_OK)+1)));
+      left := left - len(x.RX_UP_PARITY_OK);
+      assign(y(left downto left-len(x.RX_DOWN_PARITY_OK)+1), vectorify(x.RX_DOWN_PARITY_OK, y(left downto left-len(x.RX_DOWN_PARITY_OK)+1)));
+      left := left - len(x.RX_DOWN_PARITY_OK);
+      assign(y(left downto left-len(x.RX_ERR)+1), vectorify(x.RX_ERR, y(left downto left-len(x.RX_ERR)+1)));
+      left := left - len(x.RX_ERR);
+      assign(y(left downto left-len(x.RX_VALID)+1), vectorify(x.RX_VALID, y(left downto left-len(x.RX_VALID)+1)));
+      left := left - len(x.RX_VALID);
+      assign(y(left downto left-len(x.RX_REG_ADR)+1), vectorify(x.RX_REG_ADR, y(left downto left-len(x.RX_REG_ADR)+1)));
+      left := left - len(x.RX_REG_ADR);
+      assign(y(left downto left-len(x.RX_LENGTH)+1), vectorify(x.RX_LENGTH, y(left downto left-len(x.RX_LENGTH)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_IC_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.RX_DATA_FROM_GBTX)-1), convert(x.RX_DATA_FROM_GBTX, y(left to left+len(x.RX_DATA_FROM_GBTX)-1)));
+      left := left + len(x.RX_DATA_FROM_GBTX);
+      assign(y(left to left+len(x.TX_READY)-1), convert(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
+      left := left + len(x.TX_READY);
+      assign(y(left to left+len(x.RX_DATA)-1), convert(x.RX_DATA, y(left to left+len(x.RX_DATA)-1)));
+      left := left + len(x.RX_DATA);
+      assign(y(left to left+len(x.RX_CHIP_ADR)-1), convert(x.RX_CHIP_ADR, y(left to left+len(x.RX_CHIP_ADR)-1)));
+      left := left + len(x.RX_CHIP_ADR);
+      assign(y(left to left+len(x.RX_UP_PARITY_OK)-1), convert(x.RX_UP_PARITY_OK, y(left to left+len(x.RX_UP_PARITY_OK)-1)));
+      left := left + len(x.RX_UP_PARITY_OK);
+      assign(y(left to left+len(x.RX_DOWN_PARITY_OK)-1), convert(x.RX_DOWN_PARITY_OK, y(left to left+len(x.RX_DOWN_PARITY_OK)-1)));
+      left := left + len(x.RX_DOWN_PARITY_OK);
+      assign(y(left to left+len(x.RX_ERR)-1), convert(x.RX_ERR, y(left to left+len(x.RX_ERR)-1)));
+      left := left + len(x.RX_ERR);
+      assign(y(left to left+len(x.RX_VALID)-1), convert(x.RX_VALID, y(left to left+len(x.RX_VALID)-1)));
+      left := left + len(x.RX_VALID);
+      assign(y(left to left+len(x.RX_REG_ADR)-1), convert(x.RX_REG_ADR, y(left to left+len(x.RX_REG_ADR)-1)));
+      left := left + len(x.RX_REG_ADR);
+      assign(y(left to left+len(x.RX_LENGTH)-1), convert(x.RX_LENGTH, y(left to left+len(x.RX_LENGTH)-1)));
+    else
+      assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), convert(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
+      left := left - len(x.RX_DATA_FROM_GBTX);
+      assign(y(left downto left-len(x.TX_READY)+1), convert(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
+      left := left - len(x.TX_READY);
+      assign(y(left downto left-len(x.RX_DATA)+1), convert(x.RX_DATA, y(left downto left-len(x.RX_DATA)+1)));
+      left := left - len(x.RX_DATA);
+      assign(y(left downto left-len(x.RX_CHIP_ADR)+1), convert(x.RX_CHIP_ADR, y(left downto left-len(x.RX_CHIP_ADR)+1)));
+      left := left - len(x.RX_CHIP_ADR);
+      assign(y(left downto left-len(x.RX_UP_PARITY_OK)+1), convert(x.RX_UP_PARITY_OK, y(left downto left-len(x.RX_UP_PARITY_OK)+1)));
+      left := left - len(x.RX_UP_PARITY_OK);
+      assign(y(left downto left-len(x.RX_DOWN_PARITY_OK)+1), convert(x.RX_DOWN_PARITY_OK, y(left downto left-len(x.RX_DOWN_PARITY_OK)+1)));
+      left := left - len(x.RX_DOWN_PARITY_OK);
+      assign(y(left downto left-len(x.RX_ERR)+1), convert(x.RX_ERR, y(left downto left-len(x.RX_ERR)+1)));
+      left := left - len(x.RX_ERR);
+      assign(y(left downto left-len(x.RX_VALID)+1), convert(x.RX_VALID, y(left downto left-len(x.RX_VALID)+1)));
+      left := left - len(x.RX_VALID);
+      assign(y(left downto left-len(x.RX_REG_ADR)+1), convert(x.RX_REG_ADR, y(left downto left-len(x.RX_REG_ADR)+1)));
+      left := left - len(x.RX_REG_ADR);
+      assign(y(left downto left-len(x.RX_LENGTH)+1), convert(x.RX_LENGTH, y(left downto left-len(x.RX_LENGTH)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.RX_DATA_FROM_GBTX := structify(x(left to left+len(y.RX_DATA_FROM_GBTX)-1), y.RX_DATA_FROM_GBTX);
+      left := left + len(y.RX_DATA_FROM_GBTX);
+      y.TX_READY := structify(x(left to left+len(y.TX_READY)-1), y.TX_READY);
+      left := left + len(y.TX_READY);
+      y.RX_DATA := structify(x(left to left+len(y.RX_DATA)-1), y.RX_DATA);
+      left := left + len(y.RX_DATA);
+      y.RX_CHIP_ADR := structify(x(left to left+len(y.RX_CHIP_ADR)-1), y.RX_CHIP_ADR);
+      left := left + len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := structify(x(left to left+len(y.RX_UP_PARITY_OK)-1), y.RX_UP_PARITY_OK);
+      left := left + len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := structify(x(left to left+len(y.RX_DOWN_PARITY_OK)-1), y.RX_DOWN_PARITY_OK);
+      left := left + len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := structify(x(left to left+len(y.RX_ERR)-1), y.RX_ERR);
+      left := left + len(y.RX_ERR);
+      y.RX_VALID := structify(x(left to left+len(y.RX_VALID)-1), y.RX_VALID);
+      left := left + len(y.RX_VALID);
+      y.RX_REG_ADR := structify(x(left to left+len(y.RX_REG_ADR)-1), y.RX_REG_ADR);
+      left := left + len(y.RX_REG_ADR);
+      y.RX_LENGTH := structify(x(left to left+len(y.RX_LENGTH)-1), y.RX_LENGTH);
+    else
+      y.RX_DATA_FROM_GBTX := structify(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
+      left := left - len(y.RX_DATA_FROM_GBTX);
+      y.TX_READY := structify(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
+      left := left - len(y.TX_READY);
+      y.RX_DATA := structify(x(left downto left-len(y.RX_DATA)+1), y.RX_DATA);
+      left := left - len(y.RX_DATA);
+      y.RX_CHIP_ADR := structify(x(left downto left-len(y.RX_CHIP_ADR)+1), y.RX_CHIP_ADR);
+      left := left - len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := structify(x(left downto left-len(y.RX_UP_PARITY_OK)+1), y.RX_UP_PARITY_OK);
+      left := left - len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := structify(x(left downto left-len(y.RX_DOWN_PARITY_OK)+1), y.RX_DOWN_PARITY_OK);
+      left := left - len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := structify(x(left downto left-len(y.RX_ERR)+1), y.RX_ERR);
+      left := left - len(y.RX_ERR);
+      y.RX_VALID := structify(x(left downto left-len(y.RX_VALID)+1), y.RX_VALID);
+      left := left - len(y.RX_VALID);
+      y.RX_REG_ADR := structify(x(left downto left-len(y.RX_REG_ADR)+1), y.RX_REG_ADR);
+      left := left - len(y.RX_REG_ADR);
+      y.RX_LENGTH := structify(x(left downto left-len(y.RX_LENGTH)+1), y.RX_LENGTH);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.RX_DATA_FROM_GBTX := convert(x(left to left+len(y.RX_DATA_FROM_GBTX)-1), y.RX_DATA_FROM_GBTX);
+      left := left + len(y.RX_DATA_FROM_GBTX);
+      y.TX_READY := convert(x(left to left+len(y.TX_READY)-1), y.TX_READY);
+      left := left + len(y.TX_READY);
+      y.RX_DATA := convert(x(left to left+len(y.RX_DATA)-1), y.RX_DATA);
+      left := left + len(y.RX_DATA);
+      y.RX_CHIP_ADR := convert(x(left to left+len(y.RX_CHIP_ADR)-1), y.RX_CHIP_ADR);
+      left := left + len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := convert(x(left to left+len(y.RX_UP_PARITY_OK)-1), y.RX_UP_PARITY_OK);
+      left := left + len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := convert(x(left to left+len(y.RX_DOWN_PARITY_OK)-1), y.RX_DOWN_PARITY_OK);
+      left := left + len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := convert(x(left to left+len(y.RX_ERR)-1), y.RX_ERR);
+      left := left + len(y.RX_ERR);
+      y.RX_VALID := convert(x(left to left+len(y.RX_VALID)-1), y.RX_VALID);
+      left := left + len(y.RX_VALID);
+      y.RX_REG_ADR := convert(x(left to left+len(y.RX_REG_ADR)-1), y.RX_REG_ADR);
+      left := left + len(y.RX_REG_ADR);
+      y.RX_LENGTH := convert(x(left to left+len(y.RX_LENGTH)-1), y.RX_LENGTH);
+    else
+      y.RX_DATA_FROM_GBTX := convert(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
+      left := left - len(y.RX_DATA_FROM_GBTX);
+      y.TX_READY := convert(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
+      left := left - len(y.TX_READY);
+      y.RX_DATA := convert(x(left downto left-len(y.RX_DATA)+1), y.RX_DATA);
+      left := left - len(y.RX_DATA);
+      y.RX_CHIP_ADR := convert(x(left downto left-len(y.RX_CHIP_ADR)+1), y.RX_CHIP_ADR);
+      left := left - len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := convert(x(left downto left-len(y.RX_UP_PARITY_OK)+1), y.RX_UP_PARITY_OK);
+      left := left - len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := convert(x(left downto left-len(y.RX_DOWN_PARITY_OK)+1), y.RX_DOWN_PARITY_OK);
+      left := left - len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := convert(x(left downto left-len(y.RX_ERR)+1), y.RX_ERR);
+      left := left - len(y.RX_ERR);
+      y.RX_VALID := convert(x(left downto left-len(y.RX_VALID)+1), y.RX_VALID);
+      left := left - len(y.RX_VALID);
+      y.RX_REG_ADR := convert(x(left downto left-len(y.RX_REG_ADR)+1), y.RX_REG_ADR);
+      left := left - len(y.RX_REG_ADR);
+      y.RX_LENGTH := convert(x(left downto left-len(y.RX_LENGTH)+1), y.RX_LENGTH);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  begin
+    y.RX_DATA_FROM_GBTX := nullify(t.RX_DATA_FROM_GBTX);
+    y.TX_READY := nullify(t.TX_READY);
+    y.RX_DATA := nullify(t.RX_DATA);
+    y.RX_CHIP_ADR := nullify(t.RX_CHIP_ADR);
+    y.RX_UP_PARITY_OK := nullify(t.RX_UP_PARITY_OK);
+    y.RX_DOWN_PARITY_OK := nullify(t.RX_DOWN_PARITY_OK);
+    y.RX_ERR := nullify(t.RX_ERR);
+    y.RX_VALID := nullify(t.RX_VALID);
+    y.RX_REG_ADR := nullify(t.RX_REG_ADR);
+    y.RX_LENGTH := nullify(t.RX_LENGTH);
+    return y;
+  end function nullify;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_IC_MON_t) return HAL_CSM_CSM_SC_MASTER_IC_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_IC_MON_t;
+  begin
+    y.RX_DATA_FROM_GBTX := zeroed(t.RX_DATA_FROM_GBTX);
+    y.TX_READY := zeroed(t.TX_READY);
+    y.RX_DATA := zeroed(t.RX_DATA);
+    y.RX_CHIP_ADR := zeroed(t.RX_CHIP_ADR);
+    y.RX_UP_PARITY_OK := zeroed(t.RX_UP_PARITY_OK);
+    y.RX_DOWN_PARITY_OK := zeroed(t.RX_DOWN_PARITY_OK);
+    y.RX_ERR := zeroed(t.RX_ERR);
+    y.RX_VALID := zeroed(t.RX_VALID);
+    y.RX_REG_ADR := zeroed(t.RX_REG_ADR);
+    y.RX_LENGTH := zeroed(t.RX_LENGTH);
+    return y;
+  end function zeroed;
+
+  function len(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.TX_START_WRITE);
+    l := l + len(x.TX_START_READ);
+    l := l + len(x.TX_GBTX_ADDR);
+    l := l + len(x.TX_REGISTER_ADDR);
+    l := l + len(x.TX_NUM_BYTES_TO_READ);
+    l := l + len(x.TX_DATA_TO_GBTX);
+    l := l + len(x.TX_WR);
+    return l;
+  end function len;
+  function width(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.TX_START_WRITE);
+    l := l + width(x.TX_START_READ);
+    l := l + width(x.TX_GBTX_ADDR);
+    l := l + width(x.TX_REGISTER_ADDR);
+    l := l + width(x.TX_NUM_BYTES_TO_READ);
+    l := l + width(x.TX_DATA_TO_GBTX);
+    l := l + width(x.TX_WR);
+    return l;
+  end function width;
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.TX_START_WRITE)-1), vectorify(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
+      left := left + len(x.TX_START_WRITE);
+      assign(y(left to left+len(x.TX_START_READ)-1), vectorify(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
+      left := left + len(x.TX_START_READ);
+      assign(y(left to left+len(x.TX_GBTX_ADDR)-1), vectorify(x.TX_GBTX_ADDR, y(left to left+len(x.TX_GBTX_ADDR)-1)));
+      left := left + len(x.TX_GBTX_ADDR);
+      assign(y(left to left+len(x.TX_REGISTER_ADDR)-1), vectorify(x.TX_REGISTER_ADDR, y(left to left+len(x.TX_REGISTER_ADDR)-1)));
+      left := left + len(x.TX_REGISTER_ADDR);
+      assign(y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1), vectorify(x.TX_NUM_BYTES_TO_READ, y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1)));
+      left := left + len(x.TX_NUM_BYTES_TO_READ);
+      assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), vectorify(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
+      left := left + len(x.TX_DATA_TO_GBTX);
+      assign(y(left to left+len(x.TX_WR)-1), vectorify(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
+    else
+      assign(y(left downto left-len(x.TX_START_WRITE)+1), vectorify(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
+      left := left - len(x.TX_START_WRITE);
+      assign(y(left downto left-len(x.TX_START_READ)+1), vectorify(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
+      left := left - len(x.TX_START_READ);
+      assign(y(left downto left-len(x.TX_GBTX_ADDR)+1), vectorify(x.TX_GBTX_ADDR, y(left downto left-len(x.TX_GBTX_ADDR)+1)));
+      left := left - len(x.TX_GBTX_ADDR);
+      assign(y(left downto left-len(x.TX_REGISTER_ADDR)+1), vectorify(x.TX_REGISTER_ADDR, y(left downto left-len(x.TX_REGISTER_ADDR)+1)));
+      left := left - len(x.TX_REGISTER_ADDR);
+      assign(y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1), vectorify(x.TX_NUM_BYTES_TO_READ, y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1)));
+      left := left - len(x.TX_NUM_BYTES_TO_READ);
+      assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), vectorify(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
+      left := left - len(x.TX_DATA_TO_GBTX);
+      assign(y(left downto left-len(x.TX_WR)+1), vectorify(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.TX_START_WRITE)-1), convert(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
+      left := left + len(x.TX_START_WRITE);
+      assign(y(left to left+len(x.TX_START_READ)-1), convert(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
+      left := left + len(x.TX_START_READ);
+      assign(y(left to left+len(x.TX_GBTX_ADDR)-1), convert(x.TX_GBTX_ADDR, y(left to left+len(x.TX_GBTX_ADDR)-1)));
+      left := left + len(x.TX_GBTX_ADDR);
+      assign(y(left to left+len(x.TX_REGISTER_ADDR)-1), convert(x.TX_REGISTER_ADDR, y(left to left+len(x.TX_REGISTER_ADDR)-1)));
+      left := left + len(x.TX_REGISTER_ADDR);
+      assign(y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1), convert(x.TX_NUM_BYTES_TO_READ, y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1)));
+      left := left + len(x.TX_NUM_BYTES_TO_READ);
+      assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), convert(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
+      left := left + len(x.TX_DATA_TO_GBTX);
+      assign(y(left to left+len(x.TX_WR)-1), convert(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
+    else
+      assign(y(left downto left-len(x.TX_START_WRITE)+1), convert(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
+      left := left - len(x.TX_START_WRITE);
+      assign(y(left downto left-len(x.TX_START_READ)+1), convert(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
+      left := left - len(x.TX_START_READ);
+      assign(y(left downto left-len(x.TX_GBTX_ADDR)+1), convert(x.TX_GBTX_ADDR, y(left downto left-len(x.TX_GBTX_ADDR)+1)));
+      left := left - len(x.TX_GBTX_ADDR);
+      assign(y(left downto left-len(x.TX_REGISTER_ADDR)+1), convert(x.TX_REGISTER_ADDR, y(left downto left-len(x.TX_REGISTER_ADDR)+1)));
+      left := left - len(x.TX_REGISTER_ADDR);
+      assign(y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1), convert(x.TX_NUM_BYTES_TO_READ, y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1)));
+      left := left - len(x.TX_NUM_BYTES_TO_READ);
+      assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), convert(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
+      left := left - len(x.TX_DATA_TO_GBTX);
+      assign(y(left downto left-len(x.TX_WR)+1), convert(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.TX_START_WRITE := structify(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
+      left := left + len(y.TX_START_WRITE);
+      y.TX_START_READ := structify(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
+      left := left + len(y.TX_START_READ);
+      y.TX_GBTX_ADDR := structify(x(left to left+len(y.TX_GBTX_ADDR)-1), y.TX_GBTX_ADDR);
+      left := left + len(y.TX_GBTX_ADDR);
+      y.TX_REGISTER_ADDR := structify(x(left to left+len(y.TX_REGISTER_ADDR)-1), y.TX_REGISTER_ADDR);
+      left := left + len(y.TX_REGISTER_ADDR);
+      y.TX_NUM_BYTES_TO_READ := structify(x(left to left+len(y.TX_NUM_BYTES_TO_READ)-1), y.TX_NUM_BYTES_TO_READ);
+      left := left + len(y.TX_NUM_BYTES_TO_READ);
+      y.TX_DATA_TO_GBTX := structify(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
+      left := left + len(y.TX_DATA_TO_GBTX);
+      y.TX_WR := structify(x(left to left+len(y.TX_WR)-1), y.TX_WR);
+    else
+      y.TX_START_WRITE := structify(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
+      left := left - len(y.TX_START_WRITE);
+      y.TX_START_READ := structify(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
+      left := left - len(y.TX_START_READ);
+      y.TX_GBTX_ADDR := structify(x(left downto left-len(y.TX_GBTX_ADDR)+1), y.TX_GBTX_ADDR);
+      left := left - len(y.TX_GBTX_ADDR);
+      y.TX_REGISTER_ADDR := structify(x(left downto left-len(y.TX_REGISTER_ADDR)+1), y.TX_REGISTER_ADDR);
+      left := left - len(y.TX_REGISTER_ADDR);
+      y.TX_NUM_BYTES_TO_READ := structify(x(left downto left-len(y.TX_NUM_BYTES_TO_READ)+1), y.TX_NUM_BYTES_TO_READ);
+      left := left - len(y.TX_NUM_BYTES_TO_READ);
+      y.TX_DATA_TO_GBTX := structify(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
+      left := left - len(y.TX_DATA_TO_GBTX);
+      y.TX_WR := structify(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.TX_START_WRITE := convert(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
+      left := left + len(y.TX_START_WRITE);
+      y.TX_START_READ := convert(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
+      left := left + len(y.TX_START_READ);
+      y.TX_GBTX_ADDR := convert(x(left to left+len(y.TX_GBTX_ADDR)-1), y.TX_GBTX_ADDR);
+      left := left + len(y.TX_GBTX_ADDR);
+      y.TX_REGISTER_ADDR := convert(x(left to left+len(y.TX_REGISTER_ADDR)-1), y.TX_REGISTER_ADDR);
+      left := left + len(y.TX_REGISTER_ADDR);
+      y.TX_NUM_BYTES_TO_READ := convert(x(left to left+len(y.TX_NUM_BYTES_TO_READ)-1), y.TX_NUM_BYTES_TO_READ);
+      left := left + len(y.TX_NUM_BYTES_TO_READ);
+      y.TX_DATA_TO_GBTX := convert(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
+      left := left + len(y.TX_DATA_TO_GBTX);
+      y.TX_WR := convert(x(left to left+len(y.TX_WR)-1), y.TX_WR);
+    else
+      y.TX_START_WRITE := convert(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
+      left := left - len(y.TX_START_WRITE);
+      y.TX_START_READ := convert(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
+      left := left - len(y.TX_START_READ);
+      y.TX_GBTX_ADDR := convert(x(left downto left-len(y.TX_GBTX_ADDR)+1), y.TX_GBTX_ADDR);
+      left := left - len(y.TX_GBTX_ADDR);
+      y.TX_REGISTER_ADDR := convert(x(left downto left-len(y.TX_REGISTER_ADDR)+1), y.TX_REGISTER_ADDR);
+      left := left - len(y.TX_REGISTER_ADDR);
+      y.TX_NUM_BYTES_TO_READ := convert(x(left downto left-len(y.TX_NUM_BYTES_TO_READ)+1), y.TX_NUM_BYTES_TO_READ);
+      left := left - len(y.TX_NUM_BYTES_TO_READ);
+      y.TX_DATA_TO_GBTX := convert(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
+      left := left - len(y.TX_DATA_TO_GBTX);
+      y.TX_WR := convert(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  begin
+    y.TX_START_WRITE := nullify(t.TX_START_WRITE);
+    y.TX_START_READ := nullify(t.TX_START_READ);
+    y.TX_GBTX_ADDR := nullify(t.TX_GBTX_ADDR);
+    y.TX_REGISTER_ADDR := nullify(t.TX_REGISTER_ADDR);
+    y.TX_NUM_BYTES_TO_READ := nullify(t.TX_NUM_BYTES_TO_READ);
+    y.TX_DATA_TO_GBTX := nullify(t.TX_DATA_TO_GBTX);
+    y.TX_WR := nullify(t.TX_WR);
+    return y;
+  end function nullify;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t) return HAL_CSM_CSM_SC_MASTER_IC_CTRL_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_IC_CTRL_t;
+  begin
+    y.TX_START_WRITE := zeroed(t.TX_START_WRITE);
+    y.TX_START_READ := zeroed(t.TX_START_READ);
+    y.TX_GBTX_ADDR := zeroed(t.TX_GBTX_ADDR);
+    y.TX_REGISTER_ADDR := zeroed(t.TX_REGISTER_ADDR);
+    y.TX_NUM_BYTES_TO_READ := zeroed(t.TX_NUM_BYTES_TO_READ);
+    y.TX_DATA_TO_GBTX := zeroed(t.TX_DATA_TO_GBTX);
+    y.TX_WR := zeroed(t.TX_WR);
+    return y;
+  end function zeroed;
+
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.RX_LEN);
@@ -1234,7 +1732,7 @@ package body HAL_CTRL is
     l := l + len(x.RX_DATA);
     return l;
   end function len;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return natural is
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.RX_LEN);
@@ -1247,7 +1745,7 @@ package body HAL_CTRL is
     l := l + width(x.RX_DATA);
     return l;
   end function width;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1286,7 +1784,7 @@ package body HAL_CTRL is
     end if;
     return y;
   end function vectorify;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1325,8 +1823,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t is
-    variable y: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1364,8 +1862,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t is
-    variable y: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1403,8 +1901,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function nullify(t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t is
-  variable y: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
   begin
     y.RX_LEN := nullify(t.RX_LEN);
     y.RX_ADDRESS := nullify(t.RX_ADDRESS);
@@ -1416,8 +1914,8 @@ package body HAL_CTRL is
     y.RX_DATA := nullify(t.RX_DATA);
     return y;
   end function nullify;
-  function zeroed(t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t is
-  variable y: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t;
   begin
     y.RX_LEN := zeroed(t.RX_LEN);
     y.RX_ADDRESS := zeroed(t.RX_ADDRESS);
@@ -1430,19 +1928,19 @@ package body HAL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return natural is
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * len(x(x'left));
     return l;
   end function len;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return natural is
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return natural is
     variable l : natural := 0;
   begin
     l := x'length * width(x(x'left));
     return l;
   end function width;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1463,7 +1961,7 @@ package body HAL_CTRL is
     end if;
     return y;
   end function vectorify;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector is
     variable y : std_logic_vector(t'range);
     constant l :  integer := len(x(x'right));
     variable a :  integer;
@@ -1484,8 +1982,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function structify(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is
-    variable y : HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
+  function structify(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY is
+    variable y : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1505,8 +2003,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function structify;
-  function convert(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is
-    variable y : HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
+  function convert(x: std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY is
+    variable y : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
     constant l :  integer := len(y(y'left));
     variable a :  integer;
     variable b :  integer;
@@ -1526,16 +2024,16 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function nullify(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is
-    variable y : HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
+  function nullify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY is
+    variable y : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := nullify(y(i));
     end loop l;
     return y;
   end function nullify;
-  function zeroed(x: HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY is
-    variable y : HAL_CSM_CSM_SC_MASTER_RX_RX_MON_t_ARRAY;
+  function zeroed(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY) return HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY is
+    variable y : HAL_CSM_CSM_SC_MASTER_SCA_RX_RX_MON_t_ARRAY;
   begin
     l: for i in y'range loop
       y(i) := zeroed(y(i));
@@ -1543,19 +2041,19 @@ package body HAL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return natural is
+  function len(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.RX);
     return l;
   end function len;
-  function width(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return natural is
+  function width(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.RX);
     return l;
   end function width;
-  function vectorify(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1566,7 +2064,7 @@ package body HAL_CTRL is
     end if;
     return y;
   end function vectorify;
-  function convert(x: HAL_CSM_CSM_SC_MASTER_RX_MON_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -1577,8 +2075,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t is
-    variable y: HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1588,8 +2086,8 @@ package body HAL_CTRL is
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t is
-    variable y: HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t is
+    variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -1599,14 +2097,14 @@ package body HAL_CTRL is
     end if;
     return y;
   end function convert;
-  function nullify(t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t is
-  variable y: HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
   begin
     y.RX := nullify(t.RX);
     return y;
   end function nullify;
-  function zeroed(t: HAL_CSM_CSM_SC_MASTER_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_RX_MON_t is
-  variable y: HAL_CSM_CSM_SC_MASTER_RX_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t) return HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t is
+  variable y: HAL_CSM_CSM_SC_MASTER_SCA_RX_MON_t;
   begin
     y.RX := zeroed(t.RX);
     return y;
@@ -1615,19 +2113,15 @@ package body HAL_CTRL is
   function len(x: HAL_CSM_CSM_SC_MASTER_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.RX_DATA_FROM_GBTX);
-    l := l + len(x.TX_READY);
-    l := l + len(x.RX_EMPTY);
-    l := l + len(x.RX);
+    l := l + len(x.IC);
+    l := l + len(x.SCA_RX);
     return l;
   end function len;
   function width(x: HAL_CSM_CSM_SC_MASTER_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.RX_DATA_FROM_GBTX);
-    l := l + width(x.TX_READY);
-    l := l + width(x.RX_EMPTY);
-    l := l + width(x.RX);
+    l := l + width(x.IC);
+    l := l + width(x.SCA_RX);
     return l;
   end function width;
   function vectorify(x: HAL_CSM_CSM_SC_MASTER_MON_t; t: std_logic_vector) return std_logic_vector is
@@ -1635,21 +2129,13 @@ package body HAL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.RX_DATA_FROM_GBTX)-1), vectorify(x.RX_DATA_FROM_GBTX, y(left to left+len(x.RX_DATA_FROM_GBTX)-1)));
-      left := left + len(x.RX_DATA_FROM_GBTX);
-      assign(y(left to left+len(x.TX_READY)-1), vectorify(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
-      left := left + len(x.TX_READY);
-      assign(y(left to left+len(x.RX_EMPTY)-1), vectorify(x.RX_EMPTY, y(left to left+len(x.RX_EMPTY)-1)));
-      left := left + len(x.RX_EMPTY);
-      assign(y(left to left+len(x.RX)-1), vectorify(x.RX, y(left to left+len(x.RX)-1)));
+      assign(y(left to left+len(x.IC)-1), vectorify(x.IC, y(left to left+len(x.IC)-1)));
+      left := left + len(x.IC);
+      assign(y(left to left+len(x.SCA_RX)-1), vectorify(x.SCA_RX, y(left to left+len(x.SCA_RX)-1)));
     else
-      assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), vectorify(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
-      left := left - len(x.RX_DATA_FROM_GBTX);
-      assign(y(left downto left-len(x.TX_READY)+1), vectorify(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
-      left := left - len(x.TX_READY);
-      assign(y(left downto left-len(x.RX_EMPTY)+1), vectorify(x.RX_EMPTY, y(left downto left-len(x.RX_EMPTY)+1)));
-      left := left - len(x.RX_EMPTY);
-      assign(y(left downto left-len(x.RX)+1), vectorify(x.RX, y(left downto left-len(x.RX)+1)));
+      assign(y(left downto left-len(x.IC)+1), vectorify(x.IC, y(left downto left-len(x.IC)+1)));
+      left := left - len(x.IC);
+      assign(y(left downto left-len(x.SCA_RX)+1), vectorify(x.SCA_RX, y(left downto left-len(x.SCA_RX)+1)));
     end if;
     return y;
   end function vectorify;
@@ -1658,21 +2144,13 @@ package body HAL_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.RX_DATA_FROM_GBTX)-1), convert(x.RX_DATA_FROM_GBTX, y(left to left+len(x.RX_DATA_FROM_GBTX)-1)));
-      left := left + len(x.RX_DATA_FROM_GBTX);
-      assign(y(left to left+len(x.TX_READY)-1), convert(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
-      left := left + len(x.TX_READY);
-      assign(y(left to left+len(x.RX_EMPTY)-1), convert(x.RX_EMPTY, y(left to left+len(x.RX_EMPTY)-1)));
-      left := left + len(x.RX_EMPTY);
-      assign(y(left to left+len(x.RX)-1), convert(x.RX, y(left to left+len(x.RX)-1)));
+      assign(y(left to left+len(x.IC)-1), convert(x.IC, y(left to left+len(x.IC)-1)));
+      left := left + len(x.IC);
+      assign(y(left to left+len(x.SCA_RX)-1), convert(x.SCA_RX, y(left to left+len(x.SCA_RX)-1)));
     else
-      assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), convert(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
-      left := left - len(x.RX_DATA_FROM_GBTX);
-      assign(y(left downto left-len(x.TX_READY)+1), convert(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
-      left := left - len(x.TX_READY);
-      assign(y(left downto left-len(x.RX_EMPTY)+1), convert(x.RX_EMPTY, y(left downto left-len(x.RX_EMPTY)+1)));
-      left := left - len(x.RX_EMPTY);
-      assign(y(left downto left-len(x.RX)+1), convert(x.RX, y(left downto left-len(x.RX)+1)));
+      assign(y(left downto left-len(x.IC)+1), convert(x.IC, y(left downto left-len(x.IC)+1)));
+      left := left - len(x.IC);
+      assign(y(left downto left-len(x.SCA_RX)+1), convert(x.SCA_RX, y(left downto left-len(x.SCA_RX)+1)));
     end if;
     return y;
   end function convert;
@@ -1681,21 +2159,13 @@ package body HAL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.RX_DATA_FROM_GBTX := structify(x(left to left+len(y.RX_DATA_FROM_GBTX)-1), y.RX_DATA_FROM_GBTX);
-      left := left + len(y.RX_DATA_FROM_GBTX);
-      y.TX_READY := structify(x(left to left+len(y.TX_READY)-1), y.TX_READY);
-      left := left + len(y.TX_READY);
-      y.RX_EMPTY := structify(x(left to left+len(y.RX_EMPTY)-1), y.RX_EMPTY);
-      left := left + len(y.RX_EMPTY);
-      y.RX := structify(x(left to left+len(y.RX)-1), y.RX);
+      y.IC := structify(x(left to left+len(y.IC)-1), y.IC);
+      left := left + len(y.IC);
+      y.SCA_RX := structify(x(left to left+len(y.SCA_RX)-1), y.SCA_RX);
     else
-      y.RX_DATA_FROM_GBTX := structify(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
-      left := left - len(y.RX_DATA_FROM_GBTX);
-      y.TX_READY := structify(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
-      left := left - len(y.TX_READY);
-      y.RX_EMPTY := structify(x(left downto left-len(y.RX_EMPTY)+1), y.RX_EMPTY);
-      left := left - len(y.RX_EMPTY);
-      y.RX := structify(x(left downto left-len(y.RX)+1), y.RX);
+      y.IC := structify(x(left downto left-len(y.IC)+1), y.IC);
+      left := left - len(y.IC);
+      y.SCA_RX := structify(x(left downto left-len(y.SCA_RX)+1), y.SCA_RX);
     end if;
     return y;
   end function structify;
@@ -1704,40 +2174,28 @@ package body HAL_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.RX_DATA_FROM_GBTX := convert(x(left to left+len(y.RX_DATA_FROM_GBTX)-1), y.RX_DATA_FROM_GBTX);
-      left := left + len(y.RX_DATA_FROM_GBTX);
-      y.TX_READY := convert(x(left to left+len(y.TX_READY)-1), y.TX_READY);
-      left := left + len(y.TX_READY);
-      y.RX_EMPTY := convert(x(left to left+len(y.RX_EMPTY)-1), y.RX_EMPTY);
-      left := left + len(y.RX_EMPTY);
-      y.RX := convert(x(left to left+len(y.RX)-1), y.RX);
+      y.IC := convert(x(left to left+len(y.IC)-1), y.IC);
+      left := left + len(y.IC);
+      y.SCA_RX := convert(x(left to left+len(y.SCA_RX)-1), y.SCA_RX);
     else
-      y.RX_DATA_FROM_GBTX := convert(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
-      left := left - len(y.RX_DATA_FROM_GBTX);
-      y.TX_READY := convert(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
-      left := left - len(y.TX_READY);
-      y.RX_EMPTY := convert(x(left downto left-len(y.RX_EMPTY)+1), y.RX_EMPTY);
-      left := left - len(y.RX_EMPTY);
-      y.RX := convert(x(left downto left-len(y.RX)+1), y.RX);
+      y.IC := convert(x(left downto left-len(y.IC)+1), y.IC);
+      left := left - len(y.IC);
+      y.SCA_RX := convert(x(left downto left-len(y.SCA_RX)+1), y.SCA_RX);
     end if;
     return y;
   end function convert;
   function nullify(t: HAL_CSM_CSM_SC_MASTER_MON_t) return HAL_CSM_CSM_SC_MASTER_MON_t is
   variable y: HAL_CSM_CSM_SC_MASTER_MON_t;
   begin
-    y.RX_DATA_FROM_GBTX := nullify(t.RX_DATA_FROM_GBTX);
-    y.TX_READY := nullify(t.TX_READY);
-    y.RX_EMPTY := nullify(t.RX_EMPTY);
-    y.RX := nullify(t.RX);
+    y.IC := nullify(t.IC);
+    y.SCA_RX := nullify(t.SCA_RX);
     return y;
   end function nullify;
   function zeroed(t: HAL_CSM_CSM_SC_MASTER_MON_t) return HAL_CSM_CSM_SC_MASTER_MON_t is
   variable y: HAL_CSM_CSM_SC_MASTER_MON_t;
   begin
-    y.RX_DATA_FROM_GBTX := zeroed(t.RX_DATA_FROM_GBTX);
-    y.TX_READY := zeroed(t.TX_READY);
-    y.RX_EMPTY := zeroed(t.RX_EMPTY);
-    y.RX := zeroed(t.RX);
+    y.IC := zeroed(t.IC);
+    y.SCA_RX := zeroed(t.SCA_RX);
     return y;
   end function zeroed;
 
@@ -1746,14 +2204,7 @@ package body HAL_CTRL is
   begin
     l := l + len(x.TX_RESET);
     l := l + len(x.RX_RESET);
-    l := l + len(x.TX_START_WRITE);
-    l := l + len(x.TX_START_READ);
-    l := l + len(x.TX_GBTX_ADDR);
-    l := l + len(x.TX_REGISTER_ADDR);
-    l := l + len(x.TX_NUM_BYTES_TO_READ);
-    l := l + len(x.TX_DATA_TO_GBTX);
-    l := l + len(x.TX_WR);
-    l := l + len(x.RX_RD);
+    l := l + len(x.IC);
     l := l + len(x.TX_CMD);
     l := l + len(x.TX_ADDRESS);
     l := l + len(x.TX_TRANSID);
@@ -1771,14 +2222,7 @@ package body HAL_CTRL is
   begin
     l := l + width(x.TX_RESET);
     l := l + width(x.RX_RESET);
-    l := l + width(x.TX_START_WRITE);
-    l := l + width(x.TX_START_READ);
-    l := l + width(x.TX_GBTX_ADDR);
-    l := l + width(x.TX_REGISTER_ADDR);
-    l := l + width(x.TX_NUM_BYTES_TO_READ);
-    l := l + width(x.TX_DATA_TO_GBTX);
-    l := l + width(x.TX_WR);
-    l := l + width(x.RX_RD);
+    l := l + width(x.IC);
     l := l + width(x.TX_CMD);
     l := l + width(x.TX_ADDRESS);
     l := l + width(x.TX_TRANSID);
@@ -1800,22 +2244,8 @@ package body HAL_CTRL is
       left := left + len(x.TX_RESET);
       assign(y(left to left+len(x.RX_RESET)-1), vectorify(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
       left := left + len(x.RX_RESET);
-      assign(y(left to left+len(x.TX_START_WRITE)-1), vectorify(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
-      left := left + len(x.TX_START_WRITE);
-      assign(y(left to left+len(x.TX_START_READ)-1), vectorify(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
-      left := left + len(x.TX_START_READ);
-      assign(y(left to left+len(x.TX_GBTX_ADDR)-1), vectorify(x.TX_GBTX_ADDR, y(left to left+len(x.TX_GBTX_ADDR)-1)));
-      left := left + len(x.TX_GBTX_ADDR);
-      assign(y(left to left+len(x.TX_REGISTER_ADDR)-1), vectorify(x.TX_REGISTER_ADDR, y(left to left+len(x.TX_REGISTER_ADDR)-1)));
-      left := left + len(x.TX_REGISTER_ADDR);
-      assign(y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1), vectorify(x.TX_NUM_BYTES_TO_READ, y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1)));
-      left := left + len(x.TX_NUM_BYTES_TO_READ);
-      assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), vectorify(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
-      left := left + len(x.TX_DATA_TO_GBTX);
-      assign(y(left to left+len(x.TX_WR)-1), vectorify(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
-      left := left + len(x.TX_WR);
-      assign(y(left to left+len(x.RX_RD)-1), vectorify(x.RX_RD, y(left to left+len(x.RX_RD)-1)));
-      left := left + len(x.RX_RD);
+      assign(y(left to left+len(x.IC)-1), vectorify(x.IC, y(left to left+len(x.IC)-1)));
+      left := left + len(x.IC);
       assign(y(left to left+len(x.TX_CMD)-1), vectorify(x.TX_CMD, y(left to left+len(x.TX_CMD)-1)));
       left := left + len(x.TX_CMD);
       assign(y(left to left+len(x.TX_ADDRESS)-1), vectorify(x.TX_ADDRESS, y(left to left+len(x.TX_ADDRESS)-1)));
@@ -1840,22 +2270,8 @@ package body HAL_CTRL is
       left := left - len(x.TX_RESET);
       assign(y(left downto left-len(x.RX_RESET)+1), vectorify(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
       left := left - len(x.RX_RESET);
-      assign(y(left downto left-len(x.TX_START_WRITE)+1), vectorify(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
-      left := left - len(x.TX_START_WRITE);
-      assign(y(left downto left-len(x.TX_START_READ)+1), vectorify(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
-      left := left - len(x.TX_START_READ);
-      assign(y(left downto left-len(x.TX_GBTX_ADDR)+1), vectorify(x.TX_GBTX_ADDR, y(left downto left-len(x.TX_GBTX_ADDR)+1)));
-      left := left - len(x.TX_GBTX_ADDR);
-      assign(y(left downto left-len(x.TX_REGISTER_ADDR)+1), vectorify(x.TX_REGISTER_ADDR, y(left downto left-len(x.TX_REGISTER_ADDR)+1)));
-      left := left - len(x.TX_REGISTER_ADDR);
-      assign(y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1), vectorify(x.TX_NUM_BYTES_TO_READ, y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1)));
-      left := left - len(x.TX_NUM_BYTES_TO_READ);
-      assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), vectorify(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
-      left := left - len(x.TX_DATA_TO_GBTX);
-      assign(y(left downto left-len(x.TX_WR)+1), vectorify(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
-      left := left - len(x.TX_WR);
-      assign(y(left downto left-len(x.RX_RD)+1), vectorify(x.RX_RD, y(left downto left-len(x.RX_RD)+1)));
-      left := left - len(x.RX_RD);
+      assign(y(left downto left-len(x.IC)+1), vectorify(x.IC, y(left downto left-len(x.IC)+1)));
+      left := left - len(x.IC);
       assign(y(left downto left-len(x.TX_CMD)+1), vectorify(x.TX_CMD, y(left downto left-len(x.TX_CMD)+1)));
       left := left - len(x.TX_CMD);
       assign(y(left downto left-len(x.TX_ADDRESS)+1), vectorify(x.TX_ADDRESS, y(left downto left-len(x.TX_ADDRESS)+1)));
@@ -1887,22 +2303,8 @@ package body HAL_CTRL is
       left := left + len(x.TX_RESET);
       assign(y(left to left+len(x.RX_RESET)-1), convert(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
       left := left + len(x.RX_RESET);
-      assign(y(left to left+len(x.TX_START_WRITE)-1), convert(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
-      left := left + len(x.TX_START_WRITE);
-      assign(y(left to left+len(x.TX_START_READ)-1), convert(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
-      left := left + len(x.TX_START_READ);
-      assign(y(left to left+len(x.TX_GBTX_ADDR)-1), convert(x.TX_GBTX_ADDR, y(left to left+len(x.TX_GBTX_ADDR)-1)));
-      left := left + len(x.TX_GBTX_ADDR);
-      assign(y(left to left+len(x.TX_REGISTER_ADDR)-1), convert(x.TX_REGISTER_ADDR, y(left to left+len(x.TX_REGISTER_ADDR)-1)));
-      left := left + len(x.TX_REGISTER_ADDR);
-      assign(y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1), convert(x.TX_NUM_BYTES_TO_READ, y(left to left+len(x.TX_NUM_BYTES_TO_READ)-1)));
-      left := left + len(x.TX_NUM_BYTES_TO_READ);
-      assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), convert(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
-      left := left + len(x.TX_DATA_TO_GBTX);
-      assign(y(left to left+len(x.TX_WR)-1), convert(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
-      left := left + len(x.TX_WR);
-      assign(y(left to left+len(x.RX_RD)-1), convert(x.RX_RD, y(left to left+len(x.RX_RD)-1)));
-      left := left + len(x.RX_RD);
+      assign(y(left to left+len(x.IC)-1), convert(x.IC, y(left to left+len(x.IC)-1)));
+      left := left + len(x.IC);
       assign(y(left to left+len(x.TX_CMD)-1), convert(x.TX_CMD, y(left to left+len(x.TX_CMD)-1)));
       left := left + len(x.TX_CMD);
       assign(y(left to left+len(x.TX_ADDRESS)-1), convert(x.TX_ADDRESS, y(left to left+len(x.TX_ADDRESS)-1)));
@@ -1927,22 +2329,8 @@ package body HAL_CTRL is
       left := left - len(x.TX_RESET);
       assign(y(left downto left-len(x.RX_RESET)+1), convert(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
       left := left - len(x.RX_RESET);
-      assign(y(left downto left-len(x.TX_START_WRITE)+1), convert(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
-      left := left - len(x.TX_START_WRITE);
-      assign(y(left downto left-len(x.TX_START_READ)+1), convert(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
-      left := left - len(x.TX_START_READ);
-      assign(y(left downto left-len(x.TX_GBTX_ADDR)+1), convert(x.TX_GBTX_ADDR, y(left downto left-len(x.TX_GBTX_ADDR)+1)));
-      left := left - len(x.TX_GBTX_ADDR);
-      assign(y(left downto left-len(x.TX_REGISTER_ADDR)+1), convert(x.TX_REGISTER_ADDR, y(left downto left-len(x.TX_REGISTER_ADDR)+1)));
-      left := left - len(x.TX_REGISTER_ADDR);
-      assign(y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1), convert(x.TX_NUM_BYTES_TO_READ, y(left downto left-len(x.TX_NUM_BYTES_TO_READ)+1)));
-      left := left - len(x.TX_NUM_BYTES_TO_READ);
-      assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), convert(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
-      left := left - len(x.TX_DATA_TO_GBTX);
-      assign(y(left downto left-len(x.TX_WR)+1), convert(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
-      left := left - len(x.TX_WR);
-      assign(y(left downto left-len(x.RX_RD)+1), convert(x.RX_RD, y(left downto left-len(x.RX_RD)+1)));
-      left := left - len(x.RX_RD);
+      assign(y(left downto left-len(x.IC)+1), convert(x.IC, y(left downto left-len(x.IC)+1)));
+      left := left - len(x.IC);
       assign(y(left downto left-len(x.TX_CMD)+1), convert(x.TX_CMD, y(left downto left-len(x.TX_CMD)+1)));
       left := left - len(x.TX_CMD);
       assign(y(left downto left-len(x.TX_ADDRESS)+1), convert(x.TX_ADDRESS, y(left downto left-len(x.TX_ADDRESS)+1)));
@@ -1974,22 +2362,8 @@ package body HAL_CTRL is
       left := left + len(y.TX_RESET);
       y.RX_RESET := structify(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
       left := left + len(y.RX_RESET);
-      y.TX_START_WRITE := structify(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
-      left := left + len(y.TX_START_WRITE);
-      y.TX_START_READ := structify(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
-      left := left + len(y.TX_START_READ);
-      y.TX_GBTX_ADDR := structify(x(left to left+len(y.TX_GBTX_ADDR)-1), y.TX_GBTX_ADDR);
-      left := left + len(y.TX_GBTX_ADDR);
-      y.TX_REGISTER_ADDR := structify(x(left to left+len(y.TX_REGISTER_ADDR)-1), y.TX_REGISTER_ADDR);
-      left := left + len(y.TX_REGISTER_ADDR);
-      y.TX_NUM_BYTES_TO_READ := structify(x(left to left+len(y.TX_NUM_BYTES_TO_READ)-1), y.TX_NUM_BYTES_TO_READ);
-      left := left + len(y.TX_NUM_BYTES_TO_READ);
-      y.TX_DATA_TO_GBTX := structify(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
-      left := left + len(y.TX_DATA_TO_GBTX);
-      y.TX_WR := structify(x(left to left+len(y.TX_WR)-1), y.TX_WR);
-      left := left + len(y.TX_WR);
-      y.RX_RD := structify(x(left to left+len(y.RX_RD)-1), y.RX_RD);
-      left := left + len(y.RX_RD);
+      y.IC := structify(x(left to left+len(y.IC)-1), y.IC);
+      left := left + len(y.IC);
       y.TX_CMD := structify(x(left to left+len(y.TX_CMD)-1), y.TX_CMD);
       left := left + len(y.TX_CMD);
       y.TX_ADDRESS := structify(x(left to left+len(y.TX_ADDRESS)-1), y.TX_ADDRESS);
@@ -2014,22 +2388,8 @@ package body HAL_CTRL is
       left := left - len(y.TX_RESET);
       y.RX_RESET := structify(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
       left := left - len(y.RX_RESET);
-      y.TX_START_WRITE := structify(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
-      left := left - len(y.TX_START_WRITE);
-      y.TX_START_READ := structify(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
-      left := left - len(y.TX_START_READ);
-      y.TX_GBTX_ADDR := structify(x(left downto left-len(y.TX_GBTX_ADDR)+1), y.TX_GBTX_ADDR);
-      left := left - len(y.TX_GBTX_ADDR);
-      y.TX_REGISTER_ADDR := structify(x(left downto left-len(y.TX_REGISTER_ADDR)+1), y.TX_REGISTER_ADDR);
-      left := left - len(y.TX_REGISTER_ADDR);
-      y.TX_NUM_BYTES_TO_READ := structify(x(left downto left-len(y.TX_NUM_BYTES_TO_READ)+1), y.TX_NUM_BYTES_TO_READ);
-      left := left - len(y.TX_NUM_BYTES_TO_READ);
-      y.TX_DATA_TO_GBTX := structify(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
-      left := left - len(y.TX_DATA_TO_GBTX);
-      y.TX_WR := structify(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
-      left := left - len(y.TX_WR);
-      y.RX_RD := structify(x(left downto left-len(y.RX_RD)+1), y.RX_RD);
-      left := left - len(y.RX_RD);
+      y.IC := structify(x(left downto left-len(y.IC)+1), y.IC);
+      left := left - len(y.IC);
       y.TX_CMD := structify(x(left downto left-len(y.TX_CMD)+1), y.TX_CMD);
       left := left - len(y.TX_CMD);
       y.TX_ADDRESS := structify(x(left downto left-len(y.TX_ADDRESS)+1), y.TX_ADDRESS);
@@ -2061,22 +2421,8 @@ package body HAL_CTRL is
       left := left + len(y.TX_RESET);
       y.RX_RESET := convert(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
       left := left + len(y.RX_RESET);
-      y.TX_START_WRITE := convert(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
-      left := left + len(y.TX_START_WRITE);
-      y.TX_START_READ := convert(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
-      left := left + len(y.TX_START_READ);
-      y.TX_GBTX_ADDR := convert(x(left to left+len(y.TX_GBTX_ADDR)-1), y.TX_GBTX_ADDR);
-      left := left + len(y.TX_GBTX_ADDR);
-      y.TX_REGISTER_ADDR := convert(x(left to left+len(y.TX_REGISTER_ADDR)-1), y.TX_REGISTER_ADDR);
-      left := left + len(y.TX_REGISTER_ADDR);
-      y.TX_NUM_BYTES_TO_READ := convert(x(left to left+len(y.TX_NUM_BYTES_TO_READ)-1), y.TX_NUM_BYTES_TO_READ);
-      left := left + len(y.TX_NUM_BYTES_TO_READ);
-      y.TX_DATA_TO_GBTX := convert(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
-      left := left + len(y.TX_DATA_TO_GBTX);
-      y.TX_WR := convert(x(left to left+len(y.TX_WR)-1), y.TX_WR);
-      left := left + len(y.TX_WR);
-      y.RX_RD := convert(x(left to left+len(y.RX_RD)-1), y.RX_RD);
-      left := left + len(y.RX_RD);
+      y.IC := convert(x(left to left+len(y.IC)-1), y.IC);
+      left := left + len(y.IC);
       y.TX_CMD := convert(x(left to left+len(y.TX_CMD)-1), y.TX_CMD);
       left := left + len(y.TX_CMD);
       y.TX_ADDRESS := convert(x(left to left+len(y.TX_ADDRESS)-1), y.TX_ADDRESS);
@@ -2101,22 +2447,8 @@ package body HAL_CTRL is
       left := left - len(y.TX_RESET);
       y.RX_RESET := convert(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
       left := left - len(y.RX_RESET);
-      y.TX_START_WRITE := convert(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
-      left := left - len(y.TX_START_WRITE);
-      y.TX_START_READ := convert(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
-      left := left - len(y.TX_START_READ);
-      y.TX_GBTX_ADDR := convert(x(left downto left-len(y.TX_GBTX_ADDR)+1), y.TX_GBTX_ADDR);
-      left := left - len(y.TX_GBTX_ADDR);
-      y.TX_REGISTER_ADDR := convert(x(left downto left-len(y.TX_REGISTER_ADDR)+1), y.TX_REGISTER_ADDR);
-      left := left - len(y.TX_REGISTER_ADDR);
-      y.TX_NUM_BYTES_TO_READ := convert(x(left downto left-len(y.TX_NUM_BYTES_TO_READ)+1), y.TX_NUM_BYTES_TO_READ);
-      left := left - len(y.TX_NUM_BYTES_TO_READ);
-      y.TX_DATA_TO_GBTX := convert(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
-      left := left - len(y.TX_DATA_TO_GBTX);
-      y.TX_WR := convert(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
-      left := left - len(y.TX_WR);
-      y.RX_RD := convert(x(left downto left-len(y.RX_RD)+1), y.RX_RD);
-      left := left - len(y.RX_RD);
+      y.IC := convert(x(left downto left-len(y.IC)+1), y.IC);
+      left := left - len(y.IC);
       y.TX_CMD := convert(x(left downto left-len(y.TX_CMD)+1), y.TX_CMD);
       left := left - len(y.TX_CMD);
       y.TX_ADDRESS := convert(x(left downto left-len(y.TX_ADDRESS)+1), y.TX_ADDRESS);
@@ -2144,14 +2476,7 @@ package body HAL_CTRL is
   begin
     y.TX_RESET := nullify(t.TX_RESET);
     y.RX_RESET := nullify(t.RX_RESET);
-    y.TX_START_WRITE := nullify(t.TX_START_WRITE);
-    y.TX_START_READ := nullify(t.TX_START_READ);
-    y.TX_GBTX_ADDR := nullify(t.TX_GBTX_ADDR);
-    y.TX_REGISTER_ADDR := nullify(t.TX_REGISTER_ADDR);
-    y.TX_NUM_BYTES_TO_READ := nullify(t.TX_NUM_BYTES_TO_READ);
-    y.TX_DATA_TO_GBTX := nullify(t.TX_DATA_TO_GBTX);
-    y.TX_WR := nullify(t.TX_WR);
-    y.RX_RD := nullify(t.RX_RD);
+    y.IC := nullify(t.IC);
     y.TX_CMD := nullify(t.TX_CMD);
     y.TX_ADDRESS := nullify(t.TX_ADDRESS);
     y.TX_TRANSID := nullify(t.TX_TRANSID);
@@ -2169,14 +2494,7 @@ package body HAL_CTRL is
   begin
     y.TX_RESET := zeroed(t.TX_RESET);
     y.RX_RESET := zeroed(t.RX_RESET);
-    y.TX_START_WRITE := zeroed(t.TX_START_WRITE);
-    y.TX_START_READ := zeroed(t.TX_START_READ);
-    y.TX_GBTX_ADDR := zeroed(t.TX_GBTX_ADDR);
-    y.TX_REGISTER_ADDR := zeroed(t.TX_REGISTER_ADDR);
-    y.TX_NUM_BYTES_TO_READ := zeroed(t.TX_NUM_BYTES_TO_READ);
-    y.TX_DATA_TO_GBTX := zeroed(t.TX_DATA_TO_GBTX);
-    y.TX_WR := zeroed(t.TX_WR);
-    y.RX_RD := zeroed(t.RX_RD);
+    y.IC := zeroed(t.IC);
     y.TX_CMD := zeroed(t.TX_CMD);
     y.TX_ADDRESS := zeroed(t.TX_ADDRESS);
     y.TX_TRANSID := zeroed(t.TX_TRANSID);
@@ -2190,23 +2508,37 @@ package body HAL_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural is
+  function len(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + len(x.RX_DATA_FROM_GBTX);
     l := l + len(x.TX_READY);
-    l := l + len(x.RX_EMPTY);
+    l := l + len(x.RX_DATA);
+    l := l + len(x.RX_CHIP_ADR);
+    l := l + len(x.RX_UP_PARITY_OK);
+    l := l + len(x.RX_DOWN_PARITY_OK);
+    l := l + len(x.RX_ERR);
+    l := l + len(x.RX_VALID);
+    l := l + len(x.RX_REG_ADR);
+    l := l + len(x.RX_LENGTH);
     return l;
   end function len;
-  function width(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural is
+  function width(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.RX_DATA_FROM_GBTX);
     l := l + width(x.TX_READY);
-    l := l + width(x.RX_EMPTY);
+    l := l + width(x.RX_DATA);
+    l := l + width(x.RX_CHIP_ADR);
+    l := l + width(x.RX_UP_PARITY_OK);
+    l := l + width(x.RX_DOWN_PARITY_OK);
+    l := l + width(x.RX_ERR);
+    l := l + width(x.RX_VALID);
+    l := l + width(x.RX_REG_ADR);
+    l := l + width(x.RX_LENGTH);
     return l;
   end function width;
-  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_MON_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -2215,17 +2547,45 @@ package body HAL_CTRL is
       left := left + len(x.RX_DATA_FROM_GBTX);
       assign(y(left to left+len(x.TX_READY)-1), vectorify(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
       left := left + len(x.TX_READY);
-      assign(y(left to left+len(x.RX_EMPTY)-1), vectorify(x.RX_EMPTY, y(left to left+len(x.RX_EMPTY)-1)));
+      assign(y(left to left+len(x.RX_DATA)-1), vectorify(x.RX_DATA, y(left to left+len(x.RX_DATA)-1)));
+      left := left + len(x.RX_DATA);
+      assign(y(left to left+len(x.RX_CHIP_ADR)-1), vectorify(x.RX_CHIP_ADR, y(left to left+len(x.RX_CHIP_ADR)-1)));
+      left := left + len(x.RX_CHIP_ADR);
+      assign(y(left to left+len(x.RX_UP_PARITY_OK)-1), vectorify(x.RX_UP_PARITY_OK, y(left to left+len(x.RX_UP_PARITY_OK)-1)));
+      left := left + len(x.RX_UP_PARITY_OK);
+      assign(y(left to left+len(x.RX_DOWN_PARITY_OK)-1), vectorify(x.RX_DOWN_PARITY_OK, y(left to left+len(x.RX_DOWN_PARITY_OK)-1)));
+      left := left + len(x.RX_DOWN_PARITY_OK);
+      assign(y(left to left+len(x.RX_ERR)-1), vectorify(x.RX_ERR, y(left to left+len(x.RX_ERR)-1)));
+      left := left + len(x.RX_ERR);
+      assign(y(left to left+len(x.RX_VALID)-1), vectorify(x.RX_VALID, y(left to left+len(x.RX_VALID)-1)));
+      left := left + len(x.RX_VALID);
+      assign(y(left to left+len(x.RX_REG_ADR)-1), vectorify(x.RX_REG_ADR, y(left to left+len(x.RX_REG_ADR)-1)));
+      left := left + len(x.RX_REG_ADR);
+      assign(y(left to left+len(x.RX_LENGTH)-1), vectorify(x.RX_LENGTH, y(left to left+len(x.RX_LENGTH)-1)));
     else
       assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), vectorify(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
       left := left - len(x.RX_DATA_FROM_GBTX);
       assign(y(left downto left-len(x.TX_READY)+1), vectorify(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
       left := left - len(x.TX_READY);
-      assign(y(left downto left-len(x.RX_EMPTY)+1), vectorify(x.RX_EMPTY, y(left downto left-len(x.RX_EMPTY)+1)));
+      assign(y(left downto left-len(x.RX_DATA)+1), vectorify(x.RX_DATA, y(left downto left-len(x.RX_DATA)+1)));
+      left := left - len(x.RX_DATA);
+      assign(y(left downto left-len(x.RX_CHIP_ADR)+1), vectorify(x.RX_CHIP_ADR, y(left downto left-len(x.RX_CHIP_ADR)+1)));
+      left := left - len(x.RX_CHIP_ADR);
+      assign(y(left downto left-len(x.RX_UP_PARITY_OK)+1), vectorify(x.RX_UP_PARITY_OK, y(left downto left-len(x.RX_UP_PARITY_OK)+1)));
+      left := left - len(x.RX_UP_PARITY_OK);
+      assign(y(left downto left-len(x.RX_DOWN_PARITY_OK)+1), vectorify(x.RX_DOWN_PARITY_OK, y(left downto left-len(x.RX_DOWN_PARITY_OK)+1)));
+      left := left - len(x.RX_DOWN_PARITY_OK);
+      assign(y(left downto left-len(x.RX_ERR)+1), vectorify(x.RX_ERR, y(left downto left-len(x.RX_ERR)+1)));
+      left := left - len(x.RX_ERR);
+      assign(y(left downto left-len(x.RX_VALID)+1), vectorify(x.RX_VALID, y(left downto left-len(x.RX_VALID)+1)));
+      left := left - len(x.RX_VALID);
+      assign(y(left downto left-len(x.RX_REG_ADR)+1), vectorify(x.RX_REG_ADR, y(left downto left-len(x.RX_REG_ADR)+1)));
+      left := left - len(x.RX_REG_ADR);
+      assign(y(left downto left-len(x.RX_LENGTH)+1), vectorify(x.RX_LENGTH, y(left downto left-len(x.RX_LENGTH)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: HAL_CSM_CSM_SC_SLAVE_MON_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_IC_MON_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
@@ -2234,18 +2594,46 @@ package body HAL_CTRL is
       left := left + len(x.RX_DATA_FROM_GBTX);
       assign(y(left to left+len(x.TX_READY)-1), convert(x.TX_READY, y(left to left+len(x.TX_READY)-1)));
       left := left + len(x.TX_READY);
-      assign(y(left to left+len(x.RX_EMPTY)-1), convert(x.RX_EMPTY, y(left to left+len(x.RX_EMPTY)-1)));
+      assign(y(left to left+len(x.RX_DATA)-1), convert(x.RX_DATA, y(left to left+len(x.RX_DATA)-1)));
+      left := left + len(x.RX_DATA);
+      assign(y(left to left+len(x.RX_CHIP_ADR)-1), convert(x.RX_CHIP_ADR, y(left to left+len(x.RX_CHIP_ADR)-1)));
+      left := left + len(x.RX_CHIP_ADR);
+      assign(y(left to left+len(x.RX_UP_PARITY_OK)-1), convert(x.RX_UP_PARITY_OK, y(left to left+len(x.RX_UP_PARITY_OK)-1)));
+      left := left + len(x.RX_UP_PARITY_OK);
+      assign(y(left to left+len(x.RX_DOWN_PARITY_OK)-1), convert(x.RX_DOWN_PARITY_OK, y(left to left+len(x.RX_DOWN_PARITY_OK)-1)));
+      left := left + len(x.RX_DOWN_PARITY_OK);
+      assign(y(left to left+len(x.RX_ERR)-1), convert(x.RX_ERR, y(left to left+len(x.RX_ERR)-1)));
+      left := left + len(x.RX_ERR);
+      assign(y(left to left+len(x.RX_VALID)-1), convert(x.RX_VALID, y(left to left+len(x.RX_VALID)-1)));
+      left := left + len(x.RX_VALID);
+      assign(y(left to left+len(x.RX_REG_ADR)-1), convert(x.RX_REG_ADR, y(left to left+len(x.RX_REG_ADR)-1)));
+      left := left + len(x.RX_REG_ADR);
+      assign(y(left to left+len(x.RX_LENGTH)-1), convert(x.RX_LENGTH, y(left to left+len(x.RX_LENGTH)-1)));
     else
       assign(y(left downto left-len(x.RX_DATA_FROM_GBTX)+1), convert(x.RX_DATA_FROM_GBTX, y(left downto left-len(x.RX_DATA_FROM_GBTX)+1)));
       left := left - len(x.RX_DATA_FROM_GBTX);
       assign(y(left downto left-len(x.TX_READY)+1), convert(x.TX_READY, y(left downto left-len(x.TX_READY)+1)));
       left := left - len(x.TX_READY);
-      assign(y(left downto left-len(x.RX_EMPTY)+1), convert(x.RX_EMPTY, y(left downto left-len(x.RX_EMPTY)+1)));
+      assign(y(left downto left-len(x.RX_DATA)+1), convert(x.RX_DATA, y(left downto left-len(x.RX_DATA)+1)));
+      left := left - len(x.RX_DATA);
+      assign(y(left downto left-len(x.RX_CHIP_ADR)+1), convert(x.RX_CHIP_ADR, y(left downto left-len(x.RX_CHIP_ADR)+1)));
+      left := left - len(x.RX_CHIP_ADR);
+      assign(y(left downto left-len(x.RX_UP_PARITY_OK)+1), convert(x.RX_UP_PARITY_OK, y(left downto left-len(x.RX_UP_PARITY_OK)+1)));
+      left := left - len(x.RX_UP_PARITY_OK);
+      assign(y(left downto left-len(x.RX_DOWN_PARITY_OK)+1), convert(x.RX_DOWN_PARITY_OK, y(left downto left-len(x.RX_DOWN_PARITY_OK)+1)));
+      left := left - len(x.RX_DOWN_PARITY_OK);
+      assign(y(left downto left-len(x.RX_ERR)+1), convert(x.RX_ERR, y(left downto left-len(x.RX_ERR)+1)));
+      left := left - len(x.RX_ERR);
+      assign(y(left downto left-len(x.RX_VALID)+1), convert(x.RX_VALID, y(left downto left-len(x.RX_VALID)+1)));
+      left := left - len(x.RX_VALID);
+      assign(y(left downto left-len(x.RX_REG_ADR)+1), convert(x.RX_REG_ADR, y(left downto left-len(x.RX_REG_ADR)+1)));
+      left := left - len(x.RX_REG_ADR);
+      assign(y(left downto left-len(x.RX_LENGTH)+1), convert(x.RX_LENGTH, y(left downto left-len(x.RX_LENGTH)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
-    variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -2253,18 +2641,46 @@ package body HAL_CTRL is
       left := left + len(y.RX_DATA_FROM_GBTX);
       y.TX_READY := structify(x(left to left+len(y.TX_READY)-1), y.TX_READY);
       left := left + len(y.TX_READY);
-      y.RX_EMPTY := structify(x(left to left+len(y.RX_EMPTY)-1), y.RX_EMPTY);
+      y.RX_DATA := structify(x(left to left+len(y.RX_DATA)-1), y.RX_DATA);
+      left := left + len(y.RX_DATA);
+      y.RX_CHIP_ADR := structify(x(left to left+len(y.RX_CHIP_ADR)-1), y.RX_CHIP_ADR);
+      left := left + len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := structify(x(left to left+len(y.RX_UP_PARITY_OK)-1), y.RX_UP_PARITY_OK);
+      left := left + len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := structify(x(left to left+len(y.RX_DOWN_PARITY_OK)-1), y.RX_DOWN_PARITY_OK);
+      left := left + len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := structify(x(left to left+len(y.RX_ERR)-1), y.RX_ERR);
+      left := left + len(y.RX_ERR);
+      y.RX_VALID := structify(x(left to left+len(y.RX_VALID)-1), y.RX_VALID);
+      left := left + len(y.RX_VALID);
+      y.RX_REG_ADR := structify(x(left to left+len(y.RX_REG_ADR)-1), y.RX_REG_ADR);
+      left := left + len(y.RX_REG_ADR);
+      y.RX_LENGTH := structify(x(left to left+len(y.RX_LENGTH)-1), y.RX_LENGTH);
     else
       y.RX_DATA_FROM_GBTX := structify(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
       left := left - len(y.RX_DATA_FROM_GBTX);
       y.TX_READY := structify(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
       left := left - len(y.TX_READY);
-      y.RX_EMPTY := structify(x(left downto left-len(y.RX_EMPTY)+1), y.RX_EMPTY);
+      y.RX_DATA := structify(x(left downto left-len(y.RX_DATA)+1), y.RX_DATA);
+      left := left - len(y.RX_DATA);
+      y.RX_CHIP_ADR := structify(x(left downto left-len(y.RX_CHIP_ADR)+1), y.RX_CHIP_ADR);
+      left := left - len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := structify(x(left downto left-len(y.RX_UP_PARITY_OK)+1), y.RX_UP_PARITY_OK);
+      left := left - len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := structify(x(left downto left-len(y.RX_DOWN_PARITY_OK)+1), y.RX_DOWN_PARITY_OK);
+      left := left - len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := structify(x(left downto left-len(y.RX_ERR)+1), y.RX_ERR);
+      left := left - len(y.RX_ERR);
+      y.RX_VALID := structify(x(left downto left-len(y.RX_VALID)+1), y.RX_VALID);
+      left := left - len(y.RX_VALID);
+      y.RX_REG_ADR := structify(x(left downto left-len(y.RX_REG_ADR)+1), y.RX_REG_ADR);
+      left := left - len(y.RX_REG_ADR);
+      y.RX_LENGTH := structify(x(left downto left-len(y.RX_LENGTH)+1), y.RX_LENGTH);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
-    variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
@@ -2272,38 +2688,78 @@ package body HAL_CTRL is
       left := left + len(y.RX_DATA_FROM_GBTX);
       y.TX_READY := convert(x(left to left+len(y.TX_READY)-1), y.TX_READY);
       left := left + len(y.TX_READY);
-      y.RX_EMPTY := convert(x(left to left+len(y.RX_EMPTY)-1), y.RX_EMPTY);
+      y.RX_DATA := convert(x(left to left+len(y.RX_DATA)-1), y.RX_DATA);
+      left := left + len(y.RX_DATA);
+      y.RX_CHIP_ADR := convert(x(left to left+len(y.RX_CHIP_ADR)-1), y.RX_CHIP_ADR);
+      left := left + len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := convert(x(left to left+len(y.RX_UP_PARITY_OK)-1), y.RX_UP_PARITY_OK);
+      left := left + len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := convert(x(left to left+len(y.RX_DOWN_PARITY_OK)-1), y.RX_DOWN_PARITY_OK);
+      left := left + len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := convert(x(left to left+len(y.RX_ERR)-1), y.RX_ERR);
+      left := left + len(y.RX_ERR);
+      y.RX_VALID := convert(x(left to left+len(y.RX_VALID)-1), y.RX_VALID);
+      left := left + len(y.RX_VALID);
+      y.RX_REG_ADR := convert(x(left to left+len(y.RX_REG_ADR)-1), y.RX_REG_ADR);
+      left := left + len(y.RX_REG_ADR);
+      y.RX_LENGTH := convert(x(left to left+len(y.RX_LENGTH)-1), y.RX_LENGTH);
     else
       y.RX_DATA_FROM_GBTX := convert(x(left downto left-len(y.RX_DATA_FROM_GBTX)+1), y.RX_DATA_FROM_GBTX);
       left := left - len(y.RX_DATA_FROM_GBTX);
       y.TX_READY := convert(x(left downto left-len(y.TX_READY)+1), y.TX_READY);
       left := left - len(y.TX_READY);
-      y.RX_EMPTY := convert(x(left downto left-len(y.RX_EMPTY)+1), y.RX_EMPTY);
+      y.RX_DATA := convert(x(left downto left-len(y.RX_DATA)+1), y.RX_DATA);
+      left := left - len(y.RX_DATA);
+      y.RX_CHIP_ADR := convert(x(left downto left-len(y.RX_CHIP_ADR)+1), y.RX_CHIP_ADR);
+      left := left - len(y.RX_CHIP_ADR);
+      y.RX_UP_PARITY_OK := convert(x(left downto left-len(y.RX_UP_PARITY_OK)+1), y.RX_UP_PARITY_OK);
+      left := left - len(y.RX_UP_PARITY_OK);
+      y.RX_DOWN_PARITY_OK := convert(x(left downto left-len(y.RX_DOWN_PARITY_OK)+1), y.RX_DOWN_PARITY_OK);
+      left := left - len(y.RX_DOWN_PARITY_OK);
+      y.RX_ERR := convert(x(left downto left-len(y.RX_ERR)+1), y.RX_ERR);
+      left := left - len(y.RX_ERR);
+      y.RX_VALID := convert(x(left downto left-len(y.RX_VALID)+1), y.RX_VALID);
+      left := left - len(y.RX_VALID);
+      y.RX_REG_ADR := convert(x(left downto left-len(y.RX_REG_ADR)+1), y.RX_REG_ADR);
+      left := left - len(y.RX_REG_ADR);
+      y.RX_LENGTH := convert(x(left downto left-len(y.RX_LENGTH)+1), y.RX_LENGTH);
     end if;
     return y;
   end function convert;
-  function nullify(t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
-  variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  function nullify(t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
   begin
     y.RX_DATA_FROM_GBTX := nullify(t.RX_DATA_FROM_GBTX);
     y.TX_READY := nullify(t.TX_READY);
-    y.RX_EMPTY := nullify(t.RX_EMPTY);
+    y.RX_DATA := nullify(t.RX_DATA);
+    y.RX_CHIP_ADR := nullify(t.RX_CHIP_ADR);
+    y.RX_UP_PARITY_OK := nullify(t.RX_UP_PARITY_OK);
+    y.RX_DOWN_PARITY_OK := nullify(t.RX_DOWN_PARITY_OK);
+    y.RX_ERR := nullify(t.RX_ERR);
+    y.RX_VALID := nullify(t.RX_VALID);
+    y.RX_REG_ADR := nullify(t.RX_REG_ADR);
+    y.RX_LENGTH := nullify(t.RX_LENGTH);
     return y;
   end function nullify;
-  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
-  variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_IC_MON_t) return HAL_CSM_CSM_SC_SLAVE_IC_MON_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_IC_MON_t;
   begin
     y.RX_DATA_FROM_GBTX := zeroed(t.RX_DATA_FROM_GBTX);
     y.TX_READY := zeroed(t.TX_READY);
-    y.RX_EMPTY := zeroed(t.RX_EMPTY);
+    y.RX_DATA := zeroed(t.RX_DATA);
+    y.RX_CHIP_ADR := zeroed(t.RX_CHIP_ADR);
+    y.RX_UP_PARITY_OK := zeroed(t.RX_UP_PARITY_OK);
+    y.RX_DOWN_PARITY_OK := zeroed(t.RX_DOWN_PARITY_OK);
+    y.RX_ERR := zeroed(t.RX_ERR);
+    y.RX_VALID := zeroed(t.RX_VALID);
+    y.RX_REG_ADR := zeroed(t.RX_REG_ADR);
+    y.RX_LENGTH := zeroed(t.RX_LENGTH);
     return y;
   end function zeroed;
 
-  function len(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural is
+  function len(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.TX_RESET);
-    l := l + len(x.RX_RESET);
     l := l + len(x.TX_START_WRITE);
     l := l + len(x.TX_START_READ);
     l := l + len(x.TX_GBTX_ADDR);
@@ -2311,14 +2767,11 @@ package body HAL_CTRL is
     l := l + len(x.TX_NUM_BYTES_TO_READ);
     l := l + len(x.TX_DATA_TO_GBTX);
     l := l + len(x.TX_WR);
-    l := l + len(x.RX_RD);
     return l;
   end function len;
-  function width(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural is
+  function width(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.TX_RESET);
-    l := l + width(x.RX_RESET);
     l := l + width(x.TX_START_WRITE);
     l := l + width(x.TX_START_READ);
     l := l + width(x.TX_GBTX_ADDR);
@@ -2326,18 +2779,13 @@ package body HAL_CTRL is
     l := l + width(x.TX_NUM_BYTES_TO_READ);
     l := l + width(x.TX_DATA_TO_GBTX);
     l := l + width(x.TX_WR);
-    l := l + width(x.RX_RD);
     return l;
   end function width;
-  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.TX_RESET)-1), vectorify(x.TX_RESET, y(left to left+len(x.TX_RESET)-1)));
-      left := left + len(x.TX_RESET);
-      assign(y(left to left+len(x.RX_RESET)-1), vectorify(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
-      left := left + len(x.RX_RESET);
       assign(y(left to left+len(x.TX_START_WRITE)-1), vectorify(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
       left := left + len(x.TX_START_WRITE);
       assign(y(left to left+len(x.TX_START_READ)-1), vectorify(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
@@ -2351,13 +2799,7 @@ package body HAL_CTRL is
       assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), vectorify(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
       left := left + len(x.TX_DATA_TO_GBTX);
       assign(y(left to left+len(x.TX_WR)-1), vectorify(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
-      left := left + len(x.TX_WR);
-      assign(y(left to left+len(x.RX_RD)-1), vectorify(x.RX_RD, y(left to left+len(x.RX_RD)-1)));
     else
-      assign(y(left downto left-len(x.TX_RESET)+1), vectorify(x.TX_RESET, y(left downto left-len(x.TX_RESET)+1)));
-      left := left - len(x.TX_RESET);
-      assign(y(left downto left-len(x.RX_RESET)+1), vectorify(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
-      left := left - len(x.RX_RESET);
       assign(y(left downto left-len(x.TX_START_WRITE)+1), vectorify(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
       left := left - len(x.TX_START_WRITE);
       assign(y(left downto left-len(x.TX_START_READ)+1), vectorify(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
@@ -2371,20 +2813,14 @@ package body HAL_CTRL is
       assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), vectorify(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
       left := left - len(x.TX_DATA_TO_GBTX);
       assign(y(left downto left-len(x.TX_WR)+1), vectorify(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
-      left := left - len(x.TX_WR);
-      assign(y(left downto left-len(x.RX_RD)+1), vectorify(x.RX_RD, y(left downto left-len(x.RX_RD)+1)));
     end if;
     return y;
   end function vectorify;
-  function convert(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t; t: std_logic_vector) return std_logic_vector is
     variable left : natural := t'left;
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.TX_RESET)-1), convert(x.TX_RESET, y(left to left+len(x.TX_RESET)-1)));
-      left := left + len(x.TX_RESET);
-      assign(y(left to left+len(x.RX_RESET)-1), convert(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
-      left := left + len(x.RX_RESET);
       assign(y(left to left+len(x.TX_START_WRITE)-1), convert(x.TX_START_WRITE, y(left to left+len(x.TX_START_WRITE)-1)));
       left := left + len(x.TX_START_WRITE);
       assign(y(left to left+len(x.TX_START_READ)-1), convert(x.TX_START_READ, y(left to left+len(x.TX_START_READ)-1)));
@@ -2398,13 +2834,7 @@ package body HAL_CTRL is
       assign(y(left to left+len(x.TX_DATA_TO_GBTX)-1), convert(x.TX_DATA_TO_GBTX, y(left to left+len(x.TX_DATA_TO_GBTX)-1)));
       left := left + len(x.TX_DATA_TO_GBTX);
       assign(y(left to left+len(x.TX_WR)-1), convert(x.TX_WR, y(left to left+len(x.TX_WR)-1)));
-      left := left + len(x.TX_WR);
-      assign(y(left to left+len(x.RX_RD)-1), convert(x.RX_RD, y(left to left+len(x.RX_RD)-1)));
     else
-      assign(y(left downto left-len(x.TX_RESET)+1), convert(x.TX_RESET, y(left downto left-len(x.TX_RESET)+1)));
-      left := left - len(x.TX_RESET);
-      assign(y(left downto left-len(x.RX_RESET)+1), convert(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
-      left := left - len(x.RX_RESET);
       assign(y(left downto left-len(x.TX_START_WRITE)+1), convert(x.TX_START_WRITE, y(left downto left-len(x.TX_START_WRITE)+1)));
       left := left - len(x.TX_START_WRITE);
       assign(y(left downto left-len(x.TX_START_READ)+1), convert(x.TX_START_READ, y(left downto left-len(x.TX_START_READ)+1)));
@@ -2418,20 +2848,14 @@ package body HAL_CTRL is
       assign(y(left downto left-len(x.TX_DATA_TO_GBTX)+1), convert(x.TX_DATA_TO_GBTX, y(left downto left-len(x.TX_DATA_TO_GBTX)+1)));
       left := left - len(x.TX_DATA_TO_GBTX);
       assign(y(left downto left-len(x.TX_WR)+1), convert(x.TX_WR, y(left downto left-len(x.TX_WR)+1)));
-      left := left - len(x.TX_WR);
-      assign(y(left downto left-len(x.RX_RD)+1), convert(x.RX_RD, y(left downto left-len(x.RX_RD)+1)));
     end if;
     return y;
   end function convert;
-  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_CTRL_t is
-    variable y: HAL_CSM_CSM_SC_SLAVE_CTRL_t;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.TX_RESET := structify(x(left to left+len(y.TX_RESET)-1), y.TX_RESET);
-      left := left + len(y.TX_RESET);
-      y.RX_RESET := structify(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
-      left := left + len(y.RX_RESET);
       y.TX_START_WRITE := structify(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
       left := left + len(y.TX_START_WRITE);
       y.TX_START_READ := structify(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
@@ -2445,13 +2869,7 @@ package body HAL_CTRL is
       y.TX_DATA_TO_GBTX := structify(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
       left := left + len(y.TX_DATA_TO_GBTX);
       y.TX_WR := structify(x(left to left+len(y.TX_WR)-1), y.TX_WR);
-      left := left + len(y.TX_WR);
-      y.RX_RD := structify(x(left to left+len(y.RX_RD)-1), y.RX_RD);
     else
-      y.TX_RESET := structify(x(left downto left-len(y.TX_RESET)+1), y.TX_RESET);
-      left := left - len(y.TX_RESET);
-      y.RX_RESET := structify(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
-      left := left - len(y.RX_RESET);
       y.TX_START_WRITE := structify(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
       left := left - len(y.TX_START_WRITE);
       y.TX_START_READ := structify(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
@@ -2465,20 +2883,14 @@ package body HAL_CTRL is
       y.TX_DATA_TO_GBTX := structify(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
       left := left - len(y.TX_DATA_TO_GBTX);
       y.TX_WR := structify(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
-      left := left - len(y.TX_WR);
-      y.RX_RD := structify(x(left downto left-len(y.RX_RD)+1), y.RX_RD);
     end if;
     return y;
   end function structify;
-  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_CTRL_t is
-    variable y: HAL_CSM_CSM_SC_SLAVE_CTRL_t;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.TX_RESET := convert(x(left to left+len(y.TX_RESET)-1), y.TX_RESET);
-      left := left + len(y.TX_RESET);
-      y.RX_RESET := convert(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
-      left := left + len(y.RX_RESET);
       y.TX_START_WRITE := convert(x(left to left+len(y.TX_START_WRITE)-1), y.TX_START_WRITE);
       left := left + len(y.TX_START_WRITE);
       y.TX_START_READ := convert(x(left to left+len(y.TX_START_READ)-1), y.TX_START_READ);
@@ -2492,13 +2904,7 @@ package body HAL_CTRL is
       y.TX_DATA_TO_GBTX := convert(x(left to left+len(y.TX_DATA_TO_GBTX)-1), y.TX_DATA_TO_GBTX);
       left := left + len(y.TX_DATA_TO_GBTX);
       y.TX_WR := convert(x(left to left+len(y.TX_WR)-1), y.TX_WR);
-      left := left + len(y.TX_WR);
-      y.RX_RD := convert(x(left to left+len(y.RX_RD)-1), y.RX_RD);
     else
-      y.TX_RESET := convert(x(left downto left-len(y.TX_RESET)+1), y.TX_RESET);
-      left := left - len(y.TX_RESET);
-      y.RX_RESET := convert(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
-      left := left - len(y.RX_RESET);
       y.TX_START_WRITE := convert(x(left downto left-len(y.TX_START_WRITE)+1), y.TX_START_WRITE);
       left := left - len(y.TX_START_WRITE);
       y.TX_START_READ := convert(x(left downto left-len(y.TX_START_READ)+1), y.TX_START_READ);
@@ -2512,8 +2918,192 @@ package body HAL_CTRL is
       y.TX_DATA_TO_GBTX := convert(x(left downto left-len(y.TX_DATA_TO_GBTX)+1), y.TX_DATA_TO_GBTX);
       left := left - len(y.TX_DATA_TO_GBTX);
       y.TX_WR := convert(x(left downto left-len(y.TX_WR)+1), y.TX_WR);
-      left := left - len(y.TX_WR);
-      y.RX_RD := convert(x(left downto left-len(y.RX_RD)+1), y.RX_RD);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  begin
+    y.TX_START_WRITE := nullify(t.TX_START_WRITE);
+    y.TX_START_READ := nullify(t.TX_START_READ);
+    y.TX_GBTX_ADDR := nullify(t.TX_GBTX_ADDR);
+    y.TX_REGISTER_ADDR := nullify(t.TX_REGISTER_ADDR);
+    y.TX_NUM_BYTES_TO_READ := nullify(t.TX_NUM_BYTES_TO_READ);
+    y.TX_DATA_TO_GBTX := nullify(t.TX_DATA_TO_GBTX);
+    y.TX_WR := nullify(t.TX_WR);
+    return y;
+  end function nullify;
+  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_IC_CTRL_t;
+  begin
+    y.TX_START_WRITE := zeroed(t.TX_START_WRITE);
+    y.TX_START_READ := zeroed(t.TX_START_READ);
+    y.TX_GBTX_ADDR := zeroed(t.TX_GBTX_ADDR);
+    y.TX_REGISTER_ADDR := zeroed(t.TX_REGISTER_ADDR);
+    y.TX_NUM_BYTES_TO_READ := zeroed(t.TX_NUM_BYTES_TO_READ);
+    y.TX_DATA_TO_GBTX := zeroed(t.TX_DATA_TO_GBTX);
+    y.TX_WR := zeroed(t.TX_WR);
+    return y;
+  end function zeroed;
+
+  function len(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.IC);
+    return l;
+  end function len;
+  function width(x: HAL_CSM_CSM_SC_SLAVE_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.IC);
+    return l;
+  end function width;
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.IC)-1), vectorify(x.IC, y(left to left+len(x.IC)-1)));
+    else
+      assign(y(left downto left-len(x.IC)+1), vectorify(x.IC, y(left downto left-len(x.IC)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.IC)-1), convert(x.IC, y(left to left+len(x.IC)-1)));
+    else
+      assign(y(left downto left-len(x.IC)+1), convert(x.IC, y(left downto left-len(x.IC)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.IC := structify(x(left to left+len(y.IC)-1), y.IC);
+    else
+      y.IC := structify(x(left downto left-len(y.IC)+1), y.IC);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.IC := convert(x(left to left+len(y.IC)-1), y.IC);
+    else
+      y.IC := convert(x(left downto left-len(y.IC)+1), y.IC);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  begin
+    y.IC := nullify(t.IC);
+    return y;
+  end function nullify;
+  function zeroed(t: HAL_CSM_CSM_SC_SLAVE_MON_t) return HAL_CSM_CSM_SC_SLAVE_MON_t is
+  variable y: HAL_CSM_CSM_SC_SLAVE_MON_t;
+  begin
+    y.IC := zeroed(t.IC);
+    return y;
+  end function zeroed;
+
+  function len(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.TX_RESET);
+    l := l + len(x.RX_RESET);
+    l := l + len(x.IC);
+    return l;
+  end function len;
+  function width(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.TX_RESET);
+    l := l + width(x.RX_RESET);
+    l := l + width(x.IC);
+    return l;
+  end function width;
+  function vectorify(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.TX_RESET)-1), vectorify(x.TX_RESET, y(left to left+len(x.TX_RESET)-1)));
+      left := left + len(x.TX_RESET);
+      assign(y(left to left+len(x.RX_RESET)-1), vectorify(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
+      left := left + len(x.RX_RESET);
+      assign(y(left to left+len(x.IC)-1), vectorify(x.IC, y(left to left+len(x.IC)-1)));
+    else
+      assign(y(left downto left-len(x.TX_RESET)+1), vectorify(x.TX_RESET, y(left downto left-len(x.TX_RESET)+1)));
+      left := left - len(x.TX_RESET);
+      assign(y(left downto left-len(x.RX_RESET)+1), vectorify(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
+      left := left - len(x.RX_RESET);
+      assign(y(left downto left-len(x.IC)+1), vectorify(x.IC, y(left downto left-len(x.IC)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: HAL_CSM_CSM_SC_SLAVE_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.TX_RESET)-1), convert(x.TX_RESET, y(left to left+len(x.TX_RESET)-1)));
+      left := left + len(x.TX_RESET);
+      assign(y(left to left+len(x.RX_RESET)-1), convert(x.RX_RESET, y(left to left+len(x.RX_RESET)-1)));
+      left := left + len(x.RX_RESET);
+      assign(y(left to left+len(x.IC)-1), convert(x.IC, y(left to left+len(x.IC)-1)));
+    else
+      assign(y(left downto left-len(x.TX_RESET)+1), convert(x.TX_RESET, y(left downto left-len(x.TX_RESET)+1)));
+      left := left - len(x.TX_RESET);
+      assign(y(left downto left-len(x.RX_RESET)+1), convert(x.RX_RESET, y(left downto left-len(x.RX_RESET)+1)));
+      left := left - len(x.RX_RESET);
+      assign(y(left downto left-len(x.IC)+1), convert(x.IC, y(left downto left-len(x.IC)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.TX_RESET := structify(x(left to left+len(y.TX_RESET)-1), y.TX_RESET);
+      left := left + len(y.TX_RESET);
+      y.RX_RESET := structify(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
+      left := left + len(y.RX_RESET);
+      y.IC := structify(x(left to left+len(y.IC)-1), y.IC);
+    else
+      y.TX_RESET := structify(x(left downto left-len(y.TX_RESET)+1), y.TX_RESET);
+      left := left - len(y.TX_RESET);
+      y.RX_RESET := structify(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
+      left := left - len(y.RX_RESET);
+      y.IC := structify(x(left downto left-len(y.IC)+1), y.IC);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_CTRL_t is
+    variable y: HAL_CSM_CSM_SC_SLAVE_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.TX_RESET := convert(x(left to left+len(y.TX_RESET)-1), y.TX_RESET);
+      left := left + len(y.TX_RESET);
+      y.RX_RESET := convert(x(left to left+len(y.RX_RESET)-1), y.RX_RESET);
+      left := left + len(y.RX_RESET);
+      y.IC := convert(x(left to left+len(y.IC)-1), y.IC);
+    else
+      y.TX_RESET := convert(x(left downto left-len(y.TX_RESET)+1), y.TX_RESET);
+      left := left - len(y.TX_RESET);
+      y.RX_RESET := convert(x(left downto left-len(y.RX_RESET)+1), y.RX_RESET);
+      left := left - len(y.RX_RESET);
+      y.IC := convert(x(left downto left-len(y.IC)+1), y.IC);
     end if;
     return y;
   end function convert;
@@ -2522,14 +3112,7 @@ package body HAL_CTRL is
   begin
     y.TX_RESET := nullify(t.TX_RESET);
     y.RX_RESET := nullify(t.RX_RESET);
-    y.TX_START_WRITE := nullify(t.TX_START_WRITE);
-    y.TX_START_READ := nullify(t.TX_START_READ);
-    y.TX_GBTX_ADDR := nullify(t.TX_GBTX_ADDR);
-    y.TX_REGISTER_ADDR := nullify(t.TX_REGISTER_ADDR);
-    y.TX_NUM_BYTES_TO_READ := nullify(t.TX_NUM_BYTES_TO_READ);
-    y.TX_DATA_TO_GBTX := nullify(t.TX_DATA_TO_GBTX);
-    y.TX_WR := nullify(t.TX_WR);
-    y.RX_RD := nullify(t.RX_RD);
+    y.IC := nullify(t.IC);
     return y;
   end function nullify;
   function zeroed(t: HAL_CSM_CSM_SC_SLAVE_CTRL_t) return HAL_CSM_CSM_SC_SLAVE_CTRL_t is
@@ -2537,14 +3120,7 @@ package body HAL_CTRL is
   begin
     y.TX_RESET := zeroed(t.TX_RESET);
     y.RX_RESET := zeroed(t.RX_RESET);
-    y.TX_START_WRITE := zeroed(t.TX_START_WRITE);
-    y.TX_START_READ := zeroed(t.TX_START_READ);
-    y.TX_GBTX_ADDR := zeroed(t.TX_GBTX_ADDR);
-    y.TX_REGISTER_ADDR := zeroed(t.TX_REGISTER_ADDR);
-    y.TX_NUM_BYTES_TO_READ := zeroed(t.TX_NUM_BYTES_TO_READ);
-    y.TX_DATA_TO_GBTX := zeroed(t.TX_DATA_TO_GBTX);
-    y.TX_WR := zeroed(t.TX_WR);
-    y.RX_RD := zeroed(t.RX_RD);
+    y.IC := zeroed(t.IC);
     return y;
   end function zeroed;
 

@@ -134,7 +134,7 @@ architecture beh of ucm is
 
   signal uCM2pl_av            : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
-  signal csw_control          : ucm_csw_control_at(c_MAX_NUM_SL -1 downto 0);
+  signal csw_control_av       : ucm_csw_control_avt(c_MAX_NUM_SL -1 downto 0);
   signal pam_CSW_control      : ucm_pam_control_at(c_NUM_THREADS -1 downto 0);
   signal proc_info_av          : ucm_proc_info_avt(c_NUM_THREADS -1 downto 0);
 
@@ -236,7 +236,7 @@ begin
     --
     i_prepro2ctrl_av  => prepro2ctrl_av,
     --
-    o_csw_ctrl        => csw_control,
+    o_csw_ctrl_av     => csw_control_av,
     o_pam_ctrl        => pam_CSW_control,
     -- o_proc_info       => proc_info_av,
     o_proc_info_av    => proc_info_av,
@@ -287,7 +287,7 @@ begin
     rst         => local_rst,
     glob_en     => local_en,
     
-    i_control   => csw_control,
+    i_control_av   => csw_control_av,
     -- data
     i_data      => csw_main_in_av,
     o_data      => csw_main_out_av

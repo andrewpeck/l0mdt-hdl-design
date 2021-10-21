@@ -188,7 +188,6 @@ architecture beh of ult_tp is
 
   signal bx : std_logic := '0';
 
-
 begin
 
   h2s_ctrl_v <= vectorify(h2s_ctrl,h2s_ctrl_v);

@@ -72,13 +72,52 @@ available packages being given at [http://lcginfo.cern.ch](http://lcginfo.cern.c
 
 ## Custom python installation
 
-If you instead want to install python3 yourself, there are many places online showing
-how to do this. For example, [here](https://realpython.com/installing-python/).
 
-Additionally, you can find an installation script at [this repository](https://github.com/dantrim/danny_installs_python)
-that will install python for you. Beware, python compilation depends on external system libraries and so
-running the script at that repository straight out of the box may fail. Use it as a guide. It has been tested
-on MacOSX as well as CentOS7.
+If you need to install python3, there are many places online showing how to do this.
+For example, [here](https://realpython.com/installing-python/).
+
+One easy way to do it is by installing 'pyenv' and use 'pyenv' to install python3 for you.
+
+<!--
+ Additionally, you can find an installation script at [this repository](https://github.com/dantrim/danny_installs_python) that will install python for you. Beware, python compilation depends on external system libraries and so running the script at that repository straight out of the box may fail. Use it as a guide. It has been tested on MacOSX as well as CentOS7.
+ -->
+
+To install [pyenv](https://realpython.com/intro-to-pyenv/), follow [these instructions](https://github.com/pyenv/pyenv-installer).
+You can check that:
+```bash
+curl https://pyenv.run | bash
+```
+suceeded after you have added these lines to your `.bashrc` and re-source it:
+```bash
+export PATH="#HOME/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+then run:
+```bash
+pyenv --help
+```
+If this suceed, you are good to go to install python3
+```bash
+pyenv install -v 3.8.2
+pyenv global 3.8.2
+pyenv which python
+```
+
+If you will need 'libpython.so` (eg using cocoTB), in that case install python using:
+```bash
+env PYTHON_CONFIGURE_OPTS="--enable-shared"  pyenv install -v 3.8.2
+```
+
+You can add to your `.bashrc`:
+```bash
+alias python='$HOME/.pyenv/versions/3.8.2/bin/python'
+```
+Any additonal python packages (eg: tensorflow, keras, numpy, pandas, tables, matplotlib, hls4ml, jupyter etc...) can be install with:
+```bash
+python -m pip install <package_name>
+```
+
 
 <!----------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------->
@@ -88,20 +127,33 @@ on MacOSX as well as CentOS7.
 # Installation and Setup
 <!-- <details> <summary> Expand </summary> -->
 
-If you have confirmed that you have `python3` on your machine, then the only
+If you have confirmed that you have `python3`, `Xilinx and Questa` tools on your machine, then following environment variables would need to be setup
+```bash
+#!/bin/bash
+export L0MDT_TESTVECTOR_DIR=<Test Vector Directory>
+export XILINX_SIM_LIB=<Xilinx Vivado Compiled Libraries (Unisim)>
+#Run Xilinx setup scripts
+source /opt/tools/Xilinx/Vivado/2020.2/settings64.sh
+#Include Questa in Path
+PATH=/opt/tools/Questasim/QuestaSIM-10.7c/linux_x86_64:$PATH
+#Set up LM_LICENSE_PATH for Questa and Xilinx tools
+```
+
+the only
 thing that you need to do to install all requirements for running the cocotb-based
 testbenches is to run,
 ```bash
-$ source setup_env.sh -c <XILINX SIMULATION LIBRARIES> -t <TEST VECTOR DIRECTORY>
+$ source setup_env.sh -l $XILINX_SIM_LIB -t $L0MDT_TESTVECTOR_DIR -x $XILINX_VIVADO
 (env) $
 ```
-The -c and -t options are optional and help set environment variables COMPONENTS_LIB_DIR and L0MDT_TESTVECTOR_DIR which point to Xilinx compiled libraries for Questa and directory location of testvectors. The environment variables `COMPONENTS_LIB_DIR` and `L0MDT_TESTVECTOR_DIR` can also be setup manually. Simulation library locations in UCI machines
-uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2019.2.1
-uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2019.1/
+Simulation library locations in UCI machines
+uciatlaslab -  /opt/tools/Xilinx/compiled_libraries/v2020.2
+uclhc-2 - /DFS-L/DATA/atlas/psundara/xilinx/compiled_libraries/v2020.2/
 
-If these environment variables are not defined then they should be manually defined in test JSON configuration file.
+You should make sure that you are using compatible branches for cocotb and TV, IPs etc, ie that the test vector tag uses the same DataFormat version that was used to generate and now read the test vectors, and the IPs also use the same DataFormat.
 
-`source.sh` will install all dependencies (cocotb, third-party packages, etc...).
+
+`setup_env.sh` will install all dependencies (cocotb, third-party packages, etc...).
 The installation
 is handled by [pip](https://pypi.org/project/pip/) and [setuptools](https://pypi.org/project/setuptools/).
 You can inspect [setup.py](setup.py) to see the package and installation configuration.
@@ -140,6 +192,17 @@ Commands:
 If you see the above help message after running the top-level "`tb`" command then
 you should be on your way to running the testbench infrastructure.
 
+## Run a test bench
+
+Run one of these commands from tools/cocotb:
+```bash
+tb run test_config/config_mtc.json
+tb run test_config/config_lsf.json
+tb run test_config/config_ptcalc.json
+tb run test_config/config_pl_mtc.json
+```
+
+
 ## The virtual environment is necessary for running the testbench
 In order to return back to the virtual environment for the cocotb testbenches,
 simply run,
@@ -157,7 +220,7 @@ If you wish to make a clean installation, simply delete the `env/` directory cre
 ran `setup_env.sh` and re-run the installation procedure,
 ```bash
 $ rm -rf env/
-$ source setup_env.sh  -c <XILINX SIMULATION LIBRARIES> -t <TEST VECTOR DIRECTORY>
+$ source setup_env.sh -l <XILINX_SIM_LIB> -t <L0MDT_TESTVECTOR_DIR> -x $XILINX_VIVADO
 (env) $ # everything is all fresh now
 ```
 <!-- </details> -->

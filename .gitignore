@@ -44,3 +44,5 @@ compile_simlib.log.bak
 library.cfg
 Projects/
 #UserLogic/*/IP/**/*.xci
+__init__.py
+*.vstf

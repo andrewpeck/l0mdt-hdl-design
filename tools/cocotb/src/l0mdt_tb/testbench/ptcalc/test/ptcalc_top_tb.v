@@ -1,18 +1,20 @@
+`include "l0mdt_buses_constants.svh"
 module hls_ptcalc_top (
-					  ap_clk,
-					  ap_rst,
-					  ap_start,
-					  ap_done,
-					  ap_idle,
-					  ap_ready,
-					  pl2ptcalc_V,
-					  sf2ptcalc_inn_V,
-					  sf2ptcalc_mid_V,
-					  sf2ptcalc_out_V,
-					  ptcalc2mtc_V,
-					  ptcalc2mtc_V_ap_vld,
-					  is_C_side
-					  );
+		       ap_clk,
+		       ap_rst,
+		       ap_start,
+		       ap_done,
+		       ap_idle,
+		       ap_ready,
+		       pl2ptcalc,
+		       sf2ptcalc_inn,
+		       sf2ptcalc_mid,
+		       sf2ptcalc_out,
+		       ptcalc2mtc,
+		       ptcalc2mtc_ap_vld,
+		       ptcalc_debug,
+		       is_C_side
+		       );
 
 
    input   ap_clk;
@@ -21,13 +23,15 @@ module hls_ptcalc_top (
    output  ap_done;
    output  ap_idle;
    output  ap_ready;
-   input [57:0] pl2ptcalc_V;
-   input [63:0] sf2ptcalc_inn_V;
-   input [63:0] sf2ptcalc_mid_V;
-   input [63:0] sf2ptcalc_out_V;
-   output [53:0] ptcalc2mtc_V;
-   output 	 ptcalc2mtc_V_ap_vld;
+   input [PL2PTCALC_LEN-1:0] pl2ptcalc;
+   input [SF2PTCALC_LEN-1:0] sf2ptcalc_inn;
+   input [SF2PTCALC_LEN-1:0] sf2ptcalc_mid;
+   input [SF2PTCALC_LEN-1:0] sf2ptcalc_out;
+   output [PTCALC2MTC_LEN-1:0] ptcalc2mtc;
+   output 	 ptcalc2mtc_ap_vld;
    input 	 is_C_side;
+   output [57:0] ptcalc_debug;
+
 
 
    ptcalc_top ptcalc_top_inst(
@@ -37,12 +41,12 @@ module hls_ptcalc_top (
         .ap_done(ap_done),
         .ap_idle(ap_idle),
         .ap_ready(ap_ready),
-        .pl2ptcalc_V(pl2ptcalc_V),
-        .sf2ptcalc_inn_V(sf2ptcalc_inn_V),
-        .sf2ptcalc_mid_V(sf2ptcalc_mid_V),
-        .sf2ptcalc_out_V(sf2ptcalc_out_V),
-        .ptcalc2mtc_V(ptcalc2mtc_V),
-        .ptcalc2mtc_V_ap_vld(ptcalc2mtc_V_ap_vld),
+        .pl2ptcalc(pl2ptcalc),
+        .sf2ptcalc_inn(sf2ptcalc_inn),
+        .sf2ptcalc_mid(sf2ptcalc_mid),
+        .sf2ptcalc_out(sf2ptcalc_out),
+        .ptcalc2mtc(ptcalc2mtc),
+        .ptcalc2mtc_ap_vld(ptcalc2mtc_ap_vld),
         .is_C_side(is_C_side)
 );
 

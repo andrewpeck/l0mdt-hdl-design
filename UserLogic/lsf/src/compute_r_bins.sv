@@ -76,7 +76,10 @@ module compute_r_bins #(
 	     if(hit_vld_d)
 	       begin
 		  r_bin      <= (xcos_mul[xcos_mul_len-1 : cos_shift] + ysin_mul[ysin_mul_len-1 : sin_shift] + mdt_r_offset_d) >> bin_shift;
-		  r_bin_vld  <= 1'b1;
+		  if(xcos_mul[xcos_mul_len-1 : cos_shift] + ysin_mul[ysin_mul_len-1 : sin_shift] + mdt_r_offset_d >= 0)
+		    r_bin_vld  <= 1'b1;
+		  else
+		    r_bin_vld  <= 1'b0;
 	       end
 	     else
 	       begin

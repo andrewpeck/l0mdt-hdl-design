@@ -1,0 +1,72 @@
+{
+    "testbench_config": {
+        "test_name": "lsf",
+        "input_args": {
+            "n_events": 5,
+            "n_hits": 100,
+            "n_rois": 1,
+            "event_detail": false,
+            "clock_period": 3.125,
+            "clock_time_unit": "ns",
+            "lsf_histogram_rst": 128,
+            "lsf_compute_results": 21
+        },
+        "run_config": {
+            "output_directory_name": "lsf_inn",
+            "test_location": "src/l0mdt_tb/testbench/lsf/test",
+            "expected_is_observed": false,
+            "components_lib_dir": "${XILINX_LIB_DIR}"
+        },
+        "testvectors": {
+            "testvector_dir": "${L0MDT_TESTVECTOR_DIR}",
+            "testvector_file": "B_C_3.xz",
+            "inputs": [
+                {
+                    "tv_format": "HEG2SFSLC",
+                    "ports": 1,
+                    "heg2sfslc_ii": 400,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tv_type": "value"
+                },
+                {
+                    "tv_format": "HEG2SFHIT",
+                    "ports": 1,
+                    "heg2sfhit_ii": 2,
+                    "loadlut_setup": 25,
+                    "hb_acc": 100,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tv_type": "list"
+                },
+                {
+                    "tv_format": "LSF_CTRL",
+                    "ports": 1,
+                    "max_hits": 100,
+                    "tv_type": "control"
+                }
+            ],
+            "outputs": [
+                {
+                    "tv_format": "SF2PTCALC_LSF",
+                    "ports": 1,
+                    "station_ID": [
+                        "INN"
+                    ],
+                    "tolerance": {
+                        "segpos": [
+                            "abs",
+                            1000000.0
+                        ],
+                        "segangle": [
+                            "perc",
+                            50
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+}

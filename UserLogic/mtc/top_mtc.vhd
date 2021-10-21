@@ -33,11 +33,6 @@ use shared_lib.config_pkg.all;
 
 
 entity top_mtc is
-  generic     (
-    TOTAL_PTCALC_BLKS : positive := 3;
-    MTC_PER_BCID      : positive := 3;
-    n_PRIMARY_MTC     : positive := 3
-    );
   port (
    -- clock_and_control : in l0mdt_control_rt;
     clock             : in  std_logic;
@@ -53,16 +48,16 @@ end entity top_mtc;
 architecture mtc_builder_arch of top_mtc is
   component mtc_builder_verilog is
     generic (
-      TOTAL_PTCALC_BLKS : positive;
-      MTC_PER_BCID      : positive;
+      c_NUM_THREADS     : positive;
+      c_MAX_NUM_SL      : positive;
       n_PRIMARY_MTC     : positive
       );
     port(
       clock      : in std_logic;
       rst        : in std_logic;
       srst       : in std_logic;
-      ptcalc     : in tf2mtc_bus_avt(TOTAL_PTCALC_BLKS -1 downto 0);
-      slcpipeline: in  pl2mtc_bus_avt(MTC_PER_BCID -1 downto 0);
+      ptcalc     : in tf2mtc_bus_avt(c_NUM_THREADS -1 downto 0);
+      slcpipeline: in  pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
       mtc        : out mtc_out_bus_avt(n_PRIMARY_MTC -1 downto 0)
       );
 end component;
@@ -70,8 +65,8 @@ end component;
 begin
   mtc_builder_verilog_inst: component mtc_builder_verilog
     generic map (
-      TOTAL_PTCALC_BLKS => c_NUM_THREADS,
-      MTC_PER_BCID      => c_MAX_NUM_SL,
+      c_NUM_THREADS     => c_NUM_THREADS,
+      c_MAX_NUM_SL      => c_MAX_NUM_SL,
       n_PRIMARY_MTC     => c_NUM_MTC
       )
     port map (
