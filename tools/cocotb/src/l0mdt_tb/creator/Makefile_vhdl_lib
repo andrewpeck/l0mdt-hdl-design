@@ -290,3 +290,18 @@ VHDL_SOURCES_mpl_lib = \
     $(MPLDIR)/mpl_supervisor.vhd \
     $(MPLDIR)/mpl_pl.vhd \
     $(MPLDIR)/mpl.vhd
+
+
+VHDL_LIB_ORDER = xpm \
+	shared_cfg_def_lib \
+	project_lib \
+	shared_lib \
+	ctrl_lib \
+	apbus_lib \
+	vamc_lib \
+	csf_lib \
+	ptc_lib \
+	lsf_lib \
+	upt_lib \
+	ucm_lib \
+	mpl_lib

@@ -348,10 +348,10 @@ function main {
             fi
             cd ${start_dir}
 
-            echo "Updating cocotb Makefile.questa to support mixed language compilation"
-            if ! update_makefile_questa; then
-                return 1
-            fi
+           # echo "Updating cocotb Makefile.questa to support mixed language compilation"
+            #if ! update_makefile_questa; then
+             #   return 1
+            #fi
             echo "Installation successful"
 
 
