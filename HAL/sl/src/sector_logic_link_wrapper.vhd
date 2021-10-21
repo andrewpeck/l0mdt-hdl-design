@@ -76,14 +76,12 @@ end sector_logic_link_wrapper;
 architecture Behavioral of sector_logic_link_wrapper is
 
   -- Received packet from SL
-  signal sl_rx_data : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_data : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
-  signal sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_rx_data_clk40    : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_rx_data, sl_rx_data_ff, sl_rx_data_pre_cdc, sl_rx_data_clk40
+    : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
-  signal sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_tx_data_clk40    : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_tx_data, sl_tx_data_ff, sl_tx_data_post_cdc, sl_tx_data_clk40
+    : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   -- some values in the sector logic data format are represented as
   -- "signed magnitude" numbers, in which the most significant bit is a sign bit and the remaining bits
@@ -261,6 +259,8 @@ begin
       sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
       sl_tx_ctrl_o(idx).ctrl2 <= x"0"   & txctrl2;
 
+      -- tx data goes from:
+      -- pipeline clock --> clock 40 --> tx_clk
       process (clk40) is
       begin
         if (rising_edge(clk40)) then
@@ -268,10 +268,11 @@ begin
         end if;
       end process;
 
-      process (pipeline_clock) is
+      process (tx_clk(idx)) is
       begin
-        if (rising_edge(pipeline_clock)) then
-          sl_tx_data_post_cdc(idx) <= sl_tx_data(idx);
+        if (rising_edge(tx_clk(idx))) then
+          sl_tx_data_ff(idx)       <= sl_tx_data_clk40(idx);
+          sl_tx_data_post_cdc(idx) <= sl_tx_data_ff(idx);
         end if;
       end process;
 
@@ -356,6 +357,9 @@ begin
       -- since some of the edges of 240 vs. 320 have very little setup/hold we
       -- do a very simple clock domain crossing by just copying to the 40MHz LHC
       -- clock and then copying to the 320 MHz pipeline clock
+      --
+      -- rx data goes from:
+      -- rx_clk --> clk40 --> pipeline clock
 
       process (clk40) is
       begin
@@ -367,7 +371,8 @@ begin
       process (pipeline_clock) is
       begin
         if (rising_edge(pipeline_clock)) then
-          sl_rx_data(idx) <= sl_rx_data_clk40(idx);
+          sl_rx_data_ff(idx) <= sl_rx_data_clk40(idx);
+          sl_rx_data(idx)    <= sl_rx_data_ff(idx);
         end if;
       end process;
 
