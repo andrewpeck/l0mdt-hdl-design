@@ -81,32 +81,58 @@ architecture beh of apb_imem is
   signal new_apb_wr_req : std_logic;
   signal new_apb_rd_req : std_logic;
 
-  constant apb_clk_lat : integer := 5;
-  constant apb_clk_cnt : integer;
+  constant apb_clk_lat : integer := 8;
+  signal  apb_clk_cnt : integer;
 
   ----------------------------
-  signal mem_ctrl       : APB_MEM_SIG_CTRL_t;
-  signal mem_mon       : APB_MEM_SIG_MON_t;
+
+  signal mem_ctrl_r     : APB_MEM_SIG_CTRL_t;
+  signal mem_ctrl_v     : std_logic_vector(len(mem_ctrl_r)-1 downto 0);
+  signal mem_mon_r      : APB_MEM_SIG_MON_t;
+  signal mem_mon_v      : std_logic_vector(len(mem_mon_r)-1 downto 0);
+
+  signal apb_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal apb_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal apb_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  signal apb_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
 
   signal ctrl_10A38D_r  : MEM_INT_10A38D_CTRL_t;
   signal mon_10A38D_r   : MEM_INT_10A38D_MON_t;
   signal ctrl_9A19D_r   : MEM_INT_9A19D_CTRL_t;
   signal mon_9A19D_r    : MEM_INT_9A19D_MON_t;
 
+  signal axi_rep_clk  : std_logic;
+  signal axi_cnt_wait : std_logic;
+  signal axi_cnt_reset : std_logic;
+
+
 begin
 
   model_mem: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
     ctrl_10A38D_r <= structify(ctrl,ctrl_10A38D_r);
-    mem_ctrl <= ctrl_10A38D_r.SIGNALS;
-    rd_addr  <= vectorify(ctrl_10A38D_r.rd_addr,rd_addr);
-    wr_addr  <= vectorify(ctrl_10A38D_r.wr_addr,wr_addr);
-    wr_data  <= vectorify(ctrl_10A38D_r.wr_data,wr_data);
+    mem_ctrl_v    <= vectorify(ctrl_10A38D_r.SIGNALS,mem_ctrl_v);
+    mem_ctrl_r    <= structify(mem_ctrl_v,mem_ctrl_r);
+    apb_rd_addr   <= ctrl_10A38D_r.rd_addr;
+    apb_wr_addr   <= ctrl_10A38D_r.wr_addr;
+    apb_wr_data   <= vectorify(ctrl_10A38D_r.wr_data,apb_wr_data);
     --
-    mon_10A38D_r.rd_data <= structify(rd_data,mon_10A38D_r.rd_data);
-    
+    mon_10A38D_r.rd_data <= structify(apb_rd_data,mon_10A38D_r.rd_data);
+    mem_mon_v  <= vectorify(mem_mon_r,mem_mon_v);
+    mon_10A38D_r.SIGNALS <= structify(mem_mon_v,mon_10A38D_r.SIGNALS); 
+
     mon <= vectorify(mon_10A38D_r,mon);
   elsif g_XML_NODE_NAME = "MEM_INT_9A19D" generate
     -- ctrl_9A19D_r <= structify(ctrl,ctrl_9A19D_r);
+    -- mem_ctrl_v    <= vectorify(ctrl_9A19D_r.SIGNALS,mem_ctrl_v);
+    -- mem_ctrl_r    <= structify(mem_ctrl_v,mem_ctrl_r);
+    -- apb_rd_addr   <= ctrl_9A19D_r.rd_addr;
+    -- apb_wr_addr   <= ctrl_9A19D_r.wr_addr;
+    -- apb_wr_data   <= vectorify(ctrl_9A19D_r.wr_data,apb_wr_data);
+    -- --
+    -- mon_9A19D_r.rd_data <= structify(apb_rd_data,mon_9A19D_r.rd_data);
+    -- mem_mon_v  <= vectorify(mem_mon_r,mem_mon_v);
+    -- mon_9A19D_r.SIGNALS <= structify(mem_mon_v,mon_9A19D_r.SIGNALS); 
+
     -- mon <= vectorify(mon_9A19D_r,mon);
   end generate model_mem;
 
@@ -121,20 +147,58 @@ begin
         o_dv <= '0';
         o_freeze <= '0';
         --
+        axi_rep_clk <= '0';
+        --
         apb_clk_cnt <= 0;
+        axi_cnt_wait <= '0';
+        axi_cnt_reset <= '0';
       else
         -----------------------------------------------
-        if apb_clk_cnt < apb_clk_lat then
+        if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
           apb_clk_cnt <= apb_clk_cnt + 1;
         else
           apb_clk_cnt <= 0;
+          axi_rep_clk <= not axi_rep_clk;
         end if;
         -----------------------------------------------
-        if apb_clk_cnt = 0 then
 
-        else
-          
-        end if;
+        case int_wr_status is
+          when x"0" => -- INIT
+            if axi_cnt_wait = '0' then
+              int_wr_status <= x"1";
+            end if;
+          when x"1" =>
+            if ctrl_r.wr_req = '1' then
+              axi_cnt_reset <= '1';
+
+              o_wr_addr <= ctrl_r.wr_addr;
+              o_data <= vectorify(ctrl_r.wr_data,o_data);
+              o_dv <= '1';
+              int_wr_status <= x"2";
+            else
+              o_wr_addr <= (others => '0');
+              o_data <= (others => '0');
+              o_dv <= '0';
+              -- new_apb_wr_req <= '0';
+            end if;
+          -- when x"2" =>
+          --   o_wr_addr <= (others => '0');
+          --   o_data <= (others => '0');
+          --   o_dv <= '0';
+            -- if new_apb_wr_req = '0' then
+            --   int_wr_status <= x"1";
+            -- end if;
+          when others =>
+            o_wr_addr <= (others => '0');
+            o_data <= (others => '0');
+            o_dv <= '0';
+            if int_wr_status = unsigned(apb_clk_limit) then
+              int_wr_status <= x"1";
+            else
+              int_wr_status <= int_wr_status + 1;
+            end if;
+
+        end case;
 
         
       end if;
