@@ -41,7 +41,8 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity top_ult is
   generic (
-    DUMMY       : boolean := false
+    SUMP_SIGNALS : boolean := false;
+    DUMMY        : boolean := false
 
     -- g_h2s_ctrl  : H2S_CTRL_t := nullify(g_h2s_ctrl);
     );
@@ -162,7 +163,8 @@ begin
 
   ULT : entity ult_lib.ult
     generic map(
-      DUMMY       => DUMMY
+      SUMP_SIGNALS => SUMP_SIGNALS,
+      DUMMY        => DUMMY
       )
     port map(
       -- pipeline clock

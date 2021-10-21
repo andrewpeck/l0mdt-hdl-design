@@ -38,7 +38,8 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity ult is
   generic (
-    DUMMY       : boolean := false
+    SUMP_SIGNALS : boolean := false;
+    DUMMY        : boolean := false
     );
   port (
     -- clock and ttc
@@ -562,7 +563,7 @@ begin
 
   end generate;
 
-  dummy_gen : if (DUMMY) generate
+  dummy_gen : if (DUMMY or SUMP_SIGNALS) generate
     signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
     signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
     signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
