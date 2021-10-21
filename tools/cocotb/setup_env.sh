@@ -131,6 +131,32 @@ function install_tv {
 
 
 function update_makefile_questa() {
+#Add support to compile Verilog libraries
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VERILOG_SOURCES),) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVERILOG_LIB            += $(foreach SOURCES_VAR, $(filter VERILOG_SOURCES_%, $(.VARIABLES)), $(subst VERILOG_SOURCES_,,$(SOURCES_VAR))) '  $(find ./env -name Makefile.questa)
+    sed -i '/^$(SIM_BUILD)\/runsim.do/ i endif '  $(find ./env -name Makefile.questa)
+
+
+    #Appending  SO COMMANDS ARE REVERSED IN SED
+    #COMPILATION COMMANDS FOR VLIB, VMAP OF LIBRARIES and COMPILING VERILOG LIBRARRIES,
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a endif' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vlog -work $(SOURCES_VAR) $(VLOG_ARGS) $(EXTRA_ARGS) $(call to_tcl_path,$(VERILOG_SOURCES_$(SOURCES_VAR)))" >> $@ ;)' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t$(foreach SOURCES_VAR, $(VERILOG_LIB), \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a ifneq ($(VERILOG_SOURCES),)' $(find ./env -name Makefile.questa)
+
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\tdone' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vmap $$SOURCES_VAR $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\t\techo "vlib $(SIM_BUILD)/$$SOURCES_VAR " >> $@ ; \\' $(find ./env -name Makefile.questa)
+    sed -i '/\@echo \"vmap $(RTL_LIBRARY) $(SIM_BUILD)\/$(RTL_LIBRARY)" /a \\tfor SOURCES_VAR in $(VHDL_LIB); do \\' $(find ./env -name Makefile.questa)  #Create all libraries in project, VHDL_LIB has all of them
+
+    ###################
+
+    return 0
+}
+
+
+### Old Makefile UPDATE
+function old_update_makefile_questa() {
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i ifneq ($(VHDL_SOURCES),) '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += xpm '  $(find ./env -name Makefile.questa)
     sed -i '/^$(SIM_BUILD)\/runsim.do/ i \\tVHDL_LIB            += shared_cfg_def_lib '  $(find ./env -name Makefile.questa)
@@ -349,9 +375,9 @@ function main {
             cd ${start_dir}
 
            # echo "Updating cocotb Makefile.questa to support mixed language compilation"
-            #if ! update_makefile_questa; then
-             #   return 1
-            #fi
+            if ! update_makefile_questa; then
+		return 1
+            fi
             echo "Installation successful"
 
 
