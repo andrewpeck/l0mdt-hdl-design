@@ -154,11 +154,11 @@ begin
     --
     o_rd_addr     => apb_rd_addr_o,  
     o_wr_addr     => apb_wr_addr_o,  
-    o_data        => apb_data_o,   
+    o_wr_data        => apb_data_o,   
     o_rd_dv       => apb_rd_dv_o, 
     o_wr_dv       => apb_wr_dv_o, 
-    i_data        => apb_data_i,  
-    i_dv          => apb_dv_i
+    i_rd_data        => apb_data_i,  
+    i_rd_dv          => apb_dv_i
   );  
 
   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
@@ -197,13 +197,22 @@ begin
           o_dv <= '0';
         end if;
         
-        if apb_dv_o = '1' then
-          apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+        if apb_wr_dv_o = '1' then
+          -- apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
           mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
+          -- apb_dv_i <= '1';
+        else
+          -- apb_dv_i <= '0';
+        end if;
+
+        if apb_rd_dv_o = '1' then
+          apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+          -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
           apb_dv_i <= '1';
         else
           apb_dv_i <= '0';
         end if;
+
       end if;
     end if ;
   end process;

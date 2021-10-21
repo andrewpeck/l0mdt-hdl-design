@@ -54,11 +54,11 @@ entity apb_imem is
     --
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
     o_wr_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-    o_data        : out std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    o_wr_data        : out std_logic_vector(g_DATA_WIDTH - 1 downto 0);
     o_rd_dv       : out std_logic;
     o_wr_dv       : out std_logic;
-    i_data        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    i_dv          : in  std_logic
+    i_rd_data        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    i_rd_dv          : in  std_logic
 
   );
 end entity apb_imem;
@@ -144,10 +144,11 @@ begin
         if rst = '1' then
           mon <= (others =>'0');
           o_rd_addr <= (others =>'0');
-          o_rd_addr <= (others =>'0');
-          o_rd_addr <= (others =>'0');
-          o_dv <= '0';
-          o_freeze <= '0';
+          o_wr_addr <= (others =>'0');
+          o_wr_data <= (others =>'0');
+          o_rd_dv   <= '0';
+          o_rd_dv   <= '0';
+          o_freeze  <= '0';
           --
           axi_rep_clk <= '0';
           --
@@ -178,18 +179,18 @@ begin
                 axi_cnt_reset <= '1';
   
                 o_wr_addr <= apb_wr_addr;
-                o_data    <= apb_wr_data;
-                o_dv      <= '1';
+                o_wr_data    <= apb_wr_data;
+                o_wr_dv      <= '1';
                 int_wr_status <= x"2";
               else
                 o_wr_addr <= (others => '0');
-                o_data <= (others => '0');
-                o_dv <= '0';
+                o_wr_data <= (others => '0');
+                o_wr_dv <= '0';
                 -- new_apb_wr_req <= '0';
               end if;
             -- when x"2" =>
             --   o_wr_addr <= (others => '0');
-            --   o_data <= (others => '0');
+            --   o_wr_data <= (others => '0');
             --   o_dv <= '0';
               -- if new_apb_wr_req = '0' then
               --   int_wr_status <= x"1";
@@ -197,8 +198,9 @@ begin
             when others =>
               axi_cnt_reset <= '0';
               o_wr_addr <= (others => '0');
-              o_data <= (others => '0');
-              o_dv <= '0';
+              o_wr_data <= (others => '0');
+              o_wr_dv <= '0';
+              int_wr_status <= x"0";
               -- if int_wr_status = unsigned(apb_clk_limit) then
               --   int_wr_status <= x"1";
               -- else
@@ -217,18 +219,20 @@ begin
                 axi_cnt_reset <= '1';
   
                 o_rd_addr <= apb_wr_addr;
-                o_data    <= apb_wr_data;
-                o_dv      <= '1';
+                o_rd_dv      <= '1';
                 int_wr_status <= x"2";
               else
-                o_wr_addr <= (others => '0');
-                o_data <= (others => '0');
-                o_dv <= '0';
-                -- new_apb_wr_req <= '0';
+                o_rd_addr <= (others => '0');
+                o_rd_dv <= '0';
               end if;
   
             when others =>
-  
+              if i_rd_dv = '1' then
+                apb_wr_data <= i_rd_data;
+                int_wr_status <= x"0";
+              else
+
+              end if;
   
           end case;
   
