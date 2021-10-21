@@ -116,7 +116,8 @@ architecture beh of heg_ctrl_roi_tc is
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_o         : std_logic;
+  signal apb_rd_dv_o      : std_logic;
+  signal apb_wr_dv_o      : std_logic;
   signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
   signal apb_dv_i         : std_logic;
 
@@ -128,6 +129,7 @@ begin
   apb_mem_interface : entity apbus_lib.apb_imem
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_10A38D",
+    g_MEMORY_TYPE           => "vhdl_rom",
     g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH,
@@ -153,7 +155,8 @@ begin
     o_rd_addr     => apb_rd_addr_o,  
     o_wr_addr     => apb_wr_addr_o,  
     o_data        => apb_data_o,   
-    o_dv          => apb_dv_o, 
+    o_rd_dv       => apb_rd_dv_o, 
+    o_wr_dv       => apb_wr_dv_o, 
     i_data        => apb_data_i,  
     i_dv          => apb_dv_i
   );  

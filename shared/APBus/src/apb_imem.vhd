@@ -31,7 +31,7 @@ use ctrl_lib.MEM_INT_4A17D_CTRL.all;
 entity apb_imem is
   generic(
     g_XML_NODE_NAME     : string; -- := "MEM_INT_10A148D";
-    g_MEMORY_TYPE       : string := "ultra" ;
+    g_MEMORY_TYPE       : string;
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
@@ -55,7 +55,8 @@ entity apb_imem is
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
     o_wr_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
     o_data        : out std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    o_dv          : out std_logic;
+    o_rd_dv       : out std_logic;
+    o_wr_dv       : out std_logic;
     i_data        : in  std_logic_vector(g_DATA_WIDTH - 1 downto 0);
     i_dv          : in  std_logic
 
@@ -63,15 +64,15 @@ entity apb_imem is
 end entity apb_imem;
 
 architecture beh of apb_imem is
-  signal axi_rst      : std_logic;
-  signal axi_clk      : std_logic;
+  -- signal axi_rst      : std_logic;
+  -- signal axi_clk      : std_logic;
 
-  signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-  signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-  signal int_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-  signal int_wr_dv       : std_logic;
-  signal int_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-  signal int_rd_dv       : std_logic;
+  -- signal int_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  -- signal int_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  -- signal int_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  -- signal int_wr_dv       : std_logic;
+  -- signal int_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  -- signal int_rd_dv       : std_logic;
 
   -- signal apb_wr_status : std_logic_vector(3 downto 0);
   -- signal apb_rd_status : std_logic_vector(3 downto 0);
@@ -86,10 +87,10 @@ architecture beh of apb_imem is
 
   ----------------------------
 
-  signal mem_ctrl_r     : APB_MEM_SIG_CTRL_t;
-  signal mem_ctrl_v     : std_logic_vector(len(mem_ctrl_r)-1 downto 0);
-  signal mem_mon_r      : APB_MEM_SIG_MON_t;
-  signal mem_mon_v      : std_logic_vector(len(mem_mon_r)-1 downto 0);
+  signal apb_ctrl_r     : APB_MEM_SIG_CTRL_t;
+  signal apb_ctrl_v     : std_logic_vector(len(apb_ctrl_r)-1 downto 0);
+  signal apb_mon_r      : APB_MEM_SIG_MON_t;
+  signal apb_mon_v      : std_logic_vector(len(apb_mon_r)-1 downto 0);
 
   signal apb_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
   signal apb_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -110,100 +111,135 @@ begin
 
   model_mem: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
     ctrl_10A38D_r <= structify(ctrl,ctrl_10A38D_r);
-    mem_ctrl_v    <= vectorify(ctrl_10A38D_r.SIGNALS,mem_ctrl_v);
-    mem_ctrl_r    <= structify(mem_ctrl_v,mem_ctrl_r);
+    apb_ctrl_v    <= vectorify(ctrl_10A38D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_10A38D_r.rd_addr;
     apb_wr_addr   <= ctrl_10A38D_r.wr_addr;
     apb_wr_data   <= vectorify(ctrl_10A38D_r.wr_data,apb_wr_data);
     --
     mon_10A38D_r.rd_data <= structify(apb_rd_data,mon_10A38D_r.rd_data);
-    mem_mon_v  <= vectorify(mem_mon_r,mem_mon_v);
-    mon_10A38D_r.SIGNALS <= structify(mem_mon_v,mon_10A38D_r.SIGNALS); 
+    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    mon_10A38D_r.SIGNALS <= structify(apb_mon_v,mon_10A38D_r.SIGNALS); 
 
     mon <= vectorify(mon_10A38D_r,mon);
   elsif g_XML_NODE_NAME = "MEM_INT_9A19D" generate
     -- ctrl_9A19D_r <= structify(ctrl,ctrl_9A19D_r);
-    -- mem_ctrl_v    <= vectorify(ctrl_9A19D_r.SIGNALS,mem_ctrl_v);
-    -- mem_ctrl_r    <= structify(mem_ctrl_v,mem_ctrl_r);
+    -- apb_ctrl_v    <= vectorify(ctrl_9A19D_r.SIGNALS,apb_ctrl_v);
+    -- apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     -- apb_rd_addr   <= ctrl_9A19D_r.rd_addr;
     -- apb_wr_addr   <= ctrl_9A19D_r.wr_addr;
     -- apb_wr_data   <= vectorify(ctrl_9A19D_r.wr_data,apb_wr_data);
     -- --
     -- mon_9A19D_r.rd_data <= structify(apb_rd_data,mon_9A19D_r.rd_data);
-    -- mem_mon_v  <= vectorify(mem_mon_r,mem_mon_v);
-    -- mon_9A19D_r.SIGNALS <= structify(mem_mon_v,mon_9A19D_r.SIGNALS); 
+    -- apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    -- mon_9A19D_r.SIGNALS <= structify(apb_mon_v,mon_9A19D_r.SIGNALS); 
 
     -- mon <= vectorify(mon_9A19D_r,mon);
   end generate model_mem;
 
-  MEM_INT: process(clk)
-  begin
-    if rising_edge(clk) then
-      if rst = '1' then
-        mon <= (others =>'0');
-        o_rd_addr <= (others =>'0');
-        o_rd_addr <= (others =>'0');
-        o_rd_addr <= (others =>'0');
-        o_dv <= '0';
-        o_freeze <= '0';
-        --
-        axi_rep_clk <= '0';
-        --
-        apb_clk_cnt <= 0;
-        axi_cnt_wait <= '0';
-        axi_cnt_reset <= '0';
-      else
-        -----------------------------------------------
-        if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
-          apb_clk_cnt <= apb_clk_cnt + 1;
-        else
+  MEM_TYPE: if g_MEMORY_TYPE = "vhdl_rom" generate
+    MEM_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          mon <= (others =>'0');
+          o_rd_addr <= (others =>'0');
+          o_rd_addr <= (others =>'0');
+          o_rd_addr <= (others =>'0');
+          o_dv <= '0';
+          o_freeze <= '0';
+          --
+          axi_rep_clk <= '0';
+          --
           apb_clk_cnt <= 0;
-          axi_rep_clk <= not axi_rep_clk;
-        end if;
-        -----------------------------------------------
-
-        case int_wr_status is
-          when x"0" => -- INIT
-            if axi_cnt_wait = '0' then
-              int_wr_status <= x"1";
-            end if;
-          when x"1" =>
-            if ctrl_r.wr_req = '1' then
-              axi_cnt_reset <= '1';
-
-              o_wr_addr <= ctrl_r.wr_addr;
-              o_data <= vectorify(ctrl_r.wr_data,o_data);
-              o_dv <= '1';
-              int_wr_status <= x"2";
-            else
+          axi_cnt_wait <= '0';
+          axi_cnt_reset <= '0';
+          --
+          int_wr_status <=  x"0";
+          int_rd_status <=  x"0";
+  
+        else
+          -----------------------------------------------
+          if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
+            apb_clk_cnt <= apb_clk_cnt + 1;
+          else
+            apb_clk_cnt <= 0;
+            axi_rep_clk <= not axi_rep_clk;
+          end if;
+          -----------------------------------------------
+  
+          case int_wr_status is
+            -- when x"0" => -- INIT
+            --   if axi_cnt_wait = '0' then
+            --     int_wr_status <= x"1";
+            --   end if;
+            when x"0" =>
+              if apb_ctrl_r.wr_req = '1' and axi_cnt_wait = '0' then
+                axi_cnt_reset <= '1';
+  
+                o_wr_addr <= apb_wr_addr;
+                o_data    <= apb_wr_data;
+                o_dv      <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_data <= (others => '0');
+                o_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+            -- when x"2" =>
+            --   o_wr_addr <= (others => '0');
+            --   o_data <= (others => '0');
+            --   o_dv <= '0';
+              -- if new_apb_wr_req = '0' then
+              --   int_wr_status <= x"1";
+              -- end if;
+            when others =>
+              axi_cnt_reset <= '0';
               o_wr_addr <= (others => '0');
               o_data <= (others => '0');
               o_dv <= '0';
-              -- new_apb_wr_req <= '0';
-            end if;
-          -- when x"2" =>
-          --   o_wr_addr <= (others => '0');
-          --   o_data <= (others => '0');
-          --   o_dv <= '0';
-            -- if new_apb_wr_req = '0' then
-            --   int_wr_status <= x"1";
-            -- end if;
-          when others =>
-            o_wr_addr <= (others => '0');
-            o_data <= (others => '0');
-            o_dv <= '0';
-            if int_wr_status = unsigned(apb_clk_limit) then
-              int_wr_status <= x"1";
-            else
-              int_wr_status <= int_wr_status + 1;
-            end if;
-
-        end case;
-
-        
+              -- if int_wr_status = unsigned(apb_clk_limit) then
+              --   int_wr_status <= x"1";
+              -- else
+              --   int_wr_status <= int_wr_status + 1;
+              -- end if;
+  
+          end case;
+  
+          case int_rd_status is
+            -- when x"0" => -- INIT
+            --   if axi_cnt_wait = '0' then
+            --     int_wr_status <= x"1";
+            --   end if;
+            when x"0" =>
+              if apb_ctrl_r.rd_req = '1' and axi_cnt_wait = '0' then
+                axi_cnt_reset <= '1';
+  
+                o_rd_addr <= apb_wr_addr;
+                o_data    <= apb_wr_data;
+                o_dv      <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_data <= (others => '0');
+                o_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+  
+            when others =>
+  
+  
+          end case;
+  
+          
+        end if;
       end if;
-    end if;
-  end process MEM_INT;
+    end process MEM_INT;
+  elsif g_MEMORY_TYPE = "URAM" generate
+  elsif g_MEMORY_TYPE = "BRAM" generate
+  end generate MEM_TYPE;
+ 
 
 
 end architecture beh;
