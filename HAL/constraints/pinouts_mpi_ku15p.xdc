@@ -10,7 +10,7 @@ create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ;  # FELIX_
 create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ;  # FELIX_REF1
 create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ;  # FELIX_REF2
 create_clock -period 3.125 -name refclk8  [get_ports refclk_i_p[8]]  ;  # AD_CLK2_KUP , muxed as C2c or Spare
-create_clock -period 3.125 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
+create_clock -period 5.000 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
 create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ;  # AD_CLK3_KUP , muxed as sma or spare
 create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ;  # B2B_REF2
 create_clock -period 3.125 -name refclk12 [get_ports refclk_i_p[12]] ;  # FE_REF0
