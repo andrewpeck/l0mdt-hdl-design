@@ -196,10 +196,10 @@ begin
     sl_data.common.sl_charge   <= data(39);
     sl_data.common.cointype    <= data(42 downto 40);
 
-    slc_barrel_specific.rpc0_posz  <= signed(data(54 downto 43));
-    slc_barrel_specific.rpc1_posz  <= signed(data(66 downto 55));
-    slc_barrel_specific.rpc2_posz  <= signed(data(78 downto 67));
-    slc_barrel_specific.rpc3_posz  <= signed(data(90 downto 79));
+    slc_barrel_specific.rpc0_posz <= signed(data(54 downto 43));
+    slc_barrel_specific.rpc1_posz <= signed(data(66 downto 55));
+    slc_barrel_specific.rpc2_posz <= signed(data(78 downto 67));
+    slc_barrel_specific.rpc3_posz <= signed(data(90 downto 79));
     -- slc_barrel_specific.b_reserved <= data(127 downto 91);
 
     slc_endcap_specific.seg_angdtheta    <= signed_mag_to_signed(data(49 downto 43));
@@ -229,7 +229,7 @@ begin
     --------------------------------------------------------------------------------
 
     tx_gen : if (sl_idx_array(I) /= -1) generate
-      constant idx : integer := sl_idx_array(I);
+      constant idx   : integer := sl_idx_array(I);
       signal txctrl0 : std_logic_vector (3 downto 0);
       signal txctrl1 : std_logic_vector (3 downto 0);
       signal txctrl2 : std_logic_vector (3 downto 0);
@@ -245,19 +245,19 @@ begin
         port map (
           tx_usrclk2      => tx_clk(idx),
           userdata_tx     => sl_tx_mgt_word_array_o(idx),
-          txctrl0         => txctrl0,      -- 4 bit to mgt
-          txctrl1         => txctrl1,      -- 4 bit to mgt
-          txctrl2         => txctrl2,      -- 4 bit to mgt
+          txctrl0         => txctrl0,                       -- 4 bit to mgt
+          txctrl1         => txctrl1,                       -- 4 bit to mgt
+          txctrl2         => txctrl2,                       -- 4 bit to mgt
           packet_userdata => sl_tx_data_post_cdc(idx).data,
           packet_valid    => sl_tx_data_post_cdc(idx).valid,
-          packet_txctrl0  => std_logic_vector'(x"000000"), --
-          packet_txctrl1  => std_logic_vector'(x"000000"), --
-          packet_txctrl2  => std_logic_vector'(x"100000")  --
+          packet_txctrl0  => std_logic_vector'(x"000000"),  --
+          packet_txctrl1  => std_logic_vector'(x"000000"),  --
+          packet_txctrl2  => std_logic_vector'(x"100000")   --
           );
 
       sl_tx_ctrl_o(idx).ctrl0 <= x"000" & txctrl0;
       sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
-      sl_tx_ctrl_o(idx).ctrl2 <= x"0"   & txctrl2;
+      sl_tx_ctrl_o(idx).ctrl2 <= x"0" & txctrl2;
 
       -- tx data goes from:
       -- pipeline clock --> clock 40 --> tx_clk
@@ -283,12 +283,12 @@ begin
     --------------------------------------------------------------------------------
 
     rx_gen : if (sl_idx_array(I) /= -1) generate
-      constant idx           : integer := sl_idx_array(I);
-      signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-      signal dec_userdata    : std_logic_vector (31 downto 0);
-      signal rxctrl0 : std_logic_vector (3 downto 0);
-      signal rxctrl1 : std_logic_vector (3 downto 0);
+      constant idx        : integer := sl_idx_array(I);
+      signal dec_rxctrl0  : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+      signal dec_rxctrl2  : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+      signal dec_userdata : std_logic_vector (31 downto 0);
+      signal rxctrl0      : std_logic_vector (3 downto 0);
+      signal rxctrl1      : std_logic_vector (3 downto 0);
     begin
 
       assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
@@ -336,10 +336,10 @@ begin
           rxctrl3 => (others => '0'),
 
           -- 23 downto 0
-          packet_rxctrl0 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl1 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl2 => open, -- my-sl-gty just connects to led sump
-          packet_rxctrl3 => open, -- my-sl-gty just connects to led sump
+          packet_rxctrl0 => open,       -- my-sl-gty just connects to led sump
+          packet_rxctrl1 => open,       -- my-sl-gty just connects to led sump
+          packet_rxctrl2 => open,       -- my-sl-gty just connects to led sump
+          packet_rxctrl3 => open,       -- my-sl-gty just connects to led sump
 
           packet_userdata       => sl_rx_data_pre_cdc(idx).data,
           packet_locked         => sl_rx_data_pre_cdc(idx).locked,
