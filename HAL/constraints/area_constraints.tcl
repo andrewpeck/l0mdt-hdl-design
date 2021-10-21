@@ -67,11 +67,11 @@ proc assign_pblocks {min  max  side fpga} {
 
         set lQuadBlock [get_pblocks quad_$side$q]
 
+        # gather up the cells for all the links in this quad
         set cells [concat \
-                       [get_cells -quiet "top_hal/*lpgbt_link*/*link_gen[$lRegId]*.lpgbt_*link_inst"] \
                        [get_cells -quiet "top_hal/*mgt*/*mgt_gen\[$lRegId]*.MGT_INST"] \
-                       [get_cells -quiet "top_hal/*csm*/*mgt_tag\[$lRegId]*decoder*_inst"] \
-                       [get_cells -quiet "top_hal/*sector_logic*/sl_gen\[$lRegId]*_inst"]]
+                       [get_cells -quiet "top_hal/*csm*mgt_tag*[$lRegId]*"] \
+                       [get_cells -quiet "top_hal/*sector_logic*/sl_gen*[$lRegId]*"]]
 
         if {[string is space $cells] == 0} {
             puts "Adding cells to pblock $lQuadBlock with mgt #$lRegId"
