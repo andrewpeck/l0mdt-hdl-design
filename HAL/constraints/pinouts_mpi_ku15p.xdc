@@ -75,8 +75,7 @@ set_property -quiet PACKAGE_PIN L11     [get_ports refclk_i_n[21]   ] ; # FE_REF
 # LHC REF Inputs
 #set_property -quiet PACKAGE_PIN AT24    [get_ports lhc_clock_in_p] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
 #set_property -quiet PACKAGE_PIN AU24    [get_ports lhc_clock_in_n] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
-#create_clock -period 3.125 -name clock_in_async [get_ports clock_i_p]
-create_clock -period 25 -name clock_in_async [get_ports clock_i_p]
+create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
 
 # CLK_GEN Inputs
 set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
