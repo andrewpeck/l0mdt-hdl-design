@@ -225,6 +225,8 @@ architecture behavioral of top_hal is
   attribute MAX_FANOUT of strobe_pipeline : signal is "20";
   attribute DONT_TOUCH of strobe_pipeline : signal is "true";
 
+  attribute MAX_FANOUT of strobe_320 : signal is "20";
+
   -- Save this here so we can extract it from the hierarchy later
   -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
