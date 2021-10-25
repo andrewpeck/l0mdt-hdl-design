@@ -220,7 +220,7 @@ begin
   
                 o_rd_addr <= apb_wr_addr;
                 o_rd_dv      <= '1';
-                int_wr_status <= x"2";
+                int_rd_status <= x"2";
               else
                 o_rd_addr <= (others => '0');
                 o_rd_dv <= '0';
@@ -228,8 +228,8 @@ begin
   
             when others =>
               if i_rd_dv = '1' then
-                apb_wr_data <= i_rd_data;
-                int_wr_status <= x"0";
+                apb_rd_data <= i_rd_data;
+                int_rd_status <= x"0";
               else
 
               end if;
