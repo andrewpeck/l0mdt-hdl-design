@@ -57,32 +57,32 @@ entity top_ult is
 
     -- axi control
 
-    h2s_ctrl_r            : in  std_logic;
-    h2s_mon_r             : out std_logic;
+    h2s_ctrl_b            : in  std_logic;
+    h2s_mon_b             : out std_logic;
 
-    tar_ctrl_r            : in  std_logic;
-    tar_mon_r             : out std_logic;
+    tar_ctrl_b            : in  std_logic;
+    tar_mon_b             : out std_logic;
 
-    mtc_ctrl_r            : in  std_logic;
-    mtc_mon_r             : out std_logic;
+    mtc_ctrl_b            : in  std_logic;
+    mtc_mon_b             : out std_logic;
 
-    ucm_ctrl_r            : in  std_logic;
-    ucm_mon_r             : out std_logic;
+    ucm_ctrl_b            : in  std_logic;
+    ucm_mon_b             : out std_logic;
 
-    daq_ctrl_r            : in  std_logic;
-    daq_mon_r             : out std_logic;
+    daq_ctrl_b            : in  std_logic;
+    daq_mon_b             : out std_logic;
 
-    tf_ctrl_r             : in  std_logic;
-    tf_mon_r              : out std_logic;
+    tf_ctrl_b             : in  std_logic;
+    tf_mon_b              : out std_logic;
 
-    mpl_ctrl_r            : in  std_logic;--
-    mpl_mon_r             : out std_logic;
+    mpl_ctrl_b            : in  std_logic;--
+    mpl_mon_b             : out std_logic;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits : in std_logic_vecto(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inner_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -96,8 +96,8 @@ entity top_ult is
     i_plus_neighbor_slc       : in std_logic;--slc_rx_rvt;
     i_minus_neighbor_slc      : in std_logic;--slc_rx_rvt;
     -- Segments in from neighbor
-    i_plus_neighbor_segments  : in std_logic_vecto(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in std_logic_vecto(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
     o_daq_streams     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
@@ -119,6 +119,21 @@ end entity top_ult;
 
 architecture behavioral of top_ult is
   signal clock_and_control     : l0mdt_control_rt;
+
+  signal h2s_ctrl_r            : H2S_CTRL_t;
+  signal h2s_mon_r             : H2S_MON_t;
+  signal tar_ctrl_r            : TAR_CTRL_t;
+  signal tar_mon_r             : TAR_MON_t;
+  signal mtc_ctrl_r            : MTC_CTRL_t;
+  signal mtc_mon_r             : MTC_MON_t;
+  signal ucm_ctrl_r            : UCM_CTRL_t;
+  signal ucm_mon_r             : UCM_MON_t;
+  signal daq_ctrl_r            : DAQ_CTRL_t;
+  signal daq_mon_r             : DAQ_MON_t;
+  signal tf_ctrl_r             : TF_CTRL_t;
+  signal tf_mon_r              : TF_MON_t;
+  signal mpl_ctrl_r            : MPL_CTRL_t;
+  signal mpl_mon_r             : MPL_MON_t;
 
   signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
   signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
@@ -157,6 +172,8 @@ begin
   clock_and_control.rst <= rst;
   clock_and_control.bx  <= bx;
 
+  h2s_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(h2s_ctrl_r )) port map(clk,rst,h2s_ctrl_b,h2s_ctrl_v);
+  h2s_mon_b <= xor_reduce(h2s_mon_v);
 
   ULT : entity ult_lib.ult
     generic map(
@@ -218,7 +235,7 @@ begin
       o_NSP => o_NSP,
 
       sump => sump
-      );
+  );
 
 
 end behavioral;
