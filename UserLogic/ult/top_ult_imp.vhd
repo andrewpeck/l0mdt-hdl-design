@@ -79,10 +79,10 @@ entity top_ult is
     mpl_mon_b             : out std_logic;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inner_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits_ab : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -91,25 +91,25 @@ entity top_ult is
     -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    i_plus_neighbor_slc       : in std_logic;--slc_rx_rvt;
-    i_minus_neighbor_slc      : in std_logic;--slc_rx_rvt;
+    i_main_primary_slc_ab        : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc_ab      : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_plus_neighbor_slc_b       : in std_logic;--slc_rx_rvt;
+    i_minus_neighbor_slc_b      : in std_logic;--slc_rx_rvt;
     -- Segments in from neighbor
-    i_plus_neighbor_segments  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments_ab  : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments_ab : in std_logic_vector(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
+    o_daq_streams_ab     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- MUCTPI
-    o_MTC : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    o_NSP : out std_logic_vector(c_NUM_NSP-1 downto 0);--mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC_ab : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    o_NSP_ab : out std_logic_vector(c_NUM_NSP-1 downto 0);--mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
     sump : out std_logic
 
@@ -149,6 +149,27 @@ architecture behavioral of top_ult is
   signal tf_mon_v              : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
   signal mpl_ctrl_v            : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
   signal mpl_mon_v             : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
+
+  signal i_inner_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_middle_tdc_hits : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_outer_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_extra_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+
+  signal i_main_primary_slc        :slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc      :slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc       :slc_rx_rvt;
+  signal i_minus_neighbor_slc      :slc_rx_rvt;
+
+  signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+
+  signal o_daq_streams     : felix_stream_bus_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
+
+  signal o_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  signal o_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+
+  signal o_MTC : mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+  signal o_NSP : mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
 begin
 
