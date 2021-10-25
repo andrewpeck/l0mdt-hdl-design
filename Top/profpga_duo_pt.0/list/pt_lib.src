@@ -1,7 +1,0 @@
-boards/profpga_duo/Top/top_profpga_duo_pt.v
-shared/src/pt_pkg.vhd
-shared/src/bram.vhd
-pt/src/sagitta_calculator.vhd
-pt/src/seg_coord_transform.vhd
-pt/src/pt.vhd
-pt/src/pt_top.vhd
