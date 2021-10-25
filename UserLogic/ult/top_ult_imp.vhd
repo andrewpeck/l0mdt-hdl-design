@@ -57,32 +57,32 @@ entity top_ult is
 
     -- axi control
 
-    h2s_ctrl_r            : in  H2S_CTRL_t;
-    h2s_mon_r             : out H2S_MON_t;
+    h2s_ctrl_r            : in  std_logic;
+    h2s_mon_r             : out std_logic;
 
-    tar_ctrl_r            : in  TAR_CTRL_t;
-    tar_mon_r             : out TAR_MON_t;
+    tar_ctrl_r            : in  std_logic;
+    tar_mon_r             : out std_logic;
 
-    mtc_ctrl_r            : in  MTC_CTRL_t;
-    mtc_mon_r             : out MTC_MON_t;
+    mtc_ctrl_r            : in  std_logic;
+    mtc_mon_r             : out std_logic;
 
-    ucm_ctrl_r            : in  UCM_CTRL_t;
-    ucm_mon_r             : out UCM_MON_t;
+    ucm_ctrl_r            : in  std_logic;
+    ucm_mon_r             : out std_logic;
 
-    daq_ctrl_r            : in  DAQ_CTRL_t;
-    daq_mon_r             : out DAQ_MON_t;
+    daq_ctrl_r            : in  std_logic;
+    daq_mon_r             : out std_logic;
 
-    tf_ctrl_r             : in  TF_CTRL_t;
-    tf_mon_r              : out TF_MON_t;
+    tf_ctrl_r             : in  std_logic;
+    tf_mon_r              : out std_logic;
 
-    mpl_ctrl_r            : in  MPL_CTRL_t;
-    mpl_mon_r             : out MPL_MON_t;
+    mpl_ctrl_r            : in  std_logic;--
+    mpl_mon_r             : out std_logic;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inner_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_middle_tdc_hits : in std_logic_vecto(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_outer_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_extra_tdc_hits  : in std_logic_vecto(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -91,27 +91,25 @@ entity top_ult is
     -- i_extra_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- Sector Logic Candidates
-    i_main_primary_slc        : in slc_rx_bus_avt(2 downto 0);  -- is the main SL used
-    i_main_secondary_slc      : in slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
-    i_plus_neighbor_slc       : in slc_rx_rvt;
-    i_minus_neighbor_slc      : in slc_rx_rvt;
+    i_main_primary_slc        : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- is the main SL used
+    i_main_secondary_slc      : in std_logic_vector(2 downto 0);--slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
+    i_plus_neighbor_slc       : in std_logic;--slc_rx_rvt;
+    i_minus_neighbor_slc      : in std_logic;--slc_rx_rvt;
     -- Segments in from neighbor
-    i_plus_neighbor_segments  : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
-    i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_plus_neighbor_segments  : in std_logic_vecto(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+    i_minus_neighbor_segments : in std_logic_vecto(c_NUM_SF_INPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
-                                                  + c_HPS_MAX_HP_MID   
-                                                  + c_HPS_MAX_HP_OUT - 1 downto 0);
+    o_daq_streams     : out std_logic_vector(c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);--felix_stream_bus_avt (c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
     -- Segments Out to Neighbor
-    o_plus_neighbor_segments  : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-    o_minus_neighbor_segments : out sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_plus_neighbor_segments  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+    o_minus_neighbor_segments : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
 
     -- MUCTPI
-    o_MTC : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
-    o_NSP : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
+    o_MTC : out std_logic_vector(c_NUM_MTC-1 downto 0);--mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
+    o_NSP : out std_logic_vector(c_NUM_NSP-1 downto 0);--mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
 
     sump : out std_logic
 
