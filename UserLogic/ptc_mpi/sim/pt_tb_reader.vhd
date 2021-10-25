@@ -33,35 +33,35 @@ library project_lib;
 use project_lib.vhdl_textio_csv_pkg.ALL;
 
 
-entity csf_tb_reader is
+entity pt_tb_reader is
   generic (
-    IN_HIT_FILE       : string  := "csf_short_in.csv"
+    IN_HIT_FILE       : string  := "pt_in.csv"
   );
   port (
     clk               : in std_logic;
     rst               : in std_logic;
     enable            : in integer;
-    -- Hits from HE
-    o_seed            : out heg2sfslc_rt;
-    o_mdt_hit         : out heg2sfhit_rt;
-    o_eof             : out std_logic
+    o_segment_I       : out sf2ptcalc_rt;
+    o_segment_M       : out sf2ptcalc_rt;
+    o_segment_O       : out sf2ptcalc_rt;
+    o_SLC             : out pl2ptcalc_rt
   );
-end entity csf_tb_reader;
+end entity pt_tb_reader;
 
-architecture sim of csf_tb_reader is
+architecture sim of pt_tb_reader is
 
 begin
   
   
-  CSF_READ: process ( rst, clk)
+  PT_READ: process ( rst, clk)
 
-    file input_csf_file       : text open read_mode is IN_HIT_FILE;
+    file input_pt_file       : text open read_mode is IN_HIT_FILE;
     variable csv: csv_file_type;
     variable row                  : line;
     variable row_counter          : integer := 0;
-    variable hit : heg2sfhit_rt;
-    variable seed : heg2sfslc_rt;
-    variable eof : integer := 0;
+    
+    variable seg_I, seg_M, seg_O : sf2ptcalc_rt;
+    variable slc : pl2ptcalc_rt;
     variable first_read         : std_logic := '1';
 
     variable hit_dv : integer := 0;
