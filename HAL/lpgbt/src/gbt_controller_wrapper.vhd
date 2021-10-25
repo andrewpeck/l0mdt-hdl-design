@@ -22,7 +22,6 @@ entity gbt_controller_wrapper is
     ctrl : in  HAL_CSM_CSM_SC_CTRL_t;
 
     clk40   : in std_logic;
-    valid_i : in std_logic;
 
     -- master
     ic_data_i : in  std_logic_vector (1 downto 0);
@@ -68,6 +67,10 @@ architecture structural of gbt_controller_wrapper is
   signal tx_reset, rx_reset : std_logic := '0';  -- TODO: connect to AXI
 
 begin
+
+  --------------------------------------------------------------------------------
+  -- register inputs/outputs for timing
+  --------------------------------------------------------------------------------
 
   process (clk40) is
   begin
@@ -180,11 +183,11 @@ begin
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
-      tx_clk_en => valid_i,
+      tx_clk_en => '1',
 
       -- rx from lpgbt etc
       rx_clk_i  => clk40,
-      rx_clk_en => valid_i,
+      rx_clk_en => '1',
 
       -- IC/EC data from controller
       ic_data_i => ic_data_i_int,

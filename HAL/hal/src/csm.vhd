@@ -141,7 +141,6 @@ begin
 
       reset_i => reset_i,
       clk40   => clk40,
-      valid_i => downlink_data(0).valid,
       ctrl    => ctrl.sc,
       mon     => mon.sc,
 
