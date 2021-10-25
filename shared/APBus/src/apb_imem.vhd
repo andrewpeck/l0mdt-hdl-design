@@ -142,7 +142,7 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          mon <= (others =>'0');
+          --mon <= (others =>'0');
           o_rd_addr <= (others =>'0');
           o_wr_addr <= (others =>'0');
           o_wr_data <= (others =>'0');
