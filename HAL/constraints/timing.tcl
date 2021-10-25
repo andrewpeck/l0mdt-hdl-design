@@ -33,7 +33,7 @@ set_clock_groups -group [get_clocks axi_clk] -asynchronous
 # received domain to the logic clock
 ################################################################################
 
-set_max_delay -datapath_only 5 \
+set_max_delay -quiet -datapath_only 5 \
     -from [get_pins \
                {top_hal/*sector_logic*/*rx_packet_former*/*/C}] \
     -to [get_pins \
