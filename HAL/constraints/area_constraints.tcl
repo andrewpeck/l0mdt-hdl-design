@@ -74,7 +74,7 @@ proc assign_pblocks {min  max  side fpga} {
                        [get_cells -quiet "top_hal/*sector_logic*/sl_gen*[$lRegId]*"]]
 
         if {[string is space $cells] == 0} {
-            puts "Adding cells to pblock $lQuadBlock with mgt #$lRegId"
+            puts "Adding [llength $cells] cells to pblock $lQuadBlock with mgt #$lRegId"
             puts "   > quad_$side$q"
             add_cells_to_pblock $lQuadBlock $cells
         }
