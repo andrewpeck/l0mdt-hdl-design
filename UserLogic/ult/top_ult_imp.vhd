@@ -79,10 +79,10 @@ entity top_ult is
     mpl_mon_b             : out std_logic;
 
     -- TDC Hits from Polmux
-    i_inner_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
-    i_middle_tdc_hits_ab : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
-    i_outer_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
-    i_extra_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+    i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+    i_mid_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_MID -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+    i_out_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_OUT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+    i_ext_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_EXT -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
     -- TDC Hits from Tar
     -- i_inner_tar_hits  : in tar2hps_bus_avt (c_EN_TAR_HITS*c_HPS_MAX_HP_INN -1 downto 0);
@@ -155,6 +155,13 @@ architecture behavioral of top_ult is
   signal i_outer_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_extra_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
+  type mdt_polmux_bus_std_avt is array(integer range <>) of std_logic_vector(TDCPOLMUX2TAR_LEN - 1 downto 0);
+
+  signal i_inn_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mid_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+
   signal i_main_primary_slc        :slc_rx_bus_avt(2 downto 0);  -- is the main SL used
   signal i_main_secondary_slc      :slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
   signal i_plus_neighbor_slc       :slc_rx_rvt;
@@ -193,8 +200,40 @@ begin
   clock_and_control.rst <= rst;
   clock_and_control.bx  <= bx;
 
+  -- ser/Des
+
   h2s_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(h2s_ctrl_r )) port map(clk,rst,h2s_ctrl_b,h2s_ctrl_v);
   h2s_mon_b <= xor_reduce(h2s_mon_v);
+  tar_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(tar_ctrl_r )) port map(clk,rst,tar_ctrl_b,tar_ctrl_v);
+  tar_mon_b <= xor_reduce(tar_mon_v);
+  mtc_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mtc_ctrl_r )) port map(clk,rst,mtc_ctrl_b,mtc_ctrl_v);
+  mtc_mon_b <= xor_reduce(mtc_mon_v);
+  ucm_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ucm_ctrl_r )) port map(clk,rst,ucm_ctrl_b,ucm_ctrl_v);
+  ucm_mon_b <= xor_reduce(ucm_mon_v);
+  daq_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(daq_ctrl_r )) port map(clk,rst,daq_ctrl_b,daq_ctrl_v);
+  daq_mon_b <= xor_reduce(daq_mon_v);
+  tf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(tf_ctrl_r )) port map(clk,rst,tf_ctrl_b,tf_ctrl_v);
+  tf_mon_b <= xor_reduce(tf_mon_v);
+  mpl_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mpl_ctrl_r )) port map(clk,rst,mpl_ctrl_b,mpl_ctrl_v);
+  mpl_mon_b <= xor_reduce(mpl_mon_v);
+
+
+  inn_tdc: for i_h in c_HPS_MAX_HP_INN -1 downto 0 generate
+    tdc_inn : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_inn_tdc_hits_ab(i_h),o_data => i_inn_tdc_hits_av(i_h));
+    i_inner_tdc_hits(i_h) <= i_inn_tdc_hits_av(i_h);
+  end generate;
+  mid_tdc: for i_h in c_HPS_MAX_HP_MID -1 downto 0 generate
+    tdc_mid : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_mid_tdc_hits_ab(i_h),o_data => i_mid_tdc_hits_av(i_h));
+    i_middle_tdc_hits(i_h) <= i_mid_tdc_hits_av(i_h);
+  end generate;
+  out_tdc: for i_h in c_HPS_MAX_HP_OUT -1 downto 0 generate
+    tdc_out : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_out_tdc_hits_ab(i_h),o_data => i_out_tdc_hits_av(i_h));
+    i_outer_tdc_hits(i_h) <= i_out_tdc_hits_av(i_h);
+  end generate;
+  ext_tdc: for i_h in c_HPS_MAX_HP_EXT -1 downto 0 generate
+    tdc_ext : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
+    i_extra_tdc_hits(i_h) <= i_ext_tdc_hits_av(i_h);
+  end generate;
 
   ULT : entity ult_lib.ult
     generic map(
