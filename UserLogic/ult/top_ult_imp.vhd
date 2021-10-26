@@ -162,13 +162,27 @@ architecture behavioral of top_ult is
   signal i_out_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_OUT -1 downto 0);
   signal i_ext_tdc_hits_av : mdt_polmux_bus_std_avt (c_HPS_MAX_HP_EXT -1 downto 0);
 
+  
+
   signal i_main_primary_slc        :slc_rx_bus_avt(2 downto 0);  -- is the main SL used
   signal i_main_secondary_slc      :slc_rx_bus_avt(2 downto 0);  -- only used in the big endcap
   signal i_plus_neighbor_slc       :slc_rx_rvt;
   signal i_minus_neighbor_slc      :slc_rx_rvt;
 
+  type slc_rx_bus_std_avt is array(integer range <>) of std_logic_vector(SLC_RX_LEN - 1 downto 0);
+
+  signal i_main_primary_slc_av        :slc_rx_bus_std_avt(2 downto 0);  -- is the main SL used
+  signal i_main_secondary_slc_av      :slc_rx_bus_std_avt(2 downto 0);  -- only used in the big endcap
+  signal i_plus_neighbor_slc_av       :slc_rx_bus_std_avt(0 downto 0);
+  signal i_minus_neighbor_slc_av      :slc_rx_bus_std_avt(0 downto 0);
+
   signal i_plus_neighbor_segments  : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
   signal i_minus_neighbor_segments : sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
+
+  type sf2pt_bus_std_avt is array(integer range <>) of std_logic_vector(SF2PTCALC_LEN - 1 downto 0);
+
+  signal i_plus_neighbor_segments_av  : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
+  signal i_minus_neighbor_segments_av : sf2pt_bus_std_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
   signal o_daq_streams     : felix_stream_bus_avt (c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0);
 
@@ -231,9 +245,51 @@ begin
     i_outer_tdc_hits(i_h) <= i_out_tdc_hits_av(i_h);
   end generate;
   ext_tdc: for i_h in c_HPS_MAX_HP_EXT -1 downto 0 generate
-    tdc_ext : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
+  tdc_ext : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => TDCPOLMUX2TAR_LEN)port map(clk => clk,rst  => rst,i_data => i_ext_tdc_hits_ab(i_h),o_data => i_ext_tdc_hits_av(i_h));
     i_extra_tdc_hits(i_h) <= i_ext_tdc_hits_av(i_h);
   end generate;
+  --------------------------------------------------------------
+  slc_mp: for i_h in 2 downto 0 generate
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_main_primary_slc_ab(i_h),o_data => i_main_primary_slc_av(i_h));
+    i_main_primary_slc(i_h) <= i_main_primary_slc_av(i_h);
+  end generate;
+
+  slc_ms: for i_h in 2 downto 0  generate
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_main_secondary_slc_ab(i_h),o_data => i_main_secondary_slc_av(i_h));
+    i_main_secondary_slc(i_h) <= i_main_secondary_slc_av(i_h);
+  end generate;
+
+  des_p : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_slc_b,o_data => i_plus_neighbor_slc);
+  des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_minus_neighbor_slc_b,o_data => i_minus_neighbor_slc);
+  --------------------------------------------------------------
+  ns_p: for i_h in c_NUM_SF_INPUTS - 1 downto 0 generate
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SF2PTCALC_LEN)port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_segments_ab(i_h),o_data => i_plus_neighbor_segments_av(i_h));
+    i_plus_neighbor_segments(i_h) <= i_plus_neighbor_segments_av(i_h);
+  end generate;
+
+  ns_m: for i_h in c_NUM_SF_INPUTS - 1 downto 0  generate
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SF2PTCALC_LEN)port map(clk => clk,rst  => rst,i_data => i_minus_neighbor_segments_ab(i_h),o_data => i_minus_neighbor_segments_av(i_h));
+    i_minus_neighbor_segments(i_h) <= i_minus_neighbor_segments_av(i_h);
+  end generate;
+  --------------------------------------------------------------
+  daq: for i_d in c_HPS_MAX_HP_INN  + c_HPS_MAX_HP_MID  + c_HPS_MAX_HP_OUT - 1 downto 0 generate
+    o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
+  end generate;
+  --------------------------------------------------------------
+  o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+
+  --------------------------------------------------------------
+  MTC: for i_d in c_NUM_MTC - 1 downto 0 generate
+    o_MTC_ab(i_d)  <= xor_reduce(o_MTC(i_d));
+  end generate;
+  --------------------------------------------------------------
+  MTC: for i_d in c_NUM_NSP - 1 downto 0 generate
+    o_NSP_ab(i_d)  <= xor_reduce(o_NSP(i_d));
+  end generate;
+  --------------------------------------------------------------
+
+  --------------------------------------------------------------
 
   ULT : entity ult_lib.ult
     generic map(
