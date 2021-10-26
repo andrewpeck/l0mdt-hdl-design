@@ -116,9 +116,39 @@ def get_bitfield(
     else:
         return val_list[0]
 
+def print_BitFieldsInDataFormat(tvformat, tvformat_val,candidate_index=0, stationNum=-99):
+    DFSL              = DataFormat()
+    bitfieldWord = []
+    bitfieldWordList = []
+    
+    DFSL.build_data_format()
+    
 
+    if stationNum == -99:    #Some dataformats don't belong to any station (E.g. UCM2PL)
+        stationNum_internal = 0
+    else:
+        stationNum_internal = stationNum
 
+    stationID    =  station_id_to_name(stationNum_internal)
 
+  
+    bitfieldWord = DFSL.getBitFieldWord(tvformat,stationID)
+    bitfieldWord[0].set_bitwordvalue(tvformat_val)
+    bitfieldWordList.append(bitfieldWord[0].get_bitwordvalue())
+    
+    DFSL.fillBitFieldWord(tvformat, stationID, bitfieldWordList)  
+    BitFieldWord = DFSL.getBitFieldWord(tvformat,stationID)
+    print(bitfieldWord[0].print_bitFieldWord())
+   
+
+    
+def   print_tv_bitfields(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+    port_idx = 0
+    for n_ip_intf in range(n_interfaces): # Add concept of interface
+        for io in range(n_ports[n_ip_intf]):
+            for n_events in range(n_events_to_process):
+                print_BitFieldsInDataFormat(tvformats[n_ip_intf],tv_list[port_idx][n_events])
+            port_idx = port_idx + 1
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
     evt                = 0
