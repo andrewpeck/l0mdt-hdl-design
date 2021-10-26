@@ -28,24 +28,22 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
-
-library project_lib;
-use project_lib.vhdl_textio_csv_pkg.ALL;
+use shared_lib.vhdl_textio_csv_pkg.ALL;
 
 
-entity pt_tb_seg_reader is
+entity pt_tb_slc_reader is
   generic (
-    IN_HIT_FILE       : string  := "pt_in0.csv"
+    IN_HIT_FILE       : string  := "pt_in_slc.csv"
   );
   port (
     clk               : in std_logic;
     rst               : in std_logic;
-    enable            : in integer;
-    o_segment         : out sf2ptcalc_rt
+    enable            : in std_logic;
+    o_slc             : out pl2ptcalc_rt
   );
-end entity pt_tb_seg_reader;
+end entity pt_tb_slc_reader;
 
-architecture sim of pt_tb_seg_reader is
+architecture sim of pt_tb_slc_reader is
 
 begin
   
@@ -57,18 +55,18 @@ begin
     variable row                  : line;
     variable row_counter          : integer := 0;
     
-    variable seg                  : sf2ptcalc_rt;
+    variable slc                  : pl2ptcalc_rt;
     variable first_read           : std_logic := '1';
 
-    variable seg_dv       : integer := 0;
-    variable slcid        : integer := 0;
-    variable slid         : integer := 0;
-    variable bcid         : integer := 0;
-    variable segpos       : integer := 0;
-    variable segangle     : integer := 0;
-    variable segquality   : integer := 0;
-    variable chamber_id   : integer := 0;
-    variable chamber_ieta : integer := 0;
+    variable dv               : integer := 0;
+    variable slcid            : integer := 0;
+    variable slid             : integer := 0;
+    variable bcid             : integer := 0;
+    variable phimod           : integer := 0;
+    variable sl_charge        : integer := 0;
+    variable nswseg_poseta    : integer := 0;
+    variable nswseg_posphi    : integer := 0;
+    variable nswseg_angdtheta : integer := 0;
 
     variable dummy_text   : string(1 to 100);
     variable ok           : boolean;
@@ -81,7 +79,7 @@ begin
 
       else
 
-        if enable = 1 then
+        if enable = '1' then
         -- write to DUT
           if first_read = '1' then
             first_read := '0';
@@ -89,33 +87,31 @@ begin
             csv.readline; -- First line is the header
           elsif csv.end_of_file = false then
             csv.readline;
-            seg_dv       := csv.read_integer;    
-            slcid        := csv.read_integer;
-            slid         := csv.read_integer;
-            bcid         := csv.read_integer;
-            segpos       := csv.read_integer;
-            segangle     := csv.read_integer;
-            segquality   := csv.read_integer;
-            chamber_id   := csv.read_integer;
-            chamber_ieta := csv.read_integer;
+            dv           := csv.read_integer;    
+            slcid            := csv.read_integer;
+            slid             := csv.read_integer;
+            bcid             := csv.read_integer;
+            phimod           := csv.read_integer;
+            sl_charge        := csv.read_integer;
+            nswseg_poseta    := csv.read_integer;
+            nswseg_posphi    := csv.read_integer;
+            nswseg_angdtheta := csv.read_integer;
           end if;
 
-          seg := nullify(seg);
-          seg.data_valid := to_unsigned(seg_dv,1)(0);
-          seg.muid := (
+          slc := nullify(slc);
+          slc.data_valid := to_unsigned(dv,1)(0);
+          slc.muid := (
             slcid => to_unsigned(slcid, SLC_COMMON_SLCID_LEN),
             slid => to_unsigned(slid, SL_TRAILER_SLID_LEN),
             bcid => to_unsigned(bcid, SL_HEADER_BCID_LEN)
           );
-          seg.segpos := to_unsigned(segpos, SF2PTCALC_SEGPOS_LEN);
-          seg.segangle := to_unsigned(segangle, SF2PTCALC_SEGANGLE_LEN);
-          seg.segquality := to_unsigned(segquality,1)(0);
-          seg.mdtid := (
-            chamber_id => to_unsigned(chamber_id, VEC_MDTID_CHAMBER_ID_LEN),
-            chamber_ieta => to_unsigned(chamber_ieta, VEC_MDTID_CHAMBER_IETA_LEN)
-          );
+          slc.phimod := to_signed(phimod, UCM2PL_PHIMOD_LEN);
+          slc.sl_charge := to_unsigned(sl_charge,1)(0);
+          slc.nswseg_poseta := to_unsigned(nswseg_poseta, SLC_ENDCAP_NSWSEG_POSETA_LEN);
+          slc.nswseg_posphi := to_unsigned(nswseg_poseta, SLC_ENDCAP_NSWSEG_POSPHI_LEN);
+          slc.nswseg_angdtheta := to_signed(nswseg_angdtheta, SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN);
     
-          o_segment <= seg;
+          o_slc <= slc;
         end if;
 
       end if;

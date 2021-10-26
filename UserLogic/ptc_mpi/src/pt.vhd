@@ -54,7 +54,8 @@ entity pt is
         i_segment_O  : in sf2ptcalc_rvt;
         i_SLC        : in pl2ptcalc_rvt;
         i_rst        : in std_logic;
-        o_mtc        : out ptcalc2mtc_rvt
+        o_mtc        : out ptcalc2mtc_rvt;
+        o_done       : out std_logic
     );
 end pt;
 
@@ -161,7 +162,7 @@ architecture Behavioral of pt is
     signal quality : std_logic_vector(MTC_QUALITY_LEN-1 downto 0);
 
     signal combo_index : std_logic_vector(PARAMS_DEPTH_LEN-1 downto 0);
-
+    signal done : std_logic := '1';
 
     ----------------------------------------------------------------------------
     -- COMPONENTS --------------------------------------------------------------
@@ -381,6 +382,7 @@ begin
     
     slc <= structify(i_SLC);
     o_mtc <= vectorify(mtc);
+    o_done <= done;
 
 
     pt_top_proc : process( clk )
@@ -393,6 +395,7 @@ begin
             segment_O_v <= i_segment_O;
 
             if segment_I.data_valid = '1' or segment_M.data_valid = '1' or segment_O.data_valid = '1' then
+                done <= '0';
                 dv_combo     <= '1';
                 if segment_I.data_valid = '1' then
                     segment_eta <= i_segment_I;
@@ -481,6 +484,7 @@ begin
             mtc.mdt_quality <= quality;
             --reset
             if dv_pt = '1' or i_rst = '1' then
+                done <= '1';
                 comboid <= (others => '0');
                 dv_combo <= '0';
                 slc_s <= nullify(slc_s);

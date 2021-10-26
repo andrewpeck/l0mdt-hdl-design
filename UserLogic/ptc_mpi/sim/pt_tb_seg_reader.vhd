@@ -28,9 +28,7 @@ use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
-
-library project_lib;
-use project_lib.vhdl_textio_csv_pkg.ALL;
+use shared_lib.vhdl_textio_csv_pkg.ALL;
 
 
 entity pt_tb_seg_reader is
@@ -40,7 +38,7 @@ entity pt_tb_seg_reader is
   port (
     clk               : in std_logic;
     rst               : in std_logic;
-    enable            : in integer;
+    enable            : in std_logic;
     o_segment         : out sf2ptcalc_rt
   );
 end entity pt_tb_seg_reader;
@@ -81,7 +79,7 @@ begin
 
       else
 
-        if enable = 1 then
+        if enable = '1' then
         -- write to DUT
           if first_read = '1' then
             first_read := '0';

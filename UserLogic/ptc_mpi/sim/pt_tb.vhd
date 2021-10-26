@@ -35,6 +35,9 @@ library ptc_lib;
 use ptc_lib.pt_pkg.all;
 use ptc_lib.pt_params_pkg.all;
 
+library project_lib;
+
+
 entity pt_tb is
 --  Port ( );
 end pt_tb;
@@ -47,23 +50,57 @@ architecture Behavioral of pt_tb is
     signal slc : pl2ptcalc_rt;
     signal o_mtc : ptcalc2mtc_rvt := (others => '0');
     signal rst : std_logic := '0';
+    signal enable : std_logic := '1';
+    signal done : std_logic;
     constant CLK_period : time := 4.0 ns;
 
 begin
     
-    reader : ENTITY project_lib.pt_tb_reader
+    seg_I_read : ENTITY project_lib.pt_tb_seg_reader
     generic map (
-        IN_HIT_FILE => "pt_in.csv"
+        IN_HIT_FILE => "pt_in0.csv"
     )
     port map(
         clk => clk,
         rst => rst,
-        enable => 1,
-        o_segment_I => seg_I,
-        o_segment_M => seg_M,
-        o_segment_O => seg_O,
-        o_SLC       => slc
+        enable => enable,
+        o_segment => seg_I
     );
+
+    seg_M_read : ENTITY project_lib.pt_tb_seg_reader
+    generic map (
+        IN_HIT_FILE => "pt_in1.csv"
+    )
+    port map(
+        clk => clk,
+        rst => rst,
+        enable => enable,
+        o_segment => seg_M
+    );
+
+
+    seg_O_read : ENTITY project_lib.pt_tb_seg_reader
+    generic map (
+        IN_HIT_FILE => "pt_in2.csv"
+    )
+    port map(
+        clk => clk,
+        rst => rst,
+        enable => enable,
+        o_segment => seg_O
+    );
+
+    slc_read : ENTITY project_lib.pt_tb_slc_reader
+    generic map (
+        IN_HIT_FILE => "pt_in2.csv"
+    )
+    port map(
+        clk => clk,
+        rst => rst,
+        enable => enable,
+        o_slc => slc
+    );
+
 
     pt : entity ptc_lib.pt
     Port map(
@@ -73,7 +110,8 @@ begin
         i_segment_O => i_segment_O,
         i_SLC       => i_SLC,
         i_rst       => rst,
-        o_mtc       => o_mtc
+        o_mtc       => o_mtc,
+        o_done      => done
     );
 
     CLK_process :process
@@ -83,5 +121,24 @@ begin
         CLK <= '1';
         wait for CLK_period/2;
     end process;
+
+    i_segment_I <= vectorify(seg_I);
+    i_segment_M <= vectorify(seg_M);
+    i_segment_O <= vectorify(seg_O);
+
+    tb_proc : process (CLK)
+    begin
+      if (rising_edge(CLK)) then
+
+        if done = '1' then
+            enable <= '1';
+        end if;
+
+        if enable = '1' then
+            enable <= '0';
+        end if;
+ 
+      end if;
+    end process tb_proc;
 
 end Behavioral;
