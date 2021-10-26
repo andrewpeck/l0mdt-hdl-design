@@ -268,7 +268,10 @@ def ucm_test(dut):
         output_tv_list.append(single_interface_list)
 
 
+    print("Input testvectors '", input_tv_list)
+    events.print_tv_bitfields(input_tvformats, input_tv_list, UcmPorts.n_input_interfaces, UcmPorts.get_all_input_interface_ports(), num_events_to_process)
 
+ 
     ##
     ## send input events
     ##
