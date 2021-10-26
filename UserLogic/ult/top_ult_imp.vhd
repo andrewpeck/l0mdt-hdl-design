@@ -276,15 +276,21 @@ begin
     o_daq_streams_ab(i_d) <= xor_reduce(o_daq_streams(i_d));
   end generate;
   --------------------------------------------------------------
-  o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-  o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
-
+  -- o_plus_neighbor_segments_ab  : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  -- o_minus_neighbor_segments_ab : out std_logic_vector(c_NUM_SF_OUTPUTS - 1 downto 0);--sf2pt_bus_avt(c_NUM_SF_OUTPUTS - 1 downto 0);
+  pns: for i_d in c_NUM_SF_OUTPUTS - 1 downto 0 generate
+    o_plus_neighbor_segments_ab(i_d) <= xor_reduce(o_plus_neighbor_segments(i_d));
+  end generate;
+  mns: for i_d in c_NUM_SF_OUTPUTS - 1 downto 0 generate
+    o_minus_neighbor_segments_ab(i_d) <= xor_reduce(o_minus_neighbor_segments(i_d));
+  end generate;
+    
   --------------------------------------------------------------
   MTC: for i_d in c_NUM_MTC - 1 downto 0 generate
     o_MTC_ab(i_d)  <= xor_reduce(o_MTC(i_d));
   end generate;
   --------------------------------------------------------------
-  MTC: for i_d in c_NUM_NSP - 1 downto 0 generate
+  NSP: for i_d in c_NUM_NSP - 1 downto 0 generate
     o_NSP_ab(i_d)  <= xor_reduce(o_NSP(i_d));
   end generate;
   --------------------------------------------------------------
