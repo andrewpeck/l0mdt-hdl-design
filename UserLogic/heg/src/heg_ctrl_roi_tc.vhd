@@ -133,8 +133,8 @@ begin
     g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH,
-    g_APBUS_CTRL_WIDTH      => ctrl_v'length,
-    g_APBUS_MON_WIDTH       => mon_v'length
+    -- g_APBUS_CTRL_WIDTH      => ctrl_v'length,
+    -- g_APBUS_MON_WIDTH       => mon_v'length
   )
   port map (
     clk           => clk,
