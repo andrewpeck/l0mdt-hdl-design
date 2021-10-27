@@ -16,7 +16,7 @@
 	url = ../../HPTD/tx_phase_aligner.git
 [submodule "HAL/lpgbt/src/gbt-sc"]
 	path = HAL/lpgbt/src/gbt-sc
-	url = https://gitlab.cern.ch/gbtsc-fpga-support/gbt-sc
+	url = https://gitlab.cern.ch/gbtsc-fpga-support/gbt-sc.git
 [submodule "regmap"]
 	path = regmap
 	url = https://github.com/BU-Tools/uHAL_AXI_regmap.git
@@ -55,7 +55,7 @@
 	url = ../../tcpaiva/atlas-ttc-core.git
 [submodule "HAL/ctrl/src/axi-vhdl-package"]
 	path = HAL/ctrl/src/axi-vhdl-package
-	url = https://gitlab.com/BU-EDF/axi-vhdl-package
+	url = https://gitlab.com/BU-EDF/axi-vhdl-package.git
 [submodule "shared/vhdl_utilities"]
 	path = shared/vhdl_utilities
 	url = https://gitlab.com/taquionbcn/vhdl-gldl-utilities.git
