@@ -50,9 +50,9 @@ entity felix_decoder is
     strobe_pipeline : in std_logic;
     strobe_320      : in std_logic;
 
-    l0mdt_ttc_40m      : out l0mdt_ttc_rt;
-    l0mdt_ttc_320m     : out l0mdt_ttc_rt;
-    l0mdt_ttc_pipeline : out l0mdt_ttc_rt
+    l0mdt_ttc_40m      : out l0mdt_ttc_rt
+  --l0mdt_ttc_320m     : out l0mdt_ttc_rt;
+  --l0mdt_ttc_pipeline : out l0mdt_ttc_rt
 
     );
 end felix_decoder;
@@ -132,7 +132,7 @@ begin
   begin
     if (rising_edge(clock320)) then
       valid_o        <= uplink_ready and uplink_data.valid;
-      l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
+   -- l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
     end if;
   end process;
 
@@ -143,11 +143,11 @@ begin
     end if;
   end process;
 
-  process (clock_pipeline)
-  begin
-    if (rising_edge(clock_pipeline)) then
-      l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc, strobe_pipeline);
-    end if;
-  end process;
+  -- process (clock_pipeline)
+  -- begin
+  --   if (rising_edge(clock_pipeline)) then
+  --     l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc, strobe_pipeline);
+  --   end if;
+  -- end process;
 
 end behavioral;

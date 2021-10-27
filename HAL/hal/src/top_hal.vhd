@@ -563,11 +563,13 @@ begin  -- architecture behavioral
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,
 
-      l0mdt_ttc_40m      => ttc_commands,    -- copies of outputs stable for 25ns
-      l0mdt_ttc_320m     => open,            -- copies of outputs stable for 3.125ns
-      l0mdt_ttc_pipeline => ttc_commands_o,  -- copies of outputs stable for 1 pipeline clock
+      l0mdt_ttc_40m      => ttc_commands, -- copies of outputs stable for 25ns
+    --l0mdt_ttc_320m     => open,         -- copies of outputs stable for 3.125ns
+    --l0mdt_ttc_pipeline => open,         -- copies of outputs stable for 1 pipeline clock
       valid_o            => felix_valid
       );
+
+  ttc_commands_o <= ttc_commands;
 
   --------------------------------------------------------------------------------
   -- Felix Transmitter
