@@ -77,11 +77,8 @@ architecture Behavioral of sector_logic_link_wrapper is
 
   -- Received packet from SL
 
-  signal sl_rx_data, sl_rx_data_ff, sl_rx_data_pre_cdc, sl_rx_data_clk40
-    : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-
-  signal sl_tx_data, sl_tx_data_ff, sl_tx_data_post_cdc, sl_tx_data_clk40
-    : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_data, sl_rx_data_pre_cdc  : sl_rx_data_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_data, sl_tx_data_post_cdc : sl_tx_data_rt_array (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
 
   -- some values in the sector logic data format are represented as
   -- "signed magnitude" numbers, in which the most significant bit is a sign bit and the remaining bits
@@ -283,22 +280,18 @@ begin
         sl_tx_ctrl_o(idx).ctrl1 <= x"000" & txctrl1;
         sl_tx_ctrl_o(idx).ctrl2 <= x"0" & txctrl2;
 
-        -- tx data goes from:
-        -- pipeline clock --> clock 40 --> tx_clk
-        process (clk40) is
-        begin
-          if (rising_edge(clk40)) then
-            sl_tx_data_clk40(idx) <= sl_tx_data(idx);
-          end if;
-        end process;
-
-        process (tx_clk(idx)) is
-        begin
-          if (rising_edge(tx_clk(idx))) then
-            sl_tx_data_ff(idx)       <= sl_tx_data_clk40(idx);
-            sl_tx_data_post_cdc(idx) <= sl_tx_data_ff(idx);
-          end if;
-        end process;
+        -- sync from pipeline clock-----------------------------------------------------
+        sync_sl_tx : entity work.sync_cdc
+          generic map (
+            WIDTH    => sl_tx_data_post_cdc(idx).data'length,
+            N_STAGES => 2)
+          port map (
+            clk_i   => tx_clk(idx),
+            valid_i => sl_tx_data(idx).valid,
+            data_i  => sl_tx_data(idx).data,
+            valid_o => sl_tx_data_post_cdc(idx).valid,
+            data_o  => sl_tx_data_post_cdc(idx).data
+            );
 
       end generate;
 
@@ -307,12 +300,14 @@ begin
       --------------------------------------------------------------------------------
 
       rx_gen : if (sl_idx_array(I) /= -1) generate
-        constant idx        : integer := sl_idx_array(I);
-        signal dec_rxctrl0  : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-        signal dec_rxctrl2  : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
-        signal dec_userdata : std_logic_vector (31 downto 0);
-        signal rxctrl0      : std_logic_vector (3 downto 0);
-        signal rxctrl1      : std_logic_vector (3 downto 0);
+        constant idx           : integer := sl_idx_array(I);
+        signal dec_rxctrl0     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal dec_rxctrl2     : std_logic_vector (NUMBER_OF_BYTES_IN_A_WORD-1 downto 0);
+        signal dec_userdata    : std_logic_vector (31 downto 0);
+        signal rxctrl0         : std_logic_vector (3 downto 0);
+        signal rxctrl1         : std_logic_vector (3 downto 0);
+        signal sl_pre_cdc_vec  : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
+        signal sl_post_cdc_vec : std_logic_vector (sl_rx_data_pre_cdc(idx).data'length + 1 downto 0);
       begin
 
         assert false report "generating SL RX #" & integer'image(idx) & " on MGT#"
@@ -376,29 +371,25 @@ begin
         -- RX Clock Domain Crossing
         --------------------------------------------------------------------------------
 
-        -- the SL data comes out of the packet former on the rxclk, a 240MHz
-        -- LHC-synchronous clock, but we don't necessarily know which edge...
-        -- since some of the edges of 240 vs. 320 have very little setup/hold we
-        -- do a very simple clock domain crossing by just copying to the 40MHz LHC
-        -- clock and then copying to the 320 MHz pipeline clock
-        --
-        -- rx data goes from:
-        -- rx_clk --> clk40 --> pipeline clock
+        -- convert to a std_logic_vector
+        sl_pre_cdc_vec <= sl_rx_data_pre_cdc(idx).data &
+                          sl_rx_data_pre_cdc(idx).err & sl_rx_data_pre_cdc(idx).locked;
 
-        process (clk40) is
-        begin
-          if (rising_edge(clk40)) then
-            sl_rx_data_clk40(idx) <= sl_rx_data_pre_cdc(idx);
-          end if;
-        end process;
+        sync_sl_rx_data : entity work.sync_cdc
+          generic map (
+            WIDTH    => 1 + 1 + sl_rx_data_pre_cdc(idx).data'length,
+            N_STAGES => 2)
+          port map (
+            clk_i   => pipeline_clock,
+            valid_i => sl_rx_data_pre_cdc(idx).valid,
+            data_i  => sl_pre_cdc_vec,
+            valid_o => sl_rx_data(idx).valid,
+            data_o  => sl_post_cdc_vec
+            );
 
-        process (pipeline_clock) is
-        begin
-          if (rising_edge(pipeline_clock)) then
-            sl_rx_data_ff(idx) <= sl_rx_data_clk40(idx);
-            sl_rx_data(idx)    <= sl_rx_data_ff(idx);
-          end if;
-        end process;
+        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
+        sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
+        sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
       end generate;
     end generate;
