@@ -279,6 +279,7 @@ begin
           o_rd_addr <= (others =>'0');
           o_wr_addr <= (others =>'0');
           o_wr_data <= (others =>'0');
+          apb_rd_data <= (others => '0');
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
