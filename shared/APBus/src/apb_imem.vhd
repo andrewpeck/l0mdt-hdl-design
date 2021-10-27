@@ -44,8 +44,8 @@ entity apb_imem is
     rst           : in std_logic;
     ena           : in std_logic := '1';
     --
-    ctrl          : in std_logic_vector(g_APBUS_CTRL_WIDTH - 1 downto 0);
-    mon           : out std_logic_vector(g_APBUS_MON_WIDTH - 1 downto 0);
+    ctrl          : in std_logic_vector;--(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    mon           : out std_logic_vector;--(g_APBUS_MON_WIDTH - 1 downto 0);
     --
     -- i_freeze      : in std_logic_vector(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
