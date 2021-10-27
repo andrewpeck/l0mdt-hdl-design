@@ -551,8 +551,11 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock => clocks.clock320,
-      reset => global_reset,
+      clock320       => clocks.clock320,
+      clock40        => clocks.clock40,
+      clock_pipeline => clocks.clock_pipeline,
+
+      reset          => global_reset,
 
       ttc_mgt_data_i    => felix_ttc_mgt_word,
       ttc_mgt_bitslip_o => felix_ttc_bitslip,
