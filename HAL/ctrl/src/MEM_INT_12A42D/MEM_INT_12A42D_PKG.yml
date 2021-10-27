@@ -9,6 +9,18 @@ config:
 
 hdl:
 
+- MEM_INT_12A42D_SIGNALS_MON_t:
+  - rd_rdy : [ type: logic ]
+
+
+- MEM_INT_12A42D_SIGNALS_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+
+
 - MEM_INT_12A42D_wr_data_CTRL_t:
   - wr_data_0 : [ type: logic, length: 32 ]
   - wr_data_1 : [ type: logic, length: 10 ]
@@ -20,16 +32,12 @@ hdl:
 
 
 - MEM_INT_12A42D_MON_t:
-  - rd_rdy : [ type: logic ]
+  - SIGNALS : [ type: MEM_INT_12A42D_SIGNALS_MON_t ]
   - rd_data : [ type: MEM_INT_12A42D_rd_data_MON_t ]
 
 
 - MEM_INT_12A42D_CTRL_t:
-  - wr_req : [ type: logic ]
-  - wr_ack : [ type: logic ]
-  - rd_req : [ type: logic ]
-  - rd_ack : [ type: logic ]
-  - flush_req : [ type: logic ]
+  - SIGNALS : [ type: MEM_INT_12A42D_SIGNALS_CTRL_t ]
   - wr_addr : [ type: logic, length: 12 ]
   - rd_addr : [ type: logic, length: 12 ]
   - wr_data : [ type: MEM_INT_12A42D_wr_data_CTRL_t ]

@@ -13,6 +13,34 @@ use shared_lib.common_ieee.all;
 
 package MEM_INT_12A42D_CTRL is
 
+  type MEM_INT_12A42D_SIGNALS_MON_t is record
+    rd_rdy : std_logic;
+  end record MEM_INT_12A42D_SIGNALS_MON_t;
+  function len(x: MEM_INT_12A42D_SIGNALS_MON_t) return natural;
+  function width(x: MEM_INT_12A42D_SIGNALS_MON_t) return natural;
+  function vectorify(x: MEM_INT_12A42D_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A42D_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t;
+  function nullify(t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t;
+  function zeroed(t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t;
+
+  type MEM_INT_12A42D_SIGNALS_CTRL_t is record
+    wr_req : std_logic;
+    wr_ack : std_logic;
+    rd_req : std_logic;
+    rd_ack : std_logic;
+    flush_req : std_logic;
+  end record MEM_INT_12A42D_SIGNALS_CTRL_t;
+  function len(x: MEM_INT_12A42D_SIGNALS_CTRL_t) return natural;
+  function width(x: MEM_INT_12A42D_SIGNALS_CTRL_t) return natural;
+  function vectorify(x: MEM_INT_12A42D_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function convert(x: MEM_INT_12A42D_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector;
+  function structify(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t;
+  function nullify(t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t;
+  function zeroed(t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t;
+
   type MEM_INT_12A42D_wr_data_CTRL_t is record
     wr_data_0 : std_logic_vector(32-1 downto 0);
     wr_data_1 : std_logic_vector(10-1 downto 0);
@@ -40,7 +68,7 @@ package MEM_INT_12A42D_CTRL is
   function zeroed(t: MEM_INT_12A42D_rd_data_MON_t) return MEM_INT_12A42D_rd_data_MON_t;
 
   type MEM_INT_12A42D_MON_t is record
-    rd_rdy : std_logic;
+    SIGNALS : MEM_INT_12A42D_SIGNALS_MON_t;
     rd_data : MEM_INT_12A42D_rd_data_MON_t;
   end record MEM_INT_12A42D_MON_t;
   function len(x: MEM_INT_12A42D_MON_t) return natural;
@@ -53,11 +81,7 @@ package MEM_INT_12A42D_CTRL is
   function zeroed(t: MEM_INT_12A42D_MON_t) return MEM_INT_12A42D_MON_t;
 
   type MEM_INT_12A42D_CTRL_t is record
-    wr_req : std_logic;
-    wr_ack : std_logic;
-    rd_req : std_logic;
-    rd_ack : std_logic;
-    flush_req : std_logic;
+    SIGNALS : MEM_INT_12A42D_SIGNALS_CTRL_t;
     wr_addr : std_logic_vector(12-1 downto 0);
     rd_addr : std_logic_vector(12-1 downto 0);
     wr_data : MEM_INT_12A42D_wr_data_CTRL_t;
@@ -76,6 +100,224 @@ end package MEM_INT_12A42D_CTRL;
 ------------------------------------------------------------
 
 package body MEM_INT_12A42D_CTRL is
+
+  function len(x: MEM_INT_12A42D_SIGNALS_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.rd_rdy);
+    return l;
+  end function len;
+  function width(x: MEM_INT_12A42D_SIGNALS_MON_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.rd_rdy);
+    return l;
+  end function width;
+  function vectorify(x: MEM_INT_12A42D_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+    else
+      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: MEM_INT_12A42D_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+    else
+      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t is
+    variable y: MEM_INT_12A42D_SIGNALS_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+    else
+      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t is
+    variable y: MEM_INT_12A42D_SIGNALS_MON_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+    else
+      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t is
+  variable y: MEM_INT_12A42D_SIGNALS_MON_t;
+  begin
+    y.rd_rdy := nullify(t.rd_rdy);
+    return y;
+  end function nullify;
+  function zeroed(t: MEM_INT_12A42D_SIGNALS_MON_t) return MEM_INT_12A42D_SIGNALS_MON_t is
+  variable y: MEM_INT_12A42D_SIGNALS_MON_t;
+  begin
+    y.rd_rdy := zeroed(t.rd_rdy);
+    return y;
+  end function zeroed;
+
+  function len(x: MEM_INT_12A42D_SIGNALS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + len(x.wr_req);
+    l := l + len(x.wr_ack);
+    l := l + len(x.rd_req);
+    l := l + len(x.rd_ack);
+    l := l + len(x.flush_req);
+    return l;
+  end function len;
+  function width(x: MEM_INT_12A42D_SIGNALS_CTRL_t) return natural is
+    variable l : natural := 0;
+  begin
+    l := l + width(x.wr_req);
+    l := l + width(x.wr_ack);
+    l := l + width(x.rd_req);
+    l := l + width(x.rd_ack);
+    l := l + width(x.flush_req);
+    return l;
+  end function width;
+  function vectorify(x: MEM_INT_12A42D_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
+      left := left + len(x.wr_req);
+      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
+      left := left + len(x.wr_ack);
+      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
+      left := left + len(x.rd_req);
+      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
+      left := left + len(x.rd_ack);
+      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
+    else
+      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
+      left := left - len(x.wr_req);
+      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
+      left := left - len(x.wr_ack);
+      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
+      left := left - len(x.rd_req);
+      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
+      left := left - len(x.rd_ack);
+      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
+    end if;
+    return y;
+  end function vectorify;
+  function convert(x: MEM_INT_12A42D_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
+    variable left : natural := t'left;
+    variable y : std_logic_vector(t'range);
+  begin
+    if t'ascending then
+      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
+      left := left + len(x.wr_req);
+      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
+      left := left + len(x.wr_ack);
+      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
+      left := left + len(x.rd_req);
+      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
+      left := left + len(x.rd_ack);
+      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
+    else
+      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
+      left := left - len(x.wr_req);
+      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
+      left := left - len(x.wr_ack);
+      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
+      left := left - len(x.rd_req);
+      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
+      left := left - len(x.rd_ack);
+      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
+    end if;
+    return y;
+  end function convert;
+  function structify(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t is
+    variable y: MEM_INT_12A42D_SIGNALS_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
+      left := left + len(y.rd_ack);
+      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+    else
+      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
+      left := left - len(y.rd_ack);
+      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+    end if;
+    return y;
+  end function structify;
+  function convert(x: in std_logic_vector; t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t is
+    variable y: MEM_INT_12A42D_SIGNALS_CTRL_t;
+    variable left : natural := x'left;
+  begin
+    if x'ascending then
+      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
+      left := left + len(y.wr_req);
+      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
+      left := left + len(y.wr_ack);
+      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
+      left := left + len(y.rd_req);
+      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
+      left := left + len(y.rd_ack);
+      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
+    else
+      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
+      left := left - len(y.wr_req);
+      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
+      left := left - len(y.wr_ack);
+      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
+      left := left - len(y.rd_req);
+      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
+      left := left - len(y.rd_ack);
+      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
+    end if;
+    return y;
+  end function convert;
+  function nullify(t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t is
+  variable y: MEM_INT_12A42D_SIGNALS_CTRL_t;
+  begin
+    y.wr_req := nullify(t.wr_req);
+    y.wr_ack := nullify(t.wr_ack);
+    y.rd_req := nullify(t.rd_req);
+    y.rd_ack := nullify(t.rd_ack);
+    y.flush_req := nullify(t.flush_req);
+    return y;
+  end function nullify;
+  function zeroed(t: MEM_INT_12A42D_SIGNALS_CTRL_t) return MEM_INT_12A42D_SIGNALS_CTRL_t is
+  variable y: MEM_INT_12A42D_SIGNALS_CTRL_t;
+  begin
+    y.wr_req := zeroed(t.wr_req);
+    y.wr_ack := zeroed(t.wr_ack);
+    y.rd_req := zeroed(t.rd_req);
+    y.rd_ack := zeroed(t.rd_ack);
+    y.flush_req := zeroed(t.flush_req);
+    return y;
+  end function zeroed;
 
   function len(x: MEM_INT_12A42D_wr_data_CTRL_t) return natural is
     variable l : natural := 0;
@@ -258,14 +500,14 @@ package body MEM_INT_12A42D_CTRL is
   function len(x: MEM_INT_12A42D_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.rd_rdy);
+    l := l + len(x.SIGNALS);
     l := l + len(x.rd_data);
     return l;
   end function len;
   function width(x: MEM_INT_12A42D_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.rd_rdy);
+    l := l + width(x.SIGNALS);
     l := l + width(x.rd_data);
     return l;
   end function width;
@@ -274,12 +516,12 @@ package body MEM_INT_12A42D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
+      left := left + len(x.SIGNALS);
       assign(y(left to left+len(x.rd_data)-1), vectorify(x.rd_data, y(left to left+len(x.rd_data)-1)));
     else
-      assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
+      left := left - len(x.SIGNALS);
       assign(y(left downto left-len(x.rd_data)+1), vectorify(x.rd_data, y(left downto left-len(x.rd_data)+1)));
     end if;
     return y;
@@ -289,12 +531,12 @@ package body MEM_INT_12A42D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
-      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
+      left := left + len(x.SIGNALS);
       assign(y(left to left+len(x.rd_data)-1), convert(x.rd_data, y(left to left+len(x.rd_data)-1)));
     else
-      assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
-      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
+      left := left - len(x.SIGNALS);
       assign(y(left downto left-len(x.rd_data)+1), convert(x.rd_data, y(left downto left-len(x.rd_data)+1)));
     end if;
     return y;
@@ -304,12 +546,12 @@ package body MEM_INT_12A42D_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
+      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
+      left := left + len(y.SIGNALS);
       y.rd_data := structify(x(left to left+len(y.rd_data)-1), y.rd_data);
     else
-      y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
+      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
+      left := left - len(y.SIGNALS);
       y.rd_data := structify(x(left downto left-len(y.rd_data)+1), y.rd_data);
     end if;
     return y;
@@ -319,12 +561,12 @@ package body MEM_INT_12A42D_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
-      left := left + len(y.rd_rdy);
+      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
+      left := left + len(y.SIGNALS);
       y.rd_data := convert(x(left to left+len(y.rd_data)-1), y.rd_data);
     else
-      y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
-      left := left - len(y.rd_rdy);
+      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
+      left := left - len(y.SIGNALS);
       y.rd_data := convert(x(left downto left-len(y.rd_data)+1), y.rd_data);
     end if;
     return y;
@@ -332,14 +574,14 @@ package body MEM_INT_12A42D_CTRL is
   function nullify(t: MEM_INT_12A42D_MON_t) return MEM_INT_12A42D_MON_t is
   variable y: MEM_INT_12A42D_MON_t;
   begin
-    y.rd_rdy := nullify(t.rd_rdy);
+    y.SIGNALS := nullify(t.SIGNALS);
     y.rd_data := nullify(t.rd_data);
     return y;
   end function nullify;
   function zeroed(t: MEM_INT_12A42D_MON_t) return MEM_INT_12A42D_MON_t is
   variable y: MEM_INT_12A42D_MON_t;
   begin
-    y.rd_rdy := zeroed(t.rd_rdy);
+    y.SIGNALS := zeroed(t.SIGNALS);
     y.rd_data := zeroed(t.rd_data);
     return y;
   end function zeroed;
@@ -347,11 +589,7 @@ package body MEM_INT_12A42D_CTRL is
   function len(x: MEM_INT_12A42D_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.wr_req);
-    l := l + len(x.wr_ack);
-    l := l + len(x.rd_req);
-    l := l + len(x.rd_ack);
-    l := l + len(x.flush_req);
+    l := l + len(x.SIGNALS);
     l := l + len(x.wr_addr);
     l := l + len(x.rd_addr);
     l := l + len(x.wr_data);
@@ -360,11 +598,7 @@ package body MEM_INT_12A42D_CTRL is
   function width(x: MEM_INT_12A42D_CTRL_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.wr_req);
-    l := l + width(x.wr_ack);
-    l := l + width(x.rd_req);
-    l := l + width(x.rd_ack);
-    l := l + width(x.flush_req);
+    l := l + width(x.SIGNALS);
     l := l + width(x.wr_addr);
     l := l + width(x.rd_addr);
     l := l + width(x.wr_data);
@@ -375,32 +609,16 @@ package body MEM_INT_12A42D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), vectorify(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), vectorify(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), vectorify(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
-      left := left + len(x.flush_req);
+      assign(y(left to left+len(x.SIGNALS)-1), vectorify(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
+      left := left + len(x.SIGNALS);
       assign(y(left to left+len(x.wr_addr)-1), vectorify(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
       left := left + len(x.wr_addr);
       assign(y(left to left+len(x.rd_addr)-1), vectorify(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
       left := left + len(x.rd_addr);
       assign(y(left to left+len(x.wr_data)-1), vectorify(x.wr_data, y(left to left+len(x.wr_data)-1)));
     else
-      assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), vectorify(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), vectorify(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-      left := left - len(x.flush_req);
+      assign(y(left downto left-len(x.SIGNALS)+1), vectorify(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
+      left := left - len(x.SIGNALS);
       assign(y(left downto left-len(x.wr_addr)+1), vectorify(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
       left := left - len(x.wr_addr);
       assign(y(left downto left-len(x.rd_addr)+1), vectorify(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
@@ -414,32 +632,16 @@ package body MEM_INT_12A42D_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.wr_req)-1), convert(x.wr_req, y(left to left+len(x.wr_req)-1)));
-      left := left + len(x.wr_req);
-      assign(y(left to left+len(x.wr_ack)-1), convert(x.wr_ack, y(left to left+len(x.wr_ack)-1)));
-      left := left + len(x.wr_ack);
-      assign(y(left to left+len(x.rd_req)-1), convert(x.rd_req, y(left to left+len(x.rd_req)-1)));
-      left := left + len(x.rd_req);
-      assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
-      left := left + len(x.rd_ack);
-      assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
-      left := left + len(x.flush_req);
+      assign(y(left to left+len(x.SIGNALS)-1), convert(x.SIGNALS, y(left to left+len(x.SIGNALS)-1)));
+      left := left + len(x.SIGNALS);
       assign(y(left to left+len(x.wr_addr)-1), convert(x.wr_addr, y(left to left+len(x.wr_addr)-1)));
       left := left + len(x.wr_addr);
       assign(y(left to left+len(x.rd_addr)-1), convert(x.rd_addr, y(left to left+len(x.rd_addr)-1)));
       left := left + len(x.rd_addr);
       assign(y(left to left+len(x.wr_data)-1), convert(x.wr_data, y(left to left+len(x.wr_data)-1)));
     else
-      assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
-      left := left - len(x.wr_req);
-      assign(y(left downto left-len(x.wr_ack)+1), convert(x.wr_ack, y(left downto left-len(x.wr_ack)+1)));
-      left := left - len(x.wr_ack);
-      assign(y(left downto left-len(x.rd_req)+1), convert(x.rd_req, y(left downto left-len(x.rd_req)+1)));
-      left := left - len(x.rd_req);
-      assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
-      left := left - len(x.rd_ack);
-      assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
-      left := left - len(x.flush_req);
+      assign(y(left downto left-len(x.SIGNALS)+1), convert(x.SIGNALS, y(left downto left-len(x.SIGNALS)+1)));
+      left := left - len(x.SIGNALS);
       assign(y(left downto left-len(x.wr_addr)+1), convert(x.wr_addr, y(left downto left-len(x.wr_addr)+1)));
       left := left - len(x.wr_addr);
       assign(y(left downto left-len(x.rd_addr)+1), convert(x.rd_addr, y(left downto left-len(x.rd_addr)+1)));
@@ -453,32 +655,16 @@ package body MEM_INT_12A42D_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.wr_req := structify(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := structify(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := structify(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
-      left := left + len(y.flush_req);
+      y.SIGNALS := structify(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
+      left := left + len(y.SIGNALS);
       y.wr_addr := structify(x(left to left+len(y.wr_addr)-1), y.wr_addr);
       left := left + len(y.wr_addr);
       y.rd_addr := structify(x(left to left+len(y.rd_addr)-1), y.rd_addr);
       left := left + len(y.rd_addr);
       y.wr_data := structify(x(left to left+len(y.wr_data)-1), y.wr_data);
     else
-      y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := structify(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := structify(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
-      left := left - len(y.flush_req);
+      y.SIGNALS := structify(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
+      left := left - len(y.SIGNALS);
       y.wr_addr := structify(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
       left := left - len(y.wr_addr);
       y.rd_addr := structify(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
@@ -492,32 +678,16 @@ package body MEM_INT_12A42D_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.wr_req := convert(x(left to left+len(y.wr_req)-1), y.wr_req);
-      left := left + len(y.wr_req);
-      y.wr_ack := convert(x(left to left+len(y.wr_ack)-1), y.wr_ack);
-      left := left + len(y.wr_ack);
-      y.rd_req := convert(x(left to left+len(y.rd_req)-1), y.rd_req);
-      left := left + len(y.rd_req);
-      y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
-      left := left + len(y.rd_ack);
-      y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
-      left := left + len(y.flush_req);
+      y.SIGNALS := convert(x(left to left+len(y.SIGNALS)-1), y.SIGNALS);
+      left := left + len(y.SIGNALS);
       y.wr_addr := convert(x(left to left+len(y.wr_addr)-1), y.wr_addr);
       left := left + len(y.wr_addr);
       y.rd_addr := convert(x(left to left+len(y.rd_addr)-1), y.rd_addr);
       left := left + len(y.rd_addr);
       y.wr_data := convert(x(left to left+len(y.wr_data)-1), y.wr_data);
     else
-      y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
-      left := left - len(y.wr_req);
-      y.wr_ack := convert(x(left downto left-len(y.wr_ack)+1), y.wr_ack);
-      left := left - len(y.wr_ack);
-      y.rd_req := convert(x(left downto left-len(y.rd_req)+1), y.rd_req);
-      left := left - len(y.rd_req);
-      y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
-      left := left - len(y.rd_ack);
-      y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
-      left := left - len(y.flush_req);
+      y.SIGNALS := convert(x(left downto left-len(y.SIGNALS)+1), y.SIGNALS);
+      left := left - len(y.SIGNALS);
       y.wr_addr := convert(x(left downto left-len(y.wr_addr)+1), y.wr_addr);
       left := left - len(y.wr_addr);
       y.rd_addr := convert(x(left downto left-len(y.rd_addr)+1), y.rd_addr);
@@ -529,11 +699,7 @@ package body MEM_INT_12A42D_CTRL is
   function nullify(t: MEM_INT_12A42D_CTRL_t) return MEM_INT_12A42D_CTRL_t is
   variable y: MEM_INT_12A42D_CTRL_t;
   begin
-    y.wr_req := nullify(t.wr_req);
-    y.wr_ack := nullify(t.wr_ack);
-    y.rd_req := nullify(t.rd_req);
-    y.rd_ack := nullify(t.rd_ack);
-    y.flush_req := nullify(t.flush_req);
+    y.SIGNALS := nullify(t.SIGNALS);
     y.wr_addr := nullify(t.wr_addr);
     y.rd_addr := nullify(t.rd_addr);
     y.wr_data := nullify(t.wr_data);
@@ -542,11 +708,7 @@ package body MEM_INT_12A42D_CTRL is
   function zeroed(t: MEM_INT_12A42D_CTRL_t) return MEM_INT_12A42D_CTRL_t is
   variable y: MEM_INT_12A42D_CTRL_t;
   begin
-    y.wr_req := zeroed(t.wr_req);
-    y.wr_ack := zeroed(t.wr_ack);
-    y.rd_req := zeroed(t.rd_req);
-    y.rd_ack := zeroed(t.rd_ack);
-    y.flush_req := zeroed(t.flush_req);
+    y.SIGNALS := zeroed(t.SIGNALS);
     y.wr_addr := zeroed(t.wr_addr);
     y.rd_addr := zeroed(t.rd_addr);
     y.wr_data := zeroed(t.wr_data);
