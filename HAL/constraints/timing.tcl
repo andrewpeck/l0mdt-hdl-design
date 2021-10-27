@@ -8,6 +8,29 @@ foreach refclk [get_clocks refclk*] {
     set_clock_groups -group [get_clocks $refclk] -asynchronous
 }
 
+# there's no known phase relationship between the rx clocks and the 40MHz clock
+# this transition happens in the SL receiver, where we go
+# from 240MHz RX --> 40 MHz LHC --> 320 MHz pipeline clock
+#
+# The 240 MHz signal is stable for 6 clock cycles (40 MHz effective) but transitions
+# at an unknown phase.. we constrain it with a max datapath delay of 5 ns, so
+# that /at least/ one of these two conditions will be true:
+#   - the transition to the rising edge of the 40 MHz will be valid
+#   - the transition to the negative edge of the 40 MHz will be valid
+# some sort of phase scan would need to be devised to determine which to use
+set_max_delay -quiet -datapath_only 5 \
+    -from [get_clocks *RXOUTCLK*]
+    -to [get_clocks *clk40*mmcm*]
+
+# the TXCLK is something that is controlled by us, since it is locked to the
+# REFCLK that we supply.. there is some phase uncertainty of the 4.1166 ns clock
+# but we can control the phase of it with the clock synth.. just keep the
+# datapath well under 4.166 ns so then we can adjust the phase using the clock
+# synthesizer
+set_max_delay -quiet -datapath_only 3.1 \
+    -to [get_clocks *TXOUTCLK*]
+    -from [get_clocks *clk40*mmcm*]
+
 ################################################################################
 # sys_resetter has an asynchronous output (on the axi clock domain) that
 # connects to synchronous reset inputs (on other clock domains) and creates a
