@@ -35,9 +35,9 @@ entity apb_imem is
     g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
-    g_MEM_LATENCY       : integer := 0;    
-    g_APBUS_CTRL_WIDTH  : integer := 0;
-    g_APBUS_MON_WIDTH   : integer := 0
+    g_MEM_LATENCY       : integer := 0    
+    -- g_APBUS_CTRL_WIDTH  : integer := 0;
+    -- g_APBUS_MON_WIDTH   : integer := 0
   );
   port (
     clk           : in std_logic;
@@ -240,8 +240,8 @@ begin
         end if;
       end if;
     end process MEM_INT;
-  elsif g_MEMORY_TYPE = "URAM" generate
-  elsif g_MEMORY_TYPE = "BRAM" generate
+  elsif g_MEMORY_TYPE = "uram" generate
+  elsif g_MEMORY_TYPE = "bram" generate
   end generate MEM_TYPE;
  
 
