@@ -18,9 +18,9 @@ include:
     # - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
     # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
     # - local: '/Top/hal/gitlab-ci.yml'
-    - local: '/Top/base_l0mdt/gitlab-ci.yml'
-    - local: '/Top/l0mdt_lsf_upt/gitlab-ci.yml'
-    - local: '/Top/l0mdt_csf_mpt/gitlab-ci.yml'
+    # - local: '/Top/base_l0mdt/gitlab-ci.yml'
+    - local: '/Top/l0mdt_ku15p_lsf_upt/gitlab-ci.yml'
+    - local: '/Top/l0mdt_ku15p_csf_mpt/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
