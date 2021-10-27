@@ -99,6 +99,10 @@ architecture beh of apb_imem is
 
   signal ctrl_10A38D_r  : MEM_INT_10A38D_CTRL_t;
   signal mon_10A38D_r   : MEM_INT_10A38D_MON_t;
+  signal ctrl_12A42D_r  : MEM_INT_12A42D_CTRL_t;
+  signal mon_12A42D_r   : MEM_INT_12A42D_MON_t;
+  signal ctrl_12A148D_r  : MEM_INT_12A148D_CTRL_t;
+  signal mon_12A148D_r   : MEM_INT_12A148D_MON_t;
   signal ctrl_9A19D_r   : MEM_INT_9A19D_CTRL_t;
   signal mon_9A19D_r    : MEM_INT_9A19D_MON_t;
 
@@ -122,6 +126,32 @@ begin
     mon_10A38D_r.SIGNALS <= structify(apb_mon_v,mon_10A38D_r.SIGNALS); 
 
     mon <= vectorify(mon_10A38D_r,mon);
+  elsif g_XML_NODE_NAME = "MEM_INT_12A148D" generate
+    ctrl_12A148D_r <= structify(ctrl,ctrl_12A148D_r);
+    apb_ctrl_v    <= vectorify(ctrl_12A148D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    apb_rd_addr   <= ctrl_12A148D_r.rd_addr;
+    apb_wr_addr   <= ctrl_12A148D_r.wr_addr;
+    apb_wr_data   <= vectorify(ctrl_12A148D_r.wr_data,apb_wr_data);
+    --
+    mon_12A148D_r.rd_data <= structify(apb_rd_data,mon_12A148D_r.rd_data);
+    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    mon_12A148D_r.SIGNALS <= structify(apb_mon_v,mon_12A148D_r.SIGNALS); 
+
+    mon <= vectorify(mon_12A148D_r,mon);
+  elsif g_XML_NODE_NAME = "MEM_INT_12A42D" generate
+    ctrl_12A42D_r <= structify(ctrl,ctrl_12A42D_r);
+    apb_ctrl_v    <= vectorify(ctrl_12A42D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    apb_rd_addr   <= ctrl_12A42D_r.rd_addr;
+    apb_wr_addr   <= ctrl_12A42D_r.wr_addr;
+    apb_wr_data   <= vectorify(ctrl_12A42D_r.wr_data,apb_wr_data);
+    --
+    mon_12A42D_r.rd_data <= structify(apb_rd_data,mon_12A42D_r.rd_data);
+    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    mon_12A42D_r.SIGNALS <= structify(apb_mon_v,mon_12A42D_r.SIGNALS); 
+
+    mon <= vectorify(mon_12A42D_r,mon);
   elsif g_XML_NODE_NAME = "MEM_INT_9A19D" generate
     -- ctrl_9A19D_r <= structify(ctrl,ctrl_9A19D_r);
     -- apb_ctrl_v    <= vectorify(ctrl_9A19D_r.SIGNALS,apb_ctrl_v);
@@ -241,6 +271,108 @@ begin
       end if;
     end process MEM_INT;
   elsif g_MEMORY_TYPE = "uram" generate
+    MEM_INT: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          --mon <= (others =>'0');
+          o_rd_addr <= (others =>'0');
+          o_wr_addr <= (others =>'0');
+          o_wr_data <= (others =>'0');
+          o_rd_dv   <= '0';
+          o_rd_dv   <= '0';
+          o_freeze  <= '0';
+          --
+          axi_rep_clk <= '0';
+          --
+          apb_clk_cnt <= 0;
+          axi_cnt_wait <= '0';
+          axi_cnt_reset <= '0';
+          --
+          int_wr_status <=  x"0";
+          int_rd_status <=  x"0";
+  
+        else
+          -----------------------------------------------
+          if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
+            apb_clk_cnt <= apb_clk_cnt + 1;
+          else
+            apb_clk_cnt <= 0;
+            axi_rep_clk <= not axi_rep_clk;
+          end if;
+          -----------------------------------------------
+  
+          case int_wr_status is
+            -- when x"0" => -- INIT
+            --   if axi_cnt_wait = '0' then
+            --     int_wr_status <= x"1";
+            --   end if;
+            when x"0" =>
+              if apb_ctrl_r.wr_req = '1' and axi_cnt_wait = '0' then
+                axi_cnt_reset <= '1';
+  
+                o_wr_addr <= apb_wr_addr;
+                o_wr_data    <= apb_wr_data;
+                o_wr_dv      <= '1';
+                int_wr_status <= x"2";
+              else
+                o_wr_addr <= (others => '0');
+                o_wr_data <= (others => '0');
+                o_wr_dv <= '0';
+                -- new_apb_wr_req <= '0';
+              end if;
+            -- when x"2" =>
+            --   o_wr_addr <= (others => '0');
+            --   o_wr_data <= (others => '0');
+            --   o_dv <= '0';
+              -- if new_apb_wr_req = '0' then
+              --   int_wr_status <= x"1";
+              -- end if;
+            when others =>
+              axi_cnt_reset <= '0';
+              o_wr_addr <= (others => '0');
+              o_wr_data <= (others => '0');
+              o_wr_dv <= '0';
+              int_wr_status <= x"0";
+              -- if int_wr_status = unsigned(apb_clk_limit) then
+              --   int_wr_status <= x"1";
+              -- else
+              --   int_wr_status <= int_wr_status + 1;
+              -- end if;
+  
+          end case;
+  
+          case int_rd_status is
+            -- when x"0" => -- INIT
+            --   if axi_cnt_wait = '0' then
+            --     int_wr_status <= x"1";
+            --   end if;
+            when x"0" =>
+              if apb_ctrl_r.rd_req = '1' and axi_cnt_wait = '0' then
+                axi_cnt_reset <= '1';
+  
+                o_rd_addr <= apb_wr_addr;
+                o_rd_dv      <= '1';
+                int_rd_status <= x"2";
+              else
+                o_rd_addr <= (others => '0');
+                o_rd_dv <= '0';
+              end if;
+  
+            when others =>
+              if i_rd_dv = '1' then
+                apb_rd_data <= i_rd_data;
+                int_rd_status <= x"0";
+              else
+
+              end if;
+  
+          end case;
+  
+          
+        end if;
+      end if;
+    end process MEM_INT;
   elsif g_MEMORY_TYPE = "bram" generate
   end generate MEM_TYPE;
  
