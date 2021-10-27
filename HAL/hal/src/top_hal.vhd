@@ -284,6 +284,7 @@ begin  -- architecture behavioral
       );
 
   clock_strobe_1 : entity work.clock_strobe
+    generic map (RATIO => 8)
     port map (
       fast_clk_i => clocks.clock320,
       slow_clk_i => clocks.clock40,
@@ -291,6 +292,7 @@ begin  -- architecture behavioral
       );
 
   clock_strobe_2 : entity work.clock_strobe
+    generic map (RATIO => 8)
     port map (
       fast_clk_i => clocks.clock_pipeline,
       slow_clk_i => clocks.clock40,
