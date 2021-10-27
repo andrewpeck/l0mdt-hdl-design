@@ -91,10 +91,11 @@ begin
         g_PIPELINE_WIDTH    => i_uCM2pl_v'length, -- necesario?
         g_PARALLEL_MEM      => 1,
         -- BU bus
-        g_APBUS_ENABLED    => '1',--'1',
-        g_XML_NODE_NAME    => "MEM_INT_12A148D",
-        g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
-        g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
+        -- g_APBUS_ENABLED    => '1',--'1',
+        g_EXT_INT           => "APB",
+        g_XML_NODE_NAME    => "MEM_INT_12A148D"
+        -- g_APBUS_CTRL_WIDTH => apb_ctr_v'length,--integer(len(ctrl)),
+        -- g_APBUS_MON_WIDTH  => apb_mon_v'length --integer(len(mon))
       ) 
       port map(
         clk         => clk,
