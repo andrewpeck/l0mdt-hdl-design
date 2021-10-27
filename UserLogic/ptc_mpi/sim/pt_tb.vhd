@@ -49,6 +49,7 @@ architecture Behavioral of pt_tb is
     signal i_SLC : pl2ptcalc_rvt := (others => '0');
     signal slc : pl2ptcalc_rt;
     signal o_mtc : ptcalc2mtc_rvt := (others => '0');
+    signal mtc : ptcalc2mtc_rt;
     signal rst : std_logic := '0';
     signal enable : std_logic := '1';
     signal done : std_logic;
@@ -110,11 +111,11 @@ begin
         i_segment_O => i_segment_O,
         i_SLC       => i_SLC,
         i_rst       => rst,
-        o_mtc       => o_mtc,
-        o_done      => done
+        o_mtc       => o_mtc
     );
 
-    CLK_process :process
+    CLK_process : process
+
     begin
         CLK <= '0';
         wait for CLK_period/2;
@@ -125,17 +126,24 @@ begin
     i_segment_I <= vectorify(seg_I);
     i_segment_M <= vectorify(seg_M);
     i_segment_O <= vectorify(seg_O);
+    i_SLC <= vectorify(slc);
+    mtc <= structify(o_mtc);
 
     tb_proc : process (CLK)
+        variable first_read           : std_logic := '1';
     begin
       if (rising_edge(CLK)) then
 
-        if done = '1' then
+        if mtc.data_valid = '1' then
             enable <= '1';
         end if;
 
         if enable = '1' then
-            enable <= '0';
+            if first_read = '1' then 
+                first_read := '0';
+            else
+                enable <= '0';
+            end if;
         end if;
  
       end if;

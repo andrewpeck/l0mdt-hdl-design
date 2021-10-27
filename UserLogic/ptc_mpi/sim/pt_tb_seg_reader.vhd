@@ -47,7 +47,8 @@ architecture sim of pt_tb_seg_reader is
 
 begin
   
-  
+
+
   PT_READ: process ( rst, clk)
 
     file input_pt_file            : text open read_mode is IN_HIT_FILE;
@@ -112,10 +113,11 @@ begin
             chamber_id => to_unsigned(chamber_id, VEC_MDTID_CHAMBER_ID_LEN),
             chamber_ieta => to_unsigned(chamber_ieta, VEC_MDTID_CHAMBER_IETA_LEN)
           );
-    
-          o_segment <= seg;
+        else
+          seg := nullify(seg);
         end if;
 
+        o_segment <= seg;
       end if;
     end if;
 

@@ -111,9 +111,11 @@ begin
           slc.nswseg_posphi := to_unsigned(nswseg_poseta, SLC_ENDCAP_NSWSEG_POSPHI_LEN);
           slc.nswseg_angdtheta := to_signed(nswseg_angdtheta, SLC_ENDCAP_NSWSEG_ANGDTHETA_LEN);
     
-          o_slc <= slc;
+          
+        else
+          slc := nullify(slc);
         end if;
-
+        o_slc <= slc;
       end if;
     end if;
 
