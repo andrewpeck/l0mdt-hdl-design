@@ -1,10 +1,21 @@
 # Multicycle constraints: ease the timing constraints
 # Uplink constraints: Values depend on the c_multicyleDelay. Shall be the same one for setup time and -1 for the hold time
-
 # retiming changes register names and prevents multicycle path setting on the lpgbt cores
+
+# valid output is high fanout
+# force its replication early
+set_property MAX_FANOUT 25 \
+    [get_cells -quiet -hierarchical -filter {NAME =~ *lpgbtlatch.uplink_data_o_reg[0][valid]*}]
+
 # Prevent these reset registers from getting merged across different LPGBT instances...
 # they are high fanout and it caused timing to fail early on
-# TODO: replace hierarchical filters with direct calls
+set cells [get_cells -quiet -hierarchical -filter {NAME =~ *lpgbtfpga*/gearboxSyncReset*}]
+set_property -quiet KEEP true $cells
+set_property -quiet MAX_FANOUT 100 $cells
+
+set cells [get_cells -quiet -hierarchical -filter {NAME =~ *sta_gbRdy_o_reg*}]
+set_property -quiet KEEP true $cells
+set_property -quiet MAX_FANOUT 100 $cells
 
 proc set_lpgbt_multicycles {root_path} {
 
