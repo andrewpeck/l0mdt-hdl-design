@@ -19,7 +19,6 @@ set_property -quiet MAX_FANOUT 100 $cells
 
 proc set_lpgbt_multicycles {root_path} {
 
-    set_property -quiet KEEP true [get_cells -quiet -hierarchical -filter {NAME =~ ${root_path}/*/gearboxSyncReset*}]
 
     set link_wrapper_cell [get_cells -quiet "${root_path}"]
     if {[string is space $link_wrapper_cell] == 0} {
@@ -67,24 +66,3 @@ proc set_lpgbt_multicycles {root_path} {
 
 set_lpgbt_multicycles "top_hal/*csm_gen*/lpgbt_links_inst"
 set_lpgbt_multicycles "top_hal/felix_decoder_inst"
-
-################################################################################
-# GBT-SCA Multicycle Path
-################################################################################
-
-#set latch_cells [concat \
-    #                     [get_cells ${root_path}/uplink_gen*.lpgbtlatch.uplink_data_o_reg*] \
-    #                     [get_cells ${root_path}/downlink_gen*downlink_data_reg*] \
-    #                     [get_cells -of [all_fanout -endpoints_only -flat -from [get_nets top_hal/strobe_320]]]
-#             ]
-#
-#set_multicycle_path 8 -setup -from $latch_cells
-#set_multicycle_path 7 -hold -from $latch_cells
-
-
-set to_sca [get_cells top_hal/csm*/gbt_controller_wrapper_inst/*/sca_inst/sca_gen*/sca_deserializer_inst/data_o_reg*]
-
-#set_multicycle_path 8 -setup -from $sca_clk_en_from
-#set_multicycle_path 7 -hold -from $sca_clk_en_from
-#set_multicycle_path 8 -setup -to $sca_clk_en_to
-#set_multicycle_path 7 -hold -to $sca_clk_en_to
