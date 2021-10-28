@@ -82,14 +82,17 @@ architecture beh of tar is
   -- signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   -- signal mon_apb_mem_av  : mon_apb_mem_avt; 
 
-  signal ctrl_pl_inn_v : std_logic_vector(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
-  signal ctrl_pl_mid_v : std_logic_vector(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);
-  signal ctrl_pl_out_v : std_logic_vector(len(ctrl_r.PL_ST.PL_ST(2))-1  downto 0);
-  -- signal ctrl_pl_ext_v : std_logic_vector(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
-  signal mon_pl_inn_v : std_logic_vector(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
-  signal mon_pl_mid_v : std_logic_vector(len(mon_r.PL_ST.PL_ST(1))-1  downto 0);
-  signal mon_pl_out_v : std_logic_vector(len(mon_r.PL_ST.PL_ST(2))-1  downto 0);
-  -- signal mon_pl_ext_v : std_logic_vector(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
+  constant PL_ST_CTRL_LEN : integer := 426;
+  constant PL_ST_MON_LEN : integer := 258;
+
+  signal ctrl_pl_inn_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
+  signal ctrl_pl_mid_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);
+  signal ctrl_pl_out_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(2))-1  downto 0);
+  signal ctrl_pl_ext_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_STATION.PL_EXT)-1  downto 0);
+  signal mon_pl_inn_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(0))-1  downto 0);
+  signal mon_pl_mid_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(1))-1  downto 0);
+  signal mon_pl_out_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_ST.PL_ST(2))-1  downto 0);
+  signal mon_pl_ext_v : std_logic_vector(PL_ST_MON_LEN - 1 downto 0);--(len(mon_r.PL_STATION.PL_EXT)-1  downto 0);
 
 
   -- TDC polmux from Tar
@@ -124,6 +127,7 @@ begin
   mon_r.PL_ST.PL_ST(0) <= convert(mon_pl_inn_v,mon_r.PL_ST.PL_ST(0));
   mon_r.PL_ST.PL_ST(1) <= convert(mon_pl_mid_v,mon_r.PL_ST.PL_ST(1));
   mon_r.PL_ST.PL_ST(2) <= convert(mon_pl_out_v,mon_r.PL_ST.PL_ST(2));
+  mon_r.PL_ST.PL_ST(3) <= convert(mon_pl_ext_v,mon_r.PL_ST.PL_ST(3));
 
   SUPERVISOR : entity tar_lib.tar_supervisor
   port map(
@@ -172,72 +176,75 @@ begin
         );
     end generate;
 
-      MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
-        TAR_MID : entity tar_lib.tar_station
-          generic map(
-            g_ARRAY_LEN => c_HPS_MAX_HP_MID,
-            g_STATION => 1
-          )
-          port map (
-            -- clock, control, and monitoring
-            clk             => clk,
-            rst             => local_rst,
-            glob_en         => local_en,
-            -- ctrl/mon
-            ctrl_v            => ctrl_pl_mid_v,
-            mon_v             => mon_pl_mid_v,
-            -- supervisor
-            i_freeze        => int_freeze,
-            -- data
-            i_tdc_hits_av   => i_mid_tdc_hits_av,
-            o_tdc_hits_av   => o_mid_tdc_hits_av,
-            o_tar_hits_av   =>  o_mid_tar_hits_av
-          );
-      end generate;
-        OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
-          TAR_OUT : entity tar_lib.tar_station
-            generic map(
-              g_ARRAY_LEN => c_HPS_MAX_HP_OUT,
-              g_STATION => 2
-            )
-            port map (
-              -- clock, control, and monitoring
-              clk             => clk,
-              rst             => local_rst,
-              glob_en         => local_en,
-              -- ctrl/mon
-              ctrl_v            => ctrl_pl_out_v,
-              mon_v             => mon_pl_out_v,
-              -- supervisor
-              i_freeze        => int_freeze,
-              -- data
-              i_tdc_hits_av   => i_out_tdc_hits_av,
-              o_tdc_hits_av   => o_out_tdc_hits_av,
-              o_tar_hits_av   =>  o_out_tar_hits_av
-            );
-        end generate;
-        EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
-          -- TAR_EXT : entity tar_lib.tar_station
-          --   generic map(
-          --     g_ARRAY_LEN => c_HPS_MAX_HP_EXT,
-          --     g_STATION => 3
-          --   )
-          --   port map (
-          --     -- clock, control, and monitoring
-          --     clk             => clk,
-          --     rst             => local_rst,
-          --     glob_en         => local_en,
-          --     -- ctrl/mon
-          --     ctrl_v            => ctrl_pl_ext_v,
-          --     mon_v             => mon_pl_ext_v,
-          --     -- data
-          --     i_tdc_hits_av   => i_ext_tdc_hits_av,
-          --     o_tdc_hits_av   => o_ext_tdc_hits_av,
-          --     o_tar_hits_av   =>  o_ext_tar_hits_av
-          --   );
-          else generate
-          o_ext_tdc_hits_av <= (others => (others => '0'));
-          o_ext_tar_hits_av <= (others => (others => '0'));
-        end generate;
+    MID_EN : if c_HPS_ENABLE_ST_MID = '1' generate
+      TAR_MID : entity tar_lib.tar_station
+        generic map(
+          g_ARRAY_LEN => c_HPS_MAX_HP_MID,
+          g_STATION => 1
+        )
+        port map (
+          -- clock, control, and monitoring
+          clk             => clk,
+          rst             => local_rst,
+          glob_en         => local_en,
+          -- ctrl/mon
+          ctrl_v            => ctrl_pl_mid_v,
+          mon_v             => mon_pl_mid_v,
+          -- supervisor
+          i_freeze        => int_freeze,
+          -- data
+          i_tdc_hits_av   => i_mid_tdc_hits_av,
+          o_tdc_hits_av   => o_mid_tdc_hits_av,
+          o_tar_hits_av   =>  o_mid_tar_hits_av
+        );
+    end generate;
+
+    OUT_EN : if c_HPS_ENABLE_ST_OUT = '1' generate
+      TAR_OUT : entity tar_lib.tar_station
+        generic map(
+          g_ARRAY_LEN => c_HPS_MAX_HP_OUT,
+          g_STATION => 2
+        )
+        port map (
+          -- clock, control, and monitoring
+          clk             => clk,
+          rst             => local_rst,
+          glob_en         => local_en,
+          -- ctrl/mon
+          ctrl_v            => ctrl_pl_out_v,
+          mon_v             => mon_pl_out_v,
+          -- supervisor
+          i_freeze        => int_freeze,
+          -- data
+          i_tdc_hits_av   => i_out_tdc_hits_av,
+          o_tdc_hits_av   => o_out_tdc_hits_av,
+          o_tar_hits_av   =>  o_out_tar_hits_av
+        );
+    end generate;
+
+    EXT_EN : if c_HPS_ENABLE_ST_EXT = '1' generate
+      -- TAR_EXT : entity tar_lib.tar_station
+      --   generic map(
+      --     g_ARRAY_LEN => c_HPS_MAX_HP_EXT,
+      --     g_STATION => 3
+      --   )
+      --   port map (
+      --     -- clock, control, and monitoring
+      --     clk             => clk,
+      --     rst             => local_rst,
+      --     glob_en         => local_en,
+      --     -- ctrl/mon
+      --     ctrl_v            => ctrl_pl_ext_v,
+      --     mon_v             => mon_pl_ext_v,
+      --     -- data
+      --     i_tdc_hits_av   => i_ext_tdc_hits_av,
+      --     o_tdc_hits_av   => o_ext_tdc_hits_av,
+      --     o_tar_hits_av   =>  o_ext_tar_hits_av
+      --   );
+      else generate
+        o_ext_tdc_hits_av <= (others => (others => '0'));
+        o_ext_tar_hits_av <= (others => (others => '0'));
+        mon_pl_ext_v <= (others  => '0');
+    end generate;
   
 end architecture beh;

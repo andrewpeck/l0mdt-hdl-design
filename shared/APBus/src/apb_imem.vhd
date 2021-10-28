@@ -167,7 +167,7 @@ begin
     -- mon <= vectorify(mon_9A19D_r,mon);
   end generate model_mem;
 
-  MEM_TYPE: if g_MEMORY_TYPE = "vhdl_rom" generate
+  MEM_TYPE: if g_MEMORY_TYPE = "distributed" generate
     MEM_INT: process(clk)
     begin
       if rising_edge(clk) then
@@ -277,7 +277,7 @@ begin
         end if;
       end if;
     end process MEM_INT;
-  elsif g_MEMORY_TYPE = "uram" generate
+  elsif g_MEMORY_TYPE = "ultra" generate
     MEM_INT: process(clk)
     begin
       if rising_edge(clk) then

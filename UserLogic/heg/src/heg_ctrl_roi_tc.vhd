@@ -129,7 +129,7 @@ begin
   apb_mem_interface : entity apbus_lib.apb_imem
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_10A38D",
-    g_MEMORY_TYPE           => "vhdl_rom",
+    g_MEMORY_TYPE           => "distributed",
     g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH
