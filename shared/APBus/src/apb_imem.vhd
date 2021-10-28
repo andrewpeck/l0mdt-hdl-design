@@ -188,6 +188,8 @@ begin
           --
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
+          --
+          apb_mon_r <= nullify(apb_mon_r);
   
         else
           -----------------------------------------------
@@ -245,9 +247,13 @@ begin
             --     int_wr_status <= x"1";
             --   end if;
             when x"0" =>
+              if apb_ctrl_r.rd_ack = '1' then
+                apb_mon_r.rd_rdy <= '0';
+              end if;
               if apb_ctrl_r.rd_req = '1' and axi_cnt_wait = '0' then
                 axi_cnt_reset <= '1';
-  
+                
+                apb_mon_r.rd_rdy <= '0';
                 o_rd_addr <= apb_wr_addr;
                 o_rd_dv      <= '1';
                 int_rd_status <= x"2";
@@ -260,6 +266,7 @@ begin
               if i_rd_dv = '1' then
                 apb_rd_data <= i_rd_data;
                 int_rd_status <= x"0";
+                apb_mon_r.rd_rdy <= '1';
               else
 
               end if;
@@ -292,6 +299,9 @@ begin
           --
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
+
+          apb_mon_r <= nullify(apb_mon_r);
+
   
         else
           -----------------------------------------------
@@ -349,11 +359,15 @@ begin
             --     int_wr_status <= x"1";
             --   end if;
             when x"0" =>
+              if apb_ctrl_r.rd_ack = '1' then
+                apb_mon_r.rd_rdy <= '0';
+              end if;
               if apb_ctrl_r.rd_req = '1' and axi_cnt_wait = '0' then
                 axi_cnt_reset <= '1';
   
                 o_rd_addr <= apb_wr_addr;
                 o_rd_dv      <= '1';
+                apb_mon_r.rd_rdy <= '0';
                 int_rd_status <= x"2";
               else
                 o_rd_addr <= (others => '0');
@@ -364,6 +378,7 @@ begin
               if i_rd_dv = '1' then
                 apb_rd_data <= i_rd_data;
                 int_rd_status <= x"0";
+                apb_mon_r.rd_rdy <= '1';
               else
 
               end if;
