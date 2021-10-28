@@ -36,7 +36,7 @@ foreach clock_b \
 #   - the transition to the negative edge of the 40 MHz will be valid
 # some sort of phase scan would need to be devised to determine which to use
 set_max_delay -quiet -datapath_only 5 \
-    -from [get_clocks *RXOUTCLK*]
+    -from [get_clocks *RXOUTCLK*] \
     -to [get_clocks *clk40*mmcm*]
 
 # the TXCLK is something that is controlled by us, since it is locked to the
@@ -45,7 +45,7 @@ set_max_delay -quiet -datapath_only 5 \
 # datapath well under 4.166 ns so then we can adjust the phase using the clock
 # synthesizer
 set_max_delay -quiet -datapath_only 3.1 \
-    -to [get_clocks *TXOUTCLK*]
+    -to [get_clocks *TXOUTCLK*] \
     -from [get_clocks *clk40*mmcm*]
 
 ################################################################################
