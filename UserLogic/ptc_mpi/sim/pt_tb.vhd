@@ -93,7 +93,7 @@ begin
 
     slc_read : ENTITY project_lib.pt_tb_slc_reader
     generic map (
-        IN_HIT_FILE => "pt_in2.csv"
+        IN_HIT_FILE => "pt_in_slc.csv"
     )
     port map(
         clk => clk,
@@ -112,6 +112,17 @@ begin
         i_SLC       => i_SLC,
         i_rst       => rst,
         o_mtc       => o_mtc
+    );
+
+    pt_write : entity project_lib.pt_tb_writer
+    generic map (
+        OUT_FILE => "out_pt.csv"
+    )
+    Port map (
+        clk => clk,
+        rst => rst,
+        enable => 1,
+        mtc => mtc
     );
 
     CLK_process : process
