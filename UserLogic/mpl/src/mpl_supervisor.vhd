@@ -138,9 +138,9 @@ begin
       if rst = '1' then
 
       else
-        -- mon.STATUS.G_ENABLED <= local_en;
-        -- mon.STATUS.G_READY <= not local_rst;
-        -- mon.STATUS.G_ERROR <= '0';
+        status.ENABLED <= local_en;
+        status.READY <= not local_rst;
+        status.ERROR <= '0';
       end if;
     end if;
   end process;
