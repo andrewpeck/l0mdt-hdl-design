@@ -4,8 +4,11 @@
 
 # Apply asynchronous group constraints to the mgt refclks
 # https://support.xilinx.com/s/article/44651?language=en_US
-foreach refclk [get_clocks refclk*] {
-    set_clock_groups -group [get_clocks $refclk] -asynchronous
+foreach clock [concat \
+                    [get_clocks *TXOUTCLKPCS*] \
+                    [get_clocks refclk*]] {
+    puts $clock
+    set_clock_groups -group [get_clocks $clock] -asynchronous
 }
 
 # there's no known phase relationship between the rx clocks and the 40MHz clock
