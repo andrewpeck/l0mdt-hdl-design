@@ -121,18 +121,21 @@ begin
       rdy_o                      => uplink_ready
       );
 
-  l0mdt_ttc.bcr <= uplink_data.data(felix_bcr_bit);
-  l0mdt_ttc.ocr <= uplink_data.data(felix_ocr_bit);
-  l0mdt_ttc.ecr <= uplink_data.data(felix_ecr_bit);
-  l0mdt_ttc.l0a <= uplink_data.data(felix_l0a_bit);
-  l0mdt_ttc.l1a <= uplink_data.data(felix_l1a_bit);
 
   -- create copies of ttc signals gated with different clocks
   process (clock320) is
   begin
     if (rising_edge(clock320)) then
       valid_o        <= uplink_ready and uplink_data.valid;
-   -- l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
+
+      -- l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
+
+      l0mdt_ttc.bcr <= uplink_data.data(felix_bcr_bit);
+      l0mdt_ttc.ocr <= uplink_data.data(felix_ocr_bit);
+      l0mdt_ttc.ecr <= uplink_data.data(felix_ecr_bit);
+      l0mdt_ttc.l0a <= uplink_data.data(felix_l0a_bit);
+      l0mdt_ttc.l1a <= uplink_data.data(felix_l1a_bit);
+
     end if;
   end process;
 
