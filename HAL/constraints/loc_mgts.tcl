@@ -63,7 +63,11 @@ for {set i 0} {$i < $imax} {incr i} {
 
             if {[string is space $gt_cell]==0 && $gt_type != "NULL"} {
                 puts [format " > LOCing $gt_type Channel X%dY%d as MGT #%d" $x_loc [expr $y_loc + $j]  [expr $i + $j]]
-                set_property LOC [format "%s_CHANNEL_X%dY%d" $gt_type $x_loc [expr $y_loc + $j] ]  $gt_cell
+                if {[catch {set_property LOC [format "%s_CHANNEL_X%dY%d" $gt_type $x_loc [expr $y_loc + $j] ]  $gt_cell}]} {
+                    error "ERROR: Tried to LOC to a occupied site ${gt_type} X${x_loc}Y[expr $y_loc + $j]"
+                } else {
+                    puts "    > LOCing successful"
+                }
             }
         }
     }

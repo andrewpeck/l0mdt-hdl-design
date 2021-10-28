@@ -4,12 +4,26 @@
 
 # Apply asynchronous group constraints to the mgt refclks
 # https://support.xilinx.com/s/article/44651?language=en_US
+
 foreach clock [concat \
-                    [get_clocks *TXOUTCLKPCS*] \
-                    [get_clocks refclk*]] {
+                   [get_clocks refclk*]] {
     puts $clock
     set_clock_groups -group [get_clocks $clock] -asynchronous
 }
+
+# asynchronous clock relationship for tx/rx clocks to/from others
+foreach clock_b \
+    [concat \
+         [get_clocks *mmcm*] \
+         [get_clocks axi_clk] \
+         [get_clocks clock_100]] {
+             foreach clock_a [concat \
+                                  [get_clocks *RXOUTCLK*] \
+                                  [get_clocks *TXOUTCLK*]] {
+                 set_clock_groups \
+                     -group [get_clocks $clock_a] \
+                     -group [get_clocks $clock_b] \
+                     -asynchronous}}
 
 # there's no known phase relationship between the rx clocks and the 40MHz clock
 # this transition happens in the SL receiver, where we go
