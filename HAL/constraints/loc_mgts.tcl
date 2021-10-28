@@ -11,15 +11,19 @@ set imax [get_property NUM_MGTS [get_cells "top_hal/mgt_wrapper_inst"]]
 # otherwise vivado complains. we will re-apply new constraints later.
 for {set i 0} {$i < $imax} {incr i} {
 
-    set gt_cell \
+    set gt_cells \
         [get_cells -quiet -hierarchical -filter \
              [format "NAME =~ top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #set gt_cell [get_cells -quiet [format "top_hal/mgt_wrapper_inst/mgt_gen\[%d]*/*/*/*/*/*/*CHANNEL_PRIM_INST" $i]]
     #puts " > Found GT Cell at $gt_cell"
 
-    if {[string is space $gt_cell]==0} {
-        puts [format " UNLOCing MGT #%d from core default placement" $i]
-        set_property LOC {}  $gt_cell
+    set j 0
+    if {[string is space $gt_cells]==0} {
+        foreach gt_cell $gt_cells {
+            puts [format " UNLOCing MGT #%d from core default placement" [expr $i + $j]]
+            set_property LOC {}  $gt_cell
+            incr j
+        }
     }
 }
 
@@ -58,7 +62,7 @@ for {set i 0} {$i < $imax} {incr i} {
             set gt_type [ lindex [split [lindex [split $gt_cell .] end ] _ ] 0]
 
             if {[string is space $gt_cell]==0 && $gt_type != "NULL"} {
-                puts [format " > LOCing $gt_type Channel X%dY%d as MGT #%d" $x_loc [expr $y_loc + $j]  $i]
+                puts [format " > LOCing $gt_type Channel X%dY%d as MGT #%d" $x_loc [expr $y_loc + $j]  [expr $i + $j]]
                 set_property LOC [format "%s_CHANNEL_X%dY%d" $gt_type $x_loc [expr $y_loc + $j] ]  $gt_cell
             }
         }
