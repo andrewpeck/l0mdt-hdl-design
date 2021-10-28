@@ -63,6 +63,15 @@ set_max_delay -quiet -datapath_only 5 \
              {top_hal/*sector_logic*/*sl_rx_data*/D}]
 
 ################################################################################
+# The input to this reset comes from AXI clock domain but onto the MGT clock
+# just set a false path to prevent timing analysis
+################################################################################
+
+set_false_path \
+    -to [get_pins -hierarchical -filter \
+             {NAME =~ top_hal/mgt_wrapper_inst/*synchronizer*/i_in_meta_reg/D}]
+
+################################################################################
 # Uncomment to disable all logic trimming
 ################################################################################
 
