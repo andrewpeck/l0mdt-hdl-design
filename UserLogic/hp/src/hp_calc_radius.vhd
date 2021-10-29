@@ -170,16 +170,12 @@ begin
 
         if apb_wr_dv_o = '1' or apb_rd_dv_o = '1' then
           if apb_wr_dv_o = '1' then
-            -- apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
             mem(to_integer(unsigned(apb_wr_addr_o))) <= unsigned(apb_wr_data_o);
-            -- apb_dv_i <= '1';
           else
-            -- apb_dv_i <= '0';
           end if;
   
           if apb_rd_dv_o = '1' then
             apb_rd_data_i <= std_logic_vector(mem(to_integer(unsigned(apb_rd_addr_o))));
-            -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
             apb_rd_dv_i <= '1';
           else
             apb_rd_dv_i <= '0';

@@ -73,6 +73,18 @@ hdl:
   - MDT_TC : [ type: H2S_HPS_MDT_TC_MDT_TC_CTRL_t_ARRAY ]
 
 
+- H2S_HPS_MDT_T0_MDT_T0_SIGNALS_MON_t:
+  - rd_rdy : [ type: logic ]
+
+
+- H2S_HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+
+
 - H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t:
   - wr_data_0 : [ type: logic, length: 17 ]
 
@@ -82,17 +94,13 @@ hdl:
 
 
 - H2S_HPS_MDT_T0_MDT_T0_MON_t:
-  - rd_rdy : [ type: logic ]
+  - SIGNALS : [ type: H2S_HPS_MDT_T0_MDT_T0_SIGNALS_MON_t ]
   - rd_data : [ type: H2S_HPS_MDT_T0_MDT_T0_rd_data_MON_t ]
 
 - H2S_HPS_MDT_T0_MDT_T0_MON_t_ARRAY: [array: 6, type: H2S_HPS_MDT_T0_MDT_T0_MON_t]
 
 - H2S_HPS_MDT_T0_MDT_T0_CTRL_t:
-  - wr_req : [ type: logic ]
-  - wr_ack : [ type: logic ]
-  - rd_req : [ type: logic ]
-  - rd_ack : [ type: logic ]
-  - flush_req : [ type: logic ]
+  - SIGNALS : [ type: H2S_HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t ]
   - wr_addr : [ type: logic, length: 4 ]
   - rd_addr : [ type: logic, length: 4 ]
   - wr_data : [ type: H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t ]

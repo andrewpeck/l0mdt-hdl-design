@@ -688,7 +688,7 @@ add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m 
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/LSF_MON_LEN
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/LSF_CTRL_LEN
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/ctrl_r
-add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r
+add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m -expand -subitemconfig {/ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r.HEG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r.HEG.HEG -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r.HEG.HEG(2) -expand /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r.HEG.HEG(2).COUNTERS -expand} /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/mon_r
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/csf_ctrl_av
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/csf_mon_av
 add wave -noupdate -expand -group ULT -expand -group HPS_INN -expand -group c&m /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_INN/HPS/lsf_ctrl_av
@@ -1143,7 +1143,7 @@ add wave -noupdate -expand -group ULT /ult_tp/ULT/o_MTC
 add wave -noupdate -expand -group ULT /ult_tp/ULT/o_NSP
 add wave -noupdate -expand -group ULT /ult_tp/ULT/sump
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2948437500 fs} 0} {{Cursor 3} {141773417786 fs} 0}
+WaveRestoreCursors {{Cursor 1} {2042187500 fs} 1 Red default} {{Cursor 2} {2926558234 fs} 0} {{Cursor 3} {141773417786 fs} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
