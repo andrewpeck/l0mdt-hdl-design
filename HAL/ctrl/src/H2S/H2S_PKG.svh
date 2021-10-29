@@ -196,6 +196,18 @@
   } H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
 
   typedef struct packed {
+    logic  rd_rdy;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+  } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
+
+  typedef struct packed {
     logic [9-1:0] wr_data_0;
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t;
 
@@ -204,16 +216,12 @@
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t;
 
   typedef struct packed {
-    logic  rd_rdy;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t   SIGNALS;
     H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t   rd_data;
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
 
   typedef struct packed {
-    logic  wr_req;
-    logic  wr_ack;
-    logic  rd_req;
-    logic  rd_ack;
-    logic  flush_req;
+    H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t   SIGNALS;
     logic [10-1:0] wr_addr;
     logic [10-1:0] rd_addr;
     H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t   wr_data;

@@ -193,6 +193,18 @@ hdl:
   - ERROR : [ type: logic ]
 
 
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t:
+  - rd_rdy : [ type: logic ]
+
+
+- H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+
+
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:
   - wr_data_0 : [ type: logic, length: 9 ]
 
@@ -202,16 +214,12 @@ hdl:
 
 
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t:
-  - rd_rdy : [ type: logic ]
+  - SIGNALS : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t ]
   - rd_data : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_rd_data_MON_t ]
 
 
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t:
-  - wr_req : [ type: logic ]
-  - wr_ack : [ type: logic ]
-  - rd_req : [ type: logic ]
-  - rd_ack : [ type: logic ]
-  - flush_req : [ type: logic ]
+  - SIGNALS : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t ]
   - wr_addr : [ type: logic, length: 10 ]
   - rd_addr : [ type: logic, length: 10 ]
   - wr_data : [ type: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t ]

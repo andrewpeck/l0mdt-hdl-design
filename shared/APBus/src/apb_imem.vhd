@@ -105,6 +105,8 @@ architecture beh of apb_imem is
   signal mon_12A148D_r   : MEM_INT_12A148D_MON_t;
   signal ctrl_9A19D_r   : MEM_INT_9A19D_CTRL_t;
   signal mon_9A19D_r    : MEM_INT_9A19D_MON_t;
+  signal ctrl_10A9D_r   : MEM_INT_10A9D_CTRL_t;
+  signal mon_10A9D_r    : MEM_INT_10A9D_MON_t;
 
   signal axi_rep_clk  : std_logic;
   signal axi_cnt_wait : std_logic;
@@ -152,19 +154,19 @@ begin
     mon_12A42D_r.SIGNALS <= structify(apb_mon_v,mon_12A42D_r.SIGNALS); 
 
     mon <= vectorify(mon_12A42D_r,mon);
-  elsif g_XML_NODE_NAME = "MEM_INT_9A19D" generate
-    -- ctrl_9A19D_r <= structify(ctrl,ctrl_9A19D_r);
-    -- apb_ctrl_v    <= vectorify(ctrl_9A19D_r.SIGNALS,apb_ctrl_v);
-    -- apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
-    -- apb_rd_addr   <= ctrl_9A19D_r.rd_addr;
-    -- apb_wr_addr   <= ctrl_9A19D_r.wr_addr;
-    -- apb_wr_data   <= vectorify(ctrl_9A19D_r.wr_data,apb_wr_data);
-    -- --
-    -- mon_9A19D_r.rd_data <= structify(apb_rd_data,mon_9A19D_r.rd_data);
-    -- apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
-    -- mon_9A19D_r.SIGNALS <= structify(apb_mon_v,mon_9A19D_r.SIGNALS); 
+  elsif g_XML_NODE_NAME = "MEM_INT_10A9D" generate
+    ctrl_10A9D_r <= structify(ctrl,ctrl_10A9D_r);
+    apb_ctrl_v    <= vectorify(ctrl_10A9D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    apb_rd_addr   <= ctrl_10A9D_r.rd_addr;
+    apb_wr_addr   <= ctrl_10A9D_r.wr_addr;
+    apb_wr_data   <= vectorify(ctrl_10A9D_r.wr_data,apb_wr_data);
+    --
+    mon_10A9D_r.rd_data <= structify(apb_rd_data,mon_10A9D_r.rd_data);
+    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    mon_10A9D_r.SIGNALS <= structify(apb_mon_v,mon_10A9D_r.SIGNALS); 
 
-    -- mon <= vectorify(mon_9A19D_r,mon);
+    mon <= vectorify(mon_10A9D_r,mon);
   end generate model_mem;
 
   MEM_TYPE: if g_MEMORY_TYPE = "distributed" generate
