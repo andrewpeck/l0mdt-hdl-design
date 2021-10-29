@@ -189,29 +189,35 @@ begin
         --   local_layer <= (others => '0');
         -- end if;
 
-        if(i_dv = '1') then
-          mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
-          o_dv <= '1';
+        if apb_wr_dv_o = '1' or apb_rd_dv_o = '1' then
+          if apb_wr_dv_o = '1' then
+            -- apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+            mem(to_integer(unsigned(apb_wr_addr_o))) <= apb_wr_data_o;
+            -- apb_rd_dv_i <= '1';
+          else
+            -- apb_rd_dv_i <= '0';
+          end if;
+  
+          if apb_rd_dv_o = '1' then
+            apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+            -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_wr_data_o;
+            apb_rd_dv_i <= '1';
+          else
+            apb_rd_dv_i <= '0';
+          end if;
         else
-          mem_out <= (others => '0');
-          o_dv <= '0';
-        end if;
-        
-        if apb_wr_dv_o = '1' then
-          -- apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          mem(to_integer(unsigned(apb_wr_addr_o))) <= apb_wr_data_o;
-          -- apb_rd_dv_i <= '1';
-        else
-          -- apb_rd_dv_i <= '0';
+          if(i_dv = '1') then
+            mem_out <= mem(mem_index_int);--to_integer(unsigned('0' & mem_index_std)));
+            o_dv <= '1';
+          else
+            mem_out <= (others => '0');
+            o_dv <= '0';
+          end if;
         end if;
 
-        if apb_rd_dv_o = '1' then
-          apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_wr_data_o;
-          apb_rd_dv_i <= '1';
-        else
-          apb_rd_dv_i <= '0';
-        end if;
+
+        
+
 
       end if;
     end if ;
