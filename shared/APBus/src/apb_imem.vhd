@@ -98,8 +98,8 @@ architecture beh of apb_imem is
   signal apb_wr_data      : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
   signal apb_rd_data      : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
 
-  signal ctrl_4A17D_r     : MEM_INT_9A19D_CTRL_t;
-  signal mon_4A17D_r      : MEM_INT_9A19D_MON_t;
+  signal ctrl_4A17D_r     : MEM_INT_4A17D_CTRL_t;
+  signal mon_4A17D_r      : MEM_INT_4A17D_MON_t;
   signal ctrl_9A19D_r     : MEM_INT_9A19D_CTRL_t;
   signal mon_9A19D_r      : MEM_INT_9A19D_MON_t;
   signal ctrl_10A9D_r     : MEM_INT_10A9D_CTRL_t;
