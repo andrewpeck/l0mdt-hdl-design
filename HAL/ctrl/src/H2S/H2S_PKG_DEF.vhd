@@ -19,16 +19,19 @@ package H2S_CTRL_DEF is
                                                                        OUTPUT_EN => '1',
                                                                        FLUSH_MEM_RESET => '1'
                                                                       );
+  constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t := (
+                                                                                                   wr_req => '0',
+                                                                                                   wr_ack => '0',
+                                                                                                   rd_req => '0',
+                                                                                                   rd_ack => '0',
+                                                                                                   flush_req => '0'
+                                                                                                  );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t := (
                                                                                                    wr_data_0 => (others => '0'),
                                                                                                    wr_data_1 => (others => '0')
                                                                                                   );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_CTRL_t := (
-                                                                                   wr_req => '0',
-                                                                                   wr_ack => '0',
-                                                                                   rd_req => '0',
-                                                                                   rd_ack => '0',
-                                                                                   flush_req => '0',
+                                                                                   SIGNALS => DEFAULT_H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t,
                                                                                    wr_addr => (others => '0'),
                                                                                    rd_addr => (others => '0'),
                                                                                    wr_data => DEFAULT_H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t
@@ -63,16 +66,19 @@ package H2S_CTRL_DEF is
                                                                                        OUTPUT_EN => '1',
                                                                                        FLUSH_MEM_RESET => '1'
                                                                                       );
+  constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t := (
+                                                                                                               wr_req => '0',
+                                                                                                               wr_ack => '0',
+                                                                                                               rd_req => '0',
+                                                                                                               rd_ack => '0',
+                                                                                                               flush_req => '0'
+                                                                                                              );
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t : H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t := (
                                                                                                                wr_data_0 => (others => '0'),
                                                                                                                wr_data_1 => (others => '0')
                                                                                                               );
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t : H2S_HPS_HEG_HEG_CTRL_ROI_TC_CTRL_t := (
-                                                                                               wr_req => '0',
-                                                                                               wr_ack => '0',
-                                                                                               rd_req => '0',
-                                                                                               rd_ack => '0',
-                                                                                               flush_req => '0',
+                                                                                               SIGNALS => DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t,
                                                                                                wr_addr => (others => '0'),
                                                                                                rd_addr => (others => '0'),
                                                                                                wr_data => DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t
@@ -131,8 +137,14 @@ package H2S_CTRL_DEF is
   constant DEFAULT_H2S_HPS_LSF_CTRL_t : H2S_HPS_LSF_CTRL_t := (
                                                                LSF => (others => DEFAULT_H2S_HPS_LSF_LSF_CTRL_t )
                                                               );
+  constant DEFAULT_H2S_HPS_CSF_CSF_ACTIONS_CTRL_t : H2S_HPS_CSF_CSF_ACTIONS_CTRL_t := (
+                                                                                       RESET => '0',
+                                                                                       ENABLE => '0',
+                                                                                       DISABLE => '0',
+                                                                                       FREEZE => '0'
+                                                                                      );
   constant DEFAULT_H2S_HPS_CSF_CSF_CTRL_t : H2S_HPS_CSF_CSF_CTRL_t := (
-                                                                       RESET => '0'
+                                                                       ACTIONS => DEFAULT_H2S_HPS_CSF_CSF_ACTIONS_CTRL_t
                                                                       );
   constant DEFAULT_H2S_HPS_CSF_CTRL_t : H2S_HPS_CSF_CTRL_t := (
                                                                CSF => (others => DEFAULT_H2S_HPS_CSF_CSF_CTRL_t )

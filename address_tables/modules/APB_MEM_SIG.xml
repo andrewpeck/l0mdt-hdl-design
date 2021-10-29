@@ -9,3 +9,4 @@
 
   <node id="rd_rdy"     address="0x01" mask="0x00000001" permission="r"   description="Read ready"/>
 </node>
+
