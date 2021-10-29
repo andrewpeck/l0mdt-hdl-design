@@ -180,39 +180,6 @@ begin
       i_rd_dv       => apb_rd_dv_i
     );
 
-  -- apb_mem_interface : entity apbus_lib.apb_mem_int
-  -- generic map(
-  --   g_XML_NODE_NAME         => "MEM_INT_10A38D",
-  --   g_INTERNAL_CLK          => '1',
-  --   g_ADDR_WIDTH            => ADDR_WIDTH,
-  --   g_DATA_WIDTH            => DATA_WIDTH,
-  --   g_APBUS_CTRL_WIDTH      => ctrl_v'length,
-  --   g_APBUS_MON_WIDTH       => mon_v'length
-  -- )
-  -- port map (
-  --   clk           => clk,
-  --   rst           => rst,
-  --   ena           => ena,
-  --   --
-  --   ctrl          => ctrl_v,
-  --   mon           => mon_v,
-  --   --
-  --   -- i_axi_clk     => ,
-  --   -- i_axi_rst     => ,
-  --   --
-  --   -- i_freeze      => i_freeze,
-  --   -- o_freeze      => int_apb_freeze,
-  --   -- o_out_sel     => sel_out_mem,
-  --   -- o_freeze_1    => int_freeze(1),
-  --   --
-  --   o_rd_addr     => apb_rd_addr_o,  
-  --   o_wr_addr     => apb_wr_addr_o,  
-  --   o_data        => apb_wr_data_o,   
-  --   o_dv          => apb_dv_o, 
-  --   i_data        => apb_rd_data_i,  
-  --   i_dv          => apb_rd_dv_i
-  -- );  
-
   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
   mem_index_std <= std_logic_vector(local_layer(2 downto 0)) & local_tube(6 downto 0);
   -- mem_index_std(9 downto 7) <= std_logic_vector(i_layer(2 downto 0));
