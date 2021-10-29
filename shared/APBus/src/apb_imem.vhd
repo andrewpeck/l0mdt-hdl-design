@@ -24,6 +24,7 @@ use ctrl_lib.MEM_INT_10A148D_CTRL.all;
 use ctrl_lib.MEM_INT_12A42D_CTRL.all;
 use ctrl_lib.MEM_INT_12A148D_CTRL.all;
 use ctrl_lib.MEM_INT_9A19D_CTRL.all;
+use ctrl_lib.MEM_INT_10A9D_CTRL.all;
 use ctrl_lib.MEM_INT_10A38D_CTRL.all;
 use ctrl_lib.MEM_INT_4A17D_CTRL.all;
 
@@ -44,8 +45,8 @@ entity apb_imem is
     rst           : in std_logic;
     ena           : in std_logic := '1';
     --
-    ctrl          : in std_logic_vector;--(g_APBUS_CTRL_WIDTH - 1 downto 0);
-    mon           : out std_logic_vector;--(g_APBUS_MON_WIDTH - 1 downto 0);
+    ctrl_v          : in std_logic_vector;--(g_APBUS_CTRL_WIDTH - 1 downto 0);
+    mon_v           : out std_logic_vector;--(g_APBUS_MON_WIDTH - 1 downto 0);
     --
     -- i_freeze      : in std_logic_vector(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
@@ -87,36 +88,36 @@ architecture beh of apb_imem is
 
   ----------------------------
 
-  signal apb_ctrl_r     : APB_MEM_SIG_CTRL_t;
-  signal apb_ctrl_v     : std_logic_vector(len(apb_ctrl_r)-1 downto 0);
-  signal apb_mon_r      : APB_MEM_SIG_MON_t;
-  signal apb_mon_v      : std_logic_vector(len(apb_mon_r)-1 downto 0);
+  signal apb_ctrl_r       : APB_MEM_SIG_CTRL_t;
+  signal apb_ctrl_v       : std_logic_vector(len(apb_ctrl_r)-1 downto 0);
+  signal apb_mon_r        : APB_MEM_SIG_MON_t;
+  signal apb_mon_v        : std_logic_vector(len(apb_mon_r)-1 downto 0);
 
-  signal apb_rd_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-  signal apb_wr_addr     : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
-  signal apb_wr_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-  signal apb_rd_data     : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  signal apb_rd_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal apb_wr_addr      : std_logic_vector(g_ADDR_WIDTH-1 downto 0);
+  signal apb_wr_data      : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+  signal apb_rd_data      : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
 
-  signal ctrl_10A38D_r  : MEM_INT_10A38D_CTRL_t;
-  signal mon_10A38D_r   : MEM_INT_10A38D_MON_t;
-  signal ctrl_12A42D_r  : MEM_INT_12A42D_CTRL_t;
-  signal mon_12A42D_r   : MEM_INT_12A42D_MON_t;
-  signal ctrl_12A148D_r  : MEM_INT_12A148D_CTRL_t;
-  signal mon_12A148D_r   : MEM_INT_12A148D_MON_t;
-  signal ctrl_9A19D_r   : MEM_INT_9A19D_CTRL_t;
-  signal mon_9A19D_r    : MEM_INT_9A19D_MON_t;
-  signal ctrl_10A9D_r   : MEM_INT_10A9D_CTRL_t;
-  signal mon_10A9D_r    : MEM_INT_10A9D_MON_t;
+  signal ctrl_9A19D_r     : MEM_INT_9A19D_CTRL_t;
+  signal mon_9A19D_r      : MEM_INT_9A19D_MON_t;
+  signal ctrl_10A9D_r     : MEM_INT_10A9D_CTRL_t;
+  signal mon_10A9D_r      : MEM_INT_10A9D_MON_t;
+  signal ctrl_10A38D_r    : MEM_INT_10A38D_CTRL_t;
+  signal mon_10A38D_r     : MEM_INT_10A38D_MON_t;
+  signal ctrl_12A42D_r    : MEM_INT_12A42D_CTRL_t;
+  signal mon_12A42D_r     : MEM_INT_12A42D_MON_t;
+  signal ctrl_12A148D_r   : MEM_INT_12A148D_CTRL_t;
+  signal mon_12A148D_r    : MEM_INT_12A148D_MON_t;
 
-  signal axi_rep_clk  : std_logic;
-  signal axi_cnt_wait : std_logic;
-  signal axi_cnt_reset : std_logic;
+  signal axi_rep_clk      : std_logic;
+  signal axi_cnt_wait     : std_logic;
+  signal axi_cnt_reset    : std_logic;
 
 
 begin
 
   model_mem: if g_XML_NODE_NAME = "MEM_INT_10A38D" generate
-    ctrl_10A38D_r <= structify(ctrl,ctrl_10A38D_r);
+    ctrl_10A38D_r <= structify(ctrl_v,ctrl_10A38D_r);
     apb_ctrl_v    <= vectorify(ctrl_10A38D_r.SIGNALS,apb_ctrl_v);
     apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_10A38D_r.rd_addr;
@@ -127,9 +128,9 @@ begin
     apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
     mon_10A38D_r.SIGNALS <= structify(apb_mon_v,mon_10A38D_r.SIGNALS); 
 
-    mon <= vectorify(mon_10A38D_r,mon);
+    mon_v <= vectorify(mon_10A38D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_12A148D" generate
-    ctrl_12A148D_r <= structify(ctrl,ctrl_12A148D_r);
+    ctrl_12A148D_r <= structify(ctrl_v,ctrl_12A148D_r);
     apb_ctrl_v    <= vectorify(ctrl_12A148D_r.SIGNALS,apb_ctrl_v);
     apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_12A148D_r.rd_addr;
@@ -140,9 +141,9 @@ begin
     apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
     mon_12A148D_r.SIGNALS <= structify(apb_mon_v,mon_12A148D_r.SIGNALS); 
 
-    mon <= vectorify(mon_12A148D_r,mon);
+    mon_v <= vectorify(mon_12A148D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_12A42D" generate
-    ctrl_12A42D_r <= structify(ctrl,ctrl_12A42D_r);
+    ctrl_12A42D_r <= structify(ctrl_v,ctrl_12A42D_r);
     apb_ctrl_v    <= vectorify(ctrl_12A42D_r.SIGNALS,apb_ctrl_v);
     apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_12A42D_r.rd_addr;
@@ -153,9 +154,9 @@ begin
     apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
     mon_12A42D_r.SIGNALS <= structify(apb_mon_v,mon_12A42D_r.SIGNALS); 
 
-    mon <= vectorify(mon_12A42D_r,mon);
+    mon_v <= vectorify(mon_12A42D_r,mon_v);
   elsif g_XML_NODE_NAME = "MEM_INT_10A9D" generate
-    ctrl_10A9D_r <= structify(ctrl,ctrl_10A9D_r);
+    ctrl_10A9D_r <= structify(ctrl_v,ctrl_10A9D_r);
     apb_ctrl_v    <= vectorify(ctrl_10A9D_r.SIGNALS,apb_ctrl_v);
     apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
     apb_rd_addr   <= ctrl_10A9D_r.rd_addr;
@@ -166,7 +167,7 @@ begin
     apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
     mon_10A9D_r.SIGNALS <= structify(apb_mon_v,mon_10A9D_r.SIGNALS); 
 
-    mon <= vectorify(mon_10A9D_r,mon);
+    mon_v <= vectorify(mon_10A9D_r,mon_v);
   end generate model_mem;
 
   MEM_TYPE: if g_MEMORY_TYPE = "distributed" generate
@@ -174,10 +175,10 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          --mon <= (others =>'0');
           o_rd_addr <= (others =>'0');
           o_wr_addr <= (others =>'0');
           o_wr_data <= (others =>'0');
+          apb_rd_data <= (others => '0');
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
@@ -190,7 +191,7 @@ begin
           --
           int_wr_status <=  x"0";
           int_rd_status <=  x"0";
-          --
+
           apb_mon_r <= nullify(apb_mon_r);
   
         else
@@ -284,7 +285,6 @@ begin
     begin
       if rising_edge(clk) then
         if rst = '1' then
-          --mon <= (others =>'0');
           o_rd_addr <= (others =>'0');
           o_wr_addr <= (others =>'0');
           o_wr_data <= (others =>'0');

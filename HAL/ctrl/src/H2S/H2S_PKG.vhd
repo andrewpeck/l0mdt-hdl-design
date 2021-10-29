@@ -475,20 +475,6 @@ package H2S_CTRL is
   function nullify(t: H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t) return H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t;
   function zeroed(t: H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t) return H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t;
 
-  type H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t is record
-    ENABLED : std_logic;
-    READY : std_logic;
-    ERROR : std_logic;
-  end record H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  function len(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return natural;
-  function width(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return natural;
-  function vectorify(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function convert(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t; t: std_logic_vector) return std_logic_vector;
-  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  function convert(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  function nullify(t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  function zeroed(t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-
   type H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t is record
     rd_rdy : std_logic;
   end record H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
@@ -570,7 +556,6 @@ package H2S_CTRL is
   function zeroed(t: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t) return H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
 
   type H2S_HPS_HEG_HEG_HP_HP_MON_t is record
-    STATUS : H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
     MDT_DT2R : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t;
   end record H2S_HPS_HEG_HEG_HP_HP_MON_t;
   function len(x: H2S_HPS_HEG_HEG_HP_HP_MON_t) return natural;
@@ -4561,115 +4546,6 @@ package body H2S_CTRL is
     return y;
   end function zeroed;
 
-  function len(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + len(x.ENABLED);
-    l := l + len(x.READY);
-    l := l + len(x.ERROR);
-    return l;
-  end function len;
-  function width(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return natural is
-    variable l : natural := 0;
-  begin
-    l := l + width(x.ENABLED);
-    l := l + width(x.READY);
-    l := l + width(x.ERROR);
-    return l;
-  end function width;
-  function vectorify(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), vectorify(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function vectorify;
-  function convert(x: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t; t: std_logic_vector) return std_logic_vector is
-    variable left : natural := t'left;
-    variable y : std_logic_vector(t'range);
-  begin
-    if t'ascending then
-      assign(y(left to left+len(x.ENABLED)-1), convert(x.ENABLED, y(left to left+len(x.ENABLED)-1)));
-      left := left + len(x.ENABLED);
-      assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
-      left := left + len(x.READY);
-      assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
-    else
-      assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
-      left := left - len(x.ENABLED);
-      assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
-      left := left - len(x.READY);
-      assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
-    end if;
-    return y;
-  end function convert;
-  function structify(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t is
-    variable y: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := structify(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function structify;
-  function convert(x: in std_logic_vector; t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t is
-    variable y: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-    variable left : natural := x'left;
-  begin
-    if x'ascending then
-      y.ENABLED := convert(x(left to left+len(y.ENABLED)-1), y.ENABLED);
-      left := left + len(y.ENABLED);
-      y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
-      left := left + len(y.READY);
-      y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
-    else
-      y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
-      left := left - len(y.ENABLED);
-      y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
-      left := left - len(y.READY);
-      y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
-    end if;
-    return y;
-  end function convert;
-  function nullify(t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t is
-  variable y: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  begin
-    y.ENABLED := nullify(t.ENABLED);
-    y.READY := nullify(t.READY);
-    y.ERROR := nullify(t.ERROR);
-    return y;
-  end function nullify;
-  function zeroed(t: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t) return H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t is
-  variable y: H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-  begin
-    y.ENABLED := zeroed(t.ENABLED);
-    y.READY := zeroed(t.READY);
-    y.ERROR := zeroed(t.ERROR);
-    return y;
-  end function zeroed;
-
   function len(x: H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t) return natural is
     variable l : natural := 0;
   begin
@@ -5247,14 +5123,12 @@ package body H2S_CTRL is
   function len(x: H2S_HPS_HEG_HEG_HP_HP_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + len(x.STATUS);
     l := l + len(x.MDT_DT2R);
     return l;
   end function len;
   function width(x: H2S_HPS_HEG_HEG_HP_HP_MON_t) return natural is
     variable l : natural := 0;
   begin
-    l := l + width(x.STATUS);
     l := l + width(x.MDT_DT2R);
     return l;
   end function width;
@@ -5263,12 +5137,8 @@ package body H2S_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), vectorify(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
       assign(y(left to left+len(x.MDT_DT2R)-1), vectorify(x.MDT_DT2R, y(left to left+len(x.MDT_DT2R)-1)));
     else
-      assign(y(left downto left-len(x.STATUS)+1), vectorify(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
       assign(y(left downto left-len(x.MDT_DT2R)+1), vectorify(x.MDT_DT2R, y(left downto left-len(x.MDT_DT2R)+1)));
     end if;
     return y;
@@ -5278,12 +5148,8 @@ package body H2S_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
-      assign(y(left to left+len(x.STATUS)-1), convert(x.STATUS, y(left to left+len(x.STATUS)-1)));
-      left := left + len(x.STATUS);
       assign(y(left to left+len(x.MDT_DT2R)-1), convert(x.MDT_DT2R, y(left to left+len(x.MDT_DT2R)-1)));
     else
-      assign(y(left downto left-len(x.STATUS)+1), convert(x.STATUS, y(left downto left-len(x.STATUS)+1)));
-      left := left - len(x.STATUS);
       assign(y(left downto left-len(x.MDT_DT2R)+1), convert(x.MDT_DT2R, y(left downto left-len(x.MDT_DT2R)+1)));
     end if;
     return y;
@@ -5293,12 +5159,8 @@ package body H2S_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.STATUS := structify(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
       y.MDT_DT2R := structify(x(left to left+len(y.MDT_DT2R)-1), y.MDT_DT2R);
     else
-      y.STATUS := structify(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
       y.MDT_DT2R := structify(x(left downto left-len(y.MDT_DT2R)+1), y.MDT_DT2R);
     end if;
     return y;
@@ -5308,12 +5170,8 @@ package body H2S_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
-      y.STATUS := convert(x(left to left+len(y.STATUS)-1), y.STATUS);
-      left := left + len(y.STATUS);
       y.MDT_DT2R := convert(x(left to left+len(y.MDT_DT2R)-1), y.MDT_DT2R);
     else
-      y.STATUS := convert(x(left downto left-len(y.STATUS)+1), y.STATUS);
-      left := left - len(y.STATUS);
       y.MDT_DT2R := convert(x(left downto left-len(y.MDT_DT2R)+1), y.MDT_DT2R);
     end if;
     return y;
@@ -5321,14 +5179,12 @@ package body H2S_CTRL is
   function nullify(t: H2S_HPS_HEG_HEG_HP_HP_MON_t) return H2S_HPS_HEG_HEG_HP_HP_MON_t is
   variable y: H2S_HPS_HEG_HEG_HP_HP_MON_t;
   begin
-    y.STATUS := nullify(t.STATUS);
     y.MDT_DT2R := nullify(t.MDT_DT2R);
     return y;
   end function nullify;
   function zeroed(t: H2S_HPS_HEG_HEG_HP_HP_MON_t) return H2S_HPS_HEG_HEG_HP_HP_MON_t is
   variable y: H2S_HPS_HEG_HEG_HP_HP_MON_t;
   begin
-    y.STATUS := zeroed(t.STATUS);
     y.MDT_DT2R := zeroed(t.MDT_DT2R);
     return y;
   end function zeroed;

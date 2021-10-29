@@ -100,8 +100,8 @@ begin
       rst           => local_rst,
       enable        => local_en,
       --
-      ctrl          => ctrl_r.PL_MEM.PL_MEM(sl_i),
-      mon           => mon_r.PL_MEM.PL_MEM(sl_i),
+      ctrl_r          => ctrl_r.PL_MEM.PL_MEM(sl_i),
+      mon_r           => mon_r.PL_MEM.PL_MEM(sl_i),
       --
       i_freeze      => int_freeze,
       --

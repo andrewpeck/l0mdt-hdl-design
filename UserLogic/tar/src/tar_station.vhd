@@ -125,8 +125,8 @@ begin
         ena         => glob_en,
         --
         -- Ctrl/Mon 
-        ctrl        => ctrl_apb_mem_av(b_i),
-        mon         => mon_apb_mem_av(b_i),
+        ctrl_v        => ctrl_apb_mem_av(b_i),
+        mon_v         => mon_apb_mem_av(b_i),
         i_freeze    => i_freeze,
         --
         i_data      => i_tdc_hits_av(b_i),

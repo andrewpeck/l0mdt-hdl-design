@@ -115,11 +115,11 @@ architecture beh of heg_ctrl_roi_tc is
   -- APB signals
   signal apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
   signal apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-  signal apb_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_wr_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
   signal apb_rd_dv_o      : std_logic;
   signal apb_wr_dv_o      : std_logic;
-  signal apb_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
-  signal apb_dv_i         : std_logic;
+  signal apb_rd_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal apb_rd_dv_i         : std_logic;
 
 begin
 
@@ -141,8 +141,8 @@ begin
     rst           => rst,
     ena           => ena,
     --
-    ctrl          => ctrl_v,
-    mon           => mon_v,
+    ctrl_v        => ctrl_v,
+    mon_v         => mon_v,
     --
     -- i_axi_clk     => ,
     -- i_axi_rst     => ,
@@ -154,11 +154,11 @@ begin
     --
     o_rd_addr     => apb_rd_addr_o,  
     o_wr_addr     => apb_wr_addr_o,  
-    o_wr_data        => apb_data_o,   
+    o_wr_data     => apb_wr_data_o,   
     o_rd_dv       => apb_rd_dv_o, 
     o_wr_dv       => apb_wr_dv_o, 
-    i_rd_data        => apb_data_i,  
-    i_rd_dv          => apb_dv_i
+    i_rd_data     => apb_rd_data_i,  
+    i_rd_dv       => apb_rd_dv_i
   );  
 
   -- local_tube <= std_logic_vector(to_unsigned(to_integer(i_tube) - csm_offset_mem,7));
@@ -176,8 +176,8 @@ begin
         -- o_time_tc <= (others => '0');
         o_dv <= '0';
         mem_out <= (others => '0');
-        apb_dv_i <= '0';
-        apb_data_i <= (others => '0');
+        apb_rd_dv_i <= '0';
+        apb_rd_data_i <= (others => '0');
       else
         -- local_tube_dv <= i_dv;
         -- if i_dv = '1' then
@@ -198,19 +198,19 @@ begin
         end if;
         
         if apb_wr_dv_o = '1' then
-          -- apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
-          -- apb_dv_i <= '1';
+          -- apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+          mem(to_integer(unsigned(apb_wr_addr_o))) <= apb_wr_data_o;
+          -- apb_rd_dv_i <= '1';
         else
-          -- apb_dv_i <= '0';
+          -- apb_rd_dv_i <= '0';
         end if;
 
         if apb_rd_dv_o = '1' then
-          apb_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
-          -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_data_o;
-          apb_dv_i <= '1';
+          apb_rd_data_i <= mem(to_integer(unsigned(apb_rd_addr_o)));
+          -- mem(to_integer(unsigned(apb_rd_addr_o))) <= apb_wr_data_o;
+          apb_rd_dv_i <= '1';
         else
-          apb_dv_i <= '0';
+          apb_rd_dv_i <= '0';
         end if;
 
       end if;

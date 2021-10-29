@@ -190,12 +190,6 @@
   } H2S_HPS_HEG_HEG_HP_HP_CONFIGS_CTRL_t;
 
   typedef struct packed {
-    logic  ENABLED;
-    logic  READY;
-    logic  ERROR;
-  } H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t;
-
-  typedef struct packed {
     logic  rd_rdy;
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
 
@@ -228,7 +222,6 @@
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_CTRL_t;
 
   typedef struct packed {
-    H2S_HPS_HEG_HEG_HP_HP_STATUS_MON_t   STATUS;
     H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_MON_t   MDT_DT2R;
   } H2S_HPS_HEG_HEG_HP_HP_MON_t;
 
