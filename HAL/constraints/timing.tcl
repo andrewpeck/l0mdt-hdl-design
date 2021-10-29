@@ -11,15 +11,15 @@ foreach clock [concat \
     set_clock_groups -group [get_clocks $clock] -asynchronous
 }
 
-# asynchronous clock relationship for tx/rx clocks to/from others
+# asynchronous clock relationship for tx/rx clocks to/from axi
 foreach clock_b \
     [concat \
-         [get_clocks *mmcm*] \
+         [get_clocks *TXOUTCLKPCS*] \
          [get_clocks axi_clk] \
          [get_clocks clock_100]] {
              foreach clock_a [concat \
-                                  [get_clocks *RXOUTCLK*] \
-                                  [get_clocks *TXOUTCLK*]] {
+                                  [get_clocks *RXOUTCLK\[*] \
+                                  [get_clocks *TXOUTCLK\[*]] {
                  set_clock_groups \
                      -group [get_clocks $clock_a] \
                      -group [get_clocks $clock_b] \

@@ -50,16 +50,23 @@ entity felix_decoder is
     strobe_pipeline : in std_logic;
     strobe_320      : in std_logic;
 
-    l0mdt_ttc_40m      : out l0mdt_ttc_rt
-  --l0mdt_ttc_320m     : out l0mdt_ttc_rt;
-  --l0mdt_ttc_pipeline : out l0mdt_ttc_rt
+    l0mdt_ttc_40m : out l0mdt_ttc_rt
+    --l0mdt_ttc_320m     : out l0mdt_ttc_rt;
+    --l0mdt_ttc_pipeline : out l0mdt_ttc_rt
 
     );
 end felix_decoder;
 
 architecture behavioral of felix_decoder is
 
-  signal l0mdt_ttc                  : l0mdt_ttc_rt;
+  signal l0mdt_ttc_40m_int : l0mdt_ttc_rt;
+
+  attribute ASYNC_REG                          : string;
+  attribute ASYNC_REG of l0mdt_ttc_40m_int     : signal is "TRUE";
+  attribute SHREG_EXTRACT                      : string;
+  attribute SHREG_EXTRACT of l0mdt_ttc_40m_int : signal is "NO";
+
+  signal l0mdt_ttc, l0mdt_ttc_ff    : l0mdt_ttc_rt;
   attribute max_fanout              : string;
   attribute max_fanout of l0mdt_ttc : signal is "16";
 
@@ -126,7 +133,7 @@ begin
   process (clock320) is
   begin
     if (rising_edge(clock320)) then
-      valid_o        <= uplink_ready and uplink_data.valid;
+      valid_o <= uplink_ready and uplink_data.valid;
 
       -- l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
 
@@ -136,13 +143,15 @@ begin
       l0mdt_ttc.l0a <= uplink_data.data(felix_l0a_bit);
       l0mdt_ttc.l1a <= uplink_data.data(felix_l1a_bit);
 
+      l0mdt_ttc_ff <= l0mdt_ttc;
+
     end if;
   end process;
 
   process (clock40) is
   begin
     if (rising_edge(clock40)) then
-      l0mdt_ttc_40m <= l0mdt_ttc;
+      l0mdt_ttc_40m <= l0mdt_ttc_ff;
     end if;
   end process;
 
