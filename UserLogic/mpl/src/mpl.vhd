@@ -82,14 +82,14 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    actions           => ctrl_r.actions,
-    configs           => ctrl_r.configs,
-    status            => mon_r.status ,
+    i_actions           => ctrl_r.actions,
+    i_configs           => ctrl_r.configs,
+    o_status            => mon_r.status ,
     --
     o_freeze          => int_freeze,
     -- 
-    local_en          => local_en,
-    local_rst         => local_rst
+    o_local_en          => local_en,
+    o_local_rst         => local_rst
   );
 
   MPL_PL : for sl_i in c_MAX_NUM_SL -1 downto 0 generate

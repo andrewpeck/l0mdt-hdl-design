@@ -57,8 +57,8 @@ entity tar_supervisor is
     i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;
     --
-    local_en            : out std_logic;
-    local_rst           : out std_logic
+    o_local_en            : out std_logic;
+    o_local_rst           : out std_logic
   );
 end entity tar_supervisor;
 
@@ -73,6 +73,8 @@ architecture beh of tar_supervisor is
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
 begin
   o_local_en <= local_en;
   o_local_rst <= local_rst;

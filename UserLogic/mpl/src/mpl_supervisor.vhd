@@ -48,17 +48,17 @@ entity mpl_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- AXI to SoC
-    actions             : in  MPL_ACTIONS_CTRL_t;
-    configs             : in  MPL_CONFIGS_CTRL_t;
-    status              : out MPL_STATUS_MON_t;
+    i_actions             : in  MPL_ACTIONS_CTRL_t;
+    i_configs             : in  MPL_CONFIGS_CTRL_t;
+    o_status              : out MPL_STATUS_MON_t;
     --
 
     --
     i_freeze            : in std_logic := '0';
     o_freeze            : out std_logic;
     --
-    local_en            : out std_logic;
-    local_rst           : out std_logic
+    o_local_en            : out std_logic;
+    o_local_rst           : out std_logic
   );
 end entity mpl_supervisor;
 
@@ -73,6 +73,8 @@ architecture beh of mpl_supervisor is
 
   constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
 begin
   o_local_en <= local_en;
   o_local_rst <= local_rst;
