@@ -168,7 +168,7 @@ architecture beh of ult_tp is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
-  constant c_CLK_AXI_MULT : integer := 5; 
+  -- constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';

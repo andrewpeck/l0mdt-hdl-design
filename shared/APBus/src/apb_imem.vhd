@@ -15,6 +15,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library shared_lib;
+-- use shared_lib.common_ieee_pkg.all;
+-- use shared_lib.l0mdt_constants_pkg.all;
+-- use shared_lib.l0mdt_dataformats_pkg.all;
+-- use shared_lib.common_constants_pkg.all;
+-- use shared_lib.common_types_pkg.all;
+-- use shared_lib.config_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
 library apbus_lib;
 -- use apbus_lib.apb_pkg.all;
 
@@ -83,7 +92,7 @@ architecture beh of apb_imem is
   signal new_apb_wr_req : std_logic;
   signal new_apb_rd_req : std_logic;
 
-  constant apb_clk_lat : integer := 8;
+  constant apb_clk_lat : integer := c_CLK_AXI_MULT;
   signal  apb_clk_cnt : integer;
 
   ----------------------------
