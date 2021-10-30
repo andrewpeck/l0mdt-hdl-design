@@ -107,6 +107,7 @@ begin
 
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
+  
   o_local_en <= local_en;
   o_local_rst <= local_rst;
 
