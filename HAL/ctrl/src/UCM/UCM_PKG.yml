@@ -23,8 +23,8 @@ hdl:
 
 
 - UCM_SUPER_STATUS_MON_t:
-  - ENABLED : [ type: logic, length: 8 ]
-  - READY : [ type: logic, length: 8 ]
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
   - ERROR : [ type: logic, length: 8 ]
 
 

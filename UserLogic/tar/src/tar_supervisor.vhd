@@ -129,7 +129,7 @@ begin
         --------------------------------------------
         o_status.ENABLED <= local_en;
         o_status.READY <= not local_rst;
-        o_status.ERROR <= '0';
+        o_status.ERROR <= (others => '0');
       end if;
     end if;
   end process;

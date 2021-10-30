@@ -45,7 +45,7 @@ package TAR_CTRL is
   type TAR_STATUS_MON_t is record
     ENABLED : std_logic;
     READY : std_logic;
-    ERROR : std_logic;
+    ERROR : std_logic_vector(8-1 downto 0);
   end record TAR_STATUS_MON_t;
   function len(x: TAR_STATUS_MON_t) return natural;
   function width(x: TAR_STATUS_MON_t) return natural;

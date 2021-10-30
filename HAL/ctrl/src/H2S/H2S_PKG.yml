@@ -26,7 +26,7 @@ hdl:
 - H2S_HPS_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
-  - ERROR : [ type: logic ]
+  - ERROR : [ type: logic, length: 8 ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_SIGNALS_MON_t:

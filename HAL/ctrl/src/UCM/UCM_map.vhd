@@ -96,9 +96,9 @@ begin  -- architecture behavioral
           localRdData( 4)            <=  reg_data(17)( 4);                                    --
           localRdData( 5)            <=  reg_data(17)( 5);                                    --
         when 18 => --0x12
-          localRdData( 7 downto  0)  <=  Mon.SUPER.STATUS.ENABLED;                            --
-          localRdData(15 downto  8)  <=  Mon.SUPER.STATUS.READY;                              --
-          localRdData(23 downto 16)  <=  Mon.SUPER.STATUS.ERROR;                              --
+          localRdData( 0)            <=  Mon.SUPER.STATUS.ENABLED;                            --
+          localRdData( 1)            <=  Mon.SUPER.STATUS.READY;                              --
+          localRdData(11 downto  4)  <=  Mon.SUPER.STATUS.ERROR;                              --
         when 33 => --0x21
           localRdData( 9 downto  0)  <=  Mon.SUPER.SECTOR_PHI.rd_data;                        --Read Data
           localRdData(25 downto 16)  <=  reg_data(33)(25 downto 16);                          --Write Data

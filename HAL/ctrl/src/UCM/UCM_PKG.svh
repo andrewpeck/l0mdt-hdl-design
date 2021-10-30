@@ -21,8 +21,8 @@
   } UCM_SUPER_CONFIGS_CTRL_t;
 
   typedef struct packed {
-    logic [8-1:0] ENABLED;
-    logic [8-1:0] READY;
+    logic  ENABLED;
+    logic  READY;
     logic [8-1:0] ERROR;
   } UCM_SUPER_STATUS_MON_t;
 

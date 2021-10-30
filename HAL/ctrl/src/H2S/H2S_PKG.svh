@@ -24,7 +24,7 @@
   typedef struct packed {
     logic  ENABLED;
     logic  READY;
-    logic  ERROR;
+    logic [8-1:0] ERROR;
   } H2S_HPS_STATUS_MON_t;
 
   typedef struct packed {

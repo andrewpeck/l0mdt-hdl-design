@@ -13,9 +13,9 @@
       <node id="OUTPUT_EN"      mask="0x000000020" parameters="default=1" permission="rw"/>
     </node>
     <node id="STATUS" address="0x00000002">
-      <node id="ENABLED" mask="0x000000FF" permission="r"/>
-      <node id="READY"   mask="0x0000FF00" permission="r"/>
-      <node id="ERROR"   mask="0x00FF0000" permission="r"/>
+      <node id="ENABLED" mask="0x00000001" permission="r"/>
+      <node id="READY"   mask="0x00000002" permission="r"/>
+      <node id="ERROR"   mask="0x00000FF0" permission="r"/>
     </node>
 
   <!-- <node id="SUPER" address="0x00000010"> -->

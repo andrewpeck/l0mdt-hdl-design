@@ -25,7 +25,7 @@ hdl:
 - TAR_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
-  - ERROR : [ type: logic ]
+  - ERROR : [ type: logic, length: 8 ]
 
 
 - TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t:

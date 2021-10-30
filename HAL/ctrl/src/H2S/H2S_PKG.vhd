@@ -46,7 +46,7 @@ package H2S_CTRL is
   type H2S_HPS_STATUS_MON_t is record
     ENABLED : std_logic;
     READY : std_logic;
-    ERROR : std_logic;
+    ERROR : std_logic_vector(8-1 downto 0);
   end record H2S_HPS_STATUS_MON_t;
   function len(x: H2S_HPS_STATUS_MON_t) return natural;
   function width(x: H2S_HPS_STATUS_MON_t) return natural;

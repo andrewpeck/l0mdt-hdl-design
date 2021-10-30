@@ -43,8 +43,8 @@ package UCM_CTRL is
   function zeroed(t: UCM_SUPER_CONFIGS_CTRL_t) return UCM_SUPER_CONFIGS_CTRL_t;
 
   type UCM_SUPER_STATUS_MON_t is record
-    ENABLED : std_logic_vector(8-1 downto 0);
-    READY : std_logic_vector(8-1 downto 0);
+    ENABLED : std_logic;
+    READY : std_logic;
     ERROR : std_logic_vector(8-1 downto 0);
   end record UCM_SUPER_STATUS_MON_t;
   function len(x: UCM_SUPER_STATUS_MON_t) return natural;

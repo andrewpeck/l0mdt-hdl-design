@@ -98,7 +98,7 @@ begin  -- architecture behavioral
         when 2 => --0x2
           localRdData( 0)            <=  Mon.STATUS.ENABLED;                                             --
           localRdData( 1)            <=  Mon.STATUS.READY;                                               --
-          localRdData( 2)            <=  Mon.STATUS.ERROR;                                               --
+          localRdData(11 downto  4)  <=  Mon.STATUS.ERROR;                                               --
         when 2321 => --0x911
           localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).SIGNALS.rd_rdy;         --Read ready
         when 2322 => --0x912
