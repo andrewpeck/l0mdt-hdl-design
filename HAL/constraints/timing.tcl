@@ -11,12 +11,10 @@ foreach clock [concat \
     set_clock_groups -group [get_clocks $clock] -asynchronous
 }
 
-# asynchronous clock relationship for tx/rx clocks to/from axi
+# asynchronous relationship between TXOUTCLKPCS and TX/RXOUTCLK
 foreach clock_b \
     [concat \
-         [get_clocks *TXOUTCLKPCS*] \
-         [get_clocks axi_clk] \
-         [get_clocks clock_100]] {
+         [get_clocks *TXOUTCLKPCS*]] {
              foreach clock_a [concat \
                                   [get_clocks *RXOUTCLK\[*] \
                                   [get_clocks *TXOUTCLK\[*]] {
@@ -25,28 +23,49 @@ foreach clock_b \
                      -group [get_clocks $clock_b] \
                      -asynchronous}}
 
+
+# asynchronous clock relationship for tx/rx clocks to/from axi
+foreach clock_b \
+    [concat \
+         [get_clocks axi_clk] \
+         [get_clocks clock_100]] {
+             foreach clock_a [concat \
+                                  [get_clocks *TXOUTCLKPCS*] \
+                                  [get_clocks *RXOUTCLK\[*] \
+                                  [get_clocks *TXOUTCLK\[*]] {
+                 set_clock_groups \
+                     -group [get_clocks $clock_a] \
+                     -group [get_clocks $clock_b] \
+                     -asynchronous}}
+
+################################################################################
+# SL
+################################################################################
+
 # there's no known phase relationship between the rx clocks and the 40MHz clock
-# this transition happens in the SL receiver, where we go
-# from 240MHz RX --> 40 MHz LHC --> 320 MHz pipeline clock
-#
-# The 240 MHz signal is stable for 6 clock cycles (40 MHz effective) but transitions
-# at an unknown phase.. we constrain it with a max datapath delay of 5 ns, so
-# that /at least/ one of these two conditions will be true:
-#   - the transition to the rising edge of the 40 MHz will be valid
-#   - the transition to the negative edge of the 40 MHz will be valid
-# some sort of phase scan would need to be devised to determine which to use
-set_max_delay -quiet -datapath_only 5 \
-    -from [get_clocks *RXOUTCLK*] \
-    -to [get_clocks *clk40*mmcm*]
+# but the clocks are frequency locked (mesochronous)
+
+set_max_delay -datapath_only 5.0 \
+    -from [get_pins -hierarchical -filter \
+               {NAME =~ top_hal/*sector_logic*rx_packet_former*packet_valid_reg/C}] \
+    -to [get_pins -hierarchical -filter \
+             {NAME =~ top_hal/*rx_data*s_resync_reg*/D}]
+
+set_max_delay -datapath_only 5.0 \
+    -from [get_pins -hierarchical -filter \
+               {NAME =~ top_hal/*sector_logic*rx_packet_former_inst*packet_userdata_reg*/C}] \
+    -to [get_pins -hierarchical -filter \
+             {NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D}]
 
 # the TXCLK is something that is controlled by us, since it is locked to the
 # REFCLK that we supply.. there is some phase uncertainty of the 4.1166 ns clock
 # but we can control the phase of it with the clock synth.. just keep the
 # datapath well under 4.166 ns so then we can adjust the phase using the clock
 # synthesizer
+
 set_max_delay -quiet -datapath_only 3.1 \
     -to [get_clocks *TXOUTCLK*] \
-    -from [get_clocks *clk40*mmcm*]
+    -from [get_clocks *clk*mmcm*]
 
 ################################################################################
 # sys_resetter has an asynchronous output (on the axi clock domain) that
@@ -66,18 +85,6 @@ set_false_path -quiet -from [get_pins {top_control_inst/*/sys_reseter/*/*/C}]
 
 set_clock_groups -group [get_clocks clock_100] -asynchronous
 set_clock_groups -group [get_clocks axi_clk] -asynchronous
-
-################################################################################
-# FIXME: this is a kludgey workaround... the SL data needs to be fixed latency,
-# so we need to have a sensible way to clock domain crossings from the SL clock
-# received domain to the logic clock
-################################################################################
-
-set_max_delay -quiet -datapath_only 5 \
-    -from [get_pins \
-               {top_hal/*sector_logic*/*rx_packet_former*/*/C}] \
-    -to [get_pins \
-             {top_hal/*sector_logic*/*sl_rx_data*/D}]
 
 ################################################################################
 # The input to this reset comes from AXI clock domain but onto the MGT clock
