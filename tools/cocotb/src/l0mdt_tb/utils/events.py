@@ -12,7 +12,7 @@ from TVDataFormat.BX_data import BXData
 import pandas as pd
 from tabulate import tabulate
 from termcolor import colored, cprint
-
+from l0mdt_tb.utils.tv import tvRTL
 import logging
 import logging.config
 
@@ -116,7 +116,7 @@ def get_bitfield(
     else:
         return val_list[0]
 
-def print_BitFieldsInDataFormat(tvformat, tvformat_val,candidate_index=0, stationNum=-99):
+def print_BitFieldsInDataFormat(tvformat, tvformat_val, stationNum=-99):
     DFSL              = DataFormat()
     bitfieldWord = []
     bitfieldWordList = []
@@ -141,14 +141,35 @@ def print_BitFieldsInDataFormat(tvformat, tvformat_val,candidate_index=0, statio
     print(bitfieldWord[0].print_bitFieldWord())
    
 
-    
-def   print_tv_bitfields(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
-    port_idx = 0
+def fill_tv_rtl(tvformats, tv_list, n_interfaces, n_ports, n_events_to_process,station_id):
+    port_idx  = 0
+    tvRTL_list = []
     for n_ip_intf in range(n_interfaces): # Add concept of interface
         for io in range(n_ports[n_ip_intf]):
+            tvRTL_i    = tvRTL()
             for n_events in range(n_events_to_process):
-                print_BitFieldsInDataFormat(tvformats[n_ip_intf],tv_list[port_idx][n_events])
+                tvRTL_i.set_tv(tv_list[port_idx][n_events], tvformats[n_ip_intf],station=station_id[n_ip_intf][io])
+            tvRTL_list.append(tvRTL_i)
+            #tvRTL_i.clear()
             port_idx = port_idx + 1
+
+    #print ("TV RTL")
+    #for port_i in range(len(tvRTL_list)):
+    #   tvRTL_p = tvRTL_list[port_i]
+    #    tvRTL_p.print_tv()
+
+    return tvRTL_list
+
+def   print_tv_bitfields(tvRTL_list): #tvformats, tv_list, n_interfaces, n_ports, n_events_to_process):
+    port_idx  = 0
+    
+    for port_i in range(len(tvRTL_list)):
+        tvRTL_p = tvRTL_list[port_i]
+        for n_events in range(len(tvRTL_p.tv_val)):
+            print_BitFieldsInDataFormat(tvRTL_p.df, tvRTL_p.tv_val[n_events], stationNum=station_name_to_id(tvRTL_p.station))
+
+    
+    
 
 def compare_BitFields(tv_bcid_list, tvformat, n_candidates, e_idx, rtl_tv, tolerances,output_path="./",stationNum=-99):
     evt                = 0
