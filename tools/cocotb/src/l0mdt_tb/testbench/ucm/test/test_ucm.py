@@ -270,7 +270,15 @@ def ucm_test(dut):
 
     print("Debug: Printing bitfields of input testvectors across all ports:")
     print("*************************************************************")
-    events.print_tv_bitfields(input_tvformats, input_tv_list, UcmPorts.n_input_interfaces, UcmPorts.get_all_input_interface_ports(), num_events_to_process)
+    #events.print_tv_bitfields(input_tvformats, input_tv_list, UcmPorts.n_input_interfaces, UcmPorts.get_all_input_interface_ports(), num_events_to_process)
+    input_tvRTL_list = events.fill_tv_rtl(
+        input_tvformats,
+        input_tv_list, UcmPorts.n_input_interfaces, 
+        UcmPorts.get_all_input_interface_ports(), 
+        num_events_to_process,
+        inputs_station_id
+    )
+    events.print_tv_bitfields(input_tvRTL_list)
     print("*************************************************************")
  
     ##
@@ -341,7 +349,16 @@ def ucm_test(dut):
 
 
     for n_op_intf in range (UcmPorts.n_output_interfaces):
-        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(tv_bcid_list, output_tvformats[n_op_intf],UcmPorts.get_output_interface_ports(n_op_intf) , num_events_to_process , recvd_events_intf[n_op_intf],tolerance[n_op_intf],output_path=output_dir,stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0]));
+        events_are_equal, pass_count_i , fail_count_i, field_fail_count_i = events.compare_BitFields(
+            tv_bcid_list, 
+            output_tvformats[n_op_intf],
+            UcmPorts.get_output_interface_ports(n_op_intf) , 
+            num_events_to_process , 
+            recvd_events_intf[n_op_intf],
+            tolerance[n_op_intf],
+            output_path=output_dir,
+            stationNum=events.station_name_to_id(outputs_station_id[n_op_intf][0])
+        );
         all_tests_passed = (all_tests_passed and events_are_equal)
         pass_count       = pass_count + pass_count_i
         fail_count       = fail_count + fail_count_i
