@@ -858,7 +858,7 @@ end
 	     le_output_vld       <= 0;
 	     le_tb_output        <= 0;
 	     le_tb_output_vld    <= 0;
-	     sf_segquality       <= 0;
+	    //  sf_segquality       <= 0;
   	     histogram_reset_n   <= 1'h0;
 	  end
 	else
@@ -1639,7 +1639,8 @@ hls_find_max_bin find_max_bin_inst(
 				  .res_max_bin_theta(res_max_bin_theta),
 				  .res_max_bin_theta_ap_vld(rest_max_bin_theta_vld),
 				  .res_max_bin_r(res_max_bin_r),
-				  .res_max_bin_r_ap_vld(res_max_bin_r_vld)
+				  .res_max_bin_r_ap_vld(res_max_bin_r_vld),
+				  .segquality (sf_segquality)
 				  );
 end
 else
