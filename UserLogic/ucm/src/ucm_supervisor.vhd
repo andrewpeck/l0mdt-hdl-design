@@ -83,32 +83,40 @@ architecture beh of ucm_supervisor is
   signal PHI_CTRL     : UCM_SUPER_SECTOR_PHI_CTRL_t;
   signal PHI_MON     : UCM_SUPER_SECTOR_PHI_MON_t;
   --
-  signal cde_z0_apb_rd_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-  signal cde_z0_apb_wr_addr_o    : std_logic_vector(ADDR_WIDTH - 1 downto 0);
-  signal cde_z0_apb_wr_data_o       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal cde_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+  signal cde_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+  signal cde_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
   signal cde_z0_apb_wr_dv_o         : std_logic;
   signal cde_z0_apb_rd_dv_o         : std_logic;
-  signal cde_z0_apb_rd_data_i       : std_logic_vector(DATA_WIDTH - 1 downto 0);
+  signal cde_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
   signal cde_z0_apb_rd_dv_i         : std_logic;
-  --
   signal cde_ch_z0_org : b_chamber_z_origin_station_aut :=  (
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,SLC_Z_RPC_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,SLC_Z_RPC_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,SLC_Z_RPC_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,SLC_Z_RPC_MULT)
     );
-  signal CDE_Z0_CTRL : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
-  signal CDE_Z0_MON : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
-  signal CDE_states : std_logic_vector(1 downto 0);
+  signal cde_z0_ctrl_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+  signal cde_z0_mon_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+  -- signal cde_z0_ctrl_v  : std_logic_vector(len(cde_z0_ctrl_r) - 1 downto 0);
+  -- signal cde_z0_mon_v   : std_logic_vector(len(cde_z0_mon_r) - 1 downto 0);
+  -- signal CDE_states : std_logic_vector(1 downto 0);
   --
+  signal cvp_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+  signal cvp_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+  signal cvp_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
+  signal cvp_z0_apb_wr_dv_o         : std_logic;
+  signal cvp_z0_apb_rd_dv_o         : std_logic;
+  signal cvp_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
+  signal cvp_z0_apb_rd_dv_i         : std_logic;
   signal cvp_ch_z0_org : b_chamber_z_origin_station_aut :=  (
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,2,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,3,UCM2HPS_VEC_POS_MULT)
     );
-  signal CVP_Z0_CTRL : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
-  signal CVP_Z0_MON : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
+  signal cvp_z0_ctrl_r : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_CTRL_t_ARRAY;
+  signal cvp_z0_mon_r : UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_MON_t_ARRAY;
 begin
 
   ctrl_r <= structify(ctrl_v,ctrl_r);
@@ -182,7 +190,7 @@ begin
   begin
     if rising_edge(clk) then
 
-      if axi_rst = '1' then
+      if rst = '1' then
         PHI_MON.rd_data <= (others => '0');
       else
         if PHI_CTRL.rd_req = '1' then
@@ -200,10 +208,19 @@ begin
   --------------------------------------------
   -- CDE CHAMBER Z0
   --------------------------------------------
-  CDE_Z0_CTRL <= ctrl_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0;
-  mon_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= CDE_Z0_MON;
+  cde_z0_ctrl_r <= ctrl_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0;
+  mon_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= cde_z0_mon_r;
 
   CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+    -- signal cde_z0_ctrl_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_CTRL_t_ARRAY;
+    -- signal cde_z0_mon_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
+    signal cde_z0_ctrl_v  : std_logic_vector(len(cde_z0_ctrl_r(st_i)) - 1 downto 0);
+    signal cde_z0_mon_v   : std_logic_vector(len(cde_z0_mon_r(st_i)) - 1 downto 0);
+  begin
+
+    cde_z0_ctrl_v <= vectorify(cde_z0_ctrl_r(st_i),cde_z0_ctrl_v);
+    cde_z0_mon_r(st_i) <= structify(cde_z0_mon_v,cde_z0_mon_r(st_i));
+
     apb_mem_interface : entity apbus_lib.apb_imem
       generic map(
         g_XML_NODE_NAME         => "MEM_INT_8A16D",
@@ -218,10 +235,10 @@ begin
       port map (
         clk           => clk,
         rst           => rst,
-        ena           => ena,
+        ena           => glob_en,
         --
-        ctrl_v        => ctrl_v,
-        mon_v         => mon_v,
+        ctrl_v        => cde_z0_ctrl_v,
+        mon_v         => cde_z0_mon_v,
         --
         -- i_axi_clk     => ,
         -- i_axi_rst     => ,
@@ -240,19 +257,16 @@ begin
         i_rd_data     => cde_z0_apb_rd_data_i,  
         i_rd_dv       => cde_z0_apb_rd_dv_i
     );
-  end generate;
-
-  -- CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
-  --   -- CDE_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
+    
     CDE_CH_ZO_AXI: process(clk)
     begin
       if rising_edge(clk) then
-        if axi_rst = '1' then
+        if rst = '1' then
           -- CDE_Z0_MON(st_i).rd_data  <= (others => '0');
           cde_z0_apb_rd_dv_i  <= '0';
         else
           if cde_z0_apb_rd_dv_o  = '1' then
-            cde_z0_apb_rd_data_i <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).rd_addr))),integer(CDE_Z0_MON(st_i).rd_data'length)));
+            cde_z0_apb_rd_data_i <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_rd_addr_o))),16));
             cde_z0_apb_rd_dv_i <= '1';
           else
             cde_z0_apb_rd_dv_i <= '0';
@@ -268,14 +282,114 @@ begin
       end if;
     end process;
 
+  end generate;
+
+  -- CDE_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+  --   -- CDE_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
+    -- CDE_CH_ZO_AXI: process(clk)
+    -- begin
+    --   if rising_edge(clk) then
+    --     if rst = '1' then
+    --       -- CDE_Z0_MON(st_i).rd_data  <= (others => '0');
+    --       cde_z0_apb_rd_dv_i  <= '0';
+    --     else
+    --       if cde_z0_apb_rd_dv_o  = '1' then
+    --         cde_z0_apb_rd_data_i <=std_logic_vector(resize(cde_ch_z0_org(st_i)(to_integer(unsigned(CDE_Z0_CTRL(st_i).rd_addr))),integer(CDE_Z0_MON(st_i).rd_data'length)));
+    --         cde_z0_apb_rd_dv_i <= '1';
+    --       else
+    --         cde_z0_apb_rd_dv_i <= '0';
+    --       end if;
+    --       if cde_z0_apb_wr_dv_o = '1' then
+    --         cde_ch_z0_org(st_i)(to_integer(unsigned(cde_z0_apb_wr_addr_o))) <=resize(unsigned(cde_z0_apb_wr_data_o),cde_ch_z0_org(st_i)(0)'length);
+    --       else
+    --         o_cde_chamber_z_org_bus(st_i) <= vectorify(cde_ch_z0_org(st_i));
+    --       end if;
+
+    --     end if;
+        
+    --   end if;
+    -- end process;
+
   --   -- end generate;
   -- end generate;
 
   --------------------------------------------
   -- CVP CHAMBER Z0
   --------------------------------------------
-  CVP_Z0_CTRL <= ctrl_r.CVP_CHAMB_Z0.CVP_CHAMB_Z0;
-  mon_r.CVP_CHAMB_Z0.CVP_CHAMB_Z0 <= CVP_Z0_MON;
+  cvp_z0_ctrl_r <= ctrl_r.CVP_CHAMB_Z0.CVP_CHAMB_Z0;
+  mon_r.CVP_CHAMB_Z0.CVP_CHAMB_Z0 <= cvp_z0_mon_r;
+  -- cde_z0_ctrl_r <= ctrl_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0;
+  -- mon_r.CDE_CHAMB_Z0.CDE_CHAMB_Z0 <= cde_z0_mon_r;
+
+  CVP_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+    signal cvp_z0_ctrl_v  : std_logic_vector(len(cvp_z0_ctrl_r(st_i)) - 1 downto 0);
+    signal cvp_z0_mon_v   : std_logic_vector(len(cvp_z0_mon_r(st_i)) - 1 downto 0);
+  begin
+
+    cvp_z0_ctrl_v <= vectorify(cvp_z0_ctrl_r(st_i),cvp_z0_ctrl_v);
+    cvp_z0_mon_r(st_i) <= structify(cvp_z0_mon_v,cvp_z0_mon_r(st_i));
+
+    apb_mem_interface : entity apbus_lib.apb_imem
+      generic map(
+        g_XML_NODE_NAME         => "MEM_INT_8A16D",
+        g_MEMORY_TYPE           => "distributed",
+        g_ADDR_WIDTH            => 8,
+        g_DATA_WIDTH            => 16
+        -- g_CTRL_TYPE             => MEM_INT_12A148D_CTRL_t; 
+        -- g_MON_TYPE              => MEM_INT_12A148D_MON_t;   
+        -- g_APBUS_CTRL_WIDTH      => g_APBUS_CTRL_WIDTH,
+        -- g_APBUS_MON_WIDTH       => g_APBUS_MON_WIDTH
+      )
+      port map (
+        clk           => clk,
+        rst           => rst,
+        ena           => glob_en,
+        --
+        ctrl_v        => cvp_z0_ctrl_v,
+        mon_v         => cvp_z0_mon_v,
+        --
+        -- i_axi_clk     => ,
+        -- i_axi_rst     => ,
+        --
+        -- i_freeze      => i_freeze,
+        -- o_freeze      => int_apb_freeze,
+        -- o_out_sel     => sel_out_mem,
+        -- o_freeze_1    => int_freeze(1),
+        --
+    
+        o_rd_addr     => cvp_z0_apb_rd_addr_o,  
+        o_wr_addr     => cvp_z0_apb_wr_addr_o,  
+        o_wr_data     => cvp_z0_apb_wr_data_o,   
+        o_rd_dv       => cvp_z0_apb_rd_dv_o, 
+        o_wr_dv       => cvp_z0_apb_wr_dv_o,  
+        i_rd_data     => cvp_z0_apb_rd_data_i,  
+        i_rd_dv       => cvp_z0_apb_rd_dv_i
+    );
+    
+    cvp_CH_ZO_AXI: process(clk)
+    begin
+      if rising_edge(clk) then
+        if rst = '1' then
+          -- cvp_Z0_MON(st_i).rd_data  <= (others => '0');
+          cvp_z0_apb_rd_dv_i  <= '0';
+        else
+          if cvp_z0_apb_rd_dv_o  = '1' then
+            cvp_z0_apb_rd_data_i <=std_logic_vector(resize(cvp_ch_z0_org(st_i)(to_integer(unsigned(cvp_z0_apb_rd_addr_o))),16));
+            cvp_z0_apb_rd_dv_i <= '1';
+          else
+            cvp_z0_apb_rd_dv_i <= '0';
+          end if;
+          if cvp_z0_apb_wr_dv_o = '1' then
+            cvp_ch_z0_org(st_i)(to_integer(unsigned(cvp_z0_apb_wr_addr_o))) <=resize(unsigned(cvp_z0_apb_wr_data_o),cvp_ch_z0_org(st_i)(0)'length);
+          else
+            o_cvp_chamber_z_org_bus(st_i) <= vectorify(cvp_ch_z0_org(st_i));
+          end if;
+
+        end if;
+        
+      end if;
+    end process;
+  end generate;
 
   -- CVP_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
   --   -- CVP_LOOP_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate 
