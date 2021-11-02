@@ -92,7 +92,7 @@ begin  -- architecture behavioral
         case to_integer(unsigned(localAddress(2 downto 0))) is
           
         when 1 => --0x1
-          localRdData( 0)            <=  Mon.rd_rdy;                      --Read ready
+          localRdData( 0)            <=  Mon.SIGNALS.rd_rdy;              --Read ready
         when 2 => --0x2
           localRdData( 3 downto  0)  <=  reg_data( 2)( 3 downto  0);      --wr_Address
           localRdData(19 downto 16)  <=  reg_data( 2)(19 downto 16);      --rd_Address
@@ -130,22 +130,22 @@ begin  -- architecture behavioral
       reg_data( 3)(16 downto  0)  <= DEFAULT_MEM_INT_4A17D_CTRL_t.wr_data.wr_data_0;
 
     elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
-      Ctrl.wr_req <= '0';
-      Ctrl.wr_ack <= '0';
-      Ctrl.rd_req <= '0';
-      Ctrl.rd_ack <= '0';
-      Ctrl.flush_req <= '0';
+      Ctrl.SIGNALS.wr_req <= '0';
+      Ctrl.SIGNALS.wr_ack <= '0';
+      Ctrl.SIGNALS.rd_req <= '0';
+      Ctrl.SIGNALS.rd_ack <= '0';
+      Ctrl.SIGNALS.flush_req <= '0';
       
 
       
       if localWrEn = '1' then
         case to_integer(unsigned(localAddress(2 downto 0))) is
         when 0 => --0x0
-          Ctrl.wr_req                 <=  localWrData( 0);               
-          Ctrl.wr_ack                 <=  localWrData( 1);               
-          Ctrl.rd_req                 <=  localWrData( 2);               
-          Ctrl.rd_ack                 <=  localWrData( 3);               
-          Ctrl.flush_req              <=  localWrData( 4);               
+          Ctrl.SIGNALS.wr_req         <=  localWrData( 0);               
+          Ctrl.SIGNALS.wr_ack         <=  localWrData( 1);               
+          Ctrl.SIGNALS.rd_req         <=  localWrData( 2);               
+          Ctrl.SIGNALS.rd_ack         <=  localWrData( 3);               
+          Ctrl.SIGNALS.flush_req      <=  localWrData( 4);               
         when 2 => --0x2
           reg_data( 2)( 3 downto  0)  <=  localWrData( 3 downto  0);      --wr_Address
           reg_data( 2)(19 downto 16)  <=  localWrData(19 downto 16);      --rd_Address

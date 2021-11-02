@@ -24,12 +24,12 @@ use shared_lib.common_constants_pkg.all;
 
 package detector_time_param_pkg is
 
-  constant MAX_NUM_CHAMBER_POS : integer := 8;
+  -- constant MAX_NUM_CHAMBER_POS : integer := 8;
 
   -------------------------------------------------------------------------
   -- Time & cycles constants
   -------------------------------------------------------------------------
-  constant c_CLK_AXI_MULT       : integer := 5; 
+  constant c_CLK_AXI_MULT       : integer := 8; 
 
   --
   constant TIME_SLC_MDT_DELAY   : integer := 1242; --967; -- ns => 309.44 cycles

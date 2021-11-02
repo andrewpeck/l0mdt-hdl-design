@@ -81,6 +81,9 @@ begin
 
   glob_en <= '1';
 
+  o_plus_neighbor_segments_av  <= (others => (others => '0'));
+  o_minus_neighbor_segments_av <= (others => (others => '0'));
+
   -- H2S_GEN : if c_H2S_ENABLED = '1' generate
 
     -- o_sump <= '0';

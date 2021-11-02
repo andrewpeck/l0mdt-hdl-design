@@ -8,6 +8,18 @@
 
 
   typedef struct packed {
+    logic  rd_rdy;
+  } MEM_INT_12A42D_SIGNALS_MON_t;
+
+  typedef struct packed {
+    logic  wr_req;
+    logic  wr_ack;
+    logic  rd_req;
+    logic  rd_ack;
+    logic  flush_req;
+  } MEM_INT_12A42D_SIGNALS_CTRL_t;
+
+  typedef struct packed {
     logic [32-1:0] wr_data_0;
     logic [10-1:0] wr_data_1;
   } MEM_INT_12A42D_wr_data_CTRL_t;
@@ -18,16 +30,12 @@
   } MEM_INT_12A42D_rd_data_MON_t;
 
   typedef struct packed {
-    logic  rd_rdy;
+    MEM_INT_12A42D_SIGNALS_MON_t   SIGNALS;
     MEM_INT_12A42D_rd_data_MON_t   rd_data;
   } MEM_INT_12A42D_MON_t;
 
   typedef struct packed {
-    logic  wr_req;
-    logic  wr_ack;
-    logic  rd_req;
-    logic  rd_ack;
-    logic  flush_req;
+    MEM_INT_12A42D_SIGNALS_CTRL_t   SIGNALS;
     logic [12-1:0] wr_addr;
     logic [12-1:0] rd_addr;
     MEM_INT_12A42D_wr_data_CTRL_t   wr_data;

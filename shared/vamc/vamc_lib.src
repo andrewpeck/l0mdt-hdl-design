@@ -13,6 +13,7 @@ shared/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd
 
 shared/vamc/vamc-core/src/vamc_top.vhd
 shared/vamc/vamc-core/src/vamc_spl.vhd
+shared/vamc/vamc-core/src/vamc_ram.vhd
 # shared/vamc/src/vamc_controller.vhd
 
 #---------------------------------

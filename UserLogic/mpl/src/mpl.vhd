@@ -82,14 +82,14 @@ begin
     rst               => rst,
     glob_en           => glob_en,      
     -- AXI to SoC
-    actions           => ctrl_r.actions,
-    configs           => ctrl_r.configs,
-    status            => mon_r.status ,
+    i_actions           => ctrl_r.actions,
+    i_configs           => ctrl_r.configs,
+    o_status            => mon_r.status ,
     --
     o_freeze          => int_freeze,
     -- 
-    local_en          => local_en,
-    local_rst         => local_rst
+    o_local_en          => local_en,
+    o_local_rst         => local_rst
   );
 
   MPL_PL : for sl_i in c_MAX_NUM_SL -1 downto 0 generate
@@ -100,8 +100,8 @@ begin
       rst           => local_rst,
       enable        => local_en,
       --
-      ctrl          => ctrl_r.PL_MEM.PL_MEM(sl_i),
-      mon           => mon_r.PL_MEM.PL_MEM(sl_i),
+      ctrl_r          => ctrl_r.PL_MEM.PL_MEM(sl_i),
+      mon_r           => mon_r.PL_MEM.PL_MEM(sl_i),
       --
       i_freeze      => int_freeze,
       --

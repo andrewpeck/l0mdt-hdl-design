@@ -48,11 +48,11 @@ entity hps_sf_wrap is
     glob_en : in std_logic;
 
     -- control
-    csf_ctrl : in  H2S_HPS_CSF_CSF_CTRL_t;
-    csf_mon  : out H2S_HPS_CSF_CSF_MON_t;
+    csf_ctrl_v : in std_logic_vector;--  H2S_HPS_CSF_CSF_CTRL_t;
+    csf_mon_v  : out std_logic_vector;--H2S_HPS_CSF_CSF_MON_t;
 
-    lsf_ctrl : in  H2S_HPS_LSF_LSF_CTRL_t;
-    lsf_mon  : out H2S_HPS_LSF_LSF_MON_t;
+    lsf_ctrl_v : in  std_logic_vector;--H2S_HPS_LSF_LSF_CTRL_t;
+    lsf_mon_v  : out std_logic_vector;--H2S_HPS_LSF_LSF_MON_t;
 
     -- configuration
     i_control_v  : in  heg_ctrl2sf_rvt;
@@ -65,26 +65,38 @@ end entity hps_sf_wrap;
 
 architecture beh of hps_sf_wrap is
   signal i_control_r : heg_ctrl2sf_rt;
+
+  signal csf_ctrl_r : H2S_HPS_CSF_CSF_CTRL_t;
+  signal csf_mon_r  : H2S_HPS_CSF_CSF_MON_t;
+  signal lsf_ctrl_r : H2S_HPS_LSF_LSF_CTRL_t;
+  signal lsf_mon_r  : H2S_HPS_LSF_LSF_MON_t;
 begin
 
   i_control_r <= structify(i_control_v);
 
-  DIS_SF : if c_SF_ENABLED = '0' generate
-    --
-    o_sf_data_v <= (others => '0');
-    --CSF
-    csf_mon.STATUS <= '0';
-    csf_mon.READY <= '0';
-    --LSF
-    lsf_mon.STATUS <= '0';
-    lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
-    lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
-  end generate;
+  csf_ctrl_r <= convert(csf_ctrl_v,csf_ctrl_r);
+  csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
+  lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
+  lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
+
+  -- DIS_SF : if c_SF_ENABLED = '0' generate
+  --   --
+  --   o_sf_data_v <= (others => '0');
+  --   --CSF
+  --   csf_mon.STATUS <= '0';
+  --   csf_mon.READY <= '0';
+  --   --LSF
+  --   lsf_mon_r.STATUS <= '0';
+  --   lsf_mon_r.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
+  --   lsf_mon_r.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
+  -- else generate
+  -- end generate;
 
   EN_SF : if c_SF_ENABLED = '1' generate
 
-    -- CSF
-    EN_CSF : if c_SF_TYPE = '0' generate
+
+    SF_TYPE : if c_SF_TYPE = '0' generate
+
       CSF : entity csf_lib.csf
         generic map(
           IS_ENDCAP => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
@@ -146,54 +158,46 @@ begin
           --o_spyseg_empty      => '0';
       );
 
+      lsf_mon_r <= nullify(lsf_mon_r);
+      csf_mon_r <= nullify(csf_mon_r);
+
     else generate
 
-      csf_mon.STATUS <= '0';
-      csf_mon.READY <= '0';
+      LSF : entity lsf_lib.top_lsf
+        -- generic map(
+        --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+        --   )
+        port map(
+          clock                               => clk,
+          reset                               => rst,
+          slc_roi                             => i_slc_data_v,
+          mdt_hit                             => i_mdt_data_v,
+          lsf                                 => o_sf_data_v,
+          i_eof                               => i_control_r.eof,
+          hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks,
+          --SpyBuffer
+          sb_lsf_mdt_hits_freeze              => lsf_ctrl_r.sb_lsf_mdt_hits_freeze,
+          sb_lsf_mdt_hits_re                  => lsf_ctrl_r.sb_lsf_mdt_hits_re,
+          sb_lsf_mdt_hits_raddr               => lsf_ctrl_r.sb_lsf_mdt_hits_raddr,
+          sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon_r.sb_lsf_mdt_hits_rdata_31_0,
+          sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon_r.sb_lsf_mdt_hits_rdata_40_32
+      );
+
+      csf_mon_r <= nullify(csf_mon_r);
+
 
     end generate;
 
-      ------------------------------------------------------------------
-      -- LSF
-      ------------------------------------------------------------------
-
-      EN_LSF : if c_SF_TYPE = '1' generate
-        LSF : entity lsf_lib.top_lsf
-          -- generic map(
-          --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
-          --   )
-          port map(
-            clock                               => clk,
-            reset                               => rst,
-            slc_roi                             => i_slc_data_v,
-            mdt_hit                             => i_mdt_data_v,
-            lsf                                 => o_sf_data_v,
-            i_eof                               => i_control_r.eof,
-            hba_max_clocks                      => lsf_ctrl.hba_max_clocks,
-            --SpyBuffer
-            sb_lsf_mdt_hits_freeze              => lsf_ctrl.sb_lsf_mdt_hits_freeze,
-            sb_lsf_mdt_hits_re                  => lsf_ctrl.sb_lsf_mdt_hits_re,
-            sb_lsf_mdt_hits_raddr               => lsf_ctrl.sb_lsf_mdt_hits_raddr,
-            sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon.sb_lsf_mdt_hits_rdata_31_0,
-            sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon.sb_lsf_mdt_hits_rdata_40_32
-        );
 
 
-      else generate
-
-
-        lsf_mon.STATUS <= '0';
-        lsf_mon.sb_lsf_mdt_hits_rdata_31_0 <= (others =>'0');
-        lsf_mon.sb_lsf_mdt_hits_rdata_40_32 <= (others => '0');
-
-
-      end generate;
-
-
-    else generate
+  else generate
       
+    lsf_mon_r <= nullify(lsf_mon_r);
+    csf_mon_r <= nullify(csf_mon_r);
 
-    end generate;
+    o_sf_data_v <= (others => '0');
+
+  end generate;
 
   -- DIS_SF : if c_SF_ENABLED = '0' generate
 
