@@ -5,7 +5,7 @@
 
 
 OpenMR:
-    <<: *only-default
+    <<: *tag-sr
     only:
         refs:
             - schedules
