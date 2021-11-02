@@ -96,6 +96,16 @@ begin
             nswseg_poseta    := csv.read_integer;
             nswseg_posphi    := csv.read_integer;
             nswseg_angdtheta := csv.read_integer;
+          else 
+            dv               := 0;    
+            slcid            := 0;
+            slid             := 0;
+            bcid             := 0;
+            phimod           := 0;
+            sl_charge        := 0;
+            nswseg_poseta    := 0;
+            nswseg_posphi    := 0;
+            nswseg_angdtheta := 0;
           end if;
 
           slc := nullify(slc);

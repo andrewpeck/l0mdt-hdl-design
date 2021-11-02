@@ -97,6 +97,16 @@ begin
             segquality   := csv.read_integer;
             chamber_id   := csv.read_integer;
             chamber_ieta := csv.read_integer;
+          else
+            seg_dv       := 0;    
+            slcid        := 0;
+            slid         := 0;
+            bcid         := 0;
+            segpos       := 0;
+            segangle     := 0;
+            segquality   := 0;
+            chamber_id   := 0;
+            chamber_ieta := 0;
           end if;
 
           seg := nullify(seg);

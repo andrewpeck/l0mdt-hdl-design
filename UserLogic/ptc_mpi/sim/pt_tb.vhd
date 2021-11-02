@@ -116,7 +116,7 @@ begin
 
     pt_write : entity project_lib.pt_tb_writer
     generic map (
-        OUT_FILE => "out_pt.csv"
+        OUT_FILE => "out_pt_fw.csv"
     )
     Port map (
         clk => clk,
