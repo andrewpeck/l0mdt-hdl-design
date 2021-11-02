@@ -36,6 +36,7 @@ use ctrl_lib.MEM_INT_9A19D_CTRL.all;
 use ctrl_lib.MEM_INT_10A9D_CTRL.all;
 use ctrl_lib.MEM_INT_10A38D_CTRL.all;
 use ctrl_lib.MEM_INT_4A17D_CTRL.all;
+use ctrl_lib.MEM_INT_8A16D_CTRL.all;
 
 
 entity apb_imem is
@@ -192,6 +193,19 @@ begin
     mon_4A17D_r.SIGNALS <= structify(apb_mon_v,mon_4A17D_r.SIGNALS); 
 
     mon_v <= vectorify(mon_4A17D_r,mon_v);
+  elsif g_XML_NODE_NAME = "MEM_INT_8A16D" generate
+    ctrl_8A16D_r <= structify(ctrl_v,ctrl_8A16D_r);
+    apb_ctrl_v    <= vectorify(ctrl_8A16D_r.SIGNALS,apb_ctrl_v);
+    apb_ctrl_r    <= structify(apb_ctrl_v,apb_ctrl_r);
+    apb_rd_addr   <= ctrl_8A16D_r.rd_addr;
+    apb_wr_addr   <= ctrl_8A16D_r.wr_addr;
+    apb_wr_data   <= vectorify(ctrl_8A16D_r.wr_data,apb_wr_data);
+    --
+    mon_8A16D_r.rd_data <= structify(apb_rd_data,mon_8A16D_r.rd_data);
+    apb_mon_v  <= vectorify(apb_mon_r,apb_mon_v);
+    mon_8A16D_r.SIGNALS <= structify(apb_mon_v,mon_8A16D_r.SIGNALS); 
+
+    mon_v <= vectorify(mon_8A16D_r,mon_v);
   end generate model_mem;
 
   MEM_TYPE: if g_MEMORY_TYPE = "distributed" generate
