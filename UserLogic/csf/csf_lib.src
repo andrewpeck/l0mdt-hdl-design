@@ -7,7 +7,7 @@ UserLogic/csf/src/csf_fitter.vhd
 UserLogic/csf/src/csf_histogram.vhd
 UserLogic/csf/src/seg_coord_transform.vhd
 UserLogic/csf/src/sqrt_mbar.mem
-#UserLogic/csf/src/invsqrt_mbar.mem
+UserLogic/csf/src/invsqrt_mbar.mem
 UserLogic/csf/src/fitter_reciprocal.mem
 UserLogic/csf/src/m_to_theta.mem
 #IP/sqrt_mbar_rom/sqrt_mbar_rom.xci
