@@ -292,10 +292,10 @@ def parse_tvlist(
                     this_station_ID = station_ID[my_port]
 
                 if _event_belongs_to_sectorID(events_list[ievent].DF_SL, icand=my_port, station_ID=this_station_ID):
-                    #print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
-                    #tvtools.dump_event(events_list,ievent)
-                    #print(events_list[ievent].DF_SL[my_port].print_blocks())
-                    #print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
+                    # print ("parse_tvlist: ievent = ", ievent," BXData.header.event = ",events_list[ievent].header.event," BXData.header.run = ",events_list[ievent].header.run, " BXData.header.ientry = ",events_list[ievent].header.ientry)
+                    # tvtools.dump_event(events_list,ievent)
+                    # print(events_list[ievent].DF_SL[my_port].print_blocks())
+                    # print("Transaction %d, Candidate %d n_to_load %d tvformat=%s tv_type=%s" %(ievent,my_port,n_to_load,tvformat,tv_type))
 
                     event_found_for_port_interface = 1
                     tv[my_port][valid_events] = get_bitfield(
