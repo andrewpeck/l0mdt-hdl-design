@@ -101,7 +101,7 @@ architecture Behavioral of sagitta_calculator is
         := (others => '0');
     signal m_sagitta : unsigned(M_SAGITTA_LEN-1 downto 0) := (others => '0');
     
-    constant DIVIDER_LEN_BETA : integer := 17;
+    constant DIVIDER_LEN_BETA : integer := INV_S_LEN;
     signal rec_delta_beta : std_logic_vector(DIVIDER_LEN_BETA-1 downto 0 ) := (others => '0');
     -- sqrt(1+m_sagitta^2)
     signal sqrt_m_io, sqrt_m_io_s, sqrt_m_io_ss, sqrt_m_io_sss, sqrt_m_io_ssss :
@@ -346,7 +346,7 @@ begin
 
             if dvb_01_2 = '1' or dvb_02_2 = '1' or dvb_12_2 = '1' then
                 o_dv_s <= '1';
-                o_inv_s <= resize(unsigned(rec_delta_beta), INV_S_LEN);
+                o_inv_s <= unsigned(rec_delta_beta);
             end if;
 
         end if ;

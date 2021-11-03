@@ -42,7 +42,7 @@ package pt_pkg is
 
 
     -- Sagitta calculation parameter
-    constant INV_S_LEN           : integer := 11;
+    constant INV_S_LEN           : integer := 22;
     constant SAGITTA_MULT        : real := 64.0;
     constant SAGITTA_MULTI_LEN   : integer := integer(log2(sagitta_mult));
     constant M_SAGITTA_MULTI_LEN : integer := 10;
