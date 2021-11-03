@@ -31,6 +31,7 @@ package body prj_cfg is
     proj_cfg.PT_TYPE   := '0'; -- AUTO: 0: MPT 1:UPT
     proj_cfg.ENABLE_DAQ               := '1';
     -- END of auto-set variables
+    proj_cfg.NUM_MTC                  := 3; -- default 3, connecting to primary SL
 
     proj_cfg.ENABLE_SF := '1';
     proj_cfg.ENABLE_PT := '1';
