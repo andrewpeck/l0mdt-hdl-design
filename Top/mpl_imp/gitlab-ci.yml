@@ -9,7 +9,8 @@ GEN:mpl_imp:
     tags:
       - normal-ops
       - hog
-      
+      - "2020.2"
+
 # SIM:mpl_imp:
 #     extends: .simulate_project
 #     variables:
