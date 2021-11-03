@@ -50,7 +50,7 @@ package body generic_pipelined_MATH_pkg is
 
     if op = "*" then 
       OW := AW + BW;
-    elsif op = "-" then
+    elsif op = "-" OR  op = "--" then
       OW := max(AW,BW);
     elsif op = "/" then
       OW := max(AW,BW);

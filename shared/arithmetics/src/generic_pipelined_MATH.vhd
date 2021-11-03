@@ -169,6 +169,10 @@ begin
               int_Result <=std_logic_vector(
                 signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
               );
+          elsif g_OPERATION = "--" then
+            int_Result <=std_logic_vector(
+              signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
+            );
           elsif g_OPERATION = "*-" then
               int_Result <=std_logic_vector(
                 (signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) * signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))) - signed( mul_in_pipe_C(g_IN_PIPE_STAGES-1))
