@@ -37,11 +37,11 @@ entity top_ucm is
     clk                     : in std_logic;
     rst                     : in std_logic;
     glob_en                 : in std_logic;
-    -- ttc_commands            : in l0mdt_ttc_rt;
+    ttc_commands            : in l0mdt_ttc_rt;
     i_debug                 : in std_logic;
     -- -- configuration, control & Monitoring
-    ctrl_b                    : in  UCM_CTRL_t;
-    mon_b                     : out UCM_MON_t;
+    ctrl_b                    : in  std_logic;
+    mon_b                     : out std_logic;
     -- -- SLc in
     i_slc_data_mainA_ab     : in std_logic_vector(2 downto 0);
     i_slc_data_mainB_ab     : in std_logic_vector(2 downto 0);
@@ -73,7 +73,7 @@ architecture beh of top_ucm is
   signal o_uCM2hps_mid_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_out_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal o_uCM2hps_ext_av        :  ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  signal o_uCM2pl_av             :  ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
+  signal o_uCM2pl_av             :  ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
 
 begin
 
@@ -81,17 +81,17 @@ begin
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
   slc_mp: for i_h in 2 downto 0 generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_main_primary_slc_ab(i_h),o_data => i_main_primary_slc_av(i_h));
-    i_main_primary_slc(i_h) <= i_main_primary_slc_av(i_h);
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_mainA_ab(i_h),o_data => i_slc_data_mainA_av(i_h));
+    -- i_slc_data_mainA(i_h) <= i_slc_data_mainA_av(i_h);
   end generate;
 
   slc_ms: for i_h in 2 downto 0  generate
-    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_main_secondary_slc_ab(i_h),o_data => i_main_secondary_slc_av(i_h));
-    i_main_secondary_slc(i_h) <= i_main_secondary_slc_av(i_h);
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_mainB_ab(i_h),o_data => i_slc_data_mainB_av(i_h));
+    -- i_slc_data_mainB(i_h) <= i_slc_data_mainB_av(i_h);
   end generate;
 
-  des_p : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_plus_neighbor_slc_b,o_data => i_plus_neighbor_slc);
-  des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_minus_neighbor_slc_b,o_data => i_minus_neighbor_slc);
+  des_p : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborA_b,o_data => i_slc_data_neighborA_v);
+  des_m : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => SLC_RX_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_neighborB_b,o_data => i_slc_data_neighborB_v );
   --------------------------------------------------------------
   HPS_INN: for i_th in c_NUM_THREADS - 1 downto 0 generate
     o_uCM2hps_inn_ab(i_th) <= xor_reduce(o_uCM2hps_inn_av(i_th));
