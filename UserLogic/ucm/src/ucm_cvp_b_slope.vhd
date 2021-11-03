@@ -532,8 +532,8 @@ begin
   off_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
       g_OPERATION => "--",
-      g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 3
+      g_IN_PIPE_STAGES  => 4,
+      g_OUT_PIPE_STAGES => 4
     )
     port map(
       clk         => clk,
