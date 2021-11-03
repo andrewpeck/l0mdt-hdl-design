@@ -26,6 +26,7 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
 
 library hp_lib;
 use hp_lib.hp_pkg.all;
@@ -48,82 +49,88 @@ entity hps_supervisor is
     rst         : in std_logic;
     glob_en     : in std_logic;
     --
-    i_actions   : in H2S_HPS_ACTIONS_CTRL_t;
-    i_configs   : in H2S_HPS_CONFIGS_CTRL_t;
-    o_status    : out H2S_HPS_STATUS_MON_t;
+    i_actions     : in H2S_HPS_ACTIONS_CTRL_t;
+    i_configs     : in H2S_HPS_CONFIGS_CTRL_t;
+    o_status      : out H2S_HPS_STATUS_MON_t;
     --
-    o_local_rst : out std_logic;
+    i_freeze      : in std_logic := '0';
+    o_freeze            : out std_logic;
+    --
+    o_local_rst   : out std_logic;
     o_local_en    : out std_logic
   );
 end entity hps_supervisor;
 
 architecture beh of hps_supervisor is
-  signal axi_rst      : std_logic;
-  signal clk_axi      : std_logic;
-  --
   signal local_rst : std_logic;
   signal local_en  : std_logic;
   --
   signal int_en   : std_logic;
   signal int_rst  : std_logic := '1';
-begin
-  
-  --------------------------------------------
-  --    AXI CLK
-  --------------------------------------------
-  APB_MS : entity apbus_lib.apbus_main_sig
-  port map(
-    clk           => clk,
-    rst           => rst,
-    ena           => glob_en,
-    --
-    o_axi_clk     => clk_axi,
-    o_axi_rst     => axi_rst
-  );
 
-  --------------------------------------------
-  --    SIGNALING
-  --------------------------------------------
+  signal int_freeze : std_logic;
+
+  constant apb_clk_lat : integer := c_CLK_AXI_MULT;
+  signal  apb_clk_cnt : integer;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
+
+begin
   o_local_en <= local_en;
   o_local_rst <= local_rst;
 
   local_en <= glob_en and int_en;
   local_rst <= rst or int_rst;
 
-  signaling: process(clk_axi)
+  o_freeze <= i_freeze or int_freeze;
+
+  signaling: process(clk)
   begin
-    if rising_edge(clk_axi) then
-      if axi_rst = '1' then
+    if rising_edge(clk) then
+      if rst = '1' then
         int_en <= '1';
         int_rst <= rst;
+        apb_clk_cnt <= 0;
       else
-        if i_actions.reset = '1' then
-          int_rst <= '1';
+        --------------------------------------------
+        --    AXI CLK CTRL
+        --------------------------------------------
+        if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
+          apb_clk_cnt <= apb_clk_cnt + 1;
         else
-          int_rst <= '0';
+          apb_clk_cnt <= 0;
+          axi_rep_clk <= not axi_rep_clk;
         end if;
-        if i_actions.enable = '1' then
-          int_en <= '1';
-        elsif i_actions.disable = '1' then
-          int_en <= '0';
-        end if;
-      end if;
-    end if;
-  end process signaling;
-  --------------------------------------------
-  --    status
-  --------------------------------------------
-  status: process(clk_axi)
-  begin
-    if rising_edge(clk_axi) then
-      if axi_rst = '1' then
+        --------------------------------------------
+        --    from apb
+        --------------------------------------------
+        -- if apb_clk_cnt = 0 then
+          if i_actions.reset = '1' then
+            int_rst <= '1';
+          else
+            int_rst <= '0';
+          end if;
 
-      else
-        o_status.ENABLED  <= local_en;
-        o_status.READY    <= local_rst;
-        -- o_status.ERROR    <= x"00";
+          if i_actions.enable = '1' then
+            int_en <= '1';
+          else--if i_actions.disable = '1' then
+            int_en <= '0';
+          end if;
+          
+          if i_actions.freeze = '1' then
+            int_freeze <= '1';
+          else
+            int_freeze <= '0';
+          end if;
+        -- else
+        -- end if;
+        --------------------------------------------
+        --    to apb
+        --------------------------------------------
+        o_status.ENABLED <= local_en;
+        o_status.READY <= not local_rst;
+        o_status.ERROR <= (others => '0');
       end if;
     end if;
-  end process status;
-  
+  end process;
 end architecture beh;

@@ -65,6 +65,21 @@ architecture beh of hps is
   signal ctrl_r : H2S_HPS_CTRL_t;
   signal mon_r : H2S_HPS_MON_t;
 
+  constant CSF_CTRL_LEN : integer := len(ctrl_r.csf.csf(0));
+  constant CSF_MON_LEN  : integer := len(mon_r.csf.csf(0));
+  constant LSF_CTRL_LEN : integer := len(ctrl_r.lsf.lsf(0));
+  constant LSF_MON_LEN  : integer := len(mon_r.lsf.lsf(0));
+
+  type csf_ctrl_avt is array (integer range <>) of std_logic_vector(CSF_CTRL_LEN -1 downto 0); 
+  type csf_mon_avt  is array (integer range <>) of std_logic_vector(CSF_MON_LEN  -1 downto 0); 
+  type lsf_ctrl_avt is array (integer range <>) of std_logic_vector(LSF_CTRL_LEN -1 downto 0); 
+  type lsf_mon_avt  is array (integer range <>) of std_logic_vector(LSF_MON_LEN  -1 downto 0); 
+
+  signal csf_ctrl_av : csf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
+  signal csf_mon_av  : csf_mon_avt (c_NUM_THREADS -1 downto 0 );
+  signal lsf_ctrl_av : lsf_ctrl_avt(c_NUM_THREADS -1 downto 0 );
+  signal lsf_mon_av  : lsf_mon_avt (c_NUM_THREADS -1 downto 0 );
+  
   signal pc_t0_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_T0.MDT_T0)-1 downto 0);
   signal pc_tc_ctrl_v  : std_logic_vector(len(ctrl_r.MDT_TC.MDT_TC)-1 downto 0);
   signal pc_t0_mon_v  : std_logic_vector(len(mon_r.MDT_T0.MDT_T0)-1 downto 0);
@@ -99,6 +114,13 @@ begin
   pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
   mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
   mon_r.MDT_TC.MDT_TC <= structify(pc_tc_mon_v,mon_r.MDT_TC.MDT_TC);
+
+  CM_for_gen: for th_i in c_NUM_THREADS -1 downto 0 generate
+    csf_ctrl_av(th_i)   <= convert(ctrl_r.csf.csf(th_i),csf_ctrl_av(th_i));
+    mon_r.csf.csf(th_i) <= convert(csf_mon_av(th_i),mon_r.csf.csf(th_i));
+    lsf_ctrl_av(th_i)   <= convert(ctrl_r.lsf.lsf(th_i),lsf_ctrl_av(th_i));
+    mon_r.lsf.lsf(th_i) <= convert(lsf_mon_av(th_i),mon_r.lsf.lsf(th_i));
+  end generate CM_for_gen;
 
   SUPER : entity hps_lib.hps_supervisor
   generic map(
@@ -138,10 +160,10 @@ begin
       o_mdt_full_data_v => mdt_full_data_av--(hp_i)
   );
 
-  heg_gen : for heg_i in c_NUM_THREADS -1 downto 0 generate
+  heg_gen : for th_i in c_NUM_THREADS -1 downto 0 generate
 
-    heg_ctrl_av(heg_i) <= vectorify(ctrl_r.heg.heg(heg_i),heg_ctrl_av(heg_i));
-    mon_r.heg.heg(heg_i) <= structify(heg_mon_av(heg_i),mon_r.heg.heg(heg_i));
+    heg_ctrl_av(th_i) <= vectorify(ctrl_r.heg.heg(th_i),heg_ctrl_av(th_i));
+    mon_r.heg.heg(th_i) <= structify(heg_mon_av(th_i),mon_r.heg.heg(th_i));
     
     HEG : entity heg_lib.heg
       generic map(
@@ -153,16 +175,16 @@ begin
         rst                => int_rst, 
         glob_en            => int_ena,
         --        
-        ctrl_v             => heg_ctrl_av(heg_i),
-        mon_v              => heg_mon_av(heg_i),
+        ctrl_v             => heg_ctrl_av(th_i),
+        mon_v              => heg_mon_av(th_i),
         --
-        i_uCM_data_v       => i_uCM2hps_av(heg_i),
+        i_uCM_data_v       => i_uCM2hps_av(th_i),
         -- MDT hit
         i_mdt_full_data_av => mdt_full_data_av,
         -- to Segment finder
-        o_sf_control_v     => heg2sf_ctrl_av(heg_i),
-        o_sf_slc_data_v    => heg2sfslc_av(heg_i),
-        o_sf_mdt_data_v    => heg2sfhit_av(heg_i)
+        o_sf_control_v     => heg2sf_ctrl_av(th_i),
+        o_sf_slc_data_v    => heg2sfslc_av(th_i),
+        o_sf_mdt_data_v    => heg2sfhit_av(th_i)
         );
 
     SF : entity hps_lib.hps_sf_wrap
@@ -174,18 +196,18 @@ begin
         rst           => int_rst,
         glob_en       => int_ena,
 
-        lsf_ctrl => ctrl_r.lsf.lsf(heg_i),
-        lsf_mon  => mon_r.lsf.lsf(heg_i),
+        lsf_ctrl_v => lsf_ctrl_av(th_i),--ctrl_r.lsf.lsf(th_i),
+        lsf_mon_v  => lsf_mon_av(th_i),--mon_r.lsf.lsf(th_i),
 
-        csf_ctrl => ctrl_r.csf.csf(heg_i),
-        csf_mon  => mon_r.csf.csf(heg_i),
+        csf_ctrl_v => csf_ctrl_av(th_i),--ctrl_r.csf.csf(th_i),
+        csf_mon_v  => csf_mon_av(th_i),--mon_r.csf.csf(th_i),
 
         -- to Segment finder
-        i_control_v   => heg2sf_ctrl_av(heg_i),
-        i_slc_data_v  => heg2sfslc_av(heg_i),
-        i_mdt_data_v  => heg2sfhit_av(heg_i),
+        i_control_v   => heg2sf_ctrl_av(th_i),
+        i_slc_data_v  => heg2sfslc_av(th_i),
+        i_mdt_data_v  => heg2sfhit_av(th_i),
         --
-        o_sf_data_v   => o_sf2pt_av(heg_i)
+        o_sf_data_v   => o_sf2pt_av(th_i)
         );
 
   end generate;

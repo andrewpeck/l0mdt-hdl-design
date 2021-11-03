@@ -9,27 +9,35 @@ config:
 
 hdl:
 
-- MEM_INT_10A38D_wr_data_CTRL_t:
-  - wr_data_0 : [ type: logic, length: 6 ]
-  - wr_data_1 : [ type: logic, length: 32 ]
-
-
-- MEM_INT_10A38D_rd_data_MON_t:
-  - rd_data_0 : [ type: logic, length: 6 ]
-  - rd_data_1 : [ type: logic, length: 32 ]
-
-
-- MEM_INT_10A38D_MON_t:
+- MEM_INT_10A38D_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
-  - rd_data : [ type: MEM_INT_10A38D_rd_data_MON_t ]
 
 
-- MEM_INT_10A38D_CTRL_t:
+- MEM_INT_10A38D_SIGNALS_CTRL_t:
   - wr_req : [ type: logic ]
   - wr_ack : [ type: logic ]
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+
+
+- MEM_INT_10A38D_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 32 ]
+  - wr_data_1 : [ type: logic, length: 6 ]
+
+
+- MEM_INT_10A38D_rd_data_MON_t:
+  - rd_data_1 : [ type: logic, length: 6 ]
+  - rd_data_0 : [ type: logic, length: 32 ]
+
+
+- MEM_INT_10A38D_MON_t:
+  - SIGNALS : [ type: MEM_INT_10A38D_SIGNALS_MON_t ]
+  - rd_data : [ type: MEM_INT_10A38D_rd_data_MON_t ]
+
+
+- MEM_INT_10A38D_CTRL_t:
+  - SIGNALS : [ type: MEM_INT_10A38D_SIGNALS_CTRL_t ]
   - wr_addr : [ type: logic, length: 10 ]
   - rd_addr : [ type: logic, length: 10 ]
   - wr_data : [ type: MEM_INT_10A38D_wr_data_CTRL_t ]

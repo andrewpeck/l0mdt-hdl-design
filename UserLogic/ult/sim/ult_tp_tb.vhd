@@ -30,6 +30,8 @@ use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
 -- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
+use shared_lib.detector_time_param_pkg.all;
+
 use shared_lib.vhdl_tb_utils_pkg.all;
 
 library project_lib;
@@ -168,7 +170,7 @@ architecture beh of ult_tp is
   signal axi_rst      : std_logic;
   signal clk_axi      : std_logic;
   signal clk_axi_cnt  : integer;
-  constant c_CLK_AXI_MULT : integer := 5; 
+  -- constant c_CLK_AXI_MULT : integer := 5; 
   -- clk
   constant clk_time_period : time := 1 ns;  -- 1Ghz
   signal clk_time : std_logic := '0';

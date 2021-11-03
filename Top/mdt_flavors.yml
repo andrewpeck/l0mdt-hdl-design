@@ -54,3 +54,14 @@ vu13p_lsf_upt:
     default:
       link_map: "link_map_default"
       en_daq: 1
+
+vu13p_csf_mpt:
+  fpga: xcvu13p-flga2577-1-e
+  board_pkg: board_pkg_mpi_vu13p
+  sf: csf
+  pt: mpt
+  constraints:
+    - "pinouts_mpi_vu13p.xdc"
+  variants:
+    xyz:
+      link_map: "link_map_default"

@@ -223,8 +223,8 @@ begin
     o_cde_chamber_z_org_bus => cde_chamber_z_org_bus,
     o_cvp_chamber_z_org_bus => cvp_chamber_z_org_bus,
     -- 
-    local_en          => local_en,
-    local_rst         => local_rst
+    o_local_en          => local_en,
+    o_local_rst         => local_rst
   );
 
   --control
