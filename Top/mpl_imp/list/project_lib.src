@@ -1,0 +1,8 @@
+#### project local configuration files ####
+Top/mpl/prj_cfg.vhd
+#### top  ####
+UserLogic/mpl/top_mpl.vhd top=top_mpl
+#### AXI SC ####
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+#### modules included ####
+UserLogic/mpl/mpl_lib.src lib=mpl_lib

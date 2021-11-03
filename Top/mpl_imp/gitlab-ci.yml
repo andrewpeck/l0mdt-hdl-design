@@ -1,0 +1,16 @@
+#################### mpl_imp Project ###########################
+GEN:mpl_imp:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: mpl_imp
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+      - hog
+# SIM:mpl_imp:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: mpl_imp
