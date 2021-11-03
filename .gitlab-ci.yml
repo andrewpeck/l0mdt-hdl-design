@@ -38,6 +38,11 @@ include:
     # - local: '/Top/tdc/gitlab-ci.yml'
     # - local: '/Top/mtc/gitlab-ci.yml'
     #---------------------------------------------
+    #         Modules vU13P
+    #---------------------------------------------
+    - local: '/Top/ucm_imp/gitlab-ci.yml'
+    - local: '/Top/mpl_imp/gitlab-ci.yml'
+    #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
     # - local: '/Top/ult/gitlab-ci.yml'

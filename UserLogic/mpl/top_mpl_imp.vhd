@@ -39,19 +39,42 @@ entity top_mpl is
     rst                 : in std_logic;
     glob_en             : in std_logic;
     -- AXI to SoC
-    ctrl                : in  MPL_CTRL_t;
-    mon                 : out MPL_MON_t;
+    ctrl_b                : in  std_logic;
+    mon_b                 : out std_logic;
     -- configuration, control & Monitoring
     -- SLc pipeline
-    i_uCM2pl_av         : in ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-    o_pl2tf_av          : out pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_pl2mtc_av         : out pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0)
+    i_uCM2pl_ab         : in std_logic_vector(c_MAX_NUM_SL -1 downto 0);
+    o_pl2tf_ab          : out std_logic_vector(c_NUM_THREADS -1 downto 0);
+    o_pl2mtc_ab         : out std_logic_vector(c_MAX_NUM_SL -1 downto 0)
   );
 end entity top_mpl;
 
 architecture beh of top_mpl is
-  
-begin
+
+  signal ctrl_r              : MPL_CTRL_t;
+  signal mon_r               : MPL_MON_t;
+
+  signal i_uCM2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  signal o_pl2tf_av          : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal o_pl2mtc_av         : pl2mtc_bus_avt(c_MAX_NUM_SL -1 downto 0);
+
+  begin
+
+  ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(ctrl_r )) port map(clk,rst,ctrl_b,ctrl_v);
+  mon_b <= xor_reduce(mon_v);
+  --------------------------------------------------------------
+  slc_mp: for i_h in c_MAX_NUM_SL - 1 downto 0 generate
+    des : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => UCM2PL_LEN)port map(clk => clk,rst  => rst,i_data => i_uCM2pl_ab(i_h),o_data => i_uCM2pl_av(i_h));
+    -- i_slc_data_mainA(i_h) <= i_slc_data_mainA_av(i_h);
+  end generate;
+  --------------------------------------------------------------
+  pl2pt: for i_th in c_NUM_THREADS - 1 downto 0 generate
+    o_pl2tf_ab(i_th) <= xor_reduce(o_pl2tf_av(i_th));
+  end generate;
+  pl2mtc: for i_th in c_MAX_NUM_SL - 1 downto 0 generate
+    o_pl2mtc_ab(i_th) <= xor_reduce(o_pl2mtc_av(i_th));
+  end generate;
+
 
   MPL : entity mpl_lib.mpl
   port map(
@@ -59,8 +82,8 @@ begin
     rst             => rst,
     glob_en         => glob_en,
     --
-    ctrl              => ctrl,
-    mon               => mon,
+    ctrl_v              => ctrl_v,
+    mon_v               => mon_v,
     --
     i_uCM2pl_av     => i_uCM2pl_av,
     o_pl2tf_av      => o_pl2tf_av,
