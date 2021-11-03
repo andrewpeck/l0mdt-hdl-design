@@ -1,18 +1,17 @@
-#################### mpl_imp Project ###########################
-GEN:mpl_imp:
+#################### sa_ucm Project ###########################
+GEN:sa_ucm:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: mpl_imp
+      PROJECT_NAME: sa_ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
       - normal-ops
       - hog
-      - "2020.2"
-
-# SIM:mpl_imp:
+      # - "2020.2"
+# SIM:sa_ucm:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: mpl_imp
+#       PROJECT_NAME: sa_ucm

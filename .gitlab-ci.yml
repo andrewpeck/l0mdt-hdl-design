@@ -63,6 +63,7 @@ include:
     #---------------------------------------------
     #         Modules vU13P
     #---------------------------------------------
-    - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-    - local: '/Top/ucm_imp/gitlab-ci.yml'
-    - local: '/Top/mpl_imp/gitlab-ci.yml'
+    # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
+    - local: '/Top/sa_ucm/gitlab-ci.yml'
+    - local: '/Top/sa_mpl/gitlab-ci.yml'
+    - local: '/Top/sa_tar/gitlab-ci.yml'

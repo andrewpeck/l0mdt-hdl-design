@@ -32,31 +32,43 @@ library ctrl_lib;
 use ctrl_lib.UCM_CTRL.all;
 
 
-entity top_ucm is
-  port (
-    clk                     : in std_logic;
-    rst                     : in std_logic;
-    glob_en                 : in std_logic;
-    ttc_commands            : in l0mdt_ttc_rt;
-    -- configuration, control & Monitoring
-    ctrl                    : in  UCM_CTRL_t;
-    mon                     : out UCM_MON_t;
-    -- SLc in
-    i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
-    i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
-    i_slc_data_neighborA_v  : in slc_rx_rvt;
-    i_slc_data_neighborB_v  : in slc_rx_rvt;
-    -- to hps
-    o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_out_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    o_uCM2hps_ext_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    -- pipeline
-    o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
-  );
-end entity top_ucm;
+entity top_ucm_tb is
+  generic (
+    PRJ_INFO            : string  := "BA3";
+    IN_SLC_FILE         : string  := "slc_A3_Barrel.csv";
+    IN_HIT_FILE         : string  := "csm_A3_Barrel.csv";
+    -- OUT_HEG_BM_SLC_FILE : string  := "hps_heg_bm_slc_A3_Barrel_yt_v04.csv";
+    -- OUT_HEG_BM_HIT_FILE : string  := "hps_heg_bm_hit_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_SF_FILE    : string  := "pt_in_sf_A3_Barrel_yt_v04.csv";
+    -- OUT_PTIN_MPL_FILE   : string  := "pt_in_mpl_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_PT_FILE   : string  := "mtc_in_pt_A3_Barrel_yt_v04.csv";
+    -- OUT_MTCIN_MPL_FILE  : string  := "mtc_in_mpl_A3_Barrel_yt_v04.csv";
+    DUMMY               : boolean := false
+    );
+  -- port (
+  --   clk                     : in std_logic;
+  --   rst                     : in std_logic;
+  --   glob_en                 : in std_logic;
+  --   ttc_commands            : in l0mdt_ttc_rt;
+  --   -- configuration, control & Monitoring
+  --   ctrl                    : in  UCM_CTRL_t;
+  --   mon                     : out UCM_MON_t;
+  --   -- SLc in
+  --   i_slc_data_mainA_av     : in slc_rx_bus_avt(2 downto 0);
+  --   i_slc_data_mainB_av     : in slc_rx_bus_avt(2 downto 0);
+  --   i_slc_data_neighborA_v  : in slc_rx_rvt;
+  --   i_slc_data_neighborB_v  : in slc_rx_rvt;
+  --   -- to hps
+  --   o_uCM2hps_inn_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_mid_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_out_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  --   o_uCM2hps_ext_av        : out ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  --   -- pipeline
+  --   o_uCM2pl_av             : out ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0)
+  -- );
+end entity top_ucm_tb;
 
-architecture beh of top_ucm is
+architecture beh of top_ucm_tb is
 
   -- signal o_uCM2hps_inn_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   -- signal o_uCM2hps_mid_av      : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
