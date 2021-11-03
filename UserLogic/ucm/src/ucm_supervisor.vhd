@@ -83,13 +83,13 @@ architecture beh of ucm_supervisor is
   signal PHI_CTRL     : UCM_SUPER_SECTOR_PHI_CTRL_t;
   signal PHI_MON     : UCM_SUPER_SECTOR_PHI_MON_t;
   --
-  signal cde_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
-  signal cde_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
-  signal cde_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
-  signal cde_z0_apb_wr_dv_o         : std_logic;
-  signal cde_z0_apb_rd_dv_o         : std_logic;
-  signal cde_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
-  signal cde_z0_apb_rd_dv_i         : std_logic;
+  -- signal cde_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+  -- signal cde_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+  -- signal cde_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
+  -- signal cde_z0_apb_wr_dv_o         : std_logic;
+  -- signal cde_z0_apb_rd_dv_o         : std_logic;
+  -- signal cde_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
+  -- signal cde_z0_apb_rd_dv_i         : std_logic;
   signal cde_ch_z0_org : b_chamber_z_origin_station_aut :=  (
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,SLC_Z_RPC_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,SLC_Z_RPC_MULT),
@@ -102,13 +102,13 @@ architecture beh of ucm_supervisor is
   -- signal cde_z0_mon_v   : std_logic_vector(len(cde_z0_mon_r) - 1 downto 0);
   -- signal CDE_states : std_logic_vector(1 downto 0);
   --
-  signal cvp_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
-  signal cvp_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
-  signal cvp_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
-  signal cvp_z0_apb_wr_dv_o         : std_logic;
-  signal cvp_z0_apb_rd_dv_o         : std_logic;
-  signal cvp_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
-  signal cvp_z0_apb_rd_dv_i         : std_logic;
+  -- signal cvp_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+  -- signal cvp_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+  -- signal cvp_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
+  -- signal cvp_z0_apb_wr_dv_o         : std_logic;
+  -- signal cvp_z0_apb_rd_dv_o         : std_logic;
+  -- signal cvp_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
+  -- signal cvp_z0_apb_rd_dv_i         : std_logic;
   signal cvp_ch_z0_org : b_chamber_z_origin_station_aut :=  (
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,0,UCM2HPS_VEC_POS_MULT),
     get_b_chamber_origin_z_u(c_SECTOR_ID,c_SECTOR_SIDE,1,UCM2HPS_VEC_POS_MULT),
@@ -216,6 +216,14 @@ begin
     -- signal cde_z0_mon_r : UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_MON_t_ARRAY;
     signal cde_z0_ctrl_v  : std_logic_vector(len(cde_z0_ctrl_r(st_i)) - 1 downto 0);
     signal cde_z0_mon_v   : std_logic_vector(len(cde_z0_mon_r(st_i)) - 1 downto 0);
+
+    signal cde_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+    signal cde_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+    signal cde_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
+    signal cde_z0_apb_wr_dv_o         : std_logic;
+    signal cde_z0_apb_rd_dv_o         : std_logic;
+    signal cde_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
+    signal cde_z0_apb_rd_dv_i         : std_logic;
   begin
 
     cde_z0_ctrl_v <= vectorify(cde_z0_ctrl_r(st_i),cde_z0_ctrl_v);
@@ -324,6 +332,14 @@ begin
   CVP_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
     signal cvp_z0_ctrl_v  : std_logic_vector(len(cvp_z0_ctrl_r(st_i)) - 1 downto 0);
     signal cvp_z0_mon_v   : std_logic_vector(len(cvp_z0_mon_r(st_i)) - 1 downto 0);
+
+    signal cvp_z0_apb_rd_addr_o    : std_logic_vector(8 - 1 downto 0);
+    signal cvp_z0_apb_wr_addr_o    : std_logic_vector(8 - 1 downto 0);
+    signal cvp_z0_apb_wr_data_o       : std_logic_vector(16 - 1 downto 0);
+    signal cvp_z0_apb_wr_dv_o         : std_logic;
+    signal cvp_z0_apb_rd_dv_o         : std_logic;
+    signal cvp_z0_apb_rd_data_i       : std_logic_vector(16 - 1 downto 0);
+    signal cvp_z0_apb_rd_dv_i         : std_logic;
   begin
 
     cvp_z0_ctrl_v <= vectorify(cvp_z0_ctrl_r(st_i),cvp_z0_ctrl_v);
