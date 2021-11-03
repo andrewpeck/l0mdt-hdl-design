@@ -241,7 +241,7 @@ begin
 
     ----------------------------------------------------------
 
-    Z_CALC_LOOP : for st_i in 0 to c_MAX_POSSIBLE_HPS -1 generate
+    Z_CALC_LOOP : for st_i in 0 to 3 -1 generate
       Z_CALC_IF : if c_STATIONS_IN_SECTOR(st_i) = '1' generate
         Z_CALC : entity ucm_lib.ucm_cvp_z_calc
         generic map(
