@@ -1,15 +1,15 @@
 --------------------------------------------------------------------------------
---  UMass , Physics Department
---  Guillermo Loustau de Linares
---  gloustau@cern.ch
+--  Max-Planck-Institut für Physik, Munich
+--  Davide Cieri
+--  davide.cieri@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger
---  Module: Test Bench Module for Logic Trigger Path
---  Description: Hit input vector reader and injector
+--  Module: Test Bench Module for Compact Segment Finder
+--  Description: Hit/SLC input vector reader and injector
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      2020.11.23 Creation 
+--      2021.10.21 First change  
 --
 --------------------------------------------------------------------------------
 
@@ -27,11 +27,9 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 use shared_lib.common_constants_pkg.all;
 use shared_lib.common_types_pkg.all;
 use shared_lib.config_pkg.all;
--- use shared_lib.vhdl2008_functions_pkg.all;
 use shared_lib.detector_param_pkg.all;
 
-library project_lib;
-use project_lib.vhdl_textio_csv_pkg.ALL;
+use shared_lib.vhdl_textio_csv_pkg.ALL;
 
 
 entity csf_tb_reader is
