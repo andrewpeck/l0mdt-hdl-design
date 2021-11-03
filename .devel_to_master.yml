@@ -1,4 +1,11 @@
+.tag-sr: &tag-sr
+  tags:
+     - docker
+
+
+
 OpenMR:
+    <<: *tag-sr
     only:
         refs:
             - schedules
