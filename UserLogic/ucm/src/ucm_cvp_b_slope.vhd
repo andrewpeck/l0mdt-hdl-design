@@ -409,7 +409,7 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 3
     )
     port map(
       clk         => clk,
@@ -429,7 +429,7 @@ begin
     generic map(
       g_OPERATION => "*-",
       g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 3
+      g_OUT_PIPE_STAGES => 5
     )
     port map(
       clk         => clk,
@@ -531,9 +531,9 @@ begin
   --   o_offset <= resize((e_y_2) - s_e_z,32);
   off_ent : entity shared_lib.generic_pipelined_MATH
     generic map(
-      g_OPERATION => "-",
-      g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OPERATION => "--",
+      g_IN_PIPE_STAGES  => 3,
+      g_OUT_PIPE_STAGES => 3
     )
     port map(
       clk         => clk,
