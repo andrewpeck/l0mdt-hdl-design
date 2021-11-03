@@ -409,7 +409,7 @@ begin
     generic map(
       g_OPERATION => "-",
       g_IN_PIPE_STAGES  => 1,
-      g_OUT_PIPE_STAGES => 1
+      g_OUT_PIPE_STAGES => 3
     )
     port map(
       clk         => clk,
@@ -429,7 +429,7 @@ begin
     generic map(
       g_OPERATION => "*-",
       g_IN_PIPE_STAGES  => 3,
-      g_OUT_PIPE_STAGES => 3
+      g_OUT_PIPE_STAGES => 5
     )
     port map(
       clk         => clk,
