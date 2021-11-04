@@ -63,5 +63,5 @@ vu13p_csf_mpt:
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
-    xyz:
+    default:
       link_map: "link_map_default"
