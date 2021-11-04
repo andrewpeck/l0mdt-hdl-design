@@ -11,7 +11,7 @@ shared/shared_lib.src lib=shared_lib
 Top/sa_hp/prj_cfg.vhd
 
 #### top  ####
-UserLogic/hp/top_mpl_imp.vhd top=top_mpl
+UserLogic/hp/top_hp_imp.vhd top=top_hp
 
 #### hal ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
