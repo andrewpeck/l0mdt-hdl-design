@@ -1,17 +1,17 @@
-#################### sa_ucm Project ###########################
-GEN:sa_ucm:
+#################### tar Project ###########################
+GEN:tar:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: sa_ucm
+      PROJECT_NAME: tar
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
     tags:
       - normal-ops
       - hog
       # - "2020.2"
-# SIM:sa_ucm:
+# SIM:tar:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: sa_ucm
+#       PROJECT_NAME: tar

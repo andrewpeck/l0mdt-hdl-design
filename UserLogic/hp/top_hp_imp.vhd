@@ -90,7 +90,7 @@ begin
   --------------------------------------------------------------
 
   des1 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => slc_win_len)port map(clk => clk,rst  => rst,i_data => i_SLC_Window_b,o_data => i_SLC_Window_v);
-  -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
+  i_SLC_Window_ar <= structify(i_SLC_Window_v);
   i_SLC_Window_av <= vectorify(i_SLC_Window_ar);
   des2 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => HP_HEG2HP_SLC_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_b,o_data => i_slc_data_v);
   i_slc_data_rv <= i_slc_data_v;

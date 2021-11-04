@@ -1,14 +1,17 @@
-#################### hp Project ###########################
-GEN:hp:
+#################### ucm Project ###########################
+GEN:ucm:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: hp
+      PROJECT_NAME: ucm
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
       
-
-# SIM:hp:
+    tags:
+      - normal-ops
+      - hog
+      # - "2020.2"
+# SIM:ucm:
 #     extends: .simulate_project
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: hp
+#       PROJECT_NAME: ucm
