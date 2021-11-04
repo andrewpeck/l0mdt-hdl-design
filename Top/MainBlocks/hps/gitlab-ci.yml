@@ -3,8 +3,8 @@ GEN:hps:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: hps
-      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      PROJECT_NAME: MainBlocks/hps
+      HOG_ONLY_SYNTH: 0 # if 1 runs only the synthesis
       
 
 # SIM:hps:
