@@ -23,9 +23,9 @@ include:
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
-    # - local: '/Top/csf.0/gitlab-ci.yml'
+    - local: '/Top/csf.0/gitlab-ci.yml'
     # - local: '/Top/csf.1/gitlab-ci.yml'
-    # - local: '/Top/ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/ptc_mpi/gitlab-ci.yml'
     # - local: '/Top/lsf/gitlab-ci.yml'
     # - local: '/Top/upt/gitlab-ci.yml'
     # - local: '/Top/ucm/gitlab-ci.yml'
