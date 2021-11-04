@@ -67,3 +67,4 @@ include:
     - local: '/Top/sa_ucm/gitlab-ci.yml'
     - local: '/Top/sa_mpl/gitlab-ci.yml'
     - local: '/Top/sa_tar/gitlab-ci.yml'
+    - local: '/Top/sa_hp/gitlab-ci.yml'

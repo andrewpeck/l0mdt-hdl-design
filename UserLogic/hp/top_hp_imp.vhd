@@ -73,9 +73,11 @@ architecture beh of top_hp is
   
   constant slc_win_len : integer := HP_WIN_TUBES_LEN * get_num_layers(g_STATION_RADIUS);
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
-  signal i_SLC_Window     : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal i_SLC_Window_ar  : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
+  signal i_SLC_Window_av  : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
 
-  signal i_slc_data_v       : hp_heg2hp_slc_rvt;
+  signal i_slc_data_v       : std_logic_vector(HP_HEG2HP_SLC_LEN - 1 downto 0);
+  signal i_slc_data_rv      : hp_heg2hp_slc_rvt;
   -- signal i_slc_data_v       : hp_heg2hp_slc_rvt;
   signal i_mdt_data_v       : hp_hpsPc2hp_rvt;
   signal o_hit_data_v       : hp_hp2bm_rvt;
@@ -88,9 +90,12 @@ begin
   --------------------------------------------------------------
 
   des1 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => slc_win_len)port map(clk => clk,rst  => rst,i_data => i_SLC_Window_b,o_data => i_SLC_Window_v);
-  i_SLC_Window <= structify(i_SLC_Window_v);
-  des2 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => HP_HEG2HP_SLC_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_v,o_data => i_slc_data_v);
-  des3 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => HP_HPSPC2HP_LEN)port map(clk => clk,rst  => rst,i_data => i_mdt_data_d,o_data => i_mdt_data_v);
+  -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
+  i_SLC_Window_av <= vectorify(i_SLC_Window_ar);
+  des2 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => HP_HEG2HP_SLC_LEN)port map(clk => clk,rst  => rst,i_data => i_slc_data_b,o_data => i_slc_data_v);
+  i_slc_data_rv <= i_slc_data_v;
+
+  des3 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => HP_HPSPC2HP_LEN)port map(clk => clk,rst  => rst,i_data => i_mdt_data_b,o_data => i_mdt_data_v);
 
   o_hit_data_b <= xor_reduce(o_hit_data_v);
 
@@ -128,8 +133,8 @@ begin
     -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
 
     -- SLc
-    i_SLC_Window        => i_SLC_Window_v,
-    i_slc_data_v        => i_slc_data_v,
+    i_SLC_Window        => i_SLC_Window_av,
+    i_slc_data_v        => i_slc_data_rv,
     -- MDT hit
     i_mdt_data_v          => i_mdt_data_v,
     -- i_mdt_valid         => i_mdt_valid,
