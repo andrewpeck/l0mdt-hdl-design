@@ -1,0 +1,18 @@
+#################### sa_hp Project ###########################
+GEN:sa_hp:
+    extends: .generate_project
+    variables:
+      extends: .vars
+      PROJECT_NAME: sa_hp
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      
+    tags:
+      - normal-ops
+      - hog
+      # - "2020.2"
+
+# SIM:sa_hp:
+#     extends: .simulate_project
+#     variables:
+#       extends: .vars
+#       PROJECT_NAME: sa_hp
