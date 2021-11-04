@@ -1,7 +1,7 @@
 #Simulator questa
 shared/shared_lib.sim
 # UserLogic/ult/ult_lib.sim
-# UserLogic/ult/sim/ult_tp_tb.vhd topsim=ult_tp runtime=150us
+UserLogic/tar/top_tar_sim.vhd topsim=top_tar_tb runtime=150us
 
 # Waveform 
 # UserLogic/ult/sim/ult_tp_sim1.wcfg
