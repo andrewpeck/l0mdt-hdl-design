@@ -8,10 +8,10 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 shared/shared_lib.src lib=shared_lib
 
 #_project local configuration files
-Top/mpl_imp/prj_cfg.vhd
+Top/sa_mpl/prj_cfg.vhd
 
 #### top  ####
-UserLogic/sa_mpl/top_mpl_imp.vhd top=top_mpl
+UserLogic/mpl/top_mpl_imp.vhd top=top_mpl
 
 #### hal ####
 HAL/ctrl/ctrl_lib.src lib=ctrl_lib
