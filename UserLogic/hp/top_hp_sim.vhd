@@ -59,8 +59,8 @@ architecture beh of top_hp_tb is
   constant c_MON_LEN      : integer := 1042;
   signal ctrl_r           : H2S_HPS_HEG_HEG_HP_HP_CTRL_t;
   signal mon_r            : H2S_HPS_HEG_HEG_HP_HP_MON_t;
-  signal ctrl_v           : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v            : std_logic_vector(c_MON_LEN -1 downto 0);
+  signal ctrl_v           : std_logic_vector(len(ctrl_v) -1 downto 0);
+  signal mon_v            : std_logic_vector(len(mon_v) -1 downto 0);
 
   signal local_rst        : std_logic;
   signal local_en         : std_logic;
@@ -87,7 +87,7 @@ begin
     local_en            => local_en,
     -- SLc
     i_SLC_Window        => i_SLC_Window_av,
-    i_slc_data_v        => i_slc_data_rv,
+    i_slc_data_v        => i_slc_data_v,
     -- MDT hit
     i_mdt_data_v        => i_mdt_data_v,
     -- out 2 bm
