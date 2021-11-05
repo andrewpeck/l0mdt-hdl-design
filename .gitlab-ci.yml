@@ -68,3 +68,4 @@ include:
     - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
     - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
     - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/heg.0/gitlab-ci.yml'
