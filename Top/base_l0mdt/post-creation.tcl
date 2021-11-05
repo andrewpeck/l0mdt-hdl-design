@@ -20,10 +20,12 @@ set product ${BD_OUTPUT_PATH}/${BD_SUFFIX}/c2cSlave/c2cSlave.bd
 set bd_modification_time [file mtime $product]
 
 set needs_update 0
+set regenerate_svg 0
 foreach source_file $sources {
     set source_modification_time [file mtime ${source_file}]
     if {[expr ${source_modification_time} > ${bd_modification_time}]} {
         set needs_update 1
+        set regenerate_svg 1
     }
 }
 
@@ -50,6 +52,7 @@ if {$have_jq} {
         VIVADO_YEAR VIVADO_MINOR VIVADO_PATCH
     if {0 != [string compare "{$VIVADO_YEAR}.{VIVADO_MINOR}${VIVADO_PATCH}" "$bd_vivado_version"]} {
         set needs_update 1
+        set regenerate_svg 1
     }
 }
 
