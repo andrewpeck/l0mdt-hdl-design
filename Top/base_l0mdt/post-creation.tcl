@@ -27,6 +27,14 @@ foreach source_file $sources {
     }
 }
 
+
+# for some reason the VU13P doesn't work with cached BDs...
+# thanks Xilinx
+set part [get_property part [current_project]]
+if {[regexp {xcvu13p.*} $part]} {
+    set needs_update 1
+}
+
 # also check if the vivado version in the bd is different from the
 # version being used and make sure to update the bd if necessary
 # I do this with jq, so it only works if you have jq installed,
