@@ -29,7 +29,7 @@ library hp_lib;
 use hp_lib.hp_pkg.all;
 
 library ctrl_lib;
-use ctrl_lib.hp_CTRL.all;
+use ctrl_lib.H2S_CTRL.all;
 
 
 entity top_hp_tb is

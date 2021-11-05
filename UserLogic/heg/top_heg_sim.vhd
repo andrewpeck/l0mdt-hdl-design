@@ -28,6 +28,9 @@ use hp_lib.hp_pkg.all;
 library heg_lib;
 use heg_lib.heg_pkg.all;
 
+library ctrl_lib;
+use ctrl_lib.H2S_CTRL.all;
+
 entity top_heg is
   generic(
     g_STATION_RADIUS    : integer := 1;  --station
