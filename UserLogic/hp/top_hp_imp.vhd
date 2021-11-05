@@ -72,6 +72,7 @@ architecture beh of top_hp is
   -- signal local_en           : std_logic;
   
   constant slc_win_len : integer := HP_WIN_TUBES_LEN * get_num_layers(g_STATION_RADIUS);
+  -- report "The value of 'slc_win_len' is " & integer'image(slc_win_len);
   signal i_SLC_Window_v   : std_logic_vector(slc_win_len - 1 downto 0);
   signal i_SLC_Window_ar  : hp_heg2hp_window_at(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal i_SLC_Window_av  : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
@@ -84,7 +85,7 @@ architecture beh of top_hp is
 
 
 begin
-
+  -- report "slc_win_len";
   ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
