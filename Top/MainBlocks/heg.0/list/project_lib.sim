@@ -1,0 +1,7 @@
+#Simulator questa
+shared/shared_lib.sim
+# UserLogic/ult/ult_lib.sim
+UserLogic/heg/top_heg_sim.vhd topsim=top_heg_tb runtime=150us
+
+# Waveform 
+# UserLogic/ult/sim/ult_tp_sim1.wcfg

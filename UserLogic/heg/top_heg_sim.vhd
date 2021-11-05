@@ -14,6 +14,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -31,7 +32,7 @@ use heg_lib.heg_pkg.all;
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
-entity top_heg is
+entity top_heg_tb is
   generic(
     g_STATION_RADIUS    : integer := 1;  --station
     g_HPS_NUM_MDT_CH     : integer := 6 
@@ -50,9 +51,9 @@ entity top_heg is
     o_sf_slc_data_v     : out heg2sfslc_rvt;
     o_sf_mdt_data_v     : out heg2sfhit_rvt
   );
-end entity top_heg;
+end entity top_heg_tb;
 
-architecture beh of top_heg is
+architecture beh of top_heg_tb is
 
 begin
 
