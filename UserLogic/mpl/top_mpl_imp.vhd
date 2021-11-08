@@ -4,7 +4,7 @@
 --  guillermo.ldl@cern.ch
 --------------------------------------------------------------------------------
 --  Project: ATLAS L0MDT Trigger 
---  Module: Main pipe line
+--  Module: Main pipe line Top with ser/des to force synth
 --  Description: pipelines between UCM - TF - MTC
 --
 --------------------------------------------------------------------------------
@@ -16,6 +16,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -53,6 +54,8 @@ architecture beh of top_mpl is
 
   signal ctrl_r              : MPL_CTRL_t;
   signal mon_r               : MPL_MON_t;
+  signal ctrl_v            : std_logic_vector(len(ctrl_r) -1 downto 0);
+  signal mon_v             : std_logic_vector(len(mon_r) -1 downto 0);
 
   signal i_uCM2pl_av         : ucm2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   signal o_pl2tf_av          : pl2pt_bus_avt(c_NUM_THREADS -1 downto 0);
@@ -86,7 +89,7 @@ architecture beh of top_mpl is
     mon_v               => mon_v,
     --
     i_uCM2pl_av     => i_uCM2pl_av,
-    o_pl2tf_av      => o_pl2tf_av,
+    o_pl2ptcalc_av  => o_pl2tf_av,
     o_pl2mtc_av     => o_pl2mtc_av
   );
   

@@ -22,7 +22,7 @@ library shared_lib;
 use shared_lib.generic_pipelined_MATH_pkg.all;
 
 
-entity generic_pipelined_MATH is
+entity math_DSP48E2 is
   generic (
     g_INFER_DSP       : std_logic := '0';
     g_OPERATION       : string;--:= "*";
@@ -47,9 +47,9 @@ entity generic_pipelined_MATH is
     o_result      : out std_logic_vector;--((g_RESULT_WIDTH-1) downto 0);
     o_dv          : out std_logic -- valid signal for an output product
   );
-end generic_pipelined_MATH;
+end math_DSP48E2;
 
-architecture beh of generic_pipelined_MATH is
+architecture beh of math_DSP48E2 is
 
   constant g_OPERAND_A_WIDTH : integer := i_in_A'length;--arith_get_in_width(i_in_A'length,to_integer(unsigned(i_in_A)));
   constant g_OPERAND_B_WIDTH : integer := i_in_B'length;--arith_get_in_width(i_in_B'length,to_integer(unsigned(i_in_B)));

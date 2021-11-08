@@ -37,11 +37,7 @@ include:
     # - local: '/Top/mpl/gitlab-ci.yml'
     # - local: '/Top/tdc/gitlab-ci.yml'
     # - local: '/Top/mtc/gitlab-ci.yml'
-    #---------------------------------------------
-    #         Modules vU13P
-    #---------------------------------------------
-    - local: '/Top/ucm_imp/gitlab-ci.yml'
-    - local: '/Top/mpl_imp/gitlab-ci.yml'
+
     #---------------------------------------------
     #         KU15 Projects
     #---------------------------------------------
@@ -64,4 +60,11 @@ include:
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
     - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
     # - local: 'Top/upt_vu13p/gitlab-ci.yml'
-    # writer
+    #---------------------------------------------
+    #         Modules vU13P
+    #---------------------------------------------
+    # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/hp/gitlab-ci.yml'
