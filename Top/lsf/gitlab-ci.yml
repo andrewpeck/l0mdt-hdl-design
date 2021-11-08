@@ -6,10 +6,7 @@ GEN:lsf:
       PROJECT_NAME: lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
-    tags:
-      - normal-ops
-      - hog
-      - "2020.2"
+ 
 # SIM:lsf
 #     extends: .simulate_project
 #     variables:
