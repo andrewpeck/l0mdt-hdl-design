@@ -34,8 +34,7 @@ use ctrl_lib.H2S_CTRL.all;
 
 entity top_heg is
   generic(
-    g_STATION_RADIUS    : integer := 0;  --station
-    g_HPS_NUM_MDT_CH     : integer := 6 
+    FLAVOUR             : integer := 0
   );
   port (
     clk                 : in std_logic;
@@ -57,6 +56,9 @@ end entity top_heg;
 
 architecture beh of top_heg is
 
+  constant g_STATION_RADIUS    : integer := 0;  --station
+  constant g_HPS_NUM_MDT_CH    : integer := 6; 
+
 
   signal ctrl_r             : H2S_HPS_HEG_HEG_CTRL_t;
   signal mon_r              : H2S_HPS_HEG_HEG_MON_t;
@@ -74,6 +76,22 @@ architecture beh of top_heg is
   signal o_sf_mdt_data_v      : heg2sfhit_rvt;
 
 begin
+
+  flavor: if FLAVOUR = 0 generate
+    g_STATION_RADIUS := 0;
+    g_HPS_NUM_MDT_CH := 6;
+  elsif FLAVOUR = 1 generate
+    g_STATION_RADIUS := 1;
+    g_HPS_NUM_MDT_CH := 6;
+  elsif FLAVOUR = 2 generate
+    g_STATION_RADIUS := 2;
+    g_HPS_NUM_MDT_CH := 6;
+  elsif FLAVOUR = 3 generate
+    g_STATION_RADIUS := 3;
+    g_HPS_NUM_MDT_CH := 6;
+  else generate
+    
+  end generate flavor;
 
   ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
   mon_b <= xor_reduce(mon_v);
