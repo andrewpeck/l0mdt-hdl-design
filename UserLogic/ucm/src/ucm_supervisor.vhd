@@ -159,7 +159,7 @@ begin
 
           if ctrl_r.actions.enable = '1' then
             int_en <= '1';
-          else--if ctrl_r.actions.disable = '1' then
+          elsif ctrl_r.actions.disable = '1' then
             int_en <= '0';
           end if;
           
