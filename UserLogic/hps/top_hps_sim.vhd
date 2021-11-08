@@ -11,10 +11,10 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -39,17 +39,18 @@ entity top_hps_tb is
     -- mdt type
     -- type mdt_type;
     -- parameters
+    FLAVOUR             : integer := 0;
     g_STATION_RADIUS    : integer := 0;  --station
     g_HPS_NUM_MDT_CH     : integer := 6 
   );
-  port (
+  -- port (
     -- clk                 : in std_logic;
     -- rst                 : in std_logic;
     -- glob_en             : in std_logic := '1';
 
     -- -- control
-    -- ctrl              : in  H2S_HPS_CTRL_t;
-    -- mon               : out H2S_HPS_MON_t;
+    -- ctrl_v              : in  H2S_HPS_CTRL_t;
+    -- mon_v               : out H2S_HPS_MON_t;
 
     -- -- control
     -- -- SLc
@@ -59,12 +60,19 @@ entity top_hps_tb is
     -- i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
     -- -- to pt calc
     -- o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
-  );
+  -- );
 end entity top_hps_tb;
 
 architecture beh of top_hps_tb is
 
-  -- signal mdt_polmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
+  signal clk                : std_logic;
+  signal rst                : std_logic;
+  signal glob_en            : std_logic := '1';
+  signal ctrl_v               : H2S_HPS_CTRL_t;
+  signal mon_v                : H2S_HPS_MON_t;
+  signal i_uCM2hps_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+  signal i_mdt_tar_av       : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
 
 begin
 
@@ -87,8 +95,8 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
 
-      ctrl => ctrl,
-      mon => mon,
+      ctrl_v => ctrl_v,
+      mon_v => mon_v,
 
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,

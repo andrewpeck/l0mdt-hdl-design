@@ -11,10 +11,10 @@
 --  Revisions:
 --      
 --------------------------------------------------------------------------------
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.std_logic_misc.all;
 
 library shared_lib;
 use shared_lib.common_ieee_pkg.all;
@@ -39,6 +39,7 @@ entity top_hps is
     -- mdt type
     -- type mdt_type;
     -- parameters
+    FLAVOUR             : integer := 0;
     g_STATION_RADIUS    : integer := 0;  --station
     g_HPS_NUM_MDT_CH     : integer := 6 
   );
@@ -91,8 +92,8 @@ begin
       port map(clk => clk,rst  => rst,i_data => i_mdt_tar_ab(i_h),o_data => i_mdt_tar_av(i_h));
   end generate;
   --------------------------------------------------------------
-  for0: for i_th in c_NUM_THREADS -1 downto 0 generate
-    o_sf2pt_ab(i_th) <= xor_reduce(o_sf2pt_ab(i_th));
+  for3: for i_th in c_NUM_THREADS -1 downto 0 generate
+    o_sf2pt_ab(i_th) <= xor_reduce(o_sf2pt_av(i_th));
   end generate;
   
   --------------------------------------------------------------
@@ -107,8 +108,8 @@ begin
       rst                 => rst,
       glob_en             => glob_en,
 
-      ctrl => ctrl,
-      mon => mon,
+      ctrl_v => ctrl_v,
+      mon_v => mon_v,
 
       -- configuration & control
       -- i_uCM_pam           => i_uCM_pam,
