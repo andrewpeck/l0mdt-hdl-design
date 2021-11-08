@@ -34,7 +34,7 @@ use hps_lib.hps_pkg.all;
 library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
-entity top_hps is
+entity top_hps_tb is
   generic(
     -- mdt type
     -- type mdt_type;
@@ -43,26 +43,26 @@ entity top_hps is
     g_HPS_NUM_MDT_CH     : integer := 6 
   );
   port (
-    clk                 : in std_logic;
-    rst                 : in std_logic;
-    glob_en             : in std_logic := '1';
+    -- clk                 : in std_logic;
+    -- rst                 : in std_logic;
+    -- glob_en             : in std_logic := '1';
 
-    -- control
-    ctrl              : in  H2S_HPS_CTRL_t;
-    mon               : out H2S_HPS_MON_t;
+    -- -- control
+    -- ctrl              : in  H2S_HPS_CTRL_t;
+    -- mon               : out H2S_HPS_MON_t;
 
-    -- control
-    -- SLc
-    i_uCM2hps_av        : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-    -- MDT hit
-    -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-    i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-    -- to pt calc
-    o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+    -- -- control
+    -- -- SLc
+    -- i_uCM2hps_av        : in ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
+    -- -- MDT hit
+    -- -- i_mdt_polmux_av    : in tar2hps_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    -- i_mdt_tar_av        : in tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+    -- -- to pt calc
+    -- o_sf2pt_av          : out sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
   );
-end entity top_hps;
+end entity top_hps_tb;
 
-architecture beh of top_hps is
+architecture beh of top_hps_tb is
 
   -- signal mdt_polmux_data_av : hps_mdt_input_avt(g_HPS_NUM_MDT_CH -1 downto 0)
 
