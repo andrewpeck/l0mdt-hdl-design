@@ -32,24 +32,24 @@ use shared_lib.detector_param_pkg.all;
 use shared_lib.vhdl_textio_csv_pkg.ALL;
 
 
-entity csf_tb_writer is
+entity pt_tb_writer is
   generic (
-    OUT_FILE       : string  := "out_csf.csv"
+    OUT_FILE       : string  := "out_pt.csv"
   );
   port (
     clk               : in std_logic;
     rst               : in std_logic;
     enable            : in integer;
-    segment           : in sf2ptcalc_rt
+    mtc               : in ptcalc2mtc_rt
   );
-end entity csf_tb_writer;
+end entity pt_tb_writer;
 
-architecture sim of csf_tb_writer is
+architecture sim of pt_tb_writer is
 
 begin
   
   
-  CSF_WRITE: process ( rst, clk)
+  PT_WRITE: process ( rst, clk)
 
     variable csv: csv_file_type;
     variable row                  : line;
@@ -58,19 +58,6 @@ begin
     variable seed : heg2sfslc_rt;
     variable eof : integer := 0;
     variable first_write         : std_logic := '1';
-
-    variable hit_dv : integer := 0;
-    variable hit_ml : integer := 0;
-    variable hit_x  : integer := 0;
-    variable hit_y  : integer := 0;
-    variable hit_r  : integer := 0;
-    variable slc_dv : integer := 0;
-    variable slc_chamber_id : integer := 0;
-    variable slc_chamber_ieta : integer :=0 ;
-    variable slc_vec_pos : integer := 0;
-    variable slc_vec_ang : integer := 0;
-    variable slc_hewindow_pos : integer := 0;
-
 
     variable dummy_text  : string(1 to 100);
     variable ok : boolean;
@@ -95,22 +82,24 @@ begin
             csv.write_word("slcid");
             csv.write_word("slid");
             csv.write_word("bcid");
-            csv.write_word("seg_pos");
-            csv.write_word("seg_angle");
-            csv.write_word("seg_quality");
-            csv.write_word("chamber_id");
-            csv.write_word("chamber_ieta");
+            csv.write_word("mdt_eta");
+            csv.write_word("mdt_pt");
+            csv.write_word("mdt_ptthresh");
+            csv.write_word("mdt_charge");
+            csv.write_word("mdt_nsegments");
+            csv.write_word("mdt_quality");
             csv.writeline;
           else
-            if segment.data_valid = '1' then
-              csv.write_integer(to_integer(segment.muid.slcid));
-              csv.write_integer(to_integer(segment.muid.slid));  
-              csv.write_integer(to_integer(segment.muid.bcid));
-              csv.write_integer(to_integer(segment.segpos));
-              csv.write_integer(to_integer(segment.segangle));
-              csv.write_integer(to_integer(unsigned'('0' & segment.segquality)));
-              csv.write_integer(to_integer(segment.mdtid.chamber_id));
-              csv.write_integer(to_integer(segment.mdtid.chamber_ieta));  
+            if mtc.data_valid = '1' then
+              csv.write_integer(to_integer(mtc.muid.slcid));
+              csv.write_integer(to_integer(mtc.muid.slid));  
+              csv.write_integer(to_integer(mtc.muid.bcid));
+              csv.write_integer(to_integer(mtc.mdt_eta));
+              csv.write_integer(to_integer(mtc.mdt_pt));
+              csv.write_integer(to_integer(mtc.mdt_ptthresh));
+              csv.write_integer(to_integer(unsigned'('0' & mtc.mdt_charge)));
+              csv.write_integer(to_integer(mtc.mdt_nsegments));
+              csv.write_integer(to_integer(unsigned(mtc.mdt_quality)));  
               csv.writeline;
             end if;
           end if;

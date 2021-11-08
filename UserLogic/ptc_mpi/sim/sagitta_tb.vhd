@@ -90,9 +90,9 @@ begin
         seg0.segpos <= to_unsigned(39153, SF2PTCALC_SEGPOS_LEN);
         seg1.segpos <= to_unsigned(56666, SF2PTCALC_SEGPOS_LEN);
         seg2.segpos <= to_unsigned(75632, SF2PTCALC_SEGPOS_LEN);
-        seg0.segangle <= to_unsigned(100, SF2PTCALC_SEGANGLE_LEN);
+        seg0.segangle <= to_unsigned(5136, SF2PTCALC_SEGANGLE_LEN);
 
-        seg1.segangle <= to_unsigned(140, SF2PTCALC_SEGANGLE_LEN);
+        seg1.segangle <= to_unsigned(5216, SF2PTCALC_SEGANGLE_LEN);
         seg0.data_valid <= '1';
         seg1.data_valid <= '1';
         seg2.data_valid <= '0';
