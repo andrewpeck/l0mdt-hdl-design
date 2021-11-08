@@ -112,7 +112,7 @@ architecture beh of ucm is
   --
   signal prepro2ctrl_av       : ucm_prepro2ctrl_bus_avt(c_MAX_NUM_SL -1 downto 0);
   --
-  signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
+  -- signal ucm_prepro_av        : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csin_slc_data_av    : slc_prepro_avt(c_MAX_NUM_SL -1 downto 0);
   signal csw_main_in_av       : slc_rx_bus_avt(c_MAX_NUM_SL -1 downto 0);
   -- signal csw_main_out_ar      : slc_rx_bus_at(c_MAX_NUM_SL -1 downto 0);
