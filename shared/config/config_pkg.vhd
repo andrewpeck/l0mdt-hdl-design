@@ -141,6 +141,7 @@ package config_pkg is
   --
   constant c_SF_ENABLED             : std_logic := CFG.ENABLE_SF;
   constant c_SF_TYPE                : std_logic := CFG.SF_TYPE; -- 0: CSF 1:LSF
+  constant c_SF_BYPASS              : std_logic := CFG.SF_BYPASS; -- 0: CSF 1:LSF
   --
   constant c_PT_ENABLED             : std_logic := CFG.ENABLE_PT;
   constant c_PT_TYPE                : std_logic := CFG.PT_TYPE; -- 0: MPT 1:UPT

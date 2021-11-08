@@ -66,6 +66,7 @@ package cfg_global_default_pkg is
     -- Segment Finder
     ENABLE_SF                     : std_logic;  -- enable or disable the segment finder block
     SF_TYPE                       : std_logic;  -- select the type of segment finder
+    SF_BYPASS                     : std_logic;  -- bypass of the sf to avoid optimizations
     -- pt-calc
     ENABLE_PT                     : std_logic;  -- enable or disable the pt calculator
     PT_TYPE                       : std_logic;  -- select the type of pt calculator
@@ -127,6 +128,7 @@ package cfg_global_default_pkg is
     -- Segment Finder
     ENABLE_SF                     => '1', -- 0: disabled  1: enabled -- default enabled
     SF_TYPE                       => '0', -- default CSF
+    SF_BYPASS                     => '0', -- 0: disabled
     -- pt-calc
     ENABLE_PT                     => '1', -- 0: disabled  1: enabled -- default enabled
     PT_TYPE                       => '0', -- default 0
