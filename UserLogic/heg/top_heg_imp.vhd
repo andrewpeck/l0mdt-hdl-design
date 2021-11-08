@@ -78,10 +78,14 @@ begin
   ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
   mon_b <= xor_reduce(mon_v);
   --------------------------------------------------------------
-  des0 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => i_uCM_data_v'length)port map(clk => clk,rst  => rst,i_data => i_uCM_data_b,o_data => i_uCM_data_v);
+  des0 : entity shared_lib.vhdl_utils_deserializer 
+    generic map (g_DATA_WIDTH => i_uCM_data_v'length)
+    port map(clk => clk,rst  => rst,i_data => i_uCM_data_b,o_data => i_uCM_data_v);
   i_uCM_data_v <= i_uCM_data_v;
   for1: for i_h in g_HPS_NUM_MDT_CH -1 downto 0 generate
-    des1 : entity shared_lib.vhdl_utils_deserializer generic map (g_DATA_WIDTH => i_mdt_full_data_av(i_h)'length)port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_ab(i_h),o_data => i_mdt_full_data_av(i_h));
+    des1 : entity shared_lib.vhdl_utils_deserializer 
+      generic map (g_DATA_WIDTH => i_mdt_full_data_av(i_h)'length)
+      port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_ab(i_h),o_data => i_mdt_full_data_av(i_h));
   end generate;
   
   -- i_SLC_Window_ar <= structify(i_SLC_Window_v);
