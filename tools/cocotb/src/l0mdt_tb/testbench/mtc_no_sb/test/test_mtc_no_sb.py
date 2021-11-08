@@ -300,7 +300,8 @@ def mtc_test(dut):
             expected_output_events = exp_output_tv[n_oport] #output_tv_list[n_oport]
 
     #Multiple ports in this interface, need to lineup events across ports based on time
-    recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+    #recvd_lineup = events.timebased_lineup(recvd_events_all_ports, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(0))
+    recvd_lineup = recvd_events_all_ports
 
     ##
     ## perform test by comparison with expected testvectors

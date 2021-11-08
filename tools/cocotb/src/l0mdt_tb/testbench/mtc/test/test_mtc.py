@@ -285,8 +285,9 @@ def mtc_test(dut):
                 f"Output for interface {n_op_intf} : port num {n_oport} received {len(recvd_events[n_oport])} events"
             )
         #Multiple ports in this interface, need to lineup events across ports based on time
-        recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(n_op_intf))
-        recvd_events_intf.append(recvd_lineup)
+        #recvd_lineup = events.timebased_lineup(recvd_events, recvd_time,num_events_to_process,MtcPorts.get_output_interface_ports(n_op_intf))
+        #recvd_events_intf.append(recvd_lineup)
+        recvd_events_intf.append(recvd_events)
 
 
     ##
