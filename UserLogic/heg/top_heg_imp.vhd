@@ -46,7 +46,7 @@ entity top_heg is
     -- SLc
     i_uCM_data_b        : in std_logic;
     -- MDT hit
-    i_mdt_full_data_ab  : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_mdt_full_data_ab  : in std_logic_vector(c_HPS_MAX_ARRAY(FLAVOUR) -1 downto 0);
     -- to Segment finder
     o_sf_control_b      : out std_logic;
     o_sf_slc_data_b     : out std_logic;
@@ -56,8 +56,8 @@ end entity top_heg;
 
 architecture beh of top_heg is
 
-  constant g_STATION_RADIUS    : integer := 0;  --station
-  constant g_HPS_NUM_MDT_CH    : integer := 6; 
+  -- variable g_STATION_RADIUS    : integer := 0;  --station
+  -- variable g_HPS_NUM_MDT_CH    : integer := 6; 
 
 
   signal ctrl_r             : H2S_HPS_HEG_HEG_CTRL_t;
@@ -69,7 +69,7 @@ architecture beh of top_heg is
 
   signal i_uCM_data_rv        : ucm2hps_rvt;
   signal i_uCM_data_v         : std_logic_vector(i_uCM_data_rv'range);
-  signal i_mdt_full_data_av   : heg_pc2heg_avt(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal i_mdt_full_data_av   : heg_pc2heg_avt(c_HPS_MAX_ARRAY(FLAVOUR) -1 downto 0);
   signal o_sf_control_rv      : heg_ctrl2sf_rvt;
   -- signal o_sf_control_v       : std_logic_vector(o_sf_control_rv'range);
   signal o_sf_slc_data_v      : heg2sfslc_rvt;
@@ -77,22 +77,22 @@ architecture beh of top_heg is
 
 begin
 
-  flavor: if FLAVOUR = 0 generate
-    g_STATION_RADIUS := 0;
-    g_HPS_NUM_MDT_CH := 6;
-  elsif FLAVOUR = 1 generate
-    g_STATION_RADIUS := 1;
-    g_HPS_NUM_MDT_CH := 6;
-  elsif FLAVOUR = 2 generate
-    g_STATION_RADIUS := 2;
-    g_HPS_NUM_MDT_CH := 6;
-  elsif FLAVOUR = 3 generate
-    g_STATION_RADIUS := 3;
-    g_HPS_NUM_MDT_CH := 6;
-  else generate
+  -- flavor: if FLAVOUR = 0 generate
+  --   g_STATION_RADIUS := 0;
+  --   g_HPS_NUM_MDT_CH := 6;
+  -- elsif FLAVOUR = 1 generate
+  --   g_STATION_RADIUS := 1;
+  --   g_HPS_NUM_MDT_CH := 6;
+  -- elsif FLAVOUR = 2 generate
+  --   g_STATION_RADIUS := 2;
+  --   g_HPS_NUM_MDT_CH := 6;
+  -- elsif FLAVOUR = 3 generate
+  --   g_STATION_RADIUS := 3;
+  --   g_HPS_NUM_MDT_CH := 6;
+  -- else generate
     
-    
-  end generate flavor;
+
+  -- end generate flavor;
 
   ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
   mon_b <= xor_reduce(mon_v);
@@ -101,7 +101,7 @@ begin
     generic map (g_DATA_WIDTH => i_uCM_data_v'length)
     port map(clk => clk,rst  => rst,i_data => i_uCM_data_b,o_data => i_uCM_data_v);
   i_uCM_data_v <= i_uCM_data_v;
-  for1: for i_h in g_HPS_NUM_MDT_CH -1 downto 0 generate
+  for1: for i_h in c_HPS_MAX_ARRAY(FLAVOUR) -1 downto 0 generate
     des1 : entity shared_lib.vhdl_utils_deserializer 
       generic map (g_DATA_WIDTH => i_mdt_full_data_av(i_h)'length)
       port map(clk => clk,rst  => rst,i_data => i_mdt_full_data_ab(i_h),o_data => i_mdt_full_data_av(i_h));
@@ -116,8 +116,8 @@ begin
 
   HEG : entity heg_lib.heg
   generic map(
-    g_STATION_RADIUS    => g_STATION_RADIUS,
-    g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
+    g_STATION_RADIUS    => FLAVOUR,
+    g_HPS_NUM_MDT_CH    => c_HPS_MAX_ARRAY(FLAVOUR)
   )
   port map(
     clk                 => CLK,
