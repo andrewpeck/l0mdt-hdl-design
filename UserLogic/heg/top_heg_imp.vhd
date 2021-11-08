@@ -91,6 +91,7 @@ begin
     g_HPS_NUM_MDT_CH := 6;
   else generate
     
+    
   end generate flavor;
 
   ctrl : entity shared_lib.vhdl_utils_deserializer generic map (c_CTRL_LEN) port map(clk,rst,ctrl_b,ctrl_v);
