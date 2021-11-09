@@ -3,15 +3,15 @@
 --Tool Version: Vivado v.2020.2 (lin64) Build 3064766 Wed Nov 18 09:12:47 MST 2020
 --Date        : Fri Nov  5 11:06:18 2021
 --Host        : uclhc-2.ps.uci.edu running 64-bit CentOS Linux release 7.9.2009 (Core)
---Command     : generate_target top_mtc.bd
---Design      : top_mtc
+--Command     : generate_target mtc_impl_wrapper.bd
+--Design      : mtc_impl_wrapper
 --Purpose     : IP block netlist
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
-entity top_mtc is
+entity mtc_impl_wrapper is
   port (
     FIFO_READ_empty : out STD_LOGIC;
     FIFO_READ_rd_data : out STD_LOGIC_VECTOR ( 127 downto 0 );
@@ -22,9 +22,9 @@ entity top_mtc is
     clk : in STD_LOGIC;
     rst : in STD_LOGIC_VECTOR ( 7 downto 0 )
   );
-end top_mtc;
+end mtc_impl_wrapper;
 
-architecture STRUCTURE of top_mtc is
+architecture STRUCTURE of mtc_impl_wrapper is
   component mtc_impl is
   port (
     rst : in STD_LOGIC_VECTOR ( 7 downto 0 );

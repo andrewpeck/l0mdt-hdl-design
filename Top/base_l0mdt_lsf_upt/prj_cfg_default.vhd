@@ -58,6 +58,7 @@ package body prj_cfg is
 
 
     proj_cfg.NUM_THREADS   := 3;
+    proj_cfg.NUM_MTC            := 3; --default 3 MTCs connecting to primary SL
 
     if (c_NUM_POLMUX_INNER > 0) then
      proj_cfg.ENABLE_ST_INN := '1';
