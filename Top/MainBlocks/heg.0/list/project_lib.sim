@@ -1,5 +1,5 @@
 #Simulator questa
-shared/shared_lib.sim
+shared/shared_lib.sim lib=shared_lib
 # UserLogic/ult/ult_lib.sim
 UserLogic/heg/top_heg_sim.vhd topsim=top_heg_tb runtime=150us
 
