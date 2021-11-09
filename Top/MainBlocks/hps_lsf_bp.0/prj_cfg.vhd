@@ -34,7 +34,6 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- Sector information
   --   --------------------------------------------------------------------------------
-  --   proj_cfg.SECTOR_ID               := 3,
   --   proj_cfg.ST_nBARREL_ENDCAP       := '0', -- 0: barrel    1: Endcap
   --   proj_cfg.ENDCAP_nSMALL_LARGE     := '0', -- 0: small     1: large
   --   proj_cfg.ENABLE_NEIGHBORS        := '1', -- 0: disabled  1: enabled
@@ -51,8 +50,9 @@ package body prj_cfg is
   --   --------------------------------------------------------------------------------
   --   -- Segment Finder
   --   --------------------------------------------------------------------------------
-    proj_cfg.ENABLE_SF  := '1';
-    proj_cfg.SF_TYPE       := '0';  -- 0: CSF 1:LSF
+    proj_cfg.ENABLE_SF      := '1';
+    proj_cfg.SF_TYPE        := '0';  -- 0: CSF 1:LSF
+    proj_cfg.SF_BYPASS      := '0';
  
     return proj_cfg;
   end function set_project_cfg;
