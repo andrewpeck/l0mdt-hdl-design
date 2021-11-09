@@ -41,7 +41,7 @@ entity top_hps_tb is
     -- parameters
     FLAVOUR             : integer := 0;
     g_STATION_RADIUS    : integer := 0;  --station
-    g_HPS_NUM_MDT_CH     : integer := 6 
+    g_HPS_NUM_MDT_CH    : integer := 6 
   );
   -- port (
     -- clk                 : in std_logic;
@@ -68,11 +68,11 @@ architecture beh of top_hps_tb is
   signal clk                : std_logic;
   signal rst                : std_logic;
   signal glob_en            : std_logic := '1';
-  signal ctrl_v               : H2S_HPS_CTRL_t;
-  signal mon_v                : H2S_HPS_MON_t;
+  signal ctrl_v             : H2S_HPS_CTRL_t;
+  signal mon_v              : H2S_HPS_MON_t;
   signal i_uCM2hps_av       : ucm2hps_bus_avt(c_NUM_THREADS -1 downto 0);
   signal i_mdt_tar_av       : tar2hps_bus_avt(g_HPS_NUM_MDT_CH -1 downto 0);
-  signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0)
+  signal o_sf2pt_av         : sf2pt_bus_avt(c_NUM_THREADS -1 downto 0);
 
 begin
 
