@@ -33,7 +33,7 @@ CHK:ull_vu13_b3a_ucm_mpl_hps_csf:
   variables: 
     extends: .vars
     PROJECT_NAME: ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf
-    BLOCK: ALL
+    BLOCK: HEG
   needs: ["SIM:ull_vu13_b3a_ucm_mpl_hps_csf"]
   artifacts:
     name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
