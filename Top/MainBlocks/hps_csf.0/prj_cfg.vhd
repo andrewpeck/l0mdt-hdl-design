@@ -51,8 +51,8 @@ package body prj_cfg is
   --   -- Segment Finder
   --   --------------------------------------------------------------------------------
     proj_cfg.ENABLE_SF      := '1';
-    proj_cfg.SF_TYPE        := '1';  -- 0: CSF 1:LSF
-    proj_cfg.SF_BYPASS      := '1';
+    proj_cfg.SF_TYPE        := '0';  -- 0: CSF 1:LSF
+    proj_cfg.SF_BYPASS      := '0';
  
     return proj_cfg;
   end function set_project_cfg;
