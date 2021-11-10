@@ -168,10 +168,11 @@ package body hp_pkg is
     return y;
   end function structify;
   function structify(x: std_logic_vector) return hp_heg2hp_window_at is
-    variable y :  hp_heg2hp_window_at(x'range);
+    variable y :  hp_heg2hp_window_at(x'left/18 downto 0);
     variable msb : integer := x'left;
   begin
     l: for i in y'range loop
+      -- report "The value of 'x' is " & integer'image(x'range);
       y(i) := structify(x(msb downto msb-18+1));
       msb := msb - 18;
     end loop l;

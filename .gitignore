@@ -46,3 +46,4 @@ Projects/
 #UserLogic/*/IP/**/*.xci
 __init__.py
 *.vstf
+.nfs*

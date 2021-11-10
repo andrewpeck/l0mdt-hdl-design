@@ -108,6 +108,7 @@ begin
       end if;
     end process;
   end generate IN_PL_GEN;
+
   C_PL: if g_OPERAND_C_WIDTH > 1 generate
     IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
       mul_in_pipe_C(0) <= i_in_C;
@@ -130,6 +131,7 @@ begin
       end process;
     end generate IN_PL_GEN;
   end generate C_PL;
+    
   D_PL: if g_OPERAND_D_WIDTH > 1 generate
     IN_PL_GEN: if g_IN_PIPE_STAGES = 0 generate
       mul_in_pipe_D(0) <= i_in_D;
@@ -169,6 +171,10 @@ begin
               int_Result <=std_logic_vector(
                 signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
               );
+          elsif g_OPERATION = "--" then
+            int_Result <=std_logic_vector(
+              signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) - signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))
+            );
           elsif g_OPERATION = "*-" then
               int_Result <=std_logic_vector(
                 (signed(mul_in_pipe_A(g_IN_PIPE_STAGES-1)) * signed( mul_in_pipe_B(g_IN_PIPE_STAGES-1))) - signed( mul_in_pipe_C(g_IN_PIPE_STAGES-1))

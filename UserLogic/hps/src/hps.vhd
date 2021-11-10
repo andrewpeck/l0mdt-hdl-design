@@ -34,7 +34,6 @@ library hps_lib;
 use hps_lib.hps_pkg.all;
 
 library ctrl_lib;
--- use ctrl_lib.ctrl_constants_pkg.all;
 use ctrl_lib.H2S_CTRL.all;
 
 entity hps is

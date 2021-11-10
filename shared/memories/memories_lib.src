@@ -1,6 +1,6 @@
 shared/memories/src/pipeline.vhd
 shared/memories/src/ring_buffer_v2.vhd
-shared/memories/src/vhdl_ram_memory.vhd
+# shared/memories/src/vhdl_ram_memory.vhd
 #-----CSF/PT memories-----
 shared/memories/src/bram.vhd
 shared/memories/src/rom.v
