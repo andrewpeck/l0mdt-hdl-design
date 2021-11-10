@@ -10,14 +10,14 @@ SIM:csf.0:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: csf.0
+      PROJECT_NAME: MainBlocks/csf.0
     allow_failure: false
 
 CHK:csf.0:
   extends: .sim_check
   variables: 
     extends: .vars
-    PROJECT_NAME: csf.0
+    PROJECT_NAME: MainBlocks/csf.0
     BLOCK: CSF
   needs: ["SIM:csf.0"]
   artifacts:

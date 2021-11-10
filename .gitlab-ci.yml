@@ -76,3 +76,5 @@ include:
     - local: '/Top/MainBlocks/hps_lsf_bp.0/gitlab-ci.yml'
     - local: '/Top/MainBlocks/hps_lsf_bp.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/hps_lsf_bp.2/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
+    # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
