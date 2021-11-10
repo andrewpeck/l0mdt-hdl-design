@@ -3,13 +3,13 @@
 --
 --
 --------------------------------------------------------------------------------
---  Project: ATLAS L0MDT Trigger 
---  Module: User Logic Top 
+--  Project: ATLAS L0MDT Trigger
+--  Module: User Logic Top
 --  Description:
 --
 --------------------------------------------------------------------------------
 --  Revisions:
---      
+--
 --------------------------------------------------------------------------------
 
 library ieee;
@@ -37,6 +37,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
 
 
 entity top_ult is
@@ -78,6 +79,9 @@ entity top_ult is
     mpl_ctrl_r            : in  MPL_CTRL_t;
     mpl_mon_r             : out MPL_MON_t;
 
+    fm_ctrl_v             : in FM_CTRL_t;
+    fm_mon_v              : out FM_MON_t;
+
     -- TDC Hits from Polmux
     i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_middle_tdc_hits : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -100,8 +104,8 @@ entity top_ult is
     i_minus_neighbor_segments : in sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
-                                                  + c_HPS_MAX_HP_MID   
+    o_daq_streams     : out felix_stream_bus_avt (c_HPS_MAX_HP_INN
+                                                  + c_HPS_MAX_HP_MID
                                                   + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
@@ -207,6 +211,9 @@ begin
       tf_mon_v   => tf_mon_v,
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
+
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,
 
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
       o_daq_streams => o_daq_streams,
