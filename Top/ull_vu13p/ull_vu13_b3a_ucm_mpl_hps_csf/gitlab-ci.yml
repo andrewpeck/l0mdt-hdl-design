@@ -41,13 +41,11 @@ CHK:ull_vu13_b3a_ucm_mpl_hps_csf:
       - $CI_PROJECT_DIR/bin
     expire_in: 30 day
 
-
 # sim_comp:ull_ku15_b3a_ucm_mpl_hps_csf_questa:
 #     extends: .simulate_project_comp
 #     variables:
 #       extends: .vars
 #       PROJECT_NAME: ull_ku15_b3a_ucm_mpl_hps_csf_questa
-
 
 # RIV:ull_vu13_b3a_ucm_mpl_hps_csf:
 #     extends: .riviera_sim
