@@ -142,7 +142,7 @@ package cfg_global_default_pkg is
     NUM_THREADS                   => 3 ,   -- default 3
     -- MTC configuration based on links to primary, neighboring sectors
     -- (barrel, endcap)
-    NUM_MTC                       => 1    -- default 3, connecting to primary SL
+    NUM_MTC                       => 3    -- default 3, connecting to primary SL
   );
 
   function get_num_HP(enable_list : std_logic_vector) return integer;

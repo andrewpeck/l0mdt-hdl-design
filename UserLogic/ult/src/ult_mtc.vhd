@@ -46,7 +46,7 @@ architecture behavioral of mtc_builder is
 begin
 
   MTC_GEN : if c_MTC_ENABLED = '1' generate
-    MTC: entity mtc_lib.top_mtc
+    MTC: entity mtc_lib.top_mtc_wrapper
 
     port map (
       clock               => clock_and_control.clk,
