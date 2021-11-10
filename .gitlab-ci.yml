@@ -56,8 +56,8 @@ include:
       # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
       #- local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
       # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-    # - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    # - local: '/Top/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
       # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules vU13P
