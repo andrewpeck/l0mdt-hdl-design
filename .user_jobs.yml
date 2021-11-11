@@ -118,7 +118,11 @@
   image: gitlab-registry.cern.ch/atlas-tdaq-phase2-l0mdt-electronics/mdt-docker:master
   stage: user_proj
   script:
-    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$PROJECT_NAME/$PROJECT_NAME.sim/project_lib_sim/behav/questa
+    - export AUX_PRJ_FOLDER=${PROJECT_NAME%/*}
+    - echo $AUX_PRJ_FOLDER
+    - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
+    - echo $AUX_PRJ_NAME
+    - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - mv Plots bin/$PROJECT_NAME/SimPlots
   allow_failure: true
