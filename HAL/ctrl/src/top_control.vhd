@@ -16,6 +16,8 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
+
 --use ctrl_lib.FW_TIMESTAMP.all;
 --use ctrl_lib.FW_VERSION.all;
 use ctrl_lib.axiRegPkg.all;
