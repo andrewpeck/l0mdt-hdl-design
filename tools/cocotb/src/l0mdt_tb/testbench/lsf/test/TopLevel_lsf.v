@@ -63,7 +63,7 @@
 		       .DATA_WIDTH_B(DATA_WIDTH),
 		       .SPY_MEM_WIDTH_A(7),
 		       .SPY_MEM_WIDTH_B(7),
-		       .EL_MEM_WIDTH_A(7),
+		       .EL_MEM_WIDTH(7),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(1)
 		       ) spybuffer (
@@ -125,7 +125,7 @@
 		       .DATA_WIDTH_B(DATA_WIDTH),
 		       .SPY_MEM_WIDTH_A(7),
 		       .SPY_MEM_WIDTH_B(7),
-		       .EL_MEM_WIDTH_A(7),
+		       .EL_MEM_WIDTH(7),
 		       .FC_FIFO_WIDTH(FIFO_DEPTH),
 		       .PASSTHROUGH(1)
                        ) spybuffer (
