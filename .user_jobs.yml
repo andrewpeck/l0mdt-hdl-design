@@ -119,7 +119,9 @@
   stage: user_proj
   script:
     - export AUX_PRJ_FOLDER=${PROJECT_NAME%/*}
+    - echo $AUX_PRJ_FOLDER
     - export AUX_PRJ_NAME=${PROJECT_NAME##**/}
+    - echo $AUX_PRJ_NAME
     - python3 tools/simCheck/checker.py -b $BLOCK -f Projects/$AUX_PRJ_FOLDER/$AUX_PRJ_NAME/$AUX_PRJ_NAME.sim/project_lib_sim/behav/questa
     - mkdir -p bin/$PROJECT_NAME
     - mv Plots bin/$PROJECT_NAME/SimPlots
