@@ -35,8 +35,8 @@ package spybuffer_pkg is
 
       -- The size and width of the event list / metadata list memory.
       EL_MEM_SIZE    : integer := 16;
-      EL_MEM_WIDTH_A : integer := 4;
-      EL_MEM_WIDTH_B : integer := 4;
+      EL_MEM_WIDTH   : integer := 4;
+
 
       -- Passthrough mode setting. If PASSTHROUGH is set to 1, then we
       -- will *not* instantiate the FIFO. Instead, input will be continually
@@ -68,7 +68,7 @@ package spybuffer_pkg is
       -- Debug
       -- The current values of the spy memory write pointers; can be used to measure
       -- "how full" the spy memory is (and also; where to start reading from).
-      dbg_spy_meta_write_addr : out std_logic_vector (EL_MEM_WIDTH_A-1 downto 0);
+      dbg_spy_meta_write_addr : out std_logic_vector (EL_MEM_WIDTH -1 downto 0);
       dbg_spy_write_addr      : out std_logic_vector (SPY_MEM_WIDTH_B-1 downto 0);
 
       -- Fast Monitoring Signals (To IPBUS or BlockRAM Controller)
@@ -85,11 +85,11 @@ package spybuffer_pkg is
       spy_addr         : in  std_logic_vector (SPY_MEM_WIDTH_B-1 downto 0);
       spy_write_enable : in  std_logic;
       spy_write_data   : in  std_logic_vector (DATA_WIDTH_B-1 downto 0);
-      spy_read_enable  : in  std_logic;
+      spy_en           : in  std_logic;
       spy_data         : out std_logic_vector (DATA_WIDTH_B-1 downto 0);
 
       -- Interface for Spy Meta Memory - Additional information on data stored in Spy Memory
-      spy_meta_read_addr : in  std_logic_vector (EL_MEM_WIDTH_B-1 downto 0);
+      spy_meta_read_addr : in  std_logic_vector (EL_MEM_WIDTH-1 downto 0);
       spy_meta_read_data : out std_logic_vector (SPY_MEM_WIDTH_A downto 0)
       );
   end component;
