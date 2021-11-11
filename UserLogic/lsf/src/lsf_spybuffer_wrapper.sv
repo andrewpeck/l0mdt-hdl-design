@@ -88,11 +88,12 @@ module lsf_spybuffer_wrapper #(
 			     // to use the spy-buffer functionality, whereas for now we just
 			     // want to use the fifo functionality.
 			     .spy_clock(clock),
+			     .spy_clock_meta(clock),
 			     .freeze(1'b0),
 			     .playback(2'b0),
 			     .spy_write_enable(0),
 			     .spy_write_data(0),
-			     .spy_read_enable(1'b0),
+			     .spy_en(1'b0),
 //			     .spy_meta_read_enable(1'b0),
 			     .spy_addr('b0),
 //			     .spy_meta_read_addr(1'b0),
@@ -126,9 +127,9 @@ module lsf_spybuffer_wrapper #(
 				 .spy_clock(clock),
 				 .freeze(0), //sb_lsf_mdt_hits_freeze),
 				 .playback(0),//sb_lsf_mdt_hits_playback),
-				 .spy_write_enable(sb_lsf_mdt_hits_playback_we),
+				 .spy_write_enable(), //sb_lsf_mdt_hits_playback_we),
 				 .spy_write_data(sb_lsf_mdt_hits_playback_wdata),
-				 .spy_read_enable(sb_lsf_mdt_hits_re),
+				 .spy_en(sb_lsf_mdt_hits_re ),
 //				 .spy_meta_read_enable(sb_lsf_mdt_hits_meta_re),
 				 .spy_addr(sb_lsf_mdt_hits_raddr),
 //			    	 .spy_meta_read_addr(sb_lsf_mdt_hits_meta_raddr),
@@ -191,7 +192,7 @@ module lsf_spybuffer_wrapper #(
 	       .PASSTHROUGH(1),
 	       .SPY_MEM_WIDTH_A(LSF_SB_MEM_WIDTH),
 	       .SPY_MEM_WIDTH_B(LSF_SB_MEM_WIDTH),
-	       .EL_MEM_WIDTH_A(LSF_SB_EL_MEM_WIDTH)
+	       .EL_MEM_WIDTH(LSF_SB_EL_MEM_WIDTH)
 	       ) lsf_output_buffer (
 				    .rclock(clock),
 				    .wclock(clock),
@@ -211,7 +212,7 @@ module lsf_spybuffer_wrapper #(
 				    .playback(2'b0),
 				    .spy_write_enable(0),
 				    .spy_write_data(0),
-				    .spy_read_enable(1'b0),
+				    .spy_en(1'b0),
 				    //.spy_meta_read_enable(1'b0),
 				    .spy_addr('b0),
 				   // .spy_meta_read_addr(1'b0),
