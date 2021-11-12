@@ -113,7 +113,7 @@ begin
 
           if i_actions.enable = '1' then
             int_en <= '1';
-          else--if i_actions.disable = '1' then
+          elsif i_actions.disable = '1' then
             int_en <= '0';
           end if;
           
@@ -130,6 +130,7 @@ begin
         o_status.ENABLED <= local_en;
         o_status.READY <= not local_rst;
         o_status.ERROR <= (others => '0');
+        o_status.FREEZED <= i_freeze;
       end if;
     end if;
   end process;

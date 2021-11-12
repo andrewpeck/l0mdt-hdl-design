@@ -23,6 +23,7 @@
   typedef struct packed {
     logic  ENABLED;
     logic  READY;
+    logic  FREEZED;
     logic [8-1:0] ERROR;
   } TAR_STATUS_MON_t;
 

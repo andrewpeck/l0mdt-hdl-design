@@ -91,6 +91,8 @@ begin  -- architecture behavioral
         regRdAck  <= '1';
         case to_integer(unsigned(localAddress(11 downto 0))) is
           
+        when 0 => --0x0
+          localRdData( 3)            <=  reg_data( 0)( 3);                                                --
         when 1 => --0x1
           localRdData( 4)            <=  reg_data( 1)( 4);                                                --
           localRdData( 5)            <=  reg_data( 1)( 5);                                                --
@@ -98,6 +100,7 @@ begin  -- architecture behavioral
         when 2 => --0x2
           localRdData( 0)            <=  Mon.STATUS.ENABLED;                                              --
           localRdData( 1)            <=  Mon.STATUS.READY;                                                --
+          localRdData( 2)            <=  Mon.STATUS.FREEZED;                                              --
           localRdData(11 downto  4)  <=  Mon.STATUS.ERROR;                                                --
         when 2320 => --0x910
           localRdData( 0)            <=  Mon.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).SIGNALS.rd_rdy;          --Read ready
@@ -524,6 +527,7 @@ begin  -- architecture behavioral
   -------------------------------------------------------------------------------
 
   -- Register mapping to ctrl structures
+  Ctrl.ACTIONS.FREEZE                                          <=  reg_data( 0)( 3);                 
   Ctrl.CONFIGS.INPUT_EN                                        <=  reg_data( 1)( 4);                 
   Ctrl.CONFIGS.OUTPUT_EN                                       <=  reg_data( 1)( 5);                 
   Ctrl.CONFIGS.FLUSH_MEM_RESET                                 <=  reg_data( 1)( 6);                 
@@ -700,6 +704,7 @@ begin  -- architecture behavioral
   reg_writes: process (clk_axi, reset_axi_n) is
   begin  -- process reg_writes
     if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 0)( 3)  <= DEFAULT_TAR_CTRL_t.ACTIONS.FREEZE;
       reg_data( 1)( 4)  <= DEFAULT_TAR_CTRL_t.CONFIGS.INPUT_EN;
       reg_data( 1)( 5)  <= DEFAULT_TAR_CTRL_t.CONFIGS.OUTPUT_EN;
       reg_data( 1)( 6)  <= DEFAULT_TAR_CTRL_t.CONFIGS.FLUSH_MEM_RESET;
@@ -876,7 +881,6 @@ begin  -- architecture behavioral
       Ctrl.ACTIONS.RESET <= '0';
       Ctrl.ACTIONS.ENABLE <= '0';
       Ctrl.ACTIONS.DISABLE <= '0';
-      Ctrl.ACTIONS.FREEZE <= '0';
       Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).SIGNALS.wr_req <= '0';
       Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).SIGNALS.wr_ack <= '0';
       Ctrl.PL_ST.PL_ST(0).PL_CHAMBER.PL_MEM(0).SIGNALS.rd_req <= '0';
@@ -982,7 +986,7 @@ begin  -- architecture behavioral
           Ctrl.ACTIONS.RESET                                       <=  localWrData( 0);               
           Ctrl.ACTIONS.ENABLE                                      <=  localWrData( 1);               
           Ctrl.ACTIONS.DISABLE                                     <=  localWrData( 2);               
-          Ctrl.ACTIONS.FREEZE                                      <=  localWrData( 3);               
+          reg_data( 0)( 3)                                         <=  localWrData( 3);                --
         when 1 => --0x1
           reg_data( 1)( 4)                                         <=  localWrData( 4);                --
           reg_data( 1)( 5)                                         <=  localWrData( 5);                --

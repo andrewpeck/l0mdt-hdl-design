@@ -45,6 +45,7 @@ package TAR_CTRL is
   type TAR_STATUS_MON_t is record
     ENABLED : std_logic;
     READY : std_logic;
+    FREEZED : std_logic;
     ERROR : std_logic_vector(8-1 downto 0);
   end record TAR_STATUS_MON_t;
   function len(x: TAR_STATUS_MON_t) return natural;
@@ -529,6 +530,7 @@ package body TAR_CTRL is
   begin
     l := l + len(x.ENABLED);
     l := l + len(x.READY);
+    l := l + len(x.FREEZED);
     l := l + len(x.ERROR);
     return l;
   end function len;
@@ -537,6 +539,7 @@ package body TAR_CTRL is
   begin
     l := l + width(x.ENABLED);
     l := l + width(x.READY);
+    l := l + width(x.FREEZED);
     l := l + width(x.ERROR);
     return l;
   end function width;
@@ -549,12 +552,16 @@ package body TAR_CTRL is
       left := left + len(x.ENABLED);
       assign(y(left to left+len(x.READY)-1), vectorify(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
+      assign(y(left to left+len(x.FREEZED)-1), vectorify(x.FREEZED, y(left to left+len(x.FREEZED)-1)));
+      left := left + len(x.FREEZED);
       assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
       assign(y(left downto left-len(x.ENABLED)+1), vectorify(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
       assign(y(left downto left-len(x.READY)+1), vectorify(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
+      assign(y(left downto left-len(x.FREEZED)+1), vectorify(x.FREEZED, y(left downto left-len(x.FREEZED)+1)));
+      left := left - len(x.FREEZED);
       assign(y(left downto left-len(x.ERROR)+1), vectorify(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
@@ -568,12 +575,16 @@ package body TAR_CTRL is
       left := left + len(x.ENABLED);
       assign(y(left to left+len(x.READY)-1), convert(x.READY, y(left to left+len(x.READY)-1)));
       left := left + len(x.READY);
+      assign(y(left to left+len(x.FREEZED)-1), convert(x.FREEZED, y(left to left+len(x.FREEZED)-1)));
+      left := left + len(x.FREEZED);
       assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
       assign(y(left downto left-len(x.ENABLED)+1), convert(x.ENABLED, y(left downto left-len(x.ENABLED)+1)));
       left := left - len(x.ENABLED);
       assign(y(left downto left-len(x.READY)+1), convert(x.READY, y(left downto left-len(x.READY)+1)));
       left := left - len(x.READY);
+      assign(y(left downto left-len(x.FREEZED)+1), convert(x.FREEZED, y(left downto left-len(x.FREEZED)+1)));
+      left := left - len(x.FREEZED);
       assign(y(left downto left-len(x.ERROR)+1), convert(x.ERROR, y(left downto left-len(x.ERROR)+1)));
     end if;
     return y;
@@ -587,12 +598,16 @@ package body TAR_CTRL is
       left := left + len(y.ENABLED);
       y.READY := structify(x(left to left+len(y.READY)-1), y.READY);
       left := left + len(y.READY);
+      y.FREEZED := structify(x(left to left+len(y.FREEZED)-1), y.FREEZED);
+      left := left + len(y.FREEZED);
       y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
       y.ENABLED := structify(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
       left := left - len(y.ENABLED);
       y.READY := structify(x(left downto left-len(y.READY)+1), y.READY);
       left := left - len(y.READY);
+      y.FREEZED := structify(x(left downto left-len(y.FREEZED)+1), y.FREEZED);
+      left := left - len(y.FREEZED);
       y.ERROR := structify(x(left downto left-len(y.ERROR)+1), y.ERROR);
     end if;
     return y;
@@ -606,12 +621,16 @@ package body TAR_CTRL is
       left := left + len(y.ENABLED);
       y.READY := convert(x(left to left+len(y.READY)-1), y.READY);
       left := left + len(y.READY);
+      y.FREEZED := convert(x(left to left+len(y.FREEZED)-1), y.FREEZED);
+      left := left + len(y.FREEZED);
       y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
       y.ENABLED := convert(x(left downto left-len(y.ENABLED)+1), y.ENABLED);
       left := left - len(y.ENABLED);
       y.READY := convert(x(left downto left-len(y.READY)+1), y.READY);
       left := left - len(y.READY);
+      y.FREEZED := convert(x(left downto left-len(y.FREEZED)+1), y.FREEZED);
+      left := left - len(y.FREEZED);
       y.ERROR := convert(x(left downto left-len(y.ERROR)+1), y.ERROR);
     end if;
     return y;
@@ -621,6 +640,7 @@ package body TAR_CTRL is
   begin
     y.ENABLED := nullify(t.ENABLED);
     y.READY := nullify(t.READY);
+    y.FREEZED := nullify(t.FREEZED);
     y.ERROR := nullify(t.ERROR);
     return y;
   end function nullify;
@@ -629,6 +649,7 @@ package body TAR_CTRL is
   begin
     y.ENABLED := zeroed(t.ENABLED);
     y.READY := zeroed(t.READY);
+    y.FREEZED := zeroed(t.FREEZED);
     y.ERROR := zeroed(t.ERROR);
     return y;
   end function zeroed;

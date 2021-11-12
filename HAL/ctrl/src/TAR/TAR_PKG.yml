@@ -25,6 +25,7 @@ hdl:
 - TAR_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
+  - FREEZED : [ type: logic ]
   - ERROR : [ type: logic, length: 8 ]
 
 

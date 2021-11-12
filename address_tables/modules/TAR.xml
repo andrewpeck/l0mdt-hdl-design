@@ -4,7 +4,7 @@
     <node id="RESET"          mask="0x000000001" permission="w"/>
     <node id="ENABLE"         mask="0x000000002" permission="w"/>
     <node id="DISABLE"        mask="0x000000004" permission="w"/>
-    <node id="FREEZE"         mask="0x000000008" permission="w"/>
+    <node id="FREEZE"         mask="0x000000008" permission="rw" parameters="default=0"/>
   </node>
 
   <node id="CONFIGS" address="0x00000001">
@@ -17,6 +17,7 @@
   <node id="STATUS" address="0x00000002">
     <node id="ENABLED" mask="0x00000001" permission="r"/>
     <node id="READY"   mask="0x00000002" permission="r"/>
+    <node id="FREEZED" mask="0x00000004" permission="r"/>
     <node id="ERROR"   mask="0x00000FF0" permission="r"/>
   </node>
 
