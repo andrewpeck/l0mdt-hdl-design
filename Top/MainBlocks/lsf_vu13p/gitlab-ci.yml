@@ -5,6 +5,7 @@ GEN:lsf_vu13p:
       extends: .vars
       PROJECT_NAME: MainBlocks/lsf_vu13p
       HOG_NO_BITSTREAM: 1 # if 1 runs only the synthesis
+      HOG_CHECK_SYNTAX : 0
 
 
 # SIM:example:
