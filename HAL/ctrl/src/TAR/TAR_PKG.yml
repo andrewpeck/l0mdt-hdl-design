@@ -30,6 +30,7 @@ hdl:
 
 - TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t:
@@ -38,6 +39,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t:

@@ -82,8 +82,8 @@ architecture beh of tar is
   -- signal ctrl_apb_mem_av : ctrl_apb_mem_avt;
   -- signal mon_apb_mem_av  : mon_apb_mem_avt; 
 
-  constant PL_ST_CTRL_LEN : integer := 426;
-  constant PL_ST_MON_LEN : integer := 258;
+  constant PL_ST_CTRL_LEN : integer := len(ctrl_r.PL_ST.PL_ST(0));--426;
+  constant PL_ST_MON_LEN : integer := len(mon_r.PL_ST.PL_ST(0));--258;
 
   signal ctrl_pl_inn_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(0))-1  downto 0);
   signal ctrl_pl_mid_v : std_logic_vector(PL_ST_CTRL_LEN - 1 downto 0);--(len(ctrl_r.PL_ST.PL_ST(1))-1  downto 0);

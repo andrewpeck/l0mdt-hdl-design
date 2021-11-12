@@ -67,8 +67,8 @@ architecture beh of tar_station is
   -- signal ctrl_apb_mem_r : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_t;
   -- signal mon_apb_mem_r  : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_t; 
 
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN : integer := 71;
-  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN : integer := 43;
+  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN : integer := len(ctrl_r.PL_CHAMBER.PL_MEM(0));--71;
+  constant TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN : integer := len(mon_r.PL_CHAMBER.PL_MEM(0));--43;
 
   type ctrl_apb_mem_avt is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_CTRL_LEN-1  downto 0);
   type mon_apb_mem_avt  is array (5 downto 0) of std_logic_vector(TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_MON_LEN-1  downto 0);

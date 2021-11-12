@@ -65,12 +65,12 @@ end entity top_tar;
 
 architecture beh of top_tar is
 
-  constant  c_CTRL_LEN :  integer := 1711;
-  constant c_MON_LEN : integer := 1042;
-  signal ctrl_r            : tar_CTRL_t;
-  signal mon_r             : tar_MON_t;
-  signal ctrl_v            : std_logic_vector(c_CTRL_LEN -1 downto 0);
-  signal mon_v             : std_logic_vector(c_MON_LEN -1 downto 0);
+  signal ctrl_r             : tar_CTRL_t;
+  signal mon_r              : tar_MON_t;
+  constant  c_CTRL_LEN      : integer := 1807;
+  constant c_MON_LEN        : integer := 1066;
+  signal ctrl_v             : std_logic_vector(c_CTRL_LEN -1 downto 0);
+  signal mon_v              : std_logic_vector(c_MON_LEN -1 downto 0);
 
   signal i_inn_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
   signal i_mid_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);

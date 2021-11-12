@@ -58,6 +58,7 @@ package TAR_CTRL is
 
   type TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is record
     rd_rdy : std_logic;
+    freeze_ena : std_logic;
   end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
   function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural;
   function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural;
@@ -74,6 +75,8 @@ package TAR_CTRL is
     rd_req : std_logic;
     rd_ack : std_logic;
     flush_req : std_logic;
+    freeze_req : std_logic;
+    mem_sel : std_logic_vector(3-1 downto 0);
   end record TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
   function len(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural;
   function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural;
@@ -634,12 +637,14 @@ package body TAR_CTRL is
     variable l : natural := 0;
   begin
     l := l + len(x.rd_rdy);
+    l := l + len(x.freeze_ena);
     return l;
   end function len;
   function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return natural is
     variable l : natural := 0;
   begin
     l := l + width(x.rd_rdy);
+    l := l + width(x.freeze_ena);
     return l;
   end function width;
   function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t; t: std_logic_vector) return std_logic_vector is
@@ -648,8 +653,12 @@ package body TAR_CTRL is
   begin
     if t'ascending then
       assign(y(left to left+len(x.rd_rdy)-1), vectorify(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.freeze_ena)-1), vectorify(x.freeze_ena, y(left to left+len(x.freeze_ena)-1)));
     else
       assign(y(left downto left-len(x.rd_rdy)+1), vectorify(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.freeze_ena)+1), vectorify(x.freeze_ena, y(left downto left-len(x.freeze_ena)+1)));
     end if;
     return y;
   end function vectorify;
@@ -659,8 +668,12 @@ package body TAR_CTRL is
   begin
     if t'ascending then
       assign(y(left to left+len(x.rd_rdy)-1), convert(x.rd_rdy, y(left to left+len(x.rd_rdy)-1)));
+      left := left + len(x.rd_rdy);
+      assign(y(left to left+len(x.freeze_ena)-1), convert(x.freeze_ena, y(left to left+len(x.freeze_ena)-1)));
     else
       assign(y(left downto left-len(x.rd_rdy)+1), convert(x.rd_rdy, y(left downto left-len(x.rd_rdy)+1)));
+      left := left - len(x.rd_rdy);
+      assign(y(left downto left-len(x.freeze_ena)+1), convert(x.freeze_ena, y(left downto left-len(x.freeze_ena)+1)));
     end if;
     return y;
   end function convert;
@@ -670,8 +683,12 @@ package body TAR_CTRL is
   begin
     if x'ascending then
       y.rd_rdy := structify(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.freeze_ena := structify(x(left to left+len(y.freeze_ena)-1), y.freeze_ena);
     else
       y.rd_rdy := structify(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.freeze_ena := structify(x(left downto left-len(y.freeze_ena)+1), y.freeze_ena);
     end if;
     return y;
   end function structify;
@@ -681,8 +698,12 @@ package body TAR_CTRL is
   begin
     if x'ascending then
       y.rd_rdy := convert(x(left to left+len(y.rd_rdy)-1), y.rd_rdy);
+      left := left + len(y.rd_rdy);
+      y.freeze_ena := convert(x(left to left+len(y.freeze_ena)-1), y.freeze_ena);
     else
       y.rd_rdy := convert(x(left downto left-len(y.rd_rdy)+1), y.rd_rdy);
+      left := left - len(y.rd_rdy);
+      y.freeze_ena := convert(x(left downto left-len(y.freeze_ena)+1), y.freeze_ena);
     end if;
     return y;
   end function convert;
@@ -690,12 +711,14 @@ package body TAR_CTRL is
   variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
   begin
     y.rd_rdy := nullify(t.rd_rdy);
+    y.freeze_ena := nullify(t.freeze_ena);
     return y;
   end function nullify;
   function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t is
   variable y: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
   begin
     y.rd_rdy := zeroed(t.rd_rdy);
+    y.freeze_ena := zeroed(t.freeze_ena);
     return y;
   end function zeroed;
 
@@ -707,6 +730,8 @@ package body TAR_CTRL is
     l := l + len(x.rd_req);
     l := l + len(x.rd_ack);
     l := l + len(x.flush_req);
+    l := l + len(x.freeze_req);
+    l := l + len(x.mem_sel);
     return l;
   end function len;
   function width(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return natural is
@@ -717,6 +742,8 @@ package body TAR_CTRL is
     l := l + width(x.rd_req);
     l := l + width(x.rd_ack);
     l := l + width(x.flush_req);
+    l := l + width(x.freeze_req);
+    l := l + width(x.mem_sel);
     return l;
   end function width;
   function vectorify(x: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t; t: std_logic_vector) return std_logic_vector is
@@ -733,6 +760,10 @@ package body TAR_CTRL is
       assign(y(left to left+len(x.rd_ack)-1), vectorify(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
       left := left + len(x.rd_ack);
       assign(y(left to left+len(x.flush_req)-1), vectorify(x.flush_req, y(left to left+len(x.flush_req)-1)));
+      left := left + len(x.flush_req);
+      assign(y(left to left+len(x.freeze_req)-1), vectorify(x.freeze_req, y(left to left+len(x.freeze_req)-1)));
+      left := left + len(x.freeze_req);
+      assign(y(left to left+len(x.mem_sel)-1), vectorify(x.mem_sel, y(left to left+len(x.mem_sel)-1)));
     else
       assign(y(left downto left-len(x.wr_req)+1), vectorify(x.wr_req, y(left downto left-len(x.wr_req)+1)));
       left := left - len(x.wr_req);
@@ -743,6 +774,10 @@ package body TAR_CTRL is
       assign(y(left downto left-len(x.rd_ack)+1), vectorify(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
       left := left - len(x.rd_ack);
       assign(y(left downto left-len(x.flush_req)+1), vectorify(x.flush_req, y(left downto left-len(x.flush_req)+1)));
+      left := left - len(x.flush_req);
+      assign(y(left downto left-len(x.freeze_req)+1), vectorify(x.freeze_req, y(left downto left-len(x.freeze_req)+1)));
+      left := left - len(x.freeze_req);
+      assign(y(left downto left-len(x.mem_sel)+1), vectorify(x.mem_sel, y(left downto left-len(x.mem_sel)+1)));
     end if;
     return y;
   end function vectorify;
@@ -760,6 +795,10 @@ package body TAR_CTRL is
       assign(y(left to left+len(x.rd_ack)-1), convert(x.rd_ack, y(left to left+len(x.rd_ack)-1)));
       left := left + len(x.rd_ack);
       assign(y(left to left+len(x.flush_req)-1), convert(x.flush_req, y(left to left+len(x.flush_req)-1)));
+      left := left + len(x.flush_req);
+      assign(y(left to left+len(x.freeze_req)-1), convert(x.freeze_req, y(left to left+len(x.freeze_req)-1)));
+      left := left + len(x.freeze_req);
+      assign(y(left to left+len(x.mem_sel)-1), convert(x.mem_sel, y(left to left+len(x.mem_sel)-1)));
     else
       assign(y(left downto left-len(x.wr_req)+1), convert(x.wr_req, y(left downto left-len(x.wr_req)+1)));
       left := left - len(x.wr_req);
@@ -770,6 +809,10 @@ package body TAR_CTRL is
       assign(y(left downto left-len(x.rd_ack)+1), convert(x.rd_ack, y(left downto left-len(x.rd_ack)+1)));
       left := left - len(x.rd_ack);
       assign(y(left downto left-len(x.flush_req)+1), convert(x.flush_req, y(left downto left-len(x.flush_req)+1)));
+      left := left - len(x.flush_req);
+      assign(y(left downto left-len(x.freeze_req)+1), convert(x.freeze_req, y(left downto left-len(x.freeze_req)+1)));
+      left := left - len(x.freeze_req);
+      assign(y(left downto left-len(x.mem_sel)+1), convert(x.mem_sel, y(left downto left-len(x.mem_sel)+1)));
     end if;
     return y;
   end function convert;
@@ -787,6 +830,10 @@ package body TAR_CTRL is
       y.rd_ack := structify(x(left to left+len(y.rd_ack)-1), y.rd_ack);
       left := left + len(y.rd_ack);
       y.flush_req := structify(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
+      y.freeze_req := structify(x(left to left+len(y.freeze_req)-1), y.freeze_req);
+      left := left + len(y.freeze_req);
+      y.mem_sel := structify(x(left to left+len(y.mem_sel)-1), y.mem_sel);
     else
       y.wr_req := structify(x(left downto left-len(y.wr_req)+1), y.wr_req);
       left := left - len(y.wr_req);
@@ -797,6 +844,10 @@ package body TAR_CTRL is
       y.rd_ack := structify(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
       left := left - len(y.rd_ack);
       y.flush_req := structify(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
+      y.freeze_req := structify(x(left downto left-len(y.freeze_req)+1), y.freeze_req);
+      left := left - len(y.freeze_req);
+      y.mem_sel := structify(x(left downto left-len(y.mem_sel)+1), y.mem_sel);
     end if;
     return y;
   end function structify;
@@ -814,6 +865,10 @@ package body TAR_CTRL is
       y.rd_ack := convert(x(left to left+len(y.rd_ack)-1), y.rd_ack);
       left := left + len(y.rd_ack);
       y.flush_req := convert(x(left to left+len(y.flush_req)-1), y.flush_req);
+      left := left + len(y.flush_req);
+      y.freeze_req := convert(x(left to left+len(y.freeze_req)-1), y.freeze_req);
+      left := left + len(y.freeze_req);
+      y.mem_sel := convert(x(left to left+len(y.mem_sel)-1), y.mem_sel);
     else
       y.wr_req := convert(x(left downto left-len(y.wr_req)+1), y.wr_req);
       left := left - len(y.wr_req);
@@ -824,6 +879,10 @@ package body TAR_CTRL is
       y.rd_ack := convert(x(left downto left-len(y.rd_ack)+1), y.rd_ack);
       left := left - len(y.rd_ack);
       y.flush_req := convert(x(left downto left-len(y.flush_req)+1), y.flush_req);
+      left := left - len(y.flush_req);
+      y.freeze_req := convert(x(left downto left-len(y.freeze_req)+1), y.freeze_req);
+      left := left - len(y.freeze_req);
+      y.mem_sel := convert(x(left downto left-len(y.mem_sel)+1), y.mem_sel);
     end if;
     return y;
   end function convert;
@@ -835,6 +894,8 @@ package body TAR_CTRL is
     y.rd_req := nullify(t.rd_req);
     y.rd_ack := nullify(t.rd_ack);
     y.flush_req := nullify(t.flush_req);
+    y.freeze_req := nullify(t.freeze_req);
+    y.mem_sel := nullify(t.mem_sel);
     return y;
   end function nullify;
   function zeroed(t: TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t) return TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t is
@@ -845,6 +906,8 @@ package body TAR_CTRL is
     y.rd_req := zeroed(t.rd_req);
     y.rd_ack := zeroed(t.rd_ack);
     y.flush_req := zeroed(t.flush_req);
+    y.freeze_req := zeroed(t.freeze_req);
+    y.mem_sel := zeroed(t.mem_sel);
     return y;
   end function zeroed;
 

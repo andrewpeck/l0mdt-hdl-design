@@ -58,9 +58,9 @@ entity apb_imem is
     ctrl_v          : in std_logic_vector;--(g_APBUS_CTRL_WIDTH - 1 downto 0);
     mon_v           : out std_logic_vector;--(g_APBUS_MON_WIDTH - 1 downto 0);
     --
-    -- i_freeze      : in std_logic_vector(1 downto 0) := (others => '0');
+    i_freeze      : in std_logic := '0';--(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
-    -- o_out_sel     : out std_logic_vector(1 downto 0);
+    o_mem_sel     : out std_logic_vector;
     -- o_freeze_1    : in std_logic := '0';
     --
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -243,7 +243,16 @@ begin
             axi_rep_clk <= not axi_rep_clk;
           end if;
           -----------------------------------------------
-  
+          if i_freeze = '1' or apb_ctrl_r.freeze_req = '1' then
+            o_freeze <= '1';
+            apb_mon_r.freeze_ena <= '1';
+          else
+            o_freeze <= '0';
+            apb_mon_r.freeze_ena <= '0';
+          end if;
+          -----------------------------------------------
+          o_mem_sel <= apb_ctrl_r.mem_sel;
+          -----------------------------------------------
           case int_wr_status is
             -- when x"0" => -- INIT
             --   if axi_cnt_wait = '0' then
