@@ -62,7 +62,7 @@ include:
     #---------------------------------------------
     #         Modules vU13P
     #---------------------------------------------
-      - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
+    - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'
@@ -82,7 +82,7 @@ include:
     # - local: '/Top/MainBlocks/hps_lsf.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/hps_lsf.1/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/hps_lsf.2/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
+  - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
-    - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
+  - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
+  - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
