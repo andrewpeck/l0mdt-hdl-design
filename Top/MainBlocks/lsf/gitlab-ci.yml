@@ -3,7 +3,7 @@ GEN:lsf:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: lsf
+      PROJECT_NAME: MainBlocks/lsf
       HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
 
  

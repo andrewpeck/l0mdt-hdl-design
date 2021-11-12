@@ -1,6 +1,6 @@
 HAL/ctrl/src/axi/types.vhd
-HAL/ctrl/src/axi/axiReg.vhd
-HAL/ctrl/src/axi/axiRegPkg.vhd
+HAL/ctrl/src/axi-vhdl-package/axiReg.vhd
+HAL/ctrl/src/axi-vhdl-package/axiRegPkg.vhd
 HAL/ctrl/src/FW_INFO/FW_INFO_PKG.vhd
 HAL/ctrl/src/FW_INFO/FW_INFO_map.vhd
 HAL/ctrl/src/HAL/HAL_PKG.vhd
