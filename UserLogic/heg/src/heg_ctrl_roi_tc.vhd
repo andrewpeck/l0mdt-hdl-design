@@ -130,7 +130,7 @@ begin
   generic map(
     g_XML_NODE_NAME         => "MEM_INT_10A38D",
     g_MEMORY_TYPE           => "distributed",
-    g_INTERNAL_CLK          => '1',
+    -- g_INTERNAL_CLK          => '1',
     g_ADDR_WIDTH            => ADDR_WIDTH,
     g_DATA_WIDTH            => DATA_WIDTH
     -- g_APBUS_CTRL_WIDTH      => ctrl_v'length,

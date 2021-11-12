@@ -43,12 +43,13 @@ entity apb_imem is
   generic(
     g_XML_NODE_NAME     : string; -- := "MEM_INT_10A148D";
     g_MEMORY_TYPE       : string;
-    g_INTERNAL_CLK      : std_logic := '1';
+    -- g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
-    g_MEM_LATENCY       : integer := 0    
+    g_MEM_LATENCY       : integer := 0;    
     -- g_APBUS_CTRL_WIDTH  : integer := 0;
     -- g_APBUS_MON_WIDTH   : integer := 0
+    g_PARALLEL_MEM      : integer := 0
   );
   port (
     clk           : in std_logic;
@@ -60,7 +61,7 @@ entity apb_imem is
     --
     i_freeze      : in std_logic := '0';--(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
-    o_mem_sel     : out std_logic_vector;
+    o_mem_sel     : out std_logic_vector(g_PARALLEL_MEM downto 0);
     -- o_freeze_1    : in std_logic := '0';
     --
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -222,6 +223,7 @@ begin
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
+          o_mem_sel <= (others => '0');
           --
           axi_rep_clk <= '0';
           --
@@ -251,7 +253,9 @@ begin
             apb_mon_r.freeze_ena <= '0';
           end if;
           -----------------------------------------------
-          o_mem_sel <= apb_ctrl_r.mem_sel;
+          if g_PARALLEL_MEM > 0 then
+            o_mem_sel <= apb_ctrl_r.mem_sel;
+          end if;
           -----------------------------------------------
           case int_wr_status is
             -- when x"0" => -- INIT
