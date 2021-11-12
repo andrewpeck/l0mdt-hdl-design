@@ -14,19 +14,18 @@ include:
     #---------------------------------------------
     #         HW
     #---------------------------------------------
-      # - local: '/Top/profpga_duo_test/gitlab-ci.yml'
-      # - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
-      # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
-      # - local: '/Top/hal/gitlab-ci.yml'
-    - local: '/Top/base_l0mdt/gitlab-ci.yml'
-    - local: '/Top/base_l0mdt_lsf_upt/gitlab-ci.yml'
+    # - local: '/Top/profpga_duo_test/gitlab-ci.yml'
+    # - local: '/Top/profpga_duo_csf_plus_pt.0/gitlab-ci.yml'
+    # - local: '/Top/profpga_duo_pt.0/gitlab-ci.yml'
+    # - local: '/Top/hal/gitlab-ci.yml'
+    # - local: '/Top/base_l0mdt/gitlab-ci.yml'
+    # - local: '/Top/base_l0mdt_lsf_upt/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules
     #---------------------------------------------
       # - local: '/Top/csf.0/gitlab-ci.yml'
       # - local: '/Top/csf.1/gitlab-ci.yml'
       # - local: '/Top/ptc_mpi/gitlab-ci.yml'
-      # - local: '/Top/lsf/gitlab-ci.yml'
       # - local: '/Top/upt/gitlab-ci.yml'
       # - local: '/Top/ucm/gitlab-ci.yml'
       # - local: '/Top/hp/gitlab-ci.yml'
@@ -56,8 +55,8 @@ include:
       # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
       #- local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
       # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
       # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules vU13P
@@ -85,3 +84,4 @@ include:
     - local: '/Top/MainBlocks/csf.0/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/csf.1/gitlab-ci.yml'
     - local: '/Top/MainBlocks/ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/MainBlocks/lsf_vu13p/gitlab-ci.yml'
