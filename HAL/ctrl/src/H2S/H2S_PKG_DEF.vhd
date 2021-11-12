@@ -24,7 +24,9 @@ package H2S_CTRL_DEF is
                                                                                                    wr_ack => '0',
                                                                                                    rd_req => '0',
                                                                                                    rd_ack => '0',
-                                                                                                   flush_req => '0'
+                                                                                                   flush_req => '0',
+                                                                                                   freeze_req => '0',
+                                                                                                   mem_sel => "000"
                                                                                                   );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t := (
                                                                                                    wr_data_0 => (others => '0'),
@@ -44,7 +46,9 @@ package H2S_CTRL_DEF is
                                                                                                    wr_ack => '0',
                                                                                                    rd_req => '0',
                                                                                                    rd_ack => '0',
-                                                                                                   flush_req => '0'
+                                                                                                   flush_req => '0',
+                                                                                                   freeze_req => '0',
+                                                                                                   mem_sel => "000"
                                                                                                   );
   constant DEFAULT_H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t : H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t := (
                                                                                                    wr_data_0 => (others => '0')
@@ -74,7 +78,9 @@ package H2S_CTRL_DEF is
                                                                                                                wr_ack => '0',
                                                                                                                rd_req => '0',
                                                                                                                rd_ack => '0',
-                                                                                                               flush_req => '0'
+                                                                                                               flush_req => '0',
+                                                                                                               freeze_req => '0',
+                                                                                                               mem_sel => "000"
                                                                                                               );
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t : H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t := (
                                                                                                                wr_data_0 => (others => '0'),
@@ -105,7 +111,9 @@ package H2S_CTRL_DEF is
                                                                                                                      wr_ack => '0',
                                                                                                                      rd_req => '0',
                                                                                                                      rd_ack => '0',
-                                                                                                                     flush_req => '0'
+                                                                                                                     flush_req => '0',
+                                                                                                                     freeze_req => '0',
+                                                                                                                     mem_sel => "000"
                                                                                                                     );
   constant DEFAULT_H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t : H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t := (
                                                                                                                      wr_data_0 => (others => '0')

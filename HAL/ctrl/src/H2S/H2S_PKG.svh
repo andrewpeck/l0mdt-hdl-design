@@ -29,6 +29,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } H2S_HPS_MDT_TC_MDT_TC_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -37,6 +38,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t;
 
   typedef struct packed {
@@ -75,6 +78,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } H2S_HPS_MDT_T0_MDT_T0_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -83,6 +87,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } H2S_HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t;
 
   typedef struct packed {
@@ -144,6 +150,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -152,6 +159,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t;
 
   typedef struct packed {
@@ -199,6 +208,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -207,6 +217,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t;
 
   typedef struct packed {

@@ -31,6 +31,7 @@ hdl:
 
 - H2S_HPS_MDT_TC_MDT_TC_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t:
@@ -39,6 +40,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_wr_data_CTRL_t:
@@ -75,6 +78,7 @@ hdl:
 
 - H2S_HPS_MDT_T0_MDT_T0_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - H2S_HPS_MDT_T0_MDT_T0_SIGNALS_CTRL_t:
@@ -83,6 +87,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - H2S_HPS_MDT_T0_MDT_T0_wr_data_CTRL_t:
@@ -142,6 +148,7 @@ hdl:
 
 - H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t:
@@ -150,6 +157,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - H2S_HPS_HEG_HEG_CTRL_ROI_TC_wr_data_CTRL_t:
@@ -197,6 +206,7 @@ hdl:
 
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t:
@@ -205,6 +215,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - H2S_HPS_HEG_HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:
