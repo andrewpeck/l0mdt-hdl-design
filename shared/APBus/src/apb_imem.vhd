@@ -367,6 +367,25 @@ begin
             axi_rep_clk <= not axi_rep_clk;
           end if;
           -----------------------------------------------
+          if i_freeze = '1' or apb_ctrl_r.freeze_req = '1' then
+            o_freeze <= '1';
+            apb_mon_r.freeze_ena <= '1';
+          else
+            o_freeze <= '0';
+            apb_mon_r.freeze_ena <= '0';
+          end if;
+          -----------------------------------------------
+
+          if g_PARALLEL_MEM > 0 then
+            for i_sel in g_PARALLEL_MEM downto 0 loop
+              if i_sel = to_integer(unsigned(apb_ctrl_r.mem_sel)) then
+                o_mem_sel(i_sel) <= '1';
+              else
+                o_mem_sel(i_sel) <= '0';
+              end if;
+            end loop;
+          end if;
+          -----------------------------------------------
   
           case int_wr_status is
             -- when x"0" => -- INIT
