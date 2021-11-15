@@ -25,6 +25,20 @@ SIM:ull_vu13_b3a_tp_lsf_mptc:
       - questa
       - hog
       - "2020.2"
+
+CHK:ull_vu13_b3a_tp_lsf_mptc:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_lsf_mptc
+    BLOCK: HEG
+  needs: ["SIM:ull_vu13_b3a_tp_lsf_mptc"]
+  artifacts:
+    name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
+
 # user_sim:ull_vu13_b3a_tp_lsf_mptc:
 #     extends: .user_sim
 #     variables:

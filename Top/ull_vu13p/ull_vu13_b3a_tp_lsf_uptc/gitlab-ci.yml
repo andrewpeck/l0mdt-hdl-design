@@ -1,18 +1,18 @@
-#################### ull_vu13_b3a_tp_csf_uptc Project ###########################
-GEN:ull_vu13_b3a_tp_csf_uptc:
+#################### ull_vu13_b3a_tp_lsf_uptc Project ###########################
+GEN:ull_vu13_b3a_tp_lsf_uptc:
     extends: .generate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_uptc
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_lsf_uptc
     tags:
       - heavy-duty
       - hog
 
-SIM:ull_vu13_b3a_tp_csf_uptc:
+SIM:ull_vu13_b3a_tp_lsf_uptc:
     extends: .simulate_project
     variables:
       extends: .vars
-      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_uptc
+      PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_lsf_uptc
     allow_failure: false
 
     artifacts:
@@ -25,18 +25,31 @@ SIM:ull_vu13_b3a_tp_csf_uptc:
       - questa
       - hog
       - "2020.2"
-# user_sim:ull_vu13_b3a_tp_csf_uptc:
+
+CHK:ull_vu13_b3a_tp_lsf_uptc:
+  extends: .sim_check
+  variables: 
+    extends: .vars
+    PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_lsf_uptc
+    BLOCK: HEG
+  needs: ["SIM:ull_vu13_b3a_tp_lsf_uptc"]
+  artifacts:
+    name: CHK_ull_vu13_b3a_ucm_mpl_hps_csf
+    paths:
+      - $CI_PROJECT_DIR/bin
+    expire_in: 30 day
+# user_sim:ull_vu13_b3a_tp_lsf_uptc:
 #     extends: .user_sim
 #     variables:
 #       extends: .vars
-#       PROJECT_NAME: ull_vu13_b3a_tp_csf_uptc
+#       PROJECT_NAME: ull_vu13_b3a_tp_lsf_uptc
 
 
-# RIV:ull_vu13_b3a_tp_csf_uptc:
+# RIV:ull_vu13_b3a_tp_lsf_uptc:
 #     extends: .riviera_sim
 #     variables:
 #       extends: .riviera_vars
-#       PROJECT_NAME: ull_vu13_b3a_tp_csf_uptc
+#       PROJECT_NAME: ull_vu13_b3a_tp_lsf_uptc
 #       HOG_CHECK_PROJVER: 0
 #       # HOG_PATH: "/opt/Xilinx/Vivado/2019.2/bin:/mnt/vd/Xilinx/Vivado/2019.2/bin:/afs/cern.ch/project/parc/riviera20214/bin/"
 #       HOG_SIMULATION_LIB_PATH: "/home/l0mdtel/RivieraLib"
@@ -44,9 +57,9 @@ SIM:ull_vu13_b3a_tp_csf_uptc:
 #       - export PATH="/opt/Xilinx/Vivado/2019.2/bin:/opt/Aldec/Riviera-PRO-2021.04-x64/bin:$PATH"
 
 
-# CHK:ull_vu13_b3a_tp_csf_uptc:
+# CHK:ull_vu13_b3a_tp_lsf_uptc:
 #   extends: .sim_check
 #   variables:
 #     extends: .vars
-#     PROJECT_NAME: ull_vu13_b3a_tp_csf_uptc
-#   needs: ["SIM:ull_vu13_b3a_tp_csf_uptc","RIV:ull_vu13_b3a_tp_csf_uptc"]
+#     PROJECT_NAME: ull_vu13_b3a_tp_lsf_uptc
+#   needs: ["SIM:ull_vu13_b3a_tp_lsf_uptc","RIV:ull_vu13_b3a_tp_lsf_uptc"]
