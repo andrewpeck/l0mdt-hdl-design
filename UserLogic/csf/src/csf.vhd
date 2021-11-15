@@ -37,6 +37,7 @@ library csf_lib;
 entity csf is
   generic (
     IS_ENDCAP           : integer := 0;
+    MDT_STATION         : integer := 0; -- Station 0: Inner, 1: Middle, 2: Outer
     SPYBUFFER_EN        : integer := 0;
     SPYHIT_MEM_WIDTH    : integer := 10;
     SPYHIT_EL_MEM_WIDTH : integer := 10;
@@ -249,7 +250,8 @@ architecture behavioral of csf is
 
   component seg_coord_transform is
     generic (
-      IS_ENDCAP : integer
+      IS_ENDCAP : integer;
+      MDT_STATION : integer
     );
     port (
       clk       : in    std_logic;
@@ -510,7 +512,8 @@ begin
   -- Coordinate transformation
   coordtransform : component seg_coord_transform
     generic map (
-      IS_ENDCAP => IS_ENDCAP
+      IS_ENDCAP => IS_ENDCAP,
+      MDT_STATION => MDT_STATION
     )
     port map (
       clk       => clk,
