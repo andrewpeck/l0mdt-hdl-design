@@ -89,7 +89,8 @@ begin
 
         CSF : entity csf_lib.csf
           generic map(
-            IS_ENDCAP => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
+            IS_ENDCAP => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP)),
+            MDT_STATION => g_STATION_RADIUS
             )
           port map(
             clk       => clk,
