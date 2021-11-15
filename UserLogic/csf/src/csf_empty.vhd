@@ -34,6 +34,7 @@ library shared_lib;
 entity csf is
   generic (
     IS_ENDCAP           : integer := 0;
+    MDT_STATION         : integer := 0;
     SPYBUFFER_EN        : integer := 0;
     SPYHIT_MEM_WIDTH    : integer := 10;
     SPYHIT_EL_MEM_WIDTH : integer := 10;
