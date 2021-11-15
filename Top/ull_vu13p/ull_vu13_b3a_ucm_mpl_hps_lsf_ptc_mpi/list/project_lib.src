@@ -28,5 +28,5 @@ UserLogic/tar/tar_lib.src lib=tar_lib
 UserLogic/ptc_mpi/ptc_lib.src lib=ptc_lib
 UserLogic/upt/upt_lib_empty.src lib=upt_lib
 UserLogic/mtc/mtc_lib.src lib=mtc_lib
-UserLogic/lsf/lsf_lib.src lib=lsf_lib
+UserLogic/lsf/lsf_lib_vu13p.src lib=lsf_lib
 UserLogic/daq/daq.src
