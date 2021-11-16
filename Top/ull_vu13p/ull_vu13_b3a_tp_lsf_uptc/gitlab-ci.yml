@@ -15,16 +15,16 @@ SIM:ull_vu13_b3a_tp_lsf_uptc:
       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_lsf_uptc
     allow_failure: false
 
-    artifacts:
-      name: user_sim
-      paths:
-        - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
-        - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
-      expire_in: 30 day
-    tags:
-      - questa
-      - hog
-      - "2020.2"
+    # artifacts:
+    #   name: user_sim
+    #   paths:
+    #     - $CI_PROJECT_DIR/Projects/$PROJECT_NAME/$PROJECT_NAME.sim
+    #     - $CI_PROJECT_DIR/SkippedProjects/$PROJECT_NAME
+    #   expire_in: 30 day
+    # tags:
+    #   - questa
+    #   - hog
+    #   - "2020.2"
 
 CHK:ull_vu13_b3a_tp_lsf_uptc:
   extends: .sim_check
