@@ -1,5 +1,3 @@
-SHELL:=/bin/bash
-
 ################################################################################
 # Use CCZE and/or time if available
 ################################################################################
@@ -80,7 +78,7 @@ regmap : $(MAP_OBJS)
 %_map.vhd %_PKG.vhd : %.xml
 	@python3 regmap/build_vhdl_packages.py \
 			-y 2 \
-			-s False \
+			-s True \
 			-x address_tables/modules/$(basename $(notdir $<)).xml \
 			-o  $(dir $<) \
 			--mapTemplate templates/axi_generic/template_map_withbram.vhd \

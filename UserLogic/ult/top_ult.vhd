@@ -41,8 +41,7 @@ use ctrl_lib.MPL_CTRL.all;
 
 entity top_ult is
   generic (
-    SUMP_SIGNALS : boolean := false;
-    DUMMY        : boolean := false
+    DUMMY       : boolean := false
 
     -- g_h2s_ctrl  : H2S_CTRL_t := nullify(g_h2s_ctrl);
     );
@@ -163,8 +162,7 @@ begin
 
   ULT : entity ult_lib.ult
     generic map(
-      SUMP_SIGNALS => SUMP_SIGNALS,
-      DUMMY        => DUMMY
+      DUMMY       => DUMMY
       )
     port map(
       -- pipeline clock
@@ -210,7 +208,7 @@ begin
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
 
-      -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
+      -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
       o_daq_streams => o_daq_streams,
 
       -- Segments Out to Neighbor

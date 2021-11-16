@@ -42,25 +42,25 @@ package board_pkg_common is
   -- REFCLK Mapping
   --------------------------------------------------------------------------------
 
-  type refclk_freqs_t is (REF_AXI_C2C, REF_ASYNC320, REF_SYNC320, REF_SYNC240, REF_NIL);
+  type refclk_freqs_t is (REF_AXI_C2C, REF_FELIX, REF_SF_C2C, REF_SYNC320, REF_SYNC240, REF_NIL);
 
   type refclk_map_t is record
+    REFCLKNUM : integer;
     FREQ      : refclk_freqs_t;
-    --REFCLKNUM : integer;
-    --QUAD      : integer;
-    --GT_TYPE   : gt_types_t;
-    --X_LOC     : integer;
-    --Y_MIN     : integer;
-    --Y_MAX     : integer;
+    QUAD      : integer;
+    GT_TYPE   : gt_types_t;
+    X_LOC     : integer;
+    Y_MIN     : integer;
+    Y_MAX     : integer;
   end record;
 
-  constant REFCLK_NIL_MAP : refclk_map_t := (freq      => REF_NIL
-                                             -- ,refclknum => -1
-                                             -- ,quad      => -1
-                                             -- ,gt_type   => GT_NIL
-                                             -- ,x_loc     => -1
-                                             -- ,y_min     => -1
-                                             -- ,y_max     => -1
+  constant REFCLK_NIL_MAP : refclk_map_t := (refclknum => -1,
+                                             freq      => REF_NIL,
+                                             quad      => -1,
+                                             gt_type   => GT_NIL,
+                                             x_loc     => -1,
+                                             y_min     => -1,
+                                             y_max     => -1
                                              );
 
   type refclk_types_array_t is array (integer range <>) of refclk_map_t;

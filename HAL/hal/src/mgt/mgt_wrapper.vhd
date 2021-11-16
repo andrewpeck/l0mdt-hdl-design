@@ -108,7 +108,6 @@ architecture Behavioral of mgt_wrapper is
   attribute DONT_TOUCH of reset_tree : signal is "true";
 
   signal refclk : std_logic_vector (c_NUM_REFCLKS-1 downto 0);
-  signal recclk : std_logic;
 
   -- TODO: initialize these so that uninstantiated MGTs will show DEADBEEF or something
   signal tx_resets : mgt_reset_rt_array (c_NUM_MGTS-1 downto 0);
@@ -144,16 +143,6 @@ begin
       reset_tree <= (others => reset);
     end if;
   end process reset_fanout;
-
-  --------------------------------------------------------------------------------
-  -- recclk
-  --------------------------------------------------------------------------------
-
-   recclk_BUFG_inst : BUFG
-   port map (
-      O => recclk_o, -- 1-bit output: Clock output
-      I => recclk    -- 1-bit input: Clock input
-   );
 
   --------------------------------------------------------------------------------
   -- Refclk
@@ -277,7 +266,7 @@ begin
 
       attribute DONT_TOUCH of MGT_INST : label is "true";
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
 
       signal rxslide  : std_logic_vector (3 downto 0);
       signal rxoutclk : std_logic_vector (3 downto 0) := (others => '0');
@@ -430,7 +419,7 @@ begin
           rxslide (LINK_0_TO_3) <= felix_ttc_bitslip_i;
 
           recclk_out_gen : if (downlink_idx + LINK_0_TO_3 = c_FELIX_RECCLK_SRC) generate
-            recclk               <= rxoutclk(LINK_0_TO_3);
+            recclk_o             <= rxoutclk(LINK_0_TO_3);
             felix_ttc_mgt_word_o <= rx_data(LINK_0_TO_3);
           end generate;
 
@@ -455,7 +444,7 @@ begin
 
       constant idx : integer := sl_idx_array(I);
 
-      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0) := (others => '0');
+      signal rx_p, rx_n, tx_p, tx_n : std_logic_vector(3 downto 0);
 
     begin
 

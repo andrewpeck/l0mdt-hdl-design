@@ -22,7 +22,7 @@ entity gbt_controller_wrapper is
     ctrl : in  HAL_CSM_CSM_SC_CTRL_t;
 
     clk40   : in std_logic;
-    clk320  : in std_logic;
+    valid_i : in std_logic;
 
     -- master
     ic_data_i : in  std_logic_vector (1 downto 0);
@@ -46,53 +46,28 @@ end gbt_controller_wrapper;
 
 architecture structural of gbt_controller_wrapper is
 
+  -- EC line
+  signal ec_data_down, ec_data_up : reg2_arr((g_SCAS_PER_LPGBT-1) downto 0);  -- Array of bits to be mapped to the TX/RX GBT-Frame
+
+  -- IC lines
+  signal ic_data_down, ic_data_up : std_logic_vector(1 downto 0);  -- Array of bits to be mapped to the TX/RX GBT-Frame
+
   -- master
-  signal master_rx_frame, slave_rx_frame
-    : std_logic_vector (7 downto 0) := (others => '0');
+  signal ic_data_i_int, ic_data_o_int : std_logic_vector (1 downto 0);
 
-  signal master_rx_empty, slave_rx_empty
-    : std_logic := '0';
+  signal master_rx_frame, slave_rx_frame : std_logic_vector (7 downto 0) := (others => '0');
 
-  -- inputs, internal 40MHz copy
-  signal ic_data_i_int, ec_data_i_int,
-    sca0_data_i_int, sca1_data_i_int, sca2_data_i_int
-    : std_logic_vector ( 1 downto 0);
+  signal master_rx_empty, slave_rx_empty : std_logic := '0';
 
-  -- inputs, 320 MHz fanout flip-flop
-  signal ic_data_i_ff, ec_data_i_ff,
-    sca0_data_i_ff, sca1_data_i_ff, sca2_data_i_ff
-    : std_logic_vector ( 1 downto 0);
+  -- slave
+  signal ec_data_i_int, ec_data_o_int : std_logic_vector (1 downto 0);
 
-  -- outputs, internal copy
-  signal ic_data_o_int, ec_data_o_int,
-    sca0_data_o_int, sca1_data_o_int, sca2_data_o_int
-    : std_logic_vector (1 downto 0);
+  signal sca0_data_i_int, sca1_data_i_int, sca2_data_i_int : std_logic_vector (1 downto 0);
+  signal sca0_data_o_int, sca1_data_o_int, sca2_data_o_int : std_logic_vector (1 downto 0);
 
-  attribute ASYNC_REG                    : string;
-  attribute ASYNC_REG of ic_data_i_int   : signal is "TRUE";
-  attribute ASYNC_REG of ec_data_i_int   : signal is "TRUE";
-  attribute ASYNC_REG of sca0_data_i_int : signal is "TRUE";
-  attribute ASYNC_REG of sca1_data_i_int : signal is "TRUE";
-  attribute ASYNC_REG of sca2_data_i_int : signal is "TRUE";
+  signal tx_reset, rx_reset : std_logic := '0';  -- TODO: connect to AXI
 
 begin
-
-  --------------------------------------------------------------------------------
-  -- register inputs/outputs for timing
-  --------------------------------------------------------------------------------
-
-  process (clk320) is
-  begin
-    if (rising_edge(clk320)) then
-
-      ic_data_i_ff   <= ic_data_i;
-      ec_data_i_ff   <= ec_data_i;
-      sca0_data_i_ff <= sca0_data_i;
-      sca1_data_i_ff <= sca1_data_i;
-      sca2_data_i_ff <= sca2_data_i;
-
-    end if;
-  end process;
 
   process (clk40) is
   begin
@@ -104,11 +79,11 @@ begin
       sca1_data_o <= sca1_data_o_int;
       sca2_data_o <= sca2_data_o_int;
 
-      ic_data_i_int   <= ic_data_i_ff;
-      ec_data_i_int   <= ec_data_i_ff;
-      sca0_data_i_int <= sca0_data_i_ff;
-      sca1_data_i_int <= sca1_data_i_ff;
-      sca2_data_i_int <= sca2_data_i_ff;
+      ic_data_i_int   <= ic_data_i;
+      ec_data_i_int   <= ec_data_i;
+      sca0_data_i_int <= sca0_data_i;
+      sca1_data_i_int <= sca1_data_i;
+      sca2_data_i_int <= sca2_data_i;
 
     end if;
   end process;
@@ -205,11 +180,11 @@ begin
 
       -- tx to lpgbt etc
       tx_clk_i  => clk40,
-      tx_clk_en => '1',
+      tx_clk_en => valid_i,
 
       -- rx from lpgbt etc
       rx_clk_i  => clk40,
-      rx_clk_en => '1',
+      rx_clk_en => valid_i,
 
       -- IC/EC data from controller
       ic_data_i => ic_data_i_int,

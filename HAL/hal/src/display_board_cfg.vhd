@@ -35,35 +35,35 @@ package body display_board_cfg_pkg is
     -- MGTS
     --------------------------------------------------------------------------------
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(lpgbt_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "LPGBT_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(lpgbt_idx_array(I)) severity note;
+    end loop;
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "FELIX_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(felix_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "FELIX_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(felix_idx_array(I)) severity note;
+    end loop;
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "FELIX_TXRX_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(felix_txrx_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "FELIX_TXRX_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(felix_txrx_idx_array(I)) severity note;
+    end loop;
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "LPGBT_UPLINK_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(lpgbt_uplink_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "LPGBT_UPLINK_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(lpgbt_uplink_idx_array(I)) severity note;
+    end loop;
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "LPGBT_DOWNLINK_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(lpgbt_downlink_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "LPGBT_DOWNLINK_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(lpgbt_downlink_idx_array(I)) severity note;
+    end loop;
 
-    --for I in 0 to c_NUM_MGTS-1 loop
-    --  assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = "
-    --    & integer'image(sl_idx_array(I)) severity note;
-    --end loop;
+    for I in 0 to c_NUM_MGTS-1 loop
+      assert false report "SL_IDX_ARRAY(" & integer'image(I) & ") = "
+        & integer'image(sl_idx_array(I)) severity note;
+    end loop;
 
 
 
@@ -158,7 +158,7 @@ package body display_board_cfg_pkg is
         assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+1) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
         assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+2) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
         assert false report "GENERATING FELIX LINK ON MGT=" & integer'image(I+3) & " with REFCLK=" & integer'image(c_MGT_MAP(I).refclk) & " FELIX_LINK_CNT=" & integer'image(idx) severity note;
-        --assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_ASYNC_320) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
+        assert (c_REFCLK_MAP (c_MGT_MAP(I).refclk).freq = REF_FELIX) report "Incompatible REFCLK selected on MGT#" & integer'image(I) severity error;
       end if;
 
     end loop;

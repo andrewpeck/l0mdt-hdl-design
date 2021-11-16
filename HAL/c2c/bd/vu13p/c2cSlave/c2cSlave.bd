@@ -1487,13 +1487,13 @@
       "sys_reseter": {
         "vlnv": "xilinx.com:ip:proc_sys_reset:5.0",
         "xci_name": "c2cSlave_sys_reseter_0",
-        "xci_path": "ip/c2cSlave_sys_reseter_0_1/c2cSlave_sys_reseter_0.xci",
+        "xci_path": "ip/c2cSlave_sys_reseter_0_3/c2cSlave_sys_reseter_0.xci",
         "inst_hier_path": "sys_reseter"
       },
       "K_C2CLINK": {
         "vlnv": "xilinx.com:ip:axi_chip2chip:5.0",
         "xci_name": "c2cSlave_K_C2CLINK_0",
-        "xci_path": "ip/c2cSlave_K_C2CLINK_0_1/c2cSlave_K_C2CLINK_0.xci",
+        "xci_path": "ip/c2cSlave_K_C2CLINK_0_3/c2cSlave_K_C2CLINK_0.xci",
         "inst_hier_path": "K_C2CLINK",
         "parameters": {
           "C_AXI_DATA_WIDTH": {
@@ -1560,7 +1560,7 @@
       "K_C2CLINK_PHY": {
         "vlnv": "xilinx.com:ip:aurora_64b66b:12.0",
         "xci_name": "c2cSlave_K_C2CLINK_PHY_0",
-        "xci_path": "ip/c2cSlave_K_C2CLINK_PHY_0_1/c2cSlave_K_C2CLINK_PHY_0.xci",
+        "xci_path": "ip/c2cSlave_K_C2CLINK_PHY_0_3/c2cSlave_K_C2CLINK_PHY_0.xci",
         "inst_hier_path": "K_C2CLINK_PHY",
         "parameters": {
           "CHANNEL_ENABLE": {
@@ -1611,7 +1611,7 @@
       },
       "slave_interconnect": {
         "vlnv": "xilinx.com:ip:axi_interconnect:2.1",
-        "xci_path": "ip/c2cSlave_slave_interconnect_0_1/c2cSlave_slave_interconnect_0.xci",
+        "xci_path": "ip/c2cSlave_slave_interconnect_0_3/c2cSlave_slave_interconnect_0.xci",
         "inst_hier_path": "slave_interconnect",
         "xci_name": "c2cSlave_slave_interconnect_0",
         "parameters": {
@@ -1903,7 +1903,7 @@
           "xbar": {
             "vlnv": "xilinx.com:ip:axi_crossbar:2.1",
             "xci_name": "c2cSlave_xbar_0",
-            "xci_path": "ip/c2cSlave_xbar_0_1/c2cSlave_xbar_0.xci",
+            "xci_path": "ip/c2cSlave_xbar_0_3/c2cSlave_xbar_0.xci",
             "inst_hier_path": "slave_interconnect/xbar",
             "parameters": {
               "NUM_MI": {
@@ -2000,7 +2000,7 @@
               "auto_pc": {
                 "vlnv": "xilinx.com:ip:axi_protocol_converter:2.1",
                 "xci_name": "c2cSlave_auto_pc_0",
-                "xci_path": "ip/c2cSlave_auto_pc_0_1/c2cSlave_auto_pc_0.xci",
+                "xci_path": "ip/c2cSlave_auto_pc_0_3/c2cSlave_auto_pc_0.xci",
                 "inst_hier_path": "slave_interconnect/s00_couplers/auto_pc",
                 "parameters": {
                   "MI_PROTOCOL": {
@@ -2314,7 +2314,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_0",
-                "xci_path": "ip/c2cSlave_auto_cc_0_1/c2cSlave_auto_cc_0.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_0_3/c2cSlave_auto_cc_0.xci",
                 "inst_hier_path": "slave_interconnect/m03_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2327,16 +2327,16 @@
               }
             },
             "interface_nets": {
-              "auto_cc_to_m03_couplers": {
-                "interface_ports": [
-                  "M_AXI",
-                  "auto_cc/M_AXI"
-                ]
-              },
               "m03_couplers_to_auto_cc": {
                 "interface_ports": [
                   "S_AXI",
                   "auto_cc/S_AXI"
+                ]
+              },
+              "auto_cc_to_m03_couplers": {
+                "interface_ports": [
+                  "M_AXI",
+                  "auto_cc/M_AXI"
                 ]
               }
             },
@@ -2416,7 +2416,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_1",
-                "xci_path": "ip/c2cSlave_auto_cc_1_1/c2cSlave_auto_cc_1.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_1_3/c2cSlave_auto_cc_1.xci",
                 "inst_hier_path": "slave_interconnect/m04_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2518,7 +2518,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_2",
-                "xci_path": "ip/c2cSlave_auto_cc_2_1/c2cSlave_auto_cc_2.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_2_3/c2cSlave_auto_cc_2.xci",
                 "inst_hier_path": "slave_interconnect/m05_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2620,7 +2620,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_3",
-                "xci_path": "ip/c2cSlave_auto_cc_3_1/c2cSlave_auto_cc_3.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_3_3/c2cSlave_auto_cc_3.xci",
                 "inst_hier_path": "slave_interconnect/m06_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2722,7 +2722,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_4",
-                "xci_path": "ip/c2cSlave_auto_cc_4_1/c2cSlave_auto_cc_4.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_4_3/c2cSlave_auto_cc_4.xci",
                 "inst_hier_path": "slave_interconnect/m07_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2824,7 +2824,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_5",
-                "xci_path": "ip/c2cSlave_auto_cc_5_1/c2cSlave_auto_cc_5.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_5_3/c2cSlave_auto_cc_5.xci",
                 "inst_hier_path": "slave_interconnect/m08_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -2837,16 +2837,16 @@
               }
             },
             "interface_nets": {
-              "m08_couplers_to_auto_cc": {
-                "interface_ports": [
-                  "S_AXI",
-                  "auto_cc/S_AXI"
-                ]
-              },
               "auto_cc_to_m08_couplers": {
                 "interface_ports": [
                   "M_AXI",
                   "auto_cc/M_AXI"
+                ]
+              },
+              "m08_couplers_to_auto_cc": {
+                "interface_ports": [
+                  "S_AXI",
+                  "auto_cc/S_AXI"
                 ]
               }
             },
@@ -2926,7 +2926,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_6",
-                "xci_path": "ip/c2cSlave_auto_cc_6_1/c2cSlave_auto_cc_6.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_6_3/c2cSlave_auto_cc_6.xci",
                 "inst_hier_path": "slave_interconnect/m09_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -3028,7 +3028,7 @@
               "auto_cc": {
                 "vlnv": "xilinx.com:ip:axi_clock_converter:2.1",
                 "xci_name": "c2cSlave_auto_cc_7",
-                "xci_path": "ip/c2cSlave_auto_cc_7_1/c2cSlave_auto_cc_7.xci",
+                "xci_path": "ip/c2cSlave_auto_cc_7_3/c2cSlave_auto_cc_7.xci",
                 "inst_hier_path": "slave_interconnect/m10_couplers/auto_cc",
                 "interface_ports": {
                   "S_AXI": {
@@ -3083,34 +3083,22 @@
           }
         },
         "interface_nets": {
+          "xbar_to_m04_couplers": {
+            "interface_ports": [
+              "xbar/M04_AXI",
+              "m04_couplers/S_AXI"
+            ]
+          },
+          "xbar_to_m03_couplers": {
+            "interface_ports": [
+              "xbar/M03_AXI",
+              "m03_couplers/S_AXI"
+            ]
+          },
           "m03_couplers_to_slave_interconnect": {
             "interface_ports": [
               "M03_AXI",
               "m03_couplers/M_AXI"
-            ]
-          },
-          "m09_couplers_to_slave_interconnect": {
-            "interface_ports": [
-              "M09_AXI",
-              "m09_couplers/M_AXI"
-            ]
-          },
-          "xbar_to_m08_couplers": {
-            "interface_ports": [
-              "xbar/M08_AXI",
-              "m08_couplers/S_AXI"
-            ]
-          },
-          "m04_couplers_to_slave_interconnect": {
-            "interface_ports": [
-              "M04_AXI",
-              "m04_couplers/M_AXI"
-            ]
-          },
-          "s01_couplers_to_xbar": {
-            "interface_ports": [
-              "s01_couplers/M_AXI",
-              "xbar/S01_AXI"
             ]
           },
           "s00_couplers_to_xbar": {
@@ -3125,22 +3113,16 @@
               "m00_couplers/S_AXI"
             ]
           },
-          "m00_couplers_to_slave_interconnect": {
+          "m01_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "M00_AXI",
-              "m00_couplers/M_AXI"
+              "M01_AXI",
+              "m01_couplers/M_AXI"
             ]
           },
-          "xbar_to_m02_couplers": {
+          "m07_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "xbar/M02_AXI",
-              "m02_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m01_couplers": {
-            "interface_ports": [
-              "xbar/M01_AXI",
-              "m01_couplers/S_AXI"
+              "M07_AXI",
+              "m07_couplers/M_AXI"
             ]
           },
           "m06_couplers_to_slave_interconnect": {
@@ -3155,16 +3137,40 @@
               "m05_couplers/M_AXI"
             ]
           },
-          "m07_couplers_to_slave_interconnect": {
+          "xbar_to_m01_couplers": {
             "interface_ports": [
-              "M07_AXI",
-              "m07_couplers/M_AXI"
+              "xbar/M01_AXI",
+              "m01_couplers/S_AXI"
             ]
           },
-          "xbar_to_m04_couplers": {
+          "xbar_to_m06_couplers": {
             "interface_ports": [
-              "xbar/M04_AXI",
-              "m04_couplers/S_AXI"
+              "xbar/M06_AXI",
+              "m06_couplers/S_AXI"
+            ]
+          },
+          "m09_couplers_to_slave_interconnect": {
+            "interface_ports": [
+              "M09_AXI",
+              "m09_couplers/M_AXI"
+            ]
+          },
+          "xbar_to_m08_couplers": {
+            "interface_ports": [
+              "xbar/M08_AXI",
+              "m08_couplers/S_AXI"
+            ]
+          },
+          "xbar_to_m02_couplers": {
+            "interface_ports": [
+              "xbar/M02_AXI",
+              "m02_couplers/S_AXI"
+            ]
+          },
+          "slave_interconnect_to_s01_couplers": {
+            "interface_ports": [
+              "S01_AXI",
+              "s01_couplers/S_AXI"
             ]
           },
           "xbar_to_m10_couplers": {
@@ -3173,10 +3179,34 @@
               "m10_couplers/S_AXI"
             ]
           },
-          "m01_couplers_to_slave_interconnect": {
+          "slave_interconnect_to_s00_couplers": {
             "interface_ports": [
-              "M01_AXI",
-              "m01_couplers/M_AXI"
+              "S00_AXI",
+              "s00_couplers/S_AXI"
+            ]
+          },
+          "xbar_to_m09_couplers": {
+            "interface_ports": [
+              "xbar/M09_AXI",
+              "m09_couplers/S_AXI"
+            ]
+          },
+          "m04_couplers_to_slave_interconnect": {
+            "interface_ports": [
+              "M04_AXI",
+              "m04_couplers/M_AXI"
+            ]
+          },
+          "s01_couplers_to_xbar": {
+            "interface_ports": [
+              "s01_couplers/M_AXI",
+              "xbar/S01_AXI"
+            ]
+          },
+          "xbar_to_m07_couplers": {
+            "interface_ports": [
+              "xbar/M07_AXI",
+              "m07_couplers/S_AXI"
             ]
           },
           "m08_couplers_to_slave_interconnect": {
@@ -3197,46 +3227,16 @@
               "m02_couplers/M_AXI"
             ]
           },
-          "xbar_to_m09_couplers": {
+          "m00_couplers_to_slave_interconnect": {
             "interface_ports": [
-              "xbar/M09_AXI",
-              "m09_couplers/S_AXI"
+              "M00_AXI",
+              "m00_couplers/M_AXI"
             ]
           },
           "xbar_to_m05_couplers": {
             "interface_ports": [
               "xbar/M05_AXI",
               "m05_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m03_couplers": {
-            "interface_ports": [
-              "xbar/M03_AXI",
-              "m03_couplers/S_AXI"
-            ]
-          },
-          "slave_interconnect_to_s00_couplers": {
-            "interface_ports": [
-              "S00_AXI",
-              "s00_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m06_couplers": {
-            "interface_ports": [
-              "xbar/M06_AXI",
-              "m06_couplers/S_AXI"
-            ]
-          },
-          "slave_interconnect_to_s01_couplers": {
-            "interface_ports": [
-              "S01_AXI",
-              "s01_couplers/S_AXI"
-            ]
-          },
-          "xbar_to_m07_couplers": {
-            "interface_ports": [
-              "xbar/M07_AXI",
-              "m07_couplers/S_AXI"
             ]
           }
         },
@@ -3440,7 +3440,7 @@
       "KINTEX_SYS_MGMT": {
         "vlnv": "xilinx.com:ip:system_management_wiz:1.3",
         "xci_name": "c2cSlave_KINTEX_SYS_MGMT_0",
-        "xci_path": "ip/c2cSlave_KINTEX_SYS_MGMT_0_1/c2cSlave_KINTEX_SYS_MGMT_0.xci",
+        "xci_path": "ip/c2cSlave_KINTEX_SYS_MGMT_0_3/c2cSlave_KINTEX_SYS_MGMT_0.xci",
         "inst_hier_path": "KINTEX_SYS_MGMT",
         "parameters": {
           "USER_TEMP_ALARM": {
@@ -3450,34 +3450,10 @@
       }
     },
     "interface_nets": {
-      "slave_interconnect_M09_AXI": {
-        "interface_ports": [
-          "TAR",
-          "slave_interconnect/M09_AXI"
-        ]
-      },
-      "K_C2CLINK_AXIS_TX": {
-        "interface_ports": [
-          "K_C2CLINK/AXIS_TX",
-          "K_C2CLINK_PHY/USER_DATA_S_AXIS_TX"
-        ]
-      },
-      "K_C2CLINK_PHY_USER_DATA_M_AXIS_RX": {
-        "interface_ports": [
-          "K_C2CLINK_PHY/USER_DATA_M_AXIS_RX",
-          "K_C2CLINK/AXIS_RX"
-        ]
-      },
       "K_C2CLINK_PHY_refclk_1": {
         "interface_ports": [
           "K_C2CLINK_PHY_refclk",
           "K_C2CLINK_PHY/GT_DIFF_REFCLK1"
-        ]
-      },
-      "K_C2CLINK_PHY_Rx_1": {
-        "interface_ports": [
-          "K_C2CLINK_PHY_Rx",
-          "K_C2CLINK_PHY/GT_SERIAL_RX"
         ]
       },
       "K_C2CLINK_PHY_GT_SERIAL_TX": {
@@ -3486,10 +3462,10 @@
           "K_C2CLINK_PHY/GT_SERIAL_TX"
         ]
       },
-      "slave_interconnect_M05_AXI": {
+      "K_C2CLINK_AXIS_TX": {
         "interface_ports": [
-          "MTC",
-          "slave_interconnect/M05_AXI"
+          "K_C2CLINK/AXIS_TX",
+          "K_C2CLINK_PHY/USER_DATA_S_AXIS_TX"
         ]
       },
       "slave_interconnect_M02_AXI": {
@@ -3528,6 +3504,30 @@
           "slave_interconnect/M04_AXI"
         ]
       },
+      "slave_interconnect_M05_AXI": {
+        "interface_ports": [
+          "MTC",
+          "slave_interconnect/M05_AXI"
+        ]
+      },
+      "K_C2CLINK_PHY_Rx_1": {
+        "interface_ports": [
+          "K_C2CLINK_PHY_Rx",
+          "K_C2CLINK_PHY/GT_SERIAL_RX"
+        ]
+      },
+      "slave_interconnect_M09_AXI": {
+        "interface_ports": [
+          "TAR",
+          "slave_interconnect/M09_AXI"
+        ]
+      },
+      "K_C2CLINK_PHY_USER_DATA_M_AXIS_RX": {
+        "interface_ports": [
+          "K_C2CLINK_PHY/USER_DATA_M_AXIS_RX",
+          "K_C2CLINK/AXIS_RX"
+        ]
+      },
       "slave_interconnect_M03_AXI": {
         "interface_ports": [
           "HAL",
@@ -3540,12 +3540,6 @@
           "slave_interconnect/M08_AXI"
         ]
       },
-      "slave_interconnect_M10_AXI": {
-        "interface_ports": [
-          "MPL",
-          "slave_interconnect/M10_AXI"
-        ]
-      },
       "slave_interconnect_M07_AXI": {
         "interface_ports": [
           "UCM",
@@ -3556,6 +3550,12 @@
         "interface_ports": [
           "TF",
           "slave_interconnect/M06_AXI"
+        ]
+      },
+      "slave_interconnect_M10_AXI": {
+        "interface_ports": [
+          "MPL",
+          "slave_interconnect/M10_AXI"
         ]
       }
     },

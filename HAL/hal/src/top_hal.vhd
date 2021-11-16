@@ -108,9 +108,6 @@ entity top_hal is
     -- felix
     --------------------------------------------------------------------------------
 
-    -- FIXME: note that right now (10/19/2021) the daq stream is a 65 bit field,
-    -- which needs to change somehow to pack into the 32 bit / bx that we can
-    -- send to FELIX
     daq_streams : in FELIX_STREAM_bus_avt (c_HPS_MAX_HP_INN
                                            + c_HPS_MAX_HP_MID
                                            + c_HPS_MAX_HP_OUT - 1 downto 0);
@@ -191,7 +188,6 @@ architecture behavioral of top_hal is
   signal felix_mgt_rxusrclk          : std_logic_vector (c_NUM_FELIX_DOWNLINKS-1 downto 0);
   signal felix_uplink_mgt_word_array : std32_array_t (c_NUM_FELIX_UPLINKS-1 downto 0);
   signal felix_mgt_txusrclk          : std_logic_vector (c_NUM_FELIX_UPLINKS-1 downto 0);
-  signal lhc_recclk                  : std_logic;
 
   --------------------------------------------------------------------------------
   -- Sector Logic Glue
@@ -225,12 +221,9 @@ architecture behavioral of top_hal is
   attribute MAX_FANOUT of strobe_pipeline : signal is "20";
   attribute DONT_TOUCH of strobe_pipeline : signal is "true";
 
-  attribute MAX_FANOUT of strobe_320 : signal is "20";
-
   -- Save this here so we can extract it from the hierarchy later
-  -- this is used in log_mgts.tcl so please do not remove it
   attribute NUM_MGTS                       : integer;
-  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;
+  attribute NUM_MGTS of mgt_wrapper_inst   : label is c_NUM_MGTS;  -- make a copy of this handy for tcl
   attribute DONT_TOUCH of mgt_wrapper_inst : label is "true";
 
 begin  -- architecture behavioral
@@ -254,27 +247,19 @@ begin  -- architecture behavioral
   -- Common Clocking
   --------------------------------------------------------------------------------
 
-  lhc_refclk_OBUFDS_inst : OBUFDS
-    port map (
-      O  => lhc_refclk_o_p,             -- 1-bit output: Diff_p output (connect directly to top-level port)
-      OB => lhc_refclk_o_n,             -- 1-bit output: Diff_n output (connect directly to top-level port)
-      I  => lhc_recclk                  -- 1-bit input: Buffer input
-      );
-
   top_clocking_inst : entity hal.top_clocking
     port map (
       --
-      reset_i => core_ctrl.clocking.reset_mmcm,
+      reset_i          => core_ctrl.clocking.reset_mmcm,
 
       -- clock inputs
       -- this is the 100MHz UNSTOPPABLE clock that should be used to run any core logic (AXI and so on)
       clock_100m_i_p => clock_100m_i_p,
       clock_100m_i_n => clock_100m_i_n,
 
-      -- 40MHz clock from Si synth, this is either free-running or locked onto
-      -- the 40MHz clock that comes from FELIX (recovered through this FPGA)
-      clock_i_p => clock_i_p,
-      clock_i_n => clock_i_n,
+      -- 40MHz clock from Si synth
+      clock_i_p      => clock_i_p,
+      clock_i_n      => clock_i_n,
 
       -- system clocks
       clocks_o => clocks,
@@ -283,16 +268,14 @@ begin  -- architecture behavioral
       locked_o => clocks.locked
       );
 
-  clock_strobe_1 : entity work.clock_strobe
-    generic map (RATIO => 8)
+  clock_strobe_1: entity work.clock_strobe
     port map (
       fast_clk_i => clocks.clock320,
       slow_clk_i => clocks.clock40,
       strobe_o   => strobe_320
       );
 
-  clock_strobe_2 : entity work.clock_strobe
-    generic map (RATIO => 8)
+  clock_strobe_2: entity work.clock_strobe
     port map (
       fast_clk_i => clocks.clock_pipeline,
       slow_clk_i => clocks.clock40,
@@ -328,8 +311,6 @@ begin  -- architecture behavioral
 
       -- reset
       reset => '0',                     -- need a separate reset from the mmcm due to recovered links
-
-      recclk_o => lhc_recclk,
 
       ctrl => core_ctrl.mgt,
       mon  => core_mon.mgt,
@@ -371,8 +352,6 @@ begin  -- architecture behavioral
   -- LPGBT Emulator
   --------------------------------------------------------------------------------
 
-  -- FIXME: just use 1 instance of the emulator and mux the downlink data to each
-  -- 
   lpgbtemul_wrapper_inst : entity hal.lpgbtemul_wrapper
     port map (
       reset                           => global_reset,
@@ -524,7 +503,6 @@ begin  -- architecture behavioral
       tx_clk         => sl_tx_clk,
       rx_clk         => sl_rx_clk,
       pipeline_clock => clocks.clock_pipeline,
-      clk40          => clocks.clock40,
       reset          => global_reset,
 
       sl_rx_mgt_word_array_i => sl_rx_mgt_word_array,
@@ -551,11 +529,8 @@ begin  -- architecture behavioral
 
   felix_decoder_inst : entity work.felix_decoder
     port map (
-      clock320       => clocks.clock320,
-      clock40        => clocks.clock40,
-      clock_pipeline => clocks.clock_pipeline,
-
-      reset          => global_reset,
+      clock => clocks.clock320,
+      reset => global_reset,
 
       ttc_mgt_data_i    => felix_ttc_mgt_word,
       ttc_mgt_bitslip_o => felix_ttc_bitslip,
@@ -563,17 +538,11 @@ begin  -- architecture behavioral
       strobe_pipeline => strobe_pipeline,
       strobe_320      => strobe_320,
 
-      l0mdt_ttc_40m      => ttc_commands, -- copies of outputs stable for 25ns
-    --l0mdt_ttc_320m     => open,         -- copies of outputs stable for 3.125ns
-    --l0mdt_ttc_pipeline => open,         -- copies of outputs stable for 1 pipeline clock
+      l0mdt_ttc_40m      => ttc_commands,    -- copies of outputs stable for 25ns
+      l0mdt_ttc_320m     => open,            -- copies of outputs stable for 3.125ns
+      l0mdt_ttc_pipeline => ttc_commands_o,  -- copies of outputs stable for 1 pipeline clock
       valid_o            => felix_valid
       );
-
-  ttc_commands_o <= ttc_commands;
-
-  --------------------------------------------------------------------------------
-  -- Felix Transmitter
-  --------------------------------------------------------------------------------
 
   --------------------------------------------------------------------------------
   -- Sumps to prevent trimming... TODO remove later once actual logic is connected

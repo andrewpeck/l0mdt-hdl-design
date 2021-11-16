@@ -39,7 +39,7 @@ entity top_csf is
   generic (
     -- Project flavour (0: Barrel, 1: Endcap)
     FLAVOUR             : integer := 0;
-    SPYBUFFER_EN        : integer := 1;
+    SPYBUFFER_EN        : integer := 0;
     SPYHIT_MEM_WIDTH    : integer := 10;
     SPYHIT_EL_MEM_WIDTH : integer := 10;
     SPYSLC_MEM_WIDTH    : integer := 10;
