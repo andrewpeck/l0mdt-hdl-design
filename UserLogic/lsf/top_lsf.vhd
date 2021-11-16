@@ -42,7 +42,7 @@ entity top_lsf IS
     sb_lsf_mdt_hits_raddr  : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
     sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0);
   --Fast Monitoring Data
-    lsf_fm_data            : out fm_rt_array( 0 to sf_sb_station_n - 1)
+    lsf_fm_data            : out fm_rt_array( 0 to sf_sb_n - 1)
 
     );
   end entity top_lsf;
@@ -65,7 +65,7 @@ component lsf_spybuffer_wrapper
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
     histogram_accumulation_count : in std_logic_vector(9 downto 0);
-    lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_station_n - 1);
+    lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_n - 1);
     --SpyBuffer Interface
     sb_lsf_mdt_hits_freeze         : in std_logic;
     --  sb_lsf_mdt_hits_playback       : in std_logic;

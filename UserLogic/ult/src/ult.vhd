@@ -188,7 +188,7 @@ architecture behavioral of ult is
 
   --FAST MONITORING
   signal ult_fm_data : fm_rt_array(0  to total_sb-1);
-  signal h2s_fm_data : fm_rt_array(0  to h2s_sb_n -1);
+  signal h2s_fm_data : fm_rt_array(0  to h2s_sb_all_station_n -1);
 begin
 
   -- -- ctrl/mon
@@ -207,7 +207,7 @@ begin
   -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
   -- daq_mon <= structify(daq_mon_v,daq_mon);
   --Fast Monitoring
-  ult_fm_data(0 to h2s_sb_n - 1) <= h2s_fm_data;
+  ult_fm_data(0 to h2s_sb_all_station_n - 1) <= h2s_fm_data;
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate

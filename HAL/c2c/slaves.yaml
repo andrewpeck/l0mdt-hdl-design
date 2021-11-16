@@ -105,4 +105,4 @@ AXI_SLAVES:
       axi_control: "${::AXI_LHC_CTRL}"
       addr:
         offset: "0x83c50000"
-        range: "4K"
+        range: "8K"

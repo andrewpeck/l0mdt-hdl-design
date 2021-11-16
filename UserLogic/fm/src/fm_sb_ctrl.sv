@@ -18,8 +18,8 @@ module fm_sb_ctrl(
    logic [axi_dw-1:0] 			  freeze_mask;
    logic [axi_dw-1:0] 			  playback_mask;
 
-   assign global_freeze  = fm_ctrl_in.SPY_CTRL.FREEZE;
-   assign global_pb_mode = fm_ctrl_in.SPY_CTRL.PLAYBACK_MODE;
+   assign global_freeze  = fm_ctrl_in.SPY_CTRL.GLOBAL_FREEZE;
+   assign global_pb_mode = fm_ctrl_in.SPY_CTRL.GLOBAL_PLAYBACK_MODE;
 
    always @ (posedge axi_clk)
      begin
@@ -48,15 +48,30 @@ module fm_sb_ctrl(
 
 	     for (int i=0; i<total_sb; i=i+1)
 	       begin
-		  if(fm_ctrl_in.PLAYBACK_MASK_0[pb_mode_width*i +: pb_mode_width] == 0)
+		  if(i < 16)
 		    begin
-		       playback_mode[i] <= global_pb_mode;
-		    end
-		  else
+		       if(fm_ctrl_in.PLAYBACK_MASK_0[pb_mode_width*i +: pb_mode_width] == 0)
+			 begin
+			    playback_mode[i] <= global_pb_mode;
+			 end
+		       else
+			 begin
+			    playback_mode[i] <= 0;
+			 end
+		    end // if (i < 16)
+		  else if (i < 32 )
 		    begin
-		       playback_mode[i] <= 0;
+		         if(fm_ctrl_in.PLAYBACK_MASK_1[pb_mode_width*(i>>5) +: pb_mode_width] == 0)
+			 begin
+			    playback_mode[i] <= global_pb_mode;
+			 end
+		       else
+			 begin
+			    playback_mode[i] <= 0;
+			 end
 		    end
-	       end
+	       end // for (int i=0; i<total_sb; i=i+1)
+
 	  end
      end
 

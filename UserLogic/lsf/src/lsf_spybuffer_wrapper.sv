@@ -42,7 +42,7 @@ module lsf_spybuffer_wrapper #(
     //CTRL/Spy Interface
     input logic 		    i_eof,
     input logic [9:0] 		    histogram_accumulation_count,
-    output 			    fm_rt lsf_fm_data[lsf_sb_n],
+    output 			    fm_rt lsf_fm_data[sf_sb_n],
     input 			    sb_lsf_mdt_hits_freeze,
     // input 			   sb_lsf_mdt_hits_playback,
     // input 			   sb_lsf_mdt_hits_playback_we,

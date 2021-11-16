@@ -59,7 +59,7 @@ entity hps_sf_wrap is
     lsf_ctrl_v : in  std_logic_vector;--H2S_HPS_LSF_LSF_CTRL_t;
     lsf_mon_v  : out std_logic_vector;--H2S_HPS_LSF_LSF_MON_t;
 
-    sf_fm_data : out fm_rt_array( 0 to sf_sb_station_n - 1);
+    sf_fm_data : out fm_rt_array( 0 to sf_sb_n - 1);
     -- configuration
     i_control_v  : in  heg_ctrl2sf_rvt;
     i_slc_data_v : in  heg2sfslc_rvt;

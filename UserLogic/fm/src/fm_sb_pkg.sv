@@ -6,15 +6,22 @@ package fm_sb_pkg;
 
    import fm_ctrl::*;
 
-   parameter total_sb            = 2;
-   parameter total_sb_bits      = $clog2(total_sb);
+
+   //parameter total_sb_bits      = $clog2(total_sb);
    parameter axi_dw             = 32;
    parameter mon_dw_max         = 256;
    parameter pb_mode_width      = 2;
 
-   parameter lsf_sb_station_n   = 3;
+
    parameter stations_n         = 3; // INN, MID, OUT
-   parameter lsf_sb_n           = 9;
+   parameter threads_n          = 3;
+   parameter sf_sb_n            = 3;
+   parameter sf_sb_single_station_n   = sf_sb_n * threads_n;
+
+
+   parameter h2s_sb_single_station_n  = sf_sb_single_station_n;
+   parameter h2s_sb_all_station_n     = h2s_sb_single_station_n * stations_n;
+   parameter total_sb                 = 27; //h2s_sb_all_station_n ;
 
 
    FM_CTRL_t FM_CTRL;
@@ -28,11 +35,62 @@ package fm_sb_pkg;
 
    parameter  integer axi_sb_addr_width[total_sb] = {
 						     $bits(FM_CTRL.SB0.SB_MEM.address),
-						     $bits(FM_CTRL.SB1.SB_MEM.address)
+						     $bits(FM_CTRL.SB1.SB_MEM.address),
+						     $bits(FM_CTRL.SB2.SB_MEM.address),
+						     $bits(FM_CTRL.SB3.SB_MEM.address),
+						     $bits(FM_CTRL.SB4.SB_MEM.address),
+						     $bits(FM_CTRL.SB5.SB_MEM.address),
+						     $bits(FM_CTRL.SB6.SB_MEM.address),
+						     $bits(FM_CTRL.SB7.SB_MEM.address),
+						     $bits(FM_CTRL.SB8.SB_MEM.address),
+						     $bits(FM_CTRL.SB9.SB_MEM.address),
+						     $bits(FM_CTRL.SB10.SB_MEM.address),
+						     $bits(FM_CTRL.SB11.SB_MEM.address),
+						     $bits(FM_CTRL.SB12.SB_MEM.address),
+						     $bits(FM_CTRL.SB13.SB_MEM.address),
+						     $bits(FM_CTRL.SB14.SB_MEM.address),
+						     $bits(FM_CTRL.SB15.SB_MEM.address),
+						     $bits(FM_CTRL.SB16.SB_MEM.address),
+						     $bits(FM_CTRL.SB17.SB_MEM.address),
+						     $bits(FM_CTRL.SB18.SB_MEM.address),
+						     $bits(FM_CTRL.SB19.SB_MEM.address),
+						     $bits(FM_CTRL.SB20.SB_MEM.address),
+						     $bits(FM_CTRL.SB21.SB_MEM.address),
+						     $bits(FM_CTRL.SB22.SB_MEM.address),
+						     $bits(FM_CTRL.SB23.SB_MEM.address),
+						     $bits(FM_CTRL.SB24.SB_MEM.address),
+						     $bits(FM_CTRL.SB25.SB_MEM.address),
+						     $bits(FM_CTRL.SB26.SB_MEM.address)
 						     };
+
    parameter integer  axi_sm_addr_width[total_sb] = {
 						     $bits(FM_CTRL.SB0.SB_META.address),
-						     $bits(FM_CTRL.SB1.SB_META.address)
+						     $bits(FM_CTRL.SB1.SB_META.address),
+						     $bits(FM_CTRL.SB2.SB_META.address),
+						     $bits(FM_CTRL.SB3.SB_META.address),
+						     $bits(FM_CTRL.SB4.SB_META.address),
+						     $bits(FM_CTRL.SB5.SB_META.address),
+						     $bits(FM_CTRL.SB6.SB_META.address),
+						     $bits(FM_CTRL.SB7.SB_META.address),
+						     $bits(FM_CTRL.SB8.SB_META.address),
+						     $bits(FM_CTRL.SB9.SB_META.address),
+						     $bits(FM_CTRL.SB10.SB_META.address),
+						     $bits(FM_CTRL.SB11.SB_META.address),
+						     $bits(FM_CTRL.SB12.SB_META.address),
+						     $bits(FM_CTRL.SB13.SB_META.address),
+						     $bits(FM_CTRL.SB14.SB_META.address),
+						     $bits(FM_CTRL.SB15.SB_META.address),
+						     $bits(FM_CTRL.SB16.SB_META.address),
+						     $bits(FM_CTRL.SB17.SB_META.address),
+						     $bits(FM_CTRL.SB18.SB_META.address),
+						     $bits(FM_CTRL.SB19.SB_META.address),
+						     $bits(FM_CTRL.SB20.SB_META.address),
+						     $bits(FM_CTRL.SB21.SB_META.address),
+						     $bits(FM_CTRL.SB22.SB_META.address),
+						     $bits(FM_CTRL.SB23.SB_META.address),
+						     $bits(FM_CTRL.SB24.SB_META.address),
+						     $bits(FM_CTRL.SB25.SB_META.address),
+						     $bits(FM_CTRL.SB26.SB_META.address)
 						     };
    logic [15:0]       axi_sb_addr[total_sb] ;
    logic [15:0]       axi_sm_addr[total_sb] ;

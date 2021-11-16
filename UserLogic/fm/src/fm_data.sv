@@ -45,7 +45,7 @@ module fm_data(
 	      SpyBuffer #(
 			  .DATA_WIDTH_A(256),
 			  .DATA_WIDTH_B(axi_dw),
-
+			  .SPY_META_DATA_WIDTH(axi_dw),
 
 			  .SPY_MEM_WIDTH_A(),
 			  .SPY_MEM_WIDTH_B(axi_sb_addr_width[sb_i]), //$bits(fm_ctrl_t.sb0.SB_MEM.address)),
@@ -80,12 +80,12 @@ module fm_data(
 		 .freeze(freeze[sb_i]),
 		 .playback(playback_mode[sb_i]),
 		 .spy_en(axi_sb_enable[sb_i]),
-		 .spy_addr(axi_sb_addr[sb_i]),
+		 .spy_addr(axi_sb_addr[sb_i][axi_sb_addr_width[sb_i]-1:0]),
 		 .spy_write_enable(axi_sb_enable[sb_i] & axi_sb_wr_enable[sb_i]),
 		 .spy_write_data(axi_sb_wr_data[sb_i]),
 		 .spy_data(axi_spy_data[sb_i]),
 		 .spy_meta_en(axi_sm_enable[sb_i]),
-		 .spy_meta_addr(axi_sm_addr[sb_i]),
+		 .spy_meta_addr(axi_sm_addr[sb_i][axi_sm_addr_width[sb_i]-1:0]),
 		 .spy_meta_read_data(axi_spy_meta_data[sb_i]),
 		 .spy_meta_write_data(axi_sm_wr_data[sb_i]),
 		 .spy_meta_wen(axi_sm_wr_enable[sb_i])

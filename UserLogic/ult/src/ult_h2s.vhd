@@ -44,7 +44,7 @@ entity hits_to_segments is
     ttc_commands      : in  l0mdt_ttc_rt;
     ctrl_v            : in  std_logic_vector;--H2S_CTRL_t;
     mon_v             : out std_logic_vector; --H2S_MON_t;
-    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_n - 1);
+    h2s_fm_data       : out fm_rt_array(0 to h2s_sb_all_station_n - 1);
     -- TDC Hits from Polmux
     i_inn_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tar_hits_av  : in tar2hps_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -116,7 +116,7 @@ begin
 
         ctrl_v              => ctrl_hps_v,
         mon_v               => mon_hps_v,
-        h2s_fm_data         => h2s_fm_data(0 to h2s_sb_station_n-1),
+        h2s_fm_data         => h2s_fm_data(0 to h2s_sb_single_station_n-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -153,7 +153,7 @@ begin
 
         ctrl_v              => ctrl_hps_v,
         mon_v               => mon_hps_v,
-        h2s_fm_data         => h2s_fm_data(h2s_sb_station_n to h2s_sb_station_n*2-1),
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n to h2s_sb_single_station_n*2-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -190,7 +190,7 @@ begin
 
         ctrl_v              => ctrl_hps_v,
         mon_v               => mon_hps_v,
-        h2s_fm_data         => h2s_fm_data(h2s_sb_station_n*2 to h2s_sb_station_n*3-1),
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*2 to h2s_sb_single_station_n*3-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
@@ -227,7 +227,7 @@ begin
 
         ctrl_v              => ctrl_hps_v,
         mon_v               => mon_hps_v,
-        h2s_fm_data         => h2s_fm_data(h2s_sb_station_n*4 to h2s_sb_station_n*4-1),
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*4-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
