@@ -56,6 +56,9 @@ begin
       o_mtc               => o_mtc
     );
 
+    o_nsp <= (others => (others => '0'));
+    -- mon_v <= (others => '0');
+
     o_sump <= '0';
 
   end generate;
