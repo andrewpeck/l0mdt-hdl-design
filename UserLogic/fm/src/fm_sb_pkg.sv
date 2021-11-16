@@ -12,6 +12,10 @@ package fm_sb_pkg;
    parameter mon_dw_max         = 256;
    parameter pb_mode_width      = 2;
 
+   parameter lsf_sb_station_n   = 3;
+   parameter stations_n         = 3; // INN, MID, OUT
+   parameter lsf_sb_n           = 9;
+
 
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;

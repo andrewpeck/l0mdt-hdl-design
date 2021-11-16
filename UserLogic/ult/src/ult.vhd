@@ -37,6 +37,9 @@ use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
+library fm_lib;
+use fm_lib.fm_sb_pkg.all;
+
 entity ult is
   generic (
     SUMP_SIGNALS : boolean := false;
@@ -70,8 +73,8 @@ entity ult is
     mpl_ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
     mpl_mon_v             : out std_logic_vector;-- : out MPL_MON_t;
 
-    fm_ctrl_v             : in FM_CTRL_t;
-    fm_mon_v              : out FM_MON_t;
+    fm_ctrl_v             : in std_logic_vector;
+    fm_mon_v              : out std_logic_vector;
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -109,6 +112,9 @@ entity ult is
     o_MTC                     : out mtc_out_bus_avt(c_NUM_MTC-1 downto 0);
     o_NSP                     : out mtc2nsp_bus_avt(c_NUM_NSP-1 downto 0);
     -- AXI Control
+
+
+    --FM Monitor Data
 
     sump : out std_logic
 
@@ -180,6 +186,9 @@ architecture behavioral of ult is
   signal daq_sump : std_logic := '1';
   signal mpl_sump : std_logic := '1';
 
+  --FAST MONITORING
+  signal ult_fm_data : fm_rt_array(0  to total_sb-1);
+  signal h2s_fm_data : fm_rt_array(0  to h2s_sb_n -1);
 begin
 
   -- -- ctrl/mon
@@ -197,6 +206,8 @@ begin
   -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
   -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
   -- daq_mon <= structify(daq_mon_v,daq_mon);
+  --Fast Monitoring
+  ult_fm_data(0 to h2s_sb_n - 1) <= h2s_fm_data;
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate
@@ -326,6 +337,7 @@ begin
         ttc_commands              => ttc_commands,
         ctrl_v                      => h2s_ctrl_v,
         mon_V                       => h2s_mon_v,
+        h2s_fm_data                 => h2s_fm_data,
         -- inputs from hal
         i_inn_tar_hits_av             => ult_inn_tar_hits_av,
         i_mid_tar_hits_av             => ult_mid_tar_hits_av,
@@ -344,6 +356,7 @@ begin
         -- Segment outputs to HA  L
         o_plus_neighbor_segments_av   => o_plus_neighbor_segments_av,
         o_minus_neighbor_segments_av  => o_minus_neighbor_segments_av
+
 
         -- o_sump                    => h2s_sump
       );
@@ -563,12 +576,7 @@ begin
         );
       end generate;
 
-    sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;
-
-  end generate;
-
-
-   FM_GEN : if c_FM_ENABLED = '1' generate
+    FM_GEN : if c_FM_ENABLED = '1' generate
       ULT_FM : entity ult_lib.ult_fm
       port map (
         -- clock, control, and monitoring
@@ -578,10 +586,18 @@ begin
         mon_v             => fm_mon_v,
         --  inputs
         sf_mon_data       => (others=>'0'),
-        sf_mon_data_we    => '0'
+        sf_mon_data_we    => '0',
+        ult_fm_data      => ult_fm_data
       );
 
     end generate;
+
+
+    sump <= tar_sump xor ucm_sump xor h2s_sump xor pt_sump xor mtc_sump xor daq_sump xor mpl_sump;
+
+  end generate;
+
+
 
 
 

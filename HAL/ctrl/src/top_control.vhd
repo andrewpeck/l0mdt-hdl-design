@@ -74,6 +74,9 @@ entity top_control is
 
     fw_info_mon : in FW_INFO_MON_t;
 
+    fm_mon      : in FM_MON_t;
+    fm_ctrl     : out FM_CTRL_t;
+
     -- system management
     --sys_mgmt_scl            : inout std_logic;
     --sys_mgmt_sda            : inout std_logic;
@@ -142,6 +145,11 @@ architecture control_arch of top_control is
   signal mpl_writemosi : axiwritemosi;
   signal mpl_writemiso : axiwritemiso;
 
+  signal fm_readmosi  : axireadmosi;
+  signal fm_readmiso  : axireadmiso;
+  signal fm_writemosi : axiwritemosi;
+  signal fm_writemiso : axiwritemiso;
+
   signal h2s_ctrl_reg      : H2S_CTRL_t;
   signal tar_ctrl_reg      : TAR_CTRL_t;
   signal mtc_ctrl_reg      : MTC_CTRL_t;
@@ -151,6 +159,7 @@ architecture control_arch of top_control is
   signal mpl_ctrl_reg      : MPL_CTRL_t;
   signal hal_ctrl_reg      : HAL_CTRL_t;
   signal hal_core_ctrl_reg : HAL_CORE_CTRL_t;
+  signal fm_ctrl_reg       : FM_CTRL_t;
 
   signal h2s_mon_reg      : H2S_MON_t;
   signal tar_mon_reg      : TAR_MON_t;
@@ -161,6 +170,8 @@ architecture control_arch of top_control is
   signal mpl_mon_reg      : MPL_MON_t;
   signal hal_mon_reg      : HAL_MON_t;
   signal hal_core_mon_reg : HAL_CORE_MON_t;
+  signal fm_mon_reg       : FM_MON_t;
+
 
 begin
 
@@ -176,7 +187,7 @@ begin
       tf_mon_reg  <= tf_mon;
       mpl_mon_reg <= mpl_mon;
       hal_mon_reg <= hal_mon;
-
+      fm_mon_reg  <= fm_mon;
       -- outputs
       h2s_ctrl <= h2s_ctrl_reg;
       tar_ctrl <= tar_ctrl_reg;
@@ -186,6 +197,7 @@ begin
       tf_ctrl  <= tf_ctrl_reg;
       mpl_ctrl <= mpl_ctrl_reg;
       hal_ctrl <= hal_ctrl_reg;
+      fm_ctrl  <= fm_ctrl_reg;
     end if;
   end process;
 
@@ -449,6 +461,27 @@ begin
       mpl_wstrb   => mpl_writemosi.data_write_strobe,
       mpl_wvalid  => mpl_writemosi.data_valid,
 
+
+      fm_araddr  => fm_readmosi.address,
+      fm_arprot  => fm_readmosi.protection_type,
+      fm_arready => fm_readmiso.ready_for_address,
+      fm_arvalid => fm_readmosi.address_valid,
+      fm_awaddr  => fm_writemosi.address,
+      fm_awprot  => fm_writemosi.protection_type,
+      fm_awready => fm_writemiso.ready_for_address,
+      fm_awvalid => fm_writemosi.address_valid,
+      fm_bready  => fm_writemosi.ready_for_response,
+      fm_bresp   => fm_writemiso.response,
+      fm_bvalid  => fm_writemiso.response_valid,
+      fm_rdata   => fm_readmiso.data,
+      fm_rready  => fm_readmosi.ready_for_data,
+      fm_rresp   => fm_readmiso.response,
+      fm_rvalid  => fm_readmiso.data_valid,
+      fm_wdata   => fm_writemosi.data,
+      fm_wready  => fm_writemiso.ready_for_data,
+      fm_wstrb   => fm_writemosi.data_write_strobe,
+      fm_wvalid  => fm_writemosi.data_valid,
+
       -- system monitor outputs
 
       kintex_sys_mgmt_alarm          => sys_mgmt_alarm,
@@ -597,6 +630,21 @@ begin
       mon  => mpl_mon_reg,
       -- control signals out
       ctrl => mpl_ctrl_reg
+      );
+
+   fm_map_inst : entity ctrl_lib.FM_map
+    port map (
+      clk_axi         => clk40,
+      reset_axi_n     => std_logic1,
+      slave_readmosi  => fm_readmosi,
+      slave_readmiso  => fm_readmiso,
+      slave_writemosi => fm_writemosi,
+      slave_writemiso => fm_writemiso,
+
+      -- monitor signals in
+      mon  => fm_mon_reg,
+      -- control signals out
+      Ctrl => fm_ctrl_reg
       );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map

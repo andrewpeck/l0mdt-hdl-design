@@ -98,3 +98,11 @@ AXI_SLAVES:
       addr:
         offset: "0x83c4f000"
         range: "4K"
+
+  FM:
+    TCL_CALL:
+      command: "AXI_PL_DEV_CONNECT"
+      axi_control: "${::AXI_LHC_CTRL}"
+      addr:
+        offset: "0x83c50000"
+        range: "4K"

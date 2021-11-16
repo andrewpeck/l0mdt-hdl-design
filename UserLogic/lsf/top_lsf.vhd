@@ -21,6 +21,9 @@ library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 
+library fm_lib;
+use fm_lib.fm_sb_pkg.all;
+
 entity top_lsf IS
   generic (
     LSF_SB_MEM_WIDTH    : positive := 8;
@@ -37,7 +40,9 @@ entity top_lsf IS
     sb_lsf_mdt_hits_freeze : in std_logic;
     sb_lsf_mdt_hits_re     : in std_logic;
     sb_lsf_mdt_hits_raddr  : in std_logic_vector (LSF_SB_MEM_WIDTH-1 downto 0);
-    sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0)
+    sb_lsf_mdt_hits_rdata  : out std_logic_vector(HEG2SFHIT_LEN-1 downto 0);
+  --Fast Monitoring Data
+    lsf_fm_data            : out fm_rt_array( 0 to sf_sb_station_n - 1)
 
     );
   end entity top_lsf;
@@ -60,6 +65,7 @@ component lsf_spybuffer_wrapper
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
     histogram_accumulation_count : in std_logic_vector(9 downto 0);
+    lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_station_n - 1);
     --SpyBuffer Interface
     sb_lsf_mdt_hits_freeze         : in std_logic;
     --  sb_lsf_mdt_hits_playback       : in std_logic;
@@ -92,6 +98,7 @@ begin
      lsf_output    => lsf,
      i_eof         => i_eof,
      histogram_accumulation_count  => hba_max_clocks,
+     lsf_fm_data                   => lsf_fm_data,
      --SpyBuffer
      sb_lsf_mdt_hits_freeze        => sb_lsf_mdt_hits_freeze,
      sb_lsf_mdt_hits_re            => sb_lsf_mdt_hits_re,

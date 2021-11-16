@@ -37,6 +37,11 @@ library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
 library lsf_lib;
+use lsf_lib.all;
+
+library fm_lib;
+use fm_lib.fm_sb_pkg.all;
+
 
 entity hps_sf_wrap is
   generic(
@@ -54,6 +59,7 @@ entity hps_sf_wrap is
     lsf_ctrl_v : in  std_logic_vector;--H2S_HPS_LSF_LSF_CTRL_t;
     lsf_mon_v  : out std_logic_vector;--H2S_HPS_LSF_LSF_MON_t;
 
+    sf_fm_data : out fm_rt_array( 0 to sf_sb_station_n - 1);
     -- configuration
     i_control_v  : in  heg_ctrl2sf_rvt;
     i_slc_data_v : in  heg2sfslc_rvt;
@@ -100,13 +106,14 @@ begin
             i_rst     => rst,
             spy_clock => clk,
             o_seg     => o_sf_data_v,
+--            csf_fm_data => sf_fm_data,
             i_spyhit_fc_we      => '0',
             i_spyhit_fc_re      => '0',
             i_spyhit_freeze     => '0',
             i_spyhit_playback   => (others => '0'),
             i_spyhit_pb_we      => '0',
             i_spyhit_pb_wdata   => (others => '0'),
-            i_spyhit_re         => '0',
+            i_spyhit_en         => '0',
             i_spyhit_addr       => (others => '0'),
             i_spyhit_meta_addr  => (others => '0'),
             i_spyhit_meta_we    => '0',
@@ -122,7 +129,7 @@ begin
             i_spyslc_playback   => (others => '0'),
             i_spyslc_pb_we      => '0',
             i_spyslc_pb_wdata   => (others => '0'),
-            i_spyslc_re         => '0',
+            i_spyslc_en         => '0',
             i_spyslc_addr       => (others => '0'),
             i_spyslc_meta_addr  => (others => '0'),
             i_spyslc_meta_we    => '0',
@@ -138,7 +145,7 @@ begin
             i_spyseg_playback   => (others => '0'),
             i_spyseg_pb_we      => '0',
             i_spyseg_pb_wdata   => (others => '0'),
-            i_spyseg_re         => '0',
+            i_spyseg_en         => '0',
             i_spyseg_addr       => (others => '0'),
             i_spyseg_meta_addr  => (others => '0'),
             i_spyseg_meta_we    => '0',
@@ -148,12 +155,12 @@ begin
             --o_spyseg_af         => '0';
             --o_spyseg_empty      => '0';
         );
-  
+
         lsf_mon_r <= nullify(lsf_mon_r);
         csf_mon_r <= nullify(csf_mon_r);
-  
+
       else generate
-  
+
         LSF : entity lsf_lib.top_lsf
           -- generic map(
           --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
@@ -166,6 +173,7 @@ begin
             lsf                                 => o_sf_data_v,
             i_eof                               => i_control_r.eof,
             hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks,
+            lsf_fm_data                         => sf_fm_data,
             --SpyBuffer
             sb_lsf_mdt_hits_freeze              => lsf_ctrl_r.sb_lsf_mdt_hits_freeze,
             sb_lsf_mdt_hits_re                  => lsf_ctrl_r.sb_lsf_mdt_hits_re,
@@ -173,10 +181,10 @@ begin
             sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon_r.sb_lsf_mdt_hits_rdata_31_0,
             sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon_r.sb_lsf_mdt_hits_rdata_40_32
         );
-  
+
         csf_mon_r <= nullify(csf_mon_r);
-  
-  
+
+
       end generate;
     else generate
 
@@ -184,8 +192,8 @@ begin
       csf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (csf_mon_v'length) port map(clk,rst,xor_reduce(csf_ctrl_v),csf_mon_v);
       lsf_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (lsf_mon_v'length) port map(clk,rst,xor_reduce(lsf_ctrl_v),lsf_mon_v);
 
-      
-      des0 : entity shared_lib.vhdl_utils_deserializer 
+
+      des0 : entity shared_lib.vhdl_utils_deserializer
         generic map (g_DATA_WIDTH => sf_data_v'length)
         port map(
           clk => clk,
@@ -196,7 +204,7 @@ begin
     end generate SF_BP;
 
   else generate
-      
+
     lsf_mon_r <= nullify(lsf_mon_r);
     csf_mon_r <= nullify(csf_mon_r);
 

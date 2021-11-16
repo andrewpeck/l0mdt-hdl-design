@@ -6,7 +6,7 @@ module fm(
 	  input logic clk_hs,
 	  input logic rst_hs,
 	  output      FM_MON_t fm_mon_out,
-	  input       fm_rt ult_mon_data[total_sb]
+	  input       fm_rt ult_fm_data[total_sb]
 	  );
 
    logic [total_sb-1:0] 	       freeze;
@@ -24,7 +24,7 @@ module fm(
 			.freeze(freeze),
 			.playback_mode(playback_mode),
 			.fm_ctrl_in(fm_ctrl_in),
-			.ult_mon_data(ult_mon_data),
+			.ult_mon_data(ult_fm_data),
 			.fm_mon_out(fm_mon_out)
 			);
 

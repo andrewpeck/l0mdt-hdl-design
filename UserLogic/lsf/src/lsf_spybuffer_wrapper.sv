@@ -18,6 +18,9 @@
 `include "l0mdt_buses_constants.svh"
 `endif
 
+library work::fm_sb_pkg;
+import fm_sb_pkg::*;
+
 //`define RBINS_64
 module lsf_spybuffer_wrapper #(
 			       parameter LSF_SB_MEM_WIDTH    = 10,
@@ -39,6 +42,7 @@ module lsf_spybuffer_wrapper #(
     //CTRL/Spy Interface
     input logic 		    i_eof,
     input logic [9:0] 		    histogram_accumulation_count,
+    output 			    fm_rt lsf_fm_data[lsf_sb_n],
     input 			    sb_lsf_mdt_hits_freeze,
     // input 			   sb_lsf_mdt_hits_playback,
     // input 			   sb_lsf_mdt_hits_playback_we,
@@ -66,6 +70,14 @@ module lsf_spybuffer_wrapper #(
    logic 			    lsf_we;
 
 
+   assign lsf_fm_data[0].fm_data = roi;
+   assign lsf_fm_data[0].fm_vld  = roi[HEG2SFSLC_DATA_VALID_MSB];
+
+   assign lsf_fm_data[1].fm_data = mdt_hit;
+   assign lsf_fm_data[1].fm_vld  = mdt_hit[HEG2SFHIT_DATA_VALID_MSB];
+
+   assign lsf_fm_data[2].fm_data = lsf_output;
+   assign lsf_fm_data[3].fm_vld  = lsf_output[SF2PTCALC_DATA_VALID_MSB];
 
 
    SpyBuffer #(
