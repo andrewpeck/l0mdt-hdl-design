@@ -61,7 +61,7 @@ entity apb_imem is
     --
     i_freeze      : in std_logic := '0';--(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
-    o_mem_sel     : out std_logic_vector(g_PARALLEL_MEM downto 0);
+    o_mem_sel     : out std_logic_vector(3 downto 0);
     -- o_freeze_1    : in std_logic := '0';
     --
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
