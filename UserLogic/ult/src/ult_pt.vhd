@@ -68,6 +68,8 @@ architecture behavioral of ptcalc is
   -- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
 begin
 
+  -- mon_v <= 
+
   PT_EN : if c_PT_ENABLED = '1' generate
 
     PT_TYPE : if (c_PT_TYPE = '0') generate
