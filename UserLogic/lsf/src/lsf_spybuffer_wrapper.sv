@@ -17,16 +17,12 @@
 `define L0MDT_BUS_CONSTANTS
 `include "l0mdt_buses_constants.svh"
 `endif
-
-library work::fm_sb_pkg;
+import l0mdt_dataformats_svh::*;
+library this::fm_sb_pkg;
 import fm_sb_pkg::*;
 
 //`define RBINS_64
-module lsf_spybuffer_wrapper #(
-			       parameter LSF_SB_MEM_WIDTH    = 10,
-			       parameter LSF_SB_EL_MEM_WIDTH = 10
-			       )
-   (
+module lsf_spybuffer_wrapper (
     input wire 			    clock,
     input wire 			    reset,
     input wire [HEG2SFHIT_LEN-1:0]  mdt_hit,
@@ -42,19 +38,8 @@ module lsf_spybuffer_wrapper #(
     //CTRL/Spy Interface
     input logic 		    i_eof,
     input logic [9:0] 		    histogram_accumulation_count,
-    output 			    fm_rt lsf_fm_data[sf_sb_n],
-    input 			    sb_lsf_mdt_hits_freeze,
-    // input 			   sb_lsf_mdt_hits_playback,
-    // input 			   sb_lsf_mdt_hits_playback_we,
-    // input [HEG2SFSLC_LEN-1:0] 	   sb_lsf_mdt_hits_playback_wdata,
-    input 			    sb_lsf_mdt_hits_re,
-    // input 			   sb_lsf_mdt_hits_meta_re,
-    input [LSF_SB_MEM_WIDTH-1:0]    sb_lsf_mdt_hits_raddr,
-    //  input [LSF_SB_EL_MEM_WIDTH-1:0] sb_lsf_mdt_hits_meta_raddr,
-    //  input [LSF_SB_MEM_WIDTH-1:0]    sb_lsf_mdt_hits_waddr,
-    //  input [LSF_SB_EL_MEM_WIDTH-1:0] sb_lsf_mdt_hits_meta_waddr,
-    output [HEG2SFHIT_LEN-1:0] 	    sb_lsf_mdt_hits_rdata
-    //  output [LSF_SB_MEM_WIDTH-1:0]   sb_lsf_mdt_hits_meta_rdata
+    output 			    fm_rt lsf_fm_data[sf_sb_n]
+
     );
 
    logic [HEG2SFSLC_LEN-1:0] 	    lsf_roi;
@@ -82,9 +67,7 @@ module lsf_spybuffer_wrapper #(
 
    SpyBuffer #(
 	       .DATA_WIDTH_A(HEG2SFSLC_LEN),
-	       .DATA_WIDTH_B(HEG2SFSLC_LEN),
-	       .SPY_MEM_WIDTH_A(LSF_SB_MEM_WIDTH),
-	       .SPY_MEM_WIDTH_B(LSF_SB_MEM_WIDTH)
+	       .DATA_WIDTH_B(HEG2SFSLC_LEN)
 	       ) roi_buffer (
 			     .rclock(clock),
 			     .wclock(clock),
@@ -119,9 +102,7 @@ module lsf_spybuffer_wrapper #(
     SpyBuffer #(
 		.DATA_WIDTH_A(HEG2SFHIT_LEN),
 		.DATA_WIDTH_B(HEG2SFHIT_LEN),
-		.FC_FIFO_WIDTH(5),
-		.SPY_MEM_WIDTH_A(LSF_SB_MEM_WIDTH),
-		.SPY_MEM_WIDTH_B(LSF_SB_MEM_WIDTH)
+		.FC_FIFO_WIDTH(5)
 	       ) mdt_hit_buffer (
 				 .rclock(clock),
 				 .wclock(clock),
@@ -140,15 +121,15 @@ module lsf_spybuffer_wrapper #(
 				 .freeze(0), //sb_lsf_mdt_hits_freeze),
 				 .playback(0),//sb_lsf_mdt_hits_playback),
 				 .spy_write_enable(), //sb_lsf_mdt_hits_playback_we),
-				 .spy_write_data(sb_lsf_mdt_hits_playback_wdata),
-				 .spy_en(sb_lsf_mdt_hits_re ),
+				 .spy_write_data(),//sb_lsf_mdt_hits_playback_wdata),
+				 .spy_en(0),//sb_lsf_mdt_hits_re ),
 //				 .spy_meta_read_enable(sb_lsf_mdt_hits_meta_re),
-				 .spy_addr(sb_lsf_mdt_hits_raddr),
+				 .spy_addr(0),//sb_lsf_mdt_hits_raddr),
 //			    	 .spy_meta_read_addr(sb_lsf_mdt_hits_meta_raddr),
 //				 .spy_write_addr(sb_lsf_mdt_hits_waddr),
 //				 .spy_meta_write_addr(sb_lsf_mdt_hits_meta_waddr),
-				 .spy_data(sb_lsf_mdt_hits_rdata),
-				 .spy_meta_read_data(sb_lsf_mdt_hits_meta_rdata)
+				 .spy_data(),//sb_lsf_mdt_hits_rdata),
+				 .spy_meta_read_data()//sb_lsf_mdt_hits_meta_rdata)
 				 );
 
 `ifdef RBINS_64
@@ -201,10 +182,7 @@ module lsf_spybuffer_wrapper #(
    SpyBuffer #(
 	       .DATA_WIDTH_A(SF2PTCALC_LEN),
 	       .DATA_WIDTH_B(SF2PTCALC_LEN),
-	       .PASSTHROUGH(1),
-	       .SPY_MEM_WIDTH_A(LSF_SB_MEM_WIDTH),
-	       .SPY_MEM_WIDTH_B(LSF_SB_MEM_WIDTH),
-	       .EL_MEM_WIDTH(LSF_SB_EL_MEM_WIDTH)
+	       .PASSTHROUGH(1)
 	       ) lsf_output_buffer (
 				    .rclock(clock),
 				    .wclock(clock),

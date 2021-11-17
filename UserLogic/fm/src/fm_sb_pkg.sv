@@ -1,11 +1,13 @@
 `ifndef _FM_SB_PKG_
 `define _FM_SB_PKG_
+`include "l0mdt_buses_constants.svh"
 `include "FM_PKG.svh"
+
 
 package fm_sb_pkg;
 
    import fm_ctrl::*;
-
+   import l0mdt_dataformats_svh::*;
 
    //parameter total_sb_bits      = $clog2(total_sb);
    parameter axi_dw             = 32;
@@ -13,7 +15,7 @@ package fm_sb_pkg;
    parameter pb_mode_width      = 2;
 
 
-   parameter stations_n         = 3; // INN, MID, OUT
+/*   parameter stations_n         = 3; // INN, MID, OUT
    parameter threads_n          = 3;
    parameter sf_sb_n            = 3;
    parameter sf_sb_single_station_n   = sf_sb_n * threads_n;
@@ -21,19 +23,25 @@ package fm_sb_pkg;
 
    parameter h2s_sb_single_station_n  = sf_sb_single_station_n;
    parameter h2s_sb_all_station_n     = h2s_sb_single_station_n * stations_n;
-   parameter total_sb                 = 27; //h2s_sb_all_station_n ;
+   parameter total_sb                 = h2s_sb_all_station_n ;
+*/
 
+   parameter sb_mapped_n                   = 27;
 
    FM_CTRL_t FM_CTRL;
    FM_MON_t FM_MON;
 
+   logic [SF2PTCALC_LEN-1:0] tmp;
 
+   //Below definitions should match the definition on fm_ult_pkg.vhd
+   parameter sf_sb_n                  = 3;
    typedef struct {
       logic [mon_dw_max-1 : 0] fm_data;
       logic 		       fm_vld;
       }fm_rt;
+   //Above  definitions should match the definition on fm_ult_pkg.vhd
 
-   parameter  integer axi_sb_addr_width[total_sb] = {
+   parameter  integer axi_sb_addr_width[sb_mapped_n] = {
 						     $bits(FM_CTRL.SB0.SB_MEM.address),
 						     $bits(FM_CTRL.SB1.SB_MEM.address),
 						     $bits(FM_CTRL.SB2.SB_MEM.address),
@@ -63,7 +71,7 @@ package fm_sb_pkg;
 						     $bits(FM_CTRL.SB26.SB_MEM.address)
 						     };
 
-   parameter integer  axi_sm_addr_width[total_sb] = {
+   parameter integer  axi_sm_addr_width[sb_mapped_n] = {
 						     $bits(FM_CTRL.SB0.SB_META.address),
 						     $bits(FM_CTRL.SB1.SB_META.address),
 						     $bits(FM_CTRL.SB2.SB_META.address),
@@ -92,64 +100,80 @@ package fm_sb_pkg;
 						     $bits(FM_CTRL.SB25.SB_META.address),
 						     $bits(FM_CTRL.SB26.SB_META.address)
 						     };
-   logic [15:0]       axi_sb_addr[total_sb] ;
-   logic [15:0]       axi_sm_addr[total_sb] ;
-   logic 	      axi_sb_enable[total_sb];
-   logic 	      axi_sm_enable[total_sb];
-   logic 	      axi_sb_wr_enable[total_sb];
-   logic 	      axi_sm_wr_enable[total_sb];
-   logic [axi_dw-1:0] axi_sb_wr_data[total_sb] ;
-   logic [axi_dw-1:0] axi_sm_wr_data[total_sb];
+
    logic 	      spy_clock;
+   //integer 	      j=0;
+   //string 	      sb_offset = {"SB","0"};
+   //string 	      sb_offset;
+   //string 	      tmp = {"SB", j.dectoa()};
+
+   const string       sb_offset[sb_mapped_n] = {
+						"SB0",
+						"SB1",
+						"SB2",
+						"SB3",
+						"SB4",
+						"SB5",
+						"SB6",
+						"SB7",
+						"SB8",
+						"SB9",
+						"SB10",
+						"SB11",
+						"SB12",
+						"SB13",
+						"SB14",
+						"SB15",
+						"SB16",
+						"SB17",
+						"SB18",
+						"SB19",
+						"SB20",
+						"SB21",
+						"SB22",
+						"SB23",
+						"SB24",
+						"SB25",
+						"SB26"
+						};
+
+   parameter integer  sb_dw[sb_mapped_n] = {
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 0
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 1
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 2
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 0
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 1
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 2
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 0
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 1
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
+				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 2
+				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
+				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw
+				       };
 
 
-   /*
-   logic [15:0]       axi_sb_addr[total_sb]       = {
-						     FM_CTRL_t.SB0.SB_MEM.address,
-						     FM_CTRL_t.SB1.SB_MEM.address
-						     };
-   logic [15:0]       axi_sm_addr[total_sb]       = {
-						     FM_CTRL_t.SB0.SB_META.address,
-						     FM_CTRL_t.SB1.SB_META.address
-						     };
-
-   logic 	      axi_sb_enable[total_sb]       = {
-						       FM_CTRL_t.SB0.SB_MEM.enable,
-						       FM_CTRL_t.SB1.SB_MEM.enable
-						       };
-   logic 	      axi_sm_enable[total_sb]       = {
-						       FM_CTRL_t.SB0.SB_META.enable,
-						       FM_CTRL_t.SB1.SB_META.enable
-						       };
-
-   logic 	      axi_sb_wr_enable[total_sb]    = {
-						       FM_CTRL_t.SB0.SB_MEM.wr_enable,
-						       FM_CTRL_t.SB1.SB_MEM.wr_enable
-						       };
-   logic 	      axi_sm_wr_enable[total_sb]    = {
-						       FM_CTRL_t.SB0.SB_META.wr_enable,
-						       FM_CTRL_t.SB1.SB_META.wr_enable
-						       };
-
-   logic [axi_dw-1:0] axi_sb_wr_data[total_sb]       = {
-							FM_CTRL_t.SB0.SB_MEM.wr_data,
-							FM_CTRL_t.SB1.SB_MEM.wr_data
-							};
-   logic [axi_dw-1:0] axi_sm_wr_data[total_sb]       = {
-							FM_CTRL_t.SB0.SB_META.wr_enable,
-							FM_CTRL_t.SB1.SB_META.wr_enable
-							};
-    logic 	      spy_clock                       = FM_CTRL.SB0.SB_MEM.clk;
-   */
-
-   logic [axi_dw-1:0] axi_spy_data[total_sb];
-   logic [axi_dw-1:0] axi_spy_meta_data[total_sb];
 
 
 
 
 
 
-endpackage // fm_sb_pkg
+endpackage // fm_sb_pkgfm
 
 `endif //  `ifndef _FM_SB_PKG_

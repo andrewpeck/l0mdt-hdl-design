@@ -15,6 +15,8 @@ use shared_lib.config_pkg.all;
 library project_lib;
 use project_lib.prj_cfg.all;
 
+library ult_lib;
+use ult_lib.all;
 
 
 library ctrl_lib;

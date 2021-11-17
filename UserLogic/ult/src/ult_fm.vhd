@@ -21,7 +21,7 @@ library ctrl_lib;
 use ctrl_lib.FM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_sb_pkg.all;
+use fm_lib.fm_ult_pkg.all;
 
 library xil_defaultlib;
 use xil_defaultlib.all;
@@ -33,8 +33,6 @@ entity ult_fm is
    ttc_commands      : in  l0mdt_ttc_rt;
    ctrl_v            : in std_logic_vector; --FM_CTRL_t;
    mon_v             : out std_logic_vector; --FM_MON_t;
-   sf_mon_data       : in std_logic_vector(mon_dw_max-1 downto 0);
-   sf_mon_data_we    : in std_logic;
    ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
     );
   end entity ult_fm;
@@ -44,6 +42,9 @@ entity ult_fm is
     signal mon_r            : FM_MON_t;
 
     component fm is
+      generic(
+        total_sb : integer := total_sb
+        );
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
@@ -58,6 +59,9 @@ entity ult_fm is
      mon_v               <= vectorify(mon_r,mon_v);
 
      fm_inst : component fm
+       generic map(
+         total_sb => total_sb
+         )
      port map (
        fm_ctrl_in      => ctrl_r,
        clk_hs          => clock_and_control.clk,

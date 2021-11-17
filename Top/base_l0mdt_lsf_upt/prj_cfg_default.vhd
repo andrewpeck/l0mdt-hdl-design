@@ -38,7 +38,6 @@ package body prj_cfg is
     proj_cfg.ENABLE_MTC               := '1';
 
     proj_cfg.ENABLE_DAQ               := '0';
-    proj_cfg.ENABLE_MTC               := '1';
     proj_cfg.ENABLE_FM                := '1';
 
 

@@ -40,7 +40,7 @@ library lsf_lib;
 use lsf_lib.all;
 
 library fm_lib;
-use fm_lib.fm_sb_pkg.all;
+use fm_lib.fm_ult_pkg.all;
 
 
 entity hps_sf_wrap is
@@ -173,13 +173,7 @@ begin
             lsf                                 => o_sf_data_v,
             i_eof                               => i_control_r.eof,
             hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks,
-            lsf_fm_data                         => sf_fm_data,
-            --SpyBuffer
-            sb_lsf_mdt_hits_freeze              => lsf_ctrl_r.sb_lsf_mdt_hits_freeze,
-            sb_lsf_mdt_hits_re                  => lsf_ctrl_r.sb_lsf_mdt_hits_re,
-            sb_lsf_mdt_hits_raddr               => lsf_ctrl_r.sb_lsf_mdt_hits_raddr,
-            sb_lsf_mdt_hits_rdata(31 downto 0)  => lsf_mon_r.sb_lsf_mdt_hits_rdata_31_0,
-            sb_lsf_mdt_hits_rdata(40 downto 32) => lsf_mon_r.sb_lsf_mdt_hits_rdata_40_32
+            lsf_fm_data                         => sf_fm_data
         );
 
         csf_mon_r <= nullify(csf_mon_r);

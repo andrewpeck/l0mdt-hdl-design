@@ -38,7 +38,7 @@ use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_sb_pkg.all;
+use fm_lib.fm_ult_pkg.all;
 
 entity ult is
   generic (
@@ -585,11 +585,11 @@ begin
         ctrl_v            => fm_ctrl_v,
         mon_v             => fm_mon_v,
         --  inputs
-        sf_mon_data       => (others=>'0'),
-        sf_mon_data_we    => '0',
         ult_fm_data      => ult_fm_data
       );
-
+    else generate
+      SUMP_FM:
+           fm_mon_v <= (fm_mon_v'length - 1 downto 0 => '0');
     end generate;
 
 

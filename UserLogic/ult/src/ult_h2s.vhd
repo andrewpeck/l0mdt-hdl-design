@@ -35,7 +35,7 @@ library ctrl_lib;
 use ctrl_lib.H2S_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_sb_pkg.all;
+use fm_lib.fm_ult_pkg.all;
 
 entity hits_to_segments is
   port (
@@ -227,7 +227,7 @@ begin
 
         ctrl_v              => ctrl_hps_v,
         mon_v               => mon_hps_v,
-        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*4-1),
+        h2s_fm_data         => h2s_fm_data(h2s_sb_single_station_n*4 to h2s_sb_single_station_n*5-1),
         -- configuration & control
         -- i_uCM_pam           => i_uCM_pam,
         -- SLc
