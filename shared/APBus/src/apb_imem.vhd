@@ -345,6 +345,7 @@ begin
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
+          o_mem_sel <= (others => '0');
           --
           axi_rep_clk <= '0';
           --
