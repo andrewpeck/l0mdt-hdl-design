@@ -87,6 +87,15 @@ begin
   csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
   lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
   lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
+  sf_fm_data(0).fm_data <= i_slc_data_v;
+  sf_fm_data(0).fm_vld  <= i_slc_data_v(HEG2SFSLC_LEN-1);
+
+  sf_fm_data(1).fm_data <= i_mdt_data_v;
+  sf_fm_data(1).fm_vld  <= i_mdt_data_v(HEG2SFHIT_LEN-1);
+
+  sf_fm_data(2).fm_data <= o_sf_data_v;
+  sf_fm_data(2).fm_vld  <= o_sf_data_v(SF2PTCALC_LEN -1);
+
 
   EN_SF : if c_SF_ENABLED = '1' generate
 
@@ -172,8 +181,8 @@ begin
             mdt_hit                             => i_mdt_data_v,
             lsf                                 => o_sf_data_v,
             i_eof                               => i_control_r.eof,
-            hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks,
-            lsf_fm_data                         => sf_fm_data
+            hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks
+            --lsf_fm_data                         => sf_fm_data
         );
 
         csf_mon_r <= nullify(csf_mon_r);

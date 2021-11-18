@@ -37,8 +37,8 @@ module lsf_spybuffer_wrapper (
 
     //CTRL/Spy Interface
     input logic 		    i_eof,
-    input logic [9:0] 		    histogram_accumulation_count,
-    output 			    fm_rt lsf_fm_data[sf_sb_n]
+    input logic [9:0] 		    histogram_accumulation_count
+//    output 			    fm_rt lsf_fm_data[sf_sb_n]
 
     );
 
@@ -54,7 +54,7 @@ module lsf_spybuffer_wrapper (
    logic [SF2PTCALC_LEN -1:0] 	    lsf;
    logic 			    lsf_we;
 
-
+/*
    assign lsf_fm_data[0].fm_data = roi;
    assign lsf_fm_data[0].fm_vld  = roi[HEG2SFSLC_DATA_VALID_MSB];
 
@@ -64,7 +64,7 @@ module lsf_spybuffer_wrapper (
    assign lsf_fm_data[2].fm_data = lsf_output;
    assign lsf_fm_data[3].fm_vld  = lsf_output[SF2PTCALC_DATA_VALID_MSB];
 
-
+*/
    SpyBuffer #(
 	       .DATA_WIDTH_A(HEG2SFSLC_LEN),
 	       .DATA_WIDTH_B(HEG2SFSLC_LEN)

@@ -35,9 +35,9 @@ entity top_lsf IS
     mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
     lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    hba_max_clocks: in std_logic_vector(9 downto 0);
+    hba_max_clocks: in std_logic_vector(9 downto 0)
   --Fast Monitoring Data
-    lsf_fm_data            : out fm_rt_array( 0 to sf_sb_n - 1)
+  --  lsf_fm_data            : out fm_rt_array( 0 to sf_sb_n - 1)
 
     );
   end entity top_lsf;
@@ -55,8 +55,8 @@ component lsf_spybuffer_wrapper
     roi_we        : in std_logic;
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    histogram_accumulation_count : in std_logic_vector(9 downto 0);
-    lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_n - 1)
+    histogram_accumulation_count : in std_logic_vector(9 downto 0)
+ --   lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_n - 1)
 
     );
   end component;
@@ -71,8 +71,8 @@ begin
        roi_we        => slc_roi(HEG2SFSLC_LEN-1),
        lsf_output    => lsf,
        i_eof         => i_eof,
-       histogram_accumulation_count  => hba_max_clocks,
-       lsf_fm_data                   => lsf_fm_data
+       histogram_accumulation_count  => hba_max_clocks
+    --   lsf_fm_data                   => lsf_fm_data
 
      );
   end architecture top_lsf_arch;

@@ -206,8 +206,6 @@ begin
   -- mtc_mon <= structify(mtc_mon_v,mtc_mon);
   -- daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
   -- daq_mon <= structify(daq_mon_v,daq_mon);
-  --Fast Monitoring
-  ult_fm_data(0 to h2s_sb_all_station_n - 1) <= h2s_fm_data;
 
   logic_gen : if (not DUMMY) generate
     TAR_GEN : if c_TAR_ENABLED = '1' generate
@@ -576,7 +574,18 @@ begin
         );
       end generate;
 
+      --Fast Monitoring
     FM_GEN : if c_FM_ENABLED = '1' generate
+      FM_PROC : process (clock_and_control.clk) is
+        begin
+          if (rising_edge(clock_and_control.clk)) then  -- rising clock edge
+            H2S_SPYBUFFERS : for I in 0 to h2s_sb_all_station_n-1 loop
+              ult_fm_data(I).fm_data <= h2s_fm_data(I).fm_data;
+              ult_fm_data(I).fm_vld  <= h2s_fm_data(I).fm_vld;
+            end loop;
+          end if;
+      end process;
+
       ULT_FM : entity ult_lib.ult_fm
       port map (
         -- clock, control, and monitoring
