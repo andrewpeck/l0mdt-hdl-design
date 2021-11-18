@@ -47,6 +47,7 @@ entity heg is
     ctrl_v                : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
     mon_v                 : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
     -- configuration
+    i_freeze            : in std_logic := '0';
     -- SLc
     i_uCM_data_v        : in ucm2hps_rvt;
     -- MDT hit
@@ -84,7 +85,16 @@ architecture beh of heg is
 
   signal hp2bm_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
-  signal time_offset  : unsigned(7 downto 0);
+  -- signal time_offset  : unsigned(7 downto 0);
+  signal int_freeze : std_logic; 
+  signal int_rst : std_logic;
+  signal int_ena : std_logic; 
+
+
+
+  signal count_hits_in_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal count_hits_ok_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+  signal count_errors_trig  : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
 
 begin
 
@@ -100,15 +110,7 @@ begin
   ctrl_hp_ar <= ctrl_r.HP.HP;
   mon_r.HP.HP <= mon_hp_ar;
 
-  -- CTRL_HP_GEN: for i_hp  in  generate
-    
-  -- end generate CTRL_HP_GEN;
-
-
-
-  -- o_sf_control_v <= vectorify(heg_Sf_control);
-
-  Heg_Control : entity heg_lib.heg_ctrl_top
+  SUPER : entity heg_lib.heg_supervisor
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
     g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
@@ -117,6 +119,31 @@ begin
     clk                 => clk,
     rst                 => rst,
     glob_en             => glob_en,
+    --
+    ctrl_v              => heg_ctrl_ctrl_v,
+    mon_v               => heg_ctrl_mon_v,
+    --
+    i_freeze            => i_freeze,
+    o_freeze            => int_freeze,
+    --
+    o_local_rst         => int_rst,
+    o_local_en          => int_ena,
+    -- inputs
+    i_hits_in           => count_hits_in_trig,
+    i_hits_ok           => count_hits_ok_trig,
+    i_errors            => count_errors_trig
+    
+  );
+
+  Heg_Control : entity heg_lib.heg_ctrl_top
+  generic map(
+    g_STATION_RADIUS    => g_STATION_RADIUS,
+    g_HPS_NUM_MDT_CH    => g_HPS_NUM_MDT_CH
+  )
+  port map(
+    clk                 => clk,
+    rst                 => int_rst,
+    glob_en             => int_ena,
     --
     ctrl_v              => heg_ctrl_ctrl_v,
     mon_v               => heg_ctrl_mon_v,
@@ -142,8 +169,8 @@ begin
       )
       port map(
         clk                 => clk,
-        rst                 => rst,
-        glob_en             => glob_en,
+        rst                 => int_rst,
+        glob_en             => int_ena,
         --
         ctrl_v              => ctrl_hp_av(i_hp),
         mon_v               => mon_hp_av(i_hp) , 
@@ -173,8 +200,8 @@ begin
   port map(
     clk                 => clk,
     
-    rst                 => rst,
-    glob_en             => glob_en,
+    rst                 => int_rst,
+    glob_en             => int_ena,
     -- configuration
     i_control           =>hegC_control,
     -- MDT in
