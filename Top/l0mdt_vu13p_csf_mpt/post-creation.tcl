@@ -29,6 +29,8 @@ foreach source_file $sources {
     }
 }
 
+# just force the update for now.. it seems to cause too many issues otherwise
+set needs_update 1
 
 # for some reason the VU13P doesn't work with cached BDs...
 # thanks Xilinx
