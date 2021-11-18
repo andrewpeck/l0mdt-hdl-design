@@ -44,23 +44,99 @@ entity heg_supervisor is
     rst                 : in std_logic;
     glob_en             : in std_logic := '1';
     -- control
-    ctrl_v                : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
-    mon_v                 : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
-    -- configuration
-    -- SLc
-    i_uCM_data_v        : in ucm2hps_rvt;
-    -- MDT hit
-    i_mdt_full_data_av  : in heg_pc2heg_avt(g_HPS_NUM_MDT_CH-1 downto 0);
-    -- to Segment finder
-    o_sf_control_v      : out heg_ctrl2sf_rvt;
-    o_sf_slc_data_v     : out heg2sfslc_rvt;
-    o_sf_mdt_data_v     : out heg2sfhit_rvt
+    ctrl_v              : in  std_logic_vector; -- H2S_HPS_HEG_HEG_CTRL_t;
+    mon_v               : out std_logic_vector; -- H2S_HPS_HEG_HEG_MON_t;
+    -- superior entity ctrls
+    i_freeze            : in std_logic := '0';
+    o_freeze            : out std_logic;
+    --
+    o_local_rst         : out std_logic;
+    o_local_en          : out std_logic;
+    -- inputs
+    i_hits_in           : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_hits_ok           : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
+    i_errors            : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0)
   );
 end entity heg_supervisor;
 
 architecture beh of heg_supervisor is
+
+  signal ctrl_r : 
+  signal mon_r  :
  
+  signal local_rst : std_logic;
+  signal local_en  : std_logic;
+  --
+  signal int_en   : std_logic;
+  signal int_rst  : std_logic := '1';
+
+  signal int_freeze : std_logic;
+
+  constant apb_clk_lat : integer := c_CLK_AXI_MULT;
+  signal  apb_clk_cnt : integer;
+  signal axi_cnt_reset    : std_logic;
+  signal axi_rep_clk      : std_logic;
+
 begin
+  o_local_en <= local_en;
+  o_local_rst <= local_rst;
 
+  local_en <= glob_en and int_en;
+  local_rst <= rst or int_rst;
 
+  o_freeze <= i_freeze or int_freeze;
+
+  signaling: process(clk)
+  begin
+    if rising_edge(clk) then
+      if rst = '1' then
+        int_en <= '1';
+        int_rst <= rst;
+        apb_clk_cnt <= 0;
+      else
+        --------------------------------------------
+        --    AXI CLK CTRL
+        --------------------------------------------
+        if apb_clk_cnt < apb_clk_lat and axi_cnt_reset = '0' then
+          apb_clk_cnt <= apb_clk_cnt + 1;
+        else
+          apb_clk_cnt <= 0;
+          axi_rep_clk <= not axi_rep_clk;
+        end if;
+        --------------------------------------------
+        --    from apb
+        --------------------------------------------
+        -- if apb_clk_cnt = 0 then
+          if i_actions.reset = '1' then
+            int_rst <= '1';
+          else
+            int_rst <= '0';
+          end if;
+
+          if i_actions.enable = '1' then
+            int_en <= '1';
+          elsif i_actions.disable = '1' then
+            int_en <= '0';
+          end if;
+          
+          if i_actions.freeze = '1' then
+            int_freeze <= '1';
+          else
+            int_freeze <= '0';
+          end if;
+        -- else
+        -- end if;
+        --------------------------------------------
+        --    to apb
+        --------------------------------------------
+        o_status.ENABLED <= local_en;
+        o_status.READY <= not local_rst;
+        o_status.ERROR <= (others => '0');
+        --------------------------------------------
+        --    counters
+        --------------------------------------------
+
+      end if;
+    end if;
+  end process;
 end beh;
