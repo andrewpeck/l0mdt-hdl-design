@@ -100,6 +100,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.SUPER.STATUS.ERROR;                        --
         when 33 => --0x21
+          localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.HIT_PROC;                   --
         when 34 => --0x22
           localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.HIT_OK;                     --

@@ -27,6 +27,7 @@
   } HEG_SUPER_STATUS_MON_t;
 
   typedef struct packed {
+    logic [32-1:0] SLC_PROC;
     logic [32-1:0] HIT_PROC;
     logic [32-1:0] HIT_OK;
     logic [32-1:0] ERROR;

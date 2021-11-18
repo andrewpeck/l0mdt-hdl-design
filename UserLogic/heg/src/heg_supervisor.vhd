@@ -54,6 +54,7 @@ entity heg_supervisor is
     o_local_rst         : out std_logic;
     o_local_en          : out std_logic;
     -- inputs
+    i_slcs_in           : in std_logic;--_vector(g_HPS_NUM_MDT_CH -1 downto 0);
     i_hits_in           : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
     i_hits_ok           : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
     i_errors            : in std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0)

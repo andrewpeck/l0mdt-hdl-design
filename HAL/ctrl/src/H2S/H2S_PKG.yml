@@ -150,6 +150,7 @@ hdl:
 
 
 - H2S_HPS_HEG_HEG_SUPER_COUNTERS_MON_t:
+  - SLC_PROC : [ type: logic, length: 32 ]
   - HIT_PROC : [ type: logic, length: 32 ]
   - HIT_OK : [ type: logic, length: 32 ]
   - ERROR : [ type: logic, length: 32 ]

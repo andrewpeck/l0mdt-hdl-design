@@ -289,6 +289,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(0).HEG.HEG(0).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(0).HEG.HEG(0).SUPER.STATUS.ERROR;                        --
         when 12321 => --0x3021
+          localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(0).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(0).SUPER.COUNTERS.HIT_PROC;                   --
         when 12322 => --0x3022
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(0).SUPER.COUNTERS.HIT_OK;                     --
@@ -422,6 +423,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(0).HEG.HEG(1).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(0).HEG.HEG(1).SUPER.STATUS.ERROR;                        --
         when 12577 => --0x3121
+          localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(1).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(1).SUPER.COUNTERS.HIT_PROC;                   --
         when 12578 => --0x3122
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(1).SUPER.COUNTERS.HIT_OK;                     --
@@ -555,6 +557,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(0).HEG.HEG(2).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(0).HEG.HEG(2).SUPER.STATUS.ERROR;                        --
         when 12833 => --0x3221
+          localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(2).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(2).SUPER.COUNTERS.HIT_PROC;                   --
         when 12834 => --0x3222
           localRdData(31 downto  0)  <=  Mon.HPS(0).HEG.HEG(2).SUPER.COUNTERS.HIT_OK;                     --
@@ -925,6 +928,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(1).HEG.HEG(0).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(1).HEG.HEG(0).SUPER.STATUS.ERROR;                        --
         when 77857 => --0x13021
+          localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(0).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(0).SUPER.COUNTERS.HIT_PROC;                   --
         when 77858 => --0x13022
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(0).SUPER.COUNTERS.HIT_OK;                     --
@@ -1058,6 +1062,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(1).HEG.HEG(1).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(1).HEG.HEG(1).SUPER.STATUS.ERROR;                        --
         when 78113 => --0x13121
+          localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(1).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(1).SUPER.COUNTERS.HIT_PROC;                   --
         when 78114 => --0x13122
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(1).SUPER.COUNTERS.HIT_OK;                     --
@@ -1191,6 +1196,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(1).HEG.HEG(2).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(1).HEG.HEG(2).SUPER.STATUS.ERROR;                        --
         when 78369 => --0x13221
+          localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(2).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(2).SUPER.COUNTERS.HIT_PROC;                   --
         when 78370 => --0x13222
           localRdData(31 downto  0)  <=  Mon.HPS(1).HEG.HEG(2).SUPER.COUNTERS.HIT_OK;                     --
@@ -1561,6 +1567,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(2).HEG.HEG(0).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(2).HEG.HEG(0).SUPER.STATUS.ERROR;                        --
         when 143393 => --0x23021
+          localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(0).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(0).SUPER.COUNTERS.HIT_PROC;                   --
         when 143394 => --0x23022
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(0).SUPER.COUNTERS.HIT_OK;                     --
@@ -1694,6 +1701,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(2).HEG.HEG(1).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(2).HEG.HEG(1).SUPER.STATUS.ERROR;                        --
         when 143649 => --0x23121
+          localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(1).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(1).SUPER.COUNTERS.HIT_PROC;                   --
         when 143650 => --0x23122
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(1).SUPER.COUNTERS.HIT_OK;                     --
@@ -1827,6 +1835,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(2).HEG.HEG(2).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(2).HEG.HEG(2).SUPER.STATUS.ERROR;                        --
         when 143905 => --0x23221
+          localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(2).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(2).SUPER.COUNTERS.HIT_PROC;                   --
         when 143906 => --0x23222
           localRdData(31 downto  0)  <=  Mon.HPS(2).HEG.HEG(2).SUPER.COUNTERS.HIT_OK;                     --
@@ -2197,6 +2206,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(3).HEG.HEG(0).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(3).HEG.HEG(0).SUPER.STATUS.ERROR;                        --
         when 274465 => --0x43021
+          localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(0).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(0).SUPER.COUNTERS.HIT_PROC;                   --
         when 274466 => --0x43022
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(0).SUPER.COUNTERS.HIT_OK;                     --
@@ -2330,6 +2340,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(3).HEG.HEG(1).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(3).HEG.HEG(1).SUPER.STATUS.ERROR;                        --
         when 274721 => --0x43121
+          localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(1).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(1).SUPER.COUNTERS.HIT_PROC;                   --
         when 274722 => --0x43122
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(1).SUPER.COUNTERS.HIT_OK;                     --
@@ -2463,6 +2474,7 @@ begin  -- architecture behavioral
           localRdData( 1)            <=  Mon.HPS(3).HEG.HEG(2).SUPER.STATUS.READY;                        --
           localRdData( 2)            <=  Mon.HPS(3).HEG.HEG(2).SUPER.STATUS.ERROR;                        --
         when 274977 => --0x43221
+          localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(2).SUPER.COUNTERS.SLC_PROC;                   --
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(2).SUPER.COUNTERS.HIT_PROC;                   --
         when 274978 => --0x43222
           localRdData(31 downto  0)  <=  Mon.HPS(3).HEG.HEG(2).SUPER.COUNTERS.HIT_OK;                     --

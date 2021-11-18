@@ -57,6 +57,7 @@ package HEG_CTRL is
   function zeroed(t: HEG_SUPER_STATUS_MON_t) return HEG_SUPER_STATUS_MON_t;
 
   type HEG_SUPER_COUNTERS_MON_t is record
+    SLC_PROC : std_logic_vector(32-1 downto 0);
     HIT_PROC : std_logic_vector(32-1 downto 0);
     HIT_OK : std_logic_vector(32-1 downto 0);
     ERROR : std_logic_vector(32-1 downto 0);
@@ -771,6 +772,7 @@ package body HEG_CTRL is
   function len(x: HEG_SUPER_COUNTERS_MON_t) return natural is
     variable l : natural := 0;
   begin
+    l := l + len(x.SLC_PROC);
     l := l + len(x.HIT_PROC);
     l := l + len(x.HIT_OK);
     l := l + len(x.ERROR);
@@ -779,6 +781,7 @@ package body HEG_CTRL is
   function width(x: HEG_SUPER_COUNTERS_MON_t) return natural is
     variable l : natural := 0;
   begin
+    l := l + width(x.SLC_PROC);
     l := l + width(x.HIT_PROC);
     l := l + width(x.HIT_OK);
     l := l + width(x.ERROR);
@@ -789,12 +792,16 @@ package body HEG_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
+      assign(y(left to left+len(x.SLC_PROC)-1), vectorify(x.SLC_PROC, y(left to left+len(x.SLC_PROC)-1)));
+      left := left + len(x.SLC_PROC);
       assign(y(left to left+len(x.HIT_PROC)-1), vectorify(x.HIT_PROC, y(left to left+len(x.HIT_PROC)-1)));
       left := left + len(x.HIT_PROC);
       assign(y(left to left+len(x.HIT_OK)-1), vectorify(x.HIT_OK, y(left to left+len(x.HIT_OK)-1)));
       left := left + len(x.HIT_OK);
       assign(y(left to left+len(x.ERROR)-1), vectorify(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
+      assign(y(left downto left-len(x.SLC_PROC)+1), vectorify(x.SLC_PROC, y(left downto left-len(x.SLC_PROC)+1)));
+      left := left - len(x.SLC_PROC);
       assign(y(left downto left-len(x.HIT_PROC)+1), vectorify(x.HIT_PROC, y(left downto left-len(x.HIT_PROC)+1)));
       left := left - len(x.HIT_PROC);
       assign(y(left downto left-len(x.HIT_OK)+1), vectorify(x.HIT_OK, y(left downto left-len(x.HIT_OK)+1)));
@@ -808,12 +815,16 @@ package body HEG_CTRL is
     variable y : std_logic_vector(t'range);
   begin
     if t'ascending then
+      assign(y(left to left+len(x.SLC_PROC)-1), convert(x.SLC_PROC, y(left to left+len(x.SLC_PROC)-1)));
+      left := left + len(x.SLC_PROC);
       assign(y(left to left+len(x.HIT_PROC)-1), convert(x.HIT_PROC, y(left to left+len(x.HIT_PROC)-1)));
       left := left + len(x.HIT_PROC);
       assign(y(left to left+len(x.HIT_OK)-1), convert(x.HIT_OK, y(left to left+len(x.HIT_OK)-1)));
       left := left + len(x.HIT_OK);
       assign(y(left to left+len(x.ERROR)-1), convert(x.ERROR, y(left to left+len(x.ERROR)-1)));
     else
+      assign(y(left downto left-len(x.SLC_PROC)+1), convert(x.SLC_PROC, y(left downto left-len(x.SLC_PROC)+1)));
+      left := left - len(x.SLC_PROC);
       assign(y(left downto left-len(x.HIT_PROC)+1), convert(x.HIT_PROC, y(left downto left-len(x.HIT_PROC)+1)));
       left := left - len(x.HIT_PROC);
       assign(y(left downto left-len(x.HIT_OK)+1), convert(x.HIT_OK, y(left downto left-len(x.HIT_OK)+1)));
@@ -827,12 +838,16 @@ package body HEG_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
+      y.SLC_PROC := structify(x(left to left+len(y.SLC_PROC)-1), y.SLC_PROC);
+      left := left + len(y.SLC_PROC);
       y.HIT_PROC := structify(x(left to left+len(y.HIT_PROC)-1), y.HIT_PROC);
       left := left + len(y.HIT_PROC);
       y.HIT_OK := structify(x(left to left+len(y.HIT_OK)-1), y.HIT_OK);
       left := left + len(y.HIT_OK);
       y.ERROR := structify(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
+      y.SLC_PROC := structify(x(left downto left-len(y.SLC_PROC)+1), y.SLC_PROC);
+      left := left - len(y.SLC_PROC);
       y.HIT_PROC := structify(x(left downto left-len(y.HIT_PROC)+1), y.HIT_PROC);
       left := left - len(y.HIT_PROC);
       y.HIT_OK := structify(x(left downto left-len(y.HIT_OK)+1), y.HIT_OK);
@@ -846,12 +861,16 @@ package body HEG_CTRL is
     variable left : natural := x'left;
   begin
     if x'ascending then
+      y.SLC_PROC := convert(x(left to left+len(y.SLC_PROC)-1), y.SLC_PROC);
+      left := left + len(y.SLC_PROC);
       y.HIT_PROC := convert(x(left to left+len(y.HIT_PROC)-1), y.HIT_PROC);
       left := left + len(y.HIT_PROC);
       y.HIT_OK := convert(x(left to left+len(y.HIT_OK)-1), y.HIT_OK);
       left := left + len(y.HIT_OK);
       y.ERROR := convert(x(left to left+len(y.ERROR)-1), y.ERROR);
     else
+      y.SLC_PROC := convert(x(left downto left-len(y.SLC_PROC)+1), y.SLC_PROC);
+      left := left - len(y.SLC_PROC);
       y.HIT_PROC := convert(x(left downto left-len(y.HIT_PROC)+1), y.HIT_PROC);
       left := left - len(y.HIT_PROC);
       y.HIT_OK := convert(x(left downto left-len(y.HIT_OK)+1), y.HIT_OK);
@@ -863,6 +882,7 @@ package body HEG_CTRL is
   function nullify(t: HEG_SUPER_COUNTERS_MON_t) return HEG_SUPER_COUNTERS_MON_t is
   variable y: HEG_SUPER_COUNTERS_MON_t;
   begin
+    y.SLC_PROC := nullify(t.SLC_PROC);
     y.HIT_PROC := nullify(t.HIT_PROC);
     y.HIT_OK := nullify(t.HIT_OK);
     y.ERROR := nullify(t.ERROR);
@@ -871,6 +891,7 @@ package body HEG_CTRL is
   function zeroed(t: HEG_SUPER_COUNTERS_MON_t) return HEG_SUPER_COUNTERS_MON_t is
   variable y: HEG_SUPER_COUNTERS_MON_t;
   begin
+    y.SLC_PROC := zeroed(t.SLC_PROC);
     y.HIT_PROC := zeroed(t.HIT_PROC);
     y.HIT_OK := zeroed(t.HIT_OK);
     y.ERROR := zeroed(t.ERROR);

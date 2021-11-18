@@ -96,8 +96,6 @@ architecture beh of heg is
   signal int_rst : std_logic;
   signal int_ena : std_logic; 
 
-
-
   signal count_hits_in_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
   signal count_hits_ok_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
   signal count_errors_trig  : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
@@ -144,6 +142,10 @@ begin
     
   );
 
+  -- cnt_loop: for iteration generate
+    
+  -- end generate cnt_loop;
+
   Heg_Control : entity heg_lib.heg_ctrl_top
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
@@ -166,12 +168,16 @@ begin
     o_hp_control_r      => hegC_control
   );
 
-  hp_gen: for i_hp in g_HPS_NUM_MDT_CH-1 downto 0 generate
+  hp_gen: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
-    ctrl_hp_av(i_hp) <= convert(ctrl_hp_ar(i_hp),ctrl_hp_av(i_hp));
-    mon_hp_ar(i_hp) <= convert(mon_hp_av(i_hp),mon_hp_ar(i_hp));
+    count_hits_in_trig(hp_i) <=
+    count_hits_ok_trig(hp_i) <=
+    count_errors_trig(hp_i)  <= 
 
-    hp_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(i_hp) = '1' generate
+    ctrl_hp_av(hp_i) <= convert(ctrl_hp_ar(hp_i),ctrl_hp_av(hp_i));
+    mon_hp_ar(hp_i) <= convert(mon_hp_av(hp_i),mon_hp_ar(hp_i));
+
+    hp_en : if c_HP_SECTOR_STATION(g_STATION_RADIUS)(hp_i) = '1' generate
       Hit_Processor : entity hp_lib.hit_processor
       generic map(
         g_STATION_RADIUS    => g_STATION_RADIUS
@@ -181,23 +187,23 @@ begin
         rst                 => int_rst,
         glob_en             => int_ena,
         --
-        ctrl_v              => ctrl_hp_av(i_hp),
-        mon_v               => mon_hp_av(i_hp) , 
+        ctrl_v              => ctrl_hp_av(hp_i),
+        mon_v               => mon_hp_av(hp_i) , 
         -- configuration
-        local_rst           => hegC_control(i_hp).rst,
-        local_en            => hegC_control(i_hp).enable,
+        local_rst           => hegC_control(hp_i).rst,
+        local_en            => hegC_control(hp_i).enable,
         -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
 
         -- SLc
         i_SLC_Window        => roi_b_Window,
         i_slc_data_v        => hegC2hp_uCM_data,
         -- MDT hit
-        i_mdt_data_v          => i_mdt_full_data_av(i_hp),
+        i_mdt_data_v          => i_mdt_full_data_av(hp_i),
         -- i_mdt_valid         => i_mdt_valid,
         -- i_mdt_time_real     => i_mdt_time_real,
         -- to Segment finder
         -- o_sf_slc_data_v       => o_sf_slc_data_v,
-        o_hit_data_v       => hp2bm_av(i_hp)
+        o_hit_data_v       => hp2bm_av(hp_i)
       );
     end generate;
   end generate;

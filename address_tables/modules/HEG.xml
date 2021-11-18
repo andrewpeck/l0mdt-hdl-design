@@ -23,6 +23,7 @@
     </node>
 
     <node id="COUNTERS" address="0x00000020">
+      <node id="SLC_PROC" address="0x00000001" mask="0xFFFFFFFF" permission="r"/>
       <node id="HIT_PROC" address="0x00000001" mask="0xFFFFFFFF" permission="r"/>
       <node id="HIT_OK"   address="0x00000002" mask="0xFFFFFFFF" permission="r"/>
       <node id="ERROR"   address="0x00000004" mask="0xFFFFFFFF" permission="r"/>
