@@ -87,13 +87,13 @@ begin
   csf_mon_v  <= convert(csf_mon_r ,csf_mon_v );
   lsf_ctrl_r <= convert(lsf_ctrl_v,lsf_ctrl_r);
   lsf_mon_v  <= convert(lsf_mon_r ,lsf_mon_v );
-  sf_fm_data(0).fm_data <= i_slc_data_v;
+  sf_fm_data(0).fm_data <= (mon_dw_max-1 downto i_slc_data_v'length => '0') & i_slc_data_v;
   sf_fm_data(0).fm_vld  <= i_slc_data_v(HEG2SFSLC_LEN-1);
 
-  sf_fm_data(1).fm_data <= i_mdt_data_v;
+  sf_fm_data(1).fm_data <= (mon_dw_max-1 downto i_mdt_data_v'length => '0') & i_mdt_data_v;
   sf_fm_data(1).fm_vld  <= i_mdt_data_v(HEG2SFHIT_LEN-1);
 
-  sf_fm_data(2).fm_data <= o_sf_data_v;
+  sf_fm_data(2).fm_data <= (mon_dw_max-1 downto o_sf_data_v'length => '0') & o_sf_data_v;
   sf_fm_data(2).fm_vld  <= o_sf_data_v(SF2PTCALC_LEN -1);
 
 
