@@ -1,1 +1,24 @@
-../../../../address_tables/modules/MEM_INT_10A9D.xml
+<?xml version="1.0" encoding="utf-8"?>
+<!-- memory interface 10 bits addres & 9 bit data -->
+<node id="MEM_INT_10A9D">
+  <!-- <node id="wr_req"     address="0x00" mask="0x00000001" permission="w"   description="Write request"/>
+  <node id="wr_ack"     address="0x00" mask="0x00000002" permission="w"   description="Write acknowledge"/>
+  <node id="rd_req"     address="0x00" mask="0x00000004" permission="w"   description="Read request"/>
+  <node id="rd_ack"     address="0x00" mask="0x00000008" permission="w"   description="Read Ack"/>
+  <node id="flush_req"  address="0x00" mask="0x00000010" permission="w"   description="flush memory to Zync"/>
+
+  <node id="rd_rdy"     address="0x01" mask="0x00000001" permission="r"   description="Read ready"/> -->
+  <node id="SIGNALS" address="0x00000000" module="file://APB_MEM_SIG.xml"/>
+
+  <node id="wr_addr"    address="0x02" mask="0x000003FF" permission="rw"  description="wr_Address"/>
+  <node id="rd_addr"    address="0x02" mask="0x03FF0000" permission="rw"  description="rd_Address"/>
+  
+  <node id="wr_data"  address="0x03" description="Write Data">
+    <node id="wr_data_0"  address="0x00" mask="0x000001FF" permission="rw"  description="Write Data 0"/>
+  </node>
+  <node id="rd_data"  address="0x05" description="Read Data">
+    <node id="rd_data_0"  address="0x00" mask="0x000001FF" permission="r"   description="Read Data 0"/>
+  </node>
+</node>
+
+

@@ -106,8 +106,13 @@ begin
         dbiterr => open
         );
 
-    tdc_hits_o <= fifo_dout(tdc_hits_o'length-1 downto 1) & valid;
-
+    process (pipeline_clock) is
+    begin
+      if (rising_edge(pipeline_clock)) then
+        tdc_hits_o <= fifo_dout when
+                      valid='1' else (others => '0');
+      end if;
+    end process;
   end generate;
 
 end behavioral;

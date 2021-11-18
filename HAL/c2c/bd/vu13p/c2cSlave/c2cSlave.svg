@@ -27,106 +27,34 @@
    cursor="crosshair"
    clip-path="url(#clippingbbox)">
 <path d="M0 0h1866v1421h-1866z" stroke="none" fill="white" />
-<path d="M221 810l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
+<path d="M221 350l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
 <g>
+<path d="M221 350l-7 7h-14v-14h14z" />
+<text x="196" y="350" fill="black" stroke-width="0" text-anchor="end" dy="3.85">clk40</text>
+<path d="M221 790l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
+<path d="M221 790l-7 7h-14v-14h14z" />
+<text x="196" y="790" fill="black" stroke-width="0" text-anchor="end" dy="3.85">reset_n</text>
+<path d="M221 810l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
 <path d="M221 810l-7 7h-14v-14h14z" />
 <text x="196" y="810" fill="black" stroke-width="0" text-anchor="end" dy="3.85">AXI_CLK</text>
-<path d="M1551 480v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g stroke-width="3">
-<path d="M1551 480v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="480" fill="black" stroke-width="0" dy="3.85">AXI_RST_N[0:0]</text>
-<path d="M1551 420v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M221 1030l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
+<path d="M221 1030l-7 7h-14v-14h14z" />
+<text x="196" y="1030" fill="black" stroke-width="0" text-anchor="end" dy="3.85">clk50Mhz</text>
+<path d="M221 1140l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
 </g>
 <g stroke="#2a5e6f" stroke-width="3">
-<path d="M1551 420v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="420" fill="black" stroke-width="0" dy="3.85">DAQ</text>
-<path d="M1551 280v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 280v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="280" fill="black" stroke-width="0" dy="3.85">FW_INFO</text>
-<path d="M1551 320v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 320v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="320" fill="black" stroke-width="0" dy="3.85">HAL</text>
-<path d="M1551 300v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 300v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="300" fill="black" stroke-width="0" dy="3.85">HAL_CORE</text>
-<path d="M1551 340v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 340v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="340" fill="black" stroke-width="0" dy="3.85">H2S</text>
-<path d="M1218 32h206l3 1l2 1l1 2l1 3v202l-1 3l-1 2l-2 1l-3 1h-206l-3 -1l-2 -1l-1 -2l-1 -3v-202l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
-<text x="1321" y="30" fill="black" stroke-width="0" text-anchor="middle">KINTEX_SYS_MGMT</text>
-<text x="1321" y="250" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">System Management Wizard</text>
-<path d="M1201 101h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1220 105v10" />
-<path d="M1215 110h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1213 103h14v14h-14z" />
-<text x="1228" y="110" fill="black" stroke-width="0" font-size="10" dy="3.25">S_AXI_LITE</text>
-<path d="M1201 121h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1220 125v10" />
-<path d="M1215 130h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1213 123h14v14h-14z" />
-<text x="1228" y="130" fill="black" stroke-width="0" font-size="10" dy="3.25">Vp_Vn</text>
-</g>
-<g stroke="black" stroke-width="3">
-<path d="M1201 150h10" />
-<text x="1213" y="150" fill="black" stroke-width="0" font-size="10" dy="3.25">s_axi_aclk</text>
-<circle cx="1208" cy="170" r="3" />
-<path d="M1201 170h4" />
-<text x="1213" y="170" fill="black" stroke-width="0" font-size="10" dy="3.25">s_axi_aresetn</text>
-<path d="M1441 60h-10" />
-<text x="1429" y="60" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">ip2intc_irpt</text>
-<path d="M1441 80h-10" />
-<text x="1429" y="80" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">vccint_alarm_out</text>
-<path d="M1441 100h-10" />
-<text x="1429" y="100" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">vccaux_alarm_out</text>
-<path d="M1441 120h-10" />
-<text x="1429" y="120" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">ot_out</text>
-</g>
-<g stroke="black" stroke-width="5">
-<path d="M1441 140h-10" />
-<text x="1429" y="140" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">channel_out[5:0]</text>
-</g>
-<g stroke="black" stroke-width="3">
-<path d="M1441 160h-10" />
-<text x="1429" y="160" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">eoc_out</text>
-<path d="M1441 180h-10" />
-<text x="1429" y="180" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">alarm_out</text>
-<path d="M1441 200h-10" />
-<text x="1429" y="200" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">eos_out</text>
-<path d="M1441 220h-10" />
-<text x="1429" y="220" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">busy_out</text>
-</g>
-<g stroke="#41619f">
-<path d="M1218 32h206" />
-<path d="M1424,32 A6.83537,6.83537 1.61957 0,1 1431,39" />
-<path d="M1431 39v202" />
-<path d="M1431,241 A6.83537,6.83537 1.61957 0,1 1424,248" />
-<path d="M1424 248h-206" />
-<path d="M1218,248 A6.83537,6.83537 1.61957 0,1 1211,241" />
-<path d="M1211 241v-202" />
-<path d="M1211,39 A6.83537,6.83537 1.61957 0,1 1218,32" />
-<path d="M1551 180v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M221 1140l-7 7h-14v-14h14z" />
+<text x="196" y="1140" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_refclk</text>
+<path d="M221 1180l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
 </g>
 <g>
-<path d="M1551 180v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="180" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_alarm</text>
-<path d="M1551 120v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 120v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="120" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_overtemp_alarm</text>
-<path d="M1551 100v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 100v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="100" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_vccaux_alarm</text>
-<path d="M1551 80v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 80v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="80" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_vccint_alarm</text>
+<path d="M221 1180l-7 7h-14v-14h14z" />
+<text x="196" y="1180" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_power_down</text>
+<path d="M221 1200l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g stroke="#2a5e6f" stroke-width="3">
+<path d="M221 1200l-7 7h-14v-14h14z" />
+<text x="196" y="1200" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_Rx</text>
 <path d="M318 862h346l3 1l2 1l1 2l1 3v222l-1 3l-1 2l-2 1l-3 1h-346l-3 -1l-2 -1l-1 -2l-1 -3v-222l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
 <text x="491" y="860" fill="black" stroke-width="0" text-anchor="middle">K_C2CLINK</text>
 <text x="491" y="1100" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">AXI Chip2Chip Bridge</text>
@@ -215,227 +143,6 @@
 <path d="M318,1098 A6.83537,6.83537 1.61957 0,1 311,1091" />
 <path d="M311 1091v-222" />
 <path d="M311,869 A6.83537,6.83537 1.61957 0,1 318,862" />
-<path d="M1178 992h286l3 1l2 1l1 2l1 3v362l-1 3l-1 2l-2 1l-3 1h-286l-3 -1l-2 -1l-1 -2l-1 -3v-362l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
-<text x="1321" y="990" fill="black" stroke-width="0" text-anchor="middle">K_C2CLINK_PHY</text>
-<text x="1321" y="1370" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">Aurora 64B66B</text>
-<path d="M1161 1091h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1180 1095v10" />
-<path d="M1175 1100h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1173 1093h14v14h-14z" />
-<text x="1188" y="1100" fill="black" stroke-width="0" font-size="10" dy="3.25">USER_DATA_S_AXIS_TX</text>
-<path d="M1471 1011h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1461 1015v10" />
-<path d="M1456 1020h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1454 1013h14v14h-14z" />
-<text x="1454" y="1020" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">USER_DATA_M_AXIS_RX</text>
-<path d="M1161 1111h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1180 1115v10" />
-<path d="M1175 1120h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1173 1113h14v14h-14z" />
-<text x="1188" y="1120" fill="black" stroke-width="0" font-size="10" dy="3.25">AXILITE_DRP_IF_0</text>
-<path d="M1161 1131h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1180 1135v10" />
-<path d="M1175 1140h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1173 1133h14v14h-14z" />
-<text x="1188" y="1140" fill="black" stroke-width="0" font-size="10" dy="3.25">GT_DIFF_REFCLK1</text>
-<path d="M1471 1031h10v138h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1456 1040h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1454 1033h14v14h-14z" />
-<text x="1454" y="1040" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">CORE_STATUS</text>
-</g>
-<g stroke="black" stroke-width="2">
-<path d="M1481 1060h-10" />
-<path d="M1450 1055l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1060" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">channel_up</text>
-<path d="M1481 1080h-10" />
-<path d="M1450 1075l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1080" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_pll_lock</text>
-<path d="M1481 1100h-10" />
-<path d="M1450 1095l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1100" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">hard_err</text>
-</g>
-<g stroke="black" stroke-width="3">
-<path d="M1481 1120h-10" />
-<path d="M1450 1115l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1120" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">lane_up[0:0]</text>
-</g>
-<g stroke="black" stroke-width="2">
-<path d="M1481 1140h-10" />
-<path d="M1450 1135l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1140" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">mmcm_not_locked_out</text>
-<path d="M1481 1160h-10" />
-<path d="M1450 1155l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1449" y="1160" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">soft_err</text>
-<path d="M1161 1151h10v38h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1180 1155v10" />
-<path d="M1175 1160h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1173 1153h14v14h-14z" />
-<text x="1188" y="1160" fill="black" stroke-width="0" font-size="10" dy="3.25">CORE_CONTROL</text>
-</g>
-<g stroke="black" stroke-width="2">
-<path d="M1161 1180h10" />
-<path d="M1184 1175l8 5l-8 5z" stroke="none" fill="#41619f" />
-<text x="1193" y="1180" fill="black" stroke-width="0" font-size="10" dy="3.25">power_down</text>
-<path d="M1471 1171h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1461 1175v10" />
-<path d="M1456 1180h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1454 1173h14v14h-14z" />
-<text x="1454" y="1180" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">GT_SERIAL_TX</text>
-<path d="M1161 1191h10v18h-10z" stroke="none" fill="#edf6fe" />
-</g>
-<g stroke="#41619f" stroke-width="3">
-<path d="M1180 1195v10" />
-<path d="M1175 1200h10" />
-</g>
-<g stroke="#41619f">
-<path d="M1173 1193h14v14h-14z" />
-<text x="1188" y="1200" fill="black" stroke-width="0" font-size="10" dy="3.25">GT_SERIAL_RX</text>
-</g>
-<g stroke="black" stroke-width="3">
-<path d="M1161 1220h10" />
-<text x="1173" y="1220" fill="black" stroke-width="0" font-size="10" dy="3.25">reset_pb</text>
-<path d="M1161 1240h10" />
-<text x="1173" y="1240" fill="black" stroke-width="0" font-size="10" dy="3.25">pma_init</text>
-<path d="M1481 1200h-10" />
-<text x="1469" y="1200" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">tx_out_clk</text>
-<path d="M1161 1260h10" />
-<text x="1173" y="1260" fill="black" stroke-width="0" font-size="10" dy="3.25">init_clk</text>
-<path d="M1481 1220h-10" />
-<text x="1469" y="1220" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">link_reset_out</text>
-<path d="M1481 1240h-10" />
-<text x="1469" y="1240" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">user_clk_out</text>
-<path d="M1481 1260h-10" />
-<text x="1469" y="1260" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">sync_clk_out</text>
-<path d="M1481 1280h-10" />
-<text x="1469" y="1280" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">sys_reset_out</text>
-<path d="M1481 1300h-10" />
-<text x="1469" y="1300" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_reset_out</text>
-<path d="M1481 1320h-10" />
-<text x="1469" y="1320" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_refclk1_out</text>
-</g>
-<g stroke="black" stroke-width="5">
-<path d="M1481 1340h-10" />
-<text x="1469" y="1340" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_powergood[0:0]</text>
-</g>
-<g stroke="#41619f">
-<path d="M1178 992h286" />
-<path d="M1464,992 A6.83537,6.83537 1.61957 0,1 1471,999" />
-<path d="M1471 999v362" />
-<path d="M1471,1361 A6.83537,6.83537 1.61957 0,1 1464,1368" />
-<path d="M1464 1368h-286" />
-<path d="M1178,1368 A6.83537,6.83537 1.61957 0,1 1171,1361" />
-<path d="M1171 1361v-362" />
-<path d="M1171,999 A6.83537,6.83537 1.61957 0,1 1178,992" />
-<path d="M221 1200l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g stroke="#2a5e6f" stroke-width="3">
-<path d="M221 1200l-7 7h-14v-14h14z" />
-<text x="196" y="1200" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_Rx</text>
-<path d="M1551 1180v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 1180v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1180" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_Tx</text>
-<path d="M1551 1080v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g>
-<path d="M1551 1080v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1080" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_gt_pll_lock</text>
-<path d="M1551 1100v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 1100v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1100" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_hard_err</text>
-<path d="M1551 1120v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g stroke-width="3">
-<path d="M1551 1120v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1120" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_lane_up[0:0]</text>
-<path d="M1551 1220v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g>
-<path d="M1551 1220v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1220" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_link_reset_out</text>
-<path d="M1551 1140v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 1140v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1140" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_mmcm_not_locked_out</text>
-<path d="M221 1180l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-<path d="M221 1180l-7 7h-14v-14h14z" />
-<text x="196" y="1180" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_power_down</text>
-<path d="M221 1140l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g stroke="#2a5e6f" stroke-width="3">
-<path d="M221 1140l-7 7h-14v-14h14z" />
-<text x="196" y="1140" fill="black" stroke-width="0" text-anchor="end" dy="3.85">K_C2CLINK_PHY_refclk</text>
-<path d="M1551 1160v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g>
-<path d="M1551 1160v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="1160" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_soft_err</text>
-<path d="M1551 900v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 900v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="900" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_aurora_do_cc</text>
-<path d="M1551 920v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 920v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="920" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_config_error_out</text>
-<path d="M1551 940v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 940v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="940" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_link_status_out</text>
-<path d="M1551 960v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 960v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="960" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_multi_bit_error_out</text>
-<path d="M1551 460v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g stroke="#2a5e6f" stroke-width="3">
-<path d="M1551 460v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="460" fill="black" stroke-width="0" dy="3.85">MPL</text>
-<path d="M1551 360v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 360v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="360" fill="black" stroke-width="0" dy="3.85">MTC</text>
-<path d="M1551 440v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 440v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="440" fill="black" stroke-width="0" dy="3.85">TAR</text>
-<path d="M1551 380v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 380v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="380" fill="black" stroke-width="0" dy="3.85">TF</text>
-<path d="M1551 400v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
-<path d="M1551 400v-7h14l7 7l-7 7h-14z" />
-<text x="1576" y="400" fill="black" stroke-width="0" dy="3.85">UCM</text>
-<path d="M221 350l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-</g>
-<g>
-<path d="M221 350l-7 7h-14v-14h14z" />
-<text x="196" y="350" fill="black" stroke-width="0" text-anchor="end" dy="3.85">clk40</text>
-<path d="M221 1030l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-<path d="M221 1030l-7 7h-14v-14h14z" />
-<text x="196" y="1030" fill="black" stroke-width="0" text-anchor="end" dy="3.85">clk50Mhz</text>
-<path d="M221 790l-7 7h-14v-14h14z" stroke="none" fill="#ddd4d0" />
-<path d="M221 790l-7 7h-14v-14h14z" />
-<text x="196" y="790" fill="black" stroke-width="0" text-anchor="end" dy="3.85">reset_n</text>
 <path d="M808 42h206l3 1l2 1l1 2l1 3v622l-1 3l-1 2l-2 1l-3 1h-206l-3 -1l-2 -1l-1 -2l-1 -3v-622l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
 <text x="911" y="40" fill="black" stroke-width="0" text-anchor="middle">slave_interconnect</text>
 <text x="911" y="680" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">AXI Interconnect</text>
@@ -672,8 +379,299 @@
 <path d="M778,878 A6.83537,6.83537 1.61957 0,1 771,871" />
 <path d="M771 871v-122" />
 <path d="M771,749 A6.83537,6.83537 1.61957 0,1 778,742" />
+<path d="M1218 32h206l3 1l2 1l1 2l1 3v202l-1 3l-1 2l-2 1l-3 1h-206l-3 -1l-2 -1l-1 -2l-1 -3v-202l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
+<text x="1321" y="30" fill="black" stroke-width="0" text-anchor="middle">KINTEX_SYS_MGMT</text>
+<text x="1321" y="250" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">System Management Wizard</text>
+<path d="M1201 101h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1220 105v10" />
+<path d="M1215 110h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1213 103h14v14h-14z" />
+<text x="1228" y="110" fill="black" stroke-width="0" font-size="10" dy="3.25">S_AXI_LITE</text>
+<path d="M1201 121h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1220 125v10" />
+<path d="M1215 130h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1213 123h14v14h-14z" />
+<text x="1228" y="130" fill="black" stroke-width="0" font-size="10" dy="3.25">Vp_Vn</text>
+</g>
+<g stroke="black" stroke-width="3">
+<path d="M1201 150h10" />
+<text x="1213" y="150" fill="black" stroke-width="0" font-size="10" dy="3.25">s_axi_aclk</text>
+<circle cx="1208" cy="170" r="3" />
+<path d="M1201 170h4" />
+<text x="1213" y="170" fill="black" stroke-width="0" font-size="10" dy="3.25">s_axi_aresetn</text>
+<path d="M1441 60h-10" />
+<text x="1429" y="60" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">ip2intc_irpt</text>
+<path d="M1441 80h-10" />
+<text x="1429" y="80" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">vccint_alarm_out</text>
+<path d="M1441 100h-10" />
+<text x="1429" y="100" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">vccaux_alarm_out</text>
+<path d="M1441 120h-10" />
+<text x="1429" y="120" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">ot_out</text>
+</g>
+<g stroke="black" stroke-width="5">
+<path d="M1441 140h-10" />
+<text x="1429" y="140" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">channel_out[5:0]</text>
+</g>
+<g stroke="black" stroke-width="3">
+<path d="M1441 160h-10" />
+<text x="1429" y="160" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">eoc_out</text>
+<path d="M1441 180h-10" />
+<text x="1429" y="180" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">alarm_out</text>
+<path d="M1441 200h-10" />
+<text x="1429" y="200" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">eos_out</text>
+<path d="M1441 220h-10" />
+<text x="1429" y="220" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">busy_out</text>
+</g>
+<g stroke="#41619f">
+<path d="M1218 32h206" />
+<path d="M1424,32 A6.83537,6.83537 1.61957 0,1 1431,39" />
+<path d="M1431 39v202" />
+<path d="M1431,241 A6.83537,6.83537 1.61957 0,1 1424,248" />
+<path d="M1424 248h-206" />
+<path d="M1218,248 A6.83537,6.83537 1.61957 0,1 1211,241" />
+<path d="M1211 241v-202" />
+<path d="M1211,39 A6.83537,6.83537 1.61957 0,1 1218,32" />
+<path d="M1178 992h286l3 1l2 1l1 2l1 3v362l-1 3l-1 2l-2 1l-3 1h-286l-3 -1l-2 -1l-1 -2l-1 -3v-362l1 -3l1 -2l2 -1z" stroke="none" fill="#edf6fe" />
+<text x="1321" y="990" fill="black" stroke-width="0" text-anchor="middle">K_C2CLINK_PHY</text>
+<text x="1321" y="1370" fill="#41619f" stroke-width="0" text-anchor="middle" dy="7.7">Aurora 64B66B</text>
+<path d="M1161 1091h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1180 1095v10" />
+<path d="M1175 1100h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1173 1093h14v14h-14z" />
+<text x="1188" y="1100" fill="black" stroke-width="0" font-size="10" dy="3.25">USER_DATA_S_AXIS_TX</text>
+<path d="M1471 1011h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1461 1015v10" />
+<path d="M1456 1020h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1454 1013h14v14h-14z" />
+<text x="1454" y="1020" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">USER_DATA_M_AXIS_RX</text>
+<path d="M1161 1111h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1180 1115v10" />
+<path d="M1175 1120h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1173 1113h14v14h-14z" />
+<text x="1188" y="1120" fill="black" stroke-width="0" font-size="10" dy="3.25">AXILITE_DRP_IF_0</text>
+<path d="M1161 1131h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1180 1135v10" />
+<path d="M1175 1140h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1173 1133h14v14h-14z" />
+<text x="1188" y="1140" fill="black" stroke-width="0" font-size="10" dy="3.25">GT_DIFF_REFCLK1</text>
+<path d="M1471 1031h10v138h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1456 1040h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1454 1033h14v14h-14z" />
+<text x="1454" y="1040" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">CORE_STATUS</text>
+</g>
+<g stroke="black" stroke-width="2">
+<path d="M1481 1060h-10" />
+<path d="M1450 1055l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1060" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">channel_up</text>
+<path d="M1481 1080h-10" />
+<path d="M1450 1075l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1080" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_pll_lock</text>
+<path d="M1481 1100h-10" />
+<path d="M1450 1095l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1100" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">hard_err</text>
+</g>
+<g stroke="black" stroke-width="3">
+<path d="M1481 1120h-10" />
+<path d="M1450 1115l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1120" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">lane_up[0:0]</text>
+</g>
+<g stroke="black" stroke-width="2">
+<path d="M1481 1140h-10" />
+<path d="M1450 1135l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1140" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">mmcm_not_locked_out</text>
+<path d="M1481 1160h-10" />
+<path d="M1450 1155l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1449" y="1160" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">soft_err</text>
+<path d="M1161 1151h10v38h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1180 1155v10" />
+<path d="M1175 1160h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1173 1153h14v14h-14z" />
+<text x="1188" y="1160" fill="black" stroke-width="0" font-size="10" dy="3.25">CORE_CONTROL</text>
+</g>
+<g stroke="black" stroke-width="2">
+<path d="M1161 1180h10" />
+<path d="M1184 1175l8 5l-8 5z" stroke="none" fill="#41619f" />
+<text x="1193" y="1180" fill="black" stroke-width="0" font-size="10" dy="3.25">power_down</text>
+<path d="M1471 1171h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1461 1175v10" />
+<path d="M1456 1180h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1454 1173h14v14h-14z" />
+<text x="1454" y="1180" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">GT_SERIAL_TX</text>
+<path d="M1161 1191h10v18h-10z" stroke="none" fill="#edf6fe" />
+</g>
+<g stroke="#41619f" stroke-width="3">
+<path d="M1180 1195v10" />
+<path d="M1175 1200h10" />
+</g>
+<g stroke="#41619f">
+<path d="M1173 1193h14v14h-14z" />
+<text x="1188" y="1200" fill="black" stroke-width="0" font-size="10" dy="3.25">GT_SERIAL_RX</text>
+</g>
+<g stroke="black" stroke-width="3">
+<path d="M1161 1220h10" />
+<text x="1173" y="1220" fill="black" stroke-width="0" font-size="10" dy="3.25">reset_pb</text>
+<path d="M1161 1240h10" />
+<text x="1173" y="1240" fill="black" stroke-width="0" font-size="10" dy="3.25">pma_init</text>
+<path d="M1481 1200h-10" />
+<text x="1469" y="1200" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">tx_out_clk</text>
+<path d="M1161 1260h10" />
+<text x="1173" y="1260" fill="black" stroke-width="0" font-size="10" dy="3.25">init_clk</text>
+<path d="M1481 1220h-10" />
+<text x="1469" y="1220" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">link_reset_out</text>
+<path d="M1481 1240h-10" />
+<text x="1469" y="1240" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">user_clk_out</text>
+<path d="M1481 1260h-10" />
+<text x="1469" y="1260" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">sync_clk_out</text>
+<path d="M1481 1280h-10" />
+<text x="1469" y="1280" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">sys_reset_out</text>
+<path d="M1481 1300h-10" />
+<text x="1469" y="1300" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_reset_out</text>
+<path d="M1481 1320h-10" />
+<text x="1469" y="1320" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_refclk1_out</text>
+</g>
+<g stroke="black" stroke-width="5">
+<path d="M1481 1340h-10" />
+<text x="1469" y="1340" fill="black" stroke-width="0" font-size="10" text-anchor="end" dy="3.25">gt_powergood[0:0]</text>
+</g>
+<g stroke="#41619f">
+<path d="M1178 992h286" />
+<path d="M1464,992 A6.83537,6.83537 1.61957 0,1 1471,999" />
+<path d="M1471 999v362" />
+<path d="M1471,1361 A6.83537,6.83537 1.61957 0,1 1464,1368" />
+<path d="M1464 1368h-286" />
+<path d="M1178,1368 A6.83537,6.83537 1.61957 0,1 1171,1361" />
+<path d="M1171 1361v-362" />
+<path d="M1171,999 A6.83537,6.83537 1.61957 0,1 1178,992" />
+<path d="M1551 80v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
 </g>
 <g>
+<path d="M1551 80v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="80" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_vccint_alarm</text>
+<path d="M1551 100v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 100v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="100" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_vccaux_alarm</text>
+<path d="M1551 120v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 120v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="120" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_overtemp_alarm</text>
+<path d="M1551 180v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 180v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="180" fill="black" stroke-width="0" dy="3.85">KINTEX_SYS_MGMT_alarm</text>
+<path d="M1551 280v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g stroke="#2a5e6f" stroke-width="3">
+<path d="M1551 280v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="280" fill="black" stroke-width="0" dy="3.85">FW_INFO</text>
+<path d="M1551 300v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 300v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="300" fill="black" stroke-width="0" dy="3.85">HAL_CORE</text>
+<path d="M1551 320v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 320v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="320" fill="black" stroke-width="0" dy="3.85">HAL</text>
+<path d="M1551 340v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 340v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="340" fill="black" stroke-width="0" dy="3.85">H2S</text>
+<path d="M1551 360v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 360v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="360" fill="black" stroke-width="0" dy="3.85">MTC</text>
+<path d="M1551 380v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 380v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="380" fill="black" stroke-width="0" dy="3.85">TF</text>
+<path d="M1551 400v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 400v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="400" fill="black" stroke-width="0" dy="3.85">UCM</text>
+<path d="M1551 420v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 420v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="420" fill="black" stroke-width="0" dy="3.85">DAQ</text>
+<path d="M1551 440v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 440v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="440" fill="black" stroke-width="0" dy="3.85">TAR</text>
+<path d="M1551 460v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 460v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="460" fill="black" stroke-width="0" dy="3.85">MPL</text>
+<path d="M1551 480v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g stroke-width="3">
+<path d="M1551 480v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="480" fill="black" stroke-width="0" dy="3.85">AXI_RST_N[0:0]</text>
+<path d="M1551 900v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g>
+<path d="M1551 900v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="900" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_aurora_do_cc</text>
+<path d="M1551 920v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 920v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="920" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_config_error_out</text>
+<path d="M1551 940v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 940v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="940" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_link_status_out</text>
+<path d="M1551 960v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 960v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="960" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_axi_c2c_multi_bit_error_out</text>
+<path d="M1551 1080v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 1080v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1080" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_gt_pll_lock</text>
+<path d="M1551 1100v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 1100v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1100" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_hard_err</text>
+<path d="M1551 1120v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g stroke-width="3">
+<path d="M1551 1120v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1120" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_lane_up[0:0]</text>
+<path d="M1551 1140v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g>
+<path d="M1551 1140v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1140" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_mmcm_not_locked_out</text>
+<path d="M1551 1160v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+<path d="M1551 1160v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1160" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_soft_err</text>
+<path d="M1551 1180v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g stroke="#2a5e6f" stroke-width="3">
+<path d="M1551 1180v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1180" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_Tx</text>
+<path d="M1551 1220v-7h14l7 7l-7 7h-14z" stroke="none" fill="#ddd4d0" />
+</g>
+<g>
+<path d="M1551 1220v-7h14l7 7l-7 7h-14z" />
+<text x="1576" y="1220" fill="black" stroke-width="0" dy="3.85">K_C2CLINK_PHY_link_reset_out</text>
 <path d="M301 1070h-50v-300h480" />
 <path d="M731 310h60" />
 <path d="M731 270h60" />

@@ -8,6 +8,7 @@ HAL/ctrl/src/top_control.vhd
 
 # HAL
 HAL/hal/list/hal.src lib=hal
+HAL/hal/list/hal_ku.src lib=hal
 
 # User Logic Libraries
 UserLogic/hp/hp_lib.src   lib=hp_lib
@@ -22,7 +23,7 @@ UserLogic/daq/daq.src
 
 # segment finder
 UserLogic/csf/csf_lib.src lib=csf_lib
-#UserLogic/lsf/lsf_lib.src lib=lsf_lib
+#UserLogic/lsf/lsf_lib_ku15p.src lib=lsf_lib
 
 # pt assignment
 #UserLogic/upt/upt_lib_ku15p.src lib=upt_lib

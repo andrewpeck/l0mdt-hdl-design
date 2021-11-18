@@ -14,6 +14,23 @@
 #      link_map: "ku15p_test"
 #    Z:
 
+ku15p_lsf_upt:
+  fpga: xcku15p-ffva1760-2-e
+  board_pkg: board_pkg_mpi_ku15p
+  sf: lsf
+  pt: upt
+  constraints:
+    - "pinouts_mpi_ku15p.xdc"
+  variants:
+    default:
+      link_map: "link_map_default"
+      sector_id: 3
+      sector_side: 0
+      endcap: 1
+      large: 0
+      en_neighbors: 0
+      en_daq: 1
+
 ku15p_csf_mpt:
   fpga: xcku15p-ffva1760-2-e
   board_pkg: board_pkg_mpi_ku15p
@@ -22,8 +39,9 @@ ku15p_csf_mpt:
   constraints:
     - "pinouts_mpi_ku15p.xdc"
   variants:
-    xyz:
+    default:
       link_map: "link_map_default"
+      en_daq: 1
 
 vu13p_lsf_upt:
   fpga: xcvu13p-flga2577-1-e
@@ -33,8 +51,9 @@ vu13p_lsf_upt:
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
-    xyz:
+    default:
       link_map: "link_map_default"
+      en_daq: 1
 
 vu13p_csf_mpt:
   fpga: xcvu13p-flga2577-1-e
@@ -44,5 +63,5 @@ vu13p_csf_mpt:
   constraints:
     - "pinouts_mpi_vu13p.xdc"
   variants:
-    xyz:
+    default:
       link_map: "link_map_default"

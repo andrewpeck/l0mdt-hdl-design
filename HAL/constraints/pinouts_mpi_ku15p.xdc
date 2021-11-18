@@ -1,3 +1,6 @@
+# Schematic:
+# https://mdttp-files.web.cern.ch/mdttp-files/L0MDT/Demonstrator/CM/Version_1/doc/Board/Schematic/mpip001_apollo_command_module_s1v00_b1v01.pdf
+#
 create_clock -period 3.125 -name refclk0  [get_ports refclk_i_p[0]]  ;  # C2C_REF0
 create_clock -period 3.125 -name refclk1  [get_ports refclk_i_p[1]]  ;  # CM2CM_REF0
 create_clock -period 4.166 -name refclk2  [get_ports refclk_i_p[2]]  ;  # SL_REF0
@@ -7,7 +10,7 @@ create_clock -period 3.125 -name refclk5  [get_ports refclk_i_p[5]]  ;  # FELIX_
 create_clock -period 3.125 -name refclk6  [get_ports refclk_i_p[6]]  ;  # FELIX_REF1
 create_clock -period 3.125 -name refclk7  [get_ports refclk_i_p[7]]  ;  # FELIX_REF2
 create_clock -period 3.125 -name refclk8  [get_ports refclk_i_p[8]]  ;  # AD_CLK2_KUP , muxed as C2c or Spare
-create_clock -period 3.125 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
+create_clock -period 5.000 -name refclk9  [get_ports refclk_i_p[9]]  ;  # B2B_REF0
 create_clock -period 3.125 -name refclk10 [get_ports refclk_i_p[10]] ;  # AD_CLK3_KUP , muxed as sma or spare
 create_clock -period 3.125 -name refclk11 [get_ports refclk_i_p[11]] ;  # B2B_REF2
 create_clock -period 3.125 -name refclk12 [get_ports refclk_i_p[12]] ;  # FE_REF0
@@ -72,8 +75,7 @@ set_property -quiet PACKAGE_PIN L11     [get_ports refclk_i_n[21]   ] ; # FE_REF
 # LHC REF Inputs
 #set_property -quiet PACKAGE_PIN AT24    [get_ports lhc_clock_in_p] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
 #set_property -quiet PACKAGE_PIN AU24    [get_ports lhc_clock_in_n] ; # IN: LHC clock ;; SM or SMA or (KUP/ZUP output) --> Si5345 (no ZDM)
-#create_clock -period 3.125 -name clock_in_async [get_ports clock_i_p]
-create_clock -period 25 -name clock_in_async [get_ports clock_i_p]
+create_clock -period 25 -name clock_in_lhc [get_ports clock_i_p]
 
 # CLK_GEN Inputs
 set_property -quiet PACKAGE_PIN AP29    [get_ports clock_i_p] ; # IN: async programmable clock ;; oscillator --> SI5341 (no zdm)
@@ -99,3 +101,8 @@ set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_scl]
 set_property IOSTANDARD LVCMOS18 [get_ports sys_mgmt_sda]
 set_property -quiet PACKAGE_PIN AL24     [get_ports sys_mgmt_scl] ;
 set_property -quiet PACKAGE_PIN AL25     [get_ports sys_mgmt_sda];
+
+set_property PACKAGE_PIN AW8 [get_ports c2c_rxp]
+set_property PACKAGE_PIN AW7 [get_ports c2c_rxn]
+set_property PACKAGE_PIN BB6 [get_ports c2c_txp]
+set_property PACKAGE_PIN BB5 [get_ports c2c_txn]

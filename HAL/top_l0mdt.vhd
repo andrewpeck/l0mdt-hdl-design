@@ -273,7 +273,8 @@ begin
 
   ult_inst : entity ult_lib.ult
     generic map (
-      DUMMY => false
+      DUMMY        => false,
+      SUMP_SIGNALS => true
       )
     port map (
       clock_and_control => clock_and_control,
