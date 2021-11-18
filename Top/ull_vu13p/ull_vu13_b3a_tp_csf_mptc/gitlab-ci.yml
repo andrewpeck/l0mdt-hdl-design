@@ -4,6 +4,8 @@ GEN:ull_vu13_b3a_tp_csf_mptc:
     variables:
       extends: .vars
       PROJECT_NAME: ull_vu13p/ull_vu13_b3a_tp_csf_mptc
+      HOG_ONLY_SYNTH: 1 # if 1 runs only the synthesis
+      # HOG_CHECK_SYNTAX : 0
     tags:
       - heavy-duty
       - hog
