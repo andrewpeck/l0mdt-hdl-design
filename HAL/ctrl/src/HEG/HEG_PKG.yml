@@ -1,0 +1,171 @@
+# yml2hdl v2
+# This file was auto-generated.
+# Modifications might be lost.
+config:
+  basic_convert_functions : off
+  packages:
+    - ieee: [std_logic_1164, numeric_std, math_real]
+    - shared_lib: [common_ieee]
+
+hdl:
+
+- HEG_SUPER_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- HEG_SUPER_CONFIGS_CTRL_t:
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- HEG_SUPER_STATUS_MON_t:
+  - ENABLED : [ type: logic ]
+  - READY : [ type: logic ]
+  - ERROR : [ type: logic ]
+
+
+- HEG_SUPER_COUNTERS_MON_t:
+  - HIT_PROC : [ type: logic, length: 32 ]
+  - HIT_OK : [ type: logic, length: 32 ]
+  - ERROR : [ type: logic, length: 32 ]
+
+
+- HEG_SUPER_MON_t:
+  - STATUS : [ type: HEG_SUPER_STATUS_MON_t ]
+  - COUNTERS : [ type: HEG_SUPER_COUNTERS_MON_t ]
+
+
+- HEG_SUPER_CTRL_t:
+  - ACTIONS : [ type: HEG_SUPER_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: HEG_SUPER_CONFIGS_CTRL_t ]
+
+
+- HEG_CTRL_ROI_TC_SIGNALS_MON_t:
+  - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
+
+
+- HEG_CTRL_ROI_TC_SIGNALS_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
+
+
+- HEG_CTRL_ROI_TC_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 32 ]
+  - wr_data_1 : [ type: logic, length: 6 ]
+
+
+- HEG_CTRL_ROI_TC_rd_data_MON_t:
+  - rd_data_1 : [ type: logic, length: 6 ]
+  - rd_data_0 : [ type: logic, length: 32 ]
+
+
+- HEG_CTRL_ROI_TC_MON_t:
+  - SIGNALS : [ type: HEG_CTRL_ROI_TC_SIGNALS_MON_t ]
+  - rd_data : [ type: HEG_CTRL_ROI_TC_rd_data_MON_t ]
+
+
+- HEG_CTRL_ROI_TC_CTRL_t:
+  - SIGNALS : [ type: HEG_CTRL_ROI_TC_SIGNALS_CTRL_t ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data : [ type: HEG_CTRL_ROI_TC_wr_data_CTRL_t ]
+
+
+- HEG_CTRL_MON_t:
+  - ROI_TC : [ type: HEG_CTRL_ROI_TC_MON_t ]
+
+
+- HEG_CTRL_CTRL_t:
+  - ROI_TC : [ type: HEG_CTRL_ROI_TC_CTRL_t ]
+
+
+- HEG_HP_HP_ACTIONS_CTRL_t:
+  - RESET : [ type: logic ]
+  - ENABLE : [ type: logic ]
+  - DISABLE : [ type: logic ]
+  - FREEZE : [ type: logic ]
+
+
+- HEG_HP_HP_CONFIGS_CTRL_t:
+  - INPUT_EN : [ type: logic ]
+  - OUTPUT_EN : [ type: logic ]
+  - FLUSH_MEM_RESET : [ type: logic ]
+
+
+- HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t:
+  - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
+
+
+- HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t:
+  - wr_req : [ type: logic ]
+  - wr_ack : [ type: logic ]
+  - rd_req : [ type: logic ]
+  - rd_ack : [ type: logic ]
+  - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
+
+
+- HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t:
+  - wr_data_0 : [ type: logic, length: 9 ]
+
+
+- HEG_HP_HP_MDT_DT2R_rd_data_MON_t:
+  - rd_data_0 : [ type: logic, length: 9 ]
+
+
+- HEG_HP_HP_MDT_DT2R_MON_t:
+  - SIGNALS : [ type: HEG_HP_HP_MDT_DT2R_SIGNALS_MON_t ]
+  - rd_data : [ type: HEG_HP_HP_MDT_DT2R_rd_data_MON_t ]
+
+
+- HEG_HP_HP_MDT_DT2R_CTRL_t:
+  - SIGNALS : [ type: HEG_HP_HP_MDT_DT2R_SIGNALS_CTRL_t ]
+  - wr_addr : [ type: logic, length: 10 ]
+  - rd_addr : [ type: logic, length: 10 ]
+  - wr_data : [ type: HEG_HP_HP_MDT_DT2R_wr_data_CTRL_t ]
+
+
+- HEG_HP_HP_MON_t:
+  - MDT_DT2R : [ type: HEG_HP_HP_MDT_DT2R_MON_t ]
+
+- HEG_HP_HP_MON_t_ARRAY: [array: 6, type: HEG_HP_HP_MON_t]
+
+- HEG_HP_HP_CTRL_t:
+  - ACTIONS : [ type: HEG_HP_HP_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: HEG_HP_HP_CONFIGS_CTRL_t ]
+  - MDT_DT2R : [ type: HEG_HP_HP_MDT_DT2R_CTRL_t ]
+
+- HEG_HP_HP_CTRL_t_ARRAY: [array: 6, type: HEG_HP_HP_CTRL_t]
+
+- HEG_HP_MON_t:
+  - HP : [ type: HEG_HP_HP_MON_t_ARRAY ]
+
+
+- HEG_HP_CTRL_t:
+  - HP : [ type: HEG_HP_HP_CTRL_t_ARRAY ]
+
+
+- HEG_MON_t:
+  - SUPER : [ type: HEG_SUPER_MON_t ]
+  - CTRL : [ type: HEG_CTRL_MON_t ]
+  - HP : [ type: HEG_HP_MON_t ]
+
+
+- HEG_CTRL_t:
+  - SUPER : [ type: HEG_SUPER_CTRL_t ]
+  - CTRL : [ type: HEG_CTRL_CTRL_t ]
+  - HP : [ type: HEG_HP_CTRL_t ]
+
+

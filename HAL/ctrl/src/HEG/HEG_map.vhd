@@ -1,0 +1,610 @@
+--This file was auto-generated.
+--Modifications might be lost.
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_misc.all;
+use ieee.numeric_std.all;
+use work.AXIRegWidthPkg.all;
+use work.AXIRegPkg.all;
+use work.types.all;
+
+use work.HEG_Ctrl.all;
+use work.HEG_Ctrl_DEF.all;
+entity HEG_map is
+  port (
+    clk_axi          : in  std_logic;
+    reset_axi_n      : in  std_logic;
+    slave_readMOSI   : in  AXIReadMOSI;
+    slave_readMISO   : out AXIReadMISO  := DefaultAXIReadMISO;
+    slave_writeMOSI  : in  AXIWriteMOSI;
+    slave_writeMISO  : out AXIWriteMISO := DefaultAXIWriteMISO;
+    
+    Mon              : in  HEG_Mon_t;
+    Ctrl             : out HEG_Ctrl_t
+        
+    );
+end entity HEG_map;
+architecture behavioral of HEG_map is
+  signal localAddress       : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
+  signal localRdData        : slv_32_t;
+  signal localRdData_latch  : slv_32_t;
+  signal localWrData        : slv_32_t;
+  signal localWrEn          : std_logic;
+  signal localRdReq         : std_logic;
+  signal localRdAck         : std_logic;
+  signal regRdAck           : std_logic;
+
+  
+  
+  signal reg_data :  slv32_array_t(integer range 0 to 152);
+  constant Default_reg_data : slv32_array_t(integer range 0 to 152) := (others => x"00000000");
+begin  -- architecture behavioral
+
+  -------------------------------------------------------------------------------
+  -- AXI 
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+  AXIRegBridge : entity work.axiLiteRegBlocking
+    port map (
+      clk_axi     => clk_axi,
+      reset_axi_n => reset_axi_n,
+      readMOSI    => slave_readMOSI,
+      readMISO    => slave_readMISO,
+      writeMOSI   => slave_writeMOSI,
+      writeMISO   => slave_writeMISO,
+      address     => localAddress,
+      rd_data     => localRdData_latch,
+      wr_data     => localWrData,
+      write_en    => localWrEn,
+      read_req    => localRdReq,
+      read_ack    => localRdAck);
+
+  -------------------------------------------------------------------------------
+  -- Record read decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+
+  latch_reads: process (clk_axi,reset_axi_n) is
+  begin  -- process latch_reads
+    if reset_axi_n = '0' then
+      localRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      localRdAck <= '0';
+      
+      if regRdAck = '1' then
+        localRdData_latch <= localRdData;
+        localRdAck <= '1';
+      
+      end if;
+    end if;
+  end process latch_reads;
+
+  
+  reads: process (clk_axi,reset_axi_n) is
+  begin  -- process latch_reads
+    if reset_axi_n = '0' then
+      regRdAck <= '0';
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      regRdAck  <= '0';
+      localRdData <= x"00000000";
+      if localRdReq = '1' then
+        regRdAck  <= '1';
+        case to_integer(unsigned(localAddress(7 downto 0))) is
+          
+        when 1 => --0x1
+          localRdData( 4)            <=  reg_data( 1)( 4);                              --
+          localRdData( 5)            <=  reg_data( 1)( 5);                              --
+          localRdData( 6)            <=  reg_data( 1)( 6);                              --
+        when 16 => --0x10
+          localRdData( 0)            <=  Mon.SUPER.STATUS.ENABLED;                      --
+          localRdData( 1)            <=  Mon.SUPER.STATUS.READY;                        --
+          localRdData( 2)            <=  Mon.SUPER.STATUS.ERROR;                        --
+        when 33 => --0x21
+          localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.HIT_PROC;                   --
+        when 34 => --0x22
+          localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.HIT_OK;                     --
+        when 36 => --0x24
+          localRdData(31 downto  0)  <=  Mon.SUPER.COUNTERS.ERROR;                      --
+        when 48 => --0x30
+          localRdData( 0)            <=  Mon.CTRL.ROI_TC.SIGNALS.rd_rdy;                --Read ready
+          localRdData( 4)            <=  reg_data(48)( 4);                              --flush memory to Zync
+          localRdData( 5)            <=  Mon.CTRL.ROI_TC.SIGNALS.freeze_ena;            --freeze memory
+          localRdData( 5)            <=  reg_data(48)( 5);                              --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(48)( 8 downto  6);                    --sel memory
+        when 50 => --0x32
+          localRdData( 9 downto  0)  <=  reg_data(50)( 9 downto  0);                    --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(50)(25 downto 16);                    --rd_Address
+        when 51 => --0x33
+          localRdData(31 downto  0)  <=  reg_data(51)(31 downto  0);                    --Write Data 0
+        when 52 => --0x34
+          localRdData( 5 downto  0)  <=  reg_data(52)( 5 downto  0);                    --Write Data 1
+        when 53 => --0x35
+          localRdData( 5 downto  0)  <=  Mon.CTRL.ROI_TC.rd_data.rd_data_1;             --Read Data 1
+        when 54 => --0x36
+          localRdData(31 downto  0)  <=  Mon.CTRL.ROI_TC.rd_data.rd_data_0;             --Read Data 0
+        when 65 => --0x41
+          localRdData( 4)            <=  reg_data(65)( 4);                              --
+          localRdData( 5)            <=  reg_data(65)( 5);                              --
+          localRdData( 6)            <=  reg_data(65)( 6);                              --
+        when 67 => --0x43
+          localRdData( 0)            <=  Mon.HP.HP(0).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(67)( 4);                              --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(0).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(67)( 5);                              --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(67)( 8 downto  6);                    --sel memory
+        when 69 => --0x45
+          localRdData( 9 downto  0)  <=  reg_data(69)( 9 downto  0);                    --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(69)(25 downto 16);                    --rd_Address
+        when 70 => --0x46
+          localRdData( 8 downto  0)  <=  reg_data(70)( 8 downto  0);                    --Write Data 0
+        when 72 => --0x48
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(0).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+        when 81 => --0x51
+          localRdData( 4)            <=  reg_data(81)( 4);                              --
+          localRdData( 5)            <=  reg_data(81)( 5);                              --
+          localRdData( 6)            <=  reg_data(81)( 6);                              --
+        when 83 => --0x53
+          localRdData( 0)            <=  Mon.HP.HP(1).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(83)( 4);                              --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(1).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(83)( 5);                              --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(83)( 8 downto  6);                    --sel memory
+        when 85 => --0x55
+          localRdData( 9 downto  0)  <=  reg_data(85)( 9 downto  0);                    --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(85)(25 downto 16);                    --rd_Address
+        when 86 => --0x56
+          localRdData( 8 downto  0)  <=  reg_data(86)( 8 downto  0);                    --Write Data 0
+        when 88 => --0x58
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(1).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+        when 97 => --0x61
+          localRdData( 4)            <=  reg_data(97)( 4);                              --
+          localRdData( 5)            <=  reg_data(97)( 5);                              --
+          localRdData( 6)            <=  reg_data(97)( 6);                              --
+        when 99 => --0x63
+          localRdData( 0)            <=  Mon.HP.HP(2).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(99)( 4);                              --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(2).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(99)( 5);                              --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(99)( 8 downto  6);                    --sel memory
+        when 101 => --0x65
+          localRdData( 9 downto  0)  <=  reg_data(101)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(101)(25 downto 16);                   --rd_Address
+        when 102 => --0x66
+          localRdData( 8 downto  0)  <=  reg_data(102)( 8 downto  0);                   --Write Data 0
+        when 104 => --0x68
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(2).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+        when 113 => --0x71
+          localRdData( 4)            <=  reg_data(113)( 4);                             --
+          localRdData( 5)            <=  reg_data(113)( 5);                             --
+          localRdData( 6)            <=  reg_data(113)( 6);                             --
+        when 115 => --0x73
+          localRdData( 0)            <=  Mon.HP.HP(3).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(115)( 4);                             --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(3).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(115)( 5);                             --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(115)( 8 downto  6);                   --sel memory
+        when 117 => --0x75
+          localRdData( 9 downto  0)  <=  reg_data(117)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(117)(25 downto 16);                   --rd_Address
+        when 118 => --0x76
+          localRdData( 8 downto  0)  <=  reg_data(118)( 8 downto  0);                   --Write Data 0
+        when 120 => --0x78
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(3).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+        when 129 => --0x81
+          localRdData( 4)            <=  reg_data(129)( 4);                             --
+          localRdData( 5)            <=  reg_data(129)( 5);                             --
+          localRdData( 6)            <=  reg_data(129)( 6);                             --
+        when 131 => --0x83
+          localRdData( 0)            <=  Mon.HP.HP(4).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(131)( 4);                             --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(4).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(131)( 5);                             --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(131)( 8 downto  6);                   --sel memory
+        when 133 => --0x85
+          localRdData( 9 downto  0)  <=  reg_data(133)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(133)(25 downto 16);                   --rd_Address
+        when 134 => --0x86
+          localRdData( 8 downto  0)  <=  reg_data(134)( 8 downto  0);                   --Write Data 0
+        when 136 => --0x88
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(4).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+        when 145 => --0x91
+          localRdData( 4)            <=  reg_data(145)( 4);                             --
+          localRdData( 5)            <=  reg_data(145)( 5);                             --
+          localRdData( 6)            <=  reg_data(145)( 6);                             --
+        when 147 => --0x93
+          localRdData( 0)            <=  Mon.HP.HP(5).MDT_DT2R.SIGNALS.rd_rdy;          --Read ready
+          localRdData( 4)            <=  reg_data(147)( 4);                             --flush memory to Zync
+          localRdData( 5)            <=  Mon.HP.HP(5).MDT_DT2R.SIGNALS.freeze_ena;      --freeze memory
+          localRdData( 5)            <=  reg_data(147)( 5);                             --freeze memory
+          localRdData( 8 downto  6)  <=  reg_data(147)( 8 downto  6);                   --sel memory
+        when 149 => --0x95
+          localRdData( 9 downto  0)  <=  reg_data(149)( 9 downto  0);                   --wr_Address
+          localRdData(25 downto 16)  <=  reg_data(149)(25 downto 16);                   --rd_Address
+        when 150 => --0x96
+          localRdData( 8 downto  0)  <=  reg_data(150)( 8 downto  0);                   --Write Data 0
+        when 152 => --0x98
+          localRdData( 8 downto  0)  <=  Mon.HP.HP(5).MDT_DT2R.rd_data.rd_data_0;       --Read Data 0
+
+
+          when others =>
+            regRdAck <= '0';
+            localRdData <= x"00000000";
+        end case;
+      end if;
+    end if;
+  end process reads;
+
+
+  -------------------------------------------------------------------------------
+  -- Record write decoding
+  -------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
+
+  -- Register mapping to ctrl structures
+  Ctrl.SUPER.CONFIGS.INPUT_EN                <=  reg_data( 1)( 4);                
+  Ctrl.SUPER.CONFIGS.OUTPUT_EN               <=  reg_data( 1)( 5);                
+  Ctrl.SUPER.CONFIGS.FLUSH_MEM_RESET         <=  reg_data( 1)( 6);                
+  Ctrl.CTRL.ROI_TC.SIGNALS.flush_req         <=  reg_data(48)( 4);                
+  Ctrl.CTRL.ROI_TC.SIGNALS.freeze_req        <=  reg_data(48)( 5);                
+  Ctrl.CTRL.ROI_TC.SIGNALS.mem_sel           <=  reg_data(48)( 8 downto  6);      
+  Ctrl.CTRL.ROI_TC.wr_addr                   <=  reg_data(50)( 9 downto  0);      
+  Ctrl.CTRL.ROI_TC.rd_addr                   <=  reg_data(50)(25 downto 16);      
+  Ctrl.CTRL.ROI_TC.wr_data.wr_data_0         <=  reg_data(51)(31 downto  0);      
+  Ctrl.CTRL.ROI_TC.wr_data.wr_data_1         <=  reg_data(52)( 5 downto  0);      
+  Ctrl.HP.HP(0).CONFIGS.INPUT_EN             <=  reg_data(65)( 4);                
+  Ctrl.HP.HP(0).CONFIGS.OUTPUT_EN            <=  reg_data(65)( 5);                
+  Ctrl.HP.HP(0).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(65)( 6);                
+  Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(67)( 4);                
+  Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(67)( 5);                
+  Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(67)( 8 downto  6);      
+  Ctrl.HP.HP(0).MDT_DT2R.wr_addr             <=  reg_data(69)( 9 downto  0);      
+  Ctrl.HP.HP(0).MDT_DT2R.rd_addr             <=  reg_data(69)(25 downto 16);      
+  Ctrl.HP.HP(0).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(70)( 8 downto  0);      
+  Ctrl.HP.HP(1).CONFIGS.INPUT_EN             <=  reg_data(81)( 4);                
+  Ctrl.HP.HP(1).CONFIGS.OUTPUT_EN            <=  reg_data(81)( 5);                
+  Ctrl.HP.HP(1).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(81)( 6);                
+  Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(83)( 4);                
+  Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(83)( 5);                
+  Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(83)( 8 downto  6);      
+  Ctrl.HP.HP(1).MDT_DT2R.wr_addr             <=  reg_data(85)( 9 downto  0);      
+  Ctrl.HP.HP(1).MDT_DT2R.rd_addr             <=  reg_data(85)(25 downto 16);      
+  Ctrl.HP.HP(1).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(86)( 8 downto  0);      
+  Ctrl.HP.HP(2).CONFIGS.INPUT_EN             <=  reg_data(97)( 4);                
+  Ctrl.HP.HP(2).CONFIGS.OUTPUT_EN            <=  reg_data(97)( 5);                
+  Ctrl.HP.HP(2).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(97)( 6);                
+  Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(99)( 4);                
+  Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(99)( 5);                
+  Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(99)( 8 downto  6);      
+  Ctrl.HP.HP(2).MDT_DT2R.wr_addr             <=  reg_data(101)( 9 downto  0);     
+  Ctrl.HP.HP(2).MDT_DT2R.rd_addr             <=  reg_data(101)(25 downto 16);     
+  Ctrl.HP.HP(2).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(102)( 8 downto  0);     
+  Ctrl.HP.HP(3).CONFIGS.INPUT_EN             <=  reg_data(113)( 4);               
+  Ctrl.HP.HP(3).CONFIGS.OUTPUT_EN            <=  reg_data(113)( 5);               
+  Ctrl.HP.HP(3).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(113)( 6);               
+  Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(115)( 4);               
+  Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(115)( 5);               
+  Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(115)( 8 downto  6);     
+  Ctrl.HP.HP(3).MDT_DT2R.wr_addr             <=  reg_data(117)( 9 downto  0);     
+  Ctrl.HP.HP(3).MDT_DT2R.rd_addr             <=  reg_data(117)(25 downto 16);     
+  Ctrl.HP.HP(3).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(118)( 8 downto  0);     
+  Ctrl.HP.HP(4).CONFIGS.INPUT_EN             <=  reg_data(129)( 4);               
+  Ctrl.HP.HP(4).CONFIGS.OUTPUT_EN            <=  reg_data(129)( 5);               
+  Ctrl.HP.HP(4).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(129)( 6);               
+  Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(131)( 4);               
+  Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(131)( 5);               
+  Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(131)( 8 downto  6);     
+  Ctrl.HP.HP(4).MDT_DT2R.wr_addr             <=  reg_data(133)( 9 downto  0);     
+  Ctrl.HP.HP(4).MDT_DT2R.rd_addr             <=  reg_data(133)(25 downto 16);     
+  Ctrl.HP.HP(4).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(134)( 8 downto  0);     
+  Ctrl.HP.HP(5).CONFIGS.INPUT_EN             <=  reg_data(145)( 4);               
+  Ctrl.HP.HP(5).CONFIGS.OUTPUT_EN            <=  reg_data(145)( 5);               
+  Ctrl.HP.HP(5).CONFIGS.FLUSH_MEM_RESET      <=  reg_data(145)( 6);               
+  Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.flush_req   <=  reg_data(147)( 4);               
+  Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.freeze_req  <=  reg_data(147)( 5);               
+  Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.mem_sel     <=  reg_data(147)( 8 downto  6);     
+  Ctrl.HP.HP(5).MDT_DT2R.wr_addr             <=  reg_data(149)( 9 downto  0);     
+  Ctrl.HP.HP(5).MDT_DT2R.rd_addr             <=  reg_data(149)(25 downto 16);     
+  Ctrl.HP.HP(5).MDT_DT2R.wr_data.wr_data_0   <=  reg_data(150)( 8 downto  0);     
+
+
+  reg_writes: process (clk_axi, reset_axi_n) is
+  begin  -- process reg_writes
+    if reset_axi_n = '0' then                 -- asynchronous reset (active low)
+      reg_data( 1)( 4)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.INPUT_EN;
+      reg_data( 1)( 5)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.OUTPUT_EN;
+      reg_data( 1)( 6)  <= DEFAULT_HEG_CTRL_t.SUPER.CONFIGS.FLUSH_MEM_RESET;
+      reg_data(48)( 4)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.flush_req;
+      reg_data(48)( 5)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.freeze_req;
+      reg_data(48)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.SIGNALS.mem_sel;
+      reg_data(50)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.wr_addr;
+      reg_data(50)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.rd_addr;
+      reg_data(51)(31 downto  0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.wr_data.wr_data_0;
+      reg_data(52)( 5 downto  0)  <= DEFAULT_HEG_CTRL_t.CTRL.ROI_TC.wr_data.wr_data_1;
+      reg_data(65)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.INPUT_EN;
+      reg_data(65)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.OUTPUT_EN;
+      reg_data(65)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(67)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(67)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(67)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(69)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_addr;
+      reg_data(69)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.rd_addr;
+      reg_data(70)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(0).MDT_DT2R.wr_data.wr_data_0;
+      reg_data(81)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.INPUT_EN;
+      reg_data(81)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.OUTPUT_EN;
+      reg_data(81)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(83)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(83)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(83)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(85)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_addr;
+      reg_data(85)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.rd_addr;
+      reg_data(86)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(1).MDT_DT2R.wr_data.wr_data_0;
+      reg_data(97)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.INPUT_EN;
+      reg_data(97)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.OUTPUT_EN;
+      reg_data(97)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(99)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(99)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(99)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(101)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_addr;
+      reg_data(101)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.rd_addr;
+      reg_data(102)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(2).MDT_DT2R.wr_data.wr_data_0;
+      reg_data(113)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.INPUT_EN;
+      reg_data(113)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.OUTPUT_EN;
+      reg_data(113)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(115)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(115)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(115)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(117)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_addr;
+      reg_data(117)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.rd_addr;
+      reg_data(118)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(3).MDT_DT2R.wr_data.wr_data_0;
+      reg_data(129)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.INPUT_EN;
+      reg_data(129)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.OUTPUT_EN;
+      reg_data(129)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(131)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(131)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(131)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(133)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_addr;
+      reg_data(133)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.rd_addr;
+      reg_data(134)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(4).MDT_DT2R.wr_data.wr_data_0;
+      reg_data(145)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.INPUT_EN;
+      reg_data(145)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.OUTPUT_EN;
+      reg_data(145)( 6)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).CONFIGS.FLUSH_MEM_RESET;
+      reg_data(147)( 4)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.flush_req;
+      reg_data(147)( 5)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.freeze_req;
+      reg_data(147)( 8 downto  6)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.SIGNALS.mem_sel;
+      reg_data(149)( 9 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.wr_addr;
+      reg_data(149)(25 downto 16)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.rd_addr;
+      reg_data(150)( 8 downto  0)  <= DEFAULT_HEG_CTRL_t.HP.HP(5).MDT_DT2R.wr_data.wr_data_0;
+
+    elsif clk_axi'event and clk_axi = '1' then  -- rising clock edge
+      Ctrl.SUPER.ACTIONS.RESET <= '0';
+      Ctrl.SUPER.ACTIONS.ENABLE <= '0';
+      Ctrl.SUPER.ACTIONS.DISABLE <= '0';
+      Ctrl.SUPER.ACTIONS.FREEZE <= '0';
+      Ctrl.CTRL.ROI_TC.SIGNALS.wr_req <= '0';
+      Ctrl.CTRL.ROI_TC.SIGNALS.wr_ack <= '0';
+      Ctrl.CTRL.ROI_TC.SIGNALS.rd_req <= '0';
+      Ctrl.CTRL.ROI_TC.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(0).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(0).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(0).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(0).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(1).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(1).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(1).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(1).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(2).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(2).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(2).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(2).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(3).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(3).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(3).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(3).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(4).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(4).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(4).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(4).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      Ctrl.HP.HP(5).ACTIONS.RESET <= '0';
+      Ctrl.HP.HP(5).ACTIONS.ENABLE <= '0';
+      Ctrl.HP.HP(5).ACTIONS.DISABLE <= '0';
+      Ctrl.HP.HP(5).ACTIONS.FREEZE <= '0';
+      Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.wr_req <= '0';
+      Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.wr_ack <= '0';
+      Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.rd_req <= '0';
+      Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.rd_ack <= '0';
+      
+
+      
+      if localWrEn = '1' then
+        case to_integer(unsigned(localAddress(7 downto 0))) is
+        when 0 => --0x0
+          Ctrl.SUPER.ACTIONS.RESET               <=  localWrData( 0);               
+          Ctrl.SUPER.ACTIONS.ENABLE              <=  localWrData( 1);               
+          Ctrl.SUPER.ACTIONS.DISABLE             <=  localWrData( 2);               
+          Ctrl.SUPER.ACTIONS.FREEZE              <=  localWrData( 3);               
+        when 1 => --0x1
+          reg_data( 1)( 4)                       <=  localWrData( 4);                --
+          reg_data( 1)( 5)                       <=  localWrData( 5);                --
+          reg_data( 1)( 6)                       <=  localWrData( 6);                --
+        when 48 => --0x30
+          Ctrl.CTRL.ROI_TC.SIGNALS.wr_req        <=  localWrData( 0);               
+          Ctrl.CTRL.ROI_TC.SIGNALS.wr_ack        <=  localWrData( 1);               
+          Ctrl.CTRL.ROI_TC.SIGNALS.rd_req        <=  localWrData( 2);               
+          Ctrl.CTRL.ROI_TC.SIGNALS.rd_ack        <=  localWrData( 3);               
+          reg_data(48)( 4)                       <=  localWrData( 4);                --flush memory to Zync
+          reg_data(48)( 5)                       <=  localWrData( 5);                --freeze memory
+          reg_data(48)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
+        when 50 => --0x32
+          reg_data(50)( 9 downto  0)             <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(50)(25 downto 16)             <=  localWrData(25 downto 16);      --rd_Address
+        when 51 => --0x33
+          reg_data(51)(31 downto  0)             <=  localWrData(31 downto  0);      --Write Data 0
+        when 52 => --0x34
+          reg_data(52)( 5 downto  0)             <=  localWrData( 5 downto  0);      --Write Data 1
+        when 64 => --0x40
+          Ctrl.HP.HP(0).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(0).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(0).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(0).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 65 => --0x41
+          reg_data(65)( 4)                       <=  localWrData( 4);                --
+          reg_data(65)( 5)                       <=  localWrData( 5);                --
+          reg_data(65)( 6)                       <=  localWrData( 6);                --
+        when 67 => --0x43
+          Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(0).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(67)( 4)                       <=  localWrData( 4);                --flush memory to Zync
+          reg_data(67)( 5)                       <=  localWrData( 5);                --freeze memory
+          reg_data(67)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
+        when 69 => --0x45
+          reg_data(69)( 9 downto  0)             <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(69)(25 downto 16)             <=  localWrData(25 downto 16);      --rd_Address
+        when 70 => --0x46
+          reg_data(70)( 8 downto  0)             <=  localWrData( 8 downto  0);      --Write Data 0
+        when 80 => --0x50
+          Ctrl.HP.HP(1).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(1).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(1).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(1).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 81 => --0x51
+          reg_data(81)( 4)                       <=  localWrData( 4);                --
+          reg_data(81)( 5)                       <=  localWrData( 5);                --
+          reg_data(81)( 6)                       <=  localWrData( 6);                --
+        when 83 => --0x53
+          Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(1).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(83)( 4)                       <=  localWrData( 4);                --flush memory to Zync
+          reg_data(83)( 5)                       <=  localWrData( 5);                --freeze memory
+          reg_data(83)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
+        when 85 => --0x55
+          reg_data(85)( 9 downto  0)             <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(85)(25 downto 16)             <=  localWrData(25 downto 16);      --rd_Address
+        when 86 => --0x56
+          reg_data(86)( 8 downto  0)             <=  localWrData( 8 downto  0);      --Write Data 0
+        when 96 => --0x60
+          Ctrl.HP.HP(2).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(2).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(2).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(2).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 97 => --0x61
+          reg_data(97)( 4)                       <=  localWrData( 4);                --
+          reg_data(97)( 5)                       <=  localWrData( 5);                --
+          reg_data(97)( 6)                       <=  localWrData( 6);                --
+        when 99 => --0x63
+          Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(2).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(99)( 4)                       <=  localWrData( 4);                --flush memory to Zync
+          reg_data(99)( 5)                       <=  localWrData( 5);                --freeze memory
+          reg_data(99)( 8 downto  6)             <=  localWrData( 8 downto  6);      --sel memory
+        when 101 => --0x65
+          reg_data(101)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(101)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
+        when 102 => --0x66
+          reg_data(102)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
+        when 112 => --0x70
+          Ctrl.HP.HP(3).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(3).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(3).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(3).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 113 => --0x71
+          reg_data(113)( 4)                      <=  localWrData( 4);                --
+          reg_data(113)( 5)                      <=  localWrData( 5);                --
+          reg_data(113)( 6)                      <=  localWrData( 6);                --
+        when 115 => --0x73
+          Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(3).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(115)( 4)                      <=  localWrData( 4);                --flush memory to Zync
+          reg_data(115)( 5)                      <=  localWrData( 5);                --freeze memory
+          reg_data(115)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
+        when 117 => --0x75
+          reg_data(117)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(117)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
+        when 118 => --0x76
+          reg_data(118)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
+        when 128 => --0x80
+          Ctrl.HP.HP(4).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(4).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(4).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(4).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 129 => --0x81
+          reg_data(129)( 4)                      <=  localWrData( 4);                --
+          reg_data(129)( 5)                      <=  localWrData( 5);                --
+          reg_data(129)( 6)                      <=  localWrData( 6);                --
+        when 131 => --0x83
+          Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(4).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(131)( 4)                      <=  localWrData( 4);                --flush memory to Zync
+          reg_data(131)( 5)                      <=  localWrData( 5);                --freeze memory
+          reg_data(131)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
+        when 133 => --0x85
+          reg_data(133)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(133)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
+        when 134 => --0x86
+          reg_data(134)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
+        when 144 => --0x90
+          Ctrl.HP.HP(5).ACTIONS.RESET            <=  localWrData( 0);               
+          Ctrl.HP.HP(5).ACTIONS.ENABLE           <=  localWrData( 1);               
+          Ctrl.HP.HP(5).ACTIONS.DISABLE          <=  localWrData( 2);               
+          Ctrl.HP.HP(5).ACTIONS.FREEZE           <=  localWrData( 3);               
+        when 145 => --0x91
+          reg_data(145)( 4)                      <=  localWrData( 4);                --
+          reg_data(145)( 5)                      <=  localWrData( 5);                --
+          reg_data(145)( 6)                      <=  localWrData( 6);                --
+        when 147 => --0x93
+          reg_data(147)( 4)                      <=  localWrData( 4);                --flush memory to Zync
+          Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.wr_req  <=  localWrData( 0);               
+          Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.wr_ack  <=  localWrData( 1);               
+          Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.rd_req  <=  localWrData( 2);               
+          Ctrl.HP.HP(5).MDT_DT2R.SIGNALS.rd_ack  <=  localWrData( 3);               
+          reg_data(147)( 5)                      <=  localWrData( 5);                --freeze memory
+          reg_data(147)( 8 downto  6)            <=  localWrData( 8 downto  6);      --sel memory
+        when 149 => --0x95
+          reg_data(149)( 9 downto  0)            <=  localWrData( 9 downto  0);      --wr_Address
+          reg_data(149)(25 downto 16)            <=  localWrData(25 downto 16);      --rd_Address
+        when 150 => --0x96
+          reg_data(150)( 8 downto  0)            <=  localWrData( 8 downto  0);      --Write Data 0
+
+          when others => null;
+        end case;
+      end if;
+    end if;
+  end process reg_writes;
+
+
+
+
+
+
+
+  
+end architecture behavioral;

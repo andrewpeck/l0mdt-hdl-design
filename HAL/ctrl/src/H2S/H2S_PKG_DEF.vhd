@@ -7,18 +7,22 @@ use ctrl_lib.H2S_CTRL.all;
 
 
 package H2S_CTRL_DEF is
-  constant DEFAULT_H2S_HPS_ACTIONS_CTRL_t : H2S_HPS_ACTIONS_CTRL_t := (
-                                                                       RESET => '0',
-                                                                       ENABLE => '0',
-                                                                       DISABLE => '0',
-                                                                       FREEZE => '0'
-                                                                      );
-  constant DEFAULT_H2S_HPS_CONFIGS_CTRL_t : H2S_HPS_CONFIGS_CTRL_t := (
-                                                                       THREADS => x"3",
-                                                                       INPUT_EN => '1',
-                                                                       OUTPUT_EN => '1',
-                                                                       FLUSH_MEM_RESET => '1'
-                                                                      );
+  constant DEFAULT_H2S_HPS_SUPER_ACTIONS_CTRL_t : H2S_HPS_SUPER_ACTIONS_CTRL_t := (
+                                                                                   RESET => '0',
+                                                                                   ENABLE => '0',
+                                                                                   DISABLE => '0',
+                                                                                   FREEZE => '0'
+                                                                                  );
+  constant DEFAULT_H2S_HPS_SUPER_CONFIGS_CTRL_t : H2S_HPS_SUPER_CONFIGS_CTRL_t := (
+                                                                                   THREADS => x"3",
+                                                                                   INPUT_EN => '1',
+                                                                                   OUTPUT_EN => '1',
+                                                                                   FLUSH_MEM_RESET => '1'
+                                                                                  );
+  constant DEFAULT_H2S_HPS_SUPER_CTRL_t : H2S_HPS_SUPER_CTRL_t := (
+                                                                   ACTIONS => DEFAULT_H2S_HPS_SUPER_ACTIONS_CTRL_t,
+                                                                   CONFIGS => DEFAULT_H2S_HPS_SUPER_CONFIGS_CTRL_t
+                                                                  );
   constant DEFAULT_H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t : H2S_HPS_MDT_TC_MDT_TC_SIGNALS_CTRL_t := (
                                                                                                    wr_req => '0',
                                                                                                    wr_ack => '0',
@@ -62,17 +66,21 @@ package H2S_CTRL_DEF is
   constant DEFAULT_H2S_HPS_MDT_T0_CTRL_t : H2S_HPS_MDT_T0_CTRL_t := (
                                                                      MDT_T0 => (others => DEFAULT_H2S_HPS_MDT_T0_MDT_T0_CTRL_t )
                                                                     );
-  constant DEFAULT_H2S_HPS_HEG_HEG_ACTIONS_CTRL_t : H2S_HPS_HEG_HEG_ACTIONS_CTRL_t := (
-                                                                                       RESET => '0',
-                                                                                       ENABLE => '0',
-                                                                                       DISABLE => '0',
-                                                                                       FREEZE => '0'
-                                                                                      );
-  constant DEFAULT_H2S_HPS_HEG_HEG_CONFIGS_CTRL_t : H2S_HPS_HEG_HEG_CONFIGS_CTRL_t := (
-                                                                                       INPUT_EN => '1',
-                                                                                       OUTPUT_EN => '1',
-                                                                                       FLUSH_MEM_RESET => '1'
-                                                                                      );
+  constant DEFAULT_H2S_HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t : H2S_HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t := (
+                                                                                                   RESET => '0',
+                                                                                                   ENABLE => '0',
+                                                                                                   DISABLE => '0',
+                                                                                                   FREEZE => '0'
+                                                                                                  );
+  constant DEFAULT_H2S_HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t : H2S_HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t := (
+                                                                                                   INPUT_EN => '1',
+                                                                                                   OUTPUT_EN => '1',
+                                                                                                   FLUSH_MEM_RESET => '1'
+                                                                                                  );
+  constant DEFAULT_H2S_HPS_HEG_HEG_SUPER_CTRL_t : H2S_HPS_HEG_HEG_SUPER_CTRL_t := (
+                                                                                   ACTIONS => DEFAULT_H2S_HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t,
+                                                                                   CONFIGS => DEFAULT_H2S_HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t
+                                                                                  );
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t : H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_CTRL_t := (
                                                                                                                wr_req => '0',
                                                                                                                wr_ack => '0',
@@ -133,8 +141,7 @@ package H2S_CTRL_DEF is
                                                                              HP => (others => DEFAULT_H2S_HPS_HEG_HEG_HP_HP_CTRL_t )
                                                                             );
   constant DEFAULT_H2S_HPS_HEG_HEG_CTRL_t : H2S_HPS_HEG_HEG_CTRL_t := (
-                                                                       ACTIONS => DEFAULT_H2S_HPS_HEG_HEG_ACTIONS_CTRL_t,
-                                                                       CONFIGS => DEFAULT_H2S_HPS_HEG_HEG_CONFIGS_CTRL_t,
+                                                                       SUPER => DEFAULT_H2S_HPS_HEG_HEG_SUPER_CTRL_t,
                                                                        CTRL => DEFAULT_H2S_HPS_HEG_HEG_CTRL_CTRL_t,
                                                                        HP => DEFAULT_H2S_HPS_HEG_HEG_HP_CTRL_t
                                                                       );
@@ -164,8 +171,7 @@ package H2S_CTRL_DEF is
                                                                CSF => (others => DEFAULT_H2S_HPS_CSF_CSF_CTRL_t )
                                                               );
   constant DEFAULT_H2S_HPS_CTRL_t : H2S_HPS_CTRL_t := (
-                                                       ACTIONS => DEFAULT_H2S_HPS_ACTIONS_CTRL_t,
-                                                       CONFIGS => DEFAULT_H2S_HPS_CONFIGS_CTRL_t,
+                                                       SUPER => DEFAULT_H2S_HPS_SUPER_CTRL_t,
                                                        MDT_TC => DEFAULT_H2S_HPS_MDT_TC_CTRL_t,
                                                        MDT_T0 => DEFAULT_H2S_HPS_MDT_T0_CTRL_t,
                                                        HEG => DEFAULT_H2S_HPS_HEG_CTRL_t,

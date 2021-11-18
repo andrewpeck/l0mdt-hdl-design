@@ -9,24 +9,33 @@ config:
 
 hdl:
 
-- H2S_HPS_ACTIONS_CTRL_t:
+- H2S_HPS_SUPER_ACTIONS_CTRL_t:
   - RESET : [ type: logic ]
   - ENABLE : [ type: logic ]
   - DISABLE : [ type: logic ]
   - FREEZE : [ type: logic ]
 
 
-- H2S_HPS_CONFIGS_CTRL_t:
+- H2S_HPS_SUPER_CONFIGS_CTRL_t:
   - THREADS : [ type: logic, length: 4 ]
   - INPUT_EN : [ type: logic ]
   - OUTPUT_EN : [ type: logic ]
   - FLUSH_MEM_RESET : [ type: logic ]
 
 
-- H2S_HPS_STATUS_MON_t:
+- H2S_HPS_SUPER_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
   - ERROR : [ type: logic, length: 8 ]
+
+
+- H2S_HPS_SUPER_MON_t:
+  - STATUS : [ type: H2S_HPS_SUPER_STATUS_MON_t ]
+
+
+- H2S_HPS_SUPER_CTRL_t:
+  - ACTIONS : [ type: H2S_HPS_SUPER_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: H2S_HPS_SUPER_CONFIGS_CTRL_t ]
 
 
 - H2S_HPS_MDT_TC_MDT_TC_SIGNALS_MON_t:
@@ -121,29 +130,39 @@ hdl:
   - MDT_T0 : [ type: H2S_HPS_MDT_T0_MDT_T0_CTRL_t_ARRAY ]
 
 
-- H2S_HPS_HEG_HEG_ACTIONS_CTRL_t:
+- H2S_HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t:
   - RESET : [ type: logic ]
   - ENABLE : [ type: logic ]
   - DISABLE : [ type: logic ]
   - FREEZE : [ type: logic ]
 
 
-- H2S_HPS_HEG_HEG_CONFIGS_CTRL_t:
+- H2S_HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t:
   - INPUT_EN : [ type: logic ]
   - OUTPUT_EN : [ type: logic ]
   - FLUSH_MEM_RESET : [ type: logic ]
 
 
-- H2S_HPS_HEG_HEG_STATUS_MON_t:
+- H2S_HPS_HEG_HEG_SUPER_STATUS_MON_t:
   - ENABLED : [ type: logic ]
   - READY : [ type: logic ]
   - ERROR : [ type: logic ]
 
 
-- H2S_HPS_HEG_HEG_COUNTERS_MON_t:
+- H2S_HPS_HEG_HEG_SUPER_COUNTERS_MON_t:
   - HIT_PROC : [ type: logic, length: 32 ]
   - HIT_OK : [ type: logic, length: 32 ]
   - ERROR : [ type: logic, length: 32 ]
+
+
+- H2S_HPS_HEG_HEG_SUPER_MON_t:
+  - STATUS : [ type: H2S_HPS_HEG_HEG_SUPER_STATUS_MON_t ]
+  - COUNTERS : [ type: H2S_HPS_HEG_HEG_SUPER_COUNTERS_MON_t ]
+
+
+- H2S_HPS_HEG_HEG_SUPER_CTRL_t:
+  - ACTIONS : [ type: H2S_HPS_HEG_HEG_SUPER_ACTIONS_CTRL_t ]
+  - CONFIGS : [ type: H2S_HPS_HEG_HEG_SUPER_CONFIGS_CTRL_t ]
 
 
 - H2S_HPS_HEG_HEG_CTRL_ROI_TC_SIGNALS_MON_t:
@@ -260,16 +279,14 @@ hdl:
 
 
 - H2S_HPS_HEG_HEG_MON_t:
-  - STATUS : [ type: H2S_HPS_HEG_HEG_STATUS_MON_t ]
-  - COUNTERS : [ type: H2S_HPS_HEG_HEG_COUNTERS_MON_t ]
+  - SUPER : [ type: H2S_HPS_HEG_HEG_SUPER_MON_t ]
   - CTRL : [ type: H2S_HPS_HEG_HEG_CTRL_MON_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_MON_t ]
 
 - H2S_HPS_HEG_HEG_MON_t_ARRAY: [array: 3, type: H2S_HPS_HEG_HEG_MON_t]
 
 - H2S_HPS_HEG_HEG_CTRL_t:
-  - ACTIONS : [ type: H2S_HPS_HEG_HEG_ACTIONS_CTRL_t ]
-  - CONFIGS : [ type: H2S_HPS_HEG_HEG_CONFIGS_CTRL_t ]
+  - SUPER : [ type: H2S_HPS_HEG_HEG_SUPER_CTRL_t ]
   - CTRL : [ type: H2S_HPS_HEG_HEG_CTRL_CTRL_t ]
   - HP : [ type: H2S_HPS_HEG_HEG_HP_CTRL_t ]
 
@@ -339,7 +356,7 @@ hdl:
 
 
 - H2S_HPS_MON_t:
-  - STATUS : [ type: H2S_HPS_STATUS_MON_t ]
+  - SUPER : [ type: H2S_HPS_SUPER_MON_t ]
   - MDT_TC : [ type: H2S_HPS_MDT_TC_MON_t ]
   - MDT_T0 : [ type: H2S_HPS_MDT_T0_MON_t ]
   - HEG : [ type: H2S_HPS_HEG_MON_t ]
@@ -349,8 +366,7 @@ hdl:
 - H2S_HPS_MON_t_ARRAY: [array: 4, type: H2S_HPS_MON_t]
 
 - H2S_HPS_CTRL_t:
-  - ACTIONS : [ type: H2S_HPS_ACTIONS_CTRL_t ]
-  - CONFIGS : [ type: H2S_HPS_CONFIGS_CTRL_t ]
+  - SUPER : [ type: H2S_HPS_SUPER_CTRL_t ]
   - MDT_TC : [ type: H2S_HPS_MDT_TC_CTRL_t ]
   - MDT_T0 : [ type: H2S_HPS_MDT_T0_CTRL_t ]
   - HEG : [ type: H2S_HPS_HEG_CTRL_t ]
