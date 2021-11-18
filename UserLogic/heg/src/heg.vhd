@@ -62,6 +62,12 @@ end entity heg;
 architecture beh of heg is
   signal ctrl_r           : H2S_HPS_HEG_HEG_CTRL_t;
   signal mon_r            : H2S_HPS_HEG_HEG_MON_t;
+  
+  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
+  constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
+  signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
+
   signal heg_ctrl_ctrl_r  : H2S_HPS_HEG_HEG_CTRL_CTRL_t;
   signal heg_ctrl_mon_r   : H2S_HPS_HEG_HEG_CTRL_MON_t;
   signal heg_ctrl_ctrl_v  : std_logic_vector(len(heg_ctrl_ctrl_r)-1 downto 0);
@@ -101,6 +107,9 @@ begin
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
 
+  ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
+  mon_r.super <= convert(mon_super_v,mon_r.super);
+
   heg_ctrl_ctrl_r <= ctrl_r.ctrl;
   mon_r.ctrl <= heg_ctrl_mon_r;
   
@@ -120,8 +129,8 @@ begin
     rst                 => rst,
     glob_en             => glob_en,
     --
-    ctrl_v              => heg_ctrl_ctrl_v,
-    mon_v               => heg_ctrl_mon_v,
+    ctrl_v              => ctrl_super_v,
+    mon_v               => mon_super_v,
     --
     i_freeze            => i_freeze,
     o_freeze            => int_freeze,

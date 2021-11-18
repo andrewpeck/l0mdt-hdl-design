@@ -137,7 +137,7 @@ begin
         --------------------------------------------
         mon_r.status.ENABLED <= local_en;
         mon_r.status.READY <= not local_rst;
-        mon_r.status.ERROR <= (others => '0');
+        mon_r.status.ERROR <= '0';
         --------------------------------------------
         --    counters
         --------------------------------------------
