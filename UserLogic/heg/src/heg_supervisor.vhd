@@ -61,8 +61,9 @@ end entity heg_supervisor;
 
 architecture beh of heg_supervisor is
 
-  signal ctrl_r : 
-  signal mon_r  :
+  signal ctrl_r : HEG_SUPER_CTRL_t;
+  signal mon_r  : HEG_SUPER_MON_t;
+
  
   signal local_rst : std_logic;
   signal local_en  : std_logic;
@@ -78,6 +79,10 @@ architecture beh of heg_supervisor is
   signal axi_rep_clk      : std_logic;
 
 begin
+
+  ctrl_r <= convert(ctrl_v,ctrl_r);
+  mon_v <= convert(mon_r,mon_v);
+
   o_local_en <= local_en;
   o_local_rst <= local_rst;
 
@@ -107,19 +112,19 @@ begin
         --    from apb
         --------------------------------------------
         -- if apb_clk_cnt = 0 then
-          if i_actions.reset = '1' then
+          if ctrl_r.actions.reset = '1' then
             int_rst <= '1';
           else
             int_rst <= '0';
           end if;
 
-          if i_actions.enable = '1' then
+          if ctrl_r.actions.enable = '1' then
             int_en <= '1';
-          elsif i_actions.disable = '1' then
+          elsif ctrl_r.actions.disable = '1' then
             int_en <= '0';
           end if;
           
-          if i_actions.freeze = '1' then
+          if ctrl_r.actions.freeze = '1' then
             int_freeze <= '1';
           else
             int_freeze <= '0';
@@ -129,9 +134,9 @@ begin
         --------------------------------------------
         --    to apb
         --------------------------------------------
-        o_status.ENABLED <= local_en;
-        o_status.READY <= not local_rst;
-        o_status.ERROR <= (others => '0');
+        mon_r.status.ENABLED <= local_en;
+        mon_r.status.READY <= not local_rst;
+        mon_r.status.ERROR <= (others => '0');
         --------------------------------------------
         --    counters
         --------------------------------------------
