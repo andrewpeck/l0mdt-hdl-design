@@ -88,5 +88,57 @@ control logic should run NOT on this asynchronous domain -->
       <node id="MGT_73" address="0x1B6" fwinfo="type=array" module="file://MGT.xml"/>
       <node id="MGT_74" address="0x1BC" fwinfo="type=array" module="file://MGT.xml"/>
       <node id="MGT_75" address="0x1C2" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_76" address="0x1C8" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_77" address="0x1CE" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_78" address="0x1D4" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_79" address="0x1DA" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_80" address="0x1E0" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_81" address="0x1E6" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_82" address="0x1EC" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_83" address="0x1F2" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_84" address="0x1F8" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_85" address="0x1FE" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_86" address="0x204" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_87" address="0x20a" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_88" address="0x210" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_89" address="0x216" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_90" address="0x21c" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_91" address="0x222" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_92" address="0x228" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_93" address="0x22e" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_94" address="0x234" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_95" address="0x23a" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_96" address="0x240" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_97" address="0x246" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_98" address="0x24c" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_99" address="0x252" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_100" address="0x258" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_101" address="0x25e" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_102" address="0x264" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_103" address="0x26a" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_104" address="0x270" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_105" address="0x276" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_106" address="0x27c" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_107" address="0x282" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_108" address="0x288" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_109" address="0x28e" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_110" address="0x294" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_111" address="0x29a" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_112" address="0x2a0" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_113" address="0x2a6" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_114" address="0x2ac" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_115" address="0x2b2" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_116" address="0x2b8" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_117" address="0x2be" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_118" address="0x2c4" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_119" address="0x2ca" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_120" address="0x2d0" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_121" address="0x2d6" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_122" address="0x2dc" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_123" address="0x2e2" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_124" address="0x2e8" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_125" address="0x2ee" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_126" address="0x2f4" fwinfo="type=array" module="file://MGT.xml"/>
+      <node id="MGT_127" address="0x2fa" fwinfo="type=array" module="file://MGT.xml"/>
   </node>
 </node>
