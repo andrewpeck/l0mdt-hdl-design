@@ -82,6 +82,12 @@ architecture beh of heg is
   signal ctrl_hp_av : ctrl_hp_avt;
   signal mon_hp_av  : mon_hp_avt;
 
+  --------------------------------------------
+  signal i_uCM_data_r       : ucm2hps_rt;
+  signal i_mdt_full_data_ar : heg_pc2heg_at(g_HPS_NUM_MDT_CH-1 downto 0);
+
+  --------------------------------------------
+
   -- signal heg_uCM_data       : ucm2heg_slc_rt;
   signal roi_b_Window       : hp_heg2hp_window_avt(get_num_layers(g_STATION_RADIUS) -1 downto 0);
   signal hegC2hp_uCM_data   : hp_heg2hp_slc_rvt;
@@ -89,6 +95,7 @@ architecture beh of heg is
   -- signal heg_Sf_control : heg_ctrl2sf_rt;
   signal hegC_control : heg_ctrl2hp_bus_at(g_HPS_NUM_MDT_CH -1 downto 0);
 
+  signal hp2bm_ar : heg_hp2bm_bus_at(g_HPS_NUM_MDT_CH-1 downto 0);
   signal hp2bm_av : heg_hp2bm_bus_avt(g_HPS_NUM_MDT_CH-1 downto 0);
 
   -- signal time_offset  : unsigned(7 downto 0);
@@ -96,6 +103,7 @@ architecture beh of heg is
   signal int_rst : std_logic;
   signal int_ena : std_logic; 
 
+  signal count_slcs_in_trig : std_logic_vector(0 downto 0);
   signal count_hits_in_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
   signal count_hits_ok_trig : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
   signal count_errors_trig  : std_logic_vector(g_HPS_NUM_MDT_CH -1 downto 0);
@@ -117,6 +125,11 @@ begin
   ctrl_hp_ar <= ctrl_r.HP.HP;
   mon_r.HP.HP <= mon_hp_ar;
 
+  -------------------------------------------
+  i_uCM_data_r <= structify(i_uCM_data_v);
+  count_slcs_in_trig(0) <= i_uCM_data_r.data_valid;
+
+
   SUPER : entity heg_lib.heg_supervisor
   generic map(
     g_STATION_RADIUS    => g_STATION_RADIUS,
@@ -136,6 +149,7 @@ begin
     o_local_rst         => int_rst,
     o_local_en          => int_ena,
     -- inputs
+    i_slcs_in           => count_slcs_in_trig,
     i_hits_in           => count_hits_in_trig,
     i_hits_ok           => count_hits_ok_trig,
     i_errors            => count_errors_trig
@@ -168,11 +182,16 @@ begin
     o_hp_control_r      => hegC_control
   );
 
+
+
   hp_gen: for hp_i in g_HPS_NUM_MDT_CH-1 downto 0 generate
 
-    count_hits_in_trig(hp_i) <=
-    count_hits_ok_trig(hp_i) <=
-    count_errors_trig(hp_i)  <= 
+    i_mdt_full_data_ar(hp_i) <= structify(i_mdt_full_data_av(hp_i));
+    hp2bm_ar(hp_i) <= structify(hp2bm_av(hp_i));
+
+    count_hits_in_trig(hp_i) <= i_mdt_full_data_ar(hp_i).data_valid;
+    count_hits_ok_trig(hp_i) <= hp2bm_ar(hp_i).data_valid;
+    count_errors_trig(hp_i)  <= '0';
 
     ctrl_hp_av(hp_i) <= convert(ctrl_hp_ar(hp_i),ctrl_hp_av(hp_i));
     mon_hp_ar(hp_i) <= convert(mon_hp_av(hp_i),mon_hp_ar(hp_i));
@@ -193,7 +212,6 @@ begin
         local_rst           => hegC_control(hp_i).rst,
         local_en            => hegC_control(hp_i).enable,
         -- time_offset         => to_unsigned(HP_BCID_OFFSET_TIME,8),
-
         -- SLc
         i_SLC_Window        => roi_b_Window,
         i_slc_data_v        => hegC2hp_uCM_data,
@@ -226,3 +244,6 @@ begin
   );
 
 end beh;
+
+
+
