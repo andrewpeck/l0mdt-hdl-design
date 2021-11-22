@@ -599,30 +599,46 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sump_loop : process (clocks.clock_pipeline) is
-    variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
-    variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
-    variable nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
-    variable plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-    variable minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-  begin  -- process data_loop
-    if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
+  sump_gen : if (true) generate
+    signal daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
+    signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
+    signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
+    signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+    signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+  begin
 
-      daqsump_loop : for I in 0 to c_NUM_DAQ_STREAMS-1 loop
-        daq_sump(I) := xor_reduce(daq_streams(I));
-      end loop;
-      mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
-        mtc_sump(I) := xor_reduce(mtc_i(I));
-      end loop;
-      nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
-        nsp_sump(I) := xor_reduce(nsp_i(I));
-      end loop;
+    process (clocks.clock_pipeline) is
+    begin
 
-      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump);
+      if (rising_edge(clocks.clock_pipeline)) then
 
-      plus_neighbor_segments_o  <= plus_neighbor_segments_i;
-      minus_neighbor_segments_o <= minus_neighbor_segments_i;
+        daqsump_loop :
+        for I in 0 to c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT -1 loop
+          daq_sump(I) <= xor_reduce(daq_streams(I));
+        end loop;
+        mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
+          mtc_sump(I) <= xor_reduce(mtc_i(I));
+        end loop;
+        nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
+          nsp_sump(I) <= xor_reduce(nsp_i(I));
+        end loop;
 
-    end if;
-  end process sump_loop;
+        neighbor_segments_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+          plus_neighbor_segments_sump(I)  <= xor_reduce(plus_neighbor_segments_i(I));
+          minus_neighbor_segments_sump(I) <= xor_reduce(minus_neighbor_segments_i(I));
+        end loop;
+
+        sump <= xor_reduce(daq_sump)
+                xor xor_reduce(nsp_sump)
+                xor xor_reduce(mtc_sump)
+                xor xor_reduce(plus_neighbor_segments_sump)
+                xor xor_reduce(minus_neighbor_segments_sump);
+
+        plus_neighbor_segments_o  <= plus_neighbor_segments_i;
+        minus_neighbor_segments_o <= minus_neighbor_segments_i;
+
+      end if;
+    end process;
+  end generate;
+
 end architecture behavioral;
