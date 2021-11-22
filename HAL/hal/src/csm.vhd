@@ -27,7 +27,7 @@ entity csm is
     g_NUM_DOWNLINKS : integer := 1;
     g_NUM_UPLINKS   : integer := 2;
     g_CSM_ID        : integer := 0;
-    g_TDC_CNT       : integer := 0
+    g_TDC_CNT       : integer := 18
     );
   port(
 
@@ -141,7 +141,7 @@ begin
 
       reset_i => reset_i,
       clk40   => clk40,
-      valid_i => downlink_data(0).valid,
+      clk320  => uplink_clk,
       ctrl    => ctrl.sc,
       mon     => mon.sc,
 

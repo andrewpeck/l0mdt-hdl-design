@@ -6,8 +6,6 @@ use work.board_pkg_common.all;
 
 package board_pkg is
 
-  constant c_STATION : station_t := BARREL;
-
   constant c_NUM_MGTS                 : integer := 44 + 32;
 
   -- choose the nth felix RX link which should be used as the clock recovery source and connected to the LPGBT
@@ -97,34 +95,34 @@ package board_pkg is
     );
 
   constant c_NUM_REFCLKS : integer := 22;
-  constant C2C_REFCLK_SRC : integer := 9;
+  constant C2C_REFCLK_SRC : integer := 9; -- TODO: get this from a function
 
   constant c_REFCLK_MAP : refclk_types_array_t (c_NUM_REFCLKS-1 downto 0) := (
     -- B2B = AXI c2c
     -- C2C = sf c2c
     -- CM2CM = goes to firely
-    0  => (REFCLKNUM => 0 , FREQ => REF_SF_C2C  , QUAD => 127 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- C2C_REF0
-    1  => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 128 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- CM2CM_REF0
-    2  => (REFCLKNUM => 0 , FREQ => REF_SYNC240 , QUAD => 129 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 8  , Y_MAX => 11) , -- SL_REF0
-    3  => (REFCLKNUM => 0 , FREQ => REF_SYNC240 , QUAD => 130 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 12 , Y_MAX => 15) , -- SL_REF1
-    4  => (REFCLKNUM => 0 , FREQ => REF_SYNC240 , QUAD => 131 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 16 , Y_MAX => 19) , -- SL_REF2
-    5  => (REFCLKNUM => 0 , FREQ => REF_FELIX   , QUAD => 132 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 20 , Y_MAX => 23) , -- FELIX_REF0
-    6  => (REFCLKNUM => 0 , FREQ => REF_FELIX   , QUAD => 133 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 24 , Y_MAX => 27) , -- FELIX_REF1
-    7  => (REFCLKNUM => 0 , FREQ => REF_FELIX   , QUAD => 134 , GT_TYPE => GTY , X_LOC => 0 , Y_MIN => 28 , Y_MAX => 31) , -- FELIX_REF2
-    8  => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 224 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- AD_CLK2_KUP , muxed as C2c or Spare
-    9  => (REFCLKNUM => 1 , FREQ => REF_NIL     , QUAD => 224 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 0  , Y_MAX => 3)  , -- B2B_REF0 to SM
-    10 => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 225 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- AD_CLK3_KUP , muxed as sma or spare
-    11 => (REFCLKNUM => 1 , FREQ => REF_NIL     , QUAD => 225 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 4  , Y_MAX => 7)  , -- B2B_REF2 to SM
-    12 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 226 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 8  , Y_MAX => 11) , -- FE_REF0
-    13 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 227 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 12 , Y_MAX => 15) , -- FE_REF1
-    14 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 228 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 16 , Y_MAX => 19) , -- FE_REF2
-    15 => (REFCLKNUM => 0 , FREQ => REF_NIL     , QUAD => 229 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 20 , Y_MAX => 23) , -- SPARE_REF1
-    16 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 230 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 24 , Y_MAX => 27) , -- FE_REF3
-    17 => (REFCLKNUM => 1 , FREQ => REF_NIL     , QUAD => 230 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 24 , Y_MAX => 27) , -- SPARE_REF2
-    18 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 231 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 28 , Y_MAX => 31) , -- FE_REF4
-    19 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 232 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 32 , Y_MAX => 35) , -- FE_REF5
-    20 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 233 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 36 , Y_MAX => 39) , -- FE_REF6
-    21 => (REFCLKNUM => 0 , FREQ => REF_SYNC320 , QUAD => 234 , GT_TYPE => GTH , X_LOC => 0 , Y_MIN => 40 , Y_MAX => 43) , -- FE_REF7
+    0  => (FREQ => REF_NIL     ) , -- C2C_REF0
+    1  => (FREQ => REF_NIL     ) , -- CM2CM_REF0
+    2  => (FREQ => REF_SYNC240 ) , -- SL_REF0
+    3  => (FREQ => REF_SYNC240 ) , -- SL_REF1
+    4  => (FREQ => REF_SYNC240 ) , -- SL_REF2
+    5  => (FREQ => REF_SYNC320 ) , -- FELIX_REF0
+    6  => (FREQ => REF_SYNC320 ) , -- FELIX_REF1
+    7  => (FREQ => REF_SYNC320 ) , -- FELIX_REF2
+    8  => (FREQ => REF_NIL     ) , -- AD_CLK2_KUP , muxed as C2c or Spare
+    9  => (FREQ => REF_AXI_C2C ) , -- B2B_REF0 to SM
+    10 => (FREQ => REF_NIL     ) , -- AD_CLK3_KUP , muxed as sma or spare
+    11 => (FREQ => REF_NIL     ) , -- B2B_REF2 to SM
+    12 => (FREQ => REF_SYNC320 ) , -- FE_REF0
+    13 => (FREQ => REF_SYNC320 ) , -- FE_REF1
+    14 => (FREQ => REF_SYNC320 ) , -- FE_REF2
+    15 => (FREQ => REF_NIL     ) , -- SPARE_REF1
+    16 => (FREQ => REF_SYNC320 ) , -- FE_REF3
+    17 => (FREQ => REF_NIL     ) , -- SPARE_REF2
+    18 => (FREQ => REF_SYNC320 ) , -- FE_REF4
+    19 => (FREQ => REF_SYNC320 ) , -- FE_REF5
+    20 => (FREQ => REF_SYNC320 ) , -- FE_REF6
+    21 => (FREQ => REF_SYNC320 ) , -- FE_REF7
     others => REFCLK_NIL_MAP
     );
 

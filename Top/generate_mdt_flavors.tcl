@@ -8,6 +8,8 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
     exec sed -i  "s/ku15p/${fpga_short}/g" $lib
 
+    exec sed -i  "s/hal_.*.src/hal_[string range ${fpga_short} 0 1].src/g" $lib
+
     if {[string compare "upt" $pt_calc]==0} {
         # enable upt
         exec sed -i  "s/^#\\(UserLogic.*upt_lib.*.src\\)/\\1/g" $lib
@@ -26,24 +28,38 @@ proc update_trigger_libs {lib pt_calc segment_finder fpga_short} {
 
     if {[string compare "lsf" $segment_finder]==0} {
         # enable lsf
-        exec sed -i  "s/^#\\(UserLogic.*lsf_lib.src\\)/\\1/g" $lib
+        exec sed -i  "s/^#\\(UserLogic.*lsf_lib_${fpga_short}.src\\)/\\1/g" $lib
     } else {
         # disable lsf
-        exec sed -i  "s/^UserLogic.*lsf_lib.src/#&/g" $lib
+        exec sed -i  "s/^UserLogic.*lsf_lib_${fpga_short}.src/#&/g" $lib
     }
 
-    if {[string compare "csf" $segment_finder]==0} {
-        # enable csf
-        exec sed -i  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
-    } else {
-        # disable csf
-        exec sed -i  "s/^UserLogic.*csf_lib.src/#&/g" $lib
-    }
-
-    exec sed -i  "s/^#\(UserLogic.*csf_lib.src\)/\1/g" $lib
+    # need to keep csf lib in the sources for now, since
+    # hps_sf_wrap.vhd has many '0' and others => '0' in the instantiation
+    # of the csf, so xilinx fails with
+    # errors e.g. ERROR near character '0' ; 3 visible types match here
+    #
+    # if the hps_sf_wrap module gets updated to actually connect all of the
+    # input ports then this can be uncommented
+    #
+    # if {[string compare "csf" $segment_finder]==0} {
+    #     # enable csf
+    #     exec sed -i  "s/^#\\(UserLogic.*csf_lib.src\\)/\\1/g" $lib
+    # } else {
+    #     # disable csf
+    #     exec sed -i  "s/^UserLogic.*csf_lib.src/#&/g" $lib
+    # }
 }
 
-proc update_prj_config {dest_file segment_finder pt_calc} {
+proc replace_cfg_std_logic {entry new_value dest_file} {
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${new_value}|g $dest_file
+}
+
+proc replace_cfg_int {entry new_value dest_file} {
+    exec sed -i s|\\(proj_cfg.${entry}\\s*:=\\s*\\)\\(\[0-9\]*\\)|\\1${new_value}|g $dest_file
+}
+
+proc update_prj_config {dest_file segment_finder pt_calc props} {
 
     # find + replace the csf vs. lsf, mpt vs. upt choices
     if {0 == [string compare ${segment_finder} "lsf"]} {
@@ -59,12 +75,30 @@ proc update_prj_config {dest_file segment_finder pt_calc} {
         set pt_type 0
     }
 
+    # default values
+    set sector_id 3
+    set sector_side 0
+    set endcap 1
+    set large 0
+    set en_neighbors 0
+    set en_daq 1
+
+    # destructure the input properties into variables
+    foreach prop [huddle keys $props] {
+        set $prop [huddle get_stripped $props $prop]
+    }
+
     # update the SF_TYPE and PT_TYPE
-    exec sed -i s|\\(proj_cfg.SF_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${sf_type}|g $dest_file
-    exec sed -i s|\\(proj_cfg.PT_TYPE\\s*:=\\s*'\\)\\(\[0-1\]\\)|\\1${pt_type}|g $dest_file
+    replace_cfg_std_logic SF_TYPE ${sf_type} ${dest_file}
+    replace_cfg_std_logic PT_TYPE ${pt_type} ${dest_file}
+    replace_cfg_std_logic ENABLE_NEIGHBORS ${en_neighbors} ${dest_file}
+    replace_cfg_std_logic ENDCAP_nSMALL_LARGE ${large} ${dest_file}
+    replace_cfg_std_logic ST_nBARREL_ENDCAP ${endcap} ${dest_file}
+    replace_cfg_std_logic ENABLE_DAQ ${en_daq} ${dest_file}
+    replace_cfg_int SECTOR_SIDE ${sector_side} ${dest_file}
 }
 
-proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map} {
+proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder constraints link_map props} {
 
     regexp {xc([0-9A-z]*)} $fpga match fpga_shortname
 
@@ -78,6 +112,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
     set files_to_copy "get_fpga_name.tcl gitlab-ci.yml hog.conf
                        list/ctrl_lib.src list/hal.src list/l0mdt.src
                        list/project_lib.src list/shared_lib.src list/xdc.con
+                       pre-synthesis.tcl
                        post-creation.tcl prj_cfg_default.vhd"
 
     foreach file $files_to_copy {
@@ -117,7 +152,7 @@ proc clone_mdt_project {top_path name fpga board_pkg pt_calc segment_finder cons
 
     # update the project config
     file rename -force "$dest_path/prj_cfg_default.vhd" "$dest_path/prj_cfg_default.vhd"
-    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc
+    update_prj_config "$dest_path/prj_cfg_default.vhd" $segment_finder $pt_calc $props
 
     # update the project_lib.src file
     exec sed -i "s|base_l0mdt|${name}|g" "$dest_path/list/project_lib.src"
@@ -161,8 +196,15 @@ proc clone_projects {huddle} {
             puts "        pt       : $pt"
 
             global script_path
-            clone_mdt_project "$script_path" "l0mdt_${key}_${variant}" \
-                $fpga $board_pkg $pt $sf $constraints $link_map
+
+            # if the variant is "default" don't add a suffix,
+            # otherwise add the variant name
+            set suffix "_${variant}"
+            if { [string compare ${variant} "default"] == 0} {
+                set suffix ""
+            }
+            clone_mdt_project "$script_path" "l0mdt_${key}${suffix}" \
+                $fpga $board_pkg $pt $sf $constraints $link_map $props
         }}}
 
 clone_projects [yaml::yaml2huddle -file ${script_path}/mdt_flavors.yml]

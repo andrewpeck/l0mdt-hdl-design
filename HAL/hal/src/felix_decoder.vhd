@@ -1,3 +1,5 @@
+-- TODO: add some injector, local control, bunch counter, etc... steal from somewhere if possible
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_misc.all;
@@ -35,9 +37,11 @@ entity felix_decoder is
     felix_l1a_bit : integer := 4
     );
   port(
-    clock   : in  std_logic;
-    reset   : in  std_logic;
-    valid_o : out std_logic;
+    clock40        : in  std_logic;
+    clock320       : in  std_logic;
+    clock_pipeline : in  std_logic;
+    reset          : in  std_logic;
+    valid_o        : out std_logic;
 
     -- data from LPGBTs
     ttc_mgt_data_i    : in  std_logic_vector(31 downto 0);
@@ -46,15 +50,25 @@ entity felix_decoder is
     strobe_pipeline : in std_logic;
     strobe_320      : in std_logic;
 
-    l0mdt_ttc_40m      : out l0mdt_ttc_rt;
-    l0mdt_ttc_320m     : out l0mdt_ttc_rt;
-    l0mdt_ttc_pipeline : out l0mdt_ttc_rt
+    l0mdt_ttc_40m : out l0mdt_ttc_rt
+    --l0mdt_ttc_320m     : out l0mdt_ttc_rt;
+    --l0mdt_ttc_pipeline : out l0mdt_ttc_rt
 
     );
 end felix_decoder;
 
 architecture behavioral of felix_decoder is
-  signal l0mdt_ttc : l0mdt_ttc_rt;
+
+  signal l0mdt_ttc_40m_int : l0mdt_ttc_rt;
+
+  attribute ASYNC_REG                          : string;
+  attribute ASYNC_REG of l0mdt_ttc_40m_int     : signal is "TRUE";
+  attribute SHREG_EXTRACT                      : string;
+  attribute SHREG_EXTRACT of l0mdt_ttc_40m_int : signal is "NO";
+
+  signal l0mdt_ttc, l0mdt_ttc_ff    : l0mdt_ttc_rt;
+  attribute max_fanout              : string;
+  attribute max_fanout of l0mdt_ttc : signal is "16";
 
   signal unused_bits : std_logic_vector (5 downto 0);
 
@@ -76,6 +90,7 @@ architecture behavioral of felix_decoder is
   begin
     return structify(vectorify(ttc) and repeat(gate, L0MDT_TTC_LEN));
   end gate_ttc;
+
 begin
 
 
@@ -95,8 +110,8 @@ begin
       )
 
     port map (
-      uplinkclk_i                => clock,
-      uplinkrst_n_i              => not reset,       -- TODO: axi
+      uplinkclk_i                => clock320,
+      uplinkrst_n_i              => not reset,  -- TODO: axi
       mgt_word_i                 => ttc_mgt_data_i,
       bypassinterleaver_i        => c_BYPASS_INTERLEAVER,
       bypassfecencoder_i         => c_BYPASS_FEC,
@@ -113,25 +128,38 @@ begin
       rdy_o                      => uplink_ready
       );
 
-  l0mdt_ttc.bcr <= uplink_data.data(felix_bcr_bit);
-  l0mdt_ttc.ocr <= uplink_data.data(felix_ocr_bit);
-  l0mdt_ttc.ecr <= uplink_data.data(felix_ecr_bit);
-  l0mdt_ttc.l0a <= uplink_data.data(felix_l0a_bit);
-  l0mdt_ttc.l1a <= uplink_data.data(felix_l1a_bit);
 
-  process (clock)
+  -- create copies of ttc signals gated with different clocks
+  process (clock320) is
   begin
-    if (rising_edge(clock)) then
-
+    if (rising_edge(clock320)) then
       valid_o <= uplink_ready and uplink_data.valid;
 
-      -- TODO: add some injector, local control, bunch counter, etc... steal from somewhere if possible
-      -- create copies of ttc signals gated with different clocks
-      l0mdt_ttc_40m      <= l0mdt_ttc;
-      l0mdt_ttc_320m     <= gate_ttc(l0mdt_ttc, strobe_320);
-      l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc, strobe_pipeline);
+      -- l0mdt_ttc_320m <= gate_ttc(l0mdt_ttc, strobe_320);
+
+      l0mdt_ttc.bcr <= uplink_data.data(felix_bcr_bit);
+      l0mdt_ttc.ocr <= uplink_data.data(felix_ocr_bit);
+      l0mdt_ttc.ecr <= uplink_data.data(felix_ecr_bit);
+      l0mdt_ttc.l0a <= uplink_data.data(felix_l0a_bit);
+      l0mdt_ttc.l1a <= uplink_data.data(felix_l1a_bit);
+
+      l0mdt_ttc_ff <= l0mdt_ttc;
 
     end if;
   end process;
+
+  process (clock40) is
+  begin
+    if (rising_edge(clock40)) then
+      l0mdt_ttc_40m <= l0mdt_ttc_ff;
+    end if;
+  end process;
+
+  -- process (clock_pipeline)
+  -- begin
+  --   if (rising_edge(clock_pipeline)) then
+  --     l0mdt_ttc_pipeline <= gate_ttc(l0mdt_ttc, strobe_pipeline);
+  --   end if;
+  -- end process;
 
 end behavioral;

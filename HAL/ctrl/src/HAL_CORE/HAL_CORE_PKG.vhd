@@ -131,7 +131,7 @@ package HAL_CORE_CTRL is
   function nullify(t: HAL_CORE_MGT_MGT_MON_t) return HAL_CORE_MGT_MGT_MON_t;
   function zeroed(t: HAL_CORE_MGT_MGT_MON_t) return HAL_CORE_MGT_MGT_MON_t;
 
-  type HAL_CORE_MGT_MGT_MON_t_ARRAY is array(76-1 downto 0) of HAL_CORE_MGT_MGT_MON_t;
+  type HAL_CORE_MGT_MGT_MON_t_ARRAY is array(128-1 downto 0) of HAL_CORE_MGT_MGT_MON_t;
   function len(x: HAL_CORE_MGT_MGT_MON_t_ARRAY) return natural;
   function width(x: HAL_CORE_MGT_MGT_MON_t_ARRAY) return natural;
   function vectorify(x: HAL_CORE_MGT_MGT_MON_t_ARRAY; t: std_logic_vector) return std_logic_vector;
@@ -155,7 +155,7 @@ package HAL_CORE_CTRL is
   function nullify(t: HAL_CORE_MGT_MGT_CTRL_t) return HAL_CORE_MGT_MGT_CTRL_t;
   function zeroed(t: HAL_CORE_MGT_MGT_CTRL_t) return HAL_CORE_MGT_MGT_CTRL_t;
 
-  type HAL_CORE_MGT_MGT_CTRL_t_ARRAY is array(76-1 downto 0) of HAL_CORE_MGT_MGT_CTRL_t;
+  type HAL_CORE_MGT_MGT_CTRL_t_ARRAY is array(128-1 downto 0) of HAL_CORE_MGT_MGT_CTRL_t;
   function len(x: HAL_CORE_MGT_MGT_CTRL_t_ARRAY) return natural;
   function width(x: HAL_CORE_MGT_MGT_CTRL_t_ARRAY) return natural;
   function vectorify(x: HAL_CORE_MGT_MGT_CTRL_t_ARRAY; t: std_logic_vector) return std_logic_vector;
