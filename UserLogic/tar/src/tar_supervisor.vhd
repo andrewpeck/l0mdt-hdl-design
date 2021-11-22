@@ -29,7 +29,7 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 
-library apbus_lib;
+-- library apbus_lib;
 -- use TAR_lib.TAR_pkg.all;
  
 library tar_lib;
