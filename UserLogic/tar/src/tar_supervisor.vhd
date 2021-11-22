@@ -130,7 +130,7 @@ begin
         o_status.ENABLED <= local_en;
         o_status.READY <= not local_rst;
         o_status.ERROR <= (others => '0');
-        o_status.FREEZED <= i_freeze;
+        o_status.FREEZED <= o_freeze;
       end if;
     end if;
   end process;
