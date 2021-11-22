@@ -203,8 +203,8 @@ architecture behavioral of top_hal is
   signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -344,8 +344,8 @@ begin  -- architecture behavioral
       sl_tx_ctrl_i           => sl_tx_ctrl,
       sl_rx_ctrl_o           => sl_rx_ctrl,
       sl_rx_slide_i          => sl_rx_slide,
-      sl_tx_clk              => sl_tx_clk,
-      sl_rx_clk              => sl_rx_clk,
+      sl_tx_clk              => sl_tx_clks,
+      sl_rx_clk              => sl_rx_clks,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -521,8 +521,8 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
     port map (
 
-      tx_clk         => sl_tx_clk,
-      rx_clk         => sl_rx_clk,
+      tx_clk         => sl_tx_clks,
+      rx_clk         => sl_rx_clks,
       pipeline_clock => clocks.clock_pipeline,
       clk40          => clocks.clock40,
       reset          => global_reset,
