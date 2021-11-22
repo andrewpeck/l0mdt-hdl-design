@@ -23,7 +23,7 @@ library ctrl_lib;
 use ctrl_lib.FM_CTRL.all;
 
 library fm_lib;
-use fm_lib.fm_sb_pkg.all;
+use fm_lib.fm_ult_pkg.all;
 
 library xil_defaultlib;
 use xil_defaultlib.all;
@@ -39,21 +39,19 @@ entity top_ult_fm is
    fm_mon_v          : out std_logic_vector(1023 downto 0); --FM_MON_t;
    ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
     );
-  end entity top_fm;
+  end entity top_ult_fm;
 
-  architecture behavioral of top_fm is
+  architecture behavioral of top_ult_fm is
     signal fm_ctrl_r           : FM_CTRL_t;
     signal fm_mon_r            : FM_MON_t;
 
 
     begin
 
-      fm_ctrl_r              <= structify(fm_ctrl_v,fm_ctrl_r);
-      fm_mon_v               <= vectorify(fm_mon_r,fm_mon_v);
-
-     ult_fm_inst : component ult_lib.ult_fm
+   
+     ult_fm_inst :  entity ult_lib.ult_fm
      port map (
-       lock_and_control => lock_and_control,
+       clock_and_control => clock_and_control,
        ttc_commands     => ttc_commands,
        ctrl_v           => fm_ctrl_v,
        mon_v            => fm_mon_v,

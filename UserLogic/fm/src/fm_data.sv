@@ -425,7 +425,7 @@ module fm_data #(
 		       .DATA_WIDTH_B(axi_dw),
 		       .SPY_META_DATA_WIDTH(axi_dw),
 
-		       .SPY_MEM_WIDTH_A(),
+		       .SPY_MEM_WIDTH_A($clog2((2**axi_sb_addr_width[sb_i])* axi_dw /sb_dw[sb_i])), //CHK THIS
 		       .SPY_MEM_WIDTH_B(axi_sb_addr_width[sb_i]), //$bits(fm_ctrl_t.sb0.SB_MEM.address)),
 
 		       .FC_FIFO_WIDTH(4),
@@ -435,13 +435,13 @@ module fm_data #(
 
 		       .PASSTHROUGH(1)
 		       )
-	   spybuffer_inst
+	   fm_spybuffer_inst
 		(
 		 .rclock(clk_hs),
 		 .wclock(clk_hs),
 		 .rresetbar(~rst_hs),
 		 .wresetbar(~rst_hs),
-		 .write_data(ctrl_mon_data[sb_i].fm_data),
+		 .write_data(ctrl_mon_data[sb_i].fm_data[sb_dw[sb_i]-1 : 0]), //CHECK IF ALWAYS VALID
 		 .write_enable(ctrl_mon_data[sb_i].fm_vld),
 		 .read_enable(1'b1),
 		 .read_data(),

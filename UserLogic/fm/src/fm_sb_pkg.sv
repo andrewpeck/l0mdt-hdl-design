@@ -138,41 +138,68 @@ package fm_sb_pkg;
 						};
 
    parameter integer  sb_dw[sb_mapped_n] = {
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 0
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 1
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //INN - THREAD 2
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 0
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 1
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //MID - THREAD 2
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 0
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 1
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw,
-				       $ceil(HEG2SFSLC_LEN/axi_dw) * axi_dw, //OUT - THREAD 2
-				       $ceil(HEG2SFHIT_LEN/axi_dw) * axi_dw,
-				       $ceil(SF2PTCALC_LEN/axi_dw) * axi_dw
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //INN - THREAD 0
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //INN - THREAD 1
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //INN - THREAD 2
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //MID - THREAD 0
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //MID - THREAD 1
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //MID - THREAD 2
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 0
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 1
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw,
+				       find_ceil(HEG2SFSLC_LEN,axi_dw) * axi_dw, //OUT - THREAD 2
+				       find_ceil(HEG2SFHIT_LEN,axi_dw) * axi_dw,
+				       find_ceil(SF2PTCALC_LEN,axi_dw) * axi_dw
 				       };
 
 
 
+   function integer find_ceil;
+      input integer   max;
+      input integer   min;
+      
+      integer 	      diff;
+      integer 	      res;
+      integer 	      valid_ratio;
+      
+      begin
+	 if (max == min | max < min)
+	   find_ceil = 1;
+	 else
+	   begin
+	      diff  = max - min;
+	      
+	      for (res=1; diff>0; res=res+1)
+		diff = diff - min;
+
+	     if (res & 1 == 1) //Vivado constraint on valid port ratio -- CHECK
+	       res = res + 1;
+	      
+	      find_ceil = res;
+	   end
+      end
+   endfunction // if
 
 
+   
+			 
 
-
+      
 
 endpackage // fm_sb_pkgfm
 

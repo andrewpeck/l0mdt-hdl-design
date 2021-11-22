@@ -2,8 +2,7 @@
 // https://gitlab.com/tcpaiva/yml2hdl
 
 `ifndef FM_PKG_SVH
- `define FM_PKG_SVH
-
+`define FM_PKG_SVH
 package fm_ctrl;
 
   typedef struct packed {
@@ -15,7 +14,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB0_SB_MEM_MOSI_t;
 
@@ -28,7 +27,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB0_SB_META_MOSI_t;
 
@@ -51,7 +50,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB1_SB_MEM_MOSI_t;
 
@@ -64,7 +63,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB1_SB_META_MOSI_t;
 
@@ -87,7 +86,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB2_SB_MEM_MOSI_t;
 
@@ -100,7 +99,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB2_SB_META_MOSI_t;
 
@@ -123,7 +122,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB3_SB_MEM_MOSI_t;
 
@@ -136,7 +135,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB3_SB_META_MOSI_t;
 
@@ -159,7 +158,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB4_SB_MEM_MOSI_t;
 
@@ -172,7 +171,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB4_SB_META_MOSI_t;
 
@@ -195,7 +194,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB5_SB_MEM_MOSI_t;
 
@@ -208,7 +207,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB5_SB_META_MOSI_t;
 
@@ -231,7 +230,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB6_SB_MEM_MOSI_t;
 
@@ -244,7 +243,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB6_SB_META_MOSI_t;
 
@@ -267,7 +266,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB7_SB_MEM_MOSI_t;
 
@@ -280,7 +279,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB7_SB_META_MOSI_t;
 
@@ -303,7 +302,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB8_SB_MEM_MOSI_t;
 
@@ -316,7 +315,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB8_SB_META_MOSI_t;
 
@@ -339,7 +338,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB9_SB_MEM_MOSI_t;
 
@@ -352,7 +351,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB9_SB_META_MOSI_t;
 
@@ -375,7 +374,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB10_SB_MEM_MOSI_t;
 
@@ -388,7 +387,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB10_SB_META_MOSI_t;
 
@@ -411,7 +410,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB11_SB_MEM_MOSI_t;
 
@@ -424,7 +423,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB11_SB_META_MOSI_t;
 
@@ -447,7 +446,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB12_SB_MEM_MOSI_t;
 
@@ -460,7 +459,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB12_SB_META_MOSI_t;
 
@@ -483,7 +482,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB13_SB_MEM_MOSI_t;
 
@@ -496,7 +495,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB13_SB_META_MOSI_t;
 
@@ -519,7 +518,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB14_SB_MEM_MOSI_t;
 
@@ -532,7 +531,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB14_SB_META_MOSI_t;
 
@@ -555,7 +554,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB15_SB_MEM_MOSI_t;
 
@@ -568,7 +567,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB15_SB_META_MOSI_t;
 
@@ -591,7 +590,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB16_SB_MEM_MOSI_t;
 
@@ -604,7 +603,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB16_SB_META_MOSI_t;
 
@@ -627,7 +626,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB17_SB_MEM_MOSI_t;
 
@@ -640,7 +639,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB17_SB_META_MOSI_t;
 
@@ -663,7 +662,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB18_SB_MEM_MOSI_t;
 
@@ -676,7 +675,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB18_SB_META_MOSI_t;
 
@@ -699,7 +698,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB19_SB_MEM_MOSI_t;
 
@@ -712,7 +711,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB19_SB_META_MOSI_t;
 
@@ -735,7 +734,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB20_SB_MEM_MOSI_t;
 
@@ -748,7 +747,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB20_SB_META_MOSI_t;
 
@@ -771,7 +770,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB21_SB_MEM_MOSI_t;
 
@@ -784,7 +783,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB21_SB_META_MOSI_t;
 
@@ -807,7 +806,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB22_SB_MEM_MOSI_t;
 
@@ -820,7 +819,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB22_SB_META_MOSI_t;
 
@@ -843,7 +842,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB23_SB_MEM_MOSI_t;
 
@@ -856,7 +855,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB23_SB_META_MOSI_t;
 
@@ -879,7 +878,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB24_SB_MEM_MOSI_t;
 
@@ -892,7 +891,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB24_SB_META_MOSI_t;
 
@@ -915,7 +914,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [10-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB25_SB_MEM_MOSI_t;
 
@@ -928,7 +927,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [4-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB25_SB_META_MOSI_t;
 
@@ -951,7 +950,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB26_SB_MEM_MOSI_t;
 
@@ -964,7 +963,7 @@ package fm_ctrl;
     logic  clk;
     logic  enable;
     logic  wr_enable;
-    logic [8-1:0] address;
+    logic [5-1:0] address;
     logic [32-1:0] wr_data;
   } FM_SB26_SB_META_MOSI_t;
 
@@ -1049,9 +1048,6 @@ package fm_ctrl;
   } FM_CTRL_t;
 
 endpackage // fm_ctrl
-
-
-
 
 
 `endif // FM_PKG_SVH

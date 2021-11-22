@@ -79,8 +79,8 @@ entity top_ult is
     mpl_ctrl_r            : in  MPL_CTRL_t;
     mpl_mon_r             : out MPL_MON_t;
 
-    fm_ctrl_v             : in FM_CTRL_t;
-    fm_mon_v              : out FM_MON_t;
+    fm_ctrl_r             : in FM_CTRL_t;
+    fm_mon_r              : out FM_MON_t;
 
     -- TDC Hits from Polmux
     i_inner_tdc_hits  : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -140,7 +140,8 @@ architecture behavioral of top_ult is
   signal tf_mon_v              : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
   signal mpl_ctrl_v            : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
   signal mpl_mon_v             : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
-
+  signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r  ) -1 downto 0);
+  signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
 begin
 
   -- ctrl/mon
@@ -158,7 +159,10 @@ begin
   mtc_mon_r   <= structify(mtc_mon_v,mtc_mon_r);
   daq_ctrl_v  <= vectorify(daq_ctrl_r,daq_ctrl_v);
   daq_mon_r   <= structify(daq_mon_v,daq_mon_r);
-
+  fm_ctrl_v   <= vectorify(fm_ctrl_r,fm_ctrl_v);
+  fm_mon_r    <= structify(fm_mon_v,fm_mon_r);
+  
+  
   clock_and_control.clk <= clk;
   clock_and_control.rst <= rst;
   clock_and_control.bx  <= bx;
