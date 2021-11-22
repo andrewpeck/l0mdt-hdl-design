@@ -387,7 +387,7 @@ begin
             data_o  => sl_post_cdc_vec
             );
 
-        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data_pre_cdc(idx).data'length+2-1 downto 2);
+        sl_rx_data(idx).data   <= sl_post_cdc_vec(sl_rx_data(idx).data'length+2-1 downto 2);
         sl_rx_data(idx).err    <= sl_post_cdc_vec(1);
         sl_rx_data(idx).locked <= sl_post_cdc_vec(0);
 
