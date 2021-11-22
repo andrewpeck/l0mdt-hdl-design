@@ -18,8 +18,7 @@
 `include "l0mdt_buses_constants.svh"
 `endif
 import l0mdt_dataformats_svh::*;
-library this::fm_sb_pkg;
-import fm_sb_pkg::*;
+
 
 //`define RBINS_64
 module lsf_spybuffer_wrapper (

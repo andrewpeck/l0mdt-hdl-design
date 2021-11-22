@@ -22,6 +22,7 @@
 `default_nettype wire
 //`include "l0mdt_buses_constants.svh"
 
+  import l0mdt_dataformats_svh::*;
   module TopLevel_mtc_no_sb #(
 			parameter SLCPIPELINE_WIDTH = PL2MTC_LEN,
 			parameter PTCALC_LEN = PTCALC2MTC_LEN,

@@ -8,6 +8,7 @@
 `timescale 1ns / 1ps
 `default_nettype wire
 
+  import l0mdt_dataformats_svh::*;
   module TopLevel_lsf #(
 			     parameter DATA_WIDTH = 256, //65,
 			     parameter FIFO_DEPTH = 6,
@@ -108,11 +109,9 @@
                     .slc_roi(roi),
                     .lsf(lsf_output),
                     .hba_max_clocks(10'b0), //Unused, replaced by i_eof
-                    .i_eof(tb_i_eof),
-                    .sb_lsf_mdt_hits_freeze(1'b0),
-                    .sb_lsf_mdt_hits_re(1'b0),
-                    .sb_lsf_mdt_hits_raddr(8'b0),
-                    .sb_lsf_mdt_hits_rdata());
+                    .i_eof(tb_i_eof)
+		    );
+   
 
    //
    // Output buffers

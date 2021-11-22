@@ -7,6 +7,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
+  import l0mdt_dataformats_svh::*;
 
 module TopLevel_mpl_mtc #(
     parameter DATA_WIDTH = 256, //65,
@@ -138,11 +139,7 @@ typedef struct {
       .o_pl2mtc_av(pl2mtc)
       );
 
-   top_mtc  #(
-	      .TOTAL_PTCALC_BLKS(TB_c_NUM_THREADS),
-	      .MTC_PER_BCID(TB_c_MAX_NUM_SL),
-	      .n_PRIMARY_MTC(TB_c_NUM_MTC)
-	      ) mtc_inst
+   top_mtc_wrapper  mtc_inst
      (
       .clock(clock),
       .rst(~reset_n),

@@ -9,8 +9,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-library UNISIM;
-use UNISIM.VCOMPONENTS.ALL;
+
 entity top_mtc is
   port (
     FIFO_READ_empty : out STD_LOGIC;

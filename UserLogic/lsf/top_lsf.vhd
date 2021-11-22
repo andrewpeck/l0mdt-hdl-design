@@ -21,8 +21,7 @@ library shared_lib;
 use shared_lib.l0mdt_constants_pkg.all;
 use shared_lib.l0mdt_dataformats_pkg.all;
 
-library fm_lib;
-use fm_lib.fm_ult_pkg.all;
+
 
 entity top_lsf IS
   generic (
