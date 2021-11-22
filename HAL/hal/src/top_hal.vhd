@@ -555,7 +555,7 @@ begin  -- architecture behavioral
       clock40        => clocks.clock40,
       clock_pipeline => clocks.clock_pipeline,
 
-      reset          => global_reset,
+      reset => global_reset,
 
       ttc_mgt_data_i    => felix_ttc_mgt_word,
       ttc_mgt_bitslip_o => felix_ttc_bitslip,
