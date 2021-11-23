@@ -56,11 +56,7 @@ component lsf_spybuffer_wrapper
     );
   end component;
 begin
-   lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper
-     generic map (
-       LSF_SB_MEM_WIDTH    => LSF_SB_MEM_WIDTH,
-       LSF_SB_EL_MEM_WIDTH => LSF_SB_EL_MEM_WIDTH
-     )
+   lsf_spybuffer_wrapper_inst: component lsf_spybuffer_wrapper    
    port map (
      clock         => clock,
      reset         => reset,
