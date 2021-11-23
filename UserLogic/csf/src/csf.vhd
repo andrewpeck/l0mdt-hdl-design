@@ -55,7 +55,7 @@ entity csf is
     i_rst     : in    std_logic;
     o_seg     : out   sf2ptcalc_rvt;
 
-    --SpuBuffer
+    --SpuBuffer -- TODO - This block has been moved to FM block - Can be removed here
     spy_clock           : in    std_logic;
     -- Hit Spybuffer
     i_spyhit_fc_we      : in    std_logic;
@@ -64,7 +64,8 @@ entity csf is
     i_spyhit_playback   : in    std_logic_vector(1 downto 0);
     i_spyhit_pb_we      : in    std_logic;
     i_spyhit_pb_wdata   : in    heg2sfhit_rvt;
-    i_spyhit_en         : in    std_logic;
+    i_spyhit_re         : in    std_logic; --this should be enable signal in
+                                           --new Spybuffer interface
     i_spyhit_meta_we    : in    std_logic;
     i_spyhit_addr       : in    std_logic_vector(SPYHIT_MEM_WIDTH - 1 downto 0);
     i_spyhit_meta_addr  : in   std_logic_vector(SPYHIT_EL_MEM_WIDTH - 1 downto 0);
@@ -81,7 +82,8 @@ entity csf is
     i_spyslc_playback   : in    std_logic_vector(1 downto 0);
     i_spyslc_pb_we      : in    std_logic;
     i_spyslc_pb_wdata   : in    heg2sfslc_rvt;
-    i_spyslc_en         : in    std_logic;
+    i_spyslc_re         : in    std_logic; --this should be enable signal in
+                                           --new Spybuffer interface
     i_spyslc_addr       : in    std_logic_vector(SPYSLC_MEM_WIDTH - 1 downto 0);
     i_spyslc_meta_we    : in    std_logic;
     i_spyslc_meta_addr  : in    std_logic_vector(SPYSLC_EL_MEM_WIDTH - 1 downto 0);
@@ -98,7 +100,8 @@ entity csf is
     i_spyseg_playback   : in    std_logic_vector(1 downto 0);
     i_spyseg_pb_we      : in    std_logic;
     i_spyseg_pb_wdata   : in    sf2ptcalc_rvt;
-    i_spyseg_en         : in    std_logic;
+    i_spyseg_re         : in    std_logic; --this should be enable signal in
+                                           --new Spybuffer interface
     i_spyseg_addr       : in    std_logic_vector(SPYSEG_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_addr  : in    std_logic_vector(SPYSEG_EL_MEM_WIDTH - 1 downto 0);
     i_spyseg_meta_we    : in    std_logic;
@@ -297,7 +300,7 @@ begin
         spy_addr              => i_spyhit_addr,
         spy_write_enable      => i_spyhit_pb_we,
         spy_write_data        => i_spyhit_pb_wdata,
-        spy_en                => i_spyhit_en,
+        spy_en                => i_spyhit_re, 
         spy_data              => o_spyhit_data,
         spy_clock_meta        => spy_clock,
         spy_meta_addr         => i_spyhit_meta_addr,
@@ -336,7 +339,7 @@ begin
         spy_addr              => i_spyslc_addr,
         spy_write_enable      => i_spyslc_pb_we,
         spy_write_data        => i_spyslc_pb_wdata,
-        spy_en                => i_spyslc_en,
+        spy_en                => i_spyslc_re,
         spy_data              => o_spyslc_data,
         spy_clock_meta        => spy_clock,
         spy_meta_addr         => i_spyslc_meta_addr,
