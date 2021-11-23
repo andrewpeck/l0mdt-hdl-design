@@ -35,6 +35,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
 
 entity ult is
   generic (
@@ -69,6 +70,9 @@ entity ult is
     mpl_ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
     mpl_mon_v             : out std_logic_vector;-- : out MPL_MON_t;
 
+    fm_ctrl_v             : in FM_CTRL_t;
+    fm_mon_v              : out FM_MON_t;
+
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
     i_mid_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -92,8 +96,8 @@ entity ult is
     i_minus_neighbor_segments : in  sf2pt_bus_avt(c_NUM_SF_INPUTS - 1 downto 0);
 
     -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
-    o_daq_streams : out felix_stream_bus_avt (c_HPS_MAX_HP_INN     
-                                              + c_HPS_MAX_HP_MID   
+    o_daq_streams : out felix_stream_bus_avt (c_HPS_MAX_HP_INN
+                                              + c_HPS_MAX_HP_MID
                                               + c_HPS_MAX_HP_OUT - 1 downto 0);
     -- o_daq_streams             : out felix_stream_bus_avt (c_NUM_DAQ_STREAMS-1 downto 0);
 
@@ -114,19 +118,19 @@ end entity ult;
 architecture behavioral of ult is
 
   -- ctrl/mon vectors
-  -- signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0); 
+  -- signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl) - 1 downto 0);
   -- signal h2s_mon_v  : std_logic_vector(len(h2s_mon) - 1 downto 0);
-  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0); 
+  -- signal tar_ctrl_v : std_logic_vector(len(tar_ctrl) - 1 downto 0);
   -- signal tar_mon_v  : std_logic_vector(len(tar_mon) - 1 downto 0);
-  -- -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0); 
+  -- -- signal mtc_ctrl_v : std_logic_vector(len(mtc_ctrl) - 1 downto 0);
   -- -- signal mtc_mon_v  : std_logic_vector(len(mtc_mon) - 1 downto 0);
-  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0); 
-  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0); 
-  -- -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0); 
+  -- signal ucm_ctrl_v : std_logic_vector(len(ucm_ctrl) - 1 downto 0);
+  -- signal ucm_mon_v  : std_logic_vector(len(ucm_mon) - 1 downto 0);
+  -- -- signal daq_ctrl_v : std_logic_vector(len(daq_ctrl) - 1 downto 0);
   -- -- signal daq_mon_v  : std_logic_vector(len(daq_mon) - 1 downto 0);
-  -- -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0); 
+  -- -- signal tf_ctrl_v  : std_logic_vector(len(tf_ctrl) - 1 downto 0);
   -- -- signal tf_mon_v   : std_logic_vector(len(tf_mon) - 1 downto 0);
-  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0); 
+  -- signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl) - 1 downto 0);
   -- signal mpl_mon_v  : std_logic_vector(len(mpl_mon) - 1 downto 0);
 
   -- outputs from candidate manager
@@ -229,7 +233,7 @@ begin
 
       );
     else generate
-      
+
       tar_mon_v <= (tar_mon_v'length - 1 downto 0 => '0');
       SUMP_TAR : entity ult_lib.tar_sump
       port map (
@@ -467,7 +471,7 @@ begin
       );
     end generate;
 
-    MTC_GEN : if c_MTC_ENABLED = '1' generate  
+    MTC_GEN : if c_MTC_ENABLED = '1' generate
       ULT_MTCB : entity ult_lib.mtc_builder
       port map (
         -- clock, control, and monitoring
@@ -500,7 +504,7 @@ begin
         -- outputs
         o_mtc             => o_mtc,
         o_nsp             => o_nsp,
-  
+
         o_sump            => mtc_sump
       );
     end generate;
@@ -514,22 +518,22 @@ begin
           ttc_commands      => ttc_commands,
           ctrl_v              => daq_ctrl_v,
           mon_v               => daq_mon_v,
-          
+
           -- TDC Hits from Polmux
           i_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
           i_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
           i_out_tdc_hits_av  => ult_out_tdc_hits_av,
           i_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
-          
+
           -- Tracks from MTC
           -- ???
-          
+
           -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
           o_daq_streams => o_daq_streams
-          
+
           -- o_sump => daq_sump
           );
-      
+
       else generate
 
         daq_mon_v <= (daq_mon_v'length - 1 downto 0 => '0');
@@ -542,19 +546,19 @@ begin
           -- ttc_commands      => ttc_commands,
           -- ctrl              => daq_ctrl,
           -- mon               => daq_mon,
-          
+
           -- TDC Hits from Polmux
           i_inn_tdc_hits_av  => ult_inn_tdc_hits_av,
           i_mid_tdc_hits_av  => ult_mid_tdc_hits_av,
           i_out_tdc_hits_av  => ult_out_tdc_hits_av,
           i_ext_tdc_hits_av  => ult_ext_tdc_hits_av,
-          
+
           -- Tracks from MTC
           -- ???
-          
+
           -- Array of DAQ data streams (e.g. 64 bit streams) to send to MGT
           o_daq_streams => o_daq_streams,
-          
+
           o_sump => daq_sump
         );
       end generate;
@@ -563,7 +567,28 @@ begin
 
   end generate;
 
-  dummy_gen : if (DUMMY or SUMP_SIGNALS) generate
+
+   FM_GEN : if c_FM_ENABLED = '1' generate
+      ULT_FM : entity ult_lib.ult_fm
+      port map (
+        -- clock, control, and monitoring
+        clock_and_control => clock_and_control,
+        ttc_commands      => ttc_commands,
+        ctrl_v            => fm_ctrl_v,
+        mon_v             => fm_mon_v,
+        --  inputs
+        sf_mon_data       => (others=>'0'),
+        sf_mon_data_we    => '0'
+      );
+
+    end generate;
+
+
+
+
+
+
+  dummy_gen : if (DUMMY) generate
     signal tdc_hit_inner_sump  : std_logic_vector (c_HPS_MAX_HP_INN-1 downto 0);
     signal tdc_hit_middle_sump : std_logic_vector (c_HPS_MAX_HP_MID-1 downto 0);
     signal tdc_hit_outer_sump  : std_logic_vector (c_HPS_MAX_HP_OUT-1 downto 0);
@@ -605,7 +630,7 @@ begin
                 xor xor_reduce(tdc_hit_extra_sump)
                 xor xor_reduce(slc_data_mainA_av)
                 xor xor_reduce(slc_data_mainB_av)
-                xor slc_data_neighborA_v 
+                xor slc_data_neighborA_v
                 xor slc_data_neighborB_v;
       end if;
     end process;
