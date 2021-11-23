@@ -36,12 +36,9 @@ use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
 use ctrl_lib.FM_CTRL.all;
-<<<<<<< HEAD
 
 library fm_lib;
 use fm_lib.fm_ult_pkg.all;
-=======
->>>>>>> 79b767cb (Fast Monitoring Logic)
 
 entity ult is
   generic (
@@ -76,13 +73,8 @@ entity ult is
     mpl_ctrl_v            : in std_logic_vector; -- : in  MPL_CTRL_t;
     mpl_mon_v             : out std_logic_vector;-- : out MPL_MON_t;
 
-<<<<<<< HEAD
     fm_ctrl_v             : in std_logic_vector;
     fm_mon_v              : out std_logic_vector;
-=======
-    fm_ctrl_v             : in FM_CTRL_t;
-    fm_mon_v              : out FM_MON_t;
->>>>>>> 79b767cb (Fast Monitoring Logic)
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av : in mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -615,20 +607,7 @@ begin
   end generate;
 
 
-   FM_GEN : if c_FM_ENABLED = '1' generate
-      ULT_FM : entity ult_lib.ult_fm
-      port map (
-        -- clock, control, and monitoring
-        clock_and_control => clock_and_control,
-        ttc_commands      => ttc_commands,
-        ctrl_v            => fm_ctrl_v,
-        mon_v             => fm_mon_v,
-        --  inputs
-        sf_mon_data       => (others=>'0'),
-        sf_mon_data_we    => '0'
-      );
 
-    end generate;
 
 
 

@@ -26,18 +26,15 @@ module lsf_spybuffer_wrapper (
     input wire 			    reset,
     input wire [HEG2SFHIT_LEN-1:0]  mdt_hit,
     input wire 			    mdt_hit_we,
-    //output wire 			   mdt_hit_af,
     input wire [HEG2SFSLC_LEN-1:0]  roi,
     input wire 			    roi_we,
-    // output wire 			   roi_af ,
+ 
     output reg [SF2PTCALC_LEN -1:0] lsf_output,
-    //input 			   lsf_output_re,
-    // output 			   lsf_output_empty,
-
-    //CTRL/Spy Interface
+  
+  
     input logic 		    i_eof,
     input logic [9:0] 		    histogram_accumulation_count
-//    output 			    fm_rt lsf_fm_data[sf_sb_n]
+
 
     );
 
@@ -53,20 +50,11 @@ module lsf_spybuffer_wrapper (
    logic [SF2PTCALC_LEN -1:0] 	    lsf;
    logic 			    lsf_we;
 
-/*
-   assign lsf_fm_data[0].fm_data = roi;
-   assign lsf_fm_data[0].fm_vld  = roi[HEG2SFSLC_DATA_VALID_MSB];
 
-   assign lsf_fm_data[1].fm_data = mdt_hit;
-   assign lsf_fm_data[1].fm_vld  = mdt_hit[HEG2SFHIT_DATA_VALID_MSB];
-
-   assign lsf_fm_data[2].fm_data = lsf_output;
-   assign lsf_fm_data[3].fm_vld  = lsf_output[SF2PTCALC_DATA_VALID_MSB];
-
-*/
    SpyBuffer #(
 	       .DATA_WIDTH_A(HEG2SFSLC_LEN),
-	       .DATA_WIDTH_B(HEG2SFSLC_LEN)
+	       .DATA_WIDTH_B(HEG2SFSLC_LEN),
+	       .PASSTHROUGH(0)
 	       ) roi_buffer (
 			     .rclock(clock),
 			     .wclock(clock),
@@ -101,7 +89,8 @@ module lsf_spybuffer_wrapper (
     SpyBuffer #(
 		.DATA_WIDTH_A(HEG2SFHIT_LEN),
 		.DATA_WIDTH_B(HEG2SFHIT_LEN),
-		.FC_FIFO_WIDTH(5)
+		.FC_FIFO_WIDTH(5),
+		.PASSTHROUGH(0)
 	       ) mdt_hit_buffer (
 				 .rclock(clock),
 				 .wclock(clock),
@@ -144,7 +133,7 @@ module lsf_spybuffer_wrapper (
 				       .hit_extraction_roi_empty(lsf_roi_empty),
 				       .histogram_accumulation_count(histogram_accumulation_count),
 				       .i_eof(i_eof),
-				       .le_output(lsf),
+				       .le_output(lsf_output),
 				       .le_output_vld(lsf_we)
 				       /*
 					.le_tb_output(),
@@ -167,7 +156,7 @@ module lsf_spybuffer_wrapper (
 					      .hit_extraction_roi_empty(lsf_roi_empty),
 					      .histogram_accumulation_count(histogram_accumulation_count),
 					      .i_eof(i_eof),
-					      .le_output(lsf),
+					      .le_output(lsf_output),
 					      .le_output_vld(lsf_we)
 					      /*
 					       .le_tb_output(),
@@ -178,39 +167,7 @@ module lsf_spybuffer_wrapper (
 
 `endif
 
-   SpyBuffer #(
-	       .DATA_WIDTH_A(SF2PTCALC_LEN),
-	       .DATA_WIDTH_B(SF2PTCALC_LEN),
-	       .PASSTHROUGH(1)
-	       ) lsf_output_buffer (
-				    .rclock(clock),
-				    .wclock(clock),
-				    .rresetbar(~reset),
-				    .wresetbar(~reset),
-				    .write_data(lsf),//ToUpdate
-				    .write_enable(lsf_we),//ToUpdate
-				    .read_data(lsf_output),
-				    .read_enable(~lsf_output_empty),
-				    .almost_full(),
-				    .empty(lsf_output_empty), //ToUpdate
-				    // The following should not be needed until one actually wants
-				    // to use the spy-buffer functionality, whereas for now we just
-				    // want to use the fifo functionality.
-				    .spy_clock(clock),
-				    .freeze(1'b0),
-				    .playback(2'b0),
-				    .spy_write_enable(0),
-				    .spy_write_data(0),
-				    .spy_en(1'b0),
-				    //.spy_meta_read_enable(1'b0),
-				    .spy_addr('b0),
-				   // .spy_meta_read_addr(1'b0),
-				   // .spy_write_addr(),
-				   // .spy_meta_write_addr(),
-				    .spy_data(),
-				    .spy_meta_read_data()
-				    );
-
+ 
 
 
   endmodule // lsf_spybuffer_wrapper
