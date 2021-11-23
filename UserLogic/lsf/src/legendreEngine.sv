@@ -4,7 +4,7 @@
 `include "l0mdt_buses_constants.svh"
 
 
-
+import l0mdt_dataformats_svh::*;
 
 module legendreEngine(
 		      input 			       clk,
