@@ -1,4 +1,6 @@
-library work::fm_sb_pkg;
+`include "fm_sb_pkg.sv"
+
+import fm_ctrl::*;
 import fm_sb_pkg::*;
 
 module fm #(
