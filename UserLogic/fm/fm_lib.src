@@ -1,3 +1,4 @@
+shared/spybuffers.src
 UserLogic/fm/src/fm_ult_pkg.vhd
 UserLogic/fm/src/fm_sb_pkg.sv SystemVerilog
 UserLogic/fm/src/fm_sb_ctrl.sv SystemVerilog
