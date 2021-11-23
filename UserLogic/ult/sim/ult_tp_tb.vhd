@@ -111,8 +111,8 @@ architecture beh of ult_tp is
   signal tf_mon   :  TF_MON_t;
   signal mpl_ctrl :  MPL_CTRL_t := DEFAULT_MPL_CTRL_t;
   signal mpl_mon  :  MPL_MON_t;
-  signal fm_ctrl  :  FM_CTRL_t  := DEFAULT_FM_CTRL_t;
-  signal fm_mon  :  FM_MON_t;
+  signal fm_ctrl  :  FM_CTRL_t; --  := DEFAULT_FM_CTRL_t;
+  signal fm_mon   :  FM_MON_t;
 
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl)-1 downto 0);
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
