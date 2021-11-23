@@ -51,7 +51,7 @@ module lsf_spybuffer_wrapper (
    logic 			    lsf_we;
 
 
-   SpyBuffer #(
+   SpyBuffer #( //FIX THIS - REPLACE WITH FIFO
 	       .DATA_WIDTH_A(HEG2SFSLC_LEN),
 	       .DATA_WIDTH_B(HEG2SFSLC_LEN),
 	       .PASSTHROUGH(0)
@@ -86,7 +86,7 @@ module lsf_spybuffer_wrapper (
 			     );
 
 
-    SpyBuffer #(
+    SpyBuffer #( //FIX THIS - REPLACE WITH FIFO
 		.DATA_WIDTH_A(HEG2SFHIT_LEN),
 		.DATA_WIDTH_B(HEG2SFHIT_LEN),
 		.FC_FIFO_WIDTH(5),
@@ -111,11 +111,7 @@ module lsf_spybuffer_wrapper (
 				 .spy_write_enable(), //sb_lsf_mdt_hits_playback_we),
 				 .spy_write_data(),//sb_lsf_mdt_hits_playback_wdata),
 				 .spy_en(0),//sb_lsf_mdt_hits_re ),
-//				 .spy_meta_read_enable(sb_lsf_mdt_hits_meta_re),
 				 .spy_addr(0),//sb_lsf_mdt_hits_raddr),
-//			    	 .spy_meta_read_addr(sb_lsf_mdt_hits_meta_raddr),
-//				 .spy_write_addr(sb_lsf_mdt_hits_waddr),
-//				 .spy_meta_write_addr(sb_lsf_mdt_hits_meta_waddr),
 				 .spy_data(),//sb_lsf_mdt_hits_rdata),
 				 .spy_meta_read_data()//sb_lsf_mdt_hits_meta_rdata)
 				 );
@@ -135,10 +131,7 @@ module lsf_spybuffer_wrapper (
 				       .i_eof(i_eof),
 				       .le_output(lsf_output),
 				       .le_output_vld(lsf_we)
-				       /*
-					.le_tb_output(),
-					.le_tb_output_vld()
-					*/
+				      
 			  );
 
 `else // !`ifdef RBINS_64
@@ -158,10 +151,7 @@ module lsf_spybuffer_wrapper (
 					      .i_eof(i_eof),
 					      .le_output(lsf_output),
 					      .le_output_vld(lsf_we)
-					      /*
-					       .le_tb_output(),
-					       .le_tb_output_vld()
-					       */
+					     
 					      );
 
 
