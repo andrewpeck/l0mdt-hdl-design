@@ -379,7 +379,7 @@ begin
         spy_addr              => i_spyseg_addr,
         spy_write_enable      => i_spyseg_pb_we,
         spy_write_data        => i_spyseg_pb_wdata,
-        spy_en                => i_spyseg_en,
+        spy_en                => i_spyseg_re,
         spy_data              => o_spyseg_data,
         spy_clock_meta        => spy_clock,
         spy_meta_addr         => i_spyseg_meta_addr,
