@@ -191,6 +191,7 @@ architecture behavioral of csf is
       spy_data              : out   std_logic_vector(DATA_WIDTH_B - 1 downto 0);
 
       spy_clock_meta        : in    std_logic;
+      spy_meta_en           : in    std_logic;
       spy_meta_addr         : in    std_logic_vector(EL_MEM_WIDTH  - 1 downto 0);
       spy_meta_read_data    : out   std_logic_vector(SPY_META_DATA_WIDTH -1     downto 0);
       spy_meta_write_data   : in    std_logic_vector(SPY_META_DATA_WIDTH -1     downto 0);
@@ -303,6 +304,7 @@ begin
         spy_en                => i_spyhit_re, 
         spy_data              => o_spyhit_data,
         spy_clock_meta        => spy_clock,
+ 	spy_meta_en           => '0',
         spy_meta_addr         => i_spyhit_meta_addr,
         spy_meta_read_data    => o_spyhit_meta_rdata,
         spy_meta_write_data   => i_spyhit_meta_wdata,
@@ -342,6 +344,7 @@ begin
         spy_en                => i_spyslc_re,
         spy_data              => o_spyslc_data,
         spy_clock_meta        => spy_clock,
+       	spy_meta_en           => '0',   
         spy_meta_addr         => i_spyslc_meta_addr,
         spy_meta_read_data    => o_spyslc_meta_rdata,
         spy_meta_write_data   => i_spyslc_meta_wdata,
@@ -382,6 +385,7 @@ begin
         spy_en                => i_spyseg_re,
         spy_data              => o_spyseg_data,
         spy_clock_meta        => spy_clock,
+       	spy_meta_en           => '0',
         spy_meta_addr         => i_spyseg_meta_addr,
         spy_meta_read_data    => o_spyseg_meta_rdata,
         spy_meta_write_data   => i_spyseg_meta_wdata,

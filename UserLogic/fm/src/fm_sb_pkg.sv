@@ -41,7 +41,7 @@ package fm_sb_pkg;
       }fm_rt;
    //Above  definitions should match the definition on fm_ult_pkg.vhd
 
-   parameter  integer axi_sb_addr_width[sb_mapped_n] = {
+   parameter  reg[31:0] axi_sb_addr_width[sb_mapped_n] = {
 						     $bits(FM_CTRL.SB0.SB_MEM.address),
 						     $bits(FM_CTRL.SB1.SB_MEM.address),
 						     $bits(FM_CTRL.SB2.SB_MEM.address),
@@ -71,7 +71,7 @@ package fm_sb_pkg;
 						     $bits(FM_CTRL.SB26.SB_MEM.address)
 						     };
 
-   parameter integer  axi_sm_addr_width[sb_mapped_n] = {
+   parameter reg[31:0]  axi_sm_addr_width[sb_mapped_n] = {
 						     $bits(FM_CTRL.SB0.SB_META.address),
 						     $bits(FM_CTRL.SB1.SB_META.address),
 						     $bits(FM_CTRL.SB2.SB_META.address),

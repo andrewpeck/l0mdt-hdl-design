@@ -42,29 +42,34 @@ entity top_fm is
   end entity top_fm;
 
   architecture behavioral of top_fm is
-    signal ctrl_r           : FM_CTRL_t;
-    signal mon_r            : FM_MON_t;
+  
 
     component fm is
+      generic 
+        (
+          total_sb : positive
+          );
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
-      fm_ctrl_in :in FM_CTRL_t;
-      fm_mon_out : out FM_MON_t;
+      fm_ctrl_in :in std_logic_vector;
+      fm_mon_out : out std_logic_vector;
       ult_fm_data : in fm_rt_array ( 0 to total_sb-1)
         );
       end component;
     begin
 
-      ctrl_r              <= structify(ctrl_v,ctrl_r);
-      mon_v               <= vectorify(mon_r,mon_v);
+  
 
      fm_inst : component fm
+       generic map(
+         total_sb => total_sb
+         )
      port map (
-       fm_ctrl_in      => ctrl_r,
+       fm_ctrl_in      => ctrl_v,
        clk_hs          => clock_and_control.clk,
        rst_hs          => clock_and_control.rst,
-       fm_mon_out      => mon_r,
+       fm_mon_out      => mon_v,
        ult_fm_data    => ult_fm_data
        );
 

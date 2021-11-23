@@ -48,25 +48,23 @@ entity ult_fm is
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
-      fm_ctrl_in  :in FM_CTRL_t;
-      fm_mon_out  : out FM_MON_t;
+      fm_ctrl_v   :in std_logic_vector; --FM_CTRL_t;
+      fm_mon_v    : out std_logic_vector; --FM_MON_t;
       ult_fm_data : in fm_rt_array ( 0 to total_sb-1)
         );
       end component;
     begin
 
-     ctrl_r              <= structify(ctrl_v,ctrl_r);
-     mon_v               <= vectorify(mon_r,mon_v);
-
+     
      fm_inst : component fm
        generic map(
          total_sb => total_sb
          )
      port map (
-       fm_ctrl_in      => ctrl_r,
+       fm_ctrl_v       => ctrl_v,
        clk_hs          => clock_and_control.clk,
        rst_hs          => clock_and_control.rst,
-       fm_mon_out      => mon_r,
+       fm_mon_v        => mon_v,
        ult_fm_data     => ult_fm_data
        );
 
