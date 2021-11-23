@@ -23,21 +23,14 @@ use shared_lib.l0mdt_dataformats_pkg.all;
 
 
 
-entity top_lsf IS
-  generic (
-    LSF_SB_MEM_WIDTH    : positive := 8;
-    LSF_SB_EL_MEM_WIDTH : positive := 4
-    );
+entity top_lsf IS 
   PORT(
     clock,reset   : in std_logic;
     slc_roi       : in std_logic_vector(HEG2SFSLC_LEN-1 downto 0);
     mdt_hit       : in std_logic_vector(HEG2SFHIT_LEN-1 downto 0); -- 14
     lsf           : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    hba_max_clocks: in std_logic_vector(9 downto 0)
-  --Fast Monitoring Data
-  --  lsf_fm_data            : out fm_rt_array( 0 to sf_sb_n - 1)
-
+    hba_max_clocks: in std_logic_vector(9 downto 0) 
     );
   end entity top_lsf;
 
@@ -54,8 +47,7 @@ component lsf_spybuffer_wrapper
     roi_we        : in std_logic;
     lsf_output    : out std_logic_vector(SF2PTCALC_LEN-1 downto 0);
     i_eof         : in std_logic;
-    histogram_accumulation_count : in std_logic_vector(9 downto 0)
- --   lsf_fm_data                  : out fm_rt_array( 0 to sf_sb_n - 1)
+    histogram_accumulation_count : in std_logic_vector(9 downto 0)   
 
     );
   end component;
@@ -71,7 +63,5 @@ begin
        lsf_output    => lsf,
        i_eof         => i_eof,
        histogram_accumulation_count  => hba_max_clocks
-    --   lsf_fm_data                   => lsf_fm_data
-
      );
   end architecture top_lsf_arch;

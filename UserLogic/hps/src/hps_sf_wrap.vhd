@@ -171,9 +171,7 @@ begin
       else generate
 
         LSF : entity lsf_lib.top_lsf
-          -- generic map(
-          --FLAVOUR => to_integer(unsigned'("0" & c_ST_nBARREL_ENDCAP))
-          --   )
+         
           port map(
             clock                               => clk,
             reset                               => rst,
@@ -181,8 +179,7 @@ begin
             mdt_hit                             => i_mdt_data_v,
             lsf                                 => o_sf_data_v,
             i_eof                               => i_control_r.eof,
-            hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks
-            --lsf_fm_data                         => sf_fm_data
+            hba_max_clocks                      => lsf_ctrl_r.hba_max_clocks            
         );
 
         csf_mon_r <= nullify(csf_mon_r);
