@@ -14,7 +14,6 @@ shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
 
 shared/types/common_ieee.vhd
 shared/types/yml2hdl_v1/common_ieee_pkg.vhd
-shared/types/yml2hdl_v1/common_ieee_pkg.svh
 ####### constant and types from dataformat folder ######
 # shared/types/yml2hdl_v1/sl2mdt_constants_pkg.vhd
 # shared/types/yml2hdl_v1/sl2mdt_dataformats_pkg.vhd
