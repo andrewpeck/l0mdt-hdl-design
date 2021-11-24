@@ -35,7 +35,7 @@ package fm_sb_pkg;
 
    //Below definitions should match the definition on fm_ult_pkg.vhd
    parameter sf_sb_n                  = 3;
-   typedef struct {
+   typedef  struct packed {
       logic [mon_dw_max-1 : 0] fm_data;
       logic 		       fm_vld;
       }fm_rt;

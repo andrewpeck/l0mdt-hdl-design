@@ -11,7 +11,7 @@ module fm #(
 	      input logic 			 clk_hs,
 	      input logic 			 rst_hs,
 	      output logic [$bits(FM_MON_t)-1:0] fm_mon_v,
-	      input 				 fm_rt ult_fm_data[total_sb]
+	      input logic [$bits(fm_rt)-1 :0 ] 	 ult_fm_data_v[total_sb]
 	  );
 
    logic [sb_mapped_n-1:0] 	       freeze;
@@ -19,17 +19,23 @@ module fm #(
    logic 			       axi_clock;
    logic 			       axi_rst;
    logic [2:0]			       axi_rst_d;
-
+   genvar 			       sb_t;
+   
+   
    FM_MON_t fm_mon_out;
    FM_CTRL_t fm_ctrl_in;
-
+   fm_rt     ult_fm_data[total_sb];
+   
 
    assign fm_ctrl_in   = fm_ctrl_v;
    assign fm_mon_v     = fm_mon_out;
    
-
+   assign ult_fm_data = ult_fm_data_v;	
+   
    
    assign axi_clock = fm_ctrl_in.SB0.SB_MEM.clk;
+
+   
    fm_sb_ctrl fm_sb_ctrl_inst(
 			      .fm_ctrl_in(fm_ctrl_in),
 			      .axi_rst(axi_rst),

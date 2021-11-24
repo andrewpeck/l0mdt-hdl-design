@@ -33,11 +33,11 @@ entity top_fm is
   port(
    clock_and_control : in  l0mdt_control_rt;
    ttc_commands      : in  l0mdt_ttc_rt;
-   ctrl_v            : in std_logic_vector(4095 downto 0); --M_CTRL_t;
-   mon_v             : out std_logic_vector(4095 downto 0); --FM_MON_t;
+   ctrl_v            : in std_logic_vector(2318 downto 0); --M_CTRL_t;
+   mon_v             : out std_logic_vector(1781 downto 0); --FM_MON_t;
    sf_mon_data       : in std_logic_vector(mon_dw_max-1 downto 0);
    sf_mon_data_we    : in std_logic;
-   ult_fm_data       : in fm_rt_array ( 0 to total_sb-1)
+   ult_fm_data       : in fm_data_avt ( 0 to total_sb-1)
     );
   end entity top_fm;
 
@@ -52,9 +52,9 @@ entity top_fm is
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
-      fm_ctrl_in :in std_logic_vector;
-      fm_mon_out : out std_logic_vector;
-      ult_fm_data : in fm_rt_array ( 0 to total_sb-1)
+      fm_ctrl_v    :in std_logic_vector;
+      fm_mon_v    : out std_logic_vector;
+      ult_fm_data_v : in fm_data_avt ( 0 to total_sb-1)
         );
       end component;
     begin
@@ -66,11 +66,11 @@ entity top_fm is
          total_sb => total_sb
          )
      port map (
-       fm_ctrl_in      => ctrl_v,
+       fm_ctrl_v       => ctrl_v,
        clk_hs          => clock_and_control.clk,
        rst_hs          => clock_and_control.rst,
-       fm_mon_out      => mon_v,
-       ult_fm_data    => ult_fm_data
+       fm_mon_v        => mon_v,
+       ult_fm_data_v   => ult_fm_data
        );
 
     end behavioral;

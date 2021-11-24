@@ -27,8 +27,44 @@ package fm_ult_pkg is
     fm_data : std_logic_vector(mon_dw_max-1 downto 0);
     fm_vld  : std_logic;
   end record fm_rt;
-
-  type fm_rt_array is array (integer range<>) of fm_rt;
+  function len(x:fm_rt) return natural;
+ 
+  
+  function vectorify(x:fm_rt; t: std_logic_vector) return std_logic_vector;
+  
+    
+  type fm_rt_array   is array (integer range<>) of fm_rt;
+  type fm_rt_array_v is array (integer range<>) of std_logic_vector;
+  type fm_data_avt   is array(integer range<>) of std_logic_vector(mon_dw_max+1 -1 downto 0);
+  
   type sf_single_station_array is array (0 to c_NUM_THREADS-1) of fm_rt_array( 0 to sf_sb_n-1);
 
 end package fm_ult_pkg;
+
+package body fm_ult_pkg is
+  function len(x:fm_rt) return natural is
+    variable l: natural :=0;
+  begin
+    l := l + mon_dw_max;
+    l := l + 1;
+    return l;
+  end function len;
+  
+  function vectorify(x:fm_rt; t: std_logic_vector) return std_logic_vector is
+    variable left: natural := t'left;
+    variable y   : std_logic_vector(t'range);
+    begin
+      if t'ascending then
+         y := x.fm_data & x.fm_vld;
+       else
+         y := x.fm_vld & x.fm_data;       
+
+         
+      end if;
+    return y;
+  end function vectorify;
+
+
+
+end package body fm_ult_pkg;
+  

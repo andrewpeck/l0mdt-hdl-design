@@ -38,8 +38,8 @@ entity ult_fm is
   end entity ult_fm;
 
   architecture beh of ult_fm is
-    signal ctrl_r           : FM_CTRL_t;
-    signal mon_r            : FM_MON_t;
+    
+    signal ult_fm_data_avt : fm_data_avt(0 to total_sb-1);
 
     component fm is
       generic(
@@ -48,13 +48,16 @@ entity ult_fm is
       port(
       clk_hs : in std_logic;
       rst_hs : in std_logic;
-      fm_ctrl_v   :in std_logic_vector; --FM_CTRL_t;
-      fm_mon_v    : out std_logic_vector; --FM_MON_t;
-      ult_fm_data : in fm_rt_array ( 0 to total_sb-1)
+      fm_ctrl_v     :in std_logic_vector; --FM_CTRL_t;
+      fm_mon_v      : out std_logic_vector; --FM_MON_t;
+      ult_fm_data_v : in fm_data_avt(0 to total_sb-1) -- fm_rt_array ( 0 to total_sb-1)
         );
       end component;
     begin
 
+     ult_fm_data_flatten: for sb_i in 0 to total_sb-1 generate
+       ult_fm_data_avt(sb_i) <= vectorify(ult_fm_data(sb_i),ult_fm_data_avt(sb_i));
+     end generate ult_fm_data_flatten;
      
      fm_inst : component fm
        generic map(
@@ -65,7 +68,7 @@ entity ult_fm is
        clk_hs          => clock_and_control.clk,
        rst_hs          => clock_and_control.rst,
        fm_mon_v        => mon_v,
-       ult_fm_data     => ult_fm_data
+       ult_fm_data_v   => ult_fm_data_avt
        );
 
     end architecture beh;
