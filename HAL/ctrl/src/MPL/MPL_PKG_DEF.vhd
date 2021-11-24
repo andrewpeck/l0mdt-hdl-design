@@ -24,7 +24,9 @@ package MPL_CTRL_DEF is
                                                                                            wr_ack => '0',
                                                                                            rd_req => '0',
                                                                                            rd_ack => '0',
-                                                                                           flush_req => '0'
+                                                                                           flush_req => '0',
+                                                                                           freeze_req => '0',
+                                                                                           mem_sel => "000"
                                                                                           );
   constant DEFAULT_MPL_PL_MEM_PL_MEM_wr_data_CTRL_t : MPL_PL_MEM_PL_MEM_wr_data_CTRL_t := (
                                                                                            wr_data_0 => (others => '0'),

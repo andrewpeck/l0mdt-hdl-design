@@ -1,3 +1,22 @@
+--------------------------------------------------------------------------------
+-- UMass , Physics Department
+-- File: ult_pt.vhd
+-- Project: src
+-- -----
+-- File Created: Monday, 12th July 2021 12:20:43 pm
+-- Author: Guillermo Loustau de Linares (guillermo.ldl@cern.ch)
+-- -----
+-- Last Modified: Tuesday, 16th November 2021 3:59:26 pm
+-- Modified By: Guillermo Loustau de Linares (guillermo.ldl@cern.ch>)
+-- -----
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
 library ieee;
 use ieee.std_logic_misc.all;
 use ieee.std_logic_1164.all;
@@ -49,14 +68,18 @@ architecture behavioral of ptcalc is
   -- signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_INPUTS -1 downto 0);
 begin
 
-  TF_EN : if c_PT_ENABLED = '1' generate
-    tf_gen_loop : for I in 0 to c_NUM_THREADS-1 generate
+  -- mon_v <= 
 
-      mpt : if (c_PT_TYPE = '0') generate
-        pt_1 : entity ptc_lib.pt
-          generic map (
-            FLAVOUR => 0,
-            SECTOR  => I)
+  PT_EN : if c_PT_ENABLED = '1' generate
+
+    PT_TYPE : if (c_PT_TYPE = '0') generate
+      mpt_loop : for I in 0 to c_NUM_THREADS-1 generate
+
+        mpt : entity ptc_lib.pt
+          -- generic map (
+          --   FLAVOUR => 0,
+          --   SECTOR  => I
+          --   )
           port map (
             clk         => clock_and_control.clk,
             i_segment_I => i_inn_segments(I),
@@ -66,28 +89,31 @@ begin
             i_rst       => clock_and_control.rst,
             o_mtc       => o_pt2mtc(I)
             );
+ 
+  
       end generate;
+    else generate
+      upt_loop : for I in 0 to c_NUM_THREADS-1 generate
 
-      upt : if (c_PT_TYPE = '1') generate
-         pt_1 : entity upt_lib.top_upt
-           generic map (
-             FLAVOUR => 0,
-             SECTOR  => I)
-           port map (
-             clk         => clock_and_control.clk,
-             i_rst       => clock_and_control.rst,
-             i_segment_i => i_inn_segments(I),
-             i_segment_m => i_mid_segments(I),
-             i_segment_o => i_out_segments(I),
-             i_slc       => i_pl2pt_av(I),
-             o_mtc       => o_pt2mtc(I)
-            );
+        upt : entity upt_lib.top_upt
+          generic map (
+            FLAVOUR => 0,
+            SECTOR  => I)
+          port map (
+            clk         => clock_and_control.clk,
+            i_rst       => clock_and_control.rst,
+            i_segment_i => i_inn_segments(I),
+            i_segment_m => i_mid_segments(I),
+            i_segment_o => i_out_segments(I),
+            i_slc       => i_pl2pt_av(I),
+            o_mtc       => o_pt2mtc(I)
+          );
+
       end generate;
-
     end generate;
-  end generate;
 
-  TF_DIS : if c_PT_ENABLED = '0' generate
+
+  else generate
     signal inn_segments_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal mid_segments_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);
     signal out_segments_sump            : std_logic_vector (c_NUM_THREADS-1 downto 0);

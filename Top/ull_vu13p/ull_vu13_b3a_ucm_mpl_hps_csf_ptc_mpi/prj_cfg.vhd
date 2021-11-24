@@ -48,7 +48,7 @@ package body prj_cfg is
     proj_cfg.SF_TYPE                  := '0';  -- 0: CSF 1:LSF
     proj_cfg.ENABLE_PT                := '1';
     proj_cfg.ENABLE_DAQ               := '0';
-    proj_cfg.ENABLE_MTC               := '1';
+    proj_cfg.ENABLE_MTC               := '0';
 
     -- proj_cfg.EN_MDT_CH_INN           := "000010";
     -- proj_cfg.EN_MDT_CH_EXT           := "000000";

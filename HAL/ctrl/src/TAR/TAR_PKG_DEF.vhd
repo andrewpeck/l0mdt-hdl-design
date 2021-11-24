@@ -23,7 +23,9 @@ package TAR_CTRL_DEF is
                                                                                                                            wr_ack => '0',
                                                                                                                            rd_req => '0',
                                                                                                                            rd_ack => '0',
-                                                                                                                           flush_req => '0'
+                                                                                                                           flush_req => '0',
+                                                                                                                           freeze_req => '0',
+                                                                                                                           mem_sel => "000"
                                                                                                                           );
   constant DEFAULT_TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t : TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_wr_data_CTRL_t := (
                                                                                                                            wr_data_0 => (others => '0'),

@@ -12,7 +12,9 @@ package MEM_INT_10A9D_CTRL_DEF is
                                                                                    wr_ack => '0',
                                                                                    rd_req => '0',
                                                                                    rd_ack => '0',
-                                                                                   flush_req => '0'
+                                                                                   flush_req => '0',
+                                                                                   freeze_req => '0',
+                                                                                   mem_sel => "000"
                                                                                   );
   constant DEFAULT_MEM_INT_10A9D_wr_data_CTRL_t : MEM_INT_10A9D_wr_data_CTRL_t := (
                                                                                    wr_data_0 => (others => '0')

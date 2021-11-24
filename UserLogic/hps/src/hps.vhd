@@ -67,7 +67,15 @@ architecture beh of hps is
   signal ctrl_r : H2S_HPS_CTRL_t;
   signal mon_r : H2S_HPS_MON_t;
 
-  constant CSF_CTRL_LEN : integer := len(ctrl_r.csf.csf(0));
+  -- signal ctrl_super_r : H2S_HPS_SUPER_CTRL_t;
+  -- signal mon_super_r  : H2S_HPS_SUPER_MON_t;
+  constant SUPER_CTRL_LEN : integer := len(ctrl_r.super); 
+  constant SUPER_MON_LEN  : integer := len(mon_r.super);
+  signal ctrl_super_v : std_logic_vector(SUPER_CTRL_LEN -1 downto 0);
+  signal mon_super_v  : std_logic_vector(SUPER_MON_LEN -1 downto 0);
+
+
+  constant CSF_CTRL_LEN : integer := len(ctrl_r.csf.csf(0)); 
   constant CSF_MON_LEN  : integer := len(mon_r.csf.csf(0));
   constant LSF_CTRL_LEN : integer := len(ctrl_r.lsf.lsf(0));
   constant LSF_MON_LEN  : integer := len(mon_r.lsf.lsf(0));
@@ -114,6 +122,9 @@ begin
   ctrl_r <= structify(ctrl_v,ctrl_r);
   mon_v <= vectorify(mon_r,mon_v);
 
+  ctrl_super_v <= convert(ctrl_r.super,ctrl_super_v);
+  mon_r.super <= convert(mon_super_v,mon_r.super);
+
   pc_t0_ctrl_v <= vectorify(ctrl_r.MDT_T0.MDT_T0,pc_t0_ctrl_v);
   pc_tc_ctrl_v <= vectorify(ctrl_r.MDT_TC.MDT_TC,pc_tc_ctrl_v);
   mon_r.MDT_T0.MDT_T0 <= structify(pc_t0_mon_v,mon_r.MDT_T0.MDT_T0);
@@ -143,9 +154,11 @@ begin
     rst         => rst,
     glob_en     => glob_en,
     --
-    i_actions   => ctrl_r.actions,
-    i_configs   => ctrl_r.configs,
-    o_status    => mon_r.status,
+    ctrl_v      => ctrl_super_v,
+    mon_v       => mon_super_v,
+    -- i_actions   => ctrl_r.actions,
+    -- i_configs   => ctrl_r.configs,
+    -- o_status    => mon_r.status,
     --
     o_local_rst => int_rst,
     o_local_en  => int_ena

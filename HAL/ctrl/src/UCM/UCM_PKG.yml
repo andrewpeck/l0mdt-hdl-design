@@ -40,6 +40,7 @@ hdl:
 
 - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t:
@@ -48,6 +49,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_wr_data_CTRL_t:
@@ -82,6 +85,7 @@ hdl:
 
 - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t:
   - rd_rdy : [ type: logic ]
+  - freeze_ena : [ type: logic ]
 
 
 - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t:
@@ -90,6 +94,8 @@ hdl:
   - rd_req : [ type: logic ]
   - rd_ack : [ type: logic ]
   - flush_req : [ type: logic ]
+  - freeze_req : [ type: logic ]
+  - mem_sel : [ type: logic, length: 3 ]
 
 
 - UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_wr_data_CTRL_t:

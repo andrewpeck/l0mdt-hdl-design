@@ -43,12 +43,13 @@ entity apb_imem is
   generic(
     g_XML_NODE_NAME     : string; -- := "MEM_INT_10A148D";
     g_MEMORY_TYPE       : string;
-    g_INTERNAL_CLK      : std_logic := '1';
+    -- g_INTERNAL_CLK      : std_logic := '1';
     g_ADDR_WIDTH        : integer := 0;
     g_DATA_WIDTH        : integer := 0;
-    g_MEM_LATENCY       : integer := 0    
+    g_MEM_LATENCY       : integer := 0;    
     -- g_APBUS_CTRL_WIDTH  : integer := 0;
     -- g_APBUS_MON_WIDTH   : integer := 0
+    g_PARALLEL_MEM      : integer := 0
   );
   port (
     clk           : in std_logic;
@@ -58,9 +59,9 @@ entity apb_imem is
     ctrl_v          : in std_logic_vector;--(g_APBUS_CTRL_WIDTH - 1 downto 0);
     mon_v           : out std_logic_vector;--(g_APBUS_MON_WIDTH - 1 downto 0);
     --
-    -- i_freeze      : in std_logic_vector(1 downto 0) := (others => '0');
+    i_freeze      : in std_logic := '0';--(1 downto 0) := (others => '0');
     o_freeze      : out std_logic; --_vector(1 downto 0);
-    -- o_out_sel     : out std_logic_vector(1 downto 0);
+    o_mem_sel     : out std_logic_vector(3 downto 0);
     -- o_freeze_1    : in std_logic := '0';
     --
     o_rd_addr     : out std_logic_vector(g_ADDR_WIDTH-1 downto 0);
@@ -222,6 +223,7 @@ begin
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
+          o_mem_sel <= (others => '0');
           --
           axi_rep_clk <= '0';
           --
@@ -243,7 +245,18 @@ begin
             axi_rep_clk <= not axi_rep_clk;
           end if;
           -----------------------------------------------
-  
+          if i_freeze = '1' or apb_ctrl_r.freeze_req = '1' then
+            o_freeze <= '1';
+            apb_mon_r.freeze_ena <= '1';
+          else
+            o_freeze <= '0';
+            apb_mon_r.freeze_ena <= '0';
+          end if;
+          -----------------------------------------------
+          if g_PARALLEL_MEM > 0 then
+            o_mem_sel <= apb_ctrl_r.mem_sel;
+          end if;
+          -----------------------------------------------
           case int_wr_status is
             -- when x"0" => -- INIT
             --   if axi_cnt_wait = '0' then
@@ -332,6 +345,7 @@ begin
           o_rd_dv   <= '0';
           o_rd_dv   <= '0';
           o_freeze  <= '0';
+          o_mem_sel <= (others => '0');
           --
           axi_rep_clk <= '0';
           --
@@ -352,6 +366,25 @@ begin
           else
             apb_clk_cnt <= 0;
             axi_rep_clk <= not axi_rep_clk;
+          end if;
+          -----------------------------------------------
+          if i_freeze = '1' or apb_ctrl_r.freeze_req = '1' then
+            o_freeze <= '1';
+            apb_mon_r.freeze_ena <= '1';
+          else
+            o_freeze <= '0';
+            apb_mon_r.freeze_ena <= '0';
+          end if;
+          -----------------------------------------------
+
+          if g_PARALLEL_MEM > 0 then
+            for i_sel in g_PARALLEL_MEM downto 0 loop
+              if i_sel = to_integer(unsigned(apb_ctrl_r.mem_sel)) then
+                o_mem_sel(i_sel) <= '1';
+              else
+                o_mem_sel(i_sel) <= '0';
+              end if;
+            end loop;
           end if;
           -----------------------------------------------
   
