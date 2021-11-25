@@ -74,7 +74,8 @@ module mtc_builder_verilog#(
 		mtc_link_map
 		  #(
 		    .LINK_SLID(0),
-		    .LINK_SLCID(i+1)
+		    .LINK_SLCID(i+1),
+		    .c_MAX_NUM_SL(c_MAX_NUM_SL)
 		    )mtc_link_map_inst
 		    (
 		     .clock(clock),
@@ -88,7 +89,8 @@ module mtc_builder_verilog#(
 		mtc_link_map
 		  #(
 		    .LINK_SLID(i-n_PRIMARY_MTC+1),
-		    .LINK_SLCID(0)
+		    .LINK_SLCID(0),
+		    .c_MAX_NUM_SL(c_MAX_NUM_SL)
 		    )mtc_link_map_inst
 		    (
 		     .clock(clock),
