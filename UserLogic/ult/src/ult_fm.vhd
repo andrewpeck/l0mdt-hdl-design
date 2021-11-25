@@ -23,9 +23,6 @@ use ctrl_lib.FM_CTRL.all;
 library fm_lib;
 use fm_lib.fm_ult_pkg.all;
 
-library xil_defaultlib;
-use xil_defaultlib.all;
-
 
 entity ult_fm is
   port(
