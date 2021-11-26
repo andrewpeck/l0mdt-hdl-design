@@ -11,9 +11,12 @@
 //--
 //--------------------------------------------------------------------------------
 
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 
-
-`include "l0mdt_buses_constants.svh"
 
   module format_mtc_pkt #(
 			  parameter PTCALC_WIDTH=PTCALC2MTC_LEN,
