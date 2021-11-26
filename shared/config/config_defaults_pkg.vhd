@@ -74,6 +74,8 @@ package cfg_global_default_pkg is
     ENABLE_DAQ                    : std_logic;  -- enable or disable DAQ module
     -- MTC
     ENABLE_MTC                    : std_logic;
+    --FAST MONITORING
+    ENABLE_FM                     : std_logic;
     -- number of parallel processing threads
     NUM_THREADS                   : integer;
     -- MTC configuration based on links to primary, neighboring sectors
@@ -136,6 +138,9 @@ package cfg_global_default_pkg is
     ENABLE_DAQ                    => '1', -- 0: disabled  1: enabled -- default enabled
     -- MTC
     ENABLE_MTC                    => '1',
+    --FAST MONITORING
+    ENABLE_FM                     => '1',
+
     -- H2S
     ENABLE_H2S                    => '1',
     --------------------------------------------------------------------------------

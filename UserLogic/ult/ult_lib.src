@@ -7,6 +7,7 @@ UserLogic/ult/src/ult_ucm.vhd
 UserLogic/ult/src/ult_mtc.vhd
 UserLogic/ult/src/ult_daq.vhd
 UserLogic/ult/src/ult_pt.vhd
+UserLogic/ult/src/ult_fm.vhd
 
 UserLogic/ult/src/sumps/h2s_sump.vhd
 UserLogic/ult/src/sumps/ucm_sump.vhd

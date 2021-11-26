@@ -56,6 +56,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
 use ctrl_lib.MPL_CTRL_DEF.all;
 use ctrl_lib.UCM_CTRL_DEF.all;
 use ctrl_lib.H2S_CTRL_DEF.all;
@@ -63,6 +64,7 @@ use ctrl_lib.TAR_CTRL_DEF.all;
 use ctrl_lib.MTC_CTRL_DEF.all;
 use ctrl_lib.DAQ_CTRL_DEF.all;
 use ctrl_lib.TF_CTRL_DEF.all;
+use ctrl_lib.FM_CTRL_DEF.all;
 
 
 
@@ -109,6 +111,8 @@ architecture beh of ult_tp is
   signal tf_mon   :  TF_MON_t;
   signal mpl_ctrl :  MPL_CTRL_t := DEFAULT_MPL_CTRL_t;
   signal mpl_mon  :  MPL_MON_t;
+  signal fm_ctrl  :  FM_CTRL_t; --  := DEFAULT_FM_CTRL_t;
+  signal fm_mon   :  FM_MON_t;
 
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl)-1 downto 0);
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon )-1 downto 0);
@@ -124,6 +128,8 @@ architecture beh of ult_tp is
   signal tf_mon_v   : std_logic_vector(len(tf_mon  )-1 downto 0);
   signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl)-1 downto 0);
   signal mpl_mon_v  : std_logic_vector(len(mpl_mon )-1 downto 0);
+  signal fm_ctrl_v  : std_logic_vector(len(fm_ctrl)-1 downto 0);
+  signal fm_mon_v   : std_logic_vector(len(fm_mon )-1 downto 0);
 
   -- TDC Hits from Polmux
   signal i_mdt_tdc_inn_av :  mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0) := (others => (others => '0'));
@@ -223,6 +229,8 @@ begin
     tf_mon_v   => tf_mon_v,
     mpl_ctrl_v => mpl_ctrl_v,
     mpl_mon_v  => mpl_mon_v,
+    fm_ctrl_v  => fm_ctrl_v,
+    fm_mon_v   => fm_mon_v,
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_av => i_mdt_tdc_inn_av,
@@ -275,6 +283,8 @@ begin
     mtc_mon <= structify(mtc_mon_v,mtc_mon);
     daq_ctrl_v <= vectorify(daq_ctrl,daq_ctrl_v);
     daq_mon <= structify(daq_mon_v,daq_mon);
+    fm_ctrl_v <= vectorify(fm_ctrl,fm_ctrl_v);
+    fm_mon    <= structify(fm_mon_v,fm_mon);
 
   -------------------------------------------------------------------------------------
 	-- clock Generator

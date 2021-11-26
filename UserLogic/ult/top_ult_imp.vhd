@@ -37,6 +37,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
+use ctrl_lib.FM_CTRL.all;
 
 
 entity top_ult is
@@ -77,6 +78,10 @@ entity top_ult is
 
     mpl_ctrl_b            : in  std_logic;--
     mpl_mon_b             : out std_logic;
+
+    fm_ctrl_b             : in std_logic;
+    fm_mon_b              : out std_logic;
+    
 
     -- TDC Hits from Polmux
     i_inn_tdc_hits_ab  : in std_logic_vector(c_HPS_MAX_HP_INN -1 downto 0);--mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
@@ -134,6 +139,8 @@ architecture behavioral of top_ult is
   signal tf_mon_r              : TF_MON_t;
   signal mpl_ctrl_r            : MPL_CTRL_t;
   signal mpl_mon_r             : MPL_MON_t;
+  signal fm_ctrl_r             : FM_CTRL_t;
+  signal fm_mon_r              : FM_MON_t;
 
   signal h2s_ctrl_v            : std_logic_vector(len(h2s_ctrl_r ) -1 downto 0);
   signal h2s_mon_v             : std_logic_vector(len(h2s_mon_r  ) -1 downto 0);
@@ -149,6 +156,8 @@ architecture behavioral of top_ult is
   signal tf_mon_v              : std_logic_vector(len(tf_mon_r   ) -1 downto 0);
   signal mpl_ctrl_v            : std_logic_vector(len(mpl_ctrl_r ) -1 downto 0);
   signal mpl_mon_v             : std_logic_vector(len(mpl_mon_r  ) -1 downto 0);
+  signal fm_ctrl_v             : std_logic_vector(len(fm_ctrl_r ) -1 downto 0);
+  signal fm_mon_v              : std_logic_vector(len(fm_mon_r  ) -1 downto 0);
 
   signal i_inner_tdc_hits  : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
   signal i_middle_tdc_hits : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
@@ -230,6 +239,8 @@ begin
   tf_mon_b <= xor_reduce(tf_mon_v);
   mpl_ctrl : entity shared_lib.vhdl_utils_deserializer generic map (len(mpl_ctrl_r )) port map(clk,rst,mpl_ctrl_b,mpl_ctrl_v);
   mpl_mon_b <= xor_reduce(mpl_mon_v);
+  fm_ctrl  : entity shared_lib.vhdl_utils_deserializer generic map (len(fm_ctrl_r )) port map(clk,rst,fm_ctrl_b,fm_ctrl_v);
+  fm_mon_b <= xor_reduce(fm_mon_v);
 
 
   inn_tdc: for i_h in c_HPS_MAX_HP_INN -1 downto 0 generate
@@ -342,7 +353,10 @@ begin
       tf_mon_v   => tf_mon_v,
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,
 
+      
       -- Array of DAQ data streams (e.g. 64 bit strams) to send to MGT
       o_daq_streams => o_daq_streams,
 

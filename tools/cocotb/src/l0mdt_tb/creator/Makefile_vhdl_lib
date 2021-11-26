@@ -82,11 +82,10 @@ VHDL_SOURCES_shared_lib = \
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
+
 VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
-    $(SHAREDDIR)/APBus/src/apb_main_sig.vhd \
-    $(SHAREDDIR)/APBus/src/apb_mem_int.vhd
-
+    $(SHAREDDIR)/APBus/src/apb_imem.vhd
 
 VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/pkg/vamc_pkg.vhd \
@@ -96,13 +95,15 @@ VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_csw_out.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd \
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd
 
 
 
 VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/axi/types.vhd \
+	$(HAL)/ctrl/src/MEM_INT_8A16D/MEM_INT_8A16D_PKG.vhd \
+	$(HAL)/ctrl/src/MEM_INT_10A9D/MEM_INT_10A9D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_12A42D/MEM_INT_12A42D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_10A148D/MEM_INT_10A148D_PKG.vhd \
 	$(HAL)/ctrl/src/MEM_INT_9A19D/MEM_INT_9A19D_PKG.vhd \
@@ -120,7 +121,10 @@ VHDL_SOURCES_ctrl_lib = \
 	$(HAL)/ctrl/src/UCM/UCM_map.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_PKG.vhd \
 	$(HAL)/ctrl/src/H2S/H2S_PKG_DEF.vhd \
-	$(HAL)/ctrl/src/H2S/H2S_map.vhd
+	$(HAL)/ctrl/src/H2S/H2S_map.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_PKG_DEF.vhd \
+	$(HAL)/ctrl/src/APB_MEM_SIG/APB_MEM_SIG_map.vhd 
 
 
 VHDL_SOURCES_xpm = \

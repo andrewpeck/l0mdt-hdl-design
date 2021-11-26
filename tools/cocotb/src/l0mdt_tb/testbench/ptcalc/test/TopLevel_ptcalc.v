@@ -8,7 +8,7 @@
 `timescale 1ns / 1ps
 `default_nettype wire
 `include "l0mdt_buses_constants.svh"
-
+ import l0mdt_dataformats_svh::*; 
 module TopLevel_ptcalc #(
     parameter DATA_WIDTH = 256, //65,
     parameter FIFO_DEPTH = 6,

@@ -25,7 +25,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
-
+use ctrl_lib.FM_CTRL.all;
 
 library shared_lib;
 use shared_lib.spybuffer_pkg.all;
@@ -169,6 +169,9 @@ architecture structural of top_l0mdt is
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
 
+  signal fm_mon_r   : FM_MON_t;
+  signal fm_ctrl_r  : FM_CTRL_t;
+
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
   signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
@@ -184,7 +187,8 @@ architecture structural of top_l0mdt is
   signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
   signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
 
-
+  signal fm_mon_v   : std_logic_vector(len(fm_mon_r) -1 downto 0);
+  signal fm_ctrl_v  : std_logic_vector(len(fm_ctrl_r) -1 downto 0);
   --
 
   signal hal_mon  : HAL_MON_t;
@@ -316,6 +320,8 @@ begin
       tf_mon_v   => tf_mon_v,
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,
       --
 
       sump => user_sump
@@ -336,6 +342,8 @@ begin
   mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
   daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
   daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
+  fm_ctrl_v  <= vectorify(fm_ctrl_r, fm_ctrl_v);
+  fm_mon_r   <= structify(fm_mon_v, fm_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -373,6 +381,8 @@ begin
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
       fw_info_mon => fw_info_mon,
+      fm_ctrl     => fm_ctrl_r,
+      fm_mon      => fm_mon_r,
 
       -- axi common
       clk320                  => clk320,
