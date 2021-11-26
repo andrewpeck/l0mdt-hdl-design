@@ -26,8 +26,9 @@ include:
     #---------------------------------------------
       # - local: '/Top/csf.0/gitlab-ci.yml'
       # - local: '/Top/csf.1/gitlab-ci.yml'
-      # - local: '/Top/ptc_mpi/gitlab-ci.yml'
-      # - local: '/Top/upt/gitlab-ci.yml'
+    # - local: '/Top/ptc_mpi/gitlab-ci.yml'
+    # - local: '/Top/lsf/gitlab-ci.yml'
+    # - local: '/Top/upt/gitlab-ci.yml'
       # - local: '/Top/ucm/gitlab-ci.yml'
       # - local: '/Top/hp/gitlab-ci.yml'
       # - local: '/Top/heg/gitlab-ci.yml'
@@ -56,13 +57,17 @@ include:
       # - local: '/Top/ull_vu13_b3a_ucm_mpl/gitlab-ci.yml'
       #- local: '/Top/ull_vu13_b3a_ucm_mpl_hps/gitlab-ci.yml'
       # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
-    - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_mptc/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_csf_uptc/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_mptc/gitlab-ci.yml'
+    - local: '/Top/ull_vu13p/ull_vu13_b3a_tp_lsf_uptc/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_csf_ptc_mpi/gitlab-ci.yml'
+    # - local: '/Top/ull_vu13p/ull_vu13_b3a_ucm_mpl_hps_lsf_ptc_mpi/gitlab-ci.yml'
       # - local: 'Top/upt_vu13p/gitlab-ci.yml'
     #---------------------------------------------
     #         Modules vU13P
     #---------------------------------------------
-      # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
+    # - local: '/Top/ull_imp_vu13_b3a_csf/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/ucm/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/mpl/gitlab-ci.yml'
     # - local: '/Top/MainBlocks/tar/gitlab-ci.yml'

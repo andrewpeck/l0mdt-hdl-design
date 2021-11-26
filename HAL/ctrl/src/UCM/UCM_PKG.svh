@@ -38,6 +38,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -46,6 +47,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } UCM_SUPER_CDE_CHAMB_Z0_CDE_CHAMB_Z0_SIGNALS_CTRL_t;
 
   typedef struct packed {
@@ -82,6 +85,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -90,6 +94,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } UCM_SUPER_CVP_CHAMB_Z0_CVP_CHAMB_Z0_SIGNALS_CTRL_t;
 
   typedef struct packed {

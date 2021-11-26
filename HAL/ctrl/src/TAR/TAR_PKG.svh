@@ -23,11 +23,13 @@
   typedef struct packed {
     logic  ENABLED;
     logic  READY;
+    logic  FREEZED;
     logic [8-1:0] ERROR;
   } TAR_STATUS_MON_t;
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_MON_t;
 
   typedef struct packed {
@@ -36,6 +38,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } TAR_PL_ST_PL_ST_PL_CHAMBER_PL_MEM_SIGNALS_CTRL_t;
 
   typedef struct packed {

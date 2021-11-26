@@ -9,6 +9,7 @@
 
   typedef struct packed {
     logic  rd_rdy;
+    logic  freeze_ena;
   } APB_MEM_SIG_MON_t;
 
   typedef struct packed {
@@ -17,6 +18,8 @@
     logic  rd_req;
     logic  rd_ack;
     logic  flush_req;
+    logic  freeze_req;
+    logic [3-1:0] mem_sel;
   } APB_MEM_SIG_CTRL_t;
 
 

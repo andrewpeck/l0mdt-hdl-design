@@ -29,7 +29,7 @@ use shared_lib.config_pkg.all;
 use shared_lib.detector_param_pkg.all;
 use shared_lib.detector_time_param_pkg.all;
 
-library apbus_lib;
+-- library apbus_lib;
 -- use TAR_lib.TAR_pkg.all;
  
 library tar_lib;
@@ -113,7 +113,7 @@ begin
 
           if i_actions.enable = '1' then
             int_en <= '1';
-          else--if i_actions.disable = '1' then
+          elsif i_actions.disable = '1' then
             int_en <= '0';
           end if;
           
@@ -130,6 +130,7 @@ begin
         o_status.ENABLED <= local_en;
         o_status.READY <= not local_rst;
         o_status.ERROR <= (others => '0');
+        o_status.FREEZED <= o_freeze;
       end if;
     end if;
   end process;

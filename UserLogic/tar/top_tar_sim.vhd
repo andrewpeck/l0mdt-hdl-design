@@ -49,20 +49,37 @@ end entity top_tar_tb;
 
 architecture beh of top_tar_tb is
 
-  -- signal o_tar2hps_inn_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_mid_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_out_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- signal o_tar2hps_ext_av      : tar2hps_bus_avt(c_NUM_THREADS -1 downto 0);
-  -- -- pipeline
-  -- signal o_tar2pl_av           : tar2pl_bus_avt(c_MAX_NUM_SL -1 downto 0);
-
+  signal clk                 : std_logic;
+  signal rst                 : std_logic;
+  signal glob_en             : std_logic;
+  --
+  signal ctrl_r              : TAR_CTRL_t;
+  signal mon_r               : TAR_MON_t;
+  signal ctrl_v              : std_logic_vector(len(ctrl_r) - 1 downto 0); --  : in  TAR_CTRL_t;
+  signal mon_v               : std_logic_vector(len(mon_r) - 1 downto 0);--  : out TAR_MON_t;
+  -- TDC Hits from Polmux
+  signal i_inn_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_INN -1 downto 0);
+  signal i_mid_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_MID -1 downto 0);
+  signal i_out_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_OUT -1 downto 0);
+  signal i_ext_tdc_hits_av    : mdt_polmux_bus_avt (c_HPS_MAX_HP_EXT -1 downto 0);
+  -- TDC Hits from Tar
+  -- TDC polmux from Tar
+  signal o_inn_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal o_mid_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal o_out_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal o_ext_tdc_hits_av    : mdt_polmux_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
+  -- TDC Hits from Tar
+  signal o_inn_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_INN -1 downto 0);
+  signal o_mid_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_MID -1 downto 0);
+  signal o_out_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_OUT -1 downto 0);
+  signal o_ext_tar_hits_av    : tar2hps_bus_avt(c_HPS_MAX_HP_EXT -1 downto 0);
 begin
 
   TAR : entity tar_lib.tar
   port map (
     -- clock, control, and monitoring
-    clk             => clock_and_control.clk,
-    rst             => clock_and_control.rst,
+    clk             => clk,
+    rst             => rst,
     glob_en         => glob_en,
     --
     ctrl_v            => ctrl_v,

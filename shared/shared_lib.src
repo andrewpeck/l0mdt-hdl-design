@@ -67,3 +67,4 @@ shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
 #---------------------------------
 shared/vhdl_utilities/pkg/vhdl_tb_utils_pkg.vhd
 shared/vhdl_utilities/src/vhdl_utils_deserializer.vhd
+shared/vhdl_utilities/src/vhdl_utils_NinCounter.vhd
