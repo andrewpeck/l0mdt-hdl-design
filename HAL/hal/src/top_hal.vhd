@@ -203,8 +203,8 @@ architecture behavioral of top_hal is
   signal sl_rx_ctrl           : sl_rx_ctrl_rt_array (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_slide          : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
   signal sl_rx_data           : slc_rx_bus_avt (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
-  signal sl_tx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
-  signal sl_rx_clk            : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
+  signal sl_tx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_OUTPUTS-1 downto 0);
+  signal sl_rx_clks           : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
   signal sl_rx_data_sump      : std_logic_vector (c_NUM_SECTOR_LOGIC_INPUTS-1 downto 0);
 
   --------------------------------------------------------------------------------
@@ -344,8 +344,8 @@ begin  -- architecture behavioral
       sl_tx_ctrl_i           => sl_tx_ctrl,
       sl_rx_ctrl_o           => sl_rx_ctrl,
       sl_rx_slide_i          => sl_rx_slide,
-      sl_tx_clk              => sl_tx_clk,
-      sl_rx_clk              => sl_rx_clk,
+      sl_tx_clk              => sl_tx_clks,
+      sl_rx_clk              => sl_rx_clks,
 
       -- lpgbt
       lpgbt_rxslide_i                 => lpgbt_uplink_bitslip,
@@ -521,8 +521,8 @@ begin  -- architecture behavioral
   sector_logic_link_wrapper_inst : entity hal.sector_logic_link_wrapper
     port map (
 
-      tx_clk         => sl_tx_clk,
-      rx_clk         => sl_rx_clk,
+      tx_clk         => sl_tx_clks,
+      rx_clk         => sl_rx_clks,
       pipeline_clock => clocks.clock_pipeline,
       clk40          => clocks.clock40,
       reset          => global_reset,
@@ -555,7 +555,7 @@ begin  -- architecture behavioral
       clock40        => clocks.clock40,
       clock_pipeline => clocks.clock_pipeline,
 
-      reset          => global_reset,
+      reset => global_reset,
 
       ttc_mgt_data_i    => felix_ttc_mgt_word,
       ttc_mgt_bitslip_o => felix_ttc_bitslip,
@@ -599,30 +599,46 @@ begin  -- architecture behavioral
   --   end process data_loop;
   -- end generate;
 
-  sump_loop : process (clocks.clock_pipeline) is
-    variable daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
-    variable mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
-    variable nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
-    variable plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-    variable minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
-  begin  -- process data_loop
-    if (rising_edge(clocks.clock_pipeline)) then  -- rising clock edge
+  sump_gen : if (true) generate
+    signal daq_sump                     : std_logic_vector (c_NUM_DAQ_STREAMS-1 downto 0);
+    signal mtc_sump                     : std_logic_vector (c_NUM_MTC-1 downto 0);
+    signal nsp_sump                     : std_logic_vector (c_NUM_NSP-1 downto 0);
+    signal plus_neighbor_segments_sump  : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+    signal minus_neighbor_segments_sump : std_logic_vector (c_NUM_SF_OUTPUTS -1 downto 0);
+  begin
 
-      daqsump_loop : for I in 0 to c_NUM_DAQ_STREAMS-1 loop
-        daq_sump(I) := xor_reduce(daq_streams(I));
-      end loop;
-      mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
-        mtc_sump(I) := xor_reduce(mtc_i(I));
-      end loop;
-      nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
-        nsp_sump(I) := xor_reduce(nsp_i(I));
-      end loop;
+    process (clocks.clock_pipeline) is
+    begin
 
-      sump <= xor_reduce(daq_sump) xor xor_reduce(nsp_sump);
+      if (rising_edge(clocks.clock_pipeline)) then
 
-      plus_neighbor_segments_o  <= plus_neighbor_segments_i;
-      minus_neighbor_segments_o <= minus_neighbor_segments_i;
+        daqsump_loop :
+        for I in 0 to c_HPS_MAX_HP_INN + c_HPS_MAX_HP_MID + c_HPS_MAX_HP_OUT -1 loop
+          daq_sump(I) <= xor_reduce(daq_streams(I));
+        end loop;
+        mtc_sump_loop : for I in 0 to c_NUM_MTC-1 loop
+          mtc_sump(I) <= xor_reduce(mtc_i(I));
+        end loop;
+        nsp_sump_loop : for I in 0 to c_NUM_NSP-1 loop
+          nsp_sump(I) <= xor_reduce(nsp_i(I));
+        end loop;
 
-    end if;
-  end process sump_loop;
+        neighbor_segments_loop : for I in 0 to c_NUM_SF_OUTPUTS-1 loop
+          plus_neighbor_segments_sump(I)  <= xor_reduce(plus_neighbor_segments_i(I));
+          minus_neighbor_segments_sump(I) <= xor_reduce(minus_neighbor_segments_i(I));
+        end loop;
+
+        sump <= xor_reduce(daq_sump)
+                xor xor_reduce(nsp_sump)
+                xor xor_reduce(mtc_sump)
+                xor xor_reduce(plus_neighbor_segments_sump)
+                xor xor_reduce(minus_neighbor_segments_sump);
+
+        plus_neighbor_segments_o  <= plus_neighbor_segments_i;
+        minus_neighbor_segments_o <= minus_neighbor_segments_i;
+
+      end if;
+    end process;
+  end generate;
+
 end architecture behavioral;

@@ -78,7 +78,7 @@ proc update_prj_config {dest_file segment_finder pt_calc props} {
     # default values
     set sector_id 3
     set sector_side 0
-    set endcap 1
+    set endcap 0
     set large 0
     set en_neighbors 0
     set en_daq 1

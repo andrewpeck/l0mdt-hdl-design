@@ -86,7 +86,7 @@ package config_pkg is
   constant c_HPS_NUM_MDT_CH_OUT         : integer   := get_num_HP(CFG.EN_MDT_CH_OUT);--CFG.NUM_MDT_CH_OUT;
   constant c_HPS_MAX_HP_OUT             : integer := 6;
 
-  type integer_array_t is array (integer range <>) of integer; 
+  type integer_array_t is array (integer range <>) of integer;
   constant c_HPS_MAX_ARRAY : integer_array_t(0 to 3) := (c_HPS_MAX_HP_INN,c_HPS_MAX_HP_MID,c_HPS_MAX_HP_OUT,c_HPS_MAX_HP_EXT);
 
   constant c_TOTAL_MAX_NUM_HP   : integer :=
@@ -147,8 +147,10 @@ package config_pkg is
   constant c_PT_TYPE                : std_logic := CFG.PT_TYPE; -- 0: MPT 1:UPT
   --
   constant c_MTC_ENABLED             : std_logic := CFG.ENABLE_MTC;
+
   --
   constant c_DAQ_ENABLED            : std_logic := CFG.ENABLE_DAQ;
+  constant c_FM_ENABLED             : std_logic := CFG.ENABLE_FM;
   constant c_NUM_DAQ_STREAMS        : integer := c_HPS_NUM_MDT_CH_INN
                                                  + c_HPS_NUM_MDT_CH_MID
                                                  + c_HPS_NUM_MDT_CH_OUT

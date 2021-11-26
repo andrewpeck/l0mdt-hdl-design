@@ -82,10 +82,10 @@ VHDL_SOURCES_shared_lib = \
 VHDL_SOURCES_shared_cfg_def_lib = \
 	$(SHAREDDIR)/config/config_defaults_pkg.vhd
 
+
 VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
     $(SHAREDDIR)/APBus/src/apb_imem.vhd
-
 
 
 VHDL_SOURCES_vamc_lib = \
