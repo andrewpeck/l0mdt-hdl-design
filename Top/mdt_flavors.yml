@@ -26,7 +26,7 @@ ku15p_lsf_upt:
       link_map: "link_map_default"
       sector_id: 3
       sector_side: 0
-      endcap: 1
+      endcap: 0
       large: 0
       en_neighbors: 0
       en_daq: 1
@@ -42,6 +42,7 @@ ku15p_csf_mpt:
     default:
       link_map: "link_map_default"
       en_daq: 1
+      endcap: 0
 
 vu13p_lsf_upt:
   fpga: xcvu13p-flga2577-1-e
