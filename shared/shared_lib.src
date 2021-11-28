@@ -49,7 +49,7 @@ shared/arithmetics/arithmetics_lib.src
 # spybuffer
 #---------------------------------
 shared/spybuffers.src
-
+shared/spybuffer_vhdl_wrapper/spybuffer_vhdl.vhd
 
 #---------------------------------
 # Simulation functions
