@@ -218,7 +218,26 @@ package c2cslave_pkg is
     MPL_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
     MPL_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
     MPL_rvalid : in STD_LOGIC;
-    MPL_rready : out STD_LOGIC
+    MPL_rready : out STD_LOGIC;
+    FM_awaddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_awprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    FM_awvalid : out STD_LOGIC;
+    FM_awready : in STD_LOGIC;
+    FM_wdata : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_wstrb : out STD_LOGIC_VECTOR ( 3 downto 0 );
+    FM_wvalid : out STD_LOGIC;
+    FM_wready : in STD_LOGIC;
+    FM_bresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    FM_bvalid : in STD_LOGIC;
+    FM_bready : out STD_LOGIC;
+    FM_araddr : out STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_arprot : out STD_LOGIC_VECTOR ( 2 downto 0 );
+    FM_arvalid : out STD_LOGIC;
+    FM_arready : in STD_LOGIC;
+    FM_rdata : in STD_LOGIC_VECTOR ( 31 downto 0 );
+    FM_rresp : in STD_LOGIC_VECTOR ( 1 downto 0 );
+    FM_rvalid : in STD_LOGIC;
+    FM_rready : out STD_LOGIC
   );
   end component c2cSlave;
 end package c2cslave_pkg;

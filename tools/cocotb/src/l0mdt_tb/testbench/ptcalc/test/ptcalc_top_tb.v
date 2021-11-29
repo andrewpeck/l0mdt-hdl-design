@@ -1,4 +1,5 @@
 `include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
 module hls_ptcalc_top (
 		       ap_clk,
 		       ap_rst,

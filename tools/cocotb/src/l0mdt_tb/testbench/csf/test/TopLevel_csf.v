@@ -9,7 +9,7 @@
 
 `timescale 1ns / 1ps
 `default_nettype wire
-
+ import l0mdt_dataformats_svh::*;
 module TopLevel_csf #(
     parameter DATA_WIDTH = 256, //65,
     parameter FIFO_DEPTH = 6,

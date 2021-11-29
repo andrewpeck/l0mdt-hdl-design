@@ -25,7 +25,7 @@ use ctrl_lib.UCM_CTRL.all;
 use ctrl_lib.DAQ_CTRL.all;
 use ctrl_lib.TF_CTRL.all;
 use ctrl_lib.MPL_CTRL.all;
-
+use ctrl_lib.FM_CTRL.all;
 
 library shared_lib;
 use shared_lib.spybuffer_pkg.all;
@@ -169,6 +169,9 @@ architecture structural of top_l0mdt is
   signal mpl_mon_r  : MPL_MON_t;
   signal mpl_ctrl_r : MPL_CTRL_t;
 
+  signal fm_mon_r   : FM_MON_t;
+  signal fm_ctrl_r  : FM_CTRL_t;
+
   signal h2s_ctrl_v : std_logic_vector(len(h2s_ctrl_r) -1 downto 0);
   signal h2s_mon_v  : std_logic_vector(len(h2s_mon_r) -1 downto 0);
   signal tar_ctrl_v : std_logic_vector(len(tar_ctrl_r) -1 downto 0);
@@ -184,7 +187,8 @@ architecture structural of top_l0mdt is
   signal mpl_ctrl_v : std_logic_vector(len(mpl_ctrl_r) -1 downto 0);
   signal mpl_mon_v  : std_logic_vector(len(mpl_mon_r) -1 downto 0);
 
-
+  signal fm_mon_v   : std_logic_vector(len(fm_mon_r) -1 downto 0);
+  signal fm_ctrl_v  : std_logic_vector(len(fm_ctrl_r) -1 downto 0);
   --
 
   signal hal_mon  : HAL_MON_t;
@@ -316,6 +320,8 @@ begin
       tf_mon_v   => tf_mon_v,
       mpl_ctrl_v => mpl_ctrl_v,
       mpl_mon_v  => mpl_mon_v,
+      fm_ctrl_v  => fm_ctrl_v,
+      fm_mon_v   => fm_mon_v,
       --
 
       sump => user_sump
@@ -336,6 +342,8 @@ begin
   mtc_mon_r  <= structify(mtc_mon_v, mtc_mon_r);
   daq_ctrl_v <= vectorify(daq_ctrl_r, daq_ctrl_v);
   daq_mon_r  <= structify(daq_mon_v, daq_mon_r);
+  fm_ctrl_v  <= vectorify(fm_ctrl_r, fm_ctrl_v);
+  fm_mon_r   <= structify(fm_mon_v, fm_mon_r);
 
   top_control_inst : entity work.top_control
     port map (
@@ -373,6 +381,8 @@ begin
       mpl_ctrl    => mpl_ctrl_r,
       mpl_mon     => mpl_mon_r,
       fw_info_mon => fw_info_mon,
+      fm_ctrl     => fm_ctrl_r,
+      fm_mon      => fm_mon_r,
 
       -- axi common
       clk320                  => clk320,
@@ -402,48 +412,56 @@ begin
   fw_info_mon.FW_INFO.BUILD_TIME.sec               <= (others => '0');  -- TS_SEC;
   fw_info_mon.FW_INFO.BUILD_TIME.min               <= (others => '0');  -- TS_MIN;
   fw_info_mon.FW_INFO.BUILD_TIME.HOUR              <= (others => '0');  -- TS_HOUR
-  fw_info_mon.HOG_INFO.GLOBAL_FWDATE               <= GLOBAL_FWDATE;
-  fw_info_mon.HOG_INFO.GLOBAL_FWTIME               <= GLOBAL_FWTIME;
-  fw_info_mon.HOG_INFO.OFFICIAL                    <= OFFICIAL;
-  fw_info_mon.HOG_INFO.GLOBAL_FWHASH               <= GLOBAL_FWHASH;
-  fw_info_mon.HOG_INFO.TOP_FWHASH                  <= TOP_FWHASH;
-  fw_info_mon.HOG_INFO.XML_HASH                    <= XML_HASH;
-  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION            <= GLOBAL_FWVERSION;
-  fw_info_mon.HOG_INFO.TOP_FWVERSION               <= TOP_FWVERSION;
-  fw_info_mon.HOG_INFO.XML_VERSION                 <= XML_VERSION;
-  fw_info_mon.HOG_INFO.HOG_FWHASH                  <= HOG_FWHASH;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION         <= FRAMEWORK_FWVERSION;
-  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH            <= FRAMEWORK_FWHASH;
-  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW           <= MAIN_CFG_COMPILE_HW;
-  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL           <= MAIN_CFG_COMPILE_UL;
-  fw_info_mon.CONFIG.ST_nBARREL_ENDCAP             <= c_ST_nBARREL_ENDCAP;
-  fw_info_mon.CONFIG.ENABLE_NEIGHBORS              <= c_ENABLE_NEIGHBORS;
-  fw_info_mon.CONFIG.SECTOR_ID                     <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
-  fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE           <= c_ENDCAP_nSMALL_LARGE;
-  fw_info_mon.CONFIG.PHY_BARREL_R0                 <= std_logic_vector(resize(PHY_BARREL_R0, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R1                 <= std_logic_vector(resize(PHY_BARREL_R1, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R2                 <= std_logic_vector(resize(PHY_BARREL_R2, 32));
-  fw_info_mon.CONFIG.PHY_BARREL_R3                 <= std_logic_vector(resize(PHY_BARREL_R3, 32));
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_INN             <= c_HPS_ENABLE_ST_INN;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT             <= c_HPS_ENABLE_ST_EXT;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_MID             <= c_HPS_ENABLE_ST_MID;
-  fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT             <= c_HPS_ENABLE_ST_OUT;
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
-  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT            <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
-  fw_info_mon.CONFIG.NUM_MTC                       <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
-  fw_info_mon.CONFIG.NUM_NSP                       <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
-  fw_info_mon.CONFIG.UCM_ENABLED                   <= c_UCM_ENABLED;
-  fw_info_mon.CONFIG.MPL_ENABLED                   <= c_MPL_ENABLED;
-  fw_info_mon.CONFIG.SF_ENABLED                    <= c_SF_ENABLED;
-  fw_info_mon.CONFIG.SF_TYPE                       <= c_SF_TYPE;
-  fw_info_mon.CONFIG.NUM_DAQ_STREAMS               <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
-  fw_info_mon.CONFIG.NUM_SF_INPUTS                 <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
-  fw_info_mon.CONFIG.NUM_SF_OUTPUTS                <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
-  fw_info_mon.CONFIG.MAX_NUM_SL                    <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
-  fw_info_mon.CONFIG.NUM_THREADS                   <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
 
-  sump <= hal_sump xor user_sump;
+  fw_info_mon.HOG_INFO.GLOBAL_FWDATE       <= GLOBAL_FWDATE;
+  fw_info_mon.HOG_INFO.GLOBAL_FWTIME       <= GLOBAL_FWTIME;
+  fw_info_mon.HOG_INFO.OFFICIAL            <= OFFICIAL;
+  fw_info_mon.HOG_INFO.GLOBAL_FWHASH       <= GLOBAL_FWHASH;
+  fw_info_mon.HOG_INFO.TOP_FWHASH          <= TOP_FWHASH;
+  fw_info_mon.HOG_INFO.XML_HASH            <= XML_HASH;
+  fw_info_mon.HOG_INFO.GLOBAL_FWVERSION    <= GLOBAL_FWVERSION;
+  fw_info_mon.HOG_INFO.TOP_FWVERSION       <= TOP_FWVERSION;
+  fw_info_mon.HOG_INFO.XML_VERSION         <= XML_VERSION;
+  fw_info_mon.HOG_INFO.HOG_FWHASH          <= HOG_FWHASH;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWVERSION <= FRAMEWORK_FWVERSION;
+  fw_info_mon.HOG_INFO.FRAMEWORK_FWHASH    <= FRAMEWORK_FWHASH;
+
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_HW <= MAIN_CFG_COMPILE_HW;
+  fw_info_mon.CONFIG.MAIN_CFG_COMPILE_UL <= MAIN_CFG_COMPILE_UL;
+  fw_info_mon.CONFIG.ST_nBARREL_ENDCAP   <= c_ST_nBARREL_ENDCAP;
+  fw_info_mon.CONFIG.ENABLE_NEIGHBORS    <= c_ENABLE_NEIGHBORS;
+  fw_info_mon.CONFIG.SECTOR_ID           <= std_logic_vector(to_unsigned(c_SECTOR_ID, 32));
+  fw_info_mon.CONFIG.ENDCAP_nSMALL_LARGE <= c_ENDCAP_nSMALL_LARGE;
+  fw_info_mon.CONFIG.PHY_BARREL_R0       <= std_logic_vector(resize(PHY_BARREL_R0, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R1       <= std_logic_vector(resize(PHY_BARREL_R1, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R2       <= std_logic_vector(resize(PHY_BARREL_R2, 32));
+  fw_info_mon.CONFIG.PHY_BARREL_R3       <= std_logic_vector(resize(PHY_BARREL_R3, 32));
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_INN   <= c_HPS_ENABLE_ST_INN;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_EXT   <= c_HPS_ENABLE_ST_EXT;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_MID   <= c_HPS_ENABLE_ST_MID;
+  fw_info_mon.CONFIG.HPS_ENABLE_ST_OUT   <= c_HPS_ENABLE_ST_OUT;
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_INN  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_INN, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_EXT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_EXT, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_MID  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_MID, 8));
+  fw_info_mon.CONFIG.HPS_NUM_MDT_CH_OUT  <= std_logic_vector(to_unsigned(c_HPS_NUM_MDT_CH_OUT, 8));
+  fw_info_mon.CONFIG.NUM_MTC             <= std_logic_vector(to_unsigned(c_NUM_MTC, 8));
+  fw_info_mon.CONFIG.NUM_NSP             <= std_logic_vector(to_unsigned(c_NUM_NSP, 8));
+  fw_info_mon.CONFIG.UCM_ENABLED         <= c_UCM_ENABLED;
+  fw_info_mon.CONFIG.MPL_ENABLED         <= c_MPL_ENABLED;
+  fw_info_mon.CONFIG.SF_ENABLED          <= c_SF_ENABLED;
+  fw_info_mon.CONFIG.SF_TYPE             <= c_SF_TYPE;
+  fw_info_mon.CONFIG.NUM_DAQ_STREAMS     <= std_logic_vector(to_unsigned(c_NUM_DAQ_STREAMS, 8));
+  fw_info_mon.CONFIG.NUM_SF_INPUTS       <= std_logic_vector(to_unsigned(c_NUM_SF_INPUTS, 8));
+  fw_info_mon.CONFIG.NUM_SF_OUTPUTS      <= std_logic_vector(to_unsigned(c_NUM_SF_OUTPUTS, 8));
+  fw_info_mon.CONFIG.MAX_NUM_SL          <= std_logic_vector(to_unsigned(c_MAX_NUM_SL, 8));
+  fw_info_mon.CONFIG.NUM_THREADS         <= std_logic_vector(to_unsigned(c_NUM_THREADS, 8));
+
+  process (clock_and_control.clk) is
+  begin
+    if (rising_edge(clock_and_control.clk)) then
+      sump <= hal_sump xor user_sump;
+    end if;
+  end process;
+
 
 end structural;

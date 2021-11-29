@@ -53,7 +53,7 @@ set_max_delay -datapath_only 5.0 \
 
 set_max_delay -datapath_only 5.0 \
     -from [get_pins -hierarchical -filter \
-               {NAME =~ top_hal/*sector_logic*rx_packet_former_inst*packet_userdata_reg*/C}] \
+               {NAME =~ top_hal/*sector_logic*tx_packet_former_inst*packet_userdata*/C}] \
     -to [get_pins -hierarchical -filter \
              {NAME =~ top_hal/*sector_logic*cdc_bus_inst*data_o_reg*/D}]
 

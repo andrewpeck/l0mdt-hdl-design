@@ -1,0 +1,8 @@
+shared/shared_cfg_def_lib.src lib=shared_cfg_def_lib
+shared/shared_lib_basic.src lib=shared_lib
+shared/shared_lib.src lib=shared_lib
+HAL/ctrl/ctrl_lib.src lib=ctrl_lib
+shared/spybuffers.src
+Top/fm/prj_cfg.vhd lib=project_lib
+UserLogic/fm/fm_lib.src lib=fm_lib
+Top/fm/top_fm.vhd

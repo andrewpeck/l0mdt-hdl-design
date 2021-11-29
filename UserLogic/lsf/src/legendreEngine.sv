@@ -1,9 +1,10 @@
 `timescale 1ns/1ps
 
-
-`include "l0mdt_buses_constants.svh"
-
-
+`ifndef L0MDT_BUS_CONSTANTS
+`define L0MDT_BUS_CONSTANTS
+//`include "l0mdt_buses_constants.svh"
+import l0mdt_dataformats_svh::*;
+`endif
 
 
 module legendreEngine(
