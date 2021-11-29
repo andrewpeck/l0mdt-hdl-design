@@ -113,7 +113,7 @@ begin
 
           if i_actions.enable = '1' then
             int_en <= '1';
-          else--if i_actions.disable = '1' then
+          elsif i_actions.disable = '1' then
             int_en <= '0';
           end if;
           

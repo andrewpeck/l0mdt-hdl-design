@@ -155,10 +155,10 @@ architecture behavioral of ult is
   signal ext_segments_to_pt_av  : sf2pt_bus_avt(c_NUM_THREADS-1 downto 0);
 
   -- slc to pt (from pipeline)
-  signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
-  signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal inner_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal middle_slc_to_pt : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal outer_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
+  -- signal extra_slc_to_pt  : sf2pt_bus_avt (c_NUM_THREADS-1 downto 0);
 
   -- slc to mtc (from pipeline)
   signal pl2pt_av  : pl2pt_bus_avt (c_NUM_THREADS-1 downto 0);
