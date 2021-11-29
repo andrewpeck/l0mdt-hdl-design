@@ -1,4 +1,4 @@
 # -*- mode: TCL;-*-
-HAL/c2c/bd/ku15p/c2cslave_pkg.vhd lib=ctrl_lib
+HAL/c2c/bd/ku15p/c2cslave_pkg.vhd
 #HAL/c2c/bd/ku15p/c2cSlave/c2cSlave.bd
 
