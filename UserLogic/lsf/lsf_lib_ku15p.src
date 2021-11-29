@@ -14,17 +14,5 @@ UserLogic/lsf/src/compute_r_bins.sv
 UserLogic/lsf/src/get_rom_addr.sv
 UserLogic/lsf/src/legendreEngine.sv
 UserLogic/lsf/src/legendreEngine_2clk.sv
-shared/SpyBuffer/src/aFifo/aFifo.v
-shared/SpyBuffer/src/aFifo/fifomem.v
-shared/SpyBuffer/src/aFifo/rptr_empty.v
-shared/SpyBuffer/src/aFifo/sync_r2w.v
-shared/SpyBuffer/src/aFifo/sync_w2r.v
-shared/SpyBuffer/src/aFifo/wptr_full.v
-shared/SpyBuffer/src/SpyProtocol.vh
-shared/SpyBuffer/src/SpyController.v
-shared/SpyBuffer/src/asym_ram_tdp_read_first.v
-shared/SpyBuffer/src/SpyMemory.v SystemVerilog
-shared/SpyBuffer/src/SpyPlayback.v SystemVerilog
-shared/SpyBuffer/src/SpyBuffer.v
 UserLogic/lsf/src/lsf_spybuffer_wrapper.sv
 UserLogic/lsf/top_lsf.vhd
