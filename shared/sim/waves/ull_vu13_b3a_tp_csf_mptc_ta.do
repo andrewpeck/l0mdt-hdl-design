@@ -226,65 +226,65 @@ add wave -noupdate -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_t
 add wave -noupdate -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_hit_av
 add wave -noupdate -group tb_SF_IN -expand -group HPS_INN -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2) -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).data_valid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).muid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtseg_dest -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_pos -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_ang -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).hewindow_pos -radix unsigned}}} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(1) -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(0) -radix unsigned}} -expand -subitemconfig {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2) {-height 17 -radix unsigned -childformat {{/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).data_valid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).muid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtseg_dest -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtid -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_pos -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_ang -radix unsigned} {/ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).hewindow_pos -radix unsigned}} -expand} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).data_valid {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).muid {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtseg_dest {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).mdtid {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_pos {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).vec_ang {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(2).hewindow_pos {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(1) {-height 17 -radix unsigned} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar(0) {-height 17 -radix unsigned}} /ult_tp/SF_IN/HPS_INN/heg2sf_slc_ar
 add wave -noupdate -group tb_SF_IN -expand -group HPS_INN -radix unsigned /ult_tp/SF_IN/HPS_INN/heg2sf_slc_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ttc_commands
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/clock_and_control
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_inn_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_mid_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_out_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_inn_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_mid_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_out_tdc_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_inn_tar_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_mid_tar_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ult_out_tar_hits_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_main_primary_slc
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_main_secondary_slc
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_minus_neighbor_segments
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_minus_neighbor_slc
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_plus_neighbor_segments
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/i_plus_neighbor_slc
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/daq_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/h2s_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/mpl_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/mtc_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/tar_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/tf_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/ucm_ctrl_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/daq_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/h2s_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/mpl_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/mtc_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/tar_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/tf_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group c&m /ult_tp/ULT/ucm_mon_v
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/DUMMY
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/SUMP_SIGNALS
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/daq_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/h2s_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/mpl_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/mtc_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/pt_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/tar_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/ucm_sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals -group sump /ult_tp/ULT/sump
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ext_segments_to_pt_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ext_slc_to_h2s_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals -expand /ult_tp/ULT/inn_slc_to_h2s_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/mid_slc_to_h2s_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/out_slc_to_h2s_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals -expand /ult_tp/ULT/inn_segments_to_pt_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/mid_segments_to_pt_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/out_segments_to_pt_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/pl2pt_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/pl2mtc_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/pt2mtc_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/ucm2pl_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/o_daq_streams
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/o_minus_neighbor_segments_av
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/o_MTC
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/o_NSP
-add wave -noupdate -expand -group ULT -expand -group ult_signals /ult_tp/ULT/o_plus_neighbor_segments_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ttc_commands
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/clock_and_control
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_inn_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_mid_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_out_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_inn_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_mid_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_out_tdc_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_inn_tar_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_mid_tar_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ult_out_tar_hits_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_main_primary_slc
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_main_secondary_slc
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_minus_neighbor_segments
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_minus_neighbor_slc
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_plus_neighbor_segments
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/i_plus_neighbor_slc
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/daq_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/h2s_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/mpl_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/mtc_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/tar_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/tf_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/ucm_ctrl_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/daq_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/h2s_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/mpl_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/mtc_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/tar_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/tf_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group c&m /ult_tp/ULT/ucm_mon_v
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/DUMMY
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/SUMP_SIGNALS
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/daq_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/h2s_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/mpl_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/mtc_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/pt_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/tar_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/ucm_sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/sump
+add wave -noupdate -expand -group ULT -group ult_signals -group sump /ult_tp/ULT/sump
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ext_segments_to_pt_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ext_slc_to_h2s_av
+add wave -noupdate -expand -group ULT -group ult_signals -expand /ult_tp/ULT/inn_slc_to_h2s_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/mid_slc_to_h2s_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/out_slc_to_h2s_av
+add wave -noupdate -expand -group ULT -group ult_signals -expand /ult_tp/ULT/inn_segments_to_pt_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/mid_segments_to_pt_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/out_segments_to_pt_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/pl2pt_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/pl2mtc_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/pt2mtc_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/ucm2pl_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/o_daq_streams
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/o_minus_neighbor_segments_av
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/o_MTC
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/o_NSP
+add wave -noupdate -expand -group ULT -group ult_signals /ult_tp/ULT/o_plus_neighbor_segments_av
 add wave -noupdate -expand -group ULT -group TAR /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/clk
 add wave -noupdate -expand -group ULT -group TAR /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/rst
 add wave -noupdate -expand -group ULT -group TAR /ult_tp/ULT/logic_gen/TAR_GEN/ULT_TAR/TAR/glob_en
@@ -1289,7 +1289,7 @@ add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GE
 add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_t0_r
 add wave -noupdate -expand -group ULT -group MID_PC /ult_tp/ULT/logic_gen/H2S_GEN/ULT_H2S/HPS_MID/HPS/PC/o_mon_tc_r
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {4665538965 fs} 0 Red default} {{Cursor 2} {4085937500 fs} 1}
+WaveRestoreCursors {{Cursor 1} {4513489209 fs} 0 Red default} {{Cursor 2} {4085937500 fs} 1}
 quietly wave cursor active 1
 configure wave -namecolwidth 244
 configure wave -valuecolwidth 261
@@ -1305,4 +1305,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 fs} {6694174757 fs}
+WaveRestoreZoom {0 fs} {10500 ns}
