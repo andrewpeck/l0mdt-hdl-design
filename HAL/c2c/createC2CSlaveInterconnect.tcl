@@ -84,7 +84,7 @@ yaml_to_bd "$C2C_PATH/slaves.yaml"
 # why start_gui / stop_gui?
 # see: https://forums.xilinx.com/t5/Vivado-TCL-Community/running-write-bd-layout-in-batch-mode/td-p/948476
 # the gui will open and close for a second to generate the svg outputs
-if {$regenerate_svg} {
+if {$regenerate_svg && [info exists ::env(DISPLAY) ]} {
     start_gui
     write_bd_layout -force -format svg -orientation portrait ${BD_OUTPUT_PATH}/${fpga_shortname}/c2cSlave/c2cSlave.svg
     stop_gui
