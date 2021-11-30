@@ -74,8 +74,8 @@ entity top_control is
 
     fw_info_mon : in FW_INFO_MON_t;
 
-    fm_mon      : in FM_MON_t;
-    fm_ctrl     : out FM_CTRL_t;
+    fm_mon  : in  FM_MON_t;
+    fm_ctrl : out FM_CTRL_t;
 
     -- system management
     --sys_mgmt_scl            : inout std_logic;
@@ -150,28 +150,27 @@ architecture control_arch of top_control is
   signal fm_writemosi : axiwritemosi;
   signal fm_writemiso : axiwritemiso;
 
-  signal h2s_ctrl_reg      : H2S_CTRL_t;
-  signal tar_ctrl_reg      : TAR_CTRL_t;
-  signal mtc_ctrl_reg      : MTC_CTRL_t;
-  signal ucm_ctrl_reg      : UCM_CTRL_t;
-  signal daq_ctrl_reg      : DAQ_CTRL_t;
-  signal tf_ctrl_reg       : TF_CTRL_t;
-  signal mpl_ctrl_reg      : MPL_CTRL_t;
-  signal hal_ctrl_reg      : HAL_CTRL_t;
-  signal hal_core_ctrl_reg : HAL_CORE_CTRL_t;
-  signal fm_ctrl_reg       : FM_CTRL_t;
+  signal h2s_ctrl_r, h2s_ctrl_rr           : H2S_CTRL_t;
+  signal tar_ctrl_r, tar_ctrl_rr           : TAR_CTRL_t;
+  signal mtc_ctrl_r, mtc_ctrl_rr           : MTC_CTRL_t;
+  signal ucm_ctrl_r, ucm_ctrl_rr           : UCM_CTRL_t;
+  signal daq_ctrl_r, daq_ctrl_rr           : DAQ_CTRL_t;
+  signal tf_ctrl_r, tf_ctrl_rr             : TF_CTRL_t;
+  signal mpl_ctrl_r, mpl_ctrl_rr           : MPL_CTRL_t;
+  signal hal_ctrl_r, hal_ctrl_rr           : HAL_CTRL_t;
+  signal hal_core_ctrl_r, hal_core_ctrl_rr : HAL_CORE_CTRL_t;
+  signal fm_ctrl_r, fm_ctrl_rr             : FM_CTRL_t;
 
-  signal h2s_mon_reg      : H2S_MON_t;
-  signal tar_mon_reg      : TAR_MON_t;
-  signal mtc_mon_reg      : MTC_MON_t;
-  signal ucm_mon_reg      : UCM_MON_t;
-  signal daq_mon_reg      : DAQ_MON_t;
-  signal tf_mon_reg       : TF_MON_t;
-  signal mpl_mon_reg      : MPL_MON_t;
-  signal hal_mon_reg      : HAL_MON_t;
-  signal hal_core_mon_reg : HAL_CORE_MON_t;
-  signal fm_mon_reg       : FM_MON_t;
-
+  signal h2s_mon_r, h2s_mon_rr           : H2S_MON_t;
+  signal tar_mon_r, tar_mon_rr           : TAR_MON_t;
+  signal mtc_mon_r, mtc_mon_rr           : MTC_MON_t;
+  signal ucm_mon_r, ucm_mon_rr           : UCM_MON_t;
+  signal daq_mon_r, daq_mon_rr           : DAQ_MON_t;
+  signal tf_mon_r, tf_mon_rr             : TF_MON_t;
+  signal mpl_mon_r, mpl_mon_rr           : MPL_MON_t;
+  signal hal_mon_r, hal_mon_rr           : HAL_MON_t;
+  signal hal_core_mon_r, hal_core_mon_rr : HAL_CORE_MON_t;
+  signal fm_mon_r, fm_mon_rr             : FM_MON_t;
 
 begin
 
@@ -179,25 +178,47 @@ begin
   begin
     if (rising_edge(clk40)) then
       -- inputs
-      h2s_mon_reg <= h2s_mon;
-      tar_mon_reg <= tar_mon;
-      mtc_mon_reg <= mtc_mon;
-      ucm_mon_reg <= ucm_mon;
-      daq_mon_reg <= daq_mon;
-      tf_mon_reg  <= tf_mon;
-      mpl_mon_reg <= mpl_mon;
-      hal_mon_reg <= hal_mon;
-      fm_mon_reg  <= fm_mon;
+      h2s_mon_r <= h2s_mon;
+      tar_mon_r <= tar_mon;
+      mtc_mon_r <= mtc_mon;
+      ucm_mon_r <= ucm_mon;
+      daq_mon_r <= daq_mon;
+      tf_mon_r  <= tf_mon;
+      mpl_mon_r <= mpl_mon;
+      hal_mon_r <= hal_mon;
+      fm_mon_r  <= fm_mon;
+
+      h2s_mon_rr <= h2s_mon_r;
+      tar_mon_rr <= tar_mon_r;
+      mtc_mon_rr <= mtc_mon_r;
+      ucm_mon_rr <= ucm_mon_r;
+      daq_mon_rr <= daq_mon_r;
+      tf_mon_rr  <= tf_mon_r;
+      mpl_mon_rr <= mpl_mon_r;
+      hal_mon_rr <= hal_mon_r;
+      fm_mon_rr  <= fm_mon_r;
+
       -- outputs
-      h2s_ctrl <= h2s_ctrl_reg;
-      tar_ctrl <= tar_ctrl_reg;
-      mtc_ctrl <= mtc_ctrl_reg;
-      ucm_ctrl <= ucm_ctrl_reg;
-      daq_ctrl <= daq_ctrl_reg;
-      tf_ctrl  <= tf_ctrl_reg;
-      mpl_ctrl <= mpl_ctrl_reg;
-      hal_ctrl <= hal_ctrl_reg;
-      fm_ctrl  <= fm_ctrl_reg;
+      h2s_ctrl <= h2s_ctrl_rr;
+      tar_ctrl <= tar_ctrl_rr;
+      mtc_ctrl <= mtc_ctrl_rr;
+      ucm_ctrl <= ucm_ctrl_rr;
+      daq_ctrl <= daq_ctrl_rr;
+      tf_ctrl  <= tf_ctrl_rr;
+      mpl_ctrl <= mpl_ctrl_rr;
+      hal_ctrl <= hal_ctrl_rr;
+      fm_ctrl  <= fm_ctrl_rr;
+
+      h2s_ctrl_rr <= h2s_ctrl_r;
+      tar_ctrl_rr <= tar_ctrl_r;
+      mtc_ctrl_rr <= mtc_ctrl_r;
+      ucm_ctrl_rr <= ucm_ctrl_r;
+      daq_ctrl_rr <= daq_ctrl_r;
+      tf_ctrl_rr  <= tf_ctrl_r;
+      mpl_ctrl_rr <= mpl_ctrl_r;
+      hal_ctrl_rr <= hal_ctrl_r;
+      fm_ctrl_rr  <= fm_ctrl_r;
+
     end if;
   end process;
 
@@ -206,10 +227,12 @@ begin
     if (rising_edge(axi_clk)) then
 
       -- inputs
-      hal_core_mon_reg <= hal_core_mon;
+      hal_core_mon_r  <= hal_core_mon;
+      hal_core_mon_rr <= hal_core_mon_r;
 
       -- outputs
-      hal_core_ctrl <= hal_core_ctrl_reg;
+      hal_core_ctrl    <= hal_core_ctrl_rr;
+      hal_core_ctrl_rr <= hal_core_ctrl_r;
 
     end if;
   end process;
@@ -507,9 +530,9 @@ begin
       slave_writemiso => hal_core_writemiso,
 
       -- monitor signals in
-      mon  => hal_core_mon_reg,
+      mon  => hal_core_mon_r,
       -- control signals out
-      ctrl => hal_core_ctrl_reg
+      ctrl => hal_core_ctrl_r
       );
 
   hal_map_inst : entity ctrl_lib.HAL_map
@@ -522,9 +545,9 @@ begin
       slave_writemiso => hal_writemiso,
 
       -- monitor signals in
-      mon  => hal_mon_reg,
+      mon  => hal_mon_r,
       -- control signals out
-      ctrl => hal_ctrl_reg
+      ctrl => hal_ctrl_r
       );
 
   h2s_map_inst : entity ctrl_lib.H2S_map
@@ -537,9 +560,9 @@ begin
       slave_writemiso => h2s_writemiso,
 
       -- monitor signals in
-      mon  => h2s_mon_reg,
+      mon  => h2s_mon_r,
       -- control signals out
-      ctrl => h2s_ctrl_reg
+      ctrl => h2s_ctrl_r
       );
 
   tar_map_inst : entity ctrl_lib.TAR_map
@@ -552,9 +575,9 @@ begin
       slave_writemiso => tar_writemiso,
 
       -- monitor signals in
-      mon  => tar_mon_reg,
+      mon  => tar_mon_rr,
       -- control signals out
-      ctrl => tar_ctrl_reg
+      ctrl => tar_ctrl_r
       );
 
   mtc_map_inst : entity ctrl_lib.MTC_map
@@ -567,9 +590,9 @@ begin
       slave_writemiso => mtc_writemiso,
 
       -- monitor signals in
-      mon  => mtc_mon_reg,
+      mon  => mtc_mon_rr,
       -- control signals out
-      ctrl => mtc_ctrl_reg
+      ctrl => mtc_ctrl_r
       );
 
   ucm_map_inst : entity ctrl_lib.UCM_map
@@ -582,9 +605,9 @@ begin
       slave_writemiso => ucm_writemiso,
 
       -- monitor signals in
-      mon  => ucm_mon_reg,
+      mon  => ucm_mon_rr,
       -- control signals out
-      ctrl => ucm_ctrl_reg
+      ctrl => ucm_ctrl_r
       );
 
   daq_map_inst : entity ctrl_lib.DAQ_map
@@ -597,9 +620,9 @@ begin
       slave_writemiso => daq_writemiso,
 
       -- monitor signals in
-      mon  => daq_mon_reg,
+      mon  => daq_mon_rr,
       -- control signals out
-      ctrl => daq_ctrl_reg
+      ctrl => daq_ctrl_r
       );
 
   tf_map_inst : entity ctrl_lib.TF_map
@@ -612,9 +635,9 @@ begin
       slave_writemiso => tf_writemiso,
 
       -- monitor signals in
-      mon  => tf_mon_reg,
+      mon  => tf_mon_rr,
       -- control signals out
-      ctrl => tf_ctrl_reg
+      ctrl => tf_ctrl_r
       );
 
   mpl_map_inst : entity ctrl_lib.MPL_map
@@ -627,12 +650,12 @@ begin
       slave_writemiso => mpl_writemiso,
 
       -- monitor signals in
-      mon  => mpl_mon_reg,
+      mon  => mpl_mon_rr,
       -- control signals out
-      ctrl => mpl_ctrl_reg
+      ctrl => mpl_ctrl_r
       );
 
-   fm_map_inst : entity ctrl_lib.FM_map
+  fm_map_inst : entity ctrl_lib.FM_map
     port map (
       clk_axi         => clk40,
       reset_axi_n     => std_logic1,
@@ -642,15 +665,15 @@ begin
       slave_writemiso => fm_writemiso,
 
       -- monitor signals in
-      mon  => fm_mon_reg,
+      mon  => fm_mon_rr,
       -- control signals out
-      Ctrl => fm_ctrl_reg
+      Ctrl => fm_ctrl_r
       );
 
   fw_info_map_inst : entity ctrl_lib.fw_info_map
     port map (
       clk_axi         => axi_clk,
-      reset_axi_n     => '1',
+      reset_axi_n     => std_logic1,
       slave_readmosi  => fw_info_readmosi,
       slave_readmiso  => fw_info_readmiso,
       slave_writemosi => fw_info_writemosi,
