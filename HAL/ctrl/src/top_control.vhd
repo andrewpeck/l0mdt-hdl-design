@@ -171,6 +171,18 @@ architecture control_arch of top_control is
   signal hal_core_mon_r, hal_core_mon_rr : HAL_CORE_MON_t;
   signal fm_mon_r, fm_mon_rr             : FM_MON_t;
 
+  attribute async_reg : string;
+
+  attribute async_reg of
+    h2s_mon_r, tar_mon_r, mtc_mon_r, ucm_mon_r, daq_mon_r, tf_mon_r,
+    mpl_mon_r, hal_mon_r, hal_core_mon_r, fm_mon_r
+    : signal is "true";
+
+  attribute async_reg of
+    h2s_ctrl_rr, tar_ctrl_rr, mtc_ctrl_rr, ucm_ctrl_rr, daq_ctrl_rr, tf_ctrl_rr,
+    mpl_ctrl_rr, hal_ctrl_rr, hal_core_ctrl_rr
+    : signal is "true";
+
 begin
 
   process (clk40) is
