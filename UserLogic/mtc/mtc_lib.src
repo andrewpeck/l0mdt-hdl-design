@@ -1,3 +1,5 @@
 # dataformats/l0mdt_buses_constants.svh
-UserLogic/mtc/src/mtc_builder_verilog.sv
+UserLogic/mtc/src/format_mtc_pkt.sv SystemVerilog
+UserLogic/mtc/src/mtc_link_map.sv SystemVerilog
+UserLogic/mtc/src/mtc_builder_verilog.sv SystemVerilog
 UserLogic/mtc/top_mtc_wrapper.vhd

@@ -87,6 +87,7 @@ VHDL_SOURCES_apbus_lib = \
     $(SHAREDDIR)/APBus/pkg/apb_pkg.vhd \
     $(SHAREDDIR)/APBus/src/apb_imem.vhd
 
+
 VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/pkg/vamc_pkg.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_rb.vhd \
@@ -96,7 +97,8 @@ VHDL_SOURCES_vamc_lib = \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_pl.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/modules/vamc_ctrl_ext.vhd \
 	$(SHAREDDIR)/vamc/vamc-core/src/vamc_spl.vhd \
-	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd
+	$(SHAREDDIR)/vamc/vamc-core/src/vamc_top.vhd 
+
 
 
 
